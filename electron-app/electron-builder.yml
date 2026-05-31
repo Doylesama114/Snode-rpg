@@ -1,0 +1,21 @@
+﻿appId: com.snowd.skilltree
+productName: "斯诺德跑团"
+directories:
+  output: dist
+files:
+  - main.js
+  - package.json
+  - 职业页/**/*
+  - 斯诺德跑团/**/*
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
+  signAndEditExecutable: false
+  forceCodeSigning: false
+portable:
+  artifactName: "斯诺德跑团.exe"
+  unpackDirName: snowd-skill-tree
+npmRebuild: false
+nodeGypRebuild: false

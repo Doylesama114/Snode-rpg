@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斯诺德 · 冒险者工具集</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  background: #f6f4ef;
+  color: #1f2522;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.container { max-width: 460px; width: 100%; }
+h1 {
+  font-size: 28px;
+  color: #1f2522;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-size: 14px;
+  color: #69706b;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+  text-decoration: none;
+  color: inherit;
+}
+.card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.icon {
+  font-size: 36px;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f4ef;
+  border-radius: 10px;
+  flex-shrink: 0;
+  border: 1px solid #d8d2c4;
+}
+.card-text h2 {
+  font-size: 19px;
+  color: #1f2522;
+  margin-bottom: 4px;
+}
+.card-text p {
+  font-size: 13px;
+  color: #69706b;
+  line-height: 1.5;
+}
+.footer {
+  margin-top: 36px;
+  font-size: 12px;
+  color: #69706b;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>⚔ 斯诺德</h1>
+  <div class="subtitle">冒险者工具集</div>
+
+  <a class="card" href="主页.html">
+    <div class="icon">📜</div>
+    <div class="card-text">
+      <h2>角色系统</h2>
+      <p>创建、管理你的冒险者角色，查看角色面板与装备</p>
+    </div>
+  </a>
+
+  <a class="card" href="../职业页/首页.html">
+    <div class="icon">📖</div>
+    <div class="card-text">
+      <h2>职业技能</h2>
+      <p>浏览各职业的天赋树、技能详情与进阶途径</p>
+    </div>
+  </a>
+
+  <a class="card" href="帮助.html">
+    <div class="icon">❓</div>
+    <div class="card-text">
+      <h2>帮助</h2>
+      <p>查看使用指南、规则说明与常见问题</p>
+    </div>
+  </a>
+
+  <div class="footer">斯诺德规则 · 冒险者工具集</div>
+</div>
+</body>
+</html>

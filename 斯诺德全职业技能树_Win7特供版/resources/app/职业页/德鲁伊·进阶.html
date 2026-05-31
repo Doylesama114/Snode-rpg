@@ -1,0 +1,1232 @@
+﻿<!doctype html>
+<html lang="zh-德鲁伊">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>德鲁伊 · 进阶途径</title>
+<link rel="stylesheet" href="common.css"/>
+<style>
+    body { background: var(--bg); }
+    .adv-container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .adv-card {
+        margin: 12px 0; padding: 16px;
+        border: 1px solid var(--line); border-radius: 8px;
+        background: var(--panel);
+    }
+    .adv-card h4 { margin: 0 0 10px; font-size: 20px; color: var(--red); }
+    .adv-card .field { color: var(--green); font-weight: 700; }
+    .adv-card p { margin: 6px 0; font-size: 14px; }
+    .adv-card ol { margin: 4px 0 4px 20px; padding: 0; }
+    .adv-card ol li { font-size: 14px; margin: 2px 0; }
+    .adv-card.hidden { display: none; }
+    .adv-card.filter-hidden { opacity: 0.4; }
+    .back-links { max-width: 900px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 16px; }
+    .back-links a { text-decoration: none; color: var(--muted); font-size: 14px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 5px; }
+    .back-links a:hover { color: var(--ink); border-color: var(--green); }
+    .topbar { max-width: 900px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    h1 { margin: 0; font-size: 24px; }
+    .subtitle { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .searchbox input { width: 100%; height: 40px; border: 1px solid var(--line); border-radius: 6px; padding: 0 12px; font-size: 15px; background: var(--panel); color: var(--ink); outline: none; }
+    .searchbox input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(47,111,94,.16); }
+    @media (max-width: 600px) {
+        .topbar { flex-direction: column; gap: 8px; padding: 12px 16px; }
+        .adv-container { padding: 12px; }
+        .back-links { padding: 8px 16px; flex-wrap: wrap; }
+        }
+.detail-btn { display: block; width: 100%; margin-top: 12px; padding: 10px 16px;
+    border: 2px solid var(--green, #00B050); border-radius: 6px; background: transparent;
+    color: var(--green, #00B050); font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 1px; }
+.detail-btn:hover, .detail-btn.active { background: var(--green, #00B050); color: #fff; }
+.locked-btn { display: block; width: 100%; margin-top: 12px; padding: 10px 16px;
+    border: 2px solid #666; border-radius: 6px; background: #333; color: #888;
+    font-size: 13px; font-weight: 700; cursor: not-allowed; letter-spacing: 1px; opacity: 0.6; }
+
+/* === 方案⑥ 整体背景分层 === */
+.adv-detail {
+    margin-top: 16px; padding: 0 20px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--panel), rgba(47,111,94,0.02) 80%);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+    max-height: 0; opacity: 0;
+    box-shadow: 0 2px 16px rgba(31,37,34,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* === 方案⑤ 展开动画 === */
+.adv-detail.expand {
+    max-height: 5000px; opacity: 1; padding: 20px;
+    animation: detail-fade-in 0.4s ease-out;
+}
+@keyframes detail-fade-in {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 描述 */
+.adv-detail .detail-desc {
+    color: var(--ink); margin-bottom: 16px;
+    font-size: 16px; line-height: 1.8;
+    padding: 14px 18px;
+    background: rgba(47,111,94,0.03);
+    border-radius: 8px;
+    border-left: 3px solid var(--green);
+    position: relative;
+}
+
+/* === 方案① 卡片化 === */
+.adv-detail .detail-ability {
+    margin: 14px 0; padding: 16px 18px 18px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--green);
+    border-top: 1px solid rgba(47,111,94,0.08);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: 0 2px 8px rgba(31,37,34,0.04), 0 1px 0 rgba(255,255,255,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+.adv-detail .detail-ability:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(31,37,34,0.08), 0 1px 0 rgba(255,255,255,0.3);
+    border-left-color: var(--gold, #a46d1f);
+}
+.adv-detail .detail-ability:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(31,37,34,0.08);
+}
+
+/* === 方案② 文字排版 === */
+.adv-detail .detail-ability .ab-name {
+    font-weight: 800; font-size: 18px; color: var(--ink);
+    display: block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
+}
+.adv-detail .detail-ability .ab-name::before {
+    content: "\25B8";
+    color: var(--green);
+    margin-right: 6px;
+    font-size: 14px;
+}
+.adv-detail .detail-ability .ab-tags {
+    font-size: 13px;
+    color: var(--green);
+    margin-left: 8px;
+    border: 1px solid rgba(47,111,94,0.2);
+    padding: 1px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.adv-detail .detail-ability .ab-desc {
+    margin-top: 8px; font-size: 16px; color: var(--ink);
+    line-height: 1.8;
+    padding-left: 4px;
+}
+.adv-detail .detail-ability .ab-tags {
+    font-size: 13px;
+    color: var(--green);
+    margin-left: 8px;
+    background: rgba(47,111,94,0.08);
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* === 方案④ 洞察区 === */
+.adv-detail .detail-insight {
+    margin-top: 16px; padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(157,47,47,0.03), var(--panel) 60%);
+    box-shadow: 0 2px 8px rgba(31,37,34,0.04);
+}
+.adv-detail .detail-insight-title {
+    font-weight: 800; font-size: 16px;
+    color: var(--red);
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(157,47,47,0.1);
+    margin-bottom: 6px;
+}
+.adv-detail .detail-insight-tags {
+    font-size: 13px; color: var(--muted);
+    border: 1px solid rgba(157,47,47,0.15);
+    padding: 1px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.adv-detail .detail-insight-desc {
+    margin-top: 8px; font-size: 15px; color: var(--ink);
+    line-height: 1.8;
+    
+    padding-left: 12px;
+    border-left: 2px solid rgba(157,47,47,0.08);
+}
+.adv-detail .detail-insight-title {
+    font-weight: 800; font-size: 16px;
+    color: var(--red);
+    padding-bottom: 4px;
+}
+.adv-detail .detail-insight-tags {
+    font-size: 13px; color: var(--muted);
+    background: rgba(157,47,47,0.06);
+    padding: 1px 8px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.adv-detail .detail-insight-desc {
+    margin-top: 8px; font-size: 15px; color: var(--ink);
+    line-height: 1.8;
+    
+}
+
+/* 图片 */
+.adv-detail .detail-images {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin: 16px 0; justify-content: center;
+}
+.adv-detail .detail-images .img-item {
+    text-align: center; max-width: 220px;
+}
+.adv-detail .detail-images .img-item img {
+    max-width: 100%; max-height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px; cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(31,37,34,0.06);
+}
+.adv-detail .detail-images .img-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(31,37,34,0.1);
+}
+.adv-detail .detail-images .img-item img.zoomed {
+    max-width: 100%; max-height: 80vh;
+    transform: scale(1);
+}
+.adv-detail .detail-images .img-caption {
+    font-size: 12px; color: var(--muted);
+    margin-top: 4px;
+}
+.adv-detail .detail-images .img-marker {
+    width: 100%; font-size: 13px; color: var(--muted);
+    text-align: center; margin: 4px 0;
+}
+.adv-detail .detail-images .img-item {
+    text-align: center; max-width: 220px;
+}
+.adv-detail .detail-images .img-item img {
+    max-width: 100%; max-height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px; cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(31,37,34,0.08);
+}
+.adv-detail .detail-images .img-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(31,37,34,0.12);
+}
+.adv-detail .detail-images .img-item img.zoomed {
+    max-width: 100%; max-height: 80vh;
+    transform: scale(1);
+}
+.adv-detail .detail-images .img-caption {
+    font-size: 12px; color: var(--muted);
+    margin-top: 4px;
+}
+.adv-detail .detail-images .img-marker {
+    width: 100%; font-size: 13px; color: var(--muted);
+    text-align: center; margin: 4px 0;
+}
+
+
+.adv-detail .ab-desc hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 6px 0;
+  opacity: 0.3;
+}
+/* Detail text enhancements */
+.adv-detail .ab-desc .hl-num {
+  color: var(--gold, #a46d1f);
+  font-weight: 700;
+}
+.adv-detail .ab-desc .hl-field {
+  color: var(--red);
+  font-weight: 700;
+}
+.adv-detail .ab-desc .hl-lead {
+  font-size: 17px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+.adv-detail .ab-desc .hl-option {
+  display: block;
+  padding: 3px 0 3px 18px;
+  margin: 4px 0 4px 6px;
+  font-size: 15px;
+  line-height: 1.7;
+  position: relative;
+}
+.adv-detail .ab-desc .hl-option::before {
+  content: "\25B8";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  color: var(--gold, #a46d1f);
+  font-size: 12px;
+}
+
+/* === 方案③ 表格升级 === */
+.adv-detail .detail-table-wrap {
+    overflow-x: auto; margin: 16px 0;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+}
+.adv-detail .detail-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px;
+}
+.adv-detail .detail-table th,
+.adv-detail .detail-table td {
+    border: 1px solid var(--line);
+    padding: 10px 12px; text-align: left;
+}
+.adv-detail .detail-table th {
+    background: var(--green);
+    font-weight: 700; color: #fff;
+}
+.adv-detail .detail-table td {
+    color: var(--ink);
+}
+.adv-detail .detail-table tr:nth-child(even) td {
+    background: rgba(47,111,94,0.03);
+}
+.adv-detail .detail-table tr:hover td {
+    background: rgba(47,111,94,0.06);
+}
+.adv-detail .detail-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px;
+}
+.adv-detail .detail-table th,
+.adv-detail .detail-table td {
+    border: 1px solid var(--line);
+    padding: 10px 12px; text-align: left;
+}
+.adv-detail .detail-table th {
+    background: var(--green);
+    font-weight: 700; color: #fff;
+}
+.adv-detail .detail-table td {
+    color: var(--ink);
+}
+.adv-detail .detail-table tr:nth-child(even) td {
+    background: rgba(47,111,94,0.03);
+}
+.adv-detail .detail-table tr:hover td {
+    background: rgba(47,111,94,0.06);
+}
+
+.search-highlight {
+  background: #FFD700;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+  animation: search-blink 1.2s ease-in-out 3;
+}
+@keyframes search-blink {
+  0%, 100% { background: #FFD700; }
+  50% { background: #FF6B6B; }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--green, #2F6F5E);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  z-index: 999;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.back-to-top:hover {
+  transform: scale(1.1);
+}
+.back-to-top.show {
+  display: flex;
+}
+
+.detail-btn {
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: box-shadow 0.15s;
+}
+.detail-btn.holding {
+  animation: btn-pulse 1s ease-in-out infinite;
+}
+.detail-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--hold-progress, 0) * 100%);
+  background: linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,215,0,0.55));
+  pointer-events: none;
+  transition: none;
+  border-radius: 4px;
+}
+.detail-btn.holding::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow: 0 0 calc(var(--hold-progress, 0) * 24px) calc(var(--hold-progress, 0) * 6px) rgba(255,215,0,0.45);
+  transition: box-shadow 0.1s;
+}
+@keyframes btn-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+</style>
+  <script src="advancement_details.js"></script>
+</head>
+<body>
+
+<div class="back-links">
+    <a href="首页.html">← 返回主页</a>
+    <a href="德鲁伊.html">← 返回德鲁伊基础页</a>
+</div>
+
+<header>
+    <div class="topbar">
+        <div>
+            <h1>德鲁伊 · 进阶途径</h1>
+            <p class="subtitle">35 个可选进阶</p>
+        </div>
+        <label class="searchbox">
+            <input id="druid-adv-search" type="search" placeholder="搜索..." autocomplete="off" />
+        </label>
+    </div>
+</header>
+
+<div class="adv-container" id="druid-adv-container">
+            <article data-name="变形大师" class="adv-card" id="adv-druid-变形大师" data-search="变形大师 法师、德鲁伊 施展二十次带有变形关键词的效果 你花费过幕间物语来阅读一本变形学派的魔典 准备任意动物的一缕毛发、一颗爪牙、一片羽翅和一片鳞片，在自然环境下举行晋升为变形大师的仪式">
+        <h4>变形大师</h4>
+        <p><span class="field">来源：</span>法师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>智力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span>  <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>施展二十次带有变形关键词的效果</li>
+          <li>你花费过幕间物语来阅读一本变形学派的魔典</li>
+          <li>准备任意动物的一缕毛发、一颗爪牙、一片羽翅和一片鳞片，在自然环境下举行晋升为变形大师的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="部落勇士" class="adv-card" id="adv-druid-部落勇士" data-search="部落勇士 蛮斗士、战士、猎人、德鲁伊、萨满祭司 独自击败五头不弱于你的野兽或怪兽 成为一支不少于二十人的团队、社群或部族中的榜样 战胜一名无可匹敌的敌人，唯有你能够做到">
+        <h4>部落勇士</h4>
+        <p><span class="field">来源：</span>蛮斗士、战士、猎人、德鲁伊、萨满祭司</p>
+        <p><span class="field">属性需求：</span><span>力量12</span>  <span>意志15</span>  <span>魅力12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>独自击败五头不弱于你的野兽或怪兽</li>
+          <li>成为一支不少于二十人的团队、社群或部族中的榜样</li>
+          <li>战胜一名无可匹敌的敌人，唯有你能够做到</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="兽群领主" class="adv-card" id="adv-druid-兽群领主" data-search="兽群领主 猎人、德鲁伊 你拥有至少两只野兽伙伴并保持着亲密关系 令你的野兽伙伴击杀二十名角色 通过你的野兽伙伴逆转一场原先绝无希望的战局">
+        <h4>兽群领主</h4>
+        <p><span class="field">来源：</span>猎人、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有至少两只野兽伙伴并保持着亲密关系</li>
+          <li>令你的野兽伙伴击杀二十名角色</li>
+          <li>通过你的野兽伙伴逆转一场原先绝无希望的战局</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="兽群领主">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="鼠王" class="adv-card" id="adv-druid-鼠王" data-search="鼠王 猎人、德鲁伊 在暗巷、下水道或地下环境（不包括幽暗地域）中击败二十名角色 你饲养了超过三十只啮齿动物并保持着亲密关系 成为一个底层社会的组织、集会或团伙领袖，并确保你在当地具有足够的掌控力度">
+        <h4>鼠王</h4>
+        <p><span class="field">来源：</span>猎人、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在暗巷、下水道或地下环境（不包括幽暗地域）中击败二十名角色</li>
+          <li>你饲养了超过三十只啮齿动物并保持着亲密关系</li>
+          <li>成为一个底层社会的组织、集会或团伙领袖，并确保你在当地具有足够的掌控力度</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="自然行者" class="adv-card" id="adv-druid-自然行者" data-search="自然行者 猎人、牧师、德鲁伊 进行十次成功的自然检定 拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历 在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境）">
+        <h4>自然行者</h4>
+        <p><span class="field">来源：</span>猎人、牧师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的自然检定</li>
+          <li>拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历</li>
+          <li>在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="丰收祭司" class="adv-card" id="adv-druid-丰收祭司" data-search="丰收祭司 牧师、德鲁伊、魔契师 治退十名危害农田或果园的敌人（不计算玩家在内） 治理三处腐败之地，使其变为适宜耕种的沃土 开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内）">
+        <h4>丰收祭司</h4>
+        <p><span class="field">来源：</span>牧师、德鲁伊、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span>  <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>治退十名危害农田或果园的敌人（不计算玩家在内）</li>
+          <li>治理三处腐败之地，使其变为适宜耕种的沃土</li>
+          <li>开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="风暴德鲁伊" class="adv-card" id="adv-druid-风暴德鲁伊" data-search="风暴德鲁伊 德鲁伊 在空旷的野外环境下，通过带有风暴关键词的法术击败二十名角色（不计算玩家在内） 通过带有风暴关键词的法术击倒、击退或击飞十名角色（不计算玩家在内） 寻找一处自然形成的龙卷风，顺应风暴的流动被席卷其中，保持意识清醒的情况下完成风暴德鲁伊的进阶">
+        <h4>风暴德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>敏捷14</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在空旷的野外环境下，通过带有风暴关键词的法术击败二十名角色（不计算玩家在内）</li>
+          <li>通过带有风暴关键词的法术击倒、击退或击飞十名角色（不计算玩家在内）</li>
+          <li>寻找一处自然形成的龙卷风，顺应风暴的流动被席卷其中，保持意识清醒的情况下完成风暴德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="猛禽德鲁伊" class="adv-card" id="adv-druid-猛禽德鲁伊" data-search="猛禽德鲁伊 德鲁伊 与十只不同品种的鸟类保持着亲密关系 驱逐十名对鸟类生态产生危害的敌人（不计算玩家在内） 与至少一只大型体型或以上的猛禽生活长达数年时间，观察对方习性，保持着亲密关系并最终领悟猛禽德鲁伊的进阶">
+        <h4>猛禽德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>敏捷14</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>与十只不同品种的鸟类保持着亲密关系</li>
+          <li>驱逐十名对鸟类生态产生危害的敌人（不计算玩家在内）</li>
+          <li>与至少一只大型体型或以上的猛禽生活长达数年时间，观察对方习性，保持着亲密关系并最终领悟猛禽德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="利爪德鲁伊" class="adv-card" id="adv-druid-利爪德鲁伊" data-search="利爪德鲁伊 德鲁伊 你成功使十名敌人进入流血状态 击杀十名危害自然生态的敌人 在一伙有组织的敌人威胁自然环境、狩猎野兽动物时发起突袭轮次，在突袭轮次结束阶段前结束这场战斗环节，并确保有敌人感受到大自然的怒火而逃之夭夭">
+        <h4>利爪德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>敏捷14</span>  <span>体质14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你成功使十名敌人进入流血状态</li>
+          <li>击杀十名危害自然生态的敌人</li>
+          <li>在一伙有组织的敌人威胁自然环境、狩猎野兽动物时发起突袭轮次，在突袭轮次结束阶段前结束这场战斗环节，并确保有敌人感受到大自然的怒火而逃之夭夭</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="毒牙德鲁伊" class="adv-card" id="adv-druid-毒牙德鲁伊" data-search="毒牙德鲁伊 德鲁伊 你成功使十名敌人进入中毒状态 通过剧毒伤害击杀二十名角色 通过食用有毒植株、动物的自然形式使自身具备毒性">
+        <h4>毒牙德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>敏捷14</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你成功使十名敌人进入中毒状态</li>
+          <li>通过剧毒伤害击杀二十名角色</li>
+          <li>通过食用有毒植株、动物的自然形式使自身具备毒性</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="荆棘德鲁伊" class="adv-card" id="adv-druid-荆棘德鲁伊" data-search="荆棘德鲁伊 德鲁伊 使十名角色受到减速、禁锢以及阻碍关键词的效果影响（不计算玩家在内） 通过带有自然关键词的法术触发十次生命流失效果 褪去自身的所有防护后赤身穿过一片长达数百米的荆棘丛，在鲜血淋漓地过程中凭借你坚韧的意志领悟荆棘德鲁伊的进阶">
+        <h4>荆棘德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>使十名角色受到减速、禁锢以及阻碍关键词的效果影响（不计算玩家在内）</li>
+          <li>通过带有自然关键词的法术触发十次生命流失效果</li>
+          <li>褪去自身的所有防护后赤身穿过一片长达数百米的荆棘丛，在鲜血淋漓地过程中凭借你坚韧的意志领悟荆棘德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="耀阳德鲁伊" class="adv-card" id="adv-druid-耀阳德鲁伊" data-search="耀阳德鲁伊 德鲁伊 在日光环境下，通过太阳法术击败十名角色（不计算玩家在内） 进入十次日耀状态 携带太阳花和明焰石，攀登至当前地区的最高峰或在极昼环境下，于烈阳照耀最为鼎盛的时段完成耀阳德鲁伊的进阶">
+        <h4>耀阳德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在日光环境下，通过太阳法术击败十名角色（不计算玩家在内）</li>
+          <li>进入十次日耀状态</li>
+          <li>携带太阳花和明焰石，攀登至当前地区的最高峰或在极昼环境下，于烈阳照耀最为鼎盛的时段完成耀阳德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="月光德鲁伊" class="adv-card" id="adv-druid-月光德鲁伊" data-search="月光德鲁伊 德鲁伊 在黑夜环境下，通过月亮法术击败十名角色（不计算玩家在内） 进入十次月耀状态 携带月蔷薇和月光石，在能够看见月亮的黑暗渊底或在极夜环境下，于满月或月光消逝的瞬间完成月光德鲁伊的进阶">
+        <h4>月光德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在黑夜环境下，通过月亮法术击败十名角色（不计算玩家在内）</li>
+          <li>进入十次月耀状态</li>
+          <li>携带月蔷薇和月光石，在能够看见月亮的黑暗渊底或在极夜环境下，于满月或月光消逝的瞬间完成月光德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="海潮德鲁伊" class="adv-card" id="adv-druid-海潮德鲁伊" data-search="海潮德鲁伊 德鲁伊 在水域环境下，通过自然或水源法术击败十名角色（不计算玩家在内） 净化三处被污染的水源、或驱逐三次威胁水域平衡的生物 在一处大型水域中驻足一周时长，并在这期间经历过以下至少六项不同事件：游泳、垂钓、潜水拾贝、遭遇暗流、水怪侵袭、收集漂流物、对抗风暴、感受宁静的水面、与友善的水生生物嬉戏以及保卫当地水生物种的生态环境">
+        <h4>海潮德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在水域环境下，通过自然或水源法术击败十名角色（不计算玩家在内）</li>
+          <li>净化三处被污染的水源、或驱逐三次威胁水域平衡的生物</li>
+          <li>在一处大型水域中驻足一周时长，并在这期间经历过以下至少六项不同事件：游泳、垂钓、潜水拾贝、遭遇暗流、水怪侵袭、收集漂流物、对抗风暴、感受宁静的水面、与友善的水生生物嬉戏以及保卫当地水生物种的生态环境</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="野火德鲁伊" class="adv-card" id="adv-druid-野火德鲁伊" data-search="野火德鲁伊 德鲁伊 分别施展十个带有火焰和自然关键词的法术或戏法 与自然精魄及其他自然种族进行过五次友善的互动 携带秋辉石和梦露花，身披七彩龙蜥的薄膜前往夜晚的林间空地，在自然精魄的好奇心下升起无害的火焰，感受精魄们的活跃以完成野火德鲁伊的进阶">
+        <h4>野火德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>感知15</span>  <span>魅力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>分别施展十个带有火焰和自然关键词的法术或戏法</li>
+          <li>与自然精魄及其他自然种族进行过五次友善的互动</li>
+          <li>携带秋辉石和梦露花，身披七彩龙蜥的薄膜前往夜晚的林间空地，在自然精魄的好奇心下升起无害的火焰，感受精魄们的活跃以完成野火德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="冰霜德鲁伊" class="adv-card" id="adv-druid-冰霜德鲁伊" data-search="冰霜德鲁伊 德鲁伊 在寒冷环境下击败十名非本土自然生态的敌人（不计算玩家在内） 在寒冷环境中长休十次 携带臻冰和冬刺草，在寒风凌厉的极寒环境下，于新一轮的暴风雪席卷中完成冰霜德鲁伊的进阶">
+        <h4>冰霜德鲁伊</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在寒冷环境下击败十名非本土自然生态的敌人（不计算玩家在内）</li>
+          <li>在寒冷环境中长休十次</li>
+          <li>携带臻冰和冬刺草，在寒风凌厉的极寒环境下，于新一轮的暴风雪席卷中完成冰霜德鲁伊的进阶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="天气术士" class="adv-card" id="adv-druid-天气术士" data-search="天气术士 德鲁伊、魔契师 分别在晴天、多云、阴天、雨天、雷雨、小雪、大雪天气下各驻足一周时长，并保证尽可能在室外环境下停留 在上述气候环境下各完成一场战斗环节 在极端气候环境下使自身保持绝佳状态扭转战局">
+        <h4>天气术士</h4>
+        <p><span class="field">来源：</span>德鲁伊、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>分别在晴天、多云、阴天、雨天、雷雨、小雪、大雪天气下各驻足一周时长，并保证尽可能在室外环境下停留</li>
+          <li>在上述气候环境下各完成一场战斗环节</li>
+          <li>在极端气候环境下使自身保持绝佳状态扭转战局</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="菌术士" class="adv-card" id="adv-druid-菌术士" data-search="菌术士 德鲁伊 你成功使十名敌人进入异常状态 击败十名当前受到三种或更多异常状态影响的角色（不计算玩家在内） 使自身类别可以被视为菌类生物">
+        <h4>菌术士</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质15</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你成功使十名敌人进入异常状态</li>
+          <li>击败十名当前受到三种或更多异常状态影响的角色（不计算玩家在内）</li>
+          <li>使自身类别可以被视为菌类生物</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="枯萎者" class="adv-card" id="adv-druid-枯萎者" data-search="枯萎者 德鲁伊 击败十名猎人、德鲁伊和萨满祭司职业者（不计算玩家在内） 使三处自然环境受到严重污染，但使其仍然能够维持基本的生态循环 夺取一处森林、泉水或草地的全部生命能量">
+        <h4>枯萎者</h4>
+        <p><span class="field">来源：</span>德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击败十名猎人、德鲁伊和萨满祭司职业者（不计算玩家在内）</li>
+          <li>使三处自然环境受到严重污染，但使其仍然能够维持基本的生态循环</li>
+          <li>夺取一处森林、泉水或草地的全部生命能量</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="植物学家" class="adv-card" id="adv-druid-植物学家" data-search="植物学家 牧师、德鲁伊 击败十名危害植物生长的敌人（不计算玩家在内） 探寻并详细记录三株珍稀品质或以上的野生植物 种植、观测并培育出一株奇珍品质或以上的神奇植物">
+        <h4>植物学家</h4>
+        <p><span class="field">来源：</span>牧师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击败十名危害植物生长的敌人（不计算玩家在内）</li>
+          <li>探寻并详细记录三株珍稀品质或以上的野生植物</li>
+          <li>种植、观测并培育出一株奇珍品质或以上的神奇植物</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="奇美拉" class="adv-card" id="adv-druid-奇美拉" data-search="奇美拉 德鲁伊、魔契师 猎杀三只野兽或怪兽，移植对方的核心器官 注入狮类、羊类和蛇类精英级生物的血统因子各一份 触发不可控突变">
+        <h4>奇美拉</h4>
+        <p><span class="field">来源：</span>德鲁伊、魔契师</p>
+        <p><span class="field">属性需求：</span><span>体质16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>猎杀三只野兽或怪兽，移植对方的核心器官</li>
+          <li>注入狮类、羊类和蛇类精英级生物的血统因子各一份</li>
+          <li>触发不可控突变</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="离群野兽" class="adv-card" id="adv-druid-离群野兽" data-search="离群野兽 蛮斗士、猎人、游荡者、德鲁伊、武僧 在五场战斗环节中没有进行过发言，也没有与友方角色进行交互 在三个模组中没有与任何NPC角色进行过沟通 成为“神灵”">
+        <h4>离群野兽</h4>
+        <p><span class="field">来源：</span>蛮斗士、猎人、游荡者、德鲁伊、武僧</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>意志14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在五场战斗环节中没有进行过发言，也没有与友方角色进行交互</li>
+          <li>在三个模组中没有与任何NPC角色进行过沟通</li>
+          <li>成为“神灵”</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="蝇法师" class="adv-card" id="adv-druid-蝇法师" data-search="蝇法师 法师、德鲁伊 驱使十次虫类生物来达成你的目的 通过非限定法术或戏法的效果触发十次异常状态效果 将一名精英级敌人在战斗环节开始前削弱至无需战斗便能够轻易击败的程度">
+        <h4>蝇法师</h4>
+        <p><span class="field">来源：</span>法师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>智力14</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>驱使十次虫类生物来达成你的目的</li>
+          <li>通过非限定法术或戏法的效果触发十次异常状态效果</li>
+          <li>将一名精英级敌人在战斗环节开始前削弱至无需战斗便能够轻易击败的程度</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="大地旅者" class="adv-card" id="adv-druid-大地旅者" data-search="大地旅者 蛮斗士、德鲁伊、萨满祭司 在野外环境的陆地上进行十次成功的专注、聆听或感悟检定 与土元素及其他大地种族进行过五次友善的互动 在没有装备、魔法及奇械等外物辅助的情况下，脚踏实地的穿行长达一千公里的路径，期间与这片土地上的生灵进行紧密的交流">
+        <h4>大地旅者</h4>
+        <p><span class="field">来源：</span>蛮斗士、德鲁伊、萨满祭司</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在野外环境的陆地上进行十次成功的专注、聆听或感悟检定</li>
+          <li>与土元素及其他大地种族进行过五次友善的互动</li>
+          <li>在没有装备、魔法及奇械等外物辅助的情况下，脚踏实地的穿行长达一千公里的路径，期间与这片土地上的生灵进行紧密的交流</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="牧魂人" class="adv-card" id="adv-druid-牧魂人" data-search="牧魂人 德鲁伊、萨满祭司 为十名在自然界中死亡的己方阵营角色举行安息仪式 累计十次将生命值降至0或更低的角色生命值回复到至少1点 陪同并确保一名未能安息的亡魂在自然环境下存续一周时长，使其能够完成执念并最终得以安息">
+        <h4>牧魂人</h4>
+        <p><span class="field">来源：</span>德鲁伊、萨满祭司</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>为十名在自然界中死亡的己方阵营角色举行安息仪式</li>
+          <li>累计十次将生命值降至0或更低的角色生命值回复到至少1点</li>
+          <li>陪同并确保一名未能安息的亡魂在自然环境下存续一周时长，使其能够完成执念并最终得以安息</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="近卫" class="adv-card" id="adv-druid-近卫" data-search="近卫 全职业 赢得十场战斗环节的胜利 确保在十场战斗环节中你为团队中承受伤害最多的角色 在一场关键战役中全程担任正面承受敌人火力的职责">
+        <h4>近卫</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>确保在十场战斗环节中你为团队中承受伤害最多的角色</li>
+          <li>在一场关键战役中全程担任正面承受敌人火力的职责</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="高阶冒险者" class="adv-card" id="adv-druid-高阶冒险者" data-search="高阶冒险者 全职业 赢得十场战斗环节的胜利 完成十次成功的剧情交互内容 完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容">
+        <h4>高阶冒险者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>完成十次成功的剧情交互内容</li>
+          <li>完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="战斗大师" class="adv-card" id="adv-druid-战斗大师" data-search="战斗大师 全职业 赢得十场战斗环节的胜利 你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态 取得一场关键战役的最终胜利">
+        <h4>战斗大师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量13</span>  <span>敏捷14</span>  <span>感知13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态</li>
+          <li>取得一场关键战役的最终胜利</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="复仇者" class="adv-card" id="adv-druid-复仇者" data-search="复仇者 全职业 你拥有一名刻骨铭心、无论如何都必须向其复仇的对象 你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内） 你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式">
+        <h4>复仇者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有一名刻骨铭心、无论如何都必须向其复仇的对象</li>
+          <li>你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）</li>
+          <li>你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="骑士扈从" class="adv-card" id="adv-druid-骑士扈从" data-search="骑士扈从 全职业 你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共 你与自身的效忠对象一同参与十场战斗环节 在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右">
+        <h4>骑士扈从</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共</li>
+          <li>你与自身的效忠对象一同参与十场战斗环节</li>
+          <li>在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="战地医师" class="adv-card" id="adv-druid-战地医师" data-search="战地医师 全职业 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役">
+        <h4>战地医师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的医药检定</li>
+          <li>通过医疗包移除十次中毒或流血的效果</li>
+          <li>作为医疗人员的身份完整参与一场战役</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="边界行者" class="adv-card" id="adv-druid-边界行者" data-search="边界行者 全职业 击败二十名来自任意边境地区的敌人 完成三场不为人知的拯救行动（不计算玩家在内） 阻挡一次来自异界、异位面对本位面的入侵事件">
+        <h4>边界行者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>感知14</span>  <span>意志13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击败二十名来自任意边境地区的敌人</li>
+          <li>完成三场不为人知的拯救行动（不计算玩家在内）</li>
+          <li>阻挡一次来自异界、异位面对本位面的入侵事件</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="自由骑士" class="adv-card" id="adv-druid-自由骑士" data-search="自由骑士 全职业 你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出） 协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容 你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划">
+        <h4>自由骑士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）</li>
+          <li>协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容</li>
+          <li>你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="塑形者" class="adv-card" id="adv-druid-塑形者" data-search="塑形者 全职业 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业">
+        <h4>塑形者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量X</span>  <span>敏捷X</span>  <span>体质X</span>  <span>智力X</span>  <span>感知X</span>  <span>意志X</span>  <span>魅力X</span>  <span>幸运X</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度</li>
+          <li>你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板</li>
+          <li>你所在团队的所有其他角色均完成进阶职业</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+      <article data-name="凡人勇士" class="adv-card" id="adv-druid-凡人勇士" data-search="凡人勇士 全职业 你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板 在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力 战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成">
+        <h4>凡人勇士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>敏捷15</span>  <span>体质15</span>  <span>智力15</span>  <span>感知15</span>  <span>意志15</span>  <span>魅力15</span>  <span>幸运15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板</li>
+          <li>在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力</li>
+          <li>战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+
+<div id="druid-adv-empty" class="empty hidden" style="text-align:center;padding:40px;color:var(--muted);">没有找到匹配的进阶。</div>
+</div>
+
+<script>
+(function() {
+    var detailsData = null;
+    var holdState = null;
+    function initDetails() {
+        if (typeof ADVANCEMENT_DETAILS !== "undefined") {
+            detailsData = ADVANCEMENT_DETAILS;
+        }
+    }
+    function buildHTML(d) {
+        var h = "";
+        if (d.desc_html) h += "<div class=\"detail-desc\">" + d.desc_html + "</div>";
+        else if (d.description) h += "<div class=\"detail-desc\">" + d.description + "</div>";
+        if (d.image_markers) {
+            var firstImgs = d.image_markers.filter(function(m) { return m.para_index === 825; });
+            if (firstImgs.length > 0) {
+                h += "<div class=\"detail-images\">";
+                firstImgs.forEach(function(m, idx) {
+                    h += "<div class=\"img-item\">";
+                    h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
+                    h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
+                });
+                h += "</div>";
+            }
+        }
+        if (d.abilities && d.abilities.length > 0) {
+            d.abilities.forEach(function(a, ai) {
+                h += "<div class=\"detail-ability\">";
+                h += "<span class=\"ab-name\">" + a.name + "</span>";
+                if (a.tags) h += "<span class=\"ab-tags\">[" + a.tags + "]</span>";
+                var descContent = a.desc_html || a.desc || "";
+                h += "<div class=\"ab-desc\">" + descContent + "</div></div>";
+                if (d.image_markers && d.name === "\u602a\u7269") {
+                    var sectionImgs = null;
+                    if (ai === 0) {
+                        sectionImgs = d.image_markers.filter(function(m) { return m.para_index >= 843 && m.para_index <= 849; });
+                    }
+                    if (sectionImgs && sectionImgs.length > 0) {
+                        h += "<div class=\"detail-images\">";
+                        sectionImgs.forEach(function(m, idx) {
+                            h += "<div class=\"img-item\">";
+                            h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
+                            h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
+                        });
+                        h += "</div>";
+                    }
+                }
+            });
+        }
+        if (d.tables && d.tables.length > 0) {
+            d.tables.forEach(function(tbl) {
+                h += "<div class=\"detail-table-wrap\">";
+                h += "<table class=\"detail-table\">";
+                tbl.forEach(function(row, ri) {
+                    h += "<tr>";
+                    row.forEach(function(cell) {
+                        var tag = (ri === 0) ? "th" : "td";
+                        h += "<" + tag + ">" + cell + "</" + tag + ">";
+                    });
+                    h += "</tr>";
+                });
+                h += "</table></div>";
+            });
+        }
+        if (d.insight) {
+            h += "<div class=\"detail-insight\">";
+            h += "<div class=\"detail-insight-title\">" + d.insight.name + "</div>";
+            if (d.insight.tags) h += "<div class=\"detail-insight-tags\">[" + d.insight.tags + "]</div>";
+            var insContent = d.insight.desc_html || d.insight.desc || "";
+            h += "<div class=\"detail-insight-desc\">" + insContent + "</div></div>";
+        }
+        return h;
+    }
+
+
+
+
+
+
+
+
+    function formatDetailText(container) {
+        var descs = container.querySelectorAll(".ab-desc");
+        for (var d = 0; d < descs.length; d++) {
+            var el = descs[d];
+            var raw = el.innerHTML;
+            raw = raw.replace(/\n\s*(?:<strong>\s*)?-{3,}(?:\s*<\/strong>)?\s*/g, "<hr>");
+            raw = raw.replace(/([\u3002\uff1a])\n/g, "$1<br>");
+            raw = raw.replace(/\n\s*/g, "");
+            raw = raw.replace(/<br>([^<]+)/g, "<span class=\"hl-option\">$1</span>");
+            var plainTxt = raw.replace(/<[^>]+>/g, "");
+            var dotIdx = plainTxt.indexOf("\u3002");
+            if (dotIdx > 0 && dotIdx < 100) {
+                var leadRaw = plainTxt.substring(0, dotIdx + 1);
+                var escLead = leadRaw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                var re = new RegExp("^\\s*(" + escLead + ")", "");
+                if (re.test(raw)) {
+                    raw = raw.replace(re, "<span class=\"hl-lead\">$1</span>");
+                }
+            }
+            el.innerHTML = raw;
+            var walker = document.createTreeWalker(el, 4, null, false);
+            var nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+            for (var i = 0; i < nodes.length; i++) {
+                var nd = nodes[i];
+                if (!nd.parentNode) continue;
+                var p = nd.parentNode;
+                if (p.classList && (p.classList.contains("hl-num") || p.classList.contains("hl-field"))) continue;
+                if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
+                var t = nd.textContent;
+                var changed = false;
+                var t1 = t.replace(/(\d+%|\d+点|[Dd]\d+|\d+级|\+\d+|\d+[Dd]\d+)/g, "<span class=\"hl-num\">$1</span>");
+                if (t1 !== t) { t = t1; changed = true; }
+                var t2 = t.replace(/(你的\S+职业等级到达\d+级时：)/g, "<span class=\"hl-field\">$1</span>");
+                if (t2 !== t) { t = t2; changed = true; }
+                if (changed) {
+                    var sp = document.createElement("span");
+                    sp.innerHTML = t;
+                    p.replaceChild(sp, nd);
+                }
+            }
+        }
+    }
+
+    function showDetail(btn) {
+        btn.classList.remove("holding");
+        var card = btn.closest(".adv-card");
+        if (!card) return;
+        var dv = card.querySelector(".adv-detail");
+        if (!dv) return;
+        initDetails();
+        if (!detailsData) {
+            dv.innerHTML = "<p style=\"color:red;text-align:center;padding:12px;\">\u6570\u636e\u52a0\u8f7d\u5931\u8d25</p>";
+            dv.classList.add("expand");
+            btn.textContent = "\u6536\u8d77";
+            btn.classList.add("active");
+            return;
+        }
+        var nm = btn.getAttribute("data-adv-name");
+        if (!nm) return;
+        var f = null;
+        for (var i = 0; i < detailsData.length; i++) {
+            if (detailsData[i].name === nm) { f = detailsData[i]; break; }
+        }
+        if (f) { dv.innerHTML = buildHTML(f); formatDetailText(dv); }
+        else { dv.innerHTML = "<p style=\"color:var(--muted);text-align:center;padding:12px;\">\u6682\u65e0\u8be6\u7ec6\u4fe1\u606f</p>"; }
+        dv.classList.add("expand");
+        btn.textContent = "\u6536\u8d77";
+        btn.classList.add("active");
+    }
+    document.addEventListener("pointerdown", function(e) {
+        var btn = e.target.closest(".detail-btn");
+        if (!btn) return;
+        if (holdState) return;
+        var card = btn.closest(".adv-card");
+        if (!card) return;
+        var dv = card.querySelector(".adv-detail");
+        if (!dv) return;
+        if (dv.classList.contains("expand")) {
+            dv.classList.remove("expand");
+            btn.textContent = "\u67e5\u770b\u8be6\u60c5";
+            btn.classList.remove("active");
+            return;
+        }
+        holdState = { btn: btn, startTime: performance.now(), running: true };
+        btn.classList.add("holding");
+        btn.style.setProperty("--hold-progress", "0");
+        (function tick() {
+            if (!holdState || !holdState.running) return;
+            var elapsed = performance.now() - holdState.startTime;
+            var p = Math.min(elapsed / 2000, 1);
+            holdState.btn.style.setProperty("--hold-progress", String(p));
+            if (p >= 1) {
+                holdState.running = false;
+                var b = holdState.btn;
+                holdState = null;
+                showDetail(b);
+                return;
+            }
+            holdState.timer = requestAnimationFrame(tick);
+        })();
+    });
+    document.addEventListener("pointerup", function() {
+        if (!holdState) return;
+        holdState.btn.classList.remove("holding");
+        holdState.running = false;
+        if (holdState.timer) cancelAnimationFrame(holdState.timer);
+        var btn = holdState.btn;
+        var startP = parseFloat(btn.style.getPropertyValue("--hold-progress")) || 0;
+        if (startP < 1) {
+            var decayStart = performance.now();
+            (function decay() {
+                var elapsed = performance.now() - decayStart;
+                var t = Math.min(elapsed / 600, 1);
+                var eased = 1 - Math.pow(1 - t, 3);
+                var current = startP * (1 - eased);
+                btn.style.setProperty("--hold-progress", String(current));
+                if (t < 1) { requestAnimationFrame(decay); }
+                else { btn.style.setProperty("--hold-progress", "0"); holdState = null; }
+            })();
+        } else {
+            holdState = null;
+        }
+    });
+    document.addEventListener("pointercancel", function() {
+        if (!holdState) return;
+        holdState.btn.classList.remove("holding");
+        holdState.running = false;
+        if (holdState.timer) cancelAnimationFrame(holdState.timer);
+        if (holdState.btn) holdState.btn.style.setProperty("--hold-progress", "0");
+        holdState = null;
+    });
+})();
+
+// Advancement card search
+(function() {
+        var searchInput = document.getElementById("druid-adv-search");
+    if (!searchInput) return;
+    searchInput.addEventListener("input", function() {
+        var q = this.value.trim().toLowerCase();
+        var cards = document.querySelectorAll(".adv-card");
+        var oldHL = document.querySelectorAll(".search-highlight");
+        for (var i = oldHL.length - 1; i >= 0; i--) {
+            var sp = oldHL[i];
+            sp.parentNode.replaceChild(document.createTextNode(sp.textContent), sp);
+        }
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var sd = card.getAttribute("data-search") || "";
+            if (q === "" || sd.toLowerCase().indexOf(q) >= 0) {
+                card.classList.remove("filter-hidden");
+            } else {
+                card.classList.add("filter-hidden");
+            }
+        }
+        if (q !== "") {
+            var vis = document.querySelectorAll(".adv-card:not(.filter-hidden)");
+            var esc = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            var rx = new RegExp(esc, "gi");
+            for (var i = 0; i < vis.length; i++) {
+                var walker = document.createTreeWalker(vis[i], 4, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                for (var j = 0; j < nodes.length; j++) {
+                    var nd = nodes[j];
+                    if (!nd.parentNode) continue;
+                    var p = nd.parentNode;
+                    if (p.classList && p.classList.contains("search-highlight")) continue;
+                    if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
+                    var txt = nd.textContent;
+                    rx.lastIndex = 0;
+                    var fm = rx.exec(txt);
+                    if (!fm) continue;
+                    rx.lastIndex = 0;
+                    var frag = document.createDocumentFragment();
+                    var li = 0;
+                    while (true) {
+                        var mt = rx.exec(txt);
+                        if (mt === null) break;
+                        if (mt.index > li) frag.appendChild(document.createTextNode(txt.substring(li, mt.index)));
+                        var sp = document.createElement("span");
+                        sp.className = "search-highlight";
+                        sp.textContent = mt[0];
+                        frag.appendChild(sp);
+                        li = rx.lastIndex;
+                    }
+                    if (li < txt.length) frag.appendChild(document.createTextNode(txt.substring(li)));
+                    p.replaceChild(frag, nd);
+                }
+            }
+        }
+    });
+})();
+
+</script>
+
+<button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+<script>
+
+(function() {
+  var btn = document.getElementById("backToTop");
+  if (!btn) return;
+  window.addEventListener("scroll", function() {
+    if (window.scrollY > 300) {
+      btn.classList.add("show");
+    } else {
+      btn.classList.remove("show");
+    }
+  });
+  btn.addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+
+</script>
+
+</body>
+</html>

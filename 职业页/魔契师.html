@@ -1,0 +1,1556 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>魔契师 · 斯诺德职业技能索引</title>
+<link rel="stylesheet" href="common.css"/>
+<style>
+    body { background: var(--bg); }
+    .class-view { display: block !important; }
+    .view-home { display: none !important; }
+
+    .adv-link {
+        display: block;
+        margin: 14px 0;
+        padding: 16px 20px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--red), #c0392b);
+        color: #fff !important;
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 2px;
+        box-shadow: 0 3px 12px rgba(157,47,47,0.4);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .adv-link:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(157,47,47,0.5);
+    }
+</style>
+
+</head>
+<body>
+
+<a href="首页.html" class="back-btn">← 返回</a>
+<header><div class="topbar"><div><h1>魔契师天赋索引</h1><p class="subtitle">魔契风格 · 一至二阶 · 技能详情 · 关键词搜索</p></div>
+<label class="searchbox"><input id="pt-search" type="search" placeholder="搜索技能、风格、阶位、关键词或正文..." autocomplete="off" /></label>
+</div></header><main>
+<nav aria-label="魔契师天赋索引"><div class="nav-inner"><div class="filter-bar" id="pt-filter-bar"></div>
+<a class="style-link" href="#p-starting">起始特性</a>
+<a class="adv-link" href="魔契师·进阶.html">→ 查看进阶途径</a>
+<div class="tier-list">
+<a class="skill-link" href="#p-skill-1">巫术箭</a>
+<a class="skill-link" href="#p-skill-2">毒液飞溅</a>
+<a class="skill-link" href="#p-skill-3">虚弱诅咒</a>
+<a class="skill-link" href="#p-skill-4">次级变形术</a>
+</div>
+<details class="nav-group"><summary class="style-summary"><a href="#p-style-魔契">魔契风格</a></summary>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-魔契-1">一阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-5">恩赐魔刃</a>
+<a class="skill-link" href="#p-skill-6">异界灵感</a>
+<a class="skill-link" href="#p-skill-7">召唤魔宠</a>
+<a class="skill-link" href="#p-skill-8">传讯术</a>
+<a class="skill-link" href="#p-skill-9">力量报偿</a>
+<a class="skill-link" href="#p-skill-10">节能施法</a>
+</details>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-魔契-2">二阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-11">虫孽滋生</a>
+<a class="skill-link" href="#p-skill-12">均衡敕令</a>
+<a class="skill-link" href="#p-skill-13">次级召唤术</a>
+<a class="skill-link" href="#p-skill-14">强化术</a>
+<a class="skill-link" href="#p-skill-15">恩赐法术</a>
+<a class="skill-link" href="#p-skill-16">超限</a>
+<a class="skill-link" href="#p-skill-17">灰色交易</a>
+</details>
+</details>
+<details class="nav-group"><summary class="style-summary"><a href="#p-style-邪念">邪念风格</a></summary>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-邪念-1">一阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-18">混乱箭</a>
+<a class="skill-link" href="#p-skill-19">腐蚀术</a>
+<a class="skill-link" href="#p-skill-20">侦测毒性与疾病</a>
+<a class="skill-link" href="#p-skill-21">暗影之触</a>
+<a class="skill-link" href="#p-skill-22">提取毒物</a>
+</details>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-邪念-2">二阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-23">邪恶命令</a>
+<a class="skill-link" href="#p-skill-24">黑色闪电</a>
+<a class="skill-link" href="#p-skill-25">衰弱射线</a>
+<a class="skill-link" href="#p-skill-26">创造酸蚀</a>
+<a class="skill-link" href="#p-skill-27">恶言相加</a>
+<a class="skill-link" href="#p-skill-28">危机感知</a>
+<a class="skill-link" href="#p-skill-29">孰强孰弱</a>
+</details>
+</details>
+<details class="nav-group"><summary class="style-summary"><a href="#p-style-咒能">咒能风格</a></summary>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-咒能-1">一阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-30">骚灵现象</a>
+<a class="skill-link" href="#p-skill-31">惑人低语</a>
+<a class="skill-link" href="#p-skill-32">魔爆术</a>
+<a class="skill-link" href="#p-skill-33">轰鸣术</a>
+<a class="skill-link" href="#p-skill-34">定身术</a>
+<a class="skill-link" href="#p-skill-35">能量导管</a>
+</details>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-咒能-2">二阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-36">力场波</a>
+<a class="skill-link" href="#p-skill-37">钢铁肺腑</a>
+<a class="skill-link" href="#p-skill-38">次级符文术</a>
+<a class="skill-link" href="#p-skill-39">命令术</a>
+<a class="skill-link" href="#p-skill-40">扰咒术</a>
+<a class="skill-link" href="#p-skill-41">活灵术</a>
+</details>
+</details>
+<details class="nav-group"><summary class="style-summary"><a href="#p-style-秘术">秘术风格</a></summary>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-秘术-1">一阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-42">迷幻手稿</a>
+<a class="skill-link" href="#p-skill-43">通晓语言</a>
+<a class="skill-link" href="#p-skill-44">迷雾术</a>
+<a class="skill-link" href="#p-skill-45">霜噬</a>
+<a class="skill-link" href="#p-skill-46">赋予黑暗视觉</a>
+<a class="skill-link" href="#p-skill-47">骨符占卜</a>
+<a class="skill-link" href="#p-skill-48">奇术</a>
+</details>
+<details class="nav-tier"><summary class="tier-summary"><a href="#p-tier-秘术-2">二阶天赋树</a></summary>
+<a class="skill-link" href="#p-skill-49">虚假生命</a>
+<a class="skill-link" href="#p-skill-50">虚假防护</a>
+<a class="skill-link" href="#p-skill-51">蓝焰术</a>
+<a class="skill-link" href="#p-skill-52">敌群环绕</a>
+<a class="skill-link" href="#p-skill-53">掩饰术</a>
+<a class="skill-link" href="#p-skill-54">蛇影缠身</a>
+<a class="skill-link" href="#p-skill-55">秘法锁</a>
+</details>
+</details>
+</div></nav>
+<div class="content"><div class="empty hidden" id="pt-empty"><p>未找到匹配的技能或天赋</p></div>
+<section class="starting-features" id="p-starting"><h2>起始特性</h2>
+<div class="tier-section"><h3 class="tier-title">起始特性</h3></div>
+      <article class="skill" id="p-skill-1" data-search="巫术箭 起始特性 起始特性 法术.施法攻击.恩惠.虚化飞行道具">
+        <h4>巫术箭 <span class="chip" style="background:#888">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>          <p><span class="field">关键词：</span>法术.施法攻击.恩惠.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>巫术箭</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒从手中发射一枚由能量构成的魔法箭</p>
+          <p>你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相关</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>巫术箭改为造成2D10伤害</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>巫术箭改为造成3D10伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-2" data-search="毒液飞溅 起始特性 起始特性 法术.施法攻击.毒性.体质豁免（12）">
+        <h4>毒液飞溅 <span class="chip" style="background:#888">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">毒性</span>
+          <span class="chip">体质豁免（12）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>          <p><span class="field">关键词：</span>法术.施法攻击.毒性.体质豁免（12）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>毒液飞溅</p>
+          <p>你做出对应的施法动作、并念诵法咒朝敌人泼洒一团绿色毒液</p>
+          <p>你对一名角色及其相邻位置的另一名角色各造成1D4点剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁免失败将进入中毒状态</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>毒液飞溅改为各造成2D4点剧毒伤害</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>毒液飞溅改为各造成3D4点剧毒伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-3" data-search="虚弱诅咒 起始特性 起始特性 法术.诅咒.体质豁免（15）">
+        <h4>虚弱诅咒 <span class="chip" style="background:#888">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">诅咒</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.诅咒.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>虚弱诅咒</p>
+          <p>你朝对方挥手、并念诵法咒令敌人感到虚弱感充斥体内</p>
+          <p>你使一名角色进行一次难度为15的体质豁免，对方豁免失败将进入减速姿态，并且持续时间内执行移动行动时需要额外花费一个附赠动作</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-4" data-search="次级变形术 起始特性 起始特性 法术.惑控.幻象.变形.体质或智力豁免（15）.效果递减（-10）">
+        <h4>次级变形术 <span class="chip" style="background:#888">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">惑控</span>
+          <span class="chip">幻象</span>
+          <span class="chip">变形</span>
+          <span class="chip">体质或智力豁免（15）</span>
+          <span class="chip">效果递减（-10）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.惑控.幻象.变形.体质或智力豁免（15）.效果递减（-10）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>次级变形术</p>
+          <p>你用双手做出对应的施法动作、并念诵法咒来尝试扭曲眼前的事物</p>
+          <p>你将一件不超过1立方米的非魔法物件变为体积相仿的另一件物品，或是使一名角色进行一次难度为15的体质或智力豁免（由你决定），对方豁免失败将会变为一只无害的绵羊，这名角色在受到任意攻击时均会解除变形效果</p>
+          <p>如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再次进行难度为15的体质或智力豁免（由对方决定），对方豁免成功将会解除变形效果</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>你可以从以下抉择中选择一项变更次级变形术的效果，你也可以选择不进行变化：</p>
+          <p>次级变形术的施展时间变为一个主要动作，同时关键词变更为体质或智力豁免（10），并且次级变形术对每名角色在每日仅生效一次</p>
+          <p>次级变形术的疲劳值消耗变为4，但在战斗环节中豁免失败的角色在第一个自身回合结束后不会再次进行豁免检定</p>
+        </div>
+      </article>
+</section>
+<section class="style" id="p-style-魔契"><h2>魔契风格</h2>
+<p>魔契风格代表着与异界宗主签订契约后获得的力量，通过奉献与交易换来超越凡俗的魔法能力。</p>
+<div class="tier-section" id="p-tier-魔契-1"><h3 class="tier-title">一阶天赋树</h3></div>
+      <article class="skill" id="p-skill-5" data-search="恩赐魔刃 魔契 一阶天赋树 法术.召唤单位.恩惠.激活.唯一性 你获得过一次来自宗主的馈赠">
+        <h4>恩赐魔刃 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你获得过一次来自宗主的馈赠</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.恩惠.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#B94BFF">●</span>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>恩赐魔刃创造的武器伤害骰点数至少为3（将点数1/2视作3）</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-6" data-search="异界灵感 魔契 一阶天赋树 神术.机制.时空.恩惠.激活.长休（2） 你获得过一次来自宗主的馈赠">
+        <h4>异界灵感 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">神术</span>
+          <span class="chip">机制</span>
+          <span class="chip">时空</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">激活</span>
+          <span class="chip">长休（2）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你获得过一次来自宗主的馈赠</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>神术.机制.时空.恩惠.激活.长休（2）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>异界灵感</p>
+          <p>你将自身的思维投向遥远异界回到宗主的身边，以接受委托或索取报酬</p>
+          <p>你使自己的躯体停留在物质位面，而灵魂则抵达宗主的领域，持续时间内你的躯体在外界看来已经陷入失能</p>
+          <p>你可以在持续时间内与你的宗主对话、向其寻求答案或是祈求祂赐予你更多的力量，异界灵感的持续时间结束、或是你的宗主下达逐客后你的灵魂会强制回到身体中并促使你醒来</p>
+          <p>警告：在宗主的领域中死亡可能会导致你在物质位面彻底陷入沉寂！</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>非战斗环节.你可以选择使你的身体也一同进入宗主的领域</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>移除异界灵感的关键词长休（2）</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-7" data-search="召唤魔宠 魔契 一阶天赋树 法术.召唤单位.恩惠.随机性.激活.唯一性.每日限一次 你遭遇过一次超自然生物">
+        <h4>召唤魔宠 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">随机性</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你遭遇过一次超自然生物</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.恩惠.随机性.激活.唯一性.每日限一次</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>召唤魔宠</p>
+          <p>你做出对应的施法动作、并念诵法咒召唤一个象征着宗主的魔法结界，随后来自宗主的眷属或随从将被你召唤至物质位面</p>
+          <p>你随机召唤一个属于宗主的存在来协助你，你可以事先表明期望响应召唤者能够为你带来何种帮助、并侍奉足够份额的进贡品，随后掷一颗D20骰来决定魔宠的类别是否符合及功效强度，魔宠的外观和能力与你所契约的宗主相关</p>
+          <p>宗主对你的观感度和准备的进贡品会直观影响到随机性的结果</p>
+          <p>魔宠存在于物质位面时的一切行动均需要你为此支付疲劳值以维持现界，你可以花费一个主要动作使魔宠从其他位置来到你的身边或是使其回到原位面</p>
+          <p>每当你重新召唤魔宠会令上一只魔宠消散</p>
+          <p>警告：魔宠并不总是按照你的意愿行动，强大的魔宠可能会反噬自己的召唤者！</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-8" data-search="传讯术 魔契 一阶天赋树 戏法.专注.交涉 你在本次游玩过程中与至少五名NPC角色进行过言语沟通">
+        <h4>传讯术 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">专注</span>
+          <span class="chip">交涉</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中与至少五名NPC角色进行过言语沟通</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.专注.交涉</p>
+          <p><span class="field">施展条件：</span>对方能够听见并理解你的言语</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>传讯术</p>
+          <p>你看向一名角色，并在心中默念想要与之沟通的话语</p>
+          <p>你向一名其他角色发出讯息，谈话内容仅可被目标听见</p>
+          <p>目标可以在收到讯息的1分钟内通过低语对你进行回复，如果超过这个时段你必须重新施展传讯术才能与对方取得联系</p>
+          <p>如果目标拒绝接收你的讯息，那么在24小时内你无法再次对目标使用传讯术</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>传讯术的施展距离改为36米</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>如果你在本日触碰过这名角色，那么对目标使用传讯术时能够无视施展距离的限制</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-9" data-search="力量报偿 魔契 一阶天赋树 天赋.恩惠.增益.互动.充能（1）">
+        <h4>力量报偿 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">增益</span>
+          <span class="chip">互动</span>
+          <span class="chip">充能（1）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">关键词：</span>天赋.恩惠.增益.互动.充能（1）</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>力量报偿</p>
+          <p>你透支自身的潜力提前向宗主索取更加高昂的酬劳，在接下来的五场战斗环节中你将获取的经验值及技能点支付给宗主并获得以下效果：</p>
+          <p>·将你的魔契师等级提升至5级，若你当前为5级则改为将你的魔契师等级提升1级，这个效果在你的魔契师等级超过10级时不会触发（这个效果允许你突破兼职职业的等级限制）</p>
+          <p>·在接下来的五场战斗环节中，你的攻击命中检定、造成的伤害值以及受到的回复效果具有优势</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>恢复力量报偿的一层充能效果</p>
+          <p><span class="field">你的魔契师职业等级到达18级时：</span>恢复力量报偿的一层充能效果</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-10" data-search="节能施法 魔契 一阶天赋树 天赋.长休 你在本次游玩的战斗环节中通过施展法术或戏法进入过力竭状态 你的技能列表中拥有疲劳值消耗不低于4的能力">
+        <h4>节能施法 <span class="chip" style="background:#888">魔契 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有疲劳值消耗不低于4的能力</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过施展法术或戏法进入过力竭状态</p>
+          <p><span class="field">关键词：</span>天赋.长休</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>节能施法</p>
+          <p>你懂得如何更高效的施放法术，使你施展的下一个法术或戏法疲劳值消耗-4</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>节能施法改为使你施展的下一个法术或戏法不消耗疲劳值</p>
+        </div>
+      </article>
+<div class="tier-section" id="p-tier-魔契-2"><h3 class="tier-title">二阶天赋树</h3></div>
+      <article class="skill" id="p-skill-11" data-search="虫孽滋生 魔契 二阶天赋树 法术.召唤单位.毒性.激活.唯一性 你与一个虫群进行过交互 你拥有自然或驯兽的熟练度">
+        <h4>虫孽滋生 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">毒性</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有自然或驯兽的熟练度</p>
+          <p><span class="field">额外条件：</span>你与一个虫群进行过交互</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>1-3轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.毒性.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>虫孽滋生</p>
+          <p>你做出对应的施法动作、并念诵法咒召唤虫群围攻敌人</p>
+          <p>你召唤虫群围攻一名角色，对其产生以下影响：</p>
+          <p>·虫群共享4+你的角色等级的生命值，攻击虫群需要先进行一次难度为14的敏捷检定，如果检定失败则视作没有命中</p>
+          <p>·虫群会在每个轮次结束阶段对目标造成3点穿刺伤害</p>
+          <p>· 受到虫群攻击的角色需要在每个自身回合执行行动前进行一次难度为8的专注检定，如果检定失败则取消那项行动</p>
+          <p>·如果虫群的攻击维持至持续效果结束，那么目标将受到3点剧毒伤害并进入中毒状态，如果目标已经拥有中毒状态，那么虫群无法再赋予那些状态</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>虫孽滋生改为在第二个轮次结束阶段如果仍未被驱散，便会对目标造成5点剧毒伤害并使其进入中毒状态</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-12" data-search="均衡敕令 魔契 二阶天赋树 神术.互动 你拥有四项点数相同的属性值 你拥有两项点数相同的属性值">
+        <h4>均衡敕令 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">神术</span>
+          <span class="chip">互动</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有两项点数相同的属性值</p>
+          <p><span class="field">额外条件：</span>你拥有四项点数相同的属性值</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>1-3轮</p>          <p><span class="field">关键词：</span>神术.互动</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>均衡敕令</p>
+          <p>你做出对应的施法动作、并念诵神言降下公允的蓝色光束笼罩自身与他人</p>
+          <p>你选择一名自愿的角色作为目标，交换你和对方当前拥有的至多两个增益、护盾、持续性异常状态或负面标记效果</p>
+          <p>被交换的负面标记效果会重新开始计算持续时间</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>均衡敕令改为选择任意两名自愿的角色为目标</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>均衡敕令能够交换减速、禁锢、致盲、耳鸣、沉默、麻痹和困惑状态</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-13" data-search="次级召唤术 魔契 二阶天赋树 法术.召唤单位.专注.随机性.长休 你与一个召唤法阵展开过交互 你拥有多元宇宙的熟练度">
+        <h4>次级召唤术 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">专注</span>
+          <span class="chip">随机性</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有多元宇宙的熟练度</p>
+          <p><span class="field">额外条件：</span>你与一个召唤法阵展开过交互</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>1-3轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.专注.随机性.长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>次级召唤术</p>
+          <p>你做出召唤仪式的施法手势，念出法咒唤起不稳定的空间魔法，在一阵法力形成的蓝色漩涡中召唤出心中所想之物</p>
+          <p>你随机召唤一名角色或物件来到你的身边，你可以在施展过程中尝试描述你想要召唤的事物形象，但可能无法通过这个方式召唤出指定的物件（例如你能够通过次级召唤术来召唤钱币，却不能指定具体召唤哪个位置、或者哪名角色当前所持有的哪枚钱币）</p>
+          <p>你无法通过次级召唤术来召唤价值超过50金币、体积超过一立方米的物件或是角色等级与挑战等级≥2的智慧生物</p>
+          <p>如果被召唤的角色不处于失能状态，并且具有强烈的抗拒意愿，那么次级召唤术可能会失败</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-14" data-search="强化术 魔契 二阶天赋树 法术.增益 你拥有调整值不超过0的属性类别">
+        <h4>强化术 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有调整值不超过0的属性类别</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>1-3轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>无法对相同的角色重复施展</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>强化术</p>
+          <p>你做出对应的施法动作、并念诵法咒来增幅一名自愿角色的能力</p>
+          <p>你为一名角色强化属性，使其两项属性值各临时提升1点，无法以此方式超过属性值上限</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>强化属性改为目标可以选择三项属性值各临时提升1点</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>强化属性改为目标可以选择所有属性值各临时提升1点</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-15" data-search="恩赐法术 魔契 二阶天赋树 天赋.恩惠.随机性 你在本次游玩过程中达成了你所契约宗主的一项意愿 你达成了你所契约宗主的一项意愿">
+        <h4>恩赐法术 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">随机性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你达成了你所契约宗主的一项意愿</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中达成了你所契约宗主的一项意愿</p>
+          <p><span class="field">关键词：</span>天赋.恩惠.随机性</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>恩赐法术</p>
+          <p>你可以从你所契约的宗主那里习得一项能力，具体获得的收益由你的宗主决定</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-16" data-search="超限 魔契 二阶天赋树 天赋.增益.每日限一次 你完成了一次超过当前角色等级的挑战 你拥有威力的熟练度">
+        <h4>超限 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">增益</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有威力的熟练度</p>
+          <p><span class="field">额外条件：</span>你完成了一次超过当前角色等级的挑战</p>
+          <p><span class="field">关键词：</span>天赋.增益.每日限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>超限</p>
+          <p>你突破自身的极限，使你的下一次攻击命中检定、伤害骰和豁免检定分别具有优势</p>
+          <p>本场战斗环节结束后你会进入一层力竭状态，这个效果会持续24小时</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-17" data-search="灰色交易 魔契 二阶天赋树 天赋.恩惠.互动.充能（1） 你促成一次所契约的宗主与他人的交易 你作为第三方促成过一次交易">
+        <h4>灰色交易 <span class="chip" style="background:#888">魔契 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">恩惠</span>
+          <span class="chip">互动</span>
+          <span class="chip">充能（1）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你作为第三方促成过一次交易</p>
+          <p><span class="field">额外条件：</span>你促成一次所契约的宗主与他人的交易</p>
+          <p><span class="field">关键词：</span>天赋.恩惠.互动.充能（1）</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>灰色交易</p>
+          <p>你立即发起一场灰色交易，团队中的每一名其他角色均可以选择是否参与本次交易，如果选择参与便给予你一个任意技能点作为入场券，随后这些参与者可以自由交换彼此所拥有的技能点</p>
+          <p>邪念风格代表着从黑暗与禁忌中汲取力量，利用诅咒、腐蚀和暗影来瓦解敌人。</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>恢复灰色交易的一层充能效果</p>
+          <p><span class="field">你的魔契师职业等级到达18级时：</span>恢复灰色交易的一层充能效果</p>
+        </div>
+      </article>
+</section>
+<section class="style" id="p-style-邪念"><h2>邪念风格</h2>
+<p>邪念风格代表着从黑暗与禁忌中汲取力量，利用诅咒、腐蚀和暗影来瓦解敌人。</p>
+<div class="tier-section" id="p-tier-邪念-1"><h3 class="tier-title">一阶天赋树</h3></div>
+      <article class="skill" id="p-skill-18" data-search="混乱箭 邪念 一阶天赋树 法术.施法攻击.随机性.虚化飞行道具 你通过混沌法术掷出过一次点数为5以下和95以上的法术或戏法">
+        <h4>混乱箭 <span class="chip" style="background:#888">邪念 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">随机性</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你通过混沌法术掷出过一次点数为5以下和95以上的法术或戏法</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.随机性.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>混乱箭</p>
+          <p>你用一只未持有物件的手在空中绘出红色和绿色交织的倒五芒星形符号、并念诵法咒从那只手中发射出一道不断变化着颜色的混乱箭</p>
+          <p>你对一名角色发射混乱箭，造成5D6-1D6点伤害，这两次掷骰分别进行计算</p>
+          <p>随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型：</p>
+          <p>·D1：火焰  ·D2：雷电   ·D3：强酸</p>
+          <p>·D4：暗影  ·D5：剧毒   ·D6：邪能</p>
+          <p>你可以选择额外花费一个主要动作来使混乱箭获得+4法术命中值、终结技和伤害值必定暴击的效果</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>混乱箭改为造成6D6-1D6点伤害，这两次掷骰分别进行计算</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>你可以选择额外花费一个附赠动作来使混乱箭的结算造成的伤害值+9</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>你在施展混乱箭后可以立即花费4点疲劳值来主动准备一次混乱箭，这发混乱箭会在下一个轮次结束阶段自动指向提前选择的攻击目标，你也可以在下一个轮次的自身回合中花费主要动作和附赠动作来为那发混乱箭提供这个法术本身的增益效果</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-19" data-search="腐蚀术 邪念 一阶天赋树 法术.侵蚀.诅咒.体质豁免（15）.短休/长休 你造成过一次强酸伤害">
+        <h4>腐蚀术 <span class="chip" style="background:#888">邪念 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">侵蚀</span>
+          <span class="chip">诅咒</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你造成过一次强酸伤害</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.侵蚀.诅咒.体质豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>腐蚀术</p>
+          <p>你做出对应的施法动作、并念诵法咒产生强劲的刺激味腐蚀眼前的敌人</p>
+          <p>你使一名角色进行一次难度为15的体质豁免，对方豁免失败后承受以下效果：</p>
+          <p>·如果目标着装有重甲或盾牌:持续时间内目标的防御等级-5</p>
+          <p>·如果目标没有着装有重甲或盾牌:每个你的回合结束阶段承受1D12点强酸伤害</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>目标还需要进行一次难度为12的护甲检定，如果对方检定失败并且着装有重甲或盾牌，那么持续时间内改为防御等级-10，否则改为每个你的回合结束阶段承受3D6点强酸伤害</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>腐蚀术的施展时间变更为一个附赠动作</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-20" data-search="侦测毒性与疾病 邪念 一阶天赋树 戏法.探知 你与一名中毒者或患者进行过非战斗的交互">
+        <h4>侦测毒性与疾病 <span class="chip" style="background:#888">邪念 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">探知</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与一名中毒者或患者进行过非战斗的交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>戏法.探知</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>侦测毒性与疾病</p>
+          <p>你念出法咒，随后你的眼睛将亮起青色光芒开始侦测毒性与疾病，并在脑海中获得对应数据</p>
+          <p>你感应自身周围6米内是否存在有毒素、有毒生物、疾病以及其具体类别，感应效果可能会被部分障碍物所阻碍</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-21" data-search="暗影之触 邪念 一阶天赋树 法术.施法攻击.暗影.力量豁免（15） 你参与过一场黑暗环境下的战斗环节">
+        <h4>暗影之触 <span class="chip" style="background:#888">邪念 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">暗影</span>
+          <span class="chip">力量豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你参与过一场黑暗环境下的战斗环节</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.暗影.力量豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>暗影之触</p>
+          <p>你做出对应的施法动作、并念诵法咒从地面召唤出数道暗影构成的触手抓捕敌人</p>
+          <p>你选择自身周围6米内的一名角色造成1D8点暗影伤害</p>
+          <p>你可以额外花费2点疲劳值来额外指定范围内的另一名角色作为攻击目标</p>
+          <p>承受伤害的角色需要进行一次难度为15的力量豁免，你可以将豁免失败的角色向自身拖拽至多2米距离</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>暗影之触改为造成2D8伤害</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>暗影之触能够额外生成一条触手，仅能够用于攻击不同的角色</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>暗影之触改为能够额外生成三条触手，仅能够用于攻击不同的角色</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-22" data-search="提取毒物 邪念 一阶天赋树 戏法.净化.媒介 你拥有制毒的专业熟练项 你移除过中毒效果的异常状态">
+        <h4>提取毒物 <span class="chip" style="background:#888">邪念 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">净化</span>
+          <span class="chip">媒介</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你移除过中毒效果的异常状态</p>
+          <p><span class="field">额外条件：</span>你拥有制毒的专业熟练项</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>戏法.净化.媒介</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>提取毒物</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒，将眼前的毒物化作绿色烟雾飘散而出</p>
+          <p>你触碰一个物件，提取出其中所具有的毒性，例如将一瓶基础毒药转化为一瓶清水</p>
+          <p>你可以花费1点疲劳值使被提取出的毒物能够留存在物质位面而不消散，当你必须拥有能够盛放其的容器</p>
+          <p><span class="field">你的魔契师职业等级到达15级时：</span>提取毒物能够将角色作为施展对象</p>
+        </div>
+      </article>
+<div class="tier-section" id="p-tier-邪念-2"><h3 class="tier-title">二阶天赋树</h3></div>
+      <article class="skill" id="p-skill-23" data-search="邪恶命令 邪念 二阶天赋树 法术.惑控.意志豁免（15） 你教唆过一名角色进行邪恶行为 魅力属性为你最高的属性值，并且智力属性不为你最低的属性值">
+        <h4>邪恶命令 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">惑控</span>
+          <span class="chip">意志豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>魅力属性为你最高的属性值，并且智力属性不为你最低的属性值</p>
+          <p><span class="field">额外条件：</span>你教唆过一名角色进行邪恶行为</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.惑控.意志豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>邪恶命令</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒使敌人屈服于你的邪恶意志下，被迫做出违背意愿的行径</p>
+          <p>你使一名角色进行一次难度为15的意志豁免，对方豁免失败后将会立即向射程范围内一名由你指定的角色进行一次基础攻击</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>邪恶命令允许指定对方使用施法攻击来进行攻击</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>每个自身回合限一次.邪恶命的施展时间变更为一个附赠动作</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>邪恶命令允许指定对方不发起攻击，而是改为施展带有负面效果的能力，无法以此施展限定技能</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-24" data-search="黑色闪电 邪念 二阶天赋树 法术.施法攻击.AOE.雷电.暗影 你在本次游玩过程中通过施法攻击击杀过角色 你通过施法攻击击杀过角色">
+        <h4>黑色闪电 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">雷电</span>
+          <span class="chip">暗影</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你通过施法攻击击杀过角色</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中通过施法攻击击杀过角色</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.雷电.暗影</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>黑色闪电</p>
+          <p>你用双手做出对应的施法动作、并念诵法咒发射出黑色的闪电袭击敌人</p>
+          <p>你对前方扇形3环内的至多三名角色各造成1D3点雷电伤害和1D3点暗影伤害</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>黑暗闪电改为造成1D4点雷电伤害和1D4点暗影伤害</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>黑暗闪电改为能够对前方扇形4环内的至多四名角色造成伤害</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>黑暗闪电还会使受到伤害的角色掷一颗D2骰，根据结果决定进行一次难度为10的体质豁免或感知豁免，豁免失败将分别进入麻痹或恐惧状态</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-25" data-search="衰弱射线 邪念 二阶天赋树 法术.施法攻击.衰败.生命流失.敏捷豁免（15） 本风格不能是你的魔契师职业的第三或第四种战斗风格 你与一名衰弱的老者进行过交互">
+        <h4>衰弱射线 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">衰败</span>
+          <span class="chip">生命流失</span>
+          <span class="chip">敏捷豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你与一名衰弱的老者进行过交互</p>
+          <p><span class="field">额外条件：</span>本风格不能是你的魔契师职业的第三或第四种战斗风格</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.衰败.生命流失.敏捷豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>衰弱射线</p>
+          <p>你用一只未持有物品的手指向对方、并念诵法咒在手指上亮起一阵黯淡的光，随后发射数道灰白色射线攻击敌人</p>
+          <p>你发射至多三条衰败射线攻击不同的角色，每条射线会使目标失去1D6点生命值并进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态</p>
+          <p>你可以额外花费一个附赠动作使多道射线指向同一名角色，目标在失去生命值后无需进行豁免检定，直接进入减速状态</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>衰弱射线改为使目标失去1D10点生命值</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>衰弱射线改为使目标失去1D12点生命值，并且会使受到减速状态的角色在下一个自身回合中，每通过位移移动1米便需要消耗1点疲劳值</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-26" data-search="创造酸蚀 邪念 二阶天赋树 法术.侵蚀.阻碍.敏捷豁免（15）.短休/长休 你投掷过至少十瓶强酸瓶 你在本次游玩过程中造成或承受过强酸伤害">
+        <h4>创造酸蚀 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">侵蚀</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">敏捷豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩过程中造成或承受过强酸伤害</p>
+          <p><span class="field">额外条件：</span>你投掷过至少十瓶强酸瓶</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.侵蚀.阻碍.敏捷豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>创造酸蚀</p>
+          <p>你做出对应的施法动作、并念诵法咒生出一团冒着烟雾的绿色酸池</p>
+          <p>你使一片3*3的区域产生强酸，位于区域内的角色需要进行一次难度为15的体质豁免，豁免失败的角色需要承受3D4点强酸伤害</p>
+          <p>每个轮次结束阶段停留在区域内的角色还需要再次进行这个豁免，豁免失败将再次承受2D4点强酸伤害</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>创造酸蚀改为造成4D4点强酸伤害</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>创造酸蚀的关键词变更为短休/长休（2）</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-27" data-search="恶言相加 邪念 二阶天赋树 法术.施法攻击.心灵.魅力豁免（12） 你在本次游玩过程中通过语言交流使一名角色变为你的敌人 你通过语言交流使一名角色变为你的敌人">
+        <h4>恶言相加 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">心灵</span>
+          <span class="chip">魅力豁免（12）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你通过语言交流使一名角色变为你的敌人</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中通过语言交流使一名角色变为你的敌人</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2小时</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.心灵.魅力豁免（12）</p>
+          <p><span class="field">施展条件：</span>对方能够听见并理解你的言语</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>恶言相加</p>
+          <p>你对敌人发起一连串蕴含魔力的咒骂，谈吐的内容直指对方心中的痛点</p>
+          <p>你对一名角色发起攻击，本次攻击不进行命中检定，而是改为由目标进行一次难度为12的魅力豁免，对方豁免失败将受到1D4点心灵伤害，并且直到下一个轮次结束阶段前进行的首次攻击命中检定具有劣势</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>恶言相加的豁免难度变更为魅力豁免（15）</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-28" data-search="危机感知 邪念 二阶天赋树 法术.危机时刻.专注.激活 你在非战斗环节中遭遇过一次生死存亡的危机 感知属性为你最高的属性值之一">
+        <h4>危机感知 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">危机时刻</span>
+          <span class="chip">专注</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>感知属性为你最高的属性值之一</p>
+          <p><span class="field">额外条件：</span>你在非战斗环节中遭遇过一次生死存亡的危机</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.危机时刻.专注.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>危机感知</p>
+          <p>你做出对应施法手势，念出法咒为自身施展预警魔法</p>
+          <p>持续时间内你的被动察觉+2，当对你抱有恶意的角色距离你12米以内时将会在你的心中发起警报</p>
+          <p>如果对方提前知晓你施展了危机感知，或对你具备强烈的防范心里，危机感知可能会出现误判</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-29" data-search="孰强孰弱 邪念 二阶天赋树 天赋.增益.每日限一次 你在本次游玩过程中欺压过一名孱弱的角色 你拥有欺瞒或恐吓的熟练度">
+        <h4>孰强孰弱 <span class="chip" style="background:#888">邪念 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">增益</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有欺瞒或恐吓的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中欺压过一名孱弱的角色</p>
+          <p><span class="field">关键词：</span>天赋.增益.每日限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>孰强孰弱</p>
+          <p>你借助宗主的力量倾斜胜利的天秤，在一次你与他人进行一次属性对抗时，能够使自身的本次检定获得优势并且使对方具有劣势</p>
+          <p>咒能风格代表着对原始魔法能量的直接操控，以纯粹的魔力碾压对手。</p>
+        </div>
+      </article>
+</section>
+<section class="style" id="p-style-咒能"><h2>咒能风格</h2>
+<p>咒能风格代表着对原始魔法能量的直接操控，以纯粹的魔力碾压对手。</p>
+<div class="tier-section" id="p-tier-咒能-1"><h3 class="tier-title">一阶天赋树</h3></div>
+      <article class="skill" id="p-skill-30" data-search="骚灵现象 咒能 一阶天赋树 戏法.幻象.专注.引导.激活.长休 你造访过一座具有闹鬼传闻、但是不存在不死生物或邪魔的建筑或一片地区">
+        <h4>骚灵现象 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">幻象</span>
+          <span class="chip">专注</span>
+          <span class="chip">引导</span>
+          <span class="chip">激活</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你造访过一座具有闹鬼传闻、但是不存在不死生物或邪魔的建筑或一片地区</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.幻象.专注.引导.激活.长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>骚灵现象</p>
+          <p>你在心中默念法咒以制造出骚灵侵扰的诡异现象</p>
+          <p>持续时间内你能够创造以下效应：</p>
+          <p>·凭空移动物件，这个物件不能是同调物品或具有奇珍及以上品质，并且必须在你的视野范围内，物件的重量每有10磅重你便需要额外花费1点疲劳值，你可以同时操控至多三个物件</p>
+          <p>·在施展范围内发出一阵诡异的喧闹声响</p>
+          <p>·在施展范围内生成一个朦胧的灰白色类人型雾气</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>骚灵现象的施展距离变更为48米</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>骚灵现象能够控制更多的物件，每控制一件便额外花费1点疲劳值</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-31" data-search="惑人低语 咒能 一阶天赋树 戏法.意志豁免（15）.短休/长休 你教唆过一名角色进行违背原则的行为">
+        <h4>惑人低语 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">意志豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你教唆过一名角色进行违背原则的行为</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.意志豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>惑人低语</p>
+          <p>你念诵法咒在他人耳边呢喃着扰人心智的话语</p>
+          <p>你使一名角色进行一次难度为15的意志豁免，对方豁免失败将立即中断当前引导的能力，并且无法在持续时间内进入专注状态</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>惑人低语的关键词变更为短休/长休（2）</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>豁免结果低于5的角色还会被施加法术.命令术</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-32" data-search="魔爆术 咒能 一阶天赋树 法术.施法攻击.AOE.奥术 本风格不能是你的魔契师职业的第三或第四种战斗风格">
+        <h4>魔爆术 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">奥术</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>本风格不能是你的魔契师职业的第三或第四种战斗风格</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.奥术</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#EE822F">●</span>
+          <p>魔爆术</p>
+          <p>你将双手作出向外推出的姿势，念出法咒使蓝色的奥术能量自你体内向外迸射而出</p>
+          <p>你对自身周围2米内所有角色各造成1D4点奥术伤害</p>
+          <p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>魔爆术改为对所有角色各造成2D4点奥术伤害</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>魔爆术改为对所有角色各造成3D4点奥术伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-33" data-search="轰鸣术 咒能 一阶天赋树 法术.感知豁免（15） 你拥有威力的熟练度">
+        <h4>轰鸣术 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">感知豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你拥有威力的熟练度</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.感知豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>轰鸣术</p>
+          <p>你做出对应的施法动作、并念诵法咒在敌人耳边制造巨大的轰鸣声</p>
+          <p>你使一名角色进行一次难度为15的感知豁免，对方豁免失败将进入耳鸣状态</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>轰鸣术会使豁免失败的角色进入击倒状态</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>轰鸣术会对豁免失败的角色造成1D8点音爆伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-34" data-search="定身术 咒能 一阶天赋树 法术.阻碍.力量豁免（15） 本次游玩的战斗环节中有一名敌人未进行过位移">
+        <h4>定身术 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">力量豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>本次游玩的战斗环节中有一名敌人未进行过位移</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.阻碍.力量豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>定身术</p>
+          <p>你做出对应的施法动作、并念诵法咒召唤一阵紫色的魔法能量覆盖对方的轮廓将其束缚</p>
+          <p>1.你使一名角色进行一次难度为15的力量豁免，对方豁免失败将进入禁锢状态</p>
+          <p>2.目标角色在每个自身回合结束后会再次进行力量豁免，豁免成功将解除这个异常状态</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>受到定身术影响的角色视为进入失能状态</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-35" data-search="能量导管 咒能 一阶天赋树 天赋.增益.每日限一次 你获得过一件提高伤害加值的魔法道具">
+        <h4>能量导管 <span class="chip" style="background:#888">咒能 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">增益</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你获得过一件提高伤害加值的魔法道具</p>
+          <p><span class="field">关键词：</span>天赋.增益.每日限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>能量导管</p>
+          <p>当你进入一场战斗环节后，可以获得两颗D8骰，你可以在进行一次施法攻击的伤害值后额外投掷一颗骰子，将掷出的点数附加在结果上</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>能量导管的伤害骰点数至少为4（将点数1/2/3视作4）</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>能量导管可以在一次施法攻击的伤害值后额外投掷全部骰子</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>能量导管掷出的D8骰如果点数为8，那么视作触发暴击</p>
+        </div>
+      </article>
+<div class="tier-section" id="p-tier-咒能-2"><h3 class="tier-title">二阶天赋树</h3></div>
+      <article class="skill" id="p-skill-36" data-search="力场波 咒能 二阶天赋树 法术.施法攻击.力能.体质豁免（15） 你拥有威力和耐力的熟练度 你拥有威力或耐力的熟练度">
+        <h4>力场波 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">力能</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有威力或耐力的熟练度</p>
+          <p><span class="field">额外条件：</span>你拥有威力和耐力的熟练度</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.力能.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>力场波</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒生成一道紫色的力场波动冲击敌人</p>
+          <p>1.你对一名角色造成1D8点力场伤害，目标需要进行一次难度为15的体质豁免，对方豁免失败将被击退2米</p>
+          <p>2.闪避成功的角色依旧需要承受一半的结算后伤害</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>力场波改为造成1D10点力场伤害</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>力场波命中目标后会使其进行一次难度为10的护甲检定，如果目标着装有重甲、盾牌或天生护甲，检定失败将会失去1点防御等级，否则本次伤害具有优势</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>力场波对着装有重甲、盾牌或天生护甲的角色改为造成3D10点力场伤害，并且护甲检定的难度提升至12</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-37" data-search="钢铁肺腑 咒能 二阶天赋树 法术.韧性.短休/长休 体质属性为你最高的属性值之一 体质属性不为你最低的属性值">
+        <h4>钢铁肺腑 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">韧性</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>体质属性不为你最低的属性值</p>
+          <p><span class="field">额外条件：</span>体质属性为你最高的属性值之一</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.韧性.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>钢铁肺腑</p>
+          <p>你做出对应的施法动作、并在心中默念法咒，用魔力包裹住你的脏器免遭来自内部的袭扰</p>
+          <p>持续时间内你的中毒和流血层数的结算和叠加效果将暂时被停止</p>
+          <p><span class="field">你的法师职业等级到达10级时：</span>钢铁肺腑还会使你在持续时间内获得4点钝击和力场伤害抗性</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-38" data-search="次级符文术 咒能 二阶天赋树 法术.媒介.增益.防御.躲闪.短休/长休 你拥有铭文的专业熟练度 本风格为你魔契师职业的首个战斗风格">
+        <h4>次级符文术 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">媒介</span>
+          <span class="chip">增益</span>
+          <span class="chip">防御</span>
+          <span class="chip">躲闪</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格为你魔契师职业的首个战斗风格</p>
+          <p><span class="field">额外条件：</span>你拥有铭文的专业熟练度</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.媒介.增益.防御.躲闪.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>次级符文术</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒在空中划出颜色和图案各异的符文印记</p>
+          <p>你为一名角色附加以下一个符文印记，这个印记会在触发后被消耗：</p>
+          <p>·坚毅符文：目标在承受一次伤害时可以抵挡其中的5点伤害值</p>
+          <p>·迅捷符文：目标可以在一次移动时触发回避行动</p>
+          <p>·共鸣符文：目标周围6米内的一名友方角色获得激励点或者D6奖励骰时，目</p>
+          <p>标也会获得这个增益效果</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>次级符文术的关键词变更为短休/长休（2）</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>次级符文术可以同时对目标附加全部的符文印记</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-39" data-search="命令术 咒能 二阶天赋树 法术.惑控.魅力豁免（15）.短休/长休 你在本次游玩过程中进行过一次成功的说服检定 你拥有说服的熟练度">
+        <h4>命令术 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">惑控</span>
+          <span class="chip">魅力豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有说服的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中进行过一次成功的说服检定</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.惑控.魅力豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>命令术</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒指向他人，在那带有魔力的声音下对方开始不由自主地被你支配</p>
+          <p>1.你使一名角色进行一次难度为15的魅力豁免，对方豁免失败将会立即服从你的命令做出一件有违原则的行为，例如丢下手中的武器、攻击自己的队友或是走向远处的悬崖等</p>
+          <p>2.如果你要求的动作过于复杂，对方可能会在执行的过程中脱离控制</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-40" data-search="扰咒术 咒能 二阶天赋树 法术.惑控.智力/魅力豁免（15）.短休/长休 你在本次游玩的战斗环节中存在其他角色朝你进行施法攻击但没有命中的情况 在战斗环节中存在过其他角色朝你进行施法攻击但没有命中的情况">
+        <h4>扰咒术 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">惑控</span>
+          <span class="chip">智力/魅力豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>在战斗环节中存在过其他角色朝你进行施法攻击但没有命中的情况</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中存在其他角色朝你进行施法攻击但没有命中的情况</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.惑控.智力/魅力豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>扰咒术在一场战斗环节中对同一名角色仅能够生效一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>扰咒术</p>
+          <p>你用一只未持有物件的手指向对方、并念诵法咒放出一阵蓝色幽波干扰敌人</p>
+          <p>你使一名角色进行一次难度为15的智力或魅力豁免（由你决定），对方豁免失败后持续时间内的法术或戏法将作用于错误的对象，掷一颗目标范围内对应人数的骰子来决定具体指向的对象</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-41" data-search="活灵术 咒能 二阶天赋树 戏法.媒介.唯一性 你在本次游玩过程中与一件魔法性质的神奇道具进行过交互 你与一件魔法性质的神奇道具进行过交互">
+        <h4>活灵术 <span class="chip" style="background:#888">咒能 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">媒介</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你与一件魔法性质的神奇道具进行过交互</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中与一件魔法性质的神奇道具进行过交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>戏法.媒介.唯一性</p>
+          <p><span class="field">施展条件：</span>你必须持有法术媒介物品，并且能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>活灵术</p>
+          <p>你用魔法道具轻点物品、并念诵法咒唤醒一个物件，为其注入虚假的活性</p>
+          <p>你触碰一个不超过两方米的物件使其在持续时间内具有“活着”的特性，可以在需要判定时视作一个角色，例如受到原先针对角色的增益或护盾效果影响、或成为部分场地效果的点名对象</p>
+          <p>秘术风格代表着对隐秘知识的掌握，利用诡计、幻象和结界来掌控战局。</p>
+        </div>
+      </article>
+</section>
+<section class="style" id="p-style-秘术"><h2>秘术风格</h2>
+<p>秘术风格代表着对隐秘知识的掌握，利用诡计、幻象和结界来掌控战局。</p>
+<div class="tier-section" id="p-tier-秘术-1"><h3 class="tier-title">一阶天赋树</h3></div>
+      <article class="skill" id="p-skill-42" data-search="迷幻手稿 秘术 一阶天赋树 戏法.隐秘.媒介 你伪造过一份文书">
+        <h4>迷幻手稿 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">隐秘</span>
+          <span class="chip">媒介</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你伪造过一份文书</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.隐秘.媒介</p>
+          <p><span class="field">施展条件：</span>你携带有笔类工具</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>迷幻手稿</p>
+          <p>你为文字附着上魔力，在写下后字迹逐渐变得模糊、直至消失</p>
+          <p>你在纸面上书写一段仅有你指定的角色能够看见并阅读的文字</p>
+          <p>感知属性值超过15、或是拥有魔法学识熟练度的角色能够通过一次难度为15的感知检定来识破伪装效果</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-43" data-search="通晓语言 秘术 一阶天赋树 法术.交涉.激活 你在本次游玩过程中与一头名类人生物进行过长时间的交互">
+        <h4>通晓语言 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">交涉</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中与一头名类人生物进行过长时间的交互</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.交涉.激活</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>通晓语言</p>
+          <p>你念出法咒，随后你的眼睛颜色变得比以往更加明亮，语言将不再成为你与他人沟通的阻碍</p>
+          <p>持续时间内你可以读懂或者听懂你并未掌握的语言</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-44" data-search="迷雾术 秘术 一阶天赋树 法术.阻碍.激活 你承受过攻击命中检定劣势的效果">
+        <h4>迷雾术 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你承受过攻击命中检定劣势的效果</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.阻碍.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>迷雾术</p>
+          <p>你做出对应施法手势，念出法咒在指定区域生成一团灰白色的迷雾来遮蔽他人的视野</p>
+          <p>你使一片3*3的区域产生迷雾，位于迷雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于迷雾两端的角色同样会受到这个效果的影响</p>
+          <p>每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视迷雾术的影响</p>
+          <p>迷雾效果可能会因为风暴关键词的效果影响而被驱散</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>你可以在生成迷雾时指定迷雾内或外界的一方忽视迷雾术带来的负面影响</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-45" data-search="霜噬 秘术 一阶天赋树 法术.施法攻击.冰霜.体质豁免（15） 你拥有包含冰霜关键词的法术或戏法">
+        <h4>霜噬 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">冰霜</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你拥有包含冰霜关键词的法术或戏法</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.冰霜.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>霜噬</p>
+          <p>你做出对应的施法动作、并念诵法咒召唤彻骨的寒霜啃咬敌人</p>
+          <p>你对一名角色造成1D8点冰霜伤害并附加一层霜冻标记，当有一名角色拥有三层霜冻标记会将会移除这些标记并进行一次难度为15的体质豁免，对方豁免失败将进入冻结状态</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>霜噬对处于冻结状态的角色施展时不消耗疲劳值，并且按照伤害最大值计算</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>如果目标在本轮次承受过冰霜伤害，那么霜噬的攻击命中检定具有优势</p>
+          <p><span class="field">你的魔契师职业等级到达9级时：</span>霜噬对处于冻结状态的角色施展时视作处决技</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-46" data-search="赋予黑暗视觉 秘术 一阶天赋树 戏法.探知.激活.唯一性">
+        <h4>赋予黑暗视觉 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">探知</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.探知.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>赋予黑暗视觉</p>
+          <p>你做出对应施法手势，念出法咒赋予目标能够看穿黑夜的双眼</p>
+          <p>你使一名角色在持续时间内获得黑暗视觉，忽视来自黑夜环境的负面效果影响</p>
+          <p>黑暗视觉的视角中颜色对比度将会有所降低，趋于黑白的色调</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>移除赋予黑暗视觉的唯一性关键词</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-47" data-search="骨符占卜 秘术 一阶天赋树 戏法.命运.探知.媒介 你目睹过一次他人的占卜行为">
+        <h4>骨符占卜 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">命运</span>
+          <span class="chip">探知</span>
+          <span class="chip">媒介</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你目睹过一次他人的占卜行为</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.命运.探知.媒介</p>
+          <p><span class="field">施展条件：</span>你携带有至少一根完整的骨头，并且能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>骨符占卜</p>
+          <p>你摆弄着骨头口中呢喃着法咒，通过超自然的神秘学力量带给你启示</p>
+          <p>你进行一次难度为X的感知或魅力检定，如果检定成功那么你可以选择以下一个效果：</p>
+          <p>·知晓哪条道路能够通往正确的方向</p>
+          <p>·知晓接下来的12小时内的天气变化</p>
+          <p>·知晓你接下来准备进行的行动的危险程度</p>
+          <p>X为你自定义设置，你设置的难度越高，检定成功时得到的答案便越清晰、越准确，反正则越模糊、甚至给予你错误的答案</p>
+          <p>你必须进行一次特性.萨满教义的仪式后才能再次施展骨符占卜的效果</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-48" data-search="奇术 秘术 一阶天赋树 戏法.幻象.激活.唯一性 你在本次游玩过程中对他人展现过你的戏法">
+        <h4>奇术 <span class="chip" style="background:#888">秘术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">幻象</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中对他人展现过你的戏法</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.幻象.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>奇术</p>
+          <p>你用一只未持有物件的手如变魔术一般正在空中摆动、并念诵法咒创造一个低级奇观以表现你的超自然力</p>
+          <p>1.你可以在施展范围内创造出下列魔法效应之一：</p>
+          <p>·你的声音变得比常人响两倍</p>
+          <p>·使一团火焰闪烁、变亮、变暗或变色</p>
+          <p>·使地面轻微震动</p>
+          <p>·从施法范围内任意一个区域发出一阵雷鸣声、鸦叫声或低语声</p>
+          <p>·使一扇未锁的门打开或关闭</p>
+          <p>·改变自己眼睛的颜色</p>
+          <p>2.你可以在同一时间维持至多三个效应</p>
+        </div>
+      </article>
+<div class="tier-section" id="p-tier-秘术-2"><h3 class="tier-title">二阶天赋树</h3></div>
+      <article class="skill" id="p-skill-49" data-search="虚假生命 秘术 二阶天赋树 法术.增益.幻象.上限提升.激活.短休/长休 你获得过临时生命值 你在本次游玩的战斗环节中生命值降低至0或更低">
+        <h4>虚假生命 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">增益</span>
+          <span class="chip">幻象</span>
+          <span class="chip">上限提升</span>
+          <span class="chip">激活</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中生命值降低至0或更低</p>
+          <p><span class="field">额外条件：</span>你获得过临时生命值</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.增益.幻象.上限提升.激活.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>虚假生命</p>
+          <p>你做出对应的施法动作、并念诵法咒为自身灌注虚假的生命力</p>
+          <p>你获得1D6+6+你的主职业等级的临时生命值，这些临时生命值在受到一次伤害后会全部移除</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>虚假生命改为获得1D8+8+主职业等级的临时生命值，这些临时生命值在受到一次伤害后会全部移除</p>
+          <p><span class="field">你的魔契师职业等级到达8级时：</span>虚假生命改为获得1D12+12+主职业等级的临时生命值，这些临时生命值在受到一次伤害后会全部移除</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-50" data-search="虚假防护 秘术 二阶天赋树 法术.增益.幻象.激活.短休/长休 你通过任意方式抵消过一次即将承受的伤害 你在本次游玩的战斗环节中受到过攻击并且被命中">
+        <h4>虚假防护 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">增益</span>
+          <span class="chip">幻象</span>
+          <span class="chip">激活</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中受到过攻击并且被命中</p>
+          <p><span class="field">额外条件：</span>你通过任意方式抵消过一次即将承受的伤害</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.增益.幻象.激活.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>虚假防护</p>
+          <p>你做出对应的施法动作、并念诵法咒为自身施加虚假的防护</p>
+          <p>持续时间内使你的防御等级视为20，这个效果在你受到一次攻击并且被命中后失效</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>虚假防护需要额外受到一次攻击命中才会失效</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>虚假防护改为持续时间内使你的防御等级视为22</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-51" data-search="蓝焰术 秘术 二阶天赋树 法术.施法攻击.火焰.奥术.增益.幻象.虚化飞行道具 你参观过一场魔术表演 你拥有表演的熟练度">
+        <h4>蓝焰术 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">火焰</span>
+          <span class="chip">奥术</span>
+          <span class="chip">增益</span>
+          <span class="chip">幻象</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有表演的熟练度</p>
+          <p><span class="field">额外条件：</span>你参观过一场魔术表演</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.火焰.奥术.增益.幻象.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>蓝焰术</p>
+          <p>你用一只未持有物件的手掌心向上、并念诵法咒从手中升腾出一团蓝色的魔法火焰</p>
+          <p>你向一名角色发射蓝焰术，选择以下一项效果执行：</p>
+          <p>·蓝焰术仅产生视觉效果，能够视作光源照亮沿途的路径</p>
+          <p>·对目标角色造成1D8点奥术伤害</p>
+          <p>·使目标角色的下一次基础攻击在结算造成的伤害值后附加1D6点奥术伤害，这个效果无需进行攻击命中检定</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>通过蓝焰术的效果产生伤害后对方需要进行一次难度为15的智力豁免，如果豁免失败将进入灼烧状态</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-52" data-search="敌群环绕 秘术 二阶天赋树 戏法.互动.感知豁免（15）.短休/长休 你在本次游玩过程中击杀过一名落单状态的角色 你参与过友方人数大于敌对人数的战斗环节">
+        <h4>敌群环绕 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">互动</span>
+          <span class="chip">感知豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你参与过友方人数大于敌对人数的战斗环节</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中击杀过一名落单状态的角色</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.互动.感知豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>敌群环绕</p>
+          <p>你做出对应的施法动作、并念诵法咒令敌人心理感受到如同被敌人包围的窘迫，变得孤立无援</p>
+          <p>你使一名角色进行一次难度为15的感知豁免，对方豁免失败将在持续时间内获得以下效果：</p>
+          <p>·目标能够触及的所有角色均会在判定时被视为敌对角色，因此无法施展仅对友</p>
+          <p>方角色生效的效果</p>
+          <p>·目标的周边视为具有敌对角色，无法施展诸如潜行类型的技能</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-53" data-search="掩饰术 秘术 二阶天赋树 戏法.幻象.媒介.激活 你拥有欺瞒或伪造的熟练度 你藏匿过一件关键物品">
+        <h4>掩饰术 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">幻象</span>
+          <span class="chip">媒介</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你藏匿过一件关键物品</p>
+          <p><span class="field">额外条件：</span>你拥有欺瞒或伪造的熟练度</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.幻象.媒介.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>掩饰术</p>
+          <p>你挥挥手，将眼前的事物如同窗户上的印痕般抹去</p>
+          <p>你选择一个不超过一立方米的物件，使其在持续时间内视为进入潜行状态</p>
+          <p>如果有角色在持续时间内触碰那个物件，将会解除其潜行状态</p>
+          <p><span class="field">你的魔契师职业等级到达3级时：</span>掩饰术的施展距离变为12米</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>掩饰术能够选择一个不超过五立方米的物件</p>
+          <p><span class="field">你的魔契师职业等级到达9级时：</span>掩饰术在被触碰后不再会显形</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-54" data-search="蛇影缠身 秘术 二阶天赋树 法术.召唤单位.毒性.幻象.唯一性 你假借毒蛇来恐吓过他人 你拥有制毒的熟练度，或者受到过中毒状态的影响">
+        <h4>蛇影缠身 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">毒性</span>
+          <span class="chip">幻象</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有制毒的熟练度，或者受到过中毒状态的影响</p>
+          <p><span class="field">额外条件：</span>你假借毒蛇来恐吓过他人</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.毒性.幻象.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>蛇影缠身</p>
+          <p>你做出对应施法手势，念出法咒召唤一条蛇形黑影蛰伏于敌人身边</p>
+          <p>你使一名角色进行一次难度为15的感知豁免，对方豁免失败将会进入中毒状态并在其相邻位置召唤一个蛇形黑影</p>
+          <p>目标通过蛇影缠身获得的中毒状态暂时不会被结算、也不能被移除，当目标移动时蛇形黑影总是会出现在其相邻位置</p>
+          <p>持续时间结束时目标需要进行一次难度为15的意志豁免，对方豁免失败将会正式进入中毒状态，并将蛇形黑影转化为仅攻击目标的毒蛇，其数据如下所示</p>
+          <p>毒蛇</p>
+          <p>微型野兽，防御等级：13，生命值：2</p>
+          <p>力量2 （-4） 敏捷16（+3） 体质11（+0） 智力1 （-5）</p>
+          <p>感知10（+0） 魅力3 （-4） 意志10（+0） 幸运10（+0）</p>
+          <p>感官：被动察觉10</p>
+          <p>移动速度：6米</p>
+          <p>战斗加成：先攻时序值15，攻击命中检定加值+6</p>
+          <p>伤害抗性：中毒</p>
+          <p>状态免疫：中毒、缴械</p>
+          <p>语言：蛇语</p>
+          <p>固有技能：</p>
+          <p>毒咬</p>
+          <p>主要动作.本能.毒性.毒蛇啃咬一名角色，造成1点穿刺伤害并使目标进行一次难度为12的体质豁免，对方豁免失败将进入中毒状态</p>
+          <p><span class="field">你的魔契师职业等级到达5级时：</span>蛇影缠身的施展距离变为12米</p>
+          <p><span class="field">你的魔契师职业等级到达10级时：</span>蛇影缠身能够额外选择一名角色为目标</p>
+        </div>
+      </article>
+      <article class="skill" id="p-skill-55" data-search="秘法锁 秘术 二阶天赋树 戏法.阻碍.媒介.激活.唯一性 你在本次游玩过程中打开过一把魔法性质的锁 你拥有开锁的熟练度">
+        <h4>秘法锁 <span class="chip" style="background:#888">秘术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">媒介</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有开锁的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中打开过一把魔法性质的锁</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.阻碍.媒介.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>秘法锁</p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒生成一组由魔力构成的、晶莹剔透的紫色锁具和链条附着在物件上</p>
+          <p>你可以对一个体积不超过大型的密封容器或是门进行上锁</p>
+          <p>你在触碰秘法锁后可以选择将其解锁</p>
+          <p>其他角色可以通过一次难度为18的威力、魔法学识检定或其他暴力手段来尝试摧毁秘法锁，如果秘法锁被人为破坏你能够立即感知到</p>
+          <p>当你重新施展这个法术时会使上一个维持的秘法锁效果消散</p>
+          <p><span class="field">你的魔契师职业等级到达6级时：</span>秘法锁的破坏难度提升至22</p>
+          <p><span class="field">你的魔契师职业等级到达12级时：</span>即便对方成功通过检定，如果目标角色或挑战等级低于你，那便仍需要花费两个小时时间才能完全解除秘法锁的效果，这个效果会在对方每拥有一名通过检定的角色从旁辅助破解时间便缩减一小时</p>
+        </div>
+      </article>
+</section>
+</section>
+</div></main>
+</div>
+<div class="class-view" style="display:none" id="view-artificer">
+
+<script src="common.js"></script>
+<script src="filter.js"></script>
+<script>
+createFilterController("view-pact", "pt");
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+{
+  "宝石": [
+    {
+      "name": "玛瑙石",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "猫眼石",
+      "price": "10金币",
+      "weight": "0.1磅",
+      "quality": "常见"
+    },
+    {
+      "name": "豹眼石",
+      "price": "10金币",
+      "weight": "0.1磅",
+      "quality": "常见"
+    },
+    {
+      "name": "虎眼石",
+      "price": "15金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "孔雀石",
+      "price": "20金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "红宝石",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "quality": "稀有"
+    },
+    {
+      "name": "蓝宝石",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "绿宝石",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "青金石",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "紫水晶",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "蛋白石",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "秋辉石",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "暗玉",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "血石榴",
+      "price": "150金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "翡翠玉",
+      "price": "150金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "明焰石",
+      "price": "300金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "月光石",
+      "price": "300金币",
+      "weight": "0.2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "星耀石",
+      "price": "500金币",
+      "weight": "0.2磅",
+      "quality": "珍稀"
+    },
+    {
+      "name": "影钻",
+      "price": "750金币",
+      "weight": "0.5磅",
+      "quality": "常见"
+    },
+    {
+      "name": "亚历山大钻石",
+      "price": "1000金币",
+      "weight": "0.5磅",
+      "quality": "常见"
+    }
+  ],
+  "矿产": [
+    {
+      "name": "纯铁",
+      "price": "5金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "铜锭",
+      "price": "1金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "银锭",
+      "price": "10金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "硫磺石",
+      "price": "50金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "金锭",
+      "price": "100金币",
+      "weight": "10磅",
+      "quality": "稀有"
+    },
+    {
+      "name": "山铜锭",
+      "price": "150金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "秘银锭",
+      "price": "200金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "瑟银锭",
+      "price": "220金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "精钢锭",
+      "price": "300金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "真银锭",
+      "price": "300金币",
+      "weight": "10磅",
+      "quality": "珍稀"
+    },
+    {
+      "name": "精金锭",
+      "price": "400金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "黑曜石",
+      "price": "500金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "炼狱铁",
+      "price": "500金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "奥术蓝钢",
+      "price": "1200金币",
+      "weight": "10磅",
+      "quality": "奇珍"
+    },
+    {
+      "name": "奥术恒金",
+      "price": "2400金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "星界银",
+      "price": "2500金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "源质钢",
+      "price": "2500金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "天界钢",
+      "price": "5000金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "灵界钢",
+      "price": "5000金币",
+      "weight": "10磅",
+      "quality": "常见"
+    },
+    {
+      "name": "星界钢",
+      "price": "10000金币",
+      "weight": "10磅",
+      "quality": "常见"
+    }
+  ]
+}

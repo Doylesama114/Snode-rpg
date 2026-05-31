@@ -1,0 +1,1363 @@
+{
+  "class": "战士",
+  "advancements": [
+    {
+      "id": "adv-warrior-武器大师",
+      "name": "武器大师",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "牧师",
+        "圣骑士",
+        "奇械师"
+      ],
+      "attrs": {
+        "力量": 15,
+        "敏捷": 12,
+        "体质": 12
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 5
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有技巧专家、武器精通或战技专家",
+        "在战斗环节中累计使用过全部武器类别发起过攻击",
+        "持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质"
+      ]
+    },
+    {
+      "id": "adv-warrior-狂战士",
+      "name": "狂战士",
+      "source_classes": [
+        "蛮斗士",
+        "战士"
+      ],
+      "attrs": {
+        "力量": 15,
+        "体质": 15,
+        "智力": 10
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 6
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你通过近战攻击击杀二十名能够提供经验值的角色",
+        "你在五场战斗环节中以低于X点生命值结束战斗（X为你的25%最大生命值）",
+        "在你的当前生命值为1的情况下，由你击杀最后的敌人来结束一场战斗环节"
+      ],
+      "attrs_max": {
+        "智力": true
+      }
+    },
+    {
+      "id": "adv-warrior-防御者",
+      "name": "防御者",
+      "source_classes": [
+        "战士",
+        "牧师",
+        "圣骑士"
+      ],
+      "attrs": {
+        "敏捷": 10,
+        "体质": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "确保在十场战斗环节中你为团队中承受伤害最多的角色",
+        "在战斗环节中累计承受超过500点伤害（包括过量伤害）",
+        "在一场己方阵营至少存在三名其他角色的战斗环节中，保持你是团队中唯一承受过伤害的角色"
+      ],
+      "attrs_max": {
+        "敏捷": true
+      }
+    },
+    {
+      "id": "adv-warrior-斗士",
+      "name": "斗士",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "圣骑士"
+      ],
+      "attrs": {
+        "力量": 15,
+        "体质": 14,
+        "意志": 13
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 3
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "赢得十次力量对抗的胜利",
+        "在万众瞩目下击败一名公认的劲敌并得到众人的喝彩"
+      ]
+    },
+    {
+      "id": "adv-warrior-剑圣",
+      "name": "剑圣",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 12,
+        "敏捷": 13,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你持有剑类武器击败二十名持有剑类武器的角色",
+        "在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次",
+        "完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼"
+      ]
+    },
+    {
+      "id": "adv-warrior-破法者",
+      "name": "破法者",
+      "source_classes": [
+        "战士"
+      ],
+      "attrs": {
+        "体质": 15,
+        "智力": 12
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "击败二十名施法者主职业的角色（不计算玩家在内）",
+        "打断五次施法者职业角色的法术或戏法，又或是使其退出专注状态（不计算玩家在内）",
+        "承受来自一本魔典的压迫，并使其不再对你能够产生威胁"
+      ]
+    },
+    {
+      "id": "adv-warrior-魔剑士",
+      "name": "魔剑士",
+      "source_classes": [
+        "战士",
+        "法师",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "敏捷": 12,
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "使用魔法类型的剑类武器参与十场战斗环节",
+        "为你的剑类武器附加十种不同的增益效果",
+        "将你所持有的武器铸就成魔剑"
+      ]
+    },
+    {
+      "id": "adv-warrior-熊战士",
+      "name": "熊战士",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "猎人",
+        "萨满祭司"
+      ],
+      "attrs": {
+        "力量": 15,
+        "体质": 15
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有强化属性、擒抱者、健壮或韧性",
+        "赢得十次力量对抗的胜利",
+        "掌握“野兽的心脏”，并将熊之图腾烙印在自身的血脉当中"
+      ]
+    },
+    {
+      "id": "adv-warrior-游击士",
+      "name": "游击士",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "游荡者"
+      ],
+      "attrs": {
+        "力量": 10,
+        "敏捷": 16
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 4
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你受到十次借机攻击而没有受到伤害",
+        "你执行过十次回避动作",
+        "你在每个战斗轮均进行全速移动的情况下结束一场战斗环节，并且这一过程中你击败过能够提供经验值的角色"
+      ],
+      "attrs_max": {
+        "力量": true
+      }
+    },
+    {
+      "id": "adv-warrior-旗手",
+      "name": "旗手",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "为友方角色提供二十次增益效果",
+        "在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态",
+        "亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役"
+      ]
+    },
+    {
+      "id": "adv-warrior-指挥官",
+      "name": "指挥官",
+      "source_classes": [
+        "战士",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 12,
+        "魅力": 15,
+        "意志": 12
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
+        "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
+        "参与一场能够影响局部地区走势的战役并在其中脱颖而出"
+      ]
+    },
+    {
+      "id": "adv-warrior-前锋",
+      "name": "前锋",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "牧师",
+        "圣骑士",
+        "武僧"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 12,
+        "体质": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 6
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有冲锋手或大步奔行",
+        "在十场战斗环节中作为团队中率先发起攻击的角色",
+        "在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间"
+      ]
+    },
+    {
+      "id": "adv-warrior-部落勇士",
+      "name": "部落勇士",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "猎人",
+        "德鲁伊",
+        "萨满祭司"
+      ],
+      "attrs": {
+        "力量": 12,
+        "魅力": 12,
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 4
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "独自击败五头不弱于你的野兽或怪兽",
+        "成为一支不少于二十人的团队、社群或部族中的榜样",
+        "战胜一名无可匹敌的敌人，唯有你能够做到"
+      ]
+    },
+    {
+      "id": "adv-warrior-神射手",
+      "name": "神射手",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "奇械师"
+      ],
+      "attrs": {
+        "敏捷": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "进行三十次成功的攻击命中检定",
+        "连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算）",
+        "在一次劣势或极大劣势的攻击中触发暴击"
+      ]
+    },
+    {
+      "id": "adv-warrior-游侠",
+      "name": "游侠",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "游荡者"
+      ],
+      "attrs": {
+        "敏捷": 15,
+        "体质": 13,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 5
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你执行过十次回避动作",
+        "你在战斗环节中布置过十个陷阱，或者包含阻碍关键词的效应",
+        "你在同一个自身回合中使用近战攻击和远程攻击分别击杀一名能够获取经验值的角色，并且这场战斗环节有角色死于你的陷阱效果"
+      ]
+    },
+    {
+      "id": "adv-warrior-行刑官",
+      "name": "行刑官",
+      "source_classes": [
+        "战士",
+        "游荡者",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 12,
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "主持五场公开且合法的审判，或是具有黑幕、非公开的处刑",
+        "击杀二十名触犯法律、或是饱含冤屈的角色",
+        "在公共场合杀死一名名望等级超过8的角色（你可以在秩序势力的领地，或是“黑暗世界”中完成你的行刑）"
+      ]
+    },
+    {
+      "id": "adv-warrior-狼骑士",
+      "name": "狼骑士",
+      "source_classes": [
+        "战士",
+        "圣骑士"
+      ],
+      "attrs": {
+        "敏捷": 14,
+        "体质": 14,
+        "感知": 12
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "与友方角色协力击杀二十头野兽",
+        "与友方角色协力击杀三名挑战等级高于你们团队的角色",
+        "与一支足够规模的犬科动物社群生活数年时间，领悟集群作战的真谛"
+      ]
+    },
+    {
+      "id": "adv-warrior-弓战士",
+      "name": "弓战士",
+      "source_classes": [
+        "战士",
+        "猎人"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "使用弓箭或弓弩武器击杀二十名角色",
+        "在自身回合中将近战武器切换为远程武器，或者与之相反，随后击杀共计十名角色",
+        "通过远程攻击暴击击杀一名相邻角色"
+      ]
+    },
+    {
+      "id": "adv-warrior-猎魔人",
+      "name": "猎魔人",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "圣骑士"
+      ],
+      "attrs": {
+        "体质": 14,
+        "感知": 12,
+        "意志": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 1
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "驱逐十只邪魔、精类生物或不死生物",
+        "消灭二十只野兽、怪兽或异怪",
+        "通过长达数日的调查情报、实地考察和战前准备后，击杀一只困扰当地数段时日、具有明确危害的邪恶存在"
+      ]
+    },
+    {
+      "id": "adv-warrior-奥法骑士",
+      "name": "奥法骑士",
+      "source_classes": [
+        "战士"
+      ],
+      "attrs": {
+        "体质": 14,
+        "智力": 14
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "使用法术击杀二十名角色",
+        "你花费过幕间物语来阅读一本任意类型的魔典",
+        "在魔法能量充裕的环境下参与五场战斗环节（不包括日常训练及同伴间的友好切磋）"
+      ]
+    },
+    {
+      "id": "adv-warrior-骑兵",
+      "name": "骑兵",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 14,
+        "体质": 14,
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有冲锋手、枪兵或骑乘战斗",
+        "你在保持骑乘状态的情况下完成五场战斗环节",
+        "为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛"
+      ]
+    },
+    {
+      "id": "adv-warrior-铳士",
+      "name": "铳士",
+      "source_classes": [
+        "战士",
+        "游荡者"
+      ],
+      "attrs": {
+        "敏捷": 14,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 4
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "使用枪械武器击杀二十名角色",
+        "在自身周围4米内通过远程攻击击杀十名角色",
+        "通过远程攻击暴击击杀一名相邻角色"
+      ]
+    },
+    {
+      "id": "adv-warrior-拳击手",
+      "name": "拳击手",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "游荡者",
+        "武僧"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 12,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 6
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "通过徒手攻击击败二十名角色（不计算玩家在内）",
+        "参与五次酒馆斗殴并取得胜利",
+        "参与一场观众规模超过五百人的拳击比赛，取得冠军称号并得到众人的喝彩"
+      ]
+    },
+    {
+      "id": "adv-warrior-逆流勇士",
+      "name": "逆流勇士",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "猎人"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 12,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你通过投掷武器造成二十次伤害",
+        "你通过十次劣势的攻击命中检定",
+        "在面对一名难以匹敌的敌人时，运用你的投掷技巧决定战斗的胜负"
+      ]
+    },
+    {
+      "id": "adv-warrior-强弩射手",
+      "name": "强弩射手",
+      "source_classes": [
+        "战士",
+        "奇械师"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 5
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "使用弓弩武器击杀二十名角色",
+        "执行十次装填动作",
+        "在一次劣势或极大劣势的攻击中触发暴击"
+      ]
+    },
+    {
+      "id": "adv-warrior-近卫",
+      "name": "近卫",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 14,
+        "体质": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "确保在十场战斗环节中你为团队中承受伤害最多的角色",
+        "在一场关键战役中全程担任正面承受敌人火力的职责"
+      ]
+    },
+    {
+      "id": "adv-warrior-高阶冒险者",
+      "name": "高阶冒险者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "完成十次成功的剧情交互内容",
+        "完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容"
+      ]
+    },
+    {
+      "id": "adv-warrior-战斗大师",
+      "name": "战斗大师",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 13,
+        "敏捷": 14,
+        "感知": 13
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态",
+        "取得一场关键战役的最终胜利"
+      ]
+    },
+    {
+      "id": "adv-warrior-复仇者",
+      "name": "复仇者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 3
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你拥有一名刻骨铭心、无论如何都必须向其复仇的对象",
+        "你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）",
+        "你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式"
+      ]
+    },
+    {
+      "id": "adv-warrior-骑士扈从",
+      "name": "骑士扈从",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共",
+        "你与自身的效忠对象一同参与十场战斗环节",
+        "在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右"
+      ]
+    },
+    {
+      "id": "adv-warrior-战地医师",
+      "name": "战地医师",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "智力": 12,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "进行十次成功的医药检定",
+        "通过医疗包移除十次中毒或流血的效果",
+        "作为医疗人员的身份完整参与一场战役"
+      ]
+    },
+    {
+      "id": "adv-warrior-边界行者",
+      "name": "边界行者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "感知": 14,
+        "意志": 13
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "击败二十名来自任意边境地区的敌人",
+        "完成三场不为人知的拯救行动（不计算玩家在内）",
+        "阻挡一次来自异界、异位面对本位面的入侵事件"
+      ]
+    },
+    {
+      "id": "adv-warrior-自由骑士",
+      "name": "自由骑士",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）",
+        "协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容",
+        "你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划"
+      ]
+    },
+    {
+      "id": "adv-warrior-塑形者",
+      "name": "塑形者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": "X",
+        "敏捷": "X",
+        "体质": "X",
+        "智力": "X",
+        "感知": "X",
+        "魅力": "X",
+        "意志": "X",
+        "幸运": "X"
+      },
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度",
+        "你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板",
+        "你所在团队的所有其他角色均完成进阶职业"
+      ]
+    },
+    {
+      "id": "adv-warrior-凡人勇士",
+      "name": "凡人勇士",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 15,
+        "敏捷": 15,
+        "体质": 15,
+        "智力": 15,
+        "感知": 15,
+        "魅力": 15,
+        "意志": 15,
+        "幸运": 15
+      },
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板",
+        "在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力",
+        "战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成"
+      ],
+      "attrs_max": {
+        "力量": true,
+        "敏捷": true,
+        "体质": true,
+        "智力": true,
+        "感知": true,
+        "魅力": true,
+        "意志": true,
+        "幸运": true
+      }
+    }
+  ]
+}

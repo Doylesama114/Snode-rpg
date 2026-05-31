@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>角色管理 - 主页</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  background: #f6f4ef;
+  color: #1f2522;
+  min-height: 100vh;
+  padding: 30px;
+  font-size: 15px;
+}
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 26px;
+  color: #1f2522;
+  font-weight: bold;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d8d2c4;
+}
+.subtitle {
+  font-size: 14px;
+  color: #69706b;
+  margin-bottom: 24px;
+}
+.card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.icon {
+  font-size: 32px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f4ef;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid #d8d2c4;
+}
+.card-text h2 {
+  font-size: 18px;
+  color: #1f2522;
+  margin-bottom: 3px;
+}
+.card-text p {
+  font-size: 13px;
+  color: #69706b;
+}
+.back-link {
+  display: inline-block;
+  color: #69706b;
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.back-link:hover { color: #a46d1f; }
+/* Char list page specific */
+.char-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.char-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.char-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 6px;
+}
+.char-info {
+  font-size: 13px;
+  color: #69706b;
+  line-height: 1.6;
+}
+.empty-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: #69706b;
+  font-size: 15px;
+}
+/* Slot page specific */
+.slot-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.slot-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.slot-card.empty {
+  opacity: 0.5;
+  border-style: dashed;
+}
+.slot-card.empty:hover {
+  opacity: 0.8;
+}
+.slot-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 4px;
+}
+.slot-time {
+  font-size: 12px;
+  color: #69706b;
+  margin-bottom: 6px;
+}
+.slot-summary {
+  font-size: 13px;
+  color: #69706b;
+}
+.slot-empty-text {
+  font-size: 13px;
+  color: #69706b;
+  font-style: italic;
+}
+.char-subtitle {
+  font-size: 14px;
+  color: #69706b;
+  margin-bottom: 20px;
+}
+.footer {
+  margin-top: 30px;
+  font-size: 12px;
+  color: #69706b;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back-link" href="启动台.html">← 返回启动台</a>
+  <h1>🎭 冒险者手册</h1>
+  <div class="subtitle">管理你的角色与冒险旅程</div>
+
+  <div class="card" onclick="location.href='角色选择页.html'">
+    <div class="icon">📜</div>
+    <div class="card-text">
+      <h2>选择已有角色</h2>
+      <p>从已有的角色存档中选择并继续冒险</p>
+    </div>
+  </div>
+
+  <div class="card" onclick="location.href='角色创建页.html'">
+    <div class="icon">✨</div>
+    <div class="card-text">
+      <h2>创建新角色</h2>
+      <p>创建一位全新的冒险者，开始新的旅程</p>
+    </div>
+  </div>
+
+  <div class="card" onclick="location.href='上传角色.html'">
+    <div class="icon">📤</div>
+    <div class="card-text">
+      <h2>上传已有角色</h2>
+      <p>通过冒险者角色档案表格导入角色</p>
+    </div>
+  </div>
+
+  <div class="footer">斯诺德规则 · 角色管理工具</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>斯诺德 · 帮助</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;background:#f6f4ef;color:#1f2522;padding:30px;font-size:15px}
+.container{max-width:960px;margin:0 auto;width:100%}
+h1{font-size:28px;font-weight:bold;margin-bottom:4px}
+.subtitle{font-size:14px;color:#69706b;margin-bottom:24px}
+.back-link{display:inline-block;color:#69706b;font-size:14px;text-decoration:none;margin-bottom:16px;cursor:pointer}
+.back-link:hover{color:#a46d1f}
+.toc{background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px 24px;margin-bottom:24px}
+.toc-title{font-size:16px;font-weight:bold;margin-bottom:12px}
+.toc a{display:block;padding:5px 0;color:#a46d1f;text-decoration:none;font-size:14px}
+.toc a:hover{color:#c0852f}
+.section{background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:24px 28px;margin-bottom:20px;overflow-x:hidden}
+.section h2{font-size:22px;font-weight:bold;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #d8d2c4}
+.section h3{font-size:16px;font-weight:bold;margin:18px 0 8px;color:#1f2522}
+.p{font-size:14px;line-height:2;margin-bottom:10px}
+.note{font-size:13px;color:#69706b;line-height:1.8;margin-bottom:10px;padding:10px 14px;background:#f6f4ef;border-radius:6px;border-left:3px solid #a46d1f}
+.card{background:#f6f4ef;border:1px solid #e8e2d8;border-radius:8px;padding:14px 18px;margin-bottom:8px}
+.card .num{font-weight:bold;color:#a46d1f;font-size:15px;margin-bottom:4px}
+.card .desc{font-size:13px;line-height:1.8}
+.wrap{overflow-x:auto;margin:10px 0;max-width:100%}
+.wrap table{width:100%;border-collapse:collapse;font-size:14px}
+.wrap table th{background:#edeae2;padding:7px 9px;text-align:left;border:1px solid #d8d2c4;font-weight:bold;vertical-align:top;white-space:nowrap}
+.wrap table td{padding:7px 9px;border:1px solid #d8d2c4;vertical-align:top;line-height:1.7;word-break:break-word;overflow-wrap:break-word}.effect-list{font-size:13px;line-height:1.9}.effect-list p{margin:3px 0}
+.wrap table tr:nth-child(even) td{background:#faf8f4}
+.sp{display:inline-block;padding:2px 10px;border-radius:4px;font-size:13px;margin:1px;font-weight:bold}
+ul,ol{margin:8px 0 8px 20px;font-size:14px;line-height:2}
+li{margin-bottom:4px}
+/* Status effects */ .wrap table td:last-child{font-size:13px;line-height:1.9}
+@media(max-width:600px){body{padding:16px}.section{padding:16px}}
+</style></head><body><div class="container">
+<a class="back-link" href="启动台.html">← 返回启动台</a>
+<h1>📖 帮助文档</h1><div class="subtitle">斯诺德规则 · 冒险者手册</div>
+<div class="toc"><div class="toc-title">目录</div><a href="#s0">基本规则</a>
+<a href="#s1">检定规则</a>
+<a href="#s2">战斗规则</a>
+<a href="#s3">升级规则</a>
+<a href="#s4">兼职规则</a>
+<a href="#s5">幕间规则</a>
+<a href="#s6">技能点规则</a>
+<a href="#s7">异常状态规则</a>
+<a href="#s8">关键词规则</a>
+</div>
+<div class="section" id="s0"><h2>基本规则</h2>
+<div class="note">以下共识对您和主持人（DM）之间的良好合作至关重要。</div>
+<div class="card"><div class="num">1.写在最开始的话</div><div class="desc">在了解斯诺德跑团的具体规则之前，请先阅读并认同以下共识，这些内容对您和主持人（DM）之间的良好合作至关重要。斯诺德世界拥有大量文本，如果您没有耐心读完并记住本部分的核心原则，那么您一定不适合参与本游戏。提前明确这一点，有助于双方避免不必要的时间浪费</div></div>
+<div class="card"><div class="num">2.这不是D&amp;D</div><div class="desc">斯诺德跑团在创作中借鉴了D&amp;D、COC、迷雾之城等TRPG规则，同时也包含大量原创机制。请不要直接套用您在其他游戏中的经验，因为斯诺德的规则有意做了不同甚至相反的调整,如果不主动了解斯诺德自身的规则，而只是生硬地移植其他游戏的玩法，您将必然在推进游戏的过程中陷入困境</div></div>
+<div class="card"><div class="num">3.PVE？还是PVP？</div><div class="desc">主持人在游戏过程中的存在，是为了帮助玩家角色顺利推进当前的故事，请多与主持人交流和互动，而不是把主持人想象成对立面。这种对抗行为没有任何意义，因为在这个世界观下，主持人实际上拥有无限的资源可供使用。请记住：这不是一个对抗性质的游戏</div></div>
+<div class="card"><div class="num">4.了解这里的风土人情</div><div class="desc">完整了解整个斯诺德世界的背景故事并非必须事项，但至少知晓一些基本的人际关系或相关内容，会更有利于您顺利游玩，遇到不了解的地方，可以询问主持人，或通过检定去了解。请不要在受挫时用“我并不了解”来搪塞自己的失误</div></div>
+<div class="card"><div class="num">5.我是尼古拉斯·赵·云殇~</div><div class="desc">传奇后裔、天命之人、权勋世家...为自己设计一个过于炫酷的背景故事并不现实，您当前只是一名1级冒险者，角色创建时设定的庞大人脉与显赫身世在实际游戏中并不会生效，创作过多额外内容只会带来落差感。您的故事才刚刚开始，而不是早已在背景中完美落幕</div></div>
+<div class="card"><div class="num">6.说，你要干嘛</div><div class="desc">或者说，告诉DM你要干嘛。如果您自己都不清楚行动的目标，那么这可能并不是一个合适的选择，只有在了解您角色行为逻辑的前提下，主持人才能够更准确地给出符合您期望的回应</div></div>
+<div class="card"><div class="num">7.万事皆有代价</div><div class="desc">在采取某一行动之前，请先想清楚需要付出的代价，对于玩家角色所在的王国或其他历史悠久的秩序势力而言，他们拥有丰富的经验来应对不守规矩的冒险者。作恶可能带来巨大收益，但面对秩序势力的打击时，请务必做好心理准备</div></div>
+<div class="card"><div class="num">8.别把简单问题复杂化</div><div class="desc">斯诺德跑团中不会出现必须依靠现实中的特定专业知识才能破解的谜题，冒险故事的逻辑通常不会太复杂，如果团队迟迟无法获得线索、剧情陷入僵局，或者主持人给出了明确的否定答复，又或者检定掷出较高数值后依然一无所获，这很可能是在提醒你们：不要再进行无意义的行为了</div></div>
+<div class="card"><div class="num">9.假如...？</div><div class="desc">在游戏之外询问主持人“假如我这样使用能力是否可行”是没有意义的，斯诺德跑团中的一切行为都需要结合当前场景的实际状况来判断，即使主持人在游戏外多次给予肯定答复，实际游戏中也可能会得出完全相反的结果</div></div>
+<div class="card"><div class="num">10.没有什么是理所当然的</div><div class="desc">您的角色在某些能力上可能天赋异禀，但也可能在另一些方面逊于常人，每个人都有擅长与不擅长的事情，当需要执行某个操作时，如果您没有对应的熟练度或并不精通，那么您的角色并不会因为“我应该会”“我的理解是”“我以为是”等说辞而自动完成该事项</div></div>
+<div class="card"><div class="num">11.关于社交</div><div class="desc">斯诺德世界中的人物行为逻辑较为贴近现实，把非玩家角色（NPC）当作活生生的人来看待，会更有利于游戏顺利进行。请记住，每一位人物都有不同的行事准则和处事方式：农民、商人、士兵或贵族的立场各不相同，对所有人使用同一套说辞，绝不会是合适的选择</div></div>
+<div class="card"><div class="num">12.摆烂不救</div><div class="desc">主持人不会为消极游玩的玩家投入资源，如果因为一时受挫而故意摆烂、放弃配合，这样的玩家通常会在后续被优化出游戏。请保持积极的参与态度，即使遇到困难也要尝试寻找解决方式或与主持人进行沟通</div></div>
+<div class="card"><div class="num">13.这是最坏的时代</div><div class="desc">斯诺德的价值观与道德水准大致处于中世纪水平，贵族与阶级制度是常态，执法队伍服务的对象往往是王室或官方机构，而非玩家角色或平民。大多数人受限于时代背景，并不会主动争取更多权益，请不要用现实中的国内标准去衡量，若需类比，他们的思维方式更接近海外某些地区的行事风格</div></div>
+<div class="card"><div class="num">14.这是最好的时代</div><div class="desc">这并非一个由死亡与悲剧构成的故事。作为冒险者，玩家角色拥有无限的可能性，成长本身就是你们最大的优势，只要坚持不懈当前的困境和难题并非无法消除。对心存希望的人而言，只要不放弃就始终存在翻盘的机会</div></div>
+<div class="card"><div class="num">15.世界总是照常运转</div><div class="desc">你们不总是这个世界的主角，但也绝非寂寂无名的凡夫，每个人都会拥有闪光点和获得聚光灯的时刻。但请记住：当你们停滞不前时，故事中的敌人或事物并不会停下脚步等待，斯诺德世界的时间线将按既定进程推进，游戏的难度与当前等级无关，而是与游玩的时长和你们的抉择相关</div></div>
+</div>
+<div class="section" id="s1"><h2>检定规则</h2>
+
+<h3>基础熟练项检定</h3>
+<div class="p"><b>公式：</b>掷骰点数 + 熟练度加值 + 属性调整值 = 检定结果</div>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:180px"><col></colgroup><tr><th>情况</th><th>检定方式</th></tr>
+<tr><td>你有这个熟练项</td><td>掷 <b>D12</b> 和一颗 <b>D8</b> 检定骰</td></tr>
+<tr><td>你没有这个熟练项</td><td>掷 <b>D12</b> 检定骰</td></tr>
+<tr><td colspan="2" style="font-size:13px;color:#69706b">专业熟练项的检定流程与基础熟练项一致，但可在合理情况下附加在基础熟练项的加值中。</td></tr>
+</table></div>
+
+<h3>色彩骰</h3>
+<div class="p">每场拥有 <b>8</b> 颗 D8 色彩骰，可在检定中投入任意数量，选择其中一颗并根据对应颜色描述使用。</div>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:60px"><col style="width:80px"><col></colgroup><tr><th>骰</th><th>主题</th><th>描述</th></tr>
+<tr><td style="text-align:center">D8 红</td><td>勇猛</td><td>凭借力量与勇气来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 橙</td><td>协调</td><td>凭借敏捷和反应来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 黄</td><td>体魄</td><td>凭借躯体和耐性来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 绿</td><td>智慧</td><td>凭借聪明的头脑来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 青</td><td>机敏</td><td>凭借敏锐的感官来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 蓝</td><td>卓越</td><td>凭借非凡的魅力来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 紫</td><td>强韧</td><td>凭借惊人的毅力来帮助完成挑战</td></tr>
+<tr><td style="text-align:center">D8 粉</td><td>运势</td><td>凭借一些小幸运来帮助完成挑战</td></tr>
+</table></div>
+
+<h3>其他检定</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th>类型</th><th>方式</th></tr>
+<tr><td>先攻检定</td><td>掷 <b>D20</b> + 敏捷调整值</td></tr>
+<tr><td>对抗检定</td><td>双方各掷骰，点数高者胜出</td></tr>
+<tr><td>属性检定</td><td>掷骰点数 + 对应属性调整值</td></tr>
+<tr><td>豁免检定</td><td>掷骰点数 + 对应豁免加值</td></tr>
+<tr><td>事件检定</td><td>掷 <b>D100</b> 事件骰</td></tr>
+</table></div>
+
+<h3>难易度</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:80px"><col></colgroup><tr><th>DC</th><th>难度</th></tr>
+<tr><td style="text-align:center"><b>5</b></td><td>轻而易举</td></tr>
+<tr><td style="text-align:center"><b>10</b></td><td>容易</td></tr>
+<tr><td style="text-align:center"><b>15</b></td><td>中等</td></tr>
+<tr><td style="text-align:center"><b>20</b></td><td>困难</td></tr>
+<tr><td style="text-align:center"><b>25</b></td><td>极难</td></tr>
+<tr><td style="text-align:center"><b>30</b></td><td>几乎不可能</td></tr>
+</table></div>
+
+</div>
+<div class="section" id="s2"><h2>战斗规则</h2>
+<h3>先攻</h3>
+<div class="p"><b>D20</b> + 敏捷调整值 = 先攻时序。NPC 为固定值。</div>
+<h3>行动选项</h3>
+<div class="wrap"><table><tr><th>动作</th><th>可用行动</th></tr>
+<tr><td style="white-space:nowrap"><b>主要动作</b></td><td><ol style="margin:0 0 0 16px"><li>使用武器/道具攻击</li><li>施展需要主要动作的技能</li><li>全速移动（不可与★共存）</li><li>稳定濒死角色</li><li>投掷物品</li><li>将主要动作转为附赠</li><li>回避</li><li>精密互动</li></ol></td></tr>
+<tr><td style="white-space:nowrap"><b>附赠动作</b></td><td><ol style="margin:0 0 0 16px"><li>施展需附赠的技能</li><li><b>★</b> 基础移动</li><li><b>★</b> 跳远/跳高</li><li>抓取/放下物件</li><li>切换武器/防具</li><li>说较长的话</li><li>主动属性/熟练项检定</li><li>瞄准部位</li><li>扑灭火焰</li><li>手下留情</li><li>简易交互</li></ol></td></tr>
+</table></div></div>
+<div class="section" id="s3"><h2>升级规则</h2>
+<h3>主职业</h3>
+<div class="wrap"><table>
+<tr><th>LV</th><th>经验</th><th>熟练</th><th>属性</th><th>槽位</th><th>其他</th><th>属性上限</th><th>熟练上限</th><th>头衔</th></tr>
+<tr><td style="text-align:center"><b>LV.1</b></td><td style="text-align:center">0</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">10</td><td>根据新人冒险者创建流程获取加成数值</td><td style="text-align:center">18</td><td style="text-align:center">2</td><td>新人冒险者</td></tr>
+<tr><td style="text-align:center"><b>LV.2</b></td><td style="text-align:center">50</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td><td style="text-align:center">18</td><td style="text-align:center">2</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.3</b></td><td style="text-align:center">100</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第三阶天赋树(50点经验值）</td><td style="text-align:center">18</td><td style="text-align:center">2</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.4</b></td><td style="text-align:center">150</td><td style="text-align:center">1</td><td style="text-align:center"></td><td style="text-align:center">1</td><td>获取一项特殊专长</td><td style="text-align:center">18</td><td style="text-align:center">2</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.5</b></td><td style="text-align:center">300</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>开启主职业的三条进阶职业途径</td><td style="text-align:center">19</td><td style="text-align:center">3</td><td>普通冒险者</td></tr>
+<tr><td style="text-align:center"><b>LV.6</b></td><td style="text-align:center">500</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第四阶天赋树（100点经验值）</td><td style="text-align:center">19</td><td style="text-align:center">3</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.7</b></td><td style="text-align:center">800</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>允许兼职一个与主职业不冲突的基础职业</td><td style="text-align:center">19</td><td style="text-align:center">3</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.8</b></td><td style="text-align:center">1200</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>获取一项特殊专长</td><td style="text-align:center">19</td><td style="text-align:center">3</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.9</b></td><td style="text-align:center">1600</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第五阶天赋树（300点经验值）</td><td style="text-align:center">20</td><td style="text-align:center">4</td><td>资深冒险者</td></tr>
+<tr><td style="text-align:center"><b>LV.10</b></td><td style="text-align:center">2000</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td><td style="text-align:center">20</td><td style="text-align:center">4</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.11</b></td><td style="text-align:center">2400</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>开启子职业的三条进阶职业途径</td><td style="text-align:center">20</td><td style="text-align:center">4</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.12</b></td><td style="text-align:center">2800</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第六阶天赋树（500点经验值）</td><td style="text-align:center">20</td><td style="text-align:center">4</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.13</b></td><td style="text-align:center">3200</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>获取一项特殊专长</td><td style="text-align:center">21</td><td style="text-align:center">5</td><td>大师冒险者</td></tr>
+<tr><td style="text-align:center"><b>LV.14</b></td><td style="text-align:center">3600</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td><td style="text-align:center">21</td><td style="text-align:center">5</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.15</b></td><td style="text-align:center">4000</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第七阶天赋树（1000点经验值）</td><td style="text-align:center">21</td><td style="text-align:center">5</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.16</b></td><td style="text-align:center">5000</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>将你的属性值中最低的一项提升2点</td><td style="text-align:center">21</td><td style="text-align:center">5</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.17</b></td><td style="text-align:center">10000</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td><td style="text-align:center">22</td><td style="text-align:center">6</td><td>明星冒险者</td></tr>
+<tr><td style="text-align:center"><b>LV.18</b></td><td style="text-align:center">15000</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>解锁职业的第八阶天赋树（3000点经验值）</td><td style="text-align:center">23</td><td style="text-align:center">6</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.19</b></td><td style="text-align:center">20000</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>将你的属性值中最低的一项提升2点</td><td style="text-align:center">24</td><td style="text-align:center">6</td><td></td></tr>
+<tr><td style="text-align:center"><b>LV.20</b></td><td style="text-align:center">30000</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td style="text-align:center">2</td><td>解锁职业的第九阶天赋树（5000点经验值）</td><td style="text-align:center">25</td><td style="text-align:center">8</td><td>传奇冒险者</td></tr>
+</table></div>
+<h3>子职业</h3>
+<div class="p">主职业 7 级解锁，等级上限 = 主职业 - 5。</div>
+<div class="note">附赠职业通过剧情获取，上限 5 级。</div>
+<div class="wrap"><table>
+<tr><th>LV</th><th>经验</th><th>熟练</th><th>属性</th><th>槽位</th><th>其他</th></tr>
+<tr><td style="text-align:center"><b>LV.1</b></td><td style="text-align:center">0</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">4</td><td>根据职业来获取对应的加成</td></tr>
+<tr><td style="text-align:center"><b>LV.2</b></td><td style="text-align:center">100</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.3</b></td><td style="text-align:center">200</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>自动开启职业的第三阶天赋树</td></tr>
+<tr><td style="text-align:center"><b>LV.4</b></td><td style="text-align:center">300</td><td style="text-align:center">1</td><td style="text-align:center"></td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.5</b></td><td style="text-align:center">600</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.6</b></td><td style="text-align:center">1000</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>自动开启职业的第四阶天赋树</td></tr>
+<tr><td style="text-align:center"><b>LV.7</b></td><td style="text-align:center">1600</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.8</b></td><td style="text-align:center">2400</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.9</b></td><td style="text-align:center">3200</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>自动开启职业的第五阶天赋树</td></tr>
+<tr><td style="text-align:center"><b>LV.10</b></td><td style="text-align:center">4000</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.11</b></td><td style="text-align:center">4800</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.12</b></td><td style="text-align:center">5600</td><td style="text-align:center">1</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>自动开启职业的第六阶天赋树</td></tr>
+<tr><td style="text-align:center"><b>LV.13</b></td><td style="text-align:center">6400</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.14</b></td><td style="text-align:center">7200</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td style="text-align:center">1</td><td>-</td></tr>
+<tr><td style="text-align:center"><b>LV.15</b></td><td style="text-align:center">8000</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">1</td><td>自动开启职业的第七阶天赋树</td></tr>
+</table></div></div>
+<div class="section" id="s4"><h2>兼职规则</h2>
+<div class="wrap"><table><tr><th>职业</th><th>属性要求</th><th>熟练度要求</th><th>其他要求</th></tr>
+<tr><td><b>蛮斗士</b></td><td>力量属性13，体质属性13</td><td>拥有力量或体质的熟练度共计+4</td><td>-</td></tr>
+<tr><td><b>战士</b></td><td>力量/敏捷属性13，体质属性13</td><td>拥有力量或敏捷的熟练度共计+4</td><td>-</td></tr>
+<tr><td><b>法师</b></td><td>智力属性15</td><td>拥有奥秘、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的魔法传承</td></tr>
+<tr><td><b>猎人</b></td><td>敏捷属性13，感知属性13</td><td>拥有洞悉、驯兽、自然和求生的熟练度共计+4</td><td>需连续在野外生存超过一周，并狩猎至少十只野兽</td></tr>
+<tr><td><b>牧师</b></td><td>感知属性15</td><td>拥有专注、宗教和魅力的熟练度共计+4</td><td>选择一项信仰成为虔诚的信徒</td></tr>
+<tr><td><b>圣骑士</b></td><td>意志属性15</td><td>-</td><td>愿奉献自身，坚持匡扶正义，完成五次善举</td></tr>
+<tr><td><b>游荡者</b></td><td>敏捷属性14，感知属性13</td><td>拥有敏捷、伪造和欺瞒的熟练度共计+4</td><td>完成五次偷窃、刺杀或探取有价值情报的行动</td></tr>
+<tr><td><b>德鲁伊</b></td><td>体质属性13，感知属性14</td><td>拥有驯兽、自然、求生和草药学的熟练度共计+4</td><td>需连续在野外生存超过一周，并有良好关系的野兽或植物朋友</td></tr>
+<tr><td><b>萨满祭司</b></td><td>感知属性14</td><td>拥有表演、自然、求生和神秘学的熟练度共计+4</td><td>对某种元素具有特殊的亲和力</td></tr>
+<tr><td><b>术士</b></td><td>幸运属性15</td><td>-</td><td>重复进行难度15的幸运检定。累计三次成功则兼职术士，否则失败且之后无法再尝试</td></tr>
+<tr><td><b>武僧</b></td><td>力量12，感知13，敏捷14</td><td>拥有敏捷和感悟的熟练度共计+4</td><td>拥有系统性学习的武学传承</td></tr>
+<tr><td><b>吟游诗人</b></td><td>魅力属性14</td><td>拥有巧手、知识、说服和表演的熟练度共计+4</td><td>至少拥有三名关系暧昧的对象或二十名粉丝</td></tr>
+<tr><td><b>魔契师</b></td><td>魅力属性14</td><td>拥有说服、欺瞒、表演和神秘学的熟练度共计+4</td><td>经历过匪夷所思的超自然事件</td></tr>
+<tr><td><b>奇械师</b></td><td>智力属性15</td><td>拥有巧手、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的奇械传承</td></tr>
+</table></div></div>
+<div class="section" id="s5"><h2>幕间规则</h2>
+<div class="p">玩家角色在经历一个模组或阶段性剧情后便能够进入幕间物语，在这个时段他们可以花费更多的时间去休整、学习以及完成平时冒险生活中无法进行的事情。如果玩家角色在不进入幕间物语，后续冒险中不会再获取经验值和技能点收益；即使选择多项事情，也仅结算最急迫的事项。</div>
+
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:180px"><col style="width:90px"><col style="width:90px"><col style="width:90px"><col></colgroup>
+<tr><th>幕间内容</th><th>三个月</th><th>六个月</th><th>一年</th><th>注释</th></tr>
+<tr><td>学习基础熟练度（0-2）</td><td>50 金币</td><td>- </td><td>- </td><td>通过支付财富聘请教练或其他渠道学习一项新熟练项</td></tr>
+<tr><td>学习基础熟练度（3-4）</td><td>150 金币</td><td>50 金币</td><td>- </td><td>通过支付财富聘请教练精进一项熟练项</td></tr>
+<tr><td>学习专业熟练度（0-2）</td><td>100 金币</td><td>- </td><td>- </td><td>通过支付财富聘请教练学习一项新专业熟练项</td></tr>
+<tr><td>学习专业熟练度（3-4）</td><td>300 金币</td><td>150 金币</td><td>- </td><td>通过支付财富聘请教练精进一项专业熟练项</td></tr>
+<tr><td>习得武器或护甲熟练度</td><td>X</td><td>300 金币</td><td>150 金币</td><td>学习武器和护甲熟练度不会累加，不可重复习得</td></tr>
+<tr><td>习得一门基础种族语言</td><td>50 金币</td><td>- </td><td>- </td><td>通过书本、教师或混迹其他种族社群学习</td></tr>
+<tr><td>在店铺打零工</td><td>- </td><td>- </td><td>- </td><td>选择非官方店铺，须有对应熟练度，月收入根据职业</td></tr>
+<tr><td>担任护卫工作</td><td>- </td><td>- </td><td>- </td><td>选择商队或有风险的环境，事件骰决定收入与危险</td></tr>
+<tr><td>经营一个摊位</td><td>50+ 金币</td><td>50+ 金币</td><td>50+ 金币</td><td>市政厅办理登记，售卖物品单价不超过 5 金币，月税 10%</td></tr>
+<tr><td>经营一家生活向店铺</td><td>1500+ 金币</td><td>1500+ 金币</td><td>1500+ 金币</td><td>市政厅办理执照，经商人公会评估，可租购房屋，招募雇员，月税 20%</td></tr>
+<tr><td>经营一家职业向店铺</td><td>5000+ 金币</td><td>5000+ 金币</td><td>5000+ 金币</td><td>需官方或权威人士背书方可经营，月税 30%</td></tr>
+<tr><td>获取矿脉开采权</td><td>X</td><td>10000+ 金币</td><td>10000+ 金币</td><td>流程同职业店铺，金矿等一般不会交由平民经营</td></tr>
+<tr><td>加入一个组织</td><td>X</td><td>100 金币</td><td>300 金币</td><td>不得为负声望，按资历和贡献调配组织资源</td></tr>
+<tr><td>阅读一本魔典</td><td>- </td><td>- </td><td>- </td><td>根据魔典内容获取知识，可重复阅读获得更多收益</td></tr>
+<tr><td>提升个人名望</td><td>- </td><td>- </td><td>- </td><td>花费任意财富或其他手段提升知名度</td></tr>
+</table></div>
+</div>
+<div class="section" id="s6"><h2>技能点规则</h2>
+<div class="p">技能点是学习天赋树能力的重要资源，完成剧情和战斗后发放。学习天赋树中的能力时必须花费对应颜色的技能点。</div>
+<h3>颜色与获取</h3>
+<div class="wrap"><table><tr><th>颜色</th><th>获取方式</th></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#FF0000;color:#fff">红色</span></td><td>在面对暴徒、火元素生物和超大型生物及与战争、流血冲突和激烈的矛盾相关的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#00B0F0;color:#fff">蓝色</span></td><td>在参与奥术、魔力和长远规划有关的行动及涉及深海、异界和其他位面的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#00B050;color:#fff">绿色</span></td><td>在面对植物和野兽，或是木精灵与德鲁伊以及发生在远离文明的荒野地区的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#FFF32F;color:#333">黄色</span></td><td>在与雷电、光明和天界生物有关的互动以及金融贸易、正义与坚守相关的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#EE822F;color:#fff">橙色</span></td><td>在与民兵、劫匪和守卫等常见类人生物的交互及纯粹的战斗、竞赛相关的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#00FA99;color:#333">青色</span></td><td>在面对风元素生物、精类生物、涉及梦境、命运及奇思妙想的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#B3F9FF;color:#333">浅色</span></td><td>在面对水元素生物、水生生物、速度与纯净之物及天空和海洋相关主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#B94BFF;color:#fff">紫色</span></td><td>在与魔法生物、异怪、构造体的交互及涉及奥秘与奇械的解谜相关主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#FFB7E3;color:#333">粉色</span></td><td>在面对灵体生物、涉及美食、幻象、情感、娱乐享受及暧昧情调的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#843F0B;color:#fff">棕色</span></td><td>在面对土元素生物、野兽、泥怪及城镇、街道与乡间逸闻相关的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#595959;color:#fff">黑色</span></td><td>在涉及暗影、黑暗生物、刺客及交织着隐秘与阴谋的主题时可能掉落</td></tr>
+<tr><td style="white-space:nowrap"><span class="sp" style="background:#D9D9D9;color:#333">白色</span></td><td>在面对冰元素生物、不死生物及与钢铁、宗教或是极寒相关的主题时可能掉落。无特定主题区间的内容也可能给予白色技能点</td></tr>
+</table></div>
+<h3>自由技能点</h3>
+<div class="p">自由技能点无法通过剧情直接获得，玩家可自由决定将其视作何种颜色来使用。下次获得任意颜色的技能点时，尚未使用的自由技能点将立即消散。</div>
+<h3>技能点兑换</h3>
+<ol>
+<li>将任意 <b>3</b> 个技能点兑换为 1 种任意颜色的技能点存入自己槽位</li>
+<li>将任意 <b>3</b> 个技能点兑换为 1 种任意颜色的技能点存入团队经验池（每场仅一次）</li>
+<li>将 <b>3 个相同颜色</b>的技能点兑换为 <b>100 点经验值</b></li>
+</ol>
+</div>
+<div class="section" id="s7"><h2>异常状态规则</h2>
+<h3>持续状态</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:80px"><col></colgroup><tr><th style="width:80px">状态</th><th>效果</th></tr>
+<tr><td><b>灼烧</b></td><td>1.每个轮次开始阶段时使目标受到1D4点火焰伤害，每名角色可以在自身回合花费一个附赠动作来执行扑灭行动（难度为15的敏捷检定），检定成功后移除目标身上全部的灼烧状态<br>2.每名角色可以同时被叠加多层灼烧效果<br>3.战斗环节结束时角色身上的灼烧层数不会被移除，但也不会再对目标造成伤害，如果目标在一次长休前仍拥有未移除的灼烧层数，移除这些层数并使目标进入重伤-恶性创伤状态</td></tr>
+<tr><td><b>中毒</b></td><td>1.目标需要先掷一颗D3骰来决定中毒层数，每个轮次开始阶段时使目标受到等同于中毒层数的剧毒伤害，随后使再掷一颗D3骰来获得额外中毒层数<br>2.角色可以同时被叠加多层中毒效果<br>3.战斗环节结束时角色身上的中毒层数不会被移除，但也不会再对目标造成伤害，如果目标在一次长休前仍拥有未移除的中毒层数，移除这些层数并使目标进行一次死亡裁定</td></tr>
+<tr><td><b>流血</b></td><td>1.目标需要先掷一颗D3骰来决定流血层数，每个轮次开始阶段时使目标失去等同于流血层数的生命值，随后使再掷一颗D3骰来获得额外流血层数<br>2.角色可以同时被叠加多层流血效果<br>3.战斗环节结束时角色身上的流血层数不会被移除，但也不会再令目标失去生命值，如果目标在一次长休前仍拥有未移除的流血层数，移除这些层数并使目标进行一次死亡裁定</td></tr>
+<tr><td><b>霜冻</b></td><td>目标在承受一定层数的霜冻效果后，将会进入冻结状态；这个能力通常来源于NPC单位或环境影响</td></tr>
+<tr><td><b>感染</b></td><td>目标在承受一定层数的感染效果后，将会根据最大生命值的百分比损失生命值；这个能力通常来源于NPC单位或环境影响</td></tr>
+</table></div>
+<h3>限制状态</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:80px"><col></colgroup><tr><th style="width:80px">状态</th><th>效果</th></tr>
+<tr><td><b>减速</b></td><td>目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势</td></tr>
+<tr><td><b>禁锢</b></td><td>目标无法执行位移、包括使用带有位移或空中关键词的能力，其他角色对这名目标进行的攻击命中检定具有优势</td></tr>
+<tr><td><b>致盲</b></td><td>1.目标无法通过视觉来获取信息，无法对其他角色使用指向性能力，其他角色对这名目标进行的攻击命中检定具有优势<br>2.目标在执行位移、包括使用带有跃迁或位移关键词的能力时需要掷一颗D4骰，根据掷骰点数可能会朝错误的方向行动</td></tr>
+<tr><td><b>耳鸣</b></td><td>1.目标无法通过听觉来获取信息，无法进行聆听检定，并且进行察觉检定时具有劣势，但同时诸如命令术、责难和恶言相加等需要通过听觉触发的能力无法对目标生效<br>2.如果目标是玩家角色，那么在战斗环节中目标执行行动时，其他玩家不能进行言语交流</td></tr>
+<tr><td><b>沉默</b></td><td>目标无法通过语言与他人交流，并且无法施展需要语言来生效的能力</td></tr>
+<tr><td><b>麻痹</b></td><td>目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势，持续时间内目标无法响应反应动作</td></tr>
+<tr><td><b>困惑</b></td><td>目标无法进行借机攻击，并且在自身回合进行的下一个行动必定失败，消耗对应动作后目标仍可以执行行动（如果对方还拥有足够的行动次数）</td></tr>
+<tr><td><b>压制</b></td><td>1.如果施展来源不进行移动，那么目标也无法进行移动、包括使用带有位移或空中关键词的能力<br>2.目标对施展来源进行攻击命中检定时具有劣势<br>3.目标可以在自身回合花费一个附赠动作与施展来源进行一次力量或敏捷对抗（由施展来源决定），如果对抗成功则目标解除压制状态</td></tr>
+<tr><td><b>击倒</b></td><td>1.目标需要在自身回合花费一个附赠动作站起，否则无法进行移动、包括使用带有位移关键词的能力<br>2.处于击倒状态的角色进行攻击命中检定时具有劣势，其他角色对目标进行的攻击命中检定具有优势</td></tr>
+<tr><td><b>击退</b></td><td>目标向后方倒飞一段距离，这个过程不会触发借机攻击</td></tr>
+<tr><td><b>魅惑</b></td><td>1.目标将会跳过下一个自身回合，改为在自身回合开始时朝施展来源进行一次基础移动（由施展来源进行操作），期间无法执行反应动作<br>2.目标在受到伤害或承受一定刺激后会立即解除魅惑状态</td></tr>
+<tr><td><b>恐惧</b></td><td>目标需要掷一颗D6骰来决定恐惧状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除恐惧状态：<br>D1：目标丢下手中的武器漫无目的的逃窜，立即进行一次基础移动并掷一颗D4骰来决定目标移动方向<br>D2-5：目标朝向施展来源的相反方向进行逃跑，立即进行一次基础移动（由施展来源进行操作）<br>D6：目标受到惊吓在原地瑟瑟发抖，跳过下一个自身回合</td></tr>
+<tr><td><b>混乱</b></td><td>目标需要掷一颗D6骰来决定混乱状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除混乱状态：<br>D1：目标将不受控制地朝射程范围内最近的一名角色发起攻击，并且在下一个自身回合中依旧对目标展现出敌对状态（暂时失去自身控制权）<br>D2-5：目标陷入迷茫之中，丢下持有的物件并跳过下一个自身回合<br>D6：目标歇斯底里地朝射程范围内最近的一名友方角色发起攻击，并且在下一个自身回合中依旧对目标展现出敌对状态（暂时失去自身控制权）</td></tr>
+<tr><td><b>忏悔</b></td><td>目标将会陷入自责中，对外界发生的一切事物熟视无睹，目标在受到伤害或承受一定刺激后会立即解除忏悔状态</td></tr>
+<tr><td><b>昏睡</b></td><td>目标将会陷入沉睡中，对外界发生的一切事物熟视无睹，目标在每个轮次开始阶段时需要进行一次难度为15-X的体质豁免（X为目标的体质调整值），如果豁免成功、目标在受到伤害或承受一定刺激</td></tr>
+<tr><td><b>醉酒</b></td><td>1.目标进行徒手攻击或近战攻击时攻击命中检定的点数掷出19即可触发暴击<br>2.如果目标的攻击命中检定失败，将会使自身进入击倒状态<br>3.目标的攻击命中检定大失败后必定会攻击己方角色，这个效果无法通过自身效果进行修改</td></tr>
+<tr><td><b>缴械</b></td><td>目标将无法使用持有的物件发起攻击或使用物件的特殊效果</td></tr>
+</table></div>
+<h3>失能状态</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:80px"><col></colgroup><tr><th style="width:80px">状态</th><th>效果</th></tr>
+<tr><td><b>瘫痪</b></td><td>目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到伤害或承受一定刺激后会立即解除瘫痪状态</td></tr>
+<tr><td><b>震撼</b></td><td>目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到暴击伤害或承受一定刺激后会立即解除震撼状态</td></tr>
+<tr><td><b>冻结</b></td><td>目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，冻结会立即移除目标的全部灼烧状态，并且在受到火焰伤害时会解除冻结效果</td></tr>
+<tr><td><b>眩晕</b></td><td>目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，当自身回合开始时目标还需要进行一次难度为15的意志豁免，豁免失败将再次跳过行动回合（这个效果仅触发一次）</td></tr>
+<tr><td><b>击晕</b></td><td>效果等同于眩晕状态，但是持续时间仅为1轮</td></tr>
+</table></div>
+<h3>创伤状态</h3>
+<div class="note">永久负面效果，大多数无法通过常规手段解除。</div>
+<div class="card"><div class="num">重伤</div><div class="desc">目标获得一个永久性的负面状态，大多数重伤效果无法通过回复手段或解除异常状态的能力消除</div></div>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:90px"><col></colgroup><tr><th style="width:90px">创伤</th><th>效果</th></tr>
+<tr><td><b>恶性创伤</b></td><td>目标受到的生命值回复效果在结算后减半，在进行力量、敏捷和体质检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点生命值后移除（X为你最大生命值的数值），随后目标的最大生命值永久-1D4</td></tr>
+<tr><td><b>脑部创伤</b></td><td>目标受到的疲劳值回复效果在结算后减半，无法进入专注状态，在进行智力和感知检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点疲劳值后移除（X为你最大疲劳值的数值），随后目标的最大疲劳值永久-1</td></tr>
+<tr><td><b>耳聋</b></td><td>目标视为始终处于耳鸣状态，并且进行察觉检定时具有无法移除的劣势，警惕值-2</td></tr>
+<tr><td><b>目盲</b></td><td>目标视为始终处于致盲状态，在进行需要视觉来完成的检定，包括洞悉、察觉和攻击命中检定时具有无法移除的劣势，警惕值-5</td></tr>
+<tr><td><b>失语</b></td><td>目标视为始终处于沉默状态</td></tr>
+<tr><td><b>手部断肢</b></td><td>目标在进行需要手部完成的行动时具有无法移除的劣势</td></tr>
+<tr><td><b>腿部断肢</b></td><td>目标在进行需要腿部完成的行动时具有无法移除的劣势，同时基础移动速度减半（向下取整），其他角色对目标进行的攻击命中检定具有优势</td></tr>
+<tr><td><b>疯狂</b></td><td>目标承受某种心理疾病的持续影响，可能导致无法控制自身行为、作出夸张举止甚至是朝队友发动攻击</td></tr>
+</table></div>
+</div>
+<div class="section" id="s8">
+<h2>关键词规则</h2>
+<h3>技能与天赋</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>技能</b></td><td style="word-break:break-word;overflow-wrap:break-word">所有需要主动使用的能力被统称为技能，技能必定拥有施展时间、施展距离、持续时间和疲劳值消耗这四个要素，每名角色的基础职业技能槽位上限数量为10，技能数量到达上限后添置新的技能需要先移除一项已有的技能</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>天赋</b></td><td style="word-break:break-word;overflow-wrap:break-word">没有技能四个要素的被动能力被统称为天赋，每名角色在同一层天赋树中至多拥有5项不同的天赋，同一层的天赋数量到达上限后添置新的天赋需要先移除一项已有的天赋</td></tr>
+</table></div>
+<h3>攻击类型</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>基础攻击</b></td><td style="word-break:break-word;overflow-wrap:break-word">徒手攻击、近战攻击和远程攻击的统称</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>徒手攻击</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过自身肢体，例如手部、腿部或头部进行的攻击形式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>近战攻击</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过持有剑、斧、锤或匕首等近战武器进行的攻击形式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>远程攻击</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过弓箭、弓弩或枪械等物理远程武器进行的攻击形式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>施法攻击</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过施展法术、戏法、神术或部分异能进行的攻击形式</td></tr>
+</table></div>
+<h3>能力类型</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>战技</b></td><td style="word-break:break-word;overflow-wrap:break-word">纯粹的武艺所带来的战斗技巧</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>法术</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过神奇的魔法衍化的术式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>戏法</b></td><td style="word-break:break-word;overflow-wrap:break-word">虽不如法术精妙，但同样变化万千</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>神术</b></td><td style="word-break:break-word;overflow-wrap:break-word">来自于神祇等伟大存在的恩赐</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>异能</b></td><td style="word-break:break-word;overflow-wrap:break-word">源自内心、本质与超维时空而诞生的神奇力量</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>功法</b></td><td style="word-break:break-word;overflow-wrap:break-word">修行者所施展的术法</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>绝学</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过心灵力量和感悟所淬炼的精华，是功法更深层次的奥义，因此绝学关键词有时能泛指功法关键词，但并非绝对</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>科技</b></td><td style="word-break:break-word;overflow-wrap:break-word">思维与逻辑的碰撞而创造的工艺，带有这类关键词的效果不会触发关键属性</td></tr>
+</table></div>
+<h3>元素属性</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>火焰</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以火焰而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>冰霜</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以冰霜而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>雷电</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以雷电而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>水源</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以水流而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>大地</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以地表而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>自然</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理通过汲取或释放自然能量而呈现的能力，通常为植物、岩石或流水的形式，因此自然关键词有时能够泛指大地和水源关键词，但并非绝对</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>毒性</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以剧毒而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>光耀</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以光芒而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>暗影</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以黑暗而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>奥术</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以奥术而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>心灵</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理与心灵和精神力相关，大多数情况下不会呈现出可目击的表现形式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>力能</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以力场、魔法能量或冲击波而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>侵蚀</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以强酸、邪能或其他侵略性效果而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>衰败</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以死亡、腐朽或负面能量效果而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>生命流失</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以直观的生命力流失而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>月亮</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以月光而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>太阳</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以日光而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>星空</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理或表现形式以星空而呈现的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>梦境</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理与梦境和精神力相关，大多数情况下不会呈现出可目击的表现形式</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>灵能</b></td><td style="word-break:break-word;overflow-wrap:break-word">指施展原理与灵能和精神力相关，大多数情况下不会呈现出可目击的表现形式</td></tr>
+</table></div>
+<h3>机制标签</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>AOE</b></td><td style="word-break:break-word;overflow-wrap:break-word">对一定范围内生效的攻击手段，默认从施展者进行攻击命中检定改为由目标进行一次难度为15的敏捷豁免，通常情况下闪避成功的角色仍需要承受一半的伤害</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>光环</b></td><td style="word-break:break-word;overflow-wrap:break-word">以自身为中心，持续生效的效果，通常每名角色仅能够同时维持一个光环效应在场</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>第一行动</b></td><td style="word-break:break-word;overflow-wrap:break-word">这个效果必须用本回合的第一个动作来执行，否则无法使用</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>连锁反应</b></td><td style="word-break:break-word;overflow-wrap:break-word">这个效果必须通过某种特定效果触发来执行，否则无法使用</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>召唤单位</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够召唤其他单位进场的效果，这些单位通常由DM来进行控制</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>专注</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须花费注意力来维持的精密效果，当施展者进入惑控或失能状态、以及执行另一项专注效果时将会中断先前的专注效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>引导</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须通过多个动作来维持的效果，当施展者进行移动或执行其他动作时将会立即中断的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>激活</b></td><td style="word-break:break-word;overflow-wrap:break-word">施展者未进入惑控或失能状态时能够在自身回合选择中断的效果，这个过程不需要花费动作</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>速攻</b></td><td style="word-break:break-word;overflow-wrap:break-word">这个效果的优先级高于反应动作和其他行动，在结算速攻效果后再结算其他角色施展的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>迅捷</b></td><td style="word-break:break-word;overflow-wrap:break-word">不会触发借机攻击的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>位移</b></td><td style="word-break:break-word;overflow-wrap:break-word">在具有移动轨迹的情况下进行一段距离上的变化</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>跃迁</b></td><td style="word-break:break-word;overflow-wrap:break-word">在没有移动轨迹的情况下进行一段距离上的变迁</td></tr>
+</table></div>
+<h3>效果标签</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>躲闪</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够闪避敌方攻击和针对性效果的手段</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>增益</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够提供正面增幅效果的能力，包括强化角色的属性值、获得额外行动以及提升伤害等效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>回复</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够回复生命值或疲劳值的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>护盾</b></td><td style="word-break:break-word;overflow-wrap:break-word">生成能够抵挡伤害的效果，护盾产生的数值不同于临时生命值</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>防御</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够抵挡或减免伤害数值的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>净化</b></td><td style="word-break:break-word;overflow-wrap:break-word">移除角色当前承受的负面状态的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>韧性</b></td><td style="word-break:break-word;overflow-wrap:break-word">增强角色承受伤害和负面状态抗性的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>毅力</b></td><td style="word-break:break-word;overflow-wrap:break-word">当目标的生命值降低至0或以下时，如果这次伤害值不超过对方的最大生命值，那么将目标的生命值降低至1的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>诅咒</b></td><td style="word-break:break-word;overflow-wrap:break-word">对角色持续造成负面影响的效果，通常来源于巫毒、邪神诅咒和黑魔法的影响</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>穿甲</b></td><td style="word-break:break-word;overflow-wrap:break-word">指破坏角色防御等级、护盾或护甲值等能力的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>超杀</b></td><td style="word-break:break-word;overflow-wrap:break-word">单次造成超过目标最大生命值的伤害值效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>惑控</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够使目标短暂失去角色控制权的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>隐秘</b></td><td style="word-break:break-word;overflow-wrap:break-word">无法直观被察觉到的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>探知</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够提供情报和信息的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>交涉</b></td><td style="word-break:break-word;overflow-wrap:break-word">与语言或交流相关的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>幻象</b></td><td style="word-break:break-word;overflow-wrap:break-word">产生并非真实存在的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>阻碍</b></td><td style="word-break:break-word;overflow-wrap:break-word">对角色的行动具有物理意义上影响的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>空中</b></td><td style="word-break:break-word;overflow-wrap:break-word">使目标脱离地面的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>变形</b></td><td style="word-break:break-word;overflow-wrap:break-word">使目标的性质发生变化</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>光源</b></td><td style="word-break:break-word;overflow-wrap:break-word">指能够在黑暗环境下提供照明的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>结界</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过魔法结界的形式被施展，需要通过媒介或触发来生效的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>媒介</b></td><td style="word-break:break-word;overflow-wrap:break-word">需要有一个物件作为其生效的来源</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>法术媒介</b></td><td style="word-break:break-word;overflow-wrap:break-word">需要通过魔棒、法杖等魔法道具作为媒介，针对一个物件作为其生效的来源</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>创建地形</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够改变地图环境的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>实体飞行道具</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够在物理意义上捕捉到、具有弹道的飞行物，例如箭矢和弹药等</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>虚化飞行道具</b></td><td style="word-break:break-word;overflow-wrap:break-word">无法或难以在物理意义上捕捉到的飞行物，例如大部分弹道法术和激光等</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>效果递增</b></td><td style="word-break:break-word;overflow-wrap:break-word">指针对同一目标在剧情或战斗环节中重复进行检定时难度的上升</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>效果递减</b></td><td style="word-break:break-word;overflow-wrap:break-word">指针对同一目标在剧情或战斗环节中重复进行检定时难度的下降</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>额外行动</b></td><td style="word-break:break-word;overflow-wrap:break-word">获取额外动作的能力</td></tr>
+</table></div>
+<h3>特殊标签</h3>
+<div class="wrap"><table style="table-layout:fixed"><colgroup><col style="width:100px"><col></colgroup><tr><th style="width:100px">关键词</th><th>说明</th></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>机制</b></td><td style="word-break:break-word;overflow-wrap:break-word">代表这个效果带有一套独有的特殊内容，通常会导致游玩方式的改变</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>奇迹</b></td><td style="word-break:break-word;overflow-wrap:break-word">超乎想象的效果，甚至足以突破游戏性的限制</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>命运</b></td><td style="word-break:break-word;overflow-wrap:break-word">对剧情与角色的走向将会产生影响的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>恩惠</b></td><td style="word-break:break-word;overflow-wrap:break-word">指通过外界力量、通常特指伟大存在的赐福所获得的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>创建骰池</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过拿取任意数量的骰子来对自身角色进行构筑的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>构筑</b></td><td style="word-break:break-word;overflow-wrap:break-word">指需要进行特殊规划来改变游玩性质的内容</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>随机性</b></td><td style="word-break:break-word;overflow-wrap:break-word">代表这个能力具有极大的不确定性，甚至可能产生负面效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>互动</b></td><td style="word-break:break-word;overflow-wrap:break-word">需要多名角色配合生效的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>补给</b></td><td style="word-break:break-word;overflow-wrap:break-word">能够提供物质需求的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>参悟</b></td><td style="word-break:break-word;overflow-wrap:break-word">一次自我的升华</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>自律</b></td><td style="word-break:break-word;overflow-wrap:break-word">拥有同名关键词的多个效果无法同时生效，关键词中的X通常为自律效果的持续轮次</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>精锐</b></td><td style="word-break:break-word;overflow-wrap:break-word">优先级高于低于对应位阶的速攻、反应动作和其他回合外能力，但低于同位阶或更高位阶相应能力的优先级</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>终结技</b></td><td style="word-break:break-word;overflow-wrap:break-word">强大的连击技能，攻击目标必须花费两个需要反应动作的能力，将其中一个与之抵消才能使另一个生效</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>处决技</b></td><td style="word-break:break-word;overflow-wrap:break-word">可怕的斩杀技能，如果这次攻击的理论最大值伤害能够击杀目标，那么忽略对方的反制手段，例如反应动作、毅力以及其他能力直接消灭目标</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>节奏</b></td><td style="word-break:break-word;overflow-wrap:break-word">通过施展音乐魔法触发对应次数后获取额外的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>技艺</b></td><td style="word-break:break-word;overflow-wrap:break-word">与生活向或功能性效果息息相关的能力</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>无加成</b></td><td style="word-break:break-word;overflow-wrap:break-word">这个效果不会受到关键属性的影响，也不会附加其他增益效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>唯一性</b></td><td style="word-break:break-word;overflow-wrap:break-word">指同一名角色仅能够维持一个效果，当其执行另一项这个效果时将会中断先前的唯一性效果；此外多名角色的同名效果对单一目标仅会生效一次，取其中当前角色等级最高的那个效果生效</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>上限提升</b></td><td style="word-break:break-word;overflow-wrap:break-word">指获得升级规则之外的生命值、疲劳值或属性值等数据加成</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>充能</b></td><td style="word-break:break-word;overflow-wrap:break-word">指拥有使用次数的特殊效果，每次使用会消耗对应充能，当充能全部消耗后将会失去效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>备战</b></td><td style="word-break:break-word;overflow-wrap:break-word">指在战斗环节开始前需要决定是否发动或将会触发的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>非战斗环节</b></td><td style="word-break:break-word;overflow-wrap:break-word">无法在战斗环节中使用的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>命中</b></td><td style="word-break:break-word;overflow-wrap:break-word">指提升攻击命中几率的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>每场战斗限一次</b></td><td style="word-break:break-word;overflow-wrap:break-word">在每一场战斗环节中仅能使用一次的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>每日限一次</b></td><td style="word-break:break-word;overflow-wrap:break-word">在每24个小时内仅能使用一次的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>短休</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须进行一次至少长达两小时的休整后才能再次使用的效果</td></tr>
+<tr><td style="width:100px;white-space:nowrap"><b>长休</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须进行一次至少长达八小时的深度休息后才能再次使用的效果</td></tr>
+</table></div>
+</div>
+
+<h
+</div></body></html>

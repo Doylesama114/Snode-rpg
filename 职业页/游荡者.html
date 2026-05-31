@@ -1,0 +1,2024 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>游荡者 · 斯诺德职业技能索引</title>
+<link rel="stylesheet" href="common.css"/>
+<style>
+    body { background: var(--bg); }
+    .class-view { display: block !important; }
+    .view-home { display: none !important; }
+
+    .adv-link {
+        display: block;
+        margin: 14px 0;
+        padding: 16px 20px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--red), #c0392b);
+        color: #fff !important;
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 2px;
+        box-shadow: 0 3px 12px rgba(157,47,47,0.4);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .adv-link:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(157,47,47,0.5);
+    }
+</style>
+
+</head>
+<body>
+
+<a href="首页.html" class="back-btn">← 返回</a>
+<header>
+    <div class="topbar">
+      <div>
+        <h1>游荡者天赋索引</h1>
+        <p class="subtitle">五种战斗风格 · 一至四阶 · 技能详情 · 关键词搜索</p>
+      </div>
+      <label class="searchbox">
+        <input id="r-search" type="search" placeholder="搜索技能、风格、阶位、关键词或正文..." autocomplete="off" />
+      </label>
+    </div>
+  </header>
+<main>
+    <nav aria-label="游荡者天赋索引">
+      <div class="nav-inner">
+      <div class="filter-bar" id="r-filter-bar"></div>
+      <a class="style-link" href="#r-starting-features">起始特性</a>
+<a class="adv-link" href="游荡者·进阶.html">→ 查看进阶途径</a>
+      <div class="tier-list"><a class="skill-link" href="#r-starting-skill-1">背刺</a><a class="skill-link" href="#r-starting-skill-2">潜行</a><a class="skill-link" href="#r-starting-skill-3">闷棍</a><a class="skill-link" href="#r-starting-skill-4">疾跑</a></div>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#r-style-1">奇袭风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-1-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-5">影袭</a><a class="skill-link" href="#r-skill-6">克敌先机</a><a class="skill-link" href="#r-skill-7">佯攻</a>
+                <a class="skill-link" href="#r-skill-62">侦测毒性与疾病</a><a class="skill-link" href="#r-skill-63">示敌以弱</a><a class="skill-link" href="#r-skill-64">战利品嗅觉</a><a class="skill-link" href="#r-skill-65">机关巧手（图纸）</a></details>
+              <details class="nav-tier">
+<summary class="tier-summary"><a href="#r-tier-奇袭风格-四阶">四阶天赋树</a></summary>
+<a class="skill-link" href="#r-skill-58">死亡印记</a><a class="skill-link" href="#r-skill-59">连击循环</a><a class="skill-link" href="#r-skill-60">快攻手</a><a class="skill-link" href="#r-skill-61">冷血杀手</a>
+</details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-1-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-8">割裂</a><a class="skill-link" href="#r-skill-9">刺骨</a><a class="skill-link" href="#r-skill-10">伺机待发</a><a class="skill-link" href="#r-skill-11">连环奇袭</a>
+                </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-1-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-12">袖箭风暴</a><a class="skill-link" href="#r-skill-13">锁喉</a><a class="skill-link" href="#r-skill-14">暗里藏刀</a><a class="skill-link" href="#r-skill-15">潜行之刃</a>
+                </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#r-style-2">妙手风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-2-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-16">抛沙</a><a class="skill-link" href="#r-skill-17">侦测陷阱</a>
+                <a class="skill-link" href="#r-skill-62">侦测毒性与疾病</a><a class="skill-link" href="#r-skill-63">示敌以弱</a><a class="skill-link" href="#r-skill-64">战利品嗅觉</a><a class="skill-link" href="#r-skill-65">机关巧手（图纸）</a></details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-2-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-18">探囊取物</a><a class="skill-link" href="#r-skill-19">迷幻手稿</a><a class="skill-link" href="#r-skill-20">袖里乾坤</a><a class="skill-link" href="#r-skill-21">窃贼的交易</a>
+                </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-2-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-22">嫁祸诀窍</a><a class="skill-link" href="#r-skill-23">偷师学艺</a><a class="skill-link" href="#r-skill-24">即刻搜索</a><a class="skill-link" href="#r-skill-25">销赃网络</a>
+                </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#r-style-3">魅影风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-3-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-26">暗影之刃</a><a class="skill-link" href="#r-skill-27">暗影护甲</a><a class="skill-link" href="#r-skill-28">影哨术</a><a class="skill-link" href="#r-skill-29">身轻如燕</a>
+                <a class="skill-link" href="#r-skill-62">侦测毒性与疾病</a><a class="skill-link" href="#r-skill-63">示敌以弱</a><a class="skill-link" href="#r-skill-64">战利品嗅觉</a><a class="skill-link" href="#r-skill-65">机关巧手（图纸）</a></details>
+              <details class="nav-tier">
+<summary class="tier-summary"><a href="#r-tier-魅影风格-四阶">四阶天赋树</a></summary>
+<a class="skill-link" href="#r-skill-70">鬼魅攻击</a><a class="skill-link" href="#r-skill-71">消失</a><a class="skill-link" href="#r-skill-72">暗影斗篷</a><a class="skill-link" href="#r-skill-73">剪影</a>
+</details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-3-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-30">蝶舞</a><a class="skill-link" href="#r-skill-31">暗影步</a><a class="skill-link" href="#r-skill-32">迷惑之刃</a><a class="skill-link" href="#r-skill-33">暗蚀玫瑰</a>
+                </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-3-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-34">幻影匕首</a><a class="skill-link" href="#r-skill-35">幽影伏击</a><a class="skill-link" href="#r-skill-36">飘忽不定</a><a class="skill-link" href="#r-skill-37">旋刃魂曲</a>
+                </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#r-style-4">狂妄风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-4-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-38">迅捷连射</a><a class="skill-link" href="#r-skill-39">抽血</a><a class="skill-link" href="#r-skill-40">挑衅对决</a><a class="skill-link" href="#r-skill-41">讨债者</a>
+                <a class="skill-link" href="#r-skill-62">侦测毒性与疾病</a><a class="skill-link" href="#r-skill-63">示敌以弱</a><a class="skill-link" href="#r-skill-64">战利品嗅觉</a><a class="skill-link" href="#r-skill-65">机关巧手（图纸）</a></details>
+              <details class="nav-tier">
+<summary class="tier-summary"><a href="#r-tier-狂妄风格-四阶">四阶天赋树</a></summary>
+<a class="skill-link" href="#r-skill-74">猩红之瓶（配方）</a><a class="skill-link" href="#r-skill-75">重磅一击！</a><a class="skill-link" href="#r-skill-76">剑刃乱舞</a><a class="skill-link" href="#r-skill-77">无处可逃</a><a class="skill-link" href="#r-skill-78">胆大妄为</a>
+</details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-4-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-42">抛射抓钩</a><a class="skill-link" href="#r-skill-43">短剑断奏</a><a class="skill-link" href="#r-skill-44">快速备战</a>
+                </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-4-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-45">冲刺爆发</a><a class="skill-link" href="#r-skill-46">震慑射击</a><a class="skill-link" href="#r-skill-47">剑炮齐奏</a><a class="skill-link" href="#r-skill-48">第一滴血</a>
+                </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#r-style-5">魔药风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-5-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-49">毒刃</a><a class="skill-link" href="#r-skill-50">致伤毒药（配方）</a><a class="skill-link" href="#r-skill-51">麻痹毒药（配方）</a><a class="skill-link" href="#r-skill-52">减速毒药（配方）</a>
+                <a class="skill-link" href="#r-skill-62">侦测毒性与疾病</a><a class="skill-link" href="#r-skill-63">示敌以弱</a><a class="skill-link" href="#r-skill-64">战利品嗅觉</a><a class="skill-link" href="#r-skill-65">机关巧手（图纸）</a></details>
+              <details class="nav-tier">
+<summary class="tier-summary"><a href="#r-tier-5-3">三阶天赋树</a></summary>
+<a class="skill-link" href="#r-skill-79">菊花茶（配方）</a><a class="skill-link" href="#r-skill-80">活力酂剂（配方）</a><a class="skill-link" href="#r-skill-81">致幻毒药（配方）</a><a class="skill-link" href="#r-skill-82">毒性蔓延</a>
+</details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-5-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-53">酸液飞溅</a><a class="skill-link" href="#r-skill-54">魔药喷雾（图纸）</a><a class="skill-link" href="#r-skill-55">速效毒药（配方）</a>
+                </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#r-tier-5-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#r-skill-56">酸蚀炸弹（图纸）</a><a class="skill-link" href="#r-skill-57">自愈秘酿（配方）</a>
+                </details>
+            </details>
+      </div>
+    <details class="nav-group">
+<summary class="style-summary"><a href="#r-style-通用">通用风格</a></summary>
+<details class="nav-tier">
+<summary class="tier-summary"><a href="#r-tier-通用-四阶">四阶天赋树</a></summary>
+<a class="skill-link" href="#r-skill-66">杂耍打击</a><a class="skill-link" href="#r-skill-67">隐秘小径</a><a class="skill-link" href="#r-skill-68">货币为王</a><a class="skill-link" href="#r-skill-69">盗亦有道</a>
+</details>
+</details>
+</nav>
+    <section>
+      <div class="empty hidden" id="r-empty">没有符合条件的技能。</div>
+      
+      <section class="style" id="r-starting-features">
+        <h2>起始特性</h2>
+        <p class="intro">你可以从以下起始特性中选择两项加入你的技能或天赋列表：</p>
+      <article class="skill" id="r-starting-skill-1" data-search="背刺 起始特性 起始特性 战技 近战攻击">
+        <h4>背刺 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#ddd">起始特性</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span></div>
+        <div class="detail">
+      <p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>战技.近战攻击</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">描述：</span>你给予那些胆敢将后背暴露向你的对手一个深刻地教训</p>
+<p>你对一名角色发起攻击，如果攻击过程中你位于对方的身后，那么本次攻击的命中检定值+2，并且在结算造成的伤害值后+1D4</p>
+<p>当你的游荡者等级达到3级时：背刺改为结算造成的伤害值后+2D4</p>
+<p>当你的游荡者等级达到6级时：背刺改为结算造成的伤害值后+3D4</p>
+      </div>
+      </article>
+      <article class="skill" id="r-starting-skill-2" data-search="潜行 起始特性 起始特性 战技 隐秘 激活">
+        <h4>潜行 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#ddd">起始特性</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">隐秘</span><span class="chip">激活</span></div>
+        <div class="detail">
+      <p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>战技.隐秘.激活</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>你不能在相邻位置具有敌人的情况下施展潜行</p>
+<p><span class="field">描述：</span>你通过利用地理环境、制造视野错觉、甚至超自然的手段来来隐匿自己的身形，蛰伏于阴影之中</p>
+      </div>
+      </article>
+      <article class="skill" id="r-starting-skill-3" data-search="闷棍 起始特性 起始特性 战技 惑控 体质豁免（15）">
+        <h4>闷棍 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#ddd">起始特性</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">惑控</span><span class="chip">体质豁免（15）</span></div>
+        <div class="detail">
+      <p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>-</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>战技.惑控.体质豁免（15）</p>
+<p><span class="field">施展条件：</span>你必须持有任意钝器，并且处于潜行状态</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">描述：</span>你用棍棒猛击敌人的后脑勺，令对方好好“睡上一觉”</p>
+<p>你尝试敲晕一名角色，目标需要进行一次难度为15的体质豁免，对方豁免失败将进入昏迷状态，持续1D3个小时</p>
+<p>陷入昏迷状态的目标在受到任意伤害或强烈刺激（例如巨大的声响或是粗暴的搬动）后均会解除这个状态</p>
+<p>如果你在战斗环节中使用闷棍，目标在豁免过程中具有极大优势，并且昏迷状态的持续时间降低至1D3轮</p>
+<p>闷棍无法对体型超过你两个规格或以上的角色生效，并且构造体、元素生物、不死生物和体型为超大型或以上的生物不会受到闷棍效果的影响</p>
+<p>当你的游荡者等级达到3级时：闷棍的施展时间变更为一个附赠动作</p>
+      </div>
+      </article>
+      <article class="skill" id="r-starting-skill-4" data-search="疾跑 起始特性 起始特性 战技 迅捷 位移">
+        <h4>疾跑 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#ddd">起始特性</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">迅捷</span><span class="chip">位移</span></div>
+        <div class="detail">
+      <p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.迅捷.位移</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>你无法在禁锢和压制状态下施展这个战技</p>
+<p><span class="field">描述：</span>你动如脱兔一般飞驰离去，在旁人眼中仅留下一道残影</p>
+<p>立即执行一次全速移动，如果你在一个自身回合中多次施展疾跑，后续的每次疲劳值消耗翻倍</p>
+      </div>
+      </article>
+      </section>
+      
+    <section class="style" id="r-style-1">
+      <h2>奇袭风格</h2>
+      <p class="intro"></p>
+
+      <section class="tier" id="r-tier-1-1">
+        <h3>一阶天赋树</h3>
+      <article class="skill" id="r-skill-5" data-search="影袭 奇袭风格 一阶天赋树 战技 近战攻击 暗影 穿甲">
+        <h4>影袭 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">暗影</span><span class="chip">穿甲</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你在黑暗环境中参与过一场战斗环节</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>战技.近战攻击.暗影.穿甲</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑，并且处于潜行状态</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你从无人察觉的阴影中暴起发难，敌人甚至来不及做出反应</p>
+<p>你对一名角色发起攻击，本次攻击在命中检定时忽视目标一半的防御等级，并在结算造成的伤害值后+4</p>
+<p>当你的游荡者等级达到5级时：影袭改为结算造成的伤害值后+8</p>
+<p>当你的游荡者等级达到10级时：影袭改为结算造成的伤害值后+12</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-6" data-search="克敌先机 奇袭风格 一阶天赋树 战技 躲闪 短休/长休">
+        <h4>克敌先机 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">躲闪</span><span class="chip">短休/长休</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中先攻时序值高于所有敌方角色</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>战技.躲闪.短休/长休</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你凭借敏锐的技法闪躲对手的攻势，并借助敌人发起攻击之间的空挡压制对手</p>
+<p>当一名角色对你发起攻击时，你可以使这次攻击的命中检定具有劣势</p>
+<p>持续时间内你对那名角色发起的下一次基础攻击或施法攻击的命中检定具有优势</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-7" data-search="佯攻 奇袭风格 一阶天赋树 天赋 短休/长休">
+        <h4>佯攻 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">短休/长休</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你拥有欺瞒的熟练度</p>
+<p><span class="field">关键词：</span>天赋.短休/长休</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>你发起虚张声势的一击，在你使用一次基础攻击未命中后，你可以取消这次攻击，改为使用另一个战技对其发起攻击</p>
+<p>当你的游荡者等级达到5级时：佯攻的关键词变更为短休/长休（2）</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-1-2">
+        <h3>二阶天赋树</h3>
+      <article class="skill" id="r-skill-8" data-search="割裂 奇袭风格 二阶天赋树 战技 近战攻击 生命流失 终结技 体质豁免（0）">
+        <h4>割裂 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">生命流失</span><span class="chip">终结技</span><span class="chip">体质豁免（0）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中击杀过敌方角色</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.近战攻击.生命流失.终结技.体质豁免（0）</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FF0000">●</span></p>
+<p><span class="field">描述：</span>你在敌人身上割开数道裂痕，如果对手不能及时得到治疗，那么伤口还将恶化</p>
+<p>1.你攻击一名角色并消耗全部的连击点数，本次攻击命中后目标需要进行一次难度为0的体质豁免，使用割裂时每消耗1点连击点数豁免难度便+5</p>
+<p>2.对方豁免失败将会获得2X层流血状态，并且受到的下一次生命值回复效果在结算后减半（X为你消耗的连击点数）</p>
+<p>3.X为你消耗的连击点数值</p>
+<p>4.如果目标的豁免骰数值低于5，那么还会进入重伤/恶性创伤状态</p>
+<p>当你的游荡者等级达到5级时：割裂的关键词变更为体质豁免（5），如果对方进入流血状态，还会为你返还1个连击点</p>
+<p>当你的游荡者等级达到10级时：割裂改为使豁免失败的角色获得3X层流血状态</p>
+<p>当你的游荡者等级达到15级时：如果割裂消耗至少5个连击点，那么无需进行豁免检定，立即为目标附加4X层流血层数</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-9" data-search="刺骨 奇袭风格 二阶天赋树 战技 近战攻击 终结技">
+        <h4>刺骨 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">终结技</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中击杀过敌方角色</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.近战攻击.终结技</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你重击对手，这次攻击的力度深刻入骨，留下的贯穿伤口令人触目惊心</p>
+<p>你攻击一名角色并消耗全部的连击点数，本次攻击每消耗1个连击点便使你在结算造成的伤害值后+1D6</p>
+<p>当你的游荡者等级达到5级时：刺骨掷出的伤害点数1/2均变为3</p>
+<p>当你的游荡者等级达到10级时：刺骨改为掷出的伤害点数1/2/3均变为6</p>
+<p>当你的游荡者等级达到15级时：如果刺骨消耗至少5个连击点，这次攻击的伤害值必定暴击</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-10" data-search="伺机待发 奇袭风格 二阶天赋树 战技 第一行动 专注 每个自身回合限一次">
+        <h4>伺机待发 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">第一行动</span><span class="chip">专注</span><span class="chip">每个自身回合限一次</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中未造成任何伤害</p>
+<p><span class="field">额外条件：</span>你潜伏观察过敌人，并且直到次日后才对其发起攻击</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.第一行动.专注.每个自身回合限一次</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>短暂的停歇只是为了更有力的击溃对手，你在暗中蛰伏蓄势待发</p>
+<p>本轮次你的攻击命中检定和造成的伤害值在结算后减半，你在下一个自身回合中将额外获得一个主要动作</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-11" data-search="连环奇袭 奇袭风格 二阶天赋树 天赋 连续攻击 每轮限一次">
+        <h4>连环奇袭 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">连续攻击</span><span class="chip">每轮限一次</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你习得此技能时，你的技能列表中本战斗风格的技能数量最多</p>
+<p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">关键词：</span>天赋.连续攻击.每轮限一次</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>你发起高效的连环奇袭，当你击杀一名角色后，你可以立即对一名相邻角色施展本风格的一个战技</p>
+<p>当你的游荡者等级达到8级时：在施展那个战技之前，你会先获得2个连击点</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-1-3">
+        <h3>三阶天赋树</h3>
+      <article class="skill" id="r-skill-12" data-search="袖箭风暴 奇袭风格 三阶天赋树 战技 施法攻击 AOE 终结技 敏捷豁免（15）">
+        <h4>袖箭风暴 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">施法攻击</span><span class="chip">AOE</span><span class="chip">终结技</span><span class="chip">敏捷豁免（15）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有其他带有终结技关键词的技能</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中使用过袖箭</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.施法攻击.AOE.终结技.敏捷豁免（15）</p>
+<p><span class="field">施展条件：</span>你必须携带有简易武器飞镖</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你抛出无数袖箭刺伤周围的敌人，锐利的飞刺形成令人难以靠近的风暴</p>
+<p>你对自身周围2米内的所有角色各造成1D3点穿刺伤害并消耗所有的连击点，每消耗1点连击点便重复一次此效果</p>
+<p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+<p>当你的游荡者等级达到5级时：袖箭风暴改为对所有角色各造成2D3点穿刺伤害，并且掷出的伤害点数1均变为3（将点数1视作3）</p>
+<p>当你的游荡者等级达到10级时：袖箭风暴的施展时间变为一个附赠动作，并且每次伤害骰掷出1便为你返还1个连击点</p>
+<p>当你的游荡者等级达到15级时：如果袖箭风暴消耗至少5个连击点，那么袖箭风暴的范围改为自身周围3米，并且掷出的伤害点数至少为3（将点数1/2视作3）</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-13" data-search="锁喉 奇袭风格 三阶天赋树 战技 速攻 敏捷豁免（15）">
+        <h4>锁喉 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">速攻</span><span class="chip">敏捷豁免（15）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你的敏捷属性≥15点并且拥有巧手的熟练度</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中击败过一名施法者</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.速攻.敏捷豁免（15）</p>
+<p><span class="field">施展条件：</span>你至少拥有一只未持有任何物件的单手</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你用一只未持有物件的手迅速地封锁敌人的喉部，用掐陷令对方失去了语言能力</p>
+<p>你使一名角色进行一次难度为15的敏捷豁免，对方豁免失败将进入失语状态</p>
+<p>切喉对与类人生物差异较大的生物，例如野兽、龙类和异怪等使用时敏捷豁免难度降低至10</p>
+<p>切喉无法对元素生物、灵体生物和构造体等特殊单位生效</p>
+<p>每场战斗限一次.你可以在其他角色的回合中使用这个效果</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-14" data-search="暗里藏刀 奇袭风格 三阶天赋树 天赋 暗影 每场战斗限一次">
+        <h4>暗里藏刀 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">暗影</span><span class="chip">每场战斗限一次</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你在落单状态下击杀过至少五名角色</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中于落单状态下击杀过角色</p>
+<p><span class="field">关键词：</span>天赋.暗影.每场战斗限一次</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>认定你已孤立无援的敌人并未意识到暗藏的杀机，当你处于落单状态时，你的第一次近战攻击在结算伤害值后+10</p>
+<p>当你的游荡者等级达到5级时：暗里藏刀改为结算伤害值后+15</p>
+<p>当你的游荡者等级达到10级时：当你击杀一名角色并且处于落单状态时，刷新这个效果</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-15" data-search="潜行之刃 奇袭风格 三阶天赋树 天赋 长休">
+        <h4>潜行之刃 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">长休</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有战技.潜行</p>
+<p><span class="field">额外条件：</span>你在解除潜行状态的回合击杀过一名角色</p>
+<p><span class="field">关键词：</span>天赋.长休</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>即便你显露身形，致命的刀刃仍潜伏在阴影之中，你可以立即施展一个原先限制条件必须处于潜行状态才能够使用的能力</p>
+<p>当你的游荡者等级达到10级时：潜行之刃的关键词变更为长休（2）</p>
+      </div>
+      </article>
+      </section>
+    </section>
+
+    <section class="style" id="r-style-2">
+      <h2>妙手风格</h2>
+      <p class="intro"></p>
+
+      <section class="tier" id="r-tier-2-1">
+        <h3>一阶天赋树</h3>
+      <article class="skill" id="r-skill-16" data-search="抛沙 妙手风格 一阶天赋树 战技 感知豁免（12）/递减（-5）">
+        <h4>抛沙 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">感知豁免（12）/递减（-5）</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>-</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>战技.感知豁免（12）/递减（-5）</p>
+<p><span class="field">施展条件：</span>你必须携带有一袋沙或其他粉尘</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你抓起一把尘粉随手洒向他人，粉末渗透入对方的眼部起到干扰作用</p>
+<p>你对自身前方扇形2环内所有面朝向你的角色进行一次难度为12的感知豁免，豁免失败的角色将进入致盲状态</p>
+<p>每场战斗限一次.当你的生命值降至X时（X为你的25%最大生命值），你可以在自身回合外来施展这个效果</p>
+<p>当你的游荡者等级达到5级时：豁免失败的角色还会进入减速状态</p>
+<p>抉择：侦测陷阱/侦查毒性与疾病</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-17" data-search="侦测陷阱 妙手风格 一阶天赋树 戏法 探知">
+        <h4>侦测陷阱 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">探知</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你与一个陷阱进行过非战斗的交互</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>戏法.探知</p>
+<p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你念出法咒，随后你的眼睛将亮起蓝色光芒开始侦测机关与陷阱，并在脑海中获得对应数据</p>
+<p>你感应自身周围6米内是否存在有陷阱、机关、隐藏空间以及其具体种类，感应可能会被魔法效果所阻碍</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-2-2">
+        <h3>二阶天赋树</h3>
+      <article class="skill" id="r-skill-18" data-search="探囊取物 妙手风格 二阶天赋树 戏法 每个自身回合限一次">
+        <h4>探囊取物 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">每个自身回合限一次</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有偷窃的熟练度</p>
+<p><span class="field">额外条件：</span>你拥有战技.闷棍</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>2米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>戏法.每个自身回合限一次</p>
+<p><span class="field">施展条件：</span>你至少拥有一只未持有任何物件的单手</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你用那只灵巧的手轻而易举便达成了自己的目的</p>
+<p>你与一名角色进行敏捷对抗，如果你对抗成功，那么可以获取对方一件未装备的物件、或是将自身装备槽位中的一个物件添加入对方的装备槽位</p>
+<p>当你的游荡者等级达到3级时：探囊取物的施展距离变为6米</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-19" data-search="迷幻手稿 妙手风格 二阶天赋树 戏法 隐秘 媒介">
+        <h4>迷幻手稿 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">隐秘</span><span class="chip">媒介</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你调包过一份信封、书本或其他纸质物品</p>
+<p><span class="field">额外条件：</span>你伪造过一份文书</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>2米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>戏法.隐秘.媒介</p>
+<p><span class="field">施展条件：</span>你携带有笔类工具</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你为文字附着上魔力，在写下后字迹逐渐变得模糊、直至消失</p>
+<p>你在纸面上书写一段仅有你指定的角色能够看见并阅读的文字</p>
+<p>感知属性值超过15、或是拥有魔法学识熟练度的角色能够通过一次难度为15的感知检定来识破伪装效果</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-20" data-search="袖里乾坤 妙手风格 二阶天赋树 天赋 隐秘 补给 长休">
+        <h4>袖里乾坤 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">隐秘</span><span class="chip">补给</span><span class="chip">长休</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你通过了一次难度为15以上的巧手检定</p>
+<p><span class="field">额外条件：</span>你在本次游玩过程中通过了一次难度为15以上的巧手检定</p>
+<p><span class="field">关键词：</span>天赋.隐秘.补给.长休</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>当你习得这项天赋时，可以选择一名玩家角色，立即偷取对方的一个技能点</p>
+<p>你的行囊中可以装载比想象中更多的物件，额外增加5个杂物槽位</p>
+<p>选择你的一项巧手熟练项，获得1点对应熟练度，无法通过这个效果超过熟练度上限</p>
+<p>当你因赌博出千、藏匿赃物等行为而需要进行巧手或隐匿检定时，可以使本次检定具有优势</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>你可以选择一名玩家角色，立即偷取其一个技能点</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>你可以选择一名玩家角色，立即偷取其一个技能点</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-21" data-search="窃贼的交易 妙手风格 二阶天赋树 天赋 机制 命运">
+        <h4>窃贼的交易 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">机制</span><span class="chip">命运</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你偷窃过一件价值超过500金币的物件</p>
+<p><span class="field">额外条件：</span>你偷窃过一件价值超过2000金币的物件</p>
+<p><span class="field">关键词：</span>天赋.机制.命运</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+<p>对你而言任何事物皆可明码标价，你可以选择失去5点生命值上限来获得以下增益效果：</p>
+<p>·1点自由属性点</p>
+<p>·2点自由熟练度</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>你会再次失去2点疲劳值上限，获得以下增益效果：</p>
+<p>·2点自由熟练度</p>
+<p>·技能点<span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>你会再次失去5点生命值和2点疲劳值上限，获得以下增益效果：</p>
+<p>·1点自由属性点</p>
+<p>·获得以下一项特殊专长：</p>
+<p>（1）强化属性</p>
+<p>（2）技巧专家</p>
+<p>（3）独具匠心·每日你获得两层窃贼的交易效果，你可以消耗一层窃贼的交易执行以下一项：</p>
+<p>使你的下一次巧手、隐匿、伪造或欺瞒检定具有优势</p>
+<p>兑换100枚金币或等价值的宝石、艺术品</p>
+<p>重掷你的一次骰子，你必须接受重掷的结果</p>
+<p><span class="field">你的游荡者职业等级到达15级时：</span>你会再次失去10点生命值和6点疲劳值上限，获得以下增益效果：</p>
+<p>·2点自由属性点</p>
+<p>·2点自由熟练度</p>
+<p>·技能点<span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p>·获取一项不属于你的东西，你可以与DM商议拟定这些东西具体是什么，可以是一项才华、一个身份、一段关系等，但得到的结果不能超过你的当前角色等级所能承受的范围，例如你不能选择得到奇珍品质以上的魔法道具或是使你的等级上限突破至传奇等情况</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-2-3">
+        <h3>三阶天赋树</h3>
+      <article class="skill" id="r-skill-22" data-search="嫁祸诀窍 妙手风格 三阶天赋树 战技 交涉 智力豁免（15）">
+        <h4>嫁祸诀窍 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">交涉</span><span class="chip">智力豁免（15）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有欺瞒和说服的熟练度</p>
+<p><span class="field">额外条件：</span>你将自身做出的事情嫁祸给一名其他角色</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>12米</p>
+<p><span class="field">持续时间：</span>1轮</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>战技.交涉.智力豁免（15）</p>
+<p><span class="field">限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你通过巧妙的话术转移对手的仇恨，利用真实信息构筑出谎言令他们不再信任身边的友人</p>
+<p>你选择可视范围内的一名角色，持续时间内与目标同阵营的其他角色在进行攻击时，如果目标位于对方射程范围内，那么这些角色需要进行一次难度为15的魅力豁免，豁免失败的角色将会改为对目标发起攻击</p>
+<p>嫁祸诀窍不会对一场战斗环节之中受到过影响的角色在再次生效</p>
+<p>当你的游荡者等级达到5级时：没有智力或魅力豁免值的角色在进行智力豁免时具有劣势</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-23" data-search="偷师学艺 妙手风格 三阶天赋树 天赋 机制">
+        <h4>偷师学艺 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">机制</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你当前所在团队中，其他成员分别具有至少三种不同的基础职业</p>
+<p><span class="field">额外条件：</span>你花费过幕间物语用于习得熟练度</p>
+<p><span class="field">关键词：</span>天赋.机制</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+<p>你日以夜继地学习他人的看家本领，你可以选择团队中的一名其他角色，学习对方基础职业天赋树中一个不超过三阶的能力，这个能力可以是战技、法术或戏法，你可以忽略那个能力的前置条件和额外条件，但仍需要照常支付其费用，并且习得的能力不会随着等级提升解锁更多效果</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>你可以选择团队中的一名其他角色，学习对方天赋树中一个不超过四阶的能力，这个能力可以是战技、法术或戏法，你可以忽略那个能力的前置条件和额外条件，但仍需要照常支付其费用，并且习得的能力不会随着等级提升解锁更多效果</p>
+<p><span class="field">你的游荡者职业等级到达15级时：</span>你可以选择团队中的一名其他角色，学习对方天赋树中一个不超过六阶的能力，这个能力可以是战技、法术或戏法，你可以忽略那个能力的前置条件和额外条件，但仍需要照常支付其费用，并且习得的能力不会随着等级提升解锁更多效果</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-24" data-search="即刻搜索 妙手风格 三阶天赋树 异能 探知 专注 短休/长休">
+        <h4>即刻搜索 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">异能</span><span class="chip">探知</span><span class="chip">专注</span><span class="chip">短休/长休</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有调查和探索的熟练度</p>
+<p><span class="field">额外条件：</span>你在本次游玩过程中得到过一份关键的线索或情报</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>12米</p>
+<p><span class="field">持续时间：</span>1轮</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>异能.探知.专注.短休/长休</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你不放过现场的每一处角落，势必要将一切潜藏的线索寻找出来</p>
+<p>你视为对当前环境进行一次结果为20的调查或探索检定</p>
+<p>如果已有其他友方角色对当前区域进行过调查或探索检定，瞬时搜索仅能够被视为一次点数为15的结果</p>
+<p>施展瞬时搜索后，其他友方角色在24小时内无法再对当前区域进行调查或探索检定</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-25" data-search="销赃网络 妙手风格 三阶天赋树 天赋 补给 互动">
+        <h4>销赃网络 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B3E7FF">妙手风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">补给</span><span class="chip">互动</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格为你游荡者职业的首个战斗风格</p>
+<p><span class="field">额外条件：</span>你参与过一次黑市交易</p>
+<p><span class="field">关键词：</span>天赋.补给.互动</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>你获得技能点<span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span>，你可以按照任意形式将其分配给团队中的角色，如果你本身分配到的技能点数量最多，那么团队中的其他角色均会失去一个技能点</p>
+      </div>
+      </article>
+      </section>
+    </section>
+
+    <section class="style" id="r-style-3">
+      <h2>魅影风格</h2>
+      <p class="intro"></p>
+
+      <section class="tier" id="r-tier-3-1">
+        <h3>一阶天赋树</h3>
+      <article class="skill" id="r-skill-26" data-search="暗影之刃 魅影风格 一阶天赋树 法术 暗影 媒介 唯一性">
+        <h4>暗影之刃 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">暗影</span><span class="chip">媒介</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>-</p>
+<p><span class="field">施展时间：</span>2分钟</p>
+<p><span class="field">施展距离：</span>触及</p>
+<p><span class="field">持续时间：</span>1小时</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>法术.暗影.媒介.唯一性</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你接触一把武器并吟唱法咒，为这把武器注入暗影能量，随后这把武器将会散发出深紫色的微光</p>
+<p>你为一把武器附加暗影能量，使其在持续时间内改为造成暗影伤害，并且伤害骰点数至少为3（将点数1/2视作3）</p>
+<p>你不能为锤类武器、长柄武器、简易武器和所有远程武器进行附魔</p>
+<p>其他角色使用被暗影之刃附魔的武器不会产生任何实际作用</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-27" data-search="暗影护甲 魅影风格 一阶天赋树 法术 暗影 韧性 激活 唯一性">
+        <h4>暗影护甲 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">暗影</span><span class="chip">韧性</span><span class="chip">激活</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你着装全身漆黑的服装参与过一场战斗环节</p>
+<p><span class="field">施展时间：</span>2分钟</p>
+<p><span class="field">施展距离：</span>触及</p>
+<p><span class="field">持续时间：</span>1小时</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>法术.暗影.韧性.激活.唯一性</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你召唤暗影构成一层轻薄的黑紫色纱雾环绕自身</p>
+<p><span class="field">持续时间内获得以下效果：</span></p>
+<p>·你的防御等级会附加你的感知调整值（至多为2），这个效果不会使你的防御等级超过18</p>
+<p>·你获得4点暗影和心灵伤害抗性</p>
+<p>·你获得2点光耀和神圣伤害易伤，并在承受这些伤害类型后立即移除暗影护甲</p>
+<p>的效果</p>
+<p>·你在视觉效果上被暗影覆盖，无法看清面容</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>持续时间内你的法术.暗影之刃的伤害骰点数至少为4（将点数1/2/3视作4）</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>你使用战技.疾跑时，会使你途经的道路被暗影笼罩，在那条路径上移动的其他角色需要进行一次难度为12的感知豁免，豁免失败将进入致盲状态，目标离开路径并完成那次移动后会立即解除致盲状态</p>
+<p><span class="field">你的游荡者职业等级到达9级时：</span>你使用法术.暗影斗篷时，会对与你相邻的友方角色生效</p>
+<p><span class="field">你的游荡者职业等级到达12级时：</span>暗影护甲的持续时间+1轮</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-28" data-search="影哨术 魅影风格 一阶天赋树 戏法 暗影 幻象">
+        <h4>影哨术 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">暗影</span><span class="chip">幻象</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你向他人讲述过诡异的故事</p>
+<p><span class="field">施展时间：</span>2分钟</p>
+<p><span class="field">施展距离：</span>触及</p>
+<p><span class="field">持续时间：</span>1小时</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>戏法.暗影.幻象</p>
+<p><span class="field">施展条件：</span>你至少拥有一只未持有任何物件的单手</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你用一只手悄悄作出闭合动作，随后黑暗中传来一阵尖啸划破宁静</p>
+<p>你使一个黑暗环境中发出刺耳的声响，例如哨笛声、餐盘或窗户被打碎的声响以及垂死小动物的悲鸣声，并且其他角色朝那个方向看去时会隐约感到黑暗中有某个不确定的类人生物存在</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>影哨术的施展距离变为24米</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>影哨术的施展距离变为48米</p>
+<p><span class="field">你的游荡者职业等级到达9级时：</span>影哨术可以在范围内同时生成三个效应</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-29" data-search="身轻如燕 魅影风格 一阶天赋树 天赋 功法 韧性">
+        <h4>身轻如燕 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">功法</span><span class="chip">韧性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你拥有体操的熟练度</p>
+<p><span class="field">关键词：</span>天赋.功法.韧性</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>当你从高空坠落并且未处于失能状态时，受到的坠落伤害在结算后减半</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-3-2">
+        <h3>二阶天赋树</h3>
+      <article class="skill" id="r-skill-30" data-search="蝶舞 魅影风格 二阶天赋树 戏法 暗影 幻象 专注 引导 魅力豁免（15）/递减（-5）">
+        <h4>蝶舞 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">暗影</span><span class="chip">幻象</span><span class="chip">专注</span><span class="chip">引导</span><span class="chip">魅力豁免（15）/递减（-5）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有表演的熟练度</p>
+<p><span class="field">额外条件：</span>你在本次游玩过程中与蝶类生物进行过交互</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>2轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>戏法.暗影.幻象.专注.引导.魅力豁免（15）/递减（-5）</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>你无法在禁锢和压制状态下施展这个戏法</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你翩翩起舞的跳着轻盈的节奏，暗影在你身边化作美丽但致命的蝴蝶飞舞环绕</p>
+<p>使自身周围6米内的所有敌方角色各进行一次难度为15的魅力豁免，豁免失败的角色将进入魅惑状态</p>
+<p>拥有魅力豁免值的角色自动视为豁免成功</p>
+<p>如果你成功将蝶舞引导2轮，那么蝶舞的效果结束时自身周围6米内的所有敌方角色需要再次进行难度为15的魅力豁免，豁免失败的角色将会受到2D4点心灵伤害，并在针对你的下一次攻击命中检定具有劣势</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>你可以在蝶舞引导结束后消耗连击点，每消耗1个连击点便额外造成1D4点心灵伤害</p>
+<p><span class="field">你的游荡者职业等级到达12级时：</span>蝶舞造成的心灵伤害改为1D6</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-31" data-search="暗影步 魅影风格 二阶天赋树 战技 暗影 迅捷 跃迁 媒介 短休/长休">
+        <h4>暗影步 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">暗影</span><span class="chip">迅捷</span><span class="chip">跃迁</span><span class="chip">媒介</span><span class="chip">短休/长休</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中施展过位移关键词的技能</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>2轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>战技.暗影.迅捷.跃迁.媒介.短休/长休</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>你无法在禁锢和压制状态下施展这个战技</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你借助暗影空间抵达对手身边，就如同从对方的影子中钻出一般</p>
+<p>选择视野范围内的一名角色，立即将自身置于与目标相邻的一个空白位置，如果对方周围没有可站立的位置你便不能选定其为目标</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-32" data-search="迷惑之刃 魅影风格 二阶天赋树 法术 施法攻击 心灵 感知豁免（10）">
+        <h4>迷惑之刃 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">施法攻击</span><span class="chip">心灵</span><span class="chip">感知豁免（10）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有欺瞒的熟练度</p>
+<p><span class="field">额外条件：</span>你使用袖剑或匕首造成过伤害</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>2轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>法术.施法攻击.心灵.感知豁免（10）</p>
+<p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你念出法咒挥手斩出一道粉色的刀光残影</p>
+<p>你对一名角色发起攻击，造成2D4点挥砍伤害，目标需要进行一次难度为10的感知豁免，豁免失败将进入困惑状态</p>
+<p>迷惑之刃在近战距离施展时攻击命中检定不会具有劣势</p>
+<p>如果目标已处于困惑状态，迷惑之刃改为造成心灵伤害</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>迷惑之刃改为造成3D4点挥砍伤害</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>迷惑之刃的施展距离变为4米</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>迷惑之刃的豁免难度变更为感知豁免（15）</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-33" data-search="暗蚀玫瑰 魅影风格 二阶天赋树 戏法 暗影 媒介">
+        <h4>暗蚀玫瑰 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">戏法</span><span class="chip">暗影</span><span class="chip">媒介</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你购买过一株魔皇草或者其他伪劣产品</p>
+<p><span class="field">额外条件：</span>你将一株魔皇草当做皇血草卖出，或者将其他伪劣产品当做正品卖出</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>2轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>戏法.暗影.媒介</p>
+<p><span class="field">施展条件：</span>你携带有一株花束</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你用暗影能量侵蚀一朵鲜花，令其变成一朵紫黑色的玫瑰，如同精致的艺术品般，却又散发着不详之气</p>
+<p>你将一株花束转化为暗蚀玫瑰，当这个物件位于其他角色的装备槽位中时，对方进行带有暗影关键词的豁免检定时具有劣势</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>获得技能点<span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>获得技能点<span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">你的游荡者职业等级到达9级时：</span>获得技能点<span style="font-size:1.5em;color:#EE822F">●</span></p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-3-3">
+        <h3>三阶天赋树</h3>
+      <article class="skill" id="r-skill-34" data-search="幻影匕首 魅影风格 三阶天赋树 法术 召唤单位 专注 激活 唯一性">
+        <h4>幻影匕首 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">召唤单位</span><span class="chip">专注</span><span class="chip">激活</span><span class="chip">唯一性</span>          <span class="chip">灵能</span>
+        </div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有法术.暗影之刃</p>
+<p><span class="field">额外条件：</span>你藏匿或销毁过一把行凶过的匕首</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>3轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>法术.召唤单位.专注.激活.唯一性</p>
+<p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你做出对应施法手势，念出法咒召唤一把半透明的粉紫色匕首悬浮于空中</p>
+<p>你召唤一把幻影匕首，每当你攻击一名角色后，这把匕首会同时发起攻击</p>
+<p>幻影匕首的攻击命中加值与你相同，对目标造成1D4点灵能伤害并附加你的关键属性</p>
+<p>幻影匕首没有防御等级，在承受奥术、心灵、力场或灵能伤害后会立即消散</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>幻影匕首在持续时间内进行三次攻击后可以朝任意直线方向飞至6米内的一个任意位置，对停留在那个位置上的角色发起一次攻击，随后返回至你的身边</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>你可以在幻影匕首进行三次攻击后选择额外的指令：</p>
+<p>·朝任意直线方向飞至6米内的一个任意位置随后返回，对沿途的所有其他角色</p>
+<p>各发起一次攻击</p>
+<p>·朝任意直线方向飞至6米内的一个任意位置，对与那个位置相邻的所有其他角</p>
+<p>色各发起一次攻击，随后返回至你的身边</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-35" data-search="幽影伏击 魅影风格 三阶天赋树 战技 近战攻击 暗影">
+        <h4>幽影伏击 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">暗影</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你习得此技能时，你的技能列表中本战斗风格的技能数量最多</p>
+<p><span class="field">额外条件：</span>你在黑暗环境中发起过一次突袭轮次</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>3轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>战技.近战攻击.暗影</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑，并且处于潜行状态</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你匍匐于黑暗之中悄然靠近，如同黑夜中的捕食者一般扑向敌人</p>
+<p>你对一名角色发起攻击，本次攻击在结算造成的伤害值后会附加你的感知调整值，你可以在执行攻击动作前优先进行一次基础移动尝试靠近目标</p>
+<p>如果当前处于黑暗环境，那么你改为可以在执行攻击动作前优先进行一次全速移动</p>
+<p>如果进行位移后你未能对目标发起攻击，你依旧会解除潜行状态</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>当你处于潜行状态时，如果有一名角色途经你时可以立即施展一次幽影伏击</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-36" data-search="飘忽不定 魅影风格 三阶天赋树 法术 暗影 隐秘 短休/长休">
+        <h4>飘忽不定 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">暗影</span><span class="chip">隐秘</span><span class="chip">短休/长休</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中触发过一次借机攻击并且没有受到伤害</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中没有承受过伤害</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>3轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>法术.暗影.隐秘.短休/长休</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你的身影逐渐模糊，在视觉效果上仿佛开始化作烟雾即将散去</p>
+<p><span class="field">持续时间内你获得以下效果：</span></p>
+<p>·针对你的攻击命中检定具有劣势</p>
+<p>·指向性效果在选择你作为目标时对方必须花费动作进行一次瞄准行动，检定失</p>
+<p>败将无法选择你作为目标</p>
+<p>·进行移动时能够无视单位碰撞体型</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>当你进行一次位移后，你可以标记本次位移过程中的一个位置，持续时间结束时如果那个位置上能够停留，那么你可以跃迁到那个位置，这个过程具有迅捷关键词</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-37" data-search="旋刃魂曲 魅影风格 三阶天赋树 法术 施法攻击 AOE 心灵 专注 节奏">
+        <h4>旋刃魂曲 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#AFFFE6">魅影风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">施法攻击</span><span class="chip">AOE</span><span class="chip">心灵</span><span class="chip">专注</span><span class="chip">节奏</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你的表演熟练度的总和点数超过4</p>
+<p><span class="field">额外条件：</span>你在歌舞厅、剧院等环境击杀过一名角色</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>3轮</p>
+<p><span class="field">疲劳消耗：</span>2</p>
+<p><span class="field">关键词：</span>法术.施法攻击.AOE.心灵.专注.节奏</p>
+<p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你的指尖做出旋转动作、并念诵法咒召唤一阵荧光粉色的灵体利刃，飞速旋转的同时伴随着步步紧逼的音乐声响</p>
+<p>你在一片3*3的区域召唤旋刃魂曲，对进入这个区域和轮次结束阶段停留在其中的角色造成4D4点心灵伤害</p>
+<p>闪避成功的角色仍需要承受一半的伤害值</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>旋刃魂曲改为造成4D6点心灵伤害</p>
+<p><span class="field">你的游荡者职业等级到达15级时：</span>你可以在自身回合花费一个附赠动作来使旋刃魂曲朝任意方向移动3米</p>
+      </div>
+      </article>
+      </section>
+    </section>
+
+    <section class="style" id="r-style-4">
+      <h2>狂妄风格</h2>
+      <p class="intro"></p>
+
+      <section class="tier" id="r-tier-4-1">
+        <h3>一阶天赋树</h3>
+      <article class="skill" id="r-skill-38" data-search="迅捷连射 狂妄风格 一阶天赋树 战技 远程攻击 实体飞行道具 每个自身回合限一次">
+        <h4>迅捷连射 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">远程攻击</span><span class="chip">实体飞行道具</span><span class="chip">每个自身回合限一次</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>-</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>远程</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>战技.远程攻击.实体飞行道具.每个自身回合限一次</p>
+<p><span class="field">施展条件：</span>你必须持有手弩或火枪</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+<p><span class="field">描述：</span>你拔出别在腰间的武器快速开火</p>
+<p>你消耗一发箭矢或弹药对一名角色发起攻击，本次伤害造成伤害后会额外使你获得1个连击点</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>迅捷连射在结算造成的伤害值后+1D6</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>迅捷连射改为在结算造成的伤害值后+2D6</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-39" data-search="抽血 狂妄风格 一阶天赋树 战技 近战攻击 生命流失 体质豁免（15）">
+        <h4>抽血 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">生命流失</span><span class="chip">体质豁免（15）</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>远程</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>战技.近战攻击.生命流失.体质豁免（15）</p>
+<p><span class="field">施展条件：</span>你必须持有剑类武器、匕首武器或袖剑</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你将锐利的尖锋刺入敌人体内，再狠狠拔出使对方血流不止</p>
+<p>你对一名角色发起攻击，本次攻击造成伤害后使目标进行一次难度为15的体质豁免，对方豁免失败将进入流血状态</p>
+<p>如果对方已经处于流血状态，那么抽血还会使目标额外获得一层流血状态并失去1D8点生命值</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>抽血改为如果目标已经处于流血状态，那么抽血还会使目标额外获得两层流血状态并失去1D8+X点生命值（X为目标当前流血层数）</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-40" data-search="挑衅对决 狂妄风格 一阶天赋树 天赋 互动 每场战斗限一次">
+        <h4>挑衅对决 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">互动</span><span class="chip">每场战斗限一次</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>你主动引发过一场非必要的战斗环节发生</p>
+<p><span class="field">关键词：</span>天赋.互动.每场战斗限一次</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>你挑衅敌人是否敢于真刀真枪地来一场对决？在一个自身回合中你可以移除自身的一次反应动作使用次数，随后移除一名敌方角色的一次反应动作使用次数</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>施展挑衅对决后你对目标的下一次攻击命中和检定和伤害值具有优势</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-41" data-search="讨债者 狂妄风格 一阶天赋树 天赋 互动">
+        <h4>讨债者 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">互动</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>有NPC角色负债于你</p>
+<p><span class="field">关键词：</span>天赋.互动</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>当一名其他角色的装备槽位中拥有属于你的物件时，你能够忽视对方的无法被指向性效果选择的状态，目标进入潜行状态后仍然能够被你目击</p>
+<p>如果对方将装备槽位中属于你的物件丢弃、销毁或转让，那么你能够忽视目标的额外防御等级、伤害抗性和护甲值减免效果，持续1轮</p>
+<p>当你击杀一名装备槽位中拥有属于你的物件的角色后，获得30枚金币</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-4-2">
+        <h3>二阶天赋树</h3>
+      <article class="skill" id="r-skill-42" data-search="抛射抓钩 狂妄风格 二阶天赋树 战技 位移 空中 每个自身回合限一次">
+        <h4>抛射抓钩 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">位移</span><span class="chip">空中</span><span class="chip">每个自身回合限一次</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有攀爬的熟练度</p>
+<p><span class="field">额外条件：</span>你承受过坠落伤害</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>12米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>战技.位移.空中.每个自身回合限一次</p>
+<p><span class="field">施展条件：</span>你必须携带有探索工具或攀爬工具</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你抛射出抓钩，如同特技演员一般在空中荡漾</p>
+<p>你射出一枚抓钩标记高于当前地段的一个空白位置，直到本回合结束阶段前你可以随时位移至那个位置</p>
+<p>每当你使用抛射抓钩后，必须累计消耗5个连击点后才能重新准备这个效果</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>如果抛射抓钩标记的位置相邻处存在其他角色，那么在位移后你可以与其中一名角色进行一次敏捷对抗，对方对抗失败则你可以选择以下一项：</p>
+<p>·对目标发起一次近战攻击</p>
+<p>·在位移过程中对目标发起一次远程攻击</p>
+<p><span class="field">你的游荡者职业等级到达12级时：</span>你可以在使用抛射抓钩时消耗X个连击点，若如此做，你可以在本轮次的下X名角色回合开始时再执行位移效果</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-43" data-search="短剑断奏 狂妄风格 二阶天赋树 战技 近战攻击 速攻 位移 敏捷豁免（12）">
+        <h4>短剑断奏 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">速攻</span><span class="chip">位移</span><span class="chip">敏捷豁免（12）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你使用剑类武器击杀过三名角色</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过剑类武器击杀过敌方角色</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>12米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>战技.近战攻击.速攻.位移.敏捷豁免（12）</p>
+<p><span class="field">施展条件：</span>你必须持有剑类武器</p>
+<p><span class="field">施展限制：</span>你不能与目标处于相邻位置</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你快步冲刺向前，用犀利的剑法挫败对手</p>
+<p>你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前并发起攻击，目标需要进行一次难度为12的敏捷豁免，对方豁免失败将进入缴械状态</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>短剑断奏获得迅捷关键词</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>短剑断奏在结算造成的伤害值后会额外附加一次你的敏捷调整值</p>
+<p>猩红之瓶（配方）</p>
+<p><span class="field">前置条件：</span>你使用剑类武器击杀过三名角色</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过剑类武器击杀过敌方角色</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>4米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>配方.火焰.回复</p>
+<p><span class="field">使用限制：</span>-</p>
+<p>配方材料：任意饮品1份+蝎毒1份+炽心椒1份+任意生物的血液1份</p>
+<p>参考价格：2金币</p>
+<p><span class="field">负重：</span>1磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">描述：</span>你调配出辛辣的猩红之瓶，饮用体验比起辣汤更接近毒剂</p>
+<p>饮用者受到4点火焰伤害，随后为自身回复8点生命值，并在本轮次结束阶段再次回复8点生命值</p>
+<p>猩红之瓶造成的伤害和回复效果不会附加关键属性</p>
+<p>猩红之瓶在同一场战斗环节对一名角色仅生效一次</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>饮用猩红之瓶还会暂时停止结算自身的灼烧效果，持续1轮</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-44" data-search="快速备战 狂妄风格 二阶天赋树 天赋 备战">
+        <h4>快速备战 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">备战</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中消耗过连击点</p>
+<p><span class="field">额外条件：</span>敏捷属性为你最高的属性值</p>
+<p><span class="field">关键词：</span>天赋.备战</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>你做好了充足的战斗准备，在战斗环节开始时立即获得1个连击点</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>快速备战改为立即获得3个连击点</p>
+<p><span class="field">你的游荡者职业等级到达15级时：</span>快速备战改为立即获得5个连击点</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-4-3">
+        <h3>三阶天赋树</h3>
+      <article class="skill" id="r-skill-45" data-search="冲刺爆发 狂妄风格 三阶天赋树 战技 近战攻击 位移">
+        <h4>冲刺爆发 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">位移</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有战技.疾跑并且力量属性不为你最低的属性值</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中于执行过全速移动的回合击杀过敌方角色</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>X米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.近战攻击.位移</p>
+<p><span class="field">施展条件：</span>-</p>
+<p><span class="field">施展限制：</span>你无法在禁锢和压制状态下施展这个战技</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你奋不顾身地快速奔袭，顺势朝着眼前的敌人挥出一刀</p>
+<p>消耗全部的连击点进行一次全速移动，本次位移结束后如果你停留的位置相邻处有一名其他角色，你必须立即对目标发动一次近战攻击（无法以此施展技能）</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>你每通过冲刺爆发消耗1个连击点，本次攻击结算造成的伤害值便+2</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>如果冲刺爆发消耗至少5个连击点，本次攻击的命中检定具有优势，并获得速攻关键词</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-46" data-search="震慑射击 狂妄风格 三阶天赋树 战技 远程攻击 AOE 实体飞行道具 力量豁免（12）">
+        <h4>震慑射击 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">远程攻击</span><span class="chip">AOE</span><span class="chip">实体飞行道具</span><span class="chip">力量豁免（12）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">额外条件：</span>你拥有超过2点的威力熟练度</p>
+<p><span class="field">施展时间：</span>0动作</p>
+<p><span class="field">施展距离：</span>X米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>3</p>
+<p><span class="field">关键词：</span>战技.远程攻击.AOE.实体飞行道具.力量豁免（12）</p>
+<p><span class="field">施展条件：</span>你必须持有枪械武器</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+<p><span class="field">描述：</span>你开枪朝前发射震摄一击，强大的后坐力几乎令你无法握住把手</p>
+<p>你消耗一发弹药发起攻击，本次攻击改为对前方扇形3环内的所有角色造成伤害</p>
+<p>本次攻击的命中检定不会因相邻位置存在敌方角色而具有劣势</p>
+<p>受到伤害的角色需要进行一次难度为12的豁免检定，豁免失败的角色将进入击倒状态</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>震摄射击造成的伤害值具有优势</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-47" data-search="剑炮齐奏 狂妄风格 三阶天赋树 天赋 增益">
+        <h4>剑炮齐奏 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">增益</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有战技.迅捷连射和短剑断奏</p>
+<p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">关键词：</span>天赋.增益</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p>比起匕首、袖剑或是其他暗杀道具，你更乐意持剑与枪同对手展开正面对抗，当你同时持有剑类武器和火枪进入战斗环节时，获得以下增益效果:</p>
+<p>·你每次使用剑类武器进行近战攻击后会获得一层标记，每层标记会使你的下一</p>
+<p>次远程攻击暴击率+1，当你进行一次远程攻击时会消耗掉全部标记</p>
+<p>·你的远程攻击触发暴击后，会使你的下一次近战攻击结算造成的伤害值后+5</p>
+<p>·如果你在一个自身回合中同时发起过近战攻击和远程攻击，你造成的下一次伤</p>
+<p>害会使目标进入灼烧状态</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>当你同时装备剑类武器和火枪进入战斗环节时，增加以下增益效果</p>
+<p>·每当你触发暴击后，获得1个连击点</p>
+<p>·你的远程攻击触发暴击后，改为会使你的下一次近战攻击结算造成的伤害值后</p>
+<p>附加你的主职业等级</p>
+<p><span class="field">你的游荡者职业等级到达12级时：</span>获得技能点<span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-48" data-search="第一滴血 狂妄风格 三阶天赋树 天赋 生命流失">
+        <h4>第一滴血 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FBFF81">狂妄风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">天赋</span><span class="chip">生命流失</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你击杀过十名角色</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中使敌人进入过流血状态</p>
+<p><span class="field">关键词：</span>天赋.生命流失</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p>在战斗环节中当你首次造成伤害时，使承受伤害的角色失去10点生命值</p>
+<p><span class="field">你的游荡者职业等级到达10级时：</span>第一滴血改为使目标失去20点生命值</p>
+      </div>
+      </article>
+      </section>
+    </section>
+
+    <section class="style" id="r-style-5">
+      <h2>魔药风格</h2>
+      <p class="intro"></p>
+
+      <section class="tier" id="r-tier-5-1">
+        <h3>一阶天赋树</h3>
+      <article class="skill" id="r-skill-49" data-search="毒刃 魔药风格 一阶天赋树 战技 近战攻击 毒性 体质豁免（12）">
+        <h4>毒刃 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">战技</span><span class="chip">近战攻击</span><span class="chip">毒性</span><span class="chip">体质豁免（12）</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>-</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>战技.近战攻击.毒性.体质豁免（12）</p>
+<p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑，并携带有基础毒药</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你在武器上萃上毒剂，对敌人发起恶毒地一击</p>
+<p>你对一名角色发起攻击，本次攻击可以改为造成剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁免失败将进入中毒状态</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-50" data-search="致伤毒药（配方） 魔药风格 一阶天赋树 配方 毒性 媒介 唯一性">
+        <h4>致伤毒药（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">配方</span><span class="chip">毒性</span><span class="chip">媒介</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第四种战斗风格</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>配方.毒性.媒介.唯一性</p>
+<p><span class="field">使用限制：</span>仅能用于附着匕首武器、袖剑和箭矢</p>
+<p>配方材料：清泉水1份+地根草1株+榭寄生1株</p>
+<p>参考价格：3银币</p>
+<p><span class="field">负重：</span>0.5磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你调配出初级施毒者使用的致伤毒药，这种浓绿色的毒药涂抹在武器上后能够破坏敌人的免疫系统</p>
+<p>你为武器附加致伤毒药，攻击造成伤害后目标对灼烧、中毒和流血状态的豁免难度+2</p>
+<p>如果同时为多把武器附加致伤毒药，每把武器会令你在进行一次长休前失去2点疲劳值上限</p>
+<p><span class="field">你的游荡者职业等级到达5级时：</span>致伤毒药还会使目标对耳鸣、沉默和致盲状态的豁免难度+2</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-51" data-search="麻痹毒药（配方） 魔药风格 一阶天赋树 配方 毒性 媒介 敏捷豁免（10） 唯一性">
+        <h4>麻痹毒药（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">配方</span><span class="chip">毒性</span><span class="chip">媒介</span><span class="chip">敏捷豁免（10）</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第四种战斗风格</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>配方.毒性.媒介.敏捷豁免（10）.唯一性</p>
+<p><span class="field">使用限制：</span>仅能用于附着匕首武器、袖剑和箭矢</p>
+<p>配方材料：清泉水1份+蛇信草1株+金棘草1株</p>
+<p>参考价格：4银币</p>
+<p><span class="field">负重：</span>0.5磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你调配出初级施毒者使用的麻痹毒药，这种浅绿色的毒药涂抹在武器上后能够使敌人的躯干变得麻木</p>
+<p>你为武器附加麻痹毒药，攻击造成伤害后目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入麻痹状态</p>
+<p>如果同时为多把武器附加麻痹毒药，每把武器会令你在进行一次长休前失去2点疲劳值上限</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入麻痹状态，随后移除这些标记</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-52" data-search="减速毒药（配方） 魔药风格 一阶天赋树 配方 毒性 媒介 敏捷豁免（12） 唯一性">
+        <h4>减速毒药（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 一阶天赋树</span></h4>
+        <div class="chips"><span class="chip">配方</span><span class="chip">毒性</span><span class="chip">媒介</span><span class="chip">敏捷豁免（12）</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第四种战斗风格</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>近战</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>1</p>
+<p><span class="field">关键词：</span>配方.毒性.媒介.敏捷豁免（12）.唯一性</p>
+<p><span class="field">使用限制：</span>仅能用于附着匕首武器、袖剑和箭矢</p>
+<p>配方材料：清泉水1份+蛇信草1株</p>
+<p>参考价格：2银币</p>
+<p><span class="field">负重：</span>0.5磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你调配出初级施毒者使用的减速毒药，这种深绿色的毒药涂抹在武器上后能够使敌人的行动变得迟缓</p>
+<p>你为武器附加减速毒药，攻击造成伤害后目标需要进行一次难度为12的敏捷豁免，对方豁免失败将进入减速状态</p>
+<p>如果同时为多把武器附加减速毒药，每把武器会令你在进行一次长休前失去2点疲劳值上限</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>受到这个效果影响的角色会被附加一层标记，拥有三层该标记的角色受到下一次攻击时，需要额外花费一个带有反应动作的能力才能规避本次攻击，随后移除这些标记</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-5-2">
+        <h3>二阶天赋树</h3>
+      <article class="skill" id="r-skill-53" data-search="酸液飞溅 魔药风格 二阶天赋树 法术 施法攻击 AOE 侵蚀 穿甲 护甲检定（10）">
+        <h4>酸液飞溅 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">法术</span><span class="chip">施法攻击</span><span class="chip">AOE</span><span class="chip">侵蚀</span><span class="chip">穿甲</span><span class="chip">护甲检定（10）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有炼金术的熟练度</p>
+<p><span class="field">额外条件：</span>你投掷过至少十瓶强酸瓶</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>法术.施法攻击.AOE.侵蚀.穿甲.护甲检定（10）</p>
+<p><span class="field">施展条件：</span>你必须携带有强酸瓶</p>
+<p><span class="field">施展限制：</span>-</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你泼洒出一团极具腐蚀性的绿色酸液来摧毁对手的防护</p>
+<p>你对前方扇形3环内的所有角色各造成1D8点强酸伤害，受到伤害的角色需要进行一次难度为10的护甲检定，检定失败的角色将受到以下效果的影响：</p>
+<p>·如果对方着装为轻甲或中甲，那么额外受到1D8点强酸伤害</p>
+<p>·如果对方着装为重甲，那么在本场战斗环节中目标失去1D2层防御等级</p>
+<p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+<p><span class="field">你的游荡者职业等级到达8级时：</span>酸液飞溅的基础伤害改为2D8点强酸伤害</p>
+<p><span class="field">你的游荡者职业等级到达12级时：</span>酸液飞溅对着装为轻甲或中甲的角色改为额外造成2D8点强酸伤害，对着装为重甲的角色进行护甲检定的难度变更为15</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-54" data-search="魔药喷雾（图纸） 魔药风格 二阶天赋树 科技 装填 感知豁免（12）">
+        <h4>魔药喷雾（图纸） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">科技</span><span class="chip">装填</span><span class="chip">感知豁免（12）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有神奇道具的熟练度</p>
+<p><span class="field">额外条件：</span>你触发过一次迷雾效果</p>
+<p><span class="field">关键词：</span>科技.装填.感知豁免（12）</p>
+<p><span class="field">使用限制：</span>你能够做出对应手势</p>
+<p><span class="field">研发材料：</span>零件包1/2份+任意粉尘1份/蛇信草汁液1份/奥术粒子1份/野钢花汁液1份</p>
+<p><span class="field">研发时间：</span>1次短休</p>
+<p>参考价格：2金币5银币-10金币</p>
+<p><span class="field">负重：</span>1磅</p>
+<p><span class="field">类别：</span>奇械科技.消耗品</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+<p><span class="field">描述：</span>你单手按住罐装喷雾的开关，喷洒出带有刺激性的气体</p>
+<p>你使前方扇形2环内的角色各进行一次难度为12的感知豁免，豁免失败的角色将根据你的研发材料类型分别产生以下效果；</p>
+<p>·任意粉尘:如果目标面朝向你，那么将会进入致盲状态</p>
+<p>·蛇信草汁液:目标进入减速状态</p>
+<p>·奥术粒子:目标对法术的豁免值-1，持续1轮</p>
+<p>·野钢花汁液:移除目标的5点护盾数值</p>
+<p>你需要花费一个主要动作进行装填才能够再次使用魔药喷雾</p>
+<p>菊花茶（配方）</p>
+<p><span class="field">前置条件：</span>你拥有神奇道具的熟练度</p>
+<p><span class="field">额外条件：</span>你触发过一次迷雾效果</p><p><span class="field">关键词：</span>配方.回复.净化</p>
+<p><span class="field">使用限制：</span>-</p>
+<p>配方材料：任意茶水1份+冰糖1份+甘菊1株</p>
+<p>参考价格：2银币</p>
+<p><span class="field">负重：</span>1磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">描述：</span>你调配出口感清理的菊花茶，在炎炎夏日喝上一口便能够心旷神怡</p>
+<p>为饮用者回复2点生命值和疲劳值，并移除自身的一层灼烧效果</p>
+<p>菊花茶产生的回复效果不会附加关键属性</p>
+<p>菊花茶在同一场战斗环节对一名角色仅生效一次</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>你在一场战斗环节中首次饮用菊花茶后还会获得1个连击点</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>你在一场战斗环节中首次饮用菊花茶后改为获得2个连击点</p>
+<p><span class="field">你的游荡者职业等级到达9级时：</span>你在一场战斗环节中首次饮用菊花茶后还会返还自身一个附赠动作</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-55" data-search="速效毒药（配方） 魔药风格 二阶天赋树 配方 毒性 媒介 生命流失 唯一性">
+        <h4>速效毒药（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 二阶天赋树</span></h4>
+        <div class="chips"><span class="chip">配方</span><span class="chip">毒性</span><span class="chip">媒介</span><span class="chip">生命流失</span><span class="chip">唯一性</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你拥有任意一种一阶天赋树中的毒药配方</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中触发过一种毒药配方</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>自身</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>配方.毒性.媒介.生命流失.唯一性</p>
+<p><span class="field">使用限制：</span>仅能用于附着匕首武器、袖剑和箭矢</p>
+<p>配方材料：清泉水1份+蛇信草1株+白屈花2株</p>
+<p>参考价格：4银币</p>
+<p><span class="field">负重：</span>0.5磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span></p>
+<p><span class="field">描述：</span>你调配出施毒者常用的速效毒药，这种白绿色的毒药涂抹在武器上后能够加速敌人的失血速度</p>
+<p>你为武器附加速效毒药，攻击造成伤害后使目标失去1点生命值</p>
+<p>如果同时为多把武器附加速效毒药，每把武器会令你在进行一次长休前失去2点疲劳值上限</p>
+<p><span class="field">你的游荡者职业等级到达3级时：</span>速效毒药改为使目标失去2点生命值</p>
+<p><span class="field">你的游荡者职业等级到达6级时：</span>速效毒药改为使目标失去3点生命值</p>
+<p><span class="field">你的游荡者职业等级到达9级时：</span>速效毒药改为使目标失去4点生命值</p>
+      </div>
+      </article>
+      </section>
+
+      <section class="tier" id="r-tier-5-3">
+        <h3>三阶天赋树</h3>
+      <article class="skill" id="r-skill-56" data-search="酸蚀炸弹（图纸） 魔药风格 三阶天赋树 科技 AOE 侵蚀 爆破 穿甲 实体飞行道具 护甲检定（15）">
+        <h4>酸蚀炸弹（图纸） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">科技</span><span class="chip">AOE</span><span class="chip">侵蚀</span><span class="chip">爆破</span><span class="chip">穿甲</span><span class="chip">实体飞行道具</span><span class="chip">护甲检定（15）</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>你投掷过至少十瓶强酸瓶</p>
+<p><span class="field">额外条件：</span>你使用强酸瓶导致一个奇械设备的损毁</p>
+<p><span class="field">关键词：</span>科技.AOE.侵蚀.爆破.穿甲.实体飞行道具.护甲检定（15）</p>
+<p><span class="field">使用限制：</span>-</p>
+<p><span class="field">研发材料：</span>零件包1/2份+纯铁2磅+强酸瓶2份</p>
+<p><span class="field">研发时间：</span>1次短休</p>
+<p>参考价格：23金币5银币</p>
+<p><span class="field">负重：</span>1磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+<p><span class="field">描述：</span>你将强酸浓缩为一个危险的铁球，在炸开时首先令铁片击穿敌人的防护，再将滚烫的酸液泼洒到对方周身</p>
+<p>投掷酸蚀炸弹后会对一片3*3区域内的所有角色各造成8点强酸伤害，对位于正中心的角色额外造成4点强酸伤害</p>
+<p>随后这些角色需要各进行一次难度为10的护甲检定，检定失败的角色将失去1层防御等级</p>
+<p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+<p>抉择：自愈秘酿/活力酊剂</p>
+      </div>
+      </article>
+      <article class="skill" id="r-skill-57" data-search="自愈秘酿（配方） 魔药风格 三阶天赋树 配方 回复 净化">
+        <h4>自愈秘酿（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#D0A5FF">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips"><span class="chip">配方</span><span class="chip">回复</span><span class="chip">净化</span></div>
+        <div class="detail">
+      <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+<p><span class="field">额外条件：</span>你在本次游玩过程中饮用过生命回复类型的药水</p>
+<p><span class="field">施展时间：</span>1分钟</p>
+<p><span class="field">施展距离：</span>触及</p>
+<p><span class="field">持续时间：</span>-</p>
+<p><span class="field">疲劳消耗：</span>-</p>
+<p><span class="field">关键词：</span>配方.回复.净化</p>
+<p><span class="field">使用限制：</span>-</p>
+<p>配方材料：任意生命药水1份+血蓟草1株+水晶兰汁液1份</p>
+<p>参考价格：6金币</p>
+<p><span class="field">负重：</span>1磅</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">描述：</span>你调配出能够加速治愈速度的自愈秘酿，这种可口的药剂可以帮助伤者有效清除淤伤</p>
+<p>为饮用者回复8点生命值，并移除自身的一层流血效果</p>
+<p>自愈秘酿产生的回复效果不会附加关键属性</p>
+<p>如果饮用者当前受到无法回复或降低生命值回复数值的效果，那么首先忽视那个效果再回复生命值</p>
+<p>自愈秘酿在同一场战斗环节对一名角色仅生效一次</p>
+      </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-奇袭风格">
+      <h2>奇袭风格</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-奇袭风格-四阶">
+        <h3>奇袭风格 · 四阶天赋树</h3>
+<article class="skill" id="r-skill-58" data-search="死亡印记 战技.命运.处决技.长休 你在本位阶及后击杀过十名角色 你在本次游玩过程中宣告过一名角色的死亡，随后在后续发生的战斗环节中将其击杀 0动作 6米 - 5">
+        <h4>死亡印记 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">命运</span>
+          <span class="chip">处决技</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本位阶及后击杀过十名角色</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中宣告过一名角色的死亡，随后在后续发生的战斗环节中将其击杀</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>-</p>
+          <p><span class="field">疲劳消耗：</span>5</p>
+          <p><span class="field">关键词：</span>战技.命运.处决技.长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你向他人施加可视的死亡，在对方头上浮现出的头骨标志正选择着敌人的终结</p>
+          <p>你对一名角色施加死亡印记，在本场战斗环节中如果你施展的终结技能够在理论伤害数值上使目标的生命值降低至0或以下，那么处决目标</p>
+          <p>你的游荡者职业等级达到10级时：死亡印记在首次受到驱散效果时不会被移除</p>
+          <p>你的游荡者职业等级达到15级时：死亡印记在成功处决一名角色后会立即刷新</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-59" data-search="连击循环 战技.补给.短休/长休 你在本次游玩的战斗环节中消耗过连击点数 你在本次游玩的战斗环节中执行过额外的行动 - 自身 1轮 2">
+        <h4>连击循环 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">补给</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中消耗过连击点数</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中执行过额外的行动</p>
+          <p><span class="field">施展时间：</span>-</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>战技.补给.短休/长休</p>
+          <p><span class="field">施展条件：</span>你在本回合消耗过连击点数</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你打出一套漂亮的连击循环，当敌人以为攻击已然停歇时尚未意识到这一切还远未结束</p>
+          <p>持续时间结束时你会获得连击循环生效期间所消耗的全部连击点数，这个效果无法使你的连击点数超过上限</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-60" data-search="快攻手 天赋.每场战斗限一次 你拥有天赋.先发制人 你拥有天赋.随机应变">
+        <h4>快攻手 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">每场战斗限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有天赋.先发制人</p>
+          <p><span class="field">额外条件：</span>你拥有天赋.随机应变</p>
+          <p><span class="field">关键词：</span>天赋.每场战斗限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span></p>
+          <p>你可以在自身回合快速使用你的副手武器再进行一次近战攻击（无法以此施展技能），本次攻击不会为你提供连击点数，也不会触发攻击特效</p>
+          <p>你的游荡者职业等级达到8级时：快攻手在命中后能够为你提供连击点数</p>
+          <p>你的游荡者职业等级达到15级时：快攻手能够触发攻击特效</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-61" data-search="冷血杀手 天赋.补给 你在知晓他人苦衷的情况下，依旧选择夺取对方的生命 你的阵营倾向为邪恶阵营">
+        <h4>冷血杀手 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#FFA387">奇袭风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">补给</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在知晓他人苦衷的情况下，依旧选择夺取对方的生命</p>
+          <p><span class="field">额外条件：</span>你的阵营倾向为邪恶阵营</p>
+          <p><span class="field">关键词：</span>天赋.补给</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你的心早已坚如磐岩，任何情感都无法使你动容，获得以下效果：</p>
+          <p>·你无法执行手下留情的效果</p>
+          <p>·当你的一次单体近战攻击造成伤害后，如果目标的当前生命值低于5点，令其降低至0点</p>
+          <p>·每当你的游荡者职业等级提升时，获得一个技能点●</p>
+          <p>·每当你击杀一名角色时会获得一个连击点数</p>
+          <p>妙手风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+        </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-妙手风格">
+      <h2>妙手风格</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-妙手风格-一阶">
+        <h3>妙手风格 · 一阶天赋树</h3>
+<article class="skill" id="r-skill-62" data-search="侦测毒性与疾病 戏法.探知 你与一名中毒者或患者进行过非战斗的交互 1动作 自身 立即 2">
+        <h4>侦测毒性与疾病 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B0E57C">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">探知</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与一名中毒者或患者进行过非战斗的交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.探知</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你念出法咒，随后你的眼睛将亮起青色光芒开始侦测毒性与疾病，并在脑海中获得对应数据</p>
+          <p>你感应自身周围6米内是否存在有毒素、有毒生物、疾病以及其具体类别，感应效果可能会被部分障碍物所阻碍</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-63" data-search="示敌以弱 天赋.躲闪.每场战斗限一次 你拥有表演的熟练度">
+        <h4>示敌以弱 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B0E57C">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">躲闪</span>
+          <span class="chip">每场战斗限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你拥有表演的熟练度</p>
+          <p><span class="field">关键词：</span>天赋.躲闪.每场战斗限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+          <p>当一名角色通过挥砍、射击或魔法飞弹等能够被目击的手段对你发起攻击并且命中后，你可以在受到伤害前花费一个反应动作使自身进入击倒状态来尝试忽视本次伤害</p>
+          <p>如果你已经处于击倒状态，那么无法触发这个效果</p>
+          <p>你的游荡者职业等级达到5级时：在下一个自身回合开始时如果你因为此效果仍然处于击倒状态，那么解除这个状态</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-64" data-search="战利品嗅觉 天赋.补给 你拥有探索的熟练度">
+        <h4>战利品嗅觉 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B0E57C">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">补给</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你拥有探索的熟练度</p>
+          <p><span class="field">关键词：</span>天赋.补给</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你对搜寻财物有着超乎想象的热衷，当你参与一场战斗环节后，你可以为搜刮战利品额外进行一次调查或探索检定</p>
+          <p>你的游荡者职业等级达到5级时：立即进行一次难度为15的调查或探索检定，检定成功将获得技能点●</p>
+          <p>你的游荡者职业等级达到10级时：立即进行一次难度为15的调查或探索检定，检定成功将获得技能点●●</p>
+          <p>你的游荡者职业等级达到15级时：立即进行一次难度为15的调查或探索检定，检定成功将获得技能点●●●</p>
+          <p>二阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-65" data-search="机关巧手（图纸） 科技.专注.互动 你">
+        <h4>机关巧手（图纸） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B0E57C">妙手风格 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">科技</span>
+          <span class="chip">专注</span>
+          <span class="chip">互动</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你</p>
+          <p><span class="field">关键词：</span>科技.专注.互动</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span></p>
+          <p>使用限制：-</p>
+          <p>研发材料：奇械齿轮1份+零件包1/2份</p>
+          <p>研发时间：1次短休</p>
+          <p>参考价格：4金币5银币</p>
+          <p>负重：1磅</p>
+          <p>类别：奇械科技.机关</p>
+          <p>你制作一个小巧的扒窃工具，只需要单手操纵杠杆便能够伸出捻子隔空盗取他人的随身物品</p>
+          <p>持有者可以使用机关巧手对自身周围4米内的一名角色进行偷窃检定，而非必须与对方相邻</p>
+        </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-通用">
+      <h2>通用</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-通用-四阶">
+        <h3>通用 · 四阶天赋树</h3>
+<article class="skill" id="r-skill-66" data-search="杂耍打击 战技.戏法.近战攻击.命运.随机性 你拥有巧手、体操和表演的熟练度 你在本次游玩过程中参与过一次戏剧、马戏团或街头演出 1动作 近战 立即 1D3">
+        <h4>杂耍打击 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#888">通用 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">戏法</span>
+          <span class="chip">近战攻击</span>
+          <span class="chip">命运</span>
+          <span class="chip">随机性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有巧手、体操和表演的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中参与过一次戏剧、马戏团或街头演出</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1D3</p>
+          <p><span class="field">关键词：</span>战技.戏法.近战攻击.命运.随机性</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你犹如杂耍大师一般戏耍对手，不断抛投、接住武器打出光怪离奇的攻击特效</p>
+          <p>1.你对一名角色发起攻击，本次攻击你需要掷一颗D4骰来依次决定是造成物理、火焰、暗影或剧毒伤害；之后投掷一颗D6的骰子来随机获得以下一项效果并执行：</p>
+          <p>·D1：本次攻击额外消耗1D3点疲劳值，随后重新投掷攻击命中检定</p>
+          <p>·D2：你可以将自身周围3米内的一名自愿的友方角色拉至与你相邻的一个未被占据的位置</p>
+          <p>·D3：对距离6米内一名角色投掷飞球，造成1D6点钝击伤害（这个伤害不会附</p>
+          <p>加你的关键属性和任何增益效果）并使目标进行一次难度为10的体质豁</p>
+          <p>免，豁免失败将使目标进入击晕状态</p>
+          <p>·D4：随机召唤当地的一只普通野兽对一名由你指定的角色发起攻击</p>
+          <p>·D5：对前方扇形2环区域内所有角色造成1D8点火焰伤害并使目标进行一次难</p>
+          <p>度为15的敏捷豁免，豁免失败的角色将会进入灼烧状态</p>
+          <p>·D6：掷一颗D100骰来对自身周围6米内一个位置随机施展混沌法术的效果</p>
+          <p>2.当你在同一场战斗阶段中触发过杂耍打击的所有效果后，可以选择一名挑战等级低于5的角色，将其击败</p>
+          <p>3.你在自身回合中的后续使用杂耍打击时可以进行一次难度为12的巧手、体操或表演检定，如果检定成功那么杂耍打击仅需要花费一个附赠动作</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-67" data-search="隐秘小径 戏法.隐秘.短休/长休 你潜入一个非己方的据点并且全程未被他人发现 你在本次游玩过程中发现一条捷径、隔层或隐藏空间 0动作 自身 2轮 1">
+        <h4>隐秘小径 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#888">通用 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">隐秘</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你潜入一个非己方的据点并且全程未被他人发现</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中发现一条捷径、隔层或隐藏空间</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.隐秘.短休/长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+          <p>你在混乱中寻找到一条隐秘小径，帮助队友进行快速穿行</p>
+          <p>你在持续时间内的下一次基础移动或全速移动会留下一条道路，当其他友方角色在这条道路上行进时不会触发借机攻击，此外道路外的角色对道路上的其他友方角色进行的攻击命中检定具有劣势</p>
+          <p>你的游荡者职业等级达到8级时：在隐秘小径上移动的其他友方角色如果最终停留位置的相邻处没有敌方角色，那么会进入潜行状态</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-68" data-search="货币为王 天赋.补给.每日限一次 你一次性消费超过500金币 你一次性消费超过2000金币">
+        <h4>货币为王 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#888">通用 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">补给</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你一次性消费超过500金币</p>
+          <p><span class="field">额外条件：</span>你一次性消费超过2000金币</p>
+          <p><span class="field">关键词：</span>天赋.补给.每日限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+          <p>在这个时代唯有金钱才是王道，你总能通过机遇检定来尝试捡到钱币，此外你在进行偷窃或收集战利品时总是能够找到额外的钱币</p>
+          <p>你的游荡者职业等级达到10级时：获得技能点●●</p>
+          <p>你的游荡者职业等级达到15级时：获得技能点●●</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-69" data-search="盗亦有道 天赋.躲闪.互动 你在知晓他人苦衷的情况下，选择对其行径网开一面 你的阵营倾向为善良阵营">
+        <h4>盗亦有道 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#888">通用 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">躲闪</span>
+          <span class="chip">互动</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在知晓他人苦衷的情况下，选择对其行径网开一面</p>
+          <p><span class="field">额外条件：</span>你的阵营倾向为善良阵营</p>
+          <p><span class="field">关键词：</span>天赋.躲闪.互动</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+          <p>你深知江湖并非单纯的打杀，面对敌人时也会考虑为对方留下一线生机，获得以下效果：</p>
+          <p>·你在执行手下留情的效果时无需花费动作</p>
+          <p>·每场战斗限一次.当你施展灵巧动作时，可以在掷骰结果上附加你的偷窃熟练度</p>
+          <p>·每当你的游荡者职业等级提升时，可以将自身的一个技能点与一名其他玩家角色进行交换</p>
+          <p>·你为他人提供回复、护盾、增益或隐秘效果时会获得一个连击点数</p>
+          <p>魅影风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+        </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-魅影风格">
+      <h2>魅影风格</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-魅影风格-四阶">
+        <h3>魅影风格 · 四阶天赋树</h3>
+<article class="skill" id="r-skill-70" data-search="鬼魅攻击 战技.近战攻击.暗影.魅力豁免（10） 你拥有欺瞒或恐吓的熟练度 你在本次游玩的战斗环节中对灵体生物发动过攻击 1动作 近战 立即 3">
+        <h4>鬼魅攻击 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B4A7D6">魅影风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">近战攻击</span>
+          <span class="chip">暗影</span>
+          <span class="chip">魅力豁免（10）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有欺瞒或恐吓的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中对灵体生物发动过攻击</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>战技.近战攻击.暗影.魅力豁免（10）</p>
+          <p><span class="field">施展条件：</span>你必须持有匕首武器或袖剑</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#00B050">●</span></p>
+          <p>你施展诡异的攻击手法，如同鬼魅用指甲抚过敌人的脖颈般令人不寒而栗</p>
+          <p>你对一名角色发起攻击，本次攻击视作造成心灵伤害，随后目标需要进行一次难度为10的魅力豁免，对方豁免失败将进入恐惧状态</p>
+          <p>鬼魅攻击对处于恐惧、魅惑或混乱状态的角色施展时仅需要花费一个附赠动作</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视诸如盾牌格挡、刀枪不入等物理性质的防御效果</p>
+          <p><span class="field">你的游荡者职业等级到达12级时：</span>如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视来源于盾牌和护甲提供的防御等级</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-71" data-search="消失 战技.暗影.躲闪.隐秘.短休/长休 你的隐匿熟练度≥2 本风格不能是你的游荡者职业的第三或第四种战斗风格 0动作 自身 立即 4">
+        <h4>消失 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B4A7D6">魅影风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">暗影</span>
+          <span class="chip">躲闪</span>
+          <span class="chip">隐秘</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的隐匿熟练度≥2</p>
+          <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>战技.暗影.躲闪.隐秘.短休/长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span></p>
+          <p>你仿佛凭空消失一般遁入暗影之中</p>
+          <p>立即进入潜行状态，即便相邻位置存在敌方角色</p>
+          <p>每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用此战技并以此中断当前针对你的指向性效果</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-72" data-search="暗影斗篷 法术.暗影.隐秘.增益.短休/长休 你拥有法术.飘忽不定 你拥有至少三个带有暗影关键词的技能 0动作 自身 1-3轮 2">
+        <h4>暗影斗篷 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B4A7D6">魅影风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">暗影</span>
+          <span class="chip">隐秘</span>
+          <span class="chip">增益</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.飘忽不定</p>
+          <p><span class="field">额外条件：</span>你拥有至少三个带有暗影关键词的技能</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1-3轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.暗影.隐秘.增益.短休/长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span></p>
+          <p>你将暗影能量化作斗篷，借助黑暗帷幕抵御倾泻而来的范围攻势</p>
+          <p>持续时间内你获得以下效果：</p>
+          <p>·你的外貌无法被目击，通过视觉仅能够看见被黑暗笼罩地轮廓</p>
+          <p>·你获得无视单位碰撞体型的效果</p>
+          <p>·你受到的带有AOE关键词的伤害在结算后减半</p>
+          <p>·你在承受光耀和神圣伤害类型时会中止本次伤害，立即移除暗影斗篷的效果</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>暗影斗篷被强制中断后你可以立即将自身投射到幽影界，持续1轮并具有以下效果：</p>
+          <p>·持续时间内你与主物质位面完全隔绝并停止结算一切来源与主物质位面的干涉效果，但你也无法知晓持续时间内主物质位面发生的一切，并且你在幽影界执行的行动在返回后均不会生效</p>
+          <p>·持续时间结束后会使你返回原地，如果你原先停留的位置被占据则放置于一个相邻位置上</p>
+          <p>·随后你需要进行一次事件检定，如果本次检定结果超过75，那么会有一只对你抱有恶意的幽影生物来到主物质位面并对你展开攻击，持续至对方被放逐、消灭或是你死亡，若你撤离战斗，这只幽影生物仍会在世间追寻你的踪迹</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-73" data-search="剪影 法术.召唤单位.暗影.生命流失.媒介 你拥有法术.暗影之刃和神秘学的熟练度 你进入过幽影界位面 0动作 2米 1轮 3">
+        <h4>剪影 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#B4A7D6">魅影风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">暗影</span>
+          <span class="chip">生命流失</span>
+          <span class="chip">媒介</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.暗影之刃和神秘学的熟练度</p>
+          <p><span class="field">额外条件：</span>你进入过幽影界位面</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>2米</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.暗影.生命流失.媒介</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>剪影无法在完全黑暗的环境下施展</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你将敌人的影子拖拽而出，随后展开攻击，幽影的反馈将对敌人造成伤害</p>
+          <p>你选择一名角色，在对方相邻位置召唤一个目标的影子，你在对影子发动攻击时自动判定为命中（无法投掷攻击命中检定），在结算造成的伤害值时改为目标失去X点生命值，这个效果不会触发攻击特效</p>
+          <p>X为本次结算后伤害值的50%</p>
+          <p>如果目标移动至距离自身影子6米或更远的距离，或者花费一个附赠动作去触及影子，那么将会解除剪影的效果</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>剪影的持续时间改为2轮，目标在解除剪影时还会承受1D8点暗影伤害</p>
+          <p><span class="field">你的游荡者职业等级到达15级时：</span>剪影改为目标失去X点生命值（X为本次结算后伤害值的100%）</p>
+          <p>狂妄风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+        </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-狂妄风格">
+      <h2>狂妄风格</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-狂妄风格-四阶">
+        <h3>狂妄风格 · 四阶天赋树</h3>
+<article class="skill" id="r-skill-74" data-search="猩红之瓶（配方） 配方.火焰.回复 你饮用过至少十瓶任意品质的生命药水 你在本次游玩的战斗环节中饮用过三瓶生命药水 1分钟 触及 - -">
+        <h4>猩红之瓶（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#F4A460">狂妄风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">配方</span>
+          <span class="chip">火焰</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你饮用过至少十瓶任意品质的生命药水</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中饮用过三瓶生命药水</p>
+          <p><span class="field">施展时间：</span>1分钟</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>-</p>
+          <p><span class="field">疲劳消耗：</span>-</p>
+          <p><span class="field">关键词：</span>配方.火焰.回复</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+          <p>使用限制：-</p>
+          <p>配方材料：任意饮品1份+蝎毒1份+炽心椒1份+任意生物的血液1份</p>
+          <p>参考价格：2金币</p>
+          <p>负重：1磅</p>
+          <p>你调配出辛辣的猩红之瓶，饮用体验比起辣汤更接近毒剂</p>
+          <p>饮用者受到4点火焰伤害，随后为自身回复8点生命值，并在本轮次结束阶段再次回复8点生命值</p>
+          <p>猩红之瓶造成的伤害和回复效果不会附加关键属性</p>
+          <p>猩红之瓶在同一场战斗环节对一名角色仅生效一次</p>
+          <p><span class="field">你的游荡者职业等级到达5级时：</span>饮用猩红之瓶还会暂时停止结算自身的灼烧效果，持续1轮</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-75" data-search="重磅一击！ 战技.远程攻击.终结技.幸运豁免（15） 你拥有战技.迅捷连射和天赋.快速备战 本风格不能是你的游荡者职业的第三或第四种战斗风格 1动作 远程 立即 3">
+        <h4>重磅一击！ <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#F4A460">狂妄风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">远程攻击</span>
+          <span class="chip">终结技</span>
+          <span class="chip">幸运豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有战技.迅捷连射和天赋.快速备战</p>
+          <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>远程</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>战技.远程攻击.终结技.幸运豁免（15）</p>
+          <p><span class="field">施展条件：</span>你必须持有枪械武器</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+          <p>你扣动扳机给予敌人一发重磅攻击！造成成吨的伤害</p>
+          <p>你消耗一发弹药开启重磅一击！！对一名角色发起攻击并消耗所有的连击点数，本次攻击具有以下效果:</p>
+          <p>·每消耗1点连击点数本次攻击的攻击命中检定值、结算后伤害和暴击率便+1</p>
+          <p>·如果本次攻击触发暴击将会由双倍伤害改为三倍伤害，随后目标需要进行一次难度为15的幸运豁免，对方豁免失败后还会分别进入击倒和灼烧状态</p>
+          <p>·豁免检定结果低于5的角色还会进入重伤·恶性创伤状态</p>
+          <p><span class="field">你的游荡者职业等级到达10级时：</span>重磅一击！！击杀目标后会为你带来双倍的经验值和技能点收益</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-76" data-search="剑刃乱舞 战技.近战攻击.AOE.终结技.敏捷豁免（10+X） 你拥有舞蹈的熟练度 你习得此技能时，你的技能列表中本战斗风格的技能数量最多 1动作 近战 立即 3">
+        <h4>剑刃乱舞 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#F4A460">狂妄风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">近战攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">终结技</span>
+          <span class="chip">敏捷豁免（10+X）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有舞蹈的熟练度</p>
+          <p><span class="field">额外条件：</span>你习得此技能时，你的技能列表中本战斗风格的技能数量最多</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>战技.近战攻击.AOE.终结技.敏捷豁免（10+X）</p>
+          <p><span class="field">施展条件：</span>你必须持有剑类武器、斧类武器或匕首武器</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你掀起一阵斩击之舞席卷周围的敌人</p>
+          <p>你消耗所有的连击点数对相邻位置的所有角色各造成2X点挥砍伤害，随后承受伤害的角色需要进行一次难度为10+X的敏捷豁免，豁免失败的角色将进入缴械状态</p>
+          <p>X为消耗的连击点数3.闪避成功的角色依旧需要承受一半的结算后伤害</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>剑刃乱舞改为造成3X点挥砍伤害</p>
+          <p><span class="field">你的游荡者职业等级到达12级时：</span>剑刃乱舞改为造成4X点挥砍伤害</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-77" data-search="无处可逃 战技.阻碍.位移.媒介.激活.长休 你击杀过位于战斗地图边缘的角色 你在本次游玩的战斗环节中击杀过一名与你拥有债务、情感或其他纠纷的角色 0动作 6米 2轮 2">
+        <h4>无处可逃 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#F4A460">狂妄风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">位移</span>
+          <span class="chip">媒介</span>
+          <span class="chip">激活</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你击杀过位于战斗地图边缘的角色</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中击杀过一名与你拥有债务、情感或其他纠纷的角色</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>战技.阻碍.位移.媒介.激活.长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+          <p>你的攻势令对手无处可逃，要不了多久你就会找上他们了</p>
+          <p>你选择一名角色，目标在持续时间内视为进入落单状态，随后你可以朝对方进行一次基础移动</p>
+          <p>如果目标相邻位置没有其他可供移动的位置、或者对方处于压制和禁锢状态，那么你对目标造成的伤害值具有优势</p>
+          <p>如果目标的装备槽位中拥有属于你的物件，那么对方不能执行撤离行动</p>
+          <p>目标死亡后会重新解锁无处可逃，如果对方先前是讨债者效果的目标，那么你的下一次无处可逃无需花费动作和疲劳值消耗</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-78" data-search="胆大妄为 天赋.韧性 你拥有恐吓的熟练度 恐吓熟练度为你最高的熟练项">
+        <h4>胆大妄为 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#F4A460">狂妄风格 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">韧性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有恐吓的熟练度</p>
+          <p><span class="field">额外条件：</span>恐吓熟练度为你最高的熟练项</p>
+          <p><span class="field">关键词：</span>天赋.韧性</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+          <p>充足的准备使你变得肆无忌惮，当你拥有5点或以上连击点数时，获得以下效果：</p>
+          <p>·你在进行魅力和意志属性的对抗、豁免检定时具有优势</p>
+          <p>·你免疫同等级或以下、以及挑战等级低于你的角色所产生的恐惧和忏悔效果</p>
+          <p>·你发起基础攻击时造成的伤害值在结算后+2</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>胆大妄为改为你发起基础攻击时造成的伤害值在结算后+4</p>
+          <p><span class="field">你的游荡者职业等级到达12级时：</span>胆大妄为的生效期间，你对讨债者生效的目标进行的攻击命中检定具有优势</p>
+          <p><span class="field">你的游荡者职业等级到达15级时：</span>每场战斗限一次.如果你胆大妄为的生效期间你未拥有毅力效果，那么你将获得一次毅力效果，在你受到一次不超过你的100%最大生命值的伤害而进入死亡裁决时，改为将你的生命值降低至1点</p>
+          <p>魔药风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+        </div>
+      </article>
+      </section>
+    </section>
+<section class="style" id="r-style-魔药风格">
+      <h2>魔药风格</h2>
+      <p class="intro"></p>
+<section class="tier" id="r-tier-魔药风格-三阶">
+        <h3>魔药风格 · 三阶天赋树</h3>
+<article class="skill" id="r-skill-79" data-search="菊花茶（配方） 配方.回复.净化 你饮用过至少十瓶任意品质的活力药水 你在本次游玩过程中饮用过一份茶水 1分钟 触及 - -">
+        <h4>菊花茶（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#87CEEB">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">配方</span>
+          <span class="chip">回复</span>
+          <span class="chip">净化</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你饮用过至少十瓶任意品质的活力药水</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中饮用过一份茶水</p>
+          <p><span class="field">施展时间：</span>1分钟</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>-</p>
+          <p><span class="field">疲劳消耗：</span>-</p>
+          <p><span class="field">关键词：</span>配方.回复.净化</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>使用限制：-</p>
+          <p>配方材料：任意茶水1份+冰糖1份+甘菊1株</p>
+          <p>参考价格：2银币</p>
+          <p>负重：1磅</p>
+          <p>你调配出口感清理的菊花茶，在炎炎夏日喝上一口便能够心旷神怡</p>
+          <p>为饮用者回复2点生命值和疲劳值，并移除自身的一层灼烧效果</p>
+          <p>菊花茶产生的回复效果不会附加关键属性</p>
+          <p>菊花茶在同一场战斗环节对一名角色仅生效一次</p>
+          <p><span class="field">你的游荡者职业等级到达3级时：</span>你在一场战斗环节中首次饮用菊花茶后还会获得1个连击点</p>
+          <p><span class="field">你的游荡者职业等级到达6级时：</span>你在一场战斗环节中首次饮用菊花茶后改为获得2个连击点</p>
+          <p><span class="field">你的游荡者职业等级到达9级时：</span>你在一场战斗环节中首次饮用菊花茶后还会返还自身一个附赠动作</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-80" data-search="活力酊剂（配方） 配方.回复 本风格不能是你的游荡者职业的第三或第四种战斗风格 你在本次游玩过程中饮用过魔力回复类型的药水 1分钟 触及 - -">
+        <h4>活力酊剂（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#87CEEB">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">配方</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中饮用过魔力回复类型的药水</p>
+          <p><span class="field">施展时间：</span>1分钟</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>-</p>
+          <p><span class="field">疲劳消耗：</span>-</p>
+          <p><span class="field">关键词：</span>配方.回复</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>使用限制：-</p>
+          <p>配方材料：任意活力药水1份+红战士1株+蛙毒1份</p>
+          <p>参考价格：6金币</p>
+          <p>负重：1磅</p>
+          <p>你调配出能够迅速令人恢复精气神的活力酊剂，这种充满工业化的兴奋药剂可以有效缓解疲劳，但也会带来些许后遗症</p>
+          <p>饮用者在本回合忽视力竭状态的效果，随后可以选择以下一项效果：</p>
+          <p>·为自身回复6点疲劳值，这个回复效果不会附加关键属性</p>
+          <p>·使自身获得一个主要动作</p>
+          <p>本回合结束阶段时饮用者获得一层力竭状态</p>
+          <p>活力酊剂在同一场战斗环节对一名角色仅生效一次</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-81" data-search="致幻毒药（配方） 配方.毒性.幻象.媒介.感知豁免（10）.唯一性 你拥有其他的毒药配方和表演的熟练度 你在本次游玩过程中使用过迷药 1分钟 触及 2小时 -">
+        <h4>致幻毒药（配方） <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#87CEEB">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">配方</span>
+          <span class="chip">毒性</span>
+          <span class="chip">幻象</span>
+          <span class="chip">媒介</span>
+          <span class="chip">感知豁免（10）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有其他的毒药配方和表演的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中使用过迷药</p>
+          <p><span class="field">施展时间：</span>1分钟</p>
+          <p><span class="field">施展距离：</span>触及</p>
+          <p><span class="field">持续时间：</span>2小时</p>
+          <p><span class="field">疲劳消耗：</span>-</p>
+          <p><span class="field">关键词：</span>配方.毒性.幻象.媒介.感知豁免（10）.唯一性</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>使用限制：仅能用于附着匕首武器、袖剑和箭矢</p>
+          <p>配方材料：清泉水1份+香水薄荷1株+曼陀罗1株</p>
+          <p>参考价格：1金币2银币</p>
+          <p>负重：0.5磅</p>
+          <p>你调配出施毒者常用的致幻毒药，这种亮绿色的毒药涂抹在武器上后能够使敌人产生幻觉出现应激反应</p>
+          <p>你为武器附加致幻毒药，攻击造成伤害后目标需要进行一次难度为10的感知豁免，对方豁免失败将进入混乱状态</p>
+          <p>如果同时为多把武器附加致幻毒药，每把武器会令你在进行一次长休前失去2点疲劳值上限</p>
+          <p><span class="field">你的游荡者职业等级到达8级时：</span>豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入混乱状态，随后移除这些标记</p>
+        </div>
+      </article>
+<article class="skill" id="r-skill-82" data-search="毒性蔓延 天赋.毒性.短休/长休 你拥有战技.毒刃 本风格不能是你的游荡者职业的第三或第四种战斗风格">
+        <h4>毒性蔓延 <span class="chip" style="background:rgba(0,0,0,0.08);border-color:#87CEEB">魔药风格 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">毒性</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有战技.毒刃</p>
+          <p><span class="field">额外条件：</span>本风格不能是你的游荡者职业的第三或第四种战斗风格</p>
+          <p><span class="field">关键词：</span>天赋.毒性.短休/长休</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span></p>
+          <p>你使敌人身上的毒性效果蔓延，你可以选择执行以下一项效果：</p>
+          <p>·使自身周围6米内一名角色进入中毒状态</p>
+          <p>·使一名拥有中毒状态的角色周围相邻的所有角色各进行一次难度为15的体质</p>
+          <p>豁免，豁免失败的角色将进入中毒状态</p>
+          <p>·你的下一次战技.毒刃产生的中毒效果在结算前翻倍</p>
+          <p>·你的下一次战技.毒刃仅需花费一个附赠动作</p>
+          <p><span class="field">你的游荡者职业等级到达10级时：</span>毒性蔓延的关键词变更为短休/长休（2）</p>
+          <p><span class="field">你的游荡者职业等级到达15级时：</span>你可以同时触发毒性蔓延中的两个不同效果</p>
+        </div>
+      </article>
+      </section>
+    </section>
+</main>
+
+<script src="common.js"></script>
+<script src="filter.js"></script>
+<script>
+createFilterController("view-r", "r");
+</script>
+</body>
+</html>
