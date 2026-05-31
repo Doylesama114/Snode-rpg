@@ -32,10 +32,10 @@ jobs:
 
       - name: Install dependencies
         working-directory: electron-app
-        run: npm ci
+        run: npm install --production
 
       - name: Build and Publish
         working-directory: electron-app
-        run: npx electron-builder --win portable --publish always
+        run: node --require ./spawn_monkey_patch.js node_modules/electron-builder/out/cli/cli.js --win portable --publish always
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
