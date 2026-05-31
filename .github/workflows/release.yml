@@ -36,6 +36,6 @@ jobs:
 
       - name: Build and Publish
         working-directory: electron-app
-        run: node --require ./spawn_monkey_patch.js node_modules/electron-builder/out/cli/cli.js --win portable --publish always
+        run: node node_modules/electron-builder/out/cli/cli.js --win portable --publish always
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
