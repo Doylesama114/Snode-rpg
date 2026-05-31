@@ -1,0 +1,3065 @@
+{
+  "class": "牧师",
+  "advancements": [
+    {
+      "id": "adv-priest-圣堂刺客",
+      "name": "圣堂刺客",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "敏捷": 15,
+        "感知": 12,
+        "意志": 12
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "刺杀二十名与自身所在教团敌对的角色",
+        "完成三场在突袭轮次结束阶段前结束的战斗环节",
+        "刺杀三名具有一定影响力的邪恶阵营角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓"
+      ]
+    },
+    {
+      "id": "adv-priest-惩戒骑士",
+      "name": "惩戒骑士",
+      "source_classes": [
+        "牧师",
+        "圣骑士"
+      ],
+      "attrs": {
+        "力量": 15,
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服",
+        "打击五场正在进行的邪恶举止（不计算玩家在内）",
+        "击败一名足够影响力的、公认的邪恶存在，向世间证明正义永不缺席，光明终将战胜黑暗"
+      ]
+    },
+    {
+      "id": "adv-priest-守护骑士",
+      "name": "守护骑士",
+      "source_classes": [
+        "牧师",
+        "圣骑士",
+        "魔契师"
+      ],
+      "attrs": {
+        "体质": 15,
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你为了守护无辜的人们而主动发起十场战斗",
+        "完成五次善举并获得他人的感激（不计算玩家在内）",
+        "你挫败了一场巨大的邪恶并因此挽救了数百人的生命"
+      ]
+    },
+    {
+      "id": "adv-priest-圣洁骑士",
+      "name": "圣洁骑士",
+      "source_classes": [
+        "牧师",
+        "圣骑士",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 6
+        }
+      ],
+      "conditions": [
+        "主持三场公正的决断，通过高尚的言行令众人信服",
+        "完成五次善举并获得他人的感激（不计算玩家在内）",
+        "使你高洁的品格成为世人学习的楷模，你的事迹被记载于地方政权或教会的典籍中激励着后辈"
+      ]
+    },
+    {
+      "id": "adv-priest-光铸者",
+      "name": "光铸者",
+      "source_classes": [
+        "牧师",
+        "圣骑士"
+      ],
+      "attrs": {
+        "体质": 15,
+        "感知": 10,
+        "意志": 14
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 7
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "使用十次带有自律关键词的能力",
+        "使一座城镇或乡村感受到圣光的恩泽",
+        "证明你比其他的正义之辈更配得上光明称号"
+      ],
+      "attrs_max": {
+        "感知": true
+      }
+    },
+    {
+      "id": "adv-priest-正义导师",
+      "name": "正义导师",
+      "source_classes": [
+        "牧师",
+        "圣骑士"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "教导二十名孩童，对其今后的成长路径起到良性的作用",
+        "将十名邪恶阵营角色转化为善良阵营（不计算玩家在内）",
+        "使一名邪恶阵营中的重要角色被你的言行举止所感化，令对方真心赎罪后成为正义力量的一员（不计算玩家在内）"
+      ]
+    },
+    {
+      "id": "adv-priest-戒律神官",
+      "name": "戒律神官",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "感知": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 4
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的牧师职业战斗风格中包含有戒律风格，并且施展十次本风格中带有神谕真言关键词的技能",
+        "在教堂内对十名角色表达过劝诫与约束（不计算玩家在内）",
+        "使一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）由被迫转向心悦诚服的遵守你所信奉的神祇教义"
+      ]
+    },
+    {
+      "id": "adv-priest-光之侍",
+      "name": "光之侍",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "感知": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你拥有侍僧或狂信徒的个性背景",
+        "以圣光的名义完成五次善举并获得他人的感激（不计算玩家在内）",
+        "你为一名天界生物或其他诞生于圣光中的存在进行服务，并且得到对方的由衷感谢，通过对方给予的馈赠完成光之侍的晋升"
+      ]
+    },
+    {
+      "id": "adv-priest-圣堂武士",
+      "name": "圣堂武士",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "体质": 12,
+        "感知": 12,
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "打击五场正在进行的邪恶举止（不计算玩家在内）",
+        "击杀二十名敌对势力的邪恶阵营角色",
+        "无视世俗秩序与准则的情况下摧毁一场邪恶的行径，不惜一切代价！"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-自然行者",
+      "name": "自然行者",
+      "source_classes": [
+        "猎人",
+        "牧师",
+        "德鲁伊"
+      ],
+      "attrs": {
+        "体质": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 5
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "进行十次成功的自然检定",
+        "拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历",
+        "在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境）"
+      ]
+    },
+    {
+      "id": "adv-priest-丰收祭司",
+      "name": "丰收祭司",
+      "source_classes": [
+        "牧师",
+        "德鲁伊",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "治退十名危害农田或果园的敌人（不计算玩家在内）",
+        "治理三处腐败之地，使其变为适宜耕种的沃土",
+        "开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内）"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-净化大师",
+      "name": "净化大师",
+      "source_classes": [
+        "牧师",
+        "萨满祭司",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 5
+        }
+      ],
+      "conditions": [
+        "驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）",
+        "在战斗环节中施展十次移除异常状态的效果",
+        "净化一个具有深刻过往、危害当地多年的恶灵，在其消逝前得到对方的祝福"
+      ]
+    },
+    {
+      "id": "adv-priest-植物学家",
+      "name": "植物学家",
+      "source_classes": [
+        "牧师",
+        "德鲁伊"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 5
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "击败十名危害植物生长的敌人（不计算玩家在内）",
+        "探寻并详细记录三株珍稀品质或以上的野生植物",
+        "种植、观测并培育出一株奇珍品质或以上的神奇植物"
+      ]
+    },
+    {
+      "id": "adv-priest-和睦使者",
+      "name": "和睦使者",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态",
+        "阻止三场即将爆发的战斗环节",
+        "促成两个相互敌对的组织势力达成和解，并且获得双方的感激"
+      ]
+    },
+    {
+      "id": "adv-priest-赋生者",
+      "name": "赋生者",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "体质": 14,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "在战斗环节中为其他角色施展二十次回复效果",
+        "累计十次将生命值降至0或更低的角色生命值回复到至少1点",
+        "为一名注定死亡的角色赋予新生"
+      ]
+    },
+    {
+      "id": "adv-priest-田园守护者",
+      "name": "田园守护者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "感知": 12,
+        "魅力": 15,
+        "幸运": 12
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 4
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "治退十名危害农田或果园的敌人（不计算玩家在内）",
+        "为十名造访田园的NPC角色提供庇护和必要的帮助",
+        "阻挡一场巨大危害对人们赖以生存的家园的侵袭，并且保证事端结束后这片土地的基础建施足够完好"
+      ]
+    },
+    {
+      "id": "adv-priest-季节法师",
+      "name": "季节法师",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "分别参与一场春季、夏季、秋季和冬季发生的战斗环节，并且战斗场景具备足够的季节特征",
+        "分别击败一名象征着新生、炎热、衰败和寒冷的敌人（不计算玩家在内）",
+        "分别准备一份能够象征春季、夏季、秋季和冬季的物件和代表四季的各一种矿石珠宝和植株，在不存在明显季节特征的温室中举行晋升为季节法师的仪式"
+      ]
+    },
+    {
+      "id": "adv-priest-祈雨者",
+      "name": "祈雨者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 6
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "向十名有需求者分享水源并得到对方的感谢（不计算玩家在内）",
+        "为三座村庄开垦可长期使用的水井",
+        "获得一位水元素领主或自然精魄的认可，随后举行一场祈雨仪式令一座长期受到干涸困扰的聚居地感受雨露的恩泽"
+      ]
+    },
+    {
+      "id": "adv-priest-武器大师",
+      "name": "武器大师",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "牧师",
+        "圣骑士",
+        "奇械师"
+      ],
+      "attrs": {
+        "力量": 15,
+        "敏捷": 12,
+        "体质": 12
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 5
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有技巧专家、武器精通或战技专家",
+        "在战斗环节中累计使用过全部武器类别发起过攻击",
+        "持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质"
+      ]
+    },
+    {
+      "id": "adv-priest-剑圣",
+      "name": "剑圣",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 12,
+        "敏捷": 13,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你持有剑类武器击败二十名持有剑类武器的角色",
+        "在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次",
+        "完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼"
+      ]
+    },
+    {
+      "id": "adv-priest-刺客",
+      "name": "刺客",
+      "source_classes": [
+        "牧师",
+        "游荡者"
+      ],
+      "attrs": {
+        "敏捷": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 1
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 5
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "使用终结技击杀十名能够提供经验值的角色",
+        "完成三场在突袭轮次结束阶段前结束的战斗环节",
+        "刺杀三名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓"
+      ]
+    },
+    {
+      "id": "adv-priest-密探",
+      "name": "密探",
+      "source_classes": [
+        "牧师",
+        "游荡者",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
+        "你知晓了三个非己方阵营机构、教团或组织的隐藏据点",
+        "揭露一场惊天阴谋"
+      ]
+    },
+    {
+      "id": "adv-priest-旗手",
+      "name": "旗手",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "为友方角色提供二十次增益效果",
+        "在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态",
+        "亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役"
+      ]
+    },
+    {
+      "id": "adv-priest-策略大师",
+      "name": "策略大师",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "智力": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋",
+        "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
+        "你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降"
+      ]
+    },
+    {
+      "id": "adv-priest-前锋",
+      "name": "前锋",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "牧师",
+        "圣骑士",
+        "武僧"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 12,
+        "体质": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 6
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有冲锋手或大步奔行",
+        "在十场战斗环节中作为团队中率先发起攻击的角色",
+        "在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间"
+      ]
+    },
+    {
+      "id": "adv-priest-阴谋家",
+      "name": "阴谋家",
+      "source_classes": [
+        "牧师",
+        "游荡者",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "进行十次成功的欺瞒检定",
+        "通过真实的讯息、而非虚假的情报使十名角色对己方盟友产生误解，并最终导致双方的敌对",
+        "策划一场惊天阴谋"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-骑兵",
+      "name": "骑兵",
+      "source_classes": [
+        "战士",
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 14,
+        "体质": 14,
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有冲锋手、枪兵或骑乘战斗",
+        "你在保持骑乘状态的情况下完成五场战斗环节",
+        "为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛"
+      ]
+    },
+    {
+      "id": "adv-priest-武器大师",
+      "name": "武器大师",
+      "source_classes": [
+        "战士",
+        "猎人",
+        "牧师",
+        "圣骑士",
+        "奇械师"
+      ],
+      "attrs": {
+        "力量": 15,
+        "敏捷": 12,
+        "体质": 12
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 5
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有技巧专家、武器精通或战技专家",
+        "在战斗环节中累计使用过全部武器类别发起过攻击",
+        "持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质"
+      ]
+    },
+    {
+      "id": "adv-priest-防御者",
+      "name": "防御者",
+      "source_classes": [
+        "战士",
+        "牧师",
+        "圣骑士"
+      ],
+      "attrs": {
+        "敏捷": 10,
+        "体质": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 6
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "确保在十场战斗环节中你为团队中承受伤害最多的角色",
+        "在战斗环节中累计承受超过500点伤害（包括过量伤害）",
+        "在一场己方阵营至少存在三名其他角色的战斗环节中，保持你是团队中唯一承受过伤害的角色"
+      ],
+      "attrs_max": {
+        "敏捷": true
+      }
+    },
+    {
+      "id": "adv-priest-火焰法师",
+      "name": "火焰法师",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 6
+        },
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你成功使十名敌人进入灼烧状态",
+        "你花费过幕间物语来阅读一本火焰法术的魔典",
+        "准备一颗明焰石、一颗纯正的火焰之心和一片红龙骨鳞片，在点燃凤凰之火的密闭环境下举行晋升为火焰法师的仪式"
+      ]
+    },
+    {
+      "id": "adv-priest-附魔师",
+      "name": "附魔师",
+      "source_classes": [
+        "法师",
+        "牧师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 5
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "你对三十件物品附加带有媒介的效果",
+        "你花费过幕间物语来阅读一本附魔学派的魔典",
+        "对一件稀有品质或以上的魔法物品进行一次永久性的附魔"
+      ]
+    },
+    {
+      "id": "adv-priest-前锋",
+      "name": "前锋",
+      "source_classes": [
+        "蛮斗士",
+        "战士",
+        "牧师",
+        "圣骑士",
+        "武僧"
+      ],
+      "attrs": {
+        "力量": 14,
+        "敏捷": 12,
+        "体质": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 6
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有冲锋手或大步奔行",
+        "在十场战斗环节中作为团队中率先发起攻击的角色",
+        "在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-战锤祭司",
+      "name": "战锤祭司",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 15,
+        "体质": 15
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "你持有锤类武器击败二十名忤逆者（不计算玩家在内）",
+        "你持有锤类武器在战场或冲突地区进行五次虔诚祷告",
+        "在一场关键战役中使用锤类武器击败一名敌对势力的精英级单位"
+      ]
+    },
+    {
+      "id": "adv-priest-秘银猎手",
+      "name": "秘银猎手",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "敏捷": 14,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 5
+        }
+      ],
+      "conditions": [
+        "驱逐十只邪魔、精类生物或不死生物",
+        "举行三次降灵仪式，随后将被吸引而来的鬼魂、幽灵或其他不死生物打垮",
+        "持有一件秘银制作的武器，并携带这件装备参与一场关键战役"
+      ]
+    },
+    {
+      "id": "adv-priest-熔炉守护者",
+      "name": "熔炉守护者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "体质": 16
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 4
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "在铁匠铺、熔炉室或矮人工坊等场景完成五场战斗环节，随后立即在当前环境下进行虔诚祷告",
+        "击溃十个火元素生物",
+        "守护一处铁匠铺、熔炉室或矮人工坊能够顺利作业，阻挡来自敌人的侵袭以确保那至关重要的锻造工艺得以完成"
+      ]
+    },
+    {
+      "id": "adv-priest-破舰者",
+      "name": "破舰者",
+      "source_classes": [
+        "蛮斗士",
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "力量": 16
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "破坏五处战斗地图中的可摧毁物品",
+        "击败十名着装有重甲和盾牌的角色（不计算玩家在内）",
+        "摧毁一台防御等级为24或以上的构造体或奇械设备"
+      ]
+    },
+    {
+      "id": "adv-priest-奥术师",
+      "name": "奥术师",
+      "source_classes": [
+        "法师",
+        "牧师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 6
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "施展二十次带有奥术、跃迁或专注关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
+        "你花费过幕间物语来阅读一本奥术法术的魔典",
+        "准备一颗蓝宝石或水晶和一份魔法生物的魔力源后，绘制出进阶的奥术咒文后，在魔力充裕的环境下举行晋升为奥术师的仪式"
+      ]
+    },
+    {
+      "id": "adv-priest-古典巫师",
+      "name": "古典巫师",
+      "source_classes": [
+        "法师",
+        "牧师"
+      ],
+      "attrs": {
+        "体质": 10,
+        "智力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 5
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "持有稀有品质或以上的法杖或魔棒、戒指以及其他种类魔法物品各一件",
+        "你花费过幕间物语来阅读两本任意学派的魔典",
+        "在一座魔法学院中得到魔法导师的传授，潜心进行长达十年的专研，期间不得与外界进行交流，并且在这一过程中达成以下目标：完整抄录一本魔法书籍、完成一道魔法课题、参与一次针对魔法生物的剖析、以标准宫廷礼仪与其他学院派法师展开友好切磋、通过学院渠道购置一份魔法物品以通过古典巫师的晋升仪式"
+      ],
+      "attrs_max": {
+        "体质": true
+      }
+    },
+    {
+      "id": "adv-priest-魔药学家",
+      "name": "魔药学家",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "游荡者",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "饮用二十种不同的魔法药剂",
+        "你花费过幕间物语来阅读一本制作魔法药剂的魔典",
+        "调配出五瓶稀有品质或以上的魔法药剂，并且其中一瓶至少拥有珍稀品质，在这些药剂被使用后视为完成这项进阶条件"
+      ]
+    },
+    {
+      "id": "adv-priest-解密学者",
+      "name": "解密学者",
+      "source_classes": [
+        "法师",
+        "牧师"
+      ],
+      "attrs": {
+        "智力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "完成十次来自魔法、奇械或其他机关设置的谜题",
+        "破获三次来自秘密组织的重要情报",
+        "破解或设置一道惊人的谜题"
+      ]
+    },
+    {
+      "id": "adv-priest-心灵导师",
+      "name": "心灵导师",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 13,
+        "感知": 14,
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
+        "使十名角色进入困惑、混乱、忏悔或眩晕状态",
+        "倾听一名挑战等级或名望等级为10或以上角色的内心述说，为其开导解开对方的心结并获得其感激（不计算玩家在内）"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-博学者",
+      "name": "博学者",
+      "source_classes": [
+        "牧师",
+        "奇械师"
+      ],
+      "attrs": {
+        "智力": 18
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 4
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "复原一项出土于古代遗迹中的、现已失传的事物（例如史学文献、工艺技术或是其他的知识传承等）",
+        "激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时",
+        "与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式"
+      ]
+    },
+    {
+      "id": "adv-priest-镜影师",
+      "name": "镜影师",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你通过惑控或幻象效果成功欺骗二十名角色",
+        "让十名角色将你利用魔术或非魔法原理生成的效应误认为是魔法",
+        "通过任意手段让监管你的人目击你的虚假身影长达24小时，而实际上你的本体已然完成一起关键的任务"
+      ]
+    },
+    {
+      "id": "adv-priest-卷轴学者",
+      "name": "卷轴学者",
+      "source_classes": [
+        "法师",
+        "牧师"
+      ],
+      "attrs": {
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中包含有卷轴助理",
+        "使用二十张法术卷轴",
+        "你花费过幕间物语来阅读并抄录一本任意学派的魔典"
+      ]
+    },
+    {
+      "id": "adv-priest-戏法师",
+      "name": "戏法师",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "术士",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 14,
+        "魅力": 14
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "对十名角色施展戏法（不计算玩家在内）",
+        "使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）",
+        "你通过施展戏法决定一场关键的战斗环节胜负"
+      ]
+    },
+    {
+      "id": "adv-priest-诡术师",
+      "name": "诡术师",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "游荡者",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "敏捷": 12,
+        "智力": 13,
+        "魅力": 14
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
+        "伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内）",
+        "在一座城镇留下一起被当地人津津乐道的怪谈"
+      ]
+    },
+    {
+      "id": "adv-priest-妖精召唤者",
+      "name": "妖精召唤者",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 5
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "召唤十只精类生物来到主物质位面",
+        "经历三场由自然界的精类生物所引发的事件",
+        "造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面"
+      ]
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-竖琴精灵",
+      "name": "竖琴精灵",
+      "source_classes": [
+        "牧师",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "在一所高端层面的酒馆或旅店中进行长达一周时段的即兴乐器演奏，并因此结识五名来自上流社会的NPC角色",
+        "使五位超自然存在成为你的听众",
+        "你受到上流社会的邀请参与一场位于私密场所的独奏表演，通过精妙绝伦的演绎令听众们纷纷潸然泪下"
+      ]
+    },
+    {
+      "id": "adv-priest-狂欢骑士",
+      "name": "狂欢骑士",
+      "source_classes": [
+        "牧师",
+        "吟游诗人",
+        "魔契师"
+      ],
+      "attrs": {
+        "魅力": 15,
+        "幸运": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "在庆典活动中击败二十名角色（不计算玩家在内）",
+        "与上述前置条件①中被击败的角色开怀畅饮、纵情欢歌",
+        "参与到举办一场地区性质的盛大嘉年华活动过程当中，并且在其中起到足够亮眼的表现"
+      ]
+    },
+    {
+      "id": "adv-priest-音乐侦探",
+      "name": "音乐侦探",
+      "source_classes": [
+        "牧师",
+        "吟游诗人"
+      ],
+      "attrs": {
+        "智力": 12,
+        "感知": 15,
+        "魅力": 12
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "进行十次成功的聆听检定",
+        "破获三起与音乐、剧场或吟游诗人等题材相关的案件",
+        "将一名犯人引导向你提前布置的“剧目”现场，令对方被迫暴露在“观众”的视野当中，伴随着戏剧高潮的乐曲你置身于“台前”揭晓这一切地始末"
+      ]
+    },
+    {
+      "id": "adv-priest-幻灵诗人",
+      "name": "幻灵诗人",
+      "source_classes": [
+        "牧师",
+        "吟游诗人"
+      ],
+      "attrs": {
+        "感知": 15,
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "与三名诗人、歌手或作曲家等创作者的鬼魂交谈",
+        "对一部知名作品进行二次创作并得到足够规模的认可",
+        "帮助一位鬼魂使对方生前未能撰写完成的诗集、乐曲或剧作得以重见天日，并且取得足够的成就"
+      ]
+    },
+    {
+      "id": "adv-priest-圣乐演奏家",
+      "name": "圣乐演奏家",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "感知": 16
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "你在一处教堂、寺庙或其他宗教场所进行过十次乐器演出",
+        "为十名其他教团的牧师演奏宗教乐曲，并且获得他人的感激（不计算玩家在内）",
+        "参与一场城市级别的大教堂举办的圣乐演出，并且本次演奏过程中有来自神圣领域的存在降临"
+      ]
+    },
+    {
+      "id": "adv-priest-绘梦画师",
+      "name": "绘梦画师",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15,
+        "魅力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 1
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作",
+        "令十名敌人惊叹你的画作，并解除与你的敌对状态",
+        "在一场节日庆典、文化沙龙或艺术展活动中进行公开创作，用你的画作令所有参与者重拾心中的梦想"
+      ]
+    },
+    {
+      "id": "adv-priest-死灵法师",
+      "name": "死灵法师",
+      "source_classes": [
+        "法师",
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "体质": 10,
+        "智力": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "你成功对二十名敌人造成生命流失效果",
+        "你花费过幕间物语来阅读一本死灵学派或黑魔法的魔典",
+        "准备一颗孩童的乳齿，以及一根成人的肋骨、老者的髂骨和施法者的头骨，在负能量充裕的黑暗环境下举行晋升为死灵法师的仪式"
+      ],
+      "attrs_max": {
+        "体质": true
+      }
+    },
+    {
+      "id": "adv-priest-神谕使者",
+      "name": "神谕使者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "魅力": 16
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 4
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 4
+        }
+      ],
+      "conditions": [
+        "进行十次虔诚祷告",
+        "施展二十次带有神谕真言关键词的技能",
+        "获得一次神灵的启示，通过先机完美解决即将发生的事件"
+      ]
+    },
+    {
+      "id": "adv-priest-缝合怪专家",
+      "name": "缝合怪专家",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "体质": 14,
+        "智力": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        }
+      ],
+      "conditions": [
+        "消灭十个不死生物，并回收他们的躯体",
+        "处理二十具受到损坏的遗体",
+        "创造一头属于自己的憎恶"
+      ]
+    },
+    {
+      "id": "adv-priest-灵媒",
+      "name": "灵媒",
+      "source_classes": [
+        "牧师",
+        "萨满祭司",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 16
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 2
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
+        "造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往",
+        "驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作"
+      ]
+    },
+    {
+      "id": "adv-priest-灰袍收割者",
+      "name": "灰袍收割者",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "敏捷": 14,
+        "意志": 14
+      },
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "消灭十个不死生物",
+        "击杀十个试图使用黑魔法或其他劣等手段来维持生命延续的角色",
+        "目送一名对你至关重要的人寿终正寝，期间抗拒来自生命延续的诱惑"
+      ]
+    },
+    {
+      "id": "adv-priest-灵魂炼金师",
+      "name": "灵魂炼金师",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "智力": 15,
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 2
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态",
+        "使用任意手段复活三名角色，并且研究他们复活的完整过程",
+        "炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂"
+      ]
+    },
+    {
+      "id": "adv-priest-赋生者",
+      "name": "赋生者",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "体质": 14,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "在战斗环节中为其他角色施展二十次回复效果",
+        "累计十次将生命值降至0或更低的角色生命值回复到至少1点",
+        "为一名注定死亡的角色赋予新生"
+      ]
+    },
+    {
+      "id": "adv-priest-渡魂典卫",
+      "name": "渡魂典卫",
+      "source_classes": [
+        "牧师",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 1
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 1
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）",
+        "通过你生成的护盾、结界等效果抵挡十次伤害或异常状态效果",
+        "陪同并确保一名未能安息的亡魂穿过灵界，抵达死者的国度"
+      ]
+    },
+    {
+      "id": "adv-priest-净化大师",
+      "name": "净化大师",
+      "source_classes": [
+        "牧师",
+        "萨满祭司",
+        "魔契师"
+      ],
+      "attrs": {
+        "感知": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 2
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 1
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 5
+        }
+      ],
+      "conditions": [
+        "驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）",
+        "在战斗环节中施展十次移除异常状态的效果",
+        "净化一个具有深刻过往、危害当地多年的恶灵，在其消逝前得到对方的祝福"
+      ]
+    },
+    {
+      "id": "adv-priest-彼界战士",
+      "name": "彼界战士",
+      "source_classes": [
+        "牧师"
+      ],
+      "attrs": {
+        "力量": 13,
+        "体质": 15,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "击杀二十名角色并且确保其灵魂能够顺利抵达灵界",
+        "使用任意手段复活三名角色，随后进行虔诚祷告",
+        "将一个不该就此逝去的亡魂自灵界夺回，随后与对方一同进行虔诚祷告以完成彼界战士的晋升"
+      ]
+    },
+    {
+      "id": "adv-priest-近卫",
+      "name": "近卫",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 14,
+        "体质": 15
+      },
+      "cost": [
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "确保在十场战斗环节中你为团队中承受伤害最多的角色",
+        "在一场关键战役中全程担任正面承受敌人火力的职责"
+      ]
+    },
+    {
+      "id": "adv-priest-高阶冒险者",
+      "name": "高阶冒险者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "完成十次成功的剧情交互内容",
+        "完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容"
+      ]
+    },
+    {
+      "id": "adv-priest-战斗大师",
+      "name": "战斗大师",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 13,
+        "敏捷": 14,
+        "感知": 13
+      },
+      "cost": [
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
+        },
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "赢得十场战斗环节的胜利",
+        "你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态",
+        "取得一场关键战役的最终胜利"
+      ]
+    },
+    {
+      "id": "adv-priest-复仇者",
+      "name": "复仇者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "意志": 15
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 3
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 3
+        },
+        {
+          "color": "#B94BFF",
+          "name": "紫色",
+          "id": "purple",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "你拥有一名刻骨铭心、无论如何都必须向其复仇的对象",
+        "你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）",
+        "你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式"
+      ]
+    },
+    {
+      "id": "adv-priest-骑士扈从",
+      "name": "骑士扈从",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共",
+        "你与自身的效忠对象一同参与十场战斗环节",
+        "在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右"
+      ]
+    },
+    {
+      "id": "adv-priest-战地医师",
+      "name": "战地医师",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "智力": 12,
+        "感知": 14
+      },
+      "cost": [
+        {
+          "color": "#FF0000",
+          "name": "红色",
+          "id": "red",
+          "amount": 2
+        },
+        {
+          "color": "#FFF32F",
+          "name": "黄色",
+          "id": "yellow",
+          "amount": 1
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "进行十次成功的医药检定",
+        "通过医疗包移除十次中毒或流血的效果",
+        "作为医疗人员的身份完整参与一场战役"
+      ]
+    },
+    {
+      "id": "adv-priest-边界行者",
+      "name": "边界行者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "感知": 14,
+        "意志": 13
+      },
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 3
+        },
+        {
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
+        }
+      ],
+      "conditions": [
+        "击败二十名来自任意边境地区的敌人",
+        "完成三场不为人知的拯救行动（不计算玩家在内）",
+        "阻挡一次来自异界、异位面对本位面的入侵事件"
+      ]
+    },
+    {
+      "id": "adv-priest-自由骑士",
+      "name": "自由骑士",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {},
+      "cost": [
+        {
+          "color": "#00B050",
+          "name": "绿色",
+          "id": "green",
+          "amount": 2
+        },
+        {
+          "color": "#EE822F",
+          "name": "橙色",
+          "id": "orange",
+          "amount": 2
+        },
+        {
+          "color": "#B3F9FF",
+          "name": "浅色",
+          "id": "light",
+          "amount": 2
+        },
+        {
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 2
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 1
+        }
+      ],
+      "conditions": [
+        "你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）",
+        "协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容",
+        "你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划"
+      ]
+    },
+    {
+      "id": "adv-priest-塑形者",
+      "name": "塑形者",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": "X",
+        "敏捷": "X",
+        "体质": "X",
+        "智力": "X",
+        "感知": "X",
+        "魅力": "X",
+        "意志": "X",
+        "幸运": "X"
+      },
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度",
+        "你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板",
+        "你所在团队的所有其他角色均完成进阶职业"
+      ]
+    },
+    {
+      "id": "adv-priest-凡人勇士",
+      "name": "凡人勇士",
+      "source_classes": [
+        "全职业"
+      ],
+      "attrs": {
+        "力量": 15,
+        "敏捷": 15,
+        "体质": 15,
+        "智力": 15,
+        "感知": 15,
+        "魅力": 15,
+        "意志": 15,
+        "幸运": 15
+      },
+      "cost": [
+        {
+          "color": "#D9D9D9",
+          "name": "无色",
+          "id": "colorless",
+          "amount": 9
+        }
+      ],
+      "conditions": [
+        "你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板",
+        "在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力",
+        "战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成"
+      ],
+      "attrs_max": {
+        "力量": true,
+        "敏捷": true,
+        "体质": true,
+        "智力": true,
+        "感知": true,
+        "魅力": true,
+        "意志": true,
+        "幸运": true
+      }
+    }
+  ]
+}

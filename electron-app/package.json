@@ -1,0 +1,19 @@
+{
+  "name": "snowd-skill-tree",
+  "version": "1.0.48",
+  "description": "斯诺德跑团 - RPG角色管理工具",
+  "author": "snowd",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "node ./sync-check.js && node --require ./spawn_monkey_patch.js node_modules/electron-builder/out/cli/cli.js --win portable"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.0"
+  },
+  "devDependencies": {
+    "electron": "^22.3.27",
+    "electron-builder": "^26.8.1",
+    "electron-packager": "^17.1.2"
+  }
+}

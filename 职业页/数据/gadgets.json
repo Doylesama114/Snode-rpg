@@ -1,0 +1,366 @@
+{
+  "零件": [
+    {
+      "name": "塑料泡沫",
+      "price": "1金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "铁砂",
+      "price": "1金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "氮气弹簧",
+      "price": "2金币",
+      "weight": "0.1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "金属导管",
+      "price": "2金币",
+      "weight": "0.5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "奇械齿轮",
+      "price": "2金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "校准器",
+      "price": "5金币",
+      "weight": "0.5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "零件包",
+      "price": "5金币",
+      "weight": "2.5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "D.50.金属导管",
+      "price": "10金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "悬浮板",
+      "price": "20金币",
+      "weight": "5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "消焰器",
+      "price": "50金币",
+      "weight": "0.5磅",
+      "quality": "稀有",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "山铜奇械齿轮",
+      "price": "60金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "山铜导管",
+      "price": "60金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "秘银导管",
+      "price": "80金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "防护钢",
+      "price": "100金币",
+      "weight": "10磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "沉重金属",
+      "price": "150金币",
+      "weight": "10磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "精金奇械齿轮",
+      "price": "160金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "泵动式枪膛",
+      "price": "300金币",
+      "weight": "1磅",
+      "quality": "珍稀",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "散射扼流圈",
+      "price": "300金币",
+      "weight": "1磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "蓝钢导管",
+      "price": "300金币",
+      "weight": "2.5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "超导合金",
+      "price": "300金币",
+      "weight": "10磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "精金校准导轨",
+      "price": "440金币",
+      "weight": "2磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    },
+    {
+      "name": "曲光校准器",
+      "price": "1000金币",
+      "weight": "0.5磅",
+      "quality": "常见",
+      "tags": [
+        "材料"
+      ]
+    }
+  ],
+  "组件": [
+    {
+      "name": "初级智能芯片",
+      "price": "15金币",
+      "weight": "0.1磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "中级智能芯片",
+      "price": "50金币",
+      "weight": "0.1磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "中级电磁芯片",
+      "price": "50金币",
+      "weight": "0.1磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "高级智能芯片",
+      "price": "200金币",
+      "weight": "0.1磅",
+      "quality": "稀有",
+      "tags": []
+    },
+    {
+      "name": "高级电磁芯片",
+      "price": "200金币",
+      "weight": "0.1磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "小型燃料发动机",
+      "price": "150金币",
+      "weight": "15磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "高频驱动器",
+      "price": "200金币",
+      "weight": "10磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "小型飞行器发动机",
+      "price": "300金币",
+      "weight": "15磅",
+      "quality": "珍稀",
+      "tags": []
+    },
+    {
+      "name": "中型燃料发动机",
+      "price": "750金币",
+      "weight": "150磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "元素转换器",
+      "price": "1000金币",
+      "weight": "10磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "微缩动力引擎",
+      "price": "1000金币",
+      "weight": "20磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "惯性阻尼推进器",
+      "price": "1600金币",
+      "weight": "2.5磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "雷霆驱动器",
+      "price": "2400金币",
+      "weight": "50磅",
+      "quality": "常见",
+      "tags": []
+    },
+    {
+      "name": "风暴巨人级反应堆",
+      "price": "8800金币",
+      "weight": "500磅",
+      "quality": "奇珍",
+      "tags": []
+    }
+  ],
+  "其他": [
+    {
+      "name": "助燃剂",
+      "price": "0",
+      "weight": "1磅",
+      "quality": "常见"
+    },
+    {
+      "name": "工匠锤",
+      "price": "0",
+      "weight": "2磅",
+      "quality": "常见"
+    },
+    {
+      "name": "15金币",
+      "price": "0.1磅",
+      "weight": "常见",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    },
+    {
+      "name": "750金币",
+      "price": "150磅",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    },
+    {
+      "name": "1000金币",
+      "price": "10磅",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    },
+    {
+      "name": "1000金币",
+      "price": "20磅",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    },
+    {
+      "name": "1600金币",
+      "price": "2.5磅",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    },
+    {
+      "name": "8800金币",
+      "price": "500磅",
+      "weight": "奇珍",
+      "tags": [
+        "材料",
+        "奇械"
+      ]
+    }
+  ]
+}

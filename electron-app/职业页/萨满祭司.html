@@ -1,0 +1,2945 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>萨满祭司 · 斯诺德职业技能索引</title>
+<link rel="stylesheet" href="common.css"/>
+<style>
+    body { background: var(--bg); }
+    .class-view { display: block !important; }
+    .view-home { display: none !important; }
+
+    .adv-link {
+        display: block;
+        margin: 14px 0;
+        padding: 16px 20px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--red), #c0392b);
+        color: #fff !important;
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 2px;
+        box-shadow: 0 3px 12px rgba(157,47,47,0.4);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .adv-link:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(157,47,47,0.5);
+    }
+</style>
+
+</head>
+<body>
+
+<a href="首页.html" class="back-btn">← 返回</a>
+<header>
+    <div class="topbar">
+      <div>
+        <h1>萨满祭司天赋索引</h1>
+        <p class="subtitle">五种元素风格 · 一至四阶 · 技能详情 · 关键词搜索</p>
+      </div>
+      <label class="searchbox">
+        <input id="sa-search" type="search" placeholder="搜索技能、风格、阶位、关键词或正文..." autocomplete="off" />
+      </label>
+    </div>
+  </header>
+<main>
+    <nav aria-label="萨满祭司天赋索引">
+      <div class="nav-inner">
+      <div class="filter-bar" id="sa-filter-bar"></div>
+      <a class="style-link" href="#sa-starting-features">起始特性</a>
+<a class="adv-link" href="萨满祭司·进阶.html">→ 查看进阶途径</a>
+      <div class="tier-list">
+        <a class="skill-link" href="#sa-skill-1">闪电箭</a>
+        <a class="skill-link" href="#sa-skill-2">烈焰冲击</a>
+        <a class="skill-link" href="#sa-skill-3">治疗波</a>
+        <a class="skill-link" href="#sa-skill-4">大地之盾</a>
+      </div>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#sa-style-风暴">风暴风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-风暴-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-5">闪电盾牌</a>
+                  <a class="skill-link" href="#sa-skill-6">加速图腾</a>
+                  <a class="skill-link" href="#sa-skill-7">风之护符</a>
+                  <a class="skill-link" href="#sa-skill-8">风雷祈咒</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-风暴-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-9">叉状闪电</a>
+                  <a class="skill-link" href="#sa-skill-10">风怒</a>
+                  <a class="skill-link" href="#sa-skill-11">唤风术</a>
+                  <a class="skill-link" href="#sa-skill-12">风暴之眼</a>
+                  <a class="skill-link" href="#sa-skill-13">静电图腾</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-风暴-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-14">电弧鞭笞</a>
+                  <a class="skill-link" href="#sa-skill-15">旋风</a>
+                  <a class="skill-link" href="#sa-skill-16">气流牵引</a>
+                  <a class="skill-link" href="#sa-skill-17">召唤风元素</a>
+                  <a class="skill-link" href="#sa-skill-18">闪电链</a>
+              </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#sa-style-火焰">火焰风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-火焰-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-19">火焰箭</a>
+                  <a class="skill-link" href="#sa-skill-20">灼热图腾</a>
+                  <a class="skill-link" href="#sa-skill-21">创造篝火</a>
+                  <a class="skill-link" href="#sa-skill-22">火焰祈咒</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-火焰-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-23">熔岩武器</a>
+                  <a class="skill-link" href="#sa-skill-24">火炬图腾</a>
+                  <a class="skill-link" href="#sa-skill-25">沸腾</a>
+                  <a class="skill-link" href="#sa-skill-26">点燃</a>
+                  <a class="skill-link" href="#sa-skill-27">炽焰武力</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-火焰-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-28">烈焰战旗</a>
+                  <a class="skill-link" href="#sa-skill-29">火环图腾</a>
+                  <a class="skill-link" href="#sa-skill-30">火蛇图腾</a>
+                  <a class="skill-link" href="#sa-skill-31">召唤火元素</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-火焰-4">四阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-32">熔岩喷溅</a>
+                  <a class="skill-link" href="#sa-skill-33">火焰新星</a>
+                  <a class="skill-link" href="#sa-skill-34">火镰图腾</a>
+                  <a class="skill-link" href="#sa-skill-35">余烬抗性</a>
+              </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#sa-style-水源">水源风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-水源-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-36">水上行走</a>
+                  <a class="skill-link" href="#sa-skill-37">恢复图腾</a>
+                  <a class="skill-link" href="#sa-skill-38">创造水源</a>
+                  <a class="skill-link" href="#sa-skill-39">流水祈咒</a>
+             <details class="nav-tier">
+<summary class="tier-summary"><a href="#sa-tier-水源-5">五阶天赋树</a></summary>
+<a class="skill-link" href="#sa-skill-95">生机潮息</a><a class="skill-link" href="#sa-skill-96">衰老潮息</a><a class="skill-link" href="#sa-skill-97">镜像水域</a><a class="skill-link" href="#sa-skill-98">水灵契约</a>
+</details>
+ </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-水源-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-40">水幕屏障</a>
+                  <a class="skill-link" href="#sa-skill-41">潮汐集中</a>
+                  <a class="skill-link" href="#sa-skill-43">间歇泉</a>
+                  <a class="skill-link" href="#sa-skill-43">雨露图腾</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-水源-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-44">高压水刃</a>
+                  <a class="skill-link" href="#sa-skill-45">治疗之涌</a>
+                  <a class="skill-link" href="#sa-skill-46">寒霜之息</a>
+                  <a class="skill-link" href="#sa-skill-47">冰霜震击</a>
+                  <a class="skill-link" href="#sa-skill-48">召唤水元素</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-水源-4">四阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-49">愈疗水雾</a>
+                  <a class="skill-link" href="#sa-skill-50">宁静心智图腾</a>
+                  <a class="skill-link" href="#sa-skill-51">激流图腾</a>
+                  <a class="skill-link" href="#sa-skill-53">治疗之雨</a>
+                  <a class="skill-link" href="#sa-skill-53">潮汐抗性</a>
+              </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#sa-style-大地">大地风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-大地-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-54">石爪术</a>
+                  <a class="skill-link" href="#sa-skill-55">缓速图腾</a>
+                  <a class="skill-link" href="#sa-skill-56">强壮图腾</a>
+                  <a class="skill-link" href="#sa-skill-57">大地祈咒</a>
+             <details class="nav-tier">
+<summary class="tier-summary"><a href="#sa-tier-大地-5">五阶天赋树</a></summary>
+<a class="skill-link" href="#sa-skill-99">静水流深</a><a class="skill-link" href="#sa-skill-100">晶化崩解</a><a class="skill-link" href="#sa-skill-101">土灵契约</a>
+</details>
+ </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-大地-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-58">石肤术</a>
+                  <a class="skill-link" href="#sa-skill-59">地陷图腾</a>
+                  <a class="skill-link" href="#sa-skill-60">石锥术</a>
+                  <a class="skill-link" href="#sa-skill-61">矿石亲和</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-大地-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-62">大地震击</a>
+                  <a class="skill-link" href="#sa-skill-63">陷足流沙</a>
+                  <a class="skill-link" href="#sa-skill-64">地脉感知</a>
+                  <a class="skill-link" href="#sa-skill-65">召唤土元素</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-大地-4">四阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-66">石凝咒</a>
+                  <a class="skill-link" href="#sa-skill-67">石壁图腾</a>
+                  <a class="skill-link" href="#sa-skill-68">停滞图腾</a>
+                  <a class="skill-link" href="#sa-skill-70">漩涡武器</a>
+                  <a class="skill-link" href="#sa-skill-70">深岩抗性</a>
+              </details>
+            </details>
+
+            <details class="nav-group">
+              <summary class="style-summary"><a href="#sa-style-巫术">巫术风格</a></summary>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-巫术-1">一阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-71">视界术</a>
+                  <a class="skill-link" href="#sa-skill-72">传讯术</a>
+                  <a class="skill-link" href="#sa-skill-73">虚弱诅咒</a>
+                  <a class="skill-link" href="#sa-skill-74">迷雾术</a>
+                  <a class="skill-link" href="#sa-skill-75">侦测毒性与疾病</a>
+                  <a class="skill-link" href="#sa-skill-76">骨符占卜</a>
+             <details class="nav-tier">
+<summary class="tier-summary"><a href="#sa-tier-巫术-5">五阶天赋树</a></summary>
+<a class="skill-link" href="#sa-skill-102">山岭之护</a>
+</details>
+ </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-巫术-2">二阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-77">妖术</a>
+                  <a class="skill-link" href="#sa-skill-78">巫术打击</a>
+                  <a class="skill-link" href="#sa-skill-79">蛇吻术</a>
+                  <a class="skill-link" href="#sa-skill-80">迷失图腾</a>
+                  <a class="skill-link" href="#sa-skill-89">次级衰弱结界</a>
+                  <a class="skill-link" href="#sa-skill-90">净化图腾</a>
+                  <a class="skill-link" href="#sa-skill-81">骚灵现象</a>
+                  <a class="skill-link" href="#sa-skill-82">巫毒步</a>
+              </details>
+              <details class="nav-tier">
+                  <summary class="tier-summary"><a href="#sa-tier-巫术-3">三阶天赋树</a></summary>
+                  <a class="skill-link" href="#sa-skill-83">祖灵之矛</a>
+                  <a class="skill-link" href="#sa-skill-84">虫孽滋生</a>
+                  <a class="skill-link" href="#sa-skill-85">战栗图腾</a>
+                  <a class="skill-link" href="#sa-skill-86">巫毒疗法</a>
+                  <a class="skill-link" href="#sa-skill-87">毒雾术</a>
+                  <a class="skill-link" href="#sa-skill-88">厄运转移</a>
+
+
+              
+                  <a class="skill-link" href="#sa-skill-91">地震图腾</a>
+                  <a class="skill-link" href="#sa-skill-92">巨型图腾</a>
+                  <a class="skill-link" href="#sa-skill-93">岩崩</a>
+                  <a class="skill-link" href="#sa-skill-94">急流飞浪</a>
+              </details>
+            </details>
+      </div>
+    </nav>
+    <div class="content">
+      <div class="empty" id="sa-empty" style="display:none">
+        <p style="text-align:center;color:var(--muted);padding:40px 0">没有匹配的技能。试试其他关键词吧。</p>
+      </div>
+      <h3 id="sa-starting-features">起始特性</h3>
+      <p class="subtitle">你可以从以下起始特性中选择两项加入你的技能列表：</p>
+      <article class="skill" id="sa-skill-1" data-search="闪电箭 法术.施法攻击.雷电.虚化飞行道具 1动作 12米 立即 2 你对一名角色发射闪电箭，造成1D8点雷电伤害 如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害 你的萨满祭司职业等级到达3级时：闪电箭改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害 你的萨满祭司职业等级到达6级时：闪电箭改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害">
+        <h4>闪电箭 <span class="chip" style="background:#888;color:#fff">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">雷电</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.雷电.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>你用未持有物件的双手做出钳形动作、并念诵法咒从双手间发射一道闪电箭矢</p>
+          <p>你对一名角色发射闪电箭，造成1D8点雷电伤害</p>
+          <p>如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达3级时：</span>闪电箭改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>闪电箭改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-2" data-search="烈焰冲击 法术.施法攻击.AOE.火焰.敏捷豁免（10） 1动作 近战 立即 4 你对前方扇形3环内的所有角色各造成1D8点火焰伤害，目标需要进行一次难度为10的敏捷豁免，豁免失败的角色将进入灼烧状态 闪避成功的角色仍需要承受一半的结算后伤害 烈焰冲击会使水元素回归沉寂状态 你的萨满祭司职业等级到达5级时：烈焰冲击改为造成2D8点火焰伤害 你的萨满祭司职业等级到达8级时：烈焰冲击的关键词变更为敏捷豁免（15） 你的萨满祭司职业等级到达12级时：烈焰冲击改为造成3D8点火焰伤害">
+        <h4>烈焰冲击 <span class="chip" style="background:#888;color:#fff">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">火焰</span>
+          <span class="chip">敏捷豁免（10）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.火焰.敏捷豁免（10）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>你抬起一只手、并念出法咒掀起一阵烈焰冲击，利用高温和灼热烫伤敌人</p>
+          <p>你对前方扇形3环内的所有角色各造成1D8点火焰伤害，目标需要进行一次难度为10的敏捷豁免，豁免失败的角色将进入灼烧状态</p>
+          <p>闪避成功的角色仍需要承受一半的结算后伤害</p>
+          <p>烈焰冲击会使水元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>烈焰冲击改为造成2D8点火焰伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>烈焰冲击的关键词变更为敏捷豁免（15）</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>烈焰冲击改为造成3D8点火焰伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-3" data-search="治疗波 法术.水源.净化.回复 1动作 6米 立即 2 你为一名角色回复1D6点生命值 如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态 治疗波会使火元素回归沉寂状态 你的萨满祭司职业等级到达5级时：如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值 你的萨满祭司职业等级到达10级时：如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值">
+        <h4>治疗波 <span class="chip" style="background:#888;color:#fff">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">净化</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.水源.净化.回复</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>你做出对应施法手势，念出法咒呼唤流水之力治愈他人</p>
+          <p>你为一名角色回复1D6点生命值</p>
+          <p>如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态</p>
+          <p>治疗波会使火元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-4" data-search="大地之盾 法术.大地.护盾.激活 1动作 自身 1-2轮 3 持续时间内为你生成一个能够抵挡5点任意伤害的护盾 大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤 大地之盾无法抵挡心灵、神圣、邪能和星界伤害 如果此时土元素处于活跃状态,大地之盾获得额外5点护盾值 你的萨满祭司职业等级到达6级时：如果此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作 你的萨满祭司职业等级到达12级时：如果此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效">
+        <h4>大地之盾 <span class="chip" style="background:#888;color:#fff">起始特性</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">护盾</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.大地.护盾.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>你将双手护至胸前，念出法咒唤起顽岩环绕在自身周围形成守护之势</p>
+          <p>持续时间内为你生成一个能够抵挡5点任意伤害的护盾</p>
+          <p>大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤</p>
+          <p>大地之盾无法抵挡心灵、神圣、邪能和星界伤害</p>
+          <p>如果此时土元素处于活跃状态,大地之盾获得额外5点护盾值</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>如果此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>如果此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效</p>
+        </div>
+      </article>
+
+      <h3 id="sa-style-风暴">风暴风格</h3>
+
+      <h4 id="sa-tier-风暴-1">一阶天赋树</h4>
+      <article class="skill" id="sa-skill-5" data-search="闪电盾牌 法术.雷电.复仇.激活 你在本次游玩的战斗环节中造成过雷电伤害 0动作 自身 2轮 3 持续时间内每当你承受挥砍、射击或魔法飞弹等能够被目击的手段所造成的伤害后，如果攻击来源位于你周围6米内便会对目标发起反击，攻击命中后对目标反弹6点雷电伤害，这个效果不会附加你的关键属性和其他增益效果 你的萨满祭司职业等级到达5级时：闪电盾牌改为你在受到攻击后，而非承受伤害后便会反弹伤害 你的萨满祭司职业等级到达10级时：如果闪电盾牌持续结束时风元素处于活跃状态，那么你可以使自身周围6米内的所有角色进行一次难度为15的敏捷豁免，豁免失败的角色将受到9点雷电伤害">
+        <h4>闪电盾牌 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">雷电</span>
+          <span class="chip">复仇</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中造成过雷电伤害</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.雷电.复仇.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在自身周围生成带有电流的蓝色盾牌幻象</p>
+          <p>持续时间内每当你承受挥砍、射击或魔法飞弹等能够被目击的手段所造成的伤害后，如果攻击来源位于你周围6米内便会对目标发起反击，攻击命中后对目标反弹6点雷电伤害，这个效果不会附加你的关键属性和其他增益效果</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>闪电盾牌改为你在受到攻击后，而非承受伤害后便会反弹伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>如果闪电盾牌持续结束时风元素处于活跃状态，那么你可以使自身周围6米内的所有角色进行一次难度为15的敏捷豁免，豁免失败的角色将受到9点雷电伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-6" data-search="加速图腾 法术.图腾.增益.唯一性 你在本次游玩的战斗环节中执行过全速移动 0动作 4米 2轮 1 你在一个空白位置上放置一根风元素图腾，持续时间内使其周围2米内的所有角色基础移动力+2米 加速图腾会使土元素回归沉寂状态">
+        <h4>加速图腾 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">增益</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中执行过全速移动</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.增益.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有风元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾并使周围的风速流动加快</p>
+          <p>你在一个空白位置上放置一根风元素图腾，持续时间内使其周围2米内的所有角色基础移动力+2米</p>
+          <p>加速图腾会使土元素回归沉寂状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-7" data-search="风之护符 法术.风暴.增益 你得到过一次来自风暴的协助 0动作 12米 1轮 2 你使一名角色在持续时间内获得以下效果： ·对方在进行位移时具有迅捷关键词 ·允许在自身回合中同时执行基础移动和全速移动">
+        <h4>风之护符 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你得到过一次来自风暴的协助</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.风暴.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前风元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒呼唤风的护佑</p>
+          <p>你使一名角色在持续时间内获得以下效果：</p>
+          <p>·对方在进行位移时具有迅捷关键词</p>
+          <p>·允许在自身回合中同时执行基础移动和全速移动</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-8" data-search="风雷祈咒 法术.雷电.风暴.增益 你与风元素进行过一次友善的交互 0动作 12米 立即 1 你使一名角色在下一次结算造成的伤害值后额外附加4点雷电伤害 这个效果无法对带有AOE关键词的能力生效 你的萨满祭司职业等级到达5级时：风雷祈咒改为额外附加6点雷电伤害 你的萨满祭司职业等级到达10级时：风雷祈咒改为额外附加8点雷电伤害">
+        <h4>风雷祈咒 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">雷电</span>
+          <span class="chip">风暴</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与风元素进行过一次友善的交互</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.雷电.风暴.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前风元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒祈求风元素赐予你雷电的力量</p>
+          <p>你使一名角色在下一次结算造成的伤害值后额外附加4点雷电伤害</p>
+          <p>这个效果无法对带有AOE关键词的能力生效</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>风雷祈咒改为额外附加6点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>风雷祈咒改为额外附加8点雷电伤害</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-风暴-2">二阶天赋树</h4>
+      <article class="skill" id="sa-skill-9" data-search="叉状闪电 法术.施法攻击.雷电.虚化飞行道具 你的技能列表中拥有至少两个本风格的技能 你在本次游玩的战斗环节中通过闪电箭击杀过角色 1动作 12米 立即 4 你对两名不同的、距离不超过6米的角色各造成1D8点雷电伤害 如果此时风元素处于活跃状态,叉状闪电改为造成2D8点雷电伤害 你的萨满祭司职业等级到达5级时：叉状闪电改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成2D8+4点雷电伤害 你的萨满祭司职业等级到达10级时：叉状闪电改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成2D8+6点雷电伤害">
+        <h4>叉状闪电 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">雷电</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有至少两个本风格的技能</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过闪电箭击杀过角色</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.雷电.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用未持有物件的双手做出对应的施法动作、并念诵法咒从手中发射两道交错的闪电</p>
+          <p>你对两名不同的、距离不超过6米的角色各造成1D8点雷电伤害</p>
+          <p>如果此时风元素处于活跃状态,叉状闪电改为造成2D8点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>叉状闪电改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成2D8+4点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>叉状闪电改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成2D8+6点雷电伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-10" data-search="风怒 法术.风暴.增益.唯一性 本风格为你萨满祭司职业的首个战斗风格 你以风元素的名义击败过一名对立阵营的强敌 0动作 自身 1轮 2 持续时间内你在每个自身回合能够额外发起一次基础攻击（无法以此施展技能），这个效果等同于特性.额外攻击 你的萨满祭司职业等级到达5级时：风怒的持续时间+1轮 你的萨满祭司职业等级到达10级时：风怒的持续时间+1轮 你的萨满祭司职业等级到达15级时：你能够为自身周围6米内的一名角色施展风怒">
+        <h4>风怒 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">增益</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">额外条件：</span>你以风元素的名义击败过一名对立阵营的强敌</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.风暴.增益.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你高举武器并念诵法咒呼唤风暴汇聚于你的武器上，随后发起如同狂风一般的打击</p>
+          <p>持续时间内你在每个自身回合能够额外发起一次基础攻击（无法以此施展技能），这个效果等同于特性.额外攻击</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>风怒的持续时间+1轮</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>风怒的持续时间+1轮</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>你能够为自身周围6米内的一名角色施展风怒</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-11" data-search="唤风术"><h4>唤风术 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">每回合限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有其他包含风暴关键词的技能</p>
+          <p><span class="field">额外条件：</span>你需要额外花费技能点<span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.风暴.每回合限一次</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒在指定位置唤起一阵强风</p>
+          <p>你在一片3*3的区域生成强风效应，选择以下一种效果生效：</p>
+          <p>·使区域内的所有角色各进行一次难度为12的力量豁免，豁免失败的角色将进入击倒状态</p>
+          <p>·使区域内的所有角色各进行一次难度为12的敏捷豁免，豁免失败的角色朝相同方向被击退1-2米（由你决定）</p>
+          <p>·使区域内的迷雾效应向你指定的方向位移1D3米</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-12" data-search="风暴之眼 法术.风暴.力量豁免（15）.短休/长休 你习得此技能时，你的技能列表中本战斗风格的技能数量最多 你在本次游玩过程中参与了一场风暴环境下的战斗环节 0动作 自身 2轮 2 立即使自身周围2米内的所有中型体型及以下角色均向顺时针方向位移2米，这些角色需要进行一次难度为15的力量豁免，豁免失败的角色将进入击倒状态 持续时间内所有途经自身周围2米内的实体飞行道具均会被风暴之眼席卷而向你飞来">
+        <h4>风暴之眼 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">力量豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你习得此技能时，你的技能列表中本战斗风格的技能数量最多</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中参与了一场风暴环境下的战斗环节</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.风暴.力量豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前风元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒使风暴汇聚于自身周边，使自己成为一个小型风暴眼</p>
+          <p>立即使自身周围2米内的所有中型体型及以下角色均向顺时针方向位移2米，这些角色需要进行一次难度为15的力量豁免，豁免失败的角色将进入击倒状态</p>
+          <p>持续时间内所有途经自身周围2米内的实体飞行道具均会被风暴之眼席卷而向你飞来</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-13" data-search="静电图腾 法术.召唤单位.雷电.体质豁免（12）.唯一性 你拥有其他包含雷电关键词的技能 你使敌人受到过触电的效果 0动作 4米 2轮 1 你在一个空白位置上放置一根风元素图腾，持续时间内每个你的轮次结束时其周围2米内的所有其他角色需要进行一次难度为12的体质豁免，豁免失败的角色将进入麻痹状态">
+        <h4>静电图腾 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">雷电</span>
+          <span class="chip">体质豁免（12）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有其他包含雷电关键词的技能</p>
+          <p><span class="field">额外条件：</span>你使敌人受到过触电的效果</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.雷电.体质豁免（12）.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有风元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾使周围活跃其闪烁的电流</p>
+          <p>你在一个空白位置上放置一根风元素图腾，持续时间内每个你的轮次结束时其周围2米内的所有其他角色需要进行一次难度为12的体质豁免，豁免失败的角色将进入麻痹状态</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-风暴-3">三阶天赋树</h4>
+      <article class="skill" id="sa-skill-14" data-search="电弧鞭笞 法术.施法攻击.AOE.雷电.力量豁免（12） 你使其他角色进入过麻痹状态 你在本次游玩的战斗环节中使他人进入过麻痹状态 1动作 12米 立即 4 你对一名角色及相邻位置的另一名角色各造成2D8点雷电伤害，随后还能够对一名与其中一名角色相邻、但不与两个目标同时相邻的对象造成同等数值的雷电伤害 如果此时风元素处于活跃状态,电弧鞭笞会令所有承受伤害的角色进行一次难度为12的力量豁免，豁免失败的角色将进入麻痹状态 如果此时水元素处于活跃状态,电弧鞭笞改为造成2D12点雷电伤害 你的萨满祭司职业等级到达5级时：电弧鞭笞能够选择第四名角色作为目标，这名角色必须仅能够与第三名目标相邻、不与起始的两个目标相邻 你的萨满祭司职业等级到达10级时：每场战斗限一次.如果你施展过其他包含雷电关键词的技能，那么你的下一次电弧鞭笞的施展时间变更为一个附赠动作">
+        <h4>电弧鞭笞 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">雷电</span>
+          <span class="chip">力量豁免（12）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你使其他角色进入过麻痹状态</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中使他人进入过麻痹状态</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.雷电.力量豁免（12）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒甩出一道弧形电流攻击敌人</p>
+          <p>你对一名角色及相邻位置的另一名角色各造成2D8点雷电伤害，随后还能够对一名与其中一名角色相邻、但不与两个目标同时相邻的对象造成同等数值的雷电伤害</p>
+          <p>如果此时风元素处于活跃状态,电弧鞭笞会令所有承受伤害的角色进行一次难度为12的力量豁免，豁免失败的角色将进入麻痹状态</p>
+          <p>如果此时水元素处于活跃状态,电弧鞭笞改为造成2D12点雷电伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>电弧鞭笞能够选择第四名角色作为目标，这名角色必须仅能够与第三名目标相邻、不与起始的两个目标相邻</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>每场战斗限一次.如果你施展过其他包含雷电关键词的技能，那么你的下一次电弧鞭笞的施展时间变更为一个附赠动作</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-15" data-search="旋风 法术.风暴.敏捷豁免（15） 你通过风暴关键词的效果使其他角色进行过强制位移 你在本次游玩过程中参与了一场风暴环境下的战斗环节 1动作 12米 1-2轮 4 你使一名角色进行一次难度为15的敏捷豁免，对方豁免失败将会被吹飞至距离地面至多12米的空中并使其受到以下影响： ·目标无法进入专注状态 ·目标在持续时间内无法进行移动或执行位移效果 ·目标在执行其他行动时需要进行一次难度为12的体操检定，检定失败则取消这次行动 ·目标也可以主动花费一个附赠动作来进行一次难度为15的体操检定摆脱旋风，检定成功后需要结算一次坠落伤害 ·如果目标的体型为大型或以上，则不受此效果影响 你的萨满祭司职业等级到达12级时：如果目标的第一次豁免成功，则还需要再进行一次对应豁免检定">
+        <h4>旋风 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">敏捷豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你通过风暴关键词的效果使其他角色进行过强制位移</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中参与了一场风暴环境下的战斗环节</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.风暴.敏捷豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在一名角色脚下唤起一道旋风</p>
+          <p>你使一名角色进行一次难度为15的敏捷豁免，对方豁免失败将会被吹飞至距离地面至多12米的空中并使其受到以下影响：</p>
+          <p>·目标无法进入专注状态</p>
+          <p>·目标在持续时间内无法进行移动或执行位移效果</p>
+          <p>·目标在执行其他行动时需要进行一次难度为12的体操检定，检定失败则取消这次行动</p>
+          <p>·目标也可以主动花费一个附赠动作来进行一次难度为15的体操检定摆脱旋风，检定成功后需要结算一次坠落伤害</p>
+          <p>·如果目标的体型为大型或以上，则不受此效果影响</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>如果目标的第一次豁免成功，则还需要再进行一次对应豁免检定</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-16" data-search="气流牵引 法术.互动.激活 你拥有法术.唤风术 你与一个云元素进行过交互 0动作 12米 立即 1 你可以选择一件不超过10磅重的物件，使其朝任意方向位移6米，这个效果无法位移被角色持有的物品 你可以选择一名自愿的、不超过中小型体型的角色，使得朝任意方向位移2米 你的萨满祭司职业等级到达5级时：气流牵引改为能够使物件位移12米距离，令自愿的角色位移4米距离 你的萨满祭司职业等级到达10级时：气流牵引改为能够位移不超过50磅重的物件，以及不超过中型体型的角色">
+        <h4>气流牵引 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">互动</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.唤风术</p>
+          <p><span class="field">额外条件：</span>你与一个云元素进行过交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.互动.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒牵动气流改变物件或他人的位置</p>
+          <p>你可以选择一件不超过10磅重的物件，使其朝任意方向位移6米，这个效果无法位移被角色持有的物品</p>
+          <p>你可以选择一名自愿的、不超过中小型体型的角色，使得朝任意方向位移2米</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>气流牵引改为能够使物件位移12米距离，令自愿的角色位移4米距离</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>气流牵引改为能够位移不超过50磅重的物件，以及不超过中型体型的角色</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-17" data-search="召唤风元素 法术.风暴.召唤单位.专注.激活.唯一性 你的技能列表中拥有包含风暴关键词的法术 你击败过一个风元素或得到过风元素的认可 2动作 2米 1-5轮 4 你召唤一团风元素协同作战，其数据如下所示 ------------------------------------------------------------------- 风元素 中型元素生物，防御等级：12，生命值：15 力量9 （-1） 敏捷16（+3） 体质11（+1） 智力10（+0） 感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0） 感官：被动察觉10，体感12米 移动速度：8米 战斗加成：先攻时序值16，攻击命中检定加值+7 伤害免疫：物理、心灵 状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕 语言：元素语 固有技能： 风息跃动 天赋.风元素在风暴环境下的生命值+10，攻击命中检定加值+2 风息刃 主要动作.施法攻击.风暴.虚化飞行道具.风元素在每个自身回合可以对12米内的一名角色发起攻击，造成8点挥砍伤害 疾息刃 附赠动作.施法攻击.风暴.虚化飞行道具.风元素在每个自身回合可以对12米内一名角色造成7点挥砍伤害 风速行动 附赠动作.迅捷.风元素进行一次全速移动">
+        <h4>召唤风元素 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">风暴</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">专注</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有包含风暴关键词的法术</p>
+          <p><span class="field">额外条件：</span>你击败过一个风元素或得到过风元素的认可</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.风暴.召唤单位.专注.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在原地浮现出一个绿色召唤结界，随后一头驰掣的风元素被呼唤而来</p>
+          <p>你召唤一团风元素协同作战，其数据如下所示</p>
+          <p>-------------------------------------------------------------------</p>
+          <p>风元素</p>
+          <p>中型元素生物，防御等级：12，生命值：15</p>
+          <p>力量9 （-1） 敏捷16（+3） 体质11（+1） 智力10（+0）</p>
+          <p>感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0）</p>
+          <p>感官：被动察觉10，体感12米</p>
+          <p>移动速度：8米</p>
+          <p>战斗加成：先攻时序值16，攻击命中检定加值+7</p>
+          <p>伤害免疫：物理、心灵</p>
+          <p>状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕</p>
+          <p>语言：元素语</p>
+          <p>固有技能：</p>
+          <p>风息跃动</p>
+          <p>天赋.风元素在风暴环境下的生命值+10，攻击命中检定加值+2</p>
+          <p>风息刃</p>
+          <p>主要动作.施法攻击.风暴.虚化飞行道具.风元素在每个自身回合可以对12米内的一名角色发起攻击，造成8点挥砍伤害</p>
+          <p>疾息刃</p>
+          <p>附赠动作.施法攻击.风暴.虚化飞行道具.风元素在每个自身回合可以对12米内一名角色造成7点挥砍伤害</p>
+          <p>风速行动</p>
+          <p>附赠动作.迅捷.风元素进行一次全速移动</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-18" data-search="闪电链 天赋.雷电 你拥有法术.闪电箭 本风格为你萨满祭司职业的首个战斗风格 当你的闪电箭触发暴击时，会立即对承受伤害的角色周围6米内的一名其他角色造成X点伤害值，再对那名目标周围6米内的另一名不同角色造成X点伤害值（X为本次闪电箭结算后一半的伤害值） 闪电链的效果不会选择你为目标">
+        <h4>闪电链 <span class="chip" style="background:#89CFF0;color:#fff">风暴 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">雷电</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.闪电箭</p>
+          <p><span class="field">额外条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">关键词：</span>天赋.雷电</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>当你的闪电箭触发暴击时，会立即对承受伤害的角色周围6米内的一名其他角色造成X点伤害值，再对那名目标周围6米内的另一名不同角色造成X点伤害值（X为本次闪电箭结算后一半的伤害值）</p>
+          <p>闪电链的效果不会选择你为目标</p>
+        </div>
+      </article>
+
+      <h3 id="sa-style-火焰">火焰风格</h3>
+
+      <h4 id="sa-tier-火焰-1">一阶天赋树</h4>
+      <article class="skill" id="sa-skill-19" data-search="火焰箭 法术.施法攻击.火焰.虚化飞行道具.敏捷豁免（10） - 1动作 6米 立即 1 你对一名角色发射火焰箭，造成1D6点火焰伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入灼烧状态 你的萨满祭司职业等级到达5级时：火焰箭改为造成2D6点火焰伤害">
+        <h4>火焰箭 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">火焰</span>
+          <span class="chip">虚化飞行道具</span>
+          <span class="chip">敏捷豁免（10）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>-</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.火焰.虚化飞行道具.敏捷豁免（10）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念出法咒从手中发射出一发火焰构成的箭矢</p>
+          <p>你对一名角色发射火焰箭，造成1D6点火焰伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入灼烧状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>火焰箭改为造成2D6点火焰伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-20" data-search="灼热图腾 法术.图腾.火焰.唯一性 你在本次游玩的战斗环节中赋予过灼烧状态 0动作 4米 2轮 1 你在一个空白位置上放置一根火元素图腾，持续时间内每个轮次结束阶段会对周围6米范围内的一名由你选择的敌方角色施展一发火焰箭 灼热图腾会使水元素回归沉寂状态 你的萨满祭司职业等级到达5级时：灼热图腾施展的火焰箭能够造成2D6点火焰伤害">
+        <h4>灼热图腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">火焰</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中赋予过灼烧状态</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.图腾.火焰.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有火元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾并使周围变得灼热</p>
+          <p>你在一个空白位置上放置一根火元素图腾，持续时间内每个轮次结束阶段会对周围6米范围内的一名由你选择的敌方角色施展一发火焰箭</p>
+          <p>灼热图腾会使水元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>灼热图腾施展的火焰箭能够造成2D6点火焰伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-21" data-search="创造篝火 戏法.火焰.补给.效果递减 你在本次游玩过程中点燃过一处篝火 0动作 2米 - 1 你在一个空白位置生成一个点燃的篝火堆，或是点燃一个可燃物">
+        <h4>创造篝火 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">火焰</span>
+          <span class="chip">补给</span>
+          <span class="chip">效果递减</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中点燃过一处篝火</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.火焰.补给.效果递减</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒来掌控火焰</p>
+          <p>你在一个空白位置生成一个点燃的篝火堆，或是点燃一个可燃物</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-22" data-search="火焰祈咒 法术.火焰.增益 你与火元素进行过一次友善的交互 0动作 12米 立即 2 你使一名角色在下一次结算造成的伤害值后额外附加4点火焰伤害 这个效果无法对带有AOE关键词的能力生效 你的萨满祭司职业等级到达5级时：火焰祈咒改为额外附加6点火焰伤害 你的萨满祭司职业等级到达10级时：火焰祈咒改为额外附加8点火焰伤害">
+        <h4>火焰祈咒 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">火焰</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与火元素进行过一次友善的交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.火焰.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前火元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒祈求火元素赐予你火焰的力量</p>
+          <p>你使一名角色在下一次结算造成的伤害值后额外附加4点火焰伤害</p>
+          <p>这个效果无法对带有AOE关键词的能力生效</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>火焰祈咒改为额外附加6点火焰伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>火焰祈咒改为额外附加8点火焰伤害</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-火焰-2">二阶天赋树</h4>
+      <article class="skill" id="sa-skill-23" data-search="熔岩武器 法术.火焰.媒介.唯一性 你拥有锻造的专业熟练度 你使用火山岩锻造过一把武器或护甲 0动作 自身 立即 3 你通过这些武器进行攻击时，攻击命中检定掷出19时即可触发暴击 熔岩武器会同时使火元素和水元素回归沉寂状态 你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加1D6点火焰伤害 你的萨满祭司职业等级到达5级时：熔岩武器改为你的下三次近战攻击在结算造成的伤害值后额外附加1D8点火焰伤害 你的萨满祭司职业等级到达10级时：熔岩武器附加的第三次近战攻击伤害值必定暴击">
+        <h4>熔岩武器 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">火焰</span>
+          <span class="chip">媒介</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有锻造的专业熟练度</p>
+          <p><span class="field">额外条件：</span>你使用火山岩锻造过一把武器或护甲</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.火焰.媒介.唯一性</p>
+          <p><span class="field">施展条件：</span>你持有剑类武器、斧类武器或锤类武器，并且当前火元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你获取火元素的祝福，用熔岩来淬炼你的武器</p>
+          <p>你通过这些武器进行攻击时，攻击命中检定掷出19时即可触发暴击</p>
+          <p>熔岩武器会同时使火元素和水元素回归沉寂状态</p>
+          <p>你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加1D6点火焰伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>熔岩武器改为你的下三次近战攻击在结算造成的伤害值后额外附加1D8点火焰伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>熔岩武器附加的第三次近战攻击伤害值必定暴击</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-24" data-search="火炬图腾 法术.图腾.火焰.光源.唯一性 你拥有戏法.创造篝火 你举起过一次火炬以吸引敌人的到来 0动作 4米 2轮 1 你在一个空白位置上放置一根火元素图腾，持续时间使图腾周围2米内视为被光源覆盖 通过跳远行动越过火炬图腾的角色将会进入灼烧状态 穿过火炬图腾的带有火焰关键词的飞行道具在结算造成的伤害值后+2 穿过火炬图腾的带有冰霜关键词的飞行道具在结算造成的伤害值后减半">
+        <h4>火炬图腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">火焰</span>
+          <span class="chip">光源</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有戏法.创造篝火</p>
+          <p><span class="field">额外条件：</span>你举起过一次火炬以吸引敌人的到来</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.火焰.光源.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有火元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾生成一团明亮的火炬</p>
+          <p>你在一个空白位置上放置一根火元素图腾，持续时间使图腾周围2米内视为被光源覆盖</p>
+          <p>通过跳远行动越过火炬图腾的角色将会进入灼烧状态</p>
+          <p>穿过火炬图腾的带有火焰关键词的飞行道具在结算造成的伤害值后+2</p>
+          <p>穿过火炬图腾的带有冰霜关键词的飞行道具在结算造成的伤害值后减半</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-25" data-search="沸腾 法术.增益.韧性.短休/长休 你拥有包含火焰关键词的技能 你在本次游玩过程中观摩过一次沸腾现象 0动作 自身 2轮 4 持续时间内你获得以下效果： ·你获得4点火焰伤害抗性和4点冰霜伤害易伤 ·你的徒手攻击变为法术.烈焰冲击，并且不消耗疲劳值 ·如果你受到冰霜伤害将会进入减速状态 ·持续时间结束时你会释放出滚烫的蒸汽对所有相邻角色造成4D6点火焰伤害 2.持续时间内你的水元素无法进入活跃状态 你的萨满祭司职业等级到达5级时：沸腾的持续时间内你的火焰法术攻击命中检定掷出19时即可触发暴击，施展烈焰冲击时对方的闪避骰掷出2即可触发暴击 你的萨满祭司职业等级到达10级时：施<article class="skill" id="" data-search="沸腾"><h4>沸腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">增益</span>
+          <span class="chip">韧性</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含火焰关键词的技能</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中观摩过一次沸腾现象</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.增益.韧性.短休/长休</p>
+          <p><span class="field">施展条件：</span>当前火元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你使身躯急剧升温，如同一个散发蒸汽的火源</p>
+          <p>持续时间内你获得以下效果：</p>
+          <p>·你获得4点火焰伤害抗性和4点冰霜伤害易伤</p>
+          <p>·你的徒手攻击变为法术.烈焰冲击，并且不消耗疲劳值</p>
+          <p>·如果你受到冰霜伤害将会进入减速状态</p>
+          <p>·持续时间结束时你会释放出滚烫的蒸汽对所有相邻角色造成4D6点火焰伤害</p>
+          <p>2.持续时间内你的水元素无法进入活跃状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>沸腾的持续时间内你的火焰法术攻击命中检定掷出19时即可触发暴击，施展烈焰冲击时对方的闪避骰掷出2即可触发暴击</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>施展沸腾后你可以燃烧一个技能点，随后将一个任意技能点转化为技能点<span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-26" data-search="点燃 法术.火焰.体质豁免（15）.每个自身回合限一次 本风格为你萨满祭司职业的首个战斗风格 你在本次游玩的战斗环节中通过灼烧层数击杀过角色 0动作 6米 立即 3 你使一名角色进行一次难度为15的体质豁免，对方豁免失败将进入灼烧状态 如果对方已经进入灼烧状态，那么点燃改为立即结算一次对方的灼烧状态">
+        <h4>点燃 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">火焰</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">每个自身回合限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过灼烧层数击杀过角色</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>2米</p>
+          <p><span class="field">持续时间：</span>-</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.火焰.体质豁免（15）.每个自身回合限一次</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前火元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒令火元素点燃敌人</p>
+          <p>你使一名角色进行一次难度为15的体质豁免，对方豁免失败将进入灼烧状态</p>
+          <p>如果对方已经进入灼烧状态，那么点燃改为立即结算一次对方的灼烧状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-27" data-search="炽焰武力 天赋.火焰.增益 力量属性不为你最低的属性值 你在本次游玩的战斗环节中通过火焰伤害击杀过角色 你将炽焰附着在你的武器上，如果当前火元素处于活跃状态时，你的火焰伤害骰点数至少为3（将点数1视作3）">
+        <h4>炽焰武力 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">火焰</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>力量属性不为你最低的属性值</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过火焰伤害击杀过角色</p>
+          <p><span class="field">关键词：</span>天赋.火焰.增益</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你将炽焰附着在你的武器上，如果当前火元素处于活跃状态时，你的火焰伤害骰点数至少为3（将点数1视作3）</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-火焰-3">三阶天赋树</h4>
+      <article class="skill" id="sa-skill-28" data-search="烈焰战旗 战技.火焰.增益.媒介.光环.唯一性 你点燃过一面敌人的旗帜 你在本次游玩过程中点燃过一面敌人的旗帜 0动作 6米 2轮 2 1.你投掷出一面战旗，在持续时间内产生以下效果： ·位于烈焰战旗周围2米内的友方角色的火焰伤害骰点数至少为3（将点数1视作3） ·为范围内的所有友方角色附加一次战技.淬火的效果 ·持续时间结束时，为范围内的所有敌方角色赋予灼烧状态 2.烈焰战旗的持续时间内火元素将会始终处于活跃状态">
+        <h4>烈焰战旗 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">火焰</span>
+          <span class="chip">增益</span>
+          <span class="chip">媒介</span>
+          <span class="chip">光环</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你点燃过一面敌人的旗帜</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中点燃过一面敌人的旗帜</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>战技.火焰.增益.媒介.光环.唯一性</p>
+          <p><span class="field">施展条件：</span>你必须携带有一面旗帜</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你投掷出携带的旗帜置于战场上，燃烧的烈火照映着你们昂扬的斗志</p>
+          <p>1.你投掷出一面战旗，在持续时间内产生以下效果：</p>
+          <p>·位于烈焰战旗周围2米内的友方角色的火焰伤害骰点数至少为3（将点数1视作3）</p>
+          <p>·为范围内的所有友方角色附加一次战技.淬火的效果</p>
+          <p>·持续时间结束时，为范围内的所有敌方角色赋予灼烧状态</p>
+          <p>2.烈焰战旗的持续时间内火元素将会始终处于活跃状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-29" data-search="火环图腾 法术.图腾.火焰.唯一性 你拥有法术.灼热图腾 你遭遇过一次火焰地形 0动作 4米 2轮 1 你在一个空白位置上放置一根火元素图腾，每个轮次结束阶段会对周围2米内的所有角色各造成1D6点火焰伤害，触发两次 连续2轮承受来自火环图腾伤害的角色还会进入灼烧状态 闪避成功的角色仍需要承受一半的结算后伤害值">
+        <h4>火环图腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">火焰</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.灼热图腾</p>
+          <p><span class="field">额外条件：</span>你遭遇过一次火焰地形</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.图腾.火焰.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有火元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾对周边释放火焰</p>
+          <p>你在一个空白位置上放置一根火元素图腾，每个轮次结束阶段会对周围2米内的所有角色各造成1D6点火焰伤害，触发两次</p>
+          <p>连续2轮承受来自火环图腾伤害的角色还会进入灼烧状态</p>
+          <p>闪避成功的角色仍需要承受一半的结算后伤害值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-30" data-search="火蛇图腾 法术.图腾.火焰.唯一性 你拥有法术.灼热图腾 你击败过一个非元素体的火焰生物 0动作 2米 2轮 1 你在一个空白位置上放置一根火元素图腾，每个轮次结束阶段会对其周围12米内的一名角色发起攻击并造成3D3点火焰伤害，连续2轮承受来自火蛇图腾伤害的角色还会进入灼烧状态 如果火蛇图腾的攻击未命中目标，那么还会再次对目标发起攻击，这个效果每轮次仅能够触发一次">
+        <h4>火蛇图腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">火焰</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.灼热图腾</p>
+          <p><span class="field">额外条件：</span>你击败过一个非元素体的火焰生物</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.图腾.火焰.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有火元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾使灵动的火蛇幻影攻击敌人</p>
+          <p>你在一个空白位置上放置一根火元素图腾，每个轮次结束阶段会对其周围12米内的一名角色发起攻击并造成3D3点火焰伤害，连续2轮承受来自火蛇图腾伤害的角色还会进入灼烧状态</p>
+          <p>如果火蛇图腾的攻击未命中目标，那么还会再次对目标发起攻击，这个效果每轮次仅能够触发一次</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-31" data-search="召唤火元素 法术.火焰.召唤单位.专注.激活.唯一性 你的技能列表中拥有包含火焰关键词的法术 你击败过一个火元素或得到过火元素的认可 2动作 2米 1-5轮 4 你召唤一团火元素协同作战，其数据如下所示 ------------------------------------------------------------------- 火元素 中型元素生物，防御等级：10，生命值：15 力量9 （-1） 敏捷8 （-1） 体质12（+1） 智力10（+0） 感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0） 感官：被动察觉10，体感12米 移动速度：4米 战斗加成：先攻时序值10，攻击命中检定加值+6 伤害易伤：冰霜 伤害免疫：物理、火焰、心灵 状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕 语言：元素语 固有技能： 火焰跃动 天赋.火元素在炎热环境下的生命值+10，攻击命中检定加值+2 火焰箭 主要动作.施法攻击.火焰.虚化飞行道具.火元素在每个自身回合可以对12米范围内的一名角色发起攻击，造成8点火焰伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入灼烧状态 火球 主要动作.施法攻击.火焰.虚化飞行道具.火元素可以花费两个自身回合进行蓄力，对24米范围内的一名角色造成24点火焰伤害">
+        <h4>召唤火元素 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">火焰</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">专注</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有包含火焰关键词的法术</p>
+          <p><span class="field">额外条件：</span>你击败过一个火元素或得到过火元素的认可</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.火焰.召唤单位.专注.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在原地浮现出一个红色召唤结界，随后一头燃烧的火元素被呼唤而来</p>
+          <p>你召唤一团火元素协同作战，其数据如下所示</p>
+          <p>-------------------------------------------------------------------</p>
+          <p>火元素</p>
+          <p>中型元素生物，防御等级：10，生命值：15</p>
+          <p>力量9 （-1） 敏捷8 （-1） 体质12（+1） 智力10（+0）</p>
+          <p>感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0）</p>
+          <p>感官：被动察觉10，体感12米</p>
+          <p>移动速度：4米</p>
+          <p>战斗加成：先攻时序值10，攻击命中检定加值+6</p>
+          <p>伤害易伤：冰霜</p>
+          <p>伤害免疫：物理、火焰、心灵</p>
+          <p>状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕</p>
+          <p>语言：元素语</p>
+          <p>固有技能：</p>
+          <p>火焰跃动</p>
+          <p>天赋.火元素在炎热环境下的生命值+10，攻击命中检定加值+2</p>
+          <p>火焰箭</p>
+          <p>主要动作.施法攻击.火焰.虚化飞行道具.火元素在每个自身回合可以对12米范围内的一名角色发起攻击，造成8点火焰伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入灼烧状态</p>
+          <p>火球</p>
+          <p>主要动作.施法攻击.火焰.虚化飞行道具.火元素可以花费两个自身回合进行蓄力，对24米范围内的一名角色造成24点火焰伤害</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-火焰-4">四阶天赋树</h4>
+      <article class="skill" id="sa-skill-32" data-search="熔岩喷溅 法术.施法攻击.火焰.敏捷豁免（15） 你拥有至少五个本风格的技能或天赋 你目睹过一处火山的喷发 1动作 12米 立即 8 你">
+        <h4>熔岩喷溅 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">火焰</span>
+          <span class="chip">敏捷豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有至少五个本风格的技能或天赋</p>
+          <p><span class="field">额外条件：</span>你目睹过一处火山的喷发</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>8</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.火焰.敏捷豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用未持有物件的双手将火焰凝聚为熔岩、念诵法咒将这些滚烫的岩浆轰击出去</p>
+          <p>你</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-33" data-search="火焰新星 法术.施法攻击.AOE.火焰.短休/长休 你拥有火环图腾和表演的熟练度 你在本次游玩过程中参与过一场围绕火焰的派对 1动作 6米 2轮 2 你">
+        <h4>火焰新星 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">火焰</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有火环图腾和表演的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中参与过一场围绕火焰的派对</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>8</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.火焰.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你念诵法咒令一道火焰之环向外扩散</p>
+          <p>你</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-34" data-search="火镰图腾 法术.图腾.AOE.火焰.唯一性 你拥有火环图腾和巧手的熟练度 你在本次游玩过程中用火焰淬炼过一把镰刀并且使用过这把武器 1动作 6米 2轮 2 你">
+        <h4>火镰图腾 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">AOE</span>
+          <span class="chip">火焰</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有火环图腾和巧手的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中用火焰淬炼过一把镰刀并且使用过这把武器</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>8</p>
+          <p><span class="field">关键词：</span>法术.图腾.AOE.火焰.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有火元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾，其上空生成一把火焰构成的虚幻镰刀旋转着收割周边的敌人</p>
+          <p>你</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-35" data-search="余烬抗性 战技.火焰.增益.媒介.光环.唯一性 本风格不能是你的萨满祭司职业的第三或第四种战斗风格 你在本次游玩过程中得到了火元素的协助 你">
+        <h4>余烬抗性 <span class="chip" style="background:#FF6B6B;color:#fff">火焰 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">火焰</span>
+          <span class="chip">增益</span>
+          <span class="chip">媒介</span>
+          <span class="chip">光环</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中得到了火元素的协助</p>
+          <p><span class="field">关键词：</span>战技.火焰.增益.媒介.光环.唯一性</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FF0000;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你</p>
+        </div>
+      </article>
+
+      <h3 id="sa-style-水源">水源风格</h3>
+
+      <h4 id="sa-tier-水源-1">一阶天赋树</h4>
+      <article class="skill" id="sa-skill-36" data-search="水上行走 戏法.水源.激活 你穿行过一片水域环境 0动作 自身 1小时 1 在持续时间内能够忽略水域环境的负面效果，在水面上自由移动 如果你承受一次伤害，那么立即移除水上行走的效果 你的萨满祭司职业等级到达10级时：水上行走能够对触及范围内的其他角色施展">
+        <h4>水上行走 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">水源</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你穿行过一片水域环境</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.水源.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒使自身能够在水面上行走而不下沉</p>
+          <p>在持续时间内能够忽略水域环境的负面效果，在水面上自由移动</p>
+          <p>如果你承受一次伤害，那么立即移除水上行走的效果</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>水上行走能够对触及范围内的其他角色施展</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-37" data-search="恢复图腾 法术.图腾.回复.唯一性 你拥有医药的熟练度 0动作 4米 1轮 1 你在一个空白位置上放置一根水元素图腾，持续时间结束时为周围触2米内的所有角色各回复1D4+X点生命值（X为你的自然调整值） 加速图腾会使火元素回归沉寂状态 你的萨满祭司职业等级到达5级时：恢复图腾改为回复2D4+X点生命值（X为你的自然调整值） 你的萨满祭司职业等级到达10级时：恢复图腾还会为周围2米内的所有角色各回复2点疲劳值">
+        <h4>恢复图腾 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">回复</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你拥有医药的熟练度</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.图腾.回复.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有水元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾调动周围的自然气息恢复他人</p>
+          <p>你在一个空白位置上放置一根水元素图腾，持续时间结束时为周围触2米内的所有角色各回复1D4+X点生命值（X为你的自然调整值）</p>
+          <p>加速图腾会使火元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>恢复图腾改为回复2D4+X点生命值（X为你的自然调整值）</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>恢复图腾还会为周围2米内的所有角色各回复2点疲劳值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-38" data-search="创造水源 戏法.水源.补给.效果递减 你在本次游玩过程中用水袋接取过一次水源 0动作 2米 - 1 你可以使一个能够被目击的、容量不超过2L的容器充满干净的泉水，或是改为使其中的水源干涸">
+        <h4>创造水源 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">水源</span>
+          <span class="chip">补给</span>
+          <span class="chip">效果递减</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中用水袋接取过一次水源</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>戏法.水源.补给.效果递减</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒来掌控水源</p>
+          <p>你可以使一个能够被目击的、容量不超过2L的容器充满干净的泉水，或是改为使其中的水源干涸</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-39" data-search="流水祈咒 法术.水源.增益 你与水元素进行过一次友善的交互 0动作 12米 立即 1 你使一名角色在下一次结算生命值回复效果后额外回复4点生命值 这个效果对带有AOE关键词的能力改为额外回复2点生命值 你的萨满祭司职业等级到达5级时：流水祈咒改为额外回复6点生命值，这个效果对带有AOE关键词的能力改为额外回复3点生命值 你的萨满祭司职业等级到达10级时：流水祈咒改为额外回复8点生命值，这个效果对带有AOE关键词的能力改为额外回复4点生命值">
+        <h4>流水祈咒 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与水元素进行过一次友善的交互</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>1</p>
+          <p><span class="field">关键词：</span>法术.水源.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前水元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒祈求水元素赐予你纯净水流的力量</p>
+          <p>你使一名角色在下一次结算生命值回复效果后额外回复4点生命值</p>
+          <p>这个效果对带有AOE关键词的能力改为额外回复2点生命值</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>流水祈咒改为额外回复6点生命值，这个效果对带有AOE关键词的能力改为额外回复3点生命值</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>流水祈咒改为额外回复8点生命值，这个效果对带有AOE关键词的能力改为额外回复4点生命值</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-水源-2">二阶天赋树</h4>
+      <article class="skill" id="sa-skill-40" data-search="水幕屏障 法术.水源.专注.阻碍.激活.敏捷豁免（15）.短休/长休 你拥有天赋.创造水源 你在本次游玩过程中穿越过一处瀑布 1动作 2米 2轮 2 你在前方塑造一堵高度至多2米、宽度为6米的水幕屏障，其具有以下效果： ·使穿过水幕屏障的火焰伤害在结算后减半 ·使穿过水幕屏障的实体飞行道具的攻击命中检定值-1D4 ·穿过水幕屏障的角色需要进行一次难度为15的敏捷豁免，豁免失败将进入减速状态 你的萨满祭司职业等级到达5级时：水幕屏障的关键词变更为短休/长休（2）">
+        <h4>水幕屏障 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">专注</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">激活</span>
+          <span class="chip">敏捷豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有天赋.创造水源</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中穿越过一处瀑布</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>2米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.水源.专注.阻碍.激活.敏捷豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒唤起水流化作屏障</p>
+          <p>你在前方塑造一堵高度至多2米、宽度为6米的水幕屏障，其具有以下效果：</p>
+          <p>·使穿过水幕屏障的火焰伤害在结算后减半</p>
+          <p>·使穿过水幕屏障的实体飞行道具的攻击命中检定值-1D4</p>
+          <p>·穿过水幕屏障的角色需要进行一次难度为15的敏捷豁免，豁免失败将进入减速状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>水幕屏障的关键词变更为短休/长休（2）</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-41" data-search="潮汐集中 法术.水源.专注.回复 你拥有专注的熟练度 本风格为你萨满祭司职业的首个战斗风格 1动作 自身 1轮 4 你在持续时间内为自身和所有相邻角色回复共计4D6点生命值，回复数值由这些角色平均分配 随后水元素会回归沉寂状态，并且在下一个自身回合结束前无法再次进入活跃状态 你的萨满祭司职业等级到达8级时：潮汐集中改为回复共计6D6点生命值">
+        <h4>潮汐集中 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">专注</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有专注的熟练度</p>
+          <p><span class="field">额外条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>2米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.水源.专注.回复</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前水元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒将水元素汇聚于周边，使自身形成一个小型涡流</p>
+          <p>你在持续时间内为自身和所有相邻角色回复共计4D6点生命值，回复数值由这些角色平均分配</p>
+          <p>随后水元素会回归沉寂状态，并且在下一个自身回合结束前无法再次进入活跃状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>潮汐集中改为回复共计6D6点生命值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-43" data-search="雨露图腾"><h4>雨露图腾 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 二阶天赋树</span><<div id="sa-tier-水源-3"></div>\n<article class="skill" id="sa-skill-44" data-search="高压水刃"><h4>高压水刃 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">水源</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中造成过挥砍伤害</p>
+          <p><span class="field">额外条件：</span>风暴战斗风格不为你萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.水源</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用未持有物件的双手做出对应施法手势、并念诵法咒从双臂斩出一道高压水刃，在如此高速下就连水流也变得如此致命</p>
+          <p>你对前方横排方向上的至多两名角色各造成2D6点挥砍伤害</p>
+          <p>如果目标没有着装重甲或盾牌，那么高压水刃能够忽视对方一半的防御等级</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>高压水刃改为造成3D6点挥砍伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>高压水刃具有速攻关键词</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-45" data-search="治疗之涌 法术.AOE.水源.回复 本风格不能是你的萨满祭司职业的第三或第四种战斗风格 你 1动作 近战 立即 4 你为前方扇形3环内的所有角色各回复1D4+4点生命值并使火元素回归沉寂状态 如果此时水元素处于活跃状态，那么本次回复效果具有优势 抉择：寒霜之息/冰霜震击 你的萨满祭司职业等级到达5级时：治疗之涌改为回复2D4+4点生命值 你的萨满祭司职业等级到达8级时：治疗之涌的范围改为前方扇形4环">
+        <h4>治疗之涌 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">AOE</span>
+          <span class="chip">水源</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.AOE.水源.回复</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒唤起自然泉涌治愈他人</p>
+          <p>你为前方扇形3环内的所有角色各回复1D4+4点生命值并使火元素回归沉寂状态</p>
+          <p>如果此时水元素处于活跃状态，那么本次回复效果具有优势</p>
+          <p>抉择：寒霜之息/冰霜震击</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>治疗之涌改为回复2D4+4点生命值</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>治疗之涌的范围改为前方扇形4环</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-46" data-search="寒霜之息 法术.施法攻击.AOE.冰霜.体质豁免（15） 你的技能列表中拥有至少两个本风格的法术 你造成过冰霜伤害 1动作 近战 立即 4 你对前方扇形3环内的所有角色各造成2D6点冰霜伤害，并使这些角色各进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态 闪避成功的角色依旧需要承受一半的结算后伤害 ------------------------------------------------------------------- 你的萨满祭司职业等级到达6级时：寒霜之息改为造成3D6点冰霜伤害 你的萨满祭司职业等级到达12级时：寒霜之息改为造成4D6点冰霜伤害">
+        <h4>寒霜之息 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">冰霜</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有至少两个本风格的法术</p>
+          <p><span class="field">额外条件：</span>你造成过冰霜伤害</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.冰霜.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒从掌心喷涌出寒冷的冰霜袭击敌人</p>
+          <p>你对前方扇形3环内的所有角色各造成2D6点冰霜伤害，并使这些角色各进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态</p>
+          <p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+          <p>-------------------------------------------------------------------</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>寒霜之息改为造成3D6点冰霜伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>寒霜之息改为造成4D6点冰霜伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-47" data-search="冰霜震击 法术.施法攻击.冰霜.体质豁免（14）.短休/长休 你的技能列表中拥有至少两个本风格的法术 你造成过冰霜伤害 1动作 4米 立即 4 你对直线上第一名角色发起冰霜震击，造成3D4点冰霜伤害随后使目标进行一次难度为14的体质豁免，对方豁免失败将进入冻结状态 你的萨满祭司职业等级到达6级时：冰霜震击改为造成4D4点冰霜伤害 你的萨满祭司职业等级到达12级时：冰霜震击能够对施展距离内的任意一名角色使用">
+        <h4>冰霜震击 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">冰霜</span>
+          <span class="chip">体质豁免（14）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有至少两个本风格的法术</p>
+          <p><span class="field">额外条件：</span>你造成过冰霜伤害</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.冰霜.体质豁免（14）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用未持有物件的双手做出对应施法手势、并念诵法咒中手心喷涌出冰霜震撼敌人</p>
+          <p>你对直线上第一名角色发起冰霜震击，造成3D4点冰霜伤害随后使目标进行一次难度为14的体质豁免，对方豁免失败将进入冻结状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>冰霜震击改为造成4D4点冰霜伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>冰霜震击能够对施展距离内的任意一名角色使用</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-48" data-search="召唤水元素 法术.水源.召唤单位.专注.激活.唯一性 你的技能列表中拥有包含水源关键词的法术 你击败过一个水元素或得到过水元素的认可 2动作 2米 1-5轮 4 你召唤一团水元素协同作战，其数据如下所示 ------------------------------------------------------------------- 水元素 中型元素生物，防御等级：10，生命值：15 力量9 （-1） 敏捷8 （-1） 体质12（+1） 智力10（+0） 感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0） 感官：被动察觉10，体感12米 移动速度：4米 战斗加成：先攻时序值10，攻击命中检定加值+6 伤害易伤：火焰 伤害免疫：物理、自然、心灵 状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕 语言：元素语 固有技能： 潮汐跃动 天赋.水元素在水域环境下的生命值+10，攻击命中检定加值+2 水行箭 主要动作.施法攻击.水源.虚化飞行道具.水元素在每个自身回合可以对12米范围内的一名角色发起攻击，造成8点自然伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入击倒状态 水盾 主要动作.护盾.水元素可以为12米范围内的一名角色生成一个能够抵挡10点物理、火焰、冰霜和自然伤害的护盾">
+        <h4>召唤水元素 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">专注</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你的技能列表中拥有包含水源关键词的法术</p>
+          <p><span class="field">额外条件：</span>你击败过一个水元素或得到过水元素的认可</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.水源.召唤单位.专注.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在原地浮现出一个蓝色召唤结界，随后一头翻腾着浪花的水元素被呼唤而来</p>
+          <p>你召唤一团水元素协同作战，其数据如下所示</p>
+          <p>-------------------------------------------------------------------</p>
+          <p>水元素</p>
+          <p>中型元素生物，防御等级：10，生命值：15</p>
+          <p>力量9 （-1） 敏捷8 （-1） 体质12（+1） 智力10（+0）</p>
+          <p>感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0）</p>
+          <p>感官：被动察觉10，体感12米</p>
+          <p>移动速度：4米</p>
+          <p>战斗加成：先攻时序值10，攻击命中检定加值+6</p>
+          <p>伤害易伤：火焰</p>
+          <p>伤害免疫：物理、自然、心灵</p>
+          <p>状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕</p>
+          <p>语言：元素语</p>
+          <p>固有技能：</p>
+          <p>潮汐跃动</p>
+          <p>天赋.水元素在水域环境下的生命值+10，攻击命中检定加值+2</p>
+          <p>水行箭</p>
+          <p>主要动作.施法攻击.水源.虚化飞行道具.水元素在每个自身回合可以对12米范围内的一名角色发起攻击，造成8点自然伤害，目标需要进行一次难度为10的敏捷豁免，对方豁免失败将进入击倒状态</p>
+          <p>水盾</p>
+          <p>主要动作.护盾.水元素可以为12米范围内的一名角色生成一个能够抵挡10点物理、火焰、冰霜和自然伤害的护盾</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-水源-4">四阶天赋树</h4>
+      <article class="skill" id="sa-skill-49" data-search="愈疗水雾 法术.水源.补给 你造访过一处水浴场所 你与一个位于水浴场所的水元素进行过交互 1动作 6米 2小时 4 你使一个不超过两平米的半封闭场所产生愈疗水雾，在范围内进行短休的角色获得以下效果： ·目标能够触发短休的疲劳值回复效果，即便这不是本日第一次短休 ·目标在本日不会再承受两层力竭状态以内的负面效果 ·清除目标服装和体表上的淤泥、血迹和尘埃等污秽物 2.如果在战斗环节中施展，愈疗水雾的持续时间仅持续1轮，不会触发上述效果，而是改为移除目标当前的降低生命值回复效果">
+        <h4>愈疗水雾 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">补给</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你造访过一处水浴场所</p>
+          <p><span class="field">额外条件：</span>你与一个位于水浴场所的水元素进行过交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2小时</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.水源.补给</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势、并念诵法咒召唤一阵热腾腾的治疗水雾缓和他人的疲惫</p>
+          <p>你使一个不超过两平米的半封闭场所产生愈疗水雾，在范围内进行短休的角色获得以下效果：</p>
+          <p>·目标能够触发短休的疲劳值回复效果，即便这不是本日第一次短休</p>
+          <p>·目标在本日不会再承受两层力竭状态以内的负面效果</p>
+          <p>·清除目标服装和体表上的淤泥、血迹和尘埃等污秽物</p>
+          <p>2.如果在战斗环节中施展，愈疗水雾的持续时间仅持续1轮，不会触发上述效果，而是改为移除目标当前的降低生命值回复效果</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-50" data-search="宁静心智图腾 法术.图腾.水源.韧性.唯一性 你在一次具备充足水源的先祖之地进行过萨满教义 你拥有天赋.冥想 0动作 4米 1轮 1 你在一个空白位置上放置一根水元素图腾，持续时间内图腾周围2米内的角色在进行恐惧、魅惑或混乱状态的豁免检定时具有优势 位于宁静心智图腾范围内的角色不会因为心灵控制类的效果而被迫位移离开图腾的范围 宁静心智图腾会使火元素回归沉寂状态">
+        <h4>宁静心智图腾 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">水源</span>
+          <span class="chip">韧性</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在一次具备充足水源的先祖之地进行过萨满教义</p>
+          <p><span class="field">额外条件：</span>你拥有天赋.冥想</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2小时</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.图腾.水源.韧性.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有水元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾时周围散发出安定心神的淡蓝色光芒</p>
+          <p>你在一个空白位置上放置一根水元素图腾，持续时间内图腾周围2米内的角色在进行恐惧、魅惑或混乱状态的豁免检定时具有优势</p>
+          <p>位于宁静心智图腾范围内的角色不会因为心灵控制类的效果而被迫位移离开图腾的范围</p>
+          <p>宁静心智图腾会使火元素回归沉寂状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-51" data-search="激流图腾 法术.图腾.水源.机制.唯一性 你在一次波涛、激流或瀑布附近进行过萨满教义 你在本次游玩的战斗环节中施展本风格的技能击败过敌方角色 0动作 4米 2轮 1 你在一个空白位置上放置一根水元素图腾，持续时间内每个轮次结束阶段会对周围6米范围内的一名由你选择的敌方角色造成2D6点自然伤害 随后激流图腾会根据攻击时你选择的水流方向产生不同效果 ·水流攻击目标头部：目标需要进行一次难度为12的感知豁免，对方豁免失败  将进入困惑状态，这个效果对大型或以上体型的单位无效 ·水流攻击目标身躯：目标需要进行一次难度为12的力量豁免，对方豁免失败将会被击退2米，这个效果对大型或以上体型的单位无效 ·水流攻击目标腿部：目标需要进行一次难度为12的敏捷豁免，对方豁免失败将进入击倒状态，这个效果对大型或以上体型的单位无效 3.激流图腾会使火元素回归沉寂状态">
+        <h4>激流图腾 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">水源</span>
+          <span class="chip">机制</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在一次波涛、激流或瀑布附近进行过萨满教义</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中施展本风格的技能击败过敌方角色</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>2小时</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.图腾.水源.机制.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有水元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾喷射出强劲的水流冲击敌人</p>
+          <p>你在一个空白位置上放置一根水元素图腾，持续时间内每个轮次结束阶段会对周围6米范围内的一名由你选择的敌方角色造成2D6点自然伤害</p>
+          <p>随后激流图腾会根据攻击时你选择的水流方向产生不同效果</p>
+          <p>·水流攻击目标头部：目标需要进行一次难度为12的感知豁免，对方豁免失败  将进入困惑状态，这个效果对大型或以上体型的单位无效</p>
+          <p>·水流攻击目标身躯：目标需要进行一次难度为12的力量豁免，对方豁免失败将会被击退2米，这个效果对大型或以上体型的单位无效</p>
+          <p>·水流攻击目标腿部：目标需要进行一次难度为12的敏捷豁免，对方豁免失败将进入击倒状态，这个效果对大型或以上体型的单位无效</p>
+          <p>3.激流图腾会使火元素回归沉寂状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-53" data-search="潮汐抗性"><h4>潮汐抗性 <span class="chip" style="background:#4FC3F7;color:#fff">水源 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">防御</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中遭遇过水元素</p>
+          <p><span class="field">关键词：</span>天赋.防御</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你获得2点自然伤害抗性，这个效果允许与其他抗性效果叠加</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>获得技能点<span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>潮汐抗性改为获得4点自然伤害抗性，这个效果允许与其他抗性效果叠加</p>
+        </div>
+      </article>
+
+      
+<h4 id="sa-tier-水源-五阶">水源 · 五阶天赋树</h4>
+
+
+
+
+<div id="sa-tier-水源-5"></div>\n<article class="skill" id="sa-skill-95" data-search="生机潮汐 法术.水源.回复.长休 你在习得此技能时，你的技能列表中本战斗风格的技能数量最多 你在本位阶及后的一场战斗环节中将所有己方团队成员的生命值由受损状态回复至生命值上限 1动作 自身 立即 5">
+        <h4>生机潮汐 <span class="chip" style="background:#888;color:#fff">水源风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+      <article class="skill" id="sa-skill-96" data-search="衰老潮汐 法术.水源.衰败.生命流失.体质豁免（15）.长休 1动作 自身 立即 -"><h4>衰老潮汐 <span class="chip" style="background:#888;color:#fff">水源风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">衰败</span>
+          <span class="chip">生命流失</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>-</p>
+          <p><span class="field">关键词：</span>法术.水源.衰败.生命流失.体质豁免（15）.长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p>你用未持有物件的双手做出对应施法动作、并念诵法咒唤起一阵衰败之潮，灰黑色的水雾席卷众人令其躯体腐朽</p>
+          <p>你使自身周围4米内的至多四名角色各进行一次难度为15的体质豁免，豁免失败的角色将会失去4D6点生命值，如果范围内可选择的角色数量小于这个值，那么你可以选择已经受到衰老潮汐效果影响的角色再次进行豁免检定，如果本次豁免检定失败，那么目标还会进入力竭状态（至多通过这个方式进入两层力竭状态）</p>
+          <p>如果目标因为衰老潮汐使得自身生命值低于50%最大生命值，那么还会在下一个自身回合失去一个附赠动作</p>
+          <p>衰老潮汐会在施展后切换为生机潮汐</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-97" data-search="镜像水域 法术.图腾.净化.唯一性 你拥有包含净化关键词的技能 你拥有法术.宁静心智图腾 0动作 4米 2轮 3">
+        <h4>镜像水域 <span class="chip" style="background:#888;color:#fff">水源风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">净化</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含净化关键词的技能</p>
+          <p><span class="field">额外条件：</span>你拥有法术.宁静心智图腾</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.净化.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有任意元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒令自身如水波般扭曲，接着真身从另一处水面浮现</p>
+          <p>当你将要成为一个直观的攻击手段的目标时可以花费一个反应动作为自身召唤一个水域镜像代替你承受这个效果</p>
+          <p>随后你可以使自身跃迁至视野范围内的一处水源或相邻位置上，如果当前视野范围内不存在水源，那么你仅能够跃迁至原先相邻的一个位置上</p>
+          <p>水域镜像的防御等级与你相同，拥有等同于你的萨满祭司等级的生命值，如果水域镜像没有被破坏，那么你进入潜行状态（这个状态在水域镜像被摧毁时将会解除，此外当你的本体进行移动，或是执行一项行动后水域镜像会立即消失）</p>
+          <p>如果当前水元素处于活跃状态，那么水域镜像会在轮次结束阶段施展一个你拥有的、不超过二阶的水源风格法术，由你来支付其疲劳值消耗</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>你可以额外在视野范围内的一处水源或相邻位置上召唤一个水域镜像</p>
+          <p>净化图腾</p>
+          <p>你扔出一根图腾使柔和的蓝光洗涤不洁之物</p>
+          <p>你在一个未被占据的位置上放置一根任意元素图腾，在每个轮次结束阶段会为相邻位置的一名友方角色移除一个当前受到的异常状态</p>
+          <p>净化图腾被不死生物、邪魔或诅咒物摧毁时，还会对其造成2D6点神圣伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>净化图腾可以选择移除目标当前拥有的负面标记</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-98" data-search="水灵契约 天赋.增益 你在本位阶及后通过带有水源关键词的技能触发过暴击 你在本次游玩过程中通过带有水源关键词的技能触发过暴击">
+        <h4>水灵契约 <span class="chip" style="background:#CE93D8;color:#fff">水源风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本位阶及后通过带有水源关键词的技能触发过暴击</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中通过带有水源关键词的技能触发过暴击</p>
+          <p><span class="field">关键词：</span>天赋.增益</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>当你施展召唤水元素时，可以额外花费一个主要动作和一颗冰霜灵核来将其升格</p>
+          <p>为水灵亲卫，全方位提升能力规格，并且持续时间提升为1小时，其数据如下所</p>
+          <p>示</p>
+          <p>-------------------------------------------------------------------</p>
+          <p>水灵亲卫</p>
+          <p>中大型元素生物，防御等级：14，生命值：45</p>
+          <p>力量14（+2） 敏捷10（+0） 体质16（+3） 智力12（+1）</p>
+          <p>感知14（+2） 魅力12（+1） 意志10（+0） 幸运13（+1）</p>
+          <p>感官：警惕值10，体感12米</p>
+          <p>移动速度：5米/8米（水中）</p>
+          <p>战斗加成：先攻时序值14，攻击命中检定加值+6</p>
+          <p>伤害易伤：雷电</p>
+          <p>伤害免疫：物理、自然、心灵</p>
+          <p>状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕</p>
+          <p>语言：元素语</p>
+          <p>固有技能：</p>
+          <p>潮汐跃动</p>
+          <p>天赋.水灵亲卫在水域环境下的生命值+30，攻击命中检定加值+4</p>
+          <p>额外行动</p>
+          <p>天赋.水灵亲卫可以在每个自身回合中额外施展一次水行箭或水盾</p>
+          <p>召唤契约</p>
+          <p>天赋.水灵亲卫被击败或者离场后，你必须在水域环境完成一次萨满教义才能再度将其召唤</p>
+          <p>水行箭</p>
+          <p>主要动作.施法攻击.水源.虚化飞行道具.水灵亲卫在每个自身回合可以对12米范围内的一名角色发起攻击，造成15点自然伤害，目标需要进行一次难度为12的敏捷豁免，对方豁免失败将进入击倒状态</p>
+          <p>水盾</p>
+          <p>附赠动作.水源.护盾.水灵亲卫可以为12米范围内的一名角色生成一个能够抵挡15点物理、火焰、冰霜和自然伤害的护盾</p>
+          <p>激流冲撞</p>
+          <p>主要动作.水源.位移.水灵亲卫冲锋至直线6米内的一个未被占据的位置，沿途所有角色需要进行一次难度为14的力量豁免，对方豁免失败将会受到15点钝击伤害并且被击飞4米</p>
+          <p>治疗之泉</p>
+          <p>附赠动作.水源.回复.每场战斗限一次.水灵亲卫在自身周围6米内召唤一处治疗之泉，每个轮次结束阶段为视野范围内的一名角色回复15点生命值，持续2轮</p>
+          <p>抉择：急流飞浪/静水流深</p>
+          <p>急流飞浪</p>
+          <p>当你的水元素处于活跃状态时，每次施展带有水源关键词的技能时能够额外投掷</p>
+          <p>一颗D20骰，如果这颗骰子的点数能够满足当前暴击的条件，那么视作触发暴击</p>
+          <p>效果，即便对于回复生命值和疲劳值的效果同样如此</p>
+          <p>------------------------------------------------------------------</p>
+        </div>
+      </article>
+<h3 id="sa-style-大地">大地风格</h3>
+
+      <h4 id="sa-tier-大地-1">一阶天赋树</h4>
+      <article class="skill" id="sa-skill-54" data-search="石爪术 法术.施法攻击.AOE.大地.阻碍 - 1动作 近战 1轮 3 你对前方直线6米上的所有角色各造成1D4点穿刺伤害，随后在沿途的空白位置上生成一片石爪地形 石爪地形高度为1米，能够阻挠角色的通行，但仍然能够通过跳远行动穿越 石爪地形的防御等级为12，受到伤害后会立即破碎 你的萨满祭司职业等级到达5级时：石爪术改为造成2D4点穿刺伤害 你的萨满祭司职业等级到达10级时：通过跳跃穿过石爪地形的角色需要进行一次难度为15的敏捷豁免，对方豁免失败将进入流血状态">
+        <h4>石爪术 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">大地</span>
+          <span class="chip">阻碍</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>-</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.大地.阻碍</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>做出对应施法手势，念出法咒召唤一排岩石之爪袭击当地人</p>
+          <p>你对前方直线6米上的所有角色各造成1D4点穿刺伤害，随后在沿途的空白位置上生成一片石爪地形</p>
+          <p>石爪地形高度为1米，能够阻挠角色的通行，但仍然能够通过跳远行动穿越</p>
+          <p>石爪地形的防御等级为12，受到伤害后会立即破碎</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>石爪术改为造成2D4点穿刺伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>通过跳跃穿过石爪地形的角色需要进行一次难度为15的敏捷豁免，对方豁免失败将进入流血状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-55" data-search="缓速图腾 法术.图腾.大地.唯一性.敏捷豁免（12） 你限制过一次他人的位移 0动作 4米 2轮 1 你在一个空白位置上放置一根土元素图腾，持续时间内进入其周围2米内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将会进入减速状态">
+        <h4>缓速图腾 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">唯一性</span>
+          <span class="chip">敏捷豁免（12）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你限制过一次他人的位移</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.唯一性.敏捷豁免（12）</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾来减缓他人的行进速度</p>
+          <p>你在一个空白位置上放置一根土元素图腾，持续时间内进入其周围2米内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将会进入减速状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-56" data-search="强壮图腾 法术.图腾.大地.增益.唯一性 力量属性为你最高的属性值之一 0动作 4米 2轮 1 你在一个空白位置上放置一根土元素图腾，持续时间内周围2米内的角色力量属性值+2，并且对击倒、击退和击飞的豁免检定具有优势">
+        <h4>强壮图腾 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">增益</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>力量属性为你最高的属性值之一</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.增益.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾来强化众人</p>
+          <p>你在一个空白位置上放置一根土元素图腾，持续时间内周围2米内的角色力量属性值+2，并且对击倒、击退和击飞的豁免检定具有优势</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-57" data-search="大地祈咒 法术.大地.增益 你与土元素进行过一次友善的交互 0动作 12米 立即 2 你使一名角色在下一次获得的护盾值结算后+4 你的萨满祭司职业等级到达5级时：大地祈咒改为护盾值结算后+6 你的萨满祭司职业等级到达10级时：大地祈咒改为护盾值结算后+10">
+        <h4>大地祈咒 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">增益</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与土元素进行过一次友善的交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>近战</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.大地.增益</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前土元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒祈求土元素赐予你大地的力量</p>
+          <p>你使一名角色在下一次获得的护盾值结算后+4</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>大地祈咒改为护盾值结算后+6</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>大地祈咒改为护盾值结算后+10</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-大地-2">二阶天赋树</h4>
+      <article class="skill" id="sa-skill-58" data-search="石肤术 法术.大地.防御.韧性.激活 体质属性不为你最低的属性值 你得到过一次来自大地的协助 1动作 自身 1轮 4 你在持续时间内获得以下效果： ·你能够免疫四阶天赋树及以下的带有雷电关键词的效应 ·你获得4点穿刺和挥砍伤害抗性 ·你获得4点钝击和力场伤害抗性 ·你的基础移动速度减半 你的萨满祭司职业等级到达5级时：石肌术的持续时间内土元素将会始终处于活跃状态 你的萨满祭司职业等级到达8级时：石肌术的持续时间内你的徒手攻击命中检定掷出19时即可触发暴击">
+        <h4>石肤术 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">防御</span>
+          <span class="chip">韧性</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>体质属性不为你最低的属性值</p>
+          <p><span class="field">额外条件：</span>你得到过一次来自大地的协助</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.大地.防御.韧性.激活</p>
+          <p><span class="field">施展条件：</span>当前土元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你使自身的肌肤如同岩石一般坚韧</p>
+          <p>你在持续时间内获得以下效果：</p>
+          <p>·你能够免疫四阶天赋树及以下的带有雷电关键词的效应</p>
+          <p>·你获得4点穿刺和挥砍伤害抗性</p>
+          <p>·你获得4点钝击和力场伤害抗性</p>
+          <p>·你的基础移动速度减半</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>石肌术的持续时间内土元素将会始终处于活跃状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>石肌术的持续时间内你的徒手攻击命中检定掷出19时即可触发暴击</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-59" data-search="地陷图腾 法术.图腾.大地.阻碍.唯一性.敏捷豁免（12） 你拥有包含大地关键词的图腾 你在高地势对一名低地势角色造成过伤害 0动作 4米 2轮 1 你在一个空白位置上放置一根土元素图腾，持续时间内周围2米的地形会下沉2米深度并且被视作困难地形 地陷图腾会使风元素回归沉寂状态">
+        <h4>地陷图腾 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">唯一性</span>
+          <span class="chip">敏捷豁免（12）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含大地关键词的图腾</p>
+          <p><span class="field">额外条件：</span>你在高地势对一名低地势角色造成过伤害</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.阻碍.唯一性.敏捷豁免（12）</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾使地面塌陷</p>
+          <p>你在一个空白位置上放置一根土元素图腾，持续时间内周围2米的地形会下沉2米深度并且被视作困难地形</p>
+          <p>地陷图腾会使风元素回归沉寂状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-60" data-search="石锥术 法术.施法攻击.大地.实体飞行道具 你造成过物理伤害 你在本次游玩的战斗环节中造成过物理伤害 1动作 12米 立即 1 你生成石锥攻击直线方向上的第一名角色，对目标造成1D12点穿刺伤害 你的萨满祭司职业等级到达3级时：如果石锥术攻击目标后还未抵达最大施展距离，那么还可以对后方的第一名角色继续进行攻击，造成一半的结算后伤害值 你的萨满祭司职业等级到达6级时：石锥术改为造成2D12点穿刺伤害 你的萨满祭司职业等级到达12级时：石锥术可以对直线方向所有角色造成伤害，但对第一名角色外的其他目标仅造成一半的结算后伤害值">
+        <h4>石锥术 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">大地</span>
+          <span class="chip">实体飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你造成过物理伤害</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中造成过物理伤害</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>自身</p>
+          <p><span class="field">持续时间：</span>1轮</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.大地.实体飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒生成尖锐的石锥刺向敌人</p>
+          <p>你生成石锥攻击直线方向上的第一名角色，对目标造成1D12点穿刺伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达3级时：</span>如果石锥术攻击目标后还未抵达最大施展距离，那么还可以对后方的第一名角色继续进行攻击，造成一半的结算后伤害值</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>石锥术改为造成2D12点穿刺伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>石锥术可以对直线方向所有角色造成伤害，但对第一名角色外的其他目标仅造成一半的结算后伤害值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-61" data-search="矿石亲和 天赋.探知 本风格不能是你的萨满祭司职业的第三或第四种战斗风格 你挖掘过一块稀有或以上品质的矿石 你能够感应到自身周围12米范围内是否有矿物的存在，并且那种矿物的品质越珍贵你的感应便越强烈">
+        <h4>矿石亲和 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">探知</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你挖掘过一块稀有或以上品质的矿石</p>
+          <p><span class="field">关键词：</span>天赋.探知</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你能够感应到自身周围12米范围内是否有矿物的存在，并且那种矿物的品质越珍贵你的感应便越强烈</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-大地-3">三阶天赋树</h4>
+      <article class="skill" id="sa-skill-62" data-search="大地震击 法术.施法攻击.大地.体质豁免（15）.短休/长休 体质属性为你最高的属性值之一 你在本次游玩的战斗环节中击败一名相邻位置的敌人 1动作 4米 立即 4 你对直线方向上的第一名角色造成3D4点钝击伤害，随后使目标进行一次难度为15的体质豁免，对方豁免失败将被击晕1轮">
+        <h4>大地震击 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">大地</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail"><p><span class="field">前置条件：</span>体质属性为你最高的属性值之一</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中击败一名相邻位置的敌人</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>4米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>法术.施法攻击.大地.体质豁免（15）.短休/长休</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">限制：</span>你能够做出对应手势、凭借言语发出声音，并且当前土元素处于活跃状态</p>
+<p>你用未持有任何物件的双手做出对应的施法动作、并念诵法咒从掌心喷发出一阵黄色的冲击波震撼对手</p>
+<p>你对直线方向上的第一名角色造成3D4点钝击伤害，随后使目标进行一次难度为15的体质豁免，对方豁免失败将被击晕1轮</p></div>
+      </article>
+      <article class="skill" id="sa-skill-63" data-search="陷足流沙 法术.大地.阻碍.敏捷豁免（15） 你降低过其他角色的移动速度 你在本次游玩的战斗环节中降低过其他角色的移动速度 1动作 12米 3轮 4 你在一片4*4的区域生成大量流沙，区域内的所有角色需要立即进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态 位于流沙范围内的角色在执行跳远或跳高行动时需要进行一次难度为15的力量豁免，对方豁免失败将会取消本次行动 在流沙中停留超过1轮的角色需要再次进行难度为15的敏捷豁免，本次豁免失败将会进入禁锢状态并且尽可能朝向流沙中心移动1米 你的萨满祭司职业等级到达10级时：陷足流沙的范围提升至6*6">
+        <h4>陷足流沙 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">敏捷豁免（15）</span>
+        </div>
+        <div class="detail"><p><span class="field">前置条件：</span>你降低过其他角色的移动速度</p>
+<p><span class="field">额外条件：</span>你在本次游玩的战斗环节中降低过其他角色的移动速度</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>4米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>法术.大地.阻碍.敏捷豁免（15）</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">限制：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p>你做出对应施法手势，念出法咒在指定区域生成一片流沙来限制他人行动</p>
+<p>你在一片4*4的区域生成大量流沙，区域内的所有角色需要立即进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态</p>
+<p>位于流沙范围内的角色在执行跳远或跳高行动时需要进行一次难度为15的力量豁免，对方豁免失败将会取消本次行动</p>
+<p>在流沙中停留超过1轮的角色需要再次进行难度为15的敏捷豁免，本次豁免失败将会进入禁锢状态并且尽可能朝向流沙中心移动1米</p>
+<p><span class="field">你的萨满祭司职业等级到达10级时：</span>陷足流沙的范围提升至6*6</p></div>
+      </article>
+      <article class="skill" id="sa-skill-64" data-search="地脉感知 戏法.大地.探知 你造访过一处洞穴或地城 你造访过一处距离地面1000米以下的深层地下 1动作 自身 立即 2 你感应自身周围24米内的地表及地下环境是否存在有依附于大地的空洞、矿物和地脉运动，感应可能会因周边土元素的活跃程度而紊乱">
+        <h4>地脉感知 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">大地</span>
+          <span class="chip">探知</span>
+        </div>
+        <div class="detail"><p><span class="field">前置条件：</span>你造访过一处洞穴或地城</p>
+<p><span class="field">额外条件：</span>你造访过一处距离地面1000米以下的深层地下</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>4米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>戏法.大地.探知</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">限制：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p>你将一只未持有物件的手接触地面并念出法咒，随后你的眼睛将亮起黄色光芒与这片大地建立起紧密连接</p>
+<p>你感应自身周围24米内的地表及地下环境是否存在有依附于大地的空洞、矿物和地脉运动，感应可能会因周边土元素的活跃程度而紊乱</p></div>
+      </article>
+      <article class="skill" id="sa-skill-65" data-search="召唤土元素 法术.大地.召唤单位.专注.激活.唯一性 你的技能列表中拥有包含大地关键词的法术 你击败过一个土元素或得到过土元素的认可 2动作 2米 1-5轮 4 你召唤一团土元素协同作战，其数据如下所示 ------------------------------------------------------------------- 土元素 中型元素生物，防御等级：10，生命值：15 力量14（+2） 敏捷5 （-3） 体质14（+2） 智力10（+0） 感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0） 感官：被动察觉10，体感12米 移动速度：3米 战斗加成：先攻时序值8，攻击命中检定加值+6 伤害易伤：钝击、力场 伤害免疫：挥砍、穿刺、雷电、心灵 状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕 语言：元素语 固有技能： 地脉跃动 天赋.土元素在干旱环境下的生命值+10，攻击命中检定加值+2 猛击 主要动作.近战攻击.大地.土元素猛击一名角色，造成12点钝击伤害 碎石箭 主要动作.施法攻击.大地.实体飞行道具.土元素在每个自身回合可以对6米内的一名角色发起攻击，造成12点穿刺伤害 岩石盾 主要动作.护盾.土元素为自身生成一个能够抵挡8点任意伤害的护盾，这个护盾无法抵挡心灵、神圣、邪能和星界伤害">
+        <h4>召唤土元素 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">专注</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail"><p><span class="field">前置条件：</span>你的技能列表中拥有包含大地关键词的法术</p>
+<p><span class="field">额外条件：</span>你击败过一个土元素或得到过土元素的认可</p>
+<p><span class="field">施展时间：</span>1动作</p>
+<p><span class="field">施展距离：</span>4米</p>
+<p><span class="field">持续时间：</span>立即</p>
+<p><span class="field">疲劳消耗：</span>4</p>
+<p><span class="field">关键词：</span>法术.大地.召唤单位.专注.激活.唯一性</p>
+<p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+<p><span class="field">限制：</span>你能够做出对应手势、凭借言语发出声音</p>
+<p>你做出对应施法手势，念出法咒在原地浮现出一个黄色召唤结界，随后一头厚重的土元素被呼唤而来</p>
+<p>你召唤一团土元素协同作战，其数据如下所示</p>
+<p>-------------------------------------------------------------------</p>
+<p>土元素</p>
+<p>中型元素生物，防御等级：10，生命值：15</p>
+<p>力量14（+2） 敏捷5 （-3） 体质14（+2） 智力10（+0）</p>
+<p>感知10（+0） 魅力8 （-1） 意志10（+0） 幸运10（+0）</p>
+<p>感官：被动察觉10，体感12米</p>
+<p>移动速度：3米</p>
+<p>战斗加成：先攻时序值8，攻击命中检定加值+6</p>
+<p>伤害易伤：钝击、力场</p>
+<p>伤害免疫：挥砍、穿刺、雷电、心灵</p>
+<p>状态免疫：灼烧、中毒、流血、致盲、耳鸣、沉默、恐惧、魅惑、醉酒、忏悔、眩晕</p>
+<p>语言：元素语</p>
+<p>固有技能：</p>
+<p>地脉跃动</p>
+<p>天赋.土元素在干旱环境下的生命值+10，攻击命中检定加值+2</p>
+<p>猛击</p>
+<p>主要动作.近战攻击.大地.土元素猛击一名角色，造成12点钝击伤害</p>
+<p>碎石箭</p>
+<p>主要动作.施法攻击.大地.实体飞行道具.土元素在每个自身回合可以对6米内的一名角色发起攻击，造成12点穿刺伤害</p>
+<p>岩石盾</p>
+<p>主要动作.护盾.土元素为自身生成一个能够抵挡8点任意伤害的护盾，这个护盾无法抵挡心灵、神圣、邪能和星界伤害</p></div>
+      </article>
+
+      <h4 id="sa-tier-大地-4">四阶天赋树</h4>
+      <article class="skill" id="sa-skill-66" data-search="石凝咒 法术.大地.创造地形.阻碍.力量豁免（15） 你拥有包含大地关键词的技能 你在这个位阶及后利用地形击败过一次敌方团队 1动作 12米 立即 4 你塑造一片不超过六个区域位置、并且相互连接的地面，选择以下一项效应： ·使其上升至多6米高度 ·使其下沉至多6米深度 ·使区域内的所有角色各自进行一次难度为12的力量豁免，豁免失败的角色将会进入禁锢状态，目标可以在自身回合花费一个附赠动作再次进行难度为12的力量豁免来尝试解除这个状态 ·将沼泽、或者其他泥泞地形转化为平整的地面 你的萨满祭司职业等级到达10级时：石凝咒能够选择将地面变为泥泞，进入范围内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态 你的萨满祭司职业等级到达12级时：石凝咒改为能够塑造一片不超过九个区域位置的区域 你的萨满祭司职业等级到达15级时：石凝咒如果选择令对方进行力量豁免，那么豁免失败的角色无法做出施法手势，如果选择令对方进行敏捷豁免，那么豁免失败的角色还会进入击倒状态">
+        <h4>石凝咒 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">创造地形</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">力量豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含大地关键词的技能</p>
+          <p><span class="field">额外条件：</span>你在这个位阶及后利用地形击败过一次敌方团队</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.大地.创造地形.阻碍.力量豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用一只未持有物件的手做出对应的施法动作、并念诵法咒唤醒岩石，将其塑造成期望的模样</p>
+          <p>你塑造一片不超过六个区域位置、并且相互连接的地面，选择以下一项效应：</p>
+          <p>·使其上升至多6米高度</p>
+          <p>·使其下沉至多6米深度</p>
+          <p>·使区域内的所有角色各自进行一次难度为12的力量豁免，豁免失败的角色将会进入禁锢状态，目标可以在自身回合花费一个附赠动作再次进行难度为12的力量豁免来尝试解除这个状态</p>
+          <p>·将沼泽、或者其他泥泞地形转化为平整的地面</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>石凝咒能够选择将地面变为泥泞，进入范围内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>石凝咒改为能够塑造一片不超过九个区域位置的区域</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>石凝咒如果选择令对方进行力量豁免，那么豁免失败的角色无法做出施法手势，如果选择令对方进行敏捷豁免，那么豁免失败的角色还会进入击倒状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-67" data-search="石壁图腾 法术.图腾.大地.创造地形.阻碍.唯一性 你在本次游玩的战斗阶段中使一名敌方角色陷入过击倒、击退或眩晕状态 你在本次游玩过程中造访过山地环境 0动作 4米 - 1 你在一个空白位置上放置一根土元素图腾，石壁图腾在落地后会立即变为一个占据2*2区域、高度6米的巨大石柱 石柱的防御等级为15，在承受共计30点非心灵伤害后会被摧毁 你可以在石壁图腾放出的一分钟内令石柱瓦解，位于上方的角色会承受坠落伤害 如果你使用土元素图腾用于石壁图腾，那么这根图腾无法再被回收">
+        <h4>石壁图腾 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">创造地形</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗阶段中使一名敌方角色陷入过击倒、击退或眩晕状态</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中造访过山地环境</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.创造地形.阻碍.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾变化为巨大的石柱</p>
+          <p>你在一个空白位置上放置一根土元素图腾，石壁图腾在落地后会立即变为一个占据2*2区域、高度6米的巨大石柱</p>
+          <p>石柱的防御等级为15，在承受共计30点非心灵伤害后会被摧毁</p>
+          <p>你可以在石壁图腾放出的一分钟内令石柱瓦解，位于上方的角色会承受坠落伤害</p>
+          <p>如果你使用土元素图腾用于石壁图腾，那么这根图腾无法再被回收</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-68" data-search="停滞图腾 法术.图腾.大地.阻碍.唯一性 你在本次游玩的战斗环节中没有进行过位移 你在本次游玩过程中没有进行过发言 0动作 4米 2轮 1 你在一个空白位置上放置一根土元素图腾，持续时间内当有未与其相邻的角色途经这个图腾时，会立即结束本次移动行动，之后目标仍可以花费动作来尝试继续移动 停滞图腾会使风元素回归沉寂状态">
+        <h4>停滞图腾 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本次游玩的战斗环节中没有进行过位移</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中没有进行过发言</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.阻碍.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾让周围的空气都变得黏腻，仿佛令进入其中的人静滞</p>
+          <p>你在一个空白位置上放置一根土元素图腾，持续时间内当有未与其相邻的角色途经这个图腾时，会立即结束本次移动行动，之后目标仍可以花费动作来尝试继续移动</p>
+          <p>停滞图腾会使风元素回归沉寂状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-70" data-search="深岩抗性"><h4>深岩抗性 <span class="chip" style="background:#8D6E63;color:#fff">大地 · 四阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">防御</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格不能是你的萨满祭司职业的第三或第四种战斗风格</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中遭遇过土元素</p>
+          <p><span class="field">关键词：</span>天赋.防御</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你获得2点穿刺和挥砍伤害抗性，这个效果允许与其他抗性效果叠加</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>获得技能点<span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>深岩抗性改为获得4点穿刺和挥砍伤害抗性，这个效果允许与其他抗性效果叠加</p>
+        </div>
+      </article>
+
+      
+<h4 id="sa-tier-大地-五阶">大地 · 五阶天赋树</h4>
+
+
+
+<div id="sa-tier-大地-5"></div>\n<article class="skill" id="sa-skill-99" data-search="静水流深 法术.施法攻击.大地.体质豁免（15）.短休/长休 你降低过其他角色的移动速度 你在本次游玩的战斗环节中降低过其他角色的移动速度 1动作 4米 立即 4">
+        <h4>静水流深 <span class="chip" style="background:#888;color:#fff">大地风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">大地</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你降低过其他角色的移动速度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中降低过其他角色的移动速度</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.大地.体质豁免（15）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>当你的水元素处于活跃状态时，你的带有水源关键词的技能疲劳值消耗降低2</p>
+          <p>点（至少为1）</p>
+          <p>大地风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+          <p>石爪术</p>
+          <p>缓速图腾</p>
+          <p>强壮图腾</p>
+          <p>大地祈咒</p>
+          <p>石爪术</p>
+          <p>做出对应施法手势，念出法咒召唤一排岩石之爪袭击当地人</p>
+          <p>你对前方直线6米上的所有角色各造成1D4点穿刺伤害，随后在沿途的未被占据的位置上生成一片石爪地形</p>
+          <p>石爪地形高度为1米，能够阻挠角色的通行，但仍然能够通过跳远行动穿越</p>
+          <p>石爪地形的防御等级为12，<article class="skill" id="sa-skill-100" data-search="晶化崩解"><h4>晶化崩解 <span class="chip" style="background:#888;color:#fff">大地风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">力量豁免（15）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">额外条件：</span>你经历过一次足够规模的地震灾害</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.力量豁免（15）.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒将大地结晶凝结于体表，蓄力后引爆向四周迸射锋利的碎片</p>
+          <p>你获得晶化铠甲，在持续时间内防御等级+2并且获得2D8点护甲值，这些防御等级在你通过晶化崩解获得的护甲值全部消耗前不会被移除</p>
+          <p>每当你受到伤害时总是会优先结算护盾数值，其次是消耗你的护甲值，最后是临时生命值和你本身的生命值</p>
+          <p>护甲值无法抵挡心灵和星界类别的伤害</p>
+          <p>护甲值在承受钝击、雷电、力场和邪能类别的伤害值会在结算后翻倍，在承受穿刺、挥砍和剧毒类别的伤害会在结算后减半</p>
+          <p>如果持续时间结束时通过这个法术获得的护甲值未被全部消耗，那么自身周围2米内的所有角色需要进行一次难度为15的敏捷豁免，豁免失败的角色将受到X+你的体质调整值的穿刺伤害（X为你未消耗完的护甲值），豁免成功的角色仍需要承受一半的结算后伤害值</p>
+          <p>如果当前土元素处于活跃状态，那么晶化崩解仅需要花费一个附赠动作</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>晶化崩解改为获得3D8点护甲值</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>晶化崩解改为获得4D8点护甲值</p>
+          <p>巨型图腾</p>
+          <p>你扔出一根图腾巍然屹立，比其他图腾更加坚固，并且能够守护其他图腾</p>
+          <p>你在一个未被占据的位置上放置一根土元素图腾，其体积会占据一片2*2的区域，高度达到2米能够被视作障碍物</p>
+          <p>巨型图腾的防御等级为15，拥有15点生命值</p>
+          <p>在巨型图腾未被破坏前，与其相邻的图腾不能被摧毁</p>
+          <p>地震图腾</p>
+          <p>你扔出一根图腾狠狠砸向地面，引发持续性的震颤</p>
+          <p>你在一个未被占据的位置上放置一根土元素图腾，图腾周围2米内的所有角色在每个轮次开始阶段需要进行一次难度为15的力量豁免，豁免失败的角色将受到2D6点钝击伤害并且进入击倒状态，豁免成功的角色仍需要承受一半的结算后伤害值</p>
+          <p>受到地震图腾影响的区域会视作困难地形，并且在区域内试图施法或进入专注的角色需要进行一次难度为12的专注检定，检定失败的角色无法执行对应行动并且消耗对应动作</p>
+          <p>如果当前土元素处于活跃状态，那么地震图腾的影响范围提升至周围4米，造成4D6点钝击伤害</p>
+          <p>地震图腾会使风元素和水元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>如果当前土元素处于活跃状态，那么地震图腾的持续时间+1轮</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>如果当前土元素处于活跃状态，那么你可以花费一个附赠动作来破坏地震图腾，随后立即对范围内的所有角色进行一次难度为15的力量豁免，豁免失败的角色将受到6D6点钝击伤害并且被击飞2米</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-101" data-search="土灵契约 法术.大地.创建地形.力量豁免（15）.长休 你在本位阶及后摧毁过一处天然或人造的岩壁 你造访过一处发生过山崩、地震或泥石流的地区 1动作 24米 立即 8">
+        <h4>土灵契约 <span class="chip" style="background:#888;color:#fff">大地风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">创建地形</span>
+          <span class="chip">力量豁免（15）</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在本位阶及后摧毁过一处天然或人造的岩壁</p>
+          <p><span class="field">额外条件：</span>你造访过一处发生过山崩、地震或泥石流的地区</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>24米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>8</p>
+          <p><span class="field">关键词：</span>法术.大地.创建地形.力量豁免（15）.长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音，并且当前土元素处于活跃状态</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>岩崩</p>
+          <p>你用未持有物件的双手做出对应施法动作、并念诵法咒撼动大地，令高处的岩壁或地面崩裂，令碎石埋葬敌人</p>
+          <p>你选择一块不超过64个区域格的墙体、岩壁或石制建筑触发岩崩，破坏对应单位并根据其高度和宽度覆盖毗邻的位置，范围内的所有角色受到5D8点钝击伤害，并且需要进行一次难度为15的力量豁免，豁免失败的角色额外受到2D8点穿刺伤害随后进入压制状态，如果目标的豁免骰点数低于5还会进入眩晕状态</p>
+          <p>闪避成功的角色仍需要承受一半的结算后伤害值</p>
+          <p>岩崩的覆盖范围会被视作困难地形和掩体</p>
+          <p>如果当前土元素处于活跃状态，那么岩崩的两次伤害还会在结算后额外附加一次关键属性调整值</p>
+          <p>岩崩会使风元素和水元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>如果目标豁免失败，并且承受岩崩造成的伤害值超过40点，那么还会被击晕1轮</p>
+          <p><span class="field">你的萨满祭司职业等级到达18级时：</span>岩崩改为造成碾压伤害，在结算伤害值前优先移除目标的护盾值和护甲值</p>
+        </div>
+      </article>
+<h3 id="sa-style-巫术">巫术风格</h3>
+
+      <h4 id="sa-tier-巫术-1">一阶天赋树</h4>
+      <article class="skill" id="sa-skill-71" data-search="视界术 法术.专注.探知.激活 你通过萨满教义的先祖仪式获得过一次元素的征兆 1动作 120米 1分钟 2 你通过元素位面作为媒介，以第三人称视角观察周边环境，这个效果无法探查被障碍物遮挡的区域 你的萨满祭司职业等级到达3级时：视界术的施展距离提升至240米 你的萨满祭司职业等级到达6级时：视界术的施展距离提升至480米 你的萨满祭司职业等级到达9级时：视界术的施展距离提升至960米 你的萨满祭司职业等级到达18级时：只要元素活跃的地区均可被视界术探知，无视距离限制（但你依然要知晓探知位置的大致坐标），如果探知距离超过十公里则持续时间结束后会进入48小时的冷却，这个效果无法探知其他位面的信息">
+        <h4>视界术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">专注</span>
+          <span class="chip">探知</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你通过萨满教义的先祖仪式获得过一次元素的征兆</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.专注.探知.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，使额头前亮起一个青绿色的圆环，并在视线前生成一面仅有你能够看见的水镜</p>
+          <p>你通过元素位面作为媒介，以第三人称视角观察周边环境，这个效果无法探查被障碍物遮挡的区域</p>
+          <p><span class="field">你的萨满祭司职业等级到达3级时：</span>视界术的施展距离提升至240米</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>视界术的施展距离提升至480米</p>
+          <p><span class="field">你的萨满祭司职业等级到达9级时：</span>视界术的施展距离提升至960米</p>
+          <p><span class="field">你的萨满祭司职业等级到达18级时：</span>只要元素活跃的地区均可被视界术探知，无视距离限制（但你依然要知晓探知位置的大致坐标），如果探知距离超过十公里则持续时间结束后会进入48小时的冷却，这个效果无法探知其他位面的信息</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-72" data-search="传讯术 戏法.专注.交涉 你在本次游玩过程中与至少五名NPC角色进行过言语沟通 1动作 12米 立即 2 你向一名其他角色发出讯息，谈话内容仅可被目标听见 目标可以在收到讯息的1分钟内通过低语对你进行回复，如果超过这个时段你必须重新施展传讯术才能与对方取得联系 如果目标拒绝接收你的讯息，那么在24小时内你无法再次对目标使用传讯术 你的萨满祭司职业等级到达5级时：传讯术的施展距离改为36米 你的萨满祭司职业等级到达10级时：传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置 你的萨满祭司职业等级到达15级时：如果你在本日触碰过这名角色，那么对目标使用传讯术时能够无视施展距离的限制">
+        <h4>传讯术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">专注</span>
+          <span class="chip">交涉</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你在本次游玩过程中与至少五名NPC角色进行过言语沟通</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.专注.交涉</p>
+          <p><span class="field">施展条件：</span>对方能够听见并理解你的言语</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你看向一名角色，并在心中默念想要与之沟通的话语</p>
+          <p>你向一名其他角色发出讯息，谈话内容仅可被目标听见</p>
+          <p>目标可以在收到讯息的1分钟内通过低语对你进行回复，如果超过这个时段你必须重新施展传讯术才能与对方取得联系</p>
+          <p>如果目标拒绝接收你的讯息，那么在24小时内你无法再次对目标使用传讯术</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>传讯术的施展距离改为36米</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>如果你在本日触碰过这名角色，那么对目标使用传讯术时能够无视施展距离的限制</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-73" data-search="虚弱诅咒 法术.体质豁免（15） 你目击过一名其他角色进入力竭姿态 0动作 6米 2轮 3 你对一名角色降下虚弱诅咒，目标需要进行一次难度为15的体质豁免，对方豁免失败将进入减速状态，并且在执行位移和跳远、跳高行动时还需要额外花费一个附赠动作">
+        <h4>虚弱诅咒 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你目击过一名其他角色进入力竭姿态</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒诅咒一名角色，使无力感席卷对方周身</p>
+          <p>你对一名角色降下虚弱诅咒，目标需要进行一次难度为15的体质豁免，对方豁免失败将进入减速状态，并且在执行位移和跳远、跳高行动时还需要额外花费一个附赠动作</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-74" data-search="迷雾术 法术.阻碍.激活 你承受过攻击命中检定劣势的效果 1动作 12米 3轮 4 你使一片3*3的区域产生迷雾，位于迷雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于迷雾两端的角色同样会受到这个效果的影响 每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视迷雾术的影响 迷雾效果可能会因为风暴关键词的效果影响而被驱散 你的萨满祭司职业等级到达5级时：迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状 你的萨满祭司职业等级到达10级时：你可以在生成迷雾时指定迷雾内或外界的一方忽视迷雾术带来的负面影响">
+        <h4>迷雾术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">激活</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你承受过攻击命中检定劣势的效果</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.阻碍.激活</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在指定区域生成一团灰白色的迷雾来遮蔽他人的视野</p>
+          <p>你使一片3*3的区域产生迷雾，位于迷雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于迷雾两端的角色同样会受到这个效果的影响</p>
+          <p>每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视迷雾术的影响</p>
+          <p>迷雾效果可能会因为风暴关键词的效果影响而被驱散</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>你可以在生成迷雾时指定迷雾内或外界的一方忽视迷雾术带来的负面影响</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-75" data-search="侦测毒性与疾病 戏法.探知 你与一名中毒者或患者进行过非战斗的交互 1动作 自身 立即 2 你感应自身周围6米内是否存在有毒素、有毒生物、疾病以及其具体类别，感应效果可能会被部分障碍物所阻碍">
+        <h4>侦测毒性与疾病 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">探知</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你与一名中毒者或患者进行过非战斗的交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.探知</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你念出法咒，随后你的眼睛将亮起青色光芒开始侦测毒性与疾病，并在脑海中获得对应数据</p>
+          <p>你感应自身周围6米内是否存在有毒素、有毒生物、疾病以及其具体类别，感应效果可能会被部分障碍物所阻碍</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-76" data-search="骨符占卜 戏法.命运.探知.媒介 你目睹过一次他人的占卜行为 1分钟 自身 立即 1 你进行一次难度为X的感知或魅力检定，如果检定成功那么你可以选择以下一个效果： ·知晓哪条道路能够通往正确的方向 ·知晓接下来的12小时内的天气变化 ·知晓你接下来准备进行的行动的危险程度 X为你自定义设置，你设置的难度越高，检定成功时得到的答案便越清晰、越准确，反正则越模糊、甚至给予你错误的答案 你必须进行一次特性.萨满教义的仪式后才能再次施展骨符占卜的效果">
+        <h4>骨符占卜 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 一阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">命运</span>
+          <span class="chip">探知</span>
+          <span class="chip">媒介</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你目睹过一次他人的占卜行为</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>120米</p>
+          <p><span class="field">持续时间：</span>1分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.命运.探知.媒介</p>
+          <p><span class="field">施展条件：</span>你携带有至少一根完整的骨头，并且能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你摆弄着骨头口中呢喃着法咒，通过超自然的神秘学力量带给你启示</p>
+          <p>你进行一次难度为X的感知或魅力检定，如果检定成功那么你可以选择以下一个效果：</p>
+          <p>·知晓哪条道路能够通往正确的方向</p>
+          <p>·知晓接下来的12小时内的天气变化</p>
+          <p>·知晓你接下来准备进行的行动的危险程度</p>
+          <p>X为你自定义设置，你设置的难度越高，检定成功时得到的答案便越清晰、越准确，反正则越模糊、甚至给予你错误的答案</p>
+          <p>你必须进行一次特性.萨满教义的仪式后才能再次施展骨符占卜的效果</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-巫术-2">二阶天赋树</h4>
+      <article class="skill" id="sa-skill-77" data-search="妖术 戏法.惑控.幻象.变形.激活.体质豁免（15）/效果递减（-5） 你拥有欺瞒的熟练度并且完成过一次古怪的恶作剧 你在本次游玩过程中利用虚假的迷信恐吓过他人 2动作 12米 5分钟 2 你可以创造出以下一种魔法效应： ·使一名角色进行一次难度为15的体质豁免，对方豁免失败将会变为青蛙，在自身回合中不受控制的四处蹦跳，这名角色在受到任意攻击时均会解除变形效果；如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会 ·将一立方分米的液体伪装成看似具有回复效果的恢复性药水 ·将一份腐败的食物伪装成散发浓郁香味的美味佳肴 ·将你的意识投向一个非魔法道具的物件上，你的本体将会陷入失能状态，而那个物件将会长出你的五官并能够与他人沟通 ·在一片不超过一百平方米的区域制造稀薄的雾气，这些雾气不会阻碍视觉，但会给人带来阴森的氛围，仿佛在远处有着模糊的人影和古怪的笑声">
+        <h4>妖术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">惑控</span>
+          <span class="chip">幻象</span>
+          <span class="chip">变形</span>
+          <span class="chip">激活</span>
+          <span class="chip">体质豁免（15）/效果递减（-5）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有欺瞒的熟练度并且完成过一次古怪的恶作剧</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中利用虚假的迷信恐吓过他人</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.惑控.幻象.变形.激活.体质豁免（15）/效果递减（-5）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用双手做出对应的施法动作、并念诵着晦涩难懂的法咒施展出诡异而恶毒的妖术，这些戏法绝非是出于善意的存在</p>
+          <p>你可以创造出以下一种魔法效应：</p>
+          <p>·使一名角色进行一次难度为15的体质豁免，对方豁免失败将会变为青蛙，在自身回合中不受控制的四处蹦跳，这名角色在受到任意攻击时均会解除变形效果；如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再次进行难度为15的体质豁免，对方豁免成功将会解除变形效果</p>
+          <p>·将一立方分米的液体伪装成看似具有回复效果的恢复性药水</p>
+          <p>·将一份腐败的食物伪装成散发浓郁香味的美味佳肴</p>
+          <p>·将你的意识投向一个非魔法道具的物件上，你的本体将会陷入失能状态，而那个物件将会长出你的五官并能够与他人沟通</p>
+          <p>·在一片不超过一百平方米的区域制造稀薄的雾气，这些雾气不会阻碍视觉，但会给人带来阴森的氛围，仿佛在远处有着模糊的人影和古怪的笑声</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-78" data-search="巫术打击 法术.施法攻击.AOE.虚化飞行道具 你通过施法攻击击杀过十名角色 你在本次游玩的战斗环节中通过巫术风格的法术击杀过一名角色 1动作 6米 立即 4 你朝前方一片2*2的区域发起巫术打击，对位于区域内的所有角色各造成2D6点火焰、自然或强酸伤害，你可以在施展时自行决定伤害的类型 闪避成功的角色依旧需要承受一半的结算后伤害 你的萨满祭司职业等级到达8级时：巫术打击改为造成3D6点伤害 你的萨满祭司职业等级到达12级时：巫术打击改为造成4D6点伤害">
+        <h4>巫术打击 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你通过施法攻击击杀过十名角色</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过巫术风格的法术击杀过一名角色</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你用双手做出对应的施法动作、并念诵法咒释放由自然巫毒法术构筑的能量团砸向敌人</p>
+          <p>你朝前方一片2*2的区域发起巫术打击，对位于区域内的所有角色各造成2D6点火焰、自然或强酸伤害，你可以在施展时自行决定伤害的类型</p>
+          <p>闪避成功的角色依旧需要承受一半的结算后伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>巫术打击改为造成3D6点伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>巫术打击改为造成4D6点伤害</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-79" data-search="蛇吻术 法术.毒性.诅咒.体质豁免（15） 你造成过剧毒伤害 你在公众场合与一条蛇类生物接吻 1动作 12米 立即 3 你使一名角色进行一次难度为15的体质豁免，对方豁免失败将进入中毒状态 通过蛇吻术获得的中毒效果在首次结算后还会令目标承受3D4点剧毒伤害 你的萨满祭司职业等级到达8级时：如果目标处于中毒状态，那么蛇吻术的施展时间变更为一个附赠动作">
+        <h4>蛇吻术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">毒性</span>
+          <span class="chip">诅咒</span>
+          <span class="chip">体质豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你造成过剧毒伤害</p>
+          <p><span class="field">额外条件：</span>你在公众场合与一条蛇类生物接吻</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.毒性.诅咒.体质豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒在敌人身上生出毒蛇的咬痕</p>
+          <p>你使一名角色进行一次难度为15的体质豁免，对方豁免失败将进入中毒状态</p>
+          <p>通过蛇吻术获得的中毒效果在首次结算后还会令目标承受3D4点剧毒伤害</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>如果目标处于中毒状态，那么蛇吻术的施展时间变更为一个附赠动作</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-80" data-search="迷失图腾 法术.图腾.惑控.感知豁免（12）.唯一性 你拥有包含惑控关键词的技能 你为他人指引过一处错误方向并导致对方的迷失 0动作 4米 1轮 1 你扔出一根图腾使他人陷入迷乱之中 你在一个未被占据的位置上放置一根任意元素图腾，持续时间内首个进入迷失图腾相邻位置的角色需要进行一次难度为12的感知豁免，对方豁免失败后需要掷一颗D4骰来随机朝一个方向移动4米，随后进入困惑状态">
+        <h4>迷失图腾 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">惑控</span>
+          <span class="chip">感知豁免（12）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含惑控关键词的技能</p>
+          <p><span class="field">额外条件：</span>你为他人指引过一处错误方向并导致对方的迷失</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.图腾.惑控.感知豁免（12）.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有任意意元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾使他人陷入迷乱之中</p>
+          <p>你在一个未被占据的位置上放置一根任意元素图腾，持续时间内首个进入迷失图腾相邻位置的角色需要进行一次难度为12的感知豁免，对方豁免失败后需要掷一颗D4骰来随机朝一个方向移动4米，随后进入困惑状态</p>
+        </div>
+      </article>
+      
+      </article>
+      <article class="skill" id="sa-skill-81" data-search="骚灵现象 戏法.幻象.专注.引导.激活.长休 你拥有神秘学的熟练度 你造访过一座具有闹鬼传闻、但是不存在不死生物或邪魔的建筑或一片地区 1动作 24米 1分钟 2 持续时间内你能够创造以下效应： ·凭空移动物件，这个物件不能是同调物品或具有奇珍及以上品质，并且必须在你的视野范围内，物件的重量每有10磅重你便需要额外花费1点疲劳值，你可以同时操控至多三个物件 ·在施展范围内发出一阵诡异的喧闹声响 ·在施展范围内生成一个朦胧的灰白色类人型雾气 你的萨满祭司职业等级到达5级时：骚灵现象的施展距离变更为48米 你的萨满祭司职业等级到达10级时：骚灵现象能够控制更多的物件，每控制一件便额外花费1点疲劳值">
+        <h4>骚灵现象 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">戏法</span>
+          <span class="chip">幻象</span>
+          <span class="chip">专注</span>
+          <span class="chip">引导</span>
+          <span class="chip">激活</span>
+          <span class="chip">长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有神秘学的熟练度</p>
+          <p><span class="field">额外条件：</span>你造访过一座具有闹鬼传闻、但是不存在不死生物或邪魔的建筑或一片地区</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>戏法.幻象.专注.引导.激活.长休</p>
+          <p><span class="field">施展条件：</span>-</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你在心中默念法咒以制造出骚灵侵扰的诡异现象</p>
+          <p>持续时间内你能够创造以下效应：</p>
+          <p>·凭空移动物件，这个物件不能是同调物品或具有奇珍及以上品质，并且必须在你的视野范围内，物件的重量每有10磅重你便需要额外花费1点疲劳值，你可以同时操控至多三个物件</p>
+          <p>·在施展范围内发出一阵诡异的喧闹声响</p>
+          <p>·在施展范围内生成一个朦胧的灰白色类人型雾气</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>骚灵现象的施展距离变更为48米</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>骚灵现象能够控制更多的物件，每控制一件便额外花费1点疲劳值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-82" data-search="巫毒步 法术.迅捷.跃迁.随机性 你在自身回合外进行过位移 本风格为你萨满祭司职业的首个战斗风格 0动作 6米 立即 2 你掷一颗D4骰来随机闪现到施展距离内的一个空白位置上，可以通过这个效果穿越不可视的障碍物，前提是你知晓目标位置空间内的构造 你的萨满祭司职业等级到达5级时：每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果 你的萨满祭司职业等级到达10级时：在施展巫毒步时你可以预先选择一个方向，随后掷一颗D3骰来进行闪现，你一定不会被闪现到预选的方向">
+        <h4>巫毒步 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">迅捷</span>
+          <span class="chip">跃迁</span>
+          <span class="chip">随机性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你在自身回合外进行过位移</p>
+          <p><span class="field">额外条件：</span>本风格为你萨满祭司职业的首个战斗风格</p>
+          <p><span class="field">施展时间：</span>2动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>5分钟</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.迅捷.跃迁.随机性</p>
+          <p><span class="field">施展条件：</span>你能够凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你念诵法咒在脚下生成一道青烟覆盖全身，片刻后从诡异的角度忽然出现</p>
+          <p>你掷一颗D4骰来随机闪现到施展距离内的一个空白位置上，可以通过这个效果穿越不可视的障碍物，前提是你知晓目标位置空间内的构造</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>在施展巫毒步时你可以预先选择一个方向，随后掷一颗D3骰来进行闪现，你一定不会被闪现到预选的方向</p>
+        </div>
+      </article>
+
+      <h4 id="sa-tier-巫术-3">三阶天赋树</h4>
+      <article class="skill" id="sa-skill-83" data-search="祖灵之矛 战技.施法攻击. 你打击过一次针对氏族或部落的、来自文明的威胁 你拥有野蛮人或游牧民的个性背景 1动作 12米 立即 2 你投掷出一把长柄武器或标枪攻击敌人，对直线方向上的第一名角色结算这个武器的伤害值 你可以对造成的伤害值额外附加一次你的感知属性调整值 目标在承受伤害后会被祖灵标记，你对目标造成的下一次伤害将会消耗祖灵标记并根据类型产生不同效果： ·近战攻击：目标需要与你进行一次力量对抗，对方对抗失败将进入击倒状态 ·远程攻击：目标需要与你进行一次敏捷对抗，对方对抗失败将被击退2米或朝你拖拽2米（由你选择） ·施法攻击：目标需要与你进行一次智力对抗，对方对抗失败则下一次攻击命中检定具有劣势 4.如果祖灵之矛在具备先祖传承的环境下施展，那么攻击命中检定具有优势 你的萨满祭司职业等级到达10级时：祖灵之矛改为额外附加两次你的感知属性调整值">
+        <h4>祖灵之矛 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">战技</span>
+          <span class="chip">施法攻击</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你打击过一次针对氏族或部落的、来自文明的威胁</p>
+          <p><span class="field">额外条件：</span>你拥有野蛮人或游牧民的个性背景</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>战技.施法攻击.</p>
+          <p><span class="field">施展条件：</span>你携带有长柄武器或标枪</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B0F0;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你掷出手中的武器，此刻仿佛先祖与你一同狩猎</p>
+          <p>你投掷出一把长柄武器或标枪攻击敌人，对直线方向上的第一名角色结算这个武器的伤害值</p>
+          <p>你可以对造成的伤害值额外附加一次你的感知属性调整值</p>
+          <p>目标在承受伤害后会被祖灵标记，你对目标造成的下一次伤害将会消耗祖灵标记并根据类型产生不同效果：</p>
+          <p>·近战攻击：目标需要与你进行一次力量对抗，对方对抗失败将进入击倒状态</p>
+          <p>·远程攻击：目标需要与你进行一次敏捷对抗，对方对抗失败将被击退2米或朝你拖拽2米（由你选择）</p>
+          <p>·施法攻击：目标需要与你进行一次智力对抗，对方对抗失败则下一次攻击命中检定具有劣势</p>
+          <p>4.如果祖灵之矛在具备先祖传承的环境下施展，那么攻击命中检定具有优势</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>祖灵之矛改为额外附加两次你的感知属性调整值</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-84" data-search="虫孽滋生 法术.召唤单位.毒性.激活.唯一性 你拥有自然或驯兽的熟练度 你与一个虫群进行过交互 0动作 12米 1-3轮 2 你召唤虫群围攻一名角色，对其产生以下影响： ·虫群共享4+你的角色等级的生命值，攻击虫群需要先进行一次难度为14的敏捷检定，如果检定失败则视作没有命中 ·虫群会在每个轮次结束阶段对目标造成3点穿刺伤害 · 受到虫群攻击的角色需要在每个自身回合执行行动前进行一次难度为8的专注检定，如果检定失败则取消那项行动 ·如果虫群的攻击维持至持续效果结束，那么目标将受到3点剧毒伤害并进入中毒状态，如果目标已经拥有中毒状态，那么虫群无法再赋予那些状态 你的萨满祭司职业等级到达5级时：虫孽滋生改为在第二个轮次结束阶段如果仍未被驱散，便会对目标造成5点剧毒伤害并使其进入中毒状态">
+        <h4>虫孽滋生 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">召唤单位</span>
+          <span class="chip">毒性</span>
+          <span class="chip">激活</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有自然或驯兽的熟练度</p>
+          <p><span class="field">额外条件：</span>你与一个虫群进行过交互</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.召唤单位.毒性.激活.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#EE822F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应的施法动作、并念诵法咒召唤虫群围攻敌人</p>
+          <p>你召唤虫群围攻一名角色，对其产生以下影响：</p>
+          <p>·虫群共享4+你的角色等级的生命值，攻击虫群需要先进行一次难度为14的敏捷检定，如果检定失败则视作没有命中</p>
+          <p>·虫群会在每个轮次结束阶段对目标造成3点穿刺伤害</p>
+          <p>· 受到虫群攻击的角色需要在每个自身回合执行行动前进行一次难度为8的专注检定，如果检定失败则取消那项行动</p>
+          <p>·如果虫群的攻击维持至持续效果结束，那么目标将受到3点剧毒伤害并进入中毒状态，如果目标已经拥有中毒状态，那么虫群无法再赋予那些状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>虫孽滋生改为在第二个轮次结束阶段如果仍未被驱散，便会对目标造成5点剧毒伤害并使其进入中毒状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-85" data-search="战栗图腾 法术.图腾.惑控.魅力豁免（15）.唯一性 你拥有欺瞒或恐吓的熟练度 你拥有欺瞒和恐吓的熟练度 0动作 4米 1轮 2 你在一个空白位置上放置一根任意元素图腾，其周围2米内的角色无法进入专注状态（这个效果不会影响已经进入专注状态的角色） 战栗图腾的持续时间结束时，使周围2米内的所有角色进行一次难度为15的魅力豁免，豁免失败的角色将进入恐惧状态 战栗图腾被主动破坏时同样会触发豁免效果，如果破坏来源在周围2米内，那么进行的豁免检定具有劣势">
+        <h4>战栗图腾 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">惑控</span>
+          <span class="chip">魅力豁免（15）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有欺瞒或恐吓的熟练度</p>
+          <p><span class="field">额外条件：</span>你拥有欺瞒和恐吓的熟练度</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.图腾.惑控.魅力豁免（15）.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有任意意元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#843F0B;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾，它的图纹令他人感到心神不宁，心中产生一阵堵塞感</p>
+          <p>你在一个空白位置上放置一根任意元素图腾，其周围2米内的角色无法进入专注状态（这个效果不会影响已经进入专注状态的角色）</p>
+          <p>战栗图腾的持续时间结束时，使周围2米内的所有角色进行一次难度为15的魅力豁免，豁免失败的角色将进入恐惧状态</p>
+          <p>战栗图腾被主动破坏时同样会触发豁免效果，如果破坏来源在周围2米内，那么进行的豁免检定具有劣势</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-86" data-search="巫毒疗法 法术.毒性.诅咒.回复 你拥有神秘学和制毒的熟练度 你通过草药和毒虫制作过一份药方 1动作 6米 立即 2 你为一名自愿的角色回复4D6点生命值，随后赋予目标中毒状态 如果目标无法受到中毒效果的影响，那么改为使对方进入沉默状态">
+        <h4>巫毒疗法 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">毒性</span>
+          <span class="chip">诅咒</span>
+          <span class="chip">回复</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有神秘学和制毒的熟练度</p>
+          <p><span class="field">额外条件：</span>你通过草药和毒虫制作过一份药方</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.毒性.诅咒.回复</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#B94BFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒唤起一阵病态的绿色波纹注入他人体内以供治疗，虽然这可能会有些许副作用...</p>
+          <p>你为一名自愿的角色回复4D6点生命值，随后赋予目标中毒状态</p>
+          <p>如果目标无法受到中毒效果的影响，那么改为使对方进入沉默状态</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-87" data-search="毒雾术 法术.AOE.毒性.阻碍.体质豁免（15）.感知豁免（12）.短休/长休 你拥有法术.迷雾术和制毒的熟练度 你在本次游玩的战斗环节中使他人进入过中毒状态 1动作 6米 3轮 4 你使一片3*3的区域产生毒雾，位于区域内的角色需要进行一次难度为15的体质豁免，豁免失败的角色将进入中毒状态，在每个轮次结束阶段停留在区域内的角色还需要再次进行这个豁免 位于毒雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于毒雾两端的角色同样会受到这个效果的影响 每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视毒雾术的视觉影响 毒雾效果可能会因为风暴关键词的效果影响而被驱散 你的萨满祭司职业等级到达8级时：毒雾术的施展距离提升至12米 你的萨满祭司职业等级到达12级时：毒雾术的关键词变更为短休/长休（2）">
+        <h4>毒雾术 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">AOE</span>
+          <span class="chip">毒性</span>
+          <span class="chip">阻碍</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">感知豁免（12）</span>
+          <span class="chip">短休/长休</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.迷雾术和制毒的熟练度</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中使他人进入过中毒状态</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.AOE.毒性.阻碍.体质豁免（15）.感知豁免（12）.短休/长休</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你做出对应施法手势，念出法咒在指定区域生成一团灰绿色的毒雾来遮蔽他人的视野并使其中毒</p>
+          <p>你使一片3*3的区域产生毒雾，位于区域内的角色需要进行一次难度为15的体质豁免，豁免失败的角色将进入中毒状态，在每个轮次结束阶段停留在区域内的角色还需要再次进行这个豁免</p>
+          <p>位于毒雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于毒雾两端的角色同样会受到这个效果的影响</p>
+          <p>每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视毒雾术的视觉影响</p>
+          <p>毒雾效果可能会因为风暴关键词的效果影响而被驱散</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>毒雾术的施展距离提升至12米</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>毒雾术的关键词变更为短休/长休（2）</p>
+        </div>
+      </article>
+      <article class="skill" id="sa-skill-88" data-search="厄运转移 天赋.命运.互动.每日限一次 你触发过一次大失败效果 你在本次游玩过程中触发过一次大失败效果 当你在自身回合外进行一次豁免检定失败后，你可以花费一个反应动作将本次失败结果传递过自身周围12米内的一名友方角色 如果对方的魅力属性值低于你那么便不能够拒绝，否则对方可以选择与你进行一次幸运对抗，如果目标对抗成功那么可以选择拒绝本次转移效果 你的萨满祭司职业等级到达15级时：你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果">
+        <h4>厄运转移 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">天赋</span>
+          <span class="chip">命运</span>
+          <span class="chip">互动</span>
+          <span class="chip">每日限一次</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你触发过一次大失败效果</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中触发过一次大失败效果</p>
+          <p><span class="field">关键词：</span>天赋.命运.互动.每日限一次</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#595959;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>当你在自身回合外进行一次豁免检定失败后，你可以花费一个反应动作将本次失败结果传递过自身周围12米内的一名友方角色</p>
+          <p>如果对方的魅力属性值低于你那么便不能够拒绝，否则对方可以选择与你进行一次幸运对抗，如果目标对抗成功那么可以选择拒绝本次转移效果</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果</p>
+        </div>
+      </article>
+      
+      
+      
+      
+
+    </div>
+
+      
+      
+      
+      
+      
+      
+      
+      
+<article class="skill" id="sa-skill-89" data-search="次级衰弱结界 法术.结界.专注.体质豁免（15）.唯一性 你拥有奥秘和洞悉的熟练度 你使一名角色在战斗环节开始前便陷入虚弱 2分钟 2米 1小时 2 你生成一个淡粉色的虚幻效应，使敌人感到身体变得虚弱 你使一片4*4的区域形成衰弱结界，进入范围内的敌方角色需要进行一次难度为15的体质豁免，豁免成功将进入减速状态 豁免失败的角色除了进入减速状态以外，位于区域内再次进行体质豁免时会具有劣势 离开次级衰弱结界覆盖区域的敌方角色会立即脱离负面状态的影响 你的萨满祭司职业等级到达6级时：次级衰弱结界的范围变为一个6*6的区域 你的萨满祭司职业等级到达9级时：次级衰弱结界的范围变为一个8*8的区域">
+        <h4>次级衰弱结界 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">结界</span>
+          <span class="chip">专注</span>
+          <span class="chip">体质豁免（15）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有奥秘和洞悉的熟练度</p>
+          <p><span class="field">额外条件：</span>你使一名角色在战斗环节开始前便陷入虚弱</p>
+          <p><span class="field">施展时间：</span>2分钟</p>
+          <p><span class="field">施展距离：</span>2米</p>
+          <p><span class="field">持续时间：</span>1小时</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.结界.专注.体质豁免（15）.唯一性</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你生成一个淡粉色的虚幻效应，使敌人感到身体变得虚弱</p>
+          <p>你使一片4*4的区域形成衰弱结界，进入范围内的敌方角色需要进行一次难度为15的体质豁免，豁免成功将进入减速状态</p>
+          <p>豁免失败的角色除了进入减速状态以外，位于区域内再次进行体质豁免时会具有劣势</p>
+          <p>离开次级衰弱结界覆盖区域的敌方角色会立即脱离负面状态的影响</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>次级衰弱结界的范围变为一个6*6的区域</p>
+          <p><span class="field">你的萨满祭司职业等级到达9级时：</span>次级衰弱结界的范围变为一个8*8的区域</p>
+        </div>
+            <article class="skill" id="sa-skill-90" data-search="净化图腾 法术.图腾.净化.唯一性 你拥有包含净化关键词的技能 你拥有法术.宁静心智图腾 0动作 4米 2轮 3 你扔出一根图腾使柔和的蓝光洗涤不洁之物 你在一个未被占据的位置上放置一根任意元素图腾，在每个轮次结束阶段会为相邻位置的一名友方角色移除一个当前生效的来自敌人造成的负面状态效果 如果当前风元素处于活跃状态，净化图腾在一个轮次结束阶段能够移除两名友方角色的负面状态效果 你的萨满祭司职业等级到达8级时：净化图腾在你放置时能够立即生效一次 你的萨满祭司职业等级到达12级时：净化图腾改为移除负面状态效果后为目标回复XD6点生命值">
+        <h4>净化图腾 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 二阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">净化</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有包含净化关键词的技能</p>
+          <p><span class="field">额外条件：</span>你拥有法术.宁静心智图腾</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.图腾.净化.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有任意元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾使柔和的蓝光洗涤不洁之物</p>
+          <p>你在一个未被占据的位置上放置一根任意元素图腾，在每个轮次结束阶段会为相邻位置的一名友方角色移除一个当前生效的来自敌人造成的负面状态效果</p>
+          <p>如果当前风元素处于活跃状态，净化图腾在一个轮次结束阶段能够移除两名友方角色的负面状态效果</p>
+          <p><span class="field">你的萨满祭司职业等级到达8级时：</span>净化图腾在你放置时能够立即生效一次</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>净化图腾改为移除负面状态效果后为目标回复XD6点生命值（X为你的萨满祭司职业等级）</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-91" data-search="地震图腾 法术.图腾.大地.力量豁免（15）.唯一性 你经历过一次足够规模的地震灾害 0动作 4米 2轮 3">
+        <h4>地震图腾 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">力量豁免（15）</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">额外条件：</span>你经历过一次足够规模的地震灾害</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>
+<h4 id="sa-tier-巫术-五阶">巫术 · 五阶天赋树</h4>
+<div id="sa-tier-巫术-5"></div>\n<article class="skill" id="sa-skill-102" data-search="山岭之护 法术.施法攻击.AOE.虚化飞行道具 你通过施法攻击击杀过十名角色 你在本次游玩的战斗环节中通过巫术风格的法术击杀过一名角色 1动作 6米 立即 4">
+        <h4>山岭之护 <span class="chip" style="background:#888;color:#fff">巫术风格 · 五阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">施法攻击</span>
+          <span class="chip">AOE</span>
+          <span class="chip">虚化飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你通过施法攻击击杀过十名角色</p>
+          <p><span class="field">额外条件：</span>你在本次游玩的战斗环节中通过巫术风格的法术击杀过一名角色</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>6米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>4</p>
+          <p><span class="field">关键词：</span>法术.施法攻击.AOE.虚化飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你与大地紧密相连，当你站立与山地、岩石、地底或洞穴环境的地表上、并且你</p>
+          <p>的土元素首次进入活跃时，获得以下增益：</p>
+          <p>·为自身生成2D10点护盾，这个护盾无法抵挡心灵、神圣、邪能和星界伤害</p>
+          <p>·每当你损失生命值时，为自身回复4点生命值，这个效果会触发两次</p>
+          <p>·每当你损失疲劳值时，为自身回复2点疲劳值，这个效果会触发两次</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>山岭之护还会令你在土元素首次进入活跃</p>
+          <p>的那个轮次防御等级+2，无法以此突破22点防御等级</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>山岭之护产生的生命值和疲劳值回复效果</p>
+          <p>改为会触发三次</p>
+          <p>巫术风格</p>
+          <p>---------------------------------------------------------------------</p>
+          <p>一阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+          <p>视界术</p>
+          <p>传讯术</p>
+          <p>虚弱诅咒</p>
+          <p>迷雾术</p>
+          <p>侦测毒性与疾病</p>
+          <p>骨符占卜</p>
+          <p>视界术</p>
+          <p>你做出对应施法手势，使额头前亮起一个青绿色的圆环，并在视线前生成一面仅有你能够看见的水镜</p>
+          <p>你通过元素位面作为媒介，以第三人称视角观察周边环境，这个效果无法探查被障碍物遮挡的区域</p>
+          <p><span class="field">你的萨满祭司职业等级到达3级时：</span>视界术的施展距离提升至240米</p>
+          <p><span class="field">你的萨满祭司职业等级到达6级时：</span>视界术的施展距离提升至480米</p>
+          <p><span class="field">你的萨满祭司职业等级到达9级时：</span>视界术的施展距离提升至960米</p>
+          <p><span class="field">你的萨满祭司职业等级到达18级时：</span>只要元素活跃的地区均可被视界术探知，无视距离限制（但你依然要知晓探知位置的大致坐标），如果探知距离超过十公里则持续时间结束后会进入48小时的冷却，这个效果无法探知其他位面的信息</p>
+          <p>传讯术</p>
+          <p>你看向一名角色，并在心中默念想要与之沟通的话语</p>
+          <p>你向一名其他角色发出讯息，谈话内容仅可被目标听见</p>
+          <p>目标可以在收到讯息的1分钟内通过低语对你进行回复，如果超过这个时段你必须重新施展传讯术才能与对方取得联系</p>
+          <p>如果目标拒绝接收你的讯息，那么在24小时内你无法再次对目标使用传讯术</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>传讯术的施展距离改为36米</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置</p>
+          <p><span class="field">你的萨满祭司职业等级到达15级时：</span>如果你在本日触碰过这名角色，那么对目标使用传讯术时能够无视施展距离的限制</p>
+          <p>虚弱诅咒</p>
+          <p>你做出对应施法手势，念出法咒诅咒一名角色，使无力感席卷对方周身</p>
+          <p>你对一名角色降下虚弱诅咒，目标需要进行一次难度为15的体质豁免，对方豁免失败将进入减速状态，并且在执行位移和跳远、跳高行动时还需要额外花费一个附赠动作</p>
+          <p>迷雾术</p>
+          <p>你做出对应施法手势，念出法咒在指定区域生成一团灰白色的迷雾来遮蔽他人的视野</p>
+          <p>你使一片3*3的区域产生迷雾，位于迷雾范围内的角色与外界角色互相进行攻击时的命中检定具有劣势，位于迷雾两端的角色同样会受到这个效果的影响</p>
+          <p>每名角色可以在自身回合花费一个附赠动作来进行一次难度为15的感知检定，检定成功可以在持续时间内忽视迷雾术的影响</p>
+          <p>迷雾效果可能会因为风暴关键词的效果影响而被驱散</p>
+          <p><span class="field">你的萨满祭司职业等级到达5级时：</span>迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状</p>
+          <p><span class="field">你的萨满祭司职业等级到达10级时：</span>你可以在生成迷雾时指定迷雾内或外界的一方忽视迷雾术带来的负面影响</p>
+          <p>侦测毒性与疾病</p>
+          <p>你念出法咒，随后你的眼睛将亮起青色光芒开始侦测毒性与疾病，并在脑海中获得对应数据</p>
+          <p>你感应自身周围6米内是否存在有毒素、有毒生物、疾病以及其具体类别，感应效果可能会被部分障碍物所阻碍</p>
+          <p>骨符占卜</p>
+          <p>你摆弄着骨头口中呢喃着法咒，通过超自然的神秘学力量带给你启示</p>
+          <p>你进行一次难度为X的感知或魅力检定，如果检定成功那么你可以选择以下一个效果：</p>
+          <p>·知晓哪条道路能够通往正确的方向</p>
+          <p>·知晓接下来的12小时内的天气变化</p>
+          <p>·知晓你接下来准备进行的行动的危险程度</p>
+          <p>X为你自定义设置，你设置的难度越高，检定成功时得到的答案便越清晰、越准确，反正则越模糊、甚至给予你错误的答案</p>
+          <p>你必须进行一次特性.萨满教义的仪式后才能再次施展骨符占卜的效果</p>
+          <p>二阶天赋树</p>
+          <p>职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件</p>
+          <p>妖术</p>
+          <p>巫术打击</p>
+          <p>蛇吻术</p>
+          <p>迷失图腾</p>
+          <p>骚灵现象</p>
+          <p>巫毒步</p>
+          <p>妖术</p>
+          <p>你用双手做出对应的施法动作、并念诵着晦涩难懂的法咒施展出诡异而恶毒的妖术，这些戏法绝非是出于善意的存在</p>
+          <p>你可以创造出以下一种魔法效应：</p>
+          <p>·使一名角色进行一次难度为15的体质豁免，对方豁免失败将会变为青蛙，在自身回合中不受控制的四处蹦跳，这名角色在受到任意攻击时均会解除变形效果；如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再次进行难度为15的体质豁免，对方豁免成功将会解除变形效果</p>
+          <p>·将一立方分米的液体伪装成看似具有回复效果的恢复性药水</p>
+          <p>·将一份腐败的食物伪装成散发浓郁香味的美味佳肴</p>
+          <p>·将你的意识投向一个非魔法道具的物件上，你的本体将会陷入失能状态，而那个物件将会长出你的五官并能够与他人沟通</p>
+          <p>·在一片不超过一百平方米的区域制造稀薄的雾气，这些雾气不会阻碍视觉，但会给人带来阴森的氛围，仿佛在远处有着模糊的人影和古怪的笑声</p>
+          <p>巫术打击</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-92" data-search="巨型图腾 法术.图腾.大地.防御.唯一性 你拥有至少三种不同的图腾能力 你为一个部落或氏族制作过一根超过两米高的图腾 0动作 4米 2轮 2">
+        <h4>巨型图腾 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">图腾</span>
+          <span class="chip">大地</span>
+          <span class="chip">防御</span>
+          <span class="chip">唯一性</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有至少三种不同的图腾能力</p>
+          <p><span class="field">额外条件：</span>你为一个部落或氏族制作过一根超过两米高的图腾</p>
+          <p><span class="field">施展时间：</span>0动作</p>
+          <p><span class="field">施展距离：</span>4米</p>
+          <p><span class="field">持续时间：</span>2轮</p>
+          <p><span class="field">疲劳消耗：</span>2</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.防御.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾巍然屹立，比其他图腾更加坚固，并且能够守护其他图腾</p>
+          <p>你在一个未被占据的位置上放置一根土元素图腾，其体积会占据一片2*2的区域，高度达到2米能够被视作障碍物</p>
+          <p>巨型图腾的防御等级为15，拥有15点生命值</p>
+          <p>在巨型图腾未被破坏前，与其相邻的图腾不能被摧毁</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-93" data-search="岩崩 法术.大地.AOE.敏捷豁免（15） 你拥有法术.落石术 你在本次游玩过程中见证过一次山体滑坡 1动作 12米 立即 3">
+        <h4>岩崩 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">大地</span>
+          <span class="chip">AOE</span>
+          <span class="chip">敏捷豁免（15）</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.落石术</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中见证过一次山体滑坡</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.大地.AOE.敏捷豁免（15）</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你念诵法咒唤醒地下的岩石并使其爆裂飞溅，向广袤的区域降下碎石</p>
+          <p>你使一片4*4的区域内的所有角色各进行一次难度为15的敏捷豁免，豁免失败的角色将受到3D6点钝击伤害</p>
+          <p>如果当前土元素处于活跃状态，那么岩崩改为造成5D6点钝击伤害</p>
+        </div>
+      </article>
+<article class="skill" id="sa-skill-94" data-search="急流飞浪 法术.水源.位移.远程攻击.实体飞行道具 你拥有法术.水幕屏障 你在本次游玩过程中乘船顺利渡过了湍急的水流 1动作 12米 立即 3">
+        <h4>急流飞浪 <span class="chip" style="background:#CE93D8;color:#fff">巫术 · 三阶天赋树</span></h4>
+        <div class="chips">
+          <span class="chip">法术</span>
+          <span class="chip">水源</span>
+          <span class="chip">位移</span>
+          <span class="chip">远程攻击</span>
+          <span class="chip">实体飞行道具</span>
+        </div>
+        <div class="detail">
+          <p><span class="field">前置条件：</span>你拥有法术.水幕屏障</p>
+          <p><span class="field">额外条件：</span>你在本次游玩过程中乘船顺利渡过了湍急的水流</p>
+          <p><span class="field">施展时间：</span>1动作</p>
+          <p><span class="field">施展距离：</span>12米</p>
+          <p><span class="field">持续时间：</span>立即</p>
+          <p><span class="field">疲劳消耗：</span>3</p>
+          <p><span class="field">关键词：</span>法术.水源.位移.远程攻击.实体飞行道具</p>
+          <p><span class="field">施展条件：</span>你能够做出对应手势、凭借言语发出声音</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你念诵法咒从手中射出一道由水构成的锁链，试图将一名角色拉拽至自己面前</p>
+          <p>你对一名角色发起一次远程攻击，如果命中则结算这个远程攻击的标准伤害值，随后朝你的方向拉拽目标X米（X为本次攻击对你造成的伤害值）</p>
+          <p>如果目标在拉拽过程中碰撞到障碍物或其他角色则立即停止位移</p>
+          <p>如果当前水元素处于活跃状态，那么你在拉拽目标后可以通过攀附对方的身体进行一次敏捷检定，如果检定通过则立即移动至目标原先的位置上</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>如果你通过急流飞浪将目标拉拽至相邻位置，那么你可以立即使用一个附赠动作执行一次近战攻击</p>
+        </div>
+      </article>
+</main>
+
+
+
+</div><!-- end view-shaman -->
+
+<script src="common.js"></script>
+<script src="filter.js"></script>
+<script>
+createFilterController("view-shaman", "sa");
+</script>
+</body>
+</html>
+
+<h4 id="sa-tier-巫术-二阶">巫术 · 二阶天赋树</h4>
+
+
+<h4 id="sa-tier-巫术-三阶">巫术 · 三阶天赋树</h4>
+
+3</p>
+          <p><span class="field">关键词：</span>法术.图腾.大地.力量豁免（15）.唯一性</p>
+          <p><span class="field">施展条件：</span>你携带有土元素图腾</p>
+          <p><span class="field">施展限制：</span>-</p>
+          <p><span class="field">费用：</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#00B050;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+          <p>你扔出一根图腾狠狠砸向地面，引发持续性的震颤</p>
+          <p>你在一个未被占据的位置上放置一根土元素图腾，图腾周围2米内的所有角色在每个轮次开始阶段需要进行一次难度为15的力量豁免，豁免失败的角色将受到2D6点钝击伤害并且进入击倒状态，豁免成功的角色仍需要承受一半的结算后伤害值</p>
+          <p>受到地震图腾影响的区域会视作困难地形</p>
+          <p>如果当前土元素处于活跃状态，那么地震图腾的影响范围提升至周围4米，造成4D6点钝击伤害</p>
+          <p>地震图腾会使风元素和水元素回归沉寂状态</p>
+          <p><span class="field">你的萨满祭司职业等级到达12级时：</span>如果当前土元素处于活跃状态，那么地震图腾的持续时间+1轮</p>
+        </div>
+      </article>
+
+
+

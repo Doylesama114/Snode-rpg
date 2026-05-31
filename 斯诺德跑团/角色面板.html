@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>角色 - 角色面板</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+
+<body>
+
+
+<div class="container">
+
+
+<div class="info-grid" id="info-grid"></div>
+
+
+<div class="section"><div class="section-title"> 职业信息</div><div class="class-row" id="class-row"></div></div>
+
+
+<div class="section"><div class="section-title" id="story-title"> 个性背景</div><div class="section-body"><div class="story-block" id="story-block"></div></div></div>
+
+
+<div style="display:flex;gap:18px;align-items:stretch">
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 经验值</div><div class="section-body"><div class="xp-panel" id="xp-bar"></div></div></div>
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 技能点</div><div class="section-body"><div class="sp-panel" id="sp-bar"></div></div></div>
+
+
+</div>
+
+
+<div class="section"><div class="section-title"> 战斗数据</div><div class="section-body"><div class="stat-row" id="stat-row"></div></div></div>
+
+
+<div class="section"><div class="section-title"> 属性</div><div class="section-body"><div class="attr-grid" id="attr-grid"></div></div></div>
+
+
+<div style="display:flex;gap:18px;align-items:stretch">
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 特殊专长</div><div class="section-body"><div class="feat-list" id="feat-list"></div></div></div>
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 货币</div><div class="section-body"><div class="currency-row" id="currency-row"></div></div></div>
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 负重</div><div class="section-body"><div class="weight-block" id="weight-block"></div></div></div>
+
+
+</div><div class="section"><div class="section-title"> 天赋树</div><div class="section-body"><div class="talent-grid" id="talent-grid"></div></div></div>
+
+
+<div class="section"><div class="section-title"> 装备栏</div><div class="section-body"><div class="equip-grid" id="equip-grid"></div></div></div>
+
+
+<div style="display:flex;gap:18px;align-items:stretch">
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 种族特性</div><div class="section-body"><div class="trait-section" id="racial-traits"></div></div></div>
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 职业特性</div><div class="section-body"><div class="trait-section" id="class-features"></div></div></div>
+
+
+<div style="display:flex;flex-direction:column;gap:12px;flex:1">
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 语言</div><div class="section-body"><div id="lang-list" style="text-align:center"></div></div></div>
+
+
+<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 专业熟练项</div><div class="section-body"><div id="prof-list" style="text-align:center"></div></div></div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="section"><div class="section-title" id="mainSkillTitle"> 主职业技能列表</div>
+
+
+<div class="section-body"><table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th></tr></thead><tbody id="skill-table-body"></tbody></table>
+
+
+<div style="margin-top:16px"><div style="font-size:17px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
+
+
+<table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div></div></div>
+
+
+</div>
+
+
+<button id="learnToggle" class="learn-toggle" onclick="toggleLearnMode()">📚 学习技能</button>
+<button class="learn-toggle" onclick="cheatAdd()" style="bottom:30px;left:30px;right:auto;background:#5a7a3a">🧪 测试加点</button>
+<button class="learn-toggle" onclick="exportAllSaves()" style="bottom:90px;right:30px;background:#6b4f8a">📦 导出全部存档</button>
+<button class="learn-toggle" onclick="importSaves()" style="bottom:150px;right:30px;background:#4f7a8a">📥 导入存档</button>
+
+
+<div id="learnPanel" class="learn-panel"></div>
+
+
+<script src="../职业页/数据/items_data.js"></script>
+<script src="导出立绘.js"></script>
+<script src="panel_data.js"></script>
+<script src="panel_engine.js"></script>
+</body>
+
+</html>

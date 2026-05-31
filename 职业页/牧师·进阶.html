@@ -1,0 +1,1708 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>牧师 · 进阶途径</title>
+<link rel="stylesheet" href="common.css"/>
+<style>
+    body { background: var(--bg); }
+    .adv-container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .adv-card {
+        margin: 12px 0; padding: 16px;
+        border: 1px solid var(--line); border-radius: 8px;
+        background: var(--panel);
+    }
+    .adv-card h4 { margin: 0 0 10px; font-size: 20px; color: var(--red); }
+    .adv-card .field { color: var(--green); font-weight: 700; }
+    .adv-card p { margin: 6px 0; font-size: 14px; }
+    .adv-card ol { margin: 4px 0 4px 20px; padding: 0; }
+    .adv-card ol li { font-size: 14px; margin: 2px 0; }
+    .adv-card.hidden { display: none; }
+    .adv-card.filter-hidden { opacity: 0.4; }
+    .back-links { max-width: 900px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 16px; }
+    .back-links a { text-decoration: none; color: var(--muted); font-size: 14px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 5px; }
+    .back-links a:hover { color: var(--ink); border-color: var(--green); }
+    .topbar { max-width: 900px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    h1 { margin: 0; font-size: 24px; }
+    .subtitle { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .searchbox input { width: 100%; height: 40px; border: 1px solid var(--line); border-radius: 6px; padding: 0 12px; font-size: 15px; background: var(--panel); color: var(--ink); outline: none; }
+    .searchbox input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(47,111,94,.16); }
+    @media (max-width: 600px) {
+        .topbar { flex-direction: column; gap: 8px; padding: 12px 16px; }
+        .adv-container { padding: 12px; }
+        .back-links { padding: 8px 16px; flex-wrap: wrap; }
+        }
+.detail-btn { display: block; width: 100%; margin-top: 12px; padding: 10px 16px;
+    border: 2px solid var(--green, #00B050); border-radius: 6px; background: transparent;
+    color: var(--green, #00B050); font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 1px; }
+.detail-btn:hover, .detail-btn.active { background: var(--green, #00B050); color: #fff; }
+.locked-btn { display: block; width: 100%; margin-top: 12px; padding: 10px 16px;
+    border: 2px solid #666; border-radius: 6px; background: #333; color: #888;
+    font-size: 13px; font-weight: 700; cursor: not-allowed; letter-spacing: 1px; opacity: 0.6; }
+
+/* === 方案⑥ 整体背景分层 === */
+.adv-detail {
+    margin-top: 16px; padding: 0 20px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--panel), rgba(47,111,94,0.02) 80%);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+    max-height: 0; opacity: 0;
+    box-shadow: 0 2px 16px rgba(31,37,34,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* === 方案⑤ 展开动画 === */
+.adv-detail.expand {
+    max-height: 5000px; opacity: 1; padding: 20px;
+    animation: detail-fade-in 0.4s ease-out;
+}
+@keyframes detail-fade-in {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 描述 */
+.adv-detail .detail-desc {
+    color: var(--ink); margin-bottom: 16px;
+    font-size: 16px; line-height: 1.8;
+    padding: 14px 18px;
+    background: rgba(47,111,94,0.03);
+    border-radius: 8px;
+    border-left: 3px solid var(--green);
+    position: relative;
+}
+
+/* === 方案① 卡片化 === */
+.adv-detail .detail-ability {
+    margin: 14px 0; padding: 16px 18px 18px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--green);
+    border-top: 1px solid rgba(47,111,94,0.08);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: 0 2px 8px rgba(31,37,34,0.04), 0 1px 0 rgba(255,255,255,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+.adv-detail .detail-ability:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(31,37,34,0.08), 0 1px 0 rgba(255,255,255,0.3);
+    border-left-color: var(--gold, #a46d1f);
+}
+.adv-detail .detail-ability:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(31,37,34,0.08);
+}
+
+/* === 方案② 文字排版 === */
+.adv-detail .detail-ability .ab-name {
+    font-weight: 800; font-size: 18px; color: var(--ink);
+    display: block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
+}
+.adv-detail .detail-ability .ab-name::before {
+    content: "\25B8";
+    color: var(--green);
+    margin-right: 6px;
+    font-size: 14px;
+}
+.adv-detail .detail-ability .ab-tags {
+    font-size: 13px;
+    color: var(--green);
+    margin-left: 8px;
+    border: 1px solid rgba(47,111,94,0.2);
+    padding: 1px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.adv-detail .detail-ability .ab-desc {
+    margin-top: 8px; font-size: 16px; color: var(--ink);
+    line-height: 1.8;
+    padding-left: 4px;
+}
+.adv-detail .detail-ability .ab-tags {
+    font-size: 13px;
+    color: var(--green);
+    margin-left: 8px;
+    background: rgba(47,111,94,0.08);
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* === 方案④ 洞察区 === */
+.adv-detail .detail-insight {
+    margin-top: 16px; padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(157,47,47,0.03), var(--panel) 60%);
+    box-shadow: 0 2px 8px rgba(31,37,34,0.04);
+}
+.adv-detail .detail-insight-title {
+    font-weight: 800; font-size: 16px;
+    color: var(--red);
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(157,47,47,0.1);
+    margin-bottom: 6px;
+}
+.adv-detail .detail-insight-tags {
+    font-size: 13px; color: var(--muted);
+    border: 1px solid rgba(157,47,47,0.15);
+    padding: 1px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.adv-detail .detail-insight-desc {
+    margin-top: 8px; font-size: 15px; color: var(--ink);
+    line-height: 1.8;
+    
+    padding-left: 12px;
+    border-left: 2px solid rgba(157,47,47,0.08);
+}
+.adv-detail .detail-insight-title {
+    font-weight: 800; font-size: 16px;
+    color: var(--red);
+    padding-bottom: 4px;
+}
+.adv-detail .detail-insight-tags {
+    font-size: 13px; color: var(--muted);
+    background: rgba(157,47,47,0.06);
+    padding: 1px 8px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.adv-detail .detail-insight-desc {
+    margin-top: 8px; font-size: 15px; color: var(--ink);
+    line-height: 1.8;
+    
+}
+
+/* 图片 */
+.adv-detail .detail-images {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin: 16px 0; justify-content: center;
+}
+.adv-detail .detail-images .img-item {
+    text-align: center; max-width: 220px;
+}
+.adv-detail .detail-images .img-item img {
+    max-width: 100%; max-height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px; cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(31,37,34,0.06);
+}
+.adv-detail .detail-images .img-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(31,37,34,0.1);
+}
+.adv-detail .detail-images .img-item img.zoomed {
+    max-width: 100%; max-height: 80vh;
+    transform: scale(1);
+}
+.adv-detail .detail-images .img-caption {
+    font-size: 12px; color: var(--muted);
+    margin-top: 4px;
+}
+.adv-detail .detail-images .img-marker {
+    width: 100%; font-size: 13px; color: var(--muted);
+    text-align: center; margin: 4px 0;
+}
+.adv-detail .detail-images .img-item {
+    text-align: center; max-width: 220px;
+}
+.adv-detail .detail-images .img-item img {
+    max-width: 100%; max-height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px; cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(31,37,34,0.08);
+}
+.adv-detail .detail-images .img-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(31,37,34,0.12);
+}
+.adv-detail .detail-images .img-item img.zoomed {
+    max-width: 100%; max-height: 80vh;
+    transform: scale(1);
+}
+.adv-detail .detail-images .img-caption {
+    font-size: 12px; color: var(--muted);
+    margin-top: 4px;
+}
+.adv-detail .detail-images .img-marker {
+    width: 100%; font-size: 13px; color: var(--muted);
+    text-align: center; margin: 4px 0;
+}
+
+
+.adv-detail .ab-desc hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 6px 0;
+  opacity: 0.3;
+}
+/* Detail text enhancements */
+.adv-detail .ab-desc .hl-num {
+  color: var(--gold, #a46d1f);
+  font-weight: 700;
+}
+.adv-detail .ab-desc .hl-field {
+  color: var(--red);
+  font-weight: 700;
+}
+.adv-detail .ab-desc .hl-lead {
+  font-size: 17px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+.adv-detail .ab-desc .hl-option {
+  display: block;
+  padding: 3px 0 3px 18px;
+  margin: 4px 0 4px 6px;
+  font-size: 15px;
+  line-height: 1.7;
+  position: relative;
+}
+.adv-detail .ab-desc .hl-option::before {
+  content: "\25B8";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  color: var(--gold, #a46d1f);
+  font-size: 12px;
+}
+
+/* === 方案③ 表格升级 === */
+.adv-detail .detail-table-wrap {
+    overflow-x: auto; margin: 16px 0;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+}
+.adv-detail .detail-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px;
+}
+.adv-detail .detail-table th,
+.adv-detail .detail-table td {
+    border: 1px solid var(--line);
+    padding: 10px 12px; text-align: left;
+}
+.adv-detail .detail-table th {
+    background: var(--green);
+    font-weight: 700; color: #fff;
+}
+.adv-detail .detail-table td {
+    color: var(--ink);
+}
+.adv-detail .detail-table tr:nth-child(even) td {
+    background: rgba(47,111,94,0.03);
+}
+.adv-detail .detail-table tr:hover td {
+    background: rgba(47,111,94,0.06);
+}
+.adv-detail .detail-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px;
+}
+.adv-detail .detail-table th,
+.adv-detail .detail-table td {
+    border: 1px solid var(--line);
+    padding: 10px 12px; text-align: left;
+}
+.adv-detail .detail-table th {
+    background: var(--green);
+    font-weight: 700; color: #fff;
+}
+.adv-detail .detail-table td {
+    color: var(--ink);
+}
+.adv-detail .detail-table tr:nth-child(even) td {
+    background: rgba(47,111,94,0.03);
+}
+.adv-detail .detail-table tr:hover td {
+    background: rgba(47,111,94,0.06);
+}
+
+.search-highlight {
+  background: #FFD700;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+  animation: search-blink 1.2s ease-in-out 3;
+}
+@keyframes search-blink {
+  0%, 100% { background: #FFD700; }
+  50% { background: #FF6B6B; }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--green, #2F6F5E);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  z-index: 999;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.back-to-top:hover {
+  transform: scale(1.1);
+}
+.back-to-top.show {
+  display: flex;
+}
+
+.detail-btn {
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: box-shadow 0.15s;
+}
+.detail-btn.holding {
+  animation: btn-pulse 1s ease-in-out infinite;
+}
+.detail-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--hold-progress, 0) * 100%);
+  background: linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,215,0,0.55));
+  pointer-events: none;
+  transition: none;
+  border-radius: 4px;
+}
+.detail-btn.holding::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow: 0 0 calc(var(--hold-progress, 0) * 24px) calc(var(--hold-progress, 0) * 6px) rgba(255,215,0,0.45);
+  transition: box-shadow 0.1s;
+}
+@keyframes btn-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+</style>
+  <script src="advancement_details.js"></script>
+</head>
+<body>
+
+<div class="back-links">
+    <a href="首页.html">← 返回主页</a>
+    <a href="牧师.html">← 返回牧师基础页</a>
+</div>
+
+<header>
+    <div class="topbar">
+        <div>
+            <h1>牧师 · 进阶途径</h1>
+            <p class="subtitle">79 个可选进阶</p>
+        </div>
+        <label class="searchbox">
+            <input id="priest-adv-search" type="search" placeholder="搜索..." autocomplete="off" />
+        </label>
+    </div>
+</header>
+
+<div class="adv-container" id="priest-adv-container">
+            <article data-name="圣堂刺客" class="adv-card" id="adv-priest-圣堂刺客" data-search="圣堂刺客 牧师 刺杀二十名与自身所在教团敌对的角色 完成三场在突袭轮次结束阶段前结束的战斗环节 刺杀三名具有一定影响力的邪恶阵营角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓">
+        <h4>圣堂刺客</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>敏捷15</span>  <span>感知12</span>  <span>意志12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>刺杀二十名与自身所在教团敌对的角色</li>
+          <li>完成三场在突袭轮次结束阶段前结束的战斗环节</li>
+          <li>刺杀三名具有一定影响力的邪恶阵营角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="惩戒骑士" class="adv-card" id="adv-priest-惩戒骑士" data-search="惩戒骑士 牧师、圣骑士 主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服 打击五场正在进行的邪恶举止（不计算玩家在内） 击败一名足够影响力的、公认的邪恶存在，向世间证明正义永不缺席，光明终将战胜黑暗">
+        <h4>惩戒骑士</h4>
+        <p><span class="field">来源：</span>牧师、圣骑士</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服</li>
+          <li>打击五场正在进行的邪恶举止（不计算玩家在内）</li>
+          <li>击败一名足够影响力的、公认的邪恶存在，向世间证明正义永不缺席，光明终将战胜黑暗</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="惩戒骑士">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="守护骑士" class="adv-card" id="adv-priest-守护骑士" data-search="守护骑士 牧师、圣骑士、魔契师 你为了守护无辜的人们而主动发起十场战斗 完成五次善举并获得他人的感激（不计算玩家在内） 你挫败了一场巨大的邪恶并因此挽救了数百人的生命">
+        <h4>守护骑士</h4>
+        <p><span class="field">来源：</span>牧师、圣骑士、魔契师</p>
+        <p><span class="field">属性需求：</span><span>体质15</span>  <span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你为了守护无辜的人们而主动发起十场战斗</li>
+          <li>完成五次善举并获得他人的感激（不计算玩家在内）</li>
+          <li>你挫败了一场巨大的邪恶并因此挽救了数百人的生命</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="守护骑士">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="圣洁骑士" class="adv-card" id="adv-priest-圣洁骑士" data-search="圣洁骑士 牧师、圣骑士、魔契师 主持三场公正的决断，通过高尚的言行令众人信服 完成五次善举并获得他人的感激（不计算玩家在内） 使你高洁的品格成为世人学习的楷模，你的事迹被记载于地方政权或教会的典籍中激励着后辈">
+        <h4>圣洁骑士</h4>
+        <p><span class="field">来源：</span>牧师、圣骑士、魔契师</p>
+        <p><span class="field">属性需求：</span><span>魅力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>主持三场公正的决断，通过高尚的言行令众人信服</li>
+          <li>完成五次善举并获得他人的感激（不计算玩家在内）</li>
+          <li>使你高洁的品格成为世人学习的楷模，你的事迹被记载于地方政权或教会的典籍中激励着后辈</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="光铸者" class="adv-card" id="adv-priest-光铸者" data-search="光铸者 牧师、圣骑士 使用十次带有自律关键词的能力 使一座城镇或乡村感受到圣光的恩泽 证明你比其他的正义之辈更配得上光明称号">
+        <h4>光铸者</h4>
+        <p><span class="field">来源：</span>牧师、圣骑士</p>
+        <p><span class="field">属性需求：</span><span>体质15</span>  <span style="color:#FF0000">感知10</span>  <span>意志14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>使用十次带有自律关键词的能力</li>
+          <li>使一座城镇或乡村感受到圣光的恩泽</li>
+          <li>证明你比其他的正义之辈更配得上光明称号</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="正义导师" class="adv-card" id="adv-priest-正义导师" data-search="正义导师 牧师、圣骑士 教导二十名孩童，对其今后的成长路径起到良性的作用 将十名邪恶阵营角色转化为善良阵营（不计算玩家在内） 使一名邪恶阵营中的重要角色被你的言行举止所感化，令对方真心赎罪后成为正义力量的一员（不计算玩家在内）">
+        <h4>正义导师</h4>
+        <p><span class="field">来源：</span>牧师、圣骑士</p>
+        <p><span class="field">属性需求：</span><span>魅力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>教导二十名孩童，对其今后的成长路径起到良性的作用</li>
+          <li>将十名邪恶阵营角色转化为善良阵营（不计算玩家在内）</li>
+          <li>使一名邪恶阵营中的重要角色被你的言行举止所感化，令对方真心赎罪后成为正义力量的一员（不计算玩家在内）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="戒律神官" class="adv-card" id="adv-priest-戒律神官" data-search="戒律神官 牧师 你的牧师职业战斗风格中包含有戒律风格，并且施展十次本风格中带有神谕真言关键词的技能 在教堂内对十名角色表达过劝诫与约束（不计算玩家在内） 使一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）由被迫转向心悦诚服的遵守你所信奉的神祇教义">
+        <h4>戒律神官</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的牧师职业战斗风格中包含有戒律风格，并且施展十次本风格中带有神谕真言关键词的技能</li>
+          <li>在教堂内对十名角色表达过劝诫与约束（不计算玩家在内）</li>
+          <li>使一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）由被迫转向心悦诚服的遵守你所信奉的神祇教义</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="光之侍" class="adv-card" id="adv-priest-光之侍" data-search="光之侍 牧师 你拥有侍僧或狂信徒的个性背景 以圣光的名义完成五次善举并获得他人的感激（不计算玩家在内） 你为一名天界生物或其他诞生于圣光中的存在进行服务，并且得到对方的由衷感谢，通过对方给予的馈赠完成光之侍的晋升">
+        <h4>光之侍</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有侍僧或狂信徒的个性背景</li>
+          <li>以圣光的名义完成五次善举并获得他人的感激（不计算玩家在内）</li>
+          <li>你为一名天界生物或其他诞生于圣光中的存在进行服务，并且得到对方的由衷感谢，通过对方给予的馈赠完成光之侍的晋升</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="圣堂武士" class="adv-card" id="adv-priest-圣堂武士" data-search="圣堂武士 牧师 打击五场正在进行的邪恶举止（不计算玩家在内） 击杀二十名敌对势力的邪恶阵营角色 无视世俗秩序与准则的情况下摧毁一场邪恶的行径，不惜一切代价！">
+        <h4>圣堂武士</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>体质12</span>  <span>感知12</span>  <span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>打击五场正在进行的邪恶举止（不计算玩家在内）</li>
+          <li>击杀二十名敌对势力的邪恶阵营角色</li>
+          <li>无视世俗秩序与准则的情况下摧毁一场邪恶的行径，不惜一切代价！</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="神谕使者" class="adv-card" id="adv-priest-神谕使者" data-search="神谕使者 牧师 进行十次虔诚祷告 施展二十次带有神谕真言关键词的技能 获得一次神灵的启示，通过先机完美解决即将发生的事件">
+        <h4>神谕使者</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>魅力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次虔诚祷告</li>
+          <li>施展二十次带有神谕真言关键词的技能</li>
+          <li>获得一次神灵的启示，通过先机完美解决即将发生的事件</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="自然行者" class="adv-card" id="adv-priest-自然行者" data-search="自然行者 猎人、牧师、德鲁伊 进行十次成功的自然检定 拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历 在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境）">
+        <h4>自然行者</h4>
+        <p><span class="field">来源：</span>猎人、牧师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>体质15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的自然检定</li>
+          <li>拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历</li>
+          <li>在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="丰收祭司" class="adv-card" id="adv-priest-丰收祭司" data-search="丰收祭司 牧师、德鲁伊、魔契师 治退十名危害农田或果园的敌人（不计算玩家在内） 治理三处腐败之地，使其变为适宜耕种的沃土 开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内）">
+        <h4>丰收祭司</h4>
+        <p><span class="field">来源：</span>牧师、德鲁伊、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span>  <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>治退十名危害农田或果园的敌人（不计算玩家在内）</li>
+          <li>治理三处腐败之地，使其变为适宜耕种的沃土</li>
+          <li>开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="净化大师" class="adv-card" id="adv-priest-净化大师" data-search="净化大师 牧师、萨满祭司、魔契师 驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散） 在战斗环节中施展十次移除异常状态的效果 净化一个具有深刻过往、危害当地多年的恶灵，在其消逝前得到对方的祝福">
+        <h4>净化大师</h4>
+        <p><span class="field">来源：</span>牧师、萨满祭司、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）</li>
+          <li>在战斗环节中施展十次移除异常状态的效果</li>
+          <li>净化一个具有深刻过往、危害当地多年的恶灵，在其消逝前得到对方的祝福</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="植物学家" class="adv-card" id="adv-priest-植物学家" data-search="植物学家 牧师、德鲁伊 击败十名危害植物生长的敌人（不计算玩家在内） 探寻并详细记录三株珍稀品质或以上的野生植物 种植、观测并培育出一株奇珍品质或以上的神奇植物">
+        <h4>植物学家</h4>
+        <p><span class="field">来源：</span>牧师、德鲁伊</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击败十名危害植物生长的敌人（不计算玩家在内）</li>
+          <li>探寻并详细记录三株珍稀品质或以上的野生植物</li>
+          <li>种植、观测并培育出一株奇珍品质或以上的神奇植物</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="和睦使者" class="adv-card" id="adv-priest-和睦使者" data-search="和睦使者 牧师、魔契师 你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态 阻止三场即将爆发的战斗环节 促成两个相互敌对的组织势力达成和解，并且获得双方的感激">
+        <h4>和睦使者</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态</li>
+          <li>阻止三场即将爆发的战斗环节</li>
+          <li>促成两个相互敌对的组织势力达成和解，并且获得双方的感激</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="赋生者" class="adv-card" id="adv-priest-赋生者" data-search="赋生者 牧师、魔契师 在战斗环节中为其他角色施展二十次回复效果 累计十次将生命值降至0或更低的角色生命值回复到至少1点 为一名注定死亡的角色赋予新生">
+        <h4>赋生者</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span>  <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在战斗环节中为其他角色施展二十次回复效果</li>
+          <li>累计十次将生命值降至0或更低的角色生命值回复到至少1点</li>
+          <li>为一名注定死亡的角色赋予新生</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="赋生者">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="田园守护者" class="adv-card" id="adv-priest-田园守护者" data-search="田园守护者 牧师 治退十名危害农田或果园的敌人（不计算玩家在内） 为十名造访田园的NPC角色提供庇护和必要的帮助 阻挡一场巨大危害对人们赖以生存的家园的侵袭，并且保证事端结束后这片土地的基础建施足够完好">
+        <h4>田园守护者</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>感知12</span>  <span>魅力15</span>  <span>幸运12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>治退十名危害农田或果园的敌人（不计算玩家在内）</li>
+          <li>为十名造访田园的NPC角色提供庇护和必要的帮助</li>
+          <li>阻挡一场巨大危害对人们赖以生存的家园的侵袭，并且保证事端结束后这片土地的基础建施足够完好</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="季节法师" class="adv-card" id="adv-priest-季节法师" data-search="季节法师 牧师、魔契师 分别参与一场春季、夏季、秋季和冬季发生的战斗环节，并且战斗场景具备足够的季节特征 分别击败一名象征着新生、炎热、衰败和寒冷的敌人（不计算玩家在内） 分别准备一份能够象征春季、夏季、秋季和冬季的物件和代表四季的各一种矿石珠宝和植株，在不存在明显季节特征的温室中举行晋升为季节法师的仪式">
+        <h4>季节法师</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>分别参与一场春季、夏季、秋季和冬季发生的战斗环节，并且战斗场景具备足够的季节特征</li>
+          <li>分别击败一名象征着新生、炎热、衰败和寒冷的敌人（不计算玩家在内）</li>
+          <li>分别准备一份能够象征春季、夏季、秋季和冬季的物件和代表四季的各一种矿石珠宝和植株，在不存在明显季节特征的温室中举行晋升为季节法师的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="祈雨者" class="adv-card" id="adv-priest-祈雨者" data-search="祈雨者 牧师 向十名有需求者分享水源并得到对方的感谢（不计算玩家在内） 为三座村庄开垦可长期使用的水井 获得一位水元素领主或自然精魄的认可，随后举行一场祈雨仪式令一座长期受到干涸困扰的聚居地感受雨露的恩泽">
+        <h4>祈雨者</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>向十名有需求者分享水源并得到对方的感谢（不计算玩家在内）</li>
+          <li>为三座村庄开垦可长期使用的水井</li>
+          <li>获得一位水元素领主或自然精魄的认可，随后举行一场祈雨仪式令一座长期受到干涸困扰的聚居地感受雨露的恩泽</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="武器大师" class="adv-card" id="adv-priest-武器大师" data-search="武器大师 战士、猎人、牧师、圣骑士、奇械师 你的特殊专长中包含有技巧专家、武器精通或战技专家 在战斗环节中累计使用过全部武器类别发起过攻击 持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质">
+        <h4>武器大师</h4>
+        <p><span class="field">来源：</span>战士、猎人、牧师、圣骑士、奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>敏捷12</span>  <span>体质12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中包含有技巧专家、武器精通或战技专家</li>
+          <li>在战斗环节中累计使用过全部武器类别发起过攻击</li>
+          <li>持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="剑圣" class="adv-card" id="adv-priest-剑圣" data-search="剑圣 战士、牧师 你持有剑类武器击败二十名持有剑类武器的角色 在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次 完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼">
+        <h4>剑圣</h4>
+        <p><span class="field">来源：</span>战士、牧师</p>
+        <p><span class="field">属性需求：</span><span>力量12</span>  <span>敏捷13</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你持有剑类武器击败二十名持有剑类武器的角色</li>
+          <li>在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次</li>
+          <li>完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="剑圣">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="刺客" class="adv-card" id="adv-priest-刺客" data-search="刺客 牧师、游荡者 使用终结技击杀十名能够提供经验值的角色 完成三场在突袭轮次结束阶段前结束的战斗环节 刺杀三名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓">
+        <h4>刺客</h4>
+        <p><span class="field">来源：</span>牧师、游荡者</p>
+        <p><span class="field">属性需求：</span><span>敏捷15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>使用终结技击杀十名能够提供经验值的角色</li>
+          <li>完成三场在突袭轮次结束阶段前结束的战斗环节</li>
+          <li>刺杀三名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="密探" class="adv-card" id="adv-priest-密探" data-search="密探 牧师、游荡者、吟游诗人、魔契师 你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力 你知晓了三个非己方阵营机构、教团或组织的隐藏据点 揭露一场惊天阴谋">
+        <h4>密探</h4>
+        <p><span class="field">来源：</span>牧师、游荡者、吟游诗人、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力</li>
+          <li>你知晓了三个非己方阵营机构、教团或组织的隐藏据点</li>
+          <li>揭露一场惊天阴谋</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="密探">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="旗手" class="adv-card" id="adv-priest-旗手" data-search="旗手 战士、牧师 为友方角色提供二十次增益效果 在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态 亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役">
+        <h4>旗手</h4>
+        <p><span class="field">来源：</span>战士、牧师</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>为友方角色提供二十次增益效果</li>
+          <li>在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态</li>
+          <li>亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="策略大师" class="adv-card" id="adv-priest-策略大师" data-search="策略大师 牧师 你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋 在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点 你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降">
+        <h4>策略大师</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋</li>
+          <li>在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点</li>
+          <li>你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="前锋" class="adv-card" id="adv-priest-前锋" data-search="前锋 蛮斗士、战士、牧师、圣骑士、武僧 你的特殊专长中包含有冲锋手或大步奔行 在十场战斗环节中作为团队中率先发起攻击的角色 在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间">
+        <h4>前锋</h4>
+        <p><span class="field">来源：</span>蛮斗士、战士、牧师、圣骑士、武僧</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>敏捷12</span>  <span>体质14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中包含有冲锋手或大步奔行</li>
+          <li>在十场战斗环节中作为团队中率先发起攻击的角色</li>
+          <li>在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="前锋">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="阴谋家" class="adv-card" id="adv-priest-阴谋家" data-search="阴谋家 牧师、游荡者、魔契师 进行十次成功的欺瞒检定 通过真实的讯息、而非虚假的情报使十名角色对己方盟友产生误解，并最终导致双方的敌对 策划一场惊天阴谋">
+        <h4>阴谋家</h4>
+        <p><span class="field">来源：</span>牧师、游荡者、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的欺瞒检定</li>
+          <li>通过真实的讯息、而非虚假的情报使十名角色对己方盟友产生误解，并最终导致双方的敌对</li>
+          <li>策划一场惊天阴谋</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="骑兵" class="adv-card" id="adv-priest-骑兵" data-search="骑兵 战士、牧师 你的特殊专长中包含有冲锋手、枪兵或骑乘战斗 你在保持骑乘状态的情况下完成五场战斗环节 为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛">
+        <h4>骑兵</h4>
+        <p><span class="field">来源：</span>战士、牧师</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质14</span>  <span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中包含有冲锋手、枪兵或骑乘战斗</li>
+          <li>你在保持骑乘状态的情况下完成五场战斗环节</li>
+          <li>为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="防御者" class="adv-card" id="adv-priest-防御者" data-search="防御者 战士、牧师、圣骑士 确保在十场战斗环节中你为团队中承受伤害最多的角色 在战斗环节中累计承受超过500点伤害（包括过量伤害） 在一场己方阵营至少存在三名其他角色的战斗环节中，保持你是团队中唯一承受过伤害的角色">
+        <h4>防御者</h4>
+        <p><span class="field">来源：</span>战士、牧师、圣骑士</p>
+        <p><span class="field">属性需求：</span><span style="color:#FF0000">敏捷10</span>  <span>体质16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>确保在十场战斗环节中你为团队中承受伤害最多的角色</li>
+          <li>在战斗环节中累计承受超过500点伤害（包括过量伤害）</li>
+          <li>在一场己方阵营至少存在三名其他角色的战斗环节中，保持你是团队中唯一承受过伤害的角色</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="火焰法师" class="adv-card" id="adv-priest-火焰法师" data-search="火焰法师 法师、牧师、魔契师 你成功使十名敌人进入灼烧状态 你花费过幕间物语来阅读一本火焰法术的魔典 准备一颗明焰石、一颗纯正的火焰之心和一片红龙骨鳞片，在点燃凤凰之火的密闭环境下举行晋升为火焰法师的仪式">
+        <h4>火焰法师</h4>
+        <p><span class="field">来源：</span>法师、牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你成功使十名敌人进入灼烧状态</li>
+          <li>你花费过幕间物语来阅读一本火焰法术的魔典</li>
+          <li>准备一颗明焰石、一颗纯正的火焰之心和一片红龙骨鳞片，在点燃凤凰之火的密闭环境下举行晋升为火焰法师的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="附魔师" class="adv-card" id="adv-priest-附魔师" data-search="附魔师 法师、牧师 你对三十件物品附加带有媒介的效果 你花费过幕间物语来阅读一本附魔学派的魔典 对一件稀有品质或以上的魔法物品进行一次永久性的附魔">
+        <h4>附魔师</h4>
+        <p><span class="field">来源：</span>法师、牧师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你对三十件物品附加带有媒介的效果</li>
+          <li>你花费过幕间物语来阅读一本附魔学派的魔典</li>
+          <li>对一件稀有品质或以上的魔法物品进行一次永久性的附魔</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="战锤祭司" class="adv-card" id="adv-priest-战锤祭司" data-search="战锤祭司 牧师 你持有锤类武器击败二十名忤逆者（不计算玩家在内） 你持有锤类武器在战场或冲突地区进行五次虔诚祷告 在一场关键战役中使用锤类武器击败一名敌对势力的精英级单位">
+        <h4>战锤祭司</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你持有锤类武器击败二十名忤逆者（不计算玩家在内）</li>
+          <li>你持有锤类武器在战场或冲突地区进行五次虔诚祷告</li>
+          <li>在一场关键战役中使用锤类武器击败一名敌对势力的精英级单位</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="秘银猎手" class="adv-card" id="adv-priest-秘银猎手" data-search="秘银猎手 牧师 驱逐十只邪魔、精类生物或不死生物 举行三次降灵仪式，随后将被吸引而来的鬼魂、幽灵或其他不死生物打垮 持有一件秘银制作的武器，并携带这件装备参与一场关键战役">
+        <h4>秘银猎手</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>敏捷14</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>驱逐十只邪魔、精类生物或不死生物</li>
+          <li>举行三次降灵仪式，随后将被吸引而来的鬼魂、幽灵或其他不死生物打垮</li>
+          <li>持有一件秘银制作的武器，并携带这件装备参与一场关键战役</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="熔炉守护者" class="adv-card" id="adv-priest-熔炉守护者" data-search="熔炉守护者 牧师 在铁匠铺、熔炉室或矮人工坊等场景完成五场战斗环节，随后立即在当前环境下进行虔诚祷告 击溃十个火元素生物 守护一处铁匠铺、熔炉室或矮人工坊能够顺利作业，阻挡来自敌人的侵袭以确保那至关重要的锻造工艺得以完成">
+        <h4>熔炉守护者</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>体质16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在铁匠铺、熔炉室或矮人工坊等场景完成五场战斗环节，随后立即在当前环境下进行虔诚祷告</li>
+          <li>击溃十个火元素生物</li>
+          <li>守护一处铁匠铺、熔炉室或矮人工坊能够顺利作业，阻挡来自敌人的侵袭以确保那至关重要的锻造工艺得以完成</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="破舰者" class="adv-card" id="adv-priest-破舰者" data-search="破舰者 蛮斗士、牧师、魔契师 破坏五处战斗地图中的可摧毁物品 击败十名着装有重甲和盾牌的角色（不计算玩家在内） 摧毁一台防御等级为24或以上的构造体或奇械设备">
+        <h4>破舰者</h4>
+        <p><span class="field">来源：</span>蛮斗士、牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>力量16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>破坏五处战斗地图中的可摧毁物品</li>
+          <li>击败十名着装有重甲和盾牌的角色（不计算玩家在内）</li>
+          <li>摧毁一台防御等级为24或以上的构造体或奇械设备</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="奥术师" class="adv-card" id="adv-priest-奥术师" data-search="奥术师 法师、牧师 施展二十次带有奥术、跃迁或专注关键词的能力（一个能力同时具有多个关键词时仅计算一次） 你花费过幕间物语来阅读一本奥术法术的魔典 准备一颗蓝宝石或水晶和一份魔法生物的魔力源后，绘制出进阶的奥术咒文后，在魔力充裕的环境下举行晋升为奥术师的仪式">
+        <h4>奥术师</h4>
+        <p><span class="field">来源：</span>法师、牧师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>施展二十次带有奥术、跃迁或专注关键词的能力（一个能力同时具有多个关键词时仅计算一次）</li>
+          <li>你花费过幕间物语来阅读一本奥术法术的魔典</li>
+          <li>准备一颗蓝宝石或水晶和一份魔法生物的魔力源后，绘制出进阶的奥术咒文后，在魔力充裕的环境下举行晋升为奥术师的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="古典巫师" class="adv-card" id="adv-priest-古典巫师" data-search="古典巫师 法师、牧师 持有稀有品质或以上的法杖或魔棒、戒指以及其他种类魔法物品各一件 你花费过幕间物语来阅读两本任意学派的魔典 在一座魔法学院中得到魔法导师的传授，潜心进行长达十年的专研，期间不得与外界进行交流，并且在这一过程中达成以下目标：完整抄录一本魔法书籍、完成一道魔法课题、参与一次针对魔法生物的剖析、以标准宫廷礼仪与其他学院派法师展开友好切磋、通过学院渠道购置一份魔法物品以通过古典巫师的晋升仪式">
+        <h4>古典巫师</h4>
+        <p><span class="field">来源：</span>法师、牧师</p>
+        <p><span class="field">属性需求：</span><span style="color:#FF0000">体质10</span>  <span>智力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>持有稀有品质或以上的法杖或魔棒、戒指以及其他种类魔法物品各一件</li>
+          <li>你花费过幕间物语来阅读两本任意学派的魔典</li>
+          <li>在一座魔法学院中得到魔法导师的传授，潜心进行长达十年的专研，期间不得与外界进行交流，并且在这一过程中达成以下目标：完整抄录一本魔法书籍、完成一道魔法课题、参与一次针对魔法生物的剖析、以标准宫廷礼仪与其他学院派法师展开友好切磋、通过学院渠道购置一份魔法物品以通过古典巫师的晋升仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="魔药学家" class="adv-card" id="adv-priest-魔药学家" data-search="魔药学家 法师、牧师、游荡者、魔契师 饮用二十种不同的魔法药剂 你花费过幕间物语来阅读一本制作魔法药剂的魔典 调配出五瓶稀有品质或以上的魔法药剂，并且其中一瓶至少拥有珍稀品质，在这些药剂被使用后视为完成这项进阶条件">
+        <h4>魔药学家</h4>
+        <p><span class="field">来源：</span>法师、牧师、游荡者、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>饮用二十种不同的魔法药剂</li>
+          <li>你花费过幕间物语来阅读一本制作魔法药剂的魔典</li>
+          <li>调配出五瓶稀有品质或以上的魔法药剂，并且其中一瓶至少拥有珍稀品质，在这些药剂被使用后视为完成这项进阶条件</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="解密学者" class="adv-card" id="adv-priest-解密学者" data-search="解密学者 法师、牧师 完成十次来自魔法、奇械或其他机关设置的谜题 破获三次来自秘密组织的重要情报 破解或设置一道惊人的谜题">
+        <h4>解密学者</h4>
+        <p><span class="field">来源：</span>法师、牧师</p>
+        <p><span class="field">属性需求：</span><span>智力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>完成十次来自魔法、奇械或其他机关设置的谜题</li>
+          <li>破获三次来自秘密组织的重要情报</li>
+          <li>破解或设置一道惊人的谜题</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="心灵导师" class="adv-card" id="adv-priest-心灵导师" data-search="心灵导师 法师、牧师、魔契师 为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内） 使十名角色进入困惑、混乱、忏悔或眩晕状态 倾听一名挑战等级或名望等级为10或以上角色的内心述说，为其开导解开对方的心结并获得其感激（不计算玩家在内）">
+        <h4>心灵导师</h4>
+        <p><span class="field">来源：</span>法师、牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力13</span>  <span>感知14</span>  <span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）</li>
+          <li>使十名角色进入困惑、混乱、忏悔或眩晕状态</li>
+          <li>倾听一名挑战等级或名望等级为10或以上角色的内心述说，为其开导解开对方的心结并获得其感激（不计算玩家在内）</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="博学者" class="adv-card" id="adv-priest-博学者" data-search="博学者 牧师、奇械师 复原一项出土于古代遗迹中的、现已失传的事物（例如史学文献、工艺技术或是其他的知识传承等） 激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时 与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式">
+        <h4>博学者</h4>
+        <p><span class="field">来源：</span>牧师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力18</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>复原一项出土于古代遗迹中的、现已失传的事物（例如史学文献、工艺技术或是其他的知识传承等）</li>
+          <li>激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时</li>
+          <li>与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="镜影师" class="adv-card" id="adv-priest-镜影师" data-search="镜影师 牧师、魔契师 你通过惑控或幻象效果成功欺骗二十名角色 让十名角色将你利用魔术或非魔法原理生成的效应误认为是魔法 通过任意手段让监管你的人目击你的虚假身影长达24小时，而实际上你的本体已然完成一起关键的任务">
+        <h4>镜影师</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你通过惑控或幻象效果成功欺骗二十名角色</li>
+          <li>让十名角色将你利用魔术或非魔法原理生成的效应误认为是魔法</li>
+          <li>通过任意手段让监管你的人目击你的虚假身影长达24小时，而实际上你的本体已然完成一起关键的任务</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="卷轴学者" class="adv-card" id="adv-priest-卷轴学者" data-search="卷轴学者 法师、牧师 你的特殊专长中包含有卷轴助理 使用二十张法术卷轴 你花费过幕间物语来阅读并抄录一本任意学派的魔典">
+        <h4>卷轴学者</h4>
+        <p><span class="field">来源：</span>法师、牧师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中包含有卷轴助理</li>
+          <li>使用二十张法术卷轴</li>
+          <li>你花费过幕间物语来阅读并抄录一本任意学派的魔典</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="戏法师" class="adv-card" id="adv-priest-戏法师" data-search="戏法师 法师、牧师、术士、吟游诗人、魔契师 对十名角色施展戏法（不计算玩家在内） 使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内） 你通过施展戏法决定一场关键的战斗环节胜负">
+        <h4>戏法师</h4>
+        <p><span class="field">来源：</span>法师、牧师、术士、吟游诗人、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力14</span>  <span>魅力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>对十名角色施展戏法（不计算玩家在内）</li>
+          <li>使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）</li>
+          <li>你通过施展戏法决定一场关键的战斗环节胜负</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="诡术师" class="adv-card" id="adv-priest-诡术师" data-search="诡术师 法师、牧师、游荡者、吟游诗人、魔契师 这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师 伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内） 在一座城镇留下一起被当地人津津乐道的怪谈">
+        <h4>诡术师</h4>
+        <p><span class="field">来源：</span>法师、牧师、游荡者、吟游诗人、魔契师</p>
+        <p><span class="field">属性需求：</span><span>敏捷12</span>  <span>智力13</span>  <span>魅力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师</li>
+          <li>伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内）</li>
+          <li>在一座城镇留下一起被当地人津津乐道的怪谈</li>
+        </ol>
+              <button class="detail-btn" data-adv-name="诡术师">查看详情</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="妖精召唤者" class="adv-card" id="adv-priest-妖精召唤者" data-search="妖精召唤者 牧师、魔契师 召唤十只精类生物来到主物质位面 经历三场由自然界的精类生物所引发的事件 造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面">
+        <h4>妖精召唤者</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>魅力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>召唤十只精类生物来到主物质位面</li>
+          <li>经历三场由自然界的精类生物所引发的事件</li>
+          <li>造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="竖琴精灵" class="adv-card" id="adv-priest-竖琴精灵" data-search="竖琴精灵 牧师、吟游诗人、魔契师 在一所高端层面的酒馆或旅店中进行长达一周时段的即兴乐器演奏，并因此结识五名来自上流社会的NPC角色 使五位超自然存在成为你的听众 你受到上流社会的邀请参与一场位于私密场所的独奏表演，通过精妙绝伦的演绎令听众们纷纷潸然泪下">
+        <h4>竖琴精灵</h4>
+        <p><span class="field">来源：</span>牧师、吟游诗人、魔契师</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在一所高端层面的酒馆或旅店中进行长达一周时段的即兴乐器演奏，并因此结识五名来自上流社会的NPC角色</li>
+          <li>使五位超自然存在成为你的听众</li>
+          <li>你受到上流社会的邀请参与一场位于私密场所的独奏表演，通过精妙绝伦的演绎令听众们纷纷潸然泪下</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="狂欢骑士" class="adv-card" id="adv-priest-狂欢骑士" data-search="狂欢骑士 牧师、吟游诗人、魔契师 在庆典活动中击败二十名角色（不计算玩家在内） 与上述前置条件①中被击败的角色开怀畅饮、纵情欢歌 参与到举办一场地区性质的盛大嘉年华活动过程当中，并且在其中起到足够亮眼的表现">
+        <h4>狂欢骑士</h4>
+        <p><span class="field">来源：</span>牧师、吟游诗人、魔契师</p>
+        <p><span class="field">属性需求：</span><span>魅力15</span>  <span>幸运15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>在庆典活动中击败二十名角色（不计算玩家在内）</li>
+          <li>与上述前置条件①中被击败的角色开怀畅饮、纵情欢歌</li>
+          <li>参与到举办一场地区性质的盛大嘉年华活动过程当中，并且在其中起到足够亮眼的表现</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="音乐侦探" class="adv-card" id="adv-priest-音乐侦探" data-search="音乐侦探 牧师、吟游诗人 进行十次成功的聆听检定 破获三起与音乐、剧场或吟游诗人等题材相关的案件 将一名犯人引导向你提前布置的“剧目”现场，令对方被迫暴露在“观众”的视野当中，伴随着戏剧高潮的乐曲你置身于“台前”揭晓这一切地始末">
+        <h4>音乐侦探</h4>
+        <p><span class="field">来源：</span>牧师、吟游诗人</p>
+        <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知15</span>  <span>魅力12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的聆听检定</li>
+          <li>破获三起与音乐、剧场或吟游诗人等题材相关的案件</li>
+          <li>将一名犯人引导向你提前布置的“剧目”现场，令对方被迫暴露在“观众”的视野当中，伴随着戏剧高潮的乐曲你置身于“台前”揭晓这一切地始末</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="幻灵诗人" class="adv-card" id="adv-priest-幻灵诗人" data-search="幻灵诗人 牧师、吟游诗人 与三名诗人、歌手或作曲家等创作者的鬼魂交谈 对一部知名作品进行二次创作并得到足够规模的认可 帮助一位鬼魂使对方生前未能撰写完成的诗集、乐曲或剧作得以重见天日，并且取得足够的成就">
+        <h4>幻灵诗人</h4>
+        <p><span class="field">来源：</span>牧师、吟游诗人</p>
+        <p><span class="field">属性需求：</span><span>感知15</span>  <span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>与三名诗人、歌手或作曲家等创作者的鬼魂交谈</li>
+          <li>对一部知名作品进行二次创作并得到足够规模的认可</li>
+          <li>帮助一位鬼魂使对方生前未能撰写完成的诗集、乐曲或剧作得以重见天日，并且取得足够的成就</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="圣乐演奏家" class="adv-card" id="adv-priest-圣乐演奏家" data-search="圣乐演奏家 牧师 你在一处教堂、寺庙或其他宗教场所进行过十次乐器演出 为十名其他教团的牧师演奏宗教乐曲，并且获得他人的感激（不计算玩家在内） 参与一场城市级别的大教堂举办的圣乐演出，并且本次演奏过程中有来自神圣领域的存在降临">
+        <h4>圣乐演奏家</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你在一处教堂、寺庙或其他宗教场所进行过十次乐器演出</li>
+          <li>为十名其他教团的牧师演奏宗教乐曲，并且获得他人的感激（不计算玩家在内）</li>
+          <li>参与一场城市级别的大教堂举办的圣乐演出，并且本次演奏过程中有来自神圣领域的存在降临</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="绘梦画师" class="adv-card" id="adv-priest-绘梦画师" data-search="绘梦画师 牧师、魔契师 你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作 令十名敌人惊叹你的画作，并解除与你的敌对状态 在一场节日庆典、文化沙龙或艺术展活动中进行公开创作，用你的画作令所有参与者重拾心中的梦想">
+        <h4>绘梦画师</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span>  <span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作</li>
+          <li>令十名敌人惊叹你的画作，并解除与你的敌对状态</li>
+          <li>在一场节日庆典、文化沙龙或艺术展活动中进行公开创作，用你的画作令所有参与者重拾心中的梦想</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="死灵法师" class="adv-card" id="adv-priest-死灵法师" data-search="死灵法师 法师、牧师、魔契师 你成功对二十名敌人造成生命流失效果 你花费过幕间物语来阅读一本死灵学派或黑魔法的魔典 准备一颗孩童的乳齿，以及一根成人的肋骨、老者的髂骨和施法者的头骨，在负能量充裕的黑暗环境下举行晋升为死灵法师的仪式">
+        <h4>死灵法师</h4>
+        <p><span class="field">来源：</span>法师、牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span style="color:#FF0000">体质10</span>  <span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你成功对二十名敌人造成生命流失效果</li>
+          <li>你花费过幕间物语来阅读一本死灵学派或黑魔法的魔典</li>
+          <li>准备一颗孩童的乳齿，以及一根成人的肋骨、老者的髂骨和施法者的头骨，在负能量充裕的黑暗环境下举行晋升为死灵法师的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="缝合怪专家" class="adv-card" id="adv-priest-缝合怪专家" data-search="缝合怪专家 牧师、魔契师 消灭十个不死生物，并回收他们的躯体 处理二十具受到损坏的遗体 创造一头属于自己的憎恶">
+        <h4>缝合怪专家</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>智力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>消灭十个不死生物，并回收他们的躯体</li>
+          <li>处理二十具受到损坏的遗体</li>
+          <li>创造一头属于自己的憎恶</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="灵媒" class="adv-card" id="adv-priest-灵媒" data-search="灵媒 牧师、萨满祭司、魔契师 举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通 造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往 驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作">
+        <h4>灵媒</h4>
+        <p><span class="field">来源：</span>牧师、萨满祭司、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通</li>
+          <li>造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往</li>
+          <li>驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="灰袍收割者" class="adv-card" id="adv-priest-灰袍收割者" data-search="灰袍收割者 牧师 消灭十个不死生物 击杀十个试图使用黑魔法或其他劣等手段来维持生命延续的角色 目送一名对你至关重要的人寿终正寝，期间抗拒来自生命延续的诱惑">
+        <h4>灰袍收割者</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>敏捷14</span>  <span>意志14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>消灭十个不死生物</li>
+          <li>击杀十个试图使用黑魔法或其他劣等手段来维持生命延续的角色</li>
+          <li>目送一名对你至关重要的人寿终正寝，期间抗拒来自生命延续的诱惑</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="灵魂炼金师" class="adv-card" id="adv-priest-灵魂炼金师" data-search="灵魂炼金师 牧师、魔契师 通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态 使用任意手段复活三名角色，并且研究他们复活的完整过程 炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂">
+        <h4>灵魂炼金师</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态</li>
+          <li>使用任意手段复活三名角色，并且研究他们复活的完整过程</li>
+          <li>炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="渡魂典卫" class="adv-card" id="adv-priest-渡魂典卫" data-search="渡魂典卫 牧师、魔契师 驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散） 通过你生成的护盾、结界等效果抵挡十次伤害或异常状态效果 陪同并确保一名未能安息的亡魂穿过灵界，抵达死者的国度">
+        <h4>渡魂典卫</h4>
+        <p><span class="field">来源：</span>牧师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）</li>
+          <li>通过你生成的护盾、结界等效果抵挡十次伤害或异常状态效果</li>
+          <li>陪同并确保一名未能安息的亡魂穿过灵界，抵达死者的国度</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="彼界战士" class="adv-card" id="adv-priest-彼界战士" data-search="彼界战士 牧师 击杀二十名角色并且确保其灵魂能够顺利抵达灵界 使用任意手段复活三名角色，随后进行虔诚祷告 将一个不该就此逝去的亡魂自灵界夺回，随后与对方一同进行虔诚祷告以完成彼界战士的晋升">
+        <h4>彼界战士</h4>
+        <p><span class="field">来源：</span>牧师</p>
+        <p><span class="field">属性需求：</span><span>力量13</span>  <span>体质15</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击杀二十名角色并且确保其灵魂能够顺利抵达灵界</li>
+          <li>使用任意手段复活三名角色，随后进行虔诚祷告</li>
+          <li>将一个不该就此逝去的亡魂自灵界夺回，随后与对方一同进行虔诚祷告以完成彼界战士的晋升</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="近卫" class="adv-card" id="adv-priest-近卫" data-search="近卫 全职业 赢得十场战斗环节的胜利 确保在十场战斗环节中你为团队中承受伤害最多的角色 在一场关键战役中全程担任正面承受敌人火力的职责">
+        <h4>近卫</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>确保在十场战斗环节中你为团队中承受伤害最多的角色</li>
+          <li>在一场关键战役中全程担任正面承受敌人火力的职责</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="高阶冒险者" class="adv-card" id="adv-priest-高阶冒险者" data-search="高阶冒险者 全职业 赢得十场战斗环节的胜利 完成十次成功的剧情交互内容 完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容">
+        <h4>高阶冒险者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>完成十次成功的剧情交互内容</li>
+          <li>完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="战斗大师" class="adv-card" id="adv-priest-战斗大师" data-search="战斗大师 全职业 赢得十场战斗环节的胜利 你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态 取得一场关键战役的最终胜利">
+        <h4>战斗大师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量13</span>  <span>敏捷14</span>  <span>感知13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态</li>
+          <li>取得一场关键战役的最终胜利</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="复仇者" class="adv-card" id="adv-priest-复仇者" data-search="复仇者 全职业 你拥有一名刻骨铭心、无论如何都必须向其复仇的对象 你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内） 你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式">
+        <h4>复仇者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有一名刻骨铭心、无论如何都必须向其复仇的对象</li>
+          <li>你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）</li>
+          <li>你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="骑士扈从" class="adv-card" id="adv-priest-骑士扈从" data-search="骑士扈从 全职业 你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共 你与自身的效忠对象一同参与十场战斗环节 在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右">
+        <h4>骑士扈从</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共</li>
+          <li>你与自身的效忠对象一同参与十场战斗环节</li>
+          <li>在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="战地医师" class="adv-card" id="adv-priest-战地医师" data-search="战地医师 全职业 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役">
+        <h4>战地医师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>进行十次成功的医药检定</li>
+          <li>通过医疗包移除十次中毒或流血的效果</li>
+          <li>作为医疗人员的身份完整参与一场战役</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="边界行者" class="adv-card" id="adv-priest-边界行者" data-search="边界行者 全职业 击败二十名来自任意边境地区的敌人 完成三场不为人知的拯救行动（不计算玩家在内） 阻挡一次来自异界、异位面对本位面的入侵事件">
+        <h4>边界行者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>感知14</span>  <span>意志13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>击败二十名来自任意边境地区的敌人</li>
+          <li>完成三场不为人知的拯救行动（不计算玩家在内）</li>
+          <li>阻挡一次来自异界、异位面对本位面的入侵事件</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="自由骑士" class="adv-card" id="adv-priest-自由骑士" data-search="自由骑士 全职业 你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出） 协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容 你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划">
+        <h4>自由骑士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）</li>
+          <li>协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容</li>
+          <li>你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="塑形者" class="adv-card" id="adv-priest-塑形者" data-search="塑形者 全职业 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业">
+        <h4>塑形者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量X</span>  <span>敏捷X</span>  <span>体质X</span>  <span>智力X</span>  <span>感知X</span>  <span>意志X</span>  <span>魅力X</span>  <span>幸运X</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度</li>
+          <li>你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板</li>
+          <li>你所在团队的所有其他角色均完成进阶职业</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+            <article data-name="凡人勇士" class="adv-card" id="adv-priest-凡人勇士" data-search="凡人勇士 全职业 你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板 在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力 战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成">
+        <h4>凡人勇士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span style="color:#FF0000">力量15</span>  <span style="color:#FF0000">敏捷15</span>  <span style="color:#FF0000">体质15</span>  <span style="color:#FF0000">智力15</span>  <span style="color:#FF0000">感知15</span>  <span style="color:#FF0000">意志15</span>  <span style="color:#FF0000">魅力15</span>  <span style="color:#FF0000">幸运15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
+        <ol>
+          <li>你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板</li>
+          <li>在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力</li>
+          <li>战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成</li>
+        </ol>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
+        <div class="adv-detail collapse"></div>
+      </article>
+
+<div id="priest-adv-empty" class="empty hidden" style="text-align:center;padding:40px;color:var(--muted);">没有找到匹配的进阶。</div>
+</div>
+
+<script>
+(function() {
+    var detailsData = null;
+    var holdState = null;
+    function initDetails() {
+        if (typeof ADVANCEMENT_DETAILS !== "undefined") {
+            detailsData = ADVANCEMENT_DETAILS;
+        }
+    }
+    function buildHTML(d) {
+        var h = "";
+        if (d.desc_html) h += "<div class=\"detail-desc\">" + d.desc_html + "</div>";
+        else if (d.description) h += "<div class=\"detail-desc\">" + d.description + "</div>";
+        if (d.image_markers) {
+            var firstImgs = d.image_markers.filter(function(m) { return m.para_index === 825; });
+            if (firstImgs.length > 0) {
+                h += "<div class=\"detail-images\">";
+                firstImgs.forEach(function(m, idx) {
+                    h += "<div class=\"img-item\">";
+                    h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
+                    h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
+                });
+                h += "</div>";
+            }
+        }
+        if (d.abilities && d.abilities.length > 0) {
+            d.abilities.forEach(function(a, ai) {
+                h += "<div class=\"detail-ability\">";
+                h += "<span class=\"ab-name\">" + a.name + "</span>";
+                if (a.tags) h += "<span class=\"ab-tags\">[" + a.tags + "]</span>";
+                var descContent = a.desc_html || a.desc || "";
+                h += "<div class=\"ab-desc\">" + descContent + "</div></div>";
+                if (d.image_markers && d.name === "\u602a\u7269") {
+                    var sectionImgs = null;
+                    if (ai === 0) {
+                        sectionImgs = d.image_markers.filter(function(m) { return m.para_index >= 843 && m.para_index <= 849; });
+                    }
+                    if (sectionImgs && sectionImgs.length > 0) {
+                        h += "<div class=\"detail-images\">";
+                        sectionImgs.forEach(function(m, idx) {
+                            h += "<div class=\"img-item\">";
+                            h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
+                            h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
+                        });
+                        h += "</div>";
+                    }
+                }
+            });
+        }
+        if (d.tables && d.tables.length > 0) {
+            d.tables.forEach(function(tbl) {
+                h += "<div class=\"detail-table-wrap\">";
+                h += "<table class=\"detail-table\">";
+                tbl.forEach(function(row, ri) {
+                    h += "<tr>";
+                    row.forEach(function(cell) {
+                        var tag = (ri === 0) ? "th" : "td";
+                        h += "<" + tag + ">" + cell + "</" + tag + ">";
+                    });
+                    h += "</tr>";
+                });
+                h += "</table></div>";
+            });
+        }
+        if (d.insight) {
+            h += "<div class=\"detail-insight\">";
+            h += "<div class=\"detail-insight-title\">" + d.insight.name + "</div>";
+            if (d.insight.tags) h += "<div class=\"detail-insight-tags\">[" + d.insight.tags + "]</div>";
+            var insContent = d.insight.desc_html || d.insight.desc || "";
+            h += "<div class=\"detail-insight-desc\">" + insContent + "</div></div>";
+        }
+        return h;
+    }
+
+
+
+
+
+
+
+
+    function formatDetailText(container) {
+        var descs = container.querySelectorAll(".ab-desc");
+        for (var d = 0; d < descs.length; d++) {
+            var el = descs[d];
+            var raw = el.innerHTML;
+            raw = raw.replace(/\n\s*(?:<strong>\s*)?-{3,}(?:\s*<\/strong>)?\s*/g, "<hr>");
+            raw = raw.replace(/([\u3002\uff1a])\n/g, "$1<br>");
+            raw = raw.replace(/\n\s*/g, "");
+            raw = raw.replace(/<br>([^<]+)/g, "<span class=\"hl-option\">$1</span>");
+            var plainTxt = raw.replace(/<[^>]+>/g, "");
+            var dotIdx = plainTxt.indexOf("\u3002");
+            if (dotIdx > 0 && dotIdx < 100) {
+                var leadRaw = plainTxt.substring(0, dotIdx + 1);
+                var escLead = leadRaw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                var re = new RegExp("^\\s*(" + escLead + ")", "");
+                if (re.test(raw)) {
+                    raw = raw.replace(re, "<span class=\"hl-lead\">$1</span>");
+                }
+            }
+            el.innerHTML = raw;
+            var walker = document.createTreeWalker(el, 4, null, false);
+            var nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+            for (var i = 0; i < nodes.length; i++) {
+                var nd = nodes[i];
+                if (!nd.parentNode) continue;
+                var p = nd.parentNode;
+                if (p.classList && (p.classList.contains("hl-num") || p.classList.contains("hl-field"))) continue;
+                if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
+                var t = nd.textContent;
+                var changed = false;
+                var t1 = t.replace(/(\d+%|\d+点|[Dd]\d+|\d+级|\+\d+|\d+[Dd]\d+)/g, "<span class=\"hl-num\">$1</span>");
+                if (t1 !== t) { t = t1; changed = true; }
+                var t2 = t.replace(/(你的\S+职业等级到达\d+级时：)/g, "<span class=\"hl-field\">$1</span>");
+                if (t2 !== t) { t = t2; changed = true; }
+                if (changed) {
+                    var sp = document.createElement("span");
+                    sp.innerHTML = t;
+                    p.replaceChild(sp, nd);
+                }
+            }
+        }
+    }
+
+    function showDetail(btn) {
+        btn.classList.remove("holding");
+        var card = btn.closest(".adv-card");
+        if (!card) return;
+        var dv = card.querySelector(".adv-detail");
+        if (!dv) return;
+        initDetails();
+        if (!detailsData) {
+            dv.innerHTML = "<p style=\"color:red;text-align:center;padding:12px;\">\u6570\u636e\u52a0\u8f7d\u5931\u8d25</p>";
+            dv.classList.add("expand");
+            btn.textContent = "\u6536\u8d77";
+            btn.classList.add("active");
+            return;
+        }
+        var nm = btn.getAttribute("data-adv-name");
+        if (!nm) return;
+        var f = null;
+        for (var i = 0; i < detailsData.length; i++) {
+            if (detailsData[i].name === nm) { f = detailsData[i]; break; }
+        }
+        if (f) { dv.innerHTML = buildHTML(f); formatDetailText(dv); }
+        else { dv.innerHTML = "<p style=\"color:var(--muted);text-align:center;padding:12px;\">\u6682\u65e0\u8be6\u7ec6\u4fe1\u606f</p>"; }
+        dv.classList.add("expand");
+        btn.textContent = "\u6536\u8d77";
+        btn.classList.add("active");
+    }
+    document.addEventListener("pointerdown", function(e) {
+        var btn = e.target.closest(".detail-btn");
+        if (!btn) return;
+        if (holdState) return;
+        var card = btn.closest(".adv-card");
+        if (!card) return;
+        var dv = card.querySelector(".adv-detail");
+        if (!dv) return;
+        if (dv.classList.contains("expand")) {
+            dv.classList.remove("expand");
+            btn.textContent = "\u67e5\u770b\u8be6\u60c5";
+            btn.classList.remove("active");
+            return;
+        }
+        holdState = { btn: btn, startTime: performance.now(), running: true };
+        btn.classList.add("holding");
+        btn.style.setProperty("--hold-progress", "0");
+        (function tick() {
+            if (!holdState || !holdState.running) return;
+            var elapsed = performance.now() - holdState.startTime;
+            var p = Math.min(elapsed / 2000, 1);
+            holdState.btn.style.setProperty("--hold-progress", String(p));
+            if (p >= 1) {
+                holdState.running = false;
+                var b = holdState.btn;
+                holdState = null;
+                showDetail(b);
+                return;
+            }
+            holdState.timer = requestAnimationFrame(tick);
+        })();
+    });
+    document.addEventListener("pointerup", function() {
+        if (!holdState) return;
+        holdState.btn.classList.remove("holding");
+        holdState.running = false;
+        if (holdState.timer) cancelAnimationFrame(holdState.timer);
+        var btn = holdState.btn;
+        var startP = parseFloat(btn.style.getPropertyValue("--hold-progress")) || 0;
+        if (startP < 1) {
+            var decayStart = performance.now();
+            (function decay() {
+                var elapsed = performance.now() - decayStart;
+                var t = Math.min(elapsed / 600, 1);
+                var eased = 1 - Math.pow(1 - t, 3);
+                var current = startP * (1 - eased);
+                btn.style.setProperty("--hold-progress", String(current));
+                if (t < 1) { requestAnimationFrame(decay); }
+                else { btn.style.setProperty("--hold-progress", "0"); holdState = null; }
+            })();
+        } else {
+            holdState = null;
+        }
+    });
+    document.addEventListener("pointercancel", function() {
+        if (!holdState) return;
+        holdState.btn.classList.remove("holding");
+        holdState.running = false;
+        if (holdState.timer) cancelAnimationFrame(holdState.timer);
+        if (holdState.btn) holdState.btn.style.setProperty("--hold-progress", "0");
+        holdState = null;
+    });
+})();
+
+// Advancement card search
+(function() {
+        var searchInput = document.getElementById("priest-adv-search");
+    if (!searchInput) return;
+    searchInput.addEventListener("input", function() {
+        var q = this.value.trim().toLowerCase();
+        var cards = document.querySelectorAll(".adv-card");
+        var oldHL = document.querySelectorAll(".search-highlight");
+        for (var i = oldHL.length - 1; i >= 0; i--) {
+            var sp = oldHL[i];
+            sp.parentNode.replaceChild(document.createTextNode(sp.textContent), sp);
+        }
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var sd = card.getAttribute("data-search") || "";
+            if (q === "" || sd.toLowerCase().indexOf(q) >= 0) {
+                card.classList.remove("filter-hidden");
+            } else {
+                card.classList.add("filter-hidden");
+            }
+        }
+        if (q !== "") {
+            var vis = document.querySelectorAll(".adv-card:not(.filter-hidden)");
+            var esc = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            var rx = new RegExp(esc, "gi");
+            for (var i = 0; i < vis.length; i++) {
+                var walker = document.createTreeWalker(vis[i], 4, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                for (var j = 0; j < nodes.length; j++) {
+                    var nd = nodes[j];
+                    if (!nd.parentNode) continue;
+                    var p = nd.parentNode;
+                    if (p.classList && p.classList.contains("search-highlight")) continue;
+                    if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
+                    var txt = nd.textContent;
+                    rx.lastIndex = 0;
+                    var fm = rx.exec(txt);
+                    if (!fm) continue;
+                    rx.lastIndex = 0;
+                    var frag = document.createDocumentFragment();
+                    var li = 0;
+                    while (true) {
+                        var mt = rx.exec(txt);
+                        if (mt === null) break;
+                        if (mt.index > li) frag.appendChild(document.createTextNode(txt.substring(li, mt.index)));
+                        var sp = document.createElement("span");
+                        sp.className = "search-highlight";
+                        sp.textContent = mt[0];
+                        frag.appendChild(sp);
+                        li = rx.lastIndex;
+                    }
+                    if (li < txt.length) frag.appendChild(document.createTextNode(txt.substring(li)));
+                    p.replaceChild(frag, nd);
+                }
+            }
+        }
+    });
+})();
+
+</script>
+
+<button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+<script>
+
+(function() {
+  var btn = document.getElementById("backToTop");
+  if (!btn) return;
+  window.addEventListener("scroll", function() {
+    if (window.scrollY > 300) {
+      btn.classList.add("show");
+    } else {
+      btn.classList.remove("show");
+    }
+  });
+  btn.addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+
+</script>
+
+</body>
+</html>

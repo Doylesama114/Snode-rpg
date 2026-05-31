@@ -1,0 +1,16 @@
+﻿{
+    "name":  "snowd-skill-tree",
+    "version":  "1.0.0",
+    "description":  "鏂寰峰叏鑱屼笟鎶€鑳芥爲",
+    "author":  "snowd",
+    "main":  "main.js",
+    "scripts":  {
+                    "start":  "electron .",
+                    "dist":  "electron-builder --win portable"
+                },
+    "devDependencies":  {
+                            "electron":  "^22.3.27",
+                            "electron-builder":  "^26.8.1",
+                            "electron-packager":  "^17.1.2"
+                        }
+}
