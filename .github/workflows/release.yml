@@ -21,15 +21,6 @@ jobs:
           xcopy /E /Y /I "斯诺德跑团" "electron-app\斯诺德跑团\"
           xcopy /E /Y /I "职业页" "electron-app\职业页\"
 
-      - name: Inject Sentry
-        if: ${{ secrets.SENTRY_DSN != '' }}
-        env:
-          SENTRY_KEY: ${{ secrets.SENTRY_DSN }}
-        run: |
-          $KEY = "$env:SENTRY_KEY"
-          (Get-Content sentry-loader.js) -replace '__SENTRY_DSN__', $KEY | Set-Content electron-app\斯诺德跑团\sentry-loader.js
-          Copy-Item sentry-loader.js electron-app\职业页\sentry-loader.js
-
       - name: Install dependencies
         working-directory: electron-app
         run: npm install
