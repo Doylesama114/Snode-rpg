@@ -9,39 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
       - name: Prepare deploy directory
         run: |
           mkdir -p _deploy
-          # 只复制核心网页文件
           cp -r 斯诺德跑团 _deploy/
           cp -r 职业页 _deploy/
-          # 复制根目录共享文件
           cp sentry-loader.js _deploy/ 2>/dev/null || true
-          cp verify_all.mjs _deploy/ 2>/dev/null || true
-          cp server.js _deploy/ 2>/dev/null || true
-          # 删除备份文件和测试文件
-          rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
           find _deploy -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy -name "*.bat" -delete 2>/dev/null || true
-
-      - name: Inject Sentry (optional)
-        if: ${{ secrets.SENTRY_DSN != '' }}
-        env:
-          SENTRY_KEY: ${{ secrets.SENTRY_DSN }}
-        run: |
-          sed -i "s/__SENTRY_DSN__/${SENTRY_KEY}/g" _deploy/sentry-loader.js
-          find _deploy -name "*.html" | while read f; do
-            if ! grep -q "sentry-loader" "$f"; then
-              sed -i "s|<head>|<head>\n<script src=\"/sentry-loader.js\" data-dsn=\"${SENTRY_KEY}\"></script>|" "$f"
-            fi
-          done
+          rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
+          rm -rf _deploy/斯诺德跑团/tests.html 2>/dev/null || true
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _deploy
-          keep_files: false
