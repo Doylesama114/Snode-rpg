@@ -31,3 +31,7 @@ tmp/
 temp/
 *.tmp
 nul
+
+# Electron build copies (synced via CI)
+electron-app/斯诺德跑团/
+electron-app/职业页/
