@@ -12,13 +12,14 @@ files:
   - 斯诺德跑团/**/*
 win:
   target:
-    - target: portable
+    - target: nsis
       arch:
         - x64
   signAndEditExecutable: false
   forceCodeSigning: false
-portable:
-  artifactName: "斯诺德跑团.exe"
-  unpackDirName: snowd-skill-tree
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  artifactName: "斯诺德跑团-Setup-${version}.exe"
 npmRebuild: false
 nodeGypRebuild: false

@@ -27,12 +27,12 @@ jobs:
 
       - name: Build
         working-directory: electron-app
-        run: npx electron-builder --win portable
+        run: npx electron-builder --win nsis
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            electron-app/dist/斯诺德跑团.exe
+            electron-app/dist/*.exe
             electron-app/dist/latest.yml
           token: ${{ secrets.GH_TOKEN }}
