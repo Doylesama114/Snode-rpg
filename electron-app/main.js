@@ -1,31 +1,21 @@
-﻿const { app, BrowserWindow, Menu } = require('electron');
+﻿const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
 
 autoUpdater.autoDownload = true;
-autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.autoInstallOnAppQuit = false; // 手动重启以立即生效
 
 let mainWindow = null;
 
 function sendUpdateStatus(data) {
   if (!mainWindow) return;
-  try {
-    var code = "try{document.getElementById('updateMsg').innerHTML='";
-    if (data.status === 'downloading') {
-      code += "<span style=\\\"color:#a46d1f\\\">正在下载更新 v" + (data.version || '') + "...</span>";
-    } else if (data.status === 'downloaded') {
-      code += "<span style=\\\"color:#2e7d32\\\">新版本 v" + (data.version || '') + " 已就绪，重启后生效</span>";
-    } else if (data.status === 'error') {
-      code += "<span style=\\\"color:#c62828\\\">更新出错：" + (data.message || '') + "</span>";
-    } else if (data.status === 'uptodate') {
-      code += "<span style=\\\"color:#69706b\\\">已是最新版本</span>";
-    }
-    code += "';}catch(e){}";
-    mainWindow.webContents.executeJavaScript(code);
-  } catch(e) {}
+  mainWindow.webContents.send('update-status', data);
 }
 
-autoUpdater.on('checking-for-update', () => console.log('[更新] 检查中...'));
+autoUpdater.on('checking-for-update', () => {
+  console.log('[更新] 检查中...');
+  sendUpdateStatus({ status: 'checking' });
+});
 autoUpdater.on('update-available', (info) => {
   console.log('[更新] 发现 v' + info.version + '，正在下载...');
   sendUpdateStatus({ status: 'downloading', version: info.version });
@@ -35,12 +25,28 @@ autoUpdater.on('update-not-available', () => {
   sendUpdateStatus({ status: 'uptodate' });
 });
 autoUpdater.on('update-downloaded', (info) => {
-  console.log('[更新] v' + info.version + ' 下载完成，重启后生效');
+  console.log('[更新] v' + info.version + ' 下载完成，即将重启...');
   sendUpdateStatus({ status: 'downloaded', version: info.version });
+  // 3 秒后自动重启
+  setTimeout(() => {
+    autoUpdater.quitAndInstall(false, true);
+  }, 3000);
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
   sendUpdateStatus({ status: 'error', message: err.message });
+});
+
+// IPC: 手动检查更新
+ipcMain.on('check-update', () => {
+  sendUpdateStatus({ status: 'checking' });
+  autoUpdater.checkForUpdates();
+});
+
+// IPC: 手动重启
+ipcMain.on('restart-app', () => {
+  app.relaunch();
+  app.exit(0);
 });
 
 function createWindow() {
@@ -48,7 +54,11 @@ function createWindow() {
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
     title: '斯诺德跑团',
     icon: path.join(__dirname, '斯诺德跑团', 'favicon.ico'),
-    webPreferences: { nodeIntegration: false, contextIsolation: true }
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
 
   Menu.setApplicationMenu(null);

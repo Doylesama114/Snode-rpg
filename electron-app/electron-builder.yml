@@ -4,6 +4,7 @@ directories:
   output: dist
 files:
   - main.js
+  - preload.js
   - package.json
   - spawn_monkey_patch.js
   - sync-check.js
