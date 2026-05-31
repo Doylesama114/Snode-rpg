@@ -2,70 +2,74 @@
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
 
-// Auto-update 配置
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 
+let mainWindow = null;
+
+function sendUpdateStatus(data) {
+  if (!mainWindow) return;
+  try {
+    var code = "try{document.getElementById('updateMsg').innerHTML='";
+    if (data.status === 'downloading') {
+      code += "<span style=\\\"color:#a46d1f\\\">正在下载更新 v" + (data.version || '') + "...</span>";
+    } else if (data.status === 'downloaded') {
+      code += "<span style=\\\"color:#2e7d32\\\">新版本 v" + (data.version || '') + " 已就绪，重启后生效</span>";
+    } else if (data.status === 'error') {
+      code += "<span style=\\\"color:#c62828\\\">更新出错：" + (data.message || '') + "</span>";
+    } else if (data.status === 'uptodate') {
+      code += "<span style=\\\"color:#69706b\\\">已是最新版本</span>";
+    }
+    code += "';}catch(e){}";
+    mainWindow.webContents.executeJavaScript(code);
+  } catch(e) {}
+}
+
+autoUpdater.on('checking-for-update', () => console.log('[更新] 检查中...'));
+autoUpdater.on('update-available', (info) => {
+  console.log('[更新] 发现 v' + info.version + '，正在下载...');
+  sendUpdateStatus({ status: 'downloading', version: info.version });
+});
+autoUpdater.on('update-not-available', () => {
+  console.log('[更新] 已是最新版本');
+  sendUpdateStatus({ status: 'uptodate' });
+});
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('[更新] v' + info.version + ' 下载完成，重启后生效');
+  sendUpdateStatus({ status: 'downloaded', version: info.version });
+});
+autoUpdater.on('error', (err) => {
+  console.error('[更新] 出错:', err.message);
+  sendUpdateStatus({ status: 'error', message: err.message });
+});
+
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 1400,
-    height: 900,
-    minWidth: 900,
-    minHeight: 600,
+  mainWindow = new BrowserWindow({
+    width: 1400, height: 900, minWidth: 900, minHeight: 600,
     title: '斯诺德跑团',
     icon: path.join(__dirname, '斯诺德跑团', 'favicon.ico'),
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true
-    }
+    webPreferences: { nodeIntegration: false, contextIsolation: true }
   });
 
   Menu.setApplicationMenu(null);
-  win.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
+  mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
 
-  // Sentry 注入 — 在 renderer 进程中初始化
-  win.webContents.on('did-finish-load', () => {
-    const sentryPath = path.join(__dirname, '斯诺德跑团', 'sentry-loader.js');
-    const fs = require('fs');
-    if (fs.existsSync(sentryPath)) {
-      win.webContents.executeJavaScript(fs.readFileSync(sentryPath, 'utf8'));
-    }
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (url.startsWith('https://doylesama114.github.io/')) return;
+    if (!url.startsWith('file://')) event.preventDefault();
   });
 
-  // 允许导航到 GitHub Pages（用户手动打开网页版）
-  win.webContents.on('will-navigate', (event, url) => {
-    if (url.startsWith('https://doylesama114.github.io/')) {
-      // 允许导航到项目网页版
-      return;
-    }
-    if (!url.startsWith('file://')) {
-      event.preventDefault();
-    }
-  });
-
-  win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https://doylesama114.github.io/')) {
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/')) {
       return { action: 'allow' };
     }
     return { action: 'deny' };
   });
 }
 
-// 自动更新事件
-autoUpdater.on('checking-for-update', () => console.log('[更新] 检查中...'));
-autoUpdater.on('update-available', () => console.log('[更新] 发现新版本，正在下载...'));
-autoUpdater.on('update-not-available', () => console.log('[更新] 已是最新版本'));
-autoUpdater.on('update-downloaded', () => {
-  console.log('[更新] 下载完成，重启后生效');
-  // 可在此处通知用户：新版本已就绪，关闭应用即可更新
-});
-autoUpdater.on('error', (err) => console.error('[更新] 出错:', err.message));
-
 app.whenReady().then(() => {
   createWindow();
-  // 启动时检查更新
   autoUpdater.checkForUpdatesAndNotify();
-  // 每4小时检查一次
   setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 4 * 60 * 60 * 1000);
 });
 
