@@ -5,6 +5,8 @@ directories:
 files:
   - main.js
   - package.json
+  - spawn_monkey_patch.js
+  - sync-check.js
   - 职业页/**/*
   - 斯诺德跑团/**/*
 win:
@@ -19,3 +21,8 @@ portable:
   unpackDirName: snowd-skill-tree
 npmRebuild: false
 nodeGypRebuild: false
+publish:
+  provider: github
+  owner: Doylesama114
+  repo: Snode-rpg
+  releaseType: release

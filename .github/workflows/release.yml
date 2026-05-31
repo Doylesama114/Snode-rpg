@@ -1,0 +1,39 @@
+name: Build and Release Electron App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Sync source files
+        run: |
+          xcopy /E /Y /I "斯诺德跑团" "electron-app\斯诺德跑团\"
+          xcopy /E /Y /I "职业页" "electron-app\职业页\"
+
+      - name: Inject Sentry
+        if: ${{ vars.SENTRY_DSN }}
+        run: |
+          $KEY = "${{ vars.SENTRY_DSN }}"
+          (Get-Content sentry-loader.js) -replace '__SENTRY_DSN__', $KEY | Set-Content electron-app\斯诺德跑团\sentry-loader.js
+          Copy-Item sentry-loader.js electron-app\职业页\sentry-loader.js
+
+      - name: Install dependencies
+        working-directory: electron-app
+        run: npm ci
+
+      - name: Build and Publish
+        working-directory: electron-app
+        run: npx electron-builder --win portable --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

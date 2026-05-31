@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject Sentry
+        if: ${{ vars.SENTRY_DSN }}
+        run: |
+          KEY="${{ vars.SENTRY_DSN }}"
+          # 在 sentry-loader.js 中替换占位符
+          sed -i "s/__SENTRY_DSN__/$KEY/g" sentry-loader.js
+          # 在所有 HTML 中注入 Sentry 脚本标签
+          find 斯诺德跑团 职业页 -name "*.html" | while read f; do
+            if ! grep -q "sentry-loader" "$f"; then
+              sed -i 's|<head>|<head>\n<script src="/sentry-loader.js" data-dsn="'$KEY'"></script>|' "$f"
+            fi
+          done
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          keep_files: false
