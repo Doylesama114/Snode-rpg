@@ -21,8 +21,3 @@ portable:
   unpackDirName: snowd-skill-tree
 npmRebuild: false
 nodeGypRebuild: false
-publish:
-  provider: github
-  owner: Doylesama114
-  repo: Snode-rpg
-  releaseType: release
