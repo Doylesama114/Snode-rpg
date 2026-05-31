@@ -19,7 +19,13 @@ jobs:
           mkdir -p _deploy
           cp -r 斯诺德跑团 _deploy/
           cp -r 职业页 _deploy/
-          cp sentry-loader.js _deploy/ 2>/dev/null || true
+          cp bug-report.js _deploy/
+          # 在所有 HTML 中注入 Bug 反馈按钮脚本
+          find _deploy -name "*.html" | while read f; do
+            if ! grep -q "bug-report.js" "$f"; then
+              sed -i "s|</body>|<script src=\"/bug-report.js\"></script>\n</body>|" "$f"
+            fi
+          done
           find _deploy -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy -name "*.bat" -delete 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
