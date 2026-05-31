@@ -23,3 +23,7 @@ nsis:
   artifactName: "斯诺德跑团-Setup-${version}.exe"
 npmRebuild: false
 nodeGypRebuild: false
+publish:
+  provider: github
+  owner: Doylesama114
+  repo: Snode-rpg
