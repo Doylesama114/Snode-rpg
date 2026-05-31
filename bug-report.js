@@ -1,9 +1,10 @@
 // 斯诺德跑团 - 全局 Bug 反馈按钮
 // 由 CI 在部署时自动注入所有 HTML 页面
 (function() {
-  if (window.location.protocol === 'file:') return; // 本地开发不显示
+  // 页面加载延迟显示，避免与页面初始化冲突
+  setTimeout(initBugReport, 800);
 
-  // 全局错误捕获 — 存到 localStorage，页面崩溃后也能找回
+  function initBugReport() {
   var ERROR_KEY = '_snowd_error_log';
   var oldOnError = window.onerror;
   window.onerror = function(msg, src, line, col, err) {
@@ -45,7 +46,6 @@
   };
 
   btn.onclick = function() {
-    // 收集上下文信息
     var ctx = [];
     ctx.push('## 环境信息');
     ctx.push('- 页面: ' + window.location.href);
@@ -53,7 +53,6 @@
     ctx.push('- 浏览器: ' + navigator.userAgent);
     ctx.push('- 时间: ' + new Date().toLocaleString('zh-CN'));
 
-    // 最近的 JS 错误
     try {
       var errLog = JSON.parse(localStorage.getItem(ERROR_KEY) || '[]');
       if (errLog.length > 0) {
@@ -66,7 +65,6 @@
       }
     } catch(e) {}
 
-    // 用户期望字段
     ctx.push('');
     ctx.push('## 问题描述');
     ctx.push('（请在此描述你遇到的问题，以及你期望的正确行为是什么）');
@@ -75,26 +73,18 @@
     ctx.push('期望的结果：');
     ctx.push('复现步骤：');
 
-    // 打开 GitHub Issue
     var title = encodeURIComponent('[Bug反馈] ' + (document.title || '未知页面'));
     var body = encodeURIComponent(ctx.join('\n'));
-    var url = 'https://github.com/Doylesama114/Snode-rpg/issues/new?title=' + title + '&body=' + body;
-    window.open(url, '_blank');
+    window.open('https://github.com/Doylesama114/Snode-rpg/issues/new?title=' + title + '&body=' + body, '_blank');
   };
 
   document.body.appendChild(btn);
 
-  // 移动端适配：避免与导航按钮重叠
-  var mediaQuery = window.matchMedia('(max-width: 600px)');
-  function adjustPosition() {
-    if (mediaQuery.matches) {
-      btn.style.bottom = '90px';
-      btn.style.right = '12px';
-      btn.style.width = '38px';
-      btn.style.height = '38px';
-      btn.style.fontSize = '17px';
-    }
+  // 移动端适配
+  var mq = window.matchMedia('(max-width: 600px)');
+  function adj() {
+    if (mq.matches) { btn.style.bottom='90px'; btn.style.right='12px'; btn.style.width='38px'; btn.style.height='38px'; btn.style.fontSize='17px'; }
   }
-  adjustPosition();
-  mediaQuery.addEventListener('change', adjustPosition);
+  adj(); mq.addEventListener('change', adj);
+  } // end initBugReport
 })();
