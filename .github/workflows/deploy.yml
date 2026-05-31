@@ -12,22 +12,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inject Sentry
-        if: ${{ vars.SENTRY_DSN }}
+      - name: Prepare deploy directory
         run: |
-          KEY="${{ vars.SENTRY_DSN }}"
-          # 在 sentry-loader.js 中替换占位符
-          sed -i "s/__SENTRY_DSN__/$KEY/g" sentry-loader.js
-          # 在所有 HTML 中注入 Sentry 脚本标签
-          find 斯诺德跑团 职业页 -name "*.html" | while read f; do
+          mkdir -p _deploy
+          # 只复制核心网页文件
+          cp -r 斯诺德跑团 _deploy/
+          cp -r 职业页 _deploy/
+          # 复制根目录共享文件
+          cp sentry-loader.js _deploy/ 2>/dev/null || true
+          cp verify_all.mjs _deploy/ 2>/dev/null || true
+          cp server.js _deploy/ 2>/dev/null || true
+          # 删除备份文件和测试文件
+          rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
+          find _deploy -name "*_backup_*" -delete 2>/dev/null || true
+          find _deploy -name "*.bat" -delete 2>/dev/null || true
+
+      - name: Inject Sentry (optional)
+        if: ${{ secrets.SENTRY_DSN != '' }}
+        env:
+          SENTRY_KEY: ${{ secrets.SENTRY_DSN }}
+        run: |
+          sed -i "s/__SENTRY_DSN__/${SENTRY_KEY}/g" _deploy/sentry-loader.js
+          find _deploy -name "*.html" | while read f; do
             if ! grep -q "sentry-loader" "$f"; then
-              sed -i 's|<head>|<head>\n<script src="/sentry-loader.js" data-dsn="'$KEY'"></script>|' "$f"
+              sed -i "s|<head>|<head>\n<script src=\"/sentry-loader.js\" data-dsn=\"${SENTRY_KEY}\"></script>|" "$f"
             fi
           done
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: _deploy
           keep_files: false
