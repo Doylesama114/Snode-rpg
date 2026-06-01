@@ -140,11 +140,37 @@ h1 { font-size: 26px; font-weight: bold; margin-bottom: 16px; padding-bottom: 10
 .trait-desc { color: #69706b; }
 .race-attr-display { font-size: 13px; color: #69706b; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
 .race-attr-display .ab { background: #f6f4ef; padding: 2px 8px; border-radius: 4px; }
+@media (max-width: 860px) {
+  .container { max-width: 100%; }
+  body { padding: 20px; }
+  h1 { font-size: 22px; }
+  .step-title { font-size: 20px; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .detail-panel { padding: 14px 18px; }
+}
 @media (max-width: 600px) {
+  .container { padding: 0; }
+  body { padding: 16px; }
+  .btn { width: 100%; }
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .attr-buy { grid-template-columns: 1fr; }
   .review-grid { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  h1 { font-size: 20px; }
+  .card-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .card { padding: 12px; gap: 4px; }
+  .card-name { font-size: 15px; }
+  .card-sub { font-size: 11px; }
+  .attr-row { padding: 8px 10px; }
+  .attr-label { font-size: 13px; }
+  .attr-btn { width: 24px; height: 24px; font-size: 14px; }
+  .attr-val { font-size: 17px; }
+  .nav-buttons { flex-direction: column; gap: 8px; }
+  .btn { font-size: 14px; padding: 10px 20px; }
+  .popup .skill-chip { font-size: 12px; padding: 6px 10px; }
 }
 </style>
 <script src="导出立绘.js"></script>

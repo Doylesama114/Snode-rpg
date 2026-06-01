@@ -287,4 +287,72 @@ body{background:#f6f4ef;color:#1f2522;font-family:Microsoft YaHei,Noto Sans SC,s
 
 .learn-toggle:hover { background:#d9854e; }
 
+/* ===== 响应式布局 ===== */
+
+@media (max-width:860px){
+  body{padding:20px;font-size:14px}
+  .section{padding:16px 20px}
+  .section-title{font-size:22px}
+  .section-body{padding:10px 12px}
+  .info-row{grid-template-columns:repeat(3,1fr)}
+  .attr-box{min-height:auto}
+  .attr-main{min-width:80px}
+  .attr-value{font-size:28px}
+  .equip-grid{grid-template-columns:repeat(2,1fr)}
+  .battle-grid{grid-template-columns:repeat(3,1fr)}
+  .learn-panel{width:480px;right:20px;bottom:80px}
+  .learn-toggle{bottom:20px;right:20px;padding:10px 20px;font-size:15px}
+  .class-row{gap:12px}
+  .class-box{min-width:auto}
+}
+
+@media (max-width:600px){
+  body{padding:16px;font-size:14px}
+  .section{padding:14px 16px}
+  .section-title{font-size:20px}
+  .info-row{grid-template-columns:repeat(2,1fr)}
+  .class-row{flex-direction:column}
+  .attr-grid{grid-template-columns:1fr}
+  .attr-main{flex-direction:row;gap:12px;padding:12px;min-width:auto}
+  .attr-value{font-size:24px}
+  .attr-name{font-size:17px}
+  .equip-grid{grid-template-columns:1fr}
+  .equip-slot{padding:12px 14px}
+  .battle-layout{flex-direction:column}
+  .battle-key{min-width:auto}
+  .battle-grid{grid-template-columns:repeat(2,1fr)}
+  .talent-grid,.sp-panel{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .talent-header-row,.talent-row,.sp-row{min-width:560px}
+  .skill-table{min-width:600px;display:block;overflow-x:auto}
+  .learn-panel{width:calc(100vw - 32px);right:16px;bottom:70px;max-height:50vh}
+  .learn-toggle{bottom:16px;right:16px;padding:8px 16px;font-size:14px}
+  .prof-list{grid-template-columns:1fr}
+  .prof-item{font-size:13px}
+  .info-item{font-size:14px;padding:8px 12px}
+  .stat-item{padding:8px 10px}
+}
+
+@media (max-width:480px){
+  body{padding:12px;font-size:13px}
+  .section{padding:10px 12px}
+  .section-title{font-size:18px}
+  .section-body{padding:8px 0}
+  .info-row{grid-template-columns:1fr}
+  .battle-grid{grid-template-columns:1fr}
+  .equip-title{font-size:16px}
+  .info-value{font-size:17px}
+  .info-label{font-size:14px}
+  .stat-value{font-size:20px}
+  .learn-panel{width:calc(100vw - 16px);right:8px;bottom:60px;padding:10px}
+  .learn-toggle{padding:6px 12px;font-size:12px}
+  .class-name{font-size:22px}
+  .attr-value{font-size:20px}
+  .attr-name{font-size:15px}
+  .talent-item{font-size:11px;min-height:28px}
+  .feat-chip{font-size:13px}
+  .equip-item{font-size:14px}
+  .trait-item{font-size:14px}
+  .trait-name{font-size:15px}
+}
+
 
