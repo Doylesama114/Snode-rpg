@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.538',
+    date: '2026-06-01',
+    changes: [
+      '更新全部md文档到v1.0.537状态'
+    ]
+  },
+
+
+  {
     version: '1.0.537',
     date: '2026-06-01',
     changes: [
