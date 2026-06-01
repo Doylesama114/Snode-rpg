@@ -97,5 +97,10 @@
     } catch(e) {}
   }
 
-  setTimeout(initBugReport, 300);
+  // 等待 DOM 就绪再初始化，避免固定 300ms 延迟在重页面时 DOM 未就绪
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBugReport);
+  } else {
+    initBugReport();
+  }
 })();
