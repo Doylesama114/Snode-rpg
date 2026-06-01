@@ -18,8 +18,11 @@ win:
   signAndEditExecutable: false
   forceCodeSigning: false
 nsis:
-  oneClick: false
-  allowToChangeInstallationDirectory: true
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  runAfterFinish: true
+  createDesktopShortcut: true
   artifactName: "Snode-RPG-Setup-${version}.${ext}"
 npmRebuild: false
 nodeGypRebuild: false

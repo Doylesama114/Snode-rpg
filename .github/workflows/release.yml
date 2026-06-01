@@ -41,3 +41,9 @@ jobs:
             electron-app/dist/*.yml
             electron-app/dist/*.blockmap
           token: ${{ secrets.GH_TOKEN }}
+
+      - name: Mirror to Gitee
+        run: |
+          curl -X POST "https://gitee.com/api/v5/repos/Doylesama114/Snode-rpg/mirror" \
+            -H "Content-Type: application/json" \
+            -d '{"access_token":"${{ secrets.GITEE_TOKEN }}"}' || echo "Gitee mirror skipped (no token)"
