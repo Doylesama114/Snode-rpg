@@ -25,12 +25,8 @@ jobs:
         working-directory: electron-app
         run: npm install
 
-      - name: Build
+      - name: Build and Publish
         working-directory: electron-app
-        run: npx electron-builder --win nsis --publish never
-
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: electron-app/dist/*
-          token: ${{ secrets.GH_TOKEN }}
+        run: npx electron-builder --win nsis --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
