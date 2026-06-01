@@ -27,7 +27,7 @@ jobs:
 
       - name: Build
         working-directory: electron-app
-        run: npx electron-builder --win nsis
+        run: npx electron-builder --win nsis --publish never
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
