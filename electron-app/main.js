@@ -134,8 +134,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
-  autoUpdater.checkForUpdatesAndNotify();
-  setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 4 * 60 * 60 * 1000);
+  // 不再自动检查更新 — 用户通过启动台手动点击"检查更新"触发
 });
 
 app.on('window-all-closed', () => app.quit());
