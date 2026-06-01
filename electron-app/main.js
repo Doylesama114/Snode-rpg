@@ -88,12 +88,12 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (url.startsWith('https://doylesama114.github.io/')) return;
+    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/') || url.startsWith('https://gitee.com/')) return;
     if (!url.startsWith('file://')) event.preventDefault();
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/')) {
+    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/') || url.startsWith('https://gitee.com/')) {
       return { action: 'allow' };
     }
     return { action: 'deny' };
