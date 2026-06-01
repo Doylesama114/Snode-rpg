@@ -31,3 +31,6 @@ tmp/
 temp/
 *.tmp
 nul
+
+# Playwright MCP traces
+.playwright-mcp/
