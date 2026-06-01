@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.553',
+    date: '2026-06-01',
+    changes: [
+      '全站移动端响应式优化:panel.css三断点适配+8个角色页移动样式+职业页微调'
+    ]
+  },
+
+
+  {
     version: '1.0.552',
     date: '2026-06-01',
     changes: [
