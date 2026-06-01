@@ -1,6 +1,6 @@
-// 斯诺德跑团 - Bug 反馈按钮 → ntfy.sh 即时推送
+// 斯诺德跑团 - Bug 反馈按钮（邮件 + Formspree 双通道）
 (function() {
-  var NTFY_TOPIC = 'snowd-bug-report';
+  var EMAIL = 'your-email@example.com';
   setTimeout(initBugReport, 800);
 
   function initBugReport() {
@@ -19,13 +19,17 @@
   btn.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);transition:all 0.2s;display:flex;align-items:center;justify-content:center;padding:0;line-height:1';
 
   btn.onclick = function() {
-    var desc = prompt('请描述问题（期望 vs 实际发生什么）：');
+    var desc = prompt('请描述问题（期望 vs 实际发生什么）：\n\n（写完后点确定会自动打开邮件客户端发送）');
     if (!desc || !desc.trim()) return;
-    var body = ['页面: '+location.href, '标题: '+document.title, '时间: '+new Date().toLocaleString('zh-CN'), '', '描述: '+desc];
-    try { var el=JSON.parse(localStorage.getItem(ERROR_KEY)||'[]'); if(el.length){ body.push('','--- 最近错误 ---'); el.slice(-3).forEach(function(e){body.push(e.time+': '+e.msg)}); } } catch(e){}
-    fetch('https://ntfy.sh/'+NTFY_TOPIC, { method:'POST', body:body.join('\n'), headers:{'Title':'🐛 Bug: '+(document.title||''),'Tags':'bug'} })
-      .then(function(){alert('✅ 已发送')}).catch(function(){alert('❌ 网络错误')});
+
+    var body = ['页面: '+location.href, '标题: '+document.title, '时间: '+new Date().toLocaleString('zh-CN'), '浏览器: '+navigator.userAgent, '', '--- 问题描述 ---', desc];
+    try { var el=JSON.parse(localStorage.getItem(ERROR_KEY)||'[]'); if(el.length){ body.push('','--- 最近JS错误 ---'); el.slice(-3).forEach(function(e){body.push(e.time+': '+e.msg);}); } } catch(e){}
+
+    var subject = encodeURIComponent('Bug: ' + (document.title||''));
+    var text = encodeURIComponent(body.join('\n'));
+    location.href = 'mailto:' + EMAIL + '?subject=' + subject + '&body=' + text;
   };
+
   document.body.appendChild(btn);
   var mq=window.matchMedia('(max-width:600px)'); function adj(){if(mq.matches){btn.style.bottom='90px';btn.style.right='12px';btn.style.width='38px';btn.style.height='38px';btn.style.fontSize='17px'}} adj(); mq.addEventListener('change',adj);
   }
