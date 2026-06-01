@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.541',
+    date: '2026-06-01',
+    changes: [
+      '修复更新静默安装(quitAndInstall改为true)',
+      '修复GitHub Pages未开启问题'
+    ]
+  },
+
+
+  {
     version: '1.0.540',
     date: '2026-06-01',
     changes: [
