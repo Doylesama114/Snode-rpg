@@ -75,6 +75,15 @@ function createWindow() {
     }
     return { action: 'deny' };
   });
+
+  // 所有页面注入 Bug 反馈按钮
+  mainWindow.webContents.on('did-finish-load', () => {
+    const brPath = path.join(__dirname, '斯诺德跑团', 'bug-report.js');
+    const fs = require('fs');
+    if (fs.existsSync(brPath)) {
+      mainWindow.webContents.executeJavaScript(fs.readFileSync(brPath, 'utf8')).catch(() => {});
+    }
+  });
 }
 
 app.whenReady().then(() => {
