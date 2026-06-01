@@ -20,6 +20,7 @@ win:
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
+  artifactName: "Snode-RPG-Setup-${version}.${ext}"
 npmRebuild: false
 nodeGypRebuild: false
 publish:
