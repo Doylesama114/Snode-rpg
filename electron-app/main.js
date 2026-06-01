@@ -29,7 +29,7 @@ autoUpdater.on('update-downloaded', (info) => {
   sendUpdateStatus({ status: 'downloaded', version: info.version });
   // 3 秒后自动重启
   setTimeout(() => {
-    autoUpdater.quitAndInstall(false, true);
+    autoUpdater.quitAndInstall(true, true);
   }, 3000);
 });
 autoUpdater.on('error', (err) => {
