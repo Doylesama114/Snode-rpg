@@ -2,6 +2,7 @@
 
 **Generated:** 2026-06-01
 **Module:** Character creation, sheet rendering, save management, xlsx export
+**Version:** v1.0.542
 
 ## OVERVIEW
 独立 RPG 角色管理系统。纯前端（HTML+JS+CSS），localStorage 持久化，零外部依赖。14 职业、8 属性、装备槽位、天赋树、技能学习、xlsx 导入导出。
@@ -79,6 +80,10 @@ node verify.mjs        # HTTP 版快速验证
 
 ## GIT
 ```
+05bd932  v1.0.542: 修复NSIS静默安装(/S处理) + GitHub Pages部署(action方式)
+15ceed2  v1.0.541: 修复静默安装 quitAndInstall(true)
+323e431  v1.0.540: 修复更新日志同步 + GitHub Pages部署
+ee5d862  v1.0.539: 安装可选目录 + 更新静默 + Cloudflare Pages镜像
 b0d148d  第四波：Playwright验证环境
 f37e670  第三波：数据提取 + 核心测试
 5c7d15e  第二波：拆分为4文件 + 导入导出

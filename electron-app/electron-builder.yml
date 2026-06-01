@@ -22,7 +22,7 @@ nsis:
   perMachine: false
   allowToChangeInstallationDirectory: true
   runAfterFinish: true
-  createDesktopShortcut: true
+  createDesktopShortcut: false
   artifactName: "Snode-RPG-Setup-${version}.${ext}"
   include: installer.nsh
 npmRebuild: false

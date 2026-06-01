@@ -2,6 +2,7 @@
 
 **Generated:** 2026-06-01
 **Module:** Class skill tree browser — search, filter, navigate
+**Version:** v1.0.542
 
 ## OVERVIEW
 RPG 职业技能索引系统。31 个独立 HTML 文件（14 基础职业 + 14 进阶 + 通用天赋树 + 通用进阶 + 首页）。每个页面自包含 HTML/CSS/JS，通过公共 `common.css` + `filter.js` 共享筛选逻辑。数据源为 docx → 文本提取 → HTML 生成管道。

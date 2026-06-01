@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.543',
+    date: '2026-06-01',
+    changes: [
+      '首次安装可自选是否创建桌面快捷方式'
+    ]
+  },
+
+
+  {
     version: '1.0.542',
     date: '2026-06-01',
     changes: [
