@@ -2,6 +2,14 @@
 var SNOWD_CHANGELOG = [
   {
   {
+    version: '1.0.528',
+    date: '2026-06-01',
+    changes: [
+      '捉虫发送按钮改用内联onclick事件修复'
+    ]
+  },
+
+  {
     version: '1.0.527',
     date: '2026-06-01',
     changes: [
