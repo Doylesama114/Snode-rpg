@@ -91,7 +91,7 @@
       var btn = document.createElement('button');
       btn.id = '_snowd_bug_btn';
       btn.textContent = '🐛';
-      btn.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);';
+      btn.style.cssText = 'position:fixed;top:50%;right:30px;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);margin-top:-22px;';
       btn.addEventListener('click', function(e) { e.stopPropagation(); showBugModal(); });
       document.body.appendChild(btn);
     } catch(e) {}
