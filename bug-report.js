@@ -1,31 +1,35 @@
-// 斯诺德跑团 - Bug 反馈 → ntfy.sh
+// 斯诺德跑团 - Bug 反馈（Electron IPC / 浏览器 XHR）
 (function() {
   function sendBug() {
     var ta = document.getElementById('_snowd_bug_text');
     if (!ta || !ta.value.trim()) return;
     var desc = ta.value.trim();
-    
+
     var lines = ['页面: '+location.href, document.title, new Date().toLocaleString('zh-CN'), '', desc];
     try {
       var el = JSON.parse(localStorage.getItem('_snowd_error_log')||'[]');
-      if (el.length) {
-        lines.push('', '--- 最近错误 ---');
-        el.slice(-3).forEach(function(x) { lines.push(x.time + ': ' + x.msg); });
-      }
+      if (el.length) { lines.push('','--- 最近错误 ---'); el.slice(-3).forEach(function(x){lines.push(x.time+': '+x.msg);}); }
     } catch(e) {}
+    var body = lines.join('\n');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://ntfy.sh/snowd-bug-report', true);
-    xhr.setRequestHeader('Title', 'Bug: ' + (document.title || ''));
-    xhr.onload = function() {
-      var ov = document.getElementById('_snowd_bug_overlay');
-      if (ov) ov.parentNode.removeChild(ov);
-      alert(xhr.status === 200 ? '✅ 已发送' : '⚠ 发送失败');
-    };
-    xhr.onerror = function() {
-      alert('❌ 网络错误，请稍后重试');
-    };
-    xhr.send(lines.join('\n'));
+    var sendBtn = document.getElementById('_snowd_bug_send');
+    if (sendBtn) { sendBtn.textContent = '发送中...'; sendBtn.disabled = true; }
+
+    function done(ok) {
+      if (sendBtn) { sendBtn.textContent = ok ? '✅ 已发送' : '❌ 失败'; sendBtn.disabled = true; }
+      setTimeout(function() { closeBug(); }, 1500);
+    }
+
+    if (window.electronAPI) {
+      window.electronAPI.sendBug(body).then(function(r) { done(r && r.ok); });
+    } else {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://ntfy.sh/snowd-bug-report', true);
+      xhr.setRequestHeader('Title', 'Bug: '+(document.title||''));
+      xhr.onload = function() { done(xhr.status === 200); };
+      xhr.onerror = function() { done(false); };
+      xhr.send(body);
+    }
   }
 
   function closeBug() {
@@ -35,10 +39,10 @@
 
   function showBugModal() {
     if (document.getElementById('_snowd_bug_overlay')) return;
-
     var ov = document.createElement('div');
     ov.id = '_snowd_bug_overlay';
     ov.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    ov.addEventListener('click', function(e) { if (e.target === ov) closeBug(); });
 
     var box = document.createElement('div');
     box.style.cssText = 'background:#fffdf8;border-radius:12px;padding:20px 24px;max-width:420px;width:90%;font-family:"Microsoft YaHei",sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
@@ -49,7 +53,7 @@
     box.appendChild(h3);
 
     var p = document.createElement('p');
-    p.style.cssText = 'font-size:13px;color:#69706b;margin:0 0 12px;line-height:1.6;';
+    p.style.cssText = 'font-size:13px;color:#69706b;margin:0 0 12px;';
     p.textContent = '请描述问题（发生了什么 vs 期望什么）';
     box.appendChild(p);
 
@@ -59,24 +63,24 @@
     ta.placeholder = '请在此描述...';
     box.appendChild(ta);
 
-    var btnRow = document.createElement('div');
-    btnRow.style.cssText = 'display:flex;gap:8px;justify-content:flex-end;margin-top:12px;';
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;justify-content:flex-end;margin-top:12px;';
 
-    var cancelBtn = document.createElement('button');
-    cancelBtn.textContent = '取消';
-    cancelBtn.style.cssText = 'padding:6px 16px;border:1px solid #d8d2c4;border-radius:6px;background:#fff;cursor:pointer;color:#1f2522;font-size:14px;';
-    cancelBtn.addEventListener('click', function(e) { e.stopPropagation(); closeBug(); });
-    btnRow.appendChild(cancelBtn);
+    var cancel = document.createElement('button');
+    cancel.textContent = '取消';
+    cancel.style.cssText = 'padding:6px 16px;border:1px solid #d8d2c4;border-radius:6px;background:#fff;cursor:pointer;color:#1f2522;font-size:14px;';
+    cancel.addEventListener('click', closeBug);
+    row.appendChild(cancel);
 
-    var sendBtn = document.createElement('button');
-    sendBtn.textContent = '发送';
-    sendBtn.style.cssText = 'padding:6px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;';
-    sendBtn.addEventListener('click', function(e) { e.stopPropagation(); sendBug(); });
-    btnRow.appendChild(sendBtn);
+    var send = document.createElement('button');
+    send.id = '_snowd_bug_send';
+    send.textContent = '发送';
+    send.style.cssText = 'padding:6px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;';
+    send.addEventListener('click', sendBug);
+    row.appendChild(send);
 
-    box.appendChild(btnRow);
+    box.appendChild(row);
     ov.appendChild(box);
-    ov.addEventListener('click', function(e) { if (e.target === ov) closeBug(); });
     document.body.appendChild(ov);
     ta.focus();
   }
@@ -84,18 +88,6 @@
   function initBugReport() {
     try {
       if (document.getElementById('_snowd_bug_btn')) return;
-      var ERROR_KEY = '_snowd_error_log';
-      if (!window._snowd_bug_err_set) {
-        window._snowd_bug_err_set = true;
-        window.onerror = function(msg, src, line) {
-          try {
-            var log = JSON.parse(localStorage.getItem(ERROR_KEY)||'[]');
-            log.push({time:new Date().toISOString(), msg:String(msg).substring(0,500), src:String(src||'').substring(0,200), line:line});
-            if (log.length>20) log=log.slice(-20);
-            localStorage.setItem(ERROR_KEY, JSON.stringify(log));
-          } catch(e) {}
-        };
-      }
       var btn = document.createElement('button');
       btn.id = '_snowd_bug_btn';
       btn.textContent = '🐛';

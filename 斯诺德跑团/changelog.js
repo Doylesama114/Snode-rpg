@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
   {
   {
+    version: '1.0.530',
+    date: '2026-06-01',
+    changes: [
+      '捉虫按钮改用IPC桥接(main进程发网络请求)',
+      '发送按钮内联反馈(替代alert)'
+    ]
+  },
+
+  {
     version: '1.0.529',
     date: '2026-06-01',
     changes: [
