@@ -71,7 +71,7 @@ Module.prototype.require = function(id) {
         const nsiFile = path.join(process.cwd(), "dist", "installer.nsi");
         const blib = path.dirname(require.resolve("app-builder-lib/package.json"));
         const nsisDir = path.join(blib, "templates", "nsis");
-        const incLine = '!addincludedir "' + nsisDir + '"\n';
+        const incLine = '!define MULTIUSER_EXECUTIONLEVEL Standard\n!addincludedir "' + nsisDir + '"\n';
         data = incLine + data;
         fs.writeFileSync(nsiFile, data, "utf8");
         const fArgs = (args || []).filter(a => a !== "-");
