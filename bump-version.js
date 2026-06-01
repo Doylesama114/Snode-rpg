@@ -57,9 +57,15 @@ if (changelogMsg) {
   const today = new Date().toISOString().split('T')[0];
   const entry = `\n  {\n    version: '${newVersion}',\n    date: '${today}',\n    changes: [\n${changes.map(c => "      '" + c + "'").join(',\n')}\n    ]\n  },\n`;
 
-  // 在第一个 { 之后插入新条目
-  const firstBrace = cl.indexOf('{');
-  cl = cl.substring(0, firstBrace + 1) + entry + cl.substring(firstBrace + 1);
+  // 在 [ 行之后插入新条目
+  const lines = cl.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].trim() === '[') {
+      lines.splice(i + 1, 0, entry);
+      break;
+    }
+  }
+  cl = lines.join('\n');
   fs.writeFileSync(clPath, cl, 'utf8');
   console.log('CHANGELOG: ' + changes.length + ' entries added');
 }

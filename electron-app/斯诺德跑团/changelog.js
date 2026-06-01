@@ -1,7 +1,6 @@
 // 斯诺德跑团 - 更新日志
 var SNOWD_CHANGELOG = [
   {
-  {
     version: '1.0.530',
     date: '2026-06-01',
     changes: [
@@ -35,6 +34,7 @@ var SNOWD_CHANGELOG = [
     ]
   },
 
+  {
     version: '1.0.520',
     date: '2026-06-01',
     changes: [
