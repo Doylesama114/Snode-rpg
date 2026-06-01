@@ -60,7 +60,7 @@ if (changelogMsg) {
   // 在 [ 行之后插入新条目
   const lines = cl.split('\n');
   for (let i = 0; i < lines.length; i++) {
-    if (lines[i].trim() === '[') {
+    if (lines[i].includes('= [')) {
       lines.splice(i + 1, 0, entry);
       break;
     }

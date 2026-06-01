@@ -1,5 +1,50 @@
 // 斯诺德跑团 - 更新日志
 var SNOWD_CHANGELOG = [
+
+  {
+    version: '1.0.536',
+    date: '2026-06-01',
+    changes: [
+      '修复bump-version.js changelog写入匹配条件(= [)'
+    ]
+  },
+
+  {
+    version: '1.0.535',
+    date: '2026-06-01',
+    changes: [
+      '修复CN镜像Gitee用户名(Doylesama114→007)'
+    ]
+  },
+  {
+    version: '1.0.534',
+    date: '2026-06-01',
+    changes: [
+      '修复CN镜像按钮被Electron拦截(白名单加gitee.com)'
+    ]
+  },
+  {
+    version: '1.0.533',
+    date: '2026-06-01',
+    changes: [
+      '修复changelog.js双括号语法错误导致按钮无响应',
+      '修复bump-version注入逻辑'
+    ]
+  },
+  {
+    version: '1.0.532',
+    date: '2026-06-01',
+    changes: [
+      '修复浏览器XHR Title头含中文报错'
+    ]
+  },
+  {
+    version: '1.0.531',
+    date: '2026-06-01',
+    changes: [
+      '修复IPC发送Bug时Title头含中文报错'
+    ]
+  },
   {
     version: '1.0.530',
     date: '2026-06-01',
