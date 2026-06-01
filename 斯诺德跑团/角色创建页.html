@@ -1425,7 +1425,7 @@ function saveCharacter(){
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
     equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},containerItems:{"背包":"","旅行腰包":"","材料包A":"","材料包B":""},
-    racial_traits:[], class_features:[], languages:(function(){var l=RACE_LANGS[CHAR.raceName]||[];if(CHAR.raceName==="翼空族"&&CHAR.wingfolkHasCommon!==false)l.push("通用语");return l.concat(CHAR.extraLanguages||[]);})(), professionals:[], talent_tree:[],
+    racial_traits:[], class_features:[], languages:(function(){var l=(RACE_LANGS[CHAR.raceName]||[]).slice();if(CHAR.raceName==="翼空族"&&CHAR.wingfolkHasCommon!==false)l.push("通用语");return l.concat(CHAR.extraLanguages||[]);})(), professionals:[], talent_tree:[],
     forbidden_skills:[], unlocked_tiers:["一阶","二阶"]
   };
   for(var i=0;i<ATTR_NAMES.length;i++){
