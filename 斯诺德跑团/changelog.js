@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.551',
+    date: '2026-06-01',
+    changes: [
+      '捉虫按钮移至页面右侧中间位置，避免与右下角按钮重叠'
+    ]
+  },
+
+
+  {
     version: '1.0.550',
     date: '2026-06-01',
     changes: [
