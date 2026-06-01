@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.540',
+    date: '2026-06-01',
+    changes: [
+      '修复更新日志停止在v1.0.535',
+      '修复GitHub Pages部署(加入index.html)',
+      '修复bump-version.js自动同步changelog.js'
+    ]
+  },
+
+
+  {
     version: '1.0.539',
     date: '2026-06-01',
     changes: [

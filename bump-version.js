@@ -68,6 +68,14 @@ if (changelogMsg) {
   cl = lines.join('\n');
   fs.writeFileSync(clPath, cl, 'utf8');
   console.log('CHANGELOG: ' + changes.length + ' entries added');
+
+  // 同步 changelog.js 到斯诺德跑团/（启动台在这里读取它）
+  const changelogSrc = path.join(ROOT, 'changelog.js');
+  for (let d of ['斯诺德跑团', 'electron-app\\斯诺德跑团']) {
+    const dest = path.join(ROOT, d, 'changelog.js');
+    fs.copyFileSync(changelogSrc, dest);
+    console.log('SYNC: changelog.js → ' + d + '/changelog.js');
+  }
 }
 
 console.log('   git add -A && git commit -m "bump: v' + newVersion + '"');

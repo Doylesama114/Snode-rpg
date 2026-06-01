@@ -20,6 +20,7 @@ jobs:
           cp -r 斯诺德跑团 _deploy/
           cp -r 职业页 _deploy/
           cp bug-report.js _deploy/
+          cp index.html _deploy/
           # 在所有 HTML 中注入 Bug 反馈按钮脚本
           find _deploy -name "*.html" | while read f; do
             if ! grep -q "bug-report.js" "$f"; then
