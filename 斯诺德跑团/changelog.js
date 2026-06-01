@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.542',
+    date: '2026-06-01',
+    changes: [
+      '修复静默安装(NSIS customInit /S)',
+      '修复GitHub Pages部署(改用actions/deploy-pages)'
+    ]
+  },
+
+
+  {
     version: '1.0.541',
     date: '2026-06-01',
     changes: [

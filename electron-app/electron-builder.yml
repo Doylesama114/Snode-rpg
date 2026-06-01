@@ -24,6 +24,7 @@ nsis:
   runAfterFinish: true
   createDesktopShortcut: true
   artifactName: "Snode-RPG-Setup-${version}.${ext}"
+  include: installer.nsh
 npmRebuild: false
 nodeGypRebuild: false
 publish:

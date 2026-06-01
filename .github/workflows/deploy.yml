@@ -7,8 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     permissions:
-      contents: write
       pages: write
       id-token: write
     steps:
@@ -32,20 +34,11 @@ jobs:
           rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/tests.html 2>/dev/null || true
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _deploy
+          path: _deploy
 
-      - name: Deploy to Gitee Pages
-        env:
-          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
-        run: |
-          cd _deploy
-          git init
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add -A
-          git commit -m "Deploy to Gitee Pages" || true
-          git push -f "https://Doylesama007:${GITEE_TOKEN}@gitee.com/Doylesama007/Snode-rpg.git" master:gitee-pages
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
