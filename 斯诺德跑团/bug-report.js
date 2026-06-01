@@ -25,7 +25,7 @@
     } else {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'https://ntfy.sh/snowd-bug-report', true);
-      xhr.setRequestHeader('Title', 'Bug: '+(document.title||''));
+      xhr.setRequestHeader('Title', 'Bug Report');
       xhr.onload = function() { done(xhr.status === 200); };
       xhr.onerror = function() { done(false); };
       xhr.send(body);
