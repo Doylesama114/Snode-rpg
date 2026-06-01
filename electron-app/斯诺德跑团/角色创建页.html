@@ -169,7 +169,7 @@ var CHAR = {
   selectedSkills: [],
   keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [],
   bgIdx: -1, bgName: "", bgData: null,
-  equipIdx: -1, equipChoice: null,
+  equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: ""
 };
 
@@ -644,7 +644,7 @@ function filterClasses(){
 }
 
 // ====== Step 1: Race ======
-var RACE_LANGS={人类:["通用语"],矮人:["通用语","矮人语"],半身人:["通用语"],侏儒:["通用语","侏儒语"],半精灵:["通用语","精灵语"],木精灵:["通用语","精灵语"],高等精灵:["通用语","精灵语"],卓尔精灵:["通用语","精灵语"],黑暗精灵:["通用语","精灵语"],龙裔:["通用语","龙语"],魔裔:["通用语","炼狱语"],兽人:["通用语","兽人语"],巨魔:["通用语","兽人语","巨人语"],地精:["通用语","地精语"],狗头人:["通用语","龙语"],蜥蜴人:["通用语","龙语"],蛙人:["通用语"],鼠人:["通用语"],狼人:["通用语"],血族:["通用语"],斑猫人:["通用语"],豹兽人:["通用语"],犬牙族:["通用语"],翼空族:["通用语"],牛头人:["通用语"],狐人:["通用语"],蛇人:["通用语"],鱼人:["鱼人语"],人鱼:["通用语","鱼人语"],龟人:["通用语"]};
+var RACE_LANGS={人类:["通用语"],矮人:["通用语","矮人语"],半身人:["通用语","半身人语"],侏儒:["通用语","侏儒语"],半精灵:["通用语","精灵语"],木精灵:["通用语","精灵语"],高等精灵:["通用语","精灵语"],卓尔精灵:["通用语","精灵语","地底通用语"],黑暗精灵:["通用语","精灵语","地底通用语"],龙裔:["通用语","龙语"],魔裔:["通用语","地狱语"],兽人:["通用语","兽人语"],巨魔:["通用语","巨魔语"],地精:["通用语","地底通用语"],狗头人:["通用语","龙语"],蜥蜴人:["通用语","龙语"],蛙人:["通用语","泽地语"],鼠人:["通用语","地底通用语"],狼人:["通用语","兽语"],血族:["通用语","深渊语"],斑猫人:["通用语","兽语"],豹兽人:["通用语","兽语"],犬牙族:["通用语","兽语"],翼空族:["鸟禽语"],牛头人:["通用语","兽语"],狐人:["通用语","兽语"],蛇人:["通用语","蛇语","荒漠语"],鱼人:["鱼人语"],人鱼:["通用语","鱼人语","海洋通用语"],龟人:["通用语","海洋通用语"]};
 function renderRaceStep(c) {
   var h="<div class='step-title'>"+STEP_LABELS[2]+"</div>";
   h+="<div class='step-desc'>选择你的种族。不同种族提供不同的属性加成和独特天赋。</div>";
@@ -682,6 +682,7 @@ function raceDetail(r){
   if(bp.length) h+="<div class='field'>属性加成：<span>"+bp.join("、")+"</span></div>";
   h+="<div class='field'>生命值加成：<span>"+(r["生命值加成"]||0)+"</span></div>";
   var _rld=RACE_LANGS[r.name];if(_rld)h+="<div class='field'>语言：<span>"+_rld.join("、")+"</span></div>";
+  if(r.name==="翼空族"){h+="<div style='padding:6px 0'><label style='cursor:pointer;font-size:14px'><input type='checkbox' id='wingfolkCommon' "+(CHAR.wingfolkHasCommon!==false?"checked":"")+" onchange='CHAR.wingfolkHasCommon=this.checked'> 同时掌握<b>通用语</b>（翼空族可选）</label></div>";}
   h+="<div class='field'>基础移动力：<span>"+(r["基础移动力"]||"?")+"</span></div>";
   h+="<div class='field'>体型：<span>"+(r["体型"]||"?")+"</span></div>";
   h+="<div class='field'>寿命：<span>"+(r["寿命"]||"?")+"</span></div>";
@@ -1017,7 +1018,7 @@ function selectBg(idx){var _rBg=function(){renderBgProfs(BACKGROUNDS[idx]);};
 }
 
 
-var ALL_LANGUAGES=["精灵语","矮人语","侏儒语","龙语","炼狱语","地精语","兽人语","巨人语","鱼人语","元素语"];
+var ALL_LANGUAGES=["精灵语","矮人语","半身人语","侏儒语","地底通用语","龙语","地狱语","深渊语","兽人语","巨魔语","泽地语","荒漠语","鸟禽语","兽语","蛇语","鱼人语","海洋通用语","元素语"];
 function parseBgLangCount(bg){var o=bg["其他"]||"";if(o.indexOf("任选两门语言")>=0)return 2;if(o.indexOf("任选一门语言")>=0)return 1;return 0;}
 function showLangPicker(bg,callback){
   var count=parseBgLangCount(bg);if(count<=0){callback([]);return;}
@@ -1424,7 +1425,7 @@ function saveCharacter(){
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
     equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},containerItems:{"背包":"","旅行腰包":"","材料包A":"","材料包B":""},
-    racial_traits:[], class_features:[], languages:(RACE_LANGS[CHAR.raceName]||["通用语"]).concat(CHAR.extraLanguages||[]), professionals:[], talent_tree:[],
+    racial_traits:[], class_features:[], languages:(function(){var l=RACE_LANGS[CHAR.raceName]||[];if(CHAR.raceName==="翼空族"&&CHAR.wingfolkHasCommon!==false)l.push("通用语");return l.concat(CHAR.extraLanguages||[]);})(), professionals:[], talent_tree:[],
     forbidden_skills:[], unlocked_tiers:["一阶","二阶"]
   };
   for(var i=0;i<ATTR_NAMES.length;i++){
