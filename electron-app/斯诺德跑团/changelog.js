@@ -69,6 +69,7 @@ function showChangelog(showLatest) {
 
   html += '<div style="text-align:center;margin-top:12px"><button id="_snowd_changelog_close" style="padding:8px 24px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px">关闭</button></div>';
   modal.innerHTML = html;
+  overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
   document.getElementById('_snowd_changelog_close').onclick = function(e) { e.stopPropagation(); overlay.remove(); };
