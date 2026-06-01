@@ -1,5 +1,55 @@
 // 斯诺德跑团 - 更新日志
 var SNOWD_CHANGELOG = [
+
+  {
+    version: '1.0.540',
+    date: '2026-06-01',
+    changes: [
+      '修复更新日志停止在v1.0.535',
+      '修复GitHub Pages部署(加入index.html)',
+      '修复bump-version.js自动同步changelog.js'
+    ]
+  },
+
+
+  {
+    version: '1.0.539',
+    date: '2026-06-01',
+    changes: [
+      '安装器可选安装目录',
+      '更新完全静默无弹窗',
+      'Cloudflare Pages国内镜像站点',
+      'index.html自动跳转启动台'
+    ]
+  },
+
+
+  {
+    version: '1.0.538',
+    date: '2026-06-01',
+    changes: [
+      '更新全部md文档到v1.0.537状态'
+    ]
+  },
+
+
+  {
+    version: '1.0.537',
+    date: '2026-06-01',
+    changes: [
+      'Gitee mirror新增上传latest.yml'
+    ]
+  },
+
+
+  {
+    version: '1.0.536',
+    date: '2026-06-01',
+    changes: [
+      '修复bump-version.js changelog写入匹配条件(= [)'
+    ]
+  },
+
   {
     version: '1.0.535',
     date: '2026-06-01',
