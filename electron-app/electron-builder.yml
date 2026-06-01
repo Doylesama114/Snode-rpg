@@ -20,7 +20,6 @@ win:
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
-  artifactName: "斯诺德跑团-Setup-${version}.exe"
 npmRebuild: false
 nodeGypRebuild: false
 publish:
