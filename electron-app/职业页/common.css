@@ -441,17 +441,5 @@
     50% { background: #ff8800; }
 }
 
-
-.search-highlight {
-    background: #ffdd00;
-    color: #000 !important;
-    padding: 0 2px;
-    border-radius: 2px;
-    animation: search-blink 0.8s ease-in-out 3;
-}
-@keyframes search-blink {
-    0%, 100% { background: #ffdd00; }
-    50% { background: #ff8800; }
-}
 .nav-anchor { display: none; }
 

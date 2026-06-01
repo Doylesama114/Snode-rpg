@@ -273,25 +273,35 @@
     renderResults(matched.slice(0, 60));
   }
 
+  function highlightText(text, terms) {
+    if (!terms || terms.length === 0) return text;
+    var result = text;
+    terms.forEach(function(t) {
+      if (!t) return;
+      var escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var regex = new RegExp('(' + escaped + ')', 'gi');
+      result = result.replace(regex, '<span class="search-highlight">$1</span>');
+    });
+    return result;
+  }
+
   function renderResults(items) {
-    var resId = 'search-results-wrap';
-    resultsDiv.innerHTML = '<div id="' + resId + '">' +
-      items.map(function(it, i) {
-        var hlName = it.skillName;
-        var hlSnippet = it.snippet;
-        return '<a class="search-result-item" href="' + it.classname + '.html#' + it.skillId + '">' +
-          '<div class="result-class">' + it.classname + '</div>' +
-          '<div class="result-name">' + hlName + '</div>' +
-          '<div class="result-meta"><span>' + it.style + '</span><span>' + it.tier + '</span></div>' +
-          '<div class="result-snippet">' + hlSnippet + '</div>' +
-        '</a>';
-      }).join('') +
-    '</div>';
-    
-    var terms = input.value.trim().split(/\s+/).filter(Boolean);
-    if (terms.length > 0) {
-      _applyHighlights(resId, terms);
+    if (items.length === 0) {
+      resultsDiv.innerHTML = '<div class="search-status">没有找到匹配的技能</div>';
+      return;
     }
+    var terms = input.value.trim().split(/\s+/).filter(Boolean);
+    resultsDiv.innerHTML = items.map(function(it) {
+      var hlName = highlightText(it.skillName, terms);
+      var hlSnippet = highlightText(it.snippet, terms);
+      var hlStyle = highlightText(it.style, terms);
+      return '<a class="search-result-item" href="' + it.classname + '.html#' + it.skillId + '">' +
+        '<div class="result-class">' + it.classname + '</div>' +
+        '<div class="result-name">' + hlName + '</div>' +
+        '<div class="result-meta"><span>' + hlStyle + '</span><span>' + it.tier + '</span></div>' +
+        '<div class="result-snippet">' + hlSnippet + '</div>' +
+      '</a>';
+    }).join('');
   }
 
   function openOverlay() {
