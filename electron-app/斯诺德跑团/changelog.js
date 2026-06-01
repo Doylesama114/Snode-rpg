@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.550',
+    date: '2026-06-01',
+    changes: [
+      '语言系统更新至18种语言:30种族映射+翼空族通用语可选',
+      '修复saveCharacter中RACE_LANGS数组变异bug'
+    ]
+  },
+
+
+  {
     version: '1.0.549',
     date: '2026-06-01',
     changes: [
