@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.546',
+    date: '2026-06-01',
+    changes: [
+      '修复魔契师51处数据错误:清理29处垃圾文本+补充22个天赋技能缺失描述'
+    ]
+  },
+
+
+  {
     version: '1.0.545',
     date: '2026-06-01',
     changes: [

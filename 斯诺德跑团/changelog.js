@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.546',
+    date: '2026-06-01',
+    changes: [
+      '修复魔契师51处数据错误:清理29处垃圾文本+补充22个天赋技能缺失描述'
+    ]
+  },
+
+
+  {
     version: '1.0.545',
     date: '2026-06-01',
     changes: [
@@ -213,10 +222,9 @@ function showChangelog(showLatest) {
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto';
   
   var modal = document.createElement('div');
-  modal.style.cssText = 'background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522;position:relative';
+  modal.style.cssText = 'background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522';
 
-  var html = '<button id="_snowd_changelog_close_top" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>';
-  html += '<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>';
+  var html = '<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>';
   html += '<div style="font-size:13px;color:#69706b;margin-bottom:16px">斯诺德跑团 · 版本历史</div>';
 
   for (var i = 0; i < SNOWD_CHANGELOG.length; i++) {
@@ -231,12 +239,11 @@ function showChangelog(showLatest) {
     html += '</div>';
   }
 
+  html += '<div style="text-align:center;margin-top:12px"><button id="_snowd_changelog_close" style="padding:8px 24px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px">关闭</button></div>';
   modal.innerHTML = html;
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
-  var closeFn = function(e) { e.stopPropagation(); overlay.remove(); };
-  var topBtn = document.getElementById('_snowd_changelog_close_top');
-  if (topBtn) topBtn.onclick = closeFn;
+  document.getElementById('_snowd_changelog_close').onclick = function(e) { e.stopPropagation(); overlay.remove(); };
   overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
 }
