@@ -1,6 +1,6 @@
 {
   "name": "snowd-skill-tree",
-  "version": "1.0.520",
+  "version": "1.0.521",
   "description": "斯诺德跑团 - RPG角色管理工具",
   "author": "snowd",
   "main": "main.js",
