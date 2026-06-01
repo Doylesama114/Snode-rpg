@@ -32,7 +32,5 @@ jobs:
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            electron-app/dist/*.exe
-            electron-app/dist/latest.yml
+          files: electron-app/dist/*
           token: ${{ secrets.GH_TOKEN }}
