@@ -67,10 +67,10 @@ function showChangelog(showLatest) {
     html += '</div>';
   }
 
-  html += '<div style="text-align:center;margin-top:12px"><button onclick="this.closest(\'div[style]\').parentNode.remove()" style="padding:8px 24px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px">关闭</button></div>';
-
+  html += '<div style="text-align:center;margin-top:12px"><button id="_snowd_changelog_close" style="padding:8px 24px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px">关闭</button></div>';
   modal.innerHTML = html;
-  overlay.appendChild(modal);
-  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
   document.body.appendChild(overlay);
+
+  document.getElementById('_snowd_changelog_close').onclick = function(e) { e.stopPropagation(); overlay.remove(); };
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
 }
