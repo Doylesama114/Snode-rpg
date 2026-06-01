@@ -1,10 +1,12 @@
-// 斯诺德跑团 - Bug 反馈按钮 → ntfy.sh 即时推送
+// 斯诺德跑团 - Bug 反馈按钮 → ntfy.sh 推送
 (function() {
   function initBugReport() {
     try {
+      if (document.getElementById('_snowd_bug_btn')) return;
       var ERROR_KEY = '_snowd_error_log';
-      if (!window._snowd_bug_error_set) {
-        window._snowd_bug_error_set = true;
+
+      if (!window._snowd_bug_err_set) {
+        window._snowd_bug_err_set = true;
         window.onerror = function(msg, src, line) {
           try {
             var log = JSON.parse(localStorage.getItem(ERROR_KEY)||'[]');
@@ -15,28 +17,51 @@
         };
       }
 
-      if (document.getElementById('_snowd_bug_btn')) return;
       var btn = document.createElement('button');
       btn.id = '_snowd_bug_btn';
       btn.textContent = '🐛'; btn.title = '反馈 Bug';
       btn.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);';
 
-      btn.onclick = function(e) {
-        e.stopPropagation();
-        var desc = window.prompt('请描述问题（发生了什么 vs 期望什么）：');
-        if (!desc || !desc.trim()) return;
-        var body = ['页面: '+location.href, document.title, new Date().toLocaleString('zh-CN'), '', desc];
-        try { var el=JSON.parse(localStorage.getItem(ERROR_KEY)||'[]'); if(el.length) { body.push('---error---'); el.slice(-3).forEach(function(x){body.push(x.time+' '+x.msg);}); } } catch(e){}
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://ntfy.sh/snowd-bug-report', true);
-        xhr.setRequestHeader('Title', 'Bug: '+(document.title||''));
-        xhr.onload = function() { alert(xhr.status===200 ? '✅ 反馈已发送' : '⚠ 发送失败'); };
-        xhr.onerror = function() { alert('❌ 网络错误'); };
-        xhr.send(body.join('\n'));
-      };
+      btn.onclick = function(e) { e.stopPropagation(); showBugModal(); };
       document.body.appendChild(btn);
-    } catch(e) { console.warn('Bug button init failed:', e); }
+    } catch(e) {}
   }
 
-  setTimeout(initBugReport, 500);
+  function showBugModal() {
+    var ov = document.createElement('div');
+    ov.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    ov.id = '_snowd_bug_overlay';
+
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fffdf8;border-radius:12px;padding:20px 24px;max-width:420px;width:90%;font-family:"Microsoft YaHei",sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
+    box.innerHTML = '<h3 style="margin:0 0 8px;color:#1f2522">🐛 反馈 Bug</h3>' +
+      '<p style="font-size:13px;color:#69706b;margin:0 0 12px">请描述问题（发生了什么 vs 期望什么）</p>' +
+      '<textarea id="_snowd_bug_text" style="width:100%;height:100px;border:1px solid #d8d2c4;border-radius:6px;padding:8px;font-size:14px;font-family:inherit;resize:vertical" placeholder="请在此描述..."></textarea>' +
+      '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">' +
+      '<button id="_snowd_bug_cancel" style="padding:6px 16px;border:1px solid #d8d2c4;border-radius:6px;background:#fff;cursor:pointer">取消</button>' +
+      '<button id="_snowd_bug_send" style="padding:6px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer">发送</button></div>';
+
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+
+    document.getElementById('_snowd_bug_cancel').onclick = function() { ov.remove(); };
+    document.getElementById('_snowd_bug_send').onclick = function() {
+      var desc = document.getElementById('_snowd_bug_text').value.trim();
+      if (!desc) { alert('请输入问题描述'); return; }
+
+      var body = ['页面: '+location.href, document.title, new Date().toLocaleString('zh-CN'), '', desc];
+      try { var el=JSON.parse(localStorage.getItem('_snowd_error_log')||'[]'); if(el.length){body.push('---error---');el.slice(-3).forEach(function(x){body.push(x.time+' '+x.msg);});} } catch(e){}
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://ntfy.sh/snowd-bug-report', true);
+      xhr.setRequestHeader('Title', 'Bug: '+(document.title||''));
+      xhr.onload = function() { ov.remove(); alert(xhr.status===200 ? '✅ 已发送' : '⚠ 发送失败'); };
+      xhr.onerror = function() { alert('❌ 网络错误'); };
+      xhr.send(body.join('\n'));
+    };
+    ov.onclick = function(e) { if (e.target === ov) ov.remove(); };
+    document.getElementById('_snowd_bug_text').focus();
+  }
+
+  setTimeout(initBugReport, 300);
 })();
