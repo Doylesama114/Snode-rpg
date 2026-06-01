@@ -2,6 +2,20 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.545',
+    date: '2026-06-01',
+    changes: [
+      '魔契师数据全面更新:4风格含秘术116技能',
+      'REF_CLASSES字段修正+key_attr→魅力',
+      'REF_SUBCLASS_REQS attrs修复',
+      '28技能费用颜色docx校正',
+      '描述/升级文本技能点颜色修正',
+      '错别字魔契约师→魔契师'
+    ]
+  },
+
+
+  {
     version: '1.0.543',
     date: '2026-06-01',
     changes: [
