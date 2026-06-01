@@ -2,6 +2,14 @@
 var SNOWD_CHANGELOG = [
   {
   {
+    version: '1.0.529',
+    date: '2026-06-01',
+    changes: [
+      '捉虫按钮完全改用createElement+addEventListener'
+    ]
+  },
+
+  {
     version: '1.0.528',
     date: '2026-06-01',
     changes: [
