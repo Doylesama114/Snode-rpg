@@ -41,3 +41,14 @@ jobs:
             electron-app/dist/*.yml
             electron-app/dist/*.blockmap
           token: ${{ secrets.GH_TOKEN }}
+
+      - name: Mirror to Gitee Release
+        shell: pwsh
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          $TAG = "${{ github.ref_name }}"
+          $EXE = Get-ChildItem electron-app/dist/*.exe | Select-Object -First 1
+          $BODY = @{ tag_name=$TAG; name=$TAG; body="自动同步自 GitHub Release"; prerelease=$false } | ConvertTo-Json
+          $REL = Invoke-RestMethod -Uri "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases" -Method Post -Headers @{Authorization="token $env:GITEE_TOKEN"} -ContentType "application/json" -Body $BODY
+          Invoke-RestMethod -Uri "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/$($REL.id)/attach_files" -Method Post -Headers @{Authorization="token $env:GITEE_TOKEN"} -Form @{file=Get-Item $EXE.FullName}
