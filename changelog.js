@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.552',
+    date: '2026-06-01',
+    changes: [
+      '新增特殊专长页面:从docx提取98项特殊专长+搜索高亮闪烁+首页入口'
+    ]
+  },
+
+
+  {
     version: '1.0.551',
     date: '2026-06-01',
     changes: [
