@@ -2,6 +2,14 @@
 var SNOWD_CHANGELOG = [
   {
   {
+    version: '1.0.531',
+    date: '2026-06-01',
+    changes: [
+      '修复IPC发送Bug时Title头含中文报错'
+    ]
+  },
+
+  {
     version: '1.0.530',
     date: '2026-06-01',
     changes: [

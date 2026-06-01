@@ -58,11 +58,11 @@ ipcMain.on('send-bug', (event, { body, channel }) => {
     port: 443,
     path: '/snowd-bug-report',
     method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain',
-      'Title': 'Bug: ' + (data.split('\n')[1] || 'Unknown'),
-      'Content-Length': Buffer.byteLength(data, 'utf8')
-    }
+      headers: {
+        'Content-Type': 'text/plain',
+        'Title': 'Bug Report',
+        'Content-Length': Buffer.byteLength(data, 'utf8')
+      }
   };
   const req = https.request(options, (res) => {
     event.sender.send(channel, { ok: res.statusCode === 200 });
