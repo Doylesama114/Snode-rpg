@@ -48,7 +48,6 @@ jobs:
   mirror-gitee:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ secrets.GITEE_TOKEN != '' }}
     steps:
       - name: Download dist artifact
         uses: actions/download-artifact@v4
