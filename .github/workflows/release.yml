@@ -27,7 +27,7 @@ jobs:
 
       - name: Build
         working-directory: electron-app
-        run: npx electron-builder --win nsis --publish never
+        run: node --require ./spawn_monkey_patch.js node_modules/electron-builder/out/cli/cli.js --win nsis --publish never
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
