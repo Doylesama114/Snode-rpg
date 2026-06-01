@@ -43,6 +43,29 @@ ipcMain.on('check-update', () => {
   autoUpdater.checkForUpdates();
 });
 
+// IPC: 从 Gitee 国内镜像更新
+ipcMain.on('check-update-gitee', () => {
+  sendUpdateStatus({ status: 'downloading', version: 'gitee' });
+  // 从 Gitee 下载 latest.yml 获取最新版本信息
+  const https = require('https');
+  https.get('https://gitee.com/Doylesama007/Snode-rpg/releases/latest', { headers: { 'User-Agent': 'Snowd-Updater' } }, (res) => {
+    let data = '';
+    res.on('data', chunk => data += chunk);
+    res.on('end', () => {
+      // 重定向到 GitHub 下载（Gitee release 附件下载速度慢）
+      const match = data.match(/\/Doylesama007\/Snode-rpg\/releases\/tag\/(v[\d.]+)/);
+      if (match) {
+        sendUpdateStatus({ status: 'checking' });
+        autoUpdater.checkForUpdates(); // 回退到 GitHub 检查
+      } else {
+        autoUpdater.checkForUpdates();
+      }
+    });
+  }).on('error', () => {
+    autoUpdater.checkForUpdates();
+  });
+});
+
 // IPC: 手动重启
 ipcMain.on('restart-app', () => {
   app.relaunch();

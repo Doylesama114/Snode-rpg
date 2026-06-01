@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.537',
+    date: '2026-06-01',
+    changes: [
+      'Gitee mirror新增上传latest.yml'
+    ]
+  },
+
+
+  {
     version: '1.0.536',
     date: '2026-06-01',
     changes: [

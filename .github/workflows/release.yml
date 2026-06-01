@@ -77,4 +77,11 @@ jobs:
             -H "Authorization: token ${{ secrets.GITEE_TOKEN }}" \
             -F "file=@$EXE"
 
+          # 上传 latest.yml
+          if [ -n "$YML" ]; then
+            curl -s -X POST "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/$REL_ID/attach_files" \
+              -H "Authorization: token ${{ secrets.GITEE_TOKEN }}" \
+              -F "file=@$YML"
+          fi
+
           echo "Gitee release created: $REL_ID"
