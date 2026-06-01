@@ -25,6 +25,9 @@ jobs:
         working-directory: electron-app
         run: npm install
 
+      - name: Install NSIS
+        run: choco install nsis -y --no-progress
+
       - name: Build
         working-directory: electron-app
         run: node --require ./spawn_monkey_patch.js node_modules/electron-builder/out/cli/cli.js --win nsis --publish never
