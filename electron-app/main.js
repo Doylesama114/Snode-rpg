@@ -49,6 +49,29 @@ ipcMain.on('restart-app', () => {
   app.exit(0);
 });
 
+// IPC: Bug 反馈（主进程发网络请求，避开 file:// 限制）
+ipcMain.on('send-bug', (event, { body, channel }) => {
+  const https = require('https');
+  const data = body;
+  const options = {
+    hostname: 'ntfy.sh',
+    port: 443,
+    path: '/snowd-bug-report',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain',
+      'Title': 'Bug: ' + (data.split('\n')[1] || 'Unknown'),
+      'Content-Length': Buffer.byteLength(data, 'utf8')
+    }
+  };
+  const req = https.request(options, (res) => {
+    event.sender.send(channel, { ok: res.statusCode === 200 });
+  });
+  req.on('error', () => { event.sender.send(channel, { ok: false }); });
+  req.write(data);
+  req.end();
+});
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
