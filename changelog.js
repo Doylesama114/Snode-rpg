@@ -1,6 +1,15 @@
 // 斯诺德跑团 - 更新日志
 var SNOWD_CHANGELOG = [
   {
+  {
+    version: '1.0.527',
+    date: '2026-06-01',
+    changes: [
+      '捉虫按钮改用弹窗替代prompt修复点击无反应',
+      '更新日志自动追加功能'
+    ]
+  },
+
     version: '1.0.520',
     date: '2026-06-01',
     changes: [

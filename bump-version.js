@@ -1,10 +1,11 @@
-// bump-version.js — 统一更新所有文件中的版本号
-// 用法: node bump-version.js 1.0.514
+// bump-version.js — 统一更新版本号 + 自动写更新日志
+// 用法: node bump-version.js 1.0.527 "修复了xxx;新增了yyy"
 const fs = require('fs');
 const path = require('path');
 
 const newVersion = process.argv[2];
-if (!newVersion) { console.error('用法: node bump-version.js 1.0.514'); process.exit(1); }
+const changelogMsg = process.argv[3] || '';
+if (!newVersion) { console.error('用法: node bump-version.js 1.0.527 "改动1;改动2;改动3"'); process.exit(1); }
 
 const ROOT = __dirname;
 
@@ -47,5 +48,21 @@ for (let d of dirs) {
 }
 
 console.log('\n✅ 版本已更新到 v' + newVersion);
+
+// 自动追加更新日志
+if (changelogMsg) {
+  const clPath = path.join(ROOT, 'changelog.js');
+  let cl = fs.readFileSync(clPath, 'utf8');
+  const changes = changelogMsg.split(';').map(s => s.trim()).filter(Boolean);
+  const today = new Date().toISOString().split('T')[0];
+  const entry = `\n  {\n    version: '${newVersion}',\n    date: '${today}',\n    changes: [\n${changes.map(c => "      '" + c + "'").join(',\n')}\n    ]\n  },\n`;
+
+  // 在第一个 { 之后插入新条目
+  const firstBrace = cl.indexOf('{');
+  cl = cl.substring(0, firstBrace + 1) + entry + cl.substring(firstBrace + 1);
+  fs.writeFileSync(clPath, cl, 'utf8');
+  console.log('CHANGELOG: ' + changes.length + ' entries added');
+}
+
 console.log('   git add -A && git commit -m "bump: v' + newVersion + '"');
 console.log('   git tag v' + newVersion + ' && git push origin master --tags');
