@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.547',
+    date: '2026-06-01',
+    changes: [
+      '更新日志关闭按钮移至弹窗右上角'
+    ]
+  },
+
+
+  {
     version: '1.0.546',
     date: '2026-06-01',
     changes: [

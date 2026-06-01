@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.547',
+    date: '2026-06-01',
+    changes: [
+      '更新日志关闭按钮移至弹窗右上角'
+    ]
+  },
+
+
+  {
     version: '1.0.546',
     date: '2026-06-01',
     changes: [
@@ -239,15 +248,11 @@ function showChangelog(showLatest) {
     html += '</div>';
   }
 
-  // 右上角关闭按钮（插入到弹窗内部标题之前）
-  html = html.replace('<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>',
-    '<button id="_clog_close" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:1" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>\n  <h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>');
-
+  html += '<div style="text-align:center;margin-top:12px"><button id="_snowd_changelog_close" style="padding:8px 24px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px">关闭</button></div>';
   modal.innerHTML = html;
-  modal.style.position = 'relative';
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
-  document.getElementById('_clog_close').onclick = function(e) { e.stopPropagation(); overlay.remove(); };
+  document.getElementById('_snowd_changelog_close').onclick = function(e) { e.stopPropagation(); overlay.remove(); };
   overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
 }
