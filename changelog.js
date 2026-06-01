@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.539',
+    date: '2026-06-01',
+    changes: [
+      '安装器可选安装目录',
+      '更新完全静默无弹窗',
+      'Cloudflare Pages国内镜像站点',
+      'index.html自动跳转启动台'
+    ]
+  },
+
+
+  {
     version: '1.0.538',
     date: '2026-06-01',
     changes: [
