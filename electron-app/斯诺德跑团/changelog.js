@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.549',
+    date: '2026-06-01',
+    changes: [
+      '首页全局搜索高亮修复(selector错配)',
+      '新增空搜索结果提示',
+      '清理common.css重复CSS',
+      'electron-app首页同步全局搜索功能',
+      '新增debug-journal.md和debug-snode skill'
+    ]
+  },
+
+
+  {
     version: '1.0.548',
     date: '2026-06-01',
     changes: [
