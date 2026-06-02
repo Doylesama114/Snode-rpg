@@ -358,7 +358,11 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   var _attrFound=0;
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
-  if(_attrFound<4){  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}
+  if(_attrFound<8){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
+  // Direct fallback for known row positions
+  if(!s.attrs["感知"]||s.attrs["感知"]===10){var _wv=parseInt(c("C87"))||0;if(_wv>0&&_wv<50)s.attrs["感知"]=_wv;}
+  if(!s.attrs["智力"]||s.attrs["智力"]===10){var _iv=parseInt(c("C62"))||0;if(_iv>0&&_iv<50)s.attrs["智力"]=_iv;}
+  if(!s.attrs["魅力"]||s.attrs["魅力"]===10){var _cv=parseInt(c("C100"))||0;if(_cv>0&&_cv<50)s.attrs["魅力"]=_cv;}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
@@ -380,7 +384,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
   // Skills: find "技能列表", scan B column below until empty
-  _r=findCell("技能列表");console.log("SKILLS FIND:",_r,"cells:",Object.keys(cells).length);if(_r){var sr=parseInt(_r.substring(1));console.log("SKILLS SCAN from row",sr);
+  _r=findCell("技能列表");if(_r){var sr=parseInt(_r.substring(1));
     var _curSkillTier="一阶";for(var sn=sr+2;sn<sr+80;sn++){var sk=c("B"+sn);
       var _otier=c("O"+sn);if(_otier&&_otier.indexOf("阶天赋树")>=0){_curSkillTier=_otier.replace(/[（(]d+[）)]/,"");}
       var _kname=c("K"+sn);if(_kname&&_kname!=="-"&&_kname!=="—"&&_kname.indexOf("阶天赋树")<0&&_kname!=="技能名称"){s.skills.push({n:_kname,tm:"",range:"",dur:"",dr:"",src:s.classes[0].name,sub:"",cost:"",locked:false,ds:"",tier:_curSkillTier||""});}
