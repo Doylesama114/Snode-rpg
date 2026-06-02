@@ -444,8 +444,11 @@ function getCurrentProfCap() {
 
 
 function autoCalcStyles(){
-  // Preserve styles from upload: skip if any class has non-empty styles
-  for(var pi=0;pi<state.classes.length;pi++){if(state.classes[pi].name&&state.classes[pi].styles&&state.classes[pi].styles[0])return;}
+  // Preserve styles from upload/xlsx: skip if any class has valid non-label styles
+  for(var pi=0;pi<state.classes.length;pi++){
+    var cs=state.classes[pi];
+    if(cs.name&&cs.styles&&cs.styles[0]&&cs.styles[0]!=="通用"&&cs.styles[0]!=="风格"&&cs.styles[0]!=="风格名")return;
+  }
 
   var sc={};for(var i=0;i<state.skills.length;i++){
 
