@@ -348,6 +348,16 @@
         .detail p { font-size:14px; }
         .detail .field { font-size:13px; }
         .choice-note { word-break: break-word; overflow-wrap: break-word; font-size:13px; margin:6px 0 6px 10px; padding:6px 10px; }
+        .nav-drawer { font-size:15px; }
+        .nav-drawer .nav-inner { padding:16px 12px 60px; }
+        .nav-drawer a { display:block; padding:10px 8px; font-size:15px; text-decoration:none; color:var(--ink); border-radius:6px; }
+        .nav-drawer a:active { background:var(--line); }
+        .nav-drawer .filter-bar { gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+        .nav-drawer .filter-tag { font-size:13px; padding:5px 10px; }
+        .nav-drawer summary { font-size:15px; padding:8px 4px; cursor:pointer; }
+        .nav-drawer details { margin-bottom:4px; }
+        .nav-drawer .style-link { font-size:16px; font-weight:bold; padding:8px 4px; }
+        .nav-drawer .skill-link { font-size:14px; padding:6px 12px; }
     }
     @media (max-width:600px) {
         .view-home h1 { font-size:26px; }

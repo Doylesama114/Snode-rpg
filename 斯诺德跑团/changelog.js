@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.558',
+    date: '2026-06-02',
+    changes: [
+      '移除首页空抽屉导航',
+      '优化移动端抽屉内链接字号与触控目标'
+    ]
+  },
+
+
+  {
     version: '1.0.557',
     date: '2026-06-02',
     changes: [
