@@ -359,13 +359,13 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   var _attrFound=0;
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
   if(_attrFound<8){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
-  // Direct fallback for known row positions
-  if(!s.attrs["感知"]||s.attrs["感知"]===10){var _wv=parseInt(c("C87"))||0;if(_wv>0&&_wv<50)s.attrs["感知"]=_wv;}
-  if(!s.attrs["智力"]||s.attrs["智力"]===10){var _iv=parseInt(c("C62"))||0;if(_iv>0&&_iv<50)s.attrs["智力"]=_iv;}
-  if(!s.attrs["魅力"]||s.attrs["魅力"]===10){var _cv=parseInt(c("C100"))||0;if(_cv>0&&_cv<50)s.attrs["魅力"]=_cv;}
+  // Direct fallback for known row positions (trigger when value looks wrong)
+  if(!s.attrs["感知"]||s.attrs["感知"]===10||s.attrs["感知"]>30){var _wv=parseInt(c("C87"))||0;if(_wv>0&&_wv<50)s.attrs["感知"]=_wv;}
+  if(!s.attrs["智力"]||s.attrs["智力"]===10||s.attrs["智力"]>30){var _iv=parseInt(c("C62"))||0;if(_iv>0&&_iv<50)s.attrs["智力"]=_iv;}
+  if(!s.attrs["魅力"]||s.attrs["魅力"]===10||s.attrs["魅力"]>30){var _cv=parseInt(c("C100"))||0;if(_cv>0&&_cv<50)s.attrs["魅力"]=_cv;}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
-  function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
+  function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"&&v!=="金币"&&v!=="银币"&&v!=="铜币"&&v!=="其他货币"&&v!=="六阶"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
   readFeat("4级",4);readFeat("8级",8);readFeat("12级",12);
   // Currency
   _r=findCell("金币");if(_r)s.currency["金币"]=adjNum(_r,1);
