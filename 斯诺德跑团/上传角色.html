@@ -683,6 +683,7 @@ var _pendingIssues=[];
 // ========== UI ==========
 
 var pendingState = null;
+window._getState = function(){return pendingState;};
 
 document.getElementById("fileInput").addEventListener("change", async function(e) {
   var file = e.target.files[0];
