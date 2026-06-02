@@ -332,23 +332,23 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
   _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));
     for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)){_usedClasses[cln]=true;s.classes[1].name=cln;s.classes[1]._rawName=_cn;break;}}
-    if(!s.classes[1].name)s.classes[1].name=findClassNameNear(_r,5);
-    if((s.classes[1]._rawName||s.classes[1].name)===(s.classes[0]._rawName||s.classes[0].name))s.classes[1].name="";
+    if((s.classes[1]._rawName||s.classes[1].name||"")===(s.classes[0]._rawName||s.classes[0].name||""))s.classes[1].name="";
     for(var ri=rr2+1;ri<=rr2+6;ri++){var _dlv2=parseInt(c("D"+ri))||0;if(_dlv2>0&&_dlv2<=20){s.classes[1].level=_dlv2;break;}}
     if(!s.classes[1].level){var _df2=parseInt(c("D"+(rr2+2)))||parseInt(c("D"+(rr2+3)))||0;if(_df2>0&&_df2<=20)s.classes[1].level=_df2;else{var _rn2=readRightNum(_r,4);if(_rn2>0&&_rn2<=20)s.classes[1].level=_rn2;}}
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
     for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)&&_cn!==(s.classes[1]._rawName||s.classes[1].name)){s.classes[2].name=cln;s.classes[2]._rawName=_cn;break;}}
-    if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
+    // No findClassNameNear fallback — it picks up subclass names above
     for(var ri=rr3+1;ri<=rr3+6;ri++){var _dlv3=parseInt(c("D"+ri))||0;if(_dlv3>0&&_dlv3<=20){s.classes[2].level=_dlv3;break;}}
     if(!s.classes[2].level){var _df3=parseInt(c("D"+(rr3+2)))||parseInt(c("D"+(rr3+3)))||0;if(_df3>0&&_df3<=20)s.classes[2].level=_df3;else{var _rn3=readRightNum(_r,4);if(_rn3>0&&_rn3<=20)s.classes[2].level=_rn3;}}
     s.classes[2].styles[0]=c("E"+(rr3+2))||c("E"+(rr3+3));}
   // Key attribute lookup from class data
   for(var ci=0;ci<3;ci++){if(s.classes[ci].name&&typeof REF_CLASSES!=="undefined"&&REF_CLASSES[s.classes[ci].name]){var ka=REF_CLASSES[s.classes[ci].name].key_attr;if(ka&&ka.indexOf("或")<0)s.classes[ci].keyAttr=ka;}}
 
-  // Story
-  s.story=scanLabel(["故事","背景故事","角色故事","人物背景","背景描述","经历","生平","个人故事"],8);
-  if(!s.story){var _sr=findCellFuzzy(["故事","背景"]);if(_sr){var _srow=parseInt(_sr.substring(1));s.story=c("G"+_srow)||c("H"+_srow)||c("F"+_srow);}}
+  // Story: read from G/H column, not label text. "故事" label is at G16, value at H16
+  s.story=readRight(findCell("故事"),3)||c("H16");
+  if(!s.story||s.story==="背景故事"){s.story=c("H16")||c("G16")||readRight(findCell("背景故事"),3);}
+  if(!s.story||s.story.indexOf("背景故事")>=0){var _hr=findCellFuzzy(["故事"]);if(_hr){var _hrr=parseInt(_hr.substring(1));for(var _hro=1;_hro<=3;_hro++){var _hv=c(String.fromCharCode(_hr.charCodeAt(0)+_hro)+_hrr);if(_hv&&_hv.indexOf("背景")<0&&_hv.length>5){s.story=_hv;break;}}}}}
   s.traits=scanLabel(["特性","个性","个性特征"],3);
   s.personality=scanLabel(["特点"],2);
   s.ideals=scanLabel(["理念","信念"],2);
@@ -407,7 +407,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     for(var tn=tr+2;tn<tr+60;tn++){var tv=c(_talentCol+tn);
       if(!tv||tv==="-")continue;
       var tt=c(_talentCol+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
-      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.indexOf("//")<0&&tv.length<20&&tv.charAt(0)!=="("&&tv.charAt(0)!=="//")s.talent_tree.push({n:tv,tier:""});
+      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.indexOf("//")<0&&tv.length<20&&tv.charAt(0)!=="("&&tv.charAt(0)!=="//")s.talent_tree.push({n:tv,tier:"一阶"});
     }
   }
 
