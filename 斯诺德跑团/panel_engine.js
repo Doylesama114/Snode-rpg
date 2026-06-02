@@ -444,7 +444,8 @@ function getCurrentProfCap() {
 
 
 function autoCalcStyles(){
-
+  // Preserve styles from upload: skip if any class has non-empty styles
+  for(var pi=0;pi<state.classes.length;pi++){if(state.classes[pi].name&&state.classes[pi].styles&&state.classes[pi].styles[0])return;}
 
   var sc={};for(var i=0;i<state.skills.length;i++){
 
@@ -476,7 +477,9 @@ function autoCalcStyles(){
 
 
 function autoCalcTalentTree(){
-  state.talent_tree=state.talent_tree||[];
+  // Preserve talents from upload: skip if talent_tree already has items with tiers
+  var _tl=state.talent_tree||[];if(_tl.length>0&&_tl[0].tier)return;
+  state.talent_tree=_tl;
   if(!state.claimed_levels){
     state.claimed_levels={};
     for(var ci=0;ci<state.classes.length;ci++){
