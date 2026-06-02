@@ -314,24 +314,31 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   var RACE_LANGS=typeof RACE_LANGS!=="undefined"?RACE_LANGS:{"血族":["通用语","炼狱语"],"龙裔":["通用语","龙语"],"矮人":["通用语","矮人语"],"精灵":["通用语","精灵语"],"半精灵":["通用语","精灵语"],"半身人":["通用语","半身人语"],"侏儒":["通用语","侏儒语"],"兽人":["通用语","兽人语"],"地精":["通用语","地精语"],"卓尔精灵":["通用语","精灵语","地底通用语"],"黑暗精灵":["通用语","精灵语","地底通用语"],"木精灵":["通用语","精灵语"],"高等精灵":["通用语","精灵语"],"魔裔":["通用语","炼狱语"],"巨魔":["通用语","巨魔语"],"狗头人":["通用语","龙语"],"蜥蜴人":["通用语","龙语"],"蛙人":["通用语"],"鼠人":["通用语"],"狼人":["通用语"],"翼空族":["鸟禽语"],"牛头人":["通用语"],"狐人":["通用语"],"蛇人":["通用语"],"鱼人":["通用语","鱼人语"],"人鱼":["通用语","鱼人语","海洋通用语"],"龟人":["通用语"],"斑猫人":["通用语"],"豹兽人":["通用语"],"犬牙族":["通用语"],"公民":["通用语"],"士兵":["通用语"],"水手":["通用语"],"流浪儿":["通用语"],"外乡人":["通用语"]};
   var _rl=RACE_LANGS&&RACE_LANGS[s.race];if(_rl){for(var _li=0;_li<_rl.length;_li++){if(s.languages.indexOf(_rl[_li])<0)s.languages.push(_rl[_li]);}}
   _r=findCellFuzzy(["当前经验值","经验值","XP"]);if(_r)s.xp=readRightNum(_r,2);
+  // Background: scan wider (up to column H) to find background value in G15
+  s.background=scanLabel(["个性背景"],8)||scanLabel(["背景"],8);
+  if(!s.background){var _bgc=c("G15");if(_bgc&&_bgc.indexOf("故事")<0)s.background=_bgc;}
+  // SP (skill points) color text: parse single chars from U51
+  var _spText=c("U51")||c("U25");
+  if(_spText){var _spMap={"橙":"橙色","白":"白色","紫":"紫色","黄":"黄色","无":"无色","蓝":"蓝色","青":"青色","黑":"黑色","红":"红色","棕":"棕色","粉":"粉色","绿":"绿色","浅":"浅色","炫":"炫彩"};
+  for(var _si=0;_si<_spText.length;_si++){var _sc=_spText[_si];var _cnm=_spMap[_sc];if(_cnm)s.sp[_cnm]=(s.sp[_cnm]||0)+1;}}
 
   // Class info: find header, scan below for name+level, deduplicate
   var _usedClasses={};
   _r=findCellFuzzy(["主职业","职业"]);if(_r){var rr=parseInt(_r.substring(1));
-    for(var ri=rr+1;ri<=rr+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&!_usedClasses[cln]){_usedClasses[cln]=true;s.classes[0].name=cln;break;}}
+    for(var ri=rr+1;ri<=rr+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&!_usedClasses[cln]){_usedClasses[cln]=true;s.classes[0].name=cln;s.classes[0]._rawName=_cn;break;}}
     if(!s.classes[0].name)s.classes[0].name=findClassNameNear(_r,5);
     for(var ri=rr+1;ri<=rr+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[0].level=lv;break;}}
     if(!s.classes[0].level)s.classes[0].level=cn("D"+(rr+2))||cn("D"+(rr+3))||readRightNum(_r,4);
     s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
   _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));
-    for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&cln!==s.classes[0].name){_usedClasses[cln]=true;s.classes[1].name=cln;break;}}
+    for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)){_usedClasses[cln]=true;s.classes[1].name=cln;s.classes[1]._rawName=_cn;break;}}
     if(!s.classes[1].name)s.classes[1].name=findClassNameNear(_r,5);
-    if(s.classes[1].name===s.classes[0].name)s.classes[1].name="";
+    if((s.classes[1]._rawName||s.classes[1].name)===(s.classes[0]._rawName||s.classes[0].name))s.classes[1].name="";
     for(var ri=rr2+1;ri<=rr2+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[1].level=lv;break;}}
     if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
-    for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&cln!==s.classes[0].name&&cln!==s.classes[1].name){s.classes[2].name=cln;break;}}
+    for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)&&_cn!==(s.classes[1]._rawName||s.classes[1].name)){s.classes[2].name=cln;s.classes[2]._rawName=_cn;break;}}
     if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
     for(var ri=rr3+1;ri<=rr3+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[2].level=lv;break;}}
     if(!s.classes[2].level)s.classes[2].level=cn("D"+(rr3+2))||cn("D"+(rr3+3))||readRightNum(_r,4);
@@ -360,6 +367,8 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   _r=findCell("金币");if(_r)s.currency["金币"]=adjNum(_r,1);
   _r=findCell("银币");if(_r)s.currency["银币"]=adjNum(_r,1);
   _r=findCell("铜币");if(_r)s.currency["铜币"]=adjNum(_r,1);
+  // Equipment: scan K column rows 46-55 for items
+  for(var _er=46;_er<=55;_er++){var _ek=c("K"+_er);if(_ek&&_ek!=="名称"&&_ek!=="效果"&&_ek.indexOf("名称")<0){if(!s.equipment["背包"])s.equipment["背包"]=[];s.equipment["背包"].push(_ek);}}
 
   // sub-class skills helper
   function readSubSkills(label,nameCount){
@@ -382,13 +391,13 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
 
-  // Talent scanner for alien templates
+  // Talent scanner for alien templates (B, O, and R columns)
   var _rt=findCellFuzzy(["天赋列表","天赋树","天赋"]);if(_rt){
     var tr=parseInt(_rt.substring(1));
-    for(var tn=tr+2;tn<tr+60;tn++){var tv=c("B"+tn);
-      if(!tv||tv==="-"||tv.indexOf("技能列表")>=0)break;
-      var tt=c("O"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
-      if(tv&&tv!=="-"&&tv.indexOf("技能")<0)s.talent_tree.push({n:tv,tier:""});
+    for(var tn=tr+2;tn<tr+60;tn++){var tv=c("B"+tn)||c("R"+tn)||c("O"+tn);
+      if(!tv||tv==="-"||tv.indexOf("技能列表")>=0){var _tEmpty=c("B"+tn)||c("R"+tn)||c("O"+tn);if(!_tEmpty)break;}
+      var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
+      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0)s.talent_tree.push({n:tv,tier:""});
     }
   }
 
@@ -407,7 +416,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
       var _pn=_pList[_pi];
       var _saveEval=c("E"+_prow);if(_saveEval==="豁免"){var _saveVal=parseInt(c("G"+_prow))||0;if(_saveVal>0){if(!s.profs[_pa])s.profs[_pa]={};s.profs[_pa]["豁免"]=_saveVal;}}
     for(var _prr=_prow+1;_prr<_prow+30;_prr++){var _eval=c("E"+_prr);
-        if(_pa==="力量"){var _keys=Object.keys(cells).filter(function(k){var r=parseInt(k.substring(1));return r>=36&&r<=45;}).sort();console.log("E37="+c("E37")+" G37="+c("G37"));}
+        if(_pa==="力量"){var _keys=Object.keys(cells).filter(function(k){var r=parseInt(k.substring(1));return r>=36&&r<=45;}).sort();}
         if(!_eval||_eval===_pa||_profDefs[_eval])break;
         if(_eval===_pn||_eval.indexOf(_pn)>=0){
           var _pval=parseInt(c("G"+_prr))||0;
@@ -725,7 +734,6 @@ document.getElementById("fileInput").addEventListener("change", async function(e
   var _missingFields=validateRequired(pendingState);
   if(_missingFields.length>0){
     alert("上传失败！缺少必须字段: "+_missingFields.join(", "));
-    alert(_msg);
     statusEl.style.display="none";
     return;
   } var validation=validateState(pendingState); _pendingIssues=validation.issues;_lastCorrections=_corr; showXP_SP_Picker(pendingState,function(_xpsp){ pendingState.xp=_xpsp.xp; pendingState.sp=_xpsp.sp;
