@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.559',
+    date: '2026-06-02',
+    changes: [
+      '修复移动端导航栏挤压内容bug(选择器从.class-view.active改为全局main/nav)',
+      '移动端抽屉重设计(集成搜索+筛选+全新触控UI+左滑动画)'
+    ]
+  },
+
+
+  {
     version: '1.0.558',
     date: '2026-06-02',
     changes: [

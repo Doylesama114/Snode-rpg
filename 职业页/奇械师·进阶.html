@@ -1218,15 +1218,36 @@
 <div class="nav-overlay" id="nav-overlay"></div>
 <div class="nav-drawer" id="nav-drawer"><div class="nav-drawer-close"><button id="nav-drawer-close-btn">✕</button></div></div>
 
-<script>
+﻿<script>
 (function(){
 var t=document.getElementById("nav-toggle-btn"),o=document.getElementById("nav-overlay"),d=document.getElementById("nav-drawer");
 if(!t||!o||!d)return;
-var n=document.createElement("div");n.className="nav-inner";d.appendChild(n);
-function p(){var v=document.querySelector("nav");if(v)n.innerHTML=v.innerHTML;}
-t.onclick=function(){p();d.classList.add("open");o.classList.add("show");};
+var inner=document.createElement("div");inner.className="nav-inner";d.appendChild(inner);
+function build(){
+  inner.innerHTML="";
+  var h=document.querySelector("header");
+  var si=h?h.querySelector('input[type="search"]'):null;
+  if(si){
+    var sc=si.cloneNode(true);sc.id="drawer-search";sc.placeholder="搜索技能、关键词...";
+    sc.addEventListener("input",function(){si.value=this.value;si.dispatchEvent(new Event("input",{bubbles:true}));});
+    sc.addEventListener("keydown",function(e){if(e.key==="Enter"){d.classList.remove("open");o.classList.remove("show");}});
+    inner.appendChild(sc);
+  }
+  var fb=document.querySelector("nav .filter-bar");
+  if(fb){var fc=fb.cloneNode(true);fc.querySelectorAll(".filter-tag .remove").forEach(function(b){b.onclick=function(){var kw=this.parentElement.textContent.replace("×","").trim();var orig=fb.querySelector(".filter-tag");if(orig)orig.querySelector(".remove").click();};});fc.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var orig=fb.querySelector('.chip[data-kw="'+c.getAttribute("data-kw")+'"]');if(orig)orig.click();else{var orig2=fb.querySelector(".chip");if(orig2&&c.textContent===orig2.textContent)orig2.click();}};});inner.appendChild(fc);}
+  var nav=document.querySelector("nav .nav-inner");
+  if(nav){
+    var nc=document.createElement("div");
+    nc.innerHTML=nav.innerHTML;
+    nc.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){setTimeout(function(){d.classList.remove("open");o.classList.remove("show");},150);});});
+    inner.appendChild(nc);
+  }
+}
+t.onclick=function(){build();d.classList.add("open");o.classList.add("show");};
 o.onclick=function(){d.classList.remove("open");o.classList.remove("show");};
 document.getElementById("nav-drawer-close-btn").onclick=o.onclick;
+window.addEventListener("resize",function(){if(window.innerWidth>860){d.classList.remove("open");o.classList.remove("show");}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList.remove("open");o.classList.remove("show");}});
 })();
 </script>
 </body>
