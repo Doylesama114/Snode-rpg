@@ -310,7 +310,8 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.hp=scanLabelNum(["生命值","HP","血量"],2);
   s.fp=scanLabelNum(["疲劳值","FP","疲劳"],2);
   _r=findCellFuzzy(["语言","语言列表"]);var ls=readRight(_r,2);if(ls)s.languages=ls.split(/[,，/、]/).map(function(l){return l.trim();}).filter(function(l){return l;});
-  // Auto-fill race languages
+  // Auto-fill race languages (define RACE_LANGS inline if not loaded)
+  var RACE_LANGS=typeof RACE_LANGS!=="undefined"?RACE_LANGS:{"血族":["通用语","炼狱语"],"龙裔":["通用语","龙语"],"矮人":["通用语","矮人语"],"精灵":["通用语","精灵语"],"半精灵":["通用语","精灵语"],"半身人":["通用语","半身人语"],"侏儒":["通用语","侏儒语"],"兽人":["通用语","兽人语"],"地精":["通用语","地精语"],"卓尔精灵":["通用语","精灵语","地底通用语"],"黑暗精灵":["通用语","精灵语","地底通用语"],"木精灵":["通用语","精灵语"],"高等精灵":["通用语","精灵语"],"魔裔":["通用语","炼狱语"],"巨魔":["通用语","巨魔语"],"狗头人":["通用语","龙语"],"蜥蜴人":["通用语","龙语"],"蛙人":["通用语"],"鼠人":["通用语"],"狼人":["通用语"],"翼空族":["鸟禽语"],"牛头人":["通用语"],"狐人":["通用语"],"蛇人":["通用语"],"鱼人":["通用语","鱼人语"],"人鱼":["通用语","鱼人语","海洋通用语"],"龟人":["通用语"],"斑猫人":["通用语"],"豹兽人":["通用语"],"犬牙族":["通用语"],"公民":["通用语"],"士兵":["通用语"],"水手":["通用语"],"流浪儿":["通用语"],"外乡人":["通用语"]};
   var _rl=RACE_LANGS&&RACE_LANGS[s.race];if(_rl){for(var _li=0;_li<_rl.length;_li++){if(s.languages.indexOf(_rl[_li])<0)s.languages.push(_rl[_li]);}}
   _r=findCellFuzzy(["当前经验值","经验值","XP"]);if(_r)s.xp=readRightNum(_r,2);
 
@@ -323,13 +324,16 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     if(!s.classes[0].level)s.classes[0].level=cn("D"+(rr+2))||cn("D"+(rr+3))||readRightNum(_r,4);
     s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
   _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));
-    for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&!_usedClasses[cln]){_usedClasses[cln]=true;s.classes[1].name=cln;break;}}
+    for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&cln!==s.classes[0].name){_usedClasses[cln]=true;s.classes[1].name=cln;break;}}
     if(!s.classes[1].name)s.classes[1].name=findClassNameNear(_r,5);
+    if(s.classes[1].name===s.classes[0].name)s.classes[1].name="";
     for(var ri=rr2+1;ri<=rr2+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[1].level=lv;break;}}
     if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
+    if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
+    s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
-    for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&!_usedClasses[cln]){_usedClasses[cln]=true;s.classes[2].name=cln;break;}}
+    for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&cln!==s.classes[0].name&&cln!==s.classes[1].name){s.classes[2].name=cln;break;}}
     if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
     for(var ri=rr3+1;ri<=rr3+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[2].level=lv;break;}}
     if(!s.classes[2].level)s.classes[2].level=cn("D"+(rr3+2))||cn("D"+(rr3+3))||readRightNum(_r,4);
