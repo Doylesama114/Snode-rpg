@@ -327,21 +327,21 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   _r=findCellFuzzy(["主职业","职业"]);if(_r){var rr=parseInt(_r.substring(1));
     for(var ri=rr+1;ri<=rr+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&!_usedClasses[cln]){_usedClasses[cln]=true;s.classes[0].name=cln;s.classes[0]._rawName=_cn;break;}}
     if(!s.classes[0].name)s.classes[0].name=findClassNameNear(_r,5);
-    for(var ri=rr+1;ri<=rr+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[0].level=lv;break;}}
-    if(!s.classes[0].level)s.classes[0].level=cn("D"+(rr+2))||cn("D"+(rr+3))||readRightNum(_r,4);
+    for(var ri=rr+1;ri<=rr+6;ri++){var _dlv=parseInt(c("D"+ri))||0;if(_dlv>0&&_dlv<=20){s.classes[0].level=_dlv;break;}}
+    if(!s.classes[0].level){var _df=parseInt(c("D"+(rr+2)))||parseInt(c("D"+(rr+3)))||0;if(_df>0&&_df<=20)s.classes[0].level=_df;else{var _rn=readRightNum(_r,4);if(_rn>0&&_rn<=20)s.classes[0].level=_rn;}}
     s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
   _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));
     for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)){_usedClasses[cln]=true;s.classes[1].name=cln;s.classes[1]._rawName=_cn;break;}}
     if(!s.classes[1].name)s.classes[1].name=findClassNameNear(_r,5);
     if((s.classes[1]._rawName||s.classes[1].name)===(s.classes[0]._rawName||s.classes[0].name))s.classes[1].name="";
-    for(var ri=rr2+1;ri<=rr2+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[1].level=lv;break;}}
-    if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
+    for(var ri=rr2+1;ri<=rr2+6;ri++){var _dlv2=parseInt(c("D"+ri))||0;if(_dlv2>0&&_dlv2<=20){s.classes[1].level=_dlv2;break;}}
+    if(!s.classes[1].level){var _df2=parseInt(c("D"+(rr2+2)))||parseInt(c("D"+(rr2+3)))||0;if(_df2>0&&_df2<=20)s.classes[1].level=_df2;else{var _rn2=readRightNum(_r,4);if(_rn2>0&&_rn2<=20)s.classes[1].level=_rn2;}}
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
     for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&_cn!==(s.classes[0]._rawName||s.classes[0].name)&&_cn!==(s.classes[1]._rawName||s.classes[1].name)){s.classes[2].name=cln;s.classes[2]._rawName=_cn;break;}}
     if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
-    for(var ri=rr3+1;ri<=rr3+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[2].level=lv;break;}}
-    if(!s.classes[2].level)s.classes[2].level=cn("D"+(rr3+2))||cn("D"+(rr3+3))||readRightNum(_r,4);
+    for(var ri=rr3+1;ri<=rr3+6;ri++){var _dlv3=parseInt(c("D"+ri))||0;if(_dlv3>0&&_dlv3<=20){s.classes[2].level=_dlv3;break;}}
+    if(!s.classes[2].level){var _df3=parseInt(c("D"+(rr3+2)))||parseInt(c("D"+(rr3+3)))||0;if(_df3>0&&_df3<=20)s.classes[2].level=_df3;else{var _rn3=readRightNum(_r,4);if(_rn3>0&&_rn3<=20)s.classes[2].level=_rn3;}}
     s.classes[2].styles[0]=c("E"+(rr3+2))||c("E"+(rr3+3));}
   // Key attribute lookup from class data
   for(var ci=0;ci<3;ci++){if(s.classes[ci].name&&typeof REF_CLASSES!=="undefined"&&REF_CLASSES[s.classes[ci].name]){var ka=REF_CLASSES[s.classes[ci].name].key_attr;if(ka&&ka.indexOf("或")<0)s.classes[ci].keyAttr=ka;}}
@@ -355,9 +355,9 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.bonds=scanLabel(["羁绊"],2);
   s.flaws=scanLabel(["缺陷"],2);
 
-  // Attributes: vertical scan, then horizontal fallback for ANY missing
+  // Attributes: scan with value range check (1-50) to reject garbage indices
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
-  for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
+  for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
   var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0)s.attrs[hk]=ha[hk];}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
@@ -391,13 +391,13 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
 
-  // Talent scanner for alien templates (B, O, and R columns)
+  // Talent scanner (O and R columns only — B column has skill names, not talents)
   var _rt=findCellFuzzy(["天赋列表","天赋树","天赋"]);if(_rt){
     var tr=parseInt(_rt.substring(1));
-    for(var tn=tr+2;tn<tr+60;tn++){var tv=c("B"+tn)||c("R"+tn)||c("O"+tn);
-      if(!tv||tv==="-"||tv.indexOf("技能列表")>=0){var _tEmpty=c("B"+tn)||c("R"+tn)||c("O"+tn);if(!_tEmpty)break;}
+    for(var tn=tr+2;tn<tr+60;tn++){var tv=c("O"+tn)||c("R"+tn);
+      if(!tv||tv==="-"||tv.indexOf("技能列表")>=0){if(!c("O"+tn)&&!c("R"+tn))break;}
       var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
-      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0)s.talent_tree.push({n:tv,tier:""});
+      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0)s.talent_tree.push({n:tv,tier:""});
     }
   }
 
@@ -583,13 +583,14 @@ function showXP_SP_Picker(state,callback){
   var overlay=document.createElement("div");overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");box.style.cssText="background:#fffdf8;border-radius:10px;padding:20px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
   var h="<h3 style=margin-bottom:4px>当前经验值与技能点</h3><p style=font-size:13px;color:#69706b;margin-bottom:12px>请手动输入角色当前的经验值和各色技能点</p>";
-  h+="<div style=margin-bottom:10px><label style=font-size:14px>经验值 (XP)</label><br><input id=xpInput type=number value=0 min=0 style=width:100%;padding:6px;border:1px solid #d8d2c4;border-radius:4px;font-size:14px></div>";
+  h+="<div style=margin-bottom:10px><label style=font-size:14px>经验值 (XP)</label><br><input id=xpInput type=number value="+(state.xp||0)+" min=0 style=width:100%;padding:6px;border:1px solid #d8d2c4;border-radius:4px;font-size:14px></div>";
   h+="<div style=display:grid;grid-template-columns:repeat(4,1fr);gap:6px>";
   var _spColors=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","浅色","炫彩"];
   var _spHexes=["#EE822F","#FFFFFF","#B94BFF","#FFF32F","#D9D9D9","#00B0F0","#00FA99","#595959","#FF0000","#843F0B","#FFB7E3","#00B050","#B3F9FF","linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)"];
   for(var _si=0;_si<_spColors.length;_si++){
     var _sc=_spColors[_si];var _sh=_spHexes[_si];var _isL=["#FFFFFF","#FFF32F","#B3F9FF","#00FA99","#D9D9D9","#FFB7E3"].indexOf(_sh)>=0;
-    h+="<div style=display:flex;align-items:center;gap:4px;padding:4px;border-radius:4px;background:"+_sh+";color:"+(_isL?"#1f2522":"#fff")+"><span style=font-size:12px;min-width:28px>"+_sc+"</span><input id=sp_"+_sc+" type=number value=0 min=0 style=width:40px;padding:2px;border:1px solid #ccc;border-radius:3px;font-size:12px;text-align:center></div>";
+    var _spv=state.sp?state.sp[_sc]||0:0;
+    h+="<div style=display:flex;align-items:center;gap:4px;padding:4px;border-radius:4px;background:"+_sh+";color:"+(_isL?"#1f2522":"#fff")+"><span style=font-size:12px;min-width:28px>"+_sc+"</span><input id=sp_"+_sc+" type=number value="+_spv+" min=0 style=width:40px;padding:2px;border:1px solid #ccc;border-radius:3px;font-size:12px;text-align:center></div>";
   }
   h+="</div><div style=margin-top:14px;display:flex;gap:8px;justify-content:flex-end";
   
@@ -600,7 +601,7 @@ function showXP_SP_Picker(state,callback){
   document.getElementById("xpSpConfirmBtn").onclick=function(){
     var _xp=parseInt(document.getElementById("xpInput").value)||0;
     var _sp={};
-    for(var _si=0;_si<_spColors.length;_si++){_sp[_spColors[_si]]=parseInt(document.getElementById("sp_"+_spColors[_si]).value)||0;}
+    for(var _si=0;_si<_spColors.length;_si++){var _pv=parseInt(document.getElementById("sp_"+_spColors[_si]).value)||0;if(_pv>0)_sp[_spColors[_si]]=_pv;}
     overlay.remove();callback({xp:_xp,sp:_sp});
   };
 }
@@ -718,7 +719,7 @@ document.getElementById("fileInput").addEventListener("change", async function(e
       var _missingFields=validateRequired(pendingState);
       if(_missingFields.length>0){alert("上传失败！缺少必须字段: "+_missingFields.join(", ")); statusEl.style.display="none"; return;}
       showXP_SP_Picker(pendingState,function(_xpsp){
-        pendingState.xp=_xpsp.xp; pendingState.sp=_xpsp.sp;
+        pendingState.xp=_xpsp.xp; for(var _spk in _xpsp.sp){pendingState.sp[_spk]=_xpsp.sp[_spk];}
         if(!pendingState.background){ showBgPicker(pendingState,function(bg){
           pendingState.background=bg; if(!pendingState.traits&&_REF_BG_TRAITS[bg])pendingState.traits=_REF_BG_TRAITS[bg];
           pendingState.hp=0;pendingState.fp=0;
@@ -736,7 +737,7 @@ document.getElementById("fileInput").addEventListener("change", async function(e
     alert("上传失败！缺少必须字段: "+_missingFields.join(", "));
     statusEl.style.display="none";
     return;
-  } var validation=validateState(pendingState); _pendingIssues=validation.issues;_lastCorrections=_corr; showXP_SP_Picker(pendingState,function(_xpsp){ pendingState.xp=_xpsp.xp; pendingState.sp=_xpsp.sp;
+  } var validation=validateState(pendingState); _pendingIssues=validation.issues;_lastCorrections=_corr; showXP_SP_Picker(pendingState,function(_xpsp){ pendingState.xp=_xpsp.xp; for(var _spk in _xpsp.sp){pendingState.sp[_spk]=_xpsp.sp[_spk];}
   if(!pendingState.background){ showBgPicker(pendingState,function(bg){ pendingState.background=bg; if(!pendingState.traits&&_REF_BG_TRAITS[bg])pendingState.traits=_REF_BG_TRAITS[bg]; pendingState.hp=0;pendingState.fp=0; var v2=validateState(pendingState); _pendingIssues=v2.issues; if(v2.suggestions.length>0||v2.issues.length>0){ showConfirmDialog(v2); } else { showPreview(pendingState,parsed); } }); statusEl.style.display="none"; return; }
   var v3=validateState(pendingState); _pendingIssues=v3.issues;
   if(v3.suggestions.length>0||v3.issues.length>0){ showConfirmDialog(v3); } else { showPreview(pendingState,parsed); }
