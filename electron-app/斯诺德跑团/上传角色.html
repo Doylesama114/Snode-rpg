@@ -380,7 +380,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
   // Skills: find "技能列表", scan B column below until empty
-  _r=findCell("技能列表");if(_r){var sr=parseInt(_r.substring(1));
+  _r=findCell("技能列表");console.log("SKILLS FIND:",_r,"cells:",Object.keys(cells).length);if(_r){var sr=parseInt(_r.substring(1));console.log("SKILLS SCAN from row",sr);
     var _curSkillTier="一阶";for(var sn=sr+2;sn<sr+80;sn++){var sk=c("B"+sn);
       var _otier=c("O"+sn);if(_otier&&_otier.indexOf("阶天赋树")>=0){_curSkillTier=_otier.replace(/[（(]d+[）)]/,"");}
       var _kname=c("K"+sn);if(_kname&&_kname!=="-"&&_kname!=="—"&&_kname.indexOf("阶天赋树")<0&&_kname!=="技能名称"){s.skills.push({n:_kname,tm:"",range:"",dur:"",dr:"",src:s.classes[0].name,sub:"",cost:"",locked:false,ds:"",tier:_curSkillTier||""});}
