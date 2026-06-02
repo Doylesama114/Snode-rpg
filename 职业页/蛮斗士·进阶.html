@@ -1158,5 +1158,20 @@
 
 </script>
 
+<button class="nav-toggle" id="nav-toggle-btn" aria-label="打开目录">☰</button>
+<div class="nav-overlay" id="nav-overlay"></div>
+<div class="nav-drawer" id="nav-drawer"><div class="nav-drawer-close"><button id="nav-drawer-close-btn">✕</button></div></div>
+
+<script>
+(function(){
+var t=document.getElementById("nav-toggle-btn"),o=document.getElementById("nav-overlay"),d=document.getElementById("nav-drawer");
+if(!t||!o||!d)return;
+var n=document.createElement("div");n.className="nav-inner";d.appendChild(n);
+function p(){var v=document.querySelector("nav");if(v)n.innerHTML=v.innerHTML;}
+t.onclick=function(){p();d.classList.add("open");o.classList.add("show");};
+o.onclick=function(){d.classList.remove("open");o.classList.remove("show");};
+document.getElementById("nav-drawer-close-btn").onclick=o.onclick;
+})();
+</script>
 </body>
 </html>
