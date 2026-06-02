@@ -355,10 +355,11 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.bonds=scanLabel(["羁绊"],2);
   s.flaws=scanLabel(["缺陷"],2);
 
-  // Attributes: scan with value range check (1-50) to reject garbage indices
+  // Attributes: scan with value range check (1-50)
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
-  for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
-  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}
+  var _attrFound=0;
+  for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
+  if(_attrFound<4){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
