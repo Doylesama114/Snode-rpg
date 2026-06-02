@@ -473,6 +473,7 @@ function autoCalcStyles(){
     if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]});
 
 
+    if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]}).filter(function(s){return s!=="通用";});
     for(var i=0;i<4;i++)state.classes[ci].styles[i]=st[i]||'';}}}
 
 

@@ -481,7 +481,7 @@ function autoCalcStyles(state){
   }
   for(var ci=0;ci<state.classes.length;ci++){
     if(sc[ci]){
-      var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]});
+      var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]}).filter(function(s){return s!=="通用";});
       for(var i=0;i<4;i++)state.classes[ci].styles[i]=st[i]||"";
     }
   }
