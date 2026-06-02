@@ -689,8 +689,7 @@ function renderRaceStep(c) {
     var _rcl=RACE_LANGS[r.name];if(_rcl)h+="<div class=card-sub style=color:#5a7a5a>"+_rcl.join(" / ")+"</div>";
     if(r["特性"]){
       h+="<div class='tags'>";
-      for(var ti=0;ti<Math.min(2,r["特性"].length);ti++) h+="<span class='tag'>"+r["特性"][ti].name+"</span>";
-      if(r["特性"].length>2) h+="<span class='tag'>+"+(r["特性"].length-2)+"</span>";
+      for(var ti=0;ti<r["特性"].length;ti++) h+="<span class='tag'>"+r["特性"][ti].name+"</span>";
       h+="</div>";
     }
     h+="</div>";
@@ -1104,10 +1103,10 @@ function renderStartFeaturesStep(c) {
   var cl=CHAR.classData;
   if(!cl){c.innerHTML='<div class="step-title">'+STEP_LABELS[1]+'</div><div class="empty-msg">请先在第一步选择职业</div>';return;}
   var features=CLASS_STARTING_FEATURES[CHAR.className]||[];
-  var maxPick=(CHAR.className==="法师"?4:2);
+  var maxPick;if(CHAR.className==="术士"){maxPick=features.length;if(!CHAR.selectedFeatures.length){for(var i=0;i<features.length;i++)CHAR.selectedFeatures.push(features[i].n);}}else if(CHAR.className==="法师"){maxPick=4;}else{maxPick=2;}
   if(!CHAR.selectedFeatures) CHAR.selectedFeatures=[];
   var h='<div class="step-title">'+STEP_LABELS[1]+'</div>';
-  h+='<div class="step-desc">从起始特性中选择 <strong>'+maxPick+'</strong> 项。</div>';
+  h+='<div class="step-desc">'+(CHAR.className==="术士"?'术士初始拥有全部起始特性':'从起始特性中选择 <strong>'+maxPick+'</strong> 项。')+'</div>';
   h+="<div class='skill-select' id='featGrid'>";
   for(var i=0;i<features.length;i++){
     var f=features[i]; var sel=CHAR.selectedFeatures.indexOf(f.n)>=0;
