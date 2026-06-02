@@ -402,10 +402,11 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   }
 
   var _rt=findCellFuzzy(["天赋列表","天赋树","天赋"]);if(_rt){
+    var _talentCol=_rt[0];if(_talentCol!=="O"&&_talentCol!=="R")_talentCol="O";
     var tr=parseInt(_rt.substring(1));
-    for(var tn=tr+2;tn<tr+60;tn++){var tv=c("O"+tn)||c("R"+tn);
+    for(var tn=tr+2;tn<tr+60;tn++){var tv=c(_talentCol+tn);
       if(!tv||tv==="-")continue;
-      var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
+      var tt=c(_talentCol+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
       if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.indexOf("//")<0&&tv.length<20&&tv.charAt(0)!=="("&&tv.charAt(0)!=="//")s.talent_tree.push({n:tv,tier:""});
     }
   }
