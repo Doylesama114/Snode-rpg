@@ -314,19 +314,19 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
 
   // Class info: find header, scan below for name+level (multi-row)
   _r=findCellFuzzy(["主职业","职业"]);if(_r){var rr=parseInt(_r.substring(1));
-    for(var ri=rr+1;ri<=rr+6;ri++){var cn=c("B"+ri);var cln=findClassName(cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[0].name=cln;break;}}
+    for(var ri=rr+1;ri<=rr+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[0].name=cln;break;}}
     if(!s.classes[0].name)s.classes[0].name=findClassNameNear(_r,5);
     for(var ri=rr+1;ri<=rr+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[0].level=lv;break;}}
     if(!s.classes[0].level)s.classes[0].level=cn("D"+(rr+2))||cn("D"+(rr+3))||readRightNum(_r,4);
     s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
   _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));
-    for(var ri=rr2+1;ri<=rr2+6;ri++){var cn=c("B"+ri);var cln=findClassName(cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[1].name=cln;break;}}
+    for(var ri=rr2+1;ri<=rr2+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[1].name=cln;break;}}
     if(!s.classes[1].name)s.classes[1].name=findClassNameNear(_r,5);
     for(var ri=rr2+1;ri<=rr2+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[1].level=lv;break;}}
     if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
-    for(var ri=rr3+1;ri<=rr3+6;ri++){var cn=c("B"+ri);var cln=findClassName(cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[2].name=cln;break;}}
+    for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0){s.classes[2].name=cln;break;}}
     if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
     for(var ri=rr3+1;ri<=rr3+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[2].level=lv;break;}}
     if(!s.classes[2].level)s.classes[2].level=cn("D"+(rr3+2))||cn("D"+(rr3+3))||readRightNum(_r,4);
