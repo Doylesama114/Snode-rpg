@@ -267,9 +267,17 @@ var SKILL_STYLE={"吟游诗人\t激励乐章":"激昂","吟游诗人\t休憩曲"
 function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValues;
   function c(ref){return cells[ref]||"";}
   function cn(ref){var v=rawVals[ref];if(v==null||v==="")return 0;var n=parseInt(v);return isNaN(n)?(parseInt(cells[ref])||0):n;}
-  function findCell(text){for(var k in cells){if(cells[k]===text)return k;}return null;}
+  function findCellFuzzy(keywords){for(var k in cells){var v=cells[k];for(var i=0;i<keywords.length;i++){if(v&&v.indexOf(keywords[i])>=0)return k;}}for(var k in cells){for(var i=0;i<keywords.length;i++){if(cells[k]===keywords[i])return k;}}return null;}
+  function findCell(text){return findCellFuzzy([text]);}
+  function readRight(ref,maxCols){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var v=c(String.fromCharCode(col+o)+row);if(v)return v;}return"";}
+  function readRightNum(ref,maxCols){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var v=rawVals[String.fromCharCode(col+o)+row];if(v!=null&&v!==""){var n=parseInt(v);if(!isNaN(n))return n;}}return 0;}
   function adjVal(ref,offset){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return c(String.fromCharCode(col+offset)+row);}
   function adjNum(ref,offset){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return cn(String.fromCharCode(col+offset)+row);}
+  function scanLabel(keywords,maxCols){return readRight(findCellFuzzy(keywords),maxCols||3);}
+  function scanLabelNum(keywords,maxCols){return readRightNum(findCellFuzzy(keywords),maxCols||3);}
+  var CLASS_NAMES=["蛮斗士","战士","法师","猎人","牧师","圣骑士","游荡者","德鲁伊","萨满祭司","术士","武僧","吟游诗人","魔契师","奇械师"];
+  function findClassNameNear(ref,scanRange){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));scanRange=scanRange||5;for(var r=row-scanRange;r<=row+scanRange;r++){for(var ci=0;ci<=scanRange;ci++){var v=c(String.fromCharCode(col+ci)+r);if(v){for(var i=0;i<CLASS_NAMES.length;i++){if(v.indexOf(CLASS_NAMES[i])>=0)return CLASS_NAMES[i];}}} }return"";}
+  function scanAttrsHorizontal(){var attrs={};var names=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];for(var k in cells){for(var i=0;i<names.length;i++){if(cells[k]===names[i]){var col=k.charCodeAt(0);var row=parseInt(k.substring(1));var v=cn(String.fromCharCode(col+1)+row);if(!v)v=cn(String.fromCharCode(col)+(row+1));if(v)attrs[names[i]]=v;}}}return attrs;}
 
   var s={profs:{},player:"",name:"",race:"",gender:"",age:"",height:"",weight:"",
     eye:"",skin:"",hair:"",portrait:"",xp:0,
@@ -284,38 +292,40 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     forbidden_skills:[],unlocked_tiers:["一阶","二阶"]};
   var _r;
 
-  // Basic info: label → read right
-  _r=findCell("玩家名称");s.player=adjVal(_r,1);
-  _r=findCell("角色名称");s.name=adjVal(_r,1);
-  _r=findCell("种族");s.race=adjVal(_r,1);
-  _r=findCell("性别");s.gender=adjVal(_r,1);
-  _r=findCell("年龄");s.age=adjVal(_r,1);
-  _r=findCell("身高");s.height=adjVal(_r,1);
-  _r=findCell("体重");s.weight=adjVal(_r,1);
-  _r=findCell("瞳色");s.eye=adjVal(_r,1);
-  _r=findCell("肤色");s.skin=adjVal(_r,1);
-  _r=findCell("发色");s.hair=adjVal(_r,1);
-  _r=findCell("生命值");s.hp=adjNum(_r,1);
-  _r=findCell("疲劳值");s.fp=adjNum(_r,1);
-  _r=findCell("语言");var ls=adjVal(_r,1);if(ls)s.languages=ls.split(/[,，/、]/).map(function(l){return l.trim();}).filter(function(l){return l;});
-  _r=findCell("当前经验值");if(_r)s.xp=adjNum(_r,1);
+  // Basic info: fuzzy find + multi-column scan
+  s.player=scanLabel(["玩家名称","玩家名","姓名"],2);
+  s.name=scanLabel(["角色名称","角色名"],2);
+  s.race=scanLabel(["种族"],2);
+  s.gender=scanLabel(["性别"],2);
+  s.age=scanLabel(["年龄"],2);
+  s.height=scanLabel(["身高"],2);
+  s.weight=scanLabel(["体重"],2);
+  s.eye=scanLabel(["瞳色","瞳孔"],2);
+  s.skin=scanLabel(["肤色"],2);
+  s.hair=scanLabel(["发色","头发","毛发"],2);
+  s.hp=scanLabelNum(["生命值","HP","血量"],2);
+  s.fp=scanLabelNum(["疲劳值","FP","疲劳"],2);
+  _r=findCellFuzzy(["语言","语言列表"]);var ls=readRight(_r,2);if(ls)s.languages=ls.split(/[,，/、]/).map(function(l){return l.trim();}).filter(function(l){return l;});
+  _r=findCellFuzzy(["当前经验值","经验值","XP"]);if(_r)s.xp=readRightNum(_r,2);
 
-  // Class info: find header, read below
-  _r=findCell("主职业");if(_r){var rr=parseInt(_r.substring(1));s.classes[0].name=c("B"+(rr+2));s.classes[0].level=cn("D"+(rr+2));console.log("MAIN CLASS: ref="+_r+" name="+s.classes[0].name+" levelCell=D"+(rr+2)+" rawVal="+rawVals["C"+(rr+2)]+" finalLevel="+s.classes[0].level);s.classes[0].styles[0]=c("E"+(rr+2));}
-  _r=findCell("子职业");if(_r){var rr2=parseInt(_r.substring(1));console.log("SUB CLASS: ref="+_r+" nameCell=B"+(rr2+2)+" name="+c("B"+(rr2+2)));s.classes[1].name=c("B"+(rr2+2));s.classes[1].level=cn("D"+(rr2+2));s.classes[1].styles[0]=c("E"+(rr2+2));}
-  _r=findCell("附赠职业");if(_r){var rr3=parseInt(_r.substring(1));s.classes[2].name=c("B"+(rr3+2));s.classes[2].level=cn("D"+(rr3+2));s.classes[2].styles[0]=c("E"+(rr3+2));}
+  // Class info: find header, scan below for name+level
+  _r=findCellFuzzy(["主职业","职业"]);if(_r){var rr=parseInt(_r.substring(1));s.classes[0].name=c("B"+(rr+1))||c("B"+(rr+2))||findClassNameNear(_r,5);s.classes[0].level=cn("D"+(rr+2))||cn("D"+(rr+3))||readRightNum(_r,4);s.classes[0].styles[0]=c("E"+(rr+2))||c("E"+(rr+3));}
+  _r=findCellFuzzy(["子职业","副职业"]);if(_r){var rr2=parseInt(_r.substring(1));s.classes[1].name=c("B"+(rr2+1))||c("B"+(rr2+2))||findClassNameNear(_r,5);s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
+  _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));s.classes[2].name=c("B"+(rr3+1))||c("B"+(rr3+2))||findClassNameNear(_r,5);s.classes[2].level=cn("D"+(rr3+2))||cn("D"+(rr3+3))||readRightNum(_r,4);s.classes[2].styles[0]=c("E"+(rr3+2))||c("E"+(rr3+3));}
 
   // Story
-  _r=findCell("故事");s.story=adjVal(_r,1);
-  _r=findCell("特性");s.personality=adjVal(_r,1);
-  _r=findCell("特点");s.traits=adjVal(_r,1);
-  _r=findCell("理念");s.ideals=adjVal(_r,1);
-  _r=findCell("羁绊");s.bonds=adjVal(_r,1);
-  _r=findCell("缺陷");s.flaws=adjVal(_r,1);
+  s.story=scanLabel(["故事","背景故事","角色故事"],3);
+  s.personality=scanLabel(["特性","个性","个性特征"],3);
+  s.traits=scanLabel(["特点"],2);
+  s.ideals=scanLabel(["理念","信念"],2);
+  s.bonds=scanLabel(["羁绊"],2);
+  s.flaws=scanLabel(["缺陷"],2);
 
-  // Attributes
+  // Attributes: vertical scan first, then horizontal fallback
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
-  for(var ai=0;ai<an.length;ai++){_r=findCell(an[ai]);if(_r)s.attrs[an[ai]]=adjNum(_r,1)||10;}
+  for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
+  // Horizontal fallback for alien templates
+  if(!s.attrs["力量"]||s.attrs["力量"]===10){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk])s.attrs[hk]=ha[hk];}}
 
   // Special feats - try multiple offsets from label
   function readFeat(label,level){var ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){s.special_feats.push(typeof v==="string"?{name:v,level:level}:{name:String(v),level:level});break;}}}
