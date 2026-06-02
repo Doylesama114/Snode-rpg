@@ -266,11 +266,11 @@ var SKILL_STYLE={"吟游诗人\t激励乐章":"激昂","吟游诗人\t休憩曲"
 
 function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValues;
   function c(ref){return cells[ref]||"";}
-  function cn(ref){var v=rawVals[ref];if(v==null||v==="")return 0;var n=parseInt(v);if(!isNaN(n)&&n<50)return n;var dc=cells[ref];var dn=parseInt(dc);return isNaN(dn)?0:dn;}
+  function cn(ref){var dc=cells[ref];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50)return dn;var v=rawVals[ref];if(v==null||v==="")return 0;var n=parseInt(v);return isNaN(n)?0:n;}
   function findCellFuzzy(keywords){for(var k in cells){var v=cells[k];for(var i=0;i<keywords.length;i++){if(v&&v.indexOf(keywords[i])>=0)return k;}}for(var k in cells){for(var i=0;i<keywords.length;i++){if(cells[k]===keywords[i])return k;}}return null;}
   function findCell(text){return findCellFuzzy([text]);}
   function readRight(ref,maxCols){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var v=c(String.fromCharCode(col+o)+row);if(v)return v;}return"";}
-  function readRightNum(ref,maxCols){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var cr=String.fromCharCode(col+o)+row;var v=rawVals[cr];if(v!=null&&v!==""){var n=parseInt(v);if(!isNaN(n)&&n<50)return n;}var dc=cells[cr];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50)return dn;}return 0;}
+  function readRightNum(ref,maxCols){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var cr=String.fromCharCode(col+o)+row;var dc=cells[cr];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50&&dn>-20)return dn;var v=rawVals[cr];if(v!=null&&v!==""){var n=parseInt(v);if(!isNaN(n)&&n<50&&n>-20)return n;}}return 0;}
   function adjVal(ref,offset){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return c(String.fromCharCode(col+offset)+row);}
   function adjNum(ref,offset){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return cn(String.fromCharCode(col+offset)+row);}
   function scanLabel(keywords,maxCols){return readRight(findCellFuzzy(keywords),maxCols||3);}
@@ -396,7 +396,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     for(var tn=tr+2;tn<tr+60;tn++){var tv=c("O"+tn)||c("R"+tn);
       if(!tv||tv==="-")continue;
       var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
-      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0)s.talent_tree.push({n:tv,tier:""});
+      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.length<20)s.talent_tree.push({n:tv,tier:""});
     }
   }
 
