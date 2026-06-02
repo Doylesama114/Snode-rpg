@@ -313,7 +313,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   // Auto-fill race languages (define RACE_LANGS inline if not loaded)
   var RACE_LANGS=typeof RACE_LANGS!=="undefined"?RACE_LANGS:{"血族":["通用语","炼狱语"],"龙裔":["通用语","龙语"],"矮人":["通用语","矮人语"],"精灵":["通用语","精灵语"],"半精灵":["通用语","精灵语"],"半身人":["通用语","半身人语"],"侏儒":["通用语","侏儒语"],"兽人":["通用语","兽人语"],"地精":["通用语","地精语"],"卓尔精灵":["通用语","精灵语","地底通用语"],"黑暗精灵":["通用语","精灵语","地底通用语"],"木精灵":["通用语","精灵语"],"高等精灵":["通用语","精灵语"],"魔裔":["通用语","炼狱语"],"巨魔":["通用语","巨魔语"],"狗头人":["通用语","龙语"],"蜥蜴人":["通用语","龙语"],"蛙人":["通用语"],"鼠人":["通用语"],"狼人":["通用语"],"翼空族":["鸟禽语"],"牛头人":["通用语"],"狐人":["通用语"],"蛇人":["通用语"],"鱼人":["通用语","鱼人语"],"人鱼":["通用语","鱼人语","海洋通用语"],"龟人":["通用语"],"斑猫人":["通用语"],"豹兽人":["通用语"],"犬牙族":["通用语"],"公民":["通用语"],"士兵":["通用语"],"水手":["通用语"],"流浪儿":["通用语"],"外乡人":["通用语"]};
   var _rl=RACE_LANGS&&RACE_LANGS[s.race];if(_rl){for(var _li=0;_li<_rl.length;_li++){if(s.languages.indexOf(_rl[_li])<0)s.languages.push(_rl[_li]);}}
-  _r=findCellFuzzy(["当前经验值","经验值","XP"]);if(_r)s.xp=readRightNum(_r,2);
+  _r=findCellFuzzy(["当前经验值","经验值","XP"]);if(_r){var _xp=readRightNum(_r,4);if(!_xp){var _xpr=parseInt(_r.substring(1));_xp=parseInt(c(_r[0]+(_xpr+1)))||parseInt(c(_r[0]+(_xpr+2)))||0;}s.xp=_xp;}
   // Background: scan wider (up to column H) to find background value in G15
   s.background=scanLabel(["个性背景"],8)||scanLabel(["背景"],8);
   if(!s.background){var _bgc=c("G15");if(_bgc&&_bgc.indexOf("故事")<0)s.background=_bgc;}
@@ -358,7 +358,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   // Attributes: scan with value range check (1-50) to reject garbage indices
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
-  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0)s.attrs[hk]=ha[hk];}
+  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
@@ -391,11 +391,10 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
 
-  // Talent scanner (O and R columns only — B column has skill names, not talents)
   var _rt=findCellFuzzy(["天赋列表","天赋树","天赋"]);if(_rt){
     var tr=parseInt(_rt.substring(1));
     for(var tn=tr+2;tn<tr+60;tn++){var tv=c("O"+tn)||c("R"+tn);
-      if(!tv||tv==="-"||tv.indexOf("技能列表")>=0){if(!c("O"+tn)&&!c("R"+tn))break;}
+      if(!tv||tv==="-")continue;
       var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
       if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0)s.talent_tree.push({n:tv,tier:""});
     }
