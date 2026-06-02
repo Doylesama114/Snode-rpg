@@ -345,10 +345,9 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   // Key attribute lookup from class data
   for(var ci=0;ci<3;ci++){if(s.classes[ci].name&&typeof REF_CLASSES!=="undefined"&&REF_CLASSES[s.classes[ci].name]){var ka=REF_CLASSES[s.classes[ci].name].key_attr;if(ka&&ka.indexOf("或")<0)s.classes[ci].keyAttr=ka;}}
 
-  // Story: read from G/H column, not label text. "故事" label is at G16, value at H16
-  s.story=readRight(findCell("故事"),3)||c("H16");
-  if(!s.story||s.story==="背景故事"){s.story=c("H16")||c("G16")||readRight(findCell("背景故事"),3);}
-  if(!s.story||s.story.indexOf("背景故事")>=0){var _hr=findCellFuzzy(["故事"]);if(_hr){var _hrr=parseInt(_hr.substring(1));for(var _hro=1;_hro<=3;_hro++){var _hv=c(String.fromCharCode(_hr.charCodeAt(0)+_hro)+_hrr);if(_hv&&_hv.indexOf("背景")<0&&_hv.length>5){s.story=_hv;break;}}}}}
+  // Story
+  s.story=c("H16")||scanLabel(["故事","角色故事","个人故事"],3);
+  if(!s.story){var _sr=findCell("故事");if(_sr){var _srow=parseInt(_sr.substring(1));s.story=c("H"+_srow)||c("G"+_srow);}}
   s.traits=scanLabel(["特性","个性","个性特征"],3);
   s.personality=scanLabel(["特点"],2);
   s.ideals=scanLabel(["理念","信念"],2);
@@ -359,16 +358,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   var _attrFound=0;
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
-  if(_attrFound<4){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
-  // Direct fallback: read attributes from known row positions in case scanLabelNum fails
-  if(!s.attrs["力量"]||s.attrs["力量"]===10){var _dv=parseInt(c("C36"))||0;if(_dv>0&&_dv<50)s.attrs["力量"]=_dv;}
-  if(!s.attrs["敏捷"]||s.attrs["敏捷"]===10){var _dv=parseInt(c("C46"))||0;if(_dv>0&&_dv<50)s.attrs["敏捷"]=_dv;}
-  if(!s.attrs["体质"]||s.attrs["体质"]===10){var _dv=parseInt(c("C57"))||0;if(_dv>0&&_dv<50)s.attrs["体质"]=_dv;}
-  if(!s.attrs["智力"]||s.attrs["智力"]===10){var _dv=parseInt(c("C62"))||0;if(_dv>0&&_dv<50)s.attrs["智力"]=_dv;}
-  if(!s.attrs["感知"]||s.attrs["感知"]===10){var _dv=parseInt(c("C87"))||0;if(_dv>0&&_dv<50)s.attrs["感知"]=_dv;}
-  if(!s.attrs["魅力"]||s.attrs["魅力"]===10){var _dv=parseInt(c("C100"))||0;if(_dv>0&&_dv<50)s.attrs["魅力"]=_dv;}
-  if(!s.attrs["意志"]||s.attrs["意志"]===10){var _dv=parseInt(c("C110"))||0;if(_dv>0&&_dv<50)s.attrs["意志"]=_dv;}
-  if(!s.attrs["幸运"]||s.attrs["幸运"]===10){var _dv=parseInt(c("C116"))||0;if(_dv>0&&_dv<50)s.attrs["幸运"]=_dv;}
+  if(_attrFound<4){  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
@@ -437,6 +427,8 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
   return s;
+}
+
 }
 
 function levenshtein(a,b){if(a.length===0)return b.length;if(b.length===0)return a.length;var m=[];for(var i=0;i<=a.length;i++){m[i]=[i];}for(var j=0;j<=b.length;j++){m[0][j]=j;}for(var i=1;i<=a.length;i++){for(var j=1;j<=b.length;j++){m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));}}return m[a.length][b.length];}
@@ -692,7 +684,6 @@ var _pendingIssues=[];
 // ========== UI ==========
 
 var pendingState = null;
-window._getState=function(){return pendingState;};
 
 document.getElementById("fileInput").addEventListener("change", async function(e) {
   var file = e.target.files[0];
