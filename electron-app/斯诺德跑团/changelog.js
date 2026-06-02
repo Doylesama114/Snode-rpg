@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.560',
+    date: '2026-06-02',
+    changes: [
+      '上传角色页全面重构：修复xlsx解析20+bug(背景/子职业/等级/天赋/SP/故事/属性)；角色面板联动修复(autoCalc保护)；风格系统修正(通用不作为风格,保留xlsx原始风格)；Playwright E2E验证3角色全通过'
+    ]
+  },
+
+
+  {
     version: '1.0.559',
     date: '2026-06-02',
     changes: [

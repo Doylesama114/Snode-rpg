@@ -1,0 +1,10 @@
+- generic [ref=e2]:
+  - link "← 返回主页" [ref=e3] [cursor=pointer]:
+    - /url: 主页.html
+  - heading "📥 上传已有角色" [level=1] [ref=e4]
+  - paragraph [ref=e5]: 选择冒险者角色档案.xlsx文件，自动识别并导入角色数据
+  - generic [ref=e6] [cursor=pointer]:
+    - generic [ref=e7]: 📁
+    - generic [ref=e8]: 点击选择 .xlsx 文件
+    - generic [ref=e9]: 支持标准冒险者角色档案模板
+  - generic [ref=e10] [cursor=pointer]: 📥 下载空白模板（冒险者角色档案.xlsx）
