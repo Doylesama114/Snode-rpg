@@ -330,8 +330,6 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     for(var ri=rr2+1;ri<=rr2+6;ri++){var lv=cn("D"+ri);if(lv>0){s.classes[1].level=lv;break;}}
     if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
     s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
-    if(!s.classes[1].level)s.classes[1].level=cn("D"+(rr2+2))||cn("D"+(rr2+3))||readRightNum(_r,4);
-    s.classes[1].styles[0]=c("E"+(rr2+2))||c("E"+(rr2+3));}
   _r=findCellFuzzy(["附赠职业"]);if(_r){var rr3=parseInt(_r.substring(1));
     for(var ri=rr3+1;ri<=rr3+6;ri++){var _cn=c("B"+ri);var cln=findClassName(_cn);if(cln&&CLASS_NAMES.indexOf(cln)>=0&&cln!==s.classes[0].name&&cln!==s.classes[1].name){s.classes[2].name=cln;break;}}
     if(!s.classes[2].name)s.classes[2].name=findClassNameNear(_r,5);
@@ -353,7 +351,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   // Attributes: vertical scan, then horizontal fallback for ANY missing
   var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av)s.attrs[an[ai]]=av;else s.attrs[an[ai]]=10;}
-  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&(!s.attrs[hk]||s.attrs[hk]===10))s.attrs[hk]=ha[hk];}
+  var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0)s.attrs[hk]=ha[hk];}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
