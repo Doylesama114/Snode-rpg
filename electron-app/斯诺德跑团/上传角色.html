@@ -360,6 +360,15 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   var _attrFound=0;
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
   if(_attrFound<4){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
+  // Direct fallback: read attributes from known row positions in case scanLabelNum fails
+  if(!s.attrs["力量"]||s.attrs["力量"]===10){var _dv=parseInt(c("C36"))||0;if(_dv>0&&_dv<50)s.attrs["力量"]=_dv;}
+  if(!s.attrs["敏捷"]||s.attrs["敏捷"]===10){var _dv=parseInt(c("C46"))||0;if(_dv>0&&_dv<50)s.attrs["敏捷"]=_dv;}
+  if(!s.attrs["体质"]||s.attrs["体质"]===10){var _dv=parseInt(c("C57"))||0;if(_dv>0&&_dv<50)s.attrs["体质"]=_dv;}
+  if(!s.attrs["智力"]||s.attrs["智力"]===10){var _dv=parseInt(c("C62"))||0;if(_dv>0&&_dv<50)s.attrs["智力"]=_dv;}
+  if(!s.attrs["感知"]||s.attrs["感知"]===10){var _dv=parseInt(c("C87"))||0;if(_dv>0&&_dv<50)s.attrs["感知"]=_dv;}
+  if(!s.attrs["魅力"]||s.attrs["魅力"]===10){var _dv=parseInt(c("C100"))||0;if(_dv>0&&_dv<50)s.attrs["魅力"]=_dv;}
+  if(!s.attrs["意志"]||s.attrs["意志"]===10){var _dv=parseInt(c("C110"))||0;if(_dv>0&&_dv<50)s.attrs["意志"]=_dv;}
+  if(!s.attrs["幸运"]||s.attrs["幸运"]===10){var _dv=parseInt(c("C116"))||0;if(_dv>0&&_dv<50)s.attrs["幸运"]=_dv;}
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
@@ -397,7 +406,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     for(var tn=tr+2;tn<tr+60;tn++){var tv=c("O"+tn)||c("R"+tn);
       if(!tv||tv==="-")continue;
       var tt=c("O"+tn)||c("R"+tn);if(tt&&tt.indexOf("阶天赋树")>=0)continue;
-      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.length<20)s.talent_tree.push({n:tv,tier:""});
+      if(tv&&tv!=="-"&&tv.indexOf("技能")<0&&tv.indexOf("属性值需求")<0&&tv.indexOf("来源")<0&&tv.indexOf("特殊条件")<0&&tv.indexOf("(")<0&&tv.indexOf("//")<0&&tv.length<20&&tv.charAt(0)!=="("&&tv.charAt(0)!=="//")s.talent_tree.push({n:tv,tier:""});
     }
   }
 
