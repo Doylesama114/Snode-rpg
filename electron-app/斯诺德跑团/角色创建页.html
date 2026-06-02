@@ -196,7 +196,9 @@ var CHAR = {
   keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [],
   bgIdx: -1, bgName: "", bgData: null,
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
-  playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: ""
+  playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
+  story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
+  deity: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
 };
 
 var ATTR_NAMES = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
@@ -962,6 +964,12 @@ function showPersonalityPicker(bg){
   makeSection("理念","ideals",data.ideals,1);
   makeSection("羁绊","bonds",data.bonds,1);
   makeSection("缺陷","flaws",data.flaws,1);
+  var bgName=bg.name;
+  if(bgName==="侍僧"&&data.deities&&data.deities.length) makeSection("神祇","deity",data.deities,1);
+  else if(bgName==="侦探"&&data.contacts&&data.contacts.length) makeSection("联系渠道","contacts",data.contacts,1);
+  else if(bgName==="骗子"&&data.scam_types&&data.scam_types.length) makeSection("偏好骗局","scamType",data.scam_types,1);
+  else if(bgName==="职业杀手"&&data.mission_channels&&data.mission_channels.length) makeSection("任务渠道","missionChannel",data.mission_channels,1);
+  else if(bgName==="教授"&&data.academic_domains&&data.academic_domains.length) makeSection("学术领域","academicDomain",data.academic_domains,1);
   var btns=document.createElement("div");
   btns.style.cssText="margin-top:18px;display:flex;gap:8px;justify-content:flex-end";
   var skipBtn=document.createElement("button");
@@ -980,7 +988,7 @@ function showPersonalityPicker(bg){
   updatePersonalityCustom();
 }
 function updatePersonalityCustom(){
-  var ks=["personality","personality","ideals","bonds","flaws"];
+  var ks=["personality","personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain"];
   for(var i=0;i<ks.length;i++){
     var s=document.getElementById("pers_"+ks[i]+"_"+(i<2?i:0));
     var ci=document.getElementById("pers_"+ks[i]+"_"+(i<2?i:0)+"_custom");
@@ -988,7 +996,7 @@ function updatePersonalityCustom(){
   }
 }
 function confirmPersonalityPicker(){
-  var m={personality:["personality","personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"]};
+  var m={personality:["personality","personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"],deity:["deity"],contacts:["contacts"],scamType:["scamType"],missionChannel:["missionChannel"],academicDomain:["academicDomain"]};
   for(var k in m){
     var pp=[];
     for(var i=0;i<m[k].length;i++){
@@ -1143,6 +1151,11 @@ function renderReviewStep(c) {
   h+="<div class='form-group-half'><label>理念</label><textarea class='form-textarea' id='inputIdeals' oninput='CHAR.ideals=this.value' placeholder='你的角色信奉什么理念？'>"+esc(CHAR.ideals)+"</textarea></div>";
   h+="<div class='form-group-half'><label>羁绊</label><textarea class='form-textarea' id='inputBonds' oninput='CHAR.bonds=this.value' placeholder='你的角色有何羁绊？'>"+esc(CHAR.bonds)+"</textarea></div>";
   h+="<div class='form-group-full'><label>缺陷</label><textarea class='form-textarea' id='inputFlaws' oninput='CHAR.flaws=this.value' placeholder='你的角色有何缺陷？'>"+esc(CHAR.flaws)+"</textarea></div>";
+  if(CHAR.deity) h+="<div class='form-group-half'><label>神祇</label><textarea class='form-textarea' id='inputDeity' oninput='CHAR.deity=this.value'>"+esc(CHAR.deity)+"</textarea></div>";
+  if(CHAR.contacts) h+="<div class='form-group-half'><label>联系渠道</label><textarea class='form-textarea' id='inputContacts' oninput='CHAR.contacts=this.value'>"+esc(CHAR.contacts)+"</textarea></div>";
+  if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='CHAR.scamType=this.value'>"+esc(CHAR.scamType)+"</textarea></div>";
+  if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='CHAR.missionChannel=this.value'>"+esc(CHAR.missionChannel)+"</textarea></div>";
+  if(CHAR.academicDomain) h+="<div class='form-group-half'><label>学术领域</label><textarea class='form-textarea' id='inputAcademicDomain' oninput='CHAR.academicDomain=this.value'>"+esc(CHAR.academicDomain)+"</textarea></div>";
   h+="</div>";
   h+="<div style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>角色摘要</h3>";
@@ -1446,7 +1459,7 @@ function saveCharacter(){
     carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
     sp:{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
     hp:hp, fp:fp,
-    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", background:CHAR.bgName||"",
+    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", background:CHAR.bgName||"",
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -1820,6 +1833,11 @@ async function exportXlsxFromState(state) {
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
   if (state.flaws) set("H30", state.flaws);
+  if (state.deity) set("H33", state.deity);
+  if (state.contacts) set("H34", state.contacts);
+  if (state.scamType) set("H35", state.scamType);
+  if (state.missionChannel) set("H36", state.missionChannel);
+  if (state.academicDomain) set("H37", state.academicDomain);
 
   // Attributes
   var an = ["力量", "敏捷", "体质", "智力", "感知", "魅力", "意志", "幸运"];
