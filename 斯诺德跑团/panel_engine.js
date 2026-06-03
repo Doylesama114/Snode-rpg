@@ -473,9 +473,6 @@ function autoCalcStyles(){
   for(var ci=0;ci<state.classes.length;ci++){
 
 
-    if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]});
-
-
     if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]}).filter(function(s){return s!=="通用";});
     for(var i=0;i<4;i++)state.classes[ci].styles[i]=st[i]||'';}}}
 
@@ -1118,19 +1115,15 @@ var _equipMsgTimer = null;
 
 
 
-function getItemTags(itemName) {
-
+function itemName(x){return (x&&typeof x==='object')?x.item:x;}
+function getItemTags(_item) {
+  var n=itemName(_item);
 
   try {
 
+    if (window._itemTagsCache && window._itemTagsCache[n]) return window._itemTagsCache[n];
 
-    if (window._itemTagsCache && window._itemTagsCache[itemName]) return window._itemTagsCache[itemName];
-
-
-    // Check alias (e.g., \u9ad8\u6863\u670d\u88c5 -> \u5e03\u8863, \u6f14\u51fa\u620f\u670d -> \u62ab\u98ce)
-
-
-    var alias = globalAliasMap[itemName];
+    var alias = globalAliasMap[n];
 
 
     if (alias && window._itemTagsCache && window._itemTagsCache[alias]) return window._itemTagsCache[alias];
@@ -1927,10 +1920,9 @@ function tryMoveItem(fromSlot, fromItem, moveCount, toSlot, toItem, fromBagIdx, 
   render();
 
 
-}function getStackLimit(itemName) {
-
-
-  var tags = getItemTags(itemName);
+}function getStackLimit(_item) {
+  var n=itemName(_item);
+  var tags = getItemTags(n);
 
 
   if (tags.indexOf("材料") >= 0 || tags.indexOf("可堆叠") >= 0) return 5;
@@ -1939,7 +1931,7 @@ function tryMoveItem(fromSlot, fromItem, moveCount, toSlot, toItem, fromBagIdx, 
   if (tags.indexOf("按重量") >= 0) return 1;
 
 
-  if (itemName.indexOf("弹药") >= 0 || itemName.indexOf("箭矢") >= 0) return 20;
+  if (n.indexOf("弹药") >= 0 || n.indexOf("箭矢") >= 0) return 20;
 
 
   return 1;
@@ -1975,19 +1967,14 @@ function compactStacks(arr) {
       var count = 1;
 
 
-      while (i + count < arr.length && arr[i + count] === item && count < limit) { count++; }
+      while (i + count < arr.length && itemName(arr[i + count]) === itemName(item) && count < limit) { count++; }
 
-
-      result.push({item: item, count: count});
-
-
+      result.push({item: itemName(item), count: count, weight: (typeof item==='object'?item.weight:undefined)});
       i += count;
-
 
     } else {
 
-
-      result.push({item: item, count: 1});
+      result.push({item: itemName(item), count: 1, weight: (typeof item==='object'?item.weight:undefined)});
 
 
       i++;
@@ -2826,21 +2813,22 @@ function getItemWeight(itemName) {
 }
 
 function resolveWeight(name) {
+  if(name&&typeof name==='object'&&name.weight)return name.weight;
+  var n=itemName(name);
 
-
-  var alias = aliasMap[name];
+  var alias = aliasMap[n];
 
 
   if (alias) return getItemWeight(alias);
 
 
-  var ew = itemWeights[name];
+  var ew = itemWeights[n];
 
 
   if (ew !== undefined) return ew;
 
 
-  return getItemWeight(name);
+  return getItemWeight(n);
 
 
 }
@@ -3557,8 +3545,9 @@ function render(){ applyChoiceLLevel12Boosts();
 
           if(stack) {
             var displayName = stack.count > 1 ? (stack.item + " \u00d7" + stack.count) : stack.item;
+            var wt=stack.weight?' <span class="equip-weight">'+stack.weight.toFixed(1)+'磅</span>':'';
             var extraAttr = stack.count > 1 ? " data-count=\u0022"+stack.count+"\u0022" : "";
-            eh+="<div class=\"equip-item\" data-slot=\""+ek[ei]+"\" data-bag-type=\""+packType+"\" data-bag-idx=\""+pi+"\" data-item=\""+stack.item+"\""+extraAttr+">"+displayName+"</div>";
+            eh+="<div class=\"equip-item\" data-slot=\""+ek[ei]+"\" data-bag-type=\""+packType+"\" data-bag-idx=\""+pi+"\" data-item=\""+stack.item+"\""+extraAttr+">"+displayName+wt+"</div>";
 
 
           } else if (hasPack) {

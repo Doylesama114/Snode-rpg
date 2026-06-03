@@ -371,8 +371,8 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   _r=findCell("金币");if(_r)s.currency["金币"]=adjNum(_r,1);
   _r=findCell("银币");if(_r)s.currency["银币"]=adjNum(_r,1);
   _r=findCell("铜币");if(_r)s.currency["铜币"]=adjNum(_r,1);
-  // Equipment: scan K column rows 46-55 for items
-  for(var _er=46;_er<=55;_er++){var _ek=c("K"+_er);if(_ek&&_ek!=="名称"&&_ek!=="效果"&&_ek.indexOf("名称")<0){if(!s.equipment["背包"])s.equipment["背包"]=[];s.equipment["背包"].push(_ek);}}
+  // Equipment: scan K column (name) + S column (磅重) rows 46-55
+  for(var _er=46;_er<=55;_er++){var _ek=c("K"+_er);if(_ek&&_ek!=="名称"&&_ek!=="效果"&&_ek.indexOf("名称")<0){var _ew=parseFloat(c("S"+_er))||0;if(!s.equipment["背包"])s.equipment["背包"]=[];s.equipment["背包"].push({item:_ek,weight:_ew});}}
 
   // sub-class skills helper
   function readSubSkills(label,nameCount){
