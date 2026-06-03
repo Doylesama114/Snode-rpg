@@ -62,29 +62,51 @@ jobs:
           TAG="${{ github.ref_name }}"
           EXE=$(ls *.exe | head -1)
           YML=$(ls *.yml | head -1)
-          BLOCKMAP=$(ls *.blockmap 2>/dev/null | head -1 || echo "")
+          TOKEN="${{ secrets.GITEE_TOKEN }}"
+          API="https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases"
 
-          # 创建发行版（先放 GitHub 下载链接）
-          BODY=$(jq -n --arg tag "$TAG" '{
-            tag_name: $tag, name: $tag, target_commitish: "master",
-            body: "🔄 自动同步 GitHub Release\n\n📥 下载: https://github.com/Doylesama114/Snode-rpg/releases/download/\($tag)/\($tag)",
-            prerelease: false
-          }')
-          REL=$(curl -s -X POST "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases" \
-            -H "Authorization: token ${{ secrets.GITEE_TOKEN }}" \
-            -H "Content-Type: application/json" -d "$BODY")
-          REL_ID=$(echo "$REL" | jq -r '.id')
+          echo "=== Gitee Mirror: $TAG ==="
+          echo "EXE: $EXE ($(du -h "$EXE" | cut -f1))"
+          echo "YML: $YML"
 
-          # 上传 exe
-          curl -s -X POST "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/$REL_ID/attach_files" \
-            -H "Authorization: token ${{ secrets.GITEE_TOKEN }}" \
-            -F "file=@$EXE"
+          # 1. 检查是否已有同 tag 的 Release
+          echo "Checking existing releases..."
+          REL_ID=$(curl -sf "$API?access_token=$TOKEN&per_page=20" | jq -r ".[] | select(.tag_name==\"$TAG\") | .id" | head -1)
 
-          # 上传 latest.yml
-          if [ -n "$YML" ]; then
-            curl -s -X POST "https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/$REL_ID/attach_files" \
-              -H "Authorization: token ${{ secrets.GITEE_TOKEN }}" \
-              -F "file=@$YML"
+          if [ -z "$REL_ID" ] || [ "$REL_ID" = "null" ]; then
+            echo "Creating new release..."
+            BODY="🔄 自动同步 GitHub Release\n\n📥 GitHub: https://github.com/Doylesama114/Snode-rpg/releases/tag/$TAG"
+            REL=$(curl -sf -X POST "$API" \
+              -H "Content-Type: application/json" \
+              -d "{\"tag_name\":\"$TAG\",\"name\":\"$TAG\",\"target_commitish\":\"master\",\"body\":\"$BODY\",\"prerelease\":false,\"access_token\":\"$TOKEN\"}")
+            REL_ID=$(echo "$REL" | jq -r '.id')
+            echo "Created release: $REL_ID"
+          else
+            echo "Release already exists: $REL_ID"
           fi
 
-          echo "Gitee release created: $REL_ID"
+          # 2. 上传 exe（大文件，best-effort）
+          echo "Uploading $EXE..."
+          if curl -sf --max-time 300 --retry 2 --retry-delay 10 \
+              -X POST "$API/$REL_ID/attach_files" \
+              -F "access_token=$TOKEN" \
+              -F "file=@$EXE"; then
+            echo "EXE uploaded OK"
+          else
+            echo "WARNING: EXE upload failed (may exceed Gitee size limit or network timeout)"
+          fi
+
+          # 3. 上传 latest.yml
+          if [ -n "$YML" ]; then
+            echo "Uploading $YML..."
+            if curl -sf --max-time 60 --retry 2 --retry-delay 5 \
+                -X POST "$API/$REL_ID/attach_files" \
+                -F "access_token=$TOKEN" \
+                -F "file=@$YML"; then
+              echo "YML uploaded OK"
+            else
+              echo "WARNING: YML upload failed"
+            fi
+          fi
+
+          echo "=== Gitee mirror done ==="

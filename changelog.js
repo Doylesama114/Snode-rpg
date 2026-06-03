@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.563',
+    date: '2026-06-03',
+    changes: [
+      '修复Gitee国内镜像同步：API token改为form字段传递，重复release复用，大文件best-effort上传'
+    ]
+  },
+
+
+  {
     version: '1.0.562',
     date: '2026-06-03',
     changes: [
