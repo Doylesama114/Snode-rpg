@@ -372,11 +372,10 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   _r=findCell("银币");if(_r)s.currency["银币"]=adjNum(_r,1);
   _r=findCell("铜币");if(_r)s.currency["铜币"]=adjNum(_r,1);
   // Equipment: scan I column (section header) + K column (name) + S column (磅重)
-  var _curEquipSlot="背包";var _weaponCount=0;
-  var _slotMap={"武器":"主手武器","防具":"防具","配饰":"配饰","背包":"背包","杂物":"杂物包","材料包":"材料包"};
+  var _curEquipSlot="背包";var _weaponIdx=0;
   for(var _er=46;_er<=82;_er++){
     var _ehd=c("I"+_er);if(_ehd){
-      if(_ehd==="武器"){_weaponCount++;_curEquipSlot=_weaponCount===1?"主手武器":"副手武器";}
+      if(_ehd==="武器"){_weaponIdx=0;_curEquipSlot="主手武器";}
       else if(_ehd==="防具")_curEquipSlot="防具";
       else if(_ehd==="配饰")_curEquipSlot="配饰";
       else if(_ehd==="旅行腰包")_curEquipSlot="旅行腰包";
@@ -388,6 +387,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
       var _ew=parseFloat(c("S"+_er))||0;
       if(!s.equipment[_curEquipSlot])s.equipment[_curEquipSlot]=[];
       s.equipment[_curEquipSlot].push({item:_ek,weight:_ew});
+      if(_curEquipSlot==="主手武器"){_weaponIdx++;if(_weaponIdx>=2)_curEquipSlot="副手武器";}
     }
   }
 
