@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.564',
+    date: '2026-06-03',
+    changes: [
+      '装备系统重构：物品对象化({item,weight})，I列分区分类(武器/防具/背包/腰包/杂物)，S列重量读取，面板渲染兼容，AC计算修复'
+    ]
+  },
+
+
+  {
     version: '1.0.563',
     date: '2026-06-03',
     changes: [
