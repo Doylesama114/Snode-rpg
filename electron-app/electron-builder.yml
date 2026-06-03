@@ -31,4 +31,3 @@ publish:
   provider: github
   owner: Doylesama114
   repo: Snode-rpg
-  token: ${GH_TOKEN}

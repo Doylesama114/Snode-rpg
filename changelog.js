@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.562',
+    date: '2026-06-03',
+    changes: [
+      '修复CI构建：electron-builder.yml移除不兼容的GH_TOKEN宏，CI通过action-gh-release发布'
+    ]
+  },
+
+
+  {
     version: '1.0.561',
     date: '2026-06-03',
     changes: [
