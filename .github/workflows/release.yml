@@ -97,17 +97,19 @@ jobs:
             fi
           done
 
-          # 3. 上传 exe（大文件，加长超时 + 更多重试）
+          # 3. 上传 exe（跨国网络大概率超时，改为尝试性上传）
           if [ -n "$EXE" ]; then
-            echo "Uploading $EXE (this may take several minutes)..."
+            echo "Uploading $EXE (large file, may timeout on cross-border network)..."
             if curl -sf --max-time 900 --retry 3 --retry-delay 30 --retry-max-time 1200 \
                 -X POST "$API/$REL_ID/attach_files" \
                 -F "access_token=$TOKEN" \
                 -F "file=@$EXE"; then
               echo "EXE uploaded OK"
             else
-              echo "WARNING: EXE upload failed (network timeout likely — download from GitHub instead)"
+              echo "EXE auto-upload failed (cross-border timeout)."
+              echo "For manual upload, run: ./upload-gitee-exe.sh $TAG"
             fi
           fi
 
           echo "=== Gitee mirror done ==="
+          echo "::notice::Gitee release: https://gitee.com/Doylesama007/Snode-rpg/releases/tag/$TAG"
