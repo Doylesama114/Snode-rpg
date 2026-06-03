@@ -61,13 +61,12 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           EXE=$(ls *.exe | head -1)
-          YML=$(ls *.yml | head -1)
           TOKEN="${{ secrets.GITEE_TOKEN }}"
           API="https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases"
 
           echo "=== Gitee Mirror: $TAG ==="
-          echo "EXE: $EXE ($(du -h "$EXE" | cut -f1))"
-          echo "YML: $YML"
+          echo "EXE: $EXE ($(du -h "$EXE" 2>/dev/null | cut -f1 || echo '?'))"
+          ls -la *.yml 2>/dev/null
 
           # 1. 检查是否已有同 tag 的 Release
           echo "Checking existing releases..."
@@ -75,7 +74,7 @@ jobs:
 
           if [ -z "$REL_ID" ] || [ "$REL_ID" = "null" ]; then
             echo "Creating new release..."
-            BODY="🔄 自动同步 GitHub Release\n\n📥 GitHub: https://github.com/Doylesama114/Snode-rpg/releases/tag/$TAG"
+            BODY="🔄 自动同步 GitHub Release\n\n📥 GitHub: https://github.com/Doylesama114/Snode-rpg/releases/tag/$TAG\n\n⚡ 国内用户可在GitHub Releases页面直接下载exe"
             REL=$(curl -sf -X POST "$API" \
               -H "Content-Type: application/json" \
               -d "{\"tag_name\":\"$TAG\",\"name\":\"$TAG\",\"target_commitish\":\"master\",\"body\":\"$BODY\",\"prerelease\":false,\"access_token\":\"$TOKEN\"}")
@@ -85,27 +84,29 @@ jobs:
             echo "Release already exists: $REL_ID"
           fi
 
-          # 2. 上传 exe（大文件，best-effort）
-          echo "Uploading $EXE..."
-          if curl -sf --max-time 300 --retry 2 --retry-delay 10 \
-              -X POST "$API/$REL_ID/attach_files" \
-              -F "access_token=$TOKEN" \
-              -F "file=@$EXE"; then
-            echo "EXE uploaded OK"
-          else
-            echo "WARNING: EXE upload failed (may exceed Gitee size limit or network timeout)"
-          fi
-
-          # 3. 上传 latest.yml
-          if [ -n "$YML" ]; then
+          # 2. 上传所有 yml 文件
+          for YML in *.yml; do
             echo "Uploading $YML..."
             if curl -sf --max-time 60 --retry 2 --retry-delay 5 \
                 -X POST "$API/$REL_ID/attach_files" \
                 -F "access_token=$TOKEN" \
                 -F "file=@$YML"; then
-              echo "YML uploaded OK"
+              echo "  $YML uploaded OK"
             else
-              echo "WARNING: YML upload failed"
+              echo "  WARNING: $YML upload failed"
+            fi
+          done
+
+          # 3. 上传 exe（大文件，加长超时 + 更多重试）
+          if [ -n "$EXE" ]; then
+            echo "Uploading $EXE (this may take several minutes)..."
+            if curl -sf --max-time 900 --retry 3 --retry-delay 30 --retry-max-time 1200 \
+                -X POST "$API/$REL_ID/attach_files" \
+                -F "access_token=$TOKEN" \
+                -F "file=@$EXE"; then
+              echo "EXE uploaded OK"
+            else
+              echo "WARNING: EXE upload failed (network timeout likely — download from GitHub instead)"
             fi
           fi
 

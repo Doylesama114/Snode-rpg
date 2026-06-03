@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.565',
+    date: '2026-06-03',
+    changes: [
+      '修复Gitee镜像：上传全部yml文件(含latest.yml)，exe超时延长至900s+3次重试'
+    ]
+  },
+
+
+  {
     version: '1.0.564',
     date: '2026-06-03',
     changes: [
