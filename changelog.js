@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.561',
+    date: '2026-06-03',
+    changes: [
+      'GitHub更新检查403修复：electron-builder publish添加GH_TOKEN认证，更新错误信息增加友好提示引导用户使用国内镜像'
+    ]
+  },
+
+
+  {
     version: '1.0.560',
     date: '2026-06-02',
     changes: [
