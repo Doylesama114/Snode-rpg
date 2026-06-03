@@ -34,7 +34,12 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
-  sendUpdateStatus({ status: 'error', message: err.message });
+  var msg = err.message || '';
+  // GitHub 403 rate-limit: give user-friendly message
+  if (msg.indexOf('403') >= 0 || msg.indexOf('Forbidden') >= 0 || msg.indexOf('restricted') >= 0) {
+    msg = 'GitHub 访问受限（403），可能是请求频率过高。请稍后重试，或使用"国内镜像"按钮从 Gitee 更新。';
+  }
+  sendUpdateStatus({ status: 'error', message: msg });
 });
 
 // IPC: 手动检查更新
