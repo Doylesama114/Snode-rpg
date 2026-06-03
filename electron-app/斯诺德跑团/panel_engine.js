@@ -2727,7 +2727,7 @@ function isSlotLocked(slot){
 
 
 function getArmorAC(armorName) {
-
+  armorName = itemName(armorName);
 
   if (armorACMap[armorName]) return armorACMap[armorName];
 
