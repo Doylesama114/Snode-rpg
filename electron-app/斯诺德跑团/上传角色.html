@@ -384,8 +384,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
       else if(_ehd==="背包")_curEquipSlot="背包";
     }
     var _ek=c("K"+_er);if(_ek&&_ek!=="名称"&&_ek!=="效果"&&_ek.indexOf("名称")<0){
-      // Within weapon section: 1st item → main-hand, rest → off-hand
-      if(_curEquipSlot==="主手武器"&&_weaponIdx>=1)_curEquipSlot="副手武器";
+      if(_curEquipSlot==="主手武器"&&_weaponIdx>=1){_curEquipSlot="副手武器";console.log("WEAPON OFFHAND",_ek,_weaponIdx);}
       var _ew=parseFloat(c("S"+_er))||0;
       if(!s.equipment[_curEquipSlot])s.equipment[_curEquipSlot]=[];
       s.equipment[_curEquipSlot].push({item:_ek,weight:_ew});
