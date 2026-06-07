@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.569',
+    date: '2026-06-07',
+    changes: [
+      '修复tooltip范围：限制在.detail描述区域，不再匹配导航标题'
+    ]
+  },
+
+
+  {
     version: '1.0.568',
     date: '2026-06-07',
     changes: [
