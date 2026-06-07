@@ -34,3 +34,4 @@ nul
 
 # Playwright MCP traces
 .playwright-mcp/
+upload-gitee-exe.sh

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.566',
+    date: '2026-06-07',
+    changes: [
+      '国内镜像按钮暂不可用：Gitee文件大小限制导致exe无法上传，寻找替代方案中'
+    ]
+  },
+
+
+  {
     version: '1.0.565',
     date: '2026-06-03',
     changes: [

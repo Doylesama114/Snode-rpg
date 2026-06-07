@@ -48,27 +48,11 @@ ipcMain.on('check-update', () => {
   autoUpdater.checkForUpdates();
 });
 
-// IPC: 从 Gitee 国内镜像更新
+// IPC: 从 Gitee 国内镜像更新（暂不可用）
 ipcMain.on('check-update-gitee', () => {
-  sendUpdateStatus({ status: 'downloading', version: 'gitee' });
-  // 从 Gitee 下载 latest.yml 获取最新版本信息
-  const https = require('https');
-  https.get('https://gitee.com/Doylesama007/Snode-rpg/releases/latest', { headers: { 'User-Agent': 'Snowd-Updater' } }, (res) => {
-    let data = '';
-    res.on('data', chunk => data += chunk);
-    res.on('end', () => {
-      // 重定向到 GitHub 下载（Gitee release 附件下载速度慢）
-      const match = data.match(/\/Doylesama007\/Snode-rpg\/releases\/tag\/(v[\d.]+)/);
-      if (match) {
-        sendUpdateStatus({ status: 'checking' });
-        autoUpdater.checkForUpdates(); // 回退到 GitHub 检查
-      } else {
-        autoUpdater.checkForUpdates();
-      }
-    });
-  }).on('error', () => {
-    autoUpdater.checkForUpdates();
-  });
+  // Gitee API文件大小限制(50MB)导致exe无法自动上传，手动上传也有问题
+  // 正在寻找新的国内镜像替代方案，请使用GitHub更新
+  sendUpdateStatus({ status: 'error', message: '国内镜像暂不可用（Gitee文件大小限制），请使用GitHub更新' });
 });
 
 // IPC: 手动重启
