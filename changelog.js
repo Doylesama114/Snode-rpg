@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.567',
+    date: '2026-06-07',
+    changes: [
+      '帮助页兼职规则完善：新增不可兼职列、职业兼容性矩阵、附赠职业说明'
+    ]
+  },
+
+
+  {
     version: '1.0.566',
     date: '2026-06-07',
     changes: [
