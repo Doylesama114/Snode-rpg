@@ -169,39 +169,11 @@ var RULE_TOOLTIPS = {
   window._tooltipApplied=true;
 
   // Scan all text nodes in the page body and wrap matched keywords
-  function applyTooltips(root){
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);
-    var texts=[];
-    while(walker.nextNode())texts.push(walker.currentNode);
-    for(var i=0;i<texts.length;i++){
-      var node=texts[i];
-      var parent=node.parentNode;
-      // Skip already processed, script, style, and existing tooltip spans
-      if(!parent||parent.nodeName==='SCRIPT'||parent.nodeName==='STYLE')continue;
-      if(parent.classList&&parent.classList.contains('tt'))continue;
-      // Skip chip elements (they have click handlers for filtering)
-      if(parent.classList&&parent.classList.contains('chip'))continue;
-
-      var text=node.nodeValue;
-      var replaced=false;
-      for(var key in RULE_TOOLTIPS){
-        if(text.indexOf(key)>=0){
-          // Only replace if not inside a chip (chips handle it separately)
-          var span='<span class="tt" data-tt="'+RULE_TOOLTIPS[key].replace(/"/g,'&quot;')+'">'+key+'</span>';
-          text=text.split(key).join(span);
-          replaced=true;
-        }
-      }
-      if(replaced){
-        var wrapper=document.createElement('span');
-        wrapper.innerHTML=text;
-        parent.replaceChild(wrapper,node);
-      }
-    }
-
-    // For .chip elements: add tooltip on hover/longpress without break click
-    var chips=root.querySelectorAll('.chips .chip');
-    for(var i=0;i<chips.length;i++){
+  function applyTooltips(root,mode){
+    if(mode==='chips'){
+      // Handle chip elements with tooltips
+      var chips=root.querySelectorAll('.chips .chip');
+      for(var i=0;i<chips.length;i++){
       var chip=chips[i];
       var kw=chip.textContent.trim();
       if(RULE_TOOLTIPS[kw]){
@@ -223,8 +195,45 @@ var RULE_TOOLTIPS = {
         });
       }
     }
+    return;
   }
+  // Default mode: text node scanning within description containers
+  var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);
+  var texts=[];
+  while(walker.nextNode())texts.push(walker.currentNode);
+  for(var i=0;i<texts.length;i++){
+    var node=texts[i];
+    var parent=node.parentNode;
+    if(!parent||parent.nodeName==='SCRIPT'||parent.nodeName==='STYLE')continue;
+    if(parent.classList&&parent.classList.contains('tt'))continue;
+    // Skip chip elements (they have click handlers for filtering)
+    if(parent.classList&&parent.classList.contains('chip'))continue;
+    var text=node.nodeValue;
+    var replaced=false;
+    for(var key in RULE_TOOLTIPS){
+      if(text.indexOf(key)>=0){
+        var span='<span class="tt" data-tt="'+RULE_TOOLTIPS[key].replace(/"/g,'&quot;')+'">'+key+'</span>';
+        text=text.split(key).join(span);
+        replaced=true;
+      }
+    }
+    if(replaced){
+      var wrapper=document.createElement('span');
+      wrapper.innerHTML=text;
+      parent.replaceChild(wrapper,node);
+    }
+  }
+}
 
-  if(document.readyState==='complete')applyTooltips(document.body);
-  else window.addEventListener('load',function(){applyTooltips(document.body);});
+if(document.readyState==='complete')initTooltips();
+  else window.addEventListener('load',function(){initTooltips();});
+
+  function initTooltips(){
+    // Scan only description areas (not titles/navigation)
+    var containers=document.querySelectorAll('.detail, .search-result-item, .feat-desc');
+    for(var i=0;i<containers.length;i++)applyTooltips(containers[i]);
+    // Also scan chips (keyword tags) — all chips containers
+    var chipsContainers=document.querySelectorAll('.chips');
+    for(var ci=0;ci<chipsContainers.length;ci++)applyTooltips(chipsContainers[ci],'chips');
+  }
 })();
