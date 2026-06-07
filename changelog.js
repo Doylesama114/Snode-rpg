@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.568',
+    date: '2026-06-07',
+    changes: [
+      '全职业关键词tooltip系统上线：异常状态30+关键词100+定义，桌面hover+移动端长按查看，141条完整字典覆盖31个页面'
+    ]
+  },
+
+
+  {
     version: '1.0.567',
     date: '2026-06-07',
     changes: [
