@@ -460,7 +460,7 @@
 /* === Tooltip system (common_tooltip.js) === */
 .tt {
   cursor: help;
-  border-bottom: 2px dashed #a46d1f;
+  border-bottom: 2px solid #c0782f;
   position: relative;
 }
 .tt::after {
@@ -504,7 +504,10 @@
 .tt-show::before {
   opacity: 1;
 }
-/* Chip tooltips: inherit chip colors */
+/* Chip tooltips: no underline, inherit chip colors */
+.chip.tt {
+  border-bottom: none !important;
+}
 .chip.tt::after {
   font-weight: normal;
   font-size: 13px;
