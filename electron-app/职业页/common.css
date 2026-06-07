@@ -457,3 +457,64 @@
 
 .nav-anchor { display: none; }
 
+/* === Tooltip system (common_tooltip.js) === */
+.tt {
+  cursor: help;
+  border-bottom: 1px dotted #a46d1f;
+  position: relative;
+}
+.tt::after {
+  content: attr(data-tt);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  background: #1f2522;
+  color: #f6f4ef;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 320px;
+  min-width: 160px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.tt::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1f2522;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tt:hover::after,
+.tt:hover::before,
+.tt-show::after,
+.tt-show::before {
+  opacity: 1;
+}
+/* Chip tooltips: inherit chip colors */
+.chip.tt::after {
+  font-weight: normal;
+  font-size: 13px;
+}
+/* Mobile: ensure tooltip doesn't overflow viewport */
+@media (max-width: 600px) {
+  .tt::after {
+    max-width: 260px;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
+
