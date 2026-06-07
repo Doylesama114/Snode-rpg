@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>濂囨甯?路 杩涢樁閫斿緞</title>
+<title>奇械师 · 进阶途径</title>
 <link rel="stylesheet" href="common.css"/>
 <style>
     body { background: var(--bg); }
@@ -42,7 +42,7 @@
     border: 2px solid #666; border-radius: 6px; background: #333; color: #888;
     font-size: 13px; font-weight: 700; cursor: not-allowed; letter-spacing: 1px; opacity: 0.6; }
 
-/* === 鏂规鈶?鏁翠綋鑳屾櫙鍒嗗眰 === */
+/* === 方案⑥ 整体背景分层 === */
 .adv-detail {
     margin-top: 16px; padding: 0 20px;
     border: 1px solid var(--line);
@@ -56,7 +56,7 @@
     box-shadow: 0 2px 16px rgba(31,37,34,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-/* === 鏂规鈶?灞曞紑鍔ㄧ敾 === */
+/* === 方案⑤ 展开动画 === */
 .adv-detail.expand {
     max-height: 5000px; opacity: 1; padding: 20px;
     animation: detail-fade-in 0.4s ease-out;
@@ -66,7 +66,7 @@
     100% { opacity: 1; transform: translateY(0); }
 }
 
-/* 鎻忚堪 */
+/* 描述 */
 .adv-detail .detail-desc {
     color: var(--ink); margin-bottom: 16px;
     font-size: 16px; line-height: 1.8;
@@ -77,7 +77,7 @@
     position: relative;
 }
 
-/* === 鏂规鈶?鍗＄墖鍖?=== */
+/* === 方案① 卡片化 === */
 .adv-detail .detail-ability {
     margin: 14px 0; padding: 16px 18px 18px;
     border: 1px solid var(--line);
@@ -99,7 +99,7 @@
     box-shadow: 0 4px 12px rgba(31,37,34,0.08);
 }
 
-/* === 鏂规鈶?鏂囧瓧鎺掔増 === */
+/* === 方案② 文字排版 === */
 .adv-detail .detail-ability .ab-name {
     font-weight: 800; font-size: 18px; color: var(--ink);
     display: block;
@@ -138,7 +138,7 @@
     display: inline-block;
 }
 
-/* === 鏂规鈶?娲炲療鍖?=== */
+/* === 方案④ 洞察区 === */
 .adv-detail .detail-insight {
     margin-top: 16px; padding: 16px 18px;
     border: 1px solid var(--line);
@@ -188,7 +188,7 @@
     
 }
 
-/* 鍥剧墖 */
+/* 图片 */
 .adv-detail .detail-images {
     display: flex; flex-wrap: wrap; gap: 12px;
     margin: 16px 0; justify-content: center;
@@ -286,7 +286,7 @@
   font-size: 12px;
 }
 
-/* === 鏂规鈶?琛ㄦ牸鍗囩骇 === */
+/* === 方案③ 表格升级 === */
 .adv-detail .detail-table-wrap {
     overflow-x: auto; margin: 16px 0;
     border-radius: 8px;
@@ -420,501 +420,501 @@
 <body>
 
 <div class="back-links">
-    <a href="棣栭〉.html">鈫?杩斿洖涓婚〉</a>
-    <a href="濂囨甯?html">鈫?杩斿洖濂囨甯堝熀纭€椤?/a>
+    <a href="首页.html">← 返回主页</a>
+    <a href="奇械师.html">← 返回奇械师基础页</a>
 </div>
 
 <header>
     <div class="topbar">
         <div>
-            <h1>濂囨甯?路 杩涢樁閫斿緞</h1>
-            <p class="subtitle">35 涓彲閫夎繘闃?/p>
+            <h1>奇械师 · 进阶途径</h1>
+            <p class="subtitle">35 个可选进阶</p>
         </div>
         <label class="searchbox">
-            <input id="artificer-adv-search" type="search" placeholder="鎼滅储..." autocomplete="off" />
+            <input id="artificer-adv-search" type="search" placeholder="搜索..." autocomplete="off" />
         </label>
     </div>
 </header>
 
 <div class="adv-container" id="artificer-adv-container">
-            <article data-name="姝﹀櫒澶у笀" class="adv-card" id="adv-artificer-姝﹀櫒澶у笀" data-search="姝﹀櫒澶у笀 鎴樺＋銆佺寧浜恒€佺墽甯堛€佸湥楠戝＋銆佸姊板笀 浣犵殑鐗规畩涓撻暱涓寘鍚湁鎶€宸т笓瀹躲€佹鍣ㄧ簿閫氭垨鎴樻妧涓撳 鍦ㄦ垬鏂楃幆鑺備腑绱浣跨敤杩囧叏閮ㄦ鍣ㄧ被鍒彂璧疯繃鏀诲嚮 鎸佹湁涓夋妸绋€鏈夊搧璐ㄦ垨浠ヤ笂鐨勬鍣紝骞朵笖鍏朵腑涓€鎶婃鍣ㄨ嚦灏戞嫢鏈夌弽绋€鍝佽川">
-        <h4>姝﹀櫒澶у笀</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鎴樺＋銆佺寧浜恒€佺墽甯堛€佸湥楠戝＋銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺15</span>  <span>鏁忔嵎12</span>  <span>浣撹川12</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="武器大师" class="adv-card" id="adv-artificer-武器大师" data-search="武器大师 战士、猎人、牧师、圣骑士、奇械师 你的特殊专长中包含有技巧专家、武器精通或战技专家 在战斗环节中累计使用过全部武器类别发起过攻击 持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质">
+        <h4>武器大师</h4>
+        <p><span class="field">来源：</span>战士、猎人、牧师、圣骑士、奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>敏捷12</span>  <span>体质12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犵殑鐗规畩涓撻暱涓寘鍚湁鎶€宸т笓瀹躲€佹鍣ㄧ簿閫氭垨鎴樻妧涓撳</li>
-          <li>鍦ㄦ垬鏂楃幆鑺備腑绱浣跨敤杩囧叏閮ㄦ鍣ㄧ被鍒彂璧疯繃鏀诲嚮</li>
-          <li>鎸佹湁涓夋妸绋€鏈夊搧璐ㄦ垨浠ヤ笂鐨勬鍣紝骞朵笖鍏朵腑涓€鎶婃鍣ㄨ嚦灏戞嫢鏈夌弽绋€鍝佽川</li>
+          <li>你的特殊专长中包含有技巧专家、武器精通或战技专家</li>
+          <li>在战斗环节中累计使用过全部武器类别发起过攻击</li>
+          <li>持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="绗︽枃娉曞笀" class="adv-card" id="adv-artificer-绗︽枃娉曞笀" data-search="绗︽枃娉曞笀 娉曞笀銆侀瓟濂戝笀銆佸姊板笀 婵€娲讳竴澶勫彜浠ｉ仐杩逛腑甯冪疆鐨勩€佸浠婂け鏁堢殑鏈哄叧鎴栫粨鐣岋紝骞剁‘淇濆叾缁存寔杩愯浆鑷冲皯24涓皬鏃?浣犺姳璐硅繃骞曢棿鐗╄鏉ラ槄璇讳竴鏈瓟娉曠鏂囨垨缁撶晫鏈夊叧鐨勯瓟鍏?鑾峰緱涓€鏋氫紶鎵胯嚦浠婄殑鍙よ€佺鏂囷紝骞舵垚涓哄叾瀹堟姢鑰?>
-        <h4>绗︽枃娉曞笀</h4>
-        <p><span class="field">鏉ユ簮锛?/span>娉曞笀銆侀瓟濂戝笀銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏18</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="符文法师" class="adv-card" id="adv-artificer-符文法师" data-search="符文法师 法师、魔契师、奇械师 激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时 你花费过幕间物语来阅读一本魔法符文或结界有关的魔典 获得一枚传承至今的古老符文，并成为其守护者">
+        <h4>符文法师</h4>
+        <p><span class="field">来源：</span>法师、魔契师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力18</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>婵€娲讳竴澶勫彜浠ｉ仐杩逛腑甯冪疆鐨勩€佸浠婂け鏁堢殑鏈哄叧鎴栫粨鐣岋紝骞剁‘淇濆叾缁存寔杩愯浆鑷冲皯24涓皬鏃?/li>
-          <li>浣犺姳璐硅繃骞曢棿鐗╄鏉ラ槄璇讳竴鏈瓟娉曠鏂囨垨缁撶晫鏈夊叧鐨勯瓟鍏?/li>
-          <li>鑾峰緱涓€鏋氫紶鎵胯嚦浠婄殑鍙よ€佺鏂囷紝骞舵垚涓哄叾瀹堟姢鑰?/li>
+          <li>激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时</li>
+          <li>你花费过幕间物语来阅读一本魔法符文或结界有关的魔典</li>
+          <li>获得一枚传承至今的古老符文，并成为其守护者</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="绁炲皠鎵? class="adv-card" id="adv-artificer-绁炲皠鎵? data-search="绁炲皠鎵?鎴樺＋銆佺寧浜恒€佸姊板笀 杩涜涓夊崄娆℃垚鍔熺殑鏀诲嚮鍛戒腑妫€瀹?杩炵画杩涜鍗佹鎴愬姛鐨勬敾鍑诲懡涓瀹氾紙濡傛灉浣犵殑鏀诲嚮鍛戒腑妫€瀹氬け璐ワ紝閭ｄ箞蹇呴』閲嶆柊杩涜璁＄畻锛?鍦ㄤ竴娆″姡鍔挎垨鏋佸ぇ鍔ｅ娍鐨勬敾鍑讳腑瑙﹀彂鏆村嚮">
-        <h4>绁炲皠鎵?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鎴樺＋銆佺寧浜恒€佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏁忔嵎15</span>  <span>鎰熺煡15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span> <span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="神射手" class="adv-card" id="adv-artificer-神射手" data-search="神射手 战士、猎人、奇械师 进行三十次成功的攻击命中检定 连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算） 在一次劣势或极大劣势的攻击中触发暴击">
+        <h4>神射手</h4>
+        <p><span class="field">来源：</span>战士、猎人、奇械师</p>
+        <p><span class="field">属性需求：</span><span>敏捷15</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>杩涜涓夊崄娆℃垚鍔熺殑鏀诲嚮鍛戒腑妫€瀹?/li>
-          <li>杩炵画杩涜鍗佹鎴愬姛鐨勬敾鍑诲懡涓瀹氾紙濡傛灉浣犵殑鏀诲嚮鍛戒腑妫€瀹氬け璐ワ紝閭ｄ箞蹇呴』閲嶆柊杩涜璁＄畻锛?/li>
-          <li>鍦ㄤ竴娆″姡鍔挎垨鏋佸ぇ鍔ｅ娍鐨勬敾鍑讳腑瑙﹀彂鏆村嚮</li>
+          <li>进行三十次成功的攻击命中检定</li>
+          <li>连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算）</li>
+          <li>在一次劣势或极大劣势的攻击中触发暴击</li>
         </ol>
-              <button class="detail-btn" data-adv-name="绁炲皠鎵?>鏌ョ湅璇︽儏</button>
+              <button class="detail-btn" data-adv-name="神射手">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍗氬鑰? class="adv-card" id="adv-artificer-鍗氬鑰? data-search="鍗氬鑰?鐗у笀銆佸姊板笀 浣犻槄璇昏繃浜屽崄鏈笉鍚岀被鍨嬬殑涔︾睄 浣犺姳璐硅繃骞曢棿鐗╄鏉ラ槄璇讳竴鏈换鎰忕被鍨嬬殑榄斿吀 鑺辫垂涓€娆￠暱杈惧崄骞存椂闂寸殑骞曢棿鐗╄鍘绘綔蹇冨涔犮€侀槄璇讳功鏈拰鑾峰彇鐭ヨ瘑浠ユ垚涓虹湡姝ｇ殑鍗氬鑰?>
-        <h4>鍗氬鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鐗у笀銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏18</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="博学者" class="adv-card" id="adv-artificer-博学者" data-search="博学者 牧师、奇械师 你阅读过二十本不同类型的书籍 你花费过幕间物语来阅读一本任意类型的魔典 花费一次长达十年时间的幕间物语去潜心学习、阅读书本和获取知识以成为真正的博学者">
+        <h4>博学者</h4>
+        <p><span class="field">来源：</span>牧师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力18</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犻槄璇昏繃浜屽崄鏈笉鍚岀被鍨嬬殑涔︾睄</li>
-          <li>浣犺姳璐硅繃骞曢棿鐗╄鏉ラ槄璇讳竴鏈换鎰忕被鍨嬬殑榄斿吀</li>
-          <li>鑺辫垂涓€娆￠暱杈惧崄骞存椂闂寸殑骞曢棿鐗╄鍘绘綔蹇冨涔犮€侀槄璇讳功鏈拰鑾峰彇鐭ヨ瘑浠ユ垚涓虹湡姝ｇ殑鍗氬鑰?/li>
+          <li>你阅读过二十本不同类型的书籍</li>
+          <li>你花费过幕间物语来阅读一本任意类型的魔典</li>
+          <li>花费一次长达十年时间的幕间物语去潜心学习、阅读书本和获取知识以成为真正的博学者</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍙や唬榄斿澹? class="adv-card" id="adv-artificer-鍙や唬榄斿澹? data-search="鍙や唬榄斿澹?鐗у笀銆佸姊板笀 澶嶅師涓€椤瑰嚭鍦熶簬鍙や唬閬楄抗涓殑銆佺幇宸插け浼犵殑浜嬬墿锛堜緥濡傚彶瀛︽枃鐚€佸伐鑹烘妧鏈垨鏄叾浠栫殑鐭ヨ瘑浼犳壙绛夛級 婵€娲讳竴澶勫彜浠ｉ仐杩逛腑甯冪疆鐨勩€佸浠婂け鏁堢殑鏈哄叧鎴栫粨鐣岋紝骞剁‘淇濆叾缁存寔杩愯浆鑷冲皯24涓皬鏃?涓庝竴浣嶅彜浠ｈ嫳鐏垫垨鏃堕棿棰嗕富绛捐濂戠害锛屼娇瀵规柟鍗忓姪浣犲畬鎴愭檵鍗囦负鍙や唬榄斿澹殑浠紡">
-        <h4>鍙や唬榄斿澹?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鐗у笀銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="古代魔导士" class="adv-card" id="adv-artificer-古代魔导士" data-search="古代魔导士 牧师、奇械师 复原一项出土于古代遗迹中的、现已失传的事物（例如史学文献、工艺技术或是其他的知识传承等） 激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时 与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式">
+        <h4>古代魔导士</h4>
+        <p><span class="field">来源：</span>牧师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>澶嶅師涓€椤瑰嚭鍦熶簬鍙や唬閬楄抗涓殑銆佺幇宸插け浼犵殑浜嬬墿锛堜緥濡傚彶瀛︽枃鐚€佸伐鑹烘妧鏈垨鏄叾浠栫殑鐭ヨ瘑浼犳壙绛夛級</li>
-          <li>婵€娲讳竴澶勫彜浠ｉ仐杩逛腑甯冪疆鐨勩€佸浠婂け鏁堢殑鏈哄叧鎴栫粨鐣岋紝骞剁‘淇濆叾缁存寔杩愯浆鑷冲皯24涓皬鏃?/li>
-          <li>涓庝竴浣嶅彜浠ｈ嫳鐏垫垨鏃堕棿棰嗕富绛捐濂戠害锛屼娇瀵规柟鍗忓姪浣犲畬鎴愭檵鍗囦负鍙や唬榄斿澹殑浠紡</li>
+          <li>复原一项出土于古代遗迹中的、现已失传的事物（例如史学文献、工艺技术或是其他的知识传承等）</li>
+          <li>激活一处古代遗迹中布置的、如今失效的机关或结界，并确保其维持运转至少24个小时</li>
+          <li>与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鏋偖甯? class="adv-card" id="adv-artificer-鏋偖甯? data-search="鏋偖甯?濂囨甯?浣犱娇鐢ㄦ灙姊版鍣ㄥ嚮鏉€浜屽崄鍚嶈兘澶熸彁渚涚粡楠屽€肩殑瑙掕壊 浣犱娇鐢ㄦ灙姊版鍣ㄨЕ鍙戝崄娆℃毚鍑?浣犱娇鐢ㄦ灙姊版鍣ㄥ湪涓€娆℃敾鍑讳腑瀵硅嚦灏戝洓鍚嶈鑹查€犳垚浼ゅ">
-        <h4>鏋偖甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏁忔嵎12</span>  <span>鎰熺煡15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="枪炮师" class="adv-card" id="adv-artificer-枪炮师" data-search="枪炮师 奇械师 你使用枪械武器击杀二十名能够提供经验值的角色 你使用枪械武器触发十次暴击 你使用枪械武器在一次攻击中对至少四名角色造成伤害">
+        <h4>枪炮师</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>敏捷12</span>  <span>感知15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犱娇鐢ㄦ灙姊版鍣ㄥ嚮鏉€浜屽崄鍚嶈兘澶熸彁渚涚粡楠屽€肩殑瑙掕壊</li>
-          <li>浣犱娇鐢ㄦ灙姊版鍣ㄨЕ鍙戝崄娆℃毚鍑?/li>
-          <li>浣犱娇鐢ㄦ灙姊版鍣ㄥ湪涓€娆℃敾鍑讳腑瀵硅嚦灏戝洓鍚嶈鑹查€犳垚浼ゅ</li>
+          <li>你使用枪械武器击杀二十名能够提供经验值的角色</li>
+          <li>你使用枪械武器触发十次暴击</li>
+          <li>你使用枪械武器在一次攻击中对至少四名角色造成伤害</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍦ｉ摱宸ュ尃" class="adv-card" id="adv-artificer-鍦ｉ摱宸ュ尃" data-search="鍦ｉ摱宸ュ尃 濂囨甯?椹辨暎鍗佷釜涓嶆鐢熺墿锛堥€氳繃鐗╃悊鎵嬫鍑绘潃涓у案銆侀楂呯瓑琛屽緞涓嶈涓洪┍鏁ｏ級 鍗忓姪宸辨柟闃佃惀瑙掕壊鍑昏触鍗佷簲涓粦鏆楃敓鐗?鍒朵綔涓€浠惰兘澶熷湪瀵规姉榛戞殫杩囩▼涓捣鍒板叧閿綔鐢ㄧ殑绁炲閬撳叿">
-        <h4>鍦ｉ摱宸ュ尃</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏12</span>  <span>鎰熺煡15</span>  <span>鎰忓織12</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="圣银工匠" class="adv-card" id="adv-artificer-圣银工匠" data-search="圣银工匠 奇械师 驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散） 协助己方阵营角色击败十五个黑暗生物 制作一件能够在对抗黑暗过程中起到关键作用的神奇道具">
+        <h4>圣银工匠</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知15</span>  <span>意志12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>椹辨暎鍗佷釜涓嶆鐢熺墿锛堥€氳繃鐗╃悊鎵嬫鍑绘潃涓у案銆侀楂呯瓑琛屽緞涓嶈涓洪┍鏁ｏ級</li>
-          <li>鍗忓姪宸辨柟闃佃惀瑙掕壊鍑昏触鍗佷簲涓粦鏆楃敓鐗?/li>
-          <li>鍒朵綔涓€浠惰兘澶熷湪瀵规姉榛戞殫杩囩▼涓捣鍒板叧閿綔鐢ㄧ殑绁炲閬撳叿</li>
+          <li>驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）</li>
+          <li>协助己方阵营角色击败十五个黑暗生物</li>
+          <li>制作一件能够在对抗黑暗过程中起到关键作用的神奇道具</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鐐奸噾鏈＋" class="adv-card" id="adv-artificer-鐐奸噾鏈＋" data-search="鐐奸噾鏈＋ 娉曞笀銆佸姊板笀 楗敤浜屽崄绉嶄笉鍚岀殑榄旀硶鑽墏 瀹屾垚涓夋鎴愬姛鐨勯瓟娉曡嵂鍓傛敞灏勮瘯楠?閫氳繃鐐奸噾璇曢獙鐨勬柟寮忎娇涓€鍚嶈鑹茬殑鑱屼笟绛夌骇鎻愬崌1绾?>
-        <h4>鐐奸噾鏈＋</h4>
-        <p><span class="field">鏉ユ簮锛?/span>娉曞笀銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>浣撹川12</span>  <span>鏅哄姏15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B050">鈼?/span> <span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="炼金术士" class="adv-card" id="adv-artificer-炼金术士" data-search="炼金术士 法师、奇械师 饮用二十种不同的魔法药剂 完成三次成功的魔法药剂注射试验 通过炼金试验的方式使一名角色的职业等级提升1级">
+        <h4>炼金术士</h4>
+        <p><span class="field">来源：</span>法师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>体质12</span>  <span>智力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>楗敤浜屽崄绉嶄笉鍚岀殑榄旀硶鑽墏</li>
-          <li>瀹屾垚涓夋鎴愬姛鐨勯瓟娉曡嵂鍓傛敞灏勮瘯楠?/li>
-          <li>閫氳繃鐐奸噾璇曢獙鐨勬柟寮忎娇涓€鍚嶈鑹茬殑鑱屼笟绛夌骇鎻愬崌1绾?/li>
+          <li>饮用二十种不同的魔法药剂</li>
+          <li>完成三次成功的魔法药剂注射试验</li>
+          <li>通过炼金试验的方式使一名角色的职业等级提升1级</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鎴樺湴瑁呯敳甯? class="adv-card" id="adv-artificer-鎴樺湴瑁呯敳甯? data-search="鎴樺湴瑁呯敳甯?濂囨甯?寤洪€犳垨璐拱涓€鍙颁互鏈烘寮曟搸浣滀负鏍稿績椹卞姩鐨勫姊版満鐢诧紝骞剁‘淇濆湪杩欏彴濂囨鏈虹敳涓婃姇鍏ヤ环鍊?0000閲戝竵鐨勮姳璐圭敤浜庡崌绾ч儴浠跺拰鏇存柊鎹唬 鍒朵綔浜斾欢涓嶅悓鐨勩€佺█鏈夊搧璐ㄦ垨浠ヤ笂鐨勫啗澶囩墿鍝?椹鹃┒浣犵殑濂囨鏈虹敳鍙備笌涓€鍦哄畬鏁寸殑鎴樺焦">
-        <h4>鎴樺湴瑁呯敳甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>浣撹川12</span>  <span>鏅哄姏14</span>  <span>鎰忓織13</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span> <span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="战地装甲师" class="adv-card" id="adv-artificer-战地装甲师" data-search="战地装甲师 奇械师 建造或购买一台以机械引擎作为核心驱动的奇械机甲，并确保在这台奇械机甲上投入价值20000金币的花费用于升级部件和更新换代 制作五件不同的、稀有品质或以上的军备物品 驾驶你的奇械机甲参与一场完整的战役">
+        <h4>战地装甲师</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>体质12</span>  <span>智力14</span>  <span>意志13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>寤洪€犳垨璐拱涓€鍙颁互鏈烘寮曟搸浣滀负鏍稿績椹卞姩鐨勫姊版満鐢诧紝骞剁‘淇濆湪杩欏彴濂囨鏈虹敳涓婃姇鍏ヤ环鍊?0000閲戝竵鐨勮姳璐圭敤浜庡崌绾ч儴浠跺拰鏇存柊鎹唬</li>
-          <li>鍒朵綔浜斾欢涓嶅悓鐨勩€佺█鏈夊搧璐ㄦ垨浠ヤ笂鐨勫啗澶囩墿鍝?/li>
-          <li>椹鹃┒浣犵殑濂囨鏈虹敳鍙備笌涓€鍦哄畬鏁寸殑鎴樺焦</li>
+          <li>建造或购买一台以机械引擎作为核心驱动的奇械机甲，并确保在这台奇械机甲上投入价值20000金币的花费用于升级部件和更新换代</li>
+          <li>制作五件不同的、稀有品质或以上的军备物品</li>
+          <li>驾驶你的奇械机甲参与一场完整的战役</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="濂ヨ兘瑁呯敳甯? class="adv-card" id="adv-artificer-濂ヨ兘瑁呯敳甯? data-search="濂ヨ兘瑁呯敳甯?濂囨甯?寤洪€犳垨璐拱涓€鍙颁互濂ユ湳鑳介噺浣滀负鏍稿績椹卞姩鐨勫姊版満鐢诧紝骞剁‘淇濆湪杩欏彴濂囨鏈虹敳涓婃姇鍏ヤ环鍊?0000閲戝竵鐨勮姳璐圭敤浜庡崌绾ч儴浠跺拰鏇存柊鎹唬 鍒朵綔浜斾欢涓嶅悓鐨勩€佺█鏈夊搧璐ㄦ垨浠ヤ笂鐨勯瓟娉曠墿鍝?浣夸綘鐨勫姊版満鐢插叿澶囪嚦灏?000鐜涚撼鐨勯瓟鍔涘€?>
-        <h4>濂ヨ兘瑁呯敳甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏16</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="奥能装甲师" class="adv-card" id="adv-artificer-奥能装甲师" data-search="奥能装甲师 奇械师 建造或购买一台以奥术能量作为核心驱动的奇械机甲，并确保在这台奇械机甲上投入价值20000金币的花费用于升级部件和更新换代 制作五件不同的、稀有品质或以上的魔法物品 使你的奇械机甲具备至少5000玛纳的魔力值">
+        <h4>奥能装甲师</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>寤洪€犳垨璐拱涓€鍙颁互濂ユ湳鑳介噺浣滀负鏍稿績椹卞姩鐨勫姊版満鐢诧紝骞剁‘淇濆湪杩欏彴濂囨鏈虹敳涓婃姇鍏ヤ环鍊?0000閲戝竵鐨勮姳璐圭敤浜庡崌绾ч儴浠跺拰鏇存柊鎹唬</li>
-          <li>鍒朵綔浜斾欢涓嶅悓鐨勩€佺█鏈夊搧璐ㄦ垨浠ヤ笂鐨勯瓟娉曠墿鍝?/li>
-          <li>浣夸綘鐨勫姊版満鐢插叿澶囪嚦灏?000鐜涚撼鐨勯瓟鍔涘€?/li>
+          <li>建造或购买一台以奥术能量作为核心驱动的奇械机甲，并确保在这台奇械机甲上投入价值20000金币的花费用于升级部件和更新换代</li>
+          <li>制作五件不同的、稀有品质或以上的魔法物品</li>
+          <li>使你的奇械机甲具备至少5000玛纳的魔力值</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="闆风數鍗氬＋" class="adv-card" id="adv-artificer-闆风數鍗氬＋" data-search="闆风數鍗氬＋ 濂囨甯?浣犻€犳垚浜屽崄娆￠浄鐢典激瀹?浣犱骇鐢熷叡璁?0鐐圭數鑳?鍑€熺數鍔涚殑鎯婁汉娼滆兘瀹屾垚涓€椤瑰鏋滃湪娌℃湁鐢靛姏鐨勬椂浠ｇ粷瀵规棤娉曞畬鎴愮殑浠诲姟">
-        <h4>闆风數鍗氬＋</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏15</span>  <span>鎰熺煡14</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="雷电博士" class="adv-card" id="adv-artificer-雷电博士" data-search="雷电博士 奇械师 你造成二十次雷电伤害 你产生共计50点电能 凭借电力的惊人潜能完成一项如果在没有电力的时代绝对无法完成的任务">
+        <h4>雷电博士</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力15</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犻€犳垚浜屽崄娆￠浄鐢典激瀹?/li>
-          <li>浣犱骇鐢熷叡璁?0鐐圭數鑳?/li>
-          <li>鍑€熺數鍔涚殑鎯婁汉娼滆兘瀹屾垚涓€椤瑰鏋滃湪娌℃湁鐢靛姏鐨勬椂浠ｇ粷瀵规棤娉曞畬鎴愮殑浠诲姟</li>
+          <li>你造成二十次雷电伤害</li>
+          <li>你产生共计50点电能</li>
+          <li>凭借电力的惊人潜能完成一项如果在没有电力的时代绝对无法完成的任务</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="绾电伀鑰? class="adv-card" id="adv-artificer-绾电伀鑰? data-search="绾电伀鑰?榄斿甯堛€佸姊板笀 浣犳垚鍔熶娇鍗佸悕鏁屼汉杩涘叆鐏肩儳鐘舵€?閫氳繃鐏劙浼ゅ鍑绘潃浜屽崄鍚嶈鑹?浣犲紩鍙戠伀鐏惧苟鐑ф瘉涓€搴у煄甯傛垨鍩庨晣鐨勫湴鏍囨€у缓绛?>
-        <h4>绾电伀鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>榄斿甯堛€佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>浣撹川15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span> <span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="纵火者" class="adv-card" id="adv-artificer-纵火者" data-search="纵火者 魔契师、奇械师 你成功使十名敌人进入灼烧状态 通过火焰伤害击杀二十名角色 你引发火灾并烧毁一座城市或城镇的地标性建筑">
+        <h4>纵火者</h4>
+        <p><span class="field">来源：</span>魔契师、奇械师</p>
+        <p><span class="field">属性需求：</span><span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犳垚鍔熶娇鍗佸悕鏁屼汉杩涘叆鐏肩儳鐘舵€?/li>
-          <li>閫氳繃鐏劙浼ゅ鍑绘潃浜屽崄鍚嶈鑹?/li>
-          <li>浣犲紩鍙戠伀鐏惧苟鐑ф瘉涓€搴у煄甯傛垨鍩庨晣鐨勫湴鏍囨€у缓绛?/li>
+          <li>你成功使十名敌人进入灼烧状态</li>
+          <li>通过火焰伤害击杀二十名角色</li>
+          <li>你引发火灾并烧毁一座城市或城镇的地标性建筑</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍏堥┍" class="adv-card" id="adv-artificer-鍏堥┍" data-search="鍏堥┍ 濂囨甯?鍚戝崄鍚嶈鑹蹭粙缁嶅姊扮殑渚垮埄鎬у拰娼滆兘锛屼娇浠栦滑鍦ㄤ粖鍚庨€夋嫨鎴愪负濂囨甯堢殑鑱屼笟鑰?浣夸笁涓病鏈夊姊拌鏂界殑鑱氶泦鍦颁範鎯姊伴€犵墿鐨勫瓨鍦?浣挎椂浠ｇ殑绉戞妧娼祦鍚戝墠杩堣繘涓€姝?>
-        <h4>鍏堥┍</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏18</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="先驱" class="adv-card" id="adv-artificer-先驱" data-search="先驱 奇械师 向十名角色介绍奇械的便利性和潜能，使他们在今后选择成为奇械师的职业者 使三个没有奇械设施的聚集地习惯奇械造物的存在 使时代的科技潮流向前迈进一步">
+        <h4>先驱</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力18</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鍚戝崄鍚嶈鑹蹭粙缁嶅姊扮殑渚垮埄鎬у拰娼滆兘锛屼娇浠栦滑鍦ㄤ粖鍚庨€夋嫨鎴愪负濂囨甯堢殑鑱屼笟鑰?/li>
-          <li>浣夸笁涓病鏈夊姊拌鏂界殑鑱氶泦鍦颁範鎯姊伴€犵墿鐨勫瓨鍦?/li>
-          <li>浣挎椂浠ｇ殑绉戞妧娼祦鍚戝墠杩堣繘涓€姝?/li>
+          <li>向十名角色介绍奇械的便利性和潜能，使他们在今后选择成为奇械师的职业者</li>
+          <li>使三个没有奇械设施的聚集地习惯奇械造物的存在</li>
+          <li>使时代的科技潮流向前迈进一步</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="钂告苯楠戝＋" class="adv-card" id="adv-artificer-钂告苯楠戝＋" data-search="钂告苯楠戝＋ 濂囨甯?鎷ユ湁涓€濂楄捀姹藉姩鍔涢摖鐢诧紝骞剁‘淇濆湪鍚姩钂告苯鍔ㄥ姏閾犵敳鐨勮繃绋嬩腑鍏辫澧炲姞30鐐圭儹鑳藉€?鍦ㄧ┛鎴磋捀姹藉姩鍔涢摖鐢茬殑鎯呭喌涓嬭耽寰楀崄娆″姏閲忓鎶楃殑鑳滃埄 鍦ㄦ垬鏂楃幆鑺備腑绌挎埓钂告苯鍔ㄥ姏閾犵敳骞朵笖绱閫氳繃鎶ょ浘鍊笺€佹姢鐢插€煎拰涓存椂鐢熷懡鍊肩瓑鎵嬫鎵垮彈瓒呰繃500鐐逛激瀹?>
-        <h4>钂告苯楠戝＋</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺15</span>  <span>浣撹川15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="蒸汽骑士" class="adv-card" id="adv-artificer-蒸汽骑士" data-search="蒸汽骑士 奇械师 拥有一套蒸汽动力铠甲，并确保在启动蒸汽动力铠甲的过程中共计增加30点热能值 在穿戴蒸汽动力铠甲的情况下赢得十次力量对抗的胜利 在战斗环节中穿戴蒸汽动力铠甲并且累计通过护盾值、护甲值和临时生命值等手段承受超过500点伤害">
+        <h4>蒸汽骑士</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量15</span>  <span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鎷ユ湁涓€濂楄捀姹藉姩鍔涢摖鐢诧紝骞剁‘淇濆湪鍚姩钂告苯鍔ㄥ姏閾犵敳鐨勮繃绋嬩腑鍏辫澧炲姞30鐐圭儹鑳藉€?/li>
-          <li>鍦ㄧ┛鎴磋捀姹藉姩鍔涢摖鐢茬殑鎯呭喌涓嬭耽寰楀崄娆″姏閲忓鎶楃殑鑳滃埄</li>
-          <li>鍦ㄦ垬鏂楃幆鑺備腑绌挎埓钂告苯鍔ㄥ姏閾犵敳骞朵笖绱閫氳繃鎶ょ浘鍊笺€佹姢鐢插€煎拰涓存椂鐢熷懡鍊肩瓑鎵嬫鎵垮彈瓒呰繃500鐐逛激瀹?/li>
+          <li>拥有一套蒸汽动力铠甲，并确保在启动蒸汽动力铠甲的过程中共计增加30点热能值</li>
+          <li>在穿戴蒸汽动力铠甲的情况下赢得十次力量对抗的胜利</li>
+          <li>在战斗环节中穿戴蒸汽动力铠甲并且累计通过护盾值、护甲值和临时生命值等手段承受超过500点伤害</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="绌洪棿鏋舵瀯甯? class="adv-card" id="adv-artificer-绌洪棿鏋舵瀯甯? data-search="绌洪棿鏋舵瀯甯?濂囨甯堛€侀瓟濂戝笀 浣犱綋楠岃繃涓夋涓嶅悓娓犻亾鐨勪紶閫侀棬鏈嶅姟 浣犻€氳繃濂囨璁惧杩涜杩囦竴娆¤法瓒?00鍏噷鐨勪紶閫侊紝骞朵笖瀹屽叏鐞嗚В鏈浼犻€佹墜娈电殑杩愪綔 浣犻€氳繃濂囨璁惧杩涜杩囦竴娆¤法瓒婁綅闈㈢殑鏃呯▼锛岄殢鍚庤姳璐逛竴骞寸殑骞曢棿鐗╄鏉ュ彂琛ㄧ浉鍏崇殑瀛︽湳鎶ュ憡">
-        <h4>绌洪棿鏋舵瀯甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯堛€侀瓟濂戝笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏16</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="空间架构师" class="adv-card" id="adv-artificer-空间架构师" data-search="空间架构师 奇械师、魔契师 你体验过三次不同渠道的传送门服务 你通过奇械设备进行过一次跨越400公里的传送，并且完全理解本次传送手段的运作 你通过奇械设备进行过一次跨越位面的旅程，随后花费一年的幕间物语来发表相关的学术报告">
+        <h4>空间架构师</h4>
+        <p><span class="field">来源：</span>奇械师、魔契师</p>
+        <p><span class="field">属性需求：</span><span>智力16</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犱綋楠岃繃涓夋涓嶅悓娓犻亾鐨勪紶閫侀棬鏈嶅姟</li>
-          <li>浣犻€氳繃濂囨璁惧杩涜杩囦竴娆¤法瓒?00鍏噷鐨勪紶閫侊紝骞朵笖瀹屽叏鐞嗚В鏈浼犻€佹墜娈电殑杩愪綔</li>
-          <li>浣犻€氳繃濂囨璁惧杩涜杩囦竴娆¤法瓒婁綅闈㈢殑鏃呯▼锛岄殢鍚庤姳璐逛竴骞寸殑骞曢棿鐗╄鏉ュ彂琛ㄧ浉鍏崇殑瀛︽湳鎶ュ憡</li>
+          <li>你体验过三次不同渠道的传送门服务</li>
+          <li>你通过奇械设备进行过一次跨越400公里的传送，并且完全理解本次传送手段的运作</li>
+          <li>你通过奇械设备进行过一次跨越位面的旅程，随后花费一年的幕间物语来发表相关的学术报告</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鐔靛姏瀛﹁€? class="adv-card" id="adv-artificer-鐔靛姏瀛﹁€? data-search="鐔靛姏瀛﹁€?濂囨甯?鍦ㄦ垬鏂楃幆鑺備腑鍒嗗埆閫犳垚鍗佹鐏劙鍜屽姏鍦轰激瀹?瑙﹀彂鍗佹浣垮叾浠栬鑹插己鍒朵綅绉荤殑鏁堟灉 浣胯嚜韬殑瑙掕壊绛夌骇澧炲姞6绾?>
-        <h4>鐔靛姏瀛﹁€?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺12</span>  <span>鏅哄姏15</span>  <span>骞歌繍12</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="熵力学者" class="adv-card" id="adv-artificer-熵力学者" data-search="熵力学者 奇械师 在战斗环节中分别造成十次火焰和力场伤害 触发十次使其他角色强制位移的效果 使自身的角色等级增加6级">
+        <h4>熵力学者</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量12</span>  <span>智力15</span>  <span>幸运12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鍦ㄦ垬鏂楃幆鑺備腑鍒嗗埆閫犳垚鍗佹鐏劙鍜屽姏鍦轰激瀹?/li>
-          <li>瑙﹀彂鍗佹浣垮叾浠栬鑹插己鍒朵綅绉荤殑鏁堟灉</li>
-          <li>浣胯嚜韬殑瑙掕壊绛夌骇澧炲姞6绾?/li>
+          <li>在战斗环节中分别造成十次火焰和力场伤害</li>
+          <li>触发十次使其他角色强制位移的效果</li>
+          <li>使自身的角色等级增加6级</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍏夊瓙濂冲" class="adv-card" id="adv-artificer-鍏夊瓙濂冲" data-search="鍏夊瓙濂冲 濂囨甯?浣犻€氳繃濂囨閬撳叿浣垮崄鍚嶈鑹茶繘鍏ヨ嚧鐩茬姸鎬?璁╁崄鍚嶈鑹插皢浣犲埄鐢ㄥ姊扮敓鎴愮殑鏁堝簲璇涓烘槸榄旀硶 鍑€熺鎶€鐨勫姏閲忎娇鑷韩涓庡綋鍦扮殑绁炵瀛︿紶闂讳骇鐢熺揣瀵嗙殑鑱旂郴锛屼娇瀵规柟灏嗗姊板垽鏂负瓒呰嚜鐒剁殑浜х墿">
-        <h4>鍏夊瓙濂冲</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏14</span>  <span>鎰熺煡13</span>  <span>榄呭姏15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#00B0F0">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#FFB7E3">鈼?/span> <span style="font-size:1.5em;color:#FFB7E3">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="光子女妖" class="adv-card" id="adv-artificer-光子女妖" data-search="光子女妖 奇械师 你通过奇械道具使十名角色进入致盲状态 让十名角色将你利用奇械生成的效应误认为是魔法 凭借科技的力量使自身与当地的神秘学传闻产生紧密的联系，使对方将奇械判断为超自然的产物">
+        <h4>光子女妖</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>智力14</span>  <span>感知13</span>  <span>魅力15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#00B0F0">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犻€氳繃濂囨閬撳叿浣垮崄鍚嶈鑹茶繘鍏ヨ嚧鐩茬姸鎬?/li>
-          <li>璁╁崄鍚嶈鑹插皢浣犲埄鐢ㄥ姊扮敓鎴愮殑鏁堝簲璇涓烘槸榄旀硶</li>
-          <li>鍑€熺鎶€鐨勫姏閲忎娇鑷韩涓庡綋鍦扮殑绁炵瀛︿紶闂讳骇鐢熺揣瀵嗙殑鑱旂郴锛屼娇瀵规柟灏嗗姊板垽鏂负瓒呰嚜鐒剁殑浜х墿</li>
+          <li>你通过奇械道具使十名角色进入致盲状态</li>
+          <li>让十名角色将你利用奇械生成的效应误认为是魔法</li>
+          <li>凭借科技的力量使自身与当地的神秘学传闻产生紧密的联系，使对方将奇械判断为超自然的产物</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鎬墿" class="adv-card" id="adv-artificer-鎬墿" data-search="鎬墿 濂囨甯?浣胯嚜韬被鍒瑙嗕负鏋勯€犱綋 浣胯嚜韬被鍒瑙嗕负寮傛€?浣胯嚜韬被鍒瑙嗕负绫讳汉鐢熺墿">
-        <h4>鎬墿</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="怪物" class="adv-card" id="adv-artificer-怪物" data-search="怪物 奇械师 使自身类别被视为构造体 使自身类别被视为异怪 使自身类别被视为类人生物">
+        <h4>怪物</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣胯嚜韬被鍒瑙嗕负鏋勯€犱綋</li>
-          <li>浣胯嚜韬被鍒瑙嗕负寮傛€?/li>
-          <li>浣胯嚜韬被鍒瑙嗕负绫讳汉鐢熺墿</li>
+          <li>使自身类别被视为构造体</li>
+          <li>使自身类别被视为异怪</li>
+          <li>使自身类别被视为类人生物</li>
         </ol>
-              <button class="detail-btn" data-adv-name="鎬墿">鏌ョ湅璇︽儏</button>
+              <button class="detail-btn" data-adv-name="怪物">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="寮哄缉灏勬墜" class="adv-card" id="adv-artificer-寮哄缉灏勬墜" data-search="寮哄缉灏勬墜 鎴樺＋銆佸姊板笀 浣跨敤寮撳缉姝﹀櫒鍑绘潃浜屽崄鍚嶈鑹?鎵ц鍗佹瑁呭～鍔ㄤ綔 鍦ㄤ竴娆″姡鍔挎垨鏋佸ぇ鍔ｅ娍鐨勬敾鍑讳腑瑙﹀彂鏆村嚮">
-        <h4>寮哄缉灏勬墜</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鎴樺＋銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺14</span>  <span>鏁忔嵎14</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="强弩射手" class="adv-card" id="adv-artificer-强弩射手" data-search="强弩射手 战士、奇械师 使用弓弩武器击杀二十名角色 执行十次装填动作 在一次劣势或极大劣势的攻击中触发暴击">
+        <h4>强弩射手</h4>
+        <p><span class="field">来源：</span>战士、奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>敏捷14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣跨敤寮撳缉姝﹀櫒鍑绘潃浜屽崄鍚嶈鑹?/li>
-          <li>鎵ц鍗佹瑁呭～鍔ㄤ綔</li>
-          <li>鍦ㄤ竴娆″姡鍔挎垨鏋佸ぇ鍔ｅ娍鐨勬敾鍑讳腑瑙﹀彂鏆村嚮</li>
+          <li>使用弓弩武器击杀二十名角色</li>
+          <li>执行十次装填动作</li>
+          <li>在一次劣势或极大劣势的攻击中触发暴击</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鎷捐崚宸ュ尃" class="adv-card" id="adv-artificer-鎷捐崚宸ュ尃" data-search="鎷捐崚宸ュ尃 濂囨甯?鍒嗗埆浠庢崯鍧忕殑濂囨鏋勯€犲浘涓婅幏鍙栦簩鍗佷唤濂囨榻胯疆鍜岄浂浠跺寘 娑堣€椾簲鍗佷唤濂囨鏉愭枡 鑾峰緱涓€椤逛笓鍒╁彂鏄庡垱閫狅紝杩欓」鍙戞槑瀹屽叏鐢卞競闈笂鍙喘涔板埌鐨勫熀纭€鏉愭枡鍒朵綔鑰屾垚">
-        <h4>鎷捐崚宸ュ尃</h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>浣撹川12</span>  <span>鏅哄姏15</span>  <span>骞歌繍12</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span> <span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="拾荒工匠" class="adv-card" id="adv-artificer-拾荒工匠" data-search="拾荒工匠 奇械师 分别从损坏的奇械构造图上获取二十份奇械齿轮和零件包 消耗五十份奇械材料 获得一项专利发明创造，这项发明完全由市面上可购买到的基础材料制作而成">
+        <h4>拾荒工匠</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>体质12</span>  <span>智力15</span>  <span>幸运12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鍒嗗埆浠庢崯鍧忕殑濂囨鏋勯€犲浘涓婅幏鍙栦簩鍗佷唤濂囨榻胯疆鍜岄浂浠跺寘</li>
-          <li>娑堣€椾簲鍗佷唤濂囨鏉愭枡</li>
-          <li>鑾峰緱涓€椤逛笓鍒╁彂鏄庡垱閫狅紝杩欓」鍙戞槑瀹屽叏鐢卞競闈笂鍙喘涔板埌鐨勫熀纭€鏉愭枡鍒朵綔鑰屾垚</li>
+          <li>分别从损坏的奇械构造图上获取二十份奇械齿轮和零件包</li>
+          <li>消耗五十份奇械材料</li>
+          <li>获得一项专利发明创造，这项发明完全由市面上可购买到的基础材料制作而成</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鏈洪摖澹? class="adv-card" id="adv-artificer-鏈洪摖澹? data-search="鏈洪摖澹?濂囨甯?灏嗕綘鐨勮嚦灏戜竴鍙墜閮ㄧ敤濂囨閮ㄤ欢杩涜瀹屾暣鐨勬浛鎹?鍦ㄥ畬鎴愪笂杩板墠缃潯浠垛憼鐨勬儏鍐典笅璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?鍑昏触涓€鍚嶆棤鍙尮鏁岀殑寮哄ぇ鏁屼汉锛屽苟涓斿湪杩欎竴杩囩▼涓瘉鏄庢満閾犳敼瑁呯殑浼樿秺鎬?>
-        <h4>鏈洪摖澹?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺14</span>  <span>浣撹川15</span>  <span>鎰忓織13</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="机铠士" class="adv-card" id="adv-artificer-机铠士" data-search="机铠士 奇械师 将你的至少一只手部用奇械部件进行完整的替换 在完成上述前置条件①的情况下赢得十场战斗环节的胜利 击败一名无可匹敌的强大敌人，并且在这一过程中证明机铠改装的优越性">
+        <h4>机铠士</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质15</span>  <span>意志13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>灏嗕綘鐨勮嚦灏戜竴鍙墜閮ㄧ敤濂囨閮ㄤ欢杩涜瀹屾暣鐨勬浛鎹?/li>
-          <li>鍦ㄥ畬鎴愪笂杩板墠缃潯浠垛憼鐨勬儏鍐典笅璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?/li>
-          <li>鍑昏触涓€鍚嶆棤鍙尮鏁岀殑寮哄ぇ鏁屼汉锛屽苟涓斿湪杩欎竴杩囩▼涓瘉鏄庢満閾犳敼瑁呯殑浼樿秺鎬?/li>
+          <li>将你的至少一只手部用奇械部件进行完整的替换</li>
+          <li>在完成上述前置条件①的情况下赢得十场战斗环节的胜利</li>
+          <li>击败一名无可匹敌的强大敌人，并且在这一过程中证明机铠改装的优越性</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="姊版鑰? class="adv-card" id="adv-artificer-姊版鑰? data-search="姊版鑰?濂囨甯?浣犱娇鐢ㄥ姊板浘绾稿埗浣滅殑杩戞垬姝﹀櫒鍑绘潃浜屽崄鍚嶈兘澶熸彁渚涚粡楠屽€肩殑瑙掕壊 鍦ㄦ垬鏂楃幆鑺備腑绱浣跨敤杩囧叏閮ㄦ鍣ㄧ被鍒彂璧疯繃鏀诲嚮 鍦ㄤ竴鍦哄叧閿垬褰逛腑鍒╃敤濂囨瑁呭鐨勭壒鎬у嚮璐ヤ竴鍚嶆棤娉曚娇鐢ㄦ鍣ㄣ€佸嚟鍊熷己妯倝浣撴垬鏂楃殑绮捐嫳绾у崟浣?>
-        <h4>姊版鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>濂囨甯?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺14</span>  <span>鏁忔嵎14</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="械武者" class="adv-card" id="adv-artificer-械武者" data-search="械武者 奇械师 你使用奇械图纸制作的近战武器击杀二十名能够提供经验值的角色 在战斗环节中累计使用过全部武器类别发起过攻击 在一场关键战役中利用奇械装备的特性击败一名无法使用武器、凭借强横肉体战斗的精英级单位">
+        <h4>械武者</h4>
+        <p><span class="field">来源：</span>奇械师</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>敏捷14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#595959">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犱娇鐢ㄥ姊板浘绾稿埗浣滅殑杩戞垬姝﹀櫒鍑绘潃浜屽崄鍚嶈兘澶熸彁渚涚粡楠屽€肩殑瑙掕壊</li>
-          <li>鍦ㄦ垬鏂楃幆鑺備腑绱浣跨敤杩囧叏閮ㄦ鍣ㄧ被鍒彂璧疯繃鏀诲嚮</li>
-          <li>鍦ㄤ竴鍦哄叧閿垬褰逛腑鍒╃敤濂囨瑁呭鐨勭壒鎬у嚮璐ヤ竴鍚嶆棤娉曚娇鐢ㄦ鍣ㄣ€佸嚟鍊熷己妯倝浣撴垬鏂楃殑绮捐嫳绾у崟浣?/li>
+          <li>你使用奇械图纸制作的近战武器击杀二十名能够提供经验值的角色</li>
+          <li>在战斗环节中累计使用过全部武器类别发起过攻击</li>
+          <li>在一场关键战役中利用奇械装备的特性击败一名无法使用武器、凭借强横肉体战斗的精英级单位</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="閽㈤搧椹吔甯? class="adv-card" id="adv-artificer-閽㈤搧椹吔甯? data-search="閽㈤搧椹吔甯?鐚庝汉銆佸姊板笀 浣犳嫢鏈変竴鍙板姊版瀯閫犱綋浣滀负浣犵殑鈥滈噹鍏戒紮浼粹€?浠や綘鐨勫姊伴噹鍏戒紮浼村嚮鏉€浜屽崄鍚嶈鑹?浣胯繖鍙板姊版瀯閫犱綋瑙夐啋鏈洪瓊锛屾垚涓虹湡姝ｇ殑浼欎即">
-        <h4>閽㈤搧椹吔甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鐚庝汉銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>浣撹川14</span>  <span>鏅哄姏14</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="钢铁驯兽师" class="adv-card" id="adv-artificer-钢铁驯兽师" data-search="钢铁驯兽师 猎人、奇械师 你拥有一台奇械构造体作为你的“野兽伙伴” 令你的奇械野兽伙伴击杀二十名角色 使这台奇械构造体觉醒机魂，成为真正的伙伴">
+        <h4>钢铁驯兽师</h4>
+        <p><span class="field">来源：</span>猎人、奇械师</p>
+        <p><span class="field">属性需求：</span><span>体质14</span>  <span>智力14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犳嫢鏈変竴鍙板姊版瀯閫犱綋浣滀负浣犵殑鈥滈噹鍏戒紮浼粹€?/li>
-          <li>浠や綘鐨勫姊伴噹鍏戒紮浼村嚮鏉€浜屽崄鍚嶈鑹?/li>
-          <li>浣胯繖鍙板姊版瀯閫犱綋瑙夐啋鏈洪瓊锛屾垚涓虹湡姝ｇ殑浼欎即</li>
+          <li>你拥有一台奇械构造体作为你的“野兽伙伴”</li>
+          <li>令你的奇械野兽伙伴击杀二十名角色</li>
+          <li>使这台奇械构造体觉醒机魂，成为真正的伙伴</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鐑熺伀鎶€甯? class="adv-card" id="adv-artificer-鐑熺伀鎶€甯? data-search="鐑熺伀鎶€甯?鍚熸父璇椾汉銆佸姊板笀 鍒朵綔鍗佺闈炴垬鏂椾晶鐨勫姊拌澶?鏂藉睍浜屽崄娆￠潪浼ゅ鎬х殑鎴忔硶 閫氳繃浣犲埗浣滅殑绁炲閬撳叿涓轰竴鍦鸿妭鏃ュ簡鍏稿甫鏉ユ洿鍔犻紟鐩涚殑鐑害锛屼娇鎵€鏈夊弬涓庤€呬负杩欎簺瀵屾湁鍒涙剰鎬х殑璁炬柦鎵€鎶樻湇">
-        <h4>鐑熺伀鎶€甯?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍚熸父璇椾汉銆佸姊板笀</p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏁忔嵎13</span>  <span>鏅哄姏14</span>  <span>榄呭姏12</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="烟火技师" class="adv-card" id="adv-artificer-烟火技师" data-search="烟火技师 吟游诗人、奇械师 制作十种非战斗侧的奇械设备 施展二十次非伤害性的戏法 通过你制作的神奇道具为一场节日庆典带来更加鼎盛的热度，使所有参与者为这些富有创意性的设施所折服">
+        <h4>烟火技师</h4>
+        <p><span class="field">来源：</span>吟游诗人、奇械师</p>
+        <p><span class="field">属性需求：</span><span>敏捷13</span>  <span>智力14</span>  <span>魅力12</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#B94BFF">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鍒朵綔鍗佺闈炴垬鏂椾晶鐨勫姊拌澶?/li>
-          <li>鏂藉睍浜屽崄娆￠潪浼ゅ鎬х殑鎴忔硶</li>
-          <li>閫氳繃浣犲埗浣滅殑绁炲閬撳叿涓轰竴鍦鸿妭鏃ュ簡鍏稿甫鏉ユ洿鍔犻紟鐩涚殑鐑害锛屼娇鎵€鏈夊弬涓庤€呬负杩欎簺瀵屾湁鍒涙剰鎬х殑璁炬柦鎵€鎶樻湇</li>
+          <li>制作十种非战斗侧的奇械设备</li>
+          <li>施展二十次非伤害性的戏法</li>
+          <li>通过你制作的神奇道具为一场节日庆典带来更加鼎盛的热度，使所有参与者为这些富有创意性的设施所折服</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="杩戝崼" class="adv-card" id="adv-artificer-杩戝崼" data-search="杩戝崼 鍏ㄨ亴涓?璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?纭繚鍦ㄥ崄鍦烘垬鏂楃幆鑺備腑浣犱负鍥㈤槦涓壙鍙椾激瀹虫渶澶氱殑瑙掕壊 鍦ㄤ竴鍦哄叧閿垬褰逛腑鍏ㄧ▼鎷呬换姝ｉ潰鎵垮彈鏁屼汉鐏姏鐨勮亴璐?>
-        <h4>杩戝崼</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺14</span>  <span>浣撹川15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="近卫" class="adv-card" id="adv-artificer-近卫" data-search="近卫 全职业 赢得十场战斗环节的胜利 确保在十场战斗环节中你为团队中承受伤害最多的角色 在一场关键战役中全程担任正面承受敌人火力的职责">
+        <h4>近卫</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?/li>
-          <li>纭繚鍦ㄥ崄鍦烘垬鏂楃幆鑺備腑浣犱负鍥㈤槦涓壙鍙椾激瀹虫渶澶氱殑瑙掕壊</li>
-          <li>鍦ㄤ竴鍦哄叧閿垬褰逛腑鍏ㄧ▼鎷呬换姝ｉ潰鎵垮彈鏁屼汉鐏姏鐨勮亴璐?/li>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>确保在十场战斗环节中你为团队中承受伤害最多的角色</li>
+          <li>在一场关键战役中全程担任正面承受敌人火力的职责</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="楂橀樁鍐掗櫓鑰? class="adv-card" id="adv-artificer-楂橀樁鍐掗櫓鑰? data-search="楂橀樁鍐掗櫓鑰?鍏ㄨ亴涓?璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?瀹屾垚鍗佹鎴愬姛鐨勫墽鎯呬氦浜掑唴瀹?瀹屾垚涓€椤规渶缁堣瘎鍒嗕负A鎴栦互涓婄殑妯＄粍锛屾垨鑰呭畬鎴愪竴鍦哄渾婊℃敹瀹樼殑闃舵鎬у墽鎯呭唴瀹?>
-        <h4>楂橀樁鍐掗櫓鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span><span style="font-size:1.5em;color:#00FA99">鈼?/span> <span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="高阶冒险者" class="adv-card" id="adv-artificer-高阶冒险者" data-search="高阶冒险者 全职业 赢得十场战斗环节的胜利 完成十次成功的剧情交互内容 完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容">
+        <h4>高阶冒险者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span><span style="font-size:1.5em;color:#00FA99">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?/li>
-          <li>瀹屾垚鍗佹鎴愬姛鐨勫墽鎯呬氦浜掑唴瀹?/li>
-          <li>瀹屾垚涓€椤规渶缁堣瘎鍒嗕负A鎴栦互涓婄殑妯＄粍锛屾垨鑰呭畬鎴愪竴鍦哄渾婊℃敹瀹樼殑闃舵鎬у墽鎯呭唴瀹?/li>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>完成十次成功的剧情交互内容</li>
+          <li>完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鎴樻枟澶у笀" class="adv-card" id="adv-artificer-鎴樻枟澶у笀" data-search="鎴樻枟澶у笀 鍏ㄨ亴涓?璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?浣犲湪鎴樻枟鐜妭涓弧瓒充互涓嬩换鎰忎袱绉嶆潯浠讹細鈶犺繘琛屼簩鍗佹鎴愬姛鐨勬敾鍑诲懡涓瀹氣憽璧㈠緱鍗佹灞炴€у鎶楃殑鑳滃埄鈶㈡柦鍔犺繃鍗佹寮傚父鐘舵€?鍙栧緱涓€鍦哄叧閿垬褰圭殑鏈€缁堣儨鍒?>
-        <h4>鎴樻枟澶у笀</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺13</span>  <span>鏁忔嵎14</span>  <span>鎰熺煡13</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span><span style="font-size:1.5em;color:#595959">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="战斗大师" class="adv-card" id="adv-artificer-战斗大师" data-search="战斗大师 全职业 赢得十场战斗环节的胜利 你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态 取得一场关键战役的最终胜利">
+        <h4>战斗大师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量13</span>  <span>敏捷14</span>  <span>感知13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span><span style="font-size:1.5em;color:#595959">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>璧㈠緱鍗佸満鎴樻枟鐜妭鐨勮儨鍒?/li>
-          <li>浣犲湪鎴樻枟鐜妭涓弧瓒充互涓嬩换鎰忎袱绉嶆潯浠讹細鈶犺繘琛屼簩鍗佹鎴愬姛鐨勬敾鍑诲懡涓瀹氣憽璧㈠緱鍗佹灞炴€у鎶楃殑鑳滃埄鈶㈡柦鍔犺繃鍗佹寮傚父鐘舵€?/li>
-          <li>鍙栧緱涓€鍦哄叧閿垬褰圭殑鏈€缁堣儨鍒?/li>
+          <li>赢得十场战斗环节的胜利</li>
+          <li>你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态</li>
+          <li>取得一场关键战役的最终胜利</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="澶嶄粐鑰? class="adv-card" id="adv-artificer-澶嶄粐鑰? data-search="澶嶄粐鑰?鍏ㄨ亴涓?浣犳嫢鏈変竴鍚嶅埢楠ㄩ摥蹇冦€佹棤璁哄浣曢兘蹇呴』鍚戝叾澶嶄粐鐨勫璞?浣犱负浜嗚拷瀵绘垨鎸戞垬杩欏悕澶嶄粐瀵硅薄锛岄€犺鑷冲皯涓変釜涓嶅悓鍦板尯銆佸嚮鏉€鍗佸悕鍏宠仈浜虹墿骞朵笖缁撹瘑浜斿悕鏂扮殑鏈嬪弸锛堜笉璁＄畻鐜╁鍦ㄥ唴锛?浣犲湪涓€鍦哄叧閿垬褰逛腑鍑绘潃澶嶄粐瀵硅薄浠ュ畬鎴愭檵鍗囦负澶嶄粐鑰呯殑浠紡">
-        <h4>澶嶄粐鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鎰忓織15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span> <span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span><span style="font-size:1.5em;color:#B94BFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="复仇者" class="adv-card" id="adv-artificer-复仇者" data-search="复仇者 全职业 你拥有一名刻骨铭心、无论如何都必须向其复仇的对象 你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内） 你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式">
+        <h4>复仇者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>意志15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span> <span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span><span style="font-size:1.5em;color:#B94BFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犳嫢鏈変竴鍚嶅埢楠ㄩ摥蹇冦€佹棤璁哄浣曢兘蹇呴』鍚戝叾澶嶄粐鐨勫璞?/li>
-          <li>浣犱负浜嗚拷瀵绘垨鎸戞垬杩欏悕澶嶄粐瀵硅薄锛岄€犺鑷冲皯涓変釜涓嶅悓鍦板尯銆佸嚮鏉€鍗佸悕鍏宠仈浜虹墿骞朵笖缁撹瘑浜斿悕鏂扮殑鏈嬪弸锛堜笉璁＄畻鐜╁鍦ㄥ唴锛?/li>
-          <li>浣犲湪涓€鍦哄叧閿垬褰逛腑鍑绘潃澶嶄粐瀵硅薄浠ュ畬鎴愭檵鍗囦负澶嶄粐鑰呯殑浠紡</li>
+          <li>你拥有一名刻骨铭心、无论如何都必须向其复仇的对象</li>
+          <li>你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）</li>
+          <li>你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="楠戝＋鎵堜粠" class="adv-card" id="adv-artificer-楠戝＋鎵堜粠" data-search="楠戝＋鎵堜粠 鍏ㄨ亴涓?浣犳嫢鏈変竴鍚嶅瑾撴晥蹇犵殑瀵硅薄锛屼笌瀵规柟鍚屽悆鍚屼綇銆佽崳杈变笌鍏?浣犱笌鑷韩鐨勬晥蹇犲璞′竴鍚屽弬涓庡崄鍦烘垬鏂楃幆鑺?鍦ㄤ綘鐨勯櫔浼村拰鍗忓姪涓嬶紝浣夸綘鐨勬晥蹇犲璞″緱鍒伴樁绾ф彁鍗囷紝鑰屼綘浠嶄繚鎸佷即闅忓叾宸﹀彸">
-        <h4>楠戝＋鎵堜粠</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="骑士扈从" class="adv-card" id="adv-artificer-骑士扈从" data-search="骑士扈从 全职业 你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共 你与自身的效忠对象一同参与十场战斗环节 在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右">
+        <h4>骑士扈从</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犳嫢鏈変竴鍚嶅瑾撴晥蹇犵殑瀵硅薄锛屼笌瀵规柟鍚屽悆鍚屼綇銆佽崳杈变笌鍏?/li>
-          <li>浣犱笌鑷韩鐨勬晥蹇犲璞′竴鍚屽弬涓庡崄鍦烘垬鏂楃幆鑺?/li>
-          <li>鍦ㄤ綘鐨勯櫔浼村拰鍗忓姪涓嬶紝浣夸綘鐨勬晥蹇犲璞″緱鍒伴樁绾ф彁鍗囷紝鑰屼綘浠嶄繚鎸佷即闅忓叾宸﹀彸</li>
+          <li>你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共</li>
+          <li>你与自身的效忠对象一同参与十场战斗环节</li>
+          <li>在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鎴樺湴鍖诲笀" class="adv-card" id="adv-artificer-鎴樺湴鍖诲笀" data-search="鎴樺湴鍖诲笀 鍏ㄨ亴涓?杩涜鍗佹鎴愬姛鐨勫尰鑽瀹?閫氳繃鍖荤枟鍖呯Щ闄ゅ崄娆′腑姣掓垨娴佽鐨勬晥鏋?浣滀负鍖荤枟浜哄憳鐨勮韩浠藉畬鏁村弬涓庝竴鍦烘垬褰?>
-        <h4>鎴樺湴鍖诲笀</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鏅哄姏12</span>  <span>鎰熺煡14</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FF0000">鈼?/span><span style="font-size:1.5em;color:#FFF32F">鈼?/span> <span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#B3F9FF">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="战地医师" class="adv-card" id="adv-artificer-战地医师" data-search="战地医师 全职业 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役">
+        <h4>战地医师</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知14</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FF0000">●</span><span style="font-size:1.5em;color:#FFF32F">●</span> <span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>杩涜鍗佹鎴愬姛鐨勫尰鑽瀹?/li>
-          <li>閫氳繃鍖荤枟鍖呯Щ闄ゅ崄娆′腑姣掓垨娴佽鐨勬晥鏋?/li>
-          <li>浣滀负鍖荤枟浜哄憳鐨勮韩浠藉畬鏁村弬涓庝竴鍦烘垬褰?/li>
+          <li>进行十次成功的医药检定</li>
+          <li>通过医疗包移除十次中毒或流血的效果</li>
+          <li>作为医疗人员的身份完整参与一场战役</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="杈圭晫琛岃€? class="adv-card" id="adv-artificer-杈圭晫琛岃€? data-search="杈圭晫琛岃€?鍏ㄨ亴涓?鍑昏触浜屽崄鍚嶆潵鑷换鎰忚竟澧冨湴鍖虹殑鏁屼汉 瀹屾垚涓夊満涓嶄负浜虹煡鐨勬嫰鏁戣鍔紙涓嶈绠楃帺瀹跺湪鍐咃級 闃绘尅涓€娆℃潵鑷紓鐣屻€佸紓浣嶉潰瀵规湰浣嶉潰鐨勫叆渚典簨浠?>
-        <h4>杈圭晫琛岃€?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鎰熺煡14</span>  <span>鎰忓織13</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#00B050">鈼?/span> <span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span><span style="font-size:1.5em;color:#843F0B">鈼?/span> <span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="边界行者" class="adv-card" id="adv-artificer-边界行者" data-search="边界行者 全职业 击败二十名来自任意边境地区的敌人 完成三场不为人知的拯救行动（不计算玩家在内） 阻挡一次来自异界、异位面对本位面的入侵事件">
+        <h4>边界行者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>感知14</span>  <span>意志13</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span> <span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span><span style="font-size:1.5em;color:#843F0B">●</span> <span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>鍑昏触浜屽崄鍚嶆潵鑷换鎰忚竟澧冨湴鍖虹殑鏁屼汉</li>
-          <li>瀹屾垚涓夊満涓嶄负浜虹煡鐨勬嫰鏁戣鍔紙涓嶈绠楃帺瀹跺湪鍐咃級</li>
-          <li>闃绘尅涓€娆℃潵鑷紓鐣屻€佸紓浣嶉潰瀵规湰浣嶉潰鐨勫叆渚典簨浠?/li>
+          <li>击败二十名来自任意边境地区的敌人</li>
+          <li>完成三场不为人知的拯救行动（不计算玩家在内）</li>
+          <li>阻挡一次来自异界、异位面对本位面的入侵事件</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鑷敱楠戝＋" class="adv-card" id="adv-artificer-鑷敱楠戝＋" data-search="鑷敱楠戝＋ 鍏ㄨ亴涓?浣犳湭鍔犲叆浠讳綍鍐掗櫓鍥€侀獞澹洟銆佸啗闃熸垨绫讳技缁勭粐锛堟垨宸叉寮忛€€鍑猴級 鍗忓姪涓€鏀洟闃熻耽寰楀崄鍦烘垬鏂楃幆鑺傜殑鑳滃埄鎴栬€呭畬鎴愬崄娆℃垚鍔熺殑鍓ф儏浜や簰鍐呭 浣犱笉涓洪噾閽辨垨鍚嶆湜锛屽彧鏄负浜嗚嚜韬殑鍧氬畧鎴栧府鍔╁弸浜轰簩鎸触浜嗕竴鍦哄绔嬮樀钀ョ殑璋嬪垝">
-        <h4>鑷敱楠戝＋</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#00B050">鈼?/span><span style="font-size:1.5em;color:#EE822F">鈼?/span> <span style="font-size:1.5em;color:#EE822F">鈼?/span><span style="font-size:1.5em;color:#B3F9FF">鈼?/span><span style="font-size:1.5em;color:#B3F9FF">鈼?/span> <span style="font-size:1.5em;color:#FFB7E3">鈼?/span><span style="font-size:1.5em;color:#FFB7E3">鈼?/span><span style="font-size:1.5em;color:#FFFFFF">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="自由骑士" class="adv-card" id="adv-artificer-自由骑士" data-search="自由骑士 全职业 你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出） 协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容 你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划">
+        <h4>自由骑士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#00B050">●</span><span style="font-size:1.5em;color:#EE822F">●</span> <span style="font-size:1.5em;color:#EE822F">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span><span style="font-size:1.5em;color:#B3F9FF">●</span> <span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFB7E3">●</span><span style="font-size:1.5em;color:#FFFFFF">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犳湭鍔犲叆浠讳綍鍐掗櫓鍥€侀獞澹洟銆佸啗闃熸垨绫讳技缁勭粐锛堟垨宸叉寮忛€€鍑猴級</li>
-          <li>鍗忓姪涓€鏀洟闃熻耽寰楀崄鍦烘垬鏂楃幆鑺傜殑鑳滃埄鎴栬€呭畬鎴愬崄娆℃垚鍔熺殑鍓ф儏浜や簰鍐呭</li>
-          <li>浣犱笉涓洪噾閽辨垨鍚嶆湜锛屽彧鏄负浜嗚嚜韬殑鍧氬畧鎴栧府鍔╁弸浜轰簩鎸触浜嗕竴鍦哄绔嬮樀钀ョ殑璋嬪垝</li>
+          <li>你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）</li>
+          <li>协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容</li>
+          <li>你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="濉戝舰鑰? class="adv-card" id="adv-artificer-濉戝舰鑰? data-search="濉戝舰鑰?鍏ㄨ亴涓?浣犵殑鑷冲皯鍏」灞炴€у€间负12鎴栨洿楂樻椂鎵嶈兘澶熻В閿佽椤硅繘闃堕€斿緞锛屼綘鎷ユ湁姣忕灞炴€ф墍瀵瑰簲鐨勮嚦灏?鐐圭啛缁冨害 浣犵殑鐗规畩涓撻暱涓寘鍚湁寮哄寲灞炴€с€佹妧宸т笓瀹躲€侀暅瀛愬ぇ甯堟垨寮ヨˉ鐭澘 浣犳墍鍦ㄥ洟闃熺殑鎵€鏈夊叾浠栬鑹插潎瀹屾垚杩涢樁鑱屼笟">
-        <h4>濉戝舰鑰?/h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span>鍔涢噺X</span>  <span>鏁忔嵎X</span>  <span>浣撹川X</span>  <span>鏅哄姏X</span>  <span>鎰熺煡X</span>  <span>鎰忓織X</span>  <span>榄呭姏X</span>  <span>骞歌繍X</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="塑形者" class="adv-card" id="adv-artificer-塑形者" data-search="塑形者 全职业 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业">
+        <h4>塑形者</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span>力量X</span>  <span>敏捷X</span>  <span>体质X</span>  <span>智力X</span>  <span>感知X</span>  <span>意志X</span>  <span>魅力X</span>  <span>幸运X</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犵殑鑷冲皯鍏」灞炴€у€间负12鎴栨洿楂樻椂鎵嶈兘澶熻В閿佽椤硅繘闃堕€斿緞锛屼綘鎷ユ湁姣忕灞炴€ф墍瀵瑰簲鐨勮嚦灏?鐐圭啛缁冨害</li>
-          <li>浣犵殑鐗规畩涓撻暱涓寘鍚湁寮哄寲灞炴€с€佹妧宸т笓瀹躲€侀暅瀛愬ぇ甯堟垨寮ヨˉ鐭澘</li>
-          <li>浣犳墍鍦ㄥ洟闃熺殑鎵€鏈夊叾浠栬鑹插潎瀹屾垚杩涢樁鑱屼笟</li>
+          <li>你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度</li>
+          <li>你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板</li>
+          <li>你所在团队的所有其他角色均完成进阶职业</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
-            <article data-name="鍑′汉鍕囧＋" class="adv-card" id="adv-artificer-鍑′汉鍕囧＋" data-search="鍑′汉鍕囧＋ 鍏ㄨ亴涓?浣犵殑鐗规畩涓撻暱涓笉鑳藉寘鍚湁寮哄寲灞炴€с€佹妧宸т笓瀹躲€佸缇＄弽瀹濄€佹垬鎶€涓撳銆侀瓟娉曚笓瀹躲€佸ぉ璧嬪紓绂€銆佸垢杩愬効銆佸奖鐣岃Е纰般€佸厓绱犱翰鍜屻€佺濂囧姩鐗╀笓瀹舵垨寮ヨˉ鐭澘 鍦ㄤ笉琚粬浜虹湅濂界殑鎯呭喌涓嬪畬鎴愪簲娆″鎵橈紝骞惰浠栦汉鐪嬪埌浣犱负杩欎竴鐩爣鑰屼粯鍑虹殑鍔姏 鎴樿儨涓€鍚嶈秴涔庢兂璞＄殑鏁屼汉锛屽湪姝よ繃绋嬩腑浣犱笉鑳芥寔鏈夋垨浣跨敤绋€鏈夊搧璐ㄤ互涓婄殑鏁堟灉锛屼娇浠栦汉瀵逛綘鐨勮繖涓€缁忓巻鍙ｅ彛鐩镐紶锛屽湪鏁呬簨涓綘鐨勪簨杩逛笉鍖呭惈浠讳綍濂囬亣鍜屽姪鍔涳紝浠呯敱浣犲潥蹇嶄笉鎷旂殑鎰忓織鎵€鏋勬垚">
-        <h4>鍑′汉鍕囧＋</h4>
-        <p><span class="field">鏉ユ簮锛?/span>鍏ㄨ亴涓?/p>
-        <p><span class="field">灞炴€ч渶姹傦細</span><span style="color:#FF0000">鍔涢噺15</span>  <span style="color:#FF0000">鏁忔嵎15</span>  <span style="color:#FF0000">浣撹川15</span>  <span style="color:#FF0000">鏅哄姏15</span>  <span style="color:#FF0000">鎰熺煡15</span>  <span style="color:#FF0000">鎰忓織15</span>  <span style="color:#FF0000">榄呭姏15</span>  <span style="color:#FF0000">骞歌繍15</span></p>
-        <p><span class="field">鎶€鑳界偣锛?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">鈼?/span></p>
-        <p><span class="field">鐗规畩鏉′欢锛?/span></p>
+            <article data-name="凡人勇士" class="adv-card" id="adv-artificer-凡人勇士" data-search="凡人勇士 全职业 你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板 在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力 战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成">
+        <h4>凡人勇士</h4>
+        <p><span class="field">来源：</span>全职业</p>
+        <p><span class="field">属性需求：</span><span style="color:#FF0000">力量15</span>  <span style="color:#FF0000">敏捷15</span>  <span style="color:#FF0000">体质15</span>  <span style="color:#FF0000">智力15</span>  <span style="color:#FF0000">感知15</span>  <span style="color:#FF0000">意志15</span>  <span style="color:#FF0000">魅力15</span>  <span style="color:#FF0000">幸运15</span></p>
+        <p><span class="field">技能点：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000">●</span></p>
+        <p><span class="field">特殊条件：</span></p>
         <ol>
-          <li>浣犵殑鐗规畩涓撻暱涓笉鑳藉寘鍚湁寮哄寲灞炴€с€佹妧宸т笓瀹躲€佸缇＄弽瀹濄€佹垬鎶€涓撳銆侀瓟娉曚笓瀹躲€佸ぉ璧嬪紓绂€銆佸垢杩愬効銆佸奖鐣岃Е纰般€佸厓绱犱翰鍜屻€佺濂囧姩鐗╀笓瀹舵垨寮ヨˉ鐭澘</li>
-          <li>鍦ㄤ笉琚粬浜虹湅濂界殑鎯呭喌涓嬪畬鎴愪簲娆″鎵橈紝骞惰浠栦汉鐪嬪埌浣犱负杩欎竴鐩爣鑰屼粯鍑虹殑鍔姏</li>
-          <li>鎴樿儨涓€鍚嶈秴涔庢兂璞＄殑鏁屼汉锛屽湪姝よ繃绋嬩腑浣犱笉鑳芥寔鏈夋垨浣跨敤绋€鏈夊搧璐ㄤ互涓婄殑鏁堟灉锛屼娇浠栦汉瀵逛綘鐨勮繖涓€缁忓巻鍙ｅ彛鐩镐紶锛屽湪鏁呬簨涓綘鐨勪簨杩逛笉鍖呭惈浠讳綍濂囬亣鍜屽姪鍔涳紝浠呯敱浣犲潥蹇嶄笉鎷旂殑鎰忓織鎵€鏋勬垚</li>
+          <li>你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板</li>
+          <li>在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力</li>
+          <li>战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成</li>
         </ol>
-              <button class="locked-btn" disabled>馃敀 鏈В閿?/button>
+              <button class="locked-btn" disabled>🔒 未解锁</button>
         <div class="adv-detail collapse"></div>
       </article>
 
-<div id="artificer-adv-empty" class="empty hidden" style="text-align:center;padding:40px;color:var(--muted);">娌℃湁鎵惧埌鍖归厤鐨勮繘闃躲€?/div>
+<div id="artificer-adv-empty" class="empty hidden" style="text-align:center;padding:40px;color:var(--muted);">没有找到匹配的进阶。</div>
 </div>
 
 <script>
@@ -1029,9 +1029,9 @@
                 if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
                 var t = nd.textContent;
                 var changed = false;
-                var t1 = t.replace(/(\d+%|\d+鐐箌[Dd]\d+|\d+绾\+\d+|\d+[Dd]\d+)/g, "<span class=\"hl-num\">$1</span>");
+                var t1 = t.replace(/(\d+%|\d+点|[Dd]\d+|\d+级|\+\d+|\d+[Dd]\d+)/g, "<span class=\"hl-num\">$1</span>");
                 if (t1 !== t) { t = t1; changed = true; }
-                var t2 = t.replace(/(浣犵殑\S+鑱屼笟绛夌骇鍒拌揪\d+绾ф椂锛?/g, "<span class=\"hl-field\">$1</span>");
+                var t2 = t.replace(/(你的\S+职业等级到达\d+级时：)/g, "<span class=\"hl-field\">$1</span>");
                 if (t2 !== t) { t = t2; changed = true; }
                 if (changed) {
                     var sp = document.createElement("span");
@@ -1194,7 +1194,7 @@
 
 </script>
 
-<button class="back-to-top" id="backToTop" title="杩斿洖椤堕儴">鈫?/button>
+<button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
 <script>
 
 (function() {
@@ -1214,11 +1214,11 @@
 
 </script>
 
-<button class="nav-toggle" id="nav-toggle-btn" aria-label="鎵撳紑鐩綍">鈽?/button>
+<button class="nav-toggle" id="nav-toggle-btn" aria-label="打开目录">☰</button>
 <div class="nav-overlay" id="nav-overlay"></div>
-<div class="nav-drawer" id="nav-drawer"><div class="nav-drawer-close"><button id="nav-drawer-close-btn">鉁?/button></div></div>
+<div class="nav-drawer" id="nav-drawer"><div class="nav-drawer-close"><button id="nav-drawer-close-btn">✕</button></div></div>
 
-锘?script>
+﻿<script>
 (function(){
 var t=document.getElementById("nav-toggle-btn"),o=document.getElementById("nav-overlay"),d=document.getElementById("nav-drawer");
 if(!t||!o||!d)return;
@@ -1228,13 +1228,13 @@ function build(){
   var h=document.querySelector("header");
   var si=h?h.querySelector('input[type="search"]'):null;
   if(si){
-    var sc=si.cloneNode(true);sc.id="drawer-search";sc.placeholder="鎼滅储鎶€鑳姐€佸叧閿瘝...";
+    var sc=si.cloneNode(true);sc.id="drawer-search";sc.placeholder="搜索技能、关键词...";
     sc.addEventListener("input",function(){si.value=this.value;si.dispatchEvent(new Event("input",{bubbles:true}));});
     sc.addEventListener("keydown",function(e){if(e.key==="Enter"){d.classList.remove("open");o.classList.remove("show");}});
     inner.appendChild(sc);
   }
   var fb=document.querySelector("nav .filter-bar");
-  if(fb){var fc=fb.cloneNode(true);fc.querySelectorAll(".filter-tag .remove").forEach(function(b){b.onclick=function(){var kw=this.parentElement.textContent.replace("脳","").trim();var orig=fb.querySelector(".filter-tag");if(orig)orig.querySelector(".remove").click();};});fc.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var orig=fb.querySelector('.chip[data-kw="'+c.getAttribute("data-kw")+'"]');if(orig)orig.click();else{var orig2=fb.querySelector(".chip");if(orig2&&c.textContent===orig2.textContent)orig2.click();}};});inner.appendChild(fc);}
+  if(fb){var fc=fb.cloneNode(true);fc.querySelectorAll(".filter-tag .remove").forEach(function(b){b.onclick=function(){var kw=this.parentElement.textContent.replace("×","").trim();var orig=fb.querySelector(".filter-tag");if(orig)orig.querySelector(".remove").click();};});fc.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var orig=fb.querySelector('.chip[data-kw="'+c.getAttribute("data-kw")+'"]');if(orig)orig.click();else{var orig2=fb.querySelector(".chip");if(orig2&&c.textContent===orig2.textContent)orig2.click();}};});inner.appendChild(fc);}
   var nav=document.querySelector("nav .nav-inner");
   if(nav){
     var nc=document.createElement("div");
