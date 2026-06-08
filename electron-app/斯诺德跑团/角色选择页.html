@@ -187,7 +187,7 @@ function renderCharList() {
   var chars = getSavedChars();
   var html = "";
   if (chars.length === 0) {
-    html = "<div class='empty-msg'>暂无已保存的角色<br><br>请先在角色面板中创建并保存角色</div>";
+    html = "<div class='empty-msg' style='font-size:16px;line-height:2.2'>📜 还没有保存的角色<br><span style='font-size:13px;color:#8a8578'>在角色面板中创建并保存第一个角色吧</span></div>";
   } else {
     for (var ci = 0; ci < chars.length; ci++) {
       var name = chars[ci];

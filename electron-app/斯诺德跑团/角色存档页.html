@@ -175,7 +175,7 @@ function renderSlots() {
     html += "<div class='" + cls + "' onclick='openSlot(" + si + ")'>";
     html += "<div class='slot-title'>存档位 " + si + "</div>";
     if (isEmpty) {
-      html += "<div class='slot-empty-text'>空存档位</div>";
+      html += "<div class='slot-empty-text'>📂 空存档位 — 点击创建新存档</div>";
     } else {
       html += "<div class='slot-time'>" + savedAt + "</div>";
       html += "<div class='slot-summary'>" + summary + "</div>";

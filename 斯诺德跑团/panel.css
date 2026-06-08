@@ -218,7 +218,8 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 .learn-toggle:hover{background:var(--accent-hover);transform:scale(1.05)}
 
 
-.learn-panel{display:none;position:fixed;bottom:100px;right:30px;width:600px;max-height:70vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;z-index:999;font-size:15px;color:var(--ink);box-shadow:0 8px 30px rgba(31,37,34,0.1)}
+.learn-panel{display:none;position:fixed;bottom:100px;right:30px;width:600px;max-height:70vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;z-index:999;font-size:15px;color:var(--ink);box-shadow:0 8px 30px rgba(31,37,34,0.1);transform-origin:bottom right}
+.learn-panel.show{display:block;animation:panelIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)}
 
 
 .xp-panel{display:flex;align-items:center;justify-content:center;min-height:44px}
@@ -358,6 +359,8 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 }
 
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+@keyframes panelIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
 
 .skill-table tbody tr{transition:background 0.15s ease}
 .skill-table tbody tr:hover{background:rgba(164,109,31,0.06)}

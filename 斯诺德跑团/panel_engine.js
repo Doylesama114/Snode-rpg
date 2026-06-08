@@ -3886,10 +3886,10 @@ function toggleLearnMode() {
   if (!panel || !btn) return;
 
 
-  if (panel.style.display === "block") {
+  if (panel.classList.contains("show")) {
 
 
-    panel.style.display = "none";
+    panel.classList.remove("show"); panel.style.display = "none";
 
 
     btn.innerHTML = "📚 学习技能";
@@ -3898,7 +3898,7 @@ function toggleLearnMode() {
   } else {
 
 
-    try { renderLearnPanel(); panel.style.display = "block"; btn.innerHTML = "✕ 关闭"; }
+    try { renderLearnPanel(); panel.classList.add("show"); btn.innerHTML = "✕ 关闭"; }
 
 
     catch(e) { panel.innerHTML = "<div style='padding:20px;color:#e06060'>Error: " + e.message + "</div>"; panel.style.display = "block"; }

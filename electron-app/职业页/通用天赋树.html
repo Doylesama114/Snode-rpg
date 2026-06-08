@@ -29,6 +29,14 @@
         transform: scale(1.05);
         box-shadow: 0 6px 20px rgba(157,47,47,0.5);
     }
+
+    /* Accordion: single-expand nav tiers */
+    details.nav-tier { border-left: 3px solid transparent; transition: border-color 0.2s; }
+    details.nav-tier[open] { border-left-color: var(--class-color, var(--accent, #a46d1f)); }
+    details.nav-tier summary { cursor: pointer; user-select: none; }
+    details.nav-tier summary::-webkit-details-marker { display: none; }
+    details.nav-tier summary::before { content: "▸"; display: inline-block; margin-right: 4px; transition: transform 0.2s; font-size: 10px; }
+    details.nav-tier[open] summary::before { transform: rotate(90deg); }
 </style>
 
 </head>
@@ -6828,6 +6836,15 @@ document.getElementById("nav-drawer-close-btn").onclick=o.onclick;
 window.addEventListener("resize",function(){if(window.innerWidth>860){d.classList.remove("open");o.classList.remove("show");}});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList.remove("open");o.classList.remove("show");}});
 })();
+</script>
+<script>
+document.querySelectorAll('details.nav-tier').forEach(function(d){
+  d.addEventListener('toggle',function(){
+    if(this.open){
+      document.querySelectorAll('details.nav-tier').forEach(function(s){if(s!==this)s.open=false;},this);
+    }
+  });
+});
 </script>
 <script src="common_tooltip.js"></script>
 </body>
