@@ -416,6 +416,7 @@
 
 </style>
   <script src="advancement_details.js"></script>
+<script src="advancement_renderer.js"></script>
 </head>
 <body>
 
@@ -870,70 +871,7 @@
             detailsData = ADVANCEMENT_DETAILS;
         }
     }
-    function buildHTML(d) {
-        var h = "";
-        if (d.desc_html) h += "<div class=\"detail-desc\">" + d.desc_html + "</div>";
-        else if (d.description) h += "<div class=\"detail-desc\">" + d.description + "</div>";
-        if (d.image_markers) {
-            var firstImgs = d.image_markers.filter(function(m) { return m.para_index === 825; });
-            if (firstImgs.length > 0) {
-                h += "<div class=\"detail-images\">";
-                firstImgs.forEach(function(m, idx) {
-                    h += "<div class=\"img-item\">";
-                    h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
-                    h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
-                });
-                h += "</div>";
-            }
-        }
-        if (d.abilities && d.abilities.length > 0) {
-            d.abilities.forEach(function(a, ai) {
-                h += "<div class=\"detail-ability\">";
-                h += "<span class=\"ab-name\">" + a.name + "</span>";
-                if (a.tags) h += "<span class=\"ab-tags\">[" + a.tags + "]</span>";
-                var descContent = a.desc_html || a.desc || "";
-                h += "<div class=\"ab-desc\">" + descContent + "</div></div>";
-                if (d.image_markers && d.name === "\u602a\u7269") {
-                    var sectionImgs = null;
-                    if (ai === 0) {
-                        sectionImgs = d.image_markers.filter(function(m) { return m.para_index >= 843 && m.para_index <= 849; });
-                    }
-                    if (sectionImgs && sectionImgs.length > 0) {
-                        h += "<div class=\"detail-images\">";
-                        sectionImgs.forEach(function(m, idx) {
-                            h += "<div class=\"img-item\">";
-                            h += "<img src=\"" + m.image + "\" alt=\"img\" onclick=\"this.classList.toggle('zoomed')\" />";
-                            h += "<div class=\"img-caption\">\u56fe\u7247" + (idx+1) + "</div></div>";
-                        });
-                        h += "</div>";
-                    }
-                }
-            });
-        }
-        if (d.tables && d.tables.length > 0) {
-            d.tables.forEach(function(tbl) {
-                h += "<div class=\"detail-table-wrap\">";
-                h += "<table class=\"detail-table\">";
-                tbl.forEach(function(row, ri) {
-                    h += "<tr>";
-                    row.forEach(function(cell) {
-                        var tag = (ri === 0) ? "th" : "td";
-                        h += "<" + tag + ">" + cell + "</" + tag + ">";
-                    });
-                    h += "</tr>";
-                });
-                h += "</table></div>";
-            });
-        }
-        if (d.insight) {
-            h += "<div class=\"detail-insight\">";
-            h += "<div class=\"detail-insight-title\">" + d.insight.name + "</div>";
-            if (d.insight.tags) h += "<div class=\"detail-insight-tags\">[" + d.insight.tags + "]</div>";
-            var insContent = d.insight.desc_html || d.insight.desc || "";
-            h += "<div class=\"detail-insight-desc\">" + insContent + "</div></div>";
-        }
-        return h;
-    }
+    
 
 
 
@@ -942,49 +880,7 @@
 
 
 
-    function formatDetailText(container) {
-        var descs = container.querySelectorAll(".ab-desc");
-        for (var d = 0; d < descs.length; d++) {
-            var el = descs[d];
-            var raw = el.innerHTML;
-            raw = raw.replace(/\n\s*(?:<strong>\s*)?-{3,}(?:\s*<\/strong>)?\s*/g, "<hr>");
-            raw = raw.replace(/([\u3002\uff1a])\n/g, "$1<br>");
-            raw = raw.replace(/\n\s*/g, "");
-            raw = raw.replace(/<br>([^<]+)/g, "<span class=\"hl-option\">$1</span>");
-            var plainTxt = raw.replace(/<[^>]+>/g, "");
-            var dotIdx = plainTxt.indexOf("\u3002");
-            if (dotIdx > 0 && dotIdx < 100) {
-                var leadRaw = plainTxt.substring(0, dotIdx + 1);
-                var escLead = leadRaw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-                var re = new RegExp("^\\s*(" + escLead + ")", "");
-                if (re.test(raw)) {
-                    raw = raw.replace(re, "<span class=\"hl-lead\">$1</span>");
-                }
-            }
-            el.innerHTML = raw;
-            var walker = document.createTreeWalker(el, 4, null, false);
-            var nodes = [];
-            while (walker.nextNode()) nodes.push(walker.currentNode);
-            for (var i = 0; i < nodes.length; i++) {
-                var nd = nodes[i];
-                if (!nd.parentNode) continue;
-                var p = nd.parentNode;
-                if (p.classList && (p.classList.contains("hl-num") || p.classList.contains("hl-field"))) continue;
-                if (p.tagName === "SCRIPT" || p.tagName === "STYLE") continue;
-                var t = nd.textContent;
-                var changed = false;
-                var t1 = t.replace(/(\d+%|\d+点|[Dd]\d+|\d+级|\+\d+|\d+[Dd]\d+)/g, "<span class=\"hl-num\">$1</span>");
-                if (t1 !== t) { t = t1; changed = true; }
-                var t2 = t.replace(/(你的\S+职业等级到达\d+级时：)/g, "<span class=\"hl-field\">$1</span>");
-                if (t2 !== t) { t = t2; changed = true; }
-                if (changed) {
-                    var sp = document.createElement("span");
-                    sp.innerHTML = t;
-                    p.replaceChild(sp, nd);
-                }
-            }
-        }
-    }
+    
 
     function showDetail(btn) {
         btn.classList.remove("holding");
