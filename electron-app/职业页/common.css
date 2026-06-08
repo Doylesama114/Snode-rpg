@@ -62,6 +62,7 @@
       align-items: start;
       animation: fadeInUp 0.45s ease-out;
     }
+    .adv-container { animation: fadeInUp 0.45s ease-out; }
     nav {
       position: sticky;
       top: 92px;
