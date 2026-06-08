@@ -566,7 +566,7 @@
 html.dark{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3d40;--gold:#d4a54a;--red:#e05555;--green:#4dab8a;--blue:#5a8fbf;--shadow:0 16px 40px rgba(0,0,0,.2)}
 html.dark body{background:linear-gradient(90deg,rgba(157,47,47,.08),transparent 36%,rgba(49,95,143,.08)),var(--bg)}
 
-.adv-card{position:relative;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.35s ease;border-left:1px solid var(--line)}
+.adv-card{position:relative;overflow:hidden;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.35s ease;border-left:1px solid var(--line)}
 .adv-card::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(105deg,transparent 30%,rgba(255,215,0,.06) 40%,rgba(255,255,255,.2) 50%,rgba(255,215,0,.06) 60%,transparent 70%);transform:skewX(-20deg);transition:left 0.65s cubic-bezier(0.4,0,0.2,1);z-index:1;pointer-events:none}
 .adv-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.18);border-left-color:var(--class-color,var(--accent,#a46d1f));animation:rotateGlow 1.8s ease-in-out infinite}
 .adv-card:hover::after{left:140%}
