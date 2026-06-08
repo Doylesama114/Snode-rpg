@@ -80,6 +80,8 @@ h1 {
   color: #69706b;
   text-align: center;
 }
+#themeToggle{position:fixed;top:16px;right:16px;z-index:999;background:transparent;border:1px solid #d8d2c4;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;transition:all 0.2s}
+#themeToggle:hover{background:#f6f4ef;border-color:#a46d1f}
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: none; }
@@ -87,6 +89,7 @@ h1 {
 .card:nth-child(2) { animation-delay: 0.05s; }
 .card:nth-child(3) { animation-delay: 0.10s; }
 @media (prefers-color-scheme:dark) { body{background:#1a1d20;color:#e8e6e3} h1{color:#e8e6e3} .subtitle{color:#9d9b98} .card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)} .card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)} .icon{background:#1a1d20;border-color:#3a3d40} .card-text h2{color:#e8e6e3} .card-text p{color:#9d9b98} .footer{color:#9d9b98} }
+html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3}html.dark .subtitle{color:#9d9b98}html.dark .card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark .card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)}html.dark .icon{background:#1a1d20;border-color:#3a3d40}html.dark .card-text h2{color:#e8e6e3}html.dark .card-text p{color:#9d9b98}html.dark .footer{color:#9d9b98}html.dark #themeToggle{border-color:#3a3d40;color:#e8e6e3}html.dark #themeToggle:hover{background:#24272b;border-color:#d4a54a}
 @media (max-width:860px) {
   body { padding: 20px; }
 }
@@ -108,6 +111,7 @@ h1 {
 </style>
 </head>
 <body>
+<button id="themeToggle">☀️</button>
 <div class="container">
   <h1>⚔ 斯诺德</h1>
   <div class="subtitle">冒险者工具集</div>
@@ -231,6 +235,16 @@ function showUpdateMsg(data) {
   else if (data.status === 'uptodate') { msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION; }
   else if (data.status === 'error') { msg.style.color='#c62828'; msg.textContent=(data.message||'更新检查失败'); }
 }
+</script>
+<script>
+(function(){
+  var t=document.getElementById('themeToggle'),h=document.documentElement;
+  function apply(d){h.classList.toggle('dark',d);t.textContent=d?'🌙':'☀️';}
+  var s=localStorage.getItem('_snowd_theme');
+  if(s!==null)apply(s==='dark');
+  else apply(window.matchMedia('(prefers-color-scheme:dark)').matches);
+  t.onclick=function(){var d=!h.classList.contains('dark');apply(d);localStorage.setItem('_snowd_theme',d?'dark':'light');};
+})();
 </script>
 </body>
 </html>

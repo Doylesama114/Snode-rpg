@@ -4041,7 +4041,8 @@ function renderLearnPanel() {
       window._learnSearchQ = this.value;
 
 
-      renderLearnResults();
+      if (_learnSearchTimer) clearTimeout(_learnSearchTimer);
+      _learnSearchTimer = setTimeout(function() { renderLearnResults(); }, 150);
 
 
     };

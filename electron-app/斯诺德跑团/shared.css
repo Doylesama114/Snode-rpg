@@ -124,3 +124,4 @@ h1 {
     --shadow-hover: 0 6px 20px rgba(0,0,0,0.3);
   }
 }
+html.dark{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3d40;--accent:#d4a54a;--accent-hover:#e8be5a;--shadow:0 4px 12px rgba(0,0,0,.2);--shadow-hover:0 6px 20px rgba(0,0,0,.3)}
