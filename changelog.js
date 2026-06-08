@@ -2,6 +2,21 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.571',
+    date: '2026-06-08',
+    changes: [
+      'CSS变量体系+shared.css消除重复',
+      '全站fadeInUp入场动画+技能卡片悬停',
+      '暗色模式支持(prefers-color-scheme)',
+      '14职业技能页独立配色',
+      '帮助页粘性目录+滚动进度条',
+      '进阶页技能卡片格式重构(article.skill)',
+      'nav-drawer修复(transform包含块)'
+    ]
+  },
+
+
+  {
     version: '1.0.570',
     date: '2026-06-08',
     changes: [
