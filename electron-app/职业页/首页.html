@@ -72,6 +72,7 @@
         width: 90%; max-width: 680px; max-height: 80vh;
         display: flex; flex-direction: column; overflow: hidden;
         margin: 0 16px 40px;
+        animation: searchPanelIn 0.25s ease-out;
     }
     .search-panel-header {
         display: flex; align-items: center; gap: 10px;
@@ -119,7 +120,11 @@
         background: #ffdd00; color: #000 !important;
         animation: search-blink 0.8s ease-in-out 3;
     }
-    @keyframes search-blink {
+    @keyframes searchPanelIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes search-blink {
         0%, 100% { background: #ffdd00; }
         50% { background: #ff8800; }
     }
@@ -308,6 +313,12 @@
 
   function openOverlay() {
     overlay.classList.remove('hidden');
+    var panel = overlay.querySelector('.search-panel');
+    if (panel) {
+        panel.style.animation = 'none';
+        panel.offsetHeight;
+        panel.style.animation = '';
+    }
     input.focus();
     loadAllData();
   }

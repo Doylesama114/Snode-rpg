@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#f6f4ef;color:#1f2522;font-family:"Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;min-height:100vh;padding:30px;font-size:15px}
-.container{max-width:700px;margin:0 auto}
+.container{max-width:700px;margin:0 auto;animation:fadeInUp 0.45s ease-out both}
 h1{font-size:26px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid #d8d2c4}
 .subtitle{font-size:14px;color:#69706b;margin-bottom:24px}
 .back-link{display:inline-block;color:#69706b;font-size:14px;text-decoration:none;margin-bottom:20px;cursor:pointer}
@@ -30,6 +30,8 @@ h1{font-size:26px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid 
 .error-msg{color:#c62828;font-size:14px;margin-top:8px;display:none}
 .success-msg{color:#2e7d32;font-size:14px;margin-top:8px;display:none}
 .template-link{display:block;text-align:center;font-size:13px;color:#a46d1f;margin-top:16px;cursor:pointer;text-decoration:underline}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:860px){body{padding:20px}.upload-zone{padding:30px 16px}.container{max-width:100%}}
 

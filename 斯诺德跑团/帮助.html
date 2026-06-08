@@ -4,7 +4,7 @@
 <title>斯诺德 · 帮助</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;background:#f6f4ef;color:#1f2522;padding:30px;font-size:15px}
-.container{max-width:960px;margin:0 auto;width:100%}
+.container{max-width:960px;margin:0 auto;width:100%;animation:fadeInUp 0.45s ease-out both}
 h1{font-size:28px;font-weight:bold;margin-bottom:4px}
 .subtitle{font-size:14px;color:#69706b;margin-bottom:24px}
 .back-link{display:inline-block;color:#69706b;font-size:14px;text-decoration:none;margin-bottom:16px;cursor:pointer}
@@ -31,6 +31,8 @@ ul,ol{margin:8px 0 8px 20px;font-size:14px;line-height:2}
 li{margin-bottom:4px}
 /* Status effects */ .wrap table td:last-child{font-size:13px;line-height:1.9}
 @media(max-width:860px){body{padding:20px}.container{max-width:100%}.section{padding:20px}}@media(max-width:600px){body{padding:16px}.section{padding:16px}h1{font-size:22px}.toc{padding:14px 18px}.section h2{font-size:18px}.card{padding:10px 14px}}@media(max-width:480px){body{padding:12px}h1{font-size:20px}.section{padding:14px 16px}.section h2{font-size:17px}.section h3{font-size:14px}p{font-size:13px;line-height:1.8}.card .desc{font-size:12px}.toc a{font-size:13px}.wrap table{font-size:12px}.wrap table th,.wrap table td{padding:5px 6px}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeInUp 0.4s ease-out both}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.16s}.card:nth-child(6){animation-delay:.2s}
 </style></head><body><div class="container">
 <a class="back-link" href="启动台.html">← 返回启动台</a>
 <h1>📖 帮助文档</h1><div class="subtitle">斯诺德规则 · 冒险者手册</div>

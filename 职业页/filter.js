@@ -103,9 +103,12 @@
             rm.textContent = "\u00d7";
             rm.style.cursor = "pointer";
             rm.addEventListener("click", function() {
-                self.af.delete(kw);
-                self.updateChips();
-                self.renderFilters();
+                tag.classList.add("removing");
+                setTimeout(function() {
+                    self.af.delete(kw);
+                    self.updateChips();
+                    self.renderFilters();
+                }, 200);
             });
             tag.appendChild(rm);
             fb.appendChild(tag);
