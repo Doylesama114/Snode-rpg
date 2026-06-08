@@ -63,6 +63,7 @@ h1 {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
+.card:active { transform: scale(0.97); }
 
 .icon {
   font-size: 32px;

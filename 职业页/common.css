@@ -170,8 +170,9 @@
       line-height: 1.5;
     }
     .chips { margin: 6px 0; display: flex; flex-wrap: wrap; gap: 4px; }
-    .detail p { margin: 6px 0; word-break: break-word; overflow-wrap: break-word; }
+    .detail p { margin: 6px 0; word-break: break-word; overflow-wrap: break-word; line-height: 1.85; max-width: 72ch; }
     .detail .field { font-weight: 700; color: var(--red); }
+    .btn:active, .adv-link:active, .class-card:active, .chip:active { transform: scale(0.96); }
     .detail .choice { font-size: 14px; font-weight: 700; color: var(--gold); word-break: break-word; }
     .empty {
       padding: 24px;
