@@ -107,7 +107,7 @@ var state={
 "xp":0, "carry_capacity":{"常规":45,"满载":60,"极限":75,"当前":5},
 "sp":{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
 "hp":10,"fp":8,
-"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"",
+"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"",
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
 "skills":[], "special_feats":[], "feats":[], "currency":{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -2982,6 +2982,11 @@ function render(){ applyChoiceLLevel12Boosts();
 
 
   var storyHtml='<div class="misc-item"><div class="m-title">背景故事</div><div>'+state.story+'</div></div><div class="misc-item"><div class="m-title">个性</div><div>'+state.personality+'</div></div><div class="misc-item"><div class="m-title">特性</div><div>'+state.traits+'</div></div><div class="misc-item"><div class="m-title">理念</div><div>'+state.ideals+'</div></div><div class="misc-item"><div class="m-title">羁绊</div><div>'+state.bonds+'</div></div><div class="misc-item"><div class="m-title">缺陷</div><div>'+state.flaws+'</div></div>';
+if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+state.deity+'</div></div>';
+if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系渠道</div><div>'+state.contacts+'</div></div>';
+if(state.scamType)storyHtml+='<div class="misc-item"><div class="m-title">偏好骗局</div><div>'+state.scamType+'</div></div>';
+if(state.missionChannel)storyHtml+='<div class="misc-item"><div class="m-title">任务渠道</div><div>'+state.missionChannel+'</div></div>';
+if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">学术领域</div><div>'+state.academicDomain+'</div></div>';
 
 
   document.getElementById("story-title").innerHTML="个性背景：\u0020"+(state.background||"未选择");

@@ -964,7 +964,7 @@ function showPersonalityPicker(bg){
     }
     b.appendChild(div);
   }
-  makeSection("特点","personality",data.traits,2);
+  makeSection("特点","personality",data.traits,1);
   makeSection("理念","ideals",data.ideals,1);
   makeSection("羁绊","bonds",data.bonds,1);
   makeSection("缺陷","flaws",data.flaws,1);
@@ -992,20 +992,21 @@ function showPersonalityPicker(bg){
   updatePersonalityCustom();
 }
 function updatePersonalityCustom(){
-  var ks=["personality","personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain"];
+  var ks=["personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain"];
   for(var i=0;i<ks.length;i++){
-    var s=document.getElementById("pers_"+ks[i]+"_"+(i<2?i:0));
-    var ci=document.getElementById("pers_"+ks[i]+"_"+(i<2?i:0)+"_custom");
+    var s=document.getElementById("pers_"+ks[i]+"_0");
+    var ci=document.getElementById("pers_"+ks[i]+"_0_custom");
     if(s&&ci)ci.style.display=s.value==="__custom__"?"block":"none";
   }
 }
+}
 function confirmPersonalityPicker(){
-  var m={personality:["personality","personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"],deity:["deity"],contacts:["contacts"],scamType:["scamType"],missionChannel:["missionChannel"],academicDomain:["academicDomain"]};
+  var m={personality:["personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"],deity:["deity"],contacts:["contacts"],scamType:["scamType"],missionChannel:["missionChannel"],academicDomain:["academicDomain"]};
   for(var k in m){
     var pp=[];
     for(var i=0;i<m[k].length;i++){
-      var s=document.getElementById("pers_"+m[k][i]+"_"+(i<2?i:0));
-      var ci=document.getElementById("pers_"+m[k][i]+"_"+(i<2?i:0)+"_custom");
+      var s=document.getElementById("pers_"+m[k][i]+"_0");
+      var ci=document.getElementById("pers_"+m[k][i]+"_0_custom");
       if(!s)continue;
       var v=s.value==="__custom__"?(ci?ci.value:""):s.value;
       if(v&&v!=="__custom__")pp.push(v);
