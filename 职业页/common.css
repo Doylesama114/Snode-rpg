@@ -60,7 +60,7 @@
       grid-template-columns: 300px minmax(0, 1fr);
       gap: 24px;
       align-items: start;
-      animation: fadeInUp 0.45s ease-out both;
+      animation: fadeInUp 0.45s ease-out;
     }
     nav {
       position: sticky;
