@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.570',
+    date: '2026-06-08',
+    changes: [
+      '血族智力+1修正(同步xlsx源文件)',
+      '全30种族属性与xlsx逐一比对确认一致',
+      '同步electron-app副本'
+    ]
+  },
+
+
+  {
     version: '1.0.569',
     date: '2026-06-07',
     changes: [
