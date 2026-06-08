@@ -27,16 +27,24 @@ h1{font-size:28px;font-weight:bold;margin-bottom:4px}
 .wrap table td{padding:7px 9px;border:1px solid #d8d2c4;vertical-align:top;line-height:1.7;word-break:break-word;overflow-wrap:break-word}.effect-list{font-size:13px;line-height:1.9}.effect-list p{margin:3px 0}
 .wrap table tr:nth-child(even) td{background:#faf8f4}
 .sp{display:inline-block;padding:2px 10px;border-radius:4px;font-size:13px;margin:1px;font-weight:bold}
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:3px;z-index:1000;background:transparent}
+.scroll-progress-bar{height:100%;background:#a46d1f;width:0;transition:width .1s linear}
+.help-layout{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start;margin-top:20px}
+.toc-sidebar{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto}
+.help-content{min-width:0}
 ul,ol{margin:8px 0 8px 20px;font-size:14px;line-height:2}
 li{margin-bottom:4px}
 /* Status effects */ .wrap table td:last-child{font-size:13px;line-height:1.9}
-@media(max-width:860px){body{padding:20px}.container{max-width:100%}.section{padding:20px}}@media(max-width:600px){body{padding:16px}.section{padding:16px}h1{font-size:22px}.toc{padding:14px 18px}.section h2{font-size:18px}.card{padding:10px 14px}}@media(max-width:480px){body{padding:12px}h1{font-size:20px}.section{padding:14px 16px}.section h2{font-size:17px}.section h3{font-size:14px}p{font-size:13px;line-height:1.8}.card .desc{font-size:12px}.toc a{font-size:13px}.wrap table{font-size:12px}.wrap table th,.wrap table td{padding:5px 6px}}
+@media(max-width:860px){body{padding:20px}.container{max-width:100%}.section{padding:20px}.help-layout{grid-template-columns:1fr}.toc-sidebar{position:static;max-height:none}}@media(max-width:600px){body{padding:16px}.section{padding:16px}h1{font-size:22px}.toc{padding:14px 18px}.section h2{font-size:18px}.card{padding:10px 14px}}@media(max-width:480px){body{padding:12px}h1{font-size:20px}.section{padding:14px 16px}.section h2{font-size:17px}.section h3{font-size:14px}p{font-size:13px;line-height:1.8}.card .desc{font-size:12px}.toc a{font-size:13px}.wrap table{font-size:12px}.wrap table th,.wrap table td{padding:5px 6px}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .card{animation:fadeInUp 0.4s ease-out both}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.16s}.card:nth-child(6){animation-delay:.2s}
-</style></head><body><div class="container">
+@media (prefers-color-scheme:dark){body{background:#1a1d20;color:#e8e6e3}h1,.section h2,.section h3,.card .num{color:#e8e6e3}.subtitle,.back-link{color:#9d9b98}.back-link:hover{color:#d4a54a}.toc{background:#24272b;border-color:#3a3d40}.toc a{color:#d4a54a}.toc a:hover{color:#e8be5a}.section{background:#24272b;border-color:#3a3d40}.section h2{border-bottom-color:#3a3d40}.note{background:#1a1d20;border-left-color:#d4a54a;color:#9d9b98}.card{background:#1a1d20;border-color:#3a3d40}.card .num{color:#d4a54a}.card .desc{color:#9d9b98}.wrap table th{background:#1a1d20;border-color:#3a3d40}.wrap table td{border-color:#3a3d40;color:#e8e6e3}.wrap table tr:nth-child(even) td{background:rgba(255,255,255,.03)}.p{color:#e8e6e3}}
+</style></head><body>
+<div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+<div class="container">
 <a class="back-link" href="启动台.html">← 返回启动台</a>
 <h1>📖 帮助文档</h1><div class="subtitle">斯诺德规则 · 冒险者手册</div>
-<div class="toc"><div class="toc-title">目录</div><a href="#s0">基本规则</a>
+<div class="help-layout"><aside class="toc-sidebar"><nav class="toc"><div class="toc-title">目录</div><a href="#s0">基本规则</a>
 <a href="#s1">检定规则</a>
 <a href="#s2">战斗规则</a>
 <a href="#s3">升级规则</a>
@@ -45,7 +53,7 @@ li{margin-bottom:4px}
 <a href="#s6">技能点规则</a>
 <a href="#s7">异常状态规则</a>
 <a href="#s8">关键词规则</a>
-</div>
+</nav></aside><main class="help-content">
 <div class="section" id="s0"><h2>基本规则</h2>
 <div class="note">以下共识对您和主持人（DM）之间的良好合作至关重要。</div>
 <div class="card"><div class="num">1.写在最开始的话</div><div class="desc">在了解斯诺德跑团的具体规则之前，请先阅读并认同以下共识，这些内容对您和主持人（DM）之间的良好合作至关重要。斯诺德世界拥有大量文本，如果您没有耐心读完并记住本部分的核心原则，那么您一定不适合参与本游戏。提前明确这一点，有助于双方避免不必要的时间浪费</div></div>
@@ -425,6 +433,6 @@ li{margin-bottom:4px}
 <tr><td style="width:100px;white-space:nowrap"><b>短休</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须进行一次至少长达两小时的休整后才能再次使用的效果</td></tr>
 <tr><td style="width:100px;white-space:nowrap"><b>长休</b></td><td style="word-break:break-word;overflow-wrap:break-word">必须进行一次至少长达八小时的深度休息后才能再次使用的效果</td></tr>
 </table></div>
-</div>
+</div></main></div>
 
-</div></body></html>
+<script>window.addEventListener('scroll',function(){var h=document.documentElement,sh=h.scrollHeight-ch=h.clientHeight,p=(h.scrollTop/sh)*100;document.getElementById('scrollBar').style.width=p+'%';});</script></div></body></html>

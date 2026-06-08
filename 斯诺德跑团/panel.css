@@ -359,4 +359,9 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
+.skill-table tbody tr{transition:background 0.15s ease}
+.skill-table tbody tr:hover{background:rgba(164,109,31,0.06)}
+
+@media (prefers-color-scheme:dark){:root{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3d40;--accent:#d4a54a;--accent-hover:#e8be5a}}
+
 

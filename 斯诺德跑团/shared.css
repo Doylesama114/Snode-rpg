@@ -109,3 +109,17 @@ h1 {
 .card:nth-child(4) { animation-delay: 0.15s; }
 .card:nth-child(5) { animation-delay: 0.20s; }
 .card:nth-child(6) { animation-delay: 0.25s; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1d20;
+    --panel: #24272b;
+    --ink: #e8e6e3;
+    --muted: #9d9b98;
+    --line: #3a3d40;
+    --accent: #d4a54a;
+    --accent-hover: #e8be5a;
+    --shadow: 0 4px 12px rgba(0,0,0,0.2);
+    --shadow-hover: 0 6px 20px rgba(0,0,0,0.3);
+  }
+}

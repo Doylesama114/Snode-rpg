@@ -544,3 +544,21 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1d20;
+    --panel: #24272b;
+    --ink: #e8e6e3;
+    --muted: #9d9b98;
+    --line: #3a3d40;
+    --gold: #d4a54a;
+    --red: #e05555;
+    --green: #4dab8a;
+    --blue: #5a8fbf;
+    --shadow: 0 16px 40px rgba(0,0,0,0.2);
+  }
+  body {
+    background: linear-gradient(90deg, rgba(157,47,47,.08), transparent 36%, rgba(49,95,143,.08)), var(--bg);
+  }
+}
+

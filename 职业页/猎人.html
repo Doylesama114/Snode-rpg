@@ -6,6 +6,7 @@
 <title>猎人 · 斯诺德职业技能索引</title>
 <link rel="stylesheet" href="common.css"/>
 <style>
+    :root { --class-color: #16a34a; }
     body { background: var(--bg); }
     .class-view { display: block !important; }
     .view-home { display: none !important; }
@@ -15,20 +16,22 @@
         margin: 14px 0;
         padding: 16px 20px;
         border-radius: 10px;
-        background: linear-gradient(135deg, var(--red), #c0392b);
+        background: linear-gradient(135deg, var(--class-color), color-mix(in srgb, var(--class-color) 70%, #000));
         color: #fff !important;
         text-decoration: none;
         font-weight: 900;
         font-size: 18px;
         text-align: center;
         letter-spacing: 2px;
-        box-shadow: 0 3px 12px rgba(157,47,47,0.4);
+        box-shadow: 0 3px 12px color-mix(in srgb, var(--class-color) 40%, #000);
         transition: transform 0.15s, box-shadow 0.15s;
     }
     .adv-link:hover {
         transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(157,47,47,0.5);
+        box-shadow: 0 6px 20px color-mix(in srgb, var(--class-color) 50%, #000);
     }
+    .style-link { border-left: 3px solid transparent; transition: border-color 0.2s; }
+    .style-link:hover { border-left-color: var(--class-color); }
 </style>
 
 </head>
