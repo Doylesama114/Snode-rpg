@@ -1,0 +1,98 @@
+:root {
+  --bg: #f6f4ef;
+  --panel: #fffdf8;
+  --ink: #1f2522;
+  --muted: #69706b;
+  --line: #d8d2c4;
+  --accent: #a46d1f;
+  --accent-hover: #c0852f;
+  --shadow: 0 4px 12px rgba(31,37,34,0.04);
+  --shadow-hover: 0 6px 20px rgba(31,37,34,0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 30px;
+  font-size: 15px;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 26px;
+  color: var(--ink);
+  font-weight: bold;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--line);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow);
+}
+
+.card:hover {
+  background: var(--bg);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.icon {
+  font-size: 32px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+}
+
+.card-text h2 {
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.card-text p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.back-link:hover { color: var(--accent); }
