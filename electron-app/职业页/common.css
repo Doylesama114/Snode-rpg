@@ -567,7 +567,7 @@ html.dark{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3
 html.dark body{background:linear-gradient(90deg,rgba(157,47,47,.08),transparent 36%,rgba(49,95,143,.08)),var(--bg)}
 
 .adv-card{position:relative;overflow:hidden;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.35s ease;border-left:1px solid var(--line)}
-.adv-card::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:radial-gradient(circle,rgba(212,165,74,.25),transparent 70%);transform:translate(-50%,-50%);transition:width 0.5s ease-out,height 0.5s ease-out,opacity 0.3s;opacity:0;z-index:0;pointer-events:none}
-.adv-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.18),0 0 60px rgba(212,165,74,.12);border-left-color:var(--class-color,var(--accent,#a46d1f))}
-.adv-card:hover::before{width:700px;height:700px;opacity:1}
+.adv-card::after{content:'';position:absolute;top:-50%;left:-80%;width:50%;height:200%;background:linear-gradient(105deg,transparent 35%,rgba(255,215,0,.08) 42%,rgba(255,255,255,.25) 50%,rgba(255,215,0,.08) 58%,transparent 65%);transform:skewX(-20deg);transition:left 0.65s cubic-bezier(0.4,0,0.2,1);z-index:1;pointer-events:none}
+.adv-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.18);border-left-color:var(--class-color,var(--accent,#a46d1f))}
+.adv-card:hover::after{left:120%}
 
