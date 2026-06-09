@@ -1038,6 +1038,7 @@
     document.addEventListener("pointercancel", function() {
         if (!holdState) return;
         holdState.btn.classList.remove("holding");
+        if(holdState._chargeSnd)holdState._chargeSnd.stop();
         holdState.running = false;
         if (holdState.timer) cancelAnimationFrame(holdState.timer);
         if (holdState.btn) holdState.btn.style.setProperty("--hold-progress", "0");
