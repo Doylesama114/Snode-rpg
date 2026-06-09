@@ -35,6 +35,16 @@ var SOUNDS={
   expand:  function(){playNoise(0.3,0.15,2000,600);setTimeout(function(){playTone(600,0.2,0.1,'sine',400)},50);setTimeout(function(){playTone(1000,0.15,0.08,'triangle',0)},120)},
   step:    function(){playTone(1500,0.04,0.1,'sine',-200)},
   toggle:  function(){playTone(60,0.25,0.1,'sine',-20)},
+  pageIn:  function(){playTone(440,0.15,0.08,'triangle',100)},
+  charge:  function(){
+    var ctx=getCtx(),osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.type='triangle';osc.frequency.setValueAtTime(200,ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(800,ctx.currentTime+2);
+    gain.gain.setValueAtTime(0.04,ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12,ctx.currentTime+2);
+    osc.connect(gain);gain.connect(ctx.destination);osc.start();
+    return {stop:function(){try{osc.stop();gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.05)}catch(e){}}};
+  }
   pageIn:  function(){playTone(440,0.15,0.08,'triangle',100)}
 };
 
@@ -44,6 +54,11 @@ window.snd={
     if(this.muted)return;
     var fn=SOUNDS[name];
     if(fn)fn();
+  },
+  playRef: function(name){
+    if(this.muted)return null;
+    var fn=SOUNDS[name];
+    return fn?fn():null;
   },
   toggle: function(){
     this.muted=!this.muted;

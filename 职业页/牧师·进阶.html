@@ -1469,7 +1469,7 @@
             btn.classList.remove("active");
             return;
         }
-        holdState = { btn: btn, startTime: performance.now(), running: true };
+        holdState = { btn: btn, startTime: performance.now(), running: true, _chargeSnd: snd.playRef('charge') };
         btn.classList.add("holding");
         btn.style.setProperty("--hold-progress", "0");
         (function tick() {
