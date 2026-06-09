@@ -213,7 +213,8 @@ var RULE_TOOLTIPS = {
     for(var key in RULE_TOOLTIPS){
       if(text.indexOf(key)>=0){
         var span='<span class="tt" data-tt="'+RULE_TOOLTIPS[key].replace(/"/g,'&quot;')+'">'+key+'</span>';
-        text=text.split(key).join(span);
+        var safeText=text.replace(/<[^>]*>/g,'');
+        text=safeText.split(key).join(span);
         replaced=true;
       }
     }
