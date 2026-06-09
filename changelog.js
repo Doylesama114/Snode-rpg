@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.575',
+    date: '2026-06-09',
+    changes: [
+      '修复tooltip嵌套span导致详情描述出现>字符',
+      '暗色模式选择器修复'
+    ]
+  },
+
+
+  {
     version: '1.0.574',
     date: '2026-06-09',
     changes: [
