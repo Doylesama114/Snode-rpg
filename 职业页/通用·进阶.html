@@ -757,6 +757,7 @@
             holdState.btn.style.setProperty("--hold-progress", String(p));
             if (p >= 1) {
                 holdState.running = false;
+                if(holdState._chargeSnd)holdState._chargeSnd.stop();
                 var b = holdState.btn;
                 holdState = null;
                 showDetail(b);
@@ -769,6 +770,7 @@
         if (!holdState) return;
         holdState.btn.classList.remove("holding");
         holdState.running = false;
+        if(holdState._chargeSnd)holdState._chargeSnd.stop();
         if (holdState.timer) cancelAnimationFrame(holdState.timer);
         var btn = holdState.btn;
         var startP = parseFloat(btn.style.getPropertyValue("--hold-progress")) || 0;
