@@ -55,7 +55,7 @@ window.snd={
 };
 
 document.addEventListener('click',function(e){
-  if(snd.muted)return;
+  if(snd.muted||!e.target.closest)return;
   var el=e.target.closest('.btn, .card, [onclick], button:not(#themeToggle):not(#muteToggle), .chip, .adv-card');
   if(el)snd.play('click');
 });
