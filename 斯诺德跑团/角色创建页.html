@@ -319,6 +319,7 @@ var SPEC_AUTO_PROF = {
 
 
 function goToStep(n) {
+  if(window.snd)snd.play('step');
   CURRENT_STEP=n;
   var dots=document.querySelectorAll(".step-dot");
   for(var i=0;i<dots.length;i++){
@@ -2053,5 +2054,6 @@ async function exportXlsxFromState(state) {
 }
 
 </script>
+<script src="snd.js"></script>
 </body>
 </html>

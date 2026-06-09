@@ -944,6 +944,7 @@
         if (!card) return;
         var dv = card.querySelector(".adv-detail");
         if (!dv) return;
+        if(window.snd)snd.play('expand');
         initDetails();
         if (!detailsData) {
             dv.innerHTML = "<p style=\"color:red;text-align:center;padding:12px;\">\u6570\u636e\u52a0\u8f7d\u5931\u8d25</p>";
@@ -1147,5 +1148,6 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 })();
 </script>
 <script src="common_tooltip.js"></script>
+<script src="../斯诺德跑团/snd.js"></script>
 </body>
 </html>

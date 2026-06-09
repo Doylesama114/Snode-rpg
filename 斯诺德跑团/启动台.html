@@ -112,6 +112,7 @@ html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3}html.
 </head>
 <body>
 <button id="themeToggle">☀️</button>
+<button id="muteToggle" onclick="snd.toggle();this.textContent=snd.muted?'🔇':'🔊'" style="position:fixed;top:62px;right:16px;z-index:999;background:transparent;border:1px solid #d8d2c4;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;transition:all 0.2s">🔊</button>
 <div class="container">
   <h1>⚔ 斯诺德</h1>
   <div class="subtitle">冒险者工具集</div>
@@ -243,8 +244,9 @@ function showUpdateMsg(data) {
   var s=localStorage.getItem('_snowd_theme');
   if(s!==null)apply(s==='dark');
   else apply(window.matchMedia('(prefers-color-scheme:dark)').matches);
-  t.onclick=function(){var d=!h.classList.contains('dark');apply(d);localStorage.setItem('_snowd_theme',d?'dark':'light');};
+  t.onclick=function(){var d=!h.classList.contains('dark');apply(d);localStorage.setItem('_snowd_theme',d?'dark':'light');if(window.snd)snd.play('toggle');};
 })();
 </script>
+<script src="snd.js"></script>
 </body>
 </html>
