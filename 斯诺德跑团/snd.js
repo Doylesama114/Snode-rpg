@@ -44,7 +44,7 @@ var SOUNDS={
     gain.gain.linearRampToValueAtTime(0.12,ctx.currentTime+2);
     osc.connect(gain);gain.connect(ctx.destination);osc.start();
     return {stop:function(){try{osc.stop();gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.05)}catch(e){}}};
-  }
+  },
   pageIn:  function(){playTone(440,0.15,0.08,'triangle',100)}
 };
 
