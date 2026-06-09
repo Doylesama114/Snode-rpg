@@ -177,7 +177,7 @@ var RULE_TOOLTIPS = {
       var chip=chips[i];
       var kw=chip.textContent.trim();
       if(RULE_TOOLTIPS[kw]){
-        chip.setAttribute('data-tt',RULE_TOOLTIPS[kw]);
+        chip.setAttribute('data-tt',RULE_TOOLTIPS[kw].replace(/"/g,'&quot;'));
         chip.classList.add('tt');
         // Mobile long-press
         chip.addEventListener('touchstart',function(e){
