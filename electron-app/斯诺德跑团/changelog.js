@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.573',
+    date: '2026-06-09',
+    changes: [
+      '修复html.dark逗号选择器泄漏到亮色模式(帮助页标题变灰等)',
+      '充能音效松手停止修复',
+      'snd.js语法修复'
+    ]
+  },
+
+
+  {
     version: '1.0.572',
     date: '2026-06-09',
     changes: [
