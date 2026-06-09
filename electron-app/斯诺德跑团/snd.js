@@ -29,8 +29,7 @@ function playNoise(d,v,f1,f2){
 }
 
 var SOUNDS={
-  click:   function(){playTone(800,0.06,0.12,'sine',-300)},
-  hover:   function(){playTone(550,0.03,0.06,'sine',100)},
+  click:   function(){playTone(400,0.05,0.1,'triangle',-200)},
   success: function(){playTone(880,0.08,0.15,'triangle',200);setTimeout(function(){playTone(1320,0.1,0.12,'triangle',0)},60)},
   error:   function(){playTone(200,0.2,0.15,'sawtooth',-80)},
   expand:  function(){playNoise(0.3,0.15,2000,600);setTimeout(function(){playTone(600,0.2,0.1,'sine',400)},50);setTimeout(function(){playTone(1000,0.15,0.08,'triangle',0)},120)},
@@ -60,8 +59,4 @@ document.addEventListener('click',function(e){
   var el=e.target.closest('.btn, .card, [onclick], button:not(#themeToggle):not(#muteToggle), .chip, .adv-card');
   if(el)snd.play('click');
 });
-document.addEventListener('mouseenter',function(e){
-  if(snd.muted)return;
-  if(e.target.closest('.adv-card'))snd.play('hover');
-},true);
 })();
