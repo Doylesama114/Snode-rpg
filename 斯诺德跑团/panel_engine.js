@@ -107,7 +107,7 @@ var state={
 "xp":0, "carry_capacity":{"常规":45,"满载":60,"极限":75,"当前":5},
 "sp":{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
 "hp":10,"fp":8,
-"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"",
+"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
 "skills":[], "special_feats":[], "feats":[], "currency":{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -2855,6 +2855,7 @@ function getTierMinLevel(tierName) {
   var info = TIER_UNLOCK_COST[tierName];
   return info ? info.minLevel : 99;
 }
+function resolveWeaponProfs(className){return CLASS_WEAPON_PROFS[className]||[];}
 function render(){ applyChoiceLLevel12Boosts();
   if(!state.containerItems)state.containerItems={"背包":"","旅行腰包":"","材料包A":"","材料包B":""};
   if(state.equipment["背包"]&&state.equipment["背包"].length>0&&!state.containerItems["背包"])state.containerItems["背包"]="auto";
@@ -3835,6 +3836,21 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   document.getElementById("prof-list").innerHTML=ph2;
+
+  // Weapon proficiency section
+  var mainClass=(state.classes&&state.classes[0])?state.classes[0].name:"";
+  var wp=resolveWeaponProfs(mainClass);
+  var wh="";
+  for(var wi=0;wi<wp.length;wi++){wh+='<span class="weapon-tag">'+wp[wi]+'</span>';}
+  if(state.weapon_specs&&state.weapon_specs.length){
+    wh+='<span style="font-size:13px;color:var(--muted);margin:0 6px">|</span>';
+    for(var wsi=0;wsi<state.weapon_specs.length;wsi++){
+      var cat=state.weapon_specs[wsi];
+      var bonus=WEAPON_SPEC_BONUSES[cat]||"";
+      wh+='<span class="weapon-spec-tag">⭐'+cat+(bonus?'（'+bonus+'）':'')+'</span>';
+    }
+  }
+  var we=document.getElementById("weapon-profs");if(we)we.innerHTML=wh;
 
 
 

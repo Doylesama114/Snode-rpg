@@ -525,6 +525,20 @@ function renderSpecChoices(clsName){
     var sn=specs[si].n;
     var sd=specs[si].d;
     var pc=SPEC_PROF_CHOICES[clsName]?SPEC_PROF_CHOICES[clsName][sn]:null;
+    if(sn==="武器专精"){
+      var cats=["剑类","斧类","锤类","长柄","弓箭","简易"];
+      var bonuses=WEAPON_SPEC_BONUSES||{};
+      h+="<div style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' class='specGroup' data-spec='"+sn+"'>";
+      h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>武器专精</div>";
+      h+="<div style='font-size:12px;color:#69706b;margin-bottom:8px'>选择一项武器类别获得对应增益</div>";
+      h+="<div class='specAttrRow' style='display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px'>";
+      for(var ci=0;ci<cats.length;ci++){
+        var bc=bonuses[cats[ci]]||"";
+        h+="<div class='spec-btn weapon-spec-btn"+(CHAR.weaponSpec===cats[ci]?" selected":"")+"' data-spec='"+cats[ci]+"' style='padding:8px 12px;cursor:pointer' title='"+bc+"'>"+cats[ci]+(bc?" - "+bc:"")+"</div>";
+      }
+      h+="</div></div>";
+      continue;
+    }
     if(!pc)continue;
     h+="<div style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' class='specGroup' data-spec='"+sn+"'>";
     h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>"+sn+"</div>";
@@ -549,6 +563,15 @@ function renderSpecChoices(clsName){
   area.innerHTML=h;
   area.onclick=function(e){
     var t=e.target;
+    if(t.classList.contains("weapon-spec-btn")){
+      var cat=t.getAttribute("data-spec");
+      CHAR.weaponSpec=cat;
+      if(!CHAR.specChoices)CHAR.specChoices={};
+      CHAR.specChoices["武器专精"]={attr:cat,skill:""};
+      document.querySelectorAll(".weapon-spec-btn").forEach(function(b){b.classList.remove("selected");});
+      t.classList.add("selected");
+      checkSpecDone();return;
+    }
     if(t.classList.contains("spec-attr")){
       var sn=t.parentNode.parentNode.getAttribute("data-spec");
       if(!CHAR.specChoices)CHAR.specChoices={};
@@ -1464,7 +1487,7 @@ function saveCharacter(){
     carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
     sp:{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
     hp:hp, fp:fp,
-    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", background:CHAR.bgName||"",
+    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},

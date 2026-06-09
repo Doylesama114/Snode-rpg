@@ -279,6 +279,9 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 
 .prof-tag{display:inline-block;padding:4px 12px;margin:3px;background:var(--bg);border-radius:4px;font-size:16px;color:var(--ink);border:1px solid var(--line)}
 
+.weapon-tag{display:inline-block;padding:4px 10px;margin:3px;background:var(--bg);border-radius:4px;font-size:15px;color:var(--muted);border:1px solid var(--line)}
+.weapon-spec-tag{display:inline-block;padding:4px 12px;margin:3px;background:#c0852f;border-radius:4px;font-size:15px;color:#fff;border:1px solid #a46d1f}
+
 
 /* 技能学习面板增强样式 */
 
