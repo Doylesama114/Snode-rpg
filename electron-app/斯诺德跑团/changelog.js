@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.576',
+    date: '2026-06-09',
+    changes: [
+      '武器熟练度系统(CLASS_WEAPON_PROFS+面板展示+武器专精选择器)',
+      '武器分类标签完善(剑/斧/锤/长柄/弓箭/简易/火器/法器)',
+      '新增猎刀武器'
+    ]
+  },
+
+
+  {
     version: '1.0.575',
     date: '2026-06-09',
     changes: [
