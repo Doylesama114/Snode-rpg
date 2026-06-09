@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.574',
+    date: '2026-06-09',
+    changes: [
+      '修复color-mix浏览器兼容性问题(adv-link按钮消失)'
+    ]
+  },
+
+
+  {
     version: '1.0.573',
     date: '2026-06-09',
     changes: [
