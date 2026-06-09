@@ -506,6 +506,7 @@ function checkBgDone(){
   // Currently just a helper - the next button is always enabled for bg
   // But we could add validation here if needed
 }
+var WEAPON_SPEC_BONUSES={"剑类":"近战伤害骰=1可重掷","斧类":"暴击率+1","锤类":"对重甲敌伤害骰最低4点","长柄":"可单手持有","弓箭":"命中检定+2","简易":"每场战斗限一次:附赠动作基础攻击"};
 function renderSpecChoices(clsName){
   var old=document.getElementById("specChoiceArea");if(old)old.remove();
   CHAR.specChoices={};
