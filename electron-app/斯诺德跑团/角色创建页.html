@@ -515,7 +515,7 @@ function renderSpecChoices(clsName){
   for(var si=0;si<specs.length;si++){
     var sn=specs[si].n;
     var pc=SPEC_PROF_CHOICES[clsName]?SPEC_PROF_CHOICES[clsName][sn]:null;
-    if(pc)hasChoice=true;
+    if(pc||sn==="武器专精")hasChoice=true;
   }
   if(!hasChoice)return;
   var area=document.createElement("div");area.id="specChoiceArea";
