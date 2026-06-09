@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>选择角色</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Char list page specific */
+.char-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.char-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.char-card { animation: fadeInUp 0.4s ease-out both; }
+.char-card:nth-child(2) { animation-delay: 0.08s; }
+.char-card:nth-child(3) { animation-delay: 0.16s; }
+.char-card:nth-child(4) { animation-delay: 0.24s; }
+.char-card:nth-child(5) { animation-delay: 0.32s; }
+.char-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 6px;
+}
+.char-info {
+  font-size: 13px;
+  color: #69706b;
+  line-height: 1.6;
+}
+.empty-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: #69706b;
+  font-size: 15px;
+}
+/* Slot page specific */
+.slot-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.slot-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.slot-card.empty {
+  opacity: 0.5;
+  border-style: dashed;
+}
+.slot-card.empty:hover {
+  opacity: 0.8;
+}
+.slot-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 4px;
+}
+.slot-time {
+  font-size: 12px;
+  color: #69706b;
+  margin-bottom: 6px;
+}
+.slot-summary {
+  font-size: 13px;
+  color: #69706b;
+}
+.slot-empty-text {
+  font-size: 13px;
+  color: #69706b;
+  font-style: italic;
+}
+.char-subtitle {
+  font-size: 14px;
+  color: #69706b;
+  margin-bottom: 20px;
+}
+.footer {
+  margin-top: 30px;
+  font-size: 12px;
+  color: #69706b;
+  text-align: center;
+}
+@media (max-width:860px) {
+  body { padding: 20px; }
+}
+@media (max-width:600px) {
+  body { padding: 16px; }
+  h1 { font-size: 22px; }
+  .card, .char-card { padding: 14px 16px; gap: 12px; }
+  .card-text h2 { font-size: 16px; }
+  .card-text p { font-size: 12px; }
+  .icon { width: 44px; height: 44px; font-size: 26px; }
+}
+@media (max-width:480px) {
+  body { padding: 12px; }
+  h1 { font-size: 20px; }
+  .subtitle { font-size: 12px; }
+  .card, .char-card { padding: 12px 14px; }
+  .card-text h2 { font-size: 15px; }
+}
+@media (prefers-color-scheme:dark) { .char-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)} .char-card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)} .char-name{color:#e8e6e3} .char-info,.empty-msg{color:#9d9b98} .slot-card{background:#24272b;border-color:#3a3d40} .slot-card:hover{background:#1a1d20;border-color:#d4a54a} .footer{color:#9d9b98} }html.dark  .char-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark  .char-card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)}html.dark  .char-name{color:#e8e6e3}html.dark  .char-info,html.dark .empty-msg{color:#9d9b98}html.dark  .slot-card{background:#24272b;border-color:#3a3d40}html.dark  .slot-card:hover{background:#1a1d20;border-color:#d4a54a}html.dark  .footer{color:#9d9b98} 
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back-link" href="主页.html">← 返回主页</a>
+  <h1>📜 选择已有角色</h1>
+  <div id="charList"></div>
+</div>
+
+<script>
+function getSavedChars() {
+  var chars = [];
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.indexOf("char_") === 0) {
+      var parts = key.replace("char_", "").split("_slot");
+      var charName = parts[0];
+      if (chars.indexOf(charName) < 0) chars.push(charName);
+    }
+  }
+  return chars;
+}
+
+function getCharSummary(charName) {
+  var latest = null;
+  var latestTime = 0;
+  for (var si = 1; si <= 3; si++) {
+    var key = "char_" + charName + "_slot" + si;
+    var raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        var data = JSON.parse(raw);
+        var savedTime = data._savedAt ? new Date(data._savedAt).getTime() : 0;
+        if (savedTime >= latestTime) {
+          latestTime = savedTime;
+          var cls = "";
+          if (data.classes) {
+            for (var ci = 0; ci < data.classes.length; ci++) {
+              var c = data.classes[ci];
+              if (c && c.name && c.level > 0) {
+                cls += (cls ? " / " : "") + c.name + " " + c.level + "级";
+              }
+            }
+          }
+          var hp = data.hp || "?";
+          var fp = data.fp || "?";
+          var attrs = data.attrs || {};
+          var attrStr = "";
+          var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+          for (var ai = 0; ai < attrNames.length; ai++) {
+            attrStr += attrNames[ai] + (attrs[attrNames[ai]] || 0) + " ";
+          }
+          var race = data.race || "";
+          var bg = data.background || "";
+          var personality = data.personality || "";
+          var traits = data.traits || "";
+          latest = { cls: cls, hp: hp, fp: fp, attrs: attrStr, race: race, bg: bg, personality: personality, traits: traits };
+        }
+      } catch(e) {}
+    }
+  }
+  return latest;
+}
+
+function renderCharList() {
+  var chars = getSavedChars();
+  var html = "";
+  if (chars.length === 0) {
+    html = "<div class='empty-msg' style='font-size:16px;line-height:2.2'>📜 还没有保存的角色<br><span style='font-size:13px;color:#8a8578'>在角色面板中创建并保存第一个角色吧</span></div>";
+  } else {
+    for (var ci = 0; ci < chars.length; ci++) {
+      var name = chars[ci];
+      var summary = getCharSummary(name);
+      var infoHtml = "";
+      if (summary) {
+        var headerLine = "";
+        if (summary.race) headerLine += summary.race;
+        if (summary.cls) headerLine += (headerLine ? " · " : "") + summary.cls;
+        if (headerLine) infoHtml += "<div class='char-info'>" + headerLine + "</div>";
+        if (summary.bg) infoHtml += "<div class='char-info'>背景: " + summary.bg + "</div>";
+        var pers = summary.personality || summary.traits || "";
+        if (pers) infoHtml += "<div class='char-info' style='color:#5a5240'>" + pers + "</div>";
+        infoHtml += "<div class='char-info'>生命: " + summary.hp + " / 疲劳: " + summary.fp + "</div>";
+        infoHtml += "<div class='char-info' style='font-size:11px'>" + summary.attrs + "</div>";
+      } else {
+        infoHtml = "<div class='char-info'>无有效存档数据</div>";
+      }
+      html += "<div class='char-card' onclick=\"location.href='角色存档页.html?char=" + encodeURIComponent(name) + "'\">";
+      html += "<div class='char-name'>" + name + "</div>";
+      html += infoHtml;
+      html += "</div>";
+    }
+  }
+  document.getElementById("charList").innerHTML = html;
+    var footer=document.getElementById("charList");var btn=document.createElement("div");btn.style.cssText="text-align:center;margin-top:20px;padding:10px;cursor:pointer;color:#a08050;font-size:13px";btn.innerHTML="🗑 清空所有测试角色";btn.onclick=clearAllChars;footer.parentNode.insertBefore(btn,footer.nextSibling);
+}
+
+renderCharList();
+function clearAllChars(){if(confirm("确定要删除所有角色存档吗？此操作不可恢复。")){var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf("char_")===0)keys.push(k);}for(var i=0;i<keys.length;i++)localStorage.removeItem(keys[i]);alert("已清空 "+keys.length+" 个角色存档");location.reload();}}
+</script>
+<script src="snd.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>角色存档</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Char list page specific */
+.char-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.char-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.char-card { animation: fadeInUp 0.4s ease-out both; }
+.char-card:nth-child(2) { animation-delay: 0.08s; }
+.char-card:nth-child(3) { animation-delay: 0.16s; }
+.char-card:nth-child(4) { animation-delay: 0.24s; }
+.char-card:nth-child(5) { animation-delay: 0.32s; }
+.char-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 6px;
+}
+.char-info {
+  font-size: 13px;
+  color: #69706b;
+  line-height: 1.6;
+}
+.empty-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: #69706b;
+  font-size: 15px;
+}
+/* Slot page specific */
+.slot-card {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
+}
+.slot-card:hover {
+  background: #f6f4ef;
+  border-color: #a46d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
+}
+.slot-card.empty {
+  opacity: 0.5;
+  border-style: dashed;
+}
+.slot-card.empty:hover {
+  opacity: 0.8;
+}
+.slot-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1f2522;
+  margin-bottom: 4px;
+}
+.slot-time {
+  font-size: 12px;
+  color: #69706b;
+  margin-bottom: 6px;
+}
+.slot-summary {
+  font-size: 13px;
+  color: #69706b;
+}
+.slot-empty-text {
+  font-size: 13px;
+  color: #69706b;
+  font-style: italic;
+}
+.char-subtitle {
+  font-size: 14px;
+  color: #69706b;
+  margin-bottom: 20px;
+}
+.footer {
+  margin-top: 30px;
+  font-size: 12px;
+  color: #69706b;
+  text-align: center;
+}
+@media (max-width:860px) {
+  body { padding: 20px; }
+}
+@media (max-width:600px) {
+  body { padding: 16px; }
+  h1 { font-size: 22px; }
+  .card { padding: 14px 16px; gap: 12px; }
+  .card-text h2 { font-size: 16px; }
+  .card-text p { font-size: 12px; }
+}
+@media (max-width:480px) {
+  body { padding: 12px; }
+  h1 { font-size: 20px; }
+  .subtitle { font-size: 12px; }
+  .card { padding: 12px 14px; }
+}
+@media (prefers-color-scheme:dark) { .char-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)} .char-card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)} .char-name,.slot-title{color:#e8e6e3} .char-info,.empty-msg,.slot-time,.slot-summary,.slot-empty-text,.footer{color:#9d9b98} .slot-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)} .slot-card:hover{background:#1a1d20;border-color:#d4a54a} .slot-card.empty{opacity:.6} .slot-card.empty:hover{opacity:.9} .char-subtitle{color:#9d9b98} }html.dark  .char-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark  .char-card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)}html.dark  .char-name,html.dark .slot-title{color:#e8e6e3}html.dark  .char-info,html.dark .empty-msg,html.dark .slot-time,html.dark .slot-summary,html.dark .slot-empty-text,html.dark .footer{color:#9d9b98}html.dark  .slot-card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark  .slot-card:hover{background:#1a1d20;border-color:#d4a54a}html.dark  .slot-card.empty{opacity:.6}html.dark  .slot-card.empty:hover{opacity:.9}html.dark  .char-subtitle{color:#9d9b98} 
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back-link" href="角色选择页.html">← 返回角色列表</a>
+  <h1>📂 选择存档</h1>
+  <div class="char-subtitle" id="charNameDisplay"></div>
+  <div id="slotList"></div>
+</div>
+
+<script>
+function getCharName() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get("char") || "";
+}
+
+function getSlotSummary(data) {
+  var cls = "";
+  if (data.classes) {
+    for (var ci = 0; ci < data.classes.length; ci++) {
+      var c = data.classes[ci];
+      if (c && c.name && c.level > 0) {
+        cls += (cls ? " / " : "") + c.name + " " + c.level + "级";
+      }
+    }
+  }
+  var hp = data.hp || "?";
+  var fp = data.fp || "?";
+  return cls + " | HP: " + hp + " FP: " + fp;
+}
+
+function renderSlots() {
+  var charName = getCharName();
+  document.getElementById("charNameDisplay").textContent = charName;
+
+  var html = "";
+  for (var si = 1; si <= 3; si++) {
+    var key = "char_" + charName + "_slot" + si;
+    var raw = localStorage.getItem(key);
+    var isEmpty = !raw;
+    var savedAt = "";
+    var summary = "";
+
+    if (!isEmpty) {
+      try {
+        var data = JSON.parse(raw);
+        savedAt = data._savedAt ? new Date(data._savedAt).toLocaleString() : "未知";
+        summary = getSlotSummary(data);
+      } catch(e) {
+        savedAt = "存档损坏";
+        summary = "";
+      }
+    }
+
+    var cls = "slot-card" + (isEmpty ? " empty" : "");
+    html += "<div class='" + cls + "' onclick='openSlot(" + si + ")'>";
+    html += "<div class='slot-title'>存档位 " + si + "</div>";
+    if (isEmpty) {
+      html += "<div class='slot-empty-text'>📂 空存档位 — 点击创建新存档</div>";
+    } else {
+      html += "<div class='slot-time'>" + savedAt + "</div>";
+      html += "<div class='slot-summary'>" + summary + "</div>";
+    }
+    html += "</div>";
+  }
+  document.getElementById("slotList").innerHTML = html;
+}
+
+function openSlot(slotIndex) {
+  var charName = getCharName();
+  if (!charName) {
+    alert("未指定角色");
+    return;
+  }
+  // Check if slot has data
+  var key = "char_" + charName + "_slot" + slotIndex;
+  var raw = localStorage.getItem(key);
+  if (!raw) {
+    alert("该存档位为空，请先在角色面板中保存角色到此位置");
+    return;
+  }
+  // Navigate to character panel with char and slot params
+  window.location.href = "角色面板.html?char=" + encodeURIComponent(charName) + "&slot=" + slotIndex;
+}
+
+renderSlots();
+</script>
+<script src="snd.js"></script>
+</body>
+</html>
