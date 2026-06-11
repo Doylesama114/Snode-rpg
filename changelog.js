@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.577',
+    date: '2026-06-11',
+    changes: [
+      '全职业页tooltip>字符修复全局验证通过(16页)',
+      '武器熟练度系统优化(hasChoice修复+WEAPON_SPEC_BONUSES内联)'
+    ]
+  },
+
+
+  {
     version: '1.0.576',
     date: '2026-06-09',
     changes: [
