@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.578',
+    date: '2026-06-12',
+    changes: [
+      '修复面板sd变量未定义导致技能详情点击无反应',
+      '暗色模式修复为全站生效(snd.js+common.js主题初始化)'
+    ]
+  },
+
+
+  {
     version: '1.0.577',
     date: '2026-06-11',
     changes: [
