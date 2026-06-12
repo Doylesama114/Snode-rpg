@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.581',
+    date: '2026-06-12',
+    changes: [
+      '武僧点穴手技能点费用修正(3→2匹配docx)'
+    ]
+  },
+
+
+  {
     version: '1.0.580',
     date: '2026-06-12',
     changes: [
