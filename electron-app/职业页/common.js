@@ -58,4 +58,27 @@ function _highlightInElement(root, term) {
     parent.replaceChild(fragment, node);
   }
 }
-(function(){var h=document.documentElement;var s=localStorage.getItem('_snowd_theme');if(s==='dark')h.classList.add('dark');else if(s==='light')h.classList.remove('dark');else if(window.matchMedia('(prefers-color-scheme:dark)').matches)h.classList.add('dark');})();
+// Dark mode init + toggle injection
+(function(){
+  var h=document.documentElement;
+  var s=localStorage.getItem('_snowd_theme');
+  if(s==='dark')h.classList.add('dark');
+  else if(s==='light')h.classList.remove('dark');
+  else if(window.matchMedia('(prefers-color-scheme:dark)').matches)h.classList.add('dark');
+
+  // Inject toggle button into header (don't duplicate)
+  if(!document.getElementById('themeToggle')){
+    var bt=document.createElement('button');
+    bt.id='themeToggle';
+    bt.textContent=h.classList.contains('dark')?'🌙':'☀️';
+    bt.style.cssText='position:fixed;top:16px;right:16px;z-index:200;background:var(--panel,#fffdf8);border:1px solid var(--line,#d8d2c4);border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;transition:all 0.2s;line-height:1';
+    bt.onclick=function(){
+      var d=!h.classList.contains('dark');
+      h.classList.toggle('dark',d);
+      bt.textContent=d?'🌙':'☀️';
+      localStorage.setItem('_snowd_theme',d?'dark':'light');
+    };
+    var hd=document.querySelector('header');
+    if(hd)hd.appendChild(bt);else document.body.appendChild(bt);
+  }
+})();
