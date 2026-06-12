@@ -574,6 +574,11 @@ html.dark .topbar{border-bottom-color:var(--line)}
 html.dark nav{background:var(--panel);border-color:var(--line);box-shadow:0 16px 40px rgba(0,0,0,.2)}
 html.dark #themeToggle:hover{background:var(--bg)}
 html.dark .style-summary a,.dark .tier-summary a{color:var(--ink)}
+html.dark .style,.dark .style.starting{background:var(--panel);border-color:var(--line)}
+html.dark .tier{background:transparent;border-color:var(--line)}
+html.dark .filter-bar{background:transparent}
+html.dark .style-link{color:var(--ink)}
+html.dark .style-link:hover{color:var(--gold)}
 
 .adv-card{position:relative;overflow:hidden;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.35s ease;border-left:1px solid var(--line)}
 .adv-card::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(105deg,transparent 30%,rgba(255,215,0,.06) 40%,rgba(255,255,255,.2) 50%,rgba(255,215,0,.06) 60%,transparent 70%);transform:skewX(-20deg);transition:left 0.65s cubic-bezier(0.4,0,0.2,1);z-index:1;pointer-events:none}
