@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.579',
+    date: '2026-06-12',
+    changes: [
+      '法师全部167技能疲劳值从docx同步修正',
+      '暗色模式全站主题初始化(snd.js+common.js)',
+      '面板sd变量名修复'
+    ]
+  },
+
+
+  {
     version: '1.0.578',
     date: '2026-06-12',
     changes: [
