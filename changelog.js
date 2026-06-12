@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.580',
+    date: '2026-06-12',
+    changes: [
+      '全职业236处FP值从docx同步',
+      '40处技能点费用修正(HTML同步)'
+    ]
+  },
+
+
+  {
     version: '1.0.579',
     date: '2026-06-12',
     changes: [
