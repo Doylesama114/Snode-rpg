@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.582',
+    date: '2026-06-12',
+    changes: [
+      '子页面黑夜模式toggle按钮注入+comprehensive html.dark样式规则'
+    ]
+  },
+
+
+  {
     version: '1.0.581',
     date: '2026-06-12',
     changes: [
