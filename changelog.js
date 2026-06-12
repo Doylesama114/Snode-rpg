@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.583',
+    date: '2026-06-12',
+    changes: [
+      '修复暗色模式下style/tier区域仍为米白色'
+    ]
+  },
+
+
+  {
     version: '1.0.582',
     date: '2026-06-12',
     changes: [
