@@ -58,3 +58,4 @@ function _highlightInElement(root, term) {
     parent.replaceChild(fragment, node);
   }
 }
+(function(){var h=document.documentElement;var s=localStorage.getItem('_snowd_theme');if(s==='dark')h.classList.add('dark');else if(s==='light')h.classList.remove('dark');else if(window.matchMedia('(prefers-color-scheme:dark)').matches)h.classList.add('dark');})();
