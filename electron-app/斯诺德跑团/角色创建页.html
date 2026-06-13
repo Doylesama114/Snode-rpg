@@ -177,6 +177,38 @@ h1 { font-size: 26px; font-weight: bold; margin-bottom: 16px; padding-bottom: 10
 .card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}
 .card:nth-child(4){animation-delay:.18s}.card:nth-child(5){animation-delay:.24s}.card:nth-child(6){animation-delay:.30s}
 @media (prefers-color-scheme:dark){body{background:#1a1d20;color:#e8e6e3}h1{color:#e8e6e3;border-bottom-color:#3a3d40}.back-link{color:#9d9b98}.back-link:hover{color:#d4a54a}.subtitle,.step-desc{color:#9d9b98}.card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}.card:hover{background:#1a1d20;border-color:#d4a54a}.card.selected{background:#1a1d20;border-color:#d4a54a}.card-name{color:#e8e6e3}.card-sub{color:#9d9b98}.card-bonus{color:#4dab8a}.detail-panel{background:#24272b;border-color:#3a3d40}.attr-row{background:#1a1d20;border-color:#3a3d40}.attr-label{color:#9d9b98}.attr-val{color:#e8e6e3}.skill-chip{background:#24272b;border-color:#3a3d40;color:#e8e6e3}.skill-chip.selected{background:#d4a54a;color:#1a1d20}.btn-primary{background:#d4a54a}.btn-primary:hover{background:#e8be5a}.btn-secondary{background:#3a3d40;color:#9d9b98}.btn-secondary:hover{background:#4a4d52}.step-dot{background:#3a3d40}.step-dot.active{background:#d4a54a}.form-input,.form-textarea{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}.form-input:focus,.form-textarea:focus{border-color:#d4a54a}}html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3;border-bottom-color:#3a3d40}html.dark .back-link{color:#9d9b98}html.dark .back-link:hover{color:#d4a54a}html.dark .subtitle,html.dark .step-desc{color:#9d9b98}html.dark .card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark .card:hover{background:#1a1d20;border-color:#d4a54a}html.dark .card.selected{background:#1a1d20;border-color:#d4a54a}html.dark .card-name{color:#e8e6e3}html.dark .card-sub{color:#9d9b98}html.dark .card-bonus{color:#4dab8a}html.dark .detail-panel{background:#24272b;border-color:#3a3d40}html.dark .attr-row{background:#1a1d20;border-color:#3a3d40}html.dark .attr-label{color:#9d9b98}html.dark .attr-val{color:#e8e6e3}html.dark .skill-chip{background:#24272b;border-color:#3a3d40;color:#e8e6e3}html.dark .skill-chip.selected{background:#d4a54a;color:#1a1d20}html.dark .btn-primary{background:#d4a54a}html.dark .btn-primary:hover{background:#e8be5a}html.dark .btn-secondary{background:#3a3d40;color:#9d9b98}html.dark .btn-secondary:hover{background:#4a4d52}html.dark .step-dot{background:#3a3d40}html.dark .step-dot.active{background:#d4a54a}html.dark .form-input,html.dark .form-textarea{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}html.dark .form-input:focus,html.dark .form-textarea:focus{border-color:#d4a54a}
+html.dark .nav-buttons{border-color:#3a3d40}
+html.dark .point-pool{background:#24272b;border-color:#3a3d40;color:#e8e6e3}
+html.dark .point-pool span{color:#d4a54a}
+html.dark .spec-btn{background:#24272b;border-color:#3a3d40;color:#e8e6e3}
+html.dark .spec-btn.selected{background:#d4a54a;color:#1a1d20}
+html.dark .attr-btn{background:#24272b;border-color:#3a3d40;color:#d4a54a}
+html.dark .attr-btn:hover{background:#d4a54a;color:#fff}
+html.dark .attr-btn:disabled{opacity:.3;background:#1a1d20;color:#666;border-color:#3a3d40}
+html.dark .attr-mod{color:#9d9b98}
+html.dark .attr-cost{color:#d4a54a}
+html.dark .review-item{background:#24272b;border-color:#3a3d40}
+html.dark .review-label{color:#9d9b98}
+html.dark .review-value{color:#e8e6e3}
+html.dark .review-attr{background:#1a1d20}
+html.dark .tag{background:#1a1d20;color:#9d9b98;border-color:#3a3d40}
+html.dark .trait-item{background:#1a1d20}
+html.dark .trait-name{color:#e8e6e3}
+html.dark .trait-desc{color:#9d9b98}
+html.dark .race-attr-display .ab{background:#1a1d20}
+html.dark .race-attr-display{color:#9d9b98}
+html.dark .form-group label{color:#9d9b98}
+html.dark .detail-panel h3{color:#e8e6e3}
+html.dark .detail-panel .field{color:#9d9b98}
+html.dark .detail-panel .field span{color:#e8e6e3}
+html.dark .detail-panel .field span.field{color:#e05555}
+html.dark .search-bar input{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}
+html.dark .empty-msg{color:#9d9b98}
+html.dark .popup-box{background:#24272b!important;border-color:#3a3d40!important;color:#e8e6e3!important}
+html.dark .dark-label{color:#9d9b98!important}
+html.dark .dark-bg{background:#1a1d20!important}
+html.dark .dark-input{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
+html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
 </style>
 <script src="导出立绘.js"></script>
 </head>
@@ -430,7 +462,7 @@ function renderBgProfs(bgData){
   var old=document.getElementById("bgProfArea");if(old)old.remove();
   CHAR.bgProfs={skills:{},profInput:""};
   var area=document.createElement("div");area.id="bgProfArea";
-  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:12px'>选择背景熟练项</div>";
 
   // Parse 基础熟练项
@@ -443,7 +475,7 @@ function renderBgProfs(bgData){
       if(mapped==="cat"){
         var cat=BG_SKILL_CATS[sk];
         if(!cat)continue;
-        h+="<div style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
+        h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
         h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>"+sk+"（自选一项）</div>";
         h+="<div class='bgProfSkillRow' data-cat='"+sk+"' style='display:flex;gap:6px;flex-wrap:wrap'>";
         for(var j=0;j<cat.opts.length;j++){
@@ -462,7 +494,7 @@ function renderBgProfs(bgData){
     var match=skText.match(/任选一?项?([^)]*)/);
     var isKnow=skText.indexOf("知识")>=0;
     if(isKnow){
-      h+="<div style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
+      h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
       h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>任选两项知识</div>";
       h+="<div class='bgProfSkillRow' data-cat='知识' data-max='2' style='display:flex;gap:6px;flex-wrap:wrap'>";
       var knowOpts=BG_SKILL_CATS["知识"].opts;
@@ -473,7 +505,7 @@ function renderBgProfs(bgData){
     }else{
       // 任选一项熟练度 - show ALL sub-skills grouped by attribute
       var allAttrs={力量:["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],敏捷:["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"],体质:["专注","耐力"],智力:["调查","逻辑","宗教","估价","伪造","读唇","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"],感知:["洞悉","导航","自然","驯兽","感悟","聆听","察觉"],魅力:["欺瞒","说服","表演-歌唱","表演-舞蹈","表演-演奏","恐吓"],意志:["求生","激励","决策"],幸运:["机遇","探索"]};
-      h+="<div style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
+      h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
       h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>任选一项熟练度</div>";
       h+="<div class='bgProfSkillRow' data-cat='_all' data-max='1' style='display:flex;gap:6px;flex-wrap:wrap'>";
       for(var attr in allAttrs){
@@ -489,7 +521,7 @@ function renderBgProfs(bgData){
   var proText=bgData["专业熟练项"]||"";
   if(proText&&proText!=="无"){
     if(proText.indexOf("任选")>=0){
-      h+="<div style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
+      h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
       h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>专业熟练项（自填）</div>";
       h+="<input id='bgProfInput' placeholder='输入专业熟练项名称' oninput='CHAR.bgProfs.profInput=this.value' style='width:100%;padding:8px 12px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px'>";
       h+="</div>";
@@ -520,7 +552,7 @@ function renderSpecChoices(clsName){
   }
   if(!hasChoice)return;
   var area=document.createElement("div");area.id="specChoiceArea";
-  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:12px'>选择专长熟练项</div>";
   for(var si=0;si<specs.length;si++){
     var sn=specs[si].n;
@@ -529,7 +561,7 @@ function renderSpecChoices(clsName){
     if(sn==="武器专精"){
       var cats=["剑类","斧类","锤类","长柄","弓箭","简易"];
       var bonuses=WEAPON_SPEC_BONUSES||{};
-      h+="<div style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' class='specGroup' data-spec='"+sn+"'>";
+      h+="<div class='specGroup dark-bg' style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' data-spec='"+sn+"'>";
       h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>武器专精</div>";
       h+="<div style='font-size:12px;color:#69706b;margin-bottom:8px'>选择一项武器类别获得对应增益</div>";
       h+="<div class='specAttrRow' style='display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px'>";
@@ -541,7 +573,7 @@ function renderSpecChoices(clsName){
       continue;
     }
     if(!pc)continue;
-    h+="<div style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' class='specGroup' data-spec='"+sn+"'>";
+    h+="<div class='specGroup dark-bg' style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' data-spec='"+sn+"'>";
     h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>"+sn+"</div>";
     h+="<div style='font-size:12px;color:#69706b;margin-bottom:8px'>"+sd+"</div>";
     if(pc.attr){
@@ -646,7 +678,7 @@ function showRaceAttrChoice(raceData){
   // Only 半精灵 has 7 X attrs; skip if none
   if(xAttrs.length<2)return;
   var area=document.createElement("div");area.id="raceChoiceArea";
-  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择额外属性加成</div>";
   h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>除魅力已+2外，选择 <strong>2</strong> 个不同属性各+1</div>";
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
@@ -676,7 +708,7 @@ function showKeyAttrChoice(clsName){
   var old=document.getElementById("keyAttrBox");if(old)old.remove();
   if(clsName!=="战士"){checkSpecDone();return;}
   var box=document.createElement("div");box.id="keyAttrBox";
-  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";box.className='popup-box';
   box.innerHTML='<div style="font-size:15px;font-weight:bold;margin-bottom:10px">选择关键属性</div>'+
     '<div style="display:flex;gap:10px">'+
     '<div class="skill-chip" onclick="pickKeyAttr(this,\'力量\')" style="flex:1;text-align:center;font-size:15px;padding:10px">力量</div>'+
@@ -818,7 +850,7 @@ function showSubSkillChoice(cat,el){
   var popup=document.createElement("div");popup.id="subSkillPopup";
   popup.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:999;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
-  box.style.cssText="background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.2)";
+  box.style.cssText="background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.2)";box.className='popup-box';
   var h2="<div style='font-size:18px;font-weight:bold;margin-bottom:6px'>"+cat+"</div>";
   h2+="<div style='font-size:13px;color:#69706b;margin-bottom:16px'>选择一项子熟练项</div>";
   h2+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
@@ -855,7 +887,7 @@ function renderSkillStep(c) {
   var cl=CHAR.classData; var txt=cl?(cl["技巧"]||""):"";
   var h="<div class='step-title'>"+STEP_LABELS[4]+"</div>";
   h+="<div class='step-desc'>从职业可选熟练项中选择 4 项。</div>";
-  h+="<div style='background:#f6f4ef;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;color:#1f2522'><strong>可选熟练项：</strong>"+esc(txt)+"</div>";
+  h+="<div class='dark-bg dark-label' style='background:#f6f4ef;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;color:#1f2522'><strong>可选熟练项：</strong>"+esc(txt)+"</div>";
   var skills=parseSkills(txt);
   h+="<div style='margin-bottom:8px;font-size:14px;color:#69706b'>已选 <strong>"+CHAR.selectedSkills.length+"</strong> / 4 项</div>";
   h+="<div class='skill-select' id='skillGrid'>";
@@ -943,7 +975,7 @@ function showPersonalityPicker(bg){
   o.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   window._persOverlay=o;
   var b=document.createElement("div");
-  b.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:600px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  b.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:600px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";b.className='popup-box';
   var h3=document.createElement("h3");
   h3.style.cssText="margin-bottom:4px;color:#1f2522";
   h3.textContent="编辑个性特征 — "+bg.name;
@@ -1086,7 +1118,7 @@ function parseBgLangCount(bg){var o=bg["其他"]||"";if(o.indexOf("任选两门�
 function showLangPicker(bg,callback){
   var count=parseBgLangCount(bg);if(count<=0){callback([]);return;}
   var overlay=document.createElement("div");overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
-  var box=document.createElement("div");box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:500px;width:90%;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  var box=document.createElement("div");box.className='popup-box';box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:500px;width:90%;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
   var h="<h3 style=margin-bottom:4px;color:#1f2522>选择额外语言 ("+count+")</h3>";
   h+="<p style=font-size:13px;color:#69706b;margin-bottom:12px>"+bg.name+"奖励"+count+"门额外语言</p>";
   h+="<div id=langGrid style=display:grid;grid-template-columns:repeat(2,1fr);gap:6px></div>";
@@ -1104,12 +1136,13 @@ function showLangPicker(bg,callback){
       var ln=cells[i].getAttribute("data-lang");var isSel=selected.indexOf(ln)>=0;
       cells[i].style.background=isSel?"#4caf50":"#f6f4ef";cells[i].style.color=isSel?"#fff":"#1f2522";
       cells[i].style.borderColor=isSel?"#4caf50":"#d8d2c4";
+      cells[i].classList.toggle('dark-bg',!isSel);cells[i].classList.toggle('dark-label',!isSel);
     }
   }
   for(var i=0;i<ALL_LANGUAGES.length;i++){
     var ln=ALL_LANGUAGES[i];
     var cell=document.createElement("div");cell.className="lang-cell";cell.setAttribute("data-lang",ln);
-    cell.textContent=ln;cell.style.cssText="cursor:pointer;padding:10px;border-radius:6px;text-align:center;font-size:14px;background:#f6f4ef;border:2px solid #d8d2c4;transition:all 0.15s";
+    cell.textContent=ln;cell.style.cssText="cursor:pointer;padding:10px;border-radius:6px;text-align:center;font-size:14px;background:#f6f4ef;border:2px solid #d8d2c4;transition:all 0.15s";cell.className='dark-bg';
     cell.onclick=function(){
       var l=this.getAttribute("data-lang");var idx=selected.indexOf(l);
       if(idx>=0){selected.splice(idx,1);}else if(selected.length<count){selected.push(l);}
@@ -1172,7 +1205,7 @@ function renderReviewStep(c) {
   h+="<div class='form-group'><label>肤色</label><input class='form-input' id='inputSkin' value='"+esc(CHAR.skin)+"' oninput='CHAR.skin=this.value' placeholder='如 白皙'></div>";
   h+="<div class='form-group'><label>发色</label><input class='form-input' id='inputHair' value='"+esc(CHAR.hair)+"' oninput='CHAR.hair=this.value' placeholder='如 黑色'></div>";
   h+="</div>";
-  h+="<div style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
+  h+="<div class='popup-box' style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>背景故事与个性</h3>";
   h+="<div class='form-grid'>";
   h+="<div class='form-group-full'><label>背景故事</label><textarea class='form-textarea' id='inputStory' oninput='CHAR.story=this.value' placeholder='描述角色背景故事...'>"+esc(CHAR.story)+"</textarea></div>";
@@ -1186,7 +1219,7 @@ function renderReviewStep(c) {
   if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='CHAR.missionChannel=this.value'>"+esc(CHAR.missionChannel)+"</textarea></div>";
   if(CHAR.academicDomain) h+="<div class='form-group-half'><label>学术领域</label><textarea class='form-textarea' id='inputAcademicDomain' oninput='CHAR.academicDomain=this.value'>"+esc(CHAR.academicDomain)+"</textarea></div>";
   h+="</div>";
-  h+="<div style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
+  h+="<div class='popup-box' style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>角色摘要</h3>";
   h+="<div class='review-grid'>";
   h+="<div class='review-item'><div class='review-label'>职业</div><div class='review-value'>"+(CHAR.className||"未选择")+"</div></div><div class='review-item'><div class='review-label'>起始特性</div><div class='review-value'>"+(CHAR.selectedFeatures.length?CHAR.selectedFeatures.join('、'):"无")+"</div></div>";
