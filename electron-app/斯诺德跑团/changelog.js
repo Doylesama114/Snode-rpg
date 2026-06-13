@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.584',
+    date: '2026-06-13',
+    changes: [
+      '快捷键系统:ESC返回+Space搜索+/聚焦+?帮助面板'
+    ]
+  },
+
+
+  {
     version: '1.0.583',
     date: '2026-06-12',
     changes: [

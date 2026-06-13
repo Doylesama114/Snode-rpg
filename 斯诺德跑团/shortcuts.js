@@ -49,13 +49,7 @@
     }
 
     // ? → show keyboard shortcuts help (Shift+/)
-    if(e.key==='?'&&!isInput){
-      e.preventDefault();
-      showShortcutHelp();
-      return;
-    }
-    // Also support Ctrl+? for keyboards where ? requires Shift
-    if(e.key==='/'&&e.shiftKey&&!isInput){
+    if((e.key==='?'||e.code==='Slash'&&e.shiftKey)&&!isInput){
       e.preventDefault();
       showShortcutHelp();
       return;
