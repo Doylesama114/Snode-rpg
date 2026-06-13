@@ -2,7 +2,7 @@
 var SNOWD_CHANGELOG = [
 
   {
-    version: '1.0.592',
+    version: '1.0.594',
     date: '2026-06-13',
     changes: [
       '启动台新增⌨快捷键帮助按钮'
