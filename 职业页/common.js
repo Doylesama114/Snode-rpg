@@ -66,8 +66,9 @@ function _highlightInElement(root, term) {
   else if(s==='light')h.classList.remove('dark');
   else if(window.matchMedia('(prefers-color-scheme:dark)').matches)h.classList.add('dark');
 
-  // Inject toggle button into header (don't duplicate)
-  if(!document.getElementById('themeToggle')){
+  // Inject toggle button (wait for DOM)
+  function injectToggle(){
+    if(document.getElementById('themeToggle'))return;
     var bt=document.createElement('button');
     bt.id='themeToggle';
     bt.textContent=h.classList.contains('dark')?'🌙':'☀️';
@@ -78,7 +79,8 @@ function _highlightInElement(root, term) {
       bt.textContent=d?'🌙':'☀️';
       localStorage.setItem('_snowd_theme',d?'dark':'light');
     };
-    var hd=document.querySelector('header');
-    if(hd)hd.appendChild(bt);else document.body.appendChild(bt);
+    if(document.body)document.body.appendChild(bt);
   }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',injectToggle);
+  else injectToggle();
 })();
