@@ -58,15 +58,15 @@
     var d=document.createElement('div');
     d.id='_shortcutHelp';
     d.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:var(--panel,#fffdf8);border:2px solid var(--accent,#a46d1f);border-radius:12px;padding:24px 28px;box-shadow:0 16px 48px rgba(0,0,0,.25);max-width:380px;width:90%;font-size:14px;color:var(--ink,#1f2522);line-height:2';
-    d.innerHTML='<div style="font-size:18px;font-weight:bold;margin-bottom:14px;text-align:center">⌨️ 快捷键</div>'
+    d.innerHTML='<div style=\"font-size:18px;font-weight:bold;margin-bottom:14px;text-align:center\">⌨️ 快捷键</div>'
       +'<b>ESC</b> &nbsp; 返回上一页<br>'
       +'<b>Space</b> &nbsp; 全局搜索（首页）<br>'
       +'<b>/</b> &nbsp; 聚焦搜索框<br>'
       +'<b>?</b> &nbsp; 显示/隐藏本面板<br>'
-      +'<div style="margin-top:14px;text-align:center;font-size:12px;color:var(--muted)">按 ESC 或点外部关闭</div>';
+      +'<div style=\"margin-top:14px;text-align:center;font-size:12px;color:var(--muted)\">按 ESC 或点外部关闭</div>';
     document.body.appendChild(d);
-    // Click outside to close
     function close(e){if(!d.contains(e.target)){d.remove();document.removeEventListener('click',close);}}
     setTimeout(function(){document.addEventListener('click',close);},100);
   }
+  window.showShortcutHelp=showShortcutHelp;
 })();
