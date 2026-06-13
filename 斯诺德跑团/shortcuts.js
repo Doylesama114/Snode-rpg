@@ -1,39 +1,46 @@
 // shortcuts.js — Global keyboard shortcut manager for 斯诺德跑团
 (function(){
   document.addEventListener('keydown',function(e){
-    // Don't intercept when user is typing in an input/textarea
     var tag=e.target.tagName;
     var isInput=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||e.target.isContentEditable;
 
-    // ESC → go back (only if no input focused, no modal open)
+    // ESC — priority: blur search input > close panels > navigate back
+    if(e.key==='Escape'){
+      // 1. If search input is focused, blur it first
+      var sr=document.querySelector('input[type="search"]:focus, .search-widget-input:focus');
+      if(sr&&isInput){e.preventDefault();sr.blur();return;}
+      // 2. If panels/modals are open, let them close naturally
+      if(!isInput)return; // let browser handle panels
+    }
+
+    // ESC → go back (when nothing else to do)
     if(e.key==='Escape'&&!isInput){
-      // Check if search overlay or other modals are open first
-      var overlay=document.querySelector('#searchOverlay:not(.hidden), .nav-overlay.show, .nav-drawer.open');
-      if(overlay){
-        // Let the page's own close handler deal with it
-        return;
-      }
-      // Find back button
+      var overlay=document.querySelector('#searchOverlay:not(.hidden), .nav-overlay.show, .nav-drawer.open, #_shortcutHelp');
+      if(overlay)return;
       var back=document.querySelector('.back-link, .back-btn');
       if(back){
         var href=back.getAttribute('href');
-        if(href)location.href=href;
-        else back.click();
+        if(href)location.href=href; else back.click();
         e.preventDefault();
       }
       return;
     }
 
-    // SPACE → open search on homepage only
-    if(e.key===' '&&!isInput&&typeof openOverlay==='function'){
-      e.preventDefault();
-      openOverlay();
-      return;
+    // SPACE → open search on homepage
+    if(e.key===' '&&!isInput){
+      var searchOverlay=document.querySelector('#searchOverlay');
+      if(searchOverlay){
+        e.preventDefault();
+        searchOverlay.classList.remove('hidden');
+        var inp=searchOverlay.querySelector('input');
+        if(inp)inp.focus();
+        return;
+      }
     }
 
     // / → focus search box on class pages
     if(e.key==='/'&&!isInput){
-      var search=document.querySelector('input[type="search"], .search-widget-input, #w-search, #m-search, #r-search');
+      var search=document.querySelector('input[type="search"]:not(#searchOverlay input), .search-widget-input');
       if(search){
         e.preventDefault();
         search.focus();
@@ -41,8 +48,14 @@
       return;
     }
 
-    // ? → show keyboard shortcuts help
-    if(e.key==='?'&&!isInput&&e.shiftKey===false){
+    // ? → show keyboard shortcuts help (Shift+/)
+    if(e.key==='?'&&!isInput){
+      e.preventDefault();
+      showShortcutHelp();
+      return;
+    }
+    // Also support Ctrl+? for keyboards where ? requires Shift
+    if(e.key==='/'&&e.shiftKey&&!isInput){
       e.preventDefault();
       showShortcutHelp();
       return;
