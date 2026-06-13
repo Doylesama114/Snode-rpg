@@ -2,6 +2,33 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5100',
+    date: '2026-06-13',
+    changes: [
+      '修复角色面板技能列表详情按钮无响应(showSkillDetail缺失showSkillPreview调用)'
+    ]
+  },
+
+
+  {
+    version: '1.0.599',
+    date: '2026-06-13',
+    changes: [
+      '角色面板暗色模式全面修复(panel.css+panel_engine.js)'
+    ]
+  },
+
+
+  {
+    version: '1.0.598',
+    date: '2026-06-13',
+    changes: [
+      '角色创建页暗色模式全面修复'
+    ]
+  },
+
+
+  {
     version: '1.0.597',
     date: '2026-06-13',
     changes: [
