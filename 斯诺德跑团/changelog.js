@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.590',
+    date: '2026-06-13',
+    changes: [
+      '术士混沌法术D100表格+描述补全(从docx)'
+    ]
+  },
+
+
+  {
     version: '1.0.589',
     date: '2026-06-13',
     changes: [
