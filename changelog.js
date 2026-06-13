@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.597',
+    date: '2026-06-13',
+    changes: [
+      '修复守护骑士advancement_details含耀阳德鲁伊技能表(光斑跃迁/天火坠临/永昼形态)'
+    ]
+  },
+
+
+  {
     version: '1.0.596',
     date: '2026-06-13',
     changes: [
