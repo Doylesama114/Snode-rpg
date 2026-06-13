@@ -580,6 +580,13 @@ html.dark .filter-bar{background:transparent}
 html.dark .style-link{color:var(--ink)}
 html.dark .style-link:hover{color:var(--gold)}
 
+/* D100 table rows */
+.d100-row{padding:8px 12px;margin:2px 0;border-radius:4px;line-height:1.8;background:rgba(0,0,0,.02)}
+.d100-row:nth-child(odd){background:rgba(0,0,0,.04)}
+.d100-row .field{display:inline-block;min-width:65px;font-size:14px;font-weight:900;color:var(--accent,#a46d1f)}
+html.dark .d100-row{background:rgba(255,255,255,.02)}
+html.dark .d100-row:nth-child(odd){background:rgba(255,255,255,.04)}
+
 .adv-card{position:relative;overflow:hidden;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.35s ease;border-left:1px solid var(--line)}
 .adv-card::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(105deg,transparent 30%,rgba(255,215,0,.06) 40%,rgba(255,255,255,.2) 50%,rgba(255,215,0,.06) 60%,transparent 70%);transform:skewX(-20deg);transition:left 0.65s cubic-bezier(0.4,0,0.2,1);z-index:1;pointer-events:none}
 .adv-card::before{display:none}
