@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.596',
+    date: '2026-06-13',
+    changes: [
+      '修复术士天赐神通描述(拆分5个level_upgrades)+暗色主题chip标签color修正'
+    ]
+  },
+
+
+  {
     version: '1.0.595',
     date: '2026-06-13',
     changes: [
