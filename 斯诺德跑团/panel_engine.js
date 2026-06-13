@@ -5382,7 +5382,7 @@ function showSkillDetail(clsName, skillName) {
   if (!skillData) return;
 
 
-  var desc = (skillData.description&&skillData.description.length?skillData.description.join("<br>"):(skillData.flavor||""));(skillName, skillData.style || clsName, skillData.tier || "", desc, null, clsName); }
+  var desc = (skillData.description&&skillData.description.length?skillData.description.join("<br>"):(skillData.flavor||""));showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, null, clsName); }
 
 
 
