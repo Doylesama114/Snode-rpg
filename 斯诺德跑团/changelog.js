@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.591',
+    date: '2026-06-13',
+    changes: [
+      '术士混沌法术level_upgrades拆分为3条独立段落'
+    ]
+  },
+
+
+  {
     version: '1.0.590',
     date: '2026-06-13',
     changes: [
