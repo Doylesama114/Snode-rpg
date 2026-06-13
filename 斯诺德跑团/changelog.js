@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.587',
+    date: '2026-06-13',
+    changes: [
+      '武僧全技能40处费用点数/颜色从docx同步修正'
+    ]
+  },
+
+
+  {
     version: '1.0.586',
     date: '2026-06-13',
     changes: [
