@@ -4,13 +4,11 @@
     var tag=e.target.tagName;
     var isInput=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||e.target.isContentEditable;
 
-    // ESC — priority: blur search input > close panels > navigate back
+    // ESC — priority: blur search input > navigate back
     if(e.key==='Escape'){
       // 1. If search input is focused, blur it first
       var sr=document.querySelector('input[type="search"]:focus, .search-widget-input:focus');
       if(sr&&isInput){e.preventDefault();sr.blur();return;}
-      // 2. If panels/modals are open, let them close naturally
-      if(!isInput)return; // let browser handle panels
     }
 
     // ESC → go back (when nothing else to do)
