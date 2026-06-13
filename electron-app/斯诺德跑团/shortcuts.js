@@ -26,14 +26,12 @@
 
     // SPACE → open search on homepage
     if(e.key===' '&&!isInput){
+      // Click the search float button if it exists (triggers openOverlay + loadAllData)
+      var sbtn=document.querySelector('.search-float-btn, #floatSearchBtn');
+      if(sbtn){e.preventDefault();sbtn.click();return;}
+      // Fallback: try to open the overlay directly
       var searchOverlay=document.querySelector('#searchOverlay');
-      if(searchOverlay){
-        e.preventDefault();
-        searchOverlay.classList.remove('hidden');
-        var inp=searchOverlay.querySelector('input');
-        if(inp)inp.focus();
-        return;
-      }
+      if(searchOverlay){e.preventDefault();searchOverlay.classList.remove('hidden');if(typeof loadAllData==='function')loadAllData();var inp=searchOverlay.querySelector('input');if(inp)inp.focus();return;}
     }
 
     // / → focus search box on class pages
