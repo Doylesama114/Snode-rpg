@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.588',
+    date: '2026-06-13',
+    changes: [
+      '武僧全技能dot费用从docx同步修正(41处)'
+    ]
+  },
+
+
+  {
     version: '1.0.587',
     date: '2026-06-13',
     changes: [
