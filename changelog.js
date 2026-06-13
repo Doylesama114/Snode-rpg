@@ -2,6 +2,24 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5102',
+    date: '2026-06-13',
+    changes: [
+      '修复58个进阶卡片data-adv-name错配导致详情显示错误职业内容'
+    ]
+  },
+
+
+  {
+    version: '1.0.5101',
+    date: '2026-06-13',
+    changes: [
+      '批量解锁57个已公布但标记为未解锁的进阶职业'
+    ]
+  },
+
+
+  {
     version: '1.0.5100',
     date: '2026-06-13',
     changes: [
