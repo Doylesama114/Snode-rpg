@@ -1326,7 +1326,7 @@ function gd_mousemove(e) {
     _dragGhost = document.createElement("div");
     var cnt = _dragFrom.count || 1;
     _dragGhost.textContent = cnt > 1 ? (_dragFrom.item + " \u00d7" + cnt) : _dragFrom.item;
-    _dragGhost.style.cssText = "position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;background:#fffdf8;border:2px solid #d9852e;border-radius:10px;font-size:18px;color:#1f2522;font-weight:bold;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0.88;white-space:nowrap;";
+    _dragGhost.style.cssText = "position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;background:var(--panel);border:2px solid var(--accent-hover);border-radius:10px;font-size:18px;color:var(--ink);font-weight:bold;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0.88;white-space:nowrap;";
     document.body.appendChild(_dragGhost);
     // Start continuous wobble animation
     function wobbleLoop() {
@@ -2879,7 +2879,7 @@ function render(){ applyChoiceLLevel12Boosts();
   var profileOuter=document.createElement("div");profileOuter.style.cssText="display:flex;gap:20px;align-items:stretch";
 
   // Portrait area
-  var portraitDiv=document.createElement("div");portraitDiv.style.cssText="flex:none;width:260px;height:260px;display:flex;align-items:center;justify-content:center;background:#f6f4ef;border:2px solid #c4b8a8;border-radius:10px;cursor:pointer;overflow:hidden";
+  var portraitDiv=document.createElement("div");portraitDiv.style.cssText="flex:none;width:260px;height:260px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:2px solid var(--line);border-radius:10px;cursor:pointer;overflow:hidden";
   portraitDiv.title="\u70b9\u51fb\u4e0a\u4f20\u7acb\u7ed8";
   if(state.portrait){
     portraitDiv.innerHTML="<img src=\""+state.portrait+"\" style=\"width:100%;height:100%;object-fit:contain;border-radius:8px\">";
@@ -2899,7 +2899,7 @@ function render(){ applyChoiceLLevel12Boosts();
   for(var ii=0;ii<infoData.length;ii++){
     var d=infoData[ii];
     var col=ii<5?infoLeft:infoRight;
-    var item=document.createElement("div");item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:#f6f4ef;border-radius:6px;border:1px solid #d8d2c4;min-height:48px";
+    var item=document.createElement("div");item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--line);min-height:48px";
     item.innerHTML="<span style=\"font-size:14px;color:#69706b\">"+d.f+"</span><span style=\"font-size:16px;color:#1f2522;font-weight:bold\">"+d.v+"</span>";
     col.appendChild(item);
   }
@@ -2961,7 +2961,7 @@ function render(){ applyChoiceLLevel12Boosts();
     for(var si=0;si<4;si++){
 
 
-      if(cl.styles[si]){var sc=STYLE_COLORS[cl.styles[si]]||'';var sb=sc?'background:'+sc+';':'background:#edeae2;';ch+='<div class="style-item" style="padding:3px 8px;border-radius:4px;border:1px solid #d8d2c4;font-size:14px;color:#1f2522;text-align:center;'+sb+'">'+cl.styles[si]+'</div>';}
+      if(cl.styles[si]){var sc=STYLE_COLORS[cl.styles[si]]||'';var sb=sc?'background:'+sc+';':'background:var(--bg);';ch+='<div class="style-item" style="padding:3px 8px;border-radius:4px;border:1px solid var(--line);font-size:14px;color:var(--ink);text-align:center;'+sb+'">'+cl.styles[si]+'</div>';}
 
 
       else{ch+='<div class="style-item-empty" style="padding:3px 8px;background:transparent;border-radius:4px;border:1px dashed #d8d2c4;font-size:12px;color:#69706b;font-style:italic;text-align:center">空风格</div>';}
@@ -3012,7 +3012,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
     var tbl=LEVEL_TABLE[ci===1?"子职业":"主职业"];
         var needXP=tbl[nextLv]?tbl[nextLv].xp:0;
     var canUp=needXP>0&&state.xp>=needXP;
-    xpHTML+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #d8d2c4">';
+    xpHTML+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--line)">';
     xpHTML+='<div style="font-size:14px;color:#69706b;font-weight:bold">'+cl.name+'</div>';
     xpHTML+='<div style="font-size:36px;color:#1f2522;font-weight:bold">Lv.'+cl.level+'</div>';
     xpHTML+='<div style="font-size:14px;color:#69706b">经验值: '+state.xp+'</div>';
@@ -5782,7 +5782,7 @@ window.showKeyPreferencePicker=function(callback){
   var overlay=document.createElement("div");
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
-  box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:420px;width:90%;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  box.className='popup-box';box.style.cssText="background:var(--panel);border-radius:10px;padding:24px;max-width:420px;width:90%;border:2px solid var(--line);box-shadow:0 8px 32px rgba(0,0,0,0.3)";
   box.innerHTML="<h3 style=margin-bottom:4px;color:#1f2522>\u9009\u62e9\u5173\u952e\u504f\u597d\u989c\u8272</h3><p style=font-size:13px;color:#69706b;margin-bottom:16px>\u4e60\u5f97\u540e\u53ef\u5c06\u4efb\u610f\u989c\u8272\u7684\u6280\u80fd\u70b9\u89c6\u4f5c\u504f\u597d\u989c\u8272\u4f7f\u7528</p><div id=kpColorGrid style=display:grid;grid-template-columns:repeat(4,1fr);gap:8px></div><button id=kpCancelBtn style=display:block;width:100%;margin-top:14px;padding:8px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer;font-size:14px>\u53d6\u6d88</button>";
   overlay.appendChild(box);
   document.body.appendChild(overlay);
@@ -5808,7 +5808,7 @@ window.showSubclassModal=function(){
   var overlay=document.createElement("div");
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
-  box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:600px;width:95%;max-height:90vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  box.className='popup-box';box.style.cssText="background:var(--panel);border-radius:10px;padding:24px;max-width:600px;width:95%;max-height:90vh;overflow-y:auto;border:2px solid var(--line);box-shadow:0 8px 32px rgba(0,0,0,0.3)";
   var h="<h3 style=margin-bottom:8px;color:#1f2522>选择子职业</h3>";
   h+="<p style=font-size:13px;color:#69706b;margin-bottom:16px>需满足属性值、熟练度要求，且与主职业兼容</p>";
   h+="<div style=display:flex;flex-direction:column;gap:6px>";

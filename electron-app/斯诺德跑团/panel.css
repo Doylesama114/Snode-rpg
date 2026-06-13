@@ -371,5 +371,29 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 
 @media (prefers-color-scheme:dark){:root{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3d40;--accent:#d4a54a;--accent-hover:#e8be5a}}
 html.dark{--bg:#1a1d20;--panel:#24272b;--ink:#e8e6e3;--muted:#9d9b98;--line:#3a3d40;--accent:#d4a54a;--accent-hover:#e8be5a}
+/* dark mode overrides for hardcoded light colors */
+html.dark .attr-main{background:var(--bg)}
+html.dark .talent-header-cell{background:var(--bg)}
+html.dark .skill-table thead th{background:var(--bg)}
+html.dark .skill-table tbody td{border-color:var(--line)}
+html.dark .skill-table tbody tr:hover{background:rgba(212,165,74,0.08)}
+html.dark .battle-key .stat-item{background:var(--bg)}
+html.dark .style-item{background:var(--bg)}
+html.dark .prof-item{border-color:var(--line)}
+html.dark .save-display{border-color:var(--line)}
+html.dark .sp-item{border-color:var(--line)}
+html.dark .equip-item{border-color:var(--line)}
+html.dark .equip-item:hover{background:var(--panel)}
+html.dark .equip-empty:hover{background:rgba(212,165,74,0.06)}
+html.dark .equip-weight{color:var(--muted)}
+html.dark .equip-selected{outline-color:var(--accent-hover)!important;background:var(--bg)!important}
+html.dark .drag-over{outline-color:#5a9be5!important;background:rgba(90,155,229,0.1)!important}
+html.dark .learn-toggle{background:var(--accent-hover)}
+html.dark .learn-toggle:hover{background:var(--accent)}
+html.dark .ctx-item{color:var(--ink)}
+html.dark .ctx-item:hover{background:var(--panel)!important}
+html.dark .section{box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+html.dark .learn-panel{box-shadow:0 8px 30px rgba(0,0,0,0.25)}
+html.dark .learn-toggle{box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 
 
