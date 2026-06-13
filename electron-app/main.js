@@ -123,7 +123,14 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
-  // 不再自动检查更新 — 用户通过启动台手动点击"检查更新"触发
+
+  // 启动时自动检查更新（延迟避免阻塞启动）
+  mainWindow.once('ready-to-show', () => {
+    setTimeout(() => autoUpdater.checkForUpdates(), 3000);
+  });
+
+  // 定时检查更新（每4小时）
+  setInterval(() => autoUpdater.checkForUpdates(), 4 * 60 * 60 * 1000);
 });
 
 app.on('window-all-closed', () => app.quit());

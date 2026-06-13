@@ -237,6 +237,15 @@ function showUpdateMsg(data) {
   else if (data.status === 'uptodate') { msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION; }
   else if (data.status === 'error') { msg.style.color='#c62828'; msg.textContent=(data.message||'更新检查失败'); }
 }
+
+// 自动检查更新（Web 模式 — Electron 由主进程 autoUpdater 处理）
+(function(){
+  if (window.electronAPI) return; // Electron 模式由主进程接管
+  // 启动时检查（延迟2秒）
+  setTimeout(checkUpdate, 2000);
+  // 定时检查（每4小时）
+  setInterval(checkUpdate, 4 * 60 * 60 * 1000);
+})();
 </script>
 <script>
 (function(){
