@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.586',
+    date: '2026-06-13',
+    changes: [
+      '修复首页搜索快捷键数据加载问题'
+    ]
+  },
+
+
+  {
     version: '1.0.585',
     date: '2026-06-13',
     changes: [
