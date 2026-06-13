@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5103',
+    date: '2026-06-13',
+    changes: [
+      '修复游荡者11个技能费用点数错误(对照docx) + 魔药风格导航顺序修正 + 定时检查更新'
+    ]
+  },
+
+
+  {
     version: '1.0.5102',
     date: '2026-06-13',
     changes: [
