@@ -220,5 +220,6 @@ renderCharList();
 function clearAllChars(){if(confirm("确定要删除所有角色存档吗？此操作不可恢复。")){var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf("char_")===0)keys.push(k);}for(var i=0;i<keys.length;i++)localStorage.removeItem(keys[i]);alert("已清空 "+keys.length+" 个角色存档");location.reload();}}
 </script>
 <script src="snd.js"></script>
+<script src="shortcuts.js"></script>
 </body>
 </html>
