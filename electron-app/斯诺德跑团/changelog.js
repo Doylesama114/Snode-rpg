@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.589',
+    date: '2026-06-13',
+    changes: [
+      '武僧全技能dot数量+颜色完整从docx同步修正'
+    ]
+  },
+
+
+  {
     version: '1.0.588',
     date: '2026-06-13',
     changes: [
