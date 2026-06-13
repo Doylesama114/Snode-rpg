@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.585',
+    date: '2026-06-13',
+    changes: [
+      '修复ESC快捷键拦截逻辑'
+    ]
+  },
+
+
+  {
     version: '1.0.584',
     date: '2026-06-13',
     changes: [
