@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5113',
+    date: '2026-06-14',
+    changes: [
+      '首页全局搜索支持通用天赋树(新增JSON+适配fields/flavor结构)'
+    ]
+  },
+
+
+  {
     version: '1.0.5112',
     date: '2026-06-14',
     changes: [
