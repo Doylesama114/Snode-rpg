@@ -5757,9 +5757,9 @@ if (!initFromURL()) {
   var saveBtn = document.createElement("button");
   saveBtn.textContent = "保存";
   var _exportBtn=document.createElement("button");_exportBtn.textContent="导出xlsx";
-  _exportBtn.style.cssText="position:fixed;bottom:270px;right:30px;padding:14px 28px;background:#a46d1f;color:#fff;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(164,109,31,.3)";
+  _exportBtn.style.cssText="position:fixed;top:80px;left:20px;padding:8px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;z-index:1000";
   _exportBtn.onclick=function(){exportCurrentXlsx();};document.body.appendChild(_exportBtn);
-  saveBtn.style.cssText = "position:fixed;bottom:210px;right:30px;padding:14px 28px;background:#4a6a3a;color:#f0e0d0;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(74,106,58,.3)";
+  saveBtn.style.cssText = "position:fixed;top:10px;right:10px;z-index:9999;padding:10px 22px;background:#4a6a3a;color:#f0e0d0;border:1px solid #6a8a5a;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   saveBtn.onclick = function() {
     showSaveDialog(function(slotIndex) {
       if (saveState(slotIndex)) {
@@ -5772,7 +5772,7 @@ if (!initFromURL()) {
   // Add back button
   var backBtn = document.createElement("button");
   backBtn.textContent = "返回";
-  backBtn.style.cssText = "position:fixed;bottom:330px;right:30px;padding:14px 28px;background:#5a3a18;color:#f0e0d0;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(90,58,24,.3)";
+  backBtn.style.cssText = "position:fixed;top:10px;right:110px;z-index:9999;padding:10px 22px;background:#5a3a18;color:#f0e0d0;border:1px solid #7a5a38;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   backBtn.onclick = goBackToSlots;
   document.body.appendChild(backBtn);
 window.showKeyPreferencePicker=function(callback){
