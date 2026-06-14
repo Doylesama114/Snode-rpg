@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5112',
+    date: '2026-06-14',
+    changes: [
+      '清理武僧枪影如林·极+三昧护心内嵌酒仙/锋岚风格污染文本'
+    ]
+  },
+
+
+  {
     version: '1.0.5111',
     date: '2026-06-14',
     changes: [
