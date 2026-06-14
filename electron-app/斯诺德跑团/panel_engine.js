@@ -5757,12 +5757,9 @@ if (!initFromURL()) {
   var saveBtn = document.createElement("button");
   saveBtn.textContent = "保存";
   var _exportBtn=document.createElement("button");_exportBtn.textContent="导出xlsx";
-  _exportBtn.style.cssText="position:fixed;top:80px;left:20px;padding:8px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;z-index:1000";
+  _exportBtn.style.cssText="position:fixed;bottom:90px;right:30px;padding:14px 28px;background:#a46d1f;color:#fff;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(164,109,31,.3)";
   _exportBtn.onclick=function(){exportCurrentXlsx();};document.body.appendChild(_exportBtn);
-var _eb=document.createElement("button");_eb.textContent="导出xlsx";
-_eb.style.cssText="position:fixed;top:80px;left:20px;padding:8px 16px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;z-index:1000";
-_eb.onclick=function(){exportCurrentXlsx();};document.body.appendChild(_eb);
-  saveBtn.style.cssText = "position:fixed;top:10px;right:10px;z-index:9999;padding:10px 22px;background:#4a6a3a;color:#f0e0d0;border:1px solid #6a8a5a;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
+  saveBtn.style.cssText = "position:fixed;bottom:150px;right:30px;padding:14px 28px;background:#4a6a3a;color:#f0e0d0;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(74,106,58,.3)";
   saveBtn.onclick = function() {
     showSaveDialog(function(slotIndex) {
       if (saveState(slotIndex)) {
@@ -5775,7 +5772,7 @@ _eb.onclick=function(){exportCurrentXlsx();};document.body.appendChild(_eb);
   // Add back button
   var backBtn = document.createElement("button");
   backBtn.textContent = "返回";
-  backBtn.style.cssText = "position:fixed;top:10px;right:110px;z-index:9999;padding:10px 22px;background:#5a3a18;color:#f0e0d0;border:1px solid #7a5a38;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
+  backBtn.style.cssText = "position:fixed;bottom:270px;right:30px;padding:14px 28px;background:#5a3a18;color:#f0e0d0;border:none;border-radius:40px;cursor:pointer;font-size:18px;font-weight:bold;z-index:1000;font-family:inherit;box-shadow:0 4px 12px rgba(90,58,24,.3)";
   backBtn.onclick = goBackToSlots;
   document.body.appendChild(backBtn);
 window.showKeyPreferencePicker=function(callback){
@@ -6451,4 +6448,51 @@ function importSaves(){
   };
   input.click();
 }
+
+// ESC 快捷键——角色面板返回启动台，提示保存
+(function(){
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    var tag=e.target.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
+    var overlay=document.querySelector('#searchOverlay:not(.hidden), .nav-overlay.show, .nav-drawer.open, #modalOverlay');
+    if(overlay)return;
+    
+    // Check if we're on character panel
+    var urlParams=new URLSearchParams(location.search);
+    if(!urlParams.get('char'))return; // Not on panel page, let global handler work
+    
+    e.preventDefault();
+    var changed=hasUnsavedChanges();
+    if(changed){
+      var r=confirm('当前角色有未保存的更改，是否保存后返回？\n\n"确定" = 保存并返回\n"取消" = 不保存直接返回');
+      if(r){saveCurrentSlot();}
+    }
+    location.href='角色选择页.html';
+  });
+  
+  // Check if current state differs from last saved
+  function hasUnsavedChanges(){
+    try{
+      if(typeof state==='undefined')return false;
+      var urlParams=new URLSearchParams(location.search);
+      var cn=urlParams.get('char');var sl=parseInt(urlParams.get('slot'))||1;
+      var key='_snowd_last_save_'+cn+'_'+sl;
+      var prev=localStorage.getItem(key);
+      var curr=JSON.stringify(state);
+      localStorage.setItem(key,curr);
+      return prev!==null&&prev!==curr;
+    }catch(e){return false;}
+  }
+  
+  function saveCurrentSlot(){
+    try{
+      var urlParams=new URLSearchParams(location.search);
+      var cn=urlParams.get('char');var sl=parseInt(urlParams.get('slot'))||1;
+      var key='char_'+cn+'_slot'+sl;
+      localStorage.setItem(key,JSON.stringify(state));
+      localStorage.setItem('_snowd_last_save_'+cn+'_'+sl,JSON.stringify(state));
+    }catch(e){}
+  }
+})();
 
