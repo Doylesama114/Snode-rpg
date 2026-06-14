@@ -286,7 +286,7 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 /* 技能学习面板增强样式 */
 
 
-#learnPanel { display:none; margin-top:12px; }
+#learnPanel { margin-top:12px; }
 
 
 .learn-toggle { padding:8px 18px;font-size:14px;background:#c9753e;color:#fff;border:none;border-radius:6px;cursor:pointer; }
