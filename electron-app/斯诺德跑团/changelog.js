@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5117',
+    date: '2026-06-15',
+    changes: [
+      '角色面板学习技能弹窗修复+ESC返回快捷键+保存前提示+去重导出xlsx'
+    ]
+  },
+
+
+  {
     version: '1.0.5116',
     date: '2026-06-14',
     changes: [
