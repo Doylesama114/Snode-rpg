@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5114',
+    date: '2026-06-14',
+    changes: [
+      '修复角色面板学习技能弹窗不显示(CSS ID选择器优先)'
+    ]
+  },
+
+
+  {
     version: '1.0.5113',
     date: '2026-06-14',
     changes: [
