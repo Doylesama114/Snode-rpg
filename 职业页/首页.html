@@ -224,7 +224,8 @@
     {name:'术士',file:'数据/术士.json'},{name:'牧师',file:'数据/牧师.json'},
     {name:'德鲁伊',file:'数据/德鲁伊.json'},{name:'吟游诗人',file:'数据/吟游诗人.json'},
     {name:'萨满祭司',file:'数据/萨满祭司.json'},{name:'蛮斗士',file:'数据/蛮斗士.json'},
-    {name:'奇械师',file:'数据/奇械师.json'},{name:'魔契师',file:'数据/魔契师.json'}
+    {name:'奇械师',file:'数据/奇械师.json'},{name:'魔契师',file:'数据/魔契师.json'},
+    {name:'通用天赋树',file:'数据/通用天赋树.json'}
   ];
 
   var searchIndex = null;
@@ -255,19 +256,21 @@
       searchIndex = [];
       allData.forEach(function(cd) {
         cd.skills.forEach(function(s) {
-          var descText = (s.description || []).join(' ').toLowerCase();
+          var fields = s.fields || {};
+          var descText = ((s.description || []).join(' ') || '').toLowerCase();
           var flavorText = (s.flavor || '').toLowerCase();
-          var tags = (s.tags || []).join(' ');
-          var style = s.style || '';
+          var tags = (s.tags || (fields['关键词'] || '').split('.')).join(' ');
+          var style = s.style || fields['风格'] || '';
           var tier = (typeof s.tier === 'number' ? s.tier + '阶' : s.tier || '');
+          var conditions = (fields['额外条件'] || fields['前置条件'] || '');
           searchIndex.push({
             classname: cd.classname,
             skillId: s.id,
             skillName: s.name,
             style: style,
             tier: tier,
-            snippet: descText.substring(0, 200),
-            searchText: (cd.classname + ' ' + s.name + ' ' + tags + ' ' + descText + ' ' + flavorText + ' ' + style).toLowerCase()
+            snippet: (descText || flavorText).substring(0, 200),
+            searchText: (cd.classname + ' ' + s.name + ' ' + tags + ' ' + descText + ' ' + flavorText + ' ' + style + ' ' + conditions).toLowerCase()
           });
         });
       });
