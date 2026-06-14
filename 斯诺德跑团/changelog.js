@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5111',
+    date: '2026-06-14',
+    changes: [
+      '武僧12处技能费用颜色修正(描述定位docx含金刚震/神龙摆尾/金刚怒目等)'
+    ]
+  },
+
+
+  {
     version: '1.0.5110',
     date: '2026-06-14',
     changes: [
