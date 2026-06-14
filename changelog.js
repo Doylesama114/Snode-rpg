@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5115',
+    date: '2026-06-14',
+    changes: [
+      '合并游荡者魔药风格重复三阶section+移除抉择污染'
+    ]
+  },
+
+
+  {
     version: '1.0.5114',
     date: '2026-06-14',
     changes: [
