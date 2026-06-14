@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5116',
+    date: '2026-06-14',
+    changes: [
+      '圣骑士23技能施展时间/距离/FP对照docx批量修正'
+    ]
+  },
+
+
+  {
     version: '1.0.5115',
     date: '2026-06-14',
     changes: [
