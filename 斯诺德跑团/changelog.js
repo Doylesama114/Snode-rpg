@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5120',
+    date: '2026-06-15',
+    changes: [
+      '修复14个职业进阶页60张无详情数据但仍显示可解锁的进阶卡片(detail-btn→locked-btn)'
+    ]
+  },
+
+
+  {
     version: '1.0.5119',
     date: '2026-06-15',
     changes: [
