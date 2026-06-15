@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5118',
+    date: '2026-06-15',
+    changes: [
+      '批量修正5职业103处施展时间(萨满28+吟游诗人39+猎人19+蛮斗士14+圣骑士3)对照data-search修正'
+    ]
+  },
+
+
+  {
     version: '1.0.5117',
     date: '2026-06-15',
     changes: [
