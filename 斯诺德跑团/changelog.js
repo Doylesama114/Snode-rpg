@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5122',
+    date: '2026-06-16',
+    changes: [
+      '修复魔契师奇术+活灵术描述污染(对照docx移除误混入的二阶天赋树内容)'
+    ]
+  },
+
+
+  {
     version: '1.0.5121',
     date: '2026-06-16',
     changes: [
