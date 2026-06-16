@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5124',
+    date: '2026-06-16',
+    changes: [
+      '对照docx优化魔契师恩赐·契约强化——补前置条件/关键词+段落拆分+移除邪念风格污染'
+    ]
+  },
+
+
+  {
     version: '1.0.5123',
     date: '2026-06-16',
     changes: [
