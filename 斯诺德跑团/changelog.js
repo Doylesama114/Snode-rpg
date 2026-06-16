@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5131',
+    date: '2026-06-17',
+    changes: [
+      '对照docx修正吟游诗人四阶全5风格23处字段错误(舒缓6+灵动3+诙谐7+集中7)'
+    ]
+  },
+
+
+  {
     version: '1.0.5130',
     date: '2026-06-16',
     changes: [
