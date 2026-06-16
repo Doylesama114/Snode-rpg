@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5125',
+    date: '2026-06-16',
+    changes: [
+      '对照docx重构术士瞬刻时机+修复四阶技能被吞(补4个缺失skill article+4个nav链接)'
+    ]
+  },
+
+
+  {
     version: '1.0.5124',
     date: '2026-06-16',
     changes: [
