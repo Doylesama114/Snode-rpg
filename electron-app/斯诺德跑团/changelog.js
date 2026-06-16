@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5128',
+    date: '2026-06-16',
+    changes: [
+      '清除UTF-8 BOM修复CI构建JSON parse失败'
+    ]
+  },
+
+
+  {
     version: '1.0.5127',
     date: '2026-06-16',
     changes: [
