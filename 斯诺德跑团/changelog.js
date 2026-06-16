@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5123',
+    date: '2026-06-16',
+    changes: [
+      '对照docx重构魔契师谜巢描述——单段大文本拆分为5段+补缺失关键词字段'
+    ]
+  },
+
+
+  {
     version: '1.0.5122',
     date: '2026-06-16',
     changes: [
