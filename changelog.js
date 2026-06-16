@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5129',
+    date: '2026-06-16',
+    changes: [
+      '对照docx修正吟游诗人防护箭矢——持续时间立即→1轮、距离12米→自身、补描述段落'
+    ]
+  },
+
+
+  {
     version: '1.0.5128',
     date: '2026-06-16',
     changes: [
