@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5126',
+    date: '2026-06-16',
+    changes: [
+      '对照docx修正战士逆境强化——施展时间1动作→-、施展距离近战→自身'
+    ]
+  },
+
+
+  {
     version: '1.0.5125',
     date: '2026-06-16',
     changes: [
