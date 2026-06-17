@@ -1,0 +1,289 @@
+# sync-class-from-docx
+
+## Description
+Complete workflow for syncing class skill data from docx to HTML + structured JSON. Covers: docx extraction, field correction, Playwright verification, user Q&A for unclear mechanics, and structured skill effects JSON generation.
+
+## When to Use
+- User says "做 {职业} {风格} {阶位} 技能" or similar
+- User asks to "对照 docx 修正" any class page
+- User wants to add new skills to skill_effects JSON
+
+## Workflow Overview
+
+```
+Phase 1: DOCX Extraction  →  Phase 2: Compare & Fix  →  Phase 3: Playwright Verify
+Phase 4: User Q&A           →  Phase 5: Write JSON     →  Phase 6: Update Schema
+```
+
+---
+
+## Phase 1: Extract Data from Docx
+
+Use this Python snippet to extract skills from the target tier/section of a docx file:
+
+```python
+import zipfile, re
+from xml.etree import ElementTree as ET
+
+ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
+docx = r'D:\Download\scholar-agent-main\基础职业-{职业名}.docx'
+
+with zipfile.ZipFile(docx) as z:
+    xml = z.read('word/document.xml')
+tree = ET.fromstring(xml)
+paras = []
+for p in tree.iter(f'{{{ns}}}t'):
+    paras.append(p.text or '')
+
+# Rebuild paragraphs (text runs are split by formatting)
+lines = []
+buf = ''
+for t in paras:
+    if t == '': 
+        if buf: lines.append(buf); buf = ''
+    else: buf += t
+if buf: lines.append(buf)
+```
+
+**Key extraction parameters:**
+- `{职业名}` = the class name in Chinese (战士, 法师, etc.)
+- Find the tier section header (e.g., "三阶天赋树")
+- Each skill is: name line → field lines (施展时间/距离/持续/FP/关键词/条件/限制/费用/描述)
+- Stop when you hit the next tier header or style header
+
+### ⚠️ CRITICAL: Always Read Raw Docx Lines Directly
+
+**NEVER trust automated skill-name-to-field matching scripts.** The docx has two occurrences of each skill name:
+1. **Skill list** (at tier header): just the name, followed by other skill names
+2. **Actual skill entry** (further down): name + full field data
+
+Automated scripts that search for a skill name and grab the NEXT N lines will frequently:
+- Pick up the WRONG skill's fields (matching the list entry instead of the real entry)
+- Attribute one skill's 关键词/前置条件 to another skill
+- Miss the actual skill entry entirely when multiple skills share similar names
+
+**Always do this instead:**
+```bash
+python -c "
+# Dump ALL raw lines around every occurrence of a skill name
+for i,p in enumerate(paras):
+    if p.strip() == 'TARGET_SKILL_NAME':
+        print(f'=== L{i} ===')
+        for j in range(i, min(i+22, len(paras))):
+            l = paras[j].strip()
+            if l: print(f'  L{j}: {l[:200]}')
+        print()
+"
+```
+
+**Then visually verify**: the correct occurrence is the one that has `前置条件：`, `施展时间：`, `关键词：` etc. within the first 5 lines after the name. The skill-list occurrence will just have other skill names after it.
+
+This is NOT a data volume issue — it's an accuracy issue. Reading 5-6 skills' raw lines is ~30 lines each, negligible to read.
+
+**Field mapping:**
+| Docx field | HTML `<span class="field">` |
+|-----------|--------------------------------|
+| 施展时间：VALUE | `<span class="field">施展时间：</span>VALUE` |
+| 施展距离：VALUE | `<span class="field">施展距离：</span>VALUE` |
+| 持续时间：VALUE | `<span class="field">持续时间：</span>VALUE` |
+| 疲劳消耗：VALUE | `<span class="field">疲劳消耗：</span>VALUE` |
+| 关键词：VALUE | `<span class="field">关键词：</span>VALUE` |
+| 施展条件：VALUE | `<span class="field">施展条件：</span>VALUE` |
+| 施展限制：VALUE | `<span class="field">施展限制：</span>VALUE` |
+| 费用：VALUE | `<span class="field">费用：</span>{dots}` |
+| 前置条件：VALUE | `<span class="field">前置条件：</span>VALUE` |
+| 额外条件：VALUE | `<span class="field">额外条件：</span>VALUE` |
+
+---
+
+## Phase 2: Compare & Fix
+
+For each skill found in Phase 1, find the corresponding `<article id="...">` in `职业页/{职业名}.html` and compare EVERY field.
+
+### 15-Point Checklist
+
+| # | Check | Method |
+|---|-------|--------|
+| 1 | Skill name | `<h4>` vs docx |
+| 2-10 | All field values | Compare against Phase 1 output |
+| 11 | ⚠️ Cost dot count & colors | Count `●` and verify hex colors |
+| 12 | Description text | Compare `<p>` content paragraph-by-paragraph |
+| 13 | Level upgrades | Check `<span class="field">你的X级时：</span>` |
+| 14 | Contamination | Check if next section's headers leaked into detail div |
+| 15 | Duplicate `<p>` skill name | Remove `<p>技能名</p>` from start of detail |
+
+### Cost Dot Colors
+| Color | Hex |
+|-------|-----|
+| 红 | #FF0000 |
+| 橙 | #EE822F |
+| 黄 | #FFF32F |
+| 绿 | #00FA99 |
+| 青 | #00B0F0 |
+| 蓝 | #B3F9FF |
+| 紫 | #B94BFF |
+| 粉 | #FFB7E3 |
+| 棕 | #843F0B |
+| 白 | #FFFFFF |
+| 黑 | #595959 |
+| 无色 | #D9D9D9 |
+
+### Fix Tool
+Use the `edit` tool for each fix. Match exact file content (indentation, smart quotes, etc.). Test after each edit.
+
+---
+
+## Phase 3: Playwright Verify
+
+Run Playwright test against the live site. Wait 50s for Cloudflare Pages deployment.
+
+```python
+import asyncio, sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+from playwright.async_api import async_playwright
+
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(headless=True)
+        page = await b.new_page()
+        pcount = fcount = 0
+        
+        await page.goto('https://snode-rpg.pages.dev/{class_page_url}', wait_until='networkidle')
+        await page.wait_for_timeout(2000)
+        
+        # For each fixed skill:
+        for sid, field, expected, name in tests:
+            loc = page.locator(f'#{sid} .detail p')
+            texts = await loc.all_text_contents()
+            found = any(f'{field}：{expected}' in t for t in texts)
+            if found: pcount += 1; print(f'PASS {name}: {field}={expected}')
+            else: fcount += 1
+        
+        print(f'\nResult: {pcount} pass / {fcount} fail')
+        await b.close()
+
+asyncio.run(main())
+```
+
+**Commit**: `git add "职业页/{职业名}.html" && git commit -m "fix: ..." && git push`
+
+---
+
+## Phase 4: User Q&A for Unclear Mechanics
+
+**BEFORE writing JSON effects, ask the user about anything unclear in the skill's mechanics.**
+
+### What to Ask About
+
+| Signal | Question to Ask |
+|--------|----------------|
+| skill mentions "附加属性" | Which attribute? STR/DEX/key attr? |
+| skill mentions "优势" | Hit advantage or damage advantage? |
+| skill mentions an unusual range | How does "X米" or grid coordinate work? |
+| skill has conditionals | What happens when condition NOT met? |
+| skill mentions a game term you don't fully know | Ask for clarification. Reference the help page (§7 异常状态) to verify status effects. |
+| skill mentions "每个自身回合" | Once per own turn? Does reaction count? |
+| skill mentions "每场战斗限一次" | Per encounter? Reset on short rest? |
+| skill has a D100 random table | Is it worth fully expanding? |
+
+### How to Ask
+Use `question` tool with concise options. Don't over-ask — only genuine uncertainties. Use the existing help page and schema for reference before asking.
+
+---
+
+## Phase 5: Write Skill Effects JSON
+
+Open `斯诺德跑团/skill_effects_{职业名}.json` and append new skill entries.
+
+### JSON Template
+
+```json
+{
+  "id": "w-skill-1-3-1",
+  "name": "二连斩",
+  "class": "战士",
+  "style": "斗争风格",
+  "tier": "三阶天赋树",
+  "type": "战技",
+  "tags": ["近战攻击", "连续攻击"],
+  "cost": { "fp": 4, "sp": ["橙", "黑"] },
+  "cast": { "time": "1动作", "range": "近战", "duration": "立即" },
+  "prerequisite": "...",
+  "extra_condition": "...",
+  "requirement": "...",
+  "restriction": "...",
+  "effects": [
+    "效果描述一行一条",
+    "优势用（2D20取高）",
+    "伤害骰用 XdY 格式",
+    "L{等级}: 升级描述"
+  ],
+  "upgrades": [
+    { "level": 8, "change": "描述" }
+  ]
+}
+```
+
+### Effects Writing Rules
+- **One effect per line**, natural language, not over-structured
+- **优势/劣势** must include dice notation: `（2D20取高）`, `（3D20取最低）`
+- **伤害骰**: `1D6`, `2D10+力量调整值`
+- **固定加伤**: `+5`, `+10`
+- **暴击**: `（暴击时全部加总伤害×2）`
+- **升级**: `L{level}: {change description}`
+- **状态赋予**: use exact status names from help page §7
+- **免疫/减伤**: `完全免疫{type}伤害`, `{type}伤害减半`
+
+---
+
+## Phase 6: Update Schema
+
+If a new mechanical pattern was discovered in this batch, update `skill_effects_schema.md`:
+
+- Add new effect prefix to the table
+- Add new game rule clarification
+- Add new color or status reference
+- Update examples if a better pattern emerged
+
+---
+
+## Reference: Key Files
+
+| File | Purpose |
+|------|---------|
+| `基础职业/{name}.docx` | Ground truth for all skill data |
+| `职业页/{name}.html` | HTML skill page (target for fixes) |
+| `斯诺德跑团/skill_effects_{name}.json` | Structured skill data for AI assistant |
+| `斯诺德跑团/skill_effects_schema.md` | JSON schema documentation |
+| `斯诺德跑团/帮助.html` | Game rules reference (§7 异常状态, §8 关键词) |
+
+---
+
+## Quick Start per Class
+
+### 战士 (Warrior)
+- **Docx**: `基础职业-战士.docx`
+- **HTML**: `职业页/战士.html`
+- **Starting skills**: w-starting-skill-1~4
+- **斗争风格 tier 1**: w-skill-1-1-1~2
+- **斗争风格 tier 2**: w-skill-1-2-1~3
+- **斗争风格 tier 3**: w-skill-1-3-1,2,4 (note: 1-3-3 is the choice note, not a skill)
+- **斗争风格 tier 4**: w-skill-1-4-1~2
+- **斗争风格 tier 5**: w-skill-1-5-1
+
+### 萨满祭司 (Shaman)
+- **Docx**: `基础职业-萨满祭司.docx`
+- **HTML**: `职业页/萨满祭司.html`
+- **Skills**: sa-skill-1~102
+
+### 法师 (Mage)
+- **Docx**: `基础职业-法师.docx`
+- **HTML**: `职业页/法师.html`
+- **Skills**: m-skill-{style}-{tier}-{index}
+
+### 吟游诗人 (Bard)
+- **Docx**: `基础职业-吟游诗人.docx`
+- **HTML**: `职业页/吟游诗人.html`
+- **Skills**: b-skill-1~119
+
+(Extend for all 14 classes as needed)
