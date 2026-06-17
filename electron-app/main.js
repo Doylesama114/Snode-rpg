@@ -48,9 +48,24 @@ ipcMain.on('check-update', () => {
   autoUpdater.checkForUpdates();
 });
 
-// IPC: 镜像下载（打开 GitHub Releases 页面）
+// IPC: 镜像下载 - 自动获取最新 exe 并打开
 ipcMain.on('check-update-gitee', () => {
-  require('electron').shell.openExternal('https://github.com/Doylesama114/Snode-rpg/releases/latest');
+  const https = require('https');
+  https.get('https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest', {
+    headers: { 'User-Agent': 'Snode-rpg' }
+  }, (res) => {
+    let body = '';
+    res.on('data', chunk => body += chunk);
+    res.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+        const exe = (data.assets || []).find(a => /\.exe$/.test(a.name));
+        if (exe) {
+          require('electron').shell.openExternal(exe.browser_download_url);
+        }
+      } catch(e) {}
+    });
+  }).on('error', () => {});
 });
 
 // IPC: 手动重启

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5133',
+    date: '2026-06-17',
+    changes: [
+      '优化镜像下载为智能获取——自动拉取最新exe直链并触发下载（无需访问GitHub页面）'
+    ]
+  },
+
+
+  {
     version: '1.0.5132',
     date: '2026-06-17',
     changes: [
