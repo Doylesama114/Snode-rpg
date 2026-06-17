@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5135',
+    date: '2026-06-17',
+    changes: [
+      '对照docx全面修正战士全7风格109技能HTML字段(92处错误+109处去重)+结构化JSON'
+    ]
+  },
+
+
+  {
     version: '1.0.5134',
     date: '2026-06-17',
     changes: [
