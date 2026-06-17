@@ -48,8 +48,9 @@ ipcMain.on('check-update', () => {
   autoUpdater.checkForUpdates();
 });
 
-// IPC: 镜像下载 - 自动获取最新 exe 并打开
+// IPC: 镜像更新 - 用 GitHub Release 直链触发自动更新
 ipcMain.on('check-update-gitee', () => {
+  sendUpdateStatus({ status: 'checking', message: '正在获取最新版本...' });
   const https = require('https');
   https.get('https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest', {
     headers: { 'User-Agent': 'Snode-rpg' }
@@ -59,13 +60,19 @@ ipcMain.on('check-update-gitee', () => {
     res.on('end', () => {
       try {
         const data = JSON.parse(body);
-        const exe = (data.assets || []).find(a => /\.exe$/.test(a.name));
-        if (exe) {
-          require('electron').shell.openExternal(exe.browser_download_url);
-        }
-      } catch(e) {}
+        const tag = data.tag_name;
+        if (!tag) { sendUpdateStatus({ status: 'error', message: '无法获取版本信息' }); return; }
+        // 用 GitHub Release 直链作为 feed（走 objects.githubusercontent.com CDN）
+        const feedUrl = 'https://github.com/Doylesama114/Snode-rpg/releases/download/' + tag + '/';
+        autoUpdater.setFeedURL({ provider: 'generic', url: feedUrl });
+        autoUpdater.checkForUpdates();
+      } catch(e) {
+        sendUpdateStatus({ status: 'error', message: '版本信息解析失败' });
+      }
     });
-  }).on('error', () => {});
+  }).on('error', () => {
+    sendUpdateStatus({ status: 'error', message: '网络连接失败，请稍后重试' });
+  });
 });
 
 // IPC: 手动重启

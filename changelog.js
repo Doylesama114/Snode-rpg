@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5134',
+    date: '2026-06-17',
+    changes: [
+      '镜像下载升级为镜像自动更新——Electron内走generic feed自动下载安装'
+    ]
+  },
+
+
+  {
     version: '1.0.5133',
     date: '2026-06-17',
     changes: [
