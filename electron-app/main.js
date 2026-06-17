@@ -37,7 +37,7 @@ autoUpdater.on('error', (err) => {
   var msg = err.message || '';
   // GitHub 403 rate-limit: give user-friendly message
   if (msg.indexOf('403') >= 0 || msg.indexOf('Forbidden') >= 0 || msg.indexOf('restricted') >= 0) {
-    msg = 'GitHub 访问受限（403），可能是请求频率过高。请稍后重试，或使用"国内镜像"按钮从 Gitee 更新。';
+    msg = 'GitHub 访问受限（403），可能是请求频率过高。请稍后重试，或使用启动台"镜像下载"按钮手动更新。';
   }
   sendUpdateStatus({ status: 'error', message: msg });
 });
@@ -48,11 +48,9 @@ ipcMain.on('check-update', () => {
   autoUpdater.checkForUpdates();
 });
 
-// IPC: 从 Gitee 国内镜像更新（暂不可用）
+// IPC: 镜像下载（打开 GitHub Releases 页面）
 ipcMain.on('check-update-gitee', () => {
-  // Gitee API文件大小限制(50MB)导致exe无法自动上传，手动上传也有问题
-  // 正在寻找新的国内镜像替代方案，请使用GitHub更新
-  sendUpdateStatus({ status: 'error', message: '国内镜像暂不可用（Gitee文件大小限制），请使用GitHub更新' });
+  require('electron').shell.openExternal('https://github.com/Doylesama114/Snode-rpg/releases/latest');
 });
 
 // IPC: 手动重启
@@ -100,12 +98,12 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/') || url.startsWith('https://gitee.com/')) return;
+    if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
     if (!url.startsWith('file://')) event.preventDefault();
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https://doylesama114.github.io/') || url.startsWith('https://github.com/') || url.startsWith('https://gitee.com/')) {
+    if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) {
       return { action: 'allow' };
     }
     return { action: 'deny' };

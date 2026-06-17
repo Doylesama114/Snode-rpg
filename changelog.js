@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5132',
+    date: '2026-06-17',
+    changes: [
+      '恢复镜像下载按钮——替代Gitee为GitHub Releases直链（jsDelivr CDN加速可用）'
+    ]
+  },
+
+
+  {
     version: '1.0.5131',
     date: '2026-06-17',
     changes: [
