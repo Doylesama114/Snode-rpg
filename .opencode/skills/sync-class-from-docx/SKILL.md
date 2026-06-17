@@ -11,8 +11,8 @@ Complete workflow for syncing class skill data from docx to HTML + structured JS
 ## Workflow Overview
 
 ```
-Phase 1: DOCX Extraction  →  Phase 2: Compare & Fix  →  Phase 3: Playwright Verify
-Phase 4: User Q&A           →  Phase 5: Write JSON     →  Phase 6: Update Schema
+Phase 1: DOCX Extraction  →  Phase 2: Compare & Fix HTML  →  Phase 2B: Sync Data JSON
+Phase 3: Playwright Verify  →  Phase 4: User Q&A  →  Phase 5: Write skill_effects JSON  →  Phase 6: Update Schema
 ```
 
 ---
@@ -130,6 +130,85 @@ For each skill found in Phase 1, find the corresponding `<article id="...">` in 
 
 ### Fix Tool
 Use the `edit` tool for each fix. Match exact file content (indentation, smart quotes, etc.). Test after each edit.
+
+---
+
+## Phase 2B: Sync Data JSON
+
+After fixing HTML, sync `职业页/数据/{职业名}.json` with the corrected field values.
+
+### What to Sync
+Only sync fields that were **demonstrably wrong in the HTML** and corrected via docx comparison:
+- **施展时间** (cast.time)
+- **施展距离** (cast.range)
+- **持续时间** (cast.duration)
+- **疲劳消耗** (cost.fp)
+- **tags**: Remove keywords not present in docx (e.g., "专注" that only exists in HTML chips)
+
+### What NOT to Touch
+- **关键词 (keywords)**: The data JSON's `fields.关键词` string includes the **type prefix** (e.g., `战技.近战攻击`, `法术.迅捷.跃迁`) while `skill_effects` `tags` do NOT include the type. Never rebuild 关键词 from skill_effects tags — it will strip the type prefix and break the site's filter system.
+- **描述 (description)**: Only fix if you found explicit description errors during Phase 2 comparison; otherwise leave as-is.
+- **level_upgrades**: Same as description — only fix explicit errors.
+
+### Batch Sync Script
+Use a Python script to sync from `skill_effects_{职业名}.json` to `数据/{职业名}.json`:
+
+```python
+import json, sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+data = json.load(open(r'职业页/数据/{职业名}.json', 'r', encoding='utf-8'))
+fx = json.load(open(r'斯诺德跑团/skill_effects_{职业名}.json', 'r', encoding='utf-8'))
+
+fx_by_id = {}
+for s in fx['{职业名}']:
+    fx_by_id[s['id']] = s
+
+field_fixes = 0
+tag_fixes = 0
+
+for skill in data['skills']:
+    sid = skill['id']
+    if sid not in fx_by_id:
+        continue
+    f = fx_by_id[sid]
+    df = skill.get('fields', {})
+    cast = f.get('cast', {})
+    cost = f.get('cost', {})
+    
+    # ONLY fix: cast fields + FP
+    for fname, key in [('施展时间','time'),('施展距离','range'),('持续时间','duration')]:
+        exp = cast.get(key, '')
+        if exp and df.get(fname, '') != exp:
+            df[fname] = exp
+            field_fixes += 1
+    
+    fp = cost.get('fp')
+    if fp is not None and fp >= 0:
+        fp_str = str(fp)
+        if df.get('疲劳消耗', '') != fp_str:
+            df['疲劳消耗'] = fp_str
+            field_fixes += 1
+    
+    # Remove tags not in docx (e.g., "专注")
+    fx_tags = f.get('tags', [])
+    skill_tags = skill.get('tags', [])
+    if '专注' in skill_tags and '专注' not in fx_tags:
+        skill['tags'] = [t for t in skill_tags if t != '专注']
+        tag_fixes += 1
+
+json.dump(data, open(r'职业页/数据/{职业名}.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+print(f'Field fixes: {field_fixes}, Tag fixes: {tag_fixes}')
+```
+
+### ⚠️ CRITICAL: Keyword Format Difference
+| File | Keywords format | Example |
+|------|----------------|---------|
+| `数据/{name}.json` → `fields.关键词` | Type prefix + keywords | `战技.近战攻击` |
+| `skill_effects_{name}.json` → `tags` | Keywords only (no type) | `["近战攻击"]` |
+| `职业页/{name}.html` → `<span class="field">关键词：</span>` | Same as docx | `战技.近战攻击` |
+
+**Never use `'.'.join(fx_tags)` to rebuild data JSON's 关键词** — it will lose the type prefix and break filtering.
 
 ---
 
@@ -253,6 +332,7 @@ If a new mechanical pattern was discovered in this batch, update `skill_effects_
 |------|---------|
 | `基础职业/{name}.docx` | Ground truth for all skill data |
 | `职业页/{name}.html` | HTML skill page (target for fixes) |
+| `职业页/数据/{name}.json` | Data JSON for site rendering/filtering (sync after HTML fix) |
 | `斯诺德跑团/skill_effects_{name}.json` | Structured skill data for AI assistant |
 | `斯诺德跑团/skill_effects_schema.md` | JSON schema documentation |
 | `斯诺德跑团/帮助.html` | Game rules reference (§7 异常状态, §8 关键词) |
