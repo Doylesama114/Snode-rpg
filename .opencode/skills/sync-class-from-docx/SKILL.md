@@ -168,6 +168,55 @@ For each skill found in Phase 1, find the corresponding `<article id="...">` in 
 | 15 | Duplicate `<p>` skill name | Remove `<p>技能名</p>` from start of detail |
 
 ### Cost Dot Colors
+
+⚠️ **When creating skills from scratch, NEVER guess dot colors.** Extract them from the docx XML font colors. Use this script:
+
+```python
+import zipfile, sys, io
+from xml.etree import ElementTree as ET
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
+docx = r'基础职业-{职业名}.docx'
+with zipfile.ZipFile(docx) as z:
+    xml = z.read('word/document.xml')
+tree = ET.fromstring(xml)
+body = tree.find(f'{{{ns}}}body')
+elems = list(body)
+
+color_table = {
+    'FF0000':'红','EE822F':'橙','FFF32F':'黄','FFD966':'黄','00FA99':'绿','00B050':'绿',
+    '00B0F0':'青','B3F9FF':'蓝','00A0FF':'蓝','B94BFF':'紫','FFB7E3':'粉','FF66CC':'粉',
+    '843F0B':'棕','FFFFFF':'白','595959':'黑','D9D9D9':'无色'
+}
+# Replace {body_index} with the actual index from Phase 1
+for body_idx in [{indices}]:
+    elem = elems[body_idx]
+    fee_section = False
+    dot_colors = []
+    for p in elem.iter(f'{{{ns}}}p'):
+        for r in p.iter(f'{{{ns}}}r'):
+            t = r.find(f'{{{ns}}}t')
+            if t is None or not t.text: continue
+            txt = t.text.strip()
+            if '费用：' in txt: fee_section = True; continue
+            if '描述：' in txt: break
+            if fee_section and '●' in txt:
+                rpr = r.find(f'{{{ns}}}rPr')
+                hex_color = '?'
+                if rpr is not None:
+                    c = rpr.find(f'{{{ns}}}color')
+                    if c is not None: hex_color = c.get(f'{{{ns}}}val','?')
+                for _ in range(txt.count('●')):
+                    dot_colors.append(color_table.get(hex_color, hex_color))
+    print(f'{body_idx}: {dot_colors} ({len(dot_colors)} dots)')
+```
+
+**This applies equally to**:
+- `费用：` field dots
+- `额外条件：` dots (e.g., 虹光射线 "技能点费用改为7色全●")
+- `描述：` text dots (e.g., 强酸箭's malformed cost dot in description)
+
+### Color Reference
 | Color | Hex |
 |-------|-----|
 | 红 | #FF0000 |
