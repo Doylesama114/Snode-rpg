@@ -11,7 +11,7 @@ Complete workflow for syncing class skill data from docx to HTML + structured JS
 ## Workflow Overview
 
 ```
-Phase 1: DOCX Extraction  →  Phase 2: Compare & Fix HTML  →  Phase 2B: Sync Data JSON
+Phase 1: DOCX Extraction  →  Phase 1B: Handle Missing Skills  →  Phase 2: Compare & Fix HTML  →  Phase 2B: Sync Data JSON
 Phase 3: Playwright Verify  →  Phase 4: User Q&A  →  Phase 5: Write skill_effects JSON  →  Phase 6: Update Schema
 ```
 
@@ -93,6 +93,61 @@ This is NOT a data volume issue — it's an accuracy issue. Reading 5-6 skills' 
 | 费用：VALUE | `<span class="field">费用：</span>{dots}` |
 | 前置条件：VALUE | `<span class="field">前置条件：</span>VALUE` |
 | 额外条件：VALUE | `<span class="field">额外条件：</span>VALUE` |
+
+---
+
+## Phase 1B: Handle Missing Skills (Entire Tier Missing from HTML)
+
+**Before Phase 2 comparison, check whether the HTML even contains the target skills.** It's common for higher tiers to be entirely absent from the HTML — the docx has the data but it was never transcribed.
+
+### How to Detect
+1. After Phase 1, grep for the skill IDs in the HTML (e.g., `m-skill-1-6-\d`)
+2. If **zero results**: the entire tier is missing → create from scratch
+3. If partial: create missing ones, compare existing ones
+
+### Creating From Scratch: 4 Things to Create
+
+#### A. Content Section
+Insert before the closing `</section>` of the current style. Template per skill:
+```html
+<article class="skill" id="m-skill-{style}-{tier}-{index}" data-search="{styleName} {tierName} {skillName} {keywords...}">
+<h4>{skillName} <span class="chip" style="background:rgba(0,0,0,0.08);border-color:{styleColor}">{styleName} · {tierName}</span></h4>
+<div class="chips">{keyword chips}</div>
+<div class="detail">
+  <p><span class="field">前置条件：</span>{prereq}</p>  <p><span class="field">额外条件：</span>{extra}</p>
+  <p><span class="field">施展时间：</span>{time}</p>  <p><span class="field">施展距离：</span>{range}</p>  <p><span class="field">持续时间：</span>{duration}</p>  <p><span class="field">疲劳消耗：</span>{fp}</p>
+  <p><span class="field">关键词：</span>{keywords}</p>  <p><span class="field">施展条件：</span>{condition}</p>  <p><span class="field">施展限制：</span>{limit}</p>
+  <p><span class="field">费用：</span>{cost dots}</p>  <p><span class="field">描述：</span>{flavor}</p>
+  {description paragraphs + level upgrades}
+</div>
+</article>
+```
+
+#### B. Nav Sidebar
+Insert `<details class="nav-tier">` before the closing `</details>` of the style group:
+```html
+<details class="nav-tier"><summary class="tier-summary"><a href="#m-tier-{style}-{tier}">{tierName}</a></summary>
+<a class="skill-link" href="#m-skill-{style}-{tier}-1">...</a>
+</details>
+```
+
+#### C. Data JSON
+Append new entries to `职业页/数据/{职业名}.json`:
+```python
+{'id':'m-skill-X-Y-Z','name':'...','type':'...','style':'...','tier':N,
+ 'tags':[...], 'fields':{'施展时间':'...','施展距离':'...',...}}
+```
+
+#### D. Skill Effects JSON
+Append to `斯诺德跑团/skill_effects_{职业名}.json` during Phase 5 as usual.
+
+### Key Points
+- **Cost dots**: `<span style="font-size:1.5em;color:#XXXXXX">●</span>` format
+- **Style colors**: 塑能=#FFA387, 咒法=#B3E7FF, 预言=#AFFFE6, 防护=#FBFF81, 附魔=#D0A5FF, 死灵=#FFFFFF, 幻术=#FFCBFF, 变化=#FFC47D
+- **data-search**: style + tier + skill name + all keyword chips
+- **No duplicate `<p>技能名</p>`** — skills created from scratch don't have this bug
+- **Choice notes**: add `<div class="choice-note">抉择：A/B</div>` before tier `</div>`
+- **Unlock text**: copy from adjacent tiers; verify tier unlock XP against docx
 
 ---
 
