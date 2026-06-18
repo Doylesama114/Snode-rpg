@@ -184,8 +184,8 @@ body = tree.find(f'{{{ns}}}body')
 elems = list(body)
 
 color_table = {
-    'FF0000':'红','EE822F':'橙','FFF32F':'黄','FFD966':'黄','00FA99':'绿','00B050':'绿',
-    '00B0F0':'青','B3F9FF':'蓝','00A0FF':'蓝','B94BFF':'紫','FFB7E3':'粉','FF66CC':'粉',
+    'FF0000':'红','EE822F':'橙','FFF32F':'黄','FFD966':'黄','00B050':'绿','00FA99':'青',
+    '00B0F0':'蓝','B3F9FF':'浅色','00A0FF':'浅色','B94BFF':'紫','FFB7E3':'粉','FF66CC':'粉',
     '843F0B':'棕','FFFFFF':'白','595959':'黑','D9D9D9':'无色'
 }
 # Replace {body_index} with the actual index from Phase 1
@@ -222,15 +222,18 @@ for body_idx in [{indices}]:
 | 红 | #FF0000 |
 | 橙 | #EE822F |
 | 黄 | #FFF32F |
-| 绿 | #00FA99 |
-| 青 | #00B0F0 |
-| 蓝 | #B3F9FF |
+| 绿 | #00B050 |
+| 青 | #00FA99 |
+| 蓝 | #00B0F0 |
 | 紫 | #B94BFF |
 | 粉 | #FFB7E3 |
 | 棕 | #843F0B |
 | 白 | #FFFFFF |
 | 黑 | #595959 |
 | 无色 | #D9D9D9 |
+| 浅色 | #B3F9FF |
+
+> ⚠️ 颜色名称以 `panel_engine.js` `spColors` 映射为准：蓝=#00B0F0, 青=#00FA99, 绿=#00B050, 浅=#B3F9FF
 
 ### Fix Tool
 Use the `edit` tool for each fix. Match exact file content (indentation, smart quotes, etc.). Test after each edit.
