@@ -137,26 +137,15 @@ Use the `edit` tool for each fix. Match exact file content (indentation, smart q
 
 After fixing HTML, sync `职业页/数据/{职业名}.json` with the corrected field values.
 
-### What to Sync
-Sync fields that were **demonstrably wrong in the HTML** and corrected via docx comparison:
-- **施展时间** (cast.time)
-- **施展距离** (cast.range)
-- **持续时间** (cast.duration)
-- **疲劳消耗** (cost.fp)
-- **tags**: Remove keywords not present in docx (e.g., "专注" that only exists in HTML chips)
-- **关键词**: Remove known-wrong fragments from the keyword string (e.g., `".专注"`)
+### Automated: 1:1 Field Mapping (Batch Script)
+These fields have a direct 1:1 mapping between skill_effects JSON and data JSON — safe to batch-sync:
 
-### What NOT to Touch
-- **描述 (description)**: Only fix if you found explicit description errors during Phase 2 comparison; otherwise leave as-is.
-- **level_upgrades**: Same as description — only fix explicit errors.
-
-### ⚠️ Keyword Handling
-The data JSON's `fields.关键词` string has **type prefix** (e.g., `战技.近战攻击`) while `skill_effects` `tags` do NOT. So DO NOT rebuild keywords with `'.'.join(fx_tags)`.
-
-**Correct approach**: remove known-wrong fragments from the existing keyword string. If "专注" was removed from tags (because docx doesn't have it), also remove `".专注"` substring from the 关键词 field.
-
-### Batch Sync Script
-Use a Python script to sync from `skill_effects_{职业名}.json` to `数据/{职业名}.json`:
+| data JSON field | skill_effects source |
+|-----------------|---------------------|
+| `fields.施展时间` | `cast.time` |
+| `fields.施展距离` | `cast.range` |
+| `fields.持续时间` | `cast.duration` |
+| `fields.疲劳消耗` | `cost.fp` |
 
 ```python
 import json, sys, io
@@ -165,13 +154,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 data = json.load(open(r'职业页/数据/{职业名}.json', 'r', encoding='utf-8'))
 fx = json.load(open(r'斯诺德跑团/skill_effects_{职业名}.json', 'r', encoding='utf-8'))
 
-fx_by_id = {}
-for s in fx['{职业名}']:
-    fx_by_id[s['id']] = s
-
-field_fixes = 0
-tag_fixes = 0
-kw_fixes = 0
+fx_by_id = {s['id']: s for s in fx['{职业名}']}
+fixes = 0
 
 for skill in data['skills']:
     sid = skill['id']
@@ -182,50 +166,42 @@ for skill in data['skills']:
     cast = f.get('cast', {})
     cost = f.get('cost', {})
     
-    # Fix: cast fields + FP
     for fname, key in [('施展时间','time'),('施展距离','range'),('持续时间','duration')]:
         exp = cast.get(key, '')
         if exp and df.get(fname, '') != exp:
             df[fname] = exp
-            field_fixes += 1
+            fixes += 1
     
     fp = cost.get('fp')
     if fp is not None and fp >= 0:
         fp_str = str(fp)
         if df.get('疲劳消耗', '') != fp_str:
             df['疲劳消耗'] = fp_str
-            field_fixes += 1
-    
-    # Fix tags: ONLY remove keywords explicitly identified as docx errors during Phase 2.
-    # DO NOT blindly diff fx_tags vs data tags — skill_effects tags are a simplified
-    # AI-facing subset; data tags include豁免DCs, compound keywords (短休/长休), etc.
-    # The most common false-positive is "专注" in HTML chips that the docx doesn't have.
-    fx_tags = f.get('tags', [])
-    skill_tags = skill.get('tags', [])
-    known_false_tags = ['专注']  # extend this list if other false tags are found
-    for rt in known_false_tags:
-        if rt in skill_tags and rt not in fx_tags:
-            skill['tags'] = [t for t in skill_tags if t != rt]
-            tag_fixes += 1
-            # Also purge from keyword string
-            old_kw = df.get('关键词', '')
-            new_kw = old_kw.replace('.' + rt, '').replace(rt + '.', '')
-            if new_kw != old_kw:
-                df['关键词'] = new_kw
-                kw_fixes += 1
+            fixes += 1
 
 json.dump(data, open(r'职业页/数据/{职业名}.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
-print(f'Field fixes: {field_fixes}, Tag fixes: {tag_fixes}, Keyword fixes: {kw_fixes}')
+print(f'Fixed {fixes} field values')
 ```
 
-### ⚠️ CRITICAL: Keyword Format Difference
+### Manual: Keywords, Tags, Descriptions
+These fields require human judgment during Phase 2 because:
+- **关键词**: data JSON includes type prefix (`战技.近战攻击`), compound keywords (`短休/长休`), and豁免 DCs — none of which exist in skill_effects tags. Only the person doing the docx comparison knows which keywords are errors.
+- **tags**: data JSON tags match the full keyword set, not the AI-facing simplified subset.
+- **描述 / level_upgrades**: Content, not structural — only fix when Phase 2 comparison found explicit text errors.
+
+**How to fix manually**: during Phase 2, when you find a keyword/tag/description error via docx comparison:
+1. Fix it in the HTML with `edit` (Phase 2)
+2. **Immediately** fix the same error in `数据/{职业名}.json` with `edit` (same tool, same corrected value)
+3. This keeps both files in sync as you go, rather than trying to batch-fix later
+
+### ⚠️ Keyword Format Difference
 | File | Keywords format | Example |
 |------|----------------|---------|
-| `数据/{name}.json` → `fields.关键词` | Type prefix + keywords | `战技.近战攻击` |
-| `skill_effects_{name}.json` → `tags` | Keywords only (no type) | `["近战攻击"]` |
+| `数据/{name}.json` → `fields.关键词` | Type prefix + full keywords | `战技.近战攻击` |
+| `skill_effects_{name}.json` → `tags` | AI-facing subset (no type, no DCs) | `["近战攻击"]` |
 | `职业页/{name}.html` → `<span class="field">关键词：</span>` | Same as docx | `战技.近战攻击` |
 
-**Never use `'.'.join(fx_tags)` to rebuild data JSON's 关键词** — it will lose the type prefix and break filtering.
+**Never use `'.'.join(fx_tags)` to rebuild data JSON's 关键词** — fx_tags is a simplified subset that lacks type prefix,豁免 DCs, and compound keywords.
 
 ---
 
