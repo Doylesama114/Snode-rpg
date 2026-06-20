@@ -11,6 +11,20 @@ var SNOWD_CHANGELOG = [
 
 
   {
+    version: '1.0.5136',
+    date: '2026-06-18',
+    changes: [
+      '对照docx全面修正法师塑能风格62技能HTML字段+去重',
+      '对照docx全面修正法师咒法风格43技能HTML字段+去重',
+      '新增法师塑能六阶/咒法六阶技能HTML（原缺失）',
+      '法师skill_effects结构化JSON同步至113技能',
+      '修正skill_effects中sp颜色名称对齐panel_engine.js（青→蓝/蓝→浅色共52处）',
+      'SKILL.md工作流完善：Phase 1B整阶缺失处理+Phase 2B数据JSON同步+颜色验证脚本'
+    ]
+  },
+
+
+  {
     version: '1.0.5134',
     date: '2026-06-17',
     changes: [
