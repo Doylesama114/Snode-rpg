@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5140',
+    date: '2026-06-21',
+    changes: [
+      '法师职业树附魔风格全六阶技能文本修正与补充；修复附魔前四阶data JSON同步遗漏(活灵术施展时间)；附魔五阶八技能全流程完成(HTML+JSON+skill_effects+线上验证)；附魔六阶九技能从docx全新创建(HTML+nav+data+fx+线上验证)'
+    ]
+  },
+
+
+  {
     version: '1.0.5135',
     date: '2026-06-17',
     changes: [

@@ -2,15 +2,10 @@
 var SNOWD_CHANGELOG = [
 
   {
-    version: '1.0.5136',
-    date: '2026-06-18',
+    version: '1.0.5140',
+    date: '2026-06-21',
     changes: [
-      '对照docx全面修正法师塑能风格62技能HTML字段+去重',
-      '对照docx全面修正法师咒法风格43技能HTML字段+去重',
-      '新增法师塑能六阶/咒法六阶技能HTML（原缺失）',
-      '法师skill_effects结构化JSON同步至113技能',
-      '修正skill_effects中sp颜色名称对齐panel_engine.js（青→蓝/蓝→浅色共52处）',
-      'SKILL.md工作流完善：Phase 1B整阶缺失处理+Phase 2B数据JSON同步+颜色验证脚本'
+      '法师职业树附魔风格全六阶技能文本修正与补充；修复附魔前四阶data JSON同步遗漏(活灵术施展时间)；附魔五阶八技能全流程完成(HTML+JSON+skill_effects+线上验证)；附魔六阶九技能从docx全新创建(HTML+nav+data+fx+线上验证)'
     ]
   },
 
@@ -20,6 +15,20 @@ var SNOWD_CHANGELOG = [
     date: '2026-06-17',
     changes: [
       '对照docx全面修正战士全7风格109技能HTML字段(92处错误+109处去重)+结构化JSON'
+    ]
+  },
+
+
+  {
+    version: '1.0.5136',
+    date: '2026-06-18',
+    changes: [
+      '对照docx全面修正法师塑能风格62技能HTML字段+去重',
+      '对照docx全面修正法师咒法风格43技能HTML字段+去重',
+      '新增法师塑能六阶/咒法六阶技能HTML（原缺失）',
+      '法师skill_effects结构化JSON同步至113技能',
+      '修正skill_effects中sp颜色名称对齐panel_engine.js（青→蓝/蓝→浅色共52处）',
+      'SKILL.md工作流完善：Phase 1B整阶缺失处理+Phase 2B数据JSON同步+颜色验证脚本'
     ]
   },
 
@@ -397,7 +406,7 @@ var SNOWD_CHANGELOG = [
     version: '1.0.593',
     date: '2026-06-13',
     changes: [
-      '拆分斯诺德大师为独立特殊专长，修复特别彩蛋误吞并问题'
+      '拆分斯诺德大师为独立特殊专长：修复特别彩蛋误吞并问题'
     ]
   },
 
