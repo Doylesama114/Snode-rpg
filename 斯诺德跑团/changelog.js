@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5141',
+    date: '2026-06-21',
+    changes: [
+      '修复法师附魔六阶section错位导致导航跳转异常；修复战士天鹅湖之匕data-search属性被HTML污染'
+    ]
+  },
+
+
+  {
     version: '1.0.5140',
     date: '2026-06-21',
     changes: [
