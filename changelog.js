@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5152',
+    date: '2026-06-22',
+    changes: [
+      '修复附魔六阶8技能在section修复时被截断丢失——从data JSON批量重建'
+    ]
+  },
+
+
+  {
     version: '1.0.5151',
     date: '2026-06-22',
     changes: [
