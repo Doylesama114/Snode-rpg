@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5151',
+    date: '2026-06-22',
+    changes: [
+      '修复法师8风格section全部位于content区外导致被导航遮挡——起始特性未正确关闭'
+    ]
+  },
+
+
+  {
     version: '1.0.5150',
     date: '2026-06-22',
     changes: [
