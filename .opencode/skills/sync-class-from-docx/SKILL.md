@@ -105,7 +105,7 @@ This is NOT a data volume issue — it's an accuracy issue. Reading 5-6 skills' 
 2. If **zero results**: the entire tier is missing → create from scratch
 3. If partial: create missing ones, compare existing ones
 
-### Creating From Scratch: 4 Things to Create
+### Creating From Scratch: 5 Things to Create
 
 #### A. Content Section
 Insert before the closing `</section>` of the current style. Template per skill:
@@ -148,6 +148,42 @@ Append to `斯诺德跑团/skill_effects_{职业名}.json` during Phase 5 as usu
 - **No duplicate `<p>技能名</p>`** — skills created from scratch don't have this bug
 - **Choice notes**: add `<div class="choice-note">抉择：A/B</div>` before tier `</div>`
 - **Unlock text**: copy from adjacent tiers; verify tier unlock XP against docx
+
+### ⚠️ Critical: edit tool matches FIRST occurrence
+
+When inserting tier content before `</section>` via the `edit` tool, **NEVER use a generic `oldString` like `</div>\n</article>\n</div>\n</section>`** — this pattern appears at the end of every section in the HTML. The `edit` tool matches the **first** occurrence, which will place the new tier inside the starting features section instead of the correct style section.
+
+**Correct approach**: always include enough surrounding context in `oldString` to make it unique. Use the **preceding tier's div ID** as an anchor:
+
+```
+// ❌ WRONG: matches first </section> in the file
+oldString = "</div>\n</article>\n</div>\n</section>"
+
+// ✅ CORRECT: anchored to the last existing tier of this style
+oldString = "...最后一个现有技能的末尾行...\n</div>\n</article>\n</div>\n</section>"
+```
+
+Or use a Python script to locate the correct insertion point by section ID.
+
+### E. Navigation Verification (MANDATORY)
+
+**After creating tier content and nav, ALWAYS verify TWO things before committing:**
+
+```python
+import re
+html = open('职业页/{职业名}.html', 'r', encoding='utf-8').read()
+
+# 1. Nav ID matching: every nav href has a matching content article id
+nav_ids = set(re.findall(r'href="#(m-skill-X-Y-\d+)"', html))
+content_ids = set(re.findall(r'id="(m-skill-X-Y-\d+)"', html))
+assert nav_ids == content_ids, f"Mismatch: nav={nav_ids-content_ids} content={content_ids-nav_ids}"
+
+# 2. Section position: tier div is inside its parent style section
+tier_pos = html.find('id="m-tier-X-Y"')
+section_start = html.find('id="m-style-X"')  # this style
+next_section = html.find('id="m-style-Y"')    # next style
+assert section_start < tier_pos < next_section, f"Tier {X}-{Y} is OUTSIDE its section!"
+```
 
 ---
 
