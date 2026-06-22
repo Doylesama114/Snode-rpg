@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5153',
+    date: '2026-06-22',
+    changes: [
+      '术士职业技能树全流程完成：起始特性3技能+一~五阶42技能docx对照修正，含Phase2B JSON同步+Phase5 skill_effects新建；修复魔力恩赐/魔力萦绕数据污染'
+    ]
+  },
+
+
+  {
     version: '1.0.5152',
     date: '2026-06-22',
     changes: [
