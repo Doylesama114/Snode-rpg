@@ -1361,9 +1361,11 @@ function showLangPicker(bg,callback){
     var cells=grid.querySelectorAll(".lang-cell");
     for(var i=0;i<cells.length;i++){
       var ln=cells[i].getAttribute("data-lang");var isSel=selected.indexOf(ln)>=0;
-      cells[i].style.background=isSel?"#4caf50":"#f6f4ef";cells[i].style.color=isSel?"#fff":"#1f2522";
+      cells[i].style.background=isSel?"#4caf50":"#f6f4ef";
+      cells[i].style.color=isSel?"#fff":"#1f2522";
       cells[i].style.borderColor=isSel?"#4caf50":"#d8d2c4";
-      cells[i].classList.toggle('dark-bg',!isSel);cells[i].classList.toggle('dark-label',!isSel);
+      cells[i].style.fontWeight=isSel?"bold":"normal";
+      cells[i].style.transform=isSel?"scale(1.03)":"scale(1)";
     }
   }
   for(var i=0;i<ALL_LANGUAGES.length;i++){
