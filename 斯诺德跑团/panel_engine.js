@@ -6207,31 +6207,36 @@ async function exportXlsxFromState(state) {
   // 警惕值
   if (state.attrs["警惕值"]) { set("C96", state.attrs["警惕值"]); set("D96", (typeof calcMod === "function" ? calcMod(state.attrs["警惕值"]) : Math.floor(((state.attrs["警惕值"]||10)-10)/2))); }
 
+  // Background
+  if (state.background) set("G15", state.background);
+  if (state.story) set("H16", state.story);
+  if (state.traits) set("H18", state.traits);
+  if (state.personality) set("H21", state.personality);
+  if (state.ideals) set("H24", state.ideals);
+  if (state.bonds) set("H27", state.bonds);
+  if (state.flaws) set("H30", state.flaws);
+
   // Proficiencies
   if (state.profs) {
+    // Build E column label -> G cell mapping from template
+    var profMap = {};
+    var profRe = /<c r="E(\d+)"[^>]*t="s"[^>]*><v>(\d+)<\/v><\/c>/g;
+    while ((m = profRe.exec(xml)) !== null) {
+      var rowNum = parseInt(m[1]);
+      var si = parseInt(m[2]);
+      if (si < strings.length) profMap[strings[si]] = rowNum;
+    }
     for (var pk in state.profs) {
       var pv = state.profs[pk];
       if (!pv || typeof pv !== "object") continue;
       for (var sk in pv) {
         var sv = pv[sk];
         if (sv === 0 || sv === undefined) continue;
-        // Find the proficiency row
-        for (var ar = 0; ar < aRows.length; ar++) {
-          var arRow = aRows[ar];
-          var arName = an[ar];
-          // Check E column for this proficiency name
-          // Need to find the exact row... this is complex. Use a simple approach:
-          // We know the E column labels. Just find the right row.
-        }
-        // Simplified: skip proficiency row matching for now - complex mapping
+        var targetRow = profMap[sk];
+        if (targetRow) set("G" + targetRow, sv);
       }
     }
   }
-
-  // Simple proficiency mapping for known rows
-  function setProf(rowBase, subIdx, val) { if (subIdx < 10) set("G" + (rowBase + subIdx), val); }
-  // This mapping is too complex to do generically without parsing E column labels
-  // For now, just set known G column values if they exist in the uploaded data
 
   // Feats
   if (state.special_feats && state.special_feats.length > 0) {
