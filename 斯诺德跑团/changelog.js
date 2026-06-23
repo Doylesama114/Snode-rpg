@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5157',
+    date: '2026-06-23',
+    changes: [
+      '角色创建页悬浮概览面板(职业/种族/属性/HP-FP/熟练项来源)+语言选择器视觉反馈+职业切换起始特性重置+CLS_OVERRIDE全14职业公式对照REF_CLASSES修正+人类自由熟练度BG_SKILL_MAP匹配修复+xlsx导出背景熟练项补全'
+    ]
+  },
+
+
+  {
     version: '1.0.5156',
     date: '2026-06-23',
     changes: [

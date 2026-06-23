@@ -209,6 +209,51 @@ html.dark .dark-label{color:#9d9b98!important}
 html.dark .dark-bg{background:#1a1d20!important}
 html.dark .dark-input{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
 html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
+
+/* ====== 悬浮角色概览面板 ====== */
+#overviewToggle {
+  position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+  width: 30px; height: 110px; z-index: 900;
+  background: #a46d1f; color: #fff; border: none; border-radius: 8px 0 0 8px;
+  cursor: pointer; font-size: 13px; writing-mode: vertical-rl;
+  letter-spacing: 2px; padding: 6px 2px; text-align: center;
+  transition: right 0.3s ease;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+}
+#overviewToggle.panel-open { right: 300px; }
+#charOverview {
+  position: fixed; right: -290px; top: 20px;
+  width: 300px; max-height: calc(100vh - 40px);
+  z-index: 899; overflow-y: auto;
+  background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 10px 0 0 10px;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+  padding: 20px 18px;
+  transition: right 0.3s ease;
+  font-size: 13px; line-height: 1.7;
+}
+#charOverview.panel-open { right: 0; }
+#charOverview h3 { font-size: 17px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #d8d2c4; }
+#charOverview .ov-section { margin-bottom: 10px; }
+#charOverview .ov-label { font-weight: bold; color: #a46d1f; font-size: 14px; }
+#charOverview .ov-item { padding-left: 8px; font-size: 12px; color: #1f2522; }
+#charOverview .ov-tag { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-left: 4px; color: #fff; vertical-align: middle; }
+#charOverview .ov-empty { color: #69706b; font-style: italic; }
+#charOverview .ov-attrs { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 3px; }
+#charOverview .ov-attrs span { text-align: center; padding: 3px 2px; background: #f6f4ef; border-radius: 4px; font-size: 11px; }
+#charOverview .ov-hp { display: flex; gap: 10px; margin-top: 2px; }
+#charOverview .ov-hp span { font-size: 13px; font-weight: bold; }
+/* dark mode */
+html.dark #charOverview { background: #24272b; border-color: #3a3d40; color: #e8e6e3; }
+html.dark #charOverview .ov-item { color: #e8e6e3; }
+html.dark #charOverview .ov-attrs span { background: #1a1d20; }
+html.dark #charOverview .ov-hp span { color: #e8e6e3; }
+html.dark #overviewToggle { background: #d4a54a; }
+@media (max-width: 600px) {
+  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -38px; width: 70px; height: 38px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 8px 8px 0 0; font-size: 14px; padding: 8px; transition: bottom 0.3s ease; }
+  #overviewToggle.panel-open { bottom: 47vh; right: auto; }
+  #charOverview { right: 0; top: auto; bottom: -55vh; width: 100%; max-height: 52vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
+  #charOverview.panel-open { bottom: 0; right: 0; }
+}
 </style>
 <script src="导出立绘.js"></script>
 </head>
@@ -218,6 +263,16 @@ html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!impo
   <h1>✨ 创建新角色</h1>
   <div class="step-indicator" id="stepIndicator"></div>
   <div id="stepContent"></div>
+</div>
+
+<!-- 悬浮角色概览 -->
+<button id="overviewToggle" onclick="toggleOverview()">角色概览</button>
+<div id="charOverview" class="panel-open">
+  <h3 style="display:flex;justify-content:space-between;align-items:center">
+    📋 角色概览
+    <span onclick="toggleOverview()" style="cursor:pointer;font-size:18px;color:#69706b">&times;</span>
+  </h3>
+  <div id="ovContent"><div class="ov-empty">逐步完成创建，概览将实时更新</div></div>
 </div>
 
 <script>
@@ -278,6 +333,181 @@ function initWizard() {
 
 var STEP_LABELS=["选择职业","选择起始特性","选择种族","分配属性","选择熟练项","选择个性背景","选择装备","确认角色"];
 initWizard();
+
+// ====== 悬浮角色概览 ======
+var _ovOpen = true;
+function toggleOverview() {
+  _ovOpen = !_ovOpen;
+  var panel = document.getElementById('charOverview');
+  var btn = document.getElementById('overviewToggle');
+  if (_ovOpen) { panel.classList.add('panel-open'); btn.classList.add('panel-open'); }
+  else { panel.classList.remove('panel-open'); btn.classList.remove('panel-open'); }
+}
+function updateOverview() {
+  var h = '';
+  // 职业
+  if (CHAR.className) {
+    h += '<div class="ov-section"><div class="ov-label">🗡 职业</div>';
+    h += '<div class="ov-item">' + CHAR.className + '</div>';
+    if (CHAR.keyAttr) h += '<div class="ov-item">关键属性: ' + CHAR.keyAttr + '</div>';
+    if (CHAR.selectedFeatures && CHAR.selectedFeatures.length) {
+      h += '<div class="ov-item">起始特性: ' + CHAR.selectedFeatures.map(function(f){return f.n||f;}).join('、') + '</div>';
+    }
+    h += '</div>';
+  }
+  // 种族
+  if (CHAR.raceName) {
+    h += '<div class="ov-section"><div class="ov-label">🧬 种族</div>';
+    h += '<div class="ov-item">' + CHAR.raceName + '</div>';
+    var rd = CHAR.raceData;
+    if (rd && rd['属性加成']) {
+      var bs = []; for (var an in rd['属性加成']) { var v = rd['属性加成'][an]; if (v && v !== 0 && v !== 'X') bs.push(an + (v > 0 ? '+' : '') + v); }
+      if (bs.length) h += '<div class="ov-item">' + bs.join(' ') + '</div>';
+    }
+    if (rd && rd['特性']) {
+      for (var ti = 0; ti < rd['特性'].length; ti++) h += '<div class="ov-item">·' + rd['特性'][ti].name + '</div>';
+    }
+    if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
+    h += '</div>';
+  }
+  // 属性 (含种族加成)
+  if (CHAR.className) {
+    var attrs = ['力量','敏捷','体质','智力','感知','魅力','意志','幸运'];
+    var rd = CHAR.raceData;
+    h += '<div class="ov-section"><div class="ov-label">📊 属性</div>';
+    h += '<div class="ov-attrs">';
+    for (var ai = 0; ai < attrs.length; ai++) {
+      var an = attrs[ai];
+      var base = CHAR.attrs[an] || 8;
+      var bonus = 0;
+      if (rd && rd['属性加成'] && rd['属性加成'][an]) {
+        var bv = rd['属性加成'][an];
+        if (bv === 'X') { bonus = CHAR.raceExtra && CHAR.raceExtra.indexOf(an) >= 0 ? 1 : 0; }
+        else if (typeof bv === 'number') bonus = bv;
+      }
+      var final = base + bonus;
+      h += '<span>' + an.substring(0,1) + ':' + final + '</span>';
+    }
+    h += '</div></div>';
+  }
+  // HP/FP
+  if (CHAR.className && CHAR.classData) {
+    var cl = CHAR.classData;
+    var con = CHAR.attrs['体质'] || 8;
+    var rd2 = CHAR.raceData;
+    var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? parseInt(rd2['生命值加成']) : rd2['生命值加成']) : 0;
+    var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
+    // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
+    var CLS_OVERRIDE = {
+      '蛮斗士':{key_attr:'力量', hp:12, fp:8}, '战士':{key_attr:'力量或敏捷', hp:10, fp:8},
+      '法师':{key_attr:'智力', hp:8, fp:12}, '德鲁伊':{key_attr:'感知', hp:8, fp:8},
+      '游荡者':{key_attr:'敏捷', hp:8, fp:8}, '吟游诗人':{key_attr:'魅力', hp:8, fp:8},
+      '猎人':{key_attr:'敏捷', hp:8, fp:8}, '圣骑士':{key_attr:'意志', hp:10, fp:8},
+      '武僧':{key_attr:'敏捷', hp:8, fp:8}, '牧师':{key_attr:'感知', hp:8, fp:8},
+      '术士':{key_attr:'幸运', hp:8, fp:8}, '魔契师':{key_attr:'魅力', hp:8, fp:8},
+      '奇械师':{key_attr:'魅力', hp:8, fp:8}, '萨满祭司':{key_attr:'感知', hp:8, fp:8}
+    };
+    var co = CLS_OVERRIDE[CHAR.className];
+    var hpFirst = co ? co.hp : 8;
+    var fpFirst = co ? co.fp : 8;
+    // Prefer REF_CLASSES or classData if available
+    if (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[CHAR.className]) {
+      if (REF_CLASSES[CHAR.className].hp_formula) hpFirst = REF_CLASSES[CHAR.className].hp_formula.first;
+      if (REF_CLASSES[CHAR.className].fp_formula) fpFirst = REF_CLASSES[CHAR.className].fp_formula.first;
+    }
+    if (cl.hp_formula && cl.hp_formula.first) hpFirst = cl.hp_formula.first;
+    if (cl.fp_formula && cl.fp_formula.first) fpFirst = cl.fp_formula.first;
+    var hpFromCon = Math.floor((con - 10) / 2);
+    var hp = hpFirst + hpFromCon + raceHp + bgHp;
+    var fpKey = CHAR.keyAttr || (cl.key_attr || (co ? co.key_attr : '魅力'));
+    if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
+    var fpVal = CHAR.attrs[fpKey] || 10;
+    var fpFromKey = Math.floor((fpVal - 10) / 2);
+    var raceFP = (rd2 && rd2['疲劳值加成']) ? (typeof rd2['疲劳值加成']==='string' ? parseInt(rd2['疲劳值加成']) : rd2['疲劳值加成']) : 0;
+    var fp = fpFirst + fpFromKey + raceFP;
+    h += '<div class="ov-section"><div class="ov-label">❤️ 生命 / 疲劳</div>';
+    h += '<div class="ov-hp"><span>HP: ' + hp + '</span><span>FP: ' + fp + '</span></div></div>';
+  }
+  // 熟练项 (含来源)
+  var profLines = [];
+  if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
+    for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
+  }
+  // Specialization proficiencies
+  var autoCls2 = SPEC_AUTO_PROF[CHAR.className];
+  if (autoCls2) {
+    for (var asn in autoCls2) {
+      var ad = autoCls2[asn];
+      if (ad.profs) {
+        for (var pa in ad.profs) {
+          var skills = ad.profs[pa];
+          for (var psi = 0; psi < skills.length; psi++) profLines.push({ name: skills[psi], src: '专精' });
+        }
+      }
+    }
+  }
+  // Specialization user choices
+  if (CHAR.specChoices) {
+    for (var sn in CHAR.specChoices) {
+      var ch = CHAR.specChoices[sn];
+      if (ch.skill && ch.skill.indexOf('-') >= 0) {
+        var specParts = ch.skill.split('-');
+        profLines.push({ name: ch.skill, src: '专精' });
+      }
+    }
+  }
+  // Background proficiencies
+  if (CHAR.bgName && CHAR.bgData) {
+    var bgSk = CHAR.bgData['基础熟练项'] || '';
+    if (bgSk && bgSk !== '无') {
+      var bgParts = bgSk.split(/[、，]/);
+      for (var bi = 0; bi < bgParts.length; bi++) {
+        var bn = bgParts[bi].trim(); if (!bn) continue;
+        var mapped = BG_SKILL_MAP[bn]; if (!mapped || mapped === 'cat') continue;
+        var mp = mapped.split('.'); if (mp.length === 2) profLines.push({ name: mp[1], src: '背景' });
+        else profLines.push({ name: bn, src: '背景' });
+      }
+    }
+    if (CHAR.bgProfs && CHAR.bgProfs.skills) {
+      for (var cat in CHAR.bgProfs.skills) {
+        if (cat === '_custom') continue;
+        var arr = CHAR.bgProfs.skills[cat];
+        if (arr && arr.length) {
+          for (var aj = 0; aj < arr.length; aj++) profLines.push({ name: arr[aj], src: '背景' });
+        }
+      }
+    }
+  }
+  // Human free skill
+  if (CHAR.humanFreeSkill) profLines.push({ name: CHAR.humanFreeSkill, src: '人类' });
+  if (profLines.length) {
+    h += '<div class="ov-section"><div class="ov-label">📚 熟练项</div>';
+    for (var pi = 0; pi < profLines.length; pi++) {
+      var clr = profLines[pi].src === '职业' ? '#6b8f5e' : (profLines[pi].src === '背景' ? '#8f6b5e' : '#5e6b8f');
+      h += '<div class="ov-item">·' + profLines[pi].name + '<span class="ov-tag" style="background:' + clr + '">' + profLines[pi].src + '</span></div>';
+    }
+    h += '</div>';
+  }
+  // 背景
+  if (CHAR.bgName) {
+    h += '<div class="ov-section"><div class="ov-label">🎭 背景: ' + CHAR.bgName + '</div>';
+    h += '</div>';
+  }
+  // 装备
+  if (CHAR.equipChoice) {
+    h += '<div class="ov-section"><div class="ov-label">⚔ 装备: ' + (CHAR.equipChoice.letter || '已选') + '</div>';
+    h += '</div>';
+  }
+  if (!h) h = '<div class="ov-empty">逐步完成创建，概览将实时更新</div>';
+  document.getElementById('ovContent').innerHTML = h;
+}
+
+// Hook into existing renderStep to auto-update
+var _origRenderStep = renderStep;
+renderStep = function(n) {
+  _origRenderStep(n);
+  updateOverview();
+};
 // ====== 职业专精数据 ======
 
 var BG_SKILL_MAP = {
@@ -659,12 +889,13 @@ function checkSpecDone(){
   }
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
 }
-function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};
+function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
   if(cards[idx]){cards[idx].classList.add("selected");cards[idx].querySelector(".card-desc").style.display="block";}
   var p=document.getElementById("classDetail");p.style.display="block";p.innerHTML=classDetail(CLASSES[idx]);showKeyAttrChoice(CLASSES[idx].name);renderSpecChoices(CLASSES[idx].name);
+  updateOverview();
 }
 
 
@@ -722,6 +953,7 @@ function pickHumanSkill(el){
   if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
   CHAR.humanFreeSkill=skill;
   el.classList.add("selected");
+  updateOverview();
 }
 function pickRaceAttr(el){
   var attr=el.getAttribute("data-attr");
@@ -755,6 +987,7 @@ function pickKeyAttr(el,v){
   var box=document.getElementById("keyAttrBox");
   if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");el.classList.add("selected");}
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 function filterClasses(){
   var q=document.getElementById("classSearch").value.trim().toLowerCase();
@@ -819,8 +1052,9 @@ function raceDetail(r){
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);showHumanFreeSkill(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 
 function filterRaces(){
@@ -872,9 +1106,8 @@ function adjAttr(name,delta){
     document.getElementById("inc_"+an2).disabled=(v2>=15||rem<(v2>=13?2:1));
   }
   document.getElementById("nextBtn").disabled=(rem!==0);
+  updateOverview();
 }
-
-
 // ====== Step 3: Skills ======
 
 function showSubSkillChoice(cat,el){
@@ -912,6 +1145,7 @@ function pickSubSkill(el){var name=el.getAttribute("data-skill");var cat=el.getA
   }
   var popup=document.getElementById("subSkillPopup");if(popup)closeSubPopup();
   renderSkillStep(document.getElementById("stepContent"));
+  updateOverview();
 }
 function closeSubPopup(){
   var p=document.getElementById("subSkillPopup");if(p)p.remove();
@@ -946,6 +1180,7 @@ function toggleSkill(name,el){if(SKILL_CATS[name]){showSubSkillChoice(name,el);r
   if(idx>=0) CHAR.selectedSkills.splice(idx,1);
   else if(CHAR.selectedSkills.length<4) CHAR.selectedSkills.push(name);
   renderSkillStep(document.getElementById("stepContent"));
+  updateOverview();
 }
 
 // ====== Step 4: Background ======
@@ -999,6 +1234,7 @@ function selectEquip(idx){
   var o=CHAR.equipChoice;
   panel.innerHTML="<h3>选项 "+o.letter+"</h3><div style='font-size:14px;line-height:1.7'>"+esc(o.text)+"</div>";
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 function showPersonalityPicker(bg){
   if(!bg||!bg.name)return;
@@ -1143,8 +1379,8 @@ function selectBg(idx){var _rBg=function(){renderBgProfs(BACKGROUNDS[idx]);};
   if(cards[idx]) cards[idx].classList.add("selected");
   var p=document.getElementById("bgDetail");p.style.display="block";p.innerHTML=bgDetail(BACKGROUNDS[idx]);setTimeout(function(){renderBgProfs(BACKGROUNDS[idx]);showLangPicker(BACKGROUNDS[idx],function(langs){CHAR.extraLanguages=langs;setTimeout(function(){showPersonalityPicker(BACKGROUNDS[idx]);},500);});},10);
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
-
 
 var ALL_LANGUAGES=["精灵语","矮人语","半身人语","侏儒语","地底通用语","龙语","地狱语","深渊语","兽人语","巨魔语","泽地语","荒漠语","鸟禽语","兽语","蛇语","鱼人语","海洋通用语","元素语"];
 function parseBgLangCount(bg){var o=bg["其他"]||"";if(o.indexOf("任选两门语言")>=0)return 2;if(o.indexOf("任选一门语言")>=0)return 1;return 0;}
@@ -1167,9 +1403,11 @@ function showLangPicker(bg,callback){
     var cells=grid.querySelectorAll(".lang-cell");
     for(var i=0;i<cells.length;i++){
       var ln=cells[i].getAttribute("data-lang");var isSel=selected.indexOf(ln)>=0;
-      cells[i].style.background=isSel?"#4caf50":"#f6f4ef";cells[i].style.color=isSel?"#fff":"#1f2522";
+      cells[i].style.background=isSel?"#4caf50":"#f6f4ef";
+      cells[i].style.color=isSel?"#fff":"#1f2522";
       cells[i].style.borderColor=isSel?"#4caf50":"#d8d2c4";
-      cells[i].classList.toggle('dark-bg',!isSel);cells[i].classList.toggle('dark-label',!isSel);
+      cells[i].style.fontWeight=isSel?"bold":"normal";
+      cells[i].style.transform=isSel?"scale(1.03)":"scale(1)";
     }
   }
   for(var i=0;i<ALL_LANGUAGES.length;i++){
@@ -1605,9 +1843,12 @@ function saveCharacter(){
   }
   // Human free skill from 中庸 trait
   if(CHAR.humanFreeSkill){
-    var attr2=skillAttrMap[CHAR.humanFreeSkill];
-    if(attr2 && allSkills[attr2]){
-      allSkills[attr2][CHAR.humanFreeSkill]=(allSkills[attr2][CHAR.humanFreeSkill]||0)+1;
+    var mapped=BG_SKILL_MAP[CHAR.humanFreeSkill];
+    if(mapped && mapped!=="cat"){
+      var parts=mapped.split(".");
+      if(parts.length===2 && allSkills[parts[0]] && allSkills[parts[0]][parts[1]]!==undefined){
+        allSkills[parts[0]][parts[1]]=(allSkills[parts[0]][parts[1]]||0)+1;
+      }
     }
   }
   charData.profs=allSkills;applySpecProfs(charData);applyBgProfs(charData);
