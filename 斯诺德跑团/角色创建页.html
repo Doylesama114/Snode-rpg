@@ -213,16 +213,16 @@ html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!impo
 /* ====== 悬浮角色概览面板 ====== */
 #overviewToggle {
   position: fixed; right: 0; top: 50%; transform: translateY(-50%);
-  width: 36px; height: 100px; z-index: 900;
+  width: 30px; height: 110px; z-index: 900;
   background: #a46d1f; color: #fff; border: none; border-radius: 8px 0 0 8px;
-  cursor: pointer; font-size: 14px; writing-mode: vertical-rl;
-  letter-spacing: 4px; padding: 8px 4px;
+  cursor: pointer; font-size: 13px; writing-mode: vertical-rl;
+  letter-spacing: 2px; padding: 6px 2px; text-align: center;
   transition: right 0.3s ease;
   box-shadow: -2px 0 12px rgba(0,0,0,0.15);
 }
 #overviewToggle.panel-open { right: 300px; }
 #charOverview {
-  position: fixed; right: -320px; top: 20px;
+  position: fixed; right: -290px; top: 20px;
   width: 300px; max-height: calc(100vh - 40px);
   z-index: 899; overflow-y: auto;
   background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 10px 0 0 10px;
@@ -233,21 +233,25 @@ html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!impo
 }
 #charOverview.panel-open { right: 0; }
 #charOverview h3 { font-size: 17px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #d8d2c4; }
-#charOverview .ov-section { margin-bottom: 12px; }
+#charOverview .ov-section { margin-bottom: 10px; }
 #charOverview .ov-label { font-weight: bold; color: #a46d1f; font-size: 14px; }
-#charOverview .ov-item { padding-left: 12px; font-size: 12px; color: #1f2522; }
+#charOverview .ov-item { padding-left: 8px; font-size: 12px; color: #1f2522; }
+#charOverview .ov-tag { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-left: 4px; color: #fff; vertical-align: middle; }
 #charOverview .ov-empty { color: #69706b; font-style: italic; }
-#charOverview .ov-attrs { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
-#charOverview .ov-attrs span { text-align: center; padding: 2px 4px; background: #f6f4ef; border-radius: 4px; font-size: 11px; }
+#charOverview .ov-attrs { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 3px; }
+#charOverview .ov-attrs span { text-align: center; padding: 3px 2px; background: #f6f4ef; border-radius: 4px; font-size: 11px; }
+#charOverview .ov-hp { display: flex; gap: 10px; margin-top: 2px; }
+#charOverview .ov-hp span { font-size: 13px; font-weight: bold; }
 /* dark mode */
 html.dark #charOverview { background: #24272b; border-color: #3a3d40; color: #e8e6e3; }
 html.dark #charOverview .ov-item { color: #e8e6e3; }
 html.dark #charOverview .ov-attrs span { background: #1a1d20; }
+html.dark #charOverview .ov-hp span { color: #e8e6e3; }
 html.dark #overviewToggle { background: #d4a54a; }
 @media (max-width: 600px) {
-  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -44px; width: 80px; height: 36px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 8px 8px 0 0; transition: bottom 0.3s ease; }
-  #overviewToggle.panel-open { bottom: 45vh; right: auto; }
-  #charOverview { right: 0; top: auto; bottom: -60vh; width: 100%; max-height: 50vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
+  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -38px; width: 70px; height: 38px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 8px 8px 0 0; font-size: 14px; padding: 8px; transition: bottom 0.3s ease; }
+  #overviewToggle.panel-open { bottom: 47vh; right: auto; }
+  #charOverview { right: 0; top: auto; bottom: -55vh; width: 100%; max-height: 52vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
   #charOverview.panel-open { bottom: 0; right: 0; }
 }
 </style>
@@ -262,7 +266,7 @@ html.dark #overviewToggle { background: #d4a54a; }
 </div>
 
 <!-- 悬浮角色概览 -->
-<button id="overviewToggle" onclick="toggleOverview()">角 色 概 览</button>
+<button id="overviewToggle" onclick="toggleOverview()">角色概览</button>
 <div id="charOverview" class="panel-open">
   <h3 style="display:flex;justify-content:space-between;align-items:center">
     📋 角色概览
@@ -357,7 +361,7 @@ function updateOverview() {
     h += '<div class="ov-item">' + CHAR.raceName + '</div>';
     var rd = CHAR.raceData;
     if (rd && rd['属性加成']) {
-      var bs = []; for (var an in rd['属性加成']) { var v = rd['属性加成'][an]; if (v && v !== 0) bs.push(an + (v > 0 ? '+' : '') + v); }
+      var bs = []; for (var an in rd['属性加成']) { var v = rd['属性加成'][an]; if (v && v !== 0 && v !== 'X') bs.push(an + (v > 0 ? '+' : '') + v); }
       if (bs.length) h += '<div class="ov-item">' + bs.join(' ') + '</div>';
     }
     if (rd && rd['特性']) {
@@ -366,21 +370,80 @@ function updateOverview() {
     if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
     h += '</div>';
   }
-  // 属性
+  // 属性 (含种族加成)
   if (CHAR.className) {
     var attrs = ['力量','敏捷','体质','智力','感知','魅力','意志','幸运'];
+    var rd = CHAR.raceData;
     h += '<div class="ov-section"><div class="ov-label">📊 属性</div>';
     h += '<div class="ov-attrs">';
     for (var ai = 0; ai < attrs.length; ai++) {
-      var av = CHAR.attrs[attrs[ai]] || 8;
-      h += '<span>' + attrs[ai].substring(0,1) + ':' + av + '</span>';
+      var an = attrs[ai];
+      var base = CHAR.attrs[an] || 8;
+      var bonus = 0;
+      if (rd && rd['属性加成'] && rd['属性加成'][an]) {
+        var bv = rd['属性加成'][an];
+        if (bv === 'X') { bonus = CHAR.raceExtra && CHAR.raceExtra.indexOf(an) >= 0 ? 1 : 0; }
+        else if (typeof bv === 'number') bonus = bv;
+      }
+      var final = base + bonus;
+      h += '<span>' + an.substring(0,1) + ':' + final + '</span>';
     }
     h += '</div></div>';
   }
-  // 熟练项
+  // HP/FP
+  if (CHAR.className && CHAR.classData) {
+    var cl = CHAR.classData;
+    var con = CHAR.attrs['体质'] || 8;
+    var rd2 = CHAR.raceData;
+    var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? parseInt(rd2['生命值加成']) : rd2['生命值加成']) : 0;
+    var hpFirst = (cl.hp_formula && cl.hp_formula.first) ? cl.hp_formula.first : 8;
+    var hpFromCon = Math.floor((con - 10) / 2);
+    var hp = hpFirst + hpFromCon + raceHp;
+    var fpKey = CHAR.keyAttr || (cl.key_attr || '魅力');
+    if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
+    var fpVal = CHAR.attrs[fpKey] || 10;
+    var fpFirst = (cl.fp_formula && cl.fp_formula.first) ? cl.fp_formula.first : 8;
+    var fpFromKey = Math.floor((fpVal - 10) / 2);
+    var raceFP = (rd2 && rd2['疲劳值加成']) ? (typeof rd2['疲劳值加成']==='string' ? parseInt(rd2['疲劳值加成']) : rd2['疲劳值加成']) : 0;
+    var fp = fpFirst + fpFromKey + raceFP;
+    h += '<div class="ov-section"><div class="ov-label">❤️ 生命 / 疲劳</div>';
+    h += '<div class="ov-hp"><span>HP: ' + hp + '</span><span>FP: ' + fp + '</span></div></div>';
+  }
+  // 熟练项 (含来源)
+  var profLines = [];
   if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
-    h += '<div class="ov-section"><div class="ov-label">📚 熟练项 (' + CHAR.selectedSkills.length + '/4)</div>';
-    for (var si = 0; si < CHAR.selectedSkills.length; si++) h += '<div class="ov-item">·' + CHAR.selectedSkills[si] + '</div>';
+    for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
+  }
+  // Background proficiencies
+  if (CHAR.bgName && CHAR.bgData) {
+    var bgSk = CHAR.bgData['基础熟练项'] || '';
+    if (bgSk && bgSk !== '无') {
+      var bgParts = bgSk.split(/[、，]/);
+      for (var bi = 0; bi < bgParts.length; bi++) {
+        var bn = bgParts[bi].trim(); if (!bn) continue;
+        var mapped = BG_SKILL_MAP[bn]; if (!mapped || mapped === 'cat') continue;
+        var mp = mapped.split('.'); if (mp.length === 2) profLines.push({ name: mp[1], src: '背景' });
+        else profLines.push({ name: bn, src: '背景' });
+      }
+    }
+    if (CHAR.bgProfs && CHAR.bgProfs.skills) {
+      for (var cat in CHAR.bgProfs.skills) {
+        if (cat === '_custom') continue;
+        var arr = CHAR.bgProfs.skills[cat];
+        if (arr && arr.length) {
+          for (var aj = 0; aj < arr.length; aj++) profLines.push({ name: arr[aj], src: '背景' });
+        }
+      }
+    }
+  }
+  // Human free skill
+  if (CHAR.humanFreeSkill) profLines.push({ name: CHAR.humanFreeSkill, src: '人类' });
+  if (profLines.length) {
+    h += '<div class="ov-section"><div class="ov-label">📚 熟练项</div>';
+    for (var pi = 0; pi < profLines.length; pi++) {
+      var clr = profLines[pi].src === '职业' ? '#6b8f5e' : (profLines[pi].src === '背景' ? '#8f6b5e' : '#5e6b8f');
+      h += '<div class="ov-item">·' + profLines[pi].name + '<span class="ov-tag" style="background:' + clr + '">' + profLines[pi].src + '</span></div>';
+    }
     h += '</div>';
   }
   // 背景
