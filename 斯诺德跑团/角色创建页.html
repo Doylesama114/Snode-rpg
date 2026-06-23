@@ -790,6 +790,7 @@ function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
   if(cards[idx]){cards[idx].classList.add("selected");cards[idx].querySelector(".card-desc").style.display="block";}
   var p=document.getElementById("classDetail");p.style.display="block";p.innerHTML=classDetail(CLASSES[idx]);showKeyAttrChoice(CLASSES[idx].name);renderSpecChoices(CLASSES[idx].name);
+  updateOverview();
 }
 
 
@@ -847,6 +848,7 @@ function pickHumanSkill(el){
   if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
   CHAR.humanFreeSkill=skill;
   el.classList.add("selected");
+  updateOverview();
 }
 function pickRaceAttr(el){
   var attr=el.getAttribute("data-attr");
@@ -880,6 +882,7 @@ function pickKeyAttr(el,v){
   var box=document.getElementById("keyAttrBox");
   if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");el.classList.add("selected");}
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 function filterClasses(){
   var q=document.getElementById("classSearch").value.trim().toLowerCase();
@@ -944,8 +947,9 @@ function raceDetail(r){
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);showHumanFreeSkill(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 
 function filterRaces(){
@@ -997,9 +1001,8 @@ function adjAttr(name,delta){
     document.getElementById("inc_"+an2).disabled=(v2>=15||rem<(v2>=13?2:1));
   }
   document.getElementById("nextBtn").disabled=(rem!==0);
+  updateOverview();
 }
-
-
 // ====== Step 3: Skills ======
 
 function showSubSkillChoice(cat,el){
@@ -1037,6 +1040,7 @@ function pickSubSkill(el){var name=el.getAttribute("data-skill");var cat=el.getA
   }
   var popup=document.getElementById("subSkillPopup");if(popup)closeSubPopup();
   renderSkillStep(document.getElementById("stepContent"));
+  updateOverview();
 }
 function closeSubPopup(){
   var p=document.getElementById("subSkillPopup");if(p)p.remove();
@@ -1071,6 +1075,7 @@ function toggleSkill(name,el){if(SKILL_CATS[name]){showSubSkillChoice(name,el);r
   if(idx>=0) CHAR.selectedSkills.splice(idx,1);
   else if(CHAR.selectedSkills.length<4) CHAR.selectedSkills.push(name);
   renderSkillStep(document.getElementById("stepContent"));
+  updateOverview();
 }
 
 // ====== Step 4: Background ======
@@ -1124,6 +1129,7 @@ function selectEquip(idx){
   var o=CHAR.equipChoice;
   panel.innerHTML="<h3>选项 "+o.letter+"</h3><div style='font-size:14px;line-height:1.7'>"+esc(o.text)+"</div>";
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
 function showPersonalityPicker(bg){
   if(!bg||!bg.name)return;
@@ -1268,8 +1274,8 @@ function selectBg(idx){var _rBg=function(){renderBgProfs(BACKGROUNDS[idx]);};
   if(cards[idx]) cards[idx].classList.add("selected");
   var p=document.getElementById("bgDetail");p.style.display="block";p.innerHTML=bgDetail(BACKGROUNDS[idx]);setTimeout(function(){renderBgProfs(BACKGROUNDS[idx]);showLangPicker(BACKGROUNDS[idx],function(langs){CHAR.extraLanguages=langs;setTimeout(function(){showPersonalityPicker(BACKGROUNDS[idx]);},500);});},10);
   document.getElementById("nextBtn").disabled=false;
+  updateOverview();
 }
-
 
 var ALL_LANGUAGES=["精灵语","矮人语","半身人语","侏儒语","地底通用语","龙语","地狱语","深渊语","兽人语","巨魔语","泽地语","荒漠语","鸟禽语","兽语","蛇语","鱼人语","海洋通用语","元素语"];
 function parseBgLangCount(bg){var o=bg["其他"]||"";if(o.indexOf("任选两门语言")>=0)return 2;if(o.indexOf("任选一门语言")>=0)return 1;return 0;}
