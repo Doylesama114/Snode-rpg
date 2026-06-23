@@ -209,6 +209,47 @@ html.dark .dark-label{color:#9d9b98!important}
 html.dark .dark-bg{background:#1a1d20!important}
 html.dark .dark-input{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
 html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!important;color:#e8e6e3!important}
+
+/* ====== 悬浮角色概览面板 ====== */
+#overviewToggle {
+  position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 100px; z-index: 900;
+  background: #a46d1f; color: #fff; border: none; border-radius: 8px 0 0 8px;
+  cursor: pointer; font-size: 14px; writing-mode: vertical-rl;
+  letter-spacing: 4px; padding: 8px 4px;
+  transition: right 0.3s ease;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+}
+#overviewToggle.panel-open { right: 300px; }
+#charOverview {
+  position: fixed; right: -320px; top: 20px;
+  width: 300px; max-height: calc(100vh - 40px);
+  z-index: 899; overflow-y: auto;
+  background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 10px 0 0 10px;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+  padding: 20px 18px;
+  transition: right 0.3s ease;
+  font-size: 13px; line-height: 1.7;
+}
+#charOverview.panel-open { right: 0; }
+#charOverview h3 { font-size: 17px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #d8d2c4; }
+#charOverview .ov-section { margin-bottom: 12px; }
+#charOverview .ov-label { font-weight: bold; color: #a46d1f; font-size: 14px; }
+#charOverview .ov-item { padding-left: 12px; font-size: 12px; color: #1f2522; }
+#charOverview .ov-empty { color: #69706b; font-style: italic; }
+#charOverview .ov-attrs { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
+#charOverview .ov-attrs span { text-align: center; padding: 2px 4px; background: #f6f4ef; border-radius: 4px; font-size: 11px; }
+/* dark mode */
+html.dark #charOverview { background: #24272b; border-color: #3a3d40; color: #e8e6e3; }
+html.dark #charOverview .ov-item { color: #e8e6e3; }
+html.dark #charOverview .ov-attrs span { background: #1a1d20; }
+html.dark #overviewToggle { background: #d4a54a; }
+@media (max-width: 600px) {
+  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -44px; width: 80px; height: 36px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 8px 8px 0 0; transition: bottom 0.3s ease; }
+  #overviewToggle.panel-open { bottom: 45vh; right: auto; }
+  #charOverview { right: 0; top: auto; bottom: -60vh; width: 100%; max-height: 50vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
+  #charOverview.panel-open { bottom: 0; right: 0; }
+}
 </style>
 <script src="导出立绘.js"></script>
 </head>
@@ -218,6 +259,16 @@ html.dark .sub-choice-btn{background:#1a1d20!important;border-color:#3a3d40!impo
   <h1>✨ 创建新角色</h1>
   <div class="step-indicator" id="stepIndicator"></div>
   <div id="stepContent"></div>
+</div>
+
+<!-- 悬浮角色概览 -->
+<button id="overviewToggle" onclick="toggleOverview()">角 色 概 览</button>
+<div id="charOverview" class="panel-open">
+  <h3 style="display:flex;justify-content:space-between;align-items:center">
+    📋 角色概览
+    <span onclick="toggleOverview()" style="cursor:pointer;font-size:18px;color:#69706b">&times;</span>
+  </h3>
+  <div id="ovContent"><div class="ov-empty">逐步完成创建，概览将实时更新</div></div>
 </div>
 
 <script>
@@ -278,6 +329,80 @@ function initWizard() {
 
 var STEP_LABELS=["选择职业","选择起始特性","选择种族","分配属性","选择熟练项","选择个性背景","选择装备","确认角色"];
 initWizard();
+
+// ====== 悬浮角色概览 ======
+var _ovOpen = true;
+function toggleOverview() {
+  _ovOpen = !_ovOpen;
+  var panel = document.getElementById('charOverview');
+  var btn = document.getElementById('overviewToggle');
+  if (_ovOpen) { panel.classList.add('panel-open'); btn.classList.add('panel-open'); }
+  else { panel.classList.remove('panel-open'); btn.classList.remove('panel-open'); }
+}
+function updateOverview() {
+  var h = '';
+  // 职业
+  if (CHAR.className) {
+    h += '<div class="ov-section"><div class="ov-label">🗡 职业</div>';
+    h += '<div class="ov-item">' + CHAR.className + '</div>';
+    if (CHAR.keyAttr) h += '<div class="ov-item">关键属性: ' + CHAR.keyAttr + '</div>';
+    if (CHAR.selectedFeatures && CHAR.selectedFeatures.length) {
+      h += '<div class="ov-item">起始特性: ' + CHAR.selectedFeatures.map(function(f){return f.n||f;}).join('、') + '</div>';
+    }
+    h += '</div>';
+  }
+  // 种族
+  if (CHAR.raceName) {
+    h += '<div class="ov-section"><div class="ov-label">🧬 种族</div>';
+    h += '<div class="ov-item">' + CHAR.raceName + '</div>';
+    var rd = CHAR.raceData;
+    if (rd && rd['属性加成']) {
+      var bs = []; for (var an in rd['属性加成']) { var v = rd['属性加成'][an]; if (v && v !== 0) bs.push(an + (v > 0 ? '+' : '') + v); }
+      if (bs.length) h += '<div class="ov-item">' + bs.join(' ') + '</div>';
+    }
+    if (rd && rd['特性']) {
+      for (var ti = 0; ti < rd['特性'].length; ti++) h += '<div class="ov-item">·' + rd['特性'][ti].name + '</div>';
+    }
+    if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
+    h += '</div>';
+  }
+  // 属性
+  if (CHAR.className) {
+    var attrs = ['力量','敏捷','体质','智力','感知','魅力','意志','幸运'];
+    h += '<div class="ov-section"><div class="ov-label">📊 属性</div>';
+    h += '<div class="ov-attrs">';
+    for (var ai = 0; ai < attrs.length; ai++) {
+      var av = CHAR.attrs[attrs[ai]] || 8;
+      h += '<span>' + attrs[ai].substring(0,1) + ':' + av + '</span>';
+    }
+    h += '</div></div>';
+  }
+  // 熟练项
+  if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
+    h += '<div class="ov-section"><div class="ov-label">📚 熟练项 (' + CHAR.selectedSkills.length + '/4)</div>';
+    for (var si = 0; si < CHAR.selectedSkills.length; si++) h += '<div class="ov-item">·' + CHAR.selectedSkills[si] + '</div>';
+    h += '</div>';
+  }
+  // 背景
+  if (CHAR.bgName) {
+    h += '<div class="ov-section"><div class="ov-label">🎭 背景: ' + CHAR.bgName + '</div>';
+    h += '</div>';
+  }
+  // 装备
+  if (CHAR.equipChoice) {
+    h += '<div class="ov-section"><div class="ov-label">⚔ 装备: ' + (CHAR.equipChoice.letter || '已选') + '</div>';
+    h += '</div>';
+  }
+  if (!h) h = '<div class="ov-empty">逐步完成创建，概览将实时更新</div>';
+  document.getElementById('ovContent').innerHTML = h;
+}
+
+// Hook into existing renderStep to auto-update
+var _origRenderStep = renderStep;
+renderStep = function(n) {
+  _origRenderStep(n);
+  updateOverview();
+};
 // ====== 职业专精数据 ======
 
 var BG_SKILL_MAP = {
