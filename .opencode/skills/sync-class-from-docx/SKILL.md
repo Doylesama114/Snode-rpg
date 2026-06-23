@@ -72,6 +72,16 @@ if buf: lines.append(buf)
 - Each skill is: name line → field lines (施展时间/距离/持续/FP/关键词/条件/限制/费用/描述)
 - Stop when you hit the next tier header or style header
 
+### ⚠️ Phase 1 执行锚点（硬性替换原有 CRITICAL）
+
+**在执行任何 Python 脚本之前，你必须先完成以下"原始转储"动作：**
+
+1. **禁止**直接运行最后那个自动提取脚本。
+2. **必须**先输出被你命名为 `TARGET_SKILL_NAME` 的技能的原始 `paras` 索引切片（大约 L 开头的那 20 行）。
+3. **判定标准**：只有当你输出的切片中包含 `前置条件：` 和 `施展时间：` 字段时，才允许继续执行后续的字段映射。如果切片中只是其他技能的名字，**必须**向后偏移索引直到找到真正的技能条目。
+
+**注意**：这一步不需要用户手动介入，只是强制你（AI）在逻辑上完成"肉眼核实"这个动作，并将核实结果作为凭证输出。
+
 ### ⚠️ CRITICAL: Always Read Raw Docx Lines Directly
 
 **NEVER trust automated skill-name-to-field matching scripts.** The docx has two occurrences of each skill name:
