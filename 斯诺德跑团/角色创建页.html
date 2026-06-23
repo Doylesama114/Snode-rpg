@@ -230,7 +230,7 @@ var CHAR = {
   raceIdx: -1, raceName: "", raceData: null,
   attrs: { "力量":8, "敏捷":8, "体质":8, "智力":8, "感知":8, "魅力":8, "意志":8, "幸运":8 },
   selectedSkills: [],
-  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [],
+  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [], humanFreeSkill: null,
   bgIdx: -1, bgName: "", bgData: null,
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
@@ -690,6 +690,39 @@ function showRaceAttrChoice(raceData){
   var p=document.getElementById("raceDetail");
   p.parentNode.insertBefore(area, p.nextSibling);
 }
+function showHumanFreeSkill(raceData){
+  var old=document.getElementById("humanSkillArea");if(old)old.remove();
+  var traits=raceData["特性"]||[];
+  var hasHumanSkill=false;
+  for(var i=0;i<traits.length;i++){if(traits[i].name==="中庸"){hasHumanSkill=true;break;}}
+  if(!hasHumanSkill)return;
+  CHAR.humanFreeSkill=null;
+  var area=document.createElement("div");area.id="humanSkillArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择自由熟练度（人类·中庸）</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>选择 <strong>1</strong> 项熟练度</div>";
+  var skills=Object.keys(BG_SKILL_MAP);
+  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  for(var i=0;i<skills.length;i++){
+    h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+skills[i]+"'>"+skills[i]+"</div>";
+  }
+  h+="</div>";
+  area.innerHTML=h;
+  var p=document.getElementById("raceDetail");
+  p.parentNode.insertBefore(area, p.nextSibling);
+}
+function pickHumanSkill(el){
+  var skill=el.getAttribute("data-skill");
+  if(CHAR.humanFreeSkill===skill){
+    CHAR.humanFreeSkill=null;
+    el.classList.remove("selected");
+    return;
+  }
+  var area=document.getElementById("humanSkillArea");
+  if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
+  CHAR.humanFreeSkill=skill;
+  el.classList.add("selected");
+}
 function pickRaceAttr(el){
   var attr=el.getAttribute("data-attr");
   var idx=CHAR.raceExtra.indexOf(attr);
@@ -786,7 +819,7 @@ function raceDetail(r){
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);showHumanFreeSkill(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
 }
 
@@ -1568,6 +1601,13 @@ function saveCharacter(){
       allSkills[attr][skName]=(allSkills[attr][skName]||0)+1;
     }else if(attr && allSkills[attr]){
       allSkills[attr][skName]=(allSkills[attr][skName]||0)+1;
+    }
+  }
+  // Human free skill from 中庸 trait
+  if(CHAR.humanFreeSkill){
+    var attr2=skillAttrMap[CHAR.humanFreeSkill];
+    if(attr2 && allSkills[attr2]){
+      allSkills[attr2][CHAR.humanFreeSkill]=(allSkills[attr2][CHAR.humanFreeSkill]||0)+1;
     }
   }
   charData.profs=allSkills;applySpecProfs(charData);applyBgProfs(charData);
