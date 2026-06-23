@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5155',
+    date: '2026-06-23',
+    changes: [
+      'xlsx导出修复(背景字段G15+H16-30补全+E列标签解析写入熟练值+ArrayBuffer有效性检查+EOCD保护)',
+      '人类种族中庸特性自由熟练度选择UI',
+      '萨满祭司起始特性+风暴一二三阶+火焰一阶共28技能docx对照修正',
+      'skill_effects萨满祭司录入'
+    ]
+  },
+
+
+  {
     version: '1.0.5154',
     date: '2026-06-23',
     changes: [
