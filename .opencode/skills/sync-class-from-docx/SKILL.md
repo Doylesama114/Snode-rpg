@@ -194,6 +194,14 @@ oldString = "</div>\n</article>\n</div>\n</section>"
 oldString = "...最后一个现有技能的末尾行...\n</div>\n</article>\n</div>\n</section>"
 ```
 
+### 🔧 编辑工具安全绳（紧接 edit 示例）
+
+在调用 `edit` 工具时，如果因为 `oldString` 匹配到错误位置导致修改失败，**触发以下应急流程**：
+
+1. **不要**重试同样的 `oldString`。
+2. **必须**先用 `grep` 或 `find` 逻辑定位目标 `id="m-tier-..."` 的前后 3 行作为新的 `oldString` 锚点。
+3. 如果找不到目标 `id`，则**判定为该阶段缺失（Phase 1B）**，转为"创建新内容"模式，而非"编辑现有内容"模式。
+
 Or use a Python script to locate the correct insertion point by section ID.
 
 ### E. Navigation Verification (MANDATORY)
