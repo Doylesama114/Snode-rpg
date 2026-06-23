@@ -1605,9 +1605,12 @@ function saveCharacter(){
   }
   // Human free skill from 中庸 trait
   if(CHAR.humanFreeSkill){
-    var attr2=skillAttrMap[CHAR.humanFreeSkill];
-    if(attr2 && allSkills[attr2]){
-      allSkills[attr2][CHAR.humanFreeSkill]=(allSkills[attr2][CHAR.humanFreeSkill]||0)+1;
+    var mapped=BG_SKILL_MAP[CHAR.humanFreeSkill];
+    if(mapped && mapped!=="cat"){
+      var parts=mapped.split(".");
+      if(parts.length===2 && allSkills[parts[0]] && allSkills[parts[0]][parts[1]]!==undefined){
+        allSkills[parts[0]][parts[1]]=(allSkills[parts[0]][parts[1]]||0)+1;
+      }
     }
   }
   charData.profs=allSkills;applySpecProfs(charData);applyBgProfs(charData);
