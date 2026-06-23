@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5156',
+    date: '2026-06-23',
+    changes: [
+      '电子更新检查修复:版本号同步'
+    ]
+  },
+
+
+  {
     version: '1.0.5155',
     date: '2026-06-23',
     changes: [
