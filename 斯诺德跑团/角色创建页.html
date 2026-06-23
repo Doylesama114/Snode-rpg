@@ -396,13 +396,14 @@ function updateOverview() {
     var con = CHAR.attrs['体质'] || 8;
     var rd2 = CHAR.raceData;
     var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? parseInt(rd2['生命值加成']) : rd2['生命值加成']) : 0;
+    var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
     var hpFirst = (cl.hp_formula && cl.hp_formula.first) ? cl.hp_formula.first : 8;
     var hpFromCon = Math.floor((con - 10) / 2);
-    var hp = hpFirst + hpFromCon + raceHp;
+    var hp = hpFirst + hpFromCon + raceHp + bgHp;
     var fpKey = CHAR.keyAttr || (cl.key_attr || '魅力');
     if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
     var fpVal = CHAR.attrs[fpKey] || 10;
-    var fpFirst = (cl.fp_formula && cl.fp_formula.first) ? cl.fp_formula.first : 8;
+    var fpFirst = (cl.fp_formula && cl.fp_formula.first) ? cl.fp_formula.first : (cl.fp_formula && cl.fp_formula.first===0 ? 0 : 8);
     var fpFromKey = Math.floor((fpVal - 10) / 2);
     var raceFP = (rd2 && rd2['疲劳值加成']) ? (typeof rd2['疲劳值加成']==='string' ? parseInt(rd2['疲劳值加成']) : rd2['疲劳值加成']) : 0;
     var fp = fpFirst + fpFromKey + raceFP;
@@ -413,6 +414,29 @@ function updateOverview() {
   var profLines = [];
   if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
     for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
+  }
+  // Specialization proficiencies
+  var autoCls2 = SPEC_AUTO_PROF[CHAR.className];
+  if (autoCls2) {
+    for (var asn in autoCls2) {
+      var ad = autoCls2[asn];
+      if (ad.profs) {
+        for (var pa in ad.profs) {
+          var skills = ad.profs[pa];
+          for (var psi = 0; psi < skills.length; psi++) profLines.push({ name: skills[psi], src: '专精' });
+        }
+      }
+    }
+  }
+  // Specialization user choices
+  if (CHAR.specChoices) {
+    for (var sn in CHAR.specChoices) {
+      var ch = CHAR.specChoices[sn];
+      if (ch.skill && ch.skill.indexOf('-') >= 0) {
+        var specParts = ch.skill.split('-');
+        profLines.push({ name: ch.skill, src: '专精' });
+      }
+    }
   }
   // Background proficiencies
   if (CHAR.bgName && CHAR.bgData) {
@@ -847,7 +871,7 @@ function checkSpecDone(){
   }
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
 }
-function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};
+function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
