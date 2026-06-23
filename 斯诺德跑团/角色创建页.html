@@ -397,22 +397,29 @@ function updateOverview() {
     var rd2 = CHAR.raceData;
     var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? parseInt(rd2['生命值加成']) : rd2['生命值加成']) : 0;
     var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
-    // Use REF_CLASSES if available, else use known class formulas
-    var hpFirst = 8, fpFirst = 8;
+    // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
+    var CLS_OVERRIDE = {
+      '蛮斗士':{key_attr:'力量', hp:12, fp:8}, '战士':{key_attr:'力量或敏捷', hp:10, fp:8},
+      '法师':{key_attr:'智力', hp:6, fp:12}, '德鲁伊':{key_attr:'感知', hp:8, fp:8},
+      '游荡者':{key_attr:'敏捷', hp:8, fp:8}, '吟游诗人':{key_attr:'魅力', hp:8, fp:8},
+      '猎人':{key_attr:'敏捷', hp:10, fp:8}, '圣骑士':{key_attr:'魅力', hp:10, fp:8},
+      '武僧':{key_attr:'感知', hp:8, fp:8}, '牧师':{key_attr:'感知', hp:8, fp:8},
+      '术士':{key_attr:'魅力', hp:6, fp:12}, '魔契师':{key_attr:'魅力', hp:8, fp:8},
+      '奇械师':{key_attr:'智力', hp:8, fp:8}, '萨满祭司':{key_attr:'感知', hp:8, fp:8}
+    };
+    var co = CLS_OVERRIDE[CHAR.className];
+    var hpFirst = co ? co.hp : 8;
+    var fpFirst = co ? co.fp : 8;
+    // Prefer REF_CLASSES or classData if available
     if (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[CHAR.className]) {
       if (REF_CLASSES[CHAR.className].hp_formula) hpFirst = REF_CLASSES[CHAR.className].hp_formula.first;
       if (REF_CLASSES[CHAR.className].fp_formula) fpFirst = REF_CLASSES[CHAR.className].fp_formula.first;
     }
-    if (hpFirst === 8 && cl.hp_formula && cl.hp_formula.first) hpFirst = cl.hp_formula.first;
-    if (fpFirst === 8 && cl.fp_formula && cl.fp_formula.first) fpFirst = cl.fp_formula.first;
-    // Hardcoded fallback for classes with non-standard formulas
-    var hpOverride = { '法师': 6, '术士': 6, '蛮斗士': 12 };
-    var fpOverride = { '法师': 12 };
-    if (hpOverride[CHAR.className]) hpFirst = hpOverride[CHAR.className];
-    if (fpOverride[CHAR.className]) fpFirst = fpOverride[CHAR.className];
+    if (cl.hp_formula && cl.hp_formula.first) hpFirst = cl.hp_formula.first;
+    if (cl.fp_formula && cl.fp_formula.first) fpFirst = cl.fp_formula.first;
     var hpFromCon = Math.floor((con - 10) / 2);
     var hp = hpFirst + hpFromCon + raceHp + bgHp;
-    var fpKey = CHAR.keyAttr || (cl.key_attr || '魅力');
+    var fpKey = CHAR.keyAttr || (cl.key_attr || (co ? co.key_attr : '魅力'));
     if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
     var fpVal = CHAR.attrs[fpKey] || 10;
     var fpFromKey = Math.floor((fpVal - 10) / 2);
