@@ -563,3 +563,7 @@ If a new mechanical pattern was discovered in this batch, update `skill_effects_
 
 4. **我是否严格按照 Docx 中的颜色列表配置了费用点，而没有使用我的默认调色板？**
     - 如果是，列出至少一个确认来源（例如：`强酸箭` 的 dot 颜色来自于 body 索引 X）。
+
+5. **我是否在 Phase 1 中为每个技能输出了原始切片并肉眼确认了前置条件和施展时间存在？**
+    - 如果是，列出至少一个技能的切片行号范围。
+    - 如果否，承认我跳过了锚点判定。
