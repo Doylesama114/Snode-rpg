@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5179',
+    date: '2026-06-24',
+    changes: [
+      '种族体型选择器:中型+2HP'
+    ]
+  },
+
+
+  {
     version: '1.0.5178',
     date: '2026-06-24',
     changes: [
