@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5163',
+    date: '2026-06-24',
+    changes: [
+      '属性豁免布尔改数值(0无/1+有)+渲染显示数字+导出正确值'
+    ]
+  },
+
+
+  {
     version: '1.0.5162',
     date: '2026-06-24',
     changes: [
