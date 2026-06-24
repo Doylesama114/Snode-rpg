@@ -5903,9 +5903,18 @@ window.showSubclassModal=function(){
       }
       if(req.profAttr){
         var _attrVal=0;
-        if(state.profs[req.profAttr]){for(var _pk in state.profs[req.profAttr]){_attrVal+=state.profs[req.profAttr][_pk]||0;}}
+        if(state.profs[req.profAttr]){for(var _pk in state.profs[req.profAttr]){if(_pk!=="豁免")_attrVal+=state.profs[req.profAttr][_pk]||0;}}
         var _attrVal2=0;
-        if(req.profAttrAlt&&state.profs[req.profAttrAlt]){for(var _pk2 in state.profs[req.profAttrAlt]){_attrVal2+=state.profs[req.profAttrAlt][_pk2]||0;}}
+        if(req.profAttrAlt&&state.profs[req.profAttrAlt]){for(var _pk2 in state.profs[req.profAttrAlt]){if(_pk2!=="豁免")_attrVal2+=state.profs[req.profAttrAlt][_pk2]||0;}}
+        // Deduplicate: subtract named profs already counted in the named loop
+        if(req.profNames&&req.profNames.length>0){
+          for(var _pi2=0;_pi2<req.profNames.length;_pi2++){
+            var _pn2=req.profNames[_pi2];
+            if(state.profs[req.profAttr]&&state.profs[req.profAttr][_pn2])_attrVal-=state.profs[req.profAttr][_pn2];
+            if(req.profAttrAlt&&state.profs[req.profAttrAlt]&&state.profs[req.profAttrAlt][_pn2])_attrVal2-=state.profs[req.profAttrAlt][_pn2];
+          }
+          _attrVal=Math.max(0,_attrVal); _attrVal2=Math.max(0,_attrVal2);
+        }
         var _bestAttr=Math.max(_attrVal,_attrVal2);
         profVal+=_bestAttr;
         if(profLabel)profLabel+="+";
