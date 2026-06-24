@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5170',
+    date: '2026-06-24',
+    changes: [
+      'F2快捷键清理卡死overlay应急修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5169',
     date: '2026-06-24',
     changes: [
