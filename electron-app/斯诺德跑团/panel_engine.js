@@ -5897,6 +5897,7 @@ window.showSubclassModal=function(){
           var _pn=req.profNames[_pi]; var _pv=0;
           var _underAttr=(req.profAttr&&state.profs[req.profAttr]&&state.profs[req.profAttr][_pn])||(req.profAttrAlt&&state.profs[req.profAttrAlt]&&state.profs[req.profAttrAlt][_pn]);
           if(!_underAttr){for(var _pa in state.profs){if(state.profs[_pa][_pn]){_pv=state.profs[_pa][_pn];break;}}}
+          else _pv = _underAttr;
           profVal+=_pv;
         }
       }

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5177',
+    date: '2026-06-24',
+    changes: [
+      '兼职熟练度检测_underAttr未赋值_pv修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5176',
     date: '2026-06-24',
     changes: [
