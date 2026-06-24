@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5175',
+    date: '2026-06-24',
+    changes: [
+      '升级流程state.profs空引用阻塞修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5174',
     date: '2026-06-24',
     changes: [
