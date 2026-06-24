@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5168',
+    date: '2026-06-24',
+    changes: [
+      '存档页+选择页单项删除按钮(含确认)'
+    ]
+  },
+
+
+  {
     version: '1.0.5167',
     date: '2026-06-24',
     changes: [

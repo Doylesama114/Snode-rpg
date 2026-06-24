@@ -183,6 +183,17 @@ function getCharSummary(charName) {
   return latest;
 }
 
+function deleteChar(charName) {
+  if (!confirm("确定要删除「" + charName + "」的所有存档吗？此操作不可恢复。")) return;
+  var deleted = 0;
+  for (var si = 1; si <= 3; si++) {
+    var key = "char_" + charName + "_slot" + si;
+    if (localStorage.getItem(key)) { localStorage.removeItem(key); deleted++; }
+  }
+  alert("已删除「" + charName + "」的 " + deleted + " 个存档");
+  location.reload();
+}
+
 function renderCharList() {
   var chars = getSavedChars();
   var html = "";
@@ -207,7 +218,7 @@ function renderCharList() {
         infoHtml = "<div class='char-info'>无有效存档数据</div>";
       }
       html += "<div class='char-card' onclick=\"location.href='角色存档页.html?char=" + encodeURIComponent(name) + "'\">";
-      html += "<div class='char-name'>" + name + "</div>";
+      html += "<div class='char-name'>" + name + " <span onclick=\"event.stopPropagation();deleteChar('" + name.replace(/'/g,"\\'") + "')\" style=\"float:right;cursor:pointer;color:#c04040;font-size:14px\" title=\"删除此角色\">🗑</span></div>";
       html += infoHtml;
       html += "</div>";
     }
