@@ -3244,7 +3244,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
         if(pn){
           var pv=pf[pn]||0;
           if(pn==="豁免"){ph+='<div class="save-display"><span>豁免</span><span class="save-status">'+(pv?"✓":"✗")+'</span></div>';}
-          else{ph+='<div class="prof-item"><span style="color:'+(pv?'#1f2522':'#c4b8a8')+'">'+pn+'</span><span class="prof-val" style="color:'+(pv?'#1f2522':'#c4b8a8')+'">'+(pv||'-')+'</span></div>';}
+          else{ph+='<div class="prof-item"><span style="color:var(--ink)">'+pn+'</span><span class="prof-val" style="color:var(--ink)">'+(pv||'-')+'</span></div>';}
         }else{ph+='<div style="min-height:28px"></div>';}
       });
       ph+='</div>';}
