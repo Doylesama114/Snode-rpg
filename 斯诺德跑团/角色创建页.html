@@ -1873,7 +1873,10 @@ function saveCharacter(){
       var fn=CHAR.selectedFeatures[i];
       var fd=null;
       for(var j=0;j<featData.length;j++){if(featData[j].n===fn){fd=featData[j];break;}}
-      var hasTalent=(fn.indexOf("天赋")>=0||(fd&&fd.d&&fd.d.indexOf("天赋")>=0));
+      var hasTalent=(fn.indexOf("天赋")>=0||(fd&&fd.d&&fd.d.indexOf("天赋")>=0)||(typeof SKILL_TIER!=='undefined'&&SKILL_TIER[fn]));
+      // Known天赋 skills that don't have "天赋" in name/desc
+      var knownTalents=["预知梦","闪电链","盲目信念","预知攻击","光环掌握","自然之友","坊间逸闻","神秘专家","奇械构装","生命之息","人之勇气"];
+      if(!hasTalent&&knownTalents.indexOf(fn)>=0)hasTalent=true;
       if(hasTalent){
         charData.talent_tree.push({n:fn,src:CHAR.className,tier:"一阶",desc:fd?fd.d:""});
       }else{
