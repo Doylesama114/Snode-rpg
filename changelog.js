@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5181',
+    date: '2026-06-24',
+    changes: [
+      '退出取消保存显式跳转'
+    ]
+  },
+
+
+  {
     version: '1.0.5180',
     date: '2026-06-24',
     changes: [
