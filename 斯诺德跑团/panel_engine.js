@@ -6308,22 +6308,28 @@ async function exportXlsxFromState(state) {
     set("O40", String(state.currency["铜币"] || 0));
   }
 
-  // Equipment
+  // Equipment (write to I/K columns matching template layout)
+  // Template has I labels: I46=武器, I50=防具, I52=武器, I56=配饰, I61=背包, I72=旅行腰包, I78=杂物
+  // Item names go in K column at/below each label
   if (state.equipment) {
-    var eqSlots = [
-      { zone: "主手武器", row: 50, col: "B" }, { zone: "副手武器", row: 50, col: "D" },
-      { zone: "防具", row: 50, col: "F" },
-      { zone: "背包", row: 61, col: "F" }, { zone: "旅行腰包", row: 72, col: "F" },
-      { zone: "配饰", row: 78, col: "F" }
+    var eqMap = [
+      { zone: "主手武器", label: "武器", row: 46 },
+      { zone: "副手武器", label: "武器", row: 52 },
+      { zone: "防具", label: "防具", row: 50 },
+      { zone: "配饰", label: "配饰", row: 56 },
+      { zone: "背包", label: "背包", row: 61 },
+      { zone: "旅行腰包", label: "旅行腰包", row: 72 },
+      { zone: "杂物包", label: "杂物", row: 78 }
     ];
-    for (var ei = 0; ei < eqSlots.length; ei++) {
-      var slot = eqSlots[ei];
+    for (var ei = 0; ei < eqMap.length; ei++) {
+      var slot = eqMap[ei];
       var items = state.equipment[slot.zone] || [];
       if (items.length > 0) {
+        set("I" + slot.row, slot.label);  // Ensure I label is set
         for (var ii = 0; ii < items.length && slot.row + ii <= 100; ii++) {
           var itemName = items[ii];
           if (typeof itemName === 'object') itemName = itemName.item || itemName.name || '';
-          if (itemName) set(slot.col + (slot.row + ii), String(itemName));
+          if (itemName) set("K" + (slot.row + ii), String(itemName));
         }
       }
     }
