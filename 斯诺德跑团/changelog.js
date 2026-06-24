@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5178',
+    date: '2026-06-24',
+    changes: [
+      '兼职熟练度去重+豁免排除'
+    ]
+  },
+
+
+  {
     version: '1.0.5177',
     date: '2026-06-24',
     changes: [
