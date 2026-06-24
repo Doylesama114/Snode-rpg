@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5174',
+    date: '2026-06-24',
+    changes: [
+      '特殊专长选择关闭后允许重试'
+    ]
+  },
+
+
+  {
     version: '1.0.5173',
     date: '2026-06-24',
     changes: [

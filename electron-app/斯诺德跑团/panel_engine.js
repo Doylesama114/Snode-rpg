@@ -5621,9 +5621,10 @@ function applyLevelUp(clsIdx){
     return;
   }
 
-  // Apply special feat
+  // Add special feat
   if(data.special==="feat"&&!_done._feat){
     showSpecialFeatSelector();
+    // If user closes selector without picking a feat, allow retry by not marking _feat as done
     return;
   }
 
