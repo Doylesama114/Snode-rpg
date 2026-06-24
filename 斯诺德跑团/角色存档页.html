@@ -173,7 +173,9 @@ function renderSlots() {
 
     var cls = "slot-card" + (isEmpty ? " empty" : "");
     html += "<div class='" + cls + "' onclick='openSlot(" + si + ")'>";
-    html += "<div class='slot-title'>存档位 " + si + "</div>";
+    html += "<div class='slot-title'>存档位 " + si;
+    if (!isEmpty) html += " <span onclick=\"event.stopPropagation();deleteSlot(" + si + ")\" style=\"float:right;cursor:pointer;color:#c04040;font-size:14px\" title=\"删除此存档\">🗑</span>";
+    html += "</div>";
     if (isEmpty) {
       html += "<div class='slot-empty-text'>📂 空存档位 — 点击创建新存档</div>";
     } else {
@@ -183,6 +185,13 @@ function renderSlots() {
     html += "</div>";
   }
   document.getElementById("slotList").innerHTML = html;
+}
+
+function deleteSlot(slotIndex) {
+  var charName = getCharName();
+  if (!confirm("确定要删除「" + charName + "」存档位 " + slotIndex + " 吗？此操作不可恢复。")) return;
+  localStorage.removeItem("char_" + charName + "_slot" + slotIndex);
+  renderSlots();
 }
 
 function openSlot(slotIndex) {
