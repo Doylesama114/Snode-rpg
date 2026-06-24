@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5176',
+    date: '2026-06-24',
+    changes: [
+      'chooseAttr修复:finalizeLevelUp→applyLevelUp'
+    ]
+  },
+
+
+  {
     version: '1.0.5175',
     date: '2026-06-24',
     changes: [
