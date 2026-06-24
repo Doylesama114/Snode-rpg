@@ -285,7 +285,7 @@ var CHAR = {
   raceIdx: -1, raceName: "", raceData: null,
   attrs: { "力量":8, "敏捷":8, "体质":8, "智力":8, "感知":8, "魅力":8, "意志":8, "幸运":8 },
   selectedSkills: [],
-  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [], humanFreeSkill: null,
+  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [], humanFreeSkill: null, raceSize: "",
   bgIdx: -1, bgName: "", bgData: null,
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
@@ -359,6 +359,7 @@ function updateOverview() {
   if (CHAR.raceName) {
     h += '<div class="ov-section"><div class="ov-label">🧬 种族</div>';
     h += '<div class="ov-item">' + CHAR.raceName + '</div>';
+    if(CHAR.raceSize) h += '<div class="ov-item">体型: ' + CHAR.raceSize + '</div>';
     var rd = CHAR.raceData;
     if (rd && rd['属性加成']) {
       var bs = []; for (var an in rd['属性加成']) { var v = rd['属性加成'][an]; if (v && v !== 0 && v !== 'X') bs.push(an + (v > 0 ? '+' : '') + v); }
@@ -395,7 +396,8 @@ function updateOverview() {
     var cl = CHAR.classData;
     var con = CHAR.attrs['体质'] || 8;
     var rd2 = CHAR.raceData;
-    var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? parseInt(rd2['生命值加成']) : rd2['生命值加成']) : 0;
+    var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? 
+      (function(rh){var hpParts=rh.split("/");if(hpParts.length===2){var hp0=parseInt(hpParts[0])||0;var hp1=parseInt(hpParts[1])||0;return (CHAR.raceSize&&CHAR.raceSize.indexOf("小")<0)?hp1:hp0;}else{var m=rh.match(/(\d+)/);return m?parseInt(m[1]):0;}})(rd2['生命值加成']) : rd2['生命值加成']) : 0;
     var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
     // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
     var CLS_OVERRIDE = {
@@ -962,6 +964,35 @@ function pickHumanSkill(el){
   el.classList.add("selected");
   updateOverview();
 }
+function showRaceSizePicker(raceData){
+  var old=document.getElementById("raceSizeArea");if(old)old.remove();
+  var sizeStr=raceData["体型"]||"";
+  if(sizeStr.indexOf("/")<0&&sizeStr.indexOf("或")<0)return;
+  var sizes=sizeStr.split(/[\/或]/);
+  if(sizes.length<2)return;
+  CHAR.raceSize="";
+  var area=document.createElement("div");area.id="raceSizeArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择体型</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>"+raceData.name+"可选择不同体型</div>";
+  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  for(var i=0;i<sizes.length;i++){
+    var sz=sizes[i].trim();if(!sz)continue;
+    var hpNote=sz.indexOf("中")>=0&&sz.indexOf("小")<0?" (+2生命值)":"";
+    h+="<div class='spec-btn' onclick='pickRaceSize(this)' data-size='"+sz+"'>"+sz+hpNote+"</div>";
+  }
+  h+="</div>";
+  area.innerHTML=h;
+  var p=document.getElementById("raceDetail");
+  p.parentNode.insertBefore(area, p.nextSibling);
+}
+function pickRaceSize(el){
+  var size=el.getAttribute("data-size");
+  if(CHAR.raceSize===size){CHAR.raceSize="";el.classList.remove("selected");return;}
+  var area=document.getElementById("raceSizeArea");
+  if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
+  CHAR.raceSize=size;el.classList.add("selected");
+}
 function pickRaceAttr(el){
   var attr=el.getAttribute("data-attr");
   var idx=CHAR.raceExtra.indexOf(attr);
@@ -1059,7 +1090,7 @@ function raceDetail(r){
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);showRaceSizePicker(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
   updateOverview();
 }
@@ -1790,12 +1821,19 @@ function saveCharacter(){
   var cl=CHAR.classData; var rd=CHAR.raceData; var bd=CHAR.bgData;
   var con=CHAR.attrs["体质"]+(rd["属性加成"]?rd["属性加成"]["体质"]||0:0);
   var raceHp=rd["生命值加成"]||0;
-  if(typeof raceHp==="string"){var m=raceHp.match(/(\d+)/);raceHp=m?parseInt(m[1]):0;}
+  if(typeof raceHp==="string"){
+    var hpParts=raceHp.split("/");
+    if(hpParts.length===2){
+      // Support size-based choice: "+0/+2" where small=0, medium=2
+      var hp0=parseInt(hpParts[0])||0;var hp1=parseInt(hpParts[1])||0;
+      raceHp=(CHAR.raceSize&&CHAR.raceSize.indexOf("小")<0)?hp1:hp0;
+    }else{var m=raceHp.match(/(\d+)/);raceHp=m?parseInt(m[1]):0;}
+  }
   var bgHp=0;if(bd&&bd["生命值加成"]){bgHp=parseInt(bd["生命值加成"])||0;}var classFirst=(CHAR.classData&&CHAR.classData["hp_formula"])?CHAR.classData["hp_formula"].first:8;var hp=classFirst+calcMod(con)+raceHp+bgHp;
   var classFirstFP=(CHAR.classData&&CHAR.classData["fp_formula"])?CHAR.classData["fp_formula"].first:8;var fpKeyAttr=CHAR.keyAttr||(CHAR.classData?CHAR.classData.key_attr:"");if(fpKeyAttr==="力量或敏捷")fpKeyAttr=CHAR.keyAttr||"力量";var fpKeyVal=CHAR.attrs[fpKeyAttr]||10;if(rd["属性加成"]&&rd["属性加成"][fpKeyAttr])fpKeyVal+=rd["属性加成"][fpKeyAttr];var raceFP=rd["疲劳值加成"]||0;if(typeof raceFP==="string"){var m2=raceFP.match(/(\d+)/);raceFP=m2?parseInt(m2[1]):0;}var fp=classFirstFP+calcMod(fpKeyVal)+raceFP;
   var charData={
     profs:{},
-    player:CHAR.playerName||"玩家", name:CHAR.charName, race:CHAR.raceName,
+    player:CHAR.playerName||"玩家", name:CHAR.charName, race:CHAR.raceName, raceSize:CHAR.raceSize||"",
     gender:CHAR.gender||"", age:CHAR.age||"", height:CHAR.height||"", weight:CHAR.weight||"",
     eye:CHAR.eye||"", skin:CHAR.skin||"", hair:CHAR.hair||"", portrait:"",
     xp:0,
