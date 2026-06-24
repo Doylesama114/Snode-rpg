@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5164',
+    date: '2026-06-24',
+    changes: [
+      '测试加点悬浮面板:XP/SP加减按钮+数值输入+点击外部关闭'
+    ]
+  },
+
+
+  {
     version: '1.0.5163',
     date: '2026-06-24',
     changes: [
