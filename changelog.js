@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5172',
+    date: '2026-06-24',
+    changes: [
+      'CLS_OVERRIDE补全豁免字段修复游荡者等职业'
+    ]
+  },
+
+
+  {
     version: '1.0.5171',
     date: '2026-06-24',
     changes: [
