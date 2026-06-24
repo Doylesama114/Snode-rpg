@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5166',
+    date: '2026-06-24',
+    changes: [
+      'saveCharacter天赋判断增强:SKILL_TIER查表+预知梦等已知天赋硬编码'
+    ]
+  },
+
+
+  {
     version: '1.0.5165',
     date: '2026-06-24',
     changes: [
