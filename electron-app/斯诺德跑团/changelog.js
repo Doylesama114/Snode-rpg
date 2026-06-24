@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5161',
+    date: '2026-06-24',
+    changes: [
+      'xlsx导出起始特性补全字段+SKILL_DATA回退查表'
+    ]
+  },
+
+
+  {
     version: '1.0.5160',
     date: '2026-06-24',
     changes: [
