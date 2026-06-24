@@ -932,7 +932,7 @@ function showHumanFreeSkill(raceData){
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择自由熟练度（人类·中庸）</div>";
   h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>选择 <strong>1</strong> 项熟练度</div>";
-  var skills=Object.keys(BG_SKILL_MAP);
+  var skills=Object.keys(BG_SKILL_MAP).filter(function(k){return BG_SKILL_MAP[k]!=="cat";});
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
   for(var i=0;i<skills.length;i++){
     h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+skills[i]+"'>"+skills[i]+"</div>";

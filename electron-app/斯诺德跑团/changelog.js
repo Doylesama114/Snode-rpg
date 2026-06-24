@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5171',
+    date: '2026-06-24',
+    changes: [
+      '人类自由熟练度过滤大类仅显示子项'
+    ]
+  },
+
+
+  {
     version: '1.0.5170',
     date: '2026-06-24',
     changes: [
