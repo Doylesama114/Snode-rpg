@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5167',
+    date: '2026-06-24',
+    changes: [
+      '学习技能面板二次打开修复:style.display残留'
+    ]
+  },
+
+
+  {
     version: '1.0.5166',
     date: '2026-06-24',
     changes: [
