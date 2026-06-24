@@ -6231,7 +6231,7 @@ async function exportXlsxFromState(state) {
       if (!pv || typeof pv !== "object") continue;
       for (var sk in pv) {
         var sv = pv[sk];
-        if (sv === 0 || sv === undefined) continue;
+        if (sv === 0 || sv === undefined || sv === false) continue;
         var targetRow = profMap[sk];
         if (targetRow) set("G" + targetRow, sv);
       }
@@ -6254,15 +6254,25 @@ async function exportXlsxFromState(state) {
     set("O40", String(state.currency["铜币"] || 0));
   }
 
-  // Equipment (simplified)
+  // Equipment
   if (state.equipment) {
     var eqSlots = [
-      { zone: "主手武器", row: 46 }, { zone: "副手武器", row: 50 },
-      { zone: "防具", row: 50 },
-      { zone: "背包", row: 61 }, { zone: "旅行腰包", row: 72 },
-      { zone: "杂物包", row: 78 }
+      { zone: "主手武器", row: 50, col: "B" }, { zone: "副手武器", row: 50, col: "D" },
+      { zone: "防具", row: 50, col: "F" },
+      { zone: "背包", row: 61, col: "F" }, { zone: "旅行腰包", row: 72, col: "F" },
+      { zone: "配饰", row: 78, col: "F" }
     ];
-    // This is approximate - each slot can have multiple items
+    for (var ei = 0; ei < eqSlots.length; ei++) {
+      var slot = eqSlots[ei];
+      var items = state.equipment[slot.zone] || [];
+      if (items.length > 0) {
+        for (var ii = 0; ii < items.length && slot.row + ii <= 100; ii++) {
+          var itemName = items[ii];
+          if (typeof itemName === 'object') itemName = itemName.item || itemName.name || '';
+          if (itemName) set(slot.col + (slot.row + ii), String(itemName));
+        }
+      }
+    }
   }
 
   // Racial traits

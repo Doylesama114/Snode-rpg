@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5160',
+    date: '2026-06-24',
+    changes: [
+      'xlsx导出豁免false不填+装备写入单元格'
+    ]
+  },
+
+
+  {
     version: '1.0.5159',
     date: '2026-06-24',
     changes: [
