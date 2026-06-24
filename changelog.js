@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5165',
+    date: '2026-06-24',
+    changes: [
+      'xlsx装备导出修正:写入I列标签+K列物品名'
+    ]
+  },
+
+
+  {
     version: '1.0.5164',
     date: '2026-06-24',
     changes: [
