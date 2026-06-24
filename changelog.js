@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5169',
+    date: '2026-06-24',
+    changes: [
+      '语言选择器暗色模式视觉反馈修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5168',
     date: '2026-06-24',
     changes: [

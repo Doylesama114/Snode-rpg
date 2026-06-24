@@ -1408,12 +1408,15 @@ function showLangPicker(bg,callback){
       cells[i].style.borderColor=isSel?"#4caf50":"#d8d2c4";
       cells[i].style.fontWeight=isSel?"bold":"normal";
       cells[i].style.transform=isSel?"scale(1.03)":"scale(1)";
+      // Remove dark-bg class when selected so !important doesn't override
+      if(isSel)cells[i].classList.remove('dark-bg');
+      else cells[i].classList.add('dark-bg');
     }
   }
   for(var i=0;i<ALL_LANGUAGES.length;i++){
     var ln=ALL_LANGUAGES[i];
     var cell=document.createElement("div");cell.className="lang-cell";cell.setAttribute("data-lang",ln);
-    cell.textContent=ln;cell.style.cssText="cursor:pointer;padding:10px;border-radius:6px;text-align:center;font-size:14px;background:#f6f4ef;border:2px solid #d8d2c4;transition:all 0.15s";cell.className='dark-bg';
+    cell.textContent=ln;cell.style.cssText="cursor:pointer;padding:10px;border-radius:6px;text-align:center;font-size:14px;background:#f6f4ef;border:2px solid #d8d2c4;transition:all 0.15s";cell.classList.add('dark-bg');
     cell.onclick=function(){
       var l=this.getAttribute("data-lang");var idx=selected.indexOf(l);
       if(idx>=0){selected.splice(idx,1);}else if(selected.length<count){selected.push(l);}
