@@ -3895,7 +3895,60 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
 document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
-  document.getElementById("subSkillTitle").innerHTML="子职业技能列表 ("+calcSkillSlots(1)+"栏)";}function cheatAdd(){if(!confirm("添加1000经验值和全部技能点各1个？"))return;state.xp+=1000;var colors=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","浅色","炫彩"];for(var i=0;i<colors.length;i++)state.sp[colors[i]]=(state.sp[colors[i]]||0)+1;alert("已添加！");render();}
+  document.getElementById("subSkillTitle").innerHTML="子职业技能列表 ("+calcSkillSlots(1)+"栏)";}function cheatAdd(){
+  var old=document.getElementById('_cheatPanel');
+  if(old){old.remove();return;}
+  var overlay=document.createElement('div');overlay.id='_cheatPanel';
+  overlay.style.cssText='position:fixed;bottom:80px;left:30px;z-index:10000;background:var(--panel,#fffdf8);border:2px solid var(--accent,#a46d1f);border-radius:12px;padding:20px 24px;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.25);animation:fadeInUp 0.3s ease-out;font-size:14px;color:var(--ink,#1f2522);max-height:80vh;overflow-y:auto';
+  
+  var h='<h3 style="margin:0 0 4px;font-size:18px">🧪 测试加点</h3>';
+  h+='<p style="font-size:12px;color:var(--muted,#69706b);margin:0 0 12px">快速增加经验值与技能点</p>';
+  
+  // XP section
+  var xp=(state.xp||0);
+  h+='<div style="margin-bottom:16px;padding:12px;background:var(--bg,#f6f4ef);border-radius:8px">';
+  h+='<div style="font-weight:bold;margin-bottom:8px">⭐ 经验值 ('+xp+')</div>';
+  h+='<div style="display:flex;gap:8px;align-items:center">';
+  h+='<button onclick="_cheatAdjXP(-100)" style="padding:6px 14px;font-size:16px;background:#c06040;color:#fff;border:none;border-radius:6px;cursor:pointer">-100</button>';
+  h+='<button onclick="_cheatAdjXP(-500)" style="padding:6px 14px;font-size:16px;background:#c06040;color:#fff;border:none;border-radius:6px;cursor:pointer">-500</button>';
+  h+='<input id="_cheatXP" type="number" min="0" value="'+xp+'" onchange="_cheatSetXP(this.value)" style="flex:1;width:60px;padding:6px;text-align:center;border:1px solid var(--line,#d8d2c4);border-radius:6px;font-size:14px;background:var(--panel,#fffdf8);color:var(--ink,#1f2522)">';
+  h+='<button onclick="_cheatAdjXP(500)" style="padding:6px 14px;font-size:16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer">+500</button>';
+  h+='<button onclick="_cheatAdjXP(100)" style="padding:6px 14px;font-size:16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer">+100</button>';
+  h+='</div></div>';
+  
+  // SP section
+  var colors=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","浅色","炫彩"];
+  h+='<div style="margin-bottom:8px;font-weight:bold">💎 技能点</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
+  for(var ci=0;ci<colors.length;ci++){
+    var c=colors[ci];var spVal=state.sp[c]||0;
+    h+='<div style="display:flex;align-items:center;gap:4px;padding:4px 8px;background:var(--bg,#f6f4ef);border-radius:6px">';
+    h+='<span style="font-size:11px;min-width:30px;color:var(--ink)">'+c+'</span>';
+    h+='<button onclick="_cheatAdjSP(\''+c+'\',-1)" style="padding:2px 8px;font-size:14px;background:#c04030;color:#fff;border:none;border-radius:4px;cursor:pointer">-</button>';
+    h+='<input id="_cheatSP_'+ci+'" type="number" min="0" value="'+spVal+'" onchange="_cheatSetSP(\''+c+'\',this.value)" style="width:40px;padding:3px;text-align:center;border:1px solid var(--line,#d8d2c4);border-radius:4px;font-size:12px;background:var(--panel,#fffdf8);color:var(--ink,#1f2522)">';
+    h+='<button onclick="_cheatAdjSP(\''+c+'\',1)" style="padding:2px 8px;font-size:14px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer">+</button>';
+    h+='</div>';
+  }
+  h+='</div>';
+  h+='<button onclick="document.getElementById(\'_cheatPanel\').remove();render()" style="margin-top:12px;width:100%;padding:8px;background:var(--accent,#a46d1f);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px">✅ 确认并刷新面板</button>';
+  
+  overlay.innerHTML=h;
+  document.body.appendChild(overlay);
+  
+  // Close on click outside
+  setTimeout(function(){
+    document.addEventListener('click',function _c(e){
+      if(!overlay.contains(e.target)&&e.target!==document.querySelector('button[onclick*=\"cheatAdd\"]')){
+        overlay.remove();document.removeEventListener('click',_c);
+      }
+    });
+  },100);
+}
+
+function _cheatAdjXP(delta){state.xp=Math.max(0,(state.xp||0)+delta);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
+function _cheatSetXP(val){state.xp=Math.max(0,parseInt(val)||0);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
+function _cheatAdjSP(color,delta){state.sp[color]=Math.max(0,(state.sp[color]||0)+delta);render();}
+function _cheatSetSP(color,val){state.sp[color]=Math.max(0,parseInt(val)||0);render();}
 function toggleLearnMode() {
 
 
