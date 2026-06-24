@@ -5663,6 +5663,7 @@ function finalizeLevelUp(clsIdx,level){
 }
 
 function showProfChoice(clsIdx,level){
+  if(!state.profs) state.profs = {};  // Guard for uninitialized state
   var overlay=document.getElementById("modalOverlay")||document.createElement("div");
   if(!overlay.parentNode){overlay.id="modalOverlay";overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";document.body.appendChild(overlay);}
 
@@ -5719,6 +5720,7 @@ function showProfChoice(clsIdx,level){
 }
 
 function chooseProf(clsIdx,level,profName){
+  if(!state.profs) state.profs = {};
   // Safety check: verify prof has not reached cap
   var curCap=getCurrentProfCap();
   // Find which attr this prof belongs to and check its value
