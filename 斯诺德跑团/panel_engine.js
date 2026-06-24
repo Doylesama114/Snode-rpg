@@ -5915,7 +5915,7 @@ window.showSubclassModal=function(){
           }
           _attrVal=Math.max(0,_attrVal); _attrVal2=Math.max(0,_attrVal2);
         }
-        var _bestAttr=Math.max(_attrVal,_attrVal2);
+        var _bestAttr=_attrVal+_attrVal2;
         profVal+=_bestAttr;
         if(profLabel)profLabel+="+";
         profLabel+=req.profAttr+(req.profAttrAlt?"或"+req.profAttrAlt:"");
