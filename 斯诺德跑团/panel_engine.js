@@ -292,6 +292,9 @@ function goBackToSlots() {
       });
       return;
     }
+    // 不保存 → 直接返回
+    window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
+    return;
   }
   window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
 }
@@ -6594,7 +6597,8 @@ function importSaves(){
       var r=confirm('当前角色有未保存的更改，是否保存后返回？\n\n"确定" = 保存并返回\n"取消" = 不保存直接返回');
       if(r){saveCurrentSlot();}
     }
-    location.href='角色选择页.html';
+    // Always navigate regardless of save choice
+    setTimeout(function(){ location.href='角色选择页.html'; }, 100);
   });
   
   // Check if current state differs from last saved
