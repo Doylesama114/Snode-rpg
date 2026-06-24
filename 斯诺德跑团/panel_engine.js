@@ -444,10 +444,11 @@ function getCurrentProfCap() {
 
 
 function autoCalcStyles(){
-  // Preserve styles from upload/xlsx: skip if any class has valid non-label styles
+  // Preserve styles from upload/xlsx: skip only if styles were manually set (all 4 non-empty)
   for(var pi=0;pi<state.classes.length;pi++){
     var cs=state.classes[pi];
-    if(cs.name&&cs.styles&&cs.styles[0]&&cs.styles[0]!=="通用"&&cs.styles[0]!=="风格"&&cs.styles[0]!=="风格名")return;
+    if(cs.name&&cs.styles&&cs.styles.length===4&&cs.styles[0]&&cs.styles[1]&&cs.styles[2]&&cs.styles[3]&&
+       cs.styles[0]!=="通用"&&cs.styles[1]!=="通用")return;
   }
 
   var sc={};for(var i=0;i<state.skills.length;i++){
