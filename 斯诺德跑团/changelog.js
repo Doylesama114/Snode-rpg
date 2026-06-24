@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5180',
+    date: '2026-06-24',
+    changes: [
+      '兼职熟练度Math.max→求和'
+    ]
+  },
+
+
+  {
     version: '1.0.5179',
     date: '2026-06-24',
     changes: [
