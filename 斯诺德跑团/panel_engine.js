@@ -6296,15 +6296,29 @@ async function exportXlsxFromState(state) {
   // Skills (B-M columns, rows 123-162)
   var mainSkills = (state.skills || []).filter(function (s) { return !s.sub || s.sub === ""; });
   var hasSkills = mainSkills.length > 0;
+  // Helper: look up skill data from SKILL_DATA by name
+  function lookupSkill(name) {
+    if (!name || typeof SKILL_DATA === 'undefined') return null;
+    for (var cn in SKILL_DATA) {
+      var arr = SKILL_DATA[cn];
+      if (!arr) continue;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].name === name || arr[i].n === name) return arr[i];
+      }
+    }
+    return null;
+  }
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
-    set("B" + (123 + si), sk.n || sk.name || "");
-    set("D" + (123 + si), sk.tm || sk.time || "");
-    set("E" + (123 + si), sk.range || "");
-    set("F" + (123 + si), sk.dur || sk.duration || "");
-    set("H" + (123 + si), sk.cost || sk.fp || "");
+    var skName = sk.n || sk.name || "";
+    var skRef = (!sk.tm && !sk.time && !sk.cost && !sk.fp) ? lookupSkill(skName) : null;
+    set("B" + (123 + si), skName);
+    set("D" + (123 + si), sk.tm || sk.time || (skRef && skRef.fields ? skRef.fields['施展时间'] : "") || "");
+    set("E" + (123 + si), sk.range || (skRef && skRef.fields ? skRef.fields['施展距离'] : "") || "");
+    set("F" + (123 + si), sk.dur || sk.duration || (skRef && skRef.fields ? skRef.fields['持续时间'] : "") || "");
+    set("H" + (123 + si), sk.cost || sk.fp || (skRef && skRef.cost ? skRef.cost.fp : "") || "");
     set("I" + (123 + si), sk.src || sk.source || cl.name || "");
-    set("J" + (123 + si), sk.ds || sk.desc || sk.description || "");
+    set("J" + (123 + si), sk.ds || sk.desc || sk.description || (skRef && skRef.description ? skRef.description[0] : "") || "");
   }
 
   // Talents (O column, rows 123-147 + 150-165)
@@ -6356,13 +6370,15 @@ async function exportXlsxFromState(state) {
   var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
-    set("B" + (168 + ssi), ssk.n || ssk.name || "");
-    set("D" + (168 + ssi), ssk.tm || ssk.time || "");
-    set("E" + (168 + ssi), ssk.range || "");
-    set("F" + (168 + ssi), ssk.dur || ssk.duration || "");
-    set("H" + (168 + ssi), ssk.cost || ssk.fp || "");
+    var sskName = ssk.n || ssk.name || "";
+    var sskRef = (!ssk.tm && !ssk.time && !ssk.cost && !ssk.fp) ? lookupSkill(sskName) : null;
+    set("B" + (168 + ssi), sskName);
+    set("D" + (168 + ssi), ssk.tm || ssk.time || (sskRef && sskRef.fields ? sskRef.fields['施展时间'] : "") || "");
+    set("E" + (168 + ssi), ssk.range || (sskRef && sskRef.fields ? sskRef.fields['施展距离'] : "") || "");
+    set("F" + (168 + ssi), ssk.dur || ssk.duration || (sskRef && sskRef.fields ? sskRef.fields['持续时间'] : "") || "");
+    set("H" + (168 + ssi), ssk.cost || ssk.fp || (sskRef && sskRef.cost ? sskRef.cost.fp : "") || "");
     set("I" + (168 + ssi), ssk.src || ssk.source || (sc ? sc.name : ""));
-    set("J" + (168 + ssi), ssk.ds || ssk.desc || ssk.description || "");
+    set("J" + (168 + ssi), ssk.ds || ssk.desc || ssk.description || (sskRef && sskRef.description ? sskRef.description[0] : "") || "");
   }
 
   // XP/SP
