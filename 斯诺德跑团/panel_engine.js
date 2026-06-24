@@ -3973,7 +3973,7 @@ function toggleLearnMode() {
   } else {
 
 
-    try { renderLearnPanel(); panel.classList.add("show"); btn.innerHTML = "✕ 关闭"; }
+    try { renderLearnPanel(); panel.style.display = ""; panel.classList.add("show"); btn.innerHTML = "✕ 关闭"; }
 
 
     catch(e) { panel.innerHTML = "<div style='padding:20px;color:#e06060'>Error: " + e.message + "</div>"; panel.style.display = "block"; }
