@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5162',
+    date: '2026-06-24',
+    changes: [
+      'autoCalcStyles风格递增修复(4格全满才跳过)'
+    ]
+  },
+
+
+  {
     version: '1.0.5161',
     date: '2026-06-24',
     changes: [
