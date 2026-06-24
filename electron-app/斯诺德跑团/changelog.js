@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5158',
+    date: '2026-06-24',
+    changes: [
+      '页面切换overlay清理防止文本框无法交互'
+    ]
+  },
+
+
+  {
     version: '1.0.5157',
     date: '2026-06-23',
     changes: [

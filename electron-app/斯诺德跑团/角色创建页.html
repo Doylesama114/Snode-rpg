@@ -2394,5 +2394,21 @@ async function exportXlsxFromState(state) {
 </script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
+<script>
+// Cleanup fixed overlays when leaving page (prevent cross-page contamination)
+window.addEventListener('beforeunload', function() {
+  var els = document.querySelectorAll('#charOverview, #overviewToggle, #subSkillPopup, #_shortcutHelp, #langGrid, .personality-overlay');
+  for (var i = 0; i < els.length; i++) { if (els[i] && els[i].parentNode) els[i].remove(); }
+});
+// Auto-close overview when clicking outside
+document.addEventListener('click', function(e) {
+  var ov = document.getElementById('charOverview');
+  var btn = document.getElementById('overviewToggle');
+  if (ov && btn && ov.classList.contains('panel-open') && !ov.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+    ov.classList.remove('panel-open');
+    btn.classList.remove('panel-open');
+  }
+});
+</script>
 </body>
 </html>
