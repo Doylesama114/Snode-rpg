@@ -399,13 +399,20 @@ function updateOverview() {
     var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
     // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
     var CLS_OVERRIDE = {
-      '蛮斗士':{key_attr:'力量', hp:12, fp:8}, '战士':{key_attr:'力量或敏捷', hp:10, fp:8},
-      '法师':{key_attr:'智力', hp:8, fp:12}, '德鲁伊':{key_attr:'感知', hp:8, fp:8},
-      '游荡者':{key_attr:'敏捷', hp:8, fp:8}, '吟游诗人':{key_attr:'魅力', hp:8, fp:8},
-      '猎人':{key_attr:'敏捷', hp:8, fp:8}, '圣骑士':{key_attr:'意志', hp:10, fp:8},
-      '武僧':{key_attr:'敏捷', hp:8, fp:8}, '牧师':{key_attr:'感知', hp:8, fp:8},
-      '术士':{key_attr:'幸运', hp:8, fp:8}, '魔契师':{key_attr:'魅力', hp:8, fp:8},
-      '奇械师':{key_attr:'魅力', hp:8, fp:8}, '萨满祭司':{key_attr:'感知', hp:8, fp:8}
+      '蛮斗士':{key_attr:'力量', hp:12, fp:8, saves:'力量、体质'},
+      '战士':{key_attr:'力量或敏捷', hp:10, fp:8, saves:'力量、敏捷'},
+      '法师':{key_attr:'智力', hp:8, fp:12, saves:'智力、感知'},
+      '德鲁伊':{key_attr:'感知', hp:8, fp:8, saves:'智力、感知'},
+      '游荡者':{key_attr:'敏捷', hp:8, fp:8, saves:'敏捷、感知'},
+      '吟游诗人':{key_attr:'魅力', hp:8, fp:8, saves:'敏捷、魅力'},
+      '猎人':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
+      '圣骑士':{key_attr:'意志', hp:10, fp:8, saves:'感知、魅力'},
+      '武僧':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
+      '牧师':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'},
+      '术士':{key_attr:'幸运', hp:8, fp:8, saves:'体质、魅力'},
+      '魔契师':{key_attr:'魅力', hp:8, fp:8, saves:'感知、魅力'},
+      '奇械师':{key_attr:'魅力', hp:8, fp:8, saves:'体质、智力'},
+      '萨满祭司':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'}
     };
     var co = CLS_OVERRIDE[CHAR.className];
     var hpFirst = co ? co.hp : 8;
@@ -1822,10 +1829,14 @@ function saveCharacter(){
   };
   if(cl && cl["豁免"]){
     var saveList=cl["豁免"].split(/[、,，]/);
-    for(var si=0;si<saveList.length;si++){
-      var attrName=saveList[si].trim();
-      if(allSkills[attrName]) allSkills[attrName]["豁免"]=1;
-    }
+  } else if(co && co.saves){
+    var saveList=co.saves.split(/[、,，]/);
+  } else {
+    var saveList=[];
+  }
+  for(var si=0;si<saveList.length;si++){
+    var attrName=saveList[si].trim();
+    if(allSkills[attrName]) allSkills[attrName]["豁免"]=1;
   }
   var skillAttrMap={
     "威力":"力量","运动":"力量","运动-跳跃":"力量","运动-攀爬":"力量","运动-游泳":"力量","承重":"力量","体操":"敏捷","骑乘":"敏捷","隐匿":"敏捷","巧手":"敏捷",
