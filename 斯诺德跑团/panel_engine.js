@@ -5787,9 +5787,9 @@ function chooseAttr(clsIdx,level,attrName){
   var curVal=state.attrs[attrName]||0;
   if(curVal>=curCap){alert("该属性已达当前等级上限（"+curCap+"），无法继续提升");return;}
   state.attrs[attrName]=curVal+1;
-  finalizeLevelUp(clsIdx,level);
+  window._pendingLevelUp._done._attr=true;
   closeReplaceModal();
-  render();
+  applyLevelUp(clsIdx);
 }
 
 function applyLowestAttr(clsIdx,level){
