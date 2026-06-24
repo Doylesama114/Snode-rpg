@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5159',
+    date: '2026-06-24',
+    changes: [
+      '面板熟练项暗色模式CSS变量适配'
+    ]
+  },
+
+
+  {
     version: '1.0.5158',
     date: '2026-06-24',
     changes: [
