@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5173',
+    date: '2026-06-24',
+    changes: [
+      'xlsx豁免导出复合key修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5172',
     date: '2026-06-24',
     changes: [
