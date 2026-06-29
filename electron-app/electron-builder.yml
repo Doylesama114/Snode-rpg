@@ -10,6 +10,7 @@ files:
   - sync-check.js
   - 职业页/**/*
   - 斯诺德跑团/**/*
+  - poker-game/**/*
 win:
   target:
     - target: nsis

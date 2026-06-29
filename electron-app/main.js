@@ -121,6 +121,7 @@ function createWindow() {
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
+    if (url.includes('poker-game')) return; // allow poker-game internal navigation
     if (!url.startsWith('file://')) event.preventDefault();
   });
 
@@ -133,11 +134,14 @@ function createWindow() {
 
   // 所有页面注入 Bug 反馈按钮
   mainWindow.webContents.on('did-finish-load', () => {
-    const brPath = path.join(__dirname, '斯诺德跑团', 'bug-report.js');
-    const fs = require('fs');
-    if (fs.existsSync(brPath)) {
-      mainWindow.webContents.executeJavaScript(fs.readFileSync(brPath, 'utf8')).catch(() => {});
-    }
+    const loadBugReport = (dir) => {
+      const brPath = path.join(__dirname, dir, 'bug-report.js');
+      const fs = require('fs');
+      if (fs.existsSync(brPath)) {
+        mainWindow.webContents.executeJavaScript(fs.readFileSync(brPath, 'utf8')).catch(() => {});
+      }
+    };
+    loadBugReport('斯诺德跑团');
   });
 }
 
