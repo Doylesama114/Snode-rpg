@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5182',
+    date: '2026-06-29',
+    changes: [
+      '萨满祭司火焰二阶5技能docx对照修正——费用色/距离/时长/描述同步'
+    ]
+  },
+
+
+  {
     version: '1.0.5181',
     date: '2026-06-24',
     changes: [
