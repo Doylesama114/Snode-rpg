@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5183',
+    date: '2026-06-29',
+    changes: [
+      '萨满祭司火焰三阶4技能docx对照修正——费用色/距离/时长/疲劳同步'
+    ]
+  },
+
+
+  {
     version: '1.0.5182',
     date: '2026-06-29',
     changes: [
