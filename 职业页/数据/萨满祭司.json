@@ -920,9 +920,9 @@
           "id": "red"
         },
         {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow"
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue"
         }
       ],
       "style": "火焰",

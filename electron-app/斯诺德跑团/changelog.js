@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5184',
+    date: '2026-06-29',
+    changes: [
+      '火焰一阶3处修正——空白位置+费用色同步docx'
+    ]
+  },
+
+
+  {
     version: '1.0.5183',
     date: '2026-06-29',
     changes: [
