@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5186',
+    date: '2026-06-29',
+    changes: [
+      '火焰四阶4技能docx对照——熔岩喷溅+火焰新星+火镰图腾+余烬抗性'
+    ]
+  },
+
+
+  {
     version: '1.0.5185',
     date: '2026-06-29',
     changes: [
