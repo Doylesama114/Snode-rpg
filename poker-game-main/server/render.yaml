@@ -2,11 +2,6 @@ services:
   - type: web
     name: poker-server
     env: node
-    rootDir: poker-game-main/server
-    buildCommand: npm install
-    startCommand: node index.js
+    buildCommand: cd poker-game-main/server && npm install
+    startCommand: cd poker-game-main/server && node index.js
     plan: free
-    autoDeploy: true
-    envVars:
-      - key: NODE_VERSION
-        value: 20.0.0
