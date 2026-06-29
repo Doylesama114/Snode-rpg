@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.5185',
+    date: '2026-06-29',
+    changes: [
+      '火焰全13技能费用颜色还原docx真值——修正此前脚本误提取错误'
+    ]
+  },
+
+
+  {
     version: '1.0.5184',
     date: '2026-06-29',
     changes: [
