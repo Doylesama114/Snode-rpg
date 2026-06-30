@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6004',
+    date: '2026-06-30',
+    changes: [
+      '修复联机页白色文字在cream背景下不可见'
+    ]
+  },
+
+
+  {
     version: '1.0.6003',
     date: '2026-06-30',
     changes: [

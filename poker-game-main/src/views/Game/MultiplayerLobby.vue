@@ -296,7 +296,7 @@ watch(isGameStarted, (started) => {
   min-height: 100vh;
   background: #f6f4ef;
   padding: 20px;
-  color: white;
+  color: #1f2522;
 }
 
 .lobby-header {

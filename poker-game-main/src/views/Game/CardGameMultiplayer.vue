@@ -504,7 +504,7 @@ function leaveGame() {
   min-height: 100vh;
   background: #f6f4ef;
   padding: 20px;
-  color: white;
+  color: #1f2522;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -516,7 +516,7 @@ function leaveGame() {
   align-items: center;
   justify-content: center;
   background: #f6f4ef;
-  color: white;
+  color: #1f2522;
   font-size: 24px;
 }
 
