@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6006',
+    date: '2026-06-30',
+    changes: [
+      '修复解散房间leaveRoom未解构'
+    ]
+  },
+
+
+  {
     version: '1.0.6005',
     date: '2026-06-30',
     changes: [

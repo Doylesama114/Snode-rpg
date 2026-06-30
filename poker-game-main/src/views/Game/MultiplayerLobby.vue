@@ -18,7 +18,8 @@ const {
   disconnect,
   createRoom,
   joinRoom,
-  getRooms
+  getRooms,
+  leaveRoom
 } = useMultiplayer()
 
 const playerNameInput = ref('')
@@ -95,7 +96,7 @@ function startGame() {
 
 function disbandRoom() {
   if (confirm('确定要解散房间吗？')) {
-    multiplayer.leaveRoom()
+    leaveRoom()
     router.replace('/')
   }
 }
