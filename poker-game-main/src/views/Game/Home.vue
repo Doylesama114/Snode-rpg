@@ -21,8 +21,7 @@ function goBack() {
 </script>
 
 <template>
-  <main h-100dvh h-screen w-screen of-hidden bg-cover bg-center grid="~ rows-[max-content_1fr]"
-        style="background: #f6f4ef;">
+  <main h-100dvh h-screen w-screen of-hidden style="background: #f6f4ef;">
     <GameNav/>
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; display: flex; flex-direction: column; gap: 20px;">
       <button 

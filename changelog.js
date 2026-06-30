@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6008',
+    date: '2026-06-30',
+    changes: [
+      '彻底移除首页bg-cover残留'
+    ]
+  },
+
+
+  {
     version: '1.0.6007',
     date: '2026-06-30',
     changes: [
