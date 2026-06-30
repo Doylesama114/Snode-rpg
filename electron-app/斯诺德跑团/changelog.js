@@ -2,6 +2,24 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6003',
+    date: '2026-06-30',
+    changes: [
+      '修复自动更新版本号+hash路由白屏'
+    ]
+  },
+
+
+  {
+    version: '1.0.6002',
+    date: '2026-06-30',
+    changes: [
+      '修复Electron file://白屏——hash路由+去除crossorigin'
+    ]
+  },
+
+
+  {
     version: '1.0.6001',
     date: '2026-06-30',
     changes: [
