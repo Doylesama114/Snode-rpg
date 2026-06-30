@@ -320,6 +320,10 @@ function isCardPlayable(index: number): boolean {
         >
           重新开始
         </button>
+
+        <button v-if="gameState.phase !== 'gameOver'" @click="$router.push('/')" class="btn btn-secondary" style="margin-left:auto">
+          返回主页
+        </button>
       </div>
     </div>
   </div>
@@ -711,7 +715,7 @@ function isCardPlayable(index: number): boolean {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   padding: 10px 0 0;
   flex-shrink: 0;
   margin-top: auto;

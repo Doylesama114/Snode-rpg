@@ -14,6 +14,10 @@ function startNewGame() {
 function startMultiplayer() {
   router.push('/multiplayer')
 }
+
+function goBack() {
+  window.history.back()
+}
 </script>
 
 <template>
@@ -32,6 +36,12 @@ function startMultiplayer() {
         style="padding: 20px 40px; font-size: 24px; background: #9c27b0; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"
       >
         🌐 联机对战
+      </button>
+      <button 
+        @click="goBack"
+        style="padding: 12px 30px; font-size: 18px; background: #69706b; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px;"
+      >
+        ← 返回启动台
       </button>
     </div>
     <GameContent/>

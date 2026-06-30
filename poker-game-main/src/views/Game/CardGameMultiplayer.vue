@@ -501,12 +501,15 @@ function leaveGame() {
 <style scoped>
 /* 复用原有样式 */
 .game-container {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background: #f6f4ef;
-  padding: 20px;
+  padding: 10px 20px;
   color: #1f2522;
-  max-width: 1600px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .loading {
@@ -527,18 +530,20 @@ function leaveGame() {
 }
 
 .game-info {
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  padding: 10px 15px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  color: #1f2522;
 }
 
 .round-info {
   display: flex;
-  gap: 20px;
-  font-size: 18px;
+  gap: 15px;
+  font-size: 16px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   align-items: center;
 }
 
@@ -549,7 +554,7 @@ function leaveGame() {
 
 .ready-status {
   color: #2f6f5e;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 @keyframes pulse {
@@ -558,16 +563,17 @@ function leaveGame() {
 }
 
 .message {
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.4;
   white-space: pre-line;
 }
 
 .player-area {
   background: #fffdf8; border: 1px solid #d8d2c4;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .opponent-area {
@@ -576,61 +582,69 @@ function leaveGame() {
 }
 
 .my-area {
-  border-left: 4px solid #2f6f5e;
   border: 1px solid #d8d2c4;
+  border-left: 4px solid #2f6f5e;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .player-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .player-header h3 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .stats {
   display: flex;
-  gap: 15px;
-  font-size: 16px;
+  gap: 10px;
+  font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .power-display {
-  font-size: 18px;
+  font-size: 16px;
   color: #a46d1f;
 }
 
 .power-display strong {
-  font-size: 22px;
+  font-size: 18px;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .field {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .field-label {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .field-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  padding: 0 80px;
+  gap: 6px;
+  padding: 0;
 }
 
 .field-slot {
   background: #f6f4ef;
   border: 1px solid #d8d2c4;
   border-radius: 8px;
-  padding: 8px;
-  min-height: 70px;
+  padding: 6px;
+  min-height: 55px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -667,9 +681,9 @@ function leaveGame() {
 }
 
 .card-name-small {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -677,68 +691,69 @@ function leaveGame() {
 }
 
 .card-power {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 
 .empty-slot {
   color: #69706b;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .opponent-hand {
   margin-bottom: 15px;
+  flex-shrink: 0;
 }
 
 .hand-cards-hidden {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .hand-card-back {
   background: #f6f4ef;
   color: white;
   border-radius: 8px;
-  padding: 20px;
-  min-width: 60px;
-  height: 80px;
+  padding: 12px;
+  min-width: 50px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hand {
-  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .hand-label {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .hint {
   color: #a46d1f;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: normal;
   margin-left: 10px;
 }
 
 .hint-disabled {
   color: #999;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: normal;
   margin-left: 10px;
 }
 
 .hint-extra {
   color: #2f6f5e;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   margin-left: 10px;
   animation: pulse 1s infinite;
@@ -746,25 +761,25 @@ function leaveGame() {
 
 .hand-cards {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   overflow-x: auto;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .hand-card {
   background: #fffdf8;
-  border: 1px solid #d8d2c4;
-  color: #333;
-  border-radius: 12px;
-  padding: 15px;
-  min-width: 200px;
-  max-width: 200px;
+  color: #1f2522;
+  border-radius: 10px;
+  padding: 10px;
+  min-width: 160px;
+  max-width: 160px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
   transition: all 0.3s;
-  border: 2px solid transparent;
+  border: 1px solid #d8d2c4;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .hand-card.playable {
@@ -801,54 +816,57 @@ function leaveGame() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .card-attribute {
   background: rgba(0, 0, 0, 0.1);
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
   font-weight: bold;
 }
 
 .card-cost-power {
   display: flex;
-  gap: 5px;
+  gap: 4px;
 }
 
 .card-type-badge {
   background: #a46d1f;
   color: #fff;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
   font-weight: bold;
 }
 
 .card-name {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
 }
 
 .card-keywords {
-  font-size: 12px;
+  font-size: 11px;
   color: #69706b;
   text-align: center;
 }
 
 .card-effect {
-  font-size: 11px;
+  font-size: 10px;
   color: #69706b;
   font-style: italic;
-  line-height: 1.3;
-  min-height: 40px;
+  line-height: 1.2;
+  min-height: 30px;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 10px 0 0;
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .btn {

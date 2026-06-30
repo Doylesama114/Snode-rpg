@@ -93,6 +93,13 @@ function startGame() {
   router.push('/game/multiplayer')
 }
 
+function disbandRoom() {
+  if (confirm('确定要解散房间吗？')) {
+    multiplayer.leaveRoom()
+    router.replace('/')
+  }
+}
+
 // 监听游戏开始
 watch(isGameStarted, (started) => {
   if (started) {
@@ -273,6 +280,9 @@ watch(isGameStarted, (started) => {
         <div v-else class="ready-message">
           游戏即将开始！
         </div>
+        <button @click="disbandRoom" class="btn btn-danger" style="margin-top:15px">
+          解散房间
+        </button>
       </div>
     </div>
 
