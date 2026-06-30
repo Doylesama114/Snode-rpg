@@ -4,6 +4,19 @@ import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import path from 'path'
 
+// 去除 crossorigin 属性 (Electron file:// 下报错)
+function removeCrossorigin() {
+  return {
+    name: 'remove-crossorigin',
+    transformIndexHtml(html: string) {
+      if (process.env.VITE_ELECTRON) {
+        return html.replace(/ crossorigin/g, '')
+      }
+      return html
+    }
+  }
+}
+
 export default defineConfig({
     // GitHub Pages 部署时需要设置正确的 base
     // 仓库名是 poker-game，所以 base 应该是 '/poker-game/'
@@ -12,6 +25,7 @@ export default defineConfig({
     plugins: [
         vue(),
         UnoCSS(),
+        removeCrossorigin(),
         AutoImport({
             // targets to transform
             include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
@@ -24,7 +38,8 @@ export default defineConfig({
                 {
                     'vue-router': [
                         'createRouter',
-                        'createWebHistory'
+                        'createWebHistory',
+                        'createWebHashHistory'
                     ]
                 },
                 // @vueuse/core auto import

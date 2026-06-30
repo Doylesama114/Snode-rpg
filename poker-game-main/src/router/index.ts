@@ -1,5 +1,8 @@
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    // Electron file:// 协议下只能用 hash 路由，history 路由会白屏
+    history: import.meta.env.VITE_ELECTRON
+      ? createWebHashHistory(import.meta.env.BASE_URL)
+      : createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
