@@ -329,9 +329,9 @@ function isCardPlayable(index: number): boolean {
 .game-container {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f6f4ef;
   padding: 10px 20px;
-  color: white;
+  color: #1f2522;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -339,10 +339,12 @@ function isCardPlayable(index: number): boolean {
 }
 
 .game-info {
-  background: rgba(0, 0, 0, 0.3);
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
   padding: 10px 15px;
-  border-radius: 10px;
+  border-radius: 12px;
   flex-shrink: 0;
+  color: #1f2522;
 }
 
 .round-info {
@@ -370,7 +372,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .player-area {
-  background: rgba(255, 255, 255, 0.1);
+  background: #fffdf8; border: 1px solid #d8d2c4;
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 8px;
@@ -378,11 +380,13 @@ function isCardPlayable(index: number): boolean {
 }
 
 .ai-area {
-  border: 2px solid rgba(255, 100, 100, 0.5);
+  border: 1px solid #d8d2c4;
+  border-left: 4px solid #9d2f2f;
 }
 
 .player-area-main {
-  border: 2px solid rgba(100, 255, 100, 0.5);
+  border: 1px solid #d8d2c4;
+  border-left: 4px solid #2f6f5e;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -412,7 +416,7 @@ function isCardPlayable(index: number): boolean {
 
 .power-display {
   font-size: 16px;
-  color: #ffd700;
+  color: #a46d1f;
 }
 
 .power-display strong {
@@ -439,8 +443,8 @@ function isCardPlayable(index: number): boolean {
 }
 
 .field-slot {
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: #f6f4ef;
+  border: 1px solid #d8d2c4;
   border-radius: 8px;
   padding: 6px;
   min-height: 55px;
@@ -453,18 +457,18 @@ function isCardPlayable(index: number): boolean {
 }
 
 .field-slot.selectable {
-  border-color: #4caf50;
+  border-color: #a46d1f;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
 }
 
 .field-slot.selectable:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+  box-shadow: 0 0 12px rgba(164, 109, 31, 0.3);
 }
 
 .field-slot.selected {
-  border-color: #ffd700;
+  border-color: #a46d1f;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
 }
 
@@ -474,7 +478,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .field-card.hidden {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f6f4ef;
   padding: 15px;
   border-radius: 8px;
 }
@@ -500,7 +504,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .empty-slot {
-  color: rgba(255, 255, 255, 0.5);
+  color: #69706b;
   font-size: 13px;
 }
 
@@ -520,7 +524,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .extra-slot.selectable {
-  border-color: #4caf50;
+  border-color: #a46d1f;
   cursor: pointer;
 }
 
@@ -547,7 +551,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .hint {
-  color: #ff9800;
+  color: #a46d1f;
   font-size: 13px;
   font-weight: normal;
   margin-left: 10px;
@@ -561,7 +565,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .hint-extra {
-  color: #4caf50;
+  color: #2f6f5e;
   font-size: 13px;
   font-weight: bold;
   margin-left: 10px;
@@ -576,8 +580,8 @@ function isCardPlayable(index: number): boolean {
 }
 
 .hand-card {
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
+  background: #fffdf8;
+  color: #1f2522;
   border-radius: 10px;
   padding: 10px;
   min-width: 160px;
@@ -586,13 +590,13 @@ function isCardPlayable(index: number): boolean {
   flex-direction: column;
   gap: 5px;
   transition: all 0.3s;
-  border: 2px solid transparent;
+  border: 1px solid #d8d2c4;
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .hand-card.playable {
-  border-color: #4caf50;
+  border-color: #a46d1f;
   box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
 }
 
@@ -607,7 +611,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .hand-card.selectable {
-  border-color: #ff9800;
+  border-color: #a46d1f;
 }
 
 .hand-card.selectable:hover {
@@ -616,7 +620,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .hand-card.selected {
-  border-color: #f44336;
+  border-color: #9d2f2f;
   background: rgba(244, 67, 54, 0.1);
   transform: translateY(-5px);
 }
@@ -641,8 +645,8 @@ function isCardPlayable(index: number): boolean {
 }
 
 .card-type-badge {
-  background: #ff9800;
-  color: white;
+  background: #a46d1f;
+  color: #fff;
   padding: 1px 5px;
   border-radius: 4px;
   font-weight: bold;
@@ -656,20 +660,20 @@ function isCardPlayable(index: number): boolean {
 
 .card-keywords {
   font-size: 11px;
-  color: #666;
+  color: #69706b;
   text-align: center;
 }
 
 .card-effect {
   font-size: 10px;
-  color: #666;
+  color: #69706b;
   font-style: italic;
   line-height: 1.2;
   min-height: 30px;
 }
 
 .target-selection {
-  background: rgba(0, 0, 0, 0.3);
+  background: #fffdf8; border: 1px solid #d8d2c4;
   padding: 10px;
   border-radius: 10px;
   flex-shrink: 0;
@@ -698,7 +702,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .target-card:hover {
-  border-color: #4caf50;
+  border-color: #a46d1f;
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
 }
@@ -724,34 +728,35 @@ function isCardPlayable(index: number): boolean {
 }
 
 .btn-primary {
-  background: #4caf50;
-  color: white;
+  background: #a46d1f;
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background: #45a049;
+  background: #8a5718;
   transform: scale(1.05);
 }
 
 .btn-secondary {
-  background: #2196f3;
-  color: white;
+  background: #f6f4ef;
+  border: 1px solid #d8d2c4;
+  color: #1f2522;
 }
 
 .btn-secondary:hover {
-  background: #0b7dda;
+  background: #e8e4da;
   transform: scale(1.05);
 }
 
 .btn-small {
   padding: 6px 14px;
   font-size: 13px;
-  background: #ff9800;
-  color: white;
+  background: #a46d1f;
+  color: #fff;
 }
 
 .btn-small:hover {
-  background: #e68900;
+  background: #8a5718;
 }
 
 .reforge-options {
@@ -759,7 +764,7 @@ function isCardPlayable(index: number): boolean {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
-  background: rgba(0, 0, 0, 0.3);
+  background: #fffdf8; border: 1px solid #d8d2c4;
   padding: 10px;
   border-radius: 10px;
   width: 100%;
@@ -772,7 +777,7 @@ function isCardPlayable(index: number): boolean {
 }
 
 .warning {
-  color: #f44336;
+  color: #9d2f2f;
   font-size: 13px;
 }
 </style>
