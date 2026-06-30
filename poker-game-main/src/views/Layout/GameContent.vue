@@ -3,7 +3,7 @@ import GameMain from '@/views/Game/GameMain.vue'
 </script>
 
 <template>
-  <div w-full h-full flex-center bg-center bg-cover bg-no-repeat>
+  <div w-full h-full flex-center style="background: #f6f4ef;">
     <GameMain/>
   </div>
 </template>

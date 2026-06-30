@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6007',
+    date: '2026-06-30',
+    changes: [
+      'UI修复——首页纯色背景+战力颜色可读+重铸溢出'
+    ]
+  },
+
+
+  {
     version: '1.0.6006',
     date: '2026-06-30',
     changes: [

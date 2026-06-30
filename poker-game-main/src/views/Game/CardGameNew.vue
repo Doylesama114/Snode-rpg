@@ -63,9 +63,9 @@ function getTotalPower(playerIndex: number) {
 }
 
 function getPowerColor(card: Card): string {
-  if (card.currentPower > card.basePower) return 'green'
-  if (card.currentPower < card.basePower) return 'red'
-  return 'white'
+  if (card.currentPower > card.basePower) return '#2f6f5e'
+  if (card.currentPower < card.basePower) return '#9d2f2f'
+  return '#1f2522'
 }
 
 function getCardTypeDisplay(card: Card): string {
@@ -394,7 +394,7 @@ function isCardPlayable(index: number): boolean {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
   min-height: 0;
 }
 
@@ -765,12 +765,12 @@ function isCardPlayable(index: number): boolean {
 
 .reforge-options {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   flex-wrap: wrap;
   background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
   width: 100%;
 }
 

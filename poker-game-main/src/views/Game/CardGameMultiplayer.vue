@@ -251,9 +251,9 @@ function selectReforgeOption(option: ReforgeOption) {
 
 // 获取战力颜色
 function getPowerColor(card: Card): string {
-  if (card.currentPower > card.basePower) return 'green'
-  if (card.currentPower < card.basePower) return 'red'
-  return 'white'
+  if (card.currentPower > card.basePower) return '#2f6f5e'
+  if (card.currentPower < card.basePower) return '#9d2f2f'
+  return '#1f2522'
 }
 
 // 离开游戏

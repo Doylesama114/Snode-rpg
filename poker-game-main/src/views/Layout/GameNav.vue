@@ -6,8 +6,8 @@ import FullScreenToggle from '@/views/NavButton/FullScreenToggle.vue'
 </script>
 
 <template>
-  <nav w-screen px4 py3 text-lg bg-transparent border="b base" color-white flex="~ gap-1 items-center">
-    <div title="Game">Poker Game Template</div>
+  <nav w-screen px4 py3 text-lg bg-transparent border="b base" style="color: #1f2522;" flex="~ gap-1 items-center">
+    <div title="Game" style="color: #1f2522;">斯诺德对决</div>
     <div flex-auto></div>
     <!-- 游戏控制按钮 -->
     <ChangeGameStatus />
