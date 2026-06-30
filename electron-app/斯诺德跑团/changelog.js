@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6005',
+    date: '2026-06-30',
+    changes: [
+      '修复——退出/解散/返回启动台/ESC快捷键/多人缩放'
+    ]
+  },
+
+
+  {
     version: '1.0.6004',
     date: '2026-06-30',
     changes: [
