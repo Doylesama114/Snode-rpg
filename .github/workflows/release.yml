@@ -39,7 +39,7 @@ jobs:
             electron-app/dist/*.exe
             electron-app/dist/*.yml
             electron-app/dist/*.blockmap
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GH_TOKEN2 }}
 
       - name: Upload dist as artifact (for mirror job)
         uses: actions/upload-artifact@v4
