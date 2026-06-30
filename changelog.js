@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6001',
+    date: '2026-06-30',
+    changes: [
+      'poker-game集成——斯诺德对决+联机对战+风格统一+缩放修复'
+    ]
+  },
+
+
+  {
     version: '1.0.5186',
     date: '2026-06-29',
     changes: [
