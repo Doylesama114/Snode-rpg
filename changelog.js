@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6014',
+    date: '2026-07-01',
+    changes: [
+      '联机grid布局+最终轮限制+负数能量框架'
+    ]
+  },
+
+
+  {
     version: '1.0.6013',
     date: '2026-07-01',
     changes: [

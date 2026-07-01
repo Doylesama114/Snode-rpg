@@ -129,7 +129,7 @@ const playerCountStart = ref(2)
         <div class="player-header">
           <h3>{{ player.name }} {{ player.id === 'player' ? '(你)' : '' }}</h3>
           <div class="stats">
-            <span>费用: {{ player.currentCost }}</span>
+            <span :class="{ 'negative-cost': player.currentCost < 0 }">费用: {{ player.currentCost }}</span>
             <span class="power-display">总战力: <strong>{{ getTotalPower(index) }}</strong></span>
             <span>手牌: {{ player.hand.length }}</span>
             <span>牌组: {{ player.deck.length }}</span>
@@ -717,4 +717,6 @@ const playerCountStart = ref(2)
   color: #9d2f2f;
   font-size: 13px;
 }
+
+.negative-cost { color: #9d2f2f; font-weight: bold; }
 </style>

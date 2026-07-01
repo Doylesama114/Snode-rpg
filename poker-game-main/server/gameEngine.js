@@ -456,9 +456,23 @@ class GameEngine {
       return { success: false, error: '卡牌不存在' }
     }
     
+    // 检查最后一回合的卡牌限制
+    const restrictions = this.gameState.playerRestrictions?.[playerId]
+    if (restrictions?.includes('cannotPlay')) {
+      return { success: false, error: '最后一回合无法出牌（场地已满）' }
+    }
+    if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
+      return { success: false, error: '最后一回合只能出战术牌' }
+    }
+    
     // 验证费用
     if (player.currentCost < card.cost) {
-      return { success: false, error: `费用不足！需要 ${card.cost}，当前 ${player.currentCost}` }
+      if (!card.forcedPlay) {
+        return { success: false, error: `费用不足！需要${card.cost}，当前${player.currentCost}` }
+      }
+      // forced play: allow negative energy
+      this.gameState.playersWithNegativeCost = this.gameState.playersWithNegativeCost || []
+      this.gameState.playersWithNegativeCost.push(playerId)
     }
     
     // 验证是否已出牌
@@ -769,6 +783,21 @@ class GameEngine {
         console.log(`[GameEngine] 最后一回合已完成，游戏结束`)
         return this.endGame()
       }
+    }
+    
+    // Compute player restrictions for final round
+    this.gameState.playerRestrictions = {}
+    if (this.gameState.isFinalRound) {
+      this.gameState.players.forEach((player, idx) => {
+        const filledSlots = player.field.filter(s => !s.isExtra && s.card).length
+        if (filledSlots >= 6) {
+          if (this.gameState.players.length === 2) {
+            this.gameState.playerRestrictions[player.id] = ['cannotPlay']
+          } else {
+            this.gameState.playerRestrictions[player.id] = ['tacticsOnly']
+          }
+        }
+      })
     }
     
     this.gameState.round++
