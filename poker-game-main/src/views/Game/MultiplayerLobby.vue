@@ -207,7 +207,7 @@ watch(isGameStarted, (started) => {
             <div class="room-id">房间: {{ room.id }}</div>
             <div class="room-info">
               <span>房主: {{ room.hostName }}</span>
-              <span>玩家: {{ room.onlinePlayers || room.playerCount }}/2</span>
+              <span>玩家: {{ room.onlinePlayers || room.playerCount }}/{{ room.maxPlayers || 2 }}</span>
               <span v-if="room.status === 'playing'" class="room-status">游戏中</span>
               <span v-else class="room-status waiting">等待中</span>
             </div>
@@ -268,7 +268,7 @@ watch(isGameStarted, (started) => {
       <div class="room-info-card">
         <h2>房间: {{ currentRoom?.id }}</h2>
         <div class="players-waiting">
-          <h3>玩家列表 ({{ roomPlayerCount }}/2)</h3>
+          <h3>玩家列表 ({{ roomPlayerCount }}/{{ currentRoom?.maxPlayers || 2 }})</h3>
           <div class="player-list">
             <div 
               v-for="player in currentRoom?.players" 
@@ -281,7 +281,7 @@ watch(isGameStarted, (started) => {
           </div>
         </div>
         
-        <div v-if="roomPlayerCount < 2" class="waiting-message">
+        <div v-if="roomPlayerCount < (currentRoom?.maxPlayers || 2)" class="waiting-message">
           等待对手加入...
         </div>
         <div v-else class="ready-message">

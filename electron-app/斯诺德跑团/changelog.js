@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6011',
+    date: '2026-07-01',
+    changes: [
+      '修复lobby人数显示/2→maxPlayers动态'
+    ]
+  },
+
+
+  {
     version: '1.0.6010',
     date: '2026-07-01',
     changes: [
