@@ -18,7 +18,6 @@ const io = new Server(httpServer, {
 // 游戏房间管理
 const rooms = new Map()
 const gameEngines = new Map() // 房间ID -> GameEngine实例
-const waitingPlayers = []
 // 玩家ID到socket ID的映射（用于断线重连）
 const playerSockets = new Map()
 
@@ -26,7 +25,7 @@ io.on('connection', (socket) => {
   console.log('玩家连接:', socket.id)
 
   // 创建房间
-  socket.on('createRoom', ({ playerName, persistentPlayerId }) => {
+  socket.on('createRoom', ({ playerName, persistentPlayerId, maxPlayers = 2 }) => {
     const roomId = generateRoomId()
     const playerId = persistentPlayerId || generatePlayerId()
     
@@ -37,6 +36,7 @@ io.on('connection', (socket) => {
         name: playerName,
         socketId: socket.id
       }],
+      maxPlayers,
       gameState: null,
       status: 'waiting', // waiting, playing, finished
       createdAt: Date.now()
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
     }
     
     // 新玩家加入
-    if (room.players.length >= 2) {
+    if (room.players.length >= room.maxPlayers) {
       console.log(`[joinRoom] 失败: 房间 ${roomId} 已满`)
       socket.emit('error', { message: '房间已满' })
       return
@@ -107,11 +107,11 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('playerJoined', { room })
     
     // 如果房间满了，开始游戏
-    if (room.players.length === 2) {
+    if (room.players.length === room.maxPlayers) {
       room.status = 'playing'
       
       // 创建游戏引擎实例
-      const gameEngine = new GameEngine(roomId, room.players)
+      const gameEngine = new GameEngine(roomId, room.players, room.maxPlayers)
       gameEngines.set(roomId, gameEngine)
       
       // 获取初始游戏状态
@@ -351,6 +351,7 @@ io.on('connection', (socket) => {
     const roomList = Array.from(rooms.values())
       .map(room => ({
         id: room.id,
+        maxPlayers: room.maxPlayers,
         playerCount: room.players.length,
         hostName: room.players[0].name,
         status: room.status,

@@ -251,8 +251,9 @@ function createInitialSlots() {
 
 // 游戏引擎类
 class GameEngine {
-  constructor(roomId, players) {
+  constructor(roomId, players, maxPlayers = 2) {
     this.roomId = roomId
+    this.maxPlayers = maxPlayers
     
     // 初始化游戏状态
     this.gameState = {
@@ -274,21 +275,19 @@ class GameEngine {
       isFinalRound: false,
       message: '回合 1 - 选择出牌或重铸',
       // 添加玩家决策状态跟踪
-      playerDecisions: {
-        [players[0].id]: { made: false, choice: null },
-        [players[1].id]: { made: false, choice: null }
-      },
+      playerDecisions: {},
       // 添加玩家回合准备状态跟踪
-      playerReady: {
-        [players[0].id]: false,
-        [players[1].id]: false
-      },
+      playerReady: {},
       // 添加待揭示的卡牌跟踪（本回合打出但尚未揭示的卡牌）
-      pendingReveals: {
-        [players[0].id]: [],
-        [players[1].id]: []
-      }
+      pendingReveals: {}
     }
+    
+    // 动态初始化玩家决策/准备/揭示状态
+    this.gameState.players.forEach(p => {
+      this.gameState.playerDecisions[p.id] = { made: false, choice: null }
+      this.gameState.playerReady[p.id] = false
+      this.gameState.pendingReveals[p.id] = []
+    })
     
     // 初始抽3张牌
     this.gameState.players.forEach(player => {
@@ -315,9 +314,9 @@ class GameEngine {
     return this.gameState.players.findIndex(p => p.id === playerId)
   }
   
-  // 获取对手索引
-  getOpponentIndex(playerIndex) {
-    return playerIndex === 0 ? 1 : 0
+  // 获取其他玩家索引
+  getOtherPlayerIndices(playerIndex) {
+    return this.gameState.players.map((_, i) => i).filter(i => i !== playerIndex)
   }
   
   // 处理玩家选择出牌
@@ -335,28 +334,30 @@ class GameEngine {
     // 记录玩家决策
     this.gameState.playerDecisions[playerId] = { made: true, choice: 'play' }
     
-    // 检查是否两个玩家都已决策
-    const allDecided = Object.values(this.gameState.playerDecisions).every(d => d.made)
+    // 检查是否所有玩家都已决策
+    const decidedCount = Object.values(this.gameState.playerDecisions).filter(d => d.made).length
+    const allDecided = decidedCount === this.gameState.players.length
     
     if (allDecided) {
-      console.log(`[GameEngine] 两个玩家都已决策，进入 action 阶段`)
+      console.log(`[GameEngine] 所有玩家都已决策，进入 action 阶段`)
       this.gameState.phase = 'action'
       
-      // 检查双方的决策类型
+      // 检查所有玩家的决策类型
       const decisions = Object.values(this.gameState.playerDecisions)
       const playCount = decisions.filter(d => d.choice === 'play').length
       const reforgeCount = decisions.filter(d => d.choice === 'reforge').length
+      const total = this.gameState.players.length
       
-      if (playCount === 2) {
-        this.gameState.message = `双方已决策，开始行动（双方都选择出牌）`
-      } else if (reforgeCount === 2) {
-        this.gameState.message = `双方已决策，开始行动（双方都选择重铸）`
+      if (playCount === total) {
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（所有玩家都选择出牌）`
+      } else if (reforgeCount === total) {
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（所有玩家都选择重铸）`
       } else {
-        this.gameState.message = `双方已决策，开始行动（一方出牌，一方重铸）`
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（${playCount}人出牌，${reforgeCount}人重铸）`
       }
     } else {
-      console.log(`[GameEngine] 等待另一个玩家决策`)
-      this.gameState.message = `对方已决策，等待另一方...`
+      console.log(`[GameEngine] 等待其他玩家决策`)
+      this.gameState.message = `已有 ${decidedCount}/${this.gameState.players.length} 玩家决策，等待其他玩家...`
     }
     
     console.log(`[GameEngine] phase: ${this.gameState.phase}`)
@@ -383,28 +384,30 @@ class GameEngine {
     // 记录玩家决策
     this.gameState.playerDecisions[playerId] = { made: true, choice: 'reforge' }
     
-    // 检查是否两个玩家都已决策
-    const allDecided = Object.values(this.gameState.playerDecisions).every(d => d.made)
+    // 检查是否所有玩家都已决策
+    const decidedCount = Object.values(this.gameState.playerDecisions).filter(d => d.made).length
+    const allDecided = decidedCount === this.gameState.players.length
     
     if (allDecided) {
-      console.log(`[GameEngine] 两个玩家都已决策，进入 action 阶段`)
+      console.log(`[GameEngine] 所有玩家都已决策，进入 action 阶段`)
       this.gameState.phase = 'action'
       
-      // 检查双方的决策类型
+      // 检查所有玩家的决策类型
       const decisions = Object.values(this.gameState.playerDecisions)
       const playCount = decisions.filter(d => d.choice === 'play').length
       const reforgeCount = decisions.filter(d => d.choice === 'reforge').length
+      const total = this.gameState.players.length
       
-      if (playCount === 2) {
-        this.gameState.message = `双方已决策，开始行动（双方都选择出牌）`
-      } else if (reforgeCount === 2) {
-        this.gameState.message = `双方已决策，开始行动（双方都选择重铸）`
+      if (playCount === total) {
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（所有玩家都选择出牌）`
+      } else if (reforgeCount === total) {
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（所有玩家都选择重铸）`
       } else {
-        this.gameState.message = `双方已决策，开始行动（一方出牌，一方重铸）`
+        this.gameState.message = `${decidedCount}/${total} 玩家已决策，开始行动（${playCount}人出牌，${reforgeCount}人重铸）`
       }
     } else {
-      console.log(`[GameEngine] 等待另一个玩家决策`)
-      this.gameState.message = `对方已决策，等待另一方...`
+      console.log(`[GameEngine] 等待其他玩家决策`)
+      this.gameState.message = `已有 ${decidedCount}/${this.gameState.players.length} 玩家决策，等待其他玩家...`
     }
     
     console.log(`[GameEngine] phase: ${this.gameState.phase}`)
@@ -503,9 +506,9 @@ class GameEngine {
       // 检查是否两个玩家都准备好
       const allReady = Object.values(this.gameState.playerReady).every(ready => ready)
       if (allReady) {
-        console.log(`[GameEngine] 两个玩家都准备完成`)
+        console.log(`[GameEngine] 所有玩家都准备完成`)
         // 不在这里揭示卡牌，等到开始新回合时再揭示
-        this.gameState.message += ` | 双方都已完成，等待进入下一回合...`
+        this.gameState.message += ` | ${this.gameState.players.length === 2 ? '双方' : '所有玩家'}都已完成，等待进入下一回合...`
       }
     }
     
@@ -567,10 +570,12 @@ class GameEngine {
       this.gameState.message += ` | ${targets[0].name} 战力+${effect.value}`
       this.discardTacticCard(card, player, slotIndex)
     } else if (effect.type === 'modifyCost') {
-      const opponentIndex = this.getOpponentIndex(this.getPlayerIndex(player.id))
-      const opponent = this.gameState.players[opponentIndex]
-      opponent.currentCost += effect.value || 0
-      this.gameState.message += ` | ${opponent.name} 费用${effect.value}`
+      const otherIndices = this.getOtherPlayerIndices(this.getPlayerIndex(player.id))
+      otherIndices.forEach(idx => {
+        const opponent = this.gameState.players[idx]
+        opponent.currentCost += effect.value || 0
+        this.gameState.message += ` | ${opponent.name} 费用${effect.value}`
+      })
       this.discardTacticCard(card, player, slotIndex)
     }
   }
@@ -705,8 +710,8 @@ class GameEngine {
     // 检查是否两个玩家都准备好
     const allReady = Object.values(this.gameState.playerReady).every(ready => ready)
     if (allReady) {
-      console.log(`[GameEngine] 两个玩家都准备完成`)
-      message += ` | 双方都已完成，等待进入下一回合...`
+      console.log(`[GameEngine] 所有玩家都准备完成`)
+      message += ` | ${this.gameState.players.length === 2 ? '双方' : '所有玩家'}都已完成，等待进入下一回合...`
     }
     
     this.gameState.message = message
@@ -734,10 +739,10 @@ class GameEngine {
     // 检查是否两个玩家都准备好
     const allReady = Object.values(this.gameState.playerReady).every(ready => ready)
     if (allReady) {
-      console.log(`[GameEngine] 两个玩家都准备完成`)
-      this.gameState.message = `${player.name} 跳过回合 | 双方都已完成，等待进入下一回合...`
+      console.log(`[GameEngine] 所有玩家都准备完成`)
+      this.gameState.message = `${player.name} 跳过回合 | ${this.gameState.players.length === 2 ? '双方' : '所有玩家'}都已完成，等待进入下一回合...`
     } else {
-      this.gameState.message = `${player.name} 跳过回合，等待对手...`
+      this.gameState.message = `${player.name} 跳过回合，等待其他玩家...`
     }
     
     return {
@@ -836,27 +841,51 @@ class GameEngine {
   endGame() {
     this.gameState.phase = 'gameOver'
     
-    const powers = this.gameState.players.map(player => {
+    // 计算所有玩家战力
+    const powerEntries = this.gameState.players.map((player, index) => {
       let totalPower = player.bonusPower
       player.field.forEach(slot => {
         if (slot.card && !slot.isExtra) {
           totalPower += slot.card.currentPower
         }
       })
-      return totalPower
+      return { index, power: totalPower }
     })
     
-    this.gameState.message = `游戏结束！\n${this.gameState.players[0].name}战力：${powers[0]}\n${this.gameState.players[1].name}战力：${powers[1]}\n`
+    // 按战力降序排序
+    powerEntries.sort((a, b) => b.power - a.power)
     
-    if (powers[0] > powers[1]) {
-      this.gameState.winner = 0
-      this.gameState.message += `${this.gameState.players[0].name}获胜！🎉`
-    } else if (powers[1] > powers[0]) {
-      this.gameState.winner = 1
-      this.gameState.message += `${this.gameState.players[1].name}获胜！`
-    } else {
-      this.gameState.message += '平局！'
+    // 设置排名
+    this.gameState.rankings = powerEntries.map((entry, rank) => ({
+      playerIndex: entry.index,
+      power: entry.power,
+      rank: rank + 1
+    }))
+    
+    // 处理平局：相同战力共享排名
+    for (let i = 1; i < powerEntries.length; i++) {
+      if (powerEntries[i].power === powerEntries[i - 1].power) {
+        this.gameState.rankings[i].rank = this.gameState.rankings[i - 1].rank
+      }
     }
+    
+    // 设置赢家（排名第一的玩家）
+    this.gameState.winner = powerEntries[0].index
+    
+    // 构建消息
+    let message = `游戏结束！\n`
+    this.gameState.rankings.forEach(({ playerIndex, power, rank }) => {
+      message += `第${rank}名: ${this.gameState.players[playerIndex].name}（战力：${power}）\n`
+    })
+    
+    // 检查是否平局
+    if (this.gameState.rankings.length > 1 && this.gameState.rankings[0].rank === this.gameState.rankings[1].rank) {
+      message += '平局！'
+    } else {
+      message += `${this.gameState.players[this.gameState.winner].name}获胜！🎉`
+    }
+    
+    this.gameState.message = message
     
     console.log(`[GameEngine] 游戏结束: ${this.gameState.message}`)
     
@@ -936,13 +965,13 @@ class GameEngine {
       }
     })
     
-    // 最后调整玩家顺序，让请求的玩家总是在 players[0]
-    if (playerIndex === 1) {
-      // 如果请求的是玩家2，交换顺序
-      const temp = publicState.players[0]
-      publicState.players[0] = publicState.players[1]
-      publicState.players[1] = temp
-      console.log(`[GameEngine] getPlayerGameState: 交换玩家顺序，让玩家${playerIndex}成为players[0]`)
+    // 最后调整玩家顺序，让请求的玩家总是在 players[0]，其他玩家轮转
+    if (playerIndex !== 0) {
+      const players = publicState.players
+      // 将请求的玩家移到第一位，其他玩家保持相对顺序
+      const reordered = [players[playerIndex], ...players.slice(0, playerIndex), ...players.slice(playerIndex + 1)]
+      publicState.players = reordered
+      console.log(`[GameEngine] getPlayerGameState: 重新排序玩家，让玩家${playerIndex}成为players[0]`)
     }
     
     return publicState

@@ -31,8 +31,8 @@ export function useGame() {
         hasPlayedThisTurn: false
       },
       {
-        id: 'ai',
-        name: 'AI',
+        id: 'ai_1',
+        name: 'AI 1',
         hand: [],
         deck: [],
         field: createInitialSlots(),
@@ -51,8 +51,9 @@ export function useGame() {
   })
 
   const currentPlayer = computed(() => gameState.value.players[gameState.value.currentPlayerIndex])
-  const opponent = computed(() => gameState.value.players[1 - gameState.value.currentPlayerIndex])
-  const aiHiddenCards = ref<Array<{ card: Card, slot: number }>>([])
+  const otherPlayers = computed(() => gameState.value.players.filter((_, i) => i !== gameState.value.currentPlayerIndex))
+  const humanPlayerId = computed(() => gameState.value.players[0].id)
+  const aiHiddenCards = ref<Record<string, Array<{ card: Card, slot: number }>>>({})
   const reforgeState = ref<{ active: boolean; selectedCard: number | null; hasChosen: boolean }>({
     active: false,
     selectedCard: null,
@@ -64,7 +65,41 @@ export function useGame() {
   const canPlayExtra = computed(() => currentPlayer.value.canPlayExtra)
 
   // 初始化游戏
-  function initGame() {
+  function initGame(playerCount: number = 2) {
+    // 构建玩家数组：人类玩家(index 0) + AI玩家
+    const players: Player[] = [
+      {
+        id: 'player',
+        name: '玩家',
+        hand: [],
+        deck: [],
+        field: createInitialSlots(),
+        discard: [],
+        currentCost: 4,
+        bonusPower: 0,
+        canPlayExtra: false,
+        hasPlayedThisTurn: false
+      }
+    ]
+    
+    for (let i = 1; i < playerCount; i++) {
+      players.push({
+        id: `ai_${i}`,
+        name: `AI ${i}`,
+        hand: [],
+        deck: [],
+        field: createInitialSlots(),
+        discard: [],
+        currentCost: 4,
+        bonusPower: 0,
+        canPlayExtra: false,
+        hasPlayedThisTurn: false
+      })
+    }
+    
+    gameState.value.players = players
+    gameState.value.playerCount = playerCount
+    
     gameState.value.players.forEach(player => {
       player.deck = shuffleDeck(createDeck())
       player.hand = []
@@ -83,11 +118,12 @@ export function useGame() {
     gameState.value.phase = 'draw'
     gameState.value.isFinalRound = false
     gameState.value.winner = undefined
-    aiHiddenCards.value = []
+    gameState.value.rankings = undefined
+    aiHiddenCards.value = {}
     reforgeState.value = { active: false, selectedCard: null, hasChosen: false }
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
-    gameState.value.message = '回合 1 - AI先手'
+    gameState.value.message = `回合 1 - AI ${gameState.value.currentPlayerIndex}先手`
     
     nextTick(() => startDrawPhase())
   }
@@ -116,8 +152,8 @@ export function useGame() {
     
     const card = drawCard(currentPlayer.value)
     
-    if (currentPlayer.value.id === 'ai') {
-      gameState.value.message = `AI 抽了一张牌`
+    if (currentPlayer.value.id.startsWith('ai')) {
+      gameState.value.message = `${currentPlayer.value.name} 抽了一张牌`
     } else {
       if (card) {
         gameState.value.message = `${currentPlayer.value.name} 抽了一张牌：${card.name}`
@@ -129,8 +165,8 @@ export function useGame() {
     setTimeout(() => {
       gameState.value.phase = 'decision'
       
-      if (currentPlayer.value.id === 'ai') {
-        gameState.value.message = `AI 正在思考...`
+      if (currentPlayer.value.id.startsWith('ai')) {
+        gameState.value.message = `${currentPlayer.value.name} 正在思考...`
         setTimeout(() => aiTurn(), 1000)
       } else {
         gameState.value.message = `${currentPlayer.value.name} - 必须选择出牌或重铸`
@@ -240,9 +276,12 @@ export function useGame() {
     }
     
     // AI隐藏卡牌
-    if (player.id === 'ai') {
-      aiHiddenCards.value.push({ card, slot: slotIndex })
-      gameState.value.message = `AI 打出了一张牌（已隐藏）`
+    if (player.id.startsWith('ai')) {
+      if (!aiHiddenCards.value[player.id]) {
+        aiHiddenCards.value[player.id] = []
+      }
+      aiHiddenCards.value[player.id].push({ card, slot: slotIndex })
+      gameState.value.message = `${player.name} 打出了一张牌（已隐藏）`
       gameState.value.selectedCard = undefined
       gameState.value.phase = 'decision'
     } else {
@@ -319,15 +358,16 @@ export function useGame() {
         gameState.value.message = '选择一个目标'
       }
     } else if (effect.type === 'modifyCost') {
-      // 魔法飞弹：减少对手费用
-      const target = opponent.value
-      target.currentCost += effect.value || 0
-      gameState.value.message += ` | ${target.name} 费用${effect.value}`
-      
-      // 检查AI是否因费用不足无法打出隐藏的牌
-      if (target.id === 'ai' && aiHiddenCards.value.length > 0) {
-        checkAIHiddenCardsAfterCostChange()
-      }
+      // 魔法飞弹：减少所有对手费用
+      otherPlayers.value.forEach(target => {
+        target.currentCost += effect.value || 0
+        gameState.value.message += ` | ${target.name} 费用${effect.value}`
+        
+        // 检查AI是否因费用不足无法打出隐藏的牌
+        if (target.id.startsWith('ai') && aiHiddenCards.value[target.id]?.length > 0) {
+          checkAIHiddenCardsAfterCostChange(target)
+        }
+      })
       
       discardTacticCard(card, player, slotIndex)
     }
@@ -366,12 +406,14 @@ export function useGame() {
   }
 
   // 检查AI隐藏卡牌费用
-  function checkAIHiddenCardsAfterCostChange() {
-    const ai = gameState.value.players[1]
-    const invalidCards: typeof aiHiddenCards.value = []
+  function checkAIHiddenCardsAfterCostChange(aiPlayer: Player) {
+    const hidden = aiHiddenCards.value[aiPlayer.id]
+    if (!hidden) return
     
-    aiHiddenCards.value = aiHiddenCards.value.filter(item => {
-      if (ai.currentCost < item.card.cost) {
+    const invalidCards: typeof hidden = []
+    
+    aiHiddenCards.value[aiPlayer.id] = hidden.filter(item => {
+      if (aiPlayer.currentCost < item.card.cost) {
         invalidCards.push(item)
         return false
       }
@@ -380,8 +422,8 @@ export function useGame() {
     
     if (invalidCards.length > 0) {
       invalidCards.forEach(item => {
-        ai.discard.push(item.card)
-        gameState.value.message += ` | AI的${item.card.name}因费用不足无法打出`
+        aiPlayer.discard.push(item.card)
+        gameState.value.message += ` | ${aiPlayer.name}的${item.card.name}因费用不足无法打出`
       })
     }
   }
@@ -418,20 +460,27 @@ export function useGame() {
 
   // 显示AI隐藏卡牌
   function revealAICards() {
-    if (aiHiddenCards.value.length === 0) return
+    const allHiddenCount = Object.values(aiHiddenCards.value).reduce((sum, cards) => sum + cards.length, 0)
+    if (allHiddenCount === 0) return
     
-    const ai = gameState.value.players[1]
-    gameState.value.message = `AI 打出了 ${aiHiddenCards.value.length} 张牌！`
+    const names: string[] = []
+    for (const aiId of Object.keys(aiHiddenCards.value)) {
+      const hidden = aiHiddenCards.value[aiId]
+      if (hidden.length === 0) continue
+      const aiPlayer = gameState.value.players.find(p => p.id === aiId)
+      if (!aiPlayer) continue
+      names.push(`${aiPlayer.name} ${hidden.length}张`)
+      hidden.forEach(item => {
+        deployCard(item.card, aiPlayer, item.slot)
+      })
+    }
     
-    aiHiddenCards.value.forEach(item => {
-      deployCard(item.card, ai, item.slot)
-    })
-    
-    aiHiddenCards.value = []
+    aiHiddenCards.value = {}
+    gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
     
     setTimeout(() => {
       if (gameState.value.phase === 'action') {
-        gameState.value.message = '玩家 - 选择手牌打出'
+        gameState.value.message = `${gameState.value.players[0].name} - 选择手牌打出`
       }
     }, 1500)
   }
@@ -454,13 +503,13 @@ export function useGame() {
           message += ` 总战力+1`
           break
         case 'redraw':
-          if (player.id === 'player' && reforgeState.value.selectedCard !== null) {
+          if (!player.id.startsWith('ai') && reforgeState.value.selectedCard !== null) {
             const card = player.hand.splice(reforgeState.value.selectedCard, 1)[0]
             player.deck.unshift(card)
             const newCard = drawCard(player)
             message += ` 换牌(${card.name}→${newCard?.name})`
             reforgeState.value.selectedCard = null
-          } else if (player.id === 'ai' && player.hand.length > 0) {
+          } else if (player.id.startsWith('ai') && player.hand.length > 0) {
             const cardIndex = Math.floor(Math.random() * player.hand.length)
             const card = player.hand.splice(cardIndex, 1)[0]
             player.deck.unshift(card)
@@ -476,7 +525,7 @@ export function useGame() {
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
     
-    if (player.id === 'player') {
+    if (!player.id.startsWith('ai')) {
       revealAICards()
     }
     
@@ -504,13 +553,14 @@ export function useGame() {
 
   // 切换玩家
   function switchToNextPlayer() {
-    const nextPlayerIndex = 1 - gameState.value.currentPlayerIndex
+    const nextPlayerIndex = (gameState.value.currentPlayerIndex + 1) % gameState.value.players.length
     
     if (gameState.value.isFinalRound) {
       const triggeredPlayer = gameState.value.finalRoundTriggeredBy!
       
       if (nextPlayerIndex === triggeredPlayer) {
-        if (aiHiddenCards.value.length > 0) {
+        const hasHidden = Object.values(aiHiddenCards.value).some(cards => cards.length > 0)
+        if (hasHidden) {
           revealAICards()
         }
         setTimeout(() => endGame(), 2000)
@@ -520,7 +570,7 @@ export function useGame() {
     
     gameState.value.currentPlayerIndex = nextPlayerIndex
     
-    if (nextPlayerIndex === 1) {
+    if (nextPlayerIndex < gameState.value.currentPlayerIndex) {
       gameState.value.round++
     }
     
@@ -537,26 +587,33 @@ export function useGame() {
   function endGame() {
     gameState.value.phase = 'gameOver'
     
-    const powers = gameState.value.players.map(player => {
+    const ranking = gameState.value.players.map((player, index) => {
       let totalPower = player.bonusPower
       player.field.forEach(slot => {
         if (slot.card && !slot.isExtra) {
           totalPower += slot.card.currentPower
         }
       })
-      return totalPower
+      return { playerIndex: index, playerName: player.name, power: totalPower }
     })
     
-    gameState.value.message = `游戏结束！\n玩家战力：${powers[0]}\nAI战力：${powers[1]}\n`
+    ranking.sort((a, b) => b.power - a.power)
+    gameState.value.rankings = ranking
     
-    if (powers[0] > powers[1]) {
+    const rankNames = ['1st', '2nd', '3rd', '4th', '5th', '6th']
+    gameState.value.message = '游戏结束！\n'
+    ranking.forEach((r, i) => {
+      gameState.value.message += `${rankNames[i] || `${i+1}th`}: ${r.playerName} (战力: ${r.power})\n`
+    })
+    
+    const humanPlayer = gameState.value.players[0]
+    const humanRank = ranking.findIndex(r => r.playerIndex === 0)
+    if (humanRank === 0) {
       gameState.value.winner = 0
-      gameState.value.message += '玩家获胜！🎉'
-    } else if (powers[1] > powers[0]) {
-      gameState.value.winner = 1
-      gameState.value.message += 'AI获胜！'
+      gameState.value.message += `${humanPlayer.name}获胜！🎉`
     } else {
-      gameState.value.message += '平局！'
+      gameState.value.winner = 1
+      gameState.value.message += `${ranking[0].playerName}获胜！`
     }
   }
 
@@ -564,10 +621,11 @@ export function useGame() {
   function aiTurn() {
     if (gameState.value.phase === 'gameOver') return
     
-    const ai = gameState.value.players[1]
+    const ai = currentPlayer.value
     const mainSlots = ai.field.filter(s => !s.isExtra)
     const filledMainSlots = mainSlots.filter(s => s.card !== null).length
-    const aiTotalCards = filledMainSlots + aiHiddenCards.value.length
+    const aiHiddenCount = (aiHiddenCards.value[ai.id]?.length || 0)
+    const aiTotalCards = filledMainSlots + aiHiddenCount
     
     const playableCards = ai.hand.filter(card => card.cost <= ai.currentCost && aiTotalCards < 6)
     
@@ -579,7 +637,7 @@ export function useGame() {
         const slotIndex = availableSlots[0]
         playCardToSlot(cardIndex, slotIndex)
         
-        gameState.value.message = `AI 打出了一张牌（已隐藏），等待玩家操作...`
+        gameState.value.message = `${ai.name} 打出了一张牌（已隐藏），等待玩家操作...`
         
         setTimeout(() => {
           if (gameState.value.phase !== 'gameOver') {
@@ -592,13 +650,13 @@ export function useGame() {
     
     // 重铸
     const options: [ReforgeOption, ReforgeOption] = ['gainCost', 'gainPower']
-    gameState.value.message = `AI 选择了重铸`
+    gameState.value.message = `${ai.name} 选择了重铸`
     
     setTimeout(() => {
       if (gameState.value.phase === 'gameOver') return
       
-      const aiPlayer = gameState.value.players[1]
-      let message = `AI 重铸：`
+      const aiPlayer = currentPlayer.value
+      let message = `${aiPlayer.name} 重铸：`
       
       options.forEach((option, index) => {
         switch (option) {
@@ -624,10 +682,36 @@ export function useGame() {
     }, 1000)
   }
 
+  // 检查卡牌是否可打出
+  function isCardPlayable(index: number): boolean {
+    if (gameState.value.phase !== 'action') return false
+    if (currentPlayer.value.id.startsWith('ai')) return false
+    if (reforgeState.value.active) return false
+    
+    const restrictions = gameState.value.playerRestrictions?.[currentPlayer.value.id]
+    if (restrictions) {
+      if (restrictions.includes('cannotPlay')) return false
+    }
+    
+    const card = currentPlayer.value.hand[index]
+    if (!card) return false
+    
+    if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
+      return false
+    }
+    
+    if (hasPlayedThisTurn.value && !canPlayExtra.value) {
+      return false
+    }
+    
+    return currentPlayer.value.currentCost >= card.cost
+  }
+
   return {
     gameState,
     currentPlayer,
-    opponent,
+    otherPlayers,
+    humanPlayerId,
     aiHiddenCards,
     reforgeState,
     hasPlayedThisTurn,
@@ -640,6 +724,7 @@ export function useGame() {
     selectTacticTarget,
     selectReforgeCard,
     executeReforge,
-    endTurn
+    endTurn,
+    isCardPlayable
   }
 }

@@ -4,7 +4,10 @@
 import { ref, computed } from 'vue'
 import type { GameState, Card, ReforgeOption } from '@/types/game'
 
-export function useGameClient() {
+export function useGameClient(myPlayerId: string) {
+  // 我的玩家ID（响应式）
+  const myPlayerIdRef = ref(myPlayerId)
+  
   // 游戏状态（从服务器接收）
   const gameState = ref<GameState | null>(null)
   
@@ -20,10 +23,18 @@ export function useGameClient() {
   const availableSlots = ref<number[]>([])
   const availableTargets = ref<Card[]>([])
   
-  // 决策状态
-  const myDecisionMade = ref(false)
-  const opponentDecisionMade = ref(false)
-  const bothDecisionsMade = computed(() => myDecisionMade.value && opponentDecisionMade.value)
+  // 决策状态（从服务器状态派生）
+  const myDecisionMade = computed(() => gameState.value?.playerDecisions?.[myPlayerIdRef.value]?.made ?? false)
+  const allOtherDecisionsMade = computed(() => {
+    const decisions = gameState.value?.playerDecisions
+    if (!decisions) return false
+    const totalPlayers = gameState.value?.players.length ?? 0
+    if (totalPlayers <= 1) return false
+    const myId = myPlayerIdRef.value
+    const otherEntries = Object.entries(decisions).filter(([pid]) => pid !== myId)
+    if (otherEntries.length < totalPlayers - 1) return false
+    return otherEntries.every(([_, d]) => d.made)
+  })
   
   // 回合准备状态
   const myReady = ref(false)
@@ -31,8 +42,8 @@ export function useGameClient() {
   const bothPlayersReady = computed(() => myReady.value && opponentReady.value)
   
   // 计算属性
-  const myPlayer = computed(() => gameState.value?.players[0] || null)
-  const opponent = computed(() => gameState.value?.players[1] || null)
+  const myPlayer = computed(() => gameState.value?.players.find(p => p.id === myPlayerIdRef.value) || null)
+  const otherPlayers = computed(() => gameState.value?.players.filter(p => p.id !== myPlayerIdRef.value) ?? [])
   const hasPlayedThisTurn = computed(() => myPlayer.value?.hasPlayedThisTurn || false)
   const canPlayExtra = computed(() => myPlayer.value?.canPlayExtra || false)
   
@@ -45,8 +56,6 @@ export function useGameClient() {
   // 选择出牌（返回操作对象，由调用者发送到服务器）
   function choosePlay() {
     console.log('[useGameClient] choosePlay 被调用')
-    console.log('[useGameClient] 设置 myDecisionMade = true')
-    myDecisionMade.value = true
     reforgeState.value.active = false
     reforgeState.value.hasChosen = true
     
@@ -58,8 +67,6 @@ export function useGameClient() {
   // 选择重铸
   function chooseReforge() {
     console.log('[useGameClient] chooseReforge 被调用')
-    console.log('[useGameClient] 设置 myDecisionMade = true')
-    myDecisionMade.value = true
     reforgeState.value.active = true
     reforgeState.value.hasChosen = true
     
@@ -147,19 +154,14 @@ export function useGameClient() {
     return action
   }
   
-  // 处理对手决策
+  // 处理对手决策（旧版兼容，决策状态现从服务器派生）
   function handleOpponentDecision() {
-    console.log('[useGameClient] handleOpponentDecision 被调用')
-    console.log('[useGameClient] 设置 opponentDecisionMade = true')
-    opponentDecisionMade.value = true
+    console.log('[useGameClient] handleOpponentDecision 被调用（已弃用，决策状态从服务器派生）')
   }
   
-  // 重置决策状态（新回合开始时）
+  // 重置决策状态（旧版兼容，决策状态现从服务器派生）
   function resetDecisionState() {
-    console.log('[useGameClient] resetDecisionState 被调用')
-    console.log('[useGameClient] 重置 myDecisionMade 和 opponentDecisionMade 为 false')
-    myDecisionMade.value = false
-    opponentDecisionMade.value = false
+    console.log('[useGameClient] resetDecisionState 被调用（已弃用，决策状态从服务器派生）')
   }
   
   // 重置回合准备状态
@@ -204,6 +206,15 @@ export function useGameClient() {
     if (gameState.value.phase !== 'action') return false
     if (reforgeState.value.active) return false
     
+    // 检查玩家限制
+    const restrictions = gameState.value.playerRestrictions?.[myPlayerIdRef.value]
+    if (restrictions?.includes('cannotPlay')) return false
+    if (restrictions?.includes('tacticsOnly')) {
+      const card = myPlayer.value.hand[index]
+      if (!card || card === 'hidden') return false
+      return (card as Card).type === 'tactic' && myPlayer.value.currentCost >= (card as Card).cost
+    }
+    
     const card = myPlayer.value.hand[index]
     if (!card || card === 'hidden') return false
     
@@ -217,7 +228,7 @@ export function useGameClient() {
   return {
     gameState,
     myPlayer,
-    opponent,
+    otherPlayers,
     reforgeState,
     selectedCard,
     selectedSlot,
@@ -226,8 +237,7 @@ export function useGameClient() {
     hasPlayedThisTurn,
     canPlayExtra,
     myDecisionMade,
-    opponentDecisionMade,
-    bothDecisionsMade,
+    allOtherDecisionsMade,
     myReady,
     opponentReady,
     bothPlayersReady,

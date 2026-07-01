@@ -11,6 +11,7 @@ export interface MultiplayerRoom {
   }>
   gameState: GameState | null
   status: 'waiting' | 'playing' | 'finished'
+  maxPlayers?: number
 }
 
 // 为每个标签页创建独立的实例
@@ -267,17 +268,18 @@ export function useMultiplayer() {
   }
 
   // 创建房间
-  function createRoom(name: string) {
+  function createRoom(name: string, maxPlayers: number = 2) {
     if (!instance.socket?.connected) {
       instance.error.value = '未连接到服务器'
       return
     }
     const currentPersistentId = getPersistentPlayerId()
-    console.log(`[${getTabId()}] createRoom 被调用:`, { name, persistentPlayerId: currentPersistentId })
+    console.log(`[${getTabId()}] createRoom 被调用:`, { name, maxPlayers, persistentPlayerId: currentPersistentId })
     instance.playerName.value = name
     instance.socket.emit('createRoom', { 
       playerName: name, 
-      persistentPlayerId: currentPersistentId
+      persistentPlayerId: currentPersistentId,
+      maxPlayers
     })
   }
 
@@ -423,10 +425,11 @@ export function useMultiplayer() {
   const isInRoom = computed(() => currentRoom.value !== null)
   const isGameStarted = computed(() => currentRoom.value?.status === 'playing')
   const roomPlayerCount = computed(() => currentRoom.value?.players.length || 0)
-  const opponentName = computed(() => {
-    if (!currentRoom.value || currentRoom.value.players.length < 2) return ''
-    const opponent = currentRoom.value.players.find(p => p.socketId !== myPlayerId.value)
-    return opponent?.name || ''
+  const otherPlayerNames = computed(() => {
+    if (!currentRoom.value) return []
+    return currentRoom.value.players
+      .filter(p => p.socketId !== myPlayerId.value)
+      .map(p => p.name)
   })
 
   return {
@@ -442,7 +445,7 @@ export function useMultiplayer() {
     isInRoom,
     isGameStarted,
     roomPlayerCount,
-    opponentName,
+    otherPlayerNames,
     connect,
     disconnect,
     createRoom,

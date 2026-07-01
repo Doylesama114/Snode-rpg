@@ -5,7 +5,7 @@ import type { ReforgeOption, Card } from '@/types/game'
 const { 
   gameState, 
   currentPlayer, 
-  opponent, 
+  otherPlayers, 
   aiHiddenCards, 
   reforgeState, 
   hasPlayedThisTurn, 
@@ -285,7 +285,7 @@ function isCardPlayable(index: number): boolean {
       <div class="actions">
         <button 
           v-if="gameState.phase === 'draw' && gameState.round === 0"
-          @click="initGame"
+          @click="() => initGame()"
           class="btn btn-primary"
         >
           开始游戏
@@ -315,7 +315,7 @@ function isCardPlayable(index: number): boolean {
 
         <button 
           v-if="gameState.phase === 'gameOver'"
-          @click="initGame"
+          @click="() => initGame()"
           class="btn btn-primary"
         >
           重新开始

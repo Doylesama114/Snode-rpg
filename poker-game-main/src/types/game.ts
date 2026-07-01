@@ -48,7 +48,8 @@ export interface EffectContext {
   game: GameState
   card: Card
   player: Player
-  opponent: Player
+  opponent?: Player      // N-player: 单一对手不再存在
+  opponents?: Player[]    // N-player: 所有对手
   trigger?: Card  // 触发效果的卡牌
 }
 
@@ -66,6 +67,7 @@ export interface Card {
   slotRequired: number    // 需要的槽位数（默认1）
   isPersistent: boolean   // 是否持续存在（战术牌为false）
   stackedBonus?: number   // 叠加的加成（用于法师、战士等）
+  forcedPlay?: boolean    // 是否强制打出（费用不足仍可打出，能量变负数）
 }
 
 // 场上槽位
@@ -101,27 +103,36 @@ export type ReforgeOption = 'gainCost' | 'redraw' | 'gainPower'
 
 // 游戏状态
 export interface GameState {
-  players: [Player, Player]
+  players: Player[]                     // N-player (was [Player, Player])
+  playerCount?: number                  // 配置的玩家数 (2-4)
   currentPlayerIndex: number
   round: number
   phase: GamePhase
   isFinalRound: boolean
   finalRoundTriggeredBy?: number
   winner?: number
+  rankings?: Array<{ playerIndex: number; power: number }>  // 多人排名
   message: string
   // 选择状态
   selectedCard?: Card
   selectedSlot?: number
   availableSlots?: number[]
   availableTargets?: Card[]
-  // 同时回合机制
-  pendingReveals?: Map<string, { cardId: string; slotIndex: number }>  // 待揭示的卡牌
-  playersReady?: Set<string>  // 已准备好的玩家
+  // 同时回合机制 (multi-player serializable records)
+  playerDecisions?: Record<string, { made: boolean; choice: DecisionType | null }>
+  pendingReveals?: Record<string, Array<{ cardId: string; slotIndex: number }>>
+  playersReady?: Record<string, boolean>
+  // 最后一轮限制
+  playerRestrictions?: Record<string, string[]>  // playerId → ['cannotPlay'|'tacticsOnly']
+  // 负数能量追踪
+  playersWithNegativeCost?: string[]
 }
 
 // 游戏操作（用于联机同步）
 export interface GameAction {
-  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft'
+  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom'
   data?: any
-  playerId?: string  // 添加玩家ID标识
+  playerId?: string
+  playerCount?: number    // room creation: 2-4
+  maxPlayers?: number     // room config
 }
