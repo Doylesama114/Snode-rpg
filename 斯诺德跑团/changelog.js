@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6020',
+    date: '2026-07-01',
+    changes: [
+      '效果3a——沙滩碉堡protect'
+    ]
+  },
+
+
+  {
     version: '1.0.6019',
     date: '2026-07-01',
     changes: [

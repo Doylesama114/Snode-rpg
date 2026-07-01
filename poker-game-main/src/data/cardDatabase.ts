@@ -2401,8 +2401,8 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'destroy',
+      timing: 'onDestroy',
+      type: 'protect',
       description: '当这张牌之前的卡牌将要被摧毁时，可以用这张牌代替被摧毁'
     }
     ],
