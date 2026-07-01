@@ -641,9 +641,13 @@ export const allCardDefinitions = [
     cost: 2,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的场上每拥有一张“居民”关键词的单位牌，这张牌的战力+1；其他玩家的场上每拥有一张金属性的卡牌，这张牌的战力-1'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 1,
+      targetKeywords: ['居民'],
+      selfTarget: true,
+      stackable: true,
+      description: '你的场上每拥有一张"居民"关键词的单位牌，这张牌的战力+1'
     }
     ],
     slotRequired: 1,

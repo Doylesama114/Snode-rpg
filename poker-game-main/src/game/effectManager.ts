@@ -214,6 +214,36 @@ export class EffectManager {
         })
       }
     })
+
+    // 处理自身onField效果：检查场上其他卡牌，满足条件则修改自己战力
+    if (card.effects) {
+      card.effects.forEach(effect => {
+        if (effect.timing === 'onField' && effect.type === 'modifyPower' && effect.selfTarget) {
+          if (effect.targetKeywords) {
+            const hasMatch = player.field.some(otherSlot =>
+              otherSlot.card && otherSlot.card !== card &&
+              this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+            )
+            const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+            if (conditionMet) {
+              if (effect.stackable !== false) {
+                // Count matching cards and multiply
+                const matchCount = player.field.filter(otherSlot =>
+                  otherSlot.card && otherSlot.card !== card &&
+                  this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+                ).length
+                card.stackedBonus = (effect.value || 0) * matchCount
+                if (matchCount > 0) {
+                  card.currentPower = card.basePower + card.stackedBonus
+                }
+              } else {
+                card.currentPower = card.basePower + (effect.value || 0)
+              }
+            }
+          }
+        }
+      })
+    }
   }
 
   // 获取可选择的目标卡牌

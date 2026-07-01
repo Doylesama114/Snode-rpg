@@ -55,8 +55,15 @@ class EffectManager {
               const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
               if (conditionMet) {
                 if (effect.stackable !== false) {
-                  slot.card.stackedBonus = (slot.card.stackedBonus || 0) + (effect.value || 0)
-                  slot.card.currentPower = slot.card.basePower + slot.card.stackedBonus
+                  // Count matching cards and multiply
+                  const matchCount = player.field.filter(otherSlot =>
+                    otherSlot !== slot && otherSlot.card &&
+                    EffectManager.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+                  ).length
+                  slot.card.stackedBonus = (effect.value || 0) * matchCount
+                  if (matchCount > 0) {
+                    slot.card.currentPower = slot.card.basePower + slot.card.stackedBonus
+                  }
                 } else {
                   slot.card.currentPower = slot.card.basePower + (effect.value || 0)
                 }
