@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7000',
+    date: '2026-07-01',
+    changes: [
+      '账号系统+151卡池+自定义牌组+SQLite数据库+注册/组牌UI'
+    ]
+  },
+
+
+  {
     version: '1.0.6012',
     date: '2026-07-01',
     changes: [
