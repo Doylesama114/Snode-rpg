@@ -38,6 +38,36 @@ class EffectManager {
     return Array.from(keywords)
   }
 
+  // 触发自身场上条件修饰效果：这张牌检查场上其他卡牌是否有关键词，满足条件则修改自己战力
+  static applyOnFieldSelfModify(game) {
+    game.gameState.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (!slot.card || slot.isExtra) return
+        if (!slot.card.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing === 'onField' && effect.type === 'modifyPower' && effect.selfTarget) {
+            if (effect.targetKeywords) {
+              // Check if ANY OTHER card on the field has the target keyword
+              const hasMatch = player.field.some(otherSlot =>
+                otherSlot !== slot && otherSlot.card &&
+                EffectManager.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+              )
+              const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+              if (conditionMet) {
+                if (effect.stackable !== false) {
+                  slot.card.stackedBonus = (slot.card.stackedBonus || 0) + (effect.value || 0)
+                  slot.card.currentPower = slot.card.basePower + slot.card.stackedBonus
+                } else {
+                  slot.card.currentPower = slot.card.basePower + (effect.value || 0)
+                }
+              }
+            }
+          }
+        })
+      })
+    })
+  }
+
   // 触发"其他卡牌打出时"的效果
   static triggerOnOtherPlayEffects(deployedCard, player, game) {
     const messages = []
@@ -556,6 +586,9 @@ class GameEngine {
     
     // 重新计算战力
     EffectManager.recalculateAllPowers(this.gameState)
+    
+    // 应用自身场上条件修饰效果（selfTarget modifyPower onField effects）
+    EffectManager.applyOnFieldSelfModify(this)
     
     // 检查是否填满场地
     this.checkFieldFull(playerIndex)

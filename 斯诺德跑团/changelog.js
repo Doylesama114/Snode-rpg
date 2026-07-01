@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6016',
+    date: '2026-07-01',
+    changes: [
+      '效果框架——条件自改战力(狗头人冒险者/圣洁骑士)'
+    ]
+  },
+
+
+  {
     version: '1.0.6015',
     date: '2026-07-01',
     changes: [

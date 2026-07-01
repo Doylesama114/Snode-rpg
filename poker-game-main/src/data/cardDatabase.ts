@@ -901,8 +901,12 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 3,
+      targetKeywords: ['金'],
+      selfTarget: true,
+      stackable: false,
       description: '如果你的场上拥有其他金属性的卡牌，这张牌的战力+3'
     }
     ],
@@ -1953,8 +1957,13 @@ export const allCardDefinitions = [
     cost: 4,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 3,
+      targetKeywords: ['暗'],
+      selfTarget: true,
+      invertCondition: true,
+      stackable: false,
       description: '如果所有玩家的场上均没有暗属性的卡牌，这张牌的战力+3'
     }
     ],
