@@ -3151,3 +3151,28 @@ export class CardDatabase {
 export function getDefaultDeckCardIds(): string[] {
   return Array.from({ length: 15 }, (_, i) => `card_${String(i + 1).padStart(3, '0')}`)
 }
+
+export function createDeckFromCardIds(cardIds: string[]): Card[] {
+  return cardIds.map((id, i) => {
+    const card = CardDatabase.get(id)
+    if (!card) {
+      console.warn(`[cardDatabase] Card not found: ${id}`)
+      return null
+    }
+    // Assign unique instance ID for deck tracking
+    return { ...card, id: `${id}_${i}` }
+  }).filter((c): c is Card => c !== null)
+}
+
+export function createDefaultDeck(): Card[] {
+  return createDeckFromCardIds(getDefaultDeckCardIds())
+}
+
+export function shuffleDeck(deck: Card[]): Card[] {
+  const shuffled = [...deck]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}

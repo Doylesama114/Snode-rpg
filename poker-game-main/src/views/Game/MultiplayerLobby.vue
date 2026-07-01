@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useRouter } from 'vue-router'
 import { getServerUrl, getServerUrlByMode, saveServerUrl, type ServerMode } from '@/config/multiplayer'
+import type { AccountState } from '@/types/game'
 import ServerConfigDialog from './ServerConfigDialog.vue'
 
 const router = useRouter()
@@ -32,12 +33,47 @@ const showServerConfig = ref(false)
 const showConfigDialog = ref(false)
 const playerCount = ref(2)
 
+// Deck info display
+const hasCustomDeck = ref(false)
+const deckCardCount = ref(0)
+
 onMounted(() => {
+  // Check account state
+  try {
+    const raw = localStorage.getItem('accountState')
+    if (raw) {
+      const accountState: AccountState = JSON.parse(raw)
+      if (!accountState.isRegistered) {
+        router.replace('/account-setup')
+        return
+      }
+      // Pre-fill player name
+      if (accountState.playerName) {
+        playerNameInput.value = accountState.playerName
+      }
+      // Check deck
+      if (accountState.deckCardIds && accountState.deckCardIds.length === 15) {
+        hasCustomDeck.value = true
+        deckCardCount.value = 15
+      }
+    } else {
+      router.replace('/account-setup')
+      return
+    }
+  } catch {
+    router.replace('/account-setup')
+    return
+  }
+
   // 只在未连接时才连接
   if (!connected.value) {
     connect(serverUrl.value)
   }
 })
+
+function goDeckBuilder() {
+  router.push('/deck-builder')
+}
 
 // 不要在unmounted时断开连接，因为游戏界面还需要使用
 // onUnmounted(() => {
@@ -178,6 +214,14 @@ watch(isGameStarted, (started) => {
 
     <!-- 未在房间 -->
     <div v-if="!isInRoom" class="lobby-content">
+      <!-- Deck info & player name -->
+      <div class="deck-info-bar">
+        <span class="player-display">👤 {{ playerNameInput || '玩家' }}</span>
+        <span class="deck-display">
+          当前卡组: {{ hasCustomDeck ? `自定义 (${deckCardCount}张)` : '默认' }}
+        </span>
+        <button @click="goDeckBuilder" class="btn btn-deck">管理卡组</button>
+      </div>
       <div class="actions">
         <button @click="showCreateDialog = true" class="btn btn-primary" :disabled="!connected">
           创建房间
@@ -451,6 +495,48 @@ watch(isGameStarted, (started) => {
 .lobby-content {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.deck-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.player-display {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1f2522;
+}
+
+.deck-display {
+  font-size: 16px;
+  color: #a46d1f;
+  font-weight: 500;
+}
+
+.btn-deck {
+  padding: 8px 18px;
+  background: #2f6f5e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-deck:hover {
+  background: #245a4c;
+  transform: scale(1.05);
 }
 
 .actions {

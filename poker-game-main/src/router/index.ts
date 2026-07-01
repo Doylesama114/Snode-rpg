@@ -1,3 +1,5 @@
+import type { AccountState } from '@/types/game'
+
 const router = createRouter({
     // Electron file:// 协议下只能用 hash 路由，history 路由会白屏
     history: import.meta.env.VITE_ELECTRON
@@ -28,8 +30,40 @@ const router = createRouter({
             path: '/game/multiplayer',
             name: 'multiplayerGame',
             component: () => import('../views/Game/CardGameMultiplayer.vue')
+        },
+        {
+            path: '/account-setup',
+            name: 'accountSetup',
+            component: () => import('../views/Game/AccountSetup.vue')
+        },
+        {
+            path: '/deck-builder',
+            name: 'deckBuilder',
+            component: () => import('../views/Game/DeckBuilder.vue')
         }
     ]
+})
+
+// Navigation guard: redirect to account setup if not registered
+router.beforeEach((to, _from, next) => {
+    if (to.path === '/account-setup') {
+        return next()
+    }
+
+    try {
+        const raw = localStorage.getItem('accountState')
+        if (raw) {
+            const accountState: AccountState = JSON.parse(raw)
+            if (!accountState.isRegistered) {
+                return next('/account-setup')
+            }
+            return next()
+        }
+    } catch {
+        // No accountState or parse error → redirect
+    }
+
+    return next('/account-setup')
 })
 
 export default router

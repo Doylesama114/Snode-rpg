@@ -1,5 +1,6 @@
-import type { GameState, Player, Card, ReforgeOption, FieldSlot } from '@/types/game'
+import type { GameState, Player, Card, ReforgeOption, FieldSlot, AccountState } from '@/types/game'
 import { createDeck, shuffleDeck, initializeCardDatabase } from '@/data/cards'
+import { createDeckFromCardIds, getDefaultDeckCardIds } from '@/data/cardDatabase'
 import { EffectManager } from '@/game/effectManager'
 
 export function useGame() {
@@ -100,8 +101,24 @@ export function useGame() {
     gameState.value.players = players
     gameState.value.playerCount = playerCount
     
-    gameState.value.players.forEach(player => {
-      player.deck = shuffleDeck(createDeck())
+    // Determine deck for human player (index 0): use custom deck from account if available
+    let humanDeckCardIds: string[] | null = null
+    try {
+      const raw = localStorage.getItem('accountState')
+      if (raw) {
+        const account: AccountState = JSON.parse(raw)
+        if (account.deckCardIds && account.deckCardIds.length === 15) {
+          humanDeckCardIds = account.deckCardIds
+        }
+      }
+    } catch { /* use default deck */ }
+    
+    gameState.value.players.forEach((player, idx) => {
+      if (idx === 0 && humanDeckCardIds) {
+        player.deck = shuffleDeck(createDeckFromCardIds(humanDeckCardIds))
+      } else {
+        player.deck = shuffleDeck(createDeck())
+      }
       player.hand = []
       player.field = createInitialSlots()
       player.discard = []

@@ -267,6 +267,20 @@ export function useMultiplayer() {
     }
   }
 
+  // 从localStorage读取deckCardIds
+  function getDeckCardIds(): string[] {
+    try {
+      const raw = localStorage.getItem('accountState')
+      if (raw) {
+        const account = JSON.parse(raw)
+        if (account.deckCardIds && account.deckCardIds.length === 15) {
+          return account.deckCardIds
+        }
+      }
+    } catch {}
+    return []
+  }
+
   // 创建房间
   function createRoom(name: string, maxPlayers: number = 2) {
     if (!instance.socket?.connected) {
@@ -274,12 +288,14 @@ export function useMultiplayer() {
       return
     }
     const currentPersistentId = getPersistentPlayerId()
-    console.log(`[${getTabId()}] createRoom 被调用:`, { name, maxPlayers, persistentPlayerId: currentPersistentId })
+    const deckCardIds = getDeckCardIds()
+    console.log(`[${getTabId()}] createRoom 被调用:`, { name, maxPlayers, persistentPlayerId: currentPersistentId, deckCardIds })
     instance.playerName.value = name
     instance.socket.emit('createRoom', { 
       playerName: name, 
       persistentPlayerId: currentPersistentId,
-      maxPlayers
+      maxPlayers,
+      deckCardIds
     })
   }
 
@@ -290,12 +306,14 @@ export function useMultiplayer() {
       return
     }
     const currentPersistentId = getPersistentPlayerId()
-    console.log(`[${getTabId()}] joinRoom 被调用:`, { roomId, name, persistentPlayerId: currentPersistentId })
+    const deckCardIds = getDeckCardIds()
+    console.log(`[${getTabId()}] joinRoom 被调用:`, { roomId, name, persistentPlayerId: currentPersistentId, deckCardIds })
     instance.playerName.value = name
     instance.socket.emit('joinRoom', { 
       roomId, 
       playerName: name, 
-      persistentPlayerId: currentPersistentId
+      persistentPlayerId: currentPersistentId,
+      deckCardIds
     })
   }
   
