@@ -3,6 +3,12 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import cors from 'cors'
 import { GameEngine } from './gameEngine.js'
+import { createRequire } from 'module'
+import { initDB, seedDefaultCards, registerPlayer, createDeck, getDeck, getPlayerByName } from './db.js'
+import { getAllCards } from './cardData.js'
+
+const require = createRequire(import.meta.url)
+const fs = require('fs')
 
 const app = express()
 app.use(cors())
@@ -21,11 +27,14 @@ const gameEngines = new Map() // 房间ID -> GameEngine实例
 // 玩家ID到socket ID的映射（用于断线重连）
 const playerSockets = new Map()
 
+// 数据库句柄（模块级别，所有socket处理器共享）
+let dbHandle = null
+
 io.on('connection', (socket) => {
   console.log('玩家连接:', socket.id)
 
   // 创建房间
-  socket.on('createRoom', ({ playerName, persistentPlayerId, maxPlayers = 2 }) => {
+  socket.on('createRoom', ({ playerName, persistentPlayerId, maxPlayers = 2, deckCardIds }) => {
     const roomId = generateRoomId()
     const playerId = persistentPlayerId || generatePlayerId()
     
@@ -34,7 +43,8 @@ io.on('connection', (socket) => {
       players: [{
         id: playerId,
         name: playerName,
-        socketId: socket.id
+        socketId: socket.id,
+        deckCardIds: deckCardIds || null
       }],
       maxPlayers,
       gameState: null,
@@ -50,7 +60,7 @@ io.on('connection', (socket) => {
   })
 
   // 加入房间
-  socket.on('joinRoom', ({ roomId, playerName, persistentPlayerId }) => {
+  socket.on('joinRoom', ({ roomId, playerName, persistentPlayerId, deckCardIds }) => {
     console.log(`[joinRoom] 玩家 ${socket.id} (${playerName}, persistentPlayerId: ${persistentPlayerId}) 尝试加入房间 ${roomId}`)
     const room = rooms.get(roomId)
     
@@ -96,7 +106,8 @@ io.on('connection', (socket) => {
       id: playerId,
       name: playerName,
       socketId: socket.id,
-      isOnline: true
+      isOnline: true,
+      deckCardIds: deckCardIds || null
     })
     
     playerSockets.set(playerId, socket.id)
@@ -360,6 +371,63 @@ io.on('connection', (socket) => {
     socket.emit('roomList', roomList)
     console.log(`[getRooms] 返回房间列表:`, roomList.length, '个房间')
   })
+
+  // --------------------------------------------------------------------------
+  // 账号系统 — 注册 / 登录 / 卡组存取
+  // --------------------------------------------------------------------------
+
+  // 注册新玩家（创建玩家记录 + 默认卡组）
+  socket.on('registerPlayer', ({ playerName }) => {
+    try {
+      const player = registerPlayer(dbHandle, playerName)
+      const defaultDeck = [
+        'card_001', 'card_002', 'card_003', 'card_004', 'card_005',
+        'card_006', 'card_007', 'card_008', 'card_009', 'card_010',
+        'card_011', 'card_012', 'card_013', 'card_014', 'card_015'
+      ]
+      createDeck(dbHandle, player.id, defaultDeck, 1) // isDefault=1
+      socket.emit('playerRegistered', {
+        player: { id: player.id, name: player.name },
+        deck: { cardIds: defaultDeck }
+      })
+    } catch (e) {
+      socket.emit('playerRejected', { message: e.message })
+    }
+  })
+
+  // 登录已有玩家
+  socket.on('loginPlayer', ({ playerName }) => {
+    const player = getPlayerByName(dbHandle, playerName)
+    if (!player) {
+      socket.emit('playerRejected', { message: `玩家 "${playerName}" 不存在，请先注册` })
+      return
+    }
+    const deck = getDeck(dbHandle, player.id)
+    socket.emit('playerLoggedIn', {
+      player: { id: player.id, name: player.name },
+      deck: deck ? { cardIds: deck.card_ids } : null
+    })
+  })
+
+  // 保存自定义卡组
+  socket.on('saveDeck', ({ playerName, cardIds }) => {
+    try {
+      const player = getPlayerByName(dbHandle, playerName)
+      if (!player) { socket.emit('playerRejected', { message: 'Player not found' }); return }
+      createDeck(dbHandle, player.id, cardIds, 0) // isDefault=0
+      socket.emit('deckSaved', { cardIds })
+    } catch (e) {
+      socket.emit('playerRejected', { message: e.message })
+    }
+  })
+
+  // 加载卡组
+  socket.on('loadDeck', ({ playerName }) => {
+    const player = getPlayerByName(dbHandle, playerName)
+    if (!player) { socket.emit('playerRejected', { message: 'Player not found' }); return }
+    const deck = getDeck(dbHandle, player.id)
+    socket.emit('deckLoaded', deck ? { cardIds: deck.card_ids } : null)
+  })
 })
 
 // 生成房间ID
@@ -371,6 +439,22 @@ function generateRoomId() {
 function generatePlayerId() {
   return `player_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
 }
+
+// --------------------------------------------------------------------------
+// 数据库初始化 & 卡牌数据填充
+// --------------------------------------------------------------------------
+dbHandle = initDB() // 使用 :memory: 以适应 Render 等无状态环境
+
+// 尝试从 card-seed.json 读取，不存在则回退到 cardData.js 内存数据
+let cardSeed
+try {
+  cardSeed = JSON.parse(fs.readFileSync('./card-seed.json', 'utf-8'))
+  console.log('[DB] 从 card-seed.json 加载卡牌数据')
+} catch (_err) {
+  cardSeed = getAllCards()
+  console.log('[DB] card-seed.json 不存在，使用 cardData.js 内存数据回退')
+}
+seedDefaultCards(dbHandle, cardSeed)
 
 const PORT = process.env.PORT || 3001
 httpServer.listen(PORT, () => {

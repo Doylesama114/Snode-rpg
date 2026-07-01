@@ -1,7 +1,7 @@
 // 服务器端游戏引擎 - 权威游戏逻辑
 // 完整移植自客户端 useGameMultiplayer.ts 和 effectManager.ts
 
-import { cardDefinitions, getCard, createDeck, shuffleDeck } from './cardData.js'
+import { getCard, createDefaultDeck, createDeckFromCardIds, shuffleDeck } from './cardData.js'
 
 // 效果管理器（从 effectManager.ts 完整移植）
 class EffectManager {
@@ -261,7 +261,9 @@ class GameEngine {
         id: p.id,
         name: p.name,
         hand: [],
-        deck: shuffleDeck(createDeck()),  // 使用正确的15张卡牌
+        deck: shuffleDeck(
+          p.deckCardIds ? createDeckFromCardIds(p.deckCardIds) : createDefaultDeck()
+        ),
         field: createInitialSlots(),
         discard: [],
         currentCost: 4,

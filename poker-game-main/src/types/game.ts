@@ -90,6 +90,7 @@ export interface Player {
   bonusPower: number
   canPlayExtra: boolean   // 是否可以额外出牌
   hasPlayedThisTurn: boolean  // 本回合是否已出牌
+  deckCardIds?: string[]
 }
 
 // 游戏阶段
@@ -126,13 +127,38 @@ export interface GameState {
   playerRestrictions?: Record<string, string[]>  // playerId → ['cannotPlay'|'tacticsOnly']
   // 负数能量追踪
   playersWithNegativeCost?: string[]
+  accountState?: AccountState
 }
 
 // 游戏操作（用于联机同步）
 export interface GameAction {
-  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom'
+  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
   data?: any
   playerId?: string
   playerCount?: number    // room creation: 2-4
   maxPlayers?: number     // room config
+}
+
+// Account System
+export interface PlayerAccount {
+  id: number
+  name: string
+  registeredAt: string
+}
+
+export interface DeckConfig {
+  cardIds: string[]  // exactly 15
+}
+
+export interface Deck extends DeckConfig {
+  id: number
+  playerId: number
+  isDefault: boolean
+  createdAt: string
+}
+
+export interface AccountState {
+  isRegistered: boolean
+  playerName: string | null
+  deckCardIds: string[]
 }
