@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6018',
+    date: '2026-07-01',
+    changes: [
+      '效果2c——复合关键词引擎+蜥蜴人勇士+森林'
+    ]
+  },
+
+
+  {
     version: '1.0.6017',
     date: '2026-07-01',
     changes: [
