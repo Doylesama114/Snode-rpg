@@ -1109,8 +1109,12 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 3,
+      requireKeywords: [['木'], ['水']],
+      selfTarget: true,
+      stackable: false,
       description: '如果你的场上拥有木属性和水属性的环境牌，这张牌的战力+3'
     }
     ],
@@ -2166,9 +2170,13 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的场上的每张带有“野兽”关键词和“猎人/德鲁伊/木精灵”名称的单位牌战力+3'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 3,
+      requireKeywords: [['野兽'], ['猎人', '德鲁伊', '木精灵']],
+      selfTarget: true,
+      stackable: false,
+      description: '你的场上的每张带有"野兽"关键词和"猎人/德鲁伊/木精灵"名称的单位牌战力+3'
     }
     ],
     slotRequired: 1,

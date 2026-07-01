@@ -69,6 +69,19 @@ class EffectManager {
                 }
               }
             }
+            // Compound keyword check: ALL groups must have at least one match
+            if (effect.requireKeywords && Array.isArray(effect.requireKeywords)) {
+              const allMatch = effect.requireKeywords.every(keywordGroup => {
+                return player.field.some(otherSlot =>
+                  otherSlot !== slot && otherSlot.card &&
+                  EffectManager.hasAnyKeyword(otherSlot.card, keywordGroup)
+                )
+              })
+              if (allMatch) {
+                const prev = slot.card.currentPower
+                slot.card.currentPower = slot.card.basePower + (effect.value || 0)
+              }
+            }
           }
         })
       })
