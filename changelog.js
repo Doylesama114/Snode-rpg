@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6012',
+    date: '2026-07-01',
+    changes: [
+      '单机模式加入数选择器2/3/4'
+    ]
+  },
+
+
+  {
     version: '1.0.6011',
     date: '2026-07-01',
     changes: [

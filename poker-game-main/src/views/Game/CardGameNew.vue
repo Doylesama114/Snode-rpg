@@ -92,6 +92,7 @@ function isCardPlayable(index: number): boolean {
   
   return currentPlayer.value.currentCost >= card.cost
 }
+const playerCountStart = ref(2)
 </script>
 
 <template>
@@ -101,6 +102,14 @@ function isCardPlayable(index: number): boolean {
       <div class="round-info">
         <span>回合: {{ gameState.round }}</span>
         <span v-if="gameState.isFinalRound" class="final-round">最后一回合！</span>
+        <span v-if="gameState.phase === 'draw' && gameState.round === 0" style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          人数:
+          <select v-model="playerCountStart" style="padding:4px 8px;border-radius:4px;border:1px solid #d8d2c4">
+            <option :value="2">2人</option>
+            <option :value="3">3人</option>
+            <option :value="4">4人</option>
+          </select>
+        </span>
       </div>
       <div class="message">{{ gameState.message }}</div>
     </div>
@@ -221,7 +230,7 @@ function isCardPlayable(index: number): boolean {
 
         <!-- 操作按钮（人类玩家+当前回合） -->
         <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
-          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame()" class="btn btn-primary">开始游戏</button>
+          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame(playerCountStart.value)" class="btn btn-primary">开始游戏</button>
           <template v-if="gameState.phase === 'decision'">
             <button @click="choosePlay" class="btn btn-primary">出牌</button>
             <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
@@ -237,7 +246,7 @@ function isCardPlayable(index: number): boolean {
             <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
           </div>
-          <button v-if="gameState.phase === 'gameOver'" @click="initGame()" class="btn btn-primary">重新开始</button>
+          <button v-if="gameState.phase === 'gameOver'" @click="initGame(playerCountStart.value)" class="btn btn-primary">重新开始</button>
           <button @click="$router.push('/')" class="btn btn-secondary" style="margin-left:auto">返回主页</button>
         </div>
       </div>
