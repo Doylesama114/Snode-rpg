@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6015',
+    date: '2026-07-01',
+    changes: [
+      '效果第1批——6张modifyPower结构化(元素/大海/热带鱼/挤奶工)'
+    ]
+  },
+
+
+  {
     version: '1.0.6014',
     date: '2026-07-01',
     changes: [

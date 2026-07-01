@@ -478,9 +478,12 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '当你打出“牛奶”时，这张牌的战力+2'
+      timing: 'onOtherPlay',
+      type: 'modifyPower',
+      value: 2,
+      description: '当你打出"牛奶"时，这张牌的战力+2',
+      targetKeywords: ['牛奶'],
+      stackable: true
     }
     ],
     slotRequired: 1,
@@ -1258,9 +1261,12 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的每张拥有“鱼”名词的单位牌战力+1'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 1,
+      description: '你的每张拥有"鱼"名词的单位牌战力+1',
+      targetKeywords: ['鱼'],
+      stackable: true
     }
     ],
     slotRequired: 1,
@@ -1358,9 +1364,12 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '每当你打出一张水属性的卡牌后，使这张牌的战力+1'
+      timing: 'onOtherPlay',
+      type: 'modifyPower',
+      value: 1,
+      description: '每当你打出一张水属性的卡牌后，使这张牌的战力+1',
+      targetKeywords: ['水'],
+      stackable: true
     }
     ],
     slotRequired: 1,
@@ -1498,9 +1507,12 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '每当你打出一张火属性的卡牌后，使这张牌的战力+1'
+      timing: 'onOtherPlay',
+      type: 'modifyPower',
+      value: 1,
+      description: '每当你打出一张火属性的卡牌后，使这张牌的战力+1',
+      targetKeywords: ['火'],
+      stackable: true
     }
     ],
     slotRequired: 1,
@@ -1598,9 +1610,12 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '每当你打出一张土属性的卡牌后，使这张牌的战力+1'
+      timing: 'onOtherPlay',
+      type: 'modifyPower',
+      value: 1,
+      description: '每当你打出一张土属性的卡牌后，使这张牌的战力+1',
+      targetKeywords: ['土'],
+      stackable: true
     }
     ],
     slotRequired: 1,
@@ -2258,9 +2273,12 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的水属性单位牌战力+2'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 2,
+      description: '你的水属性单位牌战力+2',
+      targetKeywords: ['水'],
+      stackable: true
     }
     ],
     slotRequired: 1,
