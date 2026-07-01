@@ -105,225 +105,141 @@ function isCardPlayable(index: number): boolean {
       <div class="message">{{ gameState.message }}</div>
     </div>
 
-    <!-- AI区域 -->
-    <div class="player-area ai-area">
-      <div class="player-header">
-        <h3>{{ gameState.players[1].name }}</h3>
-        <div class="stats">
-          <span>费用: {{ gameState.players[1].currentCost }}</span>
-          <span class="power-display">总战力: <strong>{{ getTotalPower(1) }}</strong></span>
-          <span>手牌: {{ gameState.players[1].hand.length }}</span>
-          <span>牌组: {{ gameState.players[1].deck.length }}</span>
+    <!-- N-player areas -->
+    <div class="players-grid" :class="'players-' + gameState.players.length">
+      <div
+        v-for="(player, index) in gameState.players"
+        :key="player.id"
+        class="player-cell"
+        :class="{
+          'is-human': player.id === 'player',
+          'is-ai': player.id.startsWith('ai'),
+          'is-current': index === gameState.currentPlayerIndex
+        }"
+      >
+        <div class="player-header">
+          <h3>{{ player.name }} {{ player.id === 'player' ? '(你)' : '' }}</h3>
+          <div class="stats">
+            <span>费用: {{ player.currentCost }}</span>
+            <span class="power-display">总战力: <strong>{{ getTotalPower(index) }}</strong></span>
+            <span>手牌: {{ player.hand.length }}</span>
+            <span>牌组: {{ player.deck.length }}</span>
+          </div>
         </div>
-      </div>
-      
-      <!-- AI场上 -->
-      <div class="field">
-        <div class="field-label">场上</div>
-        <div class="field-grid">
-          <div 
-            v-for="(slot, index) in gameState.players[1].field.filter(s => !s.isExtra)" 
-            :key="index" 
-            class="field-slot"
-            :class="{ 'has-card': slot.card }"
-          >
-            <div v-if="slot.card" class="field-card">
-              <div class="card-name-small">{{ slot.card.name }}</div>
-              <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
-                {{ slot.card.currentPower }}
-              </div>
-            </div>
-            <div v-else class="empty-slot">空</div>
-            
-            <!-- 额外槽位 -->
-            <div v-if="gameState.players[1].field.find(s => s.isExtra && s.parentSlot === index)" class="extra-slot-container">
-              <div 
-                v-for="extraSlot in gameState.players[1].field.filter(s => s.isExtra && s.parentSlot === index)"
-                :key="extraSlot.position"
-                class="extra-slot"
-              >
-                <div v-if="extraSlot.card" class="field-card extra">
-                  <div class="card-name-small">{{ extraSlot.card.name }}</div>
-                  <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
-                    {{ extraSlot.card.currentPower }}
-                  </div>
+
+        <!-- 场上 -->
+        <div class="field">
+          <div class="field-label">场上</div>
+          <div class="field-grid">
+            <div
+              v-for="(slot, si) in player.field.filter(s => !s.isExtra)"
+              :key="si"
+              class="field-slot"
+              :class="{
+                'has-card': slot.card,
+                'selectable': player.id === 'player' && isSlotAvailable(si),
+                'selected': player.id === 'player' && gameState.selectedSlot === si
+              }"
+              @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(si) && selectSlotToPlay(si)"
+            >
+              <div v-if="slot.card" class="field-card">
+                <div class="card-name-small">{{ slot.card.name }}</div>
+                <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
+                  {{ slot.card.currentPower }}
                 </div>
-                <div v-else class="empty-slot extra">额外</div>
               </div>
-            </div>
-          </div>
-          
-          <!-- 隐藏卡牌 -->
-          <div v-for="(item, index) in aiHiddenCards" :key="'hidden-' + index" class="field-slot has-card">
-            <div class="field-card hidden">
-              <div class="card-back">?</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div v-else class="empty-slot">{{ player.id === 'player' ? si + 1 : '空' }}</div>
 
-    <!-- 玩家区域 -->
-    <div class="player-area player-area-main">
-      <div class="player-header">
-        <h3>{{ gameState.players[0].name }}</h3>
-        <div class="stats">
-          <span>费用: {{ gameState.players[0].currentCost }}</span>
-          <span class="power-display">总战力: <strong>{{ getTotalPower(0) }}</strong></span>
-          <span>手牌: {{ gameState.players[0].hand.length }}</span>
-          <span>牌组: {{ gameState.players[0].deck.length }}</span>
-        </div>
-      </div>
-
-      <!-- 玩家场上 -->
-      <div class="field">
-        <div class="field-label">场上</div>
-        <div class="field-grid">
-          <div 
-            v-for="(slot, index) in gameState.players[0].field.filter(s => !s.isExtra)" 
-            :key="index" 
-            class="field-slot"
-            :class="{ 
-              'has-card': slot.card,
-              'selectable': isSlotAvailable(index),
-              'selected': gameState.selectedSlot === index
-            }"
-            @click="gameState.phase === 'selectSlot' && isSlotAvailable(index) && selectSlotToPlay(index)"
-          >
-            <div v-if="slot.card" class="field-card">
-              <div class="card-name-small">{{ slot.card.name }}</div>
-              <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
-                {{ slot.card.currentPower }}
-              </div>
-            </div>
-            <div v-else class="empty-slot">{{ index + 1 }}</div>
-            
-            <!-- 额外槽位 -->
-            <div v-if="gameState.players[0].field.find(s => s.isExtra && s.parentSlot === index)" class="extra-slot-container">
-              <div 
-                v-for="extraSlot in gameState.players[0].field.filter(s => s.isExtra && s.parentSlot === index)"
-                :key="extraSlot.position"
-                class="extra-slot"
-                :class="{
-                  'selectable': isSlotAvailable(extraSlot.position),
-                  'selected': gameState.selectedSlot === extraSlot.position
-                }"
-                @click="gameState.phase === 'selectSlot' && isSlotAvailable(extraSlot.position) && selectSlotToPlay(extraSlot.position)"
-              >
-                <div v-if="extraSlot.card" class="field-card extra">
-                  <div class="card-name-small">{{ extraSlot.card.name }}</div>
-                  <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
-                    {{ extraSlot.card.currentPower }}
+              <!-- 额外槽位 -->
+              <div v-if="player.field.find(s => s.isExtra && s.parentSlot === si)" class="extra-slot-container">
+                <div
+                  v-for="extraSlot in player.field.filter(s => s.isExtra && s.parentSlot === si)"
+                  :key="extraSlot.position"
+                  class="extra-slot"
+                  :class="{
+                    'selectable': player.id === 'player' && isSlotAvailable(extraSlot.position),
+                    'selected': player.id === 'player' && gameState.selectedSlot === extraSlot.position
+                  }"
+                  @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(extraSlot.position) && selectSlotToPlay(extraSlot.position)"
+                >
+                  <div v-if="extraSlot.card" class="field-card extra">
+                    <div class="card-name-small">{{ extraSlot.card.name }}</div>
+                    <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
+                      {{ extraSlot.card.currentPower }}
+                    </div>
                   </div>
+                  <div v-else class="empty-slot extra">额外</div>
                 </div>
-                <div v-else class="empty-slot extra">额外</div>
+              </div>
+            </div>
+
+            <!-- AI隐藏卡牌 -->
+            <div v-if="!player.id.startsWith('player')" v-for="(item, hi) in (aiHiddenCards[player.id] || [])" :key="'hidden-' + hi" class="field-slot has-card">
+              <div class="field-card hidden">
+                <div class="card-back">?</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 玩家手牌 -->
-      <div class="hand">
-        <div class="hand-label">
-          手牌
-          <span v-if="reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="hint">
-            (点击选择要放回牌组的卡牌)
-          </span>
-          <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hint-disabled">
-            (本回合已出牌)
-          </span>
-          <span v-else-if="!reforgeState.active && canPlayExtra" class="hint-extra">
-            (可以额外出一张牌！)
-          </span>
-        </div>
-        <div class="hand-cards">
-          <div 
-            v-for="(card, index) in gameState.players[0].hand" 
-            :key="index" 
-            class="hand-card"
-            :class="{ 
-              'playable': isCardPlayable(index),
-              'disabled': !isCardPlayable(index) && !reforgeState.active,
-              'selectable': reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null,
-              'selected': reforgeState.selectedCard === index
-            }"
-            @click="onHandCardClick(index)"
-          >
-            <div class="card-header">
-              <span class="card-attribute">{{ card.attribute }}</span>
-              <span class="card-cost-power">
-                <span v-if="card.type === 'environment'" class="card-type-badge">环境</span>
-                <span v-else-if="card.type === 'tactic'" class="card-type-badge">战术</span>
-                <span>⚡{{ card.cost }}</span>
-                <span v-if="card.type === 'unit'">💪{{ card.basePower }}</span>
-              </span>
+        <!-- 手牌（人类玩家） -->
+        <div v-if="player.id === 'player'" class="hand">
+          <div class="hand-label">
+            手牌
+            <span v-if="reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="hint">(点选放回)</span>
+            <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hint-disabled">(已出牌)</span>
+            <span v-else-if="!reforgeState.active && canPlayExtra" class="hint-extra">(可额外出牌!)</span>
+          </div>
+          <div class="hand-cards">
+            <div
+              v-for="(card, ci) in player.hand"
+              :key="ci"
+              class="hand-card"
+              :class="{
+                'playable': isCardPlayable(ci),
+                'disabled': !isCardPlayable(ci) && !reforgeState.active,
+                'selectable': reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null,
+                'selected': reforgeState.selectedCard === ci
+              }"
+              @click="onHandCardClick(ci)"
+            >
+              <div class="card-header">
+                <span class="card-attribute">{{ card.attribute }}</span>
+                <span class="card-cost-power">
+                  <span v-if="card.type === 'environment'" class="card-type-badge">环境</span>
+                  <span v-else-if="card.type === 'tactic'" class="card-type-badge">战术</span>
+                  <span>⚡{{ card.cost }}</span>
+                  <span v-if="card.type === 'unit'">💪{{ card.basePower }}</span>
+                </span>
+              </div>
+              <div class="card-name">{{ card.name }}</div>
+              <div class="card-keywords">{{ card.keywords.join('/') }}</div>
+              <div class="card-effect">{{ card.effects[0]?.description || '无效果' }}</div>
             </div>
-            <div class="card-name">{{ card.name }}</div>
-            <div class="card-keywords">{{ card.keywords.join('/') }}</div>
-            <div class="card-effect">{{ card.effects[0]?.description || '无效果' }}</div>
           </div>
         </div>
-      </div>
 
-      <!-- 目标选择 -->
-      <div v-if="gameState.phase === 'selectTarget' && gameState.availableTargets" class="target-selection">
-        <div class="target-label">选择目标：</div>
-        <div class="target-cards">
-          <div 
-            v-for="(target, index) in gameState.availableTargets"
-            :key="index"
-            class="target-card"
-            @click="selectTacticTarget(target)"
-          >
-            {{ target.name }} (战力: {{ target.currentPower }})
+        <!-- 操作按钮（人类玩家+当前回合） -->
+        <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
+          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame()" class="btn btn-primary">开始游戏</button>
+          <template v-if="gameState.phase === 'decision'">
+            <button @click="choosePlay" class="btn btn-primary">出牌</button>
+            <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
+          </template>
+          <template v-if="gameState.phase === 'action' && !reforgeState.active">
+            <button @click="endTurn" class="btn btn-secondary">结束回合</button>
+          </template>
+          <div v-if="reforgeState.active && reforgeOptions.length < 2" class="reforge-options">
+            <div class="reforge-info">选择操作 ({{ reforgeOptions.length }}/2)
+              <span v-if="reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="warning"> - 请先选择手牌</span>
+            </div>
+            <button @click="selectReforgeOption('gainCost')" class="btn btn-small">+2费用</button>
+            <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
+            <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
           </div>
+          <button v-if="gameState.phase === 'gameOver'" @click="initGame()" class="btn btn-primary">重新开始</button>
+          <button @click="$router.push('/')" class="btn btn-secondary" style="margin-left:auto">返回主页</button>
         </div>
-      </div>
-
-      <!-- 操作按钮 -->
-      <div class="actions">
-        <button 
-          v-if="gameState.phase === 'draw' && gameState.round === 0"
-          @click="() => initGame()"
-          class="btn btn-primary"
-        >
-          开始游戏
-        </button>
-
-        <template v-if="gameState.phase === 'decision' && currentPlayer.id === 'player'">
-          <button @click="choosePlay" class="btn btn-primary">出牌</button>
-          <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
-        </template>
-
-        <template v-if="gameState.phase === 'action' && currentPlayer.id === 'player' && !reforgeState.active">
-          <button @click="endTurn" class="btn btn-secondary">结束回合</button>
-        </template>
-
-        <!-- 重铸选项 -->
-        <div v-if="reforgeState.active && reforgeOptions.length < 2" class="reforge-options">
-          <div class="reforge-info">
-            选择操作 ({{ reforgeOptions.length }}/2)
-            <span v-if="reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="warning">
-              - 请先选择要换掉的手牌
-            </span>
-          </div>
-          <button @click="selectReforgeOption('gainCost')" class="btn btn-small">恢复2费用</button>
-          <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
-          <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
-        </div>
-
-        <button 
-          v-if="gameState.phase === 'gameOver'"
-          @click="() => initGame()"
-          class="btn btn-primary"
-        >
-          重新开始
-        </button>
-
-        <button v-if="gameState.phase !== 'gameOver'" @click="$router.push('/')" class="btn btn-secondary" style="margin-left:auto">
-          返回主页
-        </button>
       </div>
     </div>
   </div>
@@ -334,13 +250,21 @@ function isCardPlayable(index: number): boolean {
   height: 100vh;
   width: 100vw;
   background: #f6f4ef;
-  padding: 10px 20px;
   color: #1f2522;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
+  padding: 8px 12px;
 }
+.players-grid { flex: 1; display: grid; gap: 6px; min-height: 0; overflow-y: auto; padding: 4px 0; }
+.players-2 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+.players-3 { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+.players-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.player-cell.is-current { border-color: #a46d1f; border-width: 2px; }
+.player-cell.is-human { border-left: 4px solid #2f6f5e; }
+.player-cell.is-ai { border-left: 4px solid #9d2f2f; }
 
 .game-info {
   background: #fffdf8;

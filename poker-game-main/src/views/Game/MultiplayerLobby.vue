@@ -30,6 +30,7 @@ const serverMode = ref<ServerMode>('auto')
 const serverUrl = ref(getServerUrl())
 const showServerConfig = ref(false)
 const showConfigDialog = ref(false)
+const playerCount = ref(2)
 
 onMounted(() => {
   // 只在未连接时才连接
@@ -68,7 +69,7 @@ function handleCreateRoom() {
     alert('请输入玩家名称')
     return
   }
-  createRoom(playerNameInput.value)
+  createRoom(playerNameInput.value, playerCount.value)
   showCreateDialog.value = false
 }
 
@@ -225,6 +226,11 @@ watch(isGameStarted, (started) => {
             @keyup.enter="handleCreateRoom"
             class="input"
           />
+          <select v-model="playerCount" class="input" style="margin-bottom:15px">
+            <option :value="2">2 人对局</option>
+            <option :value="3">3 人对局</option>
+            <option :value="4">4 人对局</option>
+          </select>
           <div class="dialog-actions">
             <button @click="handleCreateRoom" class="btn btn-primary">创建</button>
             <button @click="showCreateDialog = false" class="btn btn-secondary">取消</button>

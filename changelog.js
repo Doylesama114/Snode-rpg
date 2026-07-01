@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6010',
+    date: '2026-07-01',
+    changes: [
+      'N-player架构——3-4人支持+grid布局+最终轮限制'
+    ]
+  },
+
+
+  {
     version: '1.0.6008',
     date: '2026-06-30',
     changes: [
