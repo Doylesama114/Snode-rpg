@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6017',
+    date: '2026-07-01',
+    changes: [
+      '效果2b-落魄男爵stackable计数+引擎修复+Playwright验证'
+    ]
+  },
+
+
+  {
     version: '1.0.6016',
     date: '2026-07-01',
     changes: [
