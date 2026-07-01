@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6019',
+    date: '2026-07-01',
+    changes: [
+      '效果2d——马车+海藻简单名称匹配'
+    ]
+  },
+
+
+  {
     version: '1.0.6018',
     date: '2026-07-01',
     changes: [
