@@ -990,8 +990,12 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onField',
-      type: 'conditional',
-      description: '如果你的场上拥有“海龟”名称的卡牌，这张牌的战力-2，如果你的场上拥有“大海”名称的卡牌，每个回合开始时为你提供1点能量值'
+      type: 'modifyPower',
+      value: -2,
+      targetKeywords: ['海龟'],
+      selfTarget: true,
+      stackable: false,
+      description: '如果你的场上拥有"海龟"名称的卡牌，这张牌的战力-2'
     }
     ],
     slotRequired: 1,
@@ -2437,9 +2441,11 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的“驮用马”战力+2，并且其每拥有一张部署的卡牌，这张牌的战力+2'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 2,
+      targetKeywords: ['驮用马'],
+      description: '你的"驮用马"战力+2'
     }
     ],
     slotRequired: 1,
