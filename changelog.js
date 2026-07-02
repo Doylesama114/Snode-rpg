@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6023',
+    date: '2026-07-02',
+    changes: [
+      '效果3c——集群战术/蓝焰术onReveal'
+    ]
+  },
+
+
+  {
     version: '1.0.6022',
     date: '2026-07-02',
     changes: [
