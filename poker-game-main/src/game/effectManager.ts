@@ -313,6 +313,30 @@ export class EffectManager {
     return targets
   }
 
+  // Search deck for cards matching name or keyword
+  static searchDeck(player: Player, effect: { searchName?: string; searchKeyword?: string }): Card[] {
+    const results: Card[] = []
+    // Search deck
+    for (let i = player.deck.length - 1; i >= 0; i--) {
+      const card = player.deck[i]
+      if (effect.searchName && card.name.includes(effect.searchName)) {
+        results.push(...player.deck.splice(i, 1))
+      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
+        results.push(...player.deck.splice(i, 1))
+      }
+    }
+    // Search discard
+    for (let i = player.discard.length - 1; i >= 0; i--) {
+      const card = player.discard[i]
+      if (effect.searchName && card.name.includes(effect.searchName)) {
+        results.push(...player.discard.splice(i, 1))
+      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
+        results.push(...player.discard.splice(i, 1))
+      }
+    }
+    return results
+  }
+
   // 检查卡牌是否会被摧毁
   static checkDestroy(card: Card): boolean {
     return card.currentPower < 0 && card.type !== 'environment'

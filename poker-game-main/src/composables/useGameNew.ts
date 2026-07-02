@@ -387,6 +387,15 @@ export function useGame() {
       })
       
       discardTacticCard(card, player, slotIndex)
+    } else if (effect.type === 'searchDeck') {
+      const found = EffectManager.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        gameState.value.message += ` | 检索到${found.length}张卡牌加入手牌`
+      } else {
+        gameState.value.message += ` | 未找到符合条件的卡牌`
+      }
+      discardTacticCard(card, player, slotIndex)
     }
   }
 
@@ -454,6 +463,14 @@ export function useGame() {
           gameState.value.message += ` | 效果：可以再打出一张牌！`
         } else if (effect.type === 'createSlot') {
           createExtraSlot(card, player)
+        } else if (effect.type === 'searchDeck') {
+          const found = EffectManager.searchDeck(player, effect)
+          if (found.length > 0) {
+            player.hand.push(...found)
+            gameState.value.message += ` | 检索到${found.length}张卡牌加入手牌`
+          } else {
+            gameState.value.message += ` | 未找到符合条件的卡牌`
+          }
         }
       }
     })

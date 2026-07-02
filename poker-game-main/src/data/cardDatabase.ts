@@ -438,9 +438,10 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：从你的牌库中检索一张拥有“酒水”关键词或“酒馆/吟游诗人”名称的卡牌加入手牌，随后混洗牌库'
+      timing: 'onDeploy',
+      type: 'searchDeck',
+      searchKeyword: '酒水',
+      description: '揭示：从你的牌库中检索一张拥有"酒水"关键词或"酒馆/吟游诗人"名称的卡牌加入手牌，随后混洗牌库'
     }
     ],
     slotRequired: 1,
@@ -459,8 +460,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '如果你的场上拥有“挤奶工”，从你的牌库中检索一张“牛奶”加入手牌，随后混洗牌库'
+      type: 'searchDeck',
+      searchName: '牛奶',
+      description: '如果你的场上拥有"挤奶工"，从你的牌库中检索一张"牛奶"加入手牌，随后混洗牌库'
     }
     ],
     slotRequired: 1,
@@ -1340,9 +1342,10 @@ export const allCardDefinitions = [
     cost: 2,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：从你的牌库中检索一张“贝壳”加入手牌，随后混洗牌库'
+      timing: 'onDeploy',
+      type: 'searchDeck',
+      searchName: '贝壳',
+      description: '揭示：从你的牌库中检索一张"贝壳"加入手牌，随后混洗牌库'
     }
     ],
     slotRequired: 1,
@@ -2364,8 +2367,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '进场后从你的牌库或弃牌区检索一张“载具”加入手牌，随后混洗牌库；你可以将“载具”单位牌部署在这张牌上'
+      type: 'searchDeck',
+      searchKeyword: '载具',
+      description: '进场后从你的牌库或弃牌区检索一张"载具"加入手牌，随后混洗牌库；你可以将"载具"单位牌部署在这张牌上'
     }
     ],
     slotRequired: 1,

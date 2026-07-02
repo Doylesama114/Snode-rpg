@@ -25,6 +25,7 @@ export type EffectType =
   | 'conditional'      // 条件效果
   | 'destroy'          // 摧毁
   | 'protect'          // 保护
+  | 'searchDeck'       // 检索牌库
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -47,6 +48,10 @@ export interface CardEffect {
   selfTarget?: boolean
   // 是否可叠加
   stackable?: boolean
+  // 牌库检索
+  searchName?: string    // card name to search for (e.g. '牛奶')
+  searchKeyword?: string // keyword to search for (e.g. '载具')
+  drawCount?: number     // number of cards to draw
 }
 
 // 效果执行上下文

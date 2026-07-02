@@ -357,6 +357,30 @@ class EffectManager {
     return targets
   }
 
+  // Search deck for cards matching name or keyword
+  static searchDeck(player, effect) {
+    const results = []
+    // Search deck
+    for (let i = player.deck.length - 1; i >= 0; i--) {
+      const card = player.deck[i]
+      if (effect.searchName && card.name.includes(effect.searchName)) {
+        results.push(...player.deck.splice(i, 1))
+      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
+        results.push(...player.deck.splice(i, 1))
+      }
+    }
+    // Search discard
+    for (let i = player.discard.length - 1; i >= 0; i--) {
+      const card = player.discard[i]
+      if (effect.searchName && card.name.includes(effect.searchName)) {
+        results.push(...player.discard.splice(i, 1))
+      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
+        results.push(...player.discard.splice(i, 1))
+      }
+    }
+    return results
+  }
+
   // 检查卡牌是否会被摧毁
   static checkDestroy(card) {
     return card.currentPower < 0 && card.type !== 'environment'
@@ -722,6 +746,15 @@ class GameEngine {
         this.gameState.message += ` | ${opponent.name} 费用${effect.value}`
       })
       this.discardTacticCard(card, player, slotIndex)
+    } else if (effect.type === 'searchDeck') {
+      const found = EffectManager.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        this.gameState.message += ` | 检索到${found.length}张卡牌加入手牌`
+      } else {
+        this.gameState.message += ` | 未找到符合条件的卡牌`
+      }
+      this.discardTacticCard(card, player, slotIndex)
     }
   }
   
@@ -755,6 +788,14 @@ class GameEngine {
         } else if (effect.type === 'createSlot') {
           console.log(`[GameEngine] 触发创建额外槽位效果`)
           this.createExtraSlot(card, player)
+        } else if (effect.type === 'searchDeck') {
+          const found = EffectManager.searchDeck(player, effect)
+          if (found.length > 0) {
+            player.hand.push(...found)
+            this.gameState.message += ` | 检索到${found.length}张卡牌加入手牌`
+          } else {
+            this.gameState.message += ` | 未找到符合条件的卡牌`
+          }
         }
       }
     })
