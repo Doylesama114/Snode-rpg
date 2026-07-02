@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6031',
+    date: '2026-07-02',
+    changes: [
+      '引擎升级#2——检索/抽牌(searchDeck)+4卡转换'
+    ]
+  },
+
+
+  {
     version: '1.0.6030',
     date: '2026-07-02',
     changes: [
