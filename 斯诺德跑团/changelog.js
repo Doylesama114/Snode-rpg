@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6030',
+    date: '2026-07-02',
+    changes: [
+      '引擎升级#1——属性匹配(targetAttributes)+5卡转换'
+    ]
+  },
+
+
+  {
     version: '1.0.6025',
     date: '2026-07-02',
     changes: [
