@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6032',
+    date: '2026-07-02',
+    changes: [
+      '修复——返回启动台左上角+gameOver退出+多人退出'
+    ]
+  },
+
+
+  {
     version: '1.0.6031',
     date: '2026-07-02',
     changes: [
