@@ -908,7 +908,7 @@ export const allCardDefinitions = [
       timing: 'onField',
       type: 'modifyPower',
       value: 3,
-      targetKeywords: ['金'],
+      targetAttributes: ['金'],
       selfTarget: true,
       stackable: false,
       description: '如果你的场上拥有其他金属性的卡牌，这张牌的战力+3'
@@ -1384,7 +1384,7 @@ export const allCardDefinitions = [
       type: 'modifyPower',
       value: 1,
       description: '每当你打出一张水属性的卡牌后，使这张牌的战力+1',
-      targetKeywords: ['水'],
+      targetAttributes: ['水'],
       stackable: true
     }
     ],
@@ -1527,7 +1527,7 @@ export const allCardDefinitions = [
       type: 'modifyPower',
       value: 1,
       description: '每当你打出一张火属性的卡牌后，使这张牌的战力+1',
-      targetKeywords: ['火'],
+      targetAttributes: ['火'],
       stackable: true
     }
     ],
@@ -1630,7 +1630,7 @@ export const allCardDefinitions = [
       type: 'modifyPower',
       value: 1,
       description: '每当你打出一张土属性的卡牌后，使这张牌的战力+1',
-      targetKeywords: ['土'],
+      targetAttributes: ['土'],
       stackable: true
     }
     ],
@@ -1974,7 +1974,7 @@ export const allCardDefinitions = [
       timing: 'onField',
       type: 'modifyPower',
       value: 3,
-      targetKeywords: ['暗'],
+      targetAttributes: ['暗'],
       selfTarget: true,
       invertCondition: true,
       stackable: false,

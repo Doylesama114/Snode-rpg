@@ -39,6 +39,12 @@ export interface CardEffect {
   value?: number
   // 目标关键词
   targetKeywords?: string[]
+  // 目标属性（e.g. ['火', '水'] — match by card.attribute instead of keywords）
+  targetAttributes?: string[]
+  // 条件标记
+  invertCondition?: boolean
+  requireKeywords?: string[][]
+  selfTarget?: boolean
   // 是否可叠加
   stackable?: boolean
 }

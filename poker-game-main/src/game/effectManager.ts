@@ -20,6 +20,18 @@ export class EffectManager {
     return keywords.some(keyword => this.hasKeyword(card, keyword))
   }
 
+  // 检查卡牌是否有指定属性
+  static hasAttribute(card: Card, attribute: string): boolean {
+    if (!card) return false
+    return card.attribute === attribute
+  }
+
+  // 检查卡牌是否有任意一个属性
+  static hasAnyAttribute(card: Card, attributes: string[]): boolean {
+    if (!card || !attributes || attributes.length === 0) return false
+    return attributes.some(attr => this.hasAttribute(card, attr))
+  }
+
   // 获取场上所有不同的关键词
   static getUniqueKeywords(player: Player, excludeCard?: Card): string[] {
     const keywords = new Set<string>()
@@ -41,8 +53,11 @@ export class EffectManager {
       if (slot.card && slot.card !== deployedCard) {
         slot.card.effects.forEach(effect => {
           if (effect.timing === 'onOtherPlay' && effect.type === 'modifyPower') {
-            // 检查部署的卡牌是否符合条件
-            if (effect.targetKeywords && this.hasAnyKeyword(deployedCard, effect.targetKeywords)) {
+            // 检查部署的卡牌是否符合条件（按关键词）
+            const keywordMatch = effect.targetKeywords && this.hasAnyKeyword(deployedCard, effect.targetKeywords)
+            // 检查部署的卡牌是否符合条件（按属性）
+            const attrMatch = effect.targetAttributes && Array.isArray(effect.targetAttributes) && this.hasAnyAttribute(deployedCard, effect.targetAttributes)
+            if (keywordMatch || attrMatch) {
               // 法师：战术牌且有魔法关键词
               if (slot.card.name === '法师' && deployedCard.type === 'tactic' && this.hasKeyword(deployedCard, '魔法')) {
                 const oldPower = slot.card.currentPower
@@ -210,6 +225,11 @@ export class EffectManager {
                 card.currentPower += effect.value
               }
             }
+            if (effect.targetAttributes && Array.isArray(effect.targetAttributes) && this.hasAnyAttribute(card, effect.targetAttributes)) {
+              if (effect.value) {
+                card.currentPower += effect.value
+              }
+            }
           }
         })
       }
@@ -231,6 +251,28 @@ export class EffectManager {
                 const matchCount = player.field.filter(otherSlot =>
                   otherSlot.card && otherSlot.card !== card &&
                   this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+                ).length
+                card.stackedBonus = (effect.value || 0) * matchCount
+                if (matchCount > 0) {
+                  card.currentPower = card.basePower + card.stackedBonus
+                }
+              } else {
+                card.currentPower = card.basePower + (effect.value || 0)
+              }
+            }
+          }
+          // Attribute-based self-modify: check if any other card has matching attribute
+          if (effect.targetAttributes && Array.isArray(effect.targetAttributes)) {
+            const hasMatch = player.field.some(otherSlot =>
+              otherSlot.card && otherSlot.card !== card &&
+              this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
+            )
+            const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+            if (conditionMet) {
+              if (effect.stackable !== false) {
+                const matchCount = player.field.filter(otherSlot =>
+                  otherSlot.card && otherSlot.card !== card &&
+                  this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
                 ).length
                 card.stackedBonus = (effect.value || 0) * matchCount
                 if (matchCount > 0) {
