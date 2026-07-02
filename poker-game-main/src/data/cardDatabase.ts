@@ -561,8 +561,8 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
+      timing: 'onDeploy',
+      type: 'createSlot',
       description: '你可以随时查看自身牌库顶部的牌/揭示：在下个回合你可以额外打出一张卡牌'
     }
     ],
@@ -1257,8 +1257,8 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
+      timing: 'onDeploy',
+      type: 'createSlot',
       description: '揭示：如果你的场上拥有水属性的环境牌，你可以立即从手牌中额外打出一张基础战力为1的单位牌'
     }
     ],
@@ -2074,9 +2074,9 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
-      type: 'conditional',
-      description: '每个回合结束时，可以额外花费1点能量值来打出一张带有“酒水”关键词的卡牌，这张卡会在下回合出牌时展示'
+      timing: 'onDeploy',
+      type: 'createSlot',
+      description: '每个回合结束时，可以额外花费1点能量值来打出一张带有"酒水"关键词的卡牌，这张卡会在下回合出牌时展示'
     }
     ],
     slotRequired: 1,
@@ -2154,9 +2154,9 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
-      type: 'conditional',
-      description: '每个回合你可以额外打出一张拥有“魔法”关键词的战术牌'
+      timing: 'onDeploy',
+      type: 'createSlot',
+      description: '每个回合你可以额外打出一张拥有"魔法"关键词的战术牌'
     }
     ],
     slotRequired: 1,
