@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6022',
+    date: '2026-07-02',
+    changes: [
+      '效果3b——摧毁引擎+护甲药水+力场波'
+    ]
+  },
+
+
+  {
     version: '1.0.6021',
     date: '2026-07-01',
     changes: [
