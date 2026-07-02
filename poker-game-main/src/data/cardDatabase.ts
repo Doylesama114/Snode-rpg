@@ -2658,13 +2658,15 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['战技'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onReveal',
+      type: 'modifyPower',
+      value: 5,
+      targetKeywords: [],
       description: '你的场上必须拥有至少三张相同关键词的卡牌时才能打出，使你的战力+5'
     }
     ],
@@ -2798,13 +2800,15 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onReveal',
+      type: 'modifyPower',
+      value: 2,
+      targetKeywords: ['火', '水'],
       description: '这张牌可以视作火属性，使你的一张火属性或水属性单位牌战力+2'
     }
     ],
