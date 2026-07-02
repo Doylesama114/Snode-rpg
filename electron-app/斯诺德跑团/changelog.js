@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6025',
+    date: '2026-07-02',
+    changes: [
+      '效果第3批收尾——剩余conditional卡待引擎升级后实现'
+    ]
+  },
+
+
+  {
     version: '1.0.6024',
     date: '2026-07-02',
     changes: [
