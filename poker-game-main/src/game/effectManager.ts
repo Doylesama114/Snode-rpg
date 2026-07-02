@@ -275,4 +275,34 @@ export class EffectManager {
   static checkDestroy(card: Card): boolean {
     return card.currentPower < 0 && card.type !== 'environment'
   }
+
+  // 触发场上摧毁效果
+  static applyOnFieldDestroy(game: GameState) {
+    game.players.forEach(player => {
+      const toRemove: { targetIndex: number }[] = []
+      player.field.forEach((slot, index) => {
+        if (!slot.card || slot.isExtra) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing === 'onField' && effect.type === 'destroy') {
+            if (effect.targetKeywords) {
+              const targetSlot = player.field.find(otherSlot =>
+                otherSlot !== slot && otherSlot.card &&
+                EffectManager.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+              )
+              if (targetSlot && targetSlot.card) {
+                toRemove.push({
+                  targetIndex: player.field.indexOf(targetSlot)
+                })
+              }
+            }
+          }
+        })
+      })
+      toRemove.forEach(({ targetIndex }) => {
+        if (player.field[targetIndex] && player.field[targetIndex].card) {
+          player.field[targetIndex].card = null
+        }
+      })
+    })
+  }
 }

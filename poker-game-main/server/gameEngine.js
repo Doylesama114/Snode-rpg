@@ -88,6 +88,37 @@ class EffectManager {
     })
   }
 
+  // Destroy cards whose effects trigger onField destroy
+  static applyOnFieldDestroy(game) {
+    game.gameState.players.forEach(player => {
+      const toRemove = []
+      player.field.forEach((slot, index) => {
+        if (!slot.card || slot.isExtra) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing === 'onField' && effect.type === 'destroy') {
+            if (effect.targetKeywords) {
+              const targetSlot = player.field.find(otherSlot =>
+                otherSlot !== slot && otherSlot.card &&
+                EffectManager.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
+              )
+              if (targetSlot && targetSlot.card) {
+                toRemove.push({
+                  sourceSlot: index,
+                  targetIndex: player.field.indexOf(targetSlot)
+                })
+              }
+            }
+          }
+        })
+      })
+      toRemove.forEach(({ targetIndex }) => {
+        if (player.field[targetIndex] && player.field[targetIndex].card) {
+          player.field[targetIndex].card = null
+        }
+      })
+    })
+  }
+
   // 触发"其他卡牌打出时"的效果
   static triggerOnOtherPlayEffects(deployedCard, player, game) {
     const messages = []
@@ -603,6 +634,9 @@ class GameEngine {
     
     // 触发"其他卡牌打出时"的效果
     EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
+    
+    // 应用摧毁效果（在重新计算战力之前）
+    EffectManager.applyOnFieldDestroy(this)
     
     // 重新计算战力
     EffectManager.recalculateAllPowers(this.gameState)

@@ -3043,8 +3043,8 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'destroy',
+      timing: 'onReveal',
+      type: 'protect',
       description: '选择一张单位牌获得一次抵挡被摧毁的效果'
     }
     ],
@@ -3063,9 +3063,10 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'onReveal',
       type: 'destroy',
-      description: '弃置一张手牌，随后摧毁场上一张拥有“建筑”关键词的卡牌'
+      targetKeywords: ['建筑'],
+      description: '弃置一张手牌，随后摧毁场上一张拥有"建筑"关键词的卡牌'
     }
     ],
     slotRequired: 1,
