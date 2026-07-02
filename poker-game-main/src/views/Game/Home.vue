@@ -48,6 +48,9 @@ function goBack() {
 <template>
   <main h-100dvh h-screen w-screen of-hidden style="background: #f6f4ef;">
     <GameNav/>
+    <button @click="goBack" style="position:fixed; top:10px; left:10px; z-index:200; padding:6px 12px; font-size:14px; background:#f6f4ef; color:#1f2522; border:1px solid #d8d2c4; border-radius:6px; cursor:pointer;">
+      ← 返回启动台
+    </button>
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; display: flex; flex-direction: column; gap: 20px;">
       <div v-if="playerName" style="text-align: center; font-size: 20px; color: #1f2522; font-weight: bold; margin-bottom: 8px;">
         欢迎, {{ playerName }}
@@ -69,12 +72,6 @@ function goBack() {
         style="padding: 20px 40px; font-size: 24px; background: #2f6f5e; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(31,37,34,0.08);"
       >
         管理卡组
-      </button>
-      <button 
-        @click="goBack"
-        style="padding: 12px 30px; font-size: 16px; background: #f6f4ef; color: #1f2522; border: 1px solid #d8d2c4; border-radius: 8px; cursor: pointer; margin-top: 8px;"
-      >
-        ← 返回启动台
       </button>
     </div>
     <GameContent/>

@@ -427,11 +427,14 @@ function leaveGame() {
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
           </div>
 
-          <button v-if="game.gameState.value.phase === 'gameOver'" @click="leaveGame" class="btn btn-primary">返回大厅</button>
-          <button @click="leaveGame" class="btn btn-danger">离开游戏</button>
         </div>
       </div>
-    </div>  </div>
+    </div>
+    <div v-if="game.gameState.value.phase === 'gameOver'" style="display:flex;justify-content:center;gap:12px;padding:12px 0;flex-shrink:0">
+      <button @click="leaveGame" class="btn btn-primary">返回大厅</button>
+      <button @click="leaveGame" class="btn btn-danger">离开游戏</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>

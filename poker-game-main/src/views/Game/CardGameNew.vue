@@ -247,9 +247,11 @@ const playerCountStart = ref(2)
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
           </div>
           <button v-if="gameState.phase === 'gameOver'" @click="initGame(playerCountStart.value)" class="btn btn-primary">重新开始</button>
-          <button @click="$router.push('/')" class="btn btn-secondary" style="margin-left:auto">返回主页</button>
         </div>
       </div>
+    </div>
+    <div v-if="gameState.phase === 'gameOver'" style="display:flex;justify-content:center;padding:12px 0;flex-shrink:0">
+      <button @click="$router.push('/')" class="btn btn-secondary">返回主页</button>
     </div>
   </div>
 </template>
