@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6024',
+    date: '2026-07-02',
+    changes: [
+      '效果3d——4张createSlot(摄像机/鲈鱼/酒馆/法师塔)'
+    ]
+  },
+
+
+  {
     version: '1.0.6023',
     date: '2026-07-02',
     changes: [
