@@ -1889,9 +1889,11 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '所有其他带有“士兵”关键词的单位牌战力-1'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: -1,
+      targetKeywords: ['士兵'],
+      description: '所有其他带有"士兵"关键词的单位牌战力-1'
     }
     ],
     slotRequired: 1,
