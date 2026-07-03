@@ -716,6 +716,41 @@ class GameEngine {
           messages.push(`没有找到包含"${targetName}"的卡牌`)
         }
       }
+      else if (effect.type === 'reduceUnitPower') {
+        const otherIndices = this.getOtherPlayerIndices(playerIndex)
+        let applied = false
+        for (const idx of otherIndices) {
+          const opponent = this.gameState.players[idx]
+          const targetSlot = opponent.field.find(s => s.card && s.card.type === 'unit')
+          if (targetSlot && targetSlot.card) {
+            const target = targetSlot.card
+            const oldPower = target.currentPower
+            target.currentPower -= (effect.value || 0)
+            messages.push(`${target.name} 战力${oldPower}→${target.currentPower}`)
+            if (target.currentPower <= 0) {
+              targetSlot.card = null
+              messages.push(`${target.name} 被摧毁`)
+            }
+            applied = true
+            break
+          }
+        }
+        if (!applied) {
+          messages.push('没有可攻击的目标')
+        }
+      }
+      else if (effect.type === 'discardOpponentHand') {
+        const otherIndices = this.getOtherPlayerIndices(playerIndex)
+        for (const idx of otherIndices) {
+          const opponent = this.gameState.players[idx]
+          if (opponent.hand.length > 0) {
+            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+            const discarded = opponent.hand.splice(randomIndex, 1)[0]
+            opponent.discard.push(discarded)
+            messages.push(`${opponent.name} 弃置了${discarded.name}`)
+          }
+        }
+      }
     })
     
     // QuickPlay tactics go to discard

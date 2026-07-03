@@ -2961,11 +2961,13 @@ export const allCardDefinitions = [
     attribute: '风',
     basePower: 3,
     currentPower: 3,
-    cost: 0,
+    cost: 3,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
+      type: 'reduceUnitPower',
+      value: 4,
       description: '速攻：使一名玩家场上的一张战力牌点数-4'
     }
     ],
@@ -3122,11 +3124,13 @@ export const allCardDefinitions = [
     attribute: '暗',
     basePower: 2,
     currentPower: 2,
-    cost: 0,
+    cost: 2,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
+      type: 'discardOpponentHand',
+      value: 1,
       description: '速攻：随机弃置其他玩家的各一张手牌'
     }
     ],

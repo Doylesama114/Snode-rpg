@@ -344,6 +344,39 @@ export function useGame() {
           gameState.value.message += ` | 没有找到包含"${targetName}"的卡牌`
         }
       }
+      else if (effect.type === 'reduceUnitPower') {
+        const otherPlayers = gameState.value.players.filter(p => p.id !== player.id)
+        let applied = false
+        for (const opponent of otherPlayers) {
+          const targetSlot = opponent.field.find(s => s.card && s.card.type === 'unit')
+          if (targetSlot && targetSlot.card) {
+            const target = targetSlot.card
+            const oldPower = target.currentPower
+            target.currentPower -= (effect.value || 0)
+            gameState.value.message += ` | ${target.name} 战力${oldPower}→${target.currentPower}`
+            if (target.currentPower <= 0) {
+              targetSlot.card = null
+              gameState.value.message += ` | ${target.name} 被摧毁`
+            }
+            applied = true
+            break
+          }
+        }
+        if (!applied) {
+          gameState.value.message += ` | 没有可攻击的目标`
+        }
+      }
+      else if (effect.type === 'discardOpponentHand') {
+        const otherPlayers = gameState.value.players.filter(p => p.id !== player.id)
+        for (const opponent of otherPlayers) {
+          if (opponent.hand.length > 0) {
+            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+            const discarded = opponent.hand.splice(randomIndex, 1)[0]
+            opponent.discard.push(discarded)
+            gameState.value.message += ` | ${opponent.name} 弃置了${discarded.name}`
+          }
+        }
+      }
     })
     
     // QuickPlay tactic cards go directly to discard

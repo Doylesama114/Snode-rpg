@@ -28,6 +28,8 @@ export type EffectType =
   | 'searchDeck'       // 检索牌库
   | 'restoreEnergy'    // 恢复能量（quickPlay）
   | 'modifyPowerByName' // 按名称修改战力（quickPlay）
+  | 'reduceUnitPower'  // 减少对手单位战力（quickPlay）
+  | 'discardOpponentHand' // 弃置对手手牌（quickPlay）
 
 // 卡牌效果定义
 export interface CardEffect {

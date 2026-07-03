@@ -2628,10 +2628,12 @@
     "attribute": "风",
     "basePower": 0,
     "cost": 3,
+    "quickPlay": true,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
+        "timing": "onPlay",
+        "type": "reduceUnitPower",
+        "value": 4,
         "description": "速攻：使一名玩家场上的一张战力牌点数-4"
       }
     ]
@@ -2772,10 +2774,12 @@
     "attribute": "暗",
     "basePower": 0,
     "cost": 2,
+    "quickPlay": true,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
+        "timing": "onPlay",
+        "type": "discardOpponentHand",
+        "value": 1,
         "description": "速攻：随机弃置其他玩家的各一张手牌"
       }
     ]

@@ -2,6 +2,26 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6034',
+    date: '2026-07-03',
+    changes: [
+      'engine upgrade #3b: reduceUnitPower + discardOpponentHand',
+      'cards: 急速射击 + 奇袭 (26/151)'
+    ]
+  },
+
+
+  {
+    version: '1.0.6034',
+    date: '2026-07-03',
+    changes: [
+      'engine upgrade #3b: reduceUnitPower + discardOpponentHand',
+      'cards: 急速射击 + 奇袭 (26/151)'
+    ]
+  },
+
+
+  {
     version: '1.0.6033',
     date: '2026-07-03',
     changes: [
