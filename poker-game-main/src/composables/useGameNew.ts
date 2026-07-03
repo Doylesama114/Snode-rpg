@@ -279,6 +279,12 @@ export function useGame() {
     
     if (!card) return
     
+    // QuickPlay gate: skip cost/action for quickPlay cards
+    if (card.quickPlay) {
+      handleQuickPlayCard(card, player)
+      return
+    }
+    
     // 支付费用
     player.currentCost -= card.cost
     
@@ -305,6 +311,56 @@ export function useGame() {
       // 玩家直接部署
       deployCard(card, player, slotIndex)
     }
+  }
+
+  // 处理快速打出（跳过费用/行动检查）
+  function handleQuickPlayCard(card: Card, player: Player) {
+    // Mark selected card (for UI synchronization)
+    gameState.value.selectedCard = card
+    
+    // Remove from hand (no cost deduction, no action marking)
+    const cardIndex = player.hand.indexOf(card)
+    if (cardIndex !== -1) player.hand.splice(cardIndex, 1)
+    
+    // Fire ALL onPlay effects
+    card.effects.forEach(effect => {
+      if (effect.timing !== 'onPlay') return
+      
+      if (effect.type === 'restoreEnergy') {
+        player.currentCost += (effect.value || 0)
+        gameState.value.message = `${player.name} 使用${card.name}：恢复${effect.value}点能量`
+      }
+      else if (effect.type === 'modifyPowerByName') {
+        const targetName = effect.targetName || ''
+        const targets = player.field
+          .filter(s => s.card && s.card.name.includes(targetName))
+          .map(s => s.card!)
+        targets.forEach(t => {
+          const oldPower = t.currentPower
+          t.currentPower += (effect.value || 0)
+          gameState.value.message += ` | ${t.name} 战力${oldPower}→${t.currentPower}`
+        })
+        if (targets.length === 0) {
+          gameState.value.message += ` | 没有找到包含"${targetName}"的卡牌`
+        }
+      }
+    })
+    
+    // QuickPlay tactic cards go directly to discard
+    if (card.type === 'tactic') {
+      player.discard.push(card)
+    }
+    
+    // Trigger onOtherPlayEffects (other cards on field may react to this play)
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
+    
+    // Recalculate all powers
+    EffectManager.recalculateAllPowers(gameState.value)
+    
+    // Reset selection state
+    gameState.value.phase = 'action'
+    gameState.value.selectedCard = undefined
+    gameState.value.selectedSlot = undefined
   }
 
   // 部署卡牌

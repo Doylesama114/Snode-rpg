@@ -26,6 +26,8 @@ export type EffectType =
   | 'destroy'          // 摧毁
   | 'protect'          // 保护
   | 'searchDeck'       // 检索牌库
+  | 'restoreEnergy'    // 恢复能量（quickPlay）
+  | 'modifyPowerByName' // 按名称修改战力（quickPlay）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -51,6 +53,7 @@ export interface CardEffect {
   // 牌库检索
   searchName?: string    // card name to search for (e.g. '牛奶')
   searchKeyword?: string // keyword to search for (e.g. '载具')
+  targetName?: string    // target card name for name-based effects (e.g. modifyPowerByName)
   drawCount?: number     // number of cards to draw
 }
 
@@ -79,6 +82,7 @@ export interface Card {
   isPersistent: boolean   // 是否持续存在（战术牌为false）
   stackedBonus?: number   // 叠加的加成（用于法师、战士等）
   forcedPlay?: boolean    // 是否强制打出（费用不足仍可打出，能量变负数）
+  quickPlay?: boolean     // 是否快速打出（跳过费用/行动检查，直接触发效果）
 }
 
 // 场上槽位

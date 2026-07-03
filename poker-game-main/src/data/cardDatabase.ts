@@ -2587,10 +2587,12 @@ export const allCardDefinitions = [
     basePower: 0,
     currentPower: 0,
     cost: 0,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
+      type: 'restoreEnergy',
+      value: 2,
       description: '速攻：为自身回复2点能量值'
     }
     ],
@@ -2769,11 +2771,20 @@ export const allCardDefinitions = [
     basePower: 1,
     currentPower: 1,
     cost: 0,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：使你的一张带有“武僧”名称的卡牌战力+1，并为自身回复1点能量'
+      type: 'modifyPowerByName',
+      targetName: '武僧',
+      value: 1,
+      description: '速攻：使你的一张带有"武僧"名称的卡牌战力+1'
+    },
+    {
+      timing: 'onPlay',
+      type: 'restoreEnergy',
+      value: 1,
+      description: '并为自身回复1点能量'
     }
     ],
     slotRequired: 1,

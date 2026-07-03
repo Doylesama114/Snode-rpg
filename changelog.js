@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6033',
+    date: '2026-07-03',
+    changes: [
+      'engine upgrade #3a: quickPlay gate + restoreEnergy + modifyPowerByName',
+      'cards: 活力药水 + 真气波 (24/151)'
+    ]
+  },
+
+
+  {
     version: '1.0.6032',
     date: '2026-07-02',
     changes: [

@@ -603,6 +603,11 @@ class GameEngine {
       return { success: false, error: '卡牌不存在' }
     }
     
+    // QuickPlay gate: skip cost/action for quickPlay cards
+    if (card.quickPlay) {
+      return this.handleQuickPlayCard(card, player, playerIndex)
+    }
+    
     // 检查最后一回合的卡牌限制
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay')) {
@@ -674,6 +679,60 @@ class GameEngine {
         this.gameState.message += ` | ${this.gameState.players.length === 2 ? '双方' : '所有玩家'}都已完成，等待进入下一回合...`
       }
     }
+    
+    return {
+      success: true,
+      gameState: this.getPublicGameState(),
+      cardPlayed: card
+    }
+  }
+  
+  // 处理快速打出（跳过费用/行动检查）
+  handleQuickPlayCard(card, player, playerIndex) {
+    // Remove from hand (no cost deduction)
+    const cardIndex = player.hand.indexOf(card)
+    if (cardIndex !== -1) player.hand.splice(cardIndex, 1)
+    
+    // Fire onPlay effects
+    const messages = []
+    card.effects.forEach(effect => {
+      if (effect.timing !== 'onPlay') return
+      
+      if (effect.type === 'restoreEnergy') {
+        player.currentCost += (effect.value || 0)
+        messages.push(`${player.name} 使用${card.name}：恢复${effect.value}点能量`)
+      }
+      else if (effect.type === 'modifyPowerByName') {
+        const targetName = effect.targetName || ''
+        const targets = player.field
+          .filter(s => s.card && s.card.name.includes(targetName))
+          .map(s => s.card)
+        targets.forEach(t => {
+          const oldPower = t.currentPower
+          t.currentPower += (effect.value || 0)
+          messages.push(`${t.name} 战力${oldPower}→${t.currentPower}`)
+        })
+        if (targets.length === 0) {
+          messages.push(`没有找到包含"${targetName}"的卡牌`)
+        }
+      }
+    })
+    
+    // QuickPlay tactics go to discard
+    if (card.type === 'tactic') {
+      player.discard.push(card)
+    }
+    
+    // After quickPlay: apply all field effects
+    EffectManager.applyOnFieldDestroy(this)
+    EffectManager.recalculateAllPowers(this.gameState)
+    EffectManager.applyOnFieldSelfModify(this)
+    
+    // Check field full
+    this.checkFieldFull(playerIndex)
+    
+    // Build response message
+    this.gameState.message = messages.join(' | ')
     
     return {
       success: true,
