@@ -30,6 +30,9 @@ export type EffectType =
   | 'modifyPowerByName' // 按名称修改战力（quickPlay）
   | 'reduceUnitPower'  // 减少对手单位战力（quickPlay）
   | 'discardOpponentHand' // 弃置对手手牌（quickPlay）
+  | 'returnToDeckBottom'  // 返回牌库底部（quickPlay）
+  | 'setNextUnitAttribute' // 设置下一次部署属性（quickPlay）
+  | 'markOpponentHand'     // 标记对手手牌（quickPlay）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -41,7 +44,7 @@ export interface CardEffect {
   // 条件检查函数
   condition?: (context: EffectContext) => boolean
   // 效果值
-  value?: number
+  value?: number | string
   // 目标关键词
   targetKeywords?: string[]
   // 目标属性（e.g. ['火', '水'] — match by card.attribute instead of keywords）
@@ -85,6 +88,7 @@ export interface Card {
   stackedBonus?: number   // 叠加的加成（用于法师、战士等）
   forcedPlay?: boolean    // 是否强制打出（费用不足仍可打出，能量变负数）
   quickPlay?: boolean     // 是否快速打出（跳过费用/行动检查，直接触发效果）
+  markedForDiscard?: boolean // 被标记弃置（火焰箭效果）
 }
 
 // 场上槽位
@@ -107,6 +111,7 @@ export interface Player {
   bonusPower: number
   canPlayExtra: boolean   // 是否可以额外出牌
   hasPlayedThisTurn: boolean  // 本回合是否已出牌
+  pendingNextAttribute?: string  // 下一张部署牌属性覆盖（元素墙）
   deckCardIds?: string[]
 }
 

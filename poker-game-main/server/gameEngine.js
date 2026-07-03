@@ -751,10 +751,30 @@ class GameEngine {
           }
         }
       }
+      else if (effect.type === 'returnToDeckBottom') {
+        player.deck.unshift(card)
+        messages.push(`${card.name} 返回牌库底部`)
+      }
+      else if (effect.type === 'setNextUnitAttribute') {
+        player.pendingNextAttribute = effect.value
+        messages.push(`下次部署的单位牌将变为${effect.value}属性`)
+      }
+      else if (effect.type === 'markOpponentHand') {
+        const otherIndices = this.getOtherPlayerIndices(playerIndex)
+        for (const idx of otherIndices) {
+          const opponent = this.gameState.players[idx]
+          if (opponent.hand.length > 0) {
+            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+            opponent.hand[randomIndex].markedForDiscard = true
+            messages.push(`${opponent.name} 的手牌被标记`)
+          }
+        }
+      }
     })
     
-    // QuickPlay tactics go to discard
-    if (card.type === 'tactic') {
+    // QuickPlay tactics go to discard (unless returned to deck)
+    const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
+    if (card.type === 'tactic' && !hasReturnToDeck) {
       player.discard.push(card)
     }
     
@@ -779,6 +799,13 @@ class GameEngine {
   // 部署卡牌
   deployCard(card, player, slotIndex, playerIndex) {
     const slot = player.field[slotIndex]
+    
+    // Apply pending attribute override from 元素墙
+    if (player.pendingNextAttribute) {
+      card.attribute = player.pendingNextAttribute
+      this.gameState.message += ` | ${card.name} 属性变更为${player.pendingNextAttribute}`
+      player.pendingNextAttribute = undefined
+    }
     
     // 部署卡牌到槽位
     slot.card = card

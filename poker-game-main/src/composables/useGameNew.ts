@@ -1,4 +1,4 @@
-import type { GameState, Player, Card, ReforgeOption, FieldSlot, AccountState } from '@/types/game'
+import type { GameState, Player, Card, ReforgeOption, FieldSlot, AccountState, AttributeType } from '@/types/game'
 import { createDeck, shuffleDeck, initializeCardDatabase } from '@/data/cards'
 import { createDeckFromCardIds, getDefaultDeckCardIds } from '@/data/cardDatabase'
 import { EffectManager } from '@/game/effectManager'
@@ -377,10 +377,29 @@ export function useGame() {
           }
         }
       }
+      else if (effect.type === 'returnToDeckBottom') {
+        player.deck.unshift(card)
+        gameState.value.message += ` | ${card.name} 返回牌库底部`
+      }
+      else if (effect.type === 'setNextUnitAttribute') {
+        player.pendingNextAttribute = effect.value as string
+        gameState.value.message += ` | 下次部署的单位牌将变为${effect.value}属性`
+      }
+      else if (effect.type === 'markOpponentHand') {
+        const otherPlayers = gameState.value.players.filter(p => p.id !== player.id)
+        for (const opponent of otherPlayers) {
+          if (opponent.hand.length > 0) {
+            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+            opponent.hand[randomIndex].markedForDiscard = true
+            gameState.value.message += ` | ${opponent.name} 的手牌被标记`
+          }
+        }
+      }
     })
     
-    // QuickPlay tactic cards go directly to discard
-    if (card.type === 'tactic') {
+    // QuickPlay tactic cards go directly to discard (unless returned to deck)
+    const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
+    if (card.type === 'tactic' && !hasReturnToDeck) {
       player.discard.push(card)
     }
     
@@ -400,6 +419,13 @@ export function useGame() {
   function deployCard(card: Card, player: Player, slotIndex: number) {
     const slot = player.field[slotIndex]
     if (!slot) return
+    
+    // Apply pending attribute override from 元素墙
+    if (player.pendingNextAttribute) {
+      card.attribute = player.pendingNextAttribute as AttributeType
+      gameState.value.message = `${player.name} 打出了 ${card.name}（属性变更为${player.pendingNextAttribute}）`
+      player.pendingNextAttribute = undefined
+    }
     
     // 放置卡牌
     slot.card = card

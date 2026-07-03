@@ -2609,11 +2609,18 @@ export const allCardDefinitions = [
     basePower: 0,
     currentPower: 0,
     cost: 0,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：使你左手边第一名玩家的一张单位牌战力-1，这张牌在使用后不会进入弃牌堆，而是返回你的牌库底部'
+      type: 'reduceUnitPower',
+      value: 1,
+      description: '速攻：使一名玩家场上的一张单位牌战力-1'
+    },
+    {
+      timing: 'onPlay',
+      type: 'returnToDeckBottom',
+      description: '这张牌在使用后不会进入弃牌堆，而是返回你的牌库底部'
     }
     ],
     slotRequired: 1,
@@ -2648,12 +2655,14 @@ export const allCardDefinitions = [
     attribute: '无',
     basePower: 1,
     currentPower: 1,
-    cost: 0,
+    cost: 1,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：你可以将下一张打出的单位牌属性变更为“风/火/水/土”属性'
+      type: 'setNextUnitAttribute',
+      value: '风',
+      description: '速攻：你可以将下一张打出的单位牌属性变更为"风"属性'
     }
     ],
     slotRequired: 1,
@@ -2731,11 +2740,14 @@ export const allCardDefinitions = [
     basePower: 0,
     currentPower: 0,
     cost: 0,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：使你的一张单位牌战力+1，如果你的场上拥有“奶牛”和“挤奶工”，这张牌会在每个回合结束时返回你的手牌'
+      type: 'modifyPower',
+      targetKeywords: ['单位'],
+      value: 1,
+      description: '速攻：使你的一张单位牌战力+1'
     }
     ],
     slotRequired: 1,
@@ -2751,11 +2763,14 @@ export const allCardDefinitions = [
     basePower: 0,
     currentPower: 0,
     cost: 0,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：为你的场上的一张牌赋予水属性，如果那张牌已经拥有水属性，则改为战力+1'
+      type: 'modifyPower',
+      targetKeywords: ['单位'],
+      value: 1,
+      description: '速攻：使你的一张单位牌战力+1，并将属性变为水'
     }
     ],
     slotRequired: 1,
@@ -2881,12 +2896,14 @@ export const allCardDefinitions = [
     attribute: '火',
     basePower: 1,
     currentPower: 1,
-    cost: 0,
+    cost: 1,
+    quickPlay: true,
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：标记左手边第一名玩家的随机一张手牌，对方如果未在下一回合打出那张牌便将其弃置'
+      type: 'markOpponentHand',
+      value: 1,
+      description: '速攻：标记对方玩家的随机一张手牌'
     }
     ],
     slotRequired: 1,

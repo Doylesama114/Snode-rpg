@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6035',
+    date: '2026-07-03',
+    changes: [
+      'engine upgrade #3c: returnToDeckBottom + setNextUnitAttribute + markOpponentHand',
+      'cards: 奥术箭 + 元素墙 + 牛奶 + 创造水源 + 火焰箭 (31/151, 20.5%)'
+    ]
+  },
+
+
+  {
     version: '1.0.6034',
     date: '2026-07-03',
     changes: [
