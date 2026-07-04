@@ -759,6 +759,8 @@ export function useGame() {
     gameState.value.message = message
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
+
+    EffectManager.triggerReforgeEffects(player, gameState.value)
     
     if (!player.id.startsWith('ai')) {
       revealAICards()

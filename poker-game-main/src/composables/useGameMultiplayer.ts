@@ -404,6 +404,8 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
     gameState.value.phase = 'draw'
+
+    EffectManager.triggerReforgeEffects(player, gameState.value)
     
     return {
       type: 'executeReforge',
@@ -548,6 +550,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
                 break
             }
           })
+          EffectManager.triggerReforgeEffects(opponentPlayer, gameState.value)
         }
         break
         

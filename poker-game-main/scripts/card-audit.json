@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T16:08:31.040Z",
+  "generatedAt": "2026-07-04T16:22:05.429Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,15 +12,15 @@
   },
   "wiringSummary": {
     "structured": 15,
-    "implemented_doc": 83,
-    "conditional_only": 50
+    "implemented_doc": 86,
+    "conditional_only": 47
   },
   "patternSummary": {
-    "on_deploy": 36,
+    "on_deploy": 34,
     "create_slot": 4,
     "on_other_play": 9,
     "on_field_power": 18,
-    "other": 5,
+    "other": 7,
     "deploy_on_card": 9,
     "on_reveal_tactic": 34,
     "quick_play": 14,
@@ -58,6 +58,7 @@
       "酒吧女招待 (card_020)",
       "奶牛 (card_021)",
       "挤奶工 (card_022)",
+      "搬运工 (card_024)",
       "游客 (card_025)",
       "摄像机 (card_026)",
       "葡萄酒商人 (card_027)",
@@ -103,12 +104,14 @@
       "海港 (card_109)",
       "帆船 (card_110)",
       "大海 (card_111)",
+      "锻炉 (card_112)",
       "沙滩 (card_115)",
       "沙滩碉堡 (card_116)",
       "马车 (card_118)",
       "寒脊山脉 (card_119)",
       "季风 (card_120)",
       "晴天 (card_121)",
+      "贫民窟 (card_122)",
       "活力药水 (card_125)",
       "奥术箭 (card_126)",
       "精准射击 (card_127)",
@@ -137,7 +140,6 @@
       "渔网 (card_017)",
       "箭袋 (card_018)",
       "攀爬工具 (card_023)",
-      "搬运工 (card_024)",
       "强盗 (card_031)",
       "征募官 (card_035)",
       "食人魔 (card_037)",
@@ -176,9 +178,7 @@
       "刺客 (card_098)",
       "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
-      "锻炉 (card_112)",
       "礁石 (card_117)",
-      "贫民窟 (card_122)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
       "矮人烈酒 (card_135)",
@@ -221,9 +221,7 @@
       "仲夏节庆典",
       "溪流",
       "帆船",
-      "锻炉",
-      "礁石",
-      "贫民窟"
+      "礁石"
     ],
     "create_slot": [
       "驮用马",
@@ -266,8 +264,10 @@
       "民兵",
       "风笛",
       "游客",
+      "锻炉",
       "沙滩碉堡",
-      "晴天"
+      "晴天",
+      "贫民窟"
     ],
     "deploy_on_card": [
       "狮鹫",
@@ -362,7 +362,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 83,
+  "implementedDocCount": 86,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -446,7 +446,10 @@
     "帆船",
     "蛮斗士",
     "蛇颈龙",
-    "仲夏节庆典"
+    "仲夏节庆典",
+    "搬运工",
+    "锻炉",
+    "贫民窟"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -857,7 +860,7 @@
       "id": "card_024",
       "name": "搬运工",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -865,7 +868,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployFromHand"
       ],
       "timings": [
         "onDeploy"
@@ -2423,18 +2426,18 @@
       "id": "card_112",
       "name": "锻炉",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "implemented_doc",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
-        "onDeploy"
+        "onReforge"
       ]
     },
     {
@@ -2605,18 +2608,18 @@
       "id": "card_122",
       "name": "贫民窟",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "implemented_doc",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "debuffAheadPlayers"
       ],
       "timings": [
-        "onDeploy"
+        "onGameEnd"
       ]
     },
     {

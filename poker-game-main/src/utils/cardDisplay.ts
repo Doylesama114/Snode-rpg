@@ -16,6 +16,7 @@ const TIMING_LABELS: Record<EffectTiming, string> = {
   roundEnd: '回合结束',
   onReveal: '揭示时',
   onGameEnd: '游戏结束时',
+  onReforge: '重铸时',
 }
 
 export function getCardTypeLabel(type: Card['type']): string {

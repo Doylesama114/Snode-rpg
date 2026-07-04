@@ -338,6 +338,46 @@ class EffectManager {
     return slots
   }
 
+  static getAvailableExtraSlotIndices(player, card) {
+    const slots = []
+    player.field.forEach((slot, index) => {
+      if (EffectManager.canDeployOnExtraSlot(card, slot)) slots.push(index)
+    })
+    return slots
+  }
+
+  static getPlayerTotalPower(player) {
+    let total = player.bonusPower
+    player.field.forEach(slot => {
+      if (slot.card && !slot.isExtra) total += slot.card.currentPower
+    })
+    return total
+  }
+
+  static triggerReforgeEffects(player, game) {
+    const gameState = game.gameState || game
+    const messages = []
+    player.field.forEach(slot => {
+      if (!slot.card?.effects) return
+      slot.card.effects.forEach(effect => {
+        if (effect.timing !== 'onReforge' || effect.type !== 'modifyPower' || !effect.selfTarget) return
+        const delta = effect.value ?? 0
+        if (effect.stackable !== false) {
+          if (slot.card.stackedBonus === undefined) slot.card.stackedBonus = 0
+          slot.card.stackedBonus += delta
+          slot.card.currentPower += delta
+        } else {
+          slot.card.basePower += delta
+          slot.card.currentPower += delta
+        }
+        messages.push(`${slot.card.name} 重铸 战力+${delta}`)
+      })
+    })
+    if (messages.length) {
+      gameState.message = (gameState.message || '') + ' | ' + messages.join(' | ')
+    }
+  }
+
   static matchesRoundGlobalTarget(card, effect) {
     if (effect.targetCardType && card.type !== effect.targetCardType) return false
     if (effect.targetKeywords?.includes('单位') && card.type !== 'unit') return false
@@ -515,7 +555,7 @@ class EffectManager {
     return attrs.size
   }
 
-  static applyGameEndEffect(effect, ownerCard, player) {
+  static applyGameEndEffect(effect, ownerCard, player, game) {
     const messages = []
 
     if (effect.type === 'd6ModifyPower') {
@@ -562,6 +602,20 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'debuffAheadPlayers' && game) {
+      const gameState = game.gameState || game
+      const ownerPower = EffectManager.getPlayerTotalPower(player)
+      const delta = effect.value ?? -4
+      gameState.players.forEach(other => {
+        if (other.id === player.id) return
+        if (EffectManager.getPlayerTotalPower(other) > ownerPower) {
+          other.bonusPower += delta
+          messages.push(`${other.name} 战力${delta}（${ownerCard.name}）`)
+        }
+      })
+      return { messages }
+    }
+
     return { messages }
   }
 
@@ -574,7 +628,7 @@ class EffectManager {
         slot.card.effects.forEach(effect => {
           if (effect.timing !== 'onGameEnd') return
           if (effect.type === 'conditional' || effect.type === 'custom') return
-          const result = EffectManager.applyGameEndEffect(effect, slot.card, player)
+          const result = EffectManager.applyGameEndEffect(effect, slot.card, player, gameState)
           messages.push(...result.messages)
         })
       })
@@ -1141,6 +1195,32 @@ class EffectManager {
       EffectManager.applyUnitDeployBonuses(deployCard, player).forEach(m => messages.push(m))
       EffectManager.triggerOnOtherPlayEffects(deployCard, player, game)
       messages.push(`部署${deployCard.name}（费用${deployCost}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'deployFromHand') {
+      const max = effect.maxCount ?? 1
+      let deployed = 0
+      for (let i = player.hand.length - 1; i >= 0 && deployed < max; i--) {
+        const handCard = player.hand[i]
+        if (effect.targetCardType && handCard.type !== effect.targetCardType) continue
+        if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(handCard, effect.targetKeywords)) continue
+        const extraSlots = EffectManager.getAvailableExtraSlotIndices(player, handCard)
+        if (extraSlots.length === 0) continue
+        const deployCost = EffectManager.getEffectivePlayCost(handCard, player)
+        if (player.currentCost < deployCost) continue
+        player.currentCost -= deployCost
+        player.hand.splice(i, 1)
+        const slotIndex = extraSlots[0]
+        const targetSlot = player.field[slotIndex]
+        targetSlot.card = handCard
+        EffectManager.applyExtraSlotDeployModifiers(handCard, targetSlot).forEach(m => messages.push(m))
+        EffectManager.applyUnitDeployBonuses(handCard, player).forEach(m => messages.push(m))
+        EffectManager.triggerOnOtherPlayEffects(handCard, player, game)
+        messages.push(`部署${handCard.name}到额外槽位（费用${deployCost}）`)
+        deployed++
+      }
+      if (deployed === 0) messages.push('未部署手牌中的物件单位')
       return { messages }
     }
 
@@ -1924,6 +2004,8 @@ class GameEngine {
       }
       if (index === 0) message += ' +'
     })
+
+    EffectManager.triggerReforgeEffects(player, this.gameState)
     
     // 重铸完成后，标记玩家为准备完成
     this.gameState.playerReady[playerId] = true

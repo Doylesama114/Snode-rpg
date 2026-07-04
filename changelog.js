@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6062',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4R:搬运工/锻炉/贫民窟',
+      'deployFromHand+onReforge+debuffAheadPlayers'
+    ]
+  },
+
+
+  {
     version: '1.0.6061',
     date: '2026-07-04',
     changes: [

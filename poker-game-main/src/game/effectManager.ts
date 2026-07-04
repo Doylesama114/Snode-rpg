@@ -586,6 +586,45 @@ export class EffectManager {
     return slots
   }
 
+  static getAvailableExtraSlotIndices(player: Player, card: Card): number[] {
+    const slots: number[] = []
+    player.field.forEach((slot, index) => {
+      if (this.canDeployOnExtraSlot(card, slot)) slots.push(index)
+    })
+    return slots
+  }
+
+  static getPlayerTotalPower(player: Player): number {
+    let total = player.bonusPower
+    player.field.forEach(slot => {
+      if (slot.card && !slot.isExtra) total += slot.card.currentPower
+    })
+    return total
+  }
+
+  static triggerReforgeEffects(player: Player, game: GameState) {
+    const messages: string[] = []
+    player.field.forEach(slot => {
+      if (!slot.card?.effects) return
+      slot.card.effects.forEach(effect => {
+        if (effect.timing !== 'onReforge' || effect.type !== 'modifyPower' || !effect.selfTarget) return
+        const delta = effect.value ?? 0
+        if (effect.stackable !== false) {
+          if (slot.card!.stackedBonus === undefined) slot.card!.stackedBonus = 0
+          slot.card!.stackedBonus += delta
+          slot.card!.currentPower += delta
+        } else {
+          slot.card!.basePower += delta
+          slot.card!.currentPower += delta
+        }
+        messages.push(`${slot.card!.name} 重铸 战力+${delta}`)
+      })
+    })
+    if (messages.length) {
+      game.message = (game.message || '') + ' | ' + messages.join(' | ')
+    }
+  }
+
   /** quickPlay 单位部署后触发 onReveal（如贝壳 D6） */
   static applyQuickPlayRevealEffects(
     card: Card,
@@ -899,6 +938,32 @@ export class EffectManager {
       this.applyUnitDeployBonuses(deployCard, player).forEach(m => messages.push(m))
       this.triggerOnOtherPlayEffects(deployCard, player, game)
       messages.push(`部署${deployCard.name}（费用${deployCost}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'deployFromHand') {
+      const max = effect.maxCount ?? 1
+      let deployed = 0
+      for (let i = player.hand.length - 1; i >= 0 && deployed < max; i--) {
+        const handCard = player.hand[i]
+        if (effect.targetCardType && handCard.type !== effect.targetCardType) continue
+        if (effect.targetKeywords?.length && !this.hasAnyKeyword(handCard, effect.targetKeywords)) continue
+        const extraSlots = this.getAvailableExtraSlotIndices(player, handCard)
+        if (extraSlots.length === 0) continue
+        const deployCost = this.getEffectivePlayCost(handCard, player)
+        if (player.currentCost < deployCost) continue
+        player.currentCost -= deployCost
+        player.hand.splice(i, 1)
+        const slotIndex = extraSlots[0]
+        const targetSlot = player.field[slotIndex]
+        targetSlot.card = handCard
+        this.applyExtraSlotDeployModifiers(handCard, targetSlot).forEach(m => messages.push(m))
+        this.applyUnitDeployBonuses(handCard, player).forEach(m => messages.push(m))
+        this.triggerOnOtherPlayEffects(handCard, player, game)
+        messages.push(`部署${handCard.name}到额外槽位（费用${deployCost}）`)
+        deployed++
+      }
+      if (deployed === 0) messages.push('未部署手牌中的物件单位')
       return { messages }
     }
 
@@ -1345,6 +1410,7 @@ export class EffectManager {
     effect: CardEffect,
     ownerCard: Card,
     player: Player,
+    game?: GameState,
   ): { messages: string[] } {
     const messages: string[] = []
 
@@ -1392,6 +1458,19 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'debuffAheadPlayers' && game) {
+      const ownerPower = this.getPlayerTotalPower(player)
+      const delta = effect.value ?? -4
+      game.players.forEach(other => {
+        if (other.id === player.id) return
+        if (this.getPlayerTotalPower(other) > ownerPower) {
+          other.bonusPower += delta
+          messages.push(`${other.name} 战力${delta}（${ownerCard.name}）`)
+        }
+      })
+      return { messages }
+    }
+
     return { messages }
   }
 
@@ -1403,7 +1482,7 @@ export class EffectManager {
         slot.card.effects.forEach(effect => {
           if (effect.timing !== 'onGameEnd') return
           if (effect.type === 'conditional' || effect.type === 'custom') return
-          const result = this.applyGameEndEffect(effect, slot.card, player)
+          const result = this.applyGameEndEffect(effect, slot.card, player, game)
           messages.push(...result.messages)
         })
       })

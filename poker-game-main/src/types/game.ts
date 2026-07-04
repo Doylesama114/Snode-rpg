@@ -15,6 +15,7 @@ export type EffectTiming =
   | 'roundEnd'         // 回合结束
   | 'onReveal'         // 揭示时（战术牌）
   | 'onGameEnd'        // 游戏结束时（吟游诗人/风笛）
+  | 'onReforge'        // 重铸行动时（锻炉）
 
 // 效果类型
 export type EffectType =
@@ -54,6 +55,8 @@ export type EffectType =
   | 'playRequirement'         // 打出前场上条件（帆船）
   | 'searchFromHandOrDeck'    // 从手牌/牌库检索并部署（溪流）
   | 'grantUntargetable'       // onField 满足条件时其他玩家不可选中（蛇颈龙）
+  | 'deployFromHand'          // 从手牌部署到额外槽位（搬运工）
+  | 'debuffAheadPlayers'      // onGameEnd 落后时领先玩家战力减值（贫民窟）
 
 // 卡牌效果定义
 export interface CardEffect {

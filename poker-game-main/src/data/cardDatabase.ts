@@ -523,8 +523,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '在这张牌进场后，你可以立即从手牌中将至多两张拥有“物件”关键词的单位牌部署在其他可以部署的卡牌上'
+      type: 'deployFromHand',
+      targetKeywords: ['物件'],
+      targetCardType: 'unit',
+      maxCount: 2,
+      description: '在这张牌进场后，你可以立即从手牌中将至多两张拥有「物件」关键词的单位牌部署在其他可以部署的卡牌上'
     }
     ],
     slotRequired: 1,
@@ -2404,8 +2407,11 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onReforge',
+      type: 'modifyPower',
+      selfTarget: true,
+      value: 2,
+      stackable: true,
       description: '每当你执行重铸行动时，这张牌的战力+2'
     }
     ],
@@ -2631,8 +2637,9 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onGameEnd',
+      type: 'debuffAheadPlayers',
+      value: -4,
       description: '如果游戏结束时你的战力落后于其他玩家，那些玩家的战力-4'
     }
     ],
