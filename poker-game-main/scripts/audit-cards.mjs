@@ -60,6 +60,7 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'grantTacticPlayFree', 'modifyPowerByUniqueAttributes',
   'playRequirement', 'searchFromHandOrDeck', 'grantUntargetable',
   'deployFromHand', 'debuffAheadPlayers', 'crossPlayerDeploy',
+  'destroyRandomOther', 'setPowerIfFieldNames', 'setPowerIfOnlyHandCard',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

@@ -873,8 +873,8 @@
     "cost": 5,
     "effects": [
       {
-        "timing": "onDeploy",
-        "type": "conditional",
+        "timing": "onGameEnd",
+        "type": "destroyRandomOther",
         "description": "游戏结束时随机消灭你的一张其他卡牌"
       }
     ],
@@ -894,8 +894,19 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "这张牌无法被打出，如果你的场上拥有环境牌以及“摄像机”和“游客”名称的卡牌，那么在游戏结束时这张牌拥有4点战力"
+        "type": "playRequirement",
+        "unplayable": true,
+        "description": "这张牌无法被打出"
+      },
+      {
+        "timing": "onGameEnd",
+        "type": "setPowerIfFieldNames",
+        "requireFieldNames": [
+          "摄像机",
+          "游客"
+        ],
+        "value": 4,
+        "description": "如果你的场上拥有环境牌以及「摄像机」和「游客」名称的卡牌，那么在游戏结束时这张牌拥有4点战力"
       }
     ],
     "slotRequired": 1,
@@ -914,8 +925,15 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "这张牌无法被打出，如果游戏结束时这是你唯一的手牌，这张牌的战力变为7点！"
+        "type": "playRequirement",
+        "unplayable": true,
+        "description": "这张牌无法被打出"
+      },
+      {
+        "timing": "onGameEnd",
+        "type": "setPowerIfOnlyHandCard",
+        "value": 7,
+        "description": "如果游戏结束时这是你唯一的手牌，这张牌的战力变为7点"
       }
     ],
     "slotRequired": 1,

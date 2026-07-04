@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T16:37:52.179Z",
+  "generatedAt": "2026-07-04T16:52:51.265Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,16 +11,16 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 13,
+    "structured": 16,
     "implemented_doc": 89,
-    "conditional_only": 46
+    "conditional_only": 43
   },
   "patternSummary": {
-    "on_deploy": 34,
+    "on_deploy": 33,
     "create_slot": 4,
     "on_other_play": 9,
     "on_field_power": 18,
-    "other": 7,
+    "other": 8,
     "deploy_on_card": 9,
     "on_reveal_tactic": 34,
     "quick_play": 14,
@@ -42,6 +42,9 @@
       "橡木武器店 (card_011)",
       "生命药水 (card_013)",
       "金牌烤火鸡 (card_015)",
+      "食人魔 (card_037)",
+      "纪念照 (card_038)",
+      "金矿 (card_039)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "利剑中队 (card_091)"
@@ -143,9 +146,6 @@
       "攀爬工具 (card_023)",
       "强盗 (card_031)",
       "征募官 (card_035)",
-      "食人魔 (card_037)",
-      "纪念照 (card_038)",
-      "金矿 (card_039)",
       "红宝石 (card_040)",
       "蓝宝石 (card_041)",
       "绿宝石 (card_042)",
@@ -197,7 +197,6 @@
       "退役老兵",
       "萨满祭司",
       "蛮斗士",
-      "食人魔",
       "纪念照",
       "金矿",
       "红宝石",
@@ -264,6 +263,7 @@
       "民兵",
       "风笛",
       "游客",
+      "食人魔",
       "锻炉",
       "沙滩碉堡",
       "晴天",
@@ -1097,25 +1097,25 @@
       "id": "card_037",
       "name": "食人魔",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "structured",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "destroyRandomOther"
       ],
       "timings": [
-        "onDeploy"
+        "onGameEnd"
       ]
     },
     {
       "id": "card_038",
       "name": "纪念照",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1123,17 +1123,19 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement",
+        "setPowerIfFieldNames"
       ],
       "timings": [
-        "onDeploy"
+        "onDeploy",
+        "onGameEnd"
       ]
     },
     {
       "id": "card_039",
       "name": "金矿",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1141,10 +1143,12 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement",
+        "setPowerIfOnlyHandCard"
       ],
       "timings": [
-        "onDeploy"
+        "onDeploy",
+        "onGameEnd"
       ]
     },
     {

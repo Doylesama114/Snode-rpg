@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6064] - 2026-07-05
+
+### 卡牌效果批次 4T + 终局/不可打出引擎
+- **食人魔**：onGameEnd `destroyRandomOther` 随机消灭一张其他己方牌
+- **纪念照**：`unplayable` + `setPowerIfFieldNames`（环境+摄像机+游客→4 战力）
+- **金矿**：`unplayable` + `setPowerIfOnlyHandCard`（唯一手牌→7 计入 bonusPower）
+- **引擎**：`triggerGameEndEffects` 两遍（先消灭再设战力）、手牌终局效果
+- **测试**：`scripts/test-4t.mjs`（12/12）
+
 ## [1.0.6063] - 2026-07-05
 
 ### 卡牌效果批次 4S + 跨玩家部署引擎

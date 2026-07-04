@@ -58,6 +58,9 @@ export type EffectType =
   | 'deployFromHand'          // 从手牌部署到额外槽位（搬运工）
   | 'debuffAheadPlayers'      // onGameEnd 落后时领先玩家战力减值（贫民窟）
   | 'crossPlayerDeploy'       // 部署到其他玩家场上（礁石）
+  | 'destroyRandomOther'      // onGameEnd 随机消灭一张其他己方牌（食人魔）
+  | 'setPowerIfFieldNames'    // onGameEnd 场上有环境+指定名称时设战力（纪念照）
+  | 'setPowerIfOnlyHandCard'  // onGameEnd 唯一手牌时设战力（金矿）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -161,6 +164,10 @@ export interface CardEffect {
   slotDeployedPowerBonus?: number
   /** playRequirement：牌库中不得含战术牌（蛮斗士） */
   requireNoTacticsInDeck?: boolean
+  /** playRequirement：此牌无法主动打出（金矿/纪念照） */
+  unplayable?: boolean
+  /** setPowerIfFieldNames：场上需同时存在这些名称的卡牌 */
+  requireFieldNames?: string[]
   drawCount?: number     // number of cards to draw
 }
 

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6064',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4T',
+      '食人魔/纪念照/金矿',
+      'unplayable+onGameEnd引擎'
+    ]
+  },
+
+
+  {
     version: '1.0.6063',
     date: '2026-07-04',
     changes: [

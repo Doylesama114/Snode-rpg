@@ -391,10 +391,54 @@ export class EffectManager {
     }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
+      if (effect.unplayable) return false
       if (effect.requireNoTacticsInDeck && player.deck.some(c => c.type === 'tactic')) return false
       if (!this.checkFieldRequirements(player, effect)) return false
     }
     return true
+  }
+
+  static isCardOnField(player: Player, card: Card): boolean {
+    return player.field.some(slot => slot.card === card)
+  }
+
+  /** onGameEnd 设战力：场上改 currentPower，手牌计入 bonusPower */
+  static applyGameEndPowerSet(ownerCard: Card, player: Player, value: number, messages: string[]) {
+    ownerCard.currentPower = value
+    ownerCard.basePower = value
+    if (!this.isCardOnField(player, ownerCard)) {
+      player.bonusPower += value
+    }
+    messages.push(`${ownerCard.name} 终局战力→${value}`)
+  }
+
+  static destroyRandomOtherCard(
+    ownerCard: Card,
+    player: Player,
+    game: GameState,
+    messages: string[],
+  ) {
+    const candidates: Array<{ card: Card; location: 'field' | 'hand' }> = []
+    player.field.forEach(slot => {
+      if (slot.card && slot.card !== ownerCard && !slot.isExtra) {
+        candidates.push({ card: slot.card, location: 'field' })
+      }
+    })
+    player.hand.forEach(c => {
+      if (c !== ownerCard) candidates.push({ card: c, location: 'hand' })
+    })
+    if (candidates.length === 0) return
+    const pick = candidates[Math.floor(Math.random() * candidates.length)]
+    if (pick.location === 'field') {
+      this.removeCardFromField(game, pick.card)
+    } else {
+      const idx = player.hand.indexOf(pick.card)
+      if (idx !== -1) {
+        player.hand.splice(idx, 1)
+        player.discard.push(pick.card)
+      }
+    }
+    messages.push(`${ownerCard.name} 终局消灭 ${pick.card.name}`)
   }
 
   static getCrossPlayerDeployEffect(card: Card): CardEffect | undefined {
@@ -1518,21 +1562,60 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'destroyRandomOther') {
+      this.destroyRandomOtherCard(ownerCard, player, game!, messages)
+      return { messages }
+    }
+
+    if (effect.type === 'setPowerIfFieldNames' && effect.requireFieldNames?.length) {
+      const hasEnv = player.field.some(
+        slot => slot.card && slot.card.type === 'environment' && !slot.isExtra,
+      )
+      const hasNames = effect.requireFieldNames.every(name =>
+        player.field.some(slot => slot.card && slot.card.name === name && !slot.isExtra),
+      )
+      if (hasEnv && hasNames && effect.value !== undefined) {
+        this.applyGameEndPowerSet(ownerCard, player, effect.value as number, messages)
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'setPowerIfOnlyHandCard') {
+      if (player.hand.length === 1 && player.hand[0] === ownerCard && effect.value !== undefined) {
+        this.applyGameEndPowerSet(ownerCard, player, effect.value as number, messages)
+      }
+      return { messages }
+    }
+
     return { messages }
   }
 
   static triggerGameEndEffects(game: GameState) {
     const messages: string[] = []
+    const runOnGameEnd = (ownerCard: Card, player: Player, pass: 'destroy' | 'other') => {
+      if (!ownerCard.effects) return
+      ownerCard.effects.forEach(effect => {
+        if (effect.timing !== 'onGameEnd') return
+        if (effect.type === 'conditional' || effect.type === 'custom') return
+        if (pass === 'destroy' && effect.type !== 'destroyRandomOther') return
+        if (pass === 'other' && effect.type === 'destroyRandomOther') return
+        const result = this.applyGameEndEffect(effect, ownerCard, player, game)
+        messages.push(...result.messages)
+      })
+    }
     game.players.forEach(player => {
       player.field.forEach(slot => {
-        if (!slot.card?.effects) return
-        slot.card.effects.forEach(effect => {
-          if (effect.timing !== 'onGameEnd') return
-          if (effect.type === 'conditional' || effect.type === 'custom') return
-          const result = this.applyGameEndEffect(effect, slot.card, player, game)
-          messages.push(...result.messages)
-        })
+        if (!slot.card) return
+        runOnGameEnd(slot.card, player, 'destroy')
       })
+      player.hand.forEach(card => runOnGameEnd(card, player, 'destroy'))
+    })
+    game.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (!slot.card) return
+        runOnGameEnd(slot.card, player, 'other')
+      })
+      player.hand.forEach(card => runOnGameEnd(card, player, 'other'))
     })
     if (messages.length > 0) {
       game.message = (game.message || '') + ' | ' + messages.join(' | ')
