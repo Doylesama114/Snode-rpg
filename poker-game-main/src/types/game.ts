@@ -68,6 +68,7 @@ export type EffectType =
   | 'discardHandOrSelf'       // onReveal 须弃手牌否则自身进弃牌区（哥布林杂兵）
   | 'skipOthersDrawNextRound' // onDeploy 其他玩家下回合开始不抽牌（牛头人勇士）
   | 'discardHandForLeftPlayerDebuff' // roundStart 弃指定属性手牌使左手边玩家终局战力减值（火蜥蜴）
+  | 'scheduleRoundStartEnergy'  // onReveal 预约下回合/最后一轮开始时恢复能量（间歇泉）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -161,6 +162,8 @@ export interface CardEffect {
   destroyThreshold?: number
   /** destroy：强制允许摧毁 environment（力场波等） */
   destroyEnvironment?: boolean
+  /** destroy：无视战力直接摧毁（寒铁虎等） */
+  directDestroy?: boolean
   /** createSlot：额外槽位可部署单位需匹配的关键词/类型/属性 */
   slotDeployKeywords?: string[]
   slotDeployCardType?: CardType
@@ -199,6 +202,10 @@ export interface CardEffect {
   discardHandAttributes?: string[]
   /** discardHandForLeftPlayerDebuff：作用于左手边玩家 bonusPower */
   debuffBonusPower?: number
+  /** scheduleRoundStartEnergy：下回合开始时恢复能量 */
+  onNextRoundStart?: boolean
+  /** scheduleRoundStartEnergy：最后一轮开始时恢复能量 */
+  onFinalRoundStart?: boolean
   drawCount?: number     // number of cards to draw
 }
 
@@ -281,6 +288,10 @@ export interface Player {
   tacticPlayFreeKeywords?: string[]
   /** 牛头人勇士等：下回合开始跳过抽牌（一次性） */
   skipDrawNextRound?: boolean
+  /** 间歇泉等：下回合开始预约恢复的能量 */
+  pendingNextRoundStartEnergy?: number
+  /** 间歇泉等：最后一轮开始预约恢复的能量 */
+  pendingFinalRoundStartEnergy?: number
   deckCardIds?: string[]
 }
 

@@ -64,6 +64,7 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'setPowerIfFieldKeyword', 'setPowerIfHandNames', 'deployOnHostOnly',
   'invertPowerLoss', 'discardHandOrSelf',
   'skipOthersDrawNextRound', 'discardHandForLeftPlayerDebuff',
+  'scheduleRoundStartEnergy',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6071',
+    date: '2026-07-04',
+    changes: [
+      '雪怪',
+      '寒铁虎',
+      '间歇泉'
+    ]
+  },
+
+
+  {
     version: '1.0.6070',
     date: '2026-07-04',
     changes: [

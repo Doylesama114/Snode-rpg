@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T18:03:44.026Z",
+  "generatedAt": "2026-07-04T18:31:01.379Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 34,
+    "structured": 37,
     "implemented_doc": 89,
-    "conditional_only": 25
+    "conditional_only": 22
   },
   "patternSummary": {
     "on_deploy": 34,
@@ -22,10 +22,10 @@
     "on_field_power": 18,
     "other": 8,
     "deploy_on_card": 9,
-    "on_reveal_tactic": 34,
+    "on_reveal_tactic": 35,
     "quick_play": 14,
     "charges": 1,
-    "round_start": 8,
+    "round_start": 7,
     "d6_random": 4,
     "on_field_other": 1,
     "round_end": 4
@@ -61,11 +61,14 @@
       "棕熊 (card_079)",
       "牛头人勇士 (card_080)",
       "雪狼 (card_087)",
+      "雪怪 (card_088)",
+      "寒铁虎 (card_089)",
       "利剑中队 (card_091)",
       "短柄斧 (card_092)",
       "三叉戟 (card_093)",
       "板甲 (card_094)",
-      "温馨的旅馆 (card_102)"
+      "温馨的旅馆 (card_102)",
+      "间歇泉 (card_137)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -173,8 +176,6 @@
       "巨鹏 (card_084)",
       "双足飞龙 (card_085)",
       "急先锋·罗森弗斯 (card_086)",
-      "雪怪 (card_088)",
-      "寒铁虎 (card_089)",
       "食尸鬼教徒 (card_096)",
       "无貌者 (card_097)",
       "刺客 (card_098)",
@@ -182,7 +183,6 @@
       "星象塔 (card_123)",
       "回春术 (card_131)",
       "矮人烈酒 (card_135)",
-      "间歇泉 (card_137)",
       "冰锥术 (card_142)"
     ]
   },
@@ -306,6 +306,7 @@
       "收获日",
       "矮人烈酒",
       "蓝焰术",
+      "间歇泉",
       "气泡酒",
       "炎炎夏日",
       "燃烧之手",
@@ -343,8 +344,7 @@
       "火蜥蜴",
       "急先锋·罗森弗斯",
       "射击俱乐部",
-      "星象塔",
-      "间歇泉"
+      "星象塔"
     ],
     "d6_random": [
       "贝壳",
@@ -2025,7 +2025,7 @@
       "id": "card_088",
       "name": "雪怪",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2033,7 +2033,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "conditionalPlayCost"
       ],
       "timings": [
         "onDeploy"
@@ -2043,7 +2043,7 @@
       "id": "card_089",
       "name": "寒铁虎",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2051,7 +2051,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "destroy"
       ],
       "timings": [
         "onReveal"
@@ -2883,18 +2883,18 @@
       "id": "card_137",
       "name": "间歇泉",
       "type": "tactic",
-      "wiring": "conditional_only",
-      "pattern": "round_start",
+      "wiring": "structured",
+      "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "scheduleRoundStartEnergy"
       ],
       "timings": [
-        "roundStart"
+        "onReveal"
       ]
     },
     {

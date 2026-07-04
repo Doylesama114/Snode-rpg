@@ -1969,7 +1969,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'conditionalPlayCost',
+      playCostValue: 4,
+      requireFieldAttributes: ['冰'],
+      requireFieldCardType: 'environment',
       description: '如果你的场上拥有冰属性的环境牌，那么这张牌的费用-1'
     }
     ],
@@ -1989,7 +1992,13 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'destroy',
+      requireFieldAttributes: ['冰'],
+      requireFieldCardType: 'environment',
+      targetLeftPlayer: true,
+      targetCardType: 'unit',
+      maxBasePower: 2,
+      directDestroy: true,
       description: '揭示：如果你的场上拥有冰属性的环境牌，摧毁左手边第一名玩家场上一张基础战力低于3的单位牌'
     }
     ],
@@ -3039,8 +3048,11 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'roundStart',
-      type: 'conditional',
+      timing: 'onReveal',
+      type: 'scheduleRoundStartEnergy',
+      value: 3,
+      onNextRoundStart: true,
+      onFinalRoundStart: true,
       description: '在下一个回合开始和最后一个回合开始时，分别为你回复3点能量值'
     }
     ],

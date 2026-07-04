@@ -820,18 +820,25 @@ export class EffectManager {
     return messages
   }
 
-  /** 收集 destroy 效果可选目标（全场） */
+  /** 收集 destroy 效果可选目标（全场或左手边玩家） */
   static getDestroyTargets(game: GameState, player: Player, effect: CardEffect): Card[] {
     const targets: Card[] = []
-    game.players.forEach(p => {
+    const collectFrom = (p: Player) => {
       p.field.forEach(slot => {
         if (!slot.card) return
         if (p.id !== player.id && slot.card.untargetableByOthers) return
-        if (effect.targetKeywords?.length && !this.hasAnyKeyword(slot.card, effect.targetKeywords)) return
         if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+        if (effect.maxBasePower !== undefined && slot.card.basePower > effect.maxBasePower) return
+        if (effect.targetKeywords?.length && !this.hasAnyKeyword(slot.card, effect.targetKeywords)) return
         targets.push(slot.card)
       })
-    })
+    }
+    if (effect.targetLeftPlayer) {
+      const left = this.getLeftPlayer(game, player)
+      if (left) collectFrom(left)
+      return targets
+    }
+    game.players.forEach(p => collectFrom(p))
     return targets
   }
 
@@ -858,7 +865,8 @@ export class EffectManager {
     }
     const instantKeywordDestroy = rawDelta === 0 && (effect.targetKeywords?.length ?? 0) > 0
     const powerDestroy = targetCard.currentPower <= threshold
-    const destroyed = (instantKeywordDestroy || powerDestroy) && this.canDestroyTarget(targetCard, effect)
+    const directDestroy = effect.directDestroy === true
+    const destroyed = (directDestroy || instantKeywordDestroy || powerDestroy) && this.canDestroyTarget(targetCard, effect)
     if (destroyed) {
       this.removeCardFromField(game, targetCard)
       messages.push(`${targetCard.name} 被摧毁`)
@@ -1009,6 +1017,18 @@ export class EffectManager {
       const bonus = effect.value ?? 1
       player.unitPlayPowerBonus = (player.unitPlayPowerBonus || 0) + bonus
       messages.push(`之后打出的单位牌战力+${bonus}`)
+      return { messages }
+    }
+
+    if (effect.type === 'scheduleRoundStartEnergy') {
+      const amt = (effect.value as number) ?? 0
+      if (effect.onNextRoundStart) {
+        player.pendingNextRoundStartEnergy = (player.pendingNextRoundStartEnergy || 0) + amt
+      }
+      if (effect.onFinalRoundStart) {
+        player.pendingFinalRoundStartEnergy = (player.pendingFinalRoundStartEnergy || 0) + amt
+      }
+      messages.push(`已预约回合开始恢复${amt}点能量`)
       return { messages }
     }
 
@@ -1631,6 +1651,24 @@ export class EffectManager {
     return { messages }
   }
 
+  /** 间歇泉等：消耗玩家预约的回合开始能量 */
+  static applyPendingRoundStartEnergy(game: GameState): string[] {
+    const messages: string[] = []
+    game.players.forEach(player => {
+      if (player.pendingNextRoundStartEnergy) {
+        player.currentCost += player.pendingNextRoundStartEnergy
+        messages.push(`${player.name} 恢复${player.pendingNextRoundStartEnergy}点能量`)
+        player.pendingNextRoundStartEnergy = 0
+      }
+      if (game.isFinalRound && player.pendingFinalRoundStartEnergy) {
+        player.currentCost += player.pendingFinalRoundStartEnergy
+        messages.push(`${player.name} 最后一轮恢复${player.pendingFinalRoundStartEnergy}点能量`)
+        player.pendingFinalRoundStartEnergy = 0
+      }
+    })
+    return messages
+  }
+
   static triggerRoundEffects(timing: 'roundStart' | 'roundEnd', game: GameState) {
     const messages: string[] = []
     if (timing === 'roundStart') {
@@ -1639,6 +1677,7 @@ export class EffectManager {
           if (slot.card) slot.card.roundUsed = false
         })
       })
+      messages.push(...this.applyPendingRoundStartEnergy(game))
     }
     game.players.forEach(player => {
       player.field.forEach(slot => {
