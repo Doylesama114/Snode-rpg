@@ -796,7 +796,9 @@ export function useGame() {
     gameState.value.currentPlayerIndex = nextPlayerIndex
     
     if (nextPlayerIndex < gameState.value.currentPlayerIndex) {
+      EffectManager.triggerRoundEffects('roundEnd', gameState.value)
       gameState.value.round++
+      EffectManager.triggerRoundEffects('roundStart', gameState.value)
     }
     
     gameState.value.phase = 'draw'

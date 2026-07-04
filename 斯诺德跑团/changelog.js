@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6038',
+    date: '2026-07-04',
+    changes: [
+      'engine upgrade #4: triggerRoundEffects roundStart/roundEnd',
+      '16 card timing fixes (arrow/quiver, seaweed, druid, fisherman, ocean druid, fire lizard, minotaur, vanguard, shooting club, astral tower, geyser — roundStart',
+      'campfire, tavern, cozy inn, frost mountain, rejuvenation — roundEnd)'
+    ]
+  },
+
+
+  {
     version: '1.0.6037',
     date: '2026-07-04',
     changes: [

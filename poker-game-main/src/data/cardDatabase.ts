@@ -399,7 +399,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'conditional',
       description: '这张牌拥有3点充能，每个回合开始时可以消耗1点充能选择一名角色的一张单位牌，使其战力-1'
     }
@@ -995,7 +995,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'modifyPower',
       value: -2,
       targetKeywords: ['海龟'],
@@ -1039,7 +1039,7 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'conditional',
       description: '如果你的场上拥有“自然”关键词的环境牌，那么每个回合开始时为你回复1点能量值'
     }
@@ -1244,7 +1244,7 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'conditional',
       description: '每个回合开始时掷一颗D6骰，如果点数为1/2/3则无视发生，如果点数为4/5/6则抽取一张卡牌'
     }
@@ -1431,7 +1431,7 @@ export const allCardDefinitions = [
     cost: 3,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundStart',
       type: 'conditional',
       description: '每回合开始限一次：弃置一张水属性的手牌选择以下一项A.回复2点能量/B.使一张单位牌的战力+2/C.抽两张牌'
     }
@@ -1491,7 +1491,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundEnd',
       type: 'conditional',
       description: '每个回合结束时，为一张非水属性的其他单位牌增加1点战力'
     }
@@ -1511,7 +1511,7 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundStart',
       type: 'conditional',
       description: '每回合开始限一次：弃置一张火属性的手牌使你左手边第一名玩家的最终战力-2'
     }
@@ -1678,7 +1678,7 @@ export const allCardDefinitions = [
     cost: 4,
     effects: [
     {
-      timing: 'onReveal',
+      timing: 'roundStart',
       type: 'conditional',
       description: '揭示：其他玩家在下一个回合开始时不会抽牌'
     }
@@ -1798,7 +1798,7 @@ export const allCardDefinitions = [
     cost: 11,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundStart',
       type: 'conditional',
       description: '在首个回合开始时，如果这张牌位于你的手牌、牌库或弃牌堆，将会消耗对应能量并立即进场'
     }
@@ -2085,7 +2085,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundEnd',
       type: 'createSlot',
       description: '每个回合结束时，可以额外花费1点能量值来打出一张带有"酒水"关键词的卡牌，这张卡会在下回合出牌时展示'
     }
@@ -2125,7 +2125,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundEnd',
       type: 'conditional',
       description: '你可以将拥有“职业者”关键词或“冒险者”名词的单位牌部署在这张牌上，这些卡牌不再计算终局数量，如果这张牌上有部署卡牌，那么在每个回合结束时为你回复1点能量并使这张牌的战力+1'
     }
@@ -2145,7 +2145,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'conditional',
       description: '每个回合开始时从你的牌库检索一张拥有“射击”名称的卡牌加入手牌，随后混洗牌库'
     }
@@ -2475,7 +2475,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundEnd',
       type: 'conditional',
       description: '每个回合结束时，所有角色场上非冰属性的卡牌战力-1，冰属性的卡牌战力+1'
     }
@@ -2555,7 +2555,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onField',
+      timing: 'roundStart',
       type: 'conditional',
       description: '每个回合开始抽牌时你可以选择抽取牌库顶的三张牌，选择其中一张加入手牌，剩余卡牌按照任意顺序放置在牌库顶或牌库底部'
     }
@@ -2728,7 +2728,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundEnd',
       type: 'conditional',
       description: '选择一张单位牌，使其在接下来的三个回合结束时每次战力+1'
     }
@@ -2865,7 +2865,7 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
+      timing: 'roundStart',
       type: 'conditional',
       description: '在下一个回合开始和最后一个回合开始时，分别为你回复3点能量值'
     }

@@ -153,6 +153,45 @@ class EffectManager {
     })
   }
 
+  // 按时机触发所有回合效果（modifyPower, modifyCost, draw, searchDeck）
+  static triggerRoundEffects(timing, game) {
+    const messages = []
+    game.gameState.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (!slot.card || !slot.card.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing !== timing) return
+          
+          if (effect.type === 'modifyPower' && effect.value) {
+            slot.card.currentPower += effect.value
+            messages.push(`${slot.card.name} 战力${effect.value > 0 ? '+' : ''}${effect.value}`)
+          } else if (effect.type === 'modifyCost' && effect.value) {
+            player.currentCost += effect.value
+            messages.push(`${player.name} 能量${effect.value > 0 ? '+' : ''}${effect.value}`)
+          } else if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
+            const count = effect.drawCount || effect.value || 1
+            for (let i = 0; i < count; i++) {
+              if (player.deck.length > 0) {
+                const drawn = player.deck.pop()
+                player.hand.push(drawn)
+                messages.push(`${player.name} 抽到了${drawn.name}`)
+              }
+            }
+          } else if (effect.type === 'searchDeck') {
+            const found = EffectManager.searchDeck(player, effect)
+            if (found.length > 0) {
+              player.hand.push(...found)
+              messages.push(`${player.name} 检索到${found.length}张牌`)
+            }
+          }
+        })
+      })
+    })
+    if (messages.length > 0) {
+      game.gameState.message = game.gameState.message + ' | ' + messages.join(' | ')
+    }
+  }
+
   // 触发"其他卡牌打出时"的效果
   static triggerOnOtherPlayEffects(deployedCard, player, game) {
     const messages = []
@@ -1086,6 +1125,9 @@ class GameEngine {
   
   // 开始新回合
   startNewRound() {
+    // 触发回合结束效果（上一回合的效果结算）
+    EffectManager.triggerRoundEffects('roundEnd', this)
+    
     // 在新回合开始时，先揭示上一回合打出的所有卡牌
     this.revealAllCards()
     
@@ -1158,6 +1200,9 @@ class GameEngine {
         }
       }
     })
+    
+    // 触发新回合开始效果
+    EffectManager.triggerRoundEffects('roundStart', this)
     
     // 检查是否只有一个玩家需要操作（最后一回合）
     const needDecision = Object.values(this.gameState.playerDecisions).filter(d => !d.made).length

@@ -371,4 +371,43 @@ export class EffectManager {
       })
     })
   }
+
+  // 触发回合开始/结束效果
+  static triggerRoundEffects(timing: 'roundStart' | 'roundEnd', game: GameState) {
+    const messages: string[] = []
+    game.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (!slot.card || !slot.card.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing !== timing) return
+
+          if (effect.type === 'modifyPower' && effect.value) {
+            slot.card.currentPower += effect.value as number
+            messages.push(`${slot.card.name} 战力${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
+          } else if (effect.type === 'modifyCost' && effect.value) {
+            player.currentCost += effect.value as number
+            messages.push(`${player.name} 能量${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
+          } else if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
+            const count = effect.drawCount || (effect.value as number) || 1
+            for (let i = 0; i < count; i++) {
+              if (player.deck.length > 0) {
+                const drawn = player.deck.pop()!
+                player.hand.push(drawn)
+                messages.push(`${player.name} 抽到了${drawn.name}`)
+              }
+            }
+          } else if (effect.type === 'searchDeck') {
+            const found = EffectManager.searchDeck(player, effect)
+            if (found.length > 0) {
+              player.hand.push(...found)
+              messages.push(`${player.name} 检索到${found.length}张牌`)
+            }
+          }
+        })
+      })
+    })
+    if (messages.length > 0) {
+      game.message = game.message + ' | ' + messages.join(' | ')
+    }
+  }
 }
