@@ -368,7 +368,8 @@
         "type": "custom",
         "description": "速攻：将其置于一张单位牌上"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_017",
@@ -856,9 +857,10 @@
       {
         "timing": "onReveal",
         "type": "custom",
-        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上"
+        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_044",
@@ -876,9 +878,10 @@
       {
         "timing": "onReveal",
         "type": "custom",
-        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上"
+        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_045",
@@ -896,9 +899,10 @@
       {
         "timing": "onReveal",
         "type": "custom",
-        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上"
+        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_046",
@@ -1080,7 +1084,8 @@
         "type": "custom",
         "description": "速攻&揭示：打开这个贝壳并掷一颗D6骰.D1-2这个贝壳中什么也没有.D3-4.有一份蚌肉，你的战力+1.D5-6.有一颗珍珠！你的战力+5"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_056",
@@ -1422,9 +1427,10 @@
       {
         "timing": "onReveal",
         "type": "custom",
-        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上"
+        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上"
       }
-    ]
+    ],
+    "quickPlay": true
   },
   {
     "id": "card_075",

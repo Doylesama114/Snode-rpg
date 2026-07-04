@@ -772,23 +772,49 @@ class GameEngine {
       }
     })
     
+    // QuickPlay units: deploy onto an existing field card (auto-select first target)
+    if (card.type === 'unit') {
+      const fieldCards = player.field.filter(s => s.card).map(s => s.card)
+      if (fieldCards.length === 0) {
+        player.discard.push(card)
+        this.gameState.message = '场上没有可部署的目标'
+        return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+      }
+
+      // Auto-select first valid target (simplified server logic)
+      const targetCard = fieldCards[0]
+      const oldPower = targetCard.currentPower
+      targetCard.currentPower += card.basePower
+      this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+
+      EffectManager.recalculateAllPowers(this.gameState)
+      EffectManager.applyOnFieldDestroy(this)
+      EffectManager.applyOnFieldSelfModify(this)
+      this.checkFieldFull(playerIndex)
+
+      // Build response message
+      this.gameState.message = messages.join(' | ') + ' | ' + this.gameState.message
+
+      return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+    }
+
     // QuickPlay tactics go to discard (unless returned to deck)
     const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
     if (card.type === 'tactic' && !hasReturnToDeck) {
       player.discard.push(card)
     }
-    
+
     // After quickPlay: apply all field effects
     EffectManager.applyOnFieldDestroy(this)
     EffectManager.recalculateAllPowers(this.gameState)
     EffectManager.applyOnFieldSelfModify(this)
-    
+
     // Check field full
     this.checkFieldFull(playerIndex)
-    
+
     // Build response message
     this.gameState.message = messages.join(' | ')
-    
+
     return {
       success: true,
       gameState: this.getPublicGameState(),

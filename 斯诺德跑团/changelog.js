@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6037',
+    date: '2026-07-04',
+    changes: [
+      'engine upgrade #3 complete: deploy-onto-card + all 15 quickPlay cards (37/151, 24.5%)'
+    ]
+  },
+
+
+  {
     version: '1.0.6035',
     date: '2026-07-03',
     changes: [

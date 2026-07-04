@@ -89,6 +89,7 @@ export interface Card {
   forcedPlay?: boolean    // 是否强制打出（费用不足仍可打出，能量变负数）
   quickPlay?: boolean     // 是否快速打出（跳过费用/行动检查，直接触发效果）
   markedForDiscard?: boolean // 被标记弃置（火焰箭效果）
+  deployOnCardTarget?: string // QuickPlay unit: parent card id (deployed onto existing field card)
 }
 
 // 场上槽位
@@ -141,6 +142,7 @@ export interface GameState {
   selectedSlot?: number
   availableSlots?: number[]
   availableTargets?: Card[]
+  pendingQuickPlayCard?: Card  // QuickPlay unit card awaiting target selection
   // 同时回合机制 (multi-player serializable records)
   playerDecisions?: Record<string, { made: boolean; choice: DecisionType | null }>
   pendingReveals?: Record<string, Array<{ cardId: string; slotIndex: number }>>

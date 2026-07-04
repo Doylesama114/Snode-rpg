@@ -397,18 +397,38 @@ export function useGame() {
       }
     })
     
+    // QuickPlay units need target selection on field (deploy onto existing card)
+    if (card.type === 'unit') {
+      const fieldCards = player.field.filter(s => s.card).map(s => s.card!)
+      if (fieldCards.length === 0) {
+        gameState.value.message = '场上没有可部署的目标'
+        // Unit goes to discard since it can't be deployed
+        player.discard.push(card)
+        gameState.value.phase = 'action'
+        gameState.value.selectedCard = undefined
+        gameState.value.selectedSlot = undefined
+        return
+      }
+      // Save pending card and switch to target selection
+      gameState.value.pendingQuickPlayCard = card
+      gameState.value.availableTargets = fieldCards
+      gameState.value.phase = 'selectTarget'
+      gameState.value.message = `选择${card.name}的部署目标`
+      return
+    }
+
     // QuickPlay tactic cards go directly to discard (unless returned to deck)
     const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
     if (card.type === 'tactic' && !hasReturnToDeck) {
       player.discard.push(card)
     }
-    
+
     // Trigger onOtherPlayEffects (other cards on field may react to this play)
     EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
-    
+
     // Recalculate all powers
     EffectManager.recalculateAllPowers(gameState.value)
-    
+
     // Reset selection state
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
@@ -517,20 +537,76 @@ export function useGame() {
   // 选择战术牌目标
   function selectTacticTarget(targetCard: Card) {
     if (gameState.value.phase !== 'selectTarget' || !gameState.value.selectedCard) return
-    
+
     const card = gameState.value.selectedCard
     const effect = card.effects.find(e => e.timing === 'onReveal')
-    
+
     if (effect && effect.value) {
       targetCard.currentPower += effect.value
       gameState.value.message += ` | ${targetCard.name} 战力+${effect.value}`
     }
-    
+
     // 找到战术牌的槽位并弃置
     const slotIndex = currentPlayer.value.field.findIndex(s => s.card === card)
     if (slotIndex !== -1) {
       discardTacticCard(card, currentPlayer.value, slotIndex)
     }
+  }
+
+  // 选择QuickPlay单位牌的部署目标（部署到现有场上卡牌上）
+  function selectQuickPlayTarget(targetCard: Card) {
+    const card = gameState.value.pendingQuickPlayCard
+    if (!card || gameState.value.phase !== 'selectTarget') return
+
+    const player = currentPlayer.value
+
+    // Check farm/vehicle keyword restriction (玉米/胡萝卜/卷心菜/洋葱)
+    const farmRestricted = card.effects.some(e =>
+      e.description.includes('农田') || e.description.includes('载具'))
+    if (farmRestricted) {
+      const hasKeyword = targetCard.keywords.some(k => k === '农田' || k === '载具')
+      if (!hasKeyword) {
+        gameState.value.message = `${card.name} 只能部署在带有"农田"或"载具"关键词的卡牌上`
+        gameState.value.phase = 'action'
+        gameState.value.pendingQuickPlayCard = undefined
+        gameState.value.availableTargets = []
+        return
+      }
+    }
+
+    // Deploy onto card: store relationship
+    card.deployOnCardTarget = targetCard.id
+
+    // For 壳: D6 stub (random 0/+1/+5)
+    let actualPower = card.basePower
+    if (card.name === '贝壳') {
+      const d6 = Math.floor(Math.random() * 6) + 1
+      if (d6 <= 2) actualPower = 0          // D1-2: 空
+      else if (d6 <= 4) actualPower = 1      // D3-4: 蚌肉 +1
+      else actualPower = 5                    // D5-6: 珍珠 +5
+      gameState.value.message = `${card.name} 掷D6=${d6}，战力+${actualPower}`
+    }
+
+    // Add power to parent (渔网: basePower is -1, adds -1 to parent)
+    const oldPower = targetCard.currentPower
+    targetCard.currentPower += actualPower
+    if (card.name !== '贝壳') {
+      gameState.value.message = `${card.name} 部署到 ${targetCard.name}上 | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
+    } else {
+      gameState.value.message += ` | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
+    }
+
+    // Trigger onOtherPlayEffects (other cards on field may react)
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
+
+    // Recalculate all powers
+    EffectManager.recalculateAllPowers(gameState.value)
+
+    // Clean up
+    gameState.value.pendingQuickPlayCard = undefined
+    gameState.value.phase = 'action'
+    gameState.value.selectedCard = undefined
+    gameState.value.availableTargets = []
   }
 
   // 弃置战术牌
@@ -871,6 +947,7 @@ export function useGame() {
     selectCardToPlay,
     selectSlotToPlay,
     selectTacticTarget,
+    selectQuickPlayTarget,
     selectReforgeCard,
     executeReforge,
     endTurn,

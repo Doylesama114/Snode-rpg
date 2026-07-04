@@ -16,6 +16,7 @@ const {
   selectCardToPlay,
   selectSlotToPlay,
   selectTacticTarget,
+  selectQuickPlayTarget,
   selectReforgeCard, 
   executeReforge, 
   endTurn 
@@ -146,10 +147,10 @@ const playerCountStart = ref(2)
               class="field-slot"
               :class="{
                 'has-card': slot.card,
-                'selectable': player.id === 'player' && isSlotAvailable(si),
+                'selectable': player.id === 'player' && (isSlotAvailable(si) || (gameState.phase === 'selectTarget' && slot.card)),
                 'selected': player.id === 'player' && gameState.selectedSlot === si
               }"
-              @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(si) && selectSlotToPlay(si)"
+              @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(si) && selectSlotToPlay(si); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card)"
             >
               <div v-if="slot.card" class="field-card">
                 <div class="card-name-small">{{ slot.card.name }}</div>

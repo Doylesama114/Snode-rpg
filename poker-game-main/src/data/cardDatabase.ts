@@ -373,8 +373,8 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['武器', '物件'],
     attribute: '无',
-    basePower: 0,
-    currentPower: 0,
+    basePower: -1,
+    currentPower: -1,
     cost: 0,
     effects: [
     {
@@ -384,7 +384,8 @@ export const allCardDefinitions = [
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 018. 箭袋
   {
@@ -933,11 +934,12 @@ export const allCardDefinitions = [
     {
       timing: 'onPlay',
       type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上'
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 045. 胡萝卜
   {
@@ -953,11 +955,12 @@ export const allCardDefinitions = [
     {
       timing: 'onPlay',
       type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上'
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 046. 卷心菜
   {
@@ -973,11 +976,12 @@ export const allCardDefinitions = [
     {
       timing: 'onPlay',
       type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上'
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 047. 海藻
   {
@@ -1185,7 +1189,8 @@ export const allCardDefinitions = [
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 057. 翻车鱼
   {
@@ -1571,11 +1576,12 @@ export const allCardDefinitions = [
     {
       timing: 'onPlay',
       type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有“农田/载具”关键词的卡牌上'
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
     }
     ],
     slotRequired: 1,
-    isPersistent: true
+    isPersistent: true,
+    quickPlay: true
   },
   // 076. 攀岩爱好者
   {
