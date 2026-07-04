@@ -5,6 +5,11 @@ import { getCard, createDefaultDeck, createDeckFromCardIds, shuffleDeck } from '
 
 // 效果管理器（从 effectManager.ts 完整移植）
 class EffectManager {
+  // 掷一颗D6骰子，返回1-6的随机整数
+  static rollD6() {
+    return Math.floor(Math.random() * 6) + 1
+  }
+
   // 检查卡牌是否有指定关键词（包括名称检查）
   static hasKeyword(card, keyword) {
     if (!card || !card.keywords) return false
@@ -1233,6 +1238,17 @@ class GameEngine {
   // 结束游戏
   endGame() {
     this.gameState.phase = 'gameOver'
+    
+    // 吟游诗人 end-of-game D6 effect
+    this.gameState.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (slot.card && slot.card.name === '吟游诗人') {
+          const d6 = EffectManager.rollD6()
+          slot.card.currentPower += d6
+          this.gameState.message += ` | 吟游诗人 D6=${d6}，战力+${d6}`
+        }
+      })
+    })
     
     // 计算所有玩家战力
     const powerEntries = this.gameState.players.map((player, index) => {

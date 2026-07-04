@@ -2,6 +2,11 @@ import type { Card, Player, GameState, FieldSlot, EffectContext } from '@/types/
 
 // 效果管理器
 export class EffectManager {
+  // 掷一颗D6骰子，返回1-6的随机整数
+  static rollD6(): number {
+    return Math.floor(Math.random() * 6) + 1
+  }
+
   // 检查卡牌是否有指定关键词（包括名称检查）
   static hasKeyword(card: Card, keyword: string): boolean {
     // 检查关键词数组

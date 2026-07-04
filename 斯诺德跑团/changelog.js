@@ -2,6 +2,24 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6039',
+    date: '2026-07-04',
+    changes: [
+      'engine upgrade #5: rollD6 utility + 4 D6 cards (垂钓客/贝壳/吟游诗人/激励乐章)'
+    ]
+  },
+
+
+  {
+    version: '1.0.6039',
+    date: '2026-07-04',
+    changes: [
+      'engine upgrade #5: rollD6 utility + 4 D6 cards (垂钓客/贝壳/吟游诗人/激励乐章)'
+    ]
+  },
+
+
+  {
     version: '1.0.6038',
     date: '2026-07-04',
     changes: [

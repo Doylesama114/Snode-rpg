@@ -814,6 +814,17 @@ export function useGame() {
   function endGame() {
     gameState.value.phase = 'gameOver'
     
+    // 吟游诗人 end-of-game D6 effect
+    gameState.value.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (slot.card && slot.card.name === '吟游诗人') {
+          const d6 = EffectManager.rollD6()
+          slot.card.currentPower += d6
+          gameState.value.message += ` | 吟游诗人 D6=${d6}，战力+${d6}`
+        }
+      })
+    })
+    
     const ranking = gameState.value.players.map((player, index) => {
       let totalPower = player.bonusPower
       player.field.forEach(slot => {

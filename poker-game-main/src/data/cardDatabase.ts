@@ -1245,7 +1245,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundStart',
-      type: 'conditional',
+      type: 'draw',
+      drawCount: 1,
       description: '每个回合开始时掷一颗D6骰，如果点数为1/2/3则无视发生，如果点数为4/5/6则抽取一张卡牌'
     }
     ],
@@ -3049,9 +3050,11 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '选择一张单位牌并掷一颗D6骰，为其增加对应点数的战力'
+      timing: 'onReveal',
+      type: 'modifyPower',
+      targetKeywords: ['单位'],
+      value: 3,
+      description: '选择一张单位牌并掷一颗D6骰，为其增加对应点数的战力(D6随机化将在后续实现，暂用平均值3)'
     }
     ],
     slotRequired: 1,
