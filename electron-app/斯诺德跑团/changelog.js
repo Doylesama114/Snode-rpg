@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6046',
+    date: '2026-07-04',
+    changes: [
+      '4D: 德鲁伊/射击俱乐部/寒脊山脉 roundStart/End',
+      'applyRoundEffect 引擎'
+    ]
+  },
+
+
+  {
     version: '1.0.6045',
     date: '2026-07-04',
     changes: [

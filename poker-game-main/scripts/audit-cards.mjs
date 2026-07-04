@@ -30,6 +30,7 @@ const IMPLEMENTED_NAMES = new Set([
   '野猪', '见习冒险者', '农田', '铁匠铺',
   '收获日', '雷云召来', '报警机器人',
   '休憩曲', '祈福', '炎炎夏日',
+  '德鲁伊', '射击俱乐部', '寒脊山脉',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([

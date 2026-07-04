@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T12:04:53.390Z",
+  "generatedAt": "2026-07-04T12:17:59.190Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,8 +12,8 @@
   },
   "wiringSummary": {
     "structured": 24,
-    "implemented_doc": 41,
-    "conditional_only": 83
+    "implemented_doc": 44,
+    "conditional_only": 80
   },
   "patternSummary": {
     "on_deploy": 42,
@@ -66,6 +66,7 @@
       "落魄男爵 (card_030)",
       "狗头人冒险者 (card_043)",
       "海藻 (card_047)",
+      "德鲁伊 (card_049)",
       "蜥蜴人勇士 (card_053)",
       "鲈鱼 (card_060)",
       "热带鱼 (card_061)",
@@ -74,11 +75,13 @@
       "土元素 (card_078)",
       "圣洁骑士 (card_095)",
       "酒馆 (card_100)",
+      "射击俱乐部 (card_103)",
       "法师塔 (card_104)",
       "森林 (card_105)",
       "大海 (card_111)",
       "沙滩碉堡 (card_116)",
       "马车 (card_118)",
+      "寒脊山脉 (card_119)",
       "活力药水 (card_125)",
       "奥术箭 (card_126)",
       "元素墙 (card_128)",
@@ -125,7 +128,6 @@
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
       "隐士 (card_048)",
-      "德鲁伊 (card_049)",
       "哥布林杂兵 (card_050)",
       "药剂师 (card_051)",
       "猎人 (card_052)",
@@ -164,7 +166,6 @@
       "刺客 (card_098)",
       "杂货铺 (card_101)",
       "温馨的旅馆 (card_102)",
-      "射击俱乐部 (card_103)",
       "棕榈树 (card_106)",
       "仲夏节庆典 (card_107)",
       "溪流 (card_108)",
@@ -173,7 +174,6 @@
       "锻炉 (card_112)",
       "沙滩 (card_115)",
       "礁石 (card_117)",
-      "寒脊山脉 (card_119)",
       "季风 (card_120)",
       "晴天 (card_121)",
       "贫民窟 (card_122)",
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 41,
+  "implementedDocCount": 44,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -401,7 +401,10 @@
     "报警机器人",
     "休憩曲",
     "祈福",
-    "炎炎夏日"
+    "炎炎夏日",
+    "德鲁伊",
+    "射击俱乐部",
+    "寒脊山脉"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -1262,7 +1265,7 @@
       "id": "card_049",
       "name": "德鲁伊",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "round_start",
       "flags": {
         "quickPlay": false,
@@ -1270,7 +1273,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "restoreEnergy"
       ],
       "timings": [
         "roundStart"
@@ -2216,7 +2219,7 @@
       "id": "card_103",
       "name": "射击俱乐部",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "round_start",
       "flags": {
         "quickPlay": false,
@@ -2224,7 +2227,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "searchDeck"
       ],
       "timings": [
         "roundStart"
@@ -2504,7 +2507,7 @@
       "id": "card_119",
       "name": "寒脊山脉",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "round_end",
       "flags": {
         "quickPlay": false,
@@ -2512,9 +2515,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower",
+        "modifyPower"
       ],
       "timings": [
+        "roundEnd",
         "roundEnd"
       ]
     },

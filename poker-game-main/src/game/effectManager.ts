@@ -567,6 +567,105 @@ export class EffectManager {
   }
 
   // 触发回合开始/结束效果
+  static hasFieldMatching(player: Player, effect: CardEffect): boolean {
+    return player.field.some(slot => {
+      if (!slot.card) return false
+      if (effect.requireFieldCardType && slot.card.type !== effect.requireFieldCardType) return false
+      if (effect.requireFieldKeywords?.length) {
+        return this.hasAnyKeyword(slot.card, effect.requireFieldKeywords)
+      }
+      return true
+    })
+  }
+
+  static matchesRoundGlobalTarget(card: Card, effect: CardEffect): boolean {
+    if (effect.targetCardType && card.type !== effect.targetCardType) return false
+    if (effect.targetKeywords?.includes('单位') && card.type !== 'unit') return false
+    if (effect.targetKeywords?.length && !effect.targetKeywords.includes('单位')) {
+      if (!this.hasAnyKeyword(card, effect.targetKeywords)) return false
+    }
+    if (effect.targetAttributes?.length && !this.hasAnyAttribute(card, effect.targetAttributes)) return false
+    if (effect.excludeAttributes?.length && this.hasAnyAttribute(card, effect.excludeAttributes)) return false
+    return true
+  }
+
+  static getRoundGlobalTargets(game: GameState, ownerPlayer: Player, effect: CardEffect): Card[] {
+    const players = effect.allPlayers ? game.players : [ownerPlayer]
+    const targets: Card[] = []
+    players.forEach(p => {
+      p.field.forEach(slot => {
+        if (slot.card && (effect.targetAllCards || effect.allPlayers) && this.matchesRoundGlobalTarget(slot.card, effect)) {
+          targets.push(slot.card)
+        }
+      })
+    })
+    return targets
+  }
+
+  static applyRoundEffect(
+    effect: CardEffect,
+    ownerCard: Card,
+    player: Player,
+    game: GameState,
+  ): { messages: string[] } {
+    const messages: string[] = []
+
+    if (effect.requireFieldKeywords?.length && !this.hasFieldMatching(player, effect)) {
+      return { messages }
+    }
+
+    if (effect.type === 'restoreEnergy') {
+      player.currentCost += effect.value || 0
+      messages.push(`${player.name} 恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.allPlayers && (effect.targetAllCards || effect.excludeAttributes || effect.targetAttributes)) {
+      const targets = this.getRoundGlobalTargets(game, player, effect)
+      if (targets.length === 0) return { messages }
+      const delta = effect.value || 0
+      targets.forEach(t => { t.currentPower += delta })
+      const sign = delta >= 0 ? '+' : ''
+      messages.push(`${targets.length}张卡牌战力${sign}${delta}`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.value && !effect.allPlayers) {
+      ownerCard.currentPower += effect.value as number
+      messages.push(`${ownerCard.name} 战力${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyCost' && effect.value) {
+      player.currentCost += effect.value as number
+      messages.push(`${player.name} 能量${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
+      return { messages }
+    }
+
+    if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
+      const count = effect.drawCount || (effect.value as number) || 1
+      for (let i = 0; i < count; i++) {
+        if (player.deck.length > 0) {
+          const drawn = player.deck.pop()!
+          player.hand.push(drawn)
+          messages.push(`${player.name} 抽到了${drawn.name}`)
+        }
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'searchDeck') {
+      const found = this.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        messages.push(`${player.name} 检索到${found.length}张牌`)
+      }
+      return { messages }
+    }
+
+    return { messages }
+  }
+
   static triggerRoundEffects(timing: 'roundStart' | 'roundEnd', game: GameState) {
     const messages: string[] = []
     game.players.forEach(player => {
@@ -574,29 +673,9 @@ export class EffectManager {
         if (!slot.card || !slot.card.effects) return
         slot.card.effects.forEach(effect => {
           if (effect.timing !== timing) return
-
-          if (effect.type === 'modifyPower' && effect.value) {
-            slot.card.currentPower += effect.value as number
-            messages.push(`${slot.card.name} 战力${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
-          } else if (effect.type === 'modifyCost' && effect.value) {
-            player.currentCost += effect.value as number
-            messages.push(`${player.name} 能量${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
-          } else if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
-            const count = effect.drawCount || (effect.value as number) || 1
-            for (let i = 0; i < count; i++) {
-              if (player.deck.length > 0) {
-                const drawn = player.deck.pop()!
-                player.hand.push(drawn)
-                messages.push(`${player.name} 抽到了${drawn.name}`)
-              }
-            }
-          } else if (effect.type === 'searchDeck') {
-            const found = EffectManager.searchDeck(player, effect)
-            if (found.length > 0) {
-              player.hand.push(...found)
-              messages.push(`${player.name} 检索到${found.length}张牌`)
-            }
-          }
+          if (effect.type === 'conditional' || effect.type === 'custom') return
+          const result = this.applyRoundEffect(effect, slot.card, player, game)
+          messages.push(...result.messages)
         })
       })
     })

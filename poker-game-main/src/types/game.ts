@@ -59,6 +59,12 @@ export interface CardEffect {
   allPlayers?: boolean
   /** setFieldAttribute：目标卡牌类型（environment/unit/tactic） */
   targetCardType?: CardType
+  /** roundStart 等：场上需存在带这些关键词的牌才触发 */
+  requireFieldKeywords?: string[]
+  /** 配合 requireFieldKeywords：限定场上牌类型 */
+  requireFieldCardType?: CardType
+  /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */
+  targetAllCards?: boolean
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

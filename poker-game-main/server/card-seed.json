@@ -1096,7 +1096,12 @@
     "effects": [
       {
         "timing": "roundStart",
-        "type": "conditional",
+        "type": "restoreEnergy",
+        "value": 1,
+        "requireFieldKeywords": [
+          "自然"
+        ],
+        "requireFieldCardType": "environment",
         "description": "如果你的场上拥有“自然”关键词的环境牌，那么每个回合开始时为你回复1点能量值"
       }
     ],
@@ -2224,7 +2229,11 @@
     "effects": [
       {
         "timing": "roundStart",
-        "type": "conditional",
+        "type": "searchDeck",
+        "searchName": "射击",
+        "maxCount": 1,
+        "shuffleAfterSearch": true,
+        "searchDiscard": false,
         "description": "每个回合开始时从你的牌库检索一张拥有“射击”名称的卡牌加入手牌，随后混洗牌库"
       }
     ],
@@ -2567,8 +2576,25 @@
     "effects": [
       {
         "timing": "roundEnd",
-        "type": "conditional",
-        "description": "每个回合结束时，所有角色场上非冰属性的卡牌战力-1，冰属性的卡牌战力+1"
+        "type": "modifyPower",
+        "value": -1,
+        "allPlayers": true,
+        "targetAllCards": true,
+        "excludeAttributes": [
+          "冰"
+        ],
+        "description": "每个回合结束时，所有角色场上非冰属性的卡牌战力-1"
+      },
+      {
+        "timing": "roundEnd",
+        "type": "modifyPower",
+        "value": 1,
+        "allPlayers": true,
+        "targetAllCards": true,
+        "targetAttributes": [
+          "冰"
+        ],
+        "description": "每个回合结束时，冰属性的卡牌战力+1"
       }
     ],
     "slotRequired": 1,
