@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T14:21:02.326Z",
+  "generatedAt": "2026-07-04T15:01:40.933Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 21,
-    "implemented_doc": 62,
-    "conditional_only": 65
+    "structured": 15,
+    "implemented_doc": 71,
+    "conditional_only": 62
   },
   "patternSummary": {
     "on_deploy": 39,
@@ -41,12 +41,6 @@
       "橡木武器店 (card_011)",
       "生命药水 (card_013)",
       "金牌烤火鸡 (card_015)",
-      "奶牛 (card_021)",
-      "退役老兵 (card_032)",
-      "翻车鱼 (card_057)",
-      "海葵 (card_058)",
-      "螃蟹 (card_063)",
-      "拾贝鱼人 (card_064)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "利剑中队 (card_091)",
@@ -61,19 +55,27 @@
       "魔法飞弹 (card_014)",
       "风笛 (card_019)",
       "酒吧女招待 (card_020)",
+      "奶牛 (card_021)",
       "挤奶工 (card_022)",
       "摄像机 (card_026)",
       "葡萄酒商人 (card_027)",
       "暴徒 (card_029)",
       "落魄男爵 (card_030)",
+      "退役老兵 (card_032)",
+      "萨满祭司 (card_033)",
       "狗头人冒险者 (card_043)",
       "海藻 (card_047)",
       "德鲁伊 (card_049)",
       "蜥蜴人勇士 (card_053)",
       "贝壳 (card_056)",
+      "翻车鱼 (card_057)",
+      "海葵 (card_058)",
       "垂钓客 (card_059)",
       "鲈鱼 (card_060)",
       "热带鱼 (card_061)",
+      "珍珠商人 (card_062)",
+      "螃蟹 (card_063)",
+      "拾贝鱼人 (card_064)",
       "水元素 (card_066)",
       "篝火 (card_071)",
       "火元素 (card_073)",
@@ -86,6 +88,7 @@
       "射击俱乐部 (card_103)",
       "法师塔 (card_104)",
       "森林 (card_105)",
+      "海港 (card_109)",
       "大海 (card_111)",
       "沙滩 (card_115)",
       "沙滩碉堡 (card_116)",
@@ -125,7 +128,6 @@
       "游客 (card_025)",
       "奴隶 (card_028)",
       "强盗 (card_031)",
-      "萨满祭司 (card_033)",
       "武僧 (card_034)",
       "征募官 (card_035)",
       "蛮斗士 (card_036)",
@@ -144,7 +146,6 @@
       "猎人 (card_052)",
       "蔓生怪 (card_054)",
       "走私船 (card_055)",
-      "珍珠商人 (card_062)",
       "潮汐歌者 (card_065)",
       "珊瑚元素 (card_067)",
       "海洋德鲁伊 (card_068)",
@@ -173,7 +174,6 @@
       "棕榈树 (card_106)",
       "仲夏节庆典 (card_107)",
       "溪流 (card_108)",
-      "海港 (card_109)",
       "帆船 (card_110)",
       "锻炉 (card_112)",
       "礁石 (card_117)",
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 62,
+  "implementedDocCount": 71,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -422,7 +422,16 @@
     "暴徒",
     "海鸥",
     "精准射击",
-    "气泡酒"
+    "气泡酒",
+    "奶牛",
+    "螃蟹",
+    "退役老兵",
+    "海葵",
+    "翻车鱼",
+    "拾贝鱼人",
+    "萨满祭司",
+    "珍珠商人",
+    "海港"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -779,7 +788,7 @@
       "id": "card_021",
       "name": "奶牛",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -977,7 +986,7 @@
       "id": "card_032",
       "name": "退役老兵",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -995,7 +1004,7 @@
       "id": "card_033",
       "name": "萨满祭司",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1003,7 +1012,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "grantAttributePlayBonus"
       ],
       "timings": [
         "onDeploy"
@@ -1427,7 +1436,7 @@
       "id": "card_057",
       "name": "翻车鱼",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_other_play",
       "flags": {
         "quickPlay": false,
@@ -1445,7 +1454,7 @@
       "id": "card_058",
       "name": "海葵",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1517,7 +1526,7 @@
       "id": "card_062",
       "name": "珍珠商人",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1525,7 +1534,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "setD6MinForCardName"
       ],
       "timings": [
         "onDeploy"
@@ -1535,7 +1544,7 @@
       "id": "card_063",
       "name": "螃蟹",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1553,7 +1562,7 @@
       "id": "card_064",
       "name": "拾贝鱼人",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2345,7 +2354,7 @@
       "id": "card_109",
       "name": "海港",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2353,7 +2362,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "createSlot"
       ],
       "timings": [
         "onDeploy"

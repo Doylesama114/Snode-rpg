@@ -1,4 +1,4 @@
-import type { GameState, Player, Card, ReforgeOption, FieldSlot, GameAction } from '@/types/game'
+import type { GameState, Player, Card, ReforgeOption, FieldSlot, GameAction, CardEffect } from '@/types/game'
 import { createDeck, shuffleDeck, initializeCardDatabase } from '@/data/cards'
 import { CardDatabase } from '@/data/cardDatabase'
 import { EffectManager } from '@/game/effectManager'
@@ -195,17 +195,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
 
   // 获取可用槽位
   function getAvailableSlots(player: Player, card: Card): number[] {
-    const slots: number[] = []
-    
-    player.field.forEach((slot, index) => {
-      if (!slot.isExtra && !slot.card) {
-        slots.push(index)
-      } else if (slot.isExtra && !slot.card && card.type === 'unit') {
-        slots.push(index)
-      }
-    })
-    
-    return slots
+    return EffectManager.getAvailableSlotIndices(player, card)
   }
 
   // 选择槽位打出卡牌
@@ -367,24 +357,18 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
         gameState.value.message += ` | ${msg}`
       })
       if (result.needsCreateSlot) {
-        createExtraSlot(card, player)
+        createExtraSlot(card, player, effect)
       }
     })
   }
 
   // 创建额外槽位
-  function createExtraSlot(parentCard: Card, player: Player) {
+  function createExtraSlot(parentCard: Card, player: Player, effect?: CardEffect) {
     const parentSlotIndex = player.field.findIndex(s => s.card === parentCard)
     if (parentSlotIndex === -1) return
     
-    const newSlot: FieldSlot = {
-      card: null,
-      position: player.field.length,
-      isExtra: true,
-      parentSlot: parentSlotIndex
-    }
-    
-    player.field.push(newSlot)
+    const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
+    player.field.push(EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules))
     gameState.value.message += ` | 创建了额外槽位`
   }
 

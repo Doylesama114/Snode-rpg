@@ -226,6 +226,84 @@ class EffectManager {
     }).length
   }
 
+  static slotRulesFromEffect(effect) {
+    if (effect.type !== 'createSlot') return undefined
+    const rules = {}
+    if (effect.slotDeployKeywords?.length) rules.deployKeywords = effect.slotDeployKeywords
+    if (effect.slotDeployCardType) rules.deployCardType = effect.slotDeployCardType
+    if (effect.slotDeployAttributes?.length) rules.deployAttributes = effect.slotDeployAttributes
+    if (effect.slotExcludeFromFieldCount) rules.excludeFromFieldCount = true
+    if (effect.slotDeployedPowerBonus) rules.deployedPowerBonus = effect.slotDeployedPowerBonus
+    return Object.keys(rules).length > 0 ? rules : undefined
+  }
+
+  static buildExtraSlot(parentSlotIndex, position, rules) {
+    return { card: null, position, isExtra: true, parentSlot: parentSlotIndex, deployRules: rules }
+  }
+
+  static canDeployOnExtraSlot(card, slot) {
+    if (!slot.isExtra || slot.card) return false
+    if (card.type !== 'unit') return false
+    const rules = slot.deployRules
+    if (!rules) return true
+    if (rules.deployCardType && card.type !== rules.deployCardType) return false
+    if (rules.deployAttributes?.length && !EffectManager.hasAnyAttribute(card, rules.deployAttributes)) return false
+    if (rules.deployKeywords?.length && !EffectManager.hasAnyKeyword(card, rules.deployKeywords)) return false
+    return true
+  }
+
+  static applyExtraSlotDeployModifiers(card, slot) {
+    const messages = []
+    if (!slot.isExtra || !slot.deployRules) return messages
+    const rules = slot.deployRules
+    if (rules.excludeFromFieldCount) {
+      card.excludeFromFieldCount = true
+      messages.push(`${card.name} 不计入终局数量`)
+    }
+    if (rules.deployedPowerBonus) {
+      card.basePower += rules.deployedPowerBonus
+      card.currentPower += rules.deployedPowerBonus
+      messages.push(`${card.name} 部署加成战力+${rules.deployedPowerBonus}`)
+    }
+    return messages
+  }
+
+  static applyUnitDeployBonuses(card, player) {
+    const messages = []
+    if (card.type !== 'unit') return messages
+    if (player.unitPlayPowerBonus) {
+      const bonus = player.unitPlayPowerBonus
+      card.basePower += bonus
+      card.currentPower += bonus
+      messages.push(`单位部署加成+${bonus}`)
+    }
+    if (player.unitPlayAttributeBonus) {
+      const attrBonus = player.unitPlayAttributeBonus[card.attribute]
+      if (attrBonus) {
+        card.basePower += attrBonus
+        card.currentPower += attrBonus
+        messages.push(`${card.attribute}属性单位额外+${attrBonus}`)
+        delete player.unitPlayAttributeBonus[card.attribute]
+        if (Object.keys(player.unitPlayAttributeBonus).length === 0) {
+          player.unitPlayAttributeBonus = undefined
+        }
+      }
+    }
+    return messages
+  }
+
+  static getAvailableSlotIndices(player, card) {
+    const slots = []
+    player.field.forEach((slot, index) => {
+      if (!slot.isExtra && !slot.card) {
+        slots.push(index)
+      } else if (EffectManager.canDeployOnExtraSlot(card, slot)) {
+        slots.push(index)
+      }
+    })
+    return slots
+  }
+
   static matchesRoundGlobalTarget(card, effect) {
     if (effect.targetCardType && card.type !== effect.targetCardType) return false
     if (effect.targetKeywords?.includes('单位') && card.type !== 'unit') return false
@@ -633,8 +711,11 @@ class EffectManager {
     return targets
   }
 
-  static rollD6TierValue(effect) {
-    const roll = EffectManager.rollD6()
+  static rollD6TierValue(effect, player, card) {
+    let roll = EffectManager.rollD6()
+    if (player && card?.name && player.d6MinByCardName?.[card.name] !== undefined) {
+      roll = Math.max(roll, player.d6MinByCardName[card.name])
+    }
     const tiers = effect.d6Tiers || []
     for (const tier of tiers) {
       if (roll >= tier.min && roll <= tier.max) {
@@ -650,7 +731,7 @@ class EffectManager {
     card.effects?.forEach(effect => {
       if (effect.timing !== 'onReveal' || effect.type === 'conditional') return
       if (effect.type === 'd6TierPower') {
-        const { roll, value } = EffectManager.rollD6TierValue(effect)
+        const { roll, value } = EffectManager.rollD6TierValue(effect, player, card)
         const old = targetCard.currentPower
         targetCard.currentPower += value
         messages.push(`${card.name} D6=${roll}，战力+${value} | ${targetCard.name} ${old}→${targetCard.currentPower}`)
@@ -833,7 +914,7 @@ class EffectManager {
     }
 
     if (effect.type === 'd6TierPower') {
-      const { roll, value } = EffectManager.rollD6TierValue(effect)
+      const { roll, value } = EffectManager.rollD6TierValue(effect, player, card)
       card.currentPower += value
       messages.push(`${card.name} D6=${roll}，战力+${value}`)
       return { messages }
@@ -873,6 +954,27 @@ class EffectManager {
     if (effect.type === 'restoreEnergy') {
       player.currentCost += effect.value || 0
       messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'grantAttributePlayBonus') {
+      const attrs = effect.targetAttributes?.length ? effect.targetAttributes : ['风', '火', '水', '土']
+      if (!player.unitPlayAttributeBonus) player.unitPlayAttributeBonus = {}
+      const bonus = effect.value ?? 1
+      for (const attr of attrs) {
+        player.unitPlayAttributeBonus[attr] = (player.unitPlayAttributeBonus[attr] || 0) + bonus
+      }
+      messages.push(`下一张${attrs.join('/')}属性单位牌战力+${bonus}`)
+      return { messages }
+    }
+
+    if (effect.type === 'setD6MinForCardName') {
+      const name = effect.targetName || effect.searchName
+      if (name) {
+        if (!player.d6MinByCardName) player.d6MinByCardName = {}
+        player.d6MinByCardName[name] = effect.d6Min ?? 5
+        messages.push(`「${name}」掷骰结果不低于 ${effect.d6Min ?? 5}`)
+      }
       return { messages }
     }
 
@@ -1187,17 +1289,7 @@ class GameEngine {
   
   // 获取可用槽位
   getAvailableSlots(player, card) {
-    const slots = []
-    
-    player.field.forEach((slot, index) => {
-      if (!slot.isExtra && !slot.card) {
-        slots.push(index)
-      } else if (slot.isExtra && !slot.card && card.type === 'unit') {
-        slots.push(index)
-      }
-    })
-    
-    return slots
+    return EffectManager.getAvailableSlotIndices(player, card)
   }
   
   // 处理打出卡牌
@@ -1452,12 +1544,12 @@ class GameEngine {
       player.pendingNextAttribute = undefined
     }
 
-    // 气泡酒等：单位部署战力加成
-    if (card.type === 'unit' && player.unitPlayPowerBonus) {
-      const bonus = player.unitPlayPowerBonus
-      card.basePower += bonus
-      card.currentPower += bonus
-    }
+    EffectManager.applyUnitDeployBonuses(card, player).forEach(msg => {
+      this.gameState.message += ` | ${msg}`
+    })
+    EffectManager.applyExtraSlotDeployModifiers(card, slot).forEach(msg => {
+      this.gameState.message += ` | ${msg}`
+    })
     
     // 部署卡牌到槽位
     slot.card = card
@@ -1532,7 +1624,7 @@ class GameEngine {
           this.gameState.message += ` | ${msg}`
         })
         if (result.needsCreateSlot) {
-          this.createExtraSlot(card, player)
+          this.createExtraSlot(card, player, effect)
         }
         if (result.needsTargetSelection) {
           pendingTarget = result.needsTargetSelection
@@ -1550,7 +1642,7 @@ class GameEngine {
   }
   
   // 创建额外槽位
-  createExtraSlot(parentCard, player) {
+  createExtraSlot(parentCard, player, effect) {
     const parentSlotIndex = player.field.findIndex(s => s.card === parentCard)
     console.log(`[GameEngine] createExtraSlot: 父卡牌=${parentCard.name}, 父槽位索引=${parentSlotIndex}`)
     
@@ -1559,12 +1651,8 @@ class GameEngine {
       return
     }
     
-    const newSlot = {
-      card: null,
-      position: player.field.length,
-      isExtra: true,
-      parentSlot: parentSlotIndex
-    }
+    const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
+    const newSlot = EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules)
     
     player.field.push(newSlot)
     console.log(`[GameEngine] 创建了额外槽位，新槽位位置=${newSlot.position}，当前总槽位数=${player.field.length}`)

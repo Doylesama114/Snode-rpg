@@ -2,6 +2,28 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6057',
+    date: '2026-07-04',
+    changes: [
+      '斯诺德对决4M：萨满祭司/珍珠商人/海港',
+      'grantAttributePlayBonus/setD6MinForCardName/createSlot',
+      'test-4m 13/13'
+    ]
+  },
+
+
+  {
+    version: '1.0.6056',
+    date: '2026-07-04',
+    changes: [
+      '斯诺德对决部署引擎：额外槽位规则',
+      'grantAttributePlayBonus/setD6MinForCardName',
+      'test-deploy-engine 18/18'
+    ]
+  },
+
+
+  {
     version: '1.0.6055',
     date: '2026-07-04',
     changes: [

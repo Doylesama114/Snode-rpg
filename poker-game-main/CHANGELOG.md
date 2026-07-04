@@ -1,5 +1,22 @@
 # 更新日志
 
+## [1.0.6057] - 2026-07-04
+
+### 卡牌效果批次 4M
+- **萨满祭司**：`grantAttributePlayBonus` 风/火/水/土单位各 +1
+- **珍珠商人**：`setD6MinForCardName` 贝壳 D6≥5 必出珍珠
+- **海港**：`createSlot` + 船名词限制 + 部署 +3 + 不计终局数量
+- **测试**：`scripts/test-4m.mjs`（13/13）
+
+## [1.0.6056] - 2026-07-04
+
+### 部署引擎（纯引擎，无卡数据）
+- **额外槽位**：`SlotDeployRules` — 关键词/属性限制、`slotDeployedPowerBonus`、`slotExcludeFromFieldCount`
+- **部署加成**：`grantAttributePlayBonus`、`applyUnitDeployBonuses` 统一单位进场加成
+- **D6 下限**：`setD6MinForCardName`；`rollD6TierValue` 读取 `player.d6MinByCardName`
+- **三端对齐**：SP/MP/Client `getAvailableSlotIndices`、`createExtraSlot(effect)`
+- **测试**：`scripts/test-deploy-engine.mjs`（18/18）
+
 ## [1.0.6055] - 2026-07-04
 
 ### 卡牌效果批次 4L

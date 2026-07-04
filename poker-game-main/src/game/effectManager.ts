@@ -1,4 +1,4 @@
-import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect } from '@/types/game'
+import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect, AttributeType } from '@/types/game'
 
 // 效果管理器
 export class EffectManager {
@@ -436,9 +436,16 @@ export class EffectManager {
     return targets
   }
 
-  /** D6 档位掷骰，返回 { roll, value } */
-  static rollD6TierValue(effect: CardEffect): { roll: number; value: number } {
-    const roll = this.rollD6()
+  /** D6 档位掷骰，返回 { roll, value }；player.d6MinByCardName 可抬高掷骰（珍珠商人） */
+  static rollD6TierValue(
+    effect: CardEffect,
+    player?: Player,
+    card?: Card,
+  ): { roll: number; value: number } {
+    let roll = this.rollD6()
+    if (player && card?.name && player.d6MinByCardName?.[card.name] !== undefined) {
+      roll = Math.max(roll, player.d6MinByCardName[card.name]!)
+    }
     const tiers = effect.d6Tiers || []
     for (const tier of tiers) {
       if (roll >= tier.min && roll <= tier.max) {
@@ -446,6 +453,91 @@ export class EffectManager {
       }
     }
     return { roll, value: 0 }
+  }
+
+  static slotRulesFromEffect(effect: CardEffect): SlotDeployRules | undefined {
+    if (effect.type !== 'createSlot') return undefined
+    const rules: SlotDeployRules = {}
+    if (effect.slotDeployKeywords?.length) rules.deployKeywords = effect.slotDeployKeywords
+    if (effect.slotDeployCardType) rules.deployCardType = effect.slotDeployCardType
+    if (effect.slotDeployAttributes?.length) rules.deployAttributes = effect.slotDeployAttributes
+    if (effect.slotExcludeFromFieldCount) rules.excludeFromFieldCount = true
+    if (effect.slotDeployedPowerBonus) rules.deployedPowerBonus = effect.slotDeployedPowerBonus
+    return Object.keys(rules).length > 0 ? rules : undefined
+  }
+
+  static buildExtraSlot(parentSlotIndex: number, position: number, rules?: SlotDeployRules): FieldSlot {
+    return {
+      card: null,
+      position,
+      isExtra: true,
+      parentSlot: parentSlotIndex,
+      deployRules: rules,
+    }
+  }
+
+  static canDeployOnExtraSlot(card: Card, slot: FieldSlot): boolean {
+    if (!slot.isExtra || slot.card) return false
+    if (card.type !== 'unit') return false
+    const rules = slot.deployRules
+    if (!rules) return true
+    if (rules.deployCardType && card.type !== rules.deployCardType) return false
+    if (rules.deployAttributes?.length && !this.hasAnyAttribute(card, rules.deployAttributes)) return false
+    if (rules.deployKeywords?.length && !this.hasAnyKeyword(card, rules.deployKeywords)) return false
+    return true
+  }
+
+  static applyExtraSlotDeployModifiers(card: Card, slot: FieldSlot): string[] {
+    const messages: string[] = []
+    if (!slot.isExtra || !slot.deployRules) return messages
+    const rules = slot.deployRules
+    if (rules.excludeFromFieldCount) {
+      card.excludeFromFieldCount = true
+      messages.push(`${card.name} 不计入终局数量`)
+    }
+    if (rules.deployedPowerBonus) {
+      card.basePower += rules.deployedPowerBonus
+      card.currentPower += rules.deployedPowerBonus
+      messages.push(`${card.name} 部署加成战力+${rules.deployedPowerBonus}`)
+    }
+    return messages
+  }
+
+  /** 单位部署时统一应用玩家级加成（气泡酒 / 萨满祭司） */
+  static applyUnitDeployBonuses(card: Card, player: Player): string[] {
+    const messages: string[] = []
+    if (card.type !== 'unit') return messages
+    if (player.unitPlayPowerBonus) {
+      const bonus = player.unitPlayPowerBonus
+      card.basePower += bonus
+      card.currentPower += bonus
+      messages.push(`单位部署加成+${bonus}`)
+    }
+    if (player.unitPlayAttributeBonus) {
+      const attrBonus = player.unitPlayAttributeBonus[card.attribute]
+      if (attrBonus) {
+        card.basePower += attrBonus
+        card.currentPower += attrBonus
+        messages.push(`${card.attribute}属性单位额外+${attrBonus}`)
+        delete player.unitPlayAttributeBonus[card.attribute]
+        if (Object.keys(player.unitPlayAttributeBonus).length === 0) {
+          player.unitPlayAttributeBonus = undefined
+        }
+      }
+    }
+    return messages
+  }
+
+  static getAvailableSlotIndices(player: Player, card: Card): number[] {
+    const slots: number[] = []
+    player.field.forEach((slot, index) => {
+      if (!slot.isExtra && !slot.card) {
+        slots.push(index)
+      } else if (this.canDeployOnExtraSlot(card, slot)) {
+        slots.push(index)
+      }
+    })
+    return slots
   }
 
   /** quickPlay 单位部署后触发 onReveal（如贝壳 D6） */
@@ -459,7 +551,7 @@ export class EffectManager {
     card.effects?.forEach(effect => {
       if (effect.timing !== 'onReveal' || effect.type === 'conditional') return
       if (effect.type === 'd6TierPower') {
-        const { roll, value } = this.rollD6TierValue(effect)
+        const { roll, value } = this.rollD6TierValue(effect, player, card)
         const old = targetCard.currentPower
         targetCard.currentPower += value
         messages.push(`${card.name} D6=${roll}，战力+${value} | ${targetCard.name} ${old}→${targetCard.currentPower}`)
@@ -647,7 +739,7 @@ export class EffectManager {
     }
 
     if (effect.type === 'd6TierPower') {
-      const { roll, value } = this.rollD6TierValue(effect)
+      const { roll, value } = this.rollD6TierValue(effect, player, card)
       card.currentPower += value
       messages.push(`${card.name} D6=${roll}，战力+${value}`)
       return { messages }
@@ -693,6 +785,30 @@ export class EffectManager {
     if (effect.type === 'restoreEnergy') {
       player.currentCost += effect.value || 0
       messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'grantAttributePlayBonus') {
+      const attrs = effect.targetAttributes?.length
+        ? effect.targetAttributes
+        : ['风', '火', '水', '土']
+      if (!player.unitPlayAttributeBonus) player.unitPlayAttributeBonus = {}
+      const bonus = effect.value ?? 1
+      for (const attr of attrs) {
+        player.unitPlayAttributeBonus[attr as AttributeType] =
+          (player.unitPlayAttributeBonus[attr as AttributeType] || 0) + bonus
+      }
+      messages.push(`下一张${attrs.join('/')}属性单位牌战力+${bonus}`)
+      return { messages }
+    }
+
+    if (effect.type === 'setD6MinForCardName') {
+      const name = effect.targetName || effect.searchName
+      if (name) {
+        if (!player.d6MinByCardName) player.d6MinByCardName = {}
+        player.d6MinByCardName[name] = effect.d6Min ?? 5
+        messages.push(`「${name}」掷骰结果不低于 ${effect.d6Min ?? 5}`)
+      }
       return { messages }
     }
 

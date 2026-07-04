@@ -717,7 +717,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'grantAttributePlayBonus',
+      value: 1,
+      targetAttributes: ['风', '火', '水', '土'],
       description: '你的下一张风、火、水、土属性的单位牌战力分别+1'
     }
     ],
@@ -1336,8 +1338,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的“贝壳”卡牌必定能够掷出珍珠'
+      type: 'setD6MinForCardName',
+      targetName: '贝壳',
+      d6Min: 5,
+      description: '你的「贝壳」卡牌必定能够掷出珍珠'
     }
     ],
     slotRequired: 1,
@@ -2305,8 +2309,12 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '你可以将拥有“船”名词的单位牌部署在这张牌上，这些卡牌不再计算终局数量，并且战力+3'
+      type: 'createSlot',
+      slotDeployKeywords: ['船'],
+      slotDeployCardType: 'unit',
+      slotDeployedPowerBonus: 3,
+      slotExcludeFromFieldCount: true,
+      description: '你可以将拥有「船」名词的单位牌部署在这张牌上，这些卡牌不再计算终局数量，并且战力+3'
     }
     ],
     slotRequired: 1,

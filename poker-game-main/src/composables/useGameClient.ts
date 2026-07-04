@@ -92,15 +92,7 @@ export function useGameClient(myPlayerId: string) {
     selectedCard.value = card as Card
     
     // 获取可用槽位
-    const slots: number[] = []
-    myPlayer.value.field.forEach((slot, index) => {
-      if (!slot.isExtra && !slot.card) {
-        slots.push(index)
-      } else if (slot.isExtra && !slot.card && (card as Card).type === 'unit') {
-        slots.push(index)
-      }
-    })
-    
+    const slots = EffectManager.getAvailableSlotIndices(myPlayer.value, card as Card)
     availableSlots.value = slots
     
     if (slots.length === 0) {

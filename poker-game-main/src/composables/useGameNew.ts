@@ -244,20 +244,7 @@ export function useGame() {
 
   // 获取可用槽位
   function getAvailableSlots(player: Player, card: Card): number[] {
-    const slots: number[] = []
-    
-    player.field.forEach((slot, index) => {
-      // 基础槽位
-      if (!slot.isExtra && !slot.card) {
-        slots.push(index)
-      }
-      // 额外槽位（只能放单位牌）
-      else if (slot.isExtra && !slot.card && card.type === 'unit') {
-        slots.push(index)
-      }
-    })
-    
-    return slots
+    return EffectManager.getAvailableSlotIndices(player, card)
   }
 
   // 选择槽位打出卡牌
@@ -449,17 +436,20 @@ export function useGame() {
       player.pendingNextAttribute = undefined
     }
 
-    // 气泡酒等：单位部署战力加成
-    if (card.type === 'unit' && player.unitPlayPowerBonus) {
-      const bonus = player.unitPlayPowerBonus
-      card.basePower += bonus
-      card.currentPower += bonus
-    }
+    // 气泡酒 / 萨满祭司等：单位部署加成
+    EffectManager.applyUnitDeployBonuses(card, player).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+
+    // 额外槽位部署修饰（海港 +3、不计终局等）
+    EffectManager.applyExtraSlotDeployModifiers(card, slot).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
     
     // 放置卡牌
     slot.card = card
     
-    gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${playCost}）`
+    gameState.value.message = `${player.name} 打出了 ${card.name}`
     
     // 战术牌：先 onDeploy，再 onReveal
     if (card.type === 'tactic') {
@@ -668,7 +658,7 @@ export function useGame() {
           gameState.value.message += ` | ${msg}`
         })
         if (result.needsCreateSlot) {
-          createExtraSlot(card, player)
+          createExtraSlot(card, player, effect)
         }
         if (result.needsTargetSelection) {
           pendingTarget = result.needsTargetSelection
@@ -688,18 +678,12 @@ export function useGame() {
   }
 
   // 创建额外槽位
-  function createExtraSlot(parentCard: Card, player: Player) {
+  function createExtraSlot(parentCard: Card, player: Player, effect?: CardEffect) {
     const parentSlotIndex = player.field.findIndex(s => s.card === parentCard)
     if (parentSlotIndex === -1) return
     
-    const newSlot: FieldSlot = {
-      card: null,
-      position: player.field.length,
-      isExtra: true,
-      parentSlot: parentSlotIndex
-    }
-    
-    player.field.push(newSlot)
+    const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
+    player.field.push(EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules))
     gameState.value.message += ` | 创建了额外槽位`
   }
 

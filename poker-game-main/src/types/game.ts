@@ -45,6 +45,8 @@ export type EffectType =
   | 'setPowerIfNoFieldKeyword' // onGameEnd 场上无其他关键词时设战力（晴天）
   | 'debuffOpponentHand'  // onDeploy 削弱左手边玩家手牌 basePower（燃烧之手）
   | 'grantUnitPlayBonus'  // onReveal 之后打出的单位牌战力加成（气泡酒）
+  | 'grantAttributePlayBonus' // onDeploy 下一张指定属性单位 +N（萨满祭司）
+  | 'setD6MinForCardName'     // onDeploy 指定名称卡牌 D6 下限（珍珠商人）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -130,7 +132,24 @@ export interface CardEffect {
   destroyThreshold?: number
   /** destroy：强制允许摧毁 environment（力场波等） */
   destroyEnvironment?: boolean
+  /** createSlot：额外槽位可部署单位需匹配的关键词/类型/属性 */
+  slotDeployKeywords?: string[]
+  slotDeployCardType?: CardType
+  slotDeployAttributes?: string[]
+  /** createSlot：部署在该槽位上的单位不计终局数量 */
+  slotExcludeFromFieldCount?: boolean
+  /** createSlot：部署到该槽位的单位额外战力 */
+  slotDeployedPowerBonus?: number
   drawCount?: number     // number of cards to draw
+}
+
+/** 额外槽位（载具/狮鹫等）的部署限制 */
+export interface SlotDeployRules {
+  deployKeywords?: string[]
+  deployCardType?: CardType
+  deployAttributes?: string[]
+  excludeFromFieldCount?: boolean
+  deployedPowerBonus?: number
 }
 
 // 效果执行上下文
@@ -161,6 +180,8 @@ export interface Card {
   quickPlay?: boolean     // 是否快速打出（跳过费用/行动检查，直接触发效果）
   markedForDiscard?: boolean // 被标记弃置（火焰箭效果）
   deployOnCardTarget?: string // QuickPlay unit: parent card id (deployed onto existing field card)
+  /** 部署在额外槽位且 host 标记不计入终局数量 */
+  excludeFromFieldCount?: boolean
 }
 
 // 场上槽位
@@ -169,6 +190,7 @@ export interface FieldSlot {
   position: number        // 槽位位置 0-5
   isExtra: boolean        // 是否是额外槽位（载具产生的）
   parentSlot?: number     // 如果是额外槽位，父槽位的位置
+  deployRules?: SlotDeployRules
 }
 
 // 玩家数据
@@ -186,6 +208,10 @@ export interface Player {
   pendingNextAttribute?: string  // 下一张部署牌属性覆盖（元素墙）
   /** 气泡酒等：之后打出的每张单位牌额外战力 */
   unitPlayPowerBonus?: number
+  /** 萨满祭司等：下一张指定属性单位额外战力（打出后消耗） */
+  unitPlayAttributeBonus?: Partial<Record<AttributeType, number>>
+  /** 珍珠商人等：按卡牌名称保证 D6 下限 */
+  d6MinByCardName?: Record<string, number>
   deckCardIds?: string[]
 }
 
