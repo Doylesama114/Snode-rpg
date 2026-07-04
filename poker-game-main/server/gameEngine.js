@@ -216,6 +216,16 @@ class EffectManager {
     return true
   }
 
+  static countMatchingFieldCards(player, excludeCard, effect) {
+    return player.field.filter(s => {
+      if (!s.card || s.card === excludeCard) return false
+      if (effect.targetCardType && s.card.type !== effect.targetCardType) return false
+      if (effect.maxBasePower !== undefined && s.card.basePower > effect.maxBasePower) return false
+      if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(s.card, effect.targetKeywords)) return false
+      return true
+    }).length
+  }
+
   static matchesRoundGlobalTarget(card, effect) {
     if (effect.targetCardType && card.type !== effect.targetCardType) return false
     if (effect.targetKeywords?.includes('单位') && card.type !== 'unit') return false
@@ -454,7 +464,13 @@ class EffectManager {
                 deployedCard.currentPower += effect.value || 0
                 messages.push(`${deployedCard.name}战力${oldPower}→${deployedCard.currentPower}（矮人铁匠加成）`)
               }
-              // 通用 onOtherPlay + selfTarget 处理器（水元素、火元素、土元素等）
+              else if (effect.buffPlayedCard) {
+                const times = effect.triggerCount ?? 1
+                const delta = (effect.value || 0) * times
+                const oldPower = deployedCard.currentPower
+                deployedCard.currentPower += delta
+                messages.push(`${deployedCard.name} 战力${oldPower}→${deployedCard.currentPower}（${slot.card.name}）`)
+              }
               else if (effect.selfTarget) {
                 const oldPower = slot.card.currentPower
                 if (effect.stackable !== false) {
@@ -857,6 +873,19 @@ class EffectManager {
     if (effect.type === 'restoreEnergy') {
       player.currentCost += effect.value || 0
       messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.countMatchingFieldCards) {
+      const count = EffectManager.countMatchingFieldCards(player, card, effect)
+      const delta = count * (effect.value || 0)
+      if (delta !== 0) {
+        card.basePower += delta
+        card.currentPower += delta
+        messages.push(`${card.name} 战力+${delta}（${count}张匹配）`)
+      } else {
+        messages.push('场上无匹配卡牌，效果未触发')
+      }
       return { messages }
     }
 

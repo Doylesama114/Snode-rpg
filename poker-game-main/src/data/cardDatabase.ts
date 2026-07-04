@@ -1220,9 +1220,13 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '当你打出一张拥有“野兽”关键词的卡牌后，使那张卡牌的战力+1，这个效果会触发两次'
+      timing: 'onOtherPlay',
+      type: 'modifyPower',
+      value: 1,
+      targetKeywords: ['野兽'],
+      buffPlayedCard: true,
+      triggerCount: 2,
+      description: '当你打出一张拥有「野兽」关键词的卡牌后，使那张卡牌的战力+1，这个效果会触发两次'
     }
     ],
     slotRequired: 1,
@@ -1241,8 +1245,14 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的场上每拥有一张基础战力不超过1的、拥有“鱼”名词的单位牌战力便+2'
+      type: 'modifyPower',
+      selfTarget: true,
+      value: 2,
+      countMatchingFieldCards: true,
+      targetKeywords: ['鱼'],
+      maxBasePower: 1,
+      targetCardType: 'unit',
+      description: '你的场上每拥有一张基础战力不超过1的、拥有「鱼」名词的单位牌战力便+2'
     }
     ],
     slotRequired: 1,
@@ -1370,6 +1380,7 @@ export const allCardDefinitions = [
       timing: 'onDeploy',
       type: 'searchDeck',
       searchName: '贝壳',
+      shuffleAfterSearch: true,
       description: '揭示：从你的牌库中检索一张"贝壳"加入手牌，随后混洗牌库'
     }
     ],

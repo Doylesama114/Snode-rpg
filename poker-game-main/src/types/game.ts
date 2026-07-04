@@ -98,6 +98,14 @@ export interface CardEffect {
   targetLeftPlayer?: boolean
   /** onDeploy modifyPower：场上无更高 basePower 的单位时触发（暴徒） */
   noHigherPowerUnitOnField?: boolean
+  /** onDeploy 自增：按场上匹配牌数量 × value（海葵） */
+  countMatchingFieldCards?: boolean
+  /** 配合 countMatchingFieldCards：基础战力上限（含） */
+  maxBasePower?: number
+  /** onOtherPlay：给打出的那张牌加战力（翻车鱼），非 selfTarget */
+  buffPlayedCard?: boolean
+  /** 配合 buffPlayedCard：重复加值次数 */
+  triggerCount?: number
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

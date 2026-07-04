@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T14:12:23.930Z",
+  "generatedAt": "2026-07-04T14:21:02.326Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,14 +11,14 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 19,
+    "structured": 21,
     "implemented_doc": 62,
-    "conditional_only": 67
+    "conditional_only": 65
   },
   "patternSummary": {
-    "on_deploy": 40,
+    "on_deploy": 39,
     "create_slot": 4,
-    "on_other_play": 7,
+    "on_other_play": 8,
     "on_field_power": 18,
     "other": 4,
     "deploy_on_card": 9,
@@ -43,6 +43,8 @@
       "金牌烤火鸡 (card_015)",
       "奶牛 (card_021)",
       "退役老兵 (card_032)",
+      "翻车鱼 (card_057)",
+      "海葵 (card_058)",
       "螃蟹 (card_063)",
       "拾贝鱼人 (card_064)",
       "野猪人劫匪 (card_077)",
@@ -142,8 +144,6 @@
       "猎人 (card_052)",
       "蔓生怪 (card_054)",
       "走私船 (card_055)",
-      "翻车鱼 (card_057)",
-      "海葵 (card_058)",
       "珍珠商人 (card_062)",
       "潮汐歌者 (card_065)",
       "珊瑚元素 (card_067)",
@@ -207,7 +207,6 @@
       "药剂师",
       "猎人",
       "蔓生怪",
-      "翻车鱼",
       "海葵",
       "珍珠商人",
       "拾贝鱼人",
@@ -239,6 +238,7 @@
       "法师",
       "战士",
       "挤奶工",
+      "翻车鱼",
       "水元素",
       "火元素",
       "土元素"
@@ -1427,25 +1427,25 @@
       "id": "card_057",
       "name": "翻车鱼",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "structured",
+      "pattern": "on_other_play",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
-        "onDeploy"
+        "onOtherPlay"
       ]
     },
     {
       "id": "card_058",
       "name": "海葵",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1453,7 +1453,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
         "onDeploy"

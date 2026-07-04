@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6055',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4L：海葵/翻车鱼/拾贝鱼人',
+      '引擎countMatchingFieldCards+buffPlayedCard'
+    ]
+  },
+
+
+  {
     version: '1.0.6054',
     date: '2026-07-04',
     changes: [
