@@ -251,7 +251,19 @@ export function useGame() {
       return
     }
 
-    if (EffectManager.requiresDeployOnHost(card) && !card.quickPlay) {
+    if (EffectManager.getDeployOnHostEffect(card)?.allowNormalDeploy && !card.quickPlay) {
+      const hostTargets = EffectManager.getQuickPlayHostTargets(currentPlayer.value, card)
+      if (hostTargets.length > 0) {
+        gameState.value.pendingHostDeployCard = card
+        gameState.value.optionalHostDeploy = true
+        gameState.value.availableTargets = hostTargets
+        gameState.value.phase = 'selectTarget'
+        gameState.value.message = `选择 ${card.name} 的宿主（土属性环境）或取消后选空槽`
+        return
+      }
+    }
+
+    if (EffectManager.requiresMandatoryHostDeploy(card) && !card.quickPlay) {
       const targets = EffectManager.getQuickPlayHostTargets(currentPlayer.value, card)
       if (targets.length === 0) {
         gameState.value.message = '没有可部署的宿主卡牌！'
@@ -659,6 +671,7 @@ export function useGame() {
       const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, gameState.value)
       gameState.value.message = msgs.join(' | ')
       gameState.value.pendingHostDeployCard = undefined
+      gameState.value.optionalHostDeploy = undefined
       gameState.value.phase = 'action'
       gameState.value.selectedCard = undefined
       gameState.value.availableTargets = []

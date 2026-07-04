@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6068] - 2026-07-05
+
+### 卡牌效果批次 4X — 宿主部署进阶
+- **板甲**：deployOnHostOnly（士兵/职业者关键词宿主）
+- **三叉戟**：宿主为水属性单位时额外 +2（`hostBonusIfHostAttribute`）
+- **攀岩爱好者**：可选土环境宿主 +3（`allowNormalDeploy` + `hostDeploySelfBonus`）
+- **引擎**：`computeHostDeployDelta`、`requiresMandatoryHostDeploy`
+- **测试**：`scripts/test-4x.mjs`（11/11）
+
 ## [1.0.6067] - 2026-07-05
 
 ### 卡牌效果批次 4W — 宿主部署扩展

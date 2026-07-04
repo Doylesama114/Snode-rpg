@@ -389,7 +389,7 @@ export class EffectManager {
       if (!game) return false
       if (this.getCrossPlayerDeployOptions(game, player, card).length === 0) return false
     }
-    if (this.requiresDeployOnHost(card)) {
+    if (this.requiresMandatoryHostDeploy(card)) {
       if (this.getQuickPlayHostTargets(player, card).length === 0) return false
     }
     for (const effect of card.effects || []) {
@@ -452,18 +452,36 @@ export class EffectManager {
     return card.effects?.find(e => e.type === 'deployOnHostOnly')
   }
 
+  static requiresMandatoryHostDeploy(card: Card): boolean {
+    const effect = this.getDeployOnHostEffect(card)
+    return !!effect && !effect.allowNormalDeploy
+  }
+
   static requiresDeployOnHost(card: Card): boolean {
-    return !!this.getDeployOnHostEffect(card)
+    return this.requiresMandatoryHostDeploy(card)
   }
 
   static isValidDeployOnHost(card: Card, hostCard: Card): boolean {
     const effect = this.getDeployOnHostEffect(card)
     if (!effect) return false
     if (effect.requireHostCardType && hostCard.type !== effect.requireHostCardType) return false
+    if (effect.requireHostAttributes?.length &&
+      !effect.requireHostAttributes.some(a => hostCard.attribute === a)) {
+      return false
+    }
     if (effect.requireHostKeywords?.length && !this.hasAnyKeyword(hostCard, effect.requireHostKeywords)) {
       return false
     }
     return true
+  }
+
+  static computeHostDeployDelta(card: Card, hostCard: Card): number {
+    const effect = this.getDeployOnHostEffect(card)
+    let delta = card.basePower + (effect?.hostDeploySelfBonus ?? 0)
+    if (effect?.hostBonusIfHostAttribute && hostCard.attribute === effect.hostBonusIfHostAttribute) {
+      delta += effect.hostBonusValue ?? 0
+    }
+    return delta
   }
 
   static applyDeployOntoHost(
@@ -474,7 +492,7 @@ export class EffectManager {
   ): string[] {
     const messages: string[] = []
     card.deployOnCardTarget = hostCard.id
-    const delta = card.basePower
+    const delta = this.computeHostDeployDelta(card, hostCard)
     const oldPower = hostCard.currentPower
     if (delta !== 0) {
       if (hostCard.stackedBonus === undefined) hostCard.stackedBonus = 0
@@ -489,7 +507,8 @@ export class EffectManager {
   }
 
   static getQuickPlayHostTargets(player: Player, card: Card): Card[] {
-    if (!this.requiresDeployOnHost(card)) {
+    const effect = this.getDeployOnHostEffect(card)
+    if (!effect) {
       return player.field.filter(s => s.card && !s.isExtra).map(s => s.card!)
     }
     return player.field
@@ -718,7 +737,7 @@ export class EffectManager {
   }
 
   static getAvailableSlotIndices(player: Player, card: Card): number[] {
-    if (this.requiresDeployOnHost(card) && !card.quickPlay) return []
+    if (this.requiresMandatoryHostDeploy(card) && !card.quickPlay) return []
     const slots: number[] = []
     player.field.forEach((slot, index) => {
       if (!slot.isExtra && !slot.card) {

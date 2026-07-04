@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T17:19:51.594Z",
+  "generatedAt": "2026-07-04T17:34:14.308Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 25,
+    "structured": 28,
     "implemented_doc": 89,
-    "conditional_only": 34
+    "conditional_only": 31
   },
   "patternSummary": {
     "on_deploy": 33,
@@ -53,10 +53,13 @@
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
       "洋葱 (card_075)",
+      "攀岩爱好者 (card_076)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "利剑中队 (card_091)",
-      "短柄斧 (card_092)"
+      "短柄斧 (card_092)",
+      "三叉戟 (card_093)",
+      "板甲 (card_094)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -162,7 +165,6 @@
       "旗鱼 (card_069)",
       "火蜥蜴 (card_072)",
       "狂战士 (card_074)",
-      "攀岩爱好者 (card_076)",
       "牛头人勇士 (card_080)",
       "枭熊 (card_081)",
       "雷龙 (card_082)",
@@ -172,8 +174,6 @@
       "雪狼 (card_087)",
       "雪怪 (card_088)",
       "寒铁虎 (card_089)",
-      "三叉戟 (card_093)",
-      "板甲 (card_094)",
       "食尸鬼教徒 (card_096)",
       "无貌者 (card_097)",
       "刺客 (card_098)",
@@ -1809,7 +1809,7 @@
       "id": "card_076",
       "name": "攀岩爱好者",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -1817,7 +1817,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onDeploy"
@@ -2115,7 +2115,7 @@
       "id": "card_093",
       "name": "三叉戟",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2123,7 +2123,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onDeploy"
@@ -2133,7 +2133,7 @@
       "id": "card_094",
       "name": "板甲",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2141,7 +2141,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onDeploy"

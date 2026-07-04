@@ -175,6 +175,16 @@ export interface CardEffect {
   requireHandNames?: string[]
   /** deployOnHostOnly：宿主牌需带这些关键词（含名称匹配） */
   requireHostKeywords?: string[]
+  /** deployOnHostOnly：宿主牌需为指定属性（任一匹配） */
+  requireHostAttributes?: string[]
+  /** deployOnHostOnly：允许部署到普通空槽（攀岩爱好者） */
+  allowNormalDeploy?: boolean
+  /** deployOnHostOnly：宿主路径额外叠加战力（含 basePower 之外） */
+  hostDeploySelfBonus?: number
+  /** deployOnHostOnly：宿主为指定属性时额外加值（三叉戟→水） */
+  hostBonusIfHostAttribute?: string
+  /** 配合 hostBonusIfHostAttribute */
+  hostBonusValue?: number
   drawCount?: number     // number of cards to draw
 }
 

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6068',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4X',
+      '板甲/三叉戟/攀岩爱好者',
+      '宿主部署加成'
+    ]
+  },
+
+
+  {
     version: '1.0.6067',
     date: '2026-07-04',
     changes: [
