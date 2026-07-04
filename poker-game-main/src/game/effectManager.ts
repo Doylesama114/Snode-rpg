@@ -602,6 +602,22 @@ export class EffectManager {
     return targets
   }
 
+  /** 计算打出费用（含 onField modifyPlayCost，如季风） */
+  static getEffectivePlayCost(card: Card, player: Player): number {
+    let cost = card.cost
+    player.field.forEach(slot => {
+      if (!slot.card?.effects) return
+      slot.card.effects.forEach(effect => {
+        if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
+        if (effect.targetCardType && card.type !== effect.targetCardType) return
+        if (effect.targetAttributes?.length && !this.hasAnyAttribute(card, effect.targetAttributes)) return
+        if (effect.targetKeywords?.length && !this.hasAnyKeyword(card, effect.targetKeywords)) return
+        cost += (effect.value as number) || 0
+      })
+    })
+    return Math.max(0, cost)
+  }
+
   static applyRoundEffect(
     effect: CardEffect,
     ownerCard: Card,
@@ -612,6 +628,13 @@ export class EffectManager {
 
     if (effect.requireFieldKeywords?.length && !this.hasFieldMatching(player, effect)) {
       return { messages }
+    }
+
+    if (effect.d6Min !== undefined) {
+      const roll = this.rollD6()
+      if (roll < effect.d6Min) {
+        return { messages }
+      }
     }
 
     if (effect.type === 'restoreEnergy') {
@@ -627,6 +650,21 @@ export class EffectManager {
       targets.forEach(t => { t.currentPower += delta })
       const sign = delta >= 0 ? '+' : ''
       messages.push(`${targets.length}张卡牌战力${sign}${delta}`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.targetOtherOnField) {
+      const candidates: Card[] = []
+      player.field.forEach(slot => {
+        if (!slot.card || (effect.excludeSelf && slot.card === ownerCard)) return
+        if (!this.matchesRoundGlobalTarget(slot.card, effect)) return
+        candidates.push(slot.card)
+      })
+      if (candidates.length === 0) return { messages }
+      const target = candidates[0]
+      const delta = effect.value || 0
+      target.currentPower += delta
+      messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 

@@ -3,6 +3,7 @@
 
 import { ref, computed } from 'vue'
 import type { GameState, Card, ReforgeOption } from '@/types/game'
+import { EffectManager } from '@/game/effectManager'
 
 export function useGameClient(myPlayerId: string) {
   // 我的玩家ID（响应式）
@@ -84,7 +85,7 @@ export function useGameClient(myPlayerId: string) {
     const card = myPlayer.value.hand[cardIndex]
     if (!card || card === 'hidden') return false
     
-    if (myPlayer.value.currentCost < (card as Card).cost) {
+    if (myPlayer.value.currentCost < EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)) {
       return false
     }
     
@@ -212,7 +213,7 @@ export function useGameClient(myPlayerId: string) {
     if (restrictions?.includes('tacticsOnly')) {
       const card = myPlayer.value.hand[index]
       if (!card || card === 'hidden') return false
-      return (card as Card).type === 'tactic' && myPlayer.value.currentCost >= (card as Card).cost
+      return (card as Card).type === 'tactic' && myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
     }
     
     const card = myPlayer.value.hand[index]
@@ -222,7 +223,7 @@ export function useGameClient(myPlayerId: string) {
       return false
     }
     
-    return myPlayer.value.currentCost >= (card as Card).cost
+    return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
   }
   
   return {

@@ -231,11 +231,33 @@ class EffectManager {
     return targets
   }
 
+  static getEffectivePlayCost(card, player) {
+    let cost = card.cost
+    player.field.forEach(slot => {
+      if (!slot.card?.effects) return
+      slot.card.effects.forEach(effect => {
+        if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
+        if (effect.targetCardType && card.type !== effect.targetCardType) return
+        if (effect.targetAttributes?.length && !EffectManager.hasAnyAttribute(card, effect.targetAttributes)) return
+        if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(card, effect.targetKeywords)) return
+        cost += effect.value || 0
+      })
+    })
+    return Math.max(0, cost)
+  }
+
   static applyRoundEffect(effect, ownerCard, player, gameState) {
     const messages = []
 
     if (effect.requireFieldKeywords?.length && !EffectManager.hasFieldMatching(player, effect)) {
       return { messages }
+    }
+
+    if (effect.d6Min !== undefined) {
+      const roll = EffectManager.rollD6()
+      if (roll < effect.d6Min) {
+        return { messages }
+      }
     }
 
     if (effect.type === 'restoreEnergy') {
@@ -251,6 +273,21 @@ class EffectManager {
       targets.forEach(t => { t.currentPower += delta })
       const sign = delta >= 0 ? '+' : ''
       messages.push(`${targets.length}张卡牌战力${sign}${delta}`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.targetOtherOnField) {
+      const candidates = []
+      player.field.forEach(slot => {
+        if (!slot.card || (effect.excludeSelf && slot.card === ownerCard)) return
+        if (!EffectManager.matchesRoundGlobalTarget(slot.card, effect)) return
+        candidates.push(slot.card)
+      })
+      if (candidates.length === 0) return { messages }
+      const target = candidates[0]
+      const delta = effect.value || 0
+      target.currentPower += delta
+      messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
@@ -845,9 +882,10 @@ class GameEngine {
     }
     
     // 验证费用
-    if (player.currentCost < card.cost) {
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    if (player.currentCost < playCost) {
       if (!card.forcedPlay) {
-        return { success: false, error: `费用不足！需要${card.cost}，当前${player.currentCost}` }
+        return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
       }
       // forced play: allow negative energy
       this.gameState.playersWithNegativeCost = this.gameState.playersWithNegativeCost || []
@@ -871,7 +909,7 @@ class GameEngine {
     
     // 执行打出卡牌
     player.hand.splice(cardIndex, 1)
-    player.currentCost -= card.cost
+    player.currentCost -= playCost
     
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
       player.canPlayExtra = false
@@ -888,7 +926,7 @@ class GameEngine {
       slotIndex: slotIndex
     })
     
-    this.gameState.message = `${player.name} 打出了一张牌（费用-${card.cost}）`
+    this.gameState.message = `${player.name} 打出了一张牌（费用-${playCost}）`
     
     console.log(`[GameEngine] ${player.name} 打出卡牌到槽位 ${slotIndex}，暂时隐藏`)
     console.log(`[GameEngine] ${player.name} 当前费用:`, player.currentCost)

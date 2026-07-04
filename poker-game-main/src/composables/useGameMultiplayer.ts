@@ -170,8 +170,9 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     const card = myPlayer.value.hand[cardIndex]
     if (!card) return
     
-    if (myPlayer.value.currentCost < card.cost) {
-      gameState.value.message = `费用不足！需要 ${card.cost}，当前 ${myPlayer.value.currentCost}`
+    const effCost = EffectManager.getEffectivePlayCost(card, myPlayer.value)
+    if (myPlayer.value.currentCost < effCost) {
+      gameState.value.message = `费用不足！需要 ${effCost}，当前 ${myPlayer.value.currentCost}`
       return
     }
     
@@ -237,7 +238,8 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     if (!card) return
     
     // 支付费用
-    player.currentCost -= card.cost
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    player.currentCost -= playCost
     
     // 从手牌移除
     player.hand.splice(cardIndex, 1)
@@ -250,17 +252,17 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     }
     
     // 部署卡牌
-    deployCard(card, player, slotIndex)
+    deployCard(card, player, slotIndex, playCost)
   }
 
   // 部署卡牌
-  function deployCard(card: Card, player: Player, slotIndex: number) {
+  function deployCard(card: Card, player: Player, slotIndex: number, playCost?: number) {
     const slot = player.field[slotIndex]
     if (!slot) return
     
     slot.card = card
     
-    gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${card.cost}）`
+    gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${playCost ?? card.cost}）`
     
     // 战术牌特殊处理
     if (card.type === 'tactic') {
@@ -515,7 +517,8 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
               opponentPlayer.hand.splice(0, 1)
             }
             
-            opponentPlayer.currentCost -= cardData.cost
+            const oppPlayCost = EffectManager.getEffectivePlayCost(cardData, opponentPlayer)
+            opponentPlayer.currentCost -= oppPlayCost
             
             if (opponentPlayer.hasPlayedThisTurn && opponentPlayer.canPlayExtra) {
               opponentPlayer.canPlayExtra = false

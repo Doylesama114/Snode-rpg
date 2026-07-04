@@ -219,8 +219,9 @@ export function useGame() {
     const card = currentPlayer.value.hand[cardIndex]
     if (!card) return
     
-    if (currentPlayer.value.currentCost < card.cost) {
-      gameState.value.message = `费用不足！需要 ${card.cost}，当前 ${currentPlayer.value.currentCost}`
+    const effCost = EffectManager.getEffectivePlayCost(card, currentPlayer.value)
+    if (currentPlayer.value.currentCost < effCost) {
+      gameState.value.message = `费用不足！需要 ${effCost}，当前 ${currentPlayer.value.currentCost}`
       return
     }
     
@@ -286,7 +287,8 @@ export function useGame() {
     }
     
     // 支付费用
-    player.currentCost -= card.cost
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    player.currentCost -= playCost
     
     // 从手牌移除
     player.hand.splice(cardIndex, 1)
@@ -450,7 +452,7 @@ export function useGame() {
     // 放置卡牌
     slot.card = card
     
-    gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${card.cost}）`
+    gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${playCost}）`
     
     // 战术牌：先 onDeploy，再 onReveal
     if (card.type === 'tactic') {
@@ -610,7 +612,7 @@ export function useGame() {
     const invalidCards: typeof hidden = []
     
     aiHiddenCards.value[aiPlayer.id] = hidden.filter(item => {
-      if (aiPlayer.currentCost < item.card.cost) {
+      if (aiPlayer.currentCost < EffectManager.getEffectivePlayCost(item.card, aiPlayer)) {
         invalidCards.push(item)
         return false
       }
@@ -864,7 +866,7 @@ export function useGame() {
     const aiHiddenCount = (aiHiddenCards.value[ai.id]?.length || 0)
     const aiTotalCards = filledMainSlots + aiHiddenCount
     
-    const playableCards = ai.hand.filter(card => card.cost <= ai.currentCost && aiTotalCards < 6)
+    const playableCards = ai.hand.filter(card => EffectManager.getEffectivePlayCost(card, ai) <= ai.currentCost && aiTotalCards < 6)
     
     if (playableCards.length > 0 && Math.random() > 0.3) {
       const cardIndex = ai.hand.indexOf(playableCards[0])
@@ -941,7 +943,7 @@ export function useGame() {
       return false
     }
     
-    return currentPlayer.value.currentCost >= card.cost
+    return currentPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card, currentPlayer.value)
   }
 
   return {

@@ -1241,6 +1241,7 @@ export const allCardDefinitions = [
       timing: 'roundStart',
       type: 'draw',
       drawCount: 1,
+      d6Min: 4,
       description: '每个回合开始时掷一颗D6骰，如果点数为1/2/3则无视发生，如果点数为4/5/6则抽取一张卡牌'
     }
     ],
@@ -1488,7 +1489,12 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundEnd',
-      type: 'conditional',
+      type: 'modifyPower',
+      value: 1,
+      targetOtherOnField: true,
+      excludeSelf: true,
+      targetCardType: 'unit',
+      excludeAttributes: ['水'],
       description: '每个回合结束时，为一张非水属性的其他单位牌增加1点战力'
     }
     ],
@@ -2500,8 +2506,10 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onField',
+      type: 'modifyPlayCost',
+      value: -1,
+      targetAttributes: ['风'],
       description: '你的风属性卡牌需要花费的能量值-1'
     }
     ],

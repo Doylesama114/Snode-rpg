@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6047',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4E：季风modifyPlayCost/篝火roundEnd/垂钓客d6Min'
+    ]
+  },
+
+
+  {
     version: '1.0.6046',
     date: '2026-07-04',
     changes: [

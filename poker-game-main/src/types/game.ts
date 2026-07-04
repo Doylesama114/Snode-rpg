@@ -37,6 +37,7 @@ export type EffectType =
   | 'stealCard'           // 偷取手牌（onReveal）
   | 'absNegativePower'    // 负数战力变正（onDeploy，祈福）
   | 'setFieldAttribute'   // 改变场上卡牌属性（onDeploy，炎炎夏日）
+  | 'modifyPlayCost'      // onField 打出费用减免（季风）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -65,6 +66,11 @@ export interface CardEffect {
   requireFieldCardType?: CardType
   /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */
   targetAllCards?: boolean
+  /** roundEnd：改场上其他卡（非自身） */
+  excludeSelf?: boolean
+  targetOtherOnField?: boolean
+  /** draw / roundStart：D6 点数需 >= d6Min 才触发 */
+  d6Min?: number
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

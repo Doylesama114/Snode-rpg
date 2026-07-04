@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T12:17:59.190Z",
+  "generatedAt": "2026-07-04T12:35:57.552Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,15 +11,16 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 24,
+    "structured": 25,
     "implemented_doc": 44,
-    "conditional_only": 80
+    "conditional_only": 78,
+    "unknown": 1
   },
   "patternSummary": {
-    "on_deploy": 42,
+    "on_deploy": 41,
     "create_slot": 4,
     "on_other_play": 7,
-    "on_field_power": 16,
+    "on_field_power": 17,
     "other": 2,
     "deploy_on_card": 9,
     "on_reveal_tactic": 36,
@@ -46,6 +47,7 @@
       "奶牛 (card_021)",
       "垂钓客 (card_059)",
       "拾贝鱼人 (card_064)",
+      "篝火 (card_071)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "海鸥 (card_083)",
@@ -143,7 +145,6 @@
       "海洋德鲁伊 (card_068)",
       "旗鱼 (card_069)",
       "蛇颈龙 (card_070)",
-      "篝火 (card_071)",
       "火蜥蜴 (card_072)",
       "狂战士 (card_074)",
       "洋葱 (card_075)",
@@ -174,7 +175,6 @@
       "锻炉 (card_112)",
       "沙滩 (card_115)",
       "礁石 (card_117)",
-      "季风 (card_120)",
       "晴天 (card_121)",
       "贫民窟 (card_122)",
       "星象塔 (card_123)",
@@ -183,6 +183,9 @@
       "间歇泉 (card_137)",
       "燃烧之手 (card_141)",
       "冰锥术 (card_142)"
+    ],
+    "unknown": [
+      "季风 (card_120)"
     ]
   },
   "byPattern": {
@@ -226,7 +229,6 @@
       "锻炉",
       "沙滩",
       "礁石",
-      "季风",
       "晴天",
       "贫民窟"
     ],
@@ -261,7 +263,8 @@
       "森林",
       "大海",
       "荒野",
-      "马车"
+      "马车",
+      "季风"
     ],
     "other": [
       "民兵",
@@ -1661,7 +1664,7 @@
       "id": "card_071",
       "name": "篝火",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "round_end",
       "flags": {
         "quickPlay": false,
@@ -1669,7 +1672,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
         "roundEnd"
@@ -2527,18 +2530,18 @@
       "id": "card_120",
       "name": "季风",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "unknown",
+      "pattern": "on_field_power",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPlayCost"
       ],
       "timings": [
-        "onDeploy"
+        "onField"
       ]
     },
     {
