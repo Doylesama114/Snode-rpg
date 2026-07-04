@@ -1619,7 +1619,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundStart',
-      type: 'conditional',
+      type: 'discardHandForLeftPlayerDebuff',
+      discardHandAttributes: ['火'],
+      debuffBonusPower: -2,
+      oncePerRound: true,
       description: '每回合开始限一次：弃置一张火属性的手牌使你左手边第一名玩家的最终战力-2'
     }
     ],
@@ -1799,8 +1802,8 @@ export const allCardDefinitions = [
     cost: 4,
     effects: [
     {
-      timing: 'roundStart',
-      type: 'conditional',
+      timing: 'onDeploy',
+      type: 'skipOthersDrawNextRound',
       description: '揭示：其他玩家在下一个回合开始时不会抽牌'
     }
     ],
@@ -1942,7 +1945,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'searchDeck',
+      searchAttribute: '冰',
+      maxCount: 1,
+      shuffleAfterSearch: true,
+      searchDiscard: false,
       description: '揭示：从你的牌库中检索一张冰属性卡牌加入手牌，随后混洗牌库'
     }
     ],

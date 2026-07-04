@@ -167,15 +167,20 @@ export function useGame() {
     currentPlayer.value.canPlayExtra = false
     reforgeState.value.hasChosen = false
     
-    const card = drawCard(currentPlayer.value)
-    
-    if (currentPlayer.value.id.startsWith('ai')) {
-      gameState.value.message = `${currentPlayer.value.name} 抽了一张牌`
+    if (currentPlayer.value.skipDrawNextRound) {
+      currentPlayer.value.skipDrawNextRound = false
+      gameState.value.message = `${currentPlayer.value.name} 本回合不抽牌`
     } else {
-      if (card) {
-        gameState.value.message = `${currentPlayer.value.name} 抽了一张牌：${card.name}`
+      const card = drawCard(currentPlayer.value)
+      
+      if (currentPlayer.value.id.startsWith('ai')) {
+        gameState.value.message = `${currentPlayer.value.name} 抽了一张牌`
       } else {
-        gameState.value.message = `${currentPlayer.value.name} 牌组已空，无法抽牌`
+        if (card) {
+          gameState.value.message = `${currentPlayer.value.name} 抽了一张牌：${card.name}`
+        } else {
+          gameState.value.message = `${currentPlayer.value.name} 牌组已空，无法抽牌`
+        }
       }
     }
     

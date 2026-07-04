@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T17:53:47.465Z",
+  "generatedAt": "2026-07-04T18:03:44.026Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,12 +11,12 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 31,
+    "structured": 34,
     "implemented_doc": 89,
-    "conditional_only": 28
+    "conditional_only": 25
   },
   "patternSummary": {
-    "on_deploy": 33,
+    "on_deploy": 34,
     "create_slot": 4,
     "on_other_play": 9,
     "on_field_power": 18,
@@ -25,7 +25,7 @@
     "on_reveal_tactic": 34,
     "quick_play": 14,
     "charges": 1,
-    "round_start": 9,
+    "round_start": 8,
     "d6_random": 4,
     "on_field_other": 1,
     "round_end": 4
@@ -53,11 +53,14 @@
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
       "哥布林杂兵 (card_050)",
+      "火蜥蜴 (card_072)",
       "狂战士 (card_074)",
       "洋葱 (card_075)",
       "攀岩爱好者 (card_076)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
+      "牛头人勇士 (card_080)",
+      "雪狼 (card_087)",
       "利剑中队 (card_091)",
       "短柄斧 (card_092)",
       "三叉戟 (card_093)",
@@ -165,14 +168,11 @@
       "潮汐歌者 (card_065)",
       "海洋德鲁伊 (card_068)",
       "旗鱼 (card_069)",
-      "火蜥蜴 (card_072)",
-      "牛头人勇士 (card_080)",
       "枭熊 (card_081)",
       "雷龙 (card_082)",
       "巨鹏 (card_084)",
       "双足飞龙 (card_085)",
       "急先锋·罗森弗斯 (card_086)",
-      "雪狼 (card_087)",
       "雪怪 (card_088)",
       "寒铁虎 (card_089)",
       "食尸鬼教徒 (card_096)",
@@ -211,6 +211,7 @@
       "珊瑚元素",
       "旗鱼",
       "狂战士",
+      "牛头人勇士",
       "枭熊",
       "雷龙",
       "巨鹏",
@@ -340,7 +341,6 @@
       "德鲁伊",
       "海洋德鲁伊",
       "火蜥蜴",
-      "牛头人勇士",
       "急先锋·罗森弗斯",
       "射击俱乐部",
       "星象塔",
@@ -1737,7 +1737,7 @@
       "id": "card_072",
       "name": "火蜥蜴",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "round_start",
       "flags": {
         "quickPlay": false,
@@ -1745,7 +1745,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "discardHandForLeftPlayerDebuff"
       ],
       "timings": [
         "roundStart"
@@ -1881,18 +1881,18 @@
       "id": "card_080",
       "name": "牛头人勇士",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "round_start",
+      "wiring": "structured",
+      "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "skipOthersDrawNextRound"
       ],
       "timings": [
-        "roundStart"
+        "onDeploy"
       ]
     },
     {
@@ -2007,7 +2007,7 @@
       "id": "card_087",
       "name": "雪狼",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2015,7 +2015,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "searchDeck"
       ],
       "timings": [
         "onReveal"

@@ -519,12 +519,41 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'discardHandForLeftPlayerDebuff') {
+      if (effect.oncePerRound && ownerCard.roundUsed) return { messages }
+      const attrs = effect.discardHandAttributes?.length
+        ? effect.discardHandAttributes
+        : effect.targetAttributes?.length
+          ? effect.targetAttributes
+          : []
+      const handIdx = player.hand.findIndex(c => attrs.includes(c.attribute))
+      if (handIdx === -1) return { messages }
+      const discarded = player.hand.splice(handIdx, 1)[0]
+      player.discard.push(discarded)
+      messages.push(`弃置${discarded.name}`)
+      const leftPlayer = EffectManager.getLeftPlayer(gameState, player)
+      if (leftPlayer) {
+        const debuff = effect.debuffBonusPower ?? effect.value ?? -2
+        leftPlayer.bonusPower += debuff
+        messages.push(`${leftPlayer.name} 终局战力${debuff >= 0 ? '+' : ''}${debuff}`)
+      }
+      if (effect.oncePerRound) ownerCard.roundUsed = true
+      return { messages }
+    }
+
     return { messages }
   }
 
   static triggerRoundEffects(timing, game) {
     const gameState = game.gameState || game
     const messages = []
+    if (timing === 'roundStart') {
+      gameState.players.forEach(p => {
+        p.field.forEach(slot => {
+          if (slot.card) slot.card.roundUsed = false
+        })
+      })
+    }
     gameState.players.forEach(player => {
       player.field.forEach(slot => {
         if (!slot.card || !slot.card.effects) return
@@ -848,7 +877,17 @@ class EffectManager {
       ? effect.searchKeywords
       : effect.searchKeyword ? [effect.searchKeyword] : []
     if (keywords.length > 0 && keywords.some(kw => EffectManager.hasKeyword(card, kw))) return true
+    if (effect.searchAttribute && card.attribute === effect.searchAttribute) return true
     return false
+  }
+
+  static getLeftPlayer(game, player) {
+    const gameState = game.gameState || game
+    const playerIndex = gameState.players.findIndex(p => p.id === player.id)
+    if (playerIndex === -1 || gameState.players.length < 2) return undefined
+    const leftIndex = (playerIndex + 1) % gameState.players.length
+    const target = gameState.players[leftIndex]
+    return target?.id !== player.id ? target : undefined
   }
 
   static shuffleInPlace(deck) {
@@ -1629,6 +1668,14 @@ class EffectManager {
     if (effect.type === 'invertPowerLoss') {
       card.invertPowerLoss = true
       messages.push(`${card.name} 战力降低时将改为提升`)
+      return { messages }
+    }
+
+    if (effect.type === 'skipOthersDrawNextRound') {
+      game.players.forEach(p => {
+        if (p.id !== player.id) p.skipDrawNextRound = true
+      })
+      messages.push('其他玩家下回合开始时将不抽牌')
       return { messages }
     }
 
@@ -2448,6 +2495,9 @@ class GameEngine {
         this.gameState.playerDecisions[player.id] = { made: true, choice: 'skip' }
         this.gameState.playerReady[player.id] = true
         // 不抽牌
+      } else if (player.skipDrawNextRound) {
+        player.skipDrawNextRound = false
+        console.log(`[GameEngine] ${player.name} 本回合不抽牌`)
       } else {
         // 抽牌
         const card = this.drawCard(player)

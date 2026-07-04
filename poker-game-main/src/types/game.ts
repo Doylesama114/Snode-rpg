@@ -66,6 +66,8 @@ export type EffectType =
   | 'deployOnHostOnly'        // quickPlay 仅能部署在指定关键词宿主上（作物）
   | 'invertPowerLoss'         // onDeploy 战力降低时改为提升（狂战士）
   | 'discardHandOrSelf'       // onReveal 须弃手牌否则自身进弃牌区（哥布林杂兵）
+  | 'skipOthersDrawNextRound' // onDeploy 其他玩家下回合开始不抽牌（牛头人勇士）
+  | 'discardHandForLeftPlayerDebuff' // roundStart 弃指定属性手牌使左手边玩家终局战力减值（火蜥蜴）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -189,6 +191,14 @@ export interface CardEffect {
   hostBonusValue?: number
   /** roundEnd 等：宿主额外槽位上须有部署牌才触发 */
   requireDeployedOnSelf?: boolean
+  /** searchDeck：按属性检索（如雪狼→冰） */
+  searchAttribute?: string
+  /** roundStart 等：每回合限触发一次（火蜥蜴） */
+  oncePerRound?: boolean
+  /** discardHandForLeftPlayerDebuff：须弃手牌匹配的属性 */
+  discardHandAttributes?: string[]
+  /** discardHandForLeftPlayerDebuff：作用于左手边玩家 bonusPower */
+  debuffBonusPower?: number
   drawCount?: number     // number of cards to draw
 }
 
@@ -235,6 +245,8 @@ export interface Card {
   untargetableByOthers?: boolean
   /** 战力降低时改为提升（狂战士） */
   invertPowerLoss?: boolean
+  /** roundStart 等：本回合已触发过一次 */
+  roundUsed?: boolean
 }
 
 // 场上槽位
@@ -267,6 +279,8 @@ export interface Player {
   d6MinByCardName?: Record<string, number>
   /** 药剂师等：下一张匹配关键词的战术牌不占用行动（一次性） */
   tacticPlayFreeKeywords?: string[]
+  /** 牛头人勇士等：下回合开始跳过抽牌（一次性） */
+  skipDrawNextRound?: boolean
   deckCardIds?: string[]
 }
 
