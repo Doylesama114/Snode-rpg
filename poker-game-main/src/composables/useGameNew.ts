@@ -560,23 +560,11 @@ export function useGame() {
     // Deploy onto card: store relationship
     card.deployOnCardTarget = targetCard.id
 
-    // For 壳: D6 stub (random 0/+1/+5)
-    let actualPower = card.basePower
-    if (card.name === '贝壳') {
-      const d6 = Math.floor(Math.random() * 6) + 1
-      if (d6 <= 2) actualPower = 0          // D1-2: 空
-      else if (d6 <= 4) actualPower = 1      // D3-4: 蚌肉 +1
-      else actualPower = 5                    // D5-6: 珍珠 +5
-      gameState.value.message = `${card.name} 掷D6=${d6}，战力+${actualPower}`
-    }
-
-    // Add power to parent (渔网: basePower is -1, adds -1 to parent)
     const oldPower = targetCard.currentPower
-    targetCard.currentPower += actualPower
-    if (card.name !== '贝壳') {
+    targetCard.currentPower += card.basePower
+    const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, gameState.value)
+    if (revealMsgs.length === 0) {
       gameState.value.message = `${card.name} 部署到 ${targetCard.name}上 | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
-    } else {
-      gameState.value.message += ` | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
     }
 
     // Trigger onOtherPlayEffects (other cards on field may react)

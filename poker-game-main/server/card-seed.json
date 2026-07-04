@@ -1255,7 +1255,24 @@
     "effects": [
       {
         "timing": "onReveal",
-        "type": "conditional",
+        "type": "d6TierPower",
+        "d6Tiers": [
+          {
+            "min": 1,
+            "max": 2,
+            "value": 0
+          },
+          {
+            "min": 3,
+            "max": 4,
+            "value": 1
+          },
+          {
+            "min": 5,
+            "max": 6,
+            "value": 5
+          }
+        ],
         "description": "速攻&揭示：打开这个贝壳并掷一颗D6骰.D1-2这个贝壳中什么也没有.D3-4.有一份蚌肉，你的战力+1.D5-6.有一颗珍珠！你的战力+5"
       }
     ],
@@ -2499,8 +2516,22 @@
     "cost": 0,
     "effects": [
       {
-        "timing": "onDeploy",
-        "type": "conditional",
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 15,
+        "selfTarget": true,
+        "requireKeywords": [
+          [
+            "晴天"
+          ],
+          [
+            "大海"
+          ],
+          [
+            "游客"
+          ]
+        ],
+        "stackable": false,
         "description": "如果你拥有“晴天”、“大海”和“游客”，这张牌的战力+15"
       }
     ],
@@ -2646,8 +2677,12 @@
     "cost": 0,
     "effects": [
       {
-        "timing": "onDeploy",
-        "type": "conditional",
+        "timing": "onGameEnd",
+        "type": "setPowerIfNoFieldKeyword",
+        "targetKeywords": [
+          "气候"
+        ],
+        "value": 5,
         "description": "如果游戏结束时，你的场上没有其他“气候”关键词的卡牌，那么这张牌的战力为5"
       }
     ],

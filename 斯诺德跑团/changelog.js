@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6049',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4G：贝壳/晴天/沙滩'
+    ]
+  },
+
+
+  {
     version: '1.0.6048',
     date: '2026-07-04',
     changes: [

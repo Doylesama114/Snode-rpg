@@ -366,6 +366,18 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'setPowerIfNoFieldKeyword' && effect.targetKeywords?.length) {
+      const hasOther = player.field.some(slot =>
+        slot.card && slot.card !== ownerCard &&
+        effect.targetKeywords.some(kw => EffectManager.hasKeyword(slot.card, kw)),
+      )
+      if (!hasOther && effect.value !== undefined) {
+        ownerCard.currentPower = effect.value
+        messages.push(`${ownerCard.name} 战力设为${effect.value}`)
+      }
+      return { messages }
+    }
+
     return { messages }
   }
 
@@ -504,6 +516,7 @@ class EffectManager {
 
   static matchesSearch(card, effect) {
     if (effect.searchName && card.name.includes(effect.searchName)) return true
+    if (effect.searchNames?.some(n => card.name.includes(n))) return true
     const keywords = effect.searchKeywords?.length
       ? effect.searchKeywords
       : effect.searchKeyword ? [effect.searchKeyword] : []
@@ -571,6 +584,35 @@ class EffectManager {
     return targets
   }
 
+  static rollD6TierValue(effect) {
+    const roll = EffectManager.rollD6()
+    const tiers = effect.d6Tiers || []
+    for (const tier of tiers) {
+      if (roll >= tier.min && roll <= tier.max) {
+        return { roll, value: tier.value }
+      }
+    }
+    return { roll, value: 0 }
+  }
+
+  static applyQuickPlayRevealEffects(card, targetCard, player, game) {
+    const messages = []
+    const gameState = game.gameState || game
+    card.effects?.forEach(effect => {
+      if (effect.timing !== 'onReveal' || effect.type === 'conditional') return
+      if (effect.type === 'd6TierPower') {
+        const { roll, value } = EffectManager.rollD6TierValue(effect)
+        const old = targetCard.currentPower
+        targetCard.currentPower += value
+        messages.push(`${card.name} D6=${roll}，战力+${value} | ${targetCard.name} ${old}→${targetCard.currentPower}`)
+      }
+    })
+    if (messages.length) {
+      gameState.message = (gameState.message || '') + ' | ' + messages.join(' | ')
+    }
+    return messages
+  }
+
   static applyRevealEffect(effect, card, player, game) {
     const messages = []
 
@@ -623,6 +665,13 @@ class EffectManager {
     if (effect.type === 'extraPlay') {
       player.canPlayExtra = true
       messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    if (effect.type === 'd6TierPower') {
+      const { roll, value } = EffectManager.rollD6TierValue(effect)
+      card.currentPower += value
+      messages.push(`${card.name} D6=${roll}，战力+${value}`)
       return { messages }
     }
 
@@ -1098,7 +1147,10 @@ class GameEngine {
       const targetCard = fieldCards[0]
       const oldPower = targetCard.currentPower
       targetCard.currentPower += card.basePower
-      this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+      const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
+      if (revealMsgs.length === 0) {
+        this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+      }
 
       EffectManager.recalculateAllPowers(this.gameState)
       EffectManager.applyOnFieldDestroy(this)

@@ -41,6 +41,8 @@ export type EffectType =
   | 'modifyPlayCost'      // onField 打出费用减免（季风）
   | 'd6ModifyPower'       // onGameEnd 掷D6加战力（吟游诗人）
   | 'doubleTargetPower'   // onGameEnd 按名称翻倍战力（风笛）
+  | 'd6TierPower'         // D6 档位加战力（贝壳）
+  | 'setPowerIfNoFieldKeyword' // onGameEnd 场上无其他关键词时设战力（晴天）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -76,6 +78,10 @@ export interface CardEffect {
   d6Min?: number
   /** onReveal modifyPower：用 D6 点数代替固定 value（激励乐章） */
   useD6Value?: boolean
+  /** d6TierPower：D6 点数区间 → 战力增量 */
+  d6Tiers?: { min: number; max: number; value: number }[]
+  /** searchDeck：按名称检索（OR） */
+  searchNames?: string[]
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

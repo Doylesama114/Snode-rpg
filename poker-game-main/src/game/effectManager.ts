@@ -339,6 +339,7 @@ export class EffectManager {
 
   private static matchesSearch(card: Card, effect: CardEffect): boolean {
     if (effect.searchName && card.name.includes(effect.searchName)) return true
+    if (effect.searchNames?.some(n => card.name.includes(n))) return true
     const keywords = effect.searchKeywords?.length
       ? effect.searchKeywords
       : effect.searchKeyword ? [effect.searchKeyword] : []
@@ -407,6 +408,41 @@ export class EffectManager {
     return targets
   }
 
+  /** D6 档位掷骰，返回 { roll, value } */
+  static rollD6TierValue(effect: CardEffect): { roll: number; value: number } {
+    const roll = this.rollD6()
+    const tiers = effect.d6Tiers || []
+    for (const tier of tiers) {
+      if (roll >= tier.min && roll <= tier.max) {
+        return { roll, value: tier.value }
+      }
+    }
+    return { roll, value: 0 }
+  }
+
+  /** quickPlay 单位部署后触发 onReveal（如贝壳 D6） */
+  static applyQuickPlayRevealEffects(
+    card: Card,
+    targetCard: Card,
+    player: Player,
+    game: GameState,
+  ): string[] {
+    const messages: string[] = []
+    card.effects?.forEach(effect => {
+      if (effect.timing !== 'onReveal' || effect.type === 'conditional') return
+      if (effect.type === 'd6TierPower') {
+        const { roll, value } = this.rollD6TierValue(effect)
+        const old = targetCard.currentPower
+        targetCard.currentPower += value
+        messages.push(`${card.name} D6=${roll}，战力+${value} | ${targetCard.name} ${old}→${targetCard.currentPower}`)
+      }
+    })
+    if (messages.length) {
+      game.message = (game.message || '') + ' | ' + messages.join(' | ')
+    }
+    return messages
+  }
+
   /** 应用单条 onReveal 结构化效果；needsTargetSelection 时由 UI 接管 */
   static applyRevealEffect(
     effect: CardEffect,
@@ -455,6 +491,13 @@ export class EffectManager {
     if (effect.type === 'extraPlay') {
       player.canPlayExtra = true
       messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    if (effect.type === 'd6TierPower') {
+      const { roll, value } = this.rollD6TierValue(effect)
+      card.currentPower += value
+      messages.push(`${card.name} D6=${roll}，战力+${value}`)
       return { messages }
     }
 
@@ -743,6 +786,18 @@ export class EffectManager {
           messages.push(`${slot.card.name} 战力翻倍→${slot.card.currentPower}`)
         }
       })
+      return { messages }
+    }
+
+    if (effect.type === 'setPowerIfNoFieldKeyword' && effect.targetKeywords?.length) {
+      const hasOther = player.field.some(slot =>
+        slot.card && slot.card !== ownerCard &&
+        effect.targetKeywords!.some(kw => this.hasKeyword(slot.card!, kw)),
+      )
+      if (!hasOther && effect.value !== undefined) {
+        ownerCard.currentPower = effect.value as number
+        messages.push(`${ownerCard.name} 战力设为${effect.value}`)
+      }
       return { messages }
     }
 

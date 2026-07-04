@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T12:53:54.176Z",
+  "generatedAt": "2026-07-04T13:04:16.139Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,17 +11,17 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 25,
+    "structured": 26,
     "implemented_doc": 44,
-    "conditional_only": 76,
-    "unknown": 3
+    "conditional_only": 73,
+    "unknown": 5
   },
   "patternSummary": {
-    "on_deploy": 40,
+    "on_deploy": 38,
     "create_slot": 4,
     "on_other_play": 7,
-    "on_field_power": 17,
-    "other": 3,
+    "on_field_power": 18,
+    "other": 4,
     "deploy_on_card": 9,
     "on_reveal_tactic": 36,
     "quick_play": 14,
@@ -54,6 +54,7 @@
       "利剑中队 (card_091)",
       "荒野 (card_113)",
       "兽栏 (card_114)",
+      "沙滩 (card_115)",
       "精准射击 (card_127)",
       "气泡酒 (card_138)",
       "激励乐章 (card_146)"
@@ -134,7 +135,6 @@
       "猎人 (card_052)",
       "蔓生怪 (card_054)",
       "走私船 (card_055)",
-      "贝壳 (card_056)",
       "翻车鱼 (card_057)",
       "海葵 (card_058)",
       "珍珠商人 (card_062)",
@@ -171,9 +171,7 @@
       "海港 (card_109)",
       "帆船 (card_110)",
       "锻炉 (card_112)",
-      "沙滩 (card_115)",
       "礁石 (card_117)",
-      "晴天 (card_121)",
       "贫民窟 (card_122)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
@@ -184,8 +182,10 @@
     ],
     "unknown": [
       "风笛 (card_019)",
+      "贝壳 (card_056)",
       "吟游诗人 (card_090)",
-      "季风 (card_120)"
+      "季风 (card_120)",
+      "晴天 (card_121)"
     ]
   },
   "byPattern": {
@@ -226,9 +226,7 @@
       "溪流",
       "帆船",
       "锻炉",
-      "沙滩",
       "礁石",
-      "晴天",
       "贫民窟"
     ],
     "create_slot": [
@@ -262,13 +260,15 @@
       "森林",
       "大海",
       "荒野",
+      "沙滩",
       "马车",
       "季风"
     ],
     "other": [
       "民兵",
       "风笛",
-      "沙滩碉堡"
+      "沙滩碉堡",
+      "晴天"
     ],
     "deploy_on_card": [
       "狮鹫",
@@ -1394,7 +1394,7 @@
       "id": "card_056",
       "name": "贝壳",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "d6_random",
       "flags": {
         "quickPlay": true,
@@ -1402,7 +1402,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "d6TierPower"
       ],
       "timings": [
         "onReveal"
@@ -2438,18 +2438,18 @@
       "id": "card_115",
       "name": "沙滩",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "structured",
+      "pattern": "on_field_power",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
-        "onDeploy"
+        "onField"
       ]
     },
     {
@@ -2548,18 +2548,18 @@
       "id": "card_121",
       "name": "晴天",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "unknown",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "setPowerIfNoFieldKeyword"
       ],
       "timings": [
-        "onDeploy"
+        "onGameEnd"
       ]
     },
     {
