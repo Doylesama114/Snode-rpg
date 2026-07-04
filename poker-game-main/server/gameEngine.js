@@ -633,6 +633,47 @@ class EffectManager {
     return messages
   }
 
+  static getDestroyTargets(game, _player, effect) {
+    const targets = []
+    game.players.forEach(p => {
+      p.field.forEach(slot => {
+        if (!slot.card) return
+        if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(slot.card, effect.targetKeywords)) return
+        if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+        targets.push(slot.card)
+      })
+    })
+    return targets
+  }
+
+  static applyDestroyToTarget(targetCard, effect, game) {
+    const messages = []
+    const threshold = effect.destroyThreshold ?? 0
+    const delta = typeof effect.value === 'number' ? effect.value : 0
+    if (delta !== 0) {
+      targetCard.currentPower += delta
+      if (targetCard.basePower !== undefined) targetCard.basePower += delta
+      messages.push(`${targetCard.name} 战力${delta}`)
+    }
+    const destroyed = targetCard.currentPower <= threshold && targetCard.type !== 'environment'
+    if (destroyed) {
+      EffectManager.removeCardFromField(game, targetCard)
+      messages.push(`${targetCard.name} 被摧毁`)
+    }
+    return { messages, destroyed }
+  }
+
+  static removeCardFromField(game, card) {
+    for (const p of game.players) {
+      const idx = p.field.findIndex(s => s.card === card)
+      if (idx !== -1) {
+        p.field[idx].card = null
+        p.discard.push(card)
+        return
+      }
+    }
+  }
+
   static applyRevealEffect(effect, card, player, game) {
     const messages = []
 
@@ -678,6 +719,41 @@ class EffectManager {
           messages.push(`${opponent.name} 费用${effect.value}`)
         })
       }
+      return { messages }
+    }
+
+    if (effect.type === 'stealCard') {
+      const playerIndex = game.players.findIndex(p => p.id === player.id)
+      const opponent = effect.targetLeftPlayer
+        ? game.players[(playerIndex + 1) % game.players.length]
+        : game.players.find(p => p.id !== player.id && p.hand.length > 0)
+      if (opponent && opponent.id !== player.id && opponent.hand.length > 0) {
+        const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+        const stolen = opponent.hand.splice(randomIndex, 1)[0]
+        player.hand.push(stolen)
+        messages.push(`偷取了${opponent.name}的${stolen.name}`)
+      } else {
+        messages.push('没有可偷取的手牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'grantUnitPlayBonus') {
+      const bonus = effect.value ?? 1
+      player.unitPlayPowerBonus = (player.unitPlayPowerBonus || 0) + bonus
+      messages.push(`之后打出的单位牌战力+${bonus}`)
+      return { messages }
+    }
+
+    if (effect.type === 'destroy') {
+      const targets = EffectManager.getDestroyTargets(game, player, effect)
+      if (targets.length === 0) {
+        messages.push('没有可摧毁的目标')
+        return { messages }
+      }
+      const target = targets[Math.floor(Math.random() * targets.length)]
+      const r = EffectManager.applyDestroyToTarget(target, effect, game)
+      messages.push(...r.messages)
       return { messages }
     }
 
@@ -805,6 +881,18 @@ class EffectManager {
         handCard.currentPower += debuff
       }
       messages.push(`${opponent.name}的${count}张手牌基础战力${debuff}`)
+      return { messages }
+    }
+
+    if (effect.type === 'destroy') {
+      const targets = EffectManager.getDestroyTargets(game, player, effect)
+      if (targets.length === 0) {
+        messages.push('没有可摧毁的目标')
+        return { messages }
+      }
+      const target = targets[Math.floor(Math.random() * targets.length)]
+      const r = EffectManager.applyDestroyToTarget(target, effect, game)
+      messages.push(...r.messages)
       return { messages }
     }
 
@@ -1264,6 +1352,13 @@ class GameEngine {
       this.gameState.message += ` | ${card.name} 属性变更为${player.pendingNextAttribute}`
       player.pendingNextAttribute = undefined
     }
+
+    // 气泡酒等：单位部署战力加成
+    if (card.type === 'unit' && player.unitPlayPowerBonus) {
+      const bonus = player.unitPlayPowerBonus
+      card.basePower += bonus
+      card.currentPower += bonus
+    }
     
     // 部署卡牌到槽位
     slot.card = card
@@ -1325,47 +1420,34 @@ class GameEngine {
   
   // 触发部署效果
   triggerDeployEffects(card, player) {
-    if (!card.effects || !Array.isArray(card.effects)) return
+    if (!card.effects || !Array.isArray(card.effects)) return null
+
+    let pendingTarget = null
 
     card.effects.forEach(effect => {
-      if (effect.timing !== 'onDeploy') {
-        if (effect.timing === 'onReveal') {
-          if (effect.type === 'stealPower') {
-            const target = player.field.find(s =>
-              s.card && s.card !== card &&
-              EffectManager.hasAnyKeyword(s.card, effect.targetKeywords || [])
-            )
-            if (target && target.card) {
-              const stolen = Math.min(effect.value || 1, target.card.currentPower)
-              target.card.currentPower -= stolen
-              card.currentPower += stolen
-              this.gameState.message += ` | ${card.name} 从 ${target.card.name} 偷取${stolen}战力`
-            }
-          } else if (effect.type === 'stealCard') {
-            const playerIndex = this.gameState.players.findIndex(p => p.id === player.id)
-            const leftIndex = (playerIndex + 1) % this.gameState.players.length
-            const opponent = this.gameState.players[leftIndex]
-            if (opponent && opponent.hand.length > 0) {
-              const randomIndex = Math.floor(Math.random() * opponent.hand.length)
-              const stolenCard = opponent.hand.splice(randomIndex, 1)[0]
-              player.hand.push(stolenCard)
-              this.gameState.message += ` | ${player.name} 偷取了${opponent.name}的${stolenCard.name}`
-            }
-          }
+      if (effect.timing === 'onDeploy') {
+        if (effect.type === 'conditional' || effect.type === 'custom') return
+
+        const result = EffectManager.applyDeployEffect(effect, card, player, this.gameState)
+        result.messages.forEach(msg => {
+          this.gameState.message += ` | ${msg}`
+        })
+        if (result.needsCreateSlot) {
+          this.createExtraSlot(card, player)
         }
-        return
-      }
-
-      if (effect.type === 'conditional' || effect.type === 'custom') return
-
-      const result = EffectManager.applyDeployEffect(effect, card, player, this.gameState)
-      result.messages.forEach(msg => {
-        this.gameState.message += ` | ${msg}`
-      })
-      if (result.needsCreateSlot) {
-        this.createExtraSlot(card, player)
+        if (result.needsTargetSelection) {
+          pendingTarget = result.needsTargetSelection
+        }
+      } else if (effect.timing === 'onReveal') {
+        if (effect.type === 'conditional' || effect.type === 'custom') return
+        const result = EffectManager.applyRevealEffect(effect, card, player, this.gameState)
+        result.messages.forEach(msg => {
+          this.gameState.message += ` | ${msg}`
+        })
       }
     })
+
+    return pendingTarget
   }
   
   // 创建额外槽位

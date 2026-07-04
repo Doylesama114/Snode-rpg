@@ -463,6 +463,53 @@ export class EffectManager {
     return messages
   }
 
+  /** 收集 destroy 效果可选目标（全场） */
+  static getDestroyTargets(game: GameState, _player: Player, effect: CardEffect): Card[] {
+    const targets: Card[] = []
+    game.players.forEach(p => {
+      p.field.forEach(slot => {
+        if (!slot.card) return
+        if (effect.targetKeywords?.length && !this.hasAnyKeyword(slot.card, effect.targetKeywords)) return
+        if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+        targets.push(slot.card)
+      })
+    })
+    return targets
+  }
+
+  /** 对单张场上牌执行 destroy：可选先减战力，降至阈值及以下则移入弃牌堆 */
+  static applyDestroyToTarget(
+    targetCard: Card,
+    effect: CardEffect,
+    game: GameState,
+  ): { messages: string[]; destroyed: boolean } {
+    const messages: string[] = []
+    const threshold = effect.destroyThreshold ?? 0
+    const delta = typeof effect.value === 'number' ? effect.value : 0
+    if (delta !== 0) {
+      targetCard.currentPower += delta
+      if (targetCard.basePower !== undefined) targetCard.basePower += delta
+      messages.push(`${targetCard.name} 战力${delta}`)
+    }
+    const destroyed = targetCard.currentPower <= threshold && targetCard.type !== 'environment'
+    if (destroyed) {
+      this.removeCardFromField(game, targetCard)
+      messages.push(`${targetCard.name} 被摧毁`)
+    }
+    return { messages, destroyed }
+  }
+
+  static removeCardFromField(game: GameState, card: Card) {
+    for (const p of game.players) {
+      const idx = p.field.findIndex(s => s.card === card)
+      if (idx !== -1) {
+        p.field[idx].card = null
+        p.discard.push(card)
+        return
+      }
+    }
+  }
+
   /** 应用单条 onReveal 结构化效果；needsTargetSelection 时由 UI 接管 */
   static applyRevealEffect(
     effect: CardEffect,
@@ -507,6 +554,43 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'stealCard') {
+      const playerIndex = game.players.findIndex(p => p.id === player.id)
+      const opponent = effect.targetLeftPlayer
+        ? game.players[(playerIndex + 1) % game.players.length]
+        : otherPlayers.find(p => p.hand.length > 0)
+      if (opponent && opponent.id !== player.id && opponent.hand.length > 0) {
+        const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+        const stolen = opponent.hand.splice(randomIndex, 1)[0]
+        player.hand.push(stolen)
+        messages.push(`偷取了${opponent.name}的${stolen.name}`)
+      } else {
+        messages.push('没有可偷取的手牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'grantUnitPlayBonus') {
+      const bonus = effect.value ?? 1
+      player.unitPlayPowerBonus = (player.unitPlayPowerBonus || 0) + bonus
+      messages.push(`之后打出的单位牌战力+${bonus}`)
+      return { messages }
+    }
+
+    if (effect.type === 'destroy') {
+      const targets = this.getDestroyTargets(game, player, effect)
+      if (targets.length === 0) {
+        messages.push('没有可摧毁的目标')
+        return { messages }
+      }
+      if (targets.length === 1) {
+        const r = this.applyDestroyToTarget(targets[0], effect, game)
+        messages.push(...r.messages)
+        return { messages }
+      }
+      return { messages, needsTargetSelection: { targets, effect } }
+    }
+
     if (effect.type === 'searchDeck') {
       const found = this.searchDeck(player, effect)
       if (found.length > 0) {
@@ -540,7 +624,7 @@ export class EffectManager {
     card: Card,
     player: Player,
     game: GameState,
-  ): { messages: string[]; needsCreateSlot?: boolean } {
+  ): { messages: string[]; needsCreateSlot?: boolean; needsTargetSelection?: { targets: Card[]; effect: CardEffect } } {
     const messages: string[] = []
 
     if (effect.type === 'extraPlay') {
@@ -638,6 +722,20 @@ export class EffectManager {
       }
       messages.push(`${opponent.name}的${count}张手牌基础战力${debuff}`)
       return { messages }
+    }
+
+    if (effect.type === 'destroy') {
+      const targets = this.getDestroyTargets(game, player, effect)
+      if (targets.length === 0) {
+        messages.push('没有可摧毁的目标')
+        return { messages }
+      }
+      if (targets.length === 1) {
+        const r = this.applyDestroyToTarget(targets[0], effect, game)
+        messages.push(...r.messages)
+        return { messages }
+      }
+      return { messages, needsTargetSelection: { targets, effect } }
     }
 
     return { messages }

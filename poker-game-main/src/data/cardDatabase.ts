@@ -1768,6 +1768,7 @@ export const allCardDefinitions = [
       timing: 'onReveal',
       type: 'stealCard',
       value: 1,
+      targetLeftPlayer: true,
       description: '揭示：随机偷取你左手边第一名玩家的一张手牌'
     }
     ],
@@ -2665,6 +2666,7 @@ export const allCardDefinitions = [
     {
       timing: 'onDeploy',
       type: 'destroy',
+      value: -2,
       description: '使一名玩家场上的一张战力牌点数-2，如果因此下降至0或以下则将其摧毁'
     }
     ],
@@ -2909,9 +2911,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'modifyPower',
+      type: 'grantUnitPlayBonus',
       value: 1,
-      targetKeywords: ['单位'],
       description: '你在这张牌之后打出的每张单位牌战力均+1'
     }
     ],

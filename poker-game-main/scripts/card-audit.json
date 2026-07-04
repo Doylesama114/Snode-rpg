@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T13:27:21.897Z",
+  "generatedAt": "2026-07-04T13:40:07.771Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,8 +11,8 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 20,
-    "implemented_doc": 59,
+    "structured": 17,
+    "implemented_doc": 62,
     "conditional_only": 69
   },
   "patternSummary": {
@@ -45,12 +45,9 @@
       "拾贝鱼人 (card_064)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
-      "海鸥 (card_083)",
       "利剑中队 (card_091)",
       "荒野 (card_113)",
-      "兽栏 (card_114)",
-      "精准射击 (card_127)",
-      "气泡酒 (card_138)"
+      "兽栏 (card_114)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -77,6 +74,7 @@
       "篝火 (card_071)",
       "火元素 (card_073)",
       "土元素 (card_078)",
+      "海鸥 (card_083)",
       "吟游诗人 (card_090)",
       "圣洁骑士 (card_095)",
       "酒馆 (card_100)",
@@ -93,6 +91,7 @@
       "晴天 (card_121)",
       "活力药水 (card_125)",
       "奥术箭 (card_126)",
+      "精准射击 (card_127)",
       "元素墙 (card_128)",
       "集群战术 (card_129)",
       "收获日 (card_130)",
@@ -100,6 +99,7 @@
       "创造水源 (card_133)",
       "真气波 (card_134)",
       "蓝焰术 (card_136)",
+      "气泡酒 (card_138)",
       "火焰箭 (card_139)",
       "炎炎夏日 (card_140)",
       "燃烧之手 (card_141)",
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 59,
+  "implementedDocCount": 62,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -419,7 +419,10 @@
     "燃烧之手",
     "葡萄酒商人",
     "魔法飞弹",
-    "暴徒"
+    "暴徒",
+    "海鸥",
+    "精准射击",
+    "气泡酒"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -1892,7 +1895,7 @@
       "id": "card_083",
       "name": "海鸥",
       "type": "unit",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2652,7 +2655,7 @@
       "id": "card_127",
       "name": "精准射击",
       "type": "tactic",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2852,7 +2855,7 @@
       "id": "card_138",
       "name": "气泡酒",
       "type": "tactic",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2860,7 +2863,7 @@
         "emptyEffects": false
       },
       "types": [
-        "modifyPower"
+        "grantUnitPlayBonus"
       ],
       "timings": [
         "onReveal"

@@ -44,6 +44,7 @@ export type EffectType =
   | 'd6TierPower'         // D6 档位加战力（贝壳）
   | 'setPowerIfNoFieldKeyword' // onGameEnd 场上无其他关键词时设战力（晴天）
   | 'debuffOpponentHand'  // onDeploy 削弱左手边玩家手牌 basePower（燃烧之手）
+  | 'grantUnitPlayBonus'  // onReveal 之后打出的单位牌战力加成（气泡酒）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -111,6 +112,8 @@ export interface CardEffect {
   shuffleAfterSearch?: boolean // 检索后洗牌库
   searchDiscard?: boolean // 是否检索弃牌堆，默认 true
   targetName?: string    // target card name for name-based effects (e.g. modifyPowerByName)
+  /** destroy：降至该阈值及以下则摧毁（默认 0） */
+  destroyThreshold?: number
   drawCount?: number     // number of cards to draw
 }
 
@@ -165,6 +168,8 @@ export interface Player {
   canPlayExtra: boolean   // 是否可以额外出牌
   hasPlayedThisTurn: boolean  // 本回合是否已出牌
   pendingNextAttribute?: string  // 下一张部署牌属性覆盖（元素墙）
+  /** 气泡酒等：之后打出的每张单位牌额外战力 */
+  unitPlayPowerBonus?: number
   deckCardIds?: string[]
 }
 
@@ -195,6 +200,7 @@ export interface GameState {
   availableSlots?: number[]
   availableTargets?: Card[]
   pendingQuickPlayCard?: Card  // QuickPlay unit card awaiting target selection
+  pendingDeployEffect?: CardEffect  // onDeploy 效果待选目标（精准射击）
   // 同时回合机制 (multi-player serializable records)
   playerDecisions?: Record<string, { made: boolean; choice: DecisionType | null }>
   pendingReveals?: Record<string, Array<{ cardId: string; slotIndex: number }>>

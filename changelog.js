@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6052',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4J：海鸥/精准射击/气泡酒',
+      '引擎 stealCard+destroy+grantUnitPlayBonus'
+    ]
+  },
+
+
+  {
     version: '1.0.6051',
     date: '2026-07-04',
     changes: [
