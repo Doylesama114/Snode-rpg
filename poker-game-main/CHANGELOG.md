@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6067] - 2026-07-05
+
+### 卡牌效果批次 4W — 宿主部署扩展
+- **洋葱**：速攻 deployOnHostOnly（农田/载具）
+- **渔网**：速攻 deployOnHostOnly（仅单位宿主）
+- **短柄斧**：非 quickPlay 宿主专属部署（士兵/蛮斗士/战士/冒险者）
+- **引擎**：`requireHostCardType`、`applyDeployOntoHost`+`stackedBonus`、`handleHostOnlyDeploy`
+- **测试**：`scripts/test-4w.mjs`（10/10）
+
 ## [1.0.6066] - 2026-07-05
 
 ### 卡牌效果批次 4V — 速攻作物

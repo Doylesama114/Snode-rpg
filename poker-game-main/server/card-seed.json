@@ -420,7 +420,8 @@
     "effects": [
       {
         "timing": "onPlay",
-        "type": "conditional",
+        "type": "deployOnHostOnly",
+        "requireHostCardType": "unit",
         "description": "速攻：将其置于一张单位牌上"
       }
     ],
@@ -1824,8 +1825,12 @@
     "effects": [
       {
         "timing": "onPlay",
-        "type": "conditional",
-        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有\"农田/载具\"关键词的卡牌上"
+        "type": "deployOnHostOnly",
+        "requireHostKeywords": [
+          "农田",
+          "载具"
+        ],
+        "description": "速攻：这张牌无法直接置于场上，仅能够部署在带有「农田/载具」关键词的卡牌上"
       }
     ],
     "slotRequired": 1,
@@ -2191,8 +2196,15 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "这张牌无法直接置于场上，仅能够部署在带有“士兵/蛮斗士/战士/冒险者”名称的单位牌上"
+        "type": "deployOnHostOnly",
+        "requireHostCardType": "unit",
+        "requireHostKeywords": [
+          "士兵",
+          "蛮斗士",
+          "战士",
+          "冒险者"
+        ],
+        "description": "这张牌无法直接置于场上，仅能够部署在带有「士兵/蛮斗士/战士/冒险者」名称的单位牌上"
       }
     ],
     "slotRequired": 1,

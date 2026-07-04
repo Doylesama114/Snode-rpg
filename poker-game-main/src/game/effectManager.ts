@@ -458,8 +458,34 @@ export class EffectManager {
 
   static isValidDeployOnHost(card: Card, hostCard: Card): boolean {
     const effect = this.getDeployOnHostEffect(card)
-    if (!effect?.requireHostKeywords?.length) return true
-    return this.hasAnyKeyword(hostCard, effect.requireHostKeywords)
+    if (!effect) return false
+    if (effect.requireHostCardType && hostCard.type !== effect.requireHostCardType) return false
+    if (effect.requireHostKeywords?.length && !this.hasAnyKeyword(hostCard, effect.requireHostKeywords)) {
+      return false
+    }
+    return true
+  }
+
+  static applyDeployOntoHost(
+    card: Card,
+    hostCard: Card,
+    player: Player,
+    game: GameState,
+  ): string[] {
+    const messages: string[] = []
+    card.deployOnCardTarget = hostCard.id
+    const delta = card.basePower
+    const oldPower = hostCard.currentPower
+    if (delta !== 0) {
+      if (hostCard.stackedBonus === undefined) hostCard.stackedBonus = 0
+      hostCard.stackedBonus += delta
+    }
+    hostCard.currentPower += delta
+    messages.push(`${card.name} 部署到 ${hostCard.name} | ${hostCard.name} 战力${oldPower}→${hostCard.currentPower}`)
+    messages.push(...this.applyQuickPlayRevealEffects(card, hostCard, player, game))
+    this.triggerOnOtherPlayEffects(card, player, game)
+    this.recalculateAllPowers(game)
+    return messages
   }
 
   static getQuickPlayHostTargets(player: Player, card: Card): Card[] {
@@ -692,6 +718,7 @@ export class EffectManager {
   }
 
   static getAvailableSlotIndices(player: Player, card: Card): number[] {
+    if (this.requiresDeployOnHost(card) && !card.quickPlay) return []
     const slots: number[] = []
     player.field.forEach((slot, index) => {
       if (!slot.isExtra && !slot.card) {

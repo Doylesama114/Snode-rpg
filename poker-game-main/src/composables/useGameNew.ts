@@ -251,6 +251,21 @@ export function useGame() {
       return
     }
 
+    if (EffectManager.requiresDeployOnHost(card) && !card.quickPlay) {
+      const targets = EffectManager.getQuickPlayHostTargets(currentPlayer.value, card)
+      if (targets.length === 0) {
+        gameState.value.message = '没有可部署的宿主卡牌！'
+        gameState.value.phase = 'action'
+        gameState.value.selectedCard = undefined
+        return
+      }
+      gameState.value.pendingHostDeployCard = card
+      gameState.value.availableTargets = targets
+      gameState.value.phase = 'selectTarget'
+      gameState.value.message = `选择 ${card.name} 的部署宿主`
+      return
+    }
+
     gameState.value.phase = 'selectSlot'
     
     // 获取可用槽位
@@ -618,6 +633,38 @@ export function useGame() {
   // 选择QuickPlay单位牌的部署目标（部署到现有场上卡牌上）
   function selectQuickPlayTarget(targetCard: Card) {
     if (gameState.value.phase !== 'selectTarget') return
+    if (!gameState.value.pendingQuickPlayCard && !gameState.value.pendingHostDeployCard && gameState.value.selectedCard) {
+      selectTacticTarget(targetCard)
+      return
+    }
+
+    if (gameState.value.pendingHostDeployCard) {
+      const card = gameState.value.pendingHostDeployCard
+      const player = currentPlayer.value
+      if (!EffectManager.isValidDeployOnHost(card, targetCard)) {
+        gameState.value.message = `${card.name} 无法部署到该卡牌上`
+        return
+      }
+      const cardIndex = player.hand.indexOf(card)
+      if (cardIndex === -1) return
+      const playCost = EffectManager.getEffectivePlayCost(card, player)
+      player.currentCost -= playCost
+      player.hand.splice(cardIndex, 1)
+      if (player.hasPlayedThisTurn && player.canPlayExtra) {
+        player.canPlayExtra = false
+      } else {
+        player.hasPlayedThisTurn = true
+      }
+      EffectManager.consumeTacticPlayFreeIfMatch(card, player)
+      const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, gameState.value)
+      gameState.value.message = msgs.join(' | ')
+      gameState.value.pendingHostDeployCard = undefined
+      gameState.value.phase = 'action'
+      gameState.value.selectedCard = undefined
+      gameState.value.availableTargets = []
+      return
+    }
+
     if (!gameState.value.pendingQuickPlayCard && gameState.value.selectedCard) {
       selectTacticTarget(targetCard)
       return
@@ -628,7 +675,7 @@ export function useGame() {
     const player = currentPlayer.value
 
     if (!EffectManager.isValidDeployOnHost(card, targetCard)) {
-      gameState.value.message = `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+      gameState.value.message = `${card.name} 无法部署到该卡牌上`
       gameState.value.phase = 'action'
       gameState.value.pendingQuickPlayCard = undefined
       gameState.value.availableTargets = []
@@ -636,21 +683,11 @@ export function useGame() {
       return
     }
 
-    // Deploy onto card: store relationship
-    card.deployOnCardTarget = targetCard.id
-
-    const oldPower = targetCard.currentPower
-    targetCard.currentPower += card.basePower
-    const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, gameState.value)
-    if (revealMsgs.length === 0) {
-      gameState.value.message = `${card.name} 部署到 ${targetCard.name}上 | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
+    // Deploy onto card
+    const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, gameState.value)
+    if (msgs.length > 0) {
+      gameState.value.message = msgs.join(' | ')
     }
-
-    // Trigger onOtherPlayEffects (other cards on field may react)
-    EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
-
-    // Recalculate all powers
-    EffectManager.recalculateAllPowers(gameState.value)
 
     // Clean up
     gameState.value.pendingQuickPlayCard = undefined

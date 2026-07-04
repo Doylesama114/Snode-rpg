@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T17:08:28.875Z",
+  "generatedAt": "2026-07-04T17:19:51.594Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 22,
+    "structured": 25,
     "implemented_doc": 89,
-    "conditional_only": 37
+    "conditional_only": 34
   },
   "patternSummary": {
     "on_deploy": 33,
@@ -42,6 +42,7 @@
       "橡木武器店 (card_011)",
       "生命药水 (card_013)",
       "金牌烤火鸡 (card_015)",
+      "渔网 (card_017)",
       "食人魔 (card_037)",
       "纪念照 (card_038)",
       "金矿 (card_039)",
@@ -51,9 +52,11 @@
       "玉米 (card_044)",
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
+      "洋葱 (card_075)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
-      "利剑中队 (card_091)"
+      "利剑中队 (card_091)",
+      "短柄斧 (card_092)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -147,7 +150,6 @@
       "奇袭 (card_151)"
     ],
     "conditional_only": [
-      "渔网 (card_017)",
       "箭袋 (card_018)",
       "攀爬工具 (card_023)",
       "强盗 (card_031)",
@@ -160,7 +162,6 @@
       "旗鱼 (card_069)",
       "火蜥蜴 (card_072)",
       "狂战士 (card_074)",
-      "洋葱 (card_075)",
       "攀岩爱好者 (card_076)",
       "牛头人勇士 (card_080)",
       "枭熊 (card_081)",
@@ -171,7 +172,6 @@
       "雪狼 (card_087)",
       "雪怪 (card_088)",
       "寒铁虎 (card_089)",
-      "短柄斧 (card_092)",
       "三叉戟 (card_093)",
       "板甲 (card_094)",
       "食尸鬼教徒 (card_096)",
@@ -737,7 +737,7 @@
       "id": "card_017",
       "name": "渔网",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "quick_play",
       "flags": {
         "quickPlay": true,
@@ -745,7 +745,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onPlay"
@@ -1791,7 +1791,7 @@
       "id": "card_075",
       "name": "洋葱",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "quick_play",
       "flags": {
         "quickPlay": true,
@@ -1799,7 +1799,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onPlay"
@@ -2097,7 +2097,7 @@
       "id": "card_092",
       "name": "短柄斧",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2105,7 +2105,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onDeploy"

@@ -284,6 +284,7 @@ export interface GameState {
   availableCrossPlayerSlots?: Array<{ playerIndex: number; slotIndex: number }>
   availableTargets?: Card[]
   pendingQuickPlayCard?: Card  // QuickPlay unit card awaiting target selection
+  pendingHostDeployCard?: Card  // 宿主专属部署（短柄斧等）待选目标
   pendingDeployEffect?: CardEffect  // onDeploy 效果待选目标（精准射击）
   // 同时回合机制 (multi-player serializable records)
   playerDecisions?: Record<string, { made: boolean; choice: DecisionType | null }>

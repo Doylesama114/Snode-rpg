@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6067',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4W',
+      '洋葱/渔网/短柄斧',
+      'deployOnHostOnly扩展'
+    ]
+  },
+
+
+  {
     version: '1.0.6066',
     date: '2026-07-04',
     changes: [

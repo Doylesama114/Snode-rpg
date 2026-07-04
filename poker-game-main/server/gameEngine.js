@@ -327,6 +327,7 @@ class EffectManager {
   }
 
   static getAvailableSlotIndices(player, card) {
+    if (EffectManager.requiresDeployOnHost(card) && !card.quickPlay) return []
     const slots = []
     player.field.forEach((slot, index) => {
       if (!slot.isExtra && !slot.card) {
@@ -924,8 +925,30 @@ class EffectManager {
 
   static isValidDeployOnHost(card, hostCard) {
     const effect = EffectManager.getDeployOnHostEffect(card)
-    if (!effect?.requireHostKeywords?.length) return true
-    return EffectManager.hasAnyKeyword(hostCard, effect.requireHostKeywords)
+    if (!effect) return false
+    if (effect.requireHostCardType && hostCard.type !== effect.requireHostCardType) return false
+    if (effect.requireHostKeywords?.length && !EffectManager.hasAnyKeyword(hostCard, effect.requireHostKeywords)) {
+      return false
+    }
+    return true
+  }
+
+  static applyDeployOntoHost(card, hostCard, player, game) {
+    const gameState = game.gameState || game
+    const messages = []
+    card.deployOnCardTarget = hostCard.id
+    const delta = card.basePower
+    const oldPower = hostCard.currentPower
+    if (delta !== 0) {
+      if (hostCard.stackedBonus === undefined) hostCard.stackedBonus = 0
+      hostCard.stackedBonus += delta
+    }
+    hostCard.currentPower += delta
+    messages.push(`${card.name} 部署到 ${hostCard.name} | ${hostCard.name} 战力${oldPower}→${hostCard.currentPower}`)
+    messages.push(...EffectManager.applyQuickPlayRevealEffects(card, hostCard, player, gameState))
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState)
+    EffectManager.recalculateAllPowers(gameState)
+    return messages
   }
 
   static getQuickPlayHostTargets(player, card) {
@@ -1763,6 +1786,10 @@ class GameEngine {
     if (card.quickPlay) {
       return this.handleQuickPlayCard(card, player, playerIndex)
     }
+
+    if (EffectManager.requiresDeployOnHost(card)) {
+      return this.handleHostOnlyDeploy(card, player, playerIndex, cardIndex)
+    }
     
     // 检查最后一回合的卡牌限制
     const restrictions = this.gameState.playerRestrictions?.[playerId]
@@ -1860,6 +1887,43 @@ class GameEngine {
       gameState: this.getPublicGameState(),
       cardPlayed: card
     }
+  }
+
+  handleHostOnlyDeploy(card, player, playerIndex, cardIndex) {
+    const playerId = player.id
+    const restrictions = this.gameState.playerRestrictions?.[playerId]
+    if (restrictions?.includes('cannotPlay')) {
+      return { success: false, error: '最后一回合无法出牌（场地已满）' }
+    }
+    if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
+      return { success: false, error: '最后一轮只能出战术牌' }
+    }
+    if (!EffectManager.meetsPlayRequirements(card, player, this.gameState)) {
+      return { success: false, error: '场上条件不满足，无法打出此牌' }
+    }
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    if (player.currentCost < playCost && !card.forcedPlay) {
+      return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
+    }
+    if (player.hasPlayedThisTurn && !player.canPlayExtra) {
+      return { success: false, error: '本回合已经出过牌了！' }
+    }
+    const targets = EffectManager.getQuickPlayHostTargets(player, card)
+    if (targets.length === 0) {
+      return { success: false, error: '没有可部署的宿主卡牌' }
+    }
+    player.hand.splice(cardIndex, 1)
+    player.currentCost -= playCost
+    if (player.hasPlayedThisTurn && player.canPlayExtra) {
+      player.canPlayExtra = false
+    } else {
+      player.hasPlayedThisTurn = true
+    }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
+    const targetCard = targets[0]
+    const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, this.gameState)
+    this.gameState.message = msgs.join(' | ')
+    return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
   }
   
   // 处理快速打出（跳过费用/行动检查）
