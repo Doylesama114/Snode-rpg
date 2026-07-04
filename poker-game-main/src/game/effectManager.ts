@@ -842,13 +842,12 @@ export class EffectManager {
   ): { messages: string[]; destroyed: boolean } {
     const messages: string[] = []
     const threshold = effect.destroyThreshold ?? 0
-    const delta = typeof effect.value === 'number' ? effect.value : 0
-    if (delta !== 0) {
-      targetCard.currentPower += delta
-      if (targetCard.basePower !== undefined) targetCard.basePower += delta
-      messages.push(`${targetCard.name} 战力${delta}`)
+    const rawDelta = typeof effect.value === 'number' ? effect.value : 0
+    if (rawDelta !== 0) {
+      const delta = this.applyCardPowerDelta(targetCard, rawDelta, true)
+      messages.push(`${targetCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
     }
-    const instantKeywordDestroy = delta === 0 && (effect.targetKeywords?.length ?? 0) > 0
+    const instantKeywordDestroy = rawDelta === 0 && (effect.targetKeywords?.length ?? 0) > 0
     const powerDestroy = targetCard.currentPower <= threshold
     const destroyed = (instantKeywordDestroy || powerDestroy) && this.canDestroyTarget(targetCard, effect)
     if (destroyed) {
@@ -867,6 +866,52 @@ export class EffectManager {
         return
       }
     }
+  }
+
+  /** 宿主环境/建筑额外槽位上的部署数量 */
+  static countDeployedOnHost(hostCard: Card, player: Player): number {
+    const hostSlot = player.field.find(s => s.card === hostCard)
+    if (!hostSlot) return 0
+    let count = 0
+    player.field.forEach(otherSlot => {
+      if (otherSlot.isExtra && otherSlot.parentSlot === hostSlot.position && otherSlot.card) {
+        count++
+      }
+    })
+    return count
+  }
+
+  /** 应用战力变化；invertPowerLoss 时负向改为正向 */
+  static applyCardPowerDelta(card: Card, delta: number, updateBase = false): number {
+    if (delta < 0 && card.invertPowerLoss) {
+      delta = -delta
+    }
+    card.currentPower += delta
+    if (updateBase && card.basePower !== undefined) {
+      card.basePower += delta
+    }
+    return delta
+  }
+
+  static applyDiscardHandOrSelf(
+    card: Card,
+    player: Player,
+    game: GameState,
+  ): { messages: string[]; removedSelf: boolean } {
+    const messages: string[] = []
+    if (player.hand.length > 0) {
+      const idx = Math.floor(Math.random() * player.hand.length)
+      const discarded = player.hand.splice(idx, 1)[0]
+      player.discard.push(discarded)
+      messages.push(`弃置了${discarded.name}`)
+      return { messages, removedSelf: false }
+    }
+    player.field.forEach(slot => {
+      if (slot.card === card) slot.card = null
+    })
+    player.discard.push(card)
+    messages.push(`${card.name} 因无法弃置手牌而进入弃牌区`)
+    return { messages, removedSelf: true }
   }
 
   /** 应用单条 onReveal 结构化效果；needsTargetSelection 时由 UI 接管 */
@@ -902,13 +947,19 @@ export class EffectManager {
         return { messages }
       }
       if (targets.length === 1 || effect.allPlayers) {
-        const delta = effect.useD6Value ? this.rollD6() : (effect.value || 0)
-        targets.forEach(t => { t.currentPower += delta })
-        const sign = delta >= 0 ? '+' : ''
-        messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`)
+        const rawDelta = effect.useD6Value ? this.rollD6() : (effect.value || 0)
+        targets.forEach(t => { this.applyCardPowerDelta(t, rawDelta) })
+        const sign = rawDelta >= 0 ? '+' : ''
+        messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${rawDelta}${effect.useD6Value ? `(D6=${rawDelta})` : ''}`)
         return { messages }
       }
       return { messages, needsTargetSelection: { targets, effect } }
+    }
+
+    if (effect.type === 'discardHandOrSelf') {
+      const r = this.applyDiscardHandOrSelf(card, player, game)
+      messages.push(...r.messages)
+      return { messages, removedSelf: r.removedSelf }
     }
 
     if (effect.type === 'modifyCost') {
@@ -1281,6 +1332,12 @@ export class EffectManager {
       return { messages, needsTargetSelection: { targets, effect } }
     }
 
+    if (effect.type === 'invertPowerLoss') {
+      card.invertPowerLoss = true
+      messages.push(`${card.name} 战力降低时将改为提升`)
+      return { messages }
+    }
+
     return { messages }
   }
 
@@ -1454,6 +1511,10 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.requireDeployedOnSelf && this.countDeployedOnHost(ownerCard, player) === 0) {
+      return { messages }
+    }
+
     if (effect.d6Min !== undefined) {
       const roll = this.rollD6()
       if (roll < effect.d6Min) {
@@ -1470,10 +1531,10 @@ export class EffectManager {
     if (effect.type === 'modifyPower' && effect.allPlayers && (effect.targetAllCards || effect.excludeAttributes || effect.targetAttributes)) {
       const targets = this.getRoundGlobalTargets(game, player, effect)
       if (targets.length === 0) return { messages }
-      const delta = effect.value || 0
-      targets.forEach(t => { t.currentPower += delta })
-      const sign = delta >= 0 ? '+' : ''
-      messages.push(`${targets.length}张卡牌战力${sign}${delta}`)
+      const rawDelta = effect.value || 0
+      targets.forEach(t => { this.applyCardPowerDelta(t, rawDelta) })
+      const sign = rawDelta >= 0 ? '+' : ''
+      messages.push(`${targets.length}张卡牌战力${sign}${rawDelta}`)
       return { messages }
     }
 
@@ -1486,15 +1547,14 @@ export class EffectManager {
       })
       if (candidates.length === 0) return { messages }
       const target = candidates[0]
-      const delta = effect.value || 0
-      target.currentPower += delta
+      const delta = this.applyCardPowerDelta(target, effect.value || 0)
       messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
     if (effect.type === 'modifyPower' && effect.value && !effect.allPlayers) {
-      ownerCard.currentPower += effect.value as number
-      messages.push(`${ownerCard.name} 战力${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
+      const delta = this.applyCardPowerDelta(ownerCard, effect.value as number)
+      messages.push(`${ownerCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 

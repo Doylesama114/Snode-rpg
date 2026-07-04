@@ -64,6 +64,8 @@ export type EffectType =
   | 'setPowerIfFieldKeyword'  // onGameEnd 场上有指定关键词时设战力（红宝石）
   | 'setPowerIfHandNames'     // onGameEnd 手牌含指定名称时设战力（蓝宝石/绿宝石）
   | 'deployOnHostOnly'        // quickPlay 仅能部署在指定关键词宿主上（作物）
+  | 'invertPowerLoss'         // onDeploy 战力降低时改为提升（狂战士）
+  | 'discardHandOrSelf'       // onReveal 须弃手牌否则自身进弃牌区（哥布林杂兵）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -185,6 +187,8 @@ export interface CardEffect {
   hostBonusIfHostAttribute?: string
   /** 配合 hostBonusIfHostAttribute */
   hostBonusValue?: number
+  /** roundEnd 等：宿主额外槽位上须有部署牌才触发 */
+  requireDeployedOnSelf?: boolean
   drawCount?: number     // number of cards to draw
 }
 
@@ -229,6 +233,8 @@ export interface Card {
   excludeFromFieldCount?: boolean
   /** 其他玩家效果不可选中（蛇颈龙等） */
   untargetableByOthers?: boolean
+  /** 战力降低时改为提升（狂战士） */
+  invertPowerLoss?: boolean
 }
 
 // 场上槽位

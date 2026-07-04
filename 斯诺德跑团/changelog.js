@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6069',
+    date: '2026-07-04',
+    changes: [
+      '温馨的旅馆',
+      '哥布林杂兵',
+      '狂战士'
+    ]
+  },
+
+
+  {
     version: '1.0.6068',
     date: '2026-07-04',
     changes: [

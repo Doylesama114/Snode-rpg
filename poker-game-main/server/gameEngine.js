@@ -441,6 +441,10 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.requireDeployedOnSelf && EffectManager.countDeployedOnHost(ownerCard, player) === 0) {
+      return { messages }
+    }
+
     if (effect.d6Min !== undefined) {
       const roll = EffectManager.rollD6()
       if (roll < effect.d6Min) {
@@ -457,10 +461,10 @@ class EffectManager {
     if (effect.type === 'modifyPower' && effect.allPlayers && (effect.targetAllCards || effect.excludeAttributes || effect.targetAttributes)) {
       const targets = EffectManager.getRoundGlobalTargets(gameState, player, effect)
       if (targets.length === 0) return { messages }
-      const delta = effect.value || 0
-      targets.forEach(t => { t.currentPower += delta })
-      const sign = delta >= 0 ? '+' : ''
-      messages.push(`${targets.length}张卡牌战力${sign}${delta}`)
+      const rawDelta = effect.value || 0
+      targets.forEach(t => { EffectManager.applyCardPowerDelta(t, rawDelta) })
+      const sign = rawDelta >= 0 ? '+' : ''
+      messages.push(`${targets.length}张卡牌战力${sign}${rawDelta}`)
       return { messages }
     }
 
@@ -473,15 +477,14 @@ class EffectManager {
       })
       if (candidates.length === 0) return { messages }
       const target = candidates[0]
-      const delta = effect.value || 0
-      target.currentPower += delta
+      const delta = EffectManager.applyCardPowerDelta(target, effect.value || 0)
       messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
     if (effect.type === 'modifyPower' && effect.value && !effect.allPlayers) {
-      ownerCard.currentPower += effect.value
-      messages.push(`${ownerCard.name} 战力${effect.value > 0 ? '+' : ''}${effect.value}`)
+      const delta = EffectManager.applyCardPowerDelta(ownerCard, effect.value)
+      messages.push(`${ownerCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
@@ -1148,13 +1151,12 @@ class EffectManager {
   static applyDestroyToTarget(targetCard, effect, game) {
     const messages = []
     const threshold = effect.destroyThreshold ?? 0
-    const delta = typeof effect.value === 'number' ? effect.value : 0
-    if (delta !== 0) {
-      targetCard.currentPower += delta
-      if (targetCard.basePower !== undefined) targetCard.basePower += delta
-      messages.push(`${targetCard.name} 战力${delta}`)
+    const rawDelta = typeof effect.value === 'number' ? effect.value : 0
+    if (rawDelta !== 0) {
+      const delta = EffectManager.applyCardPowerDelta(targetCard, rawDelta, true)
+      messages.push(`${targetCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
     }
-    const instantKeywordDestroy = delta === 0 && (effect.targetKeywords?.length ?? 0) > 0
+    const instantKeywordDestroy = rawDelta === 0 && (effect.targetKeywords?.length ?? 0) > 0
     const powerDestroy = targetCard.currentPower <= threshold
     const destroyed = (instantKeywordDestroy || powerDestroy) && EffectManager.canDestroyTarget(targetCard, effect)
     if (destroyed) {
@@ -1173,6 +1175,46 @@ class EffectManager {
         return
       }
     }
+  }
+
+  static countDeployedOnHost(hostCard, player) {
+    const hostSlot = player.field.find(s => s.card === hostCard)
+    if (!hostSlot) return 0
+    let count = 0
+    player.field.forEach(otherSlot => {
+      if (otherSlot.isExtra && otherSlot.parentSlot === hostSlot.position && otherSlot.card) {
+        count++
+      }
+    })
+    return count
+  }
+
+  static applyCardPowerDelta(card, delta, updateBase = false) {
+    if (delta < 0 && card.invertPowerLoss) {
+      delta = -delta
+    }
+    card.currentPower += delta
+    if (updateBase && card.basePower !== undefined) {
+      card.basePower += delta
+    }
+    return delta
+  }
+
+  static applyDiscardHandOrSelf(card, player, game) {
+    const messages = []
+    if (player.hand.length > 0) {
+      const idx = Math.floor(Math.random() * player.hand.length)
+      const discarded = player.hand.splice(idx, 1)[0]
+      player.discard.push(discarded)
+      messages.push(`弃置了${discarded.name}`)
+      return { messages, removedSelf: false }
+    }
+    player.field.forEach(slot => {
+      if (slot.card === card) slot.card = null
+    })
+    player.discard.push(card)
+    messages.push(`${card.name} 因无法弃置手牌而进入弃牌区`)
+    return { messages, removedSelf: true }
   }
 
   static applyRevealEffect(effect, card, player, game) {
@@ -1300,6 +1342,12 @@ class EffectManager {
       card.currentPower += value
       messages.push(`${card.name} D6=${roll}，战力+${value}`)
       return { messages }
+    }
+
+    if (effect.type === 'discardHandOrSelf') {
+      const r = EffectManager.applyDiscardHandOrSelf(card, player, game)
+      messages.push(...r.messages)
+      return { messages, removedSelf: r.removedSelf }
     }
 
     return { messages }
@@ -1575,6 +1623,12 @@ class EffectManager {
       const target = targets[Math.floor(Math.random() * targets.length)]
       const r = EffectManager.applyDestroyToTarget(target, effect, game)
       messages.push(...r.messages)
+      return { messages }
+    }
+
+    if (effect.type === 'invertPowerLoss') {
+      card.invertPowerLoss = true
+      messages.push(`${card.name} 战力降低时将改为提升`)
       return { messages }
     }
 

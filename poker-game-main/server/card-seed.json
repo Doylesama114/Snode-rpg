@@ -1222,7 +1222,7 @@
     "effects": [
       {
         "timing": "onReveal",
-        "type": "conditional",
+        "type": "discardHandOrSelf",
         "description": "揭示：你必须弃置一张手牌，否则这张牌会立即进入弃牌区"
       }
     ],
@@ -1803,7 +1803,7 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
+        "type": "invertPowerLoss",
         "description": "当这张牌的战力降低时，改为这张牌的战力提升对应数值"
       }
     ],
@@ -2410,9 +2410,29 @@
     "cost": 0,
     "effects": [
       {
+        "timing": "onDeploy",
+        "type": "createSlot",
+        "slotDeployKeywords": [
+          "职业者",
+          "冒险者"
+        ],
+        "slotDeployCardType": "unit",
+        "slotExcludeFromFieldCount": true,
+        "description": "你可以将拥有「职业者」关键词或「冒险者」名词的单位牌部署在这张牌上，这些卡牌不再计算终局数量"
+      },
+      {
         "timing": "roundEnd",
-        "type": "conditional",
-        "description": "你可以将拥有“职业者”关键词或“冒险者”名词的单位牌部署在这张牌上，这些卡牌不再计算终局数量，如果这张牌上有部署卡牌，那么在每个回合结束时为你回复1点能量并使这张牌的战力+1"
+        "type": "restoreEnergy",
+        "value": 1,
+        "requireDeployedOnSelf": true,
+        "description": "若上有部署牌，每回合结束回复1点能量"
+      },
+      {
+        "timing": "roundEnd",
+        "type": "modifyPower",
+        "value": 1,
+        "requireDeployedOnSelf": true,
+        "description": "若上有部署牌，每回合结束自身战力+1"
       }
     ],
     "slotRequired": 1,

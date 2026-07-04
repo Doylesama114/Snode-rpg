@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-07-04T17:34:14.308Z",
+  "generatedAt": "2026-07-04T17:53:47.465Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
   "xlsxExists": true,
-  "xlsxPath": "D:\\Download\\scholar-agent-main\\斯诺德对决卡牌列表（已开出）.xlsx",
+  "xlsxPath": "d:\\Download\\scholar-agent-main\\斯诺德对决卡牌列表（已开出）.xlsx",
   "typeCounts": {
     "unit": 91,
     "environment": 27,
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 28,
+    "structured": 31,
     "implemented_doc": 89,
-    "conditional_only": 31
+    "conditional_only": 28
   },
   "patternSummary": {
     "on_deploy": 33,
@@ -52,6 +52,8 @@
       "玉米 (card_044)",
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
+      "哥布林杂兵 (card_050)",
+      "狂战士 (card_074)",
       "洋葱 (card_075)",
       "攀岩爱好者 (card_076)",
       "野猪人劫匪 (card_077)",
@@ -59,7 +61,8 @@
       "利剑中队 (card_091)",
       "短柄斧 (card_092)",
       "三叉戟 (card_093)",
-      "板甲 (card_094)"
+      "板甲 (card_094)",
+      "温馨的旅馆 (card_102)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -158,13 +161,11 @@
       "强盗 (card_031)",
       "征募官 (card_035)",
       "隐士 (card_048)",
-      "哥布林杂兵 (card_050)",
       "走私船 (card_055)",
       "潮汐歌者 (card_065)",
       "海洋德鲁伊 (card_068)",
       "旗鱼 (card_069)",
       "火蜥蜴 (card_072)",
-      "狂战士 (card_074)",
       "牛头人勇士 (card_080)",
       "枭熊 (card_081)",
       "雷龙 (card_082)",
@@ -177,7 +178,6 @@
       "食尸鬼教徒 (card_096)",
       "无貌者 (card_097)",
       "刺客 (card_098)",
-      "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
@@ -1341,7 +1341,7 @@
       "id": "card_050",
       "name": "哥布林杂兵",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1349,7 +1349,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "discardHandOrSelf"
       ],
       "timings": [
         "onReveal"
@@ -1773,7 +1773,7 @@
       "id": "card_074",
       "name": "狂战士",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1781,7 +1781,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "invertPowerLoss"
       ],
       "timings": [
         "onDeploy"
@@ -2259,7 +2259,7 @@
       "id": "card_102",
       "name": "温馨的旅馆",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2267,9 +2267,13 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "createSlot",
+        "restoreEnergy",
+        "modifyPower"
       ],
       "timings": [
+        "onDeploy",
+        "roundEnd",
         "roundEnd"
       ]
     },
