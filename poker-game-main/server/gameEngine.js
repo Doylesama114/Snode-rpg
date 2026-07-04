@@ -909,6 +909,27 @@ class EffectManager {
     return target?.id !== player.id ? target : undefined
   }
 
+  static hasGlobalFieldKeyword(game, keyword) {
+    const gameState = game.gameState || game
+    return gameState.players.some(p =>
+      p.field.some(s => s.card && EffectManager.hasAnyKeyword(s.card, [keyword])),
+    )
+  }
+
+  static cloneTemplateCard(template, suffix, costOverride) {
+    const copy = JSON.parse(JSON.stringify(template))
+    copy.id = `${template.id}_grant_${suffix}`
+    copy.currentPower = copy.basePower
+    if (costOverride !== undefined) copy.cost = costOverride
+    return copy
+  }
+
+  static resolveTemplateCard(id) {
+    const template = getCard(id)
+    if (!template) return null
+    return EffectManager.cloneTemplateCard(template, 'tpl')
+  }
+
   static shuffleInPlace(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
@@ -1302,6 +1323,16 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'modifyPower' && effect.selfTarget) {
+      if (effect.requireGlobalFieldKeyword && !EffectManager.hasGlobalFieldKeyword(game, effect.requireGlobalFieldKeyword)) {
+        return { messages }
+      }
+      const delta = effect.value || 0
+      EffectManager.applyCardPowerDelta(card, delta)
+      messages.push(`${card.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && (effect.targetKeywords?.length || effect.allPlayers)) {
       const targets = EffectManager.getRevealModifyTargets(game, player, effect)
       if (targets.length === 0) {
@@ -1379,6 +1410,48 @@ class EffectManager {
         player.pendingFinalRoundStartEnergy = (player.pendingFinalRoundStartEnergy || 0) + amt
       }
       messages.push(`已预约回合开始恢复${amt}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'grantCopiesToHand') {
+      const templateId = effect.grantCardId
+      if (!templateId) return { messages }
+      const template = EffectManager.resolveTemplateCard(templateId)
+      if (!template) {
+        messages.push('未找到模板卡牌')
+        return { messages }
+      }
+      const count = effect.grantCount ?? 1
+      for (let i = 0; i < count; i++) {
+        const copy = EffectManager.cloneTemplateCard(template, `${Date.now()}_${i}`, effect.grantCostOverride)
+        player.hand.push(copy)
+      }
+      messages.push(`获得${count}张${template.name}`)
+      return { messages }
+    }
+
+    if (effect.type === 'playRandomFromDeckOrTop') {
+      if (player.deck.length === 0) {
+        messages.push('牌库为空')
+        return { messages }
+      }
+      const idx = Math.floor(Math.random() * player.deck.length)
+      const picked = player.deck.splice(idx, 1)[0]
+      const playCost = EffectManager.getEffectivePlayCost(picked, player)
+      const slots = EffectManager.getAvailableSlotIndices(player, picked)
+      const canDeploy = (picked.type === 'unit' || picked.type === 'environment')
+        && slots.length > 0
+        && player.currentCost >= playCost
+      if (canDeploy) {
+        player.currentCost -= playCost
+        player.field[slots[0]].card = picked
+        EffectManager.applyUnitDeployBonuses(picked, player).forEach(m => messages.push(m))
+        EffectManager.triggerOnOtherPlayEffects(picked, player, game)
+        messages.push(`随机打出${picked.name}（费用${playCost}）`)
+      } else {
+        player.deck.unshift(picked)
+        messages.push(`${picked.name} 无法打出，放回牌库顶`)
+      }
       return { messages }
     }
 

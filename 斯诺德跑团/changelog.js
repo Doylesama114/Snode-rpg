@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6072',
+    date: '2026-07-04',
+    changes: [
+      '征募官',
+      '强盗',
+      '攀爬工具'
+    ]
+  },
+
+
+  {
     version: '1.0.6071',
     date: '2026-07-04',
     changes: [

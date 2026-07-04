@@ -69,6 +69,8 @@ export type EffectType =
   | 'skipOthersDrawNextRound' // onDeploy 其他玩家下回合开始不抽牌（牛头人勇士）
   | 'discardHandForLeftPlayerDebuff' // roundStart 弃指定属性手牌使左手边玩家终局战力减值（火蜥蜴）
   | 'scheduleRoundStartEnergy'  // onReveal 预约下回合/最后一轮开始时恢复能量（间歇泉）
+  | 'grantCopiesToHand'         // onReveal 获取模板卡副本加入手牌（征募官）
+  | 'playRandomFromDeckOrTop'   // onReveal 随机尝试打出牌库牌否则置顶（攀爬工具）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -206,6 +208,14 @@ export interface CardEffect {
   onNextRoundStart?: boolean
   /** scheduleRoundStartEnergy：最后一轮开始时恢复能量 */
   onFinalRoundStart?: boolean
+  /** grantCopiesToHand：模板卡 ID（card_008 等） */
+  grantCardId?: string
+  /** grantCopiesToHand：生成张数 */
+  grantCount?: number
+  /** grantCopiesToHand：覆盖打出费用 */
+  grantCostOverride?: number
+  /** modifyPower 等：全场任意玩家场上需含该关键词 */
+  requireGlobalFieldKeyword?: string
   drawCount?: number     // number of cards to draw
 }
 

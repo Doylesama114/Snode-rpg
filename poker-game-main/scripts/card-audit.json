@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T18:31:01.379Z",
+  "generatedAt": "2026-07-04T18:38:31.940Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 37,
+    "structured": 40,
     "implemented_doc": 89,
-    "conditional_only": 22
+    "conditional_only": 19
   },
   "patternSummary": {
     "on_deploy": 34,
@@ -43,6 +43,9 @@
       "生命药水 (card_013)",
       "金牌烤火鸡 (card_015)",
       "渔网 (card_017)",
+      "攀爬工具 (card_023)",
+      "强盗 (card_031)",
+      "征募官 (card_035)",
       "食人魔 (card_037)",
       "纪念照 (card_038)",
       "金矿 (card_039)",
@@ -163,9 +166,6 @@
     ],
     "conditional_only": [
       "箭袋 (card_018)",
-      "攀爬工具 (card_023)",
-      "强盗 (card_031)",
-      "征募官 (card_035)",
       "隐士 (card_048)",
       "走私船 (card_055)",
       "潮汐歌者 (card_065)",
@@ -845,7 +845,7 @@
       "id": "card_023",
       "name": "攀爬工具",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -853,7 +853,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRandomFromDeckOrTop"
       ],
       "timings": [
         "onReveal"
@@ -989,7 +989,7 @@
       "id": "card_031",
       "name": "强盗",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -997,9 +997,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "stealCard",
+        "modifyPower"
       ],
       "timings": [
+        "onReveal",
         "onReveal"
       ]
     },
@@ -1061,7 +1063,7 @@
       "id": "card_035",
       "name": "征募官",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1069,7 +1071,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "grantCopiesToHand"
       ],
       "timings": [
         "onReveal"

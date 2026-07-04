@@ -1,4 +1,5 @@
 import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect, AttributeType } from '@/types/game'
+import { allCardDefinitions } from '@/data/cardDatabase'
 
 // 效果管理器
 export class EffectManager {
@@ -384,6 +385,31 @@ export class EffectManager {
     const leftIndex = (playerIndex + 1) % game.players.length
     const target = game.players[leftIndex]
     return target?.id !== player.id ? target : undefined
+  }
+
+  static hasGlobalFieldKeyword(game: GameState, keyword: string): boolean {
+    return game.players.some(p =>
+      p.field.some(s => s.card && this.hasAnyKeyword(s.card, [keyword])),
+    )
+  }
+
+  static cloneTemplateCard(template: Card, suffix: string, costOverride?: number): Card {
+    const copy: Card = {
+      ...template,
+      id: `${template.id}_grant_${suffix}`,
+      keywords: [...template.keywords],
+      effects: template.effects.map(e => ({ ...e })),
+      currentPower: template.basePower,
+      basePower: template.basePower,
+    }
+    if (costOverride !== undefined) copy.cost = costOverride
+    return copy
+  }
+
+  static resolveTemplateCard(id: string): Card | undefined {
+    const def = allCardDefinitions.find(c => c.id === id)
+    if (!def) return undefined
+    return this.cloneTemplateCard(def, 'tpl')
   }
 
   private static shuffleInPlace(deck: Card[]) {
@@ -957,6 +983,16 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'modifyPower' && effect.selfTarget) {
+      if (effect.requireGlobalFieldKeyword && !this.hasGlobalFieldKeyword(game, effect.requireGlobalFieldKeyword)) {
+        return { messages }
+      }
+      const delta = (effect.value as number) || 0
+      this.applyCardPowerDelta(card, delta)
+      messages.push(`${card.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && (effect.targetKeywords?.length || effect.allPlayers)) {
       const targets = this.getRevealModifyTargets(game, player, effect)
       if (targets.length === 0) {
@@ -1029,6 +1065,48 @@ export class EffectManager {
         player.pendingFinalRoundStartEnergy = (player.pendingFinalRoundStartEnergy || 0) + amt
       }
       messages.push(`已预约回合开始恢复${amt}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'grantCopiesToHand') {
+      const templateId = effect.grantCardId
+      if (!templateId) return { messages }
+      const template = this.resolveTemplateCard(templateId)
+      if (!template) {
+        messages.push('未找到模板卡牌')
+        return { messages }
+      }
+      const count = effect.grantCount ?? 1
+      for (let i = 0; i < count; i++) {
+        const copy = this.cloneTemplateCard(template, `${Date.now()}_${i}`, effect.grantCostOverride)
+        player.hand.push(copy)
+      }
+      messages.push(`获得${count}张${template.name}`)
+      return { messages }
+    }
+
+    if (effect.type === 'playRandomFromDeckOrTop') {
+      if (player.deck.length === 0) {
+        messages.push('牌库为空')
+        return { messages }
+      }
+      const idx = Math.floor(Math.random() * player.deck.length)
+      const picked = player.deck.splice(idx, 1)[0]
+      const playCost = this.getEffectivePlayCost(picked, player)
+      const slots = this.getAvailableSlotIndices(player, picked)
+      const canDeploy = (picked.type === 'unit' || picked.type === 'environment')
+        && slots.length > 0
+        && player.currentCost >= playCost
+      if (canDeploy) {
+        player.currentCost -= playCost
+        player.field[slots[0]].card = picked
+        this.applyUnitDeployBonuses(picked, player).forEach(m => messages.push(m))
+        this.triggerOnOtherPlayEffects(picked, player, game)
+        messages.push(`随机打出${picked.name}（费用${playCost}）`)
+      } else {
+        player.deck.unshift(picked)
+        messages.push(`${picked.name} 无法打出，放回牌库顶`)
+      }
       return { messages }
     }
 
