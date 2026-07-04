@@ -35,6 +35,7 @@ const IMPLEMENTED_NAMES = new Set([
   '吟游诗人', '风笛', '激励乐章',
   '贝壳', '晴天', '沙滩',
   '酒吧女招待', '杂货铺', '燃烧之手',
+  '葡萄酒商人', '魔法飞弹', '暴徒',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([

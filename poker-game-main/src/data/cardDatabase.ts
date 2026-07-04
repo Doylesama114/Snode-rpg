@@ -328,6 +328,7 @@ export const allCardDefinitions = [
       type: 'modifyCost',
       description: '揭示后使你左手边第一名玩家当前能量值-2',
       value: -2,
+      targetLeftPlayer: true,
       stackable: false
     }
     ],
@@ -579,9 +580,12 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：从你的牌库中检索一张拥有“葡萄酒”名词的卡牌加入手牌，随后混洗牌库'
+      timing: 'onDeploy',
+      type: 'searchDeck',
+      searchName: '葡萄酒',
+      maxCount: 1,
+      shuffleAfterSearch: true,
+      description: '揭示：从你的牌库中检索一张拥有"葡萄酒"名称的卡牌加入手牌，随后混洗牌库'
     }
     ],
     slotRequired: 1,
@@ -620,7 +624,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'modifyPower',
+      value: 2,
+      selfTarget: true,
+      noHigherPowerUnitOnField: true,
       description: '如果你的场上没有基础战力高于这张牌的单位牌，那么这张牌的战力+2'
     }
     ],

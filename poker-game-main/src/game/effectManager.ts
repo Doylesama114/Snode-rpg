@@ -490,10 +490,20 @@ export class EffectManager {
     }
 
     if (effect.type === 'modifyCost') {
-      otherPlayers.forEach(target => {
-        target.currentCost += effect.value || 0
-        messages.push(`${target.name} 费用${effect.value}`)
-      })
+      if (effect.targetLeftPlayer) {
+        const playerIndex = game.players.findIndex(p => p.id === player.id)
+        const leftIndex = (playerIndex + 1) % game.players.length
+        const target = game.players[leftIndex]
+        if (target && target.id !== player.id) {
+          target.currentCost += effect.value || 0
+          messages.push(`${target.name} 能量${effect.value}`)
+        }
+      } else {
+        otherPlayers.forEach(target => {
+          target.currentCost += effect.value || 0
+          messages.push(`${target.name} 费用${effect.value}`)
+        })
+      }
       return { messages }
     }
 
@@ -557,6 +567,21 @@ export class EffectManager {
     if (effect.type === 'restoreEnergy') {
       player.currentCost += effect.value || 0
       messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.noHigherPowerUnitOnField) {
+      const hasHigher = player.field.some(
+        s => s.card && s.card !== card && s.card.type === 'unit' && s.card.basePower > card.basePower,
+      )
+      if (!hasHigher) {
+        const delta = effect.value || 0
+        card.basePower += delta
+        card.currentPower += delta
+        messages.push(`${card.name} 战力+${delta}`)
+      } else {
+        messages.push('场上有更高战力的单位，效果未触发')
+      }
       return { messages }
     }
 

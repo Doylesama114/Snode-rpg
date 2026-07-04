@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6051',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4I：葡萄酒商人/魔法飞弹/暴徒',
+      '引擎 targetLeftPlayer+noHigherPowerUnitOnField'
+    ]
+  },
+
+
+  {
     version: '1.0.6050',
     date: '2026-07-04',
     changes: [

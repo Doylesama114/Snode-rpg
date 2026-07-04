@@ -87,6 +87,10 @@ export interface CardEffect {
   searchEachKeyword?: boolean
   /** debuffOpponentHand：削弱对手手牌张数 */
   handDebuffCount?: number
+  /** modifyCost：仅左手边第一名玩家（魔法飞弹） */
+  targetLeftPlayer?: boolean
+  /** onDeploy modifyPower：场上无更高 basePower 的单位时触发（暴徒） */
+  noHigherPowerUnitOnField?: boolean
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]
