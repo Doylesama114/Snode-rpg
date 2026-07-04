@@ -112,8 +112,10 @@ export interface CardEffect {
   shuffleAfterSearch?: boolean // 检索后洗牌库
   searchDiscard?: boolean // 是否检索弃牌堆，默认 true
   targetName?: string    // target card name for name-based effects (e.g. modifyPowerByName)
-  /** destroy：降至该阈值及以下则摧毁（默认 0） */
+  /** destroy：降至该阈值及以下则摧毁（默认 0）；targetKeywords 匹配时可摧毁环境/建筑 */
   destroyThreshold?: number
+  /** destroy：强制允许摧毁 environment（力场波等） */
+  destroyEnvironment?: boolean
   drawCount?: number     // number of cards to draw
 }
 

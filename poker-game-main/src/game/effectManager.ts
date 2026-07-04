@@ -477,6 +477,14 @@ export class EffectManager {
     return targets
   }
 
+  /** 应用单条 onReveal 结构化效果；needsTargetSelection 时由 UI 接管 */
+  static canDestroyTarget(targetCard: Card, effect: CardEffect): boolean {
+    if (targetCard.type !== 'environment') return true
+    if (effect.destroyEnvironment) return true
+    if (effect.targetKeywords?.length && this.hasAnyKeyword(targetCard, effect.targetKeywords)) return true
+    return false
+  }
+
   /** 对单张场上牌执行 destroy：可选先减战力，降至阈值及以下则移入弃牌堆 */
   static applyDestroyToTarget(
     targetCard: Card,
@@ -491,7 +499,9 @@ export class EffectManager {
       if (targetCard.basePower !== undefined) targetCard.basePower += delta
       messages.push(`${targetCard.name} 战力${delta}`)
     }
-    const destroyed = targetCard.currentPower <= threshold && targetCard.type !== 'environment'
+    const instantKeywordDestroy = delta === 0 && (effect.targetKeywords?.length ?? 0) > 0
+    const powerDestroy = targetCard.currentPower <= threshold
+    const destroyed = (instantKeywordDestroy || powerDestroy) && this.canDestroyTarget(targetCard, effect)
     if (destroyed) {
       this.removeCardFromField(game, targetCard)
       messages.push(`${targetCard.name} 被摧毁`)

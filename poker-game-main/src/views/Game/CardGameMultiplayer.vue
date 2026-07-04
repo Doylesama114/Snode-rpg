@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useGameClient } from '@/composables/useGameClient'
 import type { ReforgeOption, Card, GameState } from '@/types/game'
+import CardDetailPopover from '@/components/CardDetailPopover.vue'
 
 const router = useRouter()
 const multiplayer = useMultiplayer()
@@ -13,6 +14,21 @@ const game = useGameClient()
 
 const reforgeOptions = ref<ReforgeOption[]>([])
 const loadingTimeoutId = ref<number | null>(null)
+const hoveredCardKey = ref<string | null>(null)
+
+function fieldCardKey(playerId: string, slotKey: string | number) {
+  return `${playerId}-${slotKey}`
+}
+
+function onFieldCardEnter(playerId: string, slotKey: string | number) {
+  hoveredCardKey.value = fieldCardKey(playerId, slotKey)
+}
+
+function onFieldCardLeave(playerId: string, slotKey: string | number) {
+  if (hoveredCardKey.value === fieldCardKey(playerId, slotKey)) {
+    hoveredCardKey.value = null
+  }
+}
 
 // 处理游戏状态更新（从服务器接收）
 function handleGameStateUpdate(newState: GameState) {
@@ -257,33 +273,22 @@ function getPowerColor(card: Card): string {
 }
 
 // 离开游戏
-function leaveGame() {
-  console.log('[CardGameMultiplayer] leaveGame 被调用')
-  
-  if (!confirm('确定要离开游戏吗？')) {
+function leaveGameToLobby(fromGameOver = false) {
+  console.log('[CardGameMultiplayer] leaveGameToLobby 被调用', { fromGameOver })
+
+  if (!fromGameOver && !confirm('确定要离开游戏吗？')) {
     return
   }
-  
+
   try {
-    // 移除事件监听
     multiplayer.offGameStateUpdate()
-    
-    // 离开房间
     multiplayer.leaveRoom()
-    
-    // 使用 replace 而不是 push，避免返回按钮回到游戏
-    console.log('[CardGameMultiplayer] 跳转到主页')
-    router.replace('/').then(() => {
-      console.log('[CardGameMultiplayer] 已跳转到主页')
-    }).catch(err => {
-      console.error('[CardGameMultiplayer] 跳转失败:', err)
-      // 如果跳转失败，强制刷新页面
-      window.location.href = '/'
+    router.replace('/multiplayer').catch(() => {
+      window.location.href = '#/multiplayer'
     })
   } catch (error) {
     console.error('[CardGameMultiplayer] 离开游戏时出错:', error)
-    // 出错时强制跳转
-    window.location.href = '/'
+    window.location.href = '#/multiplayer'
   }
 }
 </script>
@@ -339,11 +344,20 @@ function leaveGame() {
               }"
               @click="player.id === multiplayer.myPlayerId.value && game.gameState.value.phase === 'action' && game.isSlotAvailable(si) && handleSelectSlot(si)"
             >
-              <div v-if="slot.card" class="field-card">
+              <div
+                v-if="slot.card"
+                class="field-card"
+                @mouseenter="onFieldCardEnter(player.id, si)"
+                @mouseleave="onFieldCardLeave(player.id, si)"
+              >
                 <div class="card-name-small">{{ slot.card.name }}</div>
                 <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
+                <CardDetailPopover
+                  v-if="hoveredCardKey === fieldCardKey(player.id, si)"
+                  :card="slot.card"
+                />
               </div>
               <div v-else class="empty-slot">{{ slot.isExtra ? '额外' : (player.id === multiplayer.myPlayerId.value ? si + 1 : '空') }}</div>
             </div>
@@ -430,10 +444,18 @@ function leaveGame() {
         </div>
       </div>
     </div>
-    <div v-if="game.gameState.value.phase === 'gameOver'" style="display:flex;justify-content:center;gap:12px;padding:12px 0;flex-shrink:0">
-      <button @click="leaveGame" class="btn btn-primary">返回大厅</button>
-      <button @click="leaveGame" class="btn btn-danger">离开游戏</button>
-    </div>
+
+    <Teleport to="body">
+      <div v-if="game.gameState.value.phase === 'gameOver'" class="game-over-overlay">
+        <div class="game-over-panel">
+          <h2 class="game-over-title">游戏结束</h2>
+          <p class="game-over-message">{{ game.gameState.value.message }}</p>
+          <div class="game-over-actions">
+            <button @click="leaveGameToLobby(true)" class="btn btn-primary">返回大厅</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -625,6 +647,7 @@ function leaveGame() {
 .field-card {
   text-align: center;
   width: 100%;
+  position: relative;
 }
 
 .card-name-small {
@@ -940,5 +963,47 @@ function leaveGame() {
   text-align: center;
   width: 100%;
   font-size: 18px;
+}
+
+.game-over-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(31, 37, 34, 0.55);
+  padding: 16px;
+}
+
+.game-over-panel {
+  background: #fffdf8;
+  border: 2px solid #a46d1f;
+  border-radius: 14px;
+  padding: 24px 28px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(31, 37, 34, 0.25);
+}
+
+.game-over-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  color: #a46d1f;
+}
+
+.game-over-message {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1f2522;
+}
+
+.game-over-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useGame } from '@/composables/useGameNew'
-import type { ReforgeOption, Card } from '@/types/game'
+import type { ReforgeOption } from '@/types/game'
+import CardDetailPopover from '@/components/CardDetailPopover.vue'
 
 const { 
   gameState, 
@@ -19,10 +20,26 @@ const {
   selectQuickPlayTarget,
   selectReforgeCard, 
   executeReforge, 
-  endTurn 
+  endTurn,
+  isCardPlayable
 } = useGame()
 
 const reforgeOptions = ref<ReforgeOption[]>([])
+const hoveredCardKey = ref<string | null>(null)
+
+function fieldCardKey(playerId: string, slotKey: string | number) {
+  return `${playerId}-${slotKey}`
+}
+
+function onFieldCardEnter(playerId: string, slotKey: string | number) {
+  hoveredCardKey.value = fieldCardKey(playerId, slotKey)
+}
+
+function onFieldCardLeave(playerId: string, slotKey: string | number) {
+  if (hoveredCardKey.value === fieldCardKey(playerId, slotKey)) {
+    hoveredCardKey.value = null
+  }
+}
 
 function selectReforgeOption(option: ReforgeOption) {
   if (reforgeOptions.value.length < 2) {
@@ -63,13 +80,13 @@ function getTotalPower(playerIndex: number) {
   return totalPower
 }
 
-function getPowerColor(card: Card): string {
+function getPowerColor(card: { currentPower: number; basePower: number }): string {
   if (card.currentPower > card.basePower) return '#2f6f5e'
   if (card.currentPower < card.basePower) return '#9d2f2f'
   return '#1f2522'
 }
 
-function getCardTypeDisplay(card: Card): string {
+function getCardTypeDisplay(card: { type: string }): string {
   if (card.type === 'environment') return '环境'
   if (card.type === 'tactic') return '战术'
   return ''
@@ -79,20 +96,6 @@ function isSlotAvailable(slotIndex: number): boolean {
   return gameState.value.availableSlots?.includes(slotIndex) || false
 }
 
-function isCardPlayable(index: number): boolean {
-  if (gameState.value.phase !== 'action' || currentPlayer.value.id !== 'player' || reforgeState.value.active) {
-    return false
-  }
-  
-  const card = gameState.value.players[0].hand[index]
-  if (!card) return false
-  
-  if (hasPlayedThisTurn.value && !canPlayExtra.value) {
-    return false
-  }
-  
-  return currentPlayer.value.currentCost >= card.cost
-}
 const playerCountStart = ref(2)
 </script>
 
@@ -152,11 +155,20 @@ const playerCountStart = ref(2)
               }"
               @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(si) && selectSlotToPlay(si); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card)"
             >
-              <div v-if="slot.card" class="field-card">
+              <div
+                v-if="slot.card"
+                class="field-card"
+                @mouseenter="onFieldCardEnter(player.id, si)"
+                @mouseleave="onFieldCardLeave(player.id, si)"
+              >
                 <div class="card-name-small">{{ slot.card.name }}</div>
                 <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
+                <CardDetailPopover
+                  v-if="hoveredCardKey === fieldCardKey(player.id, si)"
+                  :card="slot.card"
+                />
               </div>
               <div v-else class="empty-slot">{{ player.id === 'player' ? si + 1 : '空' }}</div>
 
@@ -172,11 +184,20 @@ const playerCountStart = ref(2)
                   }"
                   @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(extraSlot.position) && selectSlotToPlay(extraSlot.position)"
                 >
-                  <div v-if="extraSlot.card" class="field-card extra">
+                  <div
+                    v-if="extraSlot.card"
+                    class="field-card extra"
+                    @mouseenter="onFieldCardEnter(player.id, extraSlot.position)"
+                    @mouseleave="onFieldCardLeave(player.id, extraSlot.position)"
+                  >
                     <div class="card-name-small">{{ extraSlot.card.name }}</div>
                     <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
                       {{ extraSlot.card.currentPower }}
                     </div>
+                    <CardDetailPopover
+                      v-if="hoveredCardKey === fieldCardKey(player.id, extraSlot.position)"
+                      :card="extraSlot.card"
+                    />
                   </div>
                   <div v-else class="empty-slot extra">额外</div>
                 </div>
@@ -231,7 +252,7 @@ const playerCountStart = ref(2)
 
         <!-- 操作按钮（人类玩家+当前回合） -->
         <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
-          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame(playerCountStart.value)" class="btn btn-primary">开始游戏</button>
+          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame(playerCountStart)" class="btn btn-primary">开始游戏</button>
           <template v-if="gameState.phase === 'decision'">
             <button @click="choosePlay" class="btn btn-primary">出牌</button>
             <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
@@ -247,13 +268,22 @@ const playerCountStart = ref(2)
             <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
           </div>
-          <button v-if="gameState.phase === 'gameOver'" @click="initGame(playerCountStart.value)" class="btn btn-primary">重新开始</button>
         </div>
       </div>
     </div>
-    <div v-if="gameState.phase === 'gameOver'" style="display:flex;justify-content:center;padding:12px 0;flex-shrink:0">
-      <button @click="$router.push('/')" class="btn btn-secondary">返回主页</button>
-    </div>
+
+    <Teleport to="body">
+      <div v-if="gameState.phase === 'gameOver'" class="game-over-overlay">
+        <div class="game-over-panel">
+          <h2 class="game-over-title">游戏结束</h2>
+          <p class="game-over-message">{{ gameState.message }}</p>
+          <div class="game-over-actions">
+            <button @click="initGame(playerCountStart)" class="btn btn-primary">重新开始</button>
+            <button @click="$router.push('/')" class="btn btn-secondary">返回主页</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -415,6 +445,7 @@ const playerCountStart = ref(2)
 .field-card {
   text-align: center;
   width: 100%;
+  position: relative;
 }
 
 .field-card.hidden {
@@ -722,4 +753,46 @@ const playerCountStart = ref(2)
 }
 
 .negative-cost { color: #9d2f2f; font-weight: bold; }
+
+.game-over-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(31, 37, 34, 0.55);
+  padding: 16px;
+}
+
+.game-over-panel {
+  background: #fffdf8;
+  border: 2px solid #a46d1f;
+  border-radius: 14px;
+  padding: 24px 28px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(31, 37, 34, 0.25);
+}
+
+.game-over-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  color: #a46d1f;
+}
+
+.game-over-message {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1f2522;
+}
+
+.game-over-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
 </style>

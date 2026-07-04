@@ -784,15 +784,33 @@ export function useGame() {
   }
 
   // 检查场地是否填满
+  function countMainFieldCards(player: Player) {
+    return player.field.filter(s => !s.isExtra && s.card).length
+  }
+
+  function updateFinalRoundRestrictions() {
+    gameState.value.playerRestrictions = {}
+    if (!gameState.value.isFinalRound) return
+    gameState.value.players.forEach(player => {
+      if (countMainFieldCards(player) >= 6) {
+        if (gameState.value.players.length === 2) {
+          gameState.value.playerRestrictions[player.id] = ['cannotPlay']
+        } else {
+          gameState.value.playerRestrictions[player.id] = ['tacticsOnly']
+        }
+      }
+    })
+  }
+
   function checkFieldFull() {
     const player = currentPlayer.value
-    const mainSlots = player.field.filter(s => !s.isExtra)
-    const filledMainSlots = mainSlots.filter(s => s.card !== null).length
+    const filledMainSlots = countMainFieldCards(player)
     
     if (filledMainSlots === 6 && !gameState.value.isFinalRound) {
       gameState.value.isFinalRound = true
       gameState.value.finalRoundTriggeredBy = gameState.value.currentPlayerIndex
       gameState.value.message += ` | ${player.name} 填满了场地！进入最后一回合！`
+      updateFinalRoundRestrictions()
     }
   }
 
@@ -819,7 +837,9 @@ export function useGame() {
     
     if (roundComplete) {
       EffectManager.triggerRoundEffects('roundEnd', gameState.value)
+      gameState.value.players.forEach(p => { p.unitPlayPowerBonus = 0 })
       gameState.value.round++
+      updateFinalRoundRestrictions()
       EffectManager.triggerRoundEffects('roundStart', gameState.value)
     }
     
@@ -873,12 +893,20 @@ export function useGame() {
     if (gameState.value.phase === 'gameOver') return
     
     const ai = currentPlayer.value
-    const mainSlots = ai.field.filter(s => !s.isExtra)
-    const filledMainSlots = mainSlots.filter(s => s.card !== null).length
+    const filledMainSlots = countMainFieldCards(ai)
     const aiHiddenCount = (aiHiddenCards.value[ai.id]?.length || 0)
     const aiTotalCards = filledMainSlots + aiHiddenCount
+    const restrictions = gameState.value.playerRestrictions?.[ai.id]
+    if (restrictions?.includes('cannotPlay')) {
+      setTimeout(() => switchToNextPlayer(), 800)
+      return
+    }
     
-    const playableCards = ai.hand.filter(card => EffectManager.getEffectivePlayCost(card, ai) <= ai.currentCost && aiTotalCards < 6)
+    const playableCards = ai.hand.filter(card => {
+      if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') return false
+      if (card.type !== 'tactic' && aiTotalCards >= 6) return false
+      return EffectManager.getEffectivePlayCost(card, ai) <= ai.currentCost
+    })
     
     if (playableCards.length > 0 && Math.random() > 0.3) {
       const cardIndex = ai.hand.indexOf(playableCards[0])

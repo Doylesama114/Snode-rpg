@@ -646,6 +646,13 @@ class EffectManager {
     return targets
   }
 
+  static canDestroyTarget(targetCard, effect) {
+    if (targetCard.type !== 'environment') return true
+    if (effect.destroyEnvironment) return true
+    if (effect.targetKeywords?.length && EffectManager.hasAnyKeyword(targetCard, effect.targetKeywords)) return true
+    return false
+  }
+
   static applyDestroyToTarget(targetCard, effect, game) {
     const messages = []
     const threshold = effect.destroyThreshold ?? 0
@@ -655,7 +662,9 @@ class EffectManager {
       if (targetCard.basePower !== undefined) targetCard.basePower += delta
       messages.push(`${targetCard.name} 战力${delta}`)
     }
-    const destroyed = targetCard.currentPower <= threshold && targetCard.type !== 'environment'
+    const instantKeywordDestroy = delta === 0 && (effect.targetKeywords?.length ?? 0) > 0
+    const powerDestroy = targetCard.currentPower <= threshold
+    const destroyed = (instantKeywordDestroy || powerDestroy) && EffectManager.canDestroyTarget(targetCard, effect)
     if (destroyed) {
       EffectManager.removeCardFromField(game, targetCard)
       messages.push(`${targetCard.name} 被摧毁`)
@@ -1647,6 +1656,7 @@ class GameEngine {
     this.gameState.players.forEach((player, index) => {
       player.hasPlayedThisTurn = false
       player.canPlayExtra = false
+      player.unitPlayPowerBonus = 0
       
       // 如果是填满场地的玩家，在最后一回合跳过他的操作
       if (this.gameState.isFinalRound && this.gameState.finalRoundTriggeredBy === index) {

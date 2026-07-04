@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6053',
+    date: '2026-07-04',
+    changes: [
+      '引擎债：环境摧毁/最后一轮限制/unitPlayPowerBonus清除',
+      '游戏结束固定浮层返回按钮',
+      '场上卡牌悬停效果详情'
+    ]
+  },
+
+
+  {
     version: '1.0.6052',
     date: '2026-07-04',
     changes: [
