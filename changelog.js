@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6045',
+    date: '2026-07-04',
+    changes: [
+      '4C: 休憩曲/祈福/炎炎夏日 onDeploy',
+      '战术牌 deploy 流程修复'
+    ]
+  },
+
+
+  {
     version: '1.0.6044',
     date: '2026-07-04',
     changes: [

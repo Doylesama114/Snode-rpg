@@ -35,6 +35,8 @@ export type EffectType =
   | 'markOpponentHand'     // 标记对手手牌（quickPlay）
   | 'stealPower'          // 偷取战力（onReveal）
   | 'stealCard'           // 偷取手牌（onReveal）
+  | 'absNegativePower'    // 负数战力变正（onDeploy，祈福）
+  | 'setFieldAttribute'   // 改变场上卡牌属性（onDeploy，炎炎夏日）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -55,6 +57,8 @@ export interface CardEffect {
   excludeAttributes?: string[]
   /** onReveal modifyPower 作用于所有玩家场上 */
   allPlayers?: boolean
+  /** setFieldAttribute：目标卡牌类型（environment/unit/tactic） */
+  targetCardType?: CardType
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

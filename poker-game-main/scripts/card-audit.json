@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T11:46:15.458Z",
+  "generatedAt": "2026-07-04T12:04:53.390Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,8 +12,8 @@
   },
   "wiringSummary": {
     "structured": 24,
-    "implemented_doc": 38,
-    "conditional_only": 86
+    "implemented_doc": 41,
+    "conditional_only": 83
   },
   "patternSummary": {
     "on_deploy": 42,
@@ -89,11 +89,14 @@
       "真气波 (card_134)",
       "蓝焰术 (card_136)",
       "火焰箭 (card_139)",
+      "炎炎夏日 (card_140)",
       "急速射击 (card_143)",
       "雷云召来 (card_144)",
+      "休憩曲 (card_145)",
       "报警机器人 (card_147)",
       "护甲药水 (card_148)",
       "力场波 (card_149)",
+      "祈福 (card_150)",
       "奇袭 (card_151)"
     ],
     "conditional_only": [
@@ -178,11 +181,8 @@
       "回春术 (card_131)",
       "矮人烈酒 (card_135)",
       "间歇泉 (card_137)",
-      "炎炎夏日 (card_140)",
       "燃烧之手 (card_141)",
-      "冰锥术 (card_142)",
-      "休憩曲 (card_145)",
-      "祈福 (card_150)"
+      "冰锥术 (card_142)"
     ]
   },
   "byPattern": {
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 38,
+  "implementedDocCount": 41,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -398,7 +398,10 @@
     "铁匠铺",
     "收获日",
     "雷云召来",
-    "报警机器人"
+    "报警机器人",
+    "休憩曲",
+    "祈福",
+    "炎炎夏日"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -2865,7 +2868,7 @@
       "id": "card_140",
       "name": "炎炎夏日",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2873,7 +2876,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "setFieldAttribute"
       ],
       "timings": [
         "onDeploy"
@@ -2957,7 +2960,7 @@
       "id": "card_145",
       "name": "休憩曲",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2965,7 +2968,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "restoreEnergy"
       ],
       "timings": [
         "onDeploy"
@@ -3047,7 +3050,7 @@
       "id": "card_150",
       "name": "祈福",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -3055,7 +3058,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "absNegativePower"
       ],
       "timings": [
         "onDeploy"

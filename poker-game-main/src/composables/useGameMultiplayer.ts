@@ -264,6 +264,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     
     // 战术牌特殊处理
     if (card.type === 'tactic') {
+      triggerDeployEffects(card, player)
       handleTacticCard(card, player, slotIndex)
       return
     }
@@ -355,14 +356,16 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
 
   // 触发部署效果
   function triggerDeployEffects(card: Card, player: Player) {
+    if (!card.effects) return
     card.effects.forEach(effect => {
-      if (effect.timing === 'onDeploy') {
-        if (effect.type === 'extraPlay') {
-          player.canPlayExtra = true
-          gameState.value.message += ` | 效果：可以再打出一张牌！`
-        } else if (effect.type === 'createSlot') {
-          createExtraSlot(card, player)
-        }
+      if (effect.timing !== 'onDeploy') return
+      if (effect.type === 'conditional' || effect.type === 'custom') return
+      const result = EffectManager.applyDeployEffect(effect, card, player, gameState.value)
+      result.messages.forEach(msg => {
+        gameState.value.message += ` | ${msg}`
+      })
+      if (result.needsCreateSlot) {
+        createExtraSlot(card, player)
       }
     })
   }

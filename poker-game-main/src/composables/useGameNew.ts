@@ -452,8 +452,9 @@ export function useGame() {
     
     gameState.value.message = `${player.name} 打出了 ${card.name}（费用-${card.cost}）`
     
-    // 战术牌特殊处理
+    // 战术牌：先 onDeploy，再 onReveal
     if (card.type === 'tactic') {
+      triggerDeployEffects(card, player)
       handleTacticCard(card, player, slotIndex)
       return
     }
@@ -626,21 +627,17 @@ export function useGame() {
 
   // 触发部署效果
   function triggerDeployEffects(card: Card, player: Player) {
+    if (!card.effects) return
+
     card.effects.forEach(effect => {
       if (effect.timing === 'onDeploy') {
-        if (effect.type === 'extraPlay') {
-          player.canPlayExtra = true
-          gameState.value.message += ` | 效果：可以再打出一张牌！`
-        } else if (effect.type === 'createSlot') {
+        if (effect.type === 'conditional' || effect.type === 'custom') return
+        const result = EffectManager.applyDeployEffect(effect, card, player, gameState.value)
+        result.messages.forEach(msg => {
+          gameState.value.message += ` | ${msg}`
+        })
+        if (result.needsCreateSlot) {
           createExtraSlot(card, player)
-        } else if (effect.type === 'searchDeck') {
-          const found = EffectManager.searchDeck(player, effect)
-          if (found.length > 0) {
-            player.hand.push(...found)
-            gameState.value.message += ` | 检索到${found.length}张卡牌加入手牌`
-          } else {
-            gameState.value.message += ` | 未找到符合条件的卡牌`
-          }
         }
       } else if (effect.timing === 'onReveal') {
         if (effect.type === 'stealPower') {

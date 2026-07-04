@@ -469,6 +469,70 @@ class EffectManager {
     return { messages }
   }
 
+  static applyDeployEffect(effect, card, player, game) {
+    const messages = []
+
+    if (effect.type === 'extraPlay') {
+      player.canPlayExtra = true
+      messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    if (effect.type === 'createSlot') {
+      return { messages: ['创建了额外槽位'], needsCreateSlot: true }
+    }
+
+    if (effect.type === 'searchDeck') {
+      const found = EffectManager.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        messages.push(`检索到${found.length}张卡牌加入手牌`)
+      } else {
+        messages.push('未找到符合条件的卡牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'restoreEnergy') {
+      player.currentCost += effect.value || 0
+      messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'absNegativePower') {
+      const targets = player.field
+        .filter(s => s.card && s.card !== card && s.card.currentPower < 0)
+        .map(s => s.card)
+      if (targets.length === 0) {
+        messages.push('场上没有负数战力的卡牌')
+        return { messages }
+      }
+      const target = targets[0]
+      if (target.currentPower < 0) target.currentPower = Math.abs(target.currentPower)
+      if (target.basePower < 0) target.basePower = Math.abs(target.basePower)
+      messages.push(`${target.name} 战力变为正数（${target.currentPower}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'setFieldAttribute') {
+      const players = effect.allPlayers ? game.players : [player]
+      const attr = String(effect.value || '')
+      let count = 0
+      players.forEach(p => {
+        p.field.forEach(slot => {
+          if (!slot.card) return
+          if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+          slot.card.attribute = attr
+          count++
+        })
+      })
+      messages.push(count > 0 ? `${count}张卡牌属性变为${attr}` : '没有符合条件的目标')
+      return { messages }
+    }
+
+    return { messages }
+  }
+
   // 检查卡牌是否会被摧毁
   static checkDestroy(card) {
     return card.currentPower < 0 && card.type !== 'environment'
@@ -922,8 +986,9 @@ class GameEngine {
     // 部署卡牌到槽位
     slot.card = card
     
-    // 战术牌特殊处理
+    // 战术牌：先 onDeploy，再 onReveal
     if (card.type === 'tactic') {
+      this.triggerDeployEffects(card, player)
       this.handleTacticCard(card, player, slotIndex)
       return
     }
@@ -978,57 +1043,45 @@ class GameEngine {
   
   // 触发部署效果
   triggerDeployEffects(card, player) {
-    console.log(`[GameEngine] triggerDeployEffects: ${card.name}`)
-    console.log(`[GameEngine] 卡牌效果:`, card.effects)
-    console.log(`[GameEngine] effects 是数组吗?`, Array.isArray(card.effects))
-    
-    if (!card.effects || !Array.isArray(card.effects)) {
-      console.log(`[GameEngine] 警告：卡牌 ${card.name} 没有 effects 数组`)
-      return
-    }
-    
+    if (!card.effects || !Array.isArray(card.effects)) return
+
     card.effects.forEach(effect => {
-      console.log(`[GameEngine] 检查效果: timing=${effect.timing}, type=${effect.type}`)
-      if (effect.timing === 'onDeploy') {
-        if (effect.type === 'extraPlay') {
-          player.canPlayExtra = true
-          this.gameState.message += ` | 效果：可以再打出一张牌！`
-          console.log(`[GameEngine] 触发额外出牌效果`)
-        } else if (effect.type === 'createSlot') {
-          console.log(`[GameEngine] 触发创建额外槽位效果`)
-          this.createExtraSlot(card, player)
-        } else if (effect.type === 'searchDeck') {
-          const found = EffectManager.searchDeck(player, effect)
-          if (found.length > 0) {
-            player.hand.push(...found)
-            this.gameState.message += ` | 检索到${found.length}张卡牌加入手牌`
-          } else {
-            this.gameState.message += ` | 未找到符合条件的卡牌`
+      if (effect.timing !== 'onDeploy') {
+        if (effect.timing === 'onReveal') {
+          if (effect.type === 'stealPower') {
+            const target = player.field.find(s =>
+              s.card && s.card !== card &&
+              EffectManager.hasAnyKeyword(s.card, effect.targetKeywords || [])
+            )
+            if (target && target.card) {
+              const stolen = Math.min(effect.value || 1, target.card.currentPower)
+              target.card.currentPower -= stolen
+              card.currentPower += stolen
+              this.gameState.message += ` | ${card.name} 从 ${target.card.name} 偷取${stolen}战力`
+            }
+          } else if (effect.type === 'stealCard') {
+            const playerIndex = this.gameState.players.findIndex(p => p.id === player.id)
+            const leftIndex = (playerIndex + 1) % this.gameState.players.length
+            const opponent = this.gameState.players[leftIndex]
+            if (opponent && opponent.hand.length > 0) {
+              const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+              const stolenCard = opponent.hand.splice(randomIndex, 1)[0]
+              player.hand.push(stolenCard)
+              this.gameState.message += ` | ${player.name} 偷取了${opponent.name}的${stolenCard.name}`
+            }
           }
         }
-      } else if (effect.timing === 'onReveal') {
-        if (effect.type === 'stealPower') {
-          const target = player.field.find(s =>
-            s.card && s.card !== card &&
-            EffectManager.hasAnyKeyword(s.card, effect.targetKeywords || [])
-          )
-          if (target && target.card) {
-            const stolen = Math.min(effect.value || 1, target.card.currentPower)
-            target.card.currentPower -= stolen
-            card.currentPower += stolen
-            this.gameState.message += ` | ${card.name} 从 ${target.card.name} 偷取${stolen}战力`
-          }
-        } else if (effect.type === 'stealCard') {
-          const playerIndex = this.gameState.players.findIndex(p => p.id === player.id)
-          const leftIndex = (playerIndex + 1) % this.gameState.players.length
-          const opponent = this.gameState.players[leftIndex]
-          if (opponent && opponent.hand.length > 0) {
-            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
-            const stolenCard = opponent.hand.splice(randomIndex, 1)[0]
-            player.hand.push(stolenCard)
-            this.gameState.message += ` | ${player.name} 偷取了${opponent.name}的${stolenCard.name}`
-          }
-        }
+        return
+      }
+
+      if (effect.type === 'conditional' || effect.type === 'custom') return
+
+      const result = EffectManager.applyDeployEffect(effect, card, player, this.gameState)
+      result.messages.forEach(msg => {
+        this.gameState.message += ` | ${msg}`
+      })
+      if (result.needsCreateSlot) {
+        this.createExtraSlot(card, player)
       }
     })
   }

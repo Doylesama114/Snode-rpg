@@ -29,13 +29,14 @@ const IMPLEMENTED_NAMES = new Set([
   '奥术箭', '元素墙', '牛奶', '创造水源', '火焰箭',
   '野猪', '见习冒险者', '农田', '铁匠铺',
   '收获日', '雷云召来', '报警机器人',
+  '休憩曲', '祈福', '炎炎夏日',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([
   'extraPlay', 'modifyPower', 'modifyCost', 'createSlot', 'destroy', 'protect',
   'draw', 'searchDeck', 'restoreEnergy', 'modifyPowerByName', 'reduceUnitPower',
   'discardOpponentHand', 'returnToDeckBottom', 'setNextUnitAttribute', 'markOpponentHand',
-  'stealPower', 'stealCard',
+  'stealPower', 'stealCard', 'absNegativePower', 'setFieldAttribute',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

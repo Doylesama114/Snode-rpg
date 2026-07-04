@@ -2899,7 +2899,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'setFieldAttribute',
+      value: '火',
+      targetCardType: 'environment',
+      allPlayers: true,
       description: '将所有玩家场上的环境牌均变为火属性'
     }
     ],
@@ -3014,7 +3017,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'restoreEnergy',
+      value: 5,
       description: '为自身回复5点能量值'
     }
     ],
@@ -3117,7 +3121,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'absNegativePower',
       description: '将你场上一张卡牌的战力负数变为正数'
     }
     ],

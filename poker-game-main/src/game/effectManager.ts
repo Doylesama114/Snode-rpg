@@ -461,6 +461,76 @@ export class EffectManager {
     return { messages }
   }
 
+  /** 应用单条 onDeploy 结构化效果 */
+  static applyDeployEffect(
+    effect: CardEffect,
+    card: Card,
+    player: Player,
+    game: GameState,
+  ): { messages: string[]; needsCreateSlot?: boolean } {
+    const messages: string[] = []
+
+    if (effect.type === 'extraPlay') {
+      player.canPlayExtra = true
+      messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    if (effect.type === 'createSlot') {
+      return { messages: ['创建了额外槽位'], needsCreateSlot: true }
+    }
+
+    if (effect.type === 'searchDeck') {
+      const found = this.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        messages.push(`检索到${found.length}张卡牌加入手牌`)
+      } else {
+        messages.push('未找到符合条件的卡牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'restoreEnergy') {
+      player.currentCost += effect.value || 0
+      messages.push(`恢复${effect.value}点能量`)
+      return { messages }
+    }
+
+    if (effect.type === 'absNegativePower') {
+      const targets = player.field
+        .filter(s => s.card && s.card !== card && s.card.currentPower < 0)
+        .map(s => s.card!)
+      if (targets.length === 0) {
+        messages.push('场上没有负数战力的卡牌')
+        return { messages }
+      }
+      const target = targets[0]
+      if (target.currentPower < 0) target.currentPower = Math.abs(target.currentPower)
+      if (target.basePower < 0) target.basePower = Math.abs(target.basePower)
+      messages.push(`${target.name} 战力变为正数（${target.currentPower}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'setFieldAttribute') {
+      const players = effect.allPlayers ? game.players : [player]
+      const attr = String(effect.value || '')
+      let count = 0
+      players.forEach(p => {
+        p.field.forEach(slot => {
+          if (!slot.card) return
+          if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+          slot.card.attribute = attr as Card['attribute']
+          count++
+        })
+      })
+      messages.push(count > 0 ? `${count}张卡牌属性变为${attr}` : '没有符合条件的目标')
+      return { messages }
+    }
+
+    return { messages }
+  }
+
   // 检查卡牌是否会被摧毁
   static checkDestroy(card: Card): boolean {
     return card.currentPower < 0 && card.type !== 'environment'
