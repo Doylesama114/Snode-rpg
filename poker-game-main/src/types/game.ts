@@ -71,6 +71,9 @@ export type EffectType =
   | 'scheduleRoundStartEnergy'  // onReveal 预约下回合/最后一轮开始时恢复能量（间歇泉）
   | 'grantCopiesToHand'         // onReveal 获取模板卡副本加入手牌（征募官）
   | 'playRandomFromDeckOrTop'   // onReveal 随机尝试打出牌库牌否则置顶（攀爬工具）
+  | 'autoEnterFromZone'         // 首回合开始从手牌/牌库/弃牌堆自动进场（急先锋）
+  | 'absorbLeftPlayerUnit'      // onDeploy 吸收左手边低战力单位（巨鹏）
+  | 'stashHandUnderSelf'        // onReveal 手牌置于下方获战力（走私船）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -200,6 +203,12 @@ export interface CardEffect {
   searchAttribute?: string
   /** roundStart 等：每回合限触发一次（火蜥蜴） */
   oncePerRound?: boolean
+  /** autoEnterFromZone：仅首回合触发 */
+  firstRoundOnly?: boolean
+  /** stashHandUnderSelf：最多隐藏手牌张数 */
+  stashMaxCount?: number
+  /** stashHandUnderSelf：每张隐藏牌给予宿主战力 */
+  powerPerStashedCard?: number
   /** discardHandForLeftPlayerDebuff：须弃手牌匹配的属性 */
   discardHandAttributes?: string[]
   /** discardHandForLeftPlayerDebuff：作用于左手边玩家 bonusPower */

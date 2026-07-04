@@ -562,6 +562,55 @@ class EffectManager {
     return messages
   }
 
+  static applyFirstRoundAutoEntries(game) {
+    const gameState = game.gameState || game
+    const messages = []
+    if (gameState.round !== 1) return messages
+
+    for (const player of gameState.players) {
+      const piles = [
+        { label: '手牌', pile: player.hand },
+        { label: '牌库', pile: player.deck },
+        { label: '弃牌堆', pile: player.discard },
+      ]
+      let handled = false
+      for (const { label, pile } of piles) {
+        const idx = pile.findIndex(c =>
+          c.effects?.some(e => e.type === 'autoEnterFromZone' && e.firstRoundOnly !== false),
+        )
+        if (idx === -1) continue
+        const card = pile[idx]
+        const slots = EffectManager.getAvailableSlotIndices(player, card)
+        const cost = EffectManager.getEffectivePlayCost(card, player)
+        if (slots.length === 0 || player.currentCost < cost) {
+          messages.push(`${card.name} 在${label}但无法自动进场（槽位或费用不足）`)
+          handled = true
+          break
+        }
+        pile.splice(idx, 1)
+        player.currentCost -= cost
+        player.field[slots[0]].card = card
+        EffectManager.applyUnitDeployBonuses(card, player).forEach(m => messages.push(m))
+        card.effects?.forEach(eff => {
+          if (eff.type === 'autoEnterFromZone' || eff.type === 'conditional') return
+          if (eff.timing === 'onDeploy') {
+            const r = EffectManager.applyDeployEffect(eff, card, player, gameState)
+            messages.push(...r.messages)
+          } else if (eff.timing === 'onReveal') {
+            const r = EffectManager.applyRevealEffect(eff, card, player, gameState)
+            messages.push(...r.messages)
+          }
+        })
+        EffectManager.triggerOnOtherPlayEffects(card, player, gameState)
+        messages.push(`${card.name} 首回合自动进场（费用${cost}）`)
+        handled = true
+        break
+      }
+      if (handled) continue
+    }
+    return messages
+  }
+
   static triggerRoundEffects(timing, game) {
     const gameState = game.gameState || game
     const messages = []
@@ -572,6 +621,7 @@ class EffectManager {
         })
       })
       messages.push(...EffectManager.applyPendingRoundStartEnergy(game))
+      messages.push(...EffectManager.applyFirstRoundAutoEntries(game))
     }
     gameState.players.forEach(player => {
       player.field.forEach(slot => {
@@ -1455,6 +1505,26 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'stashHandUnderSelf') {
+      const max = effect.stashMaxCount ?? effect.maxCount ?? 3
+      const bonusPer = effect.powerPerStashedCard ?? effect.value ?? 5
+      const take = Math.min(max, player.hand.length)
+      if (take === 0) {
+        messages.push('没有可隐藏的手牌')
+        return { messages }
+      }
+      for (let i = 0; i < take; i++) {
+        const idx = Math.floor(Math.random() * player.hand.length)
+        const stashed = player.hand.splice(idx, 1)[0]
+        player.discard.push(stashed)
+        if (card.stackedBonus === undefined) card.stackedBonus = 0
+        card.stackedBonus += bonusPer
+        card.currentPower += bonusPer
+        messages.push(`隐藏${stashed.name}于${card.name}下方，战力+${bonusPer}`)
+      }
+      return { messages }
+    }
+
     if (effect.type === 'destroy') {
       const targets = EffectManager.getDestroyTargets(game, player, effect)
       if (targets.length === 0) {
@@ -1788,6 +1858,36 @@ class EffectManager {
         if (p.id !== player.id) p.skipDrawNextRound = true
       })
       messages.push('其他玩家下回合开始时将不抽牌')
+      return { messages }
+    }
+
+    if (effect.type === 'absorbLeftPlayerUnit') {
+      const leftPlayer = EffectManager.getLeftPlayer(game, player)
+      if (!leftPlayer) {
+        messages.push('没有左手边玩家')
+        return { messages }
+      }
+      let targetSlot = null
+      let targetCard = null
+      for (const slot of leftPlayer.field) {
+        if (!slot.card || slot.isExtra) continue
+        if (effect.targetCardType && slot.card.type !== effect.targetCardType) continue
+        if (effect.maxBasePower !== undefined && slot.card.basePower > effect.maxBasePower) continue
+        targetSlot = slot
+        targetCard = slot.card
+        break
+      }
+      if (!targetCard || !targetSlot) {
+        messages.push('没有可吸收的单位')
+        return { messages }
+      }
+      targetSlot.card = null
+      leftPlayer.discard.push(targetCard)
+      const bonus = effect.value ?? 1
+      if (card.stackedBonus === undefined) card.stackedBonus = 0
+      card.stackedBonus += bonus
+      card.currentPower += bonus
+      messages.push(`吸收${leftPlayer.name}的${targetCard.name}，${card.name} 战力+${bonus}`)
       return { messages }
     }
 

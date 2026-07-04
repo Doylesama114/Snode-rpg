@@ -1248,7 +1248,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'stashHandUnderSelf',
+      stashMaxCount: 3,
+      powerPerStashedCard: 5,
       description: '揭示：你可以选择至多三张手牌背面朝下置于这张牌下方，这张牌下方每拥有一张卡牌战力便+5'
     }
     ],
@@ -1896,7 +1898,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'absorbLeftPlayerUnit',
+      targetCardType: 'unit',
+      maxBasePower: 1,
+      value: 1,
       description: '将左手边第一名玩家场上一张战力小于2的单位牌背面朝上置于这张牌下方，视作这张牌战力+1'
     }
     ],
@@ -1936,7 +1941,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundStart',
-      type: 'conditional',
+      type: 'autoEnterFromZone',
+      firstRoundOnly: true,
       description: '在首个回合开始时，如果这张牌位于你的手牌、牌库或弃牌堆，将会消耗对应能量并立即进场'
     }
     ],

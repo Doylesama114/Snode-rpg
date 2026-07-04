@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6073',
+    date: '2026-07-04',
+    changes: [
+      '5C:急先锋·罗森弗斯 autoEnterFromZone',
+      '巨鹏 absorbLeftPlayerUnit',
+      '走私船 stashHandUnderSelf'
+    ]
+  },
+
+
+  {
     version: '1.0.6072',
     date: '2026-07-04',
     changes: [
