@@ -69,6 +69,12 @@ export interface CardEffect {
   targetCardType?: CardType
   /** roundStart 等：场上需存在带这些关键词的牌才触发 */
   requireFieldKeywords?: string[]
+  /** 场上需存在指定名称的卡牌才触发（奶牛/螃蟹） */
+  requireFieldName?: string
+  /** onDeploy 自增战力：场上无其他带该关键词的牌（退役老兵：无其他士兵） */
+  noOtherFieldKeyword?: string
+  /** 配合 noOtherFieldKeyword：场上需有其他带该关键词的牌（退役老兵：有居民） */
+  requireOtherFieldKeyword?: string
   /** 配合 requireFieldKeywords：限定场上牌类型 */
   requireFieldCardType?: CardType
   /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */

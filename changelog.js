@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6054',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4K：奶牛/螃蟹/退役老兵',
+      '引擎requireFieldName+条件自增'
+    ]
+  },
+
+
+  {
     version: '1.0.6053',
     date: '2026-07-04',
     changes: [

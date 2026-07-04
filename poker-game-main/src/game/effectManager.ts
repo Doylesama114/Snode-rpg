@@ -530,6 +530,22 @@ export class EffectManager {
   ): { messages: string[]; needsTargetSelection?: { targets: Card[]; effect: CardEffect } } {
     const messages: string[] = []
 
+    if (!this.checkFieldRequirements(player, effect)) {
+      messages.push('条件不满足，效果未触发')
+      return { messages }
+    }
+
+    if (effect.type === 'draw') {
+      const count = effect.drawCount ?? (typeof effect.value === 'number' ? effect.value : 1)
+      for (let i = 0; i < count; i++) {
+        if (player.deck.length === 0) break
+        const drawn = player.deck.pop()!
+        player.hand.push(drawn)
+        messages.push(`${player.name} 抽到了${drawn.name}`)
+      }
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && (effect.targetKeywords?.length || effect.allPlayers)) {
       const targets = this.getRevealModifyTargets(game, player, effect)
       if (targets.length === 0) {
@@ -602,6 +618,10 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
+      if (!this.checkFieldRequirements(player, effect)) {
+        messages.push('条件不满足，效果未触发')
+        return { messages }
+      }
       const found = this.searchDeck(player, effect)
       if (found.length > 0) {
         player.hand.push(...found)
@@ -648,6 +668,10 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
+      if (!this.checkFieldRequirements(player, effect)) {
+        messages.push('条件不满足，效果未触发')
+        return { messages }
+      }
       const found = this.searchDeck(player, effect)
       if (found.length > 0) {
         player.hand.push(...found)
@@ -676,6 +700,30 @@ export class EffectManager {
       } else {
         messages.push('场上有更高战力的单位，效果未触发')
       }
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.noOtherFieldKeyword) {
+      const hasOtherKw = player.field.some(
+        s => s.card && s.card !== card && this.hasAnyKeyword(s.card, [effect.noOtherFieldKeyword!]),
+      )
+      if (hasOtherKw) {
+        messages.push(`场上有其他「${effect.noOtherFieldKeyword}」，效果未触发`)
+        return { messages }
+      }
+      if (effect.requireOtherFieldKeyword) {
+        const hasOther = player.field.some(
+          s => s.card && s.card !== card && this.hasAnyKeyword(s.card, [effect.requireOtherFieldKeyword!]),
+        )
+        if (!hasOther) {
+          messages.push(`场上没有其他「${effect.requireOtherFieldKeyword}」，效果未触发`)
+          return { messages }
+        }
+      }
+      const delta = effect.value || 0
+      card.basePower += delta
+      card.currentPower += delta
+      messages.push(`${card.name} 战力+${delta}`)
       return { messages }
     }
 
@@ -791,11 +839,21 @@ export class EffectManager {
     return player.field.some(slot => {
       if (!slot.card) return false
       if (effect.requireFieldCardType && slot.card.type !== effect.requireFieldCardType) return false
+      if (effect.requireFieldName && slot.card.name !== effect.requireFieldName) return false
       if (effect.requireFieldKeywords?.length) {
         return this.hasAnyKeyword(slot.card, effect.requireFieldKeywords)
       }
+      if (effect.requireFieldName) return true
       return true
     })
+  }
+
+  /** deploy/reveal/round 共用：检查场上前置条件 */
+  static checkFieldRequirements(player: Player, effect: CardEffect): boolean {
+    if (effect.requireFieldName || effect.requireFieldKeywords?.length || effect.requireFieldCardType) {
+      return this.hasFieldMatching(player, effect)
+    }
+    return true
   }
 
   static matchesRoundGlobalTarget(card: Card, effect: CardEffect): boolean {
@@ -913,6 +971,10 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
+      if (!this.checkFieldRequirements(player, effect)) {
+        messages.push('条件不满足，效果未触发')
+        return { messages }
+      }
       const found = this.searchDeck(player, effect)
       if (found.length > 0) {
         player.hand.push(...found)

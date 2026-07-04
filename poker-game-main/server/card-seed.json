@@ -511,6 +511,8 @@
         "timing": "onDeploy",
         "type": "searchDeck",
         "searchName": "牛奶",
+        "requireFieldName": "挤奶工",
+        "shuffleAfterSearch": true,
         "description": "如果你的场上拥有\"挤奶工\"，从你的牌库中检索一张\"牛奶\"加入手牌，随后混洗牌库"
       }
     ],
@@ -749,8 +751,12 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "如果你的场上没有其他“士兵”关键词的卡牌，但是拥有其他“居民”关键词的卡牌，这张牌的战力+3"
+        "type": "modifyPower",
+        "selfTarget": true,
+        "value": 3,
+        "noOtherFieldKeyword": "士兵",
+        "requireOtherFieldKeyword": "居民",
+        "description": "如果你的场上没有其他「士兵」关键词的卡牌，但是拥有其他「居民」关键词的卡牌，这张牌的战力+3"
       }
     ],
     "slotRequired": 1,
@@ -1433,8 +1439,10 @@
     "effects": [
       {
         "timing": "onReveal",
-        "type": "conditional",
-        "description": "揭示：如果你的场上拥有“沙滩”，那么你抽一张牌"
+        "type": "draw",
+        "drawCount": 1,
+        "requireFieldName": "沙滩",
+        "description": "揭示：如果你的场上拥有「沙滩」，那么你抽一张牌"
       }
     ],
     "slotRequired": 1,

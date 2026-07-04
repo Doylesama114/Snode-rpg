@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T13:40:07.771Z",
+  "generatedAt": "2026-07-04T14:12:23.930Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 17,
+    "structured": 19,
     "implemented_doc": 62,
-    "conditional_only": 69
+    "conditional_only": 67
   },
   "patternSummary": {
     "on_deploy": 40,
@@ -42,6 +42,8 @@
       "生命药水 (card_013)",
       "金牌烤火鸡 (card_015)",
       "奶牛 (card_021)",
+      "退役老兵 (card_032)",
+      "螃蟹 (card_063)",
       "拾贝鱼人 (card_064)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
@@ -121,7 +123,6 @@
       "游客 (card_025)",
       "奴隶 (card_028)",
       "强盗 (card_031)",
-      "退役老兵 (card_032)",
       "萨满祭司 (card_033)",
       "武僧 (card_034)",
       "征募官 (card_035)",
@@ -144,7 +145,6 @@
       "翻车鱼 (card_057)",
       "海葵 (card_058)",
       "珍珠商人 (card_062)",
-      "螃蟹 (card_063)",
       "潮汐歌者 (card_065)",
       "珊瑚元素 (card_067)",
       "海洋德鲁伊 (card_068)",
@@ -977,7 +977,7 @@
       "id": "card_032",
       "name": "退役老兵",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -985,7 +985,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
         "onDeploy"
@@ -1535,7 +1535,7 @@
       "id": "card_063",
       "name": "螃蟹",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1543,7 +1543,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "draw"
       ],
       "timings": [
         "onReveal"
