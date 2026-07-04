@@ -223,6 +223,11 @@ export function useGame() {
       gameState.value.message = '场上条件不满足，无法打出此牌'
       return
     }
+
+    if (card.quickPlay) {
+      handleQuickPlayCard(card, currentPlayer.value)
+      return
+    }
     
     const effCost = EffectManager.getEffectivePlayCost(card, currentPlayer.value)
     if (currentPlayer.value.currentCost < effCost) {
@@ -437,9 +442,11 @@ export function useGame() {
     
     // QuickPlay units need target selection on field (deploy onto existing card)
     if (card.type === 'unit') {
-      const fieldCards = player.field.filter(s => s.card).map(s => s.card!)
+      const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
       if (fieldCards.length === 0) {
-        gameState.value.message = '场上没有可部署的目标'
+        gameState.value.message = EffectManager.requiresDeployOnHost(card)
+          ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+          : '场上没有可部署的目标'
         // Unit goes to discard since it can't be deployed
         player.discard.push(card)
         gameState.value.phase = 'action'
@@ -620,18 +627,13 @@ export function useGame() {
 
     const player = currentPlayer.value
 
-    // Check farm/vehicle keyword restriction (玉米/胡萝卜/卷心菜/洋葱)
-    const farmRestricted = card.effects.some(e =>
-      e.description.includes('农田') || e.description.includes('载具'))
-    if (farmRestricted) {
-      const hasKeyword = targetCard.keywords.some(k => k === '农田' || k === '载具')
-      if (!hasKeyword) {
-        gameState.value.message = `${card.name} 只能部署在带有"农田"或"载具"关键词的卡牌上`
-        gameState.value.phase = 'action'
-        gameState.value.pendingQuickPlayCard = undefined
-        gameState.value.availableTargets = []
-        return
-      }
+    if (!EffectManager.isValidDeployOnHost(card, targetCard)) {
+      gameState.value.message = `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+      gameState.value.phase = 'action'
+      gameState.value.pendingQuickPlayCard = undefined
+      gameState.value.availableTargets = []
+      player.discard.push(card)
+      return
     }
 
     // Deploy onto card: store relationship

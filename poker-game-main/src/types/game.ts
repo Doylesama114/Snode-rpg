@@ -63,6 +63,7 @@ export type EffectType =
   | 'setPowerIfOnlyHandCard'  // onGameEnd 唯一手牌时设战力（金矿）
   | 'setPowerIfFieldKeyword'  // onGameEnd 场上有指定关键词时设战力（红宝石）
   | 'setPowerIfHandNames'     // onGameEnd 手牌含指定名称时设战力（蓝宝石/绿宝石）
+  | 'deployOnHostOnly'        // quickPlay 仅能部署在指定关键词宿主上（作物）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -172,6 +173,8 @@ export interface CardEffect {
   requireFieldNames?: string[]
   /** setPowerIfHandNames：手牌中需同时存在这些名称的卡牌 */
   requireHandNames?: string[]
+  /** deployOnHostOnly：宿主牌需带这些关键词（含名称匹配） */
+  requireHostKeywords?: string[]
   drawCount?: number     // number of cards to draw
 }
 

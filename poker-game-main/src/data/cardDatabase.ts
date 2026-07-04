@@ -992,8 +992,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
+      type: 'deployOnHostOnly',
+      requireHostKeywords: ['农田', '载具'],
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有「农田/载具」关键词的卡牌上'
     }
     ],
     slotRequired: 1,
@@ -1013,8 +1014,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
+      type: 'deployOnHostOnly',
+      requireHostKeywords: ['农田', '载具'],
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有「农田/载具」关键词的卡牌上'
     }
     ],
     slotRequired: 1,
@@ -1034,8 +1036,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onPlay',
-      type: 'conditional',
-      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有"农田/载具"关键词的卡牌上'
+      type: 'deployOnHostOnly',
+      requireHostKeywords: ['农田', '载具'],
+      description: '速攻：这张牌无法直接置于场上，仅能够部署在带有「农田/载具」关键词的卡牌上'
     }
     ],
     slotRequired: 1,

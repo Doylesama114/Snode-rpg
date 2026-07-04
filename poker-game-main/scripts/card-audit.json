@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T16:58:58.537Z",
+  "generatedAt": "2026-07-04T17:08:28.875Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 19,
+    "structured": 22,
     "implemented_doc": 89,
-    "conditional_only": 40
+    "conditional_only": 37
   },
   "patternSummary": {
     "on_deploy": 33,
@@ -48,6 +48,9 @@
       "红宝石 (card_040)",
       "蓝宝石 (card_041)",
       "绿宝石 (card_042)",
+      "玉米 (card_044)",
+      "胡萝卜 (card_045)",
+      "卷心菜 (card_046)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "利剑中队 (card_091)"
@@ -149,9 +152,6 @@
       "攀爬工具 (card_023)",
       "强盗 (card_031)",
       "征募官 (card_035)",
-      "玉米 (card_044)",
-      "胡萝卜 (card_045)",
-      "卷心菜 (card_046)",
       "隐士 (card_048)",
       "哥布林杂兵 (card_050)",
       "走私船 (card_055)",
@@ -1233,7 +1233,7 @@
       "id": "card_044",
       "name": "玉米",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "quick_play",
       "flags": {
         "quickPlay": true,
@@ -1241,7 +1241,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onPlay"
@@ -1251,7 +1251,7 @@
       "id": "card_045",
       "name": "胡萝卜",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "quick_play",
       "flags": {
         "quickPlay": true,
@@ -1259,7 +1259,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onPlay"
@@ -1269,7 +1269,7 @@
       "id": "card_046",
       "name": "卷心菜",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "quick_play",
       "flags": {
         "quickPlay": true,
@@ -1277,7 +1277,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "deployOnHostOnly"
       ],
       "timings": [
         "onPlay"

@@ -389,6 +389,9 @@ export class EffectManager {
       if (!game) return false
       if (this.getCrossPlayerDeployOptions(game, player, card).length === 0) return false
     }
+    if (this.requiresDeployOnHost(card)) {
+      if (this.getQuickPlayHostTargets(player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.unplayable) return false
@@ -443,6 +446,29 @@ export class EffectManager {
 
   static getCrossPlayerDeployEffect(card: Card): CardEffect | undefined {
     return card.effects?.find(e => e.type === 'crossPlayerDeploy')
+  }
+
+  static getDeployOnHostEffect(card: Card): CardEffect | undefined {
+    return card.effects?.find(e => e.type === 'deployOnHostOnly')
+  }
+
+  static requiresDeployOnHost(card: Card): boolean {
+    return !!this.getDeployOnHostEffect(card)
+  }
+
+  static isValidDeployOnHost(card: Card, hostCard: Card): boolean {
+    const effect = this.getDeployOnHostEffect(card)
+    if (!effect?.requireHostKeywords?.length) return true
+    return this.hasAnyKeyword(hostCard, effect.requireHostKeywords)
+  }
+
+  static getQuickPlayHostTargets(player: Player, card: Card): Card[] {
+    if (!this.requiresDeployOnHost(card)) {
+      return player.field.filter(s => s.card && !s.isExtra).map(s => s.card!)
+    }
+    return player.field
+      .filter(s => s.card && !s.isExtra && this.isValidDeployOnHost(card, s.card))
+      .map(s => s.card!)
   }
 
   static requiresCrossPlayerDeploy(card: Card): boolean {

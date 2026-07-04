@@ -1,5 +1,12 @@
 # 更新日志
 
+## [1.0.6066] - 2026-07-05
+
+### 卡牌效果批次 4V — 速攻作物
+- **玉米/胡萝卜/卷心菜**：`deployOnHostOnly` 仅能部署在「农田/载具」关键词宿主上
+- **引擎**：`getQuickPlayHostTargets`、`requiresDeployOnHost`、`isValidDeployOnHost`
+- **测试**：`scripts/test-4v.mjs`（14/14）
+
 ## [1.0.6065] - 2026-07-05
 
 ### 卡牌效果批次 4U — 财富宝石三件套

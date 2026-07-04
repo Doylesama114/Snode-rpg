@@ -860,6 +860,9 @@ class EffectManager {
       if (!gs) return false
       if (EffectManager.getCrossPlayerDeployOptions(gs, player, card).length === 0) return false
     }
+    if (EffectManager.requiresDeployOnHost(card)) {
+      if (EffectManager.getQuickPlayHostTargets(player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.unplayable) return false
@@ -909,6 +912,29 @@ class EffectManager {
 
   static getCrossPlayerDeployEffect(card) {
     return card.effects?.find(e => e.type === 'crossPlayerDeploy')
+  }
+
+  static getDeployOnHostEffect(card) {
+    return card.effects?.find(e => e.type === 'deployOnHostOnly')
+  }
+
+  static requiresDeployOnHost(card) {
+    return !!EffectManager.getDeployOnHostEffect(card)
+  }
+
+  static isValidDeployOnHost(card, hostCard) {
+    const effect = EffectManager.getDeployOnHostEffect(card)
+    if (!effect?.requireHostKeywords?.length) return true
+    return EffectManager.hasAnyKeyword(hostCard, effect.requireHostKeywords)
+  }
+
+  static getQuickPlayHostTargets(player, card) {
+    if (!EffectManager.requiresDeployOnHost(card)) {
+      return player.field.filter(s => s.card && !s.isExtra).map(s => s.card)
+    }
+    return player.field
+      .filter(s => s.card && !s.isExtra && EffectManager.isValidDeployOnHost(card, s.card))
+      .map(s => s.card)
   }
 
   static requiresCrossPlayerDeploy(card) {
@@ -1921,12 +1947,14 @@ class GameEngine {
       }
     })
     
-    // QuickPlay units: deploy onto an existing field card (auto-select first target)
+    // QuickPlay units: deploy onto an existing field card
     if (card.type === 'unit') {
-      const fieldCards = player.field.filter(s => s.card).map(s => s.card)
+      const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
       if (fieldCards.length === 0) {
         player.discard.push(card)
-        this.gameState.message = '场上没有可部署的目标'
+        this.gameState.message = EffectManager.requiresDeployOnHost(card)
+          ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+          : '场上没有可部署的目标'
         return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
       }
 

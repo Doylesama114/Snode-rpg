@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6066',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4V',
+      '玉米/胡萝卜/卷心菜',
+      'deployOnHostOnly引擎'
+    ]
+  },
+
+
+  {
     version: '1.0.6065',
     date: '2026-07-04',
     changes: [
