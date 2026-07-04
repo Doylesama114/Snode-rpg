@@ -641,6 +641,27 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'setPowerIfFieldKeyword' && effect.requireFieldKeywords?.length) {
+      const hasKeyword = player.field.some(
+        slot => slot.card && !slot.isExtra &&
+          effect.requireFieldKeywords.some(kw => EffectManager.hasKeyword(slot.card, kw)),
+      )
+      if (hasKeyword && effect.value !== undefined) {
+        EffectManager.applyGameEndPowerSet(ownerCard, player, effect.value, messages)
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'setPowerIfHandNames' && effect.requireHandNames?.length) {
+      const hasNames = effect.requireHandNames.every(name =>
+        player.hand.some(c => c.name === name),
+      )
+      if (hasNames && effect.value !== undefined) {
+        EffectManager.applyGameEndPowerSet(ownerCard, player, effect.value, messages)
+      }
+      return { messages }
+    }
+
     return { messages }
   }
 

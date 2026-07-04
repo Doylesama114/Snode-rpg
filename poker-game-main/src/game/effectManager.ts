@@ -1587,6 +1587,27 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'setPowerIfFieldKeyword' && effect.requireFieldKeywords?.length) {
+      const hasKeyword = player.field.some(
+        slot => slot.card && !slot.isExtra &&
+          effect.requireFieldKeywords!.some(kw => this.hasKeyword(slot.card!, kw)),
+      )
+      if (hasKeyword && effect.value !== undefined) {
+        this.applyGameEndPowerSet(ownerCard, player, effect.value as number, messages)
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'setPowerIfHandNames' && effect.requireHandNames?.length) {
+      const hasNames = effect.requireHandNames.every(name =>
+        player.hand.some(c => c.name === name),
+      )
+      if (hasNames && effect.value !== undefined) {
+        this.applyGameEndPowerSet(ownerCard, player, effect.value as number, messages)
+      }
+      return { messages }
+    }
+
     return { messages }
   }
 

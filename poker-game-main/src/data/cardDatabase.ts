@@ -884,8 +884,16 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '这张牌无法被打出，如果游戏结束时你的场上拥有“贵族”关键词的卡牌，这张牌的战力变为3点'
+      type: 'playRequirement',
+      unplayable: true,
+      description: '这张牌无法被打出'
+    },
+    {
+      timing: 'onGameEnd',
+      type: 'setPowerIfFieldKeyword',
+      requireFieldKeywords: ['贵族'],
+      value: 3,
+      description: '如果游戏结束时你的场上拥有「贵族」关键词的卡牌，这张牌的战力变为3点'
     }
     ],
     slotRequired: 1,
@@ -904,8 +912,16 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '这张牌无法被打出，如果游戏结束时你手牌中拥有“红宝石”，这张牌的战力变为2点'
+      type: 'playRequirement',
+      unplayable: true,
+      description: '这张牌无法被打出'
+    },
+    {
+      timing: 'onGameEnd',
+      type: 'setPowerIfHandNames',
+      requireHandNames: ['红宝石'],
+      value: 2,
+      description: '如果游戏结束时你手牌中拥有「红宝石」，这张牌的战力变为2点'
     }
     ],
     slotRequired: 1,
@@ -924,8 +940,16 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '这张牌无法被打出，如果游戏结束时你手牌中拥有“红宝石”和“蓝宝石”，这张牌的战力变为4点'
+      type: 'playRequirement',
+      unplayable: true,
+      description: '这张牌无法被打出'
+    },
+    {
+      timing: 'onGameEnd',
+      type: 'setPowerIfHandNames',
+      requireHandNames: ['红宝石', '蓝宝石'],
+      value: 4,
+      description: '如果游戏结束时你手牌中拥有「红宝石」和「蓝宝石」，这张牌的战力变为4点'
     }
     ],
     slotRequired: 1,

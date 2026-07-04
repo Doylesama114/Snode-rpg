@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6065',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4U',
+      '红宝石/蓝宝石/绿宝石',
+      'setPowerIfFieldKeyword+HandNames'
+    ]
+  },
+
+
+  {
     version: '1.0.6064',
     date: '2026-07-04',
     changes: [

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T16:52:51.265Z",
+  "generatedAt": "2026-07-04T16:58:58.537Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 16,
+    "structured": 19,
     "implemented_doc": 89,
-    "conditional_only": 43
+    "conditional_only": 40
   },
   "patternSummary": {
     "on_deploy": 33,
@@ -45,6 +45,9 @@
       "食人魔 (card_037)",
       "纪念照 (card_038)",
       "金矿 (card_039)",
+      "红宝石 (card_040)",
+      "蓝宝石 (card_041)",
+      "绿宝石 (card_042)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
       "利剑中队 (card_091)"
@@ -146,9 +149,6 @@
       "攀爬工具 (card_023)",
       "强盗 (card_031)",
       "征募官 (card_035)",
-      "红宝石 (card_040)",
-      "蓝宝石 (card_041)",
-      "绿宝石 (card_042)",
       "玉米 (card_044)",
       "胡萝卜 (card_045)",
       "卷心菜 (card_046)",
@@ -1155,7 +1155,7 @@
       "id": "card_040",
       "name": "红宝石",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1163,17 +1163,19 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement",
+        "setPowerIfFieldKeyword"
       ],
       "timings": [
-        "onDeploy"
+        "onDeploy",
+        "onGameEnd"
       ]
     },
     {
       "id": "card_041",
       "name": "蓝宝石",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1181,17 +1183,19 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement",
+        "setPowerIfHandNames"
       ],
       "timings": [
-        "onDeploy"
+        "onDeploy",
+        "onGameEnd"
       ]
     },
     {
       "id": "card_042",
       "name": "绿宝石",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1199,10 +1203,12 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement",
+        "setPowerIfHandNames"
       ],
       "timings": [
-        "onDeploy"
+        "onDeploy",
+        "onGameEnd"
       ]
     },
     {

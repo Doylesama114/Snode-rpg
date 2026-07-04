@@ -61,6 +61,8 @@ export type EffectType =
   | 'destroyRandomOther'      // onGameEnd 随机消灭一张其他己方牌（食人魔）
   | 'setPowerIfFieldNames'    // onGameEnd 场上有环境+指定名称时设战力（纪念照）
   | 'setPowerIfOnlyHandCard'  // onGameEnd 唯一手牌时设战力（金矿）
+  | 'setPowerIfFieldKeyword'  // onGameEnd 场上有指定关键词时设战力（红宝石）
+  | 'setPowerIfHandNames'     // onGameEnd 手牌含指定名称时设战力（蓝宝石/绿宝石）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -168,6 +170,8 @@ export interface CardEffect {
   unplayable?: boolean
   /** setPowerIfFieldNames：场上需同时存在这些名称的卡牌 */
   requireFieldNames?: string[]
+  /** setPowerIfHandNames：手牌中需同时存在这些名称的卡牌 */
+  requireHandNames?: string[]
   drawCount?: number     // number of cards to draw
 }
 
