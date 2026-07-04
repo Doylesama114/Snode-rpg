@@ -323,6 +323,7 @@ class EffectManager {
         }
       }
     }
+    EffectManager.initializeCardCharges(card)
     return messages
   }
 
@@ -541,6 +542,62 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'chargeDebuffUnit') {
+      if ((ownerCard.charges ?? 0) <= 0) return { messages }
+      if (effect.oncePerRound && ownerCard.roundUsed) return { messages }
+      const debuff = effect.value ?? -1
+      const targets = []
+      gameState.players.forEach(p => {
+        if (p.id === player.id) return
+        p.field.forEach(s => {
+          if (s.card?.type === 'unit') targets.push(s.card)
+        })
+      })
+      if (targets.length === 0) {
+        messages.push('没有可削弱的目标')
+        return { messages }
+      }
+      const target = targets[0]
+      EffectManager.applyCardPowerDelta(target, debuff)
+      ownerCard.charges = (ownerCard.charges ?? 1) - 1
+      messages.push(`消耗1充能，${target.name} 战力${debuff}`)
+      if (effect.oncePerRound) ownerCard.roundUsed = true
+      return { messages }
+    }
+
+    if (effect.type === 'scryDeckTop') {
+      const n = effect.scryCount ?? 3
+      const take = effect.scryTake ?? 1
+      if (player.deck.length === 0) return { messages }
+      const count = Math.min(n, player.deck.length)
+      const scry = player.deck.splice(player.deck.length - count, count)
+      scry.sort((a, b) => b.basePower - a.basePower)
+      const taken = scry.splice(0, Math.min(take, scry.length))
+      player.hand.push(...taken)
+      if (effect.scryRestToBottom !== false) {
+        player.deck.unshift(...scry.reverse())
+      } else {
+        player.deck.push(...scry)
+      }
+      messages.push(`占卜${count}张，取${taken.map(c => c.name).join('、')}`)
+      return { messages }
+    }
+
+    if (effect.type === 'effectBranch') {
+      if (effect.oncePerRound && ownerCard.roundUsed) return { messages }
+      const attrs = effect.discardHandAttributes ?? []
+      const handIdx = player.hand.findIndex(c => attrs.includes(c.attribute))
+      if (handIdx === -1) return { messages }
+      player.discard.push(player.hand.splice(handIdx, 1)[0])
+      const branch = effect.branchDefault ?? 'A'
+      const sub = effect.branches?.[branch]
+      if (sub) {
+        messages.push(...EffectManager.applyBranchSubEffect(sub, ownerCard, player, gameState))
+      }
+      if (effect.oncePerRound) ownerCard.roundUsed = true
+      return { messages }
+    }
+
     return { messages }
   }
 
@@ -621,7 +678,11 @@ class EffectManager {
         })
       })
       messages.push(...EffectManager.applyPendingRoundStartEnergy(game))
+      EffectManager.unlockFinalRoundHandCards(gameState)
       messages.push(...EffectManager.applyFirstRoundAutoEntries(game))
+    }
+    if (timing === 'roundEnd') {
+      messages.push(...EffectManager.applyPendingRoundEndBuffs(game))
     }
     gameState.players.forEach(player => {
       player.field.forEach(slot => {
@@ -957,6 +1018,117 @@ class EffectManager {
     const leftIndex = (playerIndex + 1) % gameState.players.length
     const target = gameState.players[leftIndex]
     return target?.id !== player.id ? target : undefined
+  }
+
+  static getAdjacentPlayers(game, player) {
+    const gameState = game.gameState || game
+    const idx = gameState.players.findIndex(p => p.id === player.id)
+    if (idx === -1 || gameState.players.length < 2) return []
+    const n = gameState.players.length
+    const leftIdx = (idx + 1) % n
+    const rightIdx = (idx + n - 1) % n
+    const result = []
+    const left = gameState.players[leftIdx]
+    if (left && left.id !== player.id) result.push(left)
+    if (rightIdx !== leftIdx) {
+      const right = gameState.players[rightIdx]
+      if (right && right.id !== player.id) result.push(right)
+    }
+    return result
+  }
+
+  static findCardById(game, cardId) {
+    const gameState = game.gameState || game
+    for (const p of gameState.players) {
+      for (const slot of p.field) {
+        if (slot.card?.id === cardId) return slot.card
+      }
+      for (const c of p.hand) {
+        if (c.id === cardId) return c
+      }
+    }
+    return undefined
+  }
+
+  static isHandCardLocked(player, card, game) {
+    const gameState = game.gameState || game
+    const lock = player.lockedHandCards?.[card.id]
+    if (!lock) return false
+    if (lock === 'finalRoundOnly') return !gameState.isFinalRound
+    return true
+  }
+
+  static canPlayHandCard(card, player, game) {
+    const gameState = game?.gameState || game
+    if (gameState && EffectManager.isHandCardLocked(player, card, gameState)) return false
+    if (!EffectManager.meetsPlayTypeRestriction(card, player)) return false
+    return EffectManager.meetsPlayRequirements(card, player, game)
+  }
+
+  static meetsPlayTypeRestriction(card, player) {
+    if (!player.restrictNextPlayType) return true
+    return card.type === player.restrictNextPlayType
+  }
+
+  static playerMustSkipTurn(player, game) {
+    const gameState = game.gameState || game
+    if (!player.restrictNextPlayType) return false
+    return !player.hand.some(c => EffectManager.canPlayHandCard(c, player, gameState))
+  }
+
+  static clearTurnRestrictions(player) {
+    player.restrictNextPlayType = undefined
+  }
+
+  static initializeCardCharges(card) {
+    for (const effect of card.effects || []) {
+      if (effect.type === 'initCharges' || effect.initialCharges !== undefined) {
+        const n = effect.initialCharges ?? effect.value ?? 3
+        card.charges = n
+        card.maxCharges = n
+        break
+      }
+    }
+  }
+
+  static unlockFinalRoundHandCards(game) {
+    const gameState = game.gameState || game
+    if (!gameState.isFinalRound) return
+    gameState.players.forEach(p => {
+      if (p.lockedHandCards) p.lockedHandCards = {}
+    })
+  }
+
+  static applyPendingRoundEndBuffs(game) {
+    const gameState = game.gameState || game
+    const messages = []
+    gameState.players.forEach(player => {
+      if (!player.pendingRoundEndBuffs?.length) return
+      const remaining = []
+      for (const buff of player.pendingRoundEndBuffs) {
+        const target = EffectManager.findCardById(gameState, buff.targetCardId)
+        if (target) {
+          EffectManager.applyCardPowerDelta(target, buff.powerDelta)
+          messages.push(`${target.name} 回春+${buff.powerDelta}`)
+        }
+        buff.roundsLeft -= 1
+        if (buff.roundsLeft > 0) remaining.push(buff)
+      }
+      player.pendingRoundEndBuffs = remaining.length ? remaining : undefined
+    })
+    return messages
+  }
+
+  static copyFieldUnitIdentityTo(host, source) {
+    host.name = source.name
+    host.keywords = [...source.keywords]
+    host.effects = source.effects.map(e => ({ ...e }))
+  }
+
+  static applyBranchSubEffect(sub, ownerCard, player, game) {
+    const gameState = game.gameState || game
+    const effect = { ...sub, timing: 'roundStart' }
+    return EffectManager.applyRoundEffect(effect, ownerCard, player, gameState).messages
   }
 
   static hasGlobalFieldKeyword(game, keyword) {
@@ -1525,6 +1697,114 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'scheduleRoundEndBuff') {
+      const rounds = effect.roundEndBuffRounds ?? 3
+      const delta = effect.roundEndBuffPower ?? effect.value ?? 1
+      let target
+      if (effect.selfTarget) {
+        target = card
+      } else {
+        target = player.field.find(s => s.card?.type === 'unit')?.card
+      }
+      if (!target) {
+        messages.push('没有可施加回春的目标')
+        return { messages }
+      }
+      if (!player.pendingRoundEndBuffs) player.pendingRoundEndBuffs = []
+      player.pendingRoundEndBuffs.push({ targetCardId: target.id, powerDelta: delta, roundsLeft: rounds })
+      messages.push(`${target.name} 将在${rounds}个回合结束时各+${delta}战力`)
+      return { messages }
+    }
+
+    if (effect.type === 'lockRandomHandCards') {
+      if (effect.discardHandAttributes?.length) {
+        const handIdx = player.hand.findIndex(c => effect.discardHandAttributes.includes(c.attribute))
+        if (handIdx === -1) {
+          messages.push('缺少指定属性手牌，效果未触发')
+          return { messages }
+        }
+        player.discard.push(player.hand.splice(handIdx, 1)[0])
+      }
+      const count = effect.lockHandCount ?? 1
+      game.players.forEach(p => {
+        if (p.id === player.id || p.hand.length === 0) return
+        if (!p.lockedHandCards) p.lockedHandCards = {}
+        const picks = new Set()
+        const n = Math.min(count, p.hand.length)
+        while (picks.size < n) picks.add(Math.floor(Math.random() * p.hand.length))
+        for (const idx of picks) {
+          const handCard = p.hand[idx]
+          p.lockedHandCards[handCard.id] = effect.lockHandFinalRoundOnly !== false ? 'finalRoundOnly' : 'locked'
+          messages.push(`封锁${p.name}的${handCard.name}`)
+        }
+      })
+      return { messages }
+    }
+
+    if (effect.type === 'restrictAdjacentPlayType') {
+      const playType = effect.requiredPlayType ?? effect.targetCardType ?? 'unit'
+      EffectManager.getAdjacentPlayers(game, player).forEach(p => {
+        p.restrictNextPlayType = playType
+        messages.push(`${p.name} 下回合须打出${playType}牌`)
+      })
+      return { messages }
+    }
+
+    if (effect.type === 'peekDeckBottom') {
+      if (player.deck.length === 0) {
+        messages.push('牌库为空')
+        return { messages }
+      }
+      const bottom = player.deck[0]
+      messages.push(`牌库底为${bottom.name}`)
+      if (effect.peekTake !== false) {
+        player.deck.shift()
+        player.hand.push(bottom)
+        messages.push('加入手牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'copyFieldUnitIdentity') {
+      const source = player.field.find(s => s.card && s.card !== card && s.card.type === 'unit')?.card
+      if (!source) {
+        messages.push('没有可复制的单位')
+        return { messages }
+      }
+      EffectManager.copyFieldUnitIdentityTo(card, source)
+      messages.push(`${card.name} 复制了${source.name}的身份`)
+      return { messages }
+    }
+
+    if (effect.type === 'sacrificeFieldForPower') {
+      const slot = player.field.find(s => s.card && s.card !== card && !s.isExtra)
+      if (!slot?.card) {
+        messages.push('没有可牺牲的场上牌')
+        return { messages }
+      }
+      const victim = slot.card
+      const gain = victim.currentPower
+      slot.card = null
+      player.discard.push(victim)
+      EffectManager.applyCardPowerDelta(card, gain)
+      messages.push(`牺牲${victim.name}，获得${gain}战力`)
+      return { messages }
+    }
+
+    if (effect.type === 'retrieveFromDiscard') {
+      if (player.discard.length === 0) {
+        messages.push('弃牌堆为空')
+        return { messages }
+      }
+      const idx = effect.retrieveRandom !== false
+        ? Math.floor(Math.random() * player.discard.length)
+        : 0
+      const picked = player.discard.splice(idx, 1)[0]
+      player.hand.push(picked)
+      messages.push(`从弃牌区取回${picked.name}`)
+      return { messages }
+    }
+
     if (effect.type === 'destroy') {
       const targets = EffectManager.getDestroyTargets(game, player, effect)
       if (targets.length === 0) {
@@ -1580,6 +1860,14 @@ class EffectManager {
     if (effect.type === 'extraPlay') {
       player.canPlayExtra = true
       messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    if (effect.type === 'initCharges') {
+      const n = effect.initialCharges ?? effect.value ?? 3
+      card.charges = n
+      card.maxCharges = n
+      messages.push(`${card.name} 获得${n}点充能`)
       return { messages }
     }
 
@@ -2132,8 +2420,8 @@ class GameEngine {
       return { success: false, error: '最后一回合只能出战术牌' }
     }
 
-    if (!EffectManager.meetsPlayRequirements(card, player, this.gameState)) {
-      return { success: false, error: '场上条件不满足，无法打出此牌' }
+    if (!EffectManager.canPlayHandCard(card, player, this.gameState)) {
+      return { success: false, error: '无法打出此牌（条件/封锁/类型限制）' }
     }
 
     if (EffectManager.requiresCrossPlayerDeploy(card)) {
@@ -2230,8 +2518,8 @@ class GameEngine {
     if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
       return { success: false, error: '最后一轮只能出战术牌' }
     }
-    if (!EffectManager.meetsPlayRequirements(card, player, this.gameState)) {
-      return { success: false, error: '场上条件不满足，无法打出此牌' }
+    if (!EffectManager.canPlayHandCard(card, player, this.gameState)) {
+      return { success: false, error: '无法打出此牌（条件/封锁/类型限制）' }
     }
     const playCost = EffectManager.getEffectivePlayCost(card, player)
     if (player.currentCost < playCost && !card.forcedPlay) {

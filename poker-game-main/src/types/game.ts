@@ -74,6 +74,24 @@ export type EffectType =
   | 'autoEnterFromZone'         // 首回合开始从手牌/牌库/弃牌堆自动进场（急先锋）
   | 'absorbLeftPlayerUnit'      // onDeploy 吸收左手边低战力单位（巨鹏）
   | 'stashHandUnderSelf'        // onReveal 手牌置于下方获战力（走私船）
+  | 'initCharges'               // onDeploy 初始化充能（箭袋）
+  | 'chargeDebuffUnit'          // roundStart 消耗充能削弱单位（箭袋）
+  | 'scheduleRoundEndBuff'      // onReveal 预约多回合 roundEnd 加战力（回春术）
+  | 'lockRandomHandCards'       // onDeploy/onReveal 封锁对手手牌（冰锥术）
+  | 'restrictAdjacentPlayType'  // onReveal 限制相邻玩家下回合出牌类型（潮汐歌者）
+  | 'scryDeckTop'               // roundStart 占卜牌库顶（星象塔）
+  | 'peekDeckBottom'            // onReveal 查看牌库底（隐士）
+  | 'effectBranch'              // roundStart 弃牌后分支 A/B/C（海洋德鲁伊）
+  | 'copyFieldUnitIdentity'     // onReveal 复制场单位身份（无貌者）
+  | 'sacrificeFieldForPower'    // onReveal 牺牲己方场牌获战力（食尸鬼教徒）
+  | 'retrieveFromDiscard'       // onReveal 从弃牌区取牌（食尸鬼教徒）
+
+/** roundEnd 预约 buff（回春术） */
+export interface PendingRoundEndBuff {
+  targetCardId: string
+  powerDelta: number
+  roundsLeft: number
+}
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -209,6 +227,32 @@ export interface CardEffect {
   stashMaxCount?: number
   /** stashHandUnderSelf：每张隐藏牌给予宿主战力 */
   powerPerStashedCard?: number
+  /** initCharges / 箭袋：初始充能数 */
+  initialCharges?: number
+  /** scheduleRoundEndBuff：持续回合数 */
+  roundEndBuffRounds?: number
+  /** scheduleRoundEndBuff：每回合结束战力增量 */
+  roundEndBuffPower?: number
+  /** lockRandomHandCards：每名对手封锁手牌数 */
+  lockHandCount?: number
+  /** lockRandomHandCards：仅最后一轮可打出 */
+  lockHandFinalRoundOnly?: boolean
+  /** restrictAdjacentPlayType：要求的出牌类型 */
+  requiredPlayType?: CardType
+  /** scryDeckTop：占卜张数 */
+  scryCount?: number
+  /** scryDeckTop：取入手牌张数 */
+  scryTake?: number
+  /** scryDeckTop：其余置于牌库底 */
+  scryRestToBottom?: boolean
+  /** peekDeckBottom：是否加入手牌 */
+  peekTake?: boolean
+  /** effectBranch：无 UI 时的默认分支 */
+  branchDefault?: string
+  /** effectBranch：分支子效果 */
+  branches?: Record<string, Partial<CardEffect>>
+  /** retrieveFromDiscard：随机取牌 */
+  retrieveRandom?: boolean
   /** discardHandForLeftPlayerDebuff：须弃手牌匹配的属性 */
   discardHandAttributes?: string[]
   /** discardHandForLeftPlayerDebuff：作用于左手边玩家 bonusPower */
@@ -273,6 +317,10 @@ export interface Card {
   invertPowerLoss?: boolean
   /** roundStart 等：本回合已触发过一次 */
   roundUsed?: boolean
+  /** 箭袋等：当前充能 */
+  charges?: number
+  /** 箭袋等：最大充能 */
+  maxCharges?: number
 }
 
 // 场上槽位
@@ -311,6 +359,12 @@ export interface Player {
   pendingNextRoundStartEnergy?: number
   /** 间歇泉等：最后一轮开始预约恢复的能量 */
   pendingFinalRoundStartEnergy?: number
+  /** 冰锥术等：cardId → 封锁原因 */
+  lockedHandCards?: Record<string, 'finalRoundOnly' | 'locked'>
+  /** 潮汐歌者等：下回合必须打出的卡牌类型 */
+  restrictNextPlayType?: CardType
+  /** 回春术等：回合结束预约 buff */
+  pendingRoundEndBuffs?: PendingRoundEndBuff[]
   deckCardIds?: string[]
 }
 

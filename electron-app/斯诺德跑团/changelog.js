@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6074',
+    date: '2026-07-04',
+    changes: [
+      'P1机制引擎:充能/scry/回春/封锁/出牌限制/分支/复制/牺牲'
+    ]
+  },
+
+
+  {
     version: '1.0.6073',
     date: '2026-07-04',
     changes: [

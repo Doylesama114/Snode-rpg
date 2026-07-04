@@ -155,9 +155,16 @@ export function useGame() {
 
   // 开始抽牌阶段
   function startDrawPhase() {
-    if (gameState.value.isFinalRound && 
+    if (gameState.value.isFinalRound &&
         gameState.value.finalRoundTriggeredBy === gameState.value.currentPlayerIndex) {
       gameState.value.message = `${currentPlayer.value.name} 已填满场地，跳过本回合`
+      setTimeout(() => switchToNextPlayer(), 1500)
+      return
+    }
+
+    if (EffectManager.playerMustSkipTurn(currentPlayer.value, gameState.value)) {
+      EffectManager.clearTurnRestrictions(currentPlayer.value)
+      gameState.value.message = `${currentPlayer.value.name} 无法打出要求类型的牌，跳过回合`
       setTimeout(() => switchToNextPlayer(), 1500)
       return
     }
@@ -224,8 +231,14 @@ export function useGame() {
     const card = currentPlayer.value.hand[cardIndex]
     if (!card) return
 
-    if (!EffectManager.meetsPlayRequirements(card, currentPlayer.value, gameState.value)) {
-      gameState.value.message = '场上条件不满足，无法打出此牌'
+    if (!EffectManager.canPlayHandCard(card, currentPlayer.value, gameState.value)) {
+      if (EffectManager.isHandCardLocked(currentPlayer.value, card, gameState.value)) {
+        gameState.value.message = '该手牌已被封锁，仅最后一轮可打出'
+      } else if (!EffectManager.meetsPlayTypeRestriction(card, currentPlayer.value)) {
+        gameState.value.message = `本回合只能打出${currentPlayer.value.restrictNextPlayType}牌`
+      } else {
+        gameState.value.message = '场上条件不满足，无法打出此牌'
+      }
       return
     }
 
@@ -909,6 +922,7 @@ export function useGame() {
   // 切换玩家
   function switchToNextPlayer() {
     const prevPlayerIndex = gameState.value.currentPlayerIndex
+    EffectManager.clearTurnRestrictions(gameState.value.players[prevPlayerIndex])
     const nextPlayerIndex = (prevPlayerIndex + 1) % gameState.value.players.length
     
     if (gameState.value.isFinalRound) {
