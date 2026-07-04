@@ -1,4 +1,4 @@
-import type { Card, Player, GameState, FieldSlot, EffectContext } from '@/types/game'
+import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect } from '@/types/game'
 
 // 效果管理器
 export class EffectManager {
@@ -114,7 +114,7 @@ export class EffectManager {
     }
   }
 
-  // 计算见习冒险者的战力
+  // 计算见习冒险者的战力（保留供测试参考，逻辑已迁移至 countUniqueKeywords）
   static calculateApprenticeAdventurerPower(card: Card, player: Player): number {
     const uniqueKeywords = this.getUniqueKeywords(player, card)
     return card.basePower + uniqueKeywords.length
@@ -197,124 +197,131 @@ export class EffectManager {
     })
   }
 
+  // 应用 selfTarget onField modifyPower（累加多个效果）
+  static applySelfTargetFieldEffects(card: Card, player: Player, game: GameState) {
+    if (!card.effects) return
+
+    let selfBonus = 0
+    let replacedPower: number | null = null
+
+    for (const effect of card.effects) {
+      if (effect.timing !== 'onField' || effect.type !== 'modifyPower' || !effect.selfTarget) continue
+
+      if (effect.countUniqueKeywords) {
+        const uniqueKw = this.getUniqueKeywords(player, card)
+        selfBonus += (effect.value ?? 1) * uniqueKw.length
+        continue
+      }
+
+      if (effect.countDeployedOnSelf) {
+        const hostSlot = player.field.find(s => s.card === card)
+        if (hostSlot) {
+          let count = 0
+          player.field.forEach(otherSlot => {
+            if (
+              otherSlot.isExtra &&
+              otherSlot.parentSlot === hostSlot.position &&
+              otherSlot.card &&
+              (!effect.targetKeywords || this.hasAnyKeyword(otherSlot.card, effect.targetKeywords))
+            ) {
+              count++
+            }
+          })
+          const powerFromDeployments = count * (effect.value ?? 1)
+          if (effect.replacePowerWithDeploymentCount) {
+            replacedPower = powerFromDeployments
+          } else {
+            selfBonus += powerFromDeployments
+          }
+        }
+        continue
+      }
+
+      if (effect.requireKeywords && Array.isArray(effect.requireKeywords)) {
+        const allMatch = effect.requireKeywords.every(keywordGroup =>
+          player.field.some(otherSlot =>
+            otherSlot.card && otherSlot.card !== card &&
+            this.hasAnyKeyword(otherSlot.card, keywordGroup)
+          )
+        )
+        if (allMatch) selfBonus += (effect.value || 0)
+        continue
+      }
+
+      if (effect.targetKeywords) {
+        const hasMatch = player.field.some(otherSlot =>
+          otherSlot.card && otherSlot.card !== card &&
+          this.hasAnyKeyword(otherSlot.card, effect.targetKeywords!)
+        )
+        const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+        if (conditionMet) {
+          if (effect.stackable !== false) {
+            const matchCount = player.field.filter(otherSlot =>
+              otherSlot.card && otherSlot.card !== card &&
+              this.hasAnyKeyword(otherSlot.card, effect.targetKeywords!)
+            ).length
+            selfBonus += (effect.value || 0) * matchCount
+          } else {
+            selfBonus += (effect.value || 0)
+          }
+        }
+        continue
+      }
+
+      if (effect.targetAttributes && Array.isArray(effect.targetAttributes)) {
+        const hasMatch = player.field.some(otherSlot =>
+          otherSlot.card && otherSlot.card !== card &&
+          this.hasAnyAttribute(otherSlot.card, effect.targetAttributes!)
+        )
+        const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+        if (conditionMet) {
+          if (effect.stackable !== false) {
+            const matchCount = player.field.filter(otherSlot =>
+              otherSlot.card && otherSlot.card !== card &&
+              this.hasAnyAttribute(otherSlot.card, effect.targetAttributes!)
+            ).length
+            selfBonus += (effect.value || 0) * matchCount
+          } else {
+            selfBonus += (effect.value || 0)
+          }
+        }
+      }
+    }
+
+    if (replacedPower !== null) {
+      card.currentPower = replacedPower
+    } else {
+      card.currentPower += selfBonus
+    }
+  }
+
   // 重新计算单张卡牌的战力
   static recalculateCardPower(card: Card, player: Player, game: GameState) {
     // 重置为基础战力
     card.currentPower = card.basePower
     
-    // 添加叠加的加成（法师、战士等）
+    // 添加叠加的加成（法师、战士等 onOtherPlay 持久化）
     if (card.stackedBonus !== undefined && card.stackedBonus > 0) {
       card.currentPower += card.stackedBonus
     }
     
-    // 根据卡牌名称应用特殊计算
-    if (card.name === '见习冒险者') {
-      card.currentPower = this.calculateApprenticeAdventurerPower(card, player)
-    } else if (card.name === '野猪') {
-      card.currentPower = this.calculateBoarPower(card, player)
-    } else if (card.name === '农田') {
-      const farmlandSlot = player.field.find(slot => slot.card === card)
-      if (farmlandSlot) {
-        card.currentPower = this.calculateFarmlandPower(farmlandSlot, player)
-      }
-    } else if (card.name === '铁匠铺') {
-      if (this.checkBlacksmithCondition(player)) {
-        card.currentPower = card.basePower + 15
-      }
-    }
-    
-    // 应用橡木武器店的加成
-    const hasWeaponShop = player.field.some(slot =>
-      slot.card && slot.card.name === '橡木武器店'
-    )
-    if (hasWeaponShop && card.type === 'unit') {
-      card.currentPower += this.calculateWeaponShopBonus(card)
-    }
-    
-    // 应用其他持续效果（但不包括onOtherPlay的效果，那些已经在部署时应用了）
+    // 应用其他卡牌在场持续效果（buff 其他卡）
     player.field.forEach(slot => {
       if (slot.card && slot.card !== card) {
         slot.card.effects.forEach(effect => {
-          if (effect.timing === 'onField' && effect.type === 'modifyPower') {
-            // 检查目标是否符合条件
+          if (effect.timing === 'onField' && effect.type === 'modifyPower' && !effect.selfTarget) {
             if (effect.targetKeywords && this.hasAnyKeyword(card, effect.targetKeywords)) {
-              if (effect.value) {
-                card.currentPower += effect.value
-              }
+              if (effect.value) card.currentPower += effect.value
             }
             if (effect.targetAttributes && Array.isArray(effect.targetAttributes) && this.hasAnyAttribute(card, effect.targetAttributes)) {
-              if (effect.value) {
-                card.currentPower += effect.value
-              }
+              if (effect.value) card.currentPower += effect.value
             }
           }
         })
       }
     })
 
-    // 处理自身onField效果：检查场上其他卡牌，满足条件则修改自己战力
-    if (card.effects) {
-      card.effects.forEach(effect => {
-        if (effect.timing === 'onField' && effect.type === 'modifyPower' && effect.selfTarget) {
-          if (effect.targetKeywords) {
-            const hasMatch = player.field.some(otherSlot =>
-              otherSlot.card && otherSlot.card !== card &&
-              this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
-            )
-            const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
-            if (conditionMet) {
-              if (effect.stackable !== false) {
-                // Count matching cards and multiply
-                const matchCount = player.field.filter(otherSlot =>
-                  otherSlot.card && otherSlot.card !== card &&
-                  this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
-                ).length
-                card.stackedBonus = (effect.value || 0) * matchCount
-                if (matchCount > 0) {
-                  card.currentPower = card.basePower + card.stackedBonus
-                }
-              } else {
-                card.currentPower = card.basePower + (effect.value || 0)
-              }
-            }
-          }
-          // Attribute-based self-modify: check if any other card has matching attribute
-          if (effect.targetAttributes && Array.isArray(effect.targetAttributes)) {
-            const hasMatch = player.field.some(otherSlot =>
-              otherSlot.card && otherSlot.card !== card &&
-              this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
-            )
-            const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
-            if (conditionMet) {
-              if (effect.stackable !== false) {
-                const matchCount = player.field.filter(otherSlot =>
-                  otherSlot.card && otherSlot.card !== card &&
-                  this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
-                ).length
-                card.stackedBonus = (effect.value || 0) * matchCount
-                if (matchCount > 0) {
-                  card.currentPower = card.basePower + card.stackedBonus
-                }
-              } else {
-                card.currentPower = card.basePower + (effect.value || 0)
-              }
-            }
-          }
-          // Compound keyword check: ALL groups must have at least one match
-          if (effect.requireKeywords && Array.isArray(effect.requireKeywords)) {
-            const allMatch = effect.requireKeywords.every(keywordGroup => {
-              return player.field.some(otherSlot =>
-                otherSlot.card && otherSlot.card !== card &&
-                this.hasAnyKeyword(otherSlot.card, keywordGroup)
-              )
-            })
-            if (allMatch) {
-              card.currentPower = card.basePower + (effect.value || 0)
-            }
-          }
-        }
-      })
-    }
+    this.applySelfTargetFieldEffects(card, player, game)
   }
 
   // 获取可选择的目标卡牌
@@ -330,28 +337,128 @@ export class EffectManager {
     return targets
   }
 
+  private static matchesSearch(card: Card, effect: CardEffect): boolean {
+    if (effect.searchName && card.name.includes(effect.searchName)) return true
+    const keywords = effect.searchKeywords?.length
+      ? effect.searchKeywords
+      : effect.searchKeyword ? [effect.searchKeyword] : []
+    if (keywords.length > 0 && keywords.some(kw => this.hasKeyword(card, kw))) return true
+    return false
+  }
+
+  private static shuffleInPlace(deck: Card[]) {
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[deck[i], deck[j]] = [deck[j], deck[i]]
+    }
+  }
+
   // Search deck for cards matching name or keyword
-  static searchDeck(player: Player, effect: { searchName?: string; searchKeyword?: string }): Card[] {
+  static searchDeck(player: Player, effect: CardEffect): Card[] {
     const results: Card[] = []
-    // Search deck
-    for (let i = player.deck.length - 1; i >= 0; i--) {
-      const card = player.deck[i]
-      if (effect.searchName && card.name.includes(effect.searchName)) {
-        results.push(...player.deck.splice(i, 1))
-      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
-        results.push(...player.deck.splice(i, 1))
+    const max = effect.maxCount ?? Infinity
+    const searchDiscard = effect.searchDiscard !== false
+
+    const searchIn = (pile: Card[]) => {
+      for (let i = pile.length - 1; i >= 0 && results.length < max; i--) {
+        if (this.matchesSearch(pile[i], effect)) {
+          results.push(...pile.splice(i, 1))
+        }
       }
     }
-    // Search discard
-    for (let i = player.discard.length - 1; i >= 0; i--) {
-      const card = player.discard[i]
-      if (effect.searchName && card.name.includes(effect.searchName)) {
-        results.push(...player.discard.splice(i, 1))
-      } else if (effect.searchKeyword && EffectManager.hasKeyword(card, effect.searchKeyword)) {
-        results.push(...player.discard.splice(i, 1))
-      }
+
+    searchIn(player.deck)
+    if (searchDiscard && results.length < max) {
+      searchIn(player.discard)
+    }
+
+    if (effect.shuffleAfterSearch && player.deck.length > 1) {
+      this.shuffleInPlace(player.deck)
     }
     return results
+  }
+
+  /** onReveal modifyPower 目标匹配 */
+  static matchesRevealModifyTarget(card: Card, effect: CardEffect): boolean {
+    if (effect.targetKeywords?.includes('单位')) {
+      if (card.type !== 'unit') return false
+    } else if (effect.targetKeywords?.length) {
+      if (!this.hasAnyKeyword(card, effect.targetKeywords)) return false
+    }
+    if (effect.targetAttributes?.length && !this.hasAnyAttribute(card, effect.targetAttributes)) {
+      return false
+    }
+    if (effect.excludeAttributes?.length && this.hasAnyAttribute(card, effect.excludeAttributes)) {
+      return false
+    }
+    return true
+  }
+
+  static getRevealModifyTargets(game: GameState, player: Player, effect: CardEffect): Card[] {
+    const players = effect.allPlayers ? game.players : [player]
+    const targets: Card[] = []
+    players.forEach(p => {
+      p.field.forEach(slot => {
+        if (slot.card && this.matchesRevealModifyTarget(slot.card, effect)) {
+          targets.push(slot.card)
+        }
+      })
+    })
+    return targets
+  }
+
+  /** 应用单条 onReveal 结构化效果；needsTargetSelection 时由 UI 接管 */
+  static applyRevealEffect(
+    effect: CardEffect,
+    card: Card,
+    player: Player,
+    game: GameState,
+    otherPlayers: Player[] = game.players.filter(p => p.id !== player.id),
+  ): { messages: string[]; needsTargetSelection?: { targets: Card[]; effect: CardEffect } } {
+    const messages: string[] = []
+
+    if (effect.type === 'modifyPower' && (effect.targetKeywords?.length || effect.allPlayers)) {
+      const targets = this.getRevealModifyTargets(game, player, effect)
+      if (targets.length === 0) {
+        messages.push('没有符合条件的目标')
+        return { messages }
+      }
+      if (targets.length === 1 || effect.allPlayers) {
+        const delta = effect.value || 0
+        targets.forEach(t => { t.currentPower += delta })
+        const sign = delta >= 0 ? '+' : ''
+        messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${delta}`)
+        return { messages }
+      }
+      return { messages, needsTargetSelection: { targets, effect } }
+    }
+
+    if (effect.type === 'modifyCost') {
+      otherPlayers.forEach(target => {
+        target.currentCost += effect.value || 0
+        messages.push(`${target.name} 费用${effect.value}`)
+      })
+      return { messages }
+    }
+
+    if (effect.type === 'searchDeck') {
+      const found = this.searchDeck(player, effect)
+      if (found.length > 0) {
+        player.hand.push(...found)
+        messages.push(`检索到${found.length}张卡牌加入手牌`)
+      } else {
+        messages.push('未找到符合条件的卡牌')
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'extraPlay') {
+      player.canPlayExtra = true
+      messages.push('效果：可以再打出一张牌！')
+      return { messages }
+    }
+
+    return { messages }
   }
 
   // 检查卡牌是否会被摧毁

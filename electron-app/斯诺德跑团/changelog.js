@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6044',
+    date: '2026-07-04',
+    changes: [
+      '4B: 收获日/雷云召来/报警机器人 onReveal',
+      '4A: 野猪/见习冒险者/农田/铁匠铺',
+      '阶段0: card-seed 148张同步'
+    ]
+  },
+
+
+  {
     version: '1.0.6042',
     date: '2026-07-04',
     changes: [

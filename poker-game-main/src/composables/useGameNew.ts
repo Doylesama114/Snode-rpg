@@ -477,83 +477,40 @@ export function useGame() {
 
   // 处理战术牌
   function handleTacticCard(card: Card, player: Player, slotIndex: number) {
-    const effect = card.effects.find(e => e.timing === 'onReveal')
-    
-    // 先触发"其他卡牌打出时"的效果（战术牌也算打出）
     EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
-    
-    if (!effect) {
-      // 没有效果，直接弃置
+
+    const revealEffects = card.effects.filter(
+      e => e.timing === 'onReveal' && e.type !== 'conditional' && e.type !== 'custom',
+    )
+
+    if (revealEffects.length === 0) {
       discardTacticCard(card, player, slotIndex)
       return
     }
-    
-    if (effect.type === 'modifyPower' && effect.targetKeywords) {
-      // If targetKeywords includes "单位", match all unit-type cards
-      if (effect.targetKeywords.includes('单位')) {
-        const allUnits = player.field.filter(s => s.card && s.card.type === 'unit').map(s => s.card!)
-        if (allUnits.length === 0) {
-          gameState.value.message = '没有可用的单位目标'
-          discardTacticCard(card, player, slotIndex)
-          return
-        }
-        // Auto-select first unit if single target, or use target selection
-        if (allUnits.length === 1 || effect.value !== undefined) {
-          allUnits[0].currentPower += effect.value || 0
-          gameState.value.message += ` | ${allUnits[0].name} 战力+${effect.value}`
-          discardTacticCard(card, player, slotIndex)
-          return
-        } else {
-          gameState.value.availableTargets = allUnits
-          gameState.value.phase = 'selectTarget'
-          gameState.value.message = '选择一个单位目标'
-          return
-        }
+
+    for (const effect of revealEffects) {
+      const result = EffectManager.applyRevealEffect(
+        effect, card, player, gameState.value, otherPlayers.value,
+      )
+      result.messages.forEach(msg => {
+        gameState.value.message += ` | ${msg}`
+      })
+      if (effect.type === 'modifyCost') {
+        otherPlayers.value.forEach(target => {
+          if (target.id.startsWith('ai') && aiHiddenCards.value[target.id]?.length > 0) {
+            checkAIHiddenCardsAfterCostChange(target)
+          }
+        })
       }
-      
-      // 需要选择目标
-      const targets = EffectManager.getValidTargets(player, effect.targetKeywords)
-      
-      if (targets.length === 0) {
-        gameState.value.message = '没有符合条件的目标'
-        discardTacticCard(card, player, slotIndex)
-        return
-      }
-      
-      if (targets.length === 1) {
-        // 只有一个目标，直接应用
-        targets[0].currentPower += effect.value || 0
-        gameState.value.message += ` | ${targets[0].name} 战力+${effect.value}`
-        discardTacticCard(card, player, slotIndex)
-      } else {
-        // 多个目标，需要选择
-        gameState.value.availableTargets = targets
+      if (result.needsTargetSelection) {
+        gameState.value.availableTargets = result.needsTargetSelection.targets
         gameState.value.phase = 'selectTarget'
         gameState.value.message = '选择一个目标'
+        return
       }
-    } else if (effect.type === 'modifyCost') {
-      // 魔法飞弹：减少所有对手费用
-      otherPlayers.value.forEach(target => {
-        target.currentCost += effect.value || 0
-        gameState.value.message += ` | ${target.name} 费用${effect.value}`
-        
-        // 检查AI是否因费用不足无法打出隐藏的牌
-        if (target.id.startsWith('ai') && aiHiddenCards.value[target.id]?.length > 0) {
-          checkAIHiddenCardsAfterCostChange(target)
-        }
-      })
-      
-      discardTacticCard(card, player, slotIndex)
-    } else if (effect.type === 'searchDeck') {
-      const found = EffectManager.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        gameState.value.message += ` | 检索到${found.length}张卡牌加入手牌`
-      } else {
-        gameState.value.message += ` | 未找到符合条件的卡牌`
-      }
-      discardTacticCard(card, player, slotIndex)
     }
+
+    discardTacticCard(card, player, slotIndex)
   }
 
   // 选择战术牌目标

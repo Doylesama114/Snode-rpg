@@ -21,6 +21,9 @@ jobs:
           mkdir -p _deploy
           cp -r 斯诺德跑团 _deploy/
           cp -r 职业页 _deploy/
+          if [ -d electron-app/poker-game ]; then
+            cp -r electron-app/poker-game _deploy/poker-game
+          fi
           cp bug-report.js _deploy/
           cp index.html _deploy/
           # 在所有 HTML 中注入 Bug 反馈按钮脚本

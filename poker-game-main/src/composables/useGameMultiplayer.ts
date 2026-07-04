@@ -287,39 +287,34 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
 
   // 处理战术牌
   function handleTacticCard(card: Card, player: Player, slotIndex: number) {
-    const effect = card.effects.find(e => e.timing === 'onReveal')
-    
     EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
-    
-    if (!effect) {
+
+    const revealEffects = card.effects.filter(
+      e => e.timing === 'onReveal' && e.type !== 'conditional' && e.type !== 'custom',
+    )
+
+    if (revealEffects.length === 0) {
       discardTacticCard(card, player, slotIndex)
       return
     }
-    
-    if (effect.type === 'modifyPower' && effect.targetKeywords) {
-      const targets = EffectManager.getValidTargets(player, effect.targetKeywords)
-      
-      if (targets.length === 0) {
-        gameState.value.message = '没有符合条件的目标'
-        discardTacticCard(card, player, slotIndex)
-        return
-      }
-      
-      if (targets.length === 1) {
-        targets[0].currentPower += effect.value || 0
-        gameState.value.message += ` | ${targets[0].name} 战力+${effect.value}`
-        discardTacticCard(card, player, slotIndex)
-      } else {
-        gameState.value.availableTargets = targets
+
+    for (const effect of revealEffects) {
+      const result = EffectManager.applyRevealEffect(
+        effect, card, player, gameState.value,
+        opponent.value ? [opponent.value] : [],
+      )
+      result.messages.forEach(msg => {
+        gameState.value.message += ` | ${msg}`
+      })
+      if (result.needsTargetSelection) {
+        gameState.value.availableTargets = result.needsTargetSelection.targets
         gameState.value.phase = 'selectTarget'
         gameState.value.message = '选择一个目标'
+        return
       }
-    } else if (effect.type === 'modifyCost') {
-      const target = opponent.value
-      target.currentCost += effect.value || 0
-      gameState.value.message += ` | ${target.name} 费用${effect.value}`
-      discardTacticCard(card, player, slotIndex)
     }
+
+    discardTacticCard(card, player, slotIndex)
   }
 
   // 选择战术牌目标

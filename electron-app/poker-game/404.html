@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>卡牌对战游戏</title>
+  <script>
+    // GitHub Pages SPA 重定向
+    // 将 404 页面重定向到 index.html，保留路径信息
+    (function() {
+      var path = window.location.pathname.slice(1);
+      if (path) {
+        window.location.replace(
+          window.location.origin + 
+          '/poker-game/' + 
+          '?redirect=' + 
+          encodeURIComponent(path)
+        );
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div style="text-align: center; padding: 50px;">
+    <h1>正在加载...</h1>
+  </div>
+</body>
+</html>

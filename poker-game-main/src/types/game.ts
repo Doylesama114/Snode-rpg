@@ -51,15 +51,29 @@ export interface CardEffect {
   targetKeywords?: string[]
   // 目标属性（e.g. ['火', '水'] — match by card.attribute instead of keywords）
   targetAttributes?: string[]
+  /** 排除的属性（雷云召来：非雷单位 -2） */
+  excludeAttributes?: string[]
+  /** onReveal modifyPower 作用于所有玩家场上 */
+  allPlayers?: boolean
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]
   selfTarget?: boolean
+  /** 按场上其他卡的不同关键词种类计数（见习冒险者） */
+  countUniqueKeywords?: boolean
+  /** 按部署在本卡额外槽位上的单位计数（农田） */
+  countDeployedOnSelf?: boolean
+  /** 农田类：战力=部署计数×value，忽略 basePower */
+  replacePowerWithDeploymentCount?: boolean
   // 是否可叠加
   stackable?: boolean
   // 牌库检索
   searchName?: string    // card name to search for (e.g. '牛奶')
   searchKeyword?: string // keyword to search for (e.g. '载具')
+  searchKeywords?: string[] // 多关键词 OR 检索（收获日）
+  maxCount?: number      // 检索上限
+  shuffleAfterSearch?: boolean // 检索后洗牌库
+  searchDiscard?: boolean // 是否检索弃牌堆，默认 true
   targetName?: string    // target card name for name-based effects (e.g. modifyPowerByName)
   drawCount?: number     // number of cards to draw
 }

@@ -85,17 +85,20 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onField',
-      type: 'conditional',
+      type: 'modifyPower',
       description: '如果你场上拥有"猎人/农夫/冒险者"关键词的卡牌，这张卡的战力-2',
       value: -2,
       targetKeywords: ['猎人', '农夫', '冒险者'],
+      selfTarget: true,
       stackable: false
     },
     {
       timing: 'onField',
-      type: 'conditional',
+      type: 'modifyPower',
       description: '如果你场上拥有"农田/森林"名称的卡牌，这张牌的战力+2',
       value: 2,
+      targetKeywords: ['农田', '森林'],
+      selfTarget: true,
       stackable: false
     }
     ],
@@ -138,8 +141,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onField',
-      type: 'conditional',
+      type: 'modifyPower',
       description: '你的场上每拥有一种不同的关键词，这张牌的战力+1（不计算这张牌上的关键词）',
+      value: 1,
+      selfTarget: true,
+      countUniqueKeywords: true,
       stackable: false
     }
     ],
@@ -223,10 +229,13 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onField',
-      type: 'conditional',
+      type: 'modifyPower',
       description: '这张牌上每部署一张带有"务农"关键词的单位牌，这张牌的战力+1',
       value: 1,
       targetKeywords: ['务农'],
+      selfTarget: true,
+      countDeployedOnSelf: true,
+      replacePowerWithDeploymentCount: true,
       stackable: true
     }
     ],
@@ -269,9 +278,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onField',
-      type: 'conditional',
+      type: 'modifyPower',
       description: '如果你拥有"矮人铁匠"，"锻炉"和"板甲"，这张牌的战力+15',
       value: 15,
+      requireKeywords: [['矮人铁匠'], ['锻炉'], ['板甲']],
+      selfTarget: true,
       stackable: false
     }
     ],
@@ -345,26 +356,6 @@ export const allCardDefinitions = [
     ],
     slotRequired: 1,
     isPersistent: false
-  },
-  // 016. 名称
-  {
-    id: 'card_016',
-    name: '名称',
-    type: 'unit',
-    keywords: ['关键词'],
-    attribute: '属性',
-    basePower: 0,
-    currentPower: 0,
-    cost: 0,
-    effects: [
-    {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '暂无效果描述'
-    }
-    ],
-    slotRequired: 1,
-    isPersistent: true
   },
   // 017. 渔网
   {
@@ -2065,26 +2056,6 @@ export const allCardDefinitions = [
     slotRequired: 1,
     isPersistent: true
   },
-  // 099. 名称
-  {
-    id: 'card_099',
-    name: '名称',
-    type: 'unit',
-    keywords: ['关键词'],
-    attribute: '属性',
-    basePower: 0,
-    currentPower: 0,
-    cost: 0,
-    effects: [
-    {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '暂无效果描述'
-    }
-    ],
-    slotRequired: 1,
-    isPersistent: true
-  },
   // 100. 酒馆
   {
     id: 'card_100',
@@ -2577,26 +2548,6 @@ export const allCardDefinitions = [
     slotRequired: 1,
     isPersistent: true
   },
-  // 124. 名称
-  {
-    id: 'card_124',
-    name: '名称',
-    type: 'unit',
-    keywords: ['关键词'],
-    attribute: '属性',
-    basePower: 0,
-    currentPower: 0,
-    cost: 0,
-    effects: [
-    {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '暂无效果描述'
-    }
-    ],
-    slotRequired: 1,
-    isPersistent: true
-  },
   // 125. 活力药水
   {
     id: 'card_125',
@@ -2723,7 +2674,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'searchDeck',
+      searchKeywords: ['务农', '植株', '食物'],
+      maxCount: 2,
+      shuffleAfterSearch: true,
+      searchDiscard: false,
       description: '揭示：从你的牌库中选择两张带有“务农/植株/食物”的卡牌加入手牌，随后混洗牌库'
     }
     ],
@@ -3026,8 +2981,21 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：使所有玩家场上非雷属性的单位牌战力-2，雷属性的单位牌战力+2'
+      type: 'modifyPower',
+      targetKeywords: ['单位'],
+      excludeAttributes: ['雷'],
+      value: -2,
+      allPlayers: true,
+      description: '揭示：使所有玩家场上非雷属性的单位牌战力-2'
+    },
+    {
+      timing: 'onReveal',
+      type: 'modifyPower',
+      targetKeywords: ['单位'],
+      targetAttributes: ['雷'],
+      value: 2,
+      allPlayers: true,
+      description: '揭示：使所有玩家场上雷属性的单位牌战力+2'
     }
     ],
     slotRequired: 1,
@@ -3088,7 +3056,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'extraPlay',
       description: '揭示：你可以重新打出一张手牌'
     }
     ],

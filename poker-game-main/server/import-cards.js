@@ -94,10 +94,9 @@ for (const row of rows) {
   const category = (row[COL_CATEGORY] ?? '').toString().trim();
   const name = (row[COL_NAME] ?? '').toString().trim();
 
-  // Skip header rows (where 类别 == "类别")
+  // Skip header / template rows
   if (category === '类别') continue;
-  // Skip template rows (where name == "名称") and empty names
-  if (name === '名称' || name === '') continue;
+  if (name === '名称' || name === '关键词' || name === '') continue;
 
   // ---- Determine card type ----
   const powerStr = (row[COL_POWER] ?? '').toString().trim();
@@ -110,14 +109,17 @@ for (const row of rows) {
     type = 'environment';
   }
 
-  // ---- Parse keywords ----
+  // ---- Parse attribute ----
+  const attribute = (row[COL_ATTRIBUTE] ?? '无').toString().trim() || '无';
+
+  // Skip xlsx template placeholder rows (名称/关键词/属性)
   const kwStr = (row[COL_KEYWORDS] ?? '').toString().trim();
+  if (name === '名称' && kwStr === '关键词' && attribute === '属性') continue;
+
+  // ---- Parse keywords ----
   const keywords = kwStr
     ? kwStr.split(/[\/、,，]/).map(k => k.trim()).filter(k => k.length > 0)
     : [];
-
-  // ---- Parse attribute ----
-  const attribute = (row[COL_ATTRIBUTE] ?? '无').toString().trim() || '无';
 
   // ---- Parse basePower ----
   let basePower = 0;
