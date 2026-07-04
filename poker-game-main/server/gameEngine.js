@@ -238,6 +238,18 @@ class EffectManager {
                 deployedCard.currentPower += effect.value || 0
                 messages.push(`${deployedCard.name}战力${oldPower}→${deployedCard.currentPower}（矮人铁匠加成）`)
               }
+              // 通用 onOtherPlay + selfTarget 处理器（水元素、火元素、土元素等）
+              else if (effect.selfTarget) {
+                const oldPower = slot.card.currentPower
+                if (effect.stackable !== false) {
+                  if (slot.card.stackedBonus === undefined) slot.card.stackedBonus = 0
+                  slot.card.stackedBonus += (effect.value || 0)
+                  slot.card.currentPower += (effect.value || 0)
+                } else {
+                  slot.card.currentPower = slot.card.basePower + (slot.card.stackedBonus || 0) + (effect.value || 0)
+                }
+                messages.push(`${slot.card.name} 战力${oldPower}→${slot.card.currentPower}`)
+              }
             }
           }
         })

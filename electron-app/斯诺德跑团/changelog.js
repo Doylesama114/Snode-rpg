@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6042',
+    date: '2026-07-04',
+    changes: [
+      'batch 2: generic onOtherPlay handler + 3 element cards (水元素/火元素/土元素)'
+    ]
+  },
+
+
+  {
     version: '1.0.6041',
     date: '2026-07-04',
     changes: [

@@ -1392,6 +1392,7 @@ export const allCardDefinitions = [
       timing: 'onOtherPlay',
       type: 'modifyPower',
       value: 1,
+      selfTarget: true,
       description: '每当你打出一张水属性的卡牌后，使这张牌的战力+1',
       targetAttributes: ['水'],
       stackable: true
@@ -1535,6 +1536,7 @@ export const allCardDefinitions = [
       timing: 'onOtherPlay',
       type: 'modifyPower',
       value: 1,
+      selfTarget: true,
       description: '每当你打出一张火属性的卡牌后，使这张牌的战力+1',
       targetAttributes: ['火'],
       stackable: true
@@ -1641,6 +1643,7 @@ export const allCardDefinitions = [
       timing: 'onOtherPlay',
       type: 'modifyPower',
       value: 1,
+      selfTarget: true,
       description: '每当你打出一张土属性的卡牌后，使这张牌的战力+1',
       targetAttributes: ['土'],
       stackable: true
