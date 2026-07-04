@@ -376,6 +376,7 @@ export class EffectManager {
       : effect.searchKeyword ? [effect.searchKeyword] : []
     if (keywords.length > 0 && keywords.some(kw => this.hasKeyword(card, kw))) return true
     if (effect.searchAttribute && card.attribute === effect.searchAttribute) return true
+    if (effect.targetAttributes?.length && this.hasAnyAttribute(card, effect.targetAttributes)) return true
     return false
   }
 
@@ -1424,6 +1425,10 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'noOp') {
+      return { messages }
+    }
+
     if (effect.type === 'createSlot') {
       return { messages: ['创建了额外槽位'], needsCreateSlot: true }
     }
@@ -1832,13 +1837,19 @@ export class EffectManager {
   }
 
   static countMatchingFieldCards(player: Player, excludeCard: Card, effect: CardEffect): number {
-    return player.field.filter(s => {
-      if (!s.card || s.card === excludeCard) return false
-      if (effect.targetCardType && s.card.type !== effect.targetCardType) return false
-      if (effect.maxBasePower !== undefined && s.card.basePower > effect.maxBasePower) return false
-      if (effect.targetKeywords?.length && !this.hasAnyKeyword(s.card, effect.targetKeywords)) return false
+    const matches = (c: Card) => {
+      if (c === excludeCard) return false
+      if (effect.targetCardType && c.type !== effect.targetCardType) return false
+      if (effect.maxBasePower !== undefined && c.basePower > effect.maxBasePower) return false
+      if (effect.targetKeywords?.length && !this.hasAnyKeyword(c, effect.targetKeywords)) return false
+      if (effect.targetAttributes?.length && !this.hasAnyAttribute(c, effect.targetAttributes)) return false
       return true
-    }).length
+    }
+    let count = player.field.filter(s => s.card && matches(s.card)).length
+    if (effect.includeHand) {
+      count += player.hand.filter(matches).length
+    }
+    return count
   }
 
   static matchesRoundGlobalTarget(card: Card, effect: CardEffect): boolean {

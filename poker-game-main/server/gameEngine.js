@@ -251,13 +251,19 @@ class EffectManager {
   }
 
   static countMatchingFieldCards(player, excludeCard, effect) {
-    return player.field.filter(s => {
-      if (!s.card || s.card === excludeCard) return false
-      if (effect.targetCardType && s.card.type !== effect.targetCardType) return false
-      if (effect.maxBasePower !== undefined && s.card.basePower > effect.maxBasePower) return false
-      if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(s.card, effect.targetKeywords)) return false
+    const matches = (c) => {
+      if (c === excludeCard) return false
+      if (effect.targetCardType && c.type !== effect.targetCardType) return false
+      if (effect.maxBasePower !== undefined && c.basePower > effect.maxBasePower) return false
+      if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(c, effect.targetKeywords)) return false
+      if (effect.targetAttributes?.length && !EffectManager.hasAnyAttribute(c, effect.targetAttributes)) return false
       return true
-    }).length
+    }
+    let count = player.field.filter(s => s.card && matches(s.card)).length
+    if (effect.includeHand) {
+      count += player.hand.filter(matches).length
+    }
+    return count
   }
 
   static slotRulesFromEffect(effect) {
@@ -1008,6 +1014,7 @@ class EffectManager {
       : effect.searchKeyword ? [effect.searchKeyword] : []
     if (keywords.length > 0 && keywords.some(kw => EffectManager.hasKeyword(card, kw))) return true
     if (effect.searchAttribute && card.attribute === effect.searchAttribute) return true
+    if (effect.targetAttributes?.length && EffectManager.hasAnyAttribute(card, effect.targetAttributes)) return true
     return false
   }
 
@@ -1868,6 +1875,10 @@ class EffectManager {
       card.charges = n
       card.maxCharges = n
       messages.push(`${card.name} 获得${n}点充能`)
+      return { messages }
+    }
+
+    if (effect.type === 'noOp') {
       return { messages }
     }
 

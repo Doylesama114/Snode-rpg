@@ -85,6 +85,7 @@ export type EffectType =
   | 'copyFieldUnitIdentity'     // onReveal 复制场单位身份（无貌者）
   | 'sacrificeFieldForPower'    // onReveal 牺牲己方场牌获战力（食尸鬼教徒）
   | 'retrieveFromDiscard'       // onReveal 从弃牌区取牌（食尸鬼教徒）
+  | 'noOp'                      // 无机制占位（枭熊/雷龙/双足飞龙）
 
 /** roundEnd 预约 buff（回春术） */
 export interface PendingRoundEndBuff {
@@ -155,6 +156,8 @@ export interface CardEffect {
   noHigherPowerUnitOnField?: boolean
   /** onDeploy 自增：按场上匹配牌数量 × value（海葵） */
   countMatchingFieldCards?: boolean
+  /** 配合 countMatchingFieldCards：计数含手牌（棕榈树） */
+  includeHand?: boolean
   /** 配合 countMatchingFieldCards：基础战力上限（含） */
   maxBasePower?: number
   /** onOtherPlay：给打出的那张牌加战力（翻车鱼），非 selfTarget */

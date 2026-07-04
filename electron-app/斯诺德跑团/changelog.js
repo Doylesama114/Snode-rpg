@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6075',
+    date: '2026-07-04',
+    changes: [
+      '5D:14张P1卡结构化(箭袋至冰锥术)'
+    ]
+  },
+
+
+  {
     version: '1.0.6074',
     date: '2026-07-04',
     changes: [

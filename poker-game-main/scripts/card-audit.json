@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T18:49:50.012Z",
+  "generatedAt": "2026-07-04T19:06:06.845Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,10 +11,10 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 40,
+    "structured": 42,
     "implemented_doc": 89,
-    "conditional_only": 16,
-    "unknown": 3
+    "unknown": 15,
+    "conditional_only": 2
   },
   "patternSummary": {
     "on_deploy": 34,
@@ -23,13 +23,13 @@
     "on_field_power": 18,
     "other": 8,
     "deploy_on_card": 9,
-    "on_reveal_tactic": 35,
+    "on_reveal_tactic": 36,
     "quick_play": 14,
     "charges": 1,
     "round_start": 7,
     "d6_random": 4,
     "on_field_other": 1,
-    "round_end": 4
+    "round_end": 3
   },
   "byWiring": {
     "structured": [
@@ -71,7 +71,9 @@
       "短柄斧 (card_092)",
       "三叉戟 (card_093)",
       "板甲 (card_094)",
+      "刺客 (card_098)",
       "温馨的旅馆 (card_102)",
+      "棕榈树 (card_106)",
       "间歇泉 (card_137)"
     ],
     "implemented_doc": [
@@ -165,28 +167,26 @@
       "祈福 (card_150)",
       "奇袭 (card_151)"
     ],
-    "conditional_only": [
+    "unknown": [
       "箭袋 (card_018)",
       "隐士 (card_048)",
+      "走私船 (card_055)",
       "潮汐歌者 (card_065)",
       "海洋德鲁伊 (card_068)",
-      "旗鱼 (card_069)",
       "枭熊 (card_081)",
       "雷龙 (card_082)",
+      "巨鹏 (card_084)",
       "双足飞龙 (card_085)",
+      "急先锋·罗森弗斯 (card_086)",
       "食尸鬼教徒 (card_096)",
       "无貌者 (card_097)",
-      "刺客 (card_098)",
-      "棕榈树 (card_106)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
-      "矮人烈酒 (card_135)",
       "冰锥术 (card_142)"
     ],
-    "unknown": [
-      "走私船 (card_055)",
-      "巨鹏 (card_084)",
-      "急先锋·罗森弗斯 (card_086)"
+    "conditional_only": [
+      "旗鱼 (card_069)",
+      "矮人烈酒 (card_135)"
     ]
   },
   "byPattern": {
@@ -307,6 +307,7 @@
       "精准射击",
       "集群战术",
       "收获日",
+      "回春术",
       "矮人烈酒",
       "蓝焰术",
       "间歇泉",
@@ -361,8 +362,7 @@
     "round_end": [
       "篝火",
       "酒馆",
-      "寒脊山脉",
-      "回春术"
+      "寒脊山脉"
     ]
   },
   "implementedDocCount": 89,
@@ -758,7 +758,7 @@
       "id": "card_018",
       "name": "箭袋",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "charges",
       "flags": {
         "quickPlay": false,
@@ -766,9 +766,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "initCharges",
+        "chargeDebuffUnit"
       ],
       "timings": [
+        "onDeploy",
         "roundStart"
       ]
     },
@@ -1310,7 +1312,7 @@
       "id": "card_048",
       "name": "隐士",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1318,7 +1320,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "peekDeckBottom"
       ],
       "timings": [
         "onReveal"
@@ -1616,7 +1618,7 @@
       "id": "card_065",
       "name": "潮汐歌者",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -1624,7 +1626,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "restrictAdjacentPlayType"
       ],
       "timings": [
         "onReveal"
@@ -1670,7 +1672,7 @@
       "id": "card_068",
       "name": "海洋德鲁伊",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "round_start",
       "flags": {
         "quickPlay": false,
@@ -1678,7 +1680,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "effectBranch"
       ],
       "timings": [
         "roundStart"
@@ -1904,7 +1906,7 @@
       "id": "card_081",
       "name": "枭熊",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1912,7 +1914,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "noOp"
       ],
       "timings": [
         "onDeploy"
@@ -1922,7 +1924,7 @@
       "id": "card_082",
       "name": "雷龙",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1930,7 +1932,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "noOp"
       ],
       "timings": [
         "onDeploy"
@@ -1976,7 +1978,7 @@
       "id": "card_085",
       "name": "双足飞龙",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1984,7 +1986,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "noOp"
       ],
       "timings": [
         "onDeploy"
@@ -2174,7 +2176,7 @@
       "id": "card_096",
       "name": "食尸鬼教徒",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2182,9 +2184,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "sacrificeFieldForPower",
+        "retrieveFromDiscard"
       ],
       "timings": [
+        "onReveal",
         "onReveal"
       ]
     },
@@ -2192,7 +2196,7 @@
       "id": "card_097",
       "name": "无貌者",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2200,7 +2204,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "copyFieldUnitIdentity"
       ],
       "timings": [
         "onReveal"
@@ -2210,7 +2214,7 @@
       "id": "card_098",
       "name": "刺客",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2218,7 +2222,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "destroy"
       ],
       "timings": [
         "onReveal"
@@ -2340,7 +2344,7 @@
       "id": "card_106",
       "name": "棕榈树",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "structured",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2348,9 +2352,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "searchDeck",
+        "modifyPower"
       ],
       "timings": [
+        "onReveal",
         "onReveal"
       ]
     },
@@ -2650,7 +2656,7 @@
       "id": "card_123",
       "name": "星象塔",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "round_start",
       "flags": {
         "quickPlay": false,
@@ -2658,7 +2664,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "scryDeckTop"
       ],
       "timings": [
         "roundStart"
@@ -2778,18 +2784,18 @@
       "id": "card_131",
       "name": "回春术",
       "type": "tactic",
-      "wiring": "conditional_only",
-      "pattern": "round_end",
+      "wiring": "unknown",
+      "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "scheduleRoundEndBuff"
       ],
       "timings": [
-        "roundEnd"
+        "onReveal"
       ]
     },
     {
@@ -2978,7 +2984,7 @@
       "id": "card_142",
       "name": "冰锥术",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2986,7 +2992,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "lockRandomHandCards"
       ],
       "timings": [
         "onDeploy"

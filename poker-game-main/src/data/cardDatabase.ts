@@ -392,9 +392,17 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
+      timing: 'onDeploy',
+      type: 'initCharges',
+      initialCharges: 3,
+      description: '这张牌拥有3点充能'
+    },
+    {
       timing: 'roundStart',
-      type: 'conditional',
-      description: '这张牌拥有3点充能，每个回合开始时可以消耗1点充能选择一名角色的一张单位牌，使其战力-1'
+      type: 'chargeDebuffUnit',
+      value: -1,
+      oncePerRound: true,
+      description: '每个回合开始时可以消耗1点充能选择一名角色的一张单位牌，使其战力-1'
     }
     ],
     slotRequired: 1,
@@ -1094,7 +1102,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'peekDeckBottom',
+      peekTake: true,
       description: '揭示：你可以查看自身牌库底部的卡牌，随后选择是否将其加入手牌'
     }
     ],
@@ -1477,8 +1486,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：你可以声明所有相邻位置的玩家在下一个回合必须打出何种类型的卡牌（单位/环境/战术），如果对方不能打出这种卡牌将会直接跳过回合'
+      type: 'restrictAdjacentPlayType',
+      requiredPlayType: 'unit',
+      description: '揭示：相邻玩家下回合须打出单位牌，否则跳过回合'
     }
     ],
     slotRequired: 1,
@@ -1545,7 +1555,15 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundStart',
-      type: 'conditional',
+      type: 'effectBranch',
+      oncePerRound: true,
+      discardHandAttributes: ['水'],
+      branchDefault: 'A',
+      branches: {
+        A: { type: 'restoreEnergy', value: 2 },
+        B: { type: 'modifyPower', value: 2, targetOtherOnField: true, targetCardType: 'unit' },
+        C: { type: 'draw', drawCount: 2 },
+      },
       description: '每回合开始限一次：弃置一张水属性的手牌选择以下一项A.回复2点能量/B.使一张单位牌的战力+2/C.抽两张牌'
     }
     ],
@@ -1836,7 +1854,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'noOp',
       description: '暂无效果描述'
     }
     ],
@@ -1856,7 +1874,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'noOp',
       description: '就是大'
     }
     ],
@@ -1921,7 +1939,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'noOp',
       description: '暂无效果描述'
     }
     ],
@@ -2168,8 +2186,14 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：消灭你的场上的一张卡牌，并将战力附加在这张牌上，随后从你的弃牌区中挑选一张卡牌加入手牌'
+      type: 'sacrificeFieldForPower',
+      description: '揭示：消灭你的场上的一张卡牌，并将战力附加在这张牌上'
+    },
+    {
+      timing: 'onReveal',
+      type: 'retrieveFromDiscard',
+      retrieveRandom: false,
+      description: '随后从你的弃牌区中挑选一张卡牌加入手牌'
     }
     ],
     slotRequired: 1,
@@ -2188,7 +2212,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'copyFieldUnitIdentity',
       description: '揭示：复制并替换你场上一张单位牌的名称、关键词和效果'
     }
     ],
@@ -2208,7 +2232,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'destroy',
+      targetCardType: 'unit',
+      maxBasePower: 3,
+      directDestroy: true,
       description: '揭示：摧毁一名玩家场上一张战力低于4的单位牌'
     }
     ],
@@ -2376,8 +2403,21 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：从你的牌库中检索一张木属性卡牌加入手牌，随后混洗牌库/你每拥有一张光属性和木属性卡牌这张牌的战力便+1'
+      type: 'searchDeck',
+      targetAttributes: ['木'],
+      maxCount: 1,
+      shuffleAfterSearch: true,
+      description: '揭示：从你的牌库中检索一张木属性卡牌加入手牌，随后混洗牌库'
+    },
+    {
+      timing: 'onReveal',
+      type: 'modifyPower',
+      selfTarget: true,
+      value: 1,
+      countMatchingFieldCards: true,
+      targetAttributes: ['光', '木'],
+      includeHand: true,
+      description: '你每拥有一张光属性和木属性卡牌这张牌的战力便+1'
     }
     ],
     slotRequired: 1,
@@ -2771,8 +2811,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'roundStart',
-      type: 'conditional',
-      description: '每个回合开始抽牌时你可以选择抽取牌库顶的三张牌，选择其中一张加入手牌，剩余卡牌按照任意顺序放置在牌库顶或牌库底部'
+      type: 'scryDeckTop',
+      scryCount: 3,
+      scryTake: 1,
+      scryRestToBottom: true,
+      description: '每个回合开始抽取牌库顶三张，选一张加入手牌，其余置于牌库底'
     }
     ],
     slotRequired: 1,
@@ -2928,8 +2971,10 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'roundEnd',
-      type: 'conditional',
+      timing: 'onReveal',
+      type: 'scheduleRoundEndBuff',
+      roundEndBuffRounds: 3,
+      roundEndBuffPower: 1,
       description: '选择一张单位牌，使其在接下来的三个回合结束时每次战力+1'
     }
     ],
@@ -3177,7 +3222,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'lockRandomHandCards',
+      discardHandAttributes: ['冰'],
+      lockHandCount: 1,
+      lockHandFinalRoundOnly: true,
       description: '弃置一张冰属性的手牌封锁每名其他玩家的随机一张手牌，那张牌仅能够在最后一个回合打出'
     }
     ],
