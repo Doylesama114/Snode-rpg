@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T15:29:01.798Z",
+  "generatedAt": "2026-07-04T15:46:38.240Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,13 +12,13 @@
   },
   "wiringSummary": {
     "structured": 15,
-    "implemented_doc": 77,
-    "conditional_only": 56
+    "implemented_doc": 80,
+    "conditional_only": 53
   },
   "patternSummary": {
-    "on_deploy": 38,
+    "on_deploy": 37,
     "create_slot": 4,
-    "on_other_play": 8,
+    "on_other_play": 9,
     "on_field_power": 18,
     "other": 5,
     "deploy_on_card": 9,
@@ -65,6 +65,7 @@
       "落魄男爵 (card_030)",
       "退役老兵 (card_032)",
       "萨满祭司 (card_033)",
+      "武僧 (card_034)",
       "狗头人冒险者 (card_043)",
       "海藻 (card_047)",
       "德鲁伊 (card_049)",
@@ -94,7 +95,9 @@
       "射击俱乐部 (card_103)",
       "法师塔 (card_104)",
       "森林 (card_105)",
+      "溪流 (card_108)",
       "海港 (card_109)",
+      "帆船 (card_110)",
       "大海 (card_111)",
       "沙滩 (card_115)",
       "沙滩碉堡 (card_116)",
@@ -132,7 +135,6 @@
       "攀爬工具 (card_023)",
       "搬运工 (card_024)",
       "强盗 (card_031)",
-      "武僧 (card_034)",
       "征募官 (card_035)",
       "蛮斗士 (card_036)",
       "食人魔 (card_037)",
@@ -173,8 +175,6 @@
       "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
       "仲夏节庆典 (card_107)",
-      "溪流 (card_108)",
-      "帆船 (card_110)",
       "锻炉 (card_112)",
       "礁石 (card_117)",
       "贫民窟 (card_122)",
@@ -195,7 +195,6 @@
       "暴徒",
       "退役老兵",
       "萨满祭司",
-      "武僧",
       "蛮斗士",
       "食人魔",
       "纪念照",
@@ -237,6 +236,7 @@
       "法师",
       "战士",
       "挤奶工",
+      "武僧",
       "翻车鱼",
       "水元素",
       "火元素",
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 77,
+  "implementedDocCount": 80,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -437,7 +437,10 @@
     "珊瑚元素",
     "猎人",
     "游客",
-    "药剂师"
+    "药剂师",
+    "武僧",
+    "溪流",
+    "帆船"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -1028,18 +1031,18 @@
       "id": "card_034",
       "name": "武僧",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "implemented_doc",
+      "pattern": "on_other_play",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
-        "onDeploy"
+        "onOtherPlay"
       ]
     },
     {
@@ -2342,7 +2345,7 @@
       "id": "card_108",
       "name": "溪流",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2350,7 +2353,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "searchFromHandOrDeck"
       ],
       "timings": [
         "onDeploy"
@@ -2378,7 +2381,7 @@
       "id": "card_110",
       "name": "帆船",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2386,7 +2389,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement"
       ],
       "timings": [
         "onDeploy"

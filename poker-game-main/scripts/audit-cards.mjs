@@ -42,6 +42,7 @@ const IMPLEMENTED_NAMES = new Set([
   '萨满祭司', '珍珠商人', '海港',
   '奴隶', '蔓生怪', '珊瑚元素',
   '猎人', '游客', '药剂师',
+  '武僧', '溪流', '帆船',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([
@@ -54,6 +55,7 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'grantAttributePlayBonus', 'setD6MinForCardName',
   'conditionalPlayCost', 'excludeFromFieldCount',
   'grantTacticPlayFree', 'modifyPowerByUniqueAttributes',
+  'playRequirement', 'searchFromHandOrDeck',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

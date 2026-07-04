@@ -218,6 +218,11 @@ export function useGame() {
     
     const card = currentPlayer.value.hand[cardIndex]
     if (!card) return
+
+    if (!EffectManager.meetsPlayRequirements(card, currentPlayer.value)) {
+      gameState.value.message = '场上条件不满足，无法打出此牌'
+      return
+    }
     
     const effCost = EffectManager.getEffectivePlayCost(card, currentPlayer.value)
     if (currentPlayer.value.currentCost < effCost) {

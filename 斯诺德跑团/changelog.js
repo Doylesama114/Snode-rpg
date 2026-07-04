@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6060',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4P:武僧/溪流/帆船',
+      'playRequirement+searchFromHandOrDeck+triggerPlayedCardType'
+    ]
+  },
+
+
+  {
     version: '1.0.6059',
     date: '2026-07-04',
     changes: [

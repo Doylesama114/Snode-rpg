@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6060] - 2026-07-04
+
+### 卡牌效果批次 4P
+- **武僧**：onOtherPlay `triggerPlayedCardType: tactic` 每打出战术 +1（可叠加）
+- **溪流**：`searchFromHandOrDeck` 手牌/牌库检索名称含「鱼」的首张单位并部署
+- **帆船**：`playRequirement` 需场上水环境才能打出（复制环境效果待后续批次）
+- **引擎**：`meetsPlayRequirements` 接入 SP/MP/Client 出牌校验
+- **测试**：`scripts/test-4p.mjs`（9/9）
+
 ## [1.0.6059] - 2026-07-04
 
 ### 卡牌效果批次 4O

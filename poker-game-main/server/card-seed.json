@@ -803,9 +803,13 @@
     "cost": 3,
     "effects": [
       {
-        "timing": "onDeploy",
-        "type": "conditional",
-        "description": "每当你为这张卡牌打出一张战术牌后，这张牌的战力便+1"
+        "timing": "onOtherPlay",
+        "type": "modifyPower",
+        "value": 1,
+        "selfTarget": true,
+        "triggerPlayedCardType": "tactic",
+        "stackable": true,
+        "description": "每当你打出一张战术牌后，这张牌的战力便+1"
       }
     ],
     "slotRequired": 1,
@@ -2442,8 +2446,11 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "你可以将手牌或牌库中一张带有“鱼”名称的单位牌放置进场，照常支付其费用随后混洗牌库"
+        "type": "searchFromHandOrDeck",
+        "searchName": "鱼",
+        "targetCardType": "unit",
+        "shuffleAfterSearch": true,
+        "description": "你可以将手牌或牌库中一张带有「鱼」名称的单位牌放置进场，照常支付其费用随后混洗牌库"
       }
     ],
     "slotRequired": 1,
@@ -2488,8 +2495,12 @@
     "effects": [
       {
         "timing": "onDeploy",
-        "type": "conditional",
-        "description": "你必须在场上拥有水属性的环境牌时才能打出这张牌，复制一张水属性的环境牌效果"
+        "type": "playRequirement",
+        "requireFieldAttributes": [
+          "水"
+        ],
+        "requireFieldCardType": "environment",
+        "description": "你必须在场上拥有水属性的环境牌时才能打出这张牌（复制环境效果待后续批次）"
       }
     ],
     "slotRequired": 1,

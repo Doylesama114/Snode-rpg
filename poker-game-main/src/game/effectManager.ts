@@ -58,11 +58,26 @@ export class EffectManager {
       if (slot.card && slot.card !== deployedCard) {
         slot.card.effects.forEach(effect => {
           if (effect.timing === 'onOtherPlay' && effect.type === 'modifyPower') {
-            // 检查部署的卡牌是否符合条件（按关键词）
+            if (effect.triggerPlayedCardType && deployedCard.type !== effect.triggerPlayedCardType) {
+              return
+            }
             const keywordMatch = effect.targetKeywords && this.hasAnyKeyword(deployedCard, effect.targetKeywords)
-            // 检查部署的卡牌是否符合条件（按属性）
             const attrMatch = effect.targetAttributes && Array.isArray(effect.targetAttributes) && this.hasAnyAttribute(deployedCard, effect.targetAttributes)
-            if (keywordMatch || attrMatch) {
+            // 武僧：任意战术打出时 self +1
+            if (effect.selfTarget && effect.triggerPlayedCardType && !keywordMatch && !attrMatch) {
+              const oldPower = slot.card.currentPower
+              if (effect.stackable !== false) {
+                if (slot.card.stackedBonus === undefined) slot.card.stackedBonus = 0
+                slot.card.stackedBonus += (effect.value || 0)
+                slot.card.currentPower += (effect.value || 0)
+              } else {
+                slot.card.currentPower = slot.card.basePower + (slot.card.stackedBonus || 0) + (effect.value || 0)
+              }
+              messages.push(`${slot.card.name} 战力${oldPower}→${slot.card.currentPower}`)
+              return
+            }
+            if (!keywordMatch && !attrMatch) return
+            // 检查部署的卡牌是否符合条件（按关键词）
               // 法师：战术牌且有魔法关键词
               if (slot.card.name === '法师' && deployedCard.type === 'tactic' && this.hasKeyword(deployedCard, '魔法')) {
                 const oldPower = slot.card.currentPower
@@ -111,7 +126,6 @@ export class EffectManager {
                 }
                 messages.push(`${slot.card.name} 战力${oldPower}→${slot.card.currentPower}`)
               }
-            }
           }
         })
       }
@@ -346,6 +360,7 @@ export class EffectManager {
   }
 
   private static matchesSearch(card: Card, effect: CardEffect): boolean {
+    if (effect.targetCardType && card.type !== effect.targetCardType) return false
     if (effect.searchName && card.name.includes(effect.searchName)) return true
     if (effect.searchNames?.some(n => card.name.includes(n))) return true
     const keywords = effect.searchKeywords?.length
@@ -360,6 +375,25 @@ export class EffectManager {
       const j = Math.floor(Math.random() * (i + 1))
       ;[deck[i], deck[j]] = [deck[j], deck[i]]
     }
+  }
+
+  static meetsPlayRequirements(card: Card, player: Player): boolean {
+    for (const effect of card.effects || []) {
+      if (effect.type !== 'playRequirement') continue
+      if (!this.checkFieldRequirements(player, effect)) return false
+    }
+    return true
+  }
+
+  static findInHandOrDeck(player: Player, effect: CardEffect): { pile: 'hand' | 'deck'; index: number; card: Card } | null {
+    const matches = (c: Card) => this.matchesSearch(c, effect)
+    for (let i = 0; i < player.hand.length; i++) {
+      if (matches(player.hand[i])) return { pile: 'hand', index: i, card: player.hand[i] }
+    }
+    for (let i = player.deck.length - 1; i >= 0; i--) {
+      if (matches(player.deck[i])) return { pile: 'deck', index: i, card: player.deck[i] }
+    }
+    return null
   }
 
   // Search deck for cards matching name or keyword
@@ -822,6 +856,36 @@ export class EffectManager {
       const kws = effect.targetKeywords?.length ? effect.targetKeywords : ['药剂']
       player.tacticPlayFreeKeywords = kws
       messages.push(`下一张${kws.join('/')}战术牌不占用行动`)
+      return { messages }
+    }
+
+    if (effect.type === 'searchFromHandOrDeck') {
+      const found = this.findInHandOrDeck(player, effect)
+      if (!found) {
+        messages.push('未找到符合条件的卡牌')
+        return { messages }
+      }
+      const deployCard = found.card
+      if (found.pile === 'deck') {
+        player.deck.splice(found.index, 1)
+      } else {
+        player.hand.splice(found.index, 1)
+      }
+      if (effect.shuffleAfterSearch && player.deck.length > 1) {
+        this.shuffleInPlace(player.deck)
+      }
+      const deployCost = this.getEffectivePlayCost(deployCard, player)
+      const slots = this.getAvailableSlotIndices(player, deployCard)
+      if (slots.length === 0 || player.currentCost < deployCost) {
+        player.hand.push(deployCard)
+        messages.push(slots.length === 0 ? `找到${deployCard.name}但无空槽` : `找到${deployCard.name}但费用不足`)
+        return { messages }
+      }
+      player.currentCost -= deployCost
+      player.field[slots[0]].card = deployCard
+      this.applyUnitDeployBonuses(deployCard, player).forEach(m => messages.push(m))
+      this.triggerOnOtherPlayEffects(deployCard, player, game)
+      messages.push(`部署${deployCard.name}（费用${deployCost}）`)
       return { messages }
     }
 

@@ -84,6 +84,10 @@ export function useGameClient(myPlayerId: string) {
     
     const card = myPlayer.value.hand[cardIndex]
     if (!card || card === 'hidden') return false
+
+    if (!EffectManager.meetsPlayRequirements(card as Card, myPlayer.value)) {
+      return false
+    }
     
     if (myPlayer.value.currentCost < EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)) {
       return false

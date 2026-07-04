@@ -51,6 +51,8 @@ export type EffectType =
   | 'excludeFromFieldCount'   // onDeploy 自身不计入终局 6 张（奴隶）
   | 'grantTacticPlayFree'     // onDeploy 下一张指定关键词战术不占用行动（药剂师）
   | 'modifyPowerByUniqueAttributes' // onGameEnd 按不同属性计数加战力（游客）
+  | 'playRequirement'         // 打出前场上条件（帆船）
+  | 'searchFromHandOrDeck'    // 从手牌/牌库检索并部署（溪流）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -89,8 +91,8 @@ export interface CardEffect {
   requireAllFieldAttributes?: string[]
   /** conditionalPlayCost：条件满足时的打出费用 */
   playCostValue?: number
-  /** modifyPowerByUniqueAttributes：终局计数时包含手牌 */
-  includeHand?: boolean
+  /** onOtherPlay：仅当打出的牌为该类型时触发（武僧→战术） */
+  triggerPlayedCardType?: CardType
   /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */
   targetAllCards?: boolean
   /** roundEnd：改场上其他卡（非自身） */
