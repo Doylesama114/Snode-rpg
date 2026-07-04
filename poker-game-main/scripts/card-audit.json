@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T19:16:42.273Z",
+  "generatedAt": "2026-07-04T20:36:17.818Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -13,15 +13,14 @@
   "wiringSummary": {
     "structured": 42,
     "implemented_doc": 89,
-    "unknown": 15,
-    "conditional_only": 2
+    "unknown": 17
   },
   "patternSummary": {
-    "on_deploy": 34,
+    "on_deploy": 33,
     "create_slot": 4,
     "on_other_play": 9,
     "on_field_power": 18,
-    "other": 8,
+    "other": 9,
     "deploy_on_card": 9,
     "on_reveal_tactic": 36,
     "quick_play": 14,
@@ -173,6 +172,7 @@
       "走私船 (card_055)",
       "潮汐歌者 (card_065)",
       "海洋德鲁伊 (card_068)",
+      "旗鱼 (card_069)",
       "枭熊 (card_081)",
       "雷龙 (card_082)",
       "巨鹏 (card_084)",
@@ -182,11 +182,8 @@
       "无貌者 (card_097)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
+      "矮人烈酒 (card_135)",
       "冰锥术 (card_142)"
-    ],
-    "conditional_only": [
-      "旗鱼 (card_069)",
-      "矮人烈酒 (card_135)"
     ]
   },
   "byPattern": {
@@ -212,7 +209,6 @@
       "珍珠商人",
       "拾贝鱼人",
       "珊瑚元素",
-      "旗鱼",
       "狂战士",
       "牛头人勇士",
       "枭熊",
@@ -268,6 +264,7 @@
       "风笛",
       "游客",
       "食人魔",
+      "旗鱼",
       "锻炉",
       "沙滩碉堡",
       "晴天",
@@ -1690,18 +1687,18 @@
       "id": "card_069",
       "name": "旗鱼",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "unknown",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "batchHighestFreeDeploy"
       ],
       "timings": [
-        "onDeploy"
+        "onBatchReveal"
       ]
     },
     {
@@ -2858,7 +2855,7 @@
       "id": "card_135",
       "name": "矮人烈酒",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2866,9 +2863,11 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "moveOpponentBatchRevealToDeckBottom",
+        "forceRandomHandPlay"
       ],
       "timings": [
+        "onReveal",
         "onReveal"
       ]
     },

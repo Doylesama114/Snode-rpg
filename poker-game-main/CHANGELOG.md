@@ -1,5 +1,12 @@
 # 更新日志
 
+## [1.0.6077] - 2026-07-05
+
+### 卡牌效果批次 5E — 终批 148/148
+- **旗鱼**：`onBatchReveal` + `batchHighestFreeDeploy`
+- **矮人烈酒**：`moveOpponentBatchRevealToDeckBottom` + `forceRandomHandPlay`（`batchResolveOnly`）
+- **测试**：`scripts/test-5e.mjs`（11/11）
+
 ## [1.0.6076] - 2026-07-05
 
 ### P0 盖牌批次引擎专批

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6077',
+    date: '2026-07-04',
+    changes: [
+      '5E终批: 旗鱼/矮人烈酒结构化 148/148完成'
+    ]
+  },
+
+
+  {
     version: '1.0.6076',
     date: '2026-07-04',
     changes: [
