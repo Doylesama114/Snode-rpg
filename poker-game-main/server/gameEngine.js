@@ -497,6 +497,24 @@ class EffectManager {
     }
   }
 
+  static consumeTacticPlayFreeIfMatch(card, player) {
+    if (card.type !== 'tactic' || !player.tacticPlayFreeKeywords?.length) return false
+    const kws = player.tacticPlayFreeKeywords
+    const matched = kws.some(kw => EffectManager.hasAnyKeyword(card, [kw]))
+    if (!matched) return false
+    player.tacticPlayFreeKeywords = undefined
+    player.hasPlayedThisTurn = false
+    return true
+  }
+
+  static countUniqueAttributes(cards) {
+    const attrs = new Set()
+    cards.forEach(c => {
+      if (c.attribute && c.attribute !== '无') attrs.add(c.attribute)
+    })
+    return attrs.size
+  }
+
   static applyGameEndEffect(effect, ownerCard, player) {
     const messages = []
 
@@ -525,6 +543,21 @@ class EffectManager {
       if (!hasOther && effect.value !== undefined) {
         ownerCard.currentPower = effect.value
         messages.push(`${ownerCard.name} 战力设为${effect.value}`)
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPowerByUniqueAttributes') {
+      const cards = []
+      player.field.forEach(slot => {
+        if (slot.card) cards.push(slot.card)
+      })
+      if (effect.includeHand) cards.push(...player.hand)
+      const count = EffectManager.countUniqueAttributes(cards)
+      const delta = count * (effect.value ?? 1)
+      if (delta !== 0) {
+        ownerCard.currentPower += delta
+        messages.push(`${ownerCard.name} ${count}种属性 → 战力+${delta}`)
       }
       return { messages }
     }
@@ -1034,6 +1067,13 @@ class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'grantTacticPlayFree') {
+      const kws = effect.targetKeywords?.length ? effect.targetKeywords : ['药剂']
+      player.tacticPlayFreeKeywords = kws
+      messages.push(`下一张${kws.join('/')}战术牌不占用行动`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireAllFieldAttributes?.length) {
       if (!EffectManager.hasAllFieldAttributes(player, effect)) {
         messages.push('条件不满足，效果未触发')
@@ -1429,6 +1469,7 @@ class GameEngine {
     } else {
       player.hasPlayedThisTurn = true
     }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
     
     // 部署卡牌
     this.deployCard(card, player, slotIndex, playerIndex)

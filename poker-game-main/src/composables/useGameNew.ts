@@ -286,6 +286,7 @@ export function useGame() {
     } else {
       player.hasPlayedThisTurn = true
     }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
     
     // AI隐藏卡牌
     if (player.id.startsWith('ai')) {

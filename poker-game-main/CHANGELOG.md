@@ -1,5 +1,13 @@
 # 更新日志
 
+## [1.0.6059] - 2026-07-04
+
+### 卡牌效果批次 4O
+- **猎人**：`conditionalPlayCost` 有自然环境时费用 0
+- **游客**：`modifyPowerByUniqueAttributes` onGameEnd（含手牌）
+- **药剂师**：`grantTacticPlayFree` 下一张药剂战术不占用行动
+- **测试**：`scripts/test-4o.mjs`（9/9）
+
 ## [1.0.6058] - 2026-07-04
 
 ### 卡牌效果批次 4N

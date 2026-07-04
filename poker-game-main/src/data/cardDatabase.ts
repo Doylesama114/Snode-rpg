@@ -542,8 +542,10 @@ export const allCardDefinitions = [
     cost: 1,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onGameEnd',
+      type: 'modifyPowerByUniqueAttributes',
+      value: 1,
+      includeHand: true,
       description: '游戏结束时你的手牌和场上每拥有一张不同属性的卡牌便使战力+1'
     }
     ],
@@ -1093,8 +1095,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '你打出的下一张带有“药剂”关键词的战术牌不占用行动'
+      type: 'grantTacticPlayFree',
+      targetKeywords: ['药剂'],
+      description: '你打出的下一张带有「药剂」关键词的战术牌不占用行动'
     }
     ],
     slotRequired: 1,
@@ -1113,8 +1116,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '如果你的场上拥有“自然”关键词的环境牌，那么将这张牌免费置于场上'
+      type: 'conditionalPlayCost',
+      playCostValue: 0,
+      requireFieldKeywords: ['自然'],
+      requireFieldCardType: 'environment',
+      description: '如果你的场上拥有「自然」关键词的环境牌，那么将这张牌免费置于场上'
     }
     ],
     slotRequired: 1,

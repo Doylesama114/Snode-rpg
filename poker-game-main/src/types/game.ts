@@ -49,6 +49,8 @@ export type EffectType =
   | 'setD6MinForCardName'     // onDeploy 指定名称卡牌 D6 下限（珍珠商人）
   | 'conditionalPlayCost'     // 打出时按场上条件设定费用（蔓生怪）
   | 'excludeFromFieldCount'   // onDeploy 自身不计入终局 6 张（奴隶）
+  | 'grantTacticPlayFree'     // onDeploy 下一张指定关键词战术不占用行动（药剂师）
+  | 'modifyPowerByUniqueAttributes' // onGameEnd 按不同属性计数加战力（游客）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -87,6 +89,8 @@ export interface CardEffect {
   requireAllFieldAttributes?: string[]
   /** conditionalPlayCost：条件满足时的打出费用 */
   playCostValue?: number
+  /** modifyPowerByUniqueAttributes：终局计数时包含手牌 */
+  includeHand?: boolean
   /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */
   targetAllCards?: boolean
   /** roundEnd：改场上其他卡（非自身） */
@@ -220,6 +224,8 @@ export interface Player {
   unitPlayAttributeBonus?: Partial<Record<AttributeType, number>>
   /** 珍珠商人等：按卡牌名称保证 D6 下限 */
   d6MinByCardName?: Record<string, number>
+  /** 药剂师等：下一张匹配关键词的战术牌不占用行动（一次性） */
+  tacticPlayFreeKeywords?: string[]
   deckCardIds?: string[]
 }
 

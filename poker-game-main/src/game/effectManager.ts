@@ -818,6 +818,13 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'grantTacticPlayFree') {
+      const kws = effect.targetKeywords?.length ? effect.targetKeywords : ['药剂']
+      player.tacticPlayFreeKeywords = kws
+      messages.push(`下一张${kws.join('/')}战术牌不占用行动`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireAllFieldAttributes?.length) {
       if (!this.hasAllFieldAttributes(player, effect)) {
         messages.push('条件不满足，效果未触发')
@@ -1220,6 +1227,25 @@ export class EffectManager {
     }
   }
 
+  /** 药剂师：若打出的战术匹配 pending 关键词，恢复本回合行动 */
+  static consumeTacticPlayFreeIfMatch(card: Card, player: Player): boolean {
+    if (card.type !== 'tactic' || !player.tacticPlayFreeKeywords?.length) return false
+    const kws = player.tacticPlayFreeKeywords
+    const matched = kws.some(kw => this.hasAnyKeyword(card, [kw]))
+    if (!matched) return false
+    player.tacticPlayFreeKeywords = undefined
+    player.hasPlayedThisTurn = false
+    return true
+  }
+
+  static countUniqueAttributes(cards: Card[]): number {
+    const attrs = new Set<string>()
+    cards.forEach(c => {
+      if (c.attribute && c.attribute !== '无') attrs.add(c.attribute)
+    })
+    return attrs.size
+  }
+
   static applyGameEndEffect(
     effect: CardEffect,
     ownerCard: Card,
@@ -1252,6 +1278,21 @@ export class EffectManager {
       if (!hasOther && effect.value !== undefined) {
         ownerCard.currentPower = effect.value as number
         messages.push(`${ownerCard.name} 战力设为${effect.value}`)
+      }
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPowerByUniqueAttributes') {
+      const cards: Card[] = []
+      player.field.forEach(slot => {
+        if (slot.card) cards.push(slot.card)
+      })
+      if (effect.includeHand) cards.push(...player.hand)
+      const count = this.countUniqueAttributes(cards)
+      const delta = count * (effect.value ?? 1)
+      if (delta !== 0) {
+        ownerCard.currentPower += delta
+        messages.push(`${ownerCard.name} ${count}种属性 → 战力+${delta}`)
       }
       return { messages }
     }
