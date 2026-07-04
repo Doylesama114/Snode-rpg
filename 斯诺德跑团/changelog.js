@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6050',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4H：酒吧女招待/杂货铺/燃烧之手',
+      '引擎 searchEachKeyword+debuffOpponentHand'
+    ]
+  },
+
+
+  {
     version: '1.0.6049',
     date: '2026-07-04',
     changes: [

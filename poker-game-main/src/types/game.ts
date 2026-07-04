@@ -43,6 +43,7 @@ export type EffectType =
   | 'doubleTargetPower'   // onGameEnd 按名称翻倍战力（风笛）
   | 'd6TierPower'         // D6 档位加战力（贝壳）
   | 'setPowerIfNoFieldKeyword' // onGameEnd 场上无其他关键词时设战力（晴天）
+  | 'debuffOpponentHand'  // onDeploy 削弱左手边玩家手牌 basePower（燃烧之手）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -82,6 +83,10 @@ export interface CardEffect {
   d6Tiers?: { min: number; max: number; value: number }[]
   /** searchDeck：按名称检索（OR） */
   searchNames?: string[]
+  /** searchDeck：对 searchKeywords 中每个关键词各检索 maxCount 张（杂货铺） */
+  searchEachKeyword?: boolean
+  /** debuffOpponentHand：削弱对手手牌张数 */
+  handDebuffCount?: number
   // 条件标记
   invertCondition?: boolean
   requireKeywords?: string[][]

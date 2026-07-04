@@ -434,6 +434,9 @@ export const allCardDefinitions = [
       timing: 'onDeploy',
       type: 'searchDeck',
       searchKeyword: '酒水',
+      searchNames: ['酒馆', '吟游诗人'],
+      maxCount: 1,
+      shuffleAfterSearch: true,
       description: '揭示：从你的牌库中检索一张拥有"酒水"关键词或"酒馆/吟游诗人"名称的卡牌加入手牌，随后混洗牌库'
     }
     ],
@@ -2103,9 +2106,13 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：从你的牌库中分别检索“奇械/物件/务农/”各一张牌加入手牌，随后混洗牌库'
+      timing: 'onDeploy',
+      type: 'searchDeck',
+      searchEachKeyword: true,
+      searchKeywords: ['奇械', '物件', '务农'],
+      maxCount: 1,
+      shuffleAfterSearch: true,
+      description: '揭示：从你的牌库中分别检索各一张奇械/物件/务农牌加入手牌，随后混洗牌库'
     }
     ],
     slotRequired: 1,
@@ -2962,7 +2969,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'debuffOpponentHand',
+      value: -2,
+      handDebuffCount: 3,
       description: '标记左手边第一名玩家的随机三张手牌，这些卡牌的基础战力-2'
     }
     ],

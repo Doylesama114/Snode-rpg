@@ -31,6 +31,10 @@ const IMPLEMENTED_NAMES = new Set([
   '收获日', '雷云召来', '报警机器人',
   '休憩曲', '祈福', '炎炎夏日',
   '德鲁伊', '射击俱乐部', '寒脊山脉',
+  '季风', '篝火', '垂钓客',
+  '吟游诗人', '风笛', '激励乐章',
+  '贝壳', '晴天', '沙滩',
+  '酒吧女招待', '杂货铺', '燃烧之手',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([
@@ -38,6 +42,8 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'draw', 'searchDeck', 'restoreEnergy', 'modifyPowerByName', 'reduceUnitPower',
   'discardOpponentHand', 'returnToDeckBottom', 'setNextUnitAttribute', 'markOpponentHand',
   'stealPower', 'stealCard', 'absNegativePower', 'setFieldAttribute',
+  'd6TierPower', 'setPowerIfNoFieldKeyword', 'd6ModifyPower', 'doubleTargetPower',
+  'useD6Value', 'modifyPlayCost', 'd6Min', 'debuffOpponentHand',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

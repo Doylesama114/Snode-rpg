@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T13:04:16.139Z",
+  "generatedAt": "2026-07-04T13:15:18.275Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,19 +11,19 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 26,
+    "structured": 27,
     "implemented_doc": 44,
-    "conditional_only": 73,
-    "unknown": 5
+    "conditional_only": 71,
+    "unknown": 6
   },
   "patternSummary": {
-    "on_deploy": 38,
+    "on_deploy": 39,
     "create_slot": 4,
     "on_other_play": 7,
     "on_field_power": 18,
     "other": 4,
     "deploy_on_card": 9,
-    "on_reveal_tactic": 36,
+    "on_reveal_tactic": 35,
     "quick_play": 14,
     "charges": 1,
     "round_start": 9,
@@ -52,6 +52,7 @@
       "棕熊 (card_079)",
       "海鸥 (card_083)",
       "利剑中队 (card_091)",
+      "杂货铺 (card_101)",
       "荒野 (card_113)",
       "兽栏 (card_114)",
       "沙滩 (card_115)",
@@ -163,7 +164,6 @@
       "食尸鬼教徒 (card_096)",
       "无貌者 (card_097)",
       "刺客 (card_098)",
-      "杂货铺 (card_101)",
       "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
       "仲夏节庆典 (card_107)",
@@ -177,7 +177,6 @@
       "回春术 (card_131)",
       "矮人烈酒 (card_135)",
       "间歇泉 (card_137)",
-      "燃烧之手 (card_141)",
       "冰锥术 (card_142)"
     ],
     "unknown": [
@@ -185,7 +184,8 @@
       "贝壳 (card_056)",
       "吟游诗人 (card_090)",
       "季风 (card_120)",
-      "晴天 (card_121)"
+      "晴天 (card_121)",
+      "燃烧之手 (card_141)"
     ]
   },
   "byPattern": {
@@ -222,6 +222,7 @@
       "巨鹏",
       "双足飞龙",
       "雪怪",
+      "杂货铺",
       "仲夏节庆典",
       "溪流",
       "帆船",
@@ -301,7 +302,6 @@
       "食尸鬼教徒",
       "无貌者",
       "刺客",
-      "杂货铺",
       "棕榈树",
       "精准射击",
       "集群战术",
@@ -2186,18 +2186,18 @@
       "id": "card_101",
       "name": "杂货铺",
       "type": "environment",
-      "wiring": "conditional_only",
-      "pattern": "on_reveal_tactic",
+      "wiring": "structured",
+      "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "searchDeck"
       ],
       "timings": [
-        "onReveal"
+        "onDeploy"
       ]
     },
     {
@@ -2894,7 +2894,7 @@
       "id": "card_141",
       "name": "燃烧之手",
       "type": "tactic",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "on_reveal_tactic",
       "flags": {
         "quickPlay": false,
@@ -2902,7 +2902,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "debuffOpponentHand"
       ],
       "timings": [
         "onDeploy"

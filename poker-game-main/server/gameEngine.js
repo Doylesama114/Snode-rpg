@@ -533,6 +533,26 @@ class EffectManager {
 
   // Search deck for cards matching name or keyword
   static searchDeck(player, effect) {
+    if (effect.searchEachKeyword && effect.searchKeywords?.length) {
+      const perKw = effect.maxCount ?? 1
+      const allResults = []
+      for (const kw of effect.searchKeywords) {
+        const subEffect = {
+          ...effect,
+          searchKeywords: [kw],
+          searchKeyword: undefined,
+          searchEachKeyword: false,
+          maxCount: perKw,
+          shuffleAfterSearch: false,
+        }
+        allResults.push(...EffectManager.searchDeck(player, subEffect))
+      }
+      if (effect.shuffleAfterSearch && player.deck.length > 1) {
+        EffectManager.shuffleInPlace(player.deck)
+      }
+      return allResults
+    }
+
     const results = []
     const max = effect.maxCount ?? Infinity
     const searchDiscard = effect.searchDiscard !== false
@@ -736,6 +756,30 @@ class EffectManager {
         })
       })
       messages.push(count > 0 ? `${count}张卡牌属性变为${attr}` : '没有符合条件的目标')
+      return { messages }
+    }
+
+    if (effect.type === 'debuffOpponentHand') {
+      const playerIndex = game.players.findIndex(p => p.id === player.id)
+      const leftIndex = (playerIndex + 1) % game.players.length
+      const opponent = game.players[leftIndex]
+      if (!opponent || opponent.id === player.id || opponent.hand.length === 0) {
+        messages.push('没有可削弱的手牌目标')
+        return { messages }
+      }
+      const maxCount = effect.handDebuffCount ?? effect.maxCount ?? 3
+      const count = Math.min(maxCount, opponent.hand.length)
+      const debuff = effect.value ?? -2
+      const picked = new Set()
+      while (picked.size < count) {
+        picked.add(Math.floor(Math.random() * opponent.hand.length))
+      }
+      for (const idx of picked) {
+        const handCard = opponent.hand[idx]
+        handCard.basePower += debuff
+        handCard.currentPower += debuff
+      }
+      messages.push(`${opponent.name}的${count}张手牌基础战力${debuff}`)
       return { messages }
     }
 
