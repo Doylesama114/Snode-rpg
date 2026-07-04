@@ -523,9 +523,10 @@ export function useGame() {
     const card = gameState.value.selectedCard
     const effect = card.effects.find(e => e.timing === 'onReveal')
 
-    if (effect && effect.value) {
-      targetCard.currentPower += effect.value
-      gameState.value.message += ` | ${targetCard.name} 战力+${effect.value}`
+    if (effect && (effect.value || effect.useD6Value)) {
+      const delta = effect.useD6Value ? EffectManager.rollD6() : (effect.value as number)
+      targetCard.currentPower += delta
+      gameState.value.message += ` | ${targetCard.name} 战力+${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`
     }
 
     // 找到战术牌的槽位并弃置
@@ -779,7 +780,8 @@ export function useGame() {
 
   // 切换玩家
   function switchToNextPlayer() {
-    const nextPlayerIndex = (gameState.value.currentPlayerIndex + 1) % gameState.value.players.length
+    const prevPlayerIndex = gameState.value.currentPlayerIndex
+    const nextPlayerIndex = (prevPlayerIndex + 1) % gameState.value.players.length
     
     if (gameState.value.isFinalRound) {
       const triggeredPlayer = gameState.value.finalRoundTriggeredBy!
@@ -793,10 +795,11 @@ export function useGame() {
         return
       }
     }
-    
+
+    const roundComplete = gameState.value.players.length > 1 && nextPlayerIndex <= prevPlayerIndex
     gameState.value.currentPlayerIndex = nextPlayerIndex
     
-    if (nextPlayerIndex < gameState.value.currentPlayerIndex) {
+    if (roundComplete) {
       EffectManager.triggerRoundEffects('roundEnd', gameState.value)
       gameState.value.round++
       EffectManager.triggerRoundEffects('roundStart', gameState.value)
@@ -815,16 +818,7 @@ export function useGame() {
   function endGame() {
     gameState.value.phase = 'gameOver'
     
-    // 吟游诗人 end-of-game D6 effect
-    gameState.value.players.forEach(player => {
-      player.field.forEach(slot => {
-        if (slot.card && slot.card.name === '吟游诗人') {
-          const d6 = EffectManager.rollD6()
-          slot.card.currentPower += d6
-          gameState.value.message += ` | 吟游诗人 D6=${d6}，战力+${d6}`
-        }
-      })
-    })
+    EffectManager.triggerGameEndEffects(gameState.value)
     
     const ranking = gameState.value.players.map((player, index) => {
       let totalPower = player.bonusPower

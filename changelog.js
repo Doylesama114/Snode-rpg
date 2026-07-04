@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6048',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果4F：吟游诗人/风笛/激励乐章',
+      '单机round触发修复'
+    ]
+  },
+
+
+  {
     version: '1.0.6047',
     date: '2026-07-04',
     changes: [

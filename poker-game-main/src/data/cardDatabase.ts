@@ -410,8 +410,9 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onGameEnd',
+      type: 'doubleTargetPower',
+      targetName: '吟游诗人',
       description: '游戏结束时，你的“吟游诗人”战力翻倍'
     }
     ],
@@ -1890,8 +1891,8 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onGameEnd',
+      type: 'd6ModifyPower',
       description: '游戏结束时掷一颗D6骰，为这张牌增加等同于掷骰点数的战力'
     }
     ],
@@ -3068,8 +3069,8 @@ export const allCardDefinitions = [
       timing: 'onReveal',
       type: 'modifyPower',
       targetKeywords: ['单位'],
-      value: 3,
-      description: '选择一张单位牌并掷一颗D6骰，为其增加对应点数的战力(D6随机化将在后续实现，暂用平均值3)'
+      useD6Value: true,
+      description: '选择一张单位牌并掷一颗D6骰，为其增加对应点数的战力'
     }
     ],
     slotRequired: 1,

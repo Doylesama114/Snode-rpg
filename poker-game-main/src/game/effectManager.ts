@@ -424,10 +424,10 @@ export class EffectManager {
         return { messages }
       }
       if (targets.length === 1 || effect.allPlayers) {
-        const delta = effect.value || 0
+        const delta = effect.useD6Value ? this.rollD6() : (effect.value || 0)
         targets.forEach(t => { t.currentPower += delta })
         const sign = delta >= 0 ? '+' : ''
-        messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${delta}`)
+        messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`)
         return { messages }
       }
       return { messages, needsTargetSelection: { targets, effect } }
@@ -719,6 +719,51 @@ export class EffectManager {
     })
     if (messages.length > 0) {
       game.message = game.message + ' | ' + messages.join(' | ')
+    }
+  }
+
+  static applyGameEndEffect(
+    effect: CardEffect,
+    ownerCard: Card,
+    player: Player,
+  ): { messages: string[] } {
+    const messages: string[] = []
+
+    if (effect.type === 'd6ModifyPower') {
+      const d6 = this.rollD6()
+      ownerCard.currentPower += d6
+      messages.push(`${ownerCard.name} D6=${d6}，战力+${d6}`)
+      return { messages }
+    }
+
+    if (effect.type === 'doubleTargetPower' && effect.targetName) {
+      player.field.forEach(slot => {
+        if (slot.card && slot.card.name === effect.targetName) {
+          slot.card.currentPower *= 2
+          messages.push(`${slot.card.name} 战力翻倍→${slot.card.currentPower}`)
+        }
+      })
+      return { messages }
+    }
+
+    return { messages }
+  }
+
+  static triggerGameEndEffects(game: GameState) {
+    const messages: string[] = []
+    game.players.forEach(player => {
+      player.field.forEach(slot => {
+        if (!slot.card?.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing !== 'onGameEnd') return
+          if (effect.type === 'conditional' || effect.type === 'custom') return
+          const result = this.applyGameEndEffect(effect, slot.card, player)
+          messages.push(...result.messages)
+        })
+      })
+    })
+    if (messages.length > 0) {
+      game.message = (game.message || '') + ' | ' + messages.join(' | ')
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T12:35:57.552Z",
+  "generatedAt": "2026-07-04T12:53:54.176Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -13,15 +13,15 @@
   "wiringSummary": {
     "structured": 25,
     "implemented_doc": 44,
-    "conditional_only": 78,
-    "unknown": 1
+    "conditional_only": 76,
+    "unknown": 3
   },
   "patternSummary": {
-    "on_deploy": 41,
+    "on_deploy": 40,
     "create_slot": 4,
     "on_other_play": 7,
     "on_field_power": 17,
-    "other": 2,
+    "other": 3,
     "deploy_on_card": 9,
     "on_reveal_tactic": 36,
     "quick_play": 14,
@@ -107,7 +107,6 @@
     "conditional_only": [
       "渔网 (card_017)",
       "箭袋 (card_018)",
-      "风笛 (card_019)",
       "攀爬工具 (card_023)",
       "搬运工 (card_024)",
       "游客 (card_025)",
@@ -158,7 +157,6 @@
       "雪狼 (card_087)",
       "雪怪 (card_088)",
       "寒铁虎 (card_089)",
-      "吟游诗人 (card_090)",
       "短柄斧 (card_092)",
       "三叉戟 (card_093)",
       "板甲 (card_094)",
@@ -185,13 +183,14 @@
       "冰锥术 (card_142)"
     ],
     "unknown": [
+      "风笛 (card_019)",
+      "吟游诗人 (card_090)",
       "季风 (card_120)"
     ]
   },
   "byPattern": {
     "on_deploy": [
       "辛勤的苦工",
-      "风笛",
       "酒吧女招待",
       "奶牛",
       "游客",
@@ -268,6 +267,7 @@
     ],
     "other": [
       "民兵",
+      "风笛",
       "沙滩碉堡"
     ],
     "deploy_on_card": [
@@ -728,18 +728,18 @@
       "id": "card_019",
       "name": "风笛",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "unknown",
+      "pattern": "other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "doubleTargetPower"
       ],
       "timings": [
-        "onDeploy"
+        "onGameEnd"
       ]
     },
     {
@@ -2006,7 +2006,7 @@
       "id": "card_090",
       "name": "吟游诗人",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "unknown",
       "pattern": "d6_random",
       "flags": {
         "quickPlay": false,
@@ -2014,10 +2014,10 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "d6ModifyPower"
       ],
       "timings": [
-        "onDeploy"
+        "onGameEnd"
       ]
     },
     {
