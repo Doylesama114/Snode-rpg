@@ -489,6 +489,28 @@ export function useGame() {
     }
     
     if (effect.type === 'modifyPower' && effect.targetKeywords) {
+      // If targetKeywords includes "单位", match all unit-type cards
+      if (effect.targetKeywords.includes('单位')) {
+        const allUnits = player.field.filter(s => s.card && s.card.type === 'unit').map(s => s.card!)
+        if (allUnits.length === 0) {
+          gameState.value.message = '没有可用的单位目标'
+          discardTacticCard(card, player, slotIndex)
+          return
+        }
+        // Auto-select first unit if single target, or use target selection
+        if (allUnits.length === 1 || effect.value !== undefined) {
+          allUnits[0].currentPower += effect.value || 0
+          gameState.value.message += ` | ${allUnits[0].name} 战力+${effect.value}`
+          discardTacticCard(card, player, slotIndex)
+          return
+        } else {
+          gameState.value.availableTargets = allUnits
+          gameState.value.phase = 'selectTarget'
+          gameState.value.message = '选择一个单位目标'
+          return
+        }
+      }
+      
       // 需要选择目标
       const targets = EffectManager.getValidTargets(player, effect.targetKeywords)
       

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6041',
+    date: '2026-07-04',
+    changes: [
+      'effect batch 1: modifyPower conversion 8 cards (狗头人冒险者/棕熊/圣洁骑士/森林/大海/荒野/蓝焰术/气泡酒) + engine 单位 handler'
+    ]
+  },
+
+
+  {
     version: '1.0.6040',
     date: '2026-07-04',
     changes: [

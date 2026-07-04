@@ -835,8 +835,12 @@
     "cost": 1,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 3,
+        "targetAttributes": ["金"],
+        "selfTarget": true,
+        "stackable": false,
         "description": "如果你的场上拥有其他金属性的卡牌，这张牌的战力+3"
       }
     ]
@@ -1501,9 +1505,14 @@
     "cost": 2,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
-        "description": "如果所以玩家场上均没有“冒险者”名称的卡牌，这张牌的战力+1"
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 1,
+        "targetKeywords": ["冒险者"],
+        "selfTarget": true,
+        "invertCondition": true,
+        "stackable": false,
+        "description": "如果所有玩家场上均没有"冒险者"名称的卡牌，这张牌的战力+1"
       }
     ]
   },
@@ -1793,8 +1802,13 @@
     "cost": 2,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 3,
+        "targetAttributes": ["暗"],
+        "selfTarget": true,
+        "invertCondition": true,
+        "stackable": false,
         "description": "如果所有玩家的场上均没有暗属性的卡牌，这张牌的战力+3"
       }
     ]
@@ -1956,9 +1970,12 @@
     "cost": 1,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
-        "description": "你的场上的每张带有“野兽”关键词和“猎人/德鲁伊/木精灵”名称的单位牌战力+3"
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 3,
+        "targetKeywords": ["野兽"],
+        "stackable": false,
+        "description": "你的场上的每张带有"野兽"关键词的单位牌战力+3"
       }
     ]
   },
@@ -2065,8 +2082,10 @@
     "cost": 2,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 2,
+        "targetAttributes": ["水"],
         "description": "你的水属性单位牌战力+2"
       }
     ]
@@ -2101,9 +2120,12 @@
     "cost": 1,
     "effects": [
       {
-        "timing": "onReveal",
-        "type": "custom",
-        "description": "你的场上的每张带有“怪兽”关键词和“猎人/野蛮人/兽人”名称的单位牌战力+3"
+        "timing": "onField",
+        "type": "modifyPower",
+        "value": 3,
+        "targetKeywords": ["怪兽"],
+        "stackable": false,
+        "description": "你的场上的每张带有"怪兽"关键词的单位牌战力+3"
       }
     ]
   },
@@ -2528,8 +2550,10 @@
     "effects": [
       {
         "timing": "onReveal",
-        "type": "custom",
-        "description": "这张牌可以视作火属性，使你的一张火属性或水属性单位牌战力+2"
+        "type": "modifyPower",
+        "value": 2,
+        "targetKeywords": ["单位"],
+        "description": "使你的一张单位牌战力+2"
       }
     ]
   },
@@ -2564,7 +2588,9 @@
     "effects": [
       {
         "timing": "onReveal",
-        "type": "custom",
+        "type": "modifyPower",
+        "value": 1,
+        "targetKeywords": ["单位"],
         "description": "你在这张牌之后打出的每张单位牌战力均+1"
       }
     ]

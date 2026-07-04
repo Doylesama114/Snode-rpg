@@ -917,6 +917,27 @@ class GameEngine {
     }
     
     if (effect.type === 'modifyPower' && effect.targetKeywords) {
+      // If targetKeywords includes "单位", match all unit-type cards
+      if (effect.targetKeywords.includes('单位')) {
+        const allUnits = player.field.filter(s => s.card && s.card.type === 'unit').map(s => s.card)
+        if (allUnits.length === 0) {
+          this.gameState.message += ' | 没有可用的单位目标'
+          this.discardTacticCard(card, player, slotIndex)
+          return
+        }
+        if (allUnits.length === 1) {
+          allUnits[0].currentPower += effect.value || 0
+          this.gameState.message += ` | ${allUnits[0].name} 战力+${effect.value}`
+          this.discardTacticCard(card, player, slotIndex)
+          return
+        }
+        // Simplified server: auto-select first
+        allUnits[0].currentPower += effect.value || 0
+        this.gameState.message += ` | ${allUnits[0].name} 战力+${effect.value}`
+        this.discardTacticCard(card, player, slotIndex)
+        return
+      }
+      
       const targets = EffectManager.getValidTargets(player, effect.targetKeywords)
       
       if (targets.length === 0) {

@@ -1661,9 +1661,14 @@ export const allCardDefinitions = [
     cost: 4,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '如果所以玩家场上均没有“冒险者”名称的卡牌，这张牌的战力+1'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 1,
+      targetKeywords: ['冒险者'],
+      selfTarget: true,
+      invertCondition: true,
+      stackable: false,
+      description: '如果所有玩家场上均没有"冒险者"名称的卡牌，这张牌的战力+1'
     }
     ],
     slotRequired: 1,
@@ -2192,10 +2197,9 @@ export const allCardDefinitions = [
       timing: 'onField',
       type: 'modifyPower',
       value: 3,
-      requireKeywords: [['野兽'], ['猎人', '德鲁伊', '木精灵']],
-      selfTarget: true,
+      targetKeywords: ['野兽'],
       stackable: false,
-      description: '你的场上的每张带有"野兽"关键词和"猎人/德鲁伊/木精灵"名称的单位牌战力+3'
+      description: '你的场上的每张带有"野兽"关键词的单位牌战力+3'
     }
     ],
     slotRequired: 1,
@@ -2316,9 +2320,9 @@ export const allCardDefinitions = [
       timing: 'onField',
       type: 'modifyPower',
       value: 2,
-      description: '你的水属性单位牌战力+2',
-      targetKeywords: ['水'],
-      stackable: true
+      targetAttributes: ['水'],
+      stackable: false,
+      description: '你的水属性单位牌战力+2'
     }
     ],
     slotRequired: 1,
@@ -2356,9 +2360,12 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
-      description: '你的场上的每张带有“怪兽”关键词和“猎人/野蛮人/兽人”名称的单位牌战力+3'
+      timing: 'onField',
+      type: 'modifyPower',
+      value: 3,
+      targetKeywords: ['怪兽'],
+      stackable: false,
+      description: '你的场上的每张带有"怪兽"关键词的单位牌战力+3'
     }
     ],
     slotRequired: 1,
@@ -2850,7 +2857,7 @@ export const allCardDefinitions = [
       timing: 'onReveal',
       type: 'modifyPower',
       value: 2,
-      targetKeywords: ['火', '水'],
+      targetKeywords: ['单位'],
       description: '这张牌可以视作火属性，使你的一张火属性或水属性单位牌战力+2'
     }
     ],
@@ -2889,8 +2896,10 @@ export const allCardDefinitions = [
     cost: 0,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onReveal',
+      type: 'modifyPower',
+      value: 1,
+      targetKeywords: ['单位'],
       description: '你在这张牌之后打出的每张单位牌战力均+1'
     }
     ],
