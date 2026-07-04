@@ -2457,6 +2457,12 @@ export const allCardDefinitions = [
       type: 'searchDeck',
       searchKeyword: '载具',
       description: '进场后从你的牌库或弃牌区检索一张"载具"加入手牌，随后混洗牌库；你可以将"载具"单位牌部署在这张牌上'
+    },
+    {
+      timing: 'onDeploy',
+      type: 'createSlot',
+      slotDeployKeywords: ['载具'],
+      description: '你可以将「载具」单位牌部署在这张牌上'
     }
     ],
     slotRequired: 1,
@@ -2519,7 +2525,9 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'crossPlayerDeploy',
+      requireFieldAttributes: ['水'],
+      requireFieldCardType: 'environment',
       description: '将这张牌置于一名场上拥有水属性环境牌的玩家场上'
     }
     ],

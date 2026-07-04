@@ -384,13 +384,60 @@ export class EffectManager {
     }
   }
 
-  static meetsPlayRequirements(card: Card, player: Player): boolean {
+  static meetsPlayRequirements(card: Card, player: Player, game?: GameState): boolean {
+    if (this.requiresCrossPlayerDeploy(card)) {
+      if (!game) return false
+      if (this.getCrossPlayerDeployOptions(game, player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.requireNoTacticsInDeck && player.deck.some(c => c.type === 'tactic')) return false
       if (!this.checkFieldRequirements(player, effect)) return false
     }
     return true
+  }
+
+  static getCrossPlayerDeployEffect(card: Card): CardEffect | undefined {
+    return card.effects?.find(e => e.type === 'crossPlayerDeploy')
+  }
+
+  static requiresCrossPlayerDeploy(card: Card): boolean {
+    return !!this.getCrossPlayerDeployEffect(card)
+  }
+
+  /** 目标玩家场上满足 crossPlayerDeploy 条件 */
+  static playerMeetsCrossDeployTarget(targetPlayer: Player, effect: CardEffect): boolean {
+    return this.checkFieldRequirements(targetPlayer, effect)
+  }
+
+  static getCrossPlayerDeployOptions(
+    game: GameState,
+    _playingPlayer: Player,
+    card: Card,
+  ): Array<{ playerIndex: number; slotIndex: number }> {
+    const effect = this.getCrossPlayerDeployEffect(card)
+    if (!effect) return []
+    const options: Array<{ playerIndex: number; slotIndex: number }> = []
+    game.players.forEach((p, playerIndex) => {
+      if (!this.playerMeetsCrossDeployTarget(p, effect)) return
+      p.field.forEach((slot, slotIndex) => {
+        if (slot.isExtra || slot.card) return
+        options.push({ playerIndex, slotIndex })
+      })
+    })
+    return options
+  }
+
+  static isValidCrossPlayerDeploySlot(
+    game: GameState,
+    playingPlayer: Player,
+    card: Card,
+    targetPlayerIndex: number,
+    slotIndex: number,
+  ): boolean {
+    return this.getCrossPlayerDeployOptions(game, playingPlayer, card).some(
+      o => o.playerIndex === targetPlayerIndex && o.slotIndex === slotIndex,
+    )
   }
 
   static getCardOwner(game: GameState, card: Card): Player | undefined {

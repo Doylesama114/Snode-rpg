@@ -241,7 +241,8 @@ io.on('connection', (socket) => {
         result = gameEngine.handlePlayCard(
           player.id,
           action.data.cardIndex,
-          action.data.slotIndex
+          action.data.slotIndex,
+          action.data.targetPlayerIndex,
         )
         break
         

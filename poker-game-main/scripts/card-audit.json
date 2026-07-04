@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T16:22:05.429Z",
+  "generatedAt": "2026-07-04T16:37:52.179Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -11,9 +11,9 @@
     "tactic": 30
   },
   "wiringSummary": {
-    "structured": 15,
-    "implemented_doc": 86,
-    "conditional_only": 47
+    "structured": 13,
+    "implemented_doc": 89,
+    "conditional_only": 46
   },
   "patternSummary": {
     "on_deploy": 34,
@@ -44,9 +44,7 @@
       "金牌烤火鸡 (card_015)",
       "野猪人劫匪 (card_077)",
       "棕熊 (card_079)",
-      "利剑中队 (card_091)",
-      "荒野 (card_113)",
-      "兽栏 (card_114)"
+      "利剑中队 (card_091)"
     ],
     "implemented_doc": [
       "野猪 (card_004)",
@@ -105,8 +103,11 @@
       "帆船 (card_110)",
       "大海 (card_111)",
       "锻炉 (card_112)",
+      "荒野 (card_113)",
+      "兽栏 (card_114)",
       "沙滩 (card_115)",
       "沙滩碉堡 (card_116)",
+      "礁石 (card_117)",
       "马车 (card_118)",
       "寒脊山脉 (card_119)",
       "季风 (card_120)",
@@ -178,7 +179,6 @@
       "刺客 (card_098)",
       "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
-      "礁石 (card_117)",
       "星象塔 (card_123)",
       "回春术 (card_131)",
       "矮人烈酒 (card_135)",
@@ -362,7 +362,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 86,
+  "implementedDocCount": 89,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -449,7 +449,10 @@
     "仲夏节庆典",
     "搬运工",
     "锻炉",
-    "贫民窟"
+    "贫民窟",
+    "礁石",
+    "兽栏",
+    "荒野"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -2444,7 +2447,7 @@
       "id": "card_113",
       "name": "荒野",
       "type": "environment",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "on_field_power",
       "flags": {
         "quickPlay": false,
@@ -2462,7 +2465,7 @@
       "id": "card_114",
       "name": "兽栏",
       "type": "environment",
-      "wiring": "structured",
+      "wiring": "implemented_doc",
       "pattern": "deploy_on_card",
       "flags": {
         "quickPlay": false,
@@ -2470,9 +2473,11 @@
         "emptyEffects": false
       },
       "types": [
-        "searchDeck"
+        "searchDeck",
+        "createSlot"
       ],
       "timings": [
+        "onDeploy",
         "onDeploy"
       ]
     },
@@ -2516,7 +2521,7 @@
       "id": "card_117",
       "name": "礁石",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2524,7 +2529,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "crossPlayerDeploy"
       ],
       "timings": [
         "onDeploy"

@@ -57,6 +57,7 @@ export type EffectType =
   | 'grantUntargetable'       // onField 满足条件时其他玩家不可选中（蛇颈龙）
   | 'deployFromHand'          // 从手牌部署到额外槽位（搬运工）
   | 'debuffAheadPlayers'      // onGameEnd 落后时领先玩家战力减值（贫民窟）
+  | 'crossPlayerDeploy'       // 部署到其他玩家场上（礁石）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -240,7 +241,7 @@ export interface Player {
 }
 
 // 游戏阶段
-export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectTarget' | 'action' | 'gameOver'
+export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectCrossPlayerSlot' | 'selectTarget' | 'action' | 'gameOver'
 
 // 决策类型
 export type DecisionType = 'play' | 'reforge'
@@ -263,7 +264,10 @@ export interface GameState {
   // 选择状态
   selectedCard?: Card
   selectedSlot?: number
+  selectedDeployPlayerIndex?: number
   availableSlots?: number[]
+  /** 跨玩家部署：可选 { playerIndex, slotIndex } 列表 */
+  availableCrossPlayerSlots?: Array<{ playerIndex: number; slotIndex: number }>
   availableTargets?: Card[]
   pendingQuickPlayCard?: Card  // QuickPlay unit card awaiting target selection
   pendingDeployEffect?: CardEffect  // onDeploy 效果待选目标（精准射击）

@@ -794,13 +794,51 @@ class EffectManager {
     }
   }
 
-  static meetsPlayRequirements(card, player) {
+  static meetsPlayRequirements(card, player, game) {
+    if (EffectManager.requiresCrossPlayerDeploy(card)) {
+      const gs = game?.gameState || game
+      if (!gs) return false
+      if (EffectManager.getCrossPlayerDeployOptions(gs, player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.requireNoTacticsInDeck && player.deck.some(c => c.type === 'tactic')) return false
       if (!EffectManager.checkFieldRequirements(player, effect)) return false
     }
     return true
+  }
+
+  static getCrossPlayerDeployEffect(card) {
+    return card.effects?.find(e => e.type === 'crossPlayerDeploy')
+  }
+
+  static requiresCrossPlayerDeploy(card) {
+    return !!EffectManager.getCrossPlayerDeployEffect(card)
+  }
+
+  static playerMeetsCrossDeployTarget(targetPlayer, effect) {
+    return EffectManager.checkFieldRequirements(targetPlayer, effect)
+  }
+
+  static getCrossPlayerDeployOptions(game, _playingPlayer, card) {
+    const effect = EffectManager.getCrossPlayerDeployEffect(card)
+    if (!effect) return []
+    const gameState = game.gameState || game
+    const options = []
+    gameState.players.forEach((p, playerIndex) => {
+      if (!EffectManager.playerMeetsCrossDeployTarget(p, effect)) return
+      p.field.forEach((slot, slotIndex) => {
+        if (slot.isExtra || slot.card) return
+        options.push({ playerIndex, slotIndex })
+      })
+    })
+    return options
+  }
+
+  static isValidCrossPlayerDeploySlot(game, playingPlayer, card, targetPlayerIndex, slotIndex) {
+    return EffectManager.getCrossPlayerDeployOptions(game, playingPlayer, card).some(
+      o => o.playerIndex === targetPlayerIndex && o.slotIndex === slotIndex,
+    )
   }
 
   static findInHandOrDeck(player, effect) {
@@ -1569,7 +1607,7 @@ class GameEngine {
   }
   
   // 处理打出卡牌
-  handlePlayCard(playerId, cardIndex, slotIndex) {
+  handlePlayCard(playerId, cardIndex, slotIndex, targetPlayerIndex) {
     const playerIndex = this.getPlayerIndex(playerId)
     if (playerIndex === -1) {
       return { success: false, error: '玩家不存在' }
@@ -1587,6 +1625,14 @@ class GameEngine {
     if (!card) {
       return { success: false, error: '卡牌不存在' }
     }
+
+    const fieldOwnerIndex = targetPlayerIndex !== undefined && targetPlayerIndex !== null
+      ? targetPlayerIndex
+      : playerIndex
+    const fieldOwner = this.gameState.players[fieldOwnerIndex]
+    if (!fieldOwner) {
+      return { success: false, error: '目标玩家不存在' }
+    }
     
     // QuickPlay gate: skip cost/action for quickPlay cards
     if (card.quickPlay) {
@@ -1602,8 +1648,18 @@ class GameEngine {
       return { success: false, error: '最后一回合只能出战术牌' }
     }
 
-    if (!EffectManager.meetsPlayRequirements(card, player)) {
+    if (!EffectManager.meetsPlayRequirements(card, player, this.gameState)) {
       return { success: false, error: '场上条件不满足，无法打出此牌' }
+    }
+
+    if (EffectManager.requiresCrossPlayerDeploy(card)) {
+      if (!EffectManager.isValidCrossPlayerDeploySlot(
+        this.gameState, player, card, fieldOwnerIndex, slotIndex,
+      )) {
+        return { success: false, error: '无效的跨玩家部署槽位' }
+      }
+    } else if (fieldOwnerIndex !== playerIndex) {
+      return { success: false, error: '此牌只能部署在己方场上' }
     }
     
     // 验证费用
@@ -1623,11 +1679,11 @@ class GameEngine {
     }
     
     // 验证槽位
-    if (slotIndex < 0 || slotIndex >= player.field.length) {
+    if (slotIndex < 0 || slotIndex >= fieldOwner.field.length) {
       return { success: false, error: '无效的槽位' }
     }
     
-    const slot = player.field[slotIndex]
+    const slot = fieldOwner.field[slotIndex]
     if (slot.card !== null) {
       return { success: false, error: '槽位已被占用' }
     }
@@ -1643,16 +1699,19 @@ class GameEngine {
     }
     EffectManager.consumeTacticPlayFreeIfMatch(card, player)
     
-    // 部署卡牌
-    this.deployCard(card, player, slotIndex, playerIndex)
+    // 部署卡牌到目标玩家场上
+    this.deployCard(card, fieldOwner, slotIndex, fieldOwnerIndex)
     
     // 将卡牌添加到待揭示列表
     this.gameState.pendingReveals[playerId].push({
       card: card,
-      slotIndex: slotIndex
+      slotIndex: slotIndex,
+      targetPlayerIndex: fieldOwnerIndex,
     })
     
-    this.gameState.message = `${player.name} 打出了一张牌（费用-${playCost}）`
+    this.gameState.message = fieldOwnerIndex !== playerIndex
+      ? `${player.name} 打出了一张牌到 ${fieldOwner.name} 场上（费用-${playCost}）`
+      : `${player.name} 打出了一张牌（费用-${playCost}）`
     
     console.log(`[GameEngine] ${player.name} 打出卡牌到槽位 ${slotIndex}，暂时隐藏`)
     console.log(`[GameEngine] ${player.name} 当前费用:`, player.currentCost)

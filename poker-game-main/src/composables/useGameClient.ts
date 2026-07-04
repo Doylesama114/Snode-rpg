@@ -22,6 +22,7 @@ export function useGameClient(myPlayerId: string) {
   const selectedCard = ref<Card | null>(null)
   const selectedSlot = ref<number | null>(null)
   const availableSlots = ref<number[]>([])
+  const availableCrossPlayerSlots = ref<Array<{ playerIndex: number; slotIndex: number }>>([])
   const availableTargets = ref<Card[]>([])
   
   // 决策状态（从服务器状态派生）
@@ -85,7 +86,7 @@ export function useGameClient(myPlayerId: string) {
     const card = myPlayer.value.hand[cardIndex]
     if (!card || card === 'hidden') return false
 
-    if (!EffectManager.meetsPlayRequirements(card as Card, myPlayer.value)) {
+    if (!EffectManager.meetsPlayRequirements(card as Card, myPlayer.value, gameState.value)) {
       return false
     }
     
@@ -94,10 +95,21 @@ export function useGameClient(myPlayerId: string) {
     }
     
     selectedCard.value = card as Card
+
+    if (EffectManager.requiresCrossPlayerDeploy(card as Card)) {
+      const opts = EffectManager.getCrossPlayerDeployOptions(gameState.value, myPlayer.value, card as Card)
+      availableCrossPlayerSlots.value = opts
+      if (opts.length === 0) {
+        selectedCard.value = null
+        return false
+      }
+      return true
+    }
     
     // 获取可用槽位
     const slots = EffectManager.getAvailableSlotIndices(myPlayer.value, card as Card)
     availableSlots.value = slots
+    availableCrossPlayerSlots.value = []
     
     if (slots.length === 0) {
       selectedCard.value = null
@@ -108,7 +120,7 @@ export function useGameClient(myPlayerId: string) {
   }
   
   // 选择槽位打出卡牌（返回操作对象）
-  function selectSlotToPlay(slotIndex: number, cardIndex: number) {
+  function selectSlotToPlay(slotIndex: number, cardIndex: number, targetPlayerIndex?: number) {
     if (!selectedCard.value) return null
     
     const action = {
@@ -116,7 +128,8 @@ export function useGameClient(myPlayerId: string) {
       data: {
         cardIndex,
         slotIndex,
-        cardId: selectedCard.value.id
+        cardId: selectedCard.value.id,
+        ...(targetPlayerIndex !== undefined ? { targetPlayerIndex } : {}),
       }
     }
     
@@ -124,8 +137,15 @@ export function useGameClient(myPlayerId: string) {
     selectedCard.value = null
     selectedSlot.value = null
     availableSlots.value = []
+    availableCrossPlayerSlots.value = []
     
     return action
+  }
+
+  function isCrossPlayerSlotAvailable(playerIndex: number, slotIndex: number): boolean {
+    return availableCrossPlayerSlots.value.some(
+      o => o.playerIndex === playerIndex && o.slotIndex === slotIndex,
+    )
   }
   
   // 选择重铸手牌
@@ -230,6 +250,7 @@ export function useGameClient(myPlayerId: string) {
     selectedCard,
     selectedSlot,
     availableSlots,
+    availableCrossPlayerSlots,
     availableTargets,
     hasPlayedThisTurn,
     canPlayExtra,
@@ -252,6 +273,7 @@ export function useGameClient(myPlayerId: string) {
     setOpponentReady,
     getTotalPower,
     isSlotAvailable,
+    isCrossPlayerSlotAvailable,
     isCardPlayable
   }
 }

@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6063] - 2026-07-05
+
+### 卡牌效果批次 4S + 跨玩家部署引擎
+- **礁石**：`crossPlayerDeploy` 部署到有 water 环境牌的玩家场上
+- **兽栏**：补 `createSlot`（载具关键词额外槽）
+- **荒野**：onField 怪兽 +3（纳入 structured 进度）
+- **引擎**：`selectCrossPlayerSlot` 阶段、`targetPlayerIndex` 联机协议、终局计数按目标玩家场
+- **测试**：`scripts/test-4s.mjs`（11/11）
+
 ## [1.0.6062] - 2026-07-05
 
 ### 卡牌效果批次 4R

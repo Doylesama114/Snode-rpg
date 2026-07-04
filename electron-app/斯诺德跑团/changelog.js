@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6063',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4S:礁石/兽栏/荒野',
+      'crossPlayerDeploy跨玩家部署引擎'
+    ]
+  },
+
+
+  {
     version: '1.0.6062',
     date: '2026-07-04',
     changes: [

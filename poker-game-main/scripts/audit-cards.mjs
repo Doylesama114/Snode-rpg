@@ -45,6 +45,7 @@ const IMPLEMENTED_NAMES = new Set([
   '武僧', '溪流', '帆船',
   '蛮斗士', '蛇颈龙', '仲夏节庆典',
   '搬运工', '锻炉', '贫民窟',
+  '礁石', '兽栏', '荒野',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([
@@ -58,7 +59,7 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'conditionalPlayCost', 'excludeFromFieldCount',
   'grantTacticPlayFree', 'modifyPowerByUniqueAttributes',
   'playRequirement', 'searchFromHandOrDeck', 'grantUntargetable',
-  'deployFromHand', 'debuffAheadPlayers',
+  'deployFromHand', 'debuffAheadPlayers', 'crossPlayerDeploy',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

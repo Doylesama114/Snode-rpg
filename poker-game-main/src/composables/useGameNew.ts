@@ -219,7 +219,7 @@ export function useGame() {
     const card = currentPlayer.value.hand[cardIndex]
     if (!card) return
 
-    if (!EffectManager.meetsPlayRequirements(card, currentPlayer.value)) {
+    if (!EffectManager.meetsPlayRequirements(card, currentPlayer.value, gameState.value)) {
       gameState.value.message = '场上条件不满足，无法打出此牌'
       return
     }
@@ -231,6 +231,21 @@ export function useGame() {
     }
     
     gameState.value.selectedCard = card
+
+    if (EffectManager.requiresCrossPlayerDeploy(card)) {
+      const options = EffectManager.getCrossPlayerDeployOptions(gameState.value, currentPlayer.value, card)
+      gameState.value.availableCrossPlayerSlots = options
+      gameState.value.phase = 'selectCrossPlayerSlot'
+      if (options.length === 0) {
+        gameState.value.message = '没有可部署的目标玩家槽位！'
+        gameState.value.phase = 'action'
+        gameState.value.selectedCard = undefined
+        return
+      }
+      gameState.value.message = `选择一名拥有水环境的玩家槽位打出 ${card.name}`
+      return
+    }
+
     gameState.value.phase = 'selectSlot'
     
     // 获取可用槽位
@@ -265,12 +280,40 @@ export function useGame() {
     playCardToSlot(cardIndex, slotIndex)
   }
 
-  // 打出卡牌到指定槽位
-  function playCardToSlot(cardIndex: number, slotIndex: number) {
+  function selectCrossPlayerSlotToPlay(targetPlayerIndex: number, slotIndex: number) {
+    if (gameState.value.phase !== 'selectCrossPlayerSlot' || !gameState.value.selectedCard) return
+    const card = gameState.value.selectedCard
+    const cardIndex = currentPlayer.value.hand.indexOf(card)
+    if (cardIndex === -1) return
+    if (!EffectManager.isValidCrossPlayerDeploySlot(
+      gameState.value, currentPlayer.value, card, targetPlayerIndex, slotIndex,
+    )) {
+      gameState.value.message = '无效的部署目标'
+      return
+    }
+    playCardToSlot(cardIndex, slotIndex, targetPlayerIndex)
+    gameState.value.availableCrossPlayerSlots = undefined
+    gameState.value.selectedDeployPlayerIndex = undefined
+  }
+
+  function isCrossPlayerSlotAvailable(playerIndex: number, slotIndex: number): boolean {
+    if (gameState.value.phase !== 'selectCrossPlayerSlot') return false
+    return !!gameState.value.availableCrossPlayerSlots?.some(
+      o => o.playerIndex === playerIndex && o.slotIndex === slotIndex,
+    )
+  }
+
+  // 打出卡牌到指定槽位（可选 targetPlayerIndex 跨玩家部署）
+  function playCardToSlot(cardIndex: number, slotIndex: number, targetPlayerIndex?: number) {
     const player = currentPlayer.value
     const card = player.hand[cardIndex]
     
     if (!card) return
+
+    const fieldOwner = targetPlayerIndex !== undefined
+      ? gameState.value.players[targetPlayerIndex]
+      : player
+    if (!fieldOwner) return
     
     // QuickPlay gate: skip cost/action for quickPlay cards
     if (card.quickPlay) {
@@ -304,7 +347,7 @@ export function useGame() {
       gameState.value.phase = 'decision'
     } else {
       // 玩家直接部署
-      deployCard(card, player, slotIndex)
+      deployCard(card, fieldOwner, slotIndex)
     }
   }
 
@@ -482,8 +525,8 @@ export function useGame() {
     // 重新计算战力
     EffectManager.recalculateAllPowers(gameState.value)
     
-    // 检查是否填满场地
-    checkFieldFull()
+    // 检查是否填满场地（跨玩家部署时检查目标玩家）
+    checkFieldFull(fieldOwner)
     
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
@@ -794,13 +837,13 @@ export function useGame() {
     })
   }
 
-  function checkFieldFull() {
-    const player = currentPlayer.value
+  function checkFieldFull(fieldOwner?: Player) {
+    const player = fieldOwner ?? currentPlayer.value
     const filledMainSlots = countMainFieldCards(player)
     
     if (filledMainSlots === 6 && !gameState.value.isFinalRound) {
       gameState.value.isFinalRound = true
-      gameState.value.finalRoundTriggeredBy = gameState.value.currentPlayerIndex
+      gameState.value.finalRoundTriggeredBy = gameState.value.players.findIndex(p => p.id === player.id)
       gameState.value.message += ` | ${player.name} 填满了场地！进入最后一回合！`
       updateFinalRoundRestrictions()
     }
@@ -992,6 +1035,8 @@ export function useGame() {
     chooseReforge,
     selectCardToPlay,
     selectSlotToPlay,
+    selectCrossPlayerSlotToPlay,
+    isCrossPlayerSlotAvailable,
     selectTacticTarget,
     selectQuickPlayTarget,
     selectReforgeCard,

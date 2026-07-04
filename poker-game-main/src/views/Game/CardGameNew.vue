@@ -16,6 +16,8 @@ const {
   chooseReforge, 
   selectCardToPlay,
   selectSlotToPlay,
+  selectCrossPlayerSlotToPlay,
+  isCrossPlayerSlotAvailable,
   selectTacticTarget,
   selectQuickPlayTarget,
   selectReforgeCard, 
@@ -29,6 +31,19 @@ const hoveredCardKey = ref<string | null>(null)
 
 function fieldCardKey(playerId: string, slotKey: string | number) {
   return `${playerId}-${slotKey}`
+}
+
+function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
+  const player = gameState.players[playerIndex]
+  const actualIndex = player.field.indexOf(slotRef as typeof player.field[0])
+  if (actualIndex < 0) return
+  if (player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(actualIndex)) {
+    selectSlotToPlay(actualIndex)
+    return
+  }
+  if (gameState.phase === 'selectCrossPlayerSlot' && isCrossPlayerSlotAvailable(playerIndex, actualIndex)) {
+    selectCrossPlayerSlotToPlay(playerIndex, actualIndex)
+  }
 }
 
 function onFieldCardEnter(playerId: string, slotKey: string | number) {
@@ -150,10 +165,11 @@ const playerCountStart = ref(2)
               class="field-slot"
               :class="{
                 'has-card': slot.card,
-                'selectable': player.id === 'player' && (isSlotAvailable(si) || (gameState.phase === 'selectTarget' && slot.card)),
-                'selected': player.id === 'player' && gameState.selectedSlot === si
+                'selectable': (player.id === 'player' && (isSlotAvailable(player.field.indexOf(slot)) || (gameState.phase === 'selectTarget' && slot.card)))
+                  || isCrossPlayerSlotAvailable(index, player.field.indexOf(slot)),
+                'selected': player.id === 'player' && gameState.selectedSlot === player.field.indexOf(slot)
               }"
-              @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(si) && selectSlotToPlay(si); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card)"
+              @click="onFieldSlotClick(index, slot); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card!)"
             >
               <div
                 v-if="slot.card"
