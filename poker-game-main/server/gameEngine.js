@@ -988,6 +988,29 @@ class GameEngine {
             this.gameState.message += ` | 未找到符合条件的卡牌`
           }
         }
+      } else if (effect.timing === 'onReveal') {
+        if (effect.type === 'stealPower') {
+          const target = player.field.find(s =>
+            s.card && s.card !== card &&
+            EffectManager.hasAnyKeyword(s.card, effect.targetKeywords || [])
+          )
+          if (target && target.card) {
+            const stolen = Math.min(effect.value || 1, target.card.currentPower)
+            target.card.currentPower -= stolen
+            card.currentPower += stolen
+            this.gameState.message += ` | ${card.name} 从 ${target.card.name} 偷取${stolen}战力`
+          }
+        } else if (effect.type === 'stealCard') {
+          const playerIndex = this.gameState.players.findIndex(p => p.id === player.id)
+          const leftIndex = (playerIndex + 1) % this.gameState.players.length
+          const opponent = this.gameState.players[leftIndex]
+          if (opponent && opponent.hand.length > 0) {
+            const randomIndex = Math.floor(Math.random() * opponent.hand.length)
+            const stolenCard = opponent.hand.splice(randomIndex, 1)[0]
+            player.hand.push(stolenCard)
+            this.gameState.message += ` | ${player.name} 偷取了${opponent.name}的${stolenCard.name}`
+          }
+        }
       }
     })
   }

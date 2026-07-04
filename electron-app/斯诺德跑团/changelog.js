@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6040',
+    date: '2026-07-04',
+    changes: [
+      'engine upgrade #6: stealPower + stealCard',
+      '野猪人劫匪 + 海鸥 (all 6 engine upgrades complete)'
+    ]
+  },
+
+
+  {
     version: '1.0.6039',
     date: '2026-07-04',
     changes: [

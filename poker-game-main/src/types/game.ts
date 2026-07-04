@@ -33,6 +33,8 @@ export type EffectType =
   | 'returnToDeckBottom'  // 返回牌库底部（quickPlay）
   | 'setNextUnitAttribute' // 设置下一次部署属性（quickPlay）
   | 'markOpponentHand'     // 标记对手手牌（quickPlay）
+  | 'stealPower'          // 偷取战力（onReveal）
+  | 'stealCard'           // 偷取手牌（onReveal）
 
 // 卡牌效果定义
 export interface CardEffect {

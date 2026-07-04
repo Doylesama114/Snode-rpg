@@ -1617,8 +1617,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
-      description: '揭示：偷取场上一张带有“居民”关键词的单位牌的1点战力'
+      type: 'stealPower',
+      targetKeywords: ['居民'],
+      value: 1,
+      description: '揭示：偷取场上一张带有"居民"关键词的单位牌的1点战力'
     }
     ],
     slotRequired: 1,
@@ -1740,7 +1742,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onReveal',
-      type: 'conditional',
+      type: 'stealCard',
+      value: 1,
       description: '揭示：随机偷取你左手边第一名玩家的一张手牌'
     }
     ],
