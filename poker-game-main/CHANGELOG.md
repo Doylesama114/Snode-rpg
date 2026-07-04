@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6061] - 2026-07-04
+
+### 卡牌效果批次 4Q
+- **蛮斗士**：`playRequirement` 牌库中不得含战术牌
+- **蛇颈龙**：`grantUntargetable` 场上有水环境时其他玩家不可选中
+- **仲夏节庆典**：onDeploy `requireKeywords` 吟游诗人/鲁特琴/篝火/晴天齐全 +22
+- **引擎**：`untargetableByOthers` 接入 destroy 目标过滤与战力重算
+- **测试**：`scripts/test-4q.mjs`（10/10）
+
 ## [1.0.6060] - 2026-07-04
 
 ### 卡牌效果批次 4P

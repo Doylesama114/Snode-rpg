@@ -321,6 +321,13 @@ export class EffectManager {
   static recalculateCardPower(card: Card, player: Player, game: GameState) {
     // 重置为基础战力
     card.currentPower = card.basePower
+    card.untargetableByOthers = false
+    
+    for (const effect of card.effects) {
+      if (effect.timing === 'onField' && effect.type === 'grantUntargetable') {
+        card.untargetableByOthers = this.checkFieldRequirements(player, effect)
+      }
+    }
     
     // 添加叠加的加成（法师、战士等 onOtherPlay 持久化）
     if (card.stackedBonus !== undefined && card.stackedBonus > 0) {
@@ -380,9 +387,14 @@ export class EffectManager {
   static meetsPlayRequirements(card: Card, player: Player): boolean {
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
+      if (effect.requireNoTacticsInDeck && player.deck.some(c => c.type === 'tactic')) return false
       if (!this.checkFieldRequirements(player, effect)) return false
     }
     return true
+  }
+
+  static getCardOwner(game: GameState, card: Card): Player | undefined {
+    return game.players.find(p => p.field.some(s => s.card === card))
   }
 
   static findInHandOrDeck(player: Player, effect: CardEffect): { pile: 'hand' | 'deck'; index: number; card: Card } | null {
@@ -598,11 +610,12 @@ export class EffectManager {
   }
 
   /** 收集 destroy 效果可选目标（全场） */
-  static getDestroyTargets(game: GameState, _player: Player, effect: CardEffect): Card[] {
+  static getDestroyTargets(game: GameState, player: Player, effect: CardEffect): Card[] {
     const targets: Card[] = []
     game.players.forEach(p => {
       p.field.forEach(slot => {
         if (!slot.card) return
+        if (p.id !== player.id && slot.card.untargetableByOthers) return
         if (effect.targetKeywords?.length && !this.hasAnyKeyword(slot.card, effect.targetKeywords)) return
         if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
         targets.push(slot.card)
@@ -886,6 +899,24 @@ export class EffectManager {
       this.applyUnitDeployBonuses(deployCard, player).forEach(m => messages.push(m))
       this.triggerOnOtherPlayEffects(deployCard, player, game)
       messages.push(`部署${deployCard.name}（费用${deployCost}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireKeywords?.length) {
+      const allMatch = effect.requireKeywords.every(keywordGroup =>
+        player.field.some(otherSlot =>
+          otherSlot.card && otherSlot.card !== card &&
+          this.hasAnyKeyword(otherSlot.card, keywordGroup),
+        ),
+      )
+      if (allMatch) {
+        const delta = effect.value || 0
+        card.basePower += delta
+        card.currentPower += delta
+        messages.push(`${card.name} 战力+${delta}`)
+      } else {
+        messages.push('条件不满足，效果未触发')
+      }
       return { messages }
     }
 

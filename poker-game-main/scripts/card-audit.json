@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T15:46:38.240Z",
+  "generatedAt": "2026-07-04T16:08:31.040Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,11 +12,11 @@
   },
   "wiringSummary": {
     "structured": 15,
-    "implemented_doc": 80,
-    "conditional_only": 53
+    "implemented_doc": 83,
+    "conditional_only": 50
   },
   "patternSummary": {
-    "on_deploy": 37,
+    "on_deploy": 36,
     "create_slot": 4,
     "on_other_play": 9,
     "on_field_power": 18,
@@ -27,6 +27,7 @@
     "charges": 1,
     "round_start": 9,
     "d6_random": 4,
+    "on_field_other": 1,
     "round_end": 4
   },
   "byWiring": {
@@ -66,6 +67,7 @@
       "退役老兵 (card_032)",
       "萨满祭司 (card_033)",
       "武僧 (card_034)",
+      "蛮斗士 (card_036)",
       "狗头人冒险者 (card_043)",
       "海藻 (card_047)",
       "德鲁伊 (card_049)",
@@ -84,6 +86,7 @@
       "拾贝鱼人 (card_064)",
       "水元素 (card_066)",
       "珊瑚元素 (card_067)",
+      "蛇颈龙 (card_070)",
       "篝火 (card_071)",
       "火元素 (card_073)",
       "土元素 (card_078)",
@@ -95,6 +98,7 @@
       "射击俱乐部 (card_103)",
       "法师塔 (card_104)",
       "森林 (card_105)",
+      "仲夏节庆典 (card_107)",
       "溪流 (card_108)",
       "海港 (card_109)",
       "帆船 (card_110)",
@@ -136,7 +140,6 @@
       "搬运工 (card_024)",
       "强盗 (card_031)",
       "征募官 (card_035)",
-      "蛮斗士 (card_036)",
       "食人魔 (card_037)",
       "纪念照 (card_038)",
       "金矿 (card_039)",
@@ -152,7 +155,6 @@
       "潮汐歌者 (card_065)",
       "海洋德鲁伊 (card_068)",
       "旗鱼 (card_069)",
-      "蛇颈龙 (card_070)",
       "火蜥蜴 (card_072)",
       "狂战士 (card_074)",
       "洋葱 (card_075)",
@@ -174,7 +176,6 @@
       "刺客 (card_098)",
       "温馨的旅馆 (card_102)",
       "棕榈树 (card_106)",
-      "仲夏节庆典 (card_107)",
       "锻炉 (card_112)",
       "礁石 (card_117)",
       "贫民窟 (card_122)",
@@ -210,7 +211,6 @@
       "拾贝鱼人",
       "珊瑚元素",
       "旗鱼",
-      "蛇颈龙",
       "狂战士",
       "枭熊",
       "雷龙",
@@ -352,6 +352,9 @@
       "吟游诗人",
       "激励乐章"
     ],
+    "on_field_other": [
+      "蛇颈龙"
+    ],
     "round_end": [
       "篝火",
       "酒馆",
@@ -359,7 +362,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 80,
+  "implementedDocCount": 83,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -440,7 +443,10 @@
     "药剂师",
     "武僧",
     "溪流",
-    "帆船"
+    "帆船",
+    "蛮斗士",
+    "蛇颈龙",
+    "仲夏节庆典"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -1067,7 +1073,7 @@
       "id": "card_036",
       "name": "蛮斗士",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1075,7 +1081,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "playRequirement"
       ],
       "timings": [
         "onDeploy"
@@ -1679,18 +1685,18 @@
       "id": "card_070",
       "name": "蛇颈龙",
       "type": "unit",
-      "wiring": "conditional_only",
-      "pattern": "on_deploy",
+      "wiring": "implemented_doc",
+      "pattern": "on_field_other",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "grantUntargetable"
       ],
       "timings": [
-        "onDeploy"
+        "onField"
       ]
     },
     {
@@ -2327,7 +2333,7 @@
       "id": "card_107",
       "name": "仲夏节庆典",
       "type": "environment",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -2335,7 +2341,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
         "onDeploy"

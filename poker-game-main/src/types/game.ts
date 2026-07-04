@@ -53,6 +53,7 @@ export type EffectType =
   | 'modifyPowerByUniqueAttributes' // onGameEnd 按不同属性计数加战力（游客）
   | 'playRequirement'         // 打出前场上条件（帆船）
   | 'searchFromHandOrDeck'    // 从手牌/牌库检索并部署（溪流）
+  | 'grantUntargetable'       // onField 满足条件时其他玩家不可选中（蛇颈龙）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -154,6 +155,8 @@ export interface CardEffect {
   slotExcludeFromFieldCount?: boolean
   /** createSlot：部署到该槽位的单位额外战力 */
   slotDeployedPowerBonus?: number
+  /** playRequirement：牌库中不得含战术牌（蛮斗士） */
+  requireNoTacticsInDeck?: boolean
   drawCount?: number     // number of cards to draw
 }
 
@@ -196,6 +199,8 @@ export interface Card {
   deployOnCardTarget?: string // QuickPlay unit: parent card id (deployed onto existing field card)
   /** 部署在额外槽位且 host 标记不计入终局数量 */
   excludeFromFieldCount?: boolean
+  /** 其他玩家效果不可选中（蛇颈龙等） */
+  untargetableByOthers?: boolean
 }
 
 // 场上槽位

@@ -785,7 +785,8 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'playRequirement',
+      requireNoTacticsInDeck: true,
       description: '你的牌库里不能拥有战术牌'
     }
     ],
@@ -1524,8 +1525,10 @@ export const allCardDefinitions = [
     cost: 5,
     effects: [
     {
-      timing: 'onDeploy',
-      type: 'conditional',
+      timing: 'onField',
+      type: 'grantUntargetable',
+      requireFieldAttributes: ['水'],
+      requireFieldCardType: 'environment',
       description: '如果你拥有水属性的环境牌，这张牌便无法被其他玩家选中'
     }
     ],
@@ -2286,8 +2289,12 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
-      description: '如果你拥有“吟游诗人”、“鲁特琴”、“篝火”和“晴天”，这张牌的战力+22'
+      type: 'modifyPower',
+      selfTarget: true,
+      value: 22,
+      requireKeywords: [['吟游诗人'], ['鲁特琴'], ['篝火'], ['晴天']],
+      stackable: false,
+      description: '如果你拥有「吟游诗人」、「鲁特琴」、「篝火」和「晴天」，这张牌的战力+22'
     }
     ],
     slotRequired: 1,

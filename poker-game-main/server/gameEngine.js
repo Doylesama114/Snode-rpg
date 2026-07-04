@@ -679,6 +679,13 @@ class EffectManager {
   // 重新计算单张卡牌的战力
   static recalculateCardPower(card, player, game) {
     card.currentPower = card.basePower
+    card.untargetableByOthers = false
+
+    for (const effect of card.effects) {
+      if (effect.timing === 'onField' && effect.type === 'grantUntargetable') {
+        card.untargetableByOthers = EffectManager.checkFieldRequirements(player, effect)
+      }
+    }
 
     if (card.stackedBonus !== undefined && card.stackedBonus > 0) {
       card.currentPower += card.stackedBonus
@@ -736,6 +743,7 @@ class EffectManager {
   static meetsPlayRequirements(card, player) {
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
+      if (effect.requireNoTacticsInDeck && player.deck.some(c => c.type === 'tactic')) return false
       if (!EffectManager.checkFieldRequirements(player, effect)) return false
     }
     return true
@@ -857,11 +865,12 @@ class EffectManager {
     return messages
   }
 
-  static getDestroyTargets(game, _player, effect) {
+  static getDestroyTargets(game, player, effect) {
     const targets = []
     game.players.forEach(p => {
       p.field.forEach(slot => {
         if (!slot.card) return
+        if (p.id !== player.id && slot.card.untargetableByOthers) return
         if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(slot.card, effect.targetKeywords)) return
         if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
         targets.push(slot.card)
@@ -1132,6 +1141,24 @@ class EffectManager {
       EffectManager.applyUnitDeployBonuses(deployCard, player).forEach(m => messages.push(m))
       EffectManager.triggerOnOtherPlayEffects(deployCard, player, game)
       messages.push(`部署${deployCard.name}（费用${deployCost}）`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireKeywords?.length) {
+      const allMatch = effect.requireKeywords.every(keywordGroup =>
+        player.field.some(otherSlot =>
+          otherSlot.card && otherSlot.card !== card &&
+          EffectManager.hasAnyKeyword(otherSlot.card, keywordGroup),
+        ),
+      )
+      if (allMatch) {
+        const delta = effect.value || 0
+        card.basePower += delta
+        card.currentPower += delta
+        messages.push(`${card.name} 战力+${delta}`)
+      } else {
+        messages.push('条件不满足，效果未触发')
+      }
       return { messages }
     }
 

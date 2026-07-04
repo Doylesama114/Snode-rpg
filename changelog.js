@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6061',
+    date: '2026-07-04',
+    changes: [
+      '卡牌效果批次4Q:蛮斗士/蛇颈龙/仲夏节庆典',
+      'grantUntargetable+requireNoTacticsInDeck'
+    ]
+  },
+
+
+  {
     version: '1.0.6060',
     date: '2026-07-04',
     changes: [
