@@ -40,6 +40,7 @@ const IMPLEMENTED_NAMES = new Set([
   '奶牛', '螃蟹', '退役老兵',
   '海葵', '翻车鱼', '拾贝鱼人',
   '萨满祭司', '珍珠商人', '海港',
+  '奴隶', '蔓生怪', '珊瑚元素',
 ])
 
 const STRUCTURED_EFFECT_TYPES = new Set([
@@ -50,6 +51,7 @@ const STRUCTURED_EFFECT_TYPES = new Set([
   'd6TierPower', 'setPowerIfNoFieldKeyword', 'd6ModifyPower', 'doubleTargetPower',
   'useD6Value', 'modifyPlayCost', 'd6Min', 'debuffOpponentHand', 'grantUnitPlayBonus',
   'grantAttributePlayBonus', 'setD6MinForCardName',
+  'conditionalPlayCost', 'excludeFromFieldCount',
 ])
 
 const PLACEHOLDER_NAMES = new Set(['名称', '关键词'])

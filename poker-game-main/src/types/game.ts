@@ -47,6 +47,8 @@ export type EffectType =
   | 'grantUnitPlayBonus'  // onReveal 之后打出的单位牌战力加成（气泡酒）
   | 'grantAttributePlayBonus' // onDeploy 下一张指定属性单位 +N（萨满祭司）
   | 'setD6MinForCardName'     // onDeploy 指定名称卡牌 D6 下限（珍珠商人）
+  | 'conditionalPlayCost'     // 打出时按场上条件设定费用（蔓生怪）
+  | 'excludeFromFieldCount'   // onDeploy 自身不计入终局 6 张（奴隶）
 
 // 卡牌效果定义
 export interface CardEffect {
@@ -79,6 +81,12 @@ export interface CardEffect {
   requireOtherFieldKeyword?: string
   /** 配合 requireFieldKeywords：限定场上牌类型 */
   requireFieldCardType?: CardType
+  /** 场上需存在指定属性的牌（任一即可，如蔓生怪需木环境） */
+  requireFieldAttributes?: string[]
+  /** 场上需同时存在各属性各至少一张（如珊瑚元素需水+光环境） */
+  requireAllFieldAttributes?: string[]
+  /** conditionalPlayCost：条件满足时的打出费用 */
+  playCostValue?: number
   /** round 全局 modifyPower：作用于场上所有卡（非仅 self） */
   targetAllCards?: boolean
   /** roundEnd：改场上其他卡（非自身） */

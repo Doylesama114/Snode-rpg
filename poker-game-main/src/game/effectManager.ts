@@ -812,6 +812,24 @@ export class EffectManager {
       return { messages }
     }
 
+    if (effect.type === 'excludeFromFieldCount') {
+      card.excludeFromFieldCount = true
+      messages.push(`${card.name} 不计入终局数量`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireAllFieldAttributes?.length) {
+      if (!this.hasAllFieldAttributes(player, effect)) {
+        messages.push('条件不满足，效果未触发')
+        return { messages }
+      }
+      const delta = effect.value || 0
+      card.basePower += delta
+      card.currentPower += delta
+      messages.push(`${card.name} 战力+${delta}`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && effect.selfTarget && effect.countMatchingFieldCards) {
       const count = this.countMatchingFieldCards(player, card, effect)
       const delta = count * (effect.value || 0)
@@ -971,6 +989,31 @@ export class EffectManager {
     })
   }
 
+  static hasFieldAttributeMatching(player: Player, effect: CardEffect): boolean {
+    const attrs = effect.requireFieldAttributes
+    if (!attrs?.length) return true
+    return attrs.some(attr =>
+      player.field.some(s =>
+        s.card &&
+        s.card.attribute === attr &&
+        (!effect.requireFieldCardType || s.card.type === effect.requireFieldCardType),
+      ),
+    )
+  }
+
+  static hasAllFieldAttributes(player: Player, effect: CardEffect): boolean {
+    const attrs = effect.requireAllFieldAttributes
+    if (!attrs?.length) return true
+    const cardType = effect.requireFieldCardType
+    return attrs.every(attr =>
+      player.field.some(s =>
+        s.card &&
+        s.card.attribute === attr &&
+        (!cardType || s.card.type === cardType),
+      ),
+    )
+  }
+
   // 触发回合开始/结束效果
   static hasFieldMatching(player: Player, effect: CardEffect): boolean {
     return player.field.some(slot => {
@@ -987,8 +1030,17 @@ export class EffectManager {
 
   /** deploy/reveal/round 共用：检查场上前置条件 */
   static checkFieldRequirements(player: Player, effect: CardEffect): boolean {
-    if (effect.requireFieldName || effect.requireFieldKeywords?.length || effect.requireFieldCardType) {
+    if (effect.requireAllFieldAttributes?.length && !this.hasAllFieldAttributes(player, effect)) {
+      return false
+    }
+    if (effect.requireFieldAttributes?.length && !this.hasFieldAttributeMatching(player, effect)) {
+      return false
+    }
+    if (effect.requireFieldName || effect.requireFieldKeywords?.length) {
       return this.hasFieldMatching(player, effect)
+    }
+    if (effect.requireFieldCardType && !effect.requireFieldAttributes?.length && !effect.requireAllFieldAttributes?.length) {
+      return player.field.some(s => s.card && s.card.type === effect.requireFieldCardType)
     }
     return true
   }
@@ -1027,8 +1079,25 @@ export class EffectManager {
     return targets
   }
 
+  /** 计入终局 6 张上限的主槽位牌数（排除 excludeFromFieldCount） */
+  static countMainFieldCardsForLimit(player: Player): number {
+    return player.field.filter(s => !s.isExtra && s.card && !s.card.excludeFromFieldCount).length
+  }
+
+  static getConditionalPlayCost(card: Card, player: Player): number | null {
+    for (const effect of card.effects || []) {
+      if (effect.type !== 'conditionalPlayCost') continue
+      if (this.checkFieldRequirements(player, effect)) {
+        return effect.playCostValue ?? 0
+      }
+    }
+    return null
+  }
+
   /** 计算打出费用（含 onField modifyPlayCost，如季风） */
   static getEffectivePlayCost(card: Card, player: Player): number {
+    const override = this.getConditionalPlayCost(card, player)
+    if (override !== null) return Math.max(0, override)
     let cost = card.cost
     player.field.forEach(slot => {
       if (!slot.card?.effects) return

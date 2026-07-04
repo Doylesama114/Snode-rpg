@@ -769,7 +769,7 @@ export function useGame() {
 
   // 检查场地是否填满
   function countMainFieldCards(player: Player) {
-    return player.field.filter(s => !s.isExtra && s.card).length
+    return EffectManager.countMainFieldCardsForLimit(player)
   }
 
   function updateFinalRoundRestrictions() {

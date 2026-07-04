@@ -196,6 +196,31 @@ class EffectManager {
   }
 
   // 按时机触发所有回合效果
+  static hasFieldAttributeMatching(player, effect) {
+    const attrs = effect.requireFieldAttributes
+    if (!attrs?.length) return true
+    return attrs.some(attr =>
+      player.field.some(s =>
+        s.card &&
+        s.card.attribute === attr &&
+        (!effect.requireFieldCardType || s.card.type === effect.requireFieldCardType),
+      ),
+    )
+  }
+
+  static hasAllFieldAttributes(player, effect) {
+    const attrs = effect.requireAllFieldAttributes
+    if (!attrs?.length) return true
+    const cardType = effect.requireFieldCardType
+    return attrs.every(attr =>
+      player.field.some(s =>
+        s.card &&
+        s.card.attribute === attr &&
+        (!cardType || s.card.type === cardType),
+      ),
+    )
+  }
+
   static hasFieldMatching(player, effect) {
     return player.field.some(slot => {
       if (!slot.card) return false
@@ -210,8 +235,17 @@ class EffectManager {
   }
 
   static checkFieldRequirements(player, effect) {
-    if (effect.requireFieldName || effect.requireFieldKeywords?.length || effect.requireFieldCardType) {
+    if (effect.requireAllFieldAttributes?.length && !EffectManager.hasAllFieldAttributes(player, effect)) {
+      return false
+    }
+    if (effect.requireFieldAttributes?.length && !EffectManager.hasFieldAttributeMatching(player, effect)) {
+      return false
+    }
+    if (effect.requireFieldName || effect.requireFieldKeywords?.length) {
       return EffectManager.hasFieldMatching(player, effect)
+    }
+    if (effect.requireFieldCardType && !effect.requireFieldAttributes?.length && !effect.requireAllFieldAttributes?.length) {
+      return player.field.some(s => s.card && s.card.type === effect.requireFieldCardType)
     }
     return true
   }
@@ -328,7 +362,23 @@ class EffectManager {
     return targets
   }
 
+  static countMainFieldCardsForLimit(player) {
+    return player.field.filter(s => !s.isExtra && s.card && !s.card.excludeFromFieldCount).length
+  }
+
+  static getConditionalPlayCost(card, player) {
+    for (const effect of card.effects || []) {
+      if (effect.type !== 'conditionalPlayCost') continue
+      if (EffectManager.checkFieldRequirements(player, effect)) {
+        return effect.playCostValue ?? 0
+      }
+    }
+    return null
+  }
+
   static getEffectivePlayCost(card, player) {
+    const override = EffectManager.getConditionalPlayCost(card, player)
+    if (override !== null) return Math.max(0, override)
     let cost = card.cost
     player.field.forEach(slot => {
       if (!slot.card?.effects) return
@@ -975,6 +1025,24 @@ class EffectManager {
         player.d6MinByCardName[name] = effect.d6Min ?? 5
         messages.push(`「${name}」掷骰结果不低于 ${effect.d6Min ?? 5}`)
       }
+      return { messages }
+    }
+
+    if (effect.type === 'excludeFromFieldCount') {
+      card.excludeFromFieldCount = true
+      messages.push(`${card.name} 不计入终局数量`)
+      return { messages }
+    }
+
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.requireAllFieldAttributes?.length) {
+      if (!EffectManager.hasAllFieldAttributes(player, effect)) {
+        messages.push('条件不满足，效果未触发')
+        return { messages }
+      }
+      const delta = effect.value || 0
+      card.basePower += delta
+      card.currentPower += delta
+      messages.push(`${card.name} 战力+${delta}`)
       return { messages }
     }
 
@@ -1680,8 +1748,7 @@ class GameEngine {
   // 检查场地是否填满
   checkFieldFull(playerIndex) {
     const player = this.gameState.players[playerIndex]
-    const mainSlots = player.field.filter(s => !s.isExtra)
-    const filledMainSlots = mainSlots.filter(s => s.card !== null).length
+    const filledMainSlots = EffectManager.countMainFieldCardsForLimit(player)
     
     if (filledMainSlots === 6 && !this.gameState.isFinalRound) {
       this.gameState.isFinalRound = true
@@ -1798,7 +1865,7 @@ class GameEngine {
     this.gameState.playerRestrictions = {}
     if (this.gameState.isFinalRound) {
       this.gameState.players.forEach((player, idx) => {
-        const filledSlots = player.field.filter(s => !s.isExtra && s.card).length
+        const filledSlots = EffectManager.countMainFieldCardsForLimit(player)
         if (filledSlots >= 6) {
           if (this.gameState.players.length === 2) {
             this.gameState.playerRestrictions[player.id] = ['cannotPlay']

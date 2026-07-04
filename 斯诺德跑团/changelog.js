@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6058',
+    date: '2026-07-04',
+    changes: [
+      '斯诺德对决4N：奴隶/蔓生怪/珊瑚元素',
+      'conditionalPlayCost/requireAllFieldAttributes',
+      'test-4n 9/9'
+    ]
+  },
+
+
+  {
     version: '1.0.6057',
     date: '2026-07-04',
     changes: [

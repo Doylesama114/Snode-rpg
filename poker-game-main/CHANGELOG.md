@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6058] - 2026-07-04
+
+### 卡牌效果批次 4N
+- **奴隶**：`excludeFromFieldCount` 不计入终局 6 张
+- **蔓生怪**：`conditionalPlayCost` 有木环境时费用为 1
+- **珊瑚元素**：`requireAllFieldAttributes` 水+光环境 onDeploy +3
+- **引擎**：`countMainFieldCardsForLimit` 统一终局计数
+- **测试**：`scripts/test-4n.mjs`（9/9）
+
 ## [1.0.6057] - 2026-07-04
 
 ### 卡牌效果批次 4M

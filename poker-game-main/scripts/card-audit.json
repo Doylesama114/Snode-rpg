@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T15:01:40.933Z",
+  "generatedAt": "2026-07-04T15:16:16.080Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -12,8 +12,8 @@
   },
   "wiringSummary": {
     "structured": 15,
-    "implemented_doc": 71,
-    "conditional_only": 62
+    "implemented_doc": 74,
+    "conditional_only": 59
   },
   "patternSummary": {
     "on_deploy": 39,
@@ -59,6 +59,7 @@
       "挤奶工 (card_022)",
       "摄像机 (card_026)",
       "葡萄酒商人 (card_027)",
+      "奴隶 (card_028)",
       "暴徒 (card_029)",
       "落魄男爵 (card_030)",
       "退役老兵 (card_032)",
@@ -67,6 +68,7 @@
       "海藻 (card_047)",
       "德鲁伊 (card_049)",
       "蜥蜴人勇士 (card_053)",
+      "蔓生怪 (card_054)",
       "贝壳 (card_056)",
       "翻车鱼 (card_057)",
       "海葵 (card_058)",
@@ -77,6 +79,7 @@
       "螃蟹 (card_063)",
       "拾贝鱼人 (card_064)",
       "水元素 (card_066)",
+      "珊瑚元素 (card_067)",
       "篝火 (card_071)",
       "火元素 (card_073)",
       "土元素 (card_078)",
@@ -126,7 +129,6 @@
       "攀爬工具 (card_023)",
       "搬运工 (card_024)",
       "游客 (card_025)",
-      "奴隶 (card_028)",
       "强盗 (card_031)",
       "武僧 (card_034)",
       "征募官 (card_035)",
@@ -144,10 +146,8 @@
       "哥布林杂兵 (card_050)",
       "药剂师 (card_051)",
       "猎人 (card_052)",
-      "蔓生怪 (card_054)",
       "走私船 (card_055)",
       "潮汐歌者 (card_065)",
-      "珊瑚元素 (card_067)",
       "海洋德鲁伊 (card_068)",
       "旗鱼 (card_069)",
       "蛇颈龙 (card_070)",
@@ -359,7 +359,7 @@
       "回春术"
     ]
   },
-  "implementedDocCount": 71,
+  "implementedDocCount": 74,
   "implementedInPool": [
     "挤奶工",
     "水元素",
@@ -431,7 +431,10 @@
     "拾贝鱼人",
     "萨满祭司",
     "珍珠商人",
-    "海港"
+    "海港",
+    "奴隶",
+    "蔓生怪",
+    "珊瑚元素"
   ],
   "implementedMissingFromPool": [],
   "seedStatus": "ok",
@@ -914,7 +917,7 @@
       "id": "card_028",
       "name": "奴隶",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -922,7 +925,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "excludeFromFieldCount"
       ],
       "timings": [
         "onDeploy"
@@ -1382,7 +1385,7 @@
       "id": "card_054",
       "name": "蔓生怪",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1390,7 +1393,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "conditionalPlayCost"
       ],
       "timings": [
         "onDeploy"
@@ -1616,7 +1619,7 @@
       "id": "card_067",
       "name": "珊瑚元素",
       "type": "unit",
-      "wiring": "conditional_only",
+      "wiring": "implemented_doc",
       "pattern": "on_deploy",
       "flags": {
         "quickPlay": false,
@@ -1624,7 +1627,7 @@
         "emptyEffects": false
       },
       "types": [
-        "conditional"
+        "modifyPower"
       ],
       "timings": [
         "onDeploy"

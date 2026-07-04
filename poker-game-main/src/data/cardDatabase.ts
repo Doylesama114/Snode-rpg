@@ -606,7 +606,7 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'excludeFromFieldCount',
       description: '这张牌不计入终局数量'
     }
     ],
@@ -1157,7 +1157,10 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'conditionalPlayCost',
+      playCostValue: 1,
+      requireFieldAttributes: ['木'],
+      requireFieldCardType: 'environment',
       description: '如果你的场上拥有木属性的环境牌，这张牌的能量消耗变为1'
     }
     ],
@@ -1448,7 +1451,11 @@ export const allCardDefinitions = [
     effects: [
     {
       timing: 'onDeploy',
-      type: 'conditional',
+      type: 'modifyPower',
+      selfTarget: true,
+      value: 3,
+      requireAllFieldAttributes: ['水', '光'],
+      requireFieldCardType: 'environment',
       description: '如果你的场上拥有水属性和光属性的环境牌，这张牌的战力+3'
     }
     ],
