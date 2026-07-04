@@ -1,5 +1,14 @@
 # 更新日志
 
+## [1.0.6076] - 2026-07-05
+
+### P0 盖牌批次引擎专批
+- **批次结算**：`resolveRevealBatch` / `buildRevealBatch` / `RevealBatchEntry`
+- **旗鱼就绪**：`batchHighestFreeDeploy`（本批战力最高退还打出费用）
+- **矮人烈酒就绪**：`moveOpponentBatchRevealToDeckBottom` + `forceRandomHandPlay` + `batchResolveOnly`
+- **联机**：`revealAllCards` 接入批次结算；战术延迟揭示至下回合展示
+- **测试**：`scripts/test-engine-p0.mjs`（11/11）
+
 ## [1.0.6068] - 2026-07-05
 
 ### 卡牌效果批次 4X — 宿主部署进阶

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6076',
+    date: '2026-07-04',
+    changes: [
+      'P0盖牌批次引擎: resolveRevealBatch/batchHighestFreeDeploy/矮人烈酒机制'
+    ]
+  },
+
+
+  {
     version: '1.0.6075',
     date: '2026-07-04',
     changes: [

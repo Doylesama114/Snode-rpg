@@ -867,6 +867,96 @@ class EffectManager {
     }
   }
 
+  static getBatchEffectivePower(card) {
+    if (card.type === 'tactic') return 0
+    return card.currentPower ?? card.basePower ?? 0
+  }
+
+  static buildRevealBatch(game) {
+    const entries = []
+    if (!game.pendingReveals) return entries
+    game.players.forEach((player, playerIndex) => {
+      const reveals = game.pendingReveals[player.id] || []
+      reveals.forEach(r => {
+        const fieldOwnerIndex = r.targetPlayerIndex ?? playerIndex
+        entries.push({
+          playerId: player.id,
+          playerIndex,
+          card: r.card,
+          slotIndex: r.slotIndex,
+          fieldOwnerIndex,
+          playCost: r.playCost ?? EffectManager.getEffectivePlayCost(r.card, player),
+        })
+      })
+    })
+    return entries
+  }
+
+  static applyBatchHighestFreeDeploy(batch, game) {
+    const messages = []
+    if (batch.length === 0) return messages
+    const candidates = batch.filter(
+      e => !e.removedFromField
+        && e.card.effects?.some(eff => eff.type === 'batchHighestFreeDeploy'),
+    )
+    if (candidates.length === 0) return messages
+    const maxPower = Math.max(...batch.map(e => EffectManager.getBatchEffectivePower(e.card)))
+    const winners = candidates.filter(
+      e => EffectManager.getBatchEffectivePower(e.card) === maxPower,
+    )
+    winners.forEach(entry => {
+      const player = game.players[entry.playerIndex]
+      if (entry.playCost > 0) {
+        player.currentCost += entry.playCost
+        messages.push(`${entry.card.name} 本批战力最高(${maxPower})，退还${entry.playCost}费用`)
+      }
+    })
+    return messages
+  }
+
+  static resolveRevealBatch(game) {
+    const messages = []
+    const batch = EffectManager.buildRevealBatch(game)
+    game.lastResolvedBatch = batch.map(e => ({ ...e }))
+    game.isResolvingRevealBatch = true
+
+    for (const entry of batch) {
+      const player = game.players[entry.playerIndex]
+      const deferred = (entry.card.effects || []).filter(
+        e => e.timing === 'onReveal' && e.batchResolveOnly
+          && e.type !== 'conditional' && e.type !== 'custom',
+      )
+      for (const effect of deferred) {
+        const r = EffectManager.applyRevealEffect(effect, entry.card, player, game, undefined, batch)
+        messages.push(...r.messages)
+      }
+    }
+
+    messages.push(...EffectManager.applyBatchHighestFreeDeploy(batch, game))
+
+    if (game.pendingBatchTacticDiscards?.length) {
+      for (const pending of game.pendingBatchTacticDiscards) {
+        const player = game.players.find(p => p.id === pending.playerId)
+        if (!player) continue
+        const slot = player.field[pending.slotIndex]
+        if (slot?.card?.id === pending.card.id) {
+          slot.card = null
+        }
+        if (!player.discard.includes(pending.card)) {
+          player.discard.push(pending.card)
+        }
+        messages.push(`${pending.card.name} 揭示后进入弃牌区`)
+      }
+      game.pendingBatchTacticDiscards = []
+    }
+
+    game.isResolvingRevealBatch = false
+    if (game.pendingReveals) {
+      Object.keys(game.pendingReveals).forEach(id => { game.pendingReveals[id] = [] })
+    }
+    return { messages }
+  }
+
   // 触发"其他卡牌打出时"的效果
   static triggerOnOtherPlayEffects(deployedCard, player, game) {
     const messages = []
@@ -1533,7 +1623,8 @@ class EffectManager {
     return { messages, removedSelf: true }
   }
 
-  static applyRevealEffect(effect, card, player, game) {
+  static applyRevealEffect(effect, card, player, game, otherPlayers, batch) {
+    if (!otherPlayers) otherPlayers = game.players.filter(p => p.id !== player.id)
     const messages = []
 
     if (!EffectManager.checkFieldRequirements(player, effect)) {
@@ -1856,6 +1947,73 @@ class EffectManager {
       const r = EffectManager.applyDiscardHandOrSelf(card, player, game)
       messages.push(...r.messages)
       return { messages, removedSelf: r.removedSelf }
+    }
+
+    if (effect.type === 'moveOpponentBatchRevealToDeckBottom') {
+      const batchEntries = batch || EffectManager.buildRevealBatch(game)
+      const opponent = effect.targetLeftPlayer ? EffectManager.getLeftPlayer(game, player) : otherPlayers[0]
+      if (!opponent) {
+        messages.push('没有可影响的目标玩家')
+        return { messages }
+      }
+      const oppIndex = game.players.findIndex(p => p.id === opponent.id)
+      const entry = batchEntries.find(
+        e => e.playerIndex === oppIndex && !e.removedFromField && e.card.type !== 'tactic',
+      )
+      if (!entry) {
+        messages.push('对手本批没有可置库底的展示牌')
+        return { messages }
+      }
+      const owner = game.players[entry.fieldOwnerIndex]
+      const slot = owner.field[entry.slotIndex]
+      if (!slot?.card || slot.card.id !== entry.card.id) {
+        messages.push('对手展示牌已不在场上')
+        return { messages }
+      }
+      slot.card = null
+      opponent.deck.unshift(entry.card)
+      entry.removedFromField = true
+      messages.push(`${entry.card.name} 被置于${opponent.name}牌库底`)
+      return { messages }
+    }
+
+    if (effect.type === 'forceRandomHandPlay') {
+      const target = effect.targetLeftPlayer ? EffectManager.getLeftPlayer(game, player) : otherPlayers[0]
+      if (!target) {
+        messages.push('没有可强制出牌的目标')
+        return { messages }
+      }
+      if (target.hand.length === 0) {
+        messages.push(`${target.name} 没有手牌可强制打出`)
+        return { messages }
+      }
+      const idx = Math.floor(Math.random() * target.hand.length)
+      const picked = target.hand.splice(idx, 1)[0]
+      picked.forcedPlay = true
+      const playCost = EffectManager.getEffectivePlayCost(picked, target)
+      target.currentCost -= playCost
+      if (picked.type === 'unit' || picked.type === 'environment') {
+        const slots = EffectManager.getAvailableSlotIndices(target, picked)
+        if (slots.length === 0) {
+          target.hand.push(picked)
+          messages.push(`${picked.name} 无空位，强制打出失败`)
+          return { messages }
+        }
+        target.field[slots[0]].card = picked
+        EffectManager.applyUnitDeployBonuses(picked, target).forEach(m => messages.push(m))
+        EffectManager.triggerOnOtherPlayEffects(picked, target, game)
+        messages.push(`${target.name} 被强制打出${picked.name}（费用${playCost}）`)
+      } else {
+        const slots = EffectManager.getAvailableSlotIndices(target, picked)
+        if (slots.length === 0) {
+          target.hand.push(picked)
+          messages.push(`${picked.name} 无空位，强制打出失败`)
+          return { messages }
+        }
+        target.field[slots[0]].card = picked
+        messages.push(`${target.name} 被强制打出战术${picked.name}`)
+      }
+      return { messages }
     }
 
     return { messages }
@@ -2490,6 +2648,7 @@ class GameEngine {
       card: card,
       slotIndex: slotIndex,
       targetPlayerIndex: fieldOwnerIndex,
+      playCost: playCost,
     })
     
     this.gameState.message = fieldOwnerIndex !== playerIndex
@@ -2746,17 +2905,32 @@ class GameEngine {
     const revealEffects = card.effects.filter(
       e => e.timing === 'onReveal' && e.type !== 'conditional' && e.type !== 'custom',
     )
+    const immediateEffects = revealEffects.filter(e => !e.batchResolveOnly)
+    const deferredEffects = revealEffects.filter(e => e.batchResolveOnly)
 
-    if (revealEffects.length === 0) {
+    if (immediateEffects.length === 0 && deferredEffects.length === 0) {
       this.discardTacticCard(card, player, slotIndex)
       return
     }
 
-    for (const effect of revealEffects) {
+    for (const effect of immediateEffects) {
       const result = EffectManager.applyRevealEffect(effect, card, player, this.gameState)
       result.messages.forEach(msg => {
         this.gameState.message += ` | ${msg}`
       })
+    }
+
+    if (deferredEffects.length > 0) {
+      if (!this.gameState.pendingBatchTacticDiscards) {
+        this.gameState.pendingBatchTacticDiscards = []
+      }
+      this.gameState.pendingBatchTacticDiscards.push({
+        card,
+        playerId: player.id,
+        slotIndex,
+      })
+      console.log(`[GameEngine] ${card.name} 延迟至本批展示后结算`)
+      return
     }
 
     this.discardTacticCard(card, player, slotIndex)
@@ -2824,8 +2998,7 @@ class GameEngine {
   // 揭示所有待揭示的卡牌
   revealAllCards() {
     console.log('[GameEngine] 揭示所有待揭示的卡牌')
-    
-    // 清空待揭示列表（卡牌已经在场上了，只是现在可以被对手看到）
+
     Object.keys(this.gameState.pendingReveals).forEach(playerId => {
       const reveals = this.gameState.pendingReveals[playerId]
       if (reveals.length > 0) {
@@ -2835,8 +3008,15 @@ class GameEngine {
           console.log(`  - ${reveal.card.name} 在槽位 ${reveal.slotIndex}`)
         })
       }
-      this.gameState.pendingReveals[playerId] = []
     })
+
+    const batchResult = EffectManager.resolveRevealBatch(this.gameState)
+    if (batchResult.messages.length > 0) {
+      this.gameState.message = (this.gameState.message || '') + ' | ' + batchResult.messages.join(' | ')
+      batchResult.messages.forEach(msg => console.log(`[GameEngine] 批次结算: ${msg}`))
+    }
+
+    EffectManager.recalculateAllPowers(this.gameState)
   }
   
   // 检查场地是否填满

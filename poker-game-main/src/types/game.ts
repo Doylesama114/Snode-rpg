@@ -14,6 +14,7 @@ export type EffectTiming =
   | 'roundStart'       // 回合开始
   | 'roundEnd'         // 回合结束
   | 'onReveal'         // 揭示时（战术牌）
+  | 'onBatchReveal'    // 本批全员展示后（旗鱼等）
   | 'onGameEnd'        // 游戏结束时（吟游诗人/风笛）
   | 'onReforge'        // 重铸行动时（锻炉）
 
@@ -86,6 +87,22 @@ export type EffectType =
   | 'sacrificeFieldForPower'    // onReveal 牺牲己方场牌获战力（食尸鬼教徒）
   | 'retrieveFromDiscard'       // onReveal 从弃牌区取牌（食尸鬼教徒）
   | 'noOp'                      // 无机制占位（枭熊/雷龙/双足飞龙）
+  | 'batchHighestFreeDeploy'    // 本批展示后战力最高则退还打出费用（旗鱼）
+  | 'moveOpponentBatchRevealToDeckBottom' // 将对手本批展示牌置于牌库底（矮人烈酒）
+  | 'forceRandomHandPlay'       // 强制对手随机打出一张手牌（矮人烈酒）
+
+/** 本批展示条目（盖牌→同时翻开） */
+export interface RevealBatchEntry {
+  playerId: string
+  playerIndex: number
+  card: Card
+  slotIndex: number
+  /** 部署所在玩家索引（跨场部署时与 playerIndex 不同） */
+  fieldOwnerIndex: number
+  playCost: number
+  /** 本批展示后已从场上移除（如矮人烈酒置库底） */
+  removedFromField?: boolean
+}
 
 /** roundEnd 预约 buff（回春术） */
 export interface PendingRoundEndBuff {
@@ -152,6 +169,8 @@ export interface CardEffect {
   handDebuffCount?: number
   /** modifyCost：仅左手边第一名玩家（魔法飞弹） */
   targetLeftPlayer?: boolean
+  /** onReveal：延迟到本批全员展示后结算（矮人烈酒） */
+  batchResolveOnly?: boolean
   /** onDeploy modifyPower：场上无更高 basePower 的单位时触发（暴徒） */
   noHigherPowerUnitOnField?: boolean
   /** onDeploy 自增：按场上匹配牌数量 × value（海葵） */
@@ -369,6 +388,8 @@ export interface Player {
   /** 回春术等：回合结束预约 buff */
   pendingRoundEndBuffs?: PendingRoundEndBuff[]
   deckCardIds?: string[]
+  /** 本批展示后待弃置的战术牌（batchResolveOnly 延迟揭示） */
+  pendingBatchTacticDiscards?: Array<{ card: Card; playerId: string; slotIndex: number }>
 }
 
 // 游戏阶段
@@ -405,7 +426,16 @@ export interface GameState {
   pendingDeployEffect?: CardEffect  // onDeploy 效果待选目标（精准射击）
   // 同时回合机制 (multi-player serializable records)
   playerDecisions?: Record<string, { made: boolean; choice: DecisionType | null }>
-  pendingReveals?: Record<string, Array<{ cardId: string; slotIndex: number }>>
+  pendingReveals?: Record<string, Array<{
+    card: Card
+    slotIndex: number
+    targetPlayerIndex?: number
+    playCost?: number
+  }>>
+  /** 最近一次批次展示结算快照（矮人烈酒等） */
+  lastResolvedBatch?: RevealBatchEntry[]
+  /** 正在执行批次展示结算（批次隔离） */
+  isResolvingRevealBatch?: boolean
   playersReady?: Record<string, boolean>
   // 最后一轮限制
   playerRestrictions?: Record<string, string[]>  // playerId → ['cannotPlay'|'tacticsOnly']
