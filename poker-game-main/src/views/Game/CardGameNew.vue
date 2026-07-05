@@ -46,7 +46,7 @@ const {
   closePinned,
 } = useFieldCardDetail()
 
-const { animState } = useGameAnimations()
+const { animState, triggerSlotShake, isSlotShaking, isSlotBouncing, getPowerPulseDelta } = useGameAnimations()
 
 function slotFlashKey(playerId: string, slotIndex: number) {
   return `${playerId}-${slotIndex}`
@@ -91,6 +91,19 @@ function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
   if (!player) return
   const actualIndex = player.field.indexOf(slotRef as typeof player.field[0])
   if (actualIndex < 0) return
+
+  if (player.id === 'player' && isDeployPhase()) {
+    const slot = player.field[actualIndex]
+    if (gameState.value.phase === 'selectSlot' && !isSlotAvailable(actualIndex)) {
+      triggerSlotShake(player.id, actualIndex)
+      return
+    }
+    if (gameState.value.phase === 'selectTarget' && slot.card && !isTargetSelectable(slot.card)) {
+      triggerSlotShake(player.id, actualIndex)
+      return
+    }
+  }
+
   if (player.id === 'player' && gameState.value.phase === 'selectSlot' && isSlotAvailable(actualIndex)) {
     selectSlotToPlay(actualIndex)
     return
@@ -155,9 +168,26 @@ function isSlotAvailable(slotIndex: number): boolean {
   return gameState.value.availableSlots?.includes(slotIndex) || false
 }
 
+function isTargetSelectable(card: import('@/types/game').Card | null | undefined): boolean {
+  if (gameState.value.phase !== 'selectTarget' || !card) return false
+  return gameState.value.availableTargets?.some(t => t === card) ?? false
+}
+
+function powerPulseClass(playerId: string, slotIndex: number) {
+  const d = getPowerPulseDelta(playerId, slotIndex)
+  if (d === undefined) return ''
+  if (d > 0) return 'power-pulse-up'
+  if (d < 0) return 'power-pulse-down'
+  return ''
+}
+
 function onExtraSlotClick(slotIndex: number) {
-  if (gameState.value.phase === 'selectSlot' && isSlotAvailable(slotIndex)) {
-    selectSlotToPlay(slotIndex)
+  if (gameState.value.phase === 'selectSlot') {
+    if (isSlotAvailable(slotIndex)) {
+      selectSlotToPlay(slotIndex)
+    } else {
+      triggerSlotShake('player', slotIndex)
+    }
   }
 }
 
@@ -224,11 +254,14 @@ function playerIndex(playerId: string) {
               :class="{
                 'has-card': slot.card,
                 'slot-land-flash': isSlotFlashing(player.id, player.field.indexOf(slot)),
-                'selectable': (player.id === 'player' && (isSlotAvailable(player.field.indexOf(slot)) || (gameState.phase === 'selectTarget' && slot.card)))
-                  || isCrossPlayerSlotAvailable(playerIndex(player.id), player.field.indexOf(slot)),
+                'slot-bounce': isSlotBouncing(player.id, player.field.indexOf(slot)),
+                'slot-shake': isSlotShaking(player.id, player.field.indexOf(slot)),
+                'selectable': player.id === 'player' && isSlotAvailable(player.field.indexOf(slot)),
+                'target-selectable': player.id === 'player' && isTargetSelectable(slot.card),
+                'selectable-cross': isCrossPlayerSlotAvailable(playerIndex(player.id), player.field.indexOf(slot)),
                 'selected': player.id === 'player' && gameState.selectedSlot === player.field.indexOf(slot)
               }"
-              @click="onFieldSlotClick(playerIndex(player.id), slot); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card!)"
+              @click="onFieldSlotClick(playerIndex(player.id), slot); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && isTargetSelectable(slot.card) && selectQuickPlayTarget(slot.card!)"
             >
               <div
                 v-if="slot.card"
@@ -238,7 +271,7 @@ function playerIndex(playerId: string) {
                 @click="onFieldCardClick(slot.card, $event, () => isDeployPhase())"
               >
                 <div class="card-name-small">{{ slot.card.name }}</div>
-                <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
+                <div class="card-power" :class="powerPulseClass(player.id, player.field.indexOf(slot))" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
               </div>
@@ -264,7 +297,7 @@ function playerIndex(playerId: string) {
                     @click="onFieldCardClick(extraSlot.card, $event, () => isDeployPhase())"
                   >
                     <div class="card-name-small">{{ extraSlot.card.name }}</div>
-                    <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
+                    <div class="card-power" :class="powerPulseClass(player.id, extraSlot.position)" :style="{ color: getPowerColor(extraSlot.card) }">
                       {{ extraSlot.card.currentPower }}
                     </div>
                   </div>
@@ -561,11 +594,85 @@ function playerIndex(playerId: string) {
 .field-slot.selectable {
   border-color: #a46d1f;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  animation: select-pulse 1.6s ease-in-out infinite;
+}
+
+.field-slot.selectable-cross {
+  border-color: #315f8f;
+  cursor: pointer;
+  animation: select-pulse-blue 1.6s ease-in-out infinite;
+}
+
+.field-slot.target-selectable {
+  border-color: #9d2f2f;
+  cursor: pointer;
+  animation: target-pulse 1.2s ease-in-out infinite;
+}
+
+.field-slot.selectable:hover,
+.field-slot.selectable-cross:hover,
+.field-slot.target-selectable:hover {
+  transform: scale(1.05);
+}
+
+.field-slot.slot-shake {
+  animation: slot-shake 0.45s ease-in-out;
+}
+
+.field-slot.slot-bounce {
+  animation: slot-empty-bounce 360ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes select-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(164, 109, 31, 0.35); }
+  50% { box-shadow: 0 0 22px rgba(164, 109, 31, 0.75); }
+}
+
+@keyframes select-pulse-blue {
+  0%, 100% { box-shadow: 0 0 8px rgba(49, 95, 143, 0.35); }
+  50% { box-shadow: 0 0 22px rgba(49, 95, 143, 0.75); }
+}
+
+@keyframes target-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(157, 47, 47, 0.35); transform: scale(1); }
+  50% { box-shadow: 0 0 24px rgba(157, 47, 47, 0.85); transform: scale(1.04); }
+}
+
+@keyframes slot-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes slot-empty-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); border-color: #9d2f2f; }
+  100% { transform: scale(1); }
+}
+
+.card-power.power-pulse-up {
+  animation: power-pop-up 650ms ease-out;
+}
+
+.card-power.power-pulse-down {
+  animation: power-pop-down 650ms ease-out;
+}
+
+@keyframes power-pop-up {
+  0% { transform: scale(1); color: #2f6f5e !important; }
+  30% { transform: scale(1.45); color: #1a8f5c !important; }
+  100% { transform: scale(1); }
+}
+
+@keyframes power-pop-down {
+  0% { transform: scale(1); color: #9d2f2f !important; }
+  30% { transform: scale(1.35); color: #c0392b !important; }
+  100% { transform: scale(1); }
 }
 
 .field-slot.selectable:hover {
-  transform: scale(1.05);
   box-shadow: 0 0 12px rgba(164, 109, 31, 0.3);
 }
 

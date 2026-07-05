@@ -49,15 +49,40 @@ export interface FloatTextPayload {
   slotIndex?: number
 }
 
+export interface DestroyAnimPayload {
+  fieldOwnerId: string
+  slotIndex: number
+  card?: Card
+}
+
+export type BannerKind = 'your-turn' | 'turn' | 'final-round' | 'reveal' | 'round'
+
+export interface BannerPayload {
+  kind: BannerKind
+  text: string
+}
+
+export interface PowerPulsePayload {
+  fieldOwnerId: string
+  slotIndex: number
+  delta: number
+}
+
 interface AnimationState {
   flying: FlyCardPayload | null
   reforge: ReforgeAnimPayload | null
   landFlash: LandFlashPayload | null
   flipping: FlipRevealPayload | null
   floatTexts: FloatTextPayload[]
+  destroying: DestroyAnimPayload | null
+  banner: BannerPayload | null
+  powerPulses: Record<string, number>
+  shakeSlots: string[]
+  slotBounce: LandFlashPayload | null
   onFlyComplete: (() => void) | null
   onReforgeComplete: (() => void) | null
   onFlipComplete: (() => void) | null
+  onDestroyComplete: (() => void) | null
 }
 
 const state = reactive<AnimationState>({
@@ -66,9 +91,15 @@ const state = reactive<AnimationState>({
   landFlash: null,
   flipping: null,
   floatTexts: [],
+  destroying: null,
+  banner: null,
+  powerPulses: {},
+  shakeSlots: [],
+  slotBounce: null,
   onFlyComplete: null,
   onReforgeComplete: null,
   onFlipComplete: null,
+  onDestroyComplete: null,
 })
 
 const FLY_MS = 520
@@ -77,6 +108,14 @@ const LAND_FLASH_MS = 320
 const FLIP_MS = 480
 const FLOAT_MS = 1200
 const DRAW_MS = 480
+const DESTROY_MS = 720
+const BANNER_MS = 1100
+const POWER_PULSE_MS = 650
+const SHAKE_MS = 450
+
+export function slotKey(fieldOwnerId: string, slotIndex: number) {
+  return `${fieldOwnerId}-${slotIndex}`
+}
 
 export function getFlySelector(fieldOwnerId: string, slotIndex: number) {
   return `[data-field-slot="${fieldOwnerId}-${slotIndex}"]`
@@ -159,9 +198,22 @@ export function useGameAnimations() {
     state.landFlash = null
     state.flipping = null
     state.floatTexts = []
+    state.destroying = null
+    state.banner = null
+    state.powerPulses = {}
+    state.shakeSlots = []
+    state.slotBounce = null
     state.onFlyComplete = null
     state.onReforgeComplete = null
     state.onFlipComplete = null
+    state.onDestroyComplete = null
+  }
+
+  function completeDestroy() {
+    const cb = state.onDestroyComplete
+    state.destroying = null
+    state.onDestroyComplete = null
+    cb?.()
   }
 
   function completeFlip() {
@@ -244,6 +296,68 @@ export function useGameAnimations() {
     state.floatTexts = []
   }
 
+  async function playDestroy(payload: DestroyAnimPayload): Promise<void> {
+    if (shouldSkipAnimations()) return
+    const sel = getFlySelector(payload.fieldOwnerId, payload.slotIndex)
+    if (!measureCenter(sel)) return
+
+    return new Promise<void>(resolve => {
+      state.onDestroyComplete = resolve
+      state.destroying = payload
+    })
+  }
+
+  async function playBanner(payload: BannerPayload): Promise<void> {
+    if (shouldSkipAnimations()) return
+    state.banner = payload
+    await wait(BANNER_MS)
+    state.banner = null
+  }
+
+  async function playPowerPulse(payload: PowerPulsePayload): Promise<void> {
+    if (shouldSkipAnimations() || payload.delta === 0) return
+    const key = slotKey(payload.fieldOwnerId, payload.slotIndex)
+    state.powerPulses = { ...state.powerPulses, [key]: payload.delta }
+    await wait(POWER_PULSE_MS)
+    const next = { ...state.powerPulses }
+    delete next[key]
+    state.powerPulses = next
+  }
+
+  function triggerSlotShake(fieldOwnerId: string, slotIndex: number) {
+    if (shouldSkipAnimations()) return
+    const key = slotKey(fieldOwnerId, slotIndex)
+    if (!state.shakeSlots.includes(key)) {
+      state.shakeSlots = [...state.shakeSlots, key]
+    }
+    setTimeout(() => {
+      state.shakeSlots = state.shakeSlots.filter(k => k !== key)
+    }, SHAKE_MS)
+  }
+
+  function triggerSlotBounce(fieldOwnerId: string, slotIndex: number) {
+    if (shouldSkipAnimations()) return
+    state.slotBounce = { fieldOwnerId, slotIndex }
+    setTimeout(() => {
+      if (state.slotBounce?.fieldOwnerId === fieldOwnerId && state.slotBounce?.slotIndex === slotIndex) {
+        state.slotBounce = null
+      }
+    }, 360)
+  }
+
+  function isSlotShaking(fieldOwnerId: string, slotIndex: number) {
+    return state.shakeSlots.includes(slotKey(fieldOwnerId, slotIndex))
+  }
+
+  function getPowerPulseDelta(fieldOwnerId: string, slotIndex: number) {
+    return state.powerPulses[slotKey(fieldOwnerId, slotIndex)]
+  }
+
+  function isSlotBouncing(fieldOwnerId: string, slotIndex: number) {
+    const b = state.slotBounce
+    return b && b.fieldOwnerId === fieldOwnerId && b.slotIndex === slotIndex
+  }
+
   async function playReforge(payload: ReforgeAnimPayload): Promise<void> {
     if (shouldSkipAnimations()) return
 
@@ -307,11 +421,23 @@ export function useGameAnimations() {
           showBack: ev.showBack,
         })
         await flashLand(ev.fieldOwnerId, ev.slotIndex)
-      } else {
+      } else if (ev.type === 'flip') {
         await playFlipReveal({
           fieldOwnerId: ev.fieldOwnerId,
           slotIndex: ev.slotIndex,
           card: ev.card,
+        })
+      } else if (ev.type === 'destroy') {
+        await playDestroy({
+          fieldOwnerId: ev.fieldOwnerId,
+          slotIndex: ev.slotIndex,
+          card: ev.card,
+        })
+      } else if (ev.type === 'power') {
+        await playPowerPulse({
+          fieldOwnerId: ev.fieldOwnerId,
+          slotIndex: ev.slotIndex,
+          delta: ev.delta,
         })
       }
     }
@@ -331,6 +457,15 @@ export function useGameAnimations() {
     playDrawCard,
     playReforgeRedraw,
     playFloatTexts,
+    playDestroy,
+    playBanner,
+    playPowerPulse,
+    triggerSlotShake,
+    triggerSlotBounce,
+    isSlotShaking,
+    isSlotBouncing,
+    getPowerPulseDelta,
+    completeDestroy,
     playReforge,
     playFlipReveal,
     playFieldEvents,
@@ -346,7 +481,11 @@ export function useGameAnimations() {
     LAND_FLASH_MS,
     FLIP_MS,
     FLOAT_MS,
+    DESTROY_MS,
+    BANNER_MS,
+    POWER_PULSE_MS,
     measureCenter,
+    slotKey,
     getFlySelector,
     getHandSelector,
     getFlyOriginSelector,

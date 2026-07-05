@@ -17,7 +17,21 @@ export interface FieldFlipEvent {
   card: Card
 }
 
-export type FieldAnimEvent = FieldFlyEvent | FieldFlipEvent
+export interface FieldDestroyEvent {
+  type: 'destroy'
+  fieldOwnerId: string
+  slotIndex: number
+  card?: Card
+}
+
+export interface FieldPowerEvent {
+  type: 'power'
+  fieldOwnerId: string
+  slotIndex: number
+  delta: number
+}
+
+export type FieldAnimEvent = FieldFlyEvent | FieldFlipEvent | FieldDestroyEvent | FieldPowerEvent
 
 export interface DrawAnimEvent {
   type: 'draw'
@@ -32,7 +46,7 @@ function isHiddenCard(card: Card | null | undefined): boolean {
   return card.id === 'hidden' || card.name === '？？？'
 }
 
-/** 对比两次 gameState，提取需播放的飞牌/翻牌事件 */
+/** 对比两次 gameState，提取需播放的飞牌/翻牌/摧毁/战力事件 */
 export function diffFieldAnimations(
   prev: GameState | null | undefined,
   next: GameState,
@@ -50,7 +64,15 @@ export function diffFieldAnimations(
       const prevCard = prevSlot?.card as Card | null | undefined
       const nextCard = slot.card as Card | null | undefined
 
-      if (!nextCard && prevCard) return
+      if (!nextCard && prevCard && !isHiddenCard(prevCard)) {
+        events.push({
+          type: 'destroy',
+          fieldOwnerId: player.id,
+          slotIndex: si,
+          card: prevCard,
+        })
+        return
+      }
 
       if (nextCard && !prevCard) {
         const isOwn = player.id === myPlayerId
@@ -73,6 +95,16 @@ export function diffFieldAnimations(
           slotIndex: si,
           card: nextCard,
         })
+        return
+      }
+
+      if (nextCard && prevCard && !isHiddenCard(nextCard) && nextCard.currentPower !== prevCard.currentPower) {
+        events.push({
+          type: 'power',
+          fieldOwnerId: player.id,
+          slotIndex: si,
+          delta: nextCard.currentPower - prevCard.currentPower,
+        })
       }
     })
   }
@@ -82,6 +114,8 @@ export function diffFieldAnimations(
 
 export function fieldAnimKey(ev: FieldAnimEvent): string {
   if (ev.type === 'flip') return `flip-${ev.fieldOwnerId}-${ev.slotIndex}`
+  if (ev.type === 'destroy') return `destroy-${ev.fieldOwnerId}-${ev.slotIndex}`
+  if (ev.type === 'power') return `power-${ev.fieldOwnerId}-${ev.slotIndex}-${ev.delta}`
   return `fly-${ev.fieldOwnerId}-${ev.slotIndex}`
 }
 
@@ -117,4 +151,30 @@ export function diffDrawEvents(
   }
 
   return events
+}
+
+/** 联机阶段横幅 diff */
+export function diffPhaseBanner(
+  prev: GameState | null | undefined,
+  next: GameState,
+  myPlayerId: string,
+): { kind: 'your-turn' | 'final-round' | 'round' | 'reveal'; text: string } | null {
+  if (!prev) return null
+
+  if (!prev.isFinalRound && next.isFinalRound) {
+    return { kind: 'final-round', text: '最后一回合！' }
+  }
+
+  if (prev.round !== next.round && next.round > 0) {
+    return { kind: 'round', text: `第 ${next.round} 回合` }
+  }
+
+  if (prev.phase !== 'decision' && next.phase === 'decision') {
+    const cur = next.players[next.currentPlayerIndex]
+    if (cur?.id === myPlayerId) {
+      return { kind: 'your-turn', text: '你的回合' }
+    }
+  }
+
+  return null
 }

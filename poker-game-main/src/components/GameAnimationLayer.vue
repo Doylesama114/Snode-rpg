@@ -17,11 +17,13 @@ const {
   completeFly,
   completeReforge,
   completeFlip,
+  completeDestroy,
+  triggerSlotBounce,
   FLY_MS,
   DRAW_MS,
   REFORGE_STEP_MS,
   FLIP_MS,
-  FLOAT_MS,
+  DESTROY_MS,
 } = useGameAnimations()
 
 const flyStyle = ref<Record<string, string>>({})
@@ -39,6 +41,11 @@ const reforgeVisible = ref(false)
 const reforgePos = ref({ x: 0, y: 0 })
 
 const floatStyles = ref<Array<{ style: Record<string, string>; kind: string; text: string }>>([])
+
+const destroyStyle = ref<Record<string, string>>({})
+const destroyVisible = ref(false)
+const destroyCard = ref<Card | null>(null)
+const destroyPhase = ref<'flash' | 'shatter'>('flash')
 
 const REFORGE_LABELS: Record<ReforgeOption, string> = {
   gainCost: '⚡ +2 费用',
@@ -95,6 +102,17 @@ watch(
   },
 )
 
+watch(
+  () => animState.destroying,
+  (payload) => {
+    if (!payload) {
+      destroyVisible.value = false
+      return
+    }
+    startDestroy(payload)
+  },
+)
+
 function layoutFloats(items: typeof animState.floatTexts) {
   const styles: typeof floatStyles.value = []
   items.forEach((item, i) => {
@@ -115,6 +133,48 @@ function layoutFloats(items: typeof animState.floatTexts) {
     })
   })
   floatStyles.value = styles
+}
+
+function startDestroy(payload: NonNullable<typeof animState.destroying>) {
+  const slotEl = document.querySelector(getFlySelector(payload.fieldOwnerId, payload.slotIndex))
+  if (!slotEl) {
+    completeDestroy()
+    return
+  }
+
+  const rect = slotEl.getBoundingClientRect()
+  const w = Math.min(120, rect.width || 100)
+  const h = Math.min(160, rect.height || 140)
+
+  destroyCard.value = payload.card ?? null
+  destroyPhase.value = 'flash'
+  destroyVisible.value = true
+
+  destroyStyle.value = {
+    width: `${w}px`,
+    height: `${h}px`,
+    left: `${rect.left + rect.width / 2 - w / 2}px`,
+    top: `${rect.top + rect.height / 2 - h / 2}px`,
+    transform: 'scale(1) rotate(0deg)',
+    opacity: '1',
+    transition: 'none',
+  }
+
+  setTimeout(() => {
+    destroyPhase.value = 'shatter'
+    destroyStyle.value = {
+      ...destroyStyle.value,
+      transform: 'scale(0.2) rotate(18deg)',
+      opacity: '0',
+      transition: `transform ${DESTROY_MS - 180}ms cubic-bezier(0.4, 0, 1, 1), opacity ${DESTROY_MS - 180}ms ease-in`,
+    }
+  }, 180)
+
+  setTimeout(() => {
+    destroyVisible.value = false
+    triggerSlotBounce(payload.fieldOwnerId, payload.slotIndex)
+    completeDestroy()
+  }, DESTROY_MS + 20)
 }
 
 function startFlip(payload: NonNullable<typeof animState.flipping>) {
@@ -308,6 +368,26 @@ defineExpose({ landFlashKey })
       {{ ft.text }}
     </div>
 
+    <div v-if="animState.banner" class="phase-banner" :class="`banner-${animState.banner.kind}`">
+      {{ animState.banner.text }}
+    </div>
+
+    <div v-if="destroyVisible" class="fly-layer">
+      <div
+        class="destroy-card"
+        :class="{ 'is-flash': destroyPhase === 'flash', 'is-shatter': destroyPhase === 'shatter' }"
+        :style="destroyStyle"
+      >
+        <template v-if="destroyCard">
+          <div class="fly-name">{{ destroyCard.name }}</div>
+          <div class="fly-meta">💪{{ destroyCard.currentPower }}</div>
+        </template>
+        <template v-else>
+          <div class="card-back-art">×</div>
+        </template>
+      </div>
+    </div>
+
     <div v-if="reforgeVisible && animState.reforge" class="reforge-layer" :style="{ left: reforgePos.x + 'px', top: reforgePos.y + 'px' }">
       <div
         v-for="(opt, i) in animState.reforge.options"
@@ -365,6 +445,78 @@ defineExpose({ landFlashKey })
 
 .float-destroy {
   color: #7f1d1d;
+}
+
+.phase-banner {
+  position: fixed;
+  left: 50%;
+  top: 18%;
+  transform: translate(-50%, -50%);
+  z-index: 6200;
+  pointer-events: none;
+  padding: 14px 36px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  animation: banner-pop 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  white-space: nowrap;
+}
+
+.banner-your-turn {
+  background: linear-gradient(135deg, #fffdf8 0%, #f0e6d4 100%);
+  border: 3px solid #a46d1f;
+  color: #a46d1f;
+  box-shadow: 0 12px 40px rgba(164, 109, 31, 0.35);
+}
+
+.banner-final-round {
+  background: linear-gradient(135deg, #3d1515 0%, #7a2020 100%);
+  border: 3px solid #ffb4b4;
+  color: #ffeaea;
+  box-shadow: 0 12px 40px rgba(157, 47, 47, 0.45);
+}
+
+.banner-round,
+.banner-reveal,
+.banner-turn {
+  background: linear-gradient(135deg, #1f2522 0%, #3a4540 100%);
+  border: 3px solid #d8d2c4;
+  color: #fffdf8;
+  box-shadow: 0 12px 36px rgba(31, 37, 34, 0.4);
+}
+
+@keyframes banner-pop {
+  0% { opacity: 0; transform: translate(-50%, 20px) scale(0.85); }
+  12% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  78% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -62px) scale(0.96); }
+}
+
+.destroy-card {
+  position: fixed;
+  background: linear-gradient(145deg, #fff0f0 0%, #e8caca 100%);
+  border: 2px solid #9d2f2f;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(157, 47, 47, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+
+.destroy-card.is-flash {
+  animation: destroy-flash 180ms ease-out;
+}
+
+@keyframes destroy-flash {
+  0% { box-shadow: 0 0 0 rgba(255, 60, 60, 0); filter: brightness(1); }
+  50% { box-shadow: 0 0 28px rgba(255, 40, 40, 0.95); filter: brightness(1.35); transform: scale(1.08); }
+  100% { box-shadow: 0 0 12px rgba(255, 40, 40, 0.5); filter: brightness(1.1); }
 }
 
 @keyframes float-rise {

@@ -4,6 +4,8 @@ import { createDeckFromCardIds, getDefaultDeckCardIds } from '@/data/cardDatabas
 import { EffectManager } from '@/game/effectManager'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { parseCombatFloats } from '@/utils/parseCombatFloats'
+import { parsePowerPulsesFromSegment } from '@/utils/parsePowerPulse'
+import { findFieldSlotForCard } from '@/utils/fieldSlot'
 
 export function useGame() {
   // 初始化卡牌数据库
@@ -19,6 +21,18 @@ export function useGame() {
     const playerId = anchorPlayerId ?? currentPlayer.value.id
     const floats = newParts.flatMap(p => parseCombatFloats(p).map(f => ({ ...f, playerId })))
     if (floats.length) await animations.playFloatTexts(floats)
+    for (const part of newParts) {
+      for (const pulse of parsePowerPulsesFromSegment(part, gameState.value)) {
+        await animations.playPowerPulse(pulse)
+      }
+    }
+  }
+
+  async function animateDestroyCard(card: Card) {
+    const loc = findFieldSlotForCard(gameState.value, card)
+    if (loc) {
+      await animations.playDestroy({ ...loc, card })
+    }
   }
 
   // 创建初始槽位
@@ -222,6 +236,9 @@ export function useGame() {
     }
 
     await animations.wait(400)
+    if (currentPlayer.value.id === 'player') {
+      await animations.playBanner({ kind: 'your-turn', text: '你的回合' })
+    }
     gameState.value.phase = 'decision'
 
     if (currentPlayer.value.id.startsWith('ai')) {
@@ -539,8 +556,8 @@ export function useGame() {
 
     player.hand.splice(cardIndex, 1)
     // Fire ALL onPlay effects
-    card.effects.forEach(effect => {
-      if (effect.timing !== 'onPlay') return
+    for (const effect of card.effects) {
+      if (effect.timing !== 'onPlay') continue
       
       if (effect.type === 'restoreEnergy') {
         player.currentCost += (effect.value || 0)
@@ -567,12 +584,16 @@ export function useGame() {
           const targetSlot = opponent.field.find(s => s.card && s.card.type === 'unit')
           if (targetSlot && targetSlot.card) {
             const target = targetSlot.card
+            const loc = findFieldSlotForCard(gameState.value, target)
             const oldPower = target.currentPower
             target.currentPower -= (effect.value || 0)
             gameState.value.message += ` | ${target.name} 战力${oldPower}→${target.currentPower}`
             if (target.currentPower <= 0) {
+              if (loc) await animateDestroyCard(target)
               targetSlot.card = null
               gameState.value.message += ` | ${target.name} 被摧毁`
+            } else if (loc) {
+              await animations.playPowerPulse({ ...loc, delta: target.currentPower - oldPower })
             }
             applied = true
             break
@@ -611,7 +632,7 @@ export function useGame() {
           }
         }
       }
-    })
+    }
     
     // QuickPlay units need target selection on field (deploy onto existing card)
     if (card.type === 'unit') {
@@ -760,13 +781,28 @@ export function useGame() {
     const effect = deployEffect || revealEffect
 
     if (effect?.type === 'destroy') {
+      const loc = findFieldSlotForCard(gameState.value, targetCard)
       const r = EffectManager.applyDestroyToTarget(targetCard, effect, gameState.value)
       r.messages.forEach(msg => { gameState.value.message += ` | ${msg}` })
+      if (r.destroyed && loc) {
+        await animations.playDestroy({ ...loc, card: targetCard })
+      } else if (loc) {
+        const arrow = r.messages.find(m => /战力\d+→\d+/.test(m))
+        const m = arrow?.match(/战力(\d+)→(\d+)/)
+        if (m) {
+          await animations.playPowerPulse({
+            ...loc,
+            delta: Number(m[2]) - Number(m[1]),
+          })
+        }
+      }
       EffectManager.recalculateAllPowers(gameState.value)
     } else if (effect && (effect.value || effect.useD6Value)) {
       const delta = effect.useD6Value ? EffectManager.rollD6() : (effect.value as number)
+      const loc = findFieldSlotForCard(gameState.value, targetCard)
       targetCard.currentPower += delta
       gameState.value.message += ` | ${targetCard.name} 战力+${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`
+      if (loc) await animations.playPowerPulse({ ...loc, delta })
     }
 
     const slotIndex = currentPlayer.value.field.findIndex(s => s.card === card)
@@ -1004,6 +1040,8 @@ export function useGame() {
   async function revealAICards() {
     const allHiddenCount = Object.values(aiHiddenCards.value).reduce((sum, cards) => sum + cards.length, 0)
     if (allHiddenCount === 0) return
+
+    await animations.playBanner({ kind: 'reveal', text: '揭示隐藏卡牌' })
     
     const names: string[] = []
     for (const aiId of Object.keys(aiHiddenCards.value)) {
@@ -1135,6 +1173,7 @@ export function useGame() {
       gameState.value.finalRoundTriggeredBy = gameState.value.players.findIndex(p => p.id === player.id)
       gameState.value.message += ` | ${player.name} 填满了场地！进入最后一回合！`
       updateFinalRoundRestrictions()
+      void animations.playBanner({ kind: 'final-round', text: '最后一回合！' })
     }
   }
 
@@ -1167,6 +1206,7 @@ export function useGame() {
       gameState.value.round++
       updateFinalRoundRestrictions()
       EffectManager.triggerRoundEffects('roundStart', gameState.value)
+      await animations.playBanner({ kind: 'round', text: `第 ${gameState.value.round} 回合` })
     }
     
     gameState.value.phase = 'draw'

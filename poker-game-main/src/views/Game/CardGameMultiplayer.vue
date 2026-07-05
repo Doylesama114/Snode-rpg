@@ -8,7 +8,7 @@ import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
-import { diffFieldAnimations, diffDrawEvents, fieldAnimKey } from '@/utils/fieldAnimationDiff'
+import { diffFieldAnimations, diffDrawEvents, diffPhaseBanner, fieldAnimKey } from '@/utils/fieldAnimationDiff'
 import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
@@ -16,7 +16,13 @@ import { registerEscHandler } from '@/utils/escNavigation'
 const router = useRouter()
 const multiplayer = useMultiplayer()
 const animations = useGameAnimations()
-const { animState } = animations
+const {
+  animState,
+  triggerSlotShake,
+  isSlotShaking,
+  isSlotBouncing,
+  getPowerPulseDelta,
+} = animations
 const localAnimSkip = ref(new Set<string>())
 let lastMpFloatedMessage = ''
 
@@ -53,6 +59,25 @@ function blockFieldDetailClick() {
 function isSlotFlashing(playerId: string, slotIndex: number) {
   const f = animState.landFlash
   return f && f.fieldOwnerId === playerId && f.slotIndex === slotIndex
+}
+
+function powerPulseClass(playerId: string, slotIndex: number) {
+  const d = getPowerPulseDelta(playerId, slotIndex)
+  if (d === undefined) return ''
+  if (d > 0) return 'power-pulse-up'
+  if (d < 0) return 'power-pulse-down'
+  return ''
+}
+
+function handleFieldSlotClick(playerId: string, si: number) {
+  if (playerId !== multiplayer.myPlayerId.value) return
+  if (game.gameState.value?.phase === 'action' && game.selectedCard.value) {
+    if (game.isSlotAvailable(si)) {
+      void handleSelectSlot(si)
+    } else {
+      triggerSlotShake(playerId, si)
+    }
+  }
 }
 
 function markLocalAnim(key: string) {
@@ -94,6 +119,10 @@ async function handleGameStateUpdate(newState: GameState) {
     const floats = newParts.flatMap(p => parseCombatFloats(p).map(f => ({ ...f, playerId: anchorId })))
     if (floats.length) {
       await animations.playFloatTexts(floats)
+    }
+    const banner = diffPhaseBanner(prev, newState, myId)
+    if (banner) {
+      await animations.playBanner(banner)
     }
   }
   
@@ -428,10 +457,12 @@ function leaveGameToLobby(fromGameOver = false) {
                 'has-card': slot.card,
                 'extra-slot': slot.isExtra,
                 'slot-land-flash': isSlotFlashing(player.id, si),
+                'slot-bounce': isSlotBouncing(player.id, si),
+                'slot-shake': isSlotShaking(player.id, si),
                 'selectable': player.id === multiplayer.myPlayerId.value && game.isSlotAvailable(si),
                 'selected': player.id === multiplayer.myPlayerId.value && game.selectedSlot.value === si
               }"
-              @click="player.id === multiplayer.myPlayerId.value && game.gameState.value.phase === 'action' && game.isSlotAvailable(si) && handleSelectSlot(si)"
+              @click="handleFieldSlotClick(player.id, si)"
             >
               <div
                 v-if="slot.card"
@@ -444,7 +475,7 @@ function leaveGameToLobby(fromGameOver = false) {
                 <template v-if="slot.card.name === '？？？' || slot.card.id === 'hidden'">?</template>
                 <template v-else>
                   <div class="card-name-small">{{ slot.card.name }}</div>
-                  <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
+                  <div class="card-power" :class="powerPulseClass(player.id, si)" :style="{ color: getPowerColor(slot.card) }">
                     {{ slot.card.currentPower }}
                   </div>
                 </template>
@@ -754,12 +785,59 @@ function leaveGameToLobby(fromGameOver = false) {
 .field-slot.selectable {
   border-color: #a46d1f;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  animation: select-pulse 1.6s ease-in-out infinite;
 }
 
 .field-slot.selectable:hover {
   transform: scale(1.05);
   box-shadow: 0 0 12px rgba(164, 109, 31, 0.3);
+}
+
+.field-slot.slot-shake {
+  animation: slot-shake 0.45s ease-in-out;
+}
+
+.field-slot.slot-bounce {
+  animation: slot-empty-bounce 360ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes select-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(164, 109, 31, 0.35); }
+  50% { box-shadow: 0 0 22px rgba(164, 109, 31, 0.75); }
+}
+
+@keyframes slot-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes slot-empty-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); border-color: #9d2f2f; }
+  100% { transform: scale(1); }
+}
+
+.card-power.power-pulse-up {
+  animation: power-pop-up 650ms ease-out;
+}
+
+.card-power.power-pulse-down {
+  animation: power-pop-down 650ms ease-out;
+}
+
+@keyframes power-pop-up {
+  0% { transform: scale(1); color: #2f6f5e !important; }
+  30% { transform: scale(1.45); color: #1a8f5c !important; }
+  100% { transform: scale(1); }
+}
+
+@keyframes power-pop-down {
+  0% { transform: scale(1); color: #9d2f2f !important; }
+  30% { transform: scale(1.35); color: #c0392b !important; }
+  100% { transform: scale(1); }
 }
 
 .field-slot.selected {
