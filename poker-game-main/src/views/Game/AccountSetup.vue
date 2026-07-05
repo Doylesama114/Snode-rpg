@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getDefaultDeckCardIds } from '@/data/cardDatabase'
 import type { AccountState } from '@/types/game'
+import { createDefaultSlot, migrateAccountState, writeAccountState } from '@/utils/deckSlots'
 
 const router = useRouter()
 const playerName = ref('')
@@ -15,13 +16,17 @@ function handleRegister() {
     return
   }
 
+  const defaultIds = getDefaultDeckCardIds()
+  const firstSlot = createDefaultSlot('默认卡组', defaultIds)
   const accountState: AccountState = {
     isRegistered: true,
     playerName: name,
-    deckCardIds: getDefaultDeckCardIds()
+    deckCardIds: defaultIds,
+    savedDecks: [firstSlot],
+    activeDeckSlotId: firstSlot.id,
   }
 
-  localStorage.setItem('accountState', JSON.stringify(accountState))
+  writeAccountState(migrateAccountState(accountState))
   router.replace('/')
 }
 </script>

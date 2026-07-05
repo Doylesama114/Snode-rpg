@@ -1,21 +1,43 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import type { AccountState, Card, CardType } from '@/types/game'
+import type { AccountState, Card, CardType, SavedDeckSlot } from '@/types/game'
 import { CardDatabase, getDefaultDeckCardIds } from '@/data/cardDatabase'
 
 CardDatabase.initialize()
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import { getCardTypeLabel, formatCardEffects } from '@/utils/cardDisplay'
 import { registerEscHandler } from '@/utils/escNavigation'
+import {
+  readAccountState,
+  writeAccountState,
+  migrateAccountState,
+  updateActiveSlotCards,
+  switchActiveDeckSlot,
+  addDeckSlot,
+  renameDeckSlot,
+  deleteDeckSlot,
+  MAX_DECK_SLOTS,
+} from '@/utils/deckSlots'
 
 const router = useRouter()
+const account = ref<AccountState | null>(null)
 const deckCardIds = ref<string[]>([])
 const message = ref('')
 const searchQuery = ref('')
 const filterType = ref<CardType | 'all'>('all')
 const replacingIndex = ref<number | null>(null)
 const detailCard = ref<Card | null>(null)
+const newSlotName = ref('')
+const renameSlotName = ref('')
+const showNewSlotInput = ref(false)
+const showRenameInput = ref(false)
+
+const savedDecks = computed(() => account.value?.savedDecks ?? [])
+const activeSlotId = computed(() => account.value?.activeDeckSlotId ?? null)
+const activeSlot = computed(() => savedDecks.value.find(s => s.id === activeSlotId.value))
+const canAddSlot = computed(() => savedDecks.value.length < MAX_DECK_SLOTS)
+const canDeleteSlot = computed(() => savedDecks.value.length > 1)
 
 const allCards = computed(() => {
   return CardDatabase.getAllCards().slice().sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
@@ -44,23 +66,16 @@ function effectPreview(card: Card): string {
 let unregisterEsc: (() => void) | undefined
 
 onMounted(() => {
-  try {
-    const raw = localStorage.getItem('accountState')
-    if (!raw) {
-      router.replace('/account-setup')
-      return
-    }
-    const accountState: AccountState = JSON.parse(raw)
-    if (!accountState.isRegistered) {
-      router.replace('/account-setup')
-      return
-    }
-    deckCardIds.value = accountState.deckCardIds?.length === 15
-      ? [...accountState.deckCardIds]
-      : [...getDefaultDeckCardIds()]
-  } catch {
+  const loaded = readAccountState()
+  if (!loaded?.isRegistered) {
     router.replace('/account-setup')
+    return
   }
+  account.value = migrateAccountState(loaded)
+  deckCardIds.value = account.value.deckCardIds?.length === 15
+    ? [...account.value.deckCardIds]
+    : [...getDefaultDeckCardIds()]
+  writeAccountState(account.value)
 
   unregisterEsc = registerEscHandler(() => {
     if (detailCard.value) {
@@ -133,20 +148,103 @@ function useDefaultDeck() {
   saveDeck()
 }
 
-function saveDeck(silent = false) {
+function persistCurrentDeck(silent = false) {
+  if (!account.value) return false
   try {
-    const raw = localStorage.getItem('accountState')
-    if (!raw) return
-    const accountState: AccountState = JSON.parse(raw)
-    accountState.deckCardIds = [...deckCardIds.value]
-    localStorage.setItem('accountState', JSON.stringify(accountState))
+    updateActiveSlotCards(account.value, deckCardIds.value)
+    writeAccountState(account.value)
     if (!silent) {
-      message.value = '卡组已保存！'
+      message.value = activeSlot.value
+        ? `已保存到「${activeSlot.value.name}」`
+        : '卡组已保存！'
       setTimeout(() => { message.value = '' }, 2000)
     }
+    return true
   } catch {
     if (!silent) message.value = '保存失败'
+    return false
   }
+}
+
+function saveDeck(silent = false) {
+  persistCurrentDeck(silent)
+}
+
+function switchToSlot(slot: SavedDeckSlot) {
+  if (!account.value || slot.id === activeSlotId.value) return
+  persistCurrentDeck(true)
+  switchActiveDeckSlot(account.value, slot.id)
+  deckCardIds.value = [...slot.cardIds]
+  replacingIndex.value = null
+  writeAccountState(account.value)
+  message.value = `已切换到「${slot.name}」`
+  setTimeout(() => { message.value = '' }, 2000)
+}
+
+function openNewSlotForm() {
+  if (!canAddSlot.value) {
+    message.value = `最多保存 ${MAX_DECK_SLOTS} 套卡组`
+    setTimeout(() => { message.value = '' }, 2000)
+    return
+  }
+  newSlotName.value = `卡组 ${savedDecks.value.length + 1}`
+  showNewSlotInput.value = true
+  showRenameInput.value = false
+}
+
+function confirmNewSlot() {
+  if (!account.value) return
+  persistCurrentDeck(true)
+  const slot = addDeckSlot(account.value, newSlotName.value, [...deckCardIds.value])
+  if (!slot) {
+    message.value = `最多保存 ${MAX_DECK_SLOTS} 套卡组`
+    setTimeout(() => { message.value = '' }, 2000)
+    return
+  }
+  writeAccountState(account.value)
+  showNewSlotInput.value = false
+  message.value = `已另存为「${slot.name}」`
+  setTimeout(() => { message.value = '' }, 2000)
+}
+
+function cancelNewSlot() {
+  showNewSlotInput.value = false
+}
+
+function openRenameForm() {
+  if (!activeSlot.value) return
+  renameSlotName.value = activeSlot.value.name
+  showRenameInput.value = true
+  showNewSlotInput.value = false
+}
+
+function confirmRename() {
+  if (!account.value || !activeSlotId.value) return
+  if (!renameDeckSlot(account.value, activeSlotId.value, renameSlotName.value)) {
+    message.value = '名称不能为空'
+    setTimeout(() => { message.value = '' }, 2000)
+    return
+  }
+  writeAccountState(account.value)
+  showRenameInput.value = false
+  message.value = '栏位已重命名'
+  setTimeout(() => { message.value = '' }, 2000)
+}
+
+function cancelRename() {
+  showRenameInput.value = false
+}
+
+function deleteCurrentSlot() {
+  if (!account.value || !activeSlotId.value || !canDeleteSlot.value) return
+  const name = activeSlot.value?.name ?? '当前栏位'
+  if (!confirm(`确定删除卡组栏位「${name}」？`)) return
+  deleteDeckSlot(account.value, activeSlotId.value)
+  deckCardIds.value = [...account.value.deckCardIds]
+  replacingIndex.value = null
+  writeAccountState(account.value)
+  message.value = `已删除「${name}」`
+  setTimeout(() => { message.value = '' }, 2000)
 }
 
 function goHome() {
@@ -167,6 +265,76 @@ function goHome() {
       </div>
 
       <p v-if="message" class="deck-message">{{ message }}</p>
+
+      <section class="panel slots-panel">
+        <div class="slots-header">
+          <h3>卡组栏位 ({{ savedDecks.length }}/{{ MAX_DECK_SLOTS }})</h3>
+          <div class="slots-toolbar">
+            <button
+              v-if="canAddSlot && !showNewSlotInput"
+              type="button"
+              class="btn-secondary btn-sm"
+              @click="openNewSlotForm"
+            >
+              + 另存为新栏位
+            </button>
+            <template v-if="activeSlot">
+              <button type="button" class="btn-secondary btn-sm" @click="openRenameForm">重命名</button>
+              <button
+                v-if="canDeleteSlot"
+                type="button"
+                class="btn-danger btn-sm"
+                @click="deleteCurrentSlot"
+              >
+                删除栏位
+              </button>
+            </template>
+          </div>
+        </div>
+
+        <div v-if="showNewSlotInput" class="slot-form">
+          <input
+            v-model="newSlotName"
+            type="text"
+            class="slot-name-input"
+            placeholder="输入栏位名称"
+            maxlength="24"
+            @keyup.enter="confirmNewSlot"
+          >
+          <button type="button" class="btn-primary btn-sm" @click="confirmNewSlot">保存</button>
+          <button type="button" class="btn-secondary btn-sm" @click="cancelNewSlot">取消</button>
+        </div>
+
+        <div v-if="showRenameInput" class="slot-form">
+          <input
+            v-model="renameSlotName"
+            type="text"
+            class="slot-name-input"
+            placeholder="输入新名称"
+            maxlength="24"
+            @keyup.enter="confirmRename"
+          >
+          <button type="button" class="btn-primary btn-sm" @click="confirmRename">确定</button>
+          <button type="button" class="btn-secondary btn-sm" @click="cancelRename">取消</button>
+        </div>
+
+        <div class="slots-row">
+          <button
+            v-for="slot in savedDecks"
+            :key="slot.id"
+            type="button"
+            class="slot-chip"
+            :class="{ active: slot.id === activeSlotId }"
+            :title="`更新于 ${new Date(slot.updatedAt).toLocaleString()}`"
+            @click="switchToSlot(slot)"
+          >
+            <span class="slot-chip-name">{{ slot.name }}</span>
+            <span v-if="slot.id === activeSlotId" class="slot-chip-badge">使用中</span>
+          </button>
+        </div>
+        <p class="slots-hint">点击栏位切换卡组 · 修改后点「保存卡组」或换牌时自动保存到当前栏位</p>
+      </section>
+
       <p v-if="replacingIndex !== null" class="deck-hint replacing">
         正在更换第 {{ replacingIndex + 1 }} 张 ·
         <button type="button" class="link-btn" @click="cancelReplace">取消</button>
@@ -174,7 +342,7 @@ function goHome() {
       <p v-else class="deck-hint">点击卡牌查看效果 · 点「更换」从下方 148 张卡池替换</p>
 
       <section class="panel">
-        <h3>当前卡组 ({{ deckCards.length }}/15)</h3>
+        <h3>当前卡组 · {{ activeSlot?.name ?? '未命名' }} ({{ deckCards.length }}/15)</h3>
         <div class="deck-grid">
           <div
             v-for="(card, idx) in deckCards"
@@ -334,6 +502,117 @@ function goHome() {
   cursor: pointer;
   text-decoration: underline;
   font-size: inherit;
+}
+
+.slots-panel {
+  margin-bottom: 16px;
+}
+
+.slots-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.slots-header h3 {
+  margin: 0;
+}
+
+.slots-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.btn-danger {
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  background: #fff;
+  color: #9d2f2f;
+  border: 1px solid #e0b4b4;
+}
+
+.btn-danger:hover {
+  background: #fdf5f5;
+}
+
+.slots-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.slot-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 2px solid #d8d2c4;
+  background: #f6f4ef;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1f2522;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.slot-chip:hover {
+  border-color: #a46d1f;
+}
+
+.slot-chip.active {
+  border-color: #a46d1f;
+  background: rgba(164, 109, 31, 0.12);
+  font-weight: 600;
+}
+
+.slot-chip-name {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slot-chip-badge {
+  font-size: 10px;
+  background: #a46d1f;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.slot-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.slot-name-input {
+  flex: 1;
+  min-width: 160px;
+  padding: 8px 12px;
+  border: 1px solid #d8d2c4;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.slots-hint {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: #69706b;
 }
 
 .panel {

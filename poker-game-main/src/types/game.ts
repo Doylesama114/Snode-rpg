@@ -471,8 +471,19 @@ export interface Deck extends DeckConfig {
   createdAt: string
 }
 
+export interface SavedDeckSlot {
+  id: string
+  name: string
+  cardIds: string[]
+  updatedAt: string
+}
+
 export interface AccountState {
   isRegistered: boolean
   playerName: string | null
   deckCardIds: string[]
+  /** 命名卡组栏位 */
+  savedDecks?: SavedDeckSlot[]
+  /** 当前选用的栏位 id */
+  activeDeckSlotId?: string | null
 }
