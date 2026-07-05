@@ -26,7 +26,10 @@ const {
   executeReforge, 
   endTurn,
   cancelCardSelection,
-  isCardPlayable
+  isCardPlayable,
+  canChoosePlay,
+  canChooseReforge,
+  finalRoundTacticsOnly,
 } = useGame()
 
 const {
@@ -287,18 +290,19 @@ const playerCountStart = ref(2)
           </div>
         </div>
 
-        <!-- 操作按钮（人类玩家+当前回合） -->
+        <!-- 操作按钮（人类玩家+当前回合，紧贴手牌下方） -->
         <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
-          <template v-if="gameState.phase === 'decision'">
-            <button @click="choosePlay" class="btn btn-primary">出牌</button>
-            <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
-          </template>
-          <template v-if="isDeployPhase()">
+          <div v-if="gameState.phase === 'decision'" class="action-group decision-bar">
+            <button v-if="canChoosePlay" @click="choosePlay" class="btn btn-primary">出牌</button>
+            <button v-if="canChooseReforge" @click="chooseReforge" class="btn btn-secondary">重铸</button>
+            <span v-if="finalRoundTacticsOnly && canChoosePlay" class="hint">(场地已满，仅可出战术牌)</span>
+          </div>
+          <div v-if="isDeployPhase()" class="action-group">
             <button type="button" class="btn btn-secondary" @click="cancelCardSelection">取消出牌</button>
-          </template>
-          <template v-if="gameState.phase === 'action' && !reforgeState.active">
+          </div>
+          <div v-if="gameState.phase === 'action' && !reforgeState.active" class="action-group">
             <button @click="endTurn" class="btn btn-secondary">结束回合</button>
-          </template>
+          </div>
           <div v-if="reforgeState.active && reforgeOptions.length < 2" class="reforge-options">
             <div class="reforge-info">选择操作 ({{ reforgeOptions.length }}/2)
               <span v-if="reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="warning"> - 请先选择手牌</span>
@@ -767,12 +771,30 @@ const playerCountStart = ref(2)
 
 .actions {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 10px 0 0;
+  padding: 8px 0 0;
   flex-shrink: 0;
-  margin-top: auto;
+}
+
+.action-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.decision-bar {
+  padding: 10px 14px;
+  background: #f6f4ef;
+  border: 1px solid #d8d2c4;
+  border-radius: 10px;
+}
+
+.decision-bar .btn {
+  min-width: 96px;
 }
 
 .btn {

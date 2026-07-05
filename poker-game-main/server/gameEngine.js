@@ -2446,6 +2446,10 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
+    const restrictions = this.gameState.playerRestrictions?.[playerId]
+    if (restrictions?.includes('cannotPlay')) {
+      return { success: false, error: '最后一回合无法出牌（场地已满）' }
+    }
     
     console.log(`[GameEngine] handleChoosePlay: 玩家${playerIndex} (${player.name}) 选择出牌`)
     console.log(`[GameEngine] 当前 phase: ${this.gameState.phase}`)
@@ -2496,6 +2500,10 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
+    const restrictions = this.gameState.playerRestrictions?.[playerId]
+    if (restrictions?.includes('cannotPlay') || restrictions?.includes('tacticsOnly')) {
+      return { success: false, error: '最后一回合场地已满，无法重铸' }
+    }
     
     console.log(`[GameEngine] handleChooseReforge: 玩家${playerIndex} (${player.name}) 选择重铸`)
     console.log(`[GameEngine] 当前 phase: ${this.gameState.phase}`)
@@ -2617,6 +2625,13 @@ class GameEngine {
     // 验证是否已出牌
     if (player.hasPlayedThisTurn && !player.canPlayExtra) {
       return { success: false, error: '本回合已经出过牌了！' }
+    }
+
+    // 场地已满时战术牌可直接打出（不占槽位）
+    const filledMain = EffectManager.countMainFieldCardsForLimit(fieldOwner)
+    const availableSlots = EffectManager.getAvailableSlotIndices(fieldOwner, card)
+    if (card.type === 'tactic' && (slotIndex === -1 || (filledMain >= 6 && availableSlots.length === 0))) {
+      return this.handlePlayTacticDirect(playerId, cardIndex)
     }
     
     // 验证槽位
@@ -2938,11 +2953,70 @@ class GameEngine {
   
   // 弃置战术牌
   discardTacticCard(card, player, slotIndex) {
-    const slot = player.field[slotIndex]
-    if (slot) {
-      slot.card = null
+    if (slotIndex >= 0) {
+      const slot = player.field[slotIndex]
+      if (slot) {
+        slot.card = null
+      }
     }
     player.discard.push(card)
+  }
+
+  handlePlayTacticDirect(playerId, cardIndex) {
+    const playerIndex = this.getPlayerIndex(playerId)
+    if (playerIndex === -1) {
+      return { success: false, error: '玩家不存在' }
+    }
+    const player = this.gameState.players[playerIndex]
+    if (cardIndex < 0 || cardIndex >= player.hand.length) {
+      return { success: false, error: '无效的手牌索引' }
+    }
+    const card = player.hand[cardIndex]
+    if (!card || card.type !== 'tactic') {
+      return { success: false, error: '只能直接打出战术牌' }
+    }
+
+    const restrictions = this.gameState.playerRestrictions?.[playerId]
+    if (restrictions?.includes('cannotPlay')) {
+      return { success: false, error: '最后一回合无法出牌（场地已满）' }
+    }
+    if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
+      return { success: false, error: '最后一回合只能出战术牌' }
+    }
+    if (!EffectManager.canPlayHandCard(card, player, this.gameState)) {
+      return { success: false, error: '无法打出此牌（条件/封锁/类型限制）' }
+    }
+
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    if (player.currentCost < playCost && !card.forcedPlay) {
+      return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
+    }
+    if (player.hasPlayedThisTurn && !player.canPlayExtra) {
+      return { success: false, error: '本回合已经出过牌了！' }
+    }
+
+    player.hand.splice(cardIndex, 1)
+    player.currentCost -= playCost
+    if (player.hasPlayedThisTurn && player.canPlayExtra) {
+      player.canPlayExtra = false
+    } else {
+      player.hasPlayedThisTurn = true
+    }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
+
+    this.gameState.message += ` | ${player.name} 打出了战术牌 ${card.name}`
+    this.triggerDeployEffects(card, player)
+    this.handleTacticCard(card, player, -1)
+
+    if (!player.canPlayExtra) {
+      this.gameState.playerReady[playerId] = true
+    }
+
+    return {
+      success: true,
+      gameState: this.getPublicGameState(),
+      cardPlayed: card,
+    }
   }
   
   // 触发部署效果
@@ -3179,8 +3253,12 @@ class GameEngine {
       player.canPlayExtra = false
       player.unitPlayPowerBonus = 0
       
-      // 如果是填满场地的玩家，在最后一回合跳过他的操作
-      if (this.gameState.isFinalRound && this.gameState.finalRoundTriggeredBy === index) {
+      // 如果是填满场地或无法出牌的玩家，在最后一回合跳过操作
+      const restrictions = this.gameState.playerRestrictions?.[player.id]
+      if (this.gameState.isFinalRound && (
+        this.gameState.finalRoundTriggeredBy === index
+        || restrictions?.includes('cannotPlay')
+      )) {
         console.log(`[GameEngine] ${player.name} 已填满场地，最后一回合跳过操作`)
         // 标记为已决策和已准备，这样他不需要操作
         this.gameState.playerDecisions[player.id] = { made: true, choice: 'skip' }

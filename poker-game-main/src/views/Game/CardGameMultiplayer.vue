@@ -152,6 +152,7 @@ function handleChoosePlay() {
   console.log('[CardGameMultiplayer] 我的玩家名:', game.myPlayer.value?.name)
   
   const action = game.choosePlay()
+  if (!action) return
   console.log('[CardGameMultiplayer] 发送 choosePlay 操作')
   multiplayer.sendAction(action)
 }
@@ -163,7 +164,7 @@ function handleChooseReforge() {
   console.log('[CardGameMultiplayer] 我的玩家名:', game.myPlayer.value?.name)
   
   const action = game.chooseReforge()
-  console.log('[CardGameMultiplayer] 发送 chooseReforge 操作')
+  if (!action) return
   multiplayer.sendAction(action)
 }
 
@@ -194,7 +195,14 @@ function onHandCardClick(index: number) {
     if (!game.allDecisionsMade.value) {
       return
     }
-    game.selectCardToPlay(index)
+    const mode = game.selectCardToPlay(index)
+    if (mode === 'direct') {
+      const action = game.playTacticDirect(index)
+      if (action) {
+        multiplayer.sendAction(action)
+        game.setMyReady()
+      }
+    }
   }
 }
 
@@ -403,8 +411,9 @@ function leaveGameToLobby(fromGameOver = false) {
         <!-- 操作按钮（仅自己+当前回合） -->
         <div v-if="player.id === multiplayer.myPlayerId.value && index === game.gameState.value.currentPlayerIndex" class="actions">
           <template v-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value">
-            <button @click="handleChoosePlay" class="btn btn-primary">出牌</button>
-            <button @click="handleChooseReforge" class="btn btn-secondary">重铸</button>
+            <button v-if="game.canChoosePlay.value" @click="handleChoosePlay" class="btn btn-primary">出牌</button>
+            <button v-if="game.canChooseReforge.value" @click="handleChooseReforge" class="btn btn-secondary">重铸</button>
+            <span v-if="game.finalRoundTacticsOnly.value && game.canChoosePlay.value" class="hint">(场地已满，仅可出战术牌)</span>
           </template>
 
           <div v-if="game.myDecisionMade.value && !game.allOtherDecisionsMade.value" class="waiting-opponent">

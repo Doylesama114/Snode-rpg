@@ -71,6 +71,36 @@ export function useGameClient(initialPlayerId = '') {
   const otherPlayers = computed(() => gameState.value?.players.filter(p => p.id !== myPlayerIdRef.value) ?? [])
   const hasPlayedThisTurn = computed(() => myPlayer.value?.hasPlayedThisTurn || false)
   const canPlayExtra = computed(() => myPlayer.value?.canPlayExtra || false)
+
+  function myRestrictions(): string[] | undefined {
+    if (!gameState.value || !myPlayerIdRef.value) return undefined
+    return gameState.value.playerRestrictions?.[myPlayerIdRef.value]
+  }
+
+  function hasAffordableTacticInHand(): boolean {
+    if (!myPlayer.value || !gameState.value) return false
+    return myPlayer.value.hand.some(card => {
+      if (!card || card === 'hidden') return false
+      const c = card as Card
+      return c.type === 'tactic'
+        && EffectManager.getEffectivePlayCost(c, myPlayer.value!) <= myPlayer.value!.currentCost
+        && EffectManager.canPlayHandCard(c, myPlayer.value!, gameState.value!)
+    })
+  }
+
+  const canChooseReforge = computed(() => {
+    const r = myRestrictions()
+    return !r?.includes('cannotPlay') && !r?.includes('tacticsOnly')
+  })
+
+  const canChoosePlay = computed(() => {
+    const r = myRestrictions()
+    if (r?.includes('cannotPlay')) return false
+    if (r?.includes('tacticsOnly')) return hasAffordableTacticInHand()
+    return true
+  })
+
+  const finalRoundTacticsOnly = computed(() => !!myRestrictions()?.includes('tacticsOnly'))
   
   // 更新游戏状态（从服务器接收）
   function updateGameState(newState: GameState) {
@@ -81,6 +111,7 @@ export function useGameClient(initialPlayerId = '') {
   // 选择出牌（返回操作对象，由调用者发送到服务器）
   function choosePlay() {
     console.log('[useGameClient] choosePlay 被调用')
+    if (!canChoosePlay.value) return null
     reforgeState.value.active = false
     reforgeState.value.hasChosen = true
     
@@ -92,6 +123,7 @@ export function useGameClient(initialPlayerId = '') {
   // 选择重铸
   function chooseReforge() {
     console.log('[useGameClient] chooseReforge 被调用')
+    if (!canChooseReforge.value) return null
     reforgeState.value.active = true
     reforgeState.value.hasChosen = true
     
@@ -100,14 +132,18 @@ export function useGameClient(initialPlayerId = '') {
     }
   }
   
-  // 选择手牌准备打出
-  function selectCardToPlay(cardIndex: number) {
+  // 选择手牌准备打出；返回 slot=需选格 / direct=战术直出 / false=不可出
+  function selectCardToPlay(cardIndex: number): 'slot' | 'direct' | false {
     if (!gameState.value || !myPlayer.value) return false
     if (reforgeState.value.active) return false
     if (myPlayer.value.hasPlayedThisTurn && !myPlayer.value.canPlayExtra) return false
     
     const card = myPlayer.value.hand[cardIndex]
     if (!card || card === 'hidden') return false
+
+    const restrictions = myRestrictions()
+    if (restrictions?.includes('cannotPlay')) return false
+    if (restrictions?.includes('tacticsOnly') && (card as Card).type !== 'tactic') return false
 
     if (!EffectManager.canPlayHandCard(card as Card, myPlayer.value, gameState.value)) {
       return false
@@ -126,20 +162,43 @@ export function useGameClient(initialPlayerId = '') {
         selectedCard.value = null
         return false
       }
-      return true
+      return 'slot'
     }
     
-    // 获取可用槽位
     const slots = EffectManager.getAvailableSlotIndices(myPlayer.value, card as Card)
     availableSlots.value = slots
     availableCrossPlayerSlots.value = []
     
     if (slots.length === 0) {
+      if ((card as Card).type === 'tactic' && EffectManager.countMainFieldCardsForLimit(myPlayer.value) >= 6) {
+        return 'direct'
+      }
       selectedCard.value = null
       return false
     }
     
-    return true
+    return 'slot'
+  }
+
+  function playTacticDirect(cardIndex: number) {
+    if (!selectedCard.value && myPlayer.value) {
+      const card = myPlayer.value.hand[cardIndex]
+      if (card && card !== 'hidden') selectedCard.value = card as Card
+    }
+    if (!selectedCard.value) return null
+    const action = {
+      type: 'playCard' as const,
+      data: {
+        cardIndex,
+        slotIndex: -1,
+        cardId: selectedCard.value.id,
+      },
+    }
+    selectedCard.value = null
+    selectedSlot.value = null
+    availableSlots.value = []
+    availableCrossPlayerSlots.value = []
+    return action
   }
   
   // 选择槽位打出卡牌（返回操作对象）
@@ -242,7 +301,8 @@ export function useGameClient(initialPlayerId = '') {
     if (restrictions?.includes('tacticsOnly')) {
       const card = myPlayer.value.hand[index]
       if (!card || card === 'hidden') return false
-      return (card as Card).type === 'tactic' && myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
+      if ((card as Card).type !== 'tactic') return false
+      return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
     }
 
     const card = myPlayer.value.hand[index]
@@ -279,6 +339,7 @@ export function useGameClient(initialPlayerId = '') {
     choosePlay,
     chooseReforge,
     selectCardToPlay,
+    playTacticDirect,
     selectSlotToPlay,
     selectReforgeCard,
     executeReforge,
@@ -289,6 +350,9 @@ export function useGameClient(initialPlayerId = '') {
     getTotalPower,
     isSlotAvailable,
     isCrossPlayerSlotAvailable,
-    isCardPlayable
+    isCardPlayable,
+    canChoosePlay,
+    canChooseReforge,
+    finalRoundTacticsOnly,
   }
 }

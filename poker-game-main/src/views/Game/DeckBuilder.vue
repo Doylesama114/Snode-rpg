@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AccountState, Card, CardType } from '@/types/game'
 import { CardDatabase, getDefaultDeckCardIds } from '@/data/cardDatabase'
+
+CardDatabase.initialize()
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import { getCardTypeLabel, formatCardEffects } from '@/utils/cardDisplay'
 import { registerEscHandler } from '@/utils/escNavigation'
@@ -42,7 +44,6 @@ function effectPreview(card: Card): string {
 let unregisterEsc: (() => void) | undefined
 
 onMounted(() => {
-  CardDatabase.initialize()
   try {
     const raw = localStorage.getItem('accountState')
     if (!raw) {

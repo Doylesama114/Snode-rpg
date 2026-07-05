@@ -3552,3 +3552,6 @@ export function shuffleDeck(deck: Card[]): Card[] {
   }
   return shuffled
 }
+
+// 模块加载时即初始化，避免卡组页等页面在 onMounted 前 computed 读到空卡池
+CardDatabase.initialize()

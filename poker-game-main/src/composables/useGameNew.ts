@@ -155,6 +155,13 @@ export function useGame() {
 
   // 开始抽牌阶段
   function startDrawPhase() {
+    const restrictions = gameState.value.playerRestrictions?.[currentPlayer.value.id]
+    if (restrictions?.includes('cannotPlay')) {
+      gameState.value.message = `${currentPlayer.value.name} 场地已满，跳过本回合`
+      setTimeout(() => switchToNextPlayer(), 1500)
+      return
+    }
+
     if (gameState.value.isFinalRound &&
         gameState.value.finalRoundTriggeredBy === gameState.value.currentPlayerIndex) {
       gameState.value.message = `${currentPlayer.value.name} 已填满场地，跳过本回合`
@@ -198,13 +205,59 @@ export function useGame() {
         gameState.value.message = `${currentPlayer.value.name} 正在思考...`
         setTimeout(() => aiTurn(), 1000)
       } else {
+        const r = gameState.value.playerRestrictions?.[currentPlayer.value.id]
+        if (r?.includes('tacticsOnly') && !hasAffordableTacticInHand(currentPlayer.value)) {
+          gameState.value.message = `${currentPlayer.value.name} 场地已满且无战术牌可出，跳过本回合`
+          setTimeout(() => switchToNextPlayer(), 1500)
+          return
+        }
         gameState.value.message = `${currentPlayer.value.name} - 必须选择出牌或重铸`
       }
     }, 1000)
   }
 
+  function hasAffordableTacticInHand(player: Player): boolean {
+    return player.hand.some(card =>
+      card.type === 'tactic'
+      && EffectManager.getEffectivePlayCost(card, player) <= player.currentCost
+      && EffectManager.canPlayHandCard(card, player, gameState.value),
+    )
+  }
+
+  function canPlayerReforge(player: Player): boolean {
+    const r = gameState.value.playerRestrictions?.[player.id]
+    return !r?.includes('cannotPlay') && !r?.includes('tacticsOnly')
+  }
+
+  function canPlayerChoosePlay(player: Player): boolean {
+    const r = gameState.value.playerRestrictions?.[player.id]
+    if (r?.includes('cannotPlay')) return false
+    if (r?.includes('tacticsOnly')) return hasAffordableTacticInHand(player)
+    return true
+  }
+
+  const canChooseReforge = computed(() =>
+    gameState.value.phase === 'decision'
+    && currentPlayer.value.id === 'player'
+    && canPlayerReforge(currentPlayer.value),
+  )
+
+  const canChoosePlay = computed(() =>
+    gameState.value.phase === 'decision'
+    && currentPlayer.value.id === 'player'
+    && canPlayerChoosePlay(currentPlayer.value),
+  )
+
+  const finalRoundTacticsOnly = computed(() =>
+    !!gameState.value.playerRestrictions?.[currentPlayer.value.id]?.includes('tacticsOnly'),
+  )
+
   // 选择出牌
   function choosePlay() {
+    if (!canPlayerChoosePlay(currentPlayer.value)) {
+      gameState.value.message = '最后一回合无法出牌（场地已满）'
+      return
+    }
     reforgeState.value.active = false
     reforgeState.value.hasChosen = true
     gameState.value.phase = 'action'
@@ -214,6 +267,10 @@ export function useGame() {
 
   // 选择重铸
   function chooseReforge() {
+    if (!canPlayerReforge(currentPlayer.value)) {
+      gameState.value.message = '最后一回合场地已满，无法重铸'
+      return
+    }
     reforgeState.value.active = true
     reforgeState.value.hasChosen = true
     gameState.value.phase = 'action'
@@ -230,6 +287,16 @@ export function useGame() {
     
     const card = currentPlayer.value.hand[cardIndex]
     if (!card) return
+
+    const restrictions = gameState.value.playerRestrictions?.[currentPlayer.value.id]
+    if (restrictions?.includes('cannotPlay')) {
+      gameState.value.message = '最后一回合无法出牌（场地已满）'
+      return
+    }
+    if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') {
+      gameState.value.message = '最后一回合只能出战术牌'
+      return
+    }
 
     if (!EffectManager.canPlayHandCard(card, currentPlayer.value, gameState.value)) {
       if (EffectManager.isHandCardLocked(currentPlayer.value, card, gameState.value)) {
@@ -254,6 +321,14 @@ export function useGame() {
     }
     
     gameState.value.selectedCard = card
+
+    if (card.type === 'tactic') {
+      const availableSlots = getAvailableSlots(currentPlayer.value, card)
+      if (availableSlots.length === 0 && countMainFieldCards(currentPlayer.value) >= 6) {
+        playTacticDirect(cardIndex)
+        return
+      }
+    }
 
     if (EffectManager.requiresCrossPlayerDeploy(card)) {
       const options = EffectManager.getCrossPlayerDeployOptions(gameState.value, currentPlayer.value, card)
@@ -646,17 +721,14 @@ export function useGame() {
     gameState.value.pendingDeployEffect = undefined
     gameState.value.availableTargets = []
 
-    if (deployEffect && slotIndex !== -1) {
-      handleTacticCard(card, currentPlayer.value, slotIndex)
+    if (deployEffect) {
+      handleTacticCard(card, currentPlayer.value, slotIndex >= 0 ? slotIndex : -1)
       gameState.value.phase = 'action'
       gameState.value.selectedCard = undefined
       return
     }
 
-    if (slotIndex !== -1) {
-      discardTacticCard(card, currentPlayer.value, slotIndex)
-    }
-    gameState.value.phase = 'action'
+    discardTacticCard(card, currentPlayer.value, slotIndex >= 0 ? slotIndex : -1)
     gameState.value.selectedCard = undefined
   }
 
@@ -729,15 +801,53 @@ export function useGame() {
 
   // 弃置战术牌
   function discardTacticCard(card: Card, player: Player, slotIndex: number) {
-    const slot = player.field[slotIndex]
-    if (slot) {
-      slot.card = null
+    if (slotIndex >= 0) {
+      const slot = player.field[slotIndex]
+      if (slot) {
+        slot.card = null
+      }
     }
     player.discard.push(card)
-    
+
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
     gameState.value.availableTargets = undefined
+  }
+
+  /** 场地已满时直接打出战术牌（不占部署格） */
+  function playTacticDirect(cardIndex: number) {
+    const player = currentPlayer.value
+    const card = player.hand[cardIndex]
+    if (!card || card.type !== 'tactic') return
+
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    if (player.currentCost < playCost) {
+      gameState.value.message = `费用不足！需要 ${playCost}，当前 ${player.currentCost}`
+      return
+    }
+
+    player.currentCost -= playCost
+    player.hand.splice(cardIndex, 1)
+    if (player.hasPlayedThisTurn && player.canPlayExtra) {
+      player.canPlayExtra = false
+    } else {
+      player.hasPlayedThisTurn = true
+    }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
+
+    gameState.value.selectedCard = card
+    gameState.value.message = `${player.name} 打出了战术牌 ${card.name}`
+
+    const pending = triggerDeployEffects(card, player)
+    if (pending) {
+      gameState.value.pendingDeployEffect = pending.effect
+      gameState.value.availableTargets = pending.targets
+      gameState.value.phase = 'selectTarget'
+      gameState.value.message += ' | 选择摧毁目标'
+      return
+    }
+
+    handleTacticCard(card, player, -1)
   }
 
   // 检查AI隐藏卡牌费用
@@ -1023,11 +1133,24 @@ export function useGame() {
       if (restrictions?.includes('tacticsOnly') && card.type !== 'tactic') return false
       if (card.type !== 'tactic' && aiTotalCards >= 6) return false
       return EffectManager.getEffectivePlayCost(card, ai) <= ai.currentCost
+        && EffectManager.canPlayHandCard(card, ai, gameState.value)
     })
     
     if (playableCards.length > 0 && Math.random() > 0.3) {
-      const cardIndex = ai.hand.indexOf(playableCards[0])
-      const availableSlots = getAvailableSlots(ai, playableCards[0])
+      const card = playableCards[0]
+      const cardIndex = ai.hand.indexOf(card)
+
+      if (card.type === 'tactic' && getAvailableSlots(ai, card).length === 0 && countMainFieldCards(ai) >= 6) {
+        playTacticDirect(cardIndex)
+        setTimeout(() => {
+          if (gameState.value.phase !== 'gameOver') {
+            switchToNextPlayer()
+          }
+        }, 1500)
+        return
+      }
+
+      const availableSlots = getAvailableSlots(ai, card)
       
       if (availableSlots.length > 0) {
         const slotIndex = availableSlots[0]
@@ -1044,6 +1167,12 @@ export function useGame() {
       }
     }
     
+    if (restrictions?.includes('tacticsOnly')) {
+      gameState.value.message = `${ai.name} 无战术牌可出，跳过回合`
+      setTimeout(() => switchToNextPlayer(), 800)
+      return
+    }
+
     // 重铸
     const options: [ReforgeOption, ReforgeOption] = ['gainCost', 'gainPower']
     gameState.value.message = `${ai.name} 选择了重铸`
@@ -1112,6 +1241,9 @@ export function useGame() {
     reforgeState,
     hasPlayedThisTurn,
     canPlayExtra,
+    canChoosePlay,
+    canChooseReforge,
+    finalRoundTacticsOnly,
     initGame,
     choosePlay,
     chooseReforge,
