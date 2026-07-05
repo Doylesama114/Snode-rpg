@@ -9,6 +9,7 @@ import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
 import { computed, ref, unref, watch } from 'vue'
 import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
+import { EffectManager } from '@/game/effectManager'
 
 const gameApi = useGame()
 const { 
@@ -205,13 +206,7 @@ function onHandCardClick(index: number) {
 
 function getTotalPower(playerIndex: number) {
   const player = gameState.value.players[playerIndex]
-  let totalPower = player.bonusPower
-  player.field.forEach(slot => {
-    if (slot.card && !slot.isExtra) {
-      totalPower += slot.card.currentPower
-    }
-  })
-  return totalPower
+  return EffectManager.getPlayerTotalPower(player)
 }
 
 function getPowerColor(card: { currentPower: number; basePower: number }): string {
@@ -422,7 +417,7 @@ function playerIndex(playerId: string) {
         </div>
 
         <!-- 操作按钮（人类玩家+当前回合，紧贴手牌下方） -->
-        <div v-if="player.id === 'player' && playerIndex(player.id) === gameState.currentPlayerIndex" class="actions">
+        <div v-if="player.id === 'player' && playerIndex(player.id) === gameState.currentPlayerIndex && gameState.phase !== 'draw'" class="actions">
           <div v-if="gameState.phase === 'selectEffectBranch' && pendingEffectBranch" class="action-group effect-branch-bar">
             <div class="effect-branch-info">
               {{ pendingEffectBranch.ownerCardName }}：先点选一张水属性手牌，再选效果
@@ -441,7 +436,7 @@ function playerIndex(playerId: string) {
           <div v-if="isDeployPhase()" class="action-group">
             <button type="button" class="btn btn-secondary" @click="cancelCardSelection">取消出牌</button>
           </div>
-          <div v-if="gameState.phase === 'action' && !reforgeState.active && !gameState.selectedCard" class="action-group">
+          <div v-if="gameState.phase === 'action' && !reforgeState.active && !gameState.selectedCard && !hasPlayedThisTurn" class="action-group">
             <button type="button" class="btn btn-secondary" @click="handleCancelAction">返回选择</button>
           </div>
           <div v-if="gameState.phase === 'action' && !reforgeState.active" class="action-group">

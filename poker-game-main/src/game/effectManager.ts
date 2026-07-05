@@ -938,10 +938,11 @@ export class EffectManager {
     return slots
   }
 
+  /** 总战力 = bonusPower + 场上所有已部署卡牌（含额外槽位；excludeFromFieldCount 仍计入战力） */
   static getPlayerTotalPower(player: Player): number {
     let total = player.bonusPower
     player.field.forEach(slot => {
-      if (slot.card && !slot.isExtra) total += slot.card.currentPower
+      if (slot.card) total += slot.card.currentPower
     })
     return total
   }

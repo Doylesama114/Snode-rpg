@@ -303,6 +303,7 @@ export function useGame() {
   const canChooseReforge = computed(() =>
     gameState.value.phase === 'decision'
     && currentPlayer.value.id === 'player'
+    && !currentPlayer.value.hasPlayedThisTurn
     && canPlayerReforge(currentPlayer.value),
   )
 
@@ -331,6 +332,10 @@ export function useGame() {
 
   // 选择重铸
   function chooseReforge() {
+    if (currentPlayer.value.hasPlayedThisTurn) {
+      gameState.value.message = '本回合已出牌，无法重铸'
+      return
+    }
     if (!canPlayerReforge(currentPlayer.value)) {
       gameState.value.message = '最后一回合场地已满，无法重铸'
       return
@@ -1232,6 +1237,7 @@ export function useGame() {
 
     const roundComplete = gameState.value.players.length > 1 && nextPlayerIndex <= prevPlayerIndex
     gameState.value.currentPlayerIndex = nextPlayerIndex
+    gameState.value.phase = 'draw'
     
     if (roundComplete) {
       EffectManager.triggerRoundEffects('roundEnd', gameState.value)
@@ -1242,7 +1248,6 @@ export function useGame() {
       await animations.playBanner({ kind: 'round', text: `第 ${gameState.value.round} 回合` })
     }
     
-    gameState.value.phase = 'draw'
     await animations.wait(400)
     void startDrawPhase()
   }
@@ -1265,6 +1270,10 @@ export function useGame() {
 
   function cancelActionChoice() {
     if (gameState.value.phase !== 'action') return
+    if (currentPlayer.value.hasPlayedThisTurn) {
+      gameState.value.message = '本回合已出牌，无法返回选择'
+      return
+    }
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
     reforgeState.value.hasChosen = false
@@ -1327,15 +1336,11 @@ export function useGame() {
     
     EffectManager.triggerGameEndEffects(gameState.value)
     
-    const ranking = gameState.value.players.map((player, index) => {
-      let totalPower = player.bonusPower
-      player.field.forEach(slot => {
-        if (slot.card && !slot.isExtra) {
-          totalPower += slot.card.currentPower
-        }
-      })
-      return { playerIndex: index, playerName: player.name, power: totalPower }
-    })
+    const ranking = gameState.value.players.map((player, index) => ({
+      playerIndex: index,
+      playerName: player.name,
+      power: EffectManager.getPlayerTotalPower(player),
+    }))
     
     ranking.sort((a, b) => b.power - a.power)
     gameState.value.rankings = ranking

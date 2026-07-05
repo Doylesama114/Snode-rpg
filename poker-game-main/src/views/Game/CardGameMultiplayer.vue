@@ -26,6 +26,7 @@ const {
   getPowerPulseDelta,
 } = animations
 const localAnimSkip = ref(new Set<string>())
+const isRoundTransitioning = ref(false)
 let lastMpFloatedMessage = ''
 let prevMpBroadcastMessage = ''
 
@@ -113,6 +114,10 @@ async function handleGameStateUpdate(newState: GameState) {
 
   const prev = game.gameState.value
   const myId = multiplayer.myPlayerId.value || ''
+  const isNewRound = !!(prev && newState.round > prev.round)
+  if (isNewRound) {
+    isRoundTransitioning.value = true
+  }
   if (prev && !shouldSkipAnimations()) {
     const draws = diffDrawEvents(prev, newState, myId)
     if (draws.length) {
@@ -139,6 +144,9 @@ async function handleGameStateUpdate(newState: GameState) {
   game.updateGameState(newState)
   syncBroadcastFromMessage(newState, prevMpBroadcastMessage)
   prevMpBroadcastMessage = newState.message ?? ''
+  if (isNewRound) {
+    isRoundTransitioning.value = false
+  }
   
   // 检查是否需要重置决策状态（新回合开始）
   if (newState.phase === 'decision') {
@@ -578,7 +586,7 @@ function leaveGameToLobby(fromGameOver = false) {
         </div>
 
         <!-- 操作按钮（仅自己+当前回合） -->
-        <div v-if="player.id === multiplayer.myPlayerId.value && index === game.gameState.value.currentPlayerIndex" class="actions">
+        <div v-if="player.id === multiplayer.myPlayerId.value && index === game.gameState.value.currentPlayerIndex && game.gameState.value.phase !== 'draw' && !isRoundTransitioning" class="actions">
           <div v-if="pendingEffectBranch" class="effect-branch-bar">
             <div class="effect-branch-info">
               {{ pendingEffectBranch.ownerCardName }}：先点选水属性手牌，再选效果
@@ -588,7 +596,7 @@ function leaveGameToLobby(fromGameOver = false) {
             <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('C')">C · 抽2张牌</button>
             <button type="button" class="btn btn-secondary btn-sm" @click="handleSkipEffectBranch">跳过</button>
           </div>
-          <template v-else-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value">
+          <template v-else-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value && !isRoundTransitioning">
             <button v-if="game.canChoosePlay.value" @click="handleChoosePlay" class="btn btn-primary">出牌</button>
             <button v-if="game.canChooseReforge.value" @click="handleChooseReforge" class="btn btn-secondary">重铸</button>
             <span v-if="game.finalRoundTacticsOnly.value && game.canChoosePlay.value" class="hint">(场地已满，仅可出战术牌)</span>
@@ -596,10 +604,15 @@ function leaveGameToLobby(fromGameOver = false) {
 
           <div v-if="game.myDecisionMade.value && !game.allOtherDecisionsMade.value" class="waiting-opponent">
             ⏳ 等待其他玩家决策...
-            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
+            <button
+              v-if="!game.hasPlayedThisTurn.value && game.myPlayer.value && !game.gameState.value?.playerReady?.[game.myPlayer.value.id]"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              @click="handleCancelAction"
+            >返回选择</button>
           </div>
 
-          <div v-if="game.allDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active && !game.myPlayer.value?.hasPlayedThisTurn" class="both-ready">
+          <div v-if="game.allDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active && !game.myPlayer.value?.hasPlayedThisTurn && game.myPlayer.value && !game.gameState.value?.playerReady?.[game.myPlayer.value.id]" class="both-ready">
             <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
           </div>
 

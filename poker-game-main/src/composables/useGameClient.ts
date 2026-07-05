@@ -90,7 +90,9 @@ export function useGameClient(initialPlayerId = '') {
 
   const canChooseReforge = computed(() => {
     const r = myRestrictions()
-    return !r?.includes('cannotPlay') && !r?.includes('tacticsOnly')
+    return !hasPlayedThisTurn.value
+      && !r?.includes('cannotPlay')
+      && !r?.includes('tacticsOnly')
   })
 
   const canChoosePlay = computed(() => {
@@ -296,14 +298,7 @@ export function useGameClient(initialPlayerId = '') {
     if (!gameState.value) return 0
     const player = gameState.value.players[playerIndex]
     if (!player) return 0
-
-    let totalPower = player.bonusPower
-    player.field.forEach(slot => {
-      if (slot.card && !slot.isExtra) {
-        totalPower += slot.card.currentPower
-      }
-    })
-    return totalPower
+    return EffectManager.getPlayerTotalPower(player)
   }
 
   function isSlotAvailable(slotIndex: number): boolean {

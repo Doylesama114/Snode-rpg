@@ -360,7 +360,7 @@ class EffectManager {
   static getPlayerTotalPower(player) {
     let total = player.bonusPower
     player.field.forEach(slot => {
-      if (slot.card && !slot.isExtra) total += slot.card.currentPower
+      if (slot.card) total += slot.card.currentPower
     })
     return total
   }
@@ -2712,6 +2712,9 @@ class GameEngine {
     if (player.hasPlayedThisTurn) {
       return { success: false, error: '本回合已出牌，无法返回' }
     }
+    if (this.gameState.playerReady?.[playerId]) {
+      return { success: false, error: '本回合行动已完成，无法返回' }
+    }
     const decision = this.gameState.playerDecisions[playerId]
     if (!decision?.made) {
       return { success: false, error: '尚未选择出牌或重铸' }
@@ -3507,15 +3510,10 @@ class GameEngine {
     EffectManager.triggerGameEndEffects(this.gameState)
     
     // 计算所有玩家战力
-    const powerEntries = this.gameState.players.map((player, index) => {
-      let totalPower = player.bonusPower
-      player.field.forEach(slot => {
-        if (slot.card && !slot.isExtra) {
-          totalPower += slot.card.currentPower
-        }
-      })
-      return { index, power: totalPower }
-    })
+    const powerEntries = this.gameState.players.map((player, index) => ({
+      index,
+      power: EffectManager.getPlayerTotalPower(player),
+    }))
     
     // 按战力降序排序
     powerEntries.sort((a, b) => b.power - a.power)
