@@ -149,6 +149,18 @@ function onExtraSlotClick(slotIndex: number) {
 }
 
 const playerCountStart = ref(2)
+
+/** 布局顺序：AI 在上、玩家在下，每行一个场地 */
+const layoutPlayers = computed(() => {
+  const ps = gameState.value.players
+  const human = ps.find(p => p.id === 'player')
+  const ais = ps.filter(p => p.id !== 'player')
+  return human ? [...ais, human] : ps
+})
+
+function playerIndex(playerId: string) {
+  return gameState.value.players.findIndex(p => p.id === playerId)
+}
 </script>
 
 <template>
@@ -163,23 +175,23 @@ const playerCountStart = ref(2)
       <div class="message">{{ gameState.message }}</div>
     </div>
 
-    <!-- N-player areas -->
+    <!-- N-player areas（单列滚动，每行一个玩家场地） -->
     <div class="players-grid" :class="'players-' + gameState.players.length">
       <div
-        v-for="(player, index) in gameState.players"
+        v-for="player in layoutPlayers"
         :key="player.id"
         class="player-cell"
         :class="{
           'is-human': player.id === 'player',
           'is-ai': player.id.startsWith('ai'),
-          'is-current': index === gameState.currentPlayerIndex
+          'is-current': playerIndex(player.id) === gameState.currentPlayerIndex
         }"
       >
         <div class="player-header">
           <h3>{{ player.name }} {{ player.id === 'player' ? '(你)' : '' }}</h3>
           <div class="stats">
             <span :class="{ 'negative-cost': player.currentCost < 0 }">费用: {{ player.currentCost }}</span>
-            <span class="power-display">总战力: <strong>{{ getTotalPower(index) }}</strong></span>
+            <span class="power-display">总战力: <strong>{{ getTotalPower(playerIndex(player.id)) }}</strong></span>
             <span>手牌: {{ player.hand.length }}</span>
             <span>牌组: {{ player.deck.length }}</span>
           </div>
@@ -196,10 +208,10 @@ const playerCountStart = ref(2)
               :class="{
                 'has-card': slot.card,
                 'selectable': (player.id === 'player' && (isSlotAvailable(player.field.indexOf(slot)) || (gameState.phase === 'selectTarget' && slot.card)))
-                  || isCrossPlayerSlotAvailable(index, player.field.indexOf(slot)),
+                  || isCrossPlayerSlotAvailable(playerIndex(player.id), player.field.indexOf(slot)),
                 'selected': player.id === 'player' && gameState.selectedSlot === player.field.indexOf(slot)
               }"
-              @click="onFieldSlotClick(index, slot); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card!)"
+              @click="onFieldSlotClick(playerIndex(player.id), slot); player.id === 'player' && gameState.phase === 'selectTarget' && slot.card && selectQuickPlayTarget(slot.card!)"
             >
               <div
                 v-if="slot.card"
@@ -291,7 +303,7 @@ const playerCountStart = ref(2)
         </div>
 
         <!-- 操作按钮（人类玩家+当前回合，紧贴手牌下方） -->
-        <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
+        <div v-if="player.id === 'player' && playerIndex(player.id) === gameState.currentPlayerIndex" class="actions">
           <div v-if="gameState.phase === 'decision'" class="action-group decision-bar">
             <button v-if="canChoosePlay" @click="choosePlay" class="btn btn-primary">出牌</button>
             <button v-if="canChooseReforge" @click="chooseReforge" class="btn btn-secondary">重铸</button>
@@ -365,8 +377,9 @@ const playerCountStart = ref(2)
 
 <style scoped>
 .game-container {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
   background: #f6f4ef;
   color: #1f2522;
   display: flex;
@@ -375,24 +388,27 @@ const playerCountStart = ref(2)
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: 8px 12px 32px;
 }
 .players-grid {
-  flex: 1 0 auto;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
   min-height: min-content;
-  overflow: visible;
-  padding: 4px 0 24px;
+  padding: 4px 0 16px;
 }
-.players-2 { grid-template-columns: 1fr; grid-auto-rows: auto; }
-.players-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-.players-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-.players-3 .player-cell.is-human,
-.players-4 .player-cell.is-human {
-  grid-column: 1 / -1;
+.player-cell {
+  background: #fffdf8;
+  border: 1px solid #d8d2c4;
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-height: min-content;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
-.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: min-content; display: flex; flex-direction: column; }
 .player-cell.is-current { border-color: #a46d1f; border-width: 2px; }
 .player-cell.is-human { border-left: 4px solid #2f6f5e; }
 .player-cell.is-ai { border-left: 4px solid #9d2f2f; }
@@ -496,10 +512,10 @@ const playerCountStart = ref(2)
 
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(72px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  gap: 8px;
   padding: 0;
-  overflow-x: auto;
+  width: 100%;
 }
 
 .field-slot {

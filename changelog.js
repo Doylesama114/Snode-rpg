@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6084',
+    date: '2026-07-05',
+    changes: [
+      '单机3/4人局改为单列滚动布局，每行一个AI场地'
+    ]
+  },
+
+
+  {
     version: '1.0.6083',
     date: '2026-07-05',
     changes: [
