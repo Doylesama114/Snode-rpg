@@ -66,7 +66,6 @@ const poolFilter = useDeckPoolFilter(allCards, deckCardIds)
 const {
   criteria: poolCriteria,
   sidebarOpen: filterSidebarOpen,
-  sidebarPinned: filterSidebarPinned,
   keywordSearch: filterKeywordSearch,
   meta: poolMeta,
   filteredPool,
@@ -84,7 +83,6 @@ const {
   removeSelectedAttribute,
   removeSelectedKeyword,
   toggleSidebar: toggleFilterSidebar,
-  togglePin: toggleFilterPin,
 } = poolFilter
 
 const deckCards = computed(() =>
@@ -482,101 +480,81 @@ function goHome() {
       </section>
 
       <section ref="poolPanelRef" class="panel pool-panel">
-        <div
-          class="pool-layout"
-          :class="{
-            'pool-layout--sidebar-open': filterSidebarOpen,
-            'pool-layout--sidebar-pinned': filterSidebarPinned,
-          }"
-        >
-          <div class="pool-main">
-            <div class="pool-head">
-              <h3>
-                卡池 ({{ filteredPool.length }}/{{ poolMeta.totalCards }})
-                <span v-if="hasStructuredFilterActive" class="pool-filter-tag">已筛选</span>
-              </h3>
-              <button
-                v-if="!filterSidebarOpen"
-                type="button"
-                class="btn-secondary btn-sm pool-filter-toggle"
-                @click="toggleFilterSidebar"
-              >
-                打开筛选
-              </button>
-            </div>
-            <div class="pool-toolbar">
-              <input
-                :value="poolCriteria.searchQuery"
-                type="search"
-                class="pool-search"
-                placeholder="搜索名称、关键词、效果描述…"
-                @input="setPoolSearchQuery(($event.target as HTMLInputElement).value)"
-              >
-              <button
-                v-if="poolCriteria.searchQuery || hasStructuredFilterActive"
-                type="button"
-                class="btn-secondary btn-sm"
-                @click="clearPoolFilters"
-              >
-                清空筛选
-              </button>
-            </div>
-            <div v-if="filteredPool.length === 0" class="pool-empty-state">
-              无匹配卡牌，请放宽筛选条件或点击「清空筛选」
-            </div>
-            <div v-else class="pool-grid">
-              <button
-                v-for="card in filteredPool"
-                :key="card.id"
-                type="button"
-                class="pool-card"
-                :class="{ 'already-in-deck': isInDeck(card.id) }"
-                @click.stop="onPoolClick(card)"
-                @contextmenu="onPoolContextMenu(card, $event)"
-              >
-                <div class="pool-name">{{ card.name }}</div>
-                <div class="pool-meta">
-                  {{ getCardTypeLabel(card.type) }} · {{ card.attribute }} · ⚡{{ card.cost }}
-                  <template v-if="card.type !== 'tactic'"> · 💪{{ card.basePower }}</template>
-                </div>
-                <div v-if="card.keywords?.length" class="pool-kw">{{ card.keywords.join(' · ') }}</div>
-                <div class="pool-effect">{{ effectPreview(card) }}</div>
-                <span v-if="isInDeck(card.id)" class="pool-badge">已在卡组</span>
-              </button>
-            </div>
-            <p class="pool-hint">提示：在卡池卡牌上点击右键可快速加入卡组 · 侧栏可筛选类别/属性/关键词</p>
-          </div>
-
-          <DeckPoolFilterSidebar
-            :open="filterSidebarOpen"
-            :pinned="filterSidebarPinned"
-            :match-count="filteredPool.length"
-            :total-count="poolMeta.totalCards"
-            :selected-types="poolCriteria.selectedTypes"
-            :selected-attributes="poolCriteria.selectedAttributes"
-            :selected-keywords="poolCriteria.selectedKeywords"
-            :deck-membership="poolCriteria.deckMembership"
-            :sort-key="poolCriteria.sortKey"
-            :type-counts="poolMeta.typeCounts"
-            :attribute-counts="poolMeta.attributeCounts"
-            :filtered-keywords="filteredKeywords"
-            :keyword-search="filterKeywordSearch"
-            @toggle-open="toggleFilterSidebar"
-            @toggle-pin="toggleFilterPin"
-            @toggle-type="toggleFilterType"
-            @toggle-attribute="toggleFilterAttribute"
-            @toggle-keyword="toggleFilterKeyword"
-            @set-deck-membership="setPoolDeckMembership"
-            @set-sort-key="setPoolSortKey"
-            @clear-filters="clearPoolFilters"
-            @remove-type="removeSelectedType"
-            @remove-attribute="removeSelectedAttribute"
-            @remove-keyword="removeSelectedKeyword"
-            @update:keyword-search="setPoolKeywordSearch"
-          />
+        <div class="pool-head">
+          <h3>
+            卡池 ({{ filteredPool.length }}/{{ poolMeta.totalCards }})
+            <span v-if="hasStructuredFilterActive" class="pool-filter-tag">已筛选</span>
+          </h3>
         </div>
+        <div class="pool-toolbar">
+          <input
+            :value="poolCriteria.searchQuery"
+            type="search"
+            class="pool-search"
+            placeholder="搜索名称、关键词、效果描述…"
+            @input="setPoolSearchQuery(($event.target as HTMLInputElement).value)"
+          >
+          <button
+            v-if="poolCriteria.searchQuery || hasStructuredFilterActive"
+            type="button"
+            class="btn-secondary btn-sm"
+            @click="clearPoolFilters"
+          >
+            清空筛选
+          </button>
+        </div>
+        <div v-if="filteredPool.length === 0" class="pool-empty-state">
+          无匹配卡牌，请放宽筛选条件或点击「清空筛选」
+        </div>
+        <div v-else class="pool-grid">
+          <button
+            v-for="card in filteredPool"
+            :key="card.id"
+            type="button"
+            class="pool-card"
+            :class="{ 'already-in-deck': isInDeck(card.id) }"
+            @click.stop="onPoolClick(card)"
+            @contextmenu="onPoolContextMenu(card, $event)"
+          >
+            <div class="pool-name">{{ card.name }}</div>
+            <div class="pool-meta">
+              {{ getCardTypeLabel(card.type) }} · {{ card.attribute }} · ⚡{{ card.cost }}
+              <template v-if="card.type !== 'tactic'"> · 💪{{ card.basePower }}</template>
+            </div>
+            <div v-if="card.keywords?.length" class="pool-kw">{{ card.keywords.join(' · ') }}</div>
+            <div class="pool-effect">{{ effectPreview(card) }}</div>
+            <span v-if="isInDeck(card.id)" class="pool-badge">已在卡组</span>
+          </button>
+        </div>
+        <p class="pool-hint">提示：右键卡池卡牌快速加入 · 右侧悬浮「筛选」可收起/展开，滚动页面时仍可使用</p>
       </section>
     </div>
+
+    <DeckPoolFilterSidebar
+      :open="filterSidebarOpen"
+      :match-count="filteredPool.length"
+      :total-count="poolMeta.totalCards"
+      :selected-types="poolCriteria.selectedTypes"
+      :selected-attributes="poolCriteria.selectedAttributes"
+      :selected-keywords="poolCriteria.selectedKeywords"
+      :deck-membership="poolCriteria.deckMembership"
+      :sort-key="poolCriteria.sortKey"
+      :type-counts="poolMeta.typeCounts"
+      :attribute-counts="poolMeta.attributeCounts"
+      :filtered-keywords="filteredKeywords"
+      :keyword-search="filterKeywordSearch"
+      @toggle-open="toggleFilterSidebar"
+      @toggle-type="toggleFilterType"
+      @toggle-attribute="toggleFilterAttribute"
+      @toggle-keyword="toggleFilterKeyword"
+      @set-deck-membership="setPoolDeckMembership"
+      @set-sort-key="setPoolSortKey"
+      @clear-filters="clearPoolFilters"
+      @remove-type="removeSelectedType"
+      @remove-attribute="removeSelectedAttribute"
+      @remove-keyword="removeSelectedKeyword"
+      @update:keyword-search="setPoolKeywordSearch"
+    />
 
     <Teleport to="body">
       <div
@@ -911,23 +889,6 @@ function goHome() {
   background: #fdf5f5;
 }
 
-.pool-layout {
-  display: flex;
-  gap: 12px;
-  align-items: stretch;
-  position: relative;
-  min-height: 320px;
-}
-
-.pool-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.pool-layout--sidebar-open.pool-layout--sidebar-pinned .pool-main {
-  margin-right: 0;
-}
-
 .pool-head {
   display: flex;
   align-items: center;
@@ -951,10 +912,6 @@ function goHome() {
   padding: 2px 8px;
   border-radius: 999px;
   vertical-align: middle;
-}
-
-.pool-filter-toggle {
-  flex-shrink: 0;
 }
 
 .pool-empty-state {

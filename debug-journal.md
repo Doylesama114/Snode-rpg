@@ -134,6 +134,27 @@ function renderResults(items) {
 
 ---
 
+## #3 — 卡组构筑与筛选：两套「关键词」逻辑 (2026-07-05)
+
+### 背景
+
+v1.0.6100 起卡组必须恰好 15 张方可保存并进局；v1.0.6101 增加卡池筛选侧栏。职业页关键词为 **OR**，卡组构筑关键词为 **AND**，文档与实现须区分，避免 Agent 复用错逻辑。
+
+### 要点
+
+| 系统 | 文件 | 关键词逻辑 |
+|------|------|-----------|
+| 职业技能浏览 | `职业页/filter.js` | 多选 OR |
+| 卡组构筑 | `deckPoolFilter.ts` | 关键词 AND；类别/属性 OR |
+
+### Lessons Learned
+
+1. **同名概念不同规则**：「关键词筛选」在 TRPG 技能页与卡牌构筑页含义不同，MD 须分节说明（见 `关键词系统注意事项.md` §10）。
+2. **校验分层**：构筑页允许临时 >15 张，保存与进局各一层校验（`deckValidation.ts` + 路由 guard + 联机 composable）。
+3. **发版三件套**：poker 改动后 `pnpm build` → `robocopy dist` → `bump-version.js`，并更新根目录三 MD。
+
+---
+
 ## Debug Checklist（每次修复后检查）
 
 - [ ] 现象可复现（Playwright 重现原始 bug）

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6102',
+    date: '2026-07-05',
+    changes: [
+      '卡组筛选改悬浮窗',
+      '滚动可用',
+      '可收起'
+    ]
+  },
+
+
+  {
     version: '1.0.6101',
     date: '2026-07-05',
     changes: [

@@ -192,7 +192,6 @@ export function buildPoolFilterMeta(cards: Card[]): PoolFilterMeta {
 export interface PersistedPoolFilterUi {
   criteria: DeckPoolFilterCriteria
   sidebarOpen: boolean
-  sidebarPinned: boolean
 }
 
 export function loadPersistedPoolFilter(): PersistedPoolFilterUi | null {
@@ -204,7 +203,6 @@ export function loadPersistedPoolFilter(): PersistedPoolFilterUi | null {
     return {
       criteria: { ...DEFAULT_POOL_FILTER, ...parsed.criteria },
       sidebarOpen: parsed.sidebarOpen ?? true,
-      sidebarPinned: parsed.sidebarPinned ?? true,
     }
   } catch {
     return null

@@ -21,7 +21,6 @@ export function useDeckPoolFilter(allCards: Ref<Card[]>, deckCardIds: Ref<string
     ...(persisted?.criteria ?? {}),
   })
   const sidebarOpen = ref(persisted?.sidebarOpen ?? true)
-  const sidebarPinned = ref(persisted?.sidebarPinned ?? true)
   const keywordSearch = ref('')
 
   const meta = computed(() => buildPoolFilterMeta(allCards.value))
@@ -41,12 +40,11 @@ export function useDeckPoolFilter(allCards: Ref<Card[]>, deckCardIds: Ref<string
   })
 
   watch(
-    [criteria, sidebarOpen, sidebarPinned],
+    [criteria, sidebarOpen],
     () => {
       savePersistedPoolFilter({
         criteria: criteria.value,
         sidebarOpen: sidebarOpen.value,
-        sidebarPinned: sidebarPinned.value,
       })
     },
     { deep: true },
@@ -127,15 +125,9 @@ export function useDeckPoolFilter(allCards: Ref<Card[]>, deckCardIds: Ref<string
     sidebarOpen.value = !sidebarOpen.value
   }
 
-  function togglePin() {
-    sidebarPinned.value = !sidebarPinned.value
-    if (sidebarPinned.value) sidebarOpen.value = true
-  }
-
   return {
     criteria,
     sidebarOpen,
-    sidebarPinned,
     keywordSearch,
     meta,
     filteredPool,
@@ -156,6 +148,5 @@ export function useDeckPoolFilter(allCards: Ref<Card[]>, deckCardIds: Ref<string
     removeSelectedAttribute,
     removeSelectedKeyword,
     toggleSidebar,
-    togglePin,
   }
 }
