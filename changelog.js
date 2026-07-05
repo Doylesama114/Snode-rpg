@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6105',
+    date: '2026-07-05',
+    changes: [
+      '手牌悬停右键显示卡牌效果详情',
+      'AI对手区域默认展开',
+      'AI场上卡牌可查看详情'
+    ]
+  },
+
+
+  {
     version: '1.0.6104',
     date: '2026-07-05',
     changes: [

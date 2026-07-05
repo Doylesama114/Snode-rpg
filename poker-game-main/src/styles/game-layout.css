@@ -116,6 +116,11 @@
   scroll-snap-type: x proximity;
 }
 
+.hand-card-wrap {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
 .hand-row::-webkit-scrollbar {
   height: 6px;
 }

@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   isYou: false,
   isCurrent: false,
-  defaultCollapsed: true,
+  defaultCollapsed: false,
 })
 
 const collapsed = ref(props.defaultCollapsed && !props.isYou)

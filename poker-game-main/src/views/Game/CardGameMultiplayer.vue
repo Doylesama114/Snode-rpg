@@ -69,6 +69,14 @@ function onFieldCardEnter(e: MouseEvent, playerId: string, slotKey: string | num
   onFieldCardEnterDetail(e, playerId, slotKey, card)
 }
 
+function onHandCardEnter(e: MouseEvent, playerId: string, cardIndex: number, card: Card) {
+  onFieldCardEnterDetail(e, playerId, `hand-${cardIndex}`, card)
+}
+
+function onHandCardLeave(playerId: string, cardIndex: number) {
+  onFieldCardLeave(playerId, `hand-${cardIndex}`)
+}
+
 function blockFieldDetailClick() {
   return !!(game.gameState.value?.phase === 'action' && game.selectedCard.value)
 }
@@ -544,7 +552,7 @@ function leaveGameToLobby(fromGameOver = false) {
           :hand-count="opp.handCount || opp.hand.length"
           :deck-count="opp.deckCount || opp.deck.length"
           :field-card-count="countFieldCards(opp)"
-          :default-collapsed="true"
+          :default-collapsed="false"
           :data-player-id="opp.id"
           :data-fly-origin="opp.id"
         >
@@ -558,6 +566,9 @@ function leaveGameToLobby(fromGameOver = false) {
             :is-shaking="(si) => isSlotShaking(opp.id, si)"
             :is-bouncing="(si) => isSlotBouncing(opp.id, si)"
             :power-pulse="(si) => powerPulseLevel(opp.id, si)"
+            @card-enter="(e, k, c) => onFieldCardEnter(e, opp.id, k, c)"
+            @card-leave="(k) => onFieldCardLeave(opp.id, k)"
+            @card-click="(c, e) => onFieldCardClick(c, e)"
           />
           <div class="opponent-hand-row">
             <span class="opponent-hand-row__label">手牌 {{ opp.handCount || opp.hand.length }}</span>
@@ -611,19 +622,26 @@ function leaveGameToLobby(fromGameOver = false) {
               <span v-else-if="!game.reforgeState.value.active && game.canPlayExtra.value" class="hand-hint hand-hint--extra">可额外出牌</span>
             </div>
             <div class="hand-row" :data-hand-zone="humanPlayer.id">
-              <GameCard
+              <div
                 v-for="(card, ci) in humanPlayer.hand"
                 :key="ci"
-                :card="card !== 'hidden' && card ? card : undefined"
-                :face-down="card === 'hidden'"
-                size="hand"
-                :data-hand-card="humanPlayer.id + '-' + ci"
-                :playable="game.isCardPlayable(ci)"
-                :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active"
-                :selectable="(game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
-                :selected="game.reforgeState.value.selectedCard === ci || effectBranchDiscardIndex === ci"
-                @click="onHandCardClick(ci)"
-              />
+                class="hand-card-wrap"
+                @mouseenter="card !== 'hidden' && card && onHandCardEnter($event, humanPlayer.id, ci, card as Card)"
+                @mouseleave="onHandCardLeave(humanPlayer.id, ci)"
+                @contextmenu.prevent="card !== 'hidden' && card && onFieldCardClick(card as Card, $event)"
+              >
+                <GameCard
+                  :card="card !== 'hidden' && card ? card : undefined"
+                  :face-down="card === 'hidden'"
+                  size="hand"
+                  :data-hand-card="humanPlayer.id + '-' + ci"
+                  :playable="game.isCardPlayable(ci)"
+                  :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active"
+                  :selectable="(game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
+                  :selected="game.reforgeState.value.selectedCard === ci || effectBranchDiscardIndex === ci"
+                  @click="onHandCardClick(ci)"
+                />
+              </div>
             </div>
           </div>
         </div>
