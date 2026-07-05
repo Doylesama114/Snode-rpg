@@ -106,40 +106,40 @@ class EffectManager {
         continue
       }
 
-      if (effect.targetKeywords) {
-        const hasMatch = player.field.some(otherSlot =>
+            if (effect.targetKeywords) {
+              const hasMatch = player.field.some(otherSlot =>
           otherSlot.card && otherSlot.card !== card &&
           this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
-        )
-        const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
-        if (conditionMet) {
-          if (effect.stackable !== false) {
-            const matchCount = player.field.filter(otherSlot =>
+              )
+              const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+              if (conditionMet) {
+                if (effect.stackable !== false) {
+                  const matchCount = player.field.filter(otherSlot =>
               otherSlot.card && otherSlot.card !== card &&
               this.hasAnyKeyword(otherSlot.card, effect.targetKeywords)
-            ).length
+                  ).length
             selfBonus += (effect.value || 0) * matchCount
-          } else {
+                } else {
             selfBonus += (effect.value || 0)
-          }
-        }
+                }
+              }
         continue
-      }
+            }
 
-      if (effect.targetAttributes && Array.isArray(effect.targetAttributes)) {
-        const hasMatch = player.field.some(otherSlot =>
+            if (effect.targetAttributes && Array.isArray(effect.targetAttributes)) {
+              const hasMatch = player.field.some(otherSlot =>
           otherSlot.card && otherSlot.card !== card &&
           this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
-        )
-        const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
-        if (conditionMet) {
-          if (effect.stackable !== false) {
-            const matchCount = player.field.filter(otherSlot =>
+              )
+              const conditionMet = effect.invertCondition ? !hasMatch : hasMatch
+              if (conditionMet) {
+                if (effect.stackable !== false) {
+                  const matchCount = player.field.filter(otherSlot =>
               otherSlot.card && otherSlot.card !== card &&
               this.hasAnyAttribute(otherSlot.card, effect.targetAttributes)
-            ).length
+                  ).length
             selfBonus += (effect.value || 0) * matchCount
-          } else {
+                } else {
             selfBonus += (effect.value || 0)
           }
         }
@@ -359,7 +359,7 @@ class EffectManager {
 
   static getPlayerTotalPower(player) {
     let total = player.bonusPower
-    player.field.forEach(slot => {
+      player.field.forEach(slot => {
       if (slot.card) total += slot.card.currentPower
     })
     return total
@@ -370,7 +370,7 @@ class EffectManager {
     const messages = []
     player.field.forEach(slot => {
       if (!slot.card?.effects) return
-      slot.card.effects.forEach(effect => {
+        slot.card.effects.forEach(effect => {
         if (effect.timing !== 'onReforge' || effect.type !== 'modifyPower' || !effect.selfTarget) return
         const delta = effect.value ?? 0
         if (effect.stackable !== false) {
@@ -502,18 +502,18 @@ class EffectManager {
     }
 
     if (effect.type === 'modifyCost' && effect.value) {
-      player.currentCost += effect.value
-      messages.push(`${player.name} 能量${effect.value > 0 ? '+' : ''}${effect.value}`)
+            player.currentCost += effect.value
+            messages.push(`${player.name} 能量${effect.value > 0 ? '+' : ''}${effect.value}`)
       return { messages }
     }
 
     if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
-      const count = effect.drawCount || effect.value || 1
+            const count = effect.drawCount || effect.value || 1
       const drawnNames = []
-      for (let i = 0; i < count; i++) {
-        if (player.deck.length > 0) {
-          const drawn = player.deck.pop()
-          player.hand.push(drawn)
+            for (let i = 0; i < count; i++) {
+              if (player.deck.length > 0) {
+                const drawn = player.deck.pop()
+                player.hand.push(drawn)
           drawnNames.push(drawn.name)
         }
       }
@@ -530,11 +530,11 @@ class EffectManager {
         messages.push('条件不满足，效果未触发')
         return { messages }
       }
-      const found = EffectManager.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`${player.name} 检索到${found.length}张牌`)
-      }
+            const found = EffectManager.searchDeck(player, effect)
+            if (found.length > 0) {
+              player.hand.push(...found)
+              messages.push(`${player.name} 检索到${found.length}张牌`)
+            }
       return { messages }
     }
 
@@ -1129,7 +1129,7 @@ class EffectManager {
                   slot.card.currentPower = slot.card.basePower + (slot.card.stackedBonus || 0) + (effect.value || 0)
                 }
                 messages.push(`${slot.card.name} 战力${oldPower}→${slot.card.currentPower}`)
-              }
+            }
           }
         })
       }
@@ -1423,7 +1423,7 @@ class EffectManager {
   static destroyRandomOtherCard(ownerCard, player, game, messages) {
     const gameState = game.gameState || game
     const candidates = []
-    player.field.forEach(slot => {
+      player.field.forEach(slot => {
       if (slot.card && slot.card !== ownerCard && !slot.isExtra) {
         candidates.push({ card: slot.card, location: 'field' })
       }
@@ -2682,7 +2682,7 @@ class GameEngine {
       gameState: this.getPublicGameState()
     }
   }
-
+  
   handleResolveEffectBranch(playerId, branch, discardHandIndex) {
     const pending = this.gameState.pendingEffectBranches?.[playerId]
     if (!pending) return { success: false, error: '没有待处理的回合开始效果' }
@@ -3033,7 +3033,7 @@ class GameEngine {
       targetCard.currentPower += card.basePower
       const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
       if (revealMsgs.length === 0) {
-        this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+      this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
       }
 
       EffectManager.recalculateAllPowers(this.gameState)
@@ -3116,7 +3116,7 @@ class GameEngine {
   // 处理战术牌
   handleTacticCard(card, player, slotIndex) {
     EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
-
+    
     const revealEffects = card.effects.filter(
       e => e.timing === 'onReveal' && e.type !== 'conditional' && e.type !== 'custom',
     )
@@ -3127,7 +3127,7 @@ class GameEngine {
       this.discardTacticCard(card, player, slotIndex)
       return
     }
-
+    
     for (const effect of immediateEffects) {
       const result = EffectManager.applyRevealEffect(effect, card, player, this.gameState)
       result.messages.forEach(msg => {
@@ -3145,23 +3145,23 @@ class GameEngine {
         slotIndex,
       })
       console.log(`[GameEngine] ${card.name} 延迟至本批展示后结算`)
-      return
-    }
-
-    this.discardTacticCard(card, player, slotIndex)
+        return
+      }
+      
+        this.discardTacticCard(card, player, slotIndex)
   }
   
   // 弃置战术牌
   discardTacticCard(card, player, slotIndex) {
     if (slotIndex >= 0) {
-      const slot = player.field[slotIndex]
-      if (slot) {
-        slot.card = null
+    const slot = player.field[slotIndex]
+    if (slot) {
+      slot.card = null
       }
     }
     player.discard.push(card)
   }
-
+  
   handlePlayTacticDirect(playerId, cardIndex) {
     const playerIndex = this.getPlayerIndex(playerId)
     if (playerIndex === -1) {
@@ -3199,7 +3199,7 @@ class GameEngine {
     player.currentCost -= playCost
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
       EffectManager.consumeExtraPlay(player)
-    } else {
+          } else {
       player.hasPlayedThisTurn = true
     }
     EffectManager.consumeTacticPlayFreeIfMatch(card, player)

@@ -79,6 +79,11 @@
   background: #e8e4da;
 }
 
+.stat-chip--energy {
+  color: var(--game-energy);
+  font-weight: 700;
+}
+
 .stat-chip--power {
   color: var(--game-power);
   font-weight: 700;

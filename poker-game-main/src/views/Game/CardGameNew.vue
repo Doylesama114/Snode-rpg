@@ -10,6 +10,7 @@ import PlayerStrip from '@/components/game/PlayerStrip.vue'
 import PlayerFieldSection from '@/components/game/PlayerFieldSection.vue'
 import GameCard from '@/components/game/GameCard.vue'
 import GameButton from '@/components/game/GameButton.vue'
+import PlayerResourceStats from '@/components/game/PlayerResourceStats.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
@@ -266,6 +267,16 @@ function countFieldCards(player: import('@/types/game').Player) {
 const humanPlayer = computed(() => gameState.value.players.find(p => p.id === 'player'))
 const opponentPlayers = computed(() => layoutPlayers.value.filter(p => p.id !== 'player'))
 
+const myTotalPower = computed(() => {
+  const idx = playerIndex('player')
+  return idx >= 0 ? getTotalPower(idx) : 0
+})
+
+function opponentTotalPower(playerId: string) {
+  const idx = playerIndex(playerId)
+  return idx >= 0 ? getTotalPower(idx) : 0
+}
+
 const showActionDock = computed(() =>
   humanPlayer.value
   && playerIndex('player') === gameState.value.currentPlayerIndex
@@ -318,8 +329,8 @@ function playerIndex(playerId: string) {
       :phase="gameState.phase"
       :is-final-round="gameState.isFinalRound"
       :is-pre-game="isPreGame"
-      :energy="humanPlayer?.currentCost"
-      :total-power="humanPlayer ? getTotalPower(playerIndex('player')) : undefined"
+      :energy="humanPlayer?.currentCost ?? 0"
+      :total-power="myTotalPower"
       :is-your-turn="isYourTurn"
     />
 
@@ -338,8 +349,8 @@ function playerIndex(playerId: string) {
           :key="opp.id"
           :name="opp.name"
           :is-current="playerIndex(opp.id) === gameState.currentPlayerIndex"
-          :energy="opp.currentCost"
-          :total-power="getTotalPower(playerIndex(opp.id))"
+          :energy="opp.currentCost ?? 0"
+          :total-power="opponentTotalPower(opp.id)"
           :hand-count="opp.hand.length"
           :deck-count="opp.deck.length"
           :field-card-count="countFieldCards(opp)"
@@ -375,7 +386,11 @@ function playerIndex(playerId: string) {
           <div class="player-panel__header">
             <h3 class="player-panel__title">{{ humanPlayer.name }}（你）</h3>
             <div class="player-panel__stats">
-              <span class="stat-chip" :class="{ 'stat-chip--energy-negative': humanPlayer.currentCost < 0 }">手牌 {{ humanPlayer.hand.length }}</span>
+              <PlayerResourceStats
+                :energy="humanPlayer.currentCost ?? 0"
+                :total-power="myTotalPower"
+              />
+              <span class="stat-chip">手牌 {{ humanPlayer.hand.length }}</span>
               <span class="stat-chip" :data-deck-zone="humanPlayer.id">牌组 {{ humanPlayer.deck.length }}</span>
             </div>
           </div>

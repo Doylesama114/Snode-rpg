@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6109',
+    date: '2026-07-05',
+    changes: [
+      '牌局显示己方/对手费用与总战力',
+      '顶部状态栏与玩家面板同步展示'
+    ]
+  },
+
+
+  {
     version: '1.0.6108',
     date: '2026-07-05',
     changes: [

@@ -20,12 +20,15 @@ defineProps<{
       <span v-if="isFinalRound" class="status-bar__final game-anim-pulse">最后一回合</span>
       <span v-if="isPreGame" class="status-bar__pregame">未开始</span>
     </div>
-    <div v-if="energy !== undefined" class="status-bar__right">
-      <span class="stat-chip" :class="{ 'stat-chip--energy-negative': energy < 0 }">
-        费用 <strong>{{ energy }}</strong>
+    <div class="status-bar__right">
+      <span
+        class="stat-chip stat-chip--energy"
+        :class="{ 'stat-chip--energy-negative': (energy ?? 0) < 0 }"
+      >
+        费用 <strong>{{ energy ?? 0 }}</strong>
       </span>
-      <span v-if="totalPower !== undefined" class="stat-chip stat-chip--power">
-        战力 <strong>{{ totalPower }}</strong>
+      <span class="stat-chip stat-chip--power">
+        战力 <strong>{{ totalPower ?? 0 }}</strong>
       </span>
     </div>
     <div v-if="isYourTurn" class="status-bar__turn-badge">你的回合</div>

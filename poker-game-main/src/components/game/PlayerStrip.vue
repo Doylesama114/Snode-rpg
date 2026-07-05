@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import PlayerResourceStats from './PlayerResourceStats.vue'
 
 const props = withDefaults(defineProps<{
   name: string
@@ -33,8 +34,13 @@ function toggle() {
       'player-strip--collapsed': collapsed && !isYou,
     }"
   >
+    <div v-if="isYou" class="player-strip__you-header">
+      <span class="player-strip__name">{{ name }}（你）</span>
+      <span v-if="isCurrent" class="player-strip__badge">回合中</span>
+      <PlayerResourceStats :energy="energy" :total-power="totalPower" />
+    </div>
     <button
-      v-if="!isYou"
+      v-else
       type="button"
       class="player-strip__toggle"
       @click="toggle"
@@ -42,8 +48,7 @@ function toggle() {
       <div class="player-strip__summary">
         <span class="player-strip__name">{{ name }}</span>
         <span v-if="isCurrent" class="player-strip__badge">回合中</span>
-        <span class="stat-chip">⚡ {{ energy }}</span>
-        <span class="stat-chip stat-chip--power">💪 {{ totalPower }}</span>
+        <PlayerResourceStats :energy="energy" :total-power="totalPower" />
         <span class="stat-chip">场 {{ fieldCardCount }}</span>
       </div>
       <span class="player-strip__chevron">{{ collapsed ? '▼' : '▲' }}</span>
@@ -68,6 +73,16 @@ function toggle() {
 
 .player-strip--current {
   box-shadow: 0 0 0 1px var(--game-accent-gold-dim);
+}
+
+.player-strip__you-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  background: var(--game-bg-table);
+  border-bottom: 1px solid var(--game-border);
 }
 
 .player-strip__toggle {

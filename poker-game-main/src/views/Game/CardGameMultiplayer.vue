@@ -13,6 +13,7 @@ import PlayerStrip from '@/components/game/PlayerStrip.vue'
 import PlayerFieldSection from '@/components/game/PlayerFieldSection.vue'
 import GameCard from '@/components/game/GameCard.vue'
 import GameButton from '@/components/game/GameButton.vue'
+import PlayerResourceStats from '@/components/game/PlayerResourceStats.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { diffFieldAnimations, diffDrawEvents, diffPhaseBanner, fieldAnimKey } from '@/utils/fieldAnimationDiff'
@@ -475,6 +476,12 @@ const myPlayerIndex = computed(() => {
   return gs.players.findIndex(p => p.id === myId)
 })
 
+const myTotalPower = computed(() => {
+  const idx = myPlayerIndex.value
+  if (idx < 0) return 0
+  return game.getTotalPower(idx)
+})
+
 const humanPlayer = computed(() => game.myPlayer.value)
 const opponentPlayers = computed(() =>
   game.gameState.value?.players.filter(p => p.id !== multiplayer.myPlayerId.value) ?? [],
@@ -501,6 +508,11 @@ const readySubtitle = computed(() => {
 
 function playerIndex(playerId: string) {
   return game.gameState.value?.players.findIndex(p => p.id === playerId) ?? -1
+}
+
+function opponentTotalPower(playerId: string) {
+  const idx = playerIndex(playerId)
+  return idx >= 0 ? game.getTotalPower(idx) : 0
 }
 
 // 离开游戏
@@ -530,8 +542,8 @@ function leaveGameToLobby(fromGameOver = false) {
       :round="game.gameState.value.round"
       :phase="game.gameState.value.phase"
       :is-final-round="game.gameState.value.isFinalRound"
-      :energy="humanPlayer?.currentCost"
-      :total-power="humanPlayer ? game.getTotalPower(myPlayerIndex) : undefined"
+      :energy="humanPlayer?.currentCost ?? 0"
+      :total-power="myTotalPower"
       :is-your-turn="isYourTurn"
     />
 
@@ -552,8 +564,8 @@ function leaveGameToLobby(fromGameOver = false) {
           :key="opp.id"
           :name="opp.name"
           :is-current="playerIndex(opp.id) === game.gameState.value.currentPlayerIndex"
-          :energy="opp.currentCost"
-          :total-power="game.getTotalPower(playerIndex(opp.id))"
+          :energy="opp.currentCost ?? 0"
+          :total-power="opponentTotalPower(opp.id)"
           :hand-count="opp.handCount || opp.hand.length"
           :deck-count="opp.deckCount || opp.deck.length"
           :field-card-count="countFieldCards(opp)"
@@ -590,7 +602,11 @@ function leaveGameToLobby(fromGameOver = false) {
           <div class="player-panel__header">
             <h3 class="player-panel__title">{{ humanPlayer.name }}（你）</h3>
             <div class="player-panel__stats">
-              <span class="stat-chip" :class="{ 'stat-chip--energy-negative': humanPlayer.currentCost < 0 }">手牌 {{ humanPlayer.hand.length }}</span>
+              <PlayerResourceStats
+                :energy="humanPlayer.currentCost ?? 0"
+                :total-power="myTotalPower"
+              />
+              <span class="stat-chip">手牌 {{ humanPlayer.hand.length }}</span>
               <span class="stat-chip" :data-deck-zone="humanPlayer.id">牌组 {{ humanPlayer.deckCount || humanPlayer.deck.length }}</span>
             </div>
           </div>
