@@ -34,14 +34,15 @@ function fieldCardKey(playerId: string, slotKey: string | number) {
 }
 
 function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
-  const player = gameState.players[playerIndex]
+  const player = gameState.value.players[playerIndex]
+  if (!player) return
   const actualIndex = player.field.indexOf(slotRef as typeof player.field[0])
   if (actualIndex < 0) return
-  if (player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(actualIndex)) {
+  if (player.id === 'player' && gameState.value.phase === 'selectSlot' && isSlotAvailable(actualIndex)) {
     selectSlotToPlay(actualIndex)
     return
   }
-  if (gameState.phase === 'selectCrossPlayerSlot' && isCrossPlayerSlotAvailable(playerIndex, actualIndex)) {
+  if (gameState.value.phase === 'selectCrossPlayerSlot' && isCrossPlayerSlotAvailable(playerIndex, actualIndex)) {
     selectCrossPlayerSlotToPlay(playerIndex, actualIndex)
   }
 }
@@ -109,6 +110,12 @@ function getCardTypeDisplay(card: { type: string }): string {
 
 function isSlotAvailable(slotIndex: number): boolean {
   return gameState.value.availableSlots?.includes(slotIndex) || false
+}
+
+function onExtraSlotClick(slotIndex: number) {
+  if (gameState.value.phase === 'selectSlot' && isSlotAvailable(slotIndex)) {
+    selectSlotToPlay(slotIndex)
+  }
 }
 
 const playerCountStart = ref(2)
@@ -198,7 +205,7 @@ const playerCountStart = ref(2)
                     'selectable': player.id === 'player' && isSlotAvailable(extraSlot.position),
                     'selected': player.id === 'player' && gameState.selectedSlot === extraSlot.position
                   }"
-                  @click="player.id === 'player' && gameState.phase === 'selectSlot' && isSlotAvailable(extraSlot.position) && selectSlotToPlay(extraSlot.position)"
+                  @click.stop="onExtraSlotClick(extraSlot.position)"
                 >
                   <div
                     v-if="extraSlot.card"
@@ -311,15 +318,28 @@ const playerCountStart = ref(2)
   color: #1f2522;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   padding: 8px 12px;
 }
-.players-grid { flex: 1; display: grid; gap: 6px; min-height: 0; overflow-y: auto; padding: 4px 0; }
-.players-2 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
-.players-3 { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
-.players-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.players-grid {
+  flex: 1 0 auto;
+  display: grid;
+  gap: 8px;
+  min-height: min-content;
+  overflow: visible;
+  padding: 4px 0 24px;
+}
+.players-2 { grid-template-columns: 1fr; grid-auto-rows: auto; }
+.players-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+.players-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+.players-3 .player-cell.is-human,
+.players-4 .player-cell.is-human {
+  grid-column: 1 / -1;
+}
+.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: min-content; display: flex; flex-direction: column; }
 .player-cell.is-current { border-color: #a46d1f; border-width: 2px; }
 .player-cell.is-human { border-left: 4px solid #2f6f5e; }
 .player-cell.is-ai { border-left: 4px solid #9d2f2f; }
@@ -423,9 +443,10 @@ const playerCountStart = ref(2)
 
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(72px, 1fr));
   gap: 6px;
   padding: 0;
+  overflow-x: auto;
 }
 
 .field-slot {

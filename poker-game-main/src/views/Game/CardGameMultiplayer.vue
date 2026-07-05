@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useGameClient } from '@/composables/useGameClient'
@@ -10,7 +10,11 @@ const router = useRouter()
 const multiplayer = useMultiplayer()
 
 // 使用客户端游戏逻辑
-const game = useGameClient()
+const game = useGameClient(multiplayer.myPlayerId.value || '')
+
+watch(() => multiplayer.myPlayerId.value, (id) => {
+  if (id) game.setMyPlayerId(id)
+}, { immediate: true })
 
 const reforgeOptions = ref<ReforgeOption[]>([])
 const loadingTimeoutId = ref<number | null>(null)
@@ -37,7 +41,7 @@ function handleGameStateUpdate(newState: GameState) {
   console.log('[CardGameMultiplayer] round:', newState.round)
   console.log('[CardGameMultiplayer] message:', newState.message)
   console.log('[CardGameMultiplayer] 我的决策状态 (myDecisionMade):', game.myDecisionMade.value)
-  console.log('[CardGameMultiplayer] 对手决策状态 (opponentDecisionMade):', game.opponentDecisionMade.value)
+  console.log('[CardGameMultiplayer] 全部决策完成 (allDecisionsMade):', game.allDecisionsMade.value)
   console.log('[CardGameMultiplayer] 我的玩家名:', game.myPlayer.value?.name)
   
   // 清除加载超时
@@ -55,44 +59,28 @@ function handleGameStateUpdate(newState: GameState) {
     game.resetReadyState()
   }
   
-  // 如果进入 action 阶段，说明双方都已决策
+  // action 阶段表示所有玩家均已决策
   if (newState.phase === 'action') {
-    console.log('[CardGameMultiplayer] 进入action阶段 -> 双方都已决策')
-    if (!game.myDecisionMade.value) {
-      console.log('[CardGameMultiplayer] 我还没决策，标记为已决策（对手先决策了）')
-      game.myDecisionMade.value = true
-    }
-    if (!game.opponentDecisionMade.value) {
-      console.log('[CardGameMultiplayer] 对手标记为已决策')
-      game.opponentDecisionMade.value = true
-    }
+    console.log('[CardGameMultiplayer] 进入 action 阶段 -> 所有玩家已决策')
   }
-  
-  // 检查服务器端的准备状态
-  if (newState.playerReady) {
+
+  // 全部玩家准备完毕 → 由 ID 最小的客户端发送 startNewRound
+  if (newState.playerReady && newState.players?.length) {
     const myPlayerId = multiplayer.myPlayerId.value
-    const opponentId = newState.players.find((p: any) => p.id !== myPlayerId)?.id
-    
     if (myPlayerId && newState.playerReady[myPlayerId]) {
       game.setMyReady()
     }
-    if (opponentId && newState.playerReady[opponentId]) {
-      game.setOpponentReady()
-    }
-    
-    // 如果双方都准备好，只让一个玩家发送开始新回合的请求
-    // 使用玩家ID的字典序来决定谁发送（确保唯一性）
-    if (game.bothPlayersReady.value) {
-      console.log('[CardGameMultiplayer] 双方都准备完成')
-      
-      // 获取所有玩家ID并排序
-      const playerIds = Object.keys(newState.playerReady).sort()
+
+    const allReady = newState.players.every((p: { id: string }) => newState.playerReady?.[p.id])
+    if (allReady) {
+      console.log('[CardGameMultiplayer] 所有玩家准备完成')
+
+      const playerIds = newState.players.map((p: { id: string }) => p.id).sort()
       const shouldSendRequest = playerIds[0] === myPlayerId
-      
+
       if (shouldSendRequest) {
         console.log('[CardGameMultiplayer] 我的ID最小，2秒后发送 startNewRound')
         setTimeout(() => {
-          // 服务器端会自动检查是否应该结束游戏
           multiplayer.sendAction({ type: 'startNewRound' })
         }, 2000)
       } else {
@@ -150,12 +138,6 @@ function handleChoosePlay() {
   const action = game.choosePlay()
   console.log('[CardGameMultiplayer] 发送 choosePlay 操作')
   multiplayer.sendAction(action)
-  
-  if (!game.opponentDecisionMade.value) {
-    console.log('[CardGameMultiplayer] 对手还未决策，等待中...')
-  } else {
-    console.log('[CardGameMultiplayer] 对手已决策')
-  }
 }
 
 // 处理选择重铸
@@ -167,12 +149,6 @@ function handleChooseReforge() {
   const action = game.chooseReforge()
   console.log('[CardGameMultiplayer] 发送 chooseReforge 操作')
   multiplayer.sendAction(action)
-  
-  if (!game.opponentDecisionMade.value) {
-    console.log('[CardGameMultiplayer] 对手还未决策，等待中...')
-  } else {
-    console.log('[CardGameMultiplayer] 对手已决策')
-  }
 }
 
 // 处理手牌点击
@@ -199,7 +175,7 @@ function onHandCardClick(index: number) {
   // 选择了出牌，处理出牌逻辑
   if (game.gameState.value?.phase === 'action' && !game.reforgeState.value.active) {
     // 只有双方都做出决策后才能选择手牌
-    if (!game.bothDecisionsMade.value) {
+    if (!game.allDecisionsMade.value) {
       return
     }
     game.selectCardToPlay(index)
@@ -220,7 +196,7 @@ function handleSelectSlot(slotIndex: number) {
   }
   
   // 只有双方都做出决策后才能部署单位
-  if (!game.bothDecisionsMade.value) {
+  if (!game.allDecisionsMade.value) {
     return
   }
   
@@ -300,8 +276,8 @@ function leaveGameToLobby(fromGameOver = false) {
       <div class="round-info">
         <span>回合: {{ game.gameState.value.round }}</span>
         <span v-if="game.gameState.value.isFinalRound" class="final-round">最后一回合！</span>
-        <span v-if="game.bothPlayersReady.value" class="ready-status">双方准备完毕，进入下一回合...</span>
-        <span v-else-if="game.myReady.value" class="ready-status">等待对手...</span>
+        <span v-if="game.allPlayersReady.value" class="ready-status">所有玩家准备完毕，进入下一回合...</span>
+        <span v-else-if="game.myReady.value" class="ready-status">等待其他玩家...</span>
       </div>
       <div class="message">{{ game.gameState.value.message }}</div>
     </div>
@@ -469,14 +445,27 @@ function leaveGameToLobby(fromGameOver = false) {
   color: #1f2522;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
 }
-.players-grid { flex: 1; display: grid; gap: 6px; min-height: 0; overflow-y: auto; padding: 4px 0; }
-.players-2 { grid-template-columns: 1fr; grid-template-rows: auto auto; }
-.players-3 { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
-.players-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.players-grid {
+  flex: 1 0 auto;
+  display: grid;
+  gap: 8px;
+  min-height: min-content;
+  overflow: visible;
+  padding: 4px 0 24px;
+}
+.players-2 { grid-template-columns: 1fr; grid-auto-rows: auto; }
+.players-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+.players-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+.players-3 .player-cell.is-own,
+.players-4 .player-cell.is-own {
+  grid-column: 1 / -1;
+}
+.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: min-content; display: flex; flex-direction: column; }
 .player-cell.is-current { border-color: #a46d1f; border-width: 2px; }
 .player-cell.is-own { border-left: 4px solid #2f6f5e; }
 .player-cell.is-other { border-left: 4px solid #9d2f2f; }
@@ -603,9 +592,10 @@ function leaveGameToLobby(fromGameOver = false) {
 
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(72px, 1fr));
   gap: 6px;
   padding: 0;
+  overflow-x: auto;
 }
 
 .field-slot {

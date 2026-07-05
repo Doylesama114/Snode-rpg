@@ -114,7 +114,8 @@ function pickFromPool(card: Card) {
     }
     deckCardIds.value[replacingIndex.value] = card.id
     replacingIndex.value = null
-    message.value = `已替换为 ${card.name}`
+    saveDeck(true)
+    message.value = `已替换为 ${card.name}（已自动保存）`
     setTimeout(() => { message.value = '' }, 2000)
     return
   }
@@ -131,17 +132,19 @@ function useDefaultDeck() {
   saveDeck()
 }
 
-function saveDeck() {
+function saveDeck(silent = false) {
   try {
     const raw = localStorage.getItem('accountState')
     if (!raw) return
     const accountState: AccountState = JSON.parse(raw)
     accountState.deckCardIds = [...deckCardIds.value]
     localStorage.setItem('accountState', JSON.stringify(accountState))
-    message.value = '卡组已保存！'
-    setTimeout(() => { message.value = '' }, 2000)
+    if (!silent) {
+      message.value = '卡组已保存！'
+      setTimeout(() => { message.value = '' }, 2000)
+    }
   } catch {
-    message.value = '保存失败'
+    if (!silent) message.value = '保存失败'
   }
 }
 
@@ -247,14 +250,19 @@ function goHome() {
 
 <style scoped>
 .deck-page {
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   background: #f6f4ef;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .deck-wrap {
   max-width: 1100px;
   margin: 0 auto;
+  padding-bottom: 32px;
 }
 
 .deck-header {
@@ -453,9 +461,6 @@ function goHome() {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 8px;
-  max-height: 480px;
-  overflow-y: auto;
-  padding-right: 4px;
 }
 
 .pool-card {

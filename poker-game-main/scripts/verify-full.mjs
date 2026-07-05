@@ -115,6 +115,20 @@ const sampleDeck = seed.slice(0, 15).map(c => c.id)
 const sampleBuilt = createDeckFromCardIds(sampleDeck)
 assert(sampleBuilt.length === 15, '任意 15 张合法 ID 可组卡')
 
+// 4b 自定义卡组 → 单机/联机路径（卡组管理页保存 accountState.deckCardIds）
+const customIds = seed.slice(30, 45).map(c => c.id)
+const customDeck = createDeckFromCardIds(customIds)
+const builtBaseIds = customDeck.map(c => c.id.replace(/_unique$/, ''))
+assert(builtBaseIds.length === 15 && customIds.every(id => builtBaseIds.includes(id)), '自定义 15 张 ID 可组成牌库')
+const engineSource = readFileSync(resolve(ROOT, 'server/gameEngine.js'), 'utf8')
+assert(engineSource.includes('p.deckCardIds ? createDeckFromCardIds(p.deckCardIds)'), '联机引擎使用 deckCardIds 组牌')
+
+// 4c 单机/联机客户端读取 localStorage 卡组（源码契约）
+const spSource = readFileSync(resolve(ROOT, 'src/composables/useGameNew.ts'), 'utf8')
+const mpSource = readFileSync(resolve(ROOT, 'src/composables/useMultiplayer.ts'), 'utf8')
+assert(spSource.includes('account.deckCardIds') && spSource.includes('createDeckFromCardIds'), '单机读取 localStorage 卡组')
+assert(mpSource.includes('getDeckCardIds') && mpSource.includes('deckCardIds'), '联机 create/join 发送卡组')
+
 console.log('\n=== 5. 游戏引擎冒烟（核心路径）===')
 function makePlayer(id, extra = {}) {
   return {

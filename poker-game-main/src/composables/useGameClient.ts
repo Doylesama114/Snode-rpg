@@ -5,9 +5,13 @@ import { ref, computed } from 'vue'
 import type { GameState, Card, ReforgeOption } from '@/types/game'
 import { EffectManager } from '@/game/effectManager'
 
-export function useGameClient(myPlayerId: string) {
+export function useGameClient(initialPlayerId = '') {
   // 我的玩家ID（响应式）
-  const myPlayerIdRef = ref(myPlayerId)
+  const myPlayerIdRef = ref(initialPlayerId)
+
+  function setMyPlayerId(id: string) {
+    myPlayerIdRef.value = id
+  }
   
   // 游戏状态（从服务器接收）
   const gameState = ref<GameState | null>(null)
@@ -37,11 +41,30 @@ export function useGameClient(myPlayerId: string) {
     if (otherEntries.length < totalPlayers - 1) return false
     return otherEntries.every(([_, d]) => d.made)
   })
+
+  /** 所有玩家（含自己）均已决策 */
+  const allDecisionsMade = computed(() => {
+    const decisions = gameState.value?.playerDecisions
+    const players = gameState.value?.players
+    if (!decisions || !players?.length) return false
+    return players.every(p => decisions[p.id]?.made)
+  })
+
+  /** @deprecated 使用 allDecisionsMade */
+  const bothDecisionsMade = allDecisionsMade
   
-  // 回合准备状态
   const myReady = ref(false)
-  const opponentReady = ref(false)
-  const bothPlayersReady = computed(() => myReady.value && opponentReady.value)
+
+  /** 从服务器 playerReady 派生：全部玩家已准备 */
+  const allPlayersReady = computed(() => {
+    const ready = gameState.value?.playerReady
+    const players = gameState.value?.players
+    if (!ready || !players?.length) return false
+    return players.every(p => ready[p.id] === true)
+  })
+
+  /** @deprecated 使用 allPlayersReady */
+  const bothPlayersReady = allPlayersReady
   
   // 计算属性
   const myPlayer = computed(() => gameState.value?.players.find(p => p.id === myPlayerIdRef.value) || null)
@@ -184,25 +207,18 @@ export function useGameClient(myPlayerId: string) {
   // 重置回合准备状态
   function resetReadyState() {
     myReady.value = false
-    opponentReady.value = false
   }
   
   // 标记自己准备完成
   function setMyReady() {
     myReady.value = true
   }
-  
-  // 标记对手准备完成
-  function setOpponentReady() {
-    opponentReady.value = true
-  }
-  
-  // 获取总战力
+
   function getTotalPower(playerIndex: number) {
     if (!gameState.value) return 0
     const player = gameState.value.players[playerIndex]
     if (!player) return 0
-    
+
     let totalPower = player.bonusPower
     player.field.forEach(slot => {
       if (slot.card && !slot.isExtra) {
@@ -211,19 +227,16 @@ export function useGameClient(myPlayerId: string) {
     })
     return totalPower
   }
-  
-  // 检查槽位是否可用
+
   function isSlotAvailable(slotIndex: number): boolean {
     return availableSlots.value.includes(slotIndex)
   }
-  
-  // 检查卡牌是否可打出
+
   function isCardPlayable(index: number): boolean {
     if (!gameState.value || !myPlayer.value) return false
     if (gameState.value.phase !== 'action') return false
     if (reforgeState.value.active) return false
-    
-    // 检查玩家限制
+
     const restrictions = gameState.value.playerRestrictions?.[myPlayerIdRef.value]
     if (restrictions?.includes('cannotPlay')) return false
     if (restrictions?.includes('tacticsOnly')) {
@@ -231,17 +244,17 @@ export function useGameClient(myPlayerId: string) {
       if (!card || card === 'hidden') return false
       return (card as Card).type === 'tactic' && myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
     }
-    
+
     const card = myPlayer.value.hand[index]
     if (!card || card === 'hidden') return false
-    
+
     if (hasPlayedThisTurn.value && !canPlayExtra.value) {
       return false
     }
-    
+
     return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
   }
-  
+
   return {
     gameState,
     myPlayer,
@@ -256,9 +269,12 @@ export function useGameClient(myPlayerId: string) {
     canPlayExtra,
     myDecisionMade,
     allOtherDecisionsMade,
+    allDecisionsMade,
+    bothDecisionsMade,
     myReady,
-    opponentReady,
+    allPlayersReady,
     bothPlayersReady,
+    setMyPlayerId,
     updateGameState,
     choosePlay,
     chooseReforge,
@@ -270,7 +286,6 @@ export function useGameClient(myPlayerId: string) {
     resetDecisionState,
     resetReadyState,
     setMyReady,
-    setOpponentReady,
     getTotalPower,
     isSlotAvailable,
     isCrossPlayerSlotAvailable,
