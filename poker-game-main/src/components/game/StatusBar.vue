@@ -44,7 +44,7 @@ defineProps<{
   flex-wrap: wrap;
   min-height: var(--game-status-height);
   padding: 8px 14px;
-  background: rgba(20, 17, 14, 0.92);
+  background: #fffdf8;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--game-border);
 }
@@ -74,7 +74,7 @@ defineProps<{
   color: var(--game-text-secondary);
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #f6f4ef;
 }
 
 .status-bar__final {

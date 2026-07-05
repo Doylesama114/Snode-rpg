@@ -423,7 +423,7 @@ function goHome() {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  background: radial-gradient(ellipse at 50% 20%, #2a2218 0%, var(--game-bg-table) 55%);
+  background: var(--game-bg-table);
   color: var(--game-text-primary);
   font-family: var(--game-font-ui);
   padding: 20px;

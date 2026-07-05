@@ -61,8 +61,8 @@ const emit = defineEmits<{ click: [ev: MouseEvent] }>()
   position: relative;
   border-radius: var(--game-radius-md);
   padding: 4px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid transparent;
+  background: var(--game-bg-table);
+  border: 1px solid var(--game-border);
   transition: transform 0.2s ease;
   min-height: 104px;
 }

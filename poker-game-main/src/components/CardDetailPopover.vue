@@ -49,7 +49,7 @@ withDefaults(defineProps<{
   min-width: 260px;
   max-width: 320px;
   background: var(--game-bg-panel-elevated);
-  border: 1px solid var(--game-border-strong);
+  border: 2px solid var(--game-accent-gold);
   border-radius: var(--game-radius-md);
   padding: 12px 14px;
   box-shadow: var(--game-shadow-lift);
@@ -102,7 +102,7 @@ withDefaults(defineProps<{
 
 .meta-chip {
   font-size: 11px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--game-bg-table);
   border: 1px solid var(--game-border);
   border-radius: 6px;
   padding: 2px 8px;
@@ -143,7 +143,7 @@ withDefaults(defineProps<{
 }
 
 .effect-block {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--game-bg-table);
   border-radius: 6px;
   padding: 8px;
   margin-bottom: 6px;

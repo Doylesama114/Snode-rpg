@@ -77,7 +77,7 @@ function toggle() {
   justify-content: space-between;
   gap: 8px;
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--game-bg-table);
   border: none;
   color: var(--game-text-primary);
   cursor: pointer;

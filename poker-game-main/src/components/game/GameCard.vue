@@ -134,7 +134,7 @@ withDefaults(defineProps<{
 }
 
 .game-card--empty {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--game-bg-table);
   border: 1px dashed var(--game-border);
   box-shadow: none;
   min-height: 96px;

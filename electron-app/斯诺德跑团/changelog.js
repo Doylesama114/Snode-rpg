@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6098',
+    date: '2026-07-05',
+    changes: [
+      '恢复米色背景主题',
+      '保留新UI组件布局'
+    ]
+  },
+
+
+  {
     version: '1.0.6097',
     date: '2026-07-05',
     changes: [

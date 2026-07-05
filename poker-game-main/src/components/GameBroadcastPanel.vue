@@ -138,7 +138,7 @@ function formatTime(ts: number) {
   font-size: 12px;
   font-weight: 600;
   color: var(--game-text-secondary);
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--game-bg-table);
   border-bottom: 1px solid var(--game-border);
   position: sticky;
   top: 0;
@@ -173,7 +173,7 @@ function formatTime(ts: number) {
 }
 
 .broadcast-item-round {
-  background: rgba(255, 255, 255, 0.08);
+  background: #e8e4da;
   color: var(--game-text-secondary);
   padding: 1px 6px;
   border-radius: 4px;

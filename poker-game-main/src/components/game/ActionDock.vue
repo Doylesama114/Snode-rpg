@@ -18,7 +18,7 @@ defineProps<{ visible?: boolean }>()
   bottom: 0;
   z-index: 60;
   padding: 8px 12px max(8px, env(safe-area-inset-bottom));
-  background: linear-gradient(0deg, rgba(14, 12, 10, 0.98) 0%, rgba(14, 12, 10, 0.88) 100%);
+  background: linear-gradient(0deg, rgba(255, 253, 248, 0.98) 0%, rgba(246, 244, 239, 0.95) 100%);
   border-top: 1px solid var(--game-border);
   backdrop-filter: blur(10px);
 }
@@ -54,6 +54,6 @@ defineProps<{ visible?: boolean }>()
   padding: 10px;
   border-radius: var(--game-radius-md);
   background: var(--game-human-dim);
-  border: 1px solid rgba(61, 155, 122, 0.35);
+  border: 1px solid rgba(47, 111, 94, 0.35);
 }
 </style>
