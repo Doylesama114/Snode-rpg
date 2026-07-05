@@ -239,6 +239,23 @@ export function useGame() {
     if (currentPlayer.value.id === 'player') {
       await animations.playBanner({ kind: 'your-turn', text: '你的回合' })
     }
+
+    const turnStart = EffectManager.triggerOwnerTurnStartEffects(
+      currentPlayer.value,
+      gameState.value,
+      { interactivePlayerId: 'player' },
+    )
+    if (turnStart.messages.length) {
+      gameState.value.message += ' | ' + turnStart.messages.join(' | ')
+    }
+    if (turnStart.pendingBranch) {
+      if (!gameState.value.pendingEffectBranches) gameState.value.pendingEffectBranches = {}
+      gameState.value.pendingEffectBranches[currentPlayer.value.id] = turnStart.pendingBranch
+      gameState.value.phase = 'selectEffectBranch'
+      gameState.value.message = `${turnStart.pendingBranch.ownerCardName}：弃置一张水属性手牌并选择效果（可跳过）`
+      return
+    }
+
     gameState.value.phase = 'decision'
 
     if (currentPlayer.value.id.startsWith('ai')) {
@@ -1238,6 +1255,64 @@ export function useGame() {
     gameState.value.message = '已取消出牌，可继续操作或结束回合'
   }
 
+  function cancelActionChoice() {
+    if (gameState.value.phase !== 'action') return
+    reforgeState.value.active = false
+    reforgeState.value.selectedCard = null
+    reforgeState.value.hasChosen = false
+    gameState.value.selectedCard = undefined
+    gameState.value.phase = 'decision'
+    gameState.value.message = '选择出牌或重铸'
+  }
+
+  function findOwnerCardForBranch(pending: import('@/types/game').PendingEffectBranch): Card | undefined {
+    const player = gameState.value.players.find(p => p.id === pending.playerId)
+    if (!player) return undefined
+    for (const slot of player.field) {
+      if (slot.card?.id === pending.ownerCardId) return slot.card
+    }
+    return undefined
+  }
+
+  function finishEffectBranchPhase() {
+    const pid = currentPlayer.value.id
+    if (gameState.value.pendingEffectBranches) {
+      delete gameState.value.pendingEffectBranches[pid]
+    }
+    gameState.value.phase = 'decision'
+    gameState.value.message = `${currentPlayer.value.name} - 必须选择出牌或重铸`
+  }
+
+  function resolveEffectBranchChoice(branch: string, discardHandIndex: number) {
+    const pending = gameState.value.pendingEffectBranches?.[currentPlayer.value.id]
+    if (!pending || gameState.value.phase !== 'selectEffectBranch') return
+    const ownerCard = findOwnerCardForBranch(pending)
+    if (!ownerCard) {
+      finishEffectBranchPhase()
+      return
+    }
+    const effect: import('@/types/game').CardEffect = {
+      timing: 'roundStart',
+      type: 'effectBranch',
+      discardHandAttributes: pending.discardHandAttributes,
+      branches: pending.branches,
+      oncePerRound: pending.oncePerRound,
+    }
+    const msgs = EffectManager.resolveEffectBranch(
+      effect, ownerCard, currentPlayer.value, gameState.value, branch, discardHandIndex,
+    )
+    if (msgs.length) {
+      gameState.value.message = msgs.join(' | ')
+    }
+    finishEffectBranchPhase()
+  }
+
+  function skipEffectBranch() {
+    if (gameState.value.phase !== 'selectEffectBranch') return
+    finishEffectBranchPhase()
+    gameState.value.message = '已跳过回合开始效果'
+  }
+
   // 游戏结束
   function endGame() {
     gameState.value.phase = 'gameOver'
@@ -1415,6 +1490,9 @@ export function useGame() {
     executeReforge,
     endTurn,
     cancelCardSelection,
+    cancelActionChoice,
+    resolveEffectBranchChoice,
+    skipEffectBranch,
     isCardPlayable
   }
 }

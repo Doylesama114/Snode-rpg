@@ -43,6 +43,8 @@ console.log('--- canDeployOnExtraSlot 关键词限制 ---')
   const beast = makeCard({ name: '狼', keywords: ['野兽'] })
   assert(EffectManager.canDeployOnExtraSlot(ship, slot), '船可部署到船槽')
   assert(!EffectManager.canDeployOnExtraSlot(beast, slot), '非船不可部署到船槽')
+  const sailboat = makeCard({ name: '帆船', type: 'environment', keywords: ['载具'], attribute: '水' })
+  assert(EffectManager.canDeployOnExtraSlot(sailboat, slot), '帆船(名称含船)可部署到海港槽')
 }
 
 console.log('--- getAvailableSlotIndices 过滤 ---')

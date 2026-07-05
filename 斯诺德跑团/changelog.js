@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6092',
+    date: '2026-07-05',
+    changes: [
+      '海洋德鲁伊回合开始效果',
+      '出牌重铸返回选择',
+      '海港可部署帆船'
+    ]
+  },
+
+
+  {
     version: '1.0.6091',
     date: '2026-07-05',
     changes: [

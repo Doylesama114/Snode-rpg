@@ -253,6 +253,22 @@ io.on('connection', (socket) => {
           action.data.selectedCardIndex
         )
         break
+
+      case 'resolveEffectBranch':
+        result = gameEngine.handleResolveEffectBranch(
+          player.id,
+          action.data.branch,
+          action.data.discardHandIndex,
+        )
+        break
+
+      case 'skipEffectBranch':
+        result = gameEngine.handleSkipEffectBranch(player.id)
+        break
+
+      case 'cancelDecision':
+        result = gameEngine.handleCancelDecision(player.id)
+        break
         
       case 'skipTurn':
         result = gameEngine.handleSkipTurn(player.id)

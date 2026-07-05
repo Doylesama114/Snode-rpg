@@ -393,13 +393,23 @@ export interface Player {
 }
 
 // 游戏阶段
-export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectCrossPlayerSlot' | 'selectTarget' | 'action' | 'gameOver'
+export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectCrossPlayerSlot' | 'selectTarget' | 'selectEffectBranch' | 'action' | 'gameOver'
 
 // 决策类型
 export type DecisionType = 'play' | 'reforge'
 
 // 重铸选项
 export type ReforgeOption = 'gainCost' | 'redraw' | 'gainPower'
+
+/** 海洋德鲁伊等 effectBranch 待选状态 */
+export interface PendingEffectBranch {
+  playerId: string
+  ownerCardId: string
+  ownerCardName: string
+  discardHandAttributes: string[]
+  branches: Record<string, Partial<CardEffect>>
+  oncePerRound?: boolean
+}
 
 // 游戏状态
 export interface GameState {
@@ -441,12 +451,14 @@ export interface GameState {
   playerRestrictions?: Record<string, string[]>  // playerId → ['cannotPlay'|'tacticsOnly']
   // 负数能量追踪
   playersWithNegativeCost?: string[]
+  /** effectBranch 待选（按 playerId） */
+  pendingEffectBranches?: Record<string, PendingEffectBranch>
   accountState?: AccountState
 }
 
 // 游戏操作（用于联机同步）
 export interface GameAction {
-  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
+  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'resolveEffectBranch' | 'skipEffectBranch' | 'cancelDecision' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
   data?: any
   playerId?: string
   playerCount?: number    // room creation: 2-4

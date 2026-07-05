@@ -34,7 +34,14 @@ watch(() => multiplayer.myPlayerId.value, (id) => {
 }, { immediate: true })
 
 const reforgeOptions = ref<ReforgeOption[]>([])
+const effectBranchDiscardIndex = ref<number | null>(null)
 const loadingTimeoutId = ref<number | null>(null)
+
+const pendingEffectBranch = computed(() => {
+  const myId = multiplayer.myPlayerId.value
+  if (!myId) return null
+  return game.gameState.value?.pendingEffectBranches?.[myId] ?? null
+})
 
 const {
   hoveredCardKey,
@@ -239,8 +246,16 @@ function handleChooseReforge() {
 
 // 处理手牌点击
 function onHandCardClick(index: number) {
-  // 检查是否选择了重铸
   const myPlayerId = multiplayer.myPlayerId.value
+  if (pendingEffectBranch.value) {
+    const card = game.myPlayer.value?.hand[index]
+    if (card && card !== 'hidden' && pendingEffectBranch.value.discardHandAttributes.includes(card.attribute)) {
+      effectBranchDiscardIndex.value = index
+    }
+    return
+  }
+
+  // 检查是否选择了重铸
   const myDecision = game.gameState.value?.playerDecisions?.[myPlayerId]
   
   if (myDecision && myDecision.choice === 'reforge') {
@@ -377,6 +392,25 @@ async function selectReforgeOption(option: ReforgeOption) {
       game.setMyReady()
     }
   }
+}
+
+function handleCancelAction() {
+  const action = game.cancelActionChoice()
+  if (action) multiplayer.sendAction(action)
+  reforgeOptions.value = []
+}
+
+function confirmEffectBranch(branch: 'A' | 'B' | 'C') {
+  if (effectBranchDiscardIndex.value === null) return
+  const action = game.resolveEffectBranchChoice(branch, effectBranchDiscardIndex.value)
+  multiplayer.sendAction(action)
+  effectBranchDiscardIndex.value = null
+}
+
+function handleSkipEffectBranch() {
+  const action = game.skipEffectBranchChoice()
+  multiplayer.sendAction(action)
+  effectBranchDiscardIndex.value = null
 }
 
 // 获取战力颜色
@@ -535,7 +569,16 @@ function leaveGameToLobby(fromGameOver = false) {
 
         <!-- 操作按钮（仅自己+当前回合） -->
         <div v-if="player.id === multiplayer.myPlayerId.value && index === game.gameState.value.currentPlayerIndex" class="actions">
-          <template v-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value">
+          <div v-if="pendingEffectBranch" class="effect-branch-bar">
+            <div class="effect-branch-info">
+              {{ pendingEffectBranch.ownerCardName }}：先点选水属性手牌，再选效果
+            </div>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('A')">A · 回复2能量</button>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('B')">B · 单位战力+2</button>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('C')">C · 抽2张牌</button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleSkipEffectBranch">跳过</button>
+          </div>
+          <template v-else-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value">
             <button v-if="game.canChoosePlay.value" @click="handleChoosePlay" class="btn btn-primary">出牌</button>
             <button v-if="game.canChooseReforge.value" @click="handleChooseReforge" class="btn btn-secondary">重铸</button>
             <span v-if="game.finalRoundTacticsOnly.value && game.canChoosePlay.value" class="hint">(场地已满，仅可出战术牌)</span>
@@ -543,6 +586,11 @@ function leaveGameToLobby(fromGameOver = false) {
 
           <div v-if="game.myDecisionMade.value && !game.allOtherDecisionsMade.value" class="waiting-opponent">
             ⏳ 等待其他玩家决策...
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
+          </div>
+
+          <div v-if="game.allDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active && !game.myPlayer.value?.hasPlayedThisTurn" class="both-ready">
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
           </div>
 
           <div v-if="game.allOtherDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active" class="both-ready">
@@ -562,6 +610,7 @@ function leaveGameToLobby(fromGameOver = false) {
             <button @click="selectReforgeOption('gainCost')" class="btn btn-small">+2费用</button>
             <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
           </div>
 
         </div>

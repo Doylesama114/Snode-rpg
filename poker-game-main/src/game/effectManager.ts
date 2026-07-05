@@ -831,10 +831,14 @@ export class EffectManager {
 
   static canDeployOnExtraSlot(card: Card, slot: FieldSlot): boolean {
     if (!slot.isExtra || slot.card) return false
-    if (card.type !== 'unit') return false
     const rules = slot.deployRules
-    if (!rules) return true
-    if (rules.deployCardType && card.type !== rules.deployCardType) return false
+    if (!rules) return card.type === 'unit'
+    if (rules.deployCardType && card.type !== rules.deployCardType) {
+      // 名词匹配时允许非单位类型（如「帆船」部署到「海港」）
+      if (!rules.deployKeywords?.length || !this.hasAnyKeyword(card, rules.deployKeywords)) {
+        return false
+      }
+    }
     if (rules.deployAttributes?.length && !this.hasAnyAttribute(card, rules.deployAttributes)) return false
     if (rules.deployKeywords?.length && !this.hasAnyKeyword(card, rules.deployKeywords)) return false
     return true
@@ -2131,21 +2135,57 @@ export class EffectManager {
     }
 
     if (effect.type === 'effectBranch') {
-      if (effect.oncePerRound && ownerCard.roundUsed) return { messages }
-      const attrs = effect.discardHandAttributes ?? []
-      const handIdx = player.hand.findIndex(c => attrs.includes(c.attribute))
-      if (handIdx === -1) return { messages }
-      player.discard.push(player.hand.splice(handIdx, 1)[0])
-      const branch = effect.branchDefault ?? 'A'
-      const sub = effect.branches?.[branch]
-      if (sub) {
-        messages.push(...this.applyBranchSubEffect(sub, ownerCard, player, game))
-      }
-      if (effect.oncePerRound) ownerCard.roundUsed = true
-      return { messages }
+      return { messages: this.resolveEffectBranch(effect, ownerCard, player, game, effect.branchDefault ?? 'A', 0) }
     }
 
     return { messages }
+  }
+
+  /** 检测 effectBranch 是否可触发（不执行） */
+  static getEffectBranchWaterIndices(player: Player, effect: CardEffect): number[] {
+    const attrs = effect.discardHandAttributes ?? []
+    return player.hand
+      .map((c, i) => (attrs.includes(c.attribute) ? i : -1))
+      .filter(i => i >= 0)
+  }
+
+  /** 执行 effectBranch：弃水牌 + 选分支 */
+  static resolveEffectBranch(
+    effect: CardEffect,
+    ownerCard: Card,
+    player: Player,
+    game: GameState,
+    branch: string,
+    discardHandIndex: number,
+  ): string[] {
+    const messages: string[] = []
+    if (effect.oncePerRound && ownerCard.roundUsed) return messages
+    const attrs = effect.discardHandAttributes ?? []
+    const card = player.hand[discardHandIndex]
+    if (!card || !attrs.includes(card.attribute)) return messages
+    player.discard.push(player.hand.splice(discardHandIndex, 1)[0])
+    messages.push(`弃置${card.name}`)
+    const sub = effect.branches?.[branch]
+    if (sub) {
+      messages.push(...this.applyBranchSubEffect(sub, ownerCard, player, game))
+    }
+    if (effect.oncePerRound) ownerCard.roundUsed = true
+    return messages
+  }
+
+  /** AI 自动执行 effectBranch */
+  static autoResolveEffectBranch(
+    effect: CardEffect,
+    ownerCard: Card,
+    player: Player,
+    game: GameState,
+  ): string[] {
+    if (effect.oncePerRound && ownerCard.roundUsed) return []
+    const indices = this.getEffectBranchWaterIndices(player, effect)
+    if (indices.length === 0) return []
+    return this.resolveEffectBranch(
+      effect, ownerCard, player, game, effect.branchDefault ?? 'A', indices[0],
+    )
   }
 
   /** 间歇泉等：消耗玩家预约的回合开始能量 */
@@ -2229,21 +2269,63 @@ export class EffectManager {
     }
     if (timing === 'roundEnd') {
       messages.push(...this.applyPendingRoundEndBuffs(game))
-    }
-    game.players.forEach(player => {
-      player.field.forEach(slot => {
-        if (!slot.card || !slot.card.effects) return
-        slot.card.effects.forEach(effect => {
-          if (effect.timing !== timing) return
-          if (effect.type === 'conditional' || effect.type === 'custom') return
-          const result = this.applyRoundEffect(effect, slot.card, player, game)
-          messages.push(...result.messages)
+      game.players.forEach(player => {
+        player.field.forEach(slot => {
+          if (!slot.card?.effects) return
+          slot.card.effects.forEach(effect => {
+            if (effect.timing !== 'roundEnd') return
+            if (effect.type === 'conditional' || effect.type === 'custom') return
+            const result = this.applyRoundEffect(effect, slot.card, player, game)
+            messages.push(...result.messages)
+          })
         })
       })
-    })
+    }
     if (messages.length > 0) {
       game.message = game.message + ' | ' + messages.join(' | ')
     }
+  }
+
+  /** 当前玩家回合开始（抽牌后）：触发其场上 roundStart 效果 */
+  static triggerOwnerTurnStartEffects(
+    player: Player,
+    game: GameState,
+    options?: { interactivePlayerId?: string },
+  ): { messages: string[]; pendingBranch?: import('@/types/game').PendingEffectBranch } {
+    const messages: string[] = []
+    let pendingBranch: import('@/types/game').PendingEffectBranch | undefined
+
+    for (const slot of player.field) {
+      if (!slot.card?.effects) continue
+      for (const effect of slot.card.effects) {
+        if (effect.timing !== 'roundStart') continue
+        if (effect.type === 'conditional' || effect.type === 'custom') continue
+
+        if (effect.type === 'effectBranch') {
+          if (effect.oncePerRound && slot.card.roundUsed) continue
+          const waterIdx = this.getEffectBranchWaterIndices(player, effect)
+          if (waterIdx.length === 0) continue
+          if (options?.interactivePlayerId && player.id === options.interactivePlayerId) {
+            pendingBranch = {
+              playerId: player.id,
+              ownerCardId: slot.card.id,
+              ownerCardName: slot.card.name,
+              discardHandAttributes: effect.discardHandAttributes ?? ['水'],
+              branches: effect.branches ?? {},
+              oncePerRound: effect.oncePerRound,
+            }
+            continue
+          }
+          messages.push(...this.autoResolveEffectBranch(effect, slot.card, player, game))
+          continue
+        }
+
+        const result = this.applyRoundEffect(effect, slot.card, player, game)
+        messages.push(...result.messages)
+      }
+    }
+
+    return { messages, pendingBranch }
   }
 
   /** 药剂师：若打出的战术匹配 pending 关键词，恢复本回合行动 */

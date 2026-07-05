@@ -273,6 +273,25 @@ export function useGameClient(initialPlayerId = '') {
     myReady.value = true
   }
 
+  function cancelActionChoice() {
+    reforgeState.value.active = false
+    reforgeState.value.selectedCard = null
+    reforgeState.value.hasChosen = false
+    selectedCard.value = null
+    return { type: 'cancelDecision' as const }
+  }
+
+  function resolveEffectBranchChoice(branch: string, discardHandIndex: number) {
+    return {
+      type: 'resolveEffectBranch' as const,
+      data: { branch, discardHandIndex },
+    }
+  }
+
+  function skipEffectBranchChoice() {
+    return { type: 'skipEffectBranch' as const }
+  }
+
   function getTotalPower(playerIndex: number) {
     if (!gameState.value) return 0
     const player = gameState.value.players[playerIndex]
@@ -343,6 +362,9 @@ export function useGameClient(initialPlayerId = '') {
     selectSlotToPlay,
     selectReforgeCard,
     executeReforge,
+    cancelActionChoice,
+    resolveEffectBranchChoice,
+    skipEffectBranchChoice,
     handleOpponentDecision,
     resetDecisionState,
     resetReadyState,

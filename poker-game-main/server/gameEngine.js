@@ -283,10 +283,13 @@ class EffectManager {
 
   static canDeployOnExtraSlot(card, slot) {
     if (!slot.isExtra || slot.card) return false
-    if (card.type !== 'unit') return false
     const rules = slot.deployRules
-    if (!rules) return true
-    if (rules.deployCardType && card.type !== rules.deployCardType) return false
+    if (!rules) return card.type === 'unit'
+    if (rules.deployCardType && card.type !== rules.deployCardType) {
+      if (!rules.deployKeywords?.length || !EffectManager.hasAnyKeyword(card, rules.deployKeywords)) {
+        return false
+      }
+    }
     if (rules.deployAttributes?.length && !EffectManager.hasAnyAttribute(card, rules.deployAttributes)) return false
     if (rules.deployKeywords?.length && !EffectManager.hasAnyKeyword(card, rules.deployKeywords)) return false
     return true
@@ -590,21 +593,44 @@ class EffectManager {
     }
 
     if (effect.type === 'effectBranch') {
-      if (effect.oncePerRound && ownerCard.roundUsed) return { messages }
-      const attrs = effect.discardHandAttributes ?? []
-      const handIdx = player.hand.findIndex(c => attrs.includes(c.attribute))
-      if (handIdx === -1) return { messages }
-      player.discard.push(player.hand.splice(handIdx, 1)[0])
-      const branch = effect.branchDefault ?? 'A'
-      const sub = effect.branches?.[branch]
-      if (sub) {
-        messages.push(...EffectManager.applyBranchSubEffect(sub, ownerCard, player, gameState))
-      }
-      if (effect.oncePerRound) ownerCard.roundUsed = true
-      return { messages }
+      return { messages: EffectManager.autoResolveEffectBranch(effect, ownerCard, player, gameState) }
     }
 
     return { messages }
+  }
+
+  static getEffectBranchWaterIndices(player, effect) {
+    const attrs = effect.discardHandAttributes ?? []
+    return player.hand
+      .map((c, i) => (attrs.includes(c.attribute) ? i : -1))
+      .filter(i => i >= 0)
+  }
+
+  static resolveEffectBranch(effect, ownerCard, player, game, branch, discardHandIndex) {
+    const gameState = game.gameState || game
+    const messages = []
+    if (effect.oncePerRound && ownerCard.roundUsed) return messages
+    const attrs = effect.discardHandAttributes ?? []
+    const card = player.hand[discardHandIndex]
+    if (!card || !attrs.includes(card.attribute)) return messages
+    player.discard.push(player.hand.splice(discardHandIndex, 1)[0])
+    messages.push(`弃置${card.name}`)
+    const sub = effect.branches?.[branch]
+    if (sub) {
+      messages.push(...EffectManager.applyBranchSubEffect(sub, ownerCard, player, gameState))
+    }
+    if (effect.oncePerRound) ownerCard.roundUsed = true
+    return messages
+  }
+
+  static autoResolveEffectBranch(effect, ownerCard, player, game) {
+    const gameState = game.gameState || game
+    if (effect.oncePerRound && ownerCard.roundUsed) return []
+    const indices = EffectManager.getEffectBranchWaterIndices(player, effect)
+    if (indices.length === 0) return []
+    return EffectManager.resolveEffectBranch(
+      effect, ownerCard, player, gameState, effect.branchDefault ?? 'A', indices[0],
+    )
   }
 
   static applyPendingRoundStartEnergy(game) {
@@ -689,21 +715,59 @@ class EffectManager {
     }
     if (timing === 'roundEnd') {
       messages.push(...EffectManager.applyPendingRoundEndBuffs(game))
-    }
-    gameState.players.forEach(player => {
-      player.field.forEach(slot => {
-        if (!slot.card || !slot.card.effects) return
-        slot.card.effects.forEach(effect => {
-          if (effect.timing !== timing) return
-          if (effect.type === 'conditional' || effect.type === 'custom') return
-          const result = EffectManager.applyRoundEffect(effect, slot.card, player, gameState)
-          messages.push(...result.messages)
+      gameState.players.forEach(player => {
+        player.field.forEach(slot => {
+          if (!slot.card?.effects) return
+          slot.card.effects.forEach(effect => {
+            if (effect.timing !== 'roundEnd') return
+            if (effect.type === 'conditional' || effect.type === 'custom') return
+            const result = EffectManager.applyRoundEffect(effect, slot.card, player, gameState)
+            messages.push(...result.messages)
+          })
         })
       })
-    })
+    }
     if (messages.length > 0) {
       gameState.message = gameState.message + ' | ' + messages.join(' | ')
     }
+  }
+
+  static triggerOwnerTurnStartEffects(player, game, options) {
+    const gameState = game.gameState || game
+    const messages = []
+    let pendingBranch
+
+    for (const slot of player.field) {
+      if (!slot.card?.effects) continue
+      for (const effect of slot.card.effects) {
+        if (effect.timing !== 'roundStart') continue
+        if (effect.type === 'conditional' || effect.type === 'custom') continue
+
+        if (effect.type === 'effectBranch') {
+          if (effect.oncePerRound && slot.card.roundUsed) continue
+          const waterIdx = EffectManager.getEffectBranchWaterIndices(player, effect)
+          if (waterIdx.length === 0) continue
+          if (options?.interactivePlayerId && player.id === options.interactivePlayerId) {
+            pendingBranch = {
+              playerId: player.id,
+              ownerCardId: slot.card.id,
+              ownerCardName: slot.card.name,
+              discardHandAttributes: effect.discardHandAttributes ?? ['水'],
+              branches: effect.branches ?? {},
+              oncePerRound: effect.oncePerRound,
+            }
+            continue
+          }
+          messages.push(...EffectManager.autoResolveEffectBranch(effect, slot.card, player, gameState))
+          continue
+        }
+
+        const result = EffectManager.applyRoundEffect(effect, slot.card, player, gameState)
+        messages.push(...result.messages)
+      }
+    }
+
+    return { messages, pendingBranch }
   }
 
   static consumeTacticPlayFreeIfMatch(card, player) {
@@ -2446,6 +2510,9 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
+    if (this.gameState.pendingEffectBranches?.[playerId]) {
+      return { success: false, error: '请先处理回合开始效果' }
+    }
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay')) {
       return { success: false, error: '最后一回合无法出牌（场地已满）' }
@@ -2500,6 +2567,9 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
+    if (this.gameState.pendingEffectBranches?.[playerId]) {
+      return { success: false, error: '请先处理回合开始效果' }
+    }
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay') || restrictions?.includes('tacticsOnly')) {
       return { success: false, error: '最后一回合场地已满，无法重铸' }
@@ -2544,6 +2614,66 @@ class GameEngine {
       success: true,
       gameState: this.getPublicGameState()
     }
+  }
+
+  handleResolveEffectBranch(playerId, branch, discardHandIndex) {
+    const pending = this.gameState.pendingEffectBranches?.[playerId]
+    if (!pending) return { success: false, error: '没有待处理的回合开始效果' }
+    const playerIndex = this.getPlayerIndex(playerId)
+    if (playerIndex === -1) return { success: false, error: '玩家不存在' }
+    const player = this.gameState.players[playerIndex]
+    let ownerCard
+    for (const slot of player.field) {
+      if (slot.card?.id === pending.ownerCardId) {
+        ownerCard = slot.card
+        break
+      }
+    }
+    if (!ownerCard) {
+      delete this.gameState.pendingEffectBranches[playerId]
+      return { success: true, gameState: this.getPublicGameState() }
+    }
+    const effect = {
+      timing: 'roundStart',
+      type: 'effectBranch',
+      discardHandAttributes: pending.discardHandAttributes,
+      branches: pending.branches,
+      oncePerRound: pending.oncePerRound,
+    }
+    const msgs = EffectManager.resolveEffectBranch(
+      effect, ownerCard, player, this.gameState, branch, discardHandIndex,
+    )
+    delete this.gameState.pendingEffectBranches[playerId]
+    if (msgs.length) {
+      this.gameState.message = msgs.join(' | ')
+    }
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
+  handleSkipEffectBranch(playerId) {
+    if (!this.gameState.pendingEffectBranches?.[playerId]) {
+      return { success: false, error: '没有待处理的回合开始效果' }
+    }
+    delete this.gameState.pendingEffectBranches[playerId]
+    this.gameState.message = '已跳过回合开始效果'
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
+  handleCancelDecision(playerId) {
+    const playerIndex = this.getPlayerIndex(playerId)
+    if (playerIndex === -1) return { success: false, error: '玩家不存在' }
+    const player = this.gameState.players[playerIndex]
+    if (player.hasPlayedThisTurn) {
+      return { success: false, error: '本回合已出牌，无法返回' }
+    }
+    const decision = this.gameState.playerDecisions[playerId]
+    if (!decision?.made) {
+      return { success: false, error: '尚未选择出牌或重铸' }
+    }
+    this.gameState.playerDecisions[playerId] = { made: false, choice: null }
+    this.gameState.phase = 'decision'
+    this.gameState.message = '选择出牌或重铸'
+    return { success: true, gameState: this.getPublicGameState() }
   }
   
   // 获取可用槽位
@@ -3276,8 +3406,26 @@ class GameEngine {
       }
     })
     
-    // 触发新回合开始效果
+    // 全局回合开始（重置 roundUsed、能量预约等）
     EffectManager.triggerRoundEffects('roundStart', this)
+
+    // 各玩家场上 roundStart 效果（抽牌后）
+    if (!this.gameState.pendingEffectBranches) this.gameState.pendingEffectBranches = {}
+    this.gameState.players.forEach(player => {
+      const restrictions = this.gameState.playerRestrictions?.[player.id]
+      const skipped = this.gameState.playerDecisions[player.id]?.made
+        && this.gameState.playerDecisions[player.id]?.choice === 'skip'
+      if (this.gameState.isFinalRound && skipped) return
+      const turnStart = EffectManager.triggerOwnerTurnStartEffects(player, this, {
+        interactivePlayerId: player.id,
+      })
+      if (turnStart.messages.length) {
+        this.gameState.message += ' | ' + turnStart.messages.join(' | ')
+      }
+      if (turnStart.pendingBranch) {
+        this.gameState.pendingEffectBranches[player.id] = turnStart.pendingBranch
+      }
+    })
     
     // 检查是否只有一个玩家需要操作（最后一回合）
     const needDecision = Object.values(this.gameState.playerDecisions).filter(d => !d.made).length

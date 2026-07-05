@@ -6,7 +6,7 @@ import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
-import { computed, unref } from 'vue'
+import { computed, ref, unref } from 'vue'
 
 const gameApi = useGame()
 const { 
@@ -29,6 +29,9 @@ const {
   executeReforge, 
   endTurn,
   cancelCardSelection,
+  cancelActionChoice,
+  resolveEffectBranchChoice,
+  skipEffectBranch,
   isCardPlayable,
   canChoosePlay,
   canChooseReforge,
@@ -72,6 +75,38 @@ function isSlotFlashing(playerId: string, slotIndex: number) {
 }
 
 const reforgeOptions = ref<ReforgeOption[]>([])
+const effectBranchDiscardIndex = ref<number | null>(null)
+
+const pendingEffectBranch = computed(() =>
+  gameState.value.pendingEffectBranches?.['player'] ?? null,
+)
+
+function handleCancelAction() {
+  cancelActionChoice()
+  reforgeOptions.value = []
+}
+
+function onEffectBranchHandClick(index: number) {
+  const pending = pendingEffectBranch.value
+  if (!pending || gameState.value.phase !== 'selectEffectBranch') return
+  const card = currentPlayer.value.hand[index]
+  if (!card || !pending.discardHandAttributes.includes(card.attribute)) return
+  effectBranchDiscardIndex.value = index
+}
+
+function confirmEffectBranch(branch: 'A' | 'B' | 'C') {
+  if (effectBranchDiscardIndex.value === null) {
+    gameState.value.message = '请先选择要弃置的水属性手牌'
+    return
+  }
+  resolveEffectBranchChoice(branch, effectBranchDiscardIndex.value)
+  effectBranchDiscardIndex.value = null
+}
+
+function handleSkipEffectBranch() {
+  skipEffectBranch()
+  effectBranchDiscardIndex.value = null
+}
 
 const isPreGame = computed(() =>
   gameState.value.round === 0
@@ -143,6 +178,10 @@ function selectReforgeOption(option: ReforgeOption) {
 }
 
 function onHandCardClick(index: number) {
+  if (gameState.value.phase === 'selectEffectBranch') {
+    onEffectBranchHandClick(index)
+    return
+  }
   if (reforgeState.value.active && reforgeOptions.value.includes('redraw') && reforgeState.value.selectedCard === null) {
     selectReforgeCard(index)
     
@@ -334,6 +373,7 @@ function playerIndex(playerId: string) {
           <div class="hand-label">
             手牌
             <span v-if="reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="hint">(点选放回)</span>
+            <span v-else-if="gameState.phase === 'selectEffectBranch'" class="hint">(点选水属性手牌)</span>
             <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hint-disabled">(已出牌)</span>
             <span v-else-if="!reforgeState.active && canPlayExtra" class="hint-extra">(可额外出牌!)</span>
           </div>
@@ -345,9 +385,10 @@ function playerIndex(playerId: string) {
               :data-hand-card="player.id + '-' + ci"
               :class="{
                 'playable': isCardPlayable(ci),
-                'disabled': !isCardPlayable(ci) && !reforgeState.active,
-                'selectable': reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null,
-                'selected': reforgeState.selectedCard === ci
+                'disabled': !isCardPlayable(ci) && !reforgeState.active && gameState.phase !== 'selectEffectBranch',
+                'selectable': (reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null)
+                  || (gameState.phase === 'selectEffectBranch' && pendingEffectBranch?.discardHandAttributes.includes(card.attribute)),
+                'selected': reforgeState.selectedCard === ci || effectBranchDiscardIndex === ci
               }"
               @click="onHandCardClick(ci)"
             >
@@ -369,6 +410,16 @@ function playerIndex(playerId: string) {
 
         <!-- 操作按钮（人类玩家+当前回合，紧贴手牌下方） -->
         <div v-if="player.id === 'player' && playerIndex(player.id) === gameState.currentPlayerIndex" class="actions">
+          <div v-if="gameState.phase === 'selectEffectBranch' && pendingEffectBranch" class="action-group effect-branch-bar">
+            <div class="effect-branch-info">
+              {{ pendingEffectBranch.ownerCardName }}：先点选一张水属性手牌，再选效果
+              <span v-if="effectBranchDiscardIndex !== null" class="hint">（已选手牌）</span>
+            </div>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('A')">A · 回复2能量</button>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('B')">B · 单位战力+2</button>
+            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('C')">C · 抽2张牌</button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleSkipEffectBranch">跳过</button>
+          </div>
           <div v-if="gameState.phase === 'decision'" class="action-group decision-bar">
             <button v-if="canChoosePlay" @click="choosePlay" class="btn btn-primary">出牌</button>
             <button v-if="canChooseReforge" @click="chooseReforge" class="btn btn-secondary">重铸</button>
@@ -376,6 +427,9 @@ function playerIndex(playerId: string) {
           </div>
           <div v-if="isDeployPhase()" class="action-group">
             <button type="button" class="btn btn-secondary" @click="cancelCardSelection">取消出牌</button>
+          </div>
+          <div v-if="gameState.phase === 'action' && !reforgeState.active && !gameState.selectedCard" class="action-group">
+            <button type="button" class="btn btn-secondary" @click="handleCancelAction">返回选择</button>
           </div>
           <div v-if="gameState.phase === 'action' && !reforgeState.active" class="action-group">
             <button @click="endTurn" class="btn btn-secondary">结束回合</button>
@@ -387,6 +441,7 @@ function playerIndex(playerId: string) {
             <button @click="selectReforgeOption('gainCost')" class="btn btn-small">+2费用</button>
             <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
             <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
           </div>
         </div>
       </div>
@@ -970,6 +1025,26 @@ function playerIndex(playerId: string) {
 
 .decision-bar .btn {
   min-width: 96px;
+}
+
+.effect-branch-bar {
+  flex-direction: column;
+  padding: 10px 14px;
+  background: rgba(47, 111, 94, 0.08);
+  border: 1px solid #2f6f5e;
+  border-radius: 8px;
+}
+
+.effect-branch-info {
+  font-size: 13px;
+  color: #1f2522;
+  text-align: center;
+  width: 100%;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
 }
 
 .btn {
