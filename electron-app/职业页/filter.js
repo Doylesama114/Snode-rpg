@@ -8,6 +8,41 @@
         return document.querySelector(sel);
     }
 
+    function normHex(h) {
+        if (!h) return "";
+        h = h.trim().toUpperCase();
+        if (!h.startsWith("#")) h = "#" + h;
+        return h;
+    }
+
+    function readTagsFromSkill(skill) {
+        var raw = skill.getAttribute("data-tags");
+        if (raw) {
+            return raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+        }
+        var kws = [];
+        skill.querySelectorAll(".chips .chip").forEach(function(c) {
+            var txt = c.textContent.trim();
+            if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
+            kws.push(txt);
+        });
+        return kws;
+    }
+
+    function readMarksFromSkill(skill) {
+        var raw = skill.getAttribute("data-marks");
+        if (raw) {
+            return raw.split(",").map(normHex).filter(Boolean);
+        }
+        var marks = [];
+        skill.querySelectorAll('.detail span[style*="color:"]').forEach(function(span) {
+            if (span.textContent.indexOf("\u25cf") === -1 && span.textContent.indexOf("●") === -1) return;
+            var m = span.getAttribute("style").match(/color:\s*(#[0-9A-Fa-f]{3,8})/);
+            if (m) marks.push(normHex(m[1]));
+        });
+        return marks;
+    }
+
     function FilterController(viewId, prefix) {
         var self = this;
         this.viewId = viewId;
@@ -15,32 +50,23 @@
         this.fb = q1("#" + prefix + "-filter-bar");
         this.sr = q1("#" + prefix + "-search");
         this.em = q1("#" + prefix + "-empty");
-        this.af = new Set();
 
-        if (!this.fb || !this.sr) return;
+        if (!this.sr) return;
 
-        // Chip clicks
         q(".chips .chip").forEach(function(chip) {
             chip.addEventListener("click", function(e) {
                 e.stopPropagation();
                 var txt = this.textContent.trim();
                 if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-                if (self.af.has(txt)) {
-                    self.af.delete(txt);
-                } else {
-                    self.af.add(txt);
-                }
-                self.updateChips();
-                self.renderFilters();
+                var panel = window.__filterPanel;
+                if (panel) panel.toggleKeyword(txt);
             });
         });
 
-        // Search input
         this.sr.addEventListener("input", function() {
             self.applySearch();
         });
 
-        // Collapse nav button
         var navInner = q1(".nav-inner");
         if (navInner && !navInner.querySelector(".collapse-nav-btn")) {
             var btn = document.createElement("button");
@@ -56,81 +82,106 @@
             });
         }
 
-        this.updateChips();
-        console.log("FilterController init for " + viewId + " prefix=" + prefix + " OK");
+        var panel = window.__filterPanel || (window.initFilterPanel && window.initFilterPanel());
+        if (panel) {
+            panel.onChange(function() {
+                self.renderFilters();
+            });
+        }
+
+        this.renderFilters();
     }
 
-    FilterController.prototype.updateChips = function() {
-        var self = this;
-        q(".chips .chip").forEach(function(c) {
-            var txt = c.textContent.trim();
-            if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-            if (self.af.has(txt)) {
-                c.classList.add("filter-active");
-                c.classList.remove("filter-inactive");
-            } else if (self.af.size > 0) {
-                c.classList.remove("filter-active");
-                c.classList.add("filter-inactive");
-            } else {
-                c.classList.remove("filter-active", "filter-inactive");
-            }
-        });
+    FilterController.prototype.getFilterState = function() {
+        var panel = window.__filterPanel;
+        if (panel) return panel.getState();
+        return { keywords: new Set(), colors: new Set() };
+    };
+
+    FilterController.prototype.skillMatchesFilters = function(skill) {
+        var state = this.getFilterState();
+        var kws = readTagsFromSkill(skill);
+        var marks = readMarksFromSkill(skill);
+
+        if (state.keywords.size > 0) {
+            if (!kws.length) return false;
+            var kwOk = true;
+            state.keywords.forEach(function(kw) {
+                if (kws.indexOf(kw) === -1) kwOk = false;
+            });
+            if (!kwOk) return false;
+        }
+
+        if (state.colors.size > 0) {
+            if (!marks.length) return false;
+            var colorOk = false;
+            state.colors.forEach(function(c) {
+                if (marks.indexOf(normHex(c)) !== -1) colorOk = true;
+            });
+            if (!colorOk) return false;
+        }
+
+        return true;
     };
 
     FilterController.prototype.renderFilters = function() {
         var self = this;
         var fb = this.fb;
         var em = this.em;
-        if (!fb) return;
-        fb.innerHTML = "";
-        if (this.af.size === 0) {
-            q(".chip").forEach(function(c) {
-                c.classList.remove("filter-active");
-                c.classList.add("filter-inactive");
+        var state = this.getFilterState();
+        if (fb) {
+            fb.innerHTML = "";
+            state.keywords.forEach(function(kw) {
+                fb.appendChild(self.makeFilterTag(kw, "kw"));
             });
-            q(".skill, .skill-link, .nav-tier, .nav-group, .style-link, .tier-list a").forEach(function(el) {
-                el.classList.remove("filter-hidden");
+            state.colors.forEach(function(hex) {
+                fb.appendChild(self.makeFilterTag(hex, "color"));
             });
-            if (em) em.classList.add("hidden");
-            return;
         }
-        this.af.forEach(function(kw) {
-            var tag = document.createElement("span");
-            tag.className = "filter-tag";
-            tag.textContent = kw;
-            var rm = document.createElement("span");
-            rm.className = "remove";
-            rm.textContent = "\u00d7";
-            rm.style.cursor = "pointer";
-            rm.addEventListener("click", function() {
-                tag.classList.add("removing");
-                setTimeout(function() {
-                    self.af.delete(kw);
-                    self.updateChips();
-                    self.renderFilters();
-                }, 200);
-            });
-            tag.appendChild(rm);
-            fb.appendChild(tag);
-        });
         self.applyFilters();
+    };
+
+    FilterController.prototype.makeFilterTag = function(val, kind) {
+        var self = this;
+        var tag = document.createElement("span");
+        tag.className = "filter-tag";
+        tag.textContent = kind === "color" ? "\u25cf " + val.replace("#", "") : val;
+        var rm = document.createElement("span");
+        rm.className = "remove";
+        rm.textContent = "\u00d7";
+        rm.style.cursor = "pointer";
+        rm.addEventListener("click", function() {
+            tag.classList.add("removing");
+            setTimeout(function() {
+                var panel = window.__filterPanel;
+                if (!panel) return;
+                if (kind === "kw") panel.toggleKeyword(val);
+                else panel.toggleColor(val);
+            }, 200);
+        });
+        tag.appendChild(rm);
+        return tag;
     };
 
     FilterController.prototype.applyFilters = function() {
         var self = this;
-        var hasFilter = this.af.size > 0;
-        if (!hasFilter) { if (this.em) this.em.classList.add("hidden"); return; }
+        var state = this.getFilterState();
+        var hasFilter = state.keywords.size > 0 || state.colors.size > 0;
+        if (!hasFilter) {
+            q(".chip").forEach(function(c) {
+                c.classList.remove("filter-active", "filter-inactive");
+            });
+            q(".skill, .skill-link, .nav-tier, .nav-group, .style-link, .tier-list a").forEach(function(el) {
+                el.classList.remove("filter-hidden");
+            });
+            if (this.em) this.em.classList.add("hidden");
+            return;
+        }
+
+        if (window.__filterPanel) window.__filterPanel.syncChipStyles();
 
         q("article.skill").forEach(function(skill) {
-            var kws = [];
-            skill.querySelectorAll(".chips .chip").forEach(function(c) {
-                var txt = c.textContent.trim();
-                if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-                kws.push(txt);
-            });
-            var match = true;
-            self.af.forEach(function(kw) { if (kws.indexOf(kw) === -1) match = false; });
-            skill.classList.toggle("filter-hidden", !match);
+            skill.classList.toggle("filter-hidden", !self.skillMatchesFilters(skill));
         });
 
         q("a.skill-link").forEach(function(link) {
@@ -138,24 +189,20 @@
             if (!href) return;
             var el = document.getElementById(href.replace("#", ""));
             if (!el) return;
-            var kws = [];
-            el.querySelectorAll(".chips .chip").forEach(function(c) {
-                var txt = c.textContent.trim();
-                if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-                kws.push(txt);
-            });
-            var m = kws.length > 0;
-            self.af.forEach(function(k) { if (kws.indexOf(k) === -1) m = false; });
-            link.classList.toggle("filter-hidden", !m);
+            link.classList.toggle("filter-hidden", !self.skillMatchesFilters(el));
         });
 
         q(".nav-tier").forEach(function(nt) {
-            var vis = Array.from(nt.querySelectorAll("a.skill-link")).some(function(a) { return !a.classList.contains("filter-hidden"); });
+            var vis = Array.from(nt.querySelectorAll("a.skill-link")).some(function(a) {
+                return !a.classList.contains("filter-hidden");
+            });
             nt.classList.toggle("filter-hidden", !vis);
         });
 
         q(".nav-group").forEach(function(ng) {
-            var vis = Array.from(ng.querySelectorAll(".nav-tier")).some(function(t) { return !t.classList.contains("filter-hidden"); });
+            var vis = Array.from(ng.querySelectorAll(".nav-tier")).some(function(t) {
+                return !t.classList.contains("filter-hidden");
+            });
             ng.classList.toggle("filter-hidden", !vis);
             if (hasFilter && vis) ng.querySelectorAll("details").forEach(function(d) { d.open = true; });
         });
@@ -175,7 +222,6 @@
         var em = this.em;
         if (!this.sr) return;
 
-        this.updateChips();
         this.renderFilters();
 
         _clearHighlights(this.viewId);

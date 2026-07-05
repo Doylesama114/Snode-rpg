@@ -97,8 +97,15 @@ def data_search_text(feat: dict) -> str:
 def build_article(feat_id: str, feat: dict) -> str:
     ds = html.escape(data_search_text(feat), quote=True)
     prereq = html.escape(feat["prerequisite"])
+    marks = feat.get("mark_dots") or []
+    mark_attrs = ""
+    if marks:
+        mark_attrs = (
+            f' data-marks="{html.escape(",".join(marks), quote=True)}"'
+            f' data-mark-count="{len(marks)}"'
+        )
     return (
-        f'<article class="skill" id="{feat_id}" data-search="{ds}">\n'
+        f'<article class="skill" id="{feat_id}" data-search="{ds}"{mark_attrs}>\n'
         f"<h4>{html.escape(feat['name'])}</h4>\n"
         f'<div class="detail">\n'
         f'<p><span class="field">前置条件：</span>{prereq}</p>\n'

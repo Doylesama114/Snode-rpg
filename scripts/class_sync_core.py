@@ -450,7 +450,7 @@ def sanitize_data_search(text: str) -> str:
     return text.replace('"', "").strip()
 
 
-def patch_html(html: str, skill_id: str, detail_html: str, data_search: str) -> str:
+def patch_html(html: str, skill_id: str, detail_html: str, data_search: str, data_attrs: str = "") -> str:
     id_marker = f'id="{skill_id}"'
     pos = html.find(id_marker)
     if pos == -1:
@@ -471,7 +471,7 @@ def patch_html(html: str, skill_id: str, detail_html: str, data_search: str) -> 
     safe_search = sanitize_data_search(data_search)
     middle = html[h4_start:detail_content_start]
     rebuilt = (
-        f'<article class="{article_class}" id="{skill_id}" data-search="{safe_search}">'
+        f'<article class="{article_class}" id="{skill_id}" data-search="{safe_search}"{data_attrs}>'
         + middle
         + detail_html
         + html[detail_end:article_end + len("</article>")]
@@ -501,6 +501,46 @@ def skill_type_from_keywords(kw: str) -> str:
         return "战技"
     head = kw.split(".")[0]
     return head if head in TYPE_HEADS else "法术"
+
+
+def marks_from_cost(skill: dict, mark_dots: list[str] | None = None) -> list[str]:
+    if mark_dots:
+        return list(mark_dots)
+    out: list[str] = []
+    for c in skill.get("cost") or []:
+        out.extend([c["color"]] * c.get("count", 1))
+    return out
+
+
+def build_skill_data_attrs(skill: dict, mark_dots: list[str] | None = None) -> str:
+    import html as html_mod
+
+    tags = skill.get("tags") or []
+    fields = skill.get("fields") or {}
+    kw = fields.get("关键词", "")
+    stype = skill_type_from_keywords(kw)
+    tier = skill.get("tier", "")
+    if skill.get("type") == "starting":
+        tier_val = "0"
+    elif isinstance(tier, int):
+        tier_val = str(tier)
+    else:
+        tier_val = str(tier)
+    style = (skill.get("style") or "").replace("风格", "")
+    marks = marks_from_cost(skill, mark_dots)
+    pairs = {
+        "data-tags": ",".join(tags),
+        "data-type": stype,
+        "data-tier": tier_val,
+        "data-style": style,
+        "data-marks": ",".join(marks),
+        "data-mark-count": str(len(marks)),
+    }
+    parts = []
+    for key, val in pairs.items():
+        if val:
+            parts.append(f'{key}="{html_mod.escape(str(val), quote=True)}"')
+    return (" " + " ".join(parts)) if parts else ""
 
 
 def style_label(style: str) -> str:
@@ -628,7 +668,8 @@ def sync_class(
         style = skill.get("style", "")
         detail_html = build_detail_html(block)
         data_search = build_data_search(block, style, tier_lbl, skill["tags"])
-        html = patch_html(html, sid, detail_html, data_search)
+        data_attrs = build_skill_data_attrs(skill, block["mark_dots"])
+        html = patch_html(html, sid, detail_html, data_search, data_attrs)
         changed.append(skill["name"])
 
     if removed:

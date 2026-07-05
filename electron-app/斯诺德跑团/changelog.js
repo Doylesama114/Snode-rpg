@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6113',
+    date: '2026-07-05',
+    changes: [
+      '职业页：新增悬浮筛选面板(关键词+色彩标识)',
+      '职业页：技能卡片注入 data-tags/data-marks 筛选属性'
+    ]
+  },
+
+
+  {
     version: '1.0.6112',
     date: '2026-07-05',
     changes: [
