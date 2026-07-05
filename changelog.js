@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6078',
+    date: '2026-07-05',
+    changes: [
+      '斯诺德对决已完成，用户可进行游戏测试逻辑是否正确',
+      '首页米色背景/卡组按钮仅留首页',
+      '全量验证脚本verify-full.mjs'
+    ]
+  },
+
+
+  {
     version: '1.0.6077',
     date: '2026-07-04',
     changes: [

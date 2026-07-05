@@ -71,10 +71,6 @@ onMounted(() => {
   }
 })
 
-function goDeckBuilder() {
-  router.push('/deck-builder')
-}
-
 // 不要在unmounted时断开连接，因为游戏界面还需要使用
 // onUnmounted(() => {
 //   disconnect()
@@ -220,7 +216,6 @@ watch(isGameStarted, (started) => {
         <span class="deck-display">
           当前卡组: {{ hasCustomDeck ? `自定义 (${deckCardCount}张)` : '默认' }}
         </span>
-        <button @click="goDeckBuilder" class="btn btn-deck">管理卡组</button>
       </div>
       <div class="actions">
         <button @click="showCreateDialog = true" class="btn btn-primary" :disabled="!connected">
@@ -520,23 +515,6 @@ watch(isGameStarted, (started) => {
   font-size: 16px;
   color: #a46d1f;
   font-weight: 500;
-}
-
-.btn-deck {
-  padding: 8px 18px;
-  background: #2f6f5e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-deck:hover {
-  background: #245a4c;
-  transform: scale(1.05);
 }
 
 .actions {

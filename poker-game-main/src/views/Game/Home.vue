@@ -3,8 +3,6 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AccountState } from '@/types/game'
 import GameNav from "@/views/Layout/GameNav.vue";
-import GameContent from '@/views/Layout/GameContent.vue'
-import {getAssetsFile} from '@/utils'
 
 const state = useGlobalState()
 const router = useRouter()
@@ -74,6 +72,5 @@ function goBack() {
         管理卡组
       </button>
     </div>
-    <GameContent/>
   </main>
 </template>
