@@ -4,19 +4,19 @@
 import { ref, computed } from 'vue'
 import type { GameState, Card, ReforgeOption } from '@/types/game'
 import { EffectManager } from '@/game/effectManager'
+import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
+
+export type ClientSelectMode = 'none' | 'hostDeploy' | 'quickPlayTarget'
 
 export function useGameClient(initialPlayerId = '') {
-  // 我的玩家ID（响应式）
   const myPlayerIdRef = ref(initialPlayerId)
 
   function setMyPlayerId(id: string) {
     myPlayerIdRef.value = id
   }
   
-  // 游戏状态（从服务器接收）
   const gameState = ref<GameState | null>(null)
   
-  // 本地UI状态
   const reforgeState = ref<{ active: boolean; selectedCard: number | null; hasChosen: boolean }>({
     active: false,
     selectedCard: null,
@@ -28,8 +28,10 @@ export function useGameClient(initialPlayerId = '') {
   const availableSlots = ref<number[]>([])
   const availableCrossPlayerSlots = ref<Array<{ playerIndex: number; slotIndex: number }>>([])
   const availableTargets = ref<Card[]>([])
+  const clientSelectMode = ref<ClientSelectMode>('none')
+  const pendingCardIndex = ref<number | null>(null)
+  const deployHint = ref('')
   
-  // 决策状态（从服务器状态派生）
   const myDecisionMade = computed(() => gameState.value?.playerDecisions?.[myPlayerIdRef.value]?.made ?? false)
   const allOtherDecisionsMade = computed(() => {
     const decisions = gameState.value?.playerDecisions
@@ -42,7 +44,6 @@ export function useGameClient(initialPlayerId = '') {
     return otherEntries.every(([_, d]) => d.made)
   })
 
-  /** 所有玩家（含自己）均已决策 */
   const allDecisionsMade = computed(() => {
     const decisions = gameState.value?.playerDecisions
     const players = gameState.value?.players
@@ -50,12 +51,10 @@ export function useGameClient(initialPlayerId = '') {
     return players.every(p => decisions[p.id]?.made)
   })
 
-  /** @deprecated 使用 allDecisionsMade */
   const bothDecisionsMade = allDecisionsMade
   
   const myReady = ref(false)
 
-  /** 从服务器 playerReady 派生：全部玩家已准备 */
   const allPlayersReady = computed(() => {
     const ready = gameState.value?.playerReady
     const players = gameState.value?.players
@@ -63,14 +62,17 @@ export function useGameClient(initialPlayerId = '') {
     return players.every(p => ready[p.id] === true)
   })
 
-  /** @deprecated 使用 allPlayersReady */
   const bothPlayersReady = allPlayersReady
   
-  // 计算属性
   const myPlayer = computed(() => gameState.value?.players.find(p => p.id === myPlayerIdRef.value) || null)
   const otherPlayers = computed(() => gameState.value?.players.filter(p => p.id !== myPlayerIdRef.value) ?? [])
   const hasPlayedThisTurn = computed(() => myPlayer.value?.hasPlayedThisTurn || false)
   const canPlayExtra = computed(() => myPlayer.value?.canPlayExtra || false)
+
+  const isSelectingTarget = computed(() =>
+    clientSelectMode.value !== 'none'
+    || !!gameState.value?.pendingRevealTargetSelection?.playerId && gameState.value.pendingRevealTargetSelection.playerId === myPlayerIdRef.value,
+  )
 
   function myRestrictions(): string[] | undefined {
     if (!gameState.value || !myPlayerIdRef.value) return undefined
@@ -103,39 +105,78 @@ export function useGameClient(initialPlayerId = '') {
   })
 
   const finalRoundTacticsOnly = computed(() => !!myRestrictions()?.includes('tacticsOnly'))
-  
-  // 更新游戏状态（从服务器接收）
-  function updateGameState(newState: GameState) {
-    console.log('[useGameClient] 更新游戏状态:', newState)
-    gameState.value = newState
+
+  function findFieldCardsByIds(ids: string[]): Card[] {
+    if (!gameState.value) return []
+    const out: Card[] = []
+    for (const p of gameState.value.players) {
+      for (const slot of p.field) {
+        if (slot.card && ids.includes(slot.card.id)) out.push(slot.card)
+      }
+    }
+    return out
+  }
+
+  function syncRevealTargetSelectionFromServer() {
+    const pending = gameState.value?.pendingRevealTargetSelection
+    if (!pending || pending.playerId !== myPlayerIdRef.value) return
+    availableTargets.value = findFieldCardsByIds(pending.targetCardIds)
+    clientSelectMode.value = 'none'
+    deployHint.value = '选择一张单位牌作为揭示效果目标'
+  }
+
+  function resetClientSelection() {
+    selectedCard.value = null
+    selectedSlot.value = null
+    availableSlots.value = []
+    availableCrossPlayerSlots.value = []
+    availableTargets.value = []
+    clientSelectMode.value = 'none'
+    pendingCardIndex.value = null
+    deployHint.value = ''
   }
   
-  // 选择出牌（返回操作对象，由调用者发送到服务器）
+  function updateGameState(newState: GameState) {
+    const prevLog = gameState.value?.broadcastLog ?? []
+    const prevMessage = gameState.value?.message ?? ''
+    gameState.value = newState
+    if (!newState.broadcastLog) newState.broadcastLog = []
+    const seen = new Set(newState.broadcastLog.map(e => `${e.round}:${e.text}`))
+    for (const entry of prevLog) {
+      const key = `${entry.round}:${entry.text}`
+      if (!seen.has(key)) {
+        newState.broadcastLog.push(entry)
+        seen.add(key)
+      }
+    }
+    if (newState.broadcastLog.length > 120) {
+      newState.broadcastLog.length = 120
+    }
+    syncBroadcastFromMessage(newState, prevMessage)
+    syncRevealTargetSelectionFromServer()
+  }
+  
   function choosePlay() {
-    console.log('[useGameClient] choosePlay 被调用')
     if (!canChoosePlay.value) return null
     reforgeState.value.active = false
     reforgeState.value.hasChosen = true
-    
-    return {
-      type: 'choosePlay' as const
-    }
+    return { type: 'choosePlay' as const }
   }
   
-  // 选择重铸
   function chooseReforge() {
-    console.log('[useGameClient] chooseReforge 被调用')
     if (!canChooseReforge.value) return null
     reforgeState.value.active = true
     reforgeState.value.hasChosen = true
-    
-    return {
-      type: 'chooseReforge' as const
-    }
+    return { type: 'chooseReforge' as const }
+  }
+
+  function getOnPlayModifyTargetEffect(card: Card) {
+    return card.effects?.find(
+      e => e.timing === 'onPlay' && e.type === 'modifyPower' && e.targetKeywords?.length,
+    )
   }
   
-  // 选择手牌准备打出；返回 slot=需选格 / direct=战术直出 / false=不可出
-  function selectCardToPlay(cardIndex: number): 'slot' | 'direct' | false {
+  function selectCardToPlay(cardIndex: number): 'slot' | 'direct' | 'host' | 'target' | false {
     if (!gameState.value || !myPlayer.value) return false
     if (reforgeState.value.active) return false
     if (myPlayer.value.hasPlayedThisTurn && !myPlayer.value.canPlayExtra) return false
@@ -154,14 +195,40 @@ export function useGameClient(initialPlayerId = '') {
     if (myPlayer.value.currentCost < EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)) {
       return false
     }
-    
+
+    resetClientSelection()
     selectedCard.value = card as Card
+    pendingCardIndex.value = cardIndex
+
+    if ((card as Card).quickPlay && (card as Card).type === 'tactic') {
+      const onPlayMod = getOnPlayModifyTargetEffect(card as Card)
+      if (onPlayMod) {
+        const targets = EffectManager.getRevealModifyTargets(gameState.value, myPlayer.value, onPlayMod)
+        if (targets.length === 0) return false
+        if (targets.length > 1) {
+          availableTargets.value = targets
+          clientSelectMode.value = 'quickPlayTarget'
+          deployHint.value = `选择 ${(card as Card).name} 的目标单位`
+          return 'target'
+        }
+      }
+      return 'direct'
+    }
+
+    if (EffectManager.requiresMandatoryHostDeploy(card as Card) && !(card as Card).quickPlay) {
+      const targets = EffectManager.getQuickPlayHostTargets(myPlayer.value, card as Card)
+      if (targets.length === 0) return false
+      availableTargets.value = targets
+      clientSelectMode.value = 'hostDeploy'
+      deployHint.value = `选择 ${(card as Card).name} 的部署宿主`
+      return 'host'
+    }
 
     if (EffectManager.requiresCrossPlayerDeploy(card as Card)) {
       const opts = EffectManager.getCrossPlayerDeployOptions(gameState.value, myPlayer.value, card as Card)
       availableCrossPlayerSlots.value = opts
       if (opts.length === 0) {
-        selectedCard.value = null
+        resetClientSelection()
         return false
       }
       return 'slot'
@@ -175,14 +242,14 @@ export function useGameClient(initialPlayerId = '') {
       if ((card as Card).type === 'tactic' && EffectManager.countMainFieldCardsForLimit(myPlayer.value) >= 6) {
         return 'direct'
       }
-      selectedCard.value = null
+      resetClientSelection()
       return false
     }
     
     return 'slot'
   }
 
-  function playTacticDirect(cardIndex: number) {
+  function playTacticDirect(cardIndex: number, targetCardId?: string) {
     if (!selectedCard.value && myPlayer.value) {
       const card = myPlayer.value.hand[cardIndex]
       if (card && card !== 'hidden') selectedCard.value = card as Card
@@ -194,16 +261,39 @@ export function useGameClient(initialPlayerId = '') {
         cardIndex,
         slotIndex: -1,
         cardId: selectedCard.value.id,
+        ...(targetCardId ? { targetCardId } : {}),
       },
     }
-    selectedCard.value = null
-    selectedSlot.value = null
-    availableSlots.value = []
-    availableCrossPlayerSlots.value = []
+    resetClientSelection()
     return action
   }
+
+  function playHostDeploy(cardIndex: number, hostCardId: string) {
+    if (pendingCardIndex.value !== cardIndex && myPlayer.value) {
+      const card = myPlayer.value.hand[cardIndex]
+      if (card && card !== 'hidden') selectedCard.value = card as Card
+    }
+    if (!selectedCard.value) return null
+    const action = {
+      type: 'playCard' as const,
+      data: {
+        cardIndex,
+        slotIndex: -1,
+        cardId: selectedCard.value.id,
+        hostCardId,
+      },
+    }
+    resetClientSelection()
+    return action
+  }
+
+  function selectRevealTarget(targetCardId: string) {
+    return {
+      type: 'selectRevealTarget' as const,
+      data: { targetCardId },
+    }
+  }
   
-  // 选择槽位打出卡牌（返回操作对象）
   function selectSlotToPlay(slotIndex: number, cardIndex: number, targetPlayerIndex?: number) {
     if (!selectedCard.value) return null
     
@@ -217,12 +307,7 @@ export function useGameClient(initialPlayerId = '') {
       }
     }
     
-    // 重置选择状态
-    selectedCard.value = null
-    selectedSlot.value = null
-    availableSlots.value = []
-    availableCrossPlayerSlots.value = []
-    
+    resetClientSelection()
     return action
   }
 
@@ -232,13 +317,11 @@ export function useGameClient(initialPlayerId = '') {
     )
   }
   
-  // 选择重铸手牌
   function selectReforgeCard(cardIndex: number) {
     if (!reforgeState.value.active) return
     reforgeState.value.selectedCard = cardIndex
   }
   
-  // 执行重铸（返回操作对象）
   function executeReforge(options: [ReforgeOption, ReforgeOption]) {
     const action = {
       type: 'executeReforge' as const,
@@ -247,30 +330,23 @@ export function useGameClient(initialPlayerId = '') {
         selectedCardIndex: reforgeState.value.selectedCard
       }
     }
-    
-    // 重置重铸状态
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
-    
     return action
   }
   
-  // 处理对手决策（旧版兼容，决策状态现从服务器派生）
   function handleOpponentDecision() {
-    console.log('[useGameClient] handleOpponentDecision 被调用（已弃用，决策状态从服务器派生）')
+    console.log('[useGameClient] handleOpponentDecision 被调用（已弃用）')
   }
   
-  // 重置决策状态（旧版兼容，决策状态现从服务器派生）
   function resetDecisionState() {
-    console.log('[useGameClient] resetDecisionState 被调用（已弃用，决策状态从服务器派生）')
+    console.log('[useGameClient] resetDecisionState 被调用（已弃用）')
   }
   
-  // 重置回合准备状态
   function resetReadyState() {
     myReady.value = false
   }
   
-  // 标记自己准备完成
   function setMyReady() {
     myReady.value = true
   }
@@ -279,7 +355,7 @@ export function useGameClient(initialPlayerId = '') {
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
     reforgeState.value.hasChosen = false
-    selectedCard.value = null
+    resetClientSelection()
     return { type: 'cancelDecision' as const }
   }
 
@@ -305,10 +381,23 @@ export function useGameClient(initialPlayerId = '') {
     return availableSlots.value.includes(slotIndex)
   }
 
+  function isTargetSelectable(card: Card | null | undefined): boolean {
+    if (!card) return false
+    if (clientSelectMode.value !== 'none') {
+      return availableTargets.value.some(t => t.id === card.id)
+    }
+    const pending = gameState.value?.pendingRevealTargetSelection
+    if (pending?.playerId === myPlayerIdRef.value) {
+      return pending.targetCardIds.includes(card.id)
+    }
+    return false
+  }
+
   function isCardPlayable(index: number): boolean {
     if (!gameState.value || !myPlayer.value) return false
     if (gameState.value.phase !== 'action') return false
     if (reforgeState.value.active) return false
+    if (isSelectingTarget.value) return false
 
     const restrictions = gameState.value.playerRestrictions?.[myPlayerIdRef.value]
     if (restrictions?.includes('cannotPlay')) return false
@@ -347,6 +436,10 @@ export function useGameClient(initialPlayerId = '') {
     availableSlots,
     availableCrossPlayerSlots,
     availableTargets,
+    clientSelectMode,
+    deployHint,
+    pendingCardIndex,
+    isSelectingTarget,
     hasPlayedThisTurn,
     canPlayExtra,
     myDecisionMade,
@@ -362,6 +455,8 @@ export function useGameClient(initialPlayerId = '') {
     chooseReforge,
     selectCardToPlay,
     playTacticDirect,
+    playHostDeploy,
+    selectRevealTarget,
     selectSlotToPlay,
     selectReforgeCard,
     executeReforge,
@@ -375,9 +470,11 @@ export function useGameClient(initialPlayerId = '') {
     getTotalPower,
     isSlotAvailable,
     isCrossPlayerSlotAvailable,
+    isTargetSelectable,
     isCardPlayable,
     canChoosePlay,
     canChooseReforge,
     finalRoundTacticsOnly,
+    resetClientSelection,
   }
 }

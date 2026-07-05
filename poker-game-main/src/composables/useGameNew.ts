@@ -837,7 +837,7 @@ export function useGame() {
     } else if (effect && (effect.value || effect.useD6Value)) {
       const delta = effect.useD6Value ? EffectManager.rollD6() : (effect.value as number)
       const loc = findFieldSlotForCard(gameState.value, targetCard)
-      targetCard.currentPower += delta
+      EffectManager.applyPersistentPowerDelta(targetCard, delta)
       gameState.value.message += ` | ${targetCard.name} 战力+${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`
       if (loc) await animations.playPowerPulse({ ...loc, delta })
     }

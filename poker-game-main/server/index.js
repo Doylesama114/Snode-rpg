@@ -234,6 +234,15 @@ io.on('connection', (socket) => {
           action.data.cardIndex,
           action.data.slotIndex,
           action.data.targetPlayerIndex,
+          action.data.hostCardId,
+          action.data.targetCardId,
+        )
+        break
+
+      case 'selectRevealTarget':
+        result = gameEngine.handleSelectRevealTarget(
+          player.id,
+          action.data.targetCardId,
         )
         break
         

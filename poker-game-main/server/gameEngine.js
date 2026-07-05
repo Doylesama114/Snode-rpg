@@ -1739,6 +1739,16 @@ class EffectManager {
     return delta
   }
 
+  static applyPersistentPowerDelta(card, delta) {
+    if (delta < 0 && card.invertPowerLoss) {
+      delta = -delta
+    }
+    if (card.stackedBonus === undefined) card.stackedBonus = 0
+    card.stackedBonus += delta
+    card.currentPower += delta
+    return delta
+  }
+
   static applyDiscardHandOrSelf(card, player, game) {
     const messages = []
     if (player.hand.length > 0) {
@@ -1794,20 +1804,12 @@ class EffectManager {
       }
       if (targets.length === 1 || effect.allPlayers) {
         const delta = effect.useD6Value ? EffectManager.rollD6() : (effect.value || 0)
-        targets.forEach(t => { t.currentPower += delta })
+        targets.forEach(t => { EffectManager.applyPersistentPowerDelta(t, delta) })
         const sign = delta >= 0 ? '+' : ''
         messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${delta}${effect.useD6Value ? `(D6=${delta})` : ''}`)
         return { messages }
       }
-      if (effect.useD6Value) {
-        const delta = EffectManager.rollD6()
-        targets[0].currentPower += delta
-        messages.push(`${targets[0].name} 战力+${delta}(D6=${delta})`)
-        return { messages }
-      }
-      targets[0].currentPower += effect.value || 0
-      messages.push(`${targets[0].name} 战力+${effect.value}`)
-      return { messages }
+      return { messages, needsTargetSelection: { targets, effect } }
     }
 
     if (effect.type === 'modifyCost') {
@@ -2752,7 +2754,7 @@ class GameEngine {
   }
   
   // 处理打出卡牌
-  handlePlayCard(playerId, cardIndex, slotIndex, targetPlayerIndex) {
+  handlePlayCard(playerId, cardIndex, slotIndex, targetPlayerIndex, hostCardId, targetCardId) {
     const playerIndex = this.getPlayerIndex(playerId)
     if (playerIndex === -1) {
       return { success: false, error: '玩家不存在' }
@@ -2781,11 +2783,11 @@ class GameEngine {
     
     // QuickPlay gate: skip cost/action for quickPlay cards
     if (card.quickPlay) {
-      return this.handleQuickPlayCard(card, player, playerIndex)
+      return this.handleQuickPlayCard(card, player, playerIndex, { targetCardId })
     }
 
     if (EffectManager.requiresMandatoryHostDeploy(card)) {
-      return this.handleHostOnlyDeploy(card, player, playerIndex, cardIndex)
+      return this.handleHostOnlyDeploy(card, player, playerIndex, cardIndex, hostCardId)
     }
     
     // 检查最后一回合的卡牌限制
@@ -2894,7 +2896,7 @@ class GameEngine {
     }
   }
 
-  handleHostOnlyDeploy(card, player, playerIndex, cardIndex) {
+  handleHostOnlyDeploy(card, player, playerIndex, cardIndex, hostCardId) {
     const playerId = player.id
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay')) {
@@ -2913,9 +2915,18 @@ class GameEngine {
     if (player.hasPlayedThisTurn && !player.canPlayExtra) {
       return { success: false, error: '本回合已经出过牌了！' }
     }
-    const targets = EffectManager.getQuickPlayHostTargets(player, card)
-    if (targets.length === 0) {
-      return { success: false, error: '没有可部署的宿主卡牌' }
+    let targetCard = null
+    if (hostCardId) {
+      targetCard = player.field.find(s => s.card?.id === hostCardId)?.card ?? null
+      if (!targetCard || !EffectManager.isValidDeployOnHost(card, targetCard)) {
+        return { success: false, error: '无效的宿主卡牌' }
+      }
+    } else {
+      const targets = EffectManager.getQuickPlayHostTargets(player, card)
+      if (targets.length === 0) {
+        return { success: false, error: '没有可部署的宿主卡牌' }
+      }
+      targetCard = targets[0]
     }
     player.hand.splice(cardIndex, 1)
     player.currentCost -= playCost
@@ -2925,14 +2936,17 @@ class GameEngine {
       player.hasPlayedThisTurn = true
     }
     EffectManager.consumeTacticPlayFreeIfMatch(card, player)
-    const targetCard = targets[0]
     const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, this.gameState)
     this.gameState.message = msgs.join(' | ')
+    if (!player.canPlayExtra) {
+      this.gameState.playerReady[playerId] = true
+    }
     return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
   }
   
   // 处理快速打出（跳过费用/行动检查）
-  handleQuickPlayCard(card, player, playerIndex) {
+  handleQuickPlayCard(card, player, playerIndex, options = {}) {
+    const { targetCardId } = options
     // Remove from hand (no cost deduction)
     const cardIndex = player.hand.indexOf(card)
     if (cardIndex !== -1) player.hand.splice(cardIndex, 1)
@@ -3046,11 +3060,44 @@ class GameEngine {
       return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
     }
 
+    // QuickPlay tactics: onPlay modifyPower 需指定目标
+    if (card.type === 'tactic') {
+      const onPlayMod = card.effects.find(
+        e => e.timing === 'onPlay' && e.type === 'modifyPower' && e.targetKeywords?.length,
+      )
+      if (onPlayMod) {
+        const targets = EffectManager.getRevealModifyTargets(this.gameState, player, onPlayMod)
+        let targetCard = null
+        if (targetCardId) {
+          targetCard = targets.find(t => t.id === targetCardId) ?? null
+          if (!targetCard) {
+            player.discard.push(card)
+            return { success: false, error: '无效的速攻目标' }
+          }
+        } else if (targets.length === 1) {
+          targetCard = targets[0]
+        } else if (targets.length === 0) {
+          messages.push('没有符合条件的目标')
+        } else {
+          player.hand.push(card)
+          return { success: false, error: '请选择速攻目标' }
+        }
+        if (targetCard) {
+          const delta = onPlayMod.value || 0
+          const oldPower = targetCard.currentPower
+          EffectManager.applyPersistentPowerDelta(targetCard, delta)
+          messages.push(`${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`)
+        }
+      }
+    }
+
     // QuickPlay tactics go to discard (unless returned to deck)
     const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
     if (card.type === 'tactic' && !hasReturnToDeck) {
       player.discard.push(card)
     }
+
+    EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
 
     // After quickPlay: apply all field effects
     EffectManager.applyOnFieldDestroy(this)
@@ -3061,6 +3108,11 @@ class GameEngine {
 
     // Build response message
     this.gameState.message = messages.join(' | ')
+
+    const playerId = player.id
+    if (!player.canPlayExtra) {
+      this.gameState.playerReady[playerId] = true
+    }
 
     return {
       success: true,
@@ -3133,6 +3185,16 @@ class GameEngine {
       result.messages.forEach(msg => {
         this.gameState.message += ` | ${msg}`
       })
+      if (result.needsTargetSelection) {
+        this.gameState.pendingRevealTargetSelection = {
+          playerId: player.id,
+          cardId: card.id,
+          slotIndex,
+          effect: result.needsTargetSelection.effect,
+          targetCardIds: result.needsTargetSelection.targets.map(t => t.id),
+        }
+        return
+      }
     }
 
     if (deferredEffects.length > 0) {
@@ -3151,6 +3213,66 @@ class GameEngine {
         this.discardTacticCard(card, player, slotIndex)
   }
   
+  handleSelectRevealTarget(playerId, targetCardId) {
+    const pending = this.gameState.pendingRevealTargetSelection
+    if (!pending || pending.playerId !== playerId) {
+      return { success: false, error: '没有待选择的揭示目标' }
+    }
+    if (!pending.targetCardIds.includes(targetCardId)) {
+      return { success: false, error: '无效的目标卡牌' }
+    }
+    const player = this.gameState.players.find(p => p.id === playerId)
+    if (!player) return { success: false, error: '玩家不存在' }
+
+    let targetCard = null
+    for (const p of this.gameState.players) {
+      for (const slot of p.field) {
+        if (slot.card?.id === targetCardId) {
+          targetCard = slot.card
+          break
+        }
+      }
+      if (targetCard) break
+    }
+    if (!targetCard) {
+      return { success: false, error: '目标卡牌不在场上' }
+    }
+
+    const effect = pending.effect
+    const delta = effect.useD6Value ? EffectManager.rollD6() : (effect.value || 0)
+    const oldPower = targetCard.currentPower
+    EffectManager.applyPersistentPowerDelta(targetCard, delta)
+    this.gameState.message += ` | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}${effect.useD6Value ? `(D6=${delta})` : ''}`
+
+    const slotIndex = pending.slotIndex
+    let card = null
+    if (slotIndex >= 0) {
+      card = player.field[slotIndex]?.card
+    }
+    if (!card || card.id !== pending.cardId) {
+      for (const p of this.gameState.players) {
+        const slot = p.field.find(s => s.card?.id === pending.cardId)
+        if (slot?.card) {
+          card = slot.card
+          break
+        }
+      }
+      if (!card) {
+        card = player.discard.find(c => c.id === pending.cardId)
+      }
+    }
+    if (card && slotIndex >= 0) {
+      this.discardTacticCard(card, player, slotIndex)
+    } else if (card && !player.discard.includes(card)) {
+      player.discard.push(card)
+    }
+
+    this.gameState.pendingRevealTargetSelection = undefined
+    EffectManager.recalculateAllPowers(this.gameState)
+
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
   // 弃置战术牌
   discardTacticCard(card, player, slotIndex) {
     if (slotIndex >= 0) {

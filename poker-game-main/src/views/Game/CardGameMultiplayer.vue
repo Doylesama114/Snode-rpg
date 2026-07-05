@@ -20,7 +20,6 @@ import { diffFieldAnimations, diffDrawEvents, diffPhaseBanner, fieldAnimKey } fr
 import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
-import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
 import { syncBattleBgm } from '@/utils/gameBgm'
 
 const router = useRouter()
@@ -36,7 +35,6 @@ const {
 const localAnimSkip = ref(new Set<string>())
 const isRoundTransitioning = ref(false)
 let lastMpFloatedMessage = ''
-let prevMpBroadcastMessage = ''
 
 // 使用客户端游戏逻辑
 const game = useGameClient(multiplayer.myPlayerId.value || '')
@@ -80,7 +78,7 @@ function onHandCardLeave(playerId: string, cardIndex: number) {
 }
 
 function blockFieldDetailClick() {
-  return !!(game.gameState.value?.phase === 'action' && game.selectedCard.value)
+  return !!(game.isSelectingTarget.value || (game.gameState.value?.phase === 'action' && game.selectedCard.value))
 }
 
 function isSlotFlashing(playerId: string, slotIndex: number) {
@@ -105,6 +103,80 @@ function handleFieldSlotClick(playerId: string, si: number) {
       triggerSlotShake(playerId, si)
     }
   }
+}
+
+function handleFieldCardTargetClick(card: Card) {
+  if (!game.isTargetSelectable(card)) {
+    triggerSlotShake(multiplayer.myPlayerId.value || '', -1)
+    return
+  }
+  const pendingReveal = game.gameState.value?.pendingRevealTargetSelection
+  if (pendingReveal?.playerId === multiplayer.myPlayerId.value) {
+    const action = game.selectRevealTarget(card.id)
+    multiplayer.sendAction(action)
+    return
+  }
+  const cardIndex = pendingCardIndexForSelection()
+  if (cardIndex < 0) return
+  if (game.clientSelectMode.value === 'hostDeploy') {
+    const action = game.playHostDeploy(cardIndex, card.id)
+    if (action) {
+      void sendPlayWithAbsorbAnim(action, card, cardIndex)
+    }
+    return
+  }
+  if (game.clientSelectMode.value === 'quickPlayTarget') {
+    const action = game.playTacticDirect(cardIndex, card.id)
+    if (action) {
+      void sendQuickPlayAnim(action, cardIndex)
+    }
+  }
+}
+
+function pendingCardIndexForSelection(): number {
+  if (game.pendingCardIndex?.value != null) return game.pendingCardIndex.value
+  if (!game.myPlayer.value || !game.selectedCard.value) return -1
+  return game.myPlayer.value.hand.findIndex(c => c === game.selectedCard.value)
+}
+
+async function sendPlayWithAbsorbAnim(
+  action: { type: string; data: Record<string, unknown> },
+  hostCard: Card,
+  handIndex: number,
+) {
+  const myId = multiplayer.myPlayerId.value
+  if (!myId || !game.myPlayer.value) return
+  const hostSlotIndex = game.myPlayer.value.field.findIndex(s => s.card?.id === hostCard.id)
+  if (hostSlotIndex >= 0 && game.selectedCard.value) {
+    await animations.playCardFly({
+      kind: 'absorb',
+      card: game.selectedCard.value,
+      playerId: myId,
+      fieldOwnerId: myId,
+      slotIndex: hostSlotIndex,
+      handIndex,
+    })
+  }
+  multiplayer.sendAction(action)
+  game.setMyReady()
+}
+
+async function sendQuickPlayAnim(
+  action: { type: string; data: Record<string, unknown> },
+  handIndex: number,
+) {
+  const myId = multiplayer.myPlayerId.value
+  const card = game.selectedCard.value
+  if (myId && card) {
+    await animations.playCardFly({
+      kind: 'tactic-fade',
+      card,
+      playerId: myId,
+      handIndex,
+    })
+  }
+  multiplayer.sendAction(action)
+  game.setMyReady()
 }
 
 function markLocalAnim(key: string) {
@@ -158,8 +230,6 @@ async function handleGameStateUpdate(newState: GameState) {
   }
   
   game.updateGameState(newState)
-  syncBroadcastFromMessage(newState, prevMpBroadcastMessage)
-  prevMpBroadcastMessage = newState.message ?? ''
   if (isNewRound) {
     isRoundTransitioning.value = false
   }
@@ -313,6 +383,9 @@ function onHandCardClick(index: number) {
       return
     }
     const mode = game.selectCardToPlay(index)
+    if (mode === 'host' || mode === 'target') {
+      return
+    }
     if (mode === 'direct') {
       const card = game.myPlayer.value?.hand[index]
       const myId = multiplayer.myPlayerId.value
@@ -617,6 +690,7 @@ function leaveGameToLobby(fromGameOver = false) {
             :is-human="true"
             :is-face-down-card="isHiddenFieldCard"
             :is-slot-available="(si) => game.isSlotAvailable(si)"
+            :is-target-selectable="(c) => game.isTargetSelectable(c)"
             :selected-slot="game.selectedSlot.value"
             :slot-flash-key="(si) => humanPlayer.id + '-' + si"
             :is-flashing="(si) => !!isSlotFlashing(humanPlayer.id, si)"
@@ -626,8 +700,12 @@ function leaveGameToLobby(fromGameOver = false) {
             @slot-click="(_, si) => handleFieldSlotClick(humanPlayer.id, si)"
             @card-enter="(e, k, c) => onFieldCardEnter(e, humanPlayer.id, k, c)"
             @card-leave="(k) => onFieldCardLeave(humanPlayer.id, k)"
-            @card-click="(c, e) => onFieldCardClick(c, e, blockFieldDetailClick)"
+            @card-click="(c, e) => { if (game.isTargetSelectable(c)) { handleFieldCardTargetClick(c); return } onFieldCardClick(c, e, blockFieldDetailClick) }"
           />
+
+          <div v-if="game.deployHint.value || game.isSelectingTarget.value" class="deploy-hint">
+            {{ game.deployHint.value || '点击场上高亮单位选择目标' }}
+          </div>
 
           <div class="hand-section">
             <div class="hand-section__label">
@@ -755,5 +833,15 @@ function leaveGameToLobby(fromGameOver = false) {
 
 .action-dock-hint--warn {
   color: var(--game-danger);
+}
+
+.deploy-hint {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(47, 111, 94, 0.12);
+  color: var(--game-accent, #2f6f5e);
+  font-size: 14px;
+  text-align: center;
 }
 </style>

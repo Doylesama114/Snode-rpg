@@ -1083,6 +1083,17 @@ export class EffectManager {
     return delta
   }
 
+  /** 持久战力加成（经 recalculateAllPowers 保留，用于 onReveal / 速攻 modifyPower） */
+  static applyPersistentPowerDelta(card: Card, delta: number): number {
+    if (delta < 0 && card.invertPowerLoss) {
+      delta = -delta
+    }
+    if (card.stackedBonus === undefined) card.stackedBonus = 0
+    card.stackedBonus += delta
+    card.currentPower += delta
+    return delta
+  }
+
   static applyDiscardHandOrSelf(
     card: Card,
     player: Player,
@@ -1149,7 +1160,7 @@ export class EffectManager {
       }
       if (targets.length === 1 || effect.allPlayers) {
         const rawDelta = effect.useD6Value ? this.rollD6() : (effect.value || 0)
-        targets.forEach(t => { this.applyCardPowerDelta(t, rawDelta) })
+        targets.forEach(t => { this.applyPersistentPowerDelta(t, rawDelta) })
         const sign = rawDelta >= 0 ? '+' : ''
         messages.push(`${targets.map(t => t.name).join('、')} 战力${sign}${rawDelta}${effect.useD6Value ? `(D6=${rawDelta})` : ''}`)
         return { messages }

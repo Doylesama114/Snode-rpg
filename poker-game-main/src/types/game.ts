@@ -468,12 +468,20 @@ export interface GameState {
   pendingEffectBranches?: Record<string, PendingEffectBranch>
   /** 广播历史（最新在前） */
   broadcastLog?: BroadcastEntry[]
+  /** 联机：onReveal 待选目标（激励乐章等） */
+  pendingRevealTargetSelection?: {
+    playerId: string
+    cardId: string
+    slotIndex: number
+    effect: CardEffect
+    targetCardIds: string[]
+  }
   accountState?: AccountState
 }
 
 // 游戏操作（用于联机同步）
 export interface GameAction {
-  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'executeReforge' | 'resolveEffectBranch' | 'skipEffectBranch' | 'cancelDecision' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
+  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'selectRevealTarget' | 'executeReforge' | 'resolveEffectBranch' | 'skipEffectBranch' | 'cancelDecision' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
   data?: any
   playerId?: string
   playerCount?: number    // room creation: 2-4
