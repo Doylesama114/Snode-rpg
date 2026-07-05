@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "muteKey": "_snowd_mute",
+  "ui": {
+    "basePath": "斯诺德跑团/audio/ui/",
+    "sounds": {
+      "click": { "file": "click.ogg", "source": "Kenney Interface Sounds / select_004.ogg", "gain": 0.55 },
+      "success": { "file": "success.ogg", "source": "Kenney Interface Sounds / confirmation_001.ogg", "gain": 0.7 },
+      "error": { "file": "error.ogg", "source": "Kenney Interface Sounds / error_001.ogg", "gain": 0.65 },
+      "expand": { "file": "expand.ogg", "source": "Kenney Interface Sounds / maximize_006.ogg", "gain": 0.6 },
+      "step": { "file": "step.ogg", "source": "Kenney Interface Sounds / tick_001.ogg", "gain": 0.5 },
+      "toggle": { "file": "toggle.ogg", "source": "Kenney Interface Sounds / switch_004.ogg", "gain": 0.55 },
+      "pageIn": { "file": "pageIn.ogg", "source": "Kenney Interface Sounds / scroll_001.ogg", "gain": 0.45 },
+      "charge": { "synth": true, "note": "Web Audio ramp; stoppable via playRef" }
+    }
+  },
+  "cards": {
+    "basePath": "poker-game-main/public/audio/cards/",
+    "sounds": {
+      "cardPlace": { "file": "cardPlace.ogg", "source": "Kenney Casino Audio / card-place-2.ogg", "gain": 0.65 },
+      "cardDraw": { "file": "cardDraw.ogg", "source": "Kenney Casino Audio / cards-pack-take-out-1.ogg", "gain": 0.6 },
+      "deckAdd": { "file": "deckAdd.ogg", "source": "Kenney Casino Audio / card-slide-3.ogg", "gain": 0.6 },
+      "deckRemove": { "file": "deckRemove.ogg", "source": "Kenney Casino Audio / card-shove-2.ogg", "gain": 0.6 },
+      "saveSuccess": { "file": "saveSuccess.ogg", "source": "Kenney Interface Sounds / confirmation_002.ogg", "gain": 0.7 },
+      "error": { "file": "error.ogg", "source": "Kenney Interface Sounds / error_003.ogg", "gain": 0.65 }
+    }
+  }
+}

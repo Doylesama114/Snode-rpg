@@ -155,6 +155,24 @@ v1.0.6100 起卡组必须恰好 15 张方可保存并进局；v1.0.6101 增加�
 
 ---
 
+## #4 — 音效：跑团与扑克共用静音键 (2026-07-05)
+
+### 背景
+
+v1.0.6104 引入 Kenney CC0 样本。跑团 `snd.js` 与扑克 `sound.ts` 均读取 `localStorage._snowd_mute`（`'1'` = 静音）。启动台 🔊 切换后，卡组编辑页应同步静音。
+
+### 要点
+
+| 系统 | 入口 | 样本路径 |
+|------|------|---------|
+| 跑团 UI | `snd.js` | `斯诺德跑团/audio/ui/` |
+| 卡组编辑 | `sound.ts` | `poker-game-main/public/audio/cards/` |
+| 充能 | `snd.playRef('charge')` | 仍 Web Audio 合成 |
+
+样本加载失败时跑团回退合成；扑克静默跳过。发布前须 `VITE_ELECTRON=1 pnpm run build` 并 robocopy 到 `electron-app/poker-game`，且 `bump-version.js` 会同步 `斯诺德跑团/` → `electron-app/`。
+
+---
+
 ## Debug Checklist（每次修复后检查）
 
 - [ ] 现象可复现（Playwright 重现原始 bug）

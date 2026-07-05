@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6104',
+    date: '2026-07-05',
+    changes: [
+      'CC0样本音效替换跑团UI合成(snd.js+audio/ui)',
+      '卡组编辑加入移出保存错误音效',
+      '跑团与扑克共用_snowd_mute',
+      'sound-manifest与audio-licenses文档'
+    ]
+  },
+
+
+  {
     version: '1.0.6103',
     date: '2026-07-05',
     changes: [

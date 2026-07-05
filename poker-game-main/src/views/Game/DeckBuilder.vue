@@ -23,6 +23,7 @@ import {
   getActiveDeckSlot,
 } from '@/utils/deckSlots'
 import { DECK_SIZE, validateDeckCardIds } from '@/utils/deckValidation'
+import { playCardSound } from '@/utils/sound'
 
 const router = useRouter()
 const account = ref<AccountState | null>(null)
@@ -173,10 +174,12 @@ async function playFly(fromEl: HTMLElement | null, toEl: HTMLElement | null, lab
 async function addFromPool(card: Card, ev: MouseEvent) {
   if (isInDeck(card.id)) {
     message.value = '该卡牌已在卡组中'
+    playCardSound('error')
     setTimeout(() => { message.value = '' }, 2000)
     return
   }
   const poolEl = ev.currentTarget as HTMLElement
+  playCardSound('deckAdd')
   await playFly(poolEl, deckGridRef.value, card.name)
   deckCardIds.value.push(card.id)
 }
@@ -196,6 +199,7 @@ async function removeFromDeck(index: number, ev: MouseEvent) {
   const key = deckSlotKey(card.id, index)
   const slotEl = (ev.currentTarget as HTMLElement).closest('.deck-slot') as HTMLElement | null
   leavingKeys.value.add(key)
+  playCardSound('deckRemove')
   await playFly(slotEl, poolPanelRef.value, card.name)
   deckCardIds.value.splice(index, 1)
   leavingKeys.value.delete(key)
@@ -215,6 +219,7 @@ function persistCurrentDeck(silent = false): boolean {
   if (!account.value) return false
   if (!canSaveDeck.value) {
     if (!silent) {
+      playCardSound('error')
       message.value = deckValidation.value.message
       setTimeout(() => { message.value = '' }, 3000)
     }
@@ -228,6 +233,7 @@ function persistCurrentDeck(silent = false): boolean {
     }
     writeAccountState(account.value)
     if (!silent) {
+      playCardSound('saveSuccess')
       message.value = activeSlot.value
         ? `已保存到「${activeSlot.value.name}」`
         : '卡组已保存！'
@@ -235,7 +241,10 @@ function persistCurrentDeck(silent = false): boolean {
     }
     return true
   } catch {
-    if (!silent) message.value = '保存失败'
+    if (!silent) {
+      playCardSound('error')
+      message.value = '保存失败'
+    }
     return false
   }
 }
