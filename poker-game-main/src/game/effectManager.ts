@@ -2578,14 +2578,12 @@ export class EffectManager {
   ) {
     const player = game.players[entry.playerIndex]
     const fieldOwner = game.players[entry.fieldOwnerIndex]
-    const playCost = entry.playCost ?? this.getEffectivePlayCost(entry.card, player)
     const slot = fieldOwner.field[entry.slotIndex]
     if (slot?.card === entry.card) slot.card = null
-    player.currentCost += playCost
     player.hand.push(entry.card)
     player.hasPlayedThisTurn = false
     entry.removedFromField = true
-    messages.push(`${player.name} 因费用不足，${entry.card.name} 退回手牌（效果未触发）`)
+    messages.push(`${player.name} 因费用不足，${entry.card.name} 退回手牌（费用不退，效果未触发）`)
   }
 
   /** 本批展示后：战力最高者退还打出费用（旗鱼） */

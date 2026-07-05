@@ -49,7 +49,7 @@ console.log('--- 费用降至零以下：后手玩家退回手牌 ---')
   const r = EffectManager.resolveRevealBatch(game)
   assert(p2.hand.length === 1 && p2.hand[0].name === '士兵', '士兵退回手牌')
   assert(p2.field[1].card === null, '场上槽位清空')
-  assert(p2.currentCost === 1, '退还打出费用后剩余1（已被飞弹扣除2）')
+  assert(p2.currentCost === -2, '费用不退还，保持被飞弹扣除后的-2')
   assert(!p2.hasPlayedThisTurn, '视为未出牌')
   assert(r.messages.some(m => m.includes('退回手牌')), '有退回消息')
 }

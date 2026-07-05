@@ -1083,13 +1083,11 @@ export function useGame() {
 
       for (let hi = 0; hi < hidden.length; hi++) {
         const item = hidden[hi]
-        const playCost = item.playCost ?? EffectManager.getEffectivePlayCost(item.card, aiPlayer)
 
         if (aiPlayer.currentCost < 0) {
-          aiPlayer.currentCost += playCost
           aiPlayer.hand.push(item.card)
           aiPlayer.hasPlayedThisTurn = false
-          gameState.value.message = `${aiPlayer.name} 因费用不足，${item.card.name} 退回手牌（效果未触发）`
+          gameState.value.message = `${aiPlayer.name} 因费用不足，${item.card.name} 退回手牌（费用不退，效果未触发）`
           continue
         }
 

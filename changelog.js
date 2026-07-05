@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6096',
+    date: '2026-07-05',
+    changes: [
+      '揭示阶段费用不足退回手牌时不退还费用'
+    ]
+  },
+
+
+  {
     version: '1.0.6095',
     date: '2026-07-05',
     changes: [
