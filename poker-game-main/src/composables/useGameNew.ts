@@ -577,8 +577,8 @@ export function useGame() {
     // 重新计算战力
     EffectManager.recalculateAllPowers(gameState.value)
     
-    // 检查是否填满场地（跨玩家部署时检查目标玩家）
-    checkFieldFull(fieldOwner)
+    // 检查是否填满场地
+    checkFieldFull(player)
     
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
@@ -958,6 +958,17 @@ export function useGame() {
     switchToNextPlayer()
   }
 
+  function cancelCardSelection() {
+    gameState.value.phase = 'action'
+    gameState.value.selectedCard = undefined
+    gameState.value.selectedSlot = undefined
+    gameState.value.availableSlots = undefined
+    gameState.value.availableCrossPlayerSlots = undefined
+    gameState.value.availableTargets = undefined
+    gameState.value.pendingDeployEffect = undefined
+    gameState.value.message = '已取消出牌，可继续操作或结束回合'
+  }
+
   // 游戏结束
   function endGame() {
     gameState.value.phase = 'gameOver'
@@ -1113,6 +1124,7 @@ export function useGame() {
     selectReforgeCard,
     executeReforge,
     endTurn,
+    cancelCardSelection,
     isCardPlayable
   }
 }

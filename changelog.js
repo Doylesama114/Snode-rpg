@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6082',
+    date: '2026-07-05',
+    changes: [
+      'ESC replace直达启动台',
+      '修复单机部署后无法结束回合',
+      '场上卡牌悬停/点击查看效果',
+      '单机开局人数选择面板'
+    ]
+  },
+
+
+  {
     version: '1.0.6081',
     date: '2026-07-05',
     changes: [

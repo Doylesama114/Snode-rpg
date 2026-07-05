@@ -2,6 +2,8 @@
 import { useGame } from '@/composables/useGameNew'
 import type { ReforgeOption } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
+import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
+import { registerEscHandler } from '@/utils/escNavigation'
 
 const { 
   gameState, 
@@ -23,15 +25,50 @@ const {
   selectReforgeCard, 
   executeReforge, 
   endTurn,
+  cancelCardSelection,
   isCardPlayable
 } = useGame()
 
-const reforgeOptions = ref<ReforgeOption[]>([])
-const hoveredCardKey = ref<string | null>(null)
+const {
+  hoveredCardKey,
+  hoveredCard,
+  hoverStyle,
+  pinnedCard,
+  fieldCardKey,
+  onFieldCardEnter: onFieldCardEnterDetail,
+  onFieldCardLeave,
+  onFieldCardClick,
+  closePinned,
+} = useFieldCardDetail()
 
-function fieldCardKey(playerId: string, slotKey: string | number) {
-  return `${playerId}-${slotKey}`
+const reforgeOptions = ref<ReforgeOption[]>([])
+
+const isPreGame = computed(() =>
+  gameState.value.round === 0
+  && gameState.value.phase === 'draw'
+  && (gameState.value.players[0]?.hand.length ?? 0) === 0,
+)
+
+function isDeployPhase() {
+  const p = gameState.value.phase
+  return p === 'selectSlot' || p === 'selectCrossPlayerSlot' || p === 'selectTarget'
 }
+
+function onFieldCardEnter(e: MouseEvent, playerId: string, slotKey: string | number, card: import('@/types/game').Card) {
+  onFieldCardEnterDetail(e, playerId, slotKey, card)
+}
+
+let unregisterEsc: (() => void) | undefined
+onMounted(() => {
+  unregisterEsc = registerEscHandler(() => {
+    if (pinnedCard.value) {
+      closePinned()
+      return true
+    }
+    return false
+  })
+})
+onUnmounted(() => { unregisterEsc?.() })
 
 function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
   const player = gameState.value.players[playerIndex]
@@ -44,16 +81,6 @@ function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
   }
   if (gameState.value.phase === 'selectCrossPlayerSlot' && isCrossPlayerSlotAvailable(playerIndex, actualIndex)) {
     selectCrossPlayerSlotToPlay(playerIndex, actualIndex)
-  }
-}
-
-function onFieldCardEnter(playerId: string, slotKey: string | number) {
-  hoveredCardKey.value = fieldCardKey(playerId, slotKey)
-}
-
-function onFieldCardLeave(playerId: string, slotKey: string | number) {
-  if (hoveredCardKey.value === fieldCardKey(playerId, slotKey)) {
-    hoveredCardKey.value = null
   }
 }
 
@@ -128,14 +155,7 @@ const playerCountStart = ref(2)
       <div class="round-info">
         <span>回合: {{ gameState.round }}</span>
         <span v-if="gameState.isFinalRound" class="final-round">最后一回合！</span>
-        <span v-if="gameState.phase === 'draw' && gameState.round === 0" style="margin-left:auto;display:flex;align-items:center;gap:8px">
-          人数:
-          <select v-model="playerCountStart" style="padding:4px 8px;border-radius:4px;border:1px solid #d8d2c4">
-            <option :value="2">2人</option>
-            <option :value="3">3人</option>
-            <option :value="4">4人</option>
-          </select>
-        </span>
+        <span v-if="isPreGame" class="pregame-badge">未开始</span>
       </div>
       <div class="message">{{ gameState.message }}</div>
     </div>
@@ -181,17 +201,14 @@ const playerCountStart = ref(2)
               <div
                 v-if="slot.card"
                 class="field-card"
-                @mouseenter="onFieldCardEnter(player.id, si)"
+                @mouseenter="onFieldCardEnter($event, player.id, si, slot.card)"
                 @mouseleave="onFieldCardLeave(player.id, si)"
+                @click="onFieldCardClick(slot.card, $event, () => isDeployPhase())"
               >
                 <div class="card-name-small">{{ slot.card.name }}</div>
                 <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
-                <CardDetailPopover
-                  v-if="hoveredCardKey === fieldCardKey(player.id, si)"
-                  :card="slot.card"
-                />
               </div>
               <div v-else class="empty-slot">{{ player.id === 'player' ? si + 1 : '空' }}</div>
 
@@ -210,17 +227,14 @@ const playerCountStart = ref(2)
                   <div
                     v-if="extraSlot.card"
                     class="field-card extra"
-                    @mouseenter="onFieldCardEnter(player.id, extraSlot.position)"
+                    @mouseenter="onFieldCardEnter($event, player.id, extraSlot.position, extraSlot.card)"
                     @mouseleave="onFieldCardLeave(player.id, extraSlot.position)"
+                    @click="onFieldCardClick(extraSlot.card, $event, () => isDeployPhase())"
                   >
                     <div class="card-name-small">{{ extraSlot.card.name }}</div>
                     <div class="card-power" :style="{ color: getPowerColor(extraSlot.card) }">
                       {{ extraSlot.card.currentPower }}
                     </div>
-                    <CardDetailPopover
-                      v-if="hoveredCardKey === fieldCardKey(player.id, extraSlot.position)"
-                      :card="extraSlot.card"
-                    />
                   </div>
                   <div v-else class="empty-slot extra">额外</div>
                 </div>
@@ -275,10 +289,12 @@ const playerCountStart = ref(2)
 
         <!-- 操作按钮（人类玩家+当前回合） -->
         <div v-if="player.id === 'player' && index === gameState.currentPlayerIndex" class="actions">
-          <button v-if="gameState.phase === 'draw' && gameState.round === 0" @click="initGame(playerCountStart)" class="btn btn-primary">开始游戏</button>
           <template v-if="gameState.phase === 'decision'">
             <button @click="choosePlay" class="btn btn-primary">出牌</button>
             <button @click="chooseReforge" class="btn btn-secondary">重铸</button>
+          </template>
+          <template v-if="isDeployPhase()">
+            <button type="button" class="btn btn-secondary" @click="cancelCardSelection">取消出牌</button>
           </template>
           <template v-if="gameState.phase === 'action' && !reforgeState.active">
             <button @click="endTurn" class="btn btn-secondary">结束回合</button>
@@ -294,6 +310,39 @@ const playerCountStart = ref(2)
         </div>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div v-if="isPreGame" class="pregame-overlay">
+        <div class="pregame-panel">
+          <h2>单机对战设置</h2>
+          <p class="pregame-desc">选择 AI 对手数量后开始游戏</p>
+          <label class="pregame-label">
+            对局人数（含你）
+            <select v-model="playerCountStart" class="pregame-select">
+              <option :value="2">2 人（你 + 1 AI）</option>
+              <option :value="3">3 人（你 + 2 AI）</option>
+              <option :value="4">4 人（你 + 3 AI）</option>
+            </select>
+          </label>
+          <button type="button" class="btn btn-primary pregame-start" @click="initGame(playerCountStart)">开始游戏</button>
+        </div>
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div v-if="hoveredCard && hoveredCardKey" class="field-hover-popover" :style="hoverStyle">
+        <CardDetailPopover :card="hoveredCard" />
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div v-if="pinnedCard" class="detail-overlay" @click="closePinned">
+        <div class="detail-modal-wrap" @click.stop>
+          <CardDetailPopover :card="pinnedCard" variant="modal" />
+          <p class="detail-tip">点击空白处关闭</p>
+        </div>
+      </div>
+    </Teleport>
 
     <Teleport to="body">
       <div v-if="gameState.phase === 'gameOver'" class="game-over-overlay">
@@ -483,6 +532,7 @@ const playerCountStart = ref(2)
   text-align: center;
   width: 100%;
   position: relative;
+  cursor: pointer;
 }
 
 .field-card.hidden {
@@ -831,5 +881,102 @@ const playerCountStart = ref(2)
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
+}
+
+.pregame-badge {
+  margin-left: auto;
+  font-size: 13px;
+  color: #69706b;
+  background: #e8e4da;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.pregame-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: rgba(31, 37, 34, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pregame-panel {
+  background: #fffdf8;
+  border: 2px solid #a46d1f;
+  border-radius: 14px;
+  padding: 28px 32px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(31, 37, 34, 0.2);
+}
+
+.pregame-panel h2 {
+  margin: 0 0 8px;
+  color: #1f2522;
+}
+
+.pregame-desc {
+  margin: 0 0 20px;
+  color: #69706b;
+  font-size: 14px;
+}
+
+.pregame-label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1f2522;
+}
+
+.pregame-select {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid #d8d2c4;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.pregame-start {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.field-hover-popover {
+  z-index: 5000;
+}
+
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(31, 37, 34, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.detail-modal-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-tip {
+  margin: 0;
+  font-size: 12px;
+  color: #fffdf8;
+  opacity: 0.9;
 }
 </style>

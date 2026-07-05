@@ -24,7 +24,22 @@ export function registerEscHandler(handler: EscHandler): () => void {
   }
 }
 
+/** 从 poker-game 目录解析启动台 URL（不依赖浏览器 history） */
+export function resolveLauncherUrl(): string | null {
+  const href = window.location.href.split('#')[0]
+  if (!href.includes('poker-game')) return null
+  if (href.includes('/electron-app/poker-game')) {
+    return href.replace(/\/electron-app\/poker-game\/index\.html?$/, '/electron-app/斯诺德跑团/启动台.html')
+  }
+  return href.replace(/poker-game\/index\.html?$/, '斯诺德跑团/启动台.html')
+}
+
 export function navigateToLauncher() {
+  const launcher = resolveLauncherUrl()
+  if (launcher) {
+    window.location.href = launcher
+    return
+  }
   if (window.history.length > 1) {
     window.history.back()
   }
@@ -41,7 +56,8 @@ export function navigateEscParent(router: Router): boolean {
     return true
   }
 
-  router.push(parent)
+  // replace 避免历史栈来回弹跳
+  router.replace(parent)
   return true
 }
 

@@ -265,11 +265,14 @@ watch(isGameStarted, (started) => {
             @keyup.enter="handleCreateRoom"
             class="input"
           />
-          <select v-model="playerCount" class="input" style="margin-bottom:15px">
-            <option :value="2">2 人对局</option>
-            <option :value="3">3 人对局</option>
-            <option :value="4">4 人对局</option>
-          </select>
+          <label class="pregame-label" style="display:block;margin-bottom:12px;text-align:left">
+            对局人数
+            <select v-model="playerCount" class="input" style="margin-top:6px">
+              <option :value="2">2 人对局</option>
+              <option :value="3">3 人对局</option>
+              <option :value="4">4 人对局</option>
+            </select>
+          </label>
           <div class="dialog-actions">
             <button @click="handleCreateRoom" class="btn btn-primary">创建</button>
             <button @click="showCreateDialog = false" class="btn btn-secondary">取消</button>

@@ -5,6 +5,8 @@ import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useGameClient } from '@/composables/useGameClient'
 import type { ReforgeOption, Card, GameState } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
+import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
+import { registerEscHandler } from '@/utils/escNavigation'
 
 const router = useRouter()
 const multiplayer = useMultiplayer()
@@ -18,23 +20,28 @@ watch(() => multiplayer.myPlayerId.value, (id) => {
 
 const reforgeOptions = ref<ReforgeOption[]>([])
 const loadingTimeoutId = ref<number | null>(null)
-const hoveredCardKey = ref<string | null>(null)
 
-function fieldCardKey(playerId: string, slotKey: string | number) {
-  return `${playerId}-${slotKey}`
+const {
+  hoveredCardKey,
+  hoveredCard,
+  hoverStyle,
+  pinnedCard,
+  fieldCardKey,
+  onFieldCardEnter: onFieldCardEnterDetail,
+  onFieldCardLeave,
+  onFieldCardClick,
+  closePinned,
+} = useFieldCardDetail()
+
+function onFieldCardEnter(e: MouseEvent, playerId: string, slotKey: string | number, card: Card) {
+  onFieldCardEnterDetail(e, playerId, slotKey, card)
 }
 
-function onFieldCardEnter(playerId: string, slotKey: string | number) {
-  hoveredCardKey.value = fieldCardKey(playerId, slotKey)
+function blockFieldDetailClick() {
+  return !!(game.gameState.value?.phase === 'action' && game.selectedCard.value)
 }
 
-function onFieldCardLeave(playerId: string, slotKey: string | number) {
-  if (hoveredCardKey.value === fieldCardKey(playerId, slotKey)) {
-    hoveredCardKey.value = null
-  }
-}
-
-// 处理游戏状态更新（从服务器接收）
+let unregisterEsc: (() => void) | undefined
 function handleGameStateUpdate(newState: GameState) {
   console.log('=== [CardGameMultiplayer] 收到游戏状态更新 ===')
   console.log('[CardGameMultiplayer] phase:', newState.phase)
@@ -93,6 +100,14 @@ function handleGameStateUpdate(newState: GameState) {
 }
 
 onMounted(() => {
+  unregisterEsc = registerEscHandler(() => {
+    if (pinnedCard.value) {
+      closePinned()
+      return true
+    }
+    return false
+  })
+
   console.log('[CardGameMultiplayer] 组件挂载')
   console.log('[CardGameMultiplayer] isInRoom:', multiplayer.isInRoom.value)
   console.log('[CardGameMultiplayer] isGameStarted:', multiplayer.isGameStarted.value)
@@ -121,6 +136,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  unregisterEsc?.()
   // 清除超时
   if (loadingTimeoutId.value) {
     clearTimeout(loadingTimeoutId.value)
@@ -323,17 +339,14 @@ function leaveGameToLobby(fromGameOver = false) {
               <div
                 v-if="slot.card"
                 class="field-card"
-                @mouseenter="onFieldCardEnter(player.id, si)"
+                @mouseenter="onFieldCardEnter($event, player.id, si, slot.card as Card)"
                 @mouseleave="onFieldCardLeave(player.id, si)"
+                @click="onFieldCardClick(slot.card as Card, $event, blockFieldDetailClick)"
               >
                 <div class="card-name-small">{{ slot.card.name }}</div>
                 <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
-                <CardDetailPopover
-                  v-if="hoveredCardKey === fieldCardKey(player.id, si)"
-                  :card="slot.card"
-                />
               </div>
               <div v-else class="empty-slot">{{ slot.isExtra ? '额外' : (player.id === multiplayer.myPlayerId.value ? si + 1 : '空') }}</div>
             </div>
@@ -420,6 +433,21 @@ function leaveGameToLobby(fromGameOver = false) {
         </div>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div v-if="hoveredCard && hoveredCardKey" class="field-hover-popover" :style="hoverStyle">
+        <CardDetailPopover :card="hoveredCard" />
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div v-if="pinnedCard" class="detail-overlay" @click="closePinned">
+        <div class="detail-modal-wrap" @click.stop>
+          <CardDetailPopover :card="pinnedCard" variant="modal" />
+          <p class="detail-tip">点击空白处关闭</p>
+        </div>
+      </div>
+    </Teleport>
 
     <Teleport to="body">
       <div v-if="game.gameState.value.phase === 'gameOver'" class="game-over-overlay">
@@ -638,6 +666,7 @@ function leaveGameToLobby(fromGameOver = false) {
   text-align: center;
   width: 100%;
   position: relative;
+  cursor: pointer;
 }
 
 .card-name-small {
@@ -995,5 +1024,34 @@ function leaveGameToLobby(fromGameOver = false) {
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
+}
+
+.field-hover-popover {
+  z-index: 5000;
+}
+
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(31, 37, 34, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.detail-modal-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-tip {
+  margin: 0;
+  font-size: 12px;
+  color: #fffdf8;
+  opacity: 0.9;
 }
 </style>
