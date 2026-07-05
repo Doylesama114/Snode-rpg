@@ -252,8 +252,9 @@ function hasActiveFilter(
   pointer-events: auto;
   position: fixed;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  /* 避开右侧居中的 🐛 反馈按钮（electron-app bug-report.js top:50%） */
+  top: min(168px, 22vh);
+  transform: none;
   display: flex;
   flex-direction: column;
   align-items: center;

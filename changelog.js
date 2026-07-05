@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6103',
+    date: '2026-07-05',
+    changes: [
+      '筛选展开按钮上移避开通用Bug按钮'
+    ]
+  },
+
+
+  {
     version: '1.0.6102',
     date: '2026-07-05',
     changes: [
