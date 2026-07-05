@@ -5,6 +5,8 @@ import type { AccountState } from '@/types/game'
 import GameNav from '@/views/Layout/GameNav.vue'
 import GameButton from '@/components/game/GameButton.vue'
 import { navigateToLauncher } from '@/utils/escNavigation'
+import { readAccountState } from '@/utils/deckSlots'
+import { validateActiveDeck } from '@/utils/deckValidation'
 
 const state = useGlobalState()
 const router = useRouter()
@@ -28,11 +30,23 @@ onMounted(() => {
   }
 })
 
+function ensureValidDeck(actionLabel: string): boolean {
+  const account = readAccountState()
+  const v = validateActiveDeck(account)
+  if (!v.valid) {
+    alert(`${v.message}\n无法${actionLabel}，请前往「管理卡组」调整。`)
+    return false
+  }
+  return true
+}
+
 function startNewGame() {
+  if (!ensureValidDeck('开始单机游戏')) return
   router.push('/new-game')
 }
 
 function startMultiplayer() {
+  if (!ensureValidDeck('进入联机大厅')) return
   router.push('/multiplayer')
 }
 

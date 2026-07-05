@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AccountState, Card, CardType, SavedDeckSlot } from '@/types/game'
 import { CardDatabase, getDefaultDeckCardIds } from '@/data/cardDatabase'
@@ -18,7 +18,9 @@ import {
   renameDeckSlot,
   deleteDeckSlot,
   MAX_DECK_SLOTS,
+  getActiveDeckSlot,
 } from '@/utils/deckSlots'
+import { DECK_SIZE, validateDeckCardIds } from '@/utils/deckValidation'
 
 const router = useRouter()
 const account = ref<AccountState | null>(null)
@@ -26,18 +28,35 @@ const deckCardIds = ref<string[]>([])
 const message = ref('')
 const searchQuery = ref('')
 const filterType = ref<CardType | 'all'>('all')
-const replacingIndex = ref<number | null>(null)
 const detailCard = ref<Card | null>(null)
 const newSlotName = ref('')
 const renameSlotName = ref('')
 const showNewSlotInput = ref(false)
 const showRenameInput = ref(false)
+const deckGridRef = ref<HTMLElement | null>(null)
+const poolPanelRef = ref<HTMLElement | null>(null)
+const leavingKeys = ref(new Set<string>())
+
+interface FlyGhost {
+  id: number
+  label: string
+  x: number
+  y: number
+  tx: number
+  ty: number
+  active: boolean
+}
+
+const flyGhosts = ref<FlyGhost[]>([])
+let flySeq = 0
 
 const savedDecks = computed(() => account.value?.savedDecks ?? [])
 const activeSlotId = computed(() => account.value?.activeDeckSlotId ?? null)
 const activeSlot = computed(() => savedDecks.value.find(s => s.id === activeSlotId.value))
 const canAddSlot = computed(() => savedDecks.value.length < MAX_DECK_SLOTS)
 const canDeleteSlot = computed(() => savedDecks.value.length > 1)
+const deckValidation = computed(() => validateDeckCardIds(deckCardIds.value))
+const canSaveDeck = computed(() => deckValidation.value.valid)
 
 const allCards = computed(() => {
   return CardDatabase.getAllCards().slice().sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
@@ -63,6 +82,10 @@ function effectPreview(card: Card): string {
   return fx[0]?.description || '无效果'
 }
 
+function deckSlotKey(cardId: string, idx: number) {
+  return `${cardId}-${idx}`
+}
+
 let unregisterEsc: (() => void) | undefined
 
 onMounted(() => {
@@ -72,18 +95,17 @@ onMounted(() => {
     return
   }
   account.value = migrateAccountState(loaded)
-  deckCardIds.value = account.value.deckCardIds?.length === 15
-    ? [...account.value.deckCardIds]
-    : [...getDefaultDeckCardIds()]
+  const active = getActiveDeckSlot(account.value)
+  deckCardIds.value = active?.cardIds?.length
+    ? [...active.cardIds]
+    : account.value.deckCardIds?.length === DECK_SIZE
+      ? [...account.value.deckCardIds]
+      : [...getDefaultDeckCardIds()]
   writeAccountState(account.value)
 
   unregisterEsc = registerEscHandler(() => {
     if (detailCard.value) {
       closeDetail()
-      return true
-    }
-    if (replacingIndex.value !== null) {
-      cancelReplace()
       return true
     }
     return false
@@ -94,13 +116,8 @@ onUnmounted(() => {
   unregisterEsc?.()
 })
 
-function isInDeck(cardId: string, exceptIndex?: number): boolean {
-  return deckCardIds.value.some((id, idx) => id === cardId && idx !== exceptIndex)
-}
-
-function canPickForDeck(cardId: string): boolean {
-  if (replacingIndex.value === null) return false
-  return !isInDeck(cardId, replacingIndex.value)
+function isInDeck(cardId: string): boolean {
+  return deckCardIds.value.includes(cardId)
 }
 
 function showDetail(card: Card) {
@@ -111,31 +128,65 @@ function closeDetail() {
   detailCard.value = null
 }
 
-function startReplace(index: number) {
-  replacingIndex.value = index
-  message.value = `正在更换第 ${index + 1} 张牌，请从下方卡池选择`
-  setTimeout(() => { if (message.value.startsWith('正在更换')) message.value = '' }, 4000)
+function sleep(ms: number) {
+  return new Promise<void>(resolve => setTimeout(resolve, ms))
 }
 
-function cancelReplace() {
-  replacingIndex.value = null
+async function playFly(fromEl: HTMLElement | null, toEl: HTMLElement | null, label: string) {
+  if (!fromEl) return
+  const from = fromEl.getBoundingClientRect()
+  const to = toEl?.getBoundingClientRect()
+  const tx = to ? to.left + to.width / 2 : from.left
+  const ty = to ? to.top + to.height / 2 : from.top - 72
+  const id = ++flySeq
+  const ghost: FlyGhost = {
+    id,
+    label,
+    x: from.left + from.width / 2,
+    y: from.top + from.height / 2,
+    tx,
+    ty,
+    active: false,
+  }
+  flyGhosts.value.push(ghost)
+  await nextTick()
+  requestAnimationFrame(() => {
+    const g = flyGhosts.value.find(item => item.id === id)
+    if (g) g.active = true
+  })
+  await sleep(480)
+  flyGhosts.value = flyGhosts.value.filter(item => item.id !== id)
 }
 
-function pickFromPool(card: Card) {
-  if (replacingIndex.value !== null) {
-    if (!canPickForDeck(card.id)) {
-      message.value = '该卡牌已在卡组中'
-      setTimeout(() => { message.value = '' }, 2000)
-      return
-    }
-    deckCardIds.value[replacingIndex.value] = card.id
-    replacingIndex.value = null
-    saveDeck(true)
-    message.value = `已替换为 ${card.name}（已自动保存）`
+async function addFromPool(card: Card, ev: MouseEvent) {
+  if (isInDeck(card.id)) {
+    message.value = '该卡牌已在卡组中'
     setTimeout(() => { message.value = '' }, 2000)
     return
   }
+  const poolEl = ev.currentTarget as HTMLElement
+  await playFly(poolEl, deckGridRef.value, card.name)
+  deckCardIds.value.push(card.id)
+}
+
+function onPoolClick(card: Card) {
   showDetail(card)
+}
+
+function onPoolContextMenu(card: Card, ev: MouseEvent) {
+  ev.preventDefault()
+  void addFromPool(card, ev)
+}
+
+async function removeFromDeck(index: number, ev: MouseEvent) {
+  const card = deckCards.value[index]
+  if (!card) return
+  const key = deckSlotKey(card.id, index)
+  const slotEl = (ev.currentTarget as HTMLElement).closest('.deck-slot') as HTMLElement | null
+  leavingKeys.value.add(key)
+  await playFly(slotEl, poolPanelRef.value, card.name)
+  deckCardIds.value.splice(index, 1)
+  leavingKeys.value.delete(key)
 }
 
 function onDeckCardClick(card: Card) {
@@ -144,14 +195,25 @@ function onDeckCardClick(card: Card) {
 
 function useDefaultDeck() {
   deckCardIds.value = [...getDefaultDeckCardIds()]
-  replacingIndex.value = null
-  saveDeck()
+  message.value = '已载入默认卡组（需保存后生效）'
+  setTimeout(() => { message.value = '' }, 2000)
 }
 
-function persistCurrentDeck(silent = false) {
+function persistCurrentDeck(silent = false): boolean {
   if (!account.value) return false
+  if (!canSaveDeck.value) {
+    if (!silent) {
+      message.value = deckValidation.value.message
+      setTimeout(() => { message.value = '' }, 3000)
+    }
+    return false
+  }
   try {
-    updateActiveSlotCards(account.value, deckCardIds.value)
+    const ok = updateActiveSlotCards(account.value, deckCardIds.value)
+    if (!ok) {
+      if (!silent) message.value = '保存失败：卡组必须为 15 张'
+      return false
+    }
     writeAccountState(account.value)
     if (!silent) {
       message.value = activeSlot.value
@@ -166,22 +228,44 @@ function persistCurrentDeck(silent = false) {
   }
 }
 
-function saveDeck(silent = false) {
-  persistCurrentDeck(silent)
+function saveDeck() {
+  persistCurrentDeck(false)
+}
+
+function saveAndExit() {
+  if (!persistCurrentDeck(false)) return
+  router.push('/')
+}
+
+function deckDirty(): boolean {
+  const saved = activeSlot.value?.cardIds ?? []
+  if (saved.length !== deckCardIds.value.length) return true
+  return saved.some((id, i) => id !== deckCardIds.value[i])
 }
 
 function switchToSlot(slot: SavedDeckSlot) {
   if (!account.value || slot.id === activeSlotId.value) return
-  persistCurrentDeck(true)
+  if (deckDirty()) {
+    if (canSaveDeck.value) {
+      if (!confirm('切换栏位前是否保存当前卡组？')) return
+      if (!persistCurrentDeck(true)) return
+    } else if (!confirm('当前卡组未凑满 15 张，切换将丢弃未保存修改。继续？')) {
+      return
+    }
+  }
   switchActiveDeckSlot(account.value, slot.id)
   deckCardIds.value = [...slot.cardIds]
-  replacingIndex.value = null
   writeAccountState(account.value)
   message.value = `已切换到「${slot.name}」`
   setTimeout(() => { message.value = '' }, 2000)
 }
 
 function openNewSlotForm() {
+  if (!canSaveDeck.value) {
+    message.value = '请先凑满 15 张卡牌再另存为新栏位'
+    setTimeout(() => { message.value = '' }, 2500)
+    return
+  }
   if (!canAddSlot.value) {
     message.value = `最多保存 ${MAX_DECK_SLOTS} 套卡组`
     setTimeout(() => { message.value = '' }, 2000)
@@ -194,11 +278,15 @@ function openNewSlotForm() {
 
 function confirmNewSlot() {
   if (!account.value) return
-  persistCurrentDeck(true)
+  if (!persistCurrentDeck(true)) {
+    message.value = deckValidation.value.message
+    setTimeout(() => { message.value = '' }, 2500)
+    return
+  }
   const slot = addDeckSlot(account.value, newSlotName.value, [...deckCardIds.value])
   if (!slot) {
-    message.value = `最多保存 ${MAX_DECK_SLOTS} 套卡组`
-    setTimeout(() => { message.value = '' }, 2000)
+    message.value = `另存失败（需恰好 ${DECK_SIZE} 张且未超过栏位上限）`
+    setTimeout(() => { message.value = '' }, 2500)
     return
   }
   writeAccountState(account.value)
@@ -241,13 +329,17 @@ function deleteCurrentSlot() {
   if (!confirm(`确定删除卡组栏位「${name}」？`)) return
   deleteDeckSlot(account.value, activeSlotId.value)
   deckCardIds.value = [...account.value.deckCardIds]
-  replacingIndex.value = null
   writeAccountState(account.value)
   message.value = `已删除「${name}」`
   setTimeout(() => { message.value = '' }, 2000)
 }
 
 function goHome() {
+  if (deckDirty() && !canSaveDeck.value) {
+    if (!confirm('当前卡组不是 15 张，离开将丢弃未保存修改。确定返回？')) return
+  } else if (deckDirty() && canSaveDeck.value) {
+    if (!confirm('有未保存的修改，确定返回主页？')) return
+  }
   router.push('/')
 }
 </script>
@@ -259,7 +351,8 @@ function goHome() {
         <h1>卡组管理</h1>
         <div class="deck-actions">
           <button type="button" class="btn-secondary" @click="useDefaultDeck">恢复默认卡组</button>
-          <button type="button" class="btn-primary" @click="saveDeck">保存卡组</button>
+          <button type="button" class="btn-primary" :disabled="!canSaveDeck" @click="saveDeck">保存卡组</button>
+          <button type="button" class="btn-primary" :disabled="!canSaveDeck" @click="saveAndExit">保存并返回</button>
           <button type="button" class="btn-secondary" @click="goHome">← 返回主页</button>
         </div>
       </div>
@@ -332,23 +425,25 @@ function goHome() {
             <span v-if="slot.id === activeSlotId" class="slot-chip-badge">使用中</span>
           </button>
         </div>
-        <p class="slots-hint">点击栏位切换卡组 · 修改后点「保存卡组」或换牌时自动保存到当前栏位</p>
+        <p class="slots-hint">点击栏位切换 · 凑满 {{ DECK_SIZE }} 张后点「保存卡组」</p>
       </section>
 
-      <p v-if="replacingIndex !== null" class="deck-hint replacing">
-        正在更换第 {{ replacingIndex + 1 }} 张 ·
-        <button type="button" class="link-btn" @click="cancelReplace">取消</button>
+      <p class="deck-hint">
+        左键查看效果 · 右键卡池卡牌快速加入卡组 · 点击卡组内 ✕ 移出
+        <span v-if="!canSaveDeck" class="deck-hint-warn">（{{ deckValidation.message }}）</span>
       </p>
-      <p v-else class="deck-hint">点击卡牌查看效果 · 点「更换」从下方 148 张卡池替换</p>
 
       <section class="panel">
-        <h3>当前卡组 · {{ activeSlot?.name ?? '未命名' }} ({{ deckCards.length }}/15)</h3>
-        <div class="deck-grid">
+        <h3>
+          当前卡组 · {{ activeSlot?.name ?? '未命名' }}
+          <span class="deck-count" :class="{ 'deck-count--invalid': !canSaveDeck }">({{ deckCards.length }}/{{ DECK_SIZE }})</span>
+        </h3>
+        <div ref="deckGridRef" class="deck-grid">
           <div
             v-for="(card, idx) in deckCards"
-            :key="card.id + '-' + idx"
+            :key="deckSlotKey(card.id, idx)"
             class="deck-slot"
-            :class="{ replacing: replacingIndex === idx, 'in-deck-dup': false }"
+            :class="{ 'deck-slot--leaving': leavingKeys.has(deckSlotKey(card.id, idx)) }"
           >
             <button type="button" class="slot-main" @click="onDeckCardClick(card)">
               <span class="slot-num">{{ idx + 1 }}</span>
@@ -361,12 +456,18 @@ function goHome() {
                 <div class="slot-effect">{{ effectPreview(card) }}</div>
               </div>
             </button>
-            <button type="button" class="btn-replace" @click.stop="startReplace(idx)">更换</button>
+            <button
+              type="button"
+              class="btn-remove"
+              title="移出卡组"
+              @click.stop="removeFromDeck(idx, $event)"
+            >✕</button>
           </div>
+          <p v-if="deckCards.length === 0" class="deck-empty">卡组为空，从下方卡池右键添加卡牌</p>
         </div>
       </section>
 
-      <section class="panel pool-panel">
+      <section ref="poolPanelRef" class="panel pool-panel">
         <h3>卡池 ({{ filteredPool.length }}/148)</h3>
         <div class="pool-toolbar">
           <input
@@ -388,12 +489,9 @@ function goHome() {
             :key="card.id"
             type="button"
             class="pool-card"
-            :class="{
-              'already-in-deck': isInDeck(card.id, replacingIndex ?? undefined) && replacingIndex === null,
-              pickable: replacingIndex !== null && canPickForDeck(card.id),
-              disabled: replacingIndex !== null && !canPickForDeck(card.id),
-            }"
-            @click.stop="pickFromPool(card)"
+            :class="{ 'already-in-deck': isInDeck(card.id) }"
+            @click.stop="onPoolClick(card)"
+            @contextmenu="onPoolContextMenu(card, $event)"
           >
             <div class="pool-name">{{ card.name }}</div>
             <div class="pool-meta">
@@ -405,8 +503,26 @@ function goHome() {
             <span v-if="isInDeck(card.id)" class="pool-badge">已在卡组</span>
           </button>
         </div>
+        <p class="pool-hint">提示：在卡池卡牌上点击右键可快速加入卡组</p>
       </section>
     </div>
+
+    <Teleport to="body">
+      <div
+        v-for="ghost in flyGhosts"
+        :key="ghost.id"
+        class="deck-fly-card"
+        :class="{ 'deck-fly-card--active': ghost.active }"
+        :style="{
+          '--fly-x': ghost.x + 'px',
+          '--fly-y': ghost.y + 'px',
+          '--fly-tx': ghost.tx + 'px',
+          '--fly-ty': ghost.ty + 'px',
+        }"
+      >
+        {{ ghost.label }}
+      </div>
+    </Teleport>
 
     <div v-if="detailCard" class="detail-overlay" @click="closeDetail">
       <div class="detail-modal-wrap" @click.stop>
@@ -473,6 +589,11 @@ function goHome() {
   font-weight: bold;
 }
 
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .btn-secondary {
   background: #f6f4ef;
   color: #1f2522;
@@ -492,18 +613,13 @@ function goHome() {
   margin: 0 0 16px;
 }
 
-.deck-hint.replacing {
-  color: #a46d1f;
+.deck-hint-warn {
+  color: #9d2f2f;
   font-weight: 600;
 }
 
-.link-btn {
-  background: none;
-  border: none;
-  color: #315f8f;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: inherit;
+.deck-count--invalid {
+  color: #9d2f2f;
 }
 
 .slots-panel {
@@ -637,20 +753,28 @@ function goHome() {
   gap: 10px;
 }
 
+.deck-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #69706b;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
 .deck-slot {
   display: flex;
   align-items: stretch;
-  gap: 6px;
+  gap: 0;
   background: #f6f4ef;
   border: 2px solid #d8d2c4;
   border-radius: 8px;
   overflow: hidden;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, opacity 0.2s, transform 0.2s;
 }
 
-.deck-slot.replacing {
-  border-color: #a46d1f;
-  box-shadow: 0 0 0 2px rgba(164, 109, 31, 0.2);
+.deck-slot--leaving {
+  opacity: 0.35;
+  transform: scale(0.96);
 }
 
 .slot-main {
@@ -699,19 +823,21 @@ function goHome() {
   overflow: hidden;
 }
 
-.btn-replace {
+.btn-remove {
   flex-shrink: 0;
-  padding: 0 12px;
-  background: #2f6f5e;
-  color: #fff;
+  width: 36px;
+  background: #fff;
+  color: #9d2f2f;
   border: none;
+  border-left: 1px solid #e0b4b4;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.btn-replace:hover {
-  background: #245a4c;
+.btn-remove:hover {
+  background: #fdf5f5;
 }
 
 .pool-toolbar {
@@ -756,21 +882,11 @@ function goHome() {
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.pool-card:hover:not(.disabled) {
+.pool-card:hover {
   border-color: #a46d1f;
 }
 
-.pool-card.pickable {
-  border-color: #2f6f5e;
-  box-shadow: 0 0 0 2px rgba(47, 111, 94, 0.25);
-}
-
-.pool-card.disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.pool-card.already-in-deck:not(.pickable) {
+.pool-card.already-in-deck {
   opacity: 0.7;
 }
 
@@ -812,6 +928,42 @@ function goHome() {
   color: #69706b;
   padding: 2px 6px;
   border-radius: 4px;
+}
+
+.pool-hint {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: #69706b;
+  text-align: center;
+}
+
+.deck-fly-card {
+  position: fixed;
+  left: var(--fly-x);
+  top: var(--fly-y);
+  z-index: 3000;
+  transform: translate(-50%, -50%) scale(1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fffdf8;
+  border: 2px solid #a46d1f;
+  color: #1f2522;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(31, 37, 34, 0.2);
+  pointer-events: none;
+  transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  white-space: nowrap;
+}
+
+.deck-fly-card--active {
+  left: var(--fly-tx);
+  top: var(--fly-ty);
+  opacity: 0.85;
+  transform: translate(-50%, -50%) scale(0.82);
 }
 
 .detail-overlay {

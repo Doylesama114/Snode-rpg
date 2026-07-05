@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6100',
+    date: '2026-07-05',
+    changes: [
+      '卡组构筑右键加入',
+      '15张校验',
+      '进局拦截'
+    ]
+  },
+
+
+  {
     version: '1.0.6099',
     date: '2026-07-05',
     changes: [

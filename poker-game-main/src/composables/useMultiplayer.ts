@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 import { io, Socket } from 'socket.io-client'
 import type { GameState, GameAction } from '@/types/game'
-import { readAccountState, migrateAccountState, getActiveDeckSlot } from '@/utils/deckSlots'
+import { readAccountState } from '@/utils/deckSlots'
+import { getPlayableDeckCardIds } from '@/utils/deckValidation'
 
 export interface MultiplayerRoom {
   id: string
@@ -272,15 +273,7 @@ export function useMultiplayer() {
   function getDeckCardIds(): string[] {
     const account = readAccountState()
     if (!account) return []
-    migrateAccountState(account)
-    if (account.deckCardIds?.length === 15) {
-      return account.deckCardIds
-    }
-    const active = getActiveDeckSlot(account)
-    if (active?.cardIds?.length === 15) {
-      return active.cardIds
-    }
-    return []
+    return getPlayableDeckCardIds(account)
   }
 
   // 创建房间
@@ -291,6 +284,10 @@ export function useMultiplayer() {
     }
     const currentPersistentId = getPersistentPlayerId()
     const deckCardIds = getDeckCardIds()
+    if (deckCardIds.length !== 15) {
+      instance.error.value = '当前卡组不合法，需要恰好 15 张卡牌'
+      return
+    }
     console.log(`[${getTabId()}] createRoom 被调用:`, { name, maxPlayers, persistentPlayerId: currentPersistentId, deckCardIds })
     instance.playerName.value = name
     instance.socket.emit('createRoom', { 
@@ -309,6 +306,10 @@ export function useMultiplayer() {
     }
     const currentPersistentId = getPersistentPlayerId()
     const deckCardIds = getDeckCardIds()
+    if (deckCardIds.length !== 15) {
+      instance.error.value = '当前卡组不合法，需要恰好 15 张卡牌'
+      return
+    }
     console.log(`[${getTabId()}] joinRoom 被调用:`, { roomId, name, persistentPlayerId: currentPersistentId, deckCardIds })
     instance.playerName.value = name
     instance.socket.emit('joinRoom', { 

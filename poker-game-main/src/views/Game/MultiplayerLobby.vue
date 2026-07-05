@@ -11,6 +11,7 @@ import {
   getActiveDeckSlot,
   switchActiveDeckSlot,
 } from '@/utils/deckSlots'
+import { validateActiveDeck, DECK_SIZE } from '@/utils/deckValidation'
 import ServerConfigDialog from './ServerConfigDialog.vue'
 
 const router = useRouter()
@@ -55,6 +56,17 @@ const activeDeckLabel = computed(() => {
   return `${name}（${count} 张）`
 })
 
+const deckValid = computed(() => validateActiveDeck(account.value))
+
+function ensureValidDeckForRoom(actionLabel: string): boolean {
+  const v = validateActiveDeck(account.value)
+  if (!v.valid) {
+    alert(`${v.message}\n无法${actionLabel}，请先在「管理卡组」凑满 ${DECK_SIZE} 张并保存。`)
+    return false
+  }
+  return true
+}
+
 function loadAccountDeck() {
   const loaded = readAccountState()
   if (!loaded?.isRegistered) {
@@ -74,6 +86,7 @@ function selectDeckSlot(slotId: string) {
   if (account.value.activeDeckSlotId === slotId) return
   switchActiveDeckSlot(account.value, slotId)
   writeAccountState(account.value)
+  loadAccountDeck()
 }
 
 onMounted(() => {
@@ -115,6 +128,7 @@ function handleCreateRoom() {
     alert('请输入玩家名称')
     return
   }
+  if (!ensureValidDeckForRoom('创建房间')) return
   createRoom(playerNameInput.value, playerCount.value)
   showCreateDialog.value = false
 }
@@ -124,6 +138,7 @@ function handleJoinRoom(roomId?: string) {
     alert('请输入玩家名称')
     return
   }
+  if (!ensureValidDeckForRoom('加入房间')) return
   const targetRoomId = roomId || roomIdInput.value
   if (!targetRoomId.trim()) {
     alert('请输入房间ID')
@@ -228,7 +243,10 @@ watch(isGameStarted, (started) => {
       <div class="deck-info-bar">
         <span class="player-display">👤 {{ playerNameInput || '玩家' }}</span>
         <div class="deck-section">
-          <span class="deck-display">当前卡组：{{ activeDeckLabel }}</span>
+          <span class="deck-display" :class="{ 'deck-display--invalid': !deckValid.valid }">
+            当前卡组：{{ activeDeckLabel }}
+            <span v-if="!deckValid.valid" class="deck-invalid-tag">不可用</span>
+          </span>
           <div v-if="savedDecks.length > 0" class="deck-switcher">
             <span class="deck-switcher__label">切换卡组</span>
             <div class="deck-switcher__chips">
@@ -615,6 +633,18 @@ watch(isGameStarted, (started) => {
   font-size: 16px;
   color: #a46d1f;
   font-weight: 500;
+}
+
+.deck-display--invalid {
+  color: #9d2f2f;
+}
+
+.deck-invalid-tag {
+  margin-left: 6px;
+  font-size: 12px;
+  background: rgba(157, 47, 47, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 
 .actions {

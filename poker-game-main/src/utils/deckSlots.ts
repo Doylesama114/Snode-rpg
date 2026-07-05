@@ -56,34 +56,38 @@ export function getActiveDeckSlot(account: AccountState): SavedDeckSlot | undefi
   return account.savedDecks?.find(s => s.id === account.activeDeckSlotId)
 }
 
-/** 将 active 栏位的 cardIds 同步到 deckCardIds（供单机/联机读取） */
+/** 将 active 栏位的 cardIds 同步到 deckCardIds（供单机/联机读取；仅当恰好 15 张时同步） */
 export function syncActiveDeckToAccount(account: AccountState) {
   const active = getActiveDeckSlot(account)
-  if (active) {
+  if (active && active.cardIds.length === 15) {
     account.deckCardIds = [...active.cardIds]
   } else if (account.deckCardIds?.length !== 15) {
     account.deckCardIds = getDefaultDeckCardIds()
   }
 }
 
-export function updateActiveSlotCards(account: AccountState, cardIds: string[]) {
+export function updateActiveSlotCards(account: AccountState, cardIds: string[]): boolean {
+  if (cardIds.length !== 15) return false
   const active = getActiveDeckSlot(account)
-  if (!active) return account
+  if (!active) return false
   active.cardIds = [...cardIds]
   active.updatedAt = new Date().toISOString()
   account.deckCardIds = [...cardIds]
-  return account
+  return true
 }
 
 export function switchActiveDeckSlot(account: AccountState, slotId: string): AccountState {
   const target = account.savedDecks?.find(s => s.id === slotId)
   if (!target) return account
   account.activeDeckSlotId = slotId
-  account.deckCardIds = [...target.cardIds]
+  if (target.cardIds.length === 15) {
+    account.deckCardIds = [...target.cardIds]
+  }
   return account
 }
 
 export function addDeckSlot(account: AccountState, name: string, cardIds: string[]): SavedDeckSlot | null {
+  if (cardIds.length !== 15) return null
   if ((account.savedDecks?.length ?? 0) >= MAX_DECK_SLOTS) return null
   const slot = createDefaultSlot(name.trim() || `卡组 ${account.savedDecks.length + 1}`, cardIds)
   account.savedDecks = [...(account.savedDecks ?? []), slot]

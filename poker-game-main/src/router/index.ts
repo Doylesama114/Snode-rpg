@@ -1,4 +1,6 @@
 import type { AccountState } from '@/types/game'
+import { readAccountState } from '@/utils/deckSlots'
+import { validateActiveDeck } from '@/utils/deckValidation'
 
 const router = createRouter({
     // Electron file:// 协议下只能用 hash 路由，history 路由会白屏
@@ -61,6 +63,13 @@ router.beforeEach((to, _from, next) => {
             const accountState: AccountState = JSON.parse(raw)
             if (!accountState.isRegistered) {
                 return next('/account-setup')
+            }
+            if (to.path === '/new-game' || to.path === '/multiplayer') {
+                const v = validateActiveDeck(readAccountState())
+                if (!v.valid) {
+                    alert(`${v.message}\n请前往「管理卡组」调整后再试。`)
+                    return next('/deck-builder')
+                }
             }
             return next()
         }
