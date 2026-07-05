@@ -1,23 +1,8 @@
 {
   "class": "通用天赋树",
-  "docx_skills_indexed": 391,
+  "docx_skills_indexed": 390,
   "json_skills": 390,
-  "updated": 391,
-  "removed_not_in_docx": [
-    "抉择E·你仅能够选择其中一项习得",
-    "番茄大厨",
-    "蓝瓜骑士",
-    "青椒特警",
-    "玉米射手",
-    "橘子投弹手",
-    "青柠调酒师",
-    "薄荷染匠",
-    "紫茄魔导士",
-    "蜜桃鼓手",
-    "土豆矿工",
-    "黑莓刺客",
-    "大蒜祭司",
-    "抉择S·你仅能够选择其中一项习得"
-  ],
+  "updated": 390,
+  "removed_not_in_docx": [],
   "fx_entries": 390
 }

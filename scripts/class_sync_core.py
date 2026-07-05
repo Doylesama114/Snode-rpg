@@ -149,8 +149,10 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
         return None
 
     fields: dict[str, str] = {}
+    field_runs: dict[str, list[dict]] = {}
     mark_dots: list[str] = []
     description: list[str] = []
+    description_entries: list[dict] = []
     level_upgrades: list[dict] = []
     flavor_parts: list[str] = []
     phase = "pre"
@@ -175,12 +177,14 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
             continue
         if fk == "描述":
             if val:
-                description.append(val)
+                fields["描述"] = val
+                field_runs["描述"] = runs
             phase = "post_mark"
             i += 1
             continue
         if fk:
             fields[fk] = val
+            field_runs[fk] = runs
             phase = "fields"
             i += 1
             continue
@@ -195,13 +199,27 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
             m = LEVEL_RE.match(text)
             if m:
                 cls, lvl, body = m.group(1), m.group(2), m.group(3)
-                level_upgrades.append({"class": cls, "level": int(lvl), "text": body})
+                label = f"你的{cls}等级到达{lvl}级时："
+                level_upgrades.append({
+                    "class": cls,
+                    "level": int(lvl),
+                    "text": body,
+                    "label": label,
+                    "line_runs": runs,
+                })
                 i += 1
                 continue
             m2 = LEVEL_RE2.match(text)
             if m2:
                 lvl, body = m2.group(1), m2.group(2)
-                level_upgrades.append({"class": "", "level": int(lvl), "text": body})
+                label = f"你的{lvl}级时："
+                level_upgrades.append({
+                    "class": "",
+                    "level": int(lvl),
+                    "text": body,
+                    "label": label,
+                    "line_runs": runs,
+                })
                 i += 1
                 continue
 
@@ -220,6 +238,7 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                         break
                     if not is_boilerplate_line(t2):
                         description.append(t2)
+                        description_entries.append({"text": t2, "runs": paras[i]["runs"]})
                     i += 1
                 continue
             i += 1
@@ -245,18 +264,25 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
         if phase == "post_mark":
             if not is_boilerplate_line(text):
                 description.append(text)
+                description_entries.append({"text": text, "runs": runs})
         elif phase == "fields" and not any(text.startswith(p) for p in FIELD_PREFIXES):
             if not is_boilerplate_line(text):
                 description.append(text)
+                description_entries.append({"text": text, "runs": runs})
 
         i += 1
 
     description = filter_description_lines(description)
+    description_entries = [
+        e for e in description_entries if e["text"].strip() in description
+    ]
     return {
         "name": text0,
         "fields": fields,
+        "field_runs": field_runs,
         "mark_dots": mark_dots,
         "description": description,
+        "description_entries": description_entries,
         "level_upgrades": level_upgrades,
         "flavor": "\n".join(flavor_parts).strip(),
     }
@@ -344,12 +370,77 @@ def dots_html(dots: list[str]) -> str:
     return "".join(parts)
 
 
+def runs_have_colored_dots(runs: list[dict]) -> bool:
+    for r in runs:
+        if r.get("color") and "●" in r.get("text", ""):
+            return True
+    return False
+
+
+def slice_runs_after_prefix(runs: list[dict], prefix_len: int) -> list[dict]:
+    if prefix_len <= 0:
+        return runs
+    out: list[dict] = []
+    pos = 0
+    for r in runs:
+        text = r.get("text") or ""
+        start, end = pos, pos + len(text)
+        pos = end
+        if end <= prefix_len:
+            continue
+        if start >= prefix_len:
+            out.append(r)
+        else:
+            cut = prefix_len - start
+            rest = text[cut:]
+            if rest:
+                out.append({"text": rest, "color": r.get("color")})
+    return out
+
+
+def inline_runs_html(runs: list[dict]) -> str:
+    import html as html_mod
+
+    parts: list[str] = []
+    for r in runs:
+        text = r.get("text") or ""
+        if not text:
+            continue
+        hex_c = r.get("color")
+        if hex_c and "●" in text:
+            shadow = (
+                "text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;"
+                if hex_c in LIGHT_COLORS
+                else ""
+            )
+            for ch in text:
+                if ch == "●":
+                    parts.append(
+                        f'<span style="font-size:1.5em;color:{hex_c};{shadow}">●</span>'
+                    )
+                else:
+                    parts.append(html_mod.escape(ch))
+        else:
+            parts.append(html_mod.escape(text))
+    return "".join(parts)
+
+
 def field_p(label: str, value: str) -> str:
-    return f"<p><span class=\"field\">{label}：</span>{value}</p>"
+    return f'<p><span class="field">{label}：</span>{value}</p>'
+
+
+def field_p_html(label: str, value: str, runs: list[dict] | None = None) -> str:
+    if runs and runs_have_colored_dots(runs):
+        return f'<p><span class="field">{label}：</span>{inline_runs_html(runs)}</p>'
+    return field_p(label, value)
 
 
 def build_detail_html(block: dict) -> str:
     fields = block["fields"]
+    field_runs = block.get("field_runs") or {}
+    runs_by_text = {
+        e["text"]: e["runs"] for e in (block.get("description_entries") or [])
+    }
     ordered: list[str] = []
     for fk in FIELD_ORDER:
         if fk == "标识":
@@ -359,26 +450,62 @@ def build_detail_html(block: dict) -> str:
                 )
             continue
         if fk in fields:
-            ordered.append(field_p(fk, fields[fk]))
+            ordered.append(field_p_html(fk, fields[fk], field_runs.get(fk)))
 
     desc = filter_description_lines(block["description"])
-    # skip redundant skill-name-only line
     desc = [p for p in desc if p.strip() and p.strip() != block["name"]]
     if desc:
         if "描述" in fields:
-            ordered.append(field_p("描述", fields["描述"]))
+            if not any(
+                x.startswith('<p><span class="field">描述：</span>')
+                for x in ordered
+            ):
+                ordered.append(
+                    field_p_html("描述", fields["描述"], field_runs.get("描述"))
+                )
             for para in desc:
                 if para != fields.get("描述"):
-                    ordered.append(f"<p>{para}</p>")
+                    runs = runs_by_text.get(para)
+                    inner = (
+                        inline_runs_html(runs)
+                        if runs and runs_have_colored_dots(runs)
+                        else para
+                    )
+                    ordered.append(f"<p>{inner}</p>")
         else:
-            ordered.append(field_p("描述", desc[0]))
+            first_runs = runs_by_text.get(desc[0])
+            ordered.append(
+                field_p_html(
+                    "描述",
+                    desc[0],
+                    first_runs if first_runs else None,
+                )
+            )
             for para in desc[1:]:
-                ordered.append(f"<p>{para}</p>")
+                runs = runs_by_text.get(para)
+                inner = (
+                    inline_runs_html(runs)
+                    if runs and runs_have_colored_dots(runs)
+                    else para
+                )
+                ordered.append(f"<p>{inner}</p>")
 
     for lu in block["level_upgrades"]:
-        cls = lu.get("class") or ""
-        label = f"你的{cls}等级到达{lu['level']}级时：" if cls else f"你的等级到达{lu['level']}级时："
-        ordered.append(f'<p><span class="field">{label}</span>{lu["text"]}</p>')
+        label = lu.get("label")
+        if not label:
+            cls = lu.get("class") or ""
+            label = (
+                f"你的{cls}等级到达{lu['level']}级时："
+                if cls
+                else f"你的等级到达{lu['level']}级时："
+            )
+        line_runs = lu.get("line_runs") or []
+        body_runs = slice_runs_after_prefix(line_runs, len(label))
+        if body_runs and runs_have_colored_dots(body_runs):
+            body_html = inline_runs_html(body_runs)
+        else:
+            body_html = lu["text"]
+        ordered.append(f'<p><span class="field">{label}</span>{body_html}</p>')
 
     if block["flavor"]:
         ordered.append("<p>---------------------------------------------------------------------</p>")

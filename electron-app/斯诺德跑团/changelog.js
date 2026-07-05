@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6114',
+    date: '2026-07-05',
+    changes: [
+      '修复技能描述内联色彩标识●未着色（如冥想●/●/●）',
+      '全职业页重新同步 docx 彩色 runs',
+      '新增 scan_plain_dots 与 run_all_class_syncs 脚本'
+    ]
+  },
+
+
+  {
     version: '1.0.6113',
     date: '2026-07-05',
     changes: [
