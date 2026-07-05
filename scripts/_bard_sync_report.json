@@ -1,15 +1,8 @@
 {
   "class": "吟游诗人",
-  "docx_skills_indexed": 147,
-  "json_skills": 124,
-  "updated": 124,
-  "missing_in_docx": [],
-  "fx_entries": 124,
-  "html_费用_remaining": 0,
-  "notes": [
-    "新建 skill_effects_吟游诗人.json（124 条）",
-    "休憩曲：docx 仅关键词+描述，无标识行",
-    "静寂术：舒缓/灵动各一（b-skill-23/34）；docx 仅舒缓有独立条目，b-skill-34 手工对齐旧 HTML",
-    "11 个技能无标识（5 起始 + 部分天赋/戏法，docx 无标识行）"
-  ]
+  "docx_skills_indexed": 146,
+  "json_skills": 122,
+  "updated": 122,
+  "removed_not_in_docx": [],
+  "fx_entries": 122
 }

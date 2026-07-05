@@ -29,6 +29,10 @@ def feat_name_from_prev(text: str) -> str:
 def render_body_html(body: list[tuple[str, list]]) -> str:
     parts = []
     for text, runs in body:
+        if SEP_INLINE.search(text):
+            text = SEP_INLINE.split(text)[0].rstrip()
+        if not text:
+            continue
         if not runs:
             parts.append(html.escape(text))
             continue
@@ -72,6 +76,9 @@ def parse_feats(paras: list[dict]) -> list[dict]:
         if not name:
             continue
         desc_text = "\n".join(x[0] for x in body)
+        if SEP_INLINE.search(desc_text):
+            desc_text = SEP_INLINE.split(desc_text)[0].rstrip()
+            body = [(desc_text, body[0][1])] if body else []
         feats.append({
             "name": name,
             "prerequisite": prereq or "无",

@@ -36,6 +36,32 @@ LIGHT_COLORS = {"#FFFFFF", "#B3F9FF", "#FFF32F", "#FFB7E3", "#D9D9D9", "#00FA99"
 LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
 LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.+)$")
 TYPE_HEADS = ("战技", "法术", "能力", "战术", "戏法", "天赋", "功法")
+STAT_BLOCK_TAIL = ("其数据如下所示", "其数据如下所示：")
+BOILERPLATE_EXACT = frozenset({"你可以通过花费技能点的方式来获取以下能力"})
+BOILERPLATE_TALENT_TREE = re.compile(r"^.+天赋树$")
+
+
+def is_boilerplate_line(text: str) -> bool:
+    t = text.strip()
+    if t in BOILERPLATE_EXACT:
+        return True
+    if BOILERPLATE_TALENT_TREE.match(t) and not t.endswith("风格"):
+        return True
+    return False
+
+
+def filter_description_lines(lines: list[str]) -> list[str]:
+    return [p for p in lines if p.strip() and not is_boilerplate_line(p)]
+
+
+def wants_stat_block_after_separator(description: list[str], fields: dict) -> bool:
+    if not description:
+        return False
+    tail = description[-1].strip()
+    if tail.endswith(STAT_BLOCK_TAIL):
+        return True
+    desc_field = fields.get("描述", "").strip()
+    return bool(desc_field.endswith(STAT_BLOCK_TAIL))
 
 
 def extract_paragraphs(docx_path: Path) -> list[dict]:
@@ -134,7 +160,11 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
         text = paras[i]["text"]
         runs = paras[i]["runs"]
 
-        if is_skill_name_line(text, names) or is_section_break(text):
+        if is_skill_name_line(text, names):
+            break
+        if is_section_break(text) and not (
+            text.startswith("-----") and wants_stat_block_after_separator(description, fields)
+        ):
             break
 
         fk, val = split_field(text)
@@ -179,7 +209,29 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
             i += 1
             continue
 
-        if text.startswith("-----") or (len(text) > 4 and "天赋树" in text and "解锁" in text):
+        if text.startswith("-----"):
+            if wants_stat_block_after_separator(description, fields):
+                i += 1
+                while i < len(paras):
+                    t2 = paras[i]["text"]
+                    if is_skill_name_line(t2, names) or is_section_break(t2):
+                        break
+                    if t2.startswith("你的") and (LEVEL_RE.match(t2) or LEVEL_RE2.match(t2)):
+                        break
+                    if not is_boilerplate_line(t2):
+                        description.append(t2)
+                    i += 1
+                continue
+            i += 1
+            while i < len(paras):
+                t2 = paras[i]["text"]
+                if is_skill_name_line(t2, names) or is_section_break(t2):
+                    break
+                if not split_field(t2)[0]:
+                    flavor_parts.append(t2)
+                i += 1
+            break
+        elif len(text) > 4 and "天赋树" in text and "解锁" in text:
             i += 1
             while i < len(paras):
                 t2 = paras[i]["text"]
@@ -191,12 +243,15 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
             break
 
         if phase == "post_mark":
-            description.append(text)
+            if not is_boilerplate_line(text):
+                description.append(text)
         elif phase == "fields" and not any(text.startswith(p) for p in FIELD_PREFIXES):
-            description.append(text)
+            if not is_boilerplate_line(text):
+                description.append(text)
 
         i += 1
 
+    description = filter_description_lines(description)
     return {
         "name": text0,
         "fields": fields,
@@ -306,7 +361,7 @@ def build_detail_html(block: dict) -> str:
         if fk in fields:
             ordered.append(field_p(fk, fields[fk]))
 
-    desc = block["description"]
+    desc = filter_description_lines(block["description"])
     # skip redundant skill-name-only line
     desc = [p for p in desc if p.strip() and p.strip() != block["name"]]
     if desc:

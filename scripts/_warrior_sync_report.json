@@ -1,6 +1,8 @@
 {
-  "docx_skills_indexed": 109,
+  "class": "战士",
+  "docx_skills_indexed": 148,
   "json_skills": 109,
   "updated": 109,
-  "missing_in_docx": []
+  "removed_not_in_docx": [],
+  "fx_entries": 109
 }
