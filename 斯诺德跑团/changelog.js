@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6106',
+    date: '2026-07-05',
+    changes: [
+      '卡组构筑筛选侧栏默认收起',
+      '音效全局降低10dB(snd.js+sound.ts)'
+    ]
+  },
+
+
+  {
     version: '1.0.6105',
     date: '2026-07-05',
     changes: [

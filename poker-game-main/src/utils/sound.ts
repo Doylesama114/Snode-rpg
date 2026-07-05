@@ -1,5 +1,7 @@
 const MUTE_KEY = '_snowd_mute'
 const BASE = `${import.meta.env.BASE_URL}audio/cards/`
+/** -10 dB master attenuation */
+const DB_ATTEN = 10 ** (-10 / 20)
 
 type CardSound = 'cardPlace' | 'cardDraw' | 'deckAdd' | 'deckRemove' | 'saveSuccess' | 'error'
 
@@ -61,7 +63,7 @@ export function playCardSound(name: CardSound): void {
     const src = audio.createBufferSource()
     const gain = audio.createGain()
     src.buffer = buf
-    gain.gain.value = GAIN[name]
+    gain.gain.value = GAIN[name] * DB_ATTEN
     src.connect(gain)
     gain.connect(audio.destination)
     src.start()

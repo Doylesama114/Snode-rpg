@@ -1,6 +1,7 @@
 {
   "version": 1,
   "muteKey": "_snowd_mute",
+  "masterAttenuationDb": -10,
   "ui": {
     "basePath": "斯诺德跑团/audio/ui/",
     "sounds": {

@@ -20,7 +20,7 @@ export function useDeckPoolFilter(allCards: Ref<Card[]>, deckCardIds: Ref<string
     ...DEFAULT_POOL_FILTER,
     ...(persisted?.criteria ?? {}),
   })
-  const sidebarOpen = ref(persisted?.sidebarOpen ?? true)
+  const sidebarOpen = ref(persisted?.sidebarOpen ?? false)
   const keywordSearch = ref('')
 
   const meta = computed(() => buildPoolFilterMeta(allCards.value))

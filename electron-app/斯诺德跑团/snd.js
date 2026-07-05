@@ -4,6 +4,7 @@ var audioCtx=null;
 var sampleBase='';
 var buffers={};
 var loading=null;
+var DB_ATTEN=Math.pow(10,-10/20);
 
 function getScriptBase(){
   var el=document.currentScript||document.querySelector('script[src*="snd.js"]');
@@ -21,7 +22,7 @@ function playTone(f,d,v,t,s){
   var ctx=getCtx(),osc=ctx.createOscillator(),gain=ctx.createGain();
   osc.type=t||'sine';osc.frequency.setValueAtTime(f,ctx.currentTime);
   if(s)osc.frequency.linearRampToValueAtTime(f+s,ctx.currentTime+d);
-  gain.gain.setValueAtTime(v,ctx.currentTime);
+  gain.gain.setValueAtTime(v*DB_ATTEN,ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d);
   osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+d+.05);
 }
@@ -29,7 +30,7 @@ function playTone(f,d,v,t,s){
 function playNoise(d,v,f1,f2){
   var ctx=getCtx(),len=ctx.sampleRate*d|0,buf=ctx.createBuffer(1,len,ctx.sampleRate);
   var data=buf.getChannelData(0);
-  for(var i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/len,2)*v;
+  for(var i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/len,2)*v*DB_ATTEN;
   var src=ctx.createBufferSource(),flt=ctx.createBiquadFilter(),gn=ctx.createGain();
   src.buffer=buf;flt.type='bandpass';
   flt.frequency.setValueAtTime(f1,ctx.currentTime);
@@ -52,8 +53,8 @@ var SYNTH={
     var ctx=getCtx(),osc=ctx.createOscillator(),gain=ctx.createGain();
     osc.type='triangle';osc.frequency.setValueAtTime(200,ctx.currentTime);
     osc.frequency.linearRampToValueAtTime(800,ctx.currentTime+2);
-    gain.gain.setValueAtTime(0.04,ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.12,ctx.currentTime+2);
+    gain.gain.setValueAtTime(0.04*DB_ATTEN,ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12*DB_ATTEN,ctx.currentTime+2);
     osc.connect(gain);gain.connect(ctx.destination);osc.start();
     return {stop:function(){try{osc.stop();gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.05)}catch(e){}}};
   }
@@ -88,7 +89,7 @@ function playSample(name){
   if(!buf)return false;
   var ctx=getCtx(),src=ctx.createBufferSource(),gain=ctx.createGain();
   src.buffer=buf;
-  gain.gain.value=SAMPLE_GAIN[name]||0.6;
+  gain.gain.value=(SAMPLE_GAIN[name]||0.6)*DB_ATTEN;
   src.connect(gain);gain.connect(ctx.destination);
   src.start();
   return true;

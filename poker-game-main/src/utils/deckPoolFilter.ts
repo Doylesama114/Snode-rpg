@@ -202,7 +202,7 @@ export function loadPersistedPoolFilter(): PersistedPoolFilterUi | null {
     if (!parsed?.criteria) return null
     return {
       criteria: { ...DEFAULT_POOL_FILTER, ...parsed.criteria },
-      sidebarOpen: parsed.sidebarOpen ?? true,
+      sidebarOpen: parsed.sidebarOpen ?? false,
     }
   } catch {
     return null
