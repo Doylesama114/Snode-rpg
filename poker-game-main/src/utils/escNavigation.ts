@@ -7,6 +7,7 @@ const ESC_PARENT: Record<string, string | 'launcher' | null> = {
   '/multiplayer': '/',
   '/game/multiplayer': '/multiplayer',
   '/deck-builder': '/',
+  '/settings': '/',
   '/card-game': '/',
   '/account-setup': null,
 }

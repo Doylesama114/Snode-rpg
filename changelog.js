@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6085',
+    date: '2026-07-05',
+    changes: [
+      '炉石式出牌/重铸飞牌动画',
+      '首页设置页可跳过动画'
+    ]
+  },
+
+
+  {
     version: '1.0.6084',
     date: '2026-07-05',
     changes: [

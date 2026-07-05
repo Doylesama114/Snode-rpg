@@ -40,6 +40,11 @@ const router = createRouter({
             path: '/deck-builder',
             name: 'deckBuilder',
             component: () => import('../views/Game/DeckBuilder.vue')
+        },
+        {
+            path: '/settings',
+            name: 'gameSettings',
+            component: () => import('../views/Game/GameSettings.vue')
         }
     ]
 })

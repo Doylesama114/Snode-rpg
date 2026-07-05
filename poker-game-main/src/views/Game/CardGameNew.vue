@@ -2,7 +2,9 @@
 import { useGame } from '@/composables/useGameNew'
 import type { ReforgeOption } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
+import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
+import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
 
 const { 
@@ -43,6 +45,17 @@ const {
   onFieldCardClick,
   closePinned,
 } = useFieldCardDetail()
+
+const { animState } = useGameAnimations()
+
+function slotFlashKey(playerId: string, slotIndex: number) {
+  return `${playerId}-${slotIndex}`
+}
+
+function isSlotFlashing(playerId: string, slotIndex: number) {
+  const f = animState.landFlash
+  return f && f.fieldOwnerId === playerId && f.slotIndex === slotIndex
+}
 
 const reforgeOptions = ref<ReforgeOption[]>([])
 
@@ -181,6 +194,8 @@ function playerIndex(playerId: string) {
         v-for="player in layoutPlayers"
         :key="player.id"
         class="player-cell"
+        :data-player-id="player.id"
+        :data-fly-origin="player.id"
         :class="{
           'is-human': player.id === 'player',
           'is-ai': player.id.startsWith('ai'),
@@ -205,8 +220,10 @@ function playerIndex(playerId: string) {
               v-for="(slot, si) in player.field.filter(s => !s.isExtra)"
               :key="si"
               class="field-slot"
+              :data-field-slot="slotFlashKey(player.id, player.field.indexOf(slot))"
               :class="{
                 'has-card': slot.card,
+                'slot-land-flash': isSlotFlashing(player.id, player.field.indexOf(slot)),
                 'selectable': (player.id === 'player' && (isSlotAvailable(player.field.indexOf(slot)) || (gameState.phase === 'selectTarget' && slot.card)))
                   || isCrossPlayerSlotAvailable(playerIndex(player.id), player.field.indexOf(slot)),
                 'selected': player.id === 'player' && gameState.selectedSlot === player.field.indexOf(slot)
@@ -278,6 +295,7 @@ function playerIndex(playerId: string) {
               v-for="(card, ci) in player.hand"
               :key="ci"
               class="hand-card"
+              :data-hand-card="player.id + '-' + ci"
               :class="{
                 'playable': isCardPlayable(ci),
                 'disabled': !isCardPlayable(ci) && !reforgeState.active,
@@ -326,6 +344,8 @@ function playerIndex(playerId: string) {
         </div>
       </div>
     </div>
+
+    <GameAnimationLayer />
 
     <Teleport to="body">
       <div v-if="isPreGame" class="pregame-overlay">
@@ -546,6 +566,16 @@ function playerIndex(playerId: string) {
 .field-slot.selected {
   border-color: #a46d1f;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.field-slot.slot-land-flash {
+  animation: slot-land-pulse 320ms ease-out;
+}
+
+@keyframes slot-land-pulse {
+  0% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
+  40% { box-shadow: 0 0 24px rgba(164, 109, 31, 0.85); transform: scale(1.06); border-color: #a46d1f; }
+  100% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
 }
 
 .field-card {

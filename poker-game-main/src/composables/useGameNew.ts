@@ -2,10 +2,12 @@ import type { GameState, Player, Card, ReforgeOption, FieldSlot, AccountState, A
 import { createDeck, shuffleDeck, initializeCardDatabase } from '@/data/cards'
 import { createDeckFromCardIds, getDefaultDeckCardIds } from '@/data/cardDatabase'
 import { EffectManager } from '@/game/effectManager'
+import { useGameAnimations } from '@/composables/useGameAnimations'
 
 export function useGame() {
   // 初始化卡牌数据库
   initializeCardDatabase()
+  const animations = useGameAnimations()
 
   // 创建初始槽位
   function createInitialSlots(): FieldSlot[] {
@@ -67,6 +69,7 @@ export function useGame() {
 
   // 初始化游戏
   function initGame(playerCount: number = 2) {
+    animations.resetAnimations()
     // 构建玩家数组：人类玩家(index 0) + AI玩家
     const players: Player[] = [
       {
@@ -429,7 +432,7 @@ export function useGame() {
   }
 
   // 打出卡牌到指定槽位（可选 targetPlayerIndex 跨玩家部署）
-  function playCardToSlot(cardIndex: number, slotIndex: number, targetPlayerIndex?: number) {
+  async function playCardToSlot(cardIndex: number, slotIndex: number, targetPlayerIndex?: number) {
     const player = currentPlayer.value
     const card = player.hand[cardIndex]
     
@@ -445,7 +448,22 @@ export function useGame() {
       handleQuickPlayCard(card, player)
       return
     }
+
+    const savedHandIndex = cardIndex
+    const fieldOwnerId = fieldOwner.id
     
+    // 人类玩家：先飞牌（手牌仍在 DOM 上），再结算
+    if (!player.id.startsWith('ai')) {
+      await animations.playCardFly({
+        kind: 'deploy',
+        card,
+        playerId: player.id,
+        fieldOwnerId,
+        slotIndex,
+        handIndex: savedHandIndex,
+      })
+    }
+
     // 支付费用
     const playCost = EffectManager.getEffectivePlayCost(card, player)
     player.currentCost -= playCost
@@ -461,8 +479,15 @@ export function useGame() {
     }
     EffectManager.consumeTacticPlayFreeIfMatch(card, player)
     
-    // AI隐藏卡牌
+    // AI隐藏卡牌 — 背面飞入后再加入隐藏列表
     if (player.id.startsWith('ai')) {
+      await animations.playCardFly({
+        kind: 'hidden',
+        playerId: player.id,
+        fieldOwnerId,
+        slotIndex,
+        showBack: true,
+      })
       if (!aiHiddenCards.value[player.id]) {
         aiHiddenCards.value[player.id] = []
       }
@@ -471,8 +496,8 @@ export function useGame() {
       gameState.value.selectedCard = undefined
       gameState.value.phase = 'decision'
     } else {
-      // 玩家直接部署
       deployCard(card, fieldOwner, slotIndex)
+      await animations.flashLand(fieldOwnerId, slotIndex)
     }
   }
 
@@ -815,7 +840,7 @@ export function useGame() {
   }
 
   /** 场地已满时直接打出战术牌（不占部署格） */
-  function playTacticDirect(cardIndex: number) {
+  async function playTacticDirect(cardIndex: number) {
     const player = currentPlayer.value
     const card = player.hand[cardIndex]
     if (!card || card.type !== 'tactic') return
@@ -825,6 +850,17 @@ export function useGame() {
       gameState.value.message = `费用不足！需要 ${playCost}，当前 ${player.currentCost}`
       return
     }
+
+    const savedHandIndex = cardIndex
+
+    await animations.playCardFly({
+      kind: 'tactic',
+      card,
+      playerId: player.id,
+      fieldOwnerId: player.id,
+      slotIndex: 0,
+      handIndex: savedHandIndex,
+    })
 
     player.currentCost -= playCost
     player.hand.splice(cardIndex, 1)
@@ -944,8 +980,11 @@ export function useGame() {
   }
 
   // 执行重铸
-  function executeReforge(options: [ReforgeOption, ReforgeOption]) {
+  async function executeReforge(options: [ReforgeOption, ReforgeOption]) {
     const player = currentPlayer.value
+
+    await animations.playReforge({ playerId: player.id, options })
+
     let message = `${player.name} 重铸：`
     
     gameState.value.phase = 'draw'
@@ -989,7 +1028,8 @@ export function useGame() {
       revealAICards()
     }
     
-    setTimeout(() => endTurn(), 1500)
+    await animations.wait(400)
+    endTurn()
   }
 
   // 选择重铸手牌
@@ -1116,7 +1156,7 @@ export function useGame() {
   }
 
   // AI回合
-  function aiTurn() {
+  async function aiTurn() {
     if (gameState.value.phase === 'gameOver') return
     
     const ai = currentPlayer.value
@@ -1125,7 +1165,8 @@ export function useGame() {
     const aiTotalCards = filledMainSlots + aiHiddenCount
     const restrictions = gameState.value.playerRestrictions?.[ai.id]
     if (restrictions?.includes('cannotPlay')) {
-      setTimeout(() => switchToNextPlayer(), 800)
+      await animations.wait(800)
+      switchToNextPlayer()
       return
     }
     
@@ -1141,12 +1182,10 @@ export function useGame() {
       const cardIndex = ai.hand.indexOf(card)
 
       if (card.type === 'tactic' && getAvailableSlots(ai, card).length === 0 && countMainFieldCards(ai) >= 6) {
-        playTacticDirect(cardIndex)
-        setTimeout(() => {
-          if (gameState.value.phase !== 'gameOver') {
-            switchToNextPlayer()
-          }
-        }, 1500)
+        await playTacticDirect(cardIndex)
+        if (gameState.value.phase !== 'gameOver') {
+          switchToNextPlayer()
+        }
         return
       }
 
@@ -1154,22 +1193,22 @@ export function useGame() {
       
       if (availableSlots.length > 0) {
         const slotIndex = availableSlots[0]
-        playCardToSlot(cardIndex, slotIndex)
+        await playCardToSlot(cardIndex, slotIndex)
         
         gameState.value.message = `${ai.name} 打出了一张牌（已隐藏），等待玩家操作...`
         
-        setTimeout(() => {
-          if (gameState.value.phase !== 'gameOver') {
-            switchToNextPlayer()
-          }
-        }, 1500)
+        await animations.wait(400)
+        if (gameState.value.phase !== 'gameOver') {
+          switchToNextPlayer()
+        }
         return
       }
     }
     
     if (restrictions?.includes('tacticsOnly')) {
       gameState.value.message = `${ai.name} 无战术牌可出，跳过回合`
-      setTimeout(() => switchToNextPlayer(), 800)
+      await animations.wait(800)
+      switchToNextPlayer()
       return
     }
 
@@ -1177,34 +1216,34 @@ export function useGame() {
     const options: [ReforgeOption, ReforgeOption] = ['gainCost', 'gainPower']
     gameState.value.message = `${ai.name} 选择了重铸`
     
-    setTimeout(() => {
-      if (gameState.value.phase === 'gameOver') return
-      
-      const aiPlayer = currentPlayer.value
-      let message = `${aiPlayer.name} 重铸：`
-      
-      options.forEach((option, index) => {
-        switch (option) {
-          case 'gainCost':
-            aiPlayer.currentCost += 2
-            message += ` 恢复2费用`
-            break
-          case 'gainPower':
-            aiPlayer.bonusPower += 1
-            message += ` 总战力+1`
-            break
-        }
-        if (index === 0) message += ' +'
-      })
-      
-      gameState.value.message = message
-      
-      setTimeout(() => {
-        if (gameState.value.phase !== 'gameOver') {
-          switchToNextPlayer()
-        }
-      }, 1000)
-    }, 1000)
+    await animations.wait(600)
+    if (gameState.value.phase === 'gameOver') return
+
+    await animations.playReforge({ playerId: ai.id, options })
+
+    const aiPlayer = currentPlayer.value
+    let message = `${aiPlayer.name} 重铸：`
+    
+    options.forEach((option, index) => {
+      switch (option) {
+        case 'gainCost':
+          aiPlayer.currentCost += 2
+          message += ` 恢复2费用`
+          break
+        case 'gainPower':
+          aiPlayer.bonusPower += 1
+          message += ` 总战力+1`
+          break
+      }
+      if (index === 0) message += ' +'
+    })
+    
+    gameState.value.message = message
+    
+    await animations.wait(400)
+    if (gameState.value.phase !== 'gameOver') {
+      switchToNextPlayer()
+    }
   }
 
   // 检查卡牌是否可打出
