@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6079',
+    date: '2026-07-05',
+    changes: [
+      '修复Electron启动台斯诺德对决链接白屏(chrome-error)'
+    ]
+  },
+
+
+  {
     version: '1.0.6078',
     date: '2026-07-05',
     changes: [
