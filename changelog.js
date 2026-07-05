@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6115',
+    date: '2026-07-05',
+    changes: [
+      'Bug反馈按钮恢复右侧居中，避免与启动台/筛选面板重叠'
+    ]
+  },
+
+
+  {
     version: '1.0.6114',
     date: '2026-07-05',
     changes: [
