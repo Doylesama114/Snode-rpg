@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6093',
+    date: '2026-07-05',
+    changes: [
+      '广播下拉面板与历史记录',
+      '法师塔每回合额外魔法战术'
+    ]
+  },
+
+
+  {
     version: '1.0.6092',
     date: '2026-07-05',
     changes: [

@@ -427,7 +427,38 @@ export class EffectManager {
   static canPlayHandCard(card: Card, player: Player, game?: GameState): boolean {
     if (game && this.isHandCardLocked(player, card, game)) return false
     if (!this.meetsPlayTypeRestriction(card, player)) return false
+    if (player.hasPlayedThisTurn && player.canPlayExtra && !this.meetsExtraPlayRestriction(card, player)) {
+      return false
+    }
     return this.meetsPlayRequirements(card, player, game)
+  }
+
+  static meetsExtraPlayRestriction(card: Card, player: Player): boolean {
+    const r = player.extraPlayRestriction
+    if (!r) return true
+    if (r.cardType && card.type !== r.cardType) return false
+    if (r.keywords?.length && !this.hasAnyKeyword(card, r.keywords)) return false
+    return true
+  }
+
+  static applyExtraPlayEffect(effect: CardEffect, ownerCard: Card | null, player: Player): string[] {
+    player.canPlayExtra = true
+    if (effect.extraPlayCardType || effect.extraPlayKeywords?.length) {
+      player.extraPlayRestriction = {
+        cardType: effect.extraPlayCardType,
+        keywords: effect.extraPlayKeywords,
+      }
+      const kw = effect.extraPlayKeywords?.join('') ?? ''
+      const typeLabel = effect.extraPlayCardType === 'tactic' ? '战术' : (effect.extraPlayCardType ?? '')
+      const from = ownerCard?.name ?? '效果'
+      return [`${from}：本回合可额外打出一张${kw}${typeLabel}牌`]
+    }
+    return ['效果：可以再打出一张牌！']
+  }
+
+  static consumeExtraPlay(player: Player) {
+    player.canPlayExtra = false
+    player.extraPlayRestriction = undefined
   }
 
   static meetsPlayTypeRestriction(card: Card, player: Player): boolean {
@@ -1384,8 +1415,7 @@ export class EffectManager {
     }
 
     if (effect.type === 'extraPlay') {
-      player.canPlayExtra = true
-      messages.push('效果：可以再打出一张牌！')
+      messages.push(...this.applyExtraPlayEffect(effect, card, player))
       return { messages }
     }
 
@@ -1999,9 +2029,12 @@ export class EffectManager {
 
     if (effect.d6Min !== undefined) {
       const roll = this.rollD6()
+      const d6Label = `${ownerCard.name} 掷D6=${roll}`
       if (roll < effect.d6Min) {
+        messages.push(`${d6Label}，效果未触发`)
         return { messages }
       }
+      messages.push(`${d6Label}，效果触发`)
     }
 
     if (effect.type === 'restoreEnergy') {
@@ -2048,12 +2081,18 @@ export class EffectManager {
 
     if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
       const count = effect.drawCount || (effect.value as number) || 1
+      const drawnNames: string[] = []
       for (let i = 0; i < count; i++) {
         if (player.deck.length > 0) {
           const drawn = player.deck.pop()!
           player.hand.push(drawn)
-          messages.push(`${player.name} 抽到了${drawn.name}`)
+          drawnNames.push(drawn.name)
         }
+      }
+      if (drawnNames.length) {
+        messages.push(`${ownerCard.name}：${player.name} 抽到了${drawnNames.join('、')}`)
+      } else {
+        messages.push(`${ownerCard.name}：${player.name} 牌库已空，无法抽牌`)
       }
       return { messages }
     }
@@ -2136,6 +2175,11 @@ export class EffectManager {
 
     if (effect.type === 'effectBranch') {
       return { messages: this.resolveEffectBranch(effect, ownerCard, player, game, effect.branchDefault ?? 'A', 0) }
+    }
+
+    if (effect.type === 'extraPlay') {
+      messages.push(...this.applyExtraPlayEffect(effect, ownerCard, player))
+      return { messages }
     }
 
     return { messages }
@@ -2316,12 +2360,15 @@ export class EffectManager {
             }
             continue
           }
-          messages.push(...this.autoResolveEffectBranch(effect, slot.card, player, game))
+          messages.push(...this.autoResolveEffectBranch(effect, slot.card, player, game)
+            .map(m => `[${slot.card!.name}] ${m}`))
           continue
         }
 
         const result = this.applyRoundEffect(effect, slot.card, player, game)
-        messages.push(...result.messages)
+        for (const m of result.messages) {
+          messages.push(`[${slot.card!.name}] ${m}`)
+        }
       }
     }
 

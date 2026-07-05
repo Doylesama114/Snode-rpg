@@ -331,6 +331,14 @@ export function useGameClient(initialPlayerId = '') {
       return false
     }
 
+    if (hasPlayedThisTurn.value && canPlayExtra.value) {
+      if (!EffectManager.meetsExtraPlayRestriction(card as Card, myPlayer.value)) return false
+    }
+
+    if (!EffectManager.canPlayHandCard(card as Card, myPlayer.value, gameState.value)) {
+      return false
+    }
+
     return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
   }
 

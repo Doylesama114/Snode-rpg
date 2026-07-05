@@ -457,9 +457,12 @@ class EffectManager {
 
     if (effect.d6Min !== undefined) {
       const roll = EffectManager.rollD6()
+      const d6Label = `${ownerCard.name} 掷D6=${roll}`
       if (roll < effect.d6Min) {
+        messages.push(`${d6Label}，效果未触发`)
         return { messages }
       }
+      messages.push(`${d6Label}，效果触发`)
     }
 
     if (effect.type === 'restoreEnergy') {
@@ -506,12 +509,18 @@ class EffectManager {
 
     if (effect.type === 'draw' && (effect.drawCount || effect.value)) {
       const count = effect.drawCount || effect.value || 1
+      const drawnNames = []
       for (let i = 0; i < count; i++) {
         if (player.deck.length > 0) {
           const drawn = player.deck.pop()
           player.hand.push(drawn)
-          messages.push(`${player.name} 抽到了${drawn.name}`)
+          drawnNames.push(drawn.name)
         }
+      }
+      if (drawnNames.length) {
+        messages.push(`${ownerCard.name}：${player.name} 抽到了${drawnNames.join('、')}`)
+      } else {
+        messages.push(`${ownerCard.name}：${player.name} 牌库已空，无法抽牌`)
       }
       return { messages }
     }
@@ -594,6 +603,11 @@ class EffectManager {
 
     if (effect.type === 'effectBranch') {
       return { messages: EffectManager.autoResolveEffectBranch(effect, ownerCard, player, gameState) }
+    }
+
+    if (effect.type === 'extraPlay') {
+      messages.push(...EffectManager.applyExtraPlayEffect(effect, ownerCard, player))
+      return { messages }
     }
 
     return { messages }
@@ -758,12 +772,15 @@ class EffectManager {
             }
             continue
           }
-          messages.push(...EffectManager.autoResolveEffectBranch(effect, slot.card, player, gameState))
+          messages.push(...EffectManager.autoResolveEffectBranch(effect, slot.card, player, gameState)
+            .map(m => `[${slot.card.name}] ${m}`))
           continue
         }
 
         const result = EffectManager.applyRoundEffect(effect, slot.card, player, gameState)
-        messages.push(...result.messages)
+        for (const m of result.messages) {
+          messages.push(`[${slot.card.name}] ${m}`)
+        }
       }
     }
 
@@ -1223,7 +1240,38 @@ class EffectManager {
     const gameState = game?.gameState || game
     if (gameState && EffectManager.isHandCardLocked(player, card, gameState)) return false
     if (!EffectManager.meetsPlayTypeRestriction(card, player)) return false
+    if (player.hasPlayedThisTurn && player.canPlayExtra && !EffectManager.meetsExtraPlayRestriction(card, player)) {
+      return false
+    }
     return EffectManager.meetsPlayRequirements(card, player, game)
+  }
+
+  static meetsExtraPlayRestriction(card, player) {
+    const r = player.extraPlayRestriction
+    if (!r) return true
+    if (r.cardType && card.type !== r.cardType) return false
+    if (r.keywords?.length && !EffectManager.hasAnyKeyword(card, r.keywords)) return false
+    return true
+  }
+
+  static applyExtraPlayEffect(effect, ownerCard, player) {
+    player.canPlayExtra = true
+    if (effect.extraPlayCardType || effect.extraPlayKeywords?.length) {
+      player.extraPlayRestriction = {
+        cardType: effect.extraPlayCardType,
+        keywords: effect.extraPlayKeywords,
+      }
+      const kw = effect.extraPlayKeywords?.join('') ?? ''
+      const typeLabel = effect.extraPlayCardType === 'tactic' ? '战术' : (effect.extraPlayCardType ?? '')
+      const from = ownerCard?.name ?? '效果'
+      return [`${from}：本回合可额外打出一张${kw}${typeLabel}牌`]
+    }
+    return ['效果：可以再打出一张牌！']
+  }
+
+  static consumeExtraPlay(player) {
+    player.canPlayExtra = false
+    player.extraPlayRestriction = undefined
   }
 
   static meetsPlayTypeRestriction(card, player) {
@@ -1995,8 +2043,7 @@ class EffectManager {
     }
 
     if (effect.type === 'extraPlay') {
-      player.canPlayExtra = true
-      messages.push('效果：可以再打出一张牌！')
+      messages.push(...EffectManager.applyExtraPlayEffect(effect, card, player))
       return { messages }
     }
 
@@ -2087,8 +2134,7 @@ class EffectManager {
     const messages = []
 
     if (effect.type === 'extraPlay') {
-      player.canPlayExtra = true
-      messages.push('效果：可以再打出一张牌！')
+      messages.push(...EffectManager.applyExtraPlayEffect(effect, card, player))
       return { messages }
     }
 
@@ -2779,7 +2825,7 @@ class GameEngine {
     player.currentCost -= playCost
     
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
-      player.canPlayExtra = false
+      EffectManager.consumeExtraPlay(player)
     } else {
       player.hasPlayedThisTurn = true
     }
@@ -2850,7 +2896,7 @@ class GameEngine {
     player.hand.splice(cardIndex, 1)
     player.currentCost -= playCost
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
-      player.canPlayExtra = false
+      EffectManager.consumeExtraPlay(player)
     } else {
       player.hasPlayedThisTurn = true
     }
@@ -3128,7 +3174,7 @@ class GameEngine {
     player.hand.splice(cardIndex, 1)
     player.currentCost -= playCost
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
-      player.canPlayExtra = false
+      EffectManager.consumeExtraPlay(player)
     } else {
       player.hasPlayedThisTurn = true
     }
@@ -3381,6 +3427,7 @@ class GameEngine {
     this.gameState.players.forEach((player, index) => {
       player.hasPlayedThisTurn = false
       player.canPlayExtra = false
+      player.extraPlayRestriction = undefined
       player.unitPlayPowerBonus = 0
       
       // 如果是填满场地或无法出牌的玩家，在最后一回合跳过操作

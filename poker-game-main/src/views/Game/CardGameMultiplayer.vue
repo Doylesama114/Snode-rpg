@@ -6,12 +6,14 @@ import { useGameClient } from '@/composables/useGameClient'
 import type { ReforgeOption, Card, GameState } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
+import GameBroadcastPanel from '@/components/GameBroadcastPanel.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { diffFieldAnimations, diffDrawEvents, diffPhaseBanner, fieldAnimKey } from '@/utils/fieldAnimationDiff'
 import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
+import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
 
 const router = useRouter()
 const multiplayer = useMultiplayer()
@@ -25,6 +27,7 @@ const {
 } = animations
 const localAnimSkip = ref(new Set<string>())
 let lastMpFloatedMessage = ''
+let prevMpBroadcastMessage = ''
 
 // 使用客户端游戏逻辑
 const game = useGameClient(multiplayer.myPlayerId.value || '')
@@ -134,6 +137,8 @@ async function handleGameStateUpdate(newState: GameState) {
   }
   
   game.updateGameState(newState)
+  syncBroadcastFromMessage(newState, prevMpBroadcastMessage)
+  prevMpBroadcastMessage = newState.message ?? ''
   
   // 检查是否需要重置决策状态（新回合开始）
   if (newState.phase === 'decision') {
@@ -451,7 +456,12 @@ function leaveGameToLobby(fromGameOver = false) {
         <span v-if="game.allPlayersReady.value" class="ready-status">所有玩家准备完毕，进入下一回合...</span>
         <span v-else-if="game.myReady.value" class="ready-status">等待其他玩家...</span>
       </div>
-      <div class="message">{{ game.gameState.value.message }}</div>
+      <GameBroadcastPanel
+        v-if="game.gameState.value"
+        :entries="game.gameState.value.broadcastLog ?? []"
+        :fallback="game.gameState.value.message"
+        :round="game.gameState.value.round"
+      />
     </div>
 
     <!-- N-player grid -->

@@ -3,10 +3,12 @@ import { useGame } from '@/composables/useGameNew'
 import type { ReforgeOption } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
+import GameBroadcastPanel from '@/components/GameBroadcastPanel.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
-import { computed, ref, unref } from 'vue'
+import { computed, ref, unref, watch } from 'vue'
+import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
 
 const gameApi = useGame()
 const { 
@@ -107,6 +109,13 @@ function handleSkipEffectBranch() {
   skipEffectBranch()
   effectBranchDiscardIndex.value = null
 }
+
+let prevBroadcastMessage = ''
+watch(() => gameState.value.message, (msg) => {
+  if (!msg) return
+  syncBroadcastFromMessage(gameState.value, prevBroadcastMessage)
+  prevBroadcastMessage = msg
+})
 
 const isPreGame = computed(() =>
   gameState.value.round === 0
@@ -268,7 +277,11 @@ function playerIndex(playerId: string) {
         <span v-if="gameState.isFinalRound" class="final-round">最后一回合！</span>
         <span v-if="isPreGame" class="pregame-badge">未开始</span>
       </div>
-      <div class="message">{{ gameState.message }}</div>
+      <GameBroadcastPanel
+        :entries="gameState.broadcastLog ?? []"
+        :fallback="gameState.message"
+        :round="gameState.round"
+      />
     </div>
 
     <!-- N-player areas（单列滚动，每行一个玩家场地） -->

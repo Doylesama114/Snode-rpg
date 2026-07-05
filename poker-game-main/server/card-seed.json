@@ -2554,8 +2554,10 @@
     "cost": 0,
     "effects": [
       {
-        "timing": "onDeploy",
-        "type": "createSlot",
+        "timing": "roundStart",
+        "type": "extraPlay",
+        "extraPlayCardType": "tactic",
+        "extraPlayKeywords": ["魔法"],
         "description": "每个回合你可以额外打出一张拥有\"魔法\"关键词的战术牌"
       }
     ],

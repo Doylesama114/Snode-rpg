@@ -6,6 +6,7 @@ import { useGameAnimations } from '@/composables/useGameAnimations'
 import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { parsePowerPulsesFromSegment } from '@/utils/parsePowerPulse'
 import { findFieldSlotForCard } from '@/utils/fieldSlot'
+import { pushBroadcastEntries, clearBroadcastLog } from '@/utils/gameBroadcast'
 
 export function useGame() {
   // 初始化卡牌数据库
@@ -170,7 +171,9 @@ export function useGame() {
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
     lastFloatedMessage = ''
+    clearBroadcastLog(gameState.value)
     gameState.value.message = `回合 1 - AI ${gameState.value.currentPlayerIndex}先手`
+    pushBroadcastEntries(gameState.value, gameState.value.message)
     
     nextTick(() => void startDrawPhase())
   }
@@ -209,6 +212,7 @@ export function useGame() {
     // 重置当前玩家的出牌状态
     currentPlayer.value.hasPlayedThisTurn = false
     currentPlayer.value.canPlayExtra = false
+    currentPlayer.value.extraPlayRestriction = undefined
     reforgeState.value.hasChosen = false
     
     if (currentPlayer.value.skipDrawNextRound) {
@@ -246,7 +250,11 @@ export function useGame() {
       { interactivePlayerId: 'player' },
     )
     if (turnStart.messages.length) {
-      gameState.value.message += ' | ' + turnStart.messages.join(' | ')
+      const combined = turnStart.messages.join(' | ')
+      gameState.value.message = gameState.value.message
+        ? `${gameState.value.message} | ${combined}`
+        : combined
+      pushBroadcastEntries(gameState.value, turnStart.messages)
     }
     if (turnStart.pendingBranch) {
       if (!gameState.value.pendingEffectBranches) gameState.value.pendingEffectBranches = {}
@@ -526,7 +534,7 @@ export function useGame() {
     
     // 标记已出牌
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
-      player.canPlayExtra = false
+      EffectManager.consumeExtraPlay(player)
     } else {
       player.hasPlayedThisTurn = true
     }
@@ -875,7 +883,7 @@ export function useGame() {
       player.currentCost -= playCost
       player.hand.splice(cardIndex, 1)
       if (player.hasPlayedThisTurn && player.canPlayExtra) {
-        player.canPlayExtra = false
+        EffectManager.consumeExtraPlay(player)
       } else {
         player.hasPlayedThisTurn = true
       }
@@ -971,7 +979,7 @@ export function useGame() {
     player.currentCost -= playCost
     player.hand.splice(cardIndex, 1)
     if (player.hasPlayedThisTurn && player.canPlayExtra) {
-      player.canPlayExtra = false
+      EffectManager.consumeExtraPlay(player)
     } else {
       player.hasPlayedThisTurn = true
     }
@@ -1459,6 +1467,14 @@ export function useGame() {
     }
     
     if (hasPlayedThisTurn.value && !canPlayExtra.value) {
+      return false
+    }
+
+    if (hasPlayedThisTurn.value && canPlayExtra.value) {
+      if (!EffectManager.meetsExtraPlayRestriction(card, currentPlayer.value)) return false
+    }
+
+    if (!EffectManager.canPlayHandCard(card, currentPlayer.value, gameState.value)) {
       return false
     }
     

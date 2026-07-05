@@ -269,8 +269,9 @@ export interface CardEffect {
   scryRestToBottom?: boolean
   /** peekDeckBottom：是否加入手牌 */
   peekTake?: boolean
-  /** effectBranch：无 UI 时的默认分支 */
-  branchDefault?: string
+  /** extraPlay：额外出牌须匹配的类型/关键词（法师塔） */
+  extraPlayCardType?: CardType
+  extraPlayKeywords?: string[]
   /** effectBranch：分支子效果 */
   branches?: Record<string, Partial<CardEffect>>
   /** retrieveFromDiscard：随机取牌 */
@@ -365,6 +366,8 @@ export interface Player {
   currentCost: number
   bonusPower: number
   canPlayExtra: boolean   // 是否可以额外出牌
+  /** 额外出牌限制（法师塔：仅魔法战术） */
+  extraPlayRestriction?: { cardType?: CardType; keywords?: string[] }
   hasPlayedThisTurn: boolean  // 本回合是否已出牌
   pendingNextAttribute?: string  // 下一张部署牌属性覆盖（元素墙）
   /** 气泡酒等：之后打出的每张单位牌额外战力 */
@@ -411,6 +414,15 @@ export interface PendingEffectBranch {
   oncePerRound?: boolean
 }
 
+/** 广播日志条目 */
+export interface BroadcastEntry {
+  id: string
+  round: number
+  text: string
+  source?: string
+  timestamp: number
+}
+
 // 游戏状态
 export interface GameState {
   players: Player[]                     // N-player (was [Player, Player])
@@ -453,6 +465,8 @@ export interface GameState {
   playersWithNegativeCost?: string[]
   /** effectBranch 待选（按 playerId） */
   pendingEffectBranches?: Record<string, PendingEffectBranch>
+  /** 广播历史（最新在前） */
+  broadcastLog?: BroadcastEntry[]
   accountState?: AccountState
 }
 
