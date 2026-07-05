@@ -19,6 +19,14 @@ export interface FieldFlipEvent {
 
 export type FieldAnimEvent = FieldFlyEvent | FieldFlipEvent
 
+export interface DrawAnimEvent {
+  type: 'draw'
+  playerId: string
+  handIndex: number
+  showBack: boolean
+  card?: Card
+}
+
 function isHiddenCard(card: Card | null | undefined): boolean {
   if (!card) return false
   return card.id === 'hidden' || card.name === '？？？'
@@ -75,4 +83,38 @@ export function diffFieldAnimations(
 export function fieldAnimKey(ev: FieldAnimEvent): string {
   if (ev.type === 'flip') return `flip-${ev.fieldOwnerId}-${ev.slotIndex}`
   return `fly-${ev.fieldOwnerId}-${ev.slotIndex}`
+}
+
+/** 手牌数量增加 → 抽牌飞入动画 */
+export function diffDrawEvents(
+  prev: GameState | null | undefined,
+  next: GameState,
+  myPlayerId: string,
+): DrawAnimEvent[] {
+  if (!prev) return []
+  const events: DrawAnimEvent[] = []
+
+  for (const player of next.players) {
+    const prevPlayer = prev.players.find(p => p.id === player.id)
+    if (!prevPlayer) continue
+
+    const delta = player.hand.length - prevPlayer.hand.length
+    if (delta <= 0) continue
+
+    const isOwn = player.id === myPlayerId
+    for (let i = 0; i < delta; i++) {
+      const hi = prevPlayer.hand.length + i
+      const raw = player.hand[hi]
+      const card = isOwn && raw && typeof raw === 'object' ? (raw as Card) : undefined
+      events.push({
+        type: 'draw',
+        playerId: player.id,
+        handIndex: hi,
+        showBack: !isOwn,
+        card,
+      })
+    }
+  }
+
+  return events
 }

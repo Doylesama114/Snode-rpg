@@ -8,6 +8,8 @@ import {
   getHandSelector,
   getFlyOriginSelector,
   getHiddenCardSelector,
+  getDeckZoneSelector,
+  getHandZoneSelector,
 } from '@/composables/useGameAnimations'
 
 const {
@@ -16,8 +18,10 @@ const {
   completeReforge,
   completeFlip,
   FLY_MS,
+  DRAW_MS,
   REFORGE_STEP_MS,
   FLIP_MS,
+  FLOAT_MS,
 } = useGameAnimations()
 
 const flyStyle = ref<Record<string, string>>({})
@@ -34,6 +38,8 @@ const reforgeStep = ref(0)
 const reforgeVisible = ref(false)
 const reforgePos = ref({ x: 0, y: 0 })
 
+const floatStyles = ref<Array<{ style: Record<string, string>; kind: string; text: string }>>([])
+
 const REFORGE_LABELS: Record<ReforgeOption, string> = {
   gainCost: '⚡ +2 费用',
   redraw: '🔄 换牌',
@@ -44,15 +50,6 @@ const landFlashKey = computed(() => {
   const f = animState.landFlash
   return f ? `${f.fieldOwnerId}-${f.slotIndex}` : null
 })
-
-function cardMini(card: Card) {
-  return {
-    name: card.name,
-    cost: card.cost,
-    power: card.type === 'unit' ? card.basePower : null,
-    type: card.type,
-  }
-}
 
 watch(
   () => animState.flying,
@@ -86,6 +83,39 @@ watch(
     startFlip(payload)
   },
 )
+
+watch(
+  () => animState.floatTexts,
+  (items) => {
+    if (!items.length) {
+      floatStyles.value = []
+      return
+    }
+    layoutFloats(items)
+  },
+)
+
+function layoutFloats(items: typeof animState.floatTexts) {
+  const styles: typeof floatStyles.value = []
+  items.forEach((item, i) => {
+    const anchor = item.slotIndex !== undefined
+      ? document.querySelector(getFlySelector(item.playerId, item.slotIndex))
+      : document.querySelector(getFlyOriginSelector(item.playerId))
+    const rect = anchor?.getBoundingClientRect()
+    const x = (rect?.left ?? window.innerWidth / 2) + (rect?.width ?? 0) / 2
+    const y = (rect?.top ?? 120) - 8 - i * 28
+    styles.push({
+      kind: item.kind,
+      text: item.text,
+      style: {
+        left: `${x}px`,
+        top: `${y}px`,
+        animationDelay: `${i * 80}ms`,
+      },
+    })
+  })
+  floatStyles.value = styles
+}
 
 function startFlip(payload: NonNullable<typeof animState.flipping>) {
   const originSel = payload.hiddenOriginId
@@ -123,13 +153,52 @@ function startFlip(payload: NonNullable<typeof animState.flipping>) {
   }, FLIP_MS + 40)
 }
 
+function resolveFlyEndpoints(payload: NonNullable<typeof animState.flying>) {
+  const { kind, playerId, fieldOwnerId, slotIndex, handIndex } = payload
+
+  if (kind === 'draw' || kind === 'reforge-in') {
+    const fromEl = document.querySelector(getDeckZoneSelector(playerId))
+    const toSel = handIndex !== undefined && document.querySelector(getHandSelector(playerId, handIndex))
+      ? getHandSelector(playerId, handIndex)
+      : getHandZoneSelector(playerId)
+    return { fromEl, toEl: document.querySelector(toSel) }
+  }
+
+  if (kind === 'reforge-out') {
+    const fromSel = handIndex !== undefined
+      ? getHandSelector(playerId, handIndex)
+      : getHandZoneSelector(playerId)
+    return {
+      fromEl: document.querySelector(fromSel),
+      toEl: document.querySelector(getDeckZoneSelector(playerId)),
+    }
+  }
+
+  if (kind === 'tactic-fade') {
+    const fromSel = handIndex !== undefined
+      ? getHandSelector(playerId, handIndex)
+      : getFlyOriginSelector(playerId)
+    const fromEl = document.querySelector(fromSel)
+    const playerEl = document.querySelector(`[data-player-id="${playerId}"]`)
+    return { fromEl, toEl: playerEl, fadeAtCenter: true }
+  }
+
+  const fromSel = handIndex !== undefined
+    ? getHandSelector(playerId, handIndex)
+    : getFlyOriginSelector(playerId)
+  const toSel = fieldOwnerId !== undefined && slotIndex !== undefined
+    ? getFlySelector(fieldOwnerId, slotIndex)
+    : getFlyOriginSelector(playerId)
+
+  return {
+    fromEl: document.querySelector(fromSel),
+    toEl: document.querySelector(toSel),
+    shrink: kind === 'absorb',
+  }
+}
+
 function startFly(payload: NonNullable<typeof animState.flying>) {
-  const fromSel = payload.handIndex !== undefined
-    ? getHandSelector(payload.playerId, payload.handIndex)
-    : getFlyOriginSelector(payload.playerId)
-  const toSel = getFlySelector(payload.fieldOwnerId, payload.slotIndex)
-  const fromEl = document.querySelector(fromSel)
-  const toEl = document.querySelector(toSel)
+  const { fromEl, toEl, fadeAtCenter, shrink } = resolveFlyEndpoints(payload)
   if (!fromEl || !toEl) {
     completeFly()
     return
@@ -146,8 +215,21 @@ function startFly(payload: NonNullable<typeof animState.flying>) {
 
   const startX = from.left + from.width / 2 - w / 2
   const startY = from.top + from.height / 2 - h / 2
-  const endX = to.left + to.width / 2 - w / 2
-  const endY = to.top + to.height / 2 - h / 2
+  let endX = to.left + to.width / 2 - w / 2
+  let endY = to.top + to.height / 2 - h / 2
+
+  if (fadeAtCenter) {
+    endX = to.left + to.width / 2 - w / 2
+    endY = to.top + to.height / 2 - h / 2
+  }
+
+  const duration = payload.kind === 'draw' || payload.kind === 'reforge-in' || payload.kind === 'reforge-out'
+    ? DRAW_MS
+    : FLY_MS
+
+  const endScale = shrink ? '0.35' : fadeAtCenter ? '1.15' : '0.92'
+  const endOpacity = fadeAtCenter ? '0' : '1'
+  const endRotate = shrink ? '0deg' : fadeAtCenter ? '8deg' : '-4deg'
 
   flyStyle.value = {
     width: `${w}px`,
@@ -166,9 +248,9 @@ function startFly(payload: NonNullable<typeof animState.flying>) {
         height: `${h}px`,
         left: `${endX}px`,
         top: `${endY}px`,
-        transform: 'scale(0.92) rotate(-4deg)',
-        opacity: '1',
-        transition: `left ${FLY_MS}ms cubic-bezier(0.2, 0.8, 0.2, 1), top ${FLY_MS}ms cubic-bezier(0.2, 0.8, 0.2, 1), transform ${FLY_MS}ms ease-out`,
+        transform: `scale(${endScale}) rotate(${endRotate})`,
+        opacity: endOpacity,
+        transition: `left ${duration}ms cubic-bezier(0.2, 0.8, 0.2, 1), top ${duration}ms cubic-bezier(0.2, 0.8, 0.2, 1), transform ${duration}ms ease-out, opacity ${duration}ms ease-out`,
       }
     })
   })
@@ -176,7 +258,7 @@ function startFly(payload: NonNullable<typeof animState.flying>) {
   setTimeout(() => {
     flyVisible.value = false
     completeFly()
-  }, FLY_MS + 40)
+  }, duration + 40)
 }
 
 async function startReforge(playerId: string, options: ReforgeOption[]) {
@@ -216,6 +298,16 @@ defineExpose({ landFlashKey })
       </div>
     </div>
 
+    <div
+      v-for="(ft, i) in floatStyles"
+      :key="i"
+      class="float-text"
+      :class="`float-${ft.kind}`"
+      :style="ft.style"
+    >
+      {{ ft.text }}
+    </div>
+
     <div v-if="reforgeVisible && animState.reforge" class="reforge-layer" :style="{ left: reforgePos.x + 'px', top: reforgePos.y + 'px' }">
       <div
         v-for="(opt, i) in animState.reforge.options"
@@ -249,6 +341,45 @@ defineExpose({ landFlashKey })
   inset: 0;
   pointer-events: none;
   z-index: 6000;
+}
+
+.float-text {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  z-index: 6100;
+  font-weight: 800;
+  font-size: 15px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  animation: float-rise 1.2s ease-out forwards;
+  white-space: nowrap;
+}
+
+.float-power {
+  color: #c0392b;
+}
+
+.float-cost {
+  color: #a46d1f;
+}
+
+.float-destroy {
+  color: #7f1d1d;
+}
+
+@keyframes float-rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.85);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -12px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -48px) scale(1);
+  }
 }
 
 .flip-scene {

@@ -8,7 +8,8 @@ import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
-import { diffFieldAnimations, fieldAnimKey } from '@/utils/fieldAnimationDiff'
+import { diffFieldAnimations, diffDrawEvents, fieldAnimKey } from '@/utils/fieldAnimationDiff'
+import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
 
@@ -17,6 +18,7 @@ const multiplayer = useMultiplayer()
 const animations = useGameAnimations()
 const { animState } = animations
 const localAnimSkip = ref(new Set<string>())
+let lastMpFloatedMessage = ''
 
 // 使用客户端游戏逻辑
 const game = useGameClient(multiplayer.myPlayerId.value || '')
@@ -77,9 +79,21 @@ async function handleGameStateUpdate(newState: GameState) {
   const prev = game.gameState.value
   const myId = multiplayer.myPlayerId.value || ''
   if (prev && !shouldSkipAnimations()) {
+    const draws = diffDrawEvents(prev, newState, myId)
+    if (draws.length) {
+      await animations.playDrawEvents(draws, localAnimSkip.value)
+    }
     const events = diffFieldAnimations(prev, newState, myId)
     if (events.length) {
       await animations.playFieldEvents(events, localAnimSkip.value)
+    }
+    const anchorId = newState.players[newState.currentPlayerIndex]?.id ?? myId
+    const prevParts = new Set(lastMpFloatedMessage.split('|').map(s => s.trim()).filter(Boolean))
+    const newParts = newState.message.split('|').map(s => s.trim()).filter(s => s && !prevParts.has(s))
+    lastMpFloatedMessage = newState.message
+    const floats = newParts.flatMap(p => parseCombatFloats(p).map(f => ({ ...f, playerId: anchorId })))
+    if (floats.length) {
+      await animations.playFloatTexts(floats)
     }
   }
   
@@ -228,11 +242,9 @@ function onHandCardClick(index: number) {
       if (card && card !== 'hidden' && myId) {
         void (async () => {
           await animations.playCardFly({
-            kind: 'tactic',
+            kind: 'tactic-fade',
             card: card as Card,
             playerId: myId,
-            fieldOwnerId: myId,
-            slotIndex: 0,
             handIndex: index,
           })
           markLocalAnim(`fly-${myId}-0`)
@@ -399,7 +411,7 @@ function leaveGameToLobby(fromGameOver = false) {
             <span :class="{ 'negative-cost': player.currentCost < 0 }">费用: {{ player.currentCost }}</span>
             <span class="power-display">总战力: <strong>{{ game.getTotalPower(index) }}</strong></span>
             <span>手牌: {{ player.handCount || player.hand.length }}</span>
-            <span>牌组: {{ player.deckCount || player.deck.length }}</span>
+            <span :data-deck-zone="player.id">牌组: {{ player.deckCount || player.deck.length }}</span>
           </div>
         </div>
 
@@ -450,7 +462,7 @@ function leaveGameToLobby(fromGameOver = false) {
             <span v-else-if="!game.reforgeState.value.active && game.hasPlayedThisTurn.value && !game.canPlayExtra.value" class="hint-disabled">(已出牌)</span>
             <span v-else-if="!game.reforgeState.value.active && game.canPlayExtra.value" class="hint-extra">(可额外出牌!)</span>
           </div>
-          <div class="hand-cards">
+          <div class="hand-cards" :data-hand-zone="player.id">
             <div
               v-for="(card, ci) in player.hand"
               :key="ci"
@@ -485,7 +497,7 @@ function leaveGameToLobby(fromGameOver = false) {
         <!-- 对手手牌（卡背） -->
         <div v-if="player.id !== multiplayer.myPlayerId.value" class="opponent-hand">
           <div class="hand-label">对手手牌</div>
-          <div class="hand-cards-hidden">
+          <div class="hand-cards-hidden" :data-hand-zone="player.id">
             <div v-for="(card, ci) in player.hand" :key="ci" class="hand-card-back">?</div>
           </div>
         </div>

@@ -208,7 +208,7 @@ function playerIndex(playerId: string) {
             <span :class="{ 'negative-cost': player.currentCost < 0 }">费用: {{ player.currentCost }}</span>
             <span class="power-display">总战力: <strong>{{ getTotalPower(playerIndex(player.id)) }}</strong></span>
             <span>手牌: {{ player.hand.length }}</span>
-            <span>牌组: {{ player.deck.length }}</span>
+            <span :data-deck-zone="player.id">牌组: {{ player.deck.length }}</span>
           </div>
         </div>
 
@@ -296,7 +296,7 @@ function playerIndex(playerId: string) {
             <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hint-disabled">(已出牌)</span>
             <span v-else-if="!reforgeState.active && canPlayExtra" class="hint-extra">(可额外出牌!)</span>
           </div>
-          <div class="hand-cards">
+          <div class="hand-cards" :data-hand-zone="player.id">
             <div
               v-for="(card, ci) in player.hand"
               :key="ci"

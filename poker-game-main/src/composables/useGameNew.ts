@@ -3,11 +3,23 @@ import { createDeck, shuffleDeck, initializeCardDatabase } from '@/data/cards'
 import { createDeckFromCardIds, getDefaultDeckCardIds } from '@/data/cardDatabase'
 import { EffectManager } from '@/game/effectManager'
 import { useGameAnimations } from '@/composables/useGameAnimations'
+import { parseCombatFloats } from '@/utils/parseCombatFloats'
 
 export function useGame() {
   // 初始化卡牌数据库
   initializeCardDatabase()
   const animations = useGameAnimations()
+  let lastFloatedMessage = ''
+
+  async function showNewFloats(anchorPlayerId?: string) {
+    const msg = gameState.value.message
+    const prevParts = new Set(lastFloatedMessage.split('|').map(s => s.trim()).filter(Boolean))
+    const newParts = msg.split('|').map(s => s.trim()).filter(s => s && !prevParts.has(s))
+    lastFloatedMessage = msg
+    const playerId = anchorPlayerId ?? currentPlayer.value.id
+    const floats = newParts.flatMap(p => parseCombatFloats(p).map(f => ({ ...f, playerId })))
+    if (floats.length) await animations.playFloatTexts(floats)
+  }
 
   // 创建初始槽位
   function createInitialSlots(): FieldSlot[] {
@@ -143,9 +155,10 @@ export function useGame() {
     reforgeState.value = { active: false, selectedCard: null, hasChosen: false }
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
+    lastFloatedMessage = ''
     gameState.value.message = `回合 1 - AI ${gameState.value.currentPlayerIndex}先手`
     
-    nextTick(() => startDrawPhase())
+    nextTick(() => void startDrawPhase())
   }
 
   // 抽牌
@@ -157,7 +170,7 @@ export function useGame() {
   }
 
   // 开始抽牌阶段
-  function startDrawPhase() {
+  async function startDrawPhase() {
     const restrictions = gameState.value.playerRestrictions?.[currentPlayer.value.id]
     if (restrictions?.includes('cannotPlay')) {
       gameState.value.message = `${currentPlayer.value.name} 场地已满，跳过本回合`
@@ -188,35 +201,41 @@ export function useGame() {
       currentPlayer.value.skipDrawNextRound = false
       gameState.value.message = `${currentPlayer.value.name} 本回合不抽牌`
     } else {
-      const card = drawCard(currentPlayer.value)
-      
-      if (currentPlayer.value.id.startsWith('ai')) {
-        gameState.value.message = `${currentPlayer.value.name} 抽了一张牌`
+      const p = currentPlayer.value
+      const card = drawCard(p)
+      const handIndex = p.hand.length - 1
+      await nextTick()
+      await animations.playDrawCard({
+        playerId: p.id,
+        handIndex,
+        card: p.id === 'player' ? card ?? undefined : undefined,
+        showBack: p.id.startsWith('ai'),
+      })
+
+      if (p.id.startsWith('ai')) {
+        gameState.value.message = `${p.name} 抽了一张牌`
+      } else if (card) {
+        gameState.value.message = `${p.name} 抽了一张牌：${card.name}`
       } else {
-        if (card) {
-          gameState.value.message = `${currentPlayer.value.name} 抽了一张牌：${card.name}`
-        } else {
-          gameState.value.message = `${currentPlayer.value.name} 牌组已空，无法抽牌`
-        }
+        gameState.value.message = `${p.name} 牌组已空，无法抽牌`
       }
     }
-    
-    setTimeout(() => {
-      gameState.value.phase = 'decision'
-      
-      if (currentPlayer.value.id.startsWith('ai')) {
-        gameState.value.message = `${currentPlayer.value.name} 正在思考...`
-        setTimeout(() => aiTurn(), 1000)
-      } else {
-        const r = gameState.value.playerRestrictions?.[currentPlayer.value.id]
-        if (r?.includes('tacticsOnly') && !hasAffordableTacticInHand(currentPlayer.value)) {
-          gameState.value.message = `${currentPlayer.value.name} 场地已满且无战术牌可出，跳过本回合`
-          setTimeout(() => switchToNextPlayer(), 1500)
-          return
-        }
-        gameState.value.message = `${currentPlayer.value.name} - 必须选择出牌或重铸`
+
+    await animations.wait(400)
+    gameState.value.phase = 'decision'
+
+    if (currentPlayer.value.id.startsWith('ai')) {
+      gameState.value.message = `${currentPlayer.value.name} 正在思考...`
+      setTimeout(() => aiTurn(), 1000)
+    } else {
+      const r = gameState.value.playerRestrictions?.[currentPlayer.value.id]
+      if (r?.includes('tacticsOnly') && !hasAffordableTacticInHand(currentPlayer.value)) {
+        gameState.value.message = `${currentPlayer.value.name} 场地已满且无战术牌可出，跳过本回合`
+        setTimeout(() => switchToNextPlayer(), 1500)
+        return
       }
-    }, 1000)
+      gameState.value.message = `${currentPlayer.value.name} - 必须选择出牌或重铸`
+    }
   }
 
   function hasAffordableTacticInHand(player: Player): boolean {
@@ -445,7 +464,7 @@ export function useGame() {
     
     // QuickPlay gate: skip cost/action for quickPlay cards
     if (card.quickPlay) {
-      handleQuickPlayCard(card, player)
+      await handleQuickPlayCard(card, player)
       return
     }
 
@@ -498,18 +517,27 @@ export function useGame() {
     } else {
       deployCard(card, fieldOwner, slotIndex)
       await animations.flashLand(fieldOwnerId, slotIndex)
+      await showNewFloats(player.id)
     }
   }
 
   // 处理快速打出（跳过费用/行动检查）
-  function handleQuickPlayCard(card: Card, player: Player) {
-    // Mark selected card (for UI synchronization)
-    gameState.value.selectedCard = card
-    
-    // Remove from hand (no cost deduction, no action marking)
+  async function handleQuickPlayCard(card: Card, player: Player) {
     const cardIndex = player.hand.indexOf(card)
-    if (cardIndex !== -1) player.hand.splice(cardIndex, 1)
-    
+    if (cardIndex === -1) return
+
+    gameState.value.selectedCard = card
+
+    if (card.type === 'tactic') {
+      await animations.playCardFly({
+        kind: 'tactic-fade',
+        card,
+        playerId: player.id,
+        handIndex: cardIndex,
+      })
+    }
+
+    player.hand.splice(cardIndex, 1)
     // Fire ALL onPlay effects
     card.effects.forEach(effect => {
       if (effect.timing !== 'onPlay') return
@@ -623,9 +651,8 @@ export function useGame() {
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
+    await showNewFloats(player.id)
   }
-
-  // 部署卡牌
   function deployCard(card: Card, player: Player, slotIndex: number) {
     const slot = player.field[slotIndex]
     if (!slot) return
@@ -724,7 +751,7 @@ export function useGame() {
   }
 
   // 选择战术牌目标
-  function selectTacticTarget(targetCard: Card) {
+  async function selectTacticTarget(targetCard: Card) {
     if (gameState.value.phase !== 'selectTarget' || !gameState.value.selectedCard) return
 
     const card = gameState.value.selectedCard
@@ -750,18 +777,20 @@ export function useGame() {
       handleTacticCard(card, currentPlayer.value, slotIndex >= 0 ? slotIndex : -1)
       gameState.value.phase = 'action'
       gameState.value.selectedCard = undefined
+      await showNewFloats()
       return
     }
 
     discardTacticCard(card, currentPlayer.value, slotIndex >= 0 ? slotIndex : -1)
     gameState.value.selectedCard = undefined
+    await showNewFloats()
   }
 
   // 选择QuickPlay单位牌的部署目标（部署到现有场上卡牌上）
-  function selectQuickPlayTarget(targetCard: Card) {
+  async function selectQuickPlayTarget(targetCard: Card) {
     if (gameState.value.phase !== 'selectTarget') return
     if (!gameState.value.pendingQuickPlayCard && !gameState.value.pendingHostDeployCard && gameState.value.selectedCard) {
-      selectTacticTarget(targetCard)
+      await selectTacticTarget(targetCard)
       return
     }
 
@@ -774,6 +803,17 @@ export function useGame() {
       }
       const cardIndex = player.hand.indexOf(card)
       if (cardIndex === -1) return
+      const hostSlotIndex = player.field.findIndex(s => s.card === targetCard)
+      if (hostSlotIndex >= 0) {
+        await animations.playCardFly({
+          kind: 'absorb',
+          card,
+          playerId: player.id,
+          fieldOwnerId: player.id,
+          slotIndex: hostSlotIndex,
+          handIndex: cardIndex,
+        })
+      }
       const playCost = EffectManager.getEffectivePlayCost(card, player)
       player.currentCost -= playCost
       player.hand.splice(cardIndex, 1)
@@ -790,11 +830,12 @@ export function useGame() {
       gameState.value.phase = 'action'
       gameState.value.selectedCard = undefined
       gameState.value.availableTargets = []
+      await showNewFloats(player.id)
       return
     }
 
     if (!gameState.value.pendingQuickPlayCard && gameState.value.selectedCard) {
-      selectTacticTarget(targetCard)
+      await selectTacticTarget(targetCard)
       return
     }
     const card = gameState.value.pendingQuickPlayCard
@@ -811,17 +852,27 @@ export function useGame() {
       return
     }
 
-    // Deploy onto card
+    const hostSlotIndex = player.field.findIndex(s => s.card === targetCard)
+    if (hostSlotIndex >= 0) {
+      await animations.playCardFly({
+        kind: 'absorb',
+        card,
+        playerId: player.id,
+        fieldOwnerId: player.id,
+        slotIndex: hostSlotIndex,
+      })
+    }
+
     const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, gameState.value)
     if (msgs.length > 0) {
       gameState.value.message = msgs.join(' | ')
     }
 
-    // Clean up
     gameState.value.pendingQuickPlayCard = undefined
     gameState.value.phase = 'action'
     gameState.value.selectedCard = undefined
     gameState.value.availableTargets = []
+    await showNewFloats(player.id)
   }
 
   // 弃置战术牌
@@ -854,11 +905,9 @@ export function useGame() {
     const savedHandIndex = cardIndex
 
     await animations.playCardFly({
-      kind: 'tactic',
+      kind: 'tactic-fade',
       card,
       playerId: player.id,
-      fieldOwnerId: player.id,
-      slotIndex: 0,
       handIndex: savedHandIndex,
     })
 
@@ -884,9 +933,8 @@ export function useGame() {
     }
 
     handleTacticCard(card, player, -1)
+    await showNewFloats(player.id)
   }
-
-  // 检查AI隐藏卡牌费用
   function checkAIHiddenCardsAfterCostChange(aiPlayer: Player) {
     const hidden = aiHiddenCards.value[aiPlayer.id]
     if (!hidden) return
@@ -995,7 +1043,8 @@ export function useGame() {
     
     gameState.value.phase = 'draw'
     
-    options.forEach((option, index) => {
+    for (let index = 0; index < options.length; index++) {
+      const option = options[index]
       switch (option) {
         case 'gainCost':
           player.currentCost += 2
@@ -1007,9 +1056,22 @@ export function useGame() {
           break
         case 'redraw':
           if (!player.id.startsWith('ai') && reforgeState.value.selectedCard !== null) {
-            const card = player.hand.splice(reforgeState.value.selectedCard, 1)[0]
+            const hi = reforgeState.value.selectedCard
+            const oldCard = player.hand[hi]
+            await animations.playReforgeRedraw({
+              playerId: player.id,
+              handIndex: hi,
+              oldCard,
+            })
+            const card = player.hand.splice(hi, 1)[0]
             player.deck.unshift(card)
             const newCard = drawCard(player)
+            await nextTick()
+            await animations.playDrawCard({
+              playerId: player.id,
+              handIndex: player.hand.length - 1,
+              card: newCard ?? undefined,
+            })
             message += ` 换牌(${card.name}→${newCard?.name})`
             reforgeState.value.selectedCard = null
           } else if (player.id.startsWith('ai') && player.hand.length > 0) {
@@ -1022,13 +1084,14 @@ export function useGame() {
           break
       }
       if (index === 0) message += ' +'
-    })
+    }
     
     gameState.value.message = message
     reforgeState.value.active = false
     reforgeState.value.selectedCard = null
 
     EffectManager.triggerReforgeEffects(player, gameState.value)
+    await showNewFloats(player.id)
     
     if (!player.id.startsWith('ai')) {
       await revealAICards()
@@ -1108,7 +1171,7 @@ export function useGame() {
     
     gameState.value.phase = 'draw'
     await animations.wait(400)
-    startDrawPhase()
+    void startDrawPhase()
   }
 
   // 结束回合

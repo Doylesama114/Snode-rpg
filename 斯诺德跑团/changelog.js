@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6087',
+    date: '2026-07-05',
+    changes: [
+      'P0抽牌动画与战斗飘字(战力/费用/摧毁)',
+      'P1战术淡出与QuickPlay缩入宿主',
+      'P1重铸换牌飞行动画',
+      '联机动画队列与短暂状态滞后',
+      '音效待定见ANIMATION_TODO'
+    ]
+  },
+
+
+  {
     version: '1.0.6086',
     date: '2026-07-05',
     changes: [
