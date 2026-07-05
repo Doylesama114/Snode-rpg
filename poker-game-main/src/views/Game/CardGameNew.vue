@@ -274,7 +274,13 @@ function playerIndex(playerId: string) {
             </div>
 
             <!-- AI隐藏卡牌 -->
-            <div v-if="!player.id.startsWith('player')" v-for="(item, hi) in (aiHiddenCards[player.id] || [])" :key="'hidden-' + hi" class="field-slot has-card">
+            <div
+              v-if="!player.id.startsWith('player')"
+              v-for="(item, hi) in (aiHiddenCards[player.id] || [])"
+              :key="'hidden-' + hi"
+              class="field-slot has-card"
+              :data-hidden-card="player.id + '-' + hi"
+            >
               <div class="field-card hidden">
                 <div class="card-back">?</div>
               </div>

@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6086',
+    date: '2026-07-05',
+    changes: [
+      '联机飞牌/翻牌动画',
+      '单机AI揭示翻转'
+    ]
+  },
+
+
+  {
     version: '1.0.6085',
     date: '2026-07-05',
     changes: [

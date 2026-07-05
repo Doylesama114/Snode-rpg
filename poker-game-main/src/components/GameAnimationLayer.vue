@@ -7,21 +7,28 @@ import {
   getFlySelector,
   getHandSelector,
   getFlyOriginSelector,
+  getHiddenCardSelector,
 } from '@/composables/useGameAnimations'
 
 const {
   animState,
   completeFly,
   completeReforge,
+  completeFlip,
   FLY_MS,
   REFORGE_STEP_MS,
+  FLIP_MS,
 } = useGameAnimations()
 
 const flyStyle = ref<Record<string, string>>({})
 const flyVisible = ref(false)
 const flyCard = ref<Card | null>(null)
 const flyBack = ref(false)
-const flyRot = ref(0)
+
+const flipStyle = ref<Record<string, string>>({})
+const flipVisible = ref(false)
+const flipCard = ref<Card | null>(null)
+const flipPhase = ref<'back' | 'flipping' | 'front'>('back')
 
 const reforgeStep = ref(0)
 const reforgeVisible = ref(false)
@@ -69,6 +76,53 @@ watch(
   },
 )
 
+watch(
+  () => animState.flipping,
+  (payload) => {
+    if (!payload) {
+      flipVisible.value = false
+      return
+    }
+    startFlip(payload)
+  },
+)
+
+function startFlip(payload: NonNullable<typeof animState.flipping>) {
+  const originSel = payload.hiddenOriginId
+    ? getHiddenCardSelector(payload.hiddenOriginId)
+    : getFlySelector(payload.fieldOwnerId, payload.slotIndex)
+  const slotEl = document.querySelector(originSel)
+  if (!slotEl) {
+    completeFlip()
+    return
+  }
+
+  const rect = slotEl.getBoundingClientRect()
+  const w = Math.min(120, rect.width || 100)
+  const h = Math.min(160, rect.height || 140)
+
+  flipCard.value = payload.card
+  flipPhase.value = 'back'
+  flipVisible.value = true
+
+  flipStyle.value = {
+    width: `${w}px`,
+    height: `${h}px`,
+    left: `${rect.left + rect.width / 2 - w / 2}px`,
+    top: `${rect.top + rect.height / 2 - h / 2}px`,
+  }
+
+  requestAnimationFrame(() => {
+    flipPhase.value = 'flipping'
+  })
+
+  setTimeout(() => {
+    flipPhase.value = 'front'
+    flipVisible.value = false
+    completeFlip()
+  }, FLIP_MS + 40)
+}
+
 function startFly(payload: NonNullable<typeof animState.flying>) {
   const fromSel = payload.handIndex !== undefined
     ? getHandSelector(payload.playerId, payload.handIndex)
@@ -88,7 +142,6 @@ function startFly(payload: NonNullable<typeof animState.flying>) {
 
   flyCard.value = payload.card ?? null
   flyBack.value = !!payload.showBack
-  flyRot.value = 0
   flyVisible.value = true
 
   const startX = from.left + from.width / 2 - w / 2
@@ -173,6 +226,19 @@ defineExpose({ landFlashKey })
         {{ REFORGE_LABELS[opt] }}
       </div>
     </div>
+    <div v-if="flipVisible && flipCard" class="fly-layer">
+      <div class="flip-scene" :style="flipStyle">
+        <div class="flip-inner" :class="{ 'is-flipped': flipPhase !== 'back' }">
+          <div class="flip-face flip-back">
+            <div class="card-back-art">?</div>
+          </div>
+          <div class="flip-face flip-front">
+            <div class="fly-name">{{ flipCard.name }}</div>
+            <div class="fly-meta">⚡{{ flipCard.cost }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </Teleport>
 </template>
 
@@ -183,6 +249,48 @@ defineExpose({ landFlashKey })
   inset: 0;
   pointer-events: none;
   z-index: 6000;
+}
+
+.flip-scene {
+  position: fixed;
+  perspective: 800px;
+}
+
+.flip-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.48s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 32px rgba(31, 37, 34, 0.35);
+}
+
+.flip-back {
+  background: linear-gradient(145deg, #4a3728 0%, #2a1f18 100%);
+  border: 2px solid #8a5718;
+}
+
+.flip-front {
+  background: linear-gradient(145deg, #fffdf8 0%, #e8e4da 100%);
+  border: 2px solid #a46d1f;
+  transform: rotateY(180deg);
 }
 
 .fly-card {

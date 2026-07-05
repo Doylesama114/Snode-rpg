@@ -256,7 +256,7 @@ export function useGame() {
   )
 
   // 选择出牌
-  function choosePlay() {
+  async function choosePlay() {
     if (!canPlayerChoosePlay(currentPlayer.value)) {
       gameState.value.message = '最后一回合无法出牌（场地已满）'
       return
@@ -265,7 +265,7 @@ export function useGame() {
     reforgeState.value.hasChosen = true
     gameState.value.phase = 'action'
     gameState.value.message = '选择一张手牌打出'
-    revealAICards()
+    await revealAICards()
   }
 
   // 选择重铸
@@ -952,31 +952,37 @@ export function useGame() {
     gameState.value.message += ` | 创建了额外槽位`
   }
 
-  // 显示AI隐藏卡牌
-  function revealAICards() {
+  // 显示AI隐藏卡牌（翻转揭示）
+  async function revealAICards() {
     const allHiddenCount = Object.values(aiHiddenCards.value).reduce((sum, cards) => sum + cards.length, 0)
     if (allHiddenCount === 0) return
     
     const names: string[] = []
     for (const aiId of Object.keys(aiHiddenCards.value)) {
-      const hidden = aiHiddenCards.value[aiId]
-      if (hidden.length === 0) continue
+      const hidden = [...(aiHiddenCards.value[aiId] || [])]
+      if (!hidden.length) continue
       const aiPlayer = gameState.value.players.find(p => p.id === aiId)
       if (!aiPlayer) continue
       names.push(`${aiPlayer.name} ${hidden.length}张`)
-      hidden.forEach(item => {
+      aiHiddenCards.value[aiId] = []
+
+      for (const item of hidden) {
+        await animations.playFlipReveal({
+          fieldOwnerId: aiId,
+          slotIndex: item.slot,
+          card: item.card,
+        })
         deployCard(item.card, aiPlayer, item.slot)
-      })
+        await animations.flashLand(aiId, item.slot)
+      }
     }
     
-    aiHiddenCards.value = {}
     gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
     
-    setTimeout(() => {
-      if (gameState.value.phase === 'action') {
-        gameState.value.message = `${gameState.value.players[0].name} - 选择手牌打出`
-      }
-    }, 1500)
+    await animations.wait(400)
+    if (gameState.value.phase === 'action') {
+      gameState.value.message = `${gameState.value.players[0].name} - 选择手牌打出`
+    }
   }
 
   // 执行重铸
@@ -1025,7 +1031,7 @@ export function useGame() {
     EffectManager.triggerReforgeEffects(player, gameState.value)
     
     if (!player.id.startsWith('ai')) {
-      revealAICards()
+      await revealAICards()
     }
     
     await animations.wait(400)
@@ -1070,7 +1076,7 @@ export function useGame() {
   }
 
   // 切换玩家
-  function switchToNextPlayer() {
+  async function switchToNextPlayer() {
     const prevPlayerIndex = gameState.value.currentPlayerIndex
     EffectManager.clearTurnRestrictions(gameState.value.players[prevPlayerIndex])
     const nextPlayerIndex = (prevPlayerIndex + 1) % gameState.value.players.length
@@ -1081,9 +1087,10 @@ export function useGame() {
       if (nextPlayerIndex === triggeredPlayer) {
         const hasHidden = Object.values(aiHiddenCards.value).some(cards => cards.length > 0)
         if (hasHidden) {
-          revealAICards()
+          await revealAICards()
         }
-        setTimeout(() => endGame(), 2000)
+        await animations.wait(600)
+        endGame()
         return
       }
     }
@@ -1100,12 +1107,13 @@ export function useGame() {
     }
     
     gameState.value.phase = 'draw'
-    setTimeout(() => startDrawPhase(), 2000)
+    await animations.wait(400)
+    startDrawPhase()
   }
 
   // 结束回合
   function endTurn() {
-    switchToNextPlayer()
+    void switchToNextPlayer()
   }
 
   function cancelCardSelection() {

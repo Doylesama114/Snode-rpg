@@ -5,11 +5,18 @@ import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useGameClient } from '@/composables/useGameClient'
 import type { ReforgeOption, Card, GameState } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
+import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
+import { useGameAnimations } from '@/composables/useGameAnimations'
+import { diffFieldAnimations, fieldAnimKey } from '@/utils/fieldAnimationDiff'
+import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
 
 const router = useRouter()
 const multiplayer = useMultiplayer()
+const animations = useGameAnimations()
+const { animState } = animations
+const localAnimSkip = ref(new Set<string>())
 
 // 使用客户端游戏逻辑
 const game = useGameClient(multiplayer.myPlayerId.value || '')
@@ -41,8 +48,18 @@ function blockFieldDetailClick() {
   return !!(game.gameState.value?.phase === 'action' && game.selectedCard.value)
 }
 
+function isSlotFlashing(playerId: string, slotIndex: number) {
+  const f = animState.landFlash
+  return f && f.fieldOwnerId === playerId && f.slotIndex === slotIndex
+}
+
+function markLocalAnim(key: string) {
+  localAnimSkip.value.add(key)
+  setTimeout(() => localAnimSkip.value.delete(key), 2500)
+}
+
 let unregisterEsc: (() => void) | undefined
-function handleGameStateUpdate(newState: GameState) {
+async function handleGameStateUpdate(newState: GameState) {
   console.log('=== [CardGameMultiplayer] 收到游戏状态更新 ===')
   console.log('[CardGameMultiplayer] phase:', newState.phase)
   console.log('[CardGameMultiplayer] round:', newState.round)
@@ -55,6 +72,15 @@ function handleGameStateUpdate(newState: GameState) {
   if (loadingTimeoutId.value) {
     clearTimeout(loadingTimeoutId.value)
     loadingTimeoutId.value = null
+  }
+
+  const prev = game.gameState.value
+  const myId = multiplayer.myPlayerId.value || ''
+  if (prev && !shouldSkipAnimations()) {
+    const events = diffFieldAnimations(prev, newState, myId)
+    if (events.length) {
+      await animations.playFieldEvents(events, localAnimSkip.value)
+    }
   }
   
   game.updateGameState(newState)
@@ -197,17 +223,32 @@ function onHandCardClick(index: number) {
     }
     const mode = game.selectCardToPlay(index)
     if (mode === 'direct') {
-      const action = game.playTacticDirect(index)
-      if (action) {
-        multiplayer.sendAction(action)
-        game.setMyReady()
+      const card = game.myPlayer.value?.hand[index]
+      const myId = multiplayer.myPlayerId.value
+      if (card && card !== 'hidden' && myId) {
+        void (async () => {
+          await animations.playCardFly({
+            kind: 'tactic',
+            card: card as Card,
+            playerId: myId,
+            fieldOwnerId: myId,
+            slotIndex: 0,
+            handIndex: index,
+          })
+          markLocalAnim(`fly-${myId}-0`)
+          const action = game.playTacticDirect(index)
+          if (action) {
+            multiplayer.sendAction(action)
+            game.setMyReady()
+          }
+        })()
       }
     }
   }
 }
 
 // 处理槽位选择
-function handleSelectSlot(slotIndex: number) {
+async function handleSelectSlot(slotIndex: number) {
   console.log('[CardGameMultiplayer] handleSelectSlot 被调用, slotIndex:', slotIndex)
   
   // 检查是否选择了重铸
@@ -229,11 +270,35 @@ function handleSelectSlot(slotIndex: number) {
   // 找到选中的手牌索引
   const cardIndex = game.myPlayer.value.hand.findIndex(c => c === game.selectedCard.value)
   if (cardIndex === -1) return
-  
+
+  const card = game.selectedCard.value
+  const myId = multiplayer.myPlayerId.value
+  if (card && myId) {
+    await animations.playCardFly({
+      kind: card.type === 'tactic' ? 'tactic' : 'deploy',
+      card,
+      playerId: myId,
+      fieldOwnerId: myId,
+      slotIndex,
+      handIndex: cardIndex,
+    })
+    markLocalAnim(fieldAnimKey({
+      type: 'fly',
+      playerId: myId,
+      fieldOwnerId: myId,
+      slotIndex,
+      showBack: false,
+    }))
+  }
+
   const action = game.selectSlotToPlay(slotIndex, cardIndex)
   if (action) {
     console.log('[CardGameMultiplayer] 发送 playCard 操作:', action)
     multiplayer.sendAction(action)
+    if (myId) {
+      await animations.flashLand(myId, slotIndex)
+    }
+    game.setMyReady()
   }
 }
 
@@ -248,13 +313,21 @@ function handleSkipTurn() {
 }
 
 // 选择重铸选项
-function selectReforgeOption(option: ReforgeOption) {
+async function selectReforgeOption(option: ReforgeOption) {
   if (reforgeOptions.value.length < 2) {
     reforgeOptions.value.push(option)
     
     if (reforgeOptions.value.length === 2) {
       if (reforgeOptions.value.includes('redraw') && game.reforgeState.value.selectedCard === null) {
         return
+      }
+
+      const myId = multiplayer.myPlayerId.value
+      if (myId) {
+        await animations.playReforge({
+          playerId: myId,
+          options: [reforgeOptions.value[0], reforgeOptions.value[1]],
+        })
       }
       
       const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
@@ -312,6 +385,8 @@ function leaveGameToLobby(fromGameOver = false) {
         v-for="(player, index) in game.gameState.value.players"
         :key="player.id"
         class="player-cell"
+        :data-player-id="player.id"
+        :data-fly-origin="player.id"
         :class="{
           'is-current': index === game.gameState.value.currentPlayerIndex,
           'is-own': player.id === multiplayer.myPlayerId.value,
@@ -336,9 +411,11 @@ function leaveGameToLobby(fromGameOver = false) {
               v-for="(slot, si) in player.field"
               :key="si"
               class="field-slot"
+              :data-field-slot="player.id + '-' + si"
               :class="{
                 'has-card': slot.card,
                 'extra-slot': slot.isExtra,
+                'slot-land-flash': isSlotFlashing(player.id, si),
                 'selectable': player.id === multiplayer.myPlayerId.value && game.isSlotAvailable(si),
                 'selected': player.id === multiplayer.myPlayerId.value && game.selectedSlot.value === si
               }"
@@ -347,14 +424,18 @@ function leaveGameToLobby(fromGameOver = false) {
               <div
                 v-if="slot.card"
                 class="field-card"
-                @mouseenter="onFieldCardEnter($event, player.id, si, slot.card as Card)"
+                :class="{ 'hidden-face': slot.card.name === '？？？' || slot.card.id === 'hidden' }"
+                @mouseenter="slot.card.name !== '？？？' && slot.card.id !== 'hidden' && onFieldCardEnter($event, player.id, si, slot.card as Card)"
                 @mouseleave="onFieldCardLeave(player.id, si)"
-                @click="onFieldCardClick(slot.card as Card, $event, blockFieldDetailClick)"
+                @click="slot.card.name !== '？？？' && slot.card.id !== 'hidden' && onFieldCardClick(slot.card as Card, $event, blockFieldDetailClick)"
               >
-                <div class="card-name-small">{{ slot.card.name }}</div>
-                <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
-                  {{ slot.card.currentPower }}
-                </div>
+                <template v-if="slot.card.name === '？？？' || slot.card.id === 'hidden'">?</template>
+                <template v-else>
+                  <div class="card-name-small">{{ slot.card.name }}</div>
+                  <div class="card-power" :style="{ color: getPowerColor(slot.card) }">
+                    {{ slot.card.currentPower }}
+                  </div>
+                </template>
               </div>
               <div v-else class="empty-slot">{{ slot.isExtra ? '额外' : (player.id === multiplayer.myPlayerId.value ? si + 1 : '空') }}</div>
             </div>
@@ -374,6 +455,7 @@ function leaveGameToLobby(fromGameOver = false) {
               v-for="(card, ci) in player.hand"
               :key="ci"
               class="hand-card"
+              :data-hand-card="player.id + '-' + ci"
               :class="{
                 'playable': game.isCardPlayable(ci),
                 'disabled': !game.isCardPlayable(ci) && !game.reforgeState.value.active,
@@ -442,6 +524,8 @@ function leaveGameToLobby(fromGameOver = false) {
         </div>
       </div>
     </div>
+
+    <GameAnimationLayer />
 
     <Teleport to="body">
       <div v-if="hoveredCard && hoveredCardKey" class="field-hover-popover" :style="hoverStyle">
@@ -669,6 +753,29 @@ function leaveGameToLobby(fromGameOver = false) {
 .field-slot.selected {
   border-color: #a46d1f;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.field-slot.slot-land-flash {
+  animation: slot-land-pulse 320ms ease-out;
+}
+
+@keyframes slot-land-pulse {
+  0% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
+  40% { box-shadow: 0 0 24px rgba(164, 109, 31, 0.85); transform: scale(1.06); border-color: #a46d1f; }
+  100% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
+}
+
+.field-card.hidden-face {
+  background: linear-gradient(145deg, #4a3728 0%, #2a1f18 100%);
+  color: #d4a574;
+  border-radius: 6px;
+  padding: 8px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .field-card {
