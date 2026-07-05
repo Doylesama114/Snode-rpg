@@ -423,7 +423,9 @@ function goHome() {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  background: #f6f4ef;
+  background: radial-gradient(ellipse at 50% 20%, #2a2218 0%, var(--game-bg-table) 55%);
+  color: var(--game-text-primary);
+  font-family: var(--game-font-ui);
   padding: 20px;
   box-sizing: border-box;
 }
@@ -444,7 +446,7 @@ function goHome() {
 }
 
 .deck-header h1 {
-  color: #1f2522;
+  color: var(--game-text-primary);
   font-size: 28px;
   margin: 0;
 }

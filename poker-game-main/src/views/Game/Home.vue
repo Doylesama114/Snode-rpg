@@ -2,7 +2,8 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AccountState } from '@/types/game'
-import GameNav from "@/views/Layout/GameNav.vue";
+import GameNav from '@/views/Layout/GameNav.vue'
+import GameButton from '@/components/game/GameButton.vue'
 import { navigateToLauncher } from '@/utils/escNavigation'
 
 const state = useGlobalState()
@@ -49,36 +50,58 @@ function goBack() {
 </script>
 
 <template>
-  <main h-100dvh h-screen w-screen of-hidden style="background: #f6f4ef;">
-    <GameNav/>
-    <button @click="goBack" style="position:fixed; top:10px; left:10px; z-index:200; padding:6px 12px; font-size:14px; background:#f6f4ef; color:#1f2522; border:1px solid #d8d2c4; border-radius:6px; cursor:pointer;">
-      ← 返回启动台
-    </button>
-    <button @click="goSettings" style="position:fixed; top:10px; right:10px; z-index:200; padding:6px 14px; font-size:14px; background:#fffdf8; color:#1f2522; border:1px solid #d8d2c4; border-radius:6px; cursor:pointer;">
-      ⚙ 设置
-    </button>
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; display: flex; flex-direction: column; gap: 20px;">
-      <div v-if="playerName" style="text-align: center; font-size: 20px; color: #1f2522; font-weight: bold; margin-bottom: 8px;">
-        欢迎, {{ playerName }}
-      </div>
-      <button 
-        @click="startNewGame"
-        style="padding: 20px 40px; font-size: 24px; background: #a46d1f; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(31,37,34,0.08);"
-      >
-        单机游戏
-      </button>
-      <button 
-        @click="startMultiplayer"
-        style="padding: 20px 40px; font-size: 24px; background: #315f8f; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(31,37,34,0.08);"
-      >
-        🌐 联机对战
-      </button>
-      <button 
-        @click="goDeckBuilder"
-        style="padding: 20px 40px; font-size: 24px; background: #2f6f5e; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 12px rgba(31,37,34,0.08);"
-      >
-        管理卡组
-      </button>
+  <main class="game-menu-page h-100dvh h-screen w-screen of-hidden">
+    <GameNav />
+    <button type="button" class="home-nav-btn home-nav-btn--left" @click="goBack">← 返回启动台</button>
+    <button type="button" class="home-nav-btn home-nav-btn--right" @click="goSettings">⚙ 设置</button>
+    <div class="game-menu-page__center">
+      <div v-if="playerName" class="game-menu-page__welcome">欢迎, {{ playerName }}</div>
+      <GameButton variant="primary" class="home-menu-btn" @click="startNewGame">单机游戏</GameButton>
+      <GameButton variant="secondary" class="home-menu-btn home-menu-btn--mp" @click="startMultiplayer">🌐 联机对战</GameButton>
+      <GameButton variant="secondary" class="home-menu-btn home-menu-btn--deck" @click="goDeckBuilder">管理卡组</GameButton>
     </div>
   </main>
 </template>
+
+<style scoped>
+.home-nav-btn {
+  position: fixed;
+  top: 10px;
+  z-index: 200;
+  padding: 6px 12px;
+  font-size: 14px;
+  background: var(--game-bg-panel);
+  color: var(--game-text-primary);
+  border: 1px solid var(--game-border);
+  border-radius: var(--game-radius-sm);
+  cursor: pointer;
+  font-family: var(--game-font-ui);
+}
+
+.home-nav-btn--left {
+  left: 10px;
+}
+
+.home-nav-btn--right {
+  right: 10px;
+}
+
+.home-menu-btn {
+  width: 100%;
+  padding: 18px 40px !important;
+  font-size: 20px !important;
+  min-height: 56px !important;
+}
+
+.home-menu-btn--mp :deep(.game-btn) {
+  background: linear-gradient(180deg, #4a7ab0 0%, #315f8f 100%);
+  color: #fff;
+  border: none;
+}
+
+.home-menu-btn--deck :deep(.game-btn) {
+  background: linear-gradient(180deg, #4a9b7a 0%, #2f6f5e 100%);
+  color: #fff;
+  border: none;
+}
+</style>

@@ -48,14 +48,15 @@ withDefaults(defineProps<{
   z-index: 1500;
   min-width: 260px;
   max-width: 320px;
-  background: #fffdf8;
-  border: 2px solid #a46d1f;
-  border-radius: 10px;
+  background: var(--game-bg-panel-elevated);
+  border: 1px solid var(--game-border-strong);
+  border-radius: var(--game-radius-md);
   padding: 12px 14px;
-  box-shadow: 0 8px 28px rgba(31, 37, 34, 0.22);
+  box-shadow: var(--game-shadow-lift);
   pointer-events: none;
   text-align: left;
-  color: #1f2522;
+  color: var(--game-text-primary);
+  font-family: var(--game-font-ui);
 }
 
 .card-detail-popover.modal {
@@ -76,7 +77,7 @@ withDefaults(defineProps<{
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 8px;
-  border-bottom: 1px solid #e8e4da;
+  border-bottom: 1px solid var(--game-border);
   padding-bottom: 6px;
 }
 
@@ -87,7 +88,7 @@ withDefaults(defineProps<{
 
 .popover-type {
   font-size: 11px;
-  color: #a46d1f;
+  color: var(--game-accent-gold);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -101,14 +102,14 @@ withDefaults(defineProps<{
 
 .meta-chip {
   font-size: 11px;
-  background: #f6f4ef;
-  border: 1px solid #d8d2c4;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--game-border);
   border-radius: 6px;
   padding: 2px 8px;
 }
 
 .meta-sub {
-  color: #69706b;
+  color: var(--game-text-muted);
   font-size: 10px;
 }
 
@@ -122,14 +123,14 @@ withDefaults(defineProps<{
 
 .kw-label {
   font-size: 11px;
-  color: #69706b;
+  color: var(--game-text-muted);
   margin-right: 2px;
 }
 
 .kw-tag {
   font-size: 10px;
-  background: #e8f0ed;
-  color: #2f6f5e;
+  background: var(--game-human-dim);
+  color: var(--game-human);
   border-radius: 4px;
   padding: 1px 6px;
 }
@@ -138,11 +139,11 @@ withDefaults(defineProps<{
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 6px;
-  color: #a46d1f;
+  color: var(--game-accent-gold);
 }
 
 .effect-block {
-  background: #f6f4ef;
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   padding: 8px;
   margin-bottom: 6px;
@@ -160,18 +161,18 @@ withDefaults(defineProps<{
 }
 
 .effect-timing {
-  color: #2f6f5e;
+  color: var(--game-human);
   font-weight: 600;
 }
 
 .effect-type {
-  color: #69706b;
+  color: var(--game-text-muted);
 }
 
 .effect-desc {
   margin: 0;
   font-size: 12px;
   line-height: 1.45;
-  color: #1f2522;
+  color: var(--game-text-primary);
 }
 </style>

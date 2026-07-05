@@ -3,6 +3,9 @@ import App from './App.vue'
 import '@unocss/reset/tailwind.css'
 import 'virtual:uno.css'
 import './styles/base.css'
+import './styles/game-tokens.css'
+import './styles/game-layout.css'
+import './styles/game-animations.css'
 import router from './router'
 
 const app = createApp(App)

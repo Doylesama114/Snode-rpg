@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6097',
+    date: '2026-07-05',
+    changes: [
+      '深色牌桌UI重构(P0-P4)',
+      '单机/联机共用GameCard与ActionDock',
+      '对手区可折叠',
+      '主页/卡组/大厅统一暗色主题'
+    ]
+  },
+
+
+  {
     version: '1.0.6096',
     date: '2026-07-05',
     changes: [

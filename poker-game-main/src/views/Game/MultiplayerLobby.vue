@@ -353,9 +353,10 @@ watch(isGameStarted, (started) => {
 <style scoped>
 .lobby-container {
   min-height: 100vh;
-  background: #f6f4ef;
+  background: radial-gradient(ellipse at 50% 30%, #2a2218 0%, var(--game-bg-table) 60%);
   padding: 20px;
-  color: #1f2522;
+  color: var(--game-text-primary);
+  font-family: var(--game-font-ui);
 }
 
 .lobby-header {

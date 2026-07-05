@@ -1,0 +1,42 @@
+@keyframes game-pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+@keyframes game-select-breathe {
+  0%, 100% { box-shadow: 0 0 0 2px var(--game-accent-gold-dim); }
+  50% { box-shadow: 0 0 0 3px var(--game-accent-gold), 0 0 16px rgba(196, 146, 58, 0.35); }
+}
+
+@keyframes game-power-up {
+  0% { transform: scale(1); color: var(--game-human); }
+  35% { transform: scale(1.35); color: #5fd4a4; }
+  100% { transform: scale(1); }
+}
+
+@keyframes game-power-down {
+  0% { transform: scale(1); color: var(--game-danger); }
+  35% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes game-slot-land {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.05); border-color: var(--game-accent-gold); }
+  100% { transform: scale(1); }
+}
+
+@keyframes game-slot-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.game-anim-pulse { animation: game-pulse-soft 1.2s ease-in-out infinite; }
+.game-anim-select { animation: game-select-breathe 1.6s ease-in-out infinite; }
+.game-anim-power-up { animation: game-power-up 650ms ease-out; }
+.game-anim-power-down { animation: game-power-down 650ms ease-out; }
+.game-anim-land { animation: game-slot-land 320ms ease-out; }
+.game-anim-shake { animation: game-slot-shake 450ms ease-in-out; }

@@ -7,6 +7,12 @@ import type { ReforgeOption, Card, GameState } from '@/types/game'
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
 import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import GameBroadcastPanel from '@/components/GameBroadcastPanel.vue'
+import StatusBar from '@/components/game/StatusBar.vue'
+import ActionDock from '@/components/game/ActionDock.vue'
+import PlayerStrip from '@/components/game/PlayerStrip.vue'
+import PlayerFieldSection from '@/components/game/PlayerFieldSection.vue'
+import GameCard from '@/components/game/GameCard.vue'
+import GameButton from '@/components/game/GameButton.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { diffFieldAnimations, diffDrawEvents, diffPhaseBanner, fieldAnimKey } from '@/utils/fieldAnimationDiff'
@@ -433,6 +439,57 @@ function getPowerColor(card: Card): string {
   return '#1f2522'
 }
 
+function isHiddenFieldCard(card: Card | null | undefined) {
+  return !!card && (card.name === '？？？' || card.id === 'hidden')
+}
+
+function powerPulseLevel(playerId: string, slotIndex: number): 'up' | 'down' | null {
+  const d = getPowerPulseDelta(playerId, slotIndex)
+  if (d === undefined) return null
+  if (d > 0) return 'up'
+  if (d < 0) return 'down'
+  return null
+}
+
+function countFieldCards(player: { field: Array<{ card?: unknown }> }) {
+  return player.field.filter(s => s.card).length
+}
+
+const myPlayerIndex = computed(() => {
+  const gs = game.gameState.value
+  const myId = multiplayer.myPlayerId.value
+  if (!gs || !myId) return -1
+  return gs.players.findIndex(p => p.id === myId)
+})
+
+const humanPlayer = computed(() => game.myPlayer.value)
+const opponentPlayers = computed(() =>
+  game.gameState.value?.players.filter(p => p.id !== multiplayer.myPlayerId.value) ?? [],
+)
+
+const showActionDock = computed(() =>
+  !!humanPlayer.value
+  && myPlayerIndex.value === game.gameState.value?.currentPlayerIndex
+  && game.gameState.value?.phase !== 'draw'
+  && !isRoundTransitioning.value,
+)
+
+const isYourTurn = computed(() =>
+  myPlayerIndex.value === game.gameState.value?.currentPlayerIndex
+  && game.gameState.value?.phase !== 'draw'
+  && !isRoundTransitioning.value,
+)
+
+const readySubtitle = computed(() => {
+  if (game.allPlayersReady.value) return '所有玩家准备完毕，进入下一回合…'
+  if (game.myReady.value) return '等待其他玩家…'
+  return ''
+})
+
+function playerIndex(playerId: string) {
+  return game.gameState.value?.players.findIndex(p => p.id === playerId) ?? -1
+}
+
 // 离开游戏
 function leaveGameToLobby(fromGameOver = false) {
   console.log('[CardGameMultiplayer] leaveGameToLobby 被调用', { fromGameOver })
@@ -455,190 +512,169 @@ function leaveGameToLobby(fromGameOver = false) {
 </script>
 
 <template>
-  <div class="game-container" v-if="game.gameState.value">
-    <!-- 游戏信息栏 -->
-    <div class="game-info">
-      <div class="round-info">
-        <span>回合: {{ game.gameState.value.round }}</span>
-        <span v-if="game.gameState.value.isFinalRound" class="final-round">最后一回合！</span>
-        <span v-if="game.allPlayersReady.value" class="ready-status">所有玩家准备完毕，进入下一回合...</span>
-        <span v-else-if="game.myReady.value" class="ready-status">等待其他玩家...</span>
-      </div>
+  <div v-if="game.gameState.value" class="game-table">
+    <StatusBar
+      :round="game.gameState.value.round"
+      :phase="game.gameState.value.phase"
+      :is-final-round="game.gameState.value.isFinalRound"
+      :energy="humanPlayer?.currentCost"
+      :total-power="humanPlayer ? game.getTotalPower(myPlayerIndex) : undefined"
+      :is-your-turn="isYourTurn"
+    />
+
+    <div v-if="readySubtitle" class="game-table__ready-hint">{{ readySubtitle }}</div>
+
+    <div class="game-table__broadcast">
       <GameBroadcastPanel
-        v-if="game.gameState.value"
         :entries="game.gameState.value.broadcastLog ?? []"
         :fallback="game.gameState.value.message"
         :round="game.gameState.value.round"
       />
     </div>
 
-    <!-- N-player grid -->
-    <div class="players-grid" :class="'players-' + game.gameState.value.players.length">
-      <div
-        v-for="(player, index) in game.gameState.value.players"
-        :key="player.id"
-        class="player-cell"
-        :data-player-id="player.id"
-        :data-fly-origin="player.id"
-        :class="{
-          'is-current': index === game.gameState.value.currentPlayerIndex,
-          'is-own': player.id === multiplayer.myPlayerId.value,
-          'is-other': player.id !== multiplayer.myPlayerId.value
-        }"
-      >
-        <div class="player-header">
-          <h3>{{ player.name }} {{ player.id === multiplayer.myPlayerId.value ? '(你)' : '' }}</h3>
-          <div class="stats">
-            <span :class="{ 'negative-cost': player.currentCost < 0 }">费用: {{ player.currentCost }}</span>
-            <span class="power-display">总战力: <strong>{{ game.getTotalPower(index) }}</strong></span>
-            <span>手牌: {{ player.handCount || player.hand.length }}</span>
-            <span :data-deck-zone="player.id">牌组: {{ player.deckCount || player.deck.length }}</span>
-          </div>
-        </div>
-
-        <!-- 场上 -->
-        <div class="field">
-          <div class="field-label">场上</div>
-          <div class="field-grid">
-            <div
-              v-for="(slot, si) in player.field"
-              :key="si"
-              class="field-slot"
-              :data-field-slot="player.id + '-' + si"
-              :class="{
-                'has-card': slot.card,
-                'extra-slot': slot.isExtra,
-                'slot-land-flash': isSlotFlashing(player.id, si),
-                'slot-bounce': isSlotBouncing(player.id, si),
-                'slot-shake': isSlotShaking(player.id, si),
-                'selectable': player.id === multiplayer.myPlayerId.value && game.isSlotAvailable(si),
-                'selected': player.id === multiplayer.myPlayerId.value && game.selectedSlot.value === si
-              }"
-              @click="handleFieldSlotClick(player.id, si)"
-            >
-              <div
-                v-if="slot.card"
-                class="field-card"
-                :class="{ 'hidden-face': slot.card.name === '？？？' || slot.card.id === 'hidden' }"
-                @mouseenter="slot.card.name !== '？？？' && slot.card.id !== 'hidden' && onFieldCardEnter($event, player.id, si, slot.card as Card)"
-                @mouseleave="onFieldCardLeave(player.id, si)"
-                @click="slot.card.name !== '？？？' && slot.card.id !== 'hidden' && onFieldCardClick(slot.card as Card, $event, blockFieldDetailClick)"
-              >
-                <template v-if="slot.card.name === '？？？' || slot.card.id === 'hidden'">?</template>
-                <template v-else>
-                  <div class="card-name-small">{{ slot.card.name }}</div>
-                  <div class="card-power" :class="powerPulseClass(player.id, si)" :style="{ color: getPowerColor(slot.card) }">
-                    {{ slot.card.currentPower }}
-                  </div>
-                </template>
-              </div>
-              <div v-else class="empty-slot">{{ slot.isExtra ? '额外' : (player.id === multiplayer.myPlayerId.value ? si + 1 : '空') }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 手牌（自己：真实卡片，对手：卡背） -->
-        <div v-if="player.id === multiplayer.myPlayerId.value" class="hand">
-          <div class="hand-label">
-            手牌
-            <span v-if="game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null" class="hint">(点选放回)</span>
-            <span v-else-if="!game.reforgeState.value.active && game.hasPlayedThisTurn.value && !game.canPlayExtra.value" class="hint-disabled">(已出牌)</span>
-            <span v-else-if="!game.reforgeState.value.active && game.canPlayExtra.value" class="hint-extra">(可额外出牌!)</span>
-          </div>
-          <div class="hand-cards" :data-hand-zone="player.id">
-            <div
-              v-for="(card, ci) in player.hand"
+    <div class="game-table__scroll">
+      <div class="game-table__body">
+        <PlayerStrip
+          v-for="opp in opponentPlayers"
+          :key="opp.id"
+          :name="opp.name"
+          :is-current="playerIndex(opp.id) === game.gameState.value.currentPlayerIndex"
+          :energy="opp.currentCost"
+          :total-power="game.getTotalPower(playerIndex(opp.id))"
+          :hand-count="opp.handCount || opp.hand.length"
+          :deck-count="opp.deckCount || opp.deck.length"
+          :field-card-count="countFieldCards(opp)"
+          :default-collapsed="true"
+          :data-player-id="opp.id"
+          :data-fly-origin="opp.id"
+        >
+          <PlayerFieldSection
+            :player="opp"
+            :player-index="playerIndex(opp.id)"
+            :is-human="false"
+            :is-face-down-card="isHiddenFieldCard"
+            :slot-flash-key="(si) => opp.id + '-' + si"
+            :is-flashing="(si) => !!isSlotFlashing(opp.id, si)"
+            :is-shaking="(si) => isSlotShaking(opp.id, si)"
+            :is-bouncing="(si) => isSlotBouncing(opp.id, si)"
+            :power-pulse="(si) => powerPulseLevel(opp.id, si)"
+          />
+          <div class="opponent-hand-row">
+            <span class="opponent-hand-row__label">手牌 {{ opp.handCount || opp.hand.length }}</span>
+            <GameCard
+              v-for="(_, ci) in opp.hand"
               :key="ci"
-              class="hand-card"
-              :data-hand-card="player.id + '-' + ci"
-              :class="{
-                'playable': game.isCardPlayable(ci),
-                'disabled': !game.isCardPlayable(ci) && !game.reforgeState.value.active,
-                'selectable': game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null,
-                'selected': game.reforgeState.value.selectedCard === ci
-              }"
-              @click="onHandCardClick(ci)"
-            >
-              <template v-if="card !== 'hidden' && card">
-                <div class="card-header">
-                  <span class="card-attribute">{{ card.attribute }}</span>
-                  <span class="card-cost-power">
-                    <span v-if="card.type === 'environment'" class="card-type-badge">环境</span>
-                    <span v-else-if="card.type === 'tactic'" class="card-type-badge">战术</span>
-                    <span>⚡{{ card.cost }}</span>
-                    <span v-if="card.type === 'unit'">💪{{ card.basePower }}</span>
-                  </span>
-                </div>
-                <div class="card-name">{{ card.name }}</div>
-                <div class="card-keywords">{{ card.keywords?.join('/') || '无' }}</div>
-                <div class="card-effect">{{ card.effects?.[0]?.description || '无效果' }}</div>
-              </template>
+              size="mini"
+              face-down
+            />
+          </div>
+        </PlayerStrip>
+
+        <div
+          v-if="humanPlayer"
+          class="player-panel player-panel--human"
+          :class="{ 'player-panel--current': isYourTurn }"
+          :data-player-id="humanPlayer.id"
+          :data-fly-origin="humanPlayer.id"
+        >
+          <div class="player-panel__header">
+            <h3 class="player-panel__title">{{ humanPlayer.name }}（你）</h3>
+            <div class="player-panel__stats">
+              <span class="stat-chip" :class="{ 'stat-chip--energy-negative': humanPlayer.currentCost < 0 }">手牌 {{ humanPlayer.hand.length }}</span>
+              <span class="stat-chip" :data-deck-zone="humanPlayer.id">牌组 {{ humanPlayer.deckCount || humanPlayer.deck.length }}</span>
             </div>
           </div>
-        </div>
 
-        <!-- 对手手牌（卡背） -->
-        <div v-if="player.id !== multiplayer.myPlayerId.value" class="opponent-hand">
-          <div class="hand-label">对手手牌</div>
-          <div class="hand-cards-hidden" :data-hand-zone="player.id">
-            <div v-for="(card, ci) in player.hand" :key="ci" class="hand-card-back">?</div>
-          </div>
-        </div>
+          <PlayerFieldSection
+            :player="humanPlayer"
+            :player-index="myPlayerIndex"
+            :is-human="true"
+            :is-face-down-card="isHiddenFieldCard"
+            :is-slot-available="(si) => game.isSlotAvailable(si)"
+            :selected-slot="game.selectedSlot.value"
+            :slot-flash-key="(si) => humanPlayer.id + '-' + si"
+            :is-flashing="(si) => !!isSlotFlashing(humanPlayer.id, si)"
+            :is-shaking="(si) => isSlotShaking(humanPlayer.id, si)"
+            :is-bouncing="(si) => isSlotBouncing(humanPlayer.id, si)"
+            :power-pulse="(si) => powerPulseLevel(humanPlayer.id, si)"
+            @slot-click="(_, si) => handleFieldSlotClick(humanPlayer.id, si)"
+            @card-enter="(e, k, c) => onFieldCardEnter(e, humanPlayer.id, k, c)"
+            @card-leave="(k) => onFieldCardLeave(humanPlayer.id, k)"
+            @card-click="(c, e) => onFieldCardClick(c, e, blockFieldDetailClick)"
+          />
 
-        <!-- 操作按钮（仅自己+当前回合） -->
-        <div v-if="player.id === multiplayer.myPlayerId.value && index === game.gameState.value.currentPlayerIndex && game.gameState.value.phase !== 'draw' && !isRoundTransitioning" class="actions">
-          <div v-if="pendingEffectBranch" class="effect-branch-bar">
-            <div class="effect-branch-info">
-              {{ pendingEffectBranch.ownerCardName }}：先点选水属性手牌，再选效果
+          <div class="hand-section">
+            <div class="hand-section__label">
+              手牌
+              <span v-if="game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null" class="hand-hint">点选放回</span>
+              <span v-else-if="!game.reforgeState.value.active && game.hasPlayedThisTurn.value && !game.canPlayExtra.value" class="hand-hint hand-hint--muted">已出牌</span>
+              <span v-else-if="!game.reforgeState.value.active && game.canPlayExtra.value" class="hand-hint hand-hint--extra">可额外出牌</span>
             </div>
-            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('A')">A · 回复2能量</button>
-            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('B')">B · 单位战力+2</button>
-            <button type="button" class="btn btn-small btn-primary" @click="confirmEffectBranch('C')">C · 抽2张牌</button>
-            <button type="button" class="btn btn-secondary btn-sm" @click="handleSkipEffectBranch">跳过</button>
-          </div>
-          <template v-else-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value && !isRoundTransitioning">
-            <button v-if="game.canChoosePlay.value" @click="handleChoosePlay" class="btn btn-primary">出牌</button>
-            <button v-if="game.canChooseReforge.value" @click="handleChooseReforge" class="btn btn-secondary">重铸</button>
-            <span v-if="game.finalRoundTacticsOnly.value && game.canChoosePlay.value" class="hint">(场地已满，仅可出战术牌)</span>
-          </template>
-
-          <div v-if="game.myDecisionMade.value && !game.allOtherDecisionsMade.value" class="waiting-opponent">
-            ⏳ 等待其他玩家决策...
-            <button
-              v-if="!game.hasPlayedThisTurn.value && game.myPlayer.value && !game.gameState.value?.playerReady?.[game.myPlayer.value.id]"
-              type="button"
-              class="btn btn-secondary btn-sm"
-              @click="handleCancelAction"
-            >返回选择</button>
-          </div>
-
-          <div v-if="game.allDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active && !game.myPlayer.value?.hasPlayedThisTurn && game.myPlayer.value && !game.gameState.value?.playerReady?.[game.myPlayer.value.id]" class="both-ready">
-            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
-          </div>
-
-          <div v-if="game.allOtherDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active" class="both-ready">
-            ✅ 所有玩家已决策！
-          </div>
-
-          <template v-if="game.gameState.value.phase === 'action' && !game.reforgeState.value.active && player.currentCost === 0 && !player.canPlayExtra">
-            <div class="no-cost-warning">费用不足，无法出牌</div>
-            <button @click="handleSkipTurn" class="btn btn-warning">跳过回合</button>
-          </template>
-
-          <div v-if="game.reforgeState.value.active && reforgeOptions.length < 2" class="reforge-options">
-            <div class="reforge-info">
-              选择 ({{ reforgeOptions.length }}/2)
-              <span v-if="reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null" class="warning"> - 请先选择手牌</span>
+            <div class="hand-row" :data-hand-zone="humanPlayer.id">
+              <GameCard
+                v-for="(card, ci) in humanPlayer.hand"
+                :key="ci"
+                :card="card !== 'hidden' && card ? card : undefined"
+                :face-down="card === 'hidden'"
+                size="hand"
+                :data-hand-card="humanPlayer.id + '-' + ci"
+                :playable="game.isCardPlayable(ci)"
+                :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active"
+                :selectable="(game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
+                :selected="game.reforgeState.value.selectedCard === ci || effectBranchDiscardIndex === ci"
+                @click="onHandCardClick(ci)"
+              />
             </div>
-            <button @click="selectReforgeOption('gainCost')" class="btn btn-small">+2费用</button>
-            <button @click="selectReforgeOption('redraw')" class="btn btn-small">换牌</button>
-            <button @click="selectReforgeOption('gainPower')" class="btn btn-small">战力+1</button>
-            <button type="button" class="btn btn-secondary btn-sm" @click="handleCancelAction">返回选择</button>
           </div>
-
         </div>
       </div>
     </div>
+
+    <ActionDock :visible="showActionDock">
+      <div v-if="pendingEffectBranch" class="action-dock-branch">
+        <p class="action-dock-hint">{{ pendingEffectBranch.ownerCardName }}：先点选水属性手牌，再选效果</p>
+        <div class="action-dock-row">
+          <GameButton variant="primary" class="game-btn--small" @click="confirmEffectBranch('A')">A · 回复2能量</GameButton>
+          <GameButton variant="primary" class="game-btn--small" @click="confirmEffectBranch('B')">B · 单位战力+2</GameButton>
+          <GameButton variant="primary" class="game-btn--small" @click="confirmEffectBranch('C')">C · 抽2张牌</GameButton>
+          <GameButton variant="ghost" class="game-btn--small" @click="handleSkipEffectBranch">跳过</GameButton>
+        </div>
+      </div>
+      <div v-else-if="game.gameState.value.phase === 'decision' && !game.myDecisionMade.value" class="action-dock-row">
+        <GameButton v-if="game.canChoosePlay.value" variant="primary" @click="handleChoosePlay">出牌</GameButton>
+        <GameButton v-if="game.canChooseReforge.value" variant="secondary" @click="handleChooseReforge">重铸</GameButton>
+        <span v-if="game.finalRoundTacticsOnly.value && game.canChoosePlay.value" class="action-dock-hint">场地已满，仅可出战术牌</span>
+      </div>
+      <div v-else-if="game.myDecisionMade.value && !game.allOtherDecisionsMade.value" class="action-dock-row">
+        <span class="action-dock-hint">⏳ 等待其他玩家决策…</span>
+        <GameButton
+          v-if="!game.hasPlayedThisTurn.value && humanPlayer && !game.gameState.value?.playerReady?.[humanPlayer.id]"
+          variant="ghost"
+          class="game-btn--small"
+          @click="handleCancelAction"
+        >返回选择</GameButton>
+      </div>
+      <div v-else-if="game.allDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active && humanPlayer && !humanPlayer.hasPlayedThisTurn && !game.gameState.value?.playerReady?.[humanPlayer.id]" class="action-dock-row">
+        <GameButton variant="ghost" class="game-btn--small" @click="handleCancelAction">返回选择</GameButton>
+      </div>
+      <div v-else-if="game.allOtherDecisionsMade.value && game.gameState.value.phase === 'action' && !game.reforgeState.value.active" class="action-dock-row">
+        <span class="action-dock-hint">✅ 所有玩家已决策</span>
+      </div>
+      <div v-else-if="game.gameState.value.phase === 'action' && !game.reforgeState.value.active && humanPlayer && humanPlayer.currentCost === 0 && !humanPlayer.canPlayExtra" class="action-dock-row">
+        <span class="action-dock-hint">费用不足，无法出牌</span>
+        <GameButton variant="danger" @click="handleSkipTurn">跳过回合</GameButton>
+      </div>
+      <div v-else-if="game.reforgeState.value.active && reforgeOptions.length < 2" class="action-dock-row">
+        <span class="action-dock-hint">
+          重铸 {{ reforgeOptions.length }}/2
+          <span v-if="reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null"> — 请先选择手牌</span>
+        </span>
+        <GameButton variant="small" @click="selectReforgeOption('gainCost')">+2费用</GameButton>
+        <GameButton variant="small" @click="selectReforgeOption('redraw')">换牌</GameButton>
+        <GameButton variant="small" @click="selectReforgeOption('gainPower')">战力+1</GameButton>
+        <GameButton variant="ghost" class="game-btn--small" @click="handleCancelAction">返回</GameButton>
+      </div>
+    </ActionDock>
 
     <GameAnimationLayer />
 
@@ -658,12 +694,12 @@ function leaveGameToLobby(fromGameOver = false) {
     </Teleport>
 
     <Teleport to="body">
-      <div v-if="game.gameState.value.phase === 'gameOver'" class="game-over-overlay">
-        <div class="game-over-panel">
-          <h2 class="game-over-title">游戏结束</h2>
-          <p class="game-over-message">{{ game.gameState.value.message }}</p>
-          <div class="game-over-actions">
-            <button @click="leaveGameToLobby(true)" class="btn btn-primary">返回大厅</button>
+      <div v-if="game.gameState.value.phase === 'gameOver'" class="game-overlay">
+        <div class="game-overlay-panel">
+          <h2>游戏结束</h2>
+          <p>{{ game.gameState.value.message }}</p>
+          <div class="game-overlay-actions">
+            <GameButton variant="primary" @click="leaveGameToLobby(true)">返回大厅</GameButton>
           </div>
         </div>
       </div>
@@ -672,664 +708,7 @@ function leaveGameToLobby(fromGameOver = false) {
 </template>
 
 <style scoped>
-/* 复用原有样式 */
-.game-container {
-  height: 100vh;
-  width: 100vw;
-  background: #f6f4ef;
-  padding: 10px 20px;
-  color: #1f2522;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
-.players-grid {
-  flex: 1 0 auto;
-  display: grid;
-  gap: 8px;
-  min-height: min-content;
-  overflow: visible;
-  padding: 4px 0 24px;
-}
-.players-2 { grid-template-columns: 1fr; grid-auto-rows: auto; }
-.players-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-.players-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-.players-3 .player-cell.is-own,
-.players-4 .player-cell.is-own {
-  grid-column: 1 / -1;
-}
-.player-cell { background: #fffdf8; border: 1px solid #d8d2c4; border-radius: 8px; padding: 6px 8px; min-height: min-content; display: flex; flex-direction: column; }
-.player-cell.is-current { border-color: #a46d1f; border-width: 2px; }
-.player-cell.is-own { border-left: 4px solid #2f6f5e; }
-.player-cell.is-other { border-left: 4px solid #9d2f2f; }
-
-.loading {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #f6f4ef;
-  color: #1f2522;
-  font-size: 24px;
-}
-
-.loading-hint {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 10px;
-}
-
-.game-info {
-  background: #fffdf8;
-  border: 1px solid #d8d2c4;
-  padding: 10px 15px;
-  border-radius: 12px;
-  flex-shrink: 0;
-  color: #1f2522;
-}
-
-.round-info {
-  display: flex;
-  gap: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  align-items: center;
-}
-
-.final-round {
-  color: #ff6b6b;
-  animation: pulse 1s infinite;
-}
-
-.ready-status {
-  color: #2f6f5e;
-  font-size: 14px;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.message {
-  font-size: 14px;
-  line-height: 1.4;
-  white-space: pre-line;
-}
-
-.player-area {
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-.opponent-area {
-  border-left: 4px solid #9d2f2f;
-  border: 1px solid #d8d2c4;
-}
-
-.my-area {
-  border: 1px solid #d8d2c4;
-  border-left: 4px solid #2f6f5e;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.player-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-.player-header h3 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.stats {
-  display: flex;
-  gap: 10px;
-  font-size: 14px;
-  flex-wrap: wrap;
-}
-
-.power-display {
-  font-size: 16px;
-  color: #a46d1f;
-}
-
-.power-display strong {
-  font-size: 18px;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.field {
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-.field-label {
-  font-size: 15px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-.field-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(72px, 1fr));
-  gap: 6px;
-  padding: 0;
-  overflow-x: auto;
-}
-
-.field-slot {
-  background: #f6f4ef;
-  border: 1px solid #d8d2c4;
-  border-radius: 8px;
-  padding: 6px;
-  min-height: 55px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.3s;
-}
-
-.field-slot.extra-slot {
-  background: rgba(255, 215, 0, 0.1);
-  border-color: rgba(255, 215, 0, 0.5);
-  border-style: dashed;
-}
-
-.field-slot.selectable {
-  border-color: #a46d1f;
-  cursor: pointer;
-  animation: select-pulse 1.6s ease-in-out infinite;
-}
-
-.field-slot.selectable:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(164, 109, 31, 0.3);
-}
-
-.field-slot.slot-shake {
-  animation: slot-shake 0.45s ease-in-out;
-}
-
-.field-slot.slot-bounce {
-  animation: slot-empty-bounce 360ms cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-
-@keyframes select-pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(164, 109, 31, 0.35); }
-  50% { box-shadow: 0 0 22px rgba(164, 109, 31, 0.75); }
-}
-
-@keyframes slot-shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
-
-@keyframes slot-empty-bounce {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.08); border-color: #9d2f2f; }
-  100% { transform: scale(1); }
-}
-
-.card-power.power-pulse-up {
-  animation: power-pop-up 650ms ease-out;
-}
-
-.card-power.power-pulse-down {
-  animation: power-pop-down 650ms ease-out;
-}
-
-@keyframes power-pop-up {
-  0% { transform: scale(1); color: #2f6f5e !important; }
-  30% { transform: scale(1.45); color: #1a8f5c !important; }
-  100% { transform: scale(1); }
-}
-
-@keyframes power-pop-down {
-  0% { transform: scale(1); color: #9d2f2f !important; }
-  30% { transform: scale(1.35); color: #c0392b !important; }
-  100% { transform: scale(1); }
-}
-
-.field-slot.selected {
-  border-color: #a46d1f;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-}
-
-.field-slot.slot-land-flash {
-  animation: slot-land-pulse 320ms ease-out;
-}
-
-@keyframes slot-land-pulse {
-  0% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
-  40% { box-shadow: 0 0 24px rgba(164, 109, 31, 0.85); transform: scale(1.06); border-color: #a46d1f; }
-  100% { box-shadow: 0 0 0 rgba(164, 109, 31, 0); transform: scale(1); }
-}
-
-.field-card.hidden-face {
-  background: linear-gradient(145deg, #4a3728 0%, #2a1f18 100%);
-  color: #d4a574;
-  border-radius: 6px;
-  padding: 8px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.field-card {
-  text-align: center;
-  width: 100%;
-  position: relative;
-  cursor: pointer;
-}
-
-.card-name-small {
-  font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.card-power {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.empty-slot {
-  color: #69706b;
-  font-size: 13px;
-}
-
-.opponent-hand {
-  margin-bottom: 15px;
-  flex-shrink: 0;
-}
-
-.hand-cards-hidden {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 5px 0;
-}
-
-.hand-card-back {
-  background: #f6f4ef;
-  color: white;
-  border-radius: 8px;
-  padding: 12px;
-  min-width: 50px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.hand {
-  flex-shrink: 0;
-}
-
-.hand-label {
-  font-size: 15px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-.hint {
-  color: #a46d1f;
-  font-size: 13px;
-  font-weight: normal;
-  margin-left: 10px;
-}
-
-.hint-disabled {
-  color: #999;
-  font-size: 13px;
-  font-weight: normal;
-  margin-left: 10px;
-}
-
-.hint-extra {
-  color: #2f6f5e;
-  font-size: 13px;
-  font-weight: bold;
-  margin-left: 10px;
-  animation: pulse 1s infinite;
-}
-
-.hand-cards {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 5px 0;
-}
-
-.hand-card {
-  background: #fffdf8;
-  color: #1f2522;
-  border-radius: 10px;
-  padding: 10px;
-  min-width: 160px;
-  max-width: 160px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  transition: all 0.3s;
-  border: 1px solid #d8d2c4;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.hand-card.playable {
-  border-color: #a46d1f;
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
-}
-
-.hand-card.playable:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 4px 12px rgba(47, 111, 94, 0.3);
-}
-
-.hand-card.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.hand-card.selectable {
-  border-color: #a46d1f;
-}
-
-.hand-card.selectable:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(255, 152, 0, 0.7);
-}
-
-.hand-card.selected {
-  border-color: #9d2f2f;
-  background: rgba(244, 67, 54, 0.1);
-  transform: translateY(-5px);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-}
-
-.card-attribute {
-  background: rgba(0, 0, 0, 0.1);
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.card-cost-power {
-  display: flex;
-  gap: 4px;
-}
-
-.card-type-badge {
-  background: #a46d1f;
-  color: #fff;
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.card-name {
-  font-weight: bold;
-  font-size: 14px;
-  text-align: center;
-}
-
-.card-keywords {
-  font-size: 11px;
-  color: #69706b;
-  text-align: center;
-}
-
-.card-effect {
-  font-size: 10px;
-  color: #69706b;
-  font-style: italic;
-  line-height: 1.2;
-  min-height: 30px;
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 10px 0 0;
-  flex-shrink: 0;
-  margin-top: auto;
-}
-
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #a46d1f;
-  color: #fff;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #8a5718;
-  transform: scale(1.05);
-}
-
-.btn-secondary {
-  background: #f6f4ef;
-  border: 1px solid #d8d2c4;
-  color: #1f2522;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #e8e4da;
-  transform: scale(1.05);
-}
-
-.btn-danger {
-  background: #f44336;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #da190b;
-  transform: scale(1.05);
-}
-
-.btn-warning {
-  background: #a46d1f;
-  color: #fff;
-}
-
-.btn-warning:hover {
-  background: #8a5718;
-  transform: scale(1.05);
-}
-
-.no-cost-warning {
-  background: rgba(255, 152, 0, 0.2);
-  border: 2px solid #ff9800;
-  padding: 10px 20px;
-  border-radius: 8px;
-  color: #a46d1f;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-}
-
-.btn-small {
-  padding: 8px 16px;
-  font-size: 14px;
-  background: #a46d1f;
-  color: #fff;
-}
-
-.btn-small:hover {
-  background: #8a5718;
-}
-
-.reforge-options {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 15px;
-  border-radius: 10px;
-  width: 100%;
-}
-
-.reforge-info {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.warning {
-  color: #9d2f2f;
-  font-size: 14px;
-}
-
-.negative-cost { color: #9d2f2f; font-weight: bold; }
-
-.waiting-opponent {
-  background: rgba(255, 152, 0, 0.2);
-  border: 2px solid #ff9800;
-  padding: 15px 30px;
-  border-radius: 8px;
-  color: #a46d1f;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  font-size: 18px;
-  animation: pulse 1.5s infinite;
-}
-
-.both-ready {
-  background: rgba(76, 175, 80, 0.2);
-  border: 2px solid #4caf50;
-  padding: 15px 30px;
-  border-radius: 8px;
-  color: #2f6f5e;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  font-size: 18px;
-}
-
-.game-over-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(31, 37, 34, 0.55);
-  padding: 16px;
-}
-
-.game-over-panel {
-  background: #fffdf8;
-  border: 2px solid #a46d1f;
-  border-radius: 14px;
-  padding: 24px 28px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 12px 40px rgba(31, 37, 34, 0.25);
-}
-
-.game-over-title {
-  margin: 0 0 12px;
-  font-size: 22px;
-  color: #a46d1f;
-}
-
-.game-over-message {
-  margin: 0 0 20px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #1f2522;
-}
-
-.game-over-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.field-hover-popover {
-  z-index: 5000;
-}
-
-.detail-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: rgba(31, 37, 34, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.detail-modal-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.detail-tip {
-  margin: 0;
-  font-size: 12px;
-  color: #fffdf8;
-  opacity: 0.9;
+.action-dock-hint--warn {
+  color: var(--game-danger);
 }
 </style>
