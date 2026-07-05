@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6090',
+    date: '2026-07-05',
+    changes: [
+      '修复AI揭示动画前过早清除隐藏牌导致卡背消失'
+    ]
+  },
+
+
+  {
     version: '1.0.6089',
     date: '2026-07-05',
     changes: [

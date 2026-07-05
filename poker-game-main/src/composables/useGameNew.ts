@@ -1054,7 +1054,6 @@ export function useGame() {
       const aiPlayer = gameState.value.players.find(p => p.id === aiId)
       if (!aiPlayer) continue
       names.push(`${aiPlayer.name} ${hidden.length}张`)
-      aiHiddenCards.value[aiId] = []
 
       for (let hi = 0; hi < hidden.length; hi++) {
         const item = hidden[hi]
@@ -1067,6 +1066,9 @@ export function useGame() {
         deployCard(item.card, aiPlayer, item.slot)
         await animations.flashLand(aiId, item.slot)
       }
+
+      aiHiddenCards.value[aiId] = []
+      aiHiddenCards.value = { ...aiHiddenCards.value }
     }
     
     gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
