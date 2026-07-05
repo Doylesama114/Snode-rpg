@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6095',
+    date: '2026-07-05',
+    changes: [
+      '修复AI揭示时机',
+      '联机延迟揭示与按序费用结算',
+      '费用不足退回手牌'
+    ]
+  },
+
+
+  {
     version: '1.0.6094',
     date: '2026-07-05',
     changes: [

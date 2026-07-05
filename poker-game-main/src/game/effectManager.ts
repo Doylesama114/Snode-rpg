@@ -2547,17 +2547,18 @@ export class EffectManager {
     return card.currentPower ?? card.basePower ?? 0
   }
 
-  /** 从 pendingReveals 构建本批展示条目 */
+  /** 从 pendingReveals 构建本批展示条目（按玩家顺序） */
   static buildRevealBatch(game: GameState): RevealBatchEntry[] {
     const entries: RevealBatchEntry[] = []
     if (!game.pendingReveals) return entries
     game.players.forEach((player, playerIndex) => {
       const reveals = game.pendingReveals![player.id] || []
-      reveals.forEach(r => {
+      reveals.forEach((r, orderIndex) => {
         const fieldOwnerIndex = r.targetPlayerIndex ?? playerIndex
         entries.push({
           playerId: player.id,
           playerIndex,
+          orderIndex,
           card: r.card,
           slotIndex: r.slotIndex,
           fieldOwnerIndex,
@@ -2565,7 +2566,26 @@ export class EffectManager {
         })
       })
     })
+    entries.sort((a, b) => a.playerIndex - b.playerIndex || (a.orderIndex ?? 0) - (b.orderIndex ?? 0))
     return entries
+  }
+
+  /** 费用不足时退回待揭示牌（不触发效果） */
+  static voidPendingRevealEntry(
+    entry: RevealBatchEntry,
+    game: GameState,
+    messages: string[],
+  ) {
+    const player = game.players[entry.playerIndex]
+    const fieldOwner = game.players[entry.fieldOwnerIndex]
+    const playCost = entry.playCost ?? this.getEffectivePlayCost(entry.card, player)
+    const slot = fieldOwner.field[entry.slotIndex]
+    if (slot?.card === entry.card) slot.card = null
+    player.currentCost += playCost
+    player.hand.push(entry.card)
+    player.hasPlayedThisTurn = false
+    entry.removedFromField = true
+    messages.push(`${player.name} 因费用不足，${entry.card.name} 退回手牌（效果未触发）`)
   }
 
   /** 本批展示后：战力最高者退还打出费用（旗鱼） */
@@ -2605,6 +2625,10 @@ export class EffectManager {
 
     for (const entry of batch) {
       const player = game.players[entry.playerIndex]
+      if (player.currentCost < 0) {
+        this.voidPendingRevealEntry(entry, game, messages)
+        continue
+      }
       const deferred = (entry.card.effects || []).filter(
         e => e.timing === 'onReveal' && e.batchResolveOnly
           && e.type !== 'conditional' && e.type !== 'custom',
@@ -2615,7 +2639,10 @@ export class EffectManager {
       }
     }
 
-    messages.push(...this.applyBatchHighestFreeDeploy(batch, game))
+    messages.push(...this.applyBatchHighestFreeDeploy(
+      batch.filter(e => !e.removedFromField),
+      game,
+    ))
 
     if (game.pendingBatchTacticDiscards?.length) {
       for (const pending of game.pendingBatchTacticDiscards) {

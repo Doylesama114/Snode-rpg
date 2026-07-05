@@ -95,6 +95,7 @@ export type EffectType =
 export interface RevealBatchEntry {
   playerId: string
   playerIndex: number
+  orderIndex?: number
   card: Card
   slotIndex: number
   /** 部署所在玩家索引（跨场部署时与 playerIndex 不同） */

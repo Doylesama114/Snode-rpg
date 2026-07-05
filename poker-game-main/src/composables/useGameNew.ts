@@ -318,7 +318,7 @@ export function useGame() {
   )
 
   // 选择出牌
-  async function choosePlay() {
+  function choosePlay() {
     if (!canPlayerChoosePlay(currentPlayer.value)) {
       gameState.value.message = '最后一回合无法出牌（场地已满）'
       return
@@ -327,7 +327,6 @@ export function useGame() {
     reforgeState.value.hasChosen = true
     gameState.value.phase = 'action'
     gameState.value.message = '选择一张手牌打出'
-    await revealAICards()
   }
 
   // 选择重铸
@@ -557,7 +556,7 @@ export function useGame() {
       if (!aiHiddenCards.value[player.id]) {
         aiHiddenCards.value[player.id] = []
       }
-      aiHiddenCards.value[player.id].push({ card, slot: slotIndex })
+      aiHiddenCards.value[player.id].push({ card, slot: slotIndex, playCost })
       aiHiddenCards.value = {
         ...aiHiddenCards.value,
         [player.id]: [...aiHiddenCards.value[player.id]],
@@ -569,6 +568,9 @@ export function useGame() {
       deployCard(card, fieldOwner, slotIndex)
       await animations.flashLand(fieldOwnerId, slotIndex)
       await showNewFloats(player.id)
+      if (!player.canPlayExtra) {
+        await maybeRevealHiddenAfterHumanAction(player)
+      }
     }
   }
 
@@ -707,6 +709,7 @@ export function useGame() {
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
     await showNewFloats(player.id)
+    await maybeRevealHiddenAfterHumanAction(player)
   }
   function deployCard(card: Card, player: Player, slotIndex: number) {
     const slot = player.field[slotIndex]
@@ -1004,27 +1007,10 @@ export function useGame() {
 
     handleTacticCard(card, player, -1)
     await showNewFloats(player.id)
+    await maybeRevealHiddenAfterHumanAction(player)
   }
-  function checkAIHiddenCardsAfterCostChange(aiPlayer: Player) {
-    const hidden = aiHiddenCards.value[aiPlayer.id]
-    if (!hidden) return
-    
-    const invalidCards: typeof hidden = []
-    
-    aiHiddenCards.value[aiPlayer.id] = hidden.filter(item => {
-      if (aiPlayer.currentCost < EffectManager.getEffectivePlayCost(item.card, aiPlayer)) {
-        invalidCards.push(item)
-        return false
-      }
-      return true
-    })
-    
-    if (invalidCards.length > 0) {
-      invalidCards.forEach(item => {
-        aiPlayer.discard.push(item.card)
-        gameState.value.message += ` | ${aiPlayer.name}的${item.card.name}因费用不足无法打出`
-      })
-    }
+  function checkAIHiddenCardsAfterCostChange(_aiPlayer: Player) {
+    // 费用校验延迟至 revealAICards 按玩家顺序揭示时进行
   }
 
   // 触发部署效果
@@ -1070,7 +1056,13 @@ export function useGame() {
     gameState.value.message += ` | 创建了额外槽位`
   }
 
-  // 显示AI隐藏卡牌（翻转揭示）
+  async function maybeRevealHiddenAfterHumanAction(player: Player) {
+    if (player.id === 'player' && !player.canPlayExtra) {
+      await revealAICards()
+    }
+  }
+
+  // 显示AI隐藏卡牌（翻转揭示，按玩家顺序，费用不足则退回手牌）
   async function revealAICards() {
     const allHiddenCount = Object.values(aiHiddenCards.value).reduce((sum, cards) => sum + cards.length, 0)
     if (allHiddenCount === 0) return
@@ -1078,7 +1070,11 @@ export function useGame() {
     await animations.playBanner({ kind: 'reveal', text: '揭示隐藏卡牌' })
     
     const names: string[] = []
-    for (const aiId of Object.keys(aiHiddenCards.value)) {
+    const playerOrder = gameState.value.players
+      .map(p => p.id)
+      .filter(id => id.startsWith('ai') && (aiHiddenCards.value[id]?.length ?? 0) > 0)
+
+    for (const aiId of playerOrder) {
       const hidden = [...(aiHiddenCards.value[aiId] || [])]
       if (!hidden.length) continue
       const aiPlayer = gameState.value.players.find(p => p.id === aiId)
@@ -1087,6 +1083,16 @@ export function useGame() {
 
       for (let hi = 0; hi < hidden.length; hi++) {
         const item = hidden[hi]
+        const playCost = item.playCost ?? EffectManager.getEffectivePlayCost(item.card, aiPlayer)
+
+        if (aiPlayer.currentCost < 0) {
+          aiPlayer.currentCost += playCost
+          aiPlayer.hand.push(item.card)
+          aiPlayer.hasPlayedThisTurn = false
+          gameState.value.message = `${aiPlayer.name} 因费用不足，${item.card.name} 退回手牌（效果未触发）`
+          continue
+        }
+
         await animations.playFlipReveal({
           fieldOwnerId: aiId,
           slotIndex: item.slot,
@@ -1101,7 +1107,9 @@ export function useGame() {
       aiHiddenCards.value = { ...aiHiddenCards.value }
     }
     
-    gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
+    if (names.length) {
+      gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
+    }
     
     await animations.wait(400)
     if (gameState.value.phase === 'action') {
@@ -1168,10 +1176,6 @@ export function useGame() {
 
     EffectManager.triggerReforgeEffects(player, gameState.value)
     await showNewFloats(player.id)
-    
-    if (!player.id.startsWith('ai')) {
-      await revealAICards()
-    }
     
     await animations.wait(400)
     endTurn()
@@ -1253,7 +1257,10 @@ export function useGame() {
   }
 
   // 结束回合
-  function endTurn() {
+  async function endTurn() {
+    if (currentPlayer.value.id === 'player') {
+      await revealAICards()
+    }
     void switchToNextPlayer()
   }
 
