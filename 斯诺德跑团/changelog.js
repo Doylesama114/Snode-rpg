@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6089',
+    date: '2026-07-05',
+    changes: [
+      '修复单机AI隐藏牌在对应部署槽显示卡背而非空槽'
+    ]
+  },
+
+
+  {
     version: '1.0.6088',
     date: '2026-07-05',
     changes: [

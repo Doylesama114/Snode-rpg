@@ -528,6 +528,10 @@ export function useGame() {
         aiHiddenCards.value[player.id] = []
       }
       aiHiddenCards.value[player.id].push({ card, slot: slotIndex })
+      aiHiddenCards.value = {
+        ...aiHiddenCards.value,
+        [player.id]: [...aiHiddenCards.value[player.id]],
+      }
       gameState.value.message = `${player.name} 打出了一张牌（已隐藏）`
       gameState.value.selectedCard = undefined
       gameState.value.phase = 'decision'
@@ -1052,11 +1056,13 @@ export function useGame() {
       names.push(`${aiPlayer.name} ${hidden.length}张`)
       aiHiddenCards.value[aiId] = []
 
-      for (const item of hidden) {
+      for (let hi = 0; hi < hidden.length; hi++) {
+        const item = hidden[hi]
         await animations.playFlipReveal({
           fieldOwnerId: aiId,
           slotIndex: item.slot,
           card: item.card,
+          hiddenOriginId: `${aiId}-${hi}`,
         })
         deployCard(item.card, aiPlayer, item.slot)
         await animations.flashLand(aiId, item.slot)

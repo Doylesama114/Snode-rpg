@@ -6,12 +6,13 @@ import GameAnimationLayer from '@/components/GameAnimationLayer.vue'
 import { useFieldCardDetail } from '@/composables/useFieldCardDetail'
 import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
+import { computed, unref } from 'vue'
 
+const gameApi = useGame()
 const { 
   gameState, 
   currentPlayer, 
   otherPlayers, 
-  aiHiddenCards, 
   reforgeState, 
   hasPlayedThisTurn, 
   canPlayExtra,
@@ -32,7 +33,20 @@ const {
   canChoosePlay,
   canChooseReforge,
   finalRoundTacticsOnly,
-} = useGame()
+} = gameApi
+
+/** AI 隐藏牌（保留 ref 引用，避免解构丢响应式） */
+const aiHiddenCardsMap = computed(() => unref(gameApi.aiHiddenCards) as Record<string, Array<{ card: import('@/types/game').Card, slot: number }>>)
+
+function getAiHiddenAtSlot(playerId: string, slotIndex: number) {
+  return aiHiddenCardsMap.value[playerId]?.find(item => item.slot === slotIndex) ?? null
+}
+
+function getAiHiddenDomKey(playerId: string, slotIndex: number) {
+  const list = aiHiddenCardsMap.value[playerId] ?? []
+  const hi = list.findIndex(item => item.slot === slotIndex)
+  return hi >= 0 ? `${playerId}-${hi}` : `${playerId}-slot-${slotIndex}`
+}
 
 const {
   hoveredCardKey,
@@ -252,7 +266,7 @@ function playerIndex(playerId: string) {
               class="field-slot"
               :data-field-slot="slotFlashKey(player.id, player.field.indexOf(slot))"
               :class="{
-                'has-card': slot.card,
+                'has-card': slot.card || !!getAiHiddenAtSlot(player.id, player.field.indexOf(slot)),
                 'slot-land-flash': isSlotFlashing(player.id, player.field.indexOf(slot)),
                 'slot-bounce': isSlotBouncing(player.id, player.field.indexOf(slot)),
                 'slot-shake': isSlotShaking(player.id, player.field.indexOf(slot)),
@@ -274,6 +288,13 @@ function playerIndex(playerId: string) {
                 <div class="card-power" :class="powerPulseClass(player.id, player.field.indexOf(slot))" :style="{ color: getPowerColor(slot.card) }">
                   {{ slot.card.currentPower }}
                 </div>
+              </div>
+              <div
+                v-else-if="getAiHiddenAtSlot(player.id, player.field.indexOf(slot))"
+                class="field-card hidden"
+                :data-hidden-card="getAiHiddenDomKey(player.id, player.field.indexOf(slot))"
+              >
+                <div class="card-back">?</div>
               </div>
               <div v-else class="empty-slot">{{ player.id === 'player' ? si + 1 : '空' }}</div>
 
@@ -303,19 +324,6 @@ function playerIndex(playerId: string) {
                   </div>
                   <div v-else class="empty-slot extra">额外</div>
                 </div>
-              </div>
-            </div>
-
-            <!-- AI隐藏卡牌 -->
-            <div
-              v-if="!player.id.startsWith('player')"
-              v-for="(item, hi) in (aiHiddenCards[player.id] || [])"
-              :key="'hidden-' + hi"
-              class="field-slot has-card"
-              :data-hidden-card="player.id + '-' + hi"
-            >
-              <div class="field-card hidden">
-                <div class="card-back">?</div>
               </div>
             </div>
           </div>
@@ -699,14 +707,22 @@ function playerIndex(playerId: string) {
 }
 
 .field-card.hidden {
-  background: #f6f4ef;
+  background: linear-gradient(145deg, #4a3728 0%, #2a1f18 100%);
+  border: 2px solid #8a5718;
   padding: 15px;
   border-radius: 8px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
 }
 
 .card-back {
   font-size: 40px;
   font-weight: bold;
+  color: #d4a574;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .card-name-small {
