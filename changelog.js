@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6107',
+    date: '2026-07-05',
+    changes: [
+      '联机大厅移除配置服务器按钮',
+      '服务器地址自动检测连接'
+    ]
+  },
+
+
+  {
     version: '1.0.6106',
     date: '2026-07-05',
     changes: [

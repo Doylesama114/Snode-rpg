@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useRouter } from 'vue-router'
-import { getServerUrl, getServerUrlByMode, saveServerUrl, type ServerMode } from '@/config/multiplayer'
+import { getServerUrl } from '@/config/multiplayer'
 import type { AccountState } from '@/types/game'
 import {
   readAccountState,
@@ -12,7 +12,6 @@ import {
   switchActiveDeckSlot,
 } from '@/utils/deckSlots'
 import { validateActiveDeck, DECK_SIZE } from '@/utils/deckValidation'
-import ServerConfigDialog from './ServerConfigDialog.vue'
 
 const router = useRouter()
 const {
@@ -24,7 +23,6 @@ const {
   isGameStarted,
   roomPlayerCount,
   connect,
-  disconnect,
   createRoom,
   joinRoom,
   getRooms,
@@ -35,10 +33,7 @@ const playerNameInput = ref('')
 const roomIdInput = ref('')
 const showCreateDialog = ref(false)
 const showJoinDialog = ref(false)
-const serverMode = ref<ServerMode>('auto')
 const serverUrl = ref(getServerUrl())
-const showServerConfig = ref(false)
-const showConfigDialog = ref(false)
 const playerCount = ref(2)
 
 const account = ref<AccountState | null>(null)
@@ -103,26 +98,6 @@ onMounted(() => {
 //   disconnect()
 // })
 
-function changeServerMode(mode: ServerMode) {
-  serverMode.value = mode
-  serverUrl.value = getServerUrlByMode(mode)
-  saveServerUrl(serverUrl.value) // 保存配置
-  disconnect()
-  setTimeout(() => {
-    connect(serverUrl.value)
-  }, 500)
-}
-
-function handleConfigSave(url: string) {
-  serverUrl.value = url
-  saveServerUrl(url) // 保存配置
-  showConfigDialog.value = false
-  disconnect()
-  setTimeout(() => {
-    connect(serverUrl.value)
-  }, 500)
-}
-
 function handleCreateRoom() {
   if (!playerNameInput.value.trim()) {
     alert('请输入玩家名称')
@@ -184,52 +159,8 @@ watch(isGameStarted, (started) => {
           </span>
         </div>
         <div class="server-info">
-          <button @click="showConfigDialog = true" class="btn-link">
-            ⚙️ 配置服务器
-          </button>
           <span class="server-url">{{ serverUrl }}</span>
         </div>
-      </div>
-    </div>
-
-    <!-- 服务器配置 -->
-    <div v-if="showServerConfig" class="server-config">
-      <h3>服务器配置</h3>
-      <div class="server-modes">
-        <button 
-          @click="changeServerMode('auto')" 
-          :class="{ active: serverMode === 'auto' }"
-          class="btn btn-mode"
-        >
-          自动检测
-        </button>
-        <button 
-          @click="changeServerMode('local')" 
-          :class="{ active: serverMode === 'local' }"
-          class="btn btn-mode"
-        >
-          本地 (localhost)
-        </button>
-        <button 
-          @click="changeServerMode('lan')" 
-          :class="{ active: serverMode === 'lan' }"
-          class="btn btn-mode"
-        >
-          局域网 (192.168.1.7)
-        </button>
-        <button 
-          @click="changeServerMode('frp')" 
-          :class="{ active: serverMode === 'frp' }"
-          class="btn btn-mode"
-        >
-          🌸 Sakura FRP
-        </button>
-      </div>
-      <div class="server-help">
-        <p><strong>本地模式：</strong>同一台电脑测试（使用无痕窗口模拟第二个玩家）</p>
-        <p><strong>局域网模式：</strong>同一WiFi下的朋友可以访问 <code>http://192.168.1.7:5173</code></p>
-        <p><strong>Sakura FRP：</strong>通过内网穿透让互联网上的朋友访问</p>
-        <p><strong>自动检测：</strong>根据访问地址自动选择</p>
       </div>
     </div>
 
@@ -389,13 +320,6 @@ watch(isGameStarted, (started) => {
         返回主页
       </button>
     </div>
-
-    <!-- 服务器配置对话框 -->
-    <ServerConfigDialog 
-      v-if="showConfigDialog"
-      @close="showConfigDialog = false"
-      @save="handleConfigSave"
-    />
   </div>
 </template>
 
@@ -443,84 +367,6 @@ watch(isGameStarted, (started) => {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-}
-
-.btn-link {
-  background: none;
-  border: none;
-  color: #2f6f5e;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 14px;
-  padding: 5px 10px;
-}
-
-.btn-link:hover {
-  color: #45a049;
-}
-
-.server-config {
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.server-config h3 {
-  margin: 0 0 15px 0;
-  text-align: center;
-}
-
-.server-modes {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-}
-
-.btn-mode {
-  padding: 10px 20px;
-  background: #f6f4ef;
-  border: 1px solid #d8d2c4;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-mode:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-.btn-mode.active {
-  background: #a46d1f;
-  border-color: #a46d1f;
-  font-weight: bold;
-}
-
-.server-help {
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 15px;
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.server-help p {
-  margin: 8px 0;
-}
-
-.server-help code {
-  background: #fffdf8; border: 1px solid #d8d2c4;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  color: #2f6f5e;
 }
 
 .connected {
