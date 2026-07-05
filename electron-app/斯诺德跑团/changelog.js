@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6101',
+    date: '2026-07-05',
+    changes: [
+      '卡组构筑筛选侧栏',
+      '类别属性关键词',
+      '费用战力排序'
+    ]
+  },
+
+
+  {
     version: '1.0.6100',
     date: '2026-07-05',
     changes: [

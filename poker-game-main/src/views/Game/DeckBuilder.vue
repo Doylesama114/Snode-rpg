@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import type { AccountState, Card, CardType, SavedDeckSlot } from '@/types/game'
+import type { AccountState, Card, SavedDeckSlot } from '@/types/game'
 import { CardDatabase, getDefaultDeckCardIds } from '@/data/cardDatabase'
 
 CardDatabase.initialize()
 import CardDetailPopover from '@/components/CardDetailPopover.vue'
+import DeckPoolFilterSidebar from '@/components/deck/DeckPoolFilterSidebar.vue'
+import { useDeckPoolFilter } from '@/composables/useDeckPoolFilter'
 import { getCardTypeLabel, formatCardEffects } from '@/utils/cardDisplay'
 import { registerEscHandler } from '@/utils/escNavigation'
 import {
@@ -26,8 +28,6 @@ const router = useRouter()
 const account = ref<AccountState | null>(null)
 const deckCardIds = ref<string[]>([])
 const message = ref('')
-const searchQuery = ref('')
-const filterType = ref<CardType | 'all'>('all')
 const detailCard = ref<Card | null>(null)
 const newSlotName = ref('')
 const renameSlotName = ref('')
@@ -62,16 +62,30 @@ const allCards = computed(() => {
   return CardDatabase.getAllCards().slice().sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
 })
 
-const filteredPool = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase()
-  return allCards.value.filter(c => {
-    if (filterType.value !== 'all' && c.type !== filterType.value) return false
-    if (!q) return true
-    return c.name.toLowerCase().includes(q)
-      || c.keywords.some(kw => kw.toLowerCase().includes(q))
-      || c.attribute.includes(q)
-  })
-})
+const poolFilter = useDeckPoolFilter(allCards, deckCardIds)
+const {
+  criteria: poolCriteria,
+  sidebarOpen: filterSidebarOpen,
+  sidebarPinned: filterSidebarPinned,
+  keywordSearch: filterKeywordSearch,
+  meta: poolMeta,
+  filteredPool,
+  hasStructuredFilterActive,
+  filteredKeywords,
+  toggleType: toggleFilterType,
+  toggleAttribute: toggleFilterAttribute,
+  toggleKeyword: toggleFilterKeyword,
+  setSearchQuery: setPoolSearchQuery,
+  setDeckMembership: setPoolDeckMembership,
+  setSortKey: setPoolSortKey,
+  setKeywordSearch: setPoolKeywordSearch,
+  clearFilters: clearPoolFilters,
+  removeSelectedType,
+  removeSelectedAttribute,
+  removeSelectedKeyword,
+  toggleSidebar: toggleFilterSidebar,
+  togglePin: toggleFilterPin,
+} = poolFilter
 
 const deckCards = computed(() =>
   deckCardIds.value.map(id => CardDatabase.getCard(id)).filter((c): c is Card => !!c),
@@ -468,42 +482,99 @@ function goHome() {
       </section>
 
       <section ref="poolPanelRef" class="panel pool-panel">
-        <h3>卡池 ({{ filteredPool.length }}/148)</h3>
-        <div class="pool-toolbar">
-          <input
-            v-model="searchQuery"
-            type="search"
-            class="pool-search"
-            placeholder="搜索名称、关键词、属性…"
-          >
-          <select v-model="filterType" class="pool-filter">
-            <option value="all">全部类型</option>
-            <option value="unit">单位</option>
-            <option value="environment">环境</option>
-            <option value="tactic">战术</option>
-          </select>
-        </div>
-        <div class="pool-grid">
-          <button
-            v-for="card in filteredPool"
-            :key="card.id"
-            type="button"
-            class="pool-card"
-            :class="{ 'already-in-deck': isInDeck(card.id) }"
-            @click.stop="onPoolClick(card)"
-            @contextmenu="onPoolContextMenu(card, $event)"
-          >
-            <div class="pool-name">{{ card.name }}</div>
-            <div class="pool-meta">
-              {{ getCardTypeLabel(card.type) }} · {{ card.attribute }} · ⚡{{ card.cost }}
-              <template v-if="card.type !== 'tactic'"> · 💪{{ card.basePower }}</template>
+        <div
+          class="pool-layout"
+          :class="{
+            'pool-layout--sidebar-open': filterSidebarOpen,
+            'pool-layout--sidebar-pinned': filterSidebarPinned,
+          }"
+        >
+          <div class="pool-main">
+            <div class="pool-head">
+              <h3>
+                卡池 ({{ filteredPool.length }}/{{ poolMeta.totalCards }})
+                <span v-if="hasStructuredFilterActive" class="pool-filter-tag">已筛选</span>
+              </h3>
+              <button
+                v-if="!filterSidebarOpen"
+                type="button"
+                class="btn-secondary btn-sm pool-filter-toggle"
+                @click="toggleFilterSidebar"
+              >
+                打开筛选
+              </button>
             </div>
-            <div v-if="card.keywords?.length" class="pool-kw">{{ card.keywords.join(' · ') }}</div>
-            <div class="pool-effect">{{ effectPreview(card) }}</div>
-            <span v-if="isInDeck(card.id)" class="pool-badge">已在卡组</span>
-          </button>
+            <div class="pool-toolbar">
+              <input
+                :value="poolCriteria.searchQuery"
+                type="search"
+                class="pool-search"
+                placeholder="搜索名称、关键词、效果描述…"
+                @input="setPoolSearchQuery(($event.target as HTMLInputElement).value)"
+              >
+              <button
+                v-if="poolCriteria.searchQuery || hasStructuredFilterActive"
+                type="button"
+                class="btn-secondary btn-sm"
+                @click="clearPoolFilters"
+              >
+                清空筛选
+              </button>
+            </div>
+            <div v-if="filteredPool.length === 0" class="pool-empty-state">
+              无匹配卡牌，请放宽筛选条件或点击「清空筛选」
+            </div>
+            <div v-else class="pool-grid">
+              <button
+                v-for="card in filteredPool"
+                :key="card.id"
+                type="button"
+                class="pool-card"
+                :class="{ 'already-in-deck': isInDeck(card.id) }"
+                @click.stop="onPoolClick(card)"
+                @contextmenu="onPoolContextMenu(card, $event)"
+              >
+                <div class="pool-name">{{ card.name }}</div>
+                <div class="pool-meta">
+                  {{ getCardTypeLabel(card.type) }} · {{ card.attribute }} · ⚡{{ card.cost }}
+                  <template v-if="card.type !== 'tactic'"> · 💪{{ card.basePower }}</template>
+                </div>
+                <div v-if="card.keywords?.length" class="pool-kw">{{ card.keywords.join(' · ') }}</div>
+                <div class="pool-effect">{{ effectPreview(card) }}</div>
+                <span v-if="isInDeck(card.id)" class="pool-badge">已在卡组</span>
+              </button>
+            </div>
+            <p class="pool-hint">提示：在卡池卡牌上点击右键可快速加入卡组 · 侧栏可筛选类别/属性/关键词</p>
+          </div>
+
+          <DeckPoolFilterSidebar
+            :open="filterSidebarOpen"
+            :pinned="filterSidebarPinned"
+            :match-count="filteredPool.length"
+            :total-count="poolMeta.totalCards"
+            :selected-types="poolCriteria.selectedTypes"
+            :selected-attributes="poolCriteria.selectedAttributes"
+            :selected-keywords="poolCriteria.selectedKeywords"
+            :deck-membership="poolCriteria.deckMembership"
+            :sort-key="poolCriteria.sortKey"
+            :type-counts="poolMeta.typeCounts"
+            :attribute-counts="poolMeta.attributeCounts"
+            :filtered-keywords="filteredKeywords"
+            :keyword-search="filterKeywordSearch"
+            @toggle-open="toggleFilterSidebar"
+            @toggle-pin="toggleFilterPin"
+            @toggle-type="toggleFilterType"
+            @toggle-attribute="toggleFilterAttribute"
+            @toggle-keyword="toggleFilterKeyword"
+            @set-deck-membership="setPoolDeckMembership"
+            @set-sort-key="setPoolSortKey"
+            @clear-filters="clearPoolFilters"
+            @remove-type="removeSelectedType"
+            @remove-attribute="removeSelectedAttribute"
+            @remove-keyword="removeSelectedKeyword"
+            @update:keyword-search="setPoolKeywordSearch"
+          />
         </div>
-        <p class="pool-hint">提示：在卡池卡牌上点击右键可快速加入卡组</p>
       </section>
     </div>
 
@@ -547,7 +618,7 @@ function goHome() {
 }
 
 .deck-wrap {
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
   padding-bottom: 32px;
 }
@@ -840,6 +911,63 @@ function goHome() {
   background: #fdf5f5;
 }
 
+.pool-layout {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  position: relative;
+  min-height: 320px;
+}
+
+.pool-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.pool-layout--sidebar-open.pool-layout--sidebar-pinned .pool-main {
+  margin-right: 0;
+}
+
+.pool-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pool-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.pool-filter-tag {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a46d1f;
+  background: rgba(164, 109, 31, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+.pool-filter-toggle {
+  flex-shrink: 0;
+}
+
+.pool-empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: #9d2f2f;
+  font-size: 14px;
+  background: #fdf5f5;
+  border: 1px dashed #e0b4b4;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
 .pool-toolbar {
   display: flex;
   gap: 10px;
@@ -850,14 +978,6 @@ function goHome() {
 .pool-search {
   flex: 1;
   min-width: 180px;
-  padding: 8px 12px;
-  border: 1px solid #d8d2c4;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
-}
-
-.pool-filter {
   padding: 8px 12px;
   border: 1px solid #d8d2c4;
   border-radius: 8px;
