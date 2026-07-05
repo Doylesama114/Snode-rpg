@@ -116,36 +116,27 @@ io.on('connection', (socket) => {
     
     // 通知房间内所有玩家
     io.to(roomId).emit('playerJoined', { room })
-    
-    // 如果房间满了，开始游戏
-    if (room.players.length === room.maxPlayers) {
-      room.status = 'playing'
-      
-      // 创建游戏引擎实例
-      const gameEngine = new GameEngine(roomId, room.players, room.maxPlayers)
-      gameEngines.set(roomId, gameEngine)
-      
-      // 获取初始游戏状态
-      const initialState = gameEngine.getPublicGameState()
-      room.gameState = initialState
-      
-      console.log(`[gameStart] 游戏开始: ${roomId}，玩家: ${room.players.map(p => p.name).join(', ')}`)
-      console.log(`[gameStart] 游戏引擎已创建`)
-      console.log(`[gameStart] 初始游戏状态 phase: ${initialState.phase}, round: ${initialState.round}`)
-      
-      // 先发送 gameStart 事件
-      io.to(roomId).emit('gameStart', { room })
-      
-      // 发送每个玩家的个人游戏状态（包含自己的手牌）
-      room.players.forEach(player => {
-        const playerState = gameEngine.getPlayerGameState(player.id)
-        console.log(`[gameStart] 发送游戏状态给 ${player.name} (${player.socketId})`)
-        console.log(`[gameStart] 玩家状态 - phase: ${playerState.phase}, 手牌数: ${playerState.players[0].hand.length}`)
-        io.to(player.socketId).emit('gameStateUpdate', playerState)
-      })
-      
-      console.log(`[gameStart] 所有游戏状态已发送`)
+  })
+
+  // 房主手动开始游戏
+  socket.on('requestStartGame', ({ roomId }) => {
+    const room = rooms.get(roomId)
+    if (!room) {
+      socket.emit('error', { message: '房间不存在' })
+      return
     }
+    const player = room.players.find(p => p.socketId === socket.id)
+    if (!player) return
+    if (room.players[0].id !== player.id) {
+      socket.emit('error', { message: '只有房主可以开始游戏' })
+      return
+    }
+    if (room.status === 'playing') return
+    if (room.players.length < 2) {
+      socket.emit('error', { message: '至少需要 2 名玩家才能开始' })
+      return
+    }
+    beginRoomGame(room)
   })
 
   // 重新加入房间（用于页面刷新或导航后恢复）
@@ -450,6 +441,31 @@ io.on('connection', (socket) => {
 // 生成房间ID
 function generateRoomId() {
   return Math.random().toString(36).substring(2, 8).toUpperCase()
+}
+
+function beginRoomGame(room) {
+  if (room.status === 'playing') return
+
+  room.status = 'playing'
+
+  const gameEngine = new GameEngine(room.id, room.players, room.maxPlayers)
+  gameEngines.set(room.id, gameEngine)
+
+  const initialState = gameEngine.getPublicGameState()
+  room.gameState = initialState
+
+  console.log(`[gameStart] 游戏开始: ${room.id}，玩家: ${room.players.map(p => p.name).join(', ')}`)
+  console.log(`[gameStart] 初始游戏状态 phase: ${initialState.phase}, round: ${initialState.round}`)
+
+  io.to(room.id).emit('gameStart', { room })
+
+  room.players.forEach(player => {
+    const playerState = gameEngine.getPlayerGameState(player.id)
+    console.log(`[gameStart] 发送游戏状态给 ${player.name} (${player.socketId})`)
+    io.to(player.socketId).emit('gameStateUpdate', playerState)
+  })
+
+  console.log(`[gameStart] 所有游戏状态已发送`)
 }
 
 // 生成持久化玩家ID

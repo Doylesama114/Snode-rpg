@@ -20,6 +20,7 @@ import { parseCombatFloats } from '@/utils/parseCombatFloats'
 import { shouldSkipAnimations } from '@/utils/gameSettings'
 import { registerEscHandler } from '@/utils/escNavigation'
 import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
+import { syncBattleBgm } from '@/utils/gameBgm'
 
 const router = useRouter()
 const multiplayer = useMultiplayer()
@@ -201,6 +202,10 @@ async function handleGameStateUpdate(newState: GameState) {
   
   console.log('=== [CardGameMultiplayer] 状态更新完成 ===')
 }
+
+watch(() => game.gameState.value?.isFinalRound, (final) => {
+  if (game.gameState.value) syncBattleBgm(!!final)
+}, { immediate: true })
 
 onMounted(() => {
   unregisterEsc = registerEscHandler(() => {
@@ -571,13 +576,7 @@ function leaveGameToLobby(fromGameOver = false) {
             @card-click="(c, e) => onFieldCardClick(c, e)"
           />
           <div class="opponent-hand-row">
-            <span class="opponent-hand-row__label">手牌 {{ opp.handCount || opp.hand.length }}</span>
-            <GameCard
-              v-for="(_, ci) in opp.hand"
-              :key="ci"
-              size="mini"
-              face-down
-            />
+            <span class="opponent-hand-row__label">手牌 {{ opp.handCount ?? opp.hand.length }} 张</span>
           </div>
         </PlayerStrip>
 
@@ -723,9 +722,21 @@ function leaveGameToLobby(fromGameOver = false) {
       </div>
     </Teleport>
   </div>
+  <div v-else class="game-table game-table--loading">
+    <div class="game-table__scroll">
+      <p class="game-loading-hint">正在加载对局…</p>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.game-table--loading .game-loading-hint {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--game-text-muted);
+  font-size: 16px;
+}
+
 .action-dock-hint--warn {
   color: var(--game-danger);
 }

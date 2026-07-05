@@ -15,6 +15,7 @@ import { useGameAnimations } from '@/composables/useGameAnimations'
 import { registerEscHandler } from '@/utils/escNavigation'
 import { computed, ref, unref, watch, onMounted, onUnmounted } from 'vue'
 import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
+import { syncBattleBgm } from '@/utils/gameBgm'
 import { EffectManager } from '@/game/effectManager'
 
 const gameApi = useGame()
@@ -146,6 +147,12 @@ function onHandCardEnter(e: MouseEvent, playerId: string, cardIndex: number, car
 function onHandCardLeave(playerId: string, cardIndex: number) {
   onFieldCardLeave(playerId, `hand-${cardIndex}`)
 }
+
+watch(
+  () => gameState.value.isFinalRound,
+  final => syncBattleBgm(final),
+  { immediate: true },
+)
 
 let unregisterEsc: (() => void) | undefined
 onMounted(() => {

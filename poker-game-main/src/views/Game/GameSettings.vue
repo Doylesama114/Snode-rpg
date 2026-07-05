@@ -1,17 +1,25 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { loadGameSettings, saveGameSettings } from '@/utils/gameSettings'
+import { refreshBgmVolume } from '@/utils/gameBgm'
 import { registerEscHandler } from '@/utils/escNavigation'
 
 const router = useRouter()
 const skipAnimations = ref(false)
+const bgmVolume = ref(70)
+const bgmMuted = ref(false)
 const saved = ref(false)
+
+const volumeLabel = computed(() => `${bgmVolume.value}%`)
 
 let unregisterEsc: (() => void) | undefined
 
 onMounted(() => {
-  skipAnimations.value = loadGameSettings().skipAnimations
+  const s = loadGameSettings()
+  skipAnimations.value = s.skipAnimations
+  bgmVolume.value = Math.round(s.bgmVolume * 100)
+  bgmMuted.value = s.bgmMuted
   unregisterEsc = registerEscHandler(() => false)
 })
 
@@ -24,9 +32,19 @@ function goBack() {
 }
 
 function persist() {
-  saveGameSettings({ skipAnimations: skipAnimations.value })
+  saveGameSettings({
+    skipAnimations: skipAnimations.value,
+    bgmVolume: bgmVolume.value / 100,
+    bgmMuted: bgmMuted.value,
+  })
+  refreshBgmVolume()
   saved.value = true
   setTimeout(() => { saved.value = false }, 2000)
+}
+
+function toggleBgmMute() {
+  bgmMuted.value = !bgmMuted.value
+  persist()
 }
 </script>
 
@@ -45,6 +63,32 @@ function persist() {
         </div>
         <input v-model="skipAnimations" type="checkbox" class="setting-toggle" @change="persist">
       </label>
+
+      <div class="setting-block">
+        <div class="setting-row setting-row--static">
+          <div class="setting-text">
+            <span class="setting-title">背景音乐</span>
+            <span class="setting-desc">主页 / 构筑 / 大厅播放 HALL1；对局播放 Battle1；最后一回合切换 END1</span>
+          </div>
+          <button type="button" class="btn-mute" :class="{ 'btn-mute--off': bgmMuted }" @click="toggleBgmMute">
+            {{ bgmMuted ? '🔇 已静音' : '🔊 开启' }}
+          </button>
+        </div>
+        <label class="volume-row">
+          <span class="volume-label">音量 {{ volumeLabel }}</span>
+          <input
+            v-model.number="bgmVolume"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            class="volume-slider"
+            :disabled="bgmMuted"
+            @input="persist"
+          >
+        </label>
+      </div>
+
       <p v-if="saved" class="saved-hint">已保存</p>
     </section>
   </div>
@@ -87,6 +131,9 @@ function persist() {
   border: 1px solid #d8d2c4;
   border-radius: 12px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .setting-row {
@@ -97,10 +144,23 @@ function persist() {
   cursor: pointer;
 }
 
+.setting-row--static {
+  cursor: default;
+}
+
+.setting-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid #ece8df;
+}
+
 .setting-text {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 
 .setting-title {
@@ -121,8 +181,43 @@ function persist() {
   flex-shrink: 0;
 }
 
+.btn-mute {
+  padding: 8px 14px;
+  border: 1px solid #d8d2c4;
+  border-radius: 999px;
+  background: #f6f4ef;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-mute--off {
+  opacity: 0.75;
+}
+
+.volume-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.volume-label {
+  font-size: 14px;
+  color: #69706b;
+}
+
+.volume-slider {
+  width: 100%;
+  accent-color: #a46d1f;
+}
+
+.volume-slider:disabled {
+  opacity: 0.45;
+}
+
 .saved-hint {
-  margin: 12px 0 0;
+  margin: 0;
   font-size: 13px;
   color: #2f6f5e;
 }

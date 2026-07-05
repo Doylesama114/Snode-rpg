@@ -367,6 +367,18 @@ export function useMultiplayer() {
     instance.socket.emit('getRooms')
   }
 
+  function requestStartGame() {
+    if (!instance.socket?.connected || !instance.currentRoom.value) {
+      instance.error.value = '未连接到服务器或不在房间中'
+      return
+    }
+    if (!instance.isHost.value) {
+      instance.error.value = '只有房主可以开始游戏'
+      return
+    }
+    instance.socket.emit('requestStartGame', { roomId: instance.currentRoom.value.id })
+  }
+
   // 发送游戏操作
   function sendAction(action: GameAction) {
     if (!instance.socket?.connected) {
@@ -473,6 +485,7 @@ export function useMultiplayer() {
     joinRoom,
     leaveRoom,
     getRooms,
+    requestStartGame,
     sendAction,
     syncGameState,
     onOpponentAction,

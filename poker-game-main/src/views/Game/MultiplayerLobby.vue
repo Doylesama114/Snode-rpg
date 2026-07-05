@@ -22,10 +22,12 @@ const {
   isInRoom,
   isGameStarted,
   roomPlayerCount,
+  isHost,
   connect,
   createRoom,
   joinRoom,
   getRooms,
+  requestStartGame,
   leaveRoom
 } = useMultiplayer()
 
@@ -52,6 +54,24 @@ const activeDeckLabel = computed(() => {
 })
 
 const deckValid = computed(() => validateActiveDeck(account.value))
+
+const roomFull = computed(() =>
+  roomPlayerCount.value >= (currentRoom.value?.maxPlayers || 2),
+)
+
+const canHostStart = computed(() =>
+  isInRoom.value
+  && isHost.value
+  && !isGameStarted.value
+  && roomFull.value,
+)
+
+const waitingForHost = computed(() =>
+  isInRoom.value
+  && !isHost.value
+  && !isGameStarted.value
+  && roomFull.value,
+)
 
 function ensureValidDeckForRoom(actionLabel: string): boolean {
   const v = validateActiveDeck(account.value)
@@ -127,7 +147,11 @@ function handleRefreshRooms() {
   getRooms()
 }
 
-function startGame() {
+function handleHostStartGame() {
+  requestStartGame()
+}
+
+function goToGame() {
   router.push('/game/multiplayer')
 }
 
@@ -142,8 +166,8 @@ function disbandRoom() {
 watch(isGameStarted, (started) => {
   if (started) {
     setTimeout(() => {
-      startGame()
-    }, 1000)
+      goToGame()
+    }, 500)
   }
 })
 </script>
@@ -306,8 +330,14 @@ watch(isGameStarted, (started) => {
         <div v-if="roomPlayerCount < (currentRoom?.maxPlayers || 2)" class="waiting-message">
           等待对手加入...
         </div>
-        <div v-else class="ready-message">
-          游戏即将开始！
+        <div v-else-if="canHostStart" class="host-start-row">
+          <p class="ready-message">玩家已到齐，可以开始游戏</p>
+          <button type="button" class="btn btn-primary" @click="handleHostStartGame">
+            开始游戏
+          </button>
+        </div>
+        <div v-else-if="waitingForHost" class="waiting-message">
+          等待房主开始游戏...
         </div>
         <button @click="disbandRoom" class="btn btn-danger" style="margin-top:15px">
           解散房间
@@ -681,10 +711,18 @@ watch(isGameStarted, (started) => {
 }
 
 .ready-message {
-  font-size: 24px;
+  font-size: 18px;
   color: #2f6f5e;
   font-weight: bold;
-  animation: pulse 1s infinite;
+  margin: 0;
+}
+
+.host-start-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 @keyframes pulse {

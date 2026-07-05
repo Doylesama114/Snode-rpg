@@ -1,1 +1,0 @@
-const s="gameSettings",n={skipAnimations:!1};function e(){try{const t=localStorage.getItem(s);if(!t)return{...n};const a=JSON.parse(t);return{...n,...a}}catch{return{...n}}}function i(t){localStorage.setItem(s,JSON.stringify(t))}function o(){return e().skipAnimations}export{i as a,e as l,o as s};

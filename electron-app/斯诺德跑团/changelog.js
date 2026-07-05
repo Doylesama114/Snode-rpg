@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6108',
+    date: '2026-07-05',
+    changes: [
+      'BGM(HALL1/Battle1/END1)循环+设置页音量滑条默认70%',
+      '联机房主手动开始',
+      '对手手牌仅显示数量',
+      '牌局页滚动修复'
+    ]
+  },
+
+
+  {
     version: '1.0.6107',
     date: '2026-07-05',
     changes: [

@@ -1,8 +1,14 @@
 html,
 body {
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     --uno: bg-base font-ping;
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
 }
 
 html {
