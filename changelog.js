@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6099',
+    date: '2026-07-05',
+    changes: [
+      '联机大厅显示卡组名称',
+      '联机大厅可切换已保存卡组栏位'
+    ]
+  },
+
+
+  {
     version: '1.0.6098',
     date: '2026-07-05',
     changes: [

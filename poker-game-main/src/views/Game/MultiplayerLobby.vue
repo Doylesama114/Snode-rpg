@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useMultiplayer } from '@/composables/useMultiplayer'
 import { useRouter } from 'vue-router'
 import { getServerUrl, getServerUrlByMode, saveServerUrl, type ServerMode } from '@/config/multiplayer'
 import type { AccountState } from '@/types/game'
+import {
+  readAccountState,
+  writeAccountState,
+  migrateAccountState,
+  getActiveDeckSlot,
+  switchActiveDeckSlot,
+} from '@/utils/deckSlots'
 import ServerConfigDialog from './ServerConfigDialog.vue'
 
 const router = useRouter()
@@ -33,37 +40,44 @@ const showServerConfig = ref(false)
 const showConfigDialog = ref(false)
 const playerCount = ref(2)
 
-// Deck info display
-const hasCustomDeck = ref(false)
-const deckCardCount = ref(0)
+const account = ref<AccountState | null>(null)
+
+const savedDecks = computed(() => account.value?.savedDecks ?? [])
+
+const activeDeckSlot = computed(() =>
+  account.value ? getActiveDeckSlot(account.value) : undefined,
+)
+
+const activeDeckLabel = computed(() => {
+  const active = activeDeckSlot.value
+  const count = active?.cardIds?.length ?? account.value?.deckCardIds?.length ?? 0
+  const name = active?.name ?? '默认卡组'
+  return `${name}（${count} 张）`
+})
+
+function loadAccountDeck() {
+  const loaded = readAccountState()
+  if (!loaded?.isRegistered) {
+    router.replace('/account-setup')
+    return false
+  }
+  account.value = migrateAccountState(loaded)
+  writeAccountState(account.value)
+  if (account.value.playerName) {
+    playerNameInput.value = account.value.playerName
+  }
+  return true
+}
+
+function selectDeckSlot(slotId: string) {
+  if (!account.value || isInRoom.value) return
+  if (account.value.activeDeckSlotId === slotId) return
+  switchActiveDeckSlot(account.value, slotId)
+  writeAccountState(account.value)
+}
 
 onMounted(() => {
-  // Check account state
-  try {
-    const raw = localStorage.getItem('accountState')
-    if (raw) {
-      const accountState: AccountState = JSON.parse(raw)
-      if (!accountState.isRegistered) {
-        router.replace('/account-setup')
-        return
-      }
-      // Pre-fill player name
-      if (accountState.playerName) {
-        playerNameInput.value = accountState.playerName
-      }
-      // Check deck
-      if (accountState.deckCardIds && accountState.deckCardIds.length === 15) {
-        hasCustomDeck.value = true
-        deckCardCount.value = 15
-      }
-    } else {
-      router.replace('/account-setup')
-      return
-    }
-  } catch {
-    router.replace('/account-setup')
-    return
-  }
+  if (!loadAccountDeck()) return
 
   // 只在未连接时才连接
   if (!connected.value) {
@@ -213,9 +227,25 @@ watch(isGameStarted, (started) => {
       <!-- Deck info & player name -->
       <div class="deck-info-bar">
         <span class="player-display">👤 {{ playerNameInput || '玩家' }}</span>
-        <span class="deck-display">
-          当前卡组: {{ hasCustomDeck ? `自定义 (${deckCardCount}张)` : '默认' }}
-        </span>
+        <div class="deck-section">
+          <span class="deck-display">当前卡组：{{ activeDeckLabel }}</span>
+          <div v-if="savedDecks.length > 0" class="deck-switcher">
+            <span class="deck-switcher__label">切换卡组</span>
+            <div class="deck-switcher__chips">
+              <button
+                v-for="slot in savedDecks"
+                :key="slot.id"
+                type="button"
+                class="deck-chip"
+                :class="{ 'deck-chip--active': slot.id === account?.activeDeckSlotId }"
+                @click="selectDeckSlot(slot.id)"
+              >
+                {{ slot.name }}
+              </button>
+            </div>
+          </div>
+          <p class="deck-switch-hint">在此仅可切换已保存的卡组；修改内容请前往「管理卡组」</p>
+        </div>
       </div>
       <div class="actions">
         <button @click="showCreateDialog = true" class="btn btn-primary" :disabled="!connected">
@@ -309,6 +339,7 @@ watch(isGameStarted, (started) => {
     <div v-else class="room-waiting">
       <div class="room-info-card">
         <h2>房间: {{ currentRoom?.id }}</h2>
+        <p class="deck-in-room">使用卡组：{{ activeDeckLabel }}</p>
         <div class="players-waiting">
           <h3>玩家列表 ({{ roomPlayerCount }}/{{ currentRoom?.maxPlayers || 2 }})</h3>
           <div class="player-list">
@@ -498,7 +529,7 @@ watch(isGameStarted, (started) => {
 
 .deck-info-bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 20px;
   padding: 16px 24px;
@@ -507,6 +538,71 @@ watch(isGameStarted, (started) => {
   border: 1px solid #d8d2c4;
   border-radius: 12px;
   flex-wrap: wrap;
+}
+
+.deck-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: min(100%, 420px);
+}
+
+.deck-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deck-switcher__label {
+  font-size: 13px;
+  color: #69706b;
+  font-weight: 600;
+}
+
+.deck-switcher__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.deck-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #d8d2c4;
+  background: #f6f4ef;
+  color: #1f2522;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.deck-chip:hover {
+  border-color: #a46d1f;
+  background: #fffdf8;
+}
+
+.deck-chip--active {
+  border-color: #a46d1f;
+  background: rgba(164, 109, 31, 0.12);
+  color: #a46d1f;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px rgba(164, 109, 31, 0.25);
+}
+
+.deck-switch-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #69706b;
+  line-height: 1.4;
+}
+
+.deck-in-room {
+  margin: -16px 0 24px;
+  font-size: 16px;
+  color: #a46d1f;
+  font-weight: 600;
 }
 
 .player-display {

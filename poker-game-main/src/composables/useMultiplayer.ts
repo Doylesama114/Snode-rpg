@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { io, Socket } from 'socket.io-client'
 import type { GameState, GameAction } from '@/types/game'
+import { readAccountState, migrateAccountState, getActiveDeckSlot } from '@/utils/deckSlots'
 
 export interface MultiplayerRoom {
   id: string
@@ -267,17 +268,18 @@ export function useMultiplayer() {
     }
   }
 
-  // 从localStorage读取deckCardIds
+  // 从 localStorage 读取当前激活栏位的卡组
   function getDeckCardIds(): string[] {
-    try {
-      const raw = localStorage.getItem('accountState')
-      if (raw) {
-        const account = JSON.parse(raw)
-        if (account.deckCardIds && account.deckCardIds.length === 15) {
-          return account.deckCardIds
-        }
-      }
-    } catch {}
+    const account = readAccountState()
+    if (!account) return []
+    migrateAccountState(account)
+    if (account.deckCardIds?.length === 15) {
+      return account.deckCardIds
+    }
+    const active = getActiveDeckSlot(account)
+    if (active?.cardIds?.length === 15) {
+      return active.cardIds
+    }
     return []
   }
 
