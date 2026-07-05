@@ -15,6 +15,7 @@ const TIMING_LABELS: Record<EffectTiming, string> = {
   roundStart: '回合开始',
   roundEnd: '回合结束',
   onReveal: '揭示时',
+  onBatchReveal: '批次展示后',
   onGameEnd: '游戏结束时',
   onReforge: '重铸时',
 }

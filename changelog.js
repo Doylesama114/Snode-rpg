@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6080',
+    date: '2026-07-05',
+    changes: [
+      '卡组管理页148张卡池替换与详情弹窗',
+      'ESC按层级返回而非浏览器历史'
+    ]
+  },
+
+
+  {
     version: '1.0.6079',
     date: '2026-07-05',
     changes: [

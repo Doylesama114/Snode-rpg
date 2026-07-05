@@ -2,13 +2,14 @@
 import type { Card } from '@/types/game'
 import { formatCardEffects, getCardTypeLabel } from '@/utils/cardDisplay'
 
-defineProps<{
+withDefaults(defineProps<{
   card: Card
-}>()
+  variant?: 'popover' | 'modal'
+}>(), { variant: 'popover' })
 </script>
 
 <template>
-  <div class="card-detail-popover" @click.stop>
+  <div class="card-detail-popover" :class="{ modal: variant === 'modal' }" @click.stop>
     <div class="popover-header">
       <span class="popover-name">{{ card.name }}</span>
       <span class="popover-type">{{ getCardTypeLabel(card.type) }}</span>
@@ -55,6 +56,18 @@ defineProps<{
   pointer-events: none;
   text-align: left;
   color: #1f2522;
+}
+
+.card-detail-popover.modal {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 420px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .popover-header {

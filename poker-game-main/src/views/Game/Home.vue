@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AccountState } from '@/types/game'
 import GameNav from "@/views/Layout/GameNav.vue";
+import { navigateToLauncher } from '@/utils/escNavigation'
 
 const state = useGlobalState()
 const router = useRouter()
@@ -39,7 +40,7 @@ function goDeckBuilder() {
 }
 
 function goBack() {
-  window.history.back()
+  navigateToLauncher()
 }
 </script>
 
