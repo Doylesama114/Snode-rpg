@@ -1,0 +1,10 @@
+{
+  "class": "法师",
+  "docx_skills_indexed": 408,
+  "json_skills": 356,
+  "updated": 356,
+  "removed_not_in_docx": [
+    "虹光射线"
+  ],
+  "fx_entries": 356
+}

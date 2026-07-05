@@ -1,0 +1,19 @@
+{
+  "module": "特殊专长",
+  "docx_feats": 100,
+  "json_feats": 100,
+  "fx_entries": 100,
+  "removed_not_in_docx": [
+    "斯诺德大师",
+    "质朴",
+    "额外槽位",
+    "鬼一般的"
+  ],
+  "added_from_docx": [
+    "垂钓客",
+    "斯诺德大师.Snoed Master",
+    "额外槽",
+    "鬼一般的...",
+    "鲜明特点"
+  ]
+}
