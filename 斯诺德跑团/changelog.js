@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6123',
+    date: '2026-07-06',
+    changes: [
+      '修复学习技能面板法师塑能/咒法被拆成两组的问题',
+      '统一技能风格命名(塑能风格→塑能)并规范化战士起始技能',
+      'build_panel_skill_data与panel_engine增加canonicalSkillStyle'
+    ]
+  },
+
+
+  {
     version: '1.0.6122',
     date: '2026-07-06',
     changes: [

@@ -6,7 +6,7 @@
       "id": "w-starting-skill-1",
       "name": "猛击",
       "type": "starting",
-      "style": "斗争风格",
+      "style": "斗争",
       "tier": 1,
       "tags": [
         "近战攻击"
@@ -54,7 +54,7 @@
       "id": "w-starting-skill-2",
       "name": "冲锋",
       "type": "starting",
-      "style": "狂攻风格",
+      "style": "狂攻",
       "tier": 1,
       "tags": [
         "近战攻击",
@@ -93,7 +93,7 @@
       "id": "w-starting-skill-3",
       "name": "盾牌格挡",
       "type": "starting",
-      "style": "防护风格",
+      "style": "防护",
       "tier": 1,
       "tags": [
         "防御",
@@ -136,7 +136,7 @@
       "id": "w-starting-skill-4",
       "name": "瞄准射击",
       "type": "starting",
-      "style": "射击风格",
+      "style": "射击",
       "tier": 1,
       "tags": [
         "远程攻击",

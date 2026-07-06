@@ -1,7 +1,15 @@
+function canonicalSkillStyle(style) {
+  if (!style) return "";
+  var s = String(style).trim();
+  if (s.length > 2 && s.slice(-2) === "风格" && s.indexOf("天赋树") < 0) return s.slice(0, -2);
+  return s;
+}
+
 for(var _cn2 in SKILL_DATA){
   var _skills2=SKILL_DATA[_cn2];if(!_skills2||!_skills2.length)continue;
   for(var _si2=0;_si2<_skills2.length;_si2++){
     var _s2=_skills2[_si2];
+    if(_s2.style) _s2.style=canonicalSkillStyle(_s2.style);
     if(_s2.fields&&_s2.fields.关键词&&(!_s2.tags||!_s2.tags.length)){
       _s2.tags=_s2.fields.关键词.split(".").filter(function(t){return t;});
     }
@@ -2953,7 +2961,7 @@ function addSpecialFeat(name, choices) {
 
 function getSkillStyle(name, src) {
   var d = SKILL_DATA[src]; if (!d) return "";
-  for (var i = 0; i < d.length; i++) { if (d[i].name === name) return d[i].style || ""; }
+  for (var i = 0; i < d.length; i++) { if (d[i].name === name) return canonicalSkillStyle(d[i].style || ""); }
   return "";
 }
 
@@ -4437,7 +4445,7 @@ function renderLearnResults() {
         var sl = state.skills;
         for (var ssi = 0; ssi < sl.length; ssi++) { if (sl[ssi].n === skill.name && sl[ssi].src === clsName) { learned = true; break; } if (sl[ssi].n === skill.name && sl[ssi].src !== clsName) { crossLocked = true; } }
       }
-      var styleName = skill.style || "\u901a\u7528";
+      var styleName = canonicalSkillStyle(skill.style || "\u901a\u7528");
       if (searchQ && skill.name.toLowerCase().indexOf(searchQ) < 0 && styleName.toLowerCase().indexOf(searchQ) < 0 && (skill.tags || []).join(" ").toLowerCase().indexOf(searchQ) < 0 && (skill.tier || "").toLowerCase().indexOf(searchQ) < 0) continue;
       if (!groups[styleName]) groups[styleName] = {};
       var tierName = skill.tier || "\u901a\u7528";

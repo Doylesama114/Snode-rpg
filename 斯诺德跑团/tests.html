@@ -268,6 +268,27 @@ if (medSkill) {
 
 results.push('</div>');
 
+// T7b: skill style canonicalization (塑能 vs 塑能风格)
+results.push('<div class="section"><h3>T7b: canonicalSkillStyle — 学习技能风格分组</h3>');
+assert(canonicalSkillStyle("塑能风格"), "塑能", "塑能风格 → 塑能");
+assert(canonicalSkillStyle("咒法风格"), "咒法", "咒法风格 → 咒法");
+assert(canonicalSkillStyle("斗争风格"), "斗争", "斗争风格 → 斗争");
+assert(canonicalSkillStyle("一阶天赋树"), "一阶天赋树", "天赋树名称不受影响");
+if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["法师"]) {
+  var mageStyles = {};
+  for (var msi = 0; msi < SKILL_DATA["法师"].length; msi++) {
+    var msk = SKILL_DATA["法师"][msi];
+    if (!msk.style || msk.type === "starting" || msk.type === "upgrade" || msk.type === "granted") continue;
+    var cst = canonicalSkillStyle(msk.style);
+    mageStyles[cst] = (mageStyles[cst] || 0) + 1;
+    assertTrue(msk.style === cst, "法师技能 style 已规范化: " + msk.name);
+  }
+  assertTrue(!mageStyles["塑能风格"] && !mageStyles["咒法风格"], "法师学习技能无重复风格键");
+  assertTrue((mageStyles["塑能"] || 0) >= 40, "塑能技能合并到单一分组");
+}
+
+results.push('</div>');
+
 // =================== T8: SP / color marks (26.06.30 rules) ===================
 results.push('<div class="section"><h3>T8: parseSkillRequirements / canLearnSkill / wildcard — 技能点与色彩标识</h3>');
 

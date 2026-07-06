@@ -47,6 +47,16 @@ PANEL_SKILL_KEYS = (
 GENERAL_HTML = ROOT / "职业页" / "通用天赋树.html"
 
 
+def canonical_skill_style(style: str | None) -> str:
+    """Panel SKILL_DATA uses short style keys (塑能), not display labels (塑能风格)."""
+    if not style:
+        return ""
+    s = str(style).strip()
+    if s.endswith("风格") and "天赋树" not in s:
+        return s[: -len("风格")]
+    return s
+
+
 def tier_to_panel(tier) -> str | int | None:
     if tier is None:
         return None
@@ -129,6 +139,8 @@ def json_skill_to_panel(
             out[key] = skill[key]
     out["name"] = skill["name"]
     out["id"] = skill["id"]
+    if out.get("style"):
+        out["style"] = canonical_skill_style(out["style"])
     if "tags" not in out and skill.get("fields", {}).get("关键词"):
         out["tags"] = [t for t in skill["fields"]["关键词"].split(".") if t]
     tier = tier_override if tier_override is not None else skill.get("tier")
@@ -180,6 +192,9 @@ def merge_class(
         if sid in json_ids:
             continue
         if s.get("type") in extra_types or sid and sid.endswith("-starting"):
+            if s.get("style"):
+                s = dict(s)
+                s["style"] = canonical_skill_style(s["style"])
             merged.append(s)
     return merged
 
