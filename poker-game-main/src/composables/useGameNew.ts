@@ -496,6 +496,71 @@ export function useGame() {
     )
   }
 
+  // 装备/挂载：部署到宿主 extra 槽（含 AI 隐藏出牌）
+  async function playCardToHost(cardIndex: number, hostCard: Card) {
+    const player = currentPlayer.value
+    const card = player.hand[cardIndex]
+    if (!card || !EffectManager.canAttachToHost(card, hostCard, player)) return
+
+    const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
+    const attachSlotIdx = EffectManager.resolveAttachmentSlotIndex(player, hostIdx, card, true)
+    if (attachSlotIdx < 0) return
+
+    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    if (!player.id.startsWith('ai')) {
+      await animations.playCardFly({
+        kind: 'absorb',
+        card,
+        playerId: player.id,
+        fieldOwnerId: player.id,
+        slotIndex: hostIdx,
+        handIndex: cardIndex,
+      })
+    }
+
+    player.currentCost -= playCost
+    player.hand.splice(cardIndex, 1)
+    if (player.hasPlayedThisTurn && player.canPlayExtra) {
+      EffectManager.consumeExtraPlay(player)
+    } else {
+      player.hasPlayedThisTurn = true
+    }
+    EffectManager.consumeTacticPlayFreeIfMatch(card, player)
+
+    if (player.id.startsWith('ai')) {
+      await animations.playCardFly({
+        kind: 'hidden',
+        playerId: player.id,
+        fieldOwnerId: player.id,
+        slotIndex: attachSlotIdx,
+        showBack: true,
+      })
+      if (!aiHiddenCards.value[player.id]) {
+        aiHiddenCards.value[player.id] = []
+      }
+      aiHiddenCards.value[player.id].push({
+        card,
+        slot: attachSlotIdx,
+        playCost,
+        hostCardId: hostCard.id,
+      })
+      aiHiddenCards.value = { ...aiHiddenCards.value, [player.id]: [...aiHiddenCards.value[player.id]] }
+      gameState.value.message = `${player.name} 打出了一张牌（已隐藏）`
+      gameState.value.phase = 'decision'
+    } else {
+      const msgs = EffectManager.applyDeployOntoHost(card, hostCard, player, gameState.value)
+      gameState.value.message = msgs.join(' | ')
+      await showNewFloats(player.id)
+      if (!player.canPlayExtra) {
+        await maybeRevealHiddenAfterHumanAction(player)
+      }
+    }
+    gameState.value.selectedCard = undefined
+    gameState.value.pendingHostDeployCard = undefined
+    gameState.value.optionalHostDeploy = undefined
+    gameState.value.availableTargets = []
+  }
+
   // 打出卡牌到指定槽位（可选 targetPlayerIndex 跨玩家部署）
   async function playCardToSlot(cardIndex: number, slotIndex: number, targetPlayerIndex?: number) {
     const player = currentPlayer.value
@@ -1097,7 +1162,16 @@ export function useGame() {
           card: item.card,
           hiddenOriginId: `${aiId}-${hi}`,
         })
-        deployCard(item.card, aiPlayer, item.slot)
+        if (item.hostCardId) {
+          const hostCard = aiPlayer.field.find(s => s.card?.id === item.hostCardId)?.card
+          if (hostCard) {
+            EffectManager.applyDeployOntoHost(item.card, hostCard, aiPlayer, gameState.value)
+          } else {
+            deployCard(item.card, aiPlayer, item.slot)
+          }
+        } else {
+          deployCard(item.card, aiPlayer, item.slot)
+        }
         await animations.flashLand(aiId, item.slot)
       }
 
@@ -1402,6 +1476,17 @@ export function useGame() {
       }
 
       const availableSlots = getAvailableSlots(ai, card)
+
+      if (EffectManager.requiresMandatoryHostDeploy(card) && !card.quickPlay) {
+        const targets = EffectManager.getQuickPlayHostTargets(ai, card)
+        if (targets.length > 0) {
+          await playCardToHost(cardIndex, targets[0])
+          gameState.value.message = `${ai.name} 打出了一张牌（已隐藏），等待玩家操作...`
+          await animations.wait(400)
+          if (gameState.value.phase !== 'gameOver') switchToNextPlayer()
+          return
+        }
+      }
       
       if (availableSlots.length > 0) {
         const slotIndex = availableSlots[0]

@@ -237,13 +237,13 @@ export class EffectManager {
       }
 
       if (effect.countDeployedOnSelf) {
-        const hostSlot = player.field.find(s => s.card === card)
-        if (hostSlot) {
+        const hostIdx = player.field.findIndex(s => s.card === card)
+        if (hostIdx >= 0) {
           let count = 0
           player.field.forEach(otherSlot => {
             if (
               otherSlot.isExtra &&
-              otherSlot.parentSlot === hostSlot.position &&
+              otherSlot.parentSlot === hostIdx &&
               otherSlot.card &&
               (!effect.targetKeywords || this.hasAnyKeyword(otherSlot.card, effect.targetKeywords))
             ) {
@@ -651,6 +651,104 @@ export class EffectManager {
     return true
   }
 
+  /** 作物等：挂在农田/载具上（非单位装备槽） */
+  static isVehicleMountCard(card: Card): boolean {
+    const effect = this.getDeployOnHostEffect(card)
+    if (!effect?.requireHostKeywords?.length) return false
+    const mountHosts = ['农田', '载具']
+    return effect.requireHostKeywords.some(k => mountHosts.includes(k))
+  }
+
+  /** 武器/护甲/需持握的物件：挂在单位装备槽 */
+  static isEquipAttachmentCard(card: Card): boolean {
+    if (!this.getDeployOnHostEffect(card) || this.isVehicleMountCard(card)) return false
+    if (this.hasAnyKeyword(card, ['护甲', '武器'])) return true
+    const effect = this.getDeployOnHostEffect(card)!
+    return this.hasAnyKeyword(card, ['物件']) && effect.requireHostCardType === 'unit'
+  }
+
+  static usesAttachmentSlot(card: Card): boolean {
+    return this.isEquipAttachmentCard(card) || this.isVehicleMountCard(card)
+  }
+
+  static getEquipSlotKind(card: Card): 'equipWeapon' | 'equipArmor' | null {
+    if (this.hasAnyKeyword(card, ['护甲'])) return 'equipArmor'
+    if (this.hasAnyKeyword(card, ['武器', '物件'])) return 'equipWeapon'
+    return null
+  }
+
+  static getHostFieldIndex(player: Player, hostCard: Card): number {
+    return player.field.findIndex(s => s.card === hostCard)
+  }
+
+  static findExtraSlotOnHost(
+    player: Player,
+    hostIdx: number,
+    predicate: (slot: FieldSlot) => boolean,
+  ): number {
+    for (let i = 0; i < player.field.length; i++) {
+      const s = player.field[i]
+      if (s.isExtra && s.parentSlot === hostIdx && predicate(s)) return i
+    }
+    return -1
+  }
+
+  /** 查找或懒创建附着槽；occupied 时返回 -1（禁止替换） */
+  static resolveAttachmentSlotIndex(
+    player: Player,
+    hostIdx: number,
+    card: Card,
+    createIfMissing = true,
+  ): number {
+    if (hostIdx < 0) return -1
+
+    if (this.isEquipAttachmentCard(card)) {
+      const kind = this.getEquipSlotKind(card)
+      if (!kind) return -1
+      if (this.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && !!s.card) >= 0) {
+        return -1
+      }
+      const empty = this.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && !s.card)
+      if (empty >= 0) return empty
+      if (!createIfMissing) return -1
+      const pos = player.field.length
+      player.field.push({
+        card: null,
+        position: pos,
+        isExtra: true,
+        parentSlot: hostIdx,
+        slotKind: kind,
+        deployRules: { excludeFromFieldCount: true },
+      })
+      return pos
+    }
+
+    if (this.isVehicleMountCard(card)) {
+      const emptyVehicle = this.findExtraSlotOnHost(player, hostIdx, s =>
+        !s.card && (s.slotKind === 'vehicle' || !s.slotKind) && this.canDeployOnExtraSlot(card, s),
+      )
+      if (emptyVehicle >= 0) return emptyVehicle
+      if (this.findExtraSlotOnHost(player, hostIdx, s =>
+        (s.slotKind === 'vehicle' || !s.slotKind) && !!s.card,
+      ) >= 0) {
+        return -1
+      }
+      if (!createIfMissing) return -1
+      const pos = player.field.length
+      player.field.push(this.buildExtraSlot(hostIdx, pos, { excludeFromFieldCount: true }))
+      return pos
+    }
+
+    return -1
+  }
+
+  static canAttachToHost(card: Card, hostCard: Card, player: Player): boolean {
+    if (!this.isValidDeployOnHost(card, hostCard)) return false
+    if (!this.usesAttachmentSlot(card)) return true
+    const hostIdx = this.getHostFieldIndex(player, hostCard)
+    return this.resolveAttachmentSlotIndex(player, hostIdx, card, true) >= 0
+  }
+
   static computeHostDeployDelta(card: Card, hostCard: Card): number {
     const effect = this.getDeployOnHostEffect(card)
     let delta = card.basePower + (effect?.hostDeploySelfBonus ?? 0)
@@ -660,12 +758,70 @@ export class EffectManager {
     return delta
   }
 
+  static applyHostDeployBonusesToCard(card: Card, hostCard: Card): string[] {
+    const messages: string[] = []
+    const effect = this.getDeployOnHostEffect(card)
+    if (effect?.hostBonusIfHostAttribute && hostCard.attribute === effect.hostBonusIfHostAttribute) {
+      const bonus = effect.hostBonusValue ?? 0
+      card.basePower += bonus
+      card.currentPower += bonus
+      messages.push(`${card.name} 因宿主${hostCard.attribute}属性战力+${bonus}`)
+    }
+    if (effect?.hostDeploySelfBonus) {
+      card.basePower += effect.hostDeploySelfBonus
+      card.currentPower += effect.hostDeploySelfBonus
+      messages.push(`${card.name} 部署加成战力+${effect.hostDeploySelfBonus}`)
+    }
+    return messages
+  }
+
+  /** 装备/挂载：写入 extra slot，独立计战力 */
+  static deployAttachmentOntoHost(
+    card: Card,
+    hostCard: Card,
+    player: Player,
+    game: GameState,
+  ): string[] {
+    const messages: string[] = []
+    const hostIdx = this.getHostFieldIndex(player, hostCard)
+    const slotIdx = this.resolveAttachmentSlotIndex(player, hostIdx, card, true)
+    if (slotIdx < 0) {
+      messages.push(`${hostCard.name} 无可用附着槽位`)
+      return messages
+    }
+    const slot = player.field[slotIdx]
+    card.deployOnCardTarget = hostCard.id
+    card.excludeFromFieldCount = true
+    messages.push(...this.applyHostDeployBonusesToCard(card, hostCard))
+    messages.push(...this.applyExtraSlotDeployModifiers(card, slot))
+    if (!card.excludeFromFieldCount) {
+      card.excludeFromFieldCount = true
+    }
+    slot.card = card
+    messages.push(`${card.name} 部署到 ${hostCard.name}`)
+
+    card.effects?.forEach(effect => {
+      if (effect.timing === 'onDeploy' || (card.quickPlay && effect.timing === 'onPlay')) {
+        const result = this.applyDeployEffect(effect, card, player, game)
+        result.messages.forEach(m => messages.push(m))
+      }
+    })
+
+    messages.push(...this.applyQuickPlayRevealEffects(card, hostCard, player, game))
+    this.triggerOnOtherPlayEffects(card, player, game)
+    this.recalculateAllPowers(game)
+    return messages
+  }
+
   static applyDeployOntoHost(
     card: Card,
     hostCard: Card,
     player: Player,
     game: GameState,
   ): string[] {
+    if (this.usesAttachmentSlot(card)) {
+      return this.deployAttachmentOntoHost(card, hostCard, player, game)
+    }
     const messages: string[] = []
     card.deployOnCardTarget = hostCard.id
     const delta = this.computeHostDeployDelta(card, hostCard)
@@ -688,7 +844,7 @@ export class EffectManager {
       return player.field.filter(s => s.card && !s.isExtra).map(s => s.card!)
     }
     return player.field
-      .filter(s => s.card && !s.isExtra && this.isValidDeployOnHost(card, s.card))
+      .filter(s => s.card && !s.isExtra && this.canAttachToHost(card, s.card, player))
       .map(s => s.card!)
   }
 
@@ -856,12 +1012,14 @@ export class EffectManager {
       position,
       isExtra: true,
       parentSlot: parentSlotIndex,
+      slotKind: 'vehicle',
       deployRules: rules,
     }
   }
 
   static canDeployOnExtraSlot(card: Card, slot: FieldSlot): boolean {
     if (!slot.isExtra || slot.card) return false
+    if (slot.slotKind === 'equipWeapon' || slot.slotKind === 'equipArmor') return false
     const rules = slot.deployRules
     if (!rules) return card.type === 'unit'
     if (rules.deployCardType && card.type !== rules.deployCardType) {
@@ -1051,8 +1209,15 @@ export class EffectManager {
     for (const p of game.players) {
       const idx = p.field.findIndex(s => s.card === card)
       if (idx !== -1) {
+        const attached = p.field.filter(s => s.isExtra && s.parentSlot === idx && s.card)
         p.field[idx].card = null
         p.discard.push(card)
+        for (const att of attached) {
+          if (att.card) {
+            p.discard.push(att.card)
+            att.card = null
+          }
+        }
         return
       }
     }
@@ -1060,11 +1225,11 @@ export class EffectManager {
 
   /** 宿主环境/建筑额外槽位上的部署数量 */
   static countDeployedOnHost(hostCard: Card, player: Player): number {
-    const hostSlot = player.field.find(s => s.card === hostCard)
-    if (!hostSlot) return 0
+    const hostIdx = this.getHostFieldIndex(player, hostCard)
+    if (hostIdx < 0) return 0
     let count = 0
     player.field.forEach(otherSlot => {
-      if (otherSlot.isExtra && otherSlot.parentSlot === hostSlot.position && otherSlot.card) {
+      if (otherSlot.isExtra && otherSlot.parentSlot === hostIdx && otherSlot.card) {
         count++
       }
     })

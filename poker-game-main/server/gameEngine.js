@@ -72,13 +72,13 @@ class EffectManager {
       }
 
       if (effect.countDeployedOnSelf) {
-        const hostSlot = player.field.find(s => s.card === card)
-        if (hostSlot) {
+        const hostIdx = player.field.findIndex(s => s.card === card)
+        if (hostIdx >= 0) {
           let count = 0
           player.field.forEach(otherSlot => {
             if (
               otherSlot.isExtra &&
-              otherSlot.parentSlot === hostSlot.position &&
+              otherSlot.parentSlot === hostIdx &&
               otherSlot.card &&
               (!effect.targetKeywords || this.hasAnyKeyword(otherSlot.card, effect.targetKeywords))
             ) {
@@ -278,11 +278,12 @@ class EffectManager {
   }
 
   static buildExtraSlot(parentSlotIndex, position, rules) {
-    return { card: null, position, isExtra: true, parentSlot: parentSlotIndex, deployRules: rules }
+    return { card: null, position, isExtra: true, parentSlot: parentSlotIndex, slotKind: 'vehicle', deployRules: rules }
   }
 
   static canDeployOnExtraSlot(card, slot) {
     if (!slot.isExtra || slot.card) return false
+    if (slot.slotKind === 'equipWeapon' || slot.slotKind === 'equipArmor') return false
     const rules = slot.deployRules
     if (!rules) return card.type === 'unit'
     if (rules.deployCardType && card.type !== rules.deployCardType) {
@@ -1476,6 +1477,92 @@ class EffectManager {
     return true
   }
 
+  static isVehicleMountCard(card) {
+    const effect = EffectManager.getDeployOnHostEffect(card)
+    if (!effect?.requireHostKeywords?.length) return false
+    const mountHosts = ['农田', '载具']
+    return effect.requireHostKeywords.some(k => mountHosts.includes(k))
+  }
+
+  static isEquipAttachmentCard(card) {
+    if (!EffectManager.getDeployOnHostEffect(card) || EffectManager.isVehicleMountCard(card)) return false
+    if (EffectManager.hasAnyKeyword(card, ['护甲', '武器'])) return true
+    const effect = EffectManager.getDeployOnHostEffect(card)
+    return EffectManager.hasAnyKeyword(card, ['物件']) && effect.requireHostCardType === 'unit'
+  }
+
+  static usesAttachmentSlot(card) {
+    return EffectManager.isEquipAttachmentCard(card) || EffectManager.isVehicleMountCard(card)
+  }
+
+  static getEquipSlotKind(card) {
+    if (EffectManager.hasAnyKeyword(card, ['护甲'])) return 'equipArmor'
+    if (EffectManager.hasAnyKeyword(card, ['武器', '物件'])) return 'equipWeapon'
+    return null
+  }
+
+  static getHostFieldIndex(player, hostCard) {
+    return player.field.findIndex(s => s.card === hostCard)
+  }
+
+  static findExtraSlotOnHost(player, hostIdx, predicate) {
+    for (let i = 0; i < player.field.length; i++) {
+      const s = player.field[i]
+      if (s.isExtra && s.parentSlot === hostIdx && predicate(s)) return i
+    }
+    return -1
+  }
+
+  static resolveAttachmentSlotIndex(player, hostIdx, card, createIfMissing = true) {
+    if (hostIdx < 0) return -1
+
+    if (EffectManager.isEquipAttachmentCard(card)) {
+      const kind = EffectManager.getEquipSlotKind(card)
+      if (!kind) return -1
+      if (EffectManager.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && s.card) >= 0) {
+        return -1
+      }
+      const empty = EffectManager.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && !s.card)
+      if (empty >= 0) return empty
+      if (!createIfMissing) return -1
+      const pos = player.field.length
+      player.field.push({
+        card: null,
+        position: pos,
+        isExtra: true,
+        parentSlot: hostIdx,
+        slotKind: kind,
+        deployRules: { excludeFromFieldCount: true },
+      })
+      return pos
+    }
+
+    if (EffectManager.isVehicleMountCard(card)) {
+      const emptyVehicle = EffectManager.findExtraSlotOnHost(player, hostIdx, s =>
+        !s.card && (s.slotKind === 'vehicle' || !s.slotKind) && EffectManager.canDeployOnExtraSlot(card, s),
+      )
+      if (emptyVehicle >= 0) return emptyVehicle
+      if (EffectManager.findExtraSlotOnHost(player, hostIdx, s =>
+        (s.slotKind === 'vehicle' || !s.slotKind) && s.card,
+      ) >= 0) {
+        return -1
+      }
+      if (!createIfMissing) return -1
+      const pos = player.field.length
+      player.field.push(EffectManager.buildExtraSlot(hostIdx, pos, { excludeFromFieldCount: true }))
+      return pos
+    }
+
+    return -1
+  }
+
+  static canAttachToHost(card, hostCard, player) {
+    if (!EffectManager.isValidDeployOnHost(card, hostCard)) return false
+    if (!EffectManager.usesAttachmentSlot(card)) return true
+    const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
+    return EffectManager.resolveAttachmentSlotIndex(player, hostIdx, card, true) >= 0
+  }
+
   static computeHostDeployDelta(card, hostCard) {
     const effect = EffectManager.getDeployOnHostEffect(card)
     let delta = card.basePower + (effect?.hostDeploySelfBonus ?? 0)
@@ -1485,7 +1572,58 @@ class EffectManager {
     return delta
   }
 
+  static applyHostDeployBonusesToCard(card, hostCard) {
+    const messages = []
+    const effect = EffectManager.getDeployOnHostEffect(card)
+    if (effect?.hostBonusIfHostAttribute && hostCard.attribute === effect.hostBonusIfHostAttribute) {
+      const bonus = effect.hostBonusValue ?? 0
+      card.basePower += bonus
+      card.currentPower += bonus
+      messages.push(`${card.name} 因宿主${hostCard.attribute}属性战力+${bonus}`)
+    }
+    if (effect?.hostDeploySelfBonus) {
+      card.basePower += effect.hostDeploySelfBonus
+      card.currentPower += effect.hostDeploySelfBonus
+      messages.push(`${card.name} 部署加成战力+${effect.hostDeploySelfBonus}`)
+    }
+    return messages
+  }
+
+  static deployAttachmentOntoHost(card, hostCard, player, game) {
+    const gameState = game.gameState || game
+    const messages = []
+    const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
+    const slotIdx = EffectManager.resolveAttachmentSlotIndex(player, hostIdx, card, true)
+    if (slotIdx < 0) {
+      messages.push(`${hostCard.name} 无可用附着槽位`)
+      return messages
+    }
+    const slot = player.field[slotIdx]
+    card.deployOnCardTarget = hostCard.id
+    card.excludeFromFieldCount = true
+    messages.push(...EffectManager.applyHostDeployBonusesToCard(card, hostCard))
+    messages.push(...EffectManager.applyExtraSlotDeployModifiers(card, slot))
+    if (!card.excludeFromFieldCount) card.excludeFromFieldCount = true
+    slot.card = card
+    messages.push(`${card.name} 部署到 ${hostCard.name}`)
+
+    card.effects?.forEach(effect => {
+      if (effect.timing === 'onDeploy' || (card.quickPlay && effect.timing === 'onPlay')) {
+        const result = EffectManager.applyDeployEffect(effect, card, player, gameState)
+        result.messages.forEach(m => messages.push(m))
+      }
+    })
+
+    messages.push(...EffectManager.applyQuickPlayRevealEffects(card, hostCard, player, gameState))
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState)
+    EffectManager.recalculateAllPowers(gameState)
+    return messages
+  }
+
   static applyDeployOntoHost(card, hostCard, player, game) {
+    if (EffectManager.usesAttachmentSlot(card)) {
+      return EffectManager.deployAttachmentOntoHost(card, hostCard, player, game)
+    }
     const gameState = game.gameState || game
     const messages = []
     card.deployOnCardTarget = hostCard.id
@@ -1509,7 +1647,7 @@ class EffectManager {
       return player.field.filter(s => s.card && !s.isExtra).map(s => s.card)
     }
     return player.field
-      .filter(s => s.card && !s.isExtra && EffectManager.isValidDeployOnHost(card, s.card))
+      .filter(s => s.card && !s.isExtra && EffectManager.canAttachToHost(card, s.card, player))
       .map(s => s.card)
   }
 
@@ -1709,19 +1847,26 @@ class EffectManager {
     for (const p of game.players) {
       const idx = p.field.findIndex(s => s.card === card)
       if (idx !== -1) {
+        const attached = p.field.filter(s => s.isExtra && s.parentSlot === idx && s.card)
         p.field[idx].card = null
         p.discard.push(card)
+        for (const att of attached) {
+          if (att.card) {
+            p.discard.push(att.card)
+            att.card = null
+          }
+        }
         return
       }
     }
   }
 
   static countDeployedOnHost(hostCard, player) {
-    const hostSlot = player.field.find(s => s.card === hostCard)
-    if (!hostSlot) return 0
+    const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
+    if (hostIdx < 0) return 0
     let count = 0
     player.field.forEach(otherSlot => {
-      if (otherSlot.isExtra && otherSlot.parentSlot === hostSlot.position && otherSlot.card) {
+      if (otherSlot.isExtra && otherSlot.parentSlot === hostIdx && otherSlot.card) {
         count++
       }
     })

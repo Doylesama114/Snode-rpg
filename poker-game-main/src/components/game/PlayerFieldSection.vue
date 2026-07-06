@@ -47,7 +47,11 @@ function slotIndexOf(slot: FieldSlotType) {
 }
 
 function extraSlots(parentSi: number) {
-  return props.player.field.filter(s => s.isExtra && s.parentSlot === parentSi)
+  return props.player.field.filter(s => {
+    if (!s.isExtra || s.parentSlot !== parentSi) return false
+    if ((s.slotKind === 'equipWeapon' || s.slotKind === 'equipArmor') && !s.card) return false
+    return true
+  })
 }
 </script>
 
@@ -85,9 +89,9 @@ function extraSlots(parentSi: number) {
           class="field-hidden-marker"
           :data-hidden-card="hiddenDomKey?.(slotIndexOf(slot))"
         />
-        <div v-if="extraSlots(si).length" class="extra-slots">
+        <div v-if="extraSlots(slotIndexOf(slot)).length" class="extra-slots">
           <div
-            v-for="extra in extraSlots(si)"
+            v-for="extra in extraSlots(slotIndexOf(slot))"
             :key="extra.position"
             class="extra-slot-wrap"
             :class="{ 'extra-slot-wrap--selectable': isHuman && isSlotAvailable?.(extra.position) }"

@@ -296,6 +296,9 @@ export interface CardEffect {
   drawCount?: number     // number of cards to draw
 }
 
+/** 额外槽位类型：载具 createSlot / 单位装备武器·物件 / 防具 */
+export type ExtraSlotKind = 'vehicle' | 'equipWeapon' | 'equipArmor'
+
 /** 额外槽位（载具/狮鹫等）的部署限制 */
 export interface SlotDeployRules {
   deployKeywords?: string[]
@@ -352,7 +355,8 @@ export interface FieldSlot {
   card: Card | null
   position: number        // 槽位位置 0-5
   isExtra: boolean        // 是否是额外槽位（载具产生的）
-  parentSlot?: number     // 如果是额外槽位，父槽位的位置
+  parentSlot?: number     // 父主槽在 field 数组中的 index
+  slotKind?: ExtraSlotKind
   deployRules?: SlotDeployRules
 }
 
