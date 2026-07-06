@@ -375,17 +375,20 @@ results.push('</div>');
 // =================== T10: xlsx 天赋导出行位 ===================
 results.push('<div class="section"><h3>T10: fillXlsxTalents 按阶位填行</h3>');
 var xlsxWrites = {};
+var tierMap = defaultTalentTierRowMap();
 fillXlsxTalents(function(ref, val) { xlsxWrites[ref] = val; }, [
   { n: 'T1A', tier: '一阶' }, { n: 'T1B', tier: '一阶' },
   { n: 'T2A', tier: '二阶' },
   { n: 'T3A', tier: '三阶' }, { n: 'T3B', tier: '三阶' }
-]);
+], tierMap);
 assert(xlsxWrites.O122, 'T1A', '一阶首行 O122');
 assert(xlsxWrites.O123, 'T1B', '一阶 O123');
 assert(xlsxWrites.O129, 'T2A', '二阶 O129');
-assert(xlsxWrites.O137, 'T3A', '三阶 O137');
-assert(xlsxWrites.O138, 'T3B', '三阶 O138');
+assert(xlsxWrites.O136, 'T3A', '三阶 O136');
+assert(xlsxWrites.O137, 'T3B', '三阶 O137');
 assertFalse(xlsxWrites.O125, 'T2A 不在一阶区 O125');
+assert(featDisplayName({ name: '健壮', level: 4 }), '健壮', 'featDisplayName 对象');
+assert(featDisplayName('质朴'), '质朴', 'featDisplayName 字符串');
 results.push('</div>');
 
 // =================== Render Summary ===================

@@ -836,6 +836,8 @@ function renderMarkOverviewHtml() {
 function normalizeExportTalentTier(t) {
   var tName = t.n || t.name || "";
   var tTier = (t.tier || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
+  var numMap = { "1": "\u4e00\u9636", "2": "\u4e8c\u9636", "3": "\u4e09\u9636", "4": "\u56db\u9636", "5": "\u4e94\u9636", "6": "\u516d\u9636", "7": "\u4e03\u9636" };
+  if (/^\d+\u9636$/.test(tTier)) tTier = (numMap[tTier.charAt(0)] || tTier);
   if ((!tTier || tTier.indexOf("\u9636") < 0) && typeof SKILL_TIER !== "undefined") {
     tTier = (SKILL_TIER[tName] || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
   }
@@ -843,11 +845,52 @@ function normalizeExportTalentTier(t) {
   return tTier;
 }
 
-function fillXlsxTalents(set, talents) {
-  var tierRowMap = {
-    "\u4e00\u9636": [122, 126], "\u4e8c\u9636": [129, 133], "\u4e09\u9636": [137, 141],
-    "\u56db\u9636": [144, 148], "\u4e94\u9636": [151, 155], "\u516d\u9636": [158, 162], "\u4e03\u9636": [165, 166]
+function defaultTalentTierRowMap() {
+  return {
+    "\u4e00\u9636": [122, 126], "\u4e8c\u9636": [129, 133], "\u4e09\u9636": [136, 140],
+    "\u56db\u9636": [143, 147], "\u4e94\u9636": [150, 154], "\u516d\u9636": [157, 161], "\u4e03\u9636": [164, 165]
   };
+}
+
+function buildTalentTierRowMap(strings, xml) {
+  var tierOrder = ["\u4e00\u9636", "\u4e8c\u9636", "\u4e09\u9636", "\u56db\u9636", "\u4e94\u9636", "\u516d\u9636", "\u4e03\u9636"];
+  var headers = {}, re = /<c r="O(\d+)"[^>]*t="s"[^>]*><v>(\d+)<\/v><\/c>/g, m;
+  while ((m = re.exec(xml)) !== null) {
+    var row = parseInt(m[1], 10), text = strings[parseInt(m[2], 10)] || "";
+    if (text.indexOf("\u5929\u8d4b\u6811") < 0) continue;
+    for (var ti = 0; ti < tierOrder.length; ti++) {
+      if (text.indexOf(tierOrder[ti]) >= 0) { headers[tierOrder[ti]] = row; break; }
+    }
+  }
+  var tierRowMap = {}, hdr, nextHdr, start, end, ti, tj, tier;
+  for (ti = 0; ti < tierOrder.length; ti++) {
+    tier = tierOrder[ti];
+    hdr = headers[tier];
+    if (!hdr) continue;
+    nextHdr = 9999;
+    for (tj = ti + 1; tj < tierOrder.length; tj++) {
+      if (headers[tierOrder[tj]]) { nextHdr = headers[tierOrder[tj]]; break; }
+    }
+    start = hdr + 1;
+    end = nextHdr - 2;
+    if (end < start) end = start;
+    tierRowMap[tier] = [start, end];
+  }
+  if (!tierRowMap["\u4e00\u9636"]) return defaultTalentTierRowMap();
+  return tierRowMap;
+}
+
+function clearXlsxTalentSlots(set, tierRowMap) {
+  var tier, range, r;
+  for (tier in tierRowMap) {
+    range = tierRowMap[tier];
+    for (r = range[0]; r <= range[1]; r++) set("O" + r, "");
+  }
+}
+
+function fillXlsxTalents(set, talents, tierRowMap) {
+  if (!tierRowMap) tierRowMap = defaultTalentTierRowMap();
+  clearXlsxTalentSlots(set, tierRowMap);
   var tierSlots = {}, tierOrder = ["\u4e00\u9636", "\u4e8c\u9636", "\u4e09\u9636", "\u56db\u9636", "\u4e94\u9636", "\u516d\u9636", "\u4e03\u9636"];
   var ti, tName, tTier, range, slot;
   for (ti = 0; ti < tierOrder.length; ti++) tierSlots[tierOrder[ti]] = 0;
@@ -862,6 +905,70 @@ function fillXlsxTalents(set, talents) {
     set("O" + (range[0] + slot), tName);
     tierSlots[tTier] = slot + 1;
   }
+}
+
+function featDisplayName(f) {
+  if (f == null || f === "") return "";
+  if (typeof f === "string") return f;
+  return f.name || f.n || "";
+}
+
+function fillXlsxSpecialFeats(set, feats) {
+  var levelRows = { 4: 36, 8: 38, 12: 40 };
+  var fi, name, lv, row, used = {};
+  for (fi = 0; fi < feats.length; fi++) {
+    name = featDisplayName(feats[fi]);
+    if (!name) continue;
+    lv = feats[fi].level || 0;
+    row = levelRows[lv] || 0;
+    if (!row) {
+      var slots = [36, 38, 40, 42];
+      for (var si = 0; si < slots.length; si++) {
+        if (!used[slots[si]]) { row = slots[si]; break; }
+      }
+    }
+    if (!row || used[row]) continue;
+    used[row] = true;
+    set("K" + row, name);
+  }
+}
+
+function exportTraitsText(state) {
+  var traits = (state.traits || "").trim();
+  if (!traits && state.background && typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS[state.background]) {
+    traits = (REF_BACKGROUNDS[state.background].description || "").replace(/\\n/g, "\n");
+  }
+  if (state.background === "\u8fd0\u52a8\u5458" && state.weapon_specs && state.weapon_specs.length) {
+    var sport = state.weapon_specs[0];
+    if (sport && traits.indexOf(sport) < 0) {
+      traits = traits ? (traits + "\uff08\u504f\u597d\uff1a" + sport + "\uff09") : ("\u8fd0\u52a8\u5458\u62e5\u6709\u4e00\u9879\u504f\u597d\u7684\u8fd0\u52a8\u9879\u76ee\uff08" + sport + "\uff09\uff0c\u5728\u8fdb\u884c\u8fd9\u9879\u8fd0\u52a8\u65f6\u5177\u5907\u4e13\u5bb6\u7ea7\u7684\u719f\u7ec3\u5ea6");
+    }
+  }
+  return traits;
+}
+
+function exportRacialTraits(state) {
+  if (state.racial_traits && state.racial_traits.length) return state.racial_traits;
+  var rd = typeof REF_RACES !== "undefined" && state.race ? REF_RACES[state.race] : null;
+  if (rd && rd.talents) return rd.talents.map(function (t) { return { name: t.name, desc: t.desc }; });
+  return [];
+}
+
+function exportClassFeatures(state) {
+  if (state.class_features && state.class_features.length) return state.class_features;
+  var feats = [], ci, cn, rfc, si;
+  if (!state.classes) return feats;
+  for (ci = 0; ci < state.classes.length; ci++) {
+    cn = state.classes[ci].name;
+    if (!cn) continue;
+    rfc = typeof REF_CLASSES !== "undefined" ? REF_CLASSES[cn] : null;
+    if (rfc && rfc.specializations) {
+      for (si = 0; si < rfc.specializations.length; si++) {
+        feats.push({ name: rfc.specializations[si].name, desc: rfc.specializations[si].desc + "\uff08" + cn + "\uff09" });
+      }
+    }
+  }
+  return feats;
 }
 
 function spDot(skill) {
@@ -6171,11 +6278,17 @@ async function exportXlsxFromState(state) {
   // Background
   if (state.background) set("G15", state.background);
   if (state.story) set("H16", state.story);
-  if (state.traits) set("H18", state.traits);
+  var _traitsOut = exportTraitsText(state);
+  if (_traitsOut) set("H18", _traitsOut);
   if (state.personality) set("H21", state.personality);
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
   if (state.flaws) set("H30", state.flaws);
+  if (state.deity) set("H33", state.deity);
+  if (state.contacts) set("H34", state.contacts);
+  if (state.scamType) set("H35", state.scamType);
+  if (state.missionChannel) set("H36", state.missionChannel);
+  if (state.academicDomain) set("H37", state.academicDomain);
 
   // Proficiencies
   if (state.profs) {
@@ -6220,11 +6333,7 @@ async function exportXlsxFromState(state) {
 
   // Feats
   if (state.special_feats && state.special_feats.length > 0) {
-    var fl = state.special_feats;
-    if (fl[0]) set("K36", fl[0].n || fl[0]);
-    if (fl[1]) set("K38", fl[1].n || fl[1]);
-    if (fl[2]) set("K40", fl[2].n || fl[2]);
-    if (fl[3]) set("K42", fl[3].n || fl[3]);
+    fillXlsxSpecialFeats(set, state.special_feats);
   }
 
   // Currency
@@ -6262,18 +6371,20 @@ async function exportXlsxFromState(state) {
   }
 
   // Racial traits
-  if (state.racial_traits && state.racial_traits.length > 0) {
-    for (var ri = 0; ri < Math.min(state.racial_traits.length, 8); ri++) {
-      var rt = state.racial_traits[ri];
+  var _exportRacial = exportRacialTraits(state);
+  if (_exportRacial.length > 0) {
+    for (var ri = 0; ri < Math.min(_exportRacial.length, 8); ri++) {
+      var rt = _exportRacial[ri];
       set("I" + (112 + ri), rt.n || rt.name || rt);
       if (rt.d || rt.desc || rt.effect) set("K" + (112 + ri), rt.d || rt.desc || rt.effect || "");
     }
   }
 
   // Class features
-  if (state.class_features && state.class_features.length > 0) {
-    for (var ci = 0; ci < Math.min(state.class_features.length, 8); ci++) {
-      var cf = state.class_features[ci];
+  var _exportClassFeats = exportClassFeatures(state);
+  if (_exportClassFeats.length > 0) {
+    for (var ci = 0; ci < Math.min(_exportClassFeats.length, 8); ci++) {
+      var cf = _exportClassFeats[ci];
       set("O" + (112 + ci), cf.n || cf.name || cf);
       if (cf.d || cf.desc || cf.effect) set("Q" + (112 + ci), cf.d || cf.desc || cf.effect || "");
     }
@@ -6307,8 +6418,9 @@ async function exportXlsxFromState(state) {
     set("J" + (123 + si), sk.ds || sk.desc || sk.description || (skRef && skRef.description ? skRef.description[0] : "") || "");
   }
 
-  // Talents (O column) — grouped by tier; headers at 121/128/136/143/150/157/164
-  fillXlsxTalents(set, state.talent_tree || []);
+  // Talents (O column) — grouped by tier; clear stale cells then fill
+  var _talentTierMap = buildTalentTierRowMap(strings, sh.text);
+  fillXlsxTalents(set, state.talent_tree || [], _talentTierMap);
 
   // Subclass skills (rows 168-209)
   var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });

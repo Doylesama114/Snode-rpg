@@ -1047,6 +1047,12 @@ async function exportXlsxFromState(state) {
   if (state.background) set("G15", state.background);
   if (state.story) set("H16", state.story);
   if (state.traits) set("H18", state.traits);
+  else if (state.background && _REF_BG_TRAITS[state.background]) set("H18", _REF_BG_TRAITS[state.background]);
+  if (state.background === "运动员" && state.weapon_specs && state.weapon_specs.length) {
+    var _sport = state.weapon_specs[0];
+    var _th = state.traits || _REF_BG_TRAITS["运动员"] || "";
+    if (_sport && _th.indexOf(_sport) < 0) set("H18", _th ? (_th + "（偏好：" + _sport + "）") : ("运动员拥有一项偏好的运动项目（" + _sport + "），在进行这项运动时具备专家级的熟练度"));
+  }
   if (state.personality) set("H21", state.personality);
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
@@ -1091,11 +1097,14 @@ async function exportXlsxFromState(state) {
 
   // Feats
   if (state.special_feats && state.special_feats.length > 0) {
-    var fl = state.special_feats;
-    if (fl[0]) set("K36", fl[0].n || fl[0]);
-    if (fl[1]) set("K38", fl[1].n || fl[1]);
-    if (fl[2]) set("K40", fl[2].n || fl[2]);
-    if (fl[3]) set("K42", fl[3].n || fl[3]);
+    var fl = state.special_feats, _fn, _lv, _fri;
+    var _featRows = { 4: 36, 8: 38, 12: 40 };
+    for (_fri = 0; _fri < fl.length; _fri++) {
+      _fn = typeof fl[_fri] === "string" ? fl[_fri] : (fl[_fri].name || fl[_fri].n || "");
+      if (!_fn) continue;
+      _lv = fl[_fri].level || 0;
+      if (_featRows[_lv]) set("K" + _featRows[_lv], _fn);
+    }
   }
 
   // Currency
@@ -1150,30 +1159,33 @@ async function exportXlsxFromState(state) {
 
   // Talents (O column) — 按阶位填行，与角色面板 export 一致
   var talents = state.talent_tree || [];
-  (function () {
-    var tierRowMap = {
-      "一阶": [122, 126], "二阶": [129, 133], "三阶": [137, 141],
-      "四阶": [144, 148], "五阶": [151, 155], "六阶": [158, 162], "七阶": [165, 166]
-    };
-    var tierSlots = {}, tierOrder = ["一阶", "二阶", "三阶", "四阶", "五阶", "六阶", "七阶"];
-    var ti0, ti, tName, tTier, range, slot;
-    for (ti0 = 0; ti0 < tierOrder.length; ti0++) tierSlots[tierOrder[ti0]] = 0;
-    for (ti = 0; ti < talents.length; ti++) {
-      tName = talents[ti].n || talents[ti].name || "";
-      if (!tName) continue;
-      tTier = (talents[ti].tier || "").replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/g, "").trim();
-      if ((!tTier || tTier.indexOf("阶") < 0) && typeof SKILL_TIER !== "undefined") {
-        tTier = (SKILL_TIER[tName] || "").replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/g, "").trim();
-      }
-      if (!tTier || tTier.indexOf("阶") < 0) tTier = "一阶";
-      range = tierRowMap[tTier];
-      if (!range) continue;
-      slot = tierSlots[tTier] || 0;
-      if (slot >= range[1] - range[0] + 1) continue;
-      set("O" + (range[0] + slot), tName);
-      tierSlots[tTier] = slot + 1;
+  var tierRowMap = {
+    "一阶": [122, 126], "二阶": [129, 133], "三阶": [136, 140],
+    "四阶": [143, 147], "五阶": [150, 154], "六阶": [157, 161], "七阶": [164, 165]
+  };
+  var tierSlots = {}, tierOrder = ["一阶", "二阶", "三阶", "四阶", "五阶", "六阶", "七阶"];
+  var ti0, ti, tName, tTier, range, slot;
+  for (ti0 = 0; ti0 < tierOrder.length; ti0++) tierSlots[tierOrder[ti0]] = 0;
+  for (ti0 = 0; ti0 < tierOrder.length; ti0++) {
+    range = tierRowMap[tierOrder[ti0]];
+    if (!range) continue;
+    for (ti = range[0]; ti <= range[1]; ti++) set("O" + ti, "");
+  }
+  for (ti = 0; ti < talents.length; ti++) {
+    tName = talents[ti].n || talents[ti].name || "";
+    if (!tName) continue;
+    tTier = (talents[ti].tier || "").replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/g, "").trim();
+    if ((!tTier || tTier.indexOf("阶") < 0) && typeof SKILL_TIER !== "undefined") {
+      tTier = (SKILL_TIER[tName] || "").replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/g, "").trim();
     }
-  })();
+    if (!tTier || tTier.indexOf("阶") < 0) tTier = "一阶";
+    range = tierRowMap[tTier];
+    if (!range) continue;
+    slot = tierSlots[tTier] || 0;
+    if (slot >= range[1] - range[0] + 1) continue;
+    set("O" + (range[0] + slot), tName);
+    tierSlots[tTier] = slot + 1;
+  }
 
   // Subclass skills (rows 168-209)
   var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });

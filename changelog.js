@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6122',
+    date: '2026-07-06',
+    changes: [
+      '修复xlsx导出4级特殊专长显示object Object',
+      '修复运动员背景特性未导出',
+      '三阶天赋行位上移并清空旧槽位',
+      'tests扩展至92项'
+    ]
+  },
+
+
+  {
     version: '1.0.6121',
     date: '2026-07-06',
     changes: [
