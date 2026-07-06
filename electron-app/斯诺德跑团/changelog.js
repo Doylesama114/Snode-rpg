@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6125',
+    date: '2026-07-06',
+    changes: [
+      '上传页/创建页 xlsx 导出嵌入立绘(G3:I12)',
+      '导出时按技能名从 SKILL_DATA 补全 D/E/F/H/J 列',
+      '新增 lookup_skill_export.js 按需加载 panel_data'
+    ]
+  },
+
+  {
     version: '1.0.6124',
     date: '2026-07-06',
     changes: [

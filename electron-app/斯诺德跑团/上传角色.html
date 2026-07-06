@@ -41,6 +41,7 @@ h1{font-size:26px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid 
 @media (prefers-color-scheme:dark){body{background:#1a1d20;color:#e8e6e3}h1{color:#e8e6e3;border-bottom-color:#3a3d40}.subtitle,.back-link{color:#9d9b98}.back-link:hover{color:#d4a54a}.upload-zone{background:#24272b;border-color:#4a4d52}.upload-zone:hover{background:#1a1d20;border-color:#d4a54a}.upload-zone .text{color:#9d9b98}.upload-zone .hint{color:#7a7a78}.preview-panel{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}.preview-panel h3{color:#e8e6e3;border-bottom-color:#3a3d40}.preview-row .label{color:#9d9b98}.preview-row .value{color:#e8e6e3}.btn-primary{background:#d4a54a}.btn-primary:hover{background:#e8be5a}.btn-secondary{background:#3a3d40;color:#9d9b98}.btn-secondary:hover{background:#4a4d52}.template-link{color:#d4a54a}}html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3;border-bottom-color:#3a3d40}html.dark .subtitle,html.dark .back-link{color:#9d9b98}html.dark .back-link:hover{color:#d4a54a}html.dark .upload-zone{background:#24272b;border-color:#4a4d52}html.dark .upload-zone:hover{background:#1a1d20;border-color:#d4a54a}html.dark .upload-zone .text{color:#9d9b98}html.dark .upload-zone .hint{color:#7a7a78}html.dark .preview-panel{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark .preview-panel h3{color:#e8e6e3;border-bottom-color:#3a3d40}html.dark .preview-row .label{color:#9d9b98}html.dark .preview-row .value{color:#e8e6e3}html.dark .btn-primary{background:#d4a54a}html.dark .btn-primary:hover{background:#e8be5a}html.dark .btn-secondary{background:#3a3d40;color:#9d9b98}html.dark .btn-secondary:hover{background:#4a4d52}html.dark .template-link{color:#d4a54a}
 </style>
 <script src="导出立绘.js"></script>
+<script src="lookup_skill_export.js"></script>
 </head>
 <body>
 <div class="container">
@@ -958,6 +959,7 @@ function _xlsxBuildZip(entries) {
 }
 
 async function exportXlsxFromState(state) {
+  await ensureSkillDataForExport();
   // Use the embedded enhanced template or the original uploaded ZIP
   var templateBuf = state._uploadedXlsxBuf;
   if (!templateBuf) {
@@ -1161,13 +1163,15 @@ async function exportXlsxFromState(state) {
   var hasSkills = mainSkills.length > 0;
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
-    set("B" + (123 + si), sk.n || sk.name || "");
-    set("D" + (123 + si), sk.tm || sk.time || "");
-    set("E" + (123 + si), sk.range || "");
-    set("F" + (123 + si), sk.dur || sk.duration || "");
-    set("H" + (123 + si), sk.cost || sk.fp || "");
+    var skName = sk.n || sk.name || "";
+    var skRef = (!sk.tm && !sk.time && !sk.cost && !sk.fp) ? lookupSkillForExport(skName) : null;
+    set("B" + (123 + si), skName);
+    set("D" + (123 + si), sk.tm || sk.time || (skRef && skRef.fields ? skRef.fields['施展时间'] : "") || "");
+    set("E" + (123 + si), sk.range || (skRef && skRef.fields ? skRef.fields['施展距离'] : "") || "");
+    set("F" + (123 + si), sk.dur || sk.duration || (skRef && skRef.fields ? skRef.fields['持续时间'] : "") || "");
+    set("H" + (123 + si), sk.cost || sk.fp || (skRef && skRef.cost ? skRef.cost.fp : "") || "");
     set("I" + (123 + si), sk.src || sk.source || cl.name || "");
-    set("J" + (123 + si), sk.ds || sk.desc || sk.description || "");
+    set("J" + (123 + si), sk.ds || sk.desc || sk.description || (skRef && skRef.description ? skRef.description[0] : "") || "");
   }
 
   // Talents (O column) — 按阶位填行，与角色面板 export 一致
@@ -1204,13 +1208,15 @@ async function exportXlsxFromState(state) {
   var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
-    set("B" + (168 + ssi), ssk.n || ssk.name || "");
-    set("D" + (168 + ssi), ssk.tm || ssk.time || "");
-    set("E" + (168 + ssi), ssk.range || "");
-    set("F" + (168 + ssi), ssk.dur || ssk.duration || "");
-    set("H" + (168 + ssi), ssk.cost || ssk.fp || "");
+    var sskName = ssk.n || ssk.name || "";
+    var sskRef = (!ssk.tm && !ssk.time && !ssk.cost && !ssk.fp) ? lookupSkillForExport(sskName) : null;
+    set("B" + (168 + ssi), sskName);
+    set("D" + (168 + ssi), ssk.tm || ssk.time || (sskRef && sskRef.fields ? sskRef.fields['施展时间'] : "") || "");
+    set("E" + (168 + ssi), ssk.range || (sskRef && sskRef.fields ? sskRef.fields['施展距离'] : "") || "");
+    set("F" + (168 + ssi), ssk.dur || ssk.duration || (sskRef && sskRef.fields ? sskRef.fields['持续时间'] : "") || "");
+    set("H" + (168 + ssi), ssk.cost || ssk.fp || (sskRef && sskRef.cost ? sskRef.cost.fp : "") || "");
     set("I" + (168 + ssi), ssk.src || ssk.source || (sc ? sc.name : ""));
-    set("J" + (168 + ssi), ssk.ds || ssk.desc || ssk.description || "");
+    set("J" + (168 + ssi), ssk.ds || ssk.desc || ssk.description || (sskRef && sskRef.description ? sskRef.description[0] : "") || "");
   }
 
   // XP/SP
@@ -1242,6 +1248,8 @@ async function exportXlsxFromState(state) {
       en.method = 8;
     }
   }
+
+  if (typeof injectPortrait === "function") injectPortrait(state, entries);
 
   // Convert entries to ZIP format
   var zipEntries = [];

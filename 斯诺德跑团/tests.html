@@ -25,6 +25,7 @@ h1 { color: #fff; }
 
 <script src="../职业页/数据/items_data.js"></script>
 <script src="panel_data.js"></script>
+<script src="lookup_skill_export.js"></script>
 <script>
 // Prevent panel_engine.js from auto-calling render() on tests page
 window.initFromURL = function() { return true; };
@@ -287,6 +288,15 @@ if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["法师"]) {
   assertTrue((mageStyles["塑能"] || 0) >= 40, "塑能技能合并到单一分组");
 }
 
+results.push('</div>');
+
+// T10: xlsx export skill lookup (upload / creation pages)
+results.push('<div class="section"><h3>T10: lookupSkillForExport — 导出技能字段补全</h3>');
+var _skRef = lookupSkillForExport("塑能箭");
+assertTrue(!!_skRef, "lookupSkillForExport 命中塑能箭");
+assert(_skRef && _skRef.fields && _skRef.fields['施展时间'], "1动作", "塑能箭 施展时间");
+assertTrue(lookupSkillForExport("不存在的技能XYZ") === null, "未知技能返回 null");
+assertTrue(lookupSkillForExport("") === null, "空名返回 null");
 results.push('</div>');
 
 // T9: upload xlsx SP parse (26.06.30)
