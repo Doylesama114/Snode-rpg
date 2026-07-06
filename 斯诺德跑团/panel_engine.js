@@ -6072,14 +6072,20 @@ async function exportXlsxFromState(state) {
   var _kaVal = (state.attrs||{})[_ka]||10;
   var _spellMod = _mhp(_kaVal);
   // AC (mirrors line 4415-4530)
-  var _armorMap={"布衣":[11,1],"皮甲":[11,1],"兽皮甲":[12,1],"鳞甲":[14,1],"胸甲":[14,1],"半身板甲":[15,1],"链甲":[16,0],"板甲":[18,0]};
   var _ac=null;
   var _eqArmor=(state.equipment&&state.equipment["防具"])||[];
   for(var _ai=0;_ai<_eqArmor.length;_ai++){
-    var _an=_eqArmor[_ai]; var _ai2=null;
-    if(_armorMap[_an])_ai2=_armorMap[_an];
-    else{for(var _k in _armorMap){if(_an.indexOf(_k)>=0){_ai2=_armorMap[_k];break;}}}
-    if(_ai2){var _ac2=_ai2[0]+(_ai2[1]?_dexMod:0);if(_ac===null||_ac2>_ac)_ac=_ac2;}
+    var _aInfo=typeof getArmorAC==="function"?getArmorAC(_eqArmor[_ai]):null;
+    if(!_aInfo){
+      var _an=itemName(_eqArmor[_ai])||"";
+      if(_an==="演出戏服"||_an==="高档服装"||_an==="布衣"||_an==="披风"){
+        _aInfo={base:11,addDex:true};
+      }
+    }
+    if(_aInfo){
+      var _ac2=_aInfo.addDex?(_aInfo.base+_dexMod):_aInfo.base;
+      if(_ac===null||_ac2>_ac)_ac=_ac2;
+    }
   }
   if(_ac===null)_ac=10+_dexMod;
   // Row 1

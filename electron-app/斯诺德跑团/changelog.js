@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6120',
+    date: '2026-07-06',
+    changes: [
+      '修复xlsx导出：防具为对象时AC计算报错'
+    ]
+  },
+
+
+  {
     version: '1.0.6119',
     date: '2026-07-06',
     changes: [
