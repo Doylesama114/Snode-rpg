@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6117',
+    date: '2026-07-06',
+    changes: [
+      '修复学习技能面板通用天赋树按阶位分组(重建panel_data时恢复tier)'
+    ]
+  },
+
+
+  {
     version: '1.0.6116',
     date: '2026-07-06',
     changes: [

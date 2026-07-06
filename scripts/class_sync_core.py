@@ -620,6 +620,24 @@ def tier_label_from_skill(old: dict) -> str:
     return str(t or "")
 
 
+def tier_map_from_html_nav(html: str, id_prefix: str = "g-skill") -> dict[str, str]:
+    """Map skill id -> tier label like 一阶 (from nav tier-summary sections)."""
+    current: str | None = None
+    out: dict[str, str] = {}
+    for line in html.splitlines():
+        m = re.search(
+            r'<summary[^>]*><a[^>]*>([一二三四五六七八]阶)(?:天赋树)?</a></summary>',
+            line,
+        )
+        if m:
+            current = m.group(1)
+            continue
+        m = re.search(rf'href="#({re.escape(id_prefix)}-\d+)"', line)
+        if m and current:
+            out[m.group(1)] = current
+    return out
+
+
 def build_data_search(block: dict, style: str, tier_label: str, tags: list[str]) -> str:
     parts = [style, tier_label, block["name"], *tags]
     for fk in FIELD_ORDER:
@@ -823,6 +841,7 @@ def sync_class(
     used: set[int] = set()
 
     html = html_path.read_text(encoding="utf-8")
+    nav_tiers = tier_map_from_html_nav(html)
     removed = []
     changed = []
 
@@ -851,6 +870,9 @@ def sync_class(
         skill["tags"] = tags_from_keywords(fields.get("关键词", ""))
         skill["cost"] = cost_json(block["mark_dots"])
         apply_run_metadata(skill, block)
+
+        if not skill.get("tier") and sid in nav_tiers:
+            skill["tier"] = nav_tiers[sid]
 
         tier_lbl = tier_label_from_skill(skill)
         style = skill.get("style", "")
