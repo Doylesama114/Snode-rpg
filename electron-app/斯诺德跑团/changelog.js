@@ -2,6 +2,20 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6119',
+    date: '2026-07-06',
+    changes: [
+      '修复兼职熟练度判定：多属性/多技能求和，战士力量或敏捷条件',
+      '修复xlsx导出：CompressionStream不可用时回退未压缩存储',
+      'xlsx导出失败弹窗显示具体错误原因',
+      '角色面板移除导入/导出全部存档按钮',
+      '导出xlsx按钮移至学习技能旁',
+      'tests扩展至84项'
+    ]
+  },
+
+
+  {
     version: '1.0.6118',
     date: '2026-07-06',
     changes: [

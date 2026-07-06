@@ -336,6 +336,42 @@ assertTrue(canLearnSkill(mixed).ok, '红+无色×1 + 红蓝 → 可学');
 
 results.push('</div>');
 
+// =================== T9: Subclass / 兼职判定 ===================
+results.push('<div class="section"><h3>T9: 兼职熟练度与属性判定</h3>');
+
+var warriorReq = REF_SUBCLASS_REQS["战士"];
+var wProfs1 = { "力量": { "威力": 3 }, "敏捷": { "体操": 1 } };
+var wProfR1 = evalSubclassProfReq(warriorReq, wProfs1);
+assertTrue(wProfR1.ok, '战士: 力量3+敏捷1=4 可兼职');
+assertClose(wProfR1.value, 4, '战士: 熟练度合计4');
+
+var wProfs2 = { "力量": { "威力": 3 }, "敏捷": { "体操": 0 } };
+var wProfR2 = evalSubclassProfReq(warriorReq, wProfs2);
+assertFalse(wProfR2.ok, '战士: 力量3+敏捷0=3 不可兼职（非单独比大小）');
+
+var wAttrs1 = { "力量": 12, "敏捷": 14, "体质": 13 };
+var wAttrR1 = evalSubclassAttrReq(warriorReq, wAttrs1);
+assertTrue(wAttrR1.ok, '战士: 敏捷14满足力量/敏捷≥13 且体质13');
+
+var wAttrs2 = { "力量": 12, "敏捷": 12, "体质": 13 };
+assertFalse(evalSubclassAttrReq(warriorReq, wAttrs2).ok, '战士: 力量敏捷均12 不可兼职');
+
+var barbReq = REF_SUBCLASS_REQS["蛮斗士"];
+var bProfs = { "力量": { "威力": 2 }, "体质": { "专注": 2 } };
+assertTrue(evalSubclassProfReq(barbReq, bProfs).ok, '蛮斗士: 力量2+体质2=4');
+
+var mageReq = REF_SUBCLASS_REQS["法师"];
+var mProfs = { "智力": { "奥秘": 2, "知识": 2, "逻辑": 2 } };
+assertTrue(evalSubclassProfReq(mageReq, mProfs).ok, '法师: 奥秘+知识+逻辑=6');
+
+var rogueReq = REF_SUBCLASS_REQS["游荡者"];
+var rProfs = { "敏捷": { "体操": 2 }, "智力": { "伪造": 1 }, "魅力": { "欺瞒": 1 } };
+assertTrue(evalSubclassProfReq(rogueReq, rProfs).ok, '游荡者: 敏捷2+伪造1+欺瞒1=4');
+
+assertFalse(checkSubclassReq("法师", "蛮斗士", { "力量": 16, "体质": 16 }, bProfs).ok, '法师主职不可兼职蛮斗士');
+
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");
