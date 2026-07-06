@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6126',
+    date: '2026-07-06',
+    changes: [
+      '修复 xlsx 立绘导出：替换模板空占位图并正确写入 blip/媒体',
+      'injectPortrait 改为 upsert，修复透明图与缺图问题',
+      '角色面板导出 xlsx 已支持立绘（state.portrait）'
+    ]
+  },
+
+  {
     version: '1.0.6125',
     date: '2026-07-06',
     changes: [

@@ -26,6 +26,7 @@ h1 { color: #fff; }
 <script src="../职业页/数据/items_data.js"></script>
 <script src="panel_data.js"></script>
 <script src="lookup_skill_export.js"></script>
+<script src="导出立绘.js"></script>
 <script>
 // Prevent panel_engine.js from auto-calling render() on tests page
 window.initFromURL = function() { return true; };
@@ -288,6 +289,25 @@ if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["法师"]) {
   assertTrue((mageStyles["塑能"] || 0) >= 40, "塑能技能合并到单一分组");
 }
 
+results.push('</div>');
+
+// T11: injectPortrait — 替换模板空占位图并写入 blip
+results.push('<div class="section"><h3>T11: injectPortrait — xlsx 立绘导出</h3>');
+var _tinyPng = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+var _portraitEntries = [
+  { name: "[Content_Types].xml", method: 0, text: '<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"></Types>', rawData: new Uint8Array(0), compSize: 0, uncompSize: 0 },
+  { name: "xl/worksheets/sheet1.xml", method: 0, text: '<?xml version="1.0"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData/></worksheet>', rawData: new Uint8Array(0), compSize: 0, uncompSize: 0 },
+  { name: "xl/drawings/drawing1.xml", method: 0, text: '<xdr:wsDr><xdr:blipFill><a:stretch/></xdr:blipFill></xdr:wsDr>', rawData: new Uint8Array(0), compSize: 0, uncompSize: 0 }
+];
+assertTrue(injectPortrait({ portrait: _tinyPng }, _portraitEntries), "injectPortrait 返回 true");
+var _media = _portraitEntries.filter(function (e) { return e.name.indexOf("xl/media/portrait1.") === 0; });
+assertTrue(_media.length === 1 && _media[0].rawData.length > 8, "写入 portrait 媒体文件");
+var _draw = _portraitEntries.find(function (e) { return e.name === "xl/drawings/drawing1.xml"; });
+assertTrue(_draw && _draw.text.indexOf('r:embed="rId1"') >= 0, "drawing1 含 blip 引用");
+assertTrue(_portraitEntries.some(function (e) { return e.name === "xl/drawings/_rels/drawing1.xml.rels"; }), "drawing rels 存在");
+assertTrue(_portraitEntries.filter(function (e) { return e.name === "xl/drawings/drawing1.xml"; }).length === 1, "drawing1 无重复条目");
+var _sh = _portraitEntries.find(function (e) { return e.name === "xl/worksheets/sheet1.xml"; });
+assertTrue(_sh && _sh.text.indexOf("<drawing") >= 0, "sheet1 含 drawing 标签");
 results.push('</div>');
 
 // T10: xlsx export skill lookup (upload / creation pages)
