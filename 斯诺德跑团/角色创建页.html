@@ -257,6 +257,7 @@ html.dark #overviewToggle { background: #d4a54a; }
 </style>
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
+<script src="xlsx_proficiency_export.js"></script>
 </head>
 <body>
 <div class="container">
@@ -2261,31 +2262,8 @@ async function exportXlsxFromState(state) {
   // 警惕值
   if (state.attrs["警惕值"]) { set("C96", state.attrs["警惕值"]); set("D96", (typeof calcMod === "function" ? calcMod(state.attrs["警惕值"]) : Math.floor(((state.attrs["警惕值"]||10)-10)/2))); }
 
-  // Proficiencies
-  if (state.profs) {
-    for (var pk in state.profs) {
-      var pv = state.profs[pk];
-      if (!pv || typeof pv !== "object") continue;
-      for (var sk in pv) {
-        var sv = pv[sk];
-        if (sv === 0 || sv === undefined) continue;
-        // Find the proficiency row
-        for (var ar = 0; ar < aRows.length; ar++) {
-          var arRow = aRows[ar];
-          var arName = an[ar];
-          // Check E column for this proficiency name
-          // Need to find the exact row... this is complex. Use a simple approach:
-          // We know the E column labels. Just find the right row.
-        }
-        // Simplified: skip proficiency row matching for now - complex mapping
-      }
-    }
-  }
-
-  // Simple proficiency mapping for known rows
-  function setProf(rowBase, subIdx, val) { if (subIdx < 10) set("G" + (rowBase + subIdx), val); }
-  // This mapping is too complex to do generically without parsing E column labels
-  // For now, just set known G column values if they exist in the uploaded data
+  // Proficiencies (E 列标签 → G 列加值)
+  if (typeof fillXlsxProficiencies === "function") fillXlsxProficiencies(set, xml, strings, state);
 
   // Feats
   if (state.special_feats && state.special_feats.length > 0) {

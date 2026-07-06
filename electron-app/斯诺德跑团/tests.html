@@ -26,6 +26,7 @@ h1 { color: #fff; }
 <script src="../职业页/数据/items_data.js"></script>
 <script src="panel_data.js"></script>
 <script src="lookup_skill_export.js"></script>
+<script src="xlsx_proficiency_export.js"></script>
 <script src="导出立绘.js"></script>
 <script>
 // Prevent panel_engine.js from auto-calling render() on tests page
@@ -308,6 +309,26 @@ assertTrue(_portraitEntries.some(function (e) { return e.name === "xl/drawings/_
 assertTrue(_portraitEntries.filter(function (e) { return e.name === "xl/drawings/drawing1.xml"; }).length === 1, "drawing1 无重复条目");
 var _sh = _portraitEntries.find(function (e) { return e.name === "xl/worksheets/sheet1.xml"; });
 assertTrue(_sh && _sh.text.indexOf("<drawing") >= 0, "sheet1 含 drawing 标签");
+results.push('</div>');
+
+// T12: fillXlsxProficiencies — E 列标签 → G 列加值
+results.push('<div class="section"><h3>T12: fillXlsxProficiencies — xlsx 熟练度导出</h3>');
+var _profXml = '<sheetData>' +
+  '<c r="E36" t="s"><v>0</v></c>' +
+  '<c r="E37" t="s"><v>1</v></c>' +
+  '<c r="E47" t="s"><v>1</v></c>' +
+  '</sheetData>';
+var _profStrings = ["运动", "豁免"];
+var _profCalls = {};
+function _profSet(addr, val) { _profCalls[addr] = val; }
+fillXlsxProficiencies(_profSet, _profXml, _profStrings, {
+  profs: { "力量": { "运动": 2, "豁免": 5 }, "敏捷": { "豁免": 3 } }
+});
+assert(_profCalls.G36, 2, "力量·运动 → G36");
+assert(_profCalls.G37, 5, "力量·豁免 → G37（复合键）");
+assert(_profCalls.G47, 3, "敏捷·豁免 → G47（复合键）");
+assertTrue(typeof fillXlsxProficiencies === "function", "fillXlsxProficiencies 已加载");
+assertTrue(fillXlsxProficiencies(null, _profXml, _profStrings, { profs: {} }) === undefined, "缺 set 时安全返回");
 results.push('</div>');
 
 // T10: xlsx export skill lookup (upload / creation pages)

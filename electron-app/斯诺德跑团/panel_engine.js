@@ -6314,46 +6314,8 @@ async function exportXlsxFromState(state) {
   if (state.missionChannel) set("H36", state.missionChannel);
   if (state.academicDomain) set("H37", state.academicDomain);
 
-  // Proficiencies
-  if (state.profs) {
-    // Build E column label -> G cell mapping from template
-    // Use composite key (attribute+skill) to handle duplicates like "豁免" across 8 attrs
-    var profMap = {};
-    var attrRows = [36, 46, 57, 62, 87, 100, 110, 116];
-    var attrNames = ["力量", "敏捷", "体质", "智力", "感知", "魅力", "意志", "幸运"];
-    var profRe = /<c r="E(\d+)"[^>]*t="s"[^>]*><v>(\d+)<\/v><\/c>/g;
-    while ((m = profRe.exec(xml)) !== null) {
-      var rowNum = parseInt(m[1]);
-      var si = parseInt(m[2]);
-      if (si < strings.length) {
-        var label = strings[si];
-        // Determine which attribute section this row is in
-        var attr = "";
-        for (var ai = attrRows.length - 1; ai >= 0; ai--) {
-          if (rowNum >= attrRows[ai] && (ai === attrRows.length-1 || rowNum < attrRows[ai+1])) {
-            attr = attrNames[ai]; break;
-          }
-        }
-        // Use composite key for non-unique labels like "豁免"
-        if (label === "豁免" && attr) {
-          profMap[attr + "::豁免"] = rowNum;
-        }
-        profMap[label] = rowNum;
-      }
-    }
-    for (var pk in state.profs) {
-      var pv = state.profs[pk];
-      if (!pv || typeof pv !== "object") continue;
-      for (var sk in pv) {
-        var sv = pv[sk];
-        if (sv === 0 || sv === undefined || sv === false) continue;
-        // Use composite key for豁免 to get correct per-attribute row
-        var key = (sk === "豁免") ? (pk + "::豁免") : sk;
-        var targetRow = profMap[key];
-        if (targetRow) set("G" + targetRow, sv);
-      }
-    }
-  }
+  // Proficiencies (E 列标签 → G 列加值)
+  if (typeof fillXlsxProficiencies === "function") fillXlsxProficiencies(set, xml, strings, state);
 
   // Feats
   if (state.special_feats && state.special_feats.length > 0) {

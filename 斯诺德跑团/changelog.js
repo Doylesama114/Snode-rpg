@@ -2,24 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
-    version: '1.0.6126',
+    version: '1.0.6127',
     date: '2026-07-06',
     changes: [
-      '修复 xlsx 立绘导出：替换模板空占位图并正确写入 blip/媒体',
-      'injectPortrait 改为 upsert，修复透明图与缺图问题',
-      '角色面板导出 xlsx 已支持立绘（state.portrait）'
+      '新增 xlsx_proficiency_export.js 统一 G 列熟练度导出',
+      '上传页/创建页/角色面板共用 E 列标签映射',
+      'panel_engine 复用共享模块',
+      'tests T12 熟练度导出'
     ]
   },
 
-  {
-    version: '1.0.6125',
-    date: '2026-07-06',
-    changes: [
-      '上传页/创建页 xlsx 导出嵌入立绘(G3:I12)',
-      '导出时按技能名从 SKILL_DATA 补全 D/E/F/H/J 列',
-      '新增 lookup_skill_export.js 按需加载 panel_data'
-    ]
-  },
 
   {
     version: '1.0.6124',

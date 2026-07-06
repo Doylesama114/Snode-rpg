@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6127',
+    date: '2026-07-06',
+    changes: [
+      '新增 xlsx_proficiency_export.js 统一 G 列熟练度导出',
+      '上传页/创建页/角色面板共用 E 列标签映射',
+      'panel_engine 复用共享模块',
+      'tests T12 熟练度导出'
+    ]
+  },
+
+
+  {
     version: '1.0.6124',
     date: '2026-07-06',
     changes: [
