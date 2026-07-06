@@ -289,6 +289,22 @@ if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["法师"]) {
 
 results.push('</div>');
 
+// T9: upload xlsx SP parse (26.06.30)
+results.push('<div class="section"><h3>T9: parseSpFromXlsxText / ensureSpStateOn — 上传页技能点</h3>');
+assert(parseSpFromXlsxText("12"), 12, "U51 数字 → sp_points");
+assert(parseSpFromXlsxText("0"), 0, "U51 零");
+assert(parseSpFromXlsxText("橙白蓝"), 3, "旧 U51 颜色字串 → 求和");
+assert(parseSpFromXlsxText(""), 0, "空 U51 → 0");
+var _imp = { xp: 50 };
+ensureSpStateOn(_imp);
+assert(typeof _imp.sp_points, "number", "ensureSpStateOn 补 sp_points");
+assertTrue(_imp.color_marks && _imp.color_marks["橙色"] === false, "ensureSpStateOn 标识默认 false");
+_imp.sp_points = 5;
+delete _imp.color_marks;
+ensureSpStateOn(_imp);
+assert(_imp.sp_points, 5, "ensureSpStateOn 保留已有 sp_points");
+results.push('</div>');
+
 // =================== T8: SP / color marks (26.06.30 rules) ===================
 results.push('<div class="section"><h3>T8: parseSkillRequirements / canLearnSkill / wildcard — 技能点与色彩标识</h3>');
 

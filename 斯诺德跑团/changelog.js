@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6124',
+    date: '2026-07-06',
+    changes: [
+      '上传角色页接入26.06.30技能点(sp_points+color_marks)',
+      '弹窗简化为经验值与技能点两栏',
+      '旧xlsx U51颜色字串自动求和迁移',
+      '角色创建页存档与导出同步'
+    ]
+  },
+
+
+  {
     version: '1.0.6123',
     date: '2026-07-06',
     changes: [

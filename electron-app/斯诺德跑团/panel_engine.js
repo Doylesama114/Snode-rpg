@@ -709,6 +709,22 @@ function ensureSpState() {
   if (typeof state.sp_points !== "number") state.sp_points = 0;
 }
 
+function parseSpFromXlsxText(text) {
+  if (text == null || text === "") return 0;
+  text = String(text).trim();
+  if (!text) return 0;
+  if (/^\d+$/.test(text)) return Math.max(0, parseInt(text, 10));
+  var spMap = {"\u6a59":"\u6a59\u8272","\u767d":"\u767d\u8272","\u7d2b":"\u7d2b\u8272","\u9ec4":"\u9ec4\u8272","\u65e0":"\u65e0\u8272","\u84dd":"\u84dd\u8272","\u9752":"\u9752\u8272","\u9ed1":"\u9ed1\u8272","\u7ea2":"\u7ea2\u8272","\u68d5":"\u68d5\u8272","\u7c89":"\u7c89\u8272","\u7eff":"\u7eff\u8272","\u6d45":"\u6d45\u8272","\u70ab":"\u70ab\u5f69"};
+  var total = 0, i;
+  for (i = 0; i < text.length; i++) { if (spMap[text.charAt(i)]) total++; }
+  return total;
+}
+
+function ensureSpStateOn(obj) {
+  if (!obj.color_marks) obj.color_marks = defaultColorMarks();
+  if (typeof obj.sp_points !== "number") obj.sp_points = 0;
+}
+
 function parseSkillRequirements(skillData) {
   var flat = parseSkillCost(skillData), fixedSeen = {}, fixed = [], wildcards = 0, dots = [], i, n;
   for (i = 0; i < flat.length; i++) {

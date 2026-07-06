@@ -1838,7 +1838,8 @@ function saveCharacter(){
     eye:CHAR.eye||"", skin:CHAR.skin||"", hair:CHAR.hair||"", portrait:"",
     xp:0,
     carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
-    sp:{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
+    sp_points:0,
+    color_marks:{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
     hp:hp, fp:fp,
     story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     attrs:{},
@@ -2391,15 +2392,7 @@ async function exportXlsxFromState(state) {
 
   // XP/SP
   if (state.xp) set("U46", String(state.xp));
-  if (state.sp) {
-    var spStr = [];
-    var spc = ["橙色", "白色", "紫色", "黄色", "无色", "蓝色", "青色", "黑色", "红色", "棕色", "粉色", "绿色", "浅色", "炫彩"];
-    for (var spi = 0; spi < spc.length; spi++) {
-      var scnt = state.sp[spc[spi]] || 0;
-      for (var sc = 0; sc < scnt; sc++) spStr.push(spc[spi].substring(0, 1));
-    }
-    if (spStr.length > 0) set("U51", spStr.join(""));
-  }
+  if (typeof state.sp_points === "number" && state.sp_points > 0) set("U51", String(state.sp_points));
 
   // Weight/Language/Profession
   if (state.carry_capacity) {
