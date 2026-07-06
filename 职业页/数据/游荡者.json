@@ -667,8 +667,7 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达5级时：你可以选择一名玩家角色，立即偷取其一个技能点",
-              "color": null
+              "text": "你的游荡者职业等级到达5级时：你可以选择一名玩家角色，立即偷取其一个技能点"
             }
           ]
         },
@@ -679,16 +678,13 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：你可以选择一名玩家角色，立即偷取其一个技能点",
-              "color": null
+              "text": "级时：你可以选择一名玩家角色，立即偷取其一个技能点"
             }
           ]
         }
@@ -745,24 +741,19 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：你会再",
-              "color": null
+              "text": "级时：你会再"
             },
             {
-              "text": "次失去",
-              "color": null
+              "text": "次失去"
             },
             {
-              "text": "2点疲劳值上限，获得以下增益效果：",
-              "color": null
+              "text": "2点疲劳值上限，获得以下增益效果："
             }
           ]
         },
@@ -773,36 +764,28 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你会再次失去",
-              "color": null
+              "text": "你会再次失去"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "点生命值和",
-              "color": null
+              "text": "点生命值和"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "点疲劳值上限，获得以下增益效果：",
-              "color": null
+              "text": "点疲劳值上限，获得以下增益效果："
             }
           ]
         },
@@ -813,36 +796,28 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达1",
-              "color": null
+              "text": "你的游荡者职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你会再次失去",
-              "color": null
+              "text": "你会再次失去"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "点生命值和",
-              "color": null
+              "text": "点生命值和"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "点疲劳值上限，获得以下增益效果：",
-              "color": null
+              "text": "点疲劳值上限，获得以下增益效果："
             }
           ]
         }
@@ -1067,36 +1042,28 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "持续时间内",
-              "color": null
+              "text": "持续时间内"
             },
             {
-              "text": "你的法术",
-              "color": null
+              "text": "你的法术"
             },
             {
-              "text": ".",
-              "color": null
+              "text": "."
             },
             {
-              "text": "暗影之刃的",
-              "color": null
+              "text": "暗影之刃的"
             },
             {
-              "text": "伤害骰点数至少为4（将点数1/2/3视作4）",
-              "color": null
+              "text": "伤害骰点数至少为4（将点数1/2/3视作4）"
             }
           ]
         },
@@ -1107,72 +1074,55 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级",
-              "color": null
+              "text": "级"
             },
             {
-              "text": "时：你使用战技",
-              "color": null
+              "text": "时：你使用战技"
             },
             {
-              "text": ".",
-              "color": null
+              "text": "."
             },
             {
-              "text": "疾跑时，会使你途经的道路被暗影笼罩，在",
-              "color": null
+              "text": "疾跑时，会使你途经的道路被暗影笼罩，在"
             },
             {
-              "text": "那条",
-              "color": null
+              "text": "那条"
             },
             {
-              "text": "路径上移动",
-              "color": null
+              "text": "路径上移动"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "其他角色",
-              "color": null
+              "text": "其他角色"
             },
             {
-              "text": "需要进行一次难度为1",
-              "color": null
+              "text": "需要进行一次难度为1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "的感知豁免，豁免失败将进入致盲状态，目标离开路径并完成",
-              "color": null
+              "text": "的感知豁免，豁免失败将进入致盲状态，目标离开路径并完成"
             },
             {
-              "text": "那",
-              "color": null
+              "text": "那"
             },
             {
-              "text": "次移动后会",
-              "color": null
+              "text": "次移动后会"
             },
             {
-              "text": "立即解除致盲",
-              "color": null
+              "text": "立即解除致盲"
             },
             {
-              "text": "状态",
-              "color": null
+              "text": "状态"
             }
           ]
         },
@@ -1183,24 +1133,19 @@
           "label": "你的游荡者职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达9级时：你使用法术",
-              "color": null
+              "text": "级到达9级时：你使用法术"
             },
             {
-              "text": ".",
-              "color": null
+              "text": "."
             },
             {
-              "text": "暗影斗篷时，",
-              "color": null
+              "text": "暗影斗篷时，"
             },
             {
-              "text": "会对与你相邻的友方角色生效",
-              "color": null
+              "text": "会对与你相邻的友方角色生效"
             }
           ]
         },
@@ -1211,32 +1156,25 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "暗影护甲",
-              "color": null
+              "text": "暗影护甲"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "持续时间+1轮",
-              "color": null
+              "text": "持续时间+1轮"
             }
           ]
         }
@@ -1281,20 +1219,16 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "影哨术的施展距离变为24米",
-              "color": null
+              "text": "影哨术的施展距离变为24米"
             }
           ]
         },
@@ -1305,20 +1239,16 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "影哨术的施展距离变为48米",
-              "color": null
+              "text": "影哨术的施展距离变为48米"
             }
           ]
         },
@@ -1329,20 +1259,16 @@
           "label": "你的游荡者职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "影哨术可以在范围内同时生成三个效应",
-              "color": null
+              "text": "影哨术可以在范围内同时生成三个效应"
             }
           ]
         }
@@ -1421,12 +1347,10 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达8级时：",
-              "color": null
+              "text": "你的游荡者职业等级到达8级时："
             },
             {
-              "text": "你可以在蝶舞引导结束后消耗连击点，每消耗1个连击点便额外造成1D4点心灵伤害",
-              "color": null
+              "text": "你可以在蝶舞引导结束后消耗连击点，每消耗1个连击点便额外造成1D4点心灵伤害"
             }
           ]
         },
@@ -1437,12 +1361,10 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达12级时：",
-              "color": null
+              "text": "你的游荡者职业等级到达12级时："
             },
             {
-              "text": "蝶舞造成的心灵伤害改为1D6",
-              "color": null
+              "text": "蝶舞造成的心灵伤害改为1D6"
             }
           ]
         }
@@ -1529,28 +1451,22 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "迷惑之刃改为造成3D4点挥砍伤害",
-              "color": null
+              "text": "迷惑之刃改为造成3D4点挥砍伤害"
             }
           ]
         },
@@ -1561,28 +1477,22 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "迷惑之刃的施展距离变为4米",
-              "color": null
+              "text": "迷惑之刃的施展距离变为4米"
             }
           ]
         },
@@ -1593,32 +1503,25 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "迷惑之刃的豁免难度变更为",
-              "color": null
+              "text": "迷惑之刃的豁免难度变更为"
             },
             {
-              "text": "感知豁免（15）",
-              "color": null
+              "text": "感知豁免（15）"
             }
           ]
         }
@@ -1663,24 +1566,19 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识",
-              "color": null
+              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识"
             },
             {
               "text": "●",
@@ -1695,20 +1593,16 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识",
-              "color": null
+              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识"
             },
             {
               "text": "●",
@@ -1723,20 +1617,16 @@
           "label": "你的游荡者职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识",
-              "color": null
+              "text": "直到下一次游玩开始前你视作拥有个人的色彩标识"
             },
             {
               "text": "●",
@@ -1797,20 +1687,16 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "幻影匕首在持续时间内进行三次攻击后可以朝任意直线方向飞至6米内的一个任意位置，对停留在那个位置上的角色发起一次攻击，随后返回至你的身边",
-              "color": null
+              "text": "幻影匕首在持续时间内进行三次攻击后可以朝任意直线方向飞至6米内的一个任意位置，对停留在那个位置上的角色发起一次攻击，随后返回至你的身边"
             }
           ]
         },
@@ -1821,20 +1707,16 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以在幻影匕首进行三次攻击后选择额外的指令：",
-              "color": null
+              "text": "你可以在幻影匕首进行三次攻击后选择额外的指令："
             }
           ]
         }
@@ -1883,20 +1765,16 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "当你处于潜行状态时，如果有一名角色途经你时可以立即施展一次幽影伏击",
-              "color": null
+              "text": "当你处于潜行状态时，如果有一名角色途经你时可以立即施展一次幽影伏击"
             }
           ]
         }
@@ -1948,20 +1826,16 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "当你进行一次位移后，你可以标记本次位移过程中的一个位置，持续时间结束时如果那个位置上能够停留，那么你可以跃迁到那个位置，这个过程具有迅捷关键词",
-              "color": null
+              "text": "当你进行一次位移后，你可以标记本次位移过程中的一个位置，持续时间结束时如果那个位置上能够停留，那么你可以跃迁到那个位置，这个过程具有迅捷关键词"
             }
           ]
         }
@@ -2012,28 +1886,22 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "旋刃魂曲改为造成4D6点心灵伤害",
-              "color": null
+              "text": "旋刃魂曲改为造成4D6点心灵伤害"
             }
           ]
         },
@@ -2044,32 +1912,25 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以在自身回合花费一个附赠动作来使",
-              "color": null
+              "text": "你可以在自身回合花费一个附赠动作来使"
             },
             {
-              "text": "旋刃魂曲朝任意方向移动3米",
-              "color": null
+              "text": "旋刃魂曲朝任意方向移动3米"
             }
           ]
         }
@@ -2114,24 +1975,19 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "迅捷连射在结算造成的伤害值后+1D6",
-              "color": null
+              "text": "迅捷连射在结算造成的伤害值后+1D6"
             }
           ]
         },
@@ -2142,24 +1998,19 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "迅捷连射改为在结算造成的伤害值后+2D6",
-              "color": null
+              "text": "迅捷连射改为在结算造成的伤害值后+2D6"
             }
           ]
         }
@@ -2209,56 +2060,43 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级",
-              "color": null
+              "text": "级"
             },
             {
-              "text": "时：",
-              "color": null
+              "text": "时："
             },
             {
-              "text": "抽血",
-              "color": null
+              "text": "抽血"
             },
             {
-              "text": "改为如果目标已",
-              "color": null
+              "text": "改为如果目标已"
             },
             {
-              "text": "经",
-              "color": null
+              "text": "经"
             },
             {
-              "text": "处于流血状态",
-              "color": null
+              "text": "处于流血状态"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "那么抽血还会使目标额外获得两",
-              "color": null
+              "text": "那么抽血还会使目标额外获得两"
             },
             {
-              "text": "层流血状态",
-              "color": null
+              "text": "层流血状态"
             },
             {
-              "text": "并",
-              "color": null
+              "text": "并"
             },
             {
-              "text": "失去1D8+X点生命值（X为目标当前流血层数）",
-              "color": null
+              "text": "失去1D8+X点生命值（X为目标当前流血层数）"
             }
           ]
         }
@@ -2297,24 +2135,19 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级",
-              "color": null
+              "text": "级"
             },
             {
-              "text": "时：",
-              "color": null
+              "text": "时："
             },
             {
-              "text": "施展挑衅对决后你对目标的下一次攻击命中和检定和伤害值具有优势",
-              "color": null
+              "text": "施展挑衅对决后你对目标的下一次攻击命中和检定和伤害值具有优势"
             }
           ]
         }
@@ -2394,64 +2227,49 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果抛射抓钩标记的位置相邻处",
-              "color": null
+              "text": "如果抛射抓钩标记的位置相邻处"
             },
             {
-              "text": "存在",
-              "color": null
+              "text": "存在"
             },
             {
-              "text": "其他",
-              "color": null
+              "text": "其他"
             },
             {
-              "text": "角色，",
-              "color": null
+              "text": "角色，"
             },
             {
-              "text": "那么在位移后你可以与其中一名角色",
-              "color": null
+              "text": "那么在位移后你可以与其中一名角色"
             },
             {
-              "text": "进行一次敏捷对抗，",
-              "color": null
+              "text": "进行一次敏捷对抗，"
             },
             {
-              "text": "对方",
-              "color": null
+              "text": "对方"
             },
             {
-              "text": "对抗失败则你",
-              "color": null
+              "text": "对抗失败则你"
             },
             {
-              "text": "可以",
-              "color": null
+              "text": "可以"
             },
             {
-              "text": "选择",
-              "color": null
+              "text": "选择"
             },
             {
-              "text": "以下",
-              "color": null
+              "text": "以下"
             },
             {
-              "text": "一项：",
-              "color": null
+              "text": "一项："
             }
           ]
         },
@@ -2462,20 +2280,16 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以在使用抛射抓钩时消耗X个连击点，若如此做，你可以在本轮次的下X名角色回合开始时再执行位移效果",
-              "color": null
+              "text": "你可以在使用抛射抓钩时消耗X个连击点，若如此做，你可以在本轮次的下X名角色回合开始时再执行位移效果"
             }
           ]
         }
@@ -2523,16 +2337,13 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达3级时：短剑断奏获得",
-              "color": null
+              "text": "你的游荡者职业等级到达3级时：短剑断奏获得"
             },
             {
-              "text": "迅捷",
-              "color": null
+              "text": "迅捷"
             },
             {
-              "text": "关键词",
-              "color": null
+              "text": "关键词"
             }
           ]
         },
@@ -2543,32 +2354,25 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：短剑断奏",
-              "color": null
+              "text": "级时：短剑断奏"
             },
             {
-              "text": "在",
-              "color": null
+              "text": "在"
             },
             {
-              "text": "结算造成的伤害值后",
-              "color": null
+              "text": "结算造成的伤害值后"
             },
             {
-              "text": "会",
-              "color": null
+              "text": "会"
             },
             {
-              "text": "额外附加一次你的敏捷调整值",
-              "color": null
+              "text": "额外附加一次你的敏捷调整值"
             }
           ]
         }
@@ -2606,24 +2410,19 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达8级时：",
-              "color": null
+              "text": "你的游荡者职业等级到达8级时："
             },
             {
-              "text": "快速备战改为",
-              "color": null
+              "text": "快速备战改为"
             },
             {
-              "text": "立即获得",
-              "color": null
+              "text": "立即获得"
             },
             {
-              "text": "3个",
-              "color": null
+              "text": "3个"
             },
             {
-              "text": "连击点",
-              "color": null
+              "text": "连击点"
             }
           ]
         },
@@ -2634,32 +2433,25 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达1",
-              "color": null
+              "text": "你的游荡者职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "快速备战改为",
-              "color": null
+              "text": "快速备战改为"
             },
             {
-              "text": "立即获得",
-              "color": null
+              "text": "立即获得"
             },
             {
-              "text": "5个",
-              "color": null
+              "text": "5个"
             },
             {
-              "text": "连击点",
-              "color": null
+              "text": "连击点"
             }
           ]
         }
@@ -2706,52 +2498,40 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：你每",
-              "color": null
+              "text": "级时：你每"
             },
             {
-              "text": "通过冲刺爆发",
-              "color": null
+              "text": "通过冲刺爆发"
             },
             {
-              "text": "消耗1",
-              "color": null
+              "text": "消耗1"
             },
             {
-              "text": "个",
-              "color": null
+              "text": "个"
             },
             {
-              "text": "连击点，本次攻击结算",
-              "color": null
+              "text": "连击点，本次攻击结算"
             },
             {
-              "text": "造成的",
-              "color": null
+              "text": "造成的"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             },
             {
-              "text": "值",
-              "color": null
+              "text": "值"
             },
             {
-              "text": "便+",
-              "color": null
+              "text": "便+"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             }
           ]
         },
@@ -2762,44 +2542,34 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：如果冲刺爆发消耗至少5",
-              "color": null
+              "text": "级时：如果冲刺爆发消耗至少5"
             },
             {
-              "text": "个",
-              "color": null
+              "text": "个"
             },
             {
-              "text": "连击点",
-              "color": null
+              "text": "连击点"
             },
             {
-              "text": "，本次攻击",
-              "color": null
+              "text": "，本次攻击"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "命中检定具有优势，并获得",
-              "color": null
+              "text": "命中检定具有优势，并获得"
             },
             {
-              "text": "速攻",
-              "color": null
+              "text": "速攻"
             },
             {
-              "text": "关键词",
-              "color": null
+              "text": "关键词"
             }
           ]
         }
@@ -2850,24 +2620,19 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "震摄射击",
-              "color": null
+              "text": "震摄射击"
             },
             {
-              "text": "造成的伤害值具有优势",
-              "color": null
+              "text": "造成的伤害值具有优势"
             }
           ]
         }
@@ -2915,24 +2680,19 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：当你同时装备剑类武器和",
-              "color": null
+              "text": "级时：当你同时装备剑类武器和"
             },
             {
-              "text": "火枪",
-              "color": null
+              "text": "火枪"
             },
             {
-              "text": "进入战斗环节时，增加以下增益效果",
-              "color": null
+              "text": "进入战斗环节时，增加以下增益效果"
             }
           ]
         }
@@ -2970,36 +2730,28 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "游荡者",
-              "color": null
+              "text": "游荡者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "第一滴血改为使目标失去",
-              "color": null
+              "text": "第一滴血改为使目标失去"
             },
             {
-              "text": "20",
-              "color": null
+              "text": "20"
             },
             {
-              "text": "点生命值",
-              "color": null
+              "text": "点生命值"
             }
           ]
         }
@@ -3085,32 +2837,25 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "致伤毒药还会使目标对",
-              "color": null
+              "text": "致伤毒药还会使目标对"
             },
             {
-              "text": "耳鸣、沉默",
-              "color": null
+              "text": "耳鸣、沉默"
             },
             {
-              "text": "和致盲状态的豁免难度",
-              "color": null
+              "text": "和致盲状态的豁免难度"
             },
             {
-              "text": "+2",
-              "color": null
+              "text": "+2"
             }
           ]
         }
@@ -3162,20 +2907,16 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入麻痹状态，随后移除这些标",
-              "color": null
+              "text": "级时：豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入麻痹状态，随后移除这些标"
             },
             {
-              "text": "记",
-              "color": null
+              "text": "记"
             }
           ]
         }
@@ -3227,36 +2968,28 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：受到",
-              "color": null
+              "text": "：受到"
             },
             {
-              "text": "这个",
-              "color": null
+              "text": "这个"
             },
             {
-              "text": "效果影响的角色会被附加一层标记，拥有三层该标记的角色受到下一次攻击时，需要额外花费一个带有反应动作的",
-              "color": null
+              "text": "效果影响的角色会被附加一层标记，拥有三层该标记的角色受到下一次攻击时，需要额外花费一个带有反应动作的"
             },
             {
-              "text": "能力",
-              "color": null
+              "text": "能力"
             },
             {
-              "text": "才能规避本次攻击，随后移除这些标记",
-              "color": null
+              "text": "才能规避本次攻击，随后移除这些标记"
             }
           ]
         }
@@ -3309,24 +3042,19 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "酸液飞溅的基础伤害改为",
-              "color": null
+              "text": "酸液飞溅的基础伤害改为"
             },
             {
-              "text": "2D8点强酸伤害",
-              "color": null
+              "text": "2D8点强酸伤害"
             }
           ]
         },
@@ -3337,28 +3065,22 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "酸液飞溅对",
-              "color": null
+              "text": "酸液飞溅对"
             },
             {
-              "text": "着装为轻甲或中甲的角色改为额外造成2D8点强酸伤害",
-              "color": null
+              "text": "着装为轻甲或中甲的角色改为额外造成2D8点强酸伤害"
             },
             {
-              "text": "，对着装为重甲的角色进行护甲检定的难度变更为15",
-              "color": null
+              "text": "，对着装为重甲的角色进行护甲检定的难度变更为15"
             }
           ]
         }
@@ -3452,24 +3174,19 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "速效毒药改为使目标失去2点生命值",
-              "color": null
+              "text": "速效毒药改为使目标失去2点生命值"
             }
           ]
         },
@@ -3480,24 +3197,19 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "速效毒药改为使目标失去3点生命值",
-              "color": null
+              "text": "速效毒药改为使目标失去3点生命值"
             }
           ]
         },
@@ -3508,24 +3220,19 @@
           "label": "你的游荡者职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "速效毒药改为使目标失去4点生命值",
-              "color": null
+              "text": "速效毒药改为使目标失去4点生命值"
             }
           ]
         }
@@ -3772,7 +3479,24 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "奇袭",
-      "tier": "四阶"
+      "tier": "四阶",
+      "description_entries": [
+        {
+          "text": "·每当你的游荡者职业等级提升时，直到下一次游玩开始前你始终视作拥有个人的色彩标识●",
+          "runs": [
+            {
+              "text": "·每当你的游荡者职业等级提升时，"
+            },
+            {
+              "text": "直到下一次游玩开始前你始终视作拥有个人的色彩标识"
+            },
+            {
+              "text": "●",
+              "color": "#595959"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "r-skill-62",
@@ -3864,7 +3588,69 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "妙手",
-      "tier": "一阶"
+      "tier": "一阶",
+      "description_entries": [
+        {
+          "text": "你的游荡者职业等级达到5级时：直到下一次游玩开始前你始终视作拥有个人的色彩标识●",
+          "runs": [
+            {
+              "text": "你的游荡者职业等级达到"
+            },
+            {
+              "text": "5级时："
+            },
+            {
+              "text": "直到下一次游玩开始前你始终视作拥有个人的色彩标识"
+            },
+            {
+              "text": "●",
+              "color": "#FFF32F"
+            }
+          ]
+        },
+        {
+          "text": "你的游荡者职业等级达到10级时：直到下一次游玩开始前你始终视作拥有个人的色彩标识●",
+          "runs": [
+            {
+              "text": "你的游荡者职业等级达到"
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "级时："
+            },
+            {
+              "text": "直到下一次游玩开始前你始终视作拥有个人的色彩标识"
+            },
+            {
+              "text": "●",
+              "color": "#FFF32F"
+            }
+          ]
+        },
+        {
+          "text": "你的游荡者职业等级达到15级时：直到下一次游玩开始前你始终视作拥有个人的色彩标识●",
+          "runs": [
+            {
+              "text": "你的游荡者职业等级达到"
+            },
+            {
+              "text": "15"
+            },
+            {
+              "text": "级时："
+            },
+            {
+              "text": "直到下一次游玩开始前你始终视作拥有个人的色彩标识"
+            },
+            {
+              "text": "●",
+              "color": "#FFF32F"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "r-skill-65",
@@ -4031,7 +3817,30 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "妙手",
-      "tier": "四阶"
+      "tier": "四阶",
+      "description_entries": [
+        {
+          "text": "你的游荡者职业等级达到10级时：在每次游玩结束时你视作拥有个人的对应色彩标识●",
+          "runs": [
+            {
+              "text": "你的游荡者职业等级达到"
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "级时："
+            },
+            {
+              "text": "在每次游玩结束时你视作拥有个人的对应色彩标识"
+            },
+            {
+              "text": "●",
+              "color": "#FFF32F"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "r-skill-69",
@@ -4118,36 +3927,28 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视",
-              "color": null
+              "text": "如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视"
             },
             {
-              "text": "诸如",
-              "color": null
+              "text": "诸如"
             },
             {
-              "text": "盾牌格挡",
-              "color": null
+              "text": "盾牌格挡"
             },
             {
-              "text": "、",
-              "color": null
+              "text": "、"
             },
             {
-              "text": "刀枪不入等物理性质的防御效果",
-              "color": null
+              "text": "刀枪不入等物理性质的防御效果"
             }
           ]
         },
@@ -4158,20 +3959,16 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视来源于盾牌和护甲提供的防御等级",
-              "color": null
+              "text": "如果你当前处于无视单位碰撞体积的状态，那么鬼魅攻击能够忽视来源于盾牌和护甲提供的防御等级"
             }
           ]
         }
@@ -4277,24 +4074,19 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "暗影斗篷被强制中断后你可以立即将自身投射到幽影界，持续1轮并具有以下效果：",
-              "color": null
+              "text": "暗影斗篷被强制中断后你可以立即将自身投射到幽影界，持续1轮并具有以下效果："
             }
           ]
         }
@@ -4351,32 +4143,25 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "剪影的持续时间改为2轮",
-              "color": null
+              "text": "剪影的持续时间改为2轮"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "目标在解除剪影时还会承受1D8点暗影伤害",
-              "color": null
+              "text": "目标在解除剪影时还会承受1D8点暗影伤害"
             }
           ]
         },
@@ -4387,24 +4172,19 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等",
-              "color": null
+              "text": "你的游荡者职业等"
             },
             {
-              "text": "级到达",
-              "color": null
+              "text": "级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "剪影改为目标失去X点生命值（X为本次结算后伤害值的100%）",
-              "color": null
+              "text": "剪影改为目标失去X点生命值（X为本次结算后伤害值的100%）"
             }
           ]
         }
@@ -4456,36 +4236,28 @@
           "label": "你的游荡者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "饮用猩红之瓶还会暂时停止",
-              "color": null
+              "text": "饮用猩红之瓶还会暂时停止"
             },
             {
-              "text": "结算自身",
-              "color": null
+              "text": "结算自身"
             },
             {
-              "text": "的灼烧效果",
-              "color": null
+              "text": "的灼烧效果"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "持续1轮",
-              "color": null
+              "text": "持续1轮"
             }
           ]
         }
@@ -4542,16 +4314,13 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达1",
-              "color": null
+              "text": "你的游荡者职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：重磅一击！！击杀目标后会为你带来双倍的经验值和技能点收益",
-              "color": null
+              "text": "级时：重磅一击！！击杀目标后会为你带来双倍的经验值和技能点收益"
             }
           ]
         }
@@ -4607,8 +4376,7 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达8级时：剑刃乱舞改为造成3X点挥砍伤害",
-              "color": null
+              "text": "你的游荡者职业等级到达8级时：剑刃乱舞改为造成3X点挥砍伤害"
             }
           ]
         },
@@ -4619,24 +4387,19 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：剑刃乱舞改为造成",
-              "color": null
+              "text": "级时：剑刃乱舞改为造成"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             },
             {
-              "text": "X点挥砍伤害",
-              "color": null
+              "text": "X点挥砍伤害"
             }
           ]
         }
@@ -4732,20 +4495,16 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：胆大妄为改为你发起基础攻击时造成的伤害值在结算后+",
-              "color": null
+              "text": "级时：胆大妄为改为你发起基础攻击时造成的伤害值在结算后+"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             }
           ]
         },
@@ -4756,32 +4515,25 @@
           "label": "你的游荡者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "胆大",
-              "color": null
+              "text": "胆大"
             },
             {
-              "text": "妄为",
-              "color": null
+              "text": "妄为"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "生效期间，你对讨债者生效的目标进行的攻击命中检定具有优势",
-              "color": null
+              "text": "生效期间，你对讨债者生效的目标进行的攻击命中检定具有优势"
             }
           ]
         },
@@ -4792,32 +4544,25 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达15级时：每场",
-              "color": null
+              "text": "你的游荡者职业等级到达15级时：每场"
             },
             {
-              "text": "战斗限一次.如果你胆大妄为",
-              "color": null
+              "text": "战斗限一次.如果你胆大妄为"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "生效期间你",
-              "color": null
+              "text": "生效期间你"
             },
             {
-              "text": "未拥有毅力效果，那么你将获得一次毅力效果",
-              "color": null
+              "text": "未拥有毅力效果，那么你将获得一次毅力效果"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "在你受到一次不超过你的100%最大生命值的伤害而进入死亡裁决时，改为将你的生命值降低至1点",
-              "color": null
+              "text": "在你受到一次不超过你的100%最大生命值的伤害而进入死亡裁决时，改为将你的生命值降低至1点"
             }
           ]
         }
@@ -4869,20 +4614,16 @@
           "label": "你的游荡者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你在一场战斗环节中首次饮用菊花茶后还会获得1个连击点",
-              "color": null
+              "text": "你在一场战斗环节中首次饮用菊花茶后还会获得1个连击点"
             }
           ]
         },
@@ -4893,20 +4634,16 @@
           "label": "你的游荡者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你在一场战斗环节中首次饮用菊花茶后改为获得2个连击点",
-              "color": null
+              "text": "你在一场战斗环节中首次饮用菊花茶后改为获得2个连击点"
             }
           ]
         },
@@ -4917,20 +4654,16 @@
           "label": "你的游荡者职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你在一场战斗环节中首次饮用菊花茶后还会返还自身一个附赠动作",
-              "color": null
+              "text": "你在一场战斗环节中首次饮用菊花茶后还会返还自身一个附赠动作"
             }
           ]
         }
@@ -5025,20 +4758,16 @@
           "label": "你的游荡者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达",
-              "color": null
+              "text": "你的游荡者职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入混乱状态，随后移除这些标记",
-              "color": null
+              "text": "：豁免成功的角色会被附加一层标记，拥有三层该标记的角色立即进入混乱状态，随后移除这些标记"
             }
           ]
         }
@@ -5084,24 +4813,19 @@
           "label": "你的游荡者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达1",
-              "color": null
+              "text": "你的游荡者职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "毒性蔓延的",
-              "color": null
+              "text": "毒性蔓延的"
             },
             {
-              "text": "关键词变更为短休/长休（2）",
-              "color": null
+              "text": "关键词变更为短休/长休（2）"
             }
           ]
         },
@@ -5112,20 +4836,16 @@
           "label": "你的游荡者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的游荡者职业等级到达1",
-              "color": null
+              "text": "你的游荡者职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以同时触发毒性蔓延中的两个不同效果",
-              "color": null
+              "text": "你可以同时触发毒性蔓延中的两个不同效果"
             }
           ]
         }

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6116',
+    date: '2026-07-06',
+    changes: [
+      'JSON同步写入field_runs与description_entries彩色元数据',
+      '角色面板技能详情/预览支持彩色●标识',
+      '新增build_panel_skill_data.py从职业JSON重建panel_data.js'
+    ]
+  },
+
+
+  {
     version: '1.0.6115',
     date: '2026-07-05',
     changes: [

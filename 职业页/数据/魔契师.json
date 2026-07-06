@@ -33,16 +33,13 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：巫术箭改为造成2D10伤害",
-              "color": null
+              "text": "级时：巫术箭改为造成2D10伤害"
             }
           ]
         },
@@ -53,16 +50,13 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：巫术箭改为造成3D10伤害",
-              "color": null
+              "text": "级时：巫术箭改为造成3D10伤害"
             }
           ]
         }
@@ -100,16 +94,13 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：毒液飞溅改为各造成2D4点剧毒伤害",
-              "color": null
+              "text": "级时：毒液飞溅改为各造成2D4点剧毒伤害"
             }
           ]
         },
@@ -120,16 +111,13 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：毒液飞溅改为各造成3D4点剧毒伤害",
-              "color": null
+              "text": "级时：毒液飞溅改为各造成3D4点剧毒伤害"
             }
           ]
         }
@@ -197,24 +185,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：你可以从以下抉择中选择一项变更次级变形术的效果，你也可以选择不进行变化：",
-              "color": null
+              "text": "级时：你可以从以下抉择中选择一项变更次级变形术的效果，你也可以选择不进行变化："
             }
           ]
         }
@@ -265,20 +248,16 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：恩赐魔刃创造的武器",
-              "color": null
+              "text": "级时：恩赐魔刃创造的武器"
             },
             {
-              "text": "伤害骰点数至少为3（将点数1/2视作3）",
-              "color": null
+              "text": "伤害骰点数至少为3（将点数1/2视作3）"
             }
           ]
         }
@@ -330,16 +309,13 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达1",
-              "color": null
+              "text": "你的魔契师职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：非战斗环节.你可以选择使你的身体也一同进入宗主的领域",
-              "color": null
+              "text": "级时：非战斗环节.你可以选择使你的身体也一同进入宗主的领域"
             }
           ]
         },
@@ -350,16 +326,13 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：移除异界灵感的关键词长休（2）",
-              "color": null
+              "text": "级时：移除异界灵感的关键词长休（2）"
             }
           ]
         }
@@ -449,24 +422,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：传讯术的施展距离改为36米",
-              "color": null
+              "text": "级时：传讯术的施展距离改为36米"
             }
           ]
         },
@@ -477,24 +445,19 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置",
-              "color": null
+              "text": "级时：传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置"
             }
           ]
         },
@@ -505,56 +468,43 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：如果你",
-              "color": null
+              "text": "级时：如果你"
             },
             {
-              "text": "在本日",
-              "color": null
+              "text": "在本日"
             },
             {
-              "text": "触碰过",
-              "color": null
+              "text": "触碰过"
             },
             {
-              "text": "这",
-              "color": null
+              "text": "这"
             },
             {
-              "text": "名角色，",
-              "color": null
+              "text": "名角色，"
             },
             {
-              "text": "那么",
-              "color": null
+              "text": "那么"
             },
             {
-              "text": "对目标使用传讯术时",
-              "color": null
+              "text": "对目标使用传讯术时"
             },
             {
-              "text": "能够",
-              "color": null
+              "text": "能够"
             },
             {
-              "text": "无视施展距离的限制",
-              "color": null
+              "text": "无视施展距离的限制"
             }
           ]
         }
@@ -598,16 +548,13 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：恢复力量报偿的一层充能效果",
-              "color": null
+              "text": "级时：恢复力量报偿的一层充能效果"
             }
           ]
         },
@@ -618,8 +565,7 @@
           "label": "你的魔契师职业等级到达18级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达18级时：恢复力量报偿的一层充能效果",
-              "color": null
+              "text": "你的魔契师职业等级到达18级时：恢复力量报偿的一层充能效果"
             }
           ]
         }
@@ -658,40 +604,31 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "节能施法",
-              "color": null
+              "text": "节能施法"
             },
             {
-              "text": "改为使你施展的下一个法术",
-              "color": null
+              "text": "改为使你施展的下一个法术"
             },
             {
-              "text": "或戏法",
-              "color": null
+              "text": "或戏法"
             },
             {
-              "text": "不消耗疲劳值",
-              "color": null
+              "text": "不消耗疲劳值"
             }
           ]
         }
@@ -744,60 +681,46 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：虫孽滋生改为在",
-              "color": null
+              "text": "级时：虫孽滋生改为在"
             },
             {
-              "text": "第二个",
-              "color": null
+              "text": "第二个"
             },
             {
-              "text": "轮次结束阶段",
-              "color": null
+              "text": "轮次结束阶段"
             },
             {
-              "text": "如果仍未被驱散，便会",
-              "color": null
+              "text": "如果仍未被驱散，便会"
             },
             {
-              "text": "对目标造成",
-              "color": null
+              "text": "对目标造成"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "点剧毒伤害并",
-              "color": null
+              "text": "点剧毒伤害并"
             },
             {
-              "text": "使其",
-              "color": null
+              "text": "使其"
             },
             {
-              "text": "进入中毒",
-              "color": null
+              "text": "进入中毒"
             },
             {
-              "text": "状态",
-              "color": null
+              "text": "状态"
             }
           ]
         }
@@ -845,28 +768,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "均衡敕令改为选择任意两名自愿的角色为目标",
-              "color": null
+              "text": "均衡敕令改为选择任意两名自愿的角色为目标"
             }
           ]
         },
@@ -877,28 +794,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "均衡敕令能够交换减速、禁锢、致盲、耳鸣、沉默、麻痹和困惑状态",
-              "color": null
+              "text": "均衡敕令能够交换减速、禁锢、致盲、耳鸣、沉默、麻痹和困惑状态"
             }
           ]
         }
@@ -982,24 +893,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：强化属性改为目标可以选择三项属性值各临时提升1点",
-              "color": null
+              "text": "级时：强化属性改为目标可以选择三项属性值各临时提升1点"
             }
           ]
         },
@@ -1010,24 +916,19 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：强化属性改为目标可以选择所有属性值各临时提升1点",
-              "color": null
+              "text": "级时：强化属性改为目标可以选择所有属性值各临时提升1点"
             }
           ]
         }
@@ -1073,8 +974,7 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达5级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位",
-              "color": null
+              "text": "你的魔契师职业等级到达5级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位"
             }
           ]
         },
@@ -1085,8 +985,7 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达10级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位",
-              "color": null
+              "text": "你的魔契师职业等级到达10级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位"
             }
           ]
         },
@@ -1097,8 +996,7 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达15级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位",
-              "color": null
+              "text": "你的魔契师职业等级到达15级时：你可以再次支付费用来学习这项天赋，不会因此占用额外的天赋槽位"
             }
           ]
         }
@@ -1169,16 +1067,13 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达1",
-              "color": null
+              "text": "你的魔契师职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：恢复灰色交易的一层充能效果",
-              "color": null
+              "text": "级时：恢复灰色交易的一层充能效果"
             }
           ]
         }
@@ -1227,28 +1122,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "巫术打击改为造成3D6点伤害",
-              "color": null
+              "text": "巫术打击改为造成3D6点伤害"
             }
           ]
         },
@@ -1259,28 +1148,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "巫术打击改为造成4D6点伤害",
-              "color": null
+              "text": "巫术打击改为造成4D6点伤害"
             }
           ]
         }
@@ -1333,28 +1216,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "受到伤害的角色还需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态",
-              "color": null
+              "text": "受到伤害的角色还需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态"
             }
           ]
         },
@@ -1365,28 +1242,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "召唤箭雨改为造成3D6点穿刺伤害",
-              "color": null
+              "text": "召唤箭雨改为造成3D6点穿刺伤害"
             }
           ]
         }
@@ -1481,28 +1352,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以同时发射出两条契约锁链指定不同的角色为目标",
-              "color": null
+              "text": "你可以同时发射出两条契约锁链指定不同的角色为目标"
             }
           ]
         }
@@ -1554,28 +1419,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "将法术.召唤隐形战仆加入你的法师职业技能列表",
-              "color": null
+              "text": "将法术.召唤隐形战仆加入你的法师职业技能列表"
             }
           ]
         }
@@ -1741,28 +1600,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "契约魔刃能够额外召唤一个契灵",
-              "color": null
+              "text": "契约魔刃能够额外召唤一个契灵"
             }
           ]
         }
@@ -1871,32 +1724,25 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "契约护盾的关键词变更为",
-              "color": null
+              "text": "契约护盾的关键词变更为"
             },
             {
-              "text": "短休/长休（2）",
-              "color": null
+              "text": "短休/长休（2）"
             }
           ]
         }
@@ -1994,28 +1840,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "宗主凝视生效后，你对目标施展的下一次巫术箭或混乱箭的伤害骰按最大值计算",
-              "color": null
+              "text": "宗主凝视生效后，你对目标施展的下一次巫术箭或混乱箭的伤害骰按最大值计算"
             }
           ]
         },
@@ -2026,28 +1866,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "目标的震撼状态结束后还会进入恐惧状态",
-              "color": null
+              "text": "目标的震撼状态结束后还会进入恐惧状态"
             }
           ]
         }
@@ -2095,28 +1929,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你额外获得一个契约法术槽位",
-              "color": null
+              "text": "你额外获得一个契约法术槽位"
             }
           ]
         },
@@ -2127,28 +1955,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你额外获得一个契约法术槽位",
-              "color": null
+              "text": "你额外获得一个契约法术槽位"
             }
           ]
         }
@@ -2199,36 +2021,28 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：混乱箭改为",
-              "color": null
+              "text": "级时：混乱箭改为"
             },
             {
-              "text": "造成6",
-              "color": null
+              "text": "造成6"
             },
             {
-              "text": "D6-1D6点伤害",
-              "color": null
+              "text": "D6-1D6点伤害"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "这",
-              "color": null
+              "text": "这"
             },
             {
-              "text": "两次掷骰分别进行计算",
-              "color": null
+              "text": "两次掷骰分别进行计算"
             }
           ]
         },
@@ -2239,44 +2053,34 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：你可以选择额外花费一个附赠动作来使混乱箭的结算",
-              "color": null
+              "text": "级时：你可以选择额外花费一个附赠动作来使混乱箭的结算"
             },
             {
-              "text": "造成的",
-              "color": null
+              "text": "造成的"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             },
             {
-              "text": "值",
-              "color": null
+              "text": "值"
             },
             {
-              "text": "+",
-              "color": null
+              "text": "+"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             }
           ]
         },
@@ -2287,44 +2091,34 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达1",
-              "color": null
+              "text": "你的魔契师职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：你在施展混乱箭后可以立即花费",
-              "color": null
+              "text": "级时：你在施展混乱箭后可以立即花费"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             },
             {
-              "text": "点疲劳值来主动准备一次混乱箭，这发混乱箭会在下一个轮次结束阶段自动指向",
-              "color": null
+              "text": "点疲劳值来主动准备一次混乱箭，这发混乱箭会在下一个轮次结束阶段自动指向"
             },
             {
-              "text": "提前选择的攻击",
-              "color": null
+              "text": "提前选择的攻击"
             },
             {
-              "text": "目标，你也可以在下一个轮次",
-              "color": null
+              "text": "目标，你也可以在下一个轮次"
             },
             {
-              "text": "的自身回合中花费主要动作和附赠动作来为那发混乱箭提供",
-              "color": null
+              "text": "的自身回合中花费主要动作和附赠动作来为那发混乱箭提供"
             },
             {
-              "text": "这个法术本身的",
-              "color": null
+              "text": "这个法术本身的"
             },
             {
-              "text": "增益效果",
-              "color": null
+              "text": "增益效果"
             }
           ]
         }
@@ -2374,36 +2168,28 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达8级时：目标还需要进行一次难度为12的护甲检定，",
-              "color": null
+              "text": "你的魔契师职业等级到达8级时：目标还需要进行一次难度为12的护甲检定，"
             },
             {
-              "text": "如果对方",
-              "color": null
+              "text": "如果对方"
             },
             {
-              "text": "检定失败",
-              "color": null
+              "text": "检定失败"
             },
             {
-              "text": "并且",
-              "color": null
+              "text": "并且"
             },
             {
-              "text": "着装有重甲或盾牌，那么",
-              "color": null
+              "text": "着装有重甲或盾牌，那么"
             },
             {
-              "text": "持续时间内改为防御等级-10，",
-              "color": null
+              "text": "持续时间内改为防御等级-10，"
             },
             {
-              "text": "否则改为",
-              "color": null
+              "text": "否则改为"
             },
             {
-              "text": "每个你的回合结束阶段承受3D6点强酸伤害",
-              "color": null
+              "text": "每个你的回合结束阶段承受3D6点强酸伤害"
             }
           ]
         },
@@ -2414,8 +2200,7 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达12级时：腐蚀术的施展时间变更为一个附赠动作",
-              "color": null
+              "text": "你的魔契师职业等级到达12级时：腐蚀术的施展时间变更为一个附赠动作"
             }
           ]
         }
@@ -2496,8 +2281,7 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达5级时：暗影之触改为造成2D8伤害",
-              "color": null
+              "text": "你的魔契师职业等级到达5级时：暗影之触改为造成2D8伤害"
             }
           ]
         },
@@ -2508,16 +2292,13 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达10级时：暗影之触能够额外生成一条触手",
-              "color": null
+              "text": "你的魔契师职业等级到达10级时：暗影之触能够额外生成一条触手"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "仅能够用于攻击不同的角色",
-              "color": null
+              "text": "仅能够用于攻击不同的角色"
             }
           ]
         },
@@ -2528,12 +2309,10 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达15级时：暗影之触改为能够额外生成三条触手，",
-              "color": null
+              "text": "你的魔契师职业等级到达15级时：暗影之触改为能够额外生成三条触手，"
             },
             {
-              "text": "仅能够用于攻击不同的角色",
-              "color": null
+              "text": "仅能够用于攻击不同的角色"
             }
           ]
         }
@@ -2581,28 +2360,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "提取毒物能够将角色作为施展对象",
-              "color": null
+              "text": "提取毒物能够将角色作为施展对象"
             }
           ]
         }
@@ -2648,16 +2421,13 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：邪恶命令允许指定对方使用施法攻击来进行攻击",
-              "color": null
+              "text": "级时：邪恶命令允许指定对方使用施法攻击来进行攻击"
             }
           ]
         },
@@ -2668,36 +2438,28 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：每",
-              "color": null
+              "text": "级时：每"
             },
             {
-              "text": "个自身",
-              "color": null
+              "text": "个自身"
             },
             {
-              "text": "回合限",
-              "color": null
+              "text": "回合限"
             },
             {
-              "text": "一次.邪恶命",
-              "color": null
+              "text": "一次.邪恶命"
             },
             {
-              "text": "的施展时间变更为",
-              "color": null
+              "text": "的施展时间变更为"
             },
             {
-              "text": "一个附赠动作",
-              "color": null
+              "text": "一个附赠动作"
             }
           ]
         },
@@ -2708,20 +2470,16 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：邪恶命令允许指定对方",
-              "color": null
+              "text": "级时：邪恶命令允许指定对方"
             },
             {
-              "text": "不发起攻击，而是改为施展带有负面效果的能力，无法以此施展限定技能",
-              "color": null
+              "text": "不发起攻击，而是改为施展带有负面效果的能力，无法以此施展限定技能"
             }
           ]
         }
@@ -2769,16 +2527,13 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：黑暗闪电改为造成1D4点雷电伤害和1D4点暗影伤害",
-              "color": null
+              "text": "级时：黑暗闪电改为造成1D4点雷电伤害和1D4点暗影伤害"
             }
           ]
         },
@@ -2789,16 +2544,13 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：黑暗闪电改为能够对前方扇形4环内的至多四名角色造成伤害",
-              "color": null
+              "text": "级时：黑暗闪电改为能够对前方扇形4环内的至多四名角色造成伤害"
             }
           ]
         },
@@ -2809,52 +2561,40 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达1",
-              "color": null
+              "text": "你的魔契师职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：黑",
-              "color": null
+              "text": "级时：黑"
             },
             {
-              "text": "暗闪电还",
-              "color": null
+              "text": "暗闪电还"
             },
             {
-              "text": "会使",
-              "color": null
+              "text": "会使"
             },
             {
-              "text": "受到伤害的角色",
-              "color": null
+              "text": "受到伤害的角色"
             },
             {
-              "text": "掷一颗D2骰，根据结果决定",
-              "color": null
+              "text": "掷一颗D2骰，根据结果决定"
             },
             {
-              "text": "进行一次难度为10的",
-              "color": null
+              "text": "进行一次难度为10的"
             },
             {
-              "text": "体质",
-              "color": null
+              "text": "体质"
             },
             {
-              "text": "豁免或",
-              "color": null
+              "text": "豁免或"
             },
             {
-              "text": "感知",
-              "color": null
+              "text": "感知"
             },
             {
-              "text": "豁免，豁免失败将分别进入麻痹或恐惧状态",
-              "color": null
+              "text": "豁免，豁免失败将分别进入麻痹或恐惧状态"
             }
           ]
         }
@@ -2904,28 +2644,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "衰弱",
-              "color": null
+              "text": "衰弱"
             },
             {
-              "text": "射线改为",
-              "color": null
+              "text": "射线改为"
             },
             {
-              "text": "使目标失去1D10点生命值",
-              "color": null
+              "text": "使目标失去1D10点生命值"
             }
           ]
         },
@@ -2936,28 +2670,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "衰弱",
-              "color": null
+              "text": "衰弱"
             },
             {
-              "text": "射线改为",
-              "color": null
+              "text": "射线改为"
             },
             {
-              "text": "使目标失去1D12点生命值，并且会使受到减速状态的角色在下一个自身回合中，每通过位移移动1米便需要消耗1点疲劳值",
-              "color": null
+              "text": "使目标失去1D12点生命值，并且会使受到减速状态的角色在下一个自身回合中，每通过位移移动1米便需要消耗1点疲劳值"
             }
           ]
         }
@@ -3007,20 +2735,16 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "创造酸蚀改为造成4D4点强酸伤害",
-              "color": null
+              "text": "创造酸蚀改为造成4D4点强酸伤害"
             }
           ]
         },
@@ -3031,36 +2755,28 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "创造酸蚀的关键词变更为",
-              "color": null
+              "text": "创造酸蚀的关键词变更为"
             },
             {
-              "text": "短休/长休",
-              "color": null
+              "text": "短休/长休"
             },
             {
-              "text": "（",
-              "color": null
+              "text": "（"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "）",
-              "color": null
+              "text": "）"
             }
           ]
         }
@@ -3107,32 +2823,25 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "恶言相加的豁免难度变更为",
-              "color": null
+              "text": "恶言相加的豁免难度变更为"
             },
             {
-              "text": "魅力豁免（15）",
-              "color": null
+              "text": "魅力豁免（15）"
             }
           ]
         }
@@ -3247,28 +2956,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "邪念侵蚀的豁免难度提升至17",
-              "color": null
+              "text": "邪念侵蚀的豁免难度提升至17"
             }
           ]
         }
@@ -3322,28 +3025,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "毒雾术的施展距离提升至12米",
-              "color": null
+              "text": "毒雾术的施展距离提升至12米"
             }
           ]
         },
@@ -3354,28 +3051,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "毒雾术的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "毒雾术的关键词变更为短休/长休（2）"
             }
           ]
         }
@@ -3465,28 +3156,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "酸蚀球还会使豁免失败的角色进入减速状态",
-              "color": null
+              "text": "酸蚀球还会使豁免失败的角色进入减速状态"
             }
           ]
         },
@@ -3497,28 +3182,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "酸蚀球改为造成6D4点强酸伤害",
-              "color": null
+              "text": "酸蚀球改为造成6D4点强酸伤害"
             }
           ]
         }
@@ -3611,20 +3290,16 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "枯萎术的持续时间内目标的敏捷和体质豁免具有劣势",
-              "color": null
+              "text": "枯萎术的持续时间内目标的敏捷和体质豁免具有劣势"
             }
           ]
         }
@@ -3673,40 +3348,32 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以",
-              "color": null
+              "text": "你可以"
             },
             {
-              "text": "将本次游玩结束时的团队色彩标识全部转换为",
-              "color": null
+              "text": "将本次游玩结束时的团队色彩标识全部转换为"
             },
             {
               "text": "●",
               "color": "#595959"
             },
             {
-              "text": "来习得一个与本场景相关的、不超过三阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒",
-              "color": null
+              "text": "来习得一个与本场景相关的、不超过三阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒"
             }
           ]
         },
@@ -3717,40 +3384,32 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以",
-              "color": null
+              "text": "你可以"
             },
             {
-              "text": "将本次游玩结束时的团队色彩标识全部转换为",
-              "color": null
+              "text": "将本次游玩结束时的团队色彩标识全部转换为"
             },
             {
               "text": "●",
               "color": "#595959"
             },
             {
-              "text": "来习得一个与本场景相关的、不超过四阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒",
-              "color": null
+              "text": "来习得一个与本场景相关的、不超过四阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒"
             }
           ]
         },
@@ -3761,40 +3420,32 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以",
-              "color": null
+              "text": "你可以"
             },
             {
-              "text": "将本次游玩结束时的团队色彩标识全部转换为",
-              "color": null
+              "text": "将本次游玩结束时的团队色彩标识全部转换为"
             },
             {
               "text": "●",
               "color": "#595959"
             },
             {
-              "text": "来习得一个与本场景相关的、不超过五阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒",
-              "color": null
+              "text": "来习得一个与本场景相关的、不超过五阶的、带有诅咒关键词的法术，随后获得一层禁忌诅咒"
             }
           ]
         }
@@ -3834,28 +3485,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "诅咒蔓延传播时，如果目标已经拥有包含诅咒关键词的效果在生效，那么目标还会受到1D8点暗影伤害",
-              "color": null
+              "text": "诅咒蔓延传播时，如果目标已经拥有包含诅咒关键词的效果在生效，那么目标还会受到1D8点暗影伤害"
             }
           ]
         },
@@ -3866,28 +3511,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "诅咒蔓延对拥有诅咒生效的角色传播时改为造成2D8点暗影伤害",
-              "color": null
+              "text": "诅咒蔓延对拥有诅咒生效的角色传播时改为造成2D8点暗影伤害"
             }
           ]
         },
@@ -3898,28 +3537,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "诅咒蔓延对拥有诅咒生效的角色传播时改为造成3D8点暗影伤害",
-              "color": null
+              "text": "诅咒蔓延对拥有诅咒生效的角色传播时改为造成3D8点暗影伤害"
             }
           ]
         }
@@ -3984,28 +3617,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "侦测思想无需与目标进行对视，通过闭上眼睛的方式无法规避侦测思想的效果",
-              "color": null
+              "text": "侦测思想无需与目标进行对视，通过闭上眼睛的方式无法规避侦测思想的效果"
             }
           ]
         }
@@ -4059,28 +3686,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果通过恶毒回响施加的诅咒效果再次被移除，那么你再通过恶毒回响对目标施加的诅咒效果无需进行豁免检定，立即生效",
-              "color": null
+              "text": "如果通过恶毒回响施加的诅咒效果再次被移除，那么你再通过恶毒回响对目标施加的诅咒效果无需进行豁免检定，立即生效"
             }
           ]
         }
@@ -4132,32 +3753,25 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "诱导术的持续时间结束时你还可以再次与目标进行一次",
-              "color": null
+              "text": "诱导术的持续时间结束时你还可以再次与目标进行一次"
             },
             {
-              "text": "智力或感知对抗（由你决定），目标对抗失败后你可以令其对你指定的一名角色发起一次基础攻击",
-              "color": null
+              "text": "智力或感知对抗（由你决定），目标对抗失败后你可以令其对你指定的一名角色发起一次基础攻击"
             }
           ]
         }
@@ -4255,20 +3869,16 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达10级时：",
-              "color": null
+              "text": "职业等级到达10级时："
             },
             {
-              "text": "如果在战斗环节中施加疫病术，那么会使目标在进行体质豁免时具有劣势，持续2轮，这个效果在每个轮次结算阶段会传播给目标相邻位置的角色，但是不会重复生效",
-              "color": null
+              "text": "如果在战斗环节中施加疫病术，那么会使目标在进行体质豁免时具有劣势，持续2轮，这个效果在每个轮次结算阶段会传播给目标相邻位置的角色，但是不会重复生效"
             }
           ]
         }
@@ -4317,28 +3927,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你产生的诅咒效果会赋予目标一层感染层数，当目标拥有五层感染层数时会移除这些感染标记，随后令目标失去X点生命值（X为目标的30%最大生命值）",
-              "color": null
+              "text": "你产生的诅咒效果会赋予目标一层感染层数，当目标拥有五层感染层数时会移除这些感染标记，随后令目标失去X点生命值（X为目标的30%最大生命值）"
             }
           ]
         }
@@ -4385,40 +3989,32 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "当你通过诅咒效果使一名角色的当前生命值降低至0或以下时，如果对方在本场战斗环节中对你造成过伤害，那么你可以",
-              "color": null
+              "text": "当你通过诅咒效果使一名角色的当前生命值降低至0或以下时，如果对方在本场战斗环节中对你造成过伤害，那么你可以"
             },
             {
-              "text": "将本次游玩结束时的团队色彩标识全部转换为",
-              "color": null
+              "text": "将本次游玩结束时的团队色彩标识全部转换为"
             },
             {
               "text": "●",
               "color": "#FF0000"
             },
             {
-              "text": "来处决目标",
-              "color": null
+              "text": "来处决目标"
             }
           ]
         }
@@ -4470,28 +4066,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：骚灵",
-              "color": null
+              "text": "级时：骚灵"
             },
             {
-              "text": "现象的施展距离变更为48米",
-              "color": null
+              "text": "现象的施展距离变更为48米"
             }
           ]
         },
@@ -4502,32 +4092,25 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：骚灵",
-              "color": null
+              "text": "级时：骚灵"
             },
             {
-              "text": "现象能够控制更多的物件，每控制一件便额外",
-              "color": null
+              "text": "现象能够控制更多的物件，每控制一件便额外"
             },
             {
-              "text": "花费1点疲劳值",
-              "color": null
+              "text": "花费1点疲劳值"
             }
           ]
         }
@@ -4572,16 +4155,13 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：惑人低语的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "级时：惑人低语的关键词变更为短休/长休（2）"
             }
           ]
         },
@@ -4592,32 +4172,25 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到",
-              "color": null
+              "text": "你的魔契师职业等级到"
             },
             {
-              "text": "达",
-              "color": null
+              "text": "达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "豁免结果低于5的角色还会被施加法术",
-              "color": null
+              "text": "豁免结果低于5的角色还会被施加法术"
             },
             {
-              "text": ".",
-              "color": null
+              "text": "."
             },
             {
-              "text": "命令术",
-              "color": null
+              "text": "命令术"
             }
           ]
         }
@@ -4665,24 +4238,19 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：魔爆术改为对所有角色各造成2D4点奥术伤害",
-              "color": null
+              "text": "级时：魔爆术改为对所有角色各造成2D4点奥术伤害"
             }
           ]
         },
@@ -4693,24 +4261,19 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：魔爆术改为对所有角色各造成3D4点奥术伤害",
-              "color": null
+              "text": "级时：魔爆术改为对所有角色各造成3D4点奥术伤害"
             }
           ]
         }
@@ -4754,32 +4317,25 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "轰鸣术",
-              "color": null
+              "text": "轰鸣术"
             },
             {
-              "text": "会使豁免失败的角色进入击倒状态",
-              "color": null
+              "text": "会使豁免失败的角色进入击倒状态"
             }
           ]
         },
@@ -4790,32 +4346,25 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "轰鸣术",
-              "color": null
+              "text": "轰鸣术"
             },
             {
-              "text": "会对豁免失败的角色造成1D8点音爆伤害",
-              "color": null
+              "text": "会对豁免失败的角色造成1D8点音爆伤害"
             }
           ]
         }
@@ -4862,24 +4411,19 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达12级时：受到定身术影响的角色视为",
-              "color": null
+              "text": "职业等级到达12级时：受到定身术影响的角色视为"
             },
             {
-              "text": "进入失能",
-              "color": null
+              "text": "进入失能"
             },
             {
-              "text": "状态",
-              "color": null
+              "text": "状态"
             }
           ]
         }
@@ -4918,32 +4462,25 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "能量导管的",
-              "color": null
+              "text": "能量导管的"
             },
             {
-              "text": "伤害骰点数至少为4（将点数1/2/3视作4）",
-              "color": null
+              "text": "伤害骰点数至少为4（将点数1/2/3视作4）"
             }
           ]
         },
@@ -4954,28 +4491,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "能量导管可以在一次施法攻击的伤害值后额外投掷全部骰子",
-              "color": null
+              "text": "能量导管可以在一次施法攻击的伤害值后额外投掷全部骰子"
             }
           ]
         },
@@ -4986,28 +4517,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "能量导管掷出的D8骰如果点数为8，那么视作触发暴击",
-              "color": null
+              "text": "能量导管掷出的D8骰如果点数为8，那么视作触发暴击"
             }
           ]
         }
@@ -5056,24 +4581,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：力场波改为造成1D10点力场伤害",
-              "color": null
+              "text": "级时：力场波改为造成1D10点力场伤害"
             }
           ]
         },
@@ -5084,36 +4604,28 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：力场波命中目标后会使其进行一次难度为10的护甲检定，",
-              "color": null
+              "text": "级时：力场波命中目标后会使其进行一次难度为10的护甲检定，"
             },
             {
-              "text": "如果目标着装有重甲",
-              "color": null
+              "text": "如果目标着装有重甲"
             },
             {
-              "text": "、",
-              "color": null
+              "text": "、"
             },
             {
-              "text": "盾牌或天生护甲，检定失败将会失去1点防御等级，否则本次伤害具有优势",
-              "color": null
+              "text": "盾牌或天生护甲，检定失败将会失去1点防御等级，否则本次伤害具有优势"
             }
           ]
         },
@@ -5124,40 +4636,31 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：力场波对着装有重甲、",
-              "color": null
+              "text": "级时：力场波对着装有重甲、"
             },
             {
-              "text": "盾牌或天生护甲",
-              "color": null
+              "text": "盾牌或天生护甲"
             },
             {
-              "text": "的角色改为造成3D10点力场伤害，",
-              "color": null
+              "text": "的角色改为造成3D10点力场伤害，"
             },
             {
-              "text": "并",
-              "color": null
+              "text": "并"
             },
             {
-              "text": "且护甲检定的难度提升至12",
-              "color": null
+              "text": "且护甲检定的难度提升至12"
             }
           ]
         }
@@ -5203,8 +4706,7 @@
           "label": "你的法师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的法师职业等级到达10级时：钢铁肺腑还会使你在持续时间内获得4点钝击和力场伤害抗性",
-              "color": null
+              "text": "你的法师职业等级到达10级时：钢铁肺腑还会使你在持续时间内获得4点钝击和力场伤害抗性"
             }
           ]
         }
@@ -5258,28 +4760,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "次级符文术的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "次级符文术的关键词变更为短休/长休（2）"
             }
           ]
         },
@@ -5290,28 +4786,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "次级符文术可以同时对目标附加全部的符文印记",
-              "color": null
+              "text": "次级符文术可以同时对目标附加全部的符文印记"
             }
           ]
         }
@@ -5472,24 +4962,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达5级时：每个轮次结束阶段时黑暗环绕还会使目标受到",
-              "color": null
+              "text": "职业等级到达5级时：每个轮次结束阶段时黑暗环绕还会使目标受到"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "点暗影伤害",
-              "color": null
+              "text": "点暗影伤害"
             }
           ]
         },
@@ -5500,28 +4985,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达10级时：如果持续结束时目标未摆脱黑暗环绕，",
-              "color": null
+              "text": "职业等级到达10级时：如果持续结束时目标未摆脱黑暗环绕，"
             },
             {
-              "text": "那么",
-              "color": null
+              "text": "那么"
             },
             {
-              "text": "将进",
-              "color": null
+              "text": "将进"
             },
             {
-              "text": "入恐惧状态",
-              "color": null
+              "text": "入恐惧状态"
             }
           ]
         }
@@ -5572,28 +5051,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "咒能反弹改为能够反击五阶天赋树及以下的法术或戏法",
-              "color": null
+              "text": "咒能反弹改为能够反击五阶天赋树及以下的法术或戏法"
             }
           ]
         }
@@ -5642,32 +5115,25 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "疯狂冠冕",
-              "color": null
+              "text": "疯狂冠冕"
             },
             {
-              "text": "改为由你选择目标挣脱时的豁免类型",
-              "color": null
+              "text": "改为由你选择目标挣脱时的豁免类型"
             }
           ]
         },
@@ -5678,40 +5144,31 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：如果目标成功挣脱疯狂冠冕，",
-              "color": null
+              "text": "级时：如果目标成功挣脱疯狂冠冕，"
             },
             {
-              "text": "将会立即承",
-              "color": null
+              "text": "将会立即承"
             },
             {
-              "text": "受",
-              "color": null
+              "text": "受"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             },
             {
-              "text": "D6点心灵伤害",
-              "color": null
+              "text": "D6点心灵伤害"
             }
           ]
         }
@@ -5798,36 +5255,28 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "心灵防护结界改为抵挡下一次受到的至多15+",
-              "color": null
+              "text": "心灵防护结界改为抵挡下一次受到的至多15+"
             },
             {
-              "text": "你的角色等级的",
-              "color": null
+              "text": "你的角色等级的"
             },
             {
-              "text": "心灵伤害",
-              "color": null
+              "text": "心灵伤害"
             }
           ]
         },
@@ -5838,52 +5287,40 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "心灵防护结界成功抵挡一个",
-              "color": null
+              "text": "心灵防护结界成功抵挡一个"
             },
             {
-              "text": "魅惑或忏悔效",
-              "color": null
+              "text": "魅惑或忏悔效"
             },
             {
-              "text": "果",
-              "color": null
+              "text": "果"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "还会为你生成一个能够抵挡",
-              "color": null
+              "text": "还会为你生成一个能够抵挡"
             },
             {
-              "text": "10点心灵伤害的护盾",
-              "color": null
+              "text": "10点心灵伤害的护盾"
             }
           ]
         }
@@ -5979,40 +5416,31 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：如果",
-              "color": null
+              "text": "级时：如果"
             },
             {
-              "text": "对方",
-              "color": null
+              "text": "对方"
             },
             {
-              "text": "豁免成功，",
-              "color": null
+              "text": "豁免成功，"
             },
             {
-              "text": "那么仍然会在",
-              "color": null
+              "text": "那么仍然会在"
             },
             {
-              "text": "下一个自身回合失去一个附赠动作",
-              "color": null
+              "text": "下一个自身回合失去一个附赠动作"
             }
           ]
         }
@@ -6065,40 +5493,31 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：如果",
-              "color": null
+              "text": "级时：如果"
             },
             {
-              "text": "对方",
-              "color": null
+              "text": "对方"
             },
             {
-              "text": "豁免成功，",
-              "color": null
+              "text": "豁免成功，"
             },
             {
-              "text": "那么仍然会在",
-              "color": null
+              "text": "那么仍然会在"
             },
             {
-              "text": "下一个自身回合失去一个附赠动作",
-              "color": null
+              "text": "下一个自身回合失去一个附赠动作"
             }
           ]
         }
@@ -6199,28 +5618,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "咒能虹吸改为造成18点奥术伤害",
-              "color": null
+              "text": "咒能虹吸改为造成18点奥术伤害"
             }
           ]
         },
@@ -6231,28 +5644,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "咒能虹吸改为造成36点奥术伤害",
-              "color": null
+              "text": "咒能虹吸改为造成36点奥术伤害"
             }
           ]
         }
@@ -6312,28 +5719,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "降咒可以额外选择一项效果，并且关键词变更为短休/长休（2）",
-              "color": null
+              "text": "降咒可以额外选择一项效果，并且关键词变更为短休/长休（2）"
             }
           ]
         },
@@ -6344,32 +5745,25 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你拥有",
-              "color": null
+              "text": "如果你拥有"
             },
             {
-              "text": "一件对方的贴身物品或躯体部分来进行降咒，那么豁免难度变更为18",
-              "color": null
+              "text": "一件对方的贴身物品或躯体部分来进行降咒，那么豁免难度变更为18"
             }
           ]
         },
@@ -6380,28 +5774,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "降咒的施展距离提升至12KM",
-              "color": null
+              "text": "降咒的施展距离提升至12KM"
             }
           ]
         }
@@ -6455,28 +5843,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果目标豁免成功，那么仍会承受来自魔法排斥力的冲击，改为对目标造成3D6点力场伤害",
-              "color": null
+              "text": "如果目标豁免成功，那么仍会承受来自魔法排斥力的冲击，改为对目标造成3D6点力场伤害"
             }
           ]
         }
@@ -6576,20 +5958,16 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "目标豁免失败后的首个自身回合不能执行位移效果",
-              "color": null
+              "text": "目标豁免失败后的首个自身回合不能执行位移效果"
             }
           ]
         }
@@ -6779,16 +6157,13 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达5级时：迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状",
-              "color": null
+              "text": "职业等级到达5级时：迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状"
             }
           ]
         },
@@ -6799,28 +6174,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达10级时：你可以",
-              "color": null
+              "text": "职业等级到达10级时：你可以"
             },
             {
-              "text": "在生成迷雾时",
-              "color": null
+              "text": "在生成迷雾时"
             },
             {
-              "text": "指定迷雾内或外界的一方",
-              "color": null
+              "text": "指定迷雾内或外界的一方"
             },
             {
-              "text": "忽视迷雾术带来的负面影响",
-              "color": null
+              "text": "忽视迷雾术带来的负面影响"
             }
           ]
         }
@@ -6866,32 +6235,25 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：霜噬对处于",
-              "color": null
+              "text": "级时：霜噬对处于"
             },
             {
-              "text": "冻结",
-              "color": null
+              "text": "冻结"
             },
             {
-              "text": "状态的角色施展时不消耗疲劳值",
-              "color": null
+              "text": "状态的角色施展时不消耗疲劳值"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "并且按照伤害最大值计算",
-              "color": null
+              "text": "并且按照伤害最大值计算"
             }
           ]
         },
@@ -6902,20 +6264,16 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果目标在本轮次承受过冰霜伤害，那么霜噬的攻击命中检定具有优势",
-              "color": null
+              "text": "如果目标在本轮次承受过冰霜伤害，那么霜噬的攻击命中检定具有优势"
             }
           ]
         },
@@ -6926,20 +6284,16 @@
           "label": "你的魔契师职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：霜噬",
-              "color": null
+              "text": "级时：霜噬"
             },
             {
-              "text": "对处于冻结状态的角色施展时视作处决技",
-              "color": null
+              "text": "对处于冻结状态的角色施展时视作处决技"
             }
           ]
         }
@@ -6987,28 +6341,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "移除赋予黑暗视觉的唯一性关键词",
-              "color": null
+              "text": "移除赋予黑暗视觉的唯一性关键词"
             }
           ]
         }
@@ -7139,24 +6487,19 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达",
-              "color": null
+              "text": "你的魔契师职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：虚假生命改为获得1D8+8+",
-              "color": null
+              "text": "级时：虚假生命改为获得1D8+8+"
             },
             {
-              "text": "主职业等级的",
-              "color": null
+              "text": "主职业等级的"
             },
             {
-              "text": "临时生命值，这些临时生命值在受到一次伤害后会全部移除",
-              "color": null
+              "text": "临时生命值，这些临时生命值在受到一次伤害后会全部移除"
             }
           ]
         },
@@ -7167,16 +6510,13 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达8级时：虚假生命改为获得1D12+12+",
-              "color": null
+              "text": "你的魔契师职业等级到达8级时：虚假生命改为获得1D12+12+"
             },
             {
-              "text": "主职业等级的",
-              "color": null
+              "text": "主职业等级的"
             },
             {
-              "text": "临时生命值，这些临时生命值在受到一次伤害后会全部移除",
-              "color": null
+              "text": "临时生命值，这些临时生命值在受到一次伤害后会全部移除"
             }
           ]
         }
@@ -7224,8 +6564,7 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达6级时：虚假防护需要额外受到一次攻击命中才会失效",
-              "color": null
+              "text": "你的魔契师职业等级到达6级时：虚假防护需要额外受到一次攻击命中才会失效"
             }
           ]
         },
@@ -7236,8 +6575,7 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的魔契师职业等级到达12级时：虚假防护改为持续时间内使你的防御等级视为22",
-              "color": null
+              "text": "你的魔契师职业等级到达12级时：虚假防护改为持续时间内使你的防御等级视为22"
             }
           ]
         }
@@ -7291,28 +6629,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "通过蓝焰术的效果产生伤害后对方需要进行一次难度为15的智力豁免，如果豁免失败将进入灼烧状态",
-              "color": null
+              "text": "通过蓝焰术的效果产生伤害后对方需要进行一次难度为15的智力豁免，如果豁免失败将进入灼烧状态"
             }
           ]
         }
@@ -7400,28 +6732,22 @@
           "label": "你的魔契师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "掩饰术的施展距离变为12米",
-              "color": null
+              "text": "掩饰术的施展距离变为12米"
             }
           ]
         },
@@ -7432,28 +6758,22 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "掩饰术能够选择一个不超过五立方米的物件",
-              "color": null
+              "text": "掩饰术能够选择一个不超过五立方米的物件"
             }
           ]
         },
@@ -7464,28 +6784,22 @@
           "label": "你的魔契师职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "掩饰术在被触碰后不再会显形",
-              "color": null
+              "text": "掩饰术在被触碰后不再会显形"
             }
           ]
         }
@@ -7549,28 +6863,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "蛇影缠身的施展距离变为12米",
-              "color": null
+              "text": "蛇影缠身的施展距离变为12米"
             }
           ]
         },
@@ -7581,28 +6889,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "蛇影缠身能够额外选择一名角色为目标",
-              "color": null
+              "text": "蛇影缠身能够额外选择一名角色为目标"
             }
           ]
         }
@@ -7654,16 +6956,13 @@
           "label": "你的魔契师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达6级时：秘法锁的破坏难度提升至22",
-              "color": null
+              "text": "职业等级到达6级时：秘法锁的破坏难度提升至22"
             }
           ]
         },
@@ -7674,16 +6973,13 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达12级时：即便对方成功通过检定，如果目标角色或挑战等级低于你，那便仍需要花费两个小时时间才能完全解除秘法锁的效果，这个效果会在对方每拥有一名通过检定的角色从旁辅助破解时间便缩减一小时",
-              "color": null
+              "text": "职业等级到达12级时：即便对方成功通过检定，如果目标角色或挑战等级低于你，那便仍需要花费两个小时时间才能完全解除秘法锁的效果，这个效果会在对方每拥有一名通过检定的角色从旁辅助破解时间便缩减一小时"
             }
           ]
         }
@@ -7804,20 +7100,16 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达12级时：",
-              "color": null
+              "text": "职业等级到达12级时："
             },
             {
-              "text": "法术反制改为仅能够中断不超过四阶天赋树的法术或戏法",
-              "color": null
+              "text": "法术反制改为仅能够中断不超过四阶天赋树的法术或戏法"
             }
           ]
         },
@@ -7828,28 +7120,22 @@
           "label": "你的魔契师职业等级到达18级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "法术反制改为仅能够中断不超过五阶天赋树的法术或戏法",
-              "color": null
+              "text": "法术反制改为仅能够中断不超过五阶天赋树的法术或戏法"
             }
           ]
         }
@@ -7906,28 +7192,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "镜子替身的施展距离提升至24米",
-              "color": null
+              "text": "镜子替身的施展距离提升至24米"
             }
           ]
         },
@@ -7938,28 +7218,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "镜子替身的施展距离提升至48米",
-              "color": null
+              "text": "镜子替身的施展距离提升至48米"
             }
           ]
         }
@@ -8050,28 +7324,22 @@
           "label": "你的魔契师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "移除操纵死尸的唯一性关键词，你能够同时操纵两具不同的尸体",
-              "color": null
+              "text": "移除操纵死尸的唯一性关键词，你能够同时操纵两具不同的尸体"
             }
           ]
         },
@@ -8082,28 +7350,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "操纵死尸有可能允许尸体发挥生前的部分能力",
-              "color": null
+              "text": "操纵死尸有可能允许尸体发挥生前的部分能力"
             }
           ]
         }
@@ -8187,28 +7449,22 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果",
-              "color": null
+              "text": "你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果"
             }
           ]
         }
@@ -8284,28 +7540,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "谜巢的持续时间结束时，范围内的敌方角色需要分别进行一次难度为15的智力豁免，豁免失败的角色将会进入困惑状态",
-              "color": null
+              "text": "谜巢的持续时间结束时，范围内的敌方角色需要分别进行一次难度为15的智力豁免，豁免失败的角色将会进入困惑状态"
             }
           ]
         }
@@ -8408,28 +7658,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "星涌术改为造成3D8点星界伤害",
-              "color": null
+              "text": "星涌术改为造成3D8点星界伤害"
             }
           ]
         },
@@ -8440,28 +7684,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "星涌术改为造成4D8点星界伤害",
-              "color": null
+              "text": "星涌术改为造成4D8点星界伤害"
             }
           ]
         },
@@ -8472,32 +7710,25 @@
           "label": "你的魔契师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "星涌术能够额外引导1轮，并且在第三轮中由",
-              "color": null
+              "text": "星涌术能够额外引导1轮，并且在第三轮中由"
             },
             {
-              "text": "5*5扩散至8*8，改为造成6D8点星界伤害并且结算的伤害骰按最大值计算",
-              "color": null
+              "text": "5*5扩散至8*8，改为造成6D8点星界伤害并且结算的伤害骰按最大值计算"
             }
           ]
         }
@@ -8634,28 +7865,22 @@
           "label": "你的魔契师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "无效预言能够对重掷骰子的效果生效",
-              "color": null
+              "text": "无效预言能够对重掷骰子的效果生效"
             }
           ]
         }
@@ -8708,28 +7933,22 @@
           "label": "你的魔契师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "幻术法袍能够同时触发两项效果",
-              "color": null
+              "text": "幻术法袍能够同时触发两项效果"
             }
           ]
         },
@@ -8740,28 +7959,22 @@
           "label": "你的魔契师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "魔契师",
-              "color": null
+              "text": "魔契师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "幻术法袍能够同时触发全部效果",
-              "color": null
+              "text": "幻术法袍能够同时触发全部效果"
             }
           ]
         }

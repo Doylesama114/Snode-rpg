@@ -723,6 +723,298 @@ function spDot(skill) {
 
 
 
+var _LIGHT_DOT_COLORS = {"#FFFFFF":1,"#FFF32F":1,"#00FA99":1,"#FFB7E3":1,"#B3F9FF":1};
+
+
+function escapeHtmlText(t) {
+
+
+  if (!t) return "";
+
+
+  return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+
+}
+
+
+function runsHaveColoredDots(runs) {
+
+
+  if (!runs || !runs.length) return false;
+
+
+  for (var i = 0; i < runs.length; i++) {
+
+
+    if (runs[i].color && runs[i].text && runs[i].text.indexOf("\u25cf") >= 0) return true;
+
+
+  }
+
+
+  return false;
+
+
+}
+
+
+function runsToHtml(runs) {
+
+
+  if (!runs || !runs.length) return "";
+
+
+  var html = "", ri, r, text, hex, shadow, ci, ch;
+
+
+  for (ri = 0; ri < runs.length; ri++) {
+
+
+    r = runs[ri]; text = r.text || "";
+
+
+    if (!text) continue;
+
+
+    hex = r.color || "";
+
+
+    if (hex && text.indexOf("\u25cf") >= 0) {
+
+
+      shadow = _LIGHT_DOT_COLORS[hex] ? "text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;" : "";
+
+
+      for (ci = 0; ci < text.length; ci++) {
+
+
+        ch = text.charAt(ci);
+
+
+        if (ch === "\u25cf") html += "<span style='font-size:1.25em;color:" + hex + ";" + shadow + "'>\u25cf</span>";
+
+
+        else html += escapeHtmlText(ch);
+
+
+      }
+
+
+    } else {
+
+
+      html += escapeHtmlText(text);
+
+
+    }
+
+
+  }
+
+
+  return html;
+
+
+}
+
+
+function markDotsHtml(cost) {
+
+
+  var dots = parseSkillCost({cost: cost || []}), html = "", di, hex, shadow;
+
+
+  for (di = 0; di < dots.length; di++) {
+
+
+    hex = dots[di].colorHex || "";
+
+
+    if (!hex) continue;
+
+
+    shadow = _LIGHT_DOT_COLORS[hex] ? "text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;" : "";
+
+
+    html += "<span style='font-size:1.25em;color:" + hex + ";" + shadow + "'>\u25cf</span>";
+
+
+  }
+
+
+  return html;
+
+
+}
+
+
+function sliceRunsAfterPrefix(runs, prefixLen) {
+
+
+  if (!runs || prefixLen <= 0) return runs || [];
+
+
+  var out = [], pos = 0, ri, r, text, start, end, cut, rest;
+
+
+  for (ri = 0; ri < runs.length; ri++) {
+
+
+    r = runs[ri]; text = r.text || ""; start = pos; end = pos + text.length; pos = end;
+
+
+    if (end <= prefixLen) continue;
+
+
+    if (start >= prefixLen) { out.push(r); continue; }
+
+
+    cut = prefixLen - start; rest = text.substring(cut);
+
+
+    if (rest) out.push({text: rest, color: r.color});
+
+
+  }
+
+
+  return out;
+
+
+}
+
+
+function formatSkillDetailHtml(skillData) {
+
+
+  if (!skillData) return "";
+
+
+  var fields = skillData.fields || {}, fieldRuns = skillData.field_runs || {}, html = "", fk, fi;
+
+
+  var fieldOrder = ["\u65bd\u5c55\u65f6\u95f4","\u65bd\u5c55\u8ddd\u79bb","\u6301\u7eed\u65f6\u95f4","\u75b2\u52b3\u6d88\u8017","\u524d\u7f6e\u6761\u4ef6","\u989d\u5916\u6761\u4ef6","\u65bd\u5c55\u6761\u4ef6","\u65bd\u5c55\u9650\u5236","\u5173\u952e\u8bcd"];
+
+
+  for (fi = 0; fi < fieldOrder.length; fi++) {
+
+
+    fk = fieldOrder[fi];
+
+
+    if (!fields[fk]) continue;
+
+
+    if (fieldRuns[fk] && runsHaveColoredDots(fieldRuns[fk])) html += "<p><span style='color:#b0a090;font-weight:bold'>" + fk + "\uff1a</span>" + runsToHtml(fieldRuns[fk]) + "</p>";
+
+
+    else html += "<p><span style='color:#b0a090;font-weight:bold'>" + fk + "\uff1a</span>" + escapeHtmlText(fields[fk]) + "</p>";
+
+
+  }
+
+
+  if (skillData.cost && skillData.cost.length) {
+
+
+    html += "<p><span style='color:#b0a090;font-weight:bold'>\u6807\u8bc6\uff1a</span>" + markDotsHtml(skillData.cost) + "</p>";
+
+
+  }
+
+
+  var descText = fields["\u63cf\u8ff0"] || "", descRuns = fieldRuns["\u63cf\u8ff0"], hasDescField = false;
+
+
+  if (descText) {
+
+
+    hasDescField = true;
+
+
+    if (descRuns && runsHaveColoredDots(descRuns)) html += "<p><span style='color:#b0a090;font-weight:bold'>\u63cf\u8ff0\uff1a</span>" + runsToHtml(descRuns) + "</p>";
+
+
+    else html += "<p><span style='color:#b0a090;font-weight:bold'>\u63cf\u8ff0\uff1a</span>" + escapeHtmlText(descText) + "</p>";
+
+
+  }
+
+
+  var entryRuns = {}, descEntries = skillData.description_entries || [], di, para, runs, body;
+
+
+  for (di = 0; di < descEntries.length; di++) entryRuns[descEntries[di].text] = descEntries[di].runs;
+
+
+  var descParas = skillData.description || [];
+
+
+  for (di = 0; di < descParas.length; di++) {
+
+
+    para = descParas[di];
+
+
+    if (!para || (hasDescField && para === descText)) continue;
+
+
+    runs = entryRuns[para];
+
+
+    body = (runs && runsHaveColoredDots(runs)) ? runsToHtml(runs) : escapeHtmlText(para);
+
+
+    html += "<p>" + body + "</p>";
+
+
+  }
+
+
+  var upgrades = skillData.level_upgrades || [], ui, lu, label, lineRuns;
+
+
+  for (ui = 0; ui < upgrades.length; ui++) {
+
+
+    lu = upgrades[ui];
+
+
+    label = lu.label || ("\u4f60\u7684" + (lu.class || "") + "\u7b49\u7ea7\u5230\u8fbe" + lu.level + "\u7ea7\u65f6\uff1a");
+
+
+    lineRuns = lu.line_runs || [];
+
+
+    if (lineRuns.length && runsHaveColoredDots(lineRuns)) {
+
+
+      html += "<p><span style='color:#b0a090;font-weight:bold'>" + escapeHtmlText(label) + "</span>" + runsToHtml(sliceRunsAfterPrefix(lineRuns, label.length)) + "</p>";
+
+
+    } else if (lu.text) {
+
+
+      html += "<p><span style='color:#b0a090;font-weight:bold'>" + escapeHtmlText(label) + "</span>" + escapeHtmlText(lu.text) + "</p>";
+
+
+    }
+
+
+  }
+
+
+  if (!html && skillData.flavor) html = "<p>" + escapeHtmlText(skillData.flavor) + "</p>";
+
+
+  return html || "<p style='color:#888'>\u6682\u65e0\u63cf\u8ff0</p>";
+
+
+}
+
+
+
 
 function deductSkillPoint(colorName) {
 
@@ -5100,7 +5392,7 @@ function confirmUnlearn(clsName, skillName, clsIdx) {
   if (!skillData) return;
 
 
-  var desc = (skillData.description || [""]).join("<br>");
+  var desc = formatSkillDetailHtml(skillData);
 
 
   showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, function() { unlearnSkill(clsName, skillName, clsIdx); }); }
@@ -5247,7 +5539,7 @@ function confirmUnlearnTalent(clsName, skillName, clsIdx) {
   if (!skillData) return;
 
 
-  var desc = (skillData.description || [""]).join("<br>");
+  var desc = formatSkillDetailHtml(skillData);
 
 
   showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, function() {
@@ -5439,7 +5731,7 @@ function showSkillDetail(clsName, skillName) {
   if (!skillData) return;
 
 
-  var desc = (skillData.description&&skillData.description.length?skillData.description.join("<br>"):(skillData.flavor||""));showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, null, clsName); }
+  var desc = formatSkillDetailHtml(skillData);showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, null, clsName); }
 
 
 
@@ -5466,7 +5758,7 @@ function showSkillDetailFromAll(skillName) {
         var sd = skills[si];
 
 
-        var desc = (sd.description&&sd.description.length?sd.description:(sd.flavor?[sd.flavor]:[""])).join("<br>");
+        var desc = formatSkillDetailHtml(sd);
 
 
         showSkillPreview(skillName, sd.style || cls, sd.tier || "", desc, null);

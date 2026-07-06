@@ -28,28 +28,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "惩击改为造成2D6点伤害",
-              "color": null
+              "text": "惩击改为造成2D6点伤害"
             }
           ]
         },
@@ -60,28 +54,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "惩击改为造成3D6点伤害",
-              "color": null
+              "text": "惩击改为造成3D6点伤害"
             }
           ]
         }
@@ -115,28 +103,22 @@
           "label": "你的牧师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "治疗术改为回复1D6+6点生命值",
-              "color": null
+              "text": "治疗术改为回复1D6+6点生命值"
             }
           ]
         },
@@ -147,28 +129,22 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "治疗术改为回复1D8+8点生命值",
-              "color": null
+              "text": "治疗术改为回复1D8+8点生命值"
             }
           ]
         }
@@ -202,20 +178,16 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达5级时：",
-              "color": null
+              "text": "职业等级到达5级时："
             },
             {
-              "text": "恢复术的施展距离提升至4米",
-              "color": null
+              "text": "恢复术的施展距离提升至4米"
             }
           ]
         },
@@ -226,28 +198,22 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "恢复术改为回复2D8点生命值",
-              "color": null
+              "text": "恢复术改为回复2D8点生命值"
             }
           ]
         }
@@ -284,32 +250,25 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "责难的豁免难度变更为",
-              "color": null
+              "text": "责难的豁免难度变更为"
             },
             {
-              "text": "意志豁免（15）",
-              "color": null
+              "text": "意志豁免（15）"
             }
           ]
         },
@@ -320,64 +279,49 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "目标",
-              "color": null
+              "text": "目标"
             },
             {
-              "text": "因为",
-              "color": null
+              "text": "因为"
             },
             {
-              "text": "受到伤害外的方式强制脱离责难状态后需要再进行一次",
-              "color": null
+              "text": "受到伤害外的方式强制脱离责难状态后需要再进行一次"
             },
             {
-              "text": "对应",
-              "color": null
+              "text": "对应"
             },
             {
-              "text": "豁免，",
-              "color": null
+              "text": "豁免，"
             },
             {
-              "text": "本次",
-              "color": null
+              "text": "本次"
             },
             {
-              "text": "豁免失败将在",
-              "color": null
+              "text": "豁免失败将在"
             },
             {
-              "text": "使其在",
-              "color": null
+              "text": "使其在"
             },
             {
-              "text": "下一个自身回合中失去一个",
-              "color": null
+              "text": "下一个自身回合中失去一个"
             },
             {
-              "text": "附赠动作",
-              "color": null
+              "text": "附赠动作"
             }
           ]
         }
@@ -414,28 +358,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神灵之火造成伤害后目标需要进行一次难度为12的意志豁免，对方豁免失败将进入灼烧状态",
-              "color": null
+              "text": "神灵之火造成伤害后目标需要进行一次难度为12的意志豁免，对方豁免失败将进入灼烧状态"
             }
           ]
         },
@@ -446,28 +384,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神灵之火改为造成3D6点伤害",
-              "color": null
+              "text": "神灵之火改为造成3D6点伤害"
             }
           ]
         }
@@ -517,28 +449,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神力战槌改为持续时间内你施加的下三次近战攻击将获得增益效果",
-              "color": null
+              "text": "神力战槌改为持续时间内你施加的下三次近战攻击将获得增益效果"
             }
           ]
         },
@@ -549,28 +475,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "X改为计算你的两次宗教调整值",
-              "color": null
+              "text": "X改为计算你的两次宗教调整值"
             }
           ]
         }
@@ -619,28 +539,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果攻击来源成功通过这次感知豁免，目标仅受到结算后一半的伤害值",
-              "color": null
+              "text": "如果攻击来源成功通过这次感知豁免，目标仅受到结算后一半的伤害值"
             }
           ]
         }
@@ -687,24 +601,19 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧",
-              "color": null
+              "text": "牧"
             },
             {
-              "text": "师职业等级到达12级时：受到定身术影响的角色视为",
-              "color": null
+              "text": "师职业等级到达12级时：受到定身术影响的角色视为"
             },
             {
-              "text": "进入失能",
-              "color": null
+              "text": "进入失能"
             },
             {
-              "text": "状态",
-              "color": null
+              "text": "状态"
             }
           ]
         }
@@ -754,36 +663,28 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言",
-              "color": null
+              "text": "神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "盾改为提供一个能够抵挡1D8点伤害的护盾",
-              "color": null
+              "text": "盾改为提供一个能够抵挡1D8点伤害的护盾"
             }
           ]
         },
@@ -794,44 +695,34 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言",
-              "color": null
+              "text": "神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "盾改为提供一个能够抵挡1D",
-              "color": null
+              "text": "盾改为提供一个能够抵挡1D"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "点伤害的护盾",
-              "color": null
+              "text": "点伤害的护盾"
             }
           ]
         }
@@ -880,20 +771,16 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达8级时：盾牌格挡的关键词变为短休/长休（2）",
-              "color": null
+              "text": "职业等级到达8级时：盾牌格挡的关键词变为短休/长休（2）"
             },
             {
-              "text": " ",
-              "color": null
+              "text": " "
             }
           ]
         }
@@ -942,24 +829,19 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：力场波改为造成1D10点力场伤害",
-              "color": null
+              "text": "级时：力场波改为造成1D10点力场伤害"
             }
           ]
         },
@@ -970,36 +852,28 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：力场波命中目标后会使其进行一次难度为10的护甲检定，",
-              "color": null
+              "text": "级时：力场波命中目标后会使其进行一次难度为10的护甲检定，"
             },
             {
-              "text": "如果目标着装有重甲",
-              "color": null
+              "text": "如果目标着装有重甲"
             },
             {
-              "text": "、",
-              "color": null
+              "text": "、"
             },
             {
-              "text": "盾牌或天生护甲，检定失败将会失去1点防御等级，否则本次伤害具有优势",
-              "color": null
+              "text": "盾牌或天生护甲，检定失败将会失去1点防御等级，否则本次伤害具有优势"
             }
           ]
         },
@@ -1010,40 +884,31 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：力场波对着装有重甲、",
-              "color": null
+              "text": "级时：力场波对着装有重甲、"
             },
             {
-              "text": "盾牌或天生护甲",
-              "color": null
+              "text": "盾牌或天生护甲"
             },
             {
-              "text": "的角色改为造成3D10点力场伤害，",
-              "color": null
+              "text": "的角色改为造成3D10点力场伤害，"
             },
             {
-              "text": "并",
-              "color": null
+              "text": "并"
             },
             {
-              "text": "且护甲检定的难度提升至12",
-              "color": null
+              "text": "且护甲检定的难度提升至12"
             }
           ]
         }
@@ -1084,44 +949,34 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达10级时：跳过你的下一个幕间阶段，改为你在",
-              "color": null
+              "text": "职业等级到达10级时：跳过你的下一个幕间阶段，改为你在"
             },
             {
-              "text": "教会或隐居场所",
-              "color": null
+              "text": "教会或隐居场所"
             },
             {
-              "text": "中进行长达",
-              "color": null
+              "text": "中进行长达"
             },
             {
-              "text": "两",
-              "color": null
+              "text": "两"
             },
             {
-              "text": "年的",
-              "color": null
+              "text": "年的"
             },
             {
-              "text": "苦修",
-              "color": null
+              "text": "苦修"
             },
             {
-              "text": "，随后获得",
-              "color": null
+              "text": "，随后获得"
             },
             {
-              "text": "1000点经验值",
-              "color": null
+              "text": "1000点经验值"
             }
           ]
         }
@@ -1170,28 +1025,22 @@
           "label": "你的牧师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "约束之箭改为造成2D10点穿刺伤害",
-              "color": null
+              "text": "约束之箭改为造成2D10点穿刺伤害"
             }
           ]
         },
@@ -1202,28 +1051,22 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "约束之箭还会移除豁免失败的角色当前拥有的一个增益效果",
-              "color": null
+              "text": "约束之箭还会移除豁免失败的角色当前拥有的一个增益效果"
             }
           ]
         }
@@ -1274,16 +1117,13 @@
           "label": "你的牧师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达6级时：施展距离的X改为你的基础移动速度+2米",
-              "color": null
+              "text": "职业等级到达6级时：施展距离的X改为你的基础移动速度+2米"
             }
           ]
         },
@@ -1294,28 +1134,22 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达12级时：盾牌冲撞如果位移了最大值距离，那么还会",
-              "color": null
+              "text": "职业等级到达12级时：盾牌冲撞如果位移了最大值距离，那么还会"
             },
             {
-              "text": "为你生成一个能够抵挡10点任意伤害的护盾（这个效果不能抵挡",
-              "color": null
+              "text": "为你生成一个能够抵挡10点任意伤害的护盾（这个效果不能抵挡"
             },
             {
-              "text": "神圣、",
-              "color": null
+              "text": "神圣、"
             },
             {
-              "text": "邪能或星界伤害）",
-              "color": null
+              "text": "邪能或星界伤害）"
             }
           ]
         }
@@ -1397,28 +1231,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "惩戒真言改为你在本日中施展神术.惩击仅需花费一个附赠动作",
-              "color": null
+              "text": "惩戒真言改为你在本日中施展神术.惩击仅需花费一个附赠动作"
             }
           ]
         },
@@ -1429,28 +1257,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "惩戒真言会使你在本日是施展惩击造成的伤害值具有优势",
-              "color": null
+              "text": "惩戒真言会使你在本日是施展惩击造成的伤害值具有优势"
             }
           ]
         }
@@ -1544,32 +1366,25 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "防范探知在面对",
-              "color": null
+              "text": "防范探知在面对"
             },
             {
-              "text": "效果等同于六阶或以下的探知手段时虽然不会给予错误信息，但仍能够令这次探知无效化",
-              "color": null
+              "text": "效果等同于六阶或以下的探知手段时虽然不会给予错误信息，但仍能够令这次探知无效化"
             }
           ]
         }
@@ -1783,24 +1598,19 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：你可以通过触及对其他角色使用缓落术",
-              "color": null
+              "text": "级时：你可以通过触及对其他角色使用缓落术"
             }
           ]
         }
@@ -1878,32 +1688,25 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "侦测善恶的",
-              "color": null
+              "text": "侦测善恶的"
             },
             {
-              "text": "关键词变更为短休/长休（2）",
-              "color": null
+              "text": "关键词变更为短休/长休（2）"
             }
           ]
         },
@@ -1914,60 +1717,46 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：被侦测",
-              "color": null
+              "text": "级时：被侦测"
             },
             {
-              "text": "善恶",
-              "color": null
+              "text": "善恶"
             },
             {
-              "text": "探知到的",
-              "color": null
+              "text": "探知到的"
             },
             {
-              "text": "与你对立",
-              "color": null
+              "text": "与你对立"
             },
             {
-              "text": "阵营角色需要与你进行一次魅力对抗，对抗失败",
-              "color": null
+              "text": "阵营角色需要与你进行一次魅力对抗，对抗失败"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "一方",
-              "color": null
+              "text": "一方"
             },
             {
-              "text": "将被标记，在一次长休前无法",
-              "color": null
+              "text": "将被标记，在一次长休前无法"
             },
             {
-              "text": "在对方视角中",
-              "color": null
+              "text": "在对方视角中"
             },
             {
-              "text": "潜行",
-              "color": null
+              "text": "潜行"
             }
           ]
         }
@@ -2015,20 +1804,16 @@
           "label": "你的牧师职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的牧师职业等级到达6级时：神谕真言",
-              "color": null
+              "text": "你的牧师职业等级到达6级时：神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "愈改为为至多三名角色",
-              "color": null
+              "text": "愈改为为至多三名角色"
             },
             {
-              "text": "回复生命值",
-              "color": null
+              "text": "回复生命值"
             }
           ]
         },
@@ -2039,52 +1824,40 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的牧师职业等级到达",
-              "color": null
+              "text": "你的牧师职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：神谕真言",
-              "color": null
+              "text": "级时：神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "愈改为为至多四名角色各回复2D6点生命值，如果",
-              "color": null
+              "text": "愈改为为至多四名角色各回复2D6点生命值，如果"
             },
             {
-              "text": "这些",
-              "color": null
+              "text": "这些"
             },
             {
-              "text": "目标均与你相邻",
-              "color": null
+              "text": "目标均与你相邻"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "那么",
-              "color": null
+              "text": "那么"
             },
             {
-              "text": "改为回复",
-              "color": null
+              "text": "改为回复"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             },
             {
-              "text": "D6点生命值",
-              "color": null
+              "text": "D6点生命值"
             }
           ]
         }
@@ -2197,44 +1970,34 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "如果在进行移动后你能够触及那名角色，可以视作对其施展一次",
-              "color": null
+              "text": "如果在进行移动后你能够触及那名角色，可以视作对其施展一次"
             },
             {
-              "text": "神术.",
-              "color": null
+              "text": "神术."
             },
             {
-              "text": "恢复",
-              "color": null
+              "text": "恢复"
             },
             {
-              "text": "术",
-              "color": null
+              "text": "术"
             }
           ]
         }
@@ -2281,28 +2044,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "强效治疗术改为造成4D6+12点伤害",
-              "color": null
+              "text": "强效治疗术改为造成4D6+12点伤害"
             }
           ]
         },
@@ -2313,28 +2070,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "强效治疗术改为造成4D8+18点伤害",
-              "color": null
+              "text": "强效治疗术改为造成4D8+18点伤害"
             }
           ]
         },
@@ -2345,28 +2096,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "强效治疗术能够忽视对方拥有的降低生命值回复数值的效果",
-              "color": null
+              "text": "强效治疗术能够忽视对方拥有的降低生命值回复数值的效果"
             }
           ]
         }
@@ -2416,28 +2161,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你也可以选择不令对方位移，而是由你生长出羽翼向目标进行一次位移",
-              "color": null
+              "text": "你也可以选择不令对方位移，而是由你生长出羽翼向目标进行一次位移"
             }
           ]
         },
@@ -2448,60 +2187,46 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "每场战斗限一次.",
-              "color": null
+              "text": "每场战斗限一次."
             },
             {
-              "text": "你可以花费",
-              "color": null
+              "text": "你可以花费"
             },
             {
-              "text": "一个",
-              "color": null
+              "text": "一个"
             },
             {
-              "text": "反应动作来令一名与你具有相同神祇信仰",
-              "color": null
+              "text": "反应动作来令一名与你具有相同神祇信仰"
             },
             {
-              "text": "、",
-              "color": null
+              "text": "、"
             },
             {
-              "text": "并且自愿的角色飞向你",
-              "color": null
+              "text": "并且自愿的角色飞向你"
             },
             {
-              "text": "相邻",
-              "color": null
+              "text": "相邻"
             },
             {
-              "text": "的一个",
-              "color": null
+              "text": "的一个"
             },
             {
-              "text": "未被占据的位置",
-              "color": null
+              "text": "未被占据的位置"
             }
           ]
         }
@@ -2550,36 +2275,28 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "心灵防护结界改为抵挡下一次受到的至多15+",
-              "color": null
+              "text": "心灵防护结界改为抵挡下一次受到的至多15+"
             },
             {
-              "text": "你的角色等级的",
-              "color": null
+              "text": "你的角色等级的"
             },
             {
-              "text": "心灵伤害",
-              "color": null
+              "text": "心灵伤害"
             }
           ]
         },
@@ -2590,52 +2307,40 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "心灵防护结界成功抵挡一个",
-              "color": null
+              "text": "心灵防护结界成功抵挡一个"
             },
             {
-              "text": "魅惑或忏悔效",
-              "color": null
+              "text": "魅惑或忏悔效"
             },
             {
-              "text": "果",
-              "color": null
+              "text": "果"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "还会为你生成一个能够抵挡",
-              "color": null
+              "text": "还会为你生成一个能够抵挡"
             },
             {
-              "text": "10点心灵伤害的护盾",
-              "color": null
+              "text": "10点心灵伤害的护盾"
             }
           ]
         }
@@ -2689,36 +2394,28 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "守护刻印还可以选择额外的",
-              "color": null
+              "text": "守护刻印还可以选择额外的"
             },
             {
-              "text": "效果",
-              "color": null
+              "text": "效果"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             }
           ]
         },
@@ -2729,16 +2426,13 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达10级时：守护刻印在生效时可以同时附加三种不同的守护效果",
-              "color": null
+              "text": "职业等级到达10级时：守护刻印在生效时可以同时附加三种不同的守护效果"
             }
           ]
         },
@@ -2749,24 +2443,19 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达15级时：守护刻印还可以选择额外的",
-              "color": null
+              "text": "职业等级到达15级时：守护刻印还可以选择额外的"
             },
             {
-              "text": "效果",
-              "color": null
+              "text": "效果"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             }
           ]
         }
@@ -2813,28 +2502,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言·韧改为获得15点临时生命值",
-              "color": null
+              "text": "神谕真言·韧改为获得15点临时生命值"
             }
           ]
         },
@@ -2845,28 +2528,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言·韧改为获得20点临时生命值",
-              "color": null
+              "text": "神谕真言·韧改为获得20点临时生命值"
             }
           ]
         }
@@ -2927,28 +2604,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "移除恩赐洗礼的唯一性关键词",
-              "color": null
+              "text": "移除恩赐洗礼的唯一性关键词"
             }
           ]
         }
@@ -3075,28 +2746,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "宁神术的施展时间变更为一个附赠动作",
-              "color": null
+              "text": "宁神术的施展时间变更为一个附赠动作"
             }
           ]
         },
@@ -3107,36 +2772,28 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "宁神术",
-              "color": null
+              "text": "宁神术"
             },
             {
-              "text": "改为回复4点",
-              "color": null
+              "text": "改为回复4点"
             },
             {
-              "text": "疲劳值",
-              "color": null
+              "text": "疲劳值"
             }
           ]
         }
@@ -3184,44 +2841,34 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "纯净术的关键词变更为短休",
-              "color": null
+              "text": "纯净术的关键词变更为短休"
             },
             {
-              "text": "/长休",
-              "color": null
+              "text": "/长休"
             },
             {
-              "text": "（",
-              "color": null
+              "text": "（"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "）",
-              "color": null
+              "text": "）"
             }
           ]
         },
@@ -3232,40 +2879,31 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "纯净术可以尝试移除目标所受到的一个特殊效果标记（例如特殊战斗",
-              "color": null
+              "text": "纯净术可以尝试移除目标所受到的一个特殊效果标记（例如特殊战斗"
             },
             {
-              "text": "、",
-              "color": null
+              "text": "、"
             },
             {
-              "text": "战役或剧情限定的效果",
-              "color": null
+              "text": "战役或剧情限定的效果"
             },
             {
-              "text": "）",
-              "color": null
+              "text": "）"
             }
           ]
         }
@@ -3381,36 +3019,28 @@
           "label": "你的牧师职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言",
-              "color": null
+              "text": "神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "痛改为造成1D4点伤害",
-              "color": null
+              "text": "痛改为造成1D4点伤害"
             }
           ]
         },
@@ -3421,44 +3051,34 @@
           "label": "你的牧师职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言",
-              "color": null
+              "text": "神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "痛",
-              "color": null
+              "text": "痛"
             },
             {
-              "text": "的",
-              "color": null
+              "text": "的"
             },
             {
-              "text": "持续时间+1轮",
-              "color": null
+              "text": "持续时间+1轮"
             }
           ]
         },
@@ -3469,44 +3089,34 @@
           "label": "你的牧师职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言",
-              "color": null
+              "text": "神谕真言"
             },
             {
-              "text": "·",
-              "color": null
+              "text": "·"
             },
             {
-              "text": "痛改为造成1D",
-              "color": null
+              "text": "痛改为造成1D"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "点伤害",
-              "color": null
+              "text": "点伤害"
             }
           ]
         }
@@ -3748,28 +3358,22 @@
           "label": "你的牧师职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "恐惧防护结界改为抵挡下一次受到的至多15的角色等级的心灵伤害",
-              "color": null
+              "text": "恐惧防护结界改为抵挡下一次受到的至多15的角色等级的心灵伤害"
             }
           ]
         },
@@ -3780,56 +3384,43 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "恐惧防护结界成功抵挡一个",
-              "color": null
+              "text": "恐惧防护结界成功抵挡一个"
             },
             {
-              "text": "恐惧",
-              "color": null
+              "text": "恐惧"
             },
             {
-              "text": "效",
-              "color": null
+              "text": "效"
             },
             {
-              "text": "果",
-              "color": null
+              "text": "果"
             },
             {
-              "text": "，",
-              "color": null
+              "text": "，"
             },
             {
-              "text": "还会为你生成一个能够抵挡",
-              "color": null
+              "text": "还会为你生成一个能够抵挡"
             },
             {
-              "text": "10点暗影伤害的护盾",
-              "color": null
+              "text": "10点暗影伤害的护盾"
             }
           ]
         }
@@ -3883,28 +3474,22 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "束缚亡灵能够夺取控制权的挑战等级改为3级",
-              "color": null
+              "text": "束缚亡灵能够夺取控制权的挑战等级改为3级"
             }
           ]
         },
@@ -3915,28 +3500,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "束缚亡灵能够夺取控制权的挑战等级改为4级",
-              "color": null
+              "text": "束缚亡灵能够夺取控制权的挑战等级改为4级"
             }
           ]
         }
@@ -4019,28 +3598,22 @@
           "label": "你的牧师职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言·静改为获得4点临时疲劳值",
-              "color": null
+              "text": "神谕真言·静改为获得4点临时疲劳值"
             }
           ]
         },
@@ -4051,28 +3624,22 @@
           "label": "你的牧师职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "神谕真言·静改为获得6点临时疲劳值",
-              "color": null
+              "text": "神谕真言·静改为获得6点临时疲劳值"
             }
           ]
         }
@@ -4126,28 +3693,22 @@
           "label": "你的牧师职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "牧师",
-              "color": null
+              "text": "牧师"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果直到持续时间结束时你没有受到过伤害，并且你的相邻位置没有敌方角色，你进入潜行状态",
-              "color": null
+              "text": "如果直到持续时间结束时你没有受到过伤害，并且你的相邻位置没有敌方角色，你进入潜行状态"
             }
           ]
         }

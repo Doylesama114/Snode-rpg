@@ -32,16 +32,13 @@
           "label": "你的萨满祭司职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达3级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达3级时："
             },
             {
-              "text": "闪电箭改为造成1D8+2点雷电伤害，",
-              "color": null
+              "text": "闪电箭改为造成1D8+2点雷电伤害，"
             },
             {
-              "text": "如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害",
-              "color": null
+              "text": "如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害"
             }
           ]
         },
@@ -52,24 +49,19 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "闪电箭改为造成1D8+4点雷电伤害，",
-              "color": null
+              "text": "闪电箭改为造成1D8+4点雷电伤害，"
             },
             {
-              "text": "如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害",
-              "color": null
+              "text": "如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害"
             }
           ]
         }
@@ -108,24 +100,19 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：烈焰冲击改为造成2D",
-              "color": null
+              "text": "级时：烈焰冲击改为造成2D"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "点火焰伤害",
-              "color": null
+              "text": "点火焰伤害"
             }
           ]
         },
@@ -136,24 +123,19 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：烈焰冲击的关键词变更为敏捷豁免（1",
-              "color": null
+              "text": "级时：烈焰冲击的关键词变更为敏捷豁免（1"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "）",
-              "color": null
+              "text": "）"
             }
           ]
         },
@@ -164,32 +146,25 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：烈焰冲击改为造成",
-              "color": null
+              "text": "级时：烈焰冲击改为造成"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "D",
-              "color": null
+              "text": "D"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "点火焰伤害",
-              "color": null
+              "text": "点火焰伤害"
             }
           ]
         }
@@ -227,12 +202,10 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达5级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达5级时："
             },
             {
-              "text": "如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值",
-              "color": null
+              "text": "如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值"
             }
           ]
         },
@@ -243,12 +216,10 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达10级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达10级时："
             },
             {
-              "text": "如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值",
-              "color": null
+              "text": "如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值"
             }
           ]
         }
@@ -287,24 +258,19 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作",
-              "color": null
+              "text": "此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作"
             }
           ]
         },
@@ -315,24 +281,19 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效",
-              "color": null
+              "text": "此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效"
             }
           ]
         }
@@ -376,24 +337,19 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "闪电",
-              "color": null
+              "text": "闪电"
             },
             {
-              "text": "盾牌改为你在受到攻击后，而非承受伤害后便会反弹伤害",
-              "color": null
+              "text": "盾牌改为你在受到攻击后，而非承受伤害后便会反弹伤害"
             }
           ]
         },
@@ -404,32 +360,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果闪电",
-              "color": null
+              "text": "如果闪电"
             },
             {
-              "text": "盾牌持续结束时风元素处于活跃状态，那么你可以使自身周围",
-              "color": null
+              "text": "盾牌持续结束时风元素处于活跃状态，那么你可以使自身周围"
             },
             {
-              "text": "6米",
-              "color": null
+              "text": "6米"
             },
             {
-              "text": "内的所有角色进行一次难度为15的敏捷豁免，豁免失败的角色将受到9点雷电伤害",
-              "color": null
+              "text": "内的所有角色进行一次难度为15的敏捷豁免，豁免失败的角色将受到9点雷电伤害"
             }
           ]
         }
@@ -549,20 +498,16 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "风雷祈咒改为额外附加6点雷电伤害",
-              "color": null
+              "text": "风雷祈咒改为额外附加6点雷电伤害"
             }
           ]
         },
@@ -573,20 +518,16 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "风雷祈咒改为额外附加8点雷电伤害",
-              "color": null
+              "text": "风雷祈咒改为额外附加8点雷电伤害"
             }
           ]
         }
@@ -635,28 +576,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "叉状闪电",
-              "color": null
+              "text": "叉状闪电"
             },
             {
-              "text": "改为造成1D8+2点雷电伤害，",
-              "color": null
+              "text": "改为造成1D8+2点雷电伤害，"
             },
             {
-              "text": "如果此时风元素处于活跃状态,则改为造成2D8+4点雷电伤害",
-              "color": null
+              "text": "如果此时风元素处于活跃状态,则改为造成2D8+4点雷电伤害"
             }
           ]
         },
@@ -667,28 +602,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "叉状闪电",
-              "color": null
+              "text": "叉状闪电"
             },
             {
-              "text": "改为造成1D8+4点雷电伤害，",
-              "color": null
+              "text": "改为造成1D8+4点雷电伤害，"
             },
             {
-              "text": "如果此时风元素处于活跃状态,则改为造成2D8+6点雷电伤害",
-              "color": null
+              "text": "如果此时风元素处于活跃状态,则改为造成2D8+6点雷电伤害"
             }
           ]
         }
@@ -735,20 +664,16 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "风怒的持续时间+1轮",
-              "color": null
+              "text": "风怒的持续时间+1轮"
             }
           ]
         },
@@ -759,20 +684,16 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "风怒的持续时间+1轮",
-              "color": null
+              "text": "风怒的持续时间+1轮"
             }
           ]
         },
@@ -783,20 +704,16 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你能够为自身周围6米内的一名角色施展风怒",
-              "color": null
+              "text": "你能够为自身周围6米内的一名角色施展风怒"
             }
           ]
         }
@@ -958,32 +875,25 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "电弧鞭笞能够选择第四名角色作为目标，这名角色必须仅能够与第三名目标相邻、",
-              "color": null
+              "text": "电弧鞭笞能够选择第四名角色作为目标，这名角色必须仅能够与第三名目标相邻、"
             },
             {
-              "text": "不与起始的两个目标相邻",
-              "color": null
+              "text": "不与起始的两个目标相邻"
             }
           ]
         },
@@ -994,28 +904,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "每场战斗限一次.如果你施展过其他包含雷电关键词的技能，那么你的下一次电弧鞭笞的施展时间变更为一个附赠动作",
-              "color": null
+              "text": "每场战斗限一次.如果你施展过其他包含雷电关键词的技能，那么你的下一次电弧鞭笞的施展时间变更为一个附赠动作"
             }
           ]
         }
@@ -1067,16 +971,13 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达12级时：如果目标的第一次豁免成功，则还需要再进行一次对应豁免检定",
-              "color": null
+              "text": "职业等级到达12级时：如果目标的第一次豁免成功，则还需要再进行一次对应豁免检定"
             }
           ]
         }
@@ -1124,28 +1025,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "气流牵引改为能够使物件位移12米距离，令自愿的角色位移4米距离",
-              "color": null
+              "text": "气流牵引改为能够使物件位移12米距离，令自愿的角色位移4米距离"
             }
           ]
         },
@@ -1156,28 +1051,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "气流牵引改为能够位移不超过50磅重的物件，以及不超过中型体型的角色",
-              "color": null
+              "text": "气流牵引改为能够位移不超过50磅重的物件，以及不超过中型体型的角色"
             }
           ]
         }
@@ -1310,28 +1199,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "火焰箭改为造成2D6点火焰伤害",
-              "color": null
+              "text": "火焰箭改为造成2D6点火焰伤害"
             }
           ]
         }
@@ -1379,28 +1262,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "灼热图腾施展的火焰箭能够造成2D6点火焰伤害",
-              "color": null
+              "text": "灼热图腾施展的火焰箭能够造成2D6点火焰伤害"
             }
           ]
         }
@@ -1481,32 +1358,25 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "火焰",
-              "color": null
+              "text": "火焰"
             },
             {
-              "text": "祈咒改为额外附加6点",
-              "color": null
+              "text": "祈咒改为额外附加6点"
             },
             {
-              "text": "火焰",
-              "color": null
+              "text": "火焰"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             }
           ]
         },
@@ -1517,32 +1387,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "火焰",
-              "color": null
+              "text": "火焰"
             },
             {
-              "text": "祈咒改为额外附加8点",
-              "color": null
+              "text": "祈咒改为额外附加8点"
             },
             {
-              "text": "火焰",
-              "color": null
+              "text": "火焰"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             }
           ]
         }
@@ -1592,32 +1455,25 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "熔岩武器改为",
-              "color": null
+              "text": "熔岩武器改为"
             },
             {
-              "text": "你的下三次近战攻击在结算造成的伤害值后额外附加1D8点火焰伤害",
-              "color": null
+              "text": "你的下三次近战攻击在结算造成的伤害值后额外附加1D8点火焰伤害"
             }
           ]
         },
@@ -1628,32 +1484,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "熔岩武器附加的第三次",
-              "color": null
+              "text": "熔岩武器附加的第三次"
             },
             {
-              "text": "近战攻击伤害值必定暴击",
-              "color": null
+              "text": "近战攻击伤害值必定暴击"
             }
           ]
         }
@@ -1746,32 +1595,25 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "沸腾的持续时间内",
-              "color": null
+              "text": "沸腾的持续时间内"
             },
             {
-              "text": "你的火焰法术攻击命中检定掷出19时即可触发暴击，施展烈焰冲击时对方的闪避骰掷出2即可触发暴击",
-              "color": null
+              "text": "你的火焰法术攻击命中检定掷出19时即可触发暴击，施展烈焰冲击时对方的闪避骰掷出2即可触发暴击"
             }
           ]
         }
@@ -2052,28 +1894,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "水上行走能够对触及范围内的其他角色施展",
-              "color": null
+              "text": "水上行走能够对触及范围内的其他角色施展"
             }
           ]
         }
@@ -2121,36 +1957,28 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "恢复图腾改为回复2D4",
-              "color": null
+              "text": "恢复图腾改为回复2D4"
             },
             {
-              "text": "+X点",
-              "color": null
+              "text": "+X点"
             },
             {
-              "text": "生命值（X为你的自然调整值）",
-              "color": null
+              "text": "生命值（X为你的自然调整值）"
             }
           ]
         },
@@ -2161,36 +1989,28 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "恢复图腾还会为周围2米内的所有角色各回复2",
-              "color": null
+              "text": "恢复图腾还会为周围2米内的所有角色各回复2"
             },
             {
-              "text": "点",
-              "color": null
+              "text": "点"
             },
             {
-              "text": "疲劳值",
-              "color": null
+              "text": "疲劳值"
             }
           ]
         }
@@ -2271,24 +2091,19 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "流水祈咒改为额外回复6点生命值，",
-              "color": null
+              "text": "流水祈咒改为额外回复6点生命值，"
             },
             {
-              "text": "这个效果对带有AOE关键词的能力改为额外回复3点生命值",
-              "color": null
+              "text": "这个效果对带有AOE关键词的能力改为额外回复3点生命值"
             }
           ]
         },
@@ -2299,24 +2114,19 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "流水祈咒改为额外回复8点生命值，",
-              "color": null
+              "text": "流水祈咒改为额外回复8点生命值，"
             },
             {
-              "text": "这个效果对带有AOE关键词的能力改为额外回复4点生命值",
-              "color": null
+              "text": "这个效果对带有AOE关键词的能力改为额外回复4点生命值"
             }
           ]
         }
@@ -2370,32 +2180,25 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "水幕",
-              "color": null
+              "text": "水幕"
             },
             {
-              "text": "屏障",
-              "color": null
+              "text": "屏障"
             },
             {
-              "text": "的关键词变更为",
-              "color": null
+              "text": "的关键词变更为"
             },
             {
-              "text": "短休/长休（2）",
-              "color": null
+              "text": "短休/长休（2）"
             }
           ]
         }
@@ -2444,24 +2247,19 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "潮汐集中改为回复",
-              "color": null
+              "text": "潮汐集中改为回复"
             },
             {
-              "text": "共计6D6点生命值",
-              "color": null
+              "text": "共计6D6点生命值"
             }
           ]
         },
@@ -2472,20 +2270,16 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "开启潮汐集中会使与你相邻的敌方角色进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态",
-              "color": null
+              "text": "开启潮汐集中会使与你相邻的敌方角色进行一次难度为15的敏捷豁免，豁免失败的角色将进入减速状态"
             }
           ]
         }
@@ -2535,16 +2329,13 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达5级时：间歇泉的生效区域改为一",
-              "color": null
+              "text": "你的萨满祭司职业等级到达5级时：间歇泉的生效区域改为一"
             },
             {
-              "text": "片",
-              "color": null
+              "text": "片"
             },
             {
-              "text": "2*2的区域",
-              "color": null
+              "text": "2*2的区域"
             }
           ]
         },
@@ -2555,16 +2346,13 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达10级时：间歇泉如果在战斗环节中施展，",
-              "color": null
+              "text": "你的萨满祭司职业等级到达10级时：间歇泉如果在战斗环节中施展，"
             },
             {
-              "text": "那么",
-              "color": null
+              "text": "那么"
             },
             {
-              "text": "改为持续至这场战斗环节结束",
-              "color": null
+              "text": "改为持续至这场战斗环节结束"
             }
           ]
         }
@@ -2649,24 +2437,19 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "高压水刃改为造成",
-              "color": null
+              "text": "高压水刃改为造成"
             },
             {
-              "text": "3D6点挥砍伤害",
-              "color": null
+              "text": "3D6点挥砍伤害"
             }
           ]
         },
@@ -2677,20 +2460,16 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "高压水刃具有速攻关键词",
-              "color": null
+              "text": "高压水刃具有速攻关键词"
             }
           ]
         }
@@ -2739,24 +2518,19 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "治疗之涌改为回复",
-              "color": null
+              "text": "治疗之涌改为回复"
             },
             {
-              "text": "2D4+4点生命值",
-              "color": null
+              "text": "2D4+4点生命值"
             }
           ]
         },
@@ -2767,24 +2541,19 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "治疗之涌的范围改为",
-              "color": null
+              "text": "治疗之涌的范围改为"
             },
             {
-              "text": "前方扇形4环",
-              "color": null
+              "text": "前方扇形4环"
             }
           ]
         }
@@ -2834,44 +2603,34 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "寒霜之息",
-              "color": null
+              "text": "寒霜之息"
             },
             {
-              "text": "改为造成3D6点",
-              "color": null
+              "text": "改为造成3D6点"
             },
             {
-              "text": "冰霜",
-              "color": null
+              "text": "冰霜"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             }
           ]
         },
@@ -2882,52 +2641,40 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时",
-              "color": null
+              "text": "级时"
             },
             {
-              "text": "：",
-              "color": null
+              "text": "："
             },
             {
-              "text": "寒霜之息",
-              "color": null
+              "text": "寒霜之息"
             },
             {
-              "text": "改为造成",
-              "color": null
+              "text": "改为造成"
             },
             {
-              "text": "4",
-              "color": null
+              "text": "4"
             },
             {
-              "text": "D6点",
-              "color": null
+              "text": "D6点"
             },
             {
-              "text": "冰霜",
-              "color": null
+              "text": "冰霜"
             },
             {
-              "text": "伤害",
-              "color": null
+              "text": "伤害"
             }
           ]
         }
@@ -2975,20 +2722,16 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "冰霜震击改为造成4D4点冰霜伤害",
-              "color": null
+              "text": "冰霜震击改为造成4D4点冰霜伤害"
             }
           ]
         },
@@ -2999,20 +2742,16 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "冰霜震击能够对施展距离内的任意一名角色使用",
-              "color": null
+              "text": "冰霜震击能够对施展距离内的任意一名角色使用"
             }
           ]
         }
@@ -3271,20 +3010,16 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以在维持治疗之雨的期间以一半的基础移动速度进行移动行动",
-              "color": null
+              "text": "你可以在维持治疗之雨的期间以一半的基础移动速度进行移动行动"
             }
           ]
         }
@@ -3329,40 +3064,31 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "潮汐抗性改为获得4点",
-              "color": null
+              "text": "潮汐抗性改为获得4点"
             },
             {
-              "text": "自然",
-              "color": null
+              "text": "自然"
             },
             {
-              "text": "伤害抗性，",
-              "color": null
+              "text": "伤害抗性，"
             },
             {
-              "text": "这个效果允许与其他抗性效果叠加",
-              "color": null
+              "text": "这个效果允许与其他抗性效果叠加"
             }
           ]
         }
@@ -3495,28 +3221,22 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以额外在视野范围内的一处水源或相邻位置上召唤一个水域镜像",
-              "color": null
+              "text": "你可以额外在视野范围内的一处水源或相邻位置上召唤一个水域镜像"
             }
           ]
         }
@@ -3606,28 +3326,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石爪术改为造成2D4点穿刺伤害",
-              "color": null
+              "text": "石爪术改为造成2D4点穿刺伤害"
             }
           ]
         },
@@ -3638,28 +3352,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "通过跳跃穿过石爪地形的角色需要进行一次难度为15的敏捷豁免，对方豁免失败将进入流血状态",
-              "color": null
+              "text": "通过跳跃穿过石爪地形的角色需要进行一次难度为15的敏捷豁免，对方豁免失败将进入流血状态"
             }
           ]
         }
@@ -3774,28 +3482,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "大地",
-              "color": null
+              "text": "大地"
             },
             {
-              "text": "祈咒改为",
-              "color": null
+              "text": "祈咒改为"
             },
             {
-              "text": "护盾值结算后+6",
-              "color": null
+              "text": "护盾值结算后+6"
             }
           ]
         },
@@ -3806,28 +3508,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "大地",
-              "color": null
+              "text": "大地"
             },
             {
-              "text": "祈咒改为",
-              "color": null
+              "text": "祈咒改为"
             },
             {
-              "text": "护盾值结算后+10",
-              "color": null
+              "text": "护盾值结算后+10"
             }
           ]
         }
@@ -3880,20 +3576,16 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石肌术的持续时间内土元素将会始终处于活跃状态",
-              "color": null
+              "text": "石肌术的持续时间内土元素将会始终处于活跃状态"
             }
           ]
         },
@@ -3904,24 +3596,19 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达",
-              "color": null
+              "text": "你的萨满祭司职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石肌术的持续时间内你的徒手攻击",
-              "color": null
+              "text": "石肌术的持续时间内你的徒手攻击"
             },
             {
-              "text": "命中检定掷出19时即可触发暴击",
-              "color": null
+              "text": "命中检定掷出19时即可触发暴击"
             }
           ]
         }
@@ -4007,28 +3694,22 @@
           "label": "你的萨满祭司职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果石锥术攻击目标后还未抵达最大施展距离，那么还可以对后方的第一名角色继续进行攻击，造成一半的结算后伤害值",
-              "color": null
+              "text": "如果石锥术攻击目标后还未抵达最大施展距离，那么还可以对后方的第一名角色继续进行攻击，造成一半的结算后伤害值"
             }
           ]
         },
@@ -4039,28 +3720,22 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石锥术改为造成2D12点穿刺伤害",
-              "color": null
+              "text": "石锥术改为造成2D12点穿刺伤害"
             }
           ]
         },
@@ -4071,32 +3746,25 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石锥术可以对直线方向所有角色造成伤害，但对第一名角色外的其他目标仅造成",
-              "color": null
+              "text": "石锥术可以对直线方向所有角色造成伤害，但对第一名角色外的其他目标仅造成"
             },
             {
-              "text": "一半的结算后伤害值",
-              "color": null
+              "text": "一半的结算后伤害值"
             }
           ]
         }
@@ -4207,28 +3875,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "陷足流沙的范围提升至6*6",
-              "color": null
+              "text": "陷足流沙的范围提升至6*6"
             }
           ]
         }
@@ -4377,28 +4039,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石凝咒能够选择将地面变为泥泞，进入范围内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态",
-              "color": null
+              "text": "石凝咒能够选择将地面变为泥泞，进入范围内的角色需要进行一次难度为12的敏捷豁免，豁免失败的角色将进入减速状态"
             }
           ]
         },
@@ -4409,28 +4065,22 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石凝咒改为能够塑造一片不超过九个区域位置的区域",
-              "color": null
+              "text": "石凝咒改为能够塑造一片不超过九个区域位置的区域"
             }
           ]
         },
@@ -4441,28 +4091,22 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "石凝咒如果选择令对方进行力量豁免，那么豁免失败的角色无法做出施法手势，如果选择令对方进行敏捷豁免，那么豁免失败的角色还会进入击倒状态",
-              "color": null
+              "text": "石凝咒如果选择令对方进行力量豁免，那么豁免失败的角色无法做出施法手势，如果选择令对方进行敏捷豁免，那么豁免失败的角色还会进入击倒状态"
             }
           ]
         }
@@ -4608,28 +4252,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "漩涡武器还会使拖拽的角色进入击倒状态",
-              "color": null
+              "text": "漩涡武器还会使拖拽的角色进入击倒状态"
             }
           ]
         }
@@ -4674,40 +4312,31 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "深岩抗性改为获得4点",
-              "color": null
+              "text": "深岩抗性改为获得4点"
             },
             {
-              "text": "穿刺和挥砍",
-              "color": null
+              "text": "穿刺和挥砍"
             },
             {
-              "text": "伤害抗性，",
-              "color": null
+              "text": "伤害抗性，"
             },
             {
-              "text": "这个效果允许与其他抗性效果叠加",
-              "color": null
+              "text": "这个效果允许与其他抗性效果叠加"
             }
           ]
         }
@@ -4802,32 +4431,25 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "晶化崩解",
-              "color": null
+              "text": "晶化崩解"
             },
             {
-              "text": "改为获得3D8点护甲值",
-              "color": null
+              "text": "改为获得3D8点护甲值"
             }
           ]
         },
@@ -4838,32 +4460,25 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "晶化崩解",
-              "color": null
+              "text": "晶化崩解"
             },
             {
-              "text": "改为获得4D8点护甲值",
-              "color": null
+              "text": "改为获得4D8点护甲值"
             }
           ]
         }
@@ -4949,12 +4564,10 @@
           "label": "你的萨满祭司职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达3级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达3级时："
             },
             {
-              "text": "视界术的施展距离提升至240米",
-              "color": null
+              "text": "视界术的施展距离提升至240米"
             }
           ]
         },
@@ -4965,12 +4578,10 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达6级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达6级时："
             },
             {
-              "text": "视界术的施展距离提升至480米",
-              "color": null
+              "text": "视界术的施展距离提升至480米"
             }
           ]
         },
@@ -4981,12 +4592,10 @@
           "label": "你的萨满祭司职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达9级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达9级时："
             },
             {
-              "text": "视界术的施展距离提升至960米",
-              "color": null
+              "text": "视界术的施展距离提升至960米"
             }
           ]
         },
@@ -4997,12 +4606,10 @@
           "label": "你的萨满祭司职业等级到达18级时：",
           "line_runs": [
             {
-              "text": "你的萨满祭司职业等级到达18级时：",
-              "color": null
+              "text": "你的萨满祭司职业等级到达18级时："
             },
             {
-              "text": "只要元素活跃的地区均可被视界术探知，无视距离限制（但你依然要知晓探知位置的大致坐标），如果探知距离超过十公里则持续时间结束后会进入48小时的冷却，这个效果无法探知其他位面的信息",
-              "color": null
+              "text": "只要元素活跃的地区均可被视界术探知，无视距离限制（但你依然要知晓探知位置的大致坐标），如果探知距离超过十公里则持续时间结束后会进入48小时的冷却，这个效果无法探知其他位面的信息"
             }
           ]
         }
@@ -5050,24 +4657,19 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：传讯术的施展距离改为36米",
-              "color": null
+              "text": "级时：传讯术的施展距离改为36米"
             }
           ]
         },
@@ -5078,24 +4680,19 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置",
-              "color": null
+              "text": "级时：传讯术可以对范围内不可视的角色生效，但你仍需要大致知晓对方所在的位置"
             }
           ]
         },
@@ -5106,56 +4703,43 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：如果你",
-              "color": null
+              "text": "级时：如果你"
             },
             {
-              "text": "在本日",
-              "color": null
+              "text": "在本日"
             },
             {
-              "text": "触碰过",
-              "color": null
+              "text": "触碰过"
             },
             {
-              "text": "这",
-              "color": null
+              "text": "这"
             },
             {
-              "text": "名角色，",
-              "color": null
+              "text": "名角色，"
             },
             {
-              "text": "那么",
-              "color": null
+              "text": "那么"
             },
             {
-              "text": "对目标使用传讯术时",
-              "color": null
+              "text": "对目标使用传讯术时"
             },
             {
-              "text": "能够",
-              "color": null
+              "text": "能够"
             },
             {
-              "text": "无视施展距离的限制",
-              "color": null
+              "text": "无视施展距离的限制"
             }
           ]
         }
@@ -5235,16 +4819,13 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达5级时：迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状",
-              "color": null
+              "text": "职业等级到达5级时：迷雾术可以在共计3*3的区域生成，你可以在范围内定制其具体形状"
             }
           ]
         },
@@ -5255,28 +4836,22 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达10级时：你可以",
-              "color": null
+              "text": "职业等级到达10级时：你可以"
             },
             {
-              "text": "在生成迷雾时",
-              "color": null
+              "text": "在生成迷雾时"
             },
             {
-              "text": "指定迷雾内或外界的一方",
-              "color": null
+              "text": "指定迷雾内或外界的一方"
             },
             {
-              "text": "忽视迷雾术带来的负面影响",
-              "color": null
+              "text": "忽视迷雾术带来的负面影响"
             }
           ]
         }
@@ -5440,28 +5015,22 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "巫术打击改为造成3D6点伤害",
-              "color": null
+              "text": "巫术打击改为造成3D6点伤害"
             }
           ]
         },
@@ -5472,28 +5041,22 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "巫术打击改为造成4D6点伤害",
-              "color": null
+              "text": "巫术打击改为造成4D6点伤害"
             }
           ]
         }
@@ -5542,28 +5105,22 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果目标处于中毒状态，那么蛇吻术的施展时间变更为一个附赠动作",
-              "color": null
+              "text": "如果目标处于中毒状态，那么蛇吻术的施展时间变更为一个附赠动作"
             }
           ]
         }
@@ -5652,28 +5209,22 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：骚灵",
-              "color": null
+              "text": "级时：骚灵"
             },
             {
-              "text": "现象的施展距离变更为48米",
-              "color": null
+              "text": "现象的施展距离变更为48米"
             }
           ]
         },
@@ -5684,32 +5235,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：骚灵",
-              "color": null
+              "text": "级时：骚灵"
             },
             {
-              "text": "现象能够控制更多的物件，每控制一件便额外",
-              "color": null
+              "text": "现象能够控制更多的物件，每控制一件便额外"
             },
             {
-              "text": "花费1点疲劳值",
-              "color": null
+              "text": "花费1点疲劳值"
             }
           ]
         }
@@ -5756,36 +5300,28 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：每场战斗限一次.",
-              "color": null
+              "text": "级时：每场战斗限一次."
             },
             {
-              "text": "你可以使用一个",
-              "color": null
+              "text": "你可以使用一个"
             },
             {
-              "text": "反应动作",
-              "color": null
+              "text": "反应动作"
             },
             {
-              "text": "在其他角色的回合中使用这个效果",
-              "color": null
+              "text": "在其他角色的回合中使用这个效果"
             }
           ]
         },
@@ -5796,32 +5332,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "在施展巫毒步时你可以预先选择一个方向，随后",
-              "color": null
+              "text": "在施展巫毒步时你可以预先选择一个方向，随后"
             },
             {
-              "text": "掷一颗D3骰来进行闪现，你一定不会被闪现到预选的方向",
-              "color": null
+              "text": "掷一颗D3骰来进行闪现，你一定不会被闪现到预选的方向"
             }
           ]
         }
@@ -5872,32 +5401,25 @@
           "label": "你的萨满祭司职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "次级",
-              "color": null
+              "text": "次级"
             },
             {
-              "text": "衰弱结界的范围变为一个6*6的区域",
-              "color": null
+              "text": "衰弱结界的范围变为一个6*6的区域"
             }
           ]
         },
@@ -5908,32 +5430,25 @@
           "label": "你的萨满祭司职业等级到达9级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "9",
-              "color": null
+              "text": "9"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "次级",
-              "color": null
+              "text": "次级"
             },
             {
-              "text": "衰弱结界的范围变为一个8*8的区域",
-              "color": null
+              "text": "衰弱结界的范围变为一个8*8的区域"
             }
           ]
         }
@@ -5988,28 +5503,22 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "净化图腾可以选择移除目标当前拥有的负面标记",
-              "color": null
+              "text": "净化图腾可以选择移除目标当前拥有的负面标记"
             }
           ]
         }
@@ -6061,32 +5570,25 @@
           "label": "你的萨满祭司职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "祖灵之矛改为额外附加",
-              "color": null
+              "text": "祖灵之矛改为额外附加"
             },
             {
-              "text": "两次你的感知属性调整值",
-              "color": null
+              "text": "两次你的感知属性调整值"
             }
           ]
         }
@@ -6139,60 +5641,46 @@
           "label": "你的萨满祭司职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：虫孽滋生改为在",
-              "color": null
+              "text": "级时：虫孽滋生改为在"
             },
             {
-              "text": "第二个",
-              "color": null
+              "text": "第二个"
             },
             {
-              "text": "轮次结束阶段",
-              "color": null
+              "text": "轮次结束阶段"
             },
             {
-              "text": "如果仍未被驱散，便会",
-              "color": null
+              "text": "如果仍未被驱散，便会"
             },
             {
-              "text": "对目标造成",
-              "color": null
+              "text": "对目标造成"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "点剧毒伤害并",
-              "color": null
+              "text": "点剧毒伤害并"
             },
             {
-              "text": "使其",
-              "color": null
+              "text": "使其"
             },
             {
-              "text": "进入中毒",
-              "color": null
+              "text": "进入中毒"
             },
             {
-              "text": "状态",
-              "color": null
+              "text": "状态"
             }
           ]
         }
@@ -6322,28 +5810,22 @@
           "label": "你的萨满祭司职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "毒雾术的施展距离提升至12米",
-              "color": null
+              "text": "毒雾术的施展距离提升至12米"
             }
           ]
         },
@@ -6354,28 +5836,22 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "毒雾术的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "毒雾术的关键词变更为短休/长休（2）"
             }
           ]
         }
@@ -6424,28 +5900,22 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果",
-              "color": null
+              "text": "你可以选择额外花费6点疲劳值与范围内的一名敌方角色进行魅力对抗，如果目标对抗失败那么由对方承受本次豁免失败的结果"
             }
           ]
         }
@@ -6503,40 +5973,31 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "当前土元素处于活跃状态，那么",
-              "color": null
+              "text": "当前土元素处于活跃状态，那么"
             },
             {
-              "text": "地震",
-              "color": null
+              "text": "地震"
             },
             {
-              "text": "图腾的持续时间+1轮",
-              "color": null
+              "text": "图腾的持续时间+1轮"
             }
           ]
         },
@@ -6547,48 +6008,37 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果",
-              "color": null
+              "text": "如果"
             },
             {
-              "text": "当前土元素处于活跃状态，那么",
-              "color": null
+              "text": "当前土元素处于活跃状态，那么"
             },
             {
-              "text": "你",
-              "color": null
+              "text": "你"
             },
             {
-              "text": "可以花费一个附赠动作来破坏",
-              "color": null
+              "text": "可以花费一个附赠动作来破坏"
             },
             {
-              "text": "地震",
-              "color": null
+              "text": "地震"
             },
             {
-              "text": "图腾，随后立即对范围内的所有角色进行一次难度为15的力量豁免，豁免失败的角色将受到6D6点钝击伤害并且被击飞2米",
-              "color": null
+              "text": "图腾，随后立即对范围内的所有角色进行一次难度为15的力量豁免，豁免失败的角色将受到6D6点钝击伤害并且被击飞2米"
             }
           ]
         }
@@ -6692,28 +6142,22 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果目标豁免失败，并且承受岩崩造成的伤害值超过40点，那么还会被击晕1轮",
-              "color": null
+              "text": "如果目标豁免失败，并且承受岩崩造成的伤害值超过40点，那么还会被击晕1轮"
             }
           ]
         },
@@ -6724,28 +6168,22 @@
           "label": "你的萨满祭司职业等级到达18级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "18",
-              "color": null
+              "text": "18"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "岩崩改为造成碾压伤害，在结算伤害值前优先移除目标的护盾值和护甲值",
-              "color": null
+              "text": "岩崩改为造成碾压伤害，在结算伤害值前优先移除目标的护盾值和护甲值"
             }
           ]
         }
@@ -6836,28 +6274,22 @@
           "label": "你的萨满祭司职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "山岭之护还会令你在土元素首次进入活跃",
-              "color": null
+              "text": "山岭之护还会令你在土元素首次进入活跃"
             }
           ]
         },
@@ -6868,28 +6300,22 @@
           "label": "你的萨满祭司职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "萨满祭司",
-              "color": null
+              "text": "萨满祭司"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "山岭之护产生的生命值和疲劳值回复效果",
-              "color": null
+              "text": "山岭之护产生的生命值和疲劳值回复效果"
             }
           ]
         }

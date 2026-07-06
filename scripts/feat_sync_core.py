@@ -10,9 +10,12 @@ from pathlib import Path
 
 from class_sync_core import (
     HEX2FULL,
+    cost_json,
     dots_html,
     extract_paragraphs,
     mark_dots_from_runs,
+    normalize_runs,
+    runs_have_colored_dots,
     split_field,
 )
 
@@ -79,10 +82,19 @@ def parse_feats(paras: list[dict]) -> list[dict]:
         if SEP_INLINE.search(desc_text):
             desc_text = SEP_INLINE.split(desc_text)[0].rstrip()
             body = [(desc_text, body[0][1])] if body else []
+        desc_entries: list[dict] = []
+        for text, runs in body:
+            if not text.strip():
+                continue
+            entry: dict = {"text": text}
+            if runs_have_colored_dots(runs):
+                entry["runs"] = normalize_runs(runs)
+            desc_entries.append(entry)
         feats.append({
             "name": name,
             "prerequisite": prereq or "无",
             "description": desc_text,
+            "description_entries": desc_entries,
             "body_html": render_body_html(body),
             "mark_dots": mark_dots,
         })
@@ -116,12 +128,20 @@ def build_article(feat_id: str, feat: dict) -> str:
 
 
 def json_entry(feat_id: str, feat: dict) -> dict:
-    return {
+    out: dict = {
         "id": feat_id,
         "name": feat["name"],
         "prerequisite": feat["prerequisite"],
         "description": feat["description"],
     }
+    colored = [
+        e for e in (feat.get("description_entries") or []) if e.get("runs")
+    ]
+    if colored:
+        out["description_entries"] = colored
+    if feat.get("mark_dots"):
+        out["cost"] = cost_json(feat["mark_dots"])
+    return out
 
 
 def fx_entry(feat_id: str, feat: dict) -> dict:

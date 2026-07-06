@@ -377,6 +377,66 @@ def runs_have_colored_dots(runs: list[dict]) -> bool:
     return False
 
 
+def normalize_runs(runs: list[dict] | None) -> list[dict]:
+    if not runs:
+        return []
+    out: list[dict] = []
+    for r in runs:
+        text = r.get("text") or ""
+        if not text:
+            continue
+        item: dict = {"text": text}
+        color = r.get("color")
+        if color:
+            item["color"] = color
+        out.append(item)
+    return out
+
+
+def apply_run_metadata(skill: dict, block: dict) -> None:
+    """Persist docx run colors into JSON (inline ● and colored field text)."""
+    fields = skill.get("fields") or {}
+    field_runs: dict[str, list[dict]] = {}
+    for key, runs in (block.get("field_runs") or {}).items():
+        if runs_have_colored_dots(runs):
+            field_runs[key] = normalize_runs(runs)
+
+    desc_text = fields.get("描述")
+    if desc_text and "描述" not in field_runs:
+        for entry in block.get("description_entries") or []:
+            if entry["text"] == desc_text and runs_have_colored_dots(entry.get("runs") or []):
+                field_runs["描述"] = normalize_runs(entry["runs"])
+                break
+
+    if field_runs:
+        skill["field_runs"] = field_runs
+    else:
+        skill.pop("field_runs", None)
+
+    extra_desc = set(skill.get("description") or [])
+    desc_entries: list[dict] = []
+    for entry in block.get("description_entries") or []:
+        if entry["text"] == desc_text:
+            continue
+        if entry["text"] not in extra_desc:
+            continue
+        runs = entry.get("runs") or []
+        if runs_have_colored_dots(runs):
+            desc_entries.append({
+                "text": entry["text"],
+                "runs": normalize_runs(runs),
+            })
+    if desc_entries:
+        skill["description_entries"] = desc_entries
+    else:
+        skill.pop("description_entries", None)
+
+    for lu in skill.get("level_upgrades") or []:
+        runs = lu.get("line_runs")
+        if runs is not None:
+            lu["line_runs"] = normalize_runs(runs)
+
+
 def slice_runs_after_prefix(runs: list[dict], prefix_len: int) -> list[dict]:
     if prefix_len <= 0:
         return runs
@@ -790,6 +850,7 @@ def sync_class(
         skill["flavor"] = block["flavor"]
         skill["tags"] = tags_from_keywords(fields.get("关键词", ""))
         skill["cost"] = cost_json(block["mark_dots"])
+        apply_run_metadata(skill, block)
 
         tier_lbl = tier_label_from_skill(skill)
         style = skill.get("style", "")

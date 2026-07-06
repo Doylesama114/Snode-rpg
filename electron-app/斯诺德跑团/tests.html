@@ -236,6 +236,38 @@ assertTrue(canPlaceInSlot(["道具"], "背包", "", ""), '已解锁背包 → tr
 
 results.push('</div>');
 
+// =================== T7: runsToHtml / formatSkillDetailHtml ===================
+results.push('<div class="section"><h3>T7: runsToHtml / formatSkillDetailHtml — 彩色标识渲染</h3>');
+
+var dotRuns = [
+  { text: "●", color: "#00B0F0" },
+  { text: "/", color: "#00B0F0" },
+  { text: "●", color: "#00B050" },
+  { text: "/", color: "#00B050" },
+  { text: "●", color: "#00FA99" }
+];
+var dotHtml = runsToHtml(dotRuns);
+assertTrue(dotHtml.indexOf("#00B0F0") >= 0, 'runsToHtml 含 #00B0F0');
+assertTrue(dotHtml.indexOf("#00B050") >= 0, 'runsToHtml 含 #00B050');
+assertTrue(dotHtml.indexOf("#00FA99") >= 0, 'runsToHtml 含 #00FA99');
+assertTrue(dotHtml.indexOf("<span") >= 0, 'runsToHtml 输出 span 标签');
+
+var medSkill = null;
+if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["通用"]) {
+  for (var mi = 0; mi < SKILL_DATA["通用"].length; mi++) {
+    if (SKILL_DATA["通用"][mi].name === "冥想") { medSkill = SKILL_DATA["通用"][mi]; break; }
+  }
+}
+assertTrue(!!medSkill, 'SKILL_DATA 含冥想');
+if (medSkill) {
+  assertTrue(!!(medSkill.field_runs && medSkill.field_runs["描述"]), '冥想含 field_runs.描述');
+  var detailHtml = formatSkillDetailHtml(medSkill);
+  assertTrue(detailHtml.indexOf("#00B0F0") >= 0, 'formatSkillDetailHtml(冥想) 含彩色 ●');
+  assertTrue(detailHtml.indexOf("描述") >= 0, 'formatSkillDetailHtml(冥想) 含描述标签');
+}
+
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");
