@@ -815,20 +815,53 @@ function getSkillDotStates(skill) {
 }
 
 function renderMarkOverviewHtml() {
-  var html = "", i, cn, hex, on;
+  var html = "", i, cn, hex, on, bg;
   ensureSpState();
-  html += "<div style='font-size:12px;font-weight:bold;color:#e8d8b8;margin-bottom:4px'>\u6280\u80fd\u70b9\uff1a" + getSpTotal() + "</div>";
-  html += "<div style='display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:4px'>";
-  for (i = 0; i < CHROMATIC_MARK_NAMES.length; i++) {
-    cn = CHROMATIC_MARK_NAMES[i]; hex = MARK_COLOR_HEX[cn]; on = hasColorMark(cn);
-    html += "<span title='" + cn + "' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + hex + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (on ? "1" : "0.25") + "'></span>";
+  html += "<div class='sp-overview-label'>可用技能点</div>";
+  html += "<div class='sp-overview-total'>" + getSpTotal() + "</div>";
+  html += "<div class='sp-mark-grid'>";
+  for (i = 0; i < MARK_COLOR_NAMES.length; i++) {
+    cn = MARK_COLOR_NAMES[i];
+    hex = MARK_COLOR_HEX[cn];
+    on = hasColorMark(cn);
+    bg = (cn === "\u70ab\u5f69") ? MARK_COLOR_HEX["\u70ab\u5f69"] : hex;
+    html += "<div class='sp-mark-chip " + (on ? "active" : "inactive") + "' title='" + cn + "\u6807\u8bc6'>";
+    html += "<span class='sp-mark-dot' style='background:" + bg + "'></span>";
+    html += "<span class='sp-mark-name'>" + cn + "</span></div>";
   }
   html += "</div>";
-  html += "<div style='display:flex;gap:6px;align-items:center;font-size:10px;color:#a09080'>";
-  html += "<span title='\u65e0\u8272\u6807\u8bc6' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + MARK_COLOR_HEX["\u65e0\u8272"] + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (hasColorMark("\u65e0\u8272") ? "1" : "0.25") + "'></span>\u65e0";
-  html += "<span title='\u70ab\u5f69\u6807\u8bc6' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + MARK_COLOR_HEX["\u70ab\u5f69"] + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (hasColorMark("\u70ab\u5f69") ? "1" : "0.25") + "'></span>\u70ab";
-  html += "</div>";
   return html;
+}
+
+function normalizeExportTalentTier(t) {
+  var tName = t.n || t.name || "";
+  var tTier = (t.tier || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
+  if ((!tTier || tTier.indexOf("\u9636") < 0) && typeof SKILL_TIER !== "undefined") {
+    tTier = (SKILL_TIER[tName] || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
+  }
+  if (!tTier || tTier.indexOf("\u9636") < 0) tTier = "\u4e00\u9636";
+  return tTier;
+}
+
+function fillXlsxTalents(set, talents) {
+  var tierRowMap = {
+    "\u4e00\u9636": [122, 126], "\u4e8c\u9636": [129, 133], "\u4e09\u9636": [137, 141],
+    "\u56db\u9636": [144, 148], "\u4e94\u9636": [151, 155], "\u516d\u9636": [158, 162], "\u4e03\u9636": [165, 166]
+  };
+  var tierSlots = {}, tierOrder = ["\u4e00\u9636", "\u4e8c\u9636", "\u4e09\u9636", "\u56db\u9636", "\u4e94\u9636", "\u516d\u9636", "\u4e03\u9636"];
+  var ti, tName, tTier, range, slot;
+  for (ti = 0; ti < tierOrder.length; ti++) tierSlots[tierOrder[ti]] = 0;
+  for (ti = 0; ti < talents.length; ti++) {
+    tName = talents[ti].n || talents[ti].name || "";
+    if (!tName) continue;
+    tTier = normalizeExportTalentTier(talents[ti]);
+    range = tierRowMap[tTier];
+    if (!range) continue;
+    slot = tierSlots[tTier] || 0;
+    if (slot >= range[1] - range[0] + 1) continue;
+    set("O" + (range[0] + slot), tName);
+    tierSlots[tTier] = slot + 1;
+  }
 }
 
 function spDot(skill) {
@@ -4006,7 +4039,7 @@ document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
   for(var ci=0;ci<MARK_COLOR_NAMES.length;ci++){
     var c=MARK_COLOR_NAMES[ci];var on=hasColorMark(c);
-    h+='<button onclick="_cheatToggleMark(\''+c+'\')" style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--bg,#f6f4ef);border:1px solid var(--line,#d8d2c4);border-radius:6px;cursor:pointer;opacity:'+(on?'1':'0.45')+'">';
+    h+='<button data-mark-color="'+c+'" onclick="_cheatToggleMark(\''+c+'\')" style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--bg,#f6f4ef);border:1px solid '+(on?'var(--accent,#a46d1f)':'var(--line,#d8d2c4)')+';border-radius:6px;cursor:pointer;opacity:'+(on?'1':'0.65')+'">';
     h+='<span style="width:14px;height:14px;border-radius:50%;background:'+MARK_COLOR_HEX[c]+';border:1px solid rgba(0,0,0,0.2)"></span>';
     h+='<span style="font-size:12px;color:var(--ink)">'+c+'</span></button>';
   }
@@ -4026,11 +4059,26 @@ document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
   },100);
 }
 
+function _cheatRefreshPanel(){
+  var overlay=document.getElementById('_cheatPanel');
+  if(!overlay)return;
+  ensureSpState();
+  var spTotal=getSpTotal();
+  var spInp=document.getElementById('_cheatSPPoints');
+  if(spInp)spInp.value=spTotal;
+  var marks=overlay.querySelectorAll('[data-mark-color]');
+  for(var i=0;i<marks.length;i++){
+    var c=marks[i].getAttribute('data-mark-color');
+    var on=hasColorMark(c);
+    marks[i].style.opacity=on?'1':'0.65';
+    marks[i].style.borderColor=on?'var(--accent,#a46d1f)':'var(--line,#d8d2c4)';
+  }
+}
 function _cheatAdjXP(delta){state.xp=Math.max(0,(state.xp||0)+delta);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
 function _cheatSetXP(val){state.xp=Math.max(0,parseInt(val)||0);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
-function _cheatAdjSPPoints(delta){ensureSpState();state.sp_points=Math.max(0,(state.sp_points||0)+delta);var inp=document.getElementById("_cheatSPPoints");if(inp)inp.value=state.sp_points;render();}
-function _cheatSetSPPoints(val){ensureSpState();state.sp_points=Math.max(0,parseInt(val)||0);var inp=document.getElementById("_cheatSPPoints");if(inp)inp.value=state.sp_points;render();}
-function _cheatToggleMark(color){ensureSpState();state.color_marks[color]=!state.color_marks[color];cheatAdd();}
+function _cheatAdjSPPoints(delta){ensureSpState();state.sp_points=Math.max(0,(state.sp_points||0)+delta);_cheatRefreshPanel();render();}
+function _cheatSetSPPoints(val){ensureSpState();state.sp_points=Math.max(0,parseInt(val)||0);_cheatRefreshPanel();render();}
+function _cheatToggleMark(color){ensureSpState();state.color_marks[color]=!state.color_marks[color];_cheatRefreshPanel();}
 function toggleLearnMode() {
 
 
@@ -6259,50 +6307,8 @@ async function exportXlsxFromState(state) {
     set("J" + (123 + si), sk.ds || sk.desc || sk.description || (skRef && skRef.description ? skRef.description[0] : "") || "");
   }
 
-  // Talents (O column, rows 123-147 + 150-165)
-  var talents = state.talent_tree || [];
-
-  // Group talents by tier and fill in appropriate rows
-  // The template has: 一阶(123-127), 二阶(129-133), 三阶(136-140), 四阶(143-147), 五阶(150-154), 六阶(157-161), 七阶(164-165)
-  var tierRowMap = {
-    "一阶": [123, 127], "二阶": [129, 133], "三阶": [136, 140],
-    "四阶": [143, 147], "五阶": [150, 154], "六阶": [157, 161], "七阶": [164, 165]
-  };
-
-  for (var ti = 0; ti < talents.length; ti++) {
-    var t = talents[ti];
-    var tName = t.n || t.name || "";
-    var tTier = t.tier || "";
-    tTier = tTier.replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/, "");
-    if (!tTier || tTier.indexOf("阶") < 0) {
-      // Try SKILL_TIER
-      tTier = SKILL_TIER[tName] || "";
-      tTier = tTier.replace(/天赋树.*$/, "").replace(/[（(]\d+[）)]/, "");
-    }
-    if (!tTier || tTier.indexOf("阶") < 0) tTier = "一阶";
-
-    var rowRange = tierRowMap[tTier];
-    if (rowRange) {
-      // Find first empty O cell in this range
-      for (var tr = rowRange[0]; tr <= rowRange[1]; tr++) {
-        // Check if already filled
-        var alreadyFilled = false;
-        for (var ac = 0; ac < ti; ac++) {
-          // We can't easily check without remembering what we wrote
-          // Simple approach: just fill sequentially
-        }
-        // Just fill the first available spot - actually this is getting complex
-        // Let me just use ti as an offset within its tier
-      }
-      // Simpler: just fill in order by tier
-    }
-  }
-
-  // For now, simpler talent filling - just take all talents and fill O rows 123+ sequentially, skipping tier header rows
-  var talentRows = [123, 124, 125, 126, 127, 129, 130, 131, 132, 133, 136, 137, 138, 139, 140, 143, 144, 145, 146, 147, 150, 151, 152, 153, 154, 157, 158, 159, 160, 161, 164, 165];
-  for (var ti = 0; ti < Math.min(talents.length, talentRows.length); ti++) {
-    set("O" + talentRows[ti], talents[ti].n || talents[ti].name || "");
-  }
+  // Talents (O column) — grouped by tier; headers at 121/128/136/143/150/157/164
+  fillXlsxTalents(set, state.talent_tree || []);
 
   // Subclass skills (rows 168-209)
   var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });

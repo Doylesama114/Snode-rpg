@@ -229,7 +229,31 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 .xp-panel span{font-size:24px;color:var(--ink);font-weight:bold}
 
 
-.sp-panel{display:flex;flex-direction:column;gap:5px}
+.sp-panel{display:flex;flex-direction:column;gap:8px;width:100%}
+
+
+.sp-overview-label{font-size:13px;color:var(--muted,#69706b);margin-bottom:2px}
+
+
+.sp-overview-total{font-size:24px;font-weight:bold;color:var(--ink);line-height:1.2;margin-bottom:4px}
+
+
+.sp-mark-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%}
+
+
+.sp-mark-chip{display:flex;align-items:center;gap:4px;padding:3px 5px;border-radius:4px;border:1px solid var(--line);background:var(--bg);min-width:0}
+
+
+.sp-mark-chip.active{border-color:var(--accent);background:var(--panel);box-shadow:0 0 0 1px rgba(164,109,31,0.2)}
+
+
+.sp-mark-chip.inactive{opacity:.72}
+
+
+.sp-mark-dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.12);flex-shrink:0}
+
+
+.sp-mark-name{font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 
 .sp-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
@@ -328,8 +352,9 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
   .battle-layout{flex-direction:column}
   .battle-key{min-width:auto}
   .battle-grid{grid-template-columns:repeat(2,1fr)}
-  .talent-grid,.sp-panel{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .talent-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .talent-header-row,.talent-row,.sp-row{min-width:560px}
+  .sp-mark-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .skill-table{min-width:600px;display:block;overflow-x:auto}
   .learn-panel{width:calc(100vw - 32px);right:16px;bottom:70px;max-height:50vh}
   .learn-toggle{bottom:16px;right:16px;padding:8px 16px;font-size:14px}
