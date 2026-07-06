@@ -72,8 +72,8 @@ function applyChoiceLLevel12Boosts() {
     if (!CHOICE_L_MASTERY_MAP[sn] || state._cl12Done[sn]) continue;
     if (mainLevel >= 12) {
       var map = CHOICE_L_MASTERY_MAP[sn];
-      if (!state.sp) state.sp = {};
-      state.sp[map.spColor] = (state.sp[map.spColor] || 0) + map.spCount;
+      ensureSpState();
+      state.sp_points = (state.sp_points || 0) + map.spCount;
       state._cl12Done[sn] = true;
     }
   }
@@ -84,12 +84,7 @@ function applyChoiceLLevel12Boosts() {
 var MEDITATION_SPS = {"青色":1, "蓝色":1, "绿色":1};
 
 function applyMeditationSP(skillName, add) {
-  if (skillName !== "冥想") return; // 冥想
-  var sps = MEDITATION_SPS;
-  if (!state.sp) state.sp = {};
-  for (var color in sps) {
-    state.sp[color] = Math.max(0, (state.sp[color] || 0) + (add ? sps[color] : -sps[color]));
-  }
+  // TODO: 冥想等特殊技能副作用（色彩标识/技能点）稍后实施
 }
 var state={
 
@@ -105,7 +100,8 @@ var state={
 },
 "background":"", "player":"", "name":"","race":"","gender":"","age":"","height":"","weight":"","eye":"","skin":"","hair":"","portrait":"",
 "xp":0, "carry_capacity":{"常规":45,"满载":60,"极限":75,"当前":5},
-"sp":{"橙色":0,"白色":0,"紫色":0,"黄色":0,"无色":0,"蓝色":0,"青色":0,"黑色":0,"红色":0,"棕色":0,"粉色":0,"绿色":0,"浅色":0,"炫彩":0},
+"sp_points":0,
+"color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
 "hp":10,"fp":8,
 "story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
@@ -170,6 +166,7 @@ function loadState(charName, slotIndex) {
     CURRENT_CHAR = charName;
     CURRENT_SLOT = slotIndex;
     state._dirty = false;
+    ensureSpState();
     return true;
   } catch(e) {
     console.error("Load failed:", e);
@@ -682,44 +679,171 @@ function parseSkillCost(skillData) {
 
 
 
-function spDot(skill) {
 
+var MARK_COLOR_NAMES = ["\u6a59\u8272","\u767d\u8272","\u7d2b\u8272","\u9ec4\u8272","\u65e0\u8272","\u84dd\u8272","\u9752\u8272","\u9ed1\u8272","\u7ea2\u8272","\u68d5\u8272","\u7c89\u8272","\u7eff\u8272","\u6d45\u8272","\u70ab\u5f69"];
 
-  var costs = skill.cost;
+var MARK_COLOR_HEX = {"\u6a59\u8272":"#EE822F","\u767d\u8272":"#FFFFFF","\u7d2b\u8272":"#B94BFF","\u9ec4\u8272":"#FFF32F","\u65e0\u8272":"#D9D9D9","\u84dd\u8272":"#00B0F0","\u9752\u8272":"#00FA99","\u9ed1\u8272":"#595959","\u7ea2\u8272":"#FF0000","\u68d5\u8272":"#843F0B","\u7c89\u8272":"#FFB7E3","\u7eff\u8272":"#00B050","\u6d45\u8272":"#B3F9FF","\u70ab\u5f69":"linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)"};
 
+var CHROMATIC_MARK_NAMES = ["\u6a59\u8272","\u767d\u8272","\u7d2b\u8272","\u9ec4\u8272","\u84dd\u8272","\u9752\u8272","\u9ed1\u8272","\u7ea2\u8272","\u68d5\u8272","\u7c89\u8272","\u7eff\u8272","\u6d45\u8272"];
 
-  if (!costs || costs.length === 0) return "";
-
-
-  var html = "";
-
-
-  for (var ci = 0; ci < costs.length; ci++) {
-
-
-    var hex = costs[ci].color || "";
-
-
-    if (!hex) continue;
-
-
-    var isGrad = (hex.indexOf("gradient") >= 0);
-
-
-    var bg = isGrad ? "linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)" : hex;
-
-
-    html += "<span style='display:inline-block;width:12px;height:12px;border-radius:2px;background:" + bg + ";border:1px solid rgba(0,0,0,0.5);vertical-align:middle'></span>";
-
-
-  }
-
-
-  return html;
-
-
+function isWildcardMarkName(colorName) {
+  return colorName === "\u65e0\u8272" || colorName === "\u70ab\u5f69";
 }
 
+function defaultColorMarks() {
+  var m = {}, i;
+  for (i = 0; i < MARK_COLOR_NAMES.length; i++) m[MARK_COLOR_NAMES[i]] = false;
+  return m;
+}
+
+function ensureSpState() {
+  if (!state.color_marks) state.color_marks = defaultColorMarks();
+  if (typeof state.sp_points !== "number") state.sp_points = 0;
+}
+
+function parseSkillRequirements(skillData) {
+  var flat = parseSkillCost(skillData), fixedSeen = {}, fixed = [], wildcards = 0, dots = [], i, n;
+  for (i = 0; i < flat.length; i++) {
+    n = flat[i].colorName;
+    dots.push(flat[i]);
+    if (isWildcardMarkName(n)) wildcards++;
+    else if (!fixedSeen[n]) { fixedSeen[n] = true; fixed.push(n); }
+  }
+  return { fixed: fixed, wildcards: wildcards, dots: dots };
+}
+
+function skillHasCost(skillData) {
+  var req = parseSkillRequirements(skillData);
+  return req.fixed.length > 0 || req.wildcards > 0;
+}
+
+function getSpTotal() {
+  ensureSpState();
+  return state.sp_points || 0;
+}
+
+function hasColorMark(colorName) {
+  ensureSpState();
+  if (state.all_marks_active && CHROMATIC_MARK_NAMES.indexOf(colorName) >= 0) return true;
+  return !!state.color_marks[colorName];
+}
+
+function getActiveChromaticMarks() {
+  var out = [], i;
+  ensureSpState();
+  if (state.all_marks_active) return CHROMATIC_MARK_NAMES.slice();
+  for (i = 0; i < CHROMATIC_MARK_NAMES.length; i++) {
+    if (state.color_marks[CHROMATIC_MARK_NAMES[i]]) out.push(CHROMATIC_MARK_NAMES[i]);
+  }
+  return out;
+}
+
+function canSatisfyMarkRequirements(req) {
+  var active = getActiveChromaticMarks(), used = {}, spare = 0, i, c, totalNeed;
+  for (i = 0; i < req.fixed.length; i++) {
+    c = req.fixed[i];
+    if (active.indexOf(c) < 0) return { ok: false, reason: "\u7f3a\u5c11\u8272\u5f69\u6807\u8bc6\uff1a" + c };
+    used[c] = true;
+  }
+  for (i = 0; i < active.length; i++) { if (!used[active[i]]) spare++; }
+  if (spare < req.wildcards) {
+    totalNeed = req.fixed.length + req.wildcards;
+    return { ok: false, reason: "\u7f3a\u5c11\u8272\u5f69\u6807\u8bc6\uff1a\u9700\u8981 " + totalNeed + " \u79cd\u4e0d\u540c\u6709\u8272\u6807\u8bc6\uff08\u5f53\u524d " + active.length + " \u79cd\uff09" };
+  }
+  return { ok: true };
+}
+
+function canLearnSkill(skillData) {
+  if (!skillHasCost(skillData)) return { ok: true };
+  var req = parseSkillRequirements(skillData);
+  var markCheck = canSatisfyMarkRequirements(req);
+  if (!markCheck.ok) return markCheck;
+  if (getSpTotal() < 1) return { ok: false, reason: "\u6280\u80fd\u70b9\u4e0d\u8db3" };
+  return { ok: true };
+}
+
+function payForSkill(skillData) {
+  var check = canLearnSkill(skillData);
+  if (!check.ok) { alert(check.reason); return false; }
+  if (skillHasCost(skillData)) { ensureSpState(); state.sp_points--; }
+  return true;
+}
+
+function refundSkillPoint(skillData) {
+  if (!skillData || !skillHasCost(skillData)) return;
+  ensureSpState();
+  state.sp_points++;
+}
+
+function addSpPointsDelta(spObj, mult) {
+  var total = 0, k;
+  if (!spObj) return;
+  ensureSpState();
+  for (k in spObj) { if (spObj.hasOwnProperty(k)) total += (spObj[k] || 0); }
+  state.sp_points = Math.max(0, (state.sp_points || 0) + mult * total);
+}
+
+function buildSkillListEntry(skillData, clsName, isSub, isLocked) {
+  return {
+    id: skillData.id, n: skillData.name, src: skillData.style || clsName,
+    tm: skillData.fields ? (skillData.fields["\u65bd\u5c55\u65f6\u95f4"] || "") : "",
+    ds: (skillData.description || [""]).join(""),
+    dr: skillData.fields ? (skillData.fields["\u75b2\u52b3\u6d88\u8017"] || "") : "",
+    range: skillData.fields ? (skillData.fields["\u65bd\u5c55\u8ddd\u79bb"] || "") : "",
+    dur: skillData.fields ? (skillData.fields["\u6301\u7eed\u65f6\u95f4"] || "") : "",
+    cost: "", sub: isSub ? clsName : "", locked: isLocked
+  };
+}
+
+function getSkillDotStates(skill) {
+  var flat = parseSkillCost(skill), active = getActiveChromaticMarks(), used = {}, states = [], i, n, ci, c, found;
+  for (i = 0; i < flat.length; i++) {
+    n = flat[i].colorName;
+    if (isWildcardMarkName(n)) {
+      found = false;
+      for (ci = 0; ci < active.length; ci++) {
+        c = active[ci];
+        if (!used[c]) { used[c] = true; found = true; break; }
+      }
+      states.push(found);
+    } else {
+      states.push(active.indexOf(n) >= 0);
+      if (active.indexOf(n) >= 0) used[n] = true;
+    }
+  }
+  return { flat: flat, states: states };
+}
+
+function renderMarkOverviewHtml() {
+  var html = "", i, cn, hex, on;
+  ensureSpState();
+  html += "<div style='font-size:12px;font-weight:bold;color:#e8d8b8;margin-bottom:4px'>\u6280\u80fd\u70b9\uff1a" + getSpTotal() + "</div>";
+  html += "<div style='display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:4px'>";
+  for (i = 0; i < CHROMATIC_MARK_NAMES.length; i++) {
+    cn = CHROMATIC_MARK_NAMES[i]; hex = MARK_COLOR_HEX[cn]; on = hasColorMark(cn);
+    html += "<span title='" + cn + "' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + hex + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (on ? "1" : "0.25") + "'></span>";
+  }
+  html += "</div>";
+  html += "<div style='display:flex;gap:6px;align-items:center;font-size:10px;color:#a09080'>";
+  html += "<span title='\u65e0\u8272\u6807\u8bc6' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + MARK_COLOR_HEX["\u65e0\u8272"] + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (hasColorMark("\u65e0\u8272") ? "1" : "0.25") + "'></span>\u65e0";
+  html += "<span title='\u70ab\u5f69\u6807\u8bc6' style='display:inline-block;width:12px;height:12px;border-radius:50%;background:" + MARK_COLOR_HEX["\u70ab\u5f69"] + ";border:1px solid rgba(255,255,255,0.3);opacity:" + (hasColorMark("\u70ab\u5f69") ? "1" : "0.25") + "'></span>\u70ab";
+  html += "</div>";
+  return html;
+}
+
+function spDot(skill) {
+  var info = getSkillDotStates(skill), flat = info.flat, states = info.states, html = "", ci, hex, isGrad, bg, on;
+  if (!flat.length) return "";
+  for (ci = 0; ci < flat.length; ci++) {
+    hex = flat[ci].colorHex || "";
+    if (!hex) continue;
+    isGrad = (hex.indexOf("gradient") >= 0);
+    bg = isGrad ? "linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)" : hex;
+    on = states[ci];
+    html += "<span style='display:inline-block;width:12px;height:12px;border-radius:2px;background:" + bg + ";border:1px solid rgba(0,0,0,0.5);vertical-align:middle;opacity:" + (on ? "1" : "0.35") + "'></span>";
+  }
+  return html;
+}
 
 
 
@@ -1012,308 +1136,6 @@ function formatSkillDetailHtml(skillData) {
 
 
 }
-
-
-
-
-function deductSkillPoint(colorName) {
-
-
-  // Deduct 1 SP of the given color ONLY - no auto-fallback
-
-
-  if (!state.sp) state.sp = {};
-
-
-  if ((state.sp[colorName] || 0) > 0) {
-
-
-    state.sp[colorName]--;
-
-
-    return true;
-
-
-  }
-
-
-  return false;
-
-
-}
-
-
-
-
-
-function showSPChoiceModal(stepIdx, totalSteps, remainingCosts, alreadyDeducted, confirmCallback, cancelCallback) {
-
-
-  closeReplaceModal();
-
-
-  var currentStep = remainingCosts[0];
-
-
-  if (!currentStep) { confirmCallback(); return; }
-
-
-  var colorName = currentStep.colorName;
-
-
-  var hex = currentStep.colorHex;
-
-
-  var isColorless = (currentStep.colorName === "\u65e0\u8272");
-
-
-  var overlay = document.createElement("div");
-
-
-  overlay.id = "modalOverlay";
-
-
-  overlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";
-
-
-  document.body.appendChild(overlay);
-
-
-  
-
-
-  // Store step info + callbacks on window
-
-
-  window._spStepInfo = {
-
-
-    remaining: remainingCosts.slice(1),
-
-
-    confirmCb: confirmCallback,
-
-
-    cancelCb: cancelCallback,
-
-
-    stepIdx: stepIdx,
-
-
-    totalSteps: totalSteps
-
-
-  };
-
-
-  
-
-
-  var html = "<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:20px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
-
-
-  html += "<div style='color:#f0d0a0;font-size:14px;margin-bottom:12px;font-weight:bold'>\u652f\u4ed8\u6280\u80fd\u70b9 (" + (stepIdx+1) + "/" + totalSteps + ")</div>";
-
-
-  html += "<div style='color:#d0c0a0;font-size:13px;margin-bottom:10px'>\u8bf7\u9009\u62e9\u5982\u4f55\u652f\u4ed8\u8fd9\u4e00\u70b9\u6280\u80fd\u70b9\uff1a</div>";
-
-
-  html += "<div style='margin:8px 0'>";
-
-
-  
-  if (isColorless) {
-    var colorNames = ["\u7ea2\u8272","\u6a59\u8272","\u9ec4\u8272","\u7eff\u8272","\u9752\u8272","\u84dd\u8272","\u7d2b\u8272","\u7c89\u8272","\u68d5\u8272","\u6d45\u8272","\u767d\u8272","\u9ed1\u8272","\u65e0\u8272","\u70ab\u5f69"];
-    var colorHexes = {"\u7ea2\u8272":"#FF0000","\u6a59\u8272":"#EE822F","\u9ec4\u8272":"#FFF32F","\u7eff\u8272":"#00B050","\u9752\u8272":"#00FA99","\u84dd\u8272":"#00B0F0","\u7d2b\u8272":"#843F0B","\u7c89\u8272":"#FFB7E3","\u68d5\u8272":"#B94F00","\u6d45\u8272":"#B3F9FF","\u767d\u8272":"#FFFFFF","\u9ed1\u8272":"#4D4D4D","\u65e0\u8272":"#D9D9D9","\u70ab\u5f69":"linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)"};
-    for (var ci = 0; ci < colorNames.length; ci++) {
-      var cn = colorNames[ci];
-      var avail = (state.sp[cn] || 0) > 0;
-      var btnId = "spPayBtn_" + Date.now() + "_" + ci;
-      html += "<button id='" + btnId + "' style='display:block;width:100%;padding:10px 12px;margin:4px 0;background:" + (avail ? "#3a5030" : "#3a3030") + ";color:#f0e0d0;border:1px solid #5a3a18;border-radius:6px;cursor:pointer;text-align:left;font-size:14px' " + (avail ? "" : "disabled") + ">";
-      html += "<span style='display:inline-block;width:16px;height:16px;border-radius:3px;background:" + (colorHexes[cn] || "#D9D9D9") + ";border:1px solid rgba(255,255,255,0.2);vertical-align:middle;margin-right:8px'></span>";
-      html += cn + " \u6280\u80fd\u70b9 (\u5269\u4f59: " + (state.sp[cn]||0) + ")";
-      if (!avail) html += " [\u4e0d\u8db3]";
-      html += "</button>";
-    }
-  } else {
-    // Option 1: matching color
-    var matchingAvailable = (state.sp[colorName] || 0) > 0;
-    var btn1 = "spPayBtn_" + Date.now() + "_1";
-    html += "<button id='" + btn1 + "' style='display:block;width:100%;padding:10px 12px;margin:4px 0;background:" + (matchingAvailable ? "#3a5030" : "#3a3030") + ";color:#f0e0d0;border:1px solid #5a3a18;border-radius:6px;cursor:pointer;text-align:left;font-size:14px' " + (matchingAvailable ? "" : "disabled") + ">";
-    html += "<span style='display:inline-block;width:16px;height:16px;border-radius:3px;background:" + hex + ";border:1px solid rgba(255,255,255,0.2);vertical-align:middle;margin-right:8px'></span>";
-    html += colorName + " \u6280\u80fd\u70b9 (\u5269\u4f59: " + (state.sp[colorName]||0) + ")";
-    if (!matchingAvailable) html += " [\u4e0d\u8db3]";
-    html += "</button>";
-
-    // Option 2: colorless
-    var colorlessAvail = (state.sp["\u65e0\u8272"] || 0) > 0;
-    var btn2 = "spPayBtn_" + Date.now() + "_2";
-    html += "<button id='" + btn2 + "' style='display:block;width:100%;padding:10px 12px;margin:4px 0;background:" + (colorlessAvail ? "#3a5030" : "#3a3030") + ";color:#f0e0d0;border:1px solid #5a3a18;border-radius:6px;cursor:pointer;text-align:left;font-size:14px' " + (colorlessAvail ? "" : "disabled") + ">";
-    html += "<span style='display:inline-block;width:16px;height:16px;border-radius:3px;background:#D9D9D9;border:1px solid rgba(255,255,255,0.2);vertical-align:middle;margin-right:8px'></span>";
-    html += "\u65e0\u8272 \u6280\u80fd\u70b9 (\u5269\u4f59: " + (state.sp["\u65e0\u8272"]||0) + ")";
-    if (!colorlessAvail) html += " [\u4e0d\u8db3]";
-    html += "</button>";
-
-    // Option 3: rainbow
-    var rainbowAvail = (state.sp["\u70ab\u5f69"] || 0) > 0;
-    var btn3 = "spPayBtn_" + Date.now() + "_3";
-    html += "<button id='" + btn3 + "' style='display:block;width:100%;padding:10px 12px;margin:4px 0;background:" + (rainbowAvail ? "#3a5030" : "#3a3030") + ";color:#f0e0d0;border:1px solid #5a3a18;border-radius:6px;cursor:pointer;text-align:left;font-size:14px' " + (rainbowAvail ? "" : "disabled") + ">";
-    html += "<span style='display:inline-block;width:16px;height:16px;border-radius:3px;background:linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99);border:1px solid rgba(255,255,255,0.2);vertical-align:middle;margin-right:8px'></span>";
-    html += "\u70ab\u5f69 \u6280\u80fd\u70b9 (\u5269\u4f59: " + (state.sp["\u70ab\u5f69"]||0) + ")";
-    if (!rainbowAvail) html += " [\u4e0d\u8db3]";
-    html += "</button>";
-  }
-
-
-  // Cancel
-
-
-  html += "<button id='spCancelBtn_" + Date.now() + "' style='width:100%;padding:8px;margin-top:8px;background:#5a3a18;color:#f0e0d0;border:none;border-radius:6px;cursor:pointer;font-size:13px'>\u53d6\u6d88\u5b66\u4e60</button>";
-
-
-  html += "</div></div>";
-
-
-  overlay.innerHTML = html;
-
-
-  overlay.style.display = "flex";
-
-
-  
-
-
-  // Bind clicks using direct element IDs
-
-
-  setTimeout(function() {
-    if (isColorless) {
-      var btns = overlay.querySelectorAll("button");
-      for (var bi = 0; bi < btns.length; bi++) {
-        var bid = btns[bi].id;
-        if (bid && bid.indexOf("spPayBtn_") === 0) {
-          (function(bid) {
-            btns[bi].onclick = function() {
-              // Extract color name from button text
-              var text = document.getElementById(bid).textContent || document.getElementById(bid).innerText;
-              var colorName = text.replace("\u6280\u80fd\u70b9","").replace("\u5269\u4f59","").trim().split(" ")[0];
-              window._doSPPay(colorName);
-            };
-          })(bid);
-        } else if (bid && bid.indexOf("spCancelBtn") === 0) {
-          btns[bi].onclick = function() { window._doSPCancel(); };
-        }
-      }
-    } else {
-      var payColor = colorName;
-      var b1 = document.getElementById(btn1);
-      if (b1 && matchingAvailable) {
-        b1.onclick = function() { window._doSPPay(payColor); };
-      }
-      var b2 = document.getElementById(btn2);
-      if (b2 && colorlessAvail) {
-        b2.onclick = function() { window._doSPPay("\u65e0\u8272"); };
-      }
-      var b3 = document.getElementById(btn3);
-      if (b3 && rainbowAvail) {
-        b3.onclick = function() { window._doSPPay("\u70ab\u5f69"); };
-      }
-      var allBtns = overlay.querySelectorAll("button");
-      for (var bi = 0; bi < allBtns.length; bi++) {
-        if (allBtns[bi].id && allBtns[bi].id.indexOf("spCancelBtn") === 0) {
-          allBtns[bi].onclick = function() { window._doSPCancel(); };
-        }
-      }
-    }
-  }, 0);
-
-
-}
-
-
-
-
-
-// Helper: do a single SP payment
-
-
-window._doSPPay = function(chosenColor) {
-
-
-  closeReplaceModal();
-
-
-  state.sp[chosenColor] = (state.sp[chosenColor] || 0) - 1;
-
-
-  window._spDeductionLog = window._spDeductionLog || [];
-
-
-  window._spDeductionLog.push(chosenColor);
-
-
-  var st = window._spStepInfo;
-
-
-  if (st.remaining.length === 0) {
-
-
-    window._spDeductionLog = [];
-
-
-    st.confirmCb();
-
-
-  } else {
-
-
-    showSPChoiceModal(st.stepIdx + 1, st.totalSteps, st.remaining, {}, st.confirmCb, st.cancelCb);
-
-
-  }
-
-
-};
-
-
-
-
-
-// Helper: cancel and rollback all SP payments
-
-
-window._doSPCancel = function() {
-
-
-  closeReplaceModal();
-
-
-  var log = window._spDeductionLog || [];
-
-
-  for (var li = 0; li < log.length; li++) {
-
-
-    state.sp[log[li]] = (state.sp[log[li]] || 0) + 1;
-
-
-  }
-
-
-  window._spDeductionLog = [];
-
-
-  var st = window._spStepInfo;
-
-
-  if (st && st.cancelCb) st.cancelCb();
-
-
-  render(); renderLearnPanel();
-
-
-};
-
 
 
 
@@ -2569,10 +2391,7 @@ function applyFeatEffects(name, featEntry, add) {
       }
       // SP
       if (eff.sp) {
-        if (!state.sp) state.sp = {};
-        for (var sc in eff.sp) {
-          state.sp[sc] = Math.max(0, (state.sp[sc] || 0) + mult * eff.sp[sc]);
-        }
+        addSpPointsDelta(eff.sp, mult);
       }
       break;
     }
@@ -2626,10 +2445,7 @@ function applyFeatEffects(name, featEntry, add) {
         state.custom_profs[pn] = Math.max(0, (state.custom_profs[pn] || 0) + mult * (eff.proficiency.value || 1));
       }
       if (eff.sp) {
-        if (!state.sp) state.sp = {};
-        for (var sc in eff.sp) {
-          state.sp[sc] = Math.max(0, (state.sp[sc] || 0) + mult * eff.sp[sc]);
-        }
+        addSpPointsDelta(eff.sp, mult);
       }
       break;
     }
@@ -2671,10 +2487,7 @@ function applyFeatEffects(name, featEntry, add) {
         else spKey = "4";
         var spAmounts = spData[spKey];
         if (spAmounts && add) {
-          if (!state.sp) state.sp = {};
-          for (var sc in spAmounts) {
-            state.sp[sc] = (state.sp[sc] || 0) + spAmounts[sc];
-          }
+          addSpPointsDelta(spAmounts, 1);
         }
       }
       break;
@@ -3335,40 +3148,8 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
   // === 4b. Skill Points ===
 
 
-  var spColors=[["橙色","#EE822F"],["白色","#FFFFFF"],["紫色","#B94BFF"],["黄色","#FFF32F"],["无色","#D9D9D9"],["蓝色","#00B0F0"],["青色","#00FA99"],["黑色","#595959"],["红色","#FF0000"],["棕色","#843F0B"],["粉色","#FFB7E3"],["绿色","#00B050"],["浅色","#B3F9FF"],["炫彩","gradient"]];
-
-
-  var spData=state.sp||{};var spHtml="";
-
-
-  for(var ri=0;ri<2;ri++){
-
-
-    spHtml+="<div class='sp-row'>";
-
-
-    for(var ci=0;ci<7;ci++){
-
-
-      var idx=ri*7+ci;if(idx>=spColors.length)break;
-
-
-      var nm=spColors[idx][0];var co=spColors[idx][1];var ct=spData[nm]||0;
-
-
-      if(co==="gradient"){spHtml+="<div class='sp-item'><span class='sp-dot sp-dot-premium'></span><span class='sp-count'>"+ct+"</span></div>";}
-
-
-      else{spHtml+="<div class='sp-item'><span class='sp-dot' style='background:"+co+"'></span><span class='sp-count'>"+ct+"</span></div>";}
-
-
-    }
-
-
-    spHtml+="</div>";}
-
-
-  document.getElementById("sp-bar").innerHTML=spHtml;
+  ensureSpState();
+  document.getElementById("sp-bar").innerHTML = renderMarkOverviewHtml();
 
 
 
@@ -4211,18 +3992,23 @@ document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
   h+='<button onclick="_cheatAdjXP(100)" style="padding:6px 14px;font-size:16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer">+100</button>';
   h+='</div></div>';
   
-  // SP section
-  var colors=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","浅色","炫彩"];
-  h+='<div style="margin-bottom:8px;font-weight:bold">💎 技能点</div>';
+  // SP + marks section
+  ensureSpState();
+  var spTotal=getSpTotal();
+  h+='<div style="margin-bottom:12px;padding:12px;background:var(--bg,#f6f4ef);border-radius:8px">';
+  h+='<div style="font-weight:bold;margin-bottom:8px">💎 技能点 ('+spTotal+')</div>';
+  h+='<div style="display:flex;gap:8px;align-items:center">';
+  h+='<button onclick="_cheatAdjSPPoints(-1)" style="padding:6px 14px;font-size:16px;background:#c06040;color:#fff;border:none;border-radius:6px;cursor:pointer">-1</button>';
+  h+='<input id="_cheatSPPoints" type="number" min="0" value="'+spTotal+'" onchange="_cheatSetSPPoints(this.value)" style="flex:1;width:60px;padding:6px;text-align:center;border:1px solid var(--line,#d8d2c4);border-radius:6px;font-size:14px;background:var(--panel,#fffdf8);color:var(--ink,#1f2522)">';
+  h+='<button onclick="_cheatAdjSPPoints(1)" style="padding:6px 14px;font-size:16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer">+1</button>';
+  h+='</div></div>';
+  h+='<div style="margin-bottom:8px;font-weight:bold">🎨 色彩标识（点击切换）</div>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-  for(var ci=0;ci<colors.length;ci++){
-    var c=colors[ci];var spVal=state.sp[c]||0;
-    h+='<div style="display:flex;align-items:center;gap:4px;padding:4px 8px;background:var(--bg,#f6f4ef);border-radius:6px">';
-    h+='<span style="font-size:11px;min-width:30px;color:var(--ink)">'+c+'</span>';
-    h+='<button onclick="_cheatAdjSP(\''+c+'\',-1)" style="padding:2px 8px;font-size:14px;background:#c04030;color:#fff;border:none;border-radius:4px;cursor:pointer">-</button>';
-    h+='<input id="_cheatSP_'+ci+'" type="number" min="0" value="'+spVal+'" onchange="_cheatSetSP(\''+c+'\',this.value)" style="width:40px;padding:3px;text-align:center;border:1px solid var(--line,#d8d2c4);border-radius:4px;font-size:12px;background:var(--panel,#fffdf8);color:var(--ink,#1f2522)">';
-    h+='<button onclick="_cheatAdjSP(\''+c+'\',1)" style="padding:2px 8px;font-size:14px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer">+</button>';
-    h+='</div>';
+  for(var ci=0;ci<MARK_COLOR_NAMES.length;ci++){
+    var c=MARK_COLOR_NAMES[ci];var on=hasColorMark(c);
+    h+='<button onclick="_cheatToggleMark(\''+c+'\')" style="display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--bg,#f6f4ef);border:1px solid var(--line,#d8d2c4);border-radius:6px;cursor:pointer;opacity:'+(on?'1':'0.45')+'">';
+    h+='<span style="width:14px;height:14px;border-radius:50%;background:'+MARK_COLOR_HEX[c]+';border:1px solid rgba(0,0,0,0.2)"></span>';
+    h+='<span style="font-size:12px;color:var(--ink)">'+c+'</span></button>';
   }
   h+='</div>';
   h+='<button onclick="document.getElementById(\'_cheatPanel\').remove();render()" style="margin-top:12px;width:100%;padding:8px;background:var(--accent,#a46d1f);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px">✅ 确认并刷新面板</button>';
@@ -4242,8 +4028,9 @@ document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
 
 function _cheatAdjXP(delta){state.xp=Math.max(0,(state.xp||0)+delta);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
 function _cheatSetXP(val){state.xp=Math.max(0,parseInt(val)||0);var inp=document.getElementById('_cheatXP');if(inp)inp.value=state.xp;}
-function _cheatAdjSP(color,delta){state.sp[color]=Math.max(0,(state.sp[color]||0)+delta);render();}
-function _cheatSetSP(color,val){state.sp[color]=Math.max(0,parseInt(val)||0);render();}
+function _cheatAdjSPPoints(delta){ensureSpState();state.sp_points=Math.max(0,(state.sp_points||0)+delta);var inp=document.getElementById("_cheatSPPoints");if(inp)inp.value=state.sp_points;render();}
+function _cheatSetSPPoints(val){ensureSpState();state.sp_points=Math.max(0,parseInt(val)||0);var inp=document.getElementById("_cheatSPPoints");if(inp)inp.value=state.sp_points;render();}
+function _cheatToggleMark(color){ensureSpState();state.color_marks[color]=!state.color_marks[color];cheatAdd();}
 function toggleLearnMode() {
 
 
@@ -4337,40 +4124,13 @@ function renderLearnPanel() {
     spOverview.id = "learnSPOverview";
 
 
-    spOverview.style.cssText = "margin-bottom:10px;padding:8px 12px;background:#2d2722;border-radius:8px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center";
+    spOverview.style.cssText = "margin-bottom:10px;padding:8px 12px;background:#2d2722;border-radius:8px";
 
 
-    var spColors = {"\u6a59\u8272":"#EE822F","\u767d\u8272":"#FFFFFF","\u7d2b\u8272":"#B94BFF","\u9ec4\u8272":"#FFF32F","\u65e0\u8272":"#D9D9D9","\u84dd\u8272":"#00B0F0","\u9752\u8272":"#00FA99","\u9ed1\u8272":"#595959","\u7ea2\u8272":"#FF0000","\u68d5\u8272":"#843F0B","\u7c89\u8272":"#FFB7E3","\u7eff\u8272":"#00B050","\u6d45\u8272":"#B3F9FF","\u70ab\u5f69":"linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)"};
+    ensureSpState();
 
 
-    var spOrder = ["\u6a59\u8272","\u767d\u8272","\u7d2b\u8272","\u9ec4\u8272","\u65e0\u8272","\u84dd\u8272","\u9752\u8272","\u9ed1\u8272","\u7ea2\u8272","\u68d5\u8272","\u7c89\u8272","\u7eff\u8272","\u6d45\u8272","\u70ab\u5f69"];
-
-
-    for (var si = 0; si < spOrder.length; si++) {
-
-
-      var cn = spOrder[si];
-
-
-      var hex = spColors[cn];
-
-
-      var bg = (hex.indexOf("gradient") >= 0) ? hex : "background:" + hex;
-
-
-      var isGrad = hex.indexOf("gradient") >= 0;
-
-
-      spOverview.innerHTML += "<span style='display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#c0b0a0'>" +
-
-
-        "<span style='display:inline-block;width:10px;height:10px;border-radius:2px;" + (isGrad ? "background:" + hex : "background:" + hex) + ";border:1px solid rgba(255,255,255,0.15)'></span>" +
-
-
-        cn + ":" + (state.sp[cn]||0) + "</span>";
-
-
-    }
+    spOverview.innerHTML = renderMarkOverviewHtml();
 
 
     toolbar.appendChild(spOverview);
@@ -4490,17 +4250,8 @@ function renderLearnResults() {
   // Update SP overview counts
   var spOverview = document.getElementById("learnSPOverview");
   if (spOverview) {
-    var spColors = {"\u6a59\u8272":"#EE822F","\u767d\u8272":"#FFFFFF","\u7d2b\u8272":"#B94BFF","\u9ec4\u8272":"#FFF32F","\u65e0\u8272":"#D9D9D9","\u84dd\u8272":"#00B0F0","\u9752\u8272":"#00FA99","\u9ed1\u8272":"#595959","\u7ea2\u8272":"#FF0000","\u68d5\u8272":"#843F0B","\u7c89\u8272":"#FFB7E3","\u7eff\u8272":"#00B050","\u6d45\u8272":"#B3F9FF","\u70ab\u5f69":"linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)"};
-    var spOrder = ["\u6a59\u8272","\u767d\u8272","\u7d2b\u8272","\u9ec4\u8272","\u65e0\u8272","\u84dd\u8272","\u9752\u8272","\u9ed1\u8272","\u7ea2\u8272","\u68d5\u8272","\u7c89\u8272","\u7eff\u8272","\u6d45\u8272","\u70ab\u5f69"];
-    spOverview.innerHTML = "";
-    for (var si = 0; si < spOrder.length; si++) {
-      var cn = spOrder[si];
-      var hex = spColors[cn];
-      var isGrad = hex.indexOf("gradient") >= 0;
-      spOverview.innerHTML += "<span style=\"display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#e0d0b8\">" +
-        "<span style=\"display:inline-block;width:10px;height:10px;border-radius:2px;" + (isGrad ? "background:" + hex : "background:" + hex) + ";border:1px solid rgba(255,255,255,0.15)\"></span>" +
-        cn + ":" + (state.sp[cn]||0) + "</span>";
-    }
+    ensureSpState();
+    spOverview.innerHTML = renderMarkOverviewHtml();
   }
 
   // Initialize collapsed state
@@ -4937,6 +4688,7 @@ function learnSkill(clsName, skillName, clsIdx) {
   if (skillData.name === "\u5173\u952e\u504f\u597d") {
     var _isSub2=isSub; var _clsName2=clsName; var _tier2=skillData.tier||"\u4e00\u9636";
     showKeyPreferencePicker(function(prefColor){
+      if (!payForSkill(skillData)) return;
       var _tl=state.talent_tree||[]; _tl.push({id:skillData.id,n:skillData.name,cls:_clsName2,tier:_tier2.replace("\u5929\u8d4b\u6811",""),sub:_isSub2,pref:prefColor});
       state.talent_tree=_tl; applyChoiceBProfBonus(skillData.name,true); applyChoiceLMasteryBonus(skillData.name,true); applyMeditationSP(skillData.name,true);
       autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
@@ -4967,136 +4719,7 @@ function learnSkill(clsName, skillName, clsIdx) {
     if (dupFound) { alert("\u8be5\u5929\u8d4b\u6280\u80fd\u5df2\u5b66\u4e60\uff0c\u65e0\u6cd5\u91cd\u590d\u5b66\u4e60"); return; } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u5929\u8d4b\u9501\u5b9a"); return; }
 
 
-    var costList = parseSkillCost(skillData);
-
-
-    if (costList.length > 0) {
-
-
-      // Check if all rainbow
-
-
-      var allRainbow = true;
-
-
-      for (var ci = 0; ci < costList.length; ci++) { if (costList[ci].colorHex.indexOf("gradient") < 0) { allRainbow = false; break; } }
-
-
-      if (allRainbow) {
-
-
-        if ((state.sp["\u70ab\u5f69"] || 0) < costList.length) { alert("\u4e0d\u8db3\u7684\u70ab\u5f69\u6280\u80fd\u70b9\uff0c\u9700\u8981 " + costList.length + " \u70b9"); return; }
-
-
-        state.sp["\u70ab\u5f69"] -= costList.length;
-
-
-      } else {
-
-
-        // Try to deduct matching colors first
-
-
-        var deducted = {};
-
-
-        var missingSteps = [];
-
-
-        for (var ci = 0; ci < costList.length; ci++) {
-
-
-          var c = costList[ci];
-
-
-          if ((state.sp[c.colorName] || 0) > 0) {
-
-
-            state.sp[c.colorName]--;
-
-
-            deducted[c.colorName] = (deducted[c.colorName] || 0) + 1;
-
-
-          } else if (getKeyPreferenceColor() && c.colorName === getKeyPreferenceColor()) {
-
-
-            var _scl=["\u6a59\u8272","\u767d\u8272","\u7d2b\u8272","\u9ec4\u8272","\u65e0\u8272","\u84dd\u8272","\u9752\u8272","\u9ed1\u8272","\u7ea2\u8272","\u68d5\u8272","\u7c89\u8272","\u7eff\u8272","\u6d45\u8272","\u70ab\u5f69"];var _sf=false;
-
-
-            for(var _si=0;_si<_scl.length;_si++){var _sc=_scl[_si];if((state.sp[_sc]||0)>0){state.sp[_sc]--;deducted[_sc]=(deducted[_sc]||0)+1;_sf=true;break;}}
-
-
-            if(!_sf){missingSteps.push(c);}
-
-
-          } else if (getFreeSPColors().length>0) {
-
-
-            var _fc2=getFreeSPColors();var _ff2=false;
-
-
-            for(var _fi2=0;_fi2<_fc2.length;_fi2++){var _fcv=_fc2[_fi2];if((state.sp[_fcv]||0)>0){state.sp[_fcv]--;deducted[_fcv]=(deducted[_fcv]||0)+1;_ff2=true;break;}}
-
-
-            if(!_ff2){missingSteps.push(c);}
-
-
-          } else {
-
-
-            missingSteps.push(c);
-
-
-          }
-
-
-        }
-
-
-        if (missingSteps.length > 0) {
-
-
-          // Need to ask user - rollback first
-
-
-          for (var c in deducted) { state.sp[c] = (state.sp[c] || 0) + deducted[c]; }
-
-
-          showSPChoiceModal(0, costList.length, costList, {}, function(finalDeduction) {
-
-
-            // All deducted, proceed
-
-
-            tl.push({id:skillData.id,n:skillData.name,cls:clsName,tier:tier.replace("天赋树",""),sub:isSub,locked:isLocked});
-
-
-            state.talent_tree=tl; applyChoiceBProfBonus(skillName,true); applyChoiceLMasteryBonus(skillName,true); applyMeditationSP(skillName,true);
-
-
-            autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
-
-
-          }, function() {
-
-
-            // Cancelled - do nothing
-
-
-          });
-
-
-          return;
-
-
-        }
-
-
-      }
-
-
-    }
+    if (!payForSkill(skillData)) return;
 
 
     tl.push({id:skillData.id,n:skillData.name,cls:clsName,tier:tier.replace("天赋树",""),sub:isSub,locked:isLocked});
@@ -5135,187 +4758,13 @@ function learnSkill(clsName, skillName, clsIdx) {
       for (var si = 0; si < clsSkills.length; si++) { msg += (si+1) + ". " + clsSkills[si].n + (clsSkills[si].locked ? " [\u9501\u5b9a]" : "") + "\\n"; }
 
 
-      showReplaceModal(newName, clsSkills, skillList, maxSlots); }
+      showReplaceModal(skillData.name, clsSkills, skillList, maxSlots, {skillData: skillData, clsName: clsName, isSub: isSub, isLocked: isLocked}); return; }
 
 
-    // Deduct skill point - skip if free (no cost or empty cost)
+    if (!payForSkill(skillData)) return;
 
 
-    var costList = parseSkillCost(skillData);
-
-
-    if (costList.length > 0) {
-
-
-      // Check if all rainbow
-
-
-      var allRainbow = true;
-
-
-      for (var ci = 0; ci < costList.length; ci++) { if (costList[ci].colorHex.indexOf("gradient") < 0) { allRainbow = false; break; } }
-
-
-      if (allRainbow) {
-
-
-        if ((state.sp["\u70ab\u5f69"] || 0) < costList.length) { alert("\u4e0d\u8db3\u7684\u70ab\u5f69\u6280\u80fd\u70b9\uff0c\u9700\u8981 " + costList.length + " \u70b9"); return; }
-
-
-        state.sp["\u70ab\u5f69"] -= costList.length;
-
-
-      } else {
-
-
-        // Try to deduct matching colors first
-
-
-        var deducted = {};
-
-
-        for (var ci = 0; ci < costList.length; ci++) {
-
-
-          var c = costList[ci];
-
-
-          if ((state.sp[c.colorName] || 0) > 0) {
-
-
-            state.sp[c.colorName]--;
-
-
-            deducted[c.colorName] = (deducted[c.colorName] || 0) + 1;
-
-
-          } else {
-
-
-            deducted = {}; // reset - we need all or nothing
-
-
-            break;
-
-
-          }
-
-
-        }
-
-
-        // Check if all deducted
-
-
-        var totalDeducted = 0;
-
-
-        for (var cn in deducted) totalDeducted += deducted[cn];
-
-
-        if (totalDeducted < costList.length) {
-
-
-          // Rollback partial
-
-
-          for (var cn in deducted) { state.sp[cn] = (state.sp[cn] || 0) + deducted[cn]; }
-
-
-          showSPChoiceModal(0, costList.length, costList, {}, function(finalDeduction) {
-
-
-            // All deducted, proceed with skill addition
-
-
-            var maxSlots = isSub ? 8 : 17; var skillList2 = state.skills.slice();
-
-
-            var clsSkills2 = [];
-
-
-            for (var si = 0; si < skillList2.length; si++) { if (isSub && skillList2[si].sub) clsSkills2.push(skillList2[si]); else if (!isSub && !skillList2[si].sub) clsSkills2.push(skillList2[si]); }
-
-
-            if (clsSkills2.length >= maxSlots) {
-
-
-              var msg = "\u6280\u80fd\u5217\u8868\u5df2\u6ee1\uff01\u8bf7\u9009\u62e9\u8981\u66ff\u6362\u7684\u6280\u80fd\u7f16\u53f7 (1-" + maxSlots + "):\n";
-
-
-              for (var si = 0; si < clsSkills2.length; si++) { msg += (si+1) + ". " + clsSkills2[si].n + (clsSkills2[si].locked ? " [\u9501\u5b9a]" : "") + "\n"; }
-
-
-              showReplaceModal(skillData.name, clsSkills2, skillList2, maxSlots);
-
-
-              return;
-
-
-            }
-
-
-            skillList2.push({id: skillData.id, n: skillData.name, src: skillData.style || clsName,
-
-
-              tm: skillData.fields ? (skillData.fields["\u65bd\u5c55\u65f6\u95f4"] || "") : "",
-
-
-              ds: (skillData.description || [""]).join(""), dr: skillData.fields ? (skillData.fields["\u75b2\u52b3\u6d88\u8017"] || "") : "",
-
-
-              range: skillData.fields ? (skillData.fields["\u65bd\u5c55\u8ddd\u79bb"] || "") : "",
-
-
-              dur: skillData.fields ? (skillData.fields["\u6301\u7eed\u65f6\u95f4"] || "") : "",
-
-
-              cost: "", sub: isSub ? clsName : "", locked: isLocked});
-
-
-            state.skills = skillList2;
-
-
-            autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
-
-
-          }, function() {
-
-
-            // Cancelled - do nothing
-
-
-          });
-
-
-          return;
-
-
-        }
-
-
-      }
-
-
-    }
-
-
-    skillList.push({id: skillData.id, n: skillData.name, src: skillData.style || clsName,
-
-
-      tm: skillData.fields ? (skillData.fields["\u65bd\u5c55\u65f6\u95f4"] || "") : "",
-
-
-      ds: (skillData.description || [""]).join(""), dr: skillData.fields ? (skillData.fields["\u75b2\u52b3\u6d88\u8017"] || "") : "",
-
-
-      range: skillData.fields ? (skillData.fields["\u65bd\u5c55\u8ddd\u79bb"] || "") : "",
-
-
-      dur: skillData.fields ? (skillData.fields["\u6301\u7eed\u65f6\u95f4"] || "") : "",
-
-
-      cost: "", sub: isSub ? clsName : "", locked: isLocked});
+    skillList.push(buildSkillListEntry(skillData, clsName, isSub, isLocked));
 
 
     state.skills = skillList; }
@@ -5431,16 +4880,7 @@ function unlearnSkill(clsName, skillName, clsIdx) {
     if (sd) {
 
 
-      var costArr = parseSkillCost(sd);
-
-
-      for (var ci = 0; ci < costArr.length; ci++) {
-
-
-        state.sp[costArr[ci].colorName] = (state.sp[costArr[ci].colorName] || 0) + 1;
-
-
-      }
+      refundSkillPoint(sd);
 
 
     }
@@ -5497,16 +4937,7 @@ function unlearnTalent(clsName, skillName, clsIdx) {
     if (sd) {
 
 
-      var costArr = parseSkillCost(sd);
-
-
-      for (var ci = 0; ci < costArr.length; ci++) {
-
-
-        state.sp[costArr[ci].colorName] = (state.sp[costArr[ci].colorName] || 0) + 1;
-
-
-      }
+      refundSkillPoint(sd);
 
 
     }
@@ -5596,16 +5027,7 @@ function batchResetSkills() {
       if (sd) {
 
 
-        var costArr = parseSkillCost(sd);
-
-
-        for (var ci = 0; ci < costArr.length; ci++) {
-
-
-          state.sp[costArr[ci].colorName] = (state.sp[costArr[ci].colorName] || 0) + 1;
-
-
-        }
+        refundSkillPoint(sd);
 
 
       }
@@ -5632,7 +5054,7 @@ function batchResetSkills() {
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
 
 
-function showReplaceModal(newName, clsSkills, skillList, maxSlots) {
+function showReplaceModal(newName, clsSkills, skillList, maxSlots, pendingLearn) {
 
 
   closeReplaceModal();
@@ -5674,7 +5096,7 @@ function showReplaceModal(newName, clsSkills, skillList, maxSlots) {
   overlay.style.display = "flex";
 
 
-  window._replaceData = {clsSkills: clsSkills, skillList: skillList, maxSlots: maxSlots}; }
+  window._replaceData = {clsSkills: clsSkills, skillList: skillList, maxSlots: maxSlots, pendingLearn: pendingLearn || null}; }
 
 
 function closeReplaceModal() {
@@ -5701,7 +5123,16 @@ function doReplace(idx) {
   if (clsSkills[idx].locked) { alert("\u8be5\u6280\u80fd\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
 
 
-  var removedId = clsSkills[idx].id;
+  var removed = clsSkills[idx];
+
+
+  var removedData = findSkillDataAcrossClasses(removed.n);
+
+
+  if (removedData) refundSkillPoint(removedData);
+
+
+  var removedId = removed.id;
 
 
   state.forbidden_skills = state.forbidden_skills || [];
@@ -5711,6 +5142,27 @@ function doReplace(idx) {
 
 
   for (var si = 0; si < skillList.length; si++) { if (skillList[si].id === removedId) { skillList.splice(si, 1); break; } }
+
+
+  var pending = data.pendingLearn;
+
+
+  if (pending) {
+
+
+    if (!payForSkill(pending.skillData)) { closeReplaceModal(); render(); return; }
+
+
+    skillList.push(buildSkillListEntry(pending.skillData, pending.clsName, pending.isSub, pending.isLocked));
+
+
+    state.skills = skillList;
+
+
+    autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
+
+
+  }
 
 
   closeReplaceModal(); }
@@ -6770,15 +6222,8 @@ async function exportXlsxFromState(state) {
 
   // XP/SP
   if (state.xp) set("U46", String(state.xp));
-  if (state.sp) {
-    var spStr = [];
-    var spc = ["橙色", "白色", "紫色", "黄色", "无色", "蓝色", "青色", "黑色", "红色", "棕色", "粉色", "绿色", "浅色", "炫彩"];
-    for (var spi = 0; spi < spc.length; spi++) {
-      var scnt = state.sp[spc[spi]] || 0;
-      for (var sc = 0; sc < scnt; sc++) spStr.push(spc[spi].substring(0, 1));
-    }
-    if (spStr.length > 0) set("U51", spStr.join(""));
-  }
+  ensureSpState();
+  if (state.sp_points) set("U51", String(state.sp_points));
 
   // Weight/Language/Profession
   if (state.carry_capacity) {

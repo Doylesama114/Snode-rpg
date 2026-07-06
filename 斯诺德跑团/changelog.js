@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.6118',
+    date: '2026-07-06',
+    changes: [
+      '角色面板26.06.30技能点与色彩标识系统(sp_points+color_marks+无色/炫彩wildcard)',
+      '移除旧14色SP弹窗',
+      '学习/卸载/替换流程接入payForSkill',
+      'tests扩展至75项',
+      '技能标识授予效果由DM桌面团结算(面板待办)'
+    ]
+  },
+
+
+  {
     version: '1.0.6117',
     date: '2026-07-06',
     changes: [

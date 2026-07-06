@@ -268,6 +268,74 @@ if (medSkill) {
 
 results.push('</div>');
 
+// =================== T8: SP / color marks (26.06.30 rules) ===================
+results.push('<div class="section"><h3>T8: parseSkillRequirements / canLearnSkill / wildcard — 技能点与色彩标识</h3>');
+
+function resetMarkState() {
+  ensureSpState();
+  state.sp_points = 0;
+  state.color_marks = defaultColorMarks();
+  state.all_marks_active = false;
+}
+
+var markSkill = { cost: [{ color: "#FF0000", count: 2 }, { color: "#00B0F0", count: 1 }] };
+var req = parseSkillRequirements(markSkill);
+assert(req.fixed.length, 2, '固定色去重 count → 红+蓝');
+assert(req.fixed.indexOf("红色") >= 0, true, 'requirements 含红色');
+assert(req.fixed.indexOf("蓝色") >= 0, true, 'requirements 含蓝色');
+assert(req.wildcards, 0, '无 wildcard 槽');
+assertFalse(skillHasCost({}), '无 cost → skillHasCost false');
+assertTrue(skillHasCost(markSkill), '有 cost → skillHasCost true');
+
+resetMarkState();
+state.color_marks["红色"] = true;
+state.color_marks["蓝色"] = true;
+assertFalse(canLearnSkill(markSkill).ok, 'SP=0 无法学习');
+state.sp_points = 1;
+assertTrue(canLearnSkill(markSkill).ok, 'SP=1 + 标识齐全 → 可学');
+state.color_marks["蓝色"] = false;
+assertFalse(canLearnSkill(markSkill).ok, '缺蓝色标识 → 不可学');
+state.color_marks["蓝色"] = true;
+
+var beforeSp = state.sp_points;
+assertTrue(payForSkill(markSkill), 'payForSkill 成功');
+assert(state.sp_points, beforeSp - 1, 'payForSkill 扣 1 SP');
+assertTrue(state.color_marks["红色"], 'payForSkill 不消耗标识');
+refundSkillPoint(markSkill);
+assert(state.sp_points, beforeSp, 'refundSkillPoint 退还 1 SP');
+
+resetMarkState();
+var wc1 = { cost: [{ color: "#D9D9D9", count: 1 }] };
+assertFalse(canSatisfyMarkRequirements(parseSkillRequirements(wc1)).ok, '无色×1 无标识不满足');
+state.color_marks["绿色"] = true;
+assertTrue(canSatisfyMarkRequirements(parseSkillRequirements(wc1)).ok, '无色×1 + 绿 满足标识');
+state.sp_points = 1;
+assertTrue(canLearnSkill(wc1).ok, '无色×1 + 任意1有色 → 可学');
+
+resetMarkState();
+var wc2 = { cost: [{ color: "#D9D9D9", count: 2 }] };
+state.color_marks["绿色"] = true;
+state.sp_points = 1;
+assertFalse(canLearnSkill(wc2).ok, '无色×2 仅1色不可学');
+state.color_marks["蓝色"] = true;
+assertTrue(canLearnSkill(wc2).ok, '无色×2 + 绿蓝 → 可学');
+
+resetMarkState();
+var rainbowSkill = { cost: [{ color: "linear-gradient(135deg,#FFD700,#FF6B6B", count: 1, name: "炫彩" }] };
+state.color_marks["红色"] = true;
+state.sp_points = 1;
+assertTrue(canLearnSkill(rainbowSkill).ok, '炫彩 cost 等同无色 wildcard');
+
+resetMarkState();
+var mixed = { cost: [{ color: "#FF0000", count: 1 }, { color: "#D9D9D9", count: 1 }] };
+state.color_marks["红色"] = true;
+state.sp_points = 1;
+assertFalse(canLearnSkill(mixed).ok, '红+无色×1 仅红不可学（wildcard需另色）');
+state.color_marks["蓝色"] = true;
+assertTrue(canLearnSkill(mixed).ok, '红+无色×1 + 红蓝 → 可学');
+
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");
