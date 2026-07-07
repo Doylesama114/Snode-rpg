@@ -24,10 +24,13 @@
     "奇械师": {
       "tier": "partial",
       "keyAttr": "智力",
+      "isCaster": true,
+      "l2Layer": "L2-artificer",
       "keyAttrCreateNote": "创建页 FP 关键属性可能为魅力，以页面已选 keyAttr 为准",
       "startingFeaturePick": 2,
       "skillPickCount": 4,
-      "advisorNote": "奇械师顾问数据尚未完整更新（标识系统等仍在完善）；当前提供创建陪跑与通用规则，深度 build 请以规则书/DM 为准。"
+      "specProfChoices": ["奇械构装", "万用模组", "脑力强化"],
+      "advisorNote": "奇械师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "蛮斗士": {
       "tier": "basic",

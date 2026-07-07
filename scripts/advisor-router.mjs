@@ -85,11 +85,25 @@ export const INTENT_RULES = [
     promptProfile: 'mage_skills',
   },
   {
+    id: 'artificer_style_compare',
+    patterns: [/精准.*构想/, /构想.*精准/, /奇械师.*风格/, /战斗风格.*选/],
+    layers: ['L2-artificer', 'L1', 'L5'],
+    topK: { 'L2-artificer': 12, L1: 6, L5: 5 },
+    promptProfile: 'artificer_skills',
+  },
+  {
     id: 'tips',
     patterns: [/combo/, /小贴士/, /技巧/, /借机/, /反应动作/, /贴脸/, /塑能相关/],
     layers: ['L5', 'L2-mage'],
     topK: { L5: 8, 'L2-mage': 10 },
     promptProfile: 'tips',
+  },
+  {
+    id: 'artificer_skills',
+    patterns: [/奇械师/, /精准/, /构想/, /炽擎/, /电涌/, /魔枢/, /枪械/, /图纸/, /零件包/, /同调/, /研发/, /战术装填/, /弹射齿轮/],
+    layers: ['L2-artificer', 'L1'],
+    topK: { 'L2-artificer': 18, L1: 4 },
+    promptProfile: 'artificer_skills',
   },
   {
     id: 'mage_skills',
@@ -101,6 +115,7 @@ export const INTENT_RULES = [
 ];
 
 const MAGE_QUERY_RE = /法师|塑能|咒法|预言|防护|附魔|死灵|幻术|变化|法术|魔弹|飞弹|寒冰|火球/;
+const ARTIFICER_QUERY_RE = /奇械师|精准|构想|炽擎|电涌|魔枢|枪械|图纸|零件包|同调|研发|战术装填|弹射齿轮/;
 
 function allowL2Mage(className, query) {
   if (className === '法师' && isFullTier(getClassProfile('法师'))) return true;
@@ -108,23 +123,74 @@ function allowL2Mage(className, query) {
   return false;
 }
 
+function allowL2Artificer(className, query) {
+  const profile = getClassProfile(className || '奇械师');
+  if (className === '奇械师' && profile.tier === 'partial') return true;
+  if (!className && ARTIFICER_QUERY_RE.test(query || '')) return true;
+  return false;
+}
+
+export function resolveClassL2Layer(className, query = '') {
+  if (allowL2Mage(className, query)) return 'L2-mage';
+  if (allowL2Artificer(className, query)) return 'L2-artificer';
+  return null;
+}
+
+const L2_INJECT_INTENTS = new Set([
+  'general', 'chargen', 'wizard_step', 'artificer_skills', 'artificer_style_compare', 'tips',
+]);
+
 export function applyClassRouteFilter(route, ctx = {}) {
   const { className, query } = ctx;
-  if (allowL2Mage(className, query)) return route;
+  const intent = route.intent || route.id;
+  const mageOk = allowL2Mage(className, query);
+  const artOk = allowL2Artificer(className, query);
+  const origTopK = { ...route.topK };
 
-  route.layers = route.layers.filter((l) => l !== 'L2-mage');
-  delete route.topK['L2-mage'];
+  route.layers = route.layers.filter((l) => {
+    if (l === 'L2-mage') return mageOk;
+    if (l === 'L2-artificer') return artOk;
+    return true;
+  });
+  if (!mageOk) delete route.topK['L2-mage'];
+  if (!artOk) delete route.topK['L2-artificer'];
 
-  if (route.intent === 'mage_skills' || route.intent === 'style_compare') {
-    route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-mage'), 'L5', 'L0'])];
-    route.topK.L5 = route.topK.L5 || 6;
-    route.topK.L0 = route.topK.L0 || 4;
-    route.promptProfile = route.intent === 'style_compare' ? 'tips' : 'general';
+  if (artOk && L2_INJECT_INTENTS.has(intent) && !route.layers.includes('L2-artificer')) {
+    route.layers.push('L2-artificer');
+    route.topK['L2-artificer'] = origTopK['L2-artificer'] || 12;
   }
 
-  if (route.intent === 'tips' && !route.layers.includes('L5')) {
-    route.layers.push('L5');
-    route.topK.L5 = route.topK.L5 || 8;
+  if (route.intent === 'mage_skills' || route.intent === 'style_compare') {
+    if (!mageOk) {
+      route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-mage'), 'L5', 'L0'])];
+      route.topK.L5 = route.topK.L5 || 6;
+      route.topK.L0 = route.topK.L0 || 4;
+      route.promptProfile = route.intent === 'style_compare' ? 'tips' : 'general';
+    }
+  }
+
+  if (route.intent === 'artificer_skills' || route.intent === 'artificer_style_compare') {
+    if (!artOk) {
+      route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-artificer'), 'L5', 'L0'])];
+      route.topK.L5 = route.topK.L5 || 6;
+      route.topK.L0 = route.topK.L0 || 4;
+      route.promptProfile = route.intent === 'artificer_style_compare' ? 'tips' : 'general';
+    }
+  }
+
+  if (route.intent === 'tips') {
+    if (mageOk && !route.layers.includes('L2-mage')) {
+      route.layers.push('L2-mage');
+      route.topK['L2-mage'] = route.topK['L2-mage'] || 8;
+    }
+    if (artOk && !route.layers.includes('L2-artificer')) {
+      route.layers.push('L2-artificer');
+      route.topK['L2-artificer'] = route.topK['L2-artificer'] || 8;
+    }
+    if (!route.layers.includes('L5')) {
+      route.layers.push('L5');
+      route.topK.L5 = route.topK.L5 || 8;
+    }
   }
 
   return route;

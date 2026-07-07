@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7030',
+    date: '2026-07-07',
+    changes: [
+      '奇械师Tier B部分支持',
+      'L2-artificer技能检索',
+      'partial免责声明'
+    ]
+  },
+
+
+  {
     version: '1.0.7021',
     date: '2026-07-07',
     changes: [

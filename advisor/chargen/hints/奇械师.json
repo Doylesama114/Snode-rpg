@@ -1,24 +1,100 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-batch3",
     "targetClass": "奇械师",
     "tier": "partial",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "status": "minimal",
+    "note": "风格摘要已填；种族/背景推荐待补充"
   },
   "primaryAttr": {
     "name": "智力",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "奇械师关键属性为智力（创建页 FP 关键属性可能为魅力，以页面 keyAttr 为准）"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "科技输出",
+      "体系构筑",
+      "创造资源"
+    ],
+    "blurb": "奇械师通过头脑风暴创造出一件又一件新奇的道具，他们是伟大的发明家，能够使用零件、热能和电能等各类能源来驱使他们的造物。奇械师并非都是手无缚鸡之力的科研人员，他们同样精通枪械的运用，能够在远离敌人的情况下超远距离的击杀目标，甚至通过自我改造的方式直到造物的尽头、完成真正的升华。\\n奇械师的威能不可忽视，就如同科技日新月异一般。\\n注：玩家仅能够在曙光年代的时间线中游玩奇械师职业。"
   },
-  "specializationHints": [],
-  "styleHints": [],
+  "specializationHints": [
+    {
+      "name": "奇械构装",
+      "buildHint": "获得工程学熟练度（知识-工程学）"
+    },
+    {
+      "name": "万用模组",
+      "buildHint": "获得知识熟练度与额外专业槽位"
+    },
+    {
+      "name": "脑力强化",
+      "buildHint": "提升一次智力检定效果"
+    }
+  ],
+  "styleHints": [
+    {
+      "name": "精准",
+      "summary": "远程枪械与精准射击线；命中加值、远程战技与专注联动。",
+      "sampleSkills": [
+        "弹射齿轮",
+        "战术装填",
+        "快速射击"
+      ]
+    },
+    {
+      "name": "构想",
+      "summary": "科研图纸、奇械研发与专业列表扩展；偏资源与构筑。",
+      "sampleSkills": [
+        "撒网器（图纸）",
+        "战术抓钩（图纸）",
+        "水下呼吸帽（图纸）"
+      ]
+    },
+    {
+      "name": "支援",
+      "summary": "团队增益、装置部署与战场辅助。",
+      "sampleSkills": [
+        "照明浮游球（图纸）",
+        "自动清洁仪（图纸）",
+        "水质净化器（图纸）"
+      ]
+    },
+    {
+      "name": "炽擎",
+      "summary": "热能/火焰相关科技输出与装置。",
+      "sampleSkills": [
+        "机械恒温",
+        "烈焰喷射",
+        "蒸汽动能"
+      ]
+    },
+    {
+      "name": "电涌",
+      "summary": "雷电/电系科技输出与控制。",
+      "sampleSkills": [
+        "充能",
+        "电磁抓钩",
+        "电疗"
+      ]
+    },
+    {
+      "name": "魔枢",
+      "summary": "核心装置、同调与奇械中枢能力。",
+      "sampleSkills": [
+        "奥术箭",
+        "法术护盾",
+        "阅读魔法"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
+    "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

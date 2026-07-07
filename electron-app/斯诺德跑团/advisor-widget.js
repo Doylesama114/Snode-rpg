@@ -240,7 +240,7 @@
     }
 
     var PARTIAL_CLASS_NOTES = {
-      '奇械师': '奇械师顾问数据尚未完整更新（标识系统等仍在完善）；当前提供创建陪跑与通用规则。'
+      '奇械师': '奇械师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。'
     };
 
     function chargenTierWarning(className) {
