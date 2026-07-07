@@ -86,6 +86,7 @@ check('widget chargen bubble', widgetSrc.includes('_snowd_advisor_tip'));
 check('widget no standalone wizard tab', !widgetSrc.includes('_tab_wiz'));
 check('ledger module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-ledger.mjs')));
 check('policy module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-policy.mjs')));
+check('attrs module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-attrs.mjs')));
 check('snowdChargen on 角色创建页', fs.readFileSync(path.join(ROOT, '斯诺德跑团/角色创建页.html'), 'utf8').includes('window.snowdChargen'));
 
 const complete = buildCompleteWizard();

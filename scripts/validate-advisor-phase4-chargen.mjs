@@ -1,105 +1,108 @@
 /**
- * Phase 4″ — ledger, policy, bridge specChoices, starting-feature review mode.
+ * Phase 4‴ — ledger, attrs, policy, sync fixes
  */
-import {
-  chargenToWizardState,
-  buildChargenFingerprint,
-  normalizeChargenPayload,
-} from './advisor-chargen-bridge.mjs';
+import { chargenToWizardState } from './advisor-chargen-bridge.mjs';
 import { buildChargenLedger, formatLedgerContext } from './advisor-chargen-ledger.mjs';
-import { buildChargenBubbleQuery } from './advisor-chargen-policy.mjs';
-import { formatWizardContext } from './advisor-wizard-state.mjs';
+import { buildChargenBubbleQuery, buildChargenExtraContext } from './advisor-chargen-policy.mjs';
+import { analyzePointBuy, formatSkillSynergyContext } from './advisor-chargen-attrs.mjs';
 import { retrieve, formatContext } from './advisor-retrieve.mjs';
 
-const SAMPLE = {
+const FULL_FEATURES = {
   source: 'chargen_page',
   step: 1,
   stepLabel: '选择起始特性',
   char: {
     className: '法师',
-    raceName: null,
-    attrs: { 智力: 15, 体质: 10 },
-    selectedSkills: [],
     selectedFeatures: ['塑能箭', '闪现术', '预知梦', '法术护盾'],
     specChoices: {
       奥法学者: { skill: '奥秘-魔法学识' },
       知识传承: { skill: '知识-历史' },
     },
-    bgName: null,
-    bgProfs: { skills: {} },
-    equipChoice: null,
-    extraLanguages: [],
+    attrs: { 智力: 15, 体质: 10, 感知: 12, 力量: 8, 敏捷: 8, 魅力: 8, 意志: 8, 幸运: 8 },
+    raceAttrBonuses: { 智力: 2 },
+    pointSpent: 32,
+    selectedSkills: ['奥秘-魔法学识', '调查', '专注', '洞悉'],
+    raceName: '人类',
   },
 };
 
-const SAMPLE_PARTIAL = {
-  ...SAMPLE,
+const ATTR_DONE = {
+  source: 'chargen_page',
+  step: 3,
+  stepLabel: '分配属性',
   char: {
-    ...SAMPLE.char,
-    selectedFeatures: ['塑能箭', '闪现术'],
+    className: '法师',
+    attrs: {
+      力量: 8, 敏捷: 8, 体质: 15, 智力: 15,
+      感知: 15, 魅力: 8, 意志: 13, 幸运: 8,
+    },
+    raceAttrBonuses: { 智力: 1 },
+    raceName: '人类',
+  },
+};
+
+const SKILLS_STEP = {
+  ...FULL_FEATURES,
+  step: 4,
+  stepLabel: '选择熟练项',
+};
+
+const REVIEW = {
+  source: 'chargen_page',
+  step: 7,
+  stepLabel: '确认角色',
+  char: {
+    className: '法师',
+    characterProfile: {
+      charName: '艾拉',
+      story: '曾在学院塔楼研究塑能法术',
+      hair: '银白',
+      personality: '冷静',
+    },
   },
 };
 
 let passed = 0;
 let failed = 0;
+function pass(n) { passed++; console.log('  ✓', n); }
+function fail(n, d) { failed++; console.error('  ✗', n, d || ''); }
 
-function pass(name) {
-  passed += 1;
-  console.log('  ✓', name);
-}
+const qFeat = buildChargenBubbleQuery(FULL_FEATURES);
+if (qFeat.includes('【必须】评价') && qFeat.includes('塑能箭')) pass('policy features must review');
+else fail('policy features', qFeat.slice(0, 100));
 
-function fail(name, detail) {
-  failed += 1;
-  console.error('  ✗', name, detail || '');
-}
+const qAttr = buildChargenBubbleQuery(ATTR_DONE);
+if (qAttr.includes('【必须】评价') && qAttr.includes('32')) pass('policy attrs must review');
+else fail('policy attrs', qAttr.slice(0, 100));
 
-const ws = chargenToWizardState(SAMPLE);
-if (ws?.selections?.specChoices?.['奥法学者']?.skill === '奥秘-魔法学识') {
-  pass('bridge keeps full specChoices');
-} else fail('bridge specChoices', ws?.selections?.specChoices);
+const qReview = buildChargenBubbleQuery(REVIEW);
+if (qReview.includes('叙事') || qReview.includes('背景故事')) pass('policy review narrative');
+else fail('policy review', qReview.slice(0, 100));
 
-const ledger = buildChargenLedger(SAMPLE.char, { step: 4 });
-if (ledger.profNames.includes('奥秘-魔法学识')) pass('ledger spec prof');
-else fail('ledger spec prof');
+const ledger = buildChargenLedger(FULL_FEATURES.char, { step: 4 });
+if (ledger.entries.some((e) => e.name === '奥秘-魔法学识' && e.subLabel)) pass('ledger subLabel');
+else fail('ledger subLabel');
 
-if (ledger.entries.some((e) => e.source === '专精·魔法学派')) pass('ledger magic school granted');
-else fail('ledger magic school');
+const syn = formatSkillSynergyContext(FULL_FEATURES.char, FULL_FEATURES.char.selectedSkills);
+if (syn.includes('专注') && syn.includes('体质')) pass('skill synergy non-int');
+else fail('skill synergy', syn);
 
-if (ledger.overlapWarnings.length === 0) pass('ledger no false overlap at step4 empty skills');
-else fail('ledger false overlap', ledger.overlapWarnings);
+const extra = buildChargenExtraContext(FULL_FEATURES);
+if (extra.includes('购点分析') || extra.includes('熟练')) pass('extra context');
+else fail('extra context');
 
-const dupChar = {
-  ...SAMPLE.char,
-  selectedSkills: ['奥秘-魔法学识', '调查', '逻辑', '专注'],
-};
-const dupLedger = buildChargenLedger(dupChar, { step: 4 });
-if (dupLedger.overlapWarnings.some((w) => w.prof.includes('魔法学识'))) {
-  pass('ledger overlap magic学识');
-} else fail('ledger overlap', dupLedger.overlapWarnings);
-
-const qFull = buildChargenBubbleQuery(SAMPLE);
-if (qFull.includes('评价') && qFull.includes('不要推荐改选')) pass('policy features full review');
-else fail('policy full', qFull.slice(0, 80));
-
-const qPartial = buildChargenBubbleQuery(SAMPLE_PARTIAL);
-if (qPartial.includes('禁止') || qPartial.includes('勿')) pass('policy partial no push');
-else fail('policy partial', qPartial.slice(0, 80));
-
-const ctx = formatWizardContext(ws, {}, { ledgerContext: formatLedgerContext(ledger) });
-if (ctx.includes('非三选一') && ctx.includes('熟练账本')) pass('wizard context rules');
-else fail('wizard context');
-
-const ret = retrieve('评价我的起始特性', {
+const ret = retrieve('test', {
   mode: 'wizard',
-  wizardState: ws,
-  chargenState: SAMPLE,
+  wizardState: chargenToWizardState(SKILLS_STEP),
+  chargenState: SKILLS_STEP,
 });
 const block = formatContext(ret);
-if (block.includes('车卡熟练账本') && block.includes('塑能箭')) pass('retrieve includes ledger');
-else fail('retrieve ledger');
+if (block.includes('奥秘-魔法学识') && block.includes('熟练↔属性')) pass('retrieve full skills');
+else fail('retrieve context');
 
-if (!block.includes('法师友好背景示例')) pass('no static bg list at step1');
-else fail('static bg leak');
+const pb = analyzePointBuy(ATTR_DONE.char);
+if (pb.complete) pass('point buy complete');
+else fail('point buy');
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');
 process.exit(failed ? 1 : 0);

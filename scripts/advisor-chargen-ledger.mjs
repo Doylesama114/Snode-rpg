@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const MAGE_SPEC_PROF = new Set(['奥法学者', '知识传承']);
+import { skillPrimaryAttr } from './advisor-chargen-attrs.mjs';
 const MAGE_CLASS_SKILL_POOL = [
   '专注', '调查', '逻辑', '奥秘', '知识', '洞悉', '感悟', '聆听',
 ];
@@ -44,10 +44,25 @@ function normalizeProfName(name) {
   return t;
 }
 
+const MAGE_SPEC_PROF = new Set(['奥法学者', '知识传承']);
+
+function profSubLabel(name) {
+  if (!name || !name.includes('-')) return null;
+  const parent = name.split('-')[0];
+  const attr = skillPrimaryAttr(name);
+  return attr ? `${parent}系·${attr}` : `${parent}系`;
+}
+
 function addEntry(entries, name, source) {
   const n = normalizeProfName(name);
   if (!n) return;
-  entries.push({ name: n, source, category: profCategory(n) });
+  entries.push({
+    name: n,
+    source,
+    category: profCategory(n),
+    subLabel: profSubLabel(n),
+    primaryAttr: skillPrimaryAttr(n),
+  });
 }
 
 function featNames(list) {
@@ -196,9 +211,11 @@ export function formatLedgerContext(ledger) {
   const lines = ['## 车卡熟练账本（只读；顾问须据此分析，勿与页面冲突）'];
 
   if (ledger.entries.length) {
-    lines.push('- 已锁定熟练：');
+    lines.push('- 已锁定熟练（须按完整名称理解，含子项）：');
     for (const e of ledger.entries) {
-      let row = `  · ${e.name} ← ${e.source}`;
+      let row = `  · ${e.name}`;
+      if (e.subLabel) row += `（${e.subLabel}）`;
+      row += ` ← ${e.source}`;
       if (e.note) row += `（${e.note}）`;
       lines.push(row);
     }

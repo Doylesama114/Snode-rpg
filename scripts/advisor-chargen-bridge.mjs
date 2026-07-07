@@ -72,7 +72,9 @@ export function chargenToWizardState(snapshot) {
     equipmentKit: equipmentLetter(char),
     extraLanguages: char.extraLanguages || [],
     humanFreeSkill: char.humanFreeSkill || null,
-    pointSpent: typeof char.pointSpent === 'number' ? char.pointSpent : null,
+    raceAttrBonuses: char.raceAttrBonuses || null,
+    pointSpent: char.pointSpent ?? null,
+    characterProfile: char.characterProfile || null,
   };
 
   return normalizeWizardState(raw);

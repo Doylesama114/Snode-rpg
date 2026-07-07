@@ -348,10 +348,14 @@ function notifyChargenChange(){
   },600);
 }
 function chargenSnapshotChar(){
+  var rd=CHAR.raceData;
+  var raceAttrBonuses=rd&&rd["属性加成"]?JSON.parse(JSON.stringify(rd["属性加成"])):{};
   return{
     className:CHAR.className||null,
     raceName:CHAR.raceName||null,
     attrs:CHAR.attrs?JSON.parse(JSON.stringify(CHAR.attrs)):{},
+    raceAttrBonuses:raceAttrBonuses,
+    pointSpent:typeof calcCost==="function"?calcCost():null,
     selectedSkills:(CHAR.selectedSkills||[]).slice(),
     selectedFeatures:(CHAR.selectedFeatures||[]).map(function(f){return f.n||f;}),
     specChoices:CHAR.specChoices?JSON.parse(JSON.stringify(CHAR.specChoices)):{},
@@ -360,19 +364,44 @@ function chargenSnapshotChar(){
     equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
     extraLanguages:(CHAR.extraLanguages||[]).slice(),
     humanFreeSkill:CHAR.humanFreeSkill||null,
-    charName:CHAR.charName||""
+    charName:CHAR.charName||"",
+    characterProfile:{
+      charName:CHAR.charName||"",
+      playerName:CHAR.playerName||"",
+      playerName:CHAR.playerName||"",
+      gender:CHAR.gender||"",
+      age:CHAR.age||"",
+      height:CHAR.height||"",
+      weight:CHAR.weight||"",
+      eye:CHAR.eye||"",
+      skin:CHAR.skin||"",
+      hair:CHAR.hair||"",
+      story:CHAR.story||"",
+      personality:CHAR.personality||"",
+      ideals:CHAR.ideals||"",
+      bonds:CHAR.bonds||"",
+      flaws:CHAR.flaws||""
+    }
   };
+}
+function onChargenProfileInput(field,el){
+  CHAR[field]=el.value;
+  if(field==="charName")checkRv();
+  notifyChargenChange();
 }
 function buildChargenFingerprint(st){
   var c=st.char||st;
+  var p=c.characterProfile||{};
   return[
     st.step,c.className,c.raceName,c.bgName,
     (c.selectedFeatures||[]).join(","),
     (c.selectedSkills||[]).join(","),
     JSON.stringify(c.attrs||{}),
+    c.pointSpent,
     JSON.stringify(c.specChoices||{}),
     JSON.stringify(c.bgProfs||{}),
-    c.equipChoice&&c.equipChoice.letter
+    c.equipChoice&&c.equipChoice.letter,
+    p.story,p.personality,p.charName,p.gender,p.hair,p.eye
   ].join("|");
 }
 window.snowdChargen={
@@ -988,6 +1017,7 @@ function checkSpecDone(){
     }
   }
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
+  notifyChargenChange();
 }
 function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
@@ -1593,29 +1623,30 @@ function toggleFeature(el){
   if(idx>=0) CHAR.selectedFeatures.splice(idx,1);
   else if(CHAR.selectedFeatures.length<maxPick) CHAR.selectedFeatures.push(name);
   renderStartFeaturesStep(document.getElementById('stepContent'));
+  notifyChargenChange();
 }
 function renderReviewStep(c) {
   var h="<div class='step-title'>"+STEP_LABELS[7]+"</div>";
   h+="<div class='step-desc'>填写角色基本信息并确认所有选择。</div>";
   h+="<div class='form-grid'>";
-  h+="<div class='form-group'><label>角色名 *</label><input class='form-input' id='inputCharName' value='"+esc(CHAR.charName)+"' oninput='CHAR.charName=this.value;checkRv()' placeholder='输入角色名称'></div>";
-  h+="<div class='form-group'><label>玩家名</label><input class='form-input' id='inputPlayerName' value='"+esc(CHAR.playerName)+"' oninput='CHAR.playerName=this.value' placeholder='你的名字'></div>";
-  h+="<div class='form-group'><label>性别</label><input class='form-input' id='inputGender' value='"+esc(CHAR.gender)+"' oninput='CHAR.gender=this.value' placeholder='男/女'></div>";
-  h+="<div class='form-group'><label>年龄</label><input class='form-input' id='inputAge' value='"+esc(CHAR.age)+"' oninput='CHAR.age=this.value' placeholder='如 25岁'></div>";
-  h+="<div class='form-group'><label>身高</label><input class='form-input' id='inputHeight' value='"+esc(CHAR.height)+"' oninput='CHAR.height=this.value' placeholder='如 170cm'></div>";
-  h+="<div class='form-group'><label>瞳色</label><input class='form-input' id='inputEye' value='"+esc(CHAR.eye)+"' oninput='CHAR.eye=this.value' placeholder='如 黑色'></div>";
-  h+="<div class='form-group'><label>体重</label><input class='form-input' id='inputWeight' value='"+esc(CHAR.weight)+"' oninput='CHAR.weight=this.value' placeholder='如 65kg'></div>";
-  h+="<div class='form-group'><label>肤色</label><input class='form-input' id='inputSkin' value='"+esc(CHAR.skin)+"' oninput='CHAR.skin=this.value' placeholder='如 白皙'></div>";
-  h+="<div class='form-group'><label>发色</label><input class='form-input' id='inputHair' value='"+esc(CHAR.hair)+"' oninput='CHAR.hair=this.value' placeholder='如 黑色'></div>";
+  h+="<div class='form-group'><label>角色名 *</label><input class='form-input' id='inputCharName' value='"+esc(CHAR.charName)+"' oninput='onChargenProfileInput(\"charName\",this)' placeholder='输入角色名称'></div>";
+  h+="<div class='form-group'><label>玩家名</label><input class='form-input' id='inputPlayerName' value='"+esc(CHAR.playerName)+"' oninput='onChargenProfileInput(\"playerName\",this)' placeholder='你的名字'></div>";
+  h+="<div class='form-group'><label>性别</label><input class='form-input' id='inputGender' value='"+esc(CHAR.gender)+"' oninput='onChargenProfileInput(\"gender\",this)' placeholder='男/女'></div>";
+  h+="<div class='form-group'><label>年龄</label><input class='form-input' id='inputAge' value='"+esc(CHAR.age)+"' oninput='onChargenProfileInput(\"age\",this)' placeholder='如 25岁'></div>";
+  h+="<div class='form-group'><label>身高</label><input class='form-input' id='inputHeight' value='"+esc(CHAR.height)+"' oninput='onChargenProfileInput(\"height\",this)' placeholder='如 170cm'></div>";
+  h+="<div class='form-group'><label>瞳色</label><input class='form-input' id='inputEye' value='"+esc(CHAR.eye)+"' oninput='onChargenProfileInput(\"eye\",this)' placeholder='如 黑色'></div>";
+  h+="<div class='form-group'><label>体重</label><input class='form-input' id='inputWeight' value='"+esc(CHAR.weight)+"' oninput='onChargenProfileInput(\"weight\",this)' placeholder='如 65kg'></div>";
+  h+="<div class='form-group'><label>肤色</label><input class='form-input' id='inputSkin' value='"+esc(CHAR.skin)+"' oninput='onChargenProfileInput(\"skin\",this)' placeholder='如 白皙'></div>";
+  h+="<div class='form-group'><label>发色</label><input class='form-input' id='inputHair' value='"+esc(CHAR.hair)+"' oninput='onChargenProfileInput(\"hair\",this)' placeholder='如 黑色'></div>";
   h+="</div>";
   h+="<div class='popup-box' style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>背景故事与个性</h3>";
   h+="<div class='form-grid'>";
-  h+="<div class='form-group-full'><label>背景故事</label><textarea class='form-textarea' id='inputStory' oninput='CHAR.story=this.value' placeholder='描述角色背景故事...'>"+esc(CHAR.story)+"</textarea></div>";
-  h+="<div class='form-group-full'><label>个性</label><textarea class='form-textarea' id='inputPersonality' oninput='CHAR.personality=this.value' placeholder='选完背景后自动填入'>"+esc(CHAR.personality)+"</textarea></div>";
-  h+="<div class='form-group-half'><label>理念</label><textarea class='form-textarea' id='inputIdeals' oninput='CHAR.ideals=this.value' placeholder='你的角色信奉什么理念？'>"+esc(CHAR.ideals)+"</textarea></div>";
-  h+="<div class='form-group-half'><label>羁绊</label><textarea class='form-textarea' id='inputBonds' oninput='CHAR.bonds=this.value' placeholder='你的角色有何羁绊？'>"+esc(CHAR.bonds)+"</textarea></div>";
-  h+="<div class='form-group-full'><label>缺陷</label><textarea class='form-textarea' id='inputFlaws' oninput='CHAR.flaws=this.value' placeholder='你的角色有何缺陷？'>"+esc(CHAR.flaws)+"</textarea></div>";
+  h+="<div class='form-group-full'><label>背景故事</label><textarea class='form-textarea' id='inputStory' oninput='onChargenProfileInput(\"story\",this)' placeholder='描述角色背景故事...'>"+esc(CHAR.story)+"</textarea></div>";
+  h+="<div class='form-group-full'><label>个性</label><textarea class='form-textarea' id='inputPersonality' oninput='onChargenProfileInput(\"personality\",this)' placeholder='选完背景后自动填入'>"+esc(CHAR.personality)+"</textarea></div>";
+  h+="<div class='form-group-half'><label>理念</label><textarea class='form-textarea' id='inputIdeals' oninput='onChargenProfileInput(\"ideals\",this)' placeholder='你的角色信奉什么理念？'>"+esc(CHAR.ideals)+"</textarea></div>";
+  h+="<div class='form-group-half'><label>羁绊</label><textarea class='form-textarea' id='inputBonds' oninput='onChargenProfileInput(\"bonds\",this)' placeholder='你的角色有何羁绊？'>"+esc(CHAR.bonds)+"</textarea></div>";
+  h+="<div class='form-group-full'><label>缺陷</label><textarea class='form-textarea' id='inputFlaws' oninput='onChargenProfileInput(\"flaws\",this)' placeholder='你的角色有何缺陷？'>"+esc(CHAR.flaws)+"</textarea></div>";
   if(CHAR.deity) h+="<div class='form-group-half'><label>神祇</label><textarea class='form-textarea' id='inputDeity' oninput='CHAR.deity=this.value'>"+esc(CHAR.deity)+"</textarea></div>";
   if(CHAR.contacts) h+="<div class='form-group-half'><label>联系渠道</label><textarea class='form-textarea' id='inputContacts' oninput='CHAR.contacts=this.value'>"+esc(CHAR.contacts)+"</textarea></div>";
   if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='CHAR.scamType=this.value'>"+esc(CHAR.scamType)+"</textarea></div>";

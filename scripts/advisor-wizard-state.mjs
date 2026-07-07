@@ -5,11 +5,11 @@ export const MAGE_WIZARD_STEPS = [
   { id: 0, key: 'class', label: '选择职业', goal: '确认法师；为奥法学者、知识传承各选 1 子熟练（三项专精 L1 均获得，非三选一）' },
   { id: 1, key: 'features', label: '选择起始特性', goal: '初始特性 8 选 4；选满后评价组合，不推销未选项' },
   { id: 2, key: 'race', label: '选择种族', goal: '结合已有熟练账本选种族（属性/语言/不重复熟练）' },
-  { id: 3, key: 'attributes', label: '分配属性', goal: '32 点购点，智力优先 15' },
+  { id: 3, key: 'attributes', label: '分配属性', goal: '32 点购点；满 32 点后评价当前分配（智力≥15 等）' },
   { id: 4, key: 'skills', label: '选择熟练项', goal: '职业技巧八选四（奥秘/知识须指定子项；注意与专精/背景不重复）' },
   { id: 5, key: 'background', label: '选择个性背景', goal: '背景熟练与装备；结合账本补兼职 +6 缺口' },
   { id: 6, key: 'equipment', label: '选择装备', goal: '起始套装 A/B/C/D' },
-  { id: 7, key: 'review', label: '确认角色', goal: '复核全部选择' },
+  { id: 7, key: 'review', label: '确认角色', goal: '复核选择；对已填故事/外貌/个性做叙事简评' },
 ];
 
 export function normalizeWizardState(raw) {
@@ -132,9 +132,13 @@ export function formatWizardContext(state, store, options = {}) {
   }
 
   if (state.step === 1) {
-    lines.push('- 本步顾问姿态：评价已选起始特性组合；未选满时不推销具体未选特性名');
+    lines.push('- 本步顾问姿态：选满 4 项起始特性后【必须】评价组合；未选满时不推销具体未选特性名');
+  } else if (state.step === 3) {
+    lines.push('- 本步顾问姿态：购点满 32 后【必须】评价当前加点；未满时只给方向');
   } else if (state.step === 4 || state.step === 5) {
-    lines.push('- 本步顾问姿态：结合熟练账本补缺口；重复熟练须说明 trade-off');
+    lines.push('- 本步顾问姿态：熟练须用完整子项名；结合高属性与对应熟练协同；重复须 trade-off');
+  } else if (state.step === 7) {
+    lines.push('- 本步顾问姿态：对已填故事/外貌/个性做简评，勿替用户改写');
   }
 
   lines.push('- 回答须先确认当前步骤；不要跳到未打开步骤；勿替用户指定未选项');
