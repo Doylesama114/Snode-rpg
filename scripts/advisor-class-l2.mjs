@@ -84,8 +84,15 @@ export function resolveClassL2Layer(className, query = '') {
 /** 从问句猜测职业名（无 chargen 上下文时） */
 export function matchClassNameFromQuery(query) {
   const q = String(query || '');
+  const aliases = [
+    ['萨满祭司', '萨满'],
+    ['圣骑士', '圣骑'],
+  ];
   for (const entry of listL2ClassEntries()) {
     if (q.includes(entry.className)) return entry.className;
+    for (const alias of aliases) {
+      if (alias[0] === entry.className && q.includes(alias[1])) return entry.className;
+    }
   }
   if (MAGE_QUERY_RE.test(q)) return '法师';
   return null;

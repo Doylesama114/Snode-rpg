@@ -1,24 +1,95 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "德鲁伊",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "感知",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "德鲁伊关键属性为 感知"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "法术输出",
+      "承担伤害",
+      "控制局势"
+    ],
+    "blurb": "德鲁伊服务于自然，他们与动植物、太阳和月亮、以及那些神秘的森林精魄亲密无间，德鲁伊拥有和动物沟通的神奇能力，与万物众生的紧密连携使得他们能够变形成为各种野兽，用大自然的恩惠抚慰他人，或是召唤藤蔓、荆棘和飓风攻击入侵者，与星界沟通的德鲁伊们甚至能够唤来星空的力量狠狠地砸向敌人。\\n当你试图挑战德鲁伊时，便是在与自然界本身为敌。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "荒野",
+      "summary": "荒野：偏自然、防御、激活、法术等能力。",
+      "sampleSkills": [
+        "树皮术",
+        "石木树皮",
+        "维生术"
+      ]
+    },
+    {
+      "name": "兽灵",
+      "summary": "兽灵：偏探知、媒介、互动、专注等能力。",
+      "sampleSkills": [
+        "野兽知觉",
+        "化兽为友",
+        "通晓兽语"
+      ]
+    },
+    {
+      "name": "复苏",
+      "summary": "复苏：偏自然、回复、法术、探知等能力。",
+      "sampleSkills": [
+        "快速生长",
+        "侦测毒性与疾病",
+        "常青术"
+      ]
+    },
+    {
+      "name": "月影",
+      "summary": "月影：偏施法攻击、奥术、月亮、法术等能力。",
+      "sampleSkills": [
+        "月银之刃",
+        "银晓术",
+        "沐浴月光"
+      ]
+    },
+    {
+      "name": "日怒",
+      "summary": "日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。",
+      "sampleSkills": [
+        "炙热之日",
+        "光亮术",
+        "沐浴日光"
+      ]
+    },
+    {
+      "name": "星辰",
+      "summary": "星辰：偏机制、命运、星空、天赋等能力。",
+      "sampleSkills": [
+        "日月之蚀",
+        "炽焰法球",
+        "蓝焰术"
+      ]
+    },
+    {
+      "name": "精火",
+      "summary": "精火：偏专注、幻象、激活、戏法等能力。",
+      "sampleSkills": [
+        "妖精之火",
+        "德鲁伊伎俩",
+        "创造水源"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

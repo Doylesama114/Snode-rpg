@@ -203,6 +203,14 @@ function slugify(className) {
     猎人: 'hunter',
     武僧: 'monk',
     奇械师: 'artificer',
+    牧师: 'cleric',
+    圣骑士: 'paladin',
+    游荡者: 'rogue',
+    德鲁伊: 'druid',
+    萨满祭司: 'shaman',
+    术士: 'sorcerer',
+    吟游诗人: 'bard',
+    魔契师: 'warlock',
   };
   return map[className] || className;
 }

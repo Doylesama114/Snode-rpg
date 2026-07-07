@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7032',
+    date: '2026-07-07',
+    changes: [
+      '牧师圣骑士游荡者德鲁伊萨满术士Tier B partial'
+    ]
+  },
+
+
+  {
     version: '1.0.7031',
     date: '2026-07-07',
     changes: [

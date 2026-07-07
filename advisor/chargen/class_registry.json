@@ -112,40 +112,105 @@
       "advisorNote": "猎人顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "牧师": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "感知",
+      "isCaster": true,
+      "l2Slug": "cleric",
+      "l2Layer": "L2-cleric",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "牧师",
+        "戒律",
+        "虔佑",
+        "魂谒"
+      ],
+      "advisorNote": "牧师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "圣骑士": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "意志",
+      "l2Slug": "paladin",
+      "l2Layer": "L2-paladin",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "圣骑士",
+        "惩戒",
+        "守护",
+        "圣洁",
+        "热诚"
+      ],
+      "advisorNote": "圣骑士顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "游荡者": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "敏捷",
+      "l2Slug": "rogue",
+      "l2Layer": "L2-rogue",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "游荡者",
+        "奇袭",
+        "妙手",
+        "魅影",
+        "狂妄",
+        "魔药"
+      ],
+      "advisorNote": "游荡者顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "德鲁伊": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "感知",
+      "isCaster": true,
+      "l2Slug": "druid",
+      "l2Layer": "L2-druid",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "德鲁伊",
+        "荒野",
+        "兽灵",
+        "复苏",
+        "月影",
+        "日怒",
+        "星辰",
+        "精火"
+      ],
+      "advisorNote": "德鲁伊顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "萨满祭司": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "感知",
+      "isCaster": true,
+      "l2Slug": "shaman",
+      "l2Layer": "L2-shaman",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "萨满祭司",
+        "风暴",
+        "火焰",
+        "水源",
+        "大地",
+        "巫术"
+      ],
+      "advisorNote": "萨满祭司顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "术士": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "幸运",
+      "isCaster": true,
+      "l2Slug": "sorcerer",
+      "l2Layer": "L2-sorcerer",
       "startingFeaturePick": "all",
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "术士",
+        "潜能"
+      ],
+      "advisorNote": "术士顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "武僧": {
       "tier": "partial",

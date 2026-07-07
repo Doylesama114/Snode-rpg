@@ -1,24 +1,77 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "游荡者",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "敏捷",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "游荡者关键属性为 敏捷"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "战技输出",
+      "情报收集",
+      "战术针对"
+    ],
+    "blurb": "游荡者神出鬼没的风格使敌人无法得到片刻的放松，他们能够悄无声息的潜入敌营窃取情报，自阴影中发起突袭、或是烹制令人胆寒的魔药。对于敌人后方的施法者而言，游荡者的存在无疑是他们的噩梦。如果你认为游荡者不过是一群只敢在黑暗中游走的鼠辈那便大错特错了，如有必要他们也能够手持火枪和弯刀与对手短兵相接。\\n游荡者所带来的情报总是能够令团队在战前做好充足的准备。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "奇袭",
+      "summary": "奇袭：偏近战攻击、暗影、穿甲、战技等能力。",
+      "sampleSkills": [
+        "影袭",
+        "克敌先机",
+        "佯攻"
+      ]
+    },
+    {
+      "name": "妙手",
+      "summary": "妙手：偏感知豁免（12）/递减（-5）、战技、探知、戏法等能力。",
+      "sampleSkills": [
+        "抛沙",
+        "侦测陷阱",
+        "探囊取物"
+      ]
+    },
+    {
+      "name": "魅影",
+      "summary": "魅影：偏暗影、媒介、唯一性、法术等能力。",
+      "sampleSkills": [
+        "暗影之刃",
+        "暗影护甲",
+        "影哨术"
+      ]
+    },
+    {
+      "name": "狂妄",
+      "summary": "狂妄：偏远程攻击、实体飞行道具、每个自身回合限一次、战技等能力。",
+      "sampleSkills": [
+        "迅捷连射",
+        "抽血",
+        "挑衅对决"
+      ]
+    },
+    {
+      "name": "魔药",
+      "summary": "魔药：偏近战攻击、毒性、体质豁免（12）、战技等能力。",
+      "sampleSkills": [
+        "毒刃",
+        "致伤毒药（配方）",
+        "麻痹毒药（配方）"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 游荡者 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "游荡者顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

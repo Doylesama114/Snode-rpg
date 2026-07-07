@@ -1,24 +1,41 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "术士",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "幸运",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "术士关键属性为 幸运"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "法术输出",
+      "体系构筑",
+      "逆转战局"
+    ],
+    "blurb": "术士的血脉中充斥着未知的魔法力量，或许来自远古年代的巨龙、又或是神秘强大的异界存在，甚至是次级维度的狂暴能量本身，总之这些汹涌的混沌魔力赐予他们天生的施法能力。术士的天赋羡煞旁人，仅需要命运的馈赠，便足以让他们轻松比肩刻苦修炼的其他施法者们。\\n当术士觉醒体内血脉的那一刻起，胜利的天秤已然向他们倾斜。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "潜能",
+      "summary": "潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
+      "sampleSkills": [
+        "混乱箭",
+        "魔爆术",
+        "魔能翻涌"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

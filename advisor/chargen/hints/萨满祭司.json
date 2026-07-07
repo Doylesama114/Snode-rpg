@@ -1,24 +1,77 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "萨满祭司",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "感知",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "萨满祭司关键属性为 感知"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "法术输出",
+      "团队增益",
+      "控制局势"
+    ],
+    "blurb": "萨满祭司相信风火水土四大元素是维持世间运转的基础，他们召来火焰和风暴消灭敌人，运用水流安抚队友的伤势，生成岩石提供防御或束缚敌人的行动。萨满祭司还可以召唤先祖之灵的力量，凭借古老传统带来的智慧启迪来找寻正确的答案，施展神秘诡谲的巫毒法术对敌人降咒。\\n萨满祭司对于元素能量的转化运用已达到炉火纯青，元素之间的搭配足以让他们应对各种场合。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "风暴",
+      "summary": "风暴：偏雷电、复仇、激活、法术等能力。",
+      "sampleSkills": [
+        "闪电盾牌",
+        "加速图腾",
+        "风之护符"
+      ]
+    },
+    {
+      "name": "火焰",
+      "summary": "火焰：偏施法攻击、火焰、虚化飞行道具、敏捷豁免（10）等能力。",
+      "sampleSkills": [
+        "火焰箭",
+        "灼热图腾",
+        "创造篝火"
+      ]
+    },
+    {
+      "name": "水源",
+      "summary": "水源：偏水源、激活、戏法、图腾等能力。",
+      "sampleSkills": [
+        "水上行走",
+        "恢复图腾",
+        "创造水源"
+      ]
+    },
+    {
+      "name": "大地",
+      "summary": "大地：偏施法攻击、AOE、大地、阻碍等能力。",
+      "sampleSkills": [
+        "石爪术",
+        "缓速图腾",
+        "强壮图腾"
+      ]
+    },
+    {
+      "name": "巫术",
+      "summary": "巫术：偏专注、探知、激活、法术等能力。",
+      "sampleSkills": [
+        "视界术",
+        "传讯术",
+        "虚弱诅咒"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 萨满祭司 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "萨满祭司顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

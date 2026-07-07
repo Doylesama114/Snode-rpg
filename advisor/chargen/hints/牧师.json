@@ -1,24 +1,59 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "牧师",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "感知",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "牧师关键属性为 感知"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "回复治疗",
+      "团队增益",
+      "控制局势"
+    ],
+    "blurb": "牧师能够为队友提供充足的治疗和增益效果，深受大家的信赖，他们可以念诵祷言给予众人神灵的赐福，同时对亵渎之人降下惩戒。若是前线需要援手，牧师也不介意手持盾牌和战锤守护在队友身前，以神的旨意向敌人发起冲锋。此外根据信奉神祇的不同，牧师们能够展现不同的神圣领域为局势带来更多的变化。\\n真正虔诚的牧师将时刻践行主的道路，并为世人带来神的恩泽。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "戒律",
+      "summary": "戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。",
+      "sampleSkills": [
+        "神灵之火",
+        "神力战槌",
+        "庇护术"
+      ]
+    },
+    {
+      "name": "虔佑",
+      "summary": "虔佑：偏神术、回复、净化、每个自身回合限一次等能力。",
+      "sampleSkills": [
+        "祈福",
+        "神佑印记",
+        "缓落术"
+      ]
+    },
+    {
+      "name": "魂谒",
+      "summary": "魂谒：偏神术、回复、净化、短休/长休等能力。",
+      "sampleSkills": [
+        "宁神术",
+        "纯净术",
+        "睡眠术"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }
