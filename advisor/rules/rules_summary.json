@@ -2,7 +2,7 @@
   "meta": {
     "layer": "L0",
     "version": "1.0.0",
-    "phase": "2"
+    "phase": "5-batch8"
   },
   "bullets": [
     "斯诺德跑团规则与 D&D 不同，顾问不得套用 D&D 法术位/短休长休等概念。",
@@ -29,8 +29,8 @@
     "L5 检索器：advisor-retrieve.mjs；15 题 spot-check 通过",
     "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
     "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
-    "L3A 进阶技能：advancement_skills.json（2/40 条 documented）",
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
-    "L2 技能索引：法师 356 + 通用 390 + 奇械师 100"
+    "L2 技能索引：法师 356 + 通用 390 + 奇械师 100",
+    "L3A 进阶技能：advancement_skills.json（27/65 条 documented）"
   ]
 }

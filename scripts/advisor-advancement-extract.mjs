@@ -75,12 +75,17 @@ export function detailToRecord(d) {
   };
 }
 
-export function buildAdvancementSkillsIndex(mageNames = null) {
+export function buildAdvancementSkillsIndex(nameFilter = null) {
   const details = loadAdvancementDetails();
   const byName = {};
   for (const d of details) {
-    if (mageNames && !mageNames.has(d.name)) continue;
+    if (nameFilter && !nameFilter.has(d.name)) continue;
     byName[d.name] = detailToRecord(d);
   }
   return byName;
+}
+
+/** @deprecated use buildAdvancementSkillsIndex(null) for all entries */
+export function buildMageAdvancementSkillsIndex(mageNames) {
+  return buildAdvancementSkillsIndex(mageNames);
 }

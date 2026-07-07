@@ -33,7 +33,7 @@ ok('A档 诡术师', !!skillsDoc.byName['诡术师']?.talents?.length);
 ok('documented confidence', skillsDoc.byName['预言家']?.confidence === 'documented');
 
 const catalog = getAdvancementCatalog(loadSnapshotFile('advisor/snapshots/mock-frost-ready.json'));
-ok('catalog 40 条', catalog.advancements.length === 40);
+ok('catalog >= 65 条', catalog.advancements.length >= 65);
 ok('catalog 含 eligibility', catalog.advancements.some((a) => a.name === '冰霜法师' && a.eligibility?.eligible === true));
 ok('catalog frost documented flag', catalog.advancements.find((a) => a.name === '冰霜法师')?.documented === false);
 

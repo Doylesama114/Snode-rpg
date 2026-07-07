@@ -192,10 +192,14 @@ function parseAttrsFromQuery(query) {
 
 function pickAdvancementName(query) {
   const store = loadAdvisorStore();
-  for (const adv of store.advancements.advancements) {
-    if (query.includes(adv.name)) return adv.name;
+  const q = String(query || '');
+  const skillNames = Object.keys(store.advancementSkills?.byName || {});
+  const advNames = store.advancements.advancements.map((a) => a.name);
+  const candidates = [...new Set([...skillNames, ...advNames])].sort((a, b) => b.length - a.length);
+  for (const name of candidates) {
+    if (q.includes(name)) return name;
   }
-  if (/冰霜/.test(query)) return '冰霜法师';
+  if (/冰霜/.test(q)) return '冰霜法师';
   return null;
 }
 
@@ -743,6 +747,17 @@ function buildL3Results(store, query, queryTokens, limit, attrs) {
 
   if (advName) {
     items = items.filter((a) => a.name.includes(advName) || advName.includes(a.name));
+    if (!items.length && store.advancementSkills?.byName?.[advName]) {
+      const doc = store.advancementSkills.byName[advName];
+      items = [{
+        id: `adv-documented-${advName}`,
+        name: advName,
+        scope: 'class-advancement',
+        confidence: 'documented',
+        inferenceBlurb: (doc.description || '').slice(0, 120),
+        searchText: `${advName} documented ${doc.description || ''}`,
+      }];
+    }
   }
 
   const ranked = searchList(

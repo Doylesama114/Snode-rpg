@@ -14,12 +14,7 @@ const OUT = path.join(ROOT, 'advisor', 'advancement_skills.json');
 const ADV_PATH = path.join(ROOT, 'advisor', 'advancements.json');
 const SUMMARY_PATH = path.join(ROOT, 'advisor', 'rules', 'rules_summary.json');
 
-const advancements = JSON.parse(fs.readFileSync(ADV_PATH, 'utf8'));
-const mageNames = new Set(
-  advancements.advancements.filter((a) => a.mageEligible).map((a) => a.name),
-);
-
-const byName = buildAdvancementSkillsIndex(mageNames);
+const byName = buildAdvancementSkillsIndex(null);
 const documented = Object.keys(byName);
 
 const doc = {
@@ -28,7 +23,7 @@ const doc = {
     phase: '8B',
     source: '职业页/advancement_details.js',
     documentedCount: documented.length,
-    mageEligibleCount: mageNames.size,
+    mageEligibleCount: null,
     generatedAt: new Date().toISOString().slice(0, 10),
     note: '未收录的进阶仍为 metadata_only；随 advancement_details.js 更新后重建',
   },
@@ -39,7 +34,7 @@ fs.writeFileSync(OUT, `${JSON.stringify(doc, null, 2)}\n`, 'utf8');
 
 const summary = JSON.parse(fs.readFileSync(SUMMARY_PATH, 'utf8'));
 summary.bullets = summary.bullets.filter((b) => !b.startsWith('L3A 进阶技能'));
-summary.bullets.push(`L3A 进阶技能：advancement_skills.json（${documented.length}/${mageNames.size} 条 documented）`);
+summary.bullets.push(`L3A 进阶技能：advancement_skills.json（${documented.length} 条 documented）`);
 summary.meta = { ...summary.meta, phase: '8B' };
 fs.writeFileSync(SUMMARY_PATH, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
 

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7035',
+    date: '2026-07-07',
+    changes: [
+      '顾问 Phase5：advancement_details 27条进阶 documented',
+      'L3 进阶库扩至65条',
+      '检索/catalog 可答非法师进阶技能'
+    ]
+  },
+
+
+  {
     version: '1.0.7034',
     date: '2026-07-07',
     changes: [

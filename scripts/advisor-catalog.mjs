@@ -7,7 +7,9 @@ import { analyzeSnapshot, normalizeSnapshot } from './advisor-snapshot.mjs';
 export function getAdvancementCatalog(snapshot = null) {
   const store = loadAdvisorStore();
   const skills = store.advancementSkills?.byName || {};
-  const advancements = store.advancements.advancements.filter((a) => a.mageEligible !== false);
+  const advancements = store.advancements.advancements.filter(
+    (a) => a.mageEligible !== false || skills[a.name],
+  );
 
   let eligibilityMap = {};
   if (snapshot) {
