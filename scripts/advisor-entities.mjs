@@ -171,6 +171,12 @@ export function formatClassCard(cl) {
   if (cl.startingFeatures?.length) {
     lines.push(`- 初始特性：${cl.startingFeatures.length} 选 ${cl.startingChoice}（${cl.startingFeatures.map((f) => f.name).join('、')}）`);
   }
+  if (cl.startingGearKits?.length) {
+    lines.push('- 起始装备套装（创建页四选一）：');
+    for (const kit of cl.startingGearKits) {
+      lines.push(`  · 套装 ${kit.letter}：${(kit.summary || '').slice(0, 160)}`);
+    }
+  }
   for (const spec of cl.specializations || []) {
     lines.push(`- 专精「${spec.name}」：${spec.effect || spec.buildHint || ''}`);
   }

@@ -230,7 +230,7 @@ function resolveIntentFromEntities(query, entityHits, baseIntent) {
     return 'entity_qa';
   }
   if (entityTypes.has('background') && /背景/.test(query)) return 'entity_qa';
-  if (entityTypes.has('class') && /武器|护甲|豁免|初始武器|职业基础/.test(query)) return 'entity_qa';
+  if (entityTypes.has('class') && /武器|护甲|豁免|初始武器|职业基础|起始套装|起手套装|起始装备/.test(query)) return 'entity_qa';
   return baseIntent;
 }
 

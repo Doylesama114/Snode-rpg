@@ -1,6 +1,6 @@
 {
   "meta": {
-    "phase": "2",
+    "phase": "5-infra",
     "generatedAt": "2026-07-07",
     "sources": [
       "职业页/数据/races_data.js",
@@ -10,7 +10,7 @@
       "职业页/数据/classes_data.js",
       "advisor/entities/aliases.manual.json"
     ],
-    "entryCount": 75
+    "entryCount": 89
   },
   "entries": [
     {
@@ -446,6 +446,14 @@
       "aliases": []
     },
     {
+      "key": "吸血鬼",
+      "entityType": "race",
+      "id": "血族",
+      "aliases": [],
+      "isAlias": true,
+      "manual": true
+    },
+    {
       "key": "法师",
       "entityType": "class",
       "id": "法师",
@@ -459,6 +467,84 @@
       "id": "法师",
       "aliases": [],
       "isAlias": true
+    },
+    {
+      "key": "奇械师",
+      "entityType": "class",
+      "id": "奇械师",
+      "aliases": []
+    },
+    {
+      "key": "蛮斗士",
+      "entityType": "class",
+      "id": "蛮斗士",
+      "aliases": []
+    },
+    {
+      "key": "战士",
+      "entityType": "class",
+      "id": "战士",
+      "aliases": []
+    },
+    {
+      "key": "猎人",
+      "entityType": "class",
+      "id": "猎人",
+      "aliases": []
+    },
+    {
+      "key": "牧师",
+      "entityType": "class",
+      "id": "牧师",
+      "aliases": []
+    },
+    {
+      "key": "圣骑士",
+      "entityType": "class",
+      "id": "圣骑士",
+      "aliases": []
+    },
+    {
+      "key": "游荡者",
+      "entityType": "class",
+      "id": "游荡者",
+      "aliases": []
+    },
+    {
+      "key": "德鲁伊",
+      "entityType": "class",
+      "id": "德鲁伊",
+      "aliases": []
+    },
+    {
+      "key": "萨满祭司",
+      "entityType": "class",
+      "id": "萨满祭司",
+      "aliases": []
+    },
+    {
+      "key": "术士",
+      "entityType": "class",
+      "id": "术士",
+      "aliases": []
+    },
+    {
+      "key": "武僧",
+      "entityType": "class",
+      "id": "武僧",
+      "aliases": []
+    },
+    {
+      "key": "吟游诗人",
+      "entityType": "class",
+      "id": "吟游诗人",
+      "aliases": []
+    },
+    {
+      "key": "魔契师",
+      "entityType": "class",
+      "id": "魔契师",
+      "aliases": []
     },
     {
       "key": "吸血鬼",

@@ -59,6 +59,22 @@ function loadRegistryClassL2() {
   return { classSkillIndexes, classBasicsByName };
 }
 
+function loadRegistryClassInfra() {
+  const registry = loadJson('chargen/class_registry.json');
+  const classStartingGearByName = {};
+  const classEquipmentRulesByName = {};
+  for (const className of Object.keys(registry.classes || {})) {
+    const row = registry.classes[className];
+    const slug = className === '法师' ? 'mage' : row.l2Slug;
+    if (!slug) continue;
+    const gearPath = path.join(ADVISOR, 'chargen', `${slug}_starting_gear.json`);
+    const rulesPath = path.join(ADVISOR, 'chargen', `${slug}_equipment_rules.json`);
+    if (fs.existsSync(gearPath)) classStartingGearByName[className] = loadJson(`chargen/${slug}_starting_gear.json`);
+    if (fs.existsSync(rulesPath)) classEquipmentRulesByName[className] = loadJson(`chargen/${slug}_equipment_rules.json`);
+  }
+  return { classStartingGearByName, classEquipmentRulesByName };
+}
+
 let _cache = null;
 
 function loadJson(rel) {
@@ -68,6 +84,7 @@ function loadJson(rel) {
 export function loadAdvisorStore() {
   if (_cache) return _cache;
   const registryL2 = loadRegistryClassL2();
+  const registryInfra = loadRegistryClassInfra();
   _cache = {
     rulesSummary: loadJson('rules/rules_summary.json'),
     leveling: loadJson('rules/leveling.json'),
@@ -99,6 +116,8 @@ export function loadAdvisorStore() {
         : null),
     classSkillIndexes: registryL2.classSkillIndexes,
     classBasicsByName: registryL2.classBasicsByName,
+    classStartingGearByName: registryInfra.classStartingGearByName,
+    classEquipmentRulesByName: registryInfra.classEquipmentRulesByName,
     universalSkills: loadJson('skills/universal_index.json'),
     advancements: loadJson('advancements.json'),
     advancementSkills: fs.existsSync(path.join(ADVISOR, 'advancement_skills.json'))
@@ -510,6 +529,19 @@ export function formatRegistryClassBasics(store, className, query = '') {
   }
   for (const spec of doc.specializations || hints.specializationHints || []) {
     lines.push(`- 专精「${spec.name}」：${spec.effect || spec.buildHint || ''}`);
+  }
+  const equip = store.classEquipmentRulesByName?.[className];
+  const gear = store.classStartingGearByName?.[className];
+  if (equip?.keyRules?.length) {
+    lines.push(`- 装备规则：${equip.keyRules.slice(0, 3).join('；')}`);
+  }
+  if (/装备|起手|套装|起始/.test(query) && gear?.kits) {
+    for (const letter of ['A', 'B', 'C', 'D']) {
+      const kit = gear.kits[letter];
+      if (kit) lines.push(`- 起始套装 ${letter}：${kit.summary}`);
+    }
+    const note = gear.kitAdvisorNotes?.map((k) => `${k.kit}=${k.note}`).join('；');
+    if (note) lines.push(`- 套装建议：${note}`);
   }
   if (doc.advisorPartialNote) lines.push(`- 顾问说明：${doc.advisorPartialNote}`);
   if (doc.timelineNote) lines.push(`- ${doc.timelineNote}`);

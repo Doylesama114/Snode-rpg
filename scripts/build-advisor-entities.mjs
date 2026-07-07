@@ -13,6 +13,7 @@ import {
   toClassCard,
 } from './advisor-entity-sources.mjs';
 import { validateEntityBundle } from './validate-advisor-entities.mjs';
+import { buildIndexEntries } from './build-advisor-entities-helpers.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -25,32 +26,6 @@ function readJson(p) {
 function writeJson(p, data) {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(data, null, 2) + '\n', 'utf8');
-}
-
-function buildIndexEntries(entities, manualAliases) {
-  const entries = [];
-  const seen = new Set();
-
-  for (const e of entities) {
-    const sig = `${e.entityType}:${e.id}`;
-    if (seen.has(sig)) continue;
-    seen.add(sig);
-    entries.push({ key: e.name, entityType: e.entityType, id: e.id, aliases: e.aliases || [] });
-    for (const a of e.aliases || []) {
-      entries.push({ key: a, entityType: e.entityType, id: e.id, aliases: [], isAlias: true });
-    }
-  }
-  for (const row of manualAliases.aliases || []) {
-    entries.push({
-      key: row.alias,
-      entityType: row.entityType,
-      id: row.id,
-      aliases: [],
-      isAlias: true,
-      manual: true,
-    });
-  }
-  return entries;
 }
 
 function syncChargenRaces(races) {

@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7034',
+    date: '2026-07-07',
+    changes: [
+      '顾问 Phase5：全14职业实体卡',
+      '起手套装A-D与装备规则',
+      'proficiencies classSkillPick补全',
+      '检索/实体百科可答起始装备'
+    ]
+  },
+
+
+  {
     version: '1.0.7033',
     date: '2026-07-07',
     changes: [

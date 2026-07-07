@@ -236,36 +236,64 @@ export function normalizeBackgroundFromSource(bg, maps, xlsxExtra = null) {
   };
 }
 
-export function normalizeMageClassFromSource(refMage, classesMage, weaponProfs, mageClassJson = null) {
-  const mc = mageClassJson || {};
+export function normalizeClassFromSource(refClass, classesRow, weaponProfs, slugClassJson = null) {
+  const mc = slugClassJson || {};
+  const name = refClass.name || refClass.id || mc.name;
+  const savesRaw = refClass.saves || classesRow?.['豁免'] || mc.saves;
+  const saves = Array.isArray(savesRaw)
+    ? savesRaw
+    : String(savesRaw || '').split(/、/).map((s) => s.trim()).filter(Boolean);
+
   return {
-    id: '法师',
-    name: '法师',
-    description: classesMage?.description || mc.description || '',
-    rolePositioning: classesMage?.['职责定位'] || mc.rolePositioning || '',
-    keyAttr: refMage.key_attr || classesMage?.['关键属性'] || '智力',
-    armor: refMage.armor || classesMage?.['护甲'] || '轻甲',
-    weapons: refMage.weapons || classesMage?.['武器'] || '',
-    weaponProfCategories: weaponProfs['法师'] || mc.weaponProfCategories || [],
-    weaponCategoryNote: mc.weaponCategoryNote
-      || '角色创建页「武器」为具体类型（法杖/魔棒/匕首/手弩/简易）；面板武器熟练类别为法器/剑类/弓箭/简易（法器含法杖与魔棒，剑类含匕首，弓箭含手弩）。',
-    saves: refMage.saves || splitSkillTokens(classesMage?.['豁免']?.replace(/、/g, '、') || '智力、感知'),
-    skills: refMage.skills || classesMage?.['技巧'] || mc.skills,
+    id: name,
+    name,
+    description: classesRow?.description || mc.description || refClass.description || '',
+    rolePositioning: classesRow?.['职责定位'] || mc.rolePositioning || '',
+    keyAttr: refClass.key_attr || classesRow?.['关键属性'] || mc.keyAttr || '',
+    armor: refClass.armor || classesRow?.['护甲'] || mc.armor || '',
+    weapons: refClass.weapons || classesRow?.['武器'] || mc.weapons || '',
+    weaponProfCategories: weaponProfs[name] || mc.weaponProfCategories || [],
+    weaponCategoryNote: mc.weaponCategoryNote || null,
+    saves,
+    skills: refClass.skills || classesRow?.['技巧'] || mc.skills || '',
     hpFormula: mc.hpFormula || {
-      first: refMage.hp_formula?.first ? String(refMage.hp_formula.first) : '8+体质调整值',
-      levelUp: '每法师等级+2+体质调整值',
+      first: refClass.hp_formula?.first ? String(refClass.hp_formula.first) : undefined,
+      levelUp: refClass.hp_formula?.levelUp ? String(refClass.hp_formula.levelUp) : undefined,
     },
     fpFormula: mc.fpFormula || {
-      first: refMage.fp_formula?.first ? String(refMage.fp_formula.first) : '12+关键属性调整值',
+      first: refClass.fp_formula?.first ? String(refClass.fp_formula.first) : undefined,
+      levelUp: refClass.fp_formula?.levelUp ? String(refClass.fp_formula.levelUp) : undefined,
+    },
+    startingFeatures: (refClass.starting_features || mc.startingFeatures || []).map((f) => ({
+      name: f.name,
+      desc: f.desc || f.description || '',
+    })),
+    startingChoice: refClass.starting_choice ?? mc.startingChoice ?? 2,
+    specializations: mc.specializations?.length
+      ? mc.specializations
+      : (refClass.specializations || []).map((s) => ({
+        id: s.name,
+        name: s.name,
+        effect: s.desc || s.effect || '',
+      })),
+  };
+}
+
+/** @deprecated use normalizeClassFromSource */
+export function normalizeMageClassFromSource(refMage, classesMage, weaponProfs, mageClassJson = null) {
+  const row = normalizeClassFromSource(refMage, classesMage, weaponProfs, mageClassJson);
+  return {
+    ...row,
+    weaponCategoryNote: row.weaponCategoryNote
+      || '角色创建页「武器」为具体类型（法杖/魔棒/匕首/手弩/简易）；面板武器熟练类别为法器/剑类/弓箭/简易（法器含法杖与魔棒，剑类含匕首，弓箭含手弩）。',
+    hpFormula: row.hpFormula?.first ? row.hpFormula : {
+      first: '8+体质调整值',
+      levelUp: '每法师等级+2+体质调整值',
+    },
+    fpFormula: row.fpFormula?.first ? row.fpFormula : {
+      first: '12+关键属性调整值',
       levelUp: '每法师等级+1',
     },
-    startingFeatures: refMage.starting_features || mc.startingFeatures || [],
-    startingChoice: refMage.starting_choice ?? mc.startingChoice ?? 4,
-    specializations: mc.specializations || (refMage.specializations || []).map((s) => ({
-      id: s.name,
-      name: s.name,
-      effect: s.desc,
-    })),
   };
 }
 
@@ -326,13 +354,16 @@ export function toBackgroundCard(bg, sources) {
 export function toClassCard(cl, sources) {
   const specNames = (cl.specializations || []).map((s) => s.name).join(' ');
   const featNames = (cl.startingFeatures || []).map((f) => f.name).join(' ');
+  const kitText = (cl.startingGearKits || []).map((k) => `套装${k.letter} ${k.summary}`).join(' ');
+  const aliases = cl.name === '法师' ? ['mage'] : [];
   return {
     entityType: 'class',
     id: cl.id || cl.name,
     name: cl.name,
-    aliases: ['mage'],
+    aliases,
     searchText: buildSearchText([
       cl.name,
+      ...aliases,
       cl.description,
       cl.rolePositioning,
       cl.weapons,
@@ -341,12 +372,15 @@ export function toClassCard(cl, sources) {
       cl.skills,
       specNames,
       featNames,
+      kitText,
       (cl.weaponProfCategories || []).join(' '),
+      '起始装备',
+      '起手套装',
     ]),
     source: sources,
     ...cl,
     skillPickRule: cl.skills,
-    skillPickCount: cl.startingChoice === 4 ? 4 : 4,
+    skillPickCount: cl.skillPickCount ?? 4,
   };
 }
 
