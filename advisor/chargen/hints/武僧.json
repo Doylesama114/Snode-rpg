@@ -1,24 +1,95 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "武僧",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "敏捷",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "武僧关键属性为 敏捷"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "战技输出",
+      "承担伤害",
+      "控制局势"
+    ],
+    "blurb": "武僧比起使用武器和护甲，更信赖自身的拳脚功夫。他们运用名为真气的神奇能量来施展独门武艺和功法以击退挑衅的来犯、治愈同门友人的伤势或是行侠仗义，有的武僧通过将肉体千锤百炼来磨砺自我，也有一些人通过醉酒的方式来尝试寻求真谛。\\n武僧在冥想和戒律中完善自身的修行之道，通过历练和感悟来使自身的境界更上一个台阶。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "极斗",
+      "summary": "极斗：偏徒手攻击、第一行动、战技、幻象等能力。",
+      "sampleSkills": [
+        "连环拳",
+        "幻形踢",
+        "玄秘掌"
+      ]
+    },
+    {
+      "name": "踏风",
+      "summary": "踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。",
+      "sampleSkills": [
+        "点穴手",
+        "身轻如燕",
+        "无影步"
+      ]
+    },
+    {
+      "name": "织雾",
+      "summary": "织雾：偏韧性、长休、功法、回复等能力。",
+      "sampleSkills": [
+        "散魔功",
+        "抚慰之雾",
+        "真气波"
+      ]
+    },
+    {
+      "name": "无尘",
+      "summary": "无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。",
+      "sampleSkills": [
+        "嚎镇八方",
+        "金钟罩",
+        "疾言厉色"
+      ]
+    },
+    {
+      "name": "锋岚",
+      "summary": "锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。",
+      "sampleSkills": [
+        "当头棒喝",
+        "回马枪",
+        "长兵熟稔"
+      ]
+    },
+    {
+      "name": "酒仙",
+      "summary": "酒仙：偏徒手攻击、战技、反击、技艺等能力。",
+      "sampleSkills": [
+        "醉拳",
+        "借醉反击",
+        "蒸馏工艺"
+      ]
+    },
+    {
+      "name": "凰火",
+      "summary": "凰火：偏机制、火焰、天赋、短休/长休等能力。",
+      "sampleSkills": [
+        "我心如火",
+        "朱鹤式",
+        "凰羽焰"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

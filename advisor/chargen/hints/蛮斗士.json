@@ -1,24 +1,73 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "蛮斗士",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "力量",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "蛮斗士关键属性为 力量"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "战技输出",
+      "承担伤害",
+      "火力压制"
+    ],
+    "blurb": "蛮斗士凭借野性的直觉投身于战斗当中，他们如同杀戮机器一般主宰着整片战场，强大的输出手段、坚韧的持久力和源源不断的生命回复足以令任何对手感到绝望，如果敌人企图通过游走消耗的方式来牵制这些恐怖的战兽，那么蛮斗士来自远古氏族的狂暴魔法绝对会让他们大吃一惊！"
   },
-  "specializationHints": [],
-  "styleHints": [],
+  "specializationHints": [
+    {
+      "name": "运动健将",
+      "buildHint": "创建页专精「运动健将」（详见角色创建页说明）"
+    }
+  ],
+  "styleHints": [
+    {
+      "name": "斗争",
+      "summary": "斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。",
+      "sampleSkills": [
+        "头槌",
+        "掷刃斩",
+        "顺劈斩"
+      ]
+    },
+    {
+      "name": "狂暴",
+      "summary": "狂暴：偏增益、光环、激活、唯一性等能力。",
+      "sampleSkills": [
+        "狂暴姿态",
+        "激怒",
+        "嗜血"
+      ]
+    },
+    {
+      "name": "生机",
+      "summary": "生机：偏回复、每个自身回合限一次、战技、韧性等能力。",
+      "sampleSkills": [
+        "延绵生机",
+        "防护毒素",
+        "通晓兽语"
+      ]
+    },
+    {
+      "name": "法咒",
+      "summary": "法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。",
+      "sampleSkills": [
+        "毒蛇咒印",
+        "巨鹿咒印",
+        "狼獾咒印"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

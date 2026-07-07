@@ -3,6 +3,17 @@
  */
 import { pickAdvancementName } from './advisor-router-utils.mjs';
 import { getClassProfile, isFullTier } from './advisor-chargen-registry.mjs';
+import {
+  MAGE_L2,
+  allowL2Layer,
+  allowL2Mage,
+  listL2ClassEntries,
+  matchClassNameFromQuery,
+  resolveClassL2Layer,
+  resolveRegistryL2Layer,
+} from './advisor-class-l2.mjs';
+
+export { resolveClassL2Layer } from './advisor-class-l2.mjs';
 
 export const MODES = ['advisor', 'wizard', 'entity_qa'];
 
@@ -79,113 +90,105 @@ export const INTENT_RULES = [
   },
   {
     id: 'style_compare',
-    patterns: [/咒法.*塑能/, /塑能.*咒法/, /风格.*选/, /流派.*选/, /怎么选.*风格/],
+    patterns: [/咒法.*塑能/, /塑能.*咒法/],
     layers: ['L2-mage', 'L1', 'L5'],
     topK: { 'L2-mage': 12, L1: 6, L5: 5 },
     promptProfile: 'mage_skills',
   },
   {
-    id: 'artificer_style_compare',
-    patterns: [/精准.*构想/, /构想.*精准/, /奇械师.*风格/, /战斗风格.*选/],
-    layers: ['L2-artificer', 'L1', 'L5'],
-    topK: { 'L2-artificer': 12, L1: 6, L5: 5 },
-    promptProfile: 'artificer_skills',
-  },
-  {
     id: 'tips',
     patterns: [/combo/, /小贴士/, /技巧/, /借机/, /反应动作/, /贴脸/, /塑能相关/],
-    layers: ['L5', 'L2-mage'],
-    topK: { L5: 8, 'L2-mage': 10 },
+    layers: ['L5'],
+    topK: { L5: 8 },
     promptProfile: 'tips',
   },
   {
-    id: 'artificer_skills',
-    patterns: [/奇械师/, /精准/, /构想/, /炽擎/, /电涌/, /魔枢/, /枪械/, /图纸/, /零件包/, /同调/, /研发/, /战术装填/, /弹射齿轮/],
-    layers: ['L2-artificer', 'L1'],
-    topK: { 'L2-artificer': 18, L1: 4 },
-    promptProfile: 'artificer_skills',
+    id: 'class_skills',
+    patterns: [
+      /流派/, /战斗风格/, /职业树/, /什么流派/, /风格.*选/, /怎么选.*风格/,
+      /优先学/, /1～3|1-3|一级|二级|三级/,
+      /战士/, /蛮斗士/, /猎人/, /武僧/, /奇械师/,
+      /斗争/, /狂攻/, /防护/, /射击/, /军团/, /机敏/,
+      /狂暴/, /生机/, /法咒/, /兽群/, /猎鹰/, /生存/,
+      /极斗/, /踏风/, /织雾/, /无尘/, /锋岚/, /酒仙/, /凰火/,
+      /精准/, /构想/, /炽擎/, /电涌/, /魔枢/, /枪械/, /图纸/,
+    ],
+    layers: ['L1'],
+    topK: { L1: 6 },
+    promptProfile: 'class_skills',
   },
   {
     id: 'mage_skills',
-    patterns: [/塑能/, /咒法/, /预言/, /防护/, /附魔/, /死灵/, /幻术/, /变化/, /技能/, /法术/, /飞弹/, /寒冰/, /1～3|1-3|一级|二级|三级/],
+    patterns: [/塑能/, /咒法/, /预言/, /防护/, /附魔/, /死灵/, /幻术/, /变化/, /法术/, /飞弹/, /寒冰/],
     layers: ['L2-mage', 'L1'],
     topK: { 'L2-mage': 18, L1: 4 },
     promptProfile: 'mage_skills',
   },
 ];
 
-const MAGE_QUERY_RE = /法师|塑能|咒法|预言|防护|附魔|死灵|幻术|变化|法术|魔弹|飞弹|寒冰|火球/;
-const ARTIFICER_QUERY_RE = /奇械师|精准|构想|炽擎|电涌|魔枢|枪械|图纸|零件包|同调|研发|战术装填|弹射齿轮/;
-
-function allowL2Mage(className, query) {
-  if (className === '法师' && isFullTier(getClassProfile('法师'))) return true;
-  if (!className && MAGE_QUERY_RE.test(query || '')) return true;
-  return false;
-}
-
-function allowL2Artificer(className, query) {
-  const profile = getClassProfile(className || '奇械师');
-  if (className === '奇械师' && profile.tier === 'partial') return true;
-  if (!className && ARTIFICER_QUERY_RE.test(query || '')) return true;
-  return false;
-}
-
-export function resolveClassL2Layer(className, query = '') {
-  if (allowL2Mage(className, query)) return 'L2-mage';
-  if (allowL2Artificer(className, query)) return 'L2-artificer';
-  return null;
-}
+const REGISTRY_L2_LAYERS = () => listL2ClassEntries().map((e) => e.l2Layer);
 
 const L2_INJECT_INTENTS = new Set([
-  'general', 'chargen', 'wizard_step', 'artificer_skills', 'artificer_style_compare', 'tips',
+  'general', 'chargen', 'wizard_step', 'class_skills', 'tips',
 ]);
+
+function activeL2Layer(className, query) {
+  return resolveRegistryL2Layer(className, query) || (allowL2Mage(className, query) ? MAGE_L2 : null);
+}
 
 export function applyClassRouteFilter(route, ctx = {}) {
   const { className, query } = ctx;
   const intent = route.intent || route.id;
-  const mageOk = allowL2Mage(className, query);
-  const artOk = allowL2Artificer(className, query);
+  const resolvedClass = className || matchClassNameFromQuery(query);
   const origTopK = { ...route.topK };
+  const registryLayers = REGISTRY_L2_LAYERS();
 
   route.layers = route.layers.filter((l) => {
-    if (l === 'L2-mage') return mageOk;
-    if (l === 'L2-artificer') return artOk;
+    if (l === MAGE_L2) return allowL2Layer(MAGE_L2, resolvedClass, query);
+    if (registryLayers.includes(l)) return allowL2Layer(l, resolvedClass, query);
     return true;
   });
-  if (!mageOk) delete route.topK['L2-mage'];
-  if (!artOk) delete route.topK['L2-artificer'];
 
-  if (artOk && L2_INJECT_INTENTS.has(intent) && !route.layers.includes('L2-artificer')) {
-    route.layers.push('L2-artificer');
-    route.topK['L2-artificer'] = origTopK['L2-artificer'] || 12;
+  if (!allowL2Layer(MAGE_L2, resolvedClass, query)) delete route.topK[MAGE_L2];
+  for (const layerId of registryLayers) {
+    if (!allowL2Layer(layerId, resolvedClass, query)) delete route.topK[layerId];
+  }
+
+  const injectLayer = activeL2Layer(resolvedClass, query);
+  if (injectLayer && L2_INJECT_INTENTS.has(intent) && !route.layers.includes(injectLayer)) {
+    route.layers.push(injectLayer);
+    route.topK[injectLayer] = origTopK[injectLayer] || 12;
+  }
+
+  if (intent === 'class_skills') {
+    if (injectLayer) {
+      route.layers = [...new Set(['L1', injectLayer, ...route.layers.filter((l) => l === 'L0' || l === 'L5')])];
+      route.topK[injectLayer] = route.topK[injectLayer] || 18;
+      route.topK.L1 = route.topK.L1 || 6;
+      const profile = getClassProfile(resolvedClass);
+      route.promptProfile = profile.tier === 'full' && resolvedClass === '法师' ? 'mage_skills' : 'class_skills';
+    } else {
+      route.layers = [...new Set([...route.layers.filter((l) => l !== MAGE_L2 && !registryLayers.includes(l)), 'L5', 'L0'])];
+      route.topK.L5 = route.topK.L5 || 6;
+      route.topK.L0 = route.topK.L0 || 4;
+      route.promptProfile = 'general';
+    }
   }
 
   if (route.intent === 'mage_skills' || route.intent === 'style_compare') {
-    if (!mageOk) {
-      route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-mage'), 'L5', 'L0'])];
+    if (!allowL2Mage(resolvedClass, query)) {
+      route.layers = [...new Set([...route.layers.filter((l) => l !== MAGE_L2), 'L5', 'L0'])];
       route.topK.L5 = route.topK.L5 || 6;
       route.topK.L0 = route.topK.L0 || 4;
       route.promptProfile = route.intent === 'style_compare' ? 'tips' : 'general';
     }
   }
 
-  if (route.intent === 'artificer_skills' || route.intent === 'artificer_style_compare') {
-    if (!artOk) {
-      route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-artificer'), 'L5', 'L0'])];
-      route.topK.L5 = route.topK.L5 || 6;
-      route.topK.L0 = route.topK.L0 || 4;
-      route.promptProfile = route.intent === 'artificer_style_compare' ? 'tips' : 'general';
-    }
-  }
-
   if (route.intent === 'tips') {
-    if (mageOk && !route.layers.includes('L2-mage')) {
-      route.layers.push('L2-mage');
-      route.topK['L2-mage'] = route.topK['L2-mage'] || 8;
-    }
-    if (artOk && !route.layers.includes('L2-artificer')) {
-      route.layers.push('L2-artificer');
-      route.topK['L2-artificer'] = route.topK['L2-artificer'] || 8;
+    const layer = activeL2Layer(resolvedClass, query);
+    if (layer && !route.layers.includes(layer)) {
+      route.layers.push(layer);
+      route.topK[layer] = route.topK[layer] || 8;
     }
     if (!route.layers.includes('L5')) {
       route.layers.push('L5');
@@ -198,8 +201,8 @@ export function applyClassRouteFilter(route, ctx = {}) {
 
 const DEFAULT_RULE = {
   id: 'general',
-  layers: ['L0', 'L1', 'L2-mage'],
-  topK: { L0: 5, L1: 8, 'L2-mage': 12 },
+  layers: ['L0', 'L1'],
+  topK: { L0: 5, L1: 8 },
   promptProfile: 'general',
 };
 
@@ -275,7 +278,7 @@ export function routeQuery(input) {
     : pickRuleByIntent(intent);
 
   rule = applyClassRouteFilter(
-    { ...rule, mode, layers: [...rule.layers], topK: { ...rule.topK } },
+    { ...rule, intent, mode, layers: [...rule.layers], topK: { ...rule.topK } },
     { className: className || wizardState?.selections?.className, query },
   );
 

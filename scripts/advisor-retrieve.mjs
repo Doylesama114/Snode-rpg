@@ -26,6 +26,14 @@ import {
   resolvePrimaryAttrHint,
   loadClassHintsFile,
 } from './advisor-class-content.mjs';
+import {
+  getL2EntryByLayer,
+  listL2ClassEntries,
+  detectClassStyles,
+  matchClassNameFromQuery,
+  MAGE_QUERY_RE,
+  MAGE_L2,
+} from './advisor-class-l2.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -34,7 +42,22 @@ const ROOT = path.resolve(__dirname, '..');
 const ADVISOR = path.join(ROOT, 'advisor');
 
 const STYLE_NAMES = ['塑能', '咒法', '预言', '防护', '附魔', '死灵', '幻术', '变化'];
-const ARTIFICER_STYLE_NAMES = ['精准', '构想', '支援', '炽擎', '电涌', '魔枢'];
+
+function loadRegistryClassL2() {
+  const classSkillIndexes = {};
+  const classBasicsByName = {};
+  for (const entry of listL2ClassEntries()) {
+    const idxRel = `skills/${entry.l2Slug}_index.json`;
+    const clsRel = `chargen/${entry.l2Slug}_class.json`;
+    if (fs.existsSync(path.join(ADVISOR, idxRel))) {
+      classSkillIndexes[entry.l2Layer] = loadJson(idxRel);
+    }
+    if (fs.existsSync(path.join(ADVISOR, clsRel))) {
+      classBasicsByName[entry.className] = loadJson(clsRel);
+    }
+  }
+  return { classSkillIndexes, classBasicsByName };
+}
 
 let _cache = null;
 
@@ -44,6 +67,7 @@ function loadJson(rel) {
 
 export function loadAdvisorStore() {
   if (_cache) return _cache;
+  const registryL2 = loadRegistryClassL2();
   _cache = {
     rulesSummary: loadJson('rules/rules_summary.json'),
     leveling: loadJson('rules/leveling.json'),
@@ -69,9 +93,12 @@ export function loadAdvisorStore() {
     artificerSkills: fs.existsSync(path.join(ADVISOR, 'skills/artificer_index.json'))
       ? loadJson('skills/artificer_index.json')
       : { skills: [] },
-    artificerClass: fs.existsSync(path.join(ADVISOR, 'chargen/artificer_class.json'))
-      ? loadJson('chargen/artificer_class.json')
-      : null,
+    artificerClass: registryL2.classBasicsByName['奇械师']
+      || (fs.existsSync(path.join(ADVISOR, 'chargen/artificer_class.json'))
+        ? loadJson('chargen/artificer_class.json')
+        : null),
+    classSkillIndexes: registryL2.classSkillIndexes,
+    classBasicsByName: registryL2.classBasicsByName,
     universalSkills: loadJson('skills/universal_index.json'),
     advancements: loadJson('advancements.json'),
     advancementSkills: fs.existsSync(path.join(ADVISOR, 'advancement_skills.json'))
@@ -98,10 +125,13 @@ export function tokenize(text) {
   for (const s of STYLE_NAMES) {
     if (raw.includes(s)) tokens.add(s);
   }
-  for (const s of ARTIFICER_STYLE_NAMES) {
-    if (raw.includes(s)) tokens.add(s);
+  for (const entry of listL2ClassEntries()) {
+    if (raw.includes(entry.className)) tokens.add(entry.className);
+    for (const kw of entry.styleKeywords || []) {
+      if (kw && raw.includes(kw)) tokens.add(kw);
+    }
   }
-  for (const kw of ['兼职', '专长', '进阶', '标识', '塑能', '咒法', '奇械师', '精准', '构想', '通用', '种族', '背景', '智力', '冰霜', '火球', '飞弹', 'combo', '小贴士', '图纸', '枪械']) {
+  for (const kw of ['兼职', '专长', '进阶', '标识', '塑能', '咒法', '通用', '种族', '背景', '智力', '冰霜', '火球', '飞弹', 'combo', '小贴士', '图纸', '枪械', '流派', '战斗风格', '职业树']) {
     if (raw.includes(kw)) tokens.add(kw);
   }
   return [...tokens];
@@ -121,8 +151,17 @@ function detectStyles(query) {
   return STYLE_NAMES.filter((s) => query.includes(s));
 }
 
-function detectArtificerStyles(query) {
-  return ARTIFICER_STYLE_NAMES.filter((s) => query.includes(s));
+function styleNamesForClass(store, className) {
+  const profile = getClassProfile(className);
+  const idx = store.classSkillIndexes?.[profile.l2Layer];
+  const fromIndex = Object.keys(idx?.meta?.facets?.byStyle || {});
+  if (fromIndex.length) return fromIndex;
+  return (profile.styleKeywords || []).filter((k) => k !== className);
+}
+
+function detectStylesForClass(query, className, store) {
+  if (className === '法师') return detectStyles(query);
+  return detectClassStyles(query, className, styleNamesForClass(store, className));
 }
 
 function parseAttrsFromQuery(query) {
@@ -454,21 +493,26 @@ export function formatMageClassBasics(store, query = '') {
   return lines.join('\n');
 }
 
-export function formatArtificerClassBasics(store, query = '') {
-  const ac = store.artificerClass || {};
-  const hints = loadClassHintsFile('奇械师') || {};
+export function formatRegistryClassBasics(store, className, query = '') {
+  const doc = store.classBasicsByName?.[className] || {};
+  const hints = loadClassHintsFile(className) || {};
+  const positioning = doc.rolePositioning || hints.roleSummary?.positioning?.join('、') || '';
   const lines = [
-    `奇械师（${ac.rolePositioning || hints.roleSummary?.positioning?.join('、') || '科技输出'}）`,
-    `- 关键属性：${ac.keyAttr || '智力'}；豁免：${(ac.saves || []).join('、')}`,
-    `- 护甲熟练：${ac.armor || '—'}；武器熟练：${ac.weapons || '—'}`,
-    `- 技巧选择：${ac.skills || '—'}`,
-    `- 初始特性：${ac.startingFeatures?.length || 4} 选 ${ac.startingChoice || 2}（${(ac.startingFeatures || []).map((f) => f.name).join('、')}）`,
+    `${className}（${positioning || '见职业页'}）`,
+    `- 关键属性：${doc.keyAttr || hints.primaryAttr?.name || '—'}；豁免：${(doc.saves || []).join('、') || '—'}`,
+    `- 护甲熟练：${doc.armor || '—'}；武器熟练：${doc.weapons || '—'}`,
+    `- 技巧选择：${doc.skills || '—'}`,
   ];
-  for (const spec of ac.specializations || hints.specializationHints || []) {
+  if (doc.startingFeatures?.length) {
+    lines.push(
+      `- 初始特性：${doc.startingFeatures.length} 选 ${doc.startingChoice || 2}（${doc.startingFeatures.map((f) => f.name).join('、')}）`,
+    );
+  }
+  for (const spec of doc.specializations || hints.specializationHints || []) {
     lines.push(`- 专精「${spec.name}」：${spec.effect || spec.buildHint || ''}`);
   }
-  if (ac.advisorPartialNote) lines.push(`- 顾问说明：${ac.advisorPartialNote}`);
-  if (ac.timelineNote) lines.push(`- ${ac.timelineNote}`);
+  if (doc.advisorPartialNote) lines.push(`- 顾问说明：${doc.advisorPartialNote}`);
+  if (doc.timelineNote) lines.push(`- ${doc.timelineNote}`);
   if (/购点|属性点|32/.test(query) && store.pointBuy) {
     lines.push(`- 购点：共 ${store.pointBuy.totalPoints} 点；单项至多 ${store.pointBuy.maxPointsPerAttr} 点费用（属性 15）`);
   }
@@ -489,45 +533,62 @@ function buildL1Results(store, query, queryTokens, limit, entityHits = [], class
     Math.ceil(limit / 2),
   );
 
-  const isMageContext = !className || className === '法师';
-  const isArtificerContext = className === '奇械师';
+  const isMageContext = className === '法师' || (!className && MAGE_QUERY_RE.test(query));
+  const partialClass = className && store.classBasicsByName?.[className] ? className : null;
   const classHints = className && !isMageContext ? loadClassHintsFile(className) : null;
-  const styles = isArtificerContext ? detectArtificerStyles(query) : detectStyles(query);
-  let styleHints = isMageContext ? (store.mageHints.styleHints || []) : (classHints?.styleHints || []);
+  const styles = isMageContext
+    ? detectStyles(query)
+    : (partialClass ? detectStylesForClass(query, partialClass, store) : []);
+
+  let styleHints = isMageContext
+    ? (store.mageHints.styleHints || [])
+    : (classHints?.styleHints || []);
   if (styles.length) {
     styleHints = styleHints.filter((h) => styles.includes(h.name));
   } else if (isMageContext && /风格|流派|咒法|塑能/.test(query)) {
     styleHints = styleHints.slice(0, 4);
-  } else if (isArtificerContext && /风格|流派|精准|构想|战斗风格/.test(query)) {
-    styleHints = styleHints.slice(0, 4);
+  } else if (partialClass && /风格|流派|战斗风格|职业树/.test(query)) {
+    styleHints = styleHints.slice(0, 6);
   }
 
+  const classQueryRe = partialClass
+    ? new RegExp(className)
+    : null;
   const entityTypes = new Set(entityHits.map((e) => e.entityType));
   const skipClassBasics = entityHits.length > 0
     && !entityTypes.has('class')
-    && !/武器|护甲|专精|起手|装备|创建|车卡|法师|奇械师|初始|购点|输出|怎么选|精准|构想/.test(query);
-  const includeClassBasics = (isMageContext || isArtificerContext) && !skipClassBasics
-    && (/武器|护甲|熟练|豁免|专精|起手|装备|创建|车卡|法师.*(能|会|可以)|奇械师|初始|购点|种族|背景|输出|怎么选|精准|构想/.test(query)
-      || limit >= 4);
+    && !/武器|护甲|专精|起手|装备|创建|车卡|初始|购点|输出|怎么选|流派|战斗风格|职业树/.test(query)
+    && !(classQueryRe && classQueryRe.test(query));
+  const includeClassBasics = !skipClassBasics && (
+    (isMageContext && /武器|护甲|熟练|豁免|专精|起手|装备|创建|车卡|法师|初始|购点|种族|背景|输出|怎么选/.test(query))
+    || (partialClass && /武器|护甲|熟练|豁免|专精|起手|装备|创建|车卡|初始|购点|种族|背景|输出|怎么选|流派|战斗风格|职业树/.test(query))
+    || (isMageContext && !className && limit >= 4 && MAGE_QUERY_RE.test(query))
+  );
 
   const primaryAttr = resolvePrimaryAttrHint(store, className);
   const mageRec = isMageContext ? store.mageHints : null;
+
+  let classBasics = null;
+  if (includeClassBasics) {
+    if (partialClass) classBasics = formatRegistryClassBasics(store, partialClass, query);
+    else if (isMageContext) classBasics = formatMageClassBasics(store, query);
+  }
+
+  const combatDoc = partialClass ? store.classBasicsByName[partialClass] : null;
 
   return {
     className: className || null,
     primaryAttr,
     recommendedRaces: mageRec?.recommendedRaces || classHints?.recommendedRaces,
     recommendedBackgrounds: mageRec?.recommendedBackgrounds?.slice(0, 8) || classHints?.recommendedBackgrounds?.slice(0, 8),
-    classBasics: includeClassBasics
-      ? (isArtificerContext ? formatArtificerClassBasics(store, query) : formatMageClassBasics(store, query))
-      : null,
+    classBasics,
     races,
     backgrounds,
     styleHints,
     combatStyles: styles.length && isMageContext
       ? (store.mageClass.combatStyles || []).filter((s) => styles.includes(s.name))
-      : (styles.length && isArtificerContext
-        ? (store.artificerClass?.combatStyles || []).filter((s) => styles.includes(s.name))
+      : (styles.length && combatDoc
+        ? (combatDoc.combatStyles || []).filter((s) => styles.includes(s.name))
         : []),
   };
 }
@@ -567,13 +628,20 @@ function buildL2MageResults(store, query, queryTokens, limit) {
   return ranked;
 }
 
-function buildL2ArtificerResults(store, query, queryTokens, limit) {
-  const styles = detectArtificerStyles(query);
+function buildL2RegistryResults(store, l2Layer, query, queryTokens, limit) {
+  const entry = getL2EntryByLayer(l2Layer);
+  const index = store.classSkillIndexes?.[l2Layer];
+  if (!index?.skills?.length) return [];
+
+  const className = entry?.className || index.meta?.class;
+  const styles = className
+    ? detectStylesForClass(query, className, store)
+    : [];
   const tierFilter = /1[～~\-—到]3|1\s*~\s*3|一级|二级|三级|低阶|初期|前三级|优先学/.test(query);
-  const byName = Object.fromEntries((store.artificerSkills?.skills || []).map((s) => [s.name, s]));
+  const byName = Object.fromEntries(index.skills.map((s) => [s.name, s]));
 
   let ranked = searchList(
-    store.artificerSkills?.skills || [],
+    index.skills,
     (s) => s.searchText || `${s.name} ${s.style} ${s.summary}`,
     queryTokens,
     limit,
@@ -587,10 +655,10 @@ function buildL2ArtificerResults(store, query, queryTokens, limit) {
     },
   );
 
-  if (styles.includes('精准') && tierFilter) {
-    const pin = ['弹射齿轮', '战术装填', '快速射击', '精准射击']
-      .map((n) => byName[n])
-      .filter(Boolean);
+  if (styles.length === 1 && tierFilter) {
+    const pin = index.skills
+      .filter((s) => s.style === styles[0] && (s.tier === '一阶' || s.type === 'starting'))
+      .slice(0, 4);
     const seen = new Set();
     ranked = [...pin, ...ranked].filter((s) => {
       if (seen.has(s.name)) return false;
@@ -696,11 +764,12 @@ function buildL5Results(store, query, queryTokens, limit, className = null) {
   );
 }
 
-function resolveRetrievalClass(wizardState, chargenState, snapshot) {
+function resolveRetrievalClass(wizardState, chargenState, snapshot, query = '') {
   return wizardState?.selections?.className
     || chargenState?.char?.className
     || snapshot?.classes?.[0]?.name
     || snapshot?.className
+    || matchClassNameFromQuery(query)
     || null;
 }
 
@@ -715,6 +784,7 @@ export function retrieve(query, options = {}) {
     wizardState,
     options.chargenState,
     options.snapshot,
+    query,
   );
   const entityHits = resolveEntities(query, store.entities);
   const route = routeQuery({
@@ -768,9 +838,6 @@ export function retrieve(query, options = {}) {
       case 'L2-mage':
         layers['L2-mage'] = buildL2MageResults(store, query, queryTokens, k);
         break;
-      case 'L2-artificer':
-        layers['L2-artificer'] = buildL2ArtificerResults(store, query, queryTokens, k);
-        break;
       case 'L2-universal':
         layers['L2-universal'] = buildL2UniversalResults(store, query, queryTokens, k);
         break;
@@ -784,6 +851,9 @@ export function retrieve(query, options = {}) {
         layers.L5 = buildL5Results(store, query, queryTokens, k, retrievalClass);
         break;
       default:
+        if (layer.startsWith('L2-') && store.classSkillIndexes?.[layer]) {
+          layers[layer] = buildL2RegistryResults(store, layer, query, queryTokens, k);
+        }
         break;
     }
   }
@@ -896,14 +966,17 @@ export function formatContext(retrieval) {
     lines.push('');
   }
 
-  if (retrieval.results['L2-artificer']?.length) {
-    lines.push('## L2 奇械师技能');
-    for (const s of retrieval.results['L2-artificer'].slice(0, 15)) {
+  for (const entry of listL2ClassEntries()) {
+    const hits = retrieval.results[entry.l2Layer];
+    if (!hits?.length) continue;
+    lines.push(`## L2 ${entry.className}技能`);
+    for (const s of hits.slice(0, 15)) {
       lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''}`);
-      if (s.prerequisite) lines.push(`  前置: ${s.prerequisite.slice(0, 100)}`);
+      if (s.prerequisite) lines.push(`  前置: ${String(s.prerequisite).slice(0, 100)}`);
+      if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);
     }
-    const partialNote = store.artificerClass?.advisorPartialNote;
-    if (partialNote) lines.push(`（${partialNote}）`);
+    const note = store.classBasicsByName?.[entry.className]?.advisorPartialNote;
+    if (note) lines.push(`（${note}）`);
     lines.push('');
   }
 

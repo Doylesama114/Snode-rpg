@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7031',
+    date: '2026-07-07',
+    changes: [
+      '通用L2-class框架',
+      '战士蛮斗士猎人武僧Tier B partial'
+    ]
+  },
+
+
+  {
     version: '1.0.7030',
     date: '2026-07-07',
     changes: [

@@ -45,8 +45,11 @@ else fail('store artificerSkills');
 if (resolveClassL2Layer('奇械师') === 'L2-artificer') pass('resolveClassL2Layer artificer');
 else fail('resolveClassL2Layer artificer');
 
-if (resolveClassL2Layer('战士') == null) pass('resolveClassL2Layer warrior null');
+if (resolveClassL2Layer('战士') === 'L2-warrior') pass('resolveClassL2Layer warrior');
 else fail('resolveClassL2Layer warrior');
+
+if (resolveClassL2Layer('牧师') == null) pass('resolveClassL2Layer cleric null');
+else fail('resolveClassL2Layer cleric');
 
 const routeArt = applyClassRouteFilter(
   { id: 'general', intent: 'general', layers: ['L0', 'L1', 'L2-mage'], topK: { 'L2-mage': 12 }, promptProfile: 'general' },

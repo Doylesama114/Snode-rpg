@@ -1,24 +1,82 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "猎人",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "敏捷",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "猎人关键属性为 敏捷"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "战技输出",
+      "火力压制",
+      "构筑战场"
+    ],
+    "blurb": "猎人能够施展精湛的枪法及箭术快速击杀目标，准备充足的猎人还会在战场上提前布置好陷阱等待猎物的自投罗网，或是如同猛禽一般凭借速度与地势的威能收割敌人，而常伴野兽伙伴的猎人更是食物链中最为致命的存在，此刻你将面对不止一名自然界的顶级捕食者！\\n猎人专注于战斗的恐怖火力足以令对手闻风丧胆。"
   },
-  "specializationHints": [],
-  "styleHints": [],
+  "specializationHints": [
+    {
+      "name": "武器专精",
+      "buildHint": "创建页专精「武器专精」（详见角色创建页说明）"
+    }
+  ],
+  "styleHints": [
+    {
+      "name": "射击",
+      "summary": "射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。",
+      "sampleSkills": [
+        "奥术射击",
+        "猎人印记",
+        "误导"
+      ]
+    },
+    {
+      "name": "兽群",
+      "summary": "兽群：偏基础攻击、互动、短休/长休、战技等能力。",
+      "sampleSkills": [
+        "狂野怒火",
+        "猫鼬撕咬",
+        "倒刺射击"
+      ]
+    },
+    {
+      "name": "机敏",
+      "summary": "机敏：偏迅捷、位移、韧性、长休等能力。",
+      "sampleSkills": [
+        "迅捷如风",
+        "猎人伪装",
+        "二段跳"
+      ]
+    },
+    {
+      "name": "生存",
+      "summary": "生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。",
+      "sampleSkills": [
+        "毒刃",
+        "侦测陷阱",
+        "侦测毒性与疾病"
+      ]
+    },
+    {
+      "name": "猎鹰",
+      "summary": "猎鹰：偏异能、探知、专注、激活等能力。",
+      "sampleSkills": [
+        "鹰眼术",
+        "掷刃斩",
+        "侧翼打击"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }
