@@ -1,17 +1,147 @@
 ﻿const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
 bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
 
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = false; // 手动重启以立即生效
+autoUpdater.logger = console;
+
+const UPDATE_SOURCES = {
+  github: {
+    api: 'https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest',
+    feed: (tag) => 'https://github.com/Doylesama114/Snode-rpg/releases/download/' + tag + '/',
+  },
+  gitee: {
+    api: 'https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/latest',
+    feed: (tag) => 'https://gitee.com/Doylesama007/Snode-rpg/releases/download/' + tag + '/',
+  },
+};
 
 let mainWindow = null;
+let updateCheckInFlight = false;
 
 function sendUpdateStatus(data) {
   if (!mainWindow) return;
   mainWindow.webContents.send('update-status', data);
+}
+
+function formatUpdateError(msg) {
+  if (!msg) return '更新检查失败';
+  if (msg.indexOf('504') >= 0 || msg.indexOf('Gateway Time-out') >= 0 || msg.indexOf('Gateway Timeout') >= 0) {
+    return 'GitHub 暂时超时（504），请稍后重试或点击「镜像下载」。';
+  }
+  if (msg.indexOf('403') >= 0 || msg.indexOf('Forbidden') >= 0 || msg.indexOf('restricted') >= 0) {
+    return 'GitHub 访问受限（403），请使用「镜像下载」或稍后重试。';
+  }
+  if (msg.indexOf('ENOTFOUND') >= 0 || msg.indexOf('ETIMEDOUT') >= 0 || msg.indexOf('timeout') >= 0) {
+    return '网络连接失败，请检查网络后重试。';
+  }
+  if (msg.length > 120) {
+    return '更新检查失败，请稍后重试或使用「镜像下载」。';
+  }
+  return msg;
+}
+
+function httpsGetJson(url, opts) {
+  opts = opts || {};
+  var retries = opts.retries != null ? opts.retries : 3;
+  var timeout = opts.timeout != null ? opts.timeout : 20000;
+
+  return new Promise(function(resolve, reject) {
+    var attempts = 0;
+
+    function tryOnce() {
+      attempts += 1;
+      var req = https.get(url, {
+        headers: { 'User-Agent': 'Snode-rpg', Accept: 'application/json' },
+        timeout: timeout,
+      }, function(res) {
+        var body = '';
+        res.on('data', function(chunk) { body += chunk; });
+        res.on('end', function() {
+          if (res.statusCode >= 500 && attempts < retries) {
+            setTimeout(tryOnce, 1500 * attempts);
+            return;
+          }
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            reject(new Error('HTTP ' + res.statusCode + ' ' + url));
+            return;
+          }
+          try {
+            resolve(JSON.parse(body));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      });
+      req.on('timeout', function() {
+        req.destroy();
+        if (attempts < retries) {
+          setTimeout(tryOnce, 1500 * attempts);
+        } else {
+          reject(new Error('timeout ' + url));
+        }
+      });
+      req.on('error', function(err) {
+        if (attempts < retries) {
+          setTimeout(tryOnce, 1500 * attempts);
+        } else {
+          reject(err);
+        }
+      });
+    }
+
+    tryOnce();
+  });
+}
+
+function fetchLatestTag(sourceKey) {
+  var source = UPDATE_SOURCES[sourceKey];
+  return httpsGetJson(source.api).then(function(data) {
+    var tag = data && data.tag_name;
+    if (!tag) throw new Error('无法获取版本信息');
+    return { tag: tag, feedUrl: source.feed(tag), source: sourceKey };
+  });
+}
+
+function checkForUpdatesViaGenericFeed(opts) {
+  opts = opts || {};
+  if (updateCheckInFlight) return Promise.resolve();
+  updateCheckInFlight = true;
+
+  var order = opts.preferGitee
+    ? ['gitee', 'github']
+    : ['github', 'gitee'];
+
+  sendUpdateStatus({ status: 'checking', message: opts.preferGitee ? '正在从镜像源检查更新...' : '正在检查更新...' });
+
+  function trySource(index) {
+    if (index >= order.length) {
+      updateCheckInFlight = false;
+      sendUpdateStatus({
+        status: 'error',
+        message: '无法获取更新信息，请稍后重试或点击「镜像下载」。',
+      });
+      return Promise.resolve();
+    }
+
+    var key = order[index];
+    return fetchLatestTag(key).then(function(info) {
+      console.log('[更新] 使用 ' + key + ' feed: ' + info.feedUrl);
+      autoUpdater.setFeedURL({ provider: 'generic', url: info.feedUrl });
+      return autoUpdater.checkForUpdates();
+    }).catch(function(err) {
+      console.warn('[更新] ' + order[index] + ' 源失败:', err.message || err);
+      return trySource(index + 1);
+    });
+  }
+
+  return trySource(0).finally(function() {
+    updateCheckInFlight = false;
+  });
 }
 
 autoUpdater.on('checking-for-update', () => {
@@ -36,45 +166,17 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
-  var msg = err.message || '';
-  // GitHub 403 rate-limit: give user-friendly message
-  if (msg.indexOf('403') >= 0 || msg.indexOf('Forbidden') >= 0 || msg.indexOf('restricted') >= 0) {
-    msg = 'GitHub 访问受限（403），可能是请求频率过高。请稍后重试，或使用启动台"镜像下载"按钮手动更新。';
-  }
-  sendUpdateStatus({ status: 'error', message: msg });
+  sendUpdateStatus({ status: 'error', message: formatUpdateError(err.message || String(err)) });
 });
 
-// IPC: 手动检查更新
+// IPC: 手动检查更新（GitHub API + generic latest.yml，避免 GitHub HTML 504）
 ipcMain.on('check-update', () => {
-  sendUpdateStatus({ status: 'checking' });
-  autoUpdater.checkForUpdates();
+  checkForUpdatesViaGenericFeed({ preferGitee: false });
 });
 
-// IPC: 镜像更新 - 用 GitHub Release 直链触发自动更新
+// IPC: 镜像更新 — 优先 Gitee，失败回退 GitHub
 ipcMain.on('check-update-gitee', () => {
-  sendUpdateStatus({ status: 'checking', message: '正在获取最新版本...' });
-  const https = require('https');
-  https.get('https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest', {
-    headers: { 'User-Agent': 'Snode-rpg' }
-  }, (res) => {
-    let body = '';
-    res.on('data', chunk => body += chunk);
-    res.on('end', () => {
-      try {
-        const data = JSON.parse(body);
-        const tag = data.tag_name;
-        if (!tag) { sendUpdateStatus({ status: 'error', message: '无法获取版本信息' }); return; }
-        // 用 GitHub Release 直链作为 feed（走 objects.githubusercontent.com CDN）
-        const feedUrl = 'https://github.com/Doylesama114/Snode-rpg/releases/download/' + tag + '/';
-        autoUpdater.setFeedURL({ provider: 'generic', url: feedUrl });
-        autoUpdater.checkForUpdates();
-      } catch(e) {
-        sendUpdateStatus({ status: 'error', message: '版本信息解析失败' });
-      }
-    });
-  }).on('error', () => {
-    sendUpdateStatus({ status: 'error', message: '网络连接失败，请稍后重试' });
-  });
+  checkForUpdatesViaGenericFeed({ preferGitee: true });
 });
 
 // IPC: 手动重启
@@ -271,13 +373,13 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  // 启动时自动检查更新（延迟避免阻塞启动）
+  // 启动时自动检查更新（延迟避免阻塞启动；走 API+latest.yml，不抓 GitHub HTML）
   mainWindow.once('ready-to-show', () => {
-    setTimeout(() => autoUpdater.checkForUpdates(), 3000);
+    setTimeout(() => checkForUpdatesViaGenericFeed({ preferGitee: false }), 3000);
   });
 
   // 定时检查更新（每4小时）
-  setInterval(() => autoUpdater.checkForUpdates(), 4 * 60 * 60 * 1000);
+  setInterval(() => checkForUpdatesViaGenericFeed({ preferGitee: false }), 4 * 60 * 60 * 1000);
 });
 
 app.on('window-all-closed', () => app.quit());

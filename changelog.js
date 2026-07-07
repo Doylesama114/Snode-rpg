@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7006',
+    date: '2026-07-07',
+    changes: [
+      '修复自动更新504：改用API+latest.yml替代GitHub HTML解析',
+      'GitHub失败自动回退Gitee'
+    ]
+  },
+
+
+  {
     version: '1.0.7005',
     date: '2026-07-07',
     changes: [
