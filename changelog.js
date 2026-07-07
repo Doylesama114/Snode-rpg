@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7049',
+    date: '2026-07-07',
+    changes: [
+      '武僧顾问升full(monk_skills/七风格L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7048',
     date: '2026-07-07',
     changes: [

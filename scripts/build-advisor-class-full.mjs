@@ -732,6 +732,102 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  武僧: {
+    defaultFullL2MinSkills: 80,
+    fpKeyLabel: '敏捷',
+    specBuildHints: {
+      真气诀: '真气池与战技/功法消耗核心；长线 build 须规划真气回复。',
+      散打: '徒手攻击额外伤害；极斗/踏风/酒仙等徒手线协同。',
+      习武之人: '不着甲 AC 加成；偏无甲/轻甲 build，勿与重甲混用。',
+    },
+    styleRoleHints: {
+      极斗: '徒手爆发与连环战技；猛虎掌/连环拳代表输出。',
+      踏风: '速攻位移与点穴；身轻如燕/无影步代表机动。',
+      织雾: '真气回复与净化；散魔功/抚慰之雾代表支援。',
+      无尘: '控场与护盾；嚎镇八方/金钟罩代表防御控场。',
+      锋岚: '长兵与回马枪；当头棒喝代表近战技巧。',
+      酒仙: '醉拳与借醉反击；偏反击与技艺 build。',
+      凰火: '式（猛虎/云鹤/灵龙/玄武/朱鹤）与火焰机制；高阶长线投资。',
+    },
+    chargenAttrDetail: '敏捷≥15 为常见目标；力量配合徒手伤害，体操/运动与位移 build 协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-styles',
+        title: '七风格与首风格',
+        summary: '极斗/踏风/织雾/无尘/锋岚/酒仙/凰火七线；创建后选定首个战斗风格，部分高阶技能有替换/合并前置。',
+        detail: '引用须来自 L2 武僧上下文；勿套用法师八学派或塑能箭。',
+        relatedSkills: ['连环拳', '身轻如燕'],
+        tags: [className, '战斗风格', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手四选二',
+        summary: '4 选 2 战技：猛虎掌（输出）、扫堂腿（控场）、滚地翻（位移）、活血术（净化）。',
+        detail: '按团队缺口选两项；勿假设四项全拿。起手战技为 martial/gongfa 类型，非法术位。',
+        relatedSkills: ['猛虎掌', '扫堂腿', '滚地翻', '活血术'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-qi',
+        title: '真气机制',
+        summary: '多数战技/功法消耗真气；真气诀专精与回复类功法（织雾线）相关。',
+        detail: '具体消耗与回复以技能描述为准；标识「式」类天赋由 DM 结算，勿假设已有标识。',
+        relatedSkills: ['猛虎掌', '散魔功'],
+        tags: [className, '真气', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-types',
+        title: '战技/功法/天赋',
+        summary: 'martial 战技、gongfa 功法、talent 天赋分类型；前置常写「拥有战技.XXX」或风格锁定。',
+        detail: '凰火「式」与高阶合并技须查 prerequisite；勿编造未收录技能名。',
+        relatedSkills: ['幻形踢', '猛虎式'],
+        tags: [className, '战技', '功法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-unarmed',
+        title: '徒手与散打',
+        summary: '散打专精强化徒手；猛虎掌/连环拳等须满足「未持物单手」等施展条件（见描述）。',
+        detail: '拳刃为常见武器扩展；徒手 build 与锋岚长兵 build 勿混谈同一套节点。',
+        relatedSkills: ['猛虎掌', '连环拳'],
+        tags: [className, '徒手', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-unarmored',
+        title: '无甲与习武之人',
+        summary: '习武之人专精提供不着甲 AC；着中甲仍合法但可能与无甲 build 专精方向不一致。',
+        detail: '轻甲/中甲熟练见创建页；AC 计算见基础规则与装备规则上下文。',
+        relatedSkills: [],
+        tags: [className, '护甲', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与真气节奏',
+        summary: '战技亦可能消耗 FP；长战分回合交替输出、位移与真气回复，避免真气/FP 双空。',
+        detail: '短休/长休回复见基础规则；滚地翻等反应类注意每战次数限制。',
+        relatedSkills: ['滚地翻'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-spec',
+        title: '三项专精取向',
+        summary: '真气诀偏资源、散打偏徒手伤害、习武之人偏无甲生存；与首风格规划一致再扩展。',
+        detail: '创建页三项专精均获得（非三选一）；具体数值以规则书为准。',
+        relatedSkills: ['活血术'],
+        tags: [className, '专精', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/轻甲|中甲/.test(refClass?.armor || '')) {
+        rules.push('武僧熟练轻甲与中甲；习武之人专精与不着甲 build 相关，着甲取舍见创建页。');
+      }
+      if (/拳刃/.test(refClass?.weapons || '')) {
+        rules.push('拳刃为武僧特色武器；徒手战技与持械 build 分线规划。');
+      }
+      rules.push('徒手战技常要求「未持有物件的单手」等条件，见各技能施展条件。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

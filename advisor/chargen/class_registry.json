@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7048",
-    "note": "7048术士起始特性三项全得修正"
+    "version": "1.0.7049",
+    "note": "14职业顾问：11 full（含武僧）；7049武僧升full"
   },
   "defaults": {
     "tier": "basic",
@@ -232,7 +232,7 @@
       "l5MinTips": 20
     },
     "武僧": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "敏捷",
       "l2Slug": "monk",
       "l2Layer": "L2-monk",
@@ -248,7 +248,9 @@
         "酒仙",
         "凰火"
       ],
-      "advisorNote": "武僧顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "monk_skills",
+      "fullL2MinSkills": 80,
+      "l5MinTips": 20
     },
     "吟游诗人": {
       "tier": "partial",

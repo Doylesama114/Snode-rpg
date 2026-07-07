@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "武僧",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 9,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 28,
     "byKind": {
       "style_guide": 7,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 11,
+      "combat_rule": 8,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "武僧·极斗风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "极斗",
       "summary": "极斗：偏徒手攻击、第一行动、战技、幻象等能力。",
-      "detail": "示例技能：连环拳、幻形踢、玄秘掌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "徒手爆发与连环战技；猛虎掌/连环拳代表输出。低阶代表：连环拳、幻形踢、玄秘掌。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "连环拳",
         "幻形踢",
@@ -53,7 +54,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 极斗 极斗：偏徒手攻击、第一行动、战技、幻象等能力。 示例技能：连环拳、幻形踢、玄秘掌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 连环拳 幻形踢 玄秘掌 style_guide auto_stub"
+      "searchText": "武僧·极斗风格 style_guide auto_generated 极斗：偏徒手攻击、第一行动、战技、幻象等能力。 徒手爆发与连环战技；猛虎掌/连环拳代表输出。低阶代表：连环拳、幻形踢、玄秘掌。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 极斗 战斗风格 style_guide 连环拳 幻形踢 玄秘掌"
     },
     {
       "id": "tip-monk-style-踏风",
@@ -63,10 +64,10 @@
       ],
       "title": "武僧·踏风风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "踏风",
       "summary": "踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。",
-      "detail": "示例技能：点穴手、身轻如燕、无影步。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "速攻位移与点穴；身轻如燕/无影步代表机动。低阶代表：点穴手、身轻如燕、无影步。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "点穴手",
         "身轻如燕",
@@ -93,7 +94,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 踏风 踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。 示例技能：点穴手、身轻如燕、无影步。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 点穴手 身轻如燕 无影步 style_guide auto_stub"
+      "searchText": "武僧·踏风风格 style_guide auto_generated 踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。 速攻位移与点穴；身轻如燕/无影步代表机动。低阶代表：点穴手、身轻如燕、无影步。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 踏风 战斗风格 style_guide 点穴手 身轻如燕 无影步"
     },
     {
       "id": "tip-monk-style-织雾",
@@ -103,10 +104,10 @@
       ],
       "title": "武僧·织雾风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "织雾",
       "summary": "织雾：偏韧性、长休、功法、回复等能力。",
-      "detail": "示例技能：散魔功、抚慰之雾、真气波。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "真气回复与净化；散魔功/抚慰之雾代表支援。低阶代表：散魔功、抚慰之雾、真气波。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "散魔功",
         "抚慰之雾",
@@ -133,7 +134,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 织雾 织雾：偏韧性、长休、功法、回复等能力。 示例技能：散魔功、抚慰之雾、真气波。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 散魔功 抚慰之雾 真气波 style_guide auto_stub"
+      "searchText": "武僧·织雾风格 style_guide auto_generated 织雾：偏韧性、长休、功法、回复等能力。 真气回复与净化；散魔功/抚慰之雾代表支援。低阶代表：散魔功、抚慰之雾、真气波。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 织雾 战斗风格 style_guide 散魔功 抚慰之雾 真气波"
     },
     {
       "id": "tip-monk-style-无尘",
@@ -143,10 +144,10 @@
       ],
       "title": "武僧·无尘风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "无尘",
       "summary": "无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。",
-      "detail": "示例技能：嚎镇八方、金钟罩、疾言厉色。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "控场与护盾；嚎镇八方/金钟罩代表防御控场。低阶代表：嚎镇八方、金钟罩、疾言厉色。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "嚎镇八方",
         "金钟罩",
@@ -173,7 +174,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 无尘 无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。 示例技能：嚎镇八方、金钟罩、疾言厉色。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 嚎镇八方 金钟罩 疾言厉色 style_guide auto_stub"
+      "searchText": "武僧·无尘风格 style_guide auto_generated 无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。 控场与护盾；嚎镇八方/金钟罩代表防御控场。低阶代表：嚎镇八方、金钟罩、疾言厉色。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 无尘 战斗风格 style_guide 嚎镇八方 金钟罩 疾言厉色"
     },
     {
       "id": "tip-monk-style-锋岚",
@@ -183,10 +184,10 @@
       ],
       "title": "武僧·锋岚风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "锋岚",
       "summary": "锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。",
-      "detail": "示例技能：当头棒喝、回马枪、长兵熟稔。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "长兵与回马枪；当头棒喝代表近战技巧。低阶代表：当头棒喝、回马枪、长兵熟稔。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "当头棒喝",
         "回马枪",
@@ -213,7 +214,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 锋岚 锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。 示例技能：当头棒喝、回马枪、长兵熟稔。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 当头棒喝 回马枪 长兵熟稔 style_guide auto_stub"
+      "searchText": "武僧·锋岚风格 style_guide auto_generated 锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。 长兵与回马枪；当头棒喝代表近战技巧。低阶代表：当头棒喝、回马枪、长兵熟稔。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 锋岚 战斗风格 style_guide 当头棒喝 回马枪 长兵熟稔"
     },
     {
       "id": "tip-monk-style-酒仙",
@@ -223,10 +224,10 @@
       ],
       "title": "武僧·酒仙风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "酒仙",
       "summary": "酒仙：偏徒手攻击、战技、反击、技艺等能力。",
-      "detail": "示例技能：醉拳、借醉反击、蒸馏工艺。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "醉拳与借醉反击；偏反击与技艺 build。低阶代表：醉拳、借醉反击、蒸馏工艺。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "醉拳",
         "借醉反击",
@@ -253,7 +254,7 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 酒仙 酒仙：偏徒手攻击、战技、反击、技艺等能力。 示例技能：醉拳、借醉反击、蒸馏工艺。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 醉拳 借醉反击 蒸馏工艺 style_guide auto_stub"
+      "searchText": "武僧·酒仙风格 style_guide auto_generated 酒仙：偏徒手攻击、战技、反击、技艺等能力。 醉拳与借醉反击；偏反击与技艺 build。低阶代表：醉拳、借醉反击、蒸馏工艺。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 酒仙 战斗风格 style_guide 醉拳 借醉反击 蒸馏工艺"
     },
     {
       "id": "tip-monk-style-凰火",
@@ -263,10 +264,10 @@
       ],
       "title": "武僧·凰火风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "凰火",
       "summary": "凰火：偏机制、火焰、天赋、短休/长休等能力。",
-      "detail": "示例技能：我心如火、朱鹤式、凰羽焰。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "式（猛虎/云鹤/灵龙/玄武/朱鹤）与火焰机制；高阶长线投资。低阶代表：我心如火、朱鹤式、凰羽焰。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "我心如火",
         "朱鹤式",
@@ -293,51 +294,714 @@
           "source": "monk"
         }
       ],
-      "searchText": "武僧 凰火 凰火：偏机制、火焰、天赋、短休/长休等能力。 示例技能：我心如火、朱鹤式、凰羽焰。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 我心如火 朱鹤式 凰羽焰 style_guide auto_stub"
+      "searchText": "武僧·凰火风格 style_guide auto_generated 凰火：偏机制、火焰、天赋、短休/长休等能力。 式（猛虎/云鹤/灵龙/玄武/朱鹤）与火焰机制；高阶长线投资。低阶代表：我心如火、朱鹤式、凰羽焰。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 武僧 凰火 战斗风格 style_guide 我心如火 朱鹤式 凰羽焰"
     },
     {
-      "id": "tip-monk-chargen-1",
+      "id": "tip-monk-prio-极斗",
       "scope": "class",
       "applicableClasses": [
         "武僧"
       ],
-      "title": "武僧创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "极斗 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "极斗",
+      "summary": "极斗线前三级可优先：斗神霸体、碎空、连环拳；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 极斗 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。徒手爆发与连环战技；猛虎掌/连环拳代表输出。",
+      "relatedSkills": [
+        "斗神霸体",
+        "碎空",
+        "连环拳"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "极斗",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "斗神霸体",
+          "source": "monk"
+        },
+        {
+          "name": "碎空",
+          "source": "monk"
+        },
+        {
+          "name": "连环拳",
+          "source": "monk"
+        }
+      ],
+      "searchText": "极斗 1～3 阶优先 tactic auto_generated 极斗线前三级可优先：斗神霸体、碎空、连环拳；与起手特性/专精规划一致再扩展。 武僧 极斗 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。徒手爆发与连环战技；猛虎掌/连环拳代表输出。 武僧 极斗 优先学 tactic 斗神霸体 碎空 连环拳"
+    },
+    {
+      "id": "tip-monk-prio-踏风",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "踏风 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "踏风",
+      "summary": "踏风线前三级可优先：点穴手、身轻如燕、无影步；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 踏风 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。速攻位移与点穴；身轻如燕/无影步代表机动。",
+      "relatedSkills": [
+        "点穴手",
+        "身轻如燕",
+        "无影步"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "踏风",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "点穴手",
+          "source": "monk"
+        },
+        {
+          "name": "身轻如燕",
+          "source": "monk"
+        },
+        {
+          "name": "无影步",
+          "source": "monk"
+        }
+      ],
+      "searchText": "踏风 1～3 阶优先 tactic auto_generated 踏风线前三级可优先：点穴手、身轻如燕、无影步；与起手特性/专精规划一致再扩展。 武僧 踏风 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。速攻位移与点穴；身轻如燕/无影步代表机动。 武僧 踏风 优先学 tactic 点穴手 身轻如燕 无影步"
+    },
+    {
+      "id": "tip-monk-prio-织雾",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "织雾 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "织雾",
+      "summary": "织雾线前三级可优先：散魔功、抚慰之雾、真气波；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 织雾 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。真气回复与净化；散魔功/抚慰之雾代表支援。",
+      "relatedSkills": [
+        "散魔功",
+        "抚慰之雾",
+        "真气波"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "织雾",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "散魔功",
+          "source": "monk"
+        },
+        {
+          "name": "抚慰之雾",
+          "source": "monk"
+        },
+        {
+          "name": "真气波",
+          "source": "monk"
+        }
+      ],
+      "searchText": "织雾 1～3 阶优先 tactic auto_generated 织雾线前三级可优先：散魔功、抚慰之雾、真气波；与起手特性/专精规划一致再扩展。 武僧 织雾 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。真气回复与净化；散魔功/抚慰之雾代表支援。 武僧 织雾 优先学 tactic 散魔功 抚慰之雾 真气波"
+    },
+    {
+      "id": "tip-monk-prio-无尘",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "无尘 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "无尘",
+      "summary": "无尘线前三级可优先：不破金身、业力反震、金刚界；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 无尘 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场与护盾；嚎镇八方/金钟罩代表防御控场。",
+      "relatedSkills": [
+        "不破金身",
+        "业力反震",
+        "金刚界"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "无尘",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "不破金身",
+          "source": "monk"
+        },
+        {
+          "name": "业力反震",
+          "source": "monk"
+        },
+        {
+          "name": "金刚界",
+          "source": "monk"
+        }
+      ],
+      "searchText": "无尘 1～3 阶优先 tactic auto_generated 无尘线前三级可优先：不破金身、业力反震、金刚界；与起手特性/专精规划一致再扩展。 武僧 无尘 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场与护盾；嚎镇八方/金钟罩代表防御控场。 武僧 无尘 优先学 tactic 不破金身 业力反震 金刚界"
+    },
+    {
+      "id": "tip-monk-prio-锋岚",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "锋岚 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "锋岚",
+      "summary": "锋岚线前三级可优先：当头棒喝、回马枪、长兵熟稔；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 锋岚 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。长兵与回马枪；当头棒喝代表近战技巧。",
+      "relatedSkills": [
+        "当头棒喝",
+        "回马枪",
+        "长兵熟稔"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "锋岚",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "当头棒喝",
+          "source": "monk"
+        },
+        {
+          "name": "回马枪",
+          "source": "monk"
+        },
+        {
+          "name": "长兵熟稔",
+          "source": "monk"
+        }
+      ],
+      "searchText": "锋岚 1～3 阶优先 tactic auto_generated 锋岚线前三级可优先：当头棒喝、回马枪、长兵熟稔；与起手特性/专精规划一致再扩展。 武僧 锋岚 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。长兵与回马枪；当头棒喝代表近战技巧。 武僧 锋岚 优先学 tactic 当头棒喝 回马枪 长兵熟稔"
+    },
+    {
+      "id": "tip-monk-prio-酒仙",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "酒仙 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "酒仙",
+      "summary": "酒仙线前三级可优先：方寸乾坤、酒即大道、天神酒；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 酒仙 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。醉拳与借醉反击；偏反击与技艺 build。",
+      "relatedSkills": [
+        "方寸乾坤",
+        "酒即大道",
+        "天神酒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "酒仙",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "方寸乾坤",
+          "source": "monk"
+        },
+        {
+          "name": "酒即大道",
+          "source": "monk"
+        },
+        {
+          "name": "天神酒",
+          "source": "monk"
+        }
+      ],
+      "searchText": "酒仙 1～3 阶优先 tactic auto_generated 酒仙线前三级可优先：方寸乾坤、酒即大道、天神酒；与起手特性/专精规划一致再扩展。 武僧 酒仙 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。醉拳与借醉反击；偏反击与技艺 build。 武僧 酒仙 优先学 tactic 方寸乾坤 酒即大道 天神酒"
+    },
+    {
+      "id": "tip-monk-prio-凰火",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "凰火 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "凰火",
+      "summary": "凰火线前三级可优先：千凰乱舞、焚愿法·业火枷锁、炎帝姿态；与起手特性/专精规划一致再扩展。",
+      "detail": "武僧 凰火 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。式（猛虎/云鹤/灵龙/玄武/朱鹤）与火焰机制；高阶长线投资。",
+      "relatedSkills": [
+        "千凰乱舞",
+        "焚愿法·业火枷锁",
+        "炎帝姿态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "凰火",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "千凰乱舞",
+          "source": "monk"
+        },
+        {
+          "name": "焚愿法·业火枷锁",
+          "source": "monk"
+        },
+        {
+          "name": "炎帝姿态",
+          "source": "monk"
+        }
+      ],
+      "searchText": "凰火 1～3 阶优先 tactic auto_generated 凰火线前三级可优先：千凰乱舞、焚愿法·业火枷锁、炎帝姿态；与起手特性/专精规划一致再扩展。 武僧 凰火 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。式（猛虎/云鹤/灵龙/玄武/朱鹤）与火焰机制；高阶长线投资。 武僧 凰火 优先学 tactic 千凰乱舞 焚愿法·业火枷锁 炎帝姿态"
+    },
+    {
+      "id": "tip-monk-start-猛虎掌",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "起手·猛虎掌",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "猛虎掌（起手）：你挥出一掌砸向对手，强劲的拳风犹如猛虎的咆哮 L5: 猛虎掌改为额外附加一次你的力量和敏捷调整值",
+      "detail": "武僧 4 选 2 起手特性之一。你挥出一掌砸向对手，强劲的拳风犹如猛虎的咆哮 L5: 猛虎掌改为额外附加一次你的力量和敏捷调整值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "猛虎掌"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛虎掌",
+          "source": "monk"
+        }
+      ],
+      "searchText": "起手·猛虎掌 tactic auto_generated 猛虎掌（起手）：你挥出一掌砸向对手，强劲的拳风犹如猛虎的咆哮 L5: 猛虎掌改为额外附加一次你的力量和敏捷调整值 武僧 4 选 2 起手特性之一。你挥出一掌砸向对手，强劲的拳风犹如猛虎的咆哮 L5: 猛虎掌改为额外附加一次你的力量和敏捷调整值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 武僧 起手特性 车卡 tactic 猛虎掌"
+    },
+    {
+      "id": "tip-monk-start-扫堂腿",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "起手·扫堂腿",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "扫堂腿（起手）：你的腿犹如铁鞭一般重重扫向敌人 L5: 扫堂腿会额外附加一次你的敏捷调整值",
+      "detail": "武僧 4 选 2 起手特性之一。你的腿犹如铁鞭一般重重扫向敌人 L5: 扫堂腿会额外附加一次你的敏捷调整值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "扫堂腿"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "扫堂腿",
+          "source": "monk"
+        }
+      ],
+      "searchText": "起手·扫堂腿 tactic auto_generated 扫堂腿（起手）：你的腿犹如铁鞭一般重重扫向敌人 L5: 扫堂腿会额外附加一次你的敏捷调整值 武僧 4 选 2 起手特性之一。你的腿犹如铁鞭一般重重扫向敌人 L5: 扫堂腿会额外附加一次你的敏捷调整值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 武僧 起手特性 车卡 tactic 扫堂腿"
+    },
+    {
+      "id": "tip-monk-start-滚地翻",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "起手·滚地翻",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "滚地翻（起手）：你通过翻滚来躲避敌人的攻击，或调整自己的身位 每场战斗限一次.你可以使用一个反应动作和1点真气在其他角色的回合中使用这个效果",
+      "detail": "武僧 4 选 2 起手特性之一。你通过翻滚来躲避敌人的攻击，或调整自己的身位 每场战斗限一次.你可以使用一个反应动作和1点真气在其他角色的回合中使用这个效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "滚地翻"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "滚地翻",
+          "source": "monk"
+        }
+      ],
+      "searchText": "起手·滚地翻 tactic auto_generated 滚地翻（起手）：你通过翻滚来躲避敌人的攻击，或调整自己的身位 每场战斗限一次.你可以使用一个反应动作和1点真气在其他角色的回合中使用这个效果 武僧 4 选 2 起手特性之一。你通过翻滚来躲避敌人的攻击，或调整自己的身位 每场战斗限一次.你可以使用一个反应动作和1点真气在其他角色的回合中使用这个效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。 武僧 起手特性 车卡 tactic 滚地翻"
+    },
+    {
+      "id": "tip-monk-start-活血术",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "起手·活血术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "活血术（起手）：你将气力输入人体中以清除对方的淤伤 L5: 活血术如果移除了目标所受到的所有中毒和流血状态，还会为其回复1D8点生命值 L8: 活血术改为能够移除2D4层中毒和",
+      "detail": "武僧 4 选 2 起手特性之一。你将气力输入人体中以清除对方的淤伤 L5: 活血术如果移除了目标所受到的所有中毒和流血状态，还会为其回复1D8点生命值 L8: 活血术改为能够移除2D4层中毒和流血状态 L12: 活血术改为如果移除了目标所受到的所有中毒或流血状态，还会为其回复2D8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "活血术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "活血术",
+          "source": "monk"
+        }
+      ],
+      "searchText": "起手·活血术 tactic auto_generated 活血术（起手）：你将气力输入人体中以清除对方的淤伤 L5: 活血术如果移除了目标所受到的所有中毒和流血状态，还会为其回复1D8点生命值 L8: 活血术改为能够移除2D4层中毒和 武僧 4 选 2 起手特性之一。你将气力输入人体中以清除对方的淤伤 L5: 活血术如果移除了目标所受到的所有中毒和流血状态，还会为其回复1D8点生命值 L8: 活血术改为能够移除2D4层中毒和流血状态 L12: 活血术改为如果移除了目标所受到的所有中毒或流血状态，还会为其回复2D8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 武僧 起手特性 车卡 tactic 活血术"
+    },
+    {
+      "id": "tip-monk-cr-styles",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "七风格与首风格",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "极斗/踏风/织雾/无尘/锋岚/酒仙/凰火七线；创建后选定首个战斗风格，部分高阶技能有替换/合并前置。",
+      "detail": "引用须来自 L2 武僧上下文；勿套用法师八学派或塑能箭。",
+      "relatedSkills": [
+        "连环拳",
+        "身轻如燕"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "战斗风格",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "连环拳",
+          "source": "monk"
+        },
+        {
+          "name": "身轻如燕",
+          "source": "monk"
+        }
+      ],
+      "searchText": "七风格与首风格 combat_rule auto_generated 极斗/踏风/织雾/无尘/锋岚/酒仙/凰火七线；创建后选定首个战斗风格，部分高阶技能有替换/合并前置。 引用须来自 L2 武僧上下文；勿套用法师八学派或塑能箭。 武僧 战斗风格 combat_rule 连环拳 身轻如燕"
+    },
+    {
+      "id": "tip-monk-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "起手四选二",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "4 选 2 战技：猛虎掌（输出）、扫堂腿（控场）、滚地翻（位移）、活血术（净化）。",
+      "detail": "按团队缺口选两项；勿假设四项全拿。起手战技为 martial/gongfa 类型，非法术位。",
+      "relatedSkills": [
+        "猛虎掌",
+        "扫堂腿",
+        "滚地翻",
+        "活血术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛虎掌",
+          "source": "monk"
+        },
+        {
+          "name": "扫堂腿",
+          "source": "monk"
+        },
+        {
+          "name": "滚地翻",
+          "source": "monk"
+        },
+        {
+          "name": "活血术",
+          "source": "monk"
+        }
+      ],
+      "searchText": "起手四选二 combat_rule auto_generated 4 选 2 战技：猛虎掌（输出）、扫堂腿（控场）、滚地翻（位移）、活血术（净化）。 按团队缺口选两项；勿假设四项全拿。起手战技为 martial/gongfa 类型，非法术位。 武僧 起手特性 combat_rule 猛虎掌 扫堂腿 滚地翻 活血术"
+    },
+    {
+      "id": "tip-monk-cr-qi",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "真气机制",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多数战技/功法消耗真气；真气诀专精与回复类功法（织雾线）相关。",
+      "detail": "具体消耗与回复以技能描述为准；标识「式」类天赋由 DM 结算，勿假设已有标识。",
+      "relatedSkills": [
+        "猛虎掌",
+        "散魔功"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "真气",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛虎掌",
+          "source": "monk"
+        },
+        {
+          "name": "散魔功",
+          "source": "monk"
+        }
+      ],
+      "searchText": "真气机制 combat_rule auto_generated 多数战技/功法消耗真气；真气诀专精与回复类功法（织雾线）相关。 具体消耗与回复以技能描述为准；标识「式」类天赋由 DM 结算，勿假设已有标识。 武僧 真气 combat_rule 猛虎掌 散魔功"
+    },
+    {
+      "id": "tip-monk-cr-types",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "战技/功法/天赋",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "martial 战技、gongfa 功法、talent 天赋分类型；前置常写「拥有战技.XXX」或风格锁定。",
+      "detail": "凰火「式」与高阶合并技须查 prerequisite；勿编造未收录技能名。",
+      "relatedSkills": [
+        "幻形踢",
+        "猛虎式"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "战技",
+        "功法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "幻形踢",
+          "source": "monk"
+        },
+        {
+          "name": "猛虎式",
+          "source": "monk"
+        }
+      ],
+      "searchText": "战技/功法/天赋 combat_rule auto_generated martial 战技、gongfa 功法、talent 天赋分类型；前置常写「拥有战技.XXX」或风格锁定。 凰火「式」与高阶合并技须查 prerequisite；勿编造未收录技能名。 武僧 战技 功法 combat_rule 幻形踢 猛虎式"
+    },
+    {
+      "id": "tip-monk-cr-unarmed",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "徒手与散打",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "散打专精强化徒手；猛虎掌/连环拳等须满足「未持物单手」等施展条件（见描述）。",
+      "detail": "拳刃为常见武器扩展；徒手 build 与锋岚长兵 build 勿混谈同一套节点。",
+      "relatedSkills": [
+        "猛虎掌",
+        "连环拳"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "徒手",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛虎掌",
+          "source": "monk"
+        },
+        {
+          "name": "连环拳",
+          "source": "monk"
+        }
+      ],
+      "searchText": "徒手与散打 combat_rule auto_generated 散打专精强化徒手；猛虎掌/连环拳等须满足「未持物单手」等施展条件（见描述）。 拳刃为常见武器扩展；徒手 build 与锋岚长兵 build 勿混谈同一套节点。 武僧 徒手 combat_rule 猛虎掌 连环拳"
+    },
+    {
+      "id": "tip-monk-cr-unarmored",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "无甲与习武之人",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "习武之人专精提供不着甲 AC；着中甲仍合法但可能与无甲 build 专精方向不一致。",
+      "detail": "轻甲/中甲熟练见创建页；AC 计算见基础规则与装备规则上下文。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "无甲与习武之人 combat_rule auto_generated 习武之人专精提供不着甲 AC；着中甲仍合法但可能与无甲 build 专精方向不一致。 轻甲/中甲熟练见创建页；AC 计算见基础规则与装备规则上下文。 武僧 护甲 combat_rule"
+    },
+    {
+      "id": "tip-monk-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "FP 与真气节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战技亦可能消耗 FP；长战分回合交替输出、位移与真气回复，避免真气/FP 双空。",
+      "detail": "短休/长休回复见基础规则；滚地翻等反应类注意每战次数限制。",
+      "relatedSkills": [
+        "滚地翻"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "滚地翻",
+          "source": "monk"
+        }
+      ],
+      "searchText": "FP 与真气节奏 combat_rule auto_generated 战技亦可能消耗 FP；长战分回合交替输出、位移与真气回复，避免真气/FP 双空。 短休/长休回复见基础规则；滚地翻等反应类注意每战次数限制。 武僧 FP combat_rule 滚地翻"
+    },
+    {
+      "id": "tip-monk-cr-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "三项专精取向",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "真气诀偏资源、散打偏徒手伤害、习武之人偏无甲生存；与首风格规划一致再扩展。",
+      "detail": "创建页三项专精均获得（非三选一）；具体数值以规则书为准。",
+      "relatedSkills": [
+        "活血术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "专精",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "活血术",
+          "source": "monk"
+        }
+      ],
+      "searchText": "三项专精取向 combat_rule auto_generated 真气诀偏资源、散打偏徒手伤害、习武之人偏无甲生存；与首风格规划一致再扩展。 创建页三项专精均获得（非三选一）；具体数值以规则书为准。 武僧 专精 combat_rule 活血术"
+    },
+    {
+      "id": "tip-monk-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "敏捷≥15 为常见目标；力量配合徒手伤害，体操/运动与位移 build 协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "武僧",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "武僧 创建 车卡 顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "武僧关键属性 chargen auto_generated 敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。 敏捷≥15 为常见目标；力量配合徒手伤害，体操/运动与位移 build 协同。 武僧 车卡 属性 chargen"
     },
     {
-      "id": "tip-monk-partial-note",
+      "id": "tip-monk-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "武僧"
       ],
-      "title": "武僧顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "武僧专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "真气诀：真气池与战技/功法消耗核心；长线 build 须规划真气回复。 散打：徒手攻击额外伤害；极斗/踏风/酒仙等徒手线协同。 习武之人：不着甲 AC 加成；偏无甲/轻甲 build，勿与重甲混用。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "武僧",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "武僧 partial 顾问 武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "武僧专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 真气诀：真气池与战技/功法消耗核心；长线 build 须规划真气回复。 散打：徒手攻击额外伤害；极斗/踏风/酒仙等徒手线协同。 习武之人：不着甲 AC 加成；偏无甲/轻甲 build，勿与重甲混用。 武僧 车卡 专精 chargen"
     }
   ]
 }
