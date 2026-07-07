@@ -204,7 +204,7 @@
       "isCaster": true,
       "l2Slug": "sorcerer",
       "l2Layer": "L2-sorcerer",
-      "startingFeaturePick": "all",
+      "startingFeaturePick": 2,
       "skillPickCount": 4,
       "styleKeywords": [
         "术士",

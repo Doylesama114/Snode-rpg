@@ -10,6 +10,7 @@ import {
 } from './advisor-chargen-attrs.mjs';
 import {
   formatKeyAttrLabel,
+  formatKeyAttrTargetPhrase,
   formatTierAdvisorNote,
   getClassProfile,
   getStartingFeatureMax,
@@ -32,17 +33,33 @@ function step0Query(char, label, commonTail) {
   const tierNote = formatTierAdvisorNote(profile);
   const parts = [`当前车卡步骤「${label}」。职业：${cn}。`];
   if (tierNote) parts.push(tierNote);
+  if (profile.keyAttrCreateNote) {
+    parts.push(`关键属性说明：${profile.keyAttrCreateNote}`);
+  }
   if (profile.hasMageSpecs) {
     parts.push(
       '规则：L1 法师同时获得奥法学者、知识传承、魔法学派三项专精能力（非三选一）；本步请为奥法学者、知识传承各选 1 子熟练；魔法学派 L1 已拥有，对立学派后续在角色面板配置。',
       '请根据已选专精子项（须用完整名如奥秘-魔法学识）说明 trade-off；若尚未选满，只提示待完成项。',
     );
+  } else if (cn === '魔契师') {
+    parts.push(
+      '规则：魔契师创建以「魔契」与「起始特性」战斗风格树为核心，传统起始特性池可能为空；请围绕魔契选择与起始特性线说明 trade-off，勿套用其他职业八选四模板。',
+      '若用户尚未选魔契/风格，只提示待完成项，勿推销具体未选项名称。',
+    );
   } else if (profile.specProfChoices?.length) {
     parts.push(
       `请根据已选专精/选项（${profile.specProfChoices.join('、')} 等）说明 trade-off；若尚未选满，只提示待完成项。`,
     );
+    if (cn === '奇械师') {
+      parts.push(
+        '奇械师专精涉及知识/工程学子项与职业八选四熟练，须用完整子项名讨论重复与协同；勿假设标识系统已完整收录。',
+      );
+    }
   } else {
     parts.push('请确认职业选择并简述该职业 L1 创建要点；勿推销具体未选项名称。');
+  }
+  if ((profile.keyAttr || '').includes('或') && !char.keyAttr) {
+    parts.push('本职业关键属性为「或」关系：创建页须先选定力量或敏捷其一作为关键属性，购点阶段至少一项达标即可。');
   }
   parts.push(commonTail);
   return parts.join('');
@@ -63,7 +80,6 @@ export function buildChargenBubbleQuery(snapshot) {
   const featMax = getStartingFeatureMax(char, profile);
   const skills = (char.selectedSkills || []).slice();
   const keyLabel = formatKeyAttrLabel(char, profile);
-  const keyTarget = profile.keyAttrTarget ?? 15;
 
   const commonTail = '不要 Markdown。不要替用户指定未选项名称；不要「必拿/强烈建议选 XXX」。';
 
@@ -73,28 +89,34 @@ export function buildChargenBubbleQuery(snapshot) {
 
   if (step === 1) {
     const poolHint = profile.startingFeaturePick === 'all'
-      ? '本职业起始特性为全选'
+      ? '本职业起始特性规则以创建页为准（勿称「八选四」）'
       : `本步规则（选 ${featMax} 项）`;
+    const sorcererNote = className === '术士'
+      ? '术士起始特性为三选二（魔法飞弹/混沌法术/天赐神通）；评价组合时强调随机性与幸运关键属性协同。'
+      : '';
     if (feats.length >= featMax) {
       return [
         `当前车卡步骤「${label}」。职业：${className || '未选'}。用户已选满 ${featMax} 项起始特性：${feats.join('、')}。`,
+        sorcererNote,
         '【必须】评价这套组合的整体风格、优点与缺口（缺位移/缺控/缺生存等）；不要推荐改选或推销其他未选特性。',
         profile.tier === 'full' ? '可结合上下文起始特性标签；2～3 点，共不超过120字。' : '2～3 点，共不超过120字；勿编造上下文中未收录的特性效果。',
         commonTail,
-      ].join('');
+      ].filter(Boolean).join('');
     }
     if (feats.length > 0) {
       return [
         `当前车卡步骤「${label}」。职业：${className || '未选'}。已选 ${feats.length}/${featMax}：${feats.join('、')}。`,
+        sorcererNote,
         `请简述已选项倾向；提示选满 ${featMax} 项后将评价整体组合；禁止列出「还应选 XXX」。`,
         commonTail,
-      ].join('');
+      ].filter(Boolean).join('');
     }
     return [
       `当前车卡步骤「${label}」。职业：${className || '未选'}。尚未选择起始特性。`,
+      sorcererNote,
       `请说明${poolHint}及选满后才会评价组合；不要预先推销具体特性名称。`,
       commonTail,
-    ].join('');
+    ].filter(Boolean).join('');
   }
 
   if (step === 2) {
@@ -106,21 +128,24 @@ export function buildChargenBubbleQuery(snapshot) {
   }
 
   if (step === 3) {
+    const keyPhrase = formatKeyAttrTargetPhrase(char, profile);
     const pb = analyzePointBuy(char);
     if (pb.complete) {
       return [
         `当前车卡步骤「${label}」。职业：${className || '未选'}。用户已完成 32 点购点。`,
         formatPointBuyContext(char),
-        `【必须】评价当前加点：${keyLabel}是否达标（目标≥${keyTarget}）、取舍是否合理、与种族/build 契合度；2～3 点；不要替用户改数字。`,
+        `【必须】评价当前加点：${keyPhrase}是否达标、取舍是否合理、与种族/build 契合度；2～3 点；不要替用户改数字。`,
+        profile.keyAttrCreateNote ? `注意：${profile.keyAttrCreateNote}` : '',
         commonTail,
-      ].join('');
+      ].filter(Boolean).join('');
     }
     const spent = pb.spent;
     return [
       `当前车卡步骤「${label}」。职业：${className || '未选'}。购点进度 ${spent}/32。`,
-      `请结合种族加值说明${keyLabel} ${keyTarget} 目标与分配思路；购点满 32 后再评价最终方案。`,
+      `请结合种族加值说明${keyPhrase}与分配思路；购点满 32 后再评价最终方案。`,
+      profile.keyAttrCreateNote ? `注意：${profile.keyAttrCreateNote}` : '',
       commonTail,
-    ].join('');
+    ].filter(Boolean).join('');
   }
 
   if (step === 4) {

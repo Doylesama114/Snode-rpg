@@ -1,12 +1,223 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "蛮斗士",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 6,
+    "byKind": {
+      "style_guide": 4,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-barbarian-style-斗争",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士·斗争风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "斗争",
+      "summary": "斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。",
+      "detail": "示例技能：头槌、掷刃斩、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "头槌",
+        "掷刃斩",
+        "顺劈斩"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "斗争",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "头槌",
+          "source": "barbarian"
+        },
+        {
+          "name": "掷刃斩",
+          "source": "barbarian"
+        },
+        {
+          "name": "顺劈斩",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "蛮斗士 斗争 斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。 示例技能：头槌、掷刃斩、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 头槌 掷刃斩 顺劈斩 style_guide auto_stub"
+    },
+    {
+      "id": "tip-barbarian-style-狂暴",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士·狂暴风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "狂暴",
+      "summary": "狂暴：偏增益、光环、激活、唯一性等能力。",
+      "detail": "示例技能：狂暴姿态、激怒、嗜血。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "狂暴姿态",
+        "激怒",
+        "嗜血"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "狂暴",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "狂暴姿态",
+          "source": "barbarian"
+        },
+        {
+          "name": "激怒",
+          "source": "barbarian"
+        },
+        {
+          "name": "嗜血",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "蛮斗士 狂暴 狂暴：偏增益、光环、激活、唯一性等能力。 示例技能：狂暴姿态、激怒、嗜血。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 狂暴姿态 激怒 嗜血 style_guide auto_stub"
+    },
+    {
+      "id": "tip-barbarian-style-生机",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士·生机风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "生机",
+      "summary": "生机：偏回复、每个自身回合限一次、战技、韧性等能力。",
+      "detail": "示例技能：延绵生机、防护毒素、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "延绵生机",
+        "防护毒素",
+        "通晓兽语"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "生机",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "延绵生机",
+          "source": "barbarian"
+        },
+        {
+          "name": "防护毒素",
+          "source": "barbarian"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "蛮斗士 生机 生机：偏回复、每个自身回合限一次、战技、韧性等能力。 示例技能：延绵生机、防护毒素、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 延绵生机 防护毒素 通晓兽语 style_guide auto_stub"
+    },
+    {
+      "id": "tip-barbarian-style-法咒",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士·法咒风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "法咒",
+      "summary": "法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。",
+      "detail": "示例技能：毒蛇咒印、巨鹿咒印、狼獾咒印。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "毒蛇咒印",
+        "巨鹿咒印",
+        "狼獾咒印"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "法咒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒蛇咒印",
+          "source": "barbarian"
+        },
+        {
+          "name": "巨鹿咒印",
+          "source": "barbarian"
+        },
+        {
+          "name": "狼獾咒印",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "蛮斗士 法咒 法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。 示例技能：毒蛇咒印、巨鹿咒印、狼獾咒印。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 毒蛇咒印 巨鹿咒印 狼獾咒印 style_guide auto_stub"
+    },
+    {
+      "id": "tip-barbarian-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "蛮斗士 创建 车卡 顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-barbarian-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "蛮斗士 partial 顾问 蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

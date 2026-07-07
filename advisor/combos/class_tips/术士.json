@@ -1,12 +1,103 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "术士",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 3,
+    "byKind": {
+      "style_guide": 1,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-sorcerer-style-潜能",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "术士·潜能风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "潜能",
+      "summary": "潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
+      "detail": "示例技能：混乱箭、魔爆术、魔能翻涌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "混乱箭",
+        "魔爆术",
+        "魔能翻涌"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "潜能",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "混乱箭",
+          "source": "sorcerer"
+        },
+        {
+          "name": "魔爆术",
+          "source": "sorcerer"
+        },
+        {
+          "name": "魔能翻涌",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "术士 潜能 潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。 示例技能：混乱箭、魔爆术、魔能翻涌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 混乱箭 魔爆术 魔能翻涌 style_guide auto_stub"
+    },
+    {
+      "id": "tip-sorcerer-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "术士创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "术士 创建 车卡 顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-sorcerer-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "术士顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "术士 partial 顾问 术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

@@ -1,12 +1,263 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "吟游诗人",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 7,
+    "byKind": {
+      "style_guide": 5,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-bard-style-激昂",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人·激昂风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "激昂",
+      "summary": "激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。",
+      "detail": "示例技能：雷鸣和弦、快速拨弦、热血节拍。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "雷鸣和弦",
+        "快速拨弦",
+        "热血节拍"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "激昂",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "雷鸣和弦",
+          "source": "bard"
+        },
+        {
+          "name": "快速拨弦",
+          "source": "bard"
+        },
+        {
+          "name": "热血节拍",
+          "source": "bard"
+        }
+      ],
+      "searchText": "吟游诗人 激昂 激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。 示例技能：雷鸣和弦、快速拨弦、热血节拍。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 雷鸣和弦 快速拨弦 热血节拍 style_guide auto_stub"
+    },
+    {
+      "id": "tip-bard-style-舒缓",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人·舒缓风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "舒缓",
+      "summary": "舒缓：偏回复、戏法、净化、长休等能力。",
+      "detail": "示例技能：次级治疗术、净化间奏、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "次级治疗术",
+        "净化间奏",
+        "睡眠术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "舒缓",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "次级治疗术",
+          "source": "bard"
+        },
+        {
+          "name": "净化间奏",
+          "source": "bard"
+        },
+        {
+          "name": "睡眠术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "吟游诗人 舒缓 舒缓：偏回复、戏法、净化、长休等能力。 示例技能：次级治疗术、净化间奏、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 次级治疗术 净化间奏 睡眠术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-bard-style-灵动",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人·灵动风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "灵动",
+      "summary": "灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。",
+      "detail": "示例技能：音波刃、无律之音、轻快小调。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "音波刃",
+        "无律之音",
+        "轻快小调"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "灵动",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "音波刃",
+          "source": "bard"
+        },
+        {
+          "name": "无律之音",
+          "source": "bard"
+        },
+        {
+          "name": "轻快小调",
+          "source": "bard"
+        }
+      ],
+      "searchText": "吟游诗人 灵动 灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。 示例技能：音波刃、无律之音、轻快小调。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 音波刃 无律之音 轻快小调 style_guide auto_stub"
+    },
+    {
+      "id": "tip-bard-style-诙谐",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人·诙谐风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "诙谐",
+      "summary": "诙谐：偏光耀、光源、激活、唯一性等能力。",
+      "detail": "示例技能：舞光术、油腻术、传讯术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "舞光术",
+        "油腻术",
+        "传讯术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "诙谐",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "舞光术",
+          "source": "bard"
+        },
+        {
+          "name": "油腻术",
+          "source": "bard"
+        },
+        {
+          "name": "传讯术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "吟游诗人 诙谐 诙谐：偏光耀、光源、激活、唯一性等能力。 示例技能：舞光术、油腻术、传讯术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 舞光术 油腻术 传讯术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-bard-style-集中",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人·集中风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "集中",
+      "summary": "集中：偏媒介、隐秘、激活、戏法等能力。",
+      "detail": "示例技能：警报术、剑刃防护、专注演奏。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "警报术",
+        "剑刃防护",
+        "专注演奏"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "集中",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "警报术",
+          "source": "bard"
+        },
+        {
+          "name": "剑刃防护",
+          "source": "bard"
+        },
+        {
+          "name": "专注演奏",
+          "source": "bard"
+        }
+      ],
+      "searchText": "吟游诗人 集中 集中：偏媒介、隐秘、激活、戏法等能力。 示例技能：警报术、剑刃防护、专注演奏。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 警报术 剑刃防护 专注演奏 style_guide auto_stub"
+    },
+    {
+      "id": "tip-bard-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "吟游诗人 创建 车卡 顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-bard-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "吟游诗人 partial 顾问 吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

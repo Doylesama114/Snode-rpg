@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7036',
+    date: '2026-07-07',
+    changes: [
+      '顾问 Phase5：13职业 L5 class_tips 风格stub(90条)',
+      '复杂职业车卡policy(奇械师/魔契师/术士/双关键属性)'
+    ]
+  },
+
+
+  {
     version: '1.0.7035',
     date: '2026-07-07',
     changes: [

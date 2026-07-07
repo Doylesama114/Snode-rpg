@@ -1,12 +1,223 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "圣骑士",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 6,
+    "byKind": {
+      "style_guide": 4,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-paladin-style-惩戒",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士·惩戒风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "惩戒",
+      "summary": "惩戒：偏光耀、惑控、意志豁免（15）、短休/长休等能力。",
+      "detail": "示例技能：制裁之锤、力量祝福、黄金连打。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "制裁之锤",
+        "力量祝福",
+        "黄金连打"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "惩戒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "制裁之锤",
+          "source": "paladin"
+        },
+        {
+          "name": "力量祝福",
+          "source": "paladin"
+        },
+        {
+          "name": "黄金连打",
+          "source": "paladin"
+        }
+      ],
+      "searchText": "圣骑士 惩戒 惩戒：偏光耀、惑控、意志豁免（15）、短休/长休等能力。 示例技能：制裁之锤、力量祝福、黄金连打。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 制裁之锤 力量祝福 黄金连打 style_guide auto_stub"
+    },
+    {
+      "id": "tip-paladin-style-守护",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士·守护风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "守护",
+      "summary": "守护：偏神术、探知、短休/长休、护盾等能力。",
+      "detail": "示例技能：侦测善恶、虔诚护盾、智慧祝福。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "侦测善恶",
+        "虔诚护盾",
+        "智慧祝福"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "守护",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "侦测善恶",
+          "source": "paladin"
+        },
+        {
+          "name": "虔诚护盾",
+          "source": "paladin"
+        },
+        {
+          "name": "智慧祝福",
+          "source": "paladin"
+        }
+      ],
+      "searchText": "圣骑士 守护 守护：偏神术、探知、短休/长休、护盾等能力。 示例技能：侦测善恶、虔诚护盾、智慧祝福。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 侦测善恶 虔诚护盾 智慧祝福 style_guide auto_stub"
+    },
+    {
+      "id": "tip-paladin-style-圣洁",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士·圣洁风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "圣洁",
+      "summary": "圣洁：偏神术、光耀、回复、净化等能力。",
+      "detail": "示例技能：纯净之光、祈福、神谕真言·愈。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "纯净之光",
+        "祈福",
+        "神谕真言·愈"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "圣洁",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "纯净之光",
+          "source": "paladin"
+        },
+        {
+          "name": "祈福",
+          "source": "paladin"
+        },
+        {
+          "name": "神谕真言·愈",
+          "source": "paladin"
+        }
+      ],
+      "searchText": "圣骑士 圣洁 圣洁：偏神术、光耀、回复、净化等能力。 示例技能：纯净之光、祈福、神谕真言·愈。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 纯净之光 祈福 神谕真言·愈 style_guide auto_stub"
+    },
+    {
+      "id": "tip-paladin-style-热诚",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士·热诚风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "热诚",
+      "summary": "热诚：偏速攻、复仇、战技、魅力豁免（12）/效果递减（-5）等能力。",
+      "detail": "示例技能：以眼还眼、破胆斥喝、强令对决。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "以眼还眼",
+        "破胆斥喝",
+        "强令对决"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "热诚",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "以眼还眼",
+          "source": "paladin"
+        },
+        {
+          "name": "破胆斥喝",
+          "source": "paladin"
+        },
+        {
+          "name": "强令对决",
+          "source": "paladin"
+        }
+      ],
+      "searchText": "圣骑士 热诚 热诚：偏速攻、复仇、战技、魅力豁免（12）/效果递减（-5）等能力。 示例技能：以眼还眼、破胆斥喝、强令对决。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 以眼还眼 破胆斥喝 强令对决 style_guide auto_stub"
+    },
+    {
+      "id": "tip-paladin-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 圣骑士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 圣骑士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "圣骑士 创建 车卡 顾问档位 partial：可检索 圣骑士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-paladin-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "圣骑士"
+      ],
+      "title": "圣骑士顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "圣骑士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "圣骑士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "圣骑士",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "圣骑士 partial 顾问 圣骑士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

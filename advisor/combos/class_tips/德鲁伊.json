@@ -1,12 +1,343 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "德鲁伊",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 9,
+    "byKind": {
+      "style_guide": 7,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-druid-style-荒野",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·荒野风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "荒野",
+      "summary": "荒野：偏自然、防御、激活、法术等能力。",
+      "detail": "示例技能：树皮术、石木树皮、维生术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "树皮术",
+        "石木树皮",
+        "维生术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "荒野",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "树皮术",
+          "source": "druid"
+        },
+        {
+          "name": "石木树皮",
+          "source": "druid"
+        },
+        {
+          "name": "维生术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 荒野 荒野：偏自然、防御、激活、法术等能力。 示例技能：树皮术、石木树皮、维生术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 树皮术 石木树皮 维生术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-兽灵",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·兽灵风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "兽灵",
+      "summary": "兽灵：偏探知、媒介、互动、专注等能力。",
+      "detail": "示例技能：野兽知觉、化兽为友、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "野兽知觉",
+        "化兽为友",
+        "通晓兽语"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "兽灵",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽知觉",
+          "source": "druid"
+        },
+        {
+          "name": "化兽为友",
+          "source": "druid"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 兽灵 兽灵：偏探知、媒介、互动、专注等能力。 示例技能：野兽知觉、化兽为友、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 野兽知觉 化兽为友 通晓兽语 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-复苏",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·复苏风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "复苏",
+      "summary": "复苏：偏自然、回复、法术、探知等能力。",
+      "detail": "示例技能：快速生长、侦测毒性与疾病、常青术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "快速生长",
+        "侦测毒性与疾病",
+        "常青术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "复苏",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "快速生长",
+          "source": "druid"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "druid"
+        },
+        {
+          "name": "常青术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 复苏 复苏：偏自然、回复、法术、探知等能力。 示例技能：快速生长、侦测毒性与疾病、常青术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 快速生长 侦测毒性与疾病 常青术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-月影",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·月影风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "月影",
+      "summary": "月影：偏施法攻击、奥术、月亮、法术等能力。",
+      "detail": "示例技能：月银之刃、银晓术、沐浴月光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "月银之刃",
+        "银晓术",
+        "沐浴月光"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "月影",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "月银之刃",
+          "source": "druid"
+        },
+        {
+          "name": "银晓术",
+          "source": "druid"
+        },
+        {
+          "name": "沐浴月光",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 月影 月影：偏施法攻击、奥术、月亮、法术等能力。 示例技能：月银之刃、银晓术、沐浴月光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 月银之刃 银晓术 沐浴月光 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-日怒",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·日怒风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "日怒",
+      "summary": "日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。",
+      "detail": "示例技能：炙热之日、光亮术、沐浴日光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "炙热之日",
+        "光亮术",
+        "沐浴日光"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "日怒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "炙热之日",
+          "source": "druid"
+        },
+        {
+          "name": "光亮术",
+          "source": "druid"
+        },
+        {
+          "name": "沐浴日光",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 日怒 日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。 示例技能：炙热之日、光亮术、沐浴日光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 炙热之日 光亮术 沐浴日光 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-星辰",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·星辰风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "星辰",
+      "summary": "星辰：偏机制、命运、星空、天赋等能力。",
+      "detail": "示例技能：日月之蚀、炽焰法球、蓝焰术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "日月之蚀",
+        "炽焰法球",
+        "蓝焰术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "星辰",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "日月之蚀",
+          "source": "druid"
+        },
+        {
+          "name": "炽焰法球",
+          "source": "druid"
+        },
+        {
+          "name": "蓝焰术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 星辰 星辰：偏机制、命运、星空、天赋等能力。 示例技能：日月之蚀、炽焰法球、蓝焰术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 日月之蚀 炽焰法球 蓝焰术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-style-精火",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊·精火风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "精火",
+      "summary": "精火：偏专注、幻象、激活、戏法等能力。",
+      "detail": "示例技能：妖精之火、德鲁伊伎俩、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "妖精之火",
+        "德鲁伊伎俩",
+        "创造水源"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "精火",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "妖精之火",
+          "source": "druid"
+        },
+        {
+          "name": "德鲁伊伎俩",
+          "source": "druid"
+        },
+        {
+          "name": "创造水源",
+          "source": "druid"
+        }
+      ],
+      "searchText": "德鲁伊 精火 精火：偏专注、幻象、激活、戏法等能力。 示例技能：妖精之火、德鲁伊伎俩、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 妖精之火 德鲁伊伎俩 创造水源 style_guide auto_stub"
+    },
+    {
+      "id": "tip-druid-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "德鲁伊 创建 车卡 顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-druid-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "德鲁伊 partial 顾问 德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

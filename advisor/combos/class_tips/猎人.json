@@ -1,12 +1,263 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "猎人",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 7,
+    "byKind": {
+      "style_guide": 5,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-hunter-style-射击",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人·射击风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "射击",
+      "summary": "射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。",
+      "detail": "示例技能：奥术射击、猎人印记、误导。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "奥术射击",
+        "猎人印记",
+        "误导"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "射击",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "奥术射击",
+          "source": "hunter"
+        },
+        {
+          "name": "猎人印记",
+          "source": "hunter"
+        },
+        {
+          "name": "误导",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎人 射击 射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。 示例技能：奥术射击、猎人印记、误导。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 奥术射击 猎人印记 误导 style_guide auto_stub"
+    },
+    {
+      "id": "tip-hunter-style-兽群",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人·兽群风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "兽群",
+      "summary": "兽群：偏基础攻击、互动、短休/长休、战技等能力。",
+      "detail": "示例技能：狂野怒火、猫鼬撕咬、倒刺射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "狂野怒火",
+        "猫鼬撕咬",
+        "倒刺射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "兽群",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "狂野怒火",
+          "source": "hunter"
+        },
+        {
+          "name": "猫鼬撕咬",
+          "source": "hunter"
+        },
+        {
+          "name": "倒刺射击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎人 兽群 兽群：偏基础攻击、互动、短休/长休、战技等能力。 示例技能：狂野怒火、猫鼬撕咬、倒刺射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 狂野怒火 猫鼬撕咬 倒刺射击 style_guide auto_stub"
+    },
+    {
+      "id": "tip-hunter-style-机敏",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人·机敏风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "机敏",
+      "summary": "机敏：偏迅捷、位移、韧性、长休等能力。",
+      "detail": "示例技能：迅捷如风、猎人伪装、二段跳。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "迅捷如风",
+        "猎人伪装",
+        "二段跳"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "机敏",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "迅捷如风",
+          "source": "hunter"
+        },
+        {
+          "name": "猎人伪装",
+          "source": "hunter"
+        },
+        {
+          "name": "二段跳",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎人 机敏 机敏：偏迅捷、位移、韧性、长休等能力。 示例技能：迅捷如风、猎人伪装、二段跳。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 迅捷如风 猎人伪装 二段跳 style_guide auto_stub"
+    },
+    {
+      "id": "tip-hunter-style-生存",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人·生存风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "生存",
+      "summary": "生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。",
+      "detail": "示例技能：毒刃、侦测陷阱、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "毒刃",
+        "侦测陷阱",
+        "侦测毒性与疾病"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "生存",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒刃",
+          "source": "hunter"
+        },
+        {
+          "name": "侦测陷阱",
+          "source": "hunter"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎人 生存 生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。 示例技能：毒刃、侦测陷阱、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 毒刃 侦测陷阱 侦测毒性与疾病 style_guide auto_stub"
+    },
+    {
+      "id": "tip-hunter-style-猎鹰",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人·猎鹰风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "猎鹰",
+      "summary": "猎鹰：偏异能、探知、专注、激活等能力。",
+      "detail": "示例技能：鹰眼术、掷刃斩、侧翼打击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "鹰眼术",
+        "掷刃斩",
+        "侧翼打击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "猎鹰",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "鹰眼术",
+          "source": "hunter"
+        },
+        {
+          "name": "掷刃斩",
+          "source": "hunter"
+        },
+        {
+          "name": "侧翼打击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎人 猎鹰 猎鹰：偏异能、探知、专注、激活等能力。 示例技能：鹰眼术、掷刃斩、侧翼打击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 鹰眼术 掷刃斩 侧翼打击 style_guide auto_stub"
+    },
+    {
+      "id": "tip-hunter-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "猎人 创建 车卡 顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-hunter-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "猎人 partial 顾问 猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

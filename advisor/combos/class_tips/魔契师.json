@@ -1,12 +1,263 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "魔契师",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 7,
+    "byKind": {
+      "style_guide": 5,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-warlock-style-起始特性",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师·起始特性风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "起始特性",
+      "summary": "起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。",
+      "detail": "示例技能：巫术箭、毒液飞溅、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "巫术箭",
+        "毒液飞溅",
+        "虚弱诅咒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起始特性",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        },
+        {
+          "name": "毒液飞溅",
+          "source": "warlock"
+        },
+        {
+          "name": "虚弱诅咒",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师 起始特性 起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。 示例技能：巫术箭、毒液飞溅、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 巫术箭 毒液飞溅 虚弱诅咒 style_guide auto_stub"
+    },
+    {
+      "id": "tip-warlock-style-魔契",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师·魔契风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "魔契",
+      "summary": "魔契：偏召唤单位、恩惠、激活、唯一性等能力。",
+      "detail": "示例技能：恩赐魔刃、异界灵感、召唤魔宠。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "恩赐魔刃",
+        "异界灵感",
+        "召唤魔宠"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "魔契",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "恩赐魔刃",
+          "source": "warlock"
+        },
+        {
+          "name": "异界灵感",
+          "source": "warlock"
+        },
+        {
+          "name": "召唤魔宠",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师 魔契 魔契：偏召唤单位、恩惠、激活、唯一性等能力。 示例技能：恩赐魔刃、异界灵感、召唤魔宠。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 恩赐魔刃 异界灵感 召唤魔宠 style_guide auto_stub"
+    },
+    {
+      "id": "tip-warlock-style-邪念",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师·邪念风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "邪念",
+      "summary": "邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
+      "detail": "示例技能：混乱箭、腐蚀术、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "混乱箭",
+        "腐蚀术",
+        "侦测毒性与疾病"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "邪念",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "混乱箭",
+          "source": "warlock"
+        },
+        {
+          "name": "腐蚀术",
+          "source": "warlock"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师 邪念 邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。 示例技能：混乱箭、腐蚀术、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 混乱箭 腐蚀术 侦测毒性与疾病 style_guide auto_stub"
+    },
+    {
+      "id": "tip-warlock-style-咒能",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师·咒能风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "咒能",
+      "summary": "咒能：偏幻象、专注、引导、激活等能力。",
+      "detail": "示例技能：骚灵现象、惑人低语、魔爆术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "骚灵现象",
+        "惑人低语",
+        "魔爆术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "咒能",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "骚灵现象",
+          "source": "warlock"
+        },
+        {
+          "name": "惑人低语",
+          "source": "warlock"
+        },
+        {
+          "name": "魔爆术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师 咒能 咒能：偏幻象、专注、引导、激活等能力。 示例技能：骚灵现象、惑人低语、魔爆术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 骚灵现象 惑人低语 魔爆术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-warlock-style-秘术",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师·秘术风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "秘术",
+      "summary": "秘术：偏隐秘、媒介、戏法、交涉等能力。",
+      "detail": "示例技能：迷幻手稿、通晓语言、迷雾术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "迷幻手稿",
+        "通晓语言",
+        "迷雾术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "秘术",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "迷幻手稿",
+          "source": "warlock"
+        },
+        {
+          "name": "通晓语言",
+          "source": "warlock"
+        },
+        {
+          "name": "迷雾术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师 秘术 秘术：偏隐秘、媒介、戏法、交涉等能力。 示例技能：迷幻手稿、通晓语言、迷雾术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 迷幻手稿 通晓语言 迷雾术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-warlock-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "魔契师 创建 车卡 顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-warlock-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "魔契师 partial 顾问 魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

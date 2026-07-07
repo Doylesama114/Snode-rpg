@@ -70,6 +70,8 @@ export function analyzeKeyAttrTargets(char, profile = null) {
   const attrs = resolveKeyAttrs(char, p);
   const raceBonuses = char?.raceAttrBonuses || {};
   const base = char?.attrs || {};
+  const chosen = (char?.keyAttr || '').trim();
+  const orChoice = !chosen && attrs.length > 1 && (p.keyAttr || '').includes('或');
   const rows = attrs.map((an) => {
     let bonus = 0;
     if (raceBonuses[an] != null && raceBonuses[an] !== 'X') {
@@ -79,12 +81,36 @@ export function analyzeKeyAttrTargets(char, profile = null) {
     const final = baseVal + bonus;
     return { attr: an, base: baseVal, final, target, met: final >= target };
   });
+  const anyMet = rows.some((r) => r.met);
+  const allMet = orChoice ? anyMet : (rows.length > 0 && rows.every((r) => r.met));
   return {
     target,
     attrs: rows,
-    allMet: rows.length > 0 && rows.every((r) => r.met),
-    anyMet: rows.some((r) => r.met),
+    allMet,
+    anyMet,
+    orChoice,
   };
+}
+
+export function formatKeyAttrTargetPhrase(char, profile = null) {
+  const p = profile || getClassProfile(char?.className);
+  const kt = analyzeKeyAttrTargets(char, p);
+  const label = formatKeyAttrLabel(char, p);
+  const target = p.keyAttrTarget ?? 15;
+  if (kt.orChoice) return `${label}至少一项≥${target}`;
+  return `${label}≥${target}`;
+}
+
+export function isComplexChargenClass(profile) {
+  if (!profile) return false;
+  return !!(
+    profile.hasMageSpecs
+    || profile.keyAttrCreateNote
+    || profile.specProfChoices?.length
+    || (profile.keyAttr || '').includes('或')
+    || profile.startingFeaturePick === 'all'
+    || profile.className === '魔契师'
+  );
 }
 
 export function formatTierAdvisorNote(profile) {

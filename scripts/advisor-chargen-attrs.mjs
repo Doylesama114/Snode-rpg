@@ -145,10 +145,14 @@ export function formatPointBuyContext(char) {
   lines.push(`- 属性：${parts.join('；')}`);
   const kt = pb.keyTargets;
   if (kt.attrs.length) {
-    for (const row of kt.attrs) {
-      lines.push(
-        `- 关键属性·${row.attr}含种族：${row.final}${row.met ? `（达标≥${row.target}）` : `（未达${row.target}）`}`,
-      );
+    if (kt.orChoice) {
+      lines.push(`- 关键属性（${pb.keyAttrLabel}，至少一项≥${kt.target}）：${kt.attrs.map((r) => `${r.attr}${r.final}${r.met ? '✓' : '✗'}`).join('、')}`);
+    } else {
+      for (const row of kt.attrs) {
+        lines.push(
+          `- 关键属性·${row.attr}含种族：${row.final}${row.met ? `（达标≥${row.target}）` : `（未达${row.target}）`}`,
+        );
+      }
     }
   } else {
     lines.push(`- 关键属性：${pb.keyAttrLabel || '（见创建页）'}`);

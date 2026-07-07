@@ -1,12 +1,183 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "牧师",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 5,
+    "byKind": {
+      "style_guide": 3,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-cleric-style-戒律",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师·戒律风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "戒律",
+      "summary": "戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。",
+      "detail": "示例技能：神灵之火、神力战槌、庇护术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "神灵之火",
+        "神力战槌",
+        "庇护术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "戒律",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "神灵之火",
+          "source": "cleric"
+        },
+        {
+          "name": "神力战槌",
+          "source": "cleric"
+        },
+        {
+          "name": "庇护术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "牧师 戒律 戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。 示例技能：神灵之火、神力战槌、庇护术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 神灵之火 神力战槌 庇护术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-cleric-style-虔佑",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师·虔佑风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "虔佑",
+      "summary": "虔佑：偏神术、回复、净化、每个自身回合限一次等能力。",
+      "detail": "示例技能：祈福、神佑印记、缓落术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "祈福",
+        "神佑印记",
+        "缓落术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "虔佑",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "祈福",
+          "source": "cleric"
+        },
+        {
+          "name": "神佑印记",
+          "source": "cleric"
+        },
+        {
+          "name": "缓落术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "牧师 虔佑 虔佑：偏神术、回复、净化、每个自身回合限一次等能力。 示例技能：祈福、神佑印记、缓落术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 祈福 神佑印记 缓落术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-cleric-style-魂谒",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师·魂谒风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "魂谒",
+      "summary": "魂谒：偏神术、回复、净化、短休/长休等能力。",
+      "detail": "示例技能：宁神术、纯净术、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "宁神术",
+        "纯净术",
+        "睡眠术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "魂谒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "宁神术",
+          "source": "cleric"
+        },
+        {
+          "name": "纯净术",
+          "source": "cleric"
+        },
+        {
+          "name": "睡眠术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "牧师 魂谒 魂谒：偏神术、回复、净化、短休/长休等能力。 示例技能：宁神术、纯净术、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 宁神术 纯净术 睡眠术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-cleric-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "牧师 创建 车卡 顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-cleric-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "牧师 partial 顾问 牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

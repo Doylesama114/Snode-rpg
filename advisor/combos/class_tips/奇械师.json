@@ -1,12 +1,325 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "奇械师",
     "tier": "partial",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "status": "auto_stub",
+    "count": 9,
+    "byKind": {
+      "style_guide": 6,
+      "chargen": 2,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-artificer-style-精准",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·精准风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "精准",
+      "summary": "远程枪械与精准射击线；命中加值、远程战技与专注联动。",
+      "detail": "示例技能：弹射齿轮、战术装填、快速射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "弹射齿轮",
+        "战术装填",
+        "快速射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "精准",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "弹射齿轮",
+          "source": "artificer"
+        },
+        {
+          "name": "战术装填",
+          "source": "artificer"
+        },
+        {
+          "name": "快速射击",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 精准 远程枪械与精准射击线；命中加值、远程战技与专注联动。 示例技能：弹射齿轮、战术装填、快速射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 弹射齿轮 战术装填 快速射击 style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-style-构想",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·构想风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "构想",
+      "summary": "科研图纸、奇械研发与专业列表扩展；偏资源与构筑。",
+      "detail": "示例技能：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "撒网器（图纸）",
+        "战术抓钩（图纸）",
+        "水下呼吸帽（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "构想",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "撒网器（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "战术抓钩（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "水下呼吸帽（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 构想 科研图纸、奇械研发与专业列表扩展；偏资源与构筑。 示例技能：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 撒网器（图纸） 战术抓钩（图纸） 水下呼吸帽（图纸） style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-style-支援",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·支援风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "支援",
+      "summary": "团队增益、装置部署与战场辅助。",
+      "detail": "示例技能：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "照明浮游球（图纸）",
+        "自动清洁仪（图纸）",
+        "水质净化器（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "支援",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "照明浮游球（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "自动清洁仪（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "水质净化器（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 支援 团队增益、装置部署与战场辅助。 示例技能：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 照明浮游球（图纸） 自动清洁仪（图纸） 水质净化器（图纸） style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-style-炽擎",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·炽擎风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "炽擎",
+      "summary": "热能/火焰相关科技输出与装置。",
+      "detail": "示例技能：机械恒温、烈焰喷射、蒸汽动能。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "机械恒温",
+        "烈焰喷射",
+        "蒸汽动能"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "炽擎",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "机械恒温",
+          "source": "artificer"
+        },
+        {
+          "name": "烈焰喷射",
+          "source": "artificer"
+        },
+        {
+          "name": "蒸汽动能",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 炽擎 热能/火焰相关科技输出与装置。 示例技能：机械恒温、烈焰喷射、蒸汽动能。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 机械恒温 烈焰喷射 蒸汽动能 style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-style-电涌",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·电涌风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "电涌",
+      "summary": "雷电/电系科技输出与控制。",
+      "detail": "示例技能：充能、电磁抓钩、电疗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "充能",
+        "电磁抓钩",
+        "电疗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "电涌",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "充能",
+          "source": "artificer"
+        },
+        {
+          "name": "电磁抓钩",
+          "source": "artificer"
+        },
+        {
+          "name": "电疗",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 电涌 雷电/电系科技输出与控制。 示例技能：充能、电磁抓钩、电疗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 充能 电磁抓钩 电疗 style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-style-魔枢",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师·魔枢风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "魔枢",
+      "summary": "核心装置、同调与奇械中枢能力。",
+      "detail": "示例技能：奥术箭、法术护盾、阅读魔法。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "奥术箭",
+        "法术护盾",
+        "阅读魔法"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "魔枢",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "奥术箭",
+          "source": "artificer"
+        },
+        {
+          "name": "法术护盾",
+          "source": "artificer"
+        },
+        {
+          "name": "阅读魔法",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "奇械师 魔枢 核心装置、同调与奇械中枢能力。 示例技能：奥术箭、法术护盾、阅读魔法。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 奥术箭 法术护盾 阅读魔法 style_guide auto_stub"
+    },
+    {
+      "id": "tip-artificer-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
+      "detail": "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "奇械师 创建 车卡 创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。 chargen auto_stub"
+    },
+    {
+      "id": "tip-artificer-chargen-2",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "奇械师 创建 车卡 顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-artificer-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "奇械师 partial 顾问 奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

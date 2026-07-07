@@ -1,12 +1,263 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "游荡者",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 7,
+    "byKind": {
+      "style_guide": 5,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-rogue-style-奇袭",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者·奇袭风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "奇袭",
+      "summary": "奇袭：偏近战攻击、暗影、穿甲、战技等能力。",
+      "detail": "示例技能：影袭、克敌先机、佯攻。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "影袭",
+        "克敌先机",
+        "佯攻"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "奇袭",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "影袭",
+          "source": "rogue"
+        },
+        {
+          "name": "克敌先机",
+          "source": "rogue"
+        },
+        {
+          "name": "佯攻",
+          "source": "rogue"
+        }
+      ],
+      "searchText": "游荡者 奇袭 奇袭：偏近战攻击、暗影、穿甲、战技等能力。 示例技能：影袭、克敌先机、佯攻。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 影袭 克敌先机 佯攻 style_guide auto_stub"
+    },
+    {
+      "id": "tip-rogue-style-妙手",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者·妙手风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "妙手",
+      "summary": "妙手：偏感知豁免（12）/递减（-5）、战技、探知、戏法等能力。",
+      "detail": "示例技能：抛沙、侦测陷阱、探囊取物。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "抛沙",
+        "侦测陷阱",
+        "探囊取物"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "妙手",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "抛沙",
+          "source": "rogue"
+        },
+        {
+          "name": "侦测陷阱",
+          "source": "rogue"
+        },
+        {
+          "name": "探囊取物",
+          "source": "rogue"
+        }
+      ],
+      "searchText": "游荡者 妙手 妙手：偏感知豁免（12）/递减（-5）、战技、探知、戏法等能力。 示例技能：抛沙、侦测陷阱、探囊取物。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 抛沙 侦测陷阱 探囊取物 style_guide auto_stub"
+    },
+    {
+      "id": "tip-rogue-style-魅影",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者·魅影风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "魅影",
+      "summary": "魅影：偏暗影、媒介、唯一性、法术等能力。",
+      "detail": "示例技能：暗影之刃、暗影护甲、影哨术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "暗影之刃",
+        "暗影护甲",
+        "影哨术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "魅影",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "暗影之刃",
+          "source": "rogue"
+        },
+        {
+          "name": "暗影护甲",
+          "source": "rogue"
+        },
+        {
+          "name": "影哨术",
+          "source": "rogue"
+        }
+      ],
+      "searchText": "游荡者 魅影 魅影：偏暗影、媒介、唯一性、法术等能力。 示例技能：暗影之刃、暗影护甲、影哨术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 暗影之刃 暗影护甲 影哨术 style_guide auto_stub"
+    },
+    {
+      "id": "tip-rogue-style-狂妄",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者·狂妄风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "狂妄",
+      "summary": "狂妄：偏远程攻击、实体飞行道具、每个自身回合限一次、战技等能力。",
+      "detail": "示例技能：迅捷连射、抽血、挑衅对决。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "迅捷连射",
+        "抽血",
+        "挑衅对决"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "狂妄",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "迅捷连射",
+          "source": "rogue"
+        },
+        {
+          "name": "抽血",
+          "source": "rogue"
+        },
+        {
+          "name": "挑衅对决",
+          "source": "rogue"
+        }
+      ],
+      "searchText": "游荡者 狂妄 狂妄：偏远程攻击、实体飞行道具、每个自身回合限一次、战技等能力。 示例技能：迅捷连射、抽血、挑衅对决。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 迅捷连射 抽血 挑衅对决 style_guide auto_stub"
+    },
+    {
+      "id": "tip-rogue-style-魔药",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者·魔药风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "魔药",
+      "summary": "魔药：偏近战攻击、毒性、体质豁免（12）、战技等能力。",
+      "detail": "示例技能：毒刃、致伤毒药（配方）、麻痹毒药（配方）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "毒刃",
+        "致伤毒药（配方）",
+        "麻痹毒药（配方）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "魔药",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒刃",
+          "source": "rogue"
+        },
+        {
+          "name": "致伤毒药（配方）",
+          "source": "rogue"
+        },
+        {
+          "name": "麻痹毒药（配方）",
+          "source": "rogue"
+        }
+      ],
+      "searchText": "游荡者 魔药 魔药：偏近战攻击、毒性、体质豁免（12）、战技等能力。 示例技能：毒刃、致伤毒药（配方）、麻痹毒药（配方）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 毒刃 致伤毒药（配方） 麻痹毒药（配方） style_guide auto_stub"
+    },
+    {
+      "id": "tip-rogue-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 游荡者 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 游荡者 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "游荡者 创建 车卡 顾问档位 partial：可检索 游荡者 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-rogue-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "游荡者"
+      ],
+      "title": "游荡者顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "游荡者顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "游荡者顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "游荡者",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "游荡者 partial 顾问 游荡者顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }

@@ -1,12 +1,343 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch2",
+    "phase": "5-batch9",
     "targetClass": "武僧",
-    "tier": "basic",
-    "status": "placeholder",
-    "count": 0,
-    "note": "职业专属小贴士待补充"
+    "tier": "partial",
+    "status": "auto_stub",
+    "count": 9,
+    "byKind": {
+      "style_guide": 7,
+      "chargen": 1,
+      "meta": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-07-07"
   },
-  "tips": []
+  "tips": [
+    {
+      "id": "tip-monk-style-极斗",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·极斗风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "极斗",
+      "summary": "极斗：偏徒手攻击、第一行动、战技、幻象等能力。",
+      "detail": "示例技能：连环拳、幻形踢、玄秘掌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "连环拳",
+        "幻形踢",
+        "玄秘掌"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "极斗",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "连环拳",
+          "source": "monk"
+        },
+        {
+          "name": "幻形踢",
+          "source": "monk"
+        },
+        {
+          "name": "玄秘掌",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 极斗 极斗：偏徒手攻击、第一行动、战技、幻象等能力。 示例技能：连环拳、幻形踢、玄秘掌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 连环拳 幻形踢 玄秘掌 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-踏风",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·踏风风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "踏风",
+      "summary": "踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。",
+      "detail": "示例技能：点穴手、身轻如燕、无影步。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "点穴手",
+        "身轻如燕",
+        "无影步"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "踏风",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "点穴手",
+          "source": "monk"
+        },
+        {
+          "name": "身轻如燕",
+          "source": "monk"
+        },
+        {
+          "name": "无影步",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 踏风 踏风：偏徒手攻击、速攻、体质豁免（15）/效果递减（-7）、战技等能力。 示例技能：点穴手、身轻如燕、无影步。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 点穴手 身轻如燕 无影步 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-织雾",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·织雾风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "织雾",
+      "summary": "织雾：偏韧性、长休、功法、回复等能力。",
+      "detail": "示例技能：散魔功、抚慰之雾、真气波。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "散魔功",
+        "抚慰之雾",
+        "真气波"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "织雾",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "散魔功",
+          "source": "monk"
+        },
+        {
+          "name": "抚慰之雾",
+          "source": "monk"
+        },
+        {
+          "name": "真气波",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 织雾 织雾：偏韧性、长休、功法、回复等能力。 示例技能：散魔功、抚慰之雾、真气波。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 散魔功 抚慰之雾 真气波 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-无尘",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·无尘风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "无尘",
+      "summary": "无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。",
+      "detail": "示例技能：嚎镇八方、金钟罩、疾言厉色。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "嚎镇八方",
+        "金钟罩",
+        "疾言厉色"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "无尘",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "嚎镇八方",
+          "source": "monk"
+        },
+        {
+          "name": "金钟罩",
+          "source": "monk"
+        },
+        {
+          "name": "疾言厉色",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 无尘 无尘：偏惑控、魅力豁免（15）/效果递减（-5）、战技、护盾等能力。 示例技能：嚎镇八方、金钟罩、疾言厉色。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 嚎镇八方 金钟罩 疾言厉色 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-锋岚",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·锋岚风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "锋岚",
+      "summary": "锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。",
+      "detail": "示例技能：当头棒喝、回马枪、长兵熟稔。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "当头棒喝",
+        "回马枪",
+        "长兵熟稔"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "锋岚",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "当头棒喝",
+          "source": "monk"
+        },
+        {
+          "name": "回马枪",
+          "source": "monk"
+        },
+        {
+          "name": "长兵熟稔",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 锋岚 锋岚：偏近战攻击、体质豁免（8）、战技、躲闪等能力。 示例技能：当头棒喝、回马枪、长兵熟稔。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 当头棒喝 回马枪 长兵熟稔 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-酒仙",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·酒仙风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "酒仙",
+      "summary": "酒仙：偏徒手攻击、战技、反击、技艺等能力。",
+      "detail": "示例技能：醉拳、借醉反击、蒸馏工艺。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "醉拳",
+        "借醉反击",
+        "蒸馏工艺"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "酒仙",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "醉拳",
+          "source": "monk"
+        },
+        {
+          "name": "借醉反击",
+          "source": "monk"
+        },
+        {
+          "name": "蒸馏工艺",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 酒仙 酒仙：偏徒手攻击、战技、反击、技艺等能力。 示例技能：醉拳、借醉反击、蒸馏工艺。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 醉拳 借醉反击 蒸馏工艺 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-style-凰火",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧·凰火风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "style": "凰火",
+      "summary": "凰火：偏机制、火焰、天赋、短休/长休等能力。",
+      "detail": "示例技能：我心如火、朱鹤式、凰羽焰。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [
+        "我心如火",
+        "朱鹤式",
+        "凰羽焰"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "凰火",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "我心如火",
+          "source": "monk"
+        },
+        {
+          "name": "朱鹤式",
+          "source": "monk"
+        },
+        {
+          "name": "凰羽焰",
+          "source": "monk"
+        }
+      ],
+      "searchText": "武僧 凰火 凰火：偏机制、火焰、天赋、短休/长休等能力。 示例技能：我心如火、朱鹤式、凰羽焰。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 我心如火 朱鹤式 凰羽焰 style_guide auto_stub"
+    },
+    {
+      "id": "tip-monk-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "detail": "顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "武僧 创建 车卡 顾问档位 partial：可检索 武僧 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+    },
+    {
+      "id": "tip-monk-partial-note",
+      "scope": "class",
+      "applicableClasses": [
+        "武僧"
+      ],
+      "title": "武僧顾问档位说明",
+      "kind": "meta",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "detail": "武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "武僧",
+        "partial",
+        "顾问"
+      ],
+      "skillRefs": [],
+      "searchText": "武僧 partial 顾问 武僧顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    }
+  ]
 }
