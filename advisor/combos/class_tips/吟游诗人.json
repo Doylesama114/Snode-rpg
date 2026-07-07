@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "吟游诗人",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 7,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 25,
     "byKind": {
       "style_guide": 5,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 10,
+      "combat_rule": 8,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "吟游诗人·激昂风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "激昂",
       "summary": "激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。",
-      "detail": "示例技能：雷鸣和弦、快速拨弦、热血节拍。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "团队增益与节奏爆发；激励乐章/雷鸣和弦代表战端开场。低阶代表：雷鸣和弦、快速拨弦、热血节拍。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "雷鸣和弦",
         "快速拨弦",
@@ -53,7 +54,7 @@
           "source": "bard"
         }
       ],
-      "searchText": "吟游诗人 激昂 激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。 示例技能：雷鸣和弦、快速拨弦、热血节拍。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 雷鸣和弦 快速拨弦 热血节拍 style_guide auto_stub"
+      "searchText": "吟游诗人·激昂风格 style_guide auto_generated 激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。 团队增益与节奏爆发；激励乐章/雷鸣和弦代表战端开场。低阶代表：雷鸣和弦、快速拨弦、热血节拍。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 吟游诗人 激昂 战斗风格 style_guide 雷鸣和弦 快速拨弦 热血节拍"
     },
     {
       "id": "tip-bard-style-舒缓",
@@ -63,10 +64,10 @@
       ],
       "title": "吟游诗人·舒缓风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "舒缓",
       "summary": "舒缓：偏回复、戏法、净化、长休等能力。",
-      "detail": "示例技能：次级治疗术、净化间奏、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "治疗、净化与长休回复；次级治疗术/净化间奏代表支援。低阶代表：次级治疗术、净化间奏、睡眠术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "次级治疗术",
         "净化间奏",
@@ -93,7 +94,7 @@
           "source": "bard"
         }
       ],
-      "searchText": "吟游诗人 舒缓 舒缓：偏回复、戏法、净化、长休等能力。 示例技能：次级治疗术、净化间奏、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 次级治疗术 净化间奏 睡眠术 style_guide auto_stub"
+      "searchText": "吟游诗人·舒缓风格 style_guide auto_generated 舒缓：偏回复、戏法、净化、长休等能力。 治疗、净化与长休回复；次级治疗术/净化间奏代表支援。低阶代表：次级治疗术、净化间奏、睡眠术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 吟游诗人 舒缓 战斗风格 style_guide 次级治疗术 净化间奏 睡眠术"
     },
     {
       "id": "tip-bard-style-灵动",
@@ -103,10 +104,10 @@
       ],
       "title": "吟游诗人·灵动风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "灵动",
       "summary": "灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。",
-      "detail": "示例技能：音波刃、无律之音、轻快小调。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "音波输出与位移节奏；音波刃/轻快小调代表施法攻击。低阶代表：音波刃、无律之音、轻快小调。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "音波刃",
         "无律之音",
@@ -133,7 +134,7 @@
           "source": "bard"
         }
       ],
-      "searchText": "吟游诗人 灵动 灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。 示例技能：音波刃、无律之音、轻快小调。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 音波刃 无律之音 轻快小调 style_guide auto_stub"
+      "searchText": "吟游诗人·灵动风格 style_guide auto_generated 灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。 音波输出与位移节奏；音波刃/轻快小调代表施法攻击。低阶代表：音波刃、无律之音、轻快小调。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 吟游诗人 灵动 战斗风格 style_guide 音波刃 无律之音 轻快小调"
     },
     {
       "id": "tip-bard-style-诙谐",
@@ -143,10 +144,10 @@
       ],
       "title": "吟游诗人·诙谐风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "诙谐",
       "summary": "诙谐：偏光耀、光源、激活、唯一性等能力。",
-      "detail": "示例技能：舞光术、油腻术、传讯术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "控场戏法与光耀辅助；舞光术/油腻术代表 utility。低阶代表：舞光术、油腻术、传讯术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "舞光术",
         "油腻术",
@@ -173,7 +174,7 @@
           "source": "bard"
         }
       ],
-      "searchText": "吟游诗人 诙谐 诙谐：偏光耀、光源、激活、唯一性等能力。 示例技能：舞光术、油腻术、传讯术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 舞光术 油腻术 传讯术 style_guide auto_stub"
+      "searchText": "吟游诗人·诙谐风格 style_guide auto_generated 诙谐：偏光耀、光源、激活、唯一性等能力。 控场戏法与光耀辅助；舞光术/油腻术代表 utility。低阶代表：舞光术、油腻术、传讯术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 吟游诗人 诙谐 战斗风格 style_guide 舞光术 油腻术 传讯术"
     },
     {
       "id": "tip-bard-style-集中",
@@ -183,10 +184,10 @@
       ],
       "title": "吟游诗人·集中风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "集中",
       "summary": "集中：偏媒介、隐秘、激活、戏法等能力。",
-      "detail": "示例技能：警报术、剑刃防护、专注演奏。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "防护与专注演奏；警报术/剑刃防护代表生存与媒介。低阶代表：警报术、剑刃防护、专注演奏。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "警报术",
         "剑刃防护",
@@ -213,51 +214,672 @@
           "source": "bard"
         }
       ],
-      "searchText": "吟游诗人 集中 集中：偏媒介、隐秘、激活、戏法等能力。 示例技能：警报术、剑刃防护、专注演奏。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 警报术 剑刃防护 专注演奏 style_guide auto_stub"
+      "searchText": "吟游诗人·集中风格 style_guide auto_generated 集中：偏媒介、隐秘、激活、戏法等能力。 防护与专注演奏；警报术/剑刃防护代表生存与媒介。低阶代表：警报术、剑刃防护、专注演奏。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 吟游诗人 集中 战斗风格 style_guide 警报术 剑刃防护 专注演奏"
     },
     {
-      "id": "tip-bard-chargen-1",
+      "id": "tip-bard-prio-激昂",
       "scope": "class",
       "applicableClasses": [
         "吟游诗人"
       ],
-      "title": "吟游诗人创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "激昂 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "激昂线前三级可优先：激励乐章、休憩曲、交友术、瘙痒术；与起手特性/专精规划一致再扩展。",
+      "detail": "吟游诗人 激昂 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队增益与节奏爆发；激励乐章/雷鸣和弦代表战端开场。",
+      "relatedSkills": [
+        "激励乐章",
+        "休憩曲",
+        "交友术",
+        "瘙痒术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "激昂",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        },
+        {
+          "name": "休憩曲",
+          "source": "bard"
+        },
+        {
+          "name": "交友术",
+          "source": "bard"
+        },
+        {
+          "name": "瘙痒术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "激昂 1～3 阶优先 tactic auto_generated 激昂线前三级可优先：激励乐章、休憩曲、交友术、瘙痒术；与起手特性/专精规划一致再扩展。 吟游诗人 激昂 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队增益与节奏爆发；激励乐章/雷鸣和弦代表战端开场。 吟游诗人 激昂 优先学 tactic 激励乐章 休憩曲 交友术 瘙痒术"
+    },
+    {
+      "id": "tip-bard-prio-舒缓",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "舒缓 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "舒缓",
+      "summary": "舒缓线前三级可优先：次级治疗术、净化间奏、睡眠术；与起手特性/专精规划一致再扩展。",
+      "detail": "吟游诗人 舒缓 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗、净化与长休回复；次级治疗术/净化间奏代表支援。",
+      "relatedSkills": [
+        "次级治疗术",
+        "净化间奏",
+        "睡眠术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "舒缓",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "次级治疗术",
+          "source": "bard"
+        },
+        {
+          "name": "净化间奏",
+          "source": "bard"
+        },
+        {
+          "name": "睡眠术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "舒缓 1～3 阶优先 tactic auto_generated 舒缓线前三级可优先：次级治疗术、净化间奏、睡眠术；与起手特性/专精规划一致再扩展。 吟游诗人 舒缓 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗、净化与长休回复；次级治疗术/净化间奏代表支援。 吟游诗人 舒缓 优先学 tactic 次级治疗术 净化间奏 睡眠术"
+    },
+    {
+      "id": "tip-bard-prio-灵动",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "灵动 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "灵动",
+      "summary": "灵动线前三级可优先：音波刃、无律之音、轻快小调；与起手特性/专精规划一致再扩展。",
+      "detail": "吟游诗人 灵动 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。音波输出与位移节奏；音波刃/轻快小调代表施法攻击。",
+      "relatedSkills": [
+        "音波刃",
+        "无律之音",
+        "轻快小调"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "灵动",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "音波刃",
+          "source": "bard"
+        },
+        {
+          "name": "无律之音",
+          "source": "bard"
+        },
+        {
+          "name": "轻快小调",
+          "source": "bard"
+        }
+      ],
+      "searchText": "灵动 1～3 阶优先 tactic auto_generated 灵动线前三级可优先：音波刃、无律之音、轻快小调；与起手特性/专精规划一致再扩展。 吟游诗人 灵动 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。音波输出与位移节奏；音波刃/轻快小调代表施法攻击。 吟游诗人 灵动 优先学 tactic 音波刃 无律之音 轻快小调"
+    },
+    {
+      "id": "tip-bard-prio-诙谐",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "诙谐 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "诙谐",
+      "summary": "诙谐线前三级可优先：舞光术、油腻术、传讯术；与起手特性/专精规划一致再扩展。",
+      "detail": "吟游诗人 诙谐 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场戏法与光耀辅助；舞光术/油腻术代表 utility。",
+      "relatedSkills": [
+        "舞光术",
+        "油腻术",
+        "传讯术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "诙谐",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "舞光术",
+          "source": "bard"
+        },
+        {
+          "name": "油腻术",
+          "source": "bard"
+        },
+        {
+          "name": "传讯术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "诙谐 1～3 阶优先 tactic auto_generated 诙谐线前三级可优先：舞光术、油腻术、传讯术；与起手特性/专精规划一致再扩展。 吟游诗人 诙谐 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场戏法与光耀辅助；舞光术/油腻术代表 utility。 吟游诗人 诙谐 优先学 tactic 舞光术 油腻术 传讯术"
+    },
+    {
+      "id": "tip-bard-prio-集中",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "集中 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "集中",
+      "summary": "集中线前三级可优先：警报术、剑刃防护、专注演奏；与起手特性/专精规划一致再扩展。",
+      "detail": "吟游诗人 集中 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。防护与专注演奏；警报术/剑刃防护代表生存与媒介。",
+      "relatedSkills": [
+        "警报术",
+        "剑刃防护",
+        "专注演奏"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "集中",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "警报术",
+          "source": "bard"
+        },
+        {
+          "name": "剑刃防护",
+          "source": "bard"
+        },
+        {
+          "name": "专注演奏",
+          "source": "bard"
+        }
+      ],
+      "searchText": "集中 1～3 阶优先 tactic auto_generated 集中线前三级可优先：警报术、剑刃防护、专注演奏；与起手特性/专精规划一致再扩展。 吟游诗人 集中 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。防护与专注演奏；警报术/剑刃防护代表生存与媒介。 吟游诗人 集中 优先学 tactic 警报术 剑刃防护 专注演奏"
+    },
+    {
+      "id": "tip-bard-start-激励乐章",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手·激励乐章",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "激励乐章（激昂）：你用热血的话语和音乐激励他人，用激昂的曲调调动对方的情绪 持续时间结束时通过激励乐章获得的激励骰将会消散，同一名角色仅能够持有一颗来源于激励乐章的激励骰",
+      "detail": "吟游诗人 5 选 2 起手特性之一。你用热血的话语和音乐激励他人，用激昂的曲调调动对方的情绪 持续时间结束时通过激励乐章获得的激励骰将会消散，同一名角色仅能够持有一颗来源于激励乐章的激励骰 与后续 激昂 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "激励乐章"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手·激励乐章 tactic auto_generated 激励乐章（激昂）：你用热血的话语和音乐激励他人，用激昂的曲调调动对方的情绪 持续时间结束时通过激励乐章获得的激励骰将会消散，同一名角色仅能够持有一颗来源于激励乐章的激励骰 吟游诗人 5 选 2 起手特性之一。你用热血的话语和音乐激励他人，用激昂的曲调调动对方的情绪 持续时间结束时通过激励乐章获得的激励骰将会消散，同一名角色仅能够持有一颗来源于激励乐章的激励骰 与后续 激昂 风格技能可形成初期连招，但非强制绑定。 吟游诗人 起手特性 车卡 tactic 激励乐章"
+    },
+    {
+      "id": "tip-bard-start-休憩曲",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手·休憩曲",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "休憩曲（激昂）：你弹奏轻柔的曲调帮助伙伴恢复伤势，你与一同进行短休的友方角色总是能够回复生命值和疲劳值，而非原先的仅在每日的首次短休期间能够进行回复 短休结束后如果你或友方角色",
+      "detail": "吟游诗人 5 选 2 起手特性之一。你弹奏轻柔的曲调帮助伙伴恢复伤势，你与一同进行短休的友方角色总是能够回复生命值和疲劳值，而非原先的仅在每日的首次短休期间能够进行回复 短休结束后如果你或友方角色没有可用的激励点，那么还会获得1个激励点 与后续 激昂 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "休憩曲"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "休憩曲",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手·休憩曲 tactic auto_generated 休憩曲（激昂）：你弹奏轻柔的曲调帮助伙伴恢复伤势，你与一同进行短休的友方角色总是能够回复生命值和疲劳值，而非原先的仅在每日的首次短休期间能够进行回复 短休结束后如果你或友方角色 吟游诗人 5 选 2 起手特性之一。你弹奏轻柔的曲调帮助伙伴恢复伤势，你与一同进行短休的友方角色总是能够回复生命值和疲劳值，而非原先的仅在每日的首次短休期间能够进行回复 短休结束后如果你或友方角色没有可用的激励点，那么还会获得1个激励点 与后续 激昂 风格技能可形成初期连招，但非强制绑定。 吟游诗人 起手特性 车卡 tactic 休憩曲"
+    },
+    {
+      "id": "tip-bard-start-交友术",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手·交友术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "交友术（激昂）：你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时",
+      "detail": "吟游诗人 5 选 2 起手特性之一。你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时立即中断，对方会意识到自身受到了惑控的影响，这可能会导致目标转变为敌对状态 与后续 激昂 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "交友术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "交友术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手·交友术 tactic auto_generated 交友术（激昂）：你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时 吟游诗人 5 选 2 起手特性之一。你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时立即中断，对方会意识到自身受到了惑控的影响，这可能会导致目标转变为敌对状态 与后续 激昂 风格技能可形成初期连招，但非强制绑定。 吟游诗人 起手特性 车卡 tactic 交友术"
+    },
+    {
+      "id": "tip-bard-start-瘙痒术",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手·瘙痒术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "瘙痒术（激昂）：你做出对应施法手势，念出法咒使对方的身上如同爬满毛虫一般奇痒难耐 持续时间内目标无法进入专注状态，如果当前处于专注状态将会被中断",
+      "detail": "吟游诗人 5 选 2 起手特性之一。你做出对应施法手势，念出法咒使对方的身上如同爬满毛虫一般奇痒难耐 持续时间内目标无法进入专注状态，如果当前处于专注状态将会被中断 与后续 激昂 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "瘙痒术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "瘙痒术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手·瘙痒术 tactic auto_generated 瘙痒术（激昂）：你做出对应施法手势，念出法咒使对方的身上如同爬满毛虫一般奇痒难耐 持续时间内目标无法进入专注状态，如果当前处于专注状态将会被中断 吟游诗人 5 选 2 起手特性之一。你做出对应施法手势，念出法咒使对方的身上如同爬满毛虫一般奇痒难耐 持续时间内目标无法进入专注状态，如果当前处于专注状态将会被中断 与后续 激昂 风格技能可形成初期连招，但非强制绑定。 吟游诗人 起手特性 车卡 tactic 瘙痒术"
+    },
+    {
+      "id": "tip-bard-start-动能旋律",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手·动能旋律",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "激昂",
+      "summary": "动能旋律（激昂）：你敲打音键震颤敌人潜藏在内心中的旋律，用无形的能量波动击打对手 L5: 动能旋律改为造成2D8点力场伤害 L10: 如果目标的豁免点数低于5，那么还会被击晕1轮",
+      "detail": "吟游诗人 5 选 2 起手特性之一。你敲打音键震颤敌人潜藏在内心中的旋律，用无形的能量波动击打对手 L5: 动能旋律改为造成2D8点力场伤害 L10: 如果目标的豁免点数低于5，那么还会被击晕1轮 与后续 激昂 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "动能旋律"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "动能旋律",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手·动能旋律 tactic auto_generated 动能旋律（激昂）：你敲打音键震颤敌人潜藏在内心中的旋律，用无形的能量波动击打对手 L5: 动能旋律改为造成2D8点力场伤害 L10: 如果目标的豁免点数低于5，那么还会被击晕1轮 吟游诗人 5 选 2 起手特性之一。你敲打音键震颤敌人潜藏在内心中的旋律，用无形的能量波动击打对手 L5: 动能旋律改为造成2D8点力场伤害 L10: 如果目标的豁免点数低于5，那么还会被击晕1轮 与后续 激昂 风格技能可形成初期连招，但非强制绑定。 吟游诗人 起手特性 车卡 tactic 动能旋律"
+    },
+    {
+      "id": "tip-bard-cr-styles",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "五风格职能",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "激昂偏增益、舒缓偏治疗、灵动偏输出、诙谐偏控场戏法、集中偏防护；宜主修 1～2 系再扩展。",
+      "detail": "引用须来自 L2 吟游诗人上下文；勿套用法师八学派名。",
+      "relatedSkills": [
+        "激励乐章",
+        "次级治疗术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "战斗风格",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        },
+        {
+          "name": "次级治疗术",
+          "source": "bard"
+        }
+      ],
+      "searchText": "五风格职能 combat_rule auto_generated 激昂偏增益、舒缓偏治疗、灵动偏输出、诙谐偏控场戏法、集中偏防护；宜主修 1～2 系再扩展。 引用须来自 L2 吟游诗人上下文；勿套用法师八学派名。 吟游诗人 战斗风格 combat_rule 激励乐章 次级治疗术"
+    },
+    {
+      "id": "tip-bard-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "起手五选二",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "5 选 2：激励乐章（增益）、休憩曲（休整）、交友术/瘙痒术（社交控场）、动能旋律（输出）。",
+      "detail": "按团队缺口选两项；勿假设五项全拿。激励乐章与激昂线协同。",
+      "relatedSkills": [
+        "激励乐章",
+        "休憩曲",
+        "动能旋律"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        },
+        {
+          "name": "休憩曲",
+          "source": "bard"
+        },
+        {
+          "name": "动能旋律",
+          "source": "bard"
+        }
+      ],
+      "searchText": "起手五选二 combat_rule auto_generated 5 选 2：激励乐章（增益）、休憩曲（休整）、交友术/瘙痒术（社交控场）、动能旋律（输出）。 按团队缺口选两项；勿假设五项全拿。激励乐章与激昂线协同。 吟游诗人 起手特性 combat_rule 激励乐章 休憩曲 动能旋律"
+    },
+    {
+      "id": "tip-bard-cr-rhythm",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "节奏与节拍",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多技能含「节奏」关键词；律动节拍专精提供节拍骰，激昂/灵动线常见。",
+      "detail": "每个自身回合限一次类能力须标注；具体数值以技能描述为准。",
+      "relatedSkills": [
+        "热血节拍",
+        "韵律增幅"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "节奏",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "热血节拍",
+          "source": "bard"
+        },
+        {
+          "name": "韵律增幅",
+          "source": "bard"
+        }
+      ],
+      "searchText": "节奏与节拍 combat_rule auto_generated 多技能含「节奏」关键词；律动节拍专精提供节拍骰，激昂/灵动线常见。 每个自身回合限一次类能力须标注；具体数值以技能描述为准。 吟游诗人 节奏 combat_rule 热血节拍 韵律增幅"
+    },
+    {
+      "id": "tip-bard-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "法术与戏法",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "吟游诗人含 spell/cantrip/talent；施展常需乐器/言语，非法师法术位体系。",
+      "detail": "诙谐/集中线戏法较多；勿引用塑能箭等法师专属起手。",
+      "relatedSkills": [
+        "舞光术",
+        "音波刃"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "法术",
+        "戏法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "舞光术",
+          "source": "bard"
+        },
+        {
+          "name": "音波刃",
+          "source": "bard"
+        }
+      ],
+      "searchText": "法术与戏法 combat_rule auto_generated 吟游诗人含 spell/cantrip/talent；施展常需乐器/言语，非法师法术位体系。 诙谐/集中线戏法较多；勿引用塑能箭等法师专属起手。 吟游诗人 法术 戏法 combat_rule 舞光术 音波刃"
+    },
+    {
+      "id": "tip-bard-cr-buff",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "团队增益",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "激昂/舒缓线提供士气、治疗与净化；长战先稳态增益再交输出。",
+      "detail": "激励乐章为常见起手；休憩曲偏休整环节，勿与战斗轮混淆。",
+      "relatedSkills": [
+        "激励乐章",
+        "振奋光环"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "增益",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        },
+        {
+          "name": "振奋光环",
+          "source": "bard"
+        }
+      ],
+      "searchText": "团队增益 combat_rule auto_generated 激昂/舒缓线提供士气、治疗与净化；长战先稳态增益再交输出。 激励乐章为常见起手；休憩曲偏休整环节，勿与战斗轮混淆。 吟游诗人 增益 combat_rule 激励乐章 振奋光环"
+    },
+    {
+      "id": "tip-bard-cr-firearm",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "火器与手弩",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "吟游诗人熟练火枪/手弩；消耗弹药，相邻或超距可能有命中劣势（见基础规则）。",
+      "detail": "灵动/激昂 build 可兼远程；切换乐器/武器时注意借机与触及。",
+      "relatedSkills": [
+        "快速拨弦"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "火器",
+        "远程",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "快速拨弦",
+          "source": "bard"
+        }
+      ],
+      "searchText": "火器与手弩 combat_rule auto_generated 吟游诗人熟练火枪/手弩；消耗弹药，相邻或超距可能有命中劣势（见基础规则）。 灵动/激昂 build 可兼远程；切换乐器/武器时注意借机与触及。 吟游诗人 火器 远程 combat_rule 快速拨弦"
+    },
+    {
+      "id": "tip-bard-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "FP 与演奏节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法术/战歌消耗 FP；激昂爆发轮与舒缓回复轮分开规划，避免空 FP。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "雷鸣和弦"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "雷鸣和弦",
+          "source": "bard"
+        }
+      ],
+      "searchText": "FP 与演奏节奏 combat_rule auto_generated 法术/战歌消耗 FP；激昂爆发轮与舒缓回复轮分开规划，避免空 FP。 短休/长休回复见基础规则；标识由 DM 结算。 吟游诗人 FP combat_rule 雷鸣和弦"
+    },
+    {
+      "id": "tip-bard-cr-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "三项专精取向",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "坊间逸闻偏情报、语出惊人偏检定、律动节拍偏节奏 combat；与主风格一致再扩展。",
+      "detail": "创建页三项专精均获得（非三选一）；具体数值以规则书为准。",
+      "relatedSkills": [
+        "激励乐章"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "吟游诗人",
+        "专精",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "激励乐章",
+          "source": "bard"
+        }
+      ],
+      "searchText": "三项专精取向 combat_rule auto_generated 坊间逸闻偏情报、语出惊人偏检定、律动节拍偏节奏 combat；与主风格一致再扩展。 创建页三项专精均获得（非三选一）；具体数值以规则书为准。 吟游诗人 专精 combat_rule 激励乐章"
+    },
+    {
+      "id": "tip-bard-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "吟游诗人"
+      ],
+      "title": "吟游诗人关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魅力：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "魅力≥15 为常见目标；敏捷豁免配合灵动/火器 build。表演/激励/说服与语出惊人专精协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "吟游诗人",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "吟游诗人 创建 车卡 顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "吟游诗人关键属性 chargen auto_generated 魅力：创建购点通常至少一项≥15，与主武器/战斗风格一致。 魅力≥15 为常见目标；敏捷豁免配合灵动/火器 build。表演/激励/说服与语出惊人专精协同。 吟游诗人 车卡 属性 chargen"
     },
     {
-      "id": "tip-bard-partial-note",
+      "id": "tip-bard-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "吟游诗人"
       ],
-      "title": "吟游诗人顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "吟游诗人专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "坊间逸闻：人文/情报向；探索/欺瞒熟练协同，偏幕间与社交 build。 语出惊人：检定附加魅力；说服/表演/激励熟练协同。 律动节拍：节拍骰机制核心；激昂/灵动节奏类技能协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "吟游诗人",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "吟游诗人 partial 顾问 吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "吟游诗人专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 坊间逸闻：人文/情报向；探索/欺瞒熟练协同，偏幕间与社交 build。 语出惊人：检定附加魅力；说服/表演/激励熟练协同。 律动节拍：节拍骰机制核心；激昂/灵动节奏类技能协同。 吟游诗人 车卡 专精 chargen"
     }
   ]
 }

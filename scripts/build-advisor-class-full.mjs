@@ -828,6 +828,103 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  吟游诗人: {
+    defaultFullL2MinSkills: 80,
+    fpKeyLabel: '魅力',
+    specBuildHints: {
+      坊间逸闻: '人文/情报向；探索/欺瞒熟练协同，偏幕间与社交 build。',
+      语出惊人: '检定附加魅力；说服/表演/激励熟练协同。',
+      律动节拍: '节拍骰机制核心；激昂/灵动节奏类技能协同。',
+    },
+    styleRoleHints: {
+      激昂: '团队增益与节奏爆发；激励乐章/雷鸣和弦代表战端开场。',
+      舒缓: '治疗、净化与长休回复；次级治疗术/净化间奏代表支援。',
+      灵动: '音波输出与位移节奏；音波刃/轻快小调代表施法攻击。',
+      诙谐: '控场戏法与光耀辅助；舞光术/油腻术代表 utility。',
+      集中: '防护与专注演奏；警报术/剑刃防护代表生存与媒介。',
+    },
+    chargenAttrDetail: '魅力≥15 为常见目标；敏捷豁免配合灵动/火器 build。表演/激励/说服与语出惊人专精协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-styles',
+        title: '五风格职能',
+        summary: '激昂偏增益、舒缓偏治疗、灵动偏输出、诙谐偏控场戏法、集中偏防护；宜主修 1～2 系再扩展。',
+        detail: '引用须来自 L2 吟游诗人上下文；勿套用法师八学派名。',
+        relatedSkills: ['激励乐章', '次级治疗术'],
+        tags: [className, '战斗风格', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手五选二',
+        summary: '5 选 2：激励乐章（增益）、休憩曲（休整）、交友术/瘙痒术（社交控场）、动能旋律（输出）。',
+        detail: '按团队缺口选两项；勿假设五项全拿。激励乐章与激昂线协同。',
+        relatedSkills: ['激励乐章', '休憩曲', '动能旋律'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-rhythm',
+        title: '节奏与节拍',
+        summary: '多技能含「节奏」关键词；律动节拍专精提供节拍骰，激昂/灵动线常见。',
+        detail: '每个自身回合限一次类能力须标注；具体数值以技能描述为准。',
+        relatedSkills: ['热血节拍', '韵律增幅'],
+        tags: [className, '节奏', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '法术与戏法',
+        summary: '吟游诗人含 spell/cantrip/talent；施展常需乐器/言语，非法师法术位体系。',
+        detail: '诙谐/集中线戏法较多；勿引用塑能箭等法师专属起手。',
+        relatedSkills: ['舞光术', '音波刃'],
+        tags: [className, '法术', '戏法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-buff',
+        title: '团队增益',
+        summary: '激昂/舒缓线提供士气、治疗与净化；长战先稳态增益再交输出。',
+        detail: '激励乐章为常见起手；休憩曲偏休整环节，勿与战斗轮混淆。',
+        relatedSkills: ['激励乐章', '振奋光环'],
+        tags: [className, '增益', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-firearm',
+        title: '火器与手弩',
+        summary: '吟游诗人熟练火枪/手弩；消耗弹药，相邻或超距可能有命中劣势（见基础规则）。',
+        detail: '灵动/激昂 build 可兼远程；切换乐器/武器时注意借机与触及。',
+        relatedSkills: ['快速拨弦'],
+        tags: [className, '火器', '远程', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与演奏节奏',
+        summary: '法术/战歌消耗 FP；激昂爆发轮与舒缓回复轮分开规划，避免空 FP。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['雷鸣和弦'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-spec',
+        title: '三项专精取向',
+        summary: '坊间逸闻偏情报、语出惊人偏检定、律动节拍偏节奏 combat；与主风格一致再扩展。',
+        detail: '创建页三项专精均获得（非三选一）；具体数值以规则书为准。',
+        relatedSkills: ['激励乐章'],
+        tags: [className, '专精', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/轻甲/.test(refClass?.armor || '')) {
+        rules.push('吟游诗人着轻甲；AC 与敏捷加成见基础规则与创建页。');
+      }
+      if (/火枪|手弩/.test(refClass?.weapons || '')) {
+        rules.push('火枪/手弩消耗弹药；装填与射速见基础规则战斗章。');
+      }
+      if (/刺剑/.test(refClass?.weapons || '')) {
+        rules.push('刺剑为常见近战副武器；灵巧攻击 build 须满足武器熟练。');
+      }
+      rules.push('多数法术/战歌需乐器或言语；具体施展条件见各技能描述。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

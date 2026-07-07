@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7050',
+    date: '2026-07-07',
+    changes: [
+      '吟游诗人顾问升full(bard_skills/五风格L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7049',
     date: '2026-07-07',
     changes: [
