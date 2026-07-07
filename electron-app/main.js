@@ -239,6 +239,23 @@ async function getChargenBridgeModule() {
   return _chargenBridgeModule;
 }
 
+let _chargenPolicyModule = null;
+
+async function getChargenPolicyModule() {
+  if (!_chargenPolicyModule) {
+    _chargenPolicyModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-chargen-policy.mjs')).href);
+  }
+  return _chargenPolicyModule;
+}
+
+async function resolveAdviseQuery(payload) {
+  if (payload?.queryKind === 'chargen_bubble' && payload?.chargenState) {
+    const policy = await getChargenPolicyModule();
+    return policy.buildChargenBubbleQuery(payload.chargenState);
+  }
+  return payload?.query ? String(payload.query).trim() : '';
+}
+
 async function resolveWizardState(payload) {
   if (payload?.wizardState) return payload.wizardState;
   if (payload?.chargenState) {
@@ -285,7 +302,8 @@ async function getWizardSyncModule() {
 
 ipcMain.handle('advisor-advise', async (_event, payload) => {
   try {
-    if (!payload || !payload.query || !String(payload.query).trim()) {
+    const query = await resolveAdviseQuery(payload || {});
+    if (!query) {
       return { ok: false, error: '问题不能为空' };
     }
     const mod = await getAdvisorModule();
@@ -295,10 +313,11 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
       snapshot = snapMod.normalizeSnapshot(snapshot);
     }
     const wizardState = await resolveWizardState(payload);
-    const out = await mod.advise(String(payload.query).trim(), {
+    const out = await mod.advise(query, {
       snapshot: snapshot || undefined,
       mode: payload.mode || undefined,
       wizardState: wizardState || undefined,
+      chargenState: payload.chargenState || undefined,
     });
     return {
       ok: true,
@@ -306,6 +325,7 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
       intent: out.intent,
       mode: out.mode,
       model: out.model,
+      resolvedQuery: query,
     };
   } catch (err) {
     return { ok: false, error: err.message || String(err) };
@@ -314,7 +334,8 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
 
 ipcMain.handle('advisor-advise-stream', async (event, payload) => {
   try {
-    if (!payload || !payload.query || !String(payload.query).trim()) {
+    const query = await resolveAdviseQuery(payload || {});
+    if (!query) {
       return { ok: false, error: '问题不能为空' };
     }
     const mod = await getAdvisorModule();
@@ -325,10 +346,11 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
     }
     const wizardState = await resolveWizardState(payload);
     const sender = event.sender;
-    const out = await mod.advise(String(payload.query).trim(), {
+    const out = await mod.advise(query, {
       snapshot: snapshot || undefined,
       mode: payload.mode || undefined,
       wizardState: wizardState || undefined,
+      chargenState: payload.chargenState || undefined,
       stream: true,
       onDelta: (delta) => {
         if (!sender.isDestroyed()) {
@@ -342,6 +364,7 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
       intent: out.intent,
       mode: out.mode,
       model: out.model,
+      resolvedQuery: query,
     };
   } catch (err) {
     return { ok: false, error: err.message || String(err) };

@@ -26,7 +26,7 @@ const ROUTER_CASES = [
 const PROMPT_PROFILES = [
   { intent: 'leveling', mode: 'advisor', mustInclude: ['升级奖励', '逐级表'] },
   { intent: 'entity_qa', mode: 'entity_qa', mustInclude: ['实体百科', '实体详情'] },
-  { intent: 'wizard_step', mode: 'wizard', mustInclude: ['逐步车卡向导', '当前步骤'] },
+  { intent: 'wizard_step', mode: 'wizard', mustInclude: ['逐步车卡陪跑', '当前步骤'] },
   { intent: 'mage_skills', mode: 'advisor', mustInclude: ['法师技能', '塑能箭'] },
 ];
 
@@ -91,7 +91,7 @@ const dry = await advise('推荐智力高的种族', {
   mode: 'wizard',
   wizardState: WIZARD_MOCK,
 });
-if (!dry.messages[0].content.includes('逐步车卡向导')) fail('wizard dry-run prompt profile');
+if (!dry.messages[0].content.includes('逐步车卡陪跑')) fail('wizard dry-run prompt profile');
 else pass('wizard dry-run prompt profile');
 if (!dry.context.includes('模式: wizard')) fail('wizard dry-run context mode');
 else pass('wizard dry-run context mode');

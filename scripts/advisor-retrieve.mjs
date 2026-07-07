@@ -19,6 +19,8 @@ import {
   formatWizardContext,
   getWizardStepEntityHints,
 } from './advisor-wizard-state.mjs';
+import { buildChargenLedger, formatLedgerContext } from './advisor-chargen-ledger.mjs';
+import { chargenSnapshotChar } from './advisor-chargen-bridge.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -685,9 +687,17 @@ export function retrieve(query, options = {}) {
   }
 
   if (wizardState) {
+    let ledgerContext = '';
+    if (options.chargenState) {
+      const snapChar = chargenSnapshotChar(options.chargenState);
+      const step = options.chargenState.step ?? wizardState.step;
+      if (snapChar) {
+        ledgerContext = formatLedgerContext(buildChargenLedger(snapChar, { step }));
+      }
+    }
     layers.wizard = {
       state: wizardState,
-      context: formatWizardContext(wizardState, store),
+      context: formatWizardContext(wizardState, store, { ledgerContext }),
     };
     if (!layersHit.includes('wizard')) layersHit.push('wizard');
   }

@@ -172,6 +172,7 @@ export async function advise(query, options = {}) {
     snapshot: snapshot || undefined,
     mode: options.mode,
     wizardState: wizardState || undefined,
+    chargenState: options.chargenState || undefined,
   });
   const context = formatContext(retrieval);
   const messages = buildChatMessages(query, context, {

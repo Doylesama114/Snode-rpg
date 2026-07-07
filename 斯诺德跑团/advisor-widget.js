@@ -401,18 +401,19 @@
 
       state.chargenFp = cs.fingerprint;
       state.chargenStep = cs.step;
-      state.chargenQuery = '当前车卡步骤「' + cs.stepLabel + '」，请根据已选内容给出 2～3 条简短推荐（每条一行，总共不超过120字；不要 Markdown）。';
+      state.chargenQuery = '';
       showBubble('正在思考…');
       state.chargenBusy = true;
       updateBallBusy();
 
       var full = '';
       try {
-        var payload = { query: state.chargenQuery, mode: 'wizard', chargenState: cs };
+        var payload = { queryKind: 'chargen_bubble', mode: 'wizard', chargenState: cs, query: ' ' };
         var res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
           full += delta;
           showBubble(truncateTip(full) || '…');
         });
+        if (res && res.resolvedQuery) state.chargenQuery = res.resolvedQuery;
         if (res && res.ok && !full && res.answer) full = res.answer;
         state.chargenFullAnswer = full || '（暂无建议）';
         showBubble(truncateTip(state.chargenFullAnswer));

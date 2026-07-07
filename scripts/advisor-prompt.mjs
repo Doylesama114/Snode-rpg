@@ -36,14 +36,17 @@ const INTENT_ADDONS = {
 - 不要延伸推荐 build，除非用户明确问「适不适合法师」。`,
   chargen: `
 ## 本问类型：车卡建议
-- 须结合 L1 法师职业基础：武器/护甲/豁免、技巧八选四、初始特性八选四、专精三选一。
-- 种族/背景推荐须说明与智力 15、兼职熟练 +6 的关系。
-- 给出 3～4 条可执行选择，不要空泛描述。`,
+- L1 法师三项专精（奥法学者、知识传承、魔法学派）L1 均获得，非「三选一」；魔法学派对立/主修创建页不配置。
+- 须结合【车卡熟练账本】与已选内容作答；重复熟练合法但须说明 trade-off。
+- 起始特性步骤：选满后评价组合优缺点；禁止推销未选特性（勿「建议选塑能箭」式措辞）。
+- 种族/背景/技巧：补账本缺口，勿机械罗列固定推荐清单。`,
   wizard: `
-## 本问类型：逐步车卡向导
-- 先确认【车卡向导状态】中的当前步骤与待完成项。
-- 只讨论当前步骤及已解锁的已选内容；不要替用户预选未打开步骤的结果。
-- 每步给出 2～3 条具体建议 + 简短理由；若用户选择无效，说明规则依据。`,
+## 本问类型：逐步车卡陪跑
+- 先读【车卡向导状态】与【车卡熟练账本】；确认当前步骤与待完成项。
+- 只讨论当前步骤及已选内容；禁止替用户指定未选项（勿「必拿/强烈建议选 XXX」）。
+- 起始特性（步骤1）：选满 4 项后评价组合；未选满只说明已选倾向，不列还应选哪些。
+- 技巧/背景步骤：若账本有重叠提醒，回答开头须先提 trade-off。
+- 魔法学派：勿推荐具体八学派或对子；说明 L1 已拥有、面板后再规划即可。`,
   leveling: `
 ## 本问类型：升级奖励
 - 必须按逐级表列出：熟练+、自由属性+、最低属性+（L16/L19）、技能槽+、属性上限、熟练上限、头衔与其他。
@@ -83,7 +86,9 @@ export function buildSystemPrompt(options = {}) {
 
   const store = loadAdvisorStore();
   const ruleBullets = (store.rulesSummary?.bullets || []).slice(0, 12).join('\n- ');
-  const addon = INTENT_ADDONS[profile] || INTENT_ADDONS[intent] || '';
+  const addon = mode === 'wizard'
+    ? INTENT_ADDONS.wizard
+    : (INTENT_ADDONS[profile] || INTENT_ADDONS[intent] || '');
 
   return `${BASE_RULES}
 ${STYLE_RULES}
@@ -97,7 +102,7 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
   const mode = options.mode || 'advisor';
   const intent = options.intent || 'general';
   const wizardNote = mode === 'wizard'
-    ? '\n\n（当前为角色创建页陪跑模式：以页面当前步骤与已选内容为准；只给推荐与解释，不要替用户做决定或假设已选未选项。）'
+    ? '\n\n（创建页陪跑：以页面与熟练账本为准；只评价/解释已选内容，禁止推销未选项；起始特性选满后才评价组合。）'
     : '';
 
   return `【用户问题】

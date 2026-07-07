@@ -3,23 +3,9 @@
  */
 import { normalizeWizardState } from './advisor-wizard-state.mjs';
 
-const MAGE_SPECS = new Set(['奥法学者', '知识传承', '魔法学派']);
-
 function featNames(list) {
   if (!Array.isArray(list)) return [];
   return list.map((f) => (typeof f === 'string' ? f : (f?.n || f?.name || ''))).filter(Boolean);
-}
-
-function pickSpecialization(specChoices) {
-  if (!specChoices || typeof specChoices !== 'object') return { name: null, prof: null };
-  for (const name of Object.keys(specChoices)) {
-    if (MAGE_SPECS.has(name)) {
-      const ch = specChoices[name];
-      const prof = ch?.skill || ch?.prof || null;
-      return { name, prof };
-    }
-  }
-  return { name: null, prof: null };
 }
 
 function attrsPlain(attrs) {
@@ -51,6 +37,15 @@ function bgProfsToSkillChoices(bgProfs) {
   return out;
 }
 
+function cloneSpecChoices(specChoices) {
+  if (!specChoices || typeof specChoices !== 'object') return {};
+  try {
+    return JSON.parse(JSON.stringify(specChoices));
+  } catch {
+    return { ...specChoices };
+  }
+}
+
 /**
  * @param {{ step?: number, stepLabel?: string, char?: object }} snapshot — from snowdChargen.getState()
  */
@@ -58,15 +53,14 @@ export function chargenToWizardState(snapshot) {
   if (!snapshot) return null;
   const step = snapshot.step ?? snapshot.currentStep ?? 0;
   const char = snapshot.char || snapshot;
-  const spec = pickSpecialization(char.specChoices);
+  const specChoices = cloneSpecChoices(char.specChoices);
 
   const raw = {
     step,
     stepLabel: snapshot.stepLabel,
-    meta: { source: 'chargen_page', version: 'phase4-prime' },
+    meta: { source: 'chargen_page', version: 'phase4-prime-2' },
     className: char.className || null,
-    specialization: spec.name,
-    specializationProfChoice: spec.prof,
+    specChoices,
     startingFeatures: featNames(char.selectedFeatures),
     race: char.raceName || char.race || null,
     attrs: attrsPlain(char.attrs),
@@ -77,6 +71,7 @@ export function chargenToWizardState(snapshot) {
       || {},
     equipmentKit: equipmentLetter(char),
     extraLanguages: char.extraLanguages || [],
+    humanFreeSkill: char.humanFreeSkill || null,
     pointSpent: typeof char.pointSpent === 'number' ? char.pointSpent : null,
   };
 
@@ -95,6 +90,8 @@ export function buildChargenFingerprint(snapshot) {
     (char.selectedSkills || []).join(','),
     JSON.stringify(char.attrs || {}),
     JSON.stringify(char.specChoices || {}),
+    JSON.stringify(char.bgProfs || {}),
+    char.humanFreeSkill,
     equipmentLetter(char),
   ].join('|');
 }
@@ -103,4 +100,10 @@ export function normalizeChargenPayload(payload) {
   if (payload?.wizardState) return payload.wizardState;
   if (payload?.chargenState) return chargenToWizardState(payload.chargenState);
   return null;
+}
+
+/** @returns {object|null} raw char for ledger */
+export function chargenSnapshotChar(snapshot) {
+  if (!snapshot) return null;
+  return snapshot.char || snapshot;
 }

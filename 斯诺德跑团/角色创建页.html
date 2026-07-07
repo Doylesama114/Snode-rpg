@@ -359,6 +359,7 @@ function chargenSnapshotChar(){
     bgProfs:CHAR.bgProfs?JSON.parse(JSON.stringify(CHAR.bgProfs)):{},
     equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
     extraLanguages:(CHAR.extraLanguages||[]).slice(),
+    humanFreeSkill:CHAR.humanFreeSkill||null,
     charName:CHAR.charName||""
   };
 }
