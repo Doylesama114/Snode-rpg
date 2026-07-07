@@ -22,10 +22,10 @@ if (fs.existsSync(path.join(ROOT, 'scripts/build-advisor-class-tier-audit.mjs'))
 else fail('tier audit build script');
 
 const audit = auditAllClasses();
-if (audit.meta.fullReady === 1) pass('mage full ready');
-else fail('mage full', audit.audits.find((a) => a.className === '法师'));
+if (audit.meta.fullReady === 3) pass('3 full ready (mage+warrior+barbarian)');
+else fail('full ready', audit.meta.fullReady);
 
-if (audit.meta.partialReady === 13) pass('13 partial ready');
+if (audit.meta.partialReady === 11) pass('11 partial ready');
 else fail('partial ready', audit.meta.partialReady);
 
 for (const cn of ['战士', '奇械师', '德鲁伊']) {
@@ -47,12 +47,19 @@ else fail('prompt mage full');
 const warPrompt = buildSystemPrompt({
   intent: 'class_skills',
   mode: 'advisor',
-  promptProfile: 'class_skills',
+  promptProfile: 'warrior_skills',
   className: '战士',
-  tier: 'partial',
+  tier: 'full',
 });
-if (warPrompt.includes('partial') && warPrompt.includes('档位检查')) pass('prompt warrior partial audit');
+if (warPrompt.includes('full 档') && warPrompt.includes('战士技能')) pass('prompt warrior full');
 else fail('prompt warrior');
+
+const routeWar = applyClassRouteFilter(
+  { intent: 'class_skills', layers: ['L1'], topK: { L1: 6 }, promptProfile: 'class_skills' },
+  { className: '战士', query: '战士防护风格优先学什么' },
+);
+if (routeWar.promptProfile === 'warrior_skills') pass('router warrior promptProfile');
+else fail('router warrior', routeWar.promptProfile);
 
 const artPrompt = buildSystemPrompt({
   intent: 'class_skills',
@@ -81,7 +88,7 @@ const ctxWar = formatContext(retWar);
 if (ctxWar.includes('顾问档位检查') && ctxWar.includes('战士')) pass('context tier audit');
 else fail('context tier audit', ctxWar.slice(0, 250));
 
-if (retWar.tier === 'partial') pass('retrieve tier partial');
+if (retWar.tier === 'full') pass('retrieve tier full warrior');
 else fail('retrieve tier', retWar.tier);
 
 const auditJson = path.join(ROOT, 'advisor/chargen/class_tier_audit.json');

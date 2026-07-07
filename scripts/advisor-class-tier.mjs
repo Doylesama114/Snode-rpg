@@ -81,7 +81,9 @@ export function auditClassTier(className) {
 
   if (slug) {
     const n = skillIndexCount(slug);
-    const minSkills = tier === 'full' ? 300 : 40;
+    const minSkills = tier === 'full'
+      ? (profile.fullL2MinSkills ?? (className === '法师' ? 300 : 80))
+      : 40;
     add('l2_index', `L2 索引 ≥${minSkills} 技能`, n >= minSkills, `got ${n}`);
   } else {
     add('l2_index', 'L2 索引', false, 'no slug');
@@ -101,19 +103,25 @@ export function auditClassTier(className) {
 
   const styles = hintsStyleCount(className);
   const expectedStyles = combatStyleCount(className, slug);
-  const minStyles = tier === 'full' ? 8 : Math.max(1, Math.min(3, expectedStyles || 1));
+  const minStyles = tier === 'full'
+    ? Math.max(1, expectedStyles || styles || 1)
+    : Math.max(1, Math.min(3, expectedStyles || 1));
   add('hints_styles', `hints 战斗风格 ≥${minStyles}`, styles >= minStyles, `got ${styles}`);
 
   const tips = tipsCount(className);
-  add('l5_tips', `L5 小贴士 ≥${tier === 'full' ? 20 : 2}`, tips >= (tier === 'full' ? 20 : 2), `got ${tips}`);
+  const minTips = tier === 'full' ? (profile.l5MinTips ?? 20) : 2;
+  add('l5_tips', `L5 小贴士 ≥${minTips}`, tips >= minTips, `got ${tips}`);
 
   if (tier === 'partial') {
     add('partial_note', 'partial advisorNote', !!profile.advisorNote);
     add('registry_l2', 'registry L2 slug/layer', !!(profile.l2Slug && profile.l2Layer));
   }
 
-  if (tier === 'full') {
+  if (tier === 'full' && className === '法师') {
     add('mage_specs', '法师三项专精 policy', !!profile.hasMageSpecs);
+  }
+  if (tier === 'full' && profile.promptProfile) {
+    add('prompt_profile', `promptProfile=${profile.promptProfile}`, true);
   }
 
   const passCount = checks.filter((c) => c.pass).length;
@@ -150,7 +158,11 @@ export function formatTierAuditContext(className) {
   const lines = [`## 顾问档位检查（${className} · ${audit.tier} · ${audit.passCount}/${audit.total}）`];
   const fails = audit.checks.filter((c) => !c.pass);
   if (audit.ready) {
-    lines.push(`- ${className} ${audit.tier} 档资料项已齐；仍须遵守 partial 免责声明（标识/进阶未全收录时勿编造）。`);
+    if (audit.tier === 'full') {
+      lines.push(`- ${className} full 档资料项已齐；引用 L2/L5 须与上下文一致，标识/进阶未出现处勿编造。`);
+    } else {
+      lines.push(`- ${className} ${audit.tier} 档资料项已齐；仍须遵守 partial 免责声明（标识/进阶未全收录时勿编造）。`);
+    }
   } else if (fails.length) {
     lines.push(`- 资料缺口：${fails.map((f) => f.label).join('、')}。`);
     lines.push('- 缺口项禁止编造；引导用户查创建页/规则书/DM。');

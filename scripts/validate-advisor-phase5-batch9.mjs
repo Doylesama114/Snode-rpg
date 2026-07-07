@@ -27,7 +27,8 @@ for (const cn of classNames) {
   const p = path.join(tipsDir, `${cn}.json`);
   if (!fs.existsSync(p)) { fail(`tips file ${cn}`); continue; }
   const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
-  if (doc.meta?.status === 'auto_stub' && doc.tips?.length >= 2) pass(`tips stub ${cn} (${doc.tips.length})`);
+  const stubOk = doc.meta?.status === 'auto_stub' || doc.meta?.status === 'auto_generated';
+  if (stubOk && doc.tips?.length >= 2) pass(`tips stub ${cn} (${doc.tips.length})`);
   else fail(`tips stub ${cn}`, doc.tips?.length);
   if (doc.tips.some((t) => t.kind === 'style_guide')) pass(`style_guide ${cn}`);
   else fail(`style_guide ${cn}`);

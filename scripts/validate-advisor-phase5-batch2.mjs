@@ -38,9 +38,9 @@ if (warriorPool.some((t) => t.scope === 'universal') && !warriorPool.some((t) =>
   pass('warrior tips no mage style');
 } else fail('warrior tips pool', warriorPool.map((t) => t.title).join(','));
 
-if (magePool.length > warriorPool.length && magePool.some((t) => t.kind === 'style_guide')) {
-  pass('mage tips richer pool');
-} else fail('mage tips pool sizes', `${magePool.length} vs ${warriorPool.length}`);
+if (magePool.some((t) => t.kind === 'style_guide') && warriorPool.some((t) => t.kind === 'style_guide')) {
+  pass('class tips pools style_guide');
+} else fail('tips pool style_guide', `mage ${magePool.length} warrior ${warriorPool.length}`);
 
 const routeWar = applyClassRouteFilter(
   { layers: ['L0', 'L1', 'L2-mage'], topK: { 'L2-mage': 12 }, intent: 'general' },

@@ -31,6 +31,8 @@ const SUITE = [
   ['batch8-l3a', 'validate-advisor-phase5-batch8.mjs'],
   ['batch9-tips', 'validate-advisor-phase5-batch9.mjs'],
   ['batch10-tier', 'validate-advisor-phase5-batch10.mjs'],
+  ['batch12-warrior-full', 'validate-advisor-phase5-batch12.mjs'],
+  ['batch13-barbarian-full', 'validate-advisor-phase5-batch13.mjs'],
 ];
 
 function runCase(name, scriptRel) {
