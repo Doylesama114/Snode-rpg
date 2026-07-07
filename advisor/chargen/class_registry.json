@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7043",
-    "note": "14职业顾问：6 full（含圣骑士）；7043圣骑士升full"
+    "version": "1.0.7044",
+    "note": "14职业顾问：7 full（含游荡者）；7044游荡者升full"
   },
   "defaults": {
     "tier": "basic",
@@ -155,7 +155,7 @@
       "l5MinTips": 20
     },
     "游荡者": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "敏捷",
       "l2Slug": "rogue",
       "l2Layer": "L2-rogue",
@@ -169,7 +169,9 @@
         "狂妄",
         "魔药"
       ],
-      "advisorNote": "游荡者顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "rogue_skills",
+      "fullL2MinSkills": 60,
+      "l5MinTips": 20
     },
     "德鲁伊": {
       "tier": "partial",

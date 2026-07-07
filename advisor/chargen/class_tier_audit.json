@@ -3,8 +3,8 @@
     "phase": "5-batch10",
     "generatedAt": "2026-07-07",
     "classCount": 14,
-    "fullReady": 6,
-    "partialReady": 8
+    "fullReady": 7,
+    "partialReady": 7
   },
   "audits": [
     {
@@ -540,11 +540,11 @@
     },
     {
       "className": "游荡者",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -556,7 +556,7 @@
         },
         {
           "id": "l2_index",
-          "label": "L2 索引 ≥40 技能",
+          "label": "L2 索引 ≥60 技能",
           "pass": true,
           "note": "got 82"
         },
@@ -592,31 +592,25 @@
         },
         {
           "id": "hints_styles",
-          "label": "hints 战斗风格 ≥3",
+          "label": "hints 战斗风格 ≥5",
           "pass": true,
           "note": "got 5"
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 7"
+          "note": "got 22"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=rogue_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {

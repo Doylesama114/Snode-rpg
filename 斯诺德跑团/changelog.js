@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7044',
+    date: '2026-07-07',
+    changes: [
+      '游荡者顾问升full(rogue_skills/奇袭魔药L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7043',
     date: '2026-07-07',
     changes: [

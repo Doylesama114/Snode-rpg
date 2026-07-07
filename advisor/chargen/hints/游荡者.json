@@ -1,11 +1,11 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-tier-b",
+    "phase": "5-full",
     "targetClass": "游荡者",
-    "tier": "partial",
+    "tier": "full",
     "status": "auto",
-    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
+    "note": "战斗风格摘要为 auto；种族/背景/build 推荐待人工补充"
   },
   "primaryAttr": {
     "name": "敏捷",
@@ -71,7 +71,6 @@
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
   "chargenTips": [
-    "顾问档位 partial：可检索 游荡者 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
-  ],
-  "advisorPartialNote": "游荡者顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    "游荡者 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。"
+  ]
 }

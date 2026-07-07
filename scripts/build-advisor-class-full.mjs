@@ -374,6 +374,80 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  游荡者: {
+    defaultFullL2MinSkills: 60,
+    fpKeyLabel: '敏捷',
+    specBuildHints: {
+      连击: '奇袭/狂妄输出向常见；连击点数与攻击节奏联动，见具体技能描述。',
+      盗贼黑话: '情报/社交向；欺瞒、探索熟练协同，偏幕间与组织互动。',
+      灵巧动作: '生存与规避；偏魅影/妙手，配合体操/隐匿。',
+    },
+    styleRoleHints: {
+      奇袭: '背刺、穿甲与暗影突袭；背刺起手契合单体爆发。',
+      妙手: '陷阱、盗窃与戏法辅助；侦测/巧手熟练协同。',
+      魅影: '暗影法术与潜行深化；潜行起手契合。',
+      狂妄: '火枪/手弩远程与对决；偏每个自身回合限一次类能力。',
+      魔药: '毒性与配方（须标注「配方」）；毒刃等近战毒伤。',
+    },
+    chargenAttrDetail: '敏捷≥15 为常见目标；感知配合察觉/洞悉与妙手探知。隐匿/体操与潜行/背刺协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-backstab',
+        title: '背刺与站位',
+        summary: '背刺等技能要求目标未察觉或背对；须先潜行/佯攻创造机会。',
+        detail: '奇袭线核心；勿假设每回合都能背刺。引用须来自 L2 上下文。',
+        relatedSkills: ['背刺', '潜行'],
+        tags: [className, '奇袭', '背刺', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-stealth',
+        title: '潜行与隐匿',
+        summary: '潜行使自身进入隐匿；脱离视野或环境掩护后再发起奇袭。',
+        detail: '闷棍为非战斗控场；战斗内以潜行+背刺/影袭为主，勿混淆规则。',
+        relatedSkills: ['潜行', '闷棍'],
+        tags: [className, '潜行', '隐匿', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-firearm',
+        title: '火器与手弩',
+        summary: '游荡者熟练火枪/手弩；消耗弹药，相邻或超距可能有命中劣势（见基础规则）。',
+        detail: '狂妄线深化远程；切换近战武器时注意借机与触及。',
+        relatedSkills: ['迅捷连射'],
+        tags: [className, '火器', '远程', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-potion',
+        title: '魔药与配方',
+        summary: '魔药线含「（配方）」技能；须标注为配方，勿当作即时战技。',
+        detail: '毒性技能常带体质豁免；具体数值以规则书/创建页为准。',
+        relatedSkills: ['毒刃', '致伤毒药（配方）'],
+        tags: [className, '魔药', '配方', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-kite',
+        title: '疾跑与借机',
+        summary: '疾跑为全速移动；离开敌人触及时注意借机，带迅捷位移不触发借机。',
+        detail: '魅影/奇袭位移与 arrogant 远程 kite 可配合；规划脱离路线。',
+        relatedSkills: ['疾跑'],
+        tags: [className, '位移', '借机攻击', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与奇袭节奏',
+        summary: '战技/戏法消耗 FP；爆发轮与潜行准备轮分开规划，避免空 FP。',
+        detail: '一阶技能 FP 通常较低；长战注意短休回复。',
+        relatedSkills: ['背刺'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      const w = refClass?.weapons || '';
+      if (/火枪/.test(w)) rules.push('火枪消耗弹药；装填/射速见基础规则与职业页。');
+      if (/手弩/.test(w)) rules.push('手弩消耗箭矢/弹药；远程规则见基础规则战斗章。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {
