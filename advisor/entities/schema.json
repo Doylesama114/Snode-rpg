@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "phase": 2,
+    "version": "2.0.0",
+    "description": "Entity Store 最小 schema；build 与 validate-advisor-entities 共用"
+  },
+  "envelope": {
+    "required": ["entityType", "id", "name", "searchText", "source"],
+    "optional": ["aliases"]
+  },
+  "race": {
+    "required": ["description", "attrBonus", "traits", "hpBonus"],
+    "optional": ["moveSpeed", "size", "lifespan", "intBonus"]
+  },
+  "background": {
+    "required": ["description", "skillGrants", "funds"],
+    "optional": [
+      "baseSkills",
+      "profSkills",
+      "other",
+      "hpBonus",
+      "equipment",
+      "skills",
+      "mageSkillHits",
+      "languageChoiceCount",
+      "traitName"
+    ],
+    "skillGrantKinds": [
+      "fixed",
+      "fixed_professional",
+      "choice_from_category",
+      "choice_one",
+      "choice_language",
+      "free_text",
+      "note"
+    ]
+  },
+  "class": {
+    "required": [
+      "keyAttr",
+      "armor",
+      "weapons",
+      "saves",
+      "skillPickRule",
+      "startingFeatures",
+      "startingChoice"
+    ],
+    "optional": [
+      "description",
+      "rolePositioning",
+      "weaponProfCategories",
+      "weaponCategoryNote",
+      "hpFormula",
+      "fpFormula",
+      "specializations"
+    ]
+  }
+}

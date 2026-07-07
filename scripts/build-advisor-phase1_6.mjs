@@ -256,11 +256,28 @@ function buildCombatStyles(mageSkills) {
   });
 }
 
+function loadPanelWeaponProfs() {
+  const text = fs.readFileSync(path.join(ROOT, '斯诺德跑团', 'panel_data.js'), 'utf8');
+  const m = text.match(/var CLASS_WEAPON_PROFS=(\{[^;]+\});/);
+  if (!m) return {};
+  return JSON.parse(m[1]);
+}
+
+function loadClassesDataMage() {
+  const text = fs.readFileSync(path.join(ROOT, '职业页', '数据', 'classes_data.js'), 'utf8');
+  let CLASSES = [];
+  // eslint-disable-next-line no-eval
+  eval(text);
+  return CLASSES.find((c) => c.name === '法师') || null;
+}
+
 function buildMageClass(refMage, paras) {
   const gear = parseMageDocxGear(paras);
   const mageSkills = JSON.parse(fs.readFileSync(MAGE_JSON, 'utf8')).skills;
   const text = paras.join('\n');
   const roleBlock = text.split('---------------------------------------------------------------------')[0];
+  const classesMage = loadClassesDataMage();
+  const weaponProfs = loadPanelWeaponProfs()['法师'] || [];
 
   return {
     meta: {
@@ -271,13 +288,17 @@ function buildMageClass(refMage, paras) {
     },
     id: '法师',
     name: '法师',
+    description: classesMage?.description || roleBlock.split('\n').slice(2, 4).join(' ').trim(),
+    rolePositioning: classesMage?.['职责定位'] || '法术输出、团队增益、控制局势',
     roleSummary: {
-      positioning: ['法术输出', '团队增益', '控制局势'],
-      blurb: roleBlock.split('\n').slice(2, 4).join(' ').trim(),
+      positioning: (classesMage?.['职责定位'] || '法术输出、团队增益、控制局势').split('、'),
+      blurb: classesMage?.description || roleBlock.split('\n').slice(2, 4).join(' ').trim(),
     },
     keyAttr: refMage.key_attr,
     armor: refMage.armor,
     weapons: refMage.weapons,
+    weaponProfCategories: weaponProfs,
+    weaponCategoryNote: '角色创建页「武器」为具体类型（法杖/魔棒/匕首/手弩/简易）；面板武器熟练类别为法器/剑类/弓箭/简易（法器含法杖与魔棒，剑类含匕首，弓箭含手弩）。',
     saves: refMage.saves,
     skills: refMage.skills,
     hpFormula: { first: '8+体质调整值', levelUp: '每法师等级+2+体质调整值' },
@@ -584,6 +605,9 @@ function main() {
     backgrounds,
   });
   writeJson(path.join(OUT_CHARGEN, 'mage_hints.json'), buildMageHints(mageClass, backgrounds));
+
+  console.log('Running entity index build…');
+  execSync('node scripts/build-advisor-entities.mjs', { cwd: ROOT, stdio: 'inherit' });
 
   fs.unlinkSync(path.join(OUT_CHARGEN, '_backgrounds_xlsx_raw.json'));
 

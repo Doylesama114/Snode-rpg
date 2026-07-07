@@ -228,6 +228,8 @@ function getAdvisorRoot() {
 let _advisorModule = null;
 let _snapshotModule = null;
 let _envModule = null;
+let _wizardModule = null;
+let _wizardSyncModule = null;
 
 async function getAdvisorModule() {
   if (!_advisorModule) {
@@ -250,6 +252,20 @@ async function getEnvModule() {
   return _envModule;
 }
 
+async function getWizardModule() {
+  if (!_wizardModule) {
+    _wizardModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-wizard-api.mjs')).href);
+  }
+  return _wizardModule;
+}
+
+async function getWizardSyncModule() {
+  if (!_wizardSyncModule) {
+    _wizardSyncModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-wizard-sync.mjs')).href);
+  }
+  return _wizardSyncModule;
+}
+
 ipcMain.handle('advisor-advise', async (_event, payload) => {
   try {
     if (!payload || !payload.query || !String(payload.query).trim()) {
@@ -261,11 +277,16 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
       const snapMod = await getSnapshotModule();
       snapshot = snapMod.normalizeSnapshot(snapshot);
     }
-    const out = await mod.advise(String(payload.query).trim(), { snapshot: snapshot || undefined });
+    const out = await mod.advise(String(payload.query).trim(), {
+      snapshot: snapshot || undefined,
+      mode: payload.mode || undefined,
+      wizardState: payload.wizardState || undefined,
+    });
     return {
       ok: true,
       answer: out.answer,
       intent: out.intent,
+      mode: out.mode,
       model: out.model,
     };
   } catch (err) {
@@ -287,6 +308,8 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
     const sender = event.sender;
     const out = await mod.advise(String(payload.query).trim(), {
       snapshot: snapshot || undefined,
+      mode: payload.mode || undefined,
+      wizardState: payload.wizardState || undefined,
       stream: true,
       onDelta: (delta) => {
         if (!sender.isDestroyed()) {
@@ -298,6 +321,7 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
       ok: true,
       answer: out.answer,
       intent: out.intent,
+      mode: out.mode,
       model: out.model,
     };
   } catch (err) {
@@ -312,6 +336,31 @@ ipcMain.handle('advisor-config', async () => {
     return { ok: true, configured: !!cfg.apiKey, model: cfg.model };
   } catch (err) {
     return { ok: false, configured: false, error: err.message || String(err) };
+  }
+});
+
+ipcMain.handle('advisor-wizard', async (_event, payload) => {
+  try {
+    const method = payload?.method || 'get';
+    if (method === 'export' || method === 'import') {
+      const sync = await getWizardSyncModule();
+      return sync.wizardSyncCall(method, {
+        state: payload?.state,
+        snapshot: payload?.snapshot,
+        panelState: payload?.panelState,
+        options: payload?.options,
+      });
+    }
+    const mod = await getWizardModule();
+    const result = mod.wizardApiCall(method, {
+      state: payload?.state,
+      savedState: payload?.savedState,
+      patch: payload?.patch,
+      action: payload?.action,
+    });
+    return result;
+  } catch (err) {
+    return { ok: false, error: err.message || String(err) };
   }
 });
 

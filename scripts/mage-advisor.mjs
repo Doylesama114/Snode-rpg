@@ -22,11 +22,19 @@ function parseArgs(argv) {
     saveLog: argv.includes('--save-log'),
     json: argv.includes('--json'),
     snapshot: null,
+    mode: null,
+    wizardState: null,
   };
   const rest = [];
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--snapshot' && argv[i + 1]) {
       flags.snapshot = argv[i + 1];
+      i += 1;
+    } else if (argv[i] === '--mode' && argv[i + 1]) {
+      flags.mode = argv[i + 1];
+      i += 1;
+    } else if (argv[i] === '--wizard-state' && argv[i + 1]) {
+      flags.wizardState = argv[i + 1];
       i += 1;
     } else if (!argv[i].startsWith('--')) {
       rest.push(argv[i]);
@@ -156,14 +164,28 @@ export async function advise(query, options = {}) {
   if (typeof snapshot === 'string') {
     snapshot = loadSnapshotFile(snapshot);
   }
-  const retrieval = retrieve(query, { snapshot: snapshot || undefined });
+  let wizardState = options.wizardState || null;
+  if (typeof wizardState === 'string') {
+    wizardState = JSON.parse(fs.readFileSync(path.resolve(wizardState), 'utf8'));
+  }
+  const retrieval = retrieve(query, {
+    snapshot: snapshot || undefined,
+    mode: options.mode,
+    wizardState: wizardState || undefined,
+  });
   const context = formatContext(retrieval);
-  const messages = buildChatMessages(query, context);
+  const messages = buildChatMessages(query, context, {
+    intent: retrieval.intent,
+    mode: retrieval.mode,
+    promptProfile: retrieval.promptProfile,
+  });
 
   if (options.dryRun) {
     return {
       query,
       intent: retrieval.intent,
+      mode: retrieval.mode,
+      promptProfile: retrieval.promptProfile,
       thinking,
       model: config.model,
       messages,
@@ -187,6 +209,8 @@ export async function advise(query, options = {}) {
   return {
     query,
     intent: retrieval.intent,
+    mode: retrieval.mode,
+    promptProfile: retrieval.promptProfile,
     thinking,
     model: config.model,
     messages,
@@ -204,6 +228,8 @@ async function main() {
 
 Options:
   --snapshot <file>  角色快照 JSON（panel 存档或 advisor/snapshots mock）
+  --mode <advisor|wizard|entity_qa>  交互模式（默认 advisor）
+  --wizard-state <file>  车卡向导状态 JSON（与 --mode wizard 联用）
   --thinking   开启 DeepSeek thinking 模式（默认关）
   --dry-run    只输出 prompt/context，不调用 API
   --stream     流式输出（默认非流式）
@@ -218,6 +244,8 @@ Options:
       dryRun: flags.dryRun,
       stream: flags.stream,
       snapshot: flags.snapshot,
+      mode: flags.mode,
+      wizardState: flags.wizardState,
     });
 
     if (flags.dryRun) {

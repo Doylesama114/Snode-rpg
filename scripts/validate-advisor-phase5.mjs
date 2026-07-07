@@ -3,7 +3,13 @@
  * Validate Build Advisor Phase 5 retrieval against 15-question spot-check bank.
  * Run: node scripts/validate-advisor-phase5.mjs
  */
-import { retrieve } from './advisor-retrieve.mjs';
+import { retrieve, formatContext } from './advisor-retrieve.mjs';
+import { validateEntityFiles } from './validate-advisor-entities.mjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ENTITIES_DIR = path.join(__dirname, '..', 'advisor', 'entities');
 
 const CHECKS = [
   {
@@ -107,6 +113,67 @@ const CHECKS = [
     query: '法师兼职奇械师要什么条件？',
     layers: ['L0', 'L1'],
     anyName: ['智力', '15', '奇械师', '逻辑'],
+  },
+  {
+    id: 16,
+    query: '从1级升到8级会获得什么奖励',
+    layers: ['L0'],
+    intent: 'leveling',
+    contextMustInclude: ['熟练+4', '自由属性+2', '技能槽合计17', 'LV.2', '熟练+1', '属性上限19', '熟练上限3'],
+  },
+  {
+    id: 17,
+    query: '16级和19级升级奖励是什么',
+    layers: ['L0'],
+    intent: 'leveling',
+    contextMustInclude: ['最低属性+2', 'LV.16', 'LV.19', 'L16', 'L19'],
+  },
+  {
+    id: 18,
+    query: '从1级升到20级属性相关奖励',
+    layers: ['L0'],
+    intent: 'leveling',
+    contextMustInclude: ['最低属性+4', 'L16/19', '自由属性'],
+  },
+  {
+    id: 19,
+    query: '法师初始武器熟练度是什么',
+    layers: ['L1'],
+    intent: 'entity_qa',
+    entitiesMin: 1,
+    contextMustInclude: ['法杖、魔棒、匕首、手弩、简易', '法器', '剑类', '弓箭', '简易', '武器熟练类别（面板）'],
+  },
+  {
+    id: 20,
+    query: '血族有什么种族特性，属性加成有哪些',
+    layers: ['L1'],
+    intent: 'entity_qa',
+    entitiesMin: 1,
+    contextMustInclude: ['## 种族：血族', '魅力+2', '智力+1', '日光诅咒', '饮血者', '增强黑暗视觉'],
+  },
+  {
+    id: 21,
+    query: '法师学徒背景给什么熟练和装备',
+    layers: ['L1'],
+    intent: 'entity_qa',
+    entitiesMin: 1,
+    contextMustInclude: ['## 背景：法师学徒', '奥秘', '知识', '法师相关熟练'],
+  },
+  {
+    id: 22,
+    query: '吸血鬼属性加成',
+    layers: ['L1'],
+    intent: 'entity_qa',
+    entitiesMin: 1,
+    contextMustInclude: ['## 种族：血族', '魅力+2', '智力+1'],
+  },
+  {
+    id: 23,
+    query: '愚者背景熟练项怎么选',
+    layers: ['L1'],
+    intent: 'entity_qa',
+    entitiesMin: 1,
+    contextMustInclude: ['## 背景：愚者', '任选1项奥秘子项', '任选1项知识子项', '熟练授予'],
   },
 ];
 
@@ -238,8 +305,32 @@ function runCheck(spec) {
     if (!/三阶|tier.*3|"level":3/.test(l0)) errors.push('未命中三阶/3级解锁信息');
   }
 
+  if (spec.intent && result.intent !== spec.intent) {
+    errors.push(`意图期望 ${spec.intent} 得 ${result.intent}`);
+  }
+
+  if (spec.entitiesMin) {
+    const n = result.entities?.length || 0;
+    if (n < spec.entitiesMin) errors.push(`实体命中不足: ${n} < ${spec.entitiesMin}`);
+  }
+
+  if (spec.contextMustInclude) {
+    const ctx = formatContext(result);
+    for (const needle of spec.contextMustInclude) {
+      if (!ctx.includes(needle)) errors.push(`上下文未含 ${needle}`);
+    }
+  }
+
   return { id: spec.id, query: spec.query, intent: result.intent, pass: errors.length === 0, errors };
 }
+
+const entitySchema = validateEntityFiles(ENTITIES_DIR);
+if (!entitySchema.ok) {
+  console.error('Phase 2 entity schema: FAIL');
+  for (const e of entitySchema.errors.slice(0, 20)) console.error(' ', e);
+  process.exit(1);
+}
+console.log(`Phase 2 entity schema: OK (${ENTITIES_DIR})`);
 
 const results = CHECKS.map(runCheck);
 const failed = results.filter((r) => !r.pass);

@@ -1,0 +1,9 @@
+{
+  "step": 2,
+  "className": "法师",
+  "specialization": "奥法学者",
+  "startingFeatures": ["塑能箭", "魔法飞弹", "闪现术", "法术护盾"],
+  "race": null,
+  "skills": [],
+  "background": null
+}

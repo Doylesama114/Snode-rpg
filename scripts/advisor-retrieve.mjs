@@ -7,87 +7,26 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { checkAdvancementEligibility } from './advisor-eligibility.mjs';
 import { analyzeSnapshot, normalizeSnapshot, formatSnapshotContext } from './advisor-snapshot.mjs';
+import {
+  loadEntityStore,
+  resolveEntities,
+  formatEntityCard,
+  getEntityCard,
+} from './advisor-entities.mjs';
+import { routeQuery, routeIntent } from './advisor-router.mjs';
+import {
+  normalizeWizardState,
+  formatWizardContext,
+  getWizardStepEntityHints,
+} from './advisor-wizard-state.mjs';
+
+export { routeIntent, routeQuery } from './advisor-router.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const ADVISOR = path.join(ROOT, 'advisor');
 
 const STYLE_NAMES = ['塑能', '咒法', '预言', '防护', '附魔', '死灵', '幻术', '变化'];
-
-const INTENT_RULES = [
-  {
-    id: 'eligibility',
-    patterns: [/智力\s*\d+/, /能走/, /达标/, /属性.*进阶/],
-    layers: ['L3', 'L0'],
-    topK: { L3: 8, L0: 5 },
-  },
-  {
-    id: 'multiclass_req',
-    patterns: [/兼职.*条件/, /奇械师.*要/, /要什么条件/],
-    layers: ['L0', 'L1'],
-    topK: { L0: 8, L1: 5 },
-  },
-  {
-    id: 'multiclass',
-    patterns: [/兼职/, /子职/, /7级/],
-    layers: ['L0'],
-    topK: { L0: 10 },
-  },
-  {
-    id: 'chargen',
-    patterns: [/种族/, /背景/, /车卡/, /输出很猛/, /怎么选/],
-    layers: ['L1', 'L0'],
-    topK: { L1: 12, L0: 4 },
-  },
-  {
-    id: 'feats',
-    patterns: [/专长/, /4\s*级/, /8\s*级.*专长/],
-    layers: ['L4', 'L0'],
-    topK: { L4: 12, L0: 6 },
-  },
-  {
-    id: 'advancement',
-    patterns: [/进阶/, /近卫/, /5\s*级/, /系统奖励/, /冰霜法师/, /火焰法师/],
-    layers: ['L3', 'L0'],
-    topK: { L3: 10, L0: 5 },
-  },
-  {
-    id: 'leveling',
-    patterns: [/解锁/, /3\s*级/, /三阶/, /里程碑/, /升级/],
-    layers: ['L0'],
-    topK: { L0: 10 },
-  },
-  {
-    id: 'sp_marks',
-    patterns: [/标识/, /\bSP\b/, /sp_points/, /紫色标识/],
-    layers: ['L0'],
-    topK: { L0: 8 },
-  },
-  {
-    id: 'universal_skills',
-    patterns: [/通用天赋/, /通用.*天赋/, /通用天赋树/],
-    layers: ['L2-universal', 'L0'],
-    topK: { 'L2-universal': 18, L0: 3 },
-  },
-  {
-    id: 'style_compare',
-    patterns: [/咒法.*塑能/, /塑能.*咒法/, /风格.*选/, /流派.*选/, /怎么选.*风格/],
-    layers: ['L2-mage', 'L1', 'L5'],
-    topK: { 'L2-mage': 12, L1: 6, L5: 5 },
-  },
-  {
-    id: 'tips',
-    patterns: [/combo/, /小贴士/, /技巧/, /借机/, /反应动作/, /贴脸/, /塑能相关/],
-    layers: ['L5', 'L2-mage'],
-    topK: { L5: 8, 'L2-mage': 10 },
-  },
-  {
-    id: 'mage_skills',
-    patterns: [/塑能/, /咒法/, /预言/, /防护/, /附魔/, /死灵/, /幻术/, /变化/, /技能/, /法术/, /飞弹/, /寒冰/, /1～3|1-3|一级|二级|三级/],
-    layers: ['L2-mage', 'L1'],
-    topK: { 'L2-mage': 18, L1: 4 },
-  },
-];
 
 let _cache = null;
 
@@ -107,7 +46,17 @@ export function loadAdvisorStore() {
     backgrounds: loadJson('chargen/backgrounds.json'),
     mageHints: loadJson('chargen/mage_hints.json'),
     mageClass: loadJson('chargen/mage_class.json'),
+    mageEquipmentRules: fs.existsSync(path.join(ADVISOR, 'chargen/mage_equipment_rules.json'))
+      ? loadJson('chargen/mage_equipment_rules.json')
+      : null,
+    mageStartingGear: fs.existsSync(path.join(ADVISOR, 'chargen/mage_starting_gear.json'))
+      ? loadJson('chargen/mage_starting_gear.json')
+      : null,
+    proficiencies: fs.existsSync(path.join(ADVISOR, 'chargen/proficiencies.json'))
+      ? loadJson('chargen/proficiencies.json')
+      : null,
     pointBuy: loadJson('chargen/point_buy.json'),
+    entities: loadEntityStore(ADVISOR),
     mageSkills: loadJson('skills/mage_index.json'),
     universalSkills: loadJson('skills/universal_index.json'),
     advancements: loadJson('advancements.json'),
@@ -151,33 +100,6 @@ function detectStyles(query) {
   return STYLE_NAMES.filter((s) => query.includes(s));
 }
 
-export function routeIntent(query) {
-  const q = query.toLowerCase();
-  if (/进阶/.test(query) && pickAdvancementName(query)) {
-    return {
-      id: 'advancement',
-      layers: ['L3', 'L0'],
-      topK: { L3: 10, L0: 5 },
-      query,
-    };
-  }
-  let best = { id: 'general', layers: ['L0', 'L1', 'L2-mage'], topK: { L0: 5, L1: 8, 'L2-mage': 12 } };
-  let bestScore = 0;
-
-  for (const rule of INTENT_RULES) {
-    let s = 0;
-    for (const p of rule.patterns) {
-      if (p.test(q)) s += 2;
-    }
-    if (s > bestScore) {
-      bestScore = s;
-      best = rule;
-    }
-  }
-
-  return { ...best, query };
-}
-
 function parseAttrsFromQuery(query) {
   const attrs = {};
   const intM = query.match(/智力\s*(\d+)/);
@@ -192,6 +114,164 @@ function pickAdvancementName(query) {
   }
   if (/冰霜/.test(query)) return '冰霜法师';
   return null;
+}
+
+/** 解析「1级升到8级」「从1到8级」「升到8级」等区间 */
+export function parseLevelRange(query) {
+  const q = String(query || '');
+  const range1 = q.match(/(?:从)?\s*(\d+)\s*级?\s*(?:升|到|～|~|—|-)\s*(\d+)\s*级/);
+  if (range1) {
+    const from = Number(range1[1]);
+    const to = Number(range1[2]);
+    if (from !== to) return { from: Math.min(from, to), to: Math.max(from, to) };
+  }
+  const range2 = q.match(/(\d+)\s*级[\s\S]{0,12}?(\d+)\s*级/);
+  if (range2 && range2[1] !== range2[2]) {
+    const from = Number(range2[1]);
+    const to = Number(range2[2]);
+    return { from: Math.min(from, to), to: Math.max(from, to) };
+  }
+  const upTo = q.match(/升到\s*(\d+)\s*级/);
+  if (upTo) return { from: 1, to: Number(upTo[1]) };
+  const single = q.match(/(\d+)\s*级/);
+  if (single) {
+    const lv = Number(single[1]);
+    return { from: lv, to: lv };
+  }
+  return null;
+}
+
+function getLowestAttrGain(row) {
+  if (!row) return 0;
+  if (row.lowest_attr_gain != null) return row.lowest_attr_gain;
+  if (row.special === 'lowest_attr') return 2;
+  return 0;
+}
+
+export function formatLevelRow(row) {
+  if (!row) return '';
+  const parts = [`LV.${row.level}（累计XP≥${row.xp}）`];
+  if (row.proficiency) parts.push(`熟练+${row.proficiency}`);
+  else parts.push('熟练—');
+  const lowestGain = getLowestAttrGain(row);
+  if (row.attr_gain) parts.push(`属性+${row.attr_gain}（自由分配）`);
+  else if (lowestGain) parts.push(`最低属性+${lowestGain}（自动加至当前最低项）`);
+  else parts.push('属性—');
+  if (row.level === 1 && row.skill_slots != null) parts.push(`技能槽基数${row.skill_slots}`);
+  else if (row.skill_slots) parts.push(`技能槽+${row.skill_slots}`);
+  if (row.attr_cap != null) parts.push(`属性上限${row.attr_cap}`);
+  if (row.prof_cap != null) parts.push(`熟练上限${row.prof_cap}`);
+  if (row.rank) parts.push(`头衔「${row.rank}」`);
+  const otherText = row.other && row.other !== '-' ? row.other : '';
+  const skipOther = lowestGain && otherText.includes('最低');
+  if (otherText && !skipOther) parts.push(`其他：${otherText}`);
+  return parts.join('；');
+}
+
+export function computeMainClassCumulative(levels, fromLevel, toLevel) {
+  const slice = levels.filter((l) => l.level >= fromLevel && l.level <= toLevel);
+  let proficiencyTotal = 0;
+  let attrTotal = 0;
+  let lowestAttrTotal = 0;
+  let slotIncrements = 0;
+  let slotBase = 0;
+  const profLevels = [];
+  const attrLevels = [];
+  const lowestAttrLevels = [];
+  for (const row of slice) {
+    if (row.proficiency) {
+      proficiencyTotal += row.proficiency;
+      profLevels.push(row.level);
+    }
+    if (row.attr_gain) {
+      attrTotal += row.attr_gain;
+      attrLevels.push(row.level);
+    }
+    const lowestGain = getLowestAttrGain(row);
+    if (lowestGain) {
+      lowestAttrTotal += lowestGain;
+      lowestAttrLevels.push(row.level);
+    }
+    if (row.level === 1 && row.skill_slots != null) slotBase = row.skill_slots;
+    else if (row.skill_slots) slotIncrements += row.skill_slots;
+  }
+  const last = slice[slice.length - 1];
+  return {
+    fromLevel,
+    toLevel,
+    proficiencyTotal,
+    attrTotal,
+    lowestAttrTotal,
+    skillSlotsTotal: slotBase + slotIncrements,
+    profAtLevels: profLevels,
+    attrAtLevels: attrLevels,
+    lowestAttrAtLevels: lowestAttrLevels,
+    attrCap: last?.attr_cap ?? null,
+    profCap: last?.prof_cap ?? null,
+    ranks: slice.filter((r) => r.rank).map((r) => `L${r.level} ${r.rank}`),
+  };
+}
+
+/** 法师：2 级起每级槽位增量×2（panel_engine calcSkillSlots） */
+export function calcMageSkillSlotsAtLevel(level) {
+  if (level <= 0) return 0;
+  if (level === 1) return 10;
+  return 10 + 2 * (level - 1);
+}
+
+function formatL0Hit(hit) {
+  switch (hit.type) {
+    case 'main_level':
+      return formatLevelRow(hit.row);
+    case 'level_range': {
+      const lines = [`主职 L${hit.from}→L${hit.to} 逐级奖励：`];
+      for (const line of hit.rows || []) lines.push(`  ${line}`);
+      const c = hit.cumulative;
+      if (c) {
+        let attrSummary = `自由属性+${c.attrTotal}`;
+        if (c.attrAtLevels?.length) attrSummary += `（L${c.attrAtLevels.join('/')}）`;
+        else if (!c.attrTotal) attrSummary += '（无）';
+        if (c.lowestAttrTotal) {
+          attrSummary += `；最低属性+${c.lowestAttrTotal}（L${c.lowestAttrAtLevels.join('/')}，各加至当时最低项）`;
+        }
+        lines.push(
+          `累计（L${c.fromLevel}→L${c.toLevel}）：熟练+${c.proficiencyTotal}（L${c.profAtLevels.join('/')}）；`
+          + `${attrSummary}；`
+          + `技能槽合计${c.skillSlotsTotal}（通用职业）；`
+          + `L${c.toLevel} 属性上限${c.attrCap}、熟练上限${c.profCap}`,
+        );
+        if (c.ranks?.length) lines.push(`头衔变化：${c.ranks.join('；')}`);
+        if (hit.mageSlotsAtEnd != null) {
+          lines.push(`法师特例：L${hit.to} 技能槽合计约 ${hit.mageSlotsAtEnd}（2 级起每级槽位增量×2）；奥法学者另每级+1 法术槽`);
+        }
+      }
+      return lines.join('\n');
+    }
+    case 'lowest_attr_milestones':
+      return `最低属性奖励：${(hit.milestones || []).map((m) => `L${m.level} +${m.gain}（${m.rule}）`).join('；')}`;
+    case 'feat_milestones':
+      return `专长窗口：${(hit.milestones || []).map((m) => `L${m.level} ${m.reward}`).join('；')}`;
+    case 'advancement_milestones':
+      return `进阶窗口：${(hit.milestones || []).map((m) => `L${m.level} ${m.reward}`).join('；')}`;
+    case 'talent_tier_unlocks': {
+      const unlocks = hit.data?.unlocks || [];
+      return `天赋位阶解锁：${unlocks.map((u) => `L${u.unlockAtMainLevel} ${u.tierLabel}（额外XP ${u.extraXpRequired}）`).join('；')}；同层最多${hit.data?.sameLayerTalentCap ?? 5}项`;
+    }
+    case 'level_3_highlight':
+      return `${formatLevelRow(hit.row)}；三阶额外XP ${hit.talentTier?.extraXpRequired ?? 50}`;
+    case 'leveling_notes':
+      return (hit.notes || []).join('；');
+    case 'multiclass_mage':
+      return `兼职：主职 L${hit.unlockLevel} 解锁；法师要求 ${JSON.stringify(hit.mageRequirement?.attrs)} / 熟练 ${JSON.stringify(hit.mageRequirement?.proficiencies)}；可兼 ${(hit.compatibleSubclasses || []).slice(0, 8).join('、')}`;
+    case 'class_req':
+      return `${hit.class} 兼职条件：${JSON.stringify(hit.requirement)}`;
+    case 'sp_marks':
+      return `标识：学 1 技能通常 ${hit.learnCost?.sp ?? 1} SP + 对应 color_marks；${hit.note || ''}`;
+    case 'rules_bullets':
+      return (hit.bullets || []).join('\n');
+    default:
+      return JSON.stringify(hit).slice(0, 400);
+  }
 }
 
 function searchList(items, getText, queryTokens, limit, filterFn = null) {
@@ -234,17 +314,47 @@ function buildL0Results(store, query, queryTokens, topK) {
     });
   }
 
-  const levelMatch = query.match(/(\d+)\s*级/);
-  if (levelMatch || /解锁|三阶|里程碑|系统奖励/.test(query) || /\d+\s*级/.test(query)) {
-    const lv = levelMatch ? Number(levelMatch[1]) : null;
+  const levelRange = parseLevelRange(query);
+  const isLevelingQuery = levelRange
+    || /解锁|三阶|里程碑|系统奖励|升级|熟练|属性|奖励|获得什么|槽位/.test(query);
+
+  if (isLevelingQuery) {
     const levels = store.leveling.mainClass?.levels || [];
-    if (lv) {
-      const row = levels.find((l) => l.level === lv);
-      if (row) out.hits.push({ type: 'main_level', level: lv, row });
+    if (levelRange) {
+      const { from, to } = levelRange;
+      const rowsInRange = levels.filter((l) => l.level >= from && l.level <= to);
+      out.hits.push({
+        type: 'level_range',
+        from,
+        to,
+        rows: rowsInRange.map(formatLevelRow),
+        cumulative: computeMainClassCumulative(levels, from, to),
+        mageSlotsAtEnd: calcMageSkillSlotsAtLevel(to),
+      });
+    } else {
+      const lv = levelRange?.from ?? null;
+      if (lv) {
+        const row = levels.find((l) => l.level === lv);
+        if (row) out.hits.push({ type: 'main_level', level: lv, row });
+      }
+    }
+    if (/16|19|最低属性|lowest/.test(query) && store.leveling.lowestAttrMilestones?.length) {
+      out.hits.push({ type: 'lowest_attr_milestones', milestones: store.leveling.lowestAttrMilestones });
     }
     out.hits.push({ type: 'feat_milestones', milestones: store.leveling.featMilestones });
     out.hits.push({ type: 'advancement_milestones', milestones: store.leveling.advancementMilestones });
     out.hits.push({ type: 'talent_tier_unlocks', data: store.leveling.talentTierUnlocks });
+    out.hits.push({
+      type: 'leveling_notes',
+      notes: [
+        store.leveling.profCapNote,
+        store.leveling.attrCapNote,
+        '主职升级表每行均含：熟练增量、自由属性增量、最低属性奖励（L16/L19）、技能槽增量、属性上限、熟练上限、头衔与其他里程碑；回答区间奖励时必须全部列出，不可只写天赋/专长/兼职。',
+        ...(store.leveling.levelUpAnswerChecklist || []).slice(-2),
+        store.leveling.classModifiers?.mage?.skillSlotRule,
+        store.leveling.classModifiers?.mage?.arcanistNote,
+      ].filter(Boolean),
+    });
     if (/3级|三阶/.test(query)) {
       const l3 = levels.find((l) => l.level === 3);
       out.hits.push({ type: 'level_3_highlight', row: l3, talentTier: store.leveling.talentTierUnlocks?.unlocks?.find((u) => u.tier === 3) });
@@ -257,7 +367,69 @@ function buildL0Results(store, query, queryTokens, topK) {
   return out;
 }
 
-function buildL1Results(store, query, queryTokens, limit) {
+export function formatMageClassBasics(store, query = '') {
+  const classCard = getEntityCard(store.entities, 'class', '法师');
+  if (classCard) {
+    let text = formatEntityCard(classCard);
+    const equip = store.mageEquipmentRules || {};
+    const gear = store.mageStartingGear || {};
+    const prof = store.proficiencies || {};
+    const extras = [];
+    if (prof.classSkillPick?.法师 && !text.includes('选奥秘')) {
+      extras.push(`- 技巧选择：${prof.classSkillPick.法师}`);
+    }
+    if (equip.keyRules?.length) {
+      extras.push(`- 装备规则：${equip.keyRules.slice(0, 3).join('；')}`);
+    }
+    if (/装备|起手|套装/.test(query) && gear.kits) {
+      for (const letter of ['A', 'B', 'C', 'D']) {
+        const kit = gear.kits[letter];
+        if (kit) extras.push(`- 起始套装 ${letter}：${kit.summary}`);
+      }
+      const note = gear.kitAdvisorNotes?.map((k) => `${k.kit}=${k.note}`).join('；');
+      if (note) extras.push(`- 套装建议：${note}`);
+    }
+    if (/购点|属性点|32/.test(query) && store.pointBuy) {
+      extras.push(`- 购点：共 ${store.pointBuy.totalPoints} 点；单项至多 ${store.pointBuy.maxPointsPerAttr} 点费用（属性 15）`);
+    }
+    if (extras.length) text += `\n${extras.join('\n')}`;
+    return text;
+  }
+  const mc = store.mageClass || {};
+  const prof = store.proficiencies || {};
+  const equip = store.mageEquipmentRules || {};
+  const gear = store.mageStartingGear || {};
+  const lines = [
+    `法师（${mc.rolePositioning || mc.roleSummary?.positioning?.join('、') || '法术输出'}）`,
+    `- 关键属性：${mc.keyAttr}；豁免：${(mc.saves || []).join('、')}`,
+    `- 护甲熟练：${mc.armor}；武器熟练（创建页）：${mc.weapons}`,
+    `- 武器熟练类别（面板）：${(mc.weaponProfCategories || []).join('、') || '—'}`,
+  ];
+  if (mc.weaponCategoryNote) lines.push(`- ${mc.weaponCategoryNote}`);
+  lines.push(`- 技巧选择：${prof.classSkillPick?.法师 || mc.skills || '—'}`);
+  lines.push(`- 生命/疲劳：${mc.hpFormula?.first || '8+体质调整值'}；${mc.fpFormula?.first || '12+关键属性调整值'}`);
+  lines.push(`- 初始特性：${mc.startingFeatures?.length || 8} 选 ${mc.startingChoice || 4}（${(mc.startingFeatures || []).map((f) => f.name).join('、')}）`);
+  for (const spec of mc.specializations || []) {
+    lines.push(`- 专精「${spec.name}」：${spec.effect || spec.buildHint || ''}`);
+  }
+  if (equip.keyRules?.length) {
+    lines.push(`- 装备规则：${equip.keyRules.slice(0, 3).join('；')}`);
+  }
+  if (/装备|起手|套装|A|B|C|D/.test(query) && gear.kits) {
+    for (const letter of ['A', 'B', 'C', 'D']) {
+      const kit = gear.kits[letter];
+      if (kit) lines.push(`- 起始套装 ${letter}：${kit.summary}`);
+    }
+    const note = gear.kitAdvisorNotes?.map((k) => `${k.kit}=${k.note}`).join('；');
+    if (note) lines.push(`- 套装建议：${note}`);
+  }
+  if (/购点|属性点|32/.test(query) && store.pointBuy) {
+    lines.push(`- 购点：共 ${store.pointBuy.totalPoints} 点；单项至多 ${store.pointBuy.maxPointsPerAttr} 点费用（属性 15）；${(store.pointBuy.rules || []).join('')}`);
+  }
+  return lines.join('\n');
+}
+
+function buildL1Results(store, query, queryTokens, limit, entityHits = []) {
   const races = searchList(
     store.races.races,
     (r) => `${r.name} ${r.intBonus ?? ''} ${r.description || ''} ${JSON.stringify(r)}`,
@@ -279,10 +451,19 @@ function buildL1Results(store, query, queryTokens, limit) {
     styleHints = styleHints.slice(0, 4);
   }
 
+  const entityTypes = new Set(entityHits.map((e) => e.entityType));
+  const skipClassBasics = entityHits.length > 0
+    && !entityTypes.has('class')
+    && !/武器|护甲|专精|起手|装备|创建|车卡|法师|初始|购点|输出|怎么选/.test(query);
+  const includeClassBasics = !skipClassBasics
+    && (/武器|护甲|熟练|豁免|专精|起手|装备|创建|车卡|法师.*(能|会|可以)|初始|购点|种族|背景|输出|怎么选/.test(query)
+      || limit >= 4);
+
   return {
     primaryAttr: store.mageHints.primaryAttr,
     recommendedRaces: store.mageHints.recommendedRaces,
     recommendedBackgrounds: store.mageHints.recommendedBackgrounds?.slice(0, 8),
+    classBasics: includeClassBasics ? formatMageClassBasics(store, query) : null,
     races,
     backgrounds,
     styleHints,
@@ -422,13 +603,20 @@ function buildL5Results(store, query, queryTokens, limit) {
 
 /**
  * @param {string} query user question
- * @param {{ topK?: Record<string, number>, snapshot?: object }} options
+ * @param {{ topK?: Record<string, number>, snapshot?: object, mode?: string, wizardState?: object }} options
  */
 export function retrieve(query, options = {}) {
   const store = loadAdvisorStore();
-  const intent = routeIntent(query);
+  const wizardState = normalizeWizardState(options.wizardState);
+  const entityHits = resolveEntities(query, store.entities);
+  const route = routeQuery({
+    query,
+    mode: options.mode,
+    entityHits,
+    wizardState,
+  });
   const queryTokens = tokenize(query);
-  const topK = { ...intent.topK, ...options.topK };
+  const topK = { ...route.topK, ...options.topK };
   let attrs = parseAttrsFromQuery(query);
 
   let l6Analysis = null;
@@ -445,8 +633,20 @@ export function retrieve(query, options = {}) {
 
   const layers = {};
   const layersHit = [];
+  const mergedEntities = [...entityHits];
+  if (wizardState) {
+    for (const hint of getWizardStepEntityHints(wizardState, store)) {
+      if (!mergedEntities.some((e) => e.entityType === hint.entityType && e.id === hint.id)) {
+        mergedEntities.push({
+          ...hint,
+          matchKey: hint.id,
+          formatted: formatEntityCard(hint.card),
+        });
+      }
+    }
+  }
 
-  for (const layer of intent.layers) {
+  for (const layer of route.layers) {
     layersHit.push(layer);
     const k = topK[layer] || 10;
     switch (layer) {
@@ -454,7 +654,7 @@ export function retrieve(query, options = {}) {
         layers.L0 = buildL0Results(store, query, queryTokens, k);
         break;
       case 'L1':
-        layers.L1 = buildL1Results(store, query, queryTokens, k);
+        layers.L1 = buildL1Results(store, query, queryTokens, k, mergedEntities);
         break;
       case 'L2-mage':
         layers['L2-mage'] = buildL2MageResults(store, query, queryTokens, k);
@@ -484,22 +684,47 @@ export function retrieve(query, options = {}) {
     }
   }
 
+  if (wizardState) {
+    layers.wizard = {
+      state: wizardState,
+      context: formatWizardContext(wizardState, store),
+    };
+    if (!layersHit.includes('wizard')) layersHit.push('wizard');
+  }
+
   return {
     query,
-    intent: intent.id,
-    layersRequested: intent.layers,
+    mode: route.mode,
+    intent: route.intent,
+    promptProfile: route.promptProfile,
+    layersRequested: route.layers,
     layersHit,
     attrsParsed: attrs,
     hasSnapshot: !!l6Analysis,
+    wizardState,
+    entities: mergedEntities,
     results: layers,
   };
 }
 
 export function formatContext(retrieval) {
   const lines = [];
-  lines.push(`# 检索上下文（意图: ${retrieval.intent}）`);
+  lines.push(`# 检索上下文（模式: ${retrieval.mode || 'advisor'}；意图: ${retrieval.intent}）`);
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
+
+  if (retrieval.results.wizard?.context) {
+    lines.push(retrieval.results.wizard.context);
+    lines.push('');
+  }
+
+  if (retrieval.entities?.length) {
+    lines.push('## 实体详情');
+    for (const hit of retrieval.entities) {
+      lines.push(hit.formatted || formatEntityCard(hit.card));
+    }
+    lines.push('');
+  }
 
   if (retrieval.results.L6) {
     lines.push(formatSnapshotContext(retrieval.results.L6));
@@ -509,7 +734,7 @@ export function formatContext(retrieval) {
   if (retrieval.results.L0) {
     lines.push('## L0 规则');
     for (const hit of retrieval.results.L0.hits || []) {
-      lines.push(`- ${hit.type}: ${JSON.stringify(hit).slice(0, 500)}`);
+      lines.push(formatL0Hit(hit));
     }
     lines.push('');
   }
@@ -517,9 +742,25 @@ export function formatContext(retrieval) {
   if (retrieval.results.L1) {
     const l1 = retrieval.results.L1;
     lines.push('## L1 车卡');
+    if (l1.classBasics) {
+      lines.push('### 法师职业基础（角色创建页）');
+      lines.push(l1.classBasics);
+    }
+    const entityRaceIds = new Set(
+      (retrieval.entities || []).filter((e) => e.entityType === 'race').map((e) => e.id),
+    );
+    const entityBgIds = new Set(
+      (retrieval.entities || []).filter((e) => e.entityType === 'background').map((e) => e.id),
+    );
     if (l1.primaryAttr) lines.push(`- 关键属性: ${l1.primaryAttr.name} 目标 ${l1.primaryAttr.targetAtCreation}`);
-    for (const r of (l1.races || []).slice(0, 5)) lines.push(`- 种族: ${r.name} 智力${r.intBonus ?? '?'}`);
-    for (const b of (l1.backgrounds || []).slice(0, 5)) lines.push(`- 背景: ${b.name} 技能${(b.skills || []).join('、')}`);
+    for (const r of (l1.races || []).slice(0, 5)) {
+      if (entityRaceIds.has(r.name)) continue;
+      lines.push(`- 种族: ${r.name} 智力${r.intBonus ?? '?'}`);
+    }
+    for (const b of (l1.backgrounds || []).slice(0, 5)) {
+      if (entityBgIds.has(b.name)) continue;
+      lines.push(`- 背景: ${b.name} 技能${(b.skills || []).join('、')}`);
+    }
     for (const h of l1.styleHints || []) lines.push(`- 风格 ${h.name}: ${h.summary || h.sampleSkills?.join('、')}`);
     lines.push('');
   }

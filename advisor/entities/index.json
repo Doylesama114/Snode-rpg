@@ -1,0 +1,472 @@
+{
+  "meta": {
+    "phase": "2",
+    "generatedAt": "2026-07-07",
+    "sources": [
+      "职业页/数据/races_data.js",
+      "斯诺德跑团/panel_data.js → REF_BACKGROUNDS",
+      "advisor/chargen/backgrounds.json",
+      "斯诺德跑团/panel_data.js → REF_CLASSES.法师",
+      "职业页/数据/classes_data.js",
+      "advisor/entities/aliases.manual.json"
+    ],
+    "entryCount": 75
+  },
+  "entries": [
+    {
+      "key": "人类",
+      "entityType": "race",
+      "id": "人类",
+      "aliases": []
+    },
+    {
+      "key": "矮人",
+      "entityType": "race",
+      "id": "矮人",
+      "aliases": []
+    },
+    {
+      "key": "半身人",
+      "entityType": "race",
+      "id": "半身人",
+      "aliases": []
+    },
+    {
+      "key": "侏儒",
+      "entityType": "race",
+      "id": "侏儒",
+      "aliases": []
+    },
+    {
+      "key": "半精灵",
+      "entityType": "race",
+      "id": "半精灵",
+      "aliases": []
+    },
+    {
+      "key": "木精灵",
+      "entityType": "race",
+      "id": "木精灵",
+      "aliases": []
+    },
+    {
+      "key": "高等精灵",
+      "entityType": "race",
+      "id": "高等精灵",
+      "aliases": []
+    },
+    {
+      "key": "卓尔精灵",
+      "entityType": "race",
+      "id": "卓尔精灵",
+      "aliases": []
+    },
+    {
+      "key": "龙裔",
+      "entityType": "race",
+      "id": "龙裔",
+      "aliases": []
+    },
+    {
+      "key": "魔裔",
+      "entityType": "race",
+      "id": "魔裔",
+      "aliases": []
+    },
+    {
+      "key": "兽人",
+      "entityType": "race",
+      "id": "兽人",
+      "aliases": []
+    },
+    {
+      "key": "巨魔",
+      "entityType": "race",
+      "id": "巨魔",
+      "aliases": []
+    },
+    {
+      "key": "地精",
+      "entityType": "race",
+      "id": "地精",
+      "aliases": []
+    },
+    {
+      "key": "狗头人",
+      "entityType": "race",
+      "id": "狗头人",
+      "aliases": []
+    },
+    {
+      "key": "蜥蜴人",
+      "entityType": "race",
+      "id": "蜥蜴人",
+      "aliases": []
+    },
+    {
+      "key": "蛙人",
+      "entityType": "race",
+      "id": "蛙人",
+      "aliases": []
+    },
+    {
+      "key": "鼠人",
+      "entityType": "race",
+      "id": "鼠人",
+      "aliases": []
+    },
+    {
+      "key": "狼人",
+      "entityType": "race",
+      "id": "狼人",
+      "aliases": []
+    },
+    {
+      "key": "血族",
+      "entityType": "race",
+      "id": "血族",
+      "aliases": []
+    },
+    {
+      "key": "黑暗精灵",
+      "entityType": "race",
+      "id": "黑暗精灵",
+      "aliases": []
+    },
+    {
+      "key": "斑猫人",
+      "entityType": "race",
+      "id": "斑猫人",
+      "aliases": []
+    },
+    {
+      "key": "豹兽人",
+      "entityType": "race",
+      "id": "豹兽人",
+      "aliases": []
+    },
+    {
+      "key": "犬牙族",
+      "entityType": "race",
+      "id": "犬牙族",
+      "aliases": []
+    },
+    {
+      "key": "翼空族",
+      "entityType": "race",
+      "id": "翼空族",
+      "aliases": []
+    },
+    {
+      "key": "牛头人",
+      "entityType": "race",
+      "id": "牛头人",
+      "aliases": []
+    },
+    {
+      "key": "狐人",
+      "entityType": "race",
+      "id": "狐人",
+      "aliases": []
+    },
+    {
+      "key": "蛇人",
+      "entityType": "race",
+      "id": "蛇人",
+      "aliases": []
+    },
+    {
+      "key": "鱼人",
+      "entityType": "race",
+      "id": "鱼人",
+      "aliases": []
+    },
+    {
+      "key": "人鱼",
+      "entityType": "race",
+      "id": "人鱼",
+      "aliases": []
+    },
+    {
+      "key": "龟人",
+      "entityType": "race",
+      "id": "龟人",
+      "aliases": []
+    },
+    {
+      "key": "侍僧",
+      "entityType": "background",
+      "id": "侍僧",
+      "aliases": []
+    },
+    {
+      "key": "骗子",
+      "entityType": "background",
+      "id": "骗子",
+      "aliases": []
+    },
+    {
+      "key": "恶棍",
+      "entityType": "background",
+      "id": "恶棍",
+      "aliases": []
+    },
+    {
+      "key": "盗贼",
+      "entityType": "background",
+      "id": "盗贼",
+      "aliases": []
+    },
+    {
+      "key": "职业杀手",
+      "entityType": "background",
+      "id": "职业杀手",
+      "aliases": []
+    },
+    {
+      "key": "乐师",
+      "entityType": "background",
+      "id": "乐师",
+      "aliases": []
+    },
+    {
+      "key": "艺人",
+      "entityType": "background",
+      "id": "艺人",
+      "aliases": []
+    },
+    {
+      "key": "小丑",
+      "entityType": "background",
+      "id": "小丑",
+      "aliases": []
+    },
+    {
+      "key": "驯兽师",
+      "entityType": "background",
+      "id": "驯兽师",
+      "aliases": []
+    },
+    {
+      "key": "魔术师",
+      "entityType": "background",
+      "id": "魔术师",
+      "aliases": []
+    },
+    {
+      "key": "平民英雄",
+      "entityType": "background",
+      "id": "平民英雄",
+      "aliases": []
+    },
+    {
+      "key": "药剂师",
+      "entityType": "background",
+      "id": "药剂师",
+      "aliases": []
+    },
+    {
+      "key": "守卫",
+      "entityType": "background",
+      "id": "守卫",
+      "aliases": []
+    },
+    {
+      "key": "消防员",
+      "entityType": "background",
+      "id": "消防员",
+      "aliases": []
+    },
+    {
+      "key": "雇佣兵",
+      "entityType": "background",
+      "id": "雇佣兵",
+      "aliases": []
+    },
+    {
+      "key": "赌徒",
+      "entityType": "background",
+      "id": "赌徒",
+      "aliases": []
+    },
+    {
+      "key": "失败商人",
+      "entityType": "background",
+      "id": "失败商人",
+      "aliases": []
+    },
+    {
+      "key": "天生领袖",
+      "entityType": "background",
+      "id": "天生领袖",
+      "aliases": []
+    },
+    {
+      "key": "运动员",
+      "entityType": "background",
+      "id": "运动员",
+      "aliases": []
+    },
+    {
+      "key": "公民",
+      "entityType": "background",
+      "id": "公民",
+      "aliases": []
+    },
+    {
+      "key": "侦探",
+      "entityType": "background",
+      "id": "侦探",
+      "aliases": []
+    },
+    {
+      "key": "外乡人",
+      "entityType": "background",
+      "id": "外乡人",
+      "aliases": []
+    },
+    {
+      "key": "狂信徒",
+      "entityType": "background",
+      "id": "狂信徒",
+      "aliases": []
+    },
+    {
+      "key": "愚者",
+      "entityType": "background",
+      "id": "愚者",
+      "aliases": []
+    },
+    {
+      "key": "工匠",
+      "entityType": "background",
+      "id": "工匠",
+      "aliases": []
+    },
+    {
+      "key": "酿酒师",
+      "entityType": "background",
+      "id": "酿酒师",
+      "aliases": []
+    },
+    {
+      "key": "制图师",
+      "entityType": "background",
+      "id": "制图师",
+      "aliases": []
+    },
+    {
+      "key": "厨师",
+      "entityType": "background",
+      "id": "厨师",
+      "aliases": []
+    },
+    {
+      "key": "医者",
+      "entityType": "background",
+      "id": "医者",
+      "aliases": []
+    },
+    {
+      "key": "隐士",
+      "entityType": "background",
+      "id": "隐士",
+      "aliases": []
+    },
+    {
+      "key": "护林员",
+      "entityType": "background",
+      "id": "护林员",
+      "aliases": []
+    },
+    {
+      "key": "农夫",
+      "entityType": "background",
+      "id": "农夫",
+      "aliases": []
+    },
+    {
+      "key": "赏金猎人",
+      "entityType": "background",
+      "id": "赏金猎人",
+      "aliases": []
+    },
+    {
+      "key": "游牧民",
+      "entityType": "background",
+      "id": "游牧民",
+      "aliases": []
+    },
+    {
+      "key": "野蛮人",
+      "entityType": "background",
+      "id": "野蛮人",
+      "aliases": []
+    },
+    {
+      "key": "占星师",
+      "entityType": "background",
+      "id": "占星师",
+      "aliases": []
+    },
+    {
+      "key": "图书管理员",
+      "entityType": "background",
+      "id": "图书管理员",
+      "aliases": []
+    },
+    {
+      "key": "教授",
+      "entityType": "background",
+      "id": "教授",
+      "aliases": []
+    },
+    {
+      "key": "法师学徒",
+      "entityType": "background",
+      "id": "法师学徒",
+      "aliases": []
+    },
+    {
+      "key": "水手",
+      "entityType": "background",
+      "id": "水手",
+      "aliases": []
+    },
+    {
+      "key": "士兵",
+      "entityType": "background",
+      "id": "士兵",
+      "aliases": []
+    },
+    {
+      "key": "流浪儿",
+      "entityType": "background",
+      "id": "流浪儿",
+      "aliases": []
+    },
+    {
+      "key": "法师",
+      "entityType": "class",
+      "id": "法师",
+      "aliases": [
+        "mage"
+      ]
+    },
+    {
+      "key": "mage",
+      "entityType": "class",
+      "id": "法师",
+      "aliases": [],
+      "isAlias": true
+    },
+    {
+      "key": "吸血鬼",
+      "entityType": "race",
+      "id": "血族",
+      "aliases": [],
+      "isAlias": true,
+      "manual": true
+    }
+  ]
+}

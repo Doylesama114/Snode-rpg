@@ -30,4 +30,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   }),
   advisorConfig: () => ipcRenderer.invoke('advisor-config'),
   advisorCatalog: (payload) => ipcRenderer.invoke('advisor-catalog', payload || {}),
+  advisorWizard: (payload) => ipcRenderer.invoke('advisor-wizard', payload || {}),
 });

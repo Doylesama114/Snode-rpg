@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "phase": "1",
+    "note": "手工别名；build 时合并进 index，不覆盖 canonical name"
+  },
+  "aliases": [
+    {
+      "alias": "吸血鬼",
+      "entityType": "race",
+      "id": "血族"
+    }
+  ]
+}

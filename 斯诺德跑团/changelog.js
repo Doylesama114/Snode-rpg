@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7009',
+    date: '2026-07-07',
+    changes: [
+      'Build顾问：实体索引+检索增强(Phase1-3)',
+      '法师车卡向导Tab+背景grant校验(Phase4)',
+      '向导导出/导入角色与创建页(Phase5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7008',
     date: '2026-07-08',
     changes: [

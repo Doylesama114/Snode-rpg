@@ -46,6 +46,17 @@ function loadRaces() {
 }
 
 /** Parse help.html main-class leveling table rows (authoritative XP). */
+function enrichLevelSpecial(row) {
+  if (row.special === 'lowest_attr' || row.lowest_attr_gain != null) return row;
+  if (row.other?.includes('最低的一项提升2点')) {
+    return { ...row, special: 'lowest_attr', lowest_attr_gain: 2 };
+  }
+  if (row.other?.includes('特殊专长')) {
+    return { ...row, special: 'feat' };
+  }
+  return row;
+}
+
 function parseHelpMainLeveling() {
   const html = fs.readFileSync(HELP_HTML, 'utf8');
   const section = html.match(/id="s3"[\s\S]*?<h3>子职业<\/h3>/);
@@ -294,11 +305,11 @@ function main() {
   const mainLevels = helpMain.map((h) => {
     const p = panelMainByLevel[h.level] || {};
     const xpMismatch = p.xp != null && p.xp !== h.xp;
-    return {
+    return enrichLevelSpecial({
       ...h,
       ...(p.rank && !h.rank ? { rank: p.rank } : {}),
       _source: xpMismatch ? { xpFrom: '帮助.html', panelXp: p.xp } : { xpFrom: '帮助.html' },
-    };
+    });
   });
 
   const panelSubByLevel = Object.fromEntries(refLevelup.sub_class.levels.map((l) => [l.level, l]));

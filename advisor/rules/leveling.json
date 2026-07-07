@@ -232,6 +232,8 @@
         "xp": 5000,
         "proficiency": 1,
         "attr_gain": null,
+        "special": "lowest_attr",
+        "lowest_attr_gain": 2,
         "skill_slots": 1,
         "other": "将你的属性值中最低的一项提升2点",
         "attr_cap": 21,
@@ -274,6 +276,8 @@
         "xp": 20000,
         "proficiency": null,
         "attr_gain": null,
+        "special": "lowest_attr",
+        "lowest_attr_gain": 2,
         "skill_slots": 1,
         "other": "将你的属性值中最低的一项提升2点",
         "attr_cap": 24,
@@ -560,5 +564,33 @@
     "sameLayerTalentCapSource": "帮助.html §关键词·天赋"
   },
   "profCapNote": "单项熟练度上限见各级 prof_cap；升级时新增熟练度不可使任一单项超过当前上限。",
-  "attrCapNote": "单项属性值上限见各级 attr_cap；超出需等待升级解锁更高上限。"
+  "attrCapNote": "单项属性值上限见各级 attr_cap；超出需等待升级解锁更高上限。",
+  "classModifiers": {
+    "mage": {
+      "skillSlotRule": "法师：1 级 10 槽；自 2 级起每升 1 级技能槽增量×2（L8 合计 24 槽，不含奥法学者等专精加槽）。",
+      "arcanistNote": "奥法学者专精：法师等级每 +1 额外获得 1 个仅可用于法术/戏法的技能槽；可选奥秘子项 +1 熟练。"
+    }
+  },
+  "lowestAttrMilestones": [
+    {
+      "level": 16,
+      "gain": 2,
+      "rule": "将你属性值中最低的一项提升 2 点（自动加至当时最低项，非 attr_gain 自由分配点）"
+    },
+    {
+      "level": 19,
+      "gain": 2,
+      "rule": "将你属性值中最低的一项提升 2 点（自动加至当时最低项，非 attr_gain 自由分配点）"
+    }
+  ],
+  "levelUpAnswerChecklist": [
+    "熟练增量（proficiency 列，无则写「—」）",
+    "自由属性增量（attr_gain 列，可自由分配）",
+    "最低属性奖励（L16/L19：special=lowest_attr，各 +2 至当时最低项，不计入 attr_gain）",
+    "技能槽增量或 L1 基数（skill_slots 列）",
+    "属性上限 attr_cap、熟练上限 prof_cap",
+    "头衔 rank（若有）",
+    "其他列：天赋位阶/专长/进阶/兼职等",
+    "区间问题须给出累计熟练次数、累计自由属性点与累计最低属性奖励（若区间含 L16/L19）"
+  ]
 }

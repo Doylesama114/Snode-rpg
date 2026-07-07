@@ -1,90 +1,100 @@
 #!/usr/bin/env node
 /**
- * Validate Build Advisor Phase 3 outputs + eligibility unit tests.
+ * Phase 3 — router, mode, intent-specific prompts, wizard stub.
  * Run: node scripts/validate-advisor-phase3.mjs
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { checkEligibility, checkAdvancementEligibility } from './advisor-eligibility.mjs';
+import { routeQuery, getPromptProfile } from './advisor-router.mjs';
+import { retrieve, formatContext } from './advisor-retrieve.mjs';
+import { buildSystemPrompt } from './advisor-prompt.mjs';
+import { advise } from './mage-advisor.mjs';
+import { normalizeWizardState } from './advisor-wizard-state.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
+const WIZARD_MOCK = path.join(ROOT, 'advisor', 'snapshots', 'wizard_step2_mock.json');
 
-function loadJson(rel) {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
+const ROUTER_CASES = [
+  { query: '血族属性加成', expectIntent: 'entity_qa', expectMode: 'entity_qa' },
+  { query: '从1级升到8级会获得什么奖励', expectIntent: 'leveling', expectMode: 'advisor' },
+  { query: '塑能流派 1～3 级优先学什么', expectIntent: 'mage_skills', expectMode: 'advisor' },
+  { query: '智力 14 的法师能走冰霜法师吗', expectIntent: 'eligibility', expectMode: 'advisor' },
+];
+
+const PROMPT_PROFILES = [
+  { intent: 'leveling', mode: 'advisor', mustInclude: ['升级奖励', '逐级表'] },
+  { intent: 'entity_qa', mode: 'entity_qa', mustInclude: ['实体百科', '实体详情'] },
+  { intent: 'wizard_step', mode: 'wizard', mustInclude: ['逐步车卡向导', '当前步骤'] },
+  { intent: 'mage_skills', mode: 'advisor', mustInclude: ['法师技能', '塑能箭'] },
+];
+
+let failed = 0;
+
+function pass(label) {
+  console.log(`✓ ${label}`);
 }
 
-const checks = [];
-function ok(name, pass, detail = '') {
-  checks.push({ name, pass, detail });
+function fail(label, detail) {
+  failed += 1;
+  console.log(`✗ ${label}${detail ? ` — ${detail}` : ''}`);
 }
 
-const advancements = loadJson('advisor/advancements.json');
-const feats = loadJson('advisor/feats.json');
-const mageAdvSource = loadJson('职业页/数据/法师·进阶.json');
-const featsSource = loadJson('职业页/数据/特殊专长.json');
-const featsEffects = loadJson('斯诺德跑团/skill_effects_特殊专长.json')['特殊专长'];
-
-// L3 counts & structure
-ok('advancements count = 40', advancements.meta.count === 40 && advancements.advancements.length === 40);
-ok('30 mage-only', advancements.meta.mageOnlyCount === 30);
-ok('10 universal', advancements.meta.universalCount === 10);
-ok('advancement id 唯一', advancements.advancements.length === new Set(advancements.advancements.map((a) => a.id)).size);
-
-const advNames = new Set(advancements.advancements.map((a) => a.name));
-const srcNames = new Set(mageAdvSource.advancements.map((a) => a.name));
-ok('进阶与法师·进阶 零名差', advNames.size === srcNames.size && [...srcNames].every((n) => advNames.has(n)));
-
-const frost = advancements.advancements.find((a) => a.name === '冰霜法师');
-ok('冰霜法师 scope=mage-only', frost?.scope === 'mage-only');
-ok('冰霜法师 INT15', frost?.attrsRequired?.智力 === 15);
-ok('冰霜法师 confidence=metadata_only', frost?.confidence === 'metadata_only');
-ok('冰霜法师 inferenceTag 含 frost', frost?.inferenceTag?.includes('frost'));
-ok('冰霜法师 mageEligible', frost?.mageEligible === true);
-
-const guard = advancements.advancements.find((a) => a.name === '近卫');
-ok('近卫 scope=universal', guard?.scope === 'universal');
-
-// L4 feats
-ok('feats count = 100', feats.meta.count === 100 && feats.feats.length === 100);
-ok('feat id 唯一', feats.feats.length === new Set(feats.feats.map((f) => f.id)).size);
-
-const featNames = new Set(feats.feats.map((f) => f.name));
-const featSrcNames = new Set(featsSource.map((f) => f.name));
-ok('专长与 特殊专长.json 零名差', featNames.size === featSrcNames.size && [...featSrcNames].every((n) => featNames.has(n)));
-ok('专长与 skill_effects 零名差', [...featNames].every((n) => featsEffects.some((e) => e.name === n)));
-
-ok('专长窗口 L4/L8/L13', feats.meta.featMilestones?.map((m) => m.level).join(',') === '4,8,13');
-ok('进阶窗口 L5', feats.meta.advancementMilestones?.some((m) => m.level === 5));
-
-const spellSniper = feats.feats.find((f) => f.name === '法术射手');
-ok('法术射手 mageRelevance=high', spellSniper?.mageRelevance === 'high');
-
-ok('rules_summary 含 L3/L4', loadJson('advisor/rules/rules_summary.json').bullets.some((b) => b.startsWith('L3 进阶库'))
-  && loadJson('advisor/rules/rules_summary.json').bullets.some((b) => b.startsWith('L4 特殊专长')));
-
-// Eligibility unit tests (5)
-const t1 = checkAdvancementEligibility(frost, { 智力: 16 });
-ok('elig① 冰霜 INT16 达标', t1.eligible && Object.keys(t1.gaps).length === 0);
-
-const t2 = checkAdvancementEligibility(frost, { 智力: 14 });
-ok('elig② 冰霜 INT14 差1', !t2.eligible && t2.gaps.智力 === 1);
-
-const spellblade = advancements.advancements.find((a) => a.name === '魔剑士');
-const t3 = checkEligibility({ 敏捷: 12, 智力: 15 }, spellblade.attrsRequired);
-ok('elig③ 魔剑士双属性达标', t3.eligible);
-
-const t4 = checkEligibility({ 敏捷: 11, 智力: 15 }, spellblade.attrsRequired);
-ok('elig④ 魔剑士敏捷不足', !t4.eligible && t4.gaps.敏捷 === 1);
-
-const highAdventurer = advancements.advancements.find((a) => a.name === '高阶冒险者');
-const t5 = checkAdvancementEligibility(highAdventurer, { 智力: 8 });
-ok('elig⑤ 高阶冒险者无属性门槛', t5.eligible);
-
-const failed = checks.filter((c) => !c.pass);
-console.log(`Phase 3 validation: ${checks.length - failed.length}/${checks.length} passed`);
-for (const c of checks) {
-  console.log(`${c.pass ? '✓' : '✗'} ${c.name}${c.detail ? ` (${c.detail})` : ''}`);
+for (const c of ROUTER_CASES) {
+  const route = routeQuery({ query: c.query, entityHits: [] });
+  if (route.intent !== c.expectIntent) {
+    fail(`router intent: ${c.query}`, `got ${route.intent}`);
+  } else {
+    pass(`router intent: ${c.query} → ${route.intent}`);
+  }
+  if (route.mode !== c.expectMode) {
+    fail(`router mode: ${c.query}`, `got ${route.mode}`);
+  } else {
+    pass(`router mode: ${c.query} → ${route.mode}`);
+  }
 }
-if (failed.length) process.exit(1);
+
+for (const p of PROMPT_PROFILES) {
+  const sys = buildSystemPrompt({
+    intent: p.intent,
+    mode: p.mode,
+    promptProfile: getPromptProfile(p.intent, p.mode),
+  });
+  for (const needle of p.mustInclude) {
+    if (!sys.includes(needle)) fail(`prompt ${p.intent} ∋ ${needle}`);
+    else pass(`prompt ${p.intent} ∋ ${needle}`);
+  }
+}
+
+const wizardRaw = JSON.parse(fs.readFileSync(WIZARD_MOCK, 'utf8'));
+const wizardState = normalizeWizardState(wizardRaw);
+if (wizardState.step !== 2) fail('wizard normalize step', String(wizardState.step));
+else pass('wizard normalize step=2');
+
+const wRet = retrieve('这一步选什么种族好', {
+  mode: 'wizard',
+  wizardState: wizardRaw,
+});
+if (wRet.mode !== 'wizard') fail('wizard retrieve mode', wRet.mode);
+else pass('wizard retrieve mode=wizard');
+if (wRet.intent !== 'wizard_step') fail('wizard retrieve intent', wRet.intent);
+else pass('wizard retrieve intent=wizard_step');
+const wCtx = formatContext(wRet);
+if (!wCtx.includes('车卡向导状态')) fail('wizard context section');
+else pass('wizard context has 车卡向导状态');
+if (!wCtx.includes('选择种族')) fail('wizard context step label');
+else pass('wizard context step=选择种族');
+
+const dry = await advise('推荐智力高的种族', {
+  dryRun: true,
+  mode: 'wizard',
+  wizardState: WIZARD_MOCK,
+});
+if (!dry.messages[0].content.includes('逐步车卡向导')) fail('wizard dry-run prompt profile');
+else pass('wizard dry-run prompt profile');
+if (!dry.context.includes('模式: wizard')) fail('wizard dry-run context mode');
+else pass('wizard dry-run context mode');
+
+console.log(`\nPhase 3 validation: ${failed === 0 ? 'ALL PASSED' : `${failed} FAILED`}`);
+if (failed) process.exit(1);

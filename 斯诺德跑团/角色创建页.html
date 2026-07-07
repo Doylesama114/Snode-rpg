@@ -334,7 +334,41 @@ function initWizard() {
 }
 
 var STEP_LABELS=["选择职业","选择起始特性","选择种族","分配属性","选择熟练项","选择个性背景","选择装备","确认角色"];
+
+function applyAdvisorHandoff(){
+  try{
+    var raw=localStorage.getItem("advisor_chargen_handoff");
+    if(!raw)return;
+    var h=JSON.parse(raw);
+    if(!h||h.source!=="advisor-wizard")return;
+    localStorage.removeItem("advisor_chargen_handoff");
+    var sel=h.selections||{};
+    for(var ci=0;ci<CLASSES.length;ci++){
+      if(CLASSES[ci].name==="法师"||CLASSES[ci].n==="法师"){CHAR.classIdx=ci;CHAR.className="法师";CHAR.classData=CLASSES[ci];break;}
+    }
+    if(sel.specialization)CHAR.keyAttr="智力";
+    if(sel.startingFeatures)CHAR.selectedFeatures=sel.startingFeatures.slice();
+    if(sel.race){
+      for(var ri=0;ri<RACES.length;ri++){if(RACES[ri].name===sel.race){CHAR.raceIdx=ri;CHAR.raceName=sel.race;CHAR.raceData=RACES[ri];break;}}
+    }
+    if(sel.attrs){for(var ai=0;ai<ATTR_NAMES.length;ai++){var an=ATTR_NAMES[ai];if(sel.attrs[an]!=null)CHAR.attrs[an]=sel.attrs[an];}}
+    if(sel.skills)CHAR.selectedSkills=sel.skills.slice();
+    if(sel.background){
+      for(var bi=0;bi<BACKGROUNDS.length;bi++){if(BACKGROUNDS[bi].name===sel.background){CHAR.bgIdx=bi;CHAR.bgName=sel.background;CHAR.bgData=BACKGROUNDS[bi];break;}}
+    }
+    if(h.specChoices)CHAR.specChoices=h.specChoices;
+    if(h.extraLanguages)CHAR.extraLanguages=h.extraLanguages.slice();
+    if(sel.equipmentKit){
+      var opts=EQUIP_DATA["法师"]||[];
+      for(var ei=0;ei<opts.length;ei++){if(opts[ei].letter===sel.equipmentKit){CHAR.equipIdx=ei;CHAR.equipChoice=opts[ei];break;}}
+    }
+    if(h.charName){CHAR.charName=h.charName;CHAR.playerName=CHAR.playerName||"玩家";}
+    goToStep(typeof h.targetStep==="number"?h.targetStep:0);
+  }catch(e){console.warn("advisor handoff",e);}
+}
+
 initWizard();
+applyAdvisorHandoff();
 
 // ====== 悬浮角色概览 ======
 var _ovOpen = true;
