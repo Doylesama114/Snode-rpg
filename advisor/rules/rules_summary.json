@@ -34,6 +34,6 @@
     "L3A 进阶技能：advancement_skills.json（27/65 条 documented）",
     "Phase 5 完成（7030–7038）：全职业 partial L2 + 实体/起手装备/L3A/L5 stub/档位 audit；回归见 validate-advisor-phase5-regression.mjs",
     "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
-    "职业档位 audit：full 7/1 ready；partial 7/13 ready（class_tier_audit.json）"
+    "职业档位 audit：full 8/1 ready；partial 6/13 ready（class_tier_audit.json）"
   ]
 }

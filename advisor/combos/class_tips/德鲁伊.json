@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "德鲁伊",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 9,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 27,
     "byKind": {
       "style_guide": 7,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 12,
+      "combat_rule": 6,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "德鲁伊·荒野风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "荒野",
       "summary": "荒野：偏自然、防御、激活、法术等能力。",
-      "detail": "示例技能：树皮术、石木树皮、维生术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "自然防御与控场；树皮术等偏坦克与区域封锁。低阶代表：树皮术、石木树皮、维生术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "树皮术",
         "石木树皮",
@@ -53,7 +54,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 荒野 荒野：偏自然、防御、激活、法术等能力。 示例技能：树皮术、石木树皮、维生术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 树皮术 石木树皮 维生术 style_guide auto_stub"
+      "searchText": "德鲁伊·荒野风格 style_guide auto_generated 荒野：偏自然、防御、激活、法术等能力。 自然防御与控场；树皮术等偏坦克与区域封锁。低阶代表：树皮术、石木树皮、维生术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 荒野 战斗风格 style_guide 树皮术 石木树皮 维生术"
     },
     {
       "id": "tip-druid-style-兽灵",
@@ -63,10 +64,10 @@
       ],
       "title": "德鲁伊·兽灵风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "兽灵",
       "summary": "兽灵：偏探知、媒介、互动、专注等能力。",
-      "detail": "示例技能：野兽知觉、化兽为友、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "动物沟通与野兽形态联动；驯兽/自然熟练协同。低阶代表：野兽知觉、化兽为友、通晓兽语。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "野兽知觉",
         "化兽为友",
@@ -93,7 +94,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 兽灵 兽灵：偏探知、媒介、互动、专注等能力。 示例技能：野兽知觉、化兽为友、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 野兽知觉 化兽为友 通晓兽语 style_guide auto_stub"
+      "searchText": "德鲁伊·兽灵风格 style_guide auto_generated 兽灵：偏探知、媒介、互动、专注等能力。 动物沟通与野兽形态联动；驯兽/自然熟练协同。低阶代表：野兽知觉、化兽为友、通晓兽语。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 兽灵 战斗风格 style_guide 野兽知觉 化兽为友 通晓兽语"
     },
     {
       "id": "tip-druid-style-复苏",
@@ -103,10 +104,10 @@
       ],
       "title": "德鲁伊·复苏风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "复苏",
       "summary": "复苏：偏自然、回复、法术、探知等能力。",
-      "detail": "示例技能：快速生长、侦测毒性与疾病、常青术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "治疗与净化；回春术起手契合支援线。低阶代表：快速生长、侦测毒性与疾病、常青术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "快速生长",
         "侦测毒性与疾病",
@@ -133,7 +134,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 复苏 复苏：偏自然、回复、法术、探知等能力。 示例技能：快速生长、侦测毒性与疾病、常青术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 快速生长 侦测毒性与疾病 常青术 style_guide auto_stub"
+      "searchText": "德鲁伊·复苏风格 style_guide auto_generated 复苏：偏自然、回复、法术、探知等能力。 治疗与净化；回春术起手契合支援线。低阶代表：快速生长、侦测毒性与疾病、常青术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 复苏 战斗风格 style_guide 快速生长 侦测毒性与疾病 常青术"
     },
     {
       "id": "tip-druid-style-月影",
@@ -143,10 +144,10 @@
       ],
       "title": "德鲁伊·月影风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "月影",
       "summary": "月影：偏施法攻击、奥术、月亮、法术等能力。",
-      "detail": "示例技能：月银之刃、银晓术、沐浴月光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "月亮奥术输出；月火术起手契合。低阶代表：月银之刃、银晓术、沐浴月光。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "月银之刃",
         "银晓术",
@@ -173,7 +174,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 月影 月影：偏施法攻击、奥术、月亮、法术等能力。 示例技能：月银之刃、银晓术、沐浴月光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 月银之刃 银晓术 沐浴月光 style_guide auto_stub"
+      "searchText": "德鲁伊·月影风格 style_guide auto_generated 月影：偏施法攻击、奥术、月亮、法术等能力。 月亮奥术输出；月火术起手契合。低阶代表：月银之刃、银晓术、沐浴月光。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 月影 战斗风格 style_guide 月银之刃 银晓术 沐浴月光"
     },
     {
       "id": "tip-druid-style-日怒",
@@ -183,10 +184,10 @@
       ],
       "title": "德鲁伊·日怒风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "日怒",
       "summary": "日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。",
-      "detail": "示例技能：炙热之日、光亮术、沐浴日光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "太阳火焰与 AOE；阳炎术起手契合。低阶代表：炙热之日、光亮术、沐浴日光。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "炙热之日",
         "光亮术",
@@ -213,7 +214,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 日怒 日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。 示例技能：炙热之日、光亮术、沐浴日光。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 炙热之日 光亮术 沐浴日光 style_guide auto_stub"
+      "searchText": "德鲁伊·日怒风格 style_guide auto_generated 日怒：偏施法攻击、AOE、太阳、感知豁免（12）等能力。 太阳火焰与 AOE；阳炎术起手契合。低阶代表：炙热之日、光亮术、沐浴日光。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 日怒 战斗风格 style_guide 炙热之日 光亮术 沐浴日光"
     },
     {
       "id": "tip-druid-style-星辰",
@@ -223,10 +224,10 @@
       ],
       "title": "德鲁伊·星辰风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "星辰",
       "summary": "星辰：偏机制、命运、星空、天赋等能力。",
-      "detail": "示例技能：日月之蚀、炽焰法球、蓝焰术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "星界/命运机制；高阶投资向，勿编造未收录天赋名。低阶代表：日月之蚀、炽焰法球、蓝焰术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "日月之蚀",
         "炽焰法球",
@@ -253,7 +254,7 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 星辰 星辰：偏机制、命运、星空、天赋等能力。 示例技能：日月之蚀、炽焰法球、蓝焰术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 日月之蚀 炽焰法球 蓝焰术 style_guide auto_stub"
+      "searchText": "德鲁伊·星辰风格 style_guide auto_generated 星辰：偏机制、命运、星空、天赋等能力。 星界/命运机制；高阶投资向，勿编造未收录天赋名。低阶代表：日月之蚀、炽焰法球、蓝焰术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 星辰 战斗风格 style_guide 日月之蚀 炽焰法球 蓝焰术"
     },
     {
       "id": "tip-druid-style-精火",
@@ -263,10 +264,10 @@
       ],
       "title": "德鲁伊·精火风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "精火",
       "summary": "精火：偏专注、幻象、激活、戏法等能力。",
-      "detail": "示例技能：妖精之火、德鲁伊伎俩、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "精类火焰与戏法；偏激活与幻象辅助。低阶代表：妖精之火、德鲁伊伎俩、创造水源。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "妖精之火",
         "德鲁伊伎俩",
@@ -293,51 +294,664 @@
           "source": "druid"
         }
       ],
-      "searchText": "德鲁伊 精火 精火：偏专注、幻象、激活、戏法等能力。 示例技能：妖精之火、德鲁伊伎俩、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 妖精之火 德鲁伊伎俩 创造水源 style_guide auto_stub"
+      "searchText": "德鲁伊·精火风格 style_guide auto_generated 精火：偏专注、幻象、激活、戏法等能力。 精类火焰与戏法；偏激活与幻象辅助。低阶代表：妖精之火、德鲁伊伎俩、创造水源。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 德鲁伊 精火 战斗风格 style_guide 妖精之火 德鲁伊伎俩 创造水源"
     },
     {
-      "id": "tip-druid-chargen-1",
+      "id": "tip-druid-prio-荒野",
       "scope": "class",
       "applicableClasses": [
         "德鲁伊"
       ],
-      "title": "德鲁伊创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "荒野 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "荒野",
+      "summary": "荒野线前三级可优先：树皮术、石木树皮、维生术；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 荒野 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。自然防御与控场；树皮术等偏坦克与区域封锁。",
+      "relatedSkills": [
+        "树皮术",
+        "石木树皮",
+        "维生术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "荒野",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "树皮术",
+          "source": "druid"
+        },
+        {
+          "name": "石木树皮",
+          "source": "druid"
+        },
+        {
+          "name": "维生术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "荒野 1～3 阶优先 tactic auto_generated 荒野线前三级可优先：树皮术、石木树皮、维生术；与起手特性/专精规划一致再扩展。 德鲁伊 荒野 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。自然防御与控场；树皮术等偏坦克与区域封锁。 德鲁伊 荒野 优先学 tactic 树皮术 石木树皮 维生术"
+    },
+    {
+      "id": "tip-druid-prio-兽灵",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "兽灵 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "兽灵",
+      "summary": "兽灵线前三级可优先：野兽知觉、化兽为友、通晓兽语；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 兽灵 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。动物沟通与野兽形态联动；驯兽/自然熟练协同。",
+      "relatedSkills": [
+        "野兽知觉",
+        "化兽为友",
+        "通晓兽语"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "兽灵",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽知觉",
+          "source": "druid"
+        },
+        {
+          "name": "化兽为友",
+          "source": "druid"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "druid"
+        }
+      ],
+      "searchText": "兽灵 1～3 阶优先 tactic auto_generated 兽灵线前三级可优先：野兽知觉、化兽为友、通晓兽语；与起手特性/专精规划一致再扩展。 德鲁伊 兽灵 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。动物沟通与野兽形态联动；驯兽/自然熟练协同。 德鲁伊 兽灵 优先学 tactic 野兽知觉 化兽为友 通晓兽语"
+    },
+    {
+      "id": "tip-druid-prio-复苏",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "复苏 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "复苏",
+      "summary": "复苏线前三级可优先：快速生长、侦测毒性与疾病、常青术；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 复苏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗与净化；回春术起手契合支援线。",
+      "relatedSkills": [
+        "快速生长",
+        "侦测毒性与疾病",
+        "常青术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "复苏",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "快速生长",
+          "source": "druid"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "druid"
+        },
+        {
+          "name": "常青术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "复苏 1～3 阶优先 tactic auto_generated 复苏线前三级可优先：快速生长、侦测毒性与疾病、常青术；与起手特性/专精规划一致再扩展。 德鲁伊 复苏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗与净化；回春术起手契合支援线。 德鲁伊 复苏 优先学 tactic 快速生长 侦测毒性与疾病 常青术"
+    },
+    {
+      "id": "tip-druid-prio-月影",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "月影 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "月影",
+      "summary": "月影线前三级可优先：月银之刃、银晓术、沐浴月光；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 月影 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。月亮奥术输出；月火术起手契合。",
+      "relatedSkills": [
+        "月银之刃",
+        "银晓术",
+        "沐浴月光"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "月影",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "月银之刃",
+          "source": "druid"
+        },
+        {
+          "name": "银晓术",
+          "source": "druid"
+        },
+        {
+          "name": "沐浴月光",
+          "source": "druid"
+        }
+      ],
+      "searchText": "月影 1～3 阶优先 tactic auto_generated 月影线前三级可优先：月银之刃、银晓术、沐浴月光；与起手特性/专精规划一致再扩展。 德鲁伊 月影 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。月亮奥术输出；月火术起手契合。 德鲁伊 月影 优先学 tactic 月银之刃 银晓术 沐浴月光"
+    },
+    {
+      "id": "tip-druid-prio-日怒",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "日怒 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "日怒",
+      "summary": "日怒线前三级可优先：炙热之日、光亮术、沐浴日光；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 日怒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。太阳火焰与 AOE；阳炎术起手契合。",
+      "relatedSkills": [
+        "炙热之日",
+        "光亮术",
+        "沐浴日光"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "日怒",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "炙热之日",
+          "source": "druid"
+        },
+        {
+          "name": "光亮术",
+          "source": "druid"
+        },
+        {
+          "name": "沐浴日光",
+          "source": "druid"
+        }
+      ],
+      "searchText": "日怒 1～3 阶优先 tactic auto_generated 日怒线前三级可优先：炙热之日、光亮术、沐浴日光；与起手特性/专精规划一致再扩展。 德鲁伊 日怒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。太阳火焰与 AOE；阳炎术起手契合。 德鲁伊 日怒 优先学 tactic 炙热之日 光亮术 沐浴日光"
+    },
+    {
+      "id": "tip-druid-prio-星辰",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "星辰 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "星辰",
+      "summary": "星辰线前三级可优先：日月之蚀、炽焰法球、蓝焰术；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 星辰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。星界/命运机制；高阶投资向，勿编造未收录天赋名。",
+      "relatedSkills": [
+        "日月之蚀",
+        "炽焰法球",
+        "蓝焰术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "星辰",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "日月之蚀",
+          "source": "druid"
+        },
+        {
+          "name": "炽焰法球",
+          "source": "druid"
+        },
+        {
+          "name": "蓝焰术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "星辰 1～3 阶优先 tactic auto_generated 星辰线前三级可优先：日月之蚀、炽焰法球、蓝焰术；与起手特性/专精规划一致再扩展。 德鲁伊 星辰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。星界/命运机制；高阶投资向，勿编造未收录天赋名。 德鲁伊 星辰 优先学 tactic 日月之蚀 炽焰法球 蓝焰术"
+    },
+    {
+      "id": "tip-druid-prio-精火",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "精火 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "精火",
+      "summary": "精火线前三级可优先：妖精之火、德鲁伊伎俩、创造水源；与起手特性/专精规划一致再扩展。",
+      "detail": "德鲁伊 精火 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。精类火焰与戏法；偏激活与幻象辅助。",
+      "relatedSkills": [
+        "妖精之火",
+        "德鲁伊伎俩",
+        "创造水源"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "精火",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "妖精之火",
+          "source": "druid"
+        },
+        {
+          "name": "德鲁伊伎俩",
+          "source": "druid"
+        },
+        {
+          "name": "创造水源",
+          "source": "druid"
+        }
+      ],
+      "searchText": "精火 1～3 阶优先 tactic auto_generated 精火线前三级可优先：妖精之火、德鲁伊伎俩、创造水源；与起手特性/专精规划一致再扩展。 德鲁伊 精火 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。精类火焰与戏法；偏激活与幻象辅助。 德鲁伊 精火 优先学 tactic 妖精之火 德鲁伊伎俩 创造水源"
+    },
+    {
+      "id": "tip-druid-start-缠绕术",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "起手·缠绕术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "缠绕术（起手）：你做出对应施法动作、并念诵法咒从地面召唤藤蔓缠绕住对手 目标在每个轮次开始阶段时可以进行一次难度为12的力量检定来尝试挣脱缠绕术的效果 L3: 缠绕术的关键词变",
+      "detail": "德鲁伊 4 选 2 起手特性之一。你做出对应施法动作、并念诵法咒从地面召唤藤蔓缠绕住对手 目标在每个轮次开始阶段时可以进行一次难度为12的力量检定来尝试挣脱缠绕术的效果 L3: 缠绕术的关键词变更为敏捷豁免（15） L5: 移除缠绕术的关键词每回合限一次 L10: 目标成功挣脱缠绕术后，下一个自身回合的首次移动速度将会减半 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "缠绕术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "缠绕术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "起手·缠绕术 tactic auto_generated 缠绕术（起手）：你做出对应施法动作、并念诵法咒从地面召唤藤蔓缠绕住对手 目标在每个轮次开始阶段时可以进行一次难度为12的力量检定来尝试挣脱缠绕术的效果 L3: 缠绕术的关键词变 德鲁伊 4 选 2 起手特性之一。你做出对应施法动作、并念诵法咒从地面召唤藤蔓缠绕住对手 目标在每个轮次开始阶段时可以进行一次难度为12的力量检定来尝试挣脱缠绕术的效果 L3: 缠绕术的关键词变更为敏捷豁免（15） L5: 移除缠绕术的关键词每回合限一次 L10: 目标成功挣脱缠绕术后，下一个自身回合的首次移动速度将会减半 与后续 起手 风格技能可形成初期连招，但非强制绑定。 德鲁伊 起手特性 车卡 tactic 缠绕术"
+    },
+    {
+      "id": "tip-druid-start-野兽形态",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "起手·野兽形态",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "野兽形态（起手）：你获得一套能够使自身变化为不同动物的全新机制，你能够在自身回合中花费一个附赠动作并消耗1点疲劳值来化身成各类野兽以获得不同的增益，进入野兽形态时你能够听懂并仅能",
+      "detail": "德鲁伊 4 选 2 起手特性之一。你获得一套能够使自身变化为不同动物的全新机制，你能够在自身回合中花费一个附赠动作并消耗1点疲劳值来化身成各类野兽以获得不同的增益，进入野兽形态时你能够听懂并仅能发出对应种类的兽语，并且每十分钟消耗1点疲劳值 你在每日仅能够从一种野兽状态中获取临时生命值加成 当你施展兽灵风格以外的技能时将会强制解除野兽形态，并且你的所有包含变形关键词的能力均会被锁定，直到下一个自身回合结束为止 你能够变形的动物形态如下，并获得相应增益效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "野兽形态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽形态",
+          "source": "druid"
+        }
+      ],
+      "searchText": "起手·野兽形态 tactic auto_generated 野兽形态（起手）：你获得一套能够使自身变化为不同动物的全新机制，你能够在自身回合中花费一个附赠动作并消耗1点疲劳值来化身成各类野兽以获得不同的增益，进入野兽形态时你能够听懂并仅能 德鲁伊 4 选 2 起手特性之一。你获得一套能够使自身变化为不同动物的全新机制，你能够在自身回合中花费一个附赠动作并消耗1点疲劳值来化身成各类野兽以获得不同的增益，进入野兽形态时你能够听懂并仅能发出对应种类的兽语，并且每十分钟消耗1点疲劳值 你在每日仅能够从一种野兽状态中获取临时生命值加成 当你施展兽灵风格以外的技能时将会强制解除野兽形态，并且你的所有包含变形关键词的能力均会被锁定，直到下一个自身回合结束为止 你能够变形的动物形态如下，并获得相应增益效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。 德鲁伊 起手特性 车卡 tactic 野兽形态"
+    },
+    {
+      "id": "tip-druid-start-回春术",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "起手·回春术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "回春术（起手）：你做出对应施法动作、并念诵法咒释放出绿色的自然之力缓慢的治愈他人 L5: 回春术改为回复1D4+3点生命值 L8: 回春术改为回复1D4+4点生命值",
+      "detail": "德鲁伊 4 选 2 起手特性之一。你做出对应施法动作、并念诵法咒释放出绿色的自然之力缓慢的治愈他人 L5: 回春术改为回复1D4+3点生命值 L8: 回春术改为回复1D4+4点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "回春术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "回春术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "起手·回春术 tactic auto_generated 回春术（起手）：你做出对应施法动作、并念诵法咒释放出绿色的自然之力缓慢的治愈他人 L5: 回春术改为回复1D4+3点生命值 L8: 回春术改为回复1D4+4点生命值 德鲁伊 4 选 2 起手特性之一。你做出对应施法动作、并念诵法咒释放出绿色的自然之力缓慢的治愈他人 L5: 回春术改为回复1D4+3点生命值 L8: 回春术改为回复1D4+4点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 德鲁伊 起手特性 车卡 tactic 回春术"
+    },
+    {
+      "id": "tip-druid-start-月火术",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "起手·月火术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "月火术（起手）：你抬起双手、并念诵法咒召唤一道月光击中对手 将你的星辰轨朝月光推移1格 L5: 月火术改为造成1D4点奥术伤害 L8: 月火术改为造成1D6点奥术伤害 L10:",
+      "detail": "德鲁伊 4 选 2 起手特性之一。你抬起双手、并念诵法咒召唤一道月光击中对手 将你的星辰轨朝月光推移1格 L5: 月火术改为造成1D4点奥术伤害 L8: 月火术改为造成1D6点奥术伤害 L10: 月火术改为造成1D8点奥术伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "月火术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "月火术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "起手·月火术 tactic auto_generated 月火术（起手）：你抬起双手、并念诵法咒召唤一道月光击中对手 将你的星辰轨朝月光推移1格 L5: 月火术改为造成1D4点奥术伤害 L8: 月火术改为造成1D6点奥术伤害 L10: 德鲁伊 4 选 2 起手特性之一。你抬起双手、并念诵法咒召唤一道月光击中对手 将你的星辰轨朝月光推移1格 L5: 月火术改为造成1D4点奥术伤害 L8: 月火术改为造成1D6点奥术伤害 L10: 月火术改为造成1D8点奥术伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。 德鲁伊 起手特性 车卡 tactic 月火术"
+    },
+    {
+      "id": "tip-druid-start-阳炎术",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "起手·阳炎术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "阳炎术（起手）：你抬起双手、并念诵法咒召唤一道日光击中对手 将你的星辰轨朝日光推移1格 L5: 阳炎术改为造成1D4点火焰伤害 L8: 阳炎术改为造成1D6点火焰伤害 L10:",
+      "detail": "德鲁伊 4 选 2 起手特性之一。你抬起双手、并念诵法咒召唤一道日光击中对手 将你的星辰轨朝日光推移1格 L5: 阳炎术改为造成1D4点火焰伤害 L8: 阳炎术改为造成1D6点火焰伤害 L10: 阳炎术改为造成1D8点火焰伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "阳炎术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "阳炎术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "起手·阳炎术 tactic auto_generated 阳炎术（起手）：你抬起双手、并念诵法咒召唤一道日光击中对手 将你的星辰轨朝日光推移1格 L5: 阳炎术改为造成1D4点火焰伤害 L8: 阳炎术改为造成1D6点火焰伤害 L10: 德鲁伊 4 选 2 起手特性之一。你抬起双手、并念诵法咒召唤一道日光击中对手 将你的星辰轨朝日光推移1格 L5: 阳炎术改为造成1D4点火焰伤害 L8: 阳炎术改为造成1D6点火焰伤害 L10: 阳炎术改为造成1D8点火焰伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。 德鲁伊 起手特性 车卡 tactic 阳炎术"
+    },
+    {
+      "id": "tip-druid-cr-beast",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "野兽形态",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "野兽形态消耗疲劳值（见技能/规则）；附赠动作进入，规划 FP 与形态切换节奏。",
+      "detail": "起手可选野兽形态；兽灵/荒野 build 深化变形，具体形态列表以规则书为准。",
+      "relatedSkills": [
+        "野兽形态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "变形",
+        "兽灵",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽形态",
+          "source": "druid"
+        }
+      ],
+      "searchText": "野兽形态 combat_rule auto_generated 野兽形态消耗疲劳值（见技能/规则）；附赠动作进入，规划 FP 与形态切换节奏。 起手可选野兽形态；兽灵/荒野 build 深化变形，具体形态列表以规则书为准。 德鲁伊 变形 兽灵 combat_rule 野兽形态"
+    },
+    {
+      "id": "tip-druid-cr-armor",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "非金属护甲",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "德鲁伊护甲熟练含「非金属」限制；着金属甲/盾可能违反职业规则（见创建页）。",
+      "detail": "轻中甲+非金属盾；勿推荐全身板甲等金属重甲 build。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "非金属护甲 combat_rule auto_generated 德鲁伊护甲熟练含「非金属」限制；着金属甲/盾可能违反职业规则（见创建页）。 轻中甲+非金属盾；勿推荐全身板甲等金属重甲 build。 德鲁伊 护甲 combat_rule"
+    },
+    {
+      "id": "tip-druid-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "自然法术",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多数法术需施法动作+念诵法咒；法杖为常见媒介，勿套用法师魔棒/法术位规则。",
+      "detail": "引用须来自 L2 德鲁伊上下文；月影/日怒/荒野等各属战斗风格，非法师八学派。",
+      "relatedSkills": [
+        "缠绕术",
+        "月火术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "法术",
+        "自然",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "缠绕术",
+          "source": "druid"
+        },
+        {
+          "name": "月火术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "自然法术 combat_rule auto_generated 多数法术需施法动作+念诵法咒；法杖为常见媒介，勿套用法师魔棒/法术位规则。 引用须来自 L2 德鲁伊上下文；月影/日怒/荒野等各属战斗风格，非法师八学派。 德鲁伊 法术 自然 combat_rule 缠绕术 月火术"
+    },
+    {
+      "id": "tip-druid-cr-heal",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "回春与复苏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "回春术等有延迟回复；复苏线深化治疗，长战须提前规划。",
+      "detail": "5 选 2 起手：输出（月火/阳炎）与回复（回春）可各取一项。",
+      "relatedSkills": [
+        "回春术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "复苏",
+        "治疗",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "回春术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "回春与复苏 combat_rule auto_generated 回春术等有延迟回复；复苏线深化治疗，长战须提前规划。 5 选 2 起手：输出（月火/阳炎）与回复（回春）可各取一项。 德鲁伊 复苏 治疗 combat_rule 回春术"
+    },
+    {
+      "id": "tip-druid-cr-control",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "控场与自然",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "缠绕术等控场起手；荒野线深化藤蔓/自然区域效果。",
+      "detail": "与法师惑控不同，名称以德鲁伊 L2 列表为准。",
+      "relatedSkills": [
+        "缠绕术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "荒野",
+        "控场",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "缠绕术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "控场与自然 combat_rule auto_generated 缠绕术等控场起手；荒野线深化藤蔓/自然区域效果。 与法师惑控不同，名称以德鲁伊 L2 列表为准。 德鲁伊 荒野 控场 combat_rule 缠绕术"
+    },
+    {
+      "id": "tip-druid-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "FP 与自然节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法术/戏法消耗 FP；变形与法术分回合规划，避免空 FP。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "月火术",
+        "阳炎术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "德鲁伊",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "月火术",
+          "source": "druid"
+        },
+        {
+          "name": "阳炎术",
+          "source": "druid"
+        }
+      ],
+      "searchText": "FP 与自然节奏 combat_rule auto_generated 法术/戏法消耗 FP；变形与法术分回合规划，避免空 FP。 短休/长休回复见基础规则；标识由 DM 结算。 德鲁伊 FP combat_rule 月火术 阳炎术"
+    },
+    {
+      "id": "tip-druid-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "德鲁伊"
+      ],
+      "title": "德鲁伊关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "感知≥15 为常见目标；体质配合 HP 与荒野前线。自然/驯兽熟练与兽灵/复苏协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "德鲁伊",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "德鲁伊 创建 车卡 顾问档位 partial：可检索 德鲁伊 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "德鲁伊关键属性 chargen auto_generated 感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。 感知≥15 为常见目标；体质配合 HP 与荒野前线。自然/驯兽熟练与兽灵/复苏协同。 德鲁伊 车卡 属性 chargen"
     },
     {
-      "id": "tip-druid-partial-note",
+      "id": "tip-druid-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "德鲁伊"
       ],
-      "title": "德鲁伊顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "德鲁伊专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "自然祝福：为自然武器附魔；荒野/兽灵近战或变形 build 协同。 回归荒野：野外休整加成；长线探索与生存向 build。 自然之友：自然/栽培熟练；复苏/荒野法术与植物类能力协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "德鲁伊",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "德鲁伊 partial 顾问 德鲁伊顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "德鲁伊专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 自然祝福：为自然武器附魔；荒野/兽灵近战或变形 build 协同。 回归荒野：野外休整加成；长线探索与生存向 build。 自然之友：自然/栽培熟练；复苏/荒野法术与植物类能力协同。 德鲁伊 车卡 专精 chargen"
     }
   ]
 }

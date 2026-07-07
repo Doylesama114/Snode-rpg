@@ -448,6 +448,85 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  德鲁伊: {
+    defaultFullL2MinSkills: 60,
+    fpKeyLabel: '感知',
+    specBuildHints: {
+      自然祝福: '为自然武器附魔；荒野/兽灵近战或变形 build 协同。',
+      回归荒野: '野外休整加成；长线探索与生存向 build。',
+      自然之友: '自然/栽培熟练；复苏/荒野法术与植物类能力协同。',
+    },
+    styleRoleHints: {
+      荒野: '自然防御与控场；树皮术等偏坦克与区域封锁。',
+      兽灵: '动物沟通与野兽形态联动；驯兽/自然熟练协同。',
+      复苏: '治疗与净化；回春术起手契合支援线。',
+      月影: '月亮奥术输出；月火术起手契合。',
+      日怒: '太阳火焰与 AOE；阳炎术起手契合。',
+      星辰: '星界/命运机制；高阶投资向，勿编造未收录天赋名。',
+      精火: '精类火焰与戏法；偏激活与幻象辅助。',
+    },
+    chargenAttrDetail: '感知≥15 为常见目标；体质配合 HP 与荒野前线。自然/驯兽熟练与兽灵/复苏协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-beast',
+        title: '野兽形态',
+        summary: '野兽形态消耗疲劳值（见技能/规则）；附赠动作进入，规划 FP 与形态切换节奏。',
+        detail: '起手可选野兽形态；兽灵/荒野 build 深化变形，具体形态列表以规则书为准。',
+        relatedSkills: ['野兽形态'],
+        tags: [className, '变形', '兽灵', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-armor',
+        title: '非金属护甲',
+        summary: '德鲁伊护甲熟练含「非金属」限制；着金属甲/盾可能违反职业规则（见创建页）。',
+        detail: '轻中甲+非金属盾；勿推荐全身板甲等金属重甲 build。',
+        relatedSkills: [],
+        tags: [className, '护甲', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '自然法术',
+        summary: '多数法术需施法动作+念诵法咒；法杖为常见媒介，勿套用法师魔棒/法术位规则。',
+        detail: '引用须来自 L2 德鲁伊上下文；月影/日怒/荒野等各属战斗风格，非法师八学派。',
+        relatedSkills: ['缠绕术', '月火术'],
+        tags: [className, '法术', '自然', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-heal',
+        title: '回春与复苏',
+        summary: '回春术等有延迟回复；复苏线深化治疗，长战须提前规划。',
+        detail: '5 选 2 起手：输出（月火/阳炎）与回复（回春）可各取一项。',
+        relatedSkills: ['回春术'],
+        tags: [className, '复苏', '治疗', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-control',
+        title: '控场与自然',
+        summary: '缠绕术等控场起手；荒野线深化藤蔓/自然区域效果。',
+        detail: '与法师惑控不同，名称以德鲁伊 L2 列表为准。',
+        relatedSkills: ['缠绕术'],
+        tags: [className, '荒野', '控场', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与自然节奏',
+        summary: '法术/戏法消耗 FP；变形与法术分回合规划，避免空 FP。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['月火术', '阳炎术'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/非金属/.test(refClass?.armor || '')) {
+        rules.push('德鲁伊须着非金属护甲与盾牌；具体禁制见创建页与基础规则。');
+      }
+      if (/法杖/.test(refClass?.weapons || '')) {
+        rules.push('法杖为常见法术媒介；部分自然法术需持法器/法杖（见技能描述）。');
+      }
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

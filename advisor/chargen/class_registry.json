@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7044",
-    "note": "14职业顾问：7 full（含游荡者）；7044游荡者升full"
+    "version": "1.0.7045",
+    "note": "14职业顾问：8 full（含德鲁伊）；7045德鲁伊升full"
   },
   "defaults": {
     "tier": "basic",
@@ -174,7 +174,7 @@
       "l5MinTips": 20
     },
     "德鲁伊": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "感知",
       "isCaster": true,
       "l2Slug": "druid",
@@ -191,7 +191,9 @@
         "星辰",
         "精火"
       ],
-      "advisorNote": "德鲁伊顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "druid_skills",
+      "fullL2MinSkills": 60,
+      "l5MinTips": 20
     },
     "萨满祭司": {
       "tier": "partial",

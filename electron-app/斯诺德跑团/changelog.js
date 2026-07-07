@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7045',
+    date: '2026-07-07',
+    changes: [
+      '德鲁伊顾问升full(druid_skills/自然法术L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7044',
     date: '2026-07-07',
     changes: [

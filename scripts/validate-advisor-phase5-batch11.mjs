@@ -31,8 +31,8 @@ if (basic.length === 0) pass('no basic tier');
 else fail('basic remains', basic.join(','));
 
 const audit = auditAllClasses();
-if (audit.meta.fullReady === 7 && audit.meta.partialReady === 7) pass('tier audit all ready');
-else fail('tier audit', `${audit.meta.fullReady}/7 ${audit.meta.partialReady}/7`);
+if (audit.meta.fullReady === 8 && audit.meta.partialReady === 6) pass('tier audit all ready');
+else fail('tier audit', `${audit.meta.fullReady}/8 ${audit.meta.partialReady}/6`);
 
 const entities = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/entities/classes.json'), 'utf8'));
 if (entities.meta?.count === 14) pass('14 entity class cards');
