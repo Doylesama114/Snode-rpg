@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7007',
+    date: '2026-07-07',
+    changes: [
+      '帮助页升级规则表优化：加宽正文、头衔不换行、加成显示+1'
+    ]
+  },
+
+
+  {
     version: '1.0.7006',
     date: '2026-07-07',
     changes: [
