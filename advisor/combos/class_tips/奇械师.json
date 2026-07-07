@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "奇械师",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 9,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 26,
     "byKind": {
       "style_guide": 6,
-      "chargen": 2,
-      "meta": 1
+      "tactic": 10,
+      "combat_rule": 8,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "奇械师·精准风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "精准",
       "summary": "远程枪械与精准射击线；命中加值、远程战技与专注联动。",
-      "detail": "示例技能：弹射齿轮、战术装填、快速射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "远程枪械与命中加值；弹射齿轮/战术装填代表输出。低阶代表：弹射齿轮、战术装填、快速射击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "弹射齿轮",
         "战术装填",
@@ -53,7 +54,7 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 精准 远程枪械与精准射击线；命中加值、远程战技与专注联动。 示例技能：弹射齿轮、战术装填、快速射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 弹射齿轮 战术装填 快速射击 style_guide auto_stub"
+      "searchText": "奇械师·精准风格 style_guide auto_generated 远程枪械与精准射击线；命中加值、远程战技与专注联动。 远程枪械与命中加值；弹射齿轮/战术装填代表输出。低阶代表：弹射齿轮、战术装填、快速射击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 精准 战斗风格 style_guide 弹射齿轮 战术装填 快速射击"
     },
     {
       "id": "tip-artificer-style-构想",
@@ -63,10 +64,10 @@
       ],
       "title": "奇械师·构想风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "构想",
       "summary": "科研图纸、奇械研发与专业列表扩展；偏资源与构筑。",
-      "detail": "示例技能：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "研发图纸与奇械专业；图纸类技能须标注「（图纸）」。低阶代表：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "撒网器（图纸）",
         "战术抓钩（图纸）",
@@ -93,7 +94,7 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 构想 科研图纸、奇械研发与专业列表扩展；偏资源与构筑。 示例技能：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 撒网器（图纸） 战术抓钩（图纸） 水下呼吸帽（图纸） style_guide auto_stub"
+      "searchText": "奇械师·构想风格 style_guide auto_generated 科研图纸、奇械研发与专业列表扩展；偏资源与构筑。 研发图纸与奇械专业；图纸类技能须标注「（图纸）」。低阶代表：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 构想 战斗风格 style_guide 撒网器（图纸） 战术抓钩（图纸） 水下呼吸帽（图纸）"
     },
     {
       "id": "tip-artificer-style-支援",
@@ -103,10 +104,10 @@
       ],
       "title": "奇械师·支援风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "支援",
       "summary": "团队增益、装置部署与战场辅助。",
-      "detail": "示例技能：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "团队装置与战场辅助；照明/净化类图纸代表 utility。低阶代表：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "照明浮游球（图纸）",
         "自动清洁仪（图纸）",
@@ -133,7 +134,7 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 支援 团队增益、装置部署与战场辅助。 示例技能：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 照明浮游球（图纸） 自动清洁仪（图纸） 水质净化器（图纸） style_guide auto_stub"
+      "searchText": "奇械师·支援风格 style_guide auto_generated 团队增益、装置部署与战场辅助。 团队装置与战场辅助；照明/净化类图纸代表 utility。低阶代表：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 支援 战斗风格 style_guide 照明浮游球（图纸） 自动清洁仪（图纸） 水质净化器（图纸）"
     },
     {
       "id": "tip-artificer-style-炽擎",
@@ -143,10 +144,10 @@
       ],
       "title": "奇械师·炽擎风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "炽擎",
       "summary": "热能/火焰相关科技输出与装置。",
-      "detail": "示例技能：机械恒温、烈焰喷射、蒸汽动能。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "热能/火焰科技输出；机械恒温/烈焰喷射代表。低阶代表：机械恒温、烈焰喷射、蒸汽动能。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "机械恒温",
         "烈焰喷射",
@@ -173,7 +174,7 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 炽擎 热能/火焰相关科技输出与装置。 示例技能：机械恒温、烈焰喷射、蒸汽动能。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 机械恒温 烈焰喷射 蒸汽动能 style_guide auto_stub"
+      "searchText": "奇械师·炽擎风格 style_guide auto_generated 热能/火焰相关科技输出与装置。 热能/火焰科技输出；机械恒温/烈焰喷射代表。低阶代表：机械恒温、烈焰喷射、蒸汽动能。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 炽擎 战斗风格 style_guide 机械恒温 烈焰喷射 蒸汽动能"
     },
     {
       "id": "tip-artificer-style-电涌",
@@ -183,10 +184,10 @@
       ],
       "title": "奇械师·电涌风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "电涌",
       "summary": "雷电/电系科技输出与控制。",
-      "detail": "示例技能：充能、电磁抓钩、电疗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "雷电/电系科技；充能/电磁抓钩代表。低阶代表：充能、电磁抓钩、电疗。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "充能",
         "电磁抓钩",
@@ -213,7 +214,7 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 电涌 雷电/电系科技输出与控制。 示例技能：充能、电磁抓钩、电疗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 充能 电磁抓钩 电疗 style_guide auto_stub"
+      "searchText": "奇械师·电涌风格 style_guide auto_generated 雷电/电系科技输出与控制。 雷电/电系科技；充能/电磁抓钩代表。低阶代表：充能、电磁抓钩、电疗。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 电涌 战斗风格 style_guide 充能 电磁抓钩 电疗"
     },
     {
       "id": "tip-artificer-style-魔枢",
@@ -223,10 +224,10 @@
       ],
       "title": "奇械师·魔枢风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "魔枢",
       "summary": "核心装置、同调与奇械中枢能力。",
-      "detail": "示例技能：奥术箭、法术护盾、阅读魔法。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "同调与奥术装置；奥术箭/法术护盾代表 hybrid。低阶代表：奥术箭、法术护盾、阅读魔法。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "奥术箭",
         "法术护盾",
@@ -253,73 +254,677 @@
           "source": "artificer"
         }
       ],
-      "searchText": "奇械师 魔枢 核心装置、同调与奇械中枢能力。 示例技能：奥术箭、法术护盾、阅读魔法。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 奥术箭 法术护盾 阅读魔法 style_guide auto_stub"
+      "searchText": "奇械师·魔枢风格 style_guide auto_generated 核心装置、同调与奇械中枢能力。 同调与奥术装置；奥术箭/法术护盾代表 hybrid。低阶代表：奥术箭、法术护盾、阅读魔法。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 奇械师 魔枢 战斗风格 style_guide 奥术箭 法术护盾 阅读魔法"
     },
     {
-      "id": "tip-artificer-chargen-1",
+      "id": "tip-artificer-prio-精准",
       "scope": "class",
       "applicableClasses": [
         "奇械师"
       ],
-      "title": "奇械师创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "精准 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "精准",
+      "summary": "精准线前三级可优先：弹射齿轮、战术装填、快速射击；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 精准 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程枪械与命中加值；弹射齿轮/战术装填代表输出。",
+      "relatedSkills": [
+        "弹射齿轮",
+        "战术装填",
+        "快速射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "精准",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "弹射齿轮",
+          "source": "artificer"
+        },
+        {
+          "name": "战术装填",
+          "source": "artificer"
+        },
+        {
+          "name": "快速射击",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "精准 1～3 阶优先 tactic auto_generated 精准线前三级可优先：弹射齿轮、战术装填、快速射击；与起手特性/专精规划一致再扩展。 奇械师 精准 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程枪械与命中加值；弹射齿轮/战术装填代表输出。 奇械师 精准 优先学 tactic 弹射齿轮 战术装填 快速射击"
+    },
+    {
+      "id": "tip-artificer-prio-构想",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "构想 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "构想",
+      "summary": "构想线前三级可优先：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 构想 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。研发图纸与奇械专业；图纸类技能须标注「（图纸）」。",
+      "relatedSkills": [
+        "撒网器（图纸）",
+        "战术抓钩（图纸）",
+        "水下呼吸帽（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "构想",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "撒网器（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "战术抓钩（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "水下呼吸帽（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "构想 1～3 阶优先 tactic auto_generated 构想线前三级可优先：撒网器（图纸）、战术抓钩（图纸）、水下呼吸帽（图纸）；与起手特性/专精规划一致再扩展。 奇械师 构想 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。研发图纸与奇械专业；图纸类技能须标注「（图纸）」。 奇械师 构想 优先学 tactic 撒网器（图纸） 战术抓钩（图纸） 水下呼吸帽（图纸）"
+    },
+    {
+      "id": "tip-artificer-prio-支援",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "支援 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "支援",
+      "summary": "支援线前三级可优先：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 支援 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队装置与战场辅助；照明/净化类图纸代表 utility。",
+      "relatedSkills": [
+        "照明浮游球（图纸）",
+        "自动清洁仪（图纸）",
+        "水质净化器（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "支援",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "照明浮游球（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "自动清洁仪（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "水质净化器（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "支援 1～3 阶优先 tactic auto_generated 支援线前三级可优先：照明浮游球（图纸）、自动清洁仪（图纸）、水质净化器（图纸）；与起手特性/专精规划一致再扩展。 奇械师 支援 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队装置与战场辅助；照明/净化类图纸代表 utility。 奇械师 支援 优先学 tactic 照明浮游球（图纸） 自动清洁仪（图纸） 水质净化器（图纸）"
+    },
+    {
+      "id": "tip-artificer-prio-炽擎",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "炽擎 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "炽擎",
+      "summary": "炽擎线前三级可优先：机械恒温、烈焰喷射、蒸汽动能；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 炽擎 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。热能/火焰科技输出；机械恒温/烈焰喷射代表。",
+      "relatedSkills": [
+        "机械恒温",
+        "烈焰喷射",
+        "蒸汽动能"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "炽擎",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "机械恒温",
+          "source": "artificer"
+        },
+        {
+          "name": "烈焰喷射",
+          "source": "artificer"
+        },
+        {
+          "name": "蒸汽动能",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "炽擎 1～3 阶优先 tactic auto_generated 炽擎线前三级可优先：机械恒温、烈焰喷射、蒸汽动能；与起手特性/专精规划一致再扩展。 奇械师 炽擎 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。热能/火焰科技输出；机械恒温/烈焰喷射代表。 奇械师 炽擎 优先学 tactic 机械恒温 烈焰喷射 蒸汽动能"
+    },
+    {
+      "id": "tip-artificer-prio-电涌",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "电涌 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "电涌",
+      "summary": "电涌线前三级可优先：充能、电磁抓钩、电疗；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 电涌 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。雷电/电系科技；充能/电磁抓钩代表。",
+      "relatedSkills": [
+        "充能",
+        "电磁抓钩",
+        "电疗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "电涌",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "充能",
+          "source": "artificer"
+        },
+        {
+          "name": "电磁抓钩",
+          "source": "artificer"
+        },
+        {
+          "name": "电疗",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "电涌 1～3 阶优先 tactic auto_generated 电涌线前三级可优先：充能、电磁抓钩、电疗；与起手特性/专精规划一致再扩展。 奇械师 电涌 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。雷电/电系科技；充能/电磁抓钩代表。 奇械师 电涌 优先学 tactic 充能 电磁抓钩 电疗"
+    },
+    {
+      "id": "tip-artificer-prio-魔枢",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "魔枢 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "魔枢",
+      "summary": "魔枢线前三级可优先：奥术箭、法术护盾、阅读魔法；与起手特性/专精规划一致再扩展。",
+      "detail": "奇械师 魔枢 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。同调与奥术装置；奥术箭/法术护盾代表 hybrid。",
+      "relatedSkills": [
+        "奥术箭",
+        "法术护盾",
+        "阅读魔法"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "魔枢",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "奥术箭",
+          "source": "artificer"
+        },
+        {
+          "name": "法术护盾",
+          "source": "artificer"
+        },
+        {
+          "name": "阅读魔法",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "魔枢 1～3 阶优先 tactic auto_generated 魔枢线前三级可优先：奥术箭、法术护盾、阅读魔法；与起手特性/专精规划一致再扩展。 奇械师 魔枢 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。同调与奥术装置；奥术箭/法术护盾代表 hybrid。 奇械师 魔枢 优先学 tactic 奥术箭 法术护盾 阅读魔法"
+    },
+    {
+      "id": "tip-artificer-start-精准射击",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "起手·精准射击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
-      "detail": "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
+      "summary": "精准射击（起手）：你摆好架势做好射击准备，以确保能够精准的命中敌人 L4: 精准射击改为本次攻命中检定值+3 L9: 当你成功通过专注行动后，精准射击对目标结算造成的伤害值后+2",
+      "detail": "奇械师 4 选 2 起手特性之一。你摆好架势做好射击准备，以确保能够精准的命中敌人 L4: 精准射击改为本次攻命中检定值+3 L9: 当你成功通过专注行动后，精准射击对目标结算造成的伤害值后+2 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "精准射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "精准射击",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "起手·精准射击 tactic auto_generated 精准射击（起手）：你摆好架势做好射击准备，以确保能够精准的命中敌人 L4: 精准射击改为本次攻命中检定值+3 L9: 当你成功通过专注行动后，精准射击对目标结算造成的伤害值后+2 奇械师 4 选 2 起手特性之一。你摆好架势做好射击准备，以确保能够精准的命中敌人 L4: 精准射击改为本次攻命中检定值+3 L9: 当你成功通过专注行动后，精准射击对目标结算造成的伤害值后+2 与后续 起手 风格技能可形成初期连招，但非强制绑定。 奇械师 起手特性 车卡 tactic 精准射击"
+    },
+    {
+      "id": "tip-artificer-start-基础材料学",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "起手·基础材料学",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "基础材料学（起手）：L5: 获得技能点●●",
+      "detail": "奇械师 4 选 2 起手特性之一。L5: 获得技能点●● 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "基础材料学"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "基础材料学",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "起手·基础材料学 tactic auto_generated 基础材料学（起手）：L5: 获得技能点●● 奇械师 4 选 2 起手特性之一。L5: 获得技能点●● 与后续 起手 风格技能可形成初期连招，但非强制绑定。 奇械师 起手特性 车卡 tactic 基础材料学"
+    },
+    {
+      "id": "tip-artificer-start-同调协手",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "起手·同调协手",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "同调协手（起手）：你可以在短休期间使团队拥有的一件已同调的装备解除同调状态，或者允许一名角色直到一次长休前能够使用未经同调的装备 这个效果无法解除具有特殊词条限制的同调装备 L5",
+      "detail": "奇械师 4 选 2 起手特性之一。你可以在短休期间使团队拥有的一件已同调的装备解除同调状态，或者允许一名角色直到一次长休前能够使用未经同调的装备 这个效果无法解除具有特殊词条限制的同调装备 L5: 如果你持有至少四件已同调的装备，你的疲劳值上限+2 L10: 如果此时你持有至少六件已同调的装备，获得技能点●● L15: 如果此时你持有至少八件已同调的装备，你可以选择将其中一件装备的品质上调一个等级，无法以此上调奇珍品质或以上的装备 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "同调协手"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "同调协手",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "起手·同调协手 tactic auto_generated 同调协手（起手）：你可以在短休期间使团队拥有的一件已同调的装备解除同调状态，或者允许一名角色直到一次长休前能够使用未经同调的装备 这个效果无法解除具有特殊词条限制的同调装备 L5 奇械师 4 选 2 起手特性之一。你可以在短休期间使团队拥有的一件已同调的装备解除同调状态，或者允许一名角色直到一次长休前能够使用未经同调的装备 这个效果无法解除具有特殊词条限制的同调装备 L5: 如果你持有至少四件已同调的装备，你的疲劳值上限+2 L10: 如果此时你持有至少六件已同调的装备，获得技能点●● L15: 如果此时你持有至少八件已同调的装备，你可以选择将其中一件装备的品质上调一个等级，无法以此上调奇珍品质或以上的装备 与后续 起手 风格技能可形成初期连招，但非强制绑定。 奇械师 起手特性 车卡 tactic 同调协手"
+    },
+    {
+      "id": "tip-artificer-start-魔法武器",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "起手·魔法武器",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魔法武器（起手）：你接触一把武器并吟唱法咒，为这把武器注入魔力，随后这把武器将会散发出淡紫色的微光 你为一把武器附加魔法能量，使其在持续时间内结算造成的伤害值后额外附加1点奥术伤",
+      "detail": "奇械师 4 选 2 起手特性之一。你接触一把武器并吟唱法咒，为这把武器注入魔力，随后这把武器将会散发出淡紫色的微光 你为一把武器附加魔法能量，使其在持续时间内结算造成的伤害值后额外附加1点奥术伤害 你可以为弓箭、弓弩和枪械等远程武器附魔，令其在视觉上产生特效，但武器射出的箭矢和弹药不会附加魔法武器的额外伤害，除非你是为箭矢或弹药进行附魔 如果你为他人使用的武器进行附魔，那么在这个效应持续时间结束前你会失去对应疲劳值消耗的疲劳值上限 L3: 你可以在施展过程中选择附加魔… 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "魔法武器"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔法武器",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "起手·魔法武器 tactic auto_generated 魔法武器（起手）：你接触一把武器并吟唱法咒，为这把武器注入魔力，随后这把武器将会散发出淡紫色的微光 你为一把武器附加魔法能量，使其在持续时间内结算造成的伤害值后额外附加1点奥术伤 奇械师 4 选 2 起手特性之一。你接触一把武器并吟唱法咒，为这把武器注入魔力，随后这把武器将会散发出淡紫色的微光 你为一把武器附加魔法能量，使其在持续时间内结算造成的伤害值后额外附加1点奥术伤害 你可以为弓箭、弓弩和枪械等远程武器附魔，令其在视觉上产生特效，但武器射出的箭矢和弹药不会附加魔法武器的额外伤害，除非你是为箭矢或弹药进行附魔 如果你为他人使用的武器进行附魔，那么在这个效应持续时间结束前你会失去对应疲劳值消耗的疲劳值上限 L3: 你可以在施展过程中选择附加魔… 与后续 起手 风格技能可形成初期连招，但非强制绑定。 奇械师 起手特性 车卡 tactic 魔法武器"
+    },
+    {
+      "id": "tip-artificer-cr-styles",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "六风格科技树",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "精准/构想/支援/炽擎/电涌/魔枢六线；宜主修 1～2 系，构想线图纸须标注「（图纸）」。",
+      "detail": "勿套用法师八学派；引用须来自 L2 奇械师上下文。",
+      "relatedSkills": [
+        "弹射齿轮",
+        "撒网器（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "战斗风格",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "弹射齿轮",
+          "source": "artificer"
+        },
+        {
+          "name": "撒网器（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "六风格科技树 combat_rule auto_generated 精准/构想/支援/炽擎/电涌/魔枢六线；宜主修 1～2 系，构想线图纸须标注「（图纸）」。 勿套用法师八学派；引用须来自 L2 奇械师上下文。 奇械师 战斗风格 combat_rule 弹射齿轮 撒网器（图纸）"
+    },
+    {
+      "id": "tip-artificer-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "起手四选二",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "4 选 2：精准射击（远程）、基础材料学（图纸/研发）、同调协手（同调）、魔法武器（附魔）。",
+      "detail": "基础材料学为构想线前置；同调协手有短休限制（见描述）。",
+      "relatedSkills": [
+        "精准射击",
+        "基础材料学",
+        "同调协手",
+        "魔法武器"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "精准射击",
+          "source": "artificer"
+        },
+        {
+          "name": "基础材料学",
+          "source": "artificer"
+        },
+        {
+          "name": "同调协手",
+          "source": "artificer"
+        },
+        {
+          "name": "魔法武器",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "起手四选二 combat_rule auto_generated 4 选 2：精准射击（远程）、基础材料学（图纸/研发）、同调协手（同调）、魔法武器（附魔）。 基础材料学为构想线前置；同调协手有短休限制（见描述）。 奇械师 起手特性 combat_rule 精准射击 基础材料学 同调协手 魔法武器"
+    },
+    {
+      "id": "tip-artificer-cr-blueprint",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "图纸与研发",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "构想/支援线多含「（图纸）」技能；须标注图纸，勿当作即时战技。",
+      "detail": "专业列表与万用模组/奇械构装专精相关；零件消耗见技能描述。",
+      "relatedSkills": [
+        "撒网器（图纸）",
+        "战术抓钩（图纸）"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "图纸",
+        "构想",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "撒网器（图纸）",
+          "source": "artificer"
+        },
+        {
+          "name": "战术抓钩（图纸）",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "图纸与研发 combat_rule auto_generated 构想/支援线多含「（图纸）」技能；须标注图纸，勿当作即时战技。 专业列表与万用模组/奇械构装专精相关；零件消耗见技能描述。 奇械师 图纸 构想 combat_rule 撒网器（图纸） 战术抓钩（图纸）"
+    },
+    {
+      "id": "tip-artificer-cr-firearm",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "枪械与弹药",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "奇械师熟练枪械；精准线深化远程，消耗弹药，相邻/超距规则见基础规则。",
+      "detail": "精准射击为常见起手；勿与法师塑能箭混淆。",
+      "relatedSkills": [
+        "精准射击",
+        "战术装填"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "枪械",
+        "远程",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "精准射击",
+          "source": "artificer"
+        },
+        {
+          "name": "战术装填",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "枪械与弹药 combat_rule auto_generated 奇械师熟练枪械；精准线深化远程，消耗弹药，相邻/超距规则见基础规则。 精准射击为常见起手；勿与法师塑能箭混淆。 奇械师 枪械 远程 combat_rule 精准射击 战术装填"
+    },
+    {
+      "id": "tip-artificer-cr-attune",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "同调与魔枢",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "同调协手解除装备同调；魔枢线深化装置与同调上限相关能力。",
+      "detail": "同调规则见基础规则与创建页；具体以技能描述为准。",
+      "relatedSkills": [
+        "同调协手",
+        "法术护盾"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "同调",
+        "魔枢",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "同调协手",
+          "source": "artificer"
+        },
+        {
+          "name": "法术护盾",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "同调与魔枢 combat_rule auto_generated 同调协手解除装备同调；魔枢线深化装置与同调上限相关能力。 同调规则见基础规则与创建页；具体以技能描述为准。 奇械师 同调 魔枢 combat_rule 同调协手 法术护盾"
+    },
+    {
+      "id": "tip-artificer-cr-timeline",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "曙光年代限制",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "奇械师仅可在曙光年代时间线游玩；顾问引用时勿假设其他年代可用。",
+      "detail": "timelineNote 见 L1 职业基础；模组年代由 DM 裁定。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "时间线",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "曙光年代限制 combat_rule auto_generated 奇械师仅可在曙光年代时间线游玩；顾问引用时勿假设其他年代可用。 timelineNote 见 L1 职业基础；模组年代由 DM 裁定。 奇械师 时间线 combat_rule"
+    },
+    {
+      "id": "tip-artificer-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "FP 与装置节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战技/法术消耗 FP；图纸部署与枪械输出分回合规划，避免空 FP。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "快速射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "快速射击",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "FP 与装置节奏 combat_rule auto_generated 战技/法术消耗 FP；图纸部署与枪械输出分回合规划，避免空 FP。 短休/长休回复见基础规则；标识由 DM 结算。 奇械师 FP combat_rule 快速射击"
+    },
+    {
+      "id": "tip-artificer-cr-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "三项专精与熟练",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "奇械构装/万用模组/脑力强化；创建八选四熟练须用完整子项名，重复合法但须说明 trade-off。",
+      "detail": "知识/工程学子项与专精规划一致；勿编造未收录专业名。",
+      "relatedSkills": [
+        "基础材料学"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "奇械师",
+        "专精",
+        "熟练",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "基础材料学",
+          "source": "artificer"
+        }
+      ],
+      "searchText": "三项专精与熟练 combat_rule auto_generated 奇械构装/万用模组/脑力强化；创建八选四熟练须用完整子项名，重复合法但须说明 trade-off。 知识/工程学子项与专精规划一致；勿编造未收录专业名。 奇械师 专精 熟练 combat_rule 基础材料学"
+    },
+    {
+      "id": "tip-artificer-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "奇械师"
+      ],
+      "title": "奇械师关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "智力：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "智力≥15 为常见目标；创建页 FP 关键属性可能为魅力，以页面 keyAttr 为准。巧手/工程学与图纸 build 协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "奇械师",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "奇械师 创建 车卡 创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。 chargen auto_stub"
+      "searchText": "奇械师关键属性 chargen auto_generated 智力：创建购点通常至少一项≥15，与主武器/战斗风格一致。 智力≥15 为常见目标；创建页 FP 关键属性可能为魅力，以页面 keyAttr 为准。巧手/工程学与图纸 build 协同。 奇械师 车卡 属性 chargen"
     },
     {
-      "id": "tip-artificer-chargen-2",
+      "id": "tip-artificer-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "奇械师"
       ],
-      "title": "奇械师创建要点",
+      "title": "奇械师专精选择",
       "kind": "chargen",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。",
+      "summary": "创建页专精：奇械构装、万用模组、脑力强化；与武器与风格规划一致即可。",
+      "detail": "奇械构装：工程学（知识-工程学）熟练；构想/支援图纸 build 协同。 万用模组：知识熟练与额外专业槽；研发图纸扩展专业列表。 脑力强化：智力检定增强；逻辑/专注熟练协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "奇械师",
         "车卡",
-        "创建"
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "奇械师 创建 车卡 顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。 chargen auto_stub"
-    },
-    {
-      "id": "tip-artificer-partial-note",
-      "scope": "class",
-      "applicableClasses": [
-        "奇械师"
-      ],
-      "title": "奇械师顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
-      "style": null,
-      "summary": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "relatedSkills": [],
-      "relatedTipIds": [],
-      "tags": [
-        "奇械师",
-        "partial",
-        "顾问"
-      ],
-      "skillRefs": [],
-      "searchText": "奇械师 partial 顾问 奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "奇械师专精选择 chargen auto_generated 创建页专精：奇械构装、万用模组、脑力强化；与武器与风格规划一致即可。 奇械构装：工程学（知识-工程学）熟练；构想/支援图纸 build 协同。 万用模组：知识熟练与额外专业槽；研发图纸扩展专业列表。 脑力强化：智力检定增强；逻辑/专注熟练协同。 奇械师 车卡 专精 chargen"
     }
   ]
 }

@@ -3,8 +3,8 @@
     "phase": "5-batch10",
     "generatedAt": "2026-07-07",
     "classCount": 14,
-    "fullReady": 13,
-    "partialReady": 1
+    "fullReady": 14,
+    "partialReady": 0
   },
   "audits": [
     {
@@ -84,11 +84,11 @@
     },
     {
       "className": "奇械师",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -100,7 +100,7 @@
         },
         {
           "id": "l2_index",
-          "label": "L2 索引 ≥40 技能",
+          "label": "L2 索引 ≥80 技能",
           "pass": true,
           "note": "got 100"
         },
@@ -136,31 +136,25 @@
         },
         {
           "id": "hints_styles",
-          "label": "hints 战斗风格 ≥3",
+          "label": "hints 战斗风格 ≥6",
           "pass": true,
           "note": "got 6"
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 9"
+          "note": "got 26"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=artificer_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {

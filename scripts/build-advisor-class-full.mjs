@@ -1020,6 +1020,102 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  奇械师: {
+    defaultFullL2MinSkills: 80,
+    fpKeyLabel: '智力',
+    specBuildHints: {
+      奇械构装: '工程学（知识-工程学）熟练；构想/支援图纸 build 协同。',
+      万用模组: '知识熟练与额外专业槽；研发图纸扩展专业列表。',
+      脑力强化: '智力检定增强；逻辑/专注熟练协同。',
+    },
+    styleRoleHints: {
+      精准: '远程枪械与命中加值；弹射齿轮/战术装填代表输出。',
+      构想: '研发图纸与奇械专业；图纸类技能须标注「（图纸）」。',
+      支援: '团队装置与战场辅助；照明/净化类图纸代表 utility。',
+      炽擎: '热能/火焰科技输出；机械恒温/烈焰喷射代表。',
+      电涌: '雷电/电系科技；充能/电磁抓钩代表。',
+      魔枢: '同调与奥术装置；奥术箭/法术护盾代表 hybrid。',
+    },
+    chargenAttrDetail: '智力≥15 为常见目标；创建页 FP 关键属性可能为魅力，以页面 keyAttr 为准。巧手/工程学与图纸 build 协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-styles',
+        title: '六风格科技树',
+        summary: '精准/构想/支援/炽擎/电涌/魔枢六线；宜主修 1～2 系，构想线图纸须标注「（图纸）」。',
+        detail: '勿套用法师八学派；引用须来自 L2 奇械师上下文。',
+        relatedSkills: ['弹射齿轮', '撒网器（图纸）'],
+        tags: [className, '战斗风格', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手四选二',
+        summary: '4 选 2：精准射击（远程）、基础材料学（图纸/研发）、同调协手（同调）、魔法武器（附魔）。',
+        detail: '基础材料学为构想线前置；同调协手有短休限制（见描述）。',
+        relatedSkills: ['精准射击', '基础材料学', '同调协手', '魔法武器'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-blueprint',
+        title: '图纸与研发',
+        summary: '构想/支援线多含「（图纸）」技能；须标注图纸，勿当作即时战技。',
+        detail: '专业列表与万用模组/奇械构装专精相关；零件消耗见技能描述。',
+        relatedSkills: ['撒网器（图纸）', '战术抓钩（图纸）'],
+        tags: [className, '图纸', '构想', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-firearm',
+        title: '枪械与弹药',
+        summary: '奇械师熟练枪械；精准线深化远程，消耗弹药，相邻/超距规则见基础规则。',
+        detail: '精准射击为常见起手；勿与法师塑能箭混淆。',
+        relatedSkills: ['精准射击', '战术装填'],
+        tags: [className, '枪械', '远程', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-attune',
+        title: '同调与魔枢',
+        summary: '同调协手解除装备同调；魔枢线深化装置与同调上限相关能力。',
+        detail: '同调规则见基础规则与创建页；具体以技能描述为准。',
+        relatedSkills: ['同调协手', '法术护盾'],
+        tags: [className, '同调', '魔枢', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-timeline',
+        title: '曙光年代限制',
+        summary: '奇械师仅可在曙光年代时间线游玩；顾问引用时勿假设其他年代可用。',
+        detail: 'timelineNote 见 L1 职业基础；模组年代由 DM 裁定。',
+        relatedSkills: [],
+        tags: [className, '时间线', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与装置节奏',
+        summary: '战技/法术消耗 FP；图纸部署与枪械输出分回合规划，避免空 FP。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['快速射击'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-spec',
+        title: '三项专精与熟练',
+        summary: '奇械构装/万用模组/脑力强化；创建八选四熟练须用完整子项名，重复合法但须说明 trade-off。',
+        detail: '知识/工程学子项与专精规划一致；勿编造未收录专业名。',
+        relatedSkills: ['基础材料学'],
+        tags: [className, '专精', '熟练', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      const armor = refClass?.armor || '轻甲、中甲、盾牌';
+      if (/轻甲|中甲|盾牌/.test(armor)) {
+        rules.push('奇械师熟练轻甲、中甲与盾牌；AC 计算见基础规则与创建页。');
+      }
+      if (/枪械/.test(refClass?.weapons || '')) {
+        rules.push('枪械消耗弹药；装填/射速见基础规则战斗章。');
+      }
+      rules.push('图纸类能力须先研发/习得对应专业；零件与热能/电能资源见各技能描述。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {
@@ -1196,6 +1292,7 @@ function buildFullClassDoc(className, profile, refClass, weaponProfs, index, exi
     multiclassRequirements: mcReq || null,
     specializations,
     combatStyles,
+    ...(existing?.timelineNote ? { timelineNote: existing.timelineNote } : {}),
   };
 }
 

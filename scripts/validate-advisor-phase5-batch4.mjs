@@ -24,7 +24,7 @@ else fail('advisor-class-l2 module');
 
 for (const cn of PHYSICAL) {
   const p = getClassProfile(cn);
-  const tierOk = ['战士', '蛮斗士', '猎人'].includes(cn) ? p.tier === 'full' : p.tier === 'partial';
+  const tierOk = ['战士', '蛮斗士', '猎人', '武僧'].includes(cn) ? p.tier === 'full' : p.tier === 'partial';
   if (tierOk && p.l2Layer && p.l2Slug) pass(`registry ${cn}`);
   else fail(`registry ${cn}`, JSON.stringify(p));
 }

@@ -22,10 +22,10 @@ if (fs.existsSync(path.join(ROOT, 'scripts/build-advisor-class-tier-audit.mjs'))
 else fail('tier audit build script');
 
 const audit = auditAllClasses();
-if (audit.meta.fullReady === 13) pass('13 full ready');
+if (audit.meta.fullReady === 14) pass('14 full ready');
 else fail('full ready', audit.meta.fullReady);
 
-if (audit.meta.partialReady === 1) pass('1 partial ready');
+if (audit.meta.partialReady === 0) pass('0 partial ready');
 else fail('partial ready', audit.meta.partialReady);
 
 for (const cn of ['战士', '奇械师', '德鲁伊']) {
@@ -65,9 +65,9 @@ const artPrompt = buildSystemPrompt({
   intent: 'class_skills',
   promptProfile: 'artificer_skills',
   className: '奇械师',
-  tier: 'partial',
+  tier: 'full',
 });
-if (artPrompt.includes('奇械师') && artPrompt.includes('标识系统')) pass('prompt artificer_skills');
+if (artPrompt.includes('奇械师技能') && artPrompt.includes('full 档')) pass('prompt artificer_skills');
 else fail('prompt artificer');
 
 const entityPrompt = buildSystemPrompt({ intent: 'entity_qa', mode: 'entity_qa', promptProfile: 'entity_qa' });

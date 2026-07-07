@@ -1,11 +1,11 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch3",
+    "phase": "5-full",
     "targetClass": "奇械师",
-    "tier": "partial",
-    "status": "minimal",
-    "note": "风格摘要已填；种族/背景推荐待补充"
+    "tier": "full",
+    "status": "auto",
+    "note": "战斗风格摘要为 auto；种族/背景/build 推荐待人工补充"
   },
   "primaryAttr": {
     "name": "智力",
@@ -23,15 +23,15 @@
   "specializationHints": [
     {
       "name": "奇械构装",
-      "buildHint": "获得工程学熟练度（知识-工程学）"
+      "buildHint": "工程学（知识-工程学）熟练；构想/支援图纸 build 协同。"
     },
     {
       "name": "万用模组",
-      "buildHint": "获得知识熟练度与额外专业槽位"
+      "buildHint": "知识熟练与额外专业槽；研发图纸扩展专业列表。"
     },
     {
       "name": "脑力强化",
-      "buildHint": "提升一次智力检定效果"
+      "buildHint": "智力检定增强；逻辑/专注熟练协同。"
     }
   ],
   "styleHints": [
@@ -93,8 +93,6 @@
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
   "chargenTips": [
-    "创建页专精：奇械构装/万用模组/脑力强化；注意知识/工程学子项与职业八选四不重复。",
-    "顾问档位 partial：可问技能名与 L1 创建，勿假设已有标识或完整进阶路线。"
-  ],
-  "advisorPartialNote": "奇械师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    "奇械师 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。"
+  ]
 }

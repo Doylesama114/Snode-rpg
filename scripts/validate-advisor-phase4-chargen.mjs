@@ -161,7 +161,7 @@ if (qWar.includes('力量') && qWar.includes('15')) pass('policy warrior key att
 else fail('policy warrior', qWar.slice(0, 120));
 
 const qArt = buildChargenBubbleQuery(ARTIFICER_STEP0);
-if (qArt.includes('奇械师') && qArt.includes('尚未完整')) pass('policy artificer partial note');
+if (qArt.includes('奇械师') && qArt.includes('奇械构装')) pass('policy artificer step0 specs');
 else fail('policy artificer', qArt.slice(0, 120));
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');

@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7051",
-    "note": "14职业顾问：13 full（含魔契师）；7051魔契师升full"
+    "version": "1.0.7052",
+    "note": "14职业顾问全部full；7052奇械师升full Phase5收尾"
   },
   "defaults": {
     "tier": "basic",
@@ -22,7 +22,7 @@
       "hasMageSpecs": true
     },
     "奇械师": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "智力",
       "isCaster": true,
       "promptProfile": "artificer_skills",
@@ -49,7 +49,8 @@
         "万用模组",
         "脑力强化"
       ],
-      "advisorNote": "奇械师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "fullL2MinSkills": 80,
+      "l5MinTips": 20
     },
     "蛮斗士": {
       "tier": "full",

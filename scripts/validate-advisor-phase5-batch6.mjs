@@ -18,7 +18,7 @@ function fail(n, d) { failed++; console.error('  ✗', n, d || ''); }
 
 for (const cn of FINAL_TWO) {
   const p = getClassProfile(cn);
-  if (p.tier === 'partial' && p.l2Layer) pass(`registry ${cn}`);
+  if (p.tier === 'full' && p.l2Layer) pass(`registry ${cn}`);
   else fail(`registry ${cn}`, JSON.stringify(p));
 }
 

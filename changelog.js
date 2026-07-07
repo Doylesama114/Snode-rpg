@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7052',
+    date: '2026-07-07',
+    changes: [
+      '奇械师顾问升full(Phase5收尾/14职业全full)'
+    ]
+  },
+
+
+  {
     version: '1.0.7051',
     date: '2026-07-07',
     changes: [

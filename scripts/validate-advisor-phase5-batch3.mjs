@@ -19,7 +19,7 @@ function pass(n) { passed++; console.log('  ✓', n); }
 function fail(n, d) { failed++; console.error('  ✗', n, d || ''); }
 
 const profile = getClassProfile('奇械师');
-if (profile.tier === 'partial' && profile.l2Layer === 'L2-artificer') pass('registry artificer partial + l2Layer');
+if (profile.tier === 'full' && profile.l2Layer === 'L2-artificer') pass('registry artificer full + l2Layer');
 else fail('registry artificer', JSON.stringify(profile));
 
 const idxPath = path.join(ADVISOR, 'skills', 'artificer_index.json');
@@ -35,7 +35,7 @@ if (fs.existsSync(classPath)) pass('artificer_class.json');
 else fail('artificer_class.json');
 
 const hints = loadClassHintsFile('奇械师');
-if (hints?.styleHints?.length >= 6 && hints.advisorPartialNote) pass('奇械师 hints');
+if (hints?.styleHints?.length >= 6 && hints.meta?.tier === 'full' && !hints.advisorPartialNote) pass('奇械师 hints full');
 else fail('奇械师 hints');
 
 const store = loadAdvisorStore();
@@ -75,7 +75,7 @@ if ((retArt.results['L2-artificer'] || []).length > 0) pass('retrieve artificer 
 else fail('retrieve artificer L2');
 
 const ctxArt = formatContext(retArt);
-if (ctxArt.includes('L2 奇械师技能') && !ctxArt.includes('L2 法师技能') && ctxArt.includes('部分支持')) {
+if (ctxArt.includes('L2 奇械师技能') && !ctxArt.includes('L2 法师技能') && !ctxArt.includes('部分支持')) {
   pass('formatContext artificer no mage bleed');
 } else fail('formatContext artificer', ctxArt.slice(0, 300));
 
