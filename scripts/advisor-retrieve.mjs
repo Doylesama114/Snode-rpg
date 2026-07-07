@@ -20,6 +20,11 @@ import {
   getWizardStepEntityHints,
 } from './advisor-wizard-state.mjs';
 import { buildChargenExtraContext } from './advisor-chargen-policy.mjs';
+import { getClassProfile } from './advisor-chargen-registry.mjs';
+import {
+  collectTipsPool,
+  resolvePrimaryAttrHint,
+} from './advisor-class-content.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -66,6 +71,10 @@ export function loadAdvisorStore() {
       : { byName: {} },
     feats: loadJson('feats.json'),
     tips: loadJson('combos/mage_tips.json'),
+    universalTips: fs.existsSync(path.join(ADVISOR, 'combos/universal_tips.json'))
+      ? loadJson('combos/universal_tips.json')
+      : { tips: [] },
+    classRegistry: loadJson('chargen/class_registry.json'),
   };
   return _cache;
 }
@@ -430,7 +439,7 @@ export function formatMageClassBasics(store, query = '') {
   return lines.join('\n');
 }
 
-function buildL1Results(store, query, queryTokens, limit, entityHits = []) {
+function buildL1Results(store, query, queryTokens, limit, entityHits = [], className = null) {
   const races = searchList(
     store.races.races,
     (r) => `${r.name} ${r.intBonus ?? ''} ${r.description || ''} ${JSON.stringify(r)}`,
@@ -444,11 +453,12 @@ function buildL1Results(store, query, queryTokens, limit, entityHits = []) {
     Math.ceil(limit / 2),
   );
 
+  const isMageContext = !className || className === '法师';
   const styles = detectStyles(query);
-  let styleHints = store.mageHints.styleHints || [];
+  let styleHints = isMageContext ? (store.mageHints.styleHints || []) : [];
   if (styles.length) {
     styleHints = styleHints.filter((h) => styles.includes(h.name));
-  } else if (/风格|流派|咒法|塑能/.test(query)) {
+  } else if (isMageContext && /风格|流派|咒法|塑能/.test(query)) {
     styleHints = styleHints.slice(0, 4);
   }
 
@@ -456,19 +466,23 @@ function buildL1Results(store, query, queryTokens, limit, entityHits = []) {
   const skipClassBasics = entityHits.length > 0
     && !entityTypes.has('class')
     && !/武器|护甲|专精|起手|装备|创建|车卡|法师|初始|购点|输出|怎么选/.test(query);
-  const includeClassBasics = !skipClassBasics
+  const includeClassBasics = isMageContext && !skipClassBasics
     && (/武器|护甲|熟练|豁免|专精|起手|装备|创建|车卡|法师.*(能|会|可以)|初始|购点|种族|背景|输出|怎么选/.test(query)
       || limit >= 4);
 
+  const primaryAttr = resolvePrimaryAttrHint(store, className);
+  const mageRec = isMageContext ? store.mageHints : null;
+
   return {
-    primaryAttr: store.mageHints.primaryAttr,
-    recommendedRaces: store.mageHints.recommendedRaces,
-    recommendedBackgrounds: store.mageHints.recommendedBackgrounds?.slice(0, 8),
+    className: className || null,
+    primaryAttr,
+    recommendedRaces: mageRec?.recommendedRaces,
+    recommendedBackgrounds: mageRec?.recommendedBackgrounds?.slice(0, 8),
     classBasics: includeClassBasics ? formatMageClassBasics(store, query) : null,
     races,
     backgrounds,
     styleHints,
-    combatStyles: styles.length
+    combatStyles: styles.length && isMageContext
       ? (store.mageClass.combatStyles || []).filter((s) => styles.includes(s.name))
       : [],
   };
@@ -591,15 +605,24 @@ function buildL4Results(store, query, queryTokens, limit) {
   );
 }
 
-function buildL5Results(store, query, queryTokens, limit) {
+function buildL5Results(store, query, queryTokens, limit, className = null) {
   const styles = detectStyles(query);
+  const pool = collectTipsPool(store, className);
   return searchList(
-    store.tips.tips,
+    pool,
     (t) => t.searchText || `${t.title} ${t.summary} ${t.detail}`,
     queryTokens,
     limit,
     styles.length ? (t) => !t.style || styles.includes(t.style) : () => true,
   );
+}
+
+function resolveRetrievalClass(wizardState, chargenState, snapshot) {
+  return wizardState?.selections?.className
+    || chargenState?.char?.className
+    || snapshot?.classes?.[0]?.name
+    || snapshot?.className
+    || null;
 }
 
 /**
@@ -609,12 +632,18 @@ function buildL5Results(store, query, queryTokens, limit) {
 export function retrieve(query, options = {}) {
   const store = loadAdvisorStore();
   const wizardState = normalizeWizardState(options.wizardState);
+  const retrievalClass = resolveRetrievalClass(
+    wizardState,
+    options.chargenState,
+    options.snapshot,
+  );
   const entityHits = resolveEntities(query, store.entities);
   const route = routeQuery({
     query,
     mode: options.mode,
     entityHits,
     wizardState,
+    className: retrievalClass,
   });
   const queryTokens = tokenize(query);
   const topK = { ...route.topK, ...options.topK };
@@ -655,7 +684,7 @@ export function retrieve(query, options = {}) {
         layers.L0 = buildL0Results(store, query, queryTokens, k);
         break;
       case 'L1':
-        layers.L1 = buildL1Results(store, query, queryTokens, k, mergedEntities);
+        layers.L1 = buildL1Results(store, query, queryTokens, k, mergedEntities, retrievalClass);
         break;
       case 'L2-mage':
         layers['L2-mage'] = buildL2MageResults(store, query, queryTokens, k);
@@ -670,7 +699,7 @@ export function retrieve(query, options = {}) {
         layers.L4 = buildL4Results(store, query, queryTokens, k);
         break;
       case 'L5':
-        layers.L5 = buildL5Results(store, query, queryTokens, k);
+        layers.L5 = buildL5Results(store, query, queryTokens, k, retrievalClass);
         break;
       default:
         break;
@@ -707,6 +736,7 @@ export function retrieve(query, options = {}) {
     attrsParsed: attrs,
     hasSnapshot: !!l6Analysis,
     wizardState,
+    retrievalClass,
     entities: mergedEntities,
     results: layers,
   };
@@ -715,6 +745,9 @@ export function retrieve(query, options = {}) {
 export function formatContext(retrieval) {
   const lines = [];
   lines.push(`# 检索上下文（模式: ${retrieval.mode || 'advisor'}；意图: ${retrieval.intent}）`);
+  if (retrieval.retrievalClass) {
+    lines.push(`当前职业: ${retrieval.retrievalClass}`);
+  }
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
 
@@ -748,7 +781,7 @@ export function formatContext(retrieval) {
     const l1 = retrieval.results.L1;
     lines.push('## L1 车卡');
     if (l1.classBasics) {
-      lines.push('### 法师职业基础（角色创建页）');
+      lines.push(`### ${l1.className === '法师' || !l1.className ? '法师' : l1.className}职业基础（角色创建页）`);
       lines.push(l1.classBasics);
     }
     const entityRaceIds = new Set(
@@ -819,7 +852,8 @@ export function formatContext(retrieval) {
   if (retrieval.results.L5?.length) {
     lines.push('## L5 小贴士');
     for (const t of retrieval.results.L5.slice(0, 8)) {
-      lines.push(`- ${t.title}: ${t.summary}`);
+      const scope = t.scope ? `[${t.scope}] ` : '';
+      lines.push(`- ${scope}${t.title}: ${t.summary}`);
     }
     lines.push('');
   }

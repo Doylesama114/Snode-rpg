@@ -2,6 +2,7 @@
  * Phase 3 — query router: mode + intent + layer plan + prompt profile.
  */
 import { pickAdvancementName } from './advisor-router-utils.mjs';
+import { getClassProfile, isFullTier } from './advisor-chargen-registry.mjs';
 
 export const MODES = ['advisor', 'wizard', 'entity_qa'];
 
@@ -99,6 +100,36 @@ export const INTENT_RULES = [
   },
 ];
 
+const MAGE_QUERY_RE = /法师|塑能|咒法|预言|防护|附魔|死灵|幻术|变化|法术|魔弹|飞弹|寒冰|火球/;
+
+function allowL2Mage(className, query) {
+  if (className === '法师' && isFullTier(getClassProfile('法师'))) return true;
+  if (!className && MAGE_QUERY_RE.test(query || '')) return true;
+  return false;
+}
+
+export function applyClassRouteFilter(route, ctx = {}) {
+  const { className, query } = ctx;
+  if (allowL2Mage(className, query)) return route;
+
+  route.layers = route.layers.filter((l) => l !== 'L2-mage');
+  delete route.topK['L2-mage'];
+
+  if (route.intent === 'mage_skills' || route.intent === 'style_compare') {
+    route.layers = [...new Set([...route.layers.filter((l) => l !== 'L2-mage'), 'L5', 'L0'])];
+    route.topK.L5 = route.topK.L5 || 6;
+    route.topK.L0 = route.topK.L0 || 4;
+    route.promptProfile = route.intent === 'style_compare' ? 'tips' : 'general';
+  }
+
+  if (route.intent === 'tips' && !route.layers.includes('L5')) {
+    route.layers.push('L5');
+    route.topK.L5 = route.topK.L5 || 8;
+  }
+
+  return route;
+}
+
 const DEFAULT_RULE = {
   id: 'general',
   layers: ['L0', 'L1', 'L2-mage'],
@@ -158,7 +189,7 @@ export function routeIntent(query) {
  * @param {{ query: string, mode?: string, entityHits?: object[], wizardState?: object }} input
  */
 export function routeQuery(input) {
-  const { query, entityHits = [], wizardState = null } = input;
+  const { query, entityHits = [], wizardState = null, className = null } = input;
   const mode = normalizeMode(input.mode, query, wizardState);
   const base = routeIntent(query);
   let intent = base.id;
@@ -173,9 +204,14 @@ export function routeQuery(input) {
     intent = 'wizard_step';
   }
 
-  const rule = intent === 'wizard_step'
+  let rule = intent === 'wizard_step'
     ? { ...DEFAULT_RULE, id: 'wizard_step', layers: ['L1'], topK: { L1: 10 }, promptProfile: 'wizard' }
     : pickRuleByIntent(intent);
+
+  rule = applyClassRouteFilter(
+    { ...rule, mode, layers: [...rule.layers], topK: { ...rule.topK } },
+    { className: className || wizardState?.selections?.className, query },
+  );
 
   return {
     mode,

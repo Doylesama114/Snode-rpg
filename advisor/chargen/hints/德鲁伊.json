@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "5-batch2",
+    "targetClass": "德鲁伊",
+    "tier": "basic",
+    "status": "placeholder",
+    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+  },
+  "primaryAttr": {
+    "name": "感知",
+    "targetAtCreation": 15,
+    "reason": ""
+  },
+  "roleSummary": {
+    "positioning": [],
+    "blurb": ""
+  },
+  "specializationHints": [],
+  "styleHints": [],
+  "recommendedRaces": [],
+  "recommendedBackgrounds": [],
+  "chargenTips": []
+}

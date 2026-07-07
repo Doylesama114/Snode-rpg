@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7021',
+    date: '2026-07-07',
+    changes: [
+      'Build顾问：通用战斗小贴士池(universal_tips)',
+      '各职业hints/tips空壳',
+      '非法师检索不再注入法师L2技能'
+    ]
+  },
+
+
+  {
     version: '1.0.7020',
     date: '2026-07-07',
     changes: [

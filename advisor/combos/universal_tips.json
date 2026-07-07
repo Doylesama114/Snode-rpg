@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "layer": "L5",
+    "phase": "5-batch2",
+    "type": "universal_tips",
+    "count": 10,
+    "note": "全职业通用战斗规则 + 施法者通用规则；自 mage_tips combat_rule 迁移",
+    "generatedAt": "2026-07-07"
+  },
+  "tips": [
+    {
+      "id": "tip-uni-T03",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T03",
+      "title": "单场战斗：反应种类上限",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "同一场战斗中，你最多只能选择并释放三种你拥有的反应动作（按反应技能种类计，非总次数）。",
+      "detail": "勿在 build 中堆砌四种以上反应流并预期全能应对；应明确优先级，舍弃最不常触发的反应技。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "反应",
+        "战斗规则",
+        "限制"
+      ],
+      "skillRefs": [],
+      "searchText": "单场战斗：反应种类上限 universal 同一场战斗中，你最多只能选择并释放三种你拥有的反应动作（按反应技能种类计，非总次数）。 勿在 build 中堆砌四种以上反应流并预期全能应对；应明确优先级，舍弃最不常触发的反应技。 反应 战斗规则 限制"
+    },
+    {
+      "id": "tip-uni-T04",
+      "scope": "caster",
+      "migratedFrom": "tip-mage-T04",
+      "title": "贴脸施法：施法攻击劣势",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "当敌人在你的触及范围内时，你的施法攻击命中检定具有劣势。",
+      "detail": "贴脸时优先用非施法攻击手段、位移拉开、或咒法魔爆术等近身反制。施法前应主动管理站位，避免在敌人触及内读条高价值法术。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "施法攻击",
+        "劣势",
+        "触及",
+        "走位"
+      ],
+      "skillRefs": [],
+      "searchText": "贴脸施法：施法攻击劣势 caster 当敌人在你的触及范围内时，你的施法攻击命中检定具有劣势。 贴脸时优先用非施法攻击手段、位移拉开、或咒法魔爆术等近身反制。施法前应主动管理站位，避免在敌人触及内读条高价值法术。 施法攻击 劣势 触及 走位"
+    },
+    {
+      "id": "tip-uni-T06",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T06",
+      "title": "借机攻击与规避",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "从敌人身旁离开，或单次移动超过三格时，敌人可进行一次不占动作的回合外普通攻击（借机攻击）。使用「回避」+合法移动可规避借机。",
+      "detail": "带迅捷关键词的位移（如带迅捷的位移技能）不触发借机攻击；被击退造成的位移亦不触发。规划脱离路线时优先迅捷跃迁或回避，而非盲目全速穿人。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "借机攻击",
+        "移动",
+        "回避",
+        "迅捷"
+      ],
+      "skillRefs": [],
+      "searchText": "借机攻击与规避 universal 从敌人身旁离开，或单次移动超过三格时，敌人可进行一次不占动作的回合外普通攻击（借机攻击）。使用「回避」+合法移动可规避借机。 带迅捷关键词的位移（如带迅捷的位移技能）不触发借机攻击；被击退造成的位移亦不触发。规划脱离路线时优先迅捷跃迁或回避，而非盲目全速穿人。 借机攻击 移动 回避 迅捷"
+    },
+    {
+      "id": "tip-uni-T07",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T07",
+      "title": "地图边缘撤离",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "在地图边缘撤离时消耗一整回合；身旁每一个敌人各可对你触发一次借机攻击。",
+      "detail": "撤离不是免费脱身。撤离前应清空贴身敌人、用控场/位移拉开，或确认承受得起多次借机伤害。勿在多人贴脸时贸然边缘撤离。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "撤离",
+        "借机攻击",
+        "地图边缘"
+      ],
+      "skillRefs": [],
+      "searchText": "地图边缘撤离 universal 在地图边缘撤离时消耗一整回合；身旁每一个敌人各可对你触发一次借机攻击。 撤离不是免费脱身。撤离前应清空贴身敌人、用控场/位移拉开，或确认承受得起多次借机伤害。勿在多人贴脸时贸然边缘撤离。 撤离 借机攻击 地图边缘"
+    },
+    {
+      "id": "tip-uni-T08",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T08",
+      "title": "移动：全速与基础",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "一个回合内可用主要动作全速移动，或用附赠动作进行基础移动（规则动作表：全速移动与 ★ 基础移动不可在同一主要动作位重复占用）。",
+      "detail": "施法仍消耗对应动作与 FP。规划「移动+施法」回合时，先算动作经济再选法术，避免移动占满后无法完成关键施法。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "移动",
+        "主要动作",
+        "附赠动作"
+      ],
+      "skillRefs": [],
+      "searchText": "移动：全速与基础 universal 一个回合内可用主要动作全速移动，或用附赠动作进行基础移动（规则动作表：全速移动与 ★ 基础移动不可在同一主要动作位重复占用）。 施法仍消耗对应动作与 FP。规划「移动+施法」回合时，先算动作经济再选法术，避免移动占满后无法完成关键施法。 移动 主要动作 附赠动作"
+    },
+    {
+      "id": "tip-uni-T10",
+      "scope": "caster",
+      "migratedFrom": "tip-mage-T10",
+      "title": "减速：施法攻击优势",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "敌人处于减速状态时，你对该目标的施法攻击具有优势。",
+      "detail": "冰霜塑能线（寒冰箭、冰锥术、冰霜新星等）与减速联动明显。战术上可先上减速再集火施法攻击，提高命中与伤害稳定性。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "减速",
+        "优势",
+        "施法攻击",
+        "冰霜"
+      ],
+      "skillRefs": [],
+      "searchText": "减速：施法攻击优势 caster 敌人处于减速状态时，你对该目标的施法攻击具有优势。 冰霜塑能线（寒冰箭、冰锥术、冰霜新星等）与减速联动明显。战术上可先上减速再集火施法攻击，提高命中与伤害稳定性。 减速 优势 施法攻击 冰霜"
+    },
+    {
+      "id": "tip-uni-T11",
+      "scope": "caster",
+      "migratedFrom": "tip-mage-T11",
+      "title": "失能：施法攻击极大优势",
+      "kind": "combat_rule",
+      "confidence": "user_provided",
+      "style": null,
+      "summary": "敌人处于失能状态（如眩晕、昏睡等）时，你对该目标的施法攻击具有极大优势。",
+      "detail": "硬控后接高伤塑能（火球术、炎爆术等）收益极高。注意维持专注的法术在目标苏醒后是否仍有效，以及控场技能是否会被伤害打破。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "失能",
+        "极大优势",
+        "施法攻击",
+        "硬控"
+      ],
+      "skillRefs": [],
+      "searchText": "失能：施法攻击极大优势 caster 敌人处于失能状态（如眩晕、昏睡等）时，你对该目标的施法攻击具有极大优势。 硬控后接高伤塑能（火球术、炎爆术等）收益极高。注意维持专注的法术在目标苏醒后是否仍有效，以及控场技能是否会被伤害打破。 失能 极大优势 施法攻击 硬控"
+    },
+    {
+      "id": "tip-uni-T19",
+      "scope": "caster",
+      "migratedFrom": "tip-mage-T19",
+      "title": "专注：施法者生命线",
+      "kind": "combat_rule",
+      "confidence": "supplement",
+      "style": null,
+      "summary": "带专注关键词的法术维持期间，若你进入惑控或失能状态，或开始另一项专注效果，先前专注立即中断。",
+      "detail": "硬控对面时，自己勿站在对方失能技射程内；团队需有人保护正在维持专注的施法者。与 T14 防护、T11 硬控接爆发形成完整战术链。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "专注",
+        "中断",
+        "失能",
+        "惑控"
+      ],
+      "skillRefs": [],
+      "searchText": "专注：施法者生命线 caster 带专注关键词的法术维持期间，若你进入惑控或失能状态，或开始另一项专注效果，先前专注立即中断。 硬控对面时，自己勿站在对方失能技射程内；团队需有人保护正在维持专注的施法者。与 T14 防护、T11 硬控接爆发形成完整战术链。 专注 中断 失能 惑控"
+    },
+    {
+      "id": "tip-uni-T20",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T20",
+      "title": "麻痹：敌人无法反应",
+      "kind": "combat_rule",
+      "confidence": "supplement",
+      "style": null,
+      "summary": "麻痹状态下，目标无法响应反应动作。",
+      "detail": "对付高反应敌人（格挡、反应类反制、闪避类）前，可先上麻痹再施放关键能力，降低被反应打断概率。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "麻痹",
+        "反应",
+        "异常状态"
+      ],
+      "skillRefs": [],
+      "searchText": "麻痹：敌人无法反应 universal 麻痹状态下，目标无法响应反应动作。 对付高反应敌人（格挡、反应类反制、闪避类）前，可先上麻痹再施放关键能力，降低被反应打断概率。 麻痹 反应 异常状态"
+    },
+    {
+      "id": "tip-uni-T21",
+      "scope": "universal",
+      "migratedFrom": "tip-mage-T21",
+      "title": "困惑：敌人无法借机",
+      "kind": "combat_rule",
+      "confidence": "supplement",
+      "style": null,
+      "summary": "困惑状态下，目标无法进行借机攻击。",
+      "detail": "我方安全脱离贴脸时可利用附魔困惑系配合 T06，降低离开时吃借机的风险。与恐惧、迟缓等软控可分层使用。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "困惑",
+        "借机攻击",
+        "异常状态"
+      ],
+      "skillRefs": [],
+      "searchText": "困惑：敌人无法借机 universal 困惑状态下，目标无法进行借机攻击。 我方安全脱离贴脸时可利用附魔困惑系配合 T06，降低离开时吃借机的风险。与恐惧、迟缓等软控可分层使用。 困惑 借机攻击 异常状态"
+    }
+  ]
+}
