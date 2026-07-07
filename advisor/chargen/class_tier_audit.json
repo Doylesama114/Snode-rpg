@@ -3,8 +3,8 @@
     "phase": "5-batch10",
     "generatedAt": "2026-07-07",
     "classCount": 14,
-    "fullReady": 8,
-    "partialReady": 6
+    "fullReady": 9,
+    "partialReady": 5
   },
   "audits": [
     {
@@ -690,11 +690,11 @@
     },
     {
       "className": "萨满祭司",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -706,7 +706,7 @@
         },
         {
           "id": "l2_index",
-          "label": "L2 索引 ≥40 技能",
+          "label": "L2 索引 ≥80 技能",
           "pass": true,
           "note": "got 98"
         },
@@ -742,31 +742,25 @@
         },
         {
           "id": "hints_styles",
-          "label": "hints 战斗风格 ≥3",
+          "label": "hints 战斗风格 ≥5",
           "pass": true,
           "note": "got 5"
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 7"
+          "note": "got 22"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=shaman_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {

@@ -527,6 +527,81 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  萨满祭司: {
+    defaultFullL2MinSkills: 80,
+    fpKeyLabel: '感知',
+    specBuildHints: {
+      萨满教义: '仪式沟通先祖；巫术/风暴情报向 build 协同。',
+      元素亲和: '多元素搭配；风暴/火焰/水源/大地按主元素投资，勿四系全满。',
+      过载: '延缓力竭惩罚；长线战斗与高频施法 build。',
+    },
+    styleRoleHints: {
+      风暴: '雷电与复仇；闪电箭起手契合输出。',
+      火焰: '火焰 AOE 与图腾；烈焰冲击起手契合。',
+      水源: '治疗与图腾支援；治疗波起手契合。',
+      大地: '岩石控场与护盾；大地之盾起手契合。',
+      巫术: '诅咒、探知与先祖智慧；偏控场与资讯。',
+    },
+    chargenAttrDetail: '感知≥15 为常见目标；魅力豁免配合部分神术/社交。宗教/自然熟练与元素/仪式 build 协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-elements',
+        title: '四元素与风格',
+        summary: '风暴/火焰/水源/大地/巫术对应元素与职能；build 宜主修 1～2 系再扩展。',
+        detail: '元素亲和专精与多系搭配相关；引用须来自 L2 萨满上下文，勿套用法师八学派。',
+        relatedSkills: ['闪电箭', '治疗波'],
+        tags: [className, '元素', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-totem',
+        title: '图腾与激活',
+        summary: '多技能含「图腾」关键词；部署/激活规则以技能描述与 DM 为准。',
+        detail: '水源/大地/风暴线常见；勿编造未收录的图腾名。',
+        relatedSkills: ['恢复图腾', '灼热图腾'],
+        tags: [className, '图腾', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手四选一系',
+        summary: '4 选 2 起手：闪电箭/烈焰冲击/治疗波/大地之盾分属不同元素职能。',
+        detail: '输出（闪电/烈焰）、治疗（治疗波）、防护（大地之盾）按团队缺口选择，勿假设全拿。',
+        relatedSkills: ['闪电箭', '烈焰冲击', '治疗波', '大地之盾'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-hex',
+        title: '巫术与诅咒',
+        summary: '巫术线含诅咒、探知类法术；与法师惑控/预言名称不同，以 L2 列表为准。',
+        detail: '先祖沟通与萨满教义专精相关；深度效果以规则书为准。',
+        relatedSkills: ['虚弱诅咒', '视界术'],
+        tags: [className, '巫术', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '元素法术媒介',
+        summary: '萨满法术常需法杖/手势；非法师法术位体系，具体以技能描述为准。',
+        detail: '勿引用塑能箭、魔法飞弹等法师专属技能名。',
+        relatedSkills: ['闪电箭'],
+        tags: [className, '施法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与元素节奏',
+        summary: '法术消耗 FP；多系兼修时分回合交替元素输出与支援，避免空 FP。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['治疗波'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/法杖/.test(refClass?.weapons || '')) {
+        rules.push('法杖为常见法术媒介；部分元素法术需持法器（见技能描述）。');
+      }
+      rules.push('图腾类能力部署与维持规则以各技能描述及 DM 裁定为准。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7046',
+    date: '2026-07-07',
+    changes: [
+      '萨满祭司顾问升full(shaman_skills/元素L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7045',
     date: '2026-07-07',
     changes: [

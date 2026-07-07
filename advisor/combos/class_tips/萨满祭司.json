@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "萨满祭司",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 7,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 22,
     "byKind": {
       "style_guide": 5,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 9,
+      "combat_rule": 6,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "萨满祭司·风暴风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "风暴",
       "summary": "风暴：偏雷电、复仇、激活、法术等能力。",
-      "detail": "示例技能：闪电盾牌、加速图腾、风之护符。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "雷电与复仇；闪电箭起手契合输出。低阶代表：闪电盾牌、加速图腾、风之护符。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "闪电盾牌",
         "加速图腾",
@@ -53,7 +54,7 @@
           "source": "shaman"
         }
       ],
-      "searchText": "萨满祭司 风暴 风暴：偏雷电、复仇、激活、法术等能力。 示例技能：闪电盾牌、加速图腾、风之护符。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 闪电盾牌 加速图腾 风之护符 style_guide auto_stub"
+      "searchText": "萨满祭司·风暴风格 style_guide auto_generated 风暴：偏雷电、复仇、激活、法术等能力。 雷电与复仇；闪电箭起手契合输出。低阶代表：闪电盾牌、加速图腾、风之护符。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 萨满祭司 风暴 战斗风格 style_guide 闪电盾牌 加速图腾 风之护符"
     },
     {
       "id": "tip-shaman-style-火焰",
@@ -63,10 +64,10 @@
       ],
       "title": "萨满祭司·火焰风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "火焰",
       "summary": "火焰：偏施法攻击、火焰、虚化飞行道具、敏捷豁免（10）等能力。",
-      "detail": "示例技能：火焰箭、灼热图腾、创造篝火。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "火焰 AOE 与图腾；烈焰冲击起手契合。低阶代表：火焰箭、灼热图腾、创造篝火。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "火焰箭",
         "灼热图腾",
@@ -93,7 +94,7 @@
           "source": "shaman"
         }
       ],
-      "searchText": "萨满祭司 火焰 火焰：偏施法攻击、火焰、虚化飞行道具、敏捷豁免（10）等能力。 示例技能：火焰箭、灼热图腾、创造篝火。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 火焰箭 灼热图腾 创造篝火 style_guide auto_stub"
+      "searchText": "萨满祭司·火焰风格 style_guide auto_generated 火焰：偏施法攻击、火焰、虚化飞行道具、敏捷豁免（10）等能力。 火焰 AOE 与图腾；烈焰冲击起手契合。低阶代表：火焰箭、灼热图腾、创造篝火。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 萨满祭司 火焰 战斗风格 style_guide 火焰箭 灼热图腾 创造篝火"
     },
     {
       "id": "tip-shaman-style-水源",
@@ -103,10 +104,10 @@
       ],
       "title": "萨满祭司·水源风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "水源",
       "summary": "水源：偏水源、激活、戏法、图腾等能力。",
-      "detail": "示例技能：水上行走、恢复图腾、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "治疗与图腾支援；治疗波起手契合。低阶代表：水上行走、恢复图腾、创造水源。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "水上行走",
         "恢复图腾",
@@ -133,7 +134,7 @@
           "source": "shaman"
         }
       ],
-      "searchText": "萨满祭司 水源 水源：偏水源、激活、戏法、图腾等能力。 示例技能：水上行走、恢复图腾、创造水源。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 水上行走 恢复图腾 创造水源 style_guide auto_stub"
+      "searchText": "萨满祭司·水源风格 style_guide auto_generated 水源：偏水源、激活、戏法、图腾等能力。 治疗与图腾支援；治疗波起手契合。低阶代表：水上行走、恢复图腾、创造水源。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 萨满祭司 水源 战斗风格 style_guide 水上行走 恢复图腾 创造水源"
     },
     {
       "id": "tip-shaman-style-大地",
@@ -143,10 +144,10 @@
       ],
       "title": "萨满祭司·大地风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "大地",
       "summary": "大地：偏施法攻击、AOE、大地、阻碍等能力。",
-      "detail": "示例技能：石爪术、缓速图腾、强壮图腾。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "岩石控场与护盾；大地之盾起手契合。低阶代表：石爪术、缓速图腾、强壮图腾。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "石爪术",
         "缓速图腾",
@@ -173,7 +174,7 @@
           "source": "shaman"
         }
       ],
-      "searchText": "萨满祭司 大地 大地：偏施法攻击、AOE、大地、阻碍等能力。 示例技能：石爪术、缓速图腾、强壮图腾。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 石爪术 缓速图腾 强壮图腾 style_guide auto_stub"
+      "searchText": "萨满祭司·大地风格 style_guide auto_generated 大地：偏施法攻击、AOE、大地、阻碍等能力。 岩石控场与护盾；大地之盾起手契合。低阶代表：石爪术、缓速图腾、强壮图腾。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 萨满祭司 大地 战斗风格 style_guide 石爪术 缓速图腾 强壮图腾"
     },
     {
       "id": "tip-shaman-style-巫术",
@@ -183,10 +184,10 @@
       ],
       "title": "萨满祭司·巫术风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "巫术",
       "summary": "巫术：偏专注、探知、激活、法术等能力。",
-      "detail": "示例技能：视界术、传讯术、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "诅咒、探知与先祖智慧；偏控场与资讯。低阶代表：视界术、传讯术、虚弱诅咒。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "视界术",
         "传讯术",
@@ -213,51 +214,577 @@
           "source": "shaman"
         }
       ],
-      "searchText": "萨满祭司 巫术 巫术：偏专注、探知、激活、法术等能力。 示例技能：视界术、传讯术、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 视界术 传讯术 虚弱诅咒 style_guide auto_stub"
+      "searchText": "萨满祭司·巫术风格 style_guide auto_generated 巫术：偏专注、探知、激活、法术等能力。 诅咒、探知与先祖智慧；偏控场与资讯。低阶代表：视界术、传讯术、虚弱诅咒。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 萨满祭司 巫术 战斗风格 style_guide 视界术 传讯术 虚弱诅咒"
     },
     {
-      "id": "tip-shaman-chargen-1",
+      "id": "tip-shaman-prio-风暴",
       "scope": "class",
       "applicableClasses": [
         "萨满祭司"
       ],
-      "title": "萨满祭司创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "风暴 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "风暴",
+      "summary": "风暴线前三级可优先：闪电盾牌、加速图腾、风之护符；与起手特性/专精规划一致再扩展。",
+      "detail": "萨满祭司 风暴 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。雷电与复仇；闪电箭起手契合输出。",
+      "relatedSkills": [
+        "闪电盾牌",
+        "加速图腾",
+        "风之护符"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "风暴",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "闪电盾牌",
+          "source": "shaman"
+        },
+        {
+          "name": "加速图腾",
+          "source": "shaman"
+        },
+        {
+          "name": "风之护符",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "风暴 1～3 阶优先 tactic auto_generated 风暴线前三级可优先：闪电盾牌、加速图腾、风之护符；与起手特性/专精规划一致再扩展。 萨满祭司 风暴 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。雷电与复仇；闪电箭起手契合输出。 萨满祭司 风暴 优先学 tactic 闪电盾牌 加速图腾 风之护符"
+    },
+    {
+      "id": "tip-shaman-prio-火焰",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "火焰 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "火焰",
+      "summary": "火焰线前三级可优先：火焰箭、灼热图腾、创造篝火；与起手特性/专精规划一致再扩展。",
+      "detail": "萨满祭司 火焰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。火焰 AOE 与图腾；烈焰冲击起手契合。",
+      "relatedSkills": [
+        "火焰箭",
+        "灼热图腾",
+        "创造篝火"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "火焰",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "火焰箭",
+          "source": "shaman"
+        },
+        {
+          "name": "灼热图腾",
+          "source": "shaman"
+        },
+        {
+          "name": "创造篝火",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "火焰 1～3 阶优先 tactic auto_generated 火焰线前三级可优先：火焰箭、灼热图腾、创造篝火；与起手特性/专精规划一致再扩展。 萨满祭司 火焰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。火焰 AOE 与图腾；烈焰冲击起手契合。 萨满祭司 火焰 优先学 tactic 火焰箭 灼热图腾 创造篝火"
+    },
+    {
+      "id": "tip-shaman-prio-水源",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "水源 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "水源",
+      "summary": "水源线前三级可优先：水上行走、恢复图腾、创造水源；与起手特性/专精规划一致再扩展。",
+      "detail": "萨满祭司 水源 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗与图腾支援；治疗波起手契合。",
+      "relatedSkills": [
+        "水上行走",
+        "恢复图腾",
+        "创造水源"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "水源",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "水上行走",
+          "source": "shaman"
+        },
+        {
+          "name": "恢复图腾",
+          "source": "shaman"
+        },
+        {
+          "name": "创造水源",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "水源 1～3 阶优先 tactic auto_generated 水源线前三级可优先：水上行走、恢复图腾、创造水源；与起手特性/专精规划一致再扩展。 萨满祭司 水源 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗与图腾支援；治疗波起手契合。 萨满祭司 水源 优先学 tactic 水上行走 恢复图腾 创造水源"
+    },
+    {
+      "id": "tip-shaman-prio-大地",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "大地 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "大地",
+      "summary": "大地线前三级可优先：石爪术、缓速图腾、强壮图腾；与起手特性/专精规划一致再扩展。",
+      "detail": "萨满祭司 大地 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。岩石控场与护盾；大地之盾起手契合。",
+      "relatedSkills": [
+        "石爪术",
+        "缓速图腾",
+        "强壮图腾"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "大地",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "石爪术",
+          "source": "shaman"
+        },
+        {
+          "name": "缓速图腾",
+          "source": "shaman"
+        },
+        {
+          "name": "强壮图腾",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "大地 1～3 阶优先 tactic auto_generated 大地线前三级可优先：石爪术、缓速图腾、强壮图腾；与起手特性/专精规划一致再扩展。 萨满祭司 大地 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。岩石控场与护盾；大地之盾起手契合。 萨满祭司 大地 优先学 tactic 石爪术 缓速图腾 强壮图腾"
+    },
+    {
+      "id": "tip-shaman-prio-巫术",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "巫术 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "巫术",
+      "summary": "巫术线前三级可优先：视界术、传讯术、虚弱诅咒；与起手特性/专精规划一致再扩展。",
+      "detail": "萨满祭司 巫术 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。诅咒、探知与先祖智慧；偏控场与资讯。",
+      "relatedSkills": [
+        "视界术",
+        "传讯术",
+        "虚弱诅咒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "巫术",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "视界术",
+          "source": "shaman"
+        },
+        {
+          "name": "传讯术",
+          "source": "shaman"
+        },
+        {
+          "name": "虚弱诅咒",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "巫术 1～3 阶优先 tactic auto_generated 巫术线前三级可优先：视界术、传讯术、虚弱诅咒；与起手特性/专精规划一致再扩展。 萨满祭司 巫术 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。诅咒、探知与先祖智慧；偏控场与资讯。 萨满祭司 巫术 优先学 tactic 视界术 传讯术 虚弱诅咒"
+    },
+    {
+      "id": "tip-shaman-start-闪电箭",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "起手·闪电箭",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 萨满祭司 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 萨满祭司 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "闪电箭（起手）：你用未持有物件的双手做出钳形动作、并念诵法咒从双手间发射一道闪电箭矢 如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害 L3: 闪电箭改为造成1D8",
+      "detail": "萨满祭司 4 选 2 起手特性之一。你用未持有物件的双手做出钳形动作、并念诵法咒从双手间发射一道闪电箭矢 如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害 L3: 闪电箭改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害 L6: 闪电箭改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "闪电箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "闪电箭",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "起手·闪电箭 tactic auto_generated 闪电箭（起手）：你用未持有物件的双手做出钳形动作、并念诵法咒从双手间发射一道闪电箭矢 如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害 L3: 闪电箭改为造成1D8 萨满祭司 4 选 2 起手特性之一。你用未持有物件的双手做出钳形动作、并念诵法咒从双手间发射一道闪电箭矢 如果此时风元素处于活跃状态,闪电箭改为造成1D12点雷电伤害 L3: 闪电箭改为造成1D8+2点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+4点雷电伤害 L6: 闪电箭改为造成1D8+4点雷电伤害，如果此时风元素处于活跃状态,则改为造成1D12+6点雷电伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。 萨满祭司 起手特性 车卡 tactic 闪电箭"
+    },
+    {
+      "id": "tip-shaman-start-烈焰冲击",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "起手·烈焰冲击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "烈焰冲击（起手）：你抬起一只手、并念出法咒掀起一阵烈焰冲击，利用高温和灼热烫伤敌人 闪避成功的角色仍需要承受一半的结算后伤害 烈焰冲击会使水元素回归沉寂状态 L5: 烈焰冲击改为",
+      "detail": "萨满祭司 4 选 2 起手特性之一。你抬起一只手、并念出法咒掀起一阵烈焰冲击，利用高温和灼热烫伤敌人 闪避成功的角色仍需要承受一半的结算后伤害 烈焰冲击会使水元素回归沉寂状态 L5: 烈焰冲击改为造成2D8点火焰伤害 L8: 烈焰冲击的关键词变更为敏捷豁免（15） L12: 烈焰冲击改为造成3D8点火焰伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "烈焰冲击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "烈焰冲击",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "起手·烈焰冲击 tactic auto_generated 烈焰冲击（起手）：你抬起一只手、并念出法咒掀起一阵烈焰冲击，利用高温和灼热烫伤敌人 闪避成功的角色仍需要承受一半的结算后伤害 烈焰冲击会使水元素回归沉寂状态 L5: 烈焰冲击改为 萨满祭司 4 选 2 起手特性之一。你抬起一只手、并念出法咒掀起一阵烈焰冲击，利用高温和灼热烫伤敌人 闪避成功的角色仍需要承受一半的结算后伤害 烈焰冲击会使水元素回归沉寂状态 L5: 烈焰冲击改为造成2D8点火焰伤害 L8: 烈焰冲击的关键词变更为敏捷豁免（15） L12: 烈焰冲击改为造成3D8点火焰伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。 萨满祭司 起手特性 车卡 tactic 烈焰冲击"
+    },
+    {
+      "id": "tip-shaman-start-治疗波",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "起手·治疗波",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "治疗波（起手）：你做出对应施法手势，念出法咒呼唤流水之力治愈他人 如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态 治疗波会使火元素回归沉寂状态 L5: 如果此",
+      "detail": "萨满祭司 4 选 2 起手特性之一。你做出对应施法手势，念出法咒呼唤流水之力治愈他人 如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态 治疗波会使火元素回归沉寂状态 L5: 如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值 L10: 如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "治疗波"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "治疗波",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "起手·治疗波 tactic auto_generated 治疗波（起手）：你做出对应施法手势，念出法咒呼唤流水之力治愈他人 如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态 治疗波会使火元素回归沉寂状态 L5: 如果此 萨满祭司 4 选 2 起手特性之一。你做出对应施法手势，念出法咒呼唤流水之力治愈他人 如果此时水元素处于活跃状态,治疗波还会移除目标的1D4层灼烧状态 治疗波会使火元素回归沉寂状态 L5: 如果此时水元素处于活跃状态,治疗波改为回复1D6+4点生命值 L10: 如果此时水元素处于活跃状态,治疗波改为回复1D6+8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 萨满祭司 起手特性 车卡 tactic 治疗波"
+    },
+    {
+      "id": "tip-shaman-start-大地之盾",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "起手·大地之盾",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "大地之盾（起手）：你将双手护至胸前，念出法咒唤起顽岩环绕在自身周围形成守护之势 大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤 大地之盾无法抵挡心灵",
+      "detail": "萨满祭司 4 选 2 起手特性之一。你将双手护至胸前，念出法咒唤起顽岩环绕在自身周围形成守护之势 大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤 大地之盾无法抵挡心灵、神圣、邪能和星界伤害 如果此时土元素处于活跃状态,大地之盾获得额外5点护盾值 L6: 如果此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作 L12: 如果此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "大地之盾"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "大地之盾",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "起手·大地之盾 tactic auto_generated 大地之盾（起手）：你将双手护至胸前，念出法咒唤起顽岩环绕在自身周围形成守护之势 大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤 大地之盾无法抵挡心灵 萨满祭司 4 选 2 起手特性之一。你将双手护至胸前，念出法咒唤起顽岩环绕在自身周围形成守护之势 大地之盾在抵挡穿刺和挥砍伤害时具有2点抗性，抵挡钝击和力场伤害时具有2点易伤 大地之盾无法抵挡心灵、神圣、邪能和星界伤害 如果此时土元素处于活跃状态,大地之盾获得额外5点护盾值 L6: 如果此时土元素处于活跃状态,那么施展大地之盾仅需要花费一个附赠动作 L12: 如果此时土元素处于活跃状态,大地之盾可以对自身周围2米范围内的其他角色生效 与后续 起手 风格技能可形成初期连招，但非强制绑定。 萨满祭司 起手特性 车卡 tactic 大地之盾"
+    },
+    {
+      "id": "tip-shaman-cr-elements",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "四元素与风格",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "风暴/火焰/水源/大地/巫术对应元素与职能；build 宜主修 1～2 系再扩展。",
+      "detail": "元素亲和专精与多系搭配相关；引用须来自 L2 萨满上下文，勿套用法师八学派。",
+      "relatedSkills": [
+        "闪电箭",
+        "治疗波"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "元素",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "闪电箭",
+          "source": "shaman"
+        },
+        {
+          "name": "治疗波",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "四元素与风格 combat_rule auto_generated 风暴/火焰/水源/大地/巫术对应元素与职能；build 宜主修 1～2 系再扩展。 元素亲和专精与多系搭配相关；引用须来自 L2 萨满上下文，勿套用法师八学派。 萨满祭司 元素 combat_rule 闪电箭 治疗波"
+    },
+    {
+      "id": "tip-shaman-cr-totem",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "图腾与激活",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多技能含「图腾」关键词；部署/激活规则以技能描述与 DM 为准。",
+      "detail": "水源/大地/风暴线常见；勿编造未收录的图腾名。",
+      "relatedSkills": [
+        "恢复图腾",
+        "灼热图腾"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "图腾",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "恢复图腾",
+          "source": "shaman"
+        },
+        {
+          "name": "灼热图腾",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "图腾与激活 combat_rule auto_generated 多技能含「图腾」关键词；部署/激活规则以技能描述与 DM 为准。 水源/大地/风暴线常见；勿编造未收录的图腾名。 萨满祭司 图腾 combat_rule 恢复图腾 灼热图腾"
+    },
+    {
+      "id": "tip-shaman-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "起手四选一系",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "4 选 2 起手：闪电箭/烈焰冲击/治疗波/大地之盾分属不同元素职能。",
+      "detail": "输出（闪电/烈焰）、治疗（治疗波）、防护（大地之盾）按团队缺口选择，勿假设全拿。",
+      "relatedSkills": [
+        "闪电箭",
+        "烈焰冲击",
+        "治疗波",
+        "大地之盾"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "闪电箭",
+          "source": "shaman"
+        },
+        {
+          "name": "烈焰冲击",
+          "source": "shaman"
+        },
+        {
+          "name": "治疗波",
+          "source": "shaman"
+        },
+        {
+          "name": "大地之盾",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "起手四选一系 combat_rule auto_generated 4 选 2 起手：闪电箭/烈焰冲击/治疗波/大地之盾分属不同元素职能。 输出（闪电/烈焰）、治疗（治疗波）、防护（大地之盾）按团队缺口选择，勿假设全拿。 萨满祭司 起手特性 combat_rule 闪电箭 烈焰冲击 治疗波 大地之盾"
+    },
+    {
+      "id": "tip-shaman-cr-hex",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "巫术与诅咒",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "巫术线含诅咒、探知类法术；与法师惑控/预言名称不同，以 L2 列表为准。",
+      "detail": "先祖沟通与萨满教义专精相关；深度效果以规则书为准。",
+      "relatedSkills": [
+        "虚弱诅咒",
+        "视界术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "巫术",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "虚弱诅咒",
+          "source": "shaman"
+        },
+        {
+          "name": "视界术",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "巫术与诅咒 combat_rule auto_generated 巫术线含诅咒、探知类法术；与法师惑控/预言名称不同，以 L2 列表为准。 先祖沟通与萨满教义专精相关；深度效果以规则书为准。 萨满祭司 巫术 combat_rule 虚弱诅咒 视界术"
+    },
+    {
+      "id": "tip-shaman-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "元素法术媒介",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "萨满法术常需法杖/手势；非法师法术位体系，具体以技能描述为准。",
+      "detail": "勿引用塑能箭、魔法飞弹等法师专属技能名。",
+      "relatedSkills": [
+        "闪电箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "施法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "闪电箭",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "元素法术媒介 combat_rule auto_generated 萨满法术常需法杖/手势；非法师法术位体系，具体以技能描述为准。 勿引用塑能箭、魔法飞弹等法师专属技能名。 萨满祭司 施法 combat_rule 闪电箭"
+    },
+    {
+      "id": "tip-shaman-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "FP 与元素节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法术消耗 FP；多系兼修时分回合交替元素输出与支援，避免空 FP。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "治疗波"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "萨满祭司",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "治疗波",
+          "source": "shaman"
+        }
+      ],
+      "searchText": "FP 与元素节奏 combat_rule auto_generated 法术消耗 FP；多系兼修时分回合交替元素输出与支援，避免空 FP。 短休/长休回复见基础规则；标识由 DM 结算。 萨满祭司 FP combat_rule 治疗波"
+    },
+    {
+      "id": "tip-shaman-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "萨满祭司"
+      ],
+      "title": "萨满祭司关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "感知≥15 为常见目标；魅力豁免配合部分神术/社交。宗教/自然熟练与元素/仪式 build 协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "萨满祭司",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "萨满祭司 创建 车卡 顾问档位 partial：可检索 萨满祭司 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "萨满祭司关键属性 chargen auto_generated 感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。 感知≥15 为常见目标；魅力豁免配合部分神术/社交。宗教/自然熟练与元素/仪式 build 协同。 萨满祭司 车卡 属性 chargen"
     },
     {
-      "id": "tip-shaman-partial-note",
+      "id": "tip-shaman-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "萨满祭司"
       ],
-      "title": "萨满祭司顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "萨满祭司专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "萨满祭司顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "萨满祭司顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "萨满教义：仪式沟通先祖；巫术/风暴情报向 build 协同。 元素亲和：多元素搭配；风暴/火焰/水源/大地按主元素投资，勿四系全满。 过载：延缓力竭惩罚；长线战斗与高频施法 build。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "萨满祭司",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "萨满祭司 partial 顾问 萨满祭司顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "萨满祭司专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 萨满教义：仪式沟通先祖；巫术/风暴情报向 build 协同。 元素亲和：多元素搭配；风暴/火焰/水源/大地按主元素投资，勿四系全满。 过载：延缓力竭惩罚；长线战斗与高频施法 build。 萨满祭司 车卡 专精 chargen"
     }
   ]
 }

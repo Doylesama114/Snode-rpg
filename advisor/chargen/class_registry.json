@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7045",
-    "note": "14职业顾问：8 full（含德鲁伊）；7045德鲁伊升full"
+    "version": "1.0.7046",
+    "note": "14职业顾问：9 full（含萨满）；7046萨满升full"
   },
   "defaults": {
     "tier": "basic",
@@ -196,7 +196,7 @@
       "l5MinTips": 20
     },
     "萨满祭司": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "感知",
       "isCaster": true,
       "l2Slug": "shaman",
@@ -211,7 +211,9 @@
         "大地",
         "巫术"
       ],
-      "advisorNote": "萨满祭司顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "shaman_skills",
+      "fullL2MinSkills": 80,
+      "l5MinTips": 20
     },
     "术士": {
       "tier": "partial",
