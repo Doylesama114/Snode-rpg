@@ -23,6 +23,14 @@ const FULL_FEATURES = {
     pointSpent: 32,
     selectedSkills: ['奥秘-魔法学识', '调查', '专注', '洞悉'],
     raceName: '人类',
+    overviewProfs: [
+      { name: '奥秘-魔法学识', src: '专精' },
+      { name: '知识-历史', src: '专精' },
+      { name: '奥秘-魔法学识', src: '职业' },
+      { name: '调查', src: '职业' },
+      { name: '专注', src: '职业' },
+      { name: '洞悉', src: '职业' },
+    ],
   },
 };
 
@@ -67,6 +75,23 @@ let failed = 0;
 function pass(n) { passed++; console.log('  ✓', n); }
 function fail(n, d) { failed++; console.error('  ✗', n, d || ''); }
 
+const qRace = buildChargenBubbleQuery({ ...FULL_FEATURES, step: 2, stepLabel: '选择种族' });
+if (qRace.includes('禁止提及兼职') && !qRace.includes('兼职 +6') && !qRace.includes('+6 进度')) pass('policy race no multiclass');
+else fail('policy race multiclass', qRace.slice(0, 120));
+
+const qBg = buildChargenBubbleQuery({ ...FULL_FEATURES, step: 5, stepLabel: '选择个性背景' });
+if (qBg.includes('禁止提及兼职') && !qBg.includes('兼职 +6') && !qBg.includes('+6 进度')) pass('policy background no multiclass');
+else fail('policy background multiclass', qBg.slice(0, 120));
+
+const ledger = buildChargenLedger(FULL_FEATURES.char, { step: 4 });
+
+const ledgerCtx = formatLedgerContext(ledger);
+if (!ledgerCtx.includes('兼职法师门槛') && ledgerCtx.includes('禁止提及兼职')) pass('ledger no multiclass gate');
+else fail('ledger multiclass gate', ledgerCtx);
+
+if (ledger.fromOverview) pass('ledger uses overviewProfs');
+else fail('ledger overview source');
+
 const qFeat = buildChargenBubbleQuery(FULL_FEATURES);
 if (qFeat.includes('【必须】评价') && qFeat.includes('塑能箭')) pass('policy features must review');
 else fail('policy features', qFeat.slice(0, 100));
@@ -79,7 +104,6 @@ const qReview = buildChargenBubbleQuery(REVIEW);
 if (qReview.includes('叙事') || qReview.includes('背景故事')) pass('policy review narrative');
 else fail('policy review', qReview.slice(0, 100));
 
-const ledger = buildChargenLedger(FULL_FEATURES.char, { step: 4 });
 if (ledger.entries.some((e) => e.name === '奥秘-魔法学识' && e.subLabel)) pass('ledger subLabel');
 else fail('ledger subLabel');
 

@@ -4,10 +4,10 @@
 export const MAGE_WIZARD_STEPS = [
   { id: 0, key: 'class', label: '选择职业', goal: '确认法师；为奥法学者、知识传承各选 1 子熟练（三项专精 L1 均获得，非三选一）' },
   { id: 1, key: 'features', label: '选择起始特性', goal: '初始特性 8 选 4；选满后评价组合，不推销未选项' },
-  { id: 2, key: 'race', label: '选择种族', goal: '结合已有熟练账本选种族（属性/语言/不重复熟练）' },
+  { id: 2, key: 'race', label: '选择种族', goal: '结合概览已有熟练选种族（属性/语言/避免重复熟练）' },
   { id: 3, key: 'attributes', label: '分配属性', goal: '32 点购点；满 32 点后评价当前分配（智力≥15 等）' },
   { id: 4, key: 'skills', label: '选择熟练项', goal: '职业技巧八选四（奥秘/知识须指定子项；注意与专精/背景不重复）' },
-  { id: 5, key: 'background', label: '选择个性背景', goal: '背景熟练与装备；结合账本补兼职 +6 缺口' },
+  { id: 5, key: 'background', label: '选择个性背景', goal: '背景熟练与装备；结合概览已有熟练补缺口，避免重复 grant' },
   { id: 6, key: 'equipment', label: '选择装备', goal: '起始套装 A/B/C/D' },
   { id: 7, key: 'review', label: '确认角色', goal: '复核选择；对已填故事/外貌/个性做叙事简评' },
 ];
@@ -98,6 +98,7 @@ export function formatWizardContext(state, store, options = {}) {
   if (state.meta?.source === 'chargen_page') {
     lines.push('- 数据来源：角色创建页（只读镜像；校验以页面为准，顾问只陪跑、不替用户选）');
     lines.push('- L1 法师：奥法学者、知识传承、魔法学派三项专精能力均获得（非三选一）；魔法学派对立/主修路线创建页不配置，进面板后再定');
+    lines.push('- L1 创建阶段禁止提及兼职、7 级子职或兼职熟练门槛（+6）；兼职与当前车卡无关');
   }
   lines.push(
     `- 模式：wizard；当前步骤 ${state.step} / ${MAGE_WIZARD_STEPS.length - 1}：${def?.label || state.stepLabel}`,

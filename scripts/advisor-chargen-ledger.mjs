@@ -1,5 +1,6 @@
 /**
  * Phase 4″ — 车卡熟练账本（确定性分析，供顾问上下文与冒泡 warning）。
+ * 熟练列表以创建页「角色概览」快照 overviewProfs 为准，勿自行重算。
  */
 import fs from 'fs';
 import path from 'path';
@@ -44,8 +45,6 @@ function normalizeProfName(name) {
   return t;
 }
 
-const MAGE_SPEC_PROF = new Set(['奥法学者', '知识传承']);
-
 function profSubLabel(name) {
   if (!name || !name.includes('-')) return null;
   const parent = name.split('-')[0];
@@ -70,31 +69,30 @@ function featNames(list) {
   return list.map((f) => (typeof f === 'string' ? f : (f?.n || f?.name || ''))).filter(Boolean);
 }
 
+function appendMagicSchoolNote(char, entries) {
+  const hasNote = entries.some((e) => e.name?.includes('魔法学派（'));
+  if (hasNote) return;
+  if (char?.className !== '法师') return;
+  entries.push({
+    name: '魔法学派（L1 能力已获得）',
+    source: '专精·魔法学派',
+    category: null,
+    note: '对立学派与主修路线在角色面板后续配置，创建页不选',
+  });
+}
+
 function collectSpecProfs(char, entries) {
   const specs = char?.specChoices || {};
   for (const specName of Object.keys(specs)) {
     if (specName === '魔法学派') {
-      entries.push({
-        name: '魔法学派（L1 能力已获得）',
-        source: '专精·魔法学派',
-        category: null,
-        note: '对立学派与主修路线在角色面板后续配置，创建页不选',
-      });
+      appendMagicSchoolNote(char, entries);
       continue;
     }
-    if (!MAGE_SPEC_PROF.has(specName)) continue;
     const ch = specs[specName];
     const skill = ch?.skill || ch?.prof || null;
     if (skill) addEntry(entries, skill, `专精·${specName}`);
   }
-  if (!specs['魔法学派'] && char?.className === '法师') {
-    entries.push({
-      name: '魔法学派（L1 能力已获得）',
-      source: '专精·魔法学派',
-      category: null,
-      note: '对立学派与主修路线在角色面板后续配置，创建页不选',
-    });
-  }
+  appendMagicSchoolNote(char, entries);
 }
 
 function collectBgProfs(char, entries) {
@@ -110,27 +108,37 @@ function collectBgProfs(char, entries) {
   }
 }
 
+function collectLegacyEntries(char) {
+  const entries = [];
+  if (char?.className === '法师') collectSpecProfs(char, entries);
+  for (const sk of char?.selectedSkills || []) addEntry(entries, sk, '职业·八选四');
+  if (char?.humanFreeSkill) addEntry(entries, char.humanFreeSkill, '种族·人类中庸');
+  collectBgProfs(char, entries);
+  return entries;
+}
+
+function collectEntries(char) {
+  const overview = char?.overviewProfs;
+  if (Array.isArray(overview)) {
+    const entries = [];
+    for (const row of overview) {
+      if (!row?.name) continue;
+      addEntry(entries, row.name, row.src || row.source || '概览');
+    }
+    appendMagicSchoolNote(char, entries);
+    return entries;
+  }
+  return collectLegacyEntries(char);
+}
+
 /**
  * @param {object} char — snowdChargen snapshot char
  * @param {{ step?: number }} options
  */
 export function buildChargenLedger(char, options = {}) {
   const step = options.step ?? 0;
-  const entries = [];
-
-  if (char?.className === '法师') {
-    collectSpecProfs(char, entries);
-  }
-
-  for (const sk of char?.selectedSkills || []) {
-    addEntry(entries, sk, '职业·八选四');
-  }
-
-  if (char?.humanFreeSkill) {
-    addEntry(entries, char.humanFreeSkill, '种族·人类中庸');
-  }
-
-  collectBgProfs(char, entries);
+  const entries = collectEntries(char);
+  const fromOverview = Array.isArray(char?.overviewProfs);
 
   const profNames = entries
     .map((e) => e.name)
@@ -151,14 +159,6 @@ export function buildChargenLedger(char, options = {}) {
       seen.set(key, e.source);
     }
   }
-
-  const gate = { 奥秘: 0, 知识: 0, 逻辑: 0, total: 0, target: 6 };
-  for (const e of entries) {
-    if (e.category === '奥秘') gate.奥秘 += 1;
-    if (e.category === '知识') gate.知识 += 1;
-    if (e.category === '逻辑') gate.逻辑 += 1;
-  }
-  gate.total = gate.奥秘 + gate.知识 + gate.逻辑;
 
   const pendingAtStep = [];
   if (char?.className === '法师') {
@@ -196,7 +196,7 @@ export function buildChargenLedger(char, options = {}) {
     entries,
     profNames,
     overlapWarnings,
-    multiclassGate: gate,
+    fromOverview,
     pendingAtStep,
     startingFeatures: features,
     featureTags: uniqueTags,
@@ -208,7 +208,11 @@ export function buildChargenLedger(char, options = {}) {
 
 export function formatLedgerContext(ledger) {
   if (!ledger) return '';
-  const lines = ['## 车卡熟练账本（只读；顾问须据此分析，勿与页面冲突）'];
+  const lines = ['## 车卡熟练账本（只读；与创建页「角色概览」同源，须以此为准，勿自行重算或加总）'];
+
+  if (ledger.fromOverview) {
+    lines.push('- 数据来源：角色创建页概览面板 overviewProfs（权威）');
+  }
 
   if (ledger.entries.length) {
     lines.push('- 已锁定熟练（须按完整名称理解，含子项）：');
@@ -223,10 +227,7 @@ export function formatLedgerContext(ledger) {
     lines.push('- 已锁定熟练：（尚无）');
   }
 
-  const g = ledger.multiclassGate;
-  lines.push(
-    `- 兼职法师门槛参考（奥秘+知识+逻辑 熟练计数）：奥秘 ${g.奥秘}、知识 ${g.知识}、逻辑 ${g.逻辑}，合计 ${g.total}/${g.target}`,
-  );
+  lines.push('- L1 创建阶段禁止提及兼职、7 级子职或兼职熟练门槛；兼职系统与当前车卡无关。');
 
   if (ledger.overlapWarnings.length) {
     lines.push('- 重叠/重复提醒（须在回答中优先说明 trade-off，仅冒泡级提示，不阻止用户选择）：');

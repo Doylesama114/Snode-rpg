@@ -75,6 +75,7 @@ export function chargenToWizardState(snapshot) {
     raceAttrBonuses: char.raceAttrBonuses || null,
     pointSpent: char.pointSpent ?? null,
     characterProfile: char.characterProfile || null,
+    overviewProfs: Array.isArray(char.overviewProfs) ? char.overviewProfs.slice() : undefined,
   };
 
   return normalizeWizardState(raw);
@@ -94,6 +95,7 @@ export function buildChargenFingerprint(snapshot) {
     JSON.stringify(char.specChoices || {}),
     JSON.stringify(char.bgProfs || {}),
     char.humanFreeSkill,
+    JSON.stringify(char.overviewProfs || []),
     equipmentLetter(char),
   ].join('|');
 }

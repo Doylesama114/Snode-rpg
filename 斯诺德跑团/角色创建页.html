@@ -364,6 +364,7 @@ function chargenSnapshotChar(){
     equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
     extraLanguages:(CHAR.extraLanguages||[]).slice(),
     humanFreeSkill:CHAR.humanFreeSkill||null,
+    overviewProfs:typeof buildOverviewProfLines==="function"?buildOverviewProfLines().map(function(p){return{name:p.name,src:p.src};}):[],
     charName:CHAR.charName||"",
     characterProfile:{
       charName:CHAR.charName||"",
@@ -400,6 +401,7 @@ function buildChargenFingerprint(st){
     c.pointSpent,
     JSON.stringify(c.specChoices||{}),
     JSON.stringify(c.bgProfs||{}),
+    (c.overviewProfs||[]).map(function(p){return p.name+":"+p.src;}).join(","),
     c.equipChoice&&c.equipChoice.letter,
     p.story,p.personality,p.charName,p.gender,p.hair,p.eye
   ].join("|");
@@ -556,58 +558,7 @@ function updateOverview() {
     h += '<div class="ov-section"><div class="ov-label">❤️ 生命 / 疲劳</div>';
     h += '<div class="ov-hp"><span>HP: ' + hp + '</span><span>FP: ' + fp + '</span></div></div>';
   }
-  // 熟练项 (含来源)
-  var profLines = [];
-  if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
-    for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
-  }
-  // Specialization proficiencies
-  var autoCls2 = SPEC_AUTO_PROF[CHAR.className];
-  if (autoCls2) {
-    for (var asn in autoCls2) {
-      var ad = autoCls2[asn];
-      if (ad.profs) {
-        for (var pa in ad.profs) {
-          var skills = ad.profs[pa];
-          for (var psi = 0; psi < skills.length; psi++) profLines.push({ name: skills[psi], src: '专精' });
-        }
-      }
-    }
-  }
-  // Specialization user choices
-  if (CHAR.specChoices) {
-    for (var sn in CHAR.specChoices) {
-      var ch = CHAR.specChoices[sn];
-      if (ch.skill && ch.skill.indexOf('-') >= 0) {
-        var specParts = ch.skill.split('-');
-        profLines.push({ name: ch.skill, src: '专精' });
-      }
-    }
-  }
-  // Background proficiencies
-  if (CHAR.bgName && CHAR.bgData) {
-    var bgSk = CHAR.bgData['基础熟练项'] || '';
-    if (bgSk && bgSk !== '无') {
-      var bgParts = bgSk.split(/[、，]/);
-      for (var bi = 0; bi < bgParts.length; bi++) {
-        var bn = bgParts[bi].trim(); if (!bn) continue;
-        var mapped = BG_SKILL_MAP[bn]; if (!mapped || mapped === 'cat') continue;
-        var mp = mapped.split('.'); if (mp.length === 2) profLines.push({ name: mp[1], src: '背景' });
-        else profLines.push({ name: bn, src: '背景' });
-      }
-    }
-    if (CHAR.bgProfs && CHAR.bgProfs.skills) {
-      for (var cat in CHAR.bgProfs.skills) {
-        if (cat === '_custom') continue;
-        var arr = CHAR.bgProfs.skills[cat];
-        if (arr && arr.length) {
-          for (var aj = 0; aj < arr.length; aj++) profLines.push({ name: arr[aj], src: '背景' });
-        }
-      }
-    }
-  }
-  // Human free skill
-  if (CHAR.humanFreeSkill) profLines.push({ name: CHAR.humanFreeSkill, src: '人类' });
+  var profLines = buildOverviewProfLines();
   if (profLines.length) {
     h += '<div class="ov-section"><div class="ov-label">📚 熟练项</div>';
     for (var pi = 0; pi < profLines.length; pi++) {
@@ -707,7 +658,54 @@ var SPEC_AUTO_PROF = {
   "奇械师":{"奇械构装":{profs:{"智力":["知识-工程学"]}}}
 };
 
-
+/** 与悬浮「角色概览」熟练区同源；供概览渲染与 snowdChargen 快照共用 */
+function buildOverviewProfLines() {
+  var profLines = [];
+  if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
+    for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
+  }
+  var autoCls2 = SPEC_AUTO_PROF[CHAR.className];
+  if (autoCls2) {
+    for (var asn in autoCls2) {
+      var ad = autoCls2[asn];
+      if (ad.profs) {
+        for (var pa in ad.profs) {
+          var skills = ad.profs[pa];
+          for (var psi = 0; psi < skills.length; psi++) profLines.push({ name: skills[psi], src: '专精' });
+        }
+      }
+    }
+  }
+  if (CHAR.specChoices) {
+    for (var sn in CHAR.specChoices) {
+      var ch = CHAR.specChoices[sn];
+      if (ch.skill && ch.skill.indexOf('-') >= 0) profLines.push({ name: ch.skill, src: '专精' });
+    }
+  }
+  if (CHAR.bgName && CHAR.bgData) {
+    var bgSk = CHAR.bgData['基础熟练项'] || '';
+    if (bgSk && bgSk !== '无') {
+      var bgParts = bgSk.split(/[、，]/);
+      for (var bi = 0; bi < bgParts.length; bi++) {
+        var bn = bgParts[bi].trim(); if (!bn) continue;
+        var mapped = BG_SKILL_MAP[bn]; if (!mapped || mapped === 'cat') continue;
+        var mp = mapped.split('.'); if (mp.length === 2) profLines.push({ name: mp[1], src: '背景' });
+        else profLines.push({ name: bn, src: '背景' });
+      }
+    }
+    if (CHAR.bgProfs && CHAR.bgProfs.skills) {
+      for (var cat in CHAR.bgProfs.skills) {
+        if (cat === '_custom') continue;
+        var arr = CHAR.bgProfs.skills[cat];
+        if (arr && arr.length) {
+          for (var aj = 0; aj < arr.length; aj++) profLines.push({ name: arr[aj], src: '背景' });
+        }
+      }
+    }
+  }
+  if (CHAR.humanFreeSkill) profLines.push({ name: CHAR.humanFreeSkill, src: '人类' });
+  return profLines;
+}
 
 function goToStep(n) {
   if(window.snd)snd.play('step');

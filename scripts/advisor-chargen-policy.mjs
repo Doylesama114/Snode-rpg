@@ -70,7 +70,7 @@ export function buildChargenBubbleQuery(snapshot) {
   if (step === 2) {
     return [
       `当前车卡步骤「${label}」。`,
-      '请结合账本已有熟练（含完整子项名）与兼职 +6 进度，说明选种族时应优先补什么；不要固定推销某几个种族名。',
+      '请结合概览/账本已有熟练（含完整子项名），说明选种族时应优先补什么；不要固定推销某几个种族名；禁止提及兼职或 +6 熟练门槛。',
       commonTail,
     ].join('');
   }
@@ -116,7 +116,7 @@ export function buildChargenBubbleQuery(snapshot) {
   if (step === 5) {
     return [
       `当前车卡步骤「${label}」。`,
-      '请结合账本（完整子项熟练）与兼职 +6 进度推荐背景方向；重复 grant 须提示 trade-off。',
+      '请结合概览/账本已有熟练（完整子项名）推荐背景方向；重复 grant 须提示 trade-off；禁止提及兼职或 +6 熟练门槛。',
       commonTail,
     ].join('');
   }
