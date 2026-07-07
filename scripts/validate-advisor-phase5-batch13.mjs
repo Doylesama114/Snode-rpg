@@ -82,8 +82,9 @@ if (ret.tier === 'full') pass('retrieve tier full');
 else fail('retrieve tier', ret.tier);
 
 const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/chargen/class_registry.json'), 'utf8'));
-if (reg.meta?.version === '1.0.7040') pass('registry version 7040');
-else fail('registry version', reg.meta?.version);
+const v = reg.meta?.version || '';
+if (v >= '1.0.7040') pass('registry version ' + v);
+else fail('registry version', v);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');
 process.exit(failed ? 1 : 0);

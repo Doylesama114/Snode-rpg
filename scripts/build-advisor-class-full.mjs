@@ -602,6 +602,136 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  术士: {
+    defaultFullL2MinSkills: 40,
+    l5MinTips: 15,
+    fpKeyLabel: '幸运',
+    specBuildHints: {
+      魔力血脉: '血脉附加伤害；与混乱箭、魔爆术等输出向技能协同。',
+      狂野魔法: '施法可能触发随机效应；混沌法术、天赐神通 build 风险与收益并存。',
+      偶发灵光: '部分法术可能施展失败；宜备稳定输出技能，勿全押高随机节点。',
+    },
+    styleRoleHints: {
+      潜能: '施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。',
+    },
+    chargenAttrDetail: '幸运≥15 为常见目标；魅力豁免配合欺瞒/恐吓 build。奥秘/宗教熟练与法术体系协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-potential',
+        title: '潜能单系 build',
+        summary: '术士仅「潜能」战斗风格；全技能树集中投资，勿套用法师八学派分系。',
+        detail: '引用须来自 L2 术士上下文；塑能/咒法等法师流派名不适用。',
+        relatedSkills: ['混乱箭', '魔爆术'],
+        tags: [className, '潜能', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手三选二',
+        summary: '3 选 2：魔法飞弹（稳定输出）、混沌法术（随机效应）、天赐神通（扩展法术池）。',
+        detail: '按团队缺口选两项；勿假设三项全拿。天赐神通公共池随等级变更（见技能描述）。',
+        relatedSkills: ['魔法飞弹', '混沌法术', '天赐神通'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-chaos',
+        title: '混沌法术随机性',
+        summary: '混沌法术掷 D100 决定效应；高阶可多次掷骰取优，勿编造未收录区间。',
+        detail: '5 级起可用附赠动作施展（见升级描述）；与狂野魔法专精主题相关。',
+        relatedSkills: ['混沌法术'],
+        tags: [className, '混沌', '随机', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-gift',
+        title: '天赐神通与公共池',
+        summary: '天赐神通从公共法术池随机获得法术/戏法；池内容随术士等级提升。',
+        detail: '深度 build 须查规则书公共池列表；勿编造上下文中未出现的法术名。',
+        relatedSkills: ['天赐神通'],
+        tags: [className, '天赐神通', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-luck',
+        title: '幸运关键属性',
+        summary: '幸运为术士关键属性；购点通常≥15，与 FP 公式及机遇熟练协同。',
+        detail: '勿与法师智力/牧师感知混淆；达标检测以 L3 上下文为准。',
+        relatedSkills: [],
+        tags: [className, '幸运', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '天生施法',
+        summary: '术士为天生施法者；多数法术需手势+法咒，非法师法术位体系。',
+        detail: '魔法飞弹为术士起手之一，与法师同名技能语境不同；勿引用塑能箭等法师专属起手。',
+        relatedSkills: ['魔法飞弹'],
+        tags: [className, '施法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与潜能节奏',
+        summary: '法术/戏法消耗 FP；混沌与高阶秘仪分回合规划，避免空 FP。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['魔爆术', '混乱箭'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-spec',
+        title: '三项专精取向',
+        summary: '魔力血脉偏伤害、狂野魔法偏随机、偶发灵光偏风险；与起手组合一致再扩展。',
+        detail: '创建页三项专精均获得（非三选一）；具体数值以规则书为准。',
+        relatedSkills: ['混沌法术'],
+        tags: [className, '专精', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cantrip',
+        title: '戏法与辅助',
+        summary: '光亮术、舞光术、浮碟术等戏法消耗较低；长战与探索可备实用戏法。',
+        detail: '戏法名称以 L2 列表为准；勿引用法师专属戏法名（若上下文中未出现）。',
+        relatedSkills: ['光亮术', '舞光术'],
+        tags: [className, '戏法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-talent',
+        title: '天赋与进阶节点',
+        summary: '潜能树含 talent 类型节点（如超限、节能施法）；前置与 SP 以技能描述为准。',
+        detail: '标识消耗由 DM 结算；勿假设玩家已有标识。',
+        relatedSkills: ['超限', '节能施法'],
+        tags: [className, '天赋', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-arcane',
+        title: '秘仪之力高阶',
+        summary: '四阶起秘仪之力·战车/火焰/智者/午夜等为高阶代表；长线 build 分阶段投资。',
+        detail: '具体效果与前置须来自 L2 上下文；勿编造未收录的秘仪名。',
+        relatedSkills: ['秘仪之力·火焰'],
+        tags: [className, '秘仪', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-psionic',
+        title: '魔能与异能',
+        summary: '魔能翻涌、魔能脉冲等含 psionic 标签；与混沌随机线可协同但勿全押随机。',
+        detail: '异能类技能规则以描述为准；与法师塑能线名称不同。',
+        relatedSkills: ['魔能翻涌', '魔能脉冲'],
+        tags: [className, '异能', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-prof',
+        title: '熟练与社交',
+        summary: '奥秘/宗教/欺瞒/机遇等熟练与术士 build 协同；机遇与幸运属性主题一致。',
+        detail: '创建 4 选 4 熟练；重复熟练合法但须说明 trade-off。',
+        relatedSkills: [],
+        tags: [className, '熟练', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/轻甲/.test(refClass?.armor || '')) {
+        rules.push('术士着轻甲；AC 与敏捷加成见基础规则与创建页。');
+      }
+      if (/手弩|匕首/.test(refClass?.weapons || '')) {
+        rules.push('匕首/手弩为常见副武器；术士不熟练重甲与枪械（见创建页）。');
+      }
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {
@@ -989,7 +1119,7 @@ function patchRegistry(className, profile, slug, options = {}) {
   row.tier = 'full';
   row.promptProfile = slug + '_skills';
   row.fullL2MinSkills = profile.fullL2MinSkills ?? cp.defaultFullL2MinSkills ?? 80;
-  row.l5MinTips = profile.l5MinTips ?? 20;
+  row.l5MinTips = profile.l5MinTips ?? cp.l5MinTips ?? 20;
   delete row.advisorNote;
   if (options.registryMeta) {
     reg.meta = { ...reg.meta, ...options.registryMeta };

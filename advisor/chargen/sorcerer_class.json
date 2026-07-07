@@ -1,18 +1,32 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-tier-b",
-    "source": "职业页/数据/classes.json + 术士.json",
+    "phase": "5-full",
+    "source": "职业页/数据/术士.json + REF_CLASSES + sorcerer_index.json",
     "generatedAt": "2026-07-07",
-    "advisorTier": "partial"
+    "advisorTier": "full"
   },
   "id": "术士",
   "name": "术士",
   "description": "术士的血脉中充斥着未知的魔法力量，或许来自远古年代的巨龙、又或是神秘强大的异界存在，甚至是次级维度的狂暴能量本身，总之这些汹涌的混沌魔力赐予他们天生的施法能力。术士的天赋羡煞旁人，仅需要命运的馈赠，便足以让他们轻松比肩刻苦修炼的其他施法者们。\\n当术士觉醒体内血脉的那一刻起，胜利的天秤已然向他们倾斜。",
   "rolePositioning": "法术输出、体系构筑、逆转战局",
+  "roleSummary": {
+    "positioning": [
+      "法术输出",
+      "体系构筑",
+      "逆转战局"
+    ],
+    "blurb": "术士的血脉中充斥着未知的魔法力量，或许来自远古年代的巨龙、又或是神秘强大的异界存在，甚至是次级维度的狂暴能量本身，总之这些汹涌的混沌魔力赐予他们天生的施法能力。术士的天赋羡煞旁人，仅需要命运的馈赠，便足以让他们轻松比肩刻苦修炼的其他施法者们。\\n当术士觉醒体内血脉的那一刻起，胜利的天秤已然向他们倾斜。"
+  },
   "keyAttr": "幸运",
   "armor": "轻甲",
   "weapons": "匕首、手弩、简易",
+  "weaponProfCategories": [
+    "剑类",
+    "弓箭",
+    "简易"
+  ],
+  "weaponCategoryNote": "创建页武器为具体类型；面板武器熟练类别见 weaponProfCategories（剑类/斧类等为分组）。",
   "saves": [
     "魅力",
     "幸运"
@@ -33,12 +47,50 @@
     }
   ],
   "startingChoice": 2,
-  "specializations": [],
+  "hpFormula": {
+    "first": "8+体质调整值",
+    "levelUp": "每术士等级+2+体质调整值"
+  },
+  "fpFormula": {
+    "first": "8+幸运调整值",
+    "levelUp": "每术士等级+1"
+  },
+  "multiclassRequirements": {
+    "class": "术士",
+    "attrRequired": "幸运属性15",
+    "profRequired": null,
+    "otherRequired": "重复进行难度15的幸运检定。累计三次成功则兼职术士，否则失败且之后无法再尝试",
+    "incompatibleWith": [
+      "圣骑士"
+    ]
+  },
+  "specializations": [
+    {
+      "name": "魔力血脉",
+      "effect": "根据血脉力量附加额外伤害",
+      "buildHint": "血脉附加伤害；与混乱箭、魔爆术等输出向技能协同。"
+    },
+    {
+      "name": "狂野魔法",
+      "effect": "施展法术时可能触发随机效果",
+      "buildHint": "施法可能触发随机效应；混沌法术、天赐神通 build 风险与收益并存。"
+    },
+    {
+      "name": "偶发灵光",
+      "effect": "部分法术可能会施展失败",
+      "buildHint": "部分法术可能施展失败；宜备稳定输出技能，勿全押高随机节点。"
+    }
+  ],
   "combatStyles": [
     {
       "name": "潜能",
-      "summary": "潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。"
+      "summary": "潜能：偏施法攻击、随机性、虚化飞行道具、AOE等能力。",
+      "buildHint": "施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。",
+      "sampleSkills": [
+        "混乱箭",
+        "魔爆术",
+        "魔能翻涌"
+      ]
     }
-  ],
-  "advisorPartialNote": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+  ]
 }

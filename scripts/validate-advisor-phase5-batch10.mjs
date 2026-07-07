@@ -22,10 +22,10 @@ if (fs.existsSync(path.join(ROOT, 'scripts/build-advisor-class-tier-audit.mjs'))
 else fail('tier audit build script');
 
 const audit = auditAllClasses();
-if (audit.meta.fullReady === 9) pass('9 full ready');
+if (audit.meta.fullReady === 10) pass('10 full ready');
 else fail('full ready', audit.meta.fullReady);
 
-if (audit.meta.partialReady === 5) pass('5 partial ready');
+if (audit.meta.partialReady === 4) pass('4 partial ready');
 else fail('partial ready', audit.meta.partialReady);
 
 for (const cn of ['战士', '奇械师', '德鲁伊']) {

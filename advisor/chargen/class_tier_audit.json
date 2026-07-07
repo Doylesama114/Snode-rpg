@@ -3,8 +3,8 @@
     "phase": "5-batch10",
     "generatedAt": "2026-07-07",
     "classCount": 14,
-    "fullReady": 9,
-    "partialReady": 5
+    "fullReady": 10,
+    "partialReady": 4
   },
   "audits": [
     {
@@ -765,11 +765,11 @@
     },
     {
       "className": "术士",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -823,25 +823,19 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 3"
+          "note": "got 20"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=sorcerer_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {

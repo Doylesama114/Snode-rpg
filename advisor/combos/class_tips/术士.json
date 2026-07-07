@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "术士",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 3,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 20,
     "byKind": {
       "style_guide": 1,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 4,
+      "combat_rule": 13,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "术士·潜能风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "潜能",
       "summary": "潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
-      "detail": "示例技能：混乱箭、魔爆术、魔能翻涌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。低阶代表：混乱箭、魔爆术、魔能翻涌。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "混乱箭",
         "魔爆术",
@@ -53,51 +54,587 @@
           "source": "sorcerer"
         }
       ],
-      "searchText": "术士 潜能 潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。 示例技能：混乱箭、魔爆术、魔能翻涌。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 混乱箭 魔爆术 魔能翻涌 style_guide auto_stub"
+      "searchText": "术士·潜能风格 style_guide auto_generated 潜能：偏施法攻击、随机性、虚化飞行道具、法术等能力。 施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。低阶代表：混乱箭、魔爆术、魔能翻涌。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 术士 潜能 战斗风格 style_guide 混乱箭 魔爆术 魔能翻涌"
     },
     {
-      "id": "tip-sorcerer-chargen-1",
+      "id": "tip-sorcerer-prio-潜能",
       "scope": "class",
       "applicableClasses": [
         "术士"
       ],
-      "title": "术士创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "潜能 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "潜能",
+      "summary": "潜能线前三级可优先：魔法飞弹、混沌法术、天赐神通、混乱箭；与起手特性/专精规划一致再扩展。",
+      "detail": "术士 潜能 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。",
+      "relatedSkills": [
+        "魔法飞弹",
+        "混沌法术",
+        "天赐神通",
+        "混乱箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "潜能",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔法飞弹",
+          "source": "sorcerer"
+        },
+        {
+          "name": "混沌法术",
+          "source": "sorcerer"
+        },
+        {
+          "name": "天赐神通",
+          "source": "sorcerer"
+        },
+        {
+          "name": "混乱箭",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "潜能 1～3 阶优先 tactic auto_generated 潜能线前三级可优先：魔法飞弹、混沌法术、天赐神通、混乱箭；与起手特性/专精规划一致再扩展。 术士 潜能 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。施法攻击、随机性与虚化飞行道具；混乱箭/魔爆术代表低阶输出。 术士 潜能 优先学 tactic 魔法飞弹 混沌法术 天赐神通 混乱箭"
+    },
+    {
+      "id": "tip-sorcerer-start-魔法飞弹",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "起手·魔法飞弹",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "潜能",
+      "summary": "魔法飞弹（潜能）：你用一只未持有物件的手在空中绘出紫色的流星形符号、并念诵法咒从那只手中发射一枚由魔法能量构成的紫色飞弹 L6: 魔法飞弹改为造成2D8点力场伤害 L9: 魔法飞",
+      "detail": "术士 4 选 2 起手特性之一。你用一只未持有物件的手在空中绘出紫色的流星形符号、并念诵法咒从那只手中发射一枚由魔法能量构成的紫色飞弹 L6: 魔法飞弹改为造成2D8点力场伤害 L9: 魔法飞弹改为造成3D8点力场伤害 与后续 潜能 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "魔法飞弹"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔法飞弹",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "起手·魔法飞弹 tactic auto_generated 魔法飞弹（潜能）：你用一只未持有物件的手在空中绘出紫色的流星形符号、并念诵法咒从那只手中发射一枚由魔法能量构成的紫色飞弹 L6: 魔法飞弹改为造成2D8点力场伤害 L9: 魔法飞 术士 4 选 2 起手特性之一。你用一只未持有物件的手在空中绘出紫色的流星形符号、并念诵法咒从那只手中发射一枚由魔法能量构成的紫色飞弹 L6: 魔法飞弹改为造成2D8点力场伤害 L9: 魔法飞弹改为造成3D8点力场伤害 与后续 潜能 风格技能可形成初期连招，但非强制绑定。 术士 起手特性 车卡 tactic 魔法飞弹"
+    },
+    {
+      "id": "tip-sorcerer-start-混沌法术",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "起手·混沌法术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "潜能",
+      "summary": "混沌法术（潜能）：你在未持有物件的双手间生成一团混杂着璀璨光彩的不稳定魔法能量，在这股魔力因抵达临界点而释放前无人知晓会发生什么... 混沌法术不会触发初始专长偶尔灵光的判定 混",
+      "detail": "术士 4 选 2 起手特性之一。你在未持有物件的双手间生成一团混杂着璀璨光彩的不稳定魔法能量，在这股魔力因抵达临界点而释放前无人知晓会发生什么... 混沌法术不会触发初始专长偶尔灵光的判定 混沌法术的点数区间将决定这个效应是否会尽可能对目标有效，例如点数较优的情况下产生的伤害类别可能是对方的伤害易伤类型等，反之亦然 001 你视作施展次级祈愿术效果 002-005 施展一个对当前局势绝对有利的效应，例如回复友方角色的生命值、疲劳值，移除全部负面标记或异常状态；或者针… 与后续 潜能 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "混沌法术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "混沌法术",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "起手·混沌法术 tactic auto_generated 混沌法术（潜能）：你在未持有物件的双手间生成一团混杂着璀璨光彩的不稳定魔法能量，在这股魔力因抵达临界点而释放前无人知晓会发生什么... 混沌法术不会触发初始专长偶尔灵光的判定 混 术士 4 选 2 起手特性之一。你在未持有物件的双手间生成一团混杂着璀璨光彩的不稳定魔法能量，在这股魔力因抵达临界点而释放前无人知晓会发生什么... 混沌法术不会触发初始专长偶尔灵光的判定 混沌法术的点数区间将决定这个效应是否会尽可能对目标有效，例如点数较优的情况下产生的伤害类别可能是对方的伤害易伤类型等，反之亦然 001 你视作施展次级祈愿术效果 002-005 施展一个对当前局势绝对有利的效应，例如回复友方角色的生命值、疲劳值，移除全部负面标记或异常状态；或者针… 与后续 潜能 风格技能可形成初期连招，但非强制绑定。 术士 起手特性 车卡 tactic 混沌法术"
+    },
+    {
+      "id": "tip-sorcerer-start-天赐神通",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "起手·天赐神通",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "潜能",
+      "summary": "天赐神通（潜能）：你激活了体内未知的力量，立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 天赐神通的公共法术池将会根据你的术士职业等级的提升",
+      "detail": "术士 4 选 2 起手特性之一。你激活了体内未知的力量，立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 天赐神通的公共法术池将会根据你的术士职业等级的提升而变更 L3: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 L6: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 L9: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你… 与后续 潜能 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "天赐神通"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "天赐神通",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "起手·天赐神通 tactic auto_generated 天赐神通（潜能）：你激活了体内未知的力量，立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 天赐神通的公共法术池将会根据你的术士职业等级的提升 术士 4 选 2 起手特性之一。你激活了体内未知的力量，立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 天赐神通的公共法术池将会根据你的术士职业等级的提升而变更 L3: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 L6: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表 L9: 立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你… 与后续 潜能 风格技能可形成初期连招，但非强制绑定。 术士 起手特性 车卡 tactic 天赐神通"
+    },
+    {
+      "id": "tip-sorcerer-cr-potential",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "潜能单系 build",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "术士仅「潜能」战斗风格；全技能树集中投资，勿套用法师八学派分系。",
+      "detail": "引用须来自 L2 术士上下文；塑能/咒法等法师流派名不适用。",
+      "relatedSkills": [
+        "混乱箭",
+        "魔爆术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "潜能",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "混乱箭",
+          "source": "sorcerer"
+        },
+        {
+          "name": "魔爆术",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "潜能单系 build combat_rule auto_generated 术士仅「潜能」战斗风格；全技能树集中投资，勿套用法师八学派分系。 引用须来自 L2 术士上下文；塑能/咒法等法师流派名不适用。 术士 潜能 combat_rule 混乱箭 魔爆术"
+    },
+    {
+      "id": "tip-sorcerer-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "起手三选二",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "3 选 2：魔法飞弹（稳定输出）、混沌法术（随机效应）、天赐神通（扩展法术池）。",
+      "detail": "按团队缺口选两项；勿假设三项全拿。天赐神通公共池随等级变更（见技能描述）。",
+      "relatedSkills": [
+        "魔法飞弹",
+        "混沌法术",
+        "天赐神通"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔法飞弹",
+          "source": "sorcerer"
+        },
+        {
+          "name": "混沌法术",
+          "source": "sorcerer"
+        },
+        {
+          "name": "天赐神通",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "起手三选二 combat_rule auto_generated 3 选 2：魔法飞弹（稳定输出）、混沌法术（随机效应）、天赐神通（扩展法术池）。 按团队缺口选两项；勿假设三项全拿。天赐神通公共池随等级变更（见技能描述）。 术士 起手特性 combat_rule 魔法飞弹 混沌法术 天赐神通"
+    },
+    {
+      "id": "tip-sorcerer-cr-chaos",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "混沌法术随机性",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "混沌法术掷 D100 决定效应；高阶可多次掷骰取优，勿编造未收录区间。",
+      "detail": "5 级起可用附赠动作施展（见升级描述）；与狂野魔法专精主题相关。",
+      "relatedSkills": [
+        "混沌法术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "混沌",
+        "随机",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "混沌法术",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "混沌法术随机性 combat_rule auto_generated 混沌法术掷 D100 决定效应；高阶可多次掷骰取优，勿编造未收录区间。 5 级起可用附赠动作施展（见升级描述）；与狂野魔法专精主题相关。 术士 混沌 随机 combat_rule 混沌法术"
+    },
+    {
+      "id": "tip-sorcerer-cr-gift",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "天赐神通与公共池",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "天赐神通从公共法术池随机获得法术/戏法；池内容随术士等级提升。",
+      "detail": "深度 build 须查规则书公共池列表；勿编造上下文中未出现的法术名。",
+      "relatedSkills": [
+        "天赐神通"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "天赐神通",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "天赐神通",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "天赐神通与公共池 combat_rule auto_generated 天赐神通从公共法术池随机获得法术/戏法；池内容随术士等级提升。 深度 build 须查规则书公共池列表；勿编造上下文中未出现的法术名。 术士 天赐神通 combat_rule 天赐神通"
+    },
+    {
+      "id": "tip-sorcerer-cr-luck",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "幸运关键属性",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "幸运为术士关键属性；购点通常≥15，与 FP 公式及机遇熟练协同。",
+      "detail": "勿与法师智力/牧师感知混淆；达标检测以 L3 上下文为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "幸运",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "幸运关键属性 combat_rule auto_generated 幸运为术士关键属性；购点通常≥15，与 FP 公式及机遇熟练协同。 勿与法师智力/牧师感知混淆；达标检测以 L3 上下文为准。 术士 幸运 combat_rule"
+    },
+    {
+      "id": "tip-sorcerer-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "天生施法",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "术士为天生施法者；多数法术需手势+法咒，非法师法术位体系。",
+      "detail": "魔法飞弹为术士起手之一，与法师同名技能语境不同；勿引用塑能箭等法师专属起手。",
+      "relatedSkills": [
+        "魔法飞弹"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "施法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔法飞弹",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "天生施法 combat_rule auto_generated 术士为天生施法者；多数法术需手势+法咒，非法师法术位体系。 魔法飞弹为术士起手之一，与法师同名技能语境不同；勿引用塑能箭等法师专属起手。 术士 施法 combat_rule 魔法飞弹"
+    },
+    {
+      "id": "tip-sorcerer-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "FP 与潜能节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法术/戏法消耗 FP；混沌与高阶秘仪分回合规划，避免空 FP。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "魔爆术",
+        "混乱箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔爆术",
+          "source": "sorcerer"
+        },
+        {
+          "name": "混乱箭",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "FP 与潜能节奏 combat_rule auto_generated 法术/戏法消耗 FP；混沌与高阶秘仪分回合规划，避免空 FP。 短休/长休回复见基础规则；标识由 DM 结算。 术士 FP combat_rule 魔爆术 混乱箭"
+    },
+    {
+      "id": "tip-sorcerer-cr-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "三项专精取向",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魔力血脉偏伤害、狂野魔法偏随机、偶发灵光偏风险；与起手组合一致再扩展。",
+      "detail": "创建页三项专精均获得（非三选一）；具体数值以规则书为准。",
+      "relatedSkills": [
+        "混沌法术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "专精",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "混沌法术",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "三项专精取向 combat_rule auto_generated 魔力血脉偏伤害、狂野魔法偏随机、偶发灵光偏风险；与起手组合一致再扩展。 创建页三项专精均获得（非三选一）；具体数值以规则书为准。 术士 专精 combat_rule 混沌法术"
+    },
+    {
+      "id": "tip-sorcerer-cr-cantrip",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "戏法与辅助",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "光亮术、舞光术、浮碟术等戏法消耗较低；长战与探索可备实用戏法。",
+      "detail": "戏法名称以 L2 列表为准；勿引用法师专属戏法名（若上下文中未出现）。",
+      "relatedSkills": [
+        "光亮术",
+        "舞光术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "戏法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "光亮术",
+          "source": "sorcerer"
+        },
+        {
+          "name": "舞光术",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "戏法与辅助 combat_rule auto_generated 光亮术、舞光术、浮碟术等戏法消耗较低；长战与探索可备实用戏法。 戏法名称以 L2 列表为准；勿引用法师专属戏法名（若上下文中未出现）。 术士 戏法 combat_rule 光亮术 舞光术"
+    },
+    {
+      "id": "tip-sorcerer-cr-talent",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "天赋与进阶节点",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "潜能树含 talent 类型节点（如超限、节能施法）；前置与 SP 以技能描述为准。",
+      "detail": "标识消耗由 DM 结算；勿假设玩家已有标识。",
+      "relatedSkills": [
+        "超限",
+        "节能施法"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "天赋",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "超限",
+          "source": "sorcerer"
+        },
+        {
+          "name": "节能施法",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "天赋与进阶节点 combat_rule auto_generated 潜能树含 talent 类型节点（如超限、节能施法）；前置与 SP 以技能描述为准。 标识消耗由 DM 结算；勿假设玩家已有标识。 术士 天赋 combat_rule 超限 节能施法"
+    },
+    {
+      "id": "tip-sorcerer-cr-arcane",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "秘仪之力高阶",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "四阶起秘仪之力·战车/火焰/智者/午夜等为高阶代表；长线 build 分阶段投资。",
+      "detail": "具体效果与前置须来自 L2 上下文；勿编造未收录的秘仪名。",
+      "relatedSkills": [
+        "秘仪之力·火焰"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "秘仪",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "秘仪之力·火焰",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "秘仪之力高阶 combat_rule auto_generated 四阶起秘仪之力·战车/火焰/智者/午夜等为高阶代表；长线 build 分阶段投资。 具体效果与前置须来自 L2 上下文；勿编造未收录的秘仪名。 术士 秘仪 combat_rule 秘仪之力·火焰"
+    },
+    {
+      "id": "tip-sorcerer-cr-psionic",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "魔能与异能",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魔能翻涌、魔能脉冲等含 psionic 标签；与混沌随机线可协同但勿全押随机。",
+      "detail": "异能类技能规则以描述为准；与法师塑能线名称不同。",
+      "relatedSkills": [
+        "魔能翻涌",
+        "魔能脉冲"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "异能",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "魔能翻涌",
+          "source": "sorcerer"
+        },
+        {
+          "name": "魔能脉冲",
+          "source": "sorcerer"
+        }
+      ],
+      "searchText": "魔能与异能 combat_rule auto_generated 魔能翻涌、魔能脉冲等含 psionic 标签；与混沌随机线可协同但勿全押随机。 异能类技能规则以描述为准；与法师塑能线名称不同。 术士 异能 combat_rule 魔能翻涌 魔能脉冲"
+    },
+    {
+      "id": "tip-sorcerer-cr-prof",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "熟练与社交",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "奥秘/宗教/欺瞒/机遇等熟练与术士 build 协同；机遇与幸运属性主题一致。",
+      "detail": "创建 4 选 4 熟练；重复熟练合法但须说明 trade-off。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "术士",
+        "熟练",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "熟练与社交 combat_rule auto_generated 奥秘/宗教/欺瞒/机遇等熟练与术士 build 协同；机遇与幸运属性主题一致。 创建 4 选 4 熟练；重复熟练合法但须说明 trade-off。 术士 熟练 combat_rule"
+    },
+    {
+      "id": "tip-sorcerer-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "术士"
+      ],
+      "title": "术士关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "幸运：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "幸运≥15 为常见目标；魅力豁免配合欺瞒/恐吓 build。奥秘/宗教熟练与法术体系协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "术士",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "术士 创建 车卡 顾问档位 partial：可检索 术士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "术士关键属性 chargen auto_generated 幸运：创建购点通常至少一项≥15，与主武器/战斗风格一致。 幸运≥15 为常见目标；魅力豁免配合欺瞒/恐吓 build。奥秘/宗教熟练与法术体系协同。 术士 车卡 属性 chargen"
     },
     {
-      "id": "tip-sorcerer-partial-note",
+      "id": "tip-sorcerer-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "术士"
       ],
-      "title": "术士顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "术士专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "魔力血脉：血脉附加伤害；与混乱箭、魔爆术等输出向技能协同。 狂野魔法：施法可能触发随机效应；混沌法术、天赐神通 build 风险与收益并存。 偶发灵光：部分法术可能施展失败；宜备稳定输出技能，勿全押高随机节点。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "术士",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "术士 partial 顾问 术士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "术士专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 魔力血脉：血脉附加伤害；与混乱箭、魔爆术等输出向技能协同。 狂野魔法：施法可能触发随机效应；混沌法术、天赐神通 build 风险与收益并存。 偶发灵光：部分法术可能施展失败；宜备稳定输出技能，勿全押高随机节点。 术士 车卡 专精 chargen"
     }
   ]
 }

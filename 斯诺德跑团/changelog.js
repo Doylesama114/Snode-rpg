@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7047',
+    date: '2026-07-07',
+    changes: [
+      '术士顾问升full(sorcerer_skills/潜能L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7046',
     date: '2026-07-07',
     changes: [
