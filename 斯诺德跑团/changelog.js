@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7033',
+    date: '2026-07-07',
+    changes: [
+      '吟游诗人魔契师Tier B',
+      '全14职业L2检索完成'
+    ]
+  },
+
+
+  {
     version: '1.0.7032',
     date: '2026-07-07',
     changes: [

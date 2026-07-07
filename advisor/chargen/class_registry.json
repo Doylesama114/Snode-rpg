@@ -3,7 +3,7 @@
     "layer": "L1",
     "phase": "5-batch1",
     "version": "1.0.0",
-    "note": "顾问职业档位与创建页陪跑参数；hints/tips 可后续逐职业补充"
+    "note": "顾问职业档位与创建页陪跑参数；除法师 full 外均为 partial Tier B（L2 技能索引）"
   },
   "defaults": {
     "tier": "basic",
@@ -232,16 +232,40 @@
       "advisorNote": "武僧顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "吟游诗人": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "魅力",
+      "isCaster": true,
+      "l2Slug": "bard",
+      "l2Layer": "L2-bard",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "吟游诗人",
+        "激昂",
+        "舒缓",
+        "灵动",
+        "诙谐",
+        "集中"
+      ],
+      "advisorNote": "吟游诗人顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "魔契师": {
-      "tier": "basic",
+      "tier": "partial",
       "keyAttr": "魅力",
+      "isCaster": true,
+      "l2Slug": "warlock",
+      "l2Layer": "L2-warlock",
       "startingFeaturePick": 2,
-      "skillPickCount": 4
+      "skillPickCount": 4,
+      "styleKeywords": [
+        "魔契师",
+        "起始特性",
+        "魔契",
+        "邪念",
+        "咒能",
+        "秘术"
+      ],
+      "advisorNote": "魔契师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     }
   }
 }

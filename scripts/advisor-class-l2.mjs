@@ -87,6 +87,8 @@ export function matchClassNameFromQuery(query) {
   const aliases = [
     ['萨满祭司', '萨满'],
     ['圣骑士', '圣骑'],
+    ['吟游诗人', '吟游'],
+    ['魔契师', '魔契'],
   ];
   for (const entry of listL2ClassEntries()) {
     if (q.includes(entry.className)) return entry.className;

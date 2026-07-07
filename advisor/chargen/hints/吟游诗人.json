@@ -1,24 +1,77 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "吟游诗人",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "魅力",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "吟游诗人关键属性为 魅力"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "情报收集",
+      "团队增益",
+      "控制局势"
+    ],
+    "blurb": "吟游诗人能够发现隐藏在音乐当中的魔力，他们的演奏能够激励同伴的斗志、抚慰队友的心灵，同时还能够降低敌人的士气、干扰对手的心智。吟游诗人也是探取情报和结识人脉的好手，酒馆、剧院甚至他人的卧室都是他们大显身手的好地方，凭借自身独特的魅力他们总是能够避免剑拔弩张的气氛帮助大家握手言和。\\n有时胜利并非一定要在战场上见分晓，对吟游诗人来说唇枪舌剑也是战斗重要的一环。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "激昂",
+      "summary": "激昂：偏节奏、力量豁免（13）、每个自身回合限一次、法术等能力。",
+      "sampleSkills": [
+        "雷鸣和弦",
+        "快速拨弦",
+        "热血节拍"
+      ]
+    },
+    {
+      "name": "舒缓",
+      "summary": "舒缓：偏回复、戏法、净化、长休等能力。",
+      "sampleSkills": [
+        "次级治疗术",
+        "净化间奏",
+        "睡眠术"
+      ]
+    },
+    {
+      "name": "灵动",
+      "summary": "灵动：偏施法攻击、节奏、虚化飞行道具、法术等能力。",
+      "sampleSkills": [
+        "音波刃",
+        "无律之音",
+        "轻快小调"
+      ]
+    },
+    {
+      "name": "诙谐",
+      "summary": "诙谐：偏光耀、光源、激活、唯一性等能力。",
+      "sampleSkills": [
+        "舞光术",
+        "油腻术",
+        "传讯术"
+      ]
+    },
+    {
+      "name": "集中",
+      "summary": "集中：偏媒介、隐秘、激活、戏法等能力。",
+      "sampleSkills": [
+        "警报术",
+        "剑刃防护",
+        "专注演奏"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 吟游诗人 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "吟游诗人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }

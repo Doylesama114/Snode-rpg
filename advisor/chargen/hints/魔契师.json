@@ -1,24 +1,77 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch2",
+    "phase": "5-tier-b",
     "targetClass": "魔契师",
-    "tier": "basic",
-    "status": "placeholder",
-    "note": "待 DM/设计补充；primaryAttr 已由 registry 兜底"
+    "tier": "partial",
+    "status": "auto",
+    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
   },
   "primaryAttr": {
     "name": "魅力",
     "targetAtCreation": 15,
-    "reason": ""
+    "reason": "魔契师关键属性为 魅力"
   },
   "roleSummary": {
-    "positioning": [],
-    "blurb": ""
+    "positioning": [
+      "法术输出",
+      "控制局势",
+      "场外援助"
+    ],
+    "blurb": "魔契师时常遭受到世俗的误解，他们时常被认为是为了追求禁忌力量而投身恶魔与魔鬼怀抱的卑劣投机者，通过签订契约的方式用利益交换来换取强大的力量。虽然魔契师对禁忌的知识和力量充满了强烈的渴望，但他们并非都是邪恶的存在，力量本身无关对错，只要魔契师能够坚守本心，那些来自异界宗主的强大魔法力量将会为世界带来新的变革。\\n永远不要小瞧那些魔契师，因为他们身后站着一位超乎想象的伟大存在。"
   },
   "specializationHints": [],
-  "styleHints": [],
+  "styleHints": [
+    {
+      "name": "起始特性",
+      "summary": "起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。",
+      "sampleSkills": [
+        "巫术箭",
+        "毒液飞溅",
+        "虚弱诅咒"
+      ]
+    },
+    {
+      "name": "魔契",
+      "summary": "魔契：偏召唤单位、恩惠、激活、唯一性等能力。",
+      "sampleSkills": [
+        "恩赐魔刃",
+        "异界灵感",
+        "召唤魔宠"
+      ]
+    },
+    {
+      "name": "邪念",
+      "summary": "邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
+      "sampleSkills": [
+        "混乱箭",
+        "腐蚀术",
+        "侦测毒性与疾病"
+      ]
+    },
+    {
+      "name": "咒能",
+      "summary": "咒能：偏幻象、专注、引导、激活等能力。",
+      "sampleSkills": [
+        "骚灵现象",
+        "惑人低语",
+        "魔爆术"
+      ]
+    },
+    {
+      "name": "秘术",
+      "summary": "秘术：偏隐秘、媒介、戏法、交涉等能力。",
+      "sampleSkills": [
+        "迷幻手稿",
+        "通晓语言",
+        "迷雾术"
+      ]
+    }
+  ],
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
-  "chargenTips": []
+  "chargenTips": [
+    "顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
+  ],
+  "advisorPartialNote": "魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
 }
