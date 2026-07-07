@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "牧师",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 5,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 20,
     "byKind": {
       "style_guide": 3,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 7,
+      "combat_rule": 8,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "牧师·戒律风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "戒律",
       "summary": "戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。",
-      "detail": "示例技能：神灵之火、神力战槌、庇护术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "神术输出与惩戒；惩击起手契合，虔诚祷告后可强化戒律技能。低阶代表：神灵之火、神力战槌、庇护术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "神灵之火",
         "神力战槌",
@@ -53,7 +54,7 @@
           "source": "cleric"
         }
       ],
-      "searchText": "牧师 戒律 戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。 示例技能：神灵之火、神力战槌、庇护术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 神灵之火 神力战槌 庇护术 style_guide auto_stub"
+      "searchText": "牧师·戒律风格 style_guide auto_generated 戒律：偏神术、施法攻击、虚化飞行道具、增益等能力。 神术输出与惩戒；惩击起手契合，虔诚祷告后可强化戒律技能。低阶代表：神灵之火、神力战槌、庇护术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 牧师 戒律 战斗风格 style_guide 神灵之火 神力战槌 庇护术"
     },
     {
       "id": "tip-cleric-style-虔佑",
@@ -63,10 +64,10 @@
       ],
       "title": "牧师·虔佑风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "虔佑",
       "summary": "虔佑：偏神术、回复、净化、每个自身回合限一次等能力。",
-      "detail": "示例技能：祈福、神佑印记、缓落术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "治疗、净化与团队增益；治疗术/恢复术起手契合支援。低阶代表：祈福、神佑印记、缓落术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "祈福",
         "神佑印记",
@@ -93,7 +94,7 @@
           "source": "cleric"
         }
       ],
-      "searchText": "牧师 虔佑 虔佑：偏神术、回复、净化、每个自身回合限一次等能力。 示例技能：祈福、神佑印记、缓落术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 祈福 神佑印记 缓落术 style_guide auto_stub"
+      "searchText": "牧师·虔佑风格 style_guide auto_generated 虔佑：偏神术、回复、净化、每个自身回合限一次等能力。 治疗、净化与团队增益；治疗术/恢复术起手契合支援。低阶代表：祈福、神佑印记、缓落术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 牧师 虔佑 战斗风格 style_guide 祈福 神佑印记 缓落术"
     },
     {
       "id": "tip-cleric-style-魂谒",
@@ -103,10 +104,10 @@
       ],
       "title": "牧师·魂谒风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "魂谒",
       "summary": "魂谒：偏神术、回复、净化、短休/长休等能力。",
-      "detail": "示例技能：宁神术、纯净术、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "控场、回复与短休资源；责难等起手契合干扰与魂灵互动。低阶代表：宁神术、纯净术、睡眠术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "宁神术",
         "纯净术",
@@ -133,51 +134,547 @@
           "source": "cleric"
         }
       ],
-      "searchText": "牧师 魂谒 魂谒：偏神术、回复、净化、短休/长休等能力。 示例技能：宁神术、纯净术、睡眠术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 宁神术 纯净术 睡眠术 style_guide auto_stub"
+      "searchText": "牧师·魂谒风格 style_guide auto_generated 魂谒：偏神术、回复、净化、短休/长休等能力。 控场、回复与短休资源；责难等起手契合干扰与魂灵互动。低阶代表：宁神术、纯净术、睡眠术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 牧师 魂谒 战斗风格 style_guide 宁神术 纯净术 睡眠术"
     },
     {
-      "id": "tip-cleric-chargen-1",
+      "id": "tip-cleric-prio-戒律",
       "scope": "class",
       "applicableClasses": [
         "牧师"
       ],
-      "title": "牧师创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "戒律 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "戒律",
+      "summary": "戒律线前三级可优先：神灵之火、神力战槌、庇护术；与起手特性/专精规划一致再扩展。",
+      "detail": "牧师 戒律 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。神术输出与惩戒；惩击起手契合，虔诚祷告后可强化戒律技能。",
+      "relatedSkills": [
+        "神灵之火",
+        "神力战槌",
+        "庇护术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "戒律",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "神灵之火",
+          "source": "cleric"
+        },
+        {
+          "name": "神力战槌",
+          "source": "cleric"
+        },
+        {
+          "name": "庇护术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "戒律 1～3 阶优先 tactic auto_generated 戒律线前三级可优先：神灵之火、神力战槌、庇护术；与起手特性/专精规划一致再扩展。 牧师 戒律 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。神术输出与惩戒；惩击起手契合，虔诚祷告后可强化戒律技能。 牧师 戒律 优先学 tactic 神灵之火 神力战槌 庇护术"
+    },
+    {
+      "id": "tip-cleric-prio-虔佑",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "虔佑 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "虔佑",
+      "summary": "虔佑线前三级可优先：祈福、神佑印记、缓落术；与起手特性/专精规划一致再扩展。",
+      "detail": "牧师 虔佑 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗、净化与团队增益；治疗术/恢复术起手契合支援。",
+      "relatedSkills": [
+        "祈福",
+        "神佑印记",
+        "缓落术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "虔佑",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "祈福",
+          "source": "cleric"
+        },
+        {
+          "name": "神佑印记",
+          "source": "cleric"
+        },
+        {
+          "name": "缓落术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "虔佑 1～3 阶优先 tactic auto_generated 虔佑线前三级可优先：祈福、神佑印记、缓落术；与起手特性/专精规划一致再扩展。 牧师 虔佑 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。治疗、净化与团队增益；治疗术/恢复术起手契合支援。 牧师 虔佑 优先学 tactic 祈福 神佑印记 缓落术"
+    },
+    {
+      "id": "tip-cleric-prio-魂谒",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "魂谒 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "魂谒",
+      "summary": "魂谒线前三级可优先：宁神术、纯净术、睡眠术；与起手特性/专精规划一致再扩展。",
+      "detail": "牧师 魂谒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场、回复与短休资源；责难等起手契合干扰与魂灵互动。",
+      "relatedSkills": [
+        "宁神术",
+        "纯净术",
+        "睡眠术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "魂谒",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "宁神术",
+          "source": "cleric"
+        },
+        {
+          "name": "纯净术",
+          "source": "cleric"
+        },
+        {
+          "name": "睡眠术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "魂谒 1～3 阶优先 tactic auto_generated 魂谒线前三级可优先：宁神术、纯净术、睡眠术；与起手特性/专精规划一致再扩展。 牧师 魂谒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。控场、回复与短休资源；责难等起手契合干扰与魂灵互动。 牧师 魂谒 优先学 tactic 宁神术 纯净术 睡眠术"
+    },
+    {
+      "id": "tip-cleric-start-惩击",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "起手·惩击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "惩击（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言降下惩戒之光制裁敌人 L5: 惩击改为造成2D6点伤害 L10: 惩击改为造成3D6点伤害",
+      "detail": "牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言降下惩戒之光制裁敌人 L5: 惩击改为造成2D6点伤害 L10: 惩击改为造成3D6点伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "惩击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "惩击",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "起手·惩击 tactic auto_generated 惩击（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言降下惩戒之光制裁敌人 L5: 惩击改为造成2D6点伤害 L10: 惩击改为造成3D6点伤害 牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言降下惩戒之光制裁敌人 L5: 惩击改为造成2D6点伤害 L10: 惩击改为造成3D6点伤害 与后续 起手 风格技能可形成初期连招，但非强制绑定。 牧师 起手特性 车卡 tactic 惩击"
+    },
+    {
+      "id": "tip-cleric-start-治疗术",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "起手·治疗术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "治疗术（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言降下不可思议的光芒治愈创伤 L6: 治疗术改为回复1D6+6点生命值 L12: 治疗术改为回复1D8+8点生",
+      "detail": "牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言降下不可思议的光芒治愈创伤 L6: 治疗术改为回复1D6+6点生命值 L12: 治疗术改为回复1D8+8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "治疗术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "治疗术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "起手·治疗术 tactic auto_generated 治疗术（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言降下不可思议的光芒治愈创伤 L6: 治疗术改为回复1D6+6点生命值 L12: 治疗术改为回复1D8+8点生 牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言降下不可思议的光芒治愈创伤 L6: 治疗术改为回复1D6+6点生命值 L12: 治疗术改为回复1D8+8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 牧师 起手特性 车卡 tactic 治疗术"
+    },
+    {
+      "id": "tip-cleric-start-恢复术",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "起手·恢复术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "恢复术（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言轻轻抚慰对方，稍等片刻后便有微弱的白色光芒在对方身上渐渐亮起 L5: 恢复术的施展距离提升至4米 L8: 恢",
+      "detail": "牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言轻轻抚慰对方，稍等片刻后便有微弱的白色光芒在对方身上渐渐亮起 L5: 恢复术的施展距离提升至4米 L8: 恢复术改为回复2D8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "恢复术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "恢复术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "起手·恢复术 tactic auto_generated 恢复术（起手）：你用一只未持有物件的手做出对应的施法动作、并念诵神言轻轻抚慰对方，稍等片刻后便有微弱的白色光芒在对方身上渐渐亮起 L5: 恢复术的施展距离提升至4米 L8: 恢 牧师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵神言轻轻抚慰对方，稍等片刻后便有微弱的白色光芒在对方身上渐渐亮起 L5: 恢复术的施展距离提升至4米 L8: 恢复术改为回复2D8点生命值 与后续 起手 风格技能可形成初期连招，但非强制绑定。 牧师 起手特性 车卡 tactic 恢复术"
+    },
+    {
+      "id": "tip-cleric-start-责难",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "起手·责难",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "责难（起手）：你做出对应的施法动作、并念诵神言呵斥敌人，使对方在你的言语下心生愧疚而无地自容 2.责难无法在同一场战斗环节中对相同角色生效多次 L5: 责难的豁免难度变更为意",
+      "detail": "牧师 4 选 2 起手特性之一。你做出对应的施法动作、并念诵神言呵斥敌人，使对方在你的言语下心生愧疚而无地自容 2.责难无法在同一场战斗环节中对相同角色生效多次 L5: 责难的豁免难度变更为意志豁免（15） L8: 目标因为受到伤害外的方式强制脱离责难状态后需要再进行一次对应豁免，本次豁免失败将在使其在下一个自身回合中失去一个附赠动作 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "责难"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "责难",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "起手·责难 tactic auto_generated 责难（起手）：你做出对应的施法动作、并念诵神言呵斥敌人，使对方在你的言语下心生愧疚而无地自容 2.责难无法在同一场战斗环节中对相同角色生效多次 L5: 责难的豁免难度变更为意 牧师 4 选 2 起手特性之一。你做出对应的施法动作、并念诵神言呵斥敌人，使对方在你的言语下心生愧疚而无地自容 2.责难无法在同一场战斗环节中对相同角色生效多次 L5: 责难的豁免难度变更为意志豁免（15） L8: 目标因为受到伤害外的方式强制脱离责难状态后需要再进行一次对应豁免，本次豁免失败将在使其在下一个自身回合中失去一个附赠动作 与后续 起手 风格技能可形成初期连招，但非强制绑定。 牧师 起手特性 车卡 tactic 责难"
+    },
+    {
+      "id": "tip-cleric-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "神术施法姿势",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多数神术需空一只手做手势并念诵神言；持盾/武器时须规划空闲手。",
+      "detail": "上下文出现「施法动作+言语」描述时须原样引用；勿套用法师法器/魔棒规则。",
+      "relatedSkills": [
+        "惩击",
+        "治疗术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "神术",
+        "施法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "惩击",
+          "source": "cleric"
+        },
+        {
+          "name": "治疗术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "神术施法姿势 combat_rule auto_generated 多数神术需空一只手做手势并念诵神言；持盾/武器时须规划空闲手。 上下文出现「施法动作+言语」描述时须原样引用；勿套用法师法器/魔棒规则。 牧师 神术 施法 combat_rule 惩击 治疗术"
+    },
+    {
+      "id": "tip-cleric-cr-heal",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "治疗与 FP",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "治疗术/恢复术消耗 FP；长战须分配输出与回复节奏，避免空 FP 无法救场。",
+      "detail": "虔佑/魂谒线深化回复；恢复术有延迟，提前规划比濒死再交更安全。",
+      "relatedSkills": [
+        "治疗术",
+        "恢复术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "治疗",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "治疗术",
+          "source": "cleric"
+        },
+        {
+          "name": "恢复术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "治疗与 FP combat_rule auto_generated 治疗术/恢复术消耗 FP；长战须分配输出与回复节奏，避免空 FP 无法救场。 虔佑/魂谒线深化回复；恢复术有延迟，提前规划比濒死再交更安全。 牧师 治疗 FP combat_rule 治疗术 恢复术"
+    },
+    {
+      "id": "tip-cleric-cr-front",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "盾牌前线",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "牧师可着轻中甲与盾牌；近站惩击/战锤仍须注意 AC 与借机。",
+      "detail": "戒律线可近战输出；勿假设重甲。着甲休眠见基础规则。",
+      "relatedSkills": [
+        "神力战槌"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "盾牌",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "神力战槌",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "盾牌前线 combat_rule auto_generated 牧师可着轻中甲与盾牌；近站惩击/战锤仍须注意 AC 与借机。 戒律线可近战输出；勿假设重甲。着甲休眠见基础规则。 牧师 盾牌 护甲 combat_rule 神力战槌"
+    },
+    {
+      "id": "tip-cleric-cr-discipline",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "戒律输出",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "戒律风格偏神术伤害与增益；低阶优先上下文出现的戒律代表技能。",
+      "detail": "惩击随等级成长；与虔诚祷告联动的技能须注明前提（若上下文列出）。",
+      "relatedSkills": [
+        "惩击",
+        "神灵之火"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "戒律",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "惩击",
+          "source": "cleric"
+        },
+        {
+          "name": "神灵之火",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "戒律输出 combat_rule auto_generated 戒律风格偏神术伤害与增益；低阶优先上下文出现的戒律代表技能。 惩击随等级成长；与虔诚祷告联动的技能须注明前提（若上下文列出）。 牧师 戒律 combat_rule 惩击 神灵之火"
+    },
+    {
+      "id": "tip-cleric-cr-bless",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "虔佑支援",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "虔佑线强调回复与净化；每个自身回合限一次等限制以技能描述为准。",
+      "detail": "团队战时优先稳定血线再展开增益；勿包装成必成立连招。",
+      "relatedSkills": [
+        "祈福",
+        "治疗术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "虔佑",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "祈福",
+          "source": "cleric"
+        },
+        {
+          "name": "治疗术",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "虔佑支援 combat_rule auto_generated 虔佑线强调回复与净化；每个自身回合限一次等限制以技能描述为准。 团队战时优先稳定血线再展开增益；勿包装成必成立连招。 牧师 虔佑 combat_rule 祈福 治疗术"
+    },
+    {
+      "id": "tip-cleric-cr-soul",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "魂谒控场",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魂谒线含控场、睡眠与短休相关神术；引用须来自 L2 牧师列表。",
+      "detail": "与法师惑控/预言不同，名称以神术上下文为准；勿引用塑能箭等法师技能。",
+      "relatedSkills": [
+        "睡眠术",
+        "责难"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "魂谒",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "睡眠术",
+          "source": "cleric"
+        },
+        {
+          "name": "责难",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "魂谒控场 combat_rule auto_generated 魂谒线含控场、睡眠与短休相关神术；引用须来自 L2 牧师列表。 与法师惑控/预言不同，名称以神术上下文为准；勿引用塑能箭等法师技能。 牧师 魂谒 combat_rule 睡眠术 责难"
+    },
+    {
+      "id": "tip-cleric-cr-domain",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "神圣领域",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "专精「神圣领域」决定神祇加成；build 须与所选领域一致，勿编造领域名。",
+      "detail": "具体领域能力见创建页/规则书；顾问仅引用上下文中出现的名称。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "专精",
+        "神圣领域",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "神圣领域 combat_rule auto_generated 专精「神圣领域」决定神祇加成；build 须与所选领域一致，勿编造领域名。 具体领域能力见创建页/规则书；顾问仅引用上下文中出现的名称。 牧师 专精 神圣领域 combat_rule"
+    },
+    {
+      "id": "tip-cleric-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "神术 FP 节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "神术/法术均消耗 FP；多线兼修时优先点亮与角色定位匹配的低阶节点。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算，勿建议刷标识。",
+      "relatedSkills": [
+        "惩击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "牧师",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "惩击",
+          "source": "cleric"
+        }
+      ],
+      "searchText": "神术 FP 节奏 combat_rule auto_generated 神术/法术均消耗 FP；多线兼修时优先点亮与角色定位匹配的低阶节点。 短休/长休回复见基础规则；标识由 DM 结算，勿建议刷标识。 牧师 FP combat_rule 惩击"
+    },
+    {
+      "id": "tip-cleric-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "牧师"
+      ],
+      "title": "牧师关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "感知≥15 为常见目标；魅力豁免配合部分神术。宗教/医药熟练与治疗和仪式 build 协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "牧师",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "牧师 创建 车卡 顾问档位 partial：可检索 牧师 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "牧师关键属性 chargen auto_generated 感知：创建购点通常至少一项≥15，与主武器/战斗风格一致。 感知≥15 为常见目标；魅力豁免配合部分神术。宗教/医药熟练与治疗和仪式 build 协同。 牧师 车卡 属性 chargen"
     },
     {
-      "id": "tip-cleric-partial-note",
+      "id": "tip-cleric-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "牧师"
       ],
-      "title": "牧师顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "牧师专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "神圣领域：创建页选择信奉神祇对应的领域；领域能力影响戒律/虔佑/魂谒投资方向。 虔诚祷告：幕间/日常祷告与部分戒律技能联动（如惩戒真言）；偏仪式与资讯型 build。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "牧师",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "牧师 partial 顾问 牧师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "牧师专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 神圣领域：创建页选择信奉神祇对应的领域；领域能力影响戒律/虔佑/魂谒投资方向。 虔诚祷告：幕间/日常祷告与部分戒律技能联动（如惩戒真言）；偏仪式与资讯型 build。 牧师 车卡 专精 chargen"
     }
   ]
 }

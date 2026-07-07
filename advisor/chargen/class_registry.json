@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7041",
-    "note": "14职业顾问：法师+战士+蛮斗士+猎人 full，其余10 partial；7041猎人升full"
+    "version": "1.0.7042",
+    "note": "14职业顾问：5 full（含牧师）；7042牧师升full"
   },
   "defaults": {
     "tier": "basic",
@@ -119,7 +119,7 @@
       "l5MinTips": 20
     },
     "牧师": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "感知",
       "isCaster": true,
       "l2Slug": "cleric",
@@ -132,7 +132,9 @@
         "虔佑",
         "魂谒"
       ],
-      "advisorNote": "牧师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "cleric_skills",
+      "fullL2MinSkills": 50,
+      "l5MinTips": 20
     },
     "圣骑士": {
       "tier": "partial",

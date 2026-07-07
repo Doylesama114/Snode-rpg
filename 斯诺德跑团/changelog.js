@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7042',
+    date: '2026-07-07',
+    changes: [
+      '牧师顾问升full(cleric_skills/神术L5/起手特性)'
+    ]
+  },
+
+
+  {
     version: '1.0.7041',
     date: '2026-07-07',
     changes: [

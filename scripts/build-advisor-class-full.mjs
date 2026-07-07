@@ -218,6 +218,89 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  牧师: {
+    defaultFullL2MinSkills: 50,
+    fpKeyLabel: '感知',
+    specBuildHints: {
+      神圣领域: '创建页选择信奉神祇对应的领域；领域能力影响戒律/虔佑/魂谒投资方向。',
+      虔诚祷告: '幕间/日常祷告与部分戒律技能联动（如惩戒真言）；偏仪式与资讯型 build。',
+    },
+    styleRoleHints: {
+      戒律: '神术输出与惩戒；惩击起手契合，虔诚祷告后可强化戒律技能。',
+      虔佑: '治疗、净化与团队增益；治疗术/恢复术起手契合支援。',
+      魂谒: '控场、回复与短休资源；责难等起手契合干扰与魂灵互动。',
+    },
+    chargenAttrDetail: '感知≥15 为常见目标；魅力豁免配合部分神术。宗教/医药熟练与治疗和仪式 build 协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '神术施法姿势',
+        summary: '多数神术需空一只手做手势并念诵神言；持盾/武器时须规划空闲手。',
+        detail: '上下文出现「施法动作+言语」描述时须原样引用；勿套用法师法器/魔棒规则。',
+        relatedSkills: ['惩击', '治疗术'],
+        tags: [className, '神术', '施法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-heal',
+        title: '治疗与 FP',
+        summary: '治疗术/恢复术消耗 FP；长战须分配输出与回复节奏，避免空 FP 无法救场。',
+        detail: '虔佑/魂谒线深化回复；恢复术有延迟，提前规划比濒死再交更安全。',
+        relatedSkills: ['治疗术', '恢复术'],
+        tags: [className, '治疗', 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-front',
+        title: '盾牌前线',
+        summary: '牧师可着轻中甲与盾牌；近站惩击/战锤仍须注意 AC 与借机。',
+        detail: '戒律线可近战输出；勿假设重甲。着甲休眠见基础规则。',
+        relatedSkills: ['神力战槌'],
+        tags: [className, '盾牌', '护甲', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-discipline',
+        title: '戒律输出',
+        summary: '戒律风格偏神术伤害与增益；低阶优先上下文出现的戒律代表技能。',
+        detail: '惩击随等级成长；与虔诚祷告联动的技能须注明前提（若上下文列出）。',
+        relatedSkills: ['惩击', '神灵之火'],
+        tags: [className, '戒律', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-bless',
+        title: '虔佑支援',
+        summary: '虔佑线强调回复与净化；每个自身回合限一次等限制以技能描述为准。',
+        detail: '团队战时优先稳定血线再展开增益；勿包装成必成立连招。',
+        relatedSkills: ['祈福', '治疗术'],
+        tags: [className, '虔佑', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-soul',
+        title: '魂谒控场',
+        summary: '魂谒线含控场、睡眠与短休相关神术；引用须来自 L2 牧师列表。',
+        detail: '与法师惑控/预言不同，名称以神术上下文为准；勿引用塑能箭等法师技能。',
+        relatedSkills: ['睡眠术', '责难'],
+        tags: [className, '魂谒', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-domain',
+        title: '神圣领域',
+        summary: '专精「神圣领域」决定神祇加成；build 须与所选领域一致，勿编造领域名。',
+        detail: '具体领域能力见创建页/规则书；顾问仅引用上下文中出现的名称。',
+        relatedSkills: [],
+        tags: [className, '专精', '神圣领域', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: '神术 FP 节奏',
+        summary: '神术/法术均消耗 FP；多线兼修时优先点亮与角色定位匹配的低阶节点。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算，勿建议刷标识。',
+        relatedSkills: ['惩击'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: () => [
+      '神术媒介为手势+言语（见技能描述）；非法师戏法/法术位体系。',
+    ],
+  },
 };
 
 function classProfile(className) {
@@ -262,6 +345,22 @@ function inferStyleSummary(styleName, skills) {
   }
   const tagStr = [...tags].slice(0, 4).join('、');
   return tagStr ? `${styleName}：偏${tagStr}等能力。` : `${styleName}：该风格技能以职业页为准。`;
+}
+
+function resolveStartingSkillEntries(skills, startingFeatures) {
+  const fromType = skills.filter((s) => s.type === 'starting');
+  if (fromType.length) return fromType;
+  return (startingFeatures || []).map((def) => {
+    const name = def.name;
+    const hit = skills.find((s) => s.name === name);
+    if (hit) return { ...hit, type: 'starting' };
+    return {
+      name,
+      type: 'starting',
+      style: null,
+      summary: def.desc || '',
+    };
+  });
 }
 
 function lowTierSkills(skills, style, limit = 4) {
@@ -438,7 +537,7 @@ function finalizeTip(tip) {
   return tip;
 }
 
-function buildFullTips(className, profile, hints, index) {
+function buildFullTips(className, profile, hints, index, classDoc) {
   const slug = slugFor(className, profile);
   const cp = classProfile(className);
   const styleHints = cp.styleRoleHints || {};
@@ -446,6 +545,7 @@ function buildFullTips(className, profile, hints, index) {
   const skills = index.skills || [];
   const tips = [];
   const pick = profile.startingFeaturePick ?? 2;
+  const startingEntries = resolveStartingSkillEntries(skills, classDoc?.startingFeatures);
 
   for (const style of hints?.styleHints || []) {
     const samples = (style.sampleSkills || lowTierSkills(skills, style.name, 3).map((s) => s.name)).slice(0, 4);
@@ -489,7 +589,7 @@ function buildFullTips(className, profile, hints, index) {
     })));
   }
 
-  for (const feat of skills.filter((s) => s.type === 'starting')) {
+  for (const feat of startingEntries) {
     const featStyle = feat.style || '起手';
     const pick = profile.startingFeaturePick ?? 2;
     tips.push(finalizeTip(makeTipBase(
@@ -621,7 +721,7 @@ export function buildClassFull(className, options = {}) {
   const hintsFull = patchHintsForFull(className, hints);
   writeJson(hintsPath, hintsFull);
 
-  const tipsDoc = buildFullTips(className, profile, hintsFull, index);
+  const tipsDoc = buildFullTips(className, profile, hintsFull, index, classDoc);
   writeJson(path.join(root, 'advisor/combos/class_tips', `${className}.json`), tipsDoc);
 
   patchRegistry(className, profile, slug, options);
