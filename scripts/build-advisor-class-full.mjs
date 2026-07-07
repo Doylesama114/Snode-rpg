@@ -146,6 +146,78 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  猎人: {
+    defaultFullL2MinSkills: 60,
+    fpKeyLabel: '敏捷',
+    specBuildHints: {
+      武器专精: '远程 build 选弓箭/远程类；生存/兽群近战选猎刀/长柄；专精加成仅对该武器类型生效。',
+    },
+    styleRoleHints: {
+      射击: '远程箭/枪术与标记；瞄准射击起手契合纯远程输出。',
+      兽群: '野兽伙伴与协同攻击；野兽伙伴起手契合驯兽线。',
+      机敏: '位移、伪装与规避；逃脱起手契合游走猎杀。',
+      生存: '陷阱、毒性与战场构筑；荒野医疗起手契合续航。',
+      猎鹰: '异能感知与俯冲收割；偏探知与激活类能力。',
+    },
+    chargenAttrDetail: '敏捷≥15 为常见目标；体质提升 HP 与部分豁免。驯兽/自然熟练与兽群/生存线协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-ranged',
+        title: '远程与弹药',
+        summary: '猎人熟练远程武器；箭矢/弹药消耗与超距/贴脸命中规则见基础规则与创建页。',
+        detail: '射击线优先稳定远程输出；切换近战武器时注意触及与借机风险。',
+        relatedSkills: ['瞄准射击'],
+        tags: [className, '远程', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-beast',
+        title: '野兽伙伴',
+        summary: '兽群线与起手「野兽伙伴」依赖驯兽；伙伴行动与互动规则以规则书/DM 为准。',
+        detail: '车卡若选野兽伙伴，后续投资兽群风格技能；勿假设已有特定伙伴种类。',
+        relatedSkills: ['野兽伙伴'],
+        tags: [className, '兽群', '驯兽', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-trap',
+        title: '陷阱与生存构筑',
+        summary: '生存风格含陷阱/毒性相关能力；战前布置与触发时机是猎人特色之一。',
+        detail: '生存线适合控场与区域封锁；与射击/机敏远程 kite 可配合。',
+        relatedSkills: ['侦测陷阱'],
+        tags: [className, '生存', '陷阱', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-armor',
+        title: '轻中甲与敏捷',
+        summary: '猎人熟练轻甲、中甲与盾牌；高敏捷 build 常用皮甲/中甲保 AC 与加成。',
+        detail: '无法着重重甲；盾牌可选。着甲休眠规则见基础规则。',
+        relatedSkills: [],
+        tags: [className, '护甲', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-kite',
+        title: '位移与规避',
+        summary: '机敏线与逃脱等能力用于拉开距离；脱离贴脸时注意借机攻击。',
+        detail: '带迅捷关键词的位移不触发借机；被击退位移亦不触发。',
+        relatedSkills: ['逃脱'],
+        tags: [className, '位移', '借机攻击', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与猎杀节奏',
+        summary: '战技消耗 FP；远程爆发与陷阱布置需分回合规划，避免空 FP 无应对。',
+        detail: '一阶技能 FP 通常较低；长战配合短休/荒野医疗等续航手段。',
+        relatedSkills: ['瞄准射击', '荒野医疗'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      const w = refClass?.weapons || '';
+      if (/远程/.test(w)) rules.push('「远程」含弓/弩等；消耗箭矢或对应弹药，见装备与基础规则。');
+      if (!/火器|枪械/.test(w)) rules.push('猎人不熟练枪械；勿推荐火枪/步枪 build。');
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

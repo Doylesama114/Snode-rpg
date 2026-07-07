@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7040",
-    "note": "14职业顾问：法师+战士+蛮斗士 full，其余11 partial；7040蛮斗士升full（含7039战士）"
+    "version": "1.0.7041",
+    "note": "14职业顾问：法师+战士+蛮斗士+猎人 full，其余10 partial；7041猎人升full"
   },
   "defaults": {
     "tier": "basic",
@@ -97,7 +97,7 @@
       "l5MinTips": 20
     },
     "猎人": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "敏捷",
       "l2Slug": "hunter",
       "l2Layer": "L2-hunter",
@@ -114,7 +114,9 @@
         "生存",
         "猎鹰"
       ],
-      "advisorNote": "猎人顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "hunter_skills",
+      "fullL2MinSkills": 60,
+      "l5MinTips": 20
     },
     "牧师": {
       "tier": "partial",

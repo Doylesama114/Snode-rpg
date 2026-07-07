@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7041',
+    date: '2026-07-07',
+    changes: [
+      '猎人顾问升full(hunter_skills/L5/装备规则)',
+      'batch14验证'
+    ]
+  },
+
+
+  {
     version: '1.0.7040',
     date: '2026-07-07',
     changes: [

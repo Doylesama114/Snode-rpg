@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "猎人",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 7,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 22,
     "byKind": {
       "style_guide": 5,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 9,
+      "combat_rule": 6,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "猎人·射击风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "射击",
       "summary": "射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。",
-      "detail": "示例技能：奥术射击、猎人印记、误导。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "远程箭/枪术与标记；瞄准射击起手契合纯远程输出。低阶代表：奥术射击、猎人印记、误导。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "奥术射击",
         "猎人印记",
@@ -53,7 +54,7 @@
           "source": "hunter"
         }
       ],
-      "searchText": "猎人 射击 射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。 示例技能：奥术射击、猎人印记、误导。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 奥术射击 猎人印记 误导 style_guide auto_stub"
+      "searchText": "猎人·射击风格 style_guide auto_generated 射击：偏远程攻击、奥术、虚化飞行道具、战技等能力。 远程箭/枪术与标记；瞄准射击起手契合纯远程输出。低阶代表：奥术射击、猎人印记、误导。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 猎人 射击 战斗风格 style_guide 奥术射击 猎人印记 误导"
     },
     {
       "id": "tip-hunter-style-兽群",
@@ -63,10 +64,10 @@
       ],
       "title": "猎人·兽群风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "兽群",
       "summary": "兽群：偏基础攻击、互动、短休/长休、战技等能力。",
-      "detail": "示例技能：狂野怒火、猫鼬撕咬、倒刺射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "野兽伙伴与协同攻击；野兽伙伴起手契合驯兽线。低阶代表：狂野怒火、猫鼬撕咬、倒刺射击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "狂野怒火",
         "猫鼬撕咬",
@@ -93,7 +94,7 @@
           "source": "hunter"
         }
       ],
-      "searchText": "猎人 兽群 兽群：偏基础攻击、互动、短休/长休、战技等能力。 示例技能：狂野怒火、猫鼬撕咬、倒刺射击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 狂野怒火 猫鼬撕咬 倒刺射击 style_guide auto_stub"
+      "searchText": "猎人·兽群风格 style_guide auto_generated 兽群：偏基础攻击、互动、短休/长休、战技等能力。 野兽伙伴与协同攻击；野兽伙伴起手契合驯兽线。低阶代表：狂野怒火、猫鼬撕咬、倒刺射击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 猎人 兽群 战斗风格 style_guide 狂野怒火 猫鼬撕咬 倒刺射击"
     },
     {
       "id": "tip-hunter-style-机敏",
@@ -103,10 +104,10 @@
       ],
       "title": "猎人·机敏风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "机敏",
       "summary": "机敏：偏迅捷、位移、韧性、长休等能力。",
-      "detail": "示例技能：迅捷如风、猎人伪装、二段跳。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "位移、伪装与规避；逃脱起手契合游走猎杀。低阶代表：迅捷如风、猎人伪装、二段跳。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "迅捷如风",
         "猎人伪装",
@@ -133,7 +134,7 @@
           "source": "hunter"
         }
       ],
-      "searchText": "猎人 机敏 机敏：偏迅捷、位移、韧性、长休等能力。 示例技能：迅捷如风、猎人伪装、二段跳。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 迅捷如风 猎人伪装 二段跳 style_guide auto_stub"
+      "searchText": "猎人·机敏风格 style_guide auto_generated 机敏：偏迅捷、位移、韧性、长休等能力。 位移、伪装与规避；逃脱起手契合游走猎杀。低阶代表：迅捷如风、猎人伪装、二段跳。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 猎人 机敏 战斗风格 style_guide 迅捷如风 猎人伪装 二段跳"
     },
     {
       "id": "tip-hunter-style-生存",
@@ -143,10 +144,10 @@
       ],
       "title": "猎人·生存风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "生存",
       "summary": "生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。",
-      "detail": "示例技能：毒刃、侦测陷阱、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "陷阱、毒性与战场构筑；荒野医疗起手契合续航。低阶代表：毒刃、侦测陷阱、侦测毒性与疾病。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "毒刃",
         "侦测陷阱",
@@ -173,7 +174,7 @@
           "source": "hunter"
         }
       ],
-      "searchText": "猎人 生存 生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。 示例技能：毒刃、侦测陷阱、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 毒刃 侦测陷阱 侦测毒性与疾病 style_guide auto_stub"
+      "searchText": "猎人·生存风格 style_guide auto_generated 生存：偏近战攻击、毒性、体质豁免（12）、战技等能力。 陷阱、毒性与战场构筑；荒野医疗起手契合续航。低阶代表：毒刃、侦测陷阱、侦测毒性与疾病。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 猎人 生存 战斗风格 style_guide 毒刃 侦测陷阱 侦测毒性与疾病"
     },
     {
       "id": "tip-hunter-style-猎鹰",
@@ -183,10 +184,10 @@
       ],
       "title": "猎人·猎鹰风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "猎鹰",
       "summary": "猎鹰：偏异能、探知、专注、激活等能力。",
-      "detail": "示例技能：鹰眼术、掷刃斩、侧翼打击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "异能感知与俯冲收割；偏探知与激活类能力。低阶代表：鹰眼术、掷刃斩、侧翼打击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "鹰眼术",
         "掷刃斩",
@@ -213,51 +214,548 @@
           "source": "hunter"
         }
       ],
-      "searchText": "猎人 猎鹰 猎鹰：偏异能、探知、专注、激活等能力。 示例技能：鹰眼术、掷刃斩、侧翼打击。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 鹰眼术 掷刃斩 侧翼打击 style_guide auto_stub"
+      "searchText": "猎人·猎鹰风格 style_guide auto_generated 猎鹰：偏异能、探知、专注、激活等能力。 异能感知与俯冲收割；偏探知与激活类能力。低阶代表：鹰眼术、掷刃斩、侧翼打击。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 猎人 猎鹰 战斗风格 style_guide 鹰眼术 掷刃斩 侧翼打击"
     },
     {
-      "id": "tip-hunter-chargen-1",
+      "id": "tip-hunter-prio-射击",
       "scope": "class",
       "applicableClasses": [
         "猎人"
       ],
-      "title": "猎人创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "射击 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "射击",
+      "summary": "射击线前三级可优先：奥术射击、猎人印记、误导；与起手特性/专精规划一致再扩展。",
+      "detail": "猎人 射击 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程箭/枪术与标记；瞄准射击起手契合纯远程输出。",
+      "relatedSkills": [
+        "奥术射击",
+        "猎人印记",
+        "误导"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "射击",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "奥术射击",
+          "source": "hunter"
+        },
+        {
+          "name": "猎人印记",
+          "source": "hunter"
+        },
+        {
+          "name": "误导",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "射击 1～3 阶优先 tactic auto_generated 射击线前三级可优先：奥术射击、猎人印记、误导；与起手特性/专精规划一致再扩展。 猎人 射击 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程箭/枪术与标记；瞄准射击起手契合纯远程输出。 猎人 射击 优先学 tactic 奥术射击 猎人印记 误导"
+    },
+    {
+      "id": "tip-hunter-prio-兽群",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "兽群 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "兽群",
+      "summary": "兽群线前三级可优先：狂野怒火、猫鼬撕咬、倒刺射击；与起手特性/专精规划一致再扩展。",
+      "detail": "猎人 兽群 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。野兽伙伴与协同攻击；野兽伙伴起手契合驯兽线。",
+      "relatedSkills": [
+        "狂野怒火",
+        "猫鼬撕咬",
+        "倒刺射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "兽群",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "狂野怒火",
+          "source": "hunter"
+        },
+        {
+          "name": "猫鼬撕咬",
+          "source": "hunter"
+        },
+        {
+          "name": "倒刺射击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "兽群 1～3 阶优先 tactic auto_generated 兽群线前三级可优先：狂野怒火、猫鼬撕咬、倒刺射击；与起手特性/专精规划一致再扩展。 猎人 兽群 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。野兽伙伴与协同攻击；野兽伙伴起手契合驯兽线。 猎人 兽群 优先学 tactic 狂野怒火 猫鼬撕咬 倒刺射击"
+    },
+    {
+      "id": "tip-hunter-prio-机敏",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "机敏 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "机敏",
+      "summary": "机敏线前三级可优先：迅捷如风、猎人伪装、二段跳；与起手特性/专精规划一致再扩展。",
+      "detail": "猎人 机敏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。位移、伪装与规避；逃脱起手契合游走猎杀。",
+      "relatedSkills": [
+        "迅捷如风",
+        "猎人伪装",
+        "二段跳"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "机敏",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "迅捷如风",
+          "source": "hunter"
+        },
+        {
+          "name": "猎人伪装",
+          "source": "hunter"
+        },
+        {
+          "name": "二段跳",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "机敏 1～3 阶优先 tactic auto_generated 机敏线前三级可优先：迅捷如风、猎人伪装、二段跳；与起手特性/专精规划一致再扩展。 猎人 机敏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。位移、伪装与规避；逃脱起手契合游走猎杀。 猎人 机敏 优先学 tactic 迅捷如风 猎人伪装 二段跳"
+    },
+    {
+      "id": "tip-hunter-prio-生存",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "生存 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "生存",
+      "summary": "生存线前三级可优先：毒刃、侦测陷阱、侦测毒性与疾病；与起手特性/专精规划一致再扩展。",
+      "detail": "猎人 生存 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。陷阱、毒性与战场构筑；荒野医疗起手契合续航。",
+      "relatedSkills": [
+        "毒刃",
+        "侦测陷阱",
+        "侦测毒性与疾病"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "生存",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒刃",
+          "source": "hunter"
+        },
+        {
+          "name": "侦测陷阱",
+          "source": "hunter"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "生存 1～3 阶优先 tactic auto_generated 生存线前三级可优先：毒刃、侦测陷阱、侦测毒性与疾病；与起手特性/专精规划一致再扩展。 猎人 生存 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。陷阱、毒性与战场构筑；荒野医疗起手契合续航。 猎人 生存 优先学 tactic 毒刃 侦测陷阱 侦测毒性与疾病"
+    },
+    {
+      "id": "tip-hunter-prio-猎鹰",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎鹰 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "猎鹰",
+      "summary": "猎鹰线前三级可优先：鹰眼术、掷刃斩、侧翼打击；与起手特性/专精规划一致再扩展。",
+      "detail": "猎人 猎鹰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。异能感知与俯冲收割；偏探知与激活类能力。",
+      "relatedSkills": [
+        "鹰眼术",
+        "掷刃斩",
+        "侧翼打击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "猎鹰",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "鹰眼术",
+          "source": "hunter"
+        },
+        {
+          "name": "掷刃斩",
+          "source": "hunter"
+        },
+        {
+          "name": "侧翼打击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "猎鹰 1～3 阶优先 tactic auto_generated 猎鹰线前三级可优先：鹰眼术、掷刃斩、侧翼打击；与起手特性/专精规划一致再扩展。 猎人 猎鹰 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。异能感知与俯冲收割；偏探知与激活类能力。 猎人 猎鹰 优先学 tactic 鹰眼术 掷刃斩 侧翼打击"
+    },
+    {
+      "id": "tip-hunter-start-瞄准射击",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "起手·瞄准射击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "瞄准射击（起手）：你瞄准敌人的位置后，发起一次有效的攻击 L3: 瞄准射击改为本次攻击命中检定值+3 L6: 瞄准射击改为本次攻击命中检定值+5",
+      "detail": "猎人 4 选 2 起手特性之一。你瞄准敌人的位置后，发起一次有效的攻击 L3: 瞄准射击改为本次攻击命中检定值+3 L6: 瞄准射击改为本次攻击命中检定值+5 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "瞄准射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "瞄准射击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "起手·瞄准射击 tactic auto_generated 瞄准射击（起手）：你瞄准敌人的位置后，发起一次有效的攻击 L3: 瞄准射击改为本次攻击命中检定值+3 L6: 瞄准射击改为本次攻击命中检定值+5 猎人 4 选 2 起手特性之一。你瞄准敌人的位置后，发起一次有效的攻击 L3: 瞄准射击改为本次攻击命中检定值+3 L6: 瞄准射击改为本次攻击命中检定值+5 与后续 起手 风格技能可形成初期连招，但非强制绑定。 猎人 起手特性 车卡 tactic 瞄准射击"
+    },
+    {
+      "id": "tip-hunter-start-野兽伙伴",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "起手·野兽伙伴",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "野兽伙伴（起手）：常年生活于荒野的你与野兽建立了深厚的感情，你将它们视作自己的家人一般，你能够通过驯兽检定来尝试与一只野兽缔结紧密的关联使其成为你的伙伴，而非简单的饲主与宠物关系",
+      "detail": "猎人 4 选 2 起手特性之一。常年生活于荒野的你与野兽建立了深厚的感情，你将它们视作自己的家人一般，你能够通过驯兽检定来尝试与一只野兽缔结紧密的关联使其成为你的伙伴，而非简单的饲主与宠物关系，野兽伙伴能够与你达成心意相通，你们无需言语便能知晓对方心中所想；并且可以在战斗中响应你的本风格能力效果，而背弃或是杀害自己的野兽伙伴可能遭受严重的后果 L6: 你可以与额外一只野兽缔结伙伴关系 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "野兽伙伴"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽伙伴",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "起手·野兽伙伴 tactic auto_generated 野兽伙伴（起手）：常年生活于荒野的你与野兽建立了深厚的感情，你将它们视作自己的家人一般，你能够通过驯兽检定来尝试与一只野兽缔结紧密的关联使其成为你的伙伴，而非简单的饲主与宠物关系 猎人 4 选 2 起手特性之一。常年生活于荒野的你与野兽建立了深厚的感情，你将它们视作自己的家人一般，你能够通过驯兽检定来尝试与一只野兽缔结紧密的关联使其成为你的伙伴，而非简单的饲主与宠物关系，野兽伙伴能够与你达成心意相通，你们无需言语便能知晓对方心中所想；并且可以在战斗中响应你的本风格能力效果，而背弃或是杀害自己的野兽伙伴可能遭受严重的后果 L6: 你可以与额外一只野兽缔结伙伴关系 与后续 起手 风格技能可形成初期连招，但非强制绑定。 猎人 起手特性 车卡 tactic 野兽伙伴"
+    },
+    {
+      "id": "tip-hunter-start-逃脱",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "起手·逃脱",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "逃脱（起手）：你朝后方一跃以躲闪敌人的攻击 每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果",
+      "detail": "猎人 4 选 2 起手特性之一。你朝后方一跃以躲闪敌人的攻击 每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "逃脱"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "逃脱",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "起手·逃脱 tactic auto_generated 逃脱（起手）：你朝后方一跃以躲闪敌人的攻击 每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果 猎人 4 选 2 起手特性之一。你朝后方一跃以躲闪敌人的攻击 每场战斗限一次.你可以使用一个反应动作在其他角色的回合中使用这个效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。 猎人 起手特性 车卡 tactic 逃脱"
+    },
+    {
+      "id": "tip-hunter-start-荒野医疗",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "起手·荒野医疗",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "荒野医疗（起手）：荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 ·白屈花：在结算后额外为目标回复5点生命值 ·宁神花：在结算后额外为目标回复2点疲劳值 ·香水薄荷：移除目标受到",
+      "detail": "猎人 4 选 2 起手特性之一。荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 ·白屈花：在结算后额外为目标回复5点生命值 ·宁神花：在结算后额外为目标回复2点疲劳值 ·香水薄荷：移除目标受到的1D4层灼烧效果 ·跌打草：移除目标受到的1D4层流血效果 ·蛇信草：移除目标受到的1D4层中毒效果 ·雨燕草：目标可以立即移动至多4米，本次移动过程中具有迅捷 ·野钢花：目标的防御等级+2，无法以此方式超过21点，持续1轮 L3: 你可以在施展荒野医疗时额外消耗一份草药，随… 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "荒野医疗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "荒野医疗",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "起手·荒野医疗 tactic auto_generated 荒野医疗（起手）：荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 ·白屈花：在结算后额外为目标回复5点生命值 ·宁神花：在结算后额外为目标回复2点疲劳值 ·香水薄荷：移除目标受到 猎人 4 选 2 起手特性之一。荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 ·白屈花：在结算后额外为目标回复5点生命值 ·宁神花：在结算后额外为目标回复2点疲劳值 ·香水薄荷：移除目标受到的1D4层灼烧效果 ·跌打草：移除目标受到的1D4层流血效果 ·蛇信草：移除目标受到的1D4层中毒效果 ·雨燕草：目标可以立即移动至多4米，本次移动过程中具有迅捷 ·野钢花：目标的防御等级+2，无法以此方式超过21点，持续1轮 L3: 你可以在施展荒野医疗时额外消耗一份草药，随… 与后续 起手 风格技能可形成初期连招，但非强制绑定。 猎人 起手特性 车卡 tactic 荒野医疗"
+    },
+    {
+      "id": "tip-hunter-cr-ranged",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "远程与弹药",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "猎人熟练远程武器；箭矢/弹药消耗与超距/贴脸命中规则见基础规则与创建页。",
+      "detail": "射击线优先稳定远程输出；切换近战武器时注意触及与借机风险。",
+      "relatedSkills": [
+        "瞄准射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "远程",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "瞄准射击",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "远程与弹药 combat_rule auto_generated 猎人熟练远程武器；箭矢/弹药消耗与超距/贴脸命中规则见基础规则与创建页。 射击线优先稳定远程输出；切换近战武器时注意触及与借机风险。 猎人 远程 combat_rule 瞄准射击"
+    },
+    {
+      "id": "tip-hunter-cr-beast",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "野兽伙伴",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "兽群线与起手「野兽伙伴」依赖驯兽；伙伴行动与互动规则以规则书/DM 为准。",
+      "detail": "车卡若选野兽伙伴，后续投资兽群风格技能；勿假设已有特定伙伴种类。",
+      "relatedSkills": [
+        "野兽伙伴"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "兽群",
+        "驯兽",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "野兽伙伴",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "野兽伙伴 combat_rule auto_generated 兽群线与起手「野兽伙伴」依赖驯兽；伙伴行动与互动规则以规则书/DM 为准。 车卡若选野兽伙伴，后续投资兽群风格技能；勿假设已有特定伙伴种类。 猎人 兽群 驯兽 combat_rule 野兽伙伴"
+    },
+    {
+      "id": "tip-hunter-cr-trap",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "陷阱与生存构筑",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "生存风格含陷阱/毒性相关能力；战前布置与触发时机是猎人特色之一。",
+      "detail": "生存线适合控场与区域封锁；与射击/机敏远程 kite 可配合。",
+      "relatedSkills": [
+        "侦测陷阱"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "生存",
+        "陷阱",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "侦测陷阱",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "陷阱与生存构筑 combat_rule auto_generated 生存风格含陷阱/毒性相关能力；战前布置与触发时机是猎人特色之一。 生存线适合控场与区域封锁；与射击/机敏远程 kite 可配合。 猎人 生存 陷阱 combat_rule 侦测陷阱"
+    },
+    {
+      "id": "tip-hunter-cr-armor",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "轻中甲与敏捷",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "猎人熟练轻甲、中甲与盾牌；高敏捷 build 常用皮甲/中甲保 AC 与加成。",
+      "detail": "无法着重重甲；盾牌可选。着甲休眠规则见基础规则。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "轻中甲与敏捷 combat_rule auto_generated 猎人熟练轻甲、中甲与盾牌；高敏捷 build 常用皮甲/中甲保 AC 与加成。 无法着重重甲；盾牌可选。着甲休眠规则见基础规则。 猎人 护甲 combat_rule"
+    },
+    {
+      "id": "tip-hunter-cr-kite",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "位移与规避",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "机敏线与逃脱等能力用于拉开距离；脱离贴脸时注意借机攻击。",
+      "detail": "带迅捷关键词的位移不触发借机；被击退位移亦不触发。",
+      "relatedSkills": [
+        "逃脱"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "位移",
+        "借机攻击",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "逃脱",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "位移与规避 combat_rule auto_generated 机敏线与逃脱等能力用于拉开距离；脱离贴脸时注意借机攻击。 带迅捷关键词的位移不触发借机；被击退位移亦不触发。 猎人 位移 借机攻击 combat_rule 逃脱"
+    },
+    {
+      "id": "tip-hunter-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "FP 与猎杀节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战技消耗 FP；远程爆发与陷阱布置需分回合规划，避免空 FP 无应对。",
+      "detail": "一阶技能 FP 通常较低；长战配合短休/荒野医疗等续航手段。",
+      "relatedSkills": [
+        "瞄准射击",
+        "荒野医疗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "猎人",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "瞄准射击",
+          "source": "hunter"
+        },
+        {
+          "name": "荒野医疗",
+          "source": "hunter"
+        }
+      ],
+      "searchText": "FP 与猎杀节奏 combat_rule auto_generated 战技消耗 FP；远程爆发与陷阱布置需分回合规划，避免空 FP 无应对。 一阶技能 FP 通常较低；长战配合短休/荒野医疗等续航手段。 猎人 FP combat_rule 瞄准射击 荒野医疗"
+    },
+    {
+      "id": "tip-hunter-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "猎人"
+      ],
+      "title": "猎人关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "敏捷≥15 为常见目标；体质提升 HP 与部分豁免。驯兽/自然熟练与兽群/生存线协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "猎人",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "猎人 创建 车卡 顾问档位 partial：可检索 猎人 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "猎人关键属性 chargen auto_generated 敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。 敏捷≥15 为常见目标；体质提升 HP 与部分豁免。驯兽/自然熟练与兽群/生存线协同。 猎人 车卡 属性 chargen"
     },
     {
-      "id": "tip-hunter-partial-note",
+      "id": "tip-hunter-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "猎人"
       ],
-      "title": "猎人顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "猎人专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：武器专精；与武器与风格规划一致即可。",
+      "detail": "武器专精：远程 build 选弓箭/远程类；生存/兽群近战选猎刀/长柄；专精加成仅对该武器类型生效。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "猎人",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "猎人 partial 顾问 猎人顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "猎人专精选择 chargen auto_generated 创建页专精：武器专精；与武器与风格规划一致即可。 武器专精：远程 build 选弓箭/远程类；生存/兽群近战选猎刀/长柄；专精加成仅对该武器类型生效。 猎人 车卡 专精 chargen"
     }
   ]
 }
