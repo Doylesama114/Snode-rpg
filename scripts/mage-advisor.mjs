@@ -36,7 +36,63 @@ function parseArgs(argv) {
   return flags;
 }
 
-async function callDeepSeek(messages, { thinking, stream, config }) {
+async function consumeSSE(res, onDelta) {
+  let content = '';
+  let buffer = '';
+
+  const handleLine = (line) => {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith('data:')) return;
+    const payload = trimmed.slice(5).trim();
+    if (payload === '[DONE]') return;
+    try {
+      const chunk = JSON.parse(payload);
+      const delta = chunk.choices?.[0]?.delta?.content || '';
+      if (delta) {
+        content += delta;
+        if (onDelta) onDelta(delta);
+      }
+    } catch {
+      /* ignore partial json */
+    }
+  };
+
+  const body = res.body;
+  if (body && typeof body.getReader === 'function') {
+    const reader = body.getReader();
+    const decoder = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) handleLine(line);
+    }
+    if (buffer.trim()) handleLine(buffer);
+  } else if (body && typeof body.on === 'function') {
+    await new Promise((resolve, reject) => {
+      body.on('data', (chunk) => {
+        buffer += chunk.toString('utf8');
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) handleLine(line);
+      });
+      body.on('end', () => {
+        if (buffer.trim()) handleLine(buffer);
+        resolve();
+      });
+      body.on('error', reject);
+    });
+  } else {
+    const text = await res.text();
+    for (const line of text.split('\n')) handleLine(line);
+  }
+
+  return content;
+}
+
+async function callDeepSeek(messages, { thinking, stream, config, onDelta }) {
   const url = `${config.baseUrl.replace(/\/$/, '')}/chat/completions`;
   const body = {
     model: config.model,
@@ -73,35 +129,9 @@ async function callDeepSeek(messages, { thinking, stream, config }) {
     };
   }
 
-  let content = '';
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop() || '';
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed.startsWith('data:')) continue;
-      const payload = trimmed.slice(5).trim();
-      if (payload === '[DONE]') continue;
-      try {
-        const chunk = JSON.parse(payload);
-        const delta = chunk.choices?.[0]?.delta?.content || '';
-        if (delta) {
-          content += delta;
-          process.stdout.write(delta);
-        }
-      } catch {
-        /* ignore partial json */
-      }
-    }
-  }
-  if (stream) process.stdout.write('\n');
+  const emit = onDelta || ((delta) => { process.stdout.write(delta); });
+  const content = await consumeSSE(res, emit);
+  if (stream && !onDelta) process.stdout.write('\n');
   return { content, usage: null, raw: null };
 }
 
@@ -146,10 +176,12 @@ export async function advise(query, options = {}) {
     throw new Error('缺少 DEEPSEEK_API_KEY。请在项目根 .env 中配置，或设置环境变量。');
   }
 
+  const useStream = options.stream ?? false;
   const result = await callDeepSeek(messages, {
     thinking,
-    stream: options.stream ?? false,
+    stream: useStream,
     config,
+    onDelta: options.onDelta,
   });
 
   return {

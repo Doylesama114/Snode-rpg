@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7005',
+    date: '2026-07-07',
+    changes: [
+      '修复色彩标识#851321显示为无色名称',
+      'Build顾问回答改为流式输出'
+    ]
+  },
+
+
+  {
     version: '1.0.7004',
     date: '2026-07-07',
     changes: [

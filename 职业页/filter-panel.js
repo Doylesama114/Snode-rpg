@@ -12,10 +12,16 @@
         { hex: "#843F0B", name: "棕", light: false },
         { hex: "#FFFFFF", name: "白", light: true },
         { hex: "#595959", name: "黑", light: false },
-        { hex: "#D9D9D9", name: "无", light: true }
+        { hex: "#D9D9D9", name: "无", light: true },
+        { hex: "#851321", name: "无", light: false }
     ];
     var metaByHex = {};
     MARK_META.forEach(function(m) { metaByHex[m.hex.toUpperCase()] = m; });
+
+    window.getMarkColorName = function(hex) {
+        var m = metaByHex[normHex(hex)];
+        return m ? m.name : normHex(hex).replace("#", "");
+    };
 
     function normHex(h) {
         if (!h) return "";

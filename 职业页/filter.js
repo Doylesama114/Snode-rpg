@@ -145,7 +145,9 @@
         var self = this;
         var tag = document.createElement("span");
         tag.className = "filter-tag";
-        tag.textContent = kind === "color" ? "\u25cf " + val.replace("#", "") : val;
+        tag.textContent = kind === "color"
+            ? "\u25cf " + (window.getMarkColorName ? window.getMarkColorName(val) : val.replace("#", ""))
+            : val;
         var rm = document.createElement("span");
         rm.className = "remove";
         rm.textContent = "\u00d7";

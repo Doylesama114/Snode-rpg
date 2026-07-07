@@ -171,6 +171,38 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
   }
 });
 
+ipcMain.handle('advisor-advise-stream', async (event, payload) => {
+  try {
+    if (!payload || !payload.query || !String(payload.query).trim()) {
+      return { ok: false, error: '问题不能为空' };
+    }
+    const mod = await getAdvisorModule();
+    let snapshot = payload.snapshot || null;
+    if (snapshot) {
+      const snapMod = await getSnapshotModule();
+      snapshot = snapMod.normalizeSnapshot(snapshot);
+    }
+    const sender = event.sender;
+    const out = await mod.advise(String(payload.query).trim(), {
+      snapshot: snapshot || undefined,
+      stream: true,
+      onDelta: (delta) => {
+        if (!sender.isDestroyed()) {
+          sender.send('advisor-stream-chunk', { delta });
+        }
+      },
+    });
+    return {
+      ok: true,
+      answer: out.answer,
+      intent: out.intent,
+      model: out.model,
+    };
+  } catch (err) {
+    return { ok: false, error: err.message || String(err) };
+  }
+});
+
 ipcMain.handle('advisor-config', async () => {
   try {
     const envMod = await getEnvModule();

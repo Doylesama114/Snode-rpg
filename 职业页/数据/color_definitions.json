@@ -63,9 +63,9 @@
       "id": "green"
     },
     {
-      "hex": "#B3F9FF",
-      "name": "浅色",
-      "id": "light"
+      "hex": "#851321",
+      "name": "无色",
+      "id": "colorless_alt"
     }
   ]
 }

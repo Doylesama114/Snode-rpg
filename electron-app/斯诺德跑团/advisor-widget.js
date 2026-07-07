@@ -248,12 +248,18 @@
 
     function appendMsg(role, text) {
       var box = document.getElementById('_snowd_adv_msgs');
-      if (!box) return;
+      if (!box) return null;
       var el = document.createElement('div');
       el.className = '_snowd_adv_msg ' + (role === 'user' ? '_user' : role === 'err' ? '_err' : '_ai');
-      el.textContent = text;
+      el.textContent = text || '';
       box.appendChild(el);
       box.scrollTop = box.scrollHeight;
+      return el;
+    }
+
+    function scrollMsgs() {
+      var box = document.getElementById('_snowd_adv_msgs');
+      if (box) box.scrollTop = box.scrollHeight;
     }
 
     function setOpen(on) {
@@ -388,7 +394,7 @@
       var q = input.value.trim();
       if (!q) return;
 
-      if (!window.electronAPI || !window.electronAPI.advisorAdvise) {
+      if (!window.electronAPI || (!window.electronAPI.advisorAdviseStream && !window.electronAPI.advisorAdvise)) {
         appendMsg('err', 'Build 顾问需在 Electron 客户端中使用。浏览器版待后续支持。');
         return;
       }
@@ -397,6 +403,9 @@
       input.value = '';
       setBusy(true);
 
+      var aiEl = appendMsg('ai', '');
+      var gotChunk = false;
+
       try {
         var payload = { query: q };
         if (useCharEnabled()) {
@@ -404,10 +413,22 @@
           if (summary && summary.snapshot) payload.snapshot = summary.snapshot;
         }
 
-        var res = await window.electronAPI.advisorAdvise(payload);
-        if (res && res.ok && res.answer) {
-          appendMsg('ai', res.answer);
+        var res;
+        if (window.electronAPI.advisorAdviseStream) {
+          res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
+            gotChunk = true;
+            aiEl.textContent += delta;
+            scrollMsgs();
+          });
         } else {
+          res = await window.electronAPI.advisorAdvise(payload);
+        }
+
+        if (res && res.ok) {
+          if (!gotChunk && res.answer) aiEl.textContent = res.answer;
+          if (!aiEl.textContent) aiEl.textContent = '（无回答内容）';
+        } else {
+          if (aiEl.parentNode) aiEl.parentNode.removeChild(aiEl);
           appendMsg('err', (res && res.error) || '请求失败，请稍后重试。');
         }
       } catch (e) {
