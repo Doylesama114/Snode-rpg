@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "id": "mock-frost-ready",
+    "description": "Intel 16 frost mage candidate — 冰霜法师属性达标"
+  },
+  "name": "艾拉",
+  "race": "侏儒",
+  "background": "法师学徒",
+  "attrs": {
+    "力量": 8,
+    "敏捷": 12,
+    "体质": 12,
+    "智力": 16,
+    "感知": 13,
+    "魅力": 10,
+    "意志": 11,
+    "幸运": 10
+  },
+  "profs": {
+    "逻辑": 2,
+    "奥秘-魔法学识": 2,
+    "知识-历史": 2,
+    "专注": 1
+  },
+  "classes": [
+    {
+      "name": "法师",
+      "level": 5,
+      "styles": ["塑能", "", "", ""]
+    }
+  ],
+  "skills": [
+    { "name": "塑能箭" },
+    { "name": "魔法飞弹" },
+    { "name": "寒冰箭" },
+    { "name": "火焰箭" }
+  ],
+  "special_feats": [],
+  "xp": 300,
+  "sp_points": 2,
+  "color_marks": {
+    "紫色": true,
+    "蓝色": true,
+    "白色": false
+  }
+}

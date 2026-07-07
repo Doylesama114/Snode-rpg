@@ -32,6 +32,10 @@ temp/
 *.tmp
 nul
 
+# Secrets
+.env
+electron-app/.env.bundle
+
 # Playwright MCP traces
 .playwright-mcp/
 upload-gitee-exe.sh

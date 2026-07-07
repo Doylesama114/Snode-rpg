@@ -11,6 +11,19 @@ files:
   - 职业页/**/*
   - 斯诺德跑团/**/*
   - poker-game/**/*
+extraFiles:
+  - from: ../scripts
+    to: scripts
+    filter:
+      - "**/*.mjs"
+  - from: ../advisor
+    to: advisor
+  - from: ../.env.example
+    to: .env.example
+  - from: .env.bundle
+    to: .env
+    filter:
+      - "**/*"
 win:
   target:
     - target: nsis

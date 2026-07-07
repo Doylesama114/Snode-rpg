@@ -11,5 +11,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     const channel = 'bug-response-' + Date.now();
     ipcRenderer.once(channel, (_event, result) => resolve(result));
     ipcRenderer.send('send-bug', { body, channel });
-  })
+  }),
+  advisorAdvise: (payload) => ipcRenderer.invoke('advisor-advise', payload),
+  advisorConfig: () => ipcRenderer.invoke('advisor-config'),
+  advisorCatalog: (payload) => ipcRenderer.invoke('advisor-catalog', payload || {}),
 });

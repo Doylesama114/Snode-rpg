@@ -104,6 +104,99 @@ ipcMain.on('send-bug', (event, { body, channel }) => {
   req.end();
 });
 
+const { pathToFileURL } = require('url');
+const fs = require('fs');
+
+function getAdvisorRoot() {
+  const candidates = [
+    path.join(__dirname, '..'),
+    process.resourcesPath,
+    path.join(process.resourcesPath || '', '..'),
+  ];
+  for (const root of candidates) {
+    if (root && fs.existsSync(path.join(root, 'scripts', 'mage-advisor.mjs'))) {
+      return root;
+    }
+  }
+  return path.join(__dirname, '..');
+}
+
+let _advisorModule = null;
+let _snapshotModule = null;
+let _envModule = null;
+
+async function getAdvisorModule() {
+  if (!_advisorModule) {
+    _advisorModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'mage-advisor.mjs')).href);
+  }
+  return _advisorModule;
+}
+
+async function getSnapshotModule() {
+  if (!_snapshotModule) {
+    _snapshotModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-snapshot.mjs')).href);
+  }
+  return _snapshotModule;
+}
+
+async function getEnvModule() {
+  if (!_envModule) {
+    _envModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-env.mjs')).href);
+  }
+  return _envModule;
+}
+
+ipcMain.handle('advisor-advise', async (_event, payload) => {
+  try {
+    if (!payload || !payload.query || !String(payload.query).trim()) {
+      return { ok: false, error: '问题不能为空' };
+    }
+    const mod = await getAdvisorModule();
+    let snapshot = payload.snapshot || null;
+    if (snapshot) {
+      const snapMod = await getSnapshotModule();
+      snapshot = snapMod.normalizeSnapshot(snapshot);
+    }
+    const out = await mod.advise(String(payload.query).trim(), { snapshot: snapshot || undefined });
+    return {
+      ok: true,
+      answer: out.answer,
+      intent: out.intent,
+      model: out.model,
+    };
+  } catch (err) {
+    return { ok: false, error: err.message || String(err) };
+  }
+});
+
+ipcMain.handle('advisor-config', async () => {
+  try {
+    const envMod = await getEnvModule();
+    const cfg = envMod.getAdvisorConfig();
+    return { ok: true, configured: !!cfg.apiKey, model: cfg.model };
+  } catch (err) {
+    return { ok: false, configured: false, error: err.message || String(err) };
+  }
+});
+
+ipcMain.handle('advisor-catalog', async (_event, payload) => {
+  try {
+    const { pathToFileURL } = require('url');
+    const mod = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-catalog.mjs')).href);
+    const catalog = mod.getAdvancementCatalog(payload?.snapshot || null);
+    return { ok: true, catalog };
+  } catch (err) {
+    return { ok: false, error: err.message || String(err) };
+  }
+});
+
+function injectPageScript(relativePath) {
+  const fs = require('fs');
+  const full = path.join(__dirname, relativePath);
+  if (!fs.existsSync(full)) return;
+  mainWindow.webContents.executeJavaScript(fs.readFileSync(full, 'utf8')).catch(() => {});
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
@@ -132,16 +225,12 @@ function createWindow() {
     return { action: 'deny' };
   });
 
-  // 所有页面注入 Bug 反馈按钮
+  // 非对决页注入 Bug 反馈 + Build 顾问
   mainWindow.webContents.on('did-finish-load', () => {
-    const loadBugReport = (dir) => {
-      const brPath = path.join(__dirname, dir, 'bug-report.js');
-      const fs = require('fs');
-      if (fs.existsSync(brPath)) {
-        mainWindow.webContents.executeJavaScript(fs.readFileSync(brPath, 'utf8')).catch(() => {});
-      }
-    };
-    loadBugReport('斯诺德跑团');
+    const url = mainWindow.webContents.getURL();
+    if (url.includes('poker-game')) return;
+    injectPageScript(path.join('斯诺德跑团', 'bug-report.js'));
+    injectPageScript(path.join('斯诺德跑团', 'advisor-widget.js'));
   });
 }
 

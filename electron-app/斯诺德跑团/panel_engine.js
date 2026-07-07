@@ -6567,3 +6567,18 @@ function importSaves(){
   }
 })();
 
+if (typeof window !== 'undefined') {
+  window.snowdPanel = {
+    getSnapshot: getStateSnapshot,
+    getMainClassName: function() {
+      return (state.classes && state.classes[0] && state.classes[0].name) || '';
+    },
+    hasCharacter: function() {
+      return !!(CURRENT_CHAR || (state && state.name));
+    },
+    isPanelPage: function() {
+      return /角色面板\.html/i.test(location.pathname || '');
+    },
+  };
+}
+

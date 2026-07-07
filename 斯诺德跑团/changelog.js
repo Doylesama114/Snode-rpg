@@ -2,6 +2,29 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7002',
+    date: '2026-07-07',
+    changes: [
+      '便携版内置Build顾问DeepSeek配置(熟人圈分发)',
+      'embed-env-for-dist打包流程',
+      'advisor-env多路径加载exe同目录.env'
+    ]
+  },
+
+
+  {
+    version: '1.0.7001',
+    date: '2026-07-07',
+    changes: [
+      'Build Advisor法师顾问(Electron悬浮球+侧滑问答+进阶浏览)',
+      'L0-L6知识库与DeepSeek接入',
+      '角色快照进阶达标检测',
+      '打包含advisor/scripts运行时'
+    ]
+  },
+
+
+  {
     version: '1.0.6128',
     date: '2026-07-06',
     changes: [

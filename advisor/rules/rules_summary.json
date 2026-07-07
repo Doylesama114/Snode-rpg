@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "layer": "L0",
+    "version": "1.0.0",
+    "phase": "8A"
+  },
+  "bullets": [
+    "斯诺德跑团规则与 D&D 不同，顾问不得套用 D&D 法术位/短休长休等概念。",
+    "学 1 个带标识技能通常消耗 1 sp_points 与对应 color_marks。",
+    "主职 7 级可兼职 1 个兼容基础职业；子职等级上限 = 主职等级 - 5。",
+    "主职 5 级开启三条进阶途径；子职 11 级开启子职进阶。",
+    "4 / 8 / 13 级各获取一项特殊专长（主职表）。",
+    "进阶具体技能树未全面入库前，仅提供门槛与名称方向推测（须标注置信度）。",
+    "控场/异常 build 须引用 status_conditions.json 中状态定义，不得仅凭状态名称猜测效果。",
+    "专注效果在施展者进入惑控或失能状态时中断；控场 build 可针对敌方施法者使用沉默等。",
+    "同一层天赋树至多 5 项不同天赋；槽位满需先移除再学。",
+    "天赋位阶：除一/二阶外，解锁三阶及以上还需额外 XP（见 leveling.talentTierUnlocks）。",
+    "标识由 DM 根据模组主题结算；顾问不得建议刻意刷标识。",
+    "L2 技能索引：法师 356 + 通用 390（与 skill_effects 零名差）",
+    "L3 进阶库：40 条（含 universal 去重合并）",
+    "L4 特殊专长：100 条；专长窗口 L4/L8/L13",
+    "L5 法师小贴士：mage_tips 24 条（user 18 + supplement 6）",
+    "L5 检索器：advisor-retrieve.mjs；15 题 spot-check 通过",
+    "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
+    "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
+    "L3A 进阶技能：advancement_skills.json（2/40 条 documented）",
+    "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）"
+  ]
+}

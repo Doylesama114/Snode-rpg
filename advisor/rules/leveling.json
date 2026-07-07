@@ -1,0 +1,564 @@
+{
+  "meta": {
+    "layer": "L0",
+    "version": "1.1.0",
+    "sources": [
+      "斯诺德跑团/帮助.html",
+      "斯诺德跑团/panel_data.js → REF_LEVELUP",
+      "帮助.html §升级（天赋位阶 XP）"
+    ],
+    "generatedAt": "2026-07-06",
+    "notes": [
+      "主职经验值以 帮助.html 为准（panel_data 中 LV.5 xp=20300 为已知笔误，已忽略）。",
+      "子职：主职 7 级解锁；等级上限 = 主职 - 5；附赠职业上限 5 级（剧情获取）。"
+    ],
+    "phase": "1.6"
+  },
+  "mainClass": {
+    "levels": [
+      {
+        "level": 1,
+        "xp": 0,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 10,
+        "other": "根据新人冒险者创建流程获取加成数值",
+        "attr_cap": 18,
+        "prof_cap": 2,
+        "rank": "新人冒险者",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 2,
+        "xp": 50,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "attr_cap": 18,
+        "prof_cap": 2,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 3,
+        "xp": 100,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第三阶天赋树(50点经验值）",
+        "attr_cap": 18,
+        "prof_cap": 2,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 4,
+        "xp": 150,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "获取一项特殊专长",
+        "attr_cap": 18,
+        "prof_cap": 2,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 5,
+        "xp": 300,
+        "proficiency": null,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "开启主职业的三条进阶职业途径",
+        "attr_cap": 19,
+        "prof_cap": 3,
+        "rank": "普通冒险者",
+        "_source": {
+          "xpFrom": "帮助.html",
+          "panelXp": 20300
+        }
+      },
+      {
+        "level": 6,
+        "xp": 500,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第四阶天赋树（100点经验值）",
+        "attr_cap": 19,
+        "prof_cap": 3,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 7,
+        "xp": 800,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "允许兼职一个与主职业不冲突的基础职业",
+        "attr_cap": 19,
+        "prof_cap": 3,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 8,
+        "xp": 1200,
+        "proficiency": 1,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "获取一项特殊专长",
+        "attr_cap": 19,
+        "prof_cap": 3,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 9,
+        "xp": 1600,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第五阶天赋树（300点经验值）",
+        "attr_cap": 20,
+        "prof_cap": 4,
+        "rank": "资深冒险者",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 10,
+        "xp": 2000,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "attr_cap": 20,
+        "prof_cap": 4,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 11,
+        "xp": 2400,
+        "proficiency": null,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "开启子职业的三条进阶职业途径",
+        "attr_cap": 20,
+        "prof_cap": 4,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 12,
+        "xp": 2800,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第六阶天赋树（500点经验值）",
+        "attr_cap": 20,
+        "prof_cap": 4,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 13,
+        "xp": 3200,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "获取一项特殊专长",
+        "attr_cap": 21,
+        "prof_cap": 5,
+        "rank": "大师冒险者",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 14,
+        "xp": 3600,
+        "proficiency": 1,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "attr_cap": 21,
+        "prof_cap": 5,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 15,
+        "xp": 4000,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第七阶天赋树（1000点经验值）",
+        "attr_cap": 21,
+        "prof_cap": 5,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 16,
+        "xp": 5000,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "将你的属性值中最低的一项提升2点",
+        "attr_cap": 21,
+        "prof_cap": 5,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 17,
+        "xp": 10000,
+        "proficiency": null,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "attr_cap": 22,
+        "prof_cap": 6,
+        "rank": "明星冒险者",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 18,
+        "xp": 15000,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "解锁职业的第八阶天赋树（3000点经验值）",
+        "attr_cap": 23,
+        "prof_cap": 6,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 19,
+        "xp": 20000,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "将你的属性值中最低的一项提升2点",
+        "attr_cap": 24,
+        "prof_cap": 6,
+        "rank": null,
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 20,
+        "xp": 30000,
+        "proficiency": 1,
+        "attr_gain": 1,
+        "skill_slots": 2,
+        "other": "解锁职业的第九阶天赋树（5000点经验值）",
+        "attr_cap": 25,
+        "prof_cap": 8,
+        "rank": "传奇冒险者",
+        "_source": {
+          "xpFrom": "帮助.html",
+          "panelXp": 2030000
+        }
+      }
+    ]
+  },
+  "subClass": {
+    "unlockRule": "主职业 7 级解锁兼职",
+    "levelCapRule": "子职业等级上限 = 主职业等级 - 5",
+    "bonusClassCap": 5,
+    "bonusClassNote": "附赠职业通过剧情获取，上限 5 级",
+    "levels": [
+      {
+        "level": 1,
+        "xp": 0,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 4,
+        "other": "根据职业来获取对应的加成",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 2,
+        "xp": 100,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 3,
+        "xp": 200,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "自动开启职业的第三阶天赋树",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 4,
+        "xp": 300,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 5,
+        "xp": 600,
+        "proficiency": null,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 6,
+        "xp": 1000,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "自动开启职业的第四阶天赋树",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 7,
+        "xp": 1600,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 8,
+        "xp": 2400,
+        "proficiency": 1,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 9,
+        "xp": 3200,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "自动开启职业的第五阶天赋树",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 10,
+        "xp": 4000,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 11,
+        "xp": 4800,
+        "proficiency": null,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 12,
+        "xp": 5600,
+        "proficiency": 1,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "自动开启职业的第六阶天赋树",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 13,
+        "xp": 6400,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 14,
+        "xp": 7200,
+        "proficiency": 1,
+        "attr_gain": 1,
+        "skill_slots": 1,
+        "other": "-",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      },
+      {
+        "level": 15,
+        "xp": 8000,
+        "proficiency": null,
+        "attr_gain": null,
+        "skill_slots": 1,
+        "other": "自动开启职业的第七阶天赋树",
+        "_source": {
+          "xpFrom": "帮助.html"
+        }
+      }
+    ]
+  },
+  "featMilestones": [
+    {
+      "level": 4,
+      "reward": "获取一项特殊专长"
+    },
+    {
+      "level": 8,
+      "reward": "获取一项特殊专长"
+    },
+    {
+      "level": 13,
+      "reward": "获取一项特殊专长"
+    }
+  ],
+  "advancementMilestones": [
+    {
+      "level": 5,
+      "scope": "main",
+      "reward": "开启主职业的三条进阶职业途径"
+    },
+    {
+      "level": 11,
+      "scope": "sub",
+      "reward": "开启子职业的三条进阶职业途径"
+    }
+  ],
+  "talentTierUnlocks": {
+    "meta": {
+      "source": "斯诺德跑团/帮助.html §升级·主职业",
+      "phase": "1.6"
+    },
+    "tiersOneAndTwoFreeAtLevel": 1,
+    "unlocks": [
+      {
+        "tier": 3,
+        "tierLabel": "三阶",
+        "unlockAtMainLevel": 3,
+        "extraXpRequired": 50,
+        "note": "解锁职业的第三阶天赋树(50点经验值）"
+      },
+      {
+        "tier": 4,
+        "tierLabel": "四阶",
+        "unlockAtMainLevel": 6,
+        "extraXpRequired": 100,
+        "note": "解锁职业的第四阶天赋树（100点经验值）"
+      },
+      {
+        "tier": 5,
+        "tierLabel": "五阶",
+        "unlockAtMainLevel": 9,
+        "extraXpRequired": 300,
+        "note": "解锁职业的第五阶天赋树（300点经验值）"
+      },
+      {
+        "tier": 6,
+        "tierLabel": "六阶",
+        "unlockAtMainLevel": 12,
+        "extraXpRequired": 500,
+        "note": "解锁职业的第六阶天赋树（500点经验值）"
+      },
+      {
+        "tier": 7,
+        "tierLabel": "七阶",
+        "unlockAtMainLevel": 15,
+        "extraXpRequired": 1000,
+        "note": "解锁职业的第七阶天赋树（1000点经验值）"
+      },
+      {
+        "tier": 8,
+        "tierLabel": "八阶",
+        "unlockAtMainLevel": 18,
+        "extraXpRequired": 3000,
+        "note": "解锁职业的第八阶天赋树（3000点经验值）"
+      },
+      {
+        "tier": 9,
+        "tierLabel": "九阶",
+        "unlockAtMainLevel": 20,
+        "extraXpRequired": 5000,
+        "note": "解锁职业的第九阶天赋树（5000点经验值）"
+      }
+    ],
+    "sameLayerTalentCap": 5,
+    "sameLayerTalentCapSource": "帮助.html §关键词·天赋"
+  },
+  "profCapNote": "单项熟练度上限见各级 prof_cap；升级时新增熟练度不可使任一单项超过当前上限。",
+  "attrCapNote": "单项属性值上限见各级 attr_cap；超出需等待升级解锁更高上限。"
+}

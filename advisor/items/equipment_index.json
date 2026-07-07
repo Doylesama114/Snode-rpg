@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "1.6",
+    "source": "items_data.js + equipment_catalog.json + 基础职业-法师.docx",
+    "count": 26,
+    "generatedAt": "2026-07-06"
+  },
+  "items": [
+    {
+      "name": "匕首",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "对一名角色造成1D4点穿刺伤害.灵巧.双持.单手武器.近战.匕首武器",
+      "price": "5金币",
+      "weight": "1磅"
+    },
+    {
+      "name": "手弩",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "消耗一发箭矢，对一名角色造成2D4点穿刺伤害.装填.单手武器.远程.弓箭武器",
+      "price": "25金币",
+      "weight": "5磅"
+    },
+    {
+      "name": "学徒魔棒",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "部分戏法和法术要求必须持有魔棒才能够施展.法术媒介",
+      "price": "50金币",
+      "weight": "1磅"
+    },
+    {
+      "name": "布衣",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "防御等级11+敏捷调整值（至多为2）.隐匿劣势.轻甲",
+      "price": "5金币",
+      "weight": "10磅"
+    },
+    {
+      "name": "皮甲",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "防御等级11+敏捷调整值（至多为2）.轻甲",
+      "price": "10金币",
+      "weight": "12磅"
+    },
+    {
+      "name": "旅行腰包",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "获得额外5格装备槽位",
+      "price": "5银币",
+      "weight": null
+    },
+    {
+      "name": "背包",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "获得额外10格装备槽位",
+      "price": "2金币",
+      "weight": null
+    },
+    {
+      "name": "亚麻布毯",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "一块质地粗糙的亚麻布毯子",
+      "price": "1金币",
+      "weight": "2磅"
+    },
+    {
+      "name": "羊绒毯",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "一块粗加工的羊毛毯子，具备保暖作用",
+      "price": "5金币",
+      "weight": "5磅"
+    },
+    {
+      "name": "活力药水",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "为饮用者回复4点疲劳值",
+      "price": "10金币",
+      "weight": "1磅"
+    },
+    {
+      "name": "任意法术学派的基础书籍",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "正式游玩前确定学派；幕间阅读可学对应派系法术或戏法",
+      "price": null,
+      "weight": "1磅"
+    },
+    {
+      "name": "写作工具",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "包含羽毛笔、墨水和一些用于书写的纸张",
+      "price": "10金币",
+      "weight": "5磅"
+    },
+    {
+      "name": "探索工具",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "持有者视作拥有探索的熟练度",
+      "price": "10金币",
+      "weight": "5磅"
+    },
+    {
+      "name": "魔法水晶球",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "高超奥秘/神秘学知识者或可通过水晶球显像答案（传闻）",
+      "price": null,
+      "weight": null
+    },
+    {
+      "name": "水袋",
+      "category": "chargen",
+      "source": "基础职业-法师.docx",
+      "effect": "能够盛放1升的水源",
+      "price": null,
+      "weight": "2磅"
+    },
+    {
+      "name": "魔棒",
+      "category": "items_data",
+      "source": "职业页/数据/items_data.js",
+      "effect": "施法媒介",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "法器",
+        "施法媒介"
+      ]
+    },
+    {
+      "name": "净化水袋",
+      "category": "神奇道具",
+      "subcategory": "摆件",
+      "type": "容器",
+      "requirement": "无",
+      "effect": "能够储存不超过1L的水源，倒入其中的毒药会自动被净化为清澈的泉水",
+      "price": "不可购买",
+      "weight": "1.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "燕尾之星礼服",
+      "category": "护甲",
+      "subcategory": "服饰",
+      "type": "轻甲",
+      "requirement": "魅力属性值不低于14",
+      "effect": "①你的防御等级视为11+自身敏捷调整值（至多为2）.隐匿劣势\n②每日限一次.使你成为全程的焦点",
+      "price": "不可购买",
+      "weight": "10.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "斥候轻甲",
+      "category": "护甲",
+      "subcategory": "服饰",
+      "type": "轻甲",
+      "requirement": "无",
+      "effect": "①你的防御等级视为12+自身敏捷调整值（至多为2）\n②你在进行隐匿检定时具有优势",
+      "price": "不可购买",
+      "weight": "10.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "巨熊革甲",
+      "category": "护甲",
+      "subcategory": "服饰",
+      "type": "中甲",
+      "requirement": "无",
+      "effect": "①你的防御等级视为13+自身敏捷调整值（至多为2）\n②你获得10点临时生命值",
+      "price": "不可购买",
+      "weight": "20.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "秘银甲",
+      "category": "护甲",
+      "subcategory": "服饰",
+      "type": "中甲",
+      "requirement": "无",
+      "effect": "①你的防御等级视为14+自身敏捷调整值（至多为2）\n②这套护甲对非魔法的摧毁效果具有抗性",
+      "price": "不可购买",
+      "weight": "25.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "板甲",
+      "category": "护甲",
+      "subcategory": "服饰",
+      "type": "重甲",
+      "requirement": "无",
+      "effect": "你的防御等级视为18",
+      "price": "不可购买",
+      "weight": "80.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "吸矢盾",
+      "category": "护甲",
+      "subcategory": "防具",
+      "type": "盾牌",
+      "requirement": "无",
+      "effect": "①你的防御等级+2\n②当你在抵挡来自箭矢或弹药的攻击时，这个盾牌的防御等级额外+2",
+      "price": "不可购买",
+      "weight": "5.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "反咒小圆盾",
+      "category": "护甲",
+      "subcategory": "防具",
+      "type": "盾牌",
+      "requirement": "无",
+      "effect": "①你的防御等级+2\n②当你在抵挡来自法术或戏法的攻击时，这个盾牌的防御等级额外+2",
+      "price": "不可购买",
+      "weight": "5.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "淬毒者",
+      "category": "武器",
+      "subcategory": "匕首武器",
+      "type": "匕首",
+      "requirement": "无",
+      "effect": "①每次攻击对一名角色造成1D4点穿刺伤害\n②你通过这把武器产生的中毒层数+1",
+      "price": "不可购买",
+      "weight": "1.0",
+      "source": "equipment_catalog.json"
+    },
+    {
+      "name": "放血者",
+      "category": "武器",
+      "subcategory": "匕首武器",
+      "type": "匕首",
+      "requirement": "无",
+      "effect": "①每次攻击对一名角色造成1D4点挥砍伤害\n②你通过这把武器产生的流血层数+1",
+      "price": "不可购买",
+      "weight": "1.0",
+      "source": "equipment_catalog.json"
+    }
+  ]
+}

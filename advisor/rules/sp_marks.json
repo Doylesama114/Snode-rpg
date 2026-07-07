@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "layer": "L0",
+    "rulesVersion": "26.06.30",
+    "source": [
+      "斯诺德跑团/panel_engine.js",
+      "项目文档.md"
+    ],
+    "generatedAt": "2026-07-06"
+  },
+  "spPoints": {
+    "field": "sp_points",
+    "description": "数值型技能点；默认学 1 个带标识的技能/天赋消耗 1 SP（除非该条目另有说明）。",
+    "learnCost": 1,
+    "refundOnUnlearn": true
+  },
+  "colorMarks": {
+    "field": "color_marks",
+    "description": "14 种标识持有状态；学习技能时消耗对应色彩标识（可含 wildcard）。",
+    "allMarkNames": [
+      "橙色",
+      "白色",
+      "紫色",
+      "黄色",
+      "无色",
+      "蓝色",
+      "青色",
+      "黑色",
+      "红色",
+      "棕色",
+      "粉色",
+      "绿色",
+      "浅色",
+      "炫彩"
+    ],
+    "chromaticMarkNames": [
+      "橙色",
+      "白色",
+      "紫色",
+      "黄色",
+      "蓝色",
+      "青色",
+      "黑色",
+      "红色",
+      "棕色",
+      "粉色",
+      "绿色",
+      "浅色"
+    ],
+    "wildcards": [
+      "无色",
+      "炫彩"
+    ],
+    "wildcardRule": "无色或炫彩标识可替代任意一种固定色标识（各消耗 1 个 wildcard 计数）。"
+  },
+  "dmSettlement": {
+    "required": true,
+    "description": "标识与额外 SP 由 DM 团队根据模组/游玩结算发放；面板不自动执行「游玩结束授予标识」类技能效果。",
+    "advisorRule": "回答中不得假设玩家已持有某色彩标识，除非 characterSnapshot.color_marks 为 true。"
+  },
+  "milestonesRelated": [
+    {
+      "level": 3,
+      "note": "解锁第三阶天赋树（另需 50 经验值门槛）"
+    },
+    {
+      "level": 4,
+      "note": "获取一项特殊专长"
+    },
+    {
+      "level": 5,
+      "note": "开启主职业三条进阶途径"
+    },
+    {
+      "level": 7,
+      "note": "允许兼职（须满足子职门槛且职业兼容）"
+    }
+  ]
+}

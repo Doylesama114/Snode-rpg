@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "1.6",
+    "source": "斯诺德跑团/角色创建页.html (calcAttrCost, TOTAL_POINTS=32)",
+    "generatedAt": "2026-07-06"
+  },
+  "totalPoints": 32,
+  "maxPointsPerAttr": 9,
+  "defaultUnspentValue": 8,
+  "attrs": [
+    "力量",
+    "敏捷",
+    "体质",
+    "智力",
+    "感知",
+    "魅力",
+    "意志",
+    "幸运"
+  ],
+  "table": [
+    {
+      "attrValue": 8,
+      "pointCost": 0,
+      "modifier": -1
+    },
+    {
+      "attrValue": 9,
+      "pointCost": 1,
+      "modifier": -1
+    },
+    {
+      "attrValue": 10,
+      "pointCost": 2,
+      "modifier": 0
+    },
+    {
+      "attrValue": 11,
+      "pointCost": 3,
+      "modifier": 0
+    },
+    {
+      "attrValue": 12,
+      "pointCost": 4,
+      "modifier": 1
+    },
+    {
+      "attrValue": 13,
+      "pointCost": 5,
+      "modifier": 1
+    },
+    {
+      "attrValue": 14,
+      "pointCost": 7,
+      "modifier": 2
+    },
+    {
+      "attrValue": 15,
+      "pointCost": 9,
+      "modifier": 2
+    }
+  ],
+  "rules": [
+    "未花费费用的属性默认为 8（调整值 -1）。",
+    "单项属性至多分配 9 点费用（属性值 15，调整值 +2）。",
+    "13→14 花费 2，14→15 花费 2；8→13 每级 1 费用。",
+    "种族属性加值在 32 点分配完成后额外叠加。"
+  ]
+}

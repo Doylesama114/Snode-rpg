@@ -1,0 +1,638 @@
+{
+  "meta": {
+    "layer": "L0",
+    "phase": "1.5",
+    "version": "1.0.0",
+    "source": "斯诺德跑团/帮助.html §异常状态 + §关键词（惑控/专注/净化/激活）",
+    "generatedAt": "2026-07-06",
+    "conditionCount": 35,
+    "categories": [
+      "持续",
+      "限制",
+      "失能",
+      "创伤"
+    ],
+    "advisorUsage": "控场/异常 build 问答时检索；阶段2将为技能挂 appliesStatuses 字段联动",
+    "truncatedInSource": [
+      "昏睡：帮助.html 原文在「如果豁免成功、目标在受到伤害或承受一定刺激」处截断，以原文为准"
+    ]
+  },
+  "severeInjuryNote": "目标获得一个永久性的负面状态，大多数重伤效果无法通过回复手段或解除异常状态的能力消除",
+  "relatedKeywords": [
+    {
+      "name": "惑控",
+      "source": "帮助.html §关键词·效果标签",
+      "description": "能够使目标短暂失去角色控制权的效果"
+    },
+    {
+      "name": "专注",
+      "source": "帮助.html §关键词·机制标签",
+      "description": "必须花费注意力来维持的精密效果；施展者进入惑控或失能状态、或执行另一项专注效果时会中断先前的专注"
+    },
+    {
+      "name": "净化",
+      "source": "帮助.html §关键词·效果标签",
+      "description": "移除角色当前承受的负面状态的效果"
+    },
+    {
+      "name": "激活",
+      "source": "帮助.html §关键词·机制标签",
+      "description": "施展者未进入惑控或失能状态时可在自身回合选择中断，不需花费动作"
+    }
+  ],
+  "controlTierLegend": {
+    "hard_cc": "硬控：跳过回合 / 无法行动",
+    "soft_cc": "软控：移动、感知、反应等受限",
+    "mind_control": "惑控：目标失控或被迫行动",
+    "dot": "持续伤害层数",
+    "stacking": "层数累积后质变",
+    "displacement": "强制位移",
+    "debuff": "其他负面减益",
+    "trauma": "长期创伤（非常规战斗控场）"
+  },
+  "mageControlTop": [
+    {
+      "name": "减速",
+      "count": 19,
+      "controlTier": "soft_cc"
+    },
+    {
+      "name": "灼烧",
+      "count": 16,
+      "controlTier": "dot"
+    },
+    {
+      "name": "恐惧",
+      "count": 16,
+      "controlTier": "mind_control"
+    },
+    {
+      "name": "流血",
+      "count": 13,
+      "controlTier": "dot"
+    },
+    {
+      "name": "困惑",
+      "count": 13,
+      "controlTier": "soft_cc"
+    },
+    {
+      "name": "中毒",
+      "count": 12,
+      "controlTier": "dot"
+    },
+    {
+      "name": "致盲",
+      "count": 12,
+      "controlTier": "soft_cc"
+    },
+    {
+      "name": "忏悔",
+      "count": 10,
+      "controlTier": "mind_control"
+    },
+    {
+      "name": "眩晕",
+      "count": 10,
+      "controlTier": "hard_cc"
+    },
+    {
+      "name": "禁锢",
+      "count": 9,
+      "controlTier": "soft_cc"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "status-灼烧",
+      "name": "灼烧",
+      "category": "持续",
+      "controlTier": "dot",
+      "summary": "1.每个轮次开始阶段时使目标受到1D4点火焰伤害，每名角色可以在自身回合花费一个附赠动作来执行扑灭行动（难度为15的敏捷检定），检定成功后移除目标身上全部的灼烧状态",
+      "fullEffect": "1.每个轮次开始阶段时使目标受到1D4点火焰伤害，每名角色可以在自身回合花费一个附赠动作来执行扑灭行动（难度为15的敏捷检定），检定成功后移除目标身上全部的灼烧状态\n2.每名角色可以同时被叠加多层灼烧效果\n3.战斗环节结束时角色身上的灼烧层数不会被移除，但也不会再对目标造成伤害，如果目标在一次长休前仍拥有未移除的灼烧层数，移除这些层数并使目标进入重伤-恶性创伤状态",
+      "breaksOn": [
+        "火焰伤害"
+      ],
+      "buildHints": [
+        "持续伤害（DoT）",
+        "战斗结束后层数可能转入长休后果"
+      ],
+      "referencedByMageSkills": 16
+    },
+    {
+      "id": "status-中毒",
+      "name": "中毒",
+      "category": "持续",
+      "controlTier": "dot",
+      "summary": "1.目标需要先掷一颗D3骰来决定中毒层数，每个轮次开始阶段时使目标受到等同于中毒层数的剧毒伤害，随后使再掷一颗D3骰来获得额外中毒层数",
+      "fullEffect": "1.目标需要先掷一颗D3骰来决定中毒层数，每个轮次开始阶段时使目标受到等同于中毒层数的剧毒伤害，随后使再掷一颗D3骰来获得额外中毒层数\n2.角色可以同时被叠加多层中毒效果\n3.战斗环节结束时角色身上的中毒层数不会被移除，但也不会再对目标造成伤害，如果目标在一次长休前仍拥有未移除的中毒层数，移除这些层数并使目标进行一次死亡裁定",
+      "breaksOn": [],
+      "buildHints": [
+        "持续伤害（DoT）",
+        "战斗结束后层数可能转入长休后果"
+      ],
+      "referencedByMageSkills": 12
+    },
+    {
+      "id": "status-流血",
+      "name": "流血",
+      "category": "持续",
+      "controlTier": "dot",
+      "summary": "1.目标需要先掷一颗D3骰来决定流血层数，每个轮次开始阶段时使目标失去等同于流血层数的生命值，随后使再掷一颗D3骰来获得额外流血层数",
+      "fullEffect": "1.目标需要先掷一颗D3骰来决定流血层数，每个轮次开始阶段时使目标失去等同于流血层数的生命值，随后使再掷一颗D3骰来获得额外流血层数\n2.角色可以同时被叠加多层流血效果\n3.战斗环节结束时角色身上的流血层数不会被移除，但也不会再令目标失去生命值，如果目标在一次长休前仍拥有未移除的流血层数，移除这些层数并使目标进行一次死亡裁定",
+      "breaksOn": [],
+      "buildHints": [
+        "持续伤害（DoT）",
+        "战斗结束后层数可能转入长休后果"
+      ],
+      "referencedByMageSkills": 13
+    },
+    {
+      "id": "status-霜冻",
+      "name": "霜冻",
+      "category": "持续",
+      "controlTier": "stacking",
+      "summary": "目标在承受一定层数的霜冻效果后，将会进入冻结状态；这个能力通常来源于NPC单位或环境影响",
+      "fullEffect": "目标在承受一定层数的霜冻效果后，将会进入冻结状态；这个能力通常来源于NPC单位或环境影响",
+      "breaksOn": [],
+      "buildHints": [
+        "层数累积型",
+        "满层后触发更强效果"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-感染",
+      "name": "感染",
+      "category": "持续",
+      "controlTier": "stacking",
+      "summary": "目标在承受一定层数的感染效果后，将会根据最大生命值的百分比损失生命值；这个能力通常来源于NPC单位或环境影响",
+      "fullEffect": "目标在承受一定层数的感染效果后，将会根据最大生命值的百分比损失生命值；这个能力通常来源于NPC单位或环境影响",
+      "breaksOn": [],
+      "buildHints": [
+        "层数累积型",
+        "满层后触发更强效果"
+      ],
+      "referencedByMageSkills": 1
+    },
+    {
+      "id": "status-减速",
+      "name": "减速",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势",
+      "fullEffect": "目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加",
+        "移动限制类，可与其他控场叠加"
+      ],
+      "referencedByMageSkills": 19
+    },
+    {
+      "id": "status-禁锢",
+      "name": "禁锢",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "目标无法执行位移、包括使用带有位移或空中关键词的能力，其他角色对这名目标进行的攻击命中检定具有优势",
+      "fullEffect": "目标无法执行位移、包括使用带有位移或空中关键词的能力，其他角色对这名目标进行的攻击命中检定具有优势",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加",
+        "移动限制类，可与其他控场叠加"
+      ],
+      "referencedByMageSkills": 9
+    },
+    {
+      "id": "status-致盲",
+      "name": "致盲",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "1.目标无法通过视觉来获取信息，无法对其他角色使用指向性能力，其他角色对这名目标进行的攻击命中检定具有优势",
+      "fullEffect": "1.目标无法通过视觉来获取信息，无法对其他角色使用指向性能力，其他角色对这名目标进行的攻击命中检定具有优势\n2.目标在执行位移、包括使用带有跃迁或位移关键词的能力时需要掷一颗D4骰，根据掷骰点数可能会朝错误的方向行动",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加"
+      ],
+      "referencedByMageSkills": 12
+    },
+    {
+      "id": "status-耳鸣",
+      "name": "耳鸣",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "1.目标无法通过听觉来获取信息，无法进行聆听检定，并且进行察觉检定时具有劣势，但同时诸如命令术、责难和恶言相加等需要通过听觉触发的能力无法对目标生效",
+      "fullEffect": "1.目标无法通过听觉来获取信息，无法进行聆听检定，并且进行察觉检定时具有劣势，但同时诸如命令术、责难和恶言相加等需要通过听觉触发的能力无法对目标生效\n2.如果目标是玩家角色，那么在战斗环节中目标执行行动时，其他玩家不能进行言语交流",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加",
+        "与沉默不同：禁听觉与聆听，听觉类能力无效"
+      ],
+      "referencedByMageSkills": 5
+    },
+    {
+      "id": "status-沉默",
+      "name": "沉默",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "目标无法通过语言与他人交流，并且无法施展需要语言来生效的能力",
+      "fullEffect": "目标无法通过语言与他人交流，并且无法施展需要语言来生效的能力",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加",
+        "反制施法者：禁语言交流及需语言的法术"
+      ],
+      "referencedByMageSkills": 8
+    },
+    {
+      "id": "status-麻痹",
+      "name": "麻痹",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势，持续时间内目标无法响应反应动作",
+      "fullEffect": "目标执行位移、包括移动、跳跃或冲锋等方式时行进的步数将会减半（向下取整），其他角色对这名目标进行的攻击命中检定具有优势，持续时间内目标无法响应反应动作",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加",
+        "移动限制类，可与其他控场叠加"
+      ],
+      "referencedByMageSkills": 5
+    },
+    {
+      "id": "status-困惑",
+      "name": "困惑",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "目标无法进行借机攻击，并且在自身回合进行的下一个行动必定失败，消耗对应动作后目标仍可以执行行动（如果对方还拥有足够的行动次数）",
+      "fullEffect": "目标无法进行借机攻击，并且在自身回合进行的下一个行动必定失败，消耗对应动作后目标仍可以执行行动（如果对方还拥有足够的行动次数）",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加"
+      ],
+      "referencedByMageSkills": 13
+    },
+    {
+      "id": "status-压制",
+      "name": "压制",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "1.如果施展来源不进行移动，那么目标也无法进行移动、包括使用带有位移或空中关键词的能力",
+      "fullEffect": "1.如果施展来源不进行移动，那么目标也无法进行移动、包括使用带有位移或空中关键词的能力\n2.目标对施展来源进行攻击命中检定时具有劣势\n3.目标可以在自身回合花费一个附赠动作与施展来源进行一次力量或敏捷对抗（由施展来源决定），如果对抗成功则目标解除压制状态",
+      "breaksOn": [
+        "对抗成功"
+      ],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加"
+      ],
+      "referencedByMageSkills": 4
+    },
+    {
+      "id": "status-击倒",
+      "name": "击倒",
+      "category": "限制",
+      "controlTier": "soft_cc",
+      "summary": "1.目标需要在自身回合花费一个附赠动作站起，否则无法进行移动、包括使用带有位移关键词的能力",
+      "fullEffect": "1.目标需要在自身回合花费一个附赠动作站起，否则无法进行移动、包括使用带有位移关键词的能力\n2.处于击倒状态的角色进行攻击命中检定时具有劣势，其他角色对目标进行的攻击命中检定具有优势",
+      "breaksOn": [],
+      "buildHints": [
+        "软控：限制移动/感知/反应等",
+        "可与硬控或 DoT 叠加"
+      ],
+      "referencedByMageSkills": 9
+    },
+    {
+      "id": "status-击退",
+      "name": "击退",
+      "category": "限制",
+      "controlTier": "displacement",
+      "summary": "目标向后方倒飞一段距离，这个过程不会触发借机攻击",
+      "fullEffect": "目标向后方倒飞一段距离，这个过程不会触发借机攻击",
+      "breaksOn": [],
+      "buildHints": [
+        "位移向：改变站位",
+        "一般不触发借机攻击"
+      ],
+      "referencedByMageSkills": 8
+    },
+    {
+      "id": "status-魅惑",
+      "name": "魅惑",
+      "category": "限制",
+      "controlTier": "mind_control",
+      "summary": "1.目标将会跳过下一个自身回合，改为在自身回合开始时朝施展来源进行一次基础移动（由施展来源进行操作），期间无法执行反应动作",
+      "fullEffect": "1.目标将会跳过下一个自身回合，改为在自身回合开始时朝施展来源进行一次基础移动（由施展来源进行操作），期间无法执行反应动作\n2.目标在受到伤害或承受一定刺激后会立即解除魅惑状态",
+      "breaksOn": [
+        "伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "惑控向：目标可能失控或跳过回合",
+        "通常受伤或受刺激可解除"
+      ],
+      "referencedByMageSkills": 9
+    },
+    {
+      "id": "status-恐惧",
+      "name": "恐惧",
+      "category": "限制",
+      "controlTier": "mind_control",
+      "summary": "目标需要掷一颗D6骰来决定恐惧状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除恐惧状态：",
+      "fullEffect": "目标需要掷一颗D6骰来决定恐惧状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除恐惧状态：\nD1：目标丢下手中的武器漫无目的的逃窜，立即进行一次基础移动并掷一颗D4骰来决定目标移动方向\nD2-5：目标朝向施展来源的相反方向进行逃跑，立即进行一次基础移动（由施展来源进行操作）\nD6：目标受到惊吓在原地瑟瑟发抖，跳过下一个自身回合",
+      "breaksOn": [
+        "伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "惑控向：目标可能失控或跳过回合",
+        "通常受伤或受刺激可解除"
+      ],
+      "referencedByMageSkills": 16
+    },
+    {
+      "id": "status-混乱",
+      "name": "混乱",
+      "category": "限制",
+      "controlTier": "mind_control",
+      "summary": "目标需要掷一颗D6骰来决定混乱状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除混乱状态：",
+      "fullEffect": "目标需要掷一颗D6骰来决定混乱状态的具体效果，目标在受到伤害或承受一定刺激后会立即解除混乱状态：\nD1：目标将不受控制地朝射程范围内最近的一名角色发起攻击，并且在下一个自身回合中依旧对目标展现出敌对状态（暂时失去自身控制权）\nD2-5：目标陷入迷茫之中，丢下持有的物件并跳过下一个自身回合\nD6：目标歇斯底里地朝射程范围内最近的一名友方角色发起攻击，并且在下一个自身回合中依旧对目标展现出敌对状态（暂时失去自身控制权）",
+      "breaksOn": [
+        "伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "惑控向：目标可能失控或跳过回合",
+        "通常受伤或受刺激可解除"
+      ],
+      "referencedByMageSkills": 9
+    },
+    {
+      "id": "status-忏悔",
+      "name": "忏悔",
+      "category": "限制",
+      "controlTier": "mind_control",
+      "summary": "目标将会陷入自责中，对外界发生的一切事物熟视无睹，目标在受到伤害或承受一定刺激后会立即解除忏悔状态",
+      "fullEffect": "目标将会陷入自责中，对外界发生的一切事物熟视无睹，目标在受到伤害或承受一定刺激后会立即解除忏悔状态",
+      "breaksOn": [
+        "伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "惑控向：目标可能失控或跳过回合",
+        "通常受伤或受刺激可解除"
+      ],
+      "referencedByMageSkills": 10
+    },
+    {
+      "id": "status-昏睡",
+      "name": "昏睡",
+      "category": "限制",
+      "controlTier": "hard_cc",
+      "summary": "目标将会陷入沉睡中，对外界发生的一切事物熟视无睹，目标在每个轮次开始阶段时需要进行一次难度为15-X的体质豁免（X为目标的体质调整值），如果豁免成功、目标在受到伤害或承受一定刺激",
+      "fullEffect": "目标将会陷入沉睡中，对外界发生的一切事物熟视无睹，目标在每个轮次开始阶段时需要进行一次难度为15-X的体质豁免（X为目标的体质调整值），如果豁免成功、目标在受到伤害或承受一定刺激",
+      "breaksOn": [
+        "伤害",
+        "刺激",
+        "豁免成功"
+      ],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏"
+      ],
+      "referencedByMageSkills": 4
+    },
+    {
+      "id": "status-醉酒",
+      "name": "醉酒",
+      "category": "限制",
+      "controlTier": "debuff",
+      "summary": "1.目标进行徒手攻击或近战攻击时攻击命中检定的点数掷出19即可触发暴击",
+      "fullEffect": "1.目标进行徒手攻击或近战攻击时攻击命中检定的点数掷出19即可触发暴击\n2.如果目标的攻击命中检定失败，将会使自身进入击倒状态\n3.目标的攻击命中检定大失败后必定会攻击己方角色，这个效果无法通过自身效果进行修改",
+      "breaksOn": [],
+      "buildHints": [
+        "负面减益",
+        "改变目标战斗行为"
+      ],
+      "referencedByMageSkills": 7
+    },
+    {
+      "id": "status-缴械",
+      "name": "缴械",
+      "category": "限制",
+      "controlTier": "debuff",
+      "summary": "目标将无法使用持有的物件发起攻击或使用物件的特殊效果",
+      "fullEffect": "目标将无法使用持有的物件发起攻击或使用物件的特殊效果",
+      "breaksOn": [],
+      "buildHints": [
+        "负面减益",
+        "改变目标战斗行为"
+      ],
+      "referencedByMageSkills": 3
+    },
+    {
+      "id": "status-瘫痪",
+      "name": "瘫痪",
+      "category": "失能",
+      "controlTier": "hard_cc",
+      "summary": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到伤害或承受一定刺激后会立即解除瘫痪状态",
+      "fullEffect": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到伤害或承受一定刺激后会立即解除瘫痪状态",
+      "breaksOn": [
+        "伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-震撼",
+      "name": "震撼",
+      "category": "失能",
+      "controlTier": "hard_cc",
+      "summary": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到暴击伤害或承受一定刺激后会立即解除震撼状态",
+      "fullEffect": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到暴击伤害或承受一定刺激后会立即解除震撼状态",
+      "breaksOn": [
+        "暴击伤害",
+        "刺激"
+      ],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-冻结",
+      "name": "冻结",
+      "category": "失能",
+      "controlTier": "hard_cc",
+      "summary": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，冻结会立即移除目标的全部灼烧状态，并且在受到火焰伤害时会解除冻结效果",
+      "fullEffect": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，冻结会立即移除目标的全部灼烧状态，并且在受到火焰伤害时会解除冻结效果",
+      "breaksOn": [
+        "火焰伤害"
+      ],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏",
+        "触发时清除全部灼烧；受火焰伤害解除"
+      ],
+      "referencedByMageSkills": 9
+    },
+    {
+      "id": "status-眩晕",
+      "name": "眩晕",
+      "category": "失能",
+      "controlTier": "hard_cc",
+      "summary": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，当自身回合开始时目标还需要进行一次难度为15的意志豁免，豁免失败将再次跳过行动回合（这个效果仅触发一次）",
+      "fullEffect": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，当自身回合开始时目标还需要进行一次难度为15的意志豁免，豁免失败将再次跳过行动回合（这个效果仅触发一次）",
+      "breaksOn": [],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏"
+      ],
+      "referencedByMageSkills": 10
+    },
+    {
+      "id": "status-击晕",
+      "name": "击晕",
+      "category": "失能",
+      "controlTier": "hard_cc",
+      "summary": "效果等同于眩晕状态，但是持续时间仅为1轮",
+      "fullEffect": "效果等同于眩晕状态，但是持续时间仅为1轮",
+      "breaksOn": [],
+      "buildHints": [
+        "硬控：跳过回合且无法行动",
+        "控场 build 核心",
+        "可打断敌方施法节奏",
+        "短版眩晕，持续仅 1 轮"
+      ],
+      "referencedByMageSkills": 3
+    },
+    {
+      "id": "status-恶性创伤",
+      "name": "恶性创伤",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标受到的生命值回复效果在结算后减半，在进行力量、敏捷和体质检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点生命值后移除（X为你最大生命值的数值），随后目标的最大生命值永久-1D4",
+      "fullEffect": "目标受到的生命值回复效果在结算后减半，在进行力量、敏捷和体质检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点生命值后移除（X为你最大生命值的数值），随后目标的最大生命值永久-1D4",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-脑部创伤",
+      "name": "脑部创伤",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标受到的疲劳值回复效果在结算后减半，无法进入专注状态，在进行智力和感知检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点疲劳值后移除（X为你最大疲劳值的数值），随后目标的最大疲劳值永久-1",
+      "fullEffect": "目标受到的疲劳值回复效果在结算后减半，无法进入专注状态，在进行智力和感知检定、豁免和对抗时具有无法移除的劣势，这个效果在目标回复X点疲劳值后移除（X为你最大疲劳值的数值），随后目标的最大疲劳值永久-1",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-耳聋",
+      "name": "耳聋",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标视为始终处于耳鸣状态，并且进行察觉检定时具有无法移除的劣势，警惕值-2",
+      "fullEffect": "目标视为始终处于耳鸣状态，并且进行察觉检定时具有无法移除的劣势，警惕值-2",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 3
+    },
+    {
+      "id": "status-目盲",
+      "name": "目盲",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标视为始终处于致盲状态，在进行需要视觉来完成的检定，包括洞悉、察觉和攻击命中检定时具有无法移除的劣势，警惕值-5",
+      "fullEffect": "目标视为始终处于致盲状态，在进行需要视觉来完成的检定，包括洞悉、察觉和攻击命中检定时具有无法移除的劣势，警惕值-5",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-失语",
+      "name": "失语",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标视为始终处于沉默状态",
+      "fullEffect": "目标视为始终处于沉默状态",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-手部断肢",
+      "name": "手部断肢",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标在进行需要手部完成的行动时具有无法移除的劣势",
+      "fullEffect": "目标在进行需要手部完成的行动时具有无法移除的劣势",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-腿部断肢",
+      "name": "腿部断肢",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标在进行需要腿部完成的行动时具有无法移除的劣势，同时基础移动速度减半（向下取整），其他角色对目标进行的攻击命中检定具有优势",
+      "fullEffect": "目标在进行需要腿部完成的行动时具有无法移除的劣势，同时基础移动速度减半（向下取整），其他角色对目标进行的攻击命中检定具有优势",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 0
+    },
+    {
+      "id": "status-疯狂",
+      "name": "疯狂",
+      "category": "创伤",
+      "controlTier": "trauma",
+      "summary": "目标承受某种心理疾病的持续影响，可能导致无法控制自身行为、作出夸张举止甚至是朝队友发动攻击",
+      "fullEffect": "目标承受某种心理疾病的持续影响，可能导致无法控制自身行为、作出夸张举止甚至是朝队友发动攻击",
+      "breaksOn": [],
+      "buildHints": [
+        "长期/永久创伤",
+        "build 顾问仅作背景说明，非常规战斗控场"
+      ],
+      "referencedByMageSkills": 1
+    }
+  ]
+}

@@ -1,0 +1,427 @@
+{
+  "meta": {
+    "layer": "L0",
+    "version": "1.0.0",
+    "source": "斯诺德跑团/帮助.html §兼职",
+    "generatedAt": "2026-07-06",
+    "mainClassUnlockLevel": 7
+  },
+  "requirements": [
+    {
+      "class": "蛮斗士",
+      "attrRequired": "力量属性13，体质属性13",
+      "profRequired": "拥有力量或体质的熟练度共计+4",
+      "otherRequired": null,
+      "incompatibleWith": [
+        "法师",
+        "奇械师"
+      ]
+    },
+    {
+      "class": "战士",
+      "attrRequired": "力量/敏捷属性13，体质属性13",
+      "profRequired": "拥有力量或敏捷的熟练度共计+4",
+      "otherRequired": null,
+      "incompatibleWith": []
+    },
+    {
+      "class": "法师",
+      "attrRequired": "智力属性15",
+      "profRequired": "拥有奥秘、知识和逻辑的熟练度共计+6",
+      "otherRequired": "拥有系统性学习的魔法传承",
+      "incompatibleWith": [
+        "蛮斗士",
+        "牧师",
+        "圣骑士",
+        "德鲁伊",
+        "萨满祭司",
+        "术士",
+        "武僧"
+      ]
+    },
+    {
+      "class": "猎人",
+      "attrRequired": "敏捷属性13，感知属性13",
+      "profRequired": "拥有洞悉、驯兽、自然和求生的熟练度共计+4",
+      "otherRequired": "需连续在野外生存超过一周，并狩猎至少十只野兽",
+      "incompatibleWith": []
+    },
+    {
+      "class": "牧师",
+      "attrRequired": "感知属性15",
+      "profRequired": "拥有专注、宗教和魅力的熟练度共计+4",
+      "otherRequired": "选择一项信仰成为虔诚的信徒",
+      "incompatibleWith": [
+        "蛮斗士",
+        "德鲁伊",
+        "萨满祭司",
+        "魔契师"
+      ]
+    },
+    {
+      "class": "圣骑士",
+      "attrRequired": "意志属性15",
+      "profRequired": null,
+      "otherRequired": "愿奉献自身，坚持匡扶正义，完成五次善举",
+      "incompatibleWith": [
+        "蛮斗士",
+        "德鲁伊",
+        "萨满祭司",
+        "术士",
+        "武僧"
+      ]
+    },
+    {
+      "class": "游荡者",
+      "attrRequired": "敏捷属性14，感知属性13",
+      "profRequired": "拥有敏捷、伪造和欺瞒的熟练度共计+4",
+      "otherRequired": "完成五次偷窃、刺杀或探取有价值情报的行动",
+      "incompatibleWith": []
+    },
+    {
+      "class": "德鲁伊",
+      "attrRequired": "体质属性13，感知属性14",
+      "profRequired": "拥有驯兽、自然、求生和草药学的熟练度共计+4",
+      "otherRequired": "需连续在野外生存超过一周，并有良好关系的野兽或植物朋友",
+      "incompatibleWith": [
+        "牧师",
+        "圣骑士",
+        "奇械师",
+        "魔契师"
+      ]
+    },
+    {
+      "class": "萨满祭司",
+      "attrRequired": "感知属性14",
+      "profRequired": "拥有表演、自然、求生和神秘学的熟练度共计+4",
+      "otherRequired": "对某种元素具有特殊的亲和力",
+      "incompatibleWith": [
+        "牧师",
+        "圣骑士",
+        "魔契师"
+      ]
+    },
+    {
+      "class": "术士",
+      "attrRequired": "幸运属性15",
+      "profRequired": null,
+      "otherRequired": "重复进行难度15的幸运检定。累计三次成功则兼职术士，否则失败且之后无法再尝试",
+      "incompatibleWith": [
+        "圣骑士"
+      ]
+    },
+    {
+      "class": "武僧",
+      "attrRequired": "力量12，感知13，敏捷14",
+      "profRequired": "拥有敏捷和感悟的熟练度共计+4",
+      "otherRequired": "拥有系统性学习的武学传承",
+      "incompatibleWith": []
+    },
+    {
+      "class": "吟游诗人",
+      "attrRequired": "魅力属性14",
+      "profRequired": "拥有巧手、知识、说服和表演的熟练度共计+4",
+      "otherRequired": "至少拥有三名关系暧昧的对象或二十名粉丝",
+      "incompatibleWith": []
+    },
+    {
+      "class": "魔契师",
+      "attrRequired": "魅力属性14",
+      "profRequired": "拥有说服、欺瞒、表演和神秘学的熟练度共计+4",
+      "otherRequired": "经历过匪夷所思的超自然事件",
+      "incompatibleWith": [
+        "牧师",
+        "圣骑士",
+        "德鲁伊",
+        "萨满祭司"
+      ]
+    },
+    {
+      "class": "奇械师",
+      "attrRequired": "智力属性15",
+      "profRequired": "拥有巧手、知识和逻辑的熟练度共计+6",
+      "otherRequired": "拥有系统性学习的奇械传承",
+      "incompatibleWith": [
+        "蛮斗士",
+        "德鲁伊"
+      ]
+    }
+  ],
+  "compatibility": {
+    "蛮斗士": {
+      "蛮斗士": null,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "战士": {
+      "蛮斗士": null,
+      "战士": null,
+      "法师": true,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "法师": {
+      "蛮斗士": false,
+      "战士": true,
+      "法师": null,
+      "猎人": true,
+      "牧师": false,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": false,
+      "萨满祭司": false,
+      "术士": false,
+      "武僧": false,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "猎人": {
+      "蛮斗士": null,
+      "战士": true,
+      "法师": true,
+      "猎人": null,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "牧师": {
+      "蛮斗士": false,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": null,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": false,
+      "萨满祭司": false,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": false,
+      "奇械师": true
+    },
+    "圣骑士": {
+      "蛮斗士": false,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": null,
+      "游荡者": true,
+      "德鲁伊": false,
+      "萨满祭司": false,
+      "术士": false,
+      "武僧": false,
+      "吟游诗人": true,
+      "魔契师": false,
+      "奇械师": true
+    },
+    "游荡者": {
+      "蛮斗士": null,
+      "战士": true,
+      "法师": true,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": null,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "德鲁伊": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": false,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": null,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": false,
+      "奇械师": false
+    },
+    "萨满祭司": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": false,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": null,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": false,
+      "奇械师": true
+    },
+    "术士": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": null,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "武僧": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": false,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": null,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "吟游诗人": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": true,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": true,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": null,
+      "魔契师": true,
+      "奇械师": true
+    },
+    "魔契师": {
+      "蛮斗士": true,
+      "战士": true,
+      "法师": true,
+      "猎人": true,
+      "牧师": false,
+      "圣骑士": false,
+      "游荡者": true,
+      "德鲁伊": false,
+      "萨满祭司": false,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": null,
+      "奇械师": true
+    },
+    "奇械师": {
+      "蛮斗士": false,
+      "战士": true,
+      "法师": true,
+      "猎人": true,
+      "牧师": true,
+      "圣骑士": true,
+      "游荡者": true,
+      "德鲁伊": false,
+      "萨满祭司": true,
+      "术士": true,
+      "武僧": true,
+      "吟游诗人": true,
+      "魔契师": true,
+      "奇械师": null
+    }
+  },
+  "classOrder": [
+    "蛮斗士",
+    "战士",
+    "法师",
+    "猎人",
+    "牧师",
+    "圣骑士",
+    "游荡者",
+    "德鲁伊",
+    "萨满祭司",
+    "术士",
+    "武僧",
+    "吟游诗人",
+    "魔契师",
+    "奇械师"
+  ],
+  "classShort": {
+    "蛮斗士": "蛮",
+    "战士": "战",
+    "法师": "法",
+    "猎人": "猎",
+    "牧师": "牧",
+    "圣骑士": "圣",
+    "游荡者": "游",
+    "德鲁伊": "德",
+    "萨满祭司": "萨",
+    "术士": "术",
+    "武僧": "武",
+    "吟游诗人": "诗",
+    "魔契师": "魔",
+    "奇械师": "械"
+  },
+  "mageAsMain": {
+    "compatibleSubclasses": [
+      "战士",
+      "猎人",
+      "游荡者",
+      "吟游诗人",
+      "魔契师",
+      "奇械师"
+    ],
+    "incompatibleSubclasses": [
+      "蛮斗士",
+      "牧师",
+      "圣骑士",
+      "德鲁伊",
+      "萨满祭司",
+      "术士",
+      "武僧"
+    ]
+  }
+}
