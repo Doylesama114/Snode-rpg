@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "战士",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 8,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 22,
     "byKind": {
       "style_guide": 6,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 10,
+      "combat_rule": 4,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "战士·斗争风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "斗争",
       "summary": "斗争：偏徒手攻击、连锁反应、战技、增益等能力。",
-      "detail": "示例技能：重殴、战斗姿态、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "近战正面与徒手连段；力量型常见，可搭配猛击起手。低阶代表：重殴、战斗姿态、顺劈斩。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "重殴",
         "战斗姿态",
@@ -53,7 +54,7 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 斗争 斗争：偏徒手攻击、连锁反应、战技、增益等能力。 示例技能：重殴、战斗姿态、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 重殴 战斗姿态 顺劈斩 style_guide auto_stub"
+      "searchText": "战士·斗争风格 style_guide auto_generated 斗争：偏徒手攻击、连锁反应、战技、增益等能力。 近战正面与徒手连段；力量型常见，可搭配猛击起手。低阶代表：重殴、战斗姿态、顺劈斩。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 斗争 战斗风格 style_guide 重殴 战斗姿态 顺劈斩"
     },
     {
       "id": "tip-warrior-style-狂攻",
@@ -63,10 +64,10 @@
       ],
       "title": "战士·狂攻风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "狂攻",
       "summary": "狂攻：偏火焰、媒介、敏捷豁免（14）、战技等能力。",
-      "detail": "示例技能：淬火、掷刃斩、狂颚之咬。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "高爆发与火焰/位移；冲锋起手契合突进。低阶代表：淬火、掷刃斩、狂颚之咬。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "淬火",
         "掷刃斩",
@@ -93,7 +94,7 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 狂攻 狂攻：偏火焰、媒介、敏捷豁免（14）、战技等能力。 示例技能：淬火、掷刃斩、狂颚之咬。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 淬火 掷刃斩 狂颚之咬 style_guide auto_stub"
+      "searchText": "战士·狂攻风格 style_guide auto_generated 狂攻：偏火焰、媒介、敏捷豁免（14）、战技等能力。 高爆发与火焰/位移；冲锋起手契合突进。低阶代表：淬火、掷刃斩、狂颚之咬。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 狂攻 战斗风格 style_guide 淬火 掷刃斩 狂颚之咬"
     },
     {
       "id": "tip-warrior-style-防护",
@@ -103,10 +104,10 @@
       ],
       "title": "战士·防护风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "防护",
       "summary": "防护：偏惑控、魅力豁免（15）/效果递减（-5）、战技、防御等能力。",
-      "detail": "示例技能：嘲讽、防御姿态、盾牌冲撞。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "嘲讽、格挡与减伤；盾牌格挡起手契合坦克。低阶代表：嘲讽、防御姿态、盾牌冲撞。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "嘲讽",
         "防御姿态",
@@ -133,7 +134,7 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 防护 防护：偏惑控、魅力豁免（15）/效果递减（-5）、战技、防御等能力。 示例技能：嘲讽、防御姿态、盾牌冲撞。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 嘲讽 防御姿态 盾牌冲撞 style_guide auto_stub"
+      "searchText": "战士·防护风格 style_guide auto_generated 防护：偏惑控、魅力豁免（15）/效果递减（-5）、战技、防御等能力。 嘲讽、格挡与减伤；盾牌格挡起手契合坦克。低阶代表：嘲讽、防御姿态、盾牌冲撞。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 防护 战斗风格 style_guide 嘲讽 防御姿态 盾牌冲撞"
     },
     {
       "id": "tip-warrior-style-射击",
@@ -143,10 +144,10 @@
       ],
       "title": "战士·射击风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "射击",
       "summary": "射击：偏远程攻击、实体飞行道具、战技、迅捷等能力。",
-      "detail": "示例技能：稳固射击、迅疾姿态、蓄力劲射。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "远程稳定输出；瞄准射击起手契合弓/火器线。低阶代表：稳固射击、迅疾姿态、蓄力劲射。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "稳固射击",
         "迅疾姿态",
@@ -173,7 +174,7 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 射击 射击：偏远程攻击、实体飞行道具、战技、迅捷等能力。 示例技能：稳固射击、迅疾姿态、蓄力劲射。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 稳固射击 迅疾姿态 蓄力劲射 style_guide auto_stub"
+      "searchText": "战士·射击风格 style_guide auto_generated 射击：偏远程攻击、实体飞行道具、战技、迅捷等能力。 远程稳定输出；瞄准射击起手契合弓/火器线。低阶代表：稳固射击、迅疾姿态、蓄力劲射。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 射击 战斗风格 style_guide 稳固射击 迅疾姿态 蓄力劲射"
     },
     {
       "id": "tip-warrior-style-军团",
@@ -183,10 +184,10 @@
       ],
       "title": "战士·军团风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "军团",
       "summary": "军团：偏韧性、短休/长休（2）、战技、防御等能力。",
-      "detail": "示例技能：振奋怒吼、铁壁阵型、号令军旗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "团队号令与阵型增益；偏辅助指挥。低阶代表：振奋怒吼、铁壁阵型、号令军旗。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "振奋怒吼",
         "铁壁阵型",
@@ -213,7 +214,7 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 军团 军团：偏韧性、短休/长休（2）、战技、防御等能力。 示例技能：振奋怒吼、铁壁阵型、号令军旗。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 振奋怒吼 铁壁阵型 号令军旗 style_guide auto_stub"
+      "searchText": "战士·军团风格 style_guide auto_generated 军团：偏韧性、短休/长休（2）、战技、防御等能力。 团队号令与阵型增益；偏辅助指挥。低阶代表：振奋怒吼、铁壁阵型、号令军旗。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 军团 战斗风格 style_guide 振奋怒吼 铁壁阵型 号令军旗"
     },
     {
       "id": "tip-warrior-style-机敏",
@@ -223,10 +224,10 @@
       ],
       "title": "战士·机敏风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "机敏",
       "summary": "机敏：偏远程攻击、毒性、实体飞行道具、体质豁免（15）等能力。",
-      "detail": "示例技能：淬毒飞镖、昏睡飞矢、逆流投掷。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "毒/控与投掷；敏捷型常见。低阶代表：淬毒飞镖、昏睡飞矢、逆流投掷。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "淬毒飞镖",
         "昏睡飞矢",
@@ -253,51 +254,554 @@
           "source": "warrior"
         }
       ],
-      "searchText": "战士 机敏 机敏：偏远程攻击、毒性、实体飞行道具、体质豁免（15）等能力。 示例技能：淬毒飞镖、昏睡飞矢、逆流投掷。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 淬毒飞镖 昏睡飞矢 逆流投掷 style_guide auto_stub"
+      "searchText": "战士·机敏风格 style_guide auto_generated 机敏：偏远程攻击、毒性、实体飞行道具、体质豁免（15）等能力。 毒/控与投掷；敏捷型常见。低阶代表：淬毒飞镖、昏睡飞矢、逆流投掷。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 战士 机敏 战斗风格 style_guide 淬毒飞镖 昏睡飞矢 逆流投掷"
     },
     {
-      "id": "tip-warrior-chargen-1",
+      "id": "tip-warrior-prio-斗争",
       "scope": "class",
       "applicableClasses": [
         "战士"
       ],
-      "title": "战士创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "斗争 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "斗争线前三级可优先：猛击、重殴、战斗姿态、顺劈斩；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 斗争 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。近战正面与徒手连段；力量型常见，可搭配猛击起手。",
+      "relatedSkills": [
+        "猛击",
+        "重殴",
+        "战斗姿态",
+        "顺劈斩"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "斗争",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "warrior"
+        },
+        {
+          "name": "重殴",
+          "source": "warrior"
+        },
+        {
+          "name": "战斗姿态",
+          "source": "warrior"
+        },
+        {
+          "name": "顺劈斩",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "斗争 1～3 阶优先 tactic auto_generated 斗争线前三级可优先：猛击、重殴、战斗姿态、顺劈斩；与起手特性/专精规划一致再扩展。 战士 斗争 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。近战正面与徒手连段；力量型常见，可搭配猛击起手。 战士 斗争 优先学 tactic 猛击 重殴 战斗姿态 顺劈斩"
+    },
+    {
+      "id": "tip-warrior-prio-狂攻",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "狂攻 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "狂攻",
+      "summary": "狂攻线前三级可优先：冲锋、淬火、掷刃斩、狂颚之咬；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 狂攻 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。高爆发与火焰/位移；冲锋起手契合突进。",
+      "relatedSkills": [
+        "冲锋",
+        "淬火",
+        "掷刃斩",
+        "狂颚之咬"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "狂攻",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "冲锋",
+          "source": "warrior"
+        },
+        {
+          "name": "淬火",
+          "source": "warrior"
+        },
+        {
+          "name": "掷刃斩",
+          "source": "warrior"
+        },
+        {
+          "name": "狂颚之咬",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "狂攻 1～3 阶优先 tactic auto_generated 狂攻线前三级可优先：冲锋、淬火、掷刃斩、狂颚之咬；与起手特性/专精规划一致再扩展。 战士 狂攻 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。高爆发与火焰/位移；冲锋起手契合突进。 战士 狂攻 优先学 tactic 冲锋 淬火 掷刃斩 狂颚之咬"
+    },
+    {
+      "id": "tip-warrior-prio-防护",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "防护 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "防护",
+      "summary": "防护线前三级可优先：盾牌格挡、嘲讽、防御姿态、盾牌冲撞；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 防护 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。嘲讽、格挡与减伤；盾牌格挡起手契合坦克。",
+      "relatedSkills": [
+        "盾牌格挡",
+        "嘲讽",
+        "防御姿态",
+        "盾牌冲撞"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "防护",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "盾牌格挡",
+          "source": "warrior"
+        },
+        {
+          "name": "嘲讽",
+          "source": "warrior"
+        },
+        {
+          "name": "防御姿态",
+          "source": "warrior"
+        },
+        {
+          "name": "盾牌冲撞",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "防护 1～3 阶优先 tactic auto_generated 防护线前三级可优先：盾牌格挡、嘲讽、防御姿态、盾牌冲撞；与起手特性/专精规划一致再扩展。 战士 防护 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。嘲讽、格挡与减伤；盾牌格挡起手契合坦克。 战士 防护 优先学 tactic 盾牌格挡 嘲讽 防御姿态 盾牌冲撞"
+    },
+    {
+      "id": "tip-warrior-prio-射击",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "射击 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "射击",
+      "summary": "射击线前三级可优先：瞄准射击、稳固射击、迅疾姿态、蓄力劲射；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 射击 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程稳定输出；瞄准射击起手契合弓/火器线。",
+      "relatedSkills": [
+        "瞄准射击",
+        "稳固射击",
+        "迅疾姿态",
+        "蓄力劲射"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "射击",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "瞄准射击",
+          "source": "warrior"
+        },
+        {
+          "name": "稳固射击",
+          "source": "warrior"
+        },
+        {
+          "name": "迅疾姿态",
+          "source": "warrior"
+        },
+        {
+          "name": "蓄力劲射",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "射击 1～3 阶优先 tactic auto_generated 射击线前三级可优先：瞄准射击、稳固射击、迅疾姿态、蓄力劲射；与起手特性/专精规划一致再扩展。 战士 射击 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。远程稳定输出；瞄准射击起手契合弓/火器线。 战士 射击 优先学 tactic 瞄准射击 稳固射击 迅疾姿态 蓄力劲射"
+    },
+    {
+      "id": "tip-warrior-prio-军团",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "军团 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "军团",
+      "summary": "军团线前三级可优先：振奋怒吼、铁壁阵型、号令军旗；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 军团 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队号令与阵型增益；偏辅助指挥。",
+      "relatedSkills": [
+        "振奋怒吼",
+        "铁壁阵型",
+        "号令军旗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "军团",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "振奋怒吼",
+          "source": "warrior"
+        },
+        {
+          "name": "铁壁阵型",
+          "source": "warrior"
+        },
+        {
+          "name": "号令军旗",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "军团 1～3 阶优先 tactic auto_generated 军团线前三级可优先：振奋怒吼、铁壁阵型、号令军旗；与起手特性/专精规划一致再扩展。 战士 军团 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。团队号令与阵型增益；偏辅助指挥。 战士 军团 优先学 tactic 振奋怒吼 铁壁阵型 号令军旗"
+    },
+    {
+      "id": "tip-warrior-prio-机敏",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "机敏 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "机敏",
+      "summary": "机敏线前三级可优先：淬毒飞镖、昏睡飞矢、逆流投掷；与起手特性/专精规划一致再扩展。",
+      "detail": "战士 机敏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。毒/控与投掷；敏捷型常见。",
+      "relatedSkills": [
+        "淬毒飞镖",
+        "昏睡飞矢",
+        "逆流投掷"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "机敏",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "淬毒飞镖",
+          "source": "warrior"
+        },
+        {
+          "name": "昏睡飞矢",
+          "source": "warrior"
+        },
+        {
+          "name": "逆流投掷",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "机敏 1～3 阶优先 tactic auto_generated 机敏线前三级可优先：淬毒飞镖、昏睡飞矢、逆流投掷；与起手特性/专精规划一致再扩展。 战士 机敏 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。毒/控与投掷；敏捷型常见。 战士 机敏 优先学 tactic 淬毒飞镖 昏睡飞矢 逆流投掷"
+    },
+    {
+      "id": "tip-warrior-start-猛击",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "起手·猛击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "猛击（斗争）：你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值",
+      "detail": "战士 4 选 2 起手特性之一。你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "猛击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "起手·猛击 tactic auto_generated 猛击（斗争）：你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 战士 4 选 2 起手特性之一。你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。 战士 起手特性 车卡 tactic 猛击"
+    },
+    {
+      "id": "tip-warrior-start-冲锋",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "起手·冲锋",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "狂攻",
+      "summary": "冲锋（狂攻）：你朝着敌人发起冲锋，快速接近对方并挥舞起你的武器 施展距离的X为你的基础移动速度+2米 L5: 冲锋的施展时间变为一个附赠动作",
+      "detail": "战士 4 选 2 起手特性之一。你朝着敌人发起冲锋，快速接近对方并挥舞起你的武器 施展距离的X为你的基础移动速度+2米 L5: 冲锋的施展时间变为一个附赠动作 与后续 狂攻 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "冲锋"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "冲锋",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "起手·冲锋 tactic auto_generated 冲锋（狂攻）：你朝着敌人发起冲锋，快速接近对方并挥舞起你的武器 施展距离的X为你的基础移动速度+2米 L5: 冲锋的施展时间变为一个附赠动作 战士 4 选 2 起手特性之一。你朝着敌人发起冲锋，快速接近对方并挥舞起你的武器 施展距离的X为你的基础移动速度+2米 L5: 冲锋的施展时间变为一个附赠动作 与后续 狂攻 风格技能可形成初期连招，但非强制绑定。 战士 起手特性 车卡 tactic 冲锋"
+    },
+    {
+      "id": "tip-warrior-start-盾牌格挡",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "起手·盾牌格挡",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "防护",
+      "summary": "盾牌格挡（防护）：你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果",
+      "detail": "战士 4 选 2 起手特性之一。你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值 L8: 盾牌格挡的关键词变为短休/长休（2） 与后续 防护 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "盾牌格挡"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "盾牌格挡",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "起手·盾牌格挡 tactic auto_generated 盾牌格挡（防护）：你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果 战士 4 选 2 起手特性之一。你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值 L8: 盾牌格挡的关键词变为短休/长休（2） 与后续 防护 风格技能可形成初期连招，但非强制绑定。 战士 起手特性 车卡 tactic 盾牌格挡"
+    },
+    {
+      "id": "tip-warrior-start-瞄准射击",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "起手·瞄准射击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "射击",
+      "summary": "瞄准射击（射击）：你保持专注瞄准一名敌人以确保能够击中对方 L4: 瞄准射击改为攻击命中检定值+3 L8: 瞄准射击改为攻击命中检定值+5",
+      "detail": "战士 4 选 2 起手特性之一。你保持专注瞄准一名敌人以确保能够击中对方 L4: 瞄准射击改为攻击命中检定值+3 L8: 瞄准射击改为攻击命中检定值+5 与后续 射击 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "瞄准射击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "瞄准射击",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "起手·瞄准射击 tactic auto_generated 瞄准射击（射击）：你保持专注瞄准一名敌人以确保能够击中对方 L4: 瞄准射击改为攻击命中检定值+3 L8: 瞄准射击改为攻击命中检定值+5 战士 4 选 2 起手特性之一。你保持专注瞄准一名敌人以确保能够击中对方 L4: 瞄准射击改为攻击命中检定值+3 L8: 瞄准射击改为攻击命中检定值+5 与后续 射击 风格技能可形成初期连招，但非强制绑定。 战士 起手特性 车卡 tactic 瞄准射击"
+    },
+    {
+      "id": "tip-warrior-cr-shield",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "盾牌与格挡反应",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 战士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 战士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "持盾且具备盾牌熟练时，可用盾牌格挡等反应减伤；防护/军团线常深化此路线。",
+      "detail": "起手「盾牌格挡」与防护风格防御姿态、嘲讽等配合；切换武器或弃盾后失去相关反应选项。",
+      "relatedSkills": [
+        "盾牌格挡",
+        "防御姿态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "盾牌",
+        "反应",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "盾牌格挡",
+          "source": "warrior"
+        },
+        {
+          "name": "防御姿态",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "盾牌与格挡反应 combat_rule auto_generated 持盾且具备盾牌熟练时，可用盾牌格挡等反应减伤；防护/军团线常深化此路线。 起手「盾牌格挡」与防护风格防御姿态、嘲讽等配合；切换武器或弃盾后失去相关反应选项。 战士 盾牌 反应 combat_rule 盾牌格挡 防御姿态"
+    },
+    {
+      "id": "tip-warrior-cr-charge",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "冲锋与借机",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "冲锋等带位移的战技规划时，注意进入/离开敌人触及的借机风险；迅捷类位移不触发借机。",
+      "detail": "狂攻线「冲锋」用于接近；脱离时用回避或迅捷位移，避免贴脸多人时盲目穿人。",
+      "relatedSkills": [
+        "冲锋"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "位移",
+        "借机攻击",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "冲锋",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "冲锋与借机 combat_rule auto_generated 冲锋等带位移的战技规划时，注意进入/离开敌人触及的借机风险；迅捷类位移不触发借机。 狂攻线「冲锋」用于接近；脱离时用回避或迅捷位移，避免贴脸多人时盲目穿人。 战士 位移 借机攻击 combat_rule 冲锋"
+    },
+    {
+      "id": "tip-warrior-cr-armor",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "重甲与属性",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战士可着全部护甲；重甲力量不足时移动受限，高敏低力 build 宜轻中甲。",
+      "detail": "防护/军团坦克向可选锁链/板甲；机敏/射击高敏 build 常用皮甲或中甲保敏捷加成。以创建页熟练与力量最终值为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "重甲与属性 combat_rule auto_generated 战士可着全部护甲；重甲力量不足时移动受限，高敏低力 build 宜轻中甲。 防护/军团坦克向可选锁链/板甲；机敏/射击高敏 build 常用皮甲或中甲保敏捷加成。以创建页熟练与力量最终值为准。 战士 护甲 combat_rule"
+    },
+    {
+      "id": "tip-warrior-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "FP 与战技节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战技消耗 FP；多段战技或高 FP 技能需规划回合节奏，避免空 FP 时无应对手段。",
+      "detail": "一阶技能 FP 通常较低；长战可先低 FP 稳态输出，再交高 FP 爆发。短休/长休回复见基础规则。",
+      "relatedSkills": [
+        "猛击",
+        "冲锋"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "战士",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "warrior"
+        },
+        {
+          "name": "冲锋",
+          "source": "warrior"
+        }
+      ],
+      "searchText": "FP 与战技节奏 combat_rule auto_generated 战技消耗 FP；多段战技或高 FP 技能需规划回合节奏，避免空 FP 时无应对手段。 一阶技能 FP 通常较低；长战可先低 FP 稳态输出，再交高 FP 爆发。短休/长休回复见基础规则。 战士 FP combat_rule 猛击 冲锋"
+    },
+    {
+      "id": "tip-warrior-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "战士"
+      ],
+      "title": "战士关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "力量或敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "力量偏向斗争/狂攻/防护近战；敏捷偏向射击/机敏与部分狂攻。运动健将专精应选与主属性相同的一项。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "战士",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "战士 创建 车卡 顾问档位 partial：可检索 战士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "战士关键属性 chargen auto_generated 力量或敏捷：创建购点通常至少一项≥15，与主武器/战斗风格一致。 力量偏向斗争/狂攻/防护近战；敏捷偏向射击/机敏与部分狂攻。运动健将专精应选与主属性相同的一项。 战士 车卡 属性 chargen"
     },
     {
-      "id": "tip-warrior-partial-note",
+      "id": "tip-warrior-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "战士"
       ],
-      "title": "战士顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "战士专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "战士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "战士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：运动健将、武器专精；与武器与风格规划一致即可。",
+      "detail": "运动健将：力量或敏捷型 build 均可；创建页选与主属性一致的一项，配合运动/体操等检定。 武器专精：与主武器类型一致（近战选剑/斧/锤/长柄，远程选弓箭/火器）；专精加成仅对该武器类型生效。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "战士",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "战士 partial 顾问 战士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "战士专精选择 chargen auto_generated 创建页专精：运动健将、武器专精；与武器与风格规划一致即可。 运动健将：力量或敏捷型 build 均可；创建页选与主属性一致的一项，配合运动/体操等检定。 武器专精：与主武器类型一致（近战选剑/斧/锤/长柄，远程选弓箭/火器）；专精加成仅对该武器类型生效。 战士 车卡 专精 chargen"
     }
   ]
 }

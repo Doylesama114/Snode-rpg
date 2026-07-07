@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7038",
-    "note": "14 职业顾问：法师 full，其余 13 partial（L2+实体+起手装备+L5 stub）；Phase 5 工程批次 7030–7038 完成"
+    "version": "1.0.7040",
+    "note": "14职业顾问：法师+战士+蛮斗士 full，其余11 partial；7040蛮斗士升full（含7039战士）"
   },
   "defaults": {
     "tier": "basic",
@@ -52,7 +52,7 @@
       "advisorNote": "奇械师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
     },
     "蛮斗士": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "力量",
       "l2Slug": "barbarian",
       "l2Layer": "L2-barbarian",
@@ -68,10 +68,12 @@
         "生机",
         "法咒"
       ],
-      "advisorNote": "蛮斗士顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "barbarian_skills",
+      "fullL2MinSkills": 60,
+      "l5MinTips": 20
     },
     "战士": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "力量或敏捷",
       "l2Slug": "warrior",
       "l2Layer": "L2-warrior",
@@ -90,7 +92,9 @@
         "军团",
         "机敏"
       ],
-      "advisorNote": "战士顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "warrior_skills",
+      "fullL2MinSkills": 100,
+      "l5MinTips": 20
     },
     "猎人": {
       "tier": "partial",

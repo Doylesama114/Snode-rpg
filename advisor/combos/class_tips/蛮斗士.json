@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "蛮斗士",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 6,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 20,
     "byKind": {
       "style_guide": 4,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 8,
+      "combat_rule": 6,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "蛮斗士·斗争风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "斗争",
       "summary": "斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。",
-      "detail": "示例技能：头槌、掷刃斩、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "近战战技与连段；猛击起手常见，偏正面换血。低阶代表：头槌、掷刃斩、顺劈斩。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "头槌",
         "掷刃斩",
@@ -53,7 +54,7 @@
           "source": "barbarian"
         }
       ],
-      "searchText": "蛮斗士 斗争 斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。 示例技能：头槌、掷刃斩、顺劈斩。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 头槌 掷刃斩 顺劈斩 style_guide auto_stub"
+      "searchText": "蛮斗士·斗争风格 style_guide auto_generated 斗争：偏徒手攻击、连锁反应、战技、远程攻击等能力。 近战战技与连段；猛击起手常见，偏正面换血。低阶代表：头槌、掷刃斩、顺劈斩。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 蛮斗士 斗争 战斗风格 style_guide 头槌 掷刃斩 顺劈斩"
     },
     {
       "id": "tip-barbarian-style-狂暴",
@@ -63,10 +64,10 @@
       ],
       "title": "蛮斗士·狂暴风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "狂暴",
       "summary": "狂暴：偏增益、光环、激活、唯一性等能力。",
-      "detail": "示例技能：狂暴姿态、激怒、嗜血。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "爆发与狂怒相关能力；凶蛮打击、鲜血雷鸣等起手可契合。低阶代表：狂暴姿态、激怒、嗜血。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "狂暴姿态",
         "激怒",
@@ -93,7 +94,7 @@
           "source": "barbarian"
         }
       ],
-      "searchText": "蛮斗士 狂暴 狂暴：偏增益、光环、激活、唯一性等能力。 示例技能：狂暴姿态、激怒、嗜血。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 狂暴姿态 激怒 嗜血 style_guide auto_stub"
+      "searchText": "蛮斗士·狂暴风格 style_guide auto_generated 狂暴：偏增益、光环、激活、唯一性等能力。 爆发与狂怒相关能力；凶蛮打击、鲜血雷鸣等起手可契合。低阶代表：狂暴姿态、激怒、嗜血。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 蛮斗士 狂暴 战斗风格 style_guide 狂暴姿态 激怒 嗜血"
     },
     {
       "id": "tip-barbarian-style-生机",
@@ -103,10 +104,10 @@
       ],
       "title": "蛮斗士·生机风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "生机",
       "summary": "生机：偏回复、每个自身回合限一次、战技、韧性等能力。",
-      "detail": "示例技能：延绵生机、防护毒素、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "生命回复与续航；生命归还起手契合持久作战。低阶代表：延绵生机、防护毒素、通晓兽语。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "延绵生机",
         "防护毒素",
@@ -133,7 +134,7 @@
           "source": "barbarian"
         }
       ],
-      "searchText": "蛮斗士 生机 生机：偏回复、每个自身回合限一次、战技、韧性等能力。 示例技能：延绵生机、防护毒素、通晓兽语。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 延绵生机 防护毒素 通晓兽语 style_guide auto_stub"
+      "searchText": "蛮斗士·生机风格 style_guide auto_generated 生机：偏回复、每个自身回合限一次、战技、韧性等能力。 生命回复与续航；生命归还起手契合持久作战。低阶代表：延绵生机、防护毒素、通晓兽语。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 蛮斗士 生机 战斗风格 style_guide 延绵生机 防护毒素 通晓兽语"
     },
     {
       "id": "tip-barbarian-style-法咒",
@@ -143,10 +144,10 @@
       ],
       "title": "蛮斗士·法咒风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "法咒",
       "summary": "法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。",
-      "detail": "示例技能：毒蛇咒印、巨鹿咒印、狼獾咒印。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "氏族法术/戏法线；远古魔法补充远程与控场，勿与法师八学派混淆。低阶代表：毒蛇咒印、巨鹿咒印、狼獾咒印。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "毒蛇咒印",
         "巨鹿咒印",
@@ -173,51 +174,514 @@
           "source": "barbarian"
         }
       ],
-      "searchText": "蛮斗士 法咒 法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。 示例技能：毒蛇咒印、巨鹿咒印、狼獾咒印。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 毒蛇咒印 巨鹿咒印 狼獾咒印 style_guide auto_stub"
+      "searchText": "蛮斗士·法咒风格 style_guide auto_generated 法咒：偏毒性、复仇、体质豁免（15）、唯一性等能力。 氏族法术/戏法线；远古魔法补充远程与控场，勿与法师八学派混淆。低阶代表：毒蛇咒印、巨鹿咒印、狼獾咒印。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 蛮斗士 法咒 战斗风格 style_guide 毒蛇咒印 巨鹿咒印 狼獾咒印"
     },
     {
-      "id": "tip-barbarian-chargen-1",
+      "id": "tip-barbarian-prio-斗争",
       "scope": "class",
       "applicableClasses": [
         "蛮斗士"
       ],
-      "title": "蛮斗士创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "斗争 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "斗争线前三级可优先：猛击、凶蛮打击、生命归还、鲜血雷鸣；与起手特性/专精规划一致再扩展。",
+      "detail": "蛮斗士 斗争 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。近战战技与连段；猛击起手常见，偏正面换血。",
+      "relatedSkills": [
+        "猛击",
+        "凶蛮打击",
+        "生命归还",
+        "鲜血雷鸣"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "斗争",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "barbarian"
+        },
+        {
+          "name": "凶蛮打击",
+          "source": "barbarian"
+        },
+        {
+          "name": "生命归还",
+          "source": "barbarian"
+        },
+        {
+          "name": "鲜血雷鸣",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "斗争 1～3 阶优先 tactic auto_generated 斗争线前三级可优先：猛击、凶蛮打击、生命归还、鲜血雷鸣；与起手特性/专精规划一致再扩展。 蛮斗士 斗争 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。近战战技与连段；猛击起手常见，偏正面换血。 蛮斗士 斗争 优先学 tactic 猛击 凶蛮打击 生命归还 鲜血雷鸣"
+    },
+    {
+      "id": "tip-barbarian-prio-狂暴",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "狂暴 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "狂暴",
+      "summary": "狂暴线前三级可优先：狂暴姿态、激怒、嗜血；与起手特性/专精规划一致再扩展。",
+      "detail": "蛮斗士 狂暴 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。爆发与狂怒相关能力；凶蛮打击、鲜血雷鸣等起手可契合。",
+      "relatedSkills": [
+        "狂暴姿态",
+        "激怒",
+        "嗜血"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "狂暴",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "狂暴姿态",
+          "source": "barbarian"
+        },
+        {
+          "name": "激怒",
+          "source": "barbarian"
+        },
+        {
+          "name": "嗜血",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "狂暴 1～3 阶优先 tactic auto_generated 狂暴线前三级可优先：狂暴姿态、激怒、嗜血；与起手特性/专精规划一致再扩展。 蛮斗士 狂暴 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。爆发与狂怒相关能力；凶蛮打击、鲜血雷鸣等起手可契合。 蛮斗士 狂暴 优先学 tactic 狂暴姿态 激怒 嗜血"
+    },
+    {
+      "id": "tip-barbarian-prio-生机",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "生机 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "生机",
+      "summary": "生机线前三级可优先：延绵生机、防护毒素、通晓兽语；与起手特性/专精规划一致再扩展。",
+      "detail": "蛮斗士 生机 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。生命回复与续航；生命归还起手契合持久作战。",
+      "relatedSkills": [
+        "延绵生机",
+        "防护毒素",
+        "通晓兽语"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "生机",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "延绵生机",
+          "source": "barbarian"
+        },
+        {
+          "name": "防护毒素",
+          "source": "barbarian"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "生机 1～3 阶优先 tactic auto_generated 生机线前三级可优先：延绵生机、防护毒素、通晓兽语；与起手特性/专精规划一致再扩展。 蛮斗士 生机 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。生命回复与续航；生命归还起手契合持久作战。 蛮斗士 生机 优先学 tactic 延绵生机 防护毒素 通晓兽语"
+    },
+    {
+      "id": "tip-barbarian-prio-法咒",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "法咒 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "法咒",
+      "summary": "法咒线前三级可优先：毒蛇咒印、巨鹿咒印、狼獾咒印；与起手特性/专精规划一致再扩展。",
+      "detail": "蛮斗士 法咒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。氏族法术/戏法线；远古魔法补充远程与控场，勿与法师八学派混淆。",
+      "relatedSkills": [
+        "毒蛇咒印",
+        "巨鹿咒印",
+        "狼獾咒印"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "法咒",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒蛇咒印",
+          "source": "barbarian"
+        },
+        {
+          "name": "巨鹿咒印",
+          "source": "barbarian"
+        },
+        {
+          "name": "狼獾咒印",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "法咒 1～3 阶优先 tactic auto_generated 法咒线前三级可优先：毒蛇咒印、巨鹿咒印、狼獾咒印；与起手特性/专精规划一致再扩展。 蛮斗士 法咒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。氏族法术/戏法线；远古魔法补充远程与控场，勿与法师八学派混淆。 蛮斗士 法咒 优先学 tactic 毒蛇咒印 巨鹿咒印 狼獾咒印"
+    },
+    {
+      "id": "tip-barbarian-start-猛击",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "起手·猛击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "猛击（斗争）：你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值",
+      "detail": "蛮斗士 4 选 2 起手特性之一。你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "猛击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "起手·猛击 tactic auto_generated 猛击（斗争）：你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 蛮斗士 4 选 2 起手特性之一。你对敌人发起猛烈的一击 L12: 猛击还会再结算造成的伤害值后额外附加两次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。 蛮斗士 起手特性 车卡 tactic 猛击"
+    },
+    {
+      "id": "tip-barbarian-start-凶蛮打击",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "起手·凶蛮打击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "凶蛮打击（斗争）：你不顾自身安危，对敌人发起凶残的打击 L5: 凶蛮打击改为结算造成的伤害值后+6，随后使自身失去4点生命值 L10: 凶蛮打击改为结算造成的伤害值后+8，随后使",
+      "detail": "蛮斗士 4 选 2 起手特性之一。你不顾自身安危，对敌人发起凶残的打击 L5: 凶蛮打击改为结算造成的伤害值后+6，随后使自身失去4点生命值 L10: 凶蛮打击改为结算造成的伤害值后+8，随后使自身失去5点生命值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "凶蛮打击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "凶蛮打击",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "起手·凶蛮打击 tactic auto_generated 凶蛮打击（斗争）：你不顾自身安危，对敌人发起凶残的打击 L5: 凶蛮打击改为结算造成的伤害值后+6，随后使自身失去4点生命值 L10: 凶蛮打击改为结算造成的伤害值后+8，随后使 蛮斗士 4 选 2 起手特性之一。你不顾自身安危，对敌人发起凶残的打击 L5: 凶蛮打击改为结算造成的伤害值后+6，随后使自身失去4点生命值 L10: 凶蛮打击改为结算造成的伤害值后+8，随后使自身失去5点生命值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。 蛮斗士 起手特性 车卡 tactic 凶蛮打击"
+    },
+    {
+      "id": "tip-barbarian-start-生命归还",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "起手·生命归还",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "生命归还（斗争）：你调节呼吸促使体内的生命力循环 L6: 生命归还改为回复2D6点生命值 L12: 生命归还改为回复3D6点生命值",
+      "detail": "蛮斗士 4 选 2 起手特性之一。你调节呼吸促使体内的生命力循环 L6: 生命归还改为回复2D6点生命值 L12: 生命归还改为回复3D6点生命值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "生命归还"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "生命归还",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "起手·生命归还 tactic auto_generated 生命归还（斗争）：你调节呼吸促使体内的生命力循环 L6: 生命归还改为回复2D6点生命值 L12: 生命归还改为回复3D6点生命值 蛮斗士 4 选 2 起手特性之一。你调节呼吸促使体内的生命力循环 L6: 生命归还改为回复2D6点生命值 L12: 生命归还改为回复3D6点生命值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。 蛮斗士 起手特性 车卡 tactic 生命归还"
+    },
+    {
+      "id": "tip-barbarian-start-鲜血雷鸣",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "起手·鲜血雷鸣",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "斗争",
+      "summary": "鲜血雷鸣（斗争）：你祈求先祖为你的武器赐福，雷电已经在锋刃上跃动渴望着敌人的鲜血 L8: 鲜血雷鸣改为你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附",
+      "detail": "蛮斗士 4 选 2 起手特性之一。你祈求先祖为你的武器赐福，雷电已经在锋刃上跃动渴望着敌人的鲜血 L8: 鲜血雷鸣改为你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加一次你的力量调整值 L15: 鲜血雷鸣改为你的下四次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加一次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "鲜血雷鸣"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "鲜血雷鸣",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "起手·鲜血雷鸣 tactic auto_generated 鲜血雷鸣（斗争）：你祈求先祖为你的武器赐福，雷电已经在锋刃上跃动渴望着敌人的鲜血 L8: 鲜血雷鸣改为你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附 蛮斗士 4 选 2 起手特性之一。你祈求先祖为你的武器赐福，雷电已经在锋刃上跃动渴望着敌人的鲜血 L8: 鲜血雷鸣改为你的下三次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加一次你的力量调整值 L15: 鲜血雷鸣改为你的下四次近战攻击（不包含带有AOE关键词的效果）在结算造成的伤害值后额外附加一次你的力量调整值 与后续 斗争 风格技能可形成初期连招，但非强制绑定。 蛮斗士 起手特性 车卡 tactic 鲜血雷鸣"
+    },
+    {
+      "id": "tip-barbarian-cr-rage",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "狂怒与爆发窗口",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "狂暴/狂怒类能力有开启与维持成本；在关键回合集中输出，避免空窗期硬顶。",
+      "detail": "专精「狂怒」与狂暴风格技能联动；爆发前确认 FP 与 HP 能否支撑换血节奏。",
+      "relatedSkills": [
+        "凶蛮打击",
+        "鲜血雷鸣"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "狂暴",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "凶蛮打击",
+          "source": "barbarian"
+        },
+        {
+          "name": "鲜血雷鸣",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "狂怒与爆发窗口 combat_rule auto_generated 狂暴/狂怒类能力有开启与维持成本；在关键回合集中输出，避免空窗期硬顶。 专精「狂怒」与狂暴风格技能联动；爆发前确认 FP 与 HP 能否支撑换血节奏。 蛮斗士 狂暴 combat_rule 凶蛮打击 鲜血雷鸣"
+    },
+    {
+      "id": "tip-barbarian-cr-sustain",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "生机与回复",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "生机风格与生命归还等能力提供续航；长战优先低 FP 稳态再交高消耗战技。",
+      "detail": "蛮斗士 HP 成长较高；短休配合生机线可反复入场，但仍须规划 FP。",
+      "relatedSkills": [
+        "生命归还"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "生机",
+        "回复",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "生命归还",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "生机与回复 combat_rule auto_generated 生机风格与生命归还等能力提供续航；长战优先低 FP 稳态再交高消耗战技。 蛮斗士 HP 成长较高；短休配合生机线可反复入场，但仍须规划 FP。 蛮斗士 生机 回复 combat_rule 生命归还"
+    },
+    {
+      "id": "tip-barbarian-cr-narm",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "轻中甲与无甲",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "蛮斗士熟练轻甲、中甲与盾牌；无甲防御专精（若选）与不着甲 AC 规则见创建页。",
+      "detail": "无法使用重甲；中甲保 AC 同时注意敏捷加成上限。盾牌可选但非所有 build 必带。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "护甲",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "轻中甲与无甲 combat_rule auto_generated 蛮斗士熟练轻甲、中甲与盾牌；无甲防御专精（若选）与不着甲 AC 规则见创建页。 无法使用重甲；中甲保 AC 同时注意敏捷加成上限。盾牌可选但非所有 build 必带。 蛮斗士 护甲 combat_rule"
+    },
+    {
+      "id": "tip-barbarian-cr-spell",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "法咒线定位",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法咒风格为氏族魔法/戏法，不是法师八学派；引用须来自 L2 蛮斗士上下文。",
+      "detail": "法咒与斗争/狂暴可并行投资，但 FP 与技能槽仍有限；优先点亮与属性匹配的低阶节点。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "法咒",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "法咒线定位 combat_rule auto_generated 法咒风格为氏族魔法/戏法，不是法师八学派；引用须来自 L2 蛮斗士上下文。 法咒与斗争/狂暴可并行投资，但 FP 与技能槽仍有限；优先点亮与属性匹配的低阶节点。 蛮斗士 法咒 combat_rule"
+    },
+    {
+      "id": "tip-barbarian-cr-tradeoff",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "凶蛮打击的换血",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "凶蛮打击等对敌我同时造成伤害；确认 HP 余量后再交，配合生机/生命归还。",
+      "detail": "起手可选凶蛮打击换爆发；勿在已残血时硬开，避免被反杀。",
+      "relatedSkills": [
+        "凶蛮打击",
+        "生命归还"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "凶蛮打击",
+          "source": "barbarian"
+        },
+        {
+          "name": "生命归还",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "凶蛮打击的换血 combat_rule auto_generated 凶蛮打击等对敌我同时造成伤害；确认 HP 余量后再交，配合生机/生命归还。 起手可选凶蛮打击换爆发；勿在已残血时硬开，避免被反杀。 蛮斗士 起手特性 combat_rule 凶蛮打击 生命归还"
+    },
+    {
+      "id": "tip-barbarian-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "FP 与战技节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战技与法术均消耗 FP；长战先低 FP 稳态，再交狂暴/高消耗技能。",
+      "detail": "一阶技能 FP 通常较低；短休/长休回复见基础规则。",
+      "relatedSkills": [
+        "猛击",
+        "鲜血雷鸣"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "蛮斗士",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "猛击",
+          "source": "barbarian"
+        },
+        {
+          "name": "鲜血雷鸣",
+          "source": "barbarian"
+        }
+      ],
+      "searchText": "FP 与战技节奏 combat_rule auto_generated 战技与法术均消耗 FP；长战先低 FP 稳态，再交狂暴/高消耗技能。 一阶技能 FP 通常较低；短休/长休回复见基础规则。 蛮斗士 FP combat_rule 猛击 鲜血雷鸣"
+    },
+    {
+      "id": "tip-barbarian-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "蛮斗士"
+      ],
+      "title": "蛮斗士关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "力量：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "力量≥15 为常见目标；体质配合高 HP 与续航。法咒线仍依赖智力相关法术条目，但关键属性为力量。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "蛮斗士",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "蛮斗士 创建 车卡 顾问档位 partial：可检索 蛮斗士 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "蛮斗士关键属性 chargen auto_generated 力量：创建购点通常至少一项≥15，与主武器/战斗风格一致。 力量≥15 为常见目标；体质配合高 HP 与续航。法咒线仍依赖智力相关法术条目，但关键属性为力量。 蛮斗士 车卡 属性 chargen"
     },
     {
-      "id": "tip-barbarian-partial-note",
+      "id": "tip-barbarian-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "蛮斗士"
       ],
-      "title": "蛮斗士顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "蛮斗士专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：运动健将；与武器与风格规划一致即可。",
+      "detail": "运动健将：蛮斗士以力量为主；运动健将选力量，配合威力/运动等检定与近战输出。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "蛮斗士",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "蛮斗士 partial 顾问 蛮斗士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "蛮斗士专精选择 chargen auto_generated 创建页专精：运动健将；与武器与风格规划一致即可。 运动健将：蛮斗士以力量为主；运动健将选力量，配合威力/运动等检定与近战输出。 蛮斗士 车卡 专精 chargen"
     }
   ]
 }

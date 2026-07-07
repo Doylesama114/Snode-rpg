@@ -3,8 +3,8 @@
     "phase": "5-batch10",
     "generatedAt": "2026-07-07",
     "classCount": 14,
-    "fullReady": 1,
-    "partialReady": 13
+    "fullReady": 3,
+    "partialReady": 11
   },
   "audits": [
     {
@@ -165,11 +165,11 @@
     },
     {
       "className": "蛮斗士",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -181,7 +181,7 @@
         },
         {
           "id": "l2_index",
-          "label": "L2 索引 ≥40 技能",
+          "label": "L2 索引 ≥60 技能",
           "pass": true,
           "note": "got 68"
         },
@@ -217,40 +217,34 @@
         },
         {
           "id": "hints_styles",
-          "label": "hints 战斗风格 ≥3",
+          "label": "hints 战斗风格 ≥4",
           "pass": true,
           "note": "got 4"
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 6"
+          "note": "got 20"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=barbarian_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {
       "className": "战士",
-      "tier": "partial",
+      "tier": "full",
       "checks": [
         {
           "id": "registry_tier",
-          "label": "registry tier=partial",
+          "label": "registry tier=full",
           "pass": true,
           "note": ""
         },
@@ -262,7 +256,7 @@
         },
         {
           "id": "l2_index",
-          "label": "L2 索引 ≥40 技能",
+          "label": "L2 索引 ≥100 技能",
           "pass": true,
           "note": "got 109"
         },
@@ -298,31 +292,25 @@
         },
         {
           "id": "hints_styles",
-          "label": "hints 战斗风格 ≥3",
+          "label": "hints 战斗风格 ≥6",
           "pass": true,
           "note": "got 6"
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥2",
+          "label": "L5 小贴士 ≥20",
           "pass": true,
-          "note": "got 8"
+          "note": "got 22"
         },
         {
-          "id": "partial_note",
-          "label": "partial advisorNote",
-          "pass": true,
-          "note": ""
-        },
-        {
-          "id": "registry_l2",
-          "label": "registry L2 slug/layer",
+          "id": "prompt_profile",
+          "label": "promptProfile=warrior_skills",
           "pass": true,
           "note": ""
         }
       ],
-      "passCount": 12,
-      "total": 12,
+      "passCount": 11,
+      "total": 11,
       "ready": true
     },
     {

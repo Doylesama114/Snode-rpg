@@ -2,6 +2,28 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7040',
+    date: '2026-07-07',
+    changes: [
+      '战士顾问升full(7039)',
+      '蛮斗士顾问升full(7040)',
+      'build-advisor-class-full与batch12/13'
+    ]
+  },
+
+
+  {
+    version: '1.0.7039',
+    date: '2026-07-07',
+    changes: [
+      '战士顾问升full档(L2/L5/prompt)',
+      '新增build-advisor-class-full.mjs',
+      '7039批次验证'
+    ]
+  },
+
+
+  {
     version: '1.0.7038',
     date: '2026-07-07',
     changes: [

@@ -1,11 +1,11 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-tier-b",
+    "phase": "5-full",
     "targetClass": "战士",
-    "tier": "partial",
+    "tier": "full",
     "status": "auto",
-    "note": "风格摘要由脚本从技能标签生成；种族/背景/build 推荐待补充"
+    "note": "战斗风格摘要为 auto；种族/背景/build 推荐待人工补充"
   },
   "primaryAttr": {
     "name": "力量或敏捷",
@@ -23,11 +23,11 @@
   "specializationHints": [
     {
       "name": "运动健将",
-      "buildHint": "创建页专精「运动健将」（详见角色创建页说明）"
+      "buildHint": "力量或敏捷型 build 均可；创建页选与主属性一致的一项，配合运动/体操等检定。"
     },
     {
       "name": "武器专精",
-      "buildHint": "创建页专精「武器专精」（详见角色创建页说明）"
+      "buildHint": "与主武器类型一致（近战选剑/斧/锤/长柄，远程选弓箭/火器）；专精加成仅对该武器类型生效。"
     }
   ],
   "styleHints": [
@@ -89,7 +89,6 @@
   "recommendedRaces": [],
   "recommendedBackgrounds": [],
   "chargenTips": [
-    "顾问档位 partial：可检索 战士 技能名与战斗风格；勿假设已有标识或完整进阶路线。"
-  ],
-  "advisorPartialNote": "战士顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+    "战士 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。"
+  ]
 }
