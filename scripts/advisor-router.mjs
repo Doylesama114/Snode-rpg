@@ -16,6 +16,8 @@ import {
 
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
 
+export { resolveClassL2Layer } from './advisor-class-l2.mjs';
+
 export const MODES = ['advisor', 'wizard', 'entity_qa'];
 
 export const INTENT_RULES = [

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7038',
+    date: '2026-07-07',
+    changes: [
+      '顾问 Phase5 收尾：全量回归19项',
+      'registry/rules_summary 5-complete',
+      '修复 router 重导出'
+    ]
+  },
+
+
+  {
     version: '1.0.7037',
     date: '2026-07-07',
     changes: [

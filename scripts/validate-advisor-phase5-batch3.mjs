@@ -48,7 +48,7 @@ else fail('resolveClassL2Layer artificer');
 if (resolveClassL2Layer('战士') === 'L2-warrior') pass('resolveClassL2Layer warrior');
 else fail('resolveClassL2Layer warrior');
 
-if (resolveClassL2Layer('牧师') == null) pass('resolveClassL2Layer cleric null');
+if (resolveClassL2Layer('牧师') === 'L2-cleric') pass('resolveClassL2Layer cleric');
 else fail('resolveClassL2Layer cleric');
 
 const routeArt = applyClassRouteFilter(

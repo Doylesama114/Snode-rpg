@@ -1,9 +1,9 @@
 {
   "meta": {
     "layer": "L1",
-    "phase": "5-batch1",
-    "version": "1.0.0",
-    "note": "顾问职业档位与创建页陪跑参数；除法师 full 外均为 partial Tier B（L2 技能索引）"
+    "phase": "5-complete",
+    "version": "1.0.7038",
+    "note": "14 职业顾问：法师 full，其余 13 partial（L2+实体+起手装备+L5 stub）；Phase 5 工程批次 7030–7038 完成"
   },
   "defaults": {
     "tier": "basic",
