@@ -528,8 +528,11 @@ export function formatRegistryClassBasics(store, className, query = '') {
     `- 技巧选择：${doc.skills || '—'}`,
   ];
   if (doc.startingFeatures?.length) {
+    const names = doc.startingFeatures.map((f) => f.name).join('、');
     lines.push(
-      `- 初始特性：${doc.startingFeatures.length} 选 ${doc.startingChoice || 2}（${doc.startingFeatures.map((f) => f.name).join('、')}）`,
+      doc.startingChoice === 'all'
+        ? `- 初始特性：全部获得（${names}）`
+        : `- 初始特性：${doc.startingFeatures.length} 选 ${doc.startingChoice || 2}（${names}）`,
     );
   }
   for (const spec of doc.specializations || hints.specializationHints || []) {

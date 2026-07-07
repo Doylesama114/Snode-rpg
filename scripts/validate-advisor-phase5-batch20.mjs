@@ -43,6 +43,12 @@ else fail('sorcerer_class');
 if (classDoc.startingFeatures?.length >= 3 && classDoc.specializations?.length >= 3) pass('sorcerer_class starting/specs');
 else fail('sorcerer_class enrich');
 
+if (classDoc.startingChoice === 'all') pass('sorcerer starting all granted');
+else fail('sorcerer startingChoice', classDoc.startingChoice);
+
+if (profile.startingFeaturePick === 'all') pass('registry startingFeaturePick all');
+else fail('registry startingFeaturePick', profile.startingFeaturePick);
+
 const equip = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/chargen/sorcerer_equipment_rules.json'), 'utf8'));
 if (equip.meta?.advisorTier === 'full' && equip.keyRules.some((r) => /轻甲|混沌|幸运/.test(r))) pass('sorcerer equipment rules');
 else fail('sorcerer equipment');
@@ -50,6 +56,9 @@ else fail('sorcerer equipment');
 const tips = loadClassTipsFile(CN);
 if ((tips.tips?.length || 0) >= 20) pass(`sorcerer tips ${tips.tips.length}`);
 else fail('sorcerer tips count', tips.tips?.length);
+
+if (tips.tips.some((t) => t.id === 'tip-sorcerer-cr-start' && /全得|自动获得|无需选择/.test(t.summary + t.title))) pass('sorcerer starting combat_rule');
+else fail('sorcerer start rule');
 
 if (tips.tips.some((t) => t.style === '潜能' && t.kind === 'style_guide')) pass('sorcerer 潜能 style_guide');
 else fail('sorcerer potential style tip');
@@ -85,7 +94,7 @@ if (ret.tier === 'full') pass('retrieve tier full');
 else fail('retrieve tier', ret.tier);
 
 const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/chargen/class_registry.json'), 'utf8'));
-if (reg.meta?.version === '1.0.7047') pass('registry version 7047');
+if (reg.meta?.version === '1.0.7048') pass('registry version 7048');
 else fail('registry version', reg.meta?.version);
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');

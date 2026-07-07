@@ -71,7 +71,7 @@ const qSorc = buildChargenBubbleQuery({
   source: 'chargen_page', step: 1, stepLabel: '选择起始特性',
   char: { className: '术士', selectedFeatures: ['魔法飞弹'] },
 });
-if (qSorc.includes('三选二') && qSorc.includes('幸运')) pass('policy sorcerer step1');
+if (qSorc.includes('三项全得') && qSorc.includes('幸运')) pass('policy sorcerer step1');
 else fail('policy sorcerer', qSorc.slice(0, 200));
 
 const warOr = analyzeKeyAttrTargets({

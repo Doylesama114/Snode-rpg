@@ -46,7 +46,7 @@
       "desc": "你激活了体内未知的力量，立即投掷两颗D100骰，根据点数从公共法术池中选择其中一个法术或戏法加入你的技能列表"
     }
   ],
-  "startingChoice": 2,
+  "startingChoice": "all",
   "hpFormula": {
     "first": "8+体质调整值",
     "levelUp": "每术士等级+2+体质调整值"

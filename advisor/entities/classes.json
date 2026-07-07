@@ -977,7 +977,7 @@
           "desc": "随着等级提升获得随机法术"
         }
       ],
-      "startingChoice": 2,
+      "startingChoice": "all",
       "specializations": [
         {
           "id": "魔力血脉",

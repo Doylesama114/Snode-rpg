@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7048',
+    date: '2026-07-07',
+    changes: [
+      '术士起始特性三项全得修正'
+    ]
+  },
+
+
+  {
     version: '1.0.7047',
     date: '2026-07-07',
     changes: [

@@ -169,7 +169,12 @@ export function formatClassCard(cl) {
   lines.push(`- 技巧选择：${cl.skillPickRule || cl.skills}`);
   if (cl.hpFormula?.first) lines.push(`- 生命/疲劳：${cl.hpFormula.first}；${cl.fpFormula?.first || ''}`);
   if (cl.startingFeatures?.length) {
-    lines.push(`- 初始特性：${cl.startingFeatures.length} 选 ${cl.startingChoice}（${cl.startingFeatures.map((f) => f.name).join('、')}）`);
+    const names = cl.startingFeatures.map((f) => f.name).join('、');
+    lines.push(
+      cl.startingChoice === 'all'
+        ? `- 初始特性：全部获得（${names}）`
+        : `- 初始特性：${cl.startingFeatures.length} 选 ${cl.startingChoice}（${names}）`,
+    );
   }
   if (cl.startingGearKits?.length) {
     lines.push('- 起始装备套装（创建页四选一）：');

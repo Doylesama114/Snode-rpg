@@ -92,7 +92,7 @@ export function buildChargenBubbleQuery(snapshot) {
       ? '本职业起始特性规则以创建页为准（勿称「八选四」）'
       : `本步规则（选 ${featMax} 项）`;
     const sorcererNote = className === '术士'
-      ? '术士起始特性为三选二（魔法飞弹/混沌法术/天赐神通）；评价组合时强调随机性与幸运关键属性协同。'
+      ? '术士起始特性为魔法飞弹、混沌法术、天赐神通三项全得（创建页无需选择）；评价组合时强调随机输出、天赐扩展与幸运关键属性协同。'
       : '';
     if (feats.length >= featMax) {
       return [

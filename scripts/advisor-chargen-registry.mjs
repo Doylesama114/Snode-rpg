@@ -51,10 +51,7 @@ export function resolveKeyAttrs(char, profile = null) {
 export function getStartingFeatureMax(char, profile = null) {
   const p = profile || getClassProfile(char?.className);
   const pick = p.startingFeaturePick;
-  if (pick === 'all') {
-    const n = (char?.selectedFeatures || []).length;
-    return n > 0 ? n : 3;
-  }
+  if (pick === 'all') return 3;
   return typeof pick === 'number' ? pick : 2;
 }
 

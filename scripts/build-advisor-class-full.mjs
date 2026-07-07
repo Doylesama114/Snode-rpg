@@ -626,9 +626,9 @@ const CLASS_FULL_PROFILES = {
       },
       {
         id: 'tip-' + slug + '-cr-start',
-        title: '起手三选二',
-        summary: '3 选 2：魔法飞弹（稳定输出）、混沌法术（随机效应）、天赐神通（扩展法术池）。',
-        detail: '按团队缺口选两项；勿假设三项全拿。天赐神通公共池随等级变更（见技能描述）。',
+        title: '三项起始特性全得',
+        summary: '创建时自动获得：魔法飞弹（稳定输出）、混沌法术（随机效应）、天赐神通（扩展法术池）。',
+        detail: '无需选择；勿称「三选二」。天赐神通公共池随术士等级变更（见技能描述）。',
         relatedSkills: ['魔法飞弹', '混沌法术', '天赐神通'],
         tags: [className, '起手特性', 'combat_rule'],
       },
@@ -794,6 +794,26 @@ function resolveStartingSkillEntries(skills, startingFeatures) {
   });
 }
 
+function resolveStartingChoice(profile, refClass, startingCount) {
+  if (profile.startingFeaturePick === 'all') return 'all';
+  if (typeof profile.startingFeaturePick === 'number') return profile.startingFeaturePick;
+  if (refClass?.starting_choice != null) return refClass.starting_choice;
+  return 2;
+}
+
+function formatStartingFeatureTipDetail(className, profile, startingEntries, feat) {
+  const pick = profile.startingFeaturePick;
+  const featStyle = feat.style || '起手';
+  if (pick === 'all') {
+    return className + ' 起始特性三项全得（魔法飞弹/混沌法术/天赐神通），其中「' + feat.name + '」为其中之一。'
+      + (feat.summary || '') + ' 与后续 ' + featStyle + ' 风格技能可协同，但非强制绑定。';
+  }
+  const pickNum = typeof pick === 'number' ? pick : 2;
+  const pool = startingEntries.length || 4;
+  return className + ' ' + pool + ' 选 ' + pickNum + ' 起手特性之一。' + (feat.summary || '')
+    + ' 与后续 ' + featStyle + ' 风格技能可形成初期连招，但非强制绑定。';
+}
+
 function lowTierSkills(skills, style, limit = 4) {
   return skills
     .filter((s) => s.style === style && s.type !== 'starting')
@@ -882,7 +902,7 @@ function buildFullClassDoc(className, profile, refClass, weaponProfs, index, exi
     saves: existing?.saves || refClass?.saves || [],
     skills: existing?.skills || refClass?.skills || '',
     startingFeatures,
-    startingChoice: profile.startingFeaturePick ?? refClass?.starting_choice ?? 2,
+    startingChoice: resolveStartingChoice(profile, refClass, startingFeatures.length),
     hpFormula: formatHpFormula(refClass, className),
     fpFormula: formatFpFormula(refClass, className, cp.fpKeyLabel),
     multiclassRequirements: mcReq || null,
@@ -1022,7 +1042,6 @@ function buildFullTips(className, profile, hints, index, classDoc) {
 
   for (const feat of startingEntries) {
     const featStyle = feat.style || '起手';
-    const pick = profile.startingFeaturePick ?? 2;
     tips.push(finalizeTip(makeTipBase(
       className,
       slug,
@@ -1032,7 +1051,7 @@ function buildFullTips(className, profile, hints, index, classDoc) {
       {
         style: feat.style,
         summary: feat.name + '（' + featStyle + '）：' + String(feat.summary || '').slice(0, 80),
-        detail: className + ' 4 选 ' + pick + ' 起手特性之一。' + (feat.summary || '') + ' 与后续 ' + featStyle + ' 风格技能可形成初期连招，但非强制绑定。',
+        detail: formatStartingFeatureTipDetail(className, profile, startingEntries, feat),
         relatedSkills: [feat.name],
         tags: [className, '起手特性', '车卡', 'tactic'],
       },

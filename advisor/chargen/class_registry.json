@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7047",
-    "note": "14职业顾问：10 full（含术士）；7047术士升full"
+    "version": "1.0.7048",
+    "note": "7048术士起始特性三项全得修正"
   },
   "defaults": {
     "tier": "basic",
@@ -221,7 +221,7 @@
       "isCaster": true,
       "l2Slug": "sorcerer",
       "l2Layer": "L2-sorcerer",
-      "startingFeaturePick": 2,
+      "startingFeaturePick": "all",
       "skillPickCount": 4,
       "styleKeywords": [
         "术士",
