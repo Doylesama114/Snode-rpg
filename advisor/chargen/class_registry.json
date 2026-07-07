@@ -25,6 +25,7 @@
       "tier": "partial",
       "keyAttr": "智力",
       "isCaster": true,
+      "promptProfile": "artificer_skills",
       "l2Slug": "artificer",
       "l2Layer": "L2-artificer",
       "styleKeywords": [

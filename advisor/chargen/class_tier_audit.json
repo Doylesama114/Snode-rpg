@@ -1,0 +1,1139 @@
+{
+  "meta": {
+    "phase": "5-batch10",
+    "generatedAt": "2026-07-07",
+    "classCount": 14,
+    "fullReady": 1,
+    "partialReady": 13
+  },
+  "audits": [
+    {
+      "className": "法师",
+      "tier": "full",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=full",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥300 技能",
+          "pass": true,
+          "note": "got 356"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥8",
+          "pass": true,
+          "note": "got 8"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥20",
+          "pass": true,
+          "note": "got 24"
+        },
+        {
+          "id": "mage_specs",
+          "label": "法师三项专精 policy",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 11,
+      "total": 11,
+      "ready": true
+    },
+    {
+      "className": "奇械师",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 100"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 9"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "蛮斗士",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 68"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 4"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "战士",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 109"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 8"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "猎人",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 77"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "牧师",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 54"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 3"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "圣骑士",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 58"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 4"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "游荡者",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 82"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "德鲁伊",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 77"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 9"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "萨满祭司",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 98"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "术士",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 48"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥1",
+          "pass": true,
+          "note": "got 1"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 3"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "武僧",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 130"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 9"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "吟游诗人",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 122"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    },
+    {
+      "className": "魔契师",
+      "tier": "partial",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=partial",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥40 技能",
+          "pass": true,
+          "note": "got 116"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥3",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
+          "note": "got 7"
+        },
+        {
+          "id": "partial_note",
+          "label": "partial advisorNote",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "registry_l2",
+          "label": "registry L2 slug/layer",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 12,
+      "total": 12,
+      "ready": true
+    }
+  ]
+}

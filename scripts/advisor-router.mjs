@@ -5,6 +5,7 @@ import { pickAdvancementName } from './advisor-router-utils.mjs';
 import { getClassProfile, isFullTier } from './advisor-chargen-registry.mjs';
 import {
   MAGE_L2,
+  MAGE_QUERY_RE,
   allowL2Layer,
   allowL2Mage,
   listL2ClassEntries,
@@ -13,7 +14,7 @@ import {
   resolveRegistryL2Layer,
 } from './advisor-class-l2.mjs';
 
-export { resolveClassL2Layer } from './advisor-class-l2.mjs';
+import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
 
 export const MODES = ['advisor', 'wizard', 'entity_qa'];
 
@@ -174,7 +175,8 @@ export function applyClassRouteFilter(route, ctx = {}) {
       route.topK[injectLayer] = route.topK[injectLayer] || 18;
       route.topK.L1 = route.topK.L1 || 6;
       const profile = getClassProfile(resolvedClass);
-      route.promptProfile = profile.tier === 'full' && resolvedClass === '法师' ? 'mage_skills' : 'class_skills';
+      const base = profile.tier === 'full' && resolvedClass === '法师' ? 'mage_skills' : 'class_skills';
+      route.promptProfile = resolveClassPromptProfile(resolvedClass, base);
     } else {
       route.layers = [...new Set([...route.layers.filter((l) => l !== MAGE_L2 && !registryLayers.includes(l)), 'L5', 'L0'])];
       route.topK.L5 = route.topK.L5 || 6;
@@ -257,6 +259,16 @@ export function routeIntent(query) {
     if (s > bestScore) {
       bestScore = s;
       best = rule;
+    }
+  }
+  if (
+    best.id === 'class_skills'
+    && MAGE_QUERY_RE.test(query)
+    && !listL2ClassEntries().some((e) => e.className !== '法师' && query.includes(e.className))
+  ) {
+    const mageRule = pickRuleByIntent('mage_skills');
+    if (scoreRule(mageRule, q) > 0) {
+      best = mageRule;
     }
   }
   return { ...best, query };

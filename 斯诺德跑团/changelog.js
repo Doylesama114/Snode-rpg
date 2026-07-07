@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7037',
+    date: '2026-07-07',
+    changes: [
+      '顾问 Phase5：14职业档位checklist audit',
+      'prompt硬规则(full/partial/奇械师)',
+      '塑能路由修复'
+    ]
+  },
+
+
+  {
     version: '1.0.7036',
     date: '2026-07-07',
     changes: [

@@ -4,6 +4,7 @@
 import { loadAdvisorStore } from './advisor-retrieve.mjs';
 import { getPromptProfile } from './advisor-router.mjs';
 import { getClassProfile } from './advisor-chargen-registry.mjs';
+import { formatTierAuditContext } from './advisor-class-tier.mjs';
 
 function buildBaseRules(className, tier) {
   const role = className
@@ -14,6 +15,8 @@ function buildBaseRules(className, tier) {
     rules += '\n- 该职业当前为通用创建陪跑档：勿编造未收录的职业专属技能/进阶/标识细节；无上下文时引导查阅规则书或 DM。';
   } else if (tier === 'partial') {
     rules += '\n- 该职业顾问数据尚未完整（如标识系统等）；创建陪跑与通用规则可答，深度 build 须注明资料未齐。';
+  } else if (tier === 'full') {
+    rules += '\n- 该职业为 full 档：可引用 L2 技能名、L5 小贴士、documented 进阶天赋；仍禁止编造上下文未出现的名称。';
   }
   return rules;
 }
@@ -45,7 +48,8 @@ const INTENT_ADDONS = {
 ## 本问类型：实体百科
 - 必须基于【实体详情】整卡作答；逐条列出属性加成、特性、熟练授予、装备等上下文字段。
 - 不可只给一句摘要；用户问「有哪些」须完整枚举上下文中的条目。
-- 不要延伸推荐 build，除非用户明确问「适不适合法师」。`,
+- 职业实体问起始套装/起手装备时：须枚举套装 A/B/C/D 摘要（若上下文有）。
+- 不要延伸推荐 build，除非用户明确问「适不适合某职业」。`,
   chargen: `
 ## 本问类型：车卡建议
 - L1 法师三项专精（奥法学者、知识传承、魔法学派）L1 均获得，非「三选一」；魔法学派对立/主修创建页不配置。
@@ -120,11 +124,14 @@ export function buildSystemPrompt(options = {}) {
     ? INTENT_ADDONS.wizard
     : (INTENT_ADDONS[profile] || INTENT_ADDONS[intent] || '');
 
+  const tierAudit = className ? formatTierAuditContext(className) : '';
+
   return `${buildBaseRules(className, tier)}
 
 ## 硬规则（必须遵守）${BASE_RULES_TAIL}
 ${STYLE_RULES}
 ${addon}
+${tierAudit ? `\n## 档位检查（勿向用户复述标题）\n${tierAudit}\n` : ''}
 
 ## 全局规则摘要（仅供你判断，不要原文复述给用户）
 - ${ruleBullets}`;

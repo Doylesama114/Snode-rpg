@@ -20,6 +20,7 @@ import {
   getWizardStepEntityHints,
 } from './advisor-wizard-state.mjs';
 import { buildChargenExtraContext } from './advisor-chargen-policy.mjs';
+import { formatTierAuditContext } from './advisor-class-tier.mjs';
 import { getClassProfile } from './advisor-chargen-registry.mjs';
 import {
   collectTipsPool,
@@ -936,6 +937,7 @@ export function retrieve(query, options = {}) {
     hasSnapshot: !!l6Analysis,
     wizardState,
     retrievalClass,
+    tier: retrievalClass ? getClassProfile(retrievalClass).tier : null,
     entities: mergedEntities,
     results: layers,
   };
@@ -947,6 +949,7 @@ export function formatContext(retrieval) {
   lines.push(`# 检索上下文（模式: ${retrieval.mode || 'advisor'}；意图: ${retrieval.intent}）`);
   if (retrieval.retrievalClass) {
     lines.push(`当前职业: ${retrieval.retrievalClass}`);
+    lines.push(formatTierAuditContext(retrieval.retrievalClass));
   }
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
