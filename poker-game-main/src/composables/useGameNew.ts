@@ -468,9 +468,13 @@ export function useGame() {
     const cardIndex = currentPlayer.value.hand.indexOf(card)
     
     if (cardIndex === -1) return
+
+    const resolvedSlot = EffectManager.resolveDeploySlotIndex(currentPlayer.value, card, slotIndex)
+    const available = gameState.value.availableSlots ?? []
+    if (!available.includes(resolvedSlot)) return
     
     // 执行打出卡牌
-    playCardToSlot(cardIndex, slotIndex)
+    playCardToSlot(cardIndex, resolvedSlot)
   }
 
   function selectCrossPlayerSlotToPlay(targetPlayerIndex: number, slotIndex: number) {
@@ -935,7 +939,7 @@ export function useGame() {
     if (gameState.value.pendingHostDeployCard) {
       const card = gameState.value.pendingHostDeployCard
       const player = currentPlayer.value
-      if (!EffectManager.isValidDeployOnHost(card, targetCard)) {
+      if (!EffectManager.isValidDeployOnHost(card, targetCard, player)) {
         gameState.value.message = `${card.name} 无法部署到该卡牌上`
         return
       }
@@ -981,7 +985,7 @@ export function useGame() {
 
     const player = currentPlayer.value
 
-    if (!EffectManager.isValidDeployOnHost(card, targetCard)) {
+    if (!EffectManager.isValidDeployOnHost(card, targetCard, player)) {
       gameState.value.message = `${card.name} 无法部署到该卡牌上`
       gameState.value.phase = 'action'
       gameState.value.pendingQuickPlayCard = undefined
@@ -1117,7 +1121,7 @@ export function useGame() {
     if (parentSlotIndex === -1) return
     
     const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
-    player.field.push(EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules))
+    EffectManager.appendExtraSlot(player, parentSlotIndex, rules)
     gameState.value.message += ` | 创建了额外槽位`
   }
 

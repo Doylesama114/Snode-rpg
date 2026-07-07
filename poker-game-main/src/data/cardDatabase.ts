@@ -2608,6 +2608,7 @@ export const allCardDefinitions = [
       timing: 'onDeploy',
       type: 'createSlot',
       slotDeployKeywords: ['载具'],
+      slotDeployCardType: 'unit',
       description: '你可以将「载具」单位牌部署在这张牌上'
     }
     ],

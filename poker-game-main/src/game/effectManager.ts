@@ -1,4 +1,4 @@
-import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect, AttributeType, PendingRoundEndBuff, RevealBatchEntry } from '@/types/game'
+import type { Card, Player, GameState, FieldSlot, EffectContext, CardEffect, AttributeType, PendingRoundEndBuff, RevealBatchEntry, SlotDeployRules } from '@/types/game'
 import { allCardDefinitions } from '@/data/cardDatabase'
 
 // 效果管理器
@@ -330,8 +330,8 @@ export class EffectManager {
       }
     }
     
-    // 添加叠加的加成（法师、战士等 onOtherPlay 持久化）
-    if (card.stackedBonus !== undefined && card.stackedBonus > 0) {
+    // 添加叠加的加成（法师、战士、roundEnd 等持久化）
+    if (card.stackedBonus !== undefined && card.stackedBonus !== 0) {
       card.currentPower += card.stackedBonus
     }
     
@@ -501,7 +501,7 @@ export class EffectManager {
       for (const buff of player.pendingRoundEndBuffs) {
         const target = this.findCardById(game, buff.targetCardId)
         if (target) {
-          this.applyCardPowerDelta(target, buff.powerDelta)
+          this.applyTimedPowerDelta(target, buff.powerDelta)
           messages.push(`${target.name} 回春+${buff.powerDelta}`)
         }
         buff.roundsLeft -= 1
@@ -637,7 +637,7 @@ export class EffectManager {
     return this.requiresMandatoryHostDeploy(card)
   }
 
-  static isValidDeployOnHost(card: Card, hostCard: Card): boolean {
+  static isValidDeployOnHost(card: Card, hostCard: Card, player?: Player): boolean {
     const effect = this.getDeployOnHostEffect(card)
     if (!effect) return false
     if (effect.requireHostCardType && hostCard.type !== effect.requireHostCardType) return false
@@ -646,9 +646,24 @@ export class EffectManager {
       return false
     }
     if (effect.requireHostKeywords?.length && !this.hasAnyKeyword(hostCard, effect.requireHostKeywords)) {
-      return false
+      if (!player) return false
+      const hostIdx = this.getHostFieldIndex(player, hostCard)
+      const hasExtraSlot = hostIdx >= 0 && this.findExtraSlotOnHost(
+        player, hostIdx, s => !s.card && this.canDeployOnExtraSlot(card, s),
+      ) >= 0
+      if (!hasExtraSlot) return false
     }
     return true
+  }
+
+  /** 点选宿主主槽时，若该宿主有可用额外槽则解析为额外槽索引 */
+  static resolveDeploySlotIndex(player: Player, card: Card, slotIndex: number): number {
+    const slot = player.field[slotIndex]
+    if (!slot || slot.isExtra || !slot.card) return slotIndex
+    const extraIdx = this.findExtraSlotOnHost(
+      player, slotIndex, s => !s.card && this.canDeployOnExtraSlot(card, s),
+    )
+    return extraIdx >= 0 ? extraIdx : slotIndex
   }
 
   /** 作物等：挂在农田/载具上（非单位装备槽） */
@@ -711,15 +726,9 @@ export class EffectManager {
       const empty = this.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && !s.card)
       if (empty >= 0) return empty
       if (!createIfMissing) return -1
-      const pos = player.field.length
-      player.field.push({
-        card: null,
-        position: pos,
-        isExtra: true,
-        parentSlot: hostIdx,
-        slotKind: kind,
-        deployRules: { excludeFromFieldCount: true },
-      })
+      const pos = this.appendExtraSlot(player, hostIdx, { excludeFromFieldCount: true })
+      const slot = player.field[pos]
+      slot.slotKind = kind
       return pos
     }
 
@@ -734,16 +743,14 @@ export class EffectManager {
         return -1
       }
       if (!createIfMissing) return -1
-      const pos = player.field.length
-      player.field.push(this.buildExtraSlot(hostIdx, pos, { excludeFromFieldCount: true }))
-      return pos
+      return this.appendExtraSlot(player, hostIdx, { excludeFromFieldCount: true })
     }
 
     return -1
   }
 
   static canAttachToHost(card: Card, hostCard: Card, player: Player): boolean {
-    if (!this.isValidDeployOnHost(card, hostCard)) return false
+    if (!this.isValidDeployOnHost(card, hostCard, player)) return false
     if (!this.usesAttachmentSlot(card)) return true
     const hostIdx = this.getHostFieldIndex(player, hostCard)
     return this.resolveAttachmentSlotIndex(player, hostIdx, card, true) >= 0
@@ -1004,6 +1011,17 @@ export class EffectManager {
     if (effect.slotExcludeFromFieldCount) rules.excludeFromFieldCount = true
     if (effect.slotDeployedPowerBonus) rules.deployedPowerBonus = effect.slotDeployedPowerBonus
     return Object.keys(rules).length > 0 ? rules : undefined
+  }
+
+  /** 回合开始/结束、预约 buff 等：经 recalculateAllPowers 保留的战力变化 */
+  static applyTimedPowerDelta(card: Card, delta: number): number {
+    return this.applyPersistentPowerDelta(card, delta)
+  }
+
+  static appendExtraSlot(player: Player, parentSlotIndex: number, rules?: SlotDeployRules): number {
+    const newSlot = this.buildExtraSlot(parentSlotIndex, player.field.length, rules)
+    player.field = [...player.field, newSlot]
+    return player.field.length - 1
   }
 
   static buildExtraSlot(parentSlotIndex: number, position: number, rules?: SlotDeployRules): FieldSlot {
@@ -1312,7 +1330,7 @@ export class EffectManager {
         return { messages }
       }
       const delta = (effect.value as number) || 0
-      this.applyCardPowerDelta(card, delta)
+      this.applyTimedPowerDelta(card, delta)
       messages.push(`${card.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
@@ -1543,7 +1561,7 @@ export class EffectManager {
       const gain = victim.currentPower
       slot.card = null
       player.discard.push(victim)
-      this.applyCardPowerDelta(card, gain)
+      this.applyTimedPowerDelta(card, gain)
       messages.push(`牺牲${victim.name}，获得${gain}战力`)
       return { messages }
     }
@@ -2224,7 +2242,7 @@ export class EffectManager {
       const targets = this.getRoundGlobalTargets(game, player, effect)
       if (targets.length === 0) return { messages }
       const rawDelta = effect.value || 0
-      targets.forEach(t => { this.applyCardPowerDelta(t, rawDelta) })
+      targets.forEach(t => { this.applyTimedPowerDelta(t, rawDelta) })
       const sign = rawDelta >= 0 ? '+' : ''
       messages.push(`${targets.length}张卡牌战力${sign}${rawDelta}`)
       return { messages }
@@ -2239,13 +2257,24 @@ export class EffectManager {
       })
       if (candidates.length === 0) return { messages }
       const target = candidates[0]
-      const delta = this.applyCardPowerDelta(target, effect.value || 0)
+      const delta = this.applyTimedPowerDelta(target, effect.value || 0)
       messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.targetKeywords?.length && !effect.requireKeywords) {
+      const hasTrigger = player.field.some(
+        s => s.card && s.card !== ownerCard && this.hasAnyKeyword(s.card, effect.targetKeywords!),
+      )
+      if (!hasTrigger) return { messages }
+      const delta = effect.value || 0
+      const applied = this.applyTimedPowerDelta(ownerCard, delta)
+      messages.push(`${ownerCard.name} 战力${applied >= 0 ? '+' : ''}${applied}`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && effect.value && !effect.allPlayers) {
-      const delta = this.applyCardPowerDelta(ownerCard, effect.value as number)
+      const delta = this.applyTimedPowerDelta(ownerCard, effect.value as number)
       messages.push(`${ownerCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
@@ -2325,7 +2354,7 @@ export class EffectManager {
         return { messages }
       }
       const target = targets[0]
-      this.applyCardPowerDelta(target, debuff)
+      this.applyTimedPowerDelta(target, debuff)
       ownerCard.charges = (ownerCard.charges ?? 1) - 1
       messages.push(`消耗1充能，${target.name} 战力${debuff}`)
       if (effect.oncePerRound) ownerCard.roundUsed = true
@@ -2461,6 +2490,13 @@ export class EffectManager {
           if (eff.timing === 'onDeploy') {
             const r = this.applyDeployEffect(eff, card, player, game)
             messages.push(...r.messages)
+            if (r.needsCreateSlot) {
+              const hostIdx = player.field.findIndex(s => s.card === card)
+              if (hostIdx >= 0) {
+                this.appendExtraSlot(player, hostIdx, this.slotRulesFromEffect(eff))
+                messages.push('创建了额外槽位')
+              }
+            }
           } else if (eff.timing === 'onReveal') {
             const r = this.applyRevealEffect(eff, card, player, game)
             messages.push(...r.messages)

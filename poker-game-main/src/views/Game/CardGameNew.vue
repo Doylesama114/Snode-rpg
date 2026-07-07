@@ -175,9 +175,19 @@ function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
 
   if (player.id === 'player' && isDeployPhase()) {
     const slot = player.field[actualIndex]
-    if (gameState.value.phase === 'selectSlot' && !isSlotAvailable(actualIndex)) {
-      triggerSlotShake(player.id, actualIndex)
-      return
+    if (gameState.value.phase === 'selectSlot') {
+      const card = gameState.value.selectedCard
+      if (card) {
+        const resolved = EffectManager.resolveDeploySlotIndex(player, card, actualIndex)
+        if (isSlotAvailable(resolved)) {
+          selectSlotToPlay(actualIndex)
+          return
+        }
+      }
+      if (!isSlotAvailable(actualIndex)) {
+        triggerSlotShake(player.id, actualIndex)
+        return
+      }
     }
     if (gameState.value.phase === 'selectTarget' && slot.card && !isTargetSelectable(slot.card)) {
       triggerSlotShake(player.id, actualIndex)

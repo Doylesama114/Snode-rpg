@@ -206,16 +206,20 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     const cardIndex = myPlayer.value.hand.indexOf(card)
     
     if (cardIndex === -1) return null
+
+    const resolvedSlot = EffectManager.resolveDeploySlotIndex(myPlayer.value, card, slotIndex)
+    const available = gameState.value.availableSlots ?? []
+    if (!available.includes(resolvedSlot)) return null
     
     // 执行打出卡牌（不改变 phase，因为这是本地操作）
-    playCardToSlot(cardIndex, slotIndex)
+    playCardToSlot(cardIndex, resolvedSlot)
     
     // 重置 phase 回到 action（保持在行动阶段）
     gameState.value.phase = 'action'
     
     return {
       type: 'playCard',
-      data: { cardIndex, slotIndex, cardId: card.id },
+      data: { cardIndex, slotIndex: resolvedSlot, cardId: card.id },
       playerId: myPlayer.value.id
     }
   }
@@ -368,7 +372,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     if (parentSlotIndex === -1) return
     
     const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
-    player.field.push(EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules))
+    EffectManager.appendExtraSlot(player, parentSlotIndex, rules)
     gameState.value.message += ` | 创建了额外槽位`
   }
 

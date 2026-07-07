@@ -277,6 +277,16 @@ class EffectManager {
     return Object.keys(rules).length > 0 ? rules : undefined
   }
 
+  static applyTimedPowerDelta(card, delta) {
+    return EffectManager.applyPersistentPowerDelta(card, delta)
+  }
+
+  static appendExtraSlot(player, parentSlotIndex, rules) {
+    const newSlot = EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules)
+    player.field = [...player.field, newSlot]
+    return player.field.length - 1
+  }
+
   static buildExtraSlot(parentSlotIndex, position, rules) {
     return { card: null, position, isExtra: true, parentSlot: parentSlotIndex, slotKind: 'vehicle', deployRules: rules }
   }
@@ -476,7 +486,7 @@ class EffectManager {
       const targets = EffectManager.getRoundGlobalTargets(gameState, player, effect)
       if (targets.length === 0) return { messages }
       const rawDelta = effect.value || 0
-      targets.forEach(t => { EffectManager.applyCardPowerDelta(t, rawDelta) })
+      targets.forEach(t => { EffectManager.applyTimedPowerDelta(t, rawDelta) })
       const sign = rawDelta >= 0 ? '+' : ''
       messages.push(`${targets.length}张卡牌战力${sign}${rawDelta}`)
       return { messages }
@@ -491,13 +501,24 @@ class EffectManager {
       })
       if (candidates.length === 0) return { messages }
       const target = candidates[0]
-      const delta = EffectManager.applyCardPowerDelta(target, effect.value || 0)
+      const delta = EffectManager.applyTimedPowerDelta(target, effect.value || 0)
       messages.push(`${target.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
 
+    if (effect.type === 'modifyPower' && effect.selfTarget && effect.targetKeywords?.length && !effect.requireKeywords) {
+      const hasTrigger = player.field.some(
+        s => s.card && s.card !== ownerCard && EffectManager.hasAnyKeyword(s.card, effect.targetKeywords),
+      )
+      if (!hasTrigger) return { messages }
+      const delta = effect.value || 0
+      const applied = EffectManager.applyTimedPowerDelta(ownerCard, delta)
+      messages.push(`${ownerCard.name} 战力${applied >= 0 ? '+' : ''}${applied}`)
+      return { messages }
+    }
+
     if (effect.type === 'modifyPower' && effect.value && !effect.allPlayers) {
-      const delta = EffectManager.applyCardPowerDelta(ownerCard, effect.value)
+      const delta = EffectManager.applyTimedPowerDelta(ownerCard, effect.value)
       messages.push(`${ownerCard.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
@@ -577,7 +598,7 @@ class EffectManager {
         return { messages }
       }
       const target = targets[0]
-      EffectManager.applyCardPowerDelta(target, debuff)
+      EffectManager.applyTimedPowerDelta(target, debuff)
       ownerCard.charges = (ownerCard.charges ?? 1) - 1
       messages.push(`消耗1充能，${target.name} 战力${debuff}`)
       if (effect.oncePerRound) ownerCard.roundUsed = true
@@ -1163,7 +1184,7 @@ class EffectManager {
       }
     }
 
-    if (card.stackedBonus !== undefined && card.stackedBonus > 0) {
+    if (card.stackedBonus !== undefined && card.stackedBonus !== 0) {
       card.currentPower += card.stackedBonus
     }
 
@@ -1339,7 +1360,7 @@ class EffectManager {
       for (const buff of player.pendingRoundEndBuffs) {
         const target = EffectManager.findCardById(gameState, buff.targetCardId)
         if (target) {
-          EffectManager.applyCardPowerDelta(target, buff.powerDelta)
+          EffectManager.applyTimedPowerDelta(target, buff.powerDelta)
           messages.push(`${target.name} 回春+${buff.powerDelta}`)
         }
         buff.roundsLeft -= 1
@@ -1463,7 +1484,7 @@ class EffectManager {
     return EffectManager.requiresMandatoryHostDeploy(card)
   }
 
-  static isValidDeployOnHost(card, hostCard) {
+  static isValidDeployOnHost(card, hostCard, player) {
     const effect = EffectManager.getDeployOnHostEffect(card)
     if (!effect) return false
     if (effect.requireHostCardType && hostCard.type !== effect.requireHostCardType) return false
@@ -1472,9 +1493,23 @@ class EffectManager {
       return false
     }
     if (effect.requireHostKeywords?.length && !EffectManager.hasAnyKeyword(hostCard, effect.requireHostKeywords)) {
-      return false
+      if (!player) return false
+      const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
+      const hasExtraSlot = hostIdx >= 0 && EffectManager.findExtraSlotOnHost(
+        player, hostIdx, s => !s.card && EffectManager.canDeployOnExtraSlot(card, s),
+      ) >= 0
+      if (!hasExtraSlot) return false
     }
     return true
+  }
+
+  static resolveDeploySlotIndex(player, card, slotIndex) {
+    const slot = player.field[slotIndex]
+    if (!slot || slot.isExtra || !slot.card) return slotIndex
+    const extraIdx = EffectManager.findExtraSlotOnHost(
+      player, slotIndex, s => !s.card && EffectManager.canDeployOnExtraSlot(card, s),
+    )
+    return extraIdx >= 0 ? extraIdx : slotIndex
   }
 
   static isVehicleMountCard(card) {
@@ -1525,15 +1560,8 @@ class EffectManager {
       const empty = EffectManager.findExtraSlotOnHost(player, hostIdx, s => s.slotKind === kind && !s.card)
       if (empty >= 0) return empty
       if (!createIfMissing) return -1
-      const pos = player.field.length
-      player.field.push({
-        card: null,
-        position: pos,
-        isExtra: true,
-        parentSlot: hostIdx,
-        slotKind: kind,
-        deployRules: { excludeFromFieldCount: true },
-      })
+      const pos = EffectManager.appendExtraSlot(player, hostIdx, { excludeFromFieldCount: true })
+      player.field[pos].slotKind = kind
       return pos
     }
 
@@ -1548,16 +1576,14 @@ class EffectManager {
         return -1
       }
       if (!createIfMissing) return -1
-      const pos = player.field.length
-      player.field.push(EffectManager.buildExtraSlot(hostIdx, pos, { excludeFromFieldCount: true }))
-      return pos
+      return EffectManager.appendExtraSlot(player, hostIdx, { excludeFromFieldCount: true })
     }
 
     return -1
   }
 
   static canAttachToHost(card, hostCard, player) {
-    if (!EffectManager.isValidDeployOnHost(card, hostCard)) return false
+    if (!EffectManager.isValidDeployOnHost(card, hostCard, player)) return false
     if (!EffectManager.usesAttachmentSlot(card)) return true
     const hostIdx = EffectManager.getHostFieldIndex(player, hostCard)
     return EffectManager.resolveAttachmentSlotIndex(player, hostIdx, card, true) >= 0
@@ -1936,7 +1962,7 @@ class EffectManager {
         return { messages }
       }
       const delta = effect.value || 0
-      EffectManager.applyCardPowerDelta(card, delta)
+      EffectManager.applyTimedPowerDelta(card, delta)
       messages.push(`${card.name} 战力${delta >= 0 ? '+' : ''}${delta}`)
       return { messages }
     }
@@ -2164,7 +2190,7 @@ class EffectManager {
       const gain = victim.currentPower
       slot.card = null
       player.discard.push(victim)
-      EffectManager.applyCardPowerDelta(card, gain)
+      EffectManager.applyTimedPowerDelta(card, gain)
       messages.push(`牺牲${victim.name}，获得${gain}战力`)
       return { messages }
     }
@@ -3063,7 +3089,7 @@ class GameEngine {
     let targetCard = null
     if (hostCardId) {
       targetCard = player.field.find(s => s.card?.id === hostCardId)?.card ?? null
-      if (!targetCard || !EffectManager.isValidDeployOnHost(card, targetCard)) {
+      if (!targetCard || !EffectManager.isValidDeployOnHost(card, targetCard, player)) {
         return { success: false, error: '无效的宿主卡牌' }
       }
     } else {
@@ -3529,10 +3555,8 @@ class GameEngine {
     }
     
     const rules = effect ? EffectManager.slotRulesFromEffect(effect) : undefined
-    const newSlot = EffectManager.buildExtraSlot(parentSlotIndex, player.field.length, rules)
-    
-    player.field.push(newSlot)
-    console.log(`[GameEngine] 创建了额外槽位，新槽位位置=${newSlot.position}，当前总槽位数=${player.field.length}`)
+    EffectManager.appendExtraSlot(player, parentSlotIndex, rules)
+    console.log(`[GameEngine] 创建了额外槽位，当前总槽位数=${player.field.length}`)
     this.gameState.message += ` | 创建了额外槽位`
   }
   

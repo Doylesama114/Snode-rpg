@@ -295,13 +295,17 @@ export function useGameClient(initialPlayerId = '') {
   }
   
   function selectSlotToPlay(slotIndex: number, cardIndex: number, targetPlayerIndex?: number) {
-    if (!selectedCard.value) return null
+    if (!selectedCard.value || !myPlayer.value) return null
+
+    const resolvedSlot = targetPlayerIndex === undefined
+      ? EffectManager.resolveDeploySlotIndex(myPlayer.value, selectedCard.value, slotIndex)
+      : slotIndex
     
     const action = {
       type: 'playCard' as const,
       data: {
         cardIndex,
-        slotIndex,
+        slotIndex: resolvedSlot,
         cardId: selectedCard.value.id,
         ...(targetPlayerIndex !== undefined ? { targetPlayerIndex } : {}),
       }
