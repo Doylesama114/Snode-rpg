@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7050",
-    "note": "14职业顾问：12 full（含吟游诗人）；7050吟游诗人升full"
+    "version": "1.0.7051",
+    "note": "14职业顾问：13 full（含魔契师）；7051魔契师升full"
   },
   "defaults": {
     "tier": "basic",
@@ -273,7 +273,7 @@
       "l5MinTips": 20
     },
     "魔契师": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "魅力",
       "isCaster": true,
       "l2Slug": "warlock",
@@ -288,7 +288,9 @@
         "咒能",
         "秘术"
       ],
-      "advisorNote": "魔契师顾问为部分支持：技能索引已收录，标识系统与进阶目录尚未完整；深度 build 请以规则书/DM 为准。"
+      "promptProfile": "warlock_skills",
+      "fullL2MinSkills": 80,
+      "l5MinTips": 20
     }
   }
 }

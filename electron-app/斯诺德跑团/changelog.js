@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7051',
+    date: '2026-07-07',
+    changes: [
+      '魔契师顾问升full(warlock_skills/宗主五风格L5)'
+    ]
+  },
+
+
+  {
     version: '1.0.7050',
     date: '2026-07-07',
     changes: [

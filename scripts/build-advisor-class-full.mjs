@@ -925,6 +925,101 @@ const CLASS_FULL_PROFILES = {
       return rules;
     },
   },
+  魔契师: {
+    defaultFullL2MinSkills: 80,
+    fpKeyLabel: '魅力',
+    specBuildHints: {
+      宗主契约: '宗主类型决定巫术箭伤害等；创建时选宗主后再规划魔契/邪念线。',
+      神秘专家: '神秘学熟练与秘术/情报 build 协同；偏场外与仪式向。',
+    },
+    styleRoleHints: {
+      起始特性: '巫术箭/毒液飞溅等起手法术；伤害类型与宗主相关。',
+      魔契: '召唤、恩赐魔刃与契法之触；宗主契约专精核心线。',
+      邪念: '混乱箭、腐蚀术等邪术输出；偏诅咒与随机性。',
+      咒能: '骚灵现象、魔爆术等咒能与幻象控场。',
+      秘术: '迷幻手稿、通晓语言等隐秘与交涉 utility。',
+    },
+    chargenAttrDetail: '魅力≥15 为常见目标；感知豁免配合察觉/神秘学 build。表演/欺瞒与秘术/咒能 social 协同。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-pact',
+        title: '宗主与魔契',
+        summary: '创建须选宗主；巫术箭伤害类型与宗主相关，魔契线深化召唤与契法之触。',
+        detail: '勿套用法师八学派；神术/divine 类技能须标注来源上下文。',
+        relatedSkills: ['巫术箭', '恩赐魔刃'],
+        tags: [className, '宗主', '魔契', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-styles',
+        title: '五风格树',
+        summary: '起始特性/魔契/邪念/咒能/秘术五线；「起始特性」亦为战斗风格名，勿与其他职业起手池混淆。',
+        detail: '部分高阶魔契技能限制「不能为第三或第四种战斗风格」；见 prerequisite。',
+        relatedSkills: ['巫术箭', '召唤魔宠'],
+        tags: [className, '战斗风格', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-start',
+        title: '起手四选二',
+        summary: '4 选 2：巫术箭（输出）、毒液飞溅（毒伤）、虚弱诅咒（控场）、次级变形术（变形控场）。',
+        detail: '与「起始特性」风格树技能同名；按职能选两项，勿假设全拿。',
+        relatedSkills: ['巫术箭', '毒液飞溅', '虚弱诅咒', '次级变形术'],
+        tags: [className, '起手特性', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-eldritch',
+        title: '邪术与咒能',
+        summary: '邪念线偏诅咒/腐蚀；咒能线偏幻象与引导；名称勿与法师塑能/咒法混淆。',
+        detail: '混乱箭等与术士同名技能语境不同；引用须来自 L2 魔契师列表。',
+        relatedSkills: ['混乱箭', '魔爆术'],
+        tags: [className, '邪念', '咒能', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-arcane',
+        title: '秘术与情报',
+        summary: '秘术线偏隐秘、媒介与交涉；神秘专家专精与探索/幕间 build 协同。',
+        detail: '通晓语言、迷幻手稿等为 utility；勿编造未收录的仪式名。',
+        relatedSkills: ['迷幻手稿', '通晓语言'],
+        tags: [className, '秘术', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-cast',
+        title: '魔契师施法',
+        summary: '多数法术需手势+法咒；魔棒为常见媒介，非法师法术位体系。',
+        detail: '巫术箭为常见起手；恩惠/虚化飞行道具标签见技能描述。',
+        relatedSkills: ['巫术箭'],
+        tags: [className, '施法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与契术节奏',
+        summary: '法术消耗 FP；次级变形术等 high-FP 控场与低阶巫术箭分回合规划。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['虚弱诅咒'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-spec',
+        title: '两项专精取向',
+        summary: '宗主契约偏战斗与魔契线、神秘专家偏神秘学与秘术；与宗主选择一致再扩展。',
+        detail: '创建页两项专精均获得；具体数值以规则书为准。',
+        relatedSkills: ['巫术箭'],
+        tags: [className, '专精', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/轻甲/.test(refClass?.armor || '')) {
+        rules.push('魔契师着轻甲；AC 与敏捷加成见基础规则与创建页。');
+      }
+      if (/魔棒/.test(refClass?.weapons || '')) {
+        rules.push('魔棒为常见法术媒介；部分契术需持魔棒（见技能描述）。');
+      }
+      if (/手弩/.test(refClass?.weapons || '')) {
+        rules.push('手弩消耗弹药；远程规则见基础规则战斗章。');
+      }
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

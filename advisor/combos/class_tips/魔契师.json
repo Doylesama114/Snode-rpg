@@ -1,17 +1,18 @@
 {
   "meta": {
     "layer": "L5",
-    "phase": "5-batch9",
+    "phase": "5-full",
     "targetClass": "魔契师",
-    "tier": "partial",
-    "status": "auto_stub",
-    "count": 7,
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 24,
     "byKind": {
       "style_guide": 5,
-      "chargen": 1,
-      "meta": 1
+      "tactic": 9,
+      "combat_rule": 8,
+      "chargen": 2
     },
-    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
     "generatedAt": "2026-07-07"
   },
   "tips": [
@@ -23,10 +24,10 @@
       ],
       "title": "魔契师·起始特性风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "起始特性",
       "summary": "起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。",
-      "detail": "示例技能：巫术箭、毒液飞溅、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "巫术箭/毒液飞溅等起手法术；伤害类型与宗主相关。低阶代表：巫术箭、毒液飞溅、虚弱诅咒。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "巫术箭",
         "毒液飞溅",
@@ -53,7 +54,7 @@
           "source": "warlock"
         }
       ],
-      "searchText": "魔契师 起始特性 起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。 示例技能：巫术箭、毒液飞溅、虚弱诅咒。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 巫术箭 毒液飞溅 虚弱诅咒 style_guide auto_stub"
+      "searchText": "魔契师·起始特性风格 style_guide auto_generated 起始特性：偏施法攻击、恩惠、虚化飞行道具、法术等能力。 巫术箭/毒液飞溅等起手法术；伤害类型与宗主相关。低阶代表：巫术箭、毒液飞溅、虚弱诅咒。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 魔契师 起始特性 战斗风格 style_guide 巫术箭 毒液飞溅 虚弱诅咒"
     },
     {
       "id": "tip-warlock-style-魔契",
@@ -63,10 +64,10 @@
       ],
       "title": "魔契师·魔契风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "魔契",
       "summary": "魔契：偏召唤单位、恩惠、激活、唯一性等能力。",
-      "detail": "示例技能：恩赐魔刃、异界灵感、召唤魔宠。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "召唤、恩赐魔刃与契法之触；宗主契约专精核心线。低阶代表：恩赐魔刃、异界灵感、召唤魔宠。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "恩赐魔刃",
         "异界灵感",
@@ -93,7 +94,7 @@
           "source": "warlock"
         }
       ],
-      "searchText": "魔契师 魔契 魔契：偏召唤单位、恩惠、激活、唯一性等能力。 示例技能：恩赐魔刃、异界灵感、召唤魔宠。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 恩赐魔刃 异界灵感 召唤魔宠 style_guide auto_stub"
+      "searchText": "魔契师·魔契风格 style_guide auto_generated 魔契：偏召唤单位、恩惠、激活、唯一性等能力。 召唤、恩赐魔刃与契法之触；宗主契约专精核心线。低阶代表：恩赐魔刃、异界灵感、召唤魔宠。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 魔契师 魔契 战斗风格 style_guide 恩赐魔刃 异界灵感 召唤魔宠"
     },
     {
       "id": "tip-warlock-style-邪念",
@@ -103,10 +104,10 @@
       ],
       "title": "魔契师·邪念风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "邪念",
       "summary": "邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。",
-      "detail": "示例技能：混乱箭、腐蚀术、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "混乱箭、腐蚀术等邪术输出；偏诅咒与随机性。低阶代表：混乱箭、腐蚀术、侦测毒性与疾病。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "混乱箭",
         "腐蚀术",
@@ -133,7 +134,7 @@
           "source": "warlock"
         }
       ],
-      "searchText": "魔契师 邪念 邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。 示例技能：混乱箭、腐蚀术、侦测毒性与疾病。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 混乱箭 腐蚀术 侦测毒性与疾病 style_guide auto_stub"
+      "searchText": "魔契师·邪念风格 style_guide auto_generated 邪念：偏施法攻击、随机性、虚化飞行道具、法术等能力。 混乱箭、腐蚀术等邪术输出；偏诅咒与随机性。低阶代表：混乱箭、腐蚀术、侦测毒性与疾病。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 魔契师 邪念 战斗风格 style_guide 混乱箭 腐蚀术 侦测毒性与疾病"
     },
     {
       "id": "tip-warlock-style-咒能",
@@ -143,10 +144,10 @@
       ],
       "title": "魔契师·咒能风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "咒能",
       "summary": "咒能：偏幻象、专注、引导、激活等能力。",
-      "detail": "示例技能：骚灵现象、惑人低语、魔爆术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "骚灵现象、魔爆术等咒能与幻象控场。低阶代表：骚灵现象、惑人低语、魔爆术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "骚灵现象",
         "惑人低语",
@@ -173,7 +174,7 @@
           "source": "warlock"
         }
       ],
-      "searchText": "魔契师 咒能 咒能：偏幻象、专注、引导、激活等能力。 示例技能：骚灵现象、惑人低语、魔爆术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 骚灵现象 惑人低语 魔爆术 style_guide auto_stub"
+      "searchText": "魔契师·咒能风格 style_guide auto_generated 咒能：偏幻象、专注、引导、激活等能力。 骚灵现象、魔爆术等咒能与幻象控场。低阶代表：骚灵现象、惑人低语、魔爆术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 魔契师 咒能 战斗风格 style_guide 骚灵现象 惑人低语 魔爆术"
     },
     {
       "id": "tip-warlock-style-秘术",
@@ -183,10 +184,10 @@
       ],
       "title": "魔契师·秘术风格",
       "kind": "style_guide",
-      "confidence": "auto_stub",
+      "confidence": "auto_generated",
       "style": "秘术",
       "summary": "秘术：偏隐秘、媒介、戏法、交涉等能力。",
-      "detail": "示例技能：迷幻手稿、通晓语言、迷雾术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "detail": "迷幻手稿、通晓语言等隐秘与交涉 utility。低阶代表：迷幻手稿、通晓语言、迷雾术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
       "relatedSkills": [
         "迷幻手稿",
         "通晓语言",
@@ -213,51 +214,642 @@
           "source": "warlock"
         }
       ],
-      "searchText": "魔契师 秘术 秘术：偏隐秘、媒介、戏法、交涉等能力。 示例技能：迷幻手稿、通晓语言、迷雾术。此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。 迷幻手稿 通晓语言 迷雾术 style_guide auto_stub"
+      "searchText": "魔契师·秘术风格 style_guide auto_generated 秘术：偏隐秘、媒介、戏法、交涉等能力。 迷幻手稿、通晓语言等隐秘与交涉 utility。低阶代表：迷幻手稿、通晓语言、迷雾术。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 魔契师 秘术 战斗风格 style_guide 迷幻手稿 通晓语言 迷雾术"
     },
     {
-      "id": "tip-warlock-chargen-1",
+      "id": "tip-warlock-prio-起始特性",
       "scope": "class",
       "applicableClasses": [
         "魔契师"
       ],
-      "title": "魔契师创建要点",
-      "kind": "chargen",
-      "confidence": "auto_stub",
+      "title": "起始特性 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "起始特性",
+      "summary": "起始特性线前三级可优先：巫术箭、毒液飞溅、虚弱诅咒；与起手特性/专精规划一致再扩展。",
+      "detail": "魔契师 起始特性 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。巫术箭/毒液飞溅等起手法术；伤害类型与宗主相关。",
+      "relatedSkills": [
+        "巫术箭",
+        "毒液飞溅",
+        "虚弱诅咒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起始特性",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        },
+        {
+          "name": "毒液飞溅",
+          "source": "warlock"
+        },
+        {
+          "name": "虚弱诅咒",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起始特性 1～3 阶优先 tactic auto_generated 起始特性线前三级可优先：巫术箭、毒液飞溅、虚弱诅咒；与起手特性/专精规划一致再扩展。 魔契师 起始特性 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。巫术箭/毒液飞溅等起手法术；伤害类型与宗主相关。 魔契师 起始特性 优先学 tactic 巫术箭 毒液飞溅 虚弱诅咒"
+    },
+    {
+      "id": "tip-warlock-prio-魔契",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "魔契",
+      "summary": "魔契线前三级可优先：恩赐魔刃、异界灵感、召唤魔宠；与起手特性/专精规划一致再扩展。",
+      "detail": "魔契师 魔契 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。召唤、恩赐魔刃与契法之触；宗主契约专精核心线。",
+      "relatedSkills": [
+        "恩赐魔刃",
+        "异界灵感",
+        "召唤魔宠"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "魔契",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "恩赐魔刃",
+          "source": "warlock"
+        },
+        {
+          "name": "异界灵感",
+          "source": "warlock"
+        },
+        {
+          "name": "召唤魔宠",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契 1～3 阶优先 tactic auto_generated 魔契线前三级可优先：恩赐魔刃、异界灵感、召唤魔宠；与起手特性/专精规划一致再扩展。 魔契师 魔契 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。召唤、恩赐魔刃与契法之触；宗主契约专精核心线。 魔契师 魔契 优先学 tactic 恩赐魔刃 异界灵感 召唤魔宠"
+    },
+    {
+      "id": "tip-warlock-prio-邪念",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "邪念 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "邪念",
+      "summary": "邪念线前三级可优先：混乱箭、腐蚀术、侦测毒性与疾病；与起手特性/专精规划一致再扩展。",
+      "detail": "魔契师 邪念 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。混乱箭、腐蚀术等邪术输出；偏诅咒与随机性。",
+      "relatedSkills": [
+        "混乱箭",
+        "腐蚀术",
+        "侦测毒性与疾病"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "邪念",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "混乱箭",
+          "source": "warlock"
+        },
+        {
+          "name": "腐蚀术",
+          "source": "warlock"
+        },
+        {
+          "name": "侦测毒性与疾病",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "邪念 1～3 阶优先 tactic auto_generated 邪念线前三级可优先：混乱箭、腐蚀术、侦测毒性与疾病；与起手特性/专精规划一致再扩展。 魔契师 邪念 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。混乱箭、腐蚀术等邪术输出；偏诅咒与随机性。 魔契师 邪念 优先学 tactic 混乱箭 腐蚀术 侦测毒性与疾病"
+    },
+    {
+      "id": "tip-warlock-prio-咒能",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "咒能 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "咒能",
+      "summary": "咒能线前三级可优先：骚灵现象、惑人低语、魔爆术；与起手特性/专精规划一致再扩展。",
+      "detail": "魔契师 咒能 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。骚灵现象、魔爆术等咒能与幻象控场。",
+      "relatedSkills": [
+        "骚灵现象",
+        "惑人低语",
+        "魔爆术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "咒能",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "骚灵现象",
+          "source": "warlock"
+        },
+        {
+          "name": "惑人低语",
+          "source": "warlock"
+        },
+        {
+          "name": "魔爆术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "咒能 1～3 阶优先 tactic auto_generated 咒能线前三级可优先：骚灵现象、惑人低语、魔爆术；与起手特性/专精规划一致再扩展。 魔契师 咒能 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。骚灵现象、魔爆术等咒能与幻象控场。 魔契师 咒能 优先学 tactic 骚灵现象 惑人低语 魔爆术"
+    },
+    {
+      "id": "tip-warlock-prio-秘术",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "秘术 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "秘术",
+      "summary": "秘术线前三级可优先：迷幻手稿、通晓语言、迷雾术；与起手特性/专精规划一致再扩展。",
+      "detail": "魔契师 秘术 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。迷幻手稿、通晓语言等隐秘与交涉 utility。",
+      "relatedSkills": [
+        "迷幻手稿",
+        "通晓语言",
+        "迷雾术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "秘术",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "迷幻手稿",
+          "source": "warlock"
+        },
+        {
+          "name": "通晓语言",
+          "source": "warlock"
+        },
+        {
+          "name": "迷雾术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "秘术 1～3 阶优先 tactic auto_generated 秘术线前三级可优先：迷幻手稿、通晓语言、迷雾术；与起手特性/专精规划一致再扩展。 魔契师 秘术 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。迷幻手稿、通晓语言等隐秘与交涉 utility。 魔契师 秘术 优先学 tactic 迷幻手稿 通晓语言 迷雾术"
+    },
+    {
+      "id": "tip-warlock-start-巫术箭",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "起手·巫术箭",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "起始特性",
+      "summary": "巫术箭（起始特性）：你用一只未持有物件的手做出对应的施法动作、并念诵法咒从手中发射一枚由能量构成的魔法箭 你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相",
+      "detail": "魔契师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵法咒从手中发射一枚由能量构成的魔法箭 你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相关 L5: 巫术箭改为造成2D10伤害 L10: 巫术箭改为造成3D10伤害 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "巫术箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起手·巫术箭 tactic auto_generated 巫术箭（起始特性）：你用一只未持有物件的手做出对应的施法动作、并念诵法咒从手中发射一枚由能量构成的魔法箭 你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相 魔契师 4 选 2 起手特性之一。你用一只未持有物件的手做出对应的施法动作、并念诵法咒从手中发射一枚由能量构成的魔法箭 你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相关 L5: 巫术箭改为造成2D10伤害 L10: 巫术箭改为造成3D10伤害 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。 魔契师 起手特性 车卡 tactic 巫术箭"
+    },
+    {
+      "id": "tip-warlock-start-毒液飞溅",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "起手·毒液飞溅",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "起始特性",
+      "summary": "毒液飞溅（起始特性）：你做出对应的施法动作、并念诵法咒朝敌人泼洒一团绿色毒液 你对一名角色及其相邻位置的另一名角色各造成1D4点剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁",
+      "detail": "魔契师 4 选 2 起手特性之一。你做出对应的施法动作、并念诵法咒朝敌人泼洒一团绿色毒液 你对一名角色及其相邻位置的另一名角色各造成1D4点剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁免失败将进入中毒状态 L3: 毒液飞溅改为各造成2D4点剧毒伤害 L6: 毒液飞溅改为各造成3D4点剧毒伤害 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "毒液飞溅"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒液飞溅",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起手·毒液飞溅 tactic auto_generated 毒液飞溅（起始特性）：你做出对应的施法动作、并念诵法咒朝敌人泼洒一团绿色毒液 你对一名角色及其相邻位置的另一名角色各造成1D4点剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁 魔契师 4 选 2 起手特性之一。你做出对应的施法动作、并念诵法咒朝敌人泼洒一团绿色毒液 你对一名角色及其相邻位置的另一名角色各造成1D4点剧毒伤害，目标需要进行一次难度为12的体质豁免，对方豁免失败将进入中毒状态 L3: 毒液飞溅改为各造成2D4点剧毒伤害 L6: 毒液飞溅改为各造成3D4点剧毒伤害 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。 魔契师 起手特性 车卡 tactic 毒液飞溅"
+    },
+    {
+      "id": "tip-warlock-start-虚弱诅咒",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "起手·虚弱诅咒",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "起始特性",
+      "summary": "虚弱诅咒（起始特性）：你朝对方挥手、并念诵法咒令敌人感到虚弱感充斥体内",
+      "detail": "魔契师 4 选 2 起手特性之一。你朝对方挥手、并念诵法咒令敌人感到虚弱感充斥体内 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "虚弱诅咒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "虚弱诅咒",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起手·虚弱诅咒 tactic auto_generated 虚弱诅咒（起始特性）：你朝对方挥手、并念诵法咒令敌人感到虚弱感充斥体内 魔契师 4 选 2 起手特性之一。你朝对方挥手、并念诵法咒令敌人感到虚弱感充斥体内 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。 魔契师 起手特性 车卡 tactic 虚弱诅咒"
+    },
+    {
+      "id": "tip-warlock-start-次级变形术",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "起手·次级变形术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "起始特性",
+      "summary": "次级变形术（起始特性）：你用双手做出对应的施法动作、并念诵法咒来尝试扭曲眼前的事物 如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再",
+      "detail": "魔契师 4 选 2 起手特性之一。你用双手做出对应的施法动作、并念诵法咒来尝试扭曲眼前的事物 如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再次进行难度为15的体质或智力豁免（由对方决定），对方豁免成功将会解除变形效果 如果目标豁免成功，那么会进入困惑状态 次级变形术的施展时间变为一个主要动作，同时关键词变更为体质或智力豁免（10），并且次级变形术对每名角色在每日仅生效一次 次级变形术的疲劳值消耗变为4，但在战斗环节… 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "次级变形术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "次级变形术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起手·次级变形术 tactic auto_generated 次级变形术（起始特性）：你用双手做出对应的施法动作、并念诵法咒来尝试扭曲眼前的事物 如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再 魔契师 4 选 2 起手特性之一。你用双手做出对应的施法动作、并念诵法咒来尝试扭曲眼前的事物 如果你在战斗环节中施展这个效果，那么目标变形的持续时间变为至多3轮，并且在每个自身回合结束阶段还会再次进行难度为15的体质或智力豁免（由对方决定），对方豁免成功将会解除变形效果 如果目标豁免成功，那么会进入困惑状态 次级变形术的施展时间变为一个主要动作，同时关键词变更为体质或智力豁免（10），并且次级变形术对每名角色在每日仅生效一次 次级变形术的疲劳值消耗变为4，但在战斗环节… 与后续 起始特性 风格技能可形成初期连招，但非强制绑定。 魔契师 起手特性 车卡 tactic 次级变形术"
+    },
+    {
+      "id": "tip-warlock-cr-pact",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "宗主与魔契",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
-      "detail": "顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。",
+      "summary": "创建须选宗主；巫术箭伤害类型与宗主相关，魔契线深化召唤与契法之触。",
+      "detail": "勿套用法师八学派；神术/divine 类技能须标注来源上下文。",
+      "relatedSkills": [
+        "巫术箭",
+        "恩赐魔刃"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "宗主",
+        "魔契",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        },
+        {
+          "name": "恩赐魔刃",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "宗主与魔契 combat_rule auto_generated 创建须选宗主；巫术箭伤害类型与宗主相关，魔契线深化召唤与契法之触。 勿套用法师八学派；神术/divine 类技能须标注来源上下文。 魔契师 宗主 魔契 combat_rule 巫术箭 恩赐魔刃"
+    },
+    {
+      "id": "tip-warlock-cr-styles",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "五风格树",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "起始特性/魔契/邪念/咒能/秘术五线；「起始特性」亦为战斗风格名，勿与其他职业起手池混淆。",
+      "detail": "部分高阶魔契技能限制「不能为第三或第四种战斗风格」；见 prerequisite。",
+      "relatedSkills": [
+        "巫术箭",
+        "召唤魔宠"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "战斗风格",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        },
+        {
+          "name": "召唤魔宠",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "五风格树 combat_rule auto_generated 起始特性/魔契/邪念/咒能/秘术五线；「起始特性」亦为战斗风格名，勿与其他职业起手池混淆。 部分高阶魔契技能限制「不能为第三或第四种战斗风格」；见 prerequisite。 魔契师 战斗风格 combat_rule 巫术箭 召唤魔宠"
+    },
+    {
+      "id": "tip-warlock-cr-start",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "起手四选二",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "4 选 2：巫术箭（输出）、毒液飞溅（毒伤）、虚弱诅咒（控场）、次级变形术（变形控场）。",
+      "detail": "与「起始特性」风格树技能同名；按职能选两项，勿假设全拿。",
+      "relatedSkills": [
+        "巫术箭",
+        "毒液飞溅",
+        "虚弱诅咒",
+        "次级变形术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "起手特性",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        },
+        {
+          "name": "毒液飞溅",
+          "source": "warlock"
+        },
+        {
+          "name": "虚弱诅咒",
+          "source": "warlock"
+        },
+        {
+          "name": "次级变形术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "起手四选二 combat_rule auto_generated 4 选 2：巫术箭（输出）、毒液飞溅（毒伤）、虚弱诅咒（控场）、次级变形术（变形控场）。 与「起始特性」风格树技能同名；按职能选两项，勿假设全拿。 魔契师 起手特性 combat_rule 巫术箭 毒液飞溅 虚弱诅咒 次级变形术"
+    },
+    {
+      "id": "tip-warlock-cr-eldritch",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "邪术与咒能",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "邪念线偏诅咒/腐蚀；咒能线偏幻象与引导；名称勿与法师塑能/咒法混淆。",
+      "detail": "混乱箭等与术士同名技能语境不同；引用须来自 L2 魔契师列表。",
+      "relatedSkills": [
+        "混乱箭",
+        "魔爆术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "邪念",
+        "咒能",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "混乱箭",
+          "source": "warlock"
+        },
+        {
+          "name": "魔爆术",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "邪术与咒能 combat_rule auto_generated 邪念线偏诅咒/腐蚀；咒能线偏幻象与引导；名称勿与法师塑能/咒法混淆。 混乱箭等与术士同名技能语境不同；引用须来自 L2 魔契师列表。 魔契师 邪念 咒能 combat_rule 混乱箭 魔爆术"
+    },
+    {
+      "id": "tip-warlock-cr-arcane",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "秘术与情报",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "秘术线偏隐秘、媒介与交涉；神秘专家专精与探索/幕间 build 协同。",
+      "detail": "通晓语言、迷幻手稿等为 utility；勿编造未收录的仪式名。",
+      "relatedSkills": [
+        "迷幻手稿",
+        "通晓语言"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "秘术",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "迷幻手稿",
+          "source": "warlock"
+        },
+        {
+          "name": "通晓语言",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "秘术与情报 combat_rule auto_generated 秘术线偏隐秘、媒介与交涉；神秘专家专精与探索/幕间 build 协同。 通晓语言、迷幻手稿等为 utility；勿编造未收录的仪式名。 魔契师 秘术 combat_rule 迷幻手稿 通晓语言"
+    },
+    {
+      "id": "tip-warlock-cr-cast",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师施法",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "多数法术需手势+法咒；魔棒为常见媒介，非法师法术位体系。",
+      "detail": "巫术箭为常见起手；恩惠/虚化飞行道具标签见技能描述。",
+      "relatedSkills": [
+        "巫术箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "施法",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "魔契师施法 combat_rule auto_generated 多数法术需手势+法咒；魔棒为常见媒介，非法师法术位体系。 巫术箭为常见起手；恩惠/虚化飞行道具标签见技能描述。 魔契师 施法 combat_rule 巫术箭"
+    },
+    {
+      "id": "tip-warlock-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "FP 与契术节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "法术消耗 FP；次级变形术等 high-FP 控场与低阶巫术箭分回合规划。",
+      "detail": "短休/长休回复见基础规则；标识由 DM 结算。",
+      "relatedSkills": [
+        "虚弱诅咒"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "虚弱诅咒",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "FP 与契术节奏 combat_rule auto_generated 法术消耗 FP；次级变形术等 high-FP 控场与低阶巫术箭分回合规划。 短休/长休回复见基础规则；标识由 DM 结算。 魔契师 FP combat_rule 虚弱诅咒"
+    },
+    {
+      "id": "tip-warlock-cr-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "两项专精取向",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "宗主契约偏战斗与魔契线、神秘专家偏神秘学与秘术；与宗主选择一致再扩展。",
+      "detail": "创建页两项专精均获得；具体数值以规则书为准。",
+      "relatedSkills": [
+        "巫术箭"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "魔契师",
+        "专精",
+        "combat_rule"
+      ],
+      "skillRefs": [
+        {
+          "name": "巫术箭",
+          "source": "warlock"
+        }
+      ],
+      "searchText": "两项专精取向 combat_rule auto_generated 宗主契约偏战斗与魔契线、神秘专家偏神秘学与秘术；与宗主选择一致再扩展。 创建页两项专精均获得；具体数值以规则书为准。 魔契师 专精 combat_rule 巫术箭"
+    },
+    {
+      "id": "tip-warlock-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "魔契师"
+      ],
+      "title": "魔契师关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "魅力：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "魅力≥15 为常见目标；感知豁免配合察觉/神秘学 build。表演/欺瞒与秘术/咒能 social 协同。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "魔契师",
         "车卡",
-        "创建"
+        "属性",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "魔契师 创建 车卡 顾问档位 partial：可检索 魔契师 技能名与战斗风格；勿假设已有标识或完整进阶路线。 chargen auto_stub"
+      "searchText": "魔契师关键属性 chargen auto_generated 魅力：创建购点通常至少一项≥15，与主武器/战斗风格一致。 魅力≥15 为常见目标；感知豁免配合察觉/神秘学 build。表演/欺瞒与秘术/咒能 social 协同。 魔契师 车卡 属性 chargen"
     },
     {
-      "id": "tip-warlock-partial-note",
+      "id": "tip-warlock-chargen-spec",
       "scope": "class",
       "applicableClasses": [
         "魔契师"
       ],
-      "title": "魔契师顾问档位说明",
-      "kind": "meta",
-      "confidence": "auto_stub",
+      "title": "魔契师专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
       "style": null,
-      "summary": "魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
-      "detail": "魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。",
+      "summary": "创建页专精：见创建页；与武器与风格规划一致即可。",
+      "detail": "宗主契约：宗主类型决定巫术箭伤害等；创建时选宗主后再规划魔契/邪念线。 神秘专家：神秘学熟练与秘术/情报 build 协同；偏场外与仪式向。",
       "relatedSkills": [],
       "relatedTipIds": [],
       "tags": [
         "魔契师",
-        "partial",
-        "顾问"
+        "车卡",
+        "专精",
+        "chargen"
       ],
       "skillRefs": [],
-      "searchText": "魔契师 partial 顾问 魔契师顾问为部分支持：技能索引来自职业页数据，标识系统与进阶目录尚未完整收录；深度 build 与标识消耗请以规则书/DM 为准。"
+      "searchText": "魔契师专精选择 chargen auto_generated 创建页专精：见创建页；与武器与风格规划一致即可。 宗主契约：宗主类型决定巫术箭伤害等；创建时选宗主后再规划魔契/邪念线。 神秘专家：神秘学熟练与秘术/情报 build 协同；偏场外与仪式向。 魔契师 车卡 专精 chargen"
     }
   ]
 }
