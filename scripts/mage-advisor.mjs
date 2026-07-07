@@ -10,6 +10,7 @@ import { retrieve, formatContext } from './advisor-retrieve.mjs';
 import { buildChatMessages, buildSystemPrompt } from './advisor-prompt.mjs';
 import { getAdvisorConfig, ROOT } from './advisor-env.mjs';
 import { loadSnapshotFile } from './advisor-snapshot.mjs';
+import { fetch, abortAfter } from './advisor-fetch.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,7 +56,7 @@ async function callDeepSeek(messages, { thinking, stream, config }) {
       Authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(120_000),
+    signal: abortAfter(120_000),
   });
 
   if (!res.ok) {

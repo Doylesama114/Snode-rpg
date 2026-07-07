@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7004',
+    date: '2026-07-07',
+    changes: [
+      '修复Build顾问fetch is not defined（Electron22 Node16兼容）'
+    ]
+  },
+
+
+  {
     version: '1.0.7003',
     date: '2026-07-07',
     changes: [
