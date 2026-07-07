@@ -97,7 +97,7 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
   const mode = options.mode || 'advisor';
   const intent = options.intent || 'general';
   const wizardNote = mode === 'wizard'
-    ? '\n\n（当前为车卡向导模式：请优先响应当前步骤。）'
+    ? '\n\n（当前为角色创建页陪跑模式：以页面当前步骤与已选内容为准；只给推荐与解释，不要替用户做决定或假设已选未选项。）'
     : '';
 
   return `【用户问题】

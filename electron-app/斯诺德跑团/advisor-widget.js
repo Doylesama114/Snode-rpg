@@ -4,8 +4,22 @@
 
   var POS_KEY = '_snowd_advisor_pos';
   var USE_CHAR_KEY = '_snowd_advisor_use_char';
-  var WIZARD_KEY = '_snowd_advisor_wizard_state';
   var DRAG_THRESHOLD = 8;
+
+  function isChargenPage() {
+    if (window.snowdChargen && typeof window.snowdChargen.isChargenPage === 'function') {
+      return window.snowdChargen.isChargenPage();
+    }
+    var p = (location.pathname || '').replace(/\\/g, '/');
+    return p.indexOf('角色创建页') >= 0;
+  }
+
+  function getChargenState() {
+    if (window.snowdChargen && typeof window.snowdChargen.getState === 'function') {
+      return window.snowdChargen.getState();
+    }
+    return null;
+  }
 
   function shouldShowAdvisor() {
     var p = (location.pathname || '').replace(/\\/g, '/');
@@ -69,6 +83,11 @@
       '#_snowd_advisor_ball._busy{opacity:0.85;pointer-events:none}',
       '#_snowd_advisor_ball._busy::after{content:"";position:absolute;inset:3px;border:2px solid transparent;',
       'border-top-color:#a46d1f;border-radius:50%;animation:_snowd_adv_spin 0.8s linear infinite}',
+      '#_snowd_advisor_tip{position:fixed;z-index:10001;max-width:min(280px,calc(100vw - 48px));padding:10px 12px;',
+      'background:#fffdf8;border:1px solid #a46d1f;border-radius:12px;font-size:13px;line-height:1.45;cursor:pointer;',
+      'box-shadow:0 4px 16px rgba(164,109,31,0.2);color:#1f2522;white-space:pre-wrap;word-break:break-word}',
+      '#_snowd_advisor_tip._hidden{display:none}',
+      '#_snowd_advisor_tip::after{content:"点击查看详情";display:block;font-size:11px;color:#69706b;margin-top:6px}',
       '@keyframes _snowd_adv_spin{to{transform:rotate(360deg)}}',
       '#_snowd_advisor_panel{position:fixed;top:0;right:0;height:100%;width:400px;max-width:92vw;z-index:10002;',
       'background:#fffdf8;border-left:1px solid #d8d2c4;box-shadow:-8px 0 32px rgba(31,37,34,0.12);',
@@ -120,29 +139,10 @@
       'html.dark ._snowd_adv_card{background:#2a2d31;border-color:#3a3d40}',
       'html.dark #_snowd_advisor_panel{background:#24272b;border-color:#3a3d40;color:#e8e6e3}',
       'html.dark #_snowd_advisor_ball{background:#24272b;border-color:#d4a54a;color:#d4a54a}',
+      'html.dark #_snowd_advisor_tip{background:#2a2d31;border-color:#d4a54a;color:#e8e6e3}',
       'html.dark ._snowd_adv_msg._user{background:#1a1d20;border-color:#3a3d40}',
       'html.dark ._snowd_adv_msg._ai{background:#2a2d31;border-color:#3a3d40}',
       'html.dark ._snowd_adv_foot textarea{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}',
-      '._snowd_wiz_steps{display:flex;flex-wrap:wrap;gap:4px;padding:10px 16px;border-bottom:1px solid #eee;flex-shrink:0}',
-      '._snowd_wiz_step{font-size:11px;padding:4px 8px;border-radius:4px;border:1px solid #d8d2c4;background:#fff;color:#69706b;cursor:pointer}',
-      '._snowd_wiz_step._active{background:#a46d1f;color:#fff;border-color:#a46d1f}',
-      '._snowd_wiz_step._done{background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9}',
-      '._snowd_wiz_body{flex:1;overflow-y:auto;padding:14px 16px;font-size:14px;line-height:1.5}',
-      '._snowd_wiz_field{margin-bottom:14px}',
-      '._snowd_wiz_field label{display:block;font-weight:bold;margin-bottom:6px;font-size:13px}',
-      '._snowd_wiz_field select,._snowd_wiz_field input[type=number]{width:100%;padding:8px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px;box-sizing:border-box}',
-      '._snowd_wiz_hint{font-size:12px;color:#69706b;margin-top:4px}',
-      '._snowd_wiz_err{font-size:12px;color:#c62828;margin-top:6px}',
-      '._snowd_wiz_warn{font-size:12px;color:#8a6d00;margin-top:6px}',
-      '._snowd_wiz_multi{display:flex;flex-direction:column;gap:6px}',
-      '._snowd_wiz_multi label{font-weight:normal;display:flex;align-items:flex-start;gap:8px;cursor:pointer}',
-      '._snowd_wiz_nav{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #d8d2c4;flex-shrink:0}',
-      '._snowd_wiz_nav button{flex:1;padding:8px;border-radius:8px;border:1px solid #d8d2c4;background:#fff;cursor:pointer;font-size:14px}',
-      '._snowd_wiz_nav button._primary{background:#a46d1f;color:#fff;border-color:#a46d1f}',
-      '._snowd_wiz_nav button#_snowd_wiz_export{background:#2e7d32;border-color:#2e7d32;color:#fff}',
-      '._snowd_wiz_review{font-size:13px;white-space:pre-wrap;background:#f6f4ef;padding:10px;border-radius:8px}',
-      '._snowd_wiz_attrs{display:grid;grid-template-columns:1fr 1fr;gap:8px}',
-      '._snowd_wiz_grant{border:1px dashed #d8d2c4;padding:8px;border-radius:6px;margin-top:8px}',
     ].join('');
     document.head.appendChild(s);
   }
@@ -158,6 +158,12 @@
     ball.setAttribute('aria-label', 'Build 顾问');
     ball.textContent = '✦';
 
+    var tip = document.createElement('div');
+    tip.id = '_snowd_advisor_tip';
+    tip.className = '_hidden';
+    tip.setAttribute('role', 'button');
+    tip.title = '点击查看详细建议';
+
     var panel = document.createElement('div');
     panel.id = '_snowd_advisor_panel';
     panel.innerHTML = [
@@ -165,7 +171,6 @@
       '<div class="_snowd_adv_tabs">',
       '<button type="button" id="_tab_chat" class="_active">问答</button>',
       '<button type="button" id="_tab_adv">进阶</button>',
-      '<button type="button" id="_tab_wiz">车卡</button>',
       '</div>',
       '<div class="_snowd_adv_hdr_btns">',
       '<button type="button" id="_snowd_adv_min" title="关闭">×</button>',
@@ -187,20 +192,10 @@
       '<div class="_snowd_adv_list" id="_snowd_adv_list"></div>',
       '<div class="_snowd_adv_hint" style="padding:8px 16px">A 档已收录具体技能；其余为门槛与方向参考。剧情条件以 DM 为准。</div>',
       '</div>',
-      '<div class="_snowd_view _hidden" id="_snowd_view_wiz">',
-      '<div class="_snowd_wiz_steps" id="_snowd_wiz_steps"></div>',
-      '<div class="_snowd_adv_ctx" id="_snowd_wiz_meta"></div>',
-      '<div class="_snowd_wiz_body" id="_snowd_wiz_body"></div>',
-      '<div class="_snowd_wiz_nav">',
-      '<button type="button" id="_snowd_wiz_import">导入角色</button>',
-      '<button type="button" id="_snowd_wiz_prev">上一步</button>',
-      '<button type="button" id="_snowd_wiz_ask" class="_primary">问 AI</button>',
-      '<button type="button" id="_snowd_wiz_next" class="_primary">下一步</button>',
-      '<button type="button" id="_snowd_wiz_export" class="_primary">导出</button>',
-      '</div></div>',
     ].join('');
 
     root.appendChild(ball);
+    root.appendChild(tip);
     root.appendChild(panel);
     document.body.appendChild(root);
 
@@ -214,9 +209,11 @@
       catalogLoading: false,
       advFilter: '',
       advOpen: null,
-      wizardState: null,
-      wizardOptions: null,
-      wizardLoading: false,
+      chargenFp: '',
+      chargenStep: -1,
+      chargenQuery: '',
+      chargenFullAnswer: null,
+      chargenBusy: false,
     };
 
     function applyBallPos() {
@@ -246,6 +243,21 @@
       var ctx = document.getElementById('_snowd_adv_ctx');
       var warn = document.getElementById('_snowd_adv_warn');
       if (!ctx) return;
+
+      if (isChargenPage()) {
+        var cs = getChargenState();
+        var lbl = cs ? ('步骤 ' + cs.step + '：' + cs.stepLabel) : '角色创建页';
+        ctx.innerHTML = '模式：创建页陪跑 · ' + lbl;
+        if (warn) {
+          if (cs && cs.char.className && cs.char.className !== '法师') {
+            warn.style.display = 'block';
+            warn.textContent = '当前仅支持法师 build 顾问陪跑，其他职业后续开放。';
+          } else {
+            warn.style.display = 'none';
+          }
+        }
+        return;
+      }
 
       var summary = getCharacterSummary();
       var canChar = !!(window.snowdPanel && window.snowdPanel.hasCharacter());
@@ -311,445 +323,106 @@
       state.tab = tab;
       document.getElementById('_tab_chat').classList.toggle('_active', tab === 'chat');
       document.getElementById('_tab_adv').classList.toggle('_active', tab === 'adv');
-      document.getElementById('_tab_wiz').classList.toggle('_active', tab === 'wizard');
       document.getElementById('_snowd_view_chat').classList.toggle('_hidden', tab !== 'chat');
       document.getElementById('_snowd_view_adv').classList.toggle('_hidden', tab !== 'adv');
-      document.getElementById('_snowd_view_wiz').classList.toggle('_hidden', tab !== 'wizard');
       if (tab === 'adv') loadCatalog();
-      if (tab === 'wizard') loadWizard(true);
     }
 
-    function loadWizardStateLocal() {
-      try {
-        return JSON.parse(localStorage.getItem(WIZARD_KEY) || 'null');
-      } catch (e) {
-        return null;
-      }
+    function truncateTip(text, max) {
+      max = max || 100;
+      var t = (text || '').replace(/\s+/g, ' ').trim();
+      if (t.length <= max) return t;
+      return t.slice(0, max) + '…';
     }
 
-    function saveWizardStateLocal(st) {
-      try {
-        localStorage.setItem(WIZARD_KEY, JSON.stringify(st));
-      } catch (e) { /* ignore */ }
+    function showBubble(text) {
+      var tipEl = document.getElementById('_snowd_advisor_tip');
+      if (!tipEl) return;
+      tipEl.textContent = text || '';
+      tipEl.classList.remove('_hidden');
+      positionBubble();
     }
 
-    async function wizardCall(method, extra) {
-      if (!window.electronAPI || !window.electronAPI.advisorWizard) {
-        return { ok: false, error: '车卡向导需在 Electron 客户端中使用' };
-      }
-      var payload = { method: method };
-      if (extra) {
-        for (var k in extra) {
-          if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
-        }
-      }
-      return window.electronAPI.advisorWizard(payload);
+    function hideBubble() {
+      var tipEl = document.getElementById('_snowd_advisor_tip');
+      if (!tipEl) return;
+      tipEl.classList.add('_hidden');
     }
 
-    async function loadWizard(silent) {
-      if (state.wizardLoading) return;
-      state.wizardLoading = true;
-      try {
-        var saved = loadWizardStateLocal();
-        var res = await wizardCall('get', { state: saved || state.wizardState || undefined });
-        if (!res || !res.ok) {
-          if (!silent) {
-            var body = document.getElementById('_snowd_wiz_body');
-            if (body) body.textContent = (res && res.error) || '向导加载失败';
-          }
-          return;
-        }
-        state.wizardState = res.state;
-        state.wizardOptions = res.options;
-        saveWizardStateLocal(res.state);
-        renderWizard();
-      } catch (e) {
-        if (!silent) {
-          var b = document.getElementById('_snowd_wiz_body');
-          if (b) b.textContent = e.message || String(e);
-        }
-      } finally {
-        state.wizardLoading = false;
-      }
+    function positionBubble() {
+      var tipEl = document.getElementById('_snowd_advisor_tip');
+      if (!tipEl || tipEl.classList.contains('_hidden')) return;
+      var rect = ball.getBoundingClientRect();
+      var tipW = tipEl.offsetWidth || 260;
+      var left = rect.left - tipW - 8;
+      if (left < 8) left = rect.right + 8;
+      if (left + tipW > window.innerWidth - 8) left = Math.max(8, window.innerWidth - tipW - 8);
+      var top = rect.top - (tipEl.offsetHeight || 60) - 8;
+      if (top < 8) top = rect.bottom + 8;
+      tipEl.style.left = left + 'px';
+      tipEl.style.top = top + 'px';
+      tipEl.style.right = 'auto';
+      tipEl.style.bottom = 'auto';
     }
 
-    async function applyWizardPatch(patch) {
-      var res = await wizardCall('apply', { state: state.wizardState, patch: patch });
-      if (!res || !res.ok) return res;
-      state.wizardState = res.state;
-      state.wizardOptions = res.options;
-      saveWizardStateLocal(res.state);
-      renderWizard();
-      return res;
+    function updateBallBusy() {
+      ball.classList.toggle('_busy', state.busy || state.chargenBusy);
     }
 
-    function renderWizardSteps() {
-      var box = document.getElementById('_snowd_wiz_steps');
-      if (!box || !state.wizardOptions) return;
-      box.innerHTML = '';
-      var cur = state.wizardOptions.step;
-      var total = state.wizardOptions.totalSteps || 8;
-      for (var i = 0; i < total; i += 1) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = '_snowd_wiz_step' + (i === cur ? ' _active' : '') + (i < cur ? ' _done' : '');
-        btn.textContent = String(i);
-        btn.title = '步骤 ' + i;
-        (function(stepId) {
-          btn.addEventListener('click', function() { wizardGoto(stepId); });
-        })(i);
-        box.appendChild(btn);
-      }
-    }
-
-    function renderWizardField(field) {
-      var wrap = document.createElement('div');
-      wrap.className = '_snowd_wiz_field';
-
-      if (field.type === 'info') {
-        wrap.textContent = field.text;
-        return wrap;
-      }
-
-      if (field.type === 'hidden') return null;
-
-      if (field.type === 'select') {
-        var lbl = document.createElement('label');
-        lbl.textContent = field.label;
-        wrap.appendChild(lbl);
-        var sel = document.createElement('select');
-        sel.innerHTML = '<option value="">— 请选择 —</option>' + (field.options || []).map(function(o) {
-          return '<option value="' + o.value + '">' + o.label + (o.hint ? (' · ' + o.hint.slice(0, 30)) : '') + '</option>';
-        }).join('');
-        sel.value = field.value || '';
-        sel.addEventListener('change', function() {
-          var patch = { selections: {} };
-          patch.selections[field.key] = sel.value || null;
-          applyWizardPatch(patch);
-        });
-        wrap.appendChild(sel);
-        return wrap;
-      }
-
-      if (field.type === 'multi') {
-        var ml = document.createElement('label');
-        ml.textContent = field.label;
-        wrap.appendChild(ml);
-        var box = document.createElement('div');
-        box.className = '_snowd_wiz_multi';
-        var picked = field.value || [];
-        (field.options || []).forEach(function(o) {
-          var row = document.createElement('label');
-          var cb = document.createElement('input');
-          cb.type = 'checkbox';
-          cb.value = o.value;
-          cb.checked = picked.indexOf(o.value) >= 0;
-          cb.addEventListener('change', function() {
-            var cur = (state.wizardState && state.wizardState.selections && state.wizardState.selections[field.key]) || [];
-            var next = cur.slice();
-            if (cb.checked) {
-              if (next.indexOf(o.value) < 0) next.push(o.value);
-            } else {
-              next = next.filter(function(x) { return x !== o.value; });
-            }
-            if (next.length > (field.max || 99)) {
-              cb.checked = false;
-              return;
-            }
-            var patch = { selections: {} };
-            patch.selections[field.key] = next;
-            applyWizardPatch(patch);
-          });
-          row.appendChild(cb);
-          row.appendChild(document.createTextNode(o.label + (o.hint ? (' — ' + o.hint) : '')));
-          box.appendChild(row);
-        });
-        wrap.appendChild(box);
-        return wrap;
-      }
-
-      if (field.type === 'point_buy') {
-        var pl = document.createElement('label');
-        pl.textContent = field.label;
-        wrap.appendChild(pl);
-        var grid = document.createElement('div');
-        grid.className = '_snowd_wiz_attrs';
-        var vals = field.value || {};
-        var costMap = {};
-        (field.table || []).forEach(function(r) { costMap[r.attrValue] = r.pointCost; });
-        var spent = 0;
-        (field.attrs || []).forEach(function(a) {
-          var row = document.createElement('div');
-          var lab = document.createElement('label');
-          lab.textContent = a;
-          var inp = document.createElement('input');
-          inp.type = 'number';
-          inp.min = 8;
-          inp.max = 15;
-          inp.value = vals[a] != null ? vals[a] : 8;
-          spent += costMap[inp.value] || 0;
-          inp.addEventListener('change', function() {
-            var next = Object.assign({}, vals);
-            next[a] = parseInt(inp.value, 10) || 8;
-            applyWizardPatch({ selections: { attrs: next } });
-          });
-          row.appendChild(lab);
-          row.appendChild(inp);
-          grid.appendChild(row);
-        });
-        wrap.appendChild(grid);
-        var hint = document.createElement('div');
-        hint.className = '_snowd_wiz_hint';
-        hint.textContent = '已花费 ' + spent + ' / ' + (field.totalPoints || 32) + ' 点';
-        wrap.appendChild(hint);
-        return wrap;
-      }
-
-      if (field.type === 'skill_pick') {
-        var sl = document.createElement('label');
-        sl.textContent = field.label;
-        wrap.appendChild(sl);
-        var current = (field.value || []).slice();
-        function renderSkillRows() {
-          subBox.innerHTML = '';
-          for (var si = 0; si < (field.max || 4); si += 1) {
-            (function(idx) {
-              var row = document.createElement('div');
-              row.style.marginBottom = '8px';
-              var selMain = document.createElement('select');
-              selMain.innerHTML = '<option value="">—</option>' + (field.pool || []).map(function(p) {
-                return '<option value="' + p.value + '">' + p.label + '</option>';
-              }).join('');
-              var val = current[idx] || '';
-              var parent = val.indexOf('-') >= 0 ? val.split('-')[0] : val;
-              selMain.value = parent;
-              var subSel = document.createElement('select');
-              subSel.style.marginTop = '4px';
-              subSel.style.display = 'none';
-              function fillSub() {
-                subSel.innerHTML = '';
-                var poolItem = (field.pool || []).find(function(p) { return p.value === selMain.value; });
-                if (poolItem && poolItem.subOptions) {
-                  subSel.style.display = 'block';
-                  subSel.innerHTML = '<option value="">— 子项 —</option>' + poolItem.subOptions.map(function(o) {
-                    return '<option value="' + o.value + '">' + o.label + '</option>';
-                  }).join('');
-                  if (val.indexOf('-') >= 0 && val.split('-')[0] === selMain.value) subSel.value = val;
-                } else {
-                  subSel.style.display = 'none';
-                }
-              }
-              fillSub();
-              function commit() {
-                var v = selMain.value;
-                if (!v) {
-                  current[idx] = '';
-                } else {
-                  var pi = (field.pool || []).find(function(p) { return p.value === v; });
-                  if (pi && pi.subOptions && subSel.value) v = subSel.value;
-                  current[idx] = v;
-                }
-                var cleaned = current.filter(Boolean);
-                applyWizardPatch({ selections: { skills: cleaned } });
-              }
-              selMain.addEventListener('change', function() { fillSub(); commit(); });
-              subSel.addEventListener('change', commit);
-              row.appendChild(selMain);
-              row.appendChild(subSel);
-              subBox.appendChild(row);
-            })(si);
-          }
-        }
-        var subBox = document.createElement('div');
-        renderSkillRows();
-        wrap.appendChild(subBox);
-        return wrap;
-      }
-
-      if (field.type === 'grant_info') {
-        wrap.className = '_snowd_wiz_grant';
-        wrap.textContent = (field.label || '') + (field.fixed && field.fixed.length ? ('：' + field.fixed.join('、')) : '');
-        return wrap;
-      }
-
-      if (field.type === 'grant_choice') {
-        wrap.className = '_snowd_wiz_grant';
-        var gl = document.createElement('label');
-        gl.textContent = field.label + '（选 ' + (field.count || 1) + '）';
-        wrap.appendChild(gl);
-        var picked = field.value || [];
-        var gbox = document.createElement('div');
-        gbox.className = '_snowd_wiz_multi';
-        (field.options || []).forEach(function(o) {
-          var row = document.createElement('label');
-          var cb = document.createElement('input');
-          cb.type = 'checkbox';
-          cb.value = o.value;
-          cb.checked = picked.indexOf(o.value) >= 0;
-          cb.addEventListener('change', function() {
-            var choices = Object.assign({}, (state.wizardState && state.wizardState.selections && state.wizardState.selections.backgroundSkillChoices) || {});
-            var cur = choices[field.grantKey] || [];
-            var next = cur.slice();
-            if (cb.checked) {
-              if (next.indexOf(o.value) < 0) next.push(o.value);
-            } else {
-              next = next.filter(function(x) { return x !== o.value; });
-            }
-            if (next.length > (field.count || 1)) {
-              cb.checked = false;
-              return;
-            }
-            choices[field.grantKey] = next;
-            applyWizardPatch({ selections: { backgroundSkillChoices: choices } });
-          });
-          row.appendChild(cb);
-          row.appendChild(document.createTextNode(o.label));
-          gbox.appendChild(row);
-        });
-        wrap.appendChild(gbox);
-        return wrap;
-      }
-
-      if (field.type === 'review') {
-        var pre = document.createElement('div');
-        pre.className = '_snowd_wiz_review';
-        var s = field.selections || {};
-        pre.textContent = [
-          '职业：' + (s.className || '法师'),
-          '专精：' + (s.specialization || '—'),
-          '初始特性：' + ((s.startingFeatures || []).join('、') || '—'),
-          '种族：' + (s.race || '—'),
-          '属性：' + (s.attrs ? Object.keys(s.attrs).map(function(k) { return k + s.attrs[k]; }).join(' ') : '—'),
-          '熟练：' + ((s.skills || []).join('、') || '—'),
-          '背景：' + (s.background || '—'),
-          '套装：' + (s.equipmentKit || '—'),
-        ].join('\n');
-        wrap.appendChild(pre);
-        return wrap;
-      }
-
-      return wrap;
-    }
-
-    function renderWizard() {
-      renderWizardSteps();
-      var meta = document.getElementById('_snowd_wiz_meta');
-      var body = document.getElementById('_snowd_wiz_body');
-      if (!meta || !body || !state.wizardOptions) return;
-      meta.textContent = '步骤 ' + state.wizardOptions.step + '：' + (state.wizardOptions.label || '') + ' — ' + (state.wizardOptions.goal || '');
-      body.innerHTML = '';
-      (state.wizardOptions.fields || []).forEach(function(f) {
-        var el = renderWizardField(f);
-        if (el) body.appendChild(el);
-      });
-      var val = state.wizardOptions.validation || {};
-      if (val.errors && val.errors.length) {
-        var err = document.createElement('div');
-        err.className = '_snowd_wiz_err';
-        err.textContent = val.errors.join('；');
-        body.appendChild(err);
-      }
-      if (val.warnings && val.warnings.length) {
-        var warn = document.createElement('div');
-        warn.className = '_snowd_wiz_warn';
-        warn.textContent = val.warnings.join('；');
-        body.appendChild(warn);
-      }
-    }
-
-    async function wizardNavigate(action) {
-      var res = await wizardCall('navigate', { state: state.wizardState, action: action });
-      if (!res || !res.ok) {
-        if (res && res.error) {
-          var body = document.getElementById('_snowd_wiz_body');
-          if (body) {
-            var err = document.createElement('div');
-            err.className = '_snowd_wiz_err';
-            err.textContent = res.error;
-            body.appendChild(err);
-          }
-        }
-        if (res && res.state) {
-          state.wizardState = res.state;
-          state.wizardOptions = res.options || state.wizardOptions;
-          saveWizardStateLocal(res.state);
-          renderWizard();
-        }
-        return;
-      }
-      state.wizardState = res.state;
-      state.wizardOptions = res.options;
-      saveWizardStateLocal(res.state);
-      renderWizard();
-    }
-
-    function wizardGoto(stepId) {
-      wizardNavigate(stepId);
-    }
-
-    async function askWizardAi() {
-      if (!state.wizardOptions) return;
-      var q = '当前车卡步骤「' + (state.wizardOptions.label || '') + '」，请根据已选内容给 2～3 条建议。';
+    function openChargenDetail() {
+      if (!state.chargenFullAnswer) return;
+      setOpen(true);
       switchTab('chat');
-      var input = document.getElementById('_snowd_adv_input');
-      if (input) input.value = q;
-      await sendQuery({ mode: 'wizard', wizardState: state.wizardState, presetQuery: q });
+      var box = document.getElementById('_snowd_adv_msgs');
+      if (box) box.innerHTML = '';
+      appendMsg('user', state.chargenQuery || '当前步骤推荐');
+      appendMsg('ai', state.chargenFullAnswer);
     }
 
-    async function importWizardFromCharacter() {
-      var summary = getCharacterSummary();
-      if (!summary || !summary.snapshot) {
-        alert('请先在角色面板加载 L1 法师角色，再使用导入。');
+    async function refreshChargenTip() {
+      if (!isChargenPage()) {
+        hideBubble();
         return;
       }
-      var main = (summary.snapshot.classes && summary.snapshot.classes[0]) || {};
-      if (main.name && main.name !== '法师') {
-        alert('当前仅支持导入法师 L1 角色。');
+      var cs = getChargenState();
+      if (!cs || cs.char.className !== '法师') {
+        hideBubble();
         return;
       }
-      if ((main.level || 1) > 1) {
-        alert('向导导入仅支持 1 级角色快照。');
+      if (cs.fingerprint === state.chargenFp && state.chargenFullAnswer) {
+        showBubble(truncateTip(state.chargenFullAnswer));
         return;
       }
-      var res = await wizardCall('import', { panelState: summary.snapshot });
-      if (!res || !res.ok) {
-        alert((res && res.error) || '导入失败');
+      if (state.chargenBusy) return;
+      if (!window.electronAPI || !window.electronAPI.advisorAdviseStream) {
+        showBubble('打开 Electron 客户端可获步骤推荐');
         return;
       }
-      state.wizardState = res.state;
-      saveWizardStateLocal(res.state);
-      await loadWizard(true);
-      alert('已从当前角色导入向导；请到各步核对背景熟练等可选项。');
-    }
 
-    async function exportWizardCharacter() {
-      if (!state.wizardState) return;
-      var name = window.prompt('角色名', '新法师');
-      if (!name || !name.trim()) return;
-      var mode = window.prompt('导出到：1=角色面板存档，2=角色创建页', '1');
-      if (!mode) return;
-      var res = await wizardCall('export', {
-        state: state.wizardState,
-        options: { charName: name.trim(), allowIncomplete: false },
-      });
-      if (!res || !res.ok) {
-        alert((res && res.error) || '导出失败：请先完成全部步骤');
-        return;
-      }
-      if (mode.trim() === '1') {
-        try {
-          localStorage.setItem('char_' + name.trim() + '_slot1', JSON.stringify(res.panelState));
-          alert('已保存到角色面板存档：' + name.trim() + '（slot1）\n请打开角色面板加载该角色。');
-        } catch (e) {
-          alert('写入存档失败：' + (e.message || String(e)));
-        }
-      } else {
-        try {
-          localStorage.setItem('advisor_chargen_handoff', JSON.stringify(res.handoff));
-          window.location.href = '角色创建页.html';
-        } catch (e) {
-          alert('无法打开创建页：' + (e.message || String(e)));
-        }
+      state.chargenFp = cs.fingerprint;
+      state.chargenStep = cs.step;
+      state.chargenQuery = '当前车卡步骤「' + cs.stepLabel + '」，请根据已选内容给出 2～3 条简短推荐（每条一行，总共不超过120字；不要 Markdown）。';
+      showBubble('正在思考…');
+      state.chargenBusy = true;
+      updateBallBusy();
+
+      var full = '';
+      try {
+        var payload = { query: state.chargenQuery, mode: 'wizard', chargenState: cs };
+        var res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
+          full += delta;
+          showBubble(truncateTip(full) || '…');
+        });
+        if (res && res.ok && !full && res.answer) full = res.answer;
+        state.chargenFullAnswer = full || '（暂无建议）';
+        showBubble(truncateTip(state.chargenFullAnswer));
+      } catch (e) {
+        showBubble('推荐暂时不可用');
+        state.chargenFullAnswer = null;
+      } finally {
+        state.chargenBusy = false;
+        updateBallBusy();
+        positionBubble();
       }
     }
 
@@ -856,7 +529,7 @@
 
     function setBusy(on) {
       state.busy = on;
-      ball.classList.toggle('_busy', on);
+      updateBallBusy();
       var send = document.getElementById('_snowd_adv_send');
       if (send) send.disabled = on;
     }
@@ -884,11 +557,17 @@
         var payload = { query: q };
         if (opts.mode) payload.mode = opts.mode;
         if (opts.wizardState) payload.wizardState = opts.wizardState;
-        else if (state.tab === 'wizard' && state.wizardState) {
-          payload.mode = 'wizard';
-          payload.wizardState = state.wizardState;
+        else if (opts.chargenState) {
+          payload.mode = payload.mode || 'wizard';
+          payload.chargenState = opts.chargenState;
+        } else if (isChargenPage()) {
+          var cs = getChargenState();
+          if (cs) {
+            payload.mode = payload.mode || 'wizard';
+            payload.chargenState = cs;
+          }
         }
-        if (useCharEnabled()) {
+        if (useCharEnabled() && !isChargenPage()) {
           var summary = getCharacterSummary();
           if (summary && summary.snapshot) payload.snapshot = summary.snapshot;
         }
@@ -944,6 +623,7 @@
         ball.style.bottom = 'auto';
         state.drag.x = e.clientX;
         state.drag.y = e.clientY;
+        positionBubble();
       }
     });
 
@@ -952,6 +632,7 @@
       try { ball.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
       if (state.moved) {
         persistBallPos();
+        positionBubble();
       } else {
         setOpen(!state.open);
       }
@@ -964,12 +645,11 @@
 
     document.getElementById('_tab_chat').addEventListener('click', function() { switchTab('chat'); });
     document.getElementById('_tab_adv').addEventListener('click', function() { switchTab('adv'); });
-    document.getElementById('_tab_wiz').addEventListener('click', function() { switchTab('wizard'); });
-    document.getElementById('_snowd_wiz_prev').addEventListener('click', function() { wizardNavigate('prev'); });
-    document.getElementById('_snowd_wiz_next').addEventListener('click', function() { wizardNavigate('next'); });
-    document.getElementById('_snowd_wiz_ask').addEventListener('click', askWizardAi);
-    document.getElementById('_snowd_wiz_import').addEventListener('click', importWizardFromCharacter);
-    document.getElementById('_snowd_wiz_export').addEventListener('click', exportWizardCharacter);
+
+    tip.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openChargenDetail();
+    });
 
     document.getElementById('_snowd_adv_filter').addEventListener('input', function(e) {
       state.advFilter = e.target.value;
@@ -986,10 +666,23 @@
       }
     });
 
-    window.addEventListener('resize', applyBallPos);
+    window.addEventListener('resize', function() {
+      applyBallPos();
+      positionBubble();
+    });
+
+    window.addEventListener('snowd-chargen-change', function() {
+      refreshContext();
+      refreshChargenTip();
+    });
 
     applyBallPos();
-    appendMsg('ai', '你好，我是 Build 顾问助理。可询问法师车卡、技能加点、进阶与兼职等；在角色面板会自动读取当前角色。');
+    if (isChargenPage()) {
+      appendMsg('ai', '创建页陪跑已启用：悬浮球旁会显示当前步骤的简短推荐，点击冒泡查看完整回答；也可在下方自由提问。');
+      setTimeout(refreshChargenTip, 400);
+    } else {
+      appendMsg('ai', '你好，我是 Build 顾问助理。可询问法师车卡、技能加点、进阶与兼职等；在角色面板会自动读取当前角色。');
+    }
   }
 
   function init() {

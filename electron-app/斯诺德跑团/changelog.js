@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7010',
+    date: '2026-07-08',
+    changes: [
+      'Build顾问：创建页陪跑(Phase4′)',
+      '移除独立车卡Tab，悬浮球旁冒泡显示步骤推荐',
+      '点击冒泡查看完整回答；顾问只推荐不替用户填表'
+    ]
+  },
+
+
+  {
     version: '1.0.7009',
     date: '2026-07-07',
     changes: [

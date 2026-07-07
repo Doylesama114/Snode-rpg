@@ -335,6 +335,59 @@ function initWizard() {
 
 var STEP_LABELS=["选择职业","选择起始特性","选择种族","分配属性","选择熟练项","选择个性背景","选择装备","确认角色"];
 
+var _chargenNotifyTimer=null;
+function notifyChargenChange(){
+  if(_chargenNotifyTimer)clearTimeout(_chargenNotifyTimer);
+  _chargenNotifyTimer=setTimeout(function(){
+    _chargenNotifyTimer=null;
+    try{
+      if(window.snowdChargen){
+        window.dispatchEvent(new CustomEvent("snowd-chargen-change",{detail:snowdChargen.getState()}));
+      }
+    }catch(e){}
+  },600);
+}
+function chargenSnapshotChar(){
+  return{
+    className:CHAR.className||null,
+    raceName:CHAR.raceName||null,
+    attrs:CHAR.attrs?JSON.parse(JSON.stringify(CHAR.attrs)):{},
+    selectedSkills:(CHAR.selectedSkills||[]).slice(),
+    selectedFeatures:(CHAR.selectedFeatures||[]).map(function(f){return f.n||f;}),
+    specChoices:CHAR.specChoices?JSON.parse(JSON.stringify(CHAR.specChoices)):{},
+    bgName:CHAR.bgName||null,
+    bgProfs:CHAR.bgProfs?JSON.parse(JSON.stringify(CHAR.bgProfs)):{},
+    equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
+    extraLanguages:(CHAR.extraLanguages||[]).slice(),
+    charName:CHAR.charName||""
+  };
+}
+function buildChargenFingerprint(st){
+  var c=st.char||st;
+  return[
+    st.step,c.className,c.raceName,c.bgName,
+    (c.selectedFeatures||[]).join(","),
+    (c.selectedSkills||[]).join(","),
+    JSON.stringify(c.attrs||{}),
+    JSON.stringify(c.specChoices||{}),
+    JSON.stringify(c.bgProfs||{}),
+    c.equipChoice&&c.equipChoice.letter
+  ].join("|");
+}
+window.snowdChargen={
+  isChargenPage:function(){return true;},
+  getState:function(){
+    var st={
+      source:"chargen_page",
+      step:CURRENT_STEP,
+      stepLabel:STEP_LABELS[CURRENT_STEP]||"",
+      char:chargenSnapshotChar()
+    };
+    st.fingerprint=buildChargenFingerprint(st);
+    return st;
+  }
+};
+
 function applyAdvisorHandoff(){
   try{
     var raw=localStorage.getItem("advisor_chargen_handoff");
@@ -545,6 +598,7 @@ function updateOverview() {
   }
   if (!h) h = '<div class="ov-empty">逐步完成创建，概览将实时更新</div>';
   document.getElementById('ovContent').innerHTML = h;
+  notifyChargenChange();
 }
 
 // Hook into existing renderStep to auto-update

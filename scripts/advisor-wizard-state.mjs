@@ -17,7 +17,11 @@ export function normalizeWizardState(raw) {
   const step = raw.step ?? raw.currentStep ?? 0;
   const stepDef = MAGE_WIZARD_STEPS.find((s) => s.id === step) || MAGE_WIZARD_STEPS[0];
   return {
-    meta: { class: '法师', version: 'phase4' },
+    meta: {
+      class: '法师',
+      version: raw.meta?.version || 'phase4',
+      source: raw.meta?.source || raw.source || undefined,
+    },
     step: stepDef.id,
     stepKey: stepDef.key,
     stepLabel: stepDef.label,
@@ -73,9 +77,14 @@ export function formatWizardContext(state, store) {
   const gaps = summarizeWizardGaps(state);
   const lines = [
     '## 车卡向导状态',
+  ];
+  if (state.meta?.source === 'chargen_page') {
+    lines.push('- 数据来源：角色创建页（只读镜像；校验以页面为准，顾问只推荐、不替用户选）');
+  }
+  lines.push(
     `- 模式：wizard；当前步骤 ${state.step} / ${MAGE_WIZARD_STEPS.length - 1}：${def?.label || state.stepLabel}`,
     `- 本步目标：${def?.goal || ''}`,
-  ];
+  );
   const sel = state.selections;
   if (sel.className) lines.push(`- 已选职业：${sel.className}`);
   if (sel.specialization) lines.push(`- 已选专精：${sel.specialization}`);

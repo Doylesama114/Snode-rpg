@@ -230,6 +230,23 @@ let _snapshotModule = null;
 let _envModule = null;
 let _wizardModule = null;
 let _wizardSyncModule = null;
+let _chargenBridgeModule = null;
+
+async function getChargenBridgeModule() {
+  if (!_chargenBridgeModule) {
+    _chargenBridgeModule = await import(pathToFileURL(path.join(getAdvisorRoot(), 'scripts', 'advisor-chargen-bridge.mjs')).href);
+  }
+  return _chargenBridgeModule;
+}
+
+async function resolveWizardState(payload) {
+  if (payload?.wizardState) return payload.wizardState;
+  if (payload?.chargenState) {
+    const bridge = await getChargenBridgeModule();
+    return bridge.chargenToWizardState(payload.chargenState);
+  }
+  return undefined;
+}
 
 async function getAdvisorModule() {
   if (!_advisorModule) {
@@ -277,10 +294,11 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
       const snapMod = await getSnapshotModule();
       snapshot = snapMod.normalizeSnapshot(snapshot);
     }
+    const wizardState = await resolveWizardState(payload);
     const out = await mod.advise(String(payload.query).trim(), {
       snapshot: snapshot || undefined,
       mode: payload.mode || undefined,
-      wizardState: payload.wizardState || undefined,
+      wizardState: wizardState || undefined,
     });
     return {
       ok: true,
@@ -305,11 +323,12 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
       const snapMod = await getSnapshotModule();
       snapshot = snapMod.normalizeSnapshot(snapshot);
     }
+    const wizardState = await resolveWizardState(payload);
     const sender = event.sender;
     const out = await mod.advise(String(payload.query).trim(), {
       snapshot: snapshot || undefined,
       mode: payload.mode || undefined,
-      wizardState: payload.wizardState || undefined,
+      wizardState: wizardState || undefined,
       stream: true,
       onDelta: (delta) => {
         if (!sender.isDestroyed()) {

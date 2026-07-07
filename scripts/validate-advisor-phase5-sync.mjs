@@ -81,7 +81,11 @@ function buildCompleteWizard() {
 
 check('sync module exists', fs.existsSync(path.join(ROOT, 'scripts/advisor-wizard-sync.mjs')));
 check('handoff in 角色创建页', fs.readFileSync(path.join(ROOT, '斯诺德跑团/角色创建页.html'), 'utf8').includes('applyAdvisorHandoff'));
-check('widget export button', fs.readFileSync(path.join(ROOT, 'electron-app/斯诺德跑团/advisor-widget.js'), 'utf8').includes('_snowd_wiz_export'));
+const widgetSrc = fs.readFileSync(path.join(ROOT, 'electron-app/斯诺德跑团/advisor-widget.js'), 'utf8');
+check('widget chargen bubble', widgetSrc.includes('_snowd_advisor_tip'));
+check('widget no standalone wizard tab', !widgetSrc.includes('_tab_wiz'));
+check('chargen bridge module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-bridge.mjs')));
+check('snowdChargen on 角色创建页', fs.readFileSync(path.join(ROOT, '斯诺德跑团/角色创建页.html'), 'utf8').includes('window.snowdChargen'));
 
 const complete = buildCompleteWizard();
 const reviewVal = validateStep({ ...complete, step: 7 }, store);
