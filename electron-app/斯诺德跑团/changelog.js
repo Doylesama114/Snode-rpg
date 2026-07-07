@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7003',
+    date: '2026-07-07',
+    changes: [
+      'CI Release内置DEEPSEEK_API_KEY(Secrets)',
+      'advisor-env-bootstrap启动加载.env',
+      '修复NSIS安装包Build顾问缺Key'
+    ]
+  },
+
+
+  {
     version: '1.0.7002',
     date: '2026-07-07',
     changes: [

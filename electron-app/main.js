@@ -1,5 +1,7 @@
 ﻿const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
+bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
 
 autoUpdater.autoDownload = true;
