@@ -301,6 +301,79 @@ const CLASS_FULL_PROFILES = {
       '神术媒介为手势+言语（见技能描述）；非法师戏法/法术位体系。',
     ],
   },
+  圣骑士: {
+    defaultFullL2MinSkills: 50,
+    fpKeyLabel: '意志',
+    specBuildHints: {
+      神圣誓言: '创建页宣誓正义事业；与惩戒/热诚进攻向或守护/圣洁支援向规划一致。',
+      神佑: '降低疾病与力竭影响；偏长线冒险与生存。',
+      神圣感知: '侦测附近邪恶；情报与先手定位，配合宗教/洞悉熟练。',
+    },
+    styleRoleHints: {
+      惩戒: '光耀惩戒与控场；审判/圣光出鞘起手契合输出。',
+      守护: '护盾、探知与团队庇护；盾牌格挡起手契合坦克。',
+      圣洁: '治疗、净化与光耀回复；圣光术/驱邪术起手契合支援。',
+      热诚: '速攻、复仇与冲锋；偏魅力豁免与近战突击。',
+    },
+    chargenAttrDetail: '意志≥15 为常见目标；魅力豁免与热诚/惩戒神术协同。宗教熟练支撑誓言与侦测类能力。',
+    combatRules: (className, slug) => [
+      {
+        id: 'tip-' + slug + '-cr-radiant',
+        title: '光耀与邪恶特攻',
+        summary: '圣骑士技能常带光耀标签；对邪恶/亡灵等目标可能有额外收益（见具体技能与 DM 规则）。',
+        detail: '惩戒/圣洁线深化光耀；引用须来自 L2 上下文，勿编造对位加值。',
+        relatedSkills: ['审判', '圣光出鞘'],
+        tags: [className, '光耀', '惩戒', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-shield',
+        title: '盾牌与格挡',
+        summary: '盾牌格挡为起手选项之一；守护线可深化护盾类神术与反应减伤。',
+        detail: '全部护甲+盾牌熟练；持盾时规划空闲手施法/战技。',
+        relatedSkills: ['盾牌格挡', '虔诚护盾'],
+        tags: [className, '盾牌', '守护', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-oath',
+        title: '神圣誓言',
+        summary: '专精「神圣誓言」与角色正义定位绑定；build 须与所选誓言/风格一致。',
+        detail: '具体誓言效果见创建页/规则书；顾问仅引用上下文中出现的名称。',
+        relatedSkills: [],
+        tags: [className, '专精', '神圣誓言', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-heal',
+        title: '圣光治疗',
+        summary: '圣光术等起手提供回复；圣洁线深化治疗与净化，须规划 FP。',
+        detail: '5 选 2 起手：治疗与输出可各取一项；勿假设四项全拿。',
+        relatedSkills: ['圣光术', '驱邪术'],
+        tags: [className, '圣洁', '治疗', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-martial',
+        title: '战法双修',
+        summary: '圣骑士兼近战与神术；重甲前线与远程神术须分回合规划。',
+        detail: '热诚线偏突击；惩戒线偏光耀战技。勿套用法师塑能/咒法流派名。',
+        relatedSkills: ['审判', '制裁之锤'],
+        tags: [className, '战法', 'combat_rule'],
+      },
+      {
+        id: 'tip-' + slug + '-cr-fp',
+        title: 'FP 与圣光节奏',
+        summary: '战技与神术均消耗 FP；长战先低 FP 稳态再交爆发或救场治疗。',
+        detail: '短休/长休回复见基础规则；标识由 DM 结算。',
+        relatedSkills: ['审判'],
+        tags: [className, 'FP', 'combat_rule'],
+      },
+    ],
+    extraEquipmentRules: (refClass) => {
+      const rules = [];
+      if (/除枪械|不含枪械/.test(refClass?.weapons || '')) {
+        rules.push('圣骑士不熟练枪械；勿推荐火枪/步枪等火器 build。');
+      }
+      return rules;
+    },
+  },
 };
 
 function classProfile(className) {

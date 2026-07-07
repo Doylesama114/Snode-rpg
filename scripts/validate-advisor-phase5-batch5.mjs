@@ -21,7 +21,7 @@ function fail(n, d) { failed++; console.error('  ✗', n, d || ''); }
 
 for (const cn of BATCH) {
   const p = getClassProfile(cn);
-  const tierOk = cn === '牧师' ? p.tier === 'full' : (p.tier === 'partial' && p.l2Layer);
+  const tierOk = ['牧师', '圣骑士'].includes(cn) ? p.tier === 'full' : (p.tier === 'partial' && p.l2Layer);
   if (tierOk) pass(`registry ${cn}`);
   else fail(`registry ${cn}`, JSON.stringify(p));
 }

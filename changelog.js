@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7043',
+    date: '2026-07-07',
+    changes: [
+      '圣骑士顾问升full(paladin_skills/光耀L5/5选2起手)'
+    ]
+  },
+
+
+  {
     version: '1.0.7042',
     date: '2026-07-07',
     changes: [
