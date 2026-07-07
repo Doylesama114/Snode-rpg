@@ -179,6 +179,10 @@ export async function advise(query, options = {}) {
     intent: retrieval.intent,
     mode: retrieval.mode,
     promptProfile: retrieval.promptProfile,
+    className: retrieval.wizardState?.selections?.className
+      || options.chargenState?.char?.className
+      || null,
+    tier: undefined,
   });
 
   if (options.dryRun) {

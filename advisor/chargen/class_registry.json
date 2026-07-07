@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "5-batch1",
+    "version": "1.0.0",
+    "note": "顾问职业档位与创建页陪跑参数；hints/tips 可后续逐职业补充"
+  },
+  "defaults": {
+    "tier": "basic",
+    "keyAttrTarget": 15,
+    "startingFeaturePick": 2,
+    "skillPickCount": 4,
+    "skillPickLabel": "职业技巧八选四"
+  },
+  "classes": {
+    "法师": {
+      "tier": "full",
+      "keyAttr": "智力",
+      "startingFeaturePick": 4,
+      "startingFeaturePool": 8,
+      "skillPickCount": 4,
+      "hasMageSpecs": true
+    },
+    "奇械师": {
+      "tier": "partial",
+      "keyAttr": "智力",
+      "keyAttrCreateNote": "创建页 FP 关键属性可能为魅力，以页面已选 keyAttr 为准",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "advisorNote": "奇械师顾问数据尚未完整更新（标识系统等仍在完善）；当前提供创建陪跑与通用规则，深度 build 请以规则书/DM 为准。"
+    },
+    "蛮斗士": {
+      "tier": "basic",
+      "keyAttr": "力量",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "specProfChoices": ["运动健将"]
+    },
+    "战士": {
+      "tier": "basic",
+      "keyAttr": "力量或敏捷",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "specProfChoices": ["运动健将", "武器专精"]
+    },
+    "猎人": {
+      "tier": "basic",
+      "keyAttr": "敏捷",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "specProfChoices": ["武器专精"]
+    },
+    "牧师": {
+      "tier": "basic",
+      "keyAttr": "感知",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "圣骑士": {
+      "tier": "basic",
+      "keyAttr": "意志",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "游荡者": {
+      "tier": "basic",
+      "keyAttr": "敏捷",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "德鲁伊": {
+      "tier": "basic",
+      "keyAttr": "感知",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "萨满祭司": {
+      "tier": "basic",
+      "keyAttr": "感知",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "术士": {
+      "tier": "basic",
+      "keyAttr": "幸运",
+      "startingFeaturePick": "all",
+      "skillPickCount": 4
+    },
+    "武僧": {
+      "tier": "basic",
+      "keyAttr": "敏捷",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "吟游诗人": {
+      "tier": "basic",
+      "keyAttr": "魅力",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    },
+    "魔契师": {
+      "tier": "basic",
+      "keyAttr": "魅力",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4
+    }
+  }
+}

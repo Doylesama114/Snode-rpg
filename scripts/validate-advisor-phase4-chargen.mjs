@@ -70,6 +70,30 @@ const REVIEW = {
   },
 };
 
+const WARRIOR_ATTR = {
+  source: 'chargen_page',
+  step: 3,
+  stepLabel: '分配属性',
+  char: {
+    className: '战士',
+    keyAttr: '力量',
+    attrs: {
+      力量: 15, 敏捷: 14, 体质: 12, 智力: 8,
+      感知: 10, 魅力: 8, 意志: 8, 幸运: 8,
+    },
+    raceAttrBonuses: { 力量: 1 },
+    raceName: '人类',
+    pointSpent: 32,
+  },
+};
+
+const ARTIFICER_STEP0 = {
+  source: 'chargen_page',
+  step: 0,
+  stepLabel: '选择职业',
+  char: { className: '奇械师', specChoices: {} },
+};
+
 let passed = 0;
 let failed = 0;
 function pass(n) { passed++; console.log('  ✓', n); }
@@ -127,6 +151,18 @@ else fail('retrieve context');
 const pb = analyzePointBuy(ATTR_DONE.char);
 if (pb.complete) pass('point buy complete');
 else fail('point buy');
+
+const pbWar = analyzePointBuy(WARRIOR_ATTR.char);
+if (pbWar.keyTargets.attrs.some((r) => r.attr === '力量' && r.met)) pass('warrior key attr target');
+else fail('warrior key attr', JSON.stringify(pbWar.keyTargets));
+
+const qWar = buildChargenBubbleQuery(WARRIOR_ATTR);
+if (qWar.includes('力量') && qWar.includes('15')) pass('policy warrior key attr');
+else fail('policy warrior', qWar.slice(0, 120));
+
+const qArt = buildChargenBubbleQuery(ARTIFICER_STEP0);
+if (qArt.includes('奇械师') && qArt.includes('尚未完整')) pass('policy artificer partial note');
+else fail('policy artificer', qArt.slice(0, 120));
 
 console.log('\n' + passed + ' passed, ' + failed + ' failed');
 process.exit(failed ? 1 : 0);

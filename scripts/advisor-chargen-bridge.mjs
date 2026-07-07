@@ -58,8 +58,9 @@ export function chargenToWizardState(snapshot) {
   const raw = {
     step,
     stepLabel: snapshot.stepLabel,
-    meta: { source: 'chargen_page', version: 'phase4-prime-2' },
+    meta: { source: 'chargen_page', version: 'phase5-batch1' },
     className: char.className || null,
+    keyAttr: char.keyAttr || null,
     specChoices,
     startingFeatures: featNames(char.selectedFeatures),
     race: char.raceName || char.race || null,
@@ -87,6 +88,7 @@ export function buildChargenFingerprint(snapshot) {
   return [
     snapshot.step,
     char.className,
+    char.keyAttr,
     char.raceName,
     char.bgName,
     featNames(char.selectedFeatures).join(','),

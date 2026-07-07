@@ -1,22 +1,51 @@
 /**
- * Phase 4‴ — 购点分析与熟练↔属性关联
+ * Phase 4‴ / 5 — 购点分析与熟练↔属性关联
  */
-export const POINT_BUY_TOTAL = 32;
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import {
+  analyzeKeyAttrTargets,
+  formatKeyAttrLabel,
+  getClassProfile,
+} from './advisor-chargen-registry.mjs';
 
-export const MAGE_SKILL_ATTR = {
-  专注: '体质',
-  调查: '智力',
-  逻辑: '智力',
-  奥秘: '智力',
-  知识: '智力',
-  洞悉: '感知',
-  感悟: '感知',
-  聆听: '感知',
-};
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export const POINT_BUY_TOTAL = 32;
 
 export const ATTR_NAMES = [
   '力量', '敏捷', '体质', '智力', '感知', '魅力', '意志', '幸运',
 ];
+
+/** @type {Record<string, string>} */
+let _skillAttrMap = null;
+
+function loadSkillAttrMap() {
+  if (_skillAttrMap) return _skillAttrMap;
+  _skillAttrMap = {};
+  try {
+    const p = path.join(__dirname, '..', 'advisor', 'chargen', 'proficiencies.json');
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    for (const [attr, skills] of Object.entries(data.byAttribute || {})) {
+      for (const sk of skills) {
+        if (sk === '豁免' || sk.endsWith('-自定义')) continue;
+        const parent = sk.includes('-') ? sk.split('-')[0] : sk;
+        if (!_skillAttrMap[sk]) _skillAttrMap[sk] = attr;
+        if (!_skillAttrMap[parent]) _skillAttrMap[parent] = attr;
+      }
+    }
+  } catch {
+    _skillAttrMap = {
+      专注: '体质', 调查: '智力', 逻辑: '智力', 奥秘: '智力', 知识: '智力',
+      洞悉: '感知', 感悟: '感知', 聆听: '感知',
+    };
+  }
+  return _skillAttrMap;
+}
+
+/** @deprecated use loadSkillAttrMap — kept for tests importing MAGE_SKILL_ATTR */
+export const MAGE_SKILL_ATTR = loadSkillAttrMap();
 
 export function calcAttrCost(v) {
   if (v <= 8) return 0;
@@ -35,13 +64,14 @@ export function calcPointSpent(attrs) {
 
 export function skillPrimaryAttr(skillName) {
   if (!skillName) return null;
+  const map = loadSkillAttrMap();
   if (skillName.includes('-')) {
-    return MAGE_SKILL_ATTR[skillName.split('-')[0]] || null;
+    return map[skillName] || map[skillName.split('-')[0]] || null;
   }
   if (skillName.includes('·')) {
     return skillName.split('·')[0] || null;
   }
-  return MAGE_SKILL_ATTR[skillName] || null;
+  return map[skillName] || null;
 }
 
 export function applyRaceBonuses(baseAttrs, raceBonuses) {
@@ -62,6 +92,8 @@ export function analyzePointBuy(char) {
   const spent = calcPointSpent(attrs);
   const raceBonuses = char?.raceAttrBonuses || {};
   const final = applyRaceBonuses(attrs, raceBonuses);
+  const profile = getClassProfile(char?.className);
+  const keyTargets = analyzeKeyAttrTargets(char, profile);
   const highlights = [];
   for (const an of ATTR_NAMES) {
     const base = attrs[an] ?? 8;
@@ -74,9 +106,12 @@ export function analyzePointBuy(char) {
     complete: spent === POINT_BUY_TOTAL,
     baseAttrs: attrs,
     finalAttrs: final,
+    keyTargets,
+    keyAttrLabel: formatKeyAttrLabel(char, profile),
     intFinal: final['智力'],
-    intTargetMet: final['智力'] >= 15,
+    intTargetMet: final['智力'] >= (profile.keyAttrTarget ?? 15),
     highlights,
+    className: char?.className || null,
   };
 }
 
@@ -108,7 +143,16 @@ export function formatPointBuyContext(char) {
     return `${an}购点${base}→含种族${fin}`;
   });
   lines.push(`- 属性：${parts.join('；')}`);
-  lines.push(`- 智力含种族：${pb.intFinal}${pb.intTargetMet ? '（达标≥15）' : '（未达15）'}`);
+  const kt = pb.keyTargets;
+  if (kt.attrs.length) {
+    for (const row of kt.attrs) {
+      lines.push(
+        `- 关键属性·${row.attr}含种族：${row.final}${row.met ? `（达标≥${row.target}）` : `（未达${row.target}）`}`,
+      );
+    }
+  } else {
+    lines.push(`- 关键属性：${pb.keyAttrLabel || '（见创建页）'}`);
+  }
   if (pb.highlights.length) {
     lines.push(`- 高属性：${pb.highlights.map((h) => `${h.attr}${h.final}`).join('、')}`);
   }
@@ -118,13 +162,13 @@ export function formatPointBuyContext(char) {
 export function formatSkillSynergyContext(char, skillNames) {
   const syn = analyzeSkillAttrSynergy(char, skillNames);
   if (!syn.length) return '';
-  const lines = ['## 熟练↔属性关联（须用完整子项名，勿只写「奥秘/知识」大类）'];
+  const lines = ['## 熟练↔属性关联（须用完整子项名，勿只写大类）'];
   for (const s of syn) {
     lines.push(
       `- ${s.skill} → ${s.attr} ${s.final}${s.strong ? '（高属性，检定会受益）' : ''}`,
     );
   }
-  lines.push('- 除智力系熟练外，若用户将其他属性点得很高，须点出其对应熟练的协同价值。');
+  lines.push('- 若用户将某属性点得很高，须点出对应熟练的协同价值。');
   return lines.join('\n');
 }
 

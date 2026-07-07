@@ -351,7 +351,8 @@ function chargenSnapshotChar(){
   var rd=CHAR.raceData;
   var raceAttrBonuses=rd&&rd["属性加成"]?JSON.parse(JSON.stringify(rd["属性加成"])):{};
   return{
-    className:CHAR.className||null,
+    className: char.className||null,
+    keyAttr:CHAR.keyAttr||null,
     raceName:CHAR.raceName||null,
     attrs:CHAR.attrs?JSON.parse(JSON.stringify(CHAR.attrs)):{},
     raceAttrBonuses:raceAttrBonuses,
@@ -394,7 +395,7 @@ function buildChargenFingerprint(st){
   var c=st.char||st;
   var p=c.characterProfile||{};
   return[
-    st.step,c.className,c.raceName,c.bgName,
+    st.step,c.className,c.keyAttr,c.raceName,c.bgName,
     (c.selectedFeatures||[]).join(","),
     (c.selectedSkills||[]).join(","),
     JSON.stringify(c.attrs||{}),

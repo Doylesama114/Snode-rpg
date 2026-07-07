@@ -3,10 +3,22 @@
  */
 import { loadAdvisorStore } from './advisor-retrieve.mjs';
 import { getPromptProfile } from './advisor-router.mjs';
+import { getClassProfile } from './advisor-chargen-registry.mjs';
 
-const BASE_RULES = `你是「斯诺德跑团」法师 build 顾问助理。语气专业、清楚、好读，像规则熟手在帮玩家整理建议。你只根据用户消息中的【检索上下文】作答，使用简体中文。
+function buildBaseRules(className, tier) {
+  const role = className
+    ? `「斯诺德跑团」${className} build 顾问助理`
+    : '「斯诺德跑团」build 顾问助理';
+  let rules = `你是${role}。语气专业、清楚、好读，像规则熟手在帮玩家整理建议。你只根据用户消息中的【检索上下文】作答，使用简体中文。`;
+  if (tier === 'basic') {
+    rules += '\n- 该职业当前为通用创建陪跑档：勿编造未收录的职业专属技能/进阶/标识细节；无上下文时引导查阅规则书或 DM。';
+  } else if (tier === 'partial') {
+    rules += '\n- 该职业顾问数据尚未完整（如标识系统等）；创建陪跑与通用规则可答，深度 build 须注明资料未齐。';
+  }
+  return rules;
+}
 
-## 硬规则（必须遵守）
+const BASE_RULES_TAIL = `
 1. 仅引用【检索上下文】中出现的技能、专长、进阶、种族、背景、小贴士名称；不得编造未出现的名称。
 2. 若上下文没有对应条目，回答：「当前资料未收录此项，请咨询 DM 或查阅规则书。」
 3. 进阶 confidence 为 documented 时，可引用上下文列出的具体天赋/技能名称与摘要；metadata_only 时仅可谈门槛与方向推测，须注明「具体效果以规则书为准」，不要编造数值。
@@ -43,12 +55,12 @@ const INTENT_ADDONS = {
 - 种族/背景/技巧：结合概览已有熟练补缺口，勿机械罗列固定推荐清单。`,
   wizard: `
 ## 本问类型：逐步车卡陪跑
-- 先读【车卡向导状态】与【车卡熟练账本】；确认当前步骤与待完成项。
+- 先读【车卡向导状态】与【车卡熟练账本】；确认当前步骤、职业与待完成项。
 - 熟练以账本/概览为准，勿自行重算；L1 创建阶段禁止提及兼职或 +6 熟练门槛。
 - 只讨论当前步骤及已选内容；禁止替用户指定未选项（勿「必拿/强烈建议选 XXX」）。
-- 起始特性（步骤1）：选满 4 项后【必须】评价组合优缺点；未选满只说明已选倾向。
-- 购点（步骤3）：32 点用完后【必须】评价当前分配；不要只说「智力优先 15」而不评现有方案。
-- 熟练（步骤4）：上下文含完整子项名（如奥秘-魔法学识）；须讨论非智力属性高点与对应熟练协同。
+- 购点（步骤3）：优先保障上下文中的关键属性达标（通常≥15）；32 点用完后【必须】评价当前分配。
+- 起始特性：选满本职业要求数量后【必须】评价组合；未选满只说明已选倾向。
+- 熟练（步骤4）：须用完整子项名；结合高属性与对应熟练协同。
 - 确认（步骤7）：对用户已填故事/外貌/个性做简短叙事评价。`,
   leveling: `
 ## 本问类型：升级奖励
@@ -86,6 +98,8 @@ export function buildSystemPrompt(options = {}) {
   const intent = options.intent || 'general';
   const mode = options.mode || 'advisor';
   const profile = options.promptProfile || getPromptProfile(intent, mode);
+  const className = options.className || null;
+  const tier = options.tier || (className ? getClassProfile(className).tier : 'full');
 
   const store = loadAdvisorStore();
   const ruleBullets = (store.rulesSummary?.bullets || []).slice(0, 12).join('\n- ');
@@ -93,7 +107,9 @@ export function buildSystemPrompt(options = {}) {
     ? INTENT_ADDONS.wizard
     : (INTENT_ADDONS[profile] || INTENT_ADDONS[intent] || '');
 
-  return `${BASE_RULES}
+  return `${buildBaseRules(className, tier)}
+
+## 硬规则（必须遵守）${BASE_RULES_TAIL}
 ${STYLE_RULES}
 ${addon}
 

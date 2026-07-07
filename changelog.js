@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7020',
+    date: '2026-07-07',
+    changes: [
+      'Build顾问：全职业创建页陪跑(Tier C)',
+      '新增class_registry与关键属性购点提示',
+      '奇械师标注部分支持'
+    ]
+  },
+
+
+  {
     version: '1.0.7013',
     date: '2026-07-07',
     changes: [

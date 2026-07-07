@@ -239,6 +239,17 @@
       applyBallPos();
     }
 
+    var PARTIAL_CLASS_NOTES = {
+      '奇械师': '奇械师顾问数据尚未完整更新（标识系统等仍在完善）；当前提供创建陪跑与通用规则。'
+    };
+
+    function chargenTierWarning(className) {
+      if (!className) return '';
+      if (className === '法师') return '';
+      if (PARTIAL_CLASS_NOTES[className]) return PARTIAL_CLASS_NOTES[className];
+      return '全职业创建陪跑已开放；' + className + ' 专属深度 build 资料尚在完善，请以创建页与规则书为准。';
+    }
+
     function refreshContext() {
       var ctx = document.getElementById('_snowd_adv_ctx');
       var warn = document.getElementById('_snowd_adv_warn');
@@ -246,12 +257,16 @@
 
       if (isChargenPage()) {
         var cs = getChargenState();
+        var cn = cs && cs.char && cs.char.className;
         var lbl = cs ? ('步骤 ' + cs.step + '：' + cs.stepLabel) : '角色创建页';
-        ctx.innerHTML = '模式：创建页陪跑 · ' + lbl;
+        ctx.innerHTML = cn
+          ? ('模式：创建页陪跑 · ' + cn + ' · ' + lbl)
+          : ('模式：创建页陪跑 · ' + lbl);
         if (warn) {
-          if (cs && cs.char.className && cs.char.className !== '法师') {
+          var tierMsg = chargenTierWarning(cn);
+          if (tierMsg) {
             warn.style.display = 'block';
-            warn.textContent = '当前仅支持法师 build 顾问陪跑，其他职业后续开放。';
+            warn.textContent = tierMsg;
           } else {
             warn.style.display = 'none';
           }
@@ -286,9 +301,10 @@
         };
       }
 
-      if (warn && summary && summary.className !== '法师') {
+      if (warn && summary && summary.className && summary.className !== '法师') {
         warn.style.display = 'block';
-        warn.textContent = '当前仅支持法师 build 顾问，其他职业后续开放。';
+        warn.textContent = PARTIAL_CLASS_NOTES[summary.className]
+          || ('「' + summary.className + '」技能/进阶深度资料尚在完善；可问通用规则，创建页已支持全职业陪跑。');
       } else if (warn) {
         warn.style.display = 'none';
       }
@@ -385,7 +401,7 @@
         return;
       }
       var cs = getChargenState();
-      if (!cs || cs.char.className !== '法师') {
+      if (!cs || !cs.char || !cs.char.className) {
         hideBubble();
         return;
       }
@@ -682,7 +698,7 @@
       appendMsg('ai', '创建页陪跑已启用：悬浮球旁会显示当前步骤的简短推荐，点击冒泡查看完整回答；也可在下方自由提问。');
       setTimeout(refreshChargenTip, 400);
     } else {
-      appendMsg('ai', '你好，我是 Build 顾问助理。可询问法师车卡、技能加点、进阶与兼职等；在角色面板会自动读取当前角色。');
+      appendMsg('ai', '你好，我是 Build 顾问助理。创建页已支持全职业陪跑；可询问车卡、技能、进阶与兼职等（法师资料最完整）。');
     }
   }
 

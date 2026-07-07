@@ -9,6 +9,10 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import { skillPrimaryAttr } from './advisor-chargen-attrs.mjs';
+import {
+  getClassProfile,
+  getStartingFeatureMax,
+} from './advisor-chargen-registry.mjs';
 const MAGE_CLASS_SKILL_POOL = [
   '专注', '调查', '逻辑', '奥秘', '知识', '洞悉', '感悟', '聆听',
 ];
@@ -161,20 +165,26 @@ export function buildChargenLedger(char, options = {}) {
   }
 
   const pendingAtStep = [];
-  if (char?.className === '法师') {
+  const profile = getClassProfile(char?.className);
+  const featMax = getStartingFeatureMax(char, profile);
+  const skillN = profile.skillPickCount ?? 4;
+
+  if (profile.hasMageSpecs && char?.className === '法师') {
     if (step === 0) {
       const specs = char?.specChoices || {};
       if (!specs['奥法学者']?.skill) pendingAtStep.push('奥法学者：选择 1 项奥秘子熟练');
       if (!specs['知识传承']?.skill) pendingAtStep.push('知识传承：选择 1 项知识子熟练');
     }
-    if (step === 1) {
-      const n = featNames(char?.selectedFeatures).length;
-      if (n < 4) pendingAtStep.push(`起始特性：已选 ${n}/4（选满后可评价组合）`);
-    }
-    if (step === 4) {
-      const n = (char?.selectedSkills || []).length;
-      if (n < 4) pendingAtStep.push(`职业熟练：已选 ${n}/4`);
-    }
+  }
+
+  if (char?.className && step === 1 && profile.startingFeaturePick !== 'all') {
+    const n = featNames(char?.selectedFeatures).length;
+    if (n < featMax) pendingAtStep.push(`起始特性：已选 ${n}/${featMax}（选满后可评价组合）`);
+  }
+
+  if (char?.className && step === 4) {
+    const n = (char?.selectedSkills || []).length;
+    if (n < skillN) pendingAtStep.push(`职业熟练：已选 ${n}/${skillN}`);
   }
 
   const stepSkillPool = step === 4 && char?.className === '法师' ? MAGE_CLASS_SKILL_POOL : [];
@@ -189,7 +199,9 @@ export function buildChargenLedger(char, options = {}) {
   }
 
   const features = featNames(char?.selectedFeatures);
-  const featureTags = features.flatMap((f) => MAGE_FEATURE_TAGS[f] || []);
+  const featureTags = char?.className === '法师'
+    ? features.flatMap((f) => MAGE_FEATURE_TAGS[f] || [])
+    : [];
   const uniqueTags = [...new Set(featureTags)];
 
   return {
@@ -197,12 +209,13 @@ export function buildChargenLedger(char, options = {}) {
     profNames,
     overlapWarnings,
     fromOverview,
+    classProfile: profile,
     pendingAtStep,
     startingFeatures: features,
     featureTags: uniqueTags,
-    featureTagMap: Object.fromEntries(
-      features.map((f) => [f, MAGE_FEATURE_TAGS[f] || []]),
-    ),
+    featureTagMap: char?.className === '法师'
+      ? Object.fromEntries(features.map((f) => [f, MAGE_FEATURE_TAGS[f] || []]))
+      : {},
   };
 }
 
@@ -228,6 +241,12 @@ export function formatLedgerContext(ledger) {
   }
 
   lines.push('- L1 创建阶段禁止提及兼职、7 级子职或兼职熟练门槛；兼职系统与当前车卡无关。');
+
+  if (ledger.classProfile?.tier && ledger.classProfile.tier !== 'full') {
+    const note = ledger.classProfile.advisorNote
+      || '该职业顾问深度内容尚在完善；创建陪跑以概览与页面为准。';
+    lines.push(`- 顾问档位 ${ledger.classProfile.tier}：${note}`);
+  }
 
   if (ledger.overlapWarnings.length) {
     lines.push('- 重叠/重复提醒（须在回答中优先说明 trade-off，仅冒泡级提示，不阻止用户选择）：');
