@@ -10,11 +10,14 @@ import {
   isPanelRoadmapQuery,
   getBuildPhaseBand,
   ROADMAP_DISCLAIMER,
+  parseRoadmapGoal,
 } from './advisor-build-roadmap.mjs';
 
 const PLANNING_QUERY = '我想玩一个主职业法师，子职业战士的角色，然后想进阶魔剑士，我该怎么选择我的技能';
 const PANEL_REVIEW_QUERY = '怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能';
 const FROST_QUERY = '主职法师想进阶冰霜法师，该怎么规划技能路线';
+const THIEF_ROADMAP_QUERY = '我想玩飞贼，我该怎么安排我的成长路线？';
+const THIEF_PLAY_QUERY = '我想玩飞贼';
 
 let failed = 0;
 function check(label, ok) {
@@ -68,6 +71,38 @@ const rBullet = retrieve(BULLET_QUERY, { plan: planBullet });
 check('magic_bullet L2-hunter', rBullet.layersHit.includes('L2-hunter'));
 
 check('disclaimer constant', ROADMAP_DISCLAIMER.includes('仅作参考'));
+
+console.log('\n--- Advisor 4.0 batch1: 飞贼成长路线 ---\n');
+
+check('thief roadmap query', isBuildRoadmapQuery(THIEF_ROADMAP_QUERY));
+check('thief play alone roadmap', isBuildRoadmapQuery(THIEF_PLAY_QUERY));
+
+const thiefGoal = parseRoadmapGoal(THIEF_ROADMAP_QUERY);
+check('thief goal mainClass 游荡者', thiefGoal.mainClass === '游荡者');
+check('thief goal advancement 飞贼', thiefGoal.advancementName === '飞贼');
+check('thief goal mode advancement_primary', thiefGoal.roadmapMode === 'advancement_primary');
+
+const planThief = planFromRules(THIEF_ROADMAP_QUERY, {});
+check('thief plan build_roadmap', planThief?.intent === 'build_roadmap');
+check('thief plan mainClass 游荡者', planThief?.tasks?.[0]?.mainClass === '游荡者');
+
+const rThief = retrieve(THIEF_ROADMAP_QUERY, { plan: planThief });
+const ctxThief = formatContext(rThief);
+check('thief context 游荡者', ctxThief.includes('游荡者'));
+check('thief context attrs 敏捷感知', ctxThief.includes('敏捷') && ctxThief.includes('感知'));
+check('thief context no mage L2', !ctxThief.includes('L2 法师技能'));
+check('thief context 作答形态', ctxThief.includes('作答形态'));
+check('thief context L0 升级', ctxThief.includes('L0 主职升级摘要'));
+check('thief L3 brief no ability dump', !ctxThief.includes('盗贼诀窍（ability）'));
+check('thief L3 insight milestone', ctxThief.includes('飞贼心得') || ctxThief.includes('心得节点'));
+check('thief L2-rogue layer', rThief.layersHit.includes('L2-rogue'));
+check('thief advancement_primary mode', rThief.results._roadmap?.roadmapMode === 'advancement_primary');
+
+const UNKNOWN_QUERY = '元素大师怎么规划';
+const planUnknown = planFromRules(UNKNOWN_QUERY, {});
+check('unknown plan intent', planUnknown?.intent === 'unknown_entity');
+const rUnknown = retrieve(UNKNOWN_QUERY, { plan: planUnknown });
+check('unknown ctx 未收录', formatContext(rUnknown).includes('未收录'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

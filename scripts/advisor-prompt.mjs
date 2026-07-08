@@ -175,12 +175,25 @@ const INTENT_ADDONS = {
 - 先列门槛（属性、标识、scope）；metadata_only 须免责声明。
 - documented 进阶可列具体天赋名；否则只谈方向。
 - 有 L6 快照时：进阶达标以快照为准；主职已是法师勿谈「兼职法师」；进阶≠兼职/子职。`,
+  unknown_entity: `
+## 本问类型：未收录实体（unknown_entity）
+- 检索上下文标明「未收录进阶」时：**必须**明确告知用户该名称不在当前资料库，不得编造属性门槛、标识、天赋或技能列表。
+- 可列出上下文中的「相近 documented 进阶」作方向参考，须注明「仅供参考、以 DM/规则书为准」。
+- 可给出**一般性**规划框架（L1–4 主职升级、L5 开进阶、专长窗口），但不得假装已知该进阶的具体规则。
+- 结尾须写「仅作参考」免责声明。`,
   build_roadmap: `
-## 本问类型：Build 路线图（build_roadmap · 通用）
-- 根据用户目标（进阶名、主职/子职、取向）与【检索上下文】中的 L2/L3/L4/L6 自行组织分阶段建议；可给出多条流派思路，勿机械照搬固定配点表。
-- 篇幅允许较长（约 30～55 行）；分前期/中期/后期说明取向与代表技能，每阶段每流派 2～4 项即可，须来自上下文或 L2 检索。
-- 上下文中的「候选示例」「模板参考」仅为抽样，**不是标准答案**；须说明取舍理由，尊重玩家已有选择。
-- 无 L6 快照时：从 L1 规划视角；有快照时：先点明当前阶段，评价已学技能与可改进方向（非扣分清单），后续推荐不得超出「可学技能位阶」。
+## 本问类型：Build 路线图 / 成长路线（build_roadmap · 通用）
+- 用户问的是**成长路线**，不是进阶能力百科。须按顺序写出以下章节（标题可微调，内容不得缺失）：
+  1. 目标确认（进阶名、主职/子职；无快照则从 L1 规划）
+  2. 基础阶段（主职 L1–4）：每级关注熟练+1、属性+1、技能槽+1、L4 专长窗、属性上限
+  3. 进阶门槛与时机（主职 L5 可择进阶；仅引用 L3 文档中的属性/行为条件，不得编造）
+  4. 进阶后节点（仅列心得/等级奖励，如飞贼 L5/10/15；**勿展开**天赋机制全文）
+  5. 技能与专长方向（每阶段 2～4 个方向或代表技能名，来自 L2 抽样，附取舍理由）
+  6. 免责声明（固定句「仅作参考…」）
+- **禁止**：逐条粘贴 L3 天赋 summary；引入上下文未出现的主职（尤其无依据默认法师）；把进阶与 L7 兼职混为一谈。
+- 根据用户目标与【检索上下文】中的 L2/L3/L4/L6 自行组织；可多条流派思路，勿机械照搬固定配点表。
+- 篇幅允许较长（约 30～55 行）；上下文「候选示例」仅为抽样，**不是标准答案**。
+- 无 L6 快照时：从 L1 规划；有快照时：先点明阶段与已学技能，推荐不得超出「可学技能位阶」。
 - 进阶途径与 L7 兼职/子职不同；勿把「先升 L7 开兼职」当作进阶前提。
 - 结尾**必须**单独一行写出：以上建议由 AI 根据当前资料整理，仅作参考；具体 build 请结合角色实际情况、规则书与 DM 沟通。`,
   build_review: `
@@ -220,7 +233,8 @@ export function buildSystemPrompt(options = {}) {
   const intent = options.intent || 'general';
   const mode = options.mode || 'advisor';
   let profile = options.promptProfile || getPromptProfile(intent, mode);
-  if (options.answerStyle === 'roadmap') profile = 'build_roadmap';
+  if (options.unknownAdvancement) profile = 'unknown_entity';
+  else if (options.answerStyle === 'roadmap') profile = 'build_roadmap';
   else if (options.answerStyle === 'catalog') profile = 'catalog_skills';
   else if (options.answerStyle === 'full_list') profile = 'full_list_skills';
   const className = options.className || null;
@@ -232,13 +246,19 @@ export function buildSystemPrompt(options = {}) {
     ? INTENT_ADDONS.wizard
     : (INTENT_ADDONS[profile] || INTENT_ADDONS[intent] || '');
 
+  const goalOverrideNote = options.goalOverride?.sessionFocus === 'reject_prior'
+    ? `\n## 会话目标重置\n- 用户已否定此前职业假设；勿引用被否定的主职/兼职建议。当前焦点：${
+      options.goalOverride.advancementName || options.goalOverride.mainClass || '见用户最新问句'
+    }。\n`
+    : '';
+
   const tierAudit = className ? formatTierAuditContext(className) : '';
 
   return `${buildBaseRules(className, tier)}
 
 ## 硬规则（必须遵守）${BASE_RULES_TAIL}
 ${STYLE_RULES}
-${addon}
+${addon}${goalOverrideNote}
 ${tierAudit ? `\n## 档位检查（勿向用户复述标题）\n${tierAudit}\n` : ''}
 
 ## 全局规则摘要（仅供你判断，不要原文复述给用户）

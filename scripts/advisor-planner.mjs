@@ -5,7 +5,7 @@ import { getAdvisorConfig } from './advisor-env.mjs';
 import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
-import { isFullListFollowUp, summarizeSessionForPlanner } from './advisor-session.mjs';
+import { isFullListFollowUp, summarizeSessionForPlanner, enrichPlannerContext } from './advisor-session.mjs';
 import { planBuildRoadmapFromRules } from './advisor-build-roadmap.mjs';
 
 const PLAN_CACHE = new Map();
@@ -56,15 +56,16 @@ const FULL_LIST_RE = /全列|全部列出|完整列表|列出来|全部技能|�
  * @returns {AdvisorPlan|null}
  */
 export function planFromRules(query, ctx = {}) {
+  const enriched = enrichPlannerContext(query, ctx);
   const q = String(query || '');
 
-  const roadmapPlan = planBuildRoadmapFromRules(q, ctx);
+  const roadmapPlan = planBuildRoadmapFromRules(q, enriched);
   if (roadmapPlan) return roadmapPlan;
 
   const classes = matchAllClassesFromQuery(q);
-  if (!classes.length && ctx.className) classes.push(ctx.className);
+  if (!classes.length && enriched.className) classes.push(enriched.className);
 
-  const history = ctx.conversationHistory || [];
+  const history = enriched.conversationHistory || [];
   const listSkills = LIST_SKILLS_RE.test(q);
   const excludeStarting = EXCLUDE_STARTING_RE.test(q);
   const fullList = FULL_LIST_RE.test(q) || isFullListFollowUp(history, q);
@@ -72,7 +73,7 @@ export function planFromRules(query, ctx = {}) {
   if (fullList && history.length && !classes.length) {
     const lastUser = history[history.length - 1]?.user || '';
     classes.push(...matchAllClassesFromQuery(lastUser));
-    if (!classes.length && ctx.className) classes.push(ctx.className);
+    if (!classes.length && enriched.className) classes.push(enriched.className);
   }
 
   if ((listSkills || fullList) && classes.length) {
@@ -83,8 +84,8 @@ export function planFromRules(query, ctx = {}) {
       : resolveClassPromptProfile(classes[0], 'class_skills');
 
     let scenario = 'mixed';
-    if (ctx.mode === 'wizard') scenario = 'chargen';
-    else if (ctx.snapshot) scenario = 'build';
+    if (enriched.mode === 'wizard') scenario = 'chargen';
+    else if (enriched.snapshot) scenario = 'build';
 
     return {
       source: 'rules',
@@ -140,7 +141,9 @@ async function planWithLLM(query, ctx) {
   const config = getAdvisorConfig();
   if (!config.apiKey) return null;
 
-  const sessionSummary = summarizeSessionForPlanner(ctx.conversationHistory || []);
+  const sessionSummary = summarizeSessionForPlanner(ctx.conversationHistory || [], {
+    goalOverride: ctx.goalOverride || null,
+  });
   const system = `你是斯诺德跑团 Build 顾问的检索规划器。根据用户问题输出 JSON，不要解释。
 字段：
 - answerStyle: "catalog" | "full_list" | "recommend"（列举技能首次用 catalog；用户追问要完整列表用 full_list）

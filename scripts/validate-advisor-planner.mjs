@@ -4,9 +4,9 @@
  * Run: node scripts/validate-advisor-planner.mjs
  */
 import { planFromRules, planQuery, buildPlanCacheKey, getCachedPlan, setCachedPlan, clearPlanCache } from './advisor-planner.mjs';
-import { retrieve } from './advisor-retrieve.mjs';
+import { retrieve, formatContext } from './advisor-retrieve.mjs';
 import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
-import { isFullListFollowUp } from './advisor-session.mjs';
+import { isFullListFollowUp, extractGoalOverride, enrichPlannerContext } from './advisor-session.mjs';
 
 let failed = 0;
 
@@ -69,6 +69,27 @@ const cacheKey = buildPlanCacheKey('sess1', dualQuery, 'mixed');
 setCachedPlan(cacheKey, plan);
 const cached = await planQuery(dualQuery, { planCacheKey: cacheKey, conversationHistory: [] }, { useLLM: false });
 check('plan cache hit', cached?.source === 'cache');
+
+console.log('\n--- session goal override ---\n');
+const mageHistory = [{
+  user: '我想玩一个输出很强的法师，该怎么选技能？',
+  assistant: '建议主职法师，塑能流派…',
+}];
+const focusCtx = enrichPlannerContext('我现在只说飞贼，我该怎么安排成长路线？', {
+  conversationHistory: mageHistory,
+  className: '法师',
+});
+check('goalOverride 飞贼', focusCtx.goalOverride?.advancementName === '飞贼');
+check('goalOverride mainClass 游荡者', focusCtx.goalOverride?.mainClass === '游荡者');
+check('goalOverride drop 法师', (focusCtx.goalOverride?.dropClasses || []).includes('法师'));
+const focusPlan = planFromRules('我现在只说飞贼，我该怎么安排成长路线？', focusCtx);
+check('focus plan 游荡者', focusPlan?.tasks?.[0]?.mainClass === '游荡者');
+const focusRet = retrieve('我现在只说飞贼，我该怎么安排成长路线？', {
+  plan: focusPlan,
+  goalOverride: focusCtx.goalOverride,
+});
+check('focus ctx 会话目标重置', formatContext(focusRet).includes('会话目标重置'));
+check('focus no mage L2', !formatContext(focusRet).includes('L2 法师技能'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

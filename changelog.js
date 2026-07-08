@@ -2,6 +2,30 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7062',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 4.0 batch2: 会话目标隔离',
+      'Golden CI',
+      '未收录进阶闸门',
+      'advancement_primary路由'
+    ]
+  },
+
+
+  {
+    version: '1.0.7061',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 4.0 batch1: 统一进阶解析',
+      '飞贼路线主职推断',
+      '成长路线作答契约',
+      'L0/L3 brief'
+    ]
+  },
+
+
+  {
     version: '1.0.7060',
     date: '2026-07-08',
     changes: [

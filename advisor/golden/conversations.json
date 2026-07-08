@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Advisor golden conversations — retrieval/plan regression (no live LLM)",
+    "generatedAt": "2026-07-08"
+  },
+  "cases": [
+    {
+      "id": "thief-roadmap",
+      "query": "我想玩飞贼，我该怎么安排我的成长路线？",
+      "expectIntent": "build_roadmap",
+      "expectMainClass": "游荡者",
+      "expectAdvancement": "飞贼",
+      "mustInclude": ["游荡者", "敏捷", "感知", "作答形态", "L0 主职升级"],
+      "mustNotInclude": ["L2 法师技能", "智力15"]
+    },
+    {
+      "id": "thief-session-reset",
+      "query": "我现在只说飞贼，我该怎么安排成长路线？",
+      "history": [
+        {
+          "user": "我想玩一个输出很强的法师，该怎么选技能？",
+          "assistant": "建议主职法师，塑能流派，火球术与灼热射线…"
+        }
+      ],
+      "ctx": { "className": "法师" },
+      "expectIntent": "build_roadmap",
+      "expectMainClass": "游荡者",
+      "expectAdvancement": "飞贼",
+      "mustInclude": ["会话目标重置", "游荡者", "飞贼"],
+      "mustNotInclude": ["L2 法师技能", "兼职法师"]
+    },
+    {
+      "id": "unknown-element-master",
+      "query": "元素大师怎么规划",
+      "expectIntent": "unknown_entity",
+      "mustInclude": ["未收录", "元素大师"],
+      "mustNotInclude": ["智力18", "智力15"]
+    },
+    {
+      "id": "mage-output-roadmap",
+      "query": "我想玩一个输出很强很强的法师，我该怎么选择我的技能和成长路线？",
+      "expectIntent": "build_roadmap",
+      "expectMainClass": "法师",
+      "mustInclude": ["作答形态", "L0 主职升级", "法师"],
+      "mustNotInclude": []
+    },
+    {
+      "id": "magic-sword-regression",
+      "query": "我想玩一个主职业法师，子职业战士的角色，然后想进阶魔剑士，我该怎么选择我的技能",
+      "expectIntent": "build_roadmap",
+      "expectMainClass": "法师",
+      "mustInclude": ["通用", "法师", "战士"],
+      "mustNotInclude": ["技能目录（catalog）"]
+    },
+    {
+      "id": "thief-play-alone",
+      "query": "我想玩飞贼",
+      "expectIntent": "build_roadmap",
+      "expectMainClass": "游荡者",
+      "expectAdvancement": "飞贼",
+      "mustInclude": ["游荡者", "飞贼"],
+      "mustNotInclude": ["L2 法师技能"]
+    }
+  ]
+}

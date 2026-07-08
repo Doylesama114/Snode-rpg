@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { checkAdvancementEligibility } from './advisor-eligibility.mjs';
+import { resolveAdvancementName, briefAdvancementTalents } from './advisor-advancement-resolve.mjs';
 import { analyzeSnapshot, normalizeSnapshot, formatSnapshotContext, skillWithinLearnableTiers } from './advisor-snapshot.mjs';
 import {
   loadEntityStore,
@@ -199,19 +200,6 @@ function parseAttrsFromQuery(query) {
   const intM = query.match(/智力\s*(\d+)/);
   if (intM) attrs.智力 = Number(intM[1]);
   return attrs;
-}
-
-function pickAdvancementName(query) {
-  const store = loadAdvisorStore();
-  const q = String(query || '');
-  const skillNames = Object.keys(store.advancementSkills?.byName || {});
-  const advNames = store.advancements.advancements.map((a) => a.name);
-  const candidates = [...new Set([...skillNames, ...advNames])].sort((a, b) => b.length - a.length);
-  for (const name of candidates) {
-    if (q.includes(name)) return name;
-  }
-  if (/冰霜/.test(q)) return '冰霜法师';
-  return null;
 }
 
 /** 解析「1级升到8级」「从1到8级」「升到8级」等区间 */
@@ -758,7 +746,7 @@ function buildL2UniversalResults(store, query, queryTokens, limit) {
 }
 
 function buildL3Results(store, query, queryTokens, limit, attrs) {
-  const advName = pickAdvancementName(query);
+  const advName = resolveAdvancementName(query);
   let items = store.advancements.advancements;
 
   if (advName) {
@@ -900,19 +888,24 @@ export function buildSkillFullList(store, className, options = {}) {
   };
 }
 
-function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm) {
-  const parsed = parseRoadmapGoal(retrieval.query || '', snapshotNorm);
+function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm, goalOverride = null) {
+  const parsed = parseRoadmapGoal(retrieval.query || '', snapshotNorm, goalOverride);
   const goal = {
     mainClass: task.mainClass || parsed.mainClass,
     subClass: task.subClass ?? parsed.subClass,
-    advancementName: task.advancementName || task.goal || parsed.advancementName,
+    advancementName: task.advancementName ?? parsed.advancementName,
+    unknownAdvancement: task.unknownAdvancement ?? parsed.unknownAdvancement,
+    roadmapMode: task.roadmapMode ?? parsed.roadmapMode,
     kitId: task.kitId ?? parsed.kitId,
+    goalOverride: parsed.goalOverride,
+    query: retrieval.query || '',
   };
 
   retrieval.plan = plan;
   retrieval.answerStyle = 'roadmap';
-  retrieval.intent = 'build_roadmap';
-  retrieval.promptProfile = 'build_roadmap';
+  retrieval.intent = plan.intent || (goal.unknownAdvancement ? 'unknown_entity' : 'build_roadmap');
+  retrieval.promptProfile = plan.promptProfile || retrieval.intent;
+  retrieval.unknownAdvancement = goal.unknownAdvancement || null;
   retrieval.retrievalClass = goal.mainClass;
 
   const ctx = buildGenericRoadmapContext(store, goal, {
@@ -930,12 +923,12 @@ function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm) {
   return retrieval;
 }
 
-function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts = {}, snapshotNorm = null) {
+function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts = {}, snapshotNorm = null, goalOverride = null) {
   if (!plan?.tasks?.length) return retrieval;
 
   const roadmapTask = plan.tasks.find((t) => t.type === 'build_roadmap');
   if (roadmapTask) {
-    return applyBuildRoadmapPlan(retrieval, plan, roadmapTask, store, snapshotNorm);
+    return applyBuildRoadmapPlan(retrieval, plan, roadmapTask, store, snapshotNorm, goalOverride);
   }
 
   const listTask = plan.tasks.find((t) => t.type === 'list_skills');
@@ -1004,6 +997,7 @@ function resolveRetrievalClass(wizardState, chargenState, snapshot, query = '') 
 export function retrieve(query, options = {}) {
   const store = loadAdvisorStore();
   const wizardState = normalizeWizardState(options.wizardState);
+  const goalOverride = options.goalOverride || null;
 
   let snapshotNorm = null;
   let l6Analysis = null;
@@ -1012,7 +1006,7 @@ export function retrieve(query, options = {}) {
     snapshotNorm = options.snapshot.meta?.layer === 'L6'
       ? options.snapshot
       : normalizeSnapshot(options.snapshot);
-    const advName = pickAdvancementName(query);
+    const advName = resolveAdvancementName(query);
     l6Analysis = analyzeSnapshot(snapshotNorm, {
       advancementNames: advName ? [advName] : null,
     });
@@ -1023,7 +1017,7 @@ export function retrieve(query, options = {}) {
 
   let plan = options.plan;
   if (!plan && snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm })) {
-    plan = planBuildRoadmapFromRules(query, { snapshot: snapshotNorm, mode: options.mode });
+    plan = planBuildRoadmapFromRules(query, { snapshot: snapshotNorm, mode: options.mode, goalOverride });
   }
 
   const retrievalClass = resolveRetrievalClass(
@@ -1032,13 +1026,14 @@ export function retrieve(query, options = {}) {
     snapshotNorm || options.snapshot,
     query,
   );
+  const effectiveClass = goalOverride?.mainClass || retrievalClass;
   const entityHits = resolveEntities(query, store.entities);
   const route = routeQuery({
     query,
     mode: options.mode,
     entityHits,
     wizardState,
-    className: retrievalClass,
+    className: effectiveClass,
     snapshot: snapshotNorm,
   });
   const roadmapTask = plan?.tasks?.find((t) => t.type === 'build_roadmap');
@@ -1047,14 +1042,17 @@ export function retrieve(query, options = {}) {
     ? {
       mainClass: roadmapTask.mainClass,
       subClass: roadmapTask.subClass,
-      advancementName: roadmapTask.advancementName || roadmapTask.goal,
+      advancementName: roadmapTask.advancementName,
+      unknownAdvancement: roadmapTask.unknownAdvancement,
+      roadmapMode: roadmapTask.roadmapMode,
       kitId: roadmapTask.kitId,
+      query,
     }
-    : parseRoadmapGoal(query, snapshotNorm);
-  if (roadmapTask || plan?.intent === 'build_roadmap' || panelRoadmap) {
+    : parseRoadmapGoal(query, snapshotNorm, goalOverride);
+  if (roadmapTask || plan?.intent === 'build_roadmap' || plan?.intent === 'unknown_entity' || panelRoadmap) {
     const roadmapRoute = getRoadmapRouteConfig(roadmapGoal);
-    route.intent = 'build_roadmap';
-    route.promptProfile = 'build_roadmap';
+    route.intent = plan?.intent || 'build_roadmap';
+    route.promptProfile = plan?.promptProfile || route.intent;
     route.layers = roadmapRoute.layers;
     route.topK = roadmapRoute.topK;
   }
@@ -1158,6 +1156,7 @@ export function retrieve(query, options = {}) {
       queryTokens,
       l2Opts,
       snapshotNorm,
+      goalOverride,
     );
   }
 
@@ -1303,15 +1302,26 @@ export function formatContext(retrieval) {
   }
 
   if (retrieval.results.L3) {
+    const roadmapMode = retrieval.intent === 'build_roadmap' || retrieval.answerStyle === 'roadmap';
     lines.push('## L3 进阶');
     for (const a of retrieval.results.L3.advancements || []) {
       const doc = retrieval.results.L3.documentedSkills?.find((d) => d.advancementName === a.name || d.name === a.name);
       const conf = doc ? 'documented' : a.confidence;
       lines.push(`- ${a.name} [${a.scope}] 属性${JSON.stringify(a.attrsRequired)} 置信度${conf}`);
       if (doc) {
-        lines.push(`  描述: ${doc.description?.slice(0, 160) || ''}`);
-        for (const t of (doc.talents || []).slice(0, 6)) {
-          lines.push(`  · ${t.name}（${t.kind}）: ${(t.summary || '').slice(0, 140)}`);
+        if (roadmapMode) {
+          const brief = briefAdvancementTalents(a.name);
+          if (brief?.abilityNames?.length) {
+            lines.push(`  天赋名（路线模式·勿展开）：${brief.abilityNames.join('、')}`);
+          }
+          for (const ins of brief?.insightMilestones || []) {
+            lines.push(`  · 心得节点·${ins.name}：${ins.summary.slice(0, 120)}`);
+          }
+        } else {
+          lines.push(`  描述: ${doc.description?.slice(0, 160) || ''}`);
+          for (const t of (doc.talents || []).slice(0, 6)) {
+            lines.push(`  · ${t.name}（${t.kind}）: ${(t.summary || '').slice(0, 140)}`);
+          }
         }
       } else {
         lines.push(`  ${a.inferenceBlurb}`);

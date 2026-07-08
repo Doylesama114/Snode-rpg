@@ -63,6 +63,17 @@ node scripts/validate-advisor-build-kit.mjs
 
 ```bash
 node scripts/validate-advisor-roadmap.mjs
-node scripts/mage-advisor.mjs --dry-run --json "我想玩一个主职业法师，子职业战士的角色，然后想进阶魔剑士，我该怎么选择我的技能"
-node scripts/mage-advisor.mjs --dry-run --json "我是魔剑士 build，当前技能怎么选" --snapshot advisor/snapshots/mock-magic-sword-l6.json
+node scripts/validate-advisor-golden.mjs
+node scripts/mage-advisor.mjs --dry-run --json "我想玩飞贼，我该怎么安排我的成长路线？"
 ```
+
+## 作答契约（7061 / Advisor 4.0 batch1）
+
+`build_roadmap` 与 `advancement` 分工：
+
+| 用户意图 | 输出 |
+|----------|------|
+| 成长路线 / 怎么规划 | 六段式路线（见 `ROADMAP_ANSWER_SECTIONS`） |
+| 有哪些能力 / 效果 | `advancement` 百科 |
+
+路线模式 L3 上下文仅列天赋名与心得节点，不注入天赋 summary 全文。见 `scripts/advisor-advancement-resolve.mjs`、`formatRoadmapContext`。

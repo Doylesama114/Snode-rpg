@@ -6,6 +6,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { resolveL2LayerForClass, MAGE_L2, matchAllClassesFromQuery } from './advisor-class-l2.mjs';
 import { getMainClass } from './advisor-snapshot.mjs';
+import {
+  resolveAdvancementName,
+  getAdvancementMeta,
+  inferSourceClassForAdvancement,
+  briefAdvancementTalents,
+  detectUnknownAdvancementQuery,
+  findSimilarAdvancements,
+} from './advisor-advancement-resolve.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ADVISOR = path.join(__dirname, '..', 'advisor');
@@ -13,13 +21,24 @@ const KITS_DIR = path.join(ADVISOR, 'build_kits');
 
 export const ROADMAP_DISCLAIMER = '以上建议由 AI 根据当前资料整理，仅作参考；具体 build 请结合角色实际情况、规则书与 DM 沟通。';
 
+/** Required answer sections for build_roadmap (7062). */
+export const ROADMAP_ANSWER_SECTIONS = [
+  '目标确认',
+  '基础阶段（主职 L1–4）',
+  '进阶门槛与时机',
+  '进阶后节点',
+  '技能与专长方向',
+  '免责声明',
+];
+
 const KIT_ALIASES = {
   magic_sword: ['魔剑士', '魔武', 'gish'],
   magic_bullet: ['魔弹射手', '魔弹'],
 };
 
-const BUILD_ROADMAP_RE = /怎么选|如何选择|想玩|规划|路线|build|配点|该怎么选|如何选|进阶.*怎么|怎么.*进阶|怎么规划|如何规划/;
-const ROADMAP_SKILL_RE = /技能|build|配|路线|规划|流派|风格|专长|天赋|进阶/;
+const BUILD_ROADMAP_RE = /怎么选|如何选择|想玩|想成为|打算玩|怎么玩|规划|路线|成长|安排|build|配点|该怎么选|如何选|进阶.*怎么|怎么.*进阶|怎么规划|如何规划/;
+const ROADMAP_SKILL_RE = /技能|build|配|路线|规划|流派|风格|专长|天赋|进阶|成长|安排|怎么玩/;
+const ADVANCEMENT_PLAY_RE = /想玩|想成为|打算玩|怎么玩/;
 const CATALOG_LIST_RE = /有哪些|能学|哪些|什么技能|什么法术|什么战技|除了.*初始|除.*起手/;
 const PANEL_REVIEW_RE = /怎么评价|评价.*build|当前的build|当前.*build|build.*评价/;
 const PANEL_SKILL_RE = /技能|适合|缺口|学什么|点什么|推荐|build/i;
@@ -31,7 +50,7 @@ const TIER_BY_BAND = {
 };
 
 let _kitCache = null;
-let _advCache = null;
+let _levelingCache = null;
 
 function loadKitIndex() {
   if (_kitCache) return _kitCache;
@@ -49,12 +68,35 @@ function loadKitIndex() {
   return _kitCache;
 }
 
-function loadAdvancementsList() {
-  if (!_advCache) {
-    _advCache = JSON.parse(fs.readFileSync(path.join(ADVISOR, 'advancements.json'), 'utf8')).advancements || [];
+function loadLevelingRules() {
+  if (!_levelingCache) {
+    _levelingCache = JSON.parse(fs.readFileSync(path.join(ADVISOR, 'rules', 'leveling.json'), 'utf8'));
   }
-  return _advCache;
+  return _levelingCache;
 }
+
+export function buildLevelingHints() {
+  const leveling = loadLevelingRules();
+  const levels = (leveling.mainClass?.levels || [])
+    .filter((row) => row.level >= 1 && row.level <= 5)
+    .map((row) => ({
+      level: row.level,
+      proficiency: row.proficiency,
+      attr_gain: row.attr_gain,
+      skill_slots: row.skill_slots,
+      other: row.other,
+      rank: row.rank,
+    }));
+
+  return {
+    mainLevels1to5: levels,
+    featWindows: leveling.featMilestones || [],
+    advancementUnlock: (leveling.advancementMilestones || []).find((m) => m.level === 5) || null,
+    levelUpChecklist: (leveling.levelUpAnswerChecklist || []).slice(0, 6),
+  };
+}
+
+export { resolveAdvancementName };
 
 export function loadBuildKit(kitId) {
   if (!kitId) return null;
@@ -69,23 +111,12 @@ export function detectRoadmapKitId(query) {
   return null;
 }
 
-export function resolveAdvancementName(query) {
-  const q = String(query || '');
-  const names = loadAdvancementsList()
-    .map((a) => a.name)
-    .sort((a, b) => b.length - a.length);
-  for (const name of names) {
-    if (q.includes(name)) return name;
-  }
-  if (/冰霜/.test(q) && !q.includes('冰霜护盾')) return '冰霜法师';
-  return null;
-}
-
 /**
  * @param {string} query
  * @param {object|null} snapshot
+ * @param {object|null} [goalOverride]
  */
-export function parseRoadmapGoal(query, snapshot = null) {
+export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
   const q = String(query || '');
   const classesFromQuery = matchAllClassesFromQuery(q);
   let mainClass = classesFromQuery[0] || null;
@@ -103,17 +134,68 @@ export function parseRoadmapGoal(query, snapshot = null) {
     if (sub?.name) subClass = sub.name;
   }
 
-  const advancementName = resolveAdvancementName(q);
+  let advancementName = resolveAdvancementName(q);
+  const unknownAdvancement = advancementName ? null : detectUnknownAdvancementQuery(q);
   const kitId = detectRoadmapKitId(q);
 
-  if (!mainClass) mainClass = '法师';
+  if (goalOverride) {
+    if (goalOverride.advancementName) advancementName = goalOverride.advancementName;
+    if (goalOverride.mainClass) {
+      if (!goalOverride.dropClasses?.includes(goalOverride.mainClass)) {
+        mainClass = goalOverride.mainClass;
+      } else if (goalOverride.advancementName) {
+        mainClass = inferSourceClassForAdvancement(goalOverride.advancementName);
+      }
+    }
+    if (goalOverride.dropClasses?.length && mainClass && goalOverride.dropClasses.includes(mainClass)) {
+      mainClass = goalOverride.mainClass
+        || (advancementName ? inferSourceClassForAdvancement(advancementName) : null);
+    }
+    if (goalOverride.sessionFocus === 'reject_prior' && goalOverride.advancementName) {
+      mainClass = goalOverride.mainClass || inferSourceClassForAdvancement(goalOverride.advancementName);
+      subClass = null;
+    }
+  }
+
+  if (!mainClass && advancementName) {
+    mainClass = inferSourceClassForAdvancement(advancementName);
+  }
+  if (!mainClass && !unknownAdvancement) {
+    const mageOriented = /法师|塑能|咒法|奥法|法术|戏法|高输出.*法|法.*输出/.test(q);
+    if (mageOriented || classesFromQuery.includes('法师')) {
+      mainClass = '法师';
+    }
+  }
+
+  const roadmapMode = inferRoadmapMode({
+    query: q,
+    advancementName,
+    unknownAdvancement: unknownAdvancement?.name || null,
+    subClass,
+    mainClass,
+  });
 
   return {
-    mainClass,
+    mainClass: mainClass || null,
     subClass: subClass || null,
     advancementName,
+    unknownAdvancement: unknownAdvancement?.name || null,
     kitId,
+    roadmapMode,
+    goalOverride: goalOverride || null,
   };
+}
+
+export function inferRoadmapMode(goal = {}) {
+  if (goal.unknownAdvancement) return 'unknown_advancement';
+  if (goal.roadmapMode) return goal.roadmapMode;
+  if (goal.advancementName && !goal.subClass && !(/主职|子职|主职业|子职业/.test(goal.query || ''))) {
+    return 'advancement_primary';
+  }
+  if (/法师|塑能|咒法|高输出.*法|法.*输出/.test(goal.query || '') && !goal.advancementName) {
+    return 'orientation_only';
+  }
+  return 'dual_class_or_orientation';
 }
 
 export function isBuildRoadmapQuery(query) {
@@ -124,8 +206,11 @@ export function isBuildRoadmapQuery(query) {
   const planning = BUILD_ROADMAP_RE.test(q) && ROADMAP_SKILL_RE.test(q);
   const advancementPlan = /进阶/.test(q) && /怎么|规划|路线|选|build|技能/i.test(q);
   const dualClassPlan = /主职|子职|主职业|子职业/.test(q) && planning;
+  const advancementOnlyPlan = !!resolveAdvancementName(q) && ADVANCEMENT_PLAY_RE.test(q);
+  const sessionFocusPlan = !!resolveAdvancementName(q) && /只说|只问|只谈|只关心|现在只|就只|没问|不是问/.test(q);
+  const unknownPlan = !!detectUnknownAdvancementQuery(q);
 
-  return planning || advancementPlan || dualClassPlan;
+  return planning || advancementPlan || dualClassPlan || advancementOnlyPlan || sessionFocusPlan || unknownPlan;
 }
 
 export function isPanelRoadmapQuery(query, ctx = {}) {
@@ -135,10 +220,33 @@ export function isPanelRoadmapQuery(query, ctx = {}) {
 }
 
 export function getRoadmapRouteConfig(goal = {}) {
-  const mainClass = goal.mainClass || '法师';
+  const mainClass = goal.mainClass
+    || (goal.advancementName ? inferSourceClassForAdvancement(goal.advancementName) : null)
+    || '法师';
   const mainLayer = mainClass === '法师' ? MAGE_L2 : resolveL2LayerForClass(mainClass);
+  const mode = goal.roadmapMode || inferRoadmapMode(goal);
   const layers = ['L3'];
   const topK = { L3: 12, 'L2-universal': 14, L4: 12, L0: 5 };
+
+  if (mode === 'advancement_primary') {
+    topK.L0 = 8;
+    topK.L3 = 14;
+    topK.L4 = 10;
+    topK['L2-universal'] = 4;
+    if (mainLayer) {
+      layers.push(mainLayer);
+      topK[mainLayer] = 22;
+    }
+    layers.push('L4', 'L0', 'L2-universal');
+    return { layers, topK, subLayer: null, goal: { ...goal, roadmapMode: mode } };
+  }
+
+  if (mode === 'unknown_advancement') {
+    layers.push('L0');
+    topK.L0 = 6;
+    topK.L3 = 8;
+    return { layers, topK, subLayer: null, goal: { ...goal, roadmapMode: mode } };
+  }
 
   if (mainLayer) {
     layers.push(mainLayer);
@@ -226,8 +334,7 @@ function buildClassPhaseCatalog(store, className) {
 }
 
 function findAdvancementMeta(name) {
-  if (!name) return null;
-  return loadAdvancementsList().find((a) => a.name === name) || null;
+  return getAdvancementMeta(name);
 }
 
 function sampleFeats(store, limit = 10) {
@@ -328,30 +435,45 @@ export function buildGenericRoadmapContext(store, goal, options = {}) {
   const snapshot = options.snapshot || null;
   const main = snapshot ? getMainClass(snapshot) : { name: goal.mainClass, level: 1 };
   const mainLevel = main.level || 1;
+  const effectiveMainClass = goal.mainClass || main.name
+    || (goal.advancementName ? inferSourceClassForAdvancement(goal.advancementName) : null)
+    || '法师';
   const advancement = findAdvancementMeta(goal.advancementName);
   const kit = goal.kitId ? loadBuildKit(goal.kitId) : null;
+  const advancementBrief = goal.advancementName ? briefAdvancementTalents(goal.advancementName) : null;
+  const unknownAdvancement = goal.unknownAdvancement || null;
+  const similarAdvancements = unknownAdvancement
+    ? findSimilarAdvancements(unknownAdvancement)
+    : [];
 
   return {
     mode: 'generic',
     disclaimer: ROADMAP_DISCLAIMER,
+    roadmapMode: goal.roadmapMode || null,
+    unknownAdvancement,
+    similarAdvancements,
+    goalOverride: goal.goalOverride || null,
     goal: {
       advancementName: goal.advancementName || advancement?.name || null,
-      mainClass: goal.mainClass || main.name,
+      mainClass: effectiveMainClass,
       subClass: goal.subClass || null,
     },
     advancement: advancement ? {
       name: advancement.name,
       scope: advancement.scope,
+      sourceClasses: advancement.sourceClasses || [],
       attrsRequired: advancement.attrsRequired,
       inferenceBlurb: advancement.inferenceBlurb,
       confidence: advancement.confidence,
       conditions: (advancement.conditions || []).slice(0, 4),
     } : null,
+    advancementBrief,
+    levelingHints: buildLevelingHints(),
     scenario: snapshot ? 'panel' : 'planning',
     mainLevel,
     phaseBand: getBuildPhaseBand(mainLevel),
     phaseLabel: getBuildPhaseLabel(getBuildPhaseBand(mainLevel)),
-    mainClassCatalog: buildClassPhaseCatalog(store, goal.mainClass || main.name),
+    mainClassCatalog: buildClassPhaseCatalog(store, effectiveMainClass),
     subClassCatalog: goal.subClass ? buildClassPhaseCatalog(store, goal.subClass) : null,
     universalTalents: {
       early: sampleUniversalTalents(store, 'early'),
@@ -390,15 +512,71 @@ export function formatRoadmapContext(ctx) {
   lines.push(`- 目标：${goalParts.join(' · ')}`);
   lines.push(`- 场景：${ctx.scenario === 'panel' ? '面板（含快照）' : '规划（无快照）'}`);
   lines.push(`- 当前阶段：${ctx.phaseLabel || ''}${ctx.mainLevel ? `（主职 L${ctx.mainLevel}）` : ''}`);
+  if (ctx.roadmapMode) lines.push(`- 路线模式：${ctx.roadmapMode}`);
   lines.push('');
+
+  if (ctx.goalOverride?.sessionFocus === 'reject_prior') {
+    lines.push('### 会话目标重置（硬约束）');
+    lines.push('- 用户已否定此前对话中的职业/build 假设；**勿引用**被否定的主职或兼职建议。');
+    if (ctx.goalOverride.dropClasses?.length) {
+      lines.push(`- 勿再提及：${ctx.goalOverride.dropClasses.join('、')}`);
+    }
+    if (ctx.goal?.advancementName) {
+      lines.push(`- 当前仅讨论进阶「${ctx.goal.advancementName}」及其兼容主职路线。`);
+    }
+    lines.push('');
+  }
+
+  if (ctx.unknownAdvancement) {
+    lines.push('### 未收录进阶（硬约束）');
+    lines.push(`- 「${ctx.unknownAdvancement}」**不在当前资料库**；不得编造属性门槛、标识消耗或天赋列表。`);
+    lines.push('- 须明确告知用户「未收录」，建议向 DM 或规则书确认；可列出下方相近 documented 进阶作方向参考（注明不确定）。');
+    if (ctx.similarAdvancements?.length) {
+      lines.push(`- 相近 documented 进阶（仅供参考）：${ctx.similarAdvancements.join('、')}`);
+    }
+    lines.push('');
+  }
 
   if (ctx.advancement) {
     const a = ctx.advancement;
     lines.push('### L3 进阶参考');
     lines.push(`- ${a.name}（${a.scope || ''}，confidence=${a.confidence || '?'})`);
+    if (a.sourceClasses?.length) lines.push(`- 兼容主职：${a.sourceClasses.join('、')}`);
     if (a.inferenceBlurb) lines.push(`- 方向：${a.inferenceBlurb}`);
     if (a.attrsRequired) lines.push(`- 属性门槛：${JSON.stringify(a.attrsRequired)}`);
     if (a.conditions?.length) lines.push(`- 剧情/行为条件（摘要）：${a.conditions.join('；')}`);
+    lines.push('');
+  }
+
+  if (ctx.advancementBrief) {
+    const b = ctx.advancementBrief;
+    lines.push('### 进阶天赋索引（路线模式：仅列名与心得节点，勿展开机制全文）');
+    if (b.abilityNames?.length) {
+      lines.push(`- 天赋名（供优先级参考，勿逐条解释）：${b.abilityNames.join('、')}`);
+    }
+    for (const ins of b.insightMilestones || []) {
+      lines.push(`- 等级奖励·${ins.name}：${ins.summary}`);
+    }
+    lines.push('');
+  }
+
+  if (ctx.levelingHints) {
+    const lh = ctx.levelingHints;
+    lines.push('### L0 主职升级摘要（L1–5，供路线分段）');
+    for (const row of lh.mainLevels1to5 || []) {
+      const parts = [`L${row.level}`];
+      if (row.proficiency) parts.push(`熟练+${row.proficiency}`);
+      if (row.attr_gain) parts.push(`属性+${row.attr_gain}`);
+      if (row.skill_slots) parts.push(`技能槽+${row.skill_slots}`);
+      if (row.other && row.other !== '-') parts.push(String(row.other).slice(0, 60));
+      lines.push(`- ${parts.join(' · ')}`);
+    }
+    if (lh.featWindows?.length) {
+      lines.push(`- 专长窗口：${lh.featWindows.map((f) => `L${f.level}`).join('、')}`);
+    }
+    if (lh.advancementUnlock) {
+      lines.push(`- ${lh.advancementUnlock.reward}（L${lh.advancementUnlock.level}）`);
+    }
     lines.push('');
   }
 
@@ -459,6 +637,21 @@ export function formatRoadmapContext(ctx) {
     lines.push('');
   }
 
+  lines.push('### 作答形态（硬约束 · build_roadmap）');
+  lines.push('- 本问是**成长路线**，不是进阶能力百科。须按顺序写出以下章节标题（可微调措辞，内容不得缺失）：');
+  ROADMAP_ANSWER_SECTIONS.forEach((sec, i) => {
+    lines.push(`  ${i + 1}. ${sec}`);
+  });
+  lines.push('- **禁止**：逐条粘贴 L3 天赋 summary 全文；引入上下文未出现的主职（尤其默认法师）；把进阶与 L7 兼职混为一谈。');
+  if (ctx.roadmapMode === 'advancement_primary') {
+    lines.push('- **advancement_primary**：L1–4 写源主职（兼容主职）升级与技能方向；L5 写进阶门槛；进阶后只列心得节点。');
+  }
+  if (ctx.unknownAdvancement) {
+    lines.push('- **unknown_advancement**：不得输出具体配点表；只谈一般规划框架 + 未收录声明。');
+  }
+  lines.push('- 用户若问「有哪些能力/效果」才列天赋机制；本问只写等级节点与技能/专长方向。');
+  lines.push('');
+
   lines.push('### 作答要求（给模型）');
   lines.push('- 根据用户取向与 L2/L3/L4 检索内容组织路线，可提出多条流派思路，勿机械照搬上文示例清单。');
   lines.push('- 有快照时：推荐技能不得超出「可学技能位阶」；进阶≠兼职。');
@@ -469,10 +662,14 @@ export function formatRoadmapContext(ctx) {
 
 export function planBuildRoadmapFromRules(query, ctx = {}) {
   if (!isPanelRoadmapQuery(query, ctx)) return null;
-  const goal = parseRoadmapGoal(query, ctx.snapshot || null);
+  const goalOverride = ctx.goalOverride || null;
+  const goal = parseRoadmapGoal(query, ctx.snapshot || null, goalOverride);
   let scenario = 'mixed';
   if (ctx.mode === 'wizard') scenario = 'chargen';
   else if (ctx.snapshot) scenario = 'build';
+
+  const promptProfile = goal.unknownAdvancement ? 'unknown_entity' : 'build_roadmap';
+  const intent = goal.unknownAdvancement ? 'unknown_entity' : 'build_roadmap';
 
   return {
     source: 'rules',
@@ -484,10 +681,12 @@ export function planBuildRoadmapFromRules(query, ctx = {}) {
       mainClass: goal.mainClass,
       subClass: goal.subClass,
       advancementName: goal.advancementName,
-      goal: goal.advancementName || goal.mainClass,
+      unknownAdvancement: goal.unknownAdvancement,
+      roadmapMode: goal.roadmapMode,
+      goal: goal.advancementName || goal.unknownAdvancement || goal.mainClass,
       kitId: goal.kitId || null,
     }],
-    intent: 'build_roadmap',
-    promptProfile: 'build_roadmap',
+    intent,
+    promptProfile,
   };
 }
