@@ -22,15 +22,20 @@
 
 ## Build Kit
 
-路径：`advisor/build_kits/magic_sword.json`
+| kit | 路径 | 主职 + 子职 |
+|-----|------|-------------|
+| 魔剑士 | `advisor/build_kits/magic_sword.json` | 法师 + 战士 |
+| 魔弹射手 | `advisor/build_kits/magic_bullet.json` | 法师 + 猎人 |
 
-- 主职流派：附魔 + 塑能（可选防护/咒法）
-- 子职流派：狂攻 + 防护
-- 分阶段技能 picks（early/mid/late）
-- 通用天赋、L4/L8/L13 专长建议
-- 阶段总结文案
+扩展新 kit：新增 JSON + `ROADMAP_GOAL_PATTERNS` / `KIT_ALIASES`；`getRoadmapRouteConfig` 按子职注入对应 L2 层。
 
-扩展新 kit：新增 JSON + `ROADMAP_GOAL_PATTERNS` / `KIT_ALIASES`。
+## 数据校验
+
+```bash
+node scripts/validate-advisor-build-kit.mjs
+```
+
+校验 kit 内技能名是否收录、流派是否与 L2 索引一致（起手/无 style 除外）。
 
 ## 模块
 

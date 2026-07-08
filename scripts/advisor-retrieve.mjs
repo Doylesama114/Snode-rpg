@@ -43,6 +43,8 @@ import {
   formatRoadmapContext,
   planBuildRoadmapFromRules,
   isPanelRoadmapQuery,
+  detectRoadmapKitId,
+  getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
@@ -915,7 +917,7 @@ function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm) {
   retrieval.results._roadmap = ctx;
   retrieval.results._roadmapText = formatRoadmapContext(ctx);
 
-  const layers = ['L3', MAGE_L2, 'L2-warrior', 'L2-universal', 'L4', 'L0'];
+  const { layers } = getRoadmapRouteConfig(task.kitId);
   for (const layer of layers) {
     if (!retrieval.layersRequested.includes(layer)) retrieval.layersRequested.push(layer);
     if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
@@ -1037,18 +1039,13 @@ export function retrieve(query, options = {}) {
   });
   const roadmapTask = plan?.tasks?.find((t) => t.type === 'build_roadmap');
   const panelRoadmap = snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm });
+  const roadmapKitId = roadmapTask?.kitId || detectRoadmapKitId(query) || 'magic_sword';
   if (roadmapTask || plan?.intent === 'build_roadmap' || panelRoadmap) {
+    const roadmapRoute = getRoadmapRouteConfig(roadmapKitId);
     route.intent = 'build_roadmap';
     route.promptProfile = 'build_roadmap';
-    route.layers = ['L3', MAGE_L2, 'L2-warrior', 'L2-universal', 'L4', 'L0'];
-    route.topK = {
-      L3: 10,
-      [MAGE_L2]: 14,
-      'L2-warrior': 14,
-      'L2-universal': 12,
-      L4: 10,
-      L0: 4,
-    };
+    route.layers = roadmapRoute.layers;
+    route.topK = roadmapRoute.topK;
   }
   const queryTokens = tokenize(query);
   const topK = { ...route.topK, ...options.topK };

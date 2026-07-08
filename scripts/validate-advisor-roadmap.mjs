@@ -70,5 +70,13 @@ const rPanel2 = retrieve(PANEL_QUERY, { plan: planPanel2, snapshot: snap });
 const ctxPanel2 = formatContext(rPanel2);
 check('panel alt context 路线图', ctxPanel2.includes('Build 路线图'));
 
+const BULLET_QUERY = '我想玩主职业法师、子职业猎人，进阶魔弹射手，该怎么选技能';
+check('magic_bullet isPanelRoadmap', isBuildRoadmapQuery(BULLET_QUERY));
+const planBullet = planFromRules(BULLET_QUERY, {});
+check('magic_bullet plan kit', planBullet?.tasks?.[0]?.kitId === 'magic_bullet');
+const rBullet = retrieve(BULLET_QUERY, { plan: planBullet });
+check('magic_bullet L2-hunter', rBullet.layersHit.includes('L2-hunter'));
+check('magic_bullet context 射击', formatContext(rBullet).includes('射击'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

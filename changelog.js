@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7059',
+    date: '2026-07-08',
+    changes: [
+      '魔剑士 kit 流派校正',
+      '魔弹射手 build kit',
+      'validate-advisor-build-kit',
+      '子职动态 L2 层'
+    ]
+  },
+
+
+  {
     version: '1.0.7058',
     date: '2026-07-08',
     changes: [

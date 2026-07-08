@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { resolveL2LayerForClass } from './advisor-class-l2.mjs';
+import { resolveL2LayerForClass, MAGE_L2 } from './advisor-class-l2.mjs';
 import { getMainClass } from './advisor-snapshot.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,10 +12,12 @@ const KITS_DIR = path.join(__dirname, '..', 'advisor', 'build_kits');
 
 const KIT_ALIASES = {
   magic_sword: ['魔剑士', '魔武', 'gish'],
+  magic_bullet: ['魔弹射手', '魔弹'],
 };
 
 const ROADMAP_GOAL_PATTERNS = [
   { kitId: 'magic_sword', re: /魔剑士|魔武双修|主职.*法师.*子职.*战士|主职业法师.*子职业战士/ },
+  { kitId: 'magic_bullet', re: /魔弹射手|魔弹|主职.*法师.*子职.*猎人|主职业法师.*子职业猎人/ },
 ];
 
 const BUILD_ROADMAP_RE = /怎么选|如何选择|想玩|规划|路线|build|配点|技能.*选|选.*技能|进阶.*怎么|怎么.*进阶/;
@@ -76,6 +78,21 @@ export function isPanelRoadmapQuery(query, ctx = {}) {
   if (isBuildRoadmapQuery(query)) return true;
   if (!ctx.snapshot) return false;
   return PANEL_REVIEW_RE.test(q) && PANEL_SKILL_RE.test(q);
+}
+
+export function getRoadmapRouteConfig(kitId = 'magic_sword') {
+  const kit = loadBuildKit(kitId);
+  const subLayer = resolveL2LayerForClass(kit?.subClass || '战士') || 'L2-warrior';
+  const layers = ['L3', MAGE_L2, subLayer, 'L2-universal', 'L4', 'L0'];
+  const topK = {
+    L3: 10,
+    [MAGE_L2]: 14,
+    [subLayer]: 14,
+    'L2-universal': 12,
+    L4: 10,
+    L0: 4,
+  };
+  return { layers, topK, subLayer, kit };
 }
 
 /**
@@ -321,13 +338,13 @@ export function formatRoadmapContext(ctx) {
   }
 
   lines.push('');
-  lines.push('### 战士（子职）流派与分阶段战技');
+  lines.push(`### ${ctx.subClass}（子职）流派与分阶段战技`);
   lines.push(`- 主选：${ctx.warrior.primaryStyle.name} — ${ctx.warrior.primaryStyle.reason}`);
   lines.push(`- 副选：${ctx.warrior.secondaryStyle.name} — ${ctx.warrior.secondaryStyle.reason}`);
   for (const band of ['early', 'mid', 'late']) {
     const ph = ctx.warrior.phases[band];
     if (!ph) continue;
-    lines.push(`\n#### 战士 · ${ph.label}`);
+    lines.push(`\n#### ${ctx.subClass} · ${ph.label}`);
     for (const [style, skills] of Object.entries(ph.styles)) {
       const items = skills.map((s) => `${s.name}(${s.tier}${s.found ? '' : '·未收录'})`).join('、');
       lines.push(`- ${style}：${items}`);
@@ -383,6 +400,7 @@ export function formatRoadmapContext(ctx) {
 export function planBuildRoadmapFromRules(query, ctx = {}) {
   if (!isPanelRoadmapQuery(query, ctx)) return null;
   const kitId = detectRoadmapKitId(query) || 'magic_sword';
+  const kit = loadBuildKit(kitId);
   let scenario = 'mixed';
   if (ctx.mode === 'wizard') scenario = 'chargen';
   else if (ctx.snapshot) scenario = 'build';
@@ -394,9 +412,9 @@ export function planBuildRoadmapFromRules(query, ctx = {}) {
     tasks: [{
       type: 'build_roadmap',
       kitId,
-      mainClass: '法师',
-      subClass: '战士',
-      goal: kitId === 'magic_sword' ? '魔剑士' : kitId,
+      mainClass: kit?.mainClass || '法师',
+      subClass: kit?.subClass || '战士',
+      goal: kit?.advancementName || kitId,
     }],
     intent: 'build_roadmap',
     promptProfile: 'build_roadmap',
