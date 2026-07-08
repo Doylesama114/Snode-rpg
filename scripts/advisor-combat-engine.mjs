@@ -54,6 +54,59 @@ function categoryBonusApplies(bonus, attackType) {
 }
 
 /**
+ * @param {string} query
+ */
+function parseActiveBuffsFromQuery(query) {
+  const q = String(query || '');
+  const activeBuffs = [];
+  for (const name of Object.keys(loadCombatSkillModifiers().skills || {})) {
+    if (q.includes(name)) activeBuffs.push(name);
+  }
+  return activeBuffs;
+}
+
+/**
+ * @param {string} query
+ */
+function parseMilestoneLevelFromQuery(query) {
+  const m = String(query || '').match(/(?:法师|角色|战士|猎人|牧师)?(?:等级|L)\s*(\d+)/i);
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * @param {object} p scenario params
+ * @param {object} skillMods
+ */
+function resolveAcBuffComponents(p, skillMods) {
+  const components = [];
+  let flat = 0;
+  for (const buffName of p.activeBuffs || []) {
+    const sk = skillMods.skills?.[buffName];
+    if (!sk?.acModifier) continue;
+    if (sk.requiresHeavyArmor && p.armorKey !== 'plate_18') continue;
+    let acFlat = sk.acModifier.base ?? 0;
+    const ms = sk.acModifier.milestones || {};
+    const ml = p.milestoneLevel;
+    if (ml != null) {
+      for (const [level, val] of Object.entries(ms)) {
+        const lv = Number(String(level).replace(/^L/, ''));
+        if (ml >= lv) acFlat = Math.max(acFlat, val);
+      }
+    }
+    if (acFlat !== 0) {
+      components.push({
+        source: buffName,
+        type: 'buff_ac',
+        value: acFlat,
+        detail: sk.note || `防御等级+${acFlat}`,
+      });
+      flat += acFlat;
+    }
+  }
+  return { flat, components };
+}
+
+/**
  * Merge combat-relevant snapshot skills into activeBuffs when listed in combat_skill_modifiers.
  * @param {object} merged
  * @param {object} snapshot
@@ -66,8 +119,8 @@ function mergeSnapshotCombatBuffs(merged, snapshot) {
     .filter(Boolean);
   merged.activeBuffs = [...(merged.activeBuffs || [])];
   for (const name of names) {
-    if (known.includes(name) && !merged.activeBuffs.includes(name)) {
-      merged.activeBuffs.push(name);
+    if (known.includes(name)) {
+      if (!merged.activeBuffs.includes(name)) merged.activeBuffs.push(name);
       merged._buffsFromSnapshot = true;
     }
   }
@@ -169,6 +222,8 @@ export function parseAcScenarioFromQuery(query) {
     armorKey,
     armorLabel,
     hasShield,
+    activeBuffs: parseActiveBuffsFromQuery(q),
+    milestoneLevel: parseMilestoneLevelFromQuery(q),
     query: q,
   };
 }
@@ -178,6 +233,7 @@ export function parseAcScenarioFromQuery(query) {
  */
 export function resolveAcScenario(params) {
   const basics = loadCombatBasics();
+  const skillMods = loadCombatSkillModifiers();
   const rules = basics.acRules || {};
   const p = params || {};
   const tpl = rules[p.armorKey] || rules.unarmored;
@@ -185,7 +241,8 @@ export function resolveAcScenario(params) {
   const dexCap = tpl.dexCap;
   const dexApplied = dexCap == null ? dexMod : Math.min(dexMod, dexCap);
   const shieldBonus = p.hasShield ? (rules.shieldBonus ?? 2) : 0;
-  const totalAc = (tpl.base ?? 10) + dexApplied + shieldBonus;
+  const acBuff = resolveAcBuffComponents(p, skillMods);
+  const totalAc = (tpl.base ?? 10) + dexApplied + shieldBonus + acBuff.flat;
 
   const components = [
     {
@@ -225,14 +282,20 @@ export function resolveAcScenario(params) {
       detail: `+${shieldBonus} AC`,
     });
   }
+  for (const c of acBuff.components) {
+    components.push(c);
+  }
 
   return {
     params: p,
-    formula: rules.formula || '护甲基础 + 敏捷 + 盾牌',
+    formula: rules.formula || '护甲基础 + 敏捷 + 盾牌 + Buff',
     components,
     totalAc,
     armorLabel: tpl.label || p.armorLabel,
-    sources: ['advisor/rules/combat_basics.json', 'advisor/items/equipment_index.json'],
+    sources: [
+      'advisor/rules/combat_basics.json',
+      'advisor/rules/combat_skill_modifiers.json',
+    ],
   };
 }
 
@@ -272,6 +335,13 @@ export function mergeSnapshotIntoAcScenario(scenario, snapshot, query = '') {
     merged._shieldFromSnapshot = true;
   }
 
+  if (merged.milestoneLevel == null) {
+    const mainLevel = snapshot.classes?.[0]?.level;
+    if (mainLevel) merged.milestoneLevel = mainLevel;
+  }
+
+  mergeSnapshotCombatBuffs(merged, snapshot);
+
   merged.snapshotUsed = true;
   merged.snapshotName = snapshot.name || '';
   return merged;
@@ -297,7 +367,7 @@ export function formatAcScenarioText(result) {
     }
   }
   if (result.params?.snapshotUsed) {
-    lines.push(`- L6 快照联动：${result.params.snapshotName || '角色'}${result.params._armorFromSnapshot ? ' · 护甲自快照' : ''}${result.params._dexFromSnapshot ? ' · 敏捷自快照' : ''}${result.params._shieldFromSnapshot ? ' · 盾牌自快照' : ''}`);
+    lines.push(`- L6 快照联动：${result.params.snapshotName || '角色'}${result.params._armorFromSnapshot ? ' · 护甲自快照' : ''}${result.params._dexFromSnapshot ? ' · 敏捷自快照' : ''}${result.params._shieldFromSnapshot ? ' · 盾牌自快照' : ''}${result.params._buffsFromSnapshot ? ' · AC/战斗 Buff 自快照技能' : ''}`);
   }
   lines.push(`- 语料：${result.sources.join('、')}`);
   lines.push('- LLM 须给出分解列表与 AC 合计；注明轻甲敏捷上限与盾牌加值。');
@@ -321,13 +391,8 @@ export function parseCombatScenarioFromQuery(query) {
     else if (/斧类|斧头|双手斧|战斧/.test(q)) weaponCategory = '斧类';
   }
 
-  const activeBuffs = [];
-  for (const name of Object.keys(loadCombatSkillModifiers().skills || {})) {
-    if (q.includes(name)) activeBuffs.push(name);
-  }
-
-  const milestoneM = q.match(/(?:法师|角色|战士)?(?:等级|L)\s*(\d+)/i);
-  const milestoneLevel = milestoneM ? Number(milestoneM[1]) : null;
+  const activeBuffs = parseActiveBuffsFromQuery(q);
+  const milestoneLevel = parseMilestoneLevelFromQuery(q);
 
   return {
     attackType: /远程|弓|弩|枪/.test(q) ? 'ranged' : 'melee',

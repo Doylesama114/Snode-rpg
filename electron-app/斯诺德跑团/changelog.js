@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7078',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch14: 战斗Phase4 AC Buff+穿透射击',
+      'validate-advisor-combat-modifiers',
+      'audit 58条 golden 39条'
+    ]
+  },
+
+
+  {
     version: '1.0.7077',
     date: '2026-07-08',
     changes: [

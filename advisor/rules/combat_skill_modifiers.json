@@ -1,10 +1,10 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.1.0",
-    "source": "advisor/skills/mage_index.json + warrior_index.json（Q3 试点 + 7076 扩展）",
+    "version": "1.2.0",
+    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7078 扩展）",
     "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击"]
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲"]
   },
   "skills": {
     "魔法武器": {
@@ -37,6 +37,26 @@
       "hitModifier": { "base": 0, "milestones": { "L4": 3, "L8": 5 } },
       "note": "专注瞄准远程攻击；L4 攻击命中检定值+3，L8 +5",
       "source": "warrior_index · 瞄准射击 summary"
+    },
+    "穿透射击": {
+      "className": "猎人",
+      "requiresRanged": true,
+      "hitModifier": { "base": 0, "milestones": { "L6": 5 } },
+      "note": "穿透射击远程攻击；L6 攻击命中检定值+5",
+      "source": "hunter_index · 穿透射击 summary"
+    },
+    "守护刻印": {
+      "className": "牧师",
+      "acModifier": { "base": 2 },
+      "note": "目标防御等级+2（无法超过 21）",
+      "source": "cleric_index · 守护刻印 summary"
+    },
+    "硬化铠甲": {
+      "className": "法师",
+      "requiresHeavyArmor": true,
+      "acModifier": { "base": 0, "milestones": { "L12": 2 } },
+      "note": "目标已穿戴重甲时 L12 防御等级+2（至多 22）",
+      "source": "mage_index · 硬化铠甲 summary"
     }
   }
 }

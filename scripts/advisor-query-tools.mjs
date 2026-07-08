@@ -637,7 +637,7 @@ export function detectStructuredQuestion(query) {
   const skillHit = resolveSkillNameFromQuery(q);
   const classes = matchAllClassesFromQuery(q);
 
-  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少|怎么算|当前|我的/.test(q)) {
+  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少|怎么算|当前|我的|开启/.test(q)) {
     const acScenario = parseAcScenarioFromQuery(q);
     return { intent: 'combat_math', mode: 'ac', scenario: acScenario, query: q };
   }

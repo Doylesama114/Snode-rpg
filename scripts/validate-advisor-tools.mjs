@@ -328,5 +328,17 @@ const snapRogue = loadSnapshotFile('advisor/snapshots/mock-rogue-l6.json');
 const rRogueSnapProf = retrieve('我还缺哪些巧手熟练项，最少升到多少级', { snapshot: snapRogue });
 check('retrieve rogue snap prof', formatContext(rRogueSnapProf).includes('熟练项获取路线') && formatContext(rRogueSnapProf).includes('巧手-开锁'));
 
+const acSeal = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2穿着皮甲开启守护刻印护甲值是多少'));
+check('guardian seal AC 15', acSeal.totalAc === 15 && acSeal.components.some((c) => c.source === '守护刻印'));
+
+const penetrate = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击开启穿透射击 L6 命中加值是多少'));
+check('penetrate shot L6 +10', penetrate.totalHitBonus === 10);
+
+const snapCleric = loadSnapshotFile('advisor/snapshots/mock-cleric-l6.json');
+const acSnapSeal = resolveAcScenario(mergeSnapshotIntoAcScenario(parseAcScenarioFromQuery('我开启了守护刻印，护甲值是多少'), snapCleric, '我开启了守护刻印，护甲值是多少'));
+check('snap cleric guardian AC 15', acSnapSeal.totalAc === 15);
+const rSnapAcSeal = retrieve('我开启了守护刻印，护甲值是多少', { snapshot: snapCleric });
+check('retrieve snap ac guardian', formatContext(rSnapAcSeal).includes('守护刻印') && formatContext(rSnapAcSeal).includes('15'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

@@ -275,6 +275,28 @@
       "expectIntent": "proficiency_roadmap",
       "mustInclude": ["Tools 层", "熟练项获取路线", "L6 快照联动", "巧手", "巧手-开锁"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-guardian-seal",
+      "query": "敏捷调整值+2穿着皮甲开启守护刻印护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "守护刻印", "15", "皮甲"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-penetrate-shot-l6",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击开启穿透射击 L6 命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "穿透射击", "+10", "弓箭类别增益"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-ac-cleric-guardian",
+      "query": "我开启了守护刻印，护甲值是多少",
+      "snapshotFile": "advisor/snapshots/mock-cleric-l6.json",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "15", "L6 快照联动", "守护刻印", "AC/战斗 Buff 自快照"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }

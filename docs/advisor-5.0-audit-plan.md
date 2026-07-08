@@ -308,7 +308,13 @@ LLM
 - 分类器/快照不再硬编码法师知识奥秘；`mock-rogue-l6.json`
 - Golden + CI batch13 must-pass（牧师宗教自然 · 游荡者巧手 · 快照巧手）
 
-### v1.0.7078+ — 后续
+### v1.0.7078 — 战斗 Phase 4 AC Buff（P1）✓
+
+- `acModifier` 支持；守护刻印/穿透射击/硬化铠甲 入 `combat_skill_modifiers.json`
+- `validate-advisor-combat-modifiers.mjs`；`mock-cleric-l6.json` 快照 AC Buff
+- Golden + CI batch14 must-pass（守护刻印 AC 15 · 穿透射击 +10 · 快照牧师 AC）
+
+### v1.0.7079+ — 后续
 
 ## 8. Golden / CI 策略
 

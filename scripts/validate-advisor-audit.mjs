@@ -358,6 +358,26 @@ const CASES = [
     snapshotFile: 'advisor/snapshots/mock-rogue-l6.json',
     expectInContext: ['L6 快照联动', '熟练项获取路线', '巧手', '巧手-开锁'],
   },
+  // --- 7078 batch14 combat Phase 4 AC buffs + modifiers ---
+  {
+    id: 'extra-ac-guardian-seal',
+    category: 'combat_math',
+    query: '敏捷调整值+2穿着皮甲开启守护刻印护甲值是多少',
+    expectInContext: ['护甲值演算', '守护刻印', '15', '皮甲'],
+  },
+  {
+    id: 'extra-combat-penetrate-shot',
+    category: 'combat_math',
+    query: '敏捷调整值+2有一点弓箭熟练远程攻击开启穿透射击 L6 命中加值是多少',
+    expectInContext: ['战斗命中演算', '穿透射击', '+10', '弓箭类别增益'],
+  },
+  {
+    id: 'snap-ac-cleric-seal',
+    category: 'panel_snapshot',
+    query: '我开启了守护刻印，护甲值是多少',
+    snapshotFile: 'advisor/snapshots/mock-cleric-l6.json',
+    expectInContext: ['L6 快照联动', '护甲值演算', '守护刻印', '15', 'AC/战斗 Buff 自快照'],
+  },
 ];
 
 function corpusHas(store, term) {
@@ -552,6 +572,19 @@ function classifyGap(c, ctxScore, store) {
       && ctx.includes('巧手') && ctx.includes('巧手-开锁')
       ? 'OK' : 'TOOL_GAP';
   }
+  if (c.id === 'extra-ac-guardian-seal') {
+    return r.intent === 'combat_math' && ctx.includes('护甲值演算') && ctx.includes('守护刻印') && ctx.includes('15')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'extra-combat-penetrate-shot') {
+    return r.intent === 'combat_math' && ctx.includes('穿透射击') && ctx.includes('+10') && ctx.includes('弓箭类别增益')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'snap-ac-cleric-seal') {
+    return r.intent === 'combat_math' && ctx.includes('L6 快照联动') && ctx.includes('守护刻印') && ctx.includes('15')
+      && ctx.includes('AC/战斗 Buff 自快照')
+      ? 'OK' : 'ENGINE_GAP';
+  }
 
   const corpusChecks = c.expectInContext.map((term) => ({
     term,
@@ -631,6 +664,7 @@ const BATCH10_IDS = new Set(['extra-priest-starting-gear', 'snap-ac-armor', 'ext
 const BATCH11_IDS = new Set(['feedback-pending-bg-deities', 'feedback-pending-priest-gear', 'feedback-pending-soldier-bg']);
 const BATCH12_IDS = new Set(['extra-combat-axe-crit', 'extra-combat-aim-shot', 'snap-combat-buffs-skills']);
 const BATCH13_IDS = new Set(['extra-prof-cleric-religion', 'extra-prof-rogue-deft', 'snap-prof-rogue-deft']);
+const BATCH14_IDS = new Set(['extra-ac-guardian-seal', 'extra-combat-penetrate-shot', 'snap-ac-cleric-seal']);
 
 console.log(`\nNon-OK cases: ${failures}/${CASES.length}`);
 console.log(`Audit cases total: ${CASES.length} (target ≥30)`);
@@ -647,6 +681,7 @@ const batch10Failed = rows.filter((r) => BATCH10_IDS.has(r.id) && r.gap !== 'OK'
 const batch11Failed = rows.filter((r) => BATCH11_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch12Failed = rows.filter((r) => BATCH12_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch13Failed = rows.filter((r) => BATCH13_IDS.has(r.id) && r.gap !== 'OK').length;
+const batch14Failed = rows.filter((r) => BATCH14_IDS.has(r.id) && r.gap !== 'OK').length;
 console.log(`7065 batch1 must-pass: ${BATCH1_IDS.size - batch1Failed}/${BATCH1_IDS.size}`);
 console.log(`7066 batch2 must-pass: ${BATCH2_IDS.size - batch2Failed}/${BATCH2_IDS.size}`);
 console.log(`7067 batch3 must-pass: ${BATCH3_IDS.size - batch3Failed}/${BATCH3_IDS.size}`);
@@ -660,6 +695,7 @@ console.log(`7074 batch10 must-pass: ${BATCH10_IDS.size - batch10Failed}/${BATCH
 console.log(`7075 batch11 must-pass: ${BATCH11_IDS.size - batch11Failed}/${BATCH11_IDS.size}`);
 console.log(`7076 batch12 must-pass: ${BATCH12_IDS.size - batch12Failed}/${BATCH12_IDS.size}`);
 console.log(`7077 batch13 must-pass: ${BATCH13_IDS.size - batch13Failed}/${BATCH13_IDS.size}`);
+console.log(`7078 batch14 must-pass: ${BATCH14_IDS.size - batch14Failed}/${BATCH14_IDS.size}`);
 
 const categoryIds = {};
 for (const c of CASES) {
@@ -670,7 +706,7 @@ console.log(`Categories covered: ${Object.keys(categoryIds).length} types, min p
 if (
   batch1Failed > 0 || batch2Failed > 0 || batch3Failed > 0 || batch4Failed > 0
   || batch5Failed > 0 || batch6Failed > 0 || batch7Failed > 0 || batch8Failed > 0 || batch9Failed > 0
-  || batch10Failed > 0 || batch11Failed > 0 || batch12Failed > 0 || batch13Failed > 0
+  || batch10Failed > 0 || batch11Failed > 0   || batch12Failed > 0 || batch13Failed > 0 || batch14Failed > 0
 ) process.exitCode = 1;
 else if (failures > 0) {
   console.log('(其余失败项为 7072+ 计划范围，不阻断 CI)');

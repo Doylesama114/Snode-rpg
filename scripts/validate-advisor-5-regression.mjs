@@ -17,6 +17,7 @@ const SUITE = [
   ['golden', 'validate-advisor-golden.mjs'],
   ['intents', 'validate-advisor-intents.mjs'],
   ['feedback', 'validate-advisor-feedback.mjs'],
+  ['combat-mods', 'validate-advisor-combat-modifiers.mjs'],
 ];
 
 function runCase(name, scriptRel) {
