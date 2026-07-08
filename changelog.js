@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7060',
+    date: '2026-07-08',
+    changes: [
+      '通用 build_roadmap 替代 kit 硬编码',
+      'L2 抽样+灵活 prompt',
+      '仅作参考免责声明',
+      '移除预设按钮'
+    ]
+  },
+
+
+  {
     version: '1.0.7059',
     date: '2026-07-08',
     changes: [

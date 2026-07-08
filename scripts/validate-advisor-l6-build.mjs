@@ -52,7 +52,7 @@ check('intent build_roadmap (panel)', r.intent === 'build_roadmap');
 check('answerStyle roadmap', r.answerStyle === 'roadmap');
 check('has _roadmap', !!r.results._roadmap);
 check('context 路线图', ctx.includes('Build 路线图'));
-check('context 快照评价', ctx.includes('快照 build 评价'));
+check('context 快照观察', ctx.includes('快照 build 观察'));
 check('L6 in layers', r.layersHit.includes('L6'));
 check('context 子职', ctx.includes('子职 战士'));
 check('context 熟练非零', ctx.includes('逻辑+2'));

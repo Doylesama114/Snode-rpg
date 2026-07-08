@@ -38,12 +38,11 @@ import {
   MAGE_L2,
 } from './advisor-class-l2.mjs';
 import {
-  loadBuildKit,
-  buildRoadmapContext,
+  buildGenericRoadmapContext,
   formatRoadmapContext,
   planBuildRoadmapFromRules,
   isPanelRoadmapQuery,
-  detectRoadmapKitId,
+  parseRoadmapGoal,
   getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
 
@@ -902,22 +901,27 @@ export function buildSkillFullList(store, className, options = {}) {
 }
 
 function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm) {
-  const kit = loadBuildKit(task.kitId);
-  if (!kit) return retrieval;
+  const parsed = parseRoadmapGoal(retrieval.query || '', snapshotNorm);
+  const goal = {
+    mainClass: task.mainClass || parsed.mainClass,
+    subClass: task.subClass ?? parsed.subClass,
+    advancementName: task.advancementName || task.goal || parsed.advancementName,
+    kitId: task.kitId ?? parsed.kitId,
+  };
 
   retrieval.plan = plan;
   retrieval.answerStyle = 'roadmap';
   retrieval.intent = 'build_roadmap';
   retrieval.promptProfile = 'build_roadmap';
-  retrieval.retrievalClass = kit.mainClass;
+  retrieval.retrievalClass = goal.mainClass;
 
-  const ctx = buildRoadmapContext(store, kit, {
+  const ctx = buildGenericRoadmapContext(store, goal, {
     snapshot: snapshotNorm || null,
   });
   retrieval.results._roadmap = ctx;
   retrieval.results._roadmapText = formatRoadmapContext(ctx);
 
-  const { layers } = getRoadmapRouteConfig(task.kitId);
+  const { layers } = getRoadmapRouteConfig(goal);
   for (const layer of layers) {
     if (!retrieval.layersRequested.includes(layer)) retrieval.layersRequested.push(layer);
     if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
@@ -1039,9 +1043,16 @@ export function retrieve(query, options = {}) {
   });
   const roadmapTask = plan?.tasks?.find((t) => t.type === 'build_roadmap');
   const panelRoadmap = snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm });
-  const roadmapKitId = roadmapTask?.kitId || detectRoadmapKitId(query) || 'magic_sword';
+  const roadmapGoal = roadmapTask
+    ? {
+      mainClass: roadmapTask.mainClass,
+      subClass: roadmapTask.subClass,
+      advancementName: roadmapTask.advancementName || roadmapTask.goal,
+      kitId: roadmapTask.kitId,
+    }
+    : parseRoadmapGoal(query, snapshotNorm);
   if (roadmapTask || plan?.intent === 'build_roadmap' || panelRoadmap) {
-    const roadmapRoute = getRoadmapRouteConfig(roadmapKitId);
+    const roadmapRoute = getRoadmapRouteConfig(roadmapGoal);
     route.intent = 'build_roadmap';
     route.promptProfile = 'build_roadmap';
     route.layers = roadmapRoute.layers;

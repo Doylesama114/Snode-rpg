@@ -20,16 +20,20 @@
 - Widget 绑定角色时显示预设：「评价当前 build」「魔剑士全路线规划」
 - roadmap 回答 `max_tokens` 提升至 6144
 
-## Build Kit
+## 架构（3.1 通用 roadmap）
 
-| kit | 路径 | 主职 + 子职 |
-|-----|------|-------------|
-| 魔剑士 | `advisor/build_kits/magic_sword.json` | 法师 + 战士 |
-| 魔弹射手 | `advisor/build_kits/magic_bullet.json` | 法师 + 猎人 |
+- **默认路径**：`parseRoadmapGoal` 从问句/快照解析主职、子职、进阶名 → `buildGenericRoadmapContext` 从 L2 按流派/位阶**抽样候选**（非固定配点）→ LLM 结合 L2/L3/L4 检索自由组织。
+- **Kit 文件**（`build_kits/*.json`）：仅当问句命中别名时作为**可选风格参考**，不再强制推荐固定技能表。
+- **免责声明**：回答末尾须复述「仅作参考」；Widget 输入区亦有提示。
 
-扩展新 kit：新增 JSON + `ROADMAP_GOAL_PATTERNS` / `KIT_ALIASES`；`getRoadmapRouteConfig` 按子职注入对应 L2 层。
+## Build Kit（可选参考）
 
-## 数据校验
+| kit | 路径 | 说明 |
+|-----|------|------|
+| 魔剑士 | `magic_sword.json` | 历史模板，非标准答案 |
+| 魔弹射手 | `magic_bullet.json` | 历史模板，非标准答案 |
+
+新增 kit **不必**；任意 `advancements.json` 中的进阶名 + 主/子职均可触发通用 roadmap。
 
 ```bash
 node scripts/validate-advisor-build-kit.mjs
