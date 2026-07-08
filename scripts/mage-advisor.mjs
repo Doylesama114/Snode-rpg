@@ -216,6 +216,7 @@ export async function advise(query, options = {}) {
     conversationHistory,
     goalOverride: plannerCtx.goalOverride || null,
     unknownAdvancement: retrieval.unknownAdvancement || null,
+    hasRoadmapOutline: !!retrieval.results._roadmapOutline,
     className: retrieval.retrievalClass
       || retrieval.wizardState?.selections?.className
       || options.chargenState?.char?.className

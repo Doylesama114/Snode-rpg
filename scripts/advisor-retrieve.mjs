@@ -46,6 +46,7 @@ import {
   parseRoadmapGoal,
   getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
+import { outlineGrowthRoadmap, formatRoadmapOutline } from './advisor-tools.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -911,8 +912,18 @@ function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm, goalO
   const ctx = buildGenericRoadmapContext(store, goal, {
     snapshot: snapshotNorm || null,
   });
+  const outline = outlineGrowthRoadmap(goal, {
+    store,
+    roadmapCtx: ctx,
+    snapshot: snapshotNorm || null,
+  });
+  ctx.outline = outline;
+  ctx.outlineText = formatRoadmapOutline(outline);
+
   retrieval.results._roadmap = ctx;
-  retrieval.results._roadmapText = formatRoadmapContext(ctx);
+  retrieval.results._roadmapOutline = outline;
+  retrieval.results._roadmapOutlineText = ctx.outlineText;
+  retrieval.results._roadmapText = [formatRoadmapContext(ctx), ctx.outlineText].filter(Boolean).join('\n\n');
 
   const { layers } = getRoadmapRouteConfig(goal);
   for (const layer of layers) {

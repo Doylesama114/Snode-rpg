@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7063',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 4.0 batch3: advisor-tools 路线骨架',
+      'outlineGrowthRoadmap',
+      'validate-advisor-tools'
+    ]
+  },
+
+
+  {
     version: '1.0.7062',
     date: '2026-07-08',
     changes: [

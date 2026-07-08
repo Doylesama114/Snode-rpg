@@ -11,7 +11,7 @@
       "expectIntent": "build_roadmap",
       "expectMainClass": "游荡者",
       "expectAdvancement": "飞贼",
-      "mustInclude": ["游荡者", "敏捷", "感知", "作答形态", "L0 主职升级"],
+      "mustInclude": ["游荡者", "敏捷", "感知", "作答形态", "L0 主职升级", "路线骨架"],
       "mustNotInclude": ["L2 法师技能", "智力15"]
     },
     {

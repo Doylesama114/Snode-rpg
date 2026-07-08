@@ -64,6 +64,7 @@ node scripts/validate-advisor-build-kit.mjs
 ```bash
 node scripts/validate-advisor-roadmap.mjs
 node scripts/validate-advisor-golden.mjs
+node scripts/validate-advisor-tools.mjs
 node scripts/mage-advisor.mjs --dry-run --json "我想玩飞贼，我该怎么安排我的成长路线？"
 ```
 

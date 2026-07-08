@@ -195,6 +195,7 @@ const INTENT_ADDONS = {
 - 篇幅允许较长（约 30～55 行）；上下文「候选示例」仅为抽样，**不是标准答案**。
 - 无 L6 快照时：从 L1 规划；有快照时：先点明阶段与已学技能，推荐不得超出「可学技能位阶」。
 - 进阶途径与 L7 兼职/子职不同；勿把「先升 L7 开兼职」当作进阶前提。
+- 上下文含「路线骨架（server-side）」时：在其事实上补充流派取舍与理由，**不得修改**属性门槛、L0 升级数字、心得等级节点。
 - 结尾**必须**单独一行写出：以上建议由 AI 根据当前资料整理，仅作参考；具体 build 请结合角色实际情况、规则书与 DM 沟通。`,
   build_review: `
 ## 本问类型：当前 build 评价
@@ -272,7 +273,9 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
     ? '\n\n（创建页陪跑：以页面与熟练账本为准；只评价/解释已选内容，禁止推销未选项；起始特性选满后才评价组合。）'
     : '';
   const styleNote = options.answerStyle === 'roadmap'
-    ? '\n\n（roadmap 模式：通用分阶段 build 建议，可多条思路；须结合 L2 检索灵活发挥；结尾须写「仅作参考」免责声明。）'
+    ? `\n\n（roadmap 模式：通用分阶段 build 建议，可多条思路；须结合 L2 检索灵活发挥；${
+      options.hasRoadmapOutline ? '有路线骨架时勿改事实性门槛与等级节点；' : ''
+    }结尾须写「仅作参考」免责声明。）`
     : options.answerStyle === 'catalog'
       ? '\n\n（catalog 模式：按目录给出各流派/位阶总数与示例，勿逐条列全表。）'
       : options.answerStyle === 'full_list'
