@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { checkAdvancementEligibility } from './advisor-eligibility.mjs';
-import { analyzeSnapshot, normalizeSnapshot, formatSnapshotContext } from './advisor-snapshot.mjs';
+import { analyzeSnapshot, normalizeSnapshot, formatSnapshotContext, skillWithinLearnableTiers } from './advisor-snapshot.mjs';
 import {
   loadEntityStore,
   resolveEntities,
@@ -635,7 +635,7 @@ function buildL1Results(store, query, queryTokens, limit, entityHits = [], class
   };
 }
 
-function buildL2MageResults(store, query, queryTokens, limit) {
+function buildL2MageResults(store, query, queryTokens, limit, opts = {}) {
   const styles = detectStyles(query);
   const tierFilter = /1[～~\-—到]3|1\s*~\s*3|一级|二级|三级|低阶|初期|前三级|优先学/.test(query);
   const byName = Object.fromEntries(store.mageSkills.skills.map((s) => [s.name, s]));
@@ -646,6 +646,7 @@ function buildL2MageResults(store, query, queryTokens, limit) {
     queryTokens,
     limit,
     (s) => {
+      if (!skillWithinLearnableTiers(s, opts.learnableTiers)) return false;
       if (s.type === 'starting') return true;
       if (styles.length && s.style && !styles.includes(s.style)) return false;
       if (tierFilter && s.tier && !['一阶', '二阶', '三阶', null].includes(s.tier) && s.type !== 'starting') {
@@ -670,7 +671,7 @@ function buildL2MageResults(store, query, queryTokens, limit) {
   return ranked;
 }
 
-function buildL2RegistryResults(store, l2Layer, query, queryTokens, limit) {
+function buildL2RegistryResults(store, l2Layer, query, queryTokens, limit, opts = {}) {
   const entry = getL2EntryByLayer(l2Layer);
   const index = store.classSkillIndexes?.[l2Layer];
   if (!index?.skills?.length) return [];
@@ -688,6 +689,7 @@ function buildL2RegistryResults(store, l2Layer, query, queryTokens, limit) {
     queryTokens,
     limit,
     (s) => {
+      if (!skillWithinLearnableTiers(s, opts.learnableTiers)) return false;
       if (s.type === 'starting') return true;
       if (styles.length && s.style && !styles.includes(s.style)) return false;
       if (tierFilter && s.tier && !['一阶', '二阶', '三阶', null].includes(s.tier) && s.type !== 'starting') {
@@ -890,7 +892,7 @@ export function buildSkillFullList(store, className, options = {}) {
   };
 }
 
-function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens) {
+function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts = {}) {
   if (!plan?.tasks?.length) return retrieval;
 
   const listTask = plan.tasks.find((t) => t.type === 'list_skills');
@@ -918,9 +920,9 @@ function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens) {
       const layer = cat.layer;
       if (layer) {
         if (layer === MAGE_L2) {
-          retrieval.results[MAGE_L2] = buildL2MageResults(store, query, queryTokens, 24);
+          retrieval.results[MAGE_L2] = buildL2MageResults(store, query, queryTokens, 24, l2Opts);
         } else {
-          const sample = buildL2RegistryResults(store, layer, query, queryTokens, 24);
+          const sample = buildL2RegistryResults(store, layer, query, queryTokens, 24, l2Opts);
           if (sample.length) retrieval.results[layer] = sample;
         }
         if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
@@ -978,6 +980,7 @@ export function retrieve(query, options = {}) {
   let attrs = parseAttrsFromQuery(query);
 
   let l6Analysis = null;
+  let l2Opts = {};
   if (options.snapshot) {
     const norm = options.snapshot.meta?.layer === 'L6'
       ? options.snapshot
@@ -986,6 +989,9 @@ export function retrieve(query, options = {}) {
     l6Analysis = analyzeSnapshot(norm, {
       advancementNames: advName ? [advName] : null,
     });
+    if (l6Analysis.learnableTiers?.length) {
+      l2Opts = { learnableTiers: l6Analysis.learnableTiers };
+    }
     attrs = { ...(l6Analysis.snapshot.attrs || {}), ...attrs };
   }
 
@@ -1015,7 +1021,7 @@ export function retrieve(query, options = {}) {
         layers.L1 = buildL1Results(store, query, queryTokens, k, mergedEntities, retrievalClass);
         break;
       case 'L2-mage':
-        layers['L2-mage'] = buildL2MageResults(store, query, queryTokens, k);
+        layers['L2-mage'] = buildL2MageResults(store, query, queryTokens, k, l2Opts);
         break;
       case 'L2-universal':
         layers['L2-universal'] = buildL2UniversalResults(store, query, queryTokens, k);
@@ -1031,7 +1037,7 @@ export function retrieve(query, options = {}) {
         break;
       default:
         if (layer.startsWith('L2-') && store.classSkillIndexes?.[layer]) {
-          layers[layer] = buildL2RegistryResults(store, layer, query, queryTokens, k);
+          layers[layer] = buildL2RegistryResults(store, layer, query, queryTokens, k, l2Opts);
         }
         break;
     }
@@ -1074,7 +1080,7 @@ export function retrieve(query, options = {}) {
   };
 
   if (options.plan) {
-    retrieval = applyPlanToRetrieval(retrieval, options.plan, store, query, queryTokens);
+    retrieval = applyPlanToRetrieval(retrieval, options.plan, store, query, queryTokens, l2Opts);
   }
 
   return retrieval;
@@ -1113,7 +1119,10 @@ export function formatContext(retrieval) {
   }
 
   if (retrieval.results.L6) {
-    lines.push(formatSnapshotContext(retrieval.results.L6));
+    lines.push(formatSnapshotContext(retrieval.results.L6, {
+      intent: retrieval.intent,
+      query: retrieval.query,
+    }));
     lines.push('');
   }
 

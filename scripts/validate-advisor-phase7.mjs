@@ -11,6 +11,7 @@ import {
   analyzeSnapshot,
   normalizeSnapshot,
   sumProf,
+  flattenProfs,
 } from './advisor-snapshot.mjs';
 import { retrieve, formatContext } from './advisor-retrieve.mjs';
 
@@ -65,6 +66,15 @@ const rMc = retrieve('现在能兼职奇械师吗？', { snapshot: l7 });
 ok('卡琳 兼职 context', formatContext(rMc).includes('奇械师') && formatContext(rMc).includes('✓'));
 
 // --- panel-like raw normalize smoke ---
+// --- panel-like nested profs ---
+const nestedPanel = normalizeSnapshot({
+  name: '嵌套熟练测试',
+  attrs: { 智力: 16 },
+  profs: { 智力: { 逻辑: 2, '奥秘-魔法学识': 2, '知识-人文': 2 } },
+  classes: [{ name: '法师', level: 6 }],
+});
+ok('panel nested prof sum', sumProf(nestedPanel.profs, ['逻辑', '奥秘', '知识']) >= 6);
+
 const panelLike = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/snapshots/mock-frost-short.json'), 'utf8'));
 panelLike._charName = '伯恩';
 const norm = normalizeSnapshot(panelLike);

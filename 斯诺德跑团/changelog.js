@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7056',
+    date: '2026-07-08',
+    changes: [
+      '顾问L6 build修复:嵌套熟练度+进阶≠兼职+技能位阶过滤'
+    ]
+  },
+
+
+  {
     version: '1.0.7055',
     date: '2026-07-08',
     changes: [

@@ -45,6 +45,7 @@ const SUITE = [
   ['batch23-warlock-full', 'validate-advisor-phase5-batch23.mjs'],
   ['batch24-artificer-full', 'validate-advisor-phase5-batch24.mjs'],
   ['advisor-2-planner', 'validate-advisor-planner.mjs'],
+  ['l6-build-review', 'validate-advisor-l6-build.mjs'],
 ];
 
 function runCase(name, scriptRel) {

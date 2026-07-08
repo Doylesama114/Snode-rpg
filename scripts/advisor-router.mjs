@@ -65,6 +65,13 @@ export const INTENT_RULES = [
     promptProfile: 'feats',
   },
   {
+    id: 'build_review',
+    patterns: [/怎么评价/, /评价.*build/, /当前的build/, /当前.*build/, /适合.*技能/, /build.*评价/],
+    layers: ['L3', 'L2-mage', 'L0'],
+    topK: { L3: 12, 'L2-mage': 14, L0: 4 },
+    promptProfile: 'build_review',
+  },
+  {
     id: 'advancement',
     patterns: [/进阶/, /近卫/, /5\s*级/, /系统奖励/, /冰霜法师/, /火焰法师/],
     layers: ['L3', 'L0'],
@@ -141,7 +148,7 @@ export const INTENT_RULES = [
 const REGISTRY_L2_LAYERS = () => listL2ClassEntries().map((e) => e.l2Layer);
 
 const L2_INJECT_INTENTS = new Set([
-  'general', 'chargen', 'wizard_step', 'class_skills', 'tips',
+  'general', 'chargen', 'wizard_step', 'class_skills', 'tips', 'build_review', 'advancement',
 ]);
 
 function activeL2Layer(className, query) {
