@@ -11,6 +11,8 @@ import {
   outlineGrowthRoadmap,
   formatRoadmapOutline,
 } from './advisor-tools.mjs';
+import { resolveAdvancementName } from './advisor-advancement-resolve.mjs';
+import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
 import { parseRoadmapGoal } from './advisor-build-roadmap.mjs';
 import { loadAdvisorStore } from './advisor-retrieve.mjs';
 
@@ -30,6 +32,9 @@ console.log('=== validate-advisor-tools ===\n');
 
 const entity = resolveEntity('飞贼');
 check('resolveEntity 飞贼', entity?.type === 'advancement' && entity.name === '飞贼');
+
+check('resolve 诡术士→诡术师', resolveAdvancementName('我想进阶诡术士') === '诡术师');
+check('strip 诡术士 no 术士 class', !matchAllClassesFromQuery('我想进阶诡术士').includes('术士'));
 
 const rogue = resolveEntity('游荡者');
 check('resolveEntity 游荡者', rogue?.type === 'class');

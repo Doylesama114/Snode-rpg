@@ -39,6 +39,7 @@ const KIT_ALIASES = {
 const BUILD_ROADMAP_RE = /怎么选|如何选择|想玩|想成为|打算玩|怎么玩|规划|路线|成长|安排|build|配点|该怎么选|如何选|进阶.*怎么|怎么.*进阶|怎么规划|如何规划/;
 const ROADMAP_SKILL_RE = /技能|build|配|路线|规划|流派|风格|专长|天赋|进阶|成长|安排|怎么玩/;
 const ADVANCEMENT_PLAY_RE = /想玩|想成为|打算玩|怎么玩/;
+const BASE_CLASS_PICK_RE = /基础职业|基础.*(选|选择|选哪个|选什么)|应该选.*(什么|哪个|哪)|选什么.*(职业|主职)|哪个.*(职业|主职)|什么.*(职业|主职).*选|(职业|主职).*应该选/;
 const CATALOG_LIST_RE = /有哪些|能学|哪些|什么技能|什么法术|什么战技|除了.*初始|除.*起手/;
 const PANEL_REVIEW_RE = /怎么评价|评价.*build|当前的build|当前.*build|build.*评价/;
 const PANEL_SKILL_RE = /技能|适合|缺口|学什么|点什么|推荐|build/i;
@@ -111,6 +112,10 @@ export function detectRoadmapKitId(query) {
   return null;
 }
 
+export function isAdvancementBaseClassPickQuery(query) {
+  return BASE_CLASS_PICK_RE.test(String(query || ''));
+}
+
 /**
  * @param {string} query
  * @param {object|null} snapshot
@@ -137,6 +142,7 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
   let advancementName = resolveAdvancementName(q);
   const unknownAdvancement = advancementName ? null : detectUnknownAdvancementQuery(q);
   const kitId = detectRoadmapKitId(q);
+  const baseClassPick = !!(advancementName && isAdvancementBaseClassPickQuery(q));
 
   if (goalOverride) {
     if (goalOverride.advancementName) advancementName = goalOverride.advancementName;
@@ -157,7 +163,9 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
     }
   }
 
-  if (!mainClass && advancementName) {
+  if (baseClassPick) {
+    if (!mainM?.[1]) mainClass = classesFromQuery[0] || null;
+  } else if (!mainClass && advancementName) {
     mainClass = inferSourceClassForAdvancement(advancementName);
   }
   if (!mainClass && !unknownAdvancement) {
@@ -173,6 +181,7 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
     unknownAdvancement: unknownAdvancement?.name || null,
     subClass,
     mainClass,
+    baseClassPick,
   });
 
   return {
@@ -182,12 +191,14 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
     unknownAdvancement: unknownAdvancement?.name || null,
     kitId,
     roadmapMode,
+    baseClassPick,
     goalOverride: goalOverride || null,
   };
 }
 
 export function inferRoadmapMode(goal = {}) {
   if (goal.unknownAdvancement) return 'unknown_advancement';
+  if (goal.baseClassPick && goal.advancementName) return 'advancement_base_class_pick';
   if (goal.roadmapMode) return goal.roadmapMode;
   if (goal.advancementName && !goal.subClass && !(/主职|子职|主职业|子职业/.test(goal.query || ''))) {
     return 'advancement_primary';
@@ -227,6 +238,24 @@ export function getRoadmapRouteConfig(goal = {}) {
   const mode = goal.roadmapMode || inferRoadmapMode(goal);
   const layers = ['L3'];
   const topK = { L3: 12, 'L2-universal': 14, L4: 12, L0: 5 };
+
+  if (mode === 'advancement_base_class_pick') {
+    topK.L0 = 8;
+    topK.L3 = 16;
+    topK.L4 = 8;
+    topK['L2-universal'] = 4;
+    layers.push('L4', 'L0');
+    const adv = getAdvancementMeta(goal.advancementName);
+    for (const cls of (adv?.sourceClasses || []).slice(0, 6)) {
+      const layer = cls === '法师' ? MAGE_L2 : resolveL2LayerForClass(cls);
+      if (layer && !layers.includes(layer)) {
+        layers.push(layer);
+        topK[layer] = 8;
+      }
+    }
+    if (!layers.includes('L2-universal')) layers.push('L2-universal');
+    return { layers, topK, subLayer: null, goal: { ...goal, roadmapMode: mode } };
+  }
 
   if (mode === 'advancement_primary') {
     topK.L0 = 8;
@@ -435,9 +464,11 @@ export function buildGenericRoadmapContext(store, goal, options = {}) {
   const snapshot = options.snapshot || null;
   const main = snapshot ? getMainClass(snapshot) : { name: goal.mainClass, level: 1 };
   const mainLevel = main.level || 1;
-  const effectiveMainClass = goal.mainClass || main.name
-    || (goal.advancementName ? inferSourceClassForAdvancement(goal.advancementName) : null)
-    || '法师';
+  const effectiveMainClass = goal.baseClassPick
+    ? null
+    : goal.mainClass || main.name
+      || (goal.advancementName ? inferSourceClassForAdvancement(goal.advancementName) : null)
+      || '法师';
   const advancement = findAdvancementMeta(goal.advancementName);
   const kit = goal.kitId ? loadBuildKit(goal.kitId) : null;
   const advancementBrief = goal.advancementName ? briefAdvancementTalents(goal.advancementName) : null;
@@ -473,7 +504,7 @@ export function buildGenericRoadmapContext(store, goal, options = {}) {
     mainLevel,
     phaseBand: getBuildPhaseBand(mainLevel),
     phaseLabel: getBuildPhaseLabel(getBuildPhaseBand(mainLevel)),
-    mainClassCatalog: buildClassPhaseCatalog(store, effectiveMainClass),
+    mainClassCatalog: effectiveMainClass ? buildClassPhaseCatalog(store, effectiveMainClass) : null,
     subClassCatalog: goal.subClass ? buildClassPhaseCatalog(store, goal.subClass) : null,
     universalTalents: {
       early: sampleUniversalTalents(store, 'early'),
@@ -506,7 +537,7 @@ export function formatRoadmapContext(ctx) {
   const g = ctx.goal || {};
   const goalParts = [
     g.advancementName ? `进阶「${g.advancementName}」` : null,
-    `主职 ${g.mainClass || '?'}`,
+    g.mainClass ? `主职 ${g.mainClass}` : (ctx.roadmapMode === 'advancement_base_class_pick' ? '主职（待选 · 见兼容列表）' : null),
     g.subClass ? `子职 ${g.subClass}` : null,
   ].filter(Boolean);
   lines.push(`- 目标：${goalParts.join(' · ')}`);
@@ -542,6 +573,9 @@ export function formatRoadmapContext(ctx) {
     lines.push('### L3 进阶参考');
     lines.push(`- ${a.name}（${a.scope || ''}，confidence=${a.confidence || '?'})`);
     if (a.sourceClasses?.length) lines.push(`- 兼容主职：${a.sourceClasses.join('、')}`);
+    if (a.scope === 'mage-only' && a.sourceClasses?.length) {
+      lines.push('- **scope 说明**：mage-only 为「法师系进阶」分类，**不等于仅法师**；以上兼容主职均可作为基础选择');
+    }
     if (a.inferenceBlurb) lines.push(`- 方向：${a.inferenceBlurb}`);
     if (a.attrsRequired) lines.push(`- 属性门槛：${JSON.stringify(a.attrsRequired)}`);
     if (a.conditions?.length) lines.push(`- 剧情/行为条件（摘要）：${a.conditions.join('；')}`);
@@ -643,6 +677,9 @@ export function formatRoadmapContext(ctx) {
     lines.push(`  ${i + 1}. ${sec}`);
   });
   lines.push('- **禁止**：逐条粘贴 L3 天赋 summary 全文；引入上下文未出现的主职（尤其默认法师）；把进阶与 L7 兼职混为一谈。');
+  if (ctx.roadmapMode === 'advancement_base_class_pick') {
+    lines.push('- **advancement_base_class_pick**：用户在选择基础主职；须列出 L3 全部兼容主职并比较，勿默认法师/术士，勿把 mage-only 理解成仅法师。');
+  }
   if (ctx.roadmapMode === 'advancement_primary') {
     lines.push('- **advancement_primary**：L1–4 写源主职（兼容主职）升级与技能方向；L5 写进阶门槛；进阶后只列心得节点。');
   }
@@ -683,6 +720,7 @@ export function planBuildRoadmapFromRules(query, ctx = {}) {
       advancementName: goal.advancementName,
       unknownAdvancement: goal.unknownAdvancement,
       roadmapMode: goal.roadmapMode,
+      baseClassPick: goal.baseClassPick,
       goal: goal.advancementName || goal.unknownAdvancement || goal.mainClass,
       kitId: goal.kitId || null,
     }],

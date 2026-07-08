@@ -2,6 +2,7 @@
  * Phase 5 — 职业 L2 层配置（registry 驱动）
  */
 import { getClassProfile, isFullTier, loadClassRegistry } from './advisor-chargen-registry.mjs';
+import { stripAdvancementTokensFromQuery } from './advisor-advancement-resolve.mjs';
 
 export const MAGE_L2 = 'L2-mage';
 export const UNIVERSAL_L2 = 'L2-universal';
@@ -102,9 +103,9 @@ export function matchClassNameFromQuery(query) {
   return all[0] || null;
 }
 
-/** 从问句匹配全部提及的职业（多职业并列问句） */
+/** 从问句匹配全部提及的职业（多职业并列问句）；先剥离进阶名避免「诡术士」误匹配术士 */
 export function matchAllClassesFromQuery(query) {
-  const q = String(query || '');
+  const q = stripAdvancementTokensFromQuery(String(query || ''));
   const found = [];
   const seen = new Set();
   for (const entry of listL2ClassEntries()) {

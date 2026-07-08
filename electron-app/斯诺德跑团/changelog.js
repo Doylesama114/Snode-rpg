@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7064',
+    date: '2026-07-08',
+    changes: [
+      '诡术士别名解析',
+      '剥离进阶名防术士误判',
+      'base_class_pick',
+      'scope mage-only说明'
+    ]
+  },
+
+
+  {
     version: '1.0.7063',
     date: '2026-07-08',
     changes: [

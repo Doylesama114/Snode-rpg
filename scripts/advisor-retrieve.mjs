@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { checkAdvancementEligibility } from './advisor-eligibility.mjs';
-import { resolveAdvancementName, briefAdvancementTalents } from './advisor-advancement-resolve.mjs';
+import { resolveAdvancementName, briefAdvancementTalents, stripAdvancementTokensFromQuery } from './advisor-advancement-resolve.mjs';
 import { analyzeSnapshot, normalizeSnapshot, formatSnapshotContext, skillWithinLearnableTiers } from './advisor-snapshot.mjs';
 import {
   loadEntityStore,
@@ -897,6 +897,7 @@ function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm, goalO
     advancementName: task.advancementName ?? parsed.advancementName,
     unknownAdvancement: task.unknownAdvancement ?? parsed.unknownAdvancement,
     roadmapMode: task.roadmapMode ?? parsed.roadmapMode,
+    baseClassPick: task.baseClassPick ?? parsed.baseClassPick,
     kitId: task.kitId ?? parsed.kitId,
     goalOverride: parsed.goalOverride,
     query: retrieval.query || '',
@@ -1035,10 +1036,23 @@ export function retrieve(query, options = {}) {
     wizardState,
     options.chargenState,
     snapshotNorm || options.snapshot,
-    query,
+    stripAdvancementTokensFromQuery(query),
   );
-  const effectiveClass = goalOverride?.mainClass || retrievalClass;
-  const entityHits = resolveEntities(query, store.entities);
+  const roadmapTaskEarly = plan?.tasks?.find((t) => t.type === 'build_roadmap');
+  const earlyRoadmapGoal = roadmapTaskEarly
+    ? {
+      mainClass: roadmapTaskEarly.mainClass,
+      baseClassPick: roadmapTaskEarly.baseClassPick,
+      advancementName: roadmapTaskEarly.advancementName,
+    }
+    : (plan?.intent === 'build_roadmap' || plan?.intent === 'unknown_entity'
+      || isPanelRoadmapQuery(query, { snapshot: snapshotNorm }))
+      ? parseRoadmapGoal(query, snapshotNorm, goalOverride)
+      : null;
+  const effectiveClass = earlyRoadmapGoal?.baseClassPick
+    ? null
+    : (goalOverride?.mainClass || retrievalClass);
+  const entityHits = resolveEntities(stripAdvancementTokensFromQuery(query), store.entities);
   const route = routeQuery({
     query,
     mode: options.mode,
@@ -1047,7 +1061,7 @@ export function retrieve(query, options = {}) {
     className: effectiveClass,
     snapshot: snapshotNorm,
   });
-  const roadmapTask = plan?.tasks?.find((t) => t.type === 'build_roadmap');
+  const roadmapTask = roadmapTaskEarly;
   const panelRoadmap = snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm });
   const roadmapGoal = roadmapTask
     ? {
@@ -1056,6 +1070,7 @@ export function retrieve(query, options = {}) {
       advancementName: roadmapTask.advancementName,
       unknownAdvancement: roadmapTask.unknownAdvancement,
       roadmapMode: roadmapTask.roadmapMode,
+      baseClassPick: roadmapTask.baseClassPick,
       kitId: roadmapTask.kitId,
       query,
     }

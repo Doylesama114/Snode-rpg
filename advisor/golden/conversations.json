@@ -54,6 +54,14 @@
       "mustNotInclude": ["技能目录（catalog）"]
     },
     {
+      "id": "guishushi-base-class",
+      "query": "我想进阶诡术士，我基础职业应该选择什么",
+      "expectIntent": "build_roadmap",
+      "expectAdvancement": "诡术师",
+      "mustInclude": ["诡术师", "兼容主职", "法师", "牧师", "游荡者", "吟游诗人", "魔契师", "不等于仅法师"],
+      "mustNotInclude": ["L2 术士技能", "主职 术士", "当前主职是术士", "仅对法师"]
+    },
+    {
       "id": "thief-play-alone",
       "query": "我想玩飞贼",
       "expectIntent": "build_roadmap",

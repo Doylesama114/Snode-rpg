@@ -182,6 +182,62 @@ export function outlineGrowthRoadmap(goal, options = {}) {
   const catalog = roadmapCtx?.mainClassCatalog || null;
   const skillDirs = sampleSkillDirections(catalog);
 
+  if (goal.roadmapMode === 'advancement_base_class_pick' && advBrief?.sourceClasses?.length) {
+    const goalBullets = [
+      `目标进阶：${goal.advancementName}`,
+      `兼容基础主职（任选其一）：${advBrief.sourceClasses.join('、')}`,
+      '问句类型：基础职业选择——须比较以上主职，勿默认单一法师，勿误认「术士」等子串职业',
+    ];
+    sections.push({ id: 'goal', title: ROADMAP_ANSWER_SECTIONS[0], bullets: goalBullets });
+    sections.push({
+      id: 'base_l1_4',
+      title: ROADMAP_ANSWER_SECTIONS[1],
+      bullets: [
+        '各兼容主职 L1–4 均遵循 L0 升级表（熟练/属性/技能槽/专长窗）',
+        ...table.rows.filter((r) => r.level <= 4).map(formatLevelRow),
+      ],
+    });
+    const gateBullets = [];
+    if (table.advancementUnlock) {
+      gateBullets.push(`${table.advancementUnlock.reward}（L${table.advancementUnlock.level}）`);
+    }
+    if (advBrief.attrsRequired) {
+      gateBullets.push(`属性门槛：${Object.entries(advBrief.attrsRequired).map(([k, v]) => `${k}${v}`).join('、')}`);
+    }
+    if (advBrief.sourceClasses?.length) {
+      gateBullets.push(`兼容主职：${advBrief.sourceClasses.join('、')}`);
+    }
+    if (advBrief.conditions?.length) {
+      gateBullets.push(`行为/剧情条件：${advBrief.conditions.join('；')}`);
+    }
+    sections.push({ id: 'advancement_gate', title: ROADMAP_ANSWER_SECTIONS[2], bullets: gateBullets });
+    const insightBullets = (advBrief.insightMilestones || []).map(
+      (m) => `${m.name}：${m.summary.slice(0, 120)}`,
+    );
+    sections.push({
+      id: 'advancement_nodes',
+      title: ROADMAP_ANSWER_SECTIONS[3],
+      bullets: insightBullets.length ? insightBullets : ['见 L3 文档'],
+    });
+    sections.push({
+      id: 'skill_direction',
+      title: ROADMAP_ANSWER_SECTIONS[4],
+      bullets: [
+        `分别简述 ${advBrief.sourceClasses.join('、')} 各 1 条风格取向（须来自 L2 检索）`,
+        '勿给出单一主职的完整 build',
+      ],
+    });
+    sections.push({ id: 'disclaimer', title: ROADMAP_ANSWER_SECTIONS[5], bullets: [ROADMAP_DISCLAIMER] });
+    return {
+      mode: 'advancement_base_class_pick',
+      mainClass: null,
+      advancementName: goal.advancementName,
+      unknownAdvancement: null,
+      sections,
+      disclaimer: ROADMAP_DISCLAIMER,
+    };
+  }
+
   const goalBullets = [
     goal.advancementName ? `目标进阶：${goal.advancementName}` : null,
     `主职：${mainClass}`,
