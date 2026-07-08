@@ -187,12 +187,25 @@ const INTENT_ADDONS = {
 - L5 为玩家经验分享，不是官方规则；不要包装成必成立连招。
 - 优先引用 [universal] 通用战斗规则；非法师上下文勿引用法师流派/法术名（如塑能箭、火球术）。
 - 可引用 L2 技能名作举例，但须标注为「参考技巧」。`,
+  catalog_skills: `
+## 本问类型：技能目录（catalog）
+- 用户首次询问「有哪些技能/流派可选」：按【技能目录】逐职业、逐战斗风格/位阶列出总数与示例（每格 2 例即可）。
+- 须说明「共 N 项」；不要假装已列全表；末尾提示「若要某流派完整列表可继续追问」。
+- 排除起手/初始特性时：目录与 L2 均不得包含 type=starting 或「起手」位阶项。
+- 多职业问句：每个职业单独成段，勿混用流派名。`,
+  full_list_skills: `
+## 本问类型：技能完整列表（full_list）
+- 用户追问完整列表：按【技能完整列表】逐条枚举上下文中的技能名与位阶；可分组但不要省略名称。
+- 若某风格条目过多，先列该风格全部一～三阶，更高阶可摘要「另有 N 项高阶」。
+- 仅引用上下文中出现的名称；不得编造。`,
 };
 
 export function buildSystemPrompt(options = {}) {
   const intent = options.intent || 'general';
   const mode = options.mode || 'advisor';
-  const profile = options.promptProfile || getPromptProfile(intent, mode);
+  let profile = options.promptProfile || getPromptProfile(intent, mode);
+  if (options.answerStyle === 'catalog') profile = 'catalog_skills';
+  else if (options.answerStyle === 'full_list') profile = 'full_list_skills';
   const className = options.className || null;
   const tier = options.tier || (className ? getClassProfile(className).tier : 'full');
 
@@ -221,6 +234,11 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
   const wizardNote = mode === 'wizard'
     ? '\n\n（创建页陪跑：以页面与熟练账本为准；只评价/解释已选内容，禁止推销未选项；起始特性选满后才评价组合。）'
     : '';
+  const styleNote = options.answerStyle === 'catalog'
+    ? '\n\n（catalog 模式：按目录给出各流派/位阶总数与示例，勿逐条列全表。）'
+    : options.answerStyle === 'full_list'
+      ? '\n\n（full_list 模式：用户已追问完整列表，须尽量枚举上下文中的全部技能名。）'
+      : '';
 
   return `【用户问题】
 ${query}
@@ -228,15 +246,21 @@ ${query}
 【检索上下文】
 ${contextMarkdown}
 
-【路由】模式=${mode}；意图=${intent}${wizardNote}
+【路由】模式=${mode}；意图=${intent}${wizardNote}${styleNote}
 
 请基于以上检索上下文回答。只使用上下文中出现的具体名称。
 排版要求：助理口吻、稍正式；每点一行，点之间空一行；不用 Markdown 标题/加粗/编号列表。`;
 }
 
 export function buildChatMessages(query, contextMarkdown, options = {}) {
-  return [
+  const messages = [
     { role: 'system', content: buildSystemPrompt(options) },
-    { role: 'user', content: buildUserMessage(query, contextMarkdown, options) },
   ];
+  const history = options.conversationHistory || [];
+  for (const turn of history) {
+    if (turn.user) messages.push({ role: 'user', content: turn.user });
+    if (turn.assistant) messages.push({ role: 'assistant', content: turn.assistant });
+  }
+  messages.push({ role: 'user', content: buildUserMessage(query, contextMarkdown, options) });
+  return messages;
 }

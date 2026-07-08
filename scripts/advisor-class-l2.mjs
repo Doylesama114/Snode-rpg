@@ -81,23 +81,48 @@ export function resolveClassL2Layer(className, query = '') {
   return resolveRegistryL2Layer(className, query);
 }
 
-/** 从问句猜测职业名（无 chargen 上下文时） */
+const CLASS_ALIASES = [
+  ['萨满祭司', '萨满'],
+  ['圣骑士', '圣骑'],
+  ['吟游诗人', '吟游'],
+  ['魔契师', '魔契'],
+];
+
+function classNameMentionedInQuery(q, className) {
+  if (q.includes(className)) return true;
+  for (const alias of CLASS_ALIASES) {
+    if (alias[0] === className && q.includes(alias[1])) return true;
+  }
+  return false;
+}
+
+/** 从问句猜测职业名（无 chargen 上下文时，返回首个匹配） */
 export function matchClassNameFromQuery(query) {
+  const all = matchAllClassesFromQuery(query);
+  return all[0] || null;
+}
+
+/** 从问句匹配全部提及的职业（多职业并列问句） */
+export function matchAllClassesFromQuery(query) {
   const q = String(query || '');
-  const aliases = [
-    ['萨满祭司', '萨满'],
-    ['圣骑士', '圣骑'],
-    ['吟游诗人', '吟游'],
-    ['魔契师', '魔契'],
-  ];
+  const found = [];
+  const seen = new Set();
   for (const entry of listL2ClassEntries()) {
-    if (q.includes(entry.className)) return entry.className;
-    for (const alias of aliases) {
-      if (alias[0] === entry.className && q.includes(alias[1])) return entry.className;
+    if (classNameMentionedInQuery(q, entry.className) && !seen.has(entry.className)) {
+      seen.add(entry.className);
+      found.push(entry.className);
     }
   }
-  if (MAGE_QUERY_RE.test(q)) return '法师';
-  return null;
+  if (MAGE_QUERY_RE.test(q) && !seen.has('法师')) {
+    found.push('法师');
+  }
+  return found;
+}
+
+export function resolveL2LayerForClass(className) {
+  if (className === '法师') return MAGE_L2;
+  const entry = getL2EntryByClassName(className);
+  return entry?.l2Layer || null;
 }
 
 export function detectClassStyles(query, className, styleNames = []) {

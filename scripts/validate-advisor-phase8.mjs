@@ -35,7 +35,11 @@ ok('widget 侧滑面板', widget.includes('_snowd_advisor_panel'));
 ok('widget 无 chips', !widget.includes('chip') && !widget.includes('快捷'));
 ok('widget poker 排除', widget.includes('poker-game'));
 ok('widget electronAPI', widget.includes('electronAPI.advisorAdvise'));
-ok('widget 非法师提示', widget.includes('当前仅支持法师'));
+ok('widget 新对话按钮', widget.includes('_snowd_adv_new_chat'));
+ok('widget sessionStorage', widget.includes('_snowd_adv_chat_session_v1'));
+ok('widget conversationHistory', widget.includes('conversationHistory'));
+ok('widget 创建页气泡入 session', widget.includes('syncChargenBubbleToSession'));
+ok('widget 角色切换事件', widget.includes('snowd-panel-character-change'));
 
 const preload = read('electron-app/preload.js');
 ok('preload advisorAdvise', preload.includes('advisorAdvise'));
@@ -43,12 +47,15 @@ ok('preload advisorConfig', preload.includes('advisorConfig'));
 
 const main = read('electron-app/main.js');
 ok('main advisor-advise IPC', main.includes("ipcMain.handle('advisor-advise'"));
+ok('main conversationHistory IPC', main.includes('conversationHistory'));
+ok('main sessionId IPC', main.includes('sessionId'));
 ok('main advisor-config IPC', main.includes("ipcMain.handle('advisor-config'"));
 ok('main 注入 advisor-widget', main.includes('advisor-widget.js'));
 ok('main 对决页跳过注入', main.includes("url.includes('poker-game')"));
 
 const panel = read('斯诺德跑团/panel_engine.js');
 ok('snowdPanel.getSnapshot', panel.includes('window.snowdPanel') && panel.includes('getSnapshot'));
+ok('snowdPanel character change event', panel.includes('snowd-panel-character-change'));
 ok('snowdPanel electron mirror', read('electron-app/斯诺德跑团/panel_engine.js').includes('window.snowdPanel'));
 
 // --- advise dry-run + snapshot (same as phase 7 integration) ---

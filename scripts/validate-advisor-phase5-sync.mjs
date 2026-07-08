@@ -83,6 +83,11 @@ check('sync module exists', fs.existsSync(path.join(ROOT, 'scripts/advisor-wizar
 check('handoff in 角色创建页', fs.readFileSync(path.join(ROOT, '斯诺德跑团/角色创建页.html'), 'utf8').includes('applyAdvisorHandoff'));
 const widgetSrc = fs.readFileSync(path.join(ROOT, 'electron-app/斯诺德跑团/advisor-widget.js'), 'utf8');
 check('widget chargen bubble', widgetSrc.includes('_snowd_advisor_tip'));
+check('widget new chat button', widgetSrc.includes('_snowd_adv_new_chat'));
+check('widget session storage', widgetSrc.includes('_snowd_adv_chat_session_v1'));
+check('widget conversationHistory payload', widgetSrc.includes('conversationHistory'));
+check('widget chargen bubble session', widgetSrc.includes('syncChargenBubbleToSession'));
+check('panel character change event', fs.readFileSync(path.join(ROOT, '斯诺德跑团/panel_engine.js'), 'utf8').includes('snowd-panel-character-change'));
 check('widget no standalone wizard tab', !widgetSrc.includes('_tab_wiz'));
 check('ledger module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-ledger.mjs')));
 check('policy module', fs.existsSync(path.join(ROOT, 'scripts/advisor-chargen-policy.mjs')));

@@ -2,6 +2,27 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7055',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 2.1会话闭环:创建页气泡入history+换存档reset+Planner缓存',
+      'Advisor 2.0多职业catalog/full_list+多轮对话'
+    ]
+  },
+
+
+  {
+    version: '1.0.7054',
+    date: '2026-07-08',
+    changes: [
+      'Build Advisor 2.0：多职业检索+catalog/full_list+多轮对话',
+      '新增 advisor-planner/session 模块',
+      '问答 Tab 新对话按钮'
+    ]
+  },
+
+
+  {
     version: '1.0.7053',
     date: '2026-07-08',
     changes: [

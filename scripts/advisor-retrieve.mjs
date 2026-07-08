@@ -31,7 +31,9 @@ import {
   getL2EntryByLayer,
   listL2ClassEntries,
   detectClassStyles,
+  matchAllClassesFromQuery,
   matchClassNameFromQuery,
+  resolveL2LayerForClass,
   MAGE_QUERY_RE,
   MAGE_L2,
 } from './advisor-class-l2.mjs';
@@ -815,6 +817,132 @@ function buildL5Results(store, query, queryTokens, limit, className = null) {
   );
 }
 
+function getSkillsForClass(store, className) {
+  if (className === '法师') return store.mageSkills.skills || [];
+  const layer = resolveL2LayerForClass(className);
+  return store.classSkillIndexes?.[layer]?.skills || [];
+}
+
+function filterSkillsByPlan(skills, options = {}) {
+  const exclude = new Set(options.excludeTypes || options.exclude || []);
+  return skills.filter((s) => {
+    if (exclude.has('starting') && s.type === 'starting') return false;
+    if (exclude.has(s.type)) return false;
+    return true;
+  });
+}
+
+export function buildSkillCatalog(store, className, options = {}) {
+  const skills = filterSkillsByPlan(getSkillsForClass(store, className), options);
+  /** @type {Record<string, { style: string, tier: string, count: number, examples: object[] }>} */
+  const groups = {};
+  for (const s of skills) {
+    const style = s.style || (s.type === 'starting' ? '起手' : '其他');
+    const tier = s.tier || (s.type === 'starting' ? '起手' : '-');
+    const key = `${style}\0${tier}`;
+    if (!groups[key]) {
+      groups[key] = { style, tier, count: 0, examples: [] };
+    }
+    groups[key].count += 1;
+    if (groups[key].examples.length < 2) {
+      groups[key].examples.push({
+        name: s.name,
+        summary: (s.summary || '').slice(0, 100),
+      });
+    }
+  }
+  return {
+    className,
+    layer: resolveL2LayerForClass(className),
+    total: skills.length,
+    groups: Object.values(groups).sort((a, b) => {
+      if (a.style !== b.style) return a.style.localeCompare(b.style, 'zh');
+      return String(a.tier).localeCompare(String(b.tier), 'zh');
+    }),
+  };
+}
+
+export function buildSkillFullList(store, className, options = {}) {
+  const skills = filterSkillsByPlan(getSkillsForClass(store, className), options);
+  const byStyle = {};
+  for (const s of skills) {
+    const style = s.style || (s.type === 'starting' ? '起手' : '其他');
+    if (!byStyle[style]) byStyle[style] = [];
+    byStyle[style].push(s);
+  }
+  return {
+    className,
+    layer: resolveL2LayerForClass(className),
+    total: skills.length,
+    skills: skills.slice(0, 120),
+    byStyle: Object.fromEntries(
+      Object.entries(byStyle).map(([style, list]) => [
+        style,
+        list.map((s) => ({
+          name: s.name,
+          tier: s.tier || (s.type === 'starting' ? '起手' : '-'),
+          type: s.type,
+          summary: (s.summary || '').slice(0, 120),
+          choicesFrom: s.choicesFrom || null,
+        })),
+      ]),
+    ),
+  };
+}
+
+function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens) {
+  if (!plan?.tasks?.length) return retrieval;
+
+  const listTask = plan.tasks.find((t) => t.type === 'list_skills');
+  if (!listTask?.classes?.length) return retrieval;
+
+  retrieval.plan = plan;
+  retrieval.answerStyle = plan.answerStyle || 'catalog';
+  if (!retrieval.results._catalog) retrieval.results._catalog = [];
+  if (!retrieval.results._fullList) retrieval.results._fullList = [];
+
+  const opts = { excludeTypes: listTask.exclude || [] };
+  for (const className of listTask.classes) {
+    if (plan.answerStyle === 'full_list') {
+      const fl = buildSkillFullList(store, className, opts);
+      retrieval.results._fullList.push(fl);
+      const layer = fl.layer;
+      if (layer) {
+        retrieval.results[layer] = fl.skills.slice(0, 60);
+        if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
+        if (!retrieval.layersRequested.includes(layer)) retrieval.layersRequested.push(layer);
+      }
+    } else {
+      const cat = buildSkillCatalog(store, className, opts);
+      retrieval.results._catalog.push(cat);
+      const layer = cat.layer;
+      if (layer) {
+        if (layer === MAGE_L2) {
+          retrieval.results[MAGE_L2] = buildL2MageResults(store, query, queryTokens, 24);
+        } else {
+          const sample = buildL2RegistryResults(store, layer, query, queryTokens, 24);
+          if (sample.length) retrieval.results[layer] = sample;
+        }
+        if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
+        if (!retrieval.layersRequested.includes(layer)) retrieval.layersRequested.push(layer);
+      }
+    }
+  }
+
+  if (listTask.classes.length === 1) {
+    retrieval.retrievalClass = listTask.classes[0];
+    retrieval.tier = getClassProfile(listTask.classes[0]).tier;
+  } else {
+    retrieval.retrievalClass = null;
+    retrieval.tier = null;
+  }
+
+  if (plan.intent) retrieval.intent = plan.intent;
+  if (plan.promptProfile) retrieval.promptProfile = plan.promptProfile;
+
+  return retrieval;
+}
+
 function resolveRetrievalClass(wizardState, chargenState, snapshot, query = '') {
   return wizardState?.selections?.className
     || chargenState?.char?.className
@@ -929,7 +1057,7 @@ export function retrieve(query, options = {}) {
     if (!layersHit.includes('wizard')) layersHit.push('wizard');
   }
 
-  return {
+  let retrieval = {
     query,
     mode: route.mode,
     intent: route.intent,
@@ -944,6 +1072,12 @@ export function retrieve(query, options = {}) {
     entities: mergedEntities,
     results: layers,
   };
+
+  if (options.plan) {
+    retrieval = applyPlanToRetrieval(retrieval, options.plan, store, query, queryTokens);
+  }
+
+  return retrieval;
 }
 
 export function formatContext(retrieval) {
@@ -953,6 +1087,14 @@ export function formatContext(retrieval) {
   if (retrieval.retrievalClass) {
     lines.push(`当前职业: ${retrieval.retrievalClass}`);
     lines.push(formatTierAuditContext(retrieval.retrievalClass));
+  } else if (retrieval.results._catalog?.length > 1 || retrieval.results._fullList?.length > 1) {
+    const names = (retrieval.results._catalog || retrieval.results._fullList || [])
+      .map((c) => c.className)
+      .filter(Boolean);
+    if (names.length) lines.push(`涉及职业: ${names.join('、')}`);
+  }
+  if (retrieval.answerStyle) {
+    lines.push(`回答模式: ${retrieval.answerStyle}${retrieval.plan?.source ? `（规划: ${retrieval.plan.source}）` : ''}`);
   }
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
@@ -1008,6 +1150,33 @@ export function formatContext(retrieval) {
     }
     for (const h of l1.styleHints || []) lines.push(`- 风格 ${h.name}: ${h.summary || h.sampleSkills?.join('、')}`);
     lines.push('');
+  }
+
+  if (retrieval.results._catalog?.length) {
+    lines.push('## 技能目录（catalog）');
+    for (const cat of retrieval.results._catalog) {
+      lines.push(`### ${cat.className}（共 ${cat.total} 项）`);
+      for (const g of cat.groups || []) {
+        const ex = (g.examples || []).map((e) => e.name).join('、');
+        lines.push(`- ${g.style} · ${g.tier}：${g.count} 项；例：${ex || '—'}`);
+      }
+      lines.push('');
+    }
+  }
+
+  if (retrieval.results._fullList?.length) {
+    lines.push('## 技能完整列表（full_list）');
+    for (const fl of retrieval.results._fullList) {
+      lines.push(`### ${fl.className}（共 ${fl.total} 项）`);
+      for (const [style, items] of Object.entries(fl.byStyle || {})) {
+        lines.push(`#### ${style}`);
+        for (const s of items.slice(0, 40)) {
+          lines.push(`- ${s.name} [${s.tier}] ${s.summary || ''}`);
+        }
+        if (items.length > 40) lines.push(`  … 另有 ${items.length - 40} 项`);
+      }
+      lines.push('');
+    }
   }
 
   if (retrieval.results['L2-mage']?.length) {

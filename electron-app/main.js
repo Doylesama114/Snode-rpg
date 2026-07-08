@@ -318,6 +318,11 @@ ipcMain.handle('advisor-advise', async (_event, payload) => {
       mode: payload.mode || undefined,
       wizardState: wizardState || undefined,
       chargenState: payload.chargenState || undefined,
+      conversationHistory: payload.conversationHistory || undefined,
+      sessionId: payload.sessionId || undefined,
+      bindingKey: payload.bindingKey || undefined,
+      rulesOnlyPlanner: payload.rulesOnlyPlanner === true,
+      skipPlanner: payload.skipPlanner === true,
     });
     return {
       ok: true,
@@ -351,6 +356,11 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
       mode: payload.mode || undefined,
       wizardState: wizardState || undefined,
       chargenState: payload.chargenState || undefined,
+      conversationHistory: payload.conversationHistory || undefined,
+      sessionId: payload.sessionId || undefined,
+      bindingKey: payload.bindingKey || undefined,
+      rulesOnlyPlanner: payload.rulesOnlyPlanner === true,
+      skipPlanner: payload.skipPlanner === true,
       stream: true,
       onDelta: (delta) => {
         if (!sender.isDestroyed()) {

@@ -9,8 +9,9 @@ import {
   allowL2Layer,
   allowL2Mage,
   listL2ClassEntries,
+  matchAllClassesFromQuery,
   matchClassNameFromQuery,
-  resolveClassL2Layer,
+  resolveL2LayerForClass,
   resolveRegistryL2Layer,
 } from './advisor-class-l2.mjs';
 
@@ -169,6 +170,20 @@ export function applyClassRouteFilter(route, ctx = {}) {
   if (injectLayer && L2_INJECT_INTENTS.has(intent) && !route.layers.includes(injectLayer)) {
     route.layers.push(injectLayer);
     route.topK[injectLayer] = origTopK[injectLayer] || 12;
+  }
+
+  const multiClasses = matchAllClassesFromQuery(query);
+  if (multiClasses.length > 1 && L2_INJECT_INTENTS.has(intent)) {
+    for (const cn of multiClasses) {
+      const layer = resolveL2LayerForClass(cn);
+      if (layer && allowL2Layer(layer, cn, query) && !route.layers.includes(layer)) {
+        route.layers.push(layer);
+        route.topK[layer] = origTopK[layer] || 18;
+      }
+    }
+    if (multiClasses.length > 1) {
+      route.promptProfile = 'class_skills';
+    }
   }
 
   if (intent === 'class_skills') {

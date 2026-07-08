@@ -4,6 +4,8 @@
 
   var POS_KEY = '_snowd_advisor_pos';
   var USE_CHAR_KEY = '_snowd_advisor_use_char';
+  var SESSION_KEY = '_snowd_adv_chat_session_v1';
+  var MAX_TURNS = 3;
   var DRAG_THRESHOLD = 8;
 
   function isChargenPage() {
@@ -98,8 +100,9 @@
       'border-bottom:1px solid #d8d2c4;flex-shrink:0}',
       '._snowd_adv_hdr h2{margin:0;font-size:17px;font-weight:bold}',
       '._snowd_adv_hdr_btns{display:flex;gap:6px}',
-      '._snowd_adv_hdr_btns button{border:1px solid #d8d2c4;background:#fff;border-radius:6px;width:32px;height:32px;',
-      'cursor:pointer;font-size:16px;color:#69706b}',
+      '._snowd_adv_hdr_btns button{border:1px solid #d8d2c4;background:#fff;border-radius:6px;min-width:32px;height:32px;',
+      'padding:0 8px;cursor:pointer;font-size:13px;color:#69706b}',
+      '._snowd_adv_hdr_btns button._text{width:auto;padding:0 10px;font-size:12px}',
       '._snowd_adv_ctx{padding:10px 16px;font-size:12px;color:#69706b;border-bottom:1px solid #eee;flex-shrink:0}',
       '._snowd_adv_ctx label{display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:6px;color:#1f2522}',
       '._snowd_adv_warn{background:#fff8e1;color:#8a6d00;padding:8px 16px;font-size:12px;border-bottom:1px solid #ffe082;flex-shrink:0}',
@@ -173,6 +176,7 @@
       '<button type="button" id="_tab_adv">进阶</button>',
       '</div>',
       '<div class="_snowd_adv_hdr_btns">',
+      '<button type="button" id="_snowd_adv_new_chat" class="_text" title="新对话">新对话</button>',
       '<button type="button" id="_snowd_adv_min" title="关闭">×</button>',
       '</div></div>',
       '<div class="_snowd_view" id="_snowd_view_chat">',
@@ -214,7 +218,143 @@
       chargenQuery: '',
       chargenFullAnswer: null,
       chargenBusy: false,
+      chargenSyncedFp: '',
+      chatSession: { id: '', turns: [], bindingKey: null },
     };
+
+    function randomSessionId() {
+      return 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
+
+    function getBindingKey() {
+      if (isChargenPage()) {
+        var cs = getChargenState();
+        var cn = cs && cs.char && cs.char.className;
+        return cn ? ('chargen:' + cn) : 'chargen:anonymous';
+      }
+      var summary = getCharacterSummary();
+      if (summary && useCharEnabled()) {
+        return 'char:' + summary.name + '|' + summary.className + '|' + (summary.level || 0);
+      }
+      return 'anonymous';
+    }
+
+    function loadSessionFromStorage() {
+      try {
+        var raw = sessionStorage.getItem(SESSION_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveSessionToStorage() {
+      try {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(state.chatSession));
+      } catch (e) { /* ignore */ }
+    }
+
+    function clearMsgsUi() {
+      var box = document.getElementById('_snowd_adv_msgs');
+      if (box) box.innerHTML = '';
+    }
+
+    function appendWelcomeIfEmpty() {
+      var box = document.getElementById('_snowd_adv_msgs');
+      if (!box || box.children.length) return;
+      if (isChargenPage()) {
+        appendMsg('ai', '创建页陪跑已启用：悬浮球旁会显示当前步骤的简短推荐，点击冒泡查看完整回答；也可在下方自由提问。');
+      } else {
+        appendMsg('ai', '你好，我是 Build 顾问助理。创建页已支持全职业陪跑；可询问车卡、技能、进阶与兼职等（法师资料最完整）。');
+      }
+    }
+
+    function restoreSessionUi() {
+      clearMsgsUi();
+      var turns = state.chatSession.turns || [];
+      for (var i = 0; i < turns.length; i += 1) {
+        if (turns[i].user) appendMsg('user', turns[i].user);
+        if (turns[i].assistant) appendMsg('ai', turns[i].assistant);
+      }
+      appendWelcomeIfEmpty();
+    }
+
+    function newChatSession(opts) {
+      opts = opts || {};
+      state.chatSession = {
+        id: randomSessionId(),
+        turns: [],
+        bindingKey: getBindingKey(),
+      };
+      saveSessionToStorage();
+      if (!opts.silent) {
+        clearMsgsUi();
+        appendWelcomeIfEmpty();
+      }
+    }
+
+    function ensureSessionBinding() {
+      var key = getBindingKey();
+      if (state.chatSession.bindingKey && state.chatSession.bindingKey !== key) {
+        newChatSession({ silent: false });
+        return;
+      }
+      if (!state.chatSession.id) {
+        var saved = loadSessionFromStorage();
+        if (saved && saved.bindingKey === key) {
+          state.chatSession = saved;
+        } else {
+          newChatSession({ silent: true });
+        }
+      }
+      state.chatSession.bindingKey = key;
+    }
+
+    function appendSessionTurn(user, assistant) {
+      state.chatSession.turns.push({
+        user: user,
+        assistant: (assistant || '').slice(0, 800),
+        ts: Date.now(),
+      });
+      while (state.chatSession.turns.length > MAX_TURNS) {
+        state.chatSession.turns.shift();
+      }
+      saveSessionToStorage();
+    }
+
+    function conversationHistoryForPayload() {
+      return (state.chatSession.turns || []).map(function(t) {
+        return { user: t.user, assistant: t.assistant, ts: t.ts };
+      });
+    }
+
+    function syncChargenBubbleToSession() {
+      if (!isChargenPage() || !state.chargenFullAnswer) return;
+      var userQ = (state.chargenQuery || '').trim() || '当前步骤推荐';
+      if (state.chargenSyncedFp === state.chargenFp) return;
+      var turns = state.chatSession.turns || [];
+      var last = turns.length ? turns[turns.length - 1] : null;
+      if (last && last.source === 'chargen_bubble' && last.fp === state.chargenFp) {
+        last.user = userQ;
+        last.assistant = state.chargenFullAnswer.slice(0, 800);
+        saveSessionToStorage();
+        state.chargenSyncedFp = state.chargenFp;
+        return;
+      }
+      state.chatSession.turns.push({
+        user: userQ,
+        assistant: state.chargenFullAnswer.slice(0, 800),
+        ts: Date.now(),
+        source: 'chargen_bubble',
+        fp: state.chargenFp,
+      });
+      while (state.chatSession.turns.length > MAX_TURNS) {
+        state.chatSession.turns.shift();
+      }
+      saveSessionToStorage();
+      state.chargenSyncedFp = state.chargenFp;
+    }
 
     function applyBallPos() {
       var saved = loadPos();
@@ -251,6 +391,7 @@
     }
 
     function refreshContext() {
+      ensureSessionBinding();
       var ctx = document.getElementById('_snowd_adv_ctx');
       var warn = document.getElementById('_snowd_adv_warn');
       if (!ctx) return;
@@ -387,12 +528,10 @@
 
     function openChargenDetail() {
       if (!state.chargenFullAnswer) return;
+      syncChargenBubbleToSession();
       setOpen(true);
       switchTab('chat');
-      var box = document.getElementById('_snowd_adv_msgs');
-      if (box) box.innerHTML = '';
-      appendMsg('user', state.chargenQuery || '当前步骤推荐');
-      appendMsg('ai', state.chargenFullAnswer);
+      restoreSessionUi();
     }
 
     async function refreshChargenTip() {
@@ -424,7 +563,16 @@
 
       var full = '';
       try {
-        var payload = { queryKind: 'chargen_bubble', mode: 'wizard', chargenState: cs, query: ' ' };
+        ensureSessionBinding();
+        var payload = {
+          queryKind: 'chargen_bubble',
+          mode: 'wizard',
+          chargenState: cs,
+          query: ' ',
+          sessionId: state.chatSession.id,
+          bindingKey: getBindingKey(),
+          conversationHistory: conversationHistoryForPayload(),
+        };
         var res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
           full += delta;
           showBubble(truncateTip(full) || '…');
@@ -432,6 +580,7 @@
         if (res && res.resolvedQuery) state.chargenQuery = res.resolvedQuery;
         if (res && res.ok && !full && res.answer) full = res.answer;
         state.chargenFullAnswer = full || '（暂无建议）';
+        syncChargenBubbleToSession();
         showBubble(truncateTip(state.chargenFullAnswer));
       } catch (e) {
         showBubble('推荐暂时不可用');
@@ -571,7 +720,8 @@
       var gotChunk = false;
 
       try {
-        var payload = { query: q };
+        ensureSessionBinding();
+        var payload = { query: q, sessionId: state.chatSession.id, bindingKey: getBindingKey() };
         if (opts.mode) payload.mode = opts.mode;
         if (opts.wizardState) payload.wizardState = opts.wizardState;
         else if (opts.chargenState) {
@@ -588,6 +738,9 @@
           var summary = getCharacterSummary();
           if (summary && summary.snapshot) payload.snapshot = summary.snapshot;
         }
+        if (!opts.skipHistory) {
+          payload.conversationHistory = conversationHistoryForPayload();
+        }
 
         var res;
         if (window.electronAPI.advisorAdviseStream) {
@@ -603,6 +756,7 @@
         if (res && res.ok) {
           if (!gotChunk && res.answer) aiEl.textContent = res.answer;
           if (!aiEl.textContent) aiEl.textContent = '（无回答内容）';
+          appendSessionTurn(q, aiEl.textContent);
         } else {
           if (aiEl.parentNode) aiEl.parentNode.removeChild(aiEl);
           appendMsg('err', (res && res.error) || '请求失败，请稍后重试。');
@@ -660,6 +814,10 @@
       setOpen(false);
     });
 
+    document.getElementById('_snowd_adv_new_chat').addEventListener('click', function() {
+      newChatSession({ silent: false });
+    });
+
     document.getElementById('_tab_chat').addEventListener('click', function() { switchTab('chat'); });
     document.getElementById('_tab_adv').addEventListener('click', function() { switchTab('adv'); });
 
@@ -689,16 +847,29 @@
     });
 
     window.addEventListener('snowd-chargen-change', function() {
+      var prevKey = state.chatSession.bindingKey;
       refreshContext();
+      if (prevKey && prevKey !== getBindingKey()) {
+        newChatSession({ silent: false });
+      }
       refreshChargenTip();
     });
 
+    window.addEventListener('snowd-panel-character-change', function() {
+      if (!window.snowdPanel || !window.snowdPanel.isPanelPage || !window.snowdPanel.isPanelPage()) return;
+      var prevKey = state.chatSession.bindingKey;
+      state.catalog = null;
+      refreshContext();
+      if (prevKey && prevKey !== getBindingKey()) {
+        newChatSession({ silent: false });
+      }
+    });
+
     applyBallPos();
+    ensureSessionBinding();
+    restoreSessionUi();
     if (isChargenPage()) {
-      appendMsg('ai', '创建页陪跑已启用：悬浮球旁会显示当前步骤的简短推荐，点击冒泡查看完整回答；也可在下方自由提问。');
       setTimeout(refreshChargenTip, 400);
-    } else {
-      appendMsg('ai', '你好，我是 Build 顾问助理。创建页已支持全职业陪跑；可询问车卡、技能、进阶与兼职等（法师资料最完整）。');
     }
   }
 

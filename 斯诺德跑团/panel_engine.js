@@ -175,6 +175,11 @@ function loadState(charName, slotIndex) {
     CURRENT_SLOT = slotIndex;
     state._dirty = false;
     ensureSpState();
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('snowd-panel-character-change', {
+        detail: { charName: charName, slot: slotIndex },
+      }));
+    }
     return true;
   } catch(e) {
     console.error("Load failed:", e);

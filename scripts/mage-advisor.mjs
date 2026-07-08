@@ -11,6 +11,8 @@ import { buildChatMessages, buildSystemPrompt } from './advisor-prompt.mjs';
 import { getAdvisorConfig, ROOT } from './advisor-env.mjs';
 import { loadSnapshotFile } from './advisor-snapshot.mjs';
 import { fetch, abortAfter } from './advisor-fetch.mjs';
+import { planQuery, planFromRules, buildPlanCacheKey } from './advisor-planner.mjs';
+import { normalizeConversationHistory } from './advisor-session.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -168,17 +170,47 @@ export async function advise(query, options = {}) {
   if (typeof wizardState === 'string') {
     wizardState = JSON.parse(fs.readFileSync(path.resolve(wizardState), 'utf8'));
   }
+
+  const conversationHistory = normalizeConversationHistory(options.conversationHistory);
+  const retrievalClassHint = wizardState?.selections?.className
+    || options.chargenState?.char?.className
+    || snapshot?.classes?.[0]?.name
+    || snapshot?.className
+    || null;
+
+  const plannerCtx = {
+    className: retrievalClassHint,
+    mode: options.mode,
+    snapshot: snapshot || undefined,
+    conversationHistory,
+    chargenState: options.chargenState,
+    planCacheKey: options.sessionId
+      ? buildPlanCacheKey(options.sessionId, query, retrievalClassHint || options.bindingKey || 'anon')
+      : null,
+  };
+
+  const plan = options.skipPlanner
+    ? (options.plan || null)
+    : (options.dryRun || options.rulesOnlyPlanner)
+      ? planFromRules(query, plannerCtx)
+      : await planQuery(query, plannerCtx, {
+        useLLM: options.usePlannerLLM !== false,
+      });
+
   const retrieval = retrieve(query, {
     snapshot: snapshot || undefined,
     mode: options.mode,
     wizardState: wizardState || undefined,
     chargenState: options.chargenState || undefined,
+    plan: plan || undefined,
   });
   const context = formatContext(retrieval);
   const messages = buildChatMessages(query, context, {
     intent: retrieval.intent,
     mode: retrieval.mode,
     promptProfile: retrieval.promptProfile,
+    answerStyle: retrieval.answerStyle,
+    conversationHistory,
     className: retrieval.retrievalClass
       || retrieval.wizardState?.selections?.className
       || options.chargenState?.char?.className
@@ -193,6 +225,8 @@ export async function advise(query, options = {}) {
       intent: retrieval.intent,
       mode: retrieval.mode,
       promptProfile: retrieval.promptProfile,
+      answerStyle: retrieval.answerStyle,
+      plan,
       thinking,
       model: config.model,
       messages,
@@ -218,6 +252,8 @@ export async function advise(query, options = {}) {
     intent: retrieval.intent,
     mode: retrieval.mode,
     promptProfile: retrieval.promptProfile,
+    answerStyle: retrieval.answerStyle,
+    plan,
     thinking,
     model: config.model,
     messages,
