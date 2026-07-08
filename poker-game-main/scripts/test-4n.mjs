@@ -53,18 +53,18 @@ console.log('--- 奴隶 excludeFromFieldCount ---')
 console.log('--- 蔓生怪 conditionalPlayCost ---')
 {
   const vine = seed.find(x => x.id === 'card_054')
-  const card = makeCard({ name: '蔓生怪', cost: 5, effects: vine.effects })
+  const card = makeCard({ name: '蔓生怪', cost: 3, effects: vine.effects })
   const withWood = makePlayer('p1', {
     field: [fieldSlot(makeCard({ name: '森林', type: 'environment', attribute: '木' }))],
   })
   const alone = makePlayer('p2')
   assert(EffectManager.getEffectivePlayCost(card, withWood) === 1, '有木环境费用 1')
-  assert(EffectManager.getEffectivePlayCost(card, alone) === 5, '无木环境费用 5')
+  assert(EffectManager.getEffectivePlayCost(card, alone) === 3, '无木环境费用 3')
 }
 
 console.log('--- 珊瑚元素 requireAllFieldAttributes ---')
 {
-  const coral = makeCard({ name: '珊瑚元素', basePower: 2, currentPower: 2 })
+  const coral = makeCard({ name: '珊瑚元素', basePower: 3, currentPower: 3 })
   const effect = seed.find(x => x.id === 'card_067').effects[0]
   const me = makePlayer('p1', {
     field: [
@@ -73,13 +73,13 @@ console.log('--- 珊瑚元素 requireAllFieldAttributes ---')
     ],
   })
   EffectManager.applyDeployEffect(effect, coral, me, { players: [me] })
-  assert(coral.currentPower === 5, `水+光环境 → 2+3=5 (got ${coral.currentPower})`)
+  assert(coral.currentPower === 6, `水+光环境 → 3+3=6 (got ${coral.currentPower})`)
   const me2 = makePlayer('p2', {
     field: [fieldSlot(makeCard({ name: '大海', type: 'environment', attribute: '水' }))],
   })
-  const coral2 = makeCard({ name: '珊瑚元素', basePower: 2, currentPower: 2 })
+  const coral2 = makeCard({ name: '珊瑚元素', basePower: 3, currentPower: 3 })
   const r = EffectManager.applyDeployEffect(effect, coral2, me2, { players: [me2] })
-  assert(coral2.currentPower === 2 && r.messages.some(m => m.includes('未触发')), '仅水环境不加成')
+  assert(coral2.currentPower === 3 && r.messages.some(m => m.includes('未触发')), '仅水环境不加成')
 }
 
 console.log(`\n结果: ${passed} 通过, ${failed} 失败`)

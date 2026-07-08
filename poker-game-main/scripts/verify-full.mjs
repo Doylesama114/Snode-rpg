@@ -197,6 +197,16 @@ function makeCard(o) {
   assert(ale?.effects?.length === 2, '矮人烈酒 seed 正确')
 }
 
+console.log('\n=== 6. 费用/战力与 xlsx 一致 ===')
+{
+  const { spawnSync } = await import('node:child_process')
+  const r = spawnSync(process.execPath, ['scripts/audit-cost-power.mjs'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  })
+  assert(r.status === 0, `audit-cost-power 通过 (exit ${r.status})`)
+}
+
 console.log('\n=== 汇总 ===')
 console.log(`通过: ${passed} | 失败: ${failed} | 警告: ${warned}`)
 if (failed > 0) process.exit(1)

@@ -58,16 +58,16 @@ console.log('\n=== 1. card-seed 数据结构 ===')
 console.log('\n=== 2. 季风 modifyPlayCost ===')
 {
   const monsoon = getCard('card_120')
-  const griffin = getCard('card_009') // 狮鹫 风 cost=5
+  const griffin = getCard('card_009') // 狮鹫 风 cost=3
   const farmer = getCard('card_010') // 农田 土
 
   const player = makePlayer('p1', [monsoon])
-  assert(EffectManager.getEffectivePlayCost(griffin, player) === 4, `狮鹫 5→4 (got ${EffectManager.getEffectivePlayCost(griffin, player)})`)
+  assert(EffectManager.getEffectivePlayCost(griffin, player) === 2, `狮鹫 3→2 (got ${EffectManager.getEffectivePlayCost(griffin, player)})`)
   assert(EffectManager.getEffectivePlayCost(farmer, player) === farmer.cost, '非风属性费用不变')
 
   // 两张季风叠加 -2
   const player2 = makePlayer('p2', [cloneCard(monsoon), cloneCard(monsoon)])
-  assert(EffectManager.getEffectivePlayCost(griffin, player2) === 3, '双季风 5→3')
+  assert(EffectManager.getEffectivePlayCost(griffin, player2) === 1, '双季风 3→1')
 
   // 费用下限 0
   const cheap = getCard('card_059') // cost=1 水
@@ -76,14 +76,14 @@ console.log('\n=== 2. 季风 modifyPlayCost ===')
 
   // 无季风时不减费
   const alone = makePlayer('p3', [])
-  assert(EffectManager.getEffectivePlayCost(griffin, alone) === 5, '无季风时狮鹫仍 5')
+  assert(EffectManager.getEffectivePlayCost(griffin, alone) === 3, '无季风时狮鹫仍 3')
 }
 
 // ── 3. 篝火 — 真实效果 + triggerRoundEffects ────────────────────────────
 console.log('\n=== 3. 篝火 roundEnd ===')
 {
   const campfire = getCard('card_071')
-  const warrior = getCard('card_007') // 战士 basePower=2
+  const warrior = getCard('card_008') // 战士 basePower=3
   const water = getCard('card_059') // 垂钓客 水
   const forest = getCard('card_105') // 森林 environment
 
@@ -92,10 +92,10 @@ console.log('\n=== 3. 篝火 roundEnd ===')
     const p = makePlayer('p1', [campfire, warrior, water, forest])
     const game = makeGame([p])
     EffectManager.triggerRoundEffects('roundEnd', game)
-    assert(p.field[1].card.currentPower === 3, `战士 2→3 (got ${p.field[1].card.currentPower})`)
+    assert(p.field[1].card.currentPower === 4, `战士 3→4 (got ${p.field[1].card.currentPower})`)
     assert(p.field[2].card.currentPower === 1, `水单位不变 (got ${p.field[2].card.currentPower})`)
-    assert(p.field[3].card.currentPower === 1, `环境牌不变 (got ${p.field[3].card.currentPower})`)
-    assert(p.field[0].card.currentPower === 1, `篝火自身不变 (got ${p.field[0].card.currentPower})`)
+    assert(p.field[3].card.currentPower === 0, `环境牌不变 (got ${p.field[3].card.currentPower})`)
+    assert(p.field[0].card.currentPower === 0, `篝火自身不变 (got ${p.field[0].card.currentPower})`)
   }
 
   // 3b: 仅有水单位时无触发
@@ -121,11 +121,11 @@ console.log('\n=== 3. 篝火 roundEnd ===')
   {
     const cf = getCard('card_071')
     const w1 = getCard('card_059')
-    const w2 = getCard('card_007')
+    const w2 = getCard('card_008')
     const p = makePlayer('p4', [cf, w1, w2])
     const game = makeGame([p])
     EffectManager.triggerRoundEffects('roundEnd', game)
-    assert(p.field[2].card.currentPower === 3 && p.field[1].card.currentPower === 1, '跳过水单位，buff 战士')
+    assert(p.field[2].card.currentPower === 4 && p.field[1].card.currentPower === 1, '跳过水单位，buff 战士')
   }
 }
 
@@ -141,8 +141,8 @@ console.log('\n=== 4. 垂钓客 roundStart D6 抽牌 ===')
   {
     const p = makePlayer('p1', [fisher], [...deckCards])
     const game = makeGame([p])
-    EffectManager.triggerRoundEffects('roundStart', game)
-    assert(p.hand.length === 0 && p.deck.length === 2, 'D6=3 不抽牌')
+    const r = EffectManager.triggerOwnerTurnStartEffects(p, game, { interactivePlayerId: p.id })
+    assert(p.hand.length === 0 && r.messages.some(m => m.includes('未触发')), 'D6=3 不抽牌')
   }
 
   // D6=4 抽 1 张
@@ -150,9 +150,9 @@ console.log('\n=== 4. 垂钓客 roundStart D6 抽牌 ===')
   {
     const p = makePlayer('p2', [cloneCard(fisher)], [getCard('card_001'), getCard('card_002')])
     const game = makeGame([p])
-    EffectManager.triggerRoundEffects('roundStart', game)
+    const r = EffectManager.triggerOwnerTurnStartEffects(p, game, { interactivePlayerId: p.id })
     assert(p.hand.length === 1 && p.deck.length === 1, 'D6=4 抽 1 张')
-    assert(game.message.includes('抽到了'), '有抽牌消息')
+    assert(r.messages.some(m => m.includes('抽到了')), '有抽牌消息')
   }
 
   // 牌库空时不崩溃
@@ -160,7 +160,7 @@ console.log('\n=== 4. 垂钓客 roundStart D6 抽牌 ===')
   {
     const p = makePlayer('p3', [cloneCard(fisher)], [])
     const game = makeGame([p])
-    EffectManager.triggerRoundEffects('roundStart', game)
+    EffectManager.triggerOwnerTurnStartEffects(p, game, { interactivePlayerId: p.id })
     assert(p.hand.length === 0, '空牌库时不抽牌')
   }
 
@@ -175,16 +175,16 @@ console.log('\n=== 5. 出牌扣费模拟 ===')
   const player = makePlayer('p1', [monsoon], [], [griffin], 4)
 
   const playCost = EffectManager.getEffectivePlayCost(griffin, player)
-  assert(playCost === 4, `有效费用 4 (got ${playCost})`)
+  assert(playCost === 2, `有效费用 2 (got ${playCost})`)
   assert(player.currentCost >= playCost, '4 能量可出狮鹫（季风在场）')
 
   player.currentCost -= playCost
-  assert(player.currentCost === 0, `扣费后剩余 0 (got ${player.currentCost})`)
+  assert(player.currentCost === 2, `扣费后剩余 2 (got ${player.currentCost})`)
 
-  // 无季风时 4 能量不够出狮鹫
-  const player2 = makePlayer('p2', [], [], [griffin], 4)
+  // 无季风时 2 能量不够出狮鹫
+  const player2 = makePlayer('p2', [], [], [griffin], 2)
   const cost2 = EffectManager.getEffectivePlayCost(griffin, player2)
-  assert(cost2 === 5 && player2.currentCost < cost2, '无季风时 4 能量不够出狮鹫')
+  assert(cost2 === 3 && player2.currentCost < cost2, '无季风时 2 能量不够出狮鹫')
 }
 
 // ── 6. card-seed 与 cardDatabase 关键字段一致（抽样）────────────────────

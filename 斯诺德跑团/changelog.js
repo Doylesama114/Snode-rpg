@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7053',
+    date: '2026-07-08',
+    changes: [
+      '斯诺德对决:修复103张卡牌费用/战力与xlsx颠倒',
+      '双足飞龙3费7战'
+    ]
+  },
+
+
+  {
     version: '1.0.7052',
     date: '2026-07-07',
     changes: [

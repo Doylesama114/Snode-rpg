@@ -42,14 +42,17 @@ console.log('--- card-seed 三卡 ---')
 console.log('--- 急先锋 首回合自动进场 ---')
 {
   const fx = seed.find(x => x.id === 'card_086').effects[0]
+  const vanguardSeed = seed.find(x => x.id === 'card_086')
   const vanguard = makeCard({
-    id: 'card_086', name: '急先锋·罗森弗斯', cost: 11, basePower: 4, currentPower: 4, effects: [fx],
+    ...vanguardSeed,
+    currentPower: vanguardSeed.basePower,
+    effects: [fx],
   })
   const p1 = makePlayer('p1', { currentCost: 12, deck: [vanguard] })
   const game = { players: [p1], round: 1, message: '' }
   const msgs = EffectManager.applyFirstRoundAutoEntries(game)
   assert(p1.deck.length === 0 && p1.field.some(s => s.card?.name === '急先锋·罗森弗斯'), '从牌库自动进场')
-  assert(p1.currentCost === 1, `支付11费 (got ${p1.currentCost})`)
+  assert(p1.currentCost === 8, `支付4费 (got ${p1.currentCost})`)
   assert(msgs.some(m => m.includes('首回合自动进场')), '触发消息')
 }
 

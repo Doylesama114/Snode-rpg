@@ -54,7 +54,7 @@ console.log('--- 垂钓客 d6Min draw ---')
   const origRoll = EffectManager.rollD6
   EffectManager.rollD6 = () => 2
   const rLow = EffectManager.applyRoundEffect({ type: 'draw', drawCount: 1, d6Min: 4, timing: 'roundStart' }, fisher, player, { players: [player], message: '' })
-  assert(player.hand.length === 0 && rLow.messages.length === 0, 'D6=2 不抽牌')
+  assert(player.hand.length === 0 && rLow.messages.some(m => m.includes('未触发')), 'D6=2 不抽牌')
   EffectManager.rollD6 = () => 5
   const rHigh = EffectManager.applyRoundEffect({ type: 'draw', drawCount: 1, d6Min: 4, timing: 'roundStart' }, fisher, player, { players: [player], message: '' })
   assert(player.hand.length === 1 && player.hand[0].name === '抽到的牌', 'D6=5 抽牌')

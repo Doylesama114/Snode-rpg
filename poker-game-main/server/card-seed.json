@@ -60,8 +60,8 @@
       "居民"
     ],
     "attribute": "钢",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -86,8 +86,8 @@
       "野兽"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -127,8 +127,8 @@
       "职业者"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 1,
+    "basePower": 1,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -177,8 +177,8 @@
       "职业者"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -202,8 +202,8 @@
       "士兵"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDestroy",
@@ -227,8 +227,8 @@
       "飞行"
     ],
     "attribute": "风",
-    "basePower": 3,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 3,
     "effects": [
       {
         "timing": "onDeploy",
@@ -248,8 +248,8 @@
       "务农"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -277,8 +277,8 @@
       "建筑"
     ],
     "attribute": "木",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -305,8 +305,8 @@
       "建筑"
     ],
     "attribute": "钢",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -339,8 +339,8 @@
       "药剂"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -365,8 +365,8 @@
       "奥术"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -388,8 +388,8 @@
       "食物"
     ],
     "attribute": "火",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -437,8 +437,8 @@
       "物件"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -465,8 +465,8 @@
       "物件"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onGameEnd",
@@ -691,8 +691,8 @@
       "罪恶"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -715,8 +715,8 @@
       "贵族"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -741,8 +741,8 @@
       "敌役"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -770,8 +770,8 @@
       "士兵"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -821,8 +821,8 @@
       "职业者"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -845,8 +845,8 @@
       "士兵"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReveal",
@@ -868,8 +868,8 @@
       "职业者"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -889,8 +889,8 @@
       "敌役"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 1,
     "effects": [
       {
         "timing": "onGameEnd",
@@ -1212,8 +1212,8 @@
       "职业者"
     ],
     "attribute": "木",
-    "basePower": 2,
-    "cost": 1,
+    "basePower": 1,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
@@ -1237,8 +1237,8 @@
       "敌役"
     ],
     "attribute": "木",
-    "basePower": 0,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 0,
     "effects": [
       {
         "timing": "onReveal",
@@ -1257,8 +1257,8 @@
       "居民"
     ],
     "attribute": "木",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1280,8 +1280,8 @@
       "职业者"
     ],
     "attribute": "木",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1305,8 +1305,8 @@
       "职业者"
     ],
     "attribute": "木",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -1337,8 +1337,8 @@
       "植株"
     ],
     "attribute": "木",
-    "basePower": 3,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 3,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1363,8 +1363,8 @@
       "载具"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": -5,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReveal",
@@ -1423,8 +1423,8 @@
       "野兽"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -1449,8 +1449,8 @@
       "野兽"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1544,8 +1544,8 @@
       "居民"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1566,8 +1566,8 @@
       "野兽"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -1588,8 +1588,8 @@
       "居民"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1631,8 +1631,8 @@
       "元素"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -1657,8 +1657,8 @@
       "元素"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1684,8 +1684,8 @@
       "职业者"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
@@ -1725,8 +1725,8 @@
       "野兽"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onBatchReveal",
@@ -1745,8 +1745,8 @@
       "野兽"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -1769,8 +1769,8 @@
       "火焰"
     ],
     "attribute": "火",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "roundEnd",
@@ -1796,8 +1796,8 @@
       "野兽"
     ],
     "attribute": "火",
-    "basePower": 2,
-    "cost": 1,
+    "basePower": 1,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
@@ -1821,8 +1821,8 @@
       "元素"
     ],
     "attribute": "火",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -1847,8 +1847,8 @@
       "职业者"
     ],
     "attribute": "火",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1894,8 +1894,8 @@
       "居民"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -1944,8 +1944,8 @@
       "元素"
     ],
     "attribute": "土",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onOtherPlay",
@@ -1970,8 +1970,8 @@
       "野兽"
     ],
     "attribute": "土",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -1997,8 +1997,8 @@
       "职业者"
     ],
     "attribute": "土",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2017,8 +2017,8 @@
       "怪兽"
     ],
     "attribute": "土",
-    "basePower": 2,
-    "cost": 6,
+    "basePower": 6,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2037,8 +2037,8 @@
       "野兽"
     ],
     "attribute": "土",
-    "basePower": 6,
-    "cost": 12,
+    "basePower": 12,
+    "cost": 6,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2058,8 +2058,8 @@
       "飞行"
     ],
     "attribute": "风",
-    "basePower": 2,
-    "cost": 1,
+    "basePower": 1,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReveal",
@@ -2081,8 +2081,8 @@
       "飞行"
     ],
     "attribute": "风",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2105,8 +2105,8 @@
       "飞行"
     ],
     "attribute": "风",
-    "basePower": 3,
-    "cost": 7,
+    "basePower": 7,
+    "cost": 3,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2125,8 +2125,8 @@
       "传奇"
     ],
     "attribute": "风",
-    "basePower": 4,
-    "cost": 11,
+    "basePower": 11,
+    "cost": 4,
     "effects": [
       {
         "timing": "roundStart",
@@ -2146,8 +2146,8 @@
       "野兽"
     ],
     "attribute": "冰",
-    "basePower": 1,
-    "cost": 2,
+    "basePower": 2,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -2170,13 +2170,13 @@
       "怪兽"
     ],
     "attribute": "冰",
-    "basePower": 2,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
         "type": "conditionalPlayCost",
-        "playCostValue": 4,
+        "playCostValue": 1,
         "requireFieldAttributes": [
           "冰"
         ],
@@ -2195,8 +2195,8 @@
       "野兽"
     ],
     "attribute": "冰",
-    "basePower": 3,
-    "cost": 5,
+    "basePower": 5,
+    "cost": 3,
     "effects": [
       {
         "timing": "onReveal",
@@ -2223,8 +2223,8 @@
       "职业者"
     ],
     "attribute": "幻",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onGameEnd",
@@ -2243,8 +2243,8 @@
       "士兵"
     ],
     "attribute": "钢",
-    "basePower": 1,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -2267,8 +2267,8 @@
       "武器"
     ],
     "attribute": "钢",
-    "basePower": 1,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2294,8 +2294,8 @@
       "武器"
     ],
     "attribute": "钢",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2317,8 +2317,8 @@
       "护甲"
     ],
     "attribute": "钢",
-    "basePower": 1,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2341,8 +2341,8 @@
       "职业者"
     ],
     "attribute": "光",
-    "basePower": 2,
-    "cost": 4,
+    "basePower": 4,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -2394,8 +2394,8 @@
       "宗教"
     ],
     "attribute": "暗",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onReveal",
@@ -2414,8 +2414,8 @@
       "职业者"
     ],
     "attribute": "暗",
-    "basePower": 2,
-    "cost": 3,
+    "basePower": 3,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReveal",
@@ -2437,8 +2437,8 @@
       "建筑"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "roundEnd",
@@ -2457,8 +2457,8 @@
       "建筑"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2485,8 +2485,8 @@
       "建筑"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2525,8 +2525,8 @@
       "建筑"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
@@ -2550,14 +2550,16 @@
       "建筑"
     ],
     "attribute": "无",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
         "type": "extraPlay",
         "extraPlayCardType": "tactic",
-        "extraPlayKeywords": ["魔法"],
+        "extraPlayKeywords": [
+          "魔法"
+        ],
         "description": "每个回合你可以额外打出一张拥有\"魔法\"关键词的战术牌"
       }
     ],
@@ -2572,8 +2574,8 @@
       "自然"
     ],
     "attribute": "木",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -2597,8 +2599,8 @@
       "植株"
     ],
     "attribute": "木",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -2635,8 +2637,8 @@
       "节庆"
     ],
     "attribute": "木",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2673,8 +2675,8 @@
       "自然"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2696,8 +2698,8 @@
       "建筑"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2722,8 +2724,8 @@
       "载具"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2746,8 +2748,8 @@
       "自然"
     ],
     "attribute": "水",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -2771,8 +2773,8 @@
       "建筑"
     ],
     "attribute": "火",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReforge",
@@ -2794,8 +2796,8 @@
       "自然"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -2819,8 +2821,8 @@
       "建筑"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2849,8 +2851,8 @@
       "自然"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -2883,8 +2885,8 @@
       "建筑"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDestroy",
@@ -2903,8 +2905,8 @@
       "自然"
     ],
     "attribute": "土",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -2928,8 +2930,8 @@
       "载具"
     ],
     "attribute": "土",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onField",
@@ -2952,8 +2954,8 @@
       "自然"
     ],
     "attribute": "冰",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "roundEnd",
@@ -2989,8 +2991,8 @@
       "气候"
     ],
     "attribute": "风",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onField",
@@ -3014,8 +3016,8 @@
       "太阳"
     ],
     "attribute": "光",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onGameEnd",
@@ -3060,8 +3062,8 @@
       "星空"
     ],
     "attribute": "星",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "roundStart",
@@ -3133,8 +3135,8 @@
       "战技"
     ],
     "attribute": "无",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -3154,7 +3156,7 @@
       "魔法"
     ],
     "attribute": "无",
-    "basePower": 1,
+    "basePower": 0,
     "cost": 1,
     "quickPlay": true,
     "effects": [
@@ -3226,8 +3228,8 @@
       "自然"
     ],
     "attribute": "木",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -3298,8 +3300,8 @@
       "武艺"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "quickPlay": true,
     "effects": [
       {
@@ -3327,8 +3329,8 @@
       "酒水"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -3380,8 +3382,8 @@
       "魔法"
     ],
     "attribute": "水",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -3403,8 +3405,8 @@
       "酒水"
     ],
     "attribute": "水",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onReveal",
@@ -3425,7 +3427,7 @@
       "火焰"
     ],
     "attribute": "火",
-    "basePower": 1,
+    "basePower": 0,
     "cost": 1,
     "quickPlay": true,
     "effects": [
@@ -3448,8 +3450,8 @@
       "太阳"
     ],
     "attribute": "火",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -3471,8 +3473,8 @@
       "魔法"
     ],
     "attribute": "火",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onDeploy",
@@ -3518,7 +3520,7 @@
       "战技"
     ],
     "attribute": "风",
-    "basePower": 3,
+    "basePower": 0,
     "cost": 3,
     "quickPlay": true,
     "effects": [
@@ -3540,8 +3542,8 @@
       "魔法"
     ],
     "attribute": "雷",
-    "basePower": 3,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 3,
     "effects": [
       {
         "timing": "onReveal",
@@ -3602,8 +3604,8 @@
       "魔法"
     ],
     "attribute": "幻",
-    "basePower": 2,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 2,
     "effects": [
       {
         "timing": "onReveal",
@@ -3666,8 +3668,8 @@
       "魔法"
     ],
     "attribute": "力",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onReveal",
@@ -3689,8 +3691,8 @@
       "神恩"
     ],
     "attribute": "光",
-    "basePower": 1,
-    "cost": 0,
+    "basePower": 0,
+    "cost": 1,
     "effects": [
       {
         "timing": "onDeploy",
@@ -3709,7 +3711,7 @@
       "诡计"
     ],
     "attribute": "暗",
-    "basePower": 2,
+    "basePower": 0,
     "cost": 2,
     "quickPlay": true,
     "effects": [

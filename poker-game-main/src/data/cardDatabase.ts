@@ -56,9 +56,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民'],
     attribute: '钢',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -79,9 +79,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -112,9 +112,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['魔法', '职业者'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 1,
+    basePower: 1,
+    currentPower: 1,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -159,9 +159,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -182,9 +182,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['士兵'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onDestroy',
@@ -203,9 +203,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽', '载具', '飞行'],
     attribute: '风',
-    basePower: 3,
-    currentPower: 3,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 3,
     effects: [
     {
       timing: 'onDeploy',
@@ -223,9 +223,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然', '务农'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -249,9 +249,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['武器', '建筑'],
     attribute: '木',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -272,9 +272,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['护甲', '建筑'],
     attribute: '钢',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -296,9 +296,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['药剂'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -319,9 +319,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法', '奥术'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -342,9 +342,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['食物'],
     attribute: '火',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -387,9 +387,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['物件'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -415,9 +415,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['物件'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onGameEnd',
@@ -634,9 +634,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['罪恶'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -657,9 +657,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民', '贵族'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -681,9 +681,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['敌役'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -709,9 +709,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民', '士兵'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -755,9 +755,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -779,9 +779,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['士兵'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onReveal',
@@ -802,9 +802,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -823,9 +823,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['敌役'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 1,
     effects: [
     {
       timing: 'onGameEnd',
@@ -1117,9 +1117,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '木',
-    basePower: 2,
-    currentPower: 2,
-    cost: 1,
+    basePower: 1,
+    currentPower: 1,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -1140,9 +1140,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['敌役'],
     attribute: '木',
-    basePower: 0,
-    currentPower: 0,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 0,
     effects: [
     {
       timing: 'onReveal',
@@ -1160,9 +1160,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民'],
     attribute: '木',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -1181,9 +1181,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '木',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1204,9 +1204,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '木',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -1228,9 +1228,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['怪兽', '植株'],
     attribute: '木',
-    basePower: 3,
-    currentPower: 3,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 3,
     effects: [
     {
       timing: 'onDeploy',
@@ -1251,9 +1251,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['罪恶', '载具'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: -5,
+    currentPower: -5,
+    cost: 2,
     effects: [
     {
       timing: 'onReveal',
@@ -1299,9 +1299,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -1323,9 +1323,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -1414,9 +1414,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -1436,9 +1436,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -1458,9 +1458,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -1501,9 +1501,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['元素'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -1525,9 +1525,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['元素'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1549,9 +1549,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -1577,9 +1577,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onBatchReveal',
@@ -1597,9 +1597,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -1619,9 +1619,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['火焰'],
     attribute: '火',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'roundEnd',
@@ -1644,9 +1644,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '火',
-    basePower: 2,
-    currentPower: 2,
-    cost: 1,
+    basePower: 1,
+    currentPower: 1,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -1667,9 +1667,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['元素'],
     attribute: '火',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -1691,9 +1691,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '火',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1733,9 +1733,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['居民'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -1779,9 +1779,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['元素'],
     attribute: '土',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onOtherPlay',
@@ -1803,9 +1803,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '土',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -1828,9 +1828,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '土',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1848,9 +1848,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['怪兽'],
     attribute: '土',
-    basePower: 2,
-    currentPower: 2,
-    cost: 6,
+    basePower: 6,
+    currentPower: 6,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1868,9 +1868,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '土',
-    basePower: 6,
-    currentPower: 6,
-    cost: 12,
+    basePower: 12,
+    currentPower: 12,
+    cost: 6,
     effects: [
     {
       timing: 'onDeploy',
@@ -1888,9 +1888,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽', '飞行'],
     attribute: '风',
-    basePower: 2,
-    currentPower: 2,
-    cost: 1,
+    basePower: 1,
+    currentPower: 1,
+    cost: 2,
     effects: [
     {
       timing: 'onReveal',
@@ -1910,9 +1910,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽', '飞行'],
     attribute: '风',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -1933,9 +1933,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['怪物', '飞行'],
     attribute: '风',
-    basePower: 3,
-    currentPower: 3,
-    cost: 7,
+    basePower: 7,
+    currentPower: 7,
+    cost: 3,
     effects: [
     {
       timing: 'onDeploy',
@@ -1953,9 +1953,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['传奇'],
     attribute: '风',
-    basePower: 4,
-    currentPower: 4,
-    cost: 11,
+    basePower: 11,
+    currentPower: 11,
+    cost: 4,
     effects: [
     {
       timing: 'roundStart',
@@ -1974,9 +1974,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '冰',
-    basePower: 1,
-    currentPower: 1,
-    cost: 2,
+    basePower: 2,
+    currentPower: 2,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -1998,14 +1998,14 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['怪兽'],
     attribute: '冰',
-    basePower: 2,
-    currentPower: 2,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
       type: 'conditionalPlayCost',
-      playCostValue: 4,
+      playCostValue: 1,
       requireFieldAttributes: ['冰'],
       requireFieldCardType: 'environment',
       description: '如果你的场上拥有冰属性的环境牌，那么这张牌的费用-1'
@@ -2021,9 +2021,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['野兽'],
     attribute: '冰',
-    basePower: 3,
-    currentPower: 3,
-    cost: 5,
+    basePower: 5,
+    currentPower: 5,
+    cost: 3,
     effects: [
     {
       timing: 'onReveal',
@@ -2047,9 +2047,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '幻',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onGameEnd',
@@ -2067,9 +2067,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['士兵'],
     attribute: '钢',
-    basePower: 1,
-    currentPower: 1,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -2089,9 +2089,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['武器'],
     attribute: '钢',
-    basePower: 1,
-    currentPower: 1,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2111,9 +2111,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['武器'],
     attribute: '钢',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -2134,9 +2134,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['护甲'],
     attribute: '钢',
-    basePower: 1,
-    currentPower: 1,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2155,9 +2155,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '光',
-    basePower: 2,
-    currentPower: 2,
-    cost: 4,
+    basePower: 4,
+    currentPower: 4,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -2206,9 +2206,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['宗教'],
     attribute: '暗',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onReveal',
@@ -2226,9 +2226,9 @@ export const allCardDefinitions = [
     type: 'unit',
     keywords: ['职业者'],
     attribute: '暗',
-    basePower: 2,
-    currentPower: 2,
-    cost: 3,
+    basePower: 3,
+    currentPower: 3,
+    cost: 2,
     effects: [
     {
       timing: 'onReveal',
@@ -2249,9 +2249,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'roundEnd',
@@ -2269,9 +2269,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2293,9 +2293,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2330,9 +2330,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -2354,9 +2354,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['魔法', '建筑'],
     attribute: '无',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -2376,9 +2376,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '木',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -2399,9 +2399,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['植株'],
     attribute: '木',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -2432,9 +2432,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['节庆'],
     attribute: '木',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onDeploy',
@@ -2456,9 +2456,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['水源', '自然'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2479,9 +2479,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2503,9 +2503,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['载具'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onDeploy',
@@ -2525,9 +2525,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '水',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -2548,9 +2548,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '火',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onReforge',
@@ -2571,9 +2571,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -2594,9 +2594,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2622,9 +2622,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -2646,9 +2646,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDestroy',
@@ -2666,9 +2666,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '土',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2688,9 +2688,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['野兽', '载具'],
     attribute: '土',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onField',
@@ -2710,9 +2710,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['自然'],
     attribute: '冰',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'roundEnd',
@@ -2743,9 +2743,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['气候'],
     attribute: '风',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onField',
@@ -2765,9 +2765,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['气候', '太阳'],
     attribute: '光',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onGameEnd',
@@ -2808,9 +2808,9 @@ export const allCardDefinitions = [
     type: 'environment',
     keywords: ['建筑', '星空'],
     attribute: '星',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'roundStart',
@@ -2880,9 +2880,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['战技'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -2901,8 +2901,8 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '无',
-    basePower: 1,
-    currentPower: 1,
+    basePower: 0,
+    currentPower: 0,
     cost: 1,
     quickPlay: true,
     effects: [
@@ -2969,9 +2969,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['自然'],
     attribute: '木',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -3037,9 +3037,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['武艺'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     quickPlay: true,
     effects: [
     {
@@ -3066,9 +3066,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['酒水'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -3117,9 +3117,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '水',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -3140,9 +3140,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['酒水'],
     attribute: '水',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onReveal',
@@ -3161,8 +3161,8 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法', '火焰'],
     attribute: '火',
-    basePower: 1,
-    currentPower: 1,
+    basePower: 0,
+    currentPower: 0,
     cost: 1,
     quickPlay: true,
     effects: [
@@ -3183,9 +3183,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法', '太阳'],
     attribute: '火',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -3206,9 +3206,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '火',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onDeploy',
@@ -3251,8 +3251,8 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['战技'],
     attribute: '风',
-    basePower: 3,
-    currentPower: 3,
+    basePower: 0,
+    currentPower: 0,
     cost: 3,
     quickPlay: true,
     effects: [
@@ -3273,9 +3273,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '雷',
-    basePower: 3,
-    currentPower: 3,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 3,
     effects: [
     {
       timing: 'onReveal',
@@ -3327,9 +3327,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '幻',
-    basePower: 2,
-    currentPower: 2,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 2,
     effects: [
     {
       timing: 'onReveal',
@@ -3389,9 +3389,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['魔法'],
     attribute: '力',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onReveal',
@@ -3410,9 +3410,9 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['神恩'],
     attribute: '光',
-    basePower: 1,
-    currentPower: 1,
-    cost: 0,
+    basePower: 0,
+    currentPower: 0,
+    cost: 1,
     effects: [
     {
       timing: 'onDeploy',
@@ -3430,8 +3430,8 @@ export const allCardDefinitions = [
     type: 'tactic',
     keywords: ['诡计'],
     attribute: '暗',
-    basePower: 2,
-    currentPower: 2,
+    basePower: 0,
+    currentPower: 0,
     cost: 2,
     quickPlay: true,
     effects: [

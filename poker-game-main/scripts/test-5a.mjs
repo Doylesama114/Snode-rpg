@@ -30,7 +30,7 @@ console.log('--- card-seed 三卡 ---')
 {
   const yeti = seed.find(x => x.id === 'card_088')
   assert(yeti?.effects?.[0]?.type === 'conditionalPlayCost', '雪怪 conditionalPlayCost')
-  assert(yeti?.effects?.[0]?.playCostValue === 4, '雪怪费用 4')
+  assert(yeti?.effects?.[0]?.playCostValue === 1, '雪怪费用 1')
   const tiger = seed.find(x => x.id === 'card_089')
   assert(tiger?.effects?.[0]?.directDestroy === true, '寒铁虎 directDestroy')
   const geyser = seed.find(x => x.id === 'card_137')
@@ -39,14 +39,14 @@ console.log('--- card-seed 三卡 ---')
 
 console.log('--- 雪怪 冰环境费用 ---')
 {
-  const yeti = makeCard({ name: '雪怪', cost: 5, effects: seed.find(x => x.id === 'card_088').effects })
+  const yeti = makeCard({ name: '雪怪', cost: 2, effects: seed.find(x => x.id === 'card_088').effects })
   const iceEnv = makeCard({ name: '冰原', type: 'environment', attribute: '冰' })
   const p1 = makePlayer('p1', {
     field: [{ card: iceEnv, position: 0, isExtra: false }, ...Array.from({ length: 5 }, (_, i) => ({ card: null, position: i + 1, isExtra: false }))],
   })
-  assert(EffectManager.getEffectivePlayCost(yeti, p1) === 4, `有冰环境费用 4 (got ${EffectManager.getEffectivePlayCost(yeti, p1)})`)
+  assert(EffectManager.getEffectivePlayCost(yeti, p1) === 1, `有冰环境费用 1 (got ${EffectManager.getEffectivePlayCost(yeti, p1)})`)
   const p2 = makePlayer('p2')
-  assert(EffectManager.getEffectivePlayCost(yeti, p2) === 5, '无冰环境费用 5')
+  assert(EffectManager.getEffectivePlayCost(yeti, p2) === 2, '无冰环境费用 2')
 }
 
 console.log('--- 寒铁虎 摧毁左手边低战力单位 ---')
