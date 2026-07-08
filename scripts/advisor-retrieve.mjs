@@ -1058,6 +1058,25 @@ function applyStructuredTools(retrieval, query, snapshotNorm = null) {
   if (
     !detected
     && snapshotNorm
+    && /命中加值|攻击加值/.test(query)
+    && /多少|是多少|怎么算|分别是多少/.test(query)
+  ) {
+    const scenario = mergeSnapshotIntoCombatScenario(parseCombatScenarioFromQuery(query), snapshotNorm, query);
+    if (scenario.snapshotUsed) {
+      detected = {
+        intent: 'combat_math',
+        mode: 'hit',
+        scenario,
+        query,
+        fromSnapshot: true,
+        snapshot: snapshotNorm,
+      };
+    }
+  }
+
+  if (
+    !detected
+    && snapshotNorm
     && /护甲值|防御等级|\bAC\b/i.test(query)
     && /多少|是多少|怎么算|当前|我的/.test(query)
   ) {

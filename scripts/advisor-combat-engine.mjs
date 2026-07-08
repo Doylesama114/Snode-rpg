@@ -45,6 +45,35 @@ export function abilityModFromScore(score) {
 
 const WEAPON_CAT_HINTS = ['剑类', '锤类', '斧类', '长柄', '弓箭', '火器', '法器', '简易'];
 
+function categoryBonusApplies(bonus, attackType) {
+  const when = bonus?.when;
+  if (!when) return true;
+  if (when === 'ranged') return attackType === 'ranged';
+  if (when === 'melee') return attackType !== 'ranged';
+  return true;
+}
+
+/**
+ * Merge combat-relevant snapshot skills into activeBuffs when listed in combat_skill_modifiers.
+ * @param {object} merged
+ * @param {object} snapshot
+ */
+function mergeSnapshotCombatBuffs(merged, snapshot) {
+  if (!snapshot?.skills?.length) return merged;
+  const known = Object.keys(loadCombatSkillModifiers().skills || {});
+  const names = snapshot.skills
+    .map((s) => (typeof s === 'string' ? s : s?.name))
+    .filter(Boolean);
+  merged.activeBuffs = [...(merged.activeBuffs || [])];
+  for (const name of names) {
+    if (known.includes(name) && !merged.activeBuffs.includes(name)) {
+      merged.activeBuffs.push(name);
+      merged._buffsFromSnapshot = true;
+    }
+  }
+  return merged;
+}
+
 /**
  * Merge L6 snapshot attrs/profs into a parsed combat scenario when query omits explicit values.
  * @param {ReturnType<typeof parseCombatScenarioFromQuery>|object} scenario
@@ -97,6 +126,8 @@ export function mergeSnapshotIntoCombatScenario(scenario, snapshot, query = '') 
     const mainLevel = snapshot.classes?.[0]?.level;
     if (mainLevel) merged.milestoneLevel = mainLevel;
   }
+
+  mergeSnapshotCombatBuffs(merged, snapshot);
 
   merged.snapshotUsed = true;
   merged.snapshotName = snapshot.name || '';
@@ -278,15 +309,16 @@ export function parseCombatScenarioFromQuery(query) {
   const strM = q.match(/力量调整值[为是]?\+(\d+)/);
   const dexM = q.match(/敏捷调整值[为是]?\+(\d+)/);
   const profM = q.match(/(?:有)?(?:一点|1点|(\d+)点)([\u4e00-\u9fa5]{1,4})熟练度?/);
-  const weaponM = q.match(/拿着一把(?:伤害为[^，,]+的)?([^，,]+剑)/);
+  const weaponM = q.match(/拿着一把(?:伤害为[^，,]+的)?([^，,]+剑)/)
+    || q.match(/拿着(?:一把)?([^，,\s]{2,10}(?:剑|斧|锤|弓|弩))/);
   const damageM = q.match(/伤害为([^，,]+)/);
 
   let weaponCategory = profM?.[2] || null;
   if (!weaponCategory) {
-    if (/剑类/.test(q)) weaponCategory = '剑类';
+    if (/剑类|双手剑|长剑|短剑/.test(q)) weaponCategory = '剑类';
     else if (/弓箭|长弓|短弓|手弩|弩/.test(q)) weaponCategory = '弓箭';
     else if (/锤类|锤子/.test(q)) weaponCategory = '锤类';
-    else if (/斧类|斧头/.test(q)) weaponCategory = '斧类';
+    else if (/斧类|斧头|双手斧|战斧/.test(q)) weaponCategory = '斧类';
   }
 
   const activeBuffs = [];
@@ -294,7 +326,7 @@ export function parseCombatScenarioFromQuery(query) {
     if (q.includes(name)) activeBuffs.push(name);
   }
 
-  const milestoneM = q.match(/(?:法师|角色)?(?:等级|L)\s*(\d+)/i);
+  const milestoneM = q.match(/(?:法师|角色|战士)?(?:等级|L)\s*(\d+)/i);
   const milestoneLevel = milestoneM ? Number(milestoneM[1]) : null;
 
   return {
@@ -343,11 +375,7 @@ export function resolveCombatScenario(params) {
   const cat = p.weaponCategory;
   if (cat && catHitBonuses[cat]) {
     const bonus = catHitBonuses[cat];
-    const when = bonus.when;
-    const applies = !when
-      || (when === 'ranged' && p.attackType === 'ranged')
-      || (when === 'melee' && p.attackType !== 'ranged');
-    if (applies && bonus.hit) {
+    if (categoryBonusApplies(bonus, p.attackType) && bonus.hit) {
       components.push({
         source: `${cat}类别增益`,
         type: 'hit',
@@ -358,8 +386,22 @@ export function resolveCombatScenario(params) {
   }
 
   const categoryNotes = [];
+  const critComponents = [];
+  const catCritBonuses = basics.weaponProficiency?.categoryCritBonuses || {};
+  if (cat && catCritBonuses[cat]) {
+    const bonus = catCritBonuses[cat];
+    if (categoryBonusApplies(bonus, p.attackType) && bonus.crit) {
+      critComponents.push({
+        source: `${cat}类别增益`,
+        type: 'crit',
+        value: bonus.crit,
+        detail: bonus.note || basics.weaponProficiency?.categoryBonuses?.[cat],
+      });
+      categoryNotes.push({ category: cat, note: bonus.note || `暴击率+${bonus.crit}`, type: 'crit' });
+    }
+  }
   const catText = basics.weaponProficiency?.categoryBonuses?.[cat];
-  if (cat && catText && !catHitBonuses[cat]?.hit) {
+  if (cat && catText && !catHitBonuses[cat]?.hit && !catCritBonuses[cat]?.crit) {
     categoryNotes.push({ category: cat, note: catText });
   }
   if (cat === '剑类' && p.weaponDamage) {
@@ -369,6 +411,7 @@ export function resolveCombatScenario(params) {
   for (const buffName of p.activeBuffs || []) {
     const sk = skillMods.skills?.[buffName];
     if (!sk) continue;
+    if (sk.requiresRanged && p.attackType !== 'ranged') continue;
 
     if (sk.attrModifier) {
       for (const [attr, delta] of Object.entries(sk.attrModifier)) {
@@ -450,6 +493,7 @@ export function resolveCombatScenario(params) {
       : `max(+${effectiveStr}, +${effectiveDex})`,
   });
   const totalDamageBonus = dmgAbility;
+  const totalCritBonus = critComponents.reduce((s, c) => s + (c.value || 0), 0);
 
   return {
     params: p,
@@ -457,15 +501,17 @@ export function resolveCombatScenario(params) {
     damageFormula: damageBasics.formula || '武器伤害骰 + 属性调整值',
     components,
     damageComponents,
+    critComponents,
     categoryNotes,
     totalHitBonus: totalHit,
     totalDamageBonus,
+    totalCritBonus,
     assumptions: [
       p.milestoneLevel == null && (p.activeBuffs || []).includes('锐化武器')
         ? '未指定法师等级：锐化武器按基础效果计（命中 +0；L5 里程碑为 +3）'
         : null,
       p.snapshotUsed
-        ? `L6 快照联动：${p.snapshotName || '角色'}${p.snapshotMainClass ? `（${p.snapshotMainClass}）` : ''}${p._strFromSnapshot ? ' · 力量自快照' : ''}${p._profFromSnapshot ? ' · 武器熟练自快照' : ''}`
+        ? `L6 快照联动：${p.snapshotName || '角色'}${p.snapshotMainClass ? `（${p.snapshotMainClass}）` : ''}${p._strFromSnapshot ? ' · 力量自快照' : ''}${p._profFromSnapshot ? ' · 武器熟练自快照' : ''}${p._buffsFromSnapshot ? ' · 战斗 Buff 自快照技能' : ''}`
         : null,
       '武器类别特殊增益（如剑类伤害骰重掷）不计入命中加值',
     ].filter(Boolean),
@@ -533,6 +579,12 @@ export function formatCombatScenarioText(result, opts = {}) {
     }
     for (const n of result.categoryNotes || []) {
       lines.push(`  · ${n.category}特殊规则（信息）：${n.note}`);
+    }
+    if (result.totalCritBonus > 0) {
+      lines.push(`- **暴击率加值合计：+${result.totalCritBonus}**（类别规则，不计入命中 flat 加值）`);
+      for (const c of result.critComponents || []) {
+        lines.push(`  · ${c.source}：+${c.value}（${c.detail}）`);
+      }
     }
   }
 

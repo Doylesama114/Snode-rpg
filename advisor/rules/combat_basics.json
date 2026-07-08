@@ -3,8 +3,8 @@
     "layer": "L0",
     "version": "1.0.0",
     "source": "斯诺德跑团/帮助.html §检定规则 + panel_engine.js 攻击命中显示",
-    "generatedAt": "2026-07-08",
-    "advisorUsage": "combat_math / resolveCombatScenario MVP（7068）；AC 演算（7072）；类别增益+合并演算（7073）"
+    "generatedAt": "2026-07-09",
+    "advisorUsage": "combat_math / resolveCombatScenario MVP（7068）；AC 演算（7072）；类别增益+合并演算（7073）；斧类暴击+快照技能Buff（7076）"
   },
   "attackRoll": {
     "formula": "D20 + 攻击命中检定值",
@@ -28,6 +28,9 @@
     },
     "categoryHitBonuses": {
       "弓箭": { "hit": 2, "when": "ranged", "note": "远程攻击时弓箭类别命中检定+2（与熟练加值叠加）" }
+    },
+    "categoryCritBonuses": {
+      "斧类": { "crit": 1, "when": "melee", "note": "斧类武器近战攻击暴击率+1（不计入命中 flat 加值）" }
     },
     "source": "panel_data.js WEAPON_SPEC_BONUSES（类别增益≠熟练加值；熟练每点 +1 命中为顾问演算约定，与问句「N点X类熟练」对齐）"
   },

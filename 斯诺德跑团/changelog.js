@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7076',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch12: 战斗Phase3斧类暴击+瞄准射击+快照Buff',
+      'audit 52条 golden 33条'
+    ]
+  },
+
+
+  {
     version: '1.0.7075',
     date: '2026-07-08',
     changes: [

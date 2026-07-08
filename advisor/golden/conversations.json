@@ -231,6 +231,28 @@
       "expectIntent": "combat_math",
       "mustInclude": ["Tools 层", "护甲值演算", "13", "L6 快照联动", "皮甲"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-axe-crit",
+      "query": "力量调整值+3有一点斧类熟练拿着1d10双手斧命中和暴击加值分别是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "暴击率", "+4", "斧类"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-aim-shot-l8",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击开启瞄准射击 L8 命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "瞄准射击", "+10", "弓箭类别增益"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-combat-buffs-from-skills",
+      "query": "拿着双手剑，命中加值是多少",
+      "snapshotFile": "advisor/snapshots/mock-combat-warrior-l6.json",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "+7", "L6 快照联动", "魔法武器", "狂怒术", "战斗 Buff 自快照"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }

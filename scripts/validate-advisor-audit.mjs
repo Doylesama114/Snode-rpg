@@ -318,6 +318,26 @@ const CASES = [
     query: '士兵背景起始装备和金币有哪些',
     expectInContext: ['士兵', '背景车卡', '金币'],
   },
+  // --- 7076 batch12 combat Phase 3 ---
+  {
+    id: 'extra-combat-axe-crit',
+    category: 'combat_math',
+    query: '力量调整值+3有一点斧类熟练拿着1d10双手斧命中和暴击加值分别是多少',
+    expectInContext: ['战斗命中演算', '暴击率', '+4', '斧类'],
+  },
+  {
+    id: 'extra-combat-aim-shot',
+    category: 'combat_math',
+    query: '敏捷调整值+2有一点弓箭熟练远程攻击开启瞄准射击 L8 命中加值是多少',
+    expectInContext: ['瞄准射击', '弓箭类别增益', '+10'],
+  },
+  {
+    id: 'snap-combat-buffs-skills',
+    category: 'panel_snapshot',
+    query: '拿着双手剑，命中加值是多少',
+    snapshotFile: 'advisor/snapshots/mock-combat-warrior-l6.json',
+    expectInContext: ['L6 快照联动', '魔法武器', '狂怒术', '+7', '战斗 Buff 自快照'],
+  },
 ];
 
 function corpusHas(store, term) {
@@ -483,6 +503,20 @@ function classifyGap(c, ctxScore, store) {
     return r.intent === 'background_chargen' && ctx.includes('士兵') && ctx.includes('背景车卡')
       ? 'OK' : 'RETRIEVAL_GAP';
   }
+  if (c.id === 'extra-combat-axe-crit') {
+    return r.intent === 'combat_math' && ctx.includes('战斗命中演算') && ctx.includes('暴击率') && ctx.includes('+4')
+      && ctx.includes('斧类')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'extra-combat-aim-shot') {
+    return r.intent === 'combat_math' && ctx.includes('瞄准射击') && ctx.includes('+10') && ctx.includes('弓箭类别增益')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'snap-combat-buffs-skills') {
+    return r.intent === 'combat_math' && ctx.includes('L6 快照联动') && ctx.includes('魔法武器')
+      && ctx.includes('狂怒术') && ctx.includes('+7') && ctx.includes('战斗 Buff 自快照')
+      ? 'OK' : 'ENGINE_GAP';
+  }
 
   const corpusChecks = c.expectInContext.map((term) => ({
     term,
@@ -560,6 +594,7 @@ const BATCH8_IDS = new Set(['extra-bg-deities', 'extra-ac-leather', 'extra-ac-sh
 const BATCH9_IDS = new Set(['extra-combat-full', 'extra-prof-religion', 'extra-combat-ranged']);
 const BATCH10_IDS = new Set(['extra-priest-starting-gear', 'snap-ac-armor', 'extra-race-vampire-detail']);
 const BATCH11_IDS = new Set(['feedback-pending-bg-deities', 'feedback-pending-priest-gear', 'feedback-pending-soldier-bg']);
+const BATCH12_IDS = new Set(['extra-combat-axe-crit', 'extra-combat-aim-shot', 'snap-combat-buffs-skills']);
 
 console.log(`\nNon-OK cases: ${failures}/${CASES.length}`);
 console.log(`Audit cases total: ${CASES.length} (target ≥30)`);
@@ -574,6 +609,7 @@ const batch8Failed = rows.filter((r) => BATCH8_IDS.has(r.id) && r.gap !== 'OK').
 const batch9Failed = rows.filter((r) => BATCH9_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch10Failed = rows.filter((r) => BATCH10_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch11Failed = rows.filter((r) => BATCH11_IDS.has(r.id) && r.gap !== 'OK').length;
+const batch12Failed = rows.filter((r) => BATCH12_IDS.has(r.id) && r.gap !== 'OK').length;
 console.log(`7065 batch1 must-pass: ${BATCH1_IDS.size - batch1Failed}/${BATCH1_IDS.size}`);
 console.log(`7066 batch2 must-pass: ${BATCH2_IDS.size - batch2Failed}/${BATCH2_IDS.size}`);
 console.log(`7067 batch3 must-pass: ${BATCH3_IDS.size - batch3Failed}/${BATCH3_IDS.size}`);
@@ -585,6 +621,7 @@ console.log(`7072 batch8 must-pass: ${BATCH8_IDS.size - batch8Failed}/${BATCH8_I
 console.log(`7073 batch9 must-pass: ${BATCH9_IDS.size - batch9Failed}/${BATCH9_IDS.size}`);
 console.log(`7074 batch10 must-pass: ${BATCH10_IDS.size - batch10Failed}/${BATCH10_IDS.size}`);
 console.log(`7075 batch11 must-pass: ${BATCH11_IDS.size - batch11Failed}/${BATCH11_IDS.size}`);
+console.log(`7076 batch12 must-pass: ${BATCH12_IDS.size - batch12Failed}/${BATCH12_IDS.size}`);
 
 const categoryIds = {};
 for (const c of CASES) {
@@ -595,7 +632,7 @@ console.log(`Categories covered: ${Object.keys(categoryIds).length} types, min p
 if (
   batch1Failed > 0 || batch2Failed > 0 || batch3Failed > 0 || batch4Failed > 0
   || batch5Failed > 0 || batch6Failed > 0 || batch7Failed > 0 || batch8Failed > 0 || batch9Failed > 0
-  || batch10Failed > 0 || batch11Failed > 0
+  || batch10Failed > 0 || batch11Failed > 0 || batch12Failed > 0
 ) process.exitCode = 1;
 else if (failures > 0) {
   console.log('(其余失败项为 7072+ 计划范围，不阻断 CI)');

@@ -300,5 +300,19 @@ check('snap AC 13', acSnap.totalAc === 13);
 const rSnapAc = retrieve('我的护甲值是多少', { snapshot: snapWar });
 check('retrieve snap ac tools', formatContext(rSnapAc).includes('L6 快照联动'));
 
+const axe = resolveCombatScenario(parseCombatScenarioFromQuery('力量调整值+3有一点斧类熟练拿着1d10双手斧命中和暴击加值分别是多少'));
+check('axe hit +4', axe.totalHitBonus === 4);
+check('axe crit +1', axe.totalCritBonus === 1);
+
+const aim = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击开启瞄准射击 L8 命中加值是多少'));
+check('aim shot L8 +10', aim.totalHitBonus === 10);
+
+const snapBuffQ = '拿着双手剑，命中加值是多少';
+const snapBuffMerged = mergeSnapshotIntoCombatScenario(parseCombatScenarioFromQuery(snapBuffQ), snapWar, snapBuffQ);
+check('snapshot buffs from skills', snapBuffMerged.activeBuffs.includes('魔法武器') && snapBuffMerged.activeBuffs.includes('狂怒术'));
+check('snapshot buff hit +7', resolveCombatScenario(snapBuffMerged).totalHitBonus === 7);
+const rSnapBuff = retrieve(snapBuffQ, { snapshot: snapWar });
+check('retrieve snap buff combat', formatContext(rSnapBuff).includes('战斗 Buff 自快照'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

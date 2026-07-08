@@ -296,7 +296,13 @@ LLM
 - Phase5 回归接入 advisor-5-ci；Audit batch11 must-pass（反馈模板三类问法）
 - `bug-report.js`：反馈队列 + 问句/意图/必含 字段
 
-### v1.0.7076+ — 后续
+### v1.0.7076 — 战斗 Phase 3（P1）✓
+
+- `categoryCritBonuses` 斧类暴击率+1；`combat_skill_modifiers` 扩展瞄准射击
+- `mergeSnapshotCombatBuffs()`：L6 快照 skills → 战斗 Buff 自动联动
+- Golden + CI batch12 must-pass（斧类暴击 · 瞄准 L8 +10 · 快照 Buff +7）
+
+### v1.0.7077+ — 后续
 
 ## 8. Golden / CI 策略
 

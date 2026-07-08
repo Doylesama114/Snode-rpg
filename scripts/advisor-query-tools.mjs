@@ -535,16 +535,23 @@ export function detectStructuredQuestion(query) {
     return { intent: 'combat_math', mode: 'ac', scenario: acScenario, query: q };
   }
 
-  if (COMBAT_MATH_RE.test(q) && !/护甲值|防御等级|\bAC\b/i.test(q) && /开启|拿着|调整值|熟练度|命中加值|攻击加值|伤害加值/.test(q)) {
+  if (COMBAT_MATH_RE.test(q) && !/护甲值|防御等级|\bAC\b/i.test(q) && /开启|拿着|调整值|熟练度|命中加值|攻击加值|伤害加值|暴击/.test(q)) {
     const scenario = parseCombatScenarioFromQuery(q);
     const asksDamage = /伤害加值/.test(q);
     const asksHit = /命中加值|攻击加值|命中.*加值/.test(q);
+    const asksCrit = /暴击/.test(q);
     if (
-      ((scenario.activeBuffs?.length || scenario.weaponProfPoints || scenario.weaponDamage) && /多少|是多少/.test(q))
+      ((scenario.activeBuffs?.length || scenario.weaponProfPoints || scenario.weaponDamage || scenario.weaponCategory) && /多少|分别是多少/.test(q))
       || (asksDamage && (scenario.weaponDamage || /力量|敏捷/.test(q)))
-      || (asksHit && (scenario.activeBuffs?.length || scenario.weaponProfPoints))
+      || (asksHit && (scenario.activeBuffs?.length || scenario.weaponProfPoints || scenario.weaponCategory))
+      || (asksHit && asksCrit && scenario.weaponCategory)
     ) {
-      return { intent: 'combat_math', scenario, query: q, mode: asksDamage && !asksHit ? 'damage' : asksHit && asksDamage ? 'both' : 'hit' };
+      return {
+        intent: 'combat_math',
+        scenario,
+        query: q,
+        mode: asksDamage && asksHit ? 'both' : asksDamage && !asksHit ? 'damage' : 'hit',
+      };
     }
   }
 
