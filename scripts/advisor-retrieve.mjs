@@ -37,6 +37,11 @@ import {
   MAGE_QUERY_RE,
   MAGE_L2,
 } from './advisor-class-l2.mjs';
+import {
+  loadBuildKit,
+  buildRoadmapContext,
+  formatRoadmapContext,
+} from './advisor-build-roadmap.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -892,8 +897,38 @@ export function buildSkillFullList(store, className, options = {}) {
   };
 }
 
-function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts = {}) {
+function applyBuildRoadmapPlan(retrieval, plan, task, store, snapshotNorm) {
+  const kit = loadBuildKit(task.kitId);
+  if (!kit) return retrieval;
+
+  retrieval.plan = plan;
+  retrieval.answerStyle = 'roadmap';
+  retrieval.intent = 'build_roadmap';
+  retrieval.promptProfile = 'build_roadmap';
+  retrieval.retrievalClass = kit.mainClass;
+
+  const ctx = buildRoadmapContext(store, kit, {
+    snapshot: snapshotNorm || null,
+  });
+  retrieval.results._roadmap = ctx;
+  retrieval.results._roadmapText = formatRoadmapContext(ctx);
+
+  const layers = ['L3', MAGE_L2, 'L2-warrior', 'L2-universal', 'L4', 'L0'];
+  for (const layer of layers) {
+    if (!retrieval.layersRequested.includes(layer)) retrieval.layersRequested.push(layer);
+    if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
+  }
+
+  return retrieval;
+}
+
+function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts = {}, snapshotNorm = null) {
   if (!plan?.tasks?.length) return retrieval;
+
+  const roadmapTask = plan.tasks.find((t) => t.type === 'build_roadmap');
+  if (roadmapTask) {
+    return applyBuildRoadmapPlan(retrieval, plan, roadmapTask, store, snapshotNorm);
+  }
 
   const listTask = plan.tasks.find((t) => t.type === 'list_skills');
   if (!listTask?.classes?.length) return retrieval;
@@ -975,18 +1010,33 @@ export function retrieve(query, options = {}) {
     wizardState,
     className: retrievalClass,
   });
+  const roadmapTask = options.plan?.tasks?.find((t) => t.type === 'build_roadmap');
+  if (roadmapTask || options.plan?.intent === 'build_roadmap') {
+    route.intent = 'build_roadmap';
+    route.promptProfile = 'build_roadmap';
+    route.layers = ['L3', MAGE_L2, 'L2-warrior', 'L2-universal', 'L4', 'L0'];
+    route.topK = {
+      L3: 10,
+      [MAGE_L2]: 14,
+      'L2-warrior': 14,
+      'L2-universal': 12,
+      L4: 10,
+      L0: 4,
+    };
+  }
   const queryTokens = tokenize(query);
   const topK = { ...route.topK, ...options.topK };
   let attrs = parseAttrsFromQuery(query);
 
   let l6Analysis = null;
   let l2Opts = {};
+  let snapshotNorm = null;
   if (options.snapshot) {
-    const norm = options.snapshot.meta?.layer === 'L6'
+    snapshotNorm = options.snapshot.meta?.layer === 'L6'
       ? options.snapshot
       : normalizeSnapshot(options.snapshot);
     const advName = pickAdvancementName(query);
-    l6Analysis = analyzeSnapshot(norm, {
+    l6Analysis = analyzeSnapshot(snapshotNorm, {
       advancementNames: advName ? [advName] : null,
     });
     if (l6Analysis.learnableTiers?.length) {
@@ -1080,7 +1130,15 @@ export function retrieve(query, options = {}) {
   };
 
   if (options.plan) {
-    retrieval = applyPlanToRetrieval(retrieval, options.plan, store, query, queryTokens, l2Opts);
+    retrieval = applyPlanToRetrieval(
+      retrieval,
+      options.plan,
+      store,
+      query,
+      queryTokens,
+      l2Opts,
+      snapshotNorm,
+    );
   }
 
   return retrieval;
@@ -1123,6 +1181,11 @@ export function formatContext(retrieval) {
       intent: retrieval.intent,
       query: retrieval.query,
     }));
+    lines.push('');
+  }
+
+  if (retrieval.results._roadmapText) {
+    lines.push(retrieval.results._roadmapText);
     lines.push('');
   }
 

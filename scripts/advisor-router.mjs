@@ -16,6 +16,7 @@ import {
 } from './advisor-class-l2.mjs';
 
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
+import { isBuildRoadmapQuery } from './advisor-build-roadmap.mjs';
 
 export { resolveClassL2Layer } from './advisor-class-l2.mjs';
 
@@ -70,6 +71,16 @@ export const INTENT_RULES = [
     layers: ['L3', 'L2-mage', 'L0'],
     topK: { L3: 12, 'L2-mage': 14, L0: 4 },
     promptProfile: 'build_review',
+  },
+  {
+    id: 'build_roadmap',
+    patterns: [
+      /魔剑士/, /主职.*法师.*子职.*战士/, /主职业法师.*子职业战士/,
+      /进阶.*魔剑/, /想玩.*法师.*战士/, /规划.*技能/, /build.*路线/,
+    ],
+    layers: ['L3', 'L2-mage', 'L2-warrior', 'L2-universal', 'L4', 'L0'],
+    topK: { L3: 10, 'L2-mage': 14, 'L2-warrior': 14, 'L2-universal': 12, L4: 10, L0: 4 },
+    promptProfile: 'build_roadmap',
   },
   {
     id: 'advancement',
@@ -148,7 +159,7 @@ export const INTENT_RULES = [
 const REGISTRY_L2_LAYERS = () => listL2ClassEntries().map((e) => e.l2Layer);
 
 const L2_INJECT_INTENTS = new Set([
-  'general', 'chargen', 'wizard_step', 'class_skills', 'tips', 'build_review', 'advancement',
+  'general', 'chargen', 'wizard_step', 'class_skills', 'tips', 'build_review', 'build_roadmap', 'advancement',
 ]);
 
 function activeL2Layer(className, query) {
@@ -272,6 +283,9 @@ function pickRuleByIntent(intentId) {
 }
 
 export function routeIntent(query) {
+  if (isBuildRoadmapQuery(query)) {
+    return { ...pickRuleByIntent('build_roadmap'), id: 'build_roadmap', query };
+  }
   const q = query.toLowerCase();
   if (/进阶/.test(query) && pickAdvancementName(query)) {
     return { ...pickRuleByIntent('advancement'), id: 'advancement', query };

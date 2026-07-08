@@ -175,6 +175,14 @@ const INTENT_ADDONS = {
 - 先列门槛（属性、标识、scope）；metadata_only 须免责声明。
 - documented 进阶可列具体天赋名；否则只谈方向。
 - 有 L6 快照时：进阶达标以快照为准；主职已是法师勿谈「兼职法师」；进阶≠兼职/子职。`,
+  build_roadmap: `
+## 本问类型：Build 路线图（build_roadmap）
+- 须按固定章节输出（纯文本，不用 Markdown 标题符号）：总述 → 法师流派与分阶段技能 → 战士子职流派与分阶段战技 → 通用天赋 → 专长（L4/L8/L13）→ 总结。
+- 篇幅允许较长（约 35～60 行正文）；分前期/中期/后期说明各阶段优先学什么、为什么；每阶段每流派 2～4 个代表技能即可，须来自【Build 路线图】上下文。
+- 无 L6 快照时：从 L1 规划视角写全路线；有快照时：先点明当前阶段（前期/中期/后期），评价已学技能与 kit 缺口，再写后续推荐；推荐技能不得超出快照「可学技能位阶」。
+- 进阶（魔剑士）是 L3 进阶途径，与 L7 兼职/子职不同；勿把「先升 L7 开兼职」当作进阶前提。
+- 通用天赋、专长须引用上下文中出现的名称；L4 专长窗口以 L0 里程碑为准。
+- 禁止 catalog 式「每格 2 例」敷衍；禁止推荐上下文未出现或超出位阶的高阶技能（如 L6 主职勿推六阶）。`,
   build_review: `
 ## 本问类型：当前 build 评价
 - 有 L6 快照时：以快照的已有熟练、已学技能、主职/子职等级为准；勿把创角本职熟练门槛当作当前缺口，勿建议「兼职法师」。
@@ -211,7 +219,8 @@ export function buildSystemPrompt(options = {}) {
   const intent = options.intent || 'general';
   const mode = options.mode || 'advisor';
   let profile = options.promptProfile || getPromptProfile(intent, mode);
-  if (options.answerStyle === 'catalog') profile = 'catalog_skills';
+  if (options.answerStyle === 'roadmap') profile = 'build_roadmap';
+  else if (options.answerStyle === 'catalog') profile = 'catalog_skills';
   else if (options.answerStyle === 'full_list') profile = 'full_list_skills';
   const className = options.className || null;
   const tier = options.tier || (className ? getClassProfile(className).tier : 'full');
@@ -241,11 +250,13 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
   const wizardNote = mode === 'wizard'
     ? '\n\n（创建页陪跑：以页面与熟练账本为准；只评价/解释已选内容，禁止推销未选项；起始特性选满后才评价组合。）'
     : '';
-  const styleNote = options.answerStyle === 'catalog'
-    ? '\n\n（catalog 模式：按目录给出各流派/位阶总数与示例，勿逐条列全表。）'
-    : options.answerStyle === 'full_list'
-      ? '\n\n（full_list 模式：用户已追问完整列表，须尽量枚举上下文中的全部技能名。）'
-      : '';
+  const styleNote = options.answerStyle === 'roadmap'
+    ? '\n\n（roadmap 模式：输出完整分阶段 build 路线图，允许较长篇幅；须含法师/战士/天赋/专长/总结各章。）'
+    : options.answerStyle === 'catalog'
+      ? '\n\n（catalog 模式：按目录给出各流派/位阶总数与示例，勿逐条列全表。）'
+      : options.answerStyle === 'full_list'
+        ? '\n\n（full_list 模式：用户已追问完整列表，须尽量枚举上下文中的全部技能名。）'
+        : '';
 
   return `【用户问题】
 ${query}

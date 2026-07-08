@@ -6,6 +6,7 @@ import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
 import { isFullListFollowUp, summarizeSessionForPlanner } from './advisor-session.mjs';
+import { planBuildRoadmapFromRules } from './advisor-build-roadmap.mjs';
 
 const PLAN_CACHE = new Map();
 const PLAN_CACHE_MAX = 48;
@@ -43,7 +44,7 @@ const FULL_LIST_RE = /全列|全部列出|完整列表|列出来|全部技能|�
  * @typedef {object} AdvisorPlan
  * @property {'planner'|'rules'} source
  * @property {'build'|'chargen'|'mixed'} [scenario]
- * @property {'catalog'|'full_list'|'recommend'} answerStyle
+ * @property {'catalog'|'full_list'|'recommend'|'roadmap'} answerStyle
  * @property {{ type: string, classes: string[], exclude?: string[] }[]} tasks
  * @property {string} [intent]
  * @property {string} [promptProfile]
@@ -56,6 +57,10 @@ const FULL_LIST_RE = /全列|全部列出|完整列表|列出来|全部技能|�
  */
 export function planFromRules(query, ctx = {}) {
   const q = String(query || '');
+
+  const roadmapPlan = planBuildRoadmapFromRules(q, ctx);
+  if (roadmapPlan) return roadmapPlan;
+
   const classes = matchAllClassesFromQuery(q);
   if (!classes.length && ctx.className) classes.push(ctx.className);
 

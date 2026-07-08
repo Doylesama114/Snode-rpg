@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7057',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 3.0 build_roadmap 魔剑士 kit',
+      '分阶段路线图 prompt',
+      '面板快照缺口分析',
+      'validate-advisor-roadmap'
+    ]
+  },
+
+
+  {
     version: '1.0.7056',
     date: '2026-07-08',
     changes: [
