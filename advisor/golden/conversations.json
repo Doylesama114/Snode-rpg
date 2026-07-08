@@ -69,6 +69,146 @@
       "expectAdvancement": "飞贼",
       "mustInclude": ["游荡者", "飞贼"],
       "mustNotInclude": ["L2 法师技能"]
+    },
+    {
+      "id": "user-skill-overlap",
+      "query": "法师和吟游诗人有哪些相同的技能",
+      "expectIntent": "cross_class_compare",
+      "mustInclude": ["跨职业同名技能", "36", "舞光术", "油腻术", "Tools 层"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-thief-trade",
+      "query": "窃贼的交易这个技能我一共可以得到多少收益，与此同时我需要支付的代价又是多少",
+      "expectIntent": "skill_detail",
+      "mustInclude": ["窃贼的交易", "生命值上限", "自由属性点", "Tools 层"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "hammer-weapon-prof",
+      "query": "哪些初始职业的武器熟练度包含锤子",
+      "expectIntent": "class_weapon_prof",
+      "mustInclude": ["锤类", "战士", "牧师", "萨满祭司", "Tools 层"],
+      "mustNotInclude": ["当前资料未收录此项", "未直接列出"]
+    },
+    {
+      "id": "user-hp-max",
+      "query": "在创建角色时，怎样构筑可以使我的角色初始血量达到最大值",
+      "expectIntent": "chargen_hp_optimize",
+      "mustInclude": ["Tools 层", "L1 初始 HP", "蛮斗士", "巨魔", "19 HP", "hpBonus"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-mage-knowledge",
+      "query": "我想让我的法师能够获取到几乎所有的知识，奥秘的熟练项，我最少升到多少级，学习哪些技能可以做到",
+      "expectIntent": "proficiency_roadmap",
+      "mustInclude": ["Tools 层", "熟练项获取路线", "奥法学者", "知识传承", "10～15 级"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "status-silence",
+      "query": "沉默状态具体有什么效果，哪些技能可以造成沉默",
+      "expectIntent": "status_rules",
+      "mustInclude": ["Tools 层", "status_conditions.json", "沉默", "无法施展需要语言"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "feat-timing-windows",
+      "query": "特殊专长可以在哪些等级获取",
+      "expectIntent": "feat_timing",
+      "mustInclude": ["Tools 层", "L4", "L8", "L13", "特殊专长"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "unknown-adv-roadmap",
+      "query": "元素大师怎么规划成长路线",
+      "expectIntent": "unknown_entity",
+      "mustInclude": ["Tools 层", "未收录", "元素大师", "不在当前资料库"],
+      "mustNotInclude": ["智力15", "智力18"]
+    },
+    {
+      "id": "skill-magic-weapon-aggregate",
+      "query": "魔法武器这个技能哪些职业可以学，效果一样吗",
+      "expectIntent": "skill_aggregate",
+      "mustInclude": ["Tools 层", "魔法武器", "法师", "奇械师", "效果是否一致"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-attack-bonus",
+      "query": "我的角色力量调整值为+3，有一点剑类熟练度，拿着一把伤害为1d8的双手剑，开启了魔法武器，锐化武器，狂怒术，这个时候我的命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "combat_basics.json", "魔法武器", "锐化武器", "狂怒术", "+7"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "equip-purify-waterskin",
+      "query": "净化水袋有什么效果",
+      "expectIntent": "equipment_lookup",
+      "mustInclude": ["Tools 层", "净化水袋", "equipment_catalog_index", "净化"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "equip-mage-light-armor",
+      "query": "法师创建角色可以选哪些护甲",
+      "expectIntent": "equipment_search",
+      "mustInclude": ["Tools 层", "装备/物品检索", "护甲", "布衣"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "consumable-vitality-potion",
+      "query": "活力药水多少钱",
+      "expectIntent": "equipment_lookup",
+      "mustInclude": ["Tools 层", "活力药水", "价格"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-point-buy-mage",
+      "query": "32点购点怎样分配才能让法师智力达到15且体质尽量高",
+      "expectIntent": "point_buy_optimize",
+      "mustInclude": ["Tools 层", "购点优化", "智力", "15", "体质"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-level-3-6",
+      "query": "主职从3级升到6级一共获得什么奖励",
+      "expectIntent": "leveling_summary",
+      "mustInclude": ["Tools 层", "等级区间累计奖励", "熟练", "技能槽", "L4"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-damage-bonus",
+      "query": "我的角色力量调整值为+3，拿着一把伤害为1d8的双手剑，开启了狂怒术，伤害加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "伤害 flat 加值", "1d8", "+5", "狂怒术"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "bg-acolyte-deities",
+      "query": "侍僧背景可以侍奉哪些神祇",
+      "expectIntent": "background_detail",
+      "mustInclude": ["Tools 层", "侍僧", "可侍奉神祇", "公正与荣耀之神", "知识与智慧之神"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-ac-leather",
+      "query": "敏捷调整值+2穿着皮甲护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "13", "皮甲"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "prof-religion-classes",
+      "query": "哪些初始职业可以在创建时选择宗教熟练",
+      "expectIntent": "proficiency_lookup",
+      "mustInclude": ["Tools 层", "熟练项职业对照", "宗教", "牧师", "德鲁伊", "术士"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "user-combat-hit-damage",
+      "query": "力量调整值+3有一点剑类熟练拿着1d8双手剑开启狂怒术命中和伤害加值分别是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "伤害 flat 加值", "+6", "+5", "狂怒术"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }

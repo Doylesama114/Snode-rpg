@@ -1,0 +1,2092 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "7070",
+    "source": "职业页/数据/items_data.js",
+    "count": 150,
+    "kinds": [
+      "consumable",
+      "food",
+      "potion",
+      "scroll"
+    ],
+    "generatedAt": "2026-07-08"
+  },
+  "items": [
+    {
+      "name": "矮人烈酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "暗影防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "40金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "暗影抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "15金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "白萝卜",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "白葡萄酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "3金币",
+      "weight": "30金币",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "白灼秋葵浓汤",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "8铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "蚌肉",
+      "category": "食品,消耗品,食材,可堆叠,水产",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "蚌肉杂烩",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "2银币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "薄荷汁",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "冰霜防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "冰霜抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "冰镇牛奶",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "草药烘蛋",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "初级护甲药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "15金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "次级活力药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "次级生命药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "大蒜",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "弹药（20发）",
+      "category": "弹药,消耗品,可堆叠",
+      "effect": "远程攻击的媒介",
+      "price": "1金币",
+      "weight": "1磅",
+      "tags": [
+        "弹药",
+        "消耗品",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "调味包",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "冬酒：漫漫长夜",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "番茄",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "番茄浓汤",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "蜂蜜",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "1金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "蜂蜜酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "蜂蜜烧烤肋排",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5银币",
+      "weight": "2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "感应合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "钢铁合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "光耀防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "40金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "光耀抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "15金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "果酱",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "海鲜浓汤",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "3银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "海盐",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "1金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "黑白合之吻",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "300金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "黑椒牛排",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "1金币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "黑葡萄酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "3金币",
+      "weight": "30金币",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "红葡萄酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "3金币",
+      "weight": "30金币",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "胡萝卜",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "琥珀星光药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "黄瓜",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "黄油",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "1金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "黄油大虾",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "黄油啤酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "活力药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "火焰防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "火焰爵士的愤怒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "火焰抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "极效活力药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "极效生命药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "加速药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "坚忍药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "坚韧合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "箭矢（20支）",
+      "category": "弹药,消耗品,可堆叠",
+      "effect": "远程攻击的媒介",
+      "price": "1金币",
+      "weight": "1磅",
+      "tags": [
+        "弹药",
+        "消耗品",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "椒盐鸡腿",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "金牌烤火鸡",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "巨化药剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "100金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "巨魔之血药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "剧毒防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "剧毒抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "卷心菜",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "卷轴匣",
+      "category": "杂物",
+      "effect": "",
+      "price": "2金币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "scroll"
+    },
+    {
+      "name": "烤羊排",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "3金币",
+      "weight": "2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "空白的魔法卷轴",
+      "category": "卷轴,铭文,材料",
+      "effect": "还未铭刻法术的魔法卷轴，拥有铭文技艺的施法者可以将自己习得的法术附着在卷轴上来兜售或使用",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "卷轴",
+        "铭文",
+        "材料"
+      ],
+      "source": "items_data.js",
+      "kind": "scroll"
+    },
+    {
+      "name": "苦橙鸡尾酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "3金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "辣椒",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "辣椒酱",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "雷电防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "雷电抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "力场防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "40金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "力量合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "龙息药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "300金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "龙血葵酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "露塔莉娅水果酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "旅行者炖菜",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "2银币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "猫眼药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "魅惑合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "面粉",
+      "category": "食品,消耗品,淀粉,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "淀粉",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "蘑菇",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "蘑菇烩泥鱼",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "魔精",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "200金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "奶油",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "1金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "奶油蘑菇浓汤",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "南岛冰茶",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "南瓜",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "柠檬",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "柠檬绿茶",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "柠檬汽水",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "牛肉汉堡",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "3银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "浓缩咖啡",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "怒气药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "培根海鲜炒饭",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "3银币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "啤酒烤猪排",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5银币",
+      "weight": "2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "启迪药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "强酸防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "强酸抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "强效活力药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "强效生命药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "强壮药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "青铜合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "清蒸肥蟹",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "热苹果酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "热情药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "弱化巨魔之血药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "闪光起泡酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "生命药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "食人魔力量药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "水果茶",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "水上行走药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "水下呼吸药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "缩小药剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "100金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "体魄药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "铁盾合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "通晓语言药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "土豆",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "土豆葱花汤",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "威士忌",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1金币",
+      "weight": "10金币",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "虾肉",
+      "category": "食品,消耗品,食材,可堆叠,水产",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "香草",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "香辛料",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5金币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "橡果酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "小食拼盘",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "3银币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "蟹肉",
+      "category": "食品,消耗品,食材,可堆叠,水产",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "心灵防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "40金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "心灵抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "15金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "雪梨酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "1银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "熏肉排",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "3银币",
+      "weight": "2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "迅捷合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "烟熏鲑鱼",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "3银币",
+      "weight": "1磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "烟熏香肠",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "盐",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "洋葱",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "野猪火腿",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "3银币",
+      "weight": "2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "夜鸦药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "意志合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "音爆防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "音爆抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "银制箭矢/弹药（20发）",
+      "category": "弹药,消耗品,可堆叠",
+      "effect": "远程攻击的媒介，对黑暗生物和亡灵具有额外杀伤效果",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "弹药",
+        "消耗品",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "隐身药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "樱桃酒",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "鹰角豆",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "硬肉干",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "油",
+      "category": "食品,消耗品,佐料,按重量",
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "佐料",
+        "按重量"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "雨燕药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "玉米",
+      "category": "食品,消耗品,食材,可堆叠",
+      "effect": "",
+      "price": "2铜币",
+      "weight": "",
+      "tags": [
+        "食品",
+        "消耗品",
+        "食材",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "月光骑士",
+      "category": "食品,消耗品,酒水",
+      "effect": "",
+      "price": "2金币",
+      "weight": "20金币",
+      "tags": [
+        "食品",
+        "消耗品",
+        "酒水"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "炸洋葱圈",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "炸鱼",
+      "category": "食品,消耗品,正餐,水产",
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐",
+        "水产"
+      ],
+      "source": "items_data.js",
+      "kind": "food"
+    },
+    {
+      "name": "智慧合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "猪排汉堡",
+      "category": "食品,消耗品,正餐",
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.5磅",
+      "tags": [
+        "食品",
+        "消耗品",
+        "正餐"
+      ],
+      "source": "items_data.js",
+      "kind": "consumable"
+    },
+    {
+      "name": "自然防护合剂",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "30金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    },
+    {
+      "name": "自然抗性药水",
+      "category": "消耗品,药剂",
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "消耗品",
+        "药剂"
+      ],
+      "source": "items_data.js",
+      "kind": "potion"
+    }
+  ]
+}

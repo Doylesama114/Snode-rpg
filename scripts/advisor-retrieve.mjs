@@ -47,6 +47,9 @@ import {
   getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
 import { outlineGrowthRoadmap, formatRoadmapOutline } from './advisor-tools.mjs';
+import { detectStructuredQuestion, buildStructuredToolContext } from './advisor-query-tools.mjs';
+import { classifyQuestion } from './advisor-classifier.mjs';
+import { mergeSnapshotIntoCombatScenario, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -524,8 +527,18 @@ export function formatRegistryClassBasics(store, className, query = '') {
     `${className}（${positioning || '见职业页'}）`,
     `- 关键属性：${doc.keyAttr || hints.primaryAttr?.name || '—'}；豁免：${(doc.saves || []).join('、') || '—'}`,
     `- 护甲熟练：${doc.armor || '—'}；武器熟练：${doc.weapons || '—'}`,
-    `- 技巧选择：${doc.skills || '—'}`,
   ];
+  const wpc = doc.weaponProfCategories
+    || store.classEquipmentRulesByName?.[className]?.weaponProfCategories
+    || [];
+  if (wpc.length) {
+    lines.push(`- 武器熟练类别（面板）：${wpc.join('、')}`);
+  }
+  if (doc.weaponCategoryNote) lines.push(`- ${doc.weaponCategoryNote}`);
+  lines.push(`- 技巧选择：${doc.skills || '—'}`);
+  if (doc.hpFormula?.first) {
+    lines.push(`- L1 生命：${doc.hpFormula.first}；疲劳：${doc.fpFormula?.first || '—'}`);
+  }
   if (doc.startingFeatures?.length) {
     const names = doc.startingFeatures.map((f) => f.name).join('、');
     lines.push(
@@ -993,6 +1006,61 @@ function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts
   return retrieval;
 }
 
+function applyStructuredTools(retrieval, query, snapshotNorm = null) {
+  let detected = detectStructuredQuestion(query);
+
+  if (!detected && snapshotNorm) {
+    const classified = classifyQuestion(query, { snapshot: snapshotNorm });
+    if (classified?.structured) {
+      detected = { ...classified.structured, query };
+    } else if (classified?.intent === 'combat_math' && classified.meta?.snapshotLinked) {
+      detected = {
+        intent: 'combat_math',
+        query,
+        scenario: parseCombatScenarioFromQuery(query),
+        fromSnapshot: true,
+      };
+    } else if (classified?.intent === 'proficiency_roadmap' && classified.meta?.snapshotLinked) {
+      detected = {
+        intent: 'proficiency_roadmap',
+        className: snapshotNorm.classes?.[0]?.name || '法师',
+        targets: ['知识', '奥秘'],
+        query,
+        fromSnapshot: true,
+      };
+    }
+  }
+
+  if (detected?.intent === 'combat_math' && snapshotNorm) {
+    detected = {
+      ...detected,
+      snapshot: snapshotNorm,
+      scenario: mergeSnapshotIntoCombatScenario(
+        detected.scenario || parseCombatScenarioFromQuery(query),
+        snapshotNorm,
+        query,
+      ),
+    };
+  }
+
+  if (detected?.intent === 'proficiency_roadmap' && snapshotNorm) {
+    detected = { ...detected, snapshot: snapshotNorm };
+  }
+
+  const toolCtx = buildStructuredToolContext(detected);
+  if (!toolCtx) return retrieval;
+
+  retrieval.intent = toolCtx.intent;
+  retrieval.promptProfile = toolCtx.promptProfile;
+  retrieval.results._toolsText = toolCtx.text;
+  retrieval.results._structuredTools = toolCtx.meta;
+  if (toolCtx.meta?.snapshotUsed || detected?.snapshot || detected?.fromSnapshot) {
+    retrieval.results._snapshotLinked = true;
+  }
+  if (!retrieval.layersHit.includes('tools')) retrieval.layersHit.push('tools');
+  return retrieval;
+}
+
 function resolveRetrievalClass(wizardState, chargenState, snapshot, query = '') {
   return wizardState?.selections?.className
     || chargenState?.char?.className
@@ -1186,6 +1254,8 @@ export function retrieve(query, options = {}) {
     );
   }
 
+  retrieval = applyStructuredTools(retrieval, query, snapshotNorm);
+
   return retrieval;
 }
 
@@ -1207,6 +1277,12 @@ export function formatContext(retrieval) {
   }
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
+
+  if (retrieval.results._toolsText) {
+    lines.push('## Tools 层（server-side 事实）');
+    lines.push(retrieval.results._toolsText);
+    lines.push('');
+  }
 
   if (retrieval.results.wizard?.context) {
     lines.push(retrieval.results.wizard.context);

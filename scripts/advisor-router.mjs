@@ -17,12 +17,125 @@ import {
 
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
 import { isBuildRoadmapQuery, isPanelRoadmapQuery } from './advisor-build-roadmap.mjs';
+import { classifyQuestion } from './advisor-classifier.mjs';
 
 export { resolveClassL2Layer } from './advisor-class-l2.mjs';
 
 export const MODES = ['advisor', 'wizard', 'entity_qa'];
 
 export const INTENT_RULES = [
+  {
+    id: 'point_buy_optimize',
+    patterns: [/购点.*分配/, /32\s*点.*分配/, /智力.*15.*体质/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 6, L0: 4 },
+    promptProfile: 'point_buy_optimize',
+  },
+  {
+    id: 'leveling_summary',
+    patterns: [/从\s*\d+\s*级\s*升到\s*\d+\s*级/, /累计.*奖励/, /一共获得什么奖励/],
+    layers: ['L0'],
+    topK: { L0: 8 },
+    promptProfile: 'leveling_summary',
+  },
+  {
+    id: 'proficiency_lookup',
+    patterns: [/哪些.*职业.*熟练/, /可以选.*熟练/, /哪些.*背景.*熟练/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 10, L0: 4 },
+    promptProfile: 'proficiency_lookup',
+  },
+  {
+    id: 'background_detail',
+    patterns: [/背景.*神/, /侍僧.*神/, /性格特点|理想|牵绊|缺点/, /可以侍奉哪些神/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 8, L0: 4 },
+    promptProfile: 'background_detail',
+  },
+  {
+    id: 'equipment_lookup',
+    patterns: [/多少钱|多少金币|价格是多少/, /净化水袋|活力药水|无尽烟斗/],
+    layers: ['L0', 'L1'],
+    topK: { L0: 4, L1: 6 },
+    promptProfile: 'equipment_lookup',
+  },
+  {
+    id: 'equipment_search',
+    patterns: [/哪些.*护甲|哪些.*武器|装备列表|可以用的护甲/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 8, L0: 4 },
+    promptProfile: 'equipment_search',
+  },
+  {
+    id: 'chargen_hp_optimize',
+    patterns: [/初始血量/, /血量.*最大/, /生命.*最大/, /起始生命/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 10, L0: 3 },
+    promptProfile: 'chargen_hp_optimize',
+  },
+  {
+    id: 'proficiency_roadmap',
+    patterns: [/知识.*熟练/, /奥秘.*熟练/, /熟练.*知识/, /几乎全部.*知识/],
+    layers: ['L0', 'L1', 'L2-mage'],
+    topK: { L0: 6, L1: 6, 'L2-mage': 12 },
+    promptProfile: 'proficiency_roadmap',
+  },
+  {
+    id: 'combat_math',
+    patterns: [/命中加值/, /攻击加值/, /伤害加值/, /护甲值/, /防御等级/, /拿着一把.*开启/],
+    layers: ['L0'],
+    topK: { L0: 6 },
+    promptProfile: 'combat_math',
+  },
+  {
+    id: 'unknown_entity',
+    patterns: [/元素大师/, /未收录/, /不在.*资料库/],
+    layers: ['L0', 'L3'],
+    topK: { L0: 6, L3: 8 },
+    promptProfile: 'unknown_entity',
+  },
+  {
+    id: 'status_rules',
+    patterns: [/沉默/, /状态.*效果/, /造成.*状态/, /异常状态/],
+    layers: ['L0'],
+    topK: { L0: 8 },
+    promptProfile: 'status_rules',
+  },
+  {
+    id: 'skill_aggregate',
+    patterns: [/哪些职业.*学/, /效果一样/, /可以学.*哪些职业/],
+    layers: ['L0'],
+    topK: { L0: 4 },
+    promptProfile: 'skill_aggregate',
+  },
+  {
+    id: 'feat_timing',
+    patterns: [/特殊专长.*等级/, /专长.*哪些级/, /专长.*获取/],
+    layers: ['L0', 'L4'],
+    topK: { L0: 6, L4: 8 },
+    promptProfile: 'feat_timing',
+  },
+  {
+    id: 'skill_detail',
+    patterns: [/这个技能/, /收益/, /代价/, /一共.*多少/],
+    layers: ['L0'],
+    topK: { L0: 4 },
+    promptProfile: 'skill_detail',
+  },
+  {
+    id: 'cross_class_compare',
+    patterns: [/相同.*技能/, /共同.*技能/, /同名.*技能/, /和.*有哪些.*技能/],
+    layers: ['L1'],
+    topK: { L1: 6 },
+    promptProfile: 'cross_class_compare',
+  },
+  {
+    id: 'class_weapon_prof',
+    patterns: [/哪些.*职业.*武器/, /武器熟练.*包含/, /武器熟练.*含有/],
+    layers: ['L1', 'L0'],
+    topK: { L1: 8, L0: 3 },
+    promptProfile: 'class_weapon_prof',
+  },
   {
     id: 'eligibility',
     patterns: [/智力\s*\d+/, /能走/, /达标/, /属性.*进阶/],
@@ -83,13 +196,6 @@ export const INTENT_RULES = [
     layers: ['L3', 'L2-mage', 'L2-warrior', 'L2-universal', 'L4', 'L0'],
     topK: { L3: 10, 'L2-mage': 14, 'L2-warrior': 14, 'L2-universal': 12, L4: 10, L0: 4 },
     promptProfile: 'build_roadmap',
-  },
-  {
-    id: 'unknown_entity',
-    patterns: [/元素大师/, /未收录/],
-    layers: ['L0', 'L3'],
-    topK: { L0: 6, L3: 8 },
-    promptProfile: 'unknown_entity',
   },
   {
     id: 'advancement',
@@ -168,7 +274,7 @@ export const INTENT_RULES = [
 const REGISTRY_L2_LAYERS = () => listL2ClassEntries().map((e) => e.l2Layer);
 
 const L2_INJECT_INTENTS = new Set([
-  'general', 'chargen', 'wizard_step', 'class_skills', 'tips', 'build_review', 'build_roadmap', 'advancement',
+  'general', 'chargen', 'wizard_step', 'class_skills', 'cross_class_compare', 'tips', 'build_review', 'build_roadmap', 'advancement',
 ]);
 
 function activeL2Layer(className, query) {
@@ -209,11 +315,17 @@ export function applyClassRouteFilter(route, ctx = {}) {
       }
     }
     if (multiClasses.length > 1) {
-      route.promptProfile = 'class_skills';
+      route.promptProfile = intent === 'cross_class_compare' ? 'cross_class_compare' : 'class_skills';
     }
   }
 
-  if (intent === 'class_skills') {
+  if (intent === 'cross_class_compare') {
+    route.promptProfile = 'cross_class_compare';
+    if (!route.layers.includes('L1')) {
+      route.layers.push('L1');
+      route.topK.L1 = route.topK.L1 || 6;
+    }
+  } else if (intent === 'class_skills') {
     if (injectLayer) {
       route.layers = [...new Set(['L1', injectLayer, ...route.layers.filter((l) => l === 'L0' || l === 'L5')])];
       route.topK[injectLayer] = route.topK[injectLayer] || 18;
@@ -292,6 +404,15 @@ function pickRuleByIntent(intentId) {
 }
 
 export function routeIntent(query, ctx = {}) {
+  const classified = classifyQuestion(query, ctx);
+  if (classified?.intent && classified.confidence >= 0.65) {
+    return {
+      ...pickRuleByIntent(classified.intent),
+      id: classified.intent,
+      query,
+      classification: classified,
+    };
+  }
   if (isPanelRoadmapQuery(query, ctx)) {
     return { ...pickRuleByIntent('build_roadmap'), id: 'build_roadmap', query };
   }

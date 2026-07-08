@@ -5,6 +5,19 @@
     if (!ta || !ta.value.trim()) return;
     var desc = ta.value.trim();
 
+    try {
+      if (/顾问|advisor|AI|问句/.test(desc)) {
+        var qm = desc.match(/问句[:：]\s*(.+)/);
+        var payload = {
+          query: qm ? qm[1].split('\n')[0].trim() : desc.slice(0, 120),
+          description: desc,
+          page: location.href,
+          savedAt: new Date().toISOString(),
+        };
+        localStorage.setItem('_snowd_advisor_feedback', JSON.stringify(payload));
+      }
+    } catch (e) {}
+
     var lines = ['页面: '+location.href, document.title, new Date().toLocaleString('zh-CN'), '', desc];
     try {
       var el = JSON.parse(localStorage.getItem('_snowd_error_log')||'[]');

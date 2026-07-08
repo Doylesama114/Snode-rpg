@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "layer": "L0",
+    "version": "1.0.0",
+    "source": "斯诺德跑团/帮助.html §检定规则 + panel_engine.js 攻击命中显示",
+    "generatedAt": "2026-07-08",
+    "advisorUsage": "combat_math / resolveCombatScenario MVP（7068）；AC 演算（7072）；类别增益+合并演算（7073）"
+  },
+  "attackRoll": {
+    "formula": "D20 + 攻击命中检定值",
+    "hitBonusComponents": [
+      "属性调整值（近战默认 max(力量, 敏捷)；问句指定力量时以力量为准）",
+      "武器类别熟练度（每 1 点 +1）",
+      "附魔/战技等对「攻击命中检定值」的 flat 加算",
+      "改变力量/敏捷调整值的 Buff（如狂怒术 +2 力量）"
+    ],
+    "panelNote": "面板「攻击命中」= max(力量调整值, 敏捷调整值)；不含武器熟练与 Buff，检定时叠加。"
+  },
+  "weaponProficiency": {
+    "perPointHitBonus": 1,
+    "categoryBonuses": {
+      "剑类": "近战伤害骰=1可重掷",
+      "斧类": "暴击率+1",
+      "锤类": "对重甲敌伤害骰最低4点",
+      "长柄": "可单手持有",
+      "弓箭": "命中检定+2",
+      "简易": "每场战斗限一次:附赠动作基础攻击"
+    },
+    "categoryHitBonuses": {
+      "弓箭": { "hit": 2, "when": "ranged", "note": "远程攻击时弓箭类别命中检定+2（与熟练加值叠加）" }
+    },
+    "source": "panel_data.js WEAPON_SPEC_BONUSES（类别增益≠熟练加值；熟练每点 +1 命中为顾问演算约定，与问句「N点X类熟练」对齐）"
+  },
+  "abilityModifier": {
+    "formula": "floor((属性值 - 10) / 2)"
+  },
+  "damageRoll": {
+    "formula": "武器伤害骰 + 属性调整值（近战默认力量；远程默认敏捷）+ flat 伤害加值",
+    "meleeAbility": "力量",
+    "rangedAbility": "敏捷",
+    "note": "问句中的 1d8 等为伤害骰，不计入 flat 伤害加值；Buff 改变力量/敏捷时先算有效调整值。"
+  },
+  "acRules": {
+    "formula": "护甲基础 + min(敏捷调整值, 敏捷上限) + 盾牌加值",
+    "unarmored": { "base": 10, "dexCap": null, "label": "无护甲" },
+    "light_11": { "base": 11, "dexCap": 2, "aliases": ["布衣", "皮甲"], "label": "轻甲 11+敏捷（至多+2）" },
+    "scout_12": { "base": 12, "dexCap": 2, "aliases": ["斥候轻甲"], "label": "斥候轻甲 12+敏捷（至多+2）" },
+    "bear_13": { "base": 13, "dexCap": 2, "aliases": ["巨熊革甲"], "label": "巨熊革甲 13+敏捷（至多+2）" },
+    "mithral_14": { "base": 14, "dexCap": 2, "aliases": ["秘银甲"], "label": "秘银甲 14+敏捷（至多+2）" },
+    "plate_18": { "base": 18, "dexCap": 0, "aliases": ["板甲"], "label": "板甲 固定 AC 18" },
+    "shieldBonus": 2,
+    "source": "equipment_index.json + equipment_catalog_index.json（7072 MVP）"
+  }
+}

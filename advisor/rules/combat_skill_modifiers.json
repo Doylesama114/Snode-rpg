@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "layer": "L0",
+    "version": "1.0.0",
+    "source": "advisor/skills/mage_index.json + skill_effects_法师.json（Q3 试点）",
+    "generatedAt": "2026-07-08",
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术"]
+  },
+  "skills": {
+    "魔法武器": {
+      "className": "法师",
+      "hitModifier": { "base": 1 },
+      "note": "附魔武器攻击命中检定值+1",
+      "source": "mage_index · 魔法武器 summary"
+    },
+    "锐化武器": {
+      "className": "法师",
+      "hitModifier": { "base": 0, "milestones": { "L5": 3 } },
+      "note": "基础为忽视伤害抗性；L5 里程碑改为攻击命中检定值+3",
+      "source": "mage_index · 锐化武器 summary"
+    },
+    "狂怒术": {
+      "className": "法师",
+      "attrModifier": {
+        "力量": 2,
+        "体质": 2,
+        "智力": -2,
+        "感知": -2
+      },
+      "hitViaAttr": true,
+      "note": "目标力量/体质调整值+2；近战命中通过有效力量调整值体现，非 flat 命中加值",
+      "source": "mage_index · 狂怒术 summary"
+    }
+  }
+}

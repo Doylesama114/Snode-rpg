@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7073',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch6-9: 装备检索/购点升级/背景AC/熟练反查/战斗Phase2',
+      'audit 43条 golden 27条'
+    ]
+  },
+
+
+  {
     version: '1.0.7064',
     date: '2026-07-08',
     changes: [

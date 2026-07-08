@@ -1,0 +1,9 @@
+{
+  "id": "feedback-bg-deities-example",
+  "query": "侍僧背景可以侍奉哪些神祇",
+  "expectIntent": "background_detail",
+  "mustInclude": ["Tools 层", "侍僧", "公正与荣耀之神", "可侍奉神祇"],
+  "mustNotInclude": ["当前资料未收录此项"],
+  "tags": ["user-feedback", "7072-template"],
+  "_note": "复制到 pending/ 后运行 node scripts/advisor-feedback-sync.mjs"
+}

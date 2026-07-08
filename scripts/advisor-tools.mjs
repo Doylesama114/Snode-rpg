@@ -16,6 +16,8 @@ import {
   ROADMAP_ANSWER_SECTIONS,
   buildLevelingHints,
 } from './advisor-build-roadmap.mjs';
+import { resetEquipmentToolsCache } from './advisor-equipment-tools.mjs';
+import { resetChargenToolsCache } from './advisor-chargen-tools.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ADVISOR = path.join(__dirname, '..', 'advisor');
@@ -330,4 +332,77 @@ export function formatRoadmapOutline(outline) {
 export function resetAdvisorToolsCache() {
   _levelingCache = null;
   _registryCache = null;
+  resetEquipmentToolsCache();
+  resetChargenToolsCache();
 }
+
+export {
+  optimizePointBuy,
+  parsePointBuyConstraintsFromQuery,
+  summarizeLevelingRange,
+  parseLevelingRangeFromQuery,
+  detectChargenCalcQuestion,
+  buildChargenToolContext,
+  resetChargenToolsCache,
+} from './advisor-chargen-tools.mjs';
+
+export {
+  lookupEquipment,
+  searchEquipment,
+  resolveEquipmentNameFromQuery,
+  resolveEquipmentCategoryFromQuery,
+  detectEquipmentQuestion,
+  buildEquipmentToolContext,
+  resetEquipmentToolsCache,
+} from './advisor-equipment-tools.mjs';
+
+export {
+  lookupSkill,
+  intersectSkills,
+  listClassesByWeaponProf,
+  detectStructuredQuestion,
+  buildStructuredToolContext,
+  resolveSkillNameFromQuery,
+  resolveWeaponCategory,
+  summarizeChargenHp,
+  outlineProficiencyRoadmap,
+  summarizeSnapshotProfContext,
+  lookupStatus,
+  aggregateSkillByName,
+  summarizeFeatWindows,
+} from './advisor-query-tools.mjs';
+
+export {
+  parseCombatScenarioFromQuery,
+  resolveCombatScenario,
+  formatCombatScenarioText,
+  mergeSnapshotIntoCombatScenario,
+  abilityModFromScore,
+  resetCombatEngineCache,
+  parseAcScenarioFromQuery,
+  resolveAcScenario,
+  formatAcScenarioText,
+  resolveFullCombatScenario,
+} from './advisor-combat-engine.mjs';
+
+export {
+  lookupBackground,
+  detectBackgroundQuestion,
+  buildBackgroundToolContext,
+  resetBackgroundToolsCache,
+} from './advisor-background-tools.mjs';
+
+export {
+  listClassesByProficiency,
+  resolveProficiencyNameFromQuery,
+  detectProficiencyLookupQuestion,
+  buildProficiencyToolContext,
+  resetProficiencyToolsCache,
+} from './advisor-proficiency-tools.mjs';
+
+export {
+  classifyQuestion,
+  categoryForIntent,
+  QUESTION_CATEGORIES,
+  INTENT_TO_CATEGORY,
+} from './advisor-classifier.mjs';

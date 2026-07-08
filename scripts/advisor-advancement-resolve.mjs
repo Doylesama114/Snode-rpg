@@ -195,6 +195,12 @@ export function detectUnknownAdvancementQuery(query) {
     if (hit) return hit;
   }
 
+  const shortKnightM = q.match(/([^\s，,、？?！!]{1,6}骑士)/);
+  if (shortKnightM) {
+    const hit = tryName(shortKnightM[1]);
+    if (hit) return hit;
+  }
+
   const planM = q.match(/([^\s，,、？?]{2,10}(?:大师|学者|术士|术师|法师|射手|剑士|盗贼))\s*(?:怎么规划|如何规划|成长路线|怎么安排|如何安排|怎么选)/);
   if (planM) {
     const hit = tryName(planM[1]);
