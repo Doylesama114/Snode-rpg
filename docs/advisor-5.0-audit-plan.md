@@ -283,7 +283,13 @@ LLM
 - `advisor-proficiency-tools.mjs`：`listClassesByProficiency()`；intent `proficiency_lookup`
 - Golden + CI batch9 must-pass（命中伤害合并 · 宗教熟练 · 弓箭 +5）
 
-### v1.0.7074+ — 后续
+### v1.0.7074 — 车卡 entity bundle + 快照 AC（P2）✓
+
+- `advisor-chargen-entity-tools.mjs`：`lookupStartingGear()` / `lookupRace()` / `background_chargen`
+- `mergeSnapshotIntoAcScenario()`；L6 快照 equipment.armor 联动 AC 演算
+- Golden + CI batch10 must-pass（牧师起始装 · 血族特性 · 快照 AC 13）
+
+### v1.0.7075+ — 后续
 
 ## 8. Golden / CI 策略
 

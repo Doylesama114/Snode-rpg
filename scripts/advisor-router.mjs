@@ -39,6 +39,27 @@ export const INTENT_RULES = [
     promptProfile: 'leveling_summary',
   },
   {
+    id: 'starting_gear_lookup',
+    patterns: [/起始装备/, /起手套装/, /起始套装/, /创建.*起始装备/],
+    layers: ['L1'],
+    topK: { L1: 8 },
+    promptProfile: 'starting_gear_lookup',
+  },
+  {
+    id: 'race_detail',
+    patterns: [/种族.*特性/, /吸血鬼/, /血族.*特性/, /属性加成/],
+    layers: ['L1'],
+    topK: { L1: 6 },
+    promptProfile: 'race_detail',
+  },
+  {
+    id: 'background_chargen',
+    patterns: [/背景.*装备/, /背景.*金币/, /背景.*起始/],
+    layers: ['L1'],
+    topK: { L1: 6 },
+    promptProfile: 'background_chargen',
+  },
+  {
     id: 'proficiency_lookup',
     patterns: [/哪些.*职业.*熟练/, /可以选.*熟练/, /哪些.*背景.*熟练/],
     layers: ['L1', 'L0'],

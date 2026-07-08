@@ -383,6 +383,7 @@ export {
   resolveAcScenario,
   formatAcScenarioText,
   resolveFullCombatScenario,
+  mergeSnapshotIntoAcScenario,
 } from './advisor-combat-engine.mjs';
 
 export {
@@ -399,6 +400,15 @@ export {
   buildProficiencyToolContext,
   resetProficiencyToolsCache,
 } from './advisor-proficiency-tools.mjs';
+
+export {
+  lookupRace,
+  lookupStartingGear,
+  resolveRaceNameFromQuery,
+  detectChargenEntityQuestion,
+  buildChargenEntityToolContext,
+  resetChargenEntityToolsCache,
+} from './advisor-chargen-entity-tools.mjs';
 
 export {
   classifyQuestion,

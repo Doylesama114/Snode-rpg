@@ -228,6 +228,18 @@ const INTENT_ADDONS = {
 ## 本问类型：熟练项职业/背景对照
 - 必须基于 Tools 层「熟练项职业对照」；完整列出所有可选取该熟练的职业及背景。
 - 须说明 L1 四项熟练为「可选池」；数字须与 Tools 层 classCount 一致，不可只举示例。`,
+  starting_gear_lookup: `
+## 本问类型：职业起始装备
+- 必须基于 Tools 层 starting_gear.json；完整列出 A–D 四套 summary。
+- 勿与背景装备或消耗品 catalog 混淆；可简要比较取向。`,
+  race_detail: `
+## 本问类型：种族详情
+- 必须基于 Tools 层 races.json；完整枚举属性加值与全部种族特性。
+- 吸血鬼问法映射至「血族」；数字须与 Tools 层一致。`,
+  background_chargen: `
+## 本问类型：背景车卡 bundle
+- 必须基于 Tools 层 bg_personality_index；列出装备、熟练、金币、背景特性摘要。
+- 勿与职业起始套装 A–D 混淆。`,
   equipment_lookup: `
 ## 本问类型：装备/物品详情
 - 必须基于 Tools 层「装备/物品详情」；完整转述效果、价格、重量、要求。

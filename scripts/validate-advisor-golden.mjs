@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { planFromRules } from './advisor-planner.mjs';
 import { retrieve, formatContext } from './advisor-retrieve.mjs';
 import { enrichPlannerContext } from './advisor-session.mjs';
+import { loadSnapshotFile } from './advisor-snapshot.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GOLDEN_PATH = path.join(__dirname, '..', 'advisor', 'golden', 'conversations.json');
@@ -34,7 +35,11 @@ for (const c of golden.cases || []) {
   };
   const ctx = enrichPlannerContext(c.query, baseCtx);
   const plan = planFromRules(c.query, ctx);
-  const retrieval = retrieve(c.query, { plan, goalOverride: ctx.goalOverride || null });
+  const retrieveOpts = { plan, goalOverride: ctx.goalOverride || null };
+  if (c.snapshotFile) {
+    retrieveOpts.snapshot = loadSnapshotFile(c.snapshotFile);
+  }
+  const retrieval = retrieve(c.query, retrieveOpts);
   const context = formatContext(retrieval);
 
   if (c.expectIntent) {

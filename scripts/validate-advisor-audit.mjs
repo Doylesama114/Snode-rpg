@@ -280,6 +280,25 @@ const CASES = [
     query: '哪些初始职业可以在创建时选择宗教熟练',
     expectInContext: ['熟练项职业对照', '宗教', '牧师', '德鲁伊'],
   },
+  {
+    id: 'snap-ac-armor',
+    category: 'combat_math',
+    query: '我的护甲值是多少',
+    snapshotFile: 'advisor/snapshots/mock-combat-warrior-l6.json',
+    expectInContext: ['护甲值演算', '13', 'L6 快照联动', '皮甲'],
+  },
+  {
+    id: 'extra-bg-soldier-chargen',
+    category: 'background_chargen',
+    query: '士兵背景起始装备和金币有哪些',
+    expectInContext: ['士兵', '背景车卡', '金币'],
+  },
+  {
+    id: 'extra-race-vampire-detail',
+    category: 'race_detail',
+    query: '吸血鬼种族有什么特性',
+    expectInContext: ['血族', '饮血者', '种族特性', 'Tools 层'],
+  },
 ];
 
 function corpusHas(store, term) {
@@ -415,6 +434,24 @@ function classifyGap(c, ctxScore, store) {
       && ctx.includes('熟练项职业对照')
       ? 'OK' : 'RETRIEVAL_GAP';
   }
+  if (c.id === 'extra-priest-starting-gear') {
+    return r.intent === 'starting_gear_lookup' && ctx.includes('起始装备') && ctx.includes('套装 A')
+      && ctx.includes('轻锤')
+      ? 'OK' : 'RETRIEVAL_GAP';
+  }
+  if (c.id === 'snap-ac-armor') {
+    return r.intent === 'combat_math' && ctx.includes('护甲值演算') && ctx.includes('13')
+      && ctx.includes('L6 快照联动')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'extra-bg-soldier-chargen') {
+    return r.intent === 'background_chargen' && ctx.includes('士兵') && ctx.includes('背景车卡')
+      ? 'OK' : 'RETRIEVAL_GAP';
+  }
+  if (c.id === 'extra-race-vampire-detail') {
+    return r.intent === 'race_detail' && ctx.includes('血族') && ctx.includes('饮血者')
+      ? 'OK' : 'RETRIEVAL_GAP';
+  }
 
   const corpusChecks = c.expectInContext.map((term) => ({
     term,
@@ -490,6 +527,7 @@ const BATCH6_IDS = new Set(['extra-equip-purify', 'extra-equip-mage-armor', 'ext
 const BATCH7_IDS = new Set(['extra-point-buy', 'extra-level-rewards', 'user-damage-bonus']);
 const BATCH8_IDS = new Set(['extra-bg-deities', 'extra-ac-leather', 'extra-ac-shield']);
 const BATCH9_IDS = new Set(['extra-combat-full', 'extra-prof-religion', 'extra-combat-ranged']);
+const BATCH10_IDS = new Set(['extra-priest-starting-gear', 'snap-ac-armor', 'extra-race-vampire-detail']);
 
 console.log(`\nNon-OK cases: ${failures}/${CASES.length}`);
 console.log(`Audit cases total: ${CASES.length} (target ≥30)`);
@@ -502,6 +540,7 @@ const batch6Failed = rows.filter((r) => BATCH6_IDS.has(r.id) && r.gap !== 'OK').
 const batch7Failed = rows.filter((r) => BATCH7_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch8Failed = rows.filter((r) => BATCH8_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch9Failed = rows.filter((r) => BATCH9_IDS.has(r.id) && r.gap !== 'OK').length;
+const batch10Failed = rows.filter((r) => BATCH10_IDS.has(r.id) && r.gap !== 'OK').length;
 console.log(`7065 batch1 must-pass: ${BATCH1_IDS.size - batch1Failed}/${BATCH1_IDS.size}`);
 console.log(`7066 batch2 must-pass: ${BATCH2_IDS.size - batch2Failed}/${BATCH2_IDS.size}`);
 console.log(`7067 batch3 must-pass: ${BATCH3_IDS.size - batch3Failed}/${BATCH3_IDS.size}`);
@@ -511,6 +550,7 @@ console.log(`7070 batch6 must-pass: ${BATCH6_IDS.size - batch6Failed}/${BATCH6_I
 console.log(`7071 batch7 must-pass: ${BATCH7_IDS.size - batch7Failed}/${BATCH7_IDS.size}`);
 console.log(`7072 batch8 must-pass: ${BATCH8_IDS.size - batch8Failed}/${BATCH8_IDS.size}`);
 console.log(`7073 batch9 must-pass: ${BATCH9_IDS.size - batch9Failed}/${BATCH9_IDS.size}`);
+console.log(`7074 batch10 must-pass: ${BATCH10_IDS.size - batch10Failed}/${BATCH10_IDS.size}`);
 
 const categoryIds = {};
 for (const c of CASES) {
@@ -521,6 +561,7 @@ console.log(`Categories covered: ${Object.keys(categoryIds).length} types, min p
 if (
   batch1Failed > 0 || batch2Failed > 0 || batch3Failed > 0 || batch4Failed > 0
   || batch5Failed > 0 || batch6Failed > 0 || batch7Failed > 0 || batch8Failed > 0 || batch9Failed > 0
+  || batch10Failed > 0
 ) process.exitCode = 1;
 else if (failures > 0) {
   console.log('(其余失败项为 7072+ 计划范围，不阻断 CI)');

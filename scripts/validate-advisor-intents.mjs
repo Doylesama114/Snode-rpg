@@ -36,6 +36,8 @@ const CASES = [
   { id: 'combat_ac', query: '敏捷调整值+2穿着皮甲护甲值是多少', expect: 'combat_math' },
   { id: 'prof_religion', query: '哪些初始职业可以在创建时选择宗教熟练', expect: 'proficiency_lookup' },
   { id: 'combat_full', query: '力量+3剑类熟练1d8双手剑狂怒术命中和伤害加值分别是多少', expect: 'combat_math' },
+  { id: 'starting_gear', query: '牧师创建角色时起始装备有哪些', expect: 'starting_gear_lookup' },
+  { id: 'race_vampire', query: '吸血鬼种族有什么特性', expect: 'race_detail' },
   { id: 'roadmap', query: '我想玩飞贼怎么安排成长路线', expect: 'build_roadmap', skipDetect: true },
 ];
 

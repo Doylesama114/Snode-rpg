@@ -206,6 +206,47 @@ export function resolveAcScenario(params) {
 }
 
 /**
+ * Merge L6 snapshot attrs/equipment into AC scenario when query omits explicit values.
+ * @param {ReturnType<typeof parseAcScenarioFromQuery>|object} scenario
+ * @param {object|null} snapshot
+ * @param {string} [query]
+ */
+export function mergeSnapshotIntoAcScenario(scenario, snapshot, query = '') {
+  const base = { ...(scenario || {}) };
+  if (!snapshot) return { ...base, snapshotUsed: false };
+
+  const q = String(query || '');
+  const merged = { ...base };
+
+  const hasExplicitDex = /敏捷调整值[为是]?\+?\d+/.test(q);
+  if (!hasExplicitDex && merged.dexMod == null && snapshot.attrs?.敏捷 != null) {
+    merged.dexMod = abilityModFromScore(snapshot.attrs.敏捷);
+    merged._dexFromSnapshot = true;
+  }
+
+  if (!merged.armorKey) {
+    const armorName = snapshot.equipment?.armor || snapshot.armor || null;
+    if (armorName) {
+      const fromEquip = parseAcScenarioFromQuery(`穿着${armorName}`);
+      if (fromEquip.armorKey) {
+        merged.armorKey = fromEquip.armorKey;
+        merged.armorLabel = armorName;
+        merged._armorFromSnapshot = true;
+      }
+    }
+  }
+
+  if (!merged.hasShield && (snapshot.equipment?.shield || snapshot.shield)) {
+    merged.hasShield = true;
+    merged._shieldFromSnapshot = true;
+  }
+
+  merged.snapshotUsed = true;
+  merged.snapshotName = snapshot.name || '';
+  return merged;
+}
+
+/**
  * @param {ReturnType<typeof resolveAcScenario>} result
  */
 export function formatAcScenarioText(result) {
@@ -223,6 +264,9 @@ export function formatAcScenarioText(result) {
     } else {
       lines.push(`  · ${c.source}：+${c.value}${c.detail ? `（${c.detail}）` : ''}`);
     }
+  }
+  if (result.params?.snapshotUsed) {
+    lines.push(`- L6 快照联动：${result.params.snapshotName || '角色'}${result.params._armorFromSnapshot ? ' · 护甲自快照' : ''}${result.params._dexFromSnapshot ? ' · 敏捷自快照' : ''}${result.params._shieldFromSnapshot ? ' · 盾牌自快照' : ''}`);
   }
   lines.push(`- 语料：${result.sources.join('、')}`);
   lines.push('- LLM 须给出分解列表与 AC 合计；注明轻甲敏捷上限与盾牌加值。');

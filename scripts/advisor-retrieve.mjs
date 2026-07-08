@@ -49,7 +49,7 @@ import {
 import { outlineGrowthRoadmap, formatRoadmapOutline } from './advisor-tools.mjs';
 import { detectStructuredQuestion, buildStructuredToolContext } from './advisor-query-tools.mjs';
 import { classifyQuestion } from './advisor-classifier.mjs';
-import { mergeSnapshotIntoCombatScenario, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
+import { mergeSnapshotIntoCombatScenario, mergeSnapshotIntoAcScenario, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
 
@@ -1032,15 +1032,45 @@ function applyStructuredTools(retrieval, query, snapshotNorm = null) {
   }
 
   if (detected?.intent === 'combat_math' && snapshotNorm) {
-    detected = {
-      ...detected,
-      snapshot: snapshotNorm,
-      scenario: mergeSnapshotIntoCombatScenario(
-        detected.scenario || parseCombatScenarioFromQuery(query),
-        snapshotNorm,
+    if (detected.mode === 'ac') {
+      detected = {
+        ...detected,
+        snapshot: snapshotNorm,
+        scenario: mergeSnapshotIntoAcScenario(
+          detected.scenario || parseAcScenarioFromQuery(query),
+          snapshotNorm,
+          query,
+        ),
+      };
+    } else {
+      detected = {
+        ...detected,
+        snapshot: snapshotNorm,
+        scenario: mergeSnapshotIntoCombatScenario(
+          detected.scenario || parseCombatScenarioFromQuery(query),
+          snapshotNorm,
+          query,
+        ),
+      };
+    }
+  }
+
+  if (
+    !detected
+    && snapshotNorm
+    && /护甲值|防御等级|\bAC\b/i.test(query)
+    && /多少|是多少|怎么算|当前|我的/.test(query)
+  ) {
+    const mergedAc = mergeSnapshotIntoAcScenario(parseAcScenarioFromQuery(query), snapshotNorm, query);
+    if (mergedAc.armorKey || mergedAc.dexMod != null) {
+      detected = {
+        intent: 'combat_math',
+        mode: 'ac',
+        scenario: mergedAc,
         query,
-      ),
-    };
+        fromSnapshot: true,
+      };
+    }
   }
 
   if (detected?.intent === 'proficiency_roadmap' && snapshotNorm) {

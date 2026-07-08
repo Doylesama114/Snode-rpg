@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7074',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch10: 起始装备/种族/背景bundle+快照AC联动',
+      'audit 46条 golden 30条'
+    ]
+  },
+
+
+  {
     version: '1.0.7073',
     date: '2026-07-08',
     changes: [

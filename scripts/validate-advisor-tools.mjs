@@ -32,6 +32,9 @@ import {
   listClassesByProficiency,
   detectProficiencyLookupQuestion,
   resolveFullCombatScenario,
+  mergeSnapshotIntoAcScenario,
+  lookupStartingGear,
+  lookupRace,
   lookupEquipment,
   searchEquipment,
   detectEquipmentQuestion,
@@ -277,6 +280,25 @@ check('resolveFullCombatScenario dmg +5', full.totalDamageBonus === 5);
 
 const ranged = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练度远程攻击命中加值是多少'));
 check('ranged bow +5', ranged.totalHitBonus === 5);
+
+const priestGear = lookupStartingGear('牧师');
+check('lookupStartingGear 牧师', priestGear?.kits?.length === 4);
+const detGear = detectStructuredQuestion('牧师创建角色时起始装备有哪些');
+check('detect starting_gear_lookup', detGear?.intent === 'starting_gear_lookup');
+const rGear = retrieve('牧师创建角色时起始装备有哪些');
+check('retrieve starting gear tools', formatContext(rGear).includes('起始装备'));
+
+const vampire = lookupRace('吸血鬼');
+check('lookupRace 吸血鬼→血族', vampire?.name === '血族');
+const detRace = detectStructuredQuestion('吸血鬼种族有什么特性');
+check('detect race_detail', detRace?.intent === 'race_detail');
+
+const snapAc = mergeSnapshotIntoAcScenario(parseAcScenarioFromQuery('我的护甲值是多少'), snapWar, '我的护甲值是多少');
+check('mergeSnapshotIntoAcScenario 皮甲', snapAc.armorKey === 'light_11');
+const acSnap = resolveAcScenario(snapAc);
+check('snap AC 13', acSnap.totalAc === 13);
+const rSnapAc = retrieve('我的护甲值是多少', { snapshot: snapWar });
+check('retrieve snap ac tools', formatContext(rSnapAc).includes('L6 快照联动'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

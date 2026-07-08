@@ -18,6 +18,7 @@ import {
   resolveAcScenario,
   formatAcScenarioText,
   resolveFullCombatScenario,
+  mergeSnapshotIntoAcScenario,
 } from './advisor-combat-engine.mjs';
 import { flattenProfs, listNonZeroProfs } from './advisor-snapshot.mjs';
 import { detectEquipmentQuestion, buildEquipmentToolContext } from './advisor-equipment-tools.mjs';
@@ -27,6 +28,10 @@ import {
   detectProficiencyLookupQuestion,
   buildProficiencyToolContext,
 } from './advisor-proficiency-tools.mjs';
+import {
+  detectChargenEntityQuestion,
+  buildChargenEntityToolContext,
+} from './advisor-chargen-entity-tools.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ADVISOR = path.join(__dirname, '..', 'advisor');
@@ -525,11 +530,9 @@ export function detectStructuredQuestion(query) {
   const skillHit = resolveSkillNameFromQuery(q);
   const classes = matchAllClassesFromQuery(q);
 
-  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少/.test(q)) {
+  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少|怎么算|当前|我的/.test(q)) {
     const acScenario = parseAcScenarioFromQuery(q);
-    if (acScenario && (acScenario.armorKey || acScenario.dexMod != null)) {
-      return { intent: 'combat_math', mode: 'ac', scenario: acScenario, query: q };
-    }
+    return { intent: 'combat_math', mode: 'ac', scenario: acScenario, query: q };
   }
 
   if (COMBAT_MATH_RE.test(q) && !/护甲值|防御等级|\bAC\b/i.test(q) && /开启|拿着|调整值|熟练度|命中加值|攻击加值|伤害加值/.test(q)) {
@@ -613,6 +616,9 @@ export function detectStructuredQuestion(query) {
 
   const profLookup = detectProficiencyLookupQuestion(q);
   if (profLookup) return profLookup;
+
+  const chargenEntity = detectChargenEntityQuestion(q);
+  if (chargenEntity) return chargenEntity;
 
   const equipQ = detectEquipmentQuestion(q);
   if (equipQ) return equipQ;
@@ -836,7 +842,11 @@ export function buildStructuredToolContext(detected) {
 
   if (detected.intent === 'combat_math') {
     if (detected.mode === 'ac') {
-      const acResult = resolveAcScenario(detected.scenario || parseAcScenarioFromQuery(detected.query));
+      let acScenario = detected.scenario || parseAcScenarioFromQuery(detected.query);
+      if (detected.snapshot) {
+        acScenario = mergeSnapshotIntoAcScenario(acScenario, detected.snapshot, detected.query);
+      }
+      const acResult = resolveAcScenario(acScenario);
       return {
         intent: 'combat_math',
         promptProfile: 'combat_math',
@@ -870,6 +880,14 @@ export function buildStructuredToolContext(detected) {
 
   if (detected.intent === 'proficiency_lookup') {
     return buildProficiencyToolContext(detected);
+  }
+
+  if (
+    detected.intent === 'starting_gear_lookup'
+    || detected.intent === 'race_detail'
+    || detected.intent === 'background_chargen'
+  ) {
+    return buildChargenEntityToolContext(detected);
   }
 
   if (detected.intent === 'equipment_lookup' || detected.intent === 'equipment_search') {

@@ -3,6 +3,7 @@
  * Maps queries to categories A–I with intent + confidence; preferred over raw INTENT_RULES scoring.
  */
 import { detectStructuredQuestion } from './advisor-query-tools.mjs';
+import { parseAcScenarioFromQuery, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 import { isBuildRoadmapQuery, isPanelRoadmapQuery } from './advisor-build-roadmap.mjs';
 import { pickAdvancementName } from './advisor-router-utils.mjs';
 
@@ -48,6 +49,9 @@ export const INTENT_TO_CATEGORY = {
   equipment_search: 'A',
   background_detail: 'A',
   proficiency_lookup: 'B',
+  starting_gear_lookup: 'C',
+  race_detail: 'A',
+  background_chargen: 'C',
   mage_skills: 'A',
   wizard_step: 'C',
 };
@@ -146,6 +150,7 @@ export function classifyQuestion(query, ctx = {}) {
     }
 
     if (COMBAT_SHORT_RE.test(q) && /多少|是多少|怎么算/.test(q) && !/力量调整值[为是]?\+?\d+/.test(q)) {
+      const isAc = /护甲值|防御等级|\bAC\b/i.test(q);
       return {
         category: 'F',
         intent: 'combat_math',
@@ -153,8 +158,10 @@ export function classifyQuestion(query, ctx = {}) {
         source: 'panel',
         structured: {
           intent: 'combat_math',
+          mode: isAc ? 'ac' : 'hit',
           query: q,
           fromSnapshot: true,
+          scenario: isAc ? parseAcScenarioFromQuery(q) : parseCombatScenarioFromQuery(q),
         },
         meta: { snapshotLinked: true },
       };

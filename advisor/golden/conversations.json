@@ -209,6 +209,28 @@
       "expectIntent": "combat_math",
       "mustInclude": ["Tools 层", "战斗命中演算", "伤害 flat 加值", "+6", "+5", "狂怒术"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "priest-starting-gear",
+      "query": "牧师创建角色时起始装备有哪些",
+      "expectIntent": "starting_gear_lookup",
+      "mustInclude": ["Tools 层", "起始装备", "牧师", "套装 A", "轻锤"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "race-vampire-traits",
+      "query": "吸血鬼种族有什么特性",
+      "expectIntent": "race_detail",
+      "mustInclude": ["Tools 层", "血族", "饮血者", "日光诅咒"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-ac-from-equipment",
+      "query": "我的护甲值是多少",
+      "snapshotFile": "advisor/snapshots/mock-combat-warrior-l6.json",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "13", "L6 快照联动", "皮甲"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }
