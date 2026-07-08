@@ -224,7 +224,13 @@ export function isBuildRoadmapQuery(query) {
   return planning || advancementPlan || dualClassPlan || advancementOnlyPlan || sessionFocusPlan || unknownPlan;
 }
 
+export function isBuildReviewQuery(query, ctx = {}) {
+  if (!ctx.snapshot) return false;
+  return PANEL_REVIEW_RE.test(query) && PANEL_SKILL_RE.test(query);
+}
+
 export function isPanelRoadmapQuery(query, ctx = {}) {
+  if (isBuildReviewQuery(query, ctx)) return false;
   if (isBuildRoadmapQuery(query)) return true;
   if (!ctx.snapshot) return false;
   return PANEL_REVIEW_RE.test(query) && PANEL_SKILL_RE.test(query);

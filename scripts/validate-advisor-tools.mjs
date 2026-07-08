@@ -45,6 +45,11 @@ import {
 } from './advisor-tools.mjs';
 import { classifyQuestion, categoryForIntent } from './advisor-tools.mjs';
 import { loadSnapshotFile } from './advisor-snapshot.mjs';
+import {
+  outlineBuildReview,
+  detectBuildReviewQuestion,
+} from './advisor-build-review-tools.mjs';
+import { isBuildReviewQuery } from './advisor-build-roadmap.mjs';
 import { resolveAdvancementName } from './advisor-advancement-resolve.mjs';
 import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
 import { parseRoadmapGoal } from './advisor-build-roadmap.mjs';
@@ -339,6 +344,16 @@ const acSnapSeal = resolveAcScenario(mergeSnapshotIntoAcScenario(parseAcScenario
 check('snap cleric guardian AC 15', acSnapSeal.totalAc === 15);
 const rSnapAcSeal = retrieve('我开启了守护刻印，护甲值是多少', { snapshot: snapCleric });
 check('retrieve snap ac guardian', formatContext(rSnapAcSeal).includes('守护刻印') && formatContext(rSnapAcSeal).includes('15'));
+
+const snapMageReview = loadSnapshotFile('advisor/snapshots/mock-magic-sword-l6.json');
+check('isBuildReviewQuery', isBuildReviewQuery('怎么评价我当前的build', { snapshot: snapMageReview }));
+const reviewDet = detectBuildReviewQuestion('怎么评价我当前的build，如果我想进阶魔剑士', snapMageReview);
+check('detectBuildReviewQuestion', reviewDet?.intent === 'build_review');
+const review = outlineBuildReview(snapMageReview, { query: '魔剑士', store });
+check('outlineBuildReview suggestions', review.suggestions.some((s) => s.name === '战吼术'));
+const rBuildReview = retrieve('怎么评价我当前的build', { snapshot: snapMageReview });
+check('retrieve build_review tools', rBuildReview.intent === 'build_review' && !!rBuildReview.results._toolsText);
+check('context Build 评价', formatContext(rBuildReview).includes('Build 评价'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

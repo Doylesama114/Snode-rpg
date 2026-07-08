@@ -378,6 +378,28 @@ const CASES = [
     snapshotFile: 'advisor/snapshots/mock-cleric-l6.json',
     expectInContext: ['L6 快照联动', '护甲值演算', '守护刻印', '15', 'AC/战斗 Buff 自快照'],
   },
+  // --- 7079 batch15 build_review Tools layer ---
+  {
+    id: 'extra-build-review-magic-sword',
+    category: 'panel_snapshot',
+    query: '怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能',
+    snapshotFile: 'advisor/snapshots/mock-magic-sword-l6.json',
+    expectInContext: ['Build 评价', '魔剑士', '战吼术', '芙兰'],
+  },
+  {
+    id: 'snap-build-review-tools',
+    category: 'panel_snapshot',
+    query: '怎么评价我当前的build',
+    snapshotFile: 'advisor/snapshots/mock-magic-sword-l6.json',
+    expectInContext: ['Build 评价', 'Tools 层', '可学技能位阶', '四阶'],
+  },
+  {
+    id: 'extra-build-review-cleric',
+    category: 'panel_snapshot',
+    query: '怎么评价我当前的build还有什么技能适合我',
+    snapshotFile: 'advisor/snapshots/mock-cleric-l6.json',
+    expectInContext: ['Build 评价', '牧师', '艾拉', '已学技能'],
+  },
 ];
 
 function corpusHas(store, term) {
@@ -455,7 +477,10 @@ function classifyGap(c, ctxScore, store) {
     return ctx.includes('L6 快照联动') && ctx.includes('熟练项获取路线') ? 'OK' : 'RETRIEVAL_GAP';
   }
   if (c.id === 'snap-build-review') {
-    return ctx.includes('L6 角色快照') && ctx.includes('芙兰') ? 'OK' : 'RETRIEVAL_GAP';
+    return (r.intent === 'build_review' || r.intent === 'build_roadmap')
+      && ctx.includes('L6 角色快照') && ctx.includes('芙兰')
+      && (ctx.includes('Build 评价') || ctx.includes('Build 路线图'))
+      ? 'OK' : 'RETRIEVAL_GAP';
   }
   if (c.id === 'extra-combat-ranged') {
     return r.intent === 'combat_math' && ctx.includes('+5') && ctx.includes('弓箭类别增益')
@@ -585,6 +610,21 @@ function classifyGap(c, ctxScore, store) {
       && ctx.includes('AC/战斗 Buff 自快照')
       ? 'OK' : 'ENGINE_GAP';
   }
+  if (c.id === 'extra-build-review-magic-sword') {
+    return r.intent === 'build_review' && ctx.includes('Build 评价') && ctx.includes('魔剑士')
+      && ctx.includes('战吼术') && ctx.includes('芙兰')
+      ? 'OK' : 'TOOL_GAP';
+  }
+  if (c.id === 'snap-build-review-tools') {
+    return r.intent === 'build_review' && ctx.includes('Build 评价') && ctx.includes('Tools 层')
+      && ctx.includes('可学技能位阶') && ctx.includes('四阶')
+      ? 'OK' : 'TOOL_GAP';
+  }
+  if (c.id === 'extra-build-review-cleric') {
+    return r.intent === 'build_review' && ctx.includes('Build 评价') && ctx.includes('牧师')
+      && ctx.includes('艾拉')
+      ? 'OK' : 'TOOL_GAP';
+  }
 
   const corpusChecks = c.expectInContext.map((term) => ({
     term,
@@ -665,6 +705,7 @@ const BATCH11_IDS = new Set(['feedback-pending-bg-deities', 'feedback-pending-pr
 const BATCH12_IDS = new Set(['extra-combat-axe-crit', 'extra-combat-aim-shot', 'snap-combat-buffs-skills']);
 const BATCH13_IDS = new Set(['extra-prof-cleric-religion', 'extra-prof-rogue-deft', 'snap-prof-rogue-deft']);
 const BATCH14_IDS = new Set(['extra-ac-guardian-seal', 'extra-combat-penetrate-shot', 'snap-ac-cleric-seal']);
+const BATCH15_IDS = new Set(['extra-build-review-magic-sword', 'snap-build-review-tools', 'extra-build-review-cleric']);
 
 console.log(`\nNon-OK cases: ${failures}/${CASES.length}`);
 console.log(`Audit cases total: ${CASES.length} (target ≥30)`);
@@ -682,6 +723,7 @@ const batch11Failed = rows.filter((r) => BATCH11_IDS.has(r.id) && r.gap !== 'OK'
 const batch12Failed = rows.filter((r) => BATCH12_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch13Failed = rows.filter((r) => BATCH13_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch14Failed = rows.filter((r) => BATCH14_IDS.has(r.id) && r.gap !== 'OK').length;
+const batch15Failed = rows.filter((r) => BATCH15_IDS.has(r.id) && r.gap !== 'OK').length;
 console.log(`7065 batch1 must-pass: ${BATCH1_IDS.size - batch1Failed}/${BATCH1_IDS.size}`);
 console.log(`7066 batch2 must-pass: ${BATCH2_IDS.size - batch2Failed}/${BATCH2_IDS.size}`);
 console.log(`7067 batch3 must-pass: ${BATCH3_IDS.size - batch3Failed}/${BATCH3_IDS.size}`);
@@ -696,6 +738,7 @@ console.log(`7075 batch11 must-pass: ${BATCH11_IDS.size - batch11Failed}/${BATCH
 console.log(`7076 batch12 must-pass: ${BATCH12_IDS.size - batch12Failed}/${BATCH12_IDS.size}`);
 console.log(`7077 batch13 must-pass: ${BATCH13_IDS.size - batch13Failed}/${BATCH13_IDS.size}`);
 console.log(`7078 batch14 must-pass: ${BATCH14_IDS.size - batch14Failed}/${BATCH14_IDS.size}`);
+console.log(`7079 batch15 must-pass: ${BATCH15_IDS.size - batch15Failed}/${BATCH15_IDS.size}`);
 
 const categoryIds = {};
 for (const c of CASES) {
@@ -706,7 +749,7 @@ console.log(`Categories covered: ${Object.keys(categoryIds).length} types, min p
 if (
   batch1Failed > 0 || batch2Failed > 0 || batch3Failed > 0 || batch4Failed > 0
   || batch5Failed > 0 || batch6Failed > 0 || batch7Failed > 0 || batch8Failed > 0 || batch9Failed > 0
-  || batch10Failed > 0 || batch11Failed > 0   || batch12Failed > 0 || batch13Failed > 0 || batch14Failed > 0
+  || batch10Failed > 0 || batch11Failed > 0   || batch12Failed > 0   || batch13Failed > 0 || batch14Failed > 0 || batch15Failed > 0
 ) process.exitCode = 1;
 else if (failures > 0) {
   console.log('(其余失败项为 7072+ 计划范围，不阻断 CI)');

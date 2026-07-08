@@ -8,6 +8,7 @@ import { loadSnapshotFile } from './advisor-snapshot.mjs';
 import {
   isBuildRoadmapQuery,
   isPanelRoadmapQuery,
+  isBuildReviewQuery,
   getBuildPhaseBand,
   ROADMAP_DISCLAIMER,
   parseRoadmapGoal,
@@ -57,12 +58,13 @@ check('frost advancement 冰霜', formatContext(rFrost).includes('冰霜法师')
 const snap = loadSnapshotFile('advisor/snapshots/mock-magic-sword-l6.json');
 check('L6 phase mid', getBuildPhaseBand(6) === 'mid');
 
-check('panel review isPanelRoadmap', isPanelRoadmapQuery(PANEL_REVIEW_QUERY, { snapshot: snap }));
+check('panel review isBuildReview', isBuildReviewQuery(PANEL_REVIEW_QUERY, { snapshot: snap }));
+check('panel review not panel roadmap', !isPanelRoadmapQuery(PANEL_REVIEW_QUERY, { snapshot: snap }));
 
 const rPanel = retrieve(PANEL_REVIEW_QUERY, { snapshot: snap });
 const ctxPanel = formatContext(rPanel);
-check('panel intent build_roadmap', rPanel.intent === 'build_roadmap');
-check('panel 快照观察', ctxPanel.includes('快照 build 观察'));
+check('panel intent build_review', rPanel.intent === 'build_review');
+check('panel Build 评价', ctxPanel.includes('Build 评价'));
 check('panel disclaimer in ctx', ctxPanel.includes('仅作参考'));
 
 const BULLET_QUERY = '我想玩主职业法师、子职业猎人，进阶魔弹射手，该怎么选技能';

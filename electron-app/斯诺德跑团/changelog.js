@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7079',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch15 Build评价Tools层',
+      'build_review意图拆分',
+      'kit位阶内技能候选'
+    ]
+  },
+
+
+  {
     version: '1.0.7078',
     date: '2026-07-08',
     changes: [

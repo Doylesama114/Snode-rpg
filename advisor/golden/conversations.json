@@ -297,6 +297,30 @@
       "expectIntent": "combat_math",
       "mustInclude": ["Tools 层", "护甲值演算", "15", "L6 快照联动", "守护刻印", "AC/战斗 Buff 自快照"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "build-review-magic-sword",
+      "query": "怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能",
+      "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",
+      "expectIntent": "build_review",
+      "mustInclude": ["Tools 层", "Build 评价", "魔剑士", "战吼术", "芙兰", "四阶"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "build-review-cleric",
+      "query": "怎么评价我当前的build还有什么技能适合我",
+      "snapshotFile": "advisor/snapshots/mock-cleric-l6.json",
+      "expectIntent": "build_review",
+      "mustInclude": ["Tools 层", "Build 评价", "牧师", "艾拉", "已学技能"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-build-review-basic",
+      "query": "怎么评价我当前的build",
+      "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",
+      "expectIntent": "build_review",
+      "mustInclude": ["Tools 层", "Build 评价", "可学技能位阶", "芙兰"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }

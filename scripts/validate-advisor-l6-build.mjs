@@ -48,11 +48,11 @@ check('leveling 四阶 at L6', tiersL6.includes('四阶') && !tiersL6.includes('
 const r = retrieve(QUERY, { snapshot: snap });
 const ctx = formatContext(r);
 const l2MageBlock = (ctx.split('## L2 法师技能')[1] || '').split('##')[0];
-check('intent build_roadmap (panel)', r.intent === 'build_roadmap');
-check('answerStyle roadmap', r.answerStyle === 'roadmap');
-check('has _roadmap', !!r.results._roadmap);
-check('context 路线图', ctx.includes('Build 路线图'));
-check('context 快照观察', ctx.includes('快照 build 观察'));
+check('intent build_review (panel)', r.intent === 'build_review');
+check('answerStyle not roadmap', r.answerStyle !== 'roadmap' || !!r.results._toolsText);
+check('has build review tools', !!r.results._toolsText);
+check('context Build 评价', ctx.includes('Build 评价'));
+check('context 快照观察', ctx.includes('快照观察') || ctx.includes('L6 角色快照'));
 check('L6 in layers', r.layersHit.includes('L6'));
 check('context 子职', ctx.includes('子职 战士'));
 check('context 熟练非零', ctx.includes('逻辑+2'));

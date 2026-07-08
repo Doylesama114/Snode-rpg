@@ -32,6 +32,7 @@ import {
   detectChargenEntityQuestion,
   buildChargenEntityToolContext,
 } from './advisor-chargen-entity-tools.mjs';
+import { buildBuildReviewToolContext } from './advisor-build-review-tools.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ADVISOR = path.join(__dirname, '..', 'advisor');
@@ -754,8 +755,9 @@ function formatSkillOccurrence(occ) {
 
 /**
  * @param {ReturnType<typeof detectStructuredQuestion>} detected
+ * @param {{ store?: object }} [opts]
  */
-export function buildStructuredToolContext(detected) {
+export function buildStructuredToolContext(detected, opts = {}) {
   if (!detected) return null;
 
   if (detected.intent === 'skill_detail') {
@@ -1014,6 +1016,10 @@ export function buildStructuredToolContext(detected) {
 
   if (detected.intent === 'equipment_lookup' || detected.intent === 'equipment_search') {
     return buildEquipmentToolContext(detected);
+  }
+
+  if (detected.intent === 'build_review' && detected.snapshot) {
+    return buildBuildReviewToolContext({ ...detected, store: opts.store });
   }
 
   if (detected.intent === 'unknown_entity') {

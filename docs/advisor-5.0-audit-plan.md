@@ -314,7 +314,13 @@ LLM
 - `validate-advisor-combat-modifiers.mjs`；`mock-cleric-l6.json` 快照 AC Buff
 - Golden + CI batch14 must-pass（守护刻印 AC 15 · 穿透射击 +10 · 快照牧师 AC）
 
-### v1.0.7079+ — 后续
+### v1.0.7079 — Build 评价 Tools 层（P1）✓
+
+- `advisor-build-review-tools.mjs`：`outlineBuildReview` / kit 位阶内技能候选
+- 分类器 `build_review` 与 `build_roadmap` 拆分；`isPanelRoadmapQuery` 排除评价问句
+- Golden + CI batch15 must-pass（魔剑士评价 · 快照 Tools · 牧师评价）
+
+### v1.0.7080+ — 后续
 
 ## 8. Golden / CI 策略
 

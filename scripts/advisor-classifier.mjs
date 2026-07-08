@@ -5,7 +5,7 @@
 import { detectStructuredQuestion, parseProficiencyTargetsFromQuery } from './advisor-query-tools.mjs';
 import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
 import { parseAcScenarioFromQuery, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
-import { isBuildRoadmapQuery, isPanelRoadmapQuery } from './advisor-build-roadmap.mjs';
+import { isBuildRoadmapQuery, isPanelRoadmapQuery, isBuildReviewQuery } from './advisor-build-roadmap.mjs';
 import { pickAdvancementName } from './advisor-router-utils.mjs';
 
 /** @typedef {'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H'|'I'} QuestionCategory */
@@ -103,6 +103,16 @@ export function classifyQuestion(query, ctx = {}) {
     };
   }
 
+  if (snapshot && isBuildReviewQuery(q, ctx)) {
+    return {
+      category: 'H',
+      intent: 'build_review',
+      confidence: 0.93,
+      source: 'panel',
+      meta: { snapshotLinked: true },
+    };
+  }
+
   if (snapshot && isPanelRoadmapQuery(q, ctx)) {
     return {
       category: 'D',
@@ -123,7 +133,7 @@ export function classifyQuestion(query, ctx = {}) {
 
   if (snapshot?.meta?.layer === 'L6' || snapshot?.attrs) {
     if (PANEL_SNAPSHOT_RE.test(q)) {
-      if (/怎么评价|build.*评价|适合.*技能/.test(q)) {
+      if (isBuildReviewQuery(q, { snapshot })) {
         return {
           category: 'H',
           intent: 'build_review',

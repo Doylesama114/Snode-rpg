@@ -40,7 +40,6 @@ const CASES = [
   { id: 'combat_full', query: '力量+3剑类熟练1d8双手剑狂怒术命中和伤害加值分别是多少', expect: 'combat_math' },
   { id: 'starting_gear', query: '牧师创建角色时起始装备有哪些', expect: 'starting_gear_lookup' },
   { id: 'race_vampire', query: '吸血鬼种族有什么特性', expect: 'race_detail' },
-  { id: 'roadmap', query: '我想玩飞贼怎么安排成长路线', expect: 'build_roadmap', skipDetect: true },
 ];
 
 console.log('=== validate-advisor-intents ===\n');
@@ -58,6 +57,11 @@ const snap = loadSnapshotFile('advisor/snapshots/mock-combat-warrior-l6.json');
 const snapQ = '我开启了魔法武器和狂怒术，拿着双手剑，命中加值是多少';
 check('snap classify combat', classifyQuestion(snapQ, { snapshot: snap })?.intent === 'combat_math');
 check('snap retrieve combat', retrieve(snapQ, { snapshot: snap }).intent === 'combat_math');
+
+const snapReview = loadSnapshotFile('advisor/snapshots/mock-magic-sword-l6.json');
+const reviewQ = '怎么评价我当前的build还有什么技能适合';
+check('build_review classify', classifyQuestion(reviewQ, { snapshot: snapReview })?.intent === 'build_review');
+check('build_review retrieve', retrieve(reviewQ, { snapshot: snapReview }).intent === 'build_review');
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

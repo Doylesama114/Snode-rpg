@@ -1006,13 +1006,20 @@ function applyPlanToRetrieval(retrieval, plan, store, query, queryTokens, l2Opts
   return retrieval;
 }
 
-function applyStructuredTools(retrieval, query, snapshotNorm = null) {
+function applyStructuredTools(retrieval, query, snapshotNorm = null, store = null) {
   let detected = detectStructuredQuestion(query);
 
   if (!detected && snapshotNorm) {
     const classified = classifyQuestion(query, { snapshot: snapshotNorm });
     if (classified?.structured) {
       detected = { ...classified.structured, query };
+    } else if (classified?.intent === 'build_review' && classified.meta?.snapshotLinked) {
+      detected = {
+        intent: 'build_review',
+        query,
+        snapshot: snapshotNorm,
+        fromSnapshot: true,
+      };
     } else if (classified?.intent === 'combat_math' && classified.meta?.snapshotLinked) {
       detected = {
         intent: 'combat_math',
@@ -1097,7 +1104,11 @@ function applyStructuredTools(retrieval, query, snapshotNorm = null) {
     detected = { ...detected, snapshot: snapshotNorm };
   }
 
-  const toolCtx = buildStructuredToolContext(detected);
+  if (detected?.intent === 'build_review' && snapshotNorm) {
+    detected = { ...detected, snapshot: snapshotNorm };
+  }
+
+  const toolCtx = buildStructuredToolContext(detected, { store });
   if (!toolCtx) return retrieval;
 
   retrieval.intent = toolCtx.intent;
@@ -1304,7 +1315,7 @@ export function retrieve(query, options = {}) {
     );
   }
 
-  retrieval = applyStructuredTools(retrieval, query, snapshotNorm);
+  retrieval = applyStructuredTools(retrieval, query, snapshotNorm, store);
 
   return retrieval;
 }
