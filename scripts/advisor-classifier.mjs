@@ -2,7 +2,8 @@
  * Advisor 5.0 batch5 — question classifier (7069).
  * Maps queries to categories A–I with intent + confidence; preferred over raw INTENT_RULES scoring.
  */
-import { detectStructuredQuestion } from './advisor-query-tools.mjs';
+import { detectStructuredQuestion, parseProficiencyTargetsFromQuery } from './advisor-query-tools.mjs';
+import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
 import { parseAcScenarioFromQuery, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 import { isBuildRoadmapQuery, isPanelRoadmapQuery } from './advisor-build-roadmap.mjs';
 import { pickAdvancementName } from './advisor-router-utils.mjs';
@@ -131,7 +132,8 @@ export function classifyQuestion(query, ctx = {}) {
           meta: { snapshotLinked: true },
         };
       }
-      if (/(知识|奥秘).*熟练|熟练.*(知识|奥秘)|我还缺/.test(q)) {
+      if (/(知识|奥秘|巧手|宗教|表演|运动|自然|欺瞒|洞悉|我还缺).*熟练|熟练.*(知识|奥秘|巧手|宗教|表演)/.test(q)) {
+        const targets = parseProficiencyTargetsFromQuery(q);
         return {
           category: 'E',
           intent: 'proficiency_roadmap',
@@ -139,8 +141,8 @@ export function classifyQuestion(query, ctx = {}) {
           source: 'panel',
           structured: {
             intent: 'proficiency_roadmap',
-            className: snapshot.classes?.[0]?.name || '法师',
-            targets: ['知识', '奥秘'],
+            className: snapshot.classes?.[0]?.name || matchClassNameFromQuery(q) || '法师',
+            targets: targets.length ? targets : ['知识', '奥秘'],
             query: q,
             fromSnapshot: true,
           },

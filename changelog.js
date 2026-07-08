@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7077',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch13: 熟练路线泛化任意职业',
+      'parseProficiencyTargetsFromQuery',
+      'audit 55条 golden 36条'
+    ]
+  },
+
+
+  {
     version: '1.0.7076',
     date: '2026-07-08',
     changes: [

@@ -47,7 +47,7 @@ import {
   getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
 import { outlineGrowthRoadmap, formatRoadmapOutline } from './advisor-tools.mjs';
-import { detectStructuredQuestion, buildStructuredToolContext } from './advisor-query-tools.mjs';
+import { detectStructuredQuestion, buildStructuredToolContext, parseProficiencyTargetsFromQuery } from './advisor-query-tools.mjs';
 import { classifyQuestion } from './advisor-classifier.mjs';
 import { mergeSnapshotIntoCombatScenario, mergeSnapshotIntoAcScenario, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 
@@ -1021,10 +1021,11 @@ function applyStructuredTools(retrieval, query, snapshotNorm = null) {
         fromSnapshot: true,
       };
     } else if (classified?.intent === 'proficiency_roadmap' && classified.meta?.snapshotLinked) {
+      const targets = parseProficiencyTargetsFromQuery(query);
       detected = {
         intent: 'proficiency_roadmap',
-        className: snapshotNorm.classes?.[0]?.name || '法师',
-        targets: ['知识', '奥秘'],
+        className: snapshotNorm.classes?.[0]?.name || matchClassNameFromQuery(query) || '法师',
+        targets: targets.length ? targets : ['知识', '奥秘'],
         query,
         fromSnapshot: true,
       };

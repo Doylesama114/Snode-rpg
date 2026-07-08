@@ -366,6 +366,7 @@ export {
   resolveWeaponCategory,
   summarizeChargenHp,
   outlineProficiencyRoadmap,
+  parseProficiencyTargetsFromQuery,
   summarizeSnapshotProfContext,
   lookupStatus,
   aggregateSkillByName,

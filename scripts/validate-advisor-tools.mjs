@@ -17,6 +17,7 @@ import {
   buildStructuredToolContext,
   summarizeChargenHp,
   outlineProficiencyRoadmap,
+  parseProficiencyTargetsFromQuery,
   lookupStatus,
   aggregateSkillByName,
   summarizeFeatWindows,
@@ -133,6 +134,13 @@ check('summarizeChargenHp races', hp.topRaces.some((r) => r.hpBonus >= 4));
 const roadmap = outlineProficiencyRoadmap('法师');
 check('outlineProficiencyRoadmap subs', roadmap.arcanaSubs.length >= 4 && roadmap.knowledgeSubs.length >= 8);
 check('outlineProficiencyRoadmap 奥法学者', roadmap.l1Sources.some((s) => s.includes('奥法学者')));
+
+const clericRoad = outlineProficiencyRoadmap('牧师', ['宗教', '自然']);
+check('outlineProficiencyRoadmap 牧师宗教', clericRoad.targetGroups.length === 2 && clericRoad.className === '牧师');
+const rogueRoad = outlineProficiencyRoadmap('游荡者', ['巧手']);
+check('outlineProficiencyRoadmap 游荡者巧手', rogueRoad.targetGroups[0]?.subs?.includes('巧手-开锁'));
+const targets = parseProficiencyTargetsFromQuery('吟游诗人怎样获取表演熟练项最少升到多少级');
+check('parseProficiencyTargets 表演', targets.includes('表演'));
 
 const detHp = detectStructuredQuestion('在创建角色时怎样构筑初始血量最大');
 check('detect chargen_hp_optimize', detHp?.intent === 'chargen_hp_optimize');
@@ -313,6 +321,12 @@ check('snapshot buffs from skills', snapBuffMerged.activeBuffs.includes('魔法�
 check('snapshot buff hit +7', resolveCombatScenario(snapBuffMerged).totalHitBonus === 7);
 const rSnapBuff = retrieve(snapBuffQ, { snapshot: snapWar });
 check('retrieve snap buff combat', formatContext(rSnapBuff).includes('战斗 Buff 自快照'));
+
+const rClericProf = retrieve('牧师怎样获取宗教和自然熟练项最少升到多少级');
+check('retrieve cleric prof roadmap', formatContext(rClericProf).includes('宗教') && formatContext(rClericProf).includes('牧师'));
+const snapRogue = loadSnapshotFile('advisor/snapshots/mock-rogue-l6.json');
+const rRogueSnapProf = retrieve('我还缺哪些巧手熟练项，最少升到多少级', { snapshot: snapRogue });
+check('retrieve rogue snap prof', formatContext(rRogueSnapProf).includes('熟练项获取路线') && formatContext(rRogueSnapProf).includes('巧手-开锁'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

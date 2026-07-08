@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { matchAllClassesFromQuery } from './advisor-class-l2.mjs';
+import { matchAllClassesFromQuery, matchClassNameFromQuery } from './advisor-class-l2.mjs';
 import {
   detectUnknownAdvancementQuery,
   findSimilarAdvancements,
@@ -59,7 +59,14 @@ const WEAPON_PROF_QUERY_RE = /哪些|什么|哪几个|哪一些/;
 const WEAPON_PROF_SUBJECT_RE = /职业|初始|主职|基础职业/;
 const COMBAT_MATH_RE = /命中加值|攻击加值|伤害加值|护甲值|防御等级|暴击率|调整值.*\+|拿着一把|开启.*开启/;
 const CHARGEN_HP_RE = /初始血量|起始生命|起始hp|创建.*血量|血量.*最大|生命.*最大|hp.*最大/i;
-const PROF_ROADMAP_RE = /(知识|奥秘).*熟练|熟练.*(知识|奥秘)|几乎所有.*(知识|奥秘)/;
+const PROF_ROADMAP_PARENT_RE = /运动|巧手|奥秘|知识|表演/;
+const PROF_ROADMAP_LEAF_RE = /宗教|自然|欺瞒|洞悉|逻辑|隐匿|威逼|驯兽|医药|调查|专注|体操|运动|耐力|威力|说服|表演|探索|决策|机遇|求生|导航|聆听|察觉|感悟|激励|估价|伪造|读唇|欺瞒|恐吓|威逼/;
+const PROF_ROADMAP_RE = new RegExp(
+  `(?:${PROF_ROADMAP_PARENT_RE.source}|${PROF_ROADMAP_LEAF_RE.source}).*熟练`
+  + `|熟练.*(?:${PROF_ROADMAP_PARENT_RE.source}|${PROF_ROADMAP_LEAF_RE.source})`
+  + `|几乎所有.*(?:${PROF_ROADMAP_PARENT_RE.source}|${PROF_ROADMAP_LEAF_RE.source})`
+  + `|我还缺.*熟练`,
+);
 const FEAT_TIMING_RE = /特殊专长|专长窗口|专长.*(等级|哪些级)/;
 const STATUS_RULES_RE = /状态|异常|效果|造成|哪些技能/;
 const SKILL_AGGREGATE_RE = /哪些职业|哪些.*学|可以学|效果一样|一样吗|不同职业/;
@@ -213,6 +220,128 @@ export function summarizeChargenHp() {
 }
 
 /**
+ * @param {string} query
+ * @returns {string[]}
+ */
+export function parseProficiencyTargetsFromQuery(query) {
+  const prof = loadJson('chargen/proficiencies.json');
+  const parents = Object.keys(prof.parentCategories || {});
+  const q = String(query || '');
+  const found = [];
+
+  for (const p of parents) {
+    if (q.includes(p)) found.push(p);
+  }
+
+  const leafSet = new Set();
+  for (const arr of Object.values(prof.byAttribute || {})) {
+    for (const item of arr) {
+      if (item === '豁免' || item.includes('-')) continue;
+      leafSet.add(item);
+    }
+  }
+  for (const leaf of leafSet) {
+    if (!q.includes(leaf)) continue;
+    const coveredByParent = parents.find((p) => found.includes(p) && (leaf === p || leaf.startsWith(`${p}-`)));
+    if (!coveredByParent && !found.includes(leaf)) found.push(leaf);
+  }
+
+  if (!found.length && /知识|奥秘/.test(q)) return ['知识', '奥秘'];
+  return [...new Set(found)];
+}
+
+/**
+ * @param {string[]} targets
+ * @param {object} prof
+ */
+function resolveProficiencyTargetGroups(targets, prof) {
+  const groups = [];
+  for (const t of targets) {
+    const subs = prof.parentCategories?.[t];
+    if (subs?.length) {
+      groups.push({ parent: t, subs, count: subs.length, isLeaf: false });
+    } else {
+      groups.push({ parent: t, subs: [t], count: 1, isLeaf: true });
+    }
+  }
+  return groups;
+}
+
+/**
+ * @param {string} className
+ * @param {object|null} classDoc
+ * @param {object} prof
+ * @param {string[]} targets
+ * @param {{ parent: string, subs: string[], count: number, isLeaf: boolean }[]} targetGroups
+ */
+function buildProficiencyL1Sources(className, classDoc, prof, targets, targetGroups) {
+  const sources = [];
+  sources.push(prof.classSkillPick?.[className] || classDoc?.skills || '—');
+
+  if (className === '法师' && targets.some((t) => ['知识', '奥秘'].includes(t))) {
+    sources.push('L1 法师三项专精均获得（非三选一）：奥法学者、知识传承、魔法学派。');
+  } else if (classDoc?.specializations?.length) {
+    sources.push(`L1 专精（${className}）：${classDoc.specializations.map((s) => s.name).join('、')}。`);
+  }
+
+  for (const spec of classDoc?.specializations || []) {
+    const text = `${spec.effect || ''}${spec.buildHint || ''}`;
+    const related = targets.some((t) => text.includes(t) || (spec.profChoices || []).some((p) => p.includes(t)));
+    if (!related && !spec.profChoices?.length) continue;
+    if (spec.profChoices?.length) {
+      sources.push(`${spec.name}：${spec.effect || ''} 可选 ${spec.profChoices.join('、')}`);
+    } else {
+      sources.push(`${spec.name}：${spec.effect}${spec.buildHint ? `（${spec.buildHint}）` : ''}`);
+    }
+  }
+
+  for (const g of targetGroups) {
+    if (g.subs.length > 1) {
+      sources.push(`${g.parent}子项全集（${g.count}）：${g.subs.join('、')}`);
+    } else if (g.isLeaf) {
+      sources.push(`目标「${g.parent}」为单项熟练；via L1 八选四、背景、升级熟练窗口与 L2 技能前置。`);
+    }
+  }
+
+  return sources;
+}
+
+/**
+ * @param {string} className
+ * @param {string[]} targets
+ * @param {{ parent: string, subs: string[], count: number }[]} targetGroups
+ * @param {string[]} levelBullets
+ * @param {object} prof
+ */
+function buildProficiencyEstimateNotes(className, targets, targetGroups, levelBullets, prof) {
+  const totalSubs = targetGroups.reduce((s, g) => s + g.count, 0);
+  const notes = [
+    `目标：覆盖 ${targets.join('、')} 相关熟练（共 ${totalSubs} 个子项/单项）。`,
+  ];
+
+  if (className === '法师' && targets.some((t) => ['知识', '奥秘'].includes(t))) {
+    notes.push(
+      'L1 固定：奥法学者 +1 奥秘子项、知识传承 +1 知识子项；八选四可同时选 逻辑/奥秘/知识 父项。',
+      '奥法学者：法师每升 1 级再 +1 奥秘子项（分配至未达 prof_cap 的子项）。',
+    );
+  } else {
+    notes.push(`L1：${prof.classSkillPick?.[className] || '见职业创建页八选四熟练'}。`);
+  }
+
+  notes.push(
+    `升级：${levelBullets.slice(0, 4).join('；')}${levelBullets.length > 4 ? '…' : ''}（见 L0 升级表）。`,
+    '其余来源：背景基础熟练、L4/L8/L13 专长（如技巧专家）、幕间物语、部分 L2 技能前置（见具体技能）。',
+  );
+
+  const low = className === '法师' && totalSubs >= 12 ? 10 : Math.max(4, Math.ceil(totalSubs / 2));
+  const high = className === '法师' && totalSubs >= 12 ? 15 : Math.max(8, totalSubs + 2);
+  notes.push(
+    `粗估：要「几乎全部」覆盖 ${totalSubs} 项各至少 +1，通常需主职约 **${low}～${high} 级** 并配合背景/专长；单项上限见各级 prof_cap。`,
+  );
+  return notes;
+}
+
+/**
  * @param {string} className
  * @param {string[]} [targets]
  * @param {object|null} [snapshot]
@@ -222,8 +351,7 @@ export function outlineProficiencyRoadmap(className, targets = ['知识', '奥�
   const classDoc = loadClassDoc(className);
   const leveling = loadJson('rules/leveling.json');
 
-  const arcanaSubs = prof.parentCategories?.奥秘 || [];
-  const knowledgeSubs = prof.parentCategories?.知识 || [];
+  const targetGroups = resolveProficiencyTargetGroups(targets, prof);
   const profGainLevels = (leveling.mainClass?.levels || [])
     .filter((r) => r.proficiency && r.level <= 20)
     .map((r) => ({
@@ -232,47 +360,26 @@ export function outlineProficiencyRoadmap(className, targets = ['知识', '奥�
       profCap: r.prof_cap,
     }));
 
-  const arcanist = classDoc?.specializations?.find((s) => s.name === '奥法学者');
-  const knowledgeLegacy = classDoc?.specializations?.find((s) => s.name === '知识传承');
-
-  const l1Sources = [
-    prof.classSkillPick?.[className] || classDoc?.skills || '—',
-    'L1 法师三项专精均获得（非三选一）：奥法学者、知识传承、魔法学派。',
-    arcanist
-      ? `奥法学者：${arcanist.effect}`
-      : '奥法学者：每法师等级 +1 奥秘子项熟练（选一）。',
-    knowledgeLegacy
-      ? `知识传承：${knowledgeLegacy.effect}`
-      : '知识传承：L1 知识子项 +1（选一）。',
-    `奥秘子项全集（${arcanaSubs.length}）：${arcanaSubs.join('、')}`,
-    `知识子项全集（${knowledgeSubs.length}）：${knowledgeSubs.join('、')}`,
-  ];
-
+  const l1Sources = buildProficiencyL1Sources(className, classDoc, prof, targets, targetGroups);
   const levelBullets = profGainLevels.slice(0, 10).map(
     (r) => `L${r.level} 熟练+${r.gain}（该级单项熟练上限 ${r.profCap}）`,
   );
-
-  const totalSubs = arcanaSubs.length + knowledgeSubs.length;
-  const estimateNote = [
-    `目标：覆盖 ${targets.join('、')} 几乎全部子项（共 ${totalSubs} 个子熟练）。`,
-    'L1 固定：奥法学者 +1 奥秘子项、知识传承 +1 知识子项；八选四可同时选 逻辑/奥秘/知识 父项。',
-    `升级：${levelBullets.slice(0, 4).join('；')}…（见 L0 升级表）。`,
-    '奥法学者：法师每升 1 级再 +1 奥秘子项（分配至未达 prof_cap 的子项）。',
-    '其余来源：背景基础熟练、L4/L8/L13 专长（如技巧专家）、幕间物语、部分 L2 技能前置（见具体技能）。',
-    `粗估：要「几乎全部」${totalSubs} 个子项各至少 +1，通常需主职约 **10～15 级** 并配合背景/专长；单项上限见各级 prof_cap。`,
-  ];
-
+  const estimateNote = buildProficiencyEstimateNotes(className, targets, targetGroups, levelBullets, prof);
   const snapshotProfContext = snapshot ? summarizeSnapshotProfContext(snapshot, targets) : null;
+
+  const arcanaSubs = targetGroups.find((g) => g.parent === '奥秘')?.subs || prof.parentCategories?.奥秘 || [];
+  const knowledgeSubs = targetGroups.find((g) => g.parent === '知识')?.subs || prof.parentCategories?.知识 || [];
 
   return {
     className,
     targets,
+    targetGroups,
     arcanaSubs,
     knowledgeSubs,
     l1Sources,
     levelBullets,
     estimateNote,
-    mageMulticlassNote: prof.mageMulticlassNote,
+    mageMulticlassNote: className === '法师' ? prof.mageMulticlassNote : null,
     snapshotProfContext,
   };
 }
@@ -285,7 +392,7 @@ export function summarizeSnapshotProfContext(snapshot, targets = ['知识', '奥
   const flat = flattenProfs(snapshot.profs || {});
   const highlights = listNonZeroProfs(snapshot.profs, 32);
   const targetHits = Object.entries(flat)
-    .filter(([k, v]) => v > 0 && targets.some((t) => k.includes(t)))
+    .filter(([k, v]) => v > 0 && targets.some((t) => k.includes(t) || k.startsWith(`${t}-`)))
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh'))
     .map(([k, v]) => `${k}+${v}`);
   const main = snapshot.classes?.[0];
@@ -581,16 +688,19 @@ export function detectStructuredQuestion(query) {
 
   const classesInQ = matchAllClassesFromQuery(q);
   if (
-    classesInQ.includes('法师')
-    && PROF_ROADMAP_RE.test(q)
-    && /多少级|最少|哪些技能|怎么|怎样|升到/.test(q)
+    PROF_ROADMAP_RE.test(q)
+    && /多少级|最少|哪些技能|怎么|怎样|升到|我还缺/.test(q)
   ) {
-    return {
-      intent: 'proficiency_roadmap',
-      className: '法师',
-      targets: ['知识', '奥秘'],
-      query: q,
-    };
+    const className = matchClassNameFromQuery(q) || classesInQ[0];
+    const targets = parseProficiencyTargetsFromQuery(q);
+    if (className && targets.length) {
+      return {
+        intent: 'proficiency_roadmap',
+        className,
+        targets,
+        query: q,
+      };
+    }
   }
 
   if (skillHit) {
@@ -748,6 +858,11 @@ export function buildStructuredToolContext(detected) {
       '### Tools 层 · 熟练项获取路线（server-side 事实 · 勿改数字）',
       `- 职业：${roadmap.className}；目标：${roadmap.targets.join('、')} 几乎全部子熟练`,
     ];
+    for (const g of roadmap.targetGroups || []) {
+      if (g.subs.length > 1) {
+        lines.push(`- ${g.parent}子项（${g.count}）：${g.subs.join('、')}`);
+      }
+    }
     if (roadmap.snapshotProfContext) {
       const sp = roadmap.snapshotProfContext;
       lines.push(`- **L6 快照联动**：${sp.name || '角色'} · 主职 ${sp.mainClass} L${sp.mainLevel}`);

@@ -302,7 +302,13 @@ LLM
 - `mergeSnapshotCombatBuffs()`：L6 快照 skills → 战斗 Buff 自动联动
 - Golden + CI batch12 must-pass（斧类暴击 · 瞄准 L8 +10 · 快照 Buff +7）
 
-### v1.0.7077+ — 后续
+### v1.0.7077 — 熟练路线泛化（P2）✓
+
+- `outlineProficiencyRoadmap` 任意职业 + 父/单项熟练；`parseProficiencyTargetsFromQuery`
+- 分类器/快照不再硬编码法师知识奥秘；`mock-rogue-l6.json`
+- Golden + CI batch13 must-pass（牧师宗教自然 · 游荡者巧手 · 快照巧手）
+
+### v1.0.7078+ — 后续
 
 ## 8. Golden / CI 策略
 

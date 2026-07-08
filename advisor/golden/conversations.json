@@ -253,6 +253,28 @@
       "expectIntent": "combat_math",
       "mustInclude": ["Tools 层", "战斗命中演算", "+7", "L6 快照联动", "魔法武器", "狂怒术", "战斗 Buff 自快照"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "prof-cleric-religion-natural",
+      "query": "牧师怎样获取宗教和自然熟练项最少升到多少级",
+      "expectIntent": "proficiency_roadmap",
+      "mustInclude": ["Tools 层", "熟练项获取路线", "牧师", "宗教", "自然"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "prof-rogue-deft-hands",
+      "query": "游荡者怎样获取几乎所有巧手熟练项最少升到多少级",
+      "expectIntent": "proficiency_roadmap",
+      "mustInclude": ["Tools 层", "熟练项获取路线", "游荡者", "巧手", "巧手-开锁"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-prof-rogue-deft",
+      "query": "我还缺哪些巧手熟练项，最少升到多少级",
+      "snapshotFile": "advisor/snapshots/mock-rogue-l6.json",
+      "expectIntent": "proficiency_roadmap",
+      "mustInclude": ["Tools 层", "熟练项获取路线", "L6 快照联动", "巧手", "巧手-开锁"],
+      "mustNotInclude": ["当前资料未收录此项"]
     }
   ]
 }
