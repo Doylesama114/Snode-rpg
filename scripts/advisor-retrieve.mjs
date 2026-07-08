@@ -41,6 +41,8 @@ import {
   loadBuildKit,
   buildRoadmapContext,
   formatRoadmapContext,
+  planBuildRoadmapFromRules,
+  isPanelRoadmapQuery,
 } from './advisor-build-roadmap.mjs';
 
 export { routeIntent, routeQuery } from './advisor-router.mjs';
@@ -996,10 +998,32 @@ function resolveRetrievalClass(wizardState, chargenState, snapshot, query = '') 
 export function retrieve(query, options = {}) {
   const store = loadAdvisorStore();
   const wizardState = normalizeWizardState(options.wizardState);
+
+  let snapshotNorm = null;
+  let l6Analysis = null;
+  let l2Opts = {};
+  if (options.snapshot) {
+    snapshotNorm = options.snapshot.meta?.layer === 'L6'
+      ? options.snapshot
+      : normalizeSnapshot(options.snapshot);
+    const advName = pickAdvancementName(query);
+    l6Analysis = analyzeSnapshot(snapshotNorm, {
+      advancementNames: advName ? [advName] : null,
+    });
+    if (l6Analysis.learnableTiers?.length) {
+      l2Opts = { learnableTiers: l6Analysis.learnableTiers };
+    }
+  }
+
+  let plan = options.plan;
+  if (!plan && snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm })) {
+    plan = planBuildRoadmapFromRules(query, { snapshot: snapshotNorm, mode: options.mode });
+  }
+
   const retrievalClass = resolveRetrievalClass(
     wizardState,
     options.chargenState,
-    options.snapshot,
+    snapshotNorm || options.snapshot,
     query,
   );
   const entityHits = resolveEntities(query, store.entities);
@@ -1009,9 +1033,11 @@ export function retrieve(query, options = {}) {
     entityHits,
     wizardState,
     className: retrievalClass,
+    snapshot: snapshotNorm,
   });
-  const roadmapTask = options.plan?.tasks?.find((t) => t.type === 'build_roadmap');
-  if (roadmapTask || options.plan?.intent === 'build_roadmap') {
+  const roadmapTask = plan?.tasks?.find((t) => t.type === 'build_roadmap');
+  const panelRoadmap = snapshotNorm && isPanelRoadmapQuery(query, { snapshot: snapshotNorm });
+  if (roadmapTask || plan?.intent === 'build_roadmap' || panelRoadmap) {
     route.intent = 'build_roadmap';
     route.promptProfile = 'build_roadmap';
     route.layers = ['L3', MAGE_L2, 'L2-warrior', 'L2-universal', 'L4', 'L0'];
@@ -1027,21 +1053,7 @@ export function retrieve(query, options = {}) {
   const queryTokens = tokenize(query);
   const topK = { ...route.topK, ...options.topK };
   let attrs = parseAttrsFromQuery(query);
-
-  let l6Analysis = null;
-  let l2Opts = {};
-  let snapshotNorm = null;
-  if (options.snapshot) {
-    snapshotNorm = options.snapshot.meta?.layer === 'L6'
-      ? options.snapshot
-      : normalizeSnapshot(options.snapshot);
-    const advName = pickAdvancementName(query);
-    l6Analysis = analyzeSnapshot(snapshotNorm, {
-      advancementNames: advName ? [advName] : null,
-    });
-    if (l6Analysis.learnableTiers?.length) {
-      l2Opts = { learnableTiers: l6Analysis.learnableTiers };
-    }
+  if (l6Analysis) {
     attrs = { ...(l6Analysis.snapshot.attrs || {}), ...attrs };
   }
 
@@ -1129,10 +1141,10 @@ export function retrieve(query, options = {}) {
     results: layers,
   };
 
-  if (options.plan) {
+  if (plan) {
     retrieval = applyPlanToRetrieval(
       retrieval,
-      options.plan,
+      plan,
       store,
       query,
       queryTokens,

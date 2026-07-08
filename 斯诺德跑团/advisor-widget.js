@@ -110,7 +110,12 @@
       '._snowd_adv_msg{max-width:95%;padding:10px 12px;border-radius:10px;font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word}',
       '._snowd_adv_msg._user{align-self:flex-end;background:#f6f4ef;border:1px solid #d8d2c4}',
       '._snowd_adv_msg._ai{align-self:flex-start;background:#fff;border:1px solid #e8e4dc}',
+      '._snowd_adv_msg._ai._long{max-width:100%;font-size:13px;line-height:1.65}',
       '._snowd_adv_msg._err{align-self:stretch;background:#ffebee;border:1px solid #ffcdd2;color:#c62828;font-size:13px}',
+      '._snowd_adv_presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}',
+      '._snowd_adv_presets button{padding:5px 10px;border:1px solid #d8d2c4;border-radius:16px;background:#f6f4ef;',
+      'font-size:12px;color:#1f2522;cursor:pointer;line-height:1.3}',
+      '._snowd_adv_presets button:hover{border-color:#a46d1f;color:#a46d1f}',
       '._snowd_adv_foot{padding:12px 16px;border-top:1px solid #d8d2c4;flex-shrink:0}',
       '._snowd_adv_foot textarea{width:100%;min-height:72px;max-height:140px;border:1px solid #d8d2c4;border-radius:8px;',
       'padding:10px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box}',
@@ -184,6 +189,7 @@
       '<div class="_snowd_adv_ctx" id="_snowd_adv_ctx"></div>',
       '<div class="_snowd_adv_msgs" id="_snowd_adv_msgs"></div>',
       '<div class="_snowd_adv_foot">',
+      '<div class="_snowd_adv_presets" id="_snowd_adv_presets" style="display:none"></div>',
       '<textarea id="_snowd_adv_input" placeholder="输入 build 问题，Enter 发送"></textarea>',
       '<div class="_snowd_adv_actions">',
       '<button type="button" id="_snowd_adv_send">发送</button>',
@@ -390,6 +396,35 @@
       return '全职业创建陪跑已开放；' + className + ' 专属深度 build 资料尚在完善，请以创建页与规则书为准。';
     }
 
+    var ROADMAP_PRESETS = {
+      planning: '我想玩主职业法师、子职业战士，进阶魔剑士，该怎么选技能',
+      review: '怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能',
+    };
+
+    function renderRoadmapPresets() {
+      var box = document.getElementById('_snowd_adv_presets');
+      if (!box) return;
+      if (isChargenPage() || !useCharEnabled() || !(window.snowdPanel && window.snowdPanel.hasCharacter())) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+      }
+      box.style.display = 'flex';
+      box.innerHTML = '';
+      [
+        { id: 'review', label: '评价当前 build（魔剑士）' },
+        { id: 'planning', label: '魔剑士全路线规划' },
+      ].forEach(function(item) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = item.label;
+        btn.addEventListener('click', function() {
+          sendQuery({ presetQuery: ROADMAP_PRESETS[item.id] });
+        });
+        box.appendChild(btn);
+      });
+    }
+
     function refreshContext() {
       ensureSessionBinding();
       var ctx = document.getElementById('_snowd_adv_ctx');
@@ -412,6 +447,7 @@
             warn.style.display = 'none';
           }
         }
+        renderRoadmapPresets();
         return;
       }
 
@@ -421,6 +457,7 @@
       if (!canChar) {
         ctx.innerHTML = '模式：纯咨询（未加载角色）';
         if (warn) warn.style.display = 'none';
+        renderRoadmapPresets();
         return;
       }
 
@@ -449,13 +486,16 @@
       } else if (warn) {
         warn.style.display = 'none';
       }
+      renderRoadmapPresets();
     }
 
     function appendMsg(role, text) {
       var box = document.getElementById('_snowd_adv_msgs');
       if (!box) return null;
       var el = document.createElement('div');
-      el.className = '_snowd_adv_msg ' + (role === 'user' ? '_user' : role === 'err' ? '_err' : '_ai');
+      var cls = '_snowd_adv_msg ' + (role === 'user' ? '_user' : role === 'err' ? '_err' : '_ai');
+      if (role === 'ai' && (text || '').length > 900) cls += ' _long';
+      el.className = cls;
       el.textContent = text || '';
       box.appendChild(el);
       box.scrollTop = box.scrollHeight;
@@ -747,6 +787,7 @@
           res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
             gotChunk = true;
             aiEl.textContent += delta;
+            if (aiEl.textContent.length > 900) aiEl.classList.add('_long');
             scrollMsgs();
           });
         } else {
@@ -755,6 +796,7 @@
 
         if (res && res.ok) {
           if (!gotChunk && res.answer) aiEl.textContent = res.answer;
+          if (!gotChunk && res.answer && res.answer.length > 900) aiEl.classList.add('_long');
           if (!aiEl.textContent) aiEl.textContent = '（无回答内容）';
           appendSessionTurn(q, aiEl.textContent);
         } else {

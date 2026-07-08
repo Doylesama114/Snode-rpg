@@ -47,14 +47,19 @@ check('leveling 四阶 at L6', tiersL6.includes('四阶') && !tiersL6.includes('
 
 const r = retrieve(QUERY, { snapshot: snap });
 const ctx = formatContext(r);
-check('intent build_review', r.intent === 'build_review');
+const l2MageBlock = (ctx.split('## L2 法师技能')[1] || '').split('##')[0];
+check('intent build_roadmap (panel)', r.intent === 'build_roadmap');
+check('answerStyle roadmap', r.answerStyle === 'roadmap');
+check('has _roadmap', !!r.results._roadmap);
+check('context 路线图', ctx.includes('Build 路线图'));
+check('context 快照评价', ctx.includes('快照 build 评价'));
 check('L6 in layers', r.layersHit.includes('L6'));
 check('context 子职', ctx.includes('子职 战士'));
 check('context 熟练非零', ctx.includes('逻辑+2'));
 check('omit 兼职 block', !ctx.includes('兼职可选'));
 check('可学位阶', ctx.includes('可学技能位阶') && ctx.includes('四阶'));
-check('L2 无六阶 闪烁骑士', !ctx.includes('闪烁骑士之剑'));
-check('L2 无六阶 多重武器', !ctx.includes('附魔武器·多重武器'));
+check('L2 无六阶 闪烁骑士', !l2MageBlock.includes('闪烁骑士之剑'));
+check('L2 无六阶 多重武器', !l2MageBlock.includes('附魔武器·多重武器'));
 check('魔剑士 进阶', ctx.includes('魔剑士'));
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);

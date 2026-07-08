@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7058',
+    date: '2026-07-08',
+    changes: [
+      '面板 build 评价统一 roadmap',
+      'isPanelRoadmapQuery',
+      'widget 魔剑士预设',
+      'roadmap max_tokens 6144'
+    ]
+  },
+
+
+  {
     version: '1.0.7057',
     date: '2026-07-08',
     changes: [

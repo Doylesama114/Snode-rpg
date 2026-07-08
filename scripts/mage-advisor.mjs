@@ -102,13 +102,13 @@ async function consumeSSE(res, onDelta) {
   return content;
 }
 
-async function callDeepSeek(messages, { thinking, stream, config, onDelta }) {
+async function callDeepSeek(messages, { thinking, stream, config, onDelta, maxTokens }) {
   const url = `${config.baseUrl.replace(/\/$/, '')}/chat/completions`;
   const body = {
     model: config.model,
     messages,
     temperature: config.temperature,
-    max_tokens: config.maxTokens,
+    max_tokens: maxTokens ?? config.maxTokens,
     stream,
   };
   if (thinking) {
@@ -240,10 +240,12 @@ export async function advise(query, options = {}) {
   }
 
   const useStream = options.stream ?? false;
+  const roadmapTokens = Math.max(config.maxTokens, 6144);
   const result = await callDeepSeek(messages, {
     thinking,
     stream: useStream,
     config,
+    maxTokens: retrieval.answerStyle === 'roadmap' ? roadmapTokens : config.maxTokens,
     onDelta: options.onDelta,
   });
 

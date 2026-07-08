@@ -16,7 +16,7 @@ import {
 } from './advisor-class-l2.mjs';
 
 import { resolveClassPromptProfile } from './advisor-class-tier.mjs';
-import { isBuildRoadmapQuery } from './advisor-build-roadmap.mjs';
+import { isBuildRoadmapQuery, isPanelRoadmapQuery } from './advisor-build-roadmap.mjs';
 
 export { resolveClassL2Layer } from './advisor-class-l2.mjs';
 
@@ -282,8 +282,8 @@ function pickRuleByIntent(intentId) {
   return INTENT_RULES.find((r) => r.id === intentId) || DEFAULT_RULE;
 }
 
-export function routeIntent(query) {
-  if (isBuildRoadmapQuery(query)) {
+export function routeIntent(query, ctx = {}) {
+  if (isPanelRoadmapQuery(query, ctx)) {
     return { ...pickRuleByIntent('build_roadmap'), id: 'build_roadmap', query };
   }
   const q = query.toLowerCase();
@@ -318,7 +318,7 @@ export function routeIntent(query) {
 export function routeQuery(input) {
   const { query, entityHits = [], wizardState = null, className = null } = input;
   const mode = normalizeMode(input.mode, query, wizardState);
-  const base = routeIntent(query);
+  const base = routeIntent(query, { snapshot: input.snapshot || null });
   let intent = base.id;
 
   if (mode === 'entity_qa') {

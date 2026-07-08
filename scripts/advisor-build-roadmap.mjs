@@ -63,6 +63,21 @@ export function isBuildRoadmapQuery(query) {
   return BUILD_ROADMAP_RE.test(q) && ROADMAP_SKILL_RE.test(q);
 }
 
+const PANEL_REVIEW_RE = /怎么评价|评价.*build|当前的build|当前.*build|build.*评价/;
+const PANEL_SKILL_RE = /技能|适合|缺口|学什么|点什么|推荐|build/i;
+
+/**
+ * 规划问句，或绑定快照的面板 build 评价 + 已知 kit（如魔剑士）。
+ */
+export function isPanelRoadmapQuery(query, ctx = {}) {
+  const q = String(query || '');
+  const kitId = detectRoadmapKitId(q);
+  if (!kitId) return false;
+  if (isBuildRoadmapQuery(query)) return true;
+  if (!ctx.snapshot) return false;
+  return PANEL_REVIEW_RE.test(q) && PANEL_SKILL_RE.test(q);
+}
+
 /**
  * @param {number} mainLevel
  * @returns {'early'|'mid'|'late'}
@@ -366,7 +381,7 @@ export function formatRoadmapContext(ctx) {
  * @param {{ snapshot?: object, mode?: string }} ctx
  */
 export function planBuildRoadmapFromRules(query, ctx = {}) {
-  if (!isBuildRoadmapQuery(query)) return null;
+  if (!isPanelRoadmapQuery(query, ctx)) return null;
   const kitId = detectRoadmapKitId(query) || 'magic_sword';
   let scenario = 'mixed';
   if (ctx.mode === 'wizard') scenario = 'chargen';

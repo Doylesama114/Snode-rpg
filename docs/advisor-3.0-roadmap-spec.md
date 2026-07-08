@@ -12,7 +12,13 @@
 | answerStyle | `roadmap` |
 | promptProfile | `build_roadmap` |
 
-与 `build_review` 区分：含「怎么评价当前 build」的问句仍走 `build_review`；规划类「想玩…怎么选技能」走 `build_roadmap`。
+与 `build_review` 区分：无快照的纯规划问句走 `build_roadmap`；**绑定 L6 快照**且问句含「怎么评价当前 build」+ 魔剑士等 kit 关键词时，同样升级为 `build_roadmap`（注入快照评价与缺口）。
+
+## 面板（7058）
+
+- `isPanelRoadmapQuery(query, { snapshot })` 统一判定
+- Widget 绑定角色时显示预设：「评价当前 build」「魔剑士全路线规划」
+- roadmap 回答 `max_tokens` 提升至 6144
 
 ## Build Kit
 
