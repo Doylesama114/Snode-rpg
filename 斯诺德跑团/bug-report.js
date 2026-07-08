@@ -5,6 +5,31 @@
     if (!ta || !ta.value.trim()) return;
     var desc = ta.value.trim();
 
+    try {
+      if (/顾问|advisor|AI|问句|意图[:：]|必含[:：]/.test(desc)) {
+        var qm = desc.match(/问句[:：]\s*(.+)/);
+        var im = desc.match(/意图[:：]\s*([a-z_]+)/i);
+        var mm = desc.match(/必含[:：]\s*(.+)/);
+        var payload = {
+          query: qm ? qm[1].split('\n')[0].trim() : desc.slice(0, 120),
+          description: desc,
+          page: location.href,
+          savedAt: new Date().toISOString(),
+        };
+        if (im) payload.expectIntent = im[1].trim();
+        if (mm) {
+          payload.mustInclude = mm[1].split(/[,，、|]/).map(function(s) { return s.trim(); }).filter(Boolean);
+        }
+        localStorage.setItem('_snowd_advisor_feedback', JSON.stringify(payload));
+        var queue = [];
+        try { queue = JSON.parse(localStorage.getItem('_snowd_advisor_feedback_queue') || '[]'); } catch (e2) {}
+        if (!Array.isArray(queue)) queue = [];
+        queue.push(payload);
+        if (queue.length > 50) queue = queue.slice(-50);
+        localStorage.setItem('_snowd_advisor_feedback_queue', JSON.stringify(queue));
+      }
+    } catch (e) {}
+
     var lines = ['页面: '+location.href, document.title, new Date().toLocaleString('zh-CN'), '', desc];
     try {
       var el = JSON.parse(localStorage.getItem('_snowd_error_log')||'[]');
@@ -54,7 +79,8 @@
 
     var p = document.createElement('p');
     p.style.cssText = 'font-size:13px;color:#69706b;margin:0 0 12px;';
-    p.textContent = '请描述问题（发生了什么 vs 期望什么）';
+    p.textContent = '请描述问题（发生了什么 vs 期望什么）。顾问类反馈可加：问句：… / 意图：starting_gear_lookup / 必含：Tools 层,起始装备';
+    p.title = '开发者：复制 localStorage._snowd_advisor_feedback_queue 到 advisor/feedback/inbox/ 后运行 node scripts/advisor-feedback-export.mjs';
     box.appendChild(p);
 
     var ta = document.createElement('textarea');

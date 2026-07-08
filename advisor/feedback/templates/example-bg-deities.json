@@ -5,5 +5,5 @@
   "mustInclude": ["Tools 层", "侍僧", "公正与荣耀之神", "可侍奉神祇"],
   "mustNotInclude": ["当前资料未收录此项"],
   "tags": ["user-feedback", "7072-template"],
-  "_note": "复制到 pending/ 后运行 node scripts/advisor-feedback-sync.mjs"
+  "_note": "复制到 inbox/ 后运行 node scripts/advisor-feedback-export.mjs，再 node scripts/advisor-feedback-sync.mjs"
 }

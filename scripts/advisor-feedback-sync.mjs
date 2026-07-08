@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Advisor 5.0 batch8 (7072) — batch-import validated feedback → golden.
+ * Advisor 5.0 batch8 (7072) / batch11 (7075) — batch-import validated feedback → golden.
  *
  * Usage:
  *   node scripts/advisor-feedback-sync.mjs
@@ -10,13 +10,17 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { retrieve, formatContext } from './advisor-retrieve.mjs';
+import {
+  GOLDEN_PATH,
+  PROCESSED_DIR,
+  validateFeedbackCase,
+  normalizeFeedbackPayloadSync,
+  ensureFeedbackDirs,
+} from './advisor-feedback-lib.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const GOLDEN_PATH = path.join(ROOT, 'advisor', 'golden', 'conversations.json');
 const DEFAULT_PENDING = path.join(ROOT, 'advisor', 'feedback', 'pending');
-const PROCESSED = path.join(ROOT, 'advisor', 'feedback', 'processed');
 
 function parseArgs(argv) {
   const out = { dryRun: false, importDir: DEFAULT_PENDING };
@@ -35,22 +39,8 @@ function saveGolden(doc) {
   fs.writeFileSync(GOLDEN_PATH, `${JSON.stringify(doc, null, 2)}\n`, 'utf8');
 }
 
-function validateCase(raw) {
-  const query = String(raw.query || '').trim();
-  if (!query) return { ok: false, reason: 'missing query' };
-  const r = retrieve(query, raw.snapshot ? { snapshot: raw.snapshot } : {});
-  const ctx = formatContext(r);
-  const mustInclude = raw.mustInclude || [];
-  const missing = mustInclude.filter((t) => !ctx.includes(t));
-  const expectIntent = raw.expectIntent || r.intent;
-  if (expectIntent && r.intent !== expectIntent) {
-    return { ok: false, reason: `intent ${r.intent} != ${expectIntent}`, ctx };
-  }
-  if (missing.length) return { ok: false, reason: `missing: ${missing.join(', ')}`, ctx };
-  return { ok: true, intent: r.intent, ctx };
-}
-
 function main() {
+  ensureFeedbackDirs();
   const opts = parseArgs(process.argv.slice(2));
   if (!fs.existsSync(opts.importDir)) {
     console.log(`No pending dir: ${opts.importDir}`);
@@ -69,7 +59,8 @@ function main() {
   for (const f of files) {
     const fp = path.join(opts.importDir, f);
     const raw = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    const check = validateCase(raw);
+    const norm = normalizeFeedbackPayloadSync(raw);
+    const check = validateFeedbackCase(norm);
     if (!check.ok) {
       skipped += 1;
       console.log(`SKIP ${f}: ${check.reason}`);
@@ -77,12 +68,12 @@ function main() {
     }
 
     const newCase = {
-      id: raw.id || `feedback-${path.basename(f, '.json')}`,
-      query: raw.query,
-      expectIntent: raw.expectIntent || check.intent,
-      mustInclude: raw.mustInclude || ['Tools 层'],
-      mustNotInclude: raw.mustNotInclude || ['当前资料未收录此项'],
-      tags: raw.tags || ['user-feedback', '7072-sync'],
+      id: norm.id || `feedback-${path.basename(f, '.json')}`,
+      query: norm.query,
+      expectIntent: norm.expectIntent || check.intent,
+      mustInclude: norm.mustInclude?.length ? norm.mustInclude : ['Tools 层'],
+      mustNotInclude: norm.mustNotInclude || ['当前资料未收录此项'],
+      tags: norm.tags || ['user-feedback', '7075-sync'],
       source: 'advisor-feedback-sync.mjs',
       addedAt: new Date().toISOString().slice(0, 10),
     };
@@ -98,8 +89,8 @@ function main() {
 
     doc.cases.push(newCase);
     imported += 1;
-    fs.mkdirSync(PROCESSED, { recursive: true });
-    fs.renameSync(fp, path.join(PROCESSED, f));
+    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+    fs.renameSync(fp, path.join(PROCESSED_DIR, f));
   }
 
   if (!opts.dryRun && imported > 0) {

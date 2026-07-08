@@ -1,0 +1,9 @@
+{
+  "id": "feedback-pending-priest-smoke",
+  "query": "牧师创建角色时起始装备有哪些",
+  "expectIntent": "starting_gear_lookup",
+  "mustInclude": ["Tools 层", "起始装备", "轻锤"],
+  "mustNotInclude": ["当前资料未收录此项"],
+  "tags": ["user-feedback", "7075-fixture"],
+  "source": "validate-advisor-feedback.mjs"
+}

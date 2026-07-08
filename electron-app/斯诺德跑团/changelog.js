@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7075',
+    date: '2026-07-08',
+    changes: [
+      'Advisor 5.0 batch11: 反馈闭环+CI收口',
+      'advisor-feedback-export+validate-advisor-5-regression',
+      'audit 49条'
+    ]
+  },
+
+
+  {
     version: '1.0.7074',
     date: '2026-07-08',
     changes: [

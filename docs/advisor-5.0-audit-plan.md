@@ -289,7 +289,14 @@ LLM
 - `mergeSnapshotIntoAcScenario()`；L6 快照 equipment.armor 联动 AC 演算
 - Golden + CI batch10 must-pass（牧师起始装 · 血族特性 · 快照 AC 13）
 
-### v1.0.7075+ — 后续
+### v1.0.7075 — 反馈闭环 + CI 收口（P2）✓
+
+- `advisor-feedback-lib.mjs` / `advisor-feedback-export.mjs`：inbox → pending 自动 infer mustInclude
+- `validate-advisor-feedback.mjs` + `validate-advisor-5-regression.mjs`（Advisor 5.0 全套件）
+- Phase5 回归接入 advisor-5-ci；Audit batch11 must-pass（反馈模板三类问法）
+- `bug-report.js`：反馈队列 + 问句/意图/必含 字段
+
+### v1.0.7076+ — 后续
 
 ## 8. Golden / CI 策略
 
