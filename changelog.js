@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7093',
+    date: '2026-07-09',
+    changes: [
+      '修复进阶页色彩标识按docx显示（每组一色一点）',
+      '修复法师次级变形术描述与5级抉择排版'
+    ]
+  },
+
+
+  {
     version: '1.0.7092',
     date: '2026-07-09',
     changes: [

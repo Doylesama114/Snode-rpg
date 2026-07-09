@@ -35,6 +35,10 @@ COLOR_TABLE = {
 LIGHT_COLORS = {"#FFFFFF", "#B3F9FF", "#FFF32F", "#FFB7E3", "#D9D9D9", "#00FA99"}
 LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
 LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.+)$")
+
+
+def level_upgrade_absorbs_choices(text: str) -> bool:
+    return "抉择" in text or text.rstrip().endswith("：")
 TYPE_HEADS = ("战技", "法术", "能力", "战术", "戏法", "天赋", "功法")
 STAT_BLOCK_TAIL = ("其数据如下所示", "其数据如下所示：")
 BOILERPLATE_EXACT = frozenset({"你可以通过花费技能点的方式来获取以下能力"})
@@ -156,6 +160,7 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
     level_upgrades: list[dict] = []
     flavor_parts: list[str] = []
     phase = "pre"
+    absorb_choices = False
     i = start + 1
 
     while i < len(paras):
@@ -167,12 +172,14 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
         if is_section_break(text) and not (
             text.startswith("-----") and wants_stat_block_after_separator(description, fields)
         ):
+            absorb_choices = False
             break
 
         fk, val = split_field(text)
         if fk in ("标识", "费用"):
             mark_dots = mark_dots_from_runs(runs)
             phase = "post_mark"
+            absorb_choices = False
             i += 1
             continue
         if fk == "描述":
@@ -180,12 +187,14 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                 fields["描述"] = val
                 field_runs["描述"] = runs
             phase = "post_mark"
+            absorb_choices = False
             i += 1
             continue
         if fk:
             fields[fk] = val
             field_runs[fk] = runs
             phase = "fields"
+            absorb_choices = False
             i += 1
             continue
 
@@ -207,6 +216,7 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                     "label": label,
                     "line_runs": runs,
                 })
+                absorb_choices = level_upgrade_absorbs_choices(body)
                 i += 1
                 continue
             m2 = LEVEL_RE2.match(text)
@@ -220,6 +230,7 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                     "label": label,
                     "line_runs": runs,
                 })
+                absorb_choices = level_upgrade_absorbs_choices(body)
                 i += 1
                 continue
 
@@ -262,6 +273,10 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
             break
 
         if phase == "post_mark":
+            if absorb_choices and level_upgrades:
+                level_upgrades[-1].setdefault("choices", []).append(text)
+                i += 1
+                continue
             if not is_boilerplate_line(text):
                 description.append(text)
                 description_entries.append({"text": text, "runs": runs})
@@ -566,6 +581,8 @@ def build_detail_html(block: dict) -> str:
         else:
             body_html = lu["text"]
         ordered.append(f'<p><span class="field">{label}</span>{body_html}</p>')
+        for choice in lu.get("choices") or []:
+            ordered.append(f"<p>{choice}</p>")
 
     if block["flavor"]:
         ordered.append("<p>---------------------------------------------------------------------</p>")
@@ -812,7 +829,12 @@ def json_to_fx_entry(skill: dict, class_name: str) -> dict:
 
     upgrades = skill.get("level_upgrades") or []
     if upgrades:
-        entry["upgrades"] = [{"level": u["level"], "change": u["text"]} for u in upgrades]
+        entry["upgrades"] = []
+        for u in upgrades:
+            change = u["text"]
+            for choice in u.get("choices") or []:
+                change = f"{change}\n{choice}"
+            entry["upgrades"].append({"level": u["level"], "change": change})
 
     return entry
 
@@ -860,11 +882,10 @@ def sync_class(
         desc_body = [p for p in block["description"] if not p.startswith("限制：") and p.strip() != block["name"]]
         if "描述" not in fields and desc_body:
             fields["描述"] = desc_body[0]
-
+            skill["description"] = desc_body[1:] if len(desc_body) > 1 else []
+        else:
+            skill["description"] = desc_body
         skill["fields"] = fields
-        skill["description"] = desc_body[1:] if len(desc_body) > 1 else ([] if "描述" in fields else desc_body)
-        if "描述" in fields and desc_body and fields["描述"] == desc_body[0]:
-            skill["description"] = desc_body[1:]
         skill["level_upgrades"] = block["level_upgrades"]
         skill["flavor"] = block["flavor"]
         skill["tags"] = tags_from_keywords(fields.get("关键词", ""))

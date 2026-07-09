@@ -103,14 +103,6 @@ COLOR_ID = {
 }
 
 
-def expand_group_dots(group_colors: list[str]) -> list[str]:
-    """Docx summary table: one colored dot per group → three dots of that color."""
-    out: list[str] = []
-    for hex_c in group_colors:
-        out.extend([hex_c] * 3)
-    return out
-
-
 def parse_source_classes(text: str) -> list[str]:
     text = text.strip()
     if not text:
@@ -138,8 +130,9 @@ def cost_entries(dots: list[str]) -> list[dict]:
 
 def cost_html_compact(dots: list[str]) -> str:
     parts: list[str] = []
-    for i, hex_c in enumerate(dots):
-        if i and i % 3 == 0:
+    prev: str | None = None
+    for hex_c in dots:
+        if prev is not None and hex_c != prev:
             parts.append(" ")
         shadow = (
             "text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;"
@@ -147,6 +140,7 @@ def cost_html_compact(dots: list[str]) -> str:
             else ""
         )
         parts.append(f'<span style="font-size:1.2em;color:{hex_c};{shadow}">●</span>')
+        prev = hex_c
     return "".join(parts)
 
 
@@ -203,7 +197,7 @@ def parse_card(paras: list[dict], i: int) -> tuple[dict | None, int]:
             while k < len(paras) and "●" in paras[k]["text"]:
                 group_colors.extend(mark_dots_from_runs(paras[k]["runs"]))
                 k += 1
-            dots = expand_group_dots(group_colors)
+            dots = group_colors
             j = k
             continue
         if text == "特殊条件":
@@ -311,13 +305,22 @@ def data_search(card: dict) -> str:
 
 
 def grouped_dots_html(dots: list[str]) -> str:
-    """Render dots with a space between each group of three (docx 标识 layout)."""
+    """Render dots with a space between each color group (docx 标识 layout)."""
+    if not dots:
+        return ""
     parts: list[str] = []
-    for i in range(0, len(dots), 3):
-        chunk = dots[i : i + 3]
-        if i and chunk:
-            parts.append(" ")
-        parts.append(dots_html(chunk))
+    group: list[str] = [dots[0]]
+    for hex_c in dots[1:]:
+        if hex_c == group[0]:
+            group.append(hex_c)
+        else:
+            if parts:
+                parts.append(" ")
+            parts.append(dots_html(group))
+            group = [hex_c]
+    if parts:
+        parts.append(" ")
+    parts.append(dots_html(group))
     return "".join(parts)
 
 
