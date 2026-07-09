@@ -267,6 +267,28 @@ io.on('connection', (socket) => {
         result = gameEngine.handleSkipEffectBranch(player.id)
         break
 
+      case 'selectSearchCard':
+        result = gameEngine.handleSelectSearchCard(
+          player.id,
+          action.data.candidateIndex,
+        )
+        break
+
+      case 'skipSearchSelection':
+        result = gameEngine.handleSkipSearchSelection(player.id)
+        break
+
+      case 'playTavernLiquor':
+        result = gameEngine.handlePlayTavernLiquor(
+          player.id,
+          action.data.handIndex,
+        )
+        break
+
+      case 'skipTavernLiquor':
+        result = gameEngine.handleSkipTavernLiquor(player.id)
+        break
+
       case 'cancelDecision':
         result = gameEngine.handleCancelDecision(player.id)
         break

@@ -33,6 +33,8 @@ export function phaseLabel(phase: string): string {
     selectTarget: '选目标',
     selectCrossPlayerSlot: '跨场部署',
     selectEffectBranch: '回合效果',
+    selectSearchCard: '检索选牌',
+    selectTavernLiquor: '酒馆酒水',
     gameOver: '结束',
   }
   return map[phase] ?? phase

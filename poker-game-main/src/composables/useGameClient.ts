@@ -6,7 +6,7 @@ import type { GameState, Card, ReforgeOption } from '@/types/game'
 import { EffectManager } from '@/game/effectManager'
 import { syncBroadcastFromMessage } from '@/utils/gameBroadcast'
 
-export type ClientSelectMode = 'none' | 'hostDeploy' | 'quickPlayTarget'
+export type ClientSelectMode = 'none' | 'hostDeploy' | 'quickPlayTarget' | 'quickPlayHost'
 
 export function useGameClient(initialPlayerId = '') {
   const myPlayerIdRef = ref(initialPlayerId)
@@ -73,6 +73,23 @@ export function useGameClient(initialPlayerId = '') {
     clientSelectMode.value !== 'none'
     || !!gameState.value?.pendingRevealTargetSelection?.playerId && gameState.value.pendingRevealTargetSelection.playerId === myPlayerIdRef.value,
   )
+
+  const pendingSearchSelection = computed(() => {
+    const pending = gameState.value?.pendingSearchSelection
+    if (!pending || pending.playerId !== myPlayerIdRef.value) return null
+    return pending
+  })
+
+  const pendingTavernLiquor = computed(() => {
+    const pending = gameState.value?.pendingTavernLiquor
+    if (!pending || pending.playerId !== myPlayerIdRef.value) return null
+    return pending
+  })
+
+  const isInterstitialPhase = computed(() => {
+    const phase = gameState.value?.phase
+    return phase === 'selectSearchCard' || phase === 'selectTavernLiquor' || phase === 'selectEffectBranch'
+  })
 
   function myRestrictions(): string[] | undefined {
     if (!gameState.value || !myPlayerIdRef.value) return undefined
@@ -154,6 +171,12 @@ export function useGameClient(initialPlayerId = '') {
     }
     syncBroadcastFromMessage(newState, prevMessage)
     syncRevealTargetSelectionFromServer()
+    if (newState.phase === 'selectSearchCard' && newState.pendingSearchSelection?.playerId === myPlayerIdRef.value) {
+      deployHint.value = newState.message || '检索：选择一张加入手牌'
+    }
+    if (newState.phase === 'selectTavernLiquor' && newState.pendingTavernLiquor?.playerId === myPlayerIdRef.value) {
+      deployHint.value = newState.message || '酒馆：点选手牌中的酒水牌'
+    }
   }
   
   function choosePlay() {
@@ -213,6 +236,25 @@ export function useGameClient(initialPlayerId = '') {
         }
       }
       return 'direct'
+    }
+
+    if ((card as Card).quickPlay && (card as Card).type === 'unit') {
+      if (EffectManager.getDeployOnHostEffect(card as Card)) {
+        const targets = EffectManager.getQuickPlayHostTargets(myPlayer.value, card as Card)
+        if (targets.length === 0) return false
+        availableTargets.value = targets
+        clientSelectMode.value = 'quickPlayHost'
+        deployHint.value = `选择 ${(card as Card).name} 的部署目标`
+        return 'host'
+      }
+      const slots = EffectManager.getAvailableSlotIndices(myPlayer.value, card as Card)
+      availableSlots.value = slots
+      if (slots.length === 0) {
+        resetClientSelection()
+        return false
+      }
+      deployHint.value = `选择 ${(card as Card).name} 的部署槽位（速攻）`
+      return 'slot'
     }
 
     if (EffectManager.requiresMandatoryHostDeploy(card as Card) && !(card as Card).quickPlay) {
@@ -285,6 +327,48 @@ export function useGameClient(initialPlayerId = '') {
     }
     resetClientSelection()
     return action
+  }
+
+  function playQuickPlayHost(cardIndex: number, hostCardId: string) {
+    if (!selectedCard.value && myPlayer.value) {
+      const card = myPlayer.value.hand[cardIndex]
+      if (card && card !== 'hidden') selectedCard.value = card as Card
+    }
+    if (!selectedCard.value) return null
+    const action = {
+      type: 'playCard' as const,
+      data: {
+        cardIndex,
+        slotIndex: -1,
+        cardId: selectedCard.value.id,
+        targetCardId: hostCardId,
+      },
+    }
+    resetClientSelection()
+    return action
+  }
+
+  function selectSearchCard(candidateIndex: number) {
+    return {
+      type: 'selectSearchCard' as const,
+      data: { candidateIndex },
+    }
+  }
+
+  function skipSearchSelection() {
+    resetClientSelection()
+    return { type: 'skipSearchSelection' as const }
+  }
+
+  function playTavernLiquor(handIndex: number) {
+    return {
+      type: 'playTavernLiquor' as const,
+      data: { handIndex },
+    }
+  }
+
+  function skipTavernLiquor() {
+    return { type: 'skipTavernLiquor' as const }
   }
 
   function selectRevealTarget(targetCardId: string) {
@@ -401,6 +485,10 @@ export function useGameClient(initialPlayerId = '') {
 
   function isCardPlayable(index: number): boolean {
     if (!gameState.value || !myPlayer.value) return false
+    if (gameState.value.phase === 'selectTavernLiquor') {
+      return !!pendingTavernLiquor.value?.handIndices.includes(index)
+    }
+    if (isInterstitialPhase.value && gameState.value.phase !== 'selectTavernLiquor') return false
     if (gameState.value.phase !== 'action') return false
     if (reforgeState.value.active) return false
     if (isSelectingTarget.value) return false
@@ -462,7 +550,12 @@ export function useGameClient(initialPlayerId = '') {
     selectCardToPlay,
     playTacticDirect,
     playHostDeploy,
+    playQuickPlayHost,
     selectRevealTarget,
+    selectSearchCard,
+    skipSearchSelection,
+    playTavernLiquor,
+    skipTavernLiquor,
     selectSlotToPlay,
     selectReforgeCard,
     executeReforge,
@@ -478,6 +571,9 @@ export function useGameClient(initialPlayerId = '') {
     isCrossPlayerSlotAvailable,
     isTargetSelectable,
     isCardPlayable,
+    pendingSearchSelection,
+    pendingTavernLiquor,
+    isInterstitialPhase,
     canChoosePlay,
     canChooseReforge,
     finalRoundTacticsOnly,

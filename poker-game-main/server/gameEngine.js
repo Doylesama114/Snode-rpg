@@ -2772,6 +2772,9 @@ class GameEngine {
   constructor(roomId, players, maxPlayers = 2) {
     this.roomId = roomId
     this.maxPlayers = maxPlayers
+    this._roundTransition = { roundEndDone: false, revealDone: false, tavernDone: false }
+    this._tavernLiquorQueue = []
+    this._roundTransitionActive = false
     
     // 初始化游戏状态
     this.gameState = {
@@ -2843,6 +2846,87 @@ class GameEngine {
   getOtherPlayerIndices(playerIndex) {
     return this.gameState.players.map((_, i) => i).filter(i => i !== playerIndex)
   }
+
+  _playerHasPendingInterstitial(playerId) {
+    if (this.gameState.pendingEffectBranches?.[playerId]) return '请先处理回合开始效果'
+    if (this.gameState.pendingSearchSelection?.playerId === playerId) return '请先完成检索选牌'
+    if (this.gameState.pendingTavernLiquor?.playerId === playerId) return '请先处理酒馆酒水'
+    return null
+  }
+
+  _beginSearchSelection(player, ownerCard, effect, candidates, timing) {
+    this.gameState.pendingSearchSelection = {
+      playerId: player.id,
+      ownerCardId: ownerCard?.id,
+      ownerCardName: ownerCard?.name,
+      effect,
+      candidates,
+      timing,
+    }
+    this.gameState.phase = 'selectSearchCard'
+    this.gameState.message += ` | ${player.name} 检索：请选择一张牌`
+  }
+
+  _initTavernLiquorQueue() {
+    this._tavernLiquorQueue = []
+    for (const player of this.gameState.players) {
+      const offer = player.tavernLiquorOffer
+      if (!offer) continue
+      const liquorIndices = player.hand
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => offer.keywords.some(kw => EffectManager.hasKeyword(c, kw)))
+        .filter(({ c }) => player.currentCost >= EffectManager.getEffectivePlayCost(c, player) + offer.extraCost)
+        .map(({ i }) => i)
+      player.tavernLiquorOffer = undefined
+      if (liquorIndices.length === 0) continue
+      this._tavernLiquorQueue.push({
+        playerId: player.id,
+        extraCost: offer.extraCost,
+        handIndices: liquorIndices,
+      })
+    }
+  }
+
+  _activateNextTavernLiquorOffer() {
+    if (!this._tavernLiquorQueue?.length) return false
+    const next = this._tavernLiquorQueue.shift()
+    this.gameState.pendingTavernLiquor = next
+    this.gameState.phase = 'selectTavernLiquor'
+    const player = this.gameState.players.find(p => p.id === next.playerId)
+    this.gameState.message += ` | ${player?.name ?? '玩家'} 可在酒馆额外花费${next.extraCost}点打出酒水牌`
+    return true
+  }
+
+  _continueRoundTransition() {
+    if (!this._roundTransition.roundEndDone) {
+      EffectManager.triggerRoundEffects('roundEnd', this)
+      this._roundTransition.roundEndDone = true
+      if (this.gameState.pendingSearchSelection) {
+        this.gameState.phase = 'selectSearchCard'
+        return { success: true, gameState: this.getPublicGameState() }
+      }
+    }
+    if (!this._roundTransition.revealDone) {
+      this.revealAllCards()
+      if (this.gameState.pendingSearchSelection) {
+        this.gameState.phase = 'selectSearchCard'
+        return { success: true, gameState: this.getPublicGameState() }
+      }
+      const hasPendingReveal = Object.values(this.gameState.pendingReveals || {}).some(l => l?.length > 0)
+      if (!hasPendingReveal) {
+        this._roundTransition.revealDone = true
+      }
+    }
+    if (!this._roundTransition.tavernDone) {
+      this._initTavernLiquorQueue()
+      this._roundTransition.tavernDone = true
+      if (this._activateNextTavernLiquorOffer()) {
+        return { success: true, gameState: this.getPublicGameState() }
+      }
+    }
+    this._roundTransition = { roundEndDone: false, revealDone: false, tavernDone: false }
+    return this._finishStartNewRoundBody()
+  }
   
   // 处理玩家选择出牌
   handleChoosePlay(playerId) {
@@ -2852,8 +2936,9 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
-    if (this.gameState.pendingEffectBranches?.[playerId]) {
-      return { success: false, error: '请先处理回合开始效果' }
+    const interstitial = this._playerHasPendingInterstitial(playerId)
+    if (interstitial) {
+      return { success: false, error: interstitial }
     }
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay')) {
@@ -2909,8 +2994,9 @@ class GameEngine {
     }
     
     const player = this.gameState.players[playerIndex]
-    if (this.gameState.pendingEffectBranches?.[playerId]) {
-      return { success: false, error: '请先处理回合开始效果' }
+    const interstitial = this._playerHasPendingInterstitial(playerId)
+    if (interstitial) {
+      return { success: false, error: interstitial }
     }
     const restrictions = this.gameState.playerRestrictions?.[playerId]
     if (restrictions?.includes('cannotPlay') || restrictions?.includes('tacticsOnly')) {
@@ -3001,6 +3087,112 @@ class GameEngine {
     return { success: true, gameState: this.getPublicGameState() }
   }
 
+  handleSelectSearchCard(playerId, candidateIndex) {
+    const pending = this.gameState.pendingSearchSelection
+    if (!pending || pending.playerId !== playerId) {
+      return { success: false, error: '没有待处理的检索选牌' }
+    }
+    const candidate = pending.candidates?.[candidateIndex]
+    if (!candidate) {
+      return { success: false, error: '无效的检索候选' }
+    }
+    const player = this.gameState.players.find(p => p.id === playerId)
+    if (!player) return { success: false, error: '玩家不存在' }
+
+    const r = EffectManager.applySearchDeckEffect(player, pending.effect, candidate)
+    if (r.messages.length) {
+      this.gameState.message += ' | ' + r.messages.join(' | ')
+    }
+    this.gameState.pendingSearchSelection = undefined
+    EffectManager.recalculateAllPowers(this.gameState)
+
+    if (this._roundTransitionActive) {
+      return this._continueRoundTransition()
+    }
+
+    this.gameState.phase = 'action'
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
+  handleSkipSearchSelection(playerId) {
+    const pending = this.gameState.pendingSearchSelection
+    if (!pending || pending.playerId !== playerId) {
+      return { success: false, error: '没有待处理的检索选牌' }
+    }
+    this.gameState.pendingSearchSelection = undefined
+    this.gameState.message += ' | 跳过检索'
+
+    if (this._roundTransitionActive) {
+      return this._continueRoundTransition()
+    }
+    this.gameState.phase = 'action'
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
+  handlePlayTavernLiquor(playerId, handIndex) {
+    const pending = this.gameState.pendingTavernLiquor
+    if (!pending || pending.playerId !== playerId) {
+      return { success: false, error: '没有待处理的酒馆酒水' }
+    }
+    if (!pending.handIndices.includes(handIndex)) {
+      return { success: false, error: '无效的手牌索引' }
+    }
+    const playerIndex = this.getPlayerIndex(playerId)
+    if (playerIndex === -1) return { success: false, error: '玩家不存在' }
+    const player = this.gameState.players[playerIndex]
+    const card = player.hand[handIndex]
+    if (!card) return { success: false, error: '卡牌不存在' }
+
+    const playCost = EffectManager.getEffectivePlayCost(card, player) + pending.extraCost
+    if (player.currentCost < playCost) {
+      return { success: false, error: '费用不足' }
+    }
+    const slots = EffectManager.getAvailableSlotIndices(player, card)
+    if (slots.length === 0) {
+      return { success: false, error: '没有空槽打出酒水牌' }
+    }
+
+    player.currentCost -= playCost
+    player.hand.splice(handIndex, 1)
+    const slotIndex = slots[0]
+    player.field[slotIndex].card = card
+    this.gameState.pendingReveals[playerId].push({
+      card,
+      slotIndex,
+      playCost,
+      targetPlayerIndex: playerIndex,
+    })
+    this.gameState.message += ` | ${player.name} 打出${card.name}（酒馆额外费${pending.extraCost}，下回合展示）`
+    this.gameState.pendingTavernLiquor = undefined
+
+    if (this._activateNextTavernLiquorOffer()) {
+      return { success: true, gameState: this.getPublicGameState() }
+    }
+    if (this._roundTransitionActive) {
+      return this._continueRoundTransition()
+    }
+    this.gameState.phase = 'action'
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
+  handleSkipTavernLiquor(playerId) {
+    const pending = this.gameState.pendingTavernLiquor
+    if (!pending || pending.playerId !== playerId) {
+      return { success: false, error: '没有待处理的酒馆酒水' }
+    }
+    this.gameState.pendingTavernLiquor = undefined
+    this.gameState.message += ' | 跳过酒馆酒水'
+
+    if (this._activateNextTavernLiquorOffer()) {
+      return { success: true, gameState: this.getPublicGameState() }
+    }
+    if (this._roundTransitionActive) {
+      return this._continueRoundTransition()
+    }
+    this.gameState.phase = 'action'
+    return { success: true, gameState: this.getPublicGameState() }
+  }
+
   handleCancelDecision(playerId) {
     const playerIndex = this.getPlayerIndex(playerId)
     if (playerIndex === -1) return { success: false, error: '玩家不存在' }
@@ -3056,7 +3248,7 @@ class GameEngine {
     
     // QuickPlay gate: skip cost/action for quickPlay cards
     if (card.quickPlay) {
-      return this.handleQuickPlayCard(card, player, playerIndex, { targetCardId })
+      return this.handleQuickPlayCard(card, player, playerIndex, { targetCardId, slotIndex })
     }
 
     if (EffectManager.requiresMandatoryHostDeploy(card)) {
@@ -3219,13 +3411,97 @@ class GameEngine {
   
   // 处理快速打出（跳过费用/行动检查）
   handleQuickPlayCard(card, player, playerIndex, options = {}) {
-    const { targetCardId } = options
-    // Remove from hand (no cost deduction)
+    const { targetCardId, slotIndex: requestedSlot } = options
     const cardIndex = player.hand.indexOf(card)
-    if (cardIndex !== -1) player.hand.splice(cardIndex, 1)
+    if (cardIndex === -1) {
+      return { success: false, error: '卡牌不在手牌中' }
+    }
     
-    // Fire onPlay effects
+    // Fire onPlay effects (after validation for unit slot deploy)
     const messages = []
+    
+    // QuickPlay units: host deploy or empty slot (e.g. 贝壳)
+    if (card.type === 'unit') {
+      player.hand.splice(cardIndex, 1)
+      card.effects?.forEach(effect => {
+        if (effect.timing !== 'onPlay') return
+        if (effect.type === 'restoreEnergy') {
+          EffectManager.applyCostDelta(player, effect.value || 0)
+          messages.push(`${player.name} 使用${card.name}：恢复${effect.value}点能量`)
+        }
+      })
+
+      if (EffectManager.getDeployOnHostEffect(card)) {
+        const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
+        if (fieldCards.length === 0) {
+          player.discard.push(card)
+          this.gameState.message = EffectManager.requiresDeployOnHost(card)
+            ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+            : '场上没有可部署的目标'
+          return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+        }
+
+        const targetCard = targetCardId
+          ? fieldCards.find(c => c.id === targetCardId) ?? fieldCards[0]
+          : fieldCards[0]
+        const oldPower = targetCard.currentPower
+        targetCard.currentPower += card.basePower
+        const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
+        if (revealMsgs.length === 0) {
+          this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+        }
+
+        EffectManager.recalculateAllPowers(this.gameState)
+        EffectManager.applyOnFieldDestroy(this)
+        this.checkFieldFull(playerIndex)
+        this.gameState.message = messages.join(' | ') + ' | ' + this.gameState.message
+        return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+      }
+
+      const slots = EffectManager.getAvailableSlotIndices(player, card)
+      let slotIndex = requestedSlot
+      if (slotIndex === undefined || slotIndex === null || slotIndex < 0) {
+        if (slots.length === 0) {
+          player.discard.push(card)
+          this.gameState.message = '没有可用的槽位'
+          return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+        }
+        slotIndex = slots[0]
+      }
+      if (!slots.includes(slotIndex)) {
+        player.hand.push(card)
+        return { success: false, error: '无效的速攻部署槽位' }
+      }
+
+      if (!player.hasPlayedThisTurn) {
+        player.hasPlayedThisTurn = true
+      } else if (player.canPlayExtra) {
+        EffectManager.consumeExtraPlay(player)
+      }
+
+      player.field[slotIndex].card = card
+      EffectManager.applyUnitDeployBonuses(card, player).forEach(m => messages.push(m))
+      EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
+      EffectManager.recalculateAllPowers(this.gameState)
+      this.checkFieldFull(playerIndex)
+
+      const playerId = player.id
+      const qpCost = EffectManager.getEffectivePlayCost(card, player)
+      this.gameState.pendingReveals[playerId].push({
+        card,
+        slotIndex,
+        playCost: qpCost,
+        targetPlayerIndex: playerIndex,
+      })
+      this.gameState.message = messages.join(' | ') + ` | ${card.name} 速攻部署（下回合展示）`
+
+      if (!player.canPlayExtra) {
+        this.gameState.playerReady[playerId] = true
+      }
+      return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+    }
+
+    player.hand.splice(cardIndex, 1)
     card.effects.forEach(effect => {
       if (effect.timing !== 'onPlay') return
       
@@ -3303,51 +3579,6 @@ class GameEngine {
       }
     })
     
-    // QuickPlay units: host deploy or empty slot (e.g. 贝壳)
-    if (card.type === 'unit') {
-      if (EffectManager.getDeployOnHostEffect(card)) {
-        const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
-        if (fieldCards.length === 0) {
-          player.discard.push(card)
-          this.gameState.message = EffectManager.requiresDeployOnHost(card)
-            ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
-            : '场上没有可部署的目标'
-          return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
-        }
-
-        const targetCard = targetCardId
-          ? fieldCards.find(c => c.id === targetCardId) ?? fieldCards[0]
-          : fieldCards[0]
-        const oldPower = targetCard.currentPower
-        targetCard.currentPower += card.basePower
-        const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
-        if (revealMsgs.length === 0) {
-          this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
-        }
-
-        EffectManager.recalculateAllPowers(this.gameState)
-        EffectManager.applyOnFieldDestroy(this)
-        this.checkFieldFull(playerIndex)
-        this.gameState.message = messages.join(' | ') + ' | ' + this.gameState.message
-        return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
-      }
-
-      const slots = EffectManager.getAvailableSlotIndices(player, card)
-      if (slots.length === 0) {
-        player.discard.push(card)
-        this.gameState.message = '没有可用的槽位'
-        return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
-      }
-      const slotIndex = slots[0]
-      player.field[slotIndex].card = card
-      EffectManager.applyUnitDeployBonuses(card, player).forEach(m => messages.push(m))
-      EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
-      EffectManager.recalculateAllPowers(this.gameState)
-      this.checkFieldFull(playerIndex)
-      this.gameState.message = messages.join(' | ') + ` | ${card.name} 速攻部署到槽位${slotIndex + 1}`
-      return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
-    }
-
     // QuickPlay tactics: onPlay modifyPower 需指定目标
     if (card.type === 'tactic') {
       const onPlayMod = card.effects.find(
@@ -3481,6 +3712,16 @@ class GameEngine {
           effect: result.needsTargetSelection.effect,
           targetCardIds: result.needsTargetSelection.targets.map(t => t.id),
         }
+        return
+      }
+      if (result.needsSearchSelection) {
+        this._beginSearchSelection(
+          player,
+          card,
+          result.needsSearchSelection.effect,
+          result.needsSearchSelection.candidates,
+          'onReveal',
+        )
         return
       }
     }
@@ -3649,12 +3890,30 @@ class GameEngine {
         if (result.needsTargetSelection) {
           pendingTarget = result.needsTargetSelection
         }
+        if (result.needsSearchSelection) {
+          this._beginSearchSelection(
+            player,
+            card,
+            result.needsSearchSelection.effect,
+            result.needsSearchSelection.candidates,
+            'onDeploy',
+          )
+        }
       } else if (effect.timing === 'onReveal') {
         if (effect.type === 'conditional' || effect.type === 'custom') return
         const result = EffectManager.applyRevealEffect(effect, card, player, this.gameState)
         result.messages.forEach(msg => {
           this.gameState.message += ` | ${msg}`
         })
+        if (result.needsSearchSelection) {
+          this._beginSearchSelection(
+            player,
+            card,
+            result.needsSearchSelection.effect,
+            result.needsSearchSelection.candidates,
+            'onReveal',
+          )
+        }
       }
     })
 
@@ -3677,6 +3936,13 @@ class GameEngine {
     this.gameState.message += ` | 创建了额外槽位`
   }
   
+  _removePendingReveal(playerId, card, slotIndex) {
+    const list = this.gameState.pendingReveals?.[playerId]
+    if (!list) return
+    const idx = list.findIndex(r => r.card?.id === card.id && r.slotIndex === slotIndex)
+    if (idx >= 0) list.splice(idx, 1)
+  }
+
   // 揭示所有待揭示的卡牌（按玩家顺序结算，费用不足者退回手牌）
   revealAllCards() {
     console.log('[GameEngine] 揭示所有待揭示的卡牌')
@@ -3695,6 +3961,13 @@ class GameEngine {
       }
 
       this.resolveStagedPlay(entry.card, fieldOwner, entry.slotIndex, entry.playerIndex, entry.fieldOwnerIndex)
+      this._removePendingReveal(player.id, entry.card, entry.slotIndex)
+      if (this.gameState.pendingSearchSelection) {
+        if (messages.length > 0) {
+          this.gameState.message = (this.gameState.message || '') + ' | ' + messages.join(' | ')
+        }
+        return
+      }
       resolved.push(entry)
       messages.push(`${player.name} 揭示了 ${entry.card.name}`)
     }
@@ -3877,12 +4150,12 @@ class GameEngine {
   
   // 开始新回合
   startNewRound() {
-    // 触发回合结束效果（上一回合的效果结算）
-    EffectManager.triggerRoundEffects('roundEnd', this)
-    
-    // 在新回合开始时，先揭示上一回合打出的所有卡牌
-    this.revealAllCards()
-    
+    this._roundTransitionActive = true
+    return this._continueRoundTransition()
+  }
+
+  _finishStartNewRoundBody() {
+    this._roundTransitionActive = false
     // 检查是否应该结束游戏
     // 如果是最后一回合，且当前回合已经是触发回合的下一回合，则结束游戏
     if (this.gameState.isFinalRound && this.gameState.finalRoundStartRound !== undefined) {
@@ -4141,6 +4414,13 @@ class GameEngine {
       const reordered = [players[playerIndex], ...players.slice(0, playerIndex), ...players.slice(playerIndex + 1)]
       publicState.players = reordered
       console.log(`[GameEngine] getPlayerGameState: 重新排序玩家，让玩家${playerIndex}成为players[0]`)
+    }
+
+    if (publicState.pendingSearchSelection?.playerId !== playerId) {
+      publicState.pendingSearchSelection = undefined
+    }
+    if (publicState.pendingTavernLiquor?.playerId !== playerId) {
+      publicState.pendingTavernLiquor = undefined
     }
     
     return publicState

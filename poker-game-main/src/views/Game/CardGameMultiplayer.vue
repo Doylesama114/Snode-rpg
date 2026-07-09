@@ -130,6 +130,14 @@ function handleFieldCardTargetClick(card: Card) {
     if (action) {
       void sendQuickPlayAnim(action, cardIndex)
     }
+    return
+  }
+  if (game.clientSelectMode.value === 'quickPlayHost') {
+    const action = game.playQuickPlayHost(cardIndex, card.id)
+    if (action) {
+      void sendQuickPlayAnim(action, cardIndex)
+    }
+    return
   }
 }
 
@@ -254,7 +262,8 @@ async function handleGameStateUpdate(newState: GameState) {
     }
 
     const allReady = newState.players.every((p: { id: string }) => newState.playerReady?.[p.id])
-    if (allReady) {
+    const interstitialPhase = newState.phase === 'selectSearchCard' || newState.phase === 'selectTavernLiquor'
+    if (allReady && !interstitialPhase) {
       console.log('[CardGameMultiplayer] 所有玩家准备完成')
 
       const playerIds = newState.players.map((p: { id: string }) => p.id).sort()
@@ -361,6 +370,11 @@ function reforgeReadyToExecute(options: ReforgeOption[] = reforgeOptions.value):
 // 处理手牌点击
 function onHandCardClick(index: number) {
   const myPlayerId = multiplayer.myPlayerId.value
+  if (game.gameState.value?.phase === 'selectTavernLiquor' && game.pendingTavernLiquor.value?.handIndices.includes(index)) {
+    const action = game.playTavernLiquor(index)
+    multiplayer.sendAction(action)
+    return
+  }
   if (pendingEffectBranch.value) {
     const card = game.myPlayer.value?.hand[index]
     if (card && card !== 'hidden' && pendingEffectBranch.value.discardHandAttributes.includes(card.attribute)) {
@@ -529,6 +543,21 @@ function handleSkipEffectBranch() {
   effectBranchDiscardIndex.value = null
 }
 
+function handleSelectSearchCard(index: number) {
+  const action = game.selectSearchCard(index)
+  multiplayer.sendAction(action)
+}
+
+function handleSkipSearchSelection() {
+  const action = game.skipSearchSelection()
+  multiplayer.sendAction(action)
+}
+
+function handleSkipTavernLiquor() {
+  const action = game.skipTavernLiquor()
+  multiplayer.sendAction(action)
+}
+
 // 获取战力颜色
 function getPowerColor(card: Card): string {
   if (card.currentPower > card.basePower) return '#2f6f5e'
@@ -570,12 +599,15 @@ const opponentPlayers = computed(() =>
   game.gameState.value?.players.filter(p => p.id !== multiplayer.myPlayerId.value) ?? [],
 )
 
-const showActionDock = computed(() =>
-  !!humanPlayer.value
-  && myPlayerIndex.value === game.gameState.value?.currentPlayerIndex
-  && game.gameState.value?.phase !== 'draw'
-  && !isRoundTransitioning.value,
-)
+const showActionDock = computed(() => {
+  if (!humanPlayer.value || isRoundTransitioning.value) return false
+  const phase = game.gameState.value?.phase
+  if (phase === 'selectSearchCard' && game.pendingSearchSelection.value) return true
+  if (phase === 'selectTavernLiquor' && game.pendingTavernLiquor.value) return true
+  if (phase === 'selectEffectBranch' && pendingEffectBranch.value) return true
+  return myPlayerIndex.value === game.gameState.value?.currentPlayerIndex
+    && phase !== 'draw'
+})
 
 const isYourTurn = computed(() =>
   myPlayerIndex.value === game.gameState.value?.currentPlayerIndex
@@ -716,6 +748,12 @@ function leaveGameToLobby(fromGameOver = false) {
           <div v-if="game.deployHint.value || game.isSelectingTarget.value" class="deploy-hint">
             {{ game.deployHint.value || '点击场上高亮单位选择目标' }}
           </div>
+          <div v-else-if="game.gameState.value.phase === 'selectSearchCard' && game.pendingSearchSelection.value" class="deploy-hint">
+            检索：选择一张加入手牌
+          </div>
+          <div v-else-if="game.gameState.value.phase === 'selectTavernLiquor' && game.pendingTavernLiquor.value" class="deploy-hint">
+            酒馆：点选手牌中的酒水牌打出，或点跳过
+          </div>
 
           <div class="hand-section">
             <div class="hand-section__label">
@@ -741,8 +779,8 @@ function leaveGameToLobby(fromGameOver = false) {
                   size="hand"
                   :data-hand-card="humanPlayer.id + '-' + ci"
                   :playable="game.isCardPlayable(ci)"
-                  :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active"
-                  :selectable="(game.reforgeState.value.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedRedrawIndices.length < redrawCountNeeded()) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
+                  :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active && !(game.gameState.value?.phase === 'selectTavernLiquor' && game.pendingTavernLiquor.value?.handIndices.includes(ci)) && !(pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
+                  :selectable="(game.reforgeState.value.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedRedrawIndices.length < redrawCountNeeded()) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute)) || (game.gameState.value?.phase === 'selectTavernLiquor' && !!game.pendingTavernLiquor.value?.handIndices.includes(ci))"
                   :selected="game.reforgeState.value.selectedRedrawIndices.includes(ci) || effectBranchDiscardIndex === ci"
                   @click="onHandCardClick(ci)"
                 />
@@ -754,7 +792,26 @@ function leaveGameToLobby(fromGameOver = false) {
     </div>
 
     <ActionDock :visible="showActionDock">
-      <div v-if="pendingEffectBranch" class="action-dock-branch">
+      <div v-if="game.gameState.value.phase === 'selectSearchCard' && game.pendingSearchSelection.value" class="action-dock-branch">
+        <p class="action-dock-hint">检索：选择一张加入手牌</p>
+        <div class="action-dock-row action-dock-row--wrap">
+          <GameButton
+            v-for="(item, si) in game.pendingSearchSelection.value.candidates"
+            :key="si"
+            variant="primary"
+            class="game-btn--small"
+            @click="handleSelectSearchCard(si)"
+          >{{ item.card.name }}（{{ item.pile === 'deck' ? '牌库' : '弃牌' }}）</GameButton>
+          <GameButton variant="ghost" class="game-btn--small" @click="handleSkipSearchSelection">跳过</GameButton>
+        </div>
+      </div>
+      <div v-else-if="game.gameState.value.phase === 'selectTavernLiquor' && game.pendingTavernLiquor.value" class="action-dock-branch">
+        <p class="action-dock-hint">酒馆：额外 {{ game.pendingTavernLiquor.value.extraCost }} 费打出酒水（下回合展示）</p>
+        <div class="action-dock-row">
+          <GameButton variant="ghost" class="game-btn--small" @click="handleSkipTavernLiquor">跳过</GameButton>
+        </div>
+      </div>
+      <div v-else-if="pendingEffectBranch" class="action-dock-branch">
         <p class="action-dock-hint">{{ pendingEffectBranch.ownerCardName }}：先点选水属性手牌，再选效果</p>
         <div class="action-dock-row">
           <GameButton variant="primary" class="game-btn--small" @click="confirmEffectBranch('A')">A · 回复2能量</GameButton>

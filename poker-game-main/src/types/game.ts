@@ -507,7 +507,7 @@ export interface GameState {
 
 // 游戏操作（用于联机同步）
 export interface GameAction {
-  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'selectRevealTarget' | 'executeReforge' | 'resolveEffectBranch' | 'skipEffectBranch' | 'cancelDecision' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
+  type: 'choosePlay' | 'chooseReforge' | 'playCard' | 'selectSlot' | 'selectTarget' | 'selectRevealTarget' | 'selectSearchCard' | 'skipSearchSelection' | 'playTavernLiquor' | 'skipTavernLiquor' | 'executeReforge' | 'resolveEffectBranch' | 'skipEffectBranch' | 'cancelDecision' | 'endTurn' | 'skipTurn' | 'drawCard' | 'finalRound' | 'revealCards' | 'playerLeft' | 'createRoom' | 'registerPlayer' | 'loginPlayer' | 'saveDeck' | 'loadDeck' | 'getAccountState'
   data?: any
   playerId?: string
   playerCount?: number    // room creation: 2-4
