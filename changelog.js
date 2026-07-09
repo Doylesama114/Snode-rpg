@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7084',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch20 引擎requiresReaction',
+      'Tier-A/B bulk语料23条'
+    ]
+  },
+
+
+  {
     version: '1.0.7083',
     date: '2026-07-09',
     changes: [

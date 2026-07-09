@@ -1,10 +1,10 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.5.0",
-    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7080/7081/7082 扩展）",
+    "version": "1.6.0",
+    "source": "advisor/skills/*_index.json（Q3 试点 + 7084 bulk Tier-A/B）",
     "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮"]
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮", "精准射击", "远效射击", "奥术装备", "疾言厉色", "法术偏斜", "破邪战旗", "山岭之护"]
   },
   "skills": {
     "魔法武器": {
@@ -119,6 +119,54 @@
       "acModifier": { "base": 2 },
       "note": "防御等级+2（树皮术 L6 升级版；无法通过此方式使防御等级到达 20）",
       "source": "druid_index · 石木树皮 summary"
+    },
+    "精准射击": {
+      "className": "奇械师",
+      "requiresRanged": true,
+      "hitModifier": { "base": 0, "milestones": { "L4": 3 } },
+      "note": "专注射击；L4 攻击命中检定值+3",
+      "source": "artificer_index · 精准射击 summary"
+    },
+    "远效射击": {
+      "className": "奇械师",
+      "requiresRanged": true,
+      "hitModifier": { "base": 5 },
+      "note": "极远距精准射击；攻击命中检定值+5",
+      "source": "artificer_index · 远效射击 summary"
+    },
+    "奥术装备": {
+      "className": "法师",
+      "acModifier": { "base": 2 },
+      "note": "奥术能量附魔盔甲；持有者防御等级+2",
+      "source": "mage_index · 奥术装备 summary"
+    },
+    "疾言厉色": {
+      "className": "武僧",
+      "acModifier": { "base": 0 },
+      "conditionalAcModifier": { "queryHint": "交互", "value": 2 },
+      "note": "目标豁免失败后交互时防御等级+2（L5；无法超过 21）",
+      "source": "monk_index · 疾言厉色 summary"
+    },
+    "法术偏斜": {
+      "className": "术士",
+      "requiresReaction": true,
+      "acModifier": { "base": 4 },
+      "note": "花费反应动作偏斜单体法术；防御等级+4",
+      "source": "sorcerer_index · 法术偏斜 summary"
+    },
+    "破邪战旗": {
+      "className": "圣骑士",
+      "acModifier": { "base": 0 },
+      "conditionalAcModifier": { "queryHint": "邪恶阵营", "value": 1 },
+      "note": "受到邪恶阵营角色攻击时自身防御等级+1（无法超过 21）",
+      "source": "paladin_index · 破邪战旗 summary"
+    },
+    "山岭之护": {
+      "className": "萨满祭司",
+      "acModifier": { "base": 0 },
+      "conditionalAcModifier": { "queryHint": "山地", "value": 2 },
+      "note": "山地/洞穴环境且土元素活跃时防御等级+2",
+      "source": "shaman_index · 山岭之护 summary"
     }
   }
 }

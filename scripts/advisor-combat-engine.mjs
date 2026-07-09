@@ -84,6 +84,7 @@ function resolveAcBuffComponents(p, skillMods) {
     const sk = skillMods.skills?.[buffName];
     if (!sk?.acModifier) continue;
     if (sk.requiresHeavyArmor && p.armorKey !== 'plate_18') continue;
+    if (sk.requiresReaction && !/反应动作/.test(p.query || '')) continue;
     let acFlat = sk.acModifier.base ?? 0;
     const acCond = sk.conditionalAcModifier;
     if (acCond?.queryHint && p.query?.includes(acCond.queryHint)) {
@@ -505,6 +506,7 @@ export function resolveCombatScenario(params) {
     if (!sk) continue;
     if (sk.requiresRanged && p.attackType !== 'ranged') continue;
     if (sk.requiresMelee && p.attackType === 'ranged') continue;
+    if (sk.requiresReaction && !/反应动作/.test(p.query || '')) continue;
 
     if (sk.attrModifier) {
       for (const [attr, delta] of Object.entries(sk.attrModifier)) {

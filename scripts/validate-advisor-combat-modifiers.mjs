@@ -26,7 +26,7 @@ function skillExistsInIndexes(name) {
 }
 
 function main() {
-  console.log('=== validate-advisor-combat-modifiers (7083) ===\n');
+  console.log('=== validate-advisor-combat-modifiers (7084) ===\n');
   const doc = loadJson(MOD_PATH);
   const skills = doc.skills || {};
   let failed = 0;
@@ -48,7 +48,7 @@ function main() {
     console.log(`✓ ${name} ← ${src} (${hasHit ? 'hit' : ''}${hasHit && hasAc ? '+' : ''}${hasAc ? 'ac' : ''})`);
   }
 
-  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌', '枪影如林·极', '酩酊大醉', '石木树皮'];
+  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌', '枪影如林·极', '酩酊大醉', '石木树皮', '精准射击', '远效射击', '奥术装备', '疾言厉色', '法术偏斜', '破邪战旗', '山岭之护'];
   for (const id of expected) {
     if (!skills[id]) {
       failed += 1;
@@ -56,9 +56,10 @@ function main() {
     }
   }
 
-  console.log(`\n7083 combat modifiers corpus: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
+  console.log(`\n7084 combat modifiers corpus: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
   if (!failed) {
     console.log('✓ scan module advisor-combat-modifiers-scan.mjs');
+    console.log('✓ bulk script build-advisor-combat-modifiers-from-scan.mjs');
     console.log('✓ combat-scan CI via validate-advisor-combat-scan.mjs');
   }
   if (failed) process.exit(1);

@@ -380,6 +380,27 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "combat-long-range-shot",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击开启远效射击命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "远效射击", "+10", "弓箭类别增益"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-spell-deflect",
+      "query": "敏捷调整值+2未穿护甲花费反应动作开启法术偏斜护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "法术偏斜", "16"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-banner-evil",
+      "query": "敏捷调整值+2穿着皮甲受到邪恶阵营攻击开启破邪战旗护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "破邪战旗", "14"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

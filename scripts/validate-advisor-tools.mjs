@@ -390,5 +390,13 @@ check('stone bark AC 14', stoneBark.totalAc === 14);
 const rMultiReview = retrieve('怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能', { snapshot: snapMageReview });
 check('multiclass build review groups', formatContext(rMultiReview).includes('**法师**') && formatContext(rMultiReview).includes('**战士**'));
 
+check('requiresReaction spell deflect AC 16', resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2未穿护甲花费反应动作开启法术偏斜护甲值是多少')).totalAc === 16);
+
+const longShot = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击开启远效射击命中加值是多少'));
+check('long range shot +10', longShot.totalHitBonus === 10);
+
+const evilBanner = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2穿着皮甲受到邪恶阵营攻击开启破邪战旗护甲值是多少'));
+check('evil banner AC 14', evilBanner.totalAc === 14);
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

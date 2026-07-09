@@ -53,9 +53,9 @@ const report = scanCombatModifierCandidates();
 writeCombatModifierScanReport(report, DEFAULT_REPORT_PATH);
 
 check('report file written', fs.existsSync(DEFAULT_REPORT_PATH));
-check('structured count >= 16', report.meta.structuredCount >= 16, `got ${report.meta.structuredCount}`);
+check('structured count >= 23', report.meta.structuredCount >= 23, `got ${report.meta.structuredCount}`);
 check('total candidates >= 40', report.meta.candidateCount >= 40, `got ${report.meta.candidateCount}`);
-check('pending tier-A >= 7', report.stats.pendingByTier.A >= 7, `got ${report.stats.pendingByTier.A}`);
+check('pending tier-A <= 3', report.stats.pendingByTier.A <= 3, `got ${report.stats.pendingByTier.A}`);
 check('pending tier-B >= 10', report.stats.pendingByTier.B >= 10, `got ${report.stats.pendingByTier.B}`);
 check('duplicate name tracking', report.duplicateNames.some((d) => d.name === '瞄准射击' || d.name === '蓄力劲射'));
 

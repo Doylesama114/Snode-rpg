@@ -340,14 +340,17 @@ LLM
 
 ### v1.0.7083 — 战斗修饰符扫描 v2（P1）✓
 
-- `advisor-combat-modifiers-scan.mjs`：Tier A–D 分级 · 里程碑/条件/变量识别
-- `advisor/reports/combat-modifiers-scan.json` 报告 · `validate-advisor-combat-scan.mjs` 接入 regression 7/7
-- 443 候选 / 423 pending（Tier-A 7 · Tier-B 14 · 7084 bulk 前置）
+- `advisor-combat-modifiers-scan.mjs` Tier A–D；`combat-modifiers-scan.json` 报告
+- regression 7/7 + `validate-advisor-combat-scan.mjs`
 
-### v1.0.7084+ — 后续
+### v1.0.7084 — 引擎 Phase 6 + Tier-A/B bulk（P1）✓
 
-- **7084 bulk 入库**：按 `advisor/reports/combat-modifiers-scan.json` Tier-A 批量写入 `combat_skill_modifiers.json`
-- Tier-B 半自动（conditional 字段）；Tier-C/D 引擎扩展或排除 combat_math
+- `requiresReaction`；语料 16→23；`build-advisor-combat-modifiers-from-scan.mjs`
+- Golden + CI batch19 must-pass（远效射击 +10 · 法术偏斜 AC 16 · 破邪战旗 AC 14）
+
+### v1.0.7085+ — 后续
+
+- Tier-C 优势/劣势输出；目标 debuff AC（腐蚀术等）；剩余 Tier-A 跳过项（荒野医疗/独行伙伴）
 
 ## 8. Golden / CI 策略
 
