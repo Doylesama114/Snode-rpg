@@ -65,7 +65,7 @@ jobs:
           path: electron-app/dist/*
           retention-days: 1
 
-  mirror-gitee:
+  mirror-oss:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -74,59 +74,55 @@ jobs:
         with:
           name: dist-files
 
-      - name: Mirror to Gitee Release
+      - name: Setup ossutil
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          endpoint: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
+
+      - name: Sync release assets to Aliyun OSS
+        env:
+          TAG: ${{ github.ref_name }}
+          BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+          PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
         run: |
-          TAG="${{ github.ref_name }}"
-          EXE=$(ls *.exe | head -1)
-          TOKEN="${{ secrets.GITEE_TOKEN }}"
-          API="https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases"
-
-          echo "=== Gitee Mirror: $TAG ==="
-          echo "EXE: $EXE ($(du -h "$EXE" 2>/dev/null | cut -f1 || echo '?'))"
-          ls -la *.yml 2>/dev/null
-
-          # 1. 检查是否已有同 tag 的 Release
-          echo "Checking existing releases..."
-          REL_ID=$(curl -sf "$API?access_token=$TOKEN&per_page=20" | jq -r ".[] | select(.tag_name==\"$TAG\") | .id" | head -1)
-
-          if [ -z "$REL_ID" ] || [ "$REL_ID" = "null" ]; then
-            echo "Creating new release..."
-            BODY="🔄 自动同步 GitHub Release\n\n📥 GitHub: https://github.com/Doylesama114/Snode-rpg/releases/tag/$TAG\n\n⚡ 国内用户可在GitHub Releases页面直接下载exe"
-            REL=$(curl -sf -X POST "$API" \
-              -H "Content-Type: application/json" \
-              -d "{\"tag_name\":\"$TAG\",\"name\":\"$TAG\",\"target_commitish\":\"master\",\"body\":\"$BODY\",\"prerelease\":false,\"access_token\":\"$TOKEN\"}")
-            REL_ID=$(echo "$REL" | jq -r '.id')
-            echo "Created release: $REL_ID"
-          else
-            echo "Release already exists: $REL_ID"
+          set -euo pipefail
+          VERSION="${TAG#v}"
+          EXE=$(ls -1 *.exe 2>/dev/null | head -1)
+          if [ -z "$EXE" ]; then
+            echo "::error::No .exe in dist artifact"
+            exit 1
           fi
 
-          # 2. 上传所有 yml 文件
-          for YML in *.yml; do
-            echo "Uploading $YML..."
-            if curl -sf --max-time 60 --retry 2 --retry-delay 5 \
-                -X POST "$API/$REL_ID/attach_files" \
-                -F "access_token=$TOKEN" \
-                -F "file=@$YML"; then
-              echo "  $YML uploaded OK"
-            else
-              echo "  WARNING: $YML upload failed"
-            fi
+          echo "=== OSS Mirror: $TAG ==="
+          echo "EXE: $EXE ($(du -h "$EXE" | cut -f1))"
+          ls -la
+
+          for f in *.exe *.yml *.blockmap; do
+            [ -f "$f" ] || continue
+            echo "Uploading releases/${TAG}/${f}..."
+            ossutil cp "$f" "oss://${BUCKET}/releases/${TAG}/${f}" --update -f --acl public-read
           done
 
-          # 3. 上传 exe（跨国网络大概率超时，改为尝试性上传）
-          if [ -n "$EXE" ]; then
-            echo "Uploading $EXE (large file, may timeout on cross-border network)..."
-            if curl -sf --max-time 900 --retry 3 --retry-delay 30 --retry-max-time 1200 \
-                -X POST "$API/$REL_ID/attach_files" \
-                -F "access_token=$TOKEN" \
-                -F "file=@$EXE"; then
-              echo "EXE uploaded OK"
-            else
-              echo "EXE auto-upload failed (cross-border timeout)."
-              echo "For manual upload, run: ./upload-gitee-exe.sh $TAG"
-            fi
+          if [ -f latest.yml ]; then
+            echo "Uploading releases/latest/latest.yml..."
+            ossutil cp latest.yml "oss://${BUCKET}/releases/latest/latest.yml" --update -f --acl public-read
           fi
 
-          echo "=== Gitee mirror done ==="
-          echo "::notice::Gitee release: https://gitee.com/Doylesama007/Snode-rpg/releases/tag/$TAG"
+          cat > /tmp/latest.json <<EOF
+{
+  "version": "${VERSION}",
+  "tag": "${TAG}",
+  "feedUrl": "${PUBLIC_BASE}/releases/${TAG}/",
+  "exeUrl": "${PUBLIC_BASE}/releases/${TAG}/${EXE}",
+  "exeName": "${EXE}",
+  "mirrors": ["oss", "github"],
+  "githubRelease": "https://github.com/Doylesama114/Snode-rpg/releases/tag/${TAG}"
+}
+EOF
+          ossutil cp /tmp/latest.json "oss://${BUCKET}/releases/latest/latest.json" --update -f --acl public-read
+
+          echo "=== OSS mirror done ==="
+          echo "::notice::OSS feed ${PUBLIC_BASE}/releases/${TAG}/"
+          echo "::notice::OSS latest ${PUBLIC_BASE}/releases/latest/latest.json"

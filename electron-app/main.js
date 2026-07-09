@@ -4,19 +4,20 @@ const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
 bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
+const mirrorConfig = require('./update-mirror-config');
 
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = false; // 手动重启以立即生效
 autoUpdater.logger = console;
 
 const UPDATE_SOURCES = {
-  github: {
-    api: 'https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest',
-    feed: (tag) => 'https://github.com/Doylesama114/Snode-rpg/releases/download/' + tag + '/',
+  oss: {
+    latestJson: mirrorConfig.OSS_LATEST_JSON,
+    feed: (tag) => mirrorConfig.OSS_PUBLIC_BASE + '/releases/' + tag + '/',
   },
-  gitee: {
-    api: 'https://gitee.com/api/v5/repos/Doylesama007/Snode-rpg/releases/latest',
-    feed: (tag) => 'https://gitee.com/Doylesama007/Snode-rpg/releases/download/' + tag + '/',
+  github: {
+    api: mirrorConfig.GITHUB_LATEST_API,
+    feed: (tag) => 'https://github.com/Doylesama114/Snode-rpg/releases/download/' + tag + '/',
   },
 };
 
@@ -100,6 +101,17 @@ function httpsGetJson(url, opts) {
 
 function fetchLatestTag(sourceKey) {
   var source = UPDATE_SOURCES[sourceKey];
+  if (sourceKey === 'oss') {
+    return httpsGetJson(source.latestJson).then(function(data) {
+      var tag = data && data.tag;
+      if (!tag) throw new Error('无法获取镜像版本信息');
+      return {
+        tag: tag,
+        feedUrl: data.feedUrl || source.feed(tag),
+        source: sourceKey,
+      };
+    });
+  }
   return httpsGetJson(source.api).then(function(data) {
     var tag = data && data.tag_name;
     if (!tag) throw new Error('无法获取版本信息');
@@ -112,11 +124,15 @@ function checkForUpdatesViaGenericFeed(opts) {
   if (updateCheckInFlight) return Promise.resolve();
   updateCheckInFlight = true;
 
-  var order = opts.preferGitee
-    ? ['gitee', 'github']
-    : ['github', 'gitee'];
+  var preferMirror = !!(opts.preferMirror || opts.preferGitee);
+  var order = preferMirror
+    ? ['oss', 'github']
+    : ['github', 'oss'];
 
-  sendUpdateStatus({ status: 'checking', message: opts.preferGitee ? '正在从镜像源检查更新...' : '正在检查更新...' });
+  sendUpdateStatus({
+    status: 'checking',
+    message: preferMirror ? '正在从国内镜像检查更新...' : '正在检查更新...',
+  });
 
   function trySource(index) {
     if (index >= order.length) {
@@ -174,9 +190,13 @@ ipcMain.on('check-update', () => {
   checkForUpdatesViaGenericFeed({ preferGitee: false });
 });
 
-// IPC: 镜像更新 — 优先 Gitee，失败回退 GitHub
+// IPC: 镜像更新 — 优先阿里云 OSS，失败回退 GitHub
 ipcMain.on('check-update-gitee', () => {
-  checkForUpdatesViaGenericFeed({ preferGitee: true });
+  checkForUpdatesViaGenericFeed({ preferMirror: true });
+});
+
+ipcMain.on('check-update-mirror', () => {
+  checkForUpdatesViaGenericFeed({ preferMirror: true });
 });
 
 // IPC: 手动重启
@@ -451,12 +471,16 @@ function createWindow() {
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
+    if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) return;
     if (url.includes('poker-game')) return; // allow poker-game internal navigation
     if (!url.startsWith('file://')) event.preventDefault();
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) {
+      return { action: 'allow' };
+    }
+    if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) {
       return { action: 'allow' };
     }
     return { action: 'deny' };

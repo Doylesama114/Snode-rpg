@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7088',
+    date: '2026-07-09',
+    changes: [
+      '国内镜像阿里云OSS',
+      'release.yml mirror-oss',
+      'Electron镜像下载优先OSS'
+    ]
+  },
+
+
+  {
     version: '1.0.7087',
     date: '2026-07-09',
     changes: [

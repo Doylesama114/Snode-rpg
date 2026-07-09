@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   checkUpdate: () => ipcRenderer.send('check-update'),
-  checkUpdateGitee: () => ipcRenderer.send('check-update-gitee'),
+  checkUpdateGitee: () => ipcRenderer.send('check-update-mirror'),
+  checkUpdateMirror: () => ipcRenderer.send('check-update-mirror'),
   restart: () => ipcRenderer.send('restart-app'),
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (_event, data) => callback(data));

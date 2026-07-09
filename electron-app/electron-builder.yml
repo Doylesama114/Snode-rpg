@@ -5,6 +5,7 @@ directories:
 files:
   - main.js
   - preload.js
+  - update-mirror-config.js
   - advisor-env-bootstrap.js
   - package.json
   - spawn_monkey_patch.js
