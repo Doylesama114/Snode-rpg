@@ -2,20 +2,20 @@
   "meta": {
     "version": "2.1.0",
     "generatedAt": "2026-07-09",
-    "structuredCount": 29,
+    "structuredCount": 32,
     "candidateCount": 443,
-    "pendingCount": 410,
+    "pendingCount": 406,
     "duplicateSkillNames": 185
   },
   "stats": {
-    "structured": 29,
+    "structured": 32,
     "pendingByTier": {
       "A": 0,
-      "B": 11,
+      "B": 7,
       "C": 390,
       "D": 9
     },
-    "pendingTotal": 410
+    "pendingTotal": 406
   },
   "duplicateNames": [
     {
@@ -792,35 +792,6 @@
         "structured": false
       },
       {
-        "id": "凶蛮无羁|蛮斗士",
-        "name": "凶蛮无羁",
-        "className": "蛮斗士",
-        "tier": "B",
-        "kind": "ac",
-        "indexFile": "barbarian_index.json",
-        "tierLabel": "五阶",
-        "style": "狂暴",
-        "hit": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "ac": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "rollModifier": {
-          "advantage": false,
-          "disadvantage": false
-        },
-        "targetAcDebuff": {
-          "flats": []
-        },
-        "summarySnippet": "如果你在一个自身回合中通过自身能力损失过生命值，那么恢复你在本回合中失去的所有动作，并且你的位移不会触发借机攻击 L12: 触发凶蛮无羁的回合还能够忽视敌方角色的2点防御等级",
-        "structured": false
-      },
-      {
         "id": "讨债者|游荡者",
         "name": "讨债者",
         "className": "游荡者",
@@ -963,107 +934,6 @@
           "flats": []
         },
         "summarySnippet": "你做出对应施法手势，念出法咒令自身如水波般扭曲，接着真身从另一处水面浮现 随后你可以使自身跃迁至视野范围内的一处水源或相邻位置上，如果当前视野范围内不存在水源，那么你仅能够跃迁至原先相邻的一个位置上 水域镜像的防御等级与你相同，拥有等同于你",
-        "structured": false
-      },
-      {
-        "id": "混乱箭|术士",
-        "name": "混乱箭",
-        "className": "术士",
-        "tier": "B",
-        "kind": "ac",
-        "indexFile": "sorcerer_index.json",
-        "tierLabel": "一阶",
-        "style": "潜能",
-        "hit": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "ac": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "rollModifier": {
-          "advantage": false,
-          "disadvantage": false
-        },
-        "targetAcDebuff": {
-          "flats": []
-        },
-        "summarySnippet": "你用一只未持有物件的手在空中绘出红色和绿色交织的倒五芒星形符号、并念诵法咒从那只手中发射出一道不断变化着颜色的混乱箭 随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型： ·D1：火焰 ·D2：雷电 ·D3：强酸 ·D4：暗影 ·D5：剧",
-        "structured": false
-      },
-      {
-        "id": "皮匠工具大师|通用天赋树",
-        "name": "皮匠工具大师",
-        "className": "通用天赋树",
-        "tier": "B",
-        "kind": "ac",
-        "indexFile": "universal_index.json",
-        "tierLabel": "四阶",
-        "style": "",
-        "hit": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "ac": {
-          "flats": [
-            {
-              "value": 1,
-              "snippet": "防御等级+1"
-            },
-            {
-              "value": 1,
-              "snippet": "防御等级+1"
-            }
-          ],
-          "milestones": [],
-          "conditionals": [
-            {
-              "value": 1,
-              "snippet": "当前水准的最大值检定结果 你制作的皮甲和兽皮家防御等级+1"
-            }
-          ]
-        },
-        "rollModifier": {
-          "advantage": false,
-          "disadvantage": false
-        },
-        "targetAcDebuff": {
-          "flats": []
-        },
-        "summarySnippet": "你获得1点制皮的专业熟练度，允许以此突破角色的熟练度上限 你在使用皮匠工具时无需进行对应检定，视作你通过一次符合你当前水准的最大值检定结果 你制作的皮甲和兽皮家防御等级+1",
-        "structured": false
-      },
-      {
-        "id": "混乱箭|魔契师",
-        "name": "混乱箭",
-        "className": "魔契师",
-        "tier": "B",
-        "kind": "ac",
-        "indexFile": "warlock_index.json",
-        "tierLabel": "一阶",
-        "style": "邪念",
-        "hit": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "ac": {
-          "flats": [],
-          "milestones": [],
-          "conditionals": []
-        },
-        "rollModifier": {
-          "advantage": false,
-          "disadvantage": false
-        },
-        "targetAcDebuff": {
-          "flats": []
-        },
-        "summarySnippet": "你用一只未持有物件的手在空中绘出红色和绿色交织的倒五芒星形符号、并念诵法咒从那只手中发射出一道不断变化着颜色的混乱箭 随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型： ·D1：火焰 ·D2：雷电 ·D3：强酸 ·D4：暗影 ·D5：剧",
         "structured": false
       },
       {
@@ -13827,7 +13697,7 @@
         "flats": []
       },
       "summarySnippet": "如果你在一个自身回合中通过自身能力损失过生命值，那么恢复你在本回合中失去的所有动作，并且你的位移不会触发借机攻击 L12: 触发凶蛮无羁的回合还能够忽视敌方角色的2点防御等级",
-      "structured": false
+      "structured": true
     },
     {
       "id": "电爆法球|蛮斗士",
@@ -22242,7 +22112,7 @@
         "flats": []
       },
       "summarySnippet": "你用一只未持有物件的手在空中绘出红色和绿色交织的倒五芒星形符号、并念诵法咒从那只手中发射出一道不断变化着颜色的混乱箭 随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型： ·D1：火焰 ·D2：雷电 ·D3：强酸 ·D4：暗影 ·D5：剧",
-      "structured": false
+      "structured": true
     },
     {
       "id": "魔能翻涌|术士",
@@ -23642,7 +23512,7 @@
         "flats": []
       },
       "summarySnippet": "你获得1点制皮的专业熟练度，允许以此突破角色的熟练度上限 你在使用皮匠工具时无需进行对应检定，视作你通过一次符合你当前水准的最大值检定结果 你制作的皮甲和兽皮家防御等级+1",
-      "structured": false
+      "structured": true
     },
     {
       "id": "易容工具大师|通用天赋树",
@@ -24309,7 +24179,7 @@
         "flats": []
       },
       "summarySnippet": "你用一只未持有物件的手在空中绘出红色和绿色交织的倒五芒星形符号、并念诵法咒从那只手中发射出一道不断变化着颜色的混乱箭 随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型： ·D1：火焰 ·D2：雷电 ·D3：强酸 ·D4：暗影 ·D5：剧",
-      "structured": false
+      "structured": true
     },
     {
       "id": "腐蚀术|魔契师",

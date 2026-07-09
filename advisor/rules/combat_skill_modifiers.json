@@ -1,9 +1,9 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.8.0",
-    "source": "advisor/skills/*_index.json（7086 appliesTo + Tier-A 收尾）",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮", "精准射击", "远效射击", "奥术装备", "疾言厉色", "法术偏斜", "破邪战旗", "山岭之护", "力量报偿", "辅助瞄准镜", "腐蚀术", "荒野医疗", "独行伙伴", "奥术矩阵屏障（图纸）"]
+    "version": "1.9.0",
+    "source": "advisor/skills/*_index.json（7087 Tier-B 条件修饰符）",
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮", "精准射击", "远效射击", "奥术装备", "疾言厉色", "法术偏斜", "破邪战旗", "山岭之护", "力量报偿", "辅助瞄准镜", "腐蚀术", "荒野医疗", "独行伙伴", "奥术矩阵屏障（图纸）", "皮匠工具大师", "凶蛮无羁", "混乱箭"]
   },
   "skills": {
     "魔法武器": {
@@ -208,6 +208,26 @@
       "conditionalAcModifier": { "queryHint": "施法攻击", "value": 2 },
       "note": "持有者承受正面方向施法攻击时防御等级+2",
       "source": "artificer_index · 奥术矩阵屏障 summary"
+    },
+    "皮匠工具大师": {
+      "className": "通用天赋树",
+      "acModifier": { "base": 0 },
+      "conditionalAcModifier": { "queryHint": "皮甲", "value": 1 },
+      "note": "制作的皮甲和兽皮甲防御等级+1",
+      "source": "universal_index · 皮匠工具大师 summary"
+    },
+    "凶蛮无羁": {
+      "className": "蛮斗士",
+      "targetAcModifier": { "base": 0, "milestones": { "L12": -2 } },
+      "note": "L12 触发凶蛮无羁的回合忽视敌方角色 2 点防御等级",
+      "source": "barbarian_index · 凶蛮无羁 summary"
+    },
+    "混乱箭": {
+      "className": "术士",
+      "hitModifier": { "base": 0 },
+      "conditionalHitModifier": { "queryHint": "额外花费主要动作", "value": 4 },
+      "note": "额外花费主要动作时混乱箭获得+4法术命中值",
+      "source": "sorcerer_index · 混乱箭 summary"
     }
   }
 }

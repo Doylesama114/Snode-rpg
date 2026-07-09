@@ -26,7 +26,7 @@ function skillExistsInIndexes(name) {
 }
 
 function main() {
-  console.log('=== validate-advisor-combat-modifiers (7086) ===\n');
+  console.log('=== validate-advisor-combat-modifiers (7087) ===\n');
   const doc = loadJson(MOD_PATH);
   const skills = doc.skills || {};
   let failed = 0;
@@ -50,7 +50,7 @@ function main() {
     console.log(`✓ ${name} ← ${src} (${hasHit ? 'hit' : ''}${hasHit && hasAc ? '+' : ''}${hasAc ? 'ac' : ''})`);
   }
 
-  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌', '枪影如林·极', '酩酊大醉', '石木树皮', '精准射击', '远效射击', '奥术装备', '疾言厉色', '法术偏斜', '破邪战旗', '山岭之护', '力量报偿', '辅助瞄准镜', '腐蚀术', '荒野医疗', '独行伙伴', '奥术矩阵屏障（图纸）'];
+  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌', '枪影如林·极', '酩酊大醉', '石木树皮', '精准射击', '远效射击', '奥术装备', '疾言厉色', '法术偏斜', '破邪战旗', '山岭之护', '力量报偿', '辅助瞄准镜', '腐蚀术', '荒野医疗', '独行伙伴', '奥术矩阵屏障（图纸）', '皮匠工具大师', '凶蛮无羁', '混乱箭'];
   for (const id of expected) {
     if (!skills[id]) {
       failed += 1;
@@ -58,7 +58,7 @@ function main() {
     }
   }
 
-  console.log(`\n7086 combat modifiers corpus: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
+  console.log(`\n7087 combat modifiers corpus: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
   if (!failed) {
     console.log('✓ scan module advisor-combat-modifiers-scan.mjs');
     console.log('✓ bulk script build-advisor-combat-modifiers-from-scan.mjs');

@@ -28,7 +28,7 @@ function check(label, ok, detail) {
   }
 }
 
-console.log('=== validate-advisor-combat-scan (7086) ===\n');
+console.log('=== validate-advisor-combat-scan (7087) ===\n');
 
 check('extractHitSignals milestones', (() => {
   const s = extractHitSignals('L3: 瞄准射击改为本次攻击命中检定值+3 L6: 瞄准射击改为本次攻击命中检定值+5');
@@ -58,13 +58,14 @@ const report = scanCombatModifierCandidates();
 writeCombatModifierScanReport(report, DEFAULT_REPORT_PATH);
 
 check('report file written', fs.existsSync(DEFAULT_REPORT_PATH));
-check('structured count >= 29', report.meta.structuredCount >= 29, `got ${report.meta.structuredCount}`);
+check('structured count >= 32', report.meta.structuredCount >= 32, `got ${report.meta.structuredCount}`);
 check('total candidates >= 40', report.meta.candidateCount >= 40, `got ${report.meta.candidateCount}`);
 check('pending tier-A <= 0', report.stats.pendingByTier.A <= 0, `got ${report.stats.pendingByTier.A}`);
-check('pending tier-B >= 10', report.stats.pendingByTier.B >= 10, `got ${report.stats.pendingByTier.B}`);
+check('pending tier-B <= 8', report.stats.pendingByTier.B <= 8, `got ${report.stats.pendingByTier.B}`);
+check('pending tier-B >= 5', report.stats.pendingByTier.B >= 5, `got ${report.stats.pendingByTier.B}`);
 check('duplicate name tracking', report.duplicateNames.some((d) => d.name === '瞄准射击' || d.name === '蓄力劲射'));
 
-console.log(`\n7086 scan-v2.1: ${report.stats.pendingByTier.A} Tier-A · ${report.stats.pendingByTier.B} Tier-B · ${report.stats.pendingByTier.C} Tier-C · ${report.stats.pendingByTier.D} Tier-D pending`);
+console.log(`\n7087 scan-v2.1: ${report.stats.pendingByTier.A} Tier-A · ${report.stats.pendingByTier.B} Tier-B · ${report.stats.pendingByTier.C} Tier-C · ${report.stats.pendingByTier.D} Tier-D pending`);
 console.log(`Report: ${path.relative(path.join(__dirname, '..'), DEFAULT_REPORT_PATH)}`);
 
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);

@@ -416,5 +416,14 @@ check('solo partner companion +6', soloPartner.totalHitBonus === 6 && soloPartne
 const matrixBarrier = resolveAcScenario(parseAcScenarioFromQuery('持有者敏捷调整值+2未穿护甲生成奥术矩阵屏障（图纸）承受正面施法攻击护甲值是多少'));
 check('matrix barrier holder AC 14', matrixBarrier.totalAc === 14 && matrixBarrier.components.some((c) => c.source === '奥术矩阵屏障（图纸）'));
 
+const leatherMaster = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2穿着皮甲开启皮匠工具大师护甲值是多少'));
+check('leather master AC 14', leatherMaster.totalAc === 14 && leatherMaster.components.some((c) => c.source === '皮匠工具大师'));
+
+const savageUnbound = resolveAcScenario(parseAcScenarioFromQuery('目标敏捷调整值+2穿着皮甲受到L12凶蛮无羁攻击，防御等级是多少'));
+check('savage unbound target AC 11', savageUnbound.totalAc === 11 && savageUnbound.targetDebuffFlat === -2);
+
+const chaosArrow = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点法器熟练远程攻击额外花费主要动作施展混乱箭法术命中加值是多少'));
+check('chaos arrow +7 conditional', chaosArrow.totalHitBonus === 7 && chaosArrow.components.some((c) => c.source === '混乱箭' && c.value === 4));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

@@ -443,6 +443,27 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "ac-leather-master",
+      "query": "敏捷调整值+2穿着皮甲开启皮匠工具大师护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "皮匠工具大师", "14", "皮甲"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "target-ac-savage-unbound",
+      "query": "目标敏捷调整值+2穿着皮甲受到L12凶蛮无羁攻击，防御等级是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "凶蛮无羁", "11", "目标 AC debuff"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-chaos-arrow",
+      "query": "敏捷调整值+2有一点法器熟练远程攻击额外花费主要动作施展混乱箭法术命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "混乱箭", "+7", "额外花费主要动作"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

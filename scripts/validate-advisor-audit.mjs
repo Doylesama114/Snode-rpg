@@ -516,6 +516,25 @@ const CASES = [
     query: '持有者敏捷调整值+2未穿护甲生成奥术矩阵屏障（图纸）承受正面施法攻击护甲值是多少',
     expectInContext: ['护甲值演算', '奥术矩阵屏障', '14', '持有者'],
   },
+  // --- 7087 batch23 Tier-B conditional bulk ---
+  {
+    id: 'extra-ac-leather-master',
+    category: 'combat_math',
+    query: '敏捷调整值+2穿着皮甲开启皮匠工具大师护甲值是多少',
+    expectInContext: ['护甲值演算', '皮匠工具大师', '14', '皮甲'],
+  },
+  {
+    id: 'extra-target-ac-savage-unbound',
+    category: 'combat_math',
+    query: '目标敏捷调整值+2穿着皮甲受到L12凶蛮无羁攻击，防御等级是多少',
+    expectInContext: ['护甲值演算', '凶蛮无羁', '11', '目标 AC debuff'],
+  },
+  {
+    id: 'extra-combat-chaos-arrow',
+    category: 'combat_math',
+    query: '敏捷调整值+2有一点法器熟练远程攻击额外花费主要动作施展混乱箭法术命中加值是多少',
+    expectInContext: ['战斗命中演算', '混乱箭', '+7', '额外花费主要动作'],
+  },
 ];
 
 function corpusHas(store, term) {
@@ -816,6 +835,18 @@ function classifyGap(c, ctxScore, store) {
     return r.intent === 'combat_math' && ctx.includes('奥术矩阵屏障') && ctx.includes('14') && ctx.includes('持有者')
       ? 'OK' : 'ENGINE_GAP';
   }
+  if (c.id === 'extra-ac-leather-master') {
+    return r.intent === 'combat_math' && ctx.includes('皮匠工具大师') && ctx.includes('14') && ctx.includes('皮甲')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'extra-target-ac-savage-unbound') {
+    return r.intent === 'combat_math' && ctx.includes('凶蛮无羁') && ctx.includes('11') && ctx.includes('目标 AC debuff')
+      ? 'OK' : 'ENGINE_GAP';
+  }
+  if (c.id === 'extra-combat-chaos-arrow') {
+    return r.intent === 'combat_math' && ctx.includes('混乱箭') && ctx.includes('+7') && ctx.includes('额外花费主要动作')
+      ? 'OK' : 'ENGINE_GAP';
+  }
 
   const corpusChecks = c.expectInContext.map((term) => ({
     term,
@@ -903,6 +934,7 @@ const BATCH18_IDS = new Set(['extra-combat-gun-forest-extreme', 'extra-ac-drunke
 const BATCH19_IDS = new Set(['extra-combat-long-range-shot', 'extra-ac-spell-deflect', 'extra-ac-banner-evil']);
 const BATCH20_IDS = new Set(['extra-combat-aim-scope-adv', 'extra-combat-power-boon-adv', 'extra-target-ac-corrosion']);
 const BATCH21_IDS = new Set(['extra-target-ac-wilderness-medicine', 'extra-combat-companion-solo-partner', 'extra-ac-matrix-barrier']);
+const BATCH22_IDS = new Set(['extra-ac-leather-master', 'extra-target-ac-savage-unbound', 'extra-combat-chaos-arrow']);
 
 console.log(`\nNon-OK cases: ${failures}/${CASES.length}`);
 console.log(`Audit cases total: ${CASES.length} (target ≥30)`);
@@ -927,6 +959,7 @@ const batch18Failed = rows.filter((r) => BATCH18_IDS.has(r.id) && r.gap !== 'OK'
 const batch19Failed = rows.filter((r) => BATCH19_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch20Failed = rows.filter((r) => BATCH20_IDS.has(r.id) && r.gap !== 'OK').length;
 const batch21Failed = rows.filter((r) => BATCH21_IDS.has(r.id) && r.gap !== 'OK').length;
+const batch22Failed = rows.filter((r) => BATCH22_IDS.has(r.id) && r.gap !== 'OK').length;
 console.log(`7065 batch1 must-pass: ${BATCH1_IDS.size - batch1Failed}/${BATCH1_IDS.size}`);
 console.log(`7066 batch2 must-pass: ${BATCH2_IDS.size - batch2Failed}/${BATCH2_IDS.size}`);
 console.log(`7067 batch3 must-pass: ${BATCH3_IDS.size - batch3Failed}/${BATCH3_IDS.size}`);
@@ -948,6 +981,7 @@ console.log(`7082 batch18 must-pass: ${BATCH18_IDS.size - batch18Failed}/${BATCH
 console.log(`7084 batch19 must-pass: ${BATCH19_IDS.size - batch19Failed}/${BATCH19_IDS.size}`);
 console.log(`7085 batch20 must-pass: ${BATCH20_IDS.size - batch20Failed}/${BATCH20_IDS.size}`);
 console.log(`7086 batch21 must-pass: ${BATCH21_IDS.size - batch21Failed}/${BATCH21_IDS.size}`);
+console.log(`7087 batch22 must-pass: ${BATCH22_IDS.size - batch22Failed}/${BATCH22_IDS.size}`);
 
 const categoryIds = {};
 for (const c of CASES) {
@@ -958,7 +992,7 @@ console.log(`Categories covered: ${Object.keys(categoryIds).length} types, min p
 if (
   batch1Failed > 0 || batch2Failed > 0 || batch3Failed > 0 || batch4Failed > 0
   || batch5Failed > 0 || batch6Failed > 0 || batch7Failed > 0 || batch8Failed > 0 || batch9Failed > 0
-  || batch10Failed > 0 || batch11Failed > 0   || batch12Failed > 0   || batch13Failed > 0 || batch14Failed > 0 || batch15Failed > 0 || batch16Failed > 0 || batch17Failed > 0 || batch18Failed > 0 || batch19Failed > 0 || batch20Failed > 0 || batch21Failed > 0
+  || batch10Failed > 0 || batch11Failed > 0   || batch12Failed > 0   || batch13Failed > 0 || batch14Failed > 0 || batch15Failed > 0 || batch16Failed > 0 || batch17Failed > 0 || batch18Failed > 0 || batch19Failed > 0 || batch20Failed > 0 || batch21Failed > 0 || batch22Failed > 0
 ) process.exitCode = 1;
 else if (failures > 0) {
   console.log('(其余失败项为 7072+ 计划范围，不阻断 CI)');

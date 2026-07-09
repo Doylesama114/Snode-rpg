@@ -348,14 +348,14 @@ LLM
 - `requiresReaction`；语料 16→23；`build-advisor-combat-modifiers-from-scan.mjs`
 - Golden + CI batch19 must-pass（远效射击 +10 · 法术偏斜 AC 16 · 破邪战旗 AC 14）
 
-### v1.0.7086 — appliesTo + Tier-A 收尾 + scan v2.1（P1）✓
+### v1.0.7087 — Tier-B 条件修饰符 bulk（P1）✓
 
-- `appliesTo` 引擎；语料 29 条；Tier-A pending 清零
-- Golden + CI batch21 must-pass（荒野医疗 · 独行伙伴 · 奥术矩阵屏障）
+- 皮匠工具大师 / 凶蛮无羁 / 混乱箭；`mergeTierBFromScan`；语料 32 条
+- Golden + CI batch22 must-pass
 
-### v1.0.7086+ — 后续
+### v1.0.7087+ — 后续
 
-- Tier-B 条件 bulk（眼镜蛇式 conditional）；Tier-C 优势-only 元数据入库
+- 剩余 Tier-B（高压水刃/鬼魅攻击等需新引擎字段）；Tier-D debuff bulk
 
 ## 8. Golden / CI 策略
 

@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7087',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch23 Tier-B条件修饰符',
+      'mergeTierBFromScan脚本',
+      '语料+3皮匠/凶蛮/混乱箭',
+      'Golden+CI batch22 must-pass'
+    ]
+  },
+
+
+  {
     version: '1.0.7086',
     date: '2026-07-09',
     changes: [
