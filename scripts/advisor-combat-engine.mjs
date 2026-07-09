@@ -53,6 +53,21 @@ function categoryBonusApplies(bonus, attackType) {
   return true;
 }
 
+/**
+ * Whether a structured buff applies in the current scenario (self / target / companion / holder).
+ * @param {object} sk skill modifier row
+ * @param {object} p scenario params
+ */
+function buffAppliesInScenario(sk, p) {
+  const appliesTo = sk.appliesTo || 'self';
+  const q = String(p.query || '');
+  if (appliesTo === 'self') return true;
+  if (appliesTo === 'target') return !!p.isTarget || /目标/.test(q);
+  if (appliesTo === 'companion') return /野兽伙伴|伙伴攻击|伙伴/.test(q);
+  if (appliesTo === 'holder') return /持有者|矩阵|奥术矩阵/.test(q);
+  return true;
+}
+
 function parseTargetDebuffsFromQuery(query) {
   const q = String(query || '');
   if (!/目标/.test(q)) return [];
@@ -130,6 +145,7 @@ function resolveAcBuffComponents(p, skillMods) {
   for (const buffName of p.activeBuffs || []) {
     const sk = skillMods.skills?.[buffName];
     if (!sk?.acModifier) continue;
+    if (!buffAppliesInScenario(sk, p)) continue;
     if (sk.requiresHeavyArmor && p.armorKey !== 'plate_18') continue;
     if (sk.requiresReaction && !/反应动作/.test(p.query || '')) continue;
     let acFlat = sk.acModifier.base ?? 0;
@@ -151,6 +167,7 @@ function resolveAcBuffComponents(p, skillMods) {
         type: 'buff_ac',
         value: acFlat,
         detail: sk.note || `防御等级+${acFlat}`,
+        appliesTo: sk.appliesTo || 'self',
       });
       flat += acFlat;
     }
@@ -439,6 +456,13 @@ export function formatAcScenarioText(result) {
   if (result.params?.isTarget && result.targetDebuffFlat) {
     lines.push(`- 目标 AC debuff 合计：${result.targetDebuffFlat}（腐蚀术等；作用于目标防御等级）`);
   }
+  const targetBuffs = (result.components || []).filter((c) => c.type === 'buff_ac' && c.appliesTo && c.appliesTo !== 'self');
+  if (targetBuffs.length) {
+    lines.push(`- **appliesTo 联动**：${targetBuffs.map((c) => `${c.source}→${c.appliesTo}`).join('、')}`);
+  }
+  if (/持有者|奥术矩阵/.test(result.params?.query || '')) {
+    lines.push('- 作用于持有者（矩阵屏障等正面施法 AC buff）');
+  }
   lines.push(`- 语料：${result.sources.join('、')}`);
   lines.push('- LLM 须给出分解列表与 AC 合计；注明轻甲敏捷上限与盾牌加值。');
   return lines.join('\n');
@@ -563,6 +587,7 @@ export function resolveCombatScenario(params) {
   for (const buffName of p.activeBuffs || []) {
     const sk = skillMods.skills?.[buffName];
     if (!sk) continue;
+    if (!buffAppliesInScenario(sk, p)) continue;
     if (sk.requiresRanged && p.attackType !== 'ranged') continue;
     if (sk.requiresMelee && p.attackType === 'ranged') continue;
     if (sk.requiresReaction && !/反应动作/.test(p.query || '')) continue;
@@ -764,6 +789,10 @@ export function formatCombatScenarioText(result, opts = {}) {
         const label = r.type === 'advantage' ? '优势' : '劣势';
         lines.push(`  · ${r.source}：攻击命中检定具有**${label}**（${r.detail}）`);
       }
+    }
+    const companionHits = (result.components || []).filter((c) => c.type === 'hit' && /独行伙伴|野兽伙伴/.test(c.source));
+    if (/野兽伙伴|伙伴/.test(result.params?.query || '') && companionHits.length) {
+      lines.push(`- **appliesTo: companion**（${companionHits.map((c) => c.source).join('、')}；作用于野兽伙伴攻击）`);
     }
   }
 

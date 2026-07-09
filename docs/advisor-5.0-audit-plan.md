@@ -348,14 +348,14 @@ LLM
 - `requiresReaction`；语料 16→23；`build-advisor-combat-modifiers-from-scan.mjs`
 - Golden + CI batch19 must-pass（远效射击 +10 · 法术偏斜 AC 16 · 破邪战旗 AC 14）
 
-### v1.0.7085 — 优势/劣势 + 目标 AC debuff（P1）✓
+### v1.0.7086 — appliesTo + Tier-A 收尾 + scan v2.1（P1）✓
 
-- `hitRollModifier` · `targetAcModifier`；语料 26 条
-- Golden + CI batch20 must-pass（辅助瞄准镜 · 力量报偿 · 腐蚀术）
+- `appliesTo` 引擎；语料 29 条；Tier-A pending 清零
+- Golden + CI batch21 must-pass（荒野医疗 · 独行伙伴 · 奥术矩阵屏障）
 
-### v1.0.7085+ — 后续
+### v1.0.7086+ — 后续
 
-- Tier-C 优势-only 元数据；扫描识别 hitRoll/targetAc 模式；剩余 Tier-A 跳过项（荒野医疗/独行伙伴/奥术矩阵）
+- Tier-B 条件 bulk（眼镜蛇式 conditional）；Tier-C 优势-only 元数据入库
 
 ## 8. Golden / CI 策略
 

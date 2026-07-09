@@ -51,6 +51,10 @@ const TIER_D_MARKERS = [
   /失去\d+点防御等级/,
 ];
 
+const ROLL_ADV_RE = /攻击命中检定[^·]{0,24}具有优势|命中检定[^·]{0,16}具有优势|具有优势/;
+const ROLL_DIS_RE = /攻击命中检定[^·]{0,24}具有劣势|命中检定[^·]{0,16}具有劣势|具有劣势/;
+const TARGET_AC_DEBUFF_RE = /目标的?防御等级-(\d+)/g;
+
 const TIER_B_MARKERS = [
   /如果.+?(?:改为|那么).+?(?:命中检定值|防御等级)/,
   /处于.+?状态.+?(?:改为|那么).+?(?:命中|防御等级)/,
@@ -132,6 +136,31 @@ export function extractAcSignals(summary) {
 
 /**
  * @param {string} summary
+ */
+export function extractRollModifierSignals(summary) {
+  const text = String(summary || '');
+  return {
+    advantage: ROLL_ADV_RE.test(text),
+    disadvantage: ROLL_DIS_RE.test(text),
+  };
+}
+
+/**
+ * @param {string} summary
+ */
+export function extractTargetAcDebuffSignals(summary) {
+  const text = String(summary || '');
+  const flats = [];
+  TARGET_AC_DEBUFF_RE.lastIndex = 0;
+  let m;
+  while ((m = TARGET_AC_DEBUFF_RE.exec(text)) !== null) {
+    flats.push({ value: -Number(m[1]), snippet: m[0] });
+  }
+  return { flats };
+}
+
+/**
+ * @param {string} summary
  * @param {{ hit: ReturnType<typeof extractHitSignals>, ac: ReturnType<typeof extractAcSignals> }} signals
  */
 export function classifyModifierTier(summary, signals) {
@@ -162,6 +191,8 @@ export function analyzeSkillCandidate(sk, indexFile) {
   const summary = sk.summary || '';
   const hit = extractHitSignals(summary);
   const ac = extractAcSignals(summary);
+  const rollModifier = extractRollModifierSignals(summary);
+  const targetAcDebuff = extractTargetAcDebuffSignals(summary);
   const tier = classifyModifierTier(summary, { hit, ac });
   if (!tier) return null;
 
@@ -180,6 +211,8 @@ export function analyzeSkillCandidate(sk, indexFile) {
     style: sk.style || '',
     hit,
     ac,
+    rollModifier,
+    targetAcDebuff,
     summarySnippet: summary.slice(0, 120),
   };
 }
@@ -215,7 +248,7 @@ export function scanCombatModifierCandidates(options = {}) {
 
   return {
     meta: {
-      version: '2.0.0',
+      version: '2.1.0',
       generatedAt: new Date().toISOString().slice(0, 10),
       structuredCount: structuredNames.size,
       candidateCount: allCandidates.length,

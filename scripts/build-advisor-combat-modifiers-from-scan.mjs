@@ -3,7 +3,8 @@
  * Advisor 5.0 batch20 (7084) — merge Tier-A scan candidates into combat_skill_modifiers.json.
  * Run: node scripts/build-advisor-combat-modifiers-from-scan.mjs [--dry-run]
  *
- * Skips target/summon-only buffs (荒野医疗, 独行伙伴, 奥术矩阵屏障).
+ * Advisor 5.0 batch22 (7086) — merge Tier-A scan candidates into combat_skill_modifiers.json.
+ * Skips were: 荒野医疗/独行伙伴/奥术矩阵 — now structured via appliesTo (7086).
  */
 import fs from 'fs';
 import path from 'path';

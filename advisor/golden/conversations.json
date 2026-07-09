@@ -422,6 +422,27 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "target-ac-wilderness-medicine",
+      "query": "目标敏捷调整值+2未穿护甲施展荒野医疗野钢花护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "荒野医疗", "14", "appliesTo"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-companion-solo-partner",
+      "query": "野兽伙伴力量调整值+3有一点剑类熟练近战攻击开启独行伙伴命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "独行伙伴", "+6", "appliesTo"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-matrix-barrier",
+      "query": "持有者敏捷调整值+2未穿护甲生成奥术矩阵屏障（图纸）承受正面施法攻击护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "奥术矩阵屏障", "14", "持有者"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

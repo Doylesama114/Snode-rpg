@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7086',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch22 appliesTo+Tier-A收尾',
+      '扫描v2.1优势/目标AC信号',
+      '语料+3荒野医疗/独行伙伴/奥术矩阵',
+      'Golden+CI batch21 must-pass'
+    ]
+  },
+
+
+  {
     version: '1.0.7085',
     date: '2026-07-09',
     changes: [

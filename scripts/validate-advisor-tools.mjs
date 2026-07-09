@@ -407,5 +407,14 @@ check('power boon +4 advantage', powerBoon.totalHitBonus === 4 && powerBoon.roll
 const targetCorrosion = resolveAcScenario(parseAcScenarioFromQuery('目标穿着重甲受到腐蚀术，防御等级是多少'));
 check('target corrosion AC 13', targetCorrosion.totalAc === 13 && targetCorrosion.targetDebuffFlat === -5);
 
+const wildMed = resolveAcScenario(parseAcScenarioFromQuery('目标敏捷调整值+2未穿护甲施展荒野医疗野钢花护甲值是多少'));
+check('wilderness medicine target AC 14', wildMed.totalAc === 14 && wildMed.components.some((c) => c.source === '荒野医疗'));
+
+const soloPartner = resolveCombatScenario(parseCombatScenarioFromQuery('野兽伙伴力量调整值+3有一点剑类熟练近战攻击开启独行伙伴命中加值是多少'));
+check('solo partner companion +6', soloPartner.totalHitBonus === 6 && soloPartner.components.some((c) => c.source === '独行伙伴'));
+
+const matrixBarrier = resolveAcScenario(parseAcScenarioFromQuery('持有者敏捷调整值+2未穿护甲生成奥术矩阵屏障（图纸）承受正面施法攻击护甲值是多少'));
+check('matrix barrier holder AC 14', matrixBarrier.totalAc === 14 && matrixBarrier.components.some((c) => c.source === '奥术矩阵屏障（图纸）'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);
