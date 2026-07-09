@@ -320,7 +320,13 @@ LLM
 - 分类器 `build_review` 与 `build_roadmap` 拆分；`isPanelRoadmapQuery` 排除评价问句
 - Golden + CI batch15 must-pass（魔剑士评价 · 快照 Tools · 牧师评价）
 
-### v1.0.7080+ — 后续
+### v1.0.7080 — 战斗 Phase 5 + build_review 无 kit（P1）✓
+
+- `combat_skill_modifiers.json` 扩展蓄力劲射/树皮术/眼镜蛇射击；`conditionalHitModifier` 条件命中
+- `suggestSkillsFromCatalog()` L2 流派抽样回退；`sampleSkillsForStyle` 导出复用
+- Golden + CI batch16 must-pass（蓄力劲射 +10 · 树皮术 AC 13 · 眼镜蛇中毒 +12）
+
+### v1.0.7081+ — 后续
 
 ## 8. Golden / CI 策略
 

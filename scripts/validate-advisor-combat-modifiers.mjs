@@ -26,7 +26,7 @@ function skillExistsInIndexes(name) {
 }
 
 function main() {
-  console.log('=== validate-advisor-combat-modifiers (7078) ===\n');
+  console.log('=== validate-advisor-combat-modifiers (7080) ===\n');
   const doc = loadJson(MOD_PATH);
   const skills = doc.skills || {};
   let failed = 0;
@@ -48,15 +48,15 @@ function main() {
     console.log(`✓ ${name} ← ${src} (${hasHit ? 'hit' : ''}${hasHit && hasAc ? '+' : ''}${hasAc ? 'ac' : ''})`);
   }
 
-  const expected = ['守护刻印', '穿透射击', '硬化铠甲'];
+  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击'];
   for (const id of expected) {
     if (!skills[id]) {
       failed += 1;
-      console.log(`✗ batch14 missing skill entry: ${id}`);
+      console.log(`✗ batch16 missing skill entry: ${id}`);
     }
   }
 
-  console.log(`\n7078 combat modifiers: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
+  console.log(`\n7080 combat modifiers: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
   if (failed) process.exit(1);
 }
 

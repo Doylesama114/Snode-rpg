@@ -496,6 +496,10 @@ export function resolveCombatScenario(params) {
 
     const hitBase = sk.hitModifier?.base ?? 0;
     let hitFlat = hitBase;
+    const cond = sk.conditionalHitModifier;
+    if (cond?.queryHint && p.query?.includes(cond.queryHint)) {
+      hitFlat = cond.value ?? hitFlat;
+    }
     const ms = sk.hitModifier?.milestones || {};
     const ml = p.milestoneLevel;
     if (ml != null) {

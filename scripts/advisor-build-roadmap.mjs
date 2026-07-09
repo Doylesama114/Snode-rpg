@@ -336,7 +336,7 @@ function skillTier(s) {
   return s.tier || (s.type === 'starting' ? '起手' : '-');
 }
 
-function sampleSkillsForStyle(store, className, style, band, limit = 4) {
+export function sampleSkillsForStyle(store, className, style, band, limit = 4) {
   const tiers = TIER_BY_BAND[band] || TIER_BY_BAND.early;
   const skills = getSkillsForClass(store, className).filter((s) => {
     const tier = skillTier(s);

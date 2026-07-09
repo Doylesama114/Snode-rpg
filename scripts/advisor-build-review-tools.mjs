@@ -7,6 +7,8 @@ import {
   analyzeSnapshotGeneric,
   isBuildReviewQuery,
   ROADMAP_DISCLAIMER,
+  getBuildPhaseBand,
+  sampleSkillsForStyle,
 } from './advisor-build-roadmap.mjs';
 import {
   analyzeSnapshot,
@@ -88,6 +90,51 @@ function suggestSkillsFromKit(snapshot, kit, goal, store, learnableTiers) {
 }
 
 /**
+ * L2 style sampling when no build kit matches (7080 batch16).
+ * @param {object} snapshot
+ * @param {object} store
+ * @param {string[]} learnableTiers
+ */
+function suggestSkillsFromCatalog(snapshot, store, learnableTiers) {
+  const learned = new Set(
+    (snapshot.skills || []).map((s) => (typeof s === 'string' ? s : s.name)).filter(Boolean),
+  );
+  const suggestions = [];
+
+  for (const cls of snapshot.classes || []) {
+    if (!cls.name || !cls.level) continue;
+    const band = getBuildPhaseBand(cls.level);
+    const styles = (cls.styles || []).filter(Boolean);
+    const styleList = styles.length
+      ? styles
+      : [...new Set(getSkillsForClass(store, cls.name).map((s) => s.style).filter(Boolean))].slice(0, 4);
+
+    for (const style of styleList) {
+      const samples = sampleSkillsForStyle(store, cls.name, style, band, 6);
+      for (const s of samples) {
+        if (learned.has(s.name)) continue;
+        if (learnableTiers?.length && !learnableTiers.includes(s.tier)) continue;
+        suggestions.push({
+          name: s.name,
+          className: cls.name,
+          style: s.style || style,
+          tier: s.tier,
+          summary: s.summary || '',
+          reason: `${cls.name}·${style}线 · L2 抽样（无 kit 模板）`,
+        });
+      }
+    }
+  }
+
+  const seen = new Set();
+  return suggestions.filter((s) => {
+    if (seen.has(s.name)) return false;
+    seen.add(s.name);
+    return true;
+  }).slice(0, 8);
+}
+
+/**
  * @param {object} snapshot normalized L6
  * @param {{ query?: string, store?: object, goalOverride?: object|null }} [options]
  */
@@ -101,7 +148,10 @@ export function outlineBuildReview(snapshot, options = {}) {
   });
   const analysis = analyzeSnapshotGeneric(snapshot, goal, store);
   const kit = goal.kitId ? loadBuildKit(goal.kitId) : null;
-  const suggestions = suggestSkillsFromKit(snapshot, kit, goal, store, l6.learnableTiers);
+  const fromKit = suggestSkillsFromKit(snapshot, kit, goal, store, l6.learnableTiers);
+  const suggestions = fromKit.length
+    ? fromKit
+    : suggestSkillsFromCatalog(snapshot, store, l6.learnableTiers);
 
   return {
     goal,
@@ -163,7 +213,7 @@ export function formatBuildReviewToolsText(review) {
       lines.push(`  · **${s.name}**（${s.className} · ${s.style} · ${s.tier}）— ${s.reason}`);
     }
   } else {
-    lines.push('  · （kit 模板中暂无符合位阶的未学候选，请结合 L2 检索补充）');
+    lines.push('  · （暂无符合位阶的未学候选，请结合 L2 检索补充）');
   }
 
   lines.push('- LLM 须先评价现状与进阶衔接，再列 3～4 项可立即学习的技能；勿建议超出位阶的五阶及以上技能；勿把进阶与 L7 兼职混淆。');

@@ -1,10 +1,10 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.2.0",
-    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7078 扩展）",
+    "version": "1.3.0",
+    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7078/7080 扩展）",
     "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲"]
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击"]
   },
   "skills": {
     "魔法武器": {
@@ -57,6 +57,27 @@
       "acModifier": { "base": 0, "milestones": { "L12": 2 } },
       "note": "目标已穿戴重甲时 L12 防御等级+2（至多 22）",
       "source": "mage_index · 硬化铠甲 summary"
+    },
+    "蓄力劲射": {
+      "className": "猎人",
+      "requiresRanged": true,
+      "hitModifier": { "base": 5 },
+      "note": "额外花费一个主要动作的蓄力劲射；攻击命中检定值+5",
+      "source": "hunter_index · 蓄力劲射 summary"
+    },
+    "树皮术": {
+      "className": "德鲁伊",
+      "acModifier": { "base": 1 },
+      "note": "防御等级+1（无法通过此方式使防御等级到达 20）",
+      "source": "druid_index · 树皮术 summary"
+    },
+    "眼镜蛇射击": {
+      "className": "猎人",
+      "requiresRanged": true,
+      "hitModifier": { "base": 4 },
+      "conditionalHitModifier": { "queryHint": "中毒", "value": 7 },
+      "note": "攻击命中检定值+4；目标处于中毒状态时改为+7",
+      "source": "hunter_index · 眼镜蛇射击 summary"
     }
   }
 }

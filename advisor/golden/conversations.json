@@ -311,7 +311,28 @@
       "query": "怎么评价我当前的build还有什么技能适合我",
       "snapshotFile": "advisor/snapshots/mock-cleric-l6.json",
       "expectIntent": "build_review",
-      "mustInclude": ["Tools 层", "Build 评价", "牧师", "艾拉", "已学技能"],
+      "mustInclude": ["Tools 层", "Build 评价", "牧师", "艾拉", "强效治疗术", "L2 抽样"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-charged-shot",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击额外花费主要动作开启蓄力劲射命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "蓄力劲射", "+10", "弓箭类别增益"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-barkskin-unarmored",
+      "query": "敏捷调整值+2未穿护甲开启树皮术护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "树皮术", "13"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-cobra-poison",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击目标处于中毒状态开启眼镜蛇射击命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "眼镜蛇射击", "+12"],
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {

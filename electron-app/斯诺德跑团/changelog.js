@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7080',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch16 战斗Phase5修饰符',
+      'build_review无kit L2回退',
+      'conditionalHitModifier'
+    ]
+  },
+
+
+  {
     version: '1.0.7079',
     date: '2026-07-08',
     changes: [

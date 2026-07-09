@@ -355,5 +355,19 @@ const rBuildReview = retrieve('怎么评价我当前的build', { snapshot: snapM
 check('retrieve build_review tools', rBuildReview.intent === 'build_review' && !!rBuildReview.results._toolsText);
 check('context Build 评价', formatContext(rBuildReview).includes('Build 评价'));
 
+const charged = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击额外花费主要动作开启蓄力劲射命中加值是多少'));
+check('charged shot +10', charged.totalHitBonus === 10 && charged.components.some((c) => c.source === '蓄力劲射'));
+
+const barkAc = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2未穿护甲开启树皮术护甲值是多少'));
+check('barkskin AC 13', barkAc.totalAc === 13 && barkAc.components.some((c) => c.source === '树皮术'));
+
+const cobraPoison = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击目标处于中毒状态开启眼镜蛇射击命中加值是多少'));
+check('cobra poison +12', cobraPoison.totalHitBonus === 12);
+
+const reviewCleric = outlineBuildReview(snapCleric, { query: '怎么评价build', store });
+check('cleric no-kit suggestions', reviewCleric.suggestions.some((s) => s.name === '强效治疗术'));
+const rClericReview = retrieve('怎么评价我当前的build还有什么技能适合我', { snapshot: snapCleric });
+check('retrieve cleric build_review L2', rClericReview.intent === 'build_review' && formatContext(rClericReview).includes('强效治疗术'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);
