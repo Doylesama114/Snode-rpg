@@ -50,7 +50,7 @@
     "scout_12": { "base": 12, "dexCap": 2, "aliases": ["斥候轻甲"], "label": "斥候轻甲 12+敏捷（至多+2）" },
     "bear_13": { "base": 13, "dexCap": 2, "aliases": ["巨熊革甲"], "label": "巨熊革甲 13+敏捷（至多+2）" },
     "mithral_14": { "base": 14, "dexCap": 2, "aliases": ["秘银甲"], "label": "秘银甲 14+敏捷（至多+2）" },
-    "plate_18": { "base": 18, "dexCap": 0, "aliases": ["板甲"], "label": "板甲 固定 AC 18" },
+    "plate_18": { "base": 18, "dexCap": 0, "aliases": ["板甲", "重甲"], "label": "板甲/重甲 固定 AC 18" },
     "shieldBonus": 2,
     "source": "equipment_index.json + equipment_catalog_index.json（7072 MVP）"
   }

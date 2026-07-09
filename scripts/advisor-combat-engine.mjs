@@ -53,6 +53,53 @@ function categoryBonusApplies(bonus, attackType) {
   return true;
 }
 
+function parseTargetDebuffsFromQuery(query) {
+  const q = String(query || '');
+  if (!/目标/.test(q)) return [];
+  const debuffs = [];
+  for (const name of Object.keys(loadCombatSkillModifiers().skills || {})) {
+    const sk = loadCombatSkillModifiers().skills[name];
+    if (sk?.targetAcModifier && q.includes(name)) debuffs.push(name);
+  }
+  return debuffs;
+}
+
+/**
+ * @param {object} p scenario params
+ * @param {object} skillMods
+ */
+function resolveTargetAcDebuffComponents(p, skillMods) {
+  const components = [];
+  let flat = 0;
+  const debuffs = p.targetDebuffs || [];
+  for (const name of debuffs) {
+    const sk = skillMods.skills?.[name];
+    if (!sk?.targetAcModifier) continue;
+    const tac = sk.targetAcModifier;
+    if (tac.requiresTargetHeavyArmor && !/重甲|板甲/.test(p.query || '')) continue;
+    if (tac.requiresTargetShield && !/盾牌|持盾/.test(p.query || '')) continue;
+    let val = tac.base ?? 0;
+    const ms = tac.milestones || {};
+    const ml = p.milestoneLevel;
+    if (ml != null) {
+      for (const [level, v] of Object.entries(ms)) {
+        const lv = Number(String(level).replace(/^L/, ''));
+        if (ml >= lv) val = Math.min(val, v);
+      }
+    }
+    if (val !== 0) {
+      components.push({
+        source: name,
+        type: 'target_ac_debuff',
+        value: val,
+        detail: sk.note || `目标防御等级${val}`,
+      });
+      flat += val;
+    }
+  }
+  return { flat, components };
+}
+
 /**
  * @param {string} query
  */
@@ -228,12 +275,15 @@ export function parseAcScenarioFromQuery(query) {
   }
 
   const hasShield = /盾牌|小圆盾|吸矢盾|秘法盾|持盾/.test(q);
+  const isTarget = /目标/.test(q);
 
   return {
     dexMod,
     armorKey,
     armorLabel,
     hasShield,
+    isTarget,
+    targetDebuffs: parseTargetDebuffsFromQuery(q),
     activeBuffs: parseActiveBuffsFromQuery(q),
     milestoneLevel: parseMilestoneLevelFromQuery(q),
     query: q,
@@ -254,7 +304,8 @@ export function resolveAcScenario(params) {
   const dexApplied = dexCap == null ? dexMod : Math.min(dexMod, dexCap);
   const shieldBonus = p.hasShield ? (rules.shieldBonus ?? 2) : 0;
   const acBuff = resolveAcBuffComponents(p, skillMods);
-  const totalAc = (tpl.base ?? 10) + dexApplied + shieldBonus + acBuff.flat;
+  const targetDebuff = resolveTargetAcDebuffComponents(p, skillMods);
+  const totalAc = (tpl.base ?? 10) + dexApplied + shieldBonus + acBuff.flat + targetDebuff.flat;
 
   const components = [
     {
@@ -297,12 +348,16 @@ export function resolveAcScenario(params) {
   for (const c of acBuff.components) {
     components.push(c);
   }
+  for (const c of targetDebuff.components) {
+    components.push(c);
+  }
 
   return {
     params: p,
     formula: rules.formula || '护甲基础 + 敏捷 + 盾牌 + Buff',
     components,
     totalAc,
+    targetDebuffFlat: targetDebuff.flat,
     armorLabel: tpl.label || p.armorLabel,
     sources: [
       'advisor/rules/combat_basics.json',
@@ -381,6 +436,9 @@ export function formatAcScenarioText(result) {
   if (result.params?.snapshotUsed) {
     lines.push(`- L6 快照联动：${result.params.snapshotName || '角色'}${result.params._armorFromSnapshot ? ' · 护甲自快照' : ''}${result.params._dexFromSnapshot ? ' · 敏捷自快照' : ''}${result.params._shieldFromSnapshot ? ' · 盾牌自快照' : ''}${result.params._buffsFromSnapshot ? ' · AC/战斗 Buff 自快照技能' : ''}`);
   }
+  if (result.params?.isTarget && result.targetDebuffFlat) {
+    lines.push(`- 目标 AC debuff 合计：${result.targetDebuffFlat}（腐蚀术等；作用于目标防御等级）`);
+  }
   lines.push(`- 语料：${result.sources.join('、')}`);
   lines.push('- LLM 须给出分解列表与 AC 合计；注明轻甲敏捷上限与盾牌加值。');
   return lines.join('\n');
@@ -447,6 +505,7 @@ export function resolveCombatScenario(params) {
   const p = params || {};
   const lines = [];
   const components = [];
+  const rollModifiers = [];
 
   const strMod = Number(p.abilityMods?.力量 ?? p.strengthMod ?? 0);
   const dexMod = Number(p.abilityMods?.敏捷 ?? p.dexterityMod ?? 0);
@@ -544,6 +603,13 @@ export function resolveCombatScenario(params) {
         hitFlat = profPts;
       }
     }
+    if (sk.hitRollModifier === 'advantage' || sk.hitRollModifier === 'disadvantage') {
+      rollModifiers.push({
+        source: buffName,
+        type: sk.hitRollModifier,
+        detail: sk.note || `攻击命中检定具有${sk.hitRollModifier === 'advantage' ? '优势' : '劣势'}`,
+      });
+    }
     if (hitFlat !== 0) {
       components.push({
         source: buffName,
@@ -608,6 +674,7 @@ export function resolveCombatScenario(params) {
     damageComponents,
     critComponents,
     categoryNotes,
+    rollModifiers,
     totalHitBonus: totalHit,
     totalDamageBonus,
     totalCritBonus,
@@ -689,6 +756,13 @@ export function formatCombatScenarioText(result, opts = {}) {
       lines.push(`- **暴击率加值合计：+${result.totalCritBonus}**（类别规则，不计入命中 flat 加值）`);
       for (const c of result.critComponents || []) {
         lines.push(`  · ${c.source}：+${c.value}（${c.detail}）`);
+      }
+    }
+    if (result.rollModifiers?.length) {
+      lines.push('- **掷骰修正（不计入 flat 加值）**：');
+      for (const r of result.rollModifiers) {
+        const label = r.type === 'advantage' ? '优势' : '劣势';
+        lines.push(`  · ${r.source}：攻击命中检定具有**${label}**（${r.detail}）`);
       }
     }
   }

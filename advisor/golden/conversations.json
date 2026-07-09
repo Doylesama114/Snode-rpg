@@ -401,6 +401,27 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "combat-aim-scope-advantage",
+      "query": "敏捷调整值+2有一点弓箭熟练远程攻击装备辅助瞄准镜命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "辅助瞄准镜", "优势", "+5"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-power-boon-advantage",
+      "query": "力量调整值+3有一点剑类熟练近战攻击开启力量报偿命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "力量报偿", "优势", "+4"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "target-ac-corrosion",
+      "query": "目标穿着重甲受到腐蚀术，防御等级是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "腐蚀术", "13", "目标 AC debuff"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

@@ -398,5 +398,14 @@ check('long range shot +10', longShot.totalHitBonus === 10);
 const evilBanner = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2穿着皮甲受到邪恶阵营攻击开启破邪战旗护甲值是多少'));
 check('evil banner AC 14', evilBanner.totalAc === 14);
 
+const aimScope = resolveCombatScenario(parseCombatScenarioFromQuery('敏捷调整值+2有一点弓箭熟练远程攻击装备辅助瞄准镜命中加值是多少'));
+check('aim scope +5 advantage', aimScope.totalHitBonus === 5 && aimScope.rollModifiers?.some((r) => r.type === 'advantage'));
+
+const powerBoon = resolveCombatScenario(parseCombatScenarioFromQuery('力量调整值+3有一点剑类熟练近战攻击开启力量报偿命中加值是多少'));
+check('power boon +4 advantage', powerBoon.totalHitBonus === 4 && powerBoon.rollModifiers?.length);
+
+const targetCorrosion = resolveAcScenario(parseAcScenarioFromQuery('目标穿着重甲受到腐蚀术，防御等级是多少'));
+check('target corrosion AC 13', targetCorrosion.totalAc === 13 && targetCorrosion.targetDebuffFlat === -5);
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

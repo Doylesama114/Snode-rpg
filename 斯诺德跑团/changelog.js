@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7085',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch21 优势劣势+目标AC debuff',
+      'hitRollModifier+targetAcModifier 引擎',
+      '语料+3 力量报偿/辅助瞄准镜/腐蚀术',
+      'Golden+CI batch20 must-pass'
+    ]
+  },
+
+
+  {
     version: '1.0.7084',
     date: '2026-07-09',
     changes: [

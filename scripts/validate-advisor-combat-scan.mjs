@@ -53,7 +53,7 @@ const report = scanCombatModifierCandidates();
 writeCombatModifierScanReport(report, DEFAULT_REPORT_PATH);
 
 check('report file written', fs.existsSync(DEFAULT_REPORT_PATH));
-check('structured count >= 23', report.meta.structuredCount >= 23, `got ${report.meta.structuredCount}`);
+check('structured count >= 26', report.meta.structuredCount >= 26, `got ${report.meta.structuredCount}`);
 check('total candidates >= 40', report.meta.candidateCount >= 40, `got ${report.meta.candidateCount}`);
 check('pending tier-A <= 3', report.stats.pendingByTier.A <= 3, `got ${report.stats.pendingByTier.A}`);
 check('pending tier-B >= 10', report.stats.pendingByTier.B >= 10, `got ${report.stats.pendingByTier.B}`);

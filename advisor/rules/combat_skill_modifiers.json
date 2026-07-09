@@ -1,10 +1,9 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.6.0",
-    "source": "advisor/skills/*_index.json（Q3 试点 + 7084 bulk Tier-A/B）",
-    "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮", "精准射击", "远效射击", "奥术装备", "疾言厉色", "法术偏斜", "破邪战旗", "山岭之护"]
+    "version": "1.7.0",
+    "source": "advisor/skills/*_index.json（7085 优势/目标AC debuff）",
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮", "精准射击", "远效射击", "奥术装备", "疾言厉色", "法术偏斜", "破邪战旗", "山岭之护", "力量报偿", "辅助瞄准镜", "腐蚀术"]
   },
   "skills": {
     "魔法武器": {
@@ -167,6 +166,25 @@
       "conditionalAcModifier": { "queryHint": "山地", "value": 2 },
       "note": "山地/洞穴环境且土元素活跃时防御等级+2",
       "source": "shaman_index · 山岭之护 summary"
+    },
+    "力量报偿": {
+      "className": "魔契师",
+      "hitRollModifier": "advantage",
+      "note": "五场战斗内攻击命中检定、伤害与回复具有优势（不计入 flat 加值）",
+      "source": "warlock_index · 力量报偿 summary"
+    },
+    "辅助瞄准镜": {
+      "className": "奇械师",
+      "requiresRanged": true,
+      "hitRollModifier": "advantage",
+      "note": "持有者远程攻击命中检定具有优势",
+      "source": "artificer_index · 辅助瞄准镜 summary"
+    },
+    "腐蚀术": {
+      "className": "魔契师",
+      "targetAcModifier": { "base": -5, "requiresTargetHeavyArmor": true, "milestones": { "L8": -10 } },
+      "note": "目标着重装时防御等级-5（L8 护甲检定失败改为-10）",
+      "source": "warlock_index · 腐蚀术 summary"
     }
   }
 }
