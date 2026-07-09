@@ -347,6 +347,17 @@ function handleChooseReforge() {
   multiplayer.sendAction(action)
 }
 
+function redrawCountNeeded(options: ReforgeOption[] = reforgeOptions.value): number {
+  return options.filter(o => o === 'redraw').length
+}
+
+function reforgeReadyToExecute(options: ReforgeOption[] = reforgeOptions.value): boolean {
+  if (options.length < 2) return false
+  const needed = redrawCountNeeded(options)
+  if (needed === 0) return true
+  return game.reforgeState.value.selectedRedrawIndices.length >= needed
+}
+
 // 处理手牌点击
 function onHandCardClick(index: number) {
   const myPlayerId = multiplayer.myPlayerId.value
@@ -362,15 +373,16 @@ function onHandCardClick(index: number) {
   const myDecision = game.gameState.value?.playerDecisions?.[myPlayerId]
   
   if (myDecision && myDecision.choice === 'reforge') {
-    // 选择了重铸，处理重铸逻辑
-    if (game.reforgeState.value.active && reforgeOptions.value.includes('redraw') && game.reforgeState.value.selectedCard === null) {
-      game.selectReforgeCard(index)
-      
-      if (reforgeOptions.value.length === 2) {
-        const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
-        multiplayer.sendAction(action)
-        reforgeOptions.value = []
-        game.setMyReady()
+    if (game.reforgeState.value.active && reforgeOptions.value.length === 2 && reforgeOptions.value.includes('redraw')) {
+      const needed = redrawCountNeeded()
+      if (game.reforgeState.value.selectedRedrawIndices.length < needed) {
+        game.selectReforgeCard(index)
+        if (reforgeReadyToExecute()) {
+          const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
+          multiplayer.sendAction(action)
+          reforgeOptions.value = []
+          game.setMyReady()
+        }
       }
     }
     return
@@ -480,9 +492,7 @@ async function selectReforgeOption(option: ReforgeOption) {
     reforgeOptions.value.push(option)
     
     if (reforgeOptions.value.length === 2) {
-      if (reforgeOptions.value.includes('redraw') && game.reforgeState.value.selectedCard === null) {
-        return
-      }
+      if (!reforgeReadyToExecute()) return
 
       const myId = multiplayer.myPlayerId.value
       if (myId) {
@@ -710,7 +720,9 @@ function leaveGameToLobby(fromGameOver = false) {
           <div class="hand-section">
             <div class="hand-section__label">
               手牌
-              <span v-if="game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null" class="hand-hint">点选放回</span>
+              <span v-if="game.reforgeState.value.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedRedrawIndices.length < redrawCountNeeded()" class="hand-hint">
+                点选放回 ({{ game.reforgeState.value.selectedRedrawIndices.length }}/{{ redrawCountNeeded() }})
+              </span>
               <span v-else-if="!game.reforgeState.value.active && game.hasPlayedThisTurn.value && !game.canPlayExtra.value" class="hand-hint hand-hint--muted">已出牌</span>
               <span v-else-if="!game.reforgeState.value.active && game.canPlayExtra.value" class="hand-hint hand-hint--extra">可额外出牌</span>
             </div>
@@ -730,8 +742,8 @@ function leaveGameToLobby(fromGameOver = false) {
                   :data-hand-card="humanPlayer.id + '-' + ci"
                   :playable="game.isCardPlayable(ci)"
                   :disabled="!game.isCardPlayable(ci) && !game.reforgeState.value.active"
-                  :selectable="(game.reforgeState.value.active && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
-                  :selected="game.reforgeState.value.selectedCard === ci || effectBranchDiscardIndex === ci"
+                  :selectable="(game.reforgeState.value.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && game.reforgeState.value.selectedRedrawIndices.length < redrawCountNeeded()) || (pendingEffectBranch && card !== 'hidden' && card && pendingEffectBranch.discardHandAttributes.includes(card.attribute))"
+                  :selected="game.reforgeState.value.selectedRedrawIndices.includes(ci) || effectBranchDiscardIndex === ci"
                   @click="onHandCardClick(ci)"
                 />
               </div>
@@ -778,7 +790,9 @@ function leaveGameToLobby(fromGameOver = false) {
       <div v-else-if="game.reforgeState.value.active && reforgeOptions.length < 2" class="action-dock-row">
         <span class="action-dock-hint">
           重铸 {{ reforgeOptions.length }}/2
-          <span v-if="reforgeOptions.includes('redraw') && game.reforgeState.value.selectedCard === null"> — 请先选择手牌</span>
+          <span v-if="reforgeOptions.includes('redraw') && game.reforgeState.value.selectedRedrawIndices.length < redrawCountNeeded()">
+            — 请选择 {{ redrawCountNeeded() }} 张手牌 ({{ game.reforgeState.value.selectedRedrawIndices.length }}/{{ redrawCountNeeded() }})
+          </span>
         </span>
         <GameButton variant="small" @click="selectReforgeOption('gainCost')">+2费用</GameButton>
         <GameButton variant="small" @click="selectReforgeOption('redraw')">换牌</GameButton>

@@ -83,11 +83,11 @@ export function useGame() {
   const currentPlayer = computed(() => gameState.value.players[gameState.value.currentPlayerIndex])
   const otherPlayers = computed(() => gameState.value.players.filter((_, i) => i !== gameState.value.currentPlayerIndex))
   const humanPlayerId = computed(() => gameState.value.players[0].id)
-  const aiHiddenCards = ref<Record<string, Array<{ card: Card, slot: number }>>>({})
-  const reforgeState = ref<{ active: boolean; selectedCard: number | null; hasChosen: boolean }>({
+  const aiHiddenCards = ref<Record<string, Array<{ card: Card; slot: number; playCost?: number; hostCardId?: string }>>>({})
+  const reforgeState = ref<{ active: boolean; selectedRedrawIndices: number[]; hasChosen: boolean }>({
     active: false,
-    selectedCard: null,
-    hasChosen: false
+    selectedRedrawIndices: [],
+    hasChosen: false,
   })
   
   // 用于UI显示的计算属性
@@ -167,13 +167,26 @@ export function useGame() {
     gameState.value.winner = undefined
     gameState.value.rankings = undefined
     aiHiddenCards.value = {}
-    reforgeState.value = { active: false, selectedCard: null, hasChosen: false }
+    gameState.value.pendingReveals = {}
+    gameState.value.pendingBatchTacticDiscards = []
+    gameState.value.lastResolvedBatch = undefined
+    gameState.value.isResolvingRevealBatch = false
+    gameState.value.players.forEach(p => {
+      gameState.value.pendingReveals![p.id] = []
+    })
+    reforgeState.value = { active: false, selectedRedrawIndices: [], hasChosen: false }
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
     lastFloatedMessage = ''
     clearBroadcastLog(gameState.value)
     gameState.value.message = `回合 1 - AI ${gameState.value.currentPlayerIndex}先手`
     pushBroadcastEntries(gameState.value, gameState.value.message)
+
+    const autoEntryMsgs = EffectManager.applyFirstRoundAutoEntries(gameState.value)
+    if (autoEntryMsgs.length > 0) {
+      gameState.value.message += ' | ' + autoEntryMsgs.join(' | ')
+      pushBroadcastEntries(gameState.value, autoEntryMsgs.join(' | '))
+    }
     
     nextTick(() => void startDrawPhase())
   }
@@ -184,6 +197,90 @@ export function useGame() {
     const card = player.deck.pop()!
     player.hand.push(card)
     return card
+  }
+
+  function ensurePendingReveals() {
+    if (!gameState.value.pendingReveals) {
+      gameState.value.pendingReveals = {}
+    }
+    gameState.value.players.forEach(p => {
+      if (!gameState.value.pendingReveals![p.id]) {
+        gameState.value.pendingReveals![p.id] = []
+      }
+    })
+  }
+
+  function stagePendingReveal(
+    playerId: string,
+    card: Card,
+    slotIndex: number,
+    playCost: number,
+    targetPlayerIndex?: number,
+  ) {
+    ensurePendingReveals()
+    const list = gameState.value.pendingReveals![playerId]
+    if (list.some(r => r.card.id === card.id && r.slotIndex === slotIndex)) return
+    list.push({ card, slotIndex, playCost, targetPlayerIndex })
+  }
+
+  /** 暂存牌揭示后触发完整部署效果（卡牌已在场上） */
+  function resolveStagedPlay(
+    card: Card,
+    fieldOwner: Player,
+    slotIndex: number,
+    playerIndex: number,
+    fieldOwnerIndex?: number,
+  ) {
+    const slot = fieldOwner.field[slotIndex]
+    if (!slot?.card) slot.card = card
+    const player = gameState.value.players[playerIndex]
+
+    if (player.pendingNextAttribute) {
+      card.attribute = player.pendingNextAttribute as AttributeType
+      gameState.value.message += ` | ${card.name} 属性变更为${player.pendingNextAttribute}`
+      player.pendingNextAttribute = undefined
+    }
+
+    EffectManager.applyUnitDeployBonuses(card, player).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+    EffectManager.applyExtraSlotDeployModifiers(card, slot).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+
+    if (card.type === 'tactic') {
+      const pending = triggerDeployEffects(card, player)
+      if (pending) {
+        gameState.value.selectedCard = card
+        gameState.value.selectedSlot = slotIndex
+        gameState.value.pendingDeployEffect = pending.effect
+        gameState.value.availableTargets = pending.targets
+        gameState.value.phase = 'selectTarget'
+        gameState.value.message += ' | 选择摧毁目标'
+        return
+      }
+      handleTacticCard(card, player, slotIndex, { skipStage: true })
+      return
+    }
+
+    triggerDeployEffects(card, player)
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
+    EffectManager.recalculateAllPowers(gameState.value)
+    checkFieldFull(fieldOwnerIndex !== undefined ? gameState.value.players[fieldOwnerIndex] : player)
+  }
+
+  async function resolvePendingRevealBatch() {
+    ensurePendingReveals()
+    const hasPending = Object.values(gameState.value.pendingReveals!).some(list => list.length > 0)
+    if (!hasPending) return
+
+    const { messages } = EffectManager.resolveRevealBatch(gameState.value)
+    if (messages.length) {
+      gameState.value.message += (gameState.value.message ? ' | ' : '') + messages.join(' | ')
+      pushBroadcastEntries(gameState.value, messages.join(' | '))
+    }
+    EffectManager.recalculateAllPowers(gameState.value)
+    await showNewFloats()
   }
 
   // 开始抽牌阶段
@@ -544,16 +641,25 @@ export function useGame() {
       }
       aiHiddenCards.value[player.id].push({
         card,
-        slot: attachSlotIdx,
+        slot: slotIndex,
         playCost,
         hostCardId: hostCard.id,
       })
       aiHiddenCards.value = { ...aiHiddenCards.value, [player.id]: [...aiHiddenCards.value[player.id]] }
+      stagePendingReveal(player.id, card, attachSlotIdx, playCost, gameState.value.players.indexOf(player))
       gameState.value.message = `${player.name} 打出了一张牌（已隐藏）`
       gameState.value.phase = 'decision'
     } else {
       const msgs = EffectManager.applyDeployOntoHost(card, hostCard, player, gameState.value)
       gameState.value.message = msgs.join(' | ')
+      const attachIdx = player.field.findIndex(s => s.card === card)
+      stagePendingReveal(
+        player.id,
+        card,
+        attachIdx >= 0 ? attachIdx : hostIdx,
+        playCost,
+        gameState.value.players.indexOf(player),
+      )
       await showNewFloats(player.id)
       if (!player.canPlayExtra) {
         await maybeRevealHiddenAfterHumanAction(player)
@@ -630,11 +736,20 @@ export function useGame() {
         ...aiHiddenCards.value,
         [player.id]: [...aiHiddenCards.value[player.id]],
       }
+      const fieldOwnerIndex = gameState.value.players.findIndex(p => p.id === fieldOwner.id)
+      stagePendingReveal(player.id, card, slotIndex, playCost, fieldOwnerIndex)
       gameState.value.message = `${player.name} 打出了一张牌（已隐藏）`
       gameState.value.selectedCard = undefined
       gameState.value.phase = 'decision'
     } else {
       deployCard(card, fieldOwner, slotIndex)
+      stagePendingReveal(
+        player.id,
+        card,
+        slotIndex,
+        playCost,
+        gameState.value.players.findIndex(p => p.id === fieldOwner.id),
+      )
       await animations.flashLand(fieldOwnerId, slotIndex)
       await showNewFloats(player.id)
       if (!player.canPlayExtra) {
@@ -665,7 +780,7 @@ export function useGame() {
       if (effect.timing !== 'onPlay') continue
       
       if (effect.type === 'restoreEnergy') {
-        player.currentCost += (effect.value || 0)
+        EffectManager.applyCostDelta(player, effect.value || 0)
         gameState.value.message = `${player.name} 使用${card.name}：恢复${effect.value}点能量`
       }
       else if (effect.type === 'modifyPowerByName') {
@@ -840,7 +955,12 @@ export function useGame() {
   }
 
   // 处理战术牌
-  function handleTacticCard(card: Card, player: Player, slotIndex: number) {
+  function handleTacticCard(
+    card: Card,
+    player: Player,
+    slotIndex: number,
+    options?: { skipStage?: boolean },
+  ) {
     EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
 
     const revealEffects = card.effects.filter(
@@ -852,7 +972,10 @@ export function useGame() {
       return
     }
 
-    for (const effect of revealEffects) {
+    const immediateEffects = revealEffects.filter(e => !e.batchResolveOnly)
+    const deferredEffects = revealEffects.filter(e => e.batchResolveOnly)
+
+    for (const effect of immediateEffects) {
       const result = EffectManager.applyRevealEffect(
         effect, card, player, gameState.value, otherPlayers.value,
       )
@@ -872,6 +995,25 @@ export function useGame() {
         gameState.value.message = '选择一个目标'
         return
       }
+    }
+
+    if (deferredEffects.length > 0) {
+      if (!gameState.value.pendingBatchTacticDiscards) {
+        gameState.value.pendingBatchTacticDiscards = []
+      }
+      gameState.value.pendingBatchTacticDiscards.push({
+        card,
+        playerId: player.id,
+        slotIndex,
+      })
+      if (!options?.skipStage) {
+        const playCost = EffectManager.getEffectivePlayCost(card, player)
+        stagePendingReveal(player.id, card, slotIndex, playCost)
+      }
+      gameState.value.phase = 'action'
+      gameState.value.selectedCard = undefined
+      gameState.value.selectedSlot = undefined
+      return
     }
 
     discardTacticCard(card, player, slotIndex)
@@ -967,6 +1109,14 @@ export function useGame() {
       EffectManager.consumeTacticPlayFreeIfMatch(card, player)
       const msgs = EffectManager.applyDeployOntoHost(card, targetCard, player, gameState.value)
       gameState.value.message = msgs.join(' | ')
+      const attachIdx = player.field.findIndex(s => s.card === card)
+      stagePendingReveal(
+        player.id,
+        card,
+        attachIdx >= 0 ? attachIdx : hostSlotIndex,
+        playCost,
+        gameState.value.players.indexOf(player),
+      )
       gameState.value.pendingHostDeployCard = undefined
       gameState.value.optionalHostDeploy = undefined
       gameState.value.phase = 'action'
@@ -1009,6 +1159,15 @@ export function useGame() {
     if (msgs.length > 0) {
       gameState.value.message = msgs.join(' | ')
     }
+    const attachIdx = player.field.findIndex(s => s.card === card)
+    const qpCost = EffectManager.getEffectivePlayCost(card, player)
+    stagePendingReveal(
+      player.id,
+      card,
+      attachIdx >= 0 ? attachIdx : hostSlotIndex,
+      qpCost,
+      gameState.value.players.indexOf(player),
+    )
 
     gameState.value.pendingQuickPlayCard = undefined
     gameState.value.phase = 'action'
@@ -1127,23 +1286,25 @@ export function useGame() {
 
   async function maybeRevealHiddenAfterHumanAction(player: Player) {
     if (player.id === 'player' && !player.canPlayExtra) {
-      await revealAICards()
+      await revealAllPendingCards()
     }
   }
 
-  // 显示AI隐藏卡牌（翻转揭示，按玩家顺序，费用不足则退回手牌）
-  async function revealAICards() {
+  // 揭示 AI 隐藏牌并按批次结算（旗鱼 / 矮人烈酒等）
+  async function revealAllPendingCards() {
     const allHiddenCount = Object.values(aiHiddenCards.value).reduce((sum, cards) => sum + cards.length, 0)
-    if (allHiddenCount === 0) return
+    ensurePendingReveals()
 
-    await animations.playBanner({ kind: 'reveal', text: '揭示隐藏卡牌' })
-    
+    if (allHiddenCount > 0) {
+      await animations.playBanner({ kind: 'reveal', text: '揭示隐藏卡牌' })
+    }
+
     const names: string[] = []
     const playerOrder = gameState.value.players
-      .map(p => p.id)
-      .filter(id => id.startsWith('ai') && (aiHiddenCards.value[id]?.length ?? 0) > 0)
+      .map((p, idx) => ({ id: p.id, idx }))
+      .filter(({ id }) => id.startsWith('ai') && (aiHiddenCards.value[id]?.length ?? 0) > 0)
 
-    for (const aiId of playerOrder) {
+    for (const { id: aiId, idx: playerIndex } of playerOrder) {
       const hidden = [...(aiHiddenCards.value[aiId] || [])]
       if (!hidden.length) continue
       const aiPlayer = gameState.value.players.find(p => p.id === aiId)
@@ -1152,41 +1313,79 @@ export function useGame() {
 
       for (let hi = 0; hi < hidden.length; hi++) {
         const item = hidden[hi]
+        const fieldOwnerIndex = gameState.value.players.findIndex(p =>
+          p.field.some((s, si) => si === item.slot && !s.card) || p.id === aiId,
+        )
+        const fieldOwner = gameState.value.players[fieldOwnerIndex >= 0 ? fieldOwnerIndex : playerIndex]
+
+        const batchEntry = {
+          playerId: aiId,
+          playerIndex,
+          orderIndex: hi,
+          card: item.card,
+          slotIndex: item.slot,
+          fieldOwnerIndex: gameState.value.players.indexOf(fieldOwner),
+          playCost: item.playCost ?? EffectManager.getEffectivePlayCost(item.card, aiPlayer),
+        }
 
         if (aiPlayer.currentCost < 0) {
-          aiPlayer.hand.push(item.card)
-          aiPlayer.hasPlayedThisTurn = false
-          gameState.value.message = `${aiPlayer.name} 因费用不足，${item.card.name} 退回手牌（费用不退，效果未触发）`
+          const voidMsgs: string[] = []
+          EffectManager.voidPendingRevealEntry(batchEntry, gameState.value, voidMsgs)
+          if (voidMsgs.length) {
+            gameState.value.message += (gameState.value.message ? ' | ' : '') + voidMsgs.join(' | ')
+          }
           continue
         }
 
         await animations.playFlipReveal({
-          fieldOwnerId: aiId,
+          fieldOwnerId: fieldOwner.id,
           slotIndex: item.slot,
           card: item.card,
           hiddenOriginId: `${aiId}-${hi}`,
         })
+
         if (item.hostCardId) {
           const hostCard = aiPlayer.field.find(s => s.card?.id === item.hostCardId)?.card
           if (hostCard) {
+            fieldOwner.field[item.slot].card = item.card
             EffectManager.applyDeployOntoHost(item.card, hostCard, aiPlayer, gameState.value)
           } else {
-            deployCard(item.card, aiPlayer, item.slot)
+            fieldOwner.field[item.slot].card = item.card
+            resolveStagedPlay(item.card, fieldOwner, item.slot, playerIndex, fieldOwnerIndex)
           }
         } else {
-          deployCard(item.card, aiPlayer, item.slot)
+          fieldOwner.field[item.slot].card = item.card
+          resolveStagedPlay(
+            item.card,
+            fieldOwner,
+            item.slot,
+            playerIndex,
+            gameState.value.players.indexOf(fieldOwner),
+          )
         }
-        await animations.flashLand(aiId, item.slot)
+        await animations.flashLand(fieldOwner.id, item.slot)
+
+        if (!gameState.value.pendingReveals![aiId].some(r => r.card.id === item.card.id)) {
+          stagePendingReveal(
+            aiId,
+            item.card,
+            item.slot,
+            batchEntry.playCost,
+            gameState.value.players.indexOf(fieldOwner),
+          )
+        }
       }
 
       aiHiddenCards.value[aiId] = []
       aiHiddenCards.value = { ...aiHiddenCards.value }
     }
-    
+
+    await resolvePendingRevealBatch()
+
     if (names.length) {
       gameState.value.message = `AI 打出了 ${allHiddenCount} 张牌！（${names.join('，')}）`
     }
-    
+
     await animations.wait(400)
     if (gameState.value.phase === 'action') {
       gameState.value.message = `${gameState.value.players[0].name} - 选择手牌打出`
@@ -1207,16 +1406,17 @@ export function useGame() {
       const option = options[index]
       switch (option) {
         case 'gainCost':
-          player.currentCost += 2
+          EffectManager.applyCostDelta(player, 2)
           message += ` 恢复2费用`
           break
         case 'gainPower':
           player.bonusPower += 1
           message += ` 总战力+1`
           break
-        case 'redraw':
-          if (!player.id.startsWith('ai') && reforgeState.value.selectedCard !== null) {
-            const hi = reforgeState.value.selectedCard
+        case 'redraw': {
+          const redrawQueue = [...reforgeState.value.selectedRedrawIndices].sort((a, b) => b - a)
+          const hi = redrawQueue.shift()
+          if (hi !== undefined && hi >= 0 && hi < player.hand.length) {
             const oldCard = player.hand[hi]
             await animations.playReforgeRedraw({
               playerId: player.id,
@@ -1233,7 +1433,6 @@ export function useGame() {
               card: newCard ?? undefined,
             })
             message += ` 换牌(${card.name}→${newCard?.name})`
-            reforgeState.value.selectedCard = null
           } else if (player.id.startsWith('ai') && player.hand.length > 0) {
             const cardIndex = Math.floor(Math.random() * player.hand.length)
             const card = player.hand.splice(cardIndex, 1)[0]
@@ -1242,13 +1441,14 @@ export function useGame() {
             message += ` 换牌`
           }
           break
+        }
       }
       if (index === 0) message += ' +'
     }
     
     gameState.value.message = message
     reforgeState.value.active = false
-    reforgeState.value.selectedCard = null
+    reforgeState.value.selectedRedrawIndices = []
 
     EffectManager.triggerReforgeEffects(player, gameState.value)
     await showNewFloats(player.id)
@@ -1260,7 +1460,8 @@ export function useGame() {
   // 选择重铸手牌
   function selectReforgeCard(cardIndex: number) {
     if (!reforgeState.value.active) return
-    reforgeState.value.selectedCard = cardIndex
+    if (reforgeState.value.selectedRedrawIndices.includes(cardIndex)) return
+    reforgeState.value.selectedRedrawIndices.push(cardIndex)
   }
 
   // 检查场地是否填满
@@ -1307,7 +1508,7 @@ export function useGame() {
       if (nextPlayerIndex === triggeredPlayer) {
         const hasHidden = Object.values(aiHiddenCards.value).some(cards => cards.length > 0)
         if (hasHidden) {
-          await revealAICards()
+          await revealAllPendingCards()
         }
         await animations.wait(600)
         endGame()
@@ -1335,7 +1536,7 @@ export function useGame() {
   // 结束回合
   async function endTurn() {
     if (currentPlayer.value.id === 'player') {
-      await revealAICards()
+      await revealAllPendingCards()
     }
     void switchToNextPlayer()
   }
@@ -1358,7 +1559,7 @@ export function useGame() {
       return
     }
     reforgeState.value.active = false
-    reforgeState.value.selectedCard = null
+    reforgeState.value.selectedRedrawIndices = []
     reforgeState.value.hasChosen = false
     gameState.value.selectedCard = undefined
     gameState.value.phase = 'decision'
@@ -1528,7 +1729,7 @@ export function useGame() {
     options.forEach((option, index) => {
       switch (option) {
         case 'gainCost':
-          aiPlayer.currentCost += 2
+          EffectManager.applyCostDelta(aiPlayer, 2)
           message += ` 恢复2费用`
           break
         case 'gainPower':

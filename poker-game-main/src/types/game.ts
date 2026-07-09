@@ -480,6 +480,8 @@ export interface GameState {
     effect: CardEffect
     targetCardIds: string[]
   }
+  /** 本批展示后待弃置的战术牌（batchResolveOnly 延迟揭示） */
+  pendingBatchTacticDiscards?: Array<{ card: Card; playerId: string; slotIndex: number }>
   accountState?: AccountState
 }
 

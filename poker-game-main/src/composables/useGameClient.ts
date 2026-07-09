@@ -17,9 +17,9 @@ export function useGameClient(initialPlayerId = '') {
   
   const gameState = ref<GameState | null>(null)
   
-  const reforgeState = ref<{ active: boolean; selectedCard: number | null; hasChosen: boolean }>({
+  const reforgeState = ref<{ active: boolean; selectedRedrawIndices: number[]; hasChosen: boolean }>({
     active: false,
-    selectedCard: null,
+    selectedRedrawIndices: [],
     hasChosen: false
   })
   
@@ -323,7 +323,8 @@ export function useGameClient(initialPlayerId = '') {
   
   function selectReforgeCard(cardIndex: number) {
     if (!reforgeState.value.active) return
-    reforgeState.value.selectedCard = cardIndex
+    if (reforgeState.value.selectedRedrawIndices.includes(cardIndex)) return
+    reforgeState.value.selectedRedrawIndices.push(cardIndex)
   }
   
   function executeReforge(options: [ReforgeOption, ReforgeOption]) {
@@ -331,11 +332,12 @@ export function useGameClient(initialPlayerId = '') {
       type: 'executeReforge' as const,
       data: {
         options,
-        selectedCardIndex: reforgeState.value.selectedCard
+        selectedCardIndices: [...reforgeState.value.selectedRedrawIndices],
+        selectedCardIndex: reforgeState.value.selectedRedrawIndices[0] ?? null,
       }
     }
     reforgeState.value.active = false
-    reforgeState.value.selectedCard = null
+    reforgeState.value.selectedRedrawIndices = []
     return action
   }
   
@@ -357,7 +359,7 @@ export function useGameClient(initialPlayerId = '') {
 
   function cancelActionChoice() {
     reforgeState.value.active = false
-    reforgeState.value.selectedCard = null
+    reforgeState.value.selectedRedrawIndices = []
     reforgeState.value.hasChosen = false
     resetClientSelection()
     return { type: 'cancelDecision' as const }

@@ -75,16 +75,30 @@ function handleChooseReforge() {
   }
 }
 
+function redrawCountNeeded(options: ReforgeOption[] = reforgeOptions.value): number {
+  return options.filter(o => o === 'redraw').length
+}
+
+function reforgeReadyToExecute(options: ReforgeOption[] = reforgeOptions.value): boolean {
+  if (options.length < 2) return false
+  const needed = redrawCountNeeded(options)
+  if (needed === 0) return true
+  return game.reforgeState.value.selectedRedrawIndices.length >= needed
+}
+
 // 处理手牌点击
 function onHandCardClick(index: number) {
-  if (game.reforgeState.value.active && reforgeOptions.value.includes('redraw') && game.reforgeState.value.selectedCard === null) {
-    game.selectReforgeCard(index)
-    
-    if (reforgeOptions.value.length === 2) {
-      const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
-      multiplayer.sendAction(action)
-      reforgeOptions.value = []
-      game.setMyReady()
+  if (game.reforgeState.value.active && reforgeOptions.value.length === 2 && reforgeOptions.value.includes('redraw')) {
+    const needed = redrawCountNeeded()
+    if (game.reforgeState.value.selectedRedrawIndices.length < needed) {
+      game.selectReforgeCard(index)
+      if (reforgeReadyToExecute()) {
+        const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
+        multiplayer.sendAction(action)
+        reforgeOptions.value = []
+        game.setMyReady()
+      }
+      return
     }
   } else if (game.gameState.value?.phase === 'action' && !game.reforgeState.value.active) {
     // 只有双方都做出决策后才能选择手牌
@@ -157,9 +171,7 @@ function selectReforgeOption(option: ReforgeOption) {
     reforgeOptions.value.push(option)
     
     if (reforgeOptions.value.length === 2) {
-      if (reforgeOptions.value.includes('redraw') && game.reforgeState.value.selectedCard === null) {
-        return
-      }
+      if (!reforgeReadyToExecute()) return
       
       const action = game.executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
       multiplayer.sendAction(action)

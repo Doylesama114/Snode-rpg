@@ -5,6 +5,15 @@ import { getCard, createDefaultDeck, createDeckFromCardIds, shuffleDeck } from '
 
 // 效果管理器（从 effectManager.ts 完整移植）
 class EffectManager {
+  static MAX_CURRENT_COST = 6
+
+  static applyCostDelta(player, delta) {
+    player.currentCost += delta
+    if (player.currentCost > EffectManager.MAX_CURRENT_COST) {
+      player.currentCost = EffectManager.MAX_CURRENT_COST
+    }
+  }
+
   // 掷一颗D6骰子，返回1-6的随机整数
   static rollD6() {
     return Math.floor(Math.random() * 6) + 1
@@ -477,7 +486,7 @@ class EffectManager {
     }
 
     if (effect.type === 'restoreEnergy') {
-      player.currentCost += effect.value || 0
+      EffectManager.applyCostDelta(player, effect.value || 0)
       messages.push(`${player.name} 恢复${effect.value}点能量`)
       return { messages }
     }
@@ -524,7 +533,7 @@ class EffectManager {
     }
 
     if (effect.type === 'modifyCost' && effect.value) {
-            player.currentCost += effect.value
+            EffectManager.applyCostDelta(player, effect.value)
             messages.push(`${player.name} 能量${effect.value > 0 ? '+' : ''}${effect.value}`)
       return { messages }
     }
@@ -674,12 +683,12 @@ class EffectManager {
     const messages = []
     gameState.players.forEach(player => {
       if (player.pendingNextRoundStartEnergy) {
-        player.currentCost += player.pendingNextRoundStartEnergy
+        EffectManager.applyCostDelta(player, player.pendingNextRoundStartEnergy)
         messages.push(`${player.name} 恢复${player.pendingNextRoundStartEnergy}点能量`)
         player.pendingNextRoundStartEnergy = 0
       }
       if (gameState.isFinalRound && player.pendingFinalRoundStartEnergy) {
-        player.currentCost += player.pendingFinalRoundStartEnergy
+        EffectManager.applyCostDelta(player, player.pendingFinalRoundStartEnergy)
         messages.push(`${player.name} 最后一轮恢复${player.pendingFinalRoundStartEnergy}点能量`)
         player.pendingFinalRoundStartEnergy = 0
       }
@@ -1024,7 +1033,7 @@ class EffectManager {
     winners.forEach(entry => {
       const player = game.players[entry.playerIndex]
       if (entry.playCost > 0) {
-        player.currentCost += entry.playCost
+        EffectManager.applyCostDelta(player, entry.playCost)
         messages.push(`${entry.card.name} 本批战力最高(${maxPower})，退还${entry.playCost}费用`)
       }
     })
@@ -1989,7 +1998,7 @@ class EffectManager {
         const leftIndex = (playerIndex + 1) % game.players.length
         const target = game.players[leftIndex]
         if (target && target.id !== player.id) {
-          target.currentCost += effect.value || 0
+          EffectManager.applyCostDelta(target, effect.value || 0)
           messages.push(`${target.name} 能量${effect.value}`)
         }
       } else {
@@ -1997,7 +2006,7 @@ class EffectManager {
         const otherIndices = game.players.map((_, i) => i).filter(i => i !== playerIndex)
         otherIndices.forEach(idx => {
           const opponent = game.players[idx]
-          opponent.currentCost += effect.value || 0
+          EffectManager.applyCostDelta(opponent, effect.value || 0)
           messages.push(`${opponent.name} 费用${effect.value}`)
         })
       }
@@ -2364,7 +2373,7 @@ class EffectManager {
     }
 
     if (effect.type === 'restoreEnergy') {
-      player.currentCost += effect.value || 0
+      EffectManager.applyCostDelta(player, effect.value || 0)
       messages.push(`恢复${effect.value}点能量`)
       return { messages }
     }
@@ -2722,6 +2731,11 @@ class GameEngine {
     console.log(`[GameEngine] 游戏初始化完成，房间: ${roomId}`)
     console.log(`[GameEngine] 玩家1手牌:`, this.gameState.players[0].hand.map(c => c.name))
     console.log(`[GameEngine] 玩家2手牌:`, this.gameState.players[1].hand.map(c => c.name))
+
+    const autoMsgs = EffectManager.applyFirstRoundAutoEntries(this.gameState)
+    if (autoMsgs.length > 0) {
+      this.gameState.message += ' | ' + autoMsgs.join(' | ')
+    }
   }
   
   // 抽牌
@@ -3128,7 +3142,7 @@ class GameEngine {
       if (effect.timing !== 'onPlay') return
       
       if (effect.type === 'restoreEnergy') {
-        player.currentCost += (effect.value || 0)
+        EffectManager.applyCostDelta(player, effect.value || 0)
         messages.push(`${player.name} 使用${card.name}：恢复${effect.value}点能量`)
       }
       else if (effect.type === 'modifyPowerByName') {
@@ -3669,7 +3683,7 @@ class GameEngine {
   }
   
   // 处理执行重铸
-  handleExecuteReforge(playerId, options, selectedCardIndex) {
+  handleExecuteReforge(playerId, options, selectedCardIndex, selectedCardIndices) {
     const playerIndex = this.getPlayerIndex(playerId)
     if (playerIndex === -1) {
       return { success: false, error: '玩家不存在' }
@@ -3677,25 +3691,33 @@ class GameEngine {
     
     const player = this.gameState.players[playerIndex]
     let message = `${player.name} 重铸：`
+    const indices = Array.isArray(selectedCardIndices) && selectedCardIndices.length > 0
+      ? [...selectedCardIndices]
+      : (selectedCardIndex !== null && selectedCardIndex !== undefined && selectedCardIndex >= 0
+        ? [selectedCardIndex]
+        : [])
+    const redrawQueue = [...indices].sort((a, b) => b - a)
     
     options.forEach((option, index) => {
       switch (option) {
         case 'gainCost':
-          player.currentCost += 2
+          EffectManager.applyCostDelta(player, 2)
           message += ` 恢复2费用`
           break
         case 'gainPower':
           player.bonusPower += 1
           message += ` 总战力+1`
           break
-        case 'redraw':
-          if (selectedCardIndex !== null && selectedCardIndex >= 0 && selectedCardIndex < player.hand.length) {
-            const card = player.hand.splice(selectedCardIndex, 1)[0]
+        case 'redraw': {
+          const hi = redrawQueue.shift()
+          if (hi !== undefined && hi >= 0 && hi < player.hand.length) {
+            const card = player.hand.splice(hi, 1)[0]
             player.deck.unshift(card)
             const newCard = this.drawCard(player)
             message += ` 换牌(${card.name}→${newCard?.name})`
           }
           break
+        }
       }
       if (index === 0) message += ' +'
     })
@@ -4004,7 +4026,7 @@ class GameEngine {
         })
         
         // 恢复该玩家的费用（加回已花费但未揭示的费用）
-        publicState.players[idx].currentCost += hiddenCost
+        EffectManager.applyCostDelta(publicState.players[idx], hiddenCost)
         console.log(`[GameEngine] 玩家${idx}费用恢复 +${hiddenCost}，显示为: ${publicState.players[idx].currentCost}`)
       }
     })

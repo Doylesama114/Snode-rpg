@@ -204,15 +204,23 @@ function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
   }
 }
 
+function redrawCountNeeded(options: ReforgeOption[] = reforgeOptions.value): number {
+  return options.filter(o => o === 'redraw').length
+}
+
+function reforgeReadyToExecute(options: ReforgeOption[] = reforgeOptions.value): boolean {
+  if (options.length < 2) return false
+  const needed = redrawCountNeeded(options)
+  if (needed === 0) return true
+  return reforgeState.value.selectedRedrawIndices.length >= needed
+}
+
 function selectReforgeOption(option: ReforgeOption) {
   if (reforgeOptions.value.length < 2) {
     reforgeOptions.value.push(option)
     
     if (reforgeOptions.value.length === 2) {
-      if (reforgeOptions.value.includes('redraw') && reforgeState.value.selectedCard === null) {
-        return
-      }
-      
+      if (!reforgeReadyToExecute()) return
       executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
       reforgeOptions.value = []
     }
@@ -224,12 +232,15 @@ function onHandCardClick(index: number) {
     onEffectBranchHandClick(index)
     return
   }
-  if (reforgeState.value.active && reforgeOptions.value.includes('redraw') && reforgeState.value.selectedCard === null) {
-    selectReforgeCard(index)
-    
-    if (reforgeOptions.value.length === 2) {
-      executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
-      reforgeOptions.value = []
+  if (reforgeState.value.active && reforgeOptions.value.length === 2 && reforgeOptions.value.includes('redraw')) {
+    const needed = redrawCountNeeded()
+    if (reforgeState.value.selectedRedrawIndices.length < needed) {
+      selectReforgeCard(index)
+      if (reforgeReadyToExecute()) {
+        executeReforge([reforgeOptions.value[0], reforgeOptions.value[1]])
+        reforgeOptions.value = []
+      }
+      return
     }
   } else if (gameState.value.phase === 'action' && currentPlayer.value.id === 'player' && !reforgeState.value.active) {
     selectCardToPlay(index)
@@ -301,11 +312,45 @@ const isYourTurn = computed(() =>
 
 function onHumanFieldSlotClick(_slot: unknown, si: number) {
   onFieldSlotClick(playerIndex('player'), humanPlayer.value!.field[si])
-  if (gameState.value.phase === 'selectTarget') {
-    const card = humanPlayer.value?.field[si]?.card
-    if (card && isTargetSelectable(card)) selectQuickPlayTarget(card)
-  }
 }
+
+function onHumanFieldCardClick(c: import('@/types/game').Card, e: MouseEvent) {
+  if (gameState.value.phase === 'selectTarget' && isTargetSelectable(c)) {
+    e.stopPropagation()
+    void selectQuickPlayTarget(c)
+    return
+  }
+  if (gameState.value.phase === 'selectSlot' && gameState.value.selectedCard && humanPlayer.value) {
+    const hostSlotIndex = humanPlayer.value.field.findIndex(s => s.card === c && !s.isExtra)
+    if (hostSlotIndex >= 0) {
+      const resolved = EffectManager.resolveDeploySlotIndex(
+        humanPlayer.value,
+        gameState.value.selectedCard,
+        hostSlotIndex,
+      )
+      if (isSlotAvailable(resolved)) {
+        e.stopPropagation()
+        selectSlotToPlay(hostSlotIndex)
+        return
+      }
+    }
+  }
+  onFieldCardClick(c, e, () => isDeployPhase())
+}
+
+const deployHint = computed(() => {
+  const phase = gameState.value.phase
+  if (phase === 'selectTarget') {
+    return gameState.value.message || '点击场上高亮卡牌选择部署目标'
+  }
+  if (phase === 'selectSlot') {
+    return gameState.value.message || '选择槽位；载具/狮鹫等可点宿主卡或下方「额外」槽'
+  }
+  if (phase === 'selectCrossPlayerSlot') {
+    return gameState.value.message || '选择对手场上槽位'
+  }
+  return ''
+})
 
 function onExtraSlotClick(slotIndex: number) {
   if (gameState.value.phase === 'selectSlot') {
@@ -422,13 +467,18 @@ function playerIndex(playerId: string) {
             @extra-slot-click="onExtraSlotClick"
             @card-enter="(e, k, c) => onFieldCardEnter(e, 'player', k, c)"
             @card-leave="(k) => onFieldCardLeave('player', k)"
-            @card-click="(c, e) => onFieldCardClick(c, e, () => isDeployPhase())"
+            @card-click="onHumanFieldCardClick"
           />
+
+          <div v-if="deployHint" class="deploy-hint">{{ deployHint }}</div>
 
           <div class="hand-section">
             <div class="hand-section__label">
               手牌
-              <span v-if="reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null" class="hand-hint">点选放回</span>
+              <span v-if="reforgeState.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && reforgeState.selectedRedrawIndices.length < redrawCountNeeded()" class="hand-hint">
+                点选放回 ({{ reforgeState.selectedRedrawIndices.length }}/{{ redrawCountNeeded() }})
+              </span>
+              <span v-else-if="reforgeState.active && reforgeOptions.length < 2 && reforgeOptions.includes('redraw')" class="hand-hint">点选放回</span>
               <span v-else-if="gameState.phase === 'selectEffectBranch'" class="hand-hint">点选水属性手牌</span>
               <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hand-hint hand-hint--muted">已出牌</span>
               <span v-else-if="!reforgeState.active && canPlayExtra" class="hand-hint hand-hint--extra">可额外出牌</span>
@@ -448,8 +498,8 @@ function playerIndex(playerId: string) {
                   :data-hand-card="'player-' + ci"
                   :playable="isCardPlayable(ci)"
                   :disabled="!isCardPlayable(ci) && !reforgeState.active && gameState.phase !== 'selectEffectBranch'"
-                  :selectable="(reforgeState.active && reforgeOptions.includes('redraw') && reforgeState.selectedCard === null) || (gameState.phase === 'selectEffectBranch' && !!pendingEffectBranch?.discardHandAttributes.includes(card.attribute))"
-                  :selected="reforgeState.selectedCard === ci || effectBranchDiscardIndex === ci"
+                  :selectable="(reforgeState.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && reforgeState.selectedRedrawIndices.length < redrawCountNeeded()) || (gameState.phase === 'selectEffectBranch' && !!pendingEffectBranch?.discardHandAttributes.includes(card.attribute))"
+                  :selected="reforgeState.selectedRedrawIndices.includes(ci) || effectBranchDiscardIndex === ci"
                   @click="onHandCardClick(ci)"
                 />
               </div>
@@ -489,7 +539,9 @@ function playerIndex(playerId: string) {
       <div v-else-if="reforgeState.active && reforgeOptions.length < 2" class="action-dock-row">
         <span class="action-dock-hint">
           重铸 {{ reforgeOptions.length }}/2
-          <span v-if="reforgeOptions.includes('redraw') && reforgeState.selectedCard === null"> — 请先选择手牌</span>
+          <span v-if="reforgeOptions.includes('redraw') && reforgeState.selectedRedrawIndices.length < redrawCountNeeded()">
+            — 请选择 {{ redrawCountNeeded() }} 张手牌 ({{ reforgeState.selectedRedrawIndices.length }}/{{ redrawCountNeeded() }})
+          </span>
         </span>
         <GameButton variant="small" @click="selectReforgeOption('gainCost')">+2费用</GameButton>
         <GameButton variant="small" @click="selectReforgeOption('redraw')">换牌</GameButton>
@@ -559,5 +611,15 @@ function playerIndex(playerId: string) {
 
 .pregame-start {
   width: 100%;
+}
+
+.deploy-hint {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--game-text-muted, #5a6560);
+  background: rgba(47, 111, 94, 0.08);
+  border-radius: var(--game-radius-sm, 6px);
+  border-left: 3px solid var(--game-accent-gold, #c9a227);
 }
 </style>

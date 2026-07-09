@@ -3,6 +3,16 @@ import { allCardDefinitions } from '@/data/cardDatabase'
 
 // 效果管理器
 export class EffectManager {
+  static readonly MAX_CURRENT_COST = 6
+
+  /** 增减可用费用并限制上限（揭示后可为负，仅 clamp 上界） */
+  static applyCostDelta(player: Player, delta: number): void {
+    player.currentCost += delta
+    if (player.currentCost > this.MAX_CURRENT_COST) {
+      player.currentCost = this.MAX_CURRENT_COST
+    }
+  }
+
   // 掷一颗D6骰子，返回1-6的随机整数
   static rollD6(): number {
     return Math.floor(Math.random() * 6) + 1
@@ -1363,12 +1373,12 @@ export class EffectManager {
         const leftIndex = (playerIndex + 1) % game.players.length
         const target = game.players[leftIndex]
         if (target && target.id !== player.id) {
-          target.currentCost += effect.value || 0
+          this.applyCostDelta(target, effect.value || 0)
           messages.push(`${target.name} 能量${effect.value}`)
         }
       } else {
         otherPlayers.forEach(target => {
-          target.currentCost += effect.value || 0
+          this.applyCostDelta(target, effect.value || 0)
           messages.push(`${target.name} 费用${effect.value}`)
         })
       }
@@ -1746,7 +1756,7 @@ export class EffectManager {
     }
 
     if (effect.type === 'restoreEnergy') {
-      player.currentCost += effect.value || 0
+      this.applyCostDelta(player, effect.value || 0)
       messages.push(`恢复${effect.value}点能量`)
       return { messages }
     }
@@ -2233,7 +2243,7 @@ export class EffectManager {
     }
 
     if (effect.type === 'restoreEnergy') {
-      player.currentCost += effect.value || 0
+      this.applyCostDelta(player, effect.value || 0)
       messages.push(`${player.name} 恢复${effect.value}点能量`)
       return { messages }
     }
@@ -2280,7 +2290,7 @@ export class EffectManager {
     }
 
     if (effect.type === 'modifyCost' && effect.value) {
-      player.currentCost += effect.value as number
+      this.applyCostDelta(player, effect.value as number)
       messages.push(`${player.name} 能量${(effect.value as number) > 0 ? '+' : ''}${effect.value}`)
       return { messages }
     }
@@ -2443,12 +2453,12 @@ export class EffectManager {
     const messages: string[] = []
     game.players.forEach(player => {
       if (player.pendingNextRoundStartEnergy) {
-        player.currentCost += player.pendingNextRoundStartEnergy
+        this.applyCostDelta(player, player.pendingNextRoundStartEnergy)
         messages.push(`${player.name} 恢复${player.pendingNextRoundStartEnergy}点能量`)
         player.pendingNextRoundStartEnergy = 0
       }
       if (game.isFinalRound && player.pendingFinalRoundStartEnergy) {
-        player.currentCost += player.pendingFinalRoundStartEnergy
+        this.applyCostDelta(player, player.pendingFinalRoundStartEnergy)
         messages.push(`${player.name} 最后一轮恢复${player.pendingFinalRoundStartEnergy}点能量`)
         player.pendingFinalRoundStartEnergy = 0
       }
@@ -2817,7 +2827,7 @@ export class EffectManager {
     winners.forEach(entry => {
       const player = game.players[entry.playerIndex]
       if (entry.playCost > 0) {
-        player.currentCost += entry.playCost
+        this.applyCostDelta(player, entry.playCost)
         messages.push(`${entry.card.name} 本批战力最高(${maxPower})，退还${entry.playCost}费用`)
       }
     })

@@ -250,7 +250,8 @@ io.on('connection', (socket) => {
         result = gameEngine.handleExecuteReforge(
           player.id,
           action.data.options,
-          action.data.selectedCardIndex
+          action.data.selectedCardIndex,
+          action.data.selectedCardIndices,
         )
         break
 

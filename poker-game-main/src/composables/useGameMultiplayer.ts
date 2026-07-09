@@ -53,9 +53,9 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
 
   const myPlayer = computed(() => gameState.value.players[0])
   const opponent = computed(() => gameState.value.players[1])
-  const reforgeState = ref<{ active: boolean; selectedCard: number | null; hasChosen: boolean }>({
+  const reforgeState = ref<{ active: boolean; selectedRedrawIndices: number[]; hasChosen: boolean }>({
     active: false,
-    selectedCard: null,
+    selectedRedrawIndices: [],
     hasChosen: false
   })
 
@@ -95,7 +95,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
     gameState.value.phase = 'draw'
     gameState.value.isFinalRound = false
     gameState.value.winner = undefined
-    reforgeState.value = { active: false, selectedCard: null, hasChosen: false }
+    reforgeState.value = { active: false, selectedRedrawIndices: [], hasChosen: false }
     gameState.value.selectedCard = undefined
     gameState.value.selectedSlot = undefined
     gameState.value.message = '回合 1 - 同时操作'
@@ -380,47 +380,51 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
   function executeReforge(options: [ReforgeOption, ReforgeOption]): GameAction {
     const player = myPlayer.value
     let message = `${player.name} 重铸：`
+    const selectedIndices = [...reforgeState.value.selectedRedrawIndices]
+    const redrawQueue = [...selectedIndices].sort((a, b) => b - a)
     
     options.forEach((option, index) => {
       switch (option) {
         case 'gainCost':
-          player.currentCost += 2
+          EffectManager.applyCostDelta(player, 2)
           message += ` 恢复2费用`
           break
         case 'gainPower':
           player.bonusPower += 1
           message += ` 总战力+1`
           break
-        case 'redraw':
-          if (reforgeState.value.selectedCard !== null) {
-            const card = player.hand.splice(reforgeState.value.selectedCard, 1)[0]
+        case 'redraw': {
+          const hi = redrawQueue.shift()
+          if (hi !== undefined && hi >= 0 && hi < player.hand.length) {
+            const card = player.hand.splice(hi, 1)[0]
             player.deck.unshift(card)
             const newCard = drawCard(player)
             message += ` 换牌(${card.name}→${newCard?.name})`
-            reforgeState.value.selectedCard = null
           }
           break
+        }
       }
       if (index === 0) message += ' +'
     })
     
     gameState.value.message = message
     reforgeState.value.active = false
-    reforgeState.value.selectedCard = null
+    reforgeState.value.selectedRedrawIndices = []
     gameState.value.phase = 'draw'
 
     EffectManager.triggerReforgeEffects(player, gameState.value)
     
     return {
       type: 'executeReforge',
-      data: { options }
+      data: { options, selectedCardIndices: selectedIndices }
     }
   }
 
   // 选择重铸手牌
   function selectReforgeCard(cardIndex: number) {
     if (!reforgeState.value.active) return
-    reforgeState.value.selectedCard = cardIndex
+    if (reforgeState.value.selectedRedrawIndices.includes(cardIndex)) return
+    reforgeState.value.selectedRedrawIndices.push(cardIndex)
   }
 
   // 检查场地是否填满
@@ -536,7 +540,7 @@ export function useGameMultiplayer(myPlayerId: string, opponentId: string, myPla
           options.forEach((option: ReforgeOption) => {
             switch (option) {
               case 'gainCost':
-                opponentPlayer.currentCost += 2
+                EffectManager.applyCostDelta(opponentPlayer, 2)
                 console.log('[useGameMultiplayer] 对手恢复费用，当前:', opponentPlayer.currentCost)
                 break
               case 'gainPower':
