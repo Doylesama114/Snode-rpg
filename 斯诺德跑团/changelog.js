@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7090',
+    date: '2026-07-09',
+    changes: [
+      '修复OSS镜像feedUrl缺https导致镜像下载失败',
+      'CI自动补全PUBLIC_BASE协议头'
+    ]
+  },
+
+
+  {
     version: '1.0.7089',
     date: '2026-07-09',
     changes: [

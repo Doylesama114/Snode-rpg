@@ -94,6 +94,12 @@ jobs:
             echo "::error::No .exe in dist artifact"
             exit 1
           fi
+          # GitHub Variable 须为 https://bucket.oss-...aliyuncs.com（勿省略协议头）
+          PUBLIC_BASE="${PUBLIC_BASE%/}"
+          case "$PUBLIC_BASE" in
+            http://*|https://*) ;;
+            *) PUBLIC_BASE="https://${PUBLIC_BASE}" ;;
+          esac
 
           echo "=== OSS Mirror: $TAG ==="
           echo "EXE: $EXE ($(du -h "$EXE" | cut -f1))"

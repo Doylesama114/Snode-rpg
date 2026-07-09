@@ -46,6 +46,13 @@ function formatUpdateError(msg) {
   return msg;
 }
 
+function normalizeHttpsUrl(url) {
+  if (!url || typeof url !== 'string') return url;
+  var u = url.trim();
+  if (/^https?:\/\//i.test(u)) return u;
+  return 'https://' + u.replace(/^\/+/, '');
+}
+
 function httpsGetJson(url, opts) {
   opts = opts || {};
   var retries = opts.retries != null ? opts.retries : 3;
@@ -105,9 +112,11 @@ function fetchLatestTag(sourceKey) {
     return httpsGetJson(source.latestJson).then(function(data) {
       var tag = data && data.tag;
       if (!tag) throw new Error('无法获取镜像版本信息');
+      // feedUrl 来自 CI 写入的 latest.json；若 PUBLIC_BASE 未带 https:// 会导致 autoUpdater 失败
+      var feedUrl = normalizeHttpsUrl(data.feedUrl) || source.feed(tag);
       return {
         tag: tag,
-        feedUrl: data.feedUrl || source.feed(tag),
+        feedUrl: feedUrl,
         source: sourceKey,
       };
     });
