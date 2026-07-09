@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7092',
+    date: '2026-07-09',
+    changes: [
+      '检查更新失败自动切换国内镜像',
+      '镜像更新全自动下载安装'
+    ]
+  },
+
+
+  {
     version: '1.0.7091',
     date: '2026-07-09',
     changes: [

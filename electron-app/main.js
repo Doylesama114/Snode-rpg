@@ -23,6 +23,8 @@ const UPDATE_SOURCES = {
 
 let mainWindow = null;
 let updateCheckInFlight = false;
+/** @type {{ order: string[], phase: string, autoFallback: boolean, mirrorAttempted: boolean, lastSource: string|null }|null} */
+let updateSession = null;
 
 function sendUpdateStatus(data) {
   if (!mainWindow) return;
@@ -32,18 +34,40 @@ function sendUpdateStatus(data) {
 function formatUpdateError(msg) {
   if (!msg) return '更新检查失败';
   if (msg.indexOf('504') >= 0 || msg.indexOf('Gateway Time-out') >= 0 || msg.indexOf('Gateway Timeout') >= 0) {
-    return 'GitHub 暂时超时（504），请稍后重试或点击「镜像下载」。';
+    return 'GitHub 暂时超时（504），将自动尝试国内镜像。';
   }
   if (msg.indexOf('403') >= 0 || msg.indexOf('Forbidden') >= 0 || msg.indexOf('restricted') >= 0) {
-    return 'GitHub 访问受限（403），请使用「镜像下载」或稍后重试。';
+    return 'GitHub 访问受限（403），将自动尝试国内镜像。';
   }
   if (msg.indexOf('ENOTFOUND') >= 0 || msg.indexOf('ETIMEDOUT') >= 0 || msg.indexOf('timeout') >= 0) {
-    return '网络连接失败，请检查网络后重试。';
+    return '网络连接失败，将自动尝试国内镜像。';
   }
   if (msg.length > 120) {
-    return '更新检查失败，请稍后重试或使用「镜像下载」。';
+    return '更新检查失败，将自动尝试国内镜像。';
   }
   return msg;
+}
+
+function resolveUpdateOrder(opts) {
+  if (opts.sources && opts.sources.length) return opts.sources.slice();
+  if (opts.preferMirror || opts.preferGitee) return ['oss', 'github'];
+  return ['github', 'oss'];
+}
+
+function beginMirrorFallback(reason) {
+  if (!updateSession || updateSession.mirrorAttempted) return Promise.resolve({ outcome: 'failed' });
+  updateSession.mirrorAttempted = true;
+  console.log('[更新] 自动切换国内镜像:', reason || 'primary failed');
+  sendUpdateStatus({
+    status: 'checking',
+    message: '检查更新失败，正在自动尝试国内镜像...',
+  });
+  return checkForUpdatesViaGenericFeed({
+    sources: ['oss', 'github'],
+    autoFallback: false,
+    _fromFallback: true,
+    phase: 'mirror',
+  });
 }
 
 function normalizeHttpsUrl(url) {
@@ -130,82 +154,126 @@ function fetchLatestTag(sourceKey) {
 
 function checkForUpdatesViaGenericFeed(opts) {
   opts = opts || {};
-  if (updateCheckInFlight) return Promise.resolve();
+  if (updateCheckInFlight && !opts._fromFallback) return Promise.resolve({ outcome: 'busy' });
   updateCheckInFlight = true;
 
-  var preferMirror = !!(opts.preferMirror || opts.preferGitee);
-  var order = preferMirror
-    ? ['oss', 'github']
-    : ['github', 'oss'];
+  var order = resolveUpdateOrder(opts);
+  var autoFallback = opts.autoFallback !== false && !opts._fromFallback && order.length === 1 && order[0] === 'github';
+  updateSession = {
+    order: order,
+    phase: opts.phase || (order[0] === 'oss' ? 'mirror' : order.length === 1 ? 'github' : 'full'),
+    autoFallback: autoFallback,
+    mirrorAttempted: !!opts._fromFallback,
+    lastSource: null,
+  };
+
+  var checkingMsg = updateSession.phase === 'mirror'
+    ? '正在从国内镜像检查更新...'
+    : order[0] === 'oss'
+      ? '正在从国内镜像检查更新...'
+      : '正在检查更新...';
 
   sendUpdateStatus({
     status: 'checking',
-    message: preferMirror ? '正在从国内镜像检查更新...' : '正在检查更新...',
+    message: checkingMsg,
   });
+
+  function finishFailed() {
+    updateCheckInFlight = false;
+    if (autoFallback) {
+      return beginMirrorFallback('all sources failed');
+    }
+    sendUpdateStatus({
+      status: 'error',
+      message: '无法获取更新信息（已尝试 GitHub 与国内镜像），请稍后重试。',
+    });
+    return Promise.resolve({ outcome: 'failed' });
+  }
 
   function trySource(index) {
     if (index >= order.length) {
-      updateCheckInFlight = false;
-      sendUpdateStatus({
-        status: 'error',
-        message: '无法获取更新信息，请稍后重试或点击「镜像下载」。',
-      });
-      return Promise.resolve();
+      return finishFailed();
     }
 
     var key = order[index];
     return fetchLatestTag(key).then(function(info) {
+      updateSession.lastSource = key;
       console.log('[更新] 使用 ' + key + ' feed: ' + info.feedUrl);
       autoUpdater.setFeedURL({ provider: 'generic', url: info.feedUrl });
       return autoUpdater.checkForUpdates();
     }).catch(function(err) {
-      console.warn('[更新] ' + order[index] + ' 源失败:', err.message || err);
+      console.warn('[更新] ' + key + ' 源失败:', err.message || err);
       return trySource(index + 1);
     });
   }
 
-  return trySource(0).finally(function() {
-    updateCheckInFlight = false;
+  return trySource(0).then(function(result) {
+    if (result && result.outcome === 'failed') return result;
+    return { outcome: 'ok' };
+  }).catch(function() {
+    return finishFailed();
+  });
+}
+
+/** 启动 / 定时 / 手动「检查更新」：先 GitHub，失败自动走国内镜像全流程 */
+function runAutoUpdateCheck() {
+  return checkForUpdatesViaGenericFeed({
+    sources: ['github'],
+    autoFallback: true,
+    phase: 'github',
   });
 }
 
 autoUpdater.on('checking-for-update', () => {
   console.log('[更新] 检查中...');
-  sendUpdateStatus({ status: 'checking' });
+  sendUpdateStatus({ status: 'checking', message: updateSession && updateSession.phase === 'mirror'
+    ? '正在从国内镜像检查更新...'
+    : '正在检查更新...' });
 });
 autoUpdater.on('update-available', (info) => {
   console.log('[更新] 发现 v' + info.version + '，正在下载...');
-  sendUpdateStatus({ status: 'downloading', version: info.version });
+  var fromMirror = updateSession && (updateSession.phase === 'mirror' || updateSession.lastSource === 'oss');
+  sendUpdateStatus({
+    status: 'downloading',
+    version: info.version,
+    message: fromMirror ? '正在从国内镜像下载 v' + info.version + '...' : '正在下载更新 v' + info.version + '...',
+  });
 });
 autoUpdater.on('update-not-available', () => {
   console.log('[更新] 已是最新版本');
+  updateCheckInFlight = false;
   sendUpdateStatus({ status: 'uptodate' });
 });
 autoUpdater.on('update-downloaded', (info) => {
   console.log('[更新] v' + info.version + ' 下载完成，即将重启...');
+  updateCheckInFlight = false;
   sendUpdateStatus({ status: 'downloaded', version: info.version });
-  // 3 秒后自动重启
   setTimeout(() => {
     autoUpdater.quitAndInstall(true, true);
   }, 3000);
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
+  if (updateSession && updateSession.autoFallback && !updateSession.mirrorAttempted) {
+    beginMirrorFallback(err.message || 'autoUpdater error');
+    return;
+  }
+  updateCheckInFlight = false;
   sendUpdateStatus({ status: 'error', message: formatUpdateError(err.message || String(err)) });
 });
 
-// IPC: 手动检查更新（GitHub API + generic latest.yml，避免 GitHub HTML 504）
+// IPC: 手动检查更新 — GitHub 优先，失败自动镜像
 ipcMain.on('check-update', () => {
-  checkForUpdatesViaGenericFeed({ preferGitee: false });
+  runAutoUpdateCheck();
 });
 
-// IPC: 镜像更新 — 优先阿里云 OSS，失败回退 GitHub
+// IPC: 镜像更新 — 直接 OSS 优先全自动下载安装
 ipcMain.on('check-update-gitee', () => {
-  checkForUpdatesViaGenericFeed({ preferMirror: true });
+  checkForUpdatesViaGenericFeed({ sources: ['oss', 'github'], autoFallback: false, phase: 'mirror' });
 });
 
 ipcMain.on('check-update-mirror', () => {
-  checkForUpdatesViaGenericFeed({ preferMirror: true });
+  checkForUpdatesViaGenericFeed({ sources: ['oss', 'github'], autoFallback: false, phase: 'mirror' });
 });
 
 // IPC: 手动重启
@@ -507,13 +575,13 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  // 启动时自动检查更新（延迟避免阻塞启动；走 API+latest.yml，不抓 GitHub HTML）
+  // 启动时自动检查更新（GitHub → 失败则自动国内镜像下载安装）
   mainWindow.once('ready-to-show', () => {
-    setTimeout(() => checkForUpdatesViaGenericFeed({ preferGitee: false }), 3000);
+    setTimeout(() => runAutoUpdateCheck(), 3000);
   });
 
   // 定时检查更新（每4小时）
-  setInterval(() => checkForUpdatesViaGenericFeed({ preferGitee: false }), 4 * 60 * 60 * 1000);
+  setInterval(() => runAutoUpdateCheck(), 4 * 60 * 60 * 1000);
 });
 
 app.on('window-all-closed', () => app.quit());
