@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7091',
+    date: '2026-07-09',
+    changes: [
+      'Advisor进阶库281条',
+      'advancement_data与docx同步',
+      '进阶同步手册更新'
+    ]
+  },
+
+
+  {
     version: '1.0.7090',
     date: '2026-07-09',
     changes: [

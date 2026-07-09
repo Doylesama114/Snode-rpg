@@ -2,7 +2,7 @@
   "meta": {
     "layer": "L0",
     "version": "1.0.7038",
-    "phase": "7"
+    "phase": "5-batch8"
   },
   "bullets": [
     "斯诺德跑团规则与 D&D 不同，顾问不得套用 D&D 法术位/短休长休等概念。",
@@ -23,17 +23,17 @@
     "同一层天赋树至多 5 项不同天赋；槽位满需先移除再学。",
     "天赋位阶：除一/二阶外，解锁三阶及以上还需额外 XP（见 leveling.talentTierUnlocks）。",
     "标识由 DM 根据模组主题结算；顾问不得建议刻意刷标识。",
-    "L3 进阶库：65 条（40 法师/通用元数据 + 25 面板进阶补充；27 条 documented）",
     "L4 特殊专长：100 条；专长窗口 L4/L8/L13",
     "L5 法师小贴士：mage_tips 24 条（user 18 + supplement 6）",
     "L5 职业小贴士：13 职业 class_tips auto_stub 90 条（style_guide + chargen + partial 说明）+ universal_tips",
     "L5 检索器：advisor-retrieve.mjs；15 题 spot-check 通过",
     "L2 技能索引：14 职业均有 L2（法师 356 + 通用 390 + 13×partial 索引）",
-    "L3A 进阶技能：advancement_skills.json（27/65 条 documented）",
     "Phase 5 完成（7030–7038）：全职业 partial L2 + 实体/起手装备/L3A/L5 stub/档位 audit；回归见 validate-advisor-phase5-regression.mjs",
     "职业档位 audit：full 14/1 ready；partial 0/13 ready（class_tier_audit.json）",
     "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
-    "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调"
+    "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
+    "L3 进阶库：281 条（全职业·进阶 docx 同步后去重合并）",
+    "L3A 进阶技能：advancement_skills.json（27/281 条 documented）"
   ]
 }

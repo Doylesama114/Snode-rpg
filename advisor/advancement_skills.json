@@ -5,7 +5,7 @@
     "source": "职业页/advancement_details.js",
     "documentedCount": 27,
     "catalogSource": "advisor/advancements.json + 职业页/advancement_data.json",
-    "generatedAt": "2026-07-07",
+    "generatedAt": "2026-07-09",
     "note": "收录 advancement_details.js 全部条目；未在 details 中的进阶仍为 metadata_only"
   },
   "byName": {

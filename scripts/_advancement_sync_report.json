@@ -58,5 +58,21 @@
     }
   },
   "universal_count": 10,
-  "advancement_data_count": 489
+  "advancement_data_count": 489,
+  "advisor": {
+    "advancements_count": 281,
+    "documented_count": 27,
+    "log_tail": {
+      "build-advisor-advancements.mjs": [
+        "Advancements catalog build complete:",
+        "  unique names: 281 (from 489 class rows)",
+        "  scopes: {\"class-advancement\":253,\"mage-only\":18,\"universal\":10}"
+      ],
+      "build-advisor-advancement-skills.mjs": [
+        "  documented: 27",
+        "  catalog added: 0, patched: 27, total: 281",
+        "  斗士, 熊战士, 前锋, 指挥官, 铳士, 剑圣, 神射手, 狂徒, 醉酒大师, 守护骑士, 蝰蛇, 飞贼, 原始人英雄, 密探, 赋生者, 狂野术士, 预言家, 兽群领主, 怪物, 升腾者, 救赎骑士, 毁灭骑士, 诡术师, 狂战士, 原始术士, 棍术师, 惩戒骑士"
+      ]
+    }
+  }
 }
