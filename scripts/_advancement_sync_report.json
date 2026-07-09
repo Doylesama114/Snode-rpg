@@ -1,0 +1,62 @@
+{
+  "classes": {
+    "蛮斗士": {
+      "class_only": 20,
+      "with_universal": 30
+    },
+    "战士": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "法师": {
+      "class_only": 30,
+      "with_universal": 40
+    },
+    "猎人": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "牧师": {
+      "class_only": 69,
+      "with_universal": 79
+    },
+    "圣骑士": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "游荡者": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "德鲁伊": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "萨满祭司": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "术士": {
+      "class_only": 20,
+      "with_universal": 30
+    },
+    "武僧": {
+      "class_only": 20,
+      "with_universal": 30
+    },
+    "吟游诗人": {
+      "class_only": 25,
+      "with_universal": 35
+    },
+    "魔契师": {
+      "class_only": 120,
+      "with_universal": 130
+    },
+    "奇械师": {
+      "class_only": 25,
+      "with_universal": 35
+    }
+  },
+  "universal_count": 10,
+  "advancement_data_count": 489
+}

@@ -58,13 +58,13 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 4
+          "amount": 3
         },
         {
           "color": "#843F0B",
@@ -94,19 +94,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
+          "amount": 3
         },
         {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 2
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 5
+          "amount": 3
         }
       ],
       "conditions": [
@@ -130,18 +130,18 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#595959",
-          "name": "黑色",
-          "id": "black",
-          "amount": 4
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
+          "amount": 3
+        },
+        {
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
           "amount": 3
         }
       ],
@@ -168,19 +168,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 5
+          "amount": 3
         },
         {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -205,31 +205,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 1
-        },
-        {
-          "color": "#B3F9FF",
-          "name": "浅色",
-          "id": "light",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -253,19 +241,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 5
+          "amount": 3
         },
         {
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -286,16 +274,10 @@
       },
       "cost": [
         {
-          "color": "#00B050",
-          "name": "绿色",
-          "id": "green",
-          "amount": 1
-        },
-        {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#B3F9FF",
@@ -332,19 +314,19 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 4
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 4
+          "amount": 3
         }
       ],
       "conditions": [
@@ -403,25 +385,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 5
-        },
-        {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [
@@ -520,7 +496,13 @@
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 6
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
         }
       ],
       "conditions": [
@@ -544,25 +526,13 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 2
-        },
-        {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 1
-        },
-        {
-          "color": "#00B050",
-          "name": "绿色",
-          "id": "green",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
@@ -589,6 +559,12 @@
       },
       "cost": [
         {
+          "color": "#00B0F0",
+          "name": "蓝色",
+          "id": "blue",
+          "amount": 3
+        },
+        {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
@@ -598,7 +574,7 @@
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 6
+          "amount": 3
         }
       ],
       "conditions": [
@@ -619,40 +595,22 @@
       },
       "cost": [
         {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 2
-        },
-        {
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 1
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -711,19 +669,13 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#B94BFF",
-          "name": "紫色",
-          "id": "purple",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#595959",
@@ -753,25 +705,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 5
-        },
-        {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [
@@ -795,19 +741,13 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 1
-        },
-        {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 4
+          "amount": 3
         },
         {
           "color": "#843F0B",
@@ -838,22 +778,16 @@
       },
       "cost": [
         {
-          "color": "#FF0000",
-          "name": "红色",
-          "id": "red",
-          "amount": 1
-        },
-        {
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
           "amount": 3
         },
         {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 2
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
+          "amount": 3
         },
         {
           "color": "#843F0B",
@@ -884,13 +818,7 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B94BFF",
@@ -928,25 +856,19 @@
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFF32F",
           "name": "黄色",
           "id": "yellow",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
           "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -967,22 +889,16 @@
       },
       "cost": [
         {
-          "color": "#00B050",
-          "name": "绿色",
-          "id": "green",
-          "amount": 2
-        },
-        {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFFFFF",
@@ -1174,18 +1090,12 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 2
+          "amount": 3
         },
         {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
-        },
-        {
-          "color": "#B3F9FF",
-          "name": "浅色",
-          "id": "light",
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
           "amount": 3
         },
         {
@@ -1246,34 +1156,22 @@
       "attrs": {},
       "cost": [
         {
-          "color": "#00B050",
-          "name": "绿色",
-          "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 2
-        },
-        {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [

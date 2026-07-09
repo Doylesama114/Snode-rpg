@@ -60,22 +60,16 @@
           "amount": 3
         },
         {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
           "amount": 3
         },
         {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 2
-        },
-        {
-          "color": "#595959",
-          "name": "黑色",
-          "id": "black",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [
@@ -103,37 +97,19 @@
           "color": "#00B0F0",
           "name": "蓝色",
           "id": "blue",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 1
-        },
-        {
-          "color": "#00FA99",
-          "name": "青色",
-          "id": "cyan",
-          "amount": 2
-        },
-        {
-          "color": "#B94BFF",
-          "name": "紫色",
-          "id": "purple",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [
@@ -158,23 +134,23 @@
           "color": "#00B0F0",
           "name": "蓝色",
           "id": "blue",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 5
+          "amount": 3
         }
       ],
       "conditions": [
-        "你通过惑控或幻象效果成功欺骗二十名角色",
+        "你通过惑控或幻象效果效果成功欺骗二十名角色",
         "你花费过幕间物语来阅读一本幻术学派的魔典",
         "令三个不同势力或阵营的、具有一定身份地位的角色相信你已进阶幻术师"
       ]
@@ -196,28 +172,16 @@
       },
       "cost": [
         {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 1
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 1
-        },
-        {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#595959",
@@ -262,13 +226,7 @@
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 2
-        },
-        {
-          "color": "#595959",
-          "name": "黑色",
-          "id": "black",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [
@@ -291,28 +249,10 @@
       },
       "cost": [
         {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 1
-        },
-        {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 1
-        },
-        {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 1
-        },
-        {
-          "color": "#B3F9FF",
-          "name": "浅色",
-          "id": "light",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
@@ -324,7 +264,7 @@
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -390,7 +330,7 @@
           "color": "#FFF32F",
           "name": "黄色",
           "id": "yellow",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#B94BFF",
@@ -402,7 +342,7 @@
           "color": "#595959",
           "name": "黑色",
           "id": "black",
-          "amount": 4
+          "amount": 3
         }
       ],
       "conditions": [
@@ -424,18 +364,6 @@
       },
       "cost": [
         {
-          "color": "#00B0F0",
-          "name": "蓝色",
-          "id": "blue",
-          "amount": 2
-        },
-        {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
-        },
-        {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
@@ -445,13 +373,13 @@
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -474,16 +402,10 @@
       },
       "cost": [
         {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 2
-        },
-        {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#00FA99",
@@ -495,7 +417,7 @@
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -521,31 +443,19 @@
           "color": "#00B0F0",
           "name": "蓝色",
           "id": "blue",
-          "amount": 2
-        },
-        {
-          "color": "#00FA99",
-          "name": "青色",
-          "id": "cyan",
-          "amount": 2
-        },
-        {
-          "color": "#B94BFF",
-          "name": "紫色",
-          "id": "purple",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 1
+          "amount": 3
         },
         {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 2
+          "color": "#595959",
+          "name": "黑色",
+          "id": "black",
+          "amount": 3
         }
       ],
       "conditions": [
@@ -606,25 +516,19 @@
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
           "amount": 3
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 2
         }
       ],
       "conditions": [
@@ -684,31 +588,19 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#FFF32F",
           "name": "黄色",
           "id": "yellow",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
           "amount": 3
-        },
-        {
-          "color": "#B94BFF",
-          "name": "紫色",
-          "id": "purple",
-          "amount": 1
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -731,7 +623,7 @@
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#B94BFF",
@@ -743,19 +635,7 @@
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 1
-        },
-        {
-          "color": "#595959",
-          "name": "黑色",
-          "id": "black",
-          "amount": 1
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -785,18 +665,12 @@
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 1
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
           "amount": 3
         }
       ],
@@ -830,19 +704,13 @@
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 2
-        },
-        {
-          "color": "#FFB7E3",
-          "name": "粉色",
-          "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#843F0B",
           "name": "棕色",
           "id": "brown",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -873,7 +741,7 @@
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#00FA99",
@@ -886,12 +754,6 @@
           "name": "粉色",
           "id": "pink",
           "amount": 3
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 1
         }
       ],
       "conditions": [
@@ -920,9 +782,9 @@
           "amount": 3
         },
         {
-          "color": "#B94BFF",
-          "name": "紫色",
-          "id": "purple",
+          "color": "#843F0B",
+          "name": "棕色",
+          "id": "brown",
           "amount": 3
         },
         {
@@ -934,7 +796,7 @@
       ],
       "conditions": [
         "在酒馆、街巷或城郊等平民出行的地点赢得五场战斗环节的胜利",
-        "击败二十名向你发起攻击的敌人（不计算玩家在内）",
+        "击败二十五名向你发起攻击的敌人（不计算玩家在内）",
         "将自身在当地的名望等级提升至7"
       ]
     },
@@ -971,7 +833,7 @@
         }
       ],
       "conditions": [
-        "进行二十次成功的伪造检定",
+        "进行十次成功的伪造检定",
         "花费1000枚伪造金币，或者售出同等价值的赝品",
         "在一起关键事件中完全扮演另一名无关联的角色贯彻始末，并且没有被其他角色察觉（玩家除外）"
       ]
@@ -990,54 +852,60 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#EE822F",
           "name": "橙色",
           "id": "orange",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#FFF32F",
           "name": "黄色",
           "id": "yellow",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#00B050",
           "name": "绿色",
           "id": "green",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#00B0F0",
           "name": "蓝色",
           "id": "blue",
-          "amount": 1
+          "amount": 3
         },
         {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 1
+          "amount": 3
         },
         {
-          "color": "#D9D9D9",
-          "name": "无色",
-          "id": "colorless",
-          "amount": 2
+          "color": "#FFB7E3",
+          "name": "粉色",
+          "id": "pink",
+          "amount": 3
+        },
+        {
+          "color": "#FFFFFF",
+          "name": "白色",
+          "id": "white",
+          "amount": 3
         }
       ],
       "conditions": [
-        "获得每种不同颜色的技能点（不包括自由技能点）",
-        "花费每种不同颜色的技能点（不包括自由技能点）",
+        "你的团队获得过每种不同的基础色彩标识",
+        "你习得过每种不同颜色标识的能力（不包括自由色彩标识）",
         "制作一件珍稀品质或以上的服饰，并且具备足够的美学象征"
       ]
     },
@@ -1064,19 +932,13 @@
           "color": "#00FA99",
           "name": "青色",
           "id": "cyan",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#B94BFF",
           "name": "紫色",
           "id": "purple",
-          "amount": 2
-        },
-        {
-          "color": "#FFFFFF",
-          "name": "白色",
-          "id": "white",
-          "amount": 2
+          "amount": 3
         }
       ],
       "conditions": [
@@ -1299,18 +1161,12 @@
           "color": "#FF0000",
           "name": "红色",
           "id": "red",
-          "amount": 2
+          "amount": 3
         },
         {
-          "color": "#FFF32F",
-          "name": "黄色",
-          "id": "yellow",
-          "amount": 1
-        },
-        {
-          "color": "#B3F9FF",
-          "name": "浅色",
-          "id": "light",
+          "color": "#00FA99",
+          "name": "青色",
+          "id": "cyan",
           "amount": 3
         },
         {
@@ -1371,34 +1227,22 @@
       "attrs": {},
       "cost": [
         {
-          "color": "#00B050",
-          "name": "绿色",
-          "id": "green",
-          "amount": 2
-        },
-        {
-          "color": "#EE822F",
-          "name": "橙色",
-          "id": "orange",
-          "amount": 2
-        },
-        {
           "color": "#B3F9FF",
           "name": "浅色",
           "id": "light",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFB7E3",
           "name": "粉色",
           "id": "pink",
-          "amount": 2
+          "amount": 3
         },
         {
           "color": "#FFFFFF",
           "name": "白色",
           "id": "white",
-          "amount": 1
+          "amount": 3
         }
       ],
       "conditions": [

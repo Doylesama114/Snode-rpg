@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7089',
+    date: '2026-07-09',
+    changes: [
+      '进阶途径页从docx全量同步',
+      '标识色彩三档展开',
+      '字段改为标识'
+    ]
+  },
+
+
+  {
     version: '1.0.7088',
     date: '2026-07-09',
     changes: [
