@@ -110,17 +110,15 @@ jobs:
             ossutil cp latest.yml "oss://${BUCKET}/releases/latest/latest.yml" --update -f --acl public-read
           fi
 
-          cat > /tmp/latest.json <<EOF
-{
-  "version": "${VERSION}",
-  "tag": "${TAG}",
-  "feedUrl": "${PUBLIC_BASE}/releases/${TAG}/",
-  "exeUrl": "${PUBLIC_BASE}/releases/${TAG}/${EXE}",
-  "exeName": "${EXE}",
-  "mirrors": ["oss", "github"],
-  "githubRelease": "https://github.com/Doylesama114/Snode-rpg/releases/tag/${TAG}"
-}
-EOF
+          jq -n \
+            --arg version "$VERSION" \
+            --arg tag "$TAG" \
+            --arg feedUrl "${PUBLIC_BASE}/releases/${TAG}/" \
+            --arg exeUrl "${PUBLIC_BASE}/releases/${TAG}/${EXE}" \
+            --arg exeName "$EXE" \
+            --arg githubRelease "https://github.com/Doylesama114/Snode-rpg/releases/tag/${TAG}" \
+            '{version: $version, tag: $tag, feedUrl: $feedUrl, exeUrl: $exeUrl, exeName: $exeName, mirrors: ["oss", "github"], githubRelease: $githubRelease}' \
+            > /tmp/latest.json
           ossutil cp /tmp/latest.json "oss://${BUCKET}/releases/latest/latest.json" --update -f --acl public-read
 
           echo "=== OSS mirror done ==="
