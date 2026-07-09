@@ -143,6 +143,7 @@ export function mergeSnapshotIntoCombatScenario(scenario, snapshot, query = '') 
   const merged = {
     ...base,
     abilityMods: { ...(base.abilityMods || {}) },
+    skillProfs: { ...(base.skillProfs || {}) },
   };
 
   const hasExplicitStr = /力量调整值[为是]?\+?\d+/.test(q);
@@ -158,6 +159,12 @@ export function mergeSnapshotIntoCombatScenario(scenario, snapshot, query = '') 
   }
 
   const flatProfs = flattenProfs(snapshot.profs || {});
+  for (const [profName, pts] of Object.entries(flatProfs)) {
+    if (pts > 0 && merged.skillProfs[profName] == null) {
+      merged.skillProfs[profName] = pts;
+      merged._skillProfFromSnapshot = true;
+    }
+  }
   if (!merged.weaponProfPoints) {
     let cat = merged.weaponCategory;
     if (!cat) {
@@ -378,12 +385,12 @@ export function parseCombatScenarioFromQuery(query) {
   const q = String(query || '');
   const strM = q.match(/力量调整值[为是]?\+(\d+)/);
   const dexM = q.match(/敏捷调整值[为是]?\+(\d+)/);
-  const profM = q.match(/(?:有)?(?:一点|1点|(\d+)点)([\u4e00-\u9fa5]{1,4})熟练度?/);
+  const weaponProfM = q.match(/(?:有)?(?:一点|1点|(\d+)点)(剑类|锤类|斧类|长柄|弓箭|火器|法器|简易)熟练度?/);
   const weaponM = q.match(/拿着一把(?:伤害为[^，,]+的)?([^，,]+剑)/)
     || q.match(/拿着(?:一把)?([^，,\s]{2,10}(?:剑|斧|锤|弓|弩))/);
   const damageM = q.match(/伤害为([^，,]+)/);
 
-  let weaponCategory = profM?.[2] || null;
+  let weaponCategory = weaponProfM?.[2] || null;
   if (!weaponCategory) {
     if (/剑类|双手剑|长剑|短剑/.test(q)) weaponCategory = '剑类';
     else if (/弓箭|长弓|短弓|手弩|弩/.test(q)) weaponCategory = '弓箭';
@@ -394,6 +401,17 @@ export function parseCombatScenarioFromQuery(query) {
   const activeBuffs = parseActiveBuffsFromQuery(q);
   const milestoneLevel = parseMilestoneLevelFromQuery(q);
 
+  const skillProfs = {};
+  const skillProfRe = /([\u4e00-\u9fa5]{2,6})熟练(?:度)?(\d+)点/g;
+  let spm;
+  while ((spm = skillProfRe.exec(q)) !== null) {
+    const name = spm[1];
+    const pts = Number(spm[2]);
+    if (name && pts > 0 && !WEAPON_CAT_HINTS.includes(name)) {
+      skillProfs[name] = pts;
+    }
+  }
+
   return {
     attackType: /远程|弓|弩|枪/.test(q) ? 'ranged' : 'melee',
     abilityMods: {
@@ -401,11 +419,12 @@ export function parseCombatScenarioFromQuery(query) {
       敏捷: dexM ? Number(dexM[1]) : 0,
     },
     weaponCategory,
-    weaponProfPoints: profM ? (Number(profM[1]) || 1) : (weaponCategory && /熟练/.test(q) ? 1 : 0),
+    weaponProfPoints: weaponProfM ? (Number(weaponProfM[1]) || 1) : (weaponCategory && /熟练/.test(q) ? 1 : 0),
     weaponName: weaponM?.[1] || null,
     weaponDamage: damageM?.[1]?.trim() || null,
     activeBuffs,
     milestoneLevel,
+    skillProfs,
     query: q,
   };
 }
@@ -477,6 +496,7 @@ export function resolveCombatScenario(params) {
     const sk = skillMods.skills?.[buffName];
     if (!sk) continue;
     if (sk.requiresRanged && p.attackType !== 'ranged') continue;
+    if (sk.requiresMelee && p.attackType === 'ranged') continue;
 
     if (sk.attrModifier) {
       for (const [attr, delta] of Object.entries(sk.attrModifier)) {
@@ -502,10 +522,16 @@ export function resolveCombatScenario(params) {
     }
     const ms = sk.hitModifier?.milestones || {};
     const ml = p.milestoneLevel;
-    if (ml != null) {
+    if (ml != null && sk.hitModifier) {
       for (const [level, val] of Object.entries(ms)) {
         const lv = Number(String(level).replace(/^L/, ''));
         if (ml >= lv) hitFlat = Math.max(hitFlat, val);
+      }
+    }
+    if (sk.hitViaProficiency) {
+      const profPts = Number(p.skillProfs?.[sk.hitViaProficiency] ?? 0);
+      if (profPts > 0) {
+        hitFlat = profPts;
       }
     }
     if (hitFlat !== 0) {
@@ -515,7 +541,7 @@ export function resolveCombatScenario(params) {
         value: hitFlat,
         detail: sk.note || `攻击命中检定值+${hitFlat}`,
       });
-    } else if (sk.hitModifier && !sk.attrModifier) {
+    } else if ((sk.hitModifier && !sk.attrModifier) || sk.hitViaProficiency) {
       components.push({
         source: buffName,
         type: 'hit',

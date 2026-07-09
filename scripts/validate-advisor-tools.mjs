@@ -369,5 +369,14 @@ check('cleric no-kit suggestions', reviewCleric.suggestions.some((s) => s.name =
 const rClericReview = retrieve('怎么评价我当前的build还有什么技能适合我', { snapshot: snapCleric });
 check('retrieve cleric build_review L2', rClericReview.intent === 'build_review' && formatContext(rClericReview).includes('强效治疗术'));
 
+const crusader = resolveCombatScenario(parseCombatScenarioFromQuery('力量调整值+3剑类熟练近战攻击目标阵营相反开启十字军打击命中加值是多少'));
+check('crusader strike +6', crusader.totalHitBonus === 6);
+
+const divineHammer = resolveCombatScenario(parseCombatScenarioFromQuery('力量调整值+2宗教熟练2点有一点剑类熟练近战攻击开启神力战槌命中加值是多少'));
+check('divine hammer +5', divineHammer.totalHitBonus === 5);
+
+const snapHammer = resolveCombatScenario(mergeSnapshotIntoCombatScenario(parseCombatScenarioFromQuery('我开启了神力战槌，近战攻击命中加值是多少'), snapCleric, '我开启了神力战槌，近战攻击命中加值是多少'));
+check('snap cleric divine hammer +4', snapHammer.totalHitBonus === 4);
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

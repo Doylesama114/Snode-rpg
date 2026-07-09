@@ -336,6 +336,28 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "combat-crusader-strike",
+      "query": "力量调整值+3剑类熟练近战攻击目标阵营相反开启十字军打击命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "十字军打击", "+6"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "combat-divine-hammer",
+      "query": "力量调整值+2宗教熟练2点有一点剑类熟练近战攻击开启神力战槌命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "神力战槌", "+5", "宗教"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-combat-cleric-hammer",
+      "query": "我开启了神力战槌，近战攻击命中加值是多少",
+      "snapshotFile": "advisor/snapshots/mock-cleric-l6.json",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "神力战槌", "+4", "L6 快照联动", "宗教"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

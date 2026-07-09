@@ -326,7 +326,13 @@ LLM
 - `suggestSkillsFromCatalog()` L2 流派抽样回退；`sampleSkillsForStyle` 导出复用
 - Golden + CI batch16 must-pass（蓄力劲射 +10 · 树皮术 AC 13 · 眼镜蛇中毒 +12）
 
-### v1.0.7081+ — 后续
+### v1.0.7081 — 条件/熟练度修饰符 + L2 扫描（P1）✓
+
+- 十字军打击/神力战槌/魔能翻涌；`hitViaProficiency` · `requiresMelee` · `skillProfs`
+- `scan-advisor-combat-modifiers.mjs` L2 候选报告
+- Golden + CI batch17 must-pass（十字军 +6 · 神力战槌 +5 · 快照牧师 +4）
+
+### v1.0.7082+ — 后续
 
 ## 8. Golden / CI 策略
 

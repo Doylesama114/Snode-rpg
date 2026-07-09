@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7081',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch17 条件熟练度修饰符',
+      'hitViaProficiency',
+      'L2 combat scan'
+    ]
+  },
+
+
+  {
     version: '1.0.7080',
     date: '2026-07-09',
     changes: [

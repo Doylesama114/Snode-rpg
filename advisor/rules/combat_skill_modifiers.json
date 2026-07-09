@@ -1,10 +1,10 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.3.0",
-    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7078/7080 扩展）",
+    "version": "1.4.0",
+    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7080/7081 扩展）",
     "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击"]
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌"]
   },
   "skills": {
     "魔法武器": {
@@ -78,6 +78,27 @@
       "conditionalHitModifier": { "queryHint": "中毒", "value": 7 },
       "note": "攻击命中检定值+4；目标处于中毒状态时改为+7",
       "source": "hunter_index · 眼镜蛇射击 summary"
+    },
+    "十字军打击": {
+      "className": "圣骑士",
+      "requiresMelee": true,
+      "hitModifier": { "base": 0 },
+      "conditionalHitModifier": { "queryHint": "阵营相反", "value": 2 },
+      "note": "目标阵营倾向相反时攻击命中检定值+2",
+      "source": "paladin_index · 十字军打击 summary"
+    },
+    "神力战槌": {
+      "className": "牧师",
+      "requiresMelee": true,
+      "hitViaProficiency": "宗教",
+      "note": "攻击命中检定值+宗教调整值（以宗教熟练点数计）",
+      "source": "cleric_index · 神力战槌 summary"
+    },
+    "魔能翻涌": {
+      "className": "术士",
+      "acModifier": { "base": 1 },
+      "note": "防御等级+1",
+      "source": "sorcerer_index · 魔能翻涌 summary"
     }
   }
 }
