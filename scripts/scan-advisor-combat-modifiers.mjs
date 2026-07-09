@@ -1,74 +1,56 @@
 #!/usr/bin/env node
 /**
- * Advisor 5.0 batch17 (7081) — scan L2 skill summaries for combat modifier candidates.
- * Run: node scripts/scan-advisor-combat-modifiers.mjs
+ * Advisor 5.0 batch19 (7083) — CLI for L2 combat modifier scan v2.
+ * Run: node scripts/scan-advisor-combat-modifiers.mjs [--json] [--tier-a] [--tier-b] [--write]
  */
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import {
+  scanCombatModifierCandidates,
+  writeCombatModifierScanReport,
+  DEFAULT_REPORT_PATH,
+} from './advisor-combat-modifiers-scan.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ADVISOR = path.join(__dirname, '..', 'advisor');
-const MOD_PATH = path.join(ADVISOR, 'rules', 'combat_skill_modifiers.json');
+const args = new Set(process.argv.slice(2));
+const writeReport = args.has('--write') || args.has('--json');
+const onlyTierA = args.has('--tier-a');
+const onlyTierB = args.has('--tier-b');
 
-const HIT_RE = /攻击命中检定值\+(\d+)|命中检定值\+(\d+)/;
-const AC_RE = /防御等级\+(\d+)/;
-
-function loadJson(fp) {
-  return JSON.parse(fs.readFileSync(fp, 'utf8'));
-}
-
-function scanIndexes() {
-  const known = new Set(Object.keys(loadJson(MOD_PATH).skills || {}));
-  const hits = [];
-  const acs = [];
-  const skillsDir = path.join(ADVISOR, 'skills');
-
-  for (const f of fs.readdirSync(skillsDir)) {
-    if (!f.endsWith('_index.json')) continue;
-    const idx = loadJson(path.join(skillsDir, f));
-    for (const sk of idx.skills || []) {
-      if (!sk.name || known.has(sk.name)) continue;
-      const summary = sk.summary || '';
-      const hm = summary.match(HIT_RE);
-      const am = summary.match(AC_RE);
-      if (hm) {
-        hits.push({
-          name: sk.name,
-          className: sk.class || sk.className || f.replace('_index.json', ''),
-          bonus: Number(hm[1] || hm[2]),
-          source: f,
-        });
-      } else if (am) {
-        acs.push({
-          name: sk.name,
-          className: sk.class || sk.className || f.replace('_index.json', ''),
-          bonus: Number(am[1]),
-          source: f,
-        });
-      }
-    }
+function printTier(label, rows, limit = 15) {
+  console.log(`\n${label} (${rows.length})`);
+  for (const row of rows.slice(0, limit)) {
+    const hit = row.hit?.flats?.[0]?.value ?? row.hit?.milestones?.[0]?.value;
+    const ac = row.ac?.flats?.[0]?.value ?? row.ac?.milestones?.[0]?.value;
+    const bonus = hit != null ? `命中+${hit}` : ac != null ? `AC+${ac}` : row.kind;
+    console.log(`  · ${row.name}（${row.className}）${bonus} [${row.tier}] ← ${row.indexFile}${row.structured ? ' ✓structured' : ''}`);
   }
-
-  hits.sort((a, b) => b.bonus - a.bonus || a.name.localeCompare(b.name, 'zh'));
-  acs.sort((a, b) => b.bonus - a.bonus || a.name.localeCompare(b.name, 'zh'));
-  return { hits, acs, knownCount: known.size };
+  if (rows.length > limit) console.log(`  … +${rows.length - limit} more`);
 }
 
 function main() {
-  console.log('=== scan-advisor-combat-modifiers (7082) ===\n');
-  const { hits, acs, knownCount } = scanIndexes();
-  console.log(`Structured corpus: ${knownCount} skills`);
-  console.log(`L2 hit candidates (not yet structured): ${hits.length}`);
-  for (const row of hits.slice(0, 12)) {
-    console.log(`  · ${row.name}（${row.className}）命中+${row.bonus} ← ${row.source}`);
+  console.log('=== scan-advisor-combat-modifiers v2 (7083) ===\n');
+  const report = scanCombatModifierCandidates();
+  const { meta, stats, tiers, duplicateNames } = report;
+
+  console.log(`Structured corpus: ${meta.structuredCount} skills`);
+  console.log(`L2 modifier signals: ${meta.candidateCount} skills (${meta.pendingCount} pending)`);
+  console.log(`Pending by tier: A=${stats.pendingByTier.A} B=${stats.pendingByTier.B} C=${stats.pendingByTier.C} D=${stats.pendingByTier.D}`);
+  if (duplicateNames.length) {
+    console.log(`Duplicate skill names across indexes: ${duplicateNames.length} (e.g. ${duplicateNames.slice(0, 3).map((d) => d.name).join('、')})`);
   }
-  if (hits.length > 12) console.log(`  … +${hits.length - 12} more`);
-  console.log(`\nL2 AC candidates (not yet structured): ${acs.length}`);
-  for (const row of acs.slice(0, 8)) {
-    console.log(`  · ${row.name}（${row.className}）AC+${row.bonus} ← ${row.source}`);
+
+  if (onlyTierA) printTier('Tier-A (flat/milestone · bulk-ready)', tiers.A);
+  else if (onlyTierB) printTier('Tier-B (conditional · semi-auto)', tiers.B);
+  else {
+    printTier('Tier-A pending', tiers.A);
+    printTier('Tier-B pending', tiers.B, 10);
+    printTier('Tier-C pending (engine gap)', tiers.C, 8);
+    printTier('Tier-D pending (enemy debuff)', tiers.D, 8);
   }
-  if (acs.length > 8) console.log(`  … +${acs.length - 8} more`);
+
+  if (writeReport) {
+    const fp = writeCombatModifierScanReport(report, DEFAULT_REPORT_PATH);
+    console.log(`\nWrote ${fp}`);
+  }
+
   console.log('\nOK (report only)');
 }
 

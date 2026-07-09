@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7083',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch19 战斗修饰符扫描v2',
+      'Tier A-D分级',
+      'combat-modifiers-scan报告'
+    ]
+  },
+
+
+  {
     version: '1.0.7082',
     date: '2026-07-09',
     changes: [

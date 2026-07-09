@@ -26,7 +26,7 @@ function skillExistsInIndexes(name) {
 }
 
 function main() {
-  console.log('=== validate-advisor-combat-modifiers (7082) ===\n');
+  console.log('=== validate-advisor-combat-modifiers (7083) ===\n');
   const doc = loadJson(MOD_PATH);
   const skills = doc.skills || {};
   let failed = 0;
@@ -56,12 +56,10 @@ function main() {
     }
   }
 
-  console.log(`\n7082 combat modifiers: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
+  console.log(`\n7083 combat modifiers corpus: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
   if (!failed) {
-    const scanPath = path.join(__dirname, 'scan-advisor-combat-modifiers.mjs');
-    if (fs.existsSync(scanPath)) {
-      console.log('✓ scan-advisor-combat-modifiers.mjs present');
-    }
+    console.log('✓ scan module advisor-combat-modifiers-scan.mjs');
+    console.log('✓ combat-scan CI via validate-advisor-combat-scan.mjs');
   }
   if (failed) process.exit(1);
 }

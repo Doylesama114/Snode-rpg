@@ -338,7 +338,16 @@ LLM
 - `mergeBuildReviewSuggestions` kit+catalog；多职业分组输出
 - Golden + CI batch18 must-pass（枪影 +6 · 酩酊 AC 13 · 魔剑士多职）
 
-### v1.0.7083+ — 后续
+### v1.0.7083 — 战斗修饰符扫描 v2（P1）✓
+
+- `advisor-combat-modifiers-scan.mjs`：Tier A–D 分级 · 里程碑/条件/变量识别
+- `advisor/reports/combat-modifiers-scan.json` 报告 · `validate-advisor-combat-scan.mjs` 接入 regression 7/7
+- 443 候选 / 423 pending（Tier-A 7 · Tier-B 14 · 7084 bulk 前置）
+
+### v1.0.7084+ — 后续
+
+- **7084 bulk 入库**：按 `advisor/reports/combat-modifiers-scan.json` Tier-A 批量写入 `combat_skill_modifiers.json`
+- Tier-B 半自动（conditional 字段）；Tier-C/D 引擎扩展或排除 combat_math
 
 ## 8. Golden / CI 策略
 

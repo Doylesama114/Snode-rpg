@@ -18,6 +18,7 @@ const SUITE = [
   ['intents', 'validate-advisor-intents.mjs'],
   ['feedback', 'validate-advisor-feedback.mjs'],
   ['combat-mods', 'validate-advisor-combat-modifiers.mjs'],
+  ['combat-scan', 'validate-advisor-combat-scan.mjs'],
 ];
 
 function runCase(name, scriptRel) {
