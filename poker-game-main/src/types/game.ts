@@ -90,6 +90,7 @@ export type EffectType =
   | 'batchHighestFreeDeploy'    // 本批展示后战力最高则退还打出费用（旗鱼）
   | 'moveOpponentBatchRevealToDeckBottom' // 将对手本批展示牌置于牌库底（矮人烈酒）
   | 'forceRandomHandPlay'       // 强制对手随机打出一张手牌（矮人烈酒）
+  | 'offerTavernLiquorPlay'     // 回合结束可额外费用打出手牌中的酒水牌（酒馆）
 
 /** 本批展示条目（盖牌→同时翻开） */
 export interface RevealBatchEntry {
@@ -398,10 +399,18 @@ export interface Player {
   deckCardIds?: string[]
   /** 本批展示后待弃置的战术牌（batchResolveOnly 延迟揭示） */
   pendingBatchTacticDiscards?: Array<{ card: Card; playerId: string; slotIndex: number }>
+  /** 酒馆：回合结束后可额外费用打出手牌酒水 */
+  tavernLiquorOffer?: { extraCost: number; keywords: string[] }
+}
+
+/** 检索候选（牌库/弃牌堆中的可选牌） */
+export interface SearchCandidate {
+  card: Card
+  pile: 'deck' | 'discard'
 }
 
 // 游戏阶段
-export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectCrossPlayerSlot' | 'selectTarget' | 'selectEffectBranch' | 'action' | 'gameOver'
+export type GamePhase = 'draw' | 'decision' | 'selectSlot' | 'selectCrossPlayerSlot' | 'selectTarget' | 'selectEffectBranch' | 'selectSearchCard' | 'selectTavernLiquor' | 'action' | 'gameOver'
 
 // 决策类型
 export type DecisionType = 'play' | 'reforge'
@@ -482,6 +491,17 @@ export interface GameState {
   }
   /** 本批展示后待弃置的战术牌（batchResolveOnly 延迟揭示） */
   pendingBatchTacticDiscards?: Array<{ card: Card; playerId: string; slotIndex: number }>
+  /** 检索：待玩家从多个候选中选一张 */
+  pendingSearchSelection?: {
+    playerId: string
+    ownerCardId?: string
+    ownerCardName?: string
+    effect: CardEffect
+    candidates: SearchCandidate[]
+    timing: 'onDeploy' | 'onReveal' | 'roundStart' | 'roundEnd'
+  }
+  /** 酒馆：待选打出手牌中的酒水 */
+  pendingTavernLiquor?: { playerId: string; extraCost: number; handIndices: number[] }
   accountState?: AccountState
 }
 

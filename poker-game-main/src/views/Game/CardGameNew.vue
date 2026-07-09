@@ -43,6 +43,10 @@ const {
   cancelActionChoice,
   resolveEffectBranchChoice,
   skipEffectBranch,
+  selectSearchCard,
+  skipSearchSelection,
+  playTavernLiquor,
+  skipTavernLiquor,
   isCardPlayable,
   canChoosePlay,
   canChooseReforge,
@@ -90,6 +94,18 @@ const effectBranchDiscardIndex = ref<number | null>(null)
 
 const pendingEffectBranch = computed(() =>
   gameState.value.pendingEffectBranches?.['player'] ?? null,
+)
+
+const pendingSearchSelection = computed(() =>
+  gameState.value.pendingSearchSelection?.playerId === 'player'
+    ? gameState.value.pendingSearchSelection
+    : null,
+)
+
+const pendingTavernLiquor = computed(() =>
+  gameState.value.pendingTavernLiquor?.playerId === 'player'
+    ? gameState.value.pendingTavernLiquor
+    : null,
 )
 
 function handleCancelAction() {
@@ -176,7 +192,7 @@ function onFieldSlotClick(playerIndex: number, slotRef: unknown) {
   if (player.id === 'player' && isDeployPhase()) {
     const slot = player.field[actualIndex]
     if (gameState.value.phase === 'selectSlot') {
-      const card = gameState.value.selectedCard
+      const card = gameState.value.selectedCard ?? gameState.value.pendingQuickPlayCard
       if (card) {
         const resolved = EffectManager.resolveDeploySlotIndex(player, card, actualIndex)
         if (isSlotAvailable(resolved)) {
@@ -228,6 +244,12 @@ function selectReforgeOption(option: ReforgeOption) {
 }
 
 function onHandCardClick(index: number) {
+  if (gameState.value.phase === 'selectTavernLiquor') {
+    if (pendingTavernLiquor.value?.handIndices.includes(index)) {
+      void playTavernLiquor(index)
+    }
+    return
+  }
   if (gameState.value.phase === 'selectEffectBranch') {
     onEffectBranchHandClick(index)
     return
@@ -348,6 +370,12 @@ const deployHint = computed(() => {
   }
   if (phase === 'selectCrossPlayerSlot') {
     return gameState.value.message || '选择对手场上槽位'
+  }
+  if (phase === 'selectSearchCard') {
+    return gameState.value.message || '点击候选牌加入手牌'
+  }
+  if (phase === 'selectTavernLiquor') {
+    return gameState.value.message || '点击手牌中的酒水牌打出，或点跳过'
   }
   return ''
 })
@@ -480,6 +508,7 @@ function playerIndex(playerId: string) {
               </span>
               <span v-else-if="reforgeState.active && reforgeOptions.length < 2 && reforgeOptions.includes('redraw')" class="hand-hint">点选放回</span>
               <span v-else-if="gameState.phase === 'selectEffectBranch'" class="hand-hint">点选水属性手牌</span>
+              <span v-else-if="gameState.phase === 'selectTavernLiquor'" class="hand-hint">点选酒水牌打出</span>
               <span v-else-if="!reforgeState.active && hasPlayedThisTurn && !canPlayExtra" class="hand-hint hand-hint--muted">已出牌</span>
               <span v-else-if="!reforgeState.active && canPlayExtra" class="hand-hint hand-hint--extra">可额外出牌</span>
             </div>
@@ -497,8 +526,8 @@ function playerIndex(playerId: string) {
                   size="hand"
                   :data-hand-card="'player-' + ci"
                   :playable="isCardPlayable(ci)"
-                  :disabled="!isCardPlayable(ci) && !reforgeState.active && gameState.phase !== 'selectEffectBranch'"
-                  :selectable="(reforgeState.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && reforgeState.selectedRedrawIndices.length < redrawCountNeeded()) || (gameState.phase === 'selectEffectBranch' && !!pendingEffectBranch?.discardHandAttributes.includes(card.attribute))"
+                  :disabled="!isCardPlayable(ci) && !reforgeState.active && gameState.phase !== 'selectEffectBranch' && !(gameState.phase === 'selectTavernLiquor' && pendingTavernLiquor?.handIndices.includes(ci))"
+                  :selectable="(reforgeState.active && reforgeOptions.length === 2 && reforgeOptions.includes('redraw') && reforgeState.selectedRedrawIndices.length < redrawCountNeeded()) || (gameState.phase === 'selectEffectBranch' && !!pendingEffectBranch?.discardHandAttributes.includes(card.attribute)) || (gameState.phase === 'selectTavernLiquor' && !!pendingTavernLiquor?.handIndices.includes(ci))"
                   :selected="reforgeState.selectedRedrawIndices.includes(ci) || effectBranchDiscardIndex === ci"
                   @click="onHandCardClick(ci)"
                 />
@@ -510,7 +539,26 @@ function playerIndex(playerId: string) {
     </div>
 
     <ActionDock :visible="showActionDock">
-      <div v-if="gameState.phase === 'selectEffectBranch' && pendingEffectBranch" class="action-dock-branch">
+      <div v-if="gameState.phase === 'selectSearchCard' && pendingSearchSelection" class="action-dock-branch">
+        <p class="action-dock-hint">检索：选择一张加入手牌</p>
+        <div class="action-dock-row action-dock-row--wrap">
+          <GameButton
+            v-for="(item, si) in pendingSearchSelection.candidates"
+            :key="si"
+            variant="primary"
+            class="game-btn--small"
+            @click="selectSearchCard(si)"
+          >{{ item.card.name }}（{{ item.pile === 'deck' ? '牌库' : '弃牌' }}）</GameButton>
+          <GameButton variant="ghost" class="game-btn--small" @click="skipSearchSelection">跳过</GameButton>
+        </div>
+      </div>
+      <div v-else-if="gameState.phase === 'selectTavernLiquor' && pendingTavernLiquor" class="action-dock-branch">
+        <p class="action-dock-hint">酒馆：额外 {{ pendingTavernLiquor.extraCost }} 费打出酒水（下回合展示）</p>
+        <div class="action-dock-row">
+          <GameButton variant="ghost" class="game-btn--small" @click="skipTavernLiquor">跳过</GameButton>
+        </div>
+      </div>
+      <div v-else-if="gameState.phase === 'selectEffectBranch' && pendingEffectBranch" class="action-dock-branch">
         <p class="action-dock-hint">
           {{ pendingEffectBranch.ownerCardName }}：先点选一张水属性手牌，再选效果
           <span v-if="effectBranchDiscardIndex !== null">（已选手牌）</span>

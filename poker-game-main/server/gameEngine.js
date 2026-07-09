@@ -557,15 +557,16 @@ class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!EffectManager.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-            const found = EffectManager.searchDeck(player, effect)
-            if (found.length > 0) {
-              player.hand.push(...found)
-              messages.push(`${player.name} 检索到${found.length}张牌`)
-            }
+      const r = EffectManager.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      return { messages, needsSearchSelection: r.needsSearchSelection }
+    }
+
+    if (effect.type === 'offerTavernLiquorPlay') {
+      const extraCost = effect.value ?? 1
+      const keywords = effect.targetKeywords?.length ? effect.targetKeywords : ['酒水']
+      player.tavernLiquorOffer = { extraCost, keywords }
+      messages.push(`${player.name} 可在回合结束额外花费${extraCost}点打出${keywords.join('/')}牌`)
       return { messages }
     }
 
@@ -761,13 +762,28 @@ class EffectManager {
     if (timing === 'roundEnd') {
       messages.push(...EffectManager.applyPendingRoundEndBuffs(game))
       gameState.players.forEach(player => {
-        player.field.forEach(slot => {
+        player.field.forEach((slot, slotIndex) => {
           if (!slot.card?.effects) return
           slot.card.effects.forEach(effect => {
             if (effect.timing !== 'roundEnd') return
             if (effect.type === 'conditional' || effect.type === 'custom') return
+            if (effect.type === 'createSlot') {
+              EffectManager.appendExtraSlot(player, slotIndex, EffectManager.slotRulesFromEffect(effect))
+              messages.push(`${slot.card.name} 创建了额外槽位`)
+              return
+            }
             const result = EffectManager.applyRoundEffect(effect, slot.card, player, gameState)
             messages.push(...result.messages)
+            if (result.needsSearchSelection && !gameState.pendingSearchSelection) {
+              gameState.pendingSearchSelection = {
+                playerId: player.id,
+                ownerCardId: slot.card.id,
+                ownerCardName: slot.card.name,
+                effect: result.needsSearchSelection.effect,
+                candidates: result.needsSearchSelection.candidates,
+                timing: 'roundEnd',
+              }
+            }
           })
         })
       })
@@ -1429,6 +1445,9 @@ class EffectManager {
     if (EffectManager.requiresMandatoryHostDeploy(card)) {
       if (EffectManager.getQuickPlayHostTargets(player, card).length === 0) return false
     }
+    if (card.quickPlay && card.type === 'unit' && !EffectManager.getDeployOnHostEffect(card)) {
+      if (EffectManager.getAvailableSlotIndices(player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.unplayable) return false
@@ -1769,6 +1788,87 @@ class EffectManager {
       EffectManager.shuffleInPlace(player.deck)
     }
     return results
+  }
+
+  static listSearchCandidates(player, effect) {
+    if (effect.searchEachKeyword && effect.searchKeywords?.length) {
+      const perKw = effect.maxCount ?? 1
+      const all = []
+      for (const kw of effect.searchKeywords) {
+        const subEffect = {
+          ...effect,
+          searchKeywords: [kw],
+          searchKeyword: undefined,
+          searchEachKeyword: false,
+          maxCount: perKw,
+        }
+        all.push(...EffectManager.listSearchCandidates(player, subEffect))
+      }
+      return all
+    }
+    const candidates = []
+    for (let i = player.deck.length - 1; i >= 0; i--) {
+      if (EffectManager.matchesSearch(player.deck[i], effect)) {
+        candidates.push({ card: player.deck[i], pile: 'deck' })
+      }
+    }
+    if (effect.searchDiscard !== false) {
+      for (let i = player.discard.length - 1; i >= 0; i--) {
+        if (EffectManager.matchesSearch(player.discard[i], effect)) {
+          candidates.push({ card: player.discard[i], pile: 'discard' })
+        }
+      }
+    }
+    return candidates
+  }
+
+  static needsSearchSelection(candidates, effect) {
+    const want = effect.maxCount ?? 1
+    return candidates.length > want
+  }
+
+  static applySearchDeckEffect(player, effect, selection) {
+    const messages = []
+    if (selection) {
+      const pile = selection.pile === 'deck' ? player.deck : player.discard
+      const idx = pile.findIndex(c => c.id === selection.card.id)
+      if (idx >= 0) {
+        const [card] = pile.splice(idx, 1)
+        if (effect.shuffleAfterSearch && player.deck.length > 1) {
+          EffectManager.shuffleInPlace(player.deck)
+        }
+        player.hand.push(card)
+        messages.push(`检索到${card.name}加入手牌`)
+        return { messages, found: [card] }
+      }
+    }
+    const found = EffectManager.searchDeck(player, effect)
+    if (found.length > 0) {
+      player.hand.push(...found)
+      messages.push(`检索到${found.length}张卡牌加入手牌`)
+    } else {
+      messages.push('未找到符合条件的卡牌')
+    }
+    return { messages, found }
+  }
+
+  static resolveSearchDeckEffect(player, effect) {
+    const messages = []
+    if (!EffectManager.checkFieldRequirements(player, effect)) {
+      messages.push('条件不满足，效果未触发')
+      return { messages }
+    }
+    const candidates = EffectManager.listSearchCandidates(player, effect)
+    if (candidates.length === 0) {
+      messages.push('未找到符合条件的卡牌')
+      return { messages }
+    }
+    if (EffectManager.needsSearchSelection(candidates, effect)) {
+      return { messages, needsSearchSelection: { candidates, effect } }
+    }
+    const r = EffectManager.applySearchDeckEffect(player, effect, candidates[0])
+    messages.push(...r.messages)
+    return { messages }
   }
 
   static matchesRevealModifyTarget(card, effect) {
@@ -2231,16 +2331,10 @@ class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!EffectManager.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-      const found = EffectManager.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`检索到${found.length}张卡牌加入手牌`)
-      } else {
-        messages.push('未找到符合条件的卡牌')
+      const r = EffectManager.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      if (r.needsSearchSelection) {
+        return { messages, needsSearchSelection: r.needsSearchSelection }
       }
       return { messages }
     }
@@ -2358,16 +2452,10 @@ class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!EffectManager.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-      const found = EffectManager.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`检索到${found.length}张卡牌加入手牌`)
-      } else {
-        messages.push('未找到符合条件的卡牌')
+      const r = EffectManager.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      if (r.needsSearchSelection) {
+        return { messages, needsSearchSelection: r.needsSearchSelection }
       }
       return { messages }
     }
@@ -3215,33 +3303,48 @@ class GameEngine {
       }
     })
     
-    // QuickPlay units: deploy onto an existing field card
+    // QuickPlay units: host deploy or empty slot (e.g. 贝壳)
     if (card.type === 'unit') {
-      const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
-      if (fieldCards.length === 0) {
-        player.discard.push(card)
-        this.gameState.message = EffectManager.requiresDeployOnHost(card)
-          ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
-          : '场上没有可部署的目标'
+      if (EffectManager.getDeployOnHostEffect(card)) {
+        const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
+        if (fieldCards.length === 0) {
+          player.discard.push(card)
+          this.gameState.message = EffectManager.requiresDeployOnHost(card)
+            ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+            : '场上没有可部署的目标'
+          return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
+        }
+
+        const targetCard = targetCardId
+          ? fieldCards.find(c => c.id === targetCardId) ?? fieldCards[0]
+          : fieldCards[0]
+        const oldPower = targetCard.currentPower
+        targetCard.currentPower += card.basePower
+        const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
+        if (revealMsgs.length === 0) {
+          this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+        }
+
+        EffectManager.recalculateAllPowers(this.gameState)
+        EffectManager.applyOnFieldDestroy(this)
+        this.checkFieldFull(playerIndex)
+        this.gameState.message = messages.join(' | ') + ' | ' + this.gameState.message
         return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
       }
 
-      // Auto-select first valid target (simplified server logic)
-      const targetCard = fieldCards[0]
-      const oldPower = targetCard.currentPower
-      targetCard.currentPower += card.basePower
-      const revealMsgs = EffectManager.applyQuickPlayRevealEffects(card, targetCard, player, this.gameState)
-      if (revealMsgs.length === 0) {
-      this.gameState.message = `${card.name} 部署到 ${targetCard.name}上，战力${oldPower}→${targetCard.currentPower}`
+      const slots = EffectManager.getAvailableSlotIndices(player, card)
+      if (slots.length === 0) {
+        player.discard.push(card)
+        this.gameState.message = '没有可用的槽位'
+        return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
       }
-
+      const slotIndex = slots[0]
+      player.field[slotIndex].card = card
+      EffectManager.applyUnitDeployBonuses(card, player).forEach(m => messages.push(m))
+      EffectManager.triggerOnOtherPlayEffects(card, player, this.gameState)
       EffectManager.recalculateAllPowers(this.gameState)
-      EffectManager.applyOnFieldDestroy(this)
       this.checkFieldFull(playerIndex)
-
-      // Build response message
-      this.gameState.message = messages.join(' | ') + ' | ' + this.gameState.message
-
+      this.gameState.message = messages.join(' | ') + ` | ${card.name} 速攻部署到槽位${slotIndex + 1}`
       return { success: true, gameState: this.getPublicGameState(), cardPlayed: card }
     }
 

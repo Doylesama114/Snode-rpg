@@ -2442,7 +2442,11 @@
     "effects": [
       {
         "timing": "roundEnd",
-        "type": "createSlot",
+        "type": "offerTavernLiquorPlay",
+        "value": 1,
+        "targetKeywords": [
+          "酒水"
+        ],
         "description": "每个回合结束时，可以额外花费1点能量值来打出一张带有\"酒水\"关键词的卡牌，这张卡会在下回合出牌时展示"
       }
     ],

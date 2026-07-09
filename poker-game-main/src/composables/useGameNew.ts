@@ -558,7 +558,11 @@ export function useGame() {
   }
 
   // 选择槽位打出卡牌
-  function selectSlotToPlay(slotIndex: number) {
+  async function selectSlotToPlay(slotIndex: number) {
+    if (gameState.value.pendingQuickPlayCard) {
+      await deployQuickPlayUnitToSlot(slotIndex)
+      return
+    }
     if (gameState.value.phase !== 'selectSlot' || !gameState.value.selectedCard) return
     
     const card = gameState.value.selectedCard
@@ -854,25 +858,40 @@ export function useGame() {
       }
     }
     
-    // QuickPlay units need target selection on field (deploy onto existing card)
+    // QuickPlay units: host-only cards pick a host; others deploy to empty slots (e.g. 贝壳)
     if (card.type === 'unit') {
-      const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
-      if (fieldCards.length === 0) {
-        gameState.value.message = EffectManager.requiresDeployOnHost(card)
-          ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
-          : '场上没有可部署的目标'
-        // Unit goes to discard since it can't be deployed
+      if (EffectManager.getDeployOnHostEffect(card)) {
+        const fieldCards = EffectManager.getQuickPlayHostTargets(player, card)
+        if (fieldCards.length === 0) {
+          gameState.value.message = EffectManager.requiresDeployOnHost(card)
+            ? `${card.name} 只能部署在带有「农田」或「载具」关键词的卡牌上`
+            : '场上没有可部署的目标'
+          player.discard.push(card)
+          gameState.value.phase = 'action'
+          gameState.value.selectedCard = undefined
+          gameState.value.selectedSlot = undefined
+          return
+        }
+        gameState.value.pendingQuickPlayCard = card
+        gameState.value.availableTargets = fieldCards
+        gameState.value.phase = 'selectTarget'
+        gameState.value.message = `选择${card.name}的部署目标`
+        return
+      }
+
+      const availableSlots = EffectManager.getAvailableSlotIndices(player, card)
+      if (availableSlots.length === 0) {
+        gameState.value.message = '没有可用的槽位！'
         player.discard.push(card)
         gameState.value.phase = 'action'
         gameState.value.selectedCard = undefined
         gameState.value.selectedSlot = undefined
         return
       }
-      // Save pending card and switch to target selection
       gameState.value.pendingQuickPlayCard = card
-      gameState.value.availableTargets = fieldCards
-      gameState.value.phase = 'selectTarget'
-      gameState.value.message = `选择${card.name}的部署目标`
+      gameState.value.availableSlots = availableSlots
+      gameState.value.phase = 'selectSlot'
+      gameState.value.message = `选择${card.name}的部署槽位`
       return
     }
 
@@ -993,6 +1012,16 @@ export function useGame() {
         gameState.value.availableTargets = result.needsTargetSelection.targets
         gameState.value.phase = 'selectTarget'
         gameState.value.message = '选择一个目标'
+        return
+      }
+      if (result.needsSearchSelection) {
+        beginSearchSelection(
+          player,
+          card,
+          result.needsSearchSelection.effect,
+          result.needsSearchSelection.candidates,
+          'onReveal',
+        )
         return
       }
     }
@@ -1176,6 +1205,53 @@ export function useGame() {
     await showNewFloats(player.id)
   }
 
+  async function deployQuickPlayUnitToSlot(slotIndex: number) {
+    const card = gameState.value.pendingQuickPlayCard
+    if (!card) return
+    const player = currentPlayer.value
+    const resolvedSlot = EffectManager.resolveDeploySlotIndex(player, card, slotIndex)
+    const available = gameState.value.availableSlots ?? []
+    if (!available.includes(resolvedSlot)) return
+
+    await animations.playCardFly({
+      kind: 'deploy',
+      card,
+      playerId: player.id,
+      fieldOwnerId: player.id,
+      slotIndex: resolvedSlot,
+    })
+
+    const slot = player.field[resolvedSlot]
+    slot.card = card
+    EffectManager.applyUnitDeployBonuses(card, player).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+    EffectManager.applyExtraSlotDeployModifiers(card, slot).forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+    gameState.value.message = `${player.name} 速攻打出 ${card.name}`
+
+    EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
+    EffectManager.recalculateAllPowers(gameState.value)
+
+    const qpCost = EffectManager.getEffectivePlayCost(card, player)
+    stagePendingReveal(
+      player.id,
+      card,
+      resolvedSlot,
+      qpCost,
+      gameState.value.players.indexOf(player),
+    )
+
+    gameState.value.pendingQuickPlayCard = undefined
+    gameState.value.availableSlots = undefined
+    gameState.value.selectedCard = undefined
+    gameState.value.phase = 'action'
+    checkFieldFull(player)
+    await showNewFloats(player.id)
+    await maybeRevealHiddenAfterHumanAction(player)
+  }
+
   // 弃置战术牌
   function discardTacticCard(card: Card, player: Player, slotIndex: number) {
     if (slotIndex >= 0) {
@@ -1241,6 +1317,134 @@ export function useGame() {
     // 费用校验延迟至 revealAICards 按玩家顺序揭示时进行
   }
 
+  function beginSearchSelection(
+    player: Player,
+    ownerCard: Card,
+    effect: import('@/types/game').CardEffect,
+    candidates: import('@/types/game').SearchCandidate[],
+    timing: 'onDeploy' | 'onReveal' | 'roundStart' | 'roundEnd',
+  ) {
+    gameState.value.pendingSearchSelection = {
+      playerId: player.id,
+      ownerCardId: ownerCard.id,
+      ownerCardName: ownerCard.name,
+      effect,
+      candidates,
+      timing,
+    }
+    gameState.value.phase = 'selectSearchCard'
+    gameState.value.message = `检索：选择一张加入手牌（${ownerCard.name}）`
+  }
+
+  function finishSearchSelectionPhase() {
+    gameState.value.pendingSearchSelection = undefined
+    if (gameState.value.phase === 'selectSearchCard') {
+      gameState.value.phase = 'action'
+    }
+  }
+
+  function selectSearchCard(candidateIndex: number) {
+    const pending = gameState.value.pendingSearchSelection
+    if (!pending || gameState.value.phase !== 'selectSearchCard') return
+    const candidate = pending.candidates[candidateIndex]
+    if (!candidate) return
+    const player = gameState.value.players.find(p => p.id === pending.playerId)
+    if (!player) {
+      finishSearchSelectionPhase()
+      return
+    }
+    const r = EffectManager.applySearchDeckEffect(player, pending.effect, candidate)
+    r.messages.forEach(msg => {
+      gameState.value.message += ` | ${msg}`
+    })
+    finishSearchSelectionPhase()
+    EffectManager.recalculateAllPowers(gameState.value)
+    if (resumeAfterTavernLiquor) {
+      if (offerTavernLiquorIfNeeded()) return
+      const resume = resumeAfterTavernLiquor
+      resumeAfterTavernLiquor = null
+      void resume()
+    }
+  }
+
+  async function skipSearchSelection() {
+    finishSearchSelectionPhase()
+    gameState.value.message += ' | 跳过检索'
+    if (resumeAfterTavernLiquor) {
+      if (offerTavernLiquorIfNeeded()) return
+      const resume = resumeAfterTavernLiquor
+      resumeAfterTavernLiquor = null
+      await resume()
+    }
+  }
+
+  let resumeAfterTavernLiquor: (() => void) | null = null
+
+  function offerTavernLiquorIfNeeded(): boolean {
+    for (const player of gameState.value.players) {
+      const offer = player.tavernLiquorOffer
+      if (!offer) continue
+      const liquorIndices = player.hand
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => offer.keywords.some(kw => EffectManager.hasKeyword(c, kw)))
+        .filter(({ c }) => player.currentCost >= EffectManager.getEffectivePlayCost(c, player) + offer.extraCost)
+        .map(({ i }) => i)
+      player.tavernLiquorOffer = undefined
+      if (liquorIndices.length === 0) continue
+      if (player.id !== 'player') continue
+      gameState.value.pendingTavernLiquor = {
+        playerId: player.id,
+        extraCost: offer.extraCost,
+        handIndices: liquorIndices,
+      }
+      gameState.value.phase = 'selectTavernLiquor'
+      gameState.value.message = `酒馆：可额外花费${offer.extraCost}点打出酒水牌（下回合展示），或跳过`
+      return true
+    }
+    return false
+  }
+
+  async function playTavernLiquor(handIndex: number) {
+    const pending = gameState.value.pendingTavernLiquor
+    if (!pending || gameState.value.phase !== 'selectTavernLiquor') return
+    if (!pending.handIndices.includes(handIndex)) return
+    const player = gameState.value.players.find(p => p.id === pending.playerId)
+    if (!player) return
+    const card = player.hand[handIndex]
+    if (!card) return
+    const playCost = EffectManager.getEffectivePlayCost(card, player) + pending.extraCost
+    if (player.currentCost < playCost) return
+    const slots = EffectManager.getAvailableSlotIndices(player, card)
+    if (slots.length === 0) {
+      gameState.value.message = '没有空槽打出酒水牌'
+      return
+    }
+    player.currentCost -= playCost
+    player.hand.splice(handIndex, 1)
+    const slotIndex = slots[0]
+    player.field[slotIndex].card = card
+    stagePendingReveal(
+      player.id,
+      card,
+      slotIndex,
+      playCost,
+      gameState.value.players.indexOf(player),
+    )
+    gameState.value.pendingTavernLiquor = undefined
+    gameState.value.message = `打出${card.name}（额外费用${pending.extraCost}，下回合展示）`
+    const resume = resumeAfterTavernLiquor
+    resumeAfterTavernLiquor = null
+    if (resume) await resume()
+  }
+
+  async function skipTavernLiquor() {
+    gameState.value.pendingTavernLiquor = undefined
+    gameState.value.message += ' | 跳过酒馆酒水'
+    const resume = resumeAfterTavernLiquor
+    resumeAfterTavernLiquor = null
+    if (resume) await resume()
+  }
+
   // 触发部署效果
   function triggerDeployEffects(card: Card, player: Player): { targets: Card[]; effect: CardEffect } | null {
     if (!card.effects) return null
@@ -1257,6 +1461,15 @@ export function useGame() {
         if (result.needsCreateSlot) {
           createExtraSlot(card, player, effect)
         }
+        if (result.needsSearchSelection) {
+          beginSearchSelection(
+            player,
+            card,
+            result.needsSearchSelection.effect,
+            result.needsSearchSelection.candidates,
+            'onDeploy',
+          )
+        }
         if (result.needsTargetSelection) {
           pendingTarget = result.needsTargetSelection
         }
@@ -1268,6 +1481,15 @@ export function useGame() {
         result.messages.forEach(msg => {
           gameState.value.message += ` | ${msg}`
         })
+        if (result.needsSearchSelection) {
+          beginSearchSelection(
+            player,
+            card,
+            result.needsSearchSelection.effect,
+            result.needsSearchSelection.candidates,
+            'onReveal',
+          )
+        }
       }
     })
 
@@ -1522,13 +1744,29 @@ export function useGame() {
     
     if (roundComplete) {
       EffectManager.triggerRoundEffects('roundEnd', gameState.value)
-      gameState.value.players.forEach(p => { p.unitPlayPowerBonus = 0 })
-      gameState.value.round++
-      updateFinalRoundRestrictions()
-      EffectManager.triggerRoundEffects('roundStart', gameState.value)
-      await animations.playBanner({ kind: 'round', text: `第 ${gameState.value.round} 回合` })
+      if (gameState.value.pendingSearchSelection?.playerId === 'player') {
+        gameState.value.phase = 'selectSearchCard'
+        resumeAfterTavernLiquor = () => continueRoundTransitionAfterRoundEnd()
+        return
+      }
+      if (offerTavernLiquorIfNeeded()) {
+        resumeAfterTavernLiquor = () => continueRoundTransitionAfterRoundEnd()
+        return
+      }
+      await continueRoundTransitionAfterRoundEnd()
+      return
     }
     
+    await animations.wait(400)
+    void startDrawPhase()
+  }
+
+  async function continueRoundTransitionAfterRoundEnd() {
+    gameState.value.players.forEach(p => { p.unitPlayPowerBonus = 0 })
+    gameState.value.round++
+    updateFinalRoundRestrictions()
+    EffectManager.triggerRoundEffects('roundStart', gameState.value)
+    await animations.playBanner({ kind: 'round', text: `第 ${gameState.value.round} 回合` })
     await animations.wait(400)
     void startDrawPhase()
   }
@@ -1809,6 +2047,10 @@ export function useGame() {
     cancelActionChoice,
     resolveEffectBranchChoice,
     skipEffectBranch,
+    selectSearchCard,
+    skipSearchSelection,
+    playTavernLiquor,
+    skipTavernLiquor,
     isCardPlayable
   }
 }

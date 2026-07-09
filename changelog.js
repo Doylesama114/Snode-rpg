@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7095',
+    date: '2026-07-09',
+    changes: [
+      '迭代3:贝壳速攻空槽部署',
+      '检索多候选选牌UI',
+      '酒馆回合结束酒水可选打出'
+    ]
+  },
+
+
+  {
     version: '1.0.7094',
     date: '2026-07-09',
     changes: [

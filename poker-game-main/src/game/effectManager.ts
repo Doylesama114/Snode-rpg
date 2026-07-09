@@ -578,6 +578,9 @@ export class EffectManager {
     if (this.requiresMandatoryHostDeploy(card)) {
       if (this.getQuickPlayHostTargets(player, card).length === 0) return false
     }
+    if (card.quickPlay && card.type === 'unit' && !this.getDeployOnHostEffect(card)) {
+      if (this.getAvailableSlotIndices(player, card).length === 0) return false
+    }
     for (const effect of card.effects || []) {
       if (effect.type !== 'playRequirement') continue
       if (effect.unplayable) return false
@@ -964,6 +967,105 @@ export class EffectManager {
     return results
   }
 
+  /** 列出牌库/弃牌堆中符合检索条件的候选（不移除） */
+  static listSearchCandidates(
+    player: Player,
+    effect: CardEffect,
+  ): import('@/types/game').SearchCandidate[] {
+    if (effect.searchEachKeyword && effect.searchKeywords?.length) {
+      const perKw = effect.maxCount ?? 1
+      const all: import('@/types/game').SearchCandidate[] = []
+      for (const kw of effect.searchKeywords) {
+        const subEffect: CardEffect = {
+          ...effect,
+          searchKeywords: [kw],
+          searchKeyword: undefined,
+          searchEachKeyword: false,
+          maxCount: perKw,
+        }
+        all.push(...this.listSearchCandidates(player, subEffect))
+      }
+      return all
+    }
+    const candidates: import('@/types/game').SearchCandidate[] = []
+    for (let i = player.deck.length - 1; i >= 0; i--) {
+      if (this.matchesSearch(player.deck[i], effect)) {
+        candidates.push({ card: player.deck[i], pile: 'deck' })
+      }
+    }
+    if (effect.searchDiscard !== false) {
+      for (let i = player.discard.length - 1; i >= 0; i--) {
+        if (this.matchesSearch(player.discard[i], effect)) {
+          candidates.push({ card: player.discard[i], pile: 'discard' })
+        }
+      }
+    }
+    return candidates
+  }
+
+  static needsSearchSelection(
+    candidates: import('@/types/game').SearchCandidate[],
+    effect: CardEffect,
+  ): boolean {
+    const want = effect.maxCount ?? 1
+    return candidates.length > want
+  }
+
+  /** 检索并加入手牌；selection 指定时只取该候选 */
+  static applySearchDeckEffect(
+    player: Player,
+    effect: CardEffect,
+    selection?: import('@/types/game').SearchCandidate,
+  ): { messages: string[]; found: Card[] } {
+    const messages: string[] = []
+    if (selection) {
+      const pile = selection.pile === 'deck' ? player.deck : player.discard
+      const idx = pile.findIndex(c => c.id === selection.card.id)
+      if (idx >= 0) {
+        const [card] = pile.splice(idx, 1)
+        if (effect.shuffleAfterSearch && player.deck.length > 1) {
+          this.shuffleInPlace(player.deck)
+        }
+        player.hand.push(card)
+        messages.push(`检索到${card.name}加入手牌`)
+        return { messages, found: [card] }
+      }
+    }
+    const found = this.searchDeck(player, effect)
+    if (found.length > 0) {
+      player.hand.push(...found)
+      messages.push(`检索到${found.length}张卡牌加入手牌`)
+    } else {
+      messages.push('未找到符合条件的卡牌')
+    }
+    return { messages, found }
+  }
+
+  static resolveSearchDeckEffect(
+    player: Player,
+    effect: CardEffect,
+  ): {
+    messages: string[]
+    needsSearchSelection?: { candidates: import('@/types/game').SearchCandidate[]; effect: CardEffect }
+  } {
+    const messages: string[] = []
+    if (!this.checkFieldRequirements(player, effect)) {
+      messages.push('条件不满足，效果未触发')
+      return { messages }
+    }
+    const candidates = this.listSearchCandidates(player, effect)
+    if (candidates.length === 0) {
+      messages.push('未找到符合条件的卡牌')
+      return { messages }
+    }
+    if (this.needsSearchSelection(candidates, effect)) {
+      return { messages, needsSearchSelection: { candidates, effect } }
+    }
+    const r = this.applySearchDeckEffect(player, effect, candidates[0])
+    messages.push(...r.messages)
+    return { messages }
+  }
+
   /** onReveal modifyPower 目标匹配 */
   static matchesRevealModifyTarget(card: Card, effect: CardEffect): boolean {
     if (effect.targetKeywords?.includes('单位')) {
@@ -1316,7 +1418,12 @@ export class EffectManager {
     game: GameState,
     otherPlayers: Player[] = game.players.filter(p => p.id !== player.id),
     batch?: RevealBatchEntry[],
-  ): { messages: string[]; needsTargetSelection?: { targets: Card[]; effect: CardEffect }; removedSelf?: boolean } {
+  ): {
+    messages: string[]
+    needsTargetSelection?: { targets: Card[]; effect: CardEffect }
+    needsSearchSelection?: { candidates: import('@/types/game').SearchCandidate[]; effect: CardEffect }
+    removedSelf?: boolean
+  } {
     const messages: string[] = []
 
     if (!this.checkFieldRequirements(player, effect)) {
@@ -1605,16 +1712,10 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!this.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-      const found = this.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`检索到${found.length}张卡牌加入手牌`)
-      } else {
-        messages.push('未找到符合条件的卡牌')
+      const r = this.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      if (r.needsSearchSelection) {
+        return { messages, needsSearchSelection: r.needsSearchSelection }
       }
       return { messages }
     }
@@ -1715,7 +1816,12 @@ export class EffectManager {
     card: Card,
     player: Player,
     game: GameState,
-  ): { messages: string[]; needsCreateSlot?: boolean; needsTargetSelection?: { targets: Card[]; effect: CardEffect } } {
+  ): {
+    messages: string[]
+    needsCreateSlot?: boolean
+    needsTargetSelection?: { targets: Card[]; effect: CardEffect }
+    needsSearchSelection?: { candidates: import('@/types/game').SearchCandidate[]; effect: CardEffect }
+  } {
     const messages: string[] = []
 
     if (effect.type === 'extraPlay') {
@@ -1741,16 +1847,10 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!this.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-      const found = this.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`检索到${found.length}张卡牌加入手牌`)
-      } else {
-        messages.push('未找到符合条件的卡牌')
+      const r = this.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      if (r.needsSearchSelection) {
+        return { messages, needsSearchSelection: r.needsSearchSelection }
       }
       return { messages }
     }
@@ -2221,7 +2321,10 @@ export class EffectManager {
     ownerCard: Card,
     player: Player,
     game: GameState,
-  ): { messages: string[] } {
+  ): {
+    messages: string[]
+    needsSearchSelection?: { candidates: import('@/types/game').SearchCandidate[]; effect: CardEffect }
+  } {
     const messages: string[] = []
 
     if (effect.requireFieldKeywords?.length && !this.hasFieldMatching(player, effect)) {
@@ -2314,15 +2417,16 @@ export class EffectManager {
     }
 
     if (effect.type === 'searchDeck') {
-      if (!this.checkFieldRequirements(player, effect)) {
-        messages.push('条件不满足，效果未触发')
-        return { messages }
-      }
-      const found = this.searchDeck(player, effect)
-      if (found.length > 0) {
-        player.hand.push(...found)
-        messages.push(`${player.name} 检索到${found.length}张牌`)
-      }
+      const r = this.resolveSearchDeckEffect(player, effect)
+      messages.push(...r.messages)
+      return { messages, needsSearchSelection: r.needsSearchSelection }
+    }
+
+    if (effect.type === 'offerTavernLiquorPlay') {
+      const extraCost = (effect.value as number) ?? 1
+      const keywords = effect.targetKeywords?.length ? effect.targetKeywords : ['酒水']
+      player.tavernLiquorOffer = { extraCost, keywords }
+      messages.push(`${player.name} 可在回合结束额外花费${extraCost}点打出${keywords.join('/')}牌`)
       return { messages }
     }
 
@@ -2537,13 +2641,28 @@ export class EffectManager {
     if (timing === 'roundEnd') {
       messages.push(...this.applyPendingRoundEndBuffs(game))
       game.players.forEach(player => {
-        player.field.forEach(slot => {
+        player.field.forEach((slot, slotIndex) => {
           if (!slot.card?.effects) return
           slot.card.effects.forEach(effect => {
             if (effect.timing !== 'roundEnd') return
             if (effect.type === 'conditional' || effect.type === 'custom') return
+            if (effect.type === 'createSlot') {
+              this.appendExtraSlot(player, slotIndex, this.slotRulesFromEffect(effect))
+              messages.push(`${slot.card!.name} 创建了额外槽位`)
+              return
+            }
             const result = this.applyRoundEffect(effect, slot.card, player, game)
             messages.push(...result.messages)
+            if (result.needsSearchSelection && !game.pendingSearchSelection) {
+              game.pendingSearchSelection = {
+                playerId: player.id,
+                ownerCardId: slot.card!.id,
+                ownerCardName: slot.card!.name,
+                effect: result.needsSearchSelection.effect,
+                candidates: result.needsSearchSelection.candidates,
+                timing: 'roundEnd',
+              }
+            }
           })
         })
       })
