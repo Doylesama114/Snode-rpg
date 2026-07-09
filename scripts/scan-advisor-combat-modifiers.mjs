@@ -56,7 +56,7 @@ function scanIndexes() {
 }
 
 function main() {
-  console.log('=== scan-advisor-combat-modifiers (7081) ===\n');
+  console.log('=== scan-advisor-combat-modifiers (7082) ===\n');
   const { hits, acs, knownCount } = scanIndexes();
   console.log(`Structured corpus: ${knownCount} skills`);
   console.log(`L2 hit candidates (not yet structured): ${hits.length}`);

@@ -85,6 +85,10 @@ function resolveAcBuffComponents(p, skillMods) {
     if (!sk?.acModifier) continue;
     if (sk.requiresHeavyArmor && p.armorKey !== 'plate_18') continue;
     let acFlat = sk.acModifier.base ?? 0;
+    const acCond = sk.conditionalAcModifier;
+    if (acCond?.queryHint && p.query?.includes(acCond.queryHint)) {
+      acFlat = acCond.value ?? acFlat;
+    }
     const ms = sk.acModifier.milestones || {};
     const ml = p.milestoneLevel;
     if (ml != null) {
@@ -412,8 +416,12 @@ export function parseCombatScenarioFromQuery(query) {
     }
   }
 
+  const attackType = /近战/.test(q)
+    ? 'melee'
+    : (/远程|弓箭|长弓|短弓|手弩|弩/.test(q) ? 'ranged' : 'melee');
+
   return {
-    attackType: /远程|弓|弩|枪/.test(q) ? 'ranged' : 'melee',
+    attackType,
     abilityMods: {
       力量: strM ? Number(strM[1]) : 0,
       敏捷: dexM ? Number(dexM[1]) : 0,

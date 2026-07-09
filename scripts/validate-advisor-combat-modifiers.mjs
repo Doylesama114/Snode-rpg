@@ -26,7 +26,7 @@ function skillExistsInIndexes(name) {
 }
 
 function main() {
-  console.log('=== validate-advisor-combat-modifiers (7081) ===\n');
+  console.log('=== validate-advisor-combat-modifiers (7082) ===\n');
   const doc = loadJson(MOD_PATH);
   const skills = doc.skills || {};
   let failed = 0;
@@ -48,15 +48,15 @@ function main() {
     console.log(`✓ ${name} ← ${src} (${hasHit ? 'hit' : ''}${hasHit && hasAc ? '+' : ''}${hasAc ? 'ac' : ''})`);
   }
 
-  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌'];
+  const expected = ['守护刻印', '穿透射击', '硬化铠甲', '蓄力劲射', '树皮术', '眼镜蛇射击', '十字军打击', '神力战槌', '魔能翻涌', '枪影如林·极', '酩酊大醉', '石木树皮'];
   for (const id of expected) {
     if (!skills[id]) {
       failed += 1;
-      console.log(`✗ batch17 missing skill entry: ${id}`);
+      console.log(`✗ batch18 missing skill entry: ${id}`);
     }
   }
 
-  console.log(`\n7081 combat modifiers: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
+  console.log(`\n7082 combat modifiers: ${Object.keys(skills).length - failed}/${Object.keys(skills).length} OK`);
   if (!failed) {
     const scanPath = path.join(__dirname, 'scan-advisor-combat-modifiers.mjs');
     if (fs.existsSync(scanPath)) {

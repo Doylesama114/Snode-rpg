@@ -90,6 +90,28 @@ function suggestSkillsFromKit(snapshot, kit, goal, store, learnableTiers) {
 }
 
 /**
+ * Merge kit picks with L2 catalog; kit entries first, catalog fills gaps (7082 batch18).
+ * @param {object[]} fromKit
+ * @param {object[]} fromCatalog
+ * @param {number} [limit]
+ */
+function mergeBuildReviewSuggestions(fromKit, fromCatalog, limit = 8) {
+  const seen = new Set();
+  const out = [];
+  for (const s of fromKit) {
+    if (seen.has(s.name)) continue;
+    seen.add(s.name);
+    out.push(s);
+  }
+  for (const s of fromCatalog) {
+    if (seen.has(s.name) || out.length >= limit) continue;
+    seen.add(s.name);
+    out.push(s);
+  }
+  return out.slice(0, limit);
+}
+
+/**
  * L2 style sampling when no build kit matches (7080 batch16).
  * @param {object} snapshot
  * @param {object} store
@@ -149,9 +171,10 @@ export function outlineBuildReview(snapshot, options = {}) {
   const analysis = analyzeSnapshotGeneric(snapshot, goal, store);
   const kit = goal.kitId ? loadBuildKit(goal.kitId) : null;
   const fromKit = suggestSkillsFromKit(snapshot, kit, goal, store, l6.learnableTiers);
+  const fromCatalog = suggestSkillsFromCatalog(snapshot, store, l6.learnableTiers);
   const suggestions = fromKit.length
-    ? fromKit
-    : suggestSkillsFromCatalog(snapshot, store, l6.learnableTiers);
+    ? mergeBuildReviewSuggestions(fromKit, fromCatalog)
+    : fromCatalog;
 
   return {
     goal,
@@ -209,8 +232,22 @@ export function formatBuildReviewToolsText(review) {
 
   lines.push('', '- **推荐可学技能（位阶内 · 未学）**：');
   if (suggestions.length) {
+    const byClass = new Map();
     for (const s of suggestions) {
-      lines.push(`  · **${s.name}**（${s.className} · ${s.style} · ${s.tier}）— ${s.reason}`);
+      if (!byClass.has(s.className)) byClass.set(s.className, []);
+      byClass.get(s.className).push(s);
+    }
+    if (byClass.size > 1) {
+      for (const [className, items] of byClass) {
+        lines.push(`  **${className}**：`);
+        for (const s of items) {
+          lines.push(`    · **${s.name}**（${s.style} · ${s.tier}）— ${s.reason}`);
+        }
+      }
+    } else {
+      for (const s of suggestions) {
+        lines.push(`  · **${s.name}**（${s.className} · ${s.style} · ${s.tier}）— ${s.reason}`);
+      }
     }
   } else {
     lines.push('  · （暂无符合位阶的未学候选，请结合 L2 检索补充）');

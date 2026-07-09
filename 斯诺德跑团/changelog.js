@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7082',
+    date: '2026-07-09',
+    changes: [
+      'Advisor 5.0 batch18 扫描入库',
+      'conditionalAcModifier',
+      'build_review多职分组'
+    ]
+  },
+
+
+  {
     version: '1.0.7081',
     date: '2026-07-09',
     changes: [

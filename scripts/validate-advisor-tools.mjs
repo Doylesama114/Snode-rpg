@@ -378,5 +378,17 @@ check('divine hammer +5', divineHammer.totalHitBonus === 5);
 const snapHammer = resolveCombatScenario(mergeSnapshotIntoCombatScenario(parseCombatScenarioFromQuery('我开启了神力战槌，近战攻击命中加值是多少'), snapCleric, '我开启了神力战槌，近战攻击命中加值是多少'));
 check('snap cleric divine hammer +4', snapHammer.totalHitBonus === 4);
 
+const gunForest = resolveCombatScenario(parseCombatScenarioFromQuery('力量调整值+3有一点长柄熟练近战攻击开启枪影如林·极命中加值是多少'));
+check('gun forest extreme +6', gunForest.totalHitBonus === 6);
+
+const drunkenAc = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2未穿护甲处于醉酒状态开启酩酊大醉护甲值是多少'));
+check('drunken stagger AC 13', drunkenAc.totalAc === 13);
+
+const stoneBark = resolveAcScenario(parseAcScenarioFromQuery('敏捷调整值+2未穿护甲开启石木树皮护甲值是多少'));
+check('stone bark AC 14', stoneBark.totalAc === 14);
+
+const rMultiReview = retrieve('怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能', { snapshot: snapMageReview });
+check('multiclass build review groups', formatContext(rMultiReview).includes('**法师**') && formatContext(rMultiReview).includes('**战士**'));
+
 console.log(`\n${failed ? 'FAILED' : 'OK'} (${failed} failures)`);
 process.exit(failed ? 1 : 0);

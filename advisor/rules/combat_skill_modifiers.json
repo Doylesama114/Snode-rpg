@@ -1,10 +1,10 @@
 {
   "meta": {
     "layer": "L0",
-    "version": "1.4.0",
-    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7080/7081 扩展）",
+    "version": "1.5.0",
+    "source": "advisor/skills/*_index.json（Q3 试点 + 7076/7080/7081/7082 扩展）",
     "generatedAt": "2026-07-09",
-    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌"]
+    "pilotSkills": ["魔法武器", "锐化武器", "狂怒术", "瞄准射击", "守护刻印", "穿透射击", "硬化铠甲", "蓄力劲射", "树皮术", "眼镜蛇射击", "十字军打击", "神力战槌", "魔能翻涌", "枪影如林·极", "酩酊大醉", "石木树皮"]
   },
   "skills": {
     "魔法武器": {
@@ -99,6 +99,26 @@
       "acModifier": { "base": 1 },
       "note": "防御等级+1",
       "source": "sorcerer_index · 魔能翻涌 summary"
+    },
+    "枪影如林·极": {
+      "className": "武僧",
+      "requiresMelee": true,
+      "hitModifier": { "base": 2 },
+      "note": "长柄武器下一次近战攻击命中检定值+2",
+      "source": "monk_index · 枪影如林·极 summary"
+    },
+    "酩酊大醉": {
+      "className": "武僧",
+      "acModifier": { "base": 0 },
+      "conditionalAcModifier": { "queryHint": "醉酒", "value": 1 },
+      "note": "醉酒状态时防御等级+1（无法超过 21）",
+      "source": "monk_index · 酩酊大醉 summary"
+    },
+    "石木树皮": {
+      "className": "德鲁伊",
+      "acModifier": { "base": 2 },
+      "note": "防御等级+2（树皮术 L6 升级版；无法通过此方式使防御等级到达 20）",
+      "source": "druid_index · 石木树皮 summary"
     }
   }
 }

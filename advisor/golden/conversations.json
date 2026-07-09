@@ -358,6 +358,28 @@
       "mustNotInclude": ["当前资料未收录此项"]
     },
     {
+      "id": "combat-gun-forest-extreme",
+      "query": "力量调整值+3有一点长柄熟练近战攻击开启枪影如林·极命中加值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "战斗命中演算", "枪影如林·极", "+6"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "ac-drunken-stagger",
+      "query": "敏捷调整值+2未穿护甲处于醉酒状态开启酩酊大醉护甲值是多少",
+      "expectIntent": "combat_math",
+      "mustInclude": ["Tools 层", "护甲值演算", "酩酊大醉", "13"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "snap-build-review-multiclass",
+      "query": "怎么评价我当前的build，如果我想进阶魔剑士，还有没有什么适合我的技能",
+      "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",
+      "expectIntent": "build_review",
+      "mustInclude": ["Tools 层", "Build 评价", "**法师**", "**战士**", "战吼术", "芙兰"],
+      "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
       "id": "snap-build-review-basic",
       "query": "怎么评价我当前的build",
       "snapshotFile": "advisor/snapshots/mock-magic-sword-l6.json",

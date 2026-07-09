@@ -332,7 +332,13 @@ LLM
 - `scan-advisor-combat-modifiers.mjs` L2 候选报告
 - Golden + CI batch17 must-pass（十字军 +6 · 神力战槌 +5 · 快照牧师 +4）
 
-### v1.0.7082+ — 后续
+### v1.0.7082 — 扫描入库 + build_review 多职（P1）✓
+
+- 枪影如林·极/酩酊大醉/石木树皮；`conditionalAcModifier`；近战/远程判定修复
+- `mergeBuildReviewSuggestions` kit+catalog；多职业分组输出
+- Golden + CI batch18 must-pass（枪影 +6 · 酩酊 AC 13 · 魔剑士多职）
+
+### v1.0.7083+ — 后续
 
 ## 8. Golden / CI 策略
 
