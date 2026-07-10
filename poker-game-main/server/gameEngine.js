@@ -6,6 +6,7 @@ import { getCard, createDefaultDeck, createDeckFromCardIds, shuffleDeck } from '
 // 效果管理器（从 effectManager.ts 完整移植）
 class EffectManager {
   static MAX_CURRENT_COST = 6
+  static RANDOM_ATTRIBUTES = ['无', '土', '钢', '木', '火', '风', '水', '奥术', '光', '暗', '金', '幻']
 
   static applyCostDelta(player, delta) {
     player.currentCost += delta
@@ -447,18 +448,29 @@ class EffectManager {
     return null
   }
 
-  static getEffectivePlayCost(card, player) {
+  static getEffectivePlayCost(card, player, game) {
     const override = EffectManager.getConditionalPlayCost(card, player)
     if (override !== null) return Math.max(0, override)
     let cost = card.cost
-    player.field.forEach(slot => {
-      if (!slot.card?.effects) return
-      slot.card.effects.forEach(effect => {
-        if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
-        if (effect.targetCardType && card.type !== effect.targetCardType) return
-        if (effect.targetAttributes?.length && !EffectManager.hasAnyAttribute(card, effect.targetAttributes)) return
-        if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(card, effect.targetKeywords)) return
-        cost += effect.value || 0
+    const owners = game?.players ?? [player]
+    owners.forEach(owner => {
+      if (!game && owner.id !== player.id) return
+      owner.field.forEach(slot => {
+        if (!slot.card?.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
+          if (effect.modifyPlayCostAllPlayers) {
+            if (!game) return
+          } else if (owner.id !== player.id) {
+            return
+          }
+          if (effect.targetCardType && card.type !== effect.targetCardType) return
+          if (effect.targetAttributes?.length && !EffectManager.hasAnyAttribute(card, effect.targetAttributes)) return
+          if (effect.targetKeywords?.length && !EffectManager.hasAnyKeyword(card, effect.targetKeywords)) return
+          if (effect.playCostMinBasePowerExclusive !== undefined
+            && card.basePower <= effect.playCostMinBasePowerExclusive) return
+          cost += effect.value || 0
+        })
       })
     })
     return Math.max(0, cost)
@@ -716,7 +728,7 @@ class EffectManager {
         if (idx === -1) continue
         const card = pile[idx]
         const slots = EffectManager.getAvailableSlotIndices(player, card)
-        const cost = EffectManager.getEffectivePlayCost(card, player)
+        const cost = EffectManager.getEffectivePlayCost(card, player, gameState)
         if (slots.length === 0 || player.currentCost < cost) {
           messages.push(`${card.name} 在${label}但无法自动进场（槽位或费用不足）`)
           handled = true
@@ -1014,7 +1026,7 @@ class EffectManager {
           card: r.card,
           slotIndex: r.slotIndex,
           fieldOwnerIndex,
-          playCost: r.playCost ?? this.getEffectivePlayCost(r.card, player),
+          playCost: r.playCost ?? EffectManager.getEffectivePlayCost(r.card, player, game),
         })
       })
     })
@@ -2264,14 +2276,27 @@ class EffectManager {
     }
 
     if (effect.type === 'peekDeckBottom') {
-      if (player.deck.length === 0) {
+      let deckOwner = player
+      if (effect.peekDeckPlayer === 'random' && game.players.length > 0) {
+        const candidates = game.players.filter(p => p.deck.length > 0)
+        if (candidates.length === 0) {
+          messages.push('没有玩家牌库可抽取')
+          return { messages }
+        }
+        deckOwner = candidates[Math.floor(Math.random() * candidates.length)]
+      }
+      if (deckOwner.deck.length === 0) {
         messages.push('牌库为空')
         return { messages }
       }
-      const bottom = player.deck[0]
-      messages.push(`牌库底为${bottom.name}`)
+      const bottom = deckOwner.deck[0]
+      messages.push(
+        effect.peekDeckPlayer === 'random'
+          ? `从${deckOwner.name}牌库底得到${bottom.name}`
+          : `牌库底为${bottom.name}`,
+      )
       if (effect.peekTake !== false) {
-        player.deck.shift()
+        deckOwner.deck.shift()
         player.hand.push(bottom)
         messages.push('加入手牌')
       }
@@ -2655,17 +2680,29 @@ class EffectManager {
 
     if (effect.type === 'setFieldAttribute') {
       const players = effect.allPlayers ? game.players : [player]
-      const attr = String(effect.value || '')
       let count = 0
+      const attrs = []
       players.forEach(p => {
         p.field.forEach(slot => {
           if (!slot.card) return
           if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+          const attr = effect.randomAttribute
+            ? EffectManager.RANDOM_ATTRIBUTES[Math.floor(Math.random() * EffectManager.RANDOM_ATTRIBUTES.length)]
+            : String(effect.value || '')
           slot.card.attribute = attr
+          attrs.push(attr)
           count++
         })
       })
-      messages.push(count > 0 ? `${count}张卡牌属性变为${attr}` : '没有符合条件的目标')
+      if (count > 0) {
+        messages.push(
+          effect.randomAttribute
+            ? `${count}张卡牌属性随机变更（${attrs.join('、')}）`
+            : `${count}张卡牌属性变为${effect.value}`,
+        )
+      } else {
+        messages.push('没有符合条件的目标')
+      }
       return { messages }
     }
 
@@ -3143,7 +3180,7 @@ class GameEngine {
     const card = player.hand[handIndex]
     if (!card) return { success: false, error: '卡牌不存在' }
 
-    const playCost = EffectManager.getEffectivePlayCost(card, player) + pending.extraCost
+    const playCost = EffectManager.getEffectivePlayCost(card, player, this.gameState) + pending.extraCost
     if (player.currentCost < playCost) {
       return { success: false, error: '费用不足' }
     }
@@ -3279,7 +3316,7 @@ class GameEngine {
     }
     
     // 验证费用
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, this.gameState)
     if (player.currentCost < playCost) {
       if (!card.forcedPlay) {
         return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
@@ -3373,7 +3410,7 @@ class GameEngine {
     if (!EffectManager.canPlayHandCard(card, player, this.gameState)) {
       return { success: false, error: '无法打出此牌（条件/封锁/类型限制）' }
     }
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, this.gameState)
     if (player.currentCost < playCost && !card.forcedPlay) {
       return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
     }
@@ -3486,7 +3523,7 @@ class GameEngine {
       this.checkFieldFull(playerIndex)
 
       const playerId = player.id
-      const qpCost = EffectManager.getEffectivePlayCost(card, player)
+      const qpCost = EffectManager.getEffectivePlayCost(card, player, this.gameState)
       this.gameState.pendingReveals[playerId].push({
         card,
         slotIndex,
@@ -3838,7 +3875,7 @@ class GameEngine {
       return { success: false, error: '无法打出此牌（条件/封锁/类型限制）' }
     }
 
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, this.gameState)
     if (player.currentCost < playCost && !card.forcedPlay) {
       return { success: false, error: `费用不足！需要${playCost}，当前${player.currentCost}` }
     }

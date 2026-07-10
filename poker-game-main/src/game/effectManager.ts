@@ -1643,16 +1643,29 @@ export class EffectManager {
     }
 
     if (effect.type === 'peekDeckBottom') {
-      if (player.deck.length === 0) {
+      let deckOwner = player
+      if (effect.peekDeckPlayer === 'random' && game.players.length > 0) {
+        const candidates = game.players.filter(p => p.deck.length > 0)
+        if (candidates.length === 0) {
+          messages.push('没有玩家牌库可抽取')
+          return { messages }
+        }
+        deckOwner = candidates[Math.floor(Math.random() * candidates.length)]
+      }
+      if (deckOwner.deck.length === 0) {
         messages.push('牌库为空')
         return { messages }
       }
-      const bottom = player.deck[0]
-      messages.push(`牌库底为${bottom.name}`)
+      const bottom = deckOwner.deck[0]
+      messages.push(
+        effect.peekDeckPlayer === 'random'
+          ? `从${deckOwner.name}牌库底得到${bottom.name}`
+          : `牌库底为${bottom.name}`,
+      )
       if (effect.peekTake !== false) {
-        player.deck.shift()
+        deckOwner.deck.shift()
         player.hand.push(bottom)
-        messages.push(`加入手牌`)
+        messages.push('加入手牌')
       }
       return { messages }
     }
@@ -2053,17 +2066,29 @@ export class EffectManager {
 
     if (effect.type === 'setFieldAttribute') {
       const players = effect.allPlayers ? game.players : [player]
-      const attr = String(effect.value || '')
       let count = 0
+      const attrs: string[] = []
       players.forEach(p => {
         p.field.forEach(slot => {
           if (!slot.card) return
           if (effect.targetCardType && slot.card.type !== effect.targetCardType) return
+          const attr = effect.randomAttribute
+            ? this.RANDOM_ATTRIBUTES[Math.floor(Math.random() * this.RANDOM_ATTRIBUTES.length)]
+            : String(effect.value || '')
           slot.card.attribute = attr as Card['attribute']
+          attrs.push(attr)
           count++
         })
       })
-      messages.push(count > 0 ? `${count}张卡牌属性变为${attr}` : '没有符合条件的目标')
+      if (count > 0) {
+        messages.push(
+          effect.randomAttribute
+            ? `${count}张卡牌属性随机变更（${attrs.join('、')}）`
+            : `${count}张卡牌属性变为${effect.value}`,
+        )
+      } else {
+        messages.push('没有符合条件的目标')
+      }
       return { messages }
     }
 
@@ -2298,19 +2323,34 @@ export class EffectManager {
     return null
   }
 
-  /** 计算打出费用（含 onField modifyPlayCost，如季风） */
-  static getEffectivePlayCost(card: Card, player: Player): number {
+  static readonly RANDOM_ATTRIBUTES = [
+    '无', '土', '钢', '木', '火', '风', '水', '奥术', '光', '暗', '金', '幻',
+  ] as const
+
+  /** 计算打出费用（含 onField modifyPlayCost，如季风 / 猫鼬神龛） */
+  static getEffectivePlayCost(card: Card, player: Player, game?: GameState): number {
     const override = this.getConditionalPlayCost(card, player)
     if (override !== null) return Math.max(0, override)
     let cost = card.cost
-    player.field.forEach(slot => {
-      if (!slot.card?.effects) return
-      slot.card.effects.forEach(effect => {
-        if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
-        if (effect.targetCardType && card.type !== effect.targetCardType) return
-        if (effect.targetAttributes?.length && !this.hasAnyAttribute(card, effect.targetAttributes)) return
-        if (effect.targetKeywords?.length && !this.hasAnyKeyword(card, effect.targetKeywords)) return
-        cost += (effect.value as number) || 0
+    const owners = game?.players ?? [player]
+    owners.forEach(owner => {
+      if (!game && owner.id !== player.id) return
+      owner.field.forEach(slot => {
+        if (!slot.card?.effects) return
+        slot.card.effects.forEach(effect => {
+          if (effect.timing !== 'onField' || effect.type !== 'modifyPlayCost') return
+          if (effect.modifyPlayCostAllPlayers) {
+            if (!game) return
+          } else if (owner.id !== player.id) {
+            return
+          }
+          if (effect.targetCardType && card.type !== effect.targetCardType) return
+          if (effect.targetAttributes?.length && !this.hasAnyAttribute(card, effect.targetAttributes)) return
+          if (effect.targetKeywords?.length && !this.hasAnyKeyword(card, effect.targetKeywords)) return
+          if (effect.playCostMinBasePowerExclusive !== undefined
+            && card.basePower <= effect.playCostMinBasePowerExclusive) return
+          cost += (effect.value as number) || 0
+        })
       })
     })
     return Math.max(0, cost)
@@ -2589,7 +2629,7 @@ export class EffectManager {
         if (idx === -1) continue
         const card = pile[idx]
         const slots = this.getAvailableSlotIndices(player, card)
-        const cost = this.getEffectivePlayCost(card, player)
+        const cost = this.getEffectivePlayCost(card, player, gameState)
         if (slots.length === 0 || player.currentCost < cost) {
           messages.push(`${card.name} 在${label}但无法自动进场（槽位或费用不足）`)
           handled = true
@@ -2903,7 +2943,7 @@ export class EffectManager {
           card: r.card,
           slotIndex: r.slotIndex,
           fieldOwnerIndex,
-          playCost: r.playCost ?? this.getEffectivePlayCost(r.card, player),
+          playCost: r.playCost ?? this.getEffectivePlayCost(r.card, player, game),
         })
       })
     })

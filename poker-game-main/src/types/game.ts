@@ -271,6 +271,14 @@ export interface CardEffect {
   scryRestToBottom?: boolean
   /** peekDeckBottom：是否加入手牌 */
   peekTake?: boolean
+  /** peekDeckBottom：'self' 自己牌库底；'random' 随机玩家牌库底 */
+  peekDeckPlayer?: 'self' | 'random'
+  /** modifyPlayCost：仅当打出牌 basePower 大于此值时生效（猫鼬神龛：超过4） */
+  playCostMinBasePowerExclusive?: number
+  /** modifyPlayCost：场上效果作用于所有玩家打出费用（猫鼬神龛） */
+  modifyPlayCostAllPlayers?: boolean
+  /** setFieldAttribute：随机赋予属性而非固定 value */
+  randomAttribute?: boolean
   /** extraPlay：额外出牌须匹配的类型/关键词（法师塔） */
   extraPlayCardType?: CardType
   extraPlayKeywords?: string[]

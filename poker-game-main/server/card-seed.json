@@ -3728,5 +3728,97 @@
     ],
     "slotRequired": 1,
     "isPersistent": false
+  },
+  {
+    "id": "card_152",
+    "name": "鲁特琴",
+    "type": "unit",
+    "keywords": [
+      "物件"
+    ],
+    "attribute": "无",
+    "basePower": 0,
+    "cost": 1,
+    "effects": [
+      {
+        "timing": "onDeploy",
+        "type": "deployOnHostOnly",
+        "requireHostCardType": "unit",
+        "requireHostKeywords": [
+          "吟游诗人"
+        ],
+        "description": "这张牌可以被部署在「吟游诗人」卡牌上"
+      }
+    ],
+    "slotRequired": 1,
+    "isPersistent": true
+  },
+  {
+    "id": "card_153",
+    "name": "猫鼬大师的神龛",
+    "type": "environment",
+    "keywords": [
+      "地标"
+    ],
+    "attribute": "木",
+    "basePower": 0,
+    "cost": 1,
+    "effects": [
+      {
+        "timing": "onField",
+        "type": "modifyPlayCost",
+        "value": 1,
+        "targetCardType": "unit",
+        "playCostMinBasePowerExclusive": 4,
+        "modifyPlayCostAllPlayers": true,
+        "description": "所有战力值超过4的单位牌费用+1"
+      }
+    ],
+    "slotRequired": 1,
+    "isPersistent": true
+  },
+  {
+    "id": "card_154",
+    "name": "挖掘",
+    "type": "tactic",
+    "keywords": [
+      "技艺"
+    ],
+    "attribute": "土",
+    "basePower": 0,
+    "cost": 0,
+    "effects": [
+      {
+        "timing": "onReveal",
+        "type": "peekDeckBottom",
+        "peekDeckPlayer": "random",
+        "peekTake": true,
+        "description": "揭示：从随机一名玩家的牌库底部抽取一张卡牌加入手牌"
+      }
+    ],
+    "slotRequired": 1,
+    "isPersistent": false
+  },
+  {
+    "id": "card_155",
+    "name": "奇美拉",
+    "type": "unit",
+    "keywords": [
+      "怪兽"
+    ],
+    "attribute": "幻",
+    "basePower": 7,
+    "cost": 3,
+    "effects": [
+      {
+        "timing": "onReveal",
+        "type": "setFieldAttribute",
+        "randomAttribute": true,
+        "batchResolveOnly": true,
+        "description": "揭示：将你的场上每张卡牌的属性变为随机属性"
+      }
+    ],
+    "slotRequired": 1,
+    "isPersistent": true
   }
 ]

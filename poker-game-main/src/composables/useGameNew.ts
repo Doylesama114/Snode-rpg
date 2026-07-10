@@ -380,7 +380,7 @@ export function useGame() {
   function hasAffordableTacticInHand(player: Player): boolean {
     return player.hand.some(card =>
       card.type === 'tactic'
-      && EffectManager.getEffectivePlayCost(card, player) <= player.currentCost
+      && EffectManager.getEffectivePlayCost(card, player, gameState.value) <= player.currentCost
       && EffectManager.canPlayHandCard(card, player, gameState.value),
     )
   }
@@ -479,7 +479,7 @@ export function useGame() {
       return
     }
     
-    const effCost = EffectManager.getEffectivePlayCost(card, currentPlayer.value)
+    const effCost = EffectManager.getEffectivePlayCost(card, currentPlayer.value, gameState.value)
     if (currentPlayer.value.currentCost < effCost) {
       gameState.value.message = `费用不足！需要 ${effCost}，当前 ${currentPlayer.value.currentCost}`
       return
@@ -611,7 +611,7 @@ export function useGame() {
     const attachSlotIdx = EffectManager.resolveAttachmentSlotIndex(player, hostIdx, card, true)
     if (attachSlotIdx < 0) return
 
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
     if (!player.id.startsWith('ai')) {
       await animations.playCardFly({
         kind: 'absorb',
@@ -709,7 +709,7 @@ export function useGame() {
     }
 
     // 支付费用
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
     player.currentCost -= playCost
     
     // 从手牌移除
@@ -1036,7 +1036,7 @@ export function useGame() {
         slotIndex,
       })
       if (!options?.skipStage) {
-        const playCost = EffectManager.getEffectivePlayCost(card, player)
+        const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
         stagePendingReveal(player.id, card, slotIndex, playCost)
       }
       gameState.value.phase = 'action'
@@ -1127,7 +1127,7 @@ export function useGame() {
           handIndex: cardIndex,
         })
       }
-      const playCost = EffectManager.getEffectivePlayCost(card, player)
+      const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
       player.currentCost -= playCost
       player.hand.splice(cardIndex, 1)
       if (player.hasPlayedThisTurn && player.canPlayExtra) {
@@ -1189,7 +1189,7 @@ export function useGame() {
       gameState.value.message = msgs.join(' | ')
     }
     const attachIdx = player.field.findIndex(s => s.card === card)
-    const qpCost = EffectManager.getEffectivePlayCost(card, player)
+    const qpCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
     stagePendingReveal(
       player.id,
       card,
@@ -1234,7 +1234,7 @@ export function useGame() {
     EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
     EffectManager.recalculateAllPowers(gameState.value)
 
-    const qpCost = EffectManager.getEffectivePlayCost(card, player)
+    const qpCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
     stagePendingReveal(
       player.id,
       card,
@@ -1273,7 +1273,7 @@ export function useGame() {
     const card = player.hand[cardIndex]
     if (!card || card.type !== 'tactic') return
 
-    const playCost = EffectManager.getEffectivePlayCost(card, player)
+    const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value)
     if (player.currentCost < playCost) {
       gameState.value.message = `费用不足！需要 ${playCost}，当前 ${player.currentCost}`
       return
@@ -1412,7 +1412,7 @@ export function useGame() {
     if (!player) return
     const card = player.hand[handIndex]
     if (!card) return
-    const playCost = EffectManager.getEffectivePlayCost(card, player) + pending.extraCost
+    const playCost = EffectManager.getEffectivePlayCost(card, player, gameState.value) + pending.extraCost
     if (player.currentCost < playCost) return
     const slots = EffectManager.getAvailableSlotIndices(player, card)
     if (slots.length === 0) {
@@ -2016,7 +2016,7 @@ export function useGame() {
       return false
     }
     
-    return currentPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card, currentPlayer.value)
+    return currentPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card, currentPlayer.value, gameState.value)
   }
 
   return {

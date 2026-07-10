@@ -102,7 +102,7 @@ export function useGameClient(initialPlayerId = '') {
       if (!card || card === 'hidden') return false
       const c = card as Card
       return c.type === 'tactic'
-        && EffectManager.getEffectivePlayCost(c, myPlayer.value!) <= myPlayer.value!.currentCost
+        && EffectManager.getEffectivePlayCost(card as Card, myPlayer.value!, gameState.value!) <= myPlayer.value!.currentCost
         && EffectManager.canPlayHandCard(c, myPlayer.value!, gameState.value!)
     })
   }
@@ -215,7 +215,7 @@ export function useGameClient(initialPlayerId = '') {
       return false
     }
     
-    if (myPlayer.value.currentCost < EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)) {
+    if (myPlayer.value.currentCost < EffectManager.getEffectivePlayCost(card as Card, myPlayer.value, gameState.value!)) {
       return false
     }
 
@@ -499,7 +499,7 @@ export function useGameClient(initialPlayerId = '') {
       const card = myPlayer.value.hand[index]
       if (!card || card === 'hidden') return false
       if ((card as Card).type !== 'tactic') return false
-      return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
+      return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value, gameState.value!)
     }
 
     const card = myPlayer.value.hand[index]
@@ -517,7 +517,7 @@ export function useGameClient(initialPlayerId = '') {
       return false
     }
 
-    return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value)
+    return myPlayer.value.currentCost >= EffectManager.getEffectivePlayCost(card as Card, myPlayer.value, gameState.value!)
   }
 
   return {
