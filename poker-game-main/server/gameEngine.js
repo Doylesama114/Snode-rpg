@@ -1911,6 +1911,32 @@ class EffectManager {
     return targets
   }
 
+  static getOnPlayTargetEffect(card) {
+    return card.effects?.find(
+      e => e.timing === 'onPlay' && (
+        (e.type === 'modifyPower' && e.targetKeywords?.length)
+        || (e.type === 'grantKeyword' && e.grantKeywords?.length)
+      ),
+    )
+  }
+
+  static getGrantKeywordTargets(player) {
+    return player.field.filter(s => s.card).map(s => s.card)
+  }
+
+  static applyGrantKeyword(targetCard, effect) {
+    const messages = []
+    for (const kw of effect.grantKeywords || []) {
+      if (!EffectManager.hasKeyword(targetCard, kw)) {
+        targetCard.keywords.push(kw)
+        messages.push(`${targetCard.name} 获得「${kw}」关键词`)
+      } else {
+        messages.push(`${targetCard.name} 已拥有「${kw}」关键词`)
+      }
+    }
+    return messages
+  }
+
   static rollD6TierValue(effect, player, card) {
     let roll = EffectManager.rollD6()
     if (player && card?.name && player.d6MinByCardName?.[card.name] !== undefined) {
@@ -3616,13 +3642,13 @@ class GameEngine {
       }
     })
     
-    // QuickPlay tactics: onPlay modifyPower 需指定目标
+    // QuickPlay tactics: onPlay modifyPower / grantKeyword 需指定目标
     if (card.type === 'tactic') {
-      const onPlayMod = card.effects.find(
-        e => e.timing === 'onPlay' && e.type === 'modifyPower' && e.targetKeywords?.length,
-      )
-      if (onPlayMod) {
-        const targets = EffectManager.getRevealModifyTargets(this.gameState, player, onPlayMod)
+      const onPlayTarget = EffectManager.getOnPlayTargetEffect(card)
+      if (onPlayTarget) {
+        const targets = onPlayTarget.type === 'grantKeyword'
+          ? EffectManager.getGrantKeywordTargets(player)
+          : EffectManager.getRevealModifyTargets(this.gameState, player, onPlayTarget)
         let targetCard = null
         if (targetCardId) {
           targetCard = targets.find(t => t.id === targetCardId) ?? null
@@ -3639,10 +3665,14 @@ class GameEngine {
           return { success: false, error: '请选择速攻目标' }
         }
         if (targetCard) {
-          const delta = onPlayMod.value || 0
-          const oldPower = targetCard.currentPower
-          EffectManager.applyPersistentPowerDelta(targetCard, delta)
-          messages.push(`${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`)
+          if (onPlayTarget.type === 'grantKeyword') {
+            EffectManager.applyGrantKeyword(targetCard, onPlayTarget).forEach(m => messages.push(m))
+          } else {
+            const delta = onPlayTarget.value || 0
+            const oldPower = targetCard.currentPower
+            EffectManager.applyPersistentPowerDelta(targetCard, delta)
+            messages.push(`${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`)
+          }
         }
       }
     }

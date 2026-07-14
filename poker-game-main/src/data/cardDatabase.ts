@@ -3536,6 +3536,28 @@ export const allCardDefinitions = [
     ],
     slotRequired: 1,
     isPersistent: true
+  },
+  // 156. 自然亲和
+  {
+    id: 'card_156',
+    name: '自然亲和',
+    type: 'tactic',
+    keywords: ['个性'],
+    attribute: '木',
+    basePower: 0,
+    currentPower: 0,
+    cost: 0,
+    quickPlay: true,
+    effects: [
+    {
+      timing: 'onPlay',
+      type: 'grantKeyword',
+      grantKeywords: ['自然'],
+      description: '速攻：为你的场上的一张牌赋予「自然」关键词'
+    }
+    ],
+    slotRequired: 1,
+    isPersistent: false
   }
 ] as Card[]
 

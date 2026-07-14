@@ -895,6 +895,36 @@ export function useGame() {
       return
     }
 
+    // QuickPlay tactics: onPlay modifyPower / grantKeyword 需指定目标
+    if (card.type === 'tactic') {
+      const onPlayTarget = EffectManager.getOnPlayTargetEffect(card)
+      if (onPlayTarget) {
+        const targets = onPlayTarget.type === 'grantKeyword'
+          ? EffectManager.getGrantKeywordTargets(player)
+          : EffectManager.getRevealModifyTargets(gameState.value, player, onPlayTarget)
+        if (targets.length === 0) {
+          gameState.value.message += ' | 没有可用的目标'
+        } else if (targets.length > 1) {
+          gameState.value.availableTargets = targets
+          gameState.value.phase = 'selectTarget'
+          gameState.value.message = `选择${card.name}的目标`
+          return
+        } else {
+          const targetCard = targets[0]
+          if (onPlayTarget.type === 'grantKeyword') {
+            EffectManager.applyGrantKeyword(targetCard, onPlayTarget).forEach(m => {
+              gameState.value.message += ` | ${m}`
+            })
+          } else {
+            const delta = onPlayTarget.value || 0
+            const oldPower = targetCard.currentPower
+            EffectManager.applyPersistentPowerDelta(targetCard, delta)
+            gameState.value.message += ` | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
+          }
+        }
+      }
+    }
+
     // QuickPlay tactic cards go directly to discard (unless returned to deck)
     const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
     if (card.type === 'tactic' && !hasReturnToDeck) {
@@ -1053,9 +1083,40 @@ export function useGame() {
     if (gameState.value.phase !== 'selectTarget' || !gameState.value.selectedCard) return
 
     const card = gameState.value.selectedCard
+    const player = currentPlayer.value
     const deployEffect = gameState.value.pendingDeployEffect
     const revealEffect = card.effects.find(e => e.timing === 'onReveal' && e.type !== 'conditional' && e.type !== 'custom')
+    const onPlayTarget = !deployEffect ? EffectManager.getOnPlayTargetEffect(card) : undefined
     const effect = deployEffect || revealEffect
+
+    if (onPlayTarget) {
+      if (!gameState.value.availableTargets?.some(t => t === targetCard)) return
+      if (onPlayTarget.type === 'grantKeyword') {
+        EffectManager.applyGrantKeyword(targetCard, onPlayTarget).forEach(m => {
+          gameState.value.message += ` | ${m}`
+        })
+      } else {
+        const delta = onPlayTarget.value || 0
+        const loc = findFieldSlotForCard(gameState.value, targetCard)
+        const oldPower = targetCard.currentPower
+        EffectManager.applyPersistentPowerDelta(targetCard, delta)
+        gameState.value.message += ` | ${targetCard.name} 战力${oldPower}→${targetCard.currentPower}`
+        if (loc) await animations.playPowerPulse({ ...loc, delta: targetCard.currentPower - oldPower })
+      }
+      const hasReturnToDeck = card.effects.some(e => e.type === 'returnToDeckBottom')
+      if (!hasReturnToDeck) {
+        player.discard.push(card)
+      }
+      EffectManager.triggerOnOtherPlayEffects(card, player, gameState.value)
+      EffectManager.recalculateAllPowers(gameState.value)
+      gameState.value.pendingDeployEffect = undefined
+      gameState.value.availableTargets = []
+      gameState.value.phase = 'action'
+      gameState.value.selectedCard = undefined
+      await showNewFloats(player.id)
+      await maybeRevealHiddenAfterHumanAction(player)
+      return
+    }
 
     if (effect?.type === 'destroy') {
       const loc = findFieldSlotForCard(gameState.value, targetCard)

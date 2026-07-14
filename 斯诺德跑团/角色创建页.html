@@ -602,6 +602,20 @@ var BG_SKILL_MAP = {
   "医药":"智力.知识-医药","炼金":"智力.奥秘-炼金术","草药学":"智力.知识-草药学",
   "开锁":"敏捷.巧手-开锁","烹饪":"智力.知识-烹饪","地理":"智力.知识-地理",
   "多元宇宙":"智力.奥秘-多元宇宙",
+  "魔法学识":"智力.奥秘-魔法学识","神奇道具":"智力.奥秘-神奇道具",
+  "历史":"智力.知识-历史","人文":"智力.知识-人文","政治":"智力.知识-政治",
+  "神秘学":"智力.知识-神秘学","工程学":"智力.知识-工程学","珠宝学":"智力.知识-珠宝学",
+  "歌唱":"魅力.表演-歌唱","舞蹈":"魅力.表演-舞蹈","演奏":"魅力.表演-演奏",
+  "偷窃":"敏捷.巧手-偷窃","拆除":"敏捷.巧手-拆除",
+  "跳跃":"力量.运动-跳跃","攀爬":"力量.运动-攀爬","游泳":"力量.运动-游泳",
+  "威力":"力量.威力","承重":"力量.承重",
+  "骑乘":"敏捷.骑乘","读唇":"智力.读唇","激励":"意志.激励",
+  "运动-跳跃":"力量.运动-跳跃","运动-攀爬":"力量.运动-攀爬","运动-游泳":"力量.运动-游泳",
+  "巧手-偷窃":"敏捷.巧手-偷窃","巧手-拆除":"敏捷.巧手-拆除",
+  "表演-歌唱":"魅力.表演-歌唱","表演-舞蹈":"魅力.表演-舞蹈","表演-演奏":"魅力.表演-演奏",
+  "奥秘-魔法学识":"智力.奥秘-魔法学识","奥秘-神奇道具":"智力.奥秘-神奇道具",
+  "知识-历史":"智力.知识-历史","知识-人文":"智力.知识-人文","知识-政治":"智力.知识-政治",
+  "知识-神秘学":"智力.知识-神秘学","知识-工程学":"智力.知识-工程学","知识-珠宝学":"智力.知识-珠宝学",
   "运动":"cat","巧手":"cat","表演":"cat","奥秘":"cat","知识":"cat"
 };
 var BG_SKILL_CATS = {
@@ -1061,10 +1075,14 @@ function showHumanFreeSkill(raceData){
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择自由熟练度（人类·中庸）</div>";
   h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>选择 <strong>1</strong> 项熟练度</div>";
-  var skills=Object.keys(BG_SKILL_MAP).filter(function(k){return BG_SKILL_MAP[k]!=="cat";});
+  // Use comprehensive all Attrs list (same as bg proficiency selection) for full coverage
+  var allAttrs={力量:["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],敏捷:["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"],体质:["专注","耐力"],智力:["调查","逻辑","宗教","估价","伪造","读唇","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"],感知:["洞悉","导航","自然","驯兽","感悟","聆听","察觉"],魅力:["欺瞒","说服","表演-歌唱","表演-舞蹈","表演-演奏","恐吓"],意志:["求生","激励","决策"],幸运:["机遇","探索"]};
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
-  for(var i=0;i<skills.length;i++){
-    h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+skills[i]+"'>"+skills[i]+"</div>";
+  for(var attr in allAttrs){
+    for(var i=0;i<allAttrs[attr].length;i++){
+      var sk=allAttrs[attr][i];
+      h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+sk+"'>"+attr+"·"+sk+"</div>";
+    }
   }
   h+="</div>";
   area.innerHTML=h;

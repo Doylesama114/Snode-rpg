@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T20:36:17.818Z",
+  "generatedAt": "2026-07-10T02:11:38.259Z",
   "poolSize": 148,
   "realPoolSize": 148,
   "placeholderCount": 0,
@@ -17,7 +17,7 @@
   },
   "patternSummary": {
     "on_deploy": 33,
-    "create_slot": 4,
+    "create_slot": 3,
     "on_other_play": 9,
     "on_field_power": 18,
     "other": 9,
@@ -25,7 +25,7 @@
     "on_reveal_tactic": 36,
     "quick_play": 14,
     "charges": 1,
-    "round_start": 7,
+    "round_start": 8,
     "d6_random": 4,
     "on_field_other": 1,
     "round_end": 3
@@ -225,8 +225,7 @@
     "create_slot": [
       "驮用马",
       "摄像机",
-      "鲈鱼",
-      "法师塔"
+      "鲈鱼"
     ],
     "on_other_play": [
       "矮人铁匠",
@@ -345,6 +344,7 @@
       "火蜥蜴",
       "急先锋·罗森弗斯",
       "射击俱乐部",
+      "法师塔",
       "星象塔"
     ],
     "d6_random": [
@@ -2237,7 +2237,7 @@
         "emptyEffects": false
       },
       "types": [
-        "createSlot"
+        "offerTavernLiquorPlay"
       ],
       "timings": [
         "roundEnd"
@@ -2306,17 +2306,17 @@
       "name": "法师塔",
       "type": "environment",
       "wiring": "implemented_doc",
-      "pattern": "create_slot",
+      "pattern": "round_start",
       "flags": {
         "quickPlay": false,
         "placeholder": false,
         "emptyEffects": false
       },
       "types": [
-        "createSlot"
+        "extraPlay"
       ],
       "timings": [
-        "onDeploy"
+        "roundStart"
       ]
     },
     {

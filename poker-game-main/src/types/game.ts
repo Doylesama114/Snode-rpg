@@ -91,6 +91,7 @@ export type EffectType =
   | 'moveOpponentBatchRevealToDeckBottom' // 将对手本批展示牌置于牌库底（矮人烈酒）
   | 'forceRandomHandPlay'       // 强制对手随机打出一张手牌（矮人烈酒）
   | 'offerTavernLiquorPlay'     // 回合结束可额外费用打出手牌中的酒水牌（酒馆）
+  | 'grantKeyword'              // onPlay 速攻：为场上卡牌赋予关键词（自然亲和）
 
 /** 本批展示条目（盖牌→同时翻开） */
 export interface RevealBatchEntry {
@@ -303,6 +304,8 @@ export interface CardEffect {
   /** modifyPower 等：全场任意玩家场上需含该关键词 */
   requireGlobalFieldKeyword?: string
   drawCount?: number     // number of cards to draw
+  /** grantKeyword：要赋予的关键词列表 */
+  grantKeywords?: string[]
 }
 
 /** 额外槽位类型：载具 createSlot / 单位装备武器·物件 / 防具 */

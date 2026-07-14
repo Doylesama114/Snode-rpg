@@ -193,10 +193,8 @@ export function useGameClient(initialPlayerId = '') {
     return { type: 'chooseReforge' as const }
   }
 
-  function getOnPlayModifyTargetEffect(card: Card) {
-    return card.effects?.find(
-      e => e.timing === 'onPlay' && e.type === 'modifyPower' && e.targetKeywords?.length,
-    )
+  function getOnPlayTargetEffect(card: Card) {
+    return EffectManager.getOnPlayTargetEffect(card)
   }
   
   function selectCardToPlay(cardIndex: number): 'slot' | 'direct' | 'host' | 'target' | false {
@@ -224,14 +222,16 @@ export function useGameClient(initialPlayerId = '') {
     pendingCardIndex.value = cardIndex
 
     if ((card as Card).quickPlay && (card as Card).type === 'tactic') {
-      const onPlayMod = getOnPlayModifyTargetEffect(card as Card)
-      if (onPlayMod) {
-        const targets = EffectManager.getRevealModifyTargets(gameState.value, myPlayer.value, onPlayMod)
+      const onPlayTarget = getOnPlayTargetEffect(card as Card)
+      if (onPlayTarget) {
+        const targets = onPlayTarget.type === 'grantKeyword'
+          ? EffectManager.getGrantKeywordTargets(myPlayer.value)
+          : EffectManager.getRevealModifyTargets(gameState.value, myPlayer.value, onPlayTarget)
         if (targets.length === 0) return false
         if (targets.length > 1) {
           availableTargets.value = targets
           clientSelectMode.value = 'quickPlayTarget'
-          deployHint.value = `选择 ${(card as Card).name} 的目标单位`
+          deployHint.value = `选择 ${(card as Card).name} 的目标`
           return 'target'
         }
       }

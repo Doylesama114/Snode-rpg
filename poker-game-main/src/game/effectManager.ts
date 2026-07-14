@@ -1095,6 +1095,35 @@ export class EffectManager {
     return targets
   }
 
+  /** onPlay 速攻：需点选目标的战术效果（modifyPower / grantKeyword） */
+  static getOnPlayTargetEffect(card: Card): CardEffect | undefined {
+    return card.effects?.find(
+      e => e.timing === 'onPlay' && (
+        (e.type === 'modifyPower' && !!e.targetKeywords?.length)
+        || (e.type === 'grantKeyword' && !!e.grantKeywords?.length)
+      ),
+    )
+  }
+
+  /** grantKeyword：己方场上所有卡牌 */
+  static getGrantKeywordTargets(player: Player): Card[] {
+    return player.field.filter(s => s.card).map(s => s.card!)
+  }
+
+  /** grantKeyword：为目标卡牌追加关键词（去重） */
+  static applyGrantKeyword(targetCard: Card, effect: CardEffect): string[] {
+    const messages: string[] = []
+    for (const kw of effect.grantKeywords || []) {
+      if (!this.hasKeyword(targetCard, kw)) {
+        targetCard.keywords.push(kw)
+        messages.push(`${targetCard.name} 获得「${kw}」关键词`)
+      } else {
+        messages.push(`${targetCard.name} 已拥有「${kw}」关键词`)
+      }
+    }
+    return messages
+  }
+
   /** D6 档位掷骰，返回 { roll, value }；player.d6MinByCardName 可抬高掷骰（珍珠商人） */
   static rollD6TierValue(
     effect: CardEffect,
