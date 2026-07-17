@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7102',
+    date: '2026-07-17',
+    changes: [
+      '通用天赋树验证清理：删除遗留八墓村+触不可及(已从docx移除)'
+    ]
+  },
+
+
+  {
     version: '1.0.7101',
     date: '2026-07-17',
     changes: [
