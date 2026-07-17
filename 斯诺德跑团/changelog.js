@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7099',
+    date: '2026-07-17',
+    changes: [
+      '圣骑士docx对照：力量祝福/英雄气概/智慧祝福描述修正（盟友/角色/FP4/施展条件-）'
+    ]
+  },
+
+
+  {
     version: '1.0.7098',
     date: '2026-07-14',
     changes: [
