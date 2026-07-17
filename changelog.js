@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7100',
+    date: '2026-07-17',
+    changes: [
+      '通用天赋树docx同步：新增17天赋+8符文+重命名极速者+删除藏宝图'
+    ]
+  },
+
+
+  {
     version: '1.0.7099',
     date: '2026-07-17',
     changes: [
