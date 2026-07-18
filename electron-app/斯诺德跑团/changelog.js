@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7103',
+    date: '2026-07-18',
+    changes: [
+      '修复通用天赋树搜索功能：恢复丢失的filter.js/common.js/FilterController/nav脚本+</body></html>'
+    ]
+  },
+
+
+  {
     version: '1.0.7102',
     date: '2026-07-17',
     changes: [
