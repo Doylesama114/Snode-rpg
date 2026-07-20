@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7105',
+    date: '2026-07-20',
+    changes: [
+      '修正通用天赋树阶位v2：猛火三元素+抉择M→五阶，伤害阈值→七阶'
+    ]
+  },
+
+
+  {
     version: '1.0.7104',
     date: '2026-07-20',
     changes: [
