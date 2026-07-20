@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7104',
+    date: '2026-07-20',
+    changes: [
+      '修复通用天赋树阶位：17个错位天赋行移到正确四/五/六阶'
+    ]
+  },
+
+
+  {
     version: '1.0.7103',
     date: '2026-07-18',
     changes: [
