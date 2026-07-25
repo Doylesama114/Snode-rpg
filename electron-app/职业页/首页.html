@@ -69,14 +69,14 @@
     .search-overlay.hidden { display: none; }
     .search-panel {
         background: var(--panel); border-radius: 14px; box-shadow: var(--shadow);
-        width: 90%; max-width: 680px; max-height: 80vh;
+        width: 90%; max-width: 720px; max-height: 88vh;
         display: flex; flex-direction: column; overflow: hidden;
         margin: 0 16px 40px;
         animation: searchPanelIn 0.25s ease-out;
     }
     .search-panel-header {
         display: flex; align-items: center; gap: 10px;
-        padding: 18px 20px 12px; border-bottom: 1px solid var(--line);
+        padding: 16px 18px 10px; border-bottom: 1px solid var(--line);
     }
     .search-widget-input {
         flex: 1; border: 1px solid var(--line); border-radius: 8px;
@@ -91,45 +91,96 @@
         display: flex; align-items: center; justify-content: center;
     }
     .search-close-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .search-filters {
+        padding: 10px 16px 8px; border-bottom: 1px solid var(--line);
+        background: var(--bg); max-height: 38vh; overflow-y: auto;
+    }
+    .search-filter-row { margin-bottom: 8px; }
+    .search-filter-row:last-child { margin-bottom: 0; }
+    .search-filter-label {
+        display: flex; align-items: center; justify-content: space-between;
+        font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px;
+    }
+    .search-filter-clear {
+        border: none; background: none; color: var(--green); font-size: 12px;
+        cursor: pointer; padding: 0; font-family: inherit;
+    }
+    .search-filter-clear:hover { text-decoration: underline; }
+    .search-chip-wrap, .search-color-wrap {
+        display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .search-chip {
+        border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+        border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600;
+        cursor: pointer; font-family: inherit; line-height: 1.3;
+    }
+    .search-chip.active {
+        border-color: var(--green); background: rgba(47,111,94,0.12); color: var(--green);
+    }
+    .search-color-btn {
+        border: 1px solid var(--line); background: var(--panel); border-radius: 8px;
+        padding: 4px 8px; font-size: 12px; cursor: pointer; font-family: inherit;
+        display: inline-flex; align-items: center; gap: 4px; color: var(--ink);
+    }
+    .search-color-btn.active { border-color: var(--green); box-shadow: 0 0 0 2px rgba(47,111,94,0.15); }
+    .search-color-btn .gs-dot { font-size: 14px; line-height: 1; }
+    .search-color-btn.light .gs-dot {
+        text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
+    }
+    .search-summary {
+        padding: 8px 16px; font-size: 12px; color: var(--muted);
+        border-bottom: 1px solid var(--line); background: var(--panel);
+    }
+    .search-summary strong { color: var(--ink); }
     .search-status {
         padding: 24px; text-align: center; color: var(--muted); font-size: 14px;
     }
+    .search-status.error { color: var(--red); }
     .search-status.hidden { display: none; }
-    .search-results { flex: 1; overflow-y: auto; padding: 8px 0; }
-    .search-result-item {
-        display: block; padding: 14px 20px; border-bottom: 1px solid var(--line);
-        cursor: pointer; transition: background 0.12s; text-decoration: none; color: inherit;
-        animation: resultSlideIn 0.3s ease-out both;
+    .search-results { flex: 1; overflow-y: auto; padding: 0 0 12px; }
+    .gs-group { border-bottom: 1px solid var(--line); }
+    .gs-group-head {
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 16px; border: none; background: var(--bg); color: var(--ink);
+        font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; text-align: left;
     }
-    .search-result-item:nth-child(2) { animation-delay: 0.04s; }
-    .search-result-item:nth-child(3) { animation-delay: 0.08s; }
-    .search-result-item:nth-child(4) { animation-delay: 0.12s; }
-    .search-result-item:nth-child(5) { animation-delay: 0.16s; }
-    .search-result-item:nth-child(6) { animation-delay: 0.20s; }
-    .search-result-item:hover { background: var(--bg); }
-    .search-result-item .result-class {
-        font-size: 12px; color: var(--green); font-weight: 700; margin-bottom: 3px;
+    .gs-group-head:hover { background: rgba(47,111,94,0.06); }
+    .gs-group-head .gs-count { color: var(--muted); font-weight: 600; }
+    .gs-group-body.collapsed { display: none; }
+    .gs-row {
+        display: flex; align-items: stretch; border-bottom: 1px solid var(--line);
     }
-    .search-result-item .result-name {
-        font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 2px;
+    .gs-row:last-child { border-bottom: none; }
+    .gs-row-main {
+        flex: 1; display: flex; align-items: center; gap: 8px;
+        padding: 8px 6px 8px 16px; text-decoration: none; color: inherit; min-width: 0;
     }
-    .search-result-item .result-meta {
-        font-size: 12px; color: var(--muted); margin-bottom: 6px;
+    .gs-row-main:hover { background: rgba(47,111,94,0.05); }
+    .gs-row-name { font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gs-row-marks { display: inline-flex; gap: 1px; flex-shrink: 0; }
+    .gs-row-marks .gs-dot { font-size: 13px; line-height: 1; }
+    .gs-row-meta { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: auto; flex-shrink: 1; min-width: 0; }
+    .gs-row-toggle {
+        width: 36px; border: none; background: transparent; color: var(--muted);
+        cursor: pointer; font-size: 12px; flex-shrink: 0;
     }
-    .search-result-item .result-meta span { margin-right: 8px; }
-    .search-result-item .result-snippet {
-        font-size: 13px; color: var(--ink); line-height: 1.6;
-        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-        overflow: hidden;
+    .gs-row-toggle:hover { color: var(--green); }
+    .gs-row-snippet {
+        display: none; padding: 0 16px 10px 16px; font-size: 12px; color: var(--ink);
+        line-height: 1.55; border-bottom: 1px solid var(--line);
     }
+    .gs-row.expanded + .gs-row-snippet { display: block; }
+    .gs-more {
+        display: block; width: calc(100% - 32px); margin: 12px 16px 4px;
+        padding: 10px; border: 1px dashed var(--line); border-radius: 8px;
+        background: var(--bg); color: var(--green); font-weight: 700; font-size: 13px;
+        cursor: pointer; font-family: inherit;
+    }
+    .gs-more:hover { border-color: var(--green); }
     .search-highlight {
         background: #ffdd00; color: #000 !important;
         animation: search-blink 0.8s ease-in-out 3;
     }
-    @keyframes resultSlideIn {
-  from { opacity: 0; transform: translateX(16px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
 @keyframes searchPanelIn {
   from { transform: scale(0.95); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
@@ -146,9 +197,11 @@
         .home-container { padding: 24px 12px; }
         h1 { font-size: 22px; }
         .search-float-btn { width: 48px; height: 48px; bottom: 16px; right: 16px; font-size: 22px; }
-        .search-panel { max-height: 90vh; border-radius: 10px; }
+        .search-panel { max-height: 92vh; border-radius: 10px; }
         .search-panel-header { padding: 14px 14px 10px; }
         .search-widget-input { padding: 10px 12px; font-size: 15px; }
+        .search-filters { max-height: 32vh; }
+        .gs-row-meta { display: none; }
     }
 </style>
 </head>
@@ -208,8 +261,19 @@
   <div class="search-panel">
     <div class="search-panel-header">
       <input type="search" class="search-widget-input" id="searchWidgetInput" placeholder="搜索全部职业技能（技能名/关键词/描述）…" autocomplete="off">
-      <button class="search-close-btn" id="searchCloseBtn">✕</button>
+      <button class="search-close-btn" id="searchCloseBtn" type="button">✕</button>
     </div>
+    <div class="search-filters" id="searchFilters">
+      <div class="search-filter-row">
+        <div class="search-filter-label"><span>职业</span><button type="button" class="search-filter-clear" id="clearClassFilter">清空</button></div>
+        <div class="search-chip-wrap" id="classFilterWrap"></div>
+      </div>
+      <div class="search-filter-row">
+        <div class="search-filter-label"><span>色彩标识</span><button type="button" class="search-filter-clear" id="clearColorFilter">清空</button></div>
+        <div class="search-color-wrap" id="colorFilterWrap"></div>
+      </div>
+    </div>
+    <div class="search-summary hidden" id="searchSummary"></div>
     <div class="search-status hidden" id="searchStatus">加载中…</div>
     <div class="search-results" id="searchResults"></div>
   </div>
@@ -217,139 +281,393 @@
 
 <script>
 (function() {
-  var CLASS_FILES = [
-    {name:'战士',file:'数据/战士.json'},{name:'圣骑士',file:'数据/圣骑士.json'},
-    {name:'猎人',file:'数据/猎人.json'},{name:'游荡者',file:'数据/游荡者.json'},
-    {name:'武僧',file:'数据/武僧.json'},{name:'法师',file:'数据/法师.json'},
-    {name:'术士',file:'数据/术士.json'},{name:'牧师',file:'数据/牧师.json'},
-    {name:'德鲁伊',file:'数据/德鲁伊.json'},{name:'吟游诗人',file:'数据/吟游诗人.json'},
-    {name:'萨满祭司',file:'数据/萨满祭司.json'},{name:'蛮斗士',file:'数据/蛮斗士.json'},
-    {name:'奇械师',file:'数据/奇械师.json'},{name:'魔契师',file:'数据/魔契师.json'},
-    {name:'通用天赋树',file:'数据/通用天赋树.json'}
+  var MARK_META = [
+    { hex: '#FF0000', name: '红', light: false },
+    { hex: '#EE822F', name: '橙', light: false },
+    { hex: '#FFF32F', name: '黄', light: true },
+    { hex: '#00B050', name: '绿', light: false },
+    { hex: '#00FA99', name: '青', light: true },
+    { hex: '#00B0F0', name: '蓝', light: false },
+    { hex: '#B3F9FF', name: '浅', light: true },
+    { hex: '#B94BFF', name: '紫', light: false },
+    { hex: '#FFB7E3', name: '粉', light: true },
+    { hex: '#843F0B', name: '棕', light: false },
+    { hex: '#FFFFFF', name: '白', light: true },
+    { hex: '#595959', name: '黑', light: false },
+    { hex: '#D9D9D9', name: '灰', light: true },
+    { hex: '#851321', name: '暗红', light: false }
+  ];
+  var metaByHex = {};
+  MARK_META.forEach(function(m) { metaByHex[m.hex.toUpperCase()] = m; });
+
+  var CLASS_ORDER = [
+    '战士', '圣骑士', '猎人', '游荡者', '武僧', '法师', '术士', '牧师',
+    '德鲁伊', '吟游诗人', '萨满祭司', '蛮斗士', '奇械师', '魔契师',
+    '通用天赋树', '特殊专长'
   ];
 
+  var PAGE_SIZE = 80;
+  var PAGE_STEP = 40;
+
   var searchIndex = null;
-  var loading = false;
+  var loadPromise = null;
+  var loadError = null;
+  var selectedClasses = new Set();
+  var selectedColors = new Set();
+  var visibleLimit = PAGE_SIZE;
+  var lastMatched = [];
+  var collapsedGroups = {};
+
   var overlay = document.getElementById('searchOverlay');
   var input = document.getElementById('searchWidgetInput');
   var resultsDiv = document.getElementById('searchResults');
   var statusDiv = document.getElementById('searchStatus');
+  var summaryDiv = document.getElementById('searchSummary');
   var floatBtn = document.getElementById('searchFloatBtn');
   var closeBtn = document.getElementById('searchCloseBtn');
+  var classWrap = document.getElementById('classFilterWrap');
+  var colorWrap = document.getElementById('colorFilterWrap');
   var debounceTimer = null;
 
-  function loadAllData() {
-    if (searchIndex) return Promise.resolve(searchIndex);
-    if (loading) return;
-    loading = true;
-    statusDiv.classList.remove('hidden');
-    resultsDiv.innerHTML = '';
-
-    return Promise.all(CLASS_FILES.map(function(c) {
-      return fetch(c.file)
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          return { classname: c.name, skills: data.skills || [] };
-        })
-        .catch(function() { return { classname: c.name, skills: [] }; });
-    })).then(function(allData) {
-      searchIndex = [];
-      allData.forEach(function(cd) {
-        cd.skills.forEach(function(s) {
-          var fields = s.fields || {};
-          var descText = ((s.description || []).join(' ') || '').toLowerCase();
-          var flavorText = (s.flavor || '').toLowerCase();
-          var tags = (s.tags || (fields['关键词'] || '').split('.')).join(' ');
-          var style = s.style || fields['风格'] || '';
-          var tier = (typeof s.tier === 'number' ? s.tier + '阶' : s.tier || '');
-          var conditions = (fields['额外条件'] || fields['前置条件'] || '');
-          searchIndex.push({
-            classname: cd.classname,
-            skillId: s.id,
-            skillName: s.name,
-            style: style,
-            tier: tier,
-            snippet: (descText || flavorText).substring(0, 200),
-            searchText: (cd.classname + ' ' + s.name + ' ' + tags + ' ' + descText + ' ' + flavorText + ' ' + style + ' ' + conditions).toLowerCase()
-          });
-        });
-      });
-      statusDiv.classList.add('hidden');
-      loading = false;
-      return searchIndex;
-    });
+  function normHex(h) {
+    if (!h) return '';
+    h = String(h).trim().toUpperCase();
+    if (h.charAt(0) !== '#') h = '#' + h;
+    return h;
   }
 
-  function search() {
-    var terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!searchIndex) return;
-    
-    if (terms.length === 0) { resultsDiv.innerHTML = ''; return; }
-    
-    var matched = searchIndex.filter(function(entry) {
-      return terms.every(function(t) { return entry.searchText.indexOf(t) !== -1; });
-    });
-    
-    renderResults(matched.slice(0, 60));
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   function highlightText(text, terms) {
-    if (!terms || terms.length === 0) return text;
-    var result = text;
+    var result = escapeHtml(text || '');
+    if (!terms || !terms.length) return result;
     terms.forEach(function(t) {
       if (!t) return;
       var escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      var regex = new RegExp('(' + escaped + ')', 'gi');
-      result = result.replace(regex, '<span class="search-highlight">$1</span>');
+      result = result.replace(new RegExp('(' + escaped + ')', 'gi'), '<span class="search-highlight">$1</span>');
     });
     return result;
   }
 
-  function renderResults(items) {
-    if (items.length === 0) {
+  function hasActiveQuery() {
+    return !!(input.value.trim() || selectedClasses.size || selectedColors.size);
+  }
+
+  function loadIndex() {
+    if (searchIndex) return Promise.resolve(searchIndex);
+    if (loadPromise) return loadPromise;
+    statusDiv.classList.remove('hidden');
+    statusDiv.className = 'search-status';
+    statusDiv.textContent = '加载索引中…';
+    summaryDiv.classList.add('hidden');
+    loadPromise = fetch('search-index.json')
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        searchIndex = data.skills || [];
+        loadError = null;
+        statusDiv.classList.add('hidden');
+        buildFilterControls();
+        return searchIndex;
+      })
+      .catch(function(err) {
+        loadError = err;
+        loadPromise = null;
+        searchIndex = null;
+        statusDiv.classList.remove('hidden');
+        statusDiv.className = 'search-status error';
+        statusDiv.textContent = '索引加载失败（请用启动台或本地 HTTP 打开）。请确认存在 search-index.json。';
+        throw err;
+      });
+    return loadPromise;
+  }
+
+  function buildFilterControls() {
+    classWrap.innerHTML = '';
+    CLASS_ORDER.forEach(function(name) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'search-chip' + (selectedClasses.has(name) ? ' active' : '');
+      btn.textContent = name;
+      btn.setAttribute('data-class', name);
+      btn.addEventListener('click', function() {
+        if (selectedClasses.has(name)) selectedClasses.delete(name);
+        else selectedClasses.add(name);
+        btn.classList.toggle('active', selectedClasses.has(name));
+        visibleLimit = PAGE_SIZE;
+        collapsedGroups = {};
+        scheduleQuery();
+      });
+      classWrap.appendChild(btn);
+    });
+
+    var colorSet = {};
+    searchIndex.forEach(function(s) {
+      (s.marks || []).forEach(function(c) {
+        c = normHex(c);
+        if (c) colorSet[c] = true;
+      });
+    });
+    var colors = Object.keys(colorSet).sort(function(a, b) {
+      var ia = MARK_META.findIndex(function(m) { return m.hex === a; });
+      var ib = MARK_META.findIndex(function(m) { return m.hex === b; });
+      if (ia < 0) ia = 999;
+      if (ib < 0) ib = 999;
+      return ia - ib || a.localeCompare(b);
+    });
+    colorWrap.innerHTML = '';
+    colors.forEach(function(hex) {
+      var meta = metaByHex[hex] || { hex: hex, name: hex.replace('#', ''), light: false };
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'search-color-btn' + (meta.light ? ' light' : '') + (selectedColors.has(hex) ? ' active' : '');
+      btn.setAttribute('data-color', hex);
+      btn.innerHTML = '<span class="gs-dot" style="color:' + hex + '">●</span><span>' + escapeHtml(meta.name) + '</span>';
+      btn.addEventListener('click', function() {
+        if (selectedColors.has(hex)) selectedColors.delete(hex);
+        else selectedColors.add(hex);
+        btn.classList.toggle('active', selectedColors.has(hex));
+        visibleLimit = PAGE_SIZE;
+        collapsedGroups = {};
+        scheduleQuery();
+      });
+      colorWrap.appendChild(btn);
+    });
+  }
+
+  function scoreEntry(entry, terms) {
+    var name = (entry.skillName || '').toLowerCase();
+    var joined = terms.join(' ');
+    if (terms.length && name === joined) return 0;
+    if (terms.length && terms.every(function(t) { return name.indexOf(t) !== -1; })) return 1;
+    return 2;
+  }
+
+  function runQuery() {
+    if (!searchIndex) return;
+    if (loadError) return;
+
+    var terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (!hasActiveQuery()) {
+      summaryDiv.classList.add('hidden');
+      statusDiv.classList.remove('hidden');
+      statusDiv.className = 'search-status';
+      statusDiv.textContent = '输入关键词，或筛选职业 / 色彩标识';
+      resultsDiv.innerHTML = '';
+      lastMatched = [];
+      return;
+    }
+
+    var matched = searchIndex.filter(function(entry) {
+      if (selectedClasses.size && !selectedClasses.has(entry.classname)) return false;
+      if (selectedColors.size) {
+        var marks = (entry.marks || []).map(normHex);
+        var hit = false;
+        selectedColors.forEach(function(c) {
+          if (marks.indexOf(c) !== -1) hit = true;
+        });
+        if (!hit) return false;
+      }
+      if (terms.length && !terms.every(function(t) { return (entry.searchText || '').indexOf(t) !== -1; })) {
+        return false;
+      }
+      return true;
+    });
+
+    matched.sort(function(a, b) {
+      var sa = scoreEntry(a, terms);
+      var sb = scoreEntry(b, terms);
+      if (sa !== sb) return sa - sb;
+      var ca = CLASS_ORDER.indexOf(a.classname);
+      var cb = CLASS_ORDER.indexOf(b.classname);
+      if (ca < 0) ca = 999;
+      if (cb < 0) cb = 999;
+      if (ca !== cb) return ca - cb;
+      return (a.skillName || '').localeCompare(b.skillName || '', 'zh');
+    });
+
+    lastMatched = matched;
+    statusDiv.classList.add('hidden');
+    renderSummary(matched.length);
+    renderResults(matched, terms);
+  }
+
+  function renderSummary(n) {
+    var parts = ['共 <strong>' + n + '</strong> 条命中'];
+    if (selectedClasses.size) parts.push('职业 ' + selectedClasses.size);
+    else parts.push('全部职业');
+    if (selectedColors.size) parts.push('色彩 ' + selectedColors.size);
+    summaryDiv.innerHTML = parts.join(' · ');
+    summaryDiv.classList.remove('hidden');
+  }
+
+  function renderDots(marks) {
+    return (marks || []).map(function(hex) {
+      hex = normHex(hex);
+      var meta = metaByHex[hex] || { light: false };
+      var cls = meta.light ? 'gs-dot light' : 'gs-dot';
+      var shadow = meta.light
+        ? 'text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;'
+        : '';
+      return '<span class="' + cls + '" style="color:' + hex + ';' + shadow + '">●</span>';
+    }).join('');
+  }
+
+  function renderResults(matched, terms) {
+    if (!matched.length) {
       resultsDiv.innerHTML = '<div class="search-status">没有找到匹配的技能</div>';
       return;
     }
-    var terms = input.value.trim().split(/\s+/).filter(Boolean);
-    resultsDiv.innerHTML = items.map(function(it) {
-      var hlName = highlightText(it.skillName, terms);
-      var hlSnippet = highlightText(it.snippet, terms);
-      var hlStyle = highlightText(it.style, terms);
-      return '<a class="search-result-item" href="' + it.classname + '.html#' + it.skillId + '">' +
-        '<div class="result-class">' + it.classname + '</div>' +
-        '<div class="result-name">' + hlName + '</div>' +
-        '<div class="result-meta"><span>' + hlStyle + '</span><span>' + it.tier + '</span></div>' +
-        '<div class="result-snippet">' + hlSnippet + '</div>' +
-      '</a>';
-    }).join('');
+
+    var limited = matched.slice(0, visibleLimit);
+    var groups = [];
+    var map = {};
+    limited.forEach(function(it) {
+      if (!map[it.classname]) {
+        map[it.classname] = { name: it.classname, items: [] };
+        groups.push(map[it.classname]);
+      }
+      map[it.classname].items.push(it);
+    });
+
+    // Full counts per class among all matches
+    var fullCounts = {};
+    matched.forEach(function(it) {
+      fullCounts[it.classname] = (fullCounts[it.classname] || 0) + 1;
+    });
+
+    var html = '';
+    groups.forEach(function(g, gi) {
+      var collapsed = Object.prototype.hasOwnProperty.call(collapsedGroups, g.name)
+        ? collapsedGroups[g.name]
+        : gi >= 3;
+      var count = fullCounts[g.name] || g.items.length;
+      html += '<div class="gs-group" data-group="' + escapeHtml(g.name) + '">';
+      html += '<button type="button" class="gs-group-head" data-toggle-group="' + escapeHtml(g.name) + '">';
+      html += '<span>' + escapeHtml(g.name) + '</span>';
+      html += '<span class="gs-count">' + count + (collapsed ? ' ▸' : ' ▾') + '</span></button>';
+      html += '<div class="gs-group-body' + (collapsed ? ' collapsed' : '') + '">';
+      g.items.forEach(function(it, idx) {
+        var href = encodeURI(it.page || (it.classname + '.html')) + '#' + encodeURIComponent(it.skillId);
+        var meta = [it.style, it.tier].filter(Boolean).join(' · ');
+        var rowId = 'gs-' + gi + '-' + idx;
+        html += '<div class="gs-row" data-row="' + rowId + '">';
+        html += '<a class="gs-row-main" href="' + href + '">';
+        html += '<span class="gs-row-name">' + highlightText(it.skillName, terms) + '</span>';
+        html += '<span class="gs-row-marks">' + renderDots(it.marks) + '</span>';
+        if (meta) html += '<span class="gs-row-meta">' + highlightText(meta, terms) + '</span>';
+        html += '</a>';
+        html += '<button type="button" class="gs-row-toggle" data-expand="' + rowId + '" title="展开摘要">▾</button>';
+        html += '</div>';
+        html += '<div class="gs-row-snippet" data-snippet-for="' + rowId + '">' + highlightText(it.snippet || '', terms) + '</div>';
+      });
+      html += '</div></div>';
+    });
+
+    if (matched.length > visibleLimit) {
+      html += '<button type="button" class="gs-more" id="gsShowMore">再显示 ' +
+        Math.min(PAGE_STEP, matched.length - visibleLimit) + ' 条（已显示 ' +
+        limited.length + ' / ' + matched.length + '）</button>';
+    }
+
+    resultsDiv.innerHTML = html;
+  }
+
+  function scheduleQuery() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() {
+      loadIndex().then(function() { runQuery(); }).catch(function() {});
+    }, 200);
   }
 
   function openOverlay() {
     overlay.classList.remove('hidden');
     var panel = overlay.querySelector('.search-panel');
     if (panel) {
-        panel.style.animation = 'none';
-        panel.offsetHeight;
-        panel.style.animation = '';
+      panel.style.animation = 'none';
+      panel.offsetHeight;
+      panel.style.animation = '';
     }
     input.focus();
-    loadAllData();
+    loadIndex().then(function() {
+      if (hasActiveQuery()) runQuery();
+      else {
+        statusDiv.classList.remove('hidden');
+        statusDiv.className = 'search-status';
+        statusDiv.textContent = '输入关键词，或筛选职业 / 色彩标识';
+      }
+    }).catch(function() {});
   }
 
   function closeOverlay() {
     overlay.classList.add('hidden');
-    input.value = '';
-    resultsDiv.innerHTML = '';
   }
 
   floatBtn.addEventListener('click', openOverlay);
   closeBtn.addEventListener('click', closeOverlay);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeOverlay(); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeOverlay(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeOverlay();
+  });
 
   input.addEventListener('input', function() {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(search, 250);
+    visibleLimit = PAGE_SIZE;
+    collapsedGroups = {};
+    scheduleQuery();
+  });
+
+  document.getElementById('clearClassFilter').addEventListener('click', function() {
+    selectedClasses.clear();
+    classWrap.querySelectorAll('.search-chip').forEach(function(b) { b.classList.remove('active'); });
+    visibleLimit = PAGE_SIZE;
+    collapsedGroups = {};
+    scheduleQuery();
+  });
+  document.getElementById('clearColorFilter').addEventListener('click', function() {
+    selectedColors.clear();
+    colorWrap.querySelectorAll('.search-color-btn').forEach(function(b) { b.classList.remove('active'); });
+    visibleLimit = PAGE_SIZE;
+    collapsedGroups = {};
+    scheduleQuery();
+  });
+
+  resultsDiv.addEventListener('click', function(e) {
+    var more = e.target.closest('#gsShowMore');
+    if (more) {
+      visibleLimit += PAGE_STEP;
+      runQuery();
+      return;
+    }
+    var head = e.target.closest('[data-toggle-group]');
+    if (head) {
+      var name = head.getAttribute('data-toggle-group');
+      var group = resultsDiv.querySelector('.gs-group[data-group="' + name + '"]');
+      if (!group) return;
+      var body = group.querySelector('.gs-group-body');
+      var nowCollapsed = !body.classList.contains('collapsed');
+      body.classList.toggle('collapsed', nowCollapsed);
+      collapsedGroups[name] = nowCollapsed;
+      var countEl = head.querySelector('.gs-count');
+      if (countEl) {
+        var n = (lastMatched.filter(function(x) { return x.classname === name; }).length);
+        countEl.textContent = n + (nowCollapsed ? ' ▸' : ' ▾');
+      }
+      return;
+    }
+    var exp = e.target.closest('[data-expand]');
+    if (exp) {
+      var rowId = exp.getAttribute('data-expand');
+      var row = resultsDiv.querySelector('.gs-row[data-row="' + rowId + '"]');
+      if (!row) return;
+      row.classList.toggle('expanded');
+      exp.textContent = row.classList.contains('expanded') ? '▴' : '▾';
+    }
   });
 })();
 </script>

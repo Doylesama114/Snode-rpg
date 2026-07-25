@@ -58,6 +58,49 @@ function _highlightInElement(root, term) {
     parent.replaceChild(fragment, node);
   }
 }
+
+/** Scroll to skill from URL hash (global search / deep links). */
+function focusSkillFromHash() {
+  var raw = (location.hash || "").replace(/^#/, "");
+  if (!raw) return;
+  var id;
+  try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
+  var el = document.getElementById(id);
+  if (!el) return;
+
+  var node = el.parentElement;
+  while (node) {
+    if (node.tagName === "DETAILS") node.open = true;
+    node = node.parentElement;
+  }
+
+  function scrollOnce() {
+    var header = document.querySelector("header");
+    var offset = header ? header.getBoundingClientRect().height + 12 : 12;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    el.classList.add("skill-hash-focus");
+    setTimeout(function() { el.classList.remove("skill-hash-focus"); }, 2600);
+  }
+
+  requestAnimationFrame(function() {
+    scrollOnce();
+    setTimeout(scrollOnce, 120);
+  });
+}
+
+(function() {
+  function bindHashFocus() {
+    focusSkillFromHash();
+    window.addEventListener("hashchange", focusSkillFromHash);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindHashFocus);
+  } else {
+    bindHashFocus();
+  }
+})();
+
 // Dark mode init + toggle injection
 (function(){
   var h=document.documentElement;
@@ -66,7 +109,6 @@ function _highlightInElement(root, term) {
   else if(s==='light')h.classList.remove('dark');
   else if(window.matchMedia('(prefers-color-scheme:dark)').matches)h.classList.add('dark');
 
-  // Inject toggle button (wait for DOM)
   function injectToggle(){
     if(document.getElementById('themeToggle'))return;
     var bt=document.createElement('button');
