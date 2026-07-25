@@ -175,6 +175,7 @@ function loadState(charName, slotIndex) {
     CURRENT_SLOT = slotIndex;
     state._dirty = false;
     ensureSpState();
+    ensureClaimedLevels();
     if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(new CustomEvent('snowd-panel-character-change', {
         detail: { charName: charName, slot: slotIndex },
@@ -491,20 +492,25 @@ function autoCalcStyles(){
     for(var i=0;i<4;i++)state.classes[ci].styles[i]=st[i]||'';}}}
 
 
+function ensureClaimedLevels(){
+  if(!state.claimed_levels)state.claimed_levels={};
+  if(!state.classes)return;
+  for(var ci=0;ci<state.classes.length;ci++){
+    var cl=state.classes[ci];
+    if(!cl||!(cl.level>0))continue;
+    if(!state.claimed_levels[ci]){
+      state.claimed_levels[ci]=[];
+      for(var lv=1;lv<=cl.level;lv++)state.claimed_levels[ci].push(lv);
+    }
+  }
+}
+
 function autoCalcTalentTree(){
+  // claimed_levels must init even when talent_tree early-returns (mage 预知梦 etc.)
+  ensureClaimedLevels();
   // Preserve talents from upload: skip if talent_tree already has items with tiers
   var _tl=state.talent_tree||[];if(_tl.length>0&&_tl[0].tier)return;
   state.talent_tree=_tl;
-  if(!state.claimed_levels){
-    state.claimed_levels={};
-    for(var ci=0;ci<state.classes.length;ci++){
-      var cl=state.classes[ci];
-      if(cl.level>0){
-        state.claimed_levels[ci]=[];
-        for(var lv=1;lv<=cl.level;lv++)state.claimed_levels[ci].push(lv);
-      }
-    }
-  }
 }
 
 
@@ -5576,6 +5582,7 @@ function finalizeLevelUp(clsIdx,level){
   if(usedXP>0)state.xp-=usedXP;
   if(state.xp<0)state.xp=0;
   cl.level=level;
+  ensureClaimedLevels();
   if(!state.claimed_levels[clsIdx])state.claimed_levels[clsIdx]=[];
   if(state.claimed_levels[clsIdx].indexOf(level)<0)
     state.claimed_levels[clsIdx].push(level);
@@ -5590,7 +5597,9 @@ function finalizeLevelUp(clsIdx,level){
         state.unlocked_tiers.push(tierName);
       }
     }
-  }  applyChoiceLLevel12Boosts();applyChoiceBLevel10Boosts();autoCalcStyles();autoCalcTalentTree();render();renderLearnPanel();
+  }
+  window._pendingLevelUp = null;
+  applyChoiceLLevel12Boosts();applyChoiceBLevel10Boosts();autoCalcStyles();autoCalcTalentTree();render();renderLearnPanel();
 }
 
 function showProfChoice(clsIdx,level){

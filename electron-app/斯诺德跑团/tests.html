@@ -460,6 +460,64 @@ assertFalse(checkSubclassReq("法师", "蛮斗士", { "力量": 16, "体质": 16
 
 results.push('</div>');
 
+// =================== T13: finalizeLevelUp + claimed_levels (法师预知梦) ===================
+results.push('<div class="section"><h3>T13: finalizeLevelUp claimed_levels 兜底（法师/战士）</h3>');
+
+assertTrue(typeof ensureClaimedLevels === "function", "ensureClaimedLevels 已定义");
+
+// Early-return talent_tree must still init claimed_levels
+delete state.claimed_levels;
+state.classes = [
+  { name: "法师", level: 1, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] }
+];
+state.talent_tree = [{ n: "预知梦", tier: "一阶", src: "法师" }];
+autoCalcTalentTree();
+assertTrue(!!state.claimed_levels, "带 tier 的 talent_tree 仍初始化 claimed_levels");
+assert(state.claimed_levels[0], [1], "法师 L1 回填 claimed_levels[0]=[1]");
+
+// Bug repro: mage + 预知梦 + no claimed_levels → finalize must not throw
+delete state.claimed_levels;
+state.classes = [
+  { name: "法师", level: 1, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] }
+];
+state.talent_tree = [{ n: "预知梦", tier: "一阶", src: "法师" }];
+state.skills = [];
+state.special_feats = [];
+state.xp = 100;
+state.unlocked_tiers = ["一阶", "二阶"];
+window._pendingLevelUp = { clsIdx: 0, level: 2, _done: { _prof: true } };
+var mageLuThrew = false;
+try { finalizeLevelUp(0, 2); } catch (e) { mageLuThrew = true; results.push('<span class="fail">mage finalize error: ' + e.message + '</span>'); }
+assertFalse(mageLuThrew, "法师+预知梦 finalizeLevelUp 不抛错");
+assert(state.classes[0].level, 2, "法师升级后等级=2");
+assertTrue(state.claimed_levels && state.claimed_levels[0] && state.claimed_levels[0].indexOf(2) >= 0, "claimed_levels 含等级 2");
+assert(state.xp, 50, "L2 扣 50 XP 后剩余 50");
+assertTrue(window._pendingLevelUp === null, "finalize 后 _pendingLevelUp 已清空");
+
+// Control: warrior with empty talent_tree
+delete state.claimed_levels;
+state.classes = [
+  { name: "战士", level: 1, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] }
+];
+state.talent_tree = [];
+state.skills = [];
+state.special_feats = [];
+state.xp = 50;
+window._pendingLevelUp = { clsIdx: 0, level: 2, _done: {} };
+var warLuThrew = false;
+try { finalizeLevelUp(0, 2); } catch (e) { warLuThrew = true; results.push('<span class="fail">warrior finalize error: ' + e.message + '</span>'); }
+assertFalse(warLuThrew, "战士 finalizeLevelUp 不抛错");
+assert(state.classes[0].level, 2, "战士升级后等级=2");
+assertTrue(state.claimed_levels && state.claimed_levels[0] && state.claimed_levels[0].indexOf(2) >= 0, "战士 claimed_levels 含 2");
+
+results.push('</div>');
+
 // =================== T10: xlsx 天赋导出行位 ===================
 results.push('<div class="section"><h3>T10: fillXlsxTalents 按阶位填行</h3>');
 var xlsxWrites = {};

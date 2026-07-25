@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7106',
+    date: '2026-07-25',
+    changes: [
+      '修复法师主职升级：带预知梦等tier天赋时claimed_levels未初始化导致等级不刷新',
+      '新增ensureClaimedLevels兜底+T13回归测试'
+    ]
+  },
+
+
+  {
     version: '1.0.7105',
     date: '2026-07-20',
     changes: [
