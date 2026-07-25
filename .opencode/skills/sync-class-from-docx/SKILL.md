@@ -28,6 +28,10 @@ Complete workflow for syncing class skill data from docx to HTML + structured JS
 - User says "做 {职业} {风格} {阶位} 技能" or similar
 - User asks to "对照 docx 修正" any class page
 - User wants to add new skills to skill_effects JSON
+- User asks to **发现/入库 docx 新增技能**（如新阶位）：优先 `extract_class_docx` → `diff_class_extract` → `apply_class_extract`（见仓库 `职业页同步手册.md` §四点五；`sync_class` 不会新增技能）
+
+## After content lands (before release)
+Follow `后续更新教程.md` §1.5：verify scripts + browser checklist → `bump-version.js` → tag. Never apply image fixtures to production 法师 data.
 
 ## Workflow Overview
 

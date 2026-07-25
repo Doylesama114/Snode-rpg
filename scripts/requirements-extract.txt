@@ -1,0 +1,9 @@
+# Optional deps for scripts/extract_skill_images.py (isolated from app runtime)
+#
+# Minimal (color-dot sampling + golden with --lines-json sidecar):
+pillow>=10.0.0
+#
+# OCR engines (install one; otherwise pass --lines-json / *.ocr.json):
+#   pytesseract>=0.3.10   # also needs system Tesseract + chi_sim language data
+#   paddleocr>=2.7.0
+# opencv-python-headless>=4.8.0  # optional; current detector uses Pillow flood-fill

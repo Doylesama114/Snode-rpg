@@ -1,0 +1,190 @@
+{
+  "class": "吟游诗人",
+  "tier": "五阶",
+  "added": 30,
+  "ids": [
+    "b-skill-120",
+    "b-skill-121",
+    "b-skill-122",
+    "b-skill-123",
+    "b-skill-124",
+    "b-skill-125",
+    "b-skill-126",
+    "b-skill-127",
+    "b-skill-128",
+    "b-skill-129",
+    "b-skill-130",
+    "b-skill-131",
+    "b-skill-132",
+    "b-skill-133",
+    "b-skill-134",
+    "b-skill-135",
+    "b-skill-136",
+    "b-skill-137",
+    "b-skill-138",
+    "b-skill-139",
+    "b-skill-140",
+    "b-skill-141",
+    "b-skill-142",
+    "b-skill-143",
+    "b-skill-144",
+    "b-skill-145",
+    "b-skill-146",
+    "b-skill-147",
+    "b-skill-148",
+    "b-skill-149"
+  ],
+  "names": [
+    {
+      "id": "b-skill-120",
+      "style": "激昂",
+      "name": "冲锋号角"
+    },
+    {
+      "id": "b-skill-121",
+      "style": "激昂",
+      "name": "凯旋进行曲"
+    },
+    {
+      "id": "b-skill-122",
+      "style": "激昂",
+      "name": "弗拉门戈狂击"
+    },
+    {
+      "id": "b-skill-123",
+      "style": "激昂",
+      "name": "狂想乐章"
+    },
+    {
+      "id": "b-skill-124",
+      "style": "激昂",
+      "name": "踩点"
+    },
+    {
+      "id": "b-skill-125",
+      "style": "激昂",
+      "name": "通晓传奇"
+    },
+    {
+      "id": "b-skill-126",
+      "style": "舒缓",
+      "name": "修道士祷歌"
+    },
+    {
+      "id": "b-skill-127",
+      "style": "舒缓",
+      "name": "召唤宴席"
+    },
+    {
+      "id": "b-skill-128",
+      "style": "舒缓",
+      "name": "托梦术"
+    },
+    {
+      "id": "b-skill-129",
+      "style": "舒缓",
+      "name": "暮色竖琴曲"
+    },
+    {
+      "id": "b-skill-130",
+      "style": "舒缓",
+      "name": "枕边细语"
+    },
+    {
+      "id": "b-skill-131",
+      "style": "舒缓",
+      "name": "静滞力场"
+    },
+    {
+      "id": "b-skill-132",
+      "style": "灵动",
+      "name": "凯利舞步"
+    },
+    {
+      "id": "b-skill-133",
+      "style": "灵动",
+      "name": "召唤精类生物"
+    },
+    {
+      "id": "b-skill-134",
+      "style": "灵动",
+      "name": "流光箭袋"
+    },
+    {
+      "id": "b-skill-135",
+      "style": "灵动",
+      "name": "音符折跃"
+    },
+    {
+      "id": "b-skill-136",
+      "style": "灵动",
+      "name": "预置幻影"
+    },
+    {
+      "id": "b-skill-137",
+      "style": "灵动",
+      "name": "风笛手之息"
+    },
+    {
+      "id": "b-skill-138",
+      "style": "诙谐",
+      "name": "一场闹剧"
+    },
+    {
+      "id": "b-skill-139",
+      "style": "诙谐",
+      "name": "信以为真"
+    },
+    {
+      "id": "b-skill-140",
+      "style": "诙谐",
+      "name": "即兴圆舞曲"
+    },
+    {
+      "id": "b-skill-141",
+      "style": "诙谐",
+      "name": "彩带舞"
+    },
+    {
+      "id": "b-skill-142",
+      "style": "诙谐",
+      "name": "猎艳风暴"
+    },
+    {
+      "id": "b-skill-143",
+      "style": "诙谐",
+      "name": "飞驰随想曲"
+    },
+    {
+      "id": "b-skill-144",
+      "style": "集中",
+      "name": "和声坚守"
+    },
+    {
+      "id": "b-skill-145",
+      "style": "集中",
+      "name": "坚毅术"
+    },
+    {
+      "id": "b-skill-146",
+      "style": "集中",
+      "name": "孤高者"
+    },
+    {
+      "id": "b-skill-147",
+      "style": "集中",
+      "name": "支配人形"
+    },
+    {
+      "id": "b-skill-148",
+      "style": "集中",
+      "name": "独奏者之壁"
+    },
+    {
+      "id": "b-skill-149",
+      "style": "集中",
+      "name": "铜管重音"
+    }
+  ],
+  "fx_entries": 152
+}

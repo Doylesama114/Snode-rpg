@@ -90,12 +90,21 @@ RPG 职业技能索引系统。31 个独立 HTML 文件（14 基础职业 + 14 �
 - ❌ 不要用文档级事件委托 — 用直接绑定 `.addEventListener`
 - ❌ 不要混用 `kw-chip` / `data-kw` 格式 — 统一 `class="chip"`
 
-## DATA PIPELINE (添加新职业)
+## DATA PIPELINE (添加新职业 / 发现新技能)
 ```
-docx → ZIP解压 word/document.xml → 提取 <w:t> 文本 → 按 ----- 分段
-→ 识别风格/阶位/技能段落 → 生成 HTML 卡片 → 放入 职业页/
-→ 同步到 electron-app\职业页\ → 更新 首页.html 卡片 → 打包
+# 已知技能字段刷新：
+docx → apply_*_sync.py (class_sync_core.sync_class) → HTML/JSON/FX → electron-app
+
+# 发现 docx 多出的技能（新阶位等）：
+docx → extract_class_docx.py → scripts/extracts/{职业}.json
+    → diff_class_extract.py → apply_class_extract.py（硬门禁）
+    → build_class_search_index.js → electron-app/职业页/
+
+# 发版前：verify_*_sync.py + verify_all.mjs + 手测（见 后续更新教程.md §1.5）
 ```
+
+首页全局搜索依赖 `职业页/search-index.json`；改任意技能 HTML 后必须重跑：
+`node scripts/build_class_search_index.js` 并同步到 `electron-app/职业页/`。
 
 ## GIT
 ```

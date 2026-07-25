@@ -1,0 +1,361 @@
+{
+  "class_name": "吟游诗人",
+  "tier_filter": "五阶",
+  "extract_count": 30,
+  "site_count": 30,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 29,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "一场闹剧",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-138",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "信以为真",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-139",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "修道士祷歌",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-126",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "凯利舞步",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-132",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "凯旋进行曲",
+      "style": "激昂",
+      "tier": "五阶",
+      "id": "b-skill-121",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "即兴圆舞曲",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-140",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤宴席",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-127",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤精类生物",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-133",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "和声坚守",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-144",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "坚毅术",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-145",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "孤高者",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-146",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "弗拉门戈狂击",
+      "style": "激昂",
+      "tier": "五阶",
+      "id": "b-skill-122",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "彩带舞",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-141",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "托梦术",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-128",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "支配人形",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-147",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "暮色竖琴曲",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-129",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "枕边细语",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-130",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "流光箭袋",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-134",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "狂想乐章",
+      "style": "激昂",
+      "tier": "五阶",
+      "id": "b-skill-123",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "独奏者之壁",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-148",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "猎艳风暴",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-142",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "踩点",
+      "style": "激昂",
+      "tier": "五阶",
+      "id": "b-skill-124",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "通晓传奇",
+      "style": "激昂",
+      "tier": "五阶",
+      "id": "b-skill-125",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "铜管重音",
+      "style": "集中",
+      "tier": "五阶",
+      "id": "b-skill-149",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "静滞力场",
+      "style": "舒缓",
+      "tier": "五阶",
+      "id": "b-skill-131",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "音符折跃",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-135",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "预置幻影",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-136",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "风笛手之息",
+      "style": "灵动",
+      "tier": "五阶",
+      "id": "b-skill-137",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "飞驰随想曲",
+      "style": "诙谐",
+      "tier": "五阶",
+      "id": "b-skill-143",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

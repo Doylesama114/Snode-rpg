@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7109',
+    date: '2026-07-25',
+    changes: [
+      '吟游诗人五阶入库(b-skill-120~149)',
+      '通用extract/diff/apply管线',
+      'search-index含五阶',
+      '发版前验证流程写入文档'
+    ]
+  },
+
+
+  {
     version: '1.0.7108',
     date: '2026-07-25',
     changes: [

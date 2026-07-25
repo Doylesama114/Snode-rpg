@@ -30,7 +30,7 @@ COLOR_TABLE = {
     "00B050": "#00B050", "00FA99": "#00FA99", "00B0F0": "#00B0F0", "B3F9FF": "#B3F9FF",
     "00A0FF": "#B3F9FF", "B94BFF": "#B94BFF", "FFB7E3": "#FFB7E3", "FF66CC": "#FFB7E3",
     "843F0B": "#843F0B", "FFFFFF": "#FFFFFF", "595959": "#595959", "D9D9D9": "#D9D9D9",
-    "851321": "#851321",
+    "851321": "#851321", "808080": "#595959",
 }
 LIGHT_COLORS = {"#FFFFFF", "#B3F9FF", "#FFF32F", "#FFB7E3", "#D9D9D9", "#00FA99"}
 LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
