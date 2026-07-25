@@ -7,7 +7,7 @@
       "name": "猛击",
       "type": "starting",
       "style": "斗争",
-      "tier": 1,
+      "tier": "一阶",
       "tags": [
         "近战攻击"
       ],
@@ -55,7 +55,7 @@
       "name": "冲锋",
       "type": "starting",
       "style": "狂攻",
-      "tier": 1,
+      "tier": "一阶",
       "tags": [
         "近战攻击",
         "位移"
@@ -94,7 +94,7 @@
       "name": "盾牌格挡",
       "type": "starting",
       "style": "防护",
-      "tier": 1,
+      "tier": "一阶",
       "tags": [
         "防御",
         "短休/长休"
@@ -137,7 +137,7 @@
       "name": "瞄准射击",
       "type": "starting",
       "style": "射击",
-      "tier": 1,
+      "tier": "一阶",
       "tags": [
         "远程攻击",
         "实体飞行道具"

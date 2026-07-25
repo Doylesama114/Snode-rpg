@@ -65,7 +65,13 @@ def tier_to_panel(tier) -> str | int | None:
         if 1 <= tier <= 9:
             return f"{cn[tier - 1]}阶"
         return tier
-    return tier
+    t = str(tier).strip()
+    # Strip trailing 天赋树… so class learn UI keys match TIER_UNLOCK_COST
+    if "天赋树" in t:
+        t = t.split("天赋树", 1)[0].strip()
+    if t in ("起始", "起始特性"):
+        return "一阶"
+    return t
 
 
 def universal_tier_to_panel(tier) -> str | None:
@@ -141,6 +147,9 @@ def json_skill_to_panel(
     out["id"] = skill["id"]
     if out.get("style"):
         out["style"] = canonical_skill_style(out["style"])
+    # type must not be a style label (dirty exports used type=塑能 etc.)
+    if out.get("type") and out.get("style") and out["type"] == out["style"]:
+        del out["type"]
     if "tags" not in out and skill.get("fields", {}).get("关键词"):
         out["tags"] = [t for t in skill["fields"]["关键词"].split(".") if t]
     tier = tier_override if tier_override is not None else skill.get("tier")

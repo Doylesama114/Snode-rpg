@@ -75,7 +75,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "pr-skill-2",
@@ -150,7 +151,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "pr-skill-3",
@@ -219,7 +221,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "pr-skill-4",
@@ -327,7 +330,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "pr-skill-5",

@@ -39,7 +39,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "mo-skill-2",
@@ -74,7 +75,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "mo-skill-3",
@@ -98,7 +100,8 @@
       ],
       "flavor": "",
       "level_upgrades": [],
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "mo-skill-4",
@@ -180,7 +183,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "type": "starting"
     },
     {
       "id": "mo-skill-5",

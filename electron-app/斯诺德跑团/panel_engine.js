@@ -5,11 +5,40 @@ function canonicalSkillStyle(style) {
   return s;
 }
 
+function normalizeTierName(t) {
+  if (t === 0 || t === "0") return "通用";
+  if (t === null || t === undefined || t === "") return "通用";
+  if (typeof t === "number" && t >= 1 && t <= 9) {
+    return "一二三四五六七八九".charAt(t - 1) + "阶";
+  }
+  t = String(t).replace(/天赋树.*$/, "").trim();
+  if (/^[1-9]$/.test(t)) {
+    return "一二三四五六七八九".charAt(parseInt(t, 10) - 1) + "阶";
+  }
+  if (t === "起始" || t === "起始特性") return "一阶";
+  return t;
+}
+
+function isLearnPanelStartingSkill(clsName, skill) {
+  if (!skill) return false;
+  if (skill.type === "starting" || skill.type === "upgrade" || skill.type === "granted") return true;
+  var st = canonicalSkillStyle(skill.style || "");
+  if (st === "起始特性" || skill.style === "起始特性") return true;
+  if (typeof REF_CLASSES !== "undefined" && REF_CLASSES[clsName] && REF_CLASSES[clsName].starting_features) {
+    var feats = REF_CLASSES[clsName].starting_features;
+    for (var i = 0; i < feats.length; i++) {
+      if (feats[i] && feats[i].name === skill.name) return true;
+    }
+  }
+  return false;
+}
+
 for(var _cn2 in SKILL_DATA){
   var _skills2=SKILL_DATA[_cn2];if(!_skills2||!_skills2.length)continue;
   for(var _si2=0;_si2<_skills2.length;_si2++){
     var _s2=_skills2[_si2];
     if(_s2.style) _s2.style=canonicalSkillStyle(_s2.style);
+    if(_s2.tier) _s2.tier=normalizeTierName(_s2.tier);
     if(_s2.fields&&_s2.fields.关键词&&(!_s2.tags||!_s2.tags.length)){
       _s2.tags=_s2.fields.关键词.split(".").filter(function(t){return t;});
     }
@@ -3120,24 +3149,39 @@ function resolveWeight(name) {
 
 // === HOISTED: tier unlock helpers ===
 
-
 function isTierUnlocked(tierName) {
+  tierName = normalizeTierName(tierName);
   if (!tierName || tierName === "\u901a\u7528") return true;
+  // 一阶/二阶始终免费（默认已开）；防止后缀未归一时误锁
+  if (tierName === "\u4e00\u9636" || tierName === "\u4e8c\u9636") {
+    var unlockedFree = state.unlocked_tiers || ["\u4e00\u9636","\u4e8c\u9636"];
+    if (unlockedFree.indexOf("\u4e00\u9636") < 0 || unlockedFree.indexOf("\u4e8c\u9636") < 0) {
+      if (!state.unlocked_tiers) state.unlocked_tiers = ["\u4e00\u9636","\u4e8c\u9636"];
+      if (state.unlocked_tiers.indexOf("\u4e00\u9636") < 0) state.unlocked_tiers.push("\u4e00\u9636");
+      if (state.unlocked_tiers.indexOf("\u4e8c\u9636") < 0) state.unlocked_tiers.push("\u4e8c\u9636");
+    }
+  }
   var unlocked = state.unlocked_tiers || ["\u4e00\u9636","\u4e8c\u9636"];
   for (var ui = 0; ui < unlocked.length; ui++) {
-    if (unlocked[ui] === tierName) return true;
+    if (normalizeTierName(unlocked[ui]) === tierName) return true;
   }
   return false;
 }
 function getTierUnlockCost(tierName) {
-  if (!TIER_UNLOCK_COST) return 99999;
+  tierName = normalizeTierName(tierName);
+  if (!TIER_UNLOCK_COST) return null;
   var info = TIER_UNLOCK_COST[tierName];
-  return info ? info.cost : 99999;
+  return info ? info.cost : null;
 }
 function getTierMinLevel(tierName) {
-  if (!TIER_UNLOCK_COST) return 99;
+  tierName = normalizeTierName(tierName);
+  if (!TIER_UNLOCK_COST) return null;
   var info = TIER_UNLOCK_COST[tierName];
-  return info ? info.minLevel : 99;
+  return info ? info.minLevel : null;
+}
+function hasTierUnlockCost(tierName) {
+  tierName = normalizeTierName(tierName);
+  return !!(TIER_UNLOCK_COST && TIER_UNLOCK_COST[tierName]);
 }
 function resolveWeaponProfs(className){return CLASS_WEAPON_PROFS[className]||[];}
 function render(){ applyChoiceLLevel12Boosts();
@@ -4463,7 +4507,7 @@ function renderLearnResults() {
     var groups = {};
     for (var si = 0; si < clsData.length; si++) {
       var skill = clsData[si];
-      if (skill.type === "starting" || skill.type === "upgrade" || skill.type === "granted") continue;
+      if (isLearnPanelStartingSkill(clsName, skill)) continue;
       var learned = false; var crossLocked = false;
       if (skill.tags && skill.tags.indexOf("\u5929\u8d4b") >= 0) {
         var tt = state.talent_tree || [];
@@ -4475,7 +4519,7 @@ function renderLearnResults() {
       var styleName = canonicalSkillStyle(skill.style || "\u901a\u7528");
       if (searchQ && skill.name.toLowerCase().indexOf(searchQ) < 0 && styleName.toLowerCase().indexOf(searchQ) < 0 && (skill.tags || []).join(" ").toLowerCase().indexOf(searchQ) < 0 && (skill.tier || "").toLowerCase().indexOf(searchQ) < 0) continue;
       if (!groups[styleName]) groups[styleName] = {};
-      var tierName = skill.tier || "\u901a\u7528";
+      var tierName = normalizeTierName(skill.tier || "\u901a\u7528");
       if (!groups[styleName][tierName]) groups[styleName][tierName] = [];
       groups[styleName][tierName].push({skill: skill, learned: learned, crossLocked: crossLocked});
     }
@@ -4524,15 +4568,19 @@ function renderLearnResults() {
           if (!items || items.length === 0) continue;
 
           var tierUnlocked = isTierUnlocked(tn);
-          var tierLabel = tn ? tn.replace("\u5929\u8d4b\u6811","") : "\u901a\u7528";
+          var tierLabel = tn ? normalizeTierName(tn) : "\u901a\u7528";
 
           // Tier header row
           html += "<div style=\"margin:4px 0;padding:4px 8px;background:#2a2218;border-left:2px solid " + (tierUnlocked ? "#6a9a4a" : "#8a4a3a") + ";border-radius:3px;display:flex;justify-content:space-between;align-items:center\">";
           html += "<span style=\"font-size:12px;color:" + (tierUnlocked ? "#b0d0a0" : "#b08060") + ";font-weight:bold\">[" + tierLabel + "]</span>";
           if (!tierUnlocked) {
-            var cost = getTierUnlockCost(tn);
-            var minLevel = getTierMinLevel(tn);
-            html += "<button onclick=\"unlockTier('" + tn + "')\" style=\"font-size:11px;padding:3px 10px;background:#6a4a2a;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer\">\u82b1\u8d39" + cost + "\u7ecf\u9a8c(\u9700" + minLevel + "\u7ea7)" + "\u89e3\u9501</button>";
+            if (hasTierUnlockCost(tn)) {
+              var cost = getTierUnlockCost(tn);
+              var minLevel = getTierMinLevel(tn);
+              html += "<button onclick=\"unlockTier('" + normalizeTierName(tn) + "')\" style=\"font-size:11px;padding:3px 10px;background:#6a4a2a;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer\">\u82b1\u8d39" + cost + "\u7ecf\u9a8c(\u9700" + minLevel + "\u7ea7)" + "\u89e3\u9501</button>";
+            } else {
+              html += "<span style=\"font-size:11px;color:#8a5a4a\">\u9636\u4f4d\u6570\u636e\u5f02\u5e38</span>";
+            }
           }
           html += "</div>";
 
@@ -4607,7 +4655,7 @@ function renderLearnResults() {
         }
 
         // Check tier unlock
-        var tierName = groupName.replace("\u5929\u8d4b\u6811","");
+        var tierName = normalizeTierName(groupName);
         var tierUnlocked = isTierUnlocked(tierName);
 
         html += "<div style=\"margin:4px 0;border:1px solid #4a3520;border-radius:6px;overflow:hidden;background:#25201a\">";
@@ -4617,10 +4665,14 @@ function renderLearnResults() {
 
         if (!styleCollapsed) {
           if (!tierUnlocked) {
-            var cost = getTierUnlockCost(tierName);
-            var minLevel = getTierMinLevel(tierName);
             html += "<div style=\"padding:10px;text-align:center;background:#2a2218\">";
-            html += "<button onclick=\"unlockTier('" + tierName + "')\" style=\"font-size:13px;padding:5px 16px;background:#6a4a2a;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer\">\u82b1\u8d39" + cost + "\u7ecf\u9a8c(\u9700" + minLevel + "\u7ea7)" + "\u89e3\u9501\u8be5\u9636\u4f4d</button>";
+            if (hasTierUnlockCost(tierName)) {
+              var cost = getTierUnlockCost(tierName);
+              var minLevel = getTierMinLevel(tierName);
+              html += "<button onclick=\"unlockTier('" + tierName + "')\" style=\"font-size:13px;padding:5px 16px;background:#6a4a2a;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer\">\u82b1\u8d39" + cost + "\u7ecf\u9a8c(\u9700" + minLevel + "\u7ea7)" + "\u89e3\u9501\u8be5\u9636\u4f4d</button>";
+            } else {
+              html += "<span style=\"font-size:12px;color:#8a5a4a\">\u9636\u4f4d\u6570\u636e\u5f02\u5e38</span>";
+            }
             html += "</div>";
           } else {
             for (var ii = 0; ii < items.length; ii++) {
@@ -5004,20 +5056,21 @@ function toggleCollapse(key) {
 
 
 function unlockTier(tierName) {
+  tierName = normalizeTierName(tierName);
   var info = TIER_UNLOCK_COST[tierName];
   if (!info) { alert("该阶位不需要解锁"); return; }
   var cost = info.cost;
   var minLevel = info.minLevel || 99;
   var maxLv = getMaxLevel();
-  if (maxLv < minLevel) { alert("当前最高职业等级为" + maxLv + "级，需要主职业达到" + minLevel + "级才能解锁" + tierName.replace("天赋树","") + "阶天赋树"); return; }
+  if (maxLv < minLevel) { alert("当前最高职业等级为" + maxLv + "级，需要主职业达到" + minLevel + "级才能解锁" + tierName + "天赋树"); return; }
   if (cost > state.xp) { alert("经验值不足，需要" + cost + "点经验值（当前拥有" + state.xp + "点）"); return; }
-  if (!confirm("确定要花费" + cost + "点经验值解锁" + tierName.replace("天赋树","") + "阶天赋树吗？当前经验值：" + state.xp + "点")) return;
+  if (!confirm("确定要花费" + cost + "点经验值解锁" + tierName + "天赋树吗？当前经验值：" + state.xp + "点")) return;
   state.xp -= cost;
   if (!state.unlocked_tiers) state.unlocked_tiers = ["一阶","二阶"];
   if (state.unlocked_tiers.indexOf(tierName) < 0) state.unlocked_tiers.push(tierName);
   renderLearnPanel();
   render();
-  alert("解锁成功！已解锁" + tierName.replace("天赋树","") + "阶天赋树");
+  alert("解锁成功！已解锁" + tierName + "天赋树");
 }
 function confirmUnlearn(clsName, skillName, clsIdx) {
 
@@ -5586,12 +5639,19 @@ function finalizeLevelUp(clsIdx,level){
   if(!state.claimed_levels[clsIdx])state.claimed_levels[clsIdx]=[];
   if(state.claimed_levels[clsIdx].indexOf(level)<0)
     state.claimed_levels[clsIdx].push(level);
-    // Only auto-unlock free tiers (excludes 三阶+ which need XP)
+    // Main: 三阶+ need XP spend (TIER_UNLOCK_COST) — do not auto-add
+    // Sub: notes「自动开启…N阶」→ free unlock
   var notes = tbl[level] ? tbl[level].notes || "" : "";
   var tierMatch = notes.match(/(一|二|三|四|五|六|七|八|九)阶/);
   if (tierMatch) {
-    var tierName = tierMatch[0];
-    if (!TIER_UNLOCK_COST[tierName]) {
+    var tierName = normalizeTierName(tierMatch[0]);
+    var shouldAuto = false;
+    if (clsIdx === 1 && /自动开启/.test(notes)) {
+      shouldAuto = true;
+    } else if (clsIdx === 0 && !hasTierUnlockCost(tierName)) {
+      shouldAuto = true; // 一阶/二阶等免费阶
+    }
+    if (shouldAuto) {
       if (!state.unlocked_tiers) state.unlocked_tiers = ["一阶","二阶"];
       if (state.unlocked_tiers.indexOf(tierName) < 0) {
         state.unlocked_tiers.push(tierName);

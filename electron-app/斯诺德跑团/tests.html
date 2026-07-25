@@ -518,6 +518,119 @@ assertTrue(state.claimed_levels && state.claimed_levels[0] && state.claimed_leve
 
 results.push('</div>');
 
+// =================== T14: tier unlock normalize + main/sub rules ===================
+results.push('<div class="section"><h3>T14: normalizeTierName / 阶位解锁（帮助.html）</h3>');
+
+assertTrue(typeof normalizeTierName === "function", "normalizeTierName 已定义");
+assert(normalizeTierName("三阶天赋树"), "三阶", "三阶天赋树 → 三阶");
+assert(normalizeTierName("一阶天赋树"), "一阶", "一阶天赋树 → 一阶");
+assert(normalizeTierName("起始特性"), "一阶", "起始特性 → 一阶");
+assert(normalizeTierName("五阶"), "五阶", "裸五阶保持不变");
+
+assert(getTierUnlockCost("三阶天赋树"), 50, "三阶天赋树 费用 50");
+assert(getTierMinLevel("三阶天赋树"), 3, "三阶天赋树 需 3 级");
+assert(getTierUnlockCost("六阶"), 500, "六阶 费用 500");
+assert(getTierMinLevel("九阶"), 20, "九阶 需 20 级");
+assertTrue(getTierUnlockCost("一阶天赋树") === null, "一阶无付费（null）");
+assertTrue(hasTierUnlockCost("三阶"), "三阶 hasTierUnlockCost");
+assertFalse(hasTierUnlockCost("一阶"), "一阶无 hasTierUnlockCost");
+
+state.unlocked_tiers = ["一阶", "二阶"];
+assertTrue(isTierUnlocked("一阶天赋树"), "一阶天赋树 视为已解锁");
+assertTrue(isTierUnlocked("二阶"), "二阶已解锁");
+assertFalse(isTierUnlocked("三阶天赋树"), "三阶天赋树 默认未解锁");
+assertTrue(isTierUnlocked("起始特性"), "起始特性→一阶 已解锁");
+
+// 德鲁伊荒野数据：重建后应为裸阶名
+if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["德鲁伊"]) {
+  var bark = null;
+  for (var di = 0; di < SKILL_DATA["德鲁伊"].length; di++) {
+    if (SKILL_DATA["德鲁伊"][di].name === "树皮术") { bark = SKILL_DATA["德鲁伊"][di]; break; }
+  }
+  assertTrue(!!bark, "SKILL_DATA 含树皮术");
+  if (bark) {
+    assert(bark.tier, "一阶", "树皮术 tier 为裸一阶");
+    assertTrue(bark.style === "荒野" || bark.style.indexOf("荒野") === 0, "树皮术 style 荒野");
+  }
+}
+
+// 主职业升到 3：不自动开三阶
+state.unlocked_tiers = ["一阶", "二阶"];
+state.classes = [
+  { name: "德鲁伊", level: 2, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] }
+];
+state.xp = 200;
+state.skills = [];
+state.special_feats = [];
+state.talent_tree = [];
+window._pendingLevelUp = { clsIdx: 0, level: 3, _done: {} };
+finalizeLevelUp(0, 3);
+assert(state.classes[0].level, 3, "主职升到 3");
+assertFalse(isTierUnlocked("三阶"), "主职 L3 不自动开三阶");
+
+// 子职业升到 3：自动开三阶
+state.unlocked_tiers = ["一阶", "二阶"];
+state.classes = [
+  { name: "德鲁伊", level: 8, styles: ["", "", "", ""] },
+  { name: "战士", level: 2, styles: ["", "", "", ""] },
+  { name: "", level: 0, styles: ["", "", "", ""] }
+];
+state.xp = 500;
+window._pendingLevelUp = { clsIdx: 1, level: 3, _done: {} };
+finalizeLevelUp(1, 3);
+assert(state.classes[1].level, 3, "子职升到 3");
+assertTrue(isTierUnlocked("三阶"), "子职 L3 自动开三阶");
+
+results.push('</div>');
+
+// =================== T15: 数字阶 + 起始技能退出学习面板 ===================
+results.push('<div class="section"><h3>T15: 数字阶映射与起始技能过滤</h3>');
+assert(normalizeTierName(6), "六阶", "normalizeTierName(6) → 六阶");
+assert(normalizeTierName("1"), "一阶", "normalizeTierName('1') → 一阶");
+assert(normalizeTierName(9), "九阶", "normalizeTierName(9) → 九阶");
+assertTrue(typeof isLearnPanelStartingSkill === "function", "isLearnPanelStartingSkill 已定义");
+
+if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["法师"]) {
+  var blizzard = null;
+  for (var mi = 0; mi < SKILL_DATA["法师"].length; mi++) {
+    if (SKILL_DATA["法师"][mi].name === "暴风雪") { blizzard = SKILL_DATA["法师"][mi]; break; }
+  }
+  assertTrue(!!blizzard, "SKILL_DATA 含暴风雪");
+  if (blizzard) {
+    assert(blizzard.tier, "六阶", "暴风雪 tier 为六阶");
+    assertTrue(blizzard.type !== "塑能", "暴风雪 type 不是塑能");
+  }
+}
+
+var startChecks = [
+  ["奇械师", "精准射击"],
+  ["武僧", "猛虎掌"],
+  ["牧师", "惩击"],
+  ["萨满祭司", "闪电箭"],
+  ["战士", "猛击"],
+  ["魔契师", "巫术箭"]
+];
+for (var sci = 0; sci < startChecks.length; sci++) {
+  var scn = startChecks[sci][0], sn = startChecks[sci][1];
+  if (!SKILL_DATA[scn]) continue;
+  var sk = null;
+  for (var sj = 0; sj < SKILL_DATA[scn].length; sj++) {
+    if (SKILL_DATA[scn][sj].name === sn) { sk = SKILL_DATA[scn][sj]; break; }
+  }
+  assertTrue(!!sk, scn + " 含 " + sn);
+  if (sk) {
+    assertTrue(isLearnPanelStartingSkill(scn, sk), scn + "·" + sn + " 视为起始（不进学习面板）");
+    assertTrue(sk.type === "starting" || sk.style === "起始特性" || isLearnPanelStartingSkill(scn, sk),
+      scn + "·" + sn + " 已标记 starting 或可被过滤");
+  }
+}
+assertTrue(isLearnPanelStartingSkill("法师", { name: "塑能箭", type: "starting" }), "type=starting 直接跳过");
+assertFalse(isLearnPanelStartingSkill("法师", { name: "暴风雪", type: "", style: "塑能", tier: "六阶" }), "暴风雪非起始");
+
+results.push('</div>');
+
 // =================== T10: xlsx 天赋导出行位 ===================
 results.push('<div class="section"><h3>T10: fillXlsxTalents 按阶位填行</h3>');
 var xlsxWrites = {};

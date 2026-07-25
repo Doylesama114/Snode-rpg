@@ -536,14 +536,18 @@ function autoCalcStyles(state){
 }
 
 function autoUnlockTiers(state){
-  var ml=state.classes[0].level||0;
-  var tiers=["一阶","二阶"];
-  if(ml>=3)tiers.push("三阶");
-  if(ml>=6)tiers.push("四阶");
-  if(ml>=9)tiers.push("五阶");
-  if(ml>=12)tiers.push("六阶");
-  if(ml>=15)tiers.push("七阶");
-  state.unlocked_tiers=tiers;
+  // 主职三阶+须另花经验解锁（见帮助.html）；上传只保证免费一/二阶，并保留存档已有阶位
+  var base = ["一阶","二阶"];
+  var prev = state.unlocked_tiers || [];
+  var merged = base.slice();
+  for (var i = 0; i < prev.length; i++) {
+    var t = (typeof normalizeTierName === "function")
+      ? normalizeTierName(prev[i])
+      : String(prev[i] || "").replace(/天赋树.*$/, "").trim();
+    if (!t || t === "通用") continue;
+    if (merged.indexOf(t) < 0) merged.push(t);
+  }
+  state.unlocked_tiers = merged;
 }
 
 var _TIER_MIN_LEVEL={"一阶":1,"二阶":1,"三阶":3,"四阶":6,"五阶":9,"六阶":12,"七阶":15};
