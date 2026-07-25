@@ -9,10 +9,18 @@
     }
 
     function normHex(h) {
+        if (window.snowdNormHex) return window.snowdNormHex(h);
         if (!h) return "";
         h = h.trim().toUpperCase();
         if (!h.startsWith("#")) h = "#" + h;
         return h;
+    }
+
+    function canonicalizeMarkHex(h) {
+        if (window.snowdCanonicalizeMarkHex) return window.snowdCanonicalizeMarkHex(h);
+        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3" };
+        h = normHex(h);
+        return aliases[h] || h;
     }
 
     function readTagsFromSkill(skill) {
@@ -32,13 +40,13 @@
     function readMarksFromSkill(skill) {
         var raw = skill.getAttribute("data-marks");
         if (raw) {
-            return raw.split(",").map(normHex).filter(Boolean);
+            return raw.split(",").map(canonicalizeMarkHex).filter(Boolean);
         }
         var marks = [];
         skill.querySelectorAll('.detail span[style*="color:"]').forEach(function(span) {
             if (span.textContent.indexOf("\u25cf") === -1 && span.textContent.indexOf("●") === -1) return;
             var m = span.getAttribute("style").match(/color:\s*(#[0-9A-Fa-f]{3,8})/);
-            if (m) marks.push(normHex(m[1]));
+            if (m) marks.push(canonicalizeMarkHex(m[1]));
         });
         return marks;
     }

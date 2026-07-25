@@ -19,15 +19,23 @@
     MARK_META.forEach(function(m) { metaByHex[m.hex.toUpperCase()] = m; });
 
     window.getMarkColorName = function(hex) {
-        var m = metaByHex[normHex(hex)];
-        return m ? m.name : normHex(hex).replace("#", "");
+        var m = metaByHex[canonicalizeMarkHex(hex)];
+        return m ? m.name : canonicalizeMarkHex(hex).replace("#", "");
     };
 
     function normHex(h) {
+        if (window.snowdNormHex) return window.snowdNormHex(h);
         if (!h) return "";
         h = h.trim().toUpperCase();
         if (!h.startsWith("#")) h = "#" + h;
         return h;
+    }
+
+    function canonicalizeMarkHex(h) {
+        if (window.snowdCanonicalizeMarkHex) return window.snowdCanonicalizeMarkHex(h);
+        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3" };
+        h = normHex(h);
+        return aliases[h] || h;
     }
 
     function readTags(article) {
@@ -47,13 +55,13 @@
     function readMarks(article) {
         var raw = article.getAttribute("data-marks");
         if (raw) {
-            return raw.split(",").map(normHex).filter(Boolean);
+            return raw.split(",").map(canonicalizeMarkHex).filter(Boolean);
         }
         var marks = [];
         article.querySelectorAll('.detail span[style*="color:"]').forEach(function(span) {
             if (span.textContent.indexOf("\u25cf") === -1 && span.textContent.indexOf("●") === -1) return;
             var m = span.getAttribute("style").match(/color:\s*(#[0-9A-Fa-f]{3,8})/);
-            if (m) marks.push(normHex(m[1]));
+            if (m) marks.push(canonicalizeMarkHex(m[1]));
         });
         return marks;
     }
@@ -94,7 +102,7 @@
     };
 
     FilterPanel.prototype.toggleColor = function(hex) {
-        hex = normHex(hex);
+        hex = canonicalizeMarkHex(hex);
         if (this.colors.has(hex)) this.colors.delete(hex);
         else this.colors.add(hex);
         this.syncColorStyles();
@@ -145,7 +153,7 @@
         var self = this;
         if (!this.root) return;
         this.root.querySelectorAll(".fp-color-btn").forEach(function(btn) {
-            btn.classList.toggle("active", self.colors.has(normHex(btn.getAttribute("data-color"))));
+            btn.classList.toggle("active", self.colors.has(canonicalizeMarkHex(btn.getAttribute("data-color"))));
         });
     };
 
@@ -258,7 +266,8 @@
             var colWrap = document.createElement("div");
             colWrap.className = "fp-color-list";
             this.allColors.forEach(function(hex) {
-                var meta = metaByHex[hex] || { hex: hex, name: hex, light: false };
+                hex = canonicalizeMarkHex(hex);
+                var meta = metaByHex[hex] || { hex: hex, name: hex.replace("#", ""), light: false };
                 var btn = document.createElement("button");
                 btn.type = "button";
                 btn.className = "fp-color-btn" + (meta.light ? " light" : "");

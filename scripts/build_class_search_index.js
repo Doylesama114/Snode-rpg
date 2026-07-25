@@ -23,6 +23,17 @@ function normHex(h) {
   return h;
 }
 
+const MARK_HEX_ALIASES = {
+  '#808080': '#595959', // 黑
+  '#F79646': '#EE822F', // 橙
+  '#FF66CC': '#FFB7E3', // 粉
+};
+
+function canonicalizeMarkHex(h) {
+  h = normHex(h);
+  return MARK_HEX_ALIASES[h] || h;
+}
+
 function stripTags(html) {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
@@ -55,7 +66,7 @@ function extractArticles(html, classname, page) {
 
     const searchText = (searchMatch ? searchMatch[1] : '').replace(/\s+/g, ' ').trim();
     const marks = marksMatch
-      ? marksMatch[1].split(',').map(normHex).filter(Boolean)
+      ? marksMatch[1].split(',').map(canonicalizeMarkHex).filter(Boolean)
       : [];
 
     let style = styleMatch ? styleMatch[1] : '';

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7110',
+    date: '2026-07-26',
+    changes: [
+      'docx非标准色归一:808080黑/F79646橙/FF66CC粉',
+      '全局搜索与职业页色彩筛选合并',
+      'search-index重建'
+    ]
+  },
+
+
+  {
     version: '1.0.7109',
     date: '2026-07-25',
     changes: [

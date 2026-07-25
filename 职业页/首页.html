@@ -336,6 +336,12 @@
     return h;
   }
 
+  function canonicalizeMarkHex(h) {
+    var aliases = { '#808080': '#595959', '#F79646': '#EE822F', '#FF66CC': '#FFB7E3' };
+    h = normHex(h);
+    return aliases[h] || h;
+  }
+
   function escapeHtml(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -410,7 +416,7 @@
     var colorSet = {};
     searchIndex.forEach(function(s) {
       (s.marks || []).forEach(function(c) {
-        c = normHex(c);
+        c = canonicalizeMarkHex(c);
         if (c) colorSet[c] = true;
       });
     });
@@ -430,9 +436,10 @@
       btn.setAttribute('data-color', hex);
       btn.innerHTML = '<span class="gs-dot" style="color:' + hex + '">●</span><span>' + escapeHtml(meta.name) + '</span>';
       btn.addEventListener('click', function() {
-        if (selectedColors.has(hex)) selectedColors.delete(hex);
-        else selectedColors.add(hex);
-        btn.classList.toggle('active', selectedColors.has(hex));
+        var key = canonicalizeMarkHex(hex);
+        if (selectedColors.has(key)) selectedColors.delete(key);
+        else selectedColors.add(key);
+        btn.classList.toggle('active', selectedColors.has(key));
         visibleLimit = PAGE_SIZE;
         collapsedGroups = {};
         scheduleQuery();
@@ -467,10 +474,10 @@
     var matched = searchIndex.filter(function(entry) {
       if (selectedClasses.size && !selectedClasses.has(entry.classname)) return false;
       if (selectedColors.size) {
-        var marks = (entry.marks || []).map(normHex);
+        var marks = (entry.marks || []).map(canonicalizeMarkHex);
         var hit = false;
         selectedColors.forEach(function(c) {
-          if (marks.indexOf(c) !== -1) hit = true;
+          if (marks.indexOf(canonicalizeMarkHex(c)) !== -1) hit = true;
         });
         if (!hit) return false;
       }
@@ -509,7 +516,7 @@
 
   function renderDots(marks) {
     return (marks || []).map(function(hex) {
-      hex = normHex(hex);
+      hex = canonicalizeMarkHex(hex);
       var meta = metaByHex[hex] || { light: false };
       var cls = meta.light ? 'gs-dot light' : 'gs-dot';
       var shadow = meta.light

@@ -30,8 +30,23 @@ COLOR_TABLE = {
     "00B050": "#00B050", "00FA99": "#00FA99", "00B0F0": "#00B0F0", "B3F9FF": "#B3F9FF",
     "00A0FF": "#B3F9FF", "B94BFF": "#B94BFF", "FFB7E3": "#FFB7E3", "FF66CC": "#FFB7E3",
     "843F0B": "#843F0B", "FFFFFF": "#FFFFFF", "595959": "#595959", "D9D9D9": "#D9D9D9",
-    "851321": "#851321", "808080": "#595959",
+    "851321": "#851321", "808080": "#595959", "F79646": "#EE822F",
 }
+# Docx 偶发非标准色 → 规范色（与职业页筛选 / 全局搜索一致）
+MARK_HEX_ALIASES = {
+    "#808080": "#595959",  # 黑
+    "#F79646": "#EE822F",  # 橙
+    "#FF66CC": "#FFB7E3",  # 粉
+}
+
+
+def canonicalize_mark_hex(hex_c: str | None) -> str:
+    if not hex_c:
+        return ""
+    h = str(hex_c).strip().upper()
+    if not h.startswith("#"):
+        h = "#" + h
+    return MARK_HEX_ALIASES.get(h, h)
 LIGHT_COLORS = {"#FFFFFF", "#B3F9FF", "#FFF32F", "#FFB7E3", "#D9D9D9", "#00FA99"}
 LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
 LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.+)$")
@@ -85,7 +100,8 @@ def extract_paragraphs(docx_path: Path) -> list[dict]:
                 if c is not None:
                     v = c.get(f"{{{NS}}}val") or c.get("val")
                     if v and v.lower() != "auto":
-                        hex_c = COLOR_TABLE.get(v.upper(), f"#{v.upper()}")
+                        raw = COLOR_TABLE.get(v.upper(), f"#{v.upper()}")
+                        hex_c = canonicalize_mark_hex(raw)
             runs.append({"text": txt, "color": hex_c})
         text = "".join(r["text"] for r in runs).strip()
         if text:
@@ -107,7 +123,8 @@ def mark_dots_from_runs(runs: list[dict]) -> list[str]:
     dots = []
     for r in runs:
         if "●" in r["text"] and r["color"]:
-            dots.extend([r["color"]] * r["text"].count("●"))
+            canon = canonicalize_mark_hex(r["color"])
+            dots.extend([canon] * r["text"].count("●"))
     return dots
 
 

@@ -573,7 +573,7 @@ function skillDescCell(d, cn, sn) {
 // Hex to color name mapping (reverse of spColors)
 
 
-var _hex2name = {"#EE822F":"\u6a59\u8272","#FFFFFF":"\u767d\u8272","#B94BFF":"\u7d2b\u8272","#FFF32F":"\u9ec4\u8272","#D9D9D9":"\u65e0\u8272","#00B0F0":"\u84dd\u8272","#00FA99":"\u9752\u8272","#595959":"\u9ed1\u8272","#FF0000":"\u7ea2\u8272","#843F0B":"\u68d5\u8272","#FFB7E3":"\u7c89\u8272","#00B050":"\u7eff\u8272","#B3F9FF":"\u6d45\u8272"};
+var _hex2name = {"#EE822F":"\u6a59\u8272","#FFFFFF":"\u767d\u8272","#B94BFF":"\u7d2b\u8272","#FFF32F":"\u9ec4\u8272","#D9D9D9":"\u65e0\u8272","#00B0F0":"\u84dd\u8272","#00FA99":"\u9752\u8272","#595959":"\u9ed1\u8272","#FF0000":"\u7ea2\u8272","#843F0B":"\u68d5\u8272","#FFB7E3":"\u7c89\u8272","#00B050":"\u7eff\u8272","#B3F9FF":"\u6d45\u8272","#808080":"\u9ed1\u8272","#F79646":"\u6a59\u8272","#FF66CC":"\u7c89\u8272"};
 
 
 
@@ -664,7 +664,7 @@ function parseSkillCost(skillData) {
   // Supports: single object {color, name}, array [{color, name}, ...]
 
 
-  var _hex2name_local = {"#EE822F":"\u6a59\u8272","#FFFFFF":"\u767d\u8272","#B94BFF":"\u7d2b\u8272","#FFF32F":"\u9ec4\u8272","#D9D9D9":"\u65e0\u8272","#00B0F0":"\u84dd\u8272","#00FA99":"\u9752\u8272","#595959":"\u9ed1\u8272","#FF0000":"\u7ea2\u8272","#843F0B":"\u68d5\u8272","#FFB7E3":"\u7c89\u8272","#00B050":"\u7eff\u8272","#B3F9FF":"\u6d45\u8272"};
+  var _hex2name_local = {"#EE822F":"\u6a59\u8272","#FFFFFF":"\u767d\u8272","#B94BFF":"\u7d2b\u8272","#FFF32F":"\u9ec4\u8272","#D9D9D9":"\u65e0\u8272","#00B0F0":"\u84dd\u8272","#00FA99":"\u9752\u8272","#595959":"\u9ed1\u8272","#FF0000":"\u7ea2\u8272","#843F0B":"\u68d5\u8272","#FFB7E3":"\u7c89\u8272","#00B050":"\u7eff\u8272","#B3F9FF":"\u6d45\u8272","#808080":"\u9ed1\u8272","#F79646":"\u6a59\u8272","#FF66CC":"\u7c89\u8272"};
 
 
   if (!skillData.cost) return [];
