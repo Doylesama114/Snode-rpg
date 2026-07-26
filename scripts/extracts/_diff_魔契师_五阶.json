@@ -1,0 +1,337 @@
+{
+  "class_name": "魔契师",
+  "tier_filter": "五阶",
+  "extract_count": 27,
+  "site_count": 27,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 27,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "位面防御术",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-139",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤域外生命",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-118",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤深渊恶魔",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-119",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤精类生物",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-120",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "咒蚀之种",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-125",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "善良之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-126",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "异界探知",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-121",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "异界盟约",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-122",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "怨灵咒力",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-133",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "支配人形",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-134",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "星尘震爆",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-140",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "星界导体",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-141",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "星界投影",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-142",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "法术叠爆",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-135",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "混乱之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-127",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "湮灭波",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-136",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "狂乱咒域",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-137",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "瞬时召唤",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-123",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "秩序之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-128",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "移转术",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-143",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "移除诅咒",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-129",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "绝望帷幕",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-130",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "能量监牢",
+      "style": "咒能",
+      "tier": "五阶",
+      "id": "p-skill-138",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "虚空裂隙",
+      "style": "魔契",
+      "tier": "五阶",
+      "id": "p-skill-124",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "邪恶之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-131",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "邪恶凝视",
+      "style": "邪念",
+      "tier": "五阶",
+      "id": "p-skill-132",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "预置幻影",
+      "style": "秘术",
+      "tier": "五阶",
+      "id": "p-skill-144",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

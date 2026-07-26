@@ -1,0 +1,175 @@
+{
+  "added": 28,
+  "names": [
+    {
+      "id": "p-skill-117",
+      "style": "魔契",
+      "tier": "三阶",
+      "name": "召唤隐形战仆"
+    },
+    {
+      "id": "p-skill-118",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "召唤域外生命"
+    },
+    {
+      "id": "p-skill-119",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "召唤深渊恶魔"
+    },
+    {
+      "id": "p-skill-120",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "召唤精类生物"
+    },
+    {
+      "id": "p-skill-121",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "异界探知"
+    },
+    {
+      "id": "p-skill-122",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "异界盟约"
+    },
+    {
+      "id": "p-skill-123",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "瞬时召唤"
+    },
+    {
+      "id": "p-skill-124",
+      "style": "魔契",
+      "tier": "五阶",
+      "name": "虚空裂隙"
+    },
+    {
+      "id": "p-skill-125",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "咒蚀之种"
+    },
+    {
+      "id": "p-skill-126",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "善良之墙"
+    },
+    {
+      "id": "p-skill-127",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "混乱之墙"
+    },
+    {
+      "id": "p-skill-128",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "秩序之墙"
+    },
+    {
+      "id": "p-skill-129",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "移除诅咒"
+    },
+    {
+      "id": "p-skill-130",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "绝望帷幕"
+    },
+    {
+      "id": "p-skill-131",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "邪恶之墙"
+    },
+    {
+      "id": "p-skill-132",
+      "style": "邪念",
+      "tier": "五阶",
+      "name": "邪恶凝视"
+    },
+    {
+      "id": "p-skill-133",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "怨灵咒力"
+    },
+    {
+      "id": "p-skill-134",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "支配人形"
+    },
+    {
+      "id": "p-skill-135",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "法术叠爆"
+    },
+    {
+      "id": "p-skill-136",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "湮灭波"
+    },
+    {
+      "id": "p-skill-137",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "狂乱咒域"
+    },
+    {
+      "id": "p-skill-138",
+      "style": "咒能",
+      "tier": "五阶",
+      "name": "能量监牢"
+    },
+    {
+      "id": "p-skill-139",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "位面防御术"
+    },
+    {
+      "id": "p-skill-140",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "星尘震爆"
+    },
+    {
+      "id": "p-skill-141",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "星界导体"
+    },
+    {
+      "id": "p-skill-142",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "星界投影"
+    },
+    {
+      "id": "p-skill-143",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "移转术"
+    },
+    {
+      "id": "p-skill-144",
+      "style": "秘术",
+      "tier": "五阶",
+      "name": "预置幻影"
+    }
+  ],
+  "site_skills": 144,
+  "fx_entries": 144
+}

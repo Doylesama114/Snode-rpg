@@ -1,0 +1,61 @@
+{
+  "added": 9,
+  "names": [
+    {
+      "id": "h-skill-1079",
+      "style": "射击",
+      "tier": "五阶",
+      "name": "夺命射击"
+    },
+    {
+      "id": "h-skill-1080",
+      "style": "射击",
+      "tier": "五阶",
+      "name": "精锐箭头"
+    },
+    {
+      "id": "h-skill-1081",
+      "style": "射击",
+      "tier": "五阶",
+      "name": "蛇首"
+    },
+    {
+      "id": "h-skill-1082",
+      "style": "兽群",
+      "tier": "五阶",
+      "name": "捕食专精"
+    },
+    {
+      "id": "h-skill-1083",
+      "style": "兽群",
+      "tier": "五阶",
+      "name": "践踏专精"
+    },
+    {
+      "id": "h-skill-1084",
+      "style": "兽群",
+      "tier": "五阶",
+      "name": "飞龙钉刺"
+    },
+    {
+      "id": "h-skill-1085",
+      "style": "机敏",
+      "tier": "五阶",
+      "name": "反射闪避"
+    },
+    {
+      "id": "h-skill-1086",
+      "style": "机敏",
+      "tier": "五阶",
+      "name": "旋刃飞轮"
+    },
+    {
+      "id": "h-skill-1087",
+      "style": "机敏",
+      "tier": "五阶",
+      "name": "飞禽专精"
+    }
+  ],
+  "site_skills": 86,
+  "fx_entries": 86
+}

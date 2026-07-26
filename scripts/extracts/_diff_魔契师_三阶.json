@@ -1,0 +1,449 @@
+{
+  "class_name": "魔契师",
+  "tier_filter": "三阶",
+  "extract_count": 35,
+  "site_count": 35,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 34,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "人形晕眩术",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-77",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "厄运转移",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-107",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在自身回合外进行一次豁免检定失败后，你可以花费一个反应动作将本次失败结果传递过自身周围12米内的一名友方角色"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤坐骑",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-20",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤箭雨",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-19",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "咒术蓄能",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-79",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你连续在两个自身回合均进行过施法攻击，那么在第三个自身回合你施展的首次施法攻击具有速攻关键词"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "咒能反弹",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-72",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "契约锁链",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-21",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "宗主代行者",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-25",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你在与异界生物进行社交相关的检定时具有优势，如果对方与你的宗主同属一个位面或阵营，那么起始态度至少为友善"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "巫术打击",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-18",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "强韧召唤",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-24",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你用魔力强化你的召唤物，使你的召唤单位额外获得等于你的魔契师职业等级的临时生命值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "心灵防护结界",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-75",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "怪物晕眩术",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-78",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "抑制吐息",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-23",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "操纵死尸",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-105",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "枯萎术",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-49",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "毒雾术",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-45",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "法术反制",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-102",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "灾祸术",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-74",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "疯狂冠冕",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-73",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "禁言术",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-106",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "脆弱诅咒",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-46",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "虚假情报",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-101",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "蜘行术",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-104",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "诅咒蔓延",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-51",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你施展的诅咒效果持续时间结束、或者目标在持续时间内死亡时，你可以使这个诅咒效果传播至目标周围6米内的一名其他角色，通过这个效果传播的诅咒仅持续1轮"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "谜巢",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-109",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你周围6米内至少拥有两名敌人时，你可以选择开启谜巢，持续2轮"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "通晓禁忌",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-50",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "邪念侵蚀",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-44",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "邪恶之水",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-48",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "酸蚀球",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-47",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "镜子替身",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-103",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "闹鬼之地",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-76",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "隐形仆役",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-22",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "高速神言",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-108",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.高速神言的优先级高于速攻关键词"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "黑暗环绕",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-71",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

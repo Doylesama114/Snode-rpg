@@ -1,0 +1,121 @@
+{
+  "class_name": "猎人",
+  "tier_filter": "五阶",
+  "extract_count": 9,
+  "site_count": 9,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 9,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "反射闪避",
+      "style": "机敏",
+      "tier": "五阶",
+      "id": "h-skill-1085",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "夺命射击",
+      "style": "射击",
+      "tier": "五阶",
+      "id": "h-skill-1079",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "捕食专精",
+      "style": "兽群",
+      "tier": "五阶",
+      "id": "h-skill-1082",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "旋刃飞轮",
+      "style": "机敏",
+      "tier": "五阶",
+      "id": "h-skill-1086",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "精锐箭头",
+      "style": "射击",
+      "tier": "五阶",
+      "id": "h-skill-1080",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "蛇首",
+      "style": "射击",
+      "tier": "五阶",
+      "id": "h-skill-1081",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "践踏专精",
+      "style": "兽群",
+      "tier": "五阶",
+      "id": "h-skill-1083",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "飞禽专精",
+      "style": "机敏",
+      "tier": "五阶",
+      "id": "h-skill-1087",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "飞龙钉刺",
+      "style": "兽群",
+      "tier": "五阶",
+      "id": "h-skill-1084",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

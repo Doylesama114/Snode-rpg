@@ -1,0 +1,894 @@
+{
+  "class_name": "猎人",
+  "tier_filter": null,
+  "extract_count": 86,
+  "site_count": 77,
+  "missing_on_site": [
+    {
+      "name": "瞄准射击",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "野兽伙伴",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "逃脱",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "荒野医疗",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "夺命射击",
+      "style": "射击",
+      "tier": "五阶",
+      "cost": [
+        "#EE822F",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "精锐箭头",
+      "style": "射击",
+      "tier": "五阶",
+      "cost": [
+        "#FFF32F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "蛇首",
+      "style": "射击",
+      "tier": "五阶",
+      "cost": [
+        "#00B050",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "飞龙钉刺",
+      "style": "兽群",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#00B050"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        }
+      ]
+    },
+    {
+      "name": "捕食专精",
+      "style": "兽群",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#EE822F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        }
+      ]
+    },
+    {
+      "name": "践踏专精",
+      "style": "兽群",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "旋刃飞轮",
+      "style": "机敏",
+      "tier": "五阶",
+      "cost": [
+        "#EE822F",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "飞禽专精",
+      "style": "机敏",
+      "tier": "五阶",
+      "cost": [
+        "#B3F9FF",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "反射闪避",
+      "style": "机敏",
+      "tier": "五阶",
+      "cost": [
+        "#EE822F",
+        "#B3F9FF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        }
+      ]
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "h-starting-skill-1",
+      "name": "瞄准射击",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "h-starting-skill-2",
+      "name": "野兽伙伴",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "h-starting-skill-3",
+      "name": "逃脱",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "h-starting-skill-4",
+      "name": "荒野医疗",
+      "style": null,
+      "tier": null
+    }
+  ],
+  "field_diffs_count": 72,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "二段跳",
+      "style": "机敏",
+      "tier": "一阶",
+      "id": "h-skill-529",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "二重射击",
+      "style": "机敏",
+      "tier": "三阶",
+      "id": "h-skill-629",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-692",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测陷阱",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-679",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侧翼打击",
+      "style": "猎鹰",
+      "tier": "一阶",
+      "id": "h-skill-927",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "倒刺射击",
+      "style": "兽群",
+      "tier": "一阶",
+      "id": "h-skill-351",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "假死",
+      "style": "生存",
+      "tier": "二阶",
+      "id": "h-skill-748",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰冻陷阱（图纸）",
+      "style": "生存",
+      "tier": "二阶",
+      "id": "h-skill-781",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：奇械齿轮+零件包1份+霜冻粒子2份"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凶暴野兽",
+      "style": "兽群",
+      "tier": "三阶",
+      "id": "h-skill-457",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凿击",
+      "style": "猎鹰",
+      "tier": "一阶",
+      "id": "h-skill-941",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "利箭羽锋",
+      "style": "猎鹰",
+      "tier": "三阶",
+      "id": "h-skill-1061",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你熟练地使用羽矢和刀刃收割敌人，当你在自身回合进行过一次远程攻击后，能够额外使用一个本风格的、带有近战攻击关键词的战技"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "勘破未知",
+      "style": "猎鹰",
+      "tier": "四阶",
+      "id": "h-skill-1078",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "危机感知",
+      "style": "生存",
+      "tier": "三阶",
+      "id": "h-skill-814",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "反制射击",
+      "style": "机敏",
+      "tier": "四阶",
+      "id": "h-skill-1069",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "夺命黑鸦",
+      "style": "兽群",
+      "tier": "四阶",
+      "id": "h-skill-1065",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "奥术射击",
+      "style": "射击",
+      "tier": "一阶",
+      "id": "h-skill-145",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "威慑野兽",
+      "style": "猎鹰",
+      "tier": "四阶",
+      "id": "h-skill-1077",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "对空斩",
+      "style": "猎鹰",
+      "tier": "三阶",
+      "id": "h-skill-1045",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "弹溅射击",
+      "style": "射击",
+      "tier": "二阶",
+      "id": "h-skill-224",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "强强联手",
+      "style": "兽群",
+      "tier": "四阶",
+      "id": "h-skill-1068",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "强悍的猎人与强大的猛兽组合足以令那些敌人胆寒，选择以下一个效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "急速射击",
+      "style": "机敏",
+      "tier": "二阶",
+      "id": "h-skill-547",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "怪物学家",
+      "style": "兽群",
+      "tier": "四阶",
+      "id": "h-skill-1067",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "寻常的野兽已经无法满足你的喜欢，你渴望驯服更加光怪离奇的生物，获得以下增益："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "战术翻滚",
+      "style": "机敏",
+      "tier": "四阶",
+      "id": "h-skill-1070",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "拦截",
+      "style": "射击",
+      "tier": "四阶",
+      "id": "h-skill-1064",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "捕熊陷阱（图纸）",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-705",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：狩猎陷阱+纯铁5磅+氮气弹簧1份"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "掷刃斩",
+      "style": "猎鹰",
+      "tier": "一阶",
+      "id": "h-skill-911",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "摔绊",
+      "style": "机敏",
+      "tier": "四阶",
+      "id": "h-skill-1071",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当一名角色在执行一个位移效果与你相邻时，你能够取消对方的剩余移动步数"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "斩击之翼",
+      "style": "猎鹰",
+      "tier": "四阶",
+      "id": "h-skill-1076",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "暗影步",
+      "style": "机敏",
+      "tier": "三阶",
+      "id": "h-skill-601",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "毒刃",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-666",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "毒性蔓延",
+      "style": "生存",
+      "tier": "三阶",
+      "id": "h-skill-876",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你使敌人身上的毒性效果蔓延，你可以选择执行以下一项效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "毒蛇陷阱（图纸）",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-730",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：任意毒蛇+奇械齿轮+零件包1份"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "水蛭陷阱（图纸）",
+      "style": "生存",
+      "tier": "二阶",
+      "id": "h-skill-764",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：任意水蛭+奇械齿轮+零件包1份+强韧剂1份"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "满溢箭袋",
+      "style": "射击",
+      "tier": "二阶",
+      "id": "h-skill-208",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵狐守护",
+      "style": "兽群",
+      "tier": "二阶",
+      "id": "h-skill-428",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵猴守护",
+      "style": "兽群",
+      "tier": "二阶",
+      "id": "h-skill-409",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵龟守护",
+      "style": "兽群",
+      "tier": "二阶",
+      "id": "h-skill-387",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "焦油陷阱（图纸）",
+      "style": "生存",
+      "tier": "一阶",
+      "id": "h-skill-718",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：奇械齿轮+零件包1份+焦油10磅"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "照明弹",
+      "style": "机敏",
+      "tier": "二阶",
+      "id": "h-skill-580",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "爆炸陷阱（图纸）",
+      "style": "生存",
+      "tier": "二阶",
+      "id": "h-skill-795",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "研发材料：奇械齿轮+零件包1份+氮气弹簧1份+动力岩1份+黑火药1份"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "狂野怒火",
+      "style": "兽群",
+      "tier": "一阶",
+      "id": "h-skill-305",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "独狼",
+      "style": "射击",
+      "tier": "四阶",
+      "id": "h-skill-1063",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你习惯于独自一人狩猎目标，如果你的周围6米内没有友方角色，那么你通过远程攻击和带有远程攻击关键词的战技造成的结算后伤害值具有优势，同时自身进行的敏捷和体质检定具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "独行伙伴",
+      "style": "兽群",
+      "tier": "三阶",
+      "id": "h-skill-482",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你专注于培养当前拥有的野兽伙伴，使你的野兽伙伴获得以下效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "狼之瞳",
+      "style": "兽群",
+      "tier": "二阶",
+      "id": "h-skill-445",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你如同群狼一般展开狩猎，你视作拥有集群战术的效果，如果攻击目标的周围6米内存在两名你的友方角色，你对目标的攻击命中检定具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "猎人伪装",
+      "style": "机敏",
+      "tier": "一阶",
+      "id": "h-skill-513",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "猎人印记",
+      "style": "射击",
+      "tier": "一阶",
+      "id": "h-skill-159",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "猛禽一击",
+      "style": "猎鹰",
+      "tier": "二阶",
+      "id": "h-skill-975",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "猫鼬撕咬",
+      "style": "兽群",
+      "tier": "一阶",
+      "id": "h-skill-318",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "眼镜蛇射击",
+      "style": "生存",
+      "tier": "四阶",
+      "id": "h-skill-1072",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "移动活靶",
+      "style": "射击",
+      "tier": "三阶",
+      "id": "h-skill-276",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

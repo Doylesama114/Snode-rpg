@@ -1,0 +1,1289 @@
+{
+  "class_name": "魔契师",
+  "tier_filter": null,
+  "extract_count": 144,
+  "site_count": 116,
+  "missing_on_site": [
+    {
+      "name": "巫术箭",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "毒液飞溅",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "虚弱诅咒",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级变形术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤隐形战仆",
+      "style": "魔契",
+      "tier": "三阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "异界探知",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        }
+      ]
+    },
+    {
+      "name": "虚空裂隙",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "召唤精类生物",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        }
+      ]
+    },
+    {
+      "name": "召唤深渊恶魔",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#00B050"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        }
+      ]
+    },
+    {
+      "name": "召唤域外生命",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "异界盟约",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#EE822F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "瞬时召唤",
+      "style": "魔契",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#B3F9FF",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "移除诅咒",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        }
+      ]
+    },
+    {
+      "name": "绝望帷幕",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "邪恶凝视",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "善良之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#FFF32F",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "邪恶之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#595959",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#595959",
+          "name": "黑"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "秩序之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "混乱之墙",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "咒蚀之种",
+      "style": "邪念",
+      "tier": "五阶",
+      "cost": [
+        "#00B050",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "狂乱咒域",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "湮灭波",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "能量监牢",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "支配人形",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "法术叠爆",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "怨灵咒力",
+      "style": "咒能",
+      "tier": "五阶",
+      "cost": [
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "星尘震爆",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        }
+      ]
+    },
+    {
+      "name": "移转术",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "星界投影",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "位面防御术",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        }
+      ]
+    },
+    {
+      "name": "预置幻影",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "星界导体",
+      "style": "秘术",
+      "tier": "五阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "p-skill-1",
+      "name": "巫术箭",
+      "style": "起始特性",
+      "tier": "起始特性"
+    },
+    {
+      "id": "p-skill-2",
+      "name": "毒液飞溅",
+      "style": "起始特性",
+      "tier": "起始特性"
+    },
+    {
+      "id": "p-skill-3",
+      "name": "虚弱诅咒",
+      "style": "起始特性",
+      "tier": "起始特性"
+    },
+    {
+      "id": "p-skill-4",
+      "name": "次级变形术",
+      "style": "起始特性",
+      "tier": "起始特性"
+    }
+  ],
+  "field_diffs_count": 112,
+  "mark_diffs_count": 3,
+  "field_diffs": [
+    {
+      "name": "人形晕眩术",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-77",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "任意门",
+      "style": "秘术",
+      "tier": "四阶",
+      "id": "p-skill-113",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "传讯术",
+      "style": "魔契",
+      "tier": "一阶",
+      "id": "p-skill-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测思想",
+      "style": "邪念",
+      "tier": "四阶",
+      "id": "p-skill-52",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "邪念",
+      "tier": "一阶",
+      "id": "p-skill-34",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造酸蚀",
+      "style": "邪念",
+      "tier": "二阶",
+      "id": "p-skill-40",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "力场波",
+      "style": "咒能",
+      "tier": "二阶",
+      "id": "p-skill-65",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "力量报偿",
+      "style": "魔契",
+      "tier": "一阶",
+      "id": "p-skill-9",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你透支自身的潜力提前向宗主索取更加高昂的酬劳，在接下来的五场战斗环节中你将获取的经验值及技能点支付给宗主并获得以下效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "占卜球",
+      "style": "秘术",
+      "tier": "四阶",
+      "id": "p-skill-116",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你可以在短休时段通过魔法水晶球来进行占卜，若如此做你无法获得本次短休时段的其他收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "危机感知",
+      "style": "邪念",
+      "tier": "二阶",
+      "id": "p-skill-42",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "厄运转移",
+      "style": "秘术",
+      "tier": "三阶",
+      "id": "p-skill-107",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在自身回合外进行一次豁免检定失败后，你可以花费一个反应动作将本次失败结果传递过自身周围12米内的一名友方角色"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "反噬术",
+      "style": "邪念",
+      "tier": "四阶",
+      "id": "p-skill-55",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤坐骑",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-20",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤箭雨",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-19",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤魔宠",
+      "style": "魔契",
+      "tier": "一阶",
+      "id": "p-skill-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "命令术",
+      "style": "咒能",
+      "tier": "二阶",
+      "id": "p-skill-68",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "咒术蓄能",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-79",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你连续在两个自身回合均进行过施法攻击，那么在第三个自身回合你施展的首次施法攻击具有速攻关键词"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "咒能反弹",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-72",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "咒能虹吸",
+      "style": "咒能",
+      "tier": "四阶",
+      "id": "p-skill-80",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "咒能转化",
+      "style": "咒能",
+      "tier": "四阶",
+      "id": "p-skill-86",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你短暂地扭曲魔力的本质，使你的魔法能量相互转化，你可以将任意一种自身施展的能量攻击手段转化为火焰、奥术或力场伤害"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "均衡敕令",
+      "style": "魔契",
+      "tier": "二阶",
+      "id": "p-skill-12",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "奇术",
+      "style": "秘术",
+      "tier": "一阶",
+      "id": "p-skill-93",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "契法之触",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-27",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "契约护盾",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-28",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "契约锁链",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-21",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "契约魔刃",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-26",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "孰强孰弱",
+      "style": "邪念",
+      "tier": "二阶",
+      "id": "p-skill-43",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你借助宗主的力量倾斜胜利的天秤，在一次你与他人进行一次属性对抗时，能够使自身的本次检定获得优势并且使对方具有劣势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "宗主代行者",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-25",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你在与异界生物进行社交相关的检定时具有优势，如果对方与你的宗主同属一个位面或阵营，那么起始态度至少为友善"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "宗主凝视",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-30",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "定身术",
+      "style": "咒能",
+      "tier": "一阶",
+      "id": "p-skill-63",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "巫术打击",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-18",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "幻术法袍",
+      "style": "秘术",
+      "tier": "四阶",
+      "id": "p-skill-115",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你可以在短休时段触碰一件非魔法物品的布衣，为其施展以下一项效果"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "异界灵感",
+      "style": "魔契",
+      "tier": "一阶",
+      "id": "p-skill-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "强化术",
+      "style": "魔契",
+      "tier": "二阶",
+      "id": "p-skill-14",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "强韧召唤",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-24",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你用魔力强化你的召唤物，使你的召唤单位额外获得等于你的法师职业等级的临时生命值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "心灵防护结界",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-75",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "怠惰诅咒",
+      "style": "咒能",
+      "tier": "四阶",
+      "id": "p-skill-84",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "怪物晕眩术",
+      "style": "咒能",
+      "tier": "三阶",
+      "id": "p-skill-78",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "恩赐·契约强化",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-31",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得一个额外的契约法术槽位，这个槽位仅能够用于放置带有恩惠关键词的能力、或者通过恩赐法术获得的能力"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "恩赐法术",
+      "style": "魔契",
+      "tier": "二阶",
+      "id": "p-skill-15",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你可以从你所契约的宗主那里习得一项能力，具体获得的收益由你的宗主决定"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "恩赐魔刃",
+      "style": "魔契",
+      "tier": "一阶",
+      "id": "p-skill-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "恶咒缠身",
+      "style": "邪念",
+      "tier": "四阶",
+      "id": "p-skill-57",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "每当你对一名当前拥有诅咒效果的角色施加新的诅咒时，可以令新的诅咒效果持续时间+1轮"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "恶毒回响",
+      "style": "邪念",
+      "tier": "四阶",
+      "id": "p-skill-53",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "恶言相加",
+      "style": "邪念",
+      "tier": "二阶",
+      "id": "p-skill-41",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "惑人低语",
+      "style": "咒能",
+      "tier": "一阶",
+      "id": "p-skill-60",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "慷慨术",
+      "style": "魔契",
+      "tier": "四阶",
+      "id": "p-skill-29",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "托梦术",
+      "style": "秘术",
+      "tier": "四阶",
+      "id": "p-skill-112",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "扰咒术",
+      "style": "咒能",
+      "tier": "二阶",
+      "id": "p-skill-69",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "抑制吐息",
+      "style": "魔契",
+      "tier": "三阶",
+      "id": "p-skill-23",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "掩饰术",
+      "style": "秘术",
+      "tier": "二阶",
+      "id": "p-skill-98",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "恶言相加",
+      "style": "邪念",
+      "tier": "二阶",
+      "id": "p-skill-41",
+      "extract": [
+        "#595959"
+      ],
+      "site": [
+        "#808080"
+      ]
+    },
+    {
+      "name": "灰色交易",
+      "style": "魔契",
+      "tier": "二阶",
+      "id": "p-skill-17",
+      "extract": [
+        "#D9D9D9",
+        "#D9D9D9",
+        "#D9D9D9"
+      ],
+      "site": [
+        "#D9D9D9"
+      ]
+    },
+    {
+      "name": "邪念侵蚀",
+      "style": "邪念",
+      "tier": "三阶",
+      "id": "p-skill-44",
+      "extract": [
+        "#595959"
+      ],
+      "site": [
+        "#808080"
+      ]
+    }
+  ]
+}
