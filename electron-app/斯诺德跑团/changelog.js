@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7112',
+    date: '2026-07-26',
+    changes: [
+      '修复武僧酒仙/凰火七阶侧栏跳转错位',
+      '清理通用天赋树重复错误链接',
+      '新增verify_class_nav_links校验'
+    ]
+  },
+
+
+  {
     version: '1.0.7111',
     date: '2026-07-26',
     changes: [
