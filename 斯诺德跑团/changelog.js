@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7114',
+    date: '2026-07-26',
+    changes: [
+      '进阶详情嵌套技能按文档顺序渲染',
+      '限制字段别名防拆卡',
+      'verify覆盖能力/心得nested_skills'
+    ]
+  },
+
+
+  {
     version: '1.0.7113',
     date: '2026-07-26',
     changes: [

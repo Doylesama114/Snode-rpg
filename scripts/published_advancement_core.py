@@ -24,7 +24,8 @@ TAG_RE = re.compile(
 )
 FIELD_KEYS = (
     "施展时间", "施展距离", "持续时间", "疲劳消耗", "关键词",
-    "施展条件", "施展限制", "描述", "配方", "负重", "品质", "效果", "制作时间", "参考价格",
+    "施展条件", "施展限制", "限制", "描述", "配方", "负重", "品质", "效果",
+    "制作时间", "参考价格", "类别", "注释", "职业要求",
 )
 FIELD_RE = re.compile(r"^(" + "|".join(FIELD_KEYS) + r")[：:]")
 SEP_RE = re.compile(r"^-{3,}$")
@@ -119,6 +120,15 @@ def join_desc(lines: list[str]) -> str:
     return "\n".join(x.strip() for x in lines if x.strip())
 
 
+def rows_from_skill_buf(title: str, buf: list[str]) -> list[list[str]]:
+    rows: list[list[str]] = [[title]]
+    for bl in buf:
+        if is_sep(bl):
+            continue
+        rows.append([bl])
+    return rows
+
+
 def parse_section(name: str, body: list[str]) -> dict:
     """Parse one advancement body into details schema + completeness flags."""
     i = 0
@@ -164,6 +174,9 @@ def parse_section(name: str, body: list[str]) -> dict:
                 if cur in ("野性猎杀", "利爪攻势"):
                     break
             else:
+                # Skill/item cards are separated by ---- in the docx
+                if is_sep(cur):
+                    break
                 if looks_like_title(cur) and j + 1 < n and is_tag(body[j + 1]):
                     break
                 if looks_like_title(cur) and j + 1 < n and is_field(body[j + 1]):
@@ -179,6 +192,53 @@ def parse_section(name: str, body: list[str]) -> dict:
     def block_has_skill_fields(buf: list[str]) -> bool:
         return any(is_field(x) for x in buf[:8])
 
+    def is_skill_card_at(idx: int) -> bool:
+        """Title followed by field lines (skill / recipe / item card)."""
+        if idx >= n or not looks_like_title(body[idx]):
+            return False
+        if is_insight_title(body[idx], name):
+            return False
+        if idx + 1 >= n:
+            return False
+        nxt = body[idx + 1]
+        return is_field(nxt) and not is_tag(nxt)
+
+    def is_ability_at(idx: int) -> bool:
+        if idx >= n or not looks_like_title(body[idx]):
+            return False
+        if is_insight_title(body[idx], name):
+            return False
+        return idx + 1 < n and is_tag(body[idx + 1])
+
+    def absorb_nested_skills(target: dict) -> None:
+        """Pull following skill/recipe cards (+ intervening prose) into nested_skills."""
+        nested: list = []
+        nonlocal i
+        while i < n:
+            if is_sep(body[i]):
+                i += 1
+                continue
+            if is_insight_title(body[i], name):
+                break
+            if is_ability_at(i):
+                break
+            if is_skill_card_at(i):
+                title, _tags, buf, i = read_block_after_title(i)
+                nested.append(rows_from_skill_buf(title, buf))
+                continue
+            # Intervening prose belonging to the parent ability/insight
+            line = body[i].strip()
+            if line and not is_tag(line):
+                if nested:
+                    # Keep document order between nested skills
+                    nested.append({"prose": line})
+                else:
+                    prev = (target.get("desc_html") or "").rstrip()
+                    target["desc_html"] = (prev + "\n" + line).strip() if prev else line
+            i += 1
+        if nested:
+            target["nested_skills"] = nested
+
     while i < n:
         line = body[i]
         if is_sep(line):
@@ -187,30 +247,27 @@ def parse_section(name: str, body: list[str]) -> dict:
 
         if is_insight_title(line, name):
             title, tags, buf, i = read_block_after_title(i)
-            # Remaining after insight may be skill tables — peek
             insight = {
                 "name": title,
                 "tags": tags or "天赋",
                 "desc_html": join_desc(buf),
             }
+            absorb_nested_skills(insight)
             continue
 
-        if looks_like_title(line) and i + 1 < n and (is_tag(body[i + 1]) or is_field(body[i + 1])):
+        if is_ability_at(i) or is_skill_card_at(i):
             title, tags, buf, i = read_block_after_title(i)
             if block_has_skill_fields(buf) or (not tags and any(is_field(x) for x in buf)):
-                # Skill / recipe table card
-                rows: list[list[str]] = [[title]]
-                for bl in buf:
-                    if is_sep(bl):
-                        continue
-                    rows.append([bl])
-                tables.append(rows)
+                # Orphan skill card (no parent) — keep as top-level table
+                tables.append(rows_from_skill_buf(title, buf))
             else:
-                abilities.append({
+                ability = {
                     "name": title,
                     "tags": tags or "天赋",
                     "desc_html": join_desc(buf),
-                })
+                }
+                absorb_nested_skills(ability)
+                abilities.append(ability)
             continue
 
         # orphan body lines — append to last ability if any
@@ -233,6 +290,18 @@ def parse_section(name: str, body: list[str]) -> dict:
 
     incomplete = bool(incomplete_reasons)
 
+    nested_ability = sum(
+        1
+        for a in abilities
+        for item in (a.get("nested_skills") or [])
+        if isinstance(item, list)
+    )
+    nested_insight = sum(
+        1
+        for item in ((insight or {}).get("nested_skills") or [])
+        if isinstance(item, list)
+    )
+
     entry: dict = {
         "name": name,
         "desc_html": desc_html,
@@ -250,6 +319,8 @@ def parse_section(name: str, body: list[str]) -> dict:
         "stats": {
             "ability_count": len(abilities),
             "table_count": len(tables),
+            "nested_ability_skills": nested_ability,
+            "nested_insight_skills": nested_insight,
             "has_insight": bool(insight),
             "desc_chars": len(desc_html),
         },
@@ -306,12 +377,17 @@ def preserve_media_fields(old: dict | None, new_entry: dict) -> dict:
     for key in ("image_sections", "image_markers"):
         if key in old and key not in out:
             out[key] = old[key]
-    # If old has structured 2D tables (monster parts) and new has none, keep old tables
-    if old.get("tables") and not out.get("tables"):
-        out["tables"] = old["tables"]
-    # Monster: prefer old multi-col tables over empty/skill-card misparse
+    # Monster: prefer old multi-col parts tables (docx parse cannot rebuild 2D grid)
     if old.get("name") == "怪物" and old.get("tables"):
         out["tables"] = old["tables"]
+    elif old.get("tables") and not out.get("tables"):
+        # Only keep structured multi-column tables; skill-card tables are now nested_skills
+        structured = [
+            t for t in old["tables"]
+            if t and t[0] and isinstance(t[0], list) and len(t[0]) > 1
+        ]
+        if structured:
+            out["tables"] = structured
     return out
 
 
@@ -384,6 +460,10 @@ def sync_electron_details(extra_globs: list[str] | None = None) -> list[str]:
     dst = ELECTRON_ADV / "advancement_details.js"
     shutil.copy2(src, dst)
     copied.append(str(dst.relative_to(ROOT)))
+    renderer = ADV_PAGE / "advancement_renderer.js"
+    if renderer.exists():
+        shutil.copy2(renderer, ELECTRON_ADV / "advancement_renderer.js")
+        copied.append(str((ELECTRON_ADV / "advancement_renderer.js").relative_to(ROOT)))
     for page in ADV_PAGE.glob("*·进阶.html"):
         shutil.copy2(page, ELECTRON_ADV / page.name)
         copied.append(str((ELECTRON_ADV / page.name).relative_to(ROOT)))

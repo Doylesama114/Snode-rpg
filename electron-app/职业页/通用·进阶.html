@@ -490,7 +490,7 @@
           <li>你为了追寻或挑战这名复仇对象，造访至少三个不同地区、击杀十名关联人物并且结识五名新的朋友（不计算玩家在内）</li>
           <li>你在一场关键战役中击杀复仇对象以完成晋升为复仇者的仪式</li>
         </ol>
-              <button class="locked-btn" disabled>🔒 未解锁</button>
+              <button class="detail-btn" data-adv-name="近卫">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
             <article data-name="骑士扈从" class="adv-card" id="adv-common-骑士扈从" data-search="骑士扈从 全职业 你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共 你与自身的效忠对象一同参与十场战斗环节 在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右">
@@ -504,7 +504,7 @@
           <li>你与自身的效忠对象一同参与十场战斗环节</li>
           <li>在你的陪伴和协助下，使你的效忠对象得到阶级提升，而你仍保持伴随其左右</li>
         </ol>
-              <button class="locked-btn" disabled>🔒 未解锁</button>
+              <button class="detail-btn" data-adv-name="近卫">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
             <article data-name="战地医师" class="adv-card" id="adv-common-战地医师" data-search="战地医师 全职业 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役">
@@ -532,7 +532,7 @@
           <li>完成三场不为人知的拯救行动（不计算玩家在内）</li>
           <li>阻挡一次来自异界、异位面对本位面的入侵事件</li>
         </ol>
-              <button class="locked-btn" disabled>🔒 未解锁</button>
+              <button class="detail-btn" data-adv-name="战地医师">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
             <article data-name="自由骑士" class="adv-card" id="adv-common-自由骑士" data-search="自由骑士 全职业 你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出） 协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容 你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划">
@@ -546,7 +546,7 @@
           <li>协助一支团队赢得十场战斗环节的胜利或者完成十次成功的剧情交互内容</li>
           <li>你不为金钱或名望，只是为了自身的坚守或帮助友人二挫败了一场对立阵营的谋划</li>
         </ol>
-              <button class="locked-btn" disabled>🔒 未解锁</button>
+              <button class="detail-btn" data-adv-name="战地医师">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
             <article data-name="塑形者" class="adv-card" id="adv-common-塑形者" data-search="塑形者 全职业 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业">
@@ -574,7 +574,7 @@
           <li>在不被他人看好的情况下完成五次委托，并让他人看到你为这一目标而付出的努力</li>
           <li>战胜一名超乎想象的敌人，在此过程中你不能持有或使用稀有品质以上的效果，使他人对你的这一经历口口相传，在故事中你的事迹不包含任何奇遇和助力，仅由你坚忍不拔的意志所构成</li>
         </ol>
-              <button class="locked-btn" disabled>🔒 未解锁</button>
+              <button class="detail-btn" data-adv-name="塑形者">查看详情</button>
         <div class="adv-detail collapse"></div>
       </article>
 
@@ -589,6 +589,33 @@
         if (typeof ADVANCEMENT_DETAILS !== "undefined") {
             detailsData = ADVANCEMENT_DETAILS;
         }
+    }
+    function renderNestedSkillsInline(list) {
+        if (!list || !list.length) return "";
+        var h = "";
+        for (var ni = 0; ni < list.length; ni++) {
+            var item = list[ni];
+            if (!item) continue;
+            if (!Array.isArray(item)) {
+                if (item.prose) {
+                    h += "<div class=\"ab-desc nested-prose\">" + item.prose + "</div>";
+                }
+                continue;
+            }
+            if (!item.length) continue;
+            var skillName = (item[0] && item[0][0]) ? item[0][0] : "";
+            h += "<div class=\"detail-ability\">";
+            h += "<span class=\"ab-name\">" + skillName + "</span>";
+            h += "<div class=\"ab-desc\">";
+            for (var ri = 1; ri < item.length; ri++) {
+                var row = item[ri];
+                for (var ci = 0; ci < row.length; ci++) {
+                    h += "<div>" + row[ci] + "</div>";
+                }
+            }
+            h += "</div></div>";
+        }
+        return h;
     }
     function buildHTML(d) {
         var h = "";
@@ -613,6 +640,7 @@
                 if (a.tags) h += "<span class=\"ab-tags\">[" + a.tags + "]</span>";
                 var descContent = a.desc_html || a.desc || "";
                 h += "<div class=\"ab-desc\">" + descContent + "</div></div>";
+                h += renderNestedSkillsInline(a.nested_skills);
                 if (d.image_markers && d.name === "\u602a\u7269") {
                     var sectionImgs = null;
                     if (ai === 0) {
@@ -651,6 +679,7 @@
             if (d.insight.tags) h += "<div class=\"detail-insight-tags\">[" + d.insight.tags + "]</div>";
             var insContent = d.insight.desc_html || d.insight.desc || "";
             h += "<div class=\"detail-insight-desc\">" + insContent + "</div></div>";
+            h += renderNestedSkillsInline(d.insight.nested_skills);
         }
         return h;
     }

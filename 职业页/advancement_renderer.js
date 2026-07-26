@@ -1,6 +1,44 @@
 // Shared advancement detail renderer — generates article.skill cards
 // Replaces inline buildHTML() + formatDetailText() in all 14 *进阶.html files
 
+function renderSkillTableCard(tbl) {
+    if (!tbl || tbl.length === 0) return "";
+    if (!Array.isArray(tbl)) {
+        // prose segment inserted between nested skills
+        if (tbl.prose) {
+            return "<div class=\"detail nested-prose\"><p>" + tbl.prose + "</p></div>";
+        }
+        return "";
+    }
+    var skillName = (tbl[0] && tbl[0][0]) ? tbl[0][0] : "";
+    var h = "<article class=\"skill\">";
+    h += "<h4>" + skillName + " <span class=\"chip\" style=\"background:var(--muted);color:#fff;font-size:11px\">\u8fdb\u9636\u00b7\u6280\u80fd</span></h4>";
+    h += "<div class=\"detail\">";
+    for (var ri = 1; ri < tbl.length; ri++) {
+        var row = tbl[ri];
+        for (var ci = 0; ci < row.length; ci++) {
+            var cell = row[ci];
+            var idx = cell.indexOf("\uff1a");
+            if (idx > 0) {
+                h += "<p><span class=\"field\">" + cell.substring(0, idx + 1) + "</span>" + cell.substring(idx + 1) + "</p>";
+            } else {
+                h += "<p>" + cell + "</p>";
+            }
+        }
+    }
+    h += "</div></article>";
+    return h;
+}
+
+function renderNestedSkills(list) {
+    if (!list || !list.length) return "";
+    var h = "";
+    for (var i = 0; i < list.length; i++) {
+        h += renderSkillTableCard(list[i]);
+    }
+    return h;
+}
+
 function buildHTML(d) {
     var h = "";
 
@@ -22,7 +60,7 @@ function buildHTML(d) {
         }
     }
 
-    // Abilities → article.skill cards
+    // Abilities → article.skill cards (+ nested skills immediately after each)
     if (d.abilities && d.abilities.length > 0) {
         d.abilities.forEach(function(a, ai) {
             h += "<article class=\"skill\">";
@@ -37,6 +75,8 @@ function buildHTML(d) {
             var descContent = a.desc_html || a.desc || "";
             h += "<div class=\"detail\"><p>" + descContent + "</p></div>";
             h += "</article>";
+
+            h += renderNestedSkills(a.nested_skills);
 
             // Image markers within abilities (怪物 only)
             if (d.image_markers && d.name === "\u602a\u7269") {
@@ -57,31 +97,27 @@ function buildHTML(d) {
         });
     }
 
-    // Tables → article.skill cards (one per table)
+    // Residual top-level tables (e.g. preserved 怪物 2D parts) — after abilities, before insight
     if (d.tables && d.tables.length > 0) {
         d.tables.forEach(function(tbl) {
-            if (tbl.length === 0) return;
-            var skillName = (tbl[0] && tbl[0][0]) ? tbl[0][0] : "";
-            h += "<article class=\"skill\">";
-            h += "<h4>" + skillName + " <span class=\"chip\" style=\"background:var(--muted);color:#fff;font-size:11px\">\u8fdb\u9636\u00b7\u6280\u80fd</span></h4>";
-            h += "<div class=\"detail\">";
-            for (var ri = 1; ri < tbl.length; ri++) {
-                var row = tbl[ri];
-                for (var ci = 0; ci < row.length; ci++) {
-                    var cell = row[ci];
-                    var idx = cell.indexOf("\uff1a");
-                    if (idx > 0) {
-                        h += "<p><span class=\"field\">" + cell.substring(0, idx+1) + "</span>" + cell.substring(idx+1) + "</p>";
-                    } else {
-                        h += "<p>" + cell + "</p>";
-                    }
-                }
+            if (tbl.length && tbl[0] && tbl[0].length > 1) {
+                h += "<div class=\"detail-table-wrap\"><table class=\"detail-table\">";
+                tbl.forEach(function(row, ri) {
+                    h += "<tr>";
+                    row.forEach(function(cell) {
+                        var tag = (ri === 0) ? "th" : "td";
+                        h += "<" + tag + ">" + cell + "</" + tag + ">";
+                    });
+                    h += "</tr>";
+                });
+                h += "</table></div>";
+            } else {
+                h += renderSkillTableCard(tbl);
             }
-            h += "</div></article>";
         });
     }
 
-    // Insight → article.skill card
+    // Insight → article.skill card (+ nested skills after)
     if (d.insight) {
         h += "<article class=\"skill\">";
         h += "<h4>" + d.insight.name + " <span class=\"chip\" style=\"background:var(--muted);color:#fff;font-size:11px\">\u8fdb\u9636\u00b7\u5fc3\u5f97</span></h4>";
@@ -95,6 +131,7 @@ function buildHTML(d) {
         var insContent = d.insight.desc_html || d.insight.desc || "";
         h += "<div class=\"detail\"><p>" + insContent + "</p></div>";
         h += "</article>";
+        h += renderNestedSkills(d.insight.nested_skills);
     }
 
     return h;

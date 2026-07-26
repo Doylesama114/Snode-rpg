@@ -200,7 +200,7 @@
       "inferenceBlurb": "名称指向奥术/多功能施法方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "奥术师 mage-only 法师 牧师 智力15 蓝色1 紫色1 白色1 施展二十次带有奥术、跃迁或专注关键词的能力（一个能力同时具有多个关键词时仅计算一次） 你花费过幕间物语来阅读一本奥术法术的魔典 准备一颗蓝宝石或水晶和一份魔法生物的魔力源后，绘制出进阶的奥术咒文后，在魔力充裕的环境下举行晋升为奥术师的仪式 arcane utility 名称指向奥术/多功能施法方向，具体技能以规则书为准 documented"
+      "searchText": "奥术师 mage-only 法师 牧师 智力15 蓝色1 紫色1 白色1 施展二十次带有奥术、跃迁或专注关键词的能力（一个能力同时具有多个关键词时仅计算一次） 你花费过幕间物语来阅读一本奥术法术的魔典 准备一颗蓝宝石或水晶和一份魔法生物的魔力源后，绘制出进阶的奥术咒文后，在魔力充裕的环境下举行晋升为奥术师的仪式 arcane utility 名称指向奥术/多功能施法方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-monk-白虎尊者",
@@ -861,7 +861,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "惩戒骑士 class-advancement 牧师 圣骑士 力量15 意志15 黄色1 橙色1 白色1 主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服 打击五场正在进行的邪恶举止（不计算玩家在内） 击败一名足够影响力的、公认的邪恶存在，向世间证明正义永不缺席，光明终将战胜黑暗 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented"
+      "searchText": "惩戒骑士 class-advancement 牧师 圣骑士 力量15 意志15 黄色1 橙色1 白色1 主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服 打击五场正在进行的邪恶举止（不计算玩家在内） 击败一名足够影响力的、公认的邪恶存在，向世间证明正义永不缺席，光明终将战胜黑暗 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-sorcerer-齿轮",
@@ -932,7 +932,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "铳士 class-advancement 战士 游荡者 奇械师 敏捷14 感知14 红色1 橙色1 紫色1 使用枪械武器击杀二十名角色 在自身周围4米内通过远程攻击击杀十名角色 通过远程攻击暴击击杀一名相邻角色 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "铳士 class-advancement 战士 游荡者 奇械师 敏捷14 感知14 红色1 橙色1 紫色1 使用枪械武器击杀二十名角色 在自身周围4米内通过远程攻击击杀十名角色 通过远程攻击暴击击杀一名相邻角色 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-priest-刺客",
@@ -1230,7 +1230,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "斗士 class-advancement 蛮斗士 战士 圣骑士 力量15 体质14 意志13 红色1 黄色1 橙色1 赢得十场战斗环节的胜利 赢得十次力量对抗的胜利 在万众瞩目下击败一名公认的劲敌并得到众人的喝彩 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "斗士 class-advancement 蛮斗士 战士 圣骑士 力量15 体质14 意志13 红色1 黄色1 橙色1 赢得十场战斗环节的胜利 赢得十次力量对抗的胜利 在万众瞩目下击败一名公认的劲敌并得到众人的喝彩 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-druid-毒牙德鲁伊",
@@ -1640,7 +1640,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "飞贼 mage-only 游荡者 敏捷15 感知15 黄色1 浅色1 白色1 进行十次成功的偷窃检定 通过盗窃累计获得2000枚金币的资产 保持自身的名望等级为0，或者使你的盗贼身份（而非你的真实身份）名望等级达到5 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "飞贼 mage-only 游荡者 敏捷15 感知15 黄色1 浅色1 白色1 进行十次成功的偷窃检定 通过盗窃累计获得2000枚金币的资产 保持自身的名望等级为0，或者使你的盗贼身份（而非你的真实身份）名望等级达到5 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-priest-丰收祭司",
@@ -1682,7 +1682,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "丰收祭司 class-advancement 牧师 德鲁伊 魔契师 感知15 绿色1 橙色1 棕色1 治退十名危害农田或果园的敌人（不计算玩家在内） 治理三处腐败之地，使其变为适宜耕种的沃土 开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "丰收祭司 class-advancement 牧师 德鲁伊 魔契师 感知15 绿色1 橙色1 棕色1 治退十名危害农田或果园的敌人（不计算玩家在内） 治理三处腐败之地，使其变为适宜耕种的沃土 开垦一片农田或果园，完整参与从种植到丰收的一系列过程，最终使其产出十倍于常的作物，并且期间就这片地域与至少十名中立或友善阵营角色产生过交互（不计算玩家在内） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-druid-风暴德鲁伊",
@@ -1891,7 +1891,7 @@
       "inferenceBlurb": "名称与条件指向火焰/爆发输出方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "凤凰术士 mage-only 术士 魅力15 幸运15 红色1 蓝色1 粉色1 对二十名角色造成火焰伤害（不计算玩家在内） 通过混沌法术施展十次带有火焰关键词的法术 不断吸收非凡火焰，直到使心中的凤凰得以复苏来觉醒血脉中的力量 fire burst 名称与条件指向火焰/爆发输出方向，具体技能以规则书为准 documented"
+      "searchText": "凤凰术士 mage-only 术士 魅力15 幸运15 红色1 蓝色1 粉色1 对二十名角色造成火焰伤害（不计算玩家在内） 通过混沌法术施展十次带有火焰关键词的法术 不断吸收非凡火焰，直到使心中的凤凰得以复苏来觉醒血脉中的力量 fire burst 名称与条件指向火焰/爆发输出方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-priest-缝合怪专家",
@@ -2101,7 +2101,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "赋生者 class-advancement 牧师 魔契师 体质14 感知14 青色1 浅色1 白色1 在战斗环节中为其他角色施展二十次回复效果 累计十次将生命值降至0或更低的角色生命值回复到至少1点 为一名注定死亡的角色赋予新生 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "赋生者 class-advancement 牧师 魔契师 体质14 感知14 青色1 浅色1 白色1 在战斗环节中为其他角色施展二十次回复效果 累计十次将生命值降至0或更低的角色生命值回复到至少1点 为一名注定死亡的角色赋予新生 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-hunter-钢铁驯兽师",
@@ -2182,7 +2182,7 @@
       "inferenceBlurb": "名称指向通用进阶/成长方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "高阶冒险者 universal 全职业 橙色1 青色1 棕色1 赢得十场战斗环节的胜利 完成十次成功的剧情交互内容 完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容 general progression 名称指向通用进阶/成长方向，具体技能以规则书为准 documented"
+      "searchText": "高阶冒险者 universal 全职业 橙色1 青色1 棕色1 赢得十场战斗环节的胜利 完成十次成功的剧情交互内容 完成一项最终评分为A或以上的模组，或者完成一场圆满收官的阶段性剧情内容 general progression 名称指向通用进阶/成长方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-paladin-歌剧冒险家",
@@ -2384,7 +2384,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "怪物 mage-only 奇械师 无色3 使自身类别被视为构造体 使自身类别被视为异怪 使自身类别被视为类人生物 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "怪物 mage-only 奇械师 无色3 使自身类别被视为构造体 使自身类别被视为异怪 使自身类别被视为类人生物 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warlock-光耀眷者",
@@ -2598,7 +2598,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "诡术师 class-advancement 法师 牧师 游荡者 吟游诗人 魔契师 敏捷12 智力13 魅力14 紫色1 粉色1 黑色1 这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师 伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内） 在一座城镇留下一起被当地人津津乐道的怪谈 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "诡术师 class-advancement 法师 牧师 游荡者 吟游诗人 魔契师 敏捷12 智力13 魅力14 紫色1 粉色1 黑色1 这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师 伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内） 在一座城镇留下一起被当地人津津乐道的怪谈 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-hunter-鬼灵猎人",
@@ -2682,7 +2682,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "棍术师 mage-only 武僧 力量14 敏捷14 橙色1 浅色1 棕色1 使用短棒或长棍击败二十名角色（不计算玩家在内） 使十名角色进入击倒或击退状态（不计算玩家在内） 在一场关键战役中使用普通品质的短棒或长棍击败一名持有奇珍品质或以上武器的敌人 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "棍术师 mage-only 武僧 力量14 敏捷14 橙色1 浅色1 棕色1 使用短棒或长棍击败二十名角色（不计算玩家在内） 使十名角色进入击倒或击退状态（不计算玩家在内） 在一场关键战役中使用普通品质的短棒或长棍击败一名持有奇珍品质或以上武器的敌人 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-druid-海潮德鲁伊",
@@ -3221,7 +3221,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "毁灭骑士 class-advancement 圣骑士 魔契师 体质16 感知10 红色1 绿色1 黑色1 你认为自己受到了圣光与正义的背弃 毁灭二十名能够为你提供经验值的角色 在一个公众场合摧毁一名圣骑士，让民众在你的狂笑声中畏惧，使人们相信这个世界距离毁灭更近了一步 你认为自己受到了圣光与正义的背弃， tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented"
+      "searchText": "毁灭骑士 class-advancement 圣骑士 魔契师 体质16 感知10 红色1 绿色1 黑色1 你认为自己受到了圣光与正义的背弃 毁灭二十名能够为你提供经验值的角色 在一个公众场合摧毁一名圣骑士，让民众在你的狂笑声中畏惧，使人们相信这个世界距离毁灭更近了一步 你认为自己受到了圣光与正义的背弃， tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warlock-毁灭术士",
@@ -3762,7 +3762,7 @@
       "inferenceBlurb": "名称指向魔武双修/近战方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "剑圣 class-advancement 战士 牧师 力量12 敏捷13 感知14 橙色1 浅色1 黑色1 你持有剑类武器击败二十名持有剑类武器的角色 在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次 完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼 gish melee 名称指向魔武双修/近战方向，具体技能以规则书为准 documented documented"
+      "searchText": "剑圣 class-advancement 战士 牧师 力量12 敏捷13 感知14 橙色1 浅色1 黑色1 你持有剑类武器击败二十名持有剑类武器的角色 在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次 完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼 gish melee 名称指向魔武双修/近战方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-mage-解密学者",
@@ -3885,7 +3885,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "近卫 universal 全职业 力量14 体质15 黄色1 橙色1 棕色1 赢得十场战斗环节的胜利 确保在十场战斗环节中你为团队中承受伤害最多的角色 在一场关键战役中全程担任正面承受敌人火力的职责 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented"
+      "searchText": "近卫 universal 全职业 力量14 体质15 黄色1 橙色1 棕色1 赢得十场战斗环节的胜利 确保在十场战斗环节中你为团队中承受伤害最多的角色 在一场关键战役中全程担任正面承受敌人火力的职责 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-druid-荆棘德鲁伊",
@@ -4096,7 +4096,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "救赎骑士 mage-only 圣骑士 魅力15 意志15 黄色1 青色1 白色1 你因犯下罪孽、意外落难或自身的迷茫而失去了圣光的力量，如今你渴望重新回到正确的道路上 用你的言行向五个与你当前处于冷淡或仇恨声望不同的势力证明你仍坚守着正义的信念，使他们相信你仍是善良阵营的一员，对你的态度转化为友善（不计算玩家在内） 完成你的救赎之道 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented"
+      "searchText": "救赎骑士 mage-only 圣骑士 魅力15 意志15 黄色1 青色1 白色1 你因犯下罪孽、意外落难或自身的迷茫而失去了圣光的力量，如今你渴望重新回到正确的道路上 用你的言行向五个与你当前处于冷淡或仇恨声望不同的势力证明你仍坚守着正义的信念，使他们相信你仍是善良阵营的一员，对你的态度转化为友善（不计算玩家在内） 完成你的救赎之道 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-barb-巨怪猎手",
@@ -4221,7 +4221,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "巨龙术士 mage-only 术士 体质12 魅力15 红色1 黄色1 紫色1 你拥有龙语的熟练度 击败五个龙类生物 获得一头成年巨龙的钦佩，通过对方的一滴精血觉醒体内的血脉，或者你的特殊专长中包含有龙血复苏 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "巨龙术士 mage-only 术士 体质12 魅力15 红色1 黄色1 紫色1 你拥有龙语的熟练度 击败五个龙类生物 获得一头成年巨龙的钦佩，通过对方的一滴精血觉醒体内的血脉，或者你的特殊专长中包含有龙血复苏 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-mage-卷轴学者",
@@ -4262,7 +4262,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "卷轴学者 mage-only 法师 牧师 智力15 蓝色1 紫色1 白色1 你的特殊专长中包含有卷轴助理 使用二十张法术卷轴 你花费过幕间物语来阅读并抄录一本任意学派的魔典 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "卷轴学者 mage-only 法师 牧师 智力15 蓝色1 紫色1 白色1 你的特殊专长中包含有卷轴助理 使用二十张法术卷轴 你花费过幕间物语来阅读并抄录一本任意学派的魔典 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-druid-菌术士",
@@ -4595,7 +4595,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "狂徒 mage-only 游荡者 体质15 意志15 红色1 橙色1 黑色1 你成功使十名敌人进入流血状态 你在五场战斗环节中以低于X点生命值结束战斗（X为你的20%最大生命值） 你在一个不合时宜地公开场合向强杀一名具有影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "狂徒 mage-only 游荡者 体质15 意志15 红色1 橙色1 黑色1 你成功使十名敌人进入流血状态 你在五场战斗环节中以低于X点生命值结束战斗（X为你的20%最大生命值） 你在一个不合时宜地公开场合向强杀一名具有影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warlock-狂野术士",
@@ -4637,7 +4637,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "狂野术士 mage-only 术士 感知13 魅力15 幸运15 蓝色1 青色1 紫色1 通过混沌法术掷出十次点数小于20的效果 通过混沌法术掷出十次点数大于80的效果 完成一次惊天逆转 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "狂野术士 mage-only 术士 感知13 魅力15 幸运15 蓝色1 青色1 紫色1 通过混沌法术掷出十次点数小于20的效果 通过混沌法术掷出十次点数大于80的效果 完成一次惊天逆转 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-barb-狂战士",
@@ -4680,7 +4680,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "狂战士 class-advancement 蛮斗士 战士 力量15 体质15 智力10 红色1 橙色1 黑色1 你通过近战攻击击杀二十名能够提供经验值的角色 你在五场战斗环节中以低于X点生命值结束战斗（X为你的25%最大生命值） 在你的当前生命值为1的情况下，由你击杀最后的敌人来结束一场战斗环节 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "狂战士 class-advancement 蛮斗士 战士 力量15 体质15 智力10 红色1 橙色1 黑色1 你通过近战攻击击杀二十名能够提供经验值的角色 你在五场战斗环节中以低于X点生命值结束战斗（X为你的25%最大生命值） 在你的当前生命值为1的情况下，由你击杀最后的敌人来结束一场战斗环节 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-rogue-蝰蛇",
@@ -4721,7 +4721,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "蝰蛇 mage-only 游荡者 敏捷14 感知14 红色1 绿色1 黑色1 你成功使十名敌人进入中毒状态 通过剧毒伤害击杀十名角色 通过下毒为手段谋杀一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "蝰蛇 mage-only 游荡者 敏捷14 感知14 红色1 绿色1 黑色1 你成功使十名敌人进入中毒状态 通过剧毒伤害击杀十名角色 通过下毒为手段谋杀一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warrior-狼骑士",
@@ -4894,7 +4894,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "离群野兽 class-advancement 蛮斗士 猎人 游荡者 德鲁伊 武僧 体质14 意志14 绿色1 青色1 棕色1 在五场战斗环节中没有进行过发言，也没有与友方角色进行交互 在三个模组中没有与任何NPC角色进行过沟通 成为“神灵” general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "离群野兽 class-advancement 蛮斗士 猎人 游荡者 德鲁伊 武僧 体质14 意志14 绿色1 青色1 棕色1 在五场战斗环节中没有进行过发言，也没有与友方角色进行交互 在三个模组中没有与任何NPC角色进行过沟通 成为“神灵” general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-druid-利爪德鲁伊",
@@ -4936,7 +4936,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "利爪德鲁伊 mage-only 德鲁伊 力量14 敏捷14 体质14 红色1 橙色1 棕色1 你成功使十名敌人进入流血状态 击杀十名危害自然生态的敌人 在一伙有组织的敌人威胁自然环境、狩猎野兽动物时发起突袭轮次，在突袭轮次结束阶段前结束这场战斗环节，并确保有敌人感受到大自然的怒火而逃之夭夭 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "利爪德鲁伊 mage-only 德鲁伊 力量14 敏捷14 体质14 红色1 橙色1 棕色1 你成功使十名敌人进入流血状态 击杀十名危害自然生态的敌人 在一伙有组织的敌人威胁自然环境、狩猎野兽动物时发起突袭轮次，在突袭轮次结束阶段前结束这场战斗环节，并确保有敌人感受到大自然的怒火而逃之夭夭 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-mage-炼金术士",
@@ -5689,7 +5689,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "密探 class-advancement 牧师 游荡者 吟游诗人 魔契师 感知15 橙色1 紫色1 黑色1 你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力 你知晓了三个非己方阵营机构、教团或组织的隐藏据点 揭露一场惊天阴谋 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "密探 class-advancement 牧师 游荡者 吟游诗人 魔契师 感知15 橙色1 紫色1 黑色1 你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力 你知晓了三个非己方阵营机构、教团或组织的隐藏据点 揭露一场惊天阴谋 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-bard-明星决斗家",
@@ -5900,7 +5900,7 @@
       "inferenceBlurb": "名称指向魔武双修/近战方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "魔剑士 class-advancement 战士 法师 吟游诗人 魔契师 敏捷12 智力15 蓝色1 橙色1 紫色1 使用魔法类型的剑类武器参与十场战斗环节 为你的剑类武器附加十种不同的增益效果 将你所持有的武器铸就成魔剑 gish melee 名称指向魔武双修/近战方向，具体技能以规则书为准 documented"
+      "searchText": "魔剑士 class-advancement 战士 法师 吟游诗人 魔契师 敏捷12 智力15 蓝色1 橙色1 紫色1 使用魔法类型的剑类武器参与十场战斗环节 为你的剑类武器附加十种不同的增益效果 将你所持有的武器铸就成魔剑 gish melee 名称指向魔武双修/近战方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-mage-魔药学家",
@@ -6024,7 +6024,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "牧魂人 class-advancement 德鲁伊 萨满祭司 感知16 青色1 棕色1 白色1 为十名在自然界中死亡的己方阵营角色举行安息仪式 累计十次将生命值降至0或更低的角色生命值回复到至少1点 陪同并确保一名未能安息的亡魂在自然环境下存续一周时长，使其能够完成执念并最终得以安息 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "牧魂人 class-advancement 德鲁伊 萨满祭司 感知16 青色1 棕色1 白色1 为十名在自然界中死亡的己方阵营角色举行安息仪式 累计十次将生命值降至0或更低的角色生命值回复到至少1点 陪同并确保一名未能安息的亡魂在自然环境下存续一周时长，使其能够完成执念并最终得以安息 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-barb-逆流勇士",
@@ -6483,7 +6483,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "骑兵 class-advancement 战士 牧师 力量14 体质14 魅力15 橙色1 紫色1 棕色1 你的特殊专长中包含有冲锋手、枪兵或骑乘战斗 你在保持骑乘状态的情况下完成五场战斗环节 为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented"
+      "searchText": "骑兵 class-advancement 战士 牧师 力量14 体质14 魅力15 橙色1 紫色1 棕色1 你的特殊专长中包含有冲锋手、枪兵或骑乘战斗 你在保持骑乘状态的情况下完成五场战斗环节 为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-common-骑士扈从",
@@ -6553,7 +6553,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "旗手 class-advancement 战士 牧师 魅力15 红色1 黄色1 紫色1 为友方角色提供二十次增益效果 在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态 亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "旗手 class-advancement 战士 牧师 魅力15 红色1 黄色1 紫色1 为友方角色提供二十次增益效果 在自身生命值降至0或更低后重新恢复行动能力，并在这场战斗环节结束前未再次进入濒死状态 亲手制作一面象征阵营、信仰或个人荣誉的战旗，并携带这面旗帜完整参与一场战役 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-monk-麒麟尊者",
@@ -6642,7 +6642,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "前锋 class-advancement 蛮斗士 战士 牧师 圣骑士 武僧 力量14 敏捷12 体质14 橙色1 黄色1 浅色1 你的特殊专长中包含有冲锋手或大步奔行 在十场战斗环节中作为团队中率先发起攻击的角色 在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "前锋 class-advancement 蛮斗士 战士 牧师 圣骑士 武僧 力量14 敏捷12 体质14 橙色1 黄色1 浅色1 你的特殊专长中包含有冲锋手或大步奔行 在十场战斗环节中作为团队中率先发起攻击的角色 在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-artificer-枪炮师",
@@ -7062,7 +7062,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "神射手 class-advancement 战士 猎人 奇械师 敏捷15 感知15 橙色1 青色1 浅色1 进行三十次成功的攻击命中检定 连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算） 在一次劣势或极大劣势的攻击中触发暴击 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "神射手 class-advancement 战士 猎人 奇械师 敏捷15 感知15 橙色1 青色1 浅色1 进行三十次成功的攻击命中检定 连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算） 在一次劣势或极大劣势的攻击中触发暴击 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-priest-神谕使者",
@@ -7146,7 +7146,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "升腾者 class-advancement 萨满祭司 魔契师 体质15 感知12 幸运12 蓝色1 青色1 白色1 你的特殊专长中包含有元素亲和、仪式魔法或弥补短板 吸收一名精英级或以上元素生物的核心能量 使自身类别被视为元素生物 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准 documented documented"
+      "searchText": "升腾者 class-advancement 萨满祭司 魔契师 体质15 感知12 幸运12 蓝色1 青色1 白色1 你的特殊专长中包含有元素亲和、仪式魔法或弥补短板 吸收一名精英级或以上元素生物的核心能量 使自身类别被视为元素生物 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-hunter-生存专家",
@@ -7232,7 +7232,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "圣洁骑士 class-advancement 牧师 圣骑士 魔契师 魅力16 黄色1 青色1 白色1 主持三场公正的决断，通过高尚的言行令众人信服 完成五次善举并获得他人的感激（不计算玩家在内） 使你高洁的品格成为世人学习的楷模，你的事迹被记载于地方政权或教会的典籍中激励着后辈 完成十次善举并获得他人的感激（不计算玩家在内） tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented"
+      "searchText": "圣洁骑士 class-advancement 牧师 圣骑士 魔契师 魅力16 黄色1 青色1 白色1 主持三场公正的决断，通过高尚的言行令众人信服 完成五次善举并获得他人的感激（不计算玩家在内） 使你高洁的品格成为世人学习的楷模，你的事迹被记载于地方政权或教会的典籍中激励着后辈 完成十次善举并获得他人的感激（不计算玩家在内） tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-priest-圣乐演奏家",
@@ -7482,7 +7482,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "狮心骑士 mage-only 圣骑士 力量15 体质15 红色1 黄色1 橙色1 为了呵斥恶徒、主持公正或震慑场面而进行十次恐吓检定 正面击败二十名邪恶阵营角色（不计算玩家在内） 在他人已然放弃希望之际，以高傲的姿态向那些邪恶势力证明你们永不屈服，并在劣势场景下转败为胜 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented"
+      "searchText": "狮心骑士 mage-only 圣骑士 力量15 体质15 红色1 黄色1 橙色1 为了呵斥恶徒、主持公正或震慑场面而进行十次恐吓检定 正面击败二十名邪恶阵营角色（不计算玩家在内） 在他人已然放弃希望之际，以高傲的姿态向那些邪恶势力证明你们永不屈服，并在劣势场景下转败为胜 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-artificer-拾荒工匠",
@@ -7569,7 +7569,7 @@
       "inferenceBlurb": "名称指向护卫/承伤方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "守护骑士 class-advancement 牧师 圣骑士 魔契师 体质15 意志15 黄色1 青色1 紫色1 你为了守护无辜的人们而主动发起十场战斗 完成五次善举并获得他人的感激（不计算玩家在内） 你挫败了一场巨大的邪恶并因此挽救了数百人的生命 完成十次善举并获得他人的感激（不计算玩家在内） tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented"
+      "searchText": "守护骑士 class-advancement 牧师 圣骑士 魔契师 体质15 意志15 黄色1 青色1 紫色1 你为了守护无辜的人们而主动发起十场战斗 完成五次善举并获得他人的感激（不计算玩家在内） 你挫败了一场巨大的邪恶并因此挽救了数百人的生命 完成十次善举并获得他人的感激（不计算玩家在内） tank defense 名称指向护卫/承伤方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-hunter-兽群领主",
@@ -7610,7 +7610,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "兽群领主 class-advancement 猎人 德鲁伊 魅力15 绿色1 粉色1 棕色1 你拥有至少两只野兽伙伴并保持着亲密关系 令你的野兽伙伴击杀二十名角色 通过你的野兽伙伴逆转一场原先绝无希望的战局 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "兽群领主 class-advancement 猎人 德鲁伊 魅力15 绿色1 粉色1 棕色1 你拥有至少两只野兽伙伴并保持着亲密关系 令你的野兽伙伴击杀二十名角色 通过你的野兽伙伴逆转一场原先绝无希望的战局 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-hunter-鼠王",
@@ -8029,7 +8029,7 @@
       "inferenceBlurb": "名称指向通用进阶/成长方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "塑形者 universal 全职业 力量X 敏捷X 体质X 智力X 感知X 魅力X 意志X 幸运X 无色3 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业 general progression 名称指向通用进阶/成长方向，具体技能以规则书为准 documented"
+      "searchText": "塑形者 universal 全职业 力量X 敏捷X 体质X 智力X 感知X 魅力X 意志X 幸运X 无色3 你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度 你的特殊专长中包含有强化属性、技巧专家、镜子大师或弥补短板 你所在团队的所有其他角色均完成进阶职业 general progression 名称指向通用进阶/成长方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-sorcerer-天启术士",
@@ -8534,7 +8534,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "武器大师 class-advancement 战士 猎人 牧师 圣骑士 奇械师 力量15 敏捷12 体质12 橙色1 紫色1 黑色1 你的特殊专长中包含有技巧专家、武器精通或战技专家 在战斗环节中累计使用过全部武器类别发起过攻击 持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "武器大师 class-advancement 战士 猎人 牧师 圣骑士 奇械师 力量15 敏捷12 体质12 橙色1 紫色1 黑色1 你的特殊专长中包含有技巧专家、武器精通或战技专家 在战斗环节中累计使用过全部武器类别发起过攻击 持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-mage-戏法师",
@@ -9375,7 +9375,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "熊战士 class-advancement 蛮斗士 战士 猎人 萨满祭司 力量15 体质15 绿色1 橙色1 棕色1 你的特殊专长中包含有强化属性、擒抱者、健壮或韧性 赢得十次力量对抗的胜利 掌握“野兽的心脏”，并将熊之图腾烙印在自身的血脉当中 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "熊战士 class-advancement 蛮斗士 战士 猎人 萨满祭司 力量15 体质15 绿色1 橙色1 棕色1 你的特殊专长中包含有强化属性、擒抱者、健壮或韧性 赢得十次力量对抗的胜利 掌握“野兽的心脏”，并将熊之图腾烙印在自身的血脉当中 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warlock-秀逗魔导士",
@@ -9418,7 +9418,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "秀逗魔导士 class-advancement 术士 吟游诗人 魔契师 魅力15 幸运15 青色1 粉色1 白色1 在公众场合下施展二十个戏法 分别执行五次成功的表演检定和五次失败的表演检定 在一场关键行动中由你为团队带来巨大的危机，随后凭借自身出众的个人魅力和应变能力带领大家化险为夷 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "秀逗魔导士 class-advancement 术士 吟游诗人 魔契师 魅力15 幸运15 青色1 粉色1 白色1 在公众场合下施展二十个戏法 分别执行五次成功的表演检定和五次失败的表演检定 在一场关键行动中由你为团队带来巨大的危机，随后凭借自身出众的个人魅力和应变能力带领大家化险为夷 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-sorcerer-虚空之嗣",
@@ -10003,7 +10003,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "耀阳德鲁伊 mage-only 德鲁伊 感知16 红色1 黄色1 橙色1 在日光环境下，通过太阳法术击败十名角色（不计算玩家在内） 进入十次日耀状态 携带太阳花和明焰石，攀登至当前地区的最高峰或在极昼环境下，于烈阳照耀最为鼎盛的时段完成耀阳德鲁伊的进阶 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "耀阳德鲁伊 mage-only 德鲁伊 感知16 红色1 黄色1 橙色1 在日光环境下，通过太阳法术击败十名角色（不计算玩家在内） 进入十次日耀状态 携带太阳花和明焰石，攀登至当前地区的最高峰或在极昼环境下，于烈阳照耀最为鼎盛的时段完成耀阳德鲁伊的进阶 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-druid-野火德鲁伊",
@@ -10797,7 +10797,7 @@
       "inferenceBlurb": "名称指向预言/信息方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "预言家 mage-only 法师 魔契师 智力15 感知15 青色1 粉色1 白色1 通过任意方式将二十次失败检定转变为成功 以预言作为引子改变十名角色的人生轨迹、或是阻止不幸场景的发生 使众人信服你为能够通晓未来的先知 divination utility 名称指向预言/信息方向，具体技能以规则书为准 documented documented"
+      "searchText": "预言家 mage-only 法师 魔契师 智力15 感知15 青色1 粉色1 白色1 通过任意方式将二十次失败检定转变为成功 以预言作为引子改变十名角色的人生轨迹、或是阻止不幸场景的发生 使众人信服你为能够通晓未来的先知 divination utility 名称指向预言/信息方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-mage-元素法师",
@@ -11053,7 +11053,7 @@
       "inferenceBlurb": "名称与条件指向火焰/爆发输出方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "原始人英雄 mage-only 蛮斗士 力量15 体质15 智力10 红色1 绿色1 棕色1 在不使用文明造物的情况下击杀一头超大型或以上体型的单位 在雷暴气候下找寻一只自然诞生的火元素，篡夺其火焰 阻止一次进步的潮流，或者引领一次进步的潮流 fire burst 名称与条件指向火焰/爆发输出方向，具体技能以规则书为准 documented documented"
+      "searchText": "原始人英雄 mage-only 蛮斗士 力量15 体质15 智力10 红色1 绿色1 棕色1 在不使用文明造物的情况下击杀一头超大型或以上体型的单位 在雷暴气候下找寻一只自然诞生的火元素，篡夺其火焰 阻止一次进步的潮流，或者引领一次进步的潮流 fire burst 名称与条件指向火焰/爆发输出方向，具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-warlock-原始术士",
@@ -11091,7 +11091,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "原始术士 mage-only 术士 蓝色1 紫色1 白色1 你通过天赐神通分别拥有公共法术池中点数≤25、26-74、≥75的法术或戏法 你触发过混沌法术带来的法力反噬效果并且未因此而进入力竭状态 在一场关键战役中施展十次混沌法术以觉醒最为原始的混沌力量 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "原始术士 mage-only 术士 蓝色1 紫色1 白色1 你通过天赐神通分别拥有公共法术池中点数≤25、26-74、≥75的法术或戏法 你触发过混沌法术带来的法力反噬效果并且未因此而进入力竭状态 在一场关键战役中施展十次混沌法术以觉醒最为原始的混沌力量 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-druid-月光德鲁伊",
@@ -11214,7 +11214,7 @@
       "inferenceBlurb": "名称指向医疗/支援方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "战地医师 universal 全职业 智力12 感知14 红色1 青色1 白色1 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役 support healing 名称指向医疗/支援方向，具体技能以规则书为准 documented"
+      "searchText": "战地医师 universal 全职业 智力12 感知14 红色1 青色1 白色1 进行十次成功的医药检定 通过医疗包移除十次中毒或流血的效果 作为医疗人员的身份完整参与一场战役 support healing 名称指向医疗/支援方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-artificer-战地装甲师",
@@ -11299,7 +11299,7 @@
       "inferenceBlurb": "名称指向通用战斗强化方向，具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "战斗大师 universal 全职业 力量13 敏捷14 感知13 橙色1 黑色1 无色1 赢得十场战斗环节的胜利 你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态 取得一场关键战役的最终胜利 martial general 名称指向通用战斗强化方向，具体技能以规则书为准 documented"
+      "searchText": "战斗大师 universal 全职业 力量13 敏捷14 感知13 橙色1 黑色1 无色1 赢得十场战斗环节的胜利 你在战斗环节中满足以下任意两种条件：①进行二十次成功的攻击命中检定②赢得十次属性对抗的胜利③施加过十次异常状态 取得一场关键战役的最终胜利 martial general 名称指向通用战斗强化方向，具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-mage-战斗法师",
@@ -11549,7 +11549,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "指挥官 class-advancement 战士 魔契师 智力12 魅力15 意志12 红色1 蓝色1 橙色1 参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献 在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点 参与一场能够影响局部地区走势的战役并在其中脱颖而出 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "指挥官 class-advancement 战士 魔契师 智力12 魅力15 意志12 红色1 蓝色1 橙色1 参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献 在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点 参与一场能够影响局部地区走势的战役并在其中脱颖而出 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     },
     {
       "id": "adv-sorcerer-仲夏骑士",
@@ -11717,7 +11717,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": true,
-      "searchText": "自然行者 class-advancement 猎人 牧师 德鲁伊 体质15 感知15 绿色1 浅色1 棕色1 进行十次成功的自然检定 拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历 在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented"
+      "searchText": "自然行者 class-advancement 猎人 牧师 德鲁伊 体质15 感知15 绿色1 浅色1 棕色1 进行十次成功的自然检定 拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历 在没有装备、魔法及奇械等外物辅助的情况下，仅凭自然馈赠（例如野果、露水、兽皮）生存一周时长，期间穿越过一片危险区域（例如毒沼、冰川或火山裂隙等环境） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented"
     },
     {
       "id": "adv-common-自由骑士",
@@ -11839,7 +11839,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "documented",
       "mageEligible": false,
-      "searchText": "醉酒大师 mage-only 武僧 敏捷14 感知15 绿色1 青色1 浅色1 品尝过二十种不同类型的酒水 通过饮酒结交了三位能够与之交心的好友（不计算玩家在内） 你取得了一场值得举杯欢庆的胜利，与所有伙伴们通宵达旦的开怀畅饮，在经历了宿醉后领悟醉酒大师的真谛 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented"
+      "searchText": "醉酒大师 mage-only 武僧 敏捷14 感知15 绿色1 青色1 浅色1 品尝过二十种不同类型的酒水 通过饮酒结交了三位能够与之交心的好友（不计算玩家在内） 你取得了一场值得举杯欢庆的胜利，与所有伙伴们通宵达旦的开怀畅饮，在经历了宿醉后领悟醉酒大师的真谛 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准 documented documented documented documented"
     }
   ]
 }
