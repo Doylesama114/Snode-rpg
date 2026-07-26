@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7119',
+    date: '2026-07-26',
+    changes: [
+      '修复CI electron-builder构建失败',
+      '加固release.yml重试与windows-2022'
+    ]
+  },
+
+
+  {
     version: '1.0.7118',
     date: '2026-07-26',
     changes: [
