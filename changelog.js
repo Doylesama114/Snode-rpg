@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7118',
+    date: '2026-07-26',
+    changes: [
+      '帮助页新增额外规则章节',
+      '潜行跳远双持等七条补充裁定入库'
+    ]
+  },
+
+
+  {
     version: '1.0.7117',
     date: '2026-07-26',
     changes: [
