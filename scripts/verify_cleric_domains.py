@@ -56,6 +56,32 @@ b = (ROOT / "electron-app" / "职业页" / "牧师.html").stat().st_size
 if a != b:
     errors.append(f"electron html size mismatch {a} vs {b}")
 
+# Layout: nav/content div balance — orphan </div> pushes deity panels under the sidebar.
+nav = html[html.find("<nav") : html.find("</nav>")]
+nav_bal = len(re.findall(r"<div\b", nav)) - len(re.findall(r"</div>", nav))
+if nav_bal != 0:
+    errors.append(f"nav div imbalance {nav_bal} (extra closes push content under sidebar)")
+content_start = html.find('<div class="content">')
+main_at = html.find("</main>", content_start)
+content_close = html.rfind("</div>", content_start, main_at)
+inside = html[content_start:content_close]
+outside = html[content_close:main_at]
+outside_panels = re.findall(r'id="(pr-panel-[^"]+)"', outside)
+if outside_panels:
+    errors.append(f"deity panels outside .content: {outside_panels}")
+for pid in (
+    "pr-panel-common",
+    "pr-panel-life",
+    "pr-panel-war",
+    "pr-panel-lore",
+    "pr-panel-art",
+    "pr-panel-love",
+    "pr-panel-luck",
+    "pr-panel-secret",
+):
+    if f'id="{pid}"' not in inside:
+        errors.append(f"panel not inside .content: {pid}")
+
 if errors:
     print("FAIL")
     for e in errors:

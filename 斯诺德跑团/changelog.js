@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7123',
+    date: '2026-07-26',
+    changes: [
+      '修复牧师神圣领域子分支正文落入左侧导航列',
+      '清理多余div并加固领域注入/校验'
+    ]
+  },
+
+
+  {
     version: '1.0.7122',
     date: '2026-07-26',
     changes: [

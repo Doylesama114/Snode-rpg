@@ -343,6 +343,45 @@ def build_chips_html(pantheon: list[dict]) -> str:
     return "".join(bits)
 
 
+def trim_excess_div_closes(fragment: str) -> str:
+    """Remove trailing orphan </div> so open/close counts balance (never strip opens)."""
+    while True:
+        opens = len(re.findall(r"<div\b", fragment))
+        closes = len(re.findall(r"</div>", fragment))
+        if closes <= opens:
+            return fragment
+        idx = fragment.rfind("</div>")
+        if idx < 0:
+            return fragment
+        # keep surrounding whitespace tidy
+        start = idx
+        while start > 0 and fragment[start - 1] in "\n\r\t ":
+            start -= 1
+        fragment = fragment[:start] + fragment[idx + 6 :]
+
+
+def find_div_close(html: str, open_at: int) -> int:
+    """Return index of the </div> that matches the <div at open_at."""
+    if not html.startswith("<div", open_at):
+        raise ValueError("open_at must point at <div")
+    depth = 0
+    idx = open_at
+    while idx < len(html):
+        if html.startswith("<div", idx) and (idx + 4 >= len(html) or html[idx + 4] in " \t\n>"):
+            depth += 1
+            gt = html.find(">", idx)
+            idx = gt + 1 if gt != -1 else idx + 4
+            continue
+        if html.startswith("</div>", idx):
+            depth -= 1
+            if depth == 0:
+                return idx
+            idx += 6
+            continue
+        idx += 1
+    raise ValueError("matching </div> not found")
+
+
 def strip_previous(html: str) -> str:
     html = re.sub(
         r"<!-- PR-DEITY-CHIPS -->.*?<!-- /PR-DEITY-CHIPS -->\n?",
@@ -374,10 +413,23 @@ def strip_previous(html: str) -> str:
         html,
         flags=re.S,
     )
-    # unwrap previous common wrappers if re-run
+    # unwrap previous common wrappers if re-run (open+close together, avoid orphan </div>)
+    # Collapse accidental extra </div> before markers (closes .content / nav-inner early).
+    html = re.sub(
+        r"(?:\n?</div>){1,3}\s*<!-- /PR-PANEL-COMMON -->\n?",
+        "\n",
+        html,
+        count=1,
+    )
     html = re.sub(
         r'<div class="deity-panel" data-deity="" id="pr-panel-common">\n?',
         "",
+        html,
+        count=1,
+    )
+    html = re.sub(
+        r"(?:\n?</div>){1,3}\s*<!-- /PR-NAV-COMMON -->\n?",
+        "\n",
         html,
         count=1,
     )
@@ -387,7 +439,7 @@ def strip_previous(html: str) -> str:
         html,
         count=1,
     )
-    # remove orphan closing wrappers markers
+    # leftover markers from older builds
     html = html.replace("<!-- /PR-PANEL-COMMON -->\n", "")
     html = html.replace("<!-- /PR-NAV-COMMON -->\n", "")
     return html
@@ -428,11 +480,15 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
     if pos == -1:
         raise SystemExit("filter-bar not found")
     after = pos + len(marker)
-    # find end of nav-inner before </nav>
+    # Prefer the literal nav-inner closer before </nav>. Do NOT walk by depth here:
+    # leftover orphan </div> from prior injects would make depth match too early.
     nav_end = html.find("</div></nav>", after)
     if nav_end == -1:
-        raise SystemExit("nav end not found")
-    common_nav = html[after:nav_end]
+        m = re.search(r"</div>\s*</nav>", html[after:])
+        if not m:
+            raise SystemExit("nav end not found")
+        nav_end = after + m.start()
+    common_nav = trim_excess_div_closes(html[after:nav_end])
     wrapped_nav = (
         f'\n<div class="deity-nav" data-deity="" id="pr-nav-common">\n'
         f"{common_nav}"
@@ -450,22 +506,39 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
         if cpos == -1:
             raise SystemExit("content marker not found")
     insert_at = cpos + len(content_marker)
-    # find </div>\n</main> that closes content — the content div closes before </main>
-    main_close = html.find("</main>", insert_at)
-    # walk back to content close: last </div> before </main> that closes content
-    # Structure: ...</div></main> where first </div> closes content
-    # Find matching: from content start
     content_start = html.find('<div class="content">', cpos)
-    # naive: find `\n</div>\n</main>` 
-    close_pat = "\n</div>\n</main>"
-    close_at = html.find(close_pat, insert_at)
+    if content_start == -1:
+        raise SystemExit("content start not found")
+    # Use the </div> immediately before </main> — depth-walk can stop early on orphan closes.
+    main_at = html.find("</main>", insert_at)
+    if main_at == -1:
+        raise SystemExit("</main> not found")
+    close_at = html.rfind("</div>", insert_at, main_at)
     if close_at == -1:
-        close_pat = "</div>\n</main>"
-        close_at = html.find(close_pat, insert_at)
-    if close_at == -1:
-        raise SystemExit("content close not found")
+        raise SystemExit("content close not found before </main>")
 
     common_body = html[insert_at:close_at]
+    # Drop stray chips if re-injecting over an already-injected page
+    common_body = re.sub(
+        r"<!-- PR-DEITY-CHIPS -->.*?<!-- /PR-DEITY-CHIPS -->\n?",
+        "",
+        common_body,
+        flags=re.S,
+    )
+    # Drop any domain panels that leaked outside the previous common wrapper
+    common_body = re.sub(
+        r"<!-- PR-DEITY-PANELS -->.*?<!-- /PR-DEITY-PANELS -->\n?",
+        "",
+        common_body,
+        flags=re.S,
+    )
+    common_body = re.sub(
+        r'\n*<div class="deity-panel deity-hidden"[^>]*>.*?(?=(?:<div class="deity-panel"|</div>\s*$))',
+        "",
+        common_body,
+        flags=re.S,
+    )
+    common_body = trim_excess_div_closes(common_body)
     new_body = (
         f"\n{chips}\n"
         f'<div class="deity-panel" data-deity="" id="pr-panel-common">\n'
