@@ -51,6 +51,13 @@
         return marks;
     }
 
+
+    function isSkillInActiveDeityPanel(skill) {
+        var panel = skill.closest ? skill.closest(".deity-panel") : null;
+        if (!panel) return true;
+        return !panel.classList.contains("deity-hidden");
+    }
+
     function FilterController(viewId, prefix) {
         var self = this;
         this.viewId = viewId;
@@ -191,6 +198,10 @@
         if (window.__filterPanel) window.__filterPanel.syncChipStyles();
 
         q("article.skill").forEach(function(skill) {
+            if (!isSkillInActiveDeityPanel(skill)) {
+                skill.classList.add("filter-hidden");
+                return;
+            }
             skill.classList.toggle("filter-hidden", !self.skillMatchesFilters(skill));
         });
 
@@ -249,6 +260,10 @@
         var any = false;
 
         q(".skill").forEach(function(skill) {
+            if (!isSkillInActiveDeityPanel(skill)) {
+                skill.classList.add("hidden");
+                return;
+            }
             var data = (skill.getAttribute("data-search") || "").toLowerCase();
             var text = (skill.textContent || "").toLowerCase();
             var matchAll = terms.every(function(t) { return data.indexOf(t) !== -1 || text.indexOf(t) !== -1; });
