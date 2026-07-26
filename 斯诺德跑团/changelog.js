@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7121',
+    date: '2026-07-26',
+    changes: [
+      '修复启动台帮助点击变成下载',
+      '帮助页改用ASCII路径help.html',
+      'Electron拦截.html误下载并loadFile打开'
+    ]
+  },
+
+
+  {
     version: '1.0.7120',
     date: '2026-07-26',
     changes: [

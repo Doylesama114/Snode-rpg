@@ -546,6 +546,29 @@ function createWindow() {
   Menu.setApplicationMenu(null);
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
 
+  // 中文文件名 / asar 偶发把 .html 导航误判为下载；取消下载并改为页面内打开
+  mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
+    const name = item.getFilename() || '';
+    const url = item.getURL() || '';
+    let decoded = url;
+    try { decoded = decodeURIComponent(url); } catch (_) {}
+    if (!/\.html?$/i.test(name) && !/\.html?(?:[?#]|$)/i.test(decoded)) return;
+    event.preventDefault();
+    const target = webContents && !webContents.isDestroyed() ? webContents : mainWindow.webContents;
+    if (!target || target.isDestroyed()) return;
+    // 帮助页统一落到 ASCII 文件，避免 file:// 中文路径再次触发下载
+    if (/help\.html|\u5e2e\u52a9\.html|%E5%B8%AE%E5%8A%A9/i.test(url + name + decoded)) {
+      target.loadFile(path.join(__dirname, '\u65af\u8bfa\u5fb7\u8dd1\u56e2', 'help.html')).catch(() => {});
+      return;
+    }
+    if (decoded.startsWith('file://')) {
+      let fp = decoded.replace(/^file:\/\//i, '');
+      if (/^\/[A-Za-z]:/.test(fp)) fp = fp.slice(1);
+      fp = decodeURIComponent(fp).replace(/\//g, path.sep);
+      target.loadFile(fp).catch(() => {});
+    }
+  });
+
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
     if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) return;
