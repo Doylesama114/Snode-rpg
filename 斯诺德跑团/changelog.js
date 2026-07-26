@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7116',
+    date: '2026-07-26',
+    changes: [
+      '战士武僧诗人法师docx内容同步',
+      '法师新增约58技能与防范箭矢改名',
+      '战士七阶10技能入库',
+      '搜索索引与面板SKILL_DATA更新'
+    ]
+  },
+
+
+  {
     version: '1.0.7115',
     date: '2026-07-26',
     changes: [

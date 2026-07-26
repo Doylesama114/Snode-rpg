@@ -31,7 +31,7 @@ print(f"\nSkills without 标识 ({len(no_mark)}): {no_mark[:20]}{'...' if len(no
 checks = [
     ("b-starting-skill-1", "激励乐章", False),
     ("b-skill-1", "雷鸣和弦", True),
-    ("b-skill-120", "冲锋号角", False),
+    ("b-skill-120", "冲锋号角", True),  # docx 更新后补全标识 橙+浅
     ("b-skill-122", "弗拉门戈狂击", True),
     ("b-skill-149", "铜管重音", True),
 ]

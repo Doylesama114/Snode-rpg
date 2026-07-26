@@ -35,8 +35,14 @@ from class_sync_core import (  # noqa: E402
     tags_from_keywords,
 )
 
-# Hard allow-list for this apply path (plan: only bard 五阶 writes site)
-ALLOWED = {("吟游诗人", "五阶")}
+# Hard allow-list for this apply path.
+# 法师六/七/四阶新增走 scripts/apply_mage_missing_extract.py（HTML 结构不同）。
+ALLOWED = {
+    ("吟游诗人", "五阶"),
+    ("法师", "四阶"),
+    ("法师", "六阶"),
+    ("法师", "七阶"),
+}
 
 STYLE_ORDER = ["激昂", "舒缓", "灵动", "诙谐", "集中"]
 STYLE_CHIP = {
@@ -47,7 +53,15 @@ STYLE_CHIP = {
     "集中": "#FFD43B",
 }
 ID_PREFIX = "b-skill"
-TIER_NUM = {"一阶": "1", "二阶": "2", "三阶": "3", "四阶": "4", "五阶": "5"}
+TIER_NUM = {
+    "一阶": "1",
+    "二阶": "2",
+    "三阶": "3",
+    "四阶": "4",
+    "五阶": "5",
+    "六阶": "6",
+    "七阶": "7",
+}
 
 
 def skill_key(s: dict) -> tuple:
@@ -347,12 +361,18 @@ def main() -> None:
     if key not in ALLOWED:
         raise SystemExit(
             f"apply refused: only allowed pairs are {sorted(ALLOWED)}; got {key}. "
-            "Image/fixture extracts (e.g. 法师七阶) must never be applied."
+            "Image/fixture extracts must never be applied."
         )
 
     extract_path = args.extract or (ROOT / "scripts" / "extracts" / f"{args.class_name}.json")
     if not extract_path.exists():
         raise SystemExit(f"missing extract: {extract_path}")
+
+    if args.class_name == "法师":
+        raise SystemExit(
+            "法师新增技能请使用: python scripts/apply_mage_missing_extract.py "
+            f"(已允许门禁 {key}，但 HTML 结构需专用脚本)"
+        )
 
     report = apply_bard_tier5(extract_path, dry_run=args.dry_run)
     print(json.dumps(report, ensure_ascii=False, indent=2))
