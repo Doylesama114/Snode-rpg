@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7111',
+    date: '2026-07-26',
+    changes: [
+      '暗红#851321归一为棕色',
+      '全局搜索去掉暗红色板',
+      'search-index重建'
+    ]
+  },
+
+
+  {
     version: '1.0.7110',
     date: '2026-07-26',
     changes: [

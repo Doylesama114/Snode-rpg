@@ -12,8 +12,7 @@
         { hex: "#843F0B", name: "棕", light: false },
         { hex: "#FFFFFF", name: "白", light: true },
         { hex: "#595959", name: "黑", light: false },
-        { hex: "#D9D9D9", name: "无", light: true },
-        { hex: "#851321", name: "无", light: false }
+        { hex: "#D9D9D9", name: "无", light: true }
     ];
     var metaByHex = {};
     MARK_META.forEach(function(m) { metaByHex[m.hex.toUpperCase()] = m; });
@@ -33,7 +32,7 @@
 
     function canonicalizeMarkHex(h) {
         if (window.snowdCanonicalizeMarkHex) return window.snowdCanonicalizeMarkHex(h);
-        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3" };
+        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3", "#851321": "#843F0B" };
         h = normHex(h);
         return aliases[h] || h;
     }

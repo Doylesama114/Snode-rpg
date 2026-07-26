@@ -18,7 +18,7 @@
 
     function canonicalizeMarkHex(h) {
         if (window.snowdCanonicalizeMarkHex) return window.snowdCanonicalizeMarkHex(h);
-        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3" };
+        var aliases = { "#808080": "#595959", "#F79646": "#EE822F", "#FF66CC": "#FFB7E3", "#851321": "#843F0B" };
         h = normHex(h);
         return aliases[h] || h;
     }
