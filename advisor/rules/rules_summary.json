@@ -34,6 +34,6 @@
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
     "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
     "L3 进阶库：281 条（全职业·进阶 docx 同步后去重合并）",
-    "L3A 进阶技能：advancement_skills.json（27/281 条 documented）"
+    "L3A 进阶技能：advancement_skills.json（49/281 条 documented）"
   ]
 }

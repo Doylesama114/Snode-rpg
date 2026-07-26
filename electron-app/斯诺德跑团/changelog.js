@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7113',
+    date: '2026-07-26',
+    changes: [
+      '已公布进阶docx一键入库49条',
+      '跳过冰霜法师',
+      'Advisor documented27→49',
+      '途径页解锁查看详情'
+    ]
+  },
+
+
+  {
     version: '1.0.7112',
     date: '2026-07-26',
     changes: [
