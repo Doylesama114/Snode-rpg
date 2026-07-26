@@ -66,10 +66,14 @@ export function advancementToChunk(adv, scope) {
     mageEligible: (adv.source_classes || []).some((c) => c === '法师' || c === '全职业'),
     searchText: '',
   };
+  if (adv.branch) chunk.branches = [adv.branch];
+  if (adv.branch_full) chunk.branchFulls = [adv.branch_full];
   chunk.searchText = [
     chunk.name,
     chunk.scope,
     ...(chunk.sourceClasses || []),
+    ...(chunk.branches || []),
+    ...(chunk.branchFulls || []),
     ...Object.entries(chunk.attrsRequired).map(([k, v]) => `${k}${v}`),
     ...chunk.markCost.map((m) => `${m.name}${m.amount}`),
     ...(chunk.conditions || []),

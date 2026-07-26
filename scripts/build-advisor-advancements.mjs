@@ -62,6 +62,12 @@ function mergeEntry(existing, adv, scope) {
   })));
   const condSet = new Set([...(existing.conditions || []), ...(adv.conditions || [])]);
   existing.conditions = [...condSet];
+  if (adv.branch) {
+    existing.branches = [...new Set([...(existing.branches || []), adv.branch])];
+  }
+  if (adv.branch_full) {
+    existing.branchFulls = [...new Set([...(existing.branchFulls || []), adv.branch_full])];
+  }
   existing.mageEligible = sourceClasses.some((c) => CASTER_CLASSES.has(c));
   const { inferenceTag, inferenceBlurb } = inferAdvancementTags({
     name: existing.name,
@@ -73,6 +79,8 @@ function mergeEntry(existing, adv, scope) {
     existing.name,
     existing.scope,
     ...sourceClasses,
+    ...(existing.branches || []),
+    ...(existing.branchFulls || []),
     ...Object.entries(existing.attrsRequired).map(([k, v]) => `${k}${v}`),
     ...(existing.markCost || []).map((m) => `${m.name}${m.amount}`),
     ...(existing.conditions || []),
@@ -155,7 +163,7 @@ export function buildAdvancementsCatalog(options = {}) {
       catalogCount: advancements.length,
       scopeCounts,
       universalNameCount: universalNames.size,
-      dedupeNote: '按进阶名去重；多职业同名条目合并 sourceClasses / 条件 / 标识',
+      dedupeNote: '按进阶名去重；多职业同名合并 sourceClasses；牧师/魔契师写入 branches[]',
       confidenceNote: '默认 metadata_only；documented 由 build-advisor-advancement-skills.mjs 标注',
       generatedAt: new Date().toISOString().slice(0, 10),
     },

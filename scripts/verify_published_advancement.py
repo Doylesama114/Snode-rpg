@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -159,6 +160,59 @@ def main() -> int:
                 errors.append(f"{adv}.insight missing nested {sn} (have {nested})")
             if sn in tops:
                 errors.append(f"{adv} still has top-level table {sn}")
+
+    # detail-btn integrity: no cross-card wrong data-adv-name / undocumented unlock
+    article_re = re.compile(r"<article\b([^>]*)>([\s\S]*?)</article>", re.I)
+    name_re = re.compile(r'\bdata-name="([^"]+)"')
+    btn_re = re.compile(
+        r'<button class="(detail-btn|locked-btn)"([^>]*)>'
+    )
+    adv_attr_re = re.compile(r'data-adv-name="([^"]+)"')
+    btn_mismatch = 0
+    for page in (ROOT / "职业页").glob("*·进阶.html"):
+        text = page.read_text(encoding="utf-8")
+        for m in article_re.finditer(text):
+            open_tag, body = m.group(1), m.group(2)
+            nm = name_re.search(open_tag) or name_re.search(body)
+            if not nm:
+                continue
+            card_name = nm.group(1)
+            bm = btn_re.search(body)
+            if not bm:
+                continue
+            kind, attrs = bm.group(1), bm.group(2)
+            adv_m = adv_attr_re.search(attrs)
+            adv_name = adv_m.group(1) if adv_m else None
+            if kind == "detail-btn":
+                if card_name not in names:
+                    errors.append(
+                        f"{page.name}: undocumented '{card_name}' has detail-btn→{adv_name}"
+                    )
+                    btn_mismatch += 1
+                elif adv_name != card_name:
+                    errors.append(
+                        f"{page.name}: '{card_name}' detail-btn points to '{adv_name}'"
+                    )
+                    btn_mismatch += 1
+            elif kind == "locked-btn" and card_name in names:
+                errors.append(f"{page.name}: documented '{card_name}' still locked")
+                btn_mismatch += 1
+            if btn_mismatch >= 20:
+                errors.append("... more detail-btn mismatches truncated")
+                break
+        if btn_mismatch >= 20:
+            break
+
+    # spot: 影舞者 must stay locked; 飞贼 unlocked as itself
+    rogue = (ROOT / "职业页" / "游荡者·进阶.html").read_text(encoding="utf-8")
+    if 'data-name="影舞者"' in rogue:
+        chunk = rogue.split('data-name="影舞者"', 1)[1].split("</article>", 1)[0]
+        if "detail-btn" in chunk:
+            errors.append("游荡者·进阶 影舞者 must stay locked (no published details)")
+        if 'data-adv-name="飞贼"' in chunk:
+            errors.append("游荡者·进阶 影舞者 wrongly bound to 飞贼")
+    if 'data-adv-name="飞贼"' not in rogue:
+        errors.append("游荡者·进阶 missing detail-btn for 飞贼")
 
     skills_path = ROOT / "advisor" / "advancement_skills.json"
     skills = json.loads(skills_path.read_text(encoding="utf-8"))

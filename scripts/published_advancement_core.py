@@ -424,32 +424,56 @@ def upsert_details(extract: dict, existing: list[dict] | None = None) -> tuple[l
 
 
 def refresh_detail_buttons(detail_names: set[str] | None = None) -> dict:
-    """Flip 🔒 未解锁 → 查看详情 for names now in ADVANCEMENT_DETAILS."""
+    """Reconcile each adv-card button with ADVANCEMENT_DETAILS (article-scoped).
+
+    Must NOT match across </article> — a previous cross-article regex caused
+    undocumented cards (e.g. 影舞者) to inherit a neighbour's data-adv-name.
+    """
     if detail_names is None:
         detail_names = {e["name"] for e in load_details_js()}
     changed_files = []
     pages = list(ADV_PAGE.glob("*·进阶.html"))
-    locked_re = re.compile(
-        r'(<article\b[^>]*\bdata-name="([^"]+)"[^>]*>[\s\S]*?)'
-        r'<button class="locked-btn" disabled>🔒 未解锁</button>',
-        re.M,
+    article_re = re.compile(r"(<article\b[^>]*>)([\s\S]*?)(</article>)", re.I)
+    name_re = re.compile(r'\bdata-name="([^"]+)"')
+    btn_re = re.compile(
+        r'<button class="(?:detail-btn|locked-btn)"[^>]*>[\s\S]*?</button>'
     )
+    detail_btn = (
+        '<button class="detail-btn" data-adv-name="{name}">查看详情</button>'
+    )
+    locked_btn = '<button class="locked-btn" disabled>🔒 未解锁</button>'
 
-    def repl(m: re.Match) -> str:
-        name = m.group(2)
-        if name not in detail_names:
+    def fix_article(m: re.Match) -> str:
+        open_tag, body, close_tag = m.group(1), m.group(2), m.group(3)
+        nm = name_re.search(open_tag) or name_re.search(body)
+        if not nm:
             return m.group(0)
-        return (
-            m.group(1)
-            + f'<button class="detail-btn" data-adv-name="{name}">查看详情</button>'
+        name = nm.group(1)
+        want = (
+            detail_btn.format(name=name)
+            if name in detail_names
+            else locked_btn
         )
+
+        def repl_btn(_bm: re.Match) -> str:
+            return want
+
+        new_body, n = btn_re.subn(repl_btn, body, count=1)
+        if n == 0:
+            # No button yet — insert before adv-detail or at end of body
+            insert_at = new_body.find('<div class="adv-detail')
+            if insert_at >= 0:
+                new_body = new_body[:insert_at] + want + "\n        " + new_body[insert_at:]
+            else:
+                new_body = new_body.rstrip() + "\n              " + want + "\n"
+        return open_tag + new_body + close_tag
 
     for page in pages:
         text = page.read_text(encoding="utf-8")
-        new_text, n = locked_re.subn(repl, text)
-        if n:
+        new_text, n = article_re.subn(fix_article, text)
+        if new_text != text:
             page.write_text(new_text, encoding="utf-8", newline="\n")
-            changed_files.append({"file": page.name, "flipped": n})
+            changed_files.append({"file": page.name, "articles_touched": n})
     return {"files": changed_files, "detail_name_count": len(detail_names)}
 
 
