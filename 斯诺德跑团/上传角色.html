@@ -319,6 +319,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},
     containerItems:{"背包":"已解锁","旅行腰包":"已解锁","材料包A":"","材料包B":""},
     racial_traits:[],class_features:[],languages:[],professionals:[],talent_tree:[],
+    blueprints:[],blueprint_bonus_slots:0,
     forbidden_skills:[],unlocked_tiers:["一阶","二阶"]};
   var _r;
 
@@ -452,6 +453,34 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   readSubSkills("子职业（）",2);
   // 天赋列表 shares same data area as 技能列表 - handled by autoCorrect after initial parse
   _r=null;
+
+  // === Blueprints (professional slots): fixed O211-O230 ===
+  s.blueprints=s.blueprints||[];
+  if(typeof s.blueprint_bonus_slots!=="number")s.blueprint_bonus_slots=0;
+  var _bpSeen={};
+  for(var _bi=0;_bi<s.blueprints.length;_bi++){var _bn=s.blueprints[_bi]&&(s.blueprints[_bi].n||s.blueprints[_bi].name);if(_bn)_bpSeen[_bn]=true;}
+  for(var _br=211;_br<=230;_br++){
+    var _bv=(c("O"+_br)||"").trim();
+    if(!_bv||_bv==="-"||_bv==="—"||_bv.indexOf("图纸（专业")===0||_bv.indexOf("专业槽位")>=0)continue;
+    if(!_bpSeen[_bv]){s.blueprints.push({id:"",n:_bv,src:"",tier:"",note:""});_bpSeen[_bv]=true;}
+  }
+  // Migrate misplaced （图纸） from skills / talent_tree
+  var _nsk=[],_i,_sn;
+  for(_i=0;_i<(s.skills||[]).length;_i++){
+    _sn=s.skills[_i]&&(s.skills[_i].n||s.skills[_i].name);
+    if(_sn&&_sn.indexOf("（图纸）")>=0){
+      if(!_bpSeen[_sn]){s.blueprints.push({id:s.skills[_i].id||"",n:_sn,src:s.skills[_i].src||"",tier:s.skills[_i].tier||"",note:""});_bpSeen[_sn]=true;}
+    }else _nsk.push(s.skills[_i]);
+  }
+  s.skills=_nsk;
+  var _ntt=[];
+  for(_i=0;_i<(s.talent_tree||[]).length;_i++){
+    _sn=s.talent_tree[_i]&&(s.talent_tree[_i].n||s.talent_tree[_i].name);
+    if(_sn&&_sn.indexOf("（图纸）")>=0){
+      if(!_bpSeen[_sn]){s.blueprints.push({id:"",n:_sn,src:s.talent_tree[_i].cls||"",tier:s.talent_tree[_i].tier||"",note:""});_bpSeen[_sn]=true;}
+    }else _ntt.push(s.talent_tree[_i]);
+  }
+  s.talent_tree=_ntt;
 
   // === Scan proficiencies from xlsx ===
   var _profDefs={"力量":["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],"敏捷":["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],"体质":["豁免","专注","耐力"],"智力":["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],"感知":["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],"魅力":["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-自定义"],"意志":["豁免","求生","激励","决策"],"幸运":["豁免","机遇","探索"]};
@@ -758,6 +787,18 @@ document.getElementById("fileInput").addEventListener("change", async function(e
       throw new Error("读入单元格过少（"+Object.keys(parsed.cells).length+"个），请确认文件是冒险者角色档案模板");
     }
     pendingState = buildState(parsed); var _corr=autoCorrect(pendingState); _lastCorrections=_corr;
+    // autoCorrect 可能把图纸又放回技能/天赋；再迁一次
+    (function(){
+      var s=pendingState, seen={}, i, n, next;
+      s.blueprints=s.blueprints||[];
+      for(i=0;i<s.blueprints.length;i++){n=s.blueprints[i]&&(s.blueprints[i].n||s.blueprints[i].name);if(n)seen[n]=true;}
+      next=[];
+      for(i=0;i<(s.skills||[]).length;i++){n=s.skills[i]&&(s.skills[i].n||s.skills[i].name);if(n&&n.indexOf("（图纸）")>=0){if(!seen[n]){s.blueprints.push({id:s.skills[i].id||"",n:n,src:s.skills[i].src||"",tier:s.skills[i].tier||"",note:""});seen[n]=true;}}else next.push(s.skills[i]);}
+      s.skills=next; next=[];
+      for(i=0;i<(s.talent_tree||[]).length;i++){n=s.talent_tree[i]&&(s.talent_tree[i].n||s.talent_tree[i].name);if(n&&n.indexOf("（图纸）")>=0){if(!seen[n]){s.blueprints.push({id:"",n:n,src:s.talent_tree[i].cls||"",tier:s.talent_tree[i].tier||"",note:""});seen[n]=true;}}else next.push(s.talent_tree[i]);}
+      s.talent_tree=next;
+    })();
+
       pendingState._uploadedXlsxBuf = buffer;
 	  autoCalcStyles(pendingState); autoUnlockTiers(pendingState); console.log("Styles:",JSON.stringify(pendingState.classes[0].styles),"Tiers:",pendingState.unlocked_tiers);
   var _violations=checkTierViolations(pendingState);

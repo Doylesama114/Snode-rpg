@@ -650,6 +650,79 @@ assert(featDisplayName({ name: '健壮', level: 4 }), '健壮', 'featDisplayName
 assert(featDisplayName('质朴'), '质朴', 'featDisplayName 字符串');
 results.push('</div>');
 
+// =================== T12: Blueprints / professional slots ===================
+results.push('<div class="section"><h3>T12: calcBlueprintSlots / learnSkill 图纸分流 / fillXlsxBlueprints</h3>');
+
+assert(typeof BLUEPRINT_EXPORT_SLOTS, 'number', 'BLUEPRINT_EXPORT_SLOTS 存在');
+assert(BLUEPRINT_EXPORT_SLOTS, 20, '固定 20 格');
+assert(BLUEPRINT_XLSX_CELLS.length, 20, 'BLUEPRINT_XLSX_CELLS 长度 20');
+assert(BLUEPRINT_XLSX_CELLS[0], 'O211', '首格 O211');
+assert(BLUEPRINT_XLSX_CELLS[19], 'O230', '末格 O230');
+assertTrue(isBlueprintName('捕熊陷阱（图纸）'), '识别（图纸）');
+assertFalse(isBlueprintName('捕熊陷阱'), '无后缀非图纸');
+
+state.attrs = state.attrs || {};
+state.attrs['智力'] = 10;
+state.blueprint_bonus_slots = 0;
+state.special_feats = [];
+state.blueprints = [];
+assert(calcBlueprintSlots(), 10, '智力10 → 上限10');
+state.attrs['智力'] = 20;
+assert(calcBlueprintSlots(), 15, '智力20 → 上限15');
+state.special_feats = ['独具匠心'];
+assert(calcBlueprintSlots(), 20, '独具匠心 +5 → 上限20');
+state.blueprint_bonus_slots = 2;
+assert(calcBlueprintSlots(), 22, '手动加成 +2 → 上限22');
+state.special_feats = [];
+state.blueprint_bonus_slots = 0;
+state.attrs['智力'] = 10;
+
+state.skills = [{ n: '捕熊陷阱（图纸）', src: '奇械师' }, { n: '普通技能', src: '战士' }];
+state.talent_tree = [{ n: '某天赋（图纸）', tier: '一阶' }, { n: '普通天赋', tier: '一阶' }];
+state.blueprints = [];
+ensureBlueprintState();
+assert(state.blueprints.length, 2, '迁移后图纸数=2');
+assert(state.skills.length, 1, '迁移后技能仅剩普通');
+assert(state.skills[0].n, '普通技能', '技能栏不含图纸');
+assert(state.talent_tree.length, 1, '迁移后天赋仅剩普通');
+
+state.blueprints = [];
+state.skills = [];
+var _bpWrites = {};
+function _bpSet(ref, val) { _bpWrites[ref] = val; }
+fillXlsxBlueprints(_bpSet, [{ n: '图纸甲（图纸）' }, { n: '图纸乙（图纸）' }]);
+assert(_bpWrites.O210, '图纸（专业槽位）', '导出写标题 O210');
+assert(_bpWrites.O211, '图纸甲（图纸）', '导出首格');
+assert(_bpWrites.O212, '图纸乙（图纸）', '导出次格');
+assert(_bpWrites.O213, '', '清空未用格');
+
+var _bpSkillCountBefore = (state.skills || []).length;
+var _fakeBp = null;
+if (typeof SKILL_DATA !== 'undefined') {
+  for (var _cn in SKILL_DATA) {
+    var _arr = SKILL_DATA[_cn];
+    if (!_arr) continue;
+    for (var _si = 0; _si < _arr.length; _si++) {
+      if (isBlueprintName(_arr[_si].name)) { _fakeBp = { cls: _cn, skill: _arr[_si] }; break; }
+    }
+    if (_fakeBp) break;
+  }
+}
+if (_fakeBp) {
+  // 不调用完整 learnSkill（会 render DOM）；验证分流判定与写入路径
+  state.blueprints = [];
+  state.skills = [{ n: '占位技能', src: '战士' }];
+  var _skBefore = state.skills.length;
+  assertTrue(isBlueprintName(_fakeBp.skill.name), '样本为图纸名: ' + _fakeBp.skill.name);
+  var _add = addBlueprintEntry({ id: _fakeBp.skill.id, n: _fakeBp.skill.name, src: _fakeBp.cls, tier: '', note: '' }, { silent: true });
+  assertTrue(_add.ok, '图纸写入 blueprints 成功');
+  assert(state.skills.length, _skBefore, '图纸写入不增加 skills');
+  assertTrue(state.blueprints.some(function(b){ return (b.n||b.name) === _fakeBp.skill.name; }), 'blueprints 含该图纸');
+} else {
+  assertTrue(true, '跳过图纸样本（SKILL_DATA 无图纸）');
+}
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");
