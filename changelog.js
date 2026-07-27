@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7127',
+    date: '2026-07-27',
+    changes: [
+      '帮助页名望/声望改为表格展示并优化可读性（正负面配色、声望倾向标签）'
+    ]
+  },
+
+
+  {
     version: '1.0.7126',
     date: '2026-07-27',
     changes: [

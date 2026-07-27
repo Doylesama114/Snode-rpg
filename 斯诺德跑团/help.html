@@ -46,6 +46,75 @@ li{margin-bottom:4px}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .card{animation:fadeInUp 0.4s ease-out both}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.16s}.card:nth-child(6){animation-delay:.2s}
 @media (prefers-color-scheme:dark){body{background:#1a1d20;color:#e8e6e3}h1,.section h2,.section h3,.card .num{color:#e8e6e3}.subtitle,.back-link{color:#9d9b98}.back-link:hover{color:#d4a54a}.toc{background:#24272b;border-color:#3a3d40}.toc a{color:#d4a54a}.toc a:hover{color:#e8be5a}.section{background:#24272b;border-color:#3a3d40}.section h2{border-bottom-color:#3a3d40}.note{background:#1a1d20;border-left-color:#d4a54a;color:#9d9b98}.card{background:#1a1d20;border-color:#3a3d40}.card .num{color:#d4a54a}.card .desc{color:#9d9b98}.wrap table th{background:#1a1d20;border-color:#3a3d40}.wrap table td{border-color:#3a3d40;color:#e8e6e3}.wrap table tr:nth-child(even) td{background:rgba(255,255,255,.03)}.p{color:#e8e6e3}}html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1,html.dark .section h2,html.dark .section h3,html.dark .card .num{color:#e8e6e3}html.dark .subtitle,html.dark .back-link{color:#9d9b98}html.dark .back-link:hover{color:#d4a54a}html.dark .toc{background:#24272b;border-color:#3a3d40}html.dark .toc a{color:#d4a54a}html.dark .toc a:hover{color:#e8be5a}html.dark .section{background:#24272b;border-color:#3a3d40}html.dark .section h2{border-bottom-color:#3a3d40}html.dark .note{background:#1a1d20;border-left-color:#d4a54a;color:#9d9b98}html.dark .card{background:#1a1d20;border-color:#3a3d40}html.dark .card .num{color:#d4a54a}html.dark .card .desc{color:#9d9b98}html.dark .wrap table th{background:#1a1d20;border-color:#3a3d40}html.dark .wrap table td{border-color:#3a3d40;color:#e8e6e3}html.dark .wrap table tr:nth-child(even) td{background:rgba(255,255,255,.03)}html.dark .p{color:#e8e6e3}
+
+/* FAME-REP-TABLE-CSS */
+.wrap.table-overview table{font-size:13px}
+.wrap.table-overview th.col-idx,.wrap.table-overview td.col-idx{width:2.5em;text-align:center;white-space:nowrap;color:#a46d1f;font-weight:bold}
+.wrap.table-fame{margin-top:8px}
+.wrap.table-fame table{font-size:13px;table-layout:fixed}
+.wrap.table-fame thead th{position:sticky;top:0;z-index:1;box-shadow:0 1px 0 #d8d2c4}
+.wrap.table-fame .col-lv{width:4.2em;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:bold}
+.wrap.table-fame .col-title{width:5.5em;white-space:nowrap}
+.wrap.table-fame .col-intro{width:38%}
+.wrap.table-fame .col-pos{width:24%;background:rgba(46,125,50,.06)}
+.wrap.table-fame .col-neg{width:24%;background:rgba(183,28,28,.05)}
+.wrap.table-fame th.col-pos{background:#e4efe4;color:#2e5a32}
+.wrap.table-fame th.col-neg{background:#f0e4e4;color:#6b2b2b}
+.wrap.table-fame td.col-pos{border-left:3px solid #6a9a6e}
+.wrap.table-fame td.col-neg{border-left:3px solid #c47a7a}
+.wrap.table-fame tbody tr:hover td{background:#f3efe6}
+.wrap.table-fame tbody tr:hover td.col-pos{background:rgba(46,125,50,.1)}
+.wrap.table-fame tbody tr:hover td.col-neg{background:rgba(183,28,28,.08)}
+.wrap.table-rep table{font-size:13px;table-layout:fixed}
+.wrap.table-rep thead th{position:sticky;top:0;z-index:1;box-shadow:0 1px 0 #d8d2c4}
+.wrap.table-rep .col-rep{width:4.5em;white-space:nowrap;text-align:center}
+.wrap.table-rep .col-pol{width:3.2em;text-align:center;white-space:nowrap}
+.wrap.table-rep .col-intro{width:auto}
+.pol-tag{display:inline-block;min-width:1.6em;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:bold;line-height:1.6}
+.pol-tag.pol-neg{background:#f0e4e4;color:#8b3a3a}
+.pol-tag.pol-mid{background:#edeae2;color:#5a5650}
+.pol-tag.pol-pos{background:#e4efe4;color:#2e5a32}
+.wrap.table-rep tr.pol-neg td.col-rep,.wrap.table-rep tr:has(.pol-neg) td.col-rep{color:#8b3a3a}
+.wrap.table-rep tr:has(.pol-pos) td.col-rep{color:#2e5a32}
+.wrap.table-rep tbody tr:hover td{background:#f3efe6}
+@media(max-width:860px){
+  .wrap.table-fame table{font-size:12px;table-layout:auto}
+  .wrap.table-fame .col-title,.wrap.table-fame .col-lv{white-space:nowrap}
+}
+@media (prefers-color-scheme:dark){
+  .wrap.table-overview th.col-idx,.wrap.table-overview td.col-idx{color:#d4a54a}
+  .wrap.table-fame thead th,.wrap.table-rep thead th{box-shadow:0 1px 0 #3a3d40}
+  .wrap.table-fame .col-pos{background:rgba(76,175,80,.08)}
+  .wrap.table-fame .col-neg{background:rgba(244,67,54,.08)}
+  .wrap.table-fame th.col-pos{background:#243028;color:#a5d6a7}
+  .wrap.table-fame th.col-neg{background:#302424;color:#ef9a9a}
+  .wrap.table-fame td.col-pos{border-left-color:#66bb6a}
+  .wrap.table-fame td.col-neg{border-left-color:#e57373}
+  .wrap.table-fame tbody tr:hover td{background:rgba(255,255,255,.04)}
+  .wrap.table-fame tbody tr:hover td.col-pos{background:rgba(76,175,80,.12)}
+  .wrap.table-fame tbody tr:hover td.col-neg{background:rgba(244,67,54,.12)}
+  .pol-tag.pol-neg{background:#3a2424;color:#ef9a9a}
+  .pol-tag.pol-mid{background:#2a2d30;color:#b0ada8}
+  .pol-tag.pol-pos{background:#243028;color:#a5d6a7}
+  .wrap.table-rep tr:has(.pol-neg) td.col-rep{color:#ef9a9a}
+  .wrap.table-rep tr:has(.pol-pos) td.col-rep{color:#a5d6a7}
+  .wrap.table-rep tbody tr:hover td{background:rgba(255,255,255,.04)}
+}
+html.dark .wrap.table-overview th.col-idx,html.dark .wrap.table-overview td.col-idx{color:#d4a54a}
+html.dark .wrap.table-fame thead th,html.dark .wrap.table-rep thead th{box-shadow:0 1px 0 #3a3d40}
+html.dark .wrap.table-fame .col-pos{background:rgba(76,175,80,.08)}
+html.dark .wrap.table-fame .col-neg{background:rgba(244,67,54,.08)}
+html.dark .wrap.table-fame th.col-pos{background:#243028;color:#a5d6a7}
+html.dark .wrap.table-fame th.col-neg{background:#302424;color:#ef9a9a}
+html.dark .wrap.table-fame td.col-pos{border-left-color:#66bb6a}
+html.dark .wrap.table-fame td.col-neg{border-left-color:#e57373}
+html.dark .pol-tag.pol-neg{background:#3a2424;color:#ef9a9a}
+html.dark .pol-tag.pol-mid{background:#2a2d30;color:#b0ada8}
+html.dark .pol-tag.pol-pos{background:#243028;color:#a5d6a7}
+html.dark .wrap.table-rep tr:has(.pol-neg) td.col-rep{color:#ef9a9a}
+html.dark .wrap.table-rep tr:has(.pol-pos) td.col-rep{color:#a5d6a7}
+/* /FAME-REP-TABLE-CSS */
+
 /* HELP-PAGER-CSS */
 
 .help-pager{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
@@ -532,45 +601,72 @@ html.dark .tts-speaking{outline-color:rgba(212,165,74,.55);background:rgba(212,1
 </div>
 <div class="section" id="s9"><h2>名望等级和声望规则</h2>
 <div class="note">名望衡量知名度广度；声望衡量阵营观感深度。二者独立，且均不直接提供属性加成。</div>
+
 <h3>名望等级的概述</h3>
-<div class="card"><div class="num">1.</div><div class="desc">名望等级不同于角色的职业等级，无法依靠花费经验值的方式来进行提升，其更类似于一种量化角色个人知名度和记录其丰功伟业的机制</div></div>
-<div class="card"><div class="num">2.</div><div class="desc">玩家角色可以通过成为明星提高个人知名度、参与重要事件或抉择或造成巨大影响的方式来提升自己的名望值</div></div>
-<div class="card"><div class="num">3.</div><div class="desc">角色的名望值会根据地区、群体或势力等派别而有所区分，即角色可能在某个地区如雷贯耳、也可能在其他地区籍籍无名</div></div>
-<div class="card"><div class="num">4.</div><div class="desc">正面的名望等级提升往往能够使你在秩序势力得到更多优待，而负面的名望等级（或者说恐惧等级）会使人们对你产生畏惧或厌恶，无论名望等级的来源是正面或负面，随着名望等级的提高你都会变得更难以隐匿自身的踪迹</div></div>
-<div class="card"><div class="num">5.</div><div class="desc">名望等级的提升不会直接给予你属性值或其他数值上的加成，但仍然会带来隐性的收益，例如更难以成为黑魔法或诅咒效果的媒介、在命运的位格上的得到提升</div></div>
-<h3>名望等级的规则</h3>
-<div class="table-wrap"><table>
-<tr><th>名望等级</th><th>称号</th><th>简介</th><th>正面名望</th><th>负面名望</th></tr>
-<tr><td style="white-space:nowrap">0</td><td style="white-space:nowrap"><b>寂寂无名</b></td><td style="word-break:break-word;overflow-wrap:break-word">你是初出茅庐的新人，或者常年隐居的隐士，无人知晓你、也没有人在乎。你的存在感稀薄，在人群之中你不过是模糊的背景板；在酒馆内没人会多看你一眼。即便你曾经做过某事，在将来也许会被归功于他人或当作巧合、又或是被岁月所遗忘。</td><td style="word-break:break-word;overflow-wrap:break-word">无人崇拜，无人追随</td><td style="word-break:break-word;overflow-wrap:break-word">无人警惕，无人畏惧，你的恶行甚至不会被联想到你身上</td></tr>
-<tr><td style="white-space:nowrap">1-2</td><td style="white-space:nowrap"><b>茶余闲谈</b></td><td style="word-break:break-word;overflow-wrap:break-word">你成为了人们茶余饭后的闲谈，被作为故事供人津津乐道。你的名字或绰号开始在特定的酒馆、集市或冒险者公会中流传，人们谈论你更像是在谈论一个“趣闻”或“都市传说”，而非真正认识你，你的形象往往被夸大或扭曲</td><td style="word-break:break-word;overflow-wrap:break-word">偶尔会有当地人请你喝一杯，只为听你亲口讲述那段“传闻”</td><td style="word-break:break-word;overflow-wrap:break-word">小孩哭闹时，大人会吓唬说“再哭XX（你的名字）就来抓你了”，但没人当真</td></tr>
-<tr><td style="white-space:nowrap">3-4</td><td style="white-space:nowrap"><b>略有耳闻</b></td><td style="word-break:break-word;overflow-wrap:break-word">你在当地有些许知名度，人们知道有你这号人物。你已经脱离了“故事主角”的范畴，成了一个“真实存在的人物”，当地的主要城镇、驿站或冒险者公会中，总会有那么些人听说过你的名号，并且能将名字和你的主要事迹对上号</td><td style="word-break:break-word;overflow-wrap:break-word">当地人或许听说过你的名字，你在购买普通补给品时可能会获得少许折扣</td><td style="word-break:break-word;overflow-wrap:break-word">不愿惹事的地痞无赖可能见到你会绕道走，普通平民在与你对话时可能会眼神闪躲、语气发抖</td></tr>
-<tr><td style="white-space:nowrap">5-6</td><td style="white-space:nowrap"><b>小有名气</b></td><td style="word-break:break-word;overflow-wrap:break-word">你在某些圈层或阶层拥有一定知名度，会让一些人开始留意你。你不再只是“当地名人”，而是成了某个特定职业、种族或信仰圈层内的“后起之秀”或“棘手人物”，同行开始收集你的情报、敌对势力开始建立你的档案</td><td style="word-break:break-word;overflow-wrap:break-word">同行或前辈会主动与你攀谈、递出橄榄枝，你可以更容易地“敲开”该圈层重要人物的家门</td><td style="word-break:break-word;overflow-wrap:break-word">黑市上可能会开始出现针对你的刺杀悬赏或抓捕计划，你的标志性作案手法被仇家熟知</td></tr>
-<tr><td style="white-space:nowrap">7-8</td><td style="white-space:nowrap"><b>名声初显</b></td><td style="word-break:break-word;overflow-wrap:break-word">你在某个圈层或阶层开始有所成就，更多的人开始关注起你。你已经踏入了“权威”的门槛，你的意见开始有分量，你的行踪开始被记录。圈层内的中上层人物几乎都听说过你，甚至你开始影响该地区的局部局势</td><td style="word-break:break-word;overflow-wrap:break-word">你会收到正规势力的正式邀请函（晚宴、会议或展会等），你的签名或信物能在某些特定场合具备“通行证”的效力</td><td style="word-break:break-word;overflow-wrap:break-word">你的名字被写入官方通缉令或敌对势力的优先清除名单，你的出现会引起局部骚动或警戒</td></tr>
-<tr><td style="white-space:nowrap">9-10</td><td style="white-space:nowrap"><b>业界知名</b></td><td style="word-break:break-word;overflow-wrap:break-word">你是某个圈层或阶层的名人，那些后辈将你视作榜样。现在你成为了这个圈层教科书式的人物：后辈们研究你的战术、模仿你的穿搭、传颂你的名言。你的名字等同于这个领域的黄金标准</td><td style="word-break:break-word;overflow-wrap:break-word">你会被授予荣誉头衔或特殊徽章，轻易就能招募到高质量的追随者或学徒</td><td style="word-break:break-word;overflow-wrap:break-word">你的恶名成了“梦魇”，你无需动手仅报上名号就能让低阶敌人的士气发生骚动甚至崩溃</td></tr>
-<tr><td style="white-space:nowrap">11-12</td><td style="white-space:nowrap"><b>行业翘楚</b></td><td style="word-break:break-word;overflow-wrap:break-word">你是某个圈层或阶层的标杆或者领军人物，备受众人尊敬，成为人们想要追赶的目标。你已经定义了这个领域的“天花板”，你的决策或许能影响行业的兴衰，圈层的大型聚会若无你出席便会被认为是“不完整的”</td><td style="word-break:break-word;overflow-wrap:break-word">你可以直接向圈层内的最高领袖（如团长、首席法师、国王顾问）提出建议或诉求，你拥有裁决圈层内部纠纷的话语权</td><td style="word-break:break-word;overflow-wrap:break-word">你成了悬在所有人头顶的“审判之剑”，只要传闻你出现在某地，当地秩序势力会进入备战状态，犯罪势力会选择蛰伏</td></tr>
-<tr><td style="white-space:nowrap">13-14</td><td style="white-space:nowrap"><b>如雷贯耳</b></td><td style="word-break:break-word;overflow-wrap:break-word">你在某个圈层或阶层是响当当的大人物，是足以单独出版传记的人物。你的生平被吟游诗人谱写成史诗、被历史学家收录进地方年鉴。你的名字具有“传奇色彩”，不仅是当代人、就连下一代人都会在童年听着你的故事长大</td><td style="word-break:break-word;overflow-wrap:break-word">地方统治者以接见你为荣，你的塑像或画像可能已经出现在公共场所</td><td style="word-break:break-word;overflow-wrap:break-word">你的名字成了禁忌，普通人不愿直呼其名，畏惧你如同畏惧天灾</td></tr>
-<tr><td style="white-space:nowrap">15-16</td><td style="white-space:nowrap"><b>王国大师</b></td><td style="word-break:break-word;overflow-wrap:break-word">你在自己的国度鼎鼎大名，即便是邻国人也知晓你的名讳。你已经超越了行业的局限，成了整个国家的文化符号或精神支柱。你的名讳等同于国力的象征，邻国的情报机构会将你列为国家级战略资产或威胁</td><td style="word-break:break-word;overflow-wrap:break-word">你享有近乎贵族特权乃至王权豁免权，你的请求等同于外交照会</td><td style="word-break:break-word;overflow-wrap:break-word">你的存在让邻国感到不安，甚至成为外交谈判中的筹码，国内罪犯则可能借你的名义狐假虎威</td></tr>
-<tr><td style="white-space:nowrap">17-18</td><td style="white-space:nowrap"><b>世界巨星</b></td><td style="word-break:break-word;overflow-wrap:break-word">你的知名度覆盖所在的整个世界，俨然成为民众生活中的常识。无论你走到世界的哪个角落——北地的冰原、南方的沙漠、东方的群山、西方的海域——只要是有智慧生物聚居的地方，就没有人没听过你的名字，你的存在就像太阳东升西落一样属于“常识”</td><td style="word-break:break-word;overflow-wrap:break-word">你被视为“真正的传奇”或“救世主”，不同国家的元首争相讨好你，你的话语能引发全球性的信仰或思潮动荡</td><td style="word-break:break-word;overflow-wrap:break-word">你是“灭世魔王”的代名词，全球的正义势力都会默认为了对抗你而缔结同盟</td></tr>
-<tr><td style="white-space:nowrap">19-20</td><td style="white-space:nowrap"><b>响彻群星</b></td><td style="word-break:break-word;overflow-wrap:break-word">你的名讳响彻多元宇宙，即便是其他位面的存在也听闻过你的大名和事迹。你的存在超越了主物质位面的局限：在高阶天堂、在永恒炼狱、在妖精荒野、在星界虚空...大天使、恶魔领主、元素君王、古神的低语中，都流传着你的名字</td><td style="word-break:break-word;overflow-wrap:break-word">异位面的善良阵营存在可能会主动向你提供跨位面的援助</td><td style="word-break:break-word;overflow-wrap:break-word">你的名字甚至让恶魔都感到战栗，让天使视为必须净化的终极亵渎</td></tr>
+<div class="wrap table-overview"><table>
+<tr><th class="col-idx">#</th><th>要点</th></tr>
+<tr><td class="col-idx">1</td><td>名望等级不同于角色的职业等级，无法依靠花费经验值的方式来进行提升，其更类似于一种量化角色个人知名度和记录其丰功伟业的机制</td></tr>
+<tr><td class="col-idx">2</td><td>玩家角色可以通过成为明星提高个人知名度、参与重要事件或抉择或造成巨大影响的方式来提升自己的名望值</td></tr>
+<tr><td class="col-idx">3</td><td>角色的名望值会根据地区、群体或势力等派别而有所区分，即角色可能在某个地区如雷贯耳、也可能在其他地区籍籍无名</td></tr>
+<tr><td class="col-idx">4</td><td>正面的名望等级提升往往能够使你在秩序势力得到更多优待，而负面的名望等级（或者说恐惧等级）会使人们对你产生畏惧或厌恶，无论名望等级的来源是正面或负面，随着名望等级的提高你都会变得更难以隐匿自身的踪迹</td></tr>
+<tr><td class="col-idx">5</td><td>名望等级的提升不会直接给予你属性值或其他数值上的加成，但仍然会带来隐性的收益，例如更难以成为黑魔法或诅咒效果的媒介、在命运的位格上的得到提升</td></tr>
 </table></div>
+
+<h3>名望等级一览</h3>
+<div class="note">正面名望表示秩序/友善势力对你的优待倾向；负面名望（恐惧等级）表示畏惧或厌恶。等级越高，隐匿行踪越困难。</div>
+<div class="wrap table-fame"><table>
+<thead><tr>
+<th class="col-lv">等级</th>
+<th class="col-title">称号</th>
+<th class="col-intro">简介</th>
+<th class="col-pos">正面名望</th>
+<th class="col-neg">负面名望</th>
+</tr></thead>
+<tbody>
+<tr><td class="col-lv">0</td><td class="col-title"><b>寂寂无名</b></td><td class="col-intro">你是初出茅庐的新人，或者常年隐居的隐士，无人知晓你、也没有人在乎。你的存在感稀薄，在人群之中你不过是模糊的背景板；在酒馆内没人会多看你一眼。即便你曾经做过某事，在将来也许会被归功于他人或当作巧合、又或是被岁月所遗忘。</td><td class="col-pos">无人崇拜，无人追随</td><td class="col-neg">无人警惕，无人畏惧，你的恶行甚至不会被联想到你身上</td></tr>
+<tr><td class="col-lv">1-2</td><td class="col-title"><b>茶余闲谈</b></td><td class="col-intro">你成为了人们茶余饭后的闲谈，被作为故事供人津津乐道。你的名字或绰号开始在特定的酒馆、集市或冒险者公会中流传，人们谈论你更像是在谈论一个“趣闻”或“都市传说”，而非真正认识你，你的形象往往被夸大或扭曲</td><td class="col-pos">偶尔会有当地人请你喝一杯，只为听你亲口讲述那段“传闻”</td><td class="col-neg">小孩哭闹时，大人会吓唬说“再哭XX（你的名字）就来抓你了”，但没人当真</td></tr>
+<tr><td class="col-lv">3-4</td><td class="col-title"><b>略有耳闻</b></td><td class="col-intro">你在当地有些许知名度，人们知道有你这号人物。你已经脱离了“故事主角”的范畴，成了一个“真实存在的人物”，当地的主要城镇、驿站或冒险者公会中，总会有那么些人听说过你的名号，并且能将名字和你的主要事迹对上号</td><td class="col-pos">当地人或许听说过你的名字，你在购买普通补给品时可能会获得少许折扣</td><td class="col-neg">不愿惹事的地痞无赖可能见到你会绕道走，普通平民在与你对话时可能会眼神闪躲、语气发抖</td></tr>
+<tr><td class="col-lv">5-6</td><td class="col-title"><b>小有名气</b></td><td class="col-intro">你在某些圈层或阶层拥有一定知名度，会让一些人开始留意你。你不再只是“当地名人”，而是成了某个特定职业、种族或信仰圈层内的“后起之秀”或“棘手人物”，同行开始收集你的情报、敌对势力开始建立你的档案</td><td class="col-pos">同行或前辈会主动与你攀谈、递出橄榄枝，你可以更容易地“敲开”该圈层重要人物的家门</td><td class="col-neg">黑市上可能会开始出现针对你的刺杀悬赏或抓捕计划，你的标志性作案手法被仇家熟知</td></tr>
+<tr><td class="col-lv">7-8</td><td class="col-title"><b>名声初显</b></td><td class="col-intro">你在某个圈层或阶层开始有所成就，更多的人开始关注起你。你已经踏入了“权威”的门槛，你的意见开始有分量，你的行踪开始被记录。圈层内的中上层人物几乎都听说过你，甚至你开始影响该地区的局部局势</td><td class="col-pos">你会收到正规势力的正式邀请函（晚宴、会议或展会等），你的签名或信物能在某些特定场合具备“通行证”的效力</td><td class="col-neg">你的名字被写入官方通缉令或敌对势力的优先清除名单，你的出现会引起局部骚动或警戒</td></tr>
+<tr><td class="col-lv">9-10</td><td class="col-title"><b>业界知名</b></td><td class="col-intro">你是某个圈层或阶层的名人，那些后辈将你视作榜样。现在你成为了这个圈层教科书式的人物：后辈们研究你的战术、模仿你的穿搭、传颂你的名言。你的名字等同于这个领域的黄金标准</td><td class="col-pos">你会被授予荣誉头衔或特殊徽章，轻易就能招募到高质量的追随者或学徒</td><td class="col-neg">你的恶名成了“梦魇”，你无需动手仅报上名号就能让低阶敌人的士气发生骚动甚至崩溃</td></tr>
+<tr><td class="col-lv">11-12</td><td class="col-title"><b>行业翘楚</b></td><td class="col-intro">你是某个圈层或阶层的标杆或者领军人物，备受众人尊敬，成为人们想要追赶的目标。你已经定义了这个领域的“天花板”，你的决策或许能影响行业的兴衰，圈层的大型聚会若无你出席便会被认为是“不完整的”</td><td class="col-pos">你可以直接向圈层内的最高领袖（如团长、首席法师、国王顾问）提出建议或诉求，你拥有裁决圈层内部纠纷的话语权</td><td class="col-neg">你成了悬在所有人头顶的“审判之剑”，只要传闻你出现在某地，当地秩序势力会进入备战状态，犯罪势力会选择蛰伏</td></tr>
+<tr><td class="col-lv">13-14</td><td class="col-title"><b>如雷贯耳</b></td><td class="col-intro">你在某个圈层或阶层是响当当的大人物，是足以单独出版传记的人物。你的生平被吟游诗人谱写成史诗、被历史学家收录进地方年鉴。你的名字具有“传奇色彩”，不仅是当代人、就连下一代人都会在童年听着你的故事长大</td><td class="col-pos">地方统治者以接见你为荣，你的塑像或画像可能已经出现在公共场所</td><td class="col-neg">你的名字成了禁忌，普通人不愿直呼其名，畏惧你如同畏惧天灾</td></tr>
+<tr><td class="col-lv">15-16</td><td class="col-title"><b>王国大师</b></td><td class="col-intro">你在自己的国度鼎鼎大名，即便是邻国人也知晓你的名讳。你已经超越了行业的局限，成了整个国家的文化符号或精神支柱。你的名讳等同于国力的象征，邻国的情报机构会将你列为国家级战略资产或威胁</td><td class="col-pos">你享有近乎贵族特权乃至王权豁免权，你的请求等同于外交照会</td><td class="col-neg">你的存在让邻国感到不安，甚至成为外交谈判中的筹码，国内罪犯则可能借你的名义狐假虎威</td></tr>
+<tr><td class="col-lv">17-18</td><td class="col-title"><b>世界巨星</b></td><td class="col-intro">你的知名度覆盖所在的整个世界，俨然成为民众生活中的常识。无论你走到世界的哪个角落——北地的冰原、南方的沙漠、东方的群山、西方的海域——只要是有智慧生物聚居的地方，就没有人没听过你的名字，你的存在就像太阳东升西落一样属于“常识”</td><td class="col-pos">你被视为“真正的传奇”或“救世主”，不同国家的元首争相讨好你，你的话语能引发全球性的信仰或思潮动荡</td><td class="col-neg">你是“灭世魔王”的代名词，全球的正义势力都会默认为了对抗你而缔结同盟</td></tr>
+<tr><td class="col-lv">19-20</td><td class="col-title"><b>响彻群星</b></td><td class="col-intro">你的名讳响彻多元宇宙，即便是其他位面的存在也听闻过你的大名和事迹。你的存在超越了主物质位面的局限：在高阶天堂、在永恒炼狱、在妖精荒野、在星界虚空...大天使、恶魔领主、元素君王、古神的低语中，都流传着你的名字</td><td class="col-pos">异位面的善良阵营存在可能会主动向你提供跨位面的援助</td><td class="col-neg">你的名字甚至让恶魔都感到战栗，让天使视为必须净化的终极亵渎</td></tr>
+</tbody>
+</table></div>
+
 <h3>声望制度的概述</h3>
-<div class="card"><div class="num">1.</div><div class="desc">声望制度与名望等级有所不同，名望用于衡量“谁认识你（广度与知名度）”，而声望则衡量“谁对你有何观感（深度与情感倾向）”</div></div>
-<div class="card"><div class="num">2.</div><div class="desc">声望没有数字等级，而是依照某种递进关系来进行提升，角色的名望等级无关乎在对应阵营的声望，反之亦然</div></div>
-<div class="card"><div class="num">3.</div><div class="desc">提高个人在对应阵营声望值的最佳方式便是为对应阵营提供帮助或援手，处于某些特殊情况可能角色本身并未直接提供帮助、也能够以为间接原因导致声望发生变化（例如杀死了某个组织的仇敌，或者在不经意间促成某件有利于对应势力的事项等）</div></div>
-<div class="card"><div class="num">4.</div><div class="desc">相较于名望等级，声望值的变化可能更加动态、更加令人猝不及防（例如杀死对应势力的重要成员可能导致个人声望迅速下跌）</div></div>
-<h3>声望档位</h3>
-<div class="table-wrap"><table>
-<tr><th>当前声望</th><th>简介</th></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>仇恨</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方视你做首要去除的目标，他们会主动前来追杀你，派出精锐刺客、猎杀小队跨区域追捕。他们与你不共戴天，任何对话的尝试都会失败，对方会不惜代价调动资源置你于死地。你在他们的地盘上进行一切行动都会遭遇最高级别的阻挠，他们会悬赏你的人头、并且主动散布对你不利的信息</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>敌对</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方与你保持敌对状态，如果碰面会毫不留情展开战斗，其成员见到你会立即进入战斗姿态并呼叫支援。他们的据点会对你设置临时警戒，只要你在他们视野内露头便会优先攻击你。但通常他们不会主动来找寻你，或者不会为追杀你而放弃自身主要任务</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>冷淡</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方与你关系冷淡，不愿意进行交流或提供帮助，稍有不慎便可能进入敌对。或许他们能够忍受你的存在，但不会给予任何便利，在进行交易时会抬高价格、任务委托会刻意避开你，或者给予最差最苦的差事</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>中立</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方对你没什么观感，谈不上喜欢或厌恶，只是陌生人而已。在沟通时平淡但礼貌、交易按正常市价，会接受你委托的普通任务，但不会提供额外便利</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>友善</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方表现出友好态度，乐于与你攀谈或分享。只要你不做出逾越之举，便将你视为“自己人”或“可靠的朋友”，愿意闲聊家常、分享非机密情报。他们会主动告知当地小道消息或潜在危险，聚餐聚会愿意叫上你，低级的求助（借宿、借工具）也会得到满足</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>尊敬</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方表现出对你的尊敬，更愿意听从你的话语，并且会主动提供协助。他们将你视为“前辈”、“强者”或“恩人”，你的意见具有分量，并且也愿意为你破例。负责人会亲自接见你，也会主动提供免费情报、基础装备补给，公开场合为你站台；普通成员见到你会主动行礼，甚至愿意为你冒一定风险</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>崇敬</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方将你视作追随之人，或者心中的榜样。你对他们而言近乎精神领袖或守护神，他们会主动为你举办欢迎仪式，内部成员愿意聆听你的教诲；他们的年轻一代会将你作为人生目标，并且以你为荣</td></tr>
-<tr><td style="width:100px;white-space:nowrap"><b>崇拜</b></td><td style="word-break:break-word;overflow-wrap:break-word">对方对你抱有强烈的正向情感，甚至可能演变为信仰。你是他们的“神”、“救世主”或“终极理想”，他们对你的忠诚近乎是无条件的。你可以完全支配该阵营的绝大多数资源（包括军队调动），他们的仇敌就是你的仇敌。即便你失踪多年，他们依然会世世代代传颂你、寻找你</td></tr>
+<div class="wrap table-overview"><table>
+<tr><th class="col-idx">#</th><th>要点</th></tr>
+<tr><td class="col-idx">1</td><td>声望制度与名望等级有所不同，名望用于衡量“谁认识你（广度与知名度）”，而声望则衡量“谁对你有何观感（深度与情感倾向）”</td></tr>
+<tr><td class="col-idx">2</td><td>声望没有数字等级，而是依照某种递进关系来进行提升，角色的名望等级无关乎在对应阵营的声望，反之亦然</td></tr>
+<tr><td class="col-idx">3</td><td>提高个人在对应阵营声望值的最佳方式便是为对应阵营提供帮助或援手，处于某些特殊情况可能角色本身并未直接提供帮助、也能够以为间接原因导致声望发生变化（例如杀死了某个组织的仇敌，或者在不经意间促成某件有利于对应势力的事项等）</td></tr>
+<tr><td class="col-idx">4</td><td>相较于名望等级，声望值的变化可能更加动态、更加令人猝不及防（例如杀死对应势力的重要成员可能导致个人声望迅速下跌）</td></tr>
+</table></div>
+
+<h3>声望档位一览</h3>
+<div class="note">声望按递进关系变化，衡量某一阵营对你的观感深度；与名望等级无关。下表由敌对到崇拜排列。</div>
+<div class="wrap table-rep"><table>
+<thead><tr>
+<th class="col-rep">声望</th>
+<th class="col-pol">倾向</th>
+<th class="col-intro">效果简述</th>
+</tr></thead>
+<tbody>
+<tr><td class="col-rep"><b>仇恨</b></td><td class="col-pol"><span class="pol-tag pol-neg">负</span></td><td class="col-intro">对方视你做首要去除的目标，他们会主动前来追杀你，派出精锐刺客、猎杀小队跨区域追捕。他们与你不共戴天，任何对话的尝试都会失败，对方会不惜代价调动资源置你于死地。你在他们的地盘上进行一切行动都会遭遇最高级别的阻挠，他们会悬赏你的人头、并且主动散布对你不利的信息</td></tr>
+<tr><td class="col-rep"><b>敌对</b></td><td class="col-pol"><span class="pol-tag pol-neg">负</span></td><td class="col-intro">对方与你保持敌对状态，如果碰面会毫不留情展开战斗，其成员见到你会立即进入战斗姿态并呼叫支援。他们的据点会对你设置临时警戒，只要你在他们视野内露头便会优先攻击你。但通常他们不会主动来找寻你，或者不会为追杀你而放弃自身主要任务</td></tr>
+<tr><td class="col-rep"><b>冷淡</b></td><td class="col-pol"><span class="pol-tag pol-neg">负</span></td><td class="col-intro">对方与你关系冷淡，不愿意进行交流或提供帮助，稍有不慎便可能进入敌对。或许他们能够忍受你的存在，但不会给予任何便利，在进行交易时会抬高价格、任务委托会刻意避开你，或者给予最差最苦的差事</td></tr>
+<tr><td class="col-rep"><b>中立</b></td><td class="col-pol"><span class="pol-tag pol-mid">中</span></td><td class="col-intro">对方对你没什么观感，谈不上喜欢或厌恶，只是陌生人而已。在沟通时平淡但礼貌、交易按正常市价，会接受你委托的普通任务，但不会提供额外便利</td></tr>
+<tr><td class="col-rep"><b>友善</b></td><td class="col-pol"><span class="pol-tag pol-pos">正</span></td><td class="col-intro">对方表现出友好态度，乐于与你攀谈或分享。只要你不做出逾越之举，便将你视为“自己人”或“可靠的朋友”，愿意闲聊家常、分享非机密情报。他们会主动告知当地小道消息或潜在危险，聚餐聚会愿意叫上你，低级的求助（借宿、借工具）也会得到满足</td></tr>
+<tr><td class="col-rep"><b>尊敬</b></td><td class="col-pol"><span class="pol-tag pol-pos">正</span></td><td class="col-intro">对方表现出对你的尊敬，更愿意听从你的话语，并且会主动提供协助。他们将你视为“前辈”、“强者”或“恩人”，你的意见具有分量，并且也愿意为你破例。负责人会亲自接见你，也会主动提供免费情报、基础装备补给，公开场合为你站台；普通成员见到你会主动行礼，甚至愿意为你冒一定风险</td></tr>
+<tr><td class="col-rep"><b>崇敬</b></td><td class="col-pol"><span class="pol-tag pol-pos">正</span></td><td class="col-intro">对方将你视作追随之人，或者心中的榜样。你对他们而言近乎精神领袖或守护神，他们会主动为你举办欢迎仪式，内部成员愿意聆听你的教诲；他们的年轻一代会将你作为人生目标，并且以你为荣</td></tr>
+<tr><td class="col-rep"><b>崇拜</b></td><td class="col-pol"><span class="pol-tag pol-pos">正</span></td><td class="col-intro">对方对你抱有强烈的正向情感，甚至可能演变为信仰。你是他们的“神”、“救世主”或“终极理想”，他们对你的忠诚近乎是无条件的。你可以完全支配该阵营的绝大多数资源（包括军队调动），他们的仇敌就是你的仇敌。即便你失踪多年，他们依然会世世代代传颂你、寻找你</td></tr>
+</tbody>
 </table></div>
 </div>
+
 <div class="section" id="s10"><h2>其他规则</h2>
 <div class="note">以下为常用补充裁定，与各章正文并用。</div>
 <div class="card"><div class="num">1.关于跳远和跳高</div><div class="desc">常规角色默认的跳远和跳高距离等于自身的力量或敏捷属性调整值+跳跃熟练度+1。<br>跳远和跳高仅能够朝直线（斜线）方向进行，即角色无法在空中调整他们的位置。<br>如果一名角色在自身回合中执行过全速移动，那么便不能执行跳远和跳高行动，如同他们无法执行基础移动一样。<br>如果角色在进行跳远或跳高时途经了其他角色，这些角色可以选择是否借机攻击目标。<br>如果角色当前承受了减速、或者其他会导致基础移动力减半的效果影响，那么他们再进行跳远和跳高行动时的距离同样会减半。</div></div>
