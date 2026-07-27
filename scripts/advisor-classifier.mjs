@@ -40,6 +40,7 @@ export const INTENT_TO_CATEGORY = {
   leveling: 'E',
   combat_math: 'F',
   status_rules: 'G',
+  worldview_lore: 'G',
   feat_timing: 'G',
   multiclass: 'G',
   multiclass_req: 'G',
@@ -60,6 +61,7 @@ export const INTENT_TO_CATEGORY = {
 const PANEL_SNAPSHOT_RE = /当前.*build|我的build|面板|快照|已学技能|已有熟练|我还缺|怎么评价|build.*评价|角色现状/;
 const ENTITY_QA_RE = /种族特性|属性加成|什么特性|起始装备|起始资金|背景.*熟练|吸血鬼|人类.*特性/;
 const COMBAT_SHORT_RE = /命中加值|攻击加值|伤害加值|护甲值|防御等级/;
+const WORLDVIEW_LORE_RE = /世界观|设定集|斯诺德大陆|盖茨|雷恩王国|年代记|地图志|九柱神|正神|异教神|邪恶神|拜伦帝国|上古年代|辉煌年代|混乱年代|灰色年代|曙光年代|古老的文明|周边政权|组织势力|雷恩.*节日|雷恩.*神|有哪些.*正神|公正与荣耀|奥法评议|泰瑟兰|轻语森林/;
 
 /**
  * @param {string} intent
@@ -100,6 +102,16 @@ export function classifyQuestion(query, ctx = {}) {
       source: 'structured',
       structured,
       meta: Object.keys(meta).length ? meta : undefined,
+    };
+  }
+
+  // Worldview / setting questions (before build/chargen heuristics)
+  if (WORLDVIEW_LORE_RE.test(q) && !/侍奉哪些神|背景.*神|侍僧/.test(q) && !/加点|购点|技能|进阶|兼职|专长|build|成长路线/.test(q)) {
+    return {
+      category: 'G',
+      intent: 'worldview_lore',
+      confidence: 0.9,
+      source: 'heuristic',
     };
   }
 

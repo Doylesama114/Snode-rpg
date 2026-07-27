@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7125',
+    date: '2026-07-27',
+    changes: [
+      '顾问问答接入世界观 L7 lore 知识库',
+      '设定题意图 worldview_lore 检索',
+      'sync/docx 同步写入 advisor/lore'
+    ]
+  },
+
+
+  {
     version: '1.0.7124',
     date: '2026-07-27',
     changes: [

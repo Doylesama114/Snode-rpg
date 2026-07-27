@@ -6,9 +6,11 @@ Sync 斯诺德世界观架构.docx into 斯诺德跑团/help.html as an in-page
 from __future__ import annotations
 
 import html as html_lib
+import json
 import re
 import shutil
 import zipfile
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -508,6 +510,203 @@ def ensure_tts_script(html: str) -> str:
     return html + tag + "\n"
 
 
+# --- Advisor L7 lore index -------------------------------------------------
+
+LORE_OUT = ROOT / "advisor" / "lore" / "index.json"
+MAX_CHUNK_CHARS = 1100
+
+
+def _slug_id(parts: list[str]) -> str:
+    raw = "-".join(p for p in parts if p)
+    raw = SLUG_NON.sub("-", raw).strip("-")
+    return ("lore-" + (raw[:72] or "chunk")).lower()
+
+
+def _tags_for(title: str, chapter: str, kind: str) -> list[str]:
+    tags: list[str] = []
+    if chapter:
+        tags.append(chapter)
+    if kind == "era" or "年代" in title:
+        tags.append("年代记")
+    if looks_like_festival(title) or "节日" in title or chapter.endswith("节日"):
+        tags.append("节日")
+    if any(k in title for k in ("之神", "女神", "死神", "九柱神")) or "信仰" in chapter or "神灵" in chapter or "神祇" in chapter:
+        tags.append("神祇")
+    if "组织" in chapter or any(k in title for k in ("骑士团", "评议会", "工作室", "协会", "秘社", "战线", "中队", "报刊", "周刊")):
+        tags.append("组织")
+    if "周边" in chapter or any(k in title for k in ("帝国", "公国", "联邦", "联盟", "森林", "王国")):
+        tags.append("政权")
+    if "地图" in chapter or "地图" in title:
+        tags.append("地图")
+    if "律法" in chapter or "贸易" in chapter or "人口" in chapter or "国土" in chapter:
+        tags.append("国情")
+    # dedupe preserve order
+    seen: set[str] = set()
+    out: list[str] = []
+    for t in tags:
+        if t not in seen:
+            seen.add(t)
+            out.append(t)
+    return out
+
+
+def _aliases_for(title: str) -> list[str]:
+    aliases = [normalize_title(title)]
+    nt = normalize_title(title)
+    # drop parenthetical date for festivals: 新年（1月1日） → 新年
+    if "（" in nt:
+        aliases.append(nt.split("（", 1)[0].strip())
+    return [a for a in dict.fromkeys(aliases) if a]
+
+
+def _flush_chunk(
+    chunks: list[dict],
+    *,
+    chapter: str,
+    title: str,
+    level: int,
+    kind: str,
+    body_parts: list[str],
+    used_ids: set[str],
+) -> None:
+    text = "\n".join(p for p in body_parts if p and p.strip()).strip()
+    if not text and not title:
+        return
+    # Skip map-only stubs (title only, no prose)
+    if not text and title in ("斯诺德地图志",):
+        return
+    full = (title + "\n" + text).strip() if title and text and not text.startswith(title) else (text or title)
+    if not full.strip():
+        return
+
+    def emit(piece_title: str, piece_text: str, suffix: str = "") -> None:
+        base = _slug_id([chapter, piece_title or title, suffix])
+        cid = base
+        n = 2
+        while cid in used_ids:
+            cid = f"{base}-{n}"
+            n += 1
+        used_ids.add(cid)
+        chunks.append(
+            {
+                "id": cid,
+                "chapter": chapter or "前言",
+                "title": piece_title or title or chapter or "世界观",
+                "level": level,
+                "text": piece_text.strip(),
+                "aliases": _aliases_for(piece_title or title or chapter),
+                "tags": _tags_for(piece_title or title or "", chapter, kind),
+            }
+        )
+
+    if len(full) <= MAX_CHUNK_CHARS:
+        emit(title, full)
+        return
+
+    # Soft-split long chunks on sentence boundaries
+    head = title.strip()
+    rest = text if text else full
+    if head and rest.startswith(head):
+        rest = rest[len(head) :].lstrip("\n")
+    buf = ""
+    part = 1
+    for sent in re.split(r"(?<=[。！？；\n])", rest):
+        if not sent.strip():
+            continue
+        if buf and len(buf) + len(sent) > MAX_CHUNK_CHARS:
+            piece = (head + "\n" + buf).strip() if head else buf.strip()
+            emit(title, piece, f"p{part}")
+            part += 1
+            buf = sent
+        else:
+            buf += sent
+    if buf.strip():
+        piece = (head + "\n" + buf).strip() if head else buf.strip()
+        emit(title, piece, f"p{part}" if part > 1 else "")
+
+
+def build_lore_chunks(paras: list[str]) -> list[dict]:
+    chunks: list[dict] = []
+    used_ids: set[str] = set()
+    chapter = ""
+    title = ""
+    level = 2
+    kind = "top"
+    body: list[str] = []
+
+    def flush() -> None:
+        nonlocal body
+        _flush_chunk(
+            chunks,
+            chapter=chapter,
+            title=title,
+            level=level,
+            kind=kind,
+            body_parts=body,
+            used_ids=used_ids,
+        )
+        body = []
+
+    for raw in paras:
+        for text in split_glued_heading(raw):
+            k = classify(text)
+            if k == "skip":
+                continue
+            if k == "top":
+                flush()
+                chapter = normalize_title(text)
+                title = chapter
+                level = 2
+                kind = "top"
+                body = [chapter]
+                continue
+            if k in ("sub", "era"):
+                flush()
+                title = normalize_title(text) if k == "sub" else text.strip()
+                level = 3
+                kind = k
+                body = [title]
+                continue
+            if k == "entry":
+                flush()
+                title = normalize_title(text)
+                level = 4
+                kind = "entry"
+                body = [title]
+                continue
+            # para / bullet
+            if not chapter and not title:
+                chapter = "前言"
+                title = "前言"
+                level = 2
+                kind = "top"
+            body.append(text)
+
+    flush()
+    return chunks
+
+
+def write_advisor_lore(paras: list[str] | None = None) -> Path:
+    if paras is None:
+        if not DOCX.exists():
+            raise SystemExit(f"missing {DOCX}")
+        paras = extract_paragraphs(DOCX)
+    chunks = build_lore_chunks(paras)
+    LORE_OUT.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "meta": {
+            "layer": "L7",
+            "source": "斯诺德世界观架构.docx",
+            "generatedAt": date.today().isoformat(),
+            "chunkCount": len(chunks),
+        },
+        "chunks": chunks,
+    }
+    LORE_OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"wrote {LORE_OUT.relative_to(ROOT)} ({len(chunks)} chunks)")
+    return LORE_OUT
+
+
 def mirror_to_electron() -> None:
     ELECTRON_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(HELP, ELECTRON_DIR / "help.html")
@@ -593,7 +792,13 @@ def main() -> None:
 
     mirror_to_electron()
     verify(html, toc)
+    write_advisor_lore(paras)
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] in ("--lore-only", "lore"):
+        write_advisor_lore()
+    else:
+        main()

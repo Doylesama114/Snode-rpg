@@ -145,6 +145,9 @@ export function loadAdvisorStore() {
       ? loadJson('combos/universal_tips.json')
       : { tips: [] },
     classRegistry: loadJson('chargen/class_registry.json'),
+    lore: fs.existsSync(path.join(ADVISOR, 'lore/index.json'))
+      ? loadJson('lore/index.json')
+      : { meta: { layer: 'L7', chunkCount: 0 }, chunks: [] },
   };
   return _cache;
 }
@@ -373,6 +376,59 @@ function searchList(items, getText, queryTokens, limit, filterFn = null) {
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map((x) => x.item);
+}
+
+function loreSearchText(chunk) {
+  const parts = [
+    chunk.title,
+    chunk.chapter,
+    chunk.text,
+    ...(chunk.aliases || []),
+    ...(chunk.tags || []),
+  ];
+  return parts.filter(Boolean).join('\n');
+}
+
+/** Extra score for continuous Chinese phrases (tokenize() only emits singles + whole query). */
+function lorePhraseBonus(query, blob) {
+  let bonus = 0;
+  const q = String(query || '');
+  const hay = String(blob || '');
+  for (let n = 4; n >= 2; n--) {
+    const seen = new Set();
+    for (let i = 0; i <= q.length - n; i++) {
+      const gram = q.slice(i, i + n);
+      if (!/^[\u4e00-\u9fff]+$/.test(gram) || seen.has(gram)) continue;
+      seen.add(gram);
+      if (hay.includes(gram)) bonus += n >= 3 ? 6 : 4;
+    }
+  }
+  return bonus;
+}
+
+function buildLoreResults(store, query, queryTokens, topK) {
+  const chunks = store.lore?.chunks || [];
+  if (!chunks.length) return [];
+  const q = String(query || '');
+  const wantOrthodoxGods = /正神|宗教信仰|七神|获准公开/.test(q);
+  const scored = chunks
+    .map((chunk) => {
+      const blob = loreSearchText(chunk);
+      let score = scoreText(queryTokens, blob) + lorePhraseBonus(q, blob);
+      if (wantOrthodoxGods) {
+        if (/宗教信仰/.test(chunk.title)) score += 24;
+        if ((chunk.tags || []).includes('神祇') && !/异教|邪恶|九柱/.test(chunk.title + chunk.chapter)) {
+          score += 18;
+        }
+        if (/异教|邪恶/.test(chunk.title)) score -= 10;
+      }
+      if (/节日/.test(q) && (chunk.tags || []).includes('节日')) score += 12;
+      if (/组织|骑士团/.test(q) && (chunk.tags || []).includes('组织')) score += 12;
+      return { ...chunk, score };
+    })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || (a.level || 9) - (b.level || 9));
+  return scored.slice(0, topK || 8);
 }
 
 function buildL0Results(store, query, queryTokens, topK) {
@@ -1258,6 +1314,9 @@ export function retrieve(query, options = {}) {
       case 'L5':
         layers.L5 = buildL5Results(store, query, queryTokens, k, retrievalClass);
         break;
+      case 'L7':
+        layers.L7 = buildLoreResults(store, query, queryTokens, k);
+        break;
       default:
         if (layer.startsWith('L2-') && store.classSkillIndexes?.[layer]) {
           layers[layer] = buildL2RegistryResults(store, layer, query, queryTokens, k, l2Opts);
@@ -1511,6 +1570,18 @@ export function formatContext(retrieval) {
       lines.push(`- ${scope}${t.title}: ${t.summary}`);
     }
     lines.push('');
+  }
+
+  if (retrieval.results.L7?.length) {
+    lines.push('## 世界观');
+    for (const c of retrieval.results.L7.slice(0, 10)) {
+      const loc = [c.chapter, c.title].filter(Boolean).join(' · ');
+      lines.push(`### ${loc}`);
+      const body = String(c.text || '').slice(0, 1400);
+      lines.push(body);
+      if (c.tags?.length) lines.push(`（标签: ${c.tags.join('、')}）`);
+      lines.push('');
+    }
   }
 
   lines.push('---');

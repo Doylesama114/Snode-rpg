@@ -470,6 +470,40 @@
       "expectIntent": "build_review",
       "mustInclude": ["Tools 层", "Build 评价", "可学技能位阶", "芙兰"],
       "mustNotInclude": ["当前资料未收录此项"]
+    },
+    {
+      "id": "worldview-rain-gods",
+      "query": "雷恩有哪些正神",
+      "expectIntent": "worldview_lore",
+      "mustInclude": ["## 世界观", "公正与荣耀之神", "雷恩"],
+      "mustNotInclude": ["L2 法师技能", "购点"]
+    },
+    {
+      "id": "worldview-festival",
+      "query": "雷恩王国光明节是什么",
+      "expectIntent": "worldview_lore",
+      "mustInclude": ["## 世界观", "光明节", "至暗之夜"],
+      "mustNotInclude": ["L2 法师技能"]
+    },
+    {
+      "id": "worldview-nine-pillars",
+      "query": "九柱神是什么",
+      "expectIntent": "worldview_lore",
+      "mustInclude": ["## 世界观", "九柱神", "黎塞留"],
+      "mustNotInclude": ["L2 法师技能"]
+    },
+    {
+      "id": "worldview-org-knights",
+      "query": "正义与怜悯骑士团是什么组织",
+      "expectIntent": "worldview_lore",
+      "mustInclude": ["## 世界观", "正义与怜悯骑士团"],
+      "mustNotInclude": ["L2 法师技能"]
+    },
+    {
+      "id": "mage-build-no-lore-dump",
+      "query": "法师怎么加点比较好",
+      "expectIntent": "general",
+      "mustNotInclude": ["## 世界观", "九柱神", "光明节"]
     }
   ]
 }
