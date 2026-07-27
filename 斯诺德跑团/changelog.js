@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7124',
+    date: '2026-07-27',
+    changes: [
+      '帮助页接入世界观架构（页内翻页）',
+      '世界观 Web Speech 朗读（全文/章节/段落）',
+      'sync_worldview_help.py 从 docx 同步并镜像'
+    ]
+  },
+
+
+  {
     version: '1.0.7123',
     date: '2026-07-26',
     changes: [
