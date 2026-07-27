@@ -15,7 +15,7 @@ const OUT_CHARGEN = path.join(ROOT, 'advisor', 'chargen');
 
 const PANEL_DATA = path.join(ROOT, '斯诺德跑团', 'panel_data.js');
 const RACES_DATA = path.join(ROOT, '职业页', '数据', 'races_data.js');
-const HELP_HTML = path.join(ROOT, '斯诺德跑团', '帮助.html');
+const HELP_HTML = path.join(ROOT, '斯诺德跑团', 'help.html');
 
 function loadPanelConst(name) {
   const text = fs.readFileSync(PANEL_DATA, 'utf8');

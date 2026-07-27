@@ -15,7 +15,7 @@ const OUT_RULES = path.join(ROOT, 'advisor', 'rules');
 const OUT_CHARGEN = path.join(ROOT, 'advisor', 'chargen');
 const OUT_ITEMS = path.join(ROOT, 'advisor', 'items');
 
-const HELP_HTML = path.join(ROOT, '斯诺德跑团', '帮助.html');
+const HELP_HTML = path.join(ROOT, '斯诺德跑团', 'help.html');
 const MAGE_DOCX = path.join(ROOT, '基础职业-法师.docx');
 const PANEL_DATA = path.join(ROOT, '斯诺德跑团', 'panel_data.js');
 const MAGE_JSON = path.join(ROOT, '职业页', '数据', '法师.json');

@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7126',
+    date: '2026-07-27',
+    changes: [
+      '帮助页同步《冒险者基础规则》：新增名望/声望 #s9，其他规则扩至22条 #s10',
+      '通用天赋树修复「哟吼船长的藏宝图」为五阶并修复 DOM 嵌套崩坏',
+      '顾问抽取改读 help.html；rules_summary 补充名望/声望指针'
+    ]
+  },
+
+
+  {
     version: '1.0.7125',
     date: '2026-07-27',
     changes: [
