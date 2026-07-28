@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7128',
+    date: '2026-07-28',
+    changes: [
+      '帮助页再同步《冒险者基础规则》：缴械措辞收紧；其他规则扩至25条（新增射程/反应动作细则/掩体）；通用天赋树补充暂无战斗风格说明',
+      '顾问 status_conditions 缴械与 rules_summary #s10 指针同步'
+    ]
+  },
+
+
+  {
     version: '1.0.7127',
     date: '2026-07-27',
     changes: [
