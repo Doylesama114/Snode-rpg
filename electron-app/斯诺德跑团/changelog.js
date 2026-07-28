@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7131',
+    date: '2026-07-28',
+    changes: [
+      '技能栏学习上限改用calcSkillSlots修复误报已满',
+      '风格位src用职业名并跳过空串',
+      '夜间模式XP/专长/子职业改用CSS变量',
+      '创建页复合熟练项写入与表演-演奏展示修复'
+    ]
+  },
+
+
+  {
     version: '1.0.7130',
     date: '2026-07-28',
     changes: [

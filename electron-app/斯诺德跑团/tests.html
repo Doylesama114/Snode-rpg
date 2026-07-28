@@ -199,6 +199,65 @@ state.classes = [{ name: "法师", level: 1 }, { name: "", level: 0 }, { name: "
 var ss6 = calcSkillSlots(0);
 assertClose(ss6, 10, '法师L1无双倍 → 10');
 
+// L10 / 法师L5 / 子职L6：UI 槽位须超过旧硬编码 17/8
+state.classes = [{ name: "猎人", level: 10 }, { name: "", level: 0 }, { name: "", level: 0 }];
+assert(calcSkillSlots(0), 19, '猎人L10 → 19槽（旧硬顶17）');
+state.classes = [{ name: "法师", level: 5 }, { name: "", level: 0 }, { name: "", level: 0 }];
+assert(calcSkillSlots(0), 18, '法师L5 → 18槽（旧硬顶17）');
+state.classes = [{ name: "猎人", level: 10 }, { name: "战士", level: 6 }, { name: "", level: 0 }];
+assert(calcSkillSlots(1), 9, '子职业L6 → 9槽（旧硬顶8）');
+
+results.push('</div>');
+
+// =================== T5b: style src + autoCalcStyles ===================
+results.push('<div class="section"><h3>T5b: 风格 src 与 autoCalcStyles</h3>');
+var _styleSample = null;
+if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["猎人"]) {
+  for (var _hsi = 0; _hsi < SKILL_DATA["猎人"].length; _hsi++) {
+    var _hs = SKILL_DATA["猎人"][_hsi];
+    if (_hs.style && _hs.type !== "starting" && _hs.type !== "upgrade" && !isBlueprintName(_hs.name)) {
+      _styleSample = _hs; break;
+    }
+  }
+}
+if (_styleSample) {
+  var _entry = buildSkillListEntry(_styleSample, "猎人", false, false);
+  assert(_entry.src, "猎人", "buildSkillListEntry.src 为职业名（非风格名）");
+  assertTrue(_entry.src !== _styleSample.style, "src 不等于 style: " + _styleSample.style);
+}
+// 旧档 src=风格名：getSkillStyle 回退后 styles[0] 应为真实风格
+state.classes = [{ name: "猎人", level: 5, styles: ["", "", "", ""] }, { name: "", level: 0, styles: ["", "", "", ""] }, { name: "", level: 0, styles: ["", "", "", ""] }];
+state.skills = [];
+state.talent_tree = [];
+if (_styleSample) {
+  state.skills = [{ n: _styleSample.name, src: _styleSample.style, sub: "" }];
+  autoCalcStyles();
+  assertTrue(!!state.classes[0].styles[0], "旧 src=风格名 时 styles[0] 非空");
+  assertTrue(state.classes[0].styles[0] !== "", "styles[0] 不为空串");
+  assert(state.classes[0].styles[0], canonicalSkillStyle(_styleSample.style), "styles[0] 为真实风格");
+}
+// 空串不得占第一格
+state.skills = [{ n: "不存在的技能名XYZ", src: "不存在的源", sub: "" }];
+state.classes[0].styles = ["", "", "", ""];
+state.talent_tree = [{ n: _styleSample ? _styleSample.name : "瞄准射击", cls: "猎人", tier: "一阶", sub: false }];
+autoCalcStyles();
+assertTrue(!!state.classes[0].styles[0], "天赋计入时 styles[0] 有值");
+assertTrue(state.classes[0].styles[0] !== "", "空串不占 styles[0]");
+
+results.push('</div>');
+
+// =================== T5c: 复合熟练项展示表 ===================
+results.push('<div class="section"><h3>T5c: 复合熟练项（巧手/表演）</h3>');
+assertTrue(!!(state.profs && state.profs["敏捷"] && state.profs["敏捷"].hasOwnProperty("巧手-开锁")), "默认 profs 含 巧手-开锁");
+assertTrue(!!(state.profs && state.profs["魅力"] && state.profs["魅力"].hasOwnProperty("表演-演奏")), "默认 profs 含 表演-演奏");
+state.profs = state.profs || {};
+state.profs["敏捷"] = state.profs["敏捷"] || {};
+state.profs["魅力"] = state.profs["魅力"] || {};
+state.profs["敏捷"]["巧手-开锁"] = 1;
+state.profs["魅力"]["表演-演奏"] = 1;
+assert(state.profs["敏捷"]["巧手-开锁"], 1, "巧手-开锁 可写入 profs");
+assert(state.profs["魅力"]["表演-演奏"], 1, "表演-演奏 可写入 profs");
+
 results.push('</div>');
 
 // =================== T6: canPlaceInSlot ===================

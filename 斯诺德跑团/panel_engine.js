@@ -535,7 +535,7 @@ function autoCalcStyles(){
     var ci=(s.sub&&s.sub!='')?1:0;
 
 
-    if(!sc[ci])sc[ci]={};var stName=getSkillStyle(s.n,s.src);if(!sc[ci][stName])sc[ci][stName]=0;sc[ci][stName]++;}
+    if(!sc[ci])sc[ci]={};var stName=getSkillStyle(s.n,s.src);if(!stName||stName==="通用"||stName==="起始特性")continue;if(!sc[ci][stName])sc[ci][stName]=0;sc[ci][stName]++;}
 
 
   // Count styles from talent tree
@@ -549,7 +549,7 @@ function autoCalcStyles(){
   for(var ci=0;ci<state.classes.length;ci++){
 
 
-    if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]}).filter(function(s){return s!=="通用";});
+    if(sc[ci]){var st=Object.keys(sc[ci]).sort(function(a,b){return sc[ci][b]-sc[ci][a]}).filter(function(s){return s&&s!=="通用"&&s!=="起始特性";});
     for(var i=0;i<4;i++)state.classes[ci].styles[i]=st[i]||'';}}}
 
 
@@ -1005,7 +1005,7 @@ function addSpPointsDelta(spObj, mult) {
 
 function buildSkillListEntry(skillData, clsName, isSub, isLocked) {
   return {
-    id: skillData.id, n: skillData.name, src: skillData.style || clsName,
+    id: skillData.id, n: skillData.name, src: clsName,
     tm: skillData.fields ? (skillData.fields["\u65bd\u5c55\u65f6\u95f4"] || "") : "",
     ds: (skillData.description || [""]).join(""),
     dr: skillData.fields ? (skillData.fields["\u75b2\u52b3\u6d88\u8017"] || "") : "",
@@ -3230,9 +3230,14 @@ function addSpecialFeat(name, choices) {
 
 
 function getSkillStyle(name, src) {
-  var d = SKILL_DATA[src]; if (!d) return "";
-  for (var i = 0; i < d.length; i++) { if (d[i].name === name) return canonicalSkillStyle(d[i].style || ""); }
-  return "";
+  var d = SKILL_DATA[src];
+  if (d) {
+    for (var i = 0; i < d.length; i++) {
+      if (d[i].name === name) return canonicalSkillStyle(d[i].style || "");
+    }
+  }
+  var anywhere = findSkillStyleAnywhere(name);
+  return anywhere ? canonicalSkillStyle(anywhere) : "";
 }
 
 
@@ -3427,7 +3432,7 @@ function render(){ applyChoiceLLevel12Boosts();
   if(state.portrait){
     portraitDiv.innerHTML="<img src=\""+state.portrait+"\" style=\"width:100%;height:100%;object-fit:contain;border-radius:8px\">";
   }else{
-    portraitDiv.innerHTML="<div style=\"text-align:center;color:#69706b;padding:12px\"><div style=\"font-size:32px;margin-bottom:6px\">+</div><div style=\"font-size:13px\">\u70b9\u51fb\u4e0a\u4f20\u7acb\u7ed8</div></div>";
+    portraitDiv.innerHTML="<div style=\"text-align:center;color:var(--muted);padding:12px\"><div style=\"font-size:32px;margin-bottom:6px\">+</div><div style=\"font-size:13px\">\u70b9\u51fb\u4e0a\u4f20\u7acb\u7ed8</div></div>";
   }
   portraitDiv.onclick=function(){var inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=function(e){var file=e.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(ev){state.portrait=ev.target.result;render();};reader.readAsDataURL(file);};inp.click();};
   profileOuter.appendChild(portraitDiv);
@@ -3443,7 +3448,7 @@ function render(){ applyChoiceLLevel12Boosts();
     var d=infoData[ii];
     var col=ii<5?infoLeft:infoRight;
     var item=document.createElement("div");item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--line);min-height:48px";
-    item.innerHTML="<span style=\"font-size:14px;color:#69706b\">"+d.f+"</span><span style=\"font-size:16px;color:#1f2522;font-weight:bold\">"+d.v+"</span>";
+    item.innerHTML="<span style=\"font-size:14px;color:var(--muted)\">"+d.f+"</span><span style=\"font-size:16px;color:var(--ink);font-weight:bold\">"+d.v+"</span>";
     col.appendChild(item);
   }
   infoCols.appendChild(infoLeft);infoCols.appendChild(infoRight);
@@ -3468,13 +3473,13 @@ function render(){ applyChoiceLLevel12Boosts();
         ch+='<div class="class-box" style="display:flex;gap:14px;padding:14px 18px">';
 
 
-        ch+='<div class="class-left" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1"><div style="font-size:18px;color:#a08050;text-align:center"><div style="font-weight:bold;font-size:20px">附赠职业</div><div style="font-size:14px;margin-top:2px">未解锁</div></div></div>';
+        ch+='<div class="class-left" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1"><div style="font-size:18px;color:var(--muted);text-align:center"><div style="font-weight:bold;font-size:20px">附赠职业</div><div style="font-size:14px;margin-top:2px">未解锁</div></div></div>';
 
 
         ch+='<div class="class-right" style="display:flex;flex-direction:column;gap:4px;flex:1;max-width:160px;margin-left:auto">';
 
 
-        for(var si=0;si<4;si++){ch+='<div class="style-item-empty" style="padding:3px 8px;background:transparent;border-radius:4px;border:1px dashed #d8d2c4;font-size:12px;color:#69706b;font-style:italic;text-align:center">空风格</div>';}
+        for(var si=0;si<4;si++){ch+='<div class="style-item-empty" style="padding:3px 8px;background:transparent;border-radius:4px;border:1px dashed var(--line);font-size:12px;color:var(--muted);font-style:italic;text-align:center">空风格</div>';}
 
 
         ch+='</div></div>';
@@ -3483,7 +3488,7 @@ function render(){ applyChoiceLLevel12Boosts();
       }else{
 
 
-        var _mc=state.classes[0];var _ml=_mc.level||0;if(_ml>=7){ch+='<div class="class-box" style="justify-content:center;align-items:center;cursor:pointer;background:#e8f5e9;border:2px dashed #4caf50" onclick="showSubclassModal()"><div style="color:#2e7d32;font-size:16px;font-weight:bold;padding:8px;text-align:center">📋 选择子职业</div></div>';}else{ch+='<div class="class-box" style="justify-content:center;align-items:center;background:#f5f5f0"><div style="color:#a08050;font-size:14px;padding:8px;text-align:center">🔒 未解锁<div style="font-size:12px;color:#b09070">（需主职业7级）</div></div></div>';}
+        var _mc=state.classes[0];var _ml=_mc.level||0;if(_ml>=7){ch+='<div class="class-box" style="justify-content:center;align-items:center;cursor:pointer;background:var(--panel);border:2px dashed var(--accent)" onclick="showSubclassModal()"><div style="color:var(--accent);font-size:16px;font-weight:bold;padding:8px;text-align:center">📋 选择子职业</div></div>';}else{ch+='<div class="class-box" style="justify-content:center;align-items:center;background:var(--panel)"><div style="color:var(--muted);font-size:14px;padding:8px;text-align:center">🔒 未解锁<div style="font-size:12px;color:var(--muted)">（需主职业7级）</div></div></div>';}
 
 
       }
@@ -3507,7 +3512,7 @@ function render(){ applyChoiceLLevel12Boosts();
       if(cl.styles[si]){var sc=STYLE_COLORS[cl.styles[si]]||'';var sb=sc?'background:'+sc+';':'background:var(--bg);';ch+='<div class="style-item" style="padding:3px 8px;border-radius:4px;border:1px solid var(--line);font-size:14px;color:var(--ink);text-align:center;'+sb+'">'+cl.styles[si]+'</div>';}
 
 
-      else{ch+='<div class="style-item-empty" style="padding:3px 8px;background:transparent;border-radius:4px;border:1px dashed #d8d2c4;font-size:12px;color:#69706b;font-style:italic;text-align:center">空风格</div>';}
+      else{ch+='<div class="style-item-empty" style="padding:3px 8px;background:transparent;border-radius:4px;border:1px dashed var(--line);font-size:12px;color:var(--muted);font-style:italic;text-align:center">空风格</div>';}
 
 
     }
@@ -3556,14 +3561,14 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
         var needXP=tbl[nextLv]?tbl[nextLv].xp:0;
     var canUp=needXP>0&&state.xp>=needXP;
     xpHTML+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--line)">';
-    xpHTML+='<div style="font-size:14px;color:#69706b;font-weight:bold">'+cl.name+'</div>';
-    xpHTML+='<div style="font-size:36px;color:#1f2522;font-weight:bold">Lv.'+cl.level+'</div>';
-    xpHTML+='<div style="font-size:14px;color:#69706b">经验值: '+state.xp+'</div>';
+    xpHTML+='<div style="font-size:14px;color:var(--muted);font-weight:bold">'+cl.name+'</div>';
+    xpHTML+='<div style="font-size:36px;color:var(--ink);font-weight:bold">Lv.'+cl.level+'</div>';
+    xpHTML+='<div style="font-size:14px;color:var(--muted)">经验值: '+state.xp+'</div>';
       var curAttrCap=getCurrentAttrCap?getCurrentAttrCap():18;
       var curProfCap=getCurrentProfCap?getCurrentProfCap():2;
-      xpHTML+='<div style="font-size:12px;color:#8a7a6a">属性上限: '+curAttrCap+' | 熟练度上限: '+curProfCap+'</div>';
+      xpHTML+='<div style="font-size:12px;color:var(--muted)">属性上限: '+curAttrCap+' | 熟练度上限: '+curProfCap+'</div>';
     if(needXP>0){
-      xpHTML+='<div style="font-size:12px;color:#8a7a6a">升级需要: '+needXP+' 经验</div>';
+      xpHTML+='<div style="font-size:12px;color:var(--muted)">升级需要: '+needXP+' 经验</div>';
       var subCapMsg="";
       if(ci===1){
         var maxSub=getMaxSubLevel();
@@ -3572,7 +3577,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
       }
       xpHTML+='<button onclick="showLevelUpModal('+ci+')" style="padding:6px 14px;font-size:13px;background:'+((canUp&&!subCapMsg)?'#c9753e':'#6a5a4a')+';color:#fff;border:none;border-radius:5px;cursor:'+((canUp&&!subCapMsg)?'pointer':'not-allowed')+';'+((canUp&&!subCapMsg)?'':'opacity:0.6')+'">'+(canUp?(subCapMsg||'升级！'):'经验不足')+'</button>';
     }else{
-      xpHTML+='<div style="font-size:12px;color:#8a7a6a;font-weight:bold">已达最高等级</div>';
+      xpHTML+='<div style="font-size:12px;color:var(--muted);font-weight:bold">已达最高等级</div>';
     }
     xpHTML+='</div>';}
   xpHTML+='</div>';
@@ -3747,7 +3752,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   var g=document.getElementById("attr-grid");var ak=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];var ah="";
-  var _profDefs={力量:["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],敏捷:["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],体质:["豁免","专注","耐力"],智力:["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],感知:["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],魅力:["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-自定义"],意志:["豁免","求生","激励","决策"],幸运:["豁免","机遇","探索"]};
+  var _profDefs={力量:["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],敏捷:["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],体质:["豁免","专注","耐力"],智力:["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],感知:["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],魅力:["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-演奏","表演-自定义"],意志:["豁免","求生","激励","决策"],幸运:["豁免","机遇","探索"]};
   for(var ai=0;ai<ak.length;ai++){var av=state.attrs[ak[ai]]||10;var am=calcMod(av);var pf=(state.profs||{})[ak[ai]]||{};var plist=_profDefs[ak[ai]]||[];var half=Math.ceil(plist.length/2);var ph="";
     for(var pi=0;pi<half;pi++){var pn1=plist[pi];var pn2=plist[pi+half];
       ph+='<div style="display:contents">';
@@ -3796,7 +3801,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
     fh+='<div class="feat-chip" style="border-left:4px solid #a46d1f;margin-bottom:4px">';
     fh+='<div style="display:flex;align-items:center;gap:6px">';
     if(sfLevel){fh+='<span class="feat-lv">'+sfLevel+'\u7ea7</span>';}
-    fh+='<span style="font-weight:bold;color:#1f2522">'+sfName+'</span>';
+    fh+='<span style="font-weight:bold;color:var(--ink)">'+sfName+'</span>';
     if(typeLabel){fh+='<span style="font-size:11px;background:#a46d1f;color:#fff;padding:1px 6px;border-radius:3px">'+typeLabel+'</span>';}
     fh+='<button onclick="showSpecialFeatDetail(\''+sfName.replace(/'/g,"\\'")+'\')" style="margin-left:auto;padding:1px 8px;font-size:11px;background:#3a5a7a;color:#ddd;border:none;border-radius:4px;cursor:pointer">\ud83d\udcd6 \u8be6\u60c5</button>';
     fh+='<button onclick="removeSpecialFeat(\''+sfName.replace(/'/g,"\\'")+'\')" style="margin-left:4px;background:none;border:none;color:#c06040;cursor:pointer;font-size:14px" title="\u79fb\u9664">\u2715</button>';
@@ -3806,7 +3811,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
   }
 
 
-  document.getElementById("feat-list").innerHTML=hf?fh:'<span style="color:#a08050;font-size:15px">暂无</span>';
+  document.getElementById("feat-list").innerHTML=hf?fh:'<span style="color:var(--muted);font-size:15px">暂无</span>';
 
   // Add special feat toggle button
   var featSection=document.getElementById("feat-list").parentNode;
@@ -5161,8 +5166,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
 
       for (var sj = 0; sj < skillList.length; sj++) {
-
-
+        if (isBlueprintName(skillList[sj].n || skillList[sj].name)) continue;
         if ((isSub && skillList[sj].sub) || (!isSub && !skillList[sj].sub)) currentInSlot++; }
 
 
@@ -5172,7 +5176,7 @@ function learnSkill(clsName, skillName, clsIdx) {
       // Add the granted skill
 
 
-      skillList.push({id: gData.id, n: gData.name, src: gData.style || clsName,
+      skillList.push({id: gData.id, n: gData.name, src: clsName,
 
 
         tm: gData.fields ? (gData.fields["\u65bd\u5c55\u65f6\u95f4"] || "") : "",
@@ -5205,7 +5209,7 @@ function learnSkill(clsName, skillName, clsIdx) {
   if (isBlueprintName(skillData.name)) {
     var _bpRes;
     if (!payForSkill(skillData)) return;
-    _bpRes = addBlueprintEntry({ id: skillData.id, n: skillData.name, src: skillData.style || clsName, tier: skillData.tier || "", note: "" });
+    _bpRes = addBlueprintEntry({ id: skillData.id, n: skillData.name, src: clsName, tier: skillData.tier || "", note: "" });
     if (!_bpRes.ok) {
       refundSkillPoint(skillData);
       alert(_bpRes.reason || "无法学习图纸");
@@ -5261,13 +5265,17 @@ function learnSkill(clsName, skillName, clsIdx) {
   } else {
 
 
-    var maxSlots = isSub ? 8 : 17; var skillList = state.skills.slice(); var clsSkills = [];
+    var maxSlots = calcSkillSlots(clsIdx); var skillList = state.skills.slice(); var clsSkills = [];
 
 
 
 
 
-    for (var si = 0; si < skillList.length; si++) { if (isSub && skillList[si].sub) clsSkills.push(skillList[si]); else if (!isSub && !skillList[si].sub) clsSkills.push(skillList[si]); }
+    for (var si = 0; si < skillList.length; si++) {
+      if (isBlueprintName(skillList[si].n || skillList[si].name)) continue;
+      if (isSub && skillList[si].sub) clsSkills.push(skillList[si]);
+      else if (!isSub && !skillList[si].sub) clsSkills.push(skillList[si]);
+    }
 
 
     var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { alert("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
@@ -6261,7 +6269,7 @@ window.showKeyPreferencePicker=function(callback){
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
   box.className='popup-box';box.style.cssText="background:var(--panel);border-radius:10px;padding:24px;max-width:420px;width:90%;border:2px solid var(--line);box-shadow:0 8px 32px rgba(0,0,0,0.3)";
-  box.innerHTML="<h3 style=margin-bottom:4px;color:#1f2522>\u9009\u62e9\u5173\u952e\u504f\u597d\u989c\u8272</h3><p style=font-size:13px;color:#69706b;margin-bottom:16px>\u4e60\u5f97\u540e\u53ef\u5c06\u4efb\u610f\u989c\u8272\u7684\u6280\u80fd\u70b9\u89c6\u4f5c\u504f\u597d\u989c\u8272\u4f7f\u7528</p><div id=kpColorGrid style=display:grid;grid-template-columns:repeat(4,1fr);gap:8px></div><button id=kpCancelBtn style=display:block;width:100%;margin-top:14px;padding:8px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer;font-size:14px>\u53d6\u6d88</button>";
+  box.innerHTML="<h3 style=margin-bottom:4px;color:var(--ink)>\u9009\u62e9\u5173\u952e\u504f\u597d\u989c\u8272</h3><p style=font-size:13px;color:var(--muted);margin-bottom:16px>\u4e60\u5f97\u540e\u53ef\u5c06\u4efb\u610f\u989c\u8272\u7684\u6280\u80fd\u70b9\u89c6\u4f5c\u504f\u597d\u989c\u8272\u4f7f\u7528</p><div id=kpColorGrid style=display:grid;grid-template-columns:repeat(4,1fr);gap:8px></div><button id=kpCancelBtn style=display:block;width:100%;margin-top:14px;padding:8px;background:var(--line);color:var(--muted);border:none;border-radius:6px;cursor:pointer;font-size:14px>\u53d6\u6d88</button>";
   overlay.appendChild(box);
   document.body.appendChild(overlay);
   function cleanup(){overlay.remove();}
@@ -6273,7 +6281,7 @@ window.showKeyPreferencePicker=function(callback){
     var isLight=["#FFFFFF","#FFF32F","#B3F9FF","#00FA99","#D9D9D9","#FFB7E3"].indexOf(sc[1])>=0;
     var cell=document.createElement("div");
     cell.textContent=sc[0];
-    cell.style.cssText="cursor:pointer;padding:10px 6px;border-radius:6px;text-align:center;font-size:13px;font-weight:bold;background:"+sc[1]+";color:"+(isLight?"#1f2522":"#fff")+";border:2px solid "+(isLight?"#d8d2c4":sc[1]);
+    cell.style.cssText="cursor:pointer;padding:10px 6px;border-radius:6px;text-align:center;font-size:13px;font-weight:bold;background:"+sc[1]+";color:"+(isLight?"var(--ink)":"#fff")+";border:2px solid "+(isLight?"var(--line)":sc[1]);
     cell.onmouseenter=function(){this.style.transform="scale(1.08)";this.style.boxShadow="0 4px 12px rgba(0,0,0,0.2)";};
     cell.onmouseleave=function(){this.style.transform="scale(1)";this.style.boxShadow="none";};
     (function(colorName){cell.onclick=function(){cleanup();callback(colorName);};})(sc[0]);
@@ -6287,8 +6295,8 @@ window.showSubclassModal=function(){
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
   box.className='popup-box';box.style.cssText="background:var(--panel);border-radius:10px;padding:24px;max-width:600px;width:95%;max-height:90vh;overflow-y:auto;border:2px solid var(--line);box-shadow:0 8px 32px rgba(0,0,0,0.3)";
-  var h="<h3 style=margin-bottom:8px;color:#1f2522>选择子职业</h3>";
-  h+="<p style=font-size:13px;color:#69706b;margin-bottom:16px>需满足属性值、熟练度要求，且与主职业兼容</p>";
+  var h="<h3 style=margin-bottom:8px;color:var(--ink)>选择子职业</h3>";
+  h+="<p style=font-size:13px;color:var(--muted);margin-bottom:16px>需满足属性值、熟练度要求，且与主职业兼容</p>";
   h+="<div style=display:flex;flex-direction:column;gap:6px>";
   var allClasses=["蛮斗士","战士","法师","猎人","牧师","圣骑士","游荡者","德鲁伊","萨满祭司","术士","武僧","吟游诗人","魔契师","奇械师"];
   for(var i=0;i<allClasses.length;i++){
@@ -6299,18 +6307,18 @@ window.showSubclassModal=function(){
     var attrDetail=check.attrDetail+(check.profDetail?" | "+check.profDetail:"");
     var allOK=check.ok;
     var failReasons=check.reasons;
-    var bg=allOK?"#e8f5e9":"#f5f5f0"; var border=allOK?"#4caf50":"#d8d2c4";
+    var bg=allOK?"var(--panel)":"var(--bg)"; var border=allOK?"var(--accent)":"var(--line)";
     h+="<div style=display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:6px;background:"+bg+";border:1px solid "+border+">";
-    h+="<div><span style=font-size:15px;font-weight:bold;color:"+(allOK?"#2e7d32":"#1f2522")+">"+cn+"</span>";
-    h+="<div style=font-size:11px;color:#69706b;margin-top:2px>"+attrDetail+"</div></div>";
+    h+="<div><span style=font-size:15px;font-weight:bold;color:"+(allOK?"var(--accent)":"var(--ink)")+">"+cn+"</span>";
+    h+="<div style=font-size:11px;color:var(--muted);margin-top:2px>"+attrDetail+"</div></div>";
     if(allOK){
-      h+="<button class=subclassSelectBtn data-cn=\""+cn+"\" style=padding:6px 14px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:bold>选择</button>";
+      h+="<button class=subclassSelectBtn data-cn=\""+cn+"\" style=padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:bold>选择</button>";
     }else{
       h+="<span style=font-size:12px;color:#c62828>"+failReasons.join("，")+"</span>";
     }
     h+="</div>";
   }
-  h+="</div><button id=subclassCancelBtn style=display:block;width:100%;margin-top:14px;padding:8px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer;font-size:14px>取消</button>";
+  h+="</div><button id=subclassCancelBtn style=display:block;width:100%;margin-top:14px;padding:8px;background:var(--line);color:var(--muted);border:none;border-radius:6px;cursor:pointer;font-size:14px>取消</button>";
   box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
   document.getElementById("subclassCancelBtn").onclick=function(){overlay.remove();};
   var _sbtns=box.querySelectorAll(".subclassSelectBtn");
