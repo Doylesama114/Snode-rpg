@@ -189,7 +189,7 @@ var state={
 "sp_points":0,
 "color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
 "hp":10,"fp":8,
-"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","sportPreference":"","weapon_specs":[],
+"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","deityAttr":"","patron":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","sportPreference":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
 "skills":[], "special_feats":[], "feats":[], "currency":{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -693,9 +693,9 @@ function calcSkillSlots(clsIdx) {
   return total;
 }
 
-/** 背景免费授予等：计入技能列表但不占技能栏上限 */
+/** 背景/种族免费授予等：计入技能列表但不占技能栏上限 */
 function isFreeSlotSkill(s) {
-  return !!(s && (s.freeSlot || s.grantedBy === "法师学徒"));
+  return !!(s && (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者"));
 }
 function getCurrentProfCap() {
   return getProfCapForLevel(getMaxLevel());
@@ -4031,7 +4031,8 @@ function render(){ applyChoiceLLevel12Boosts();
 
 
   var storyHtml='<div class="misc-item"><div class="m-title">背景故事</div><div>'+state.story+'</div></div><div class="misc-item"><div class="m-title">个性</div><div>'+state.personality+'</div></div><div class="misc-item"><div class="m-title">特性</div><div>'+state.traits+'</div></div><div class="misc-item"><div class="m-title">理念</div><div>'+state.ideals+'</div></div><div class="misc-item"><div class="m-title">羁绊</div><div>'+state.bonds+'</div></div><div class="misc-item"><div class="m-title">缺陷</div><div>'+state.flaws+'</div></div>';
-if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+state.deity+'</div></div>';
+if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+state.deity+(state.deityAttr?'（'+state.deityAttr+'）':'')+'</div></div>';
+if(state.patron)storyHtml+='<div class="misc-item"><div class="m-title">宗主</div><div>'+state.patron+'</div></div>';
 if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系渠道</div><div>'+state.contacts+'</div></div>';
 if(state.scamType)storyHtml+='<div class="misc-item"><div class="m-title">偏好骗局</div><div>'+state.scamType+'</div></div>';
 if(state.missionChannel)storyHtml+='<div class="misc-item"><div class="m-title">任务渠道</div><div>'+state.missionChannel+'</div></div>';
@@ -7361,8 +7362,10 @@ async function exportXlsxFromState(state) {
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
   if (state.flaws) set("H30", state.flaws);
-  if (state.deity) set("H33", state.deity);
+  if (state.deity) set("H33", state.deity + (state.deityAttr ? "（" + state.deityAttr + "）" : ""));
+  else if (state.patron) set("H33", "宗主：" + state.patron);
   if (state.contacts) set("H34", state.contacts);
+  else if (state.patron && state.deity) set("H34", "宗主：" + state.patron);
   if (state.scamType) set("H35", state.scamType);
   if (state.missionChannel) set("H36", state.missionChannel);
   if (state.academicDomain) set("H37", state.academicDomain);

@@ -1041,6 +1041,51 @@ var _pros = [];
 assert(_pros.length, 2, '乐器两项可写入 professionals');
 results.push('</div>');
 
+// =================== T5g: 卓尔毒刃 / 牧师神祇 / 魔契师宗主 ===================
+results.push('<div class="section"><h3>T5g: 卓尔毒刃 freeSlot、神祇属性、宗主名单</h3>');
+assertTrue(isFreeSlotSkill({ n: '毒刃', src: '游荡者', freeSlot: true, grantedBy: '卓尔精灵·毒吻者' }), '毒刃 freeSlot 豁免栏位');
+assertTrue(isFreeSlotSkill({ n: '毒刃', grantedBy: '卓尔精灵·毒吻者' }), 'grantedBy=卓尔精灵·毒吻者 豁免栏位');
+assertFalse(isFreeSlotSkill({ n: '毒刃', src: '游荡者', granted: true }), '无 freeSlot 的毒刃不豁免');
+
+var _clericDeities = [
+  { name: '公正与荣耀之神', attr: '神圣' },
+  { name: '生命与丰收之神', attr: '自然' },
+  { name: '火焰与锻造之神', attr: '火焰' },
+  { name: '战争与谋略之神', attr: '物理' },
+  { name: '知识与智慧之神', attr: '奥术' },
+  { name: '艺术与创造之神', attr: '音爆' },
+  { name: '死神', attr: '无属性' },
+  { name: '无尽饥饿与吞噬之神', attr: '暗影' },
+  { name: '爱、欲望与激情之神', attr: '心灵' },
+  { name: '潮汐、引力与崩坏之神', attr: '力场' }
+];
+assert(_clericDeities.length, 10, '牧师神祇名单长度 10');
+var _attrMap = {};
+for (var _di = 0; _di < _clericDeities.length; _di++) _attrMap[_clericDeities[_di].name] = _clericDeities[_di].attr;
+assert(_attrMap['公正与荣耀之神'], '神圣', '公正与荣耀之神→神圣');
+assert(_attrMap['潮汐、引力与崩坏之神'], '力场', '潮汐、引力与崩坏之神→力场');
+assert(_attrMap['死神'], '无属性', '死神→无属性');
+
+var _warlockPatrons = ['纯白圣女','夜之国女王','蝶神','翡翠之王','笑神','四季姐妹','深渊炎魔','暴虐领主','龙巫妖','鲜血大公','黑暗王子','终焉骑士','星空吞噬者','超维元首','伟大的克拉贡'];
+assert(_warlockPatrons.length, 15, '魔契师宗主名单长度 15');
+assertTrue(_warlockPatrons.indexOf('伟大的克拉贡') >= 0, '含伟大的克拉贡');
+assertTrue(_warlockPatrons.indexOf('纯白圣女') >= 0, '含纯白圣女');
+
+state = JSON.parse(JSON.stringify(STATE_DEFAULTS));
+state.race = '卓尔精灵';
+state.deity = '知识与智慧之神';
+state.deityAttr = '奥术';
+state.patron = '笑神';
+state.skills = [
+  { n: '毒刃', src: '游荡者', granted: true, freeSlot: true, grantedBy: '卓尔精灵·毒吻者', tier: '一阶' }
+];
+state.professionals = ['制毒'];
+assertTrue(state.skills.some(function (s) { return s.n === '毒刃' && isFreeSlotSkill(s); }), '卓尔毒刃形态正确');
+assertTrue(state.professionals.indexOf('制毒') >= 0, '卓尔含制毒专业');
+assert(state.deityAttr, '奥术', 'deityAttr 落盘');
+assert(state.patron, '笑神', 'patron 落盘');
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");

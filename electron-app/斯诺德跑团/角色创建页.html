@@ -304,8 +304,24 @@ var CHAR = {
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
-  deity: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
+  deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
 };
+
+/** 牧师信奉神祇（创建必选） */
+var CLERIC_DEITIES = [
+  { name:"公正与荣耀之神", attr:"神圣" },
+  { name:"生命与丰收之神", attr:"自然" },
+  { name:"火焰与锻造之神", attr:"火焰" },
+  { name:"战争与谋略之神", attr:"物理" },
+  { name:"知识与智慧之神", attr:"奥术" },
+  { name:"艺术与创造之神", attr:"音爆" },
+  { name:"死神", attr:"无属性" },
+  { name:"无尽饥饿与吞噬之神", attr:"暗影" },
+  { name:"爱、欲望与激情之神", attr:"心灵" },
+  { name:"潮汐、引力与崩坏之神", attr:"力场" }
+];
+/** 魔契师契约宗主（进阶页 15 分支） */
+var WARLOCK_PATRONS = ["纯白圣女","夜之国女王","蝶神","翡翠之王","笑神","四季姐妹","深渊炎魔","暴虐领主","龙巫妖","鲜血大公","黑暗王子","终焉骑士","星空吞噬者","超维元首","伟大的克拉贡"];
 
 /** 法师学徒可选戏法：一/二阶且关键词含「戏法」（不含钢琴类叙事） */
 var BG_MAGE_CANTRIPS = [{"n":"光亮术","t":"一阶","st":"塑能"},{"n":"舞光术","t":"一阶","st":"塑能"},{"n":"造餐术","t":"一阶","st":"咒法"},{"n":"油腻术","t":"一阶","st":"咒法"},{"n":"浮碟术","t":"一阶","st":"咒法"},{"n":"创造水源","t":"一阶","st":"咒法"},{"n":"创造篝火","t":"一阶","st":"咒法"},{"n":"侦测毒性与疾病","t":"一阶","st":"预言"},{"n":"速记术","t":"一阶","st":"预言"},{"n":"警报术","t":"一阶","st":"防护"},{"n":"魔法圈套","t":"一阶","st":"防护"},{"n":"凝光术","t":"一阶","st":"防护"},{"n":"敲击术","t":"一阶","st":"附魔"},{"n":"维生术","t":"一阶","st":"死灵"},{"n":"保存术","t":"一阶","st":"死灵"},{"n":"次级隐身术","t":"一阶","st":"幻术"},{"n":"伪造绿洲","t":"一阶","st":"幻术"},{"n":"掩饰术","t":"一阶","st":"幻术"},{"n":"映像伪装","t":"一阶","st":"幻术"},{"n":"传讯术","t":"一阶","st":"变化"},{"n":"浮空术","t":"一阶","st":"变化"},{"n":"魔石术","t":"一阶","st":"变化"},{"n":"漂染术","t":"一阶","st":"变化"},{"n":"魔法伎俩","t":"一阶","st":"变化"},{"n":"粘连术","t":"一阶","st":"变化"},{"n":"赋予黑暗视觉","t":"一阶","st":"变化"},{"n":"水下呼吸","t":"一阶","st":"变化"},{"n":"提取毒物","t":"二阶","st":"咒法"},{"n":"侦测陷阱","t":"二阶","st":"预言"},{"n":"封门术","t":"二阶","st":"防护"},{"n":"秘法锁","t":"二阶","st":"防护"},{"n":"活灵术","t":"二阶","st":"附魔"},{"n":"遗骸防护结界","t":"二阶","st":"死灵"},{"n":"七彩炫光","t":"二阶","st":"幻术"},{"n":"缓落术","t":"二阶","st":"变化"}];
@@ -490,6 +506,8 @@ function updateOverview() {
     h += '<div class="ov-section"><div class="ov-label">🗡 职业</div>';
     h += '<div class="ov-item">' + CHAR.className + '</div>';
     if (CHAR.keyAttr) h += '<div class="ov-item">关键属性: ' + CHAR.keyAttr + '</div>';
+    if (CHAR.deity && CHAR.className === '牧师') h += '<div class="ov-item">神祇: ' + CHAR.deity + (CHAR.deityAttr ? '（' + CHAR.deityAttr + '）' : '') + '</div>';
+    if (CHAR.patron && CHAR.className === '魔契师') h += '<div class="ov-item">宗主: ' + CHAR.patron + '</div>';
     if (CHAR.selectedFeatures && CHAR.selectedFeatures.length) {
       h += '<div class="ov-item">起始特性: ' + CHAR.selectedFeatures.map(function(f){return f.n||f;}).join('、') + '</div>';
     }
@@ -508,6 +526,7 @@ function updateOverview() {
     if (rd && rd['特性']) {
       for (var ti = 0; ti < rd['特性'].length; ti++) h += '<div class="ov-item">·' + rd['特性'][ti].name + '</div>';
     }
+    if (CHAR.raceName === '卓尔精灵') h += '<div class="ov-item">毒刃（种族）·制毒</div>';
     if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
     h += '</div>';
   }
@@ -805,6 +824,26 @@ function renderClassStep(c) {
   h+="</div>";
   h+=navBtns(false,CHAR.classIdx>=0);
   c.innerHTML=h;
+  if(CHAR.classIdx>=0){
+    var _cn=CLASSES[CHAR.classIdx].name;
+    showKeyAttrChoice(_cn);
+    showClericDeityChoice(_cn);
+    showWarlockPatronChoice(_cn);
+    renderSpecChoices(_cn);
+    if(CHAR.keyAttr){
+      var kab=document.getElementById("keyAttrBox");
+      if(kab){var chips=kab.querySelectorAll(".skill-chip");for(var ki=0;ki<chips.length;ki++){if(chips[ki].textContent.indexOf(CHAR.keyAttr)>=0)chips[ki].classList.add("selected");}}
+    }
+    if(CHAR.deity){
+      var cdb=document.getElementById("clericDeityBox");
+      if(cdb){var dchips=cdb.querySelectorAll(".skill-chip");for(var di=0;di<dchips.length;di++){if(dchips[di].getAttribute("data-name")===CHAR.deity)dchips[di].classList.add("selected");}}
+    }
+    if(CHAR.patron){
+      var wpb=document.getElementById("warlockPatronBox");
+      if(wpb){var pchips=wpb.querySelectorAll(".skill-chip");for(var pi=0;pi<pchips.length;pi++){if(pchips[pi].getAttribute("data-name")===CHAR.patron)pchips[pi].classList.add("selected");}}
+    }
+    checkSpecDone();
+  }
 }
 
 function classDetail(cl){
@@ -1045,6 +1084,8 @@ function checkSpecDone(){
   if(!clsName){var nb=document.getElementById("nextBtn");if(nb)nb.disabled=false;return;}
   var allDone=true;
   if(clsName==="战士"&&!CHAR.keyAttr)allDone=false;
+  if(clsName==="牧师"&&!CHAR.deity)allDone=false;
+  if(clsName==="魔契师"&&!CHAR.patron)allDone=false;
   var specs=CLASS_SPECIALIZATIONS[clsName];
   if(specs){
     for(var si=0;si<specs.length;si++){
@@ -1060,11 +1101,16 @@ function checkSpecDone(){
   notifyChargenChange();
 }
 function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
+  CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
   if(cards[idx]){cards[idx].classList.add("selected");cards[idx].querySelector(".card-desc").style.display="block";}
-  var p=document.getElementById("classDetail");p.style.display="block";p.innerHTML=classDetail(CLASSES[idx]);showKeyAttrChoice(CLASSES[idx].name);renderSpecChoices(CLASSES[idx].name);
+  var p=document.getElementById("classDetail");p.style.display="block";p.innerHTML=classDetail(CLASSES[idx]);
+  showKeyAttrChoice(CLASSES[idx].name);
+  showClericDeityChoice(CLASSES[idx].name);
+  showWarlockPatronChoice(CLASSES[idx].name);
+  renderSpecChoices(CLASSES[idx].name);
   updateOverview();
 }
 
@@ -1193,7 +1239,62 @@ function pickKeyAttr(el,v){
   CHAR.keyAttr=v;
   var box=document.getElementById("keyAttrBox");
   if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");el.classList.add("selected");}
-  document.getElementById("nextBtn").disabled=false;
+  checkSpecDone();
+  updateOverview();
+}
+function showClericDeityChoice(clsName){
+  var old=document.getElementById("clericDeityBox");if(old)old.remove();
+  if(clsName!=="牧师"){checkSpecDone();return;}
+  var p=document.getElementById("classDetail");
+  var box=document.createElement("div");box.id="clericDeityBox";
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";box.className='popup-box';
+  var h='<div style="font-size:15px;font-weight:bold;margin-bottom:6px">选择信奉神祇</div>';
+  h+='<div style="font-size:13px;color:#69706b;margin-bottom:10px">牧师必须选择一位神祇（决定神圣领域属性）</div>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  for(var i=0;i<CLERIC_DEITIES.length;i++){
+    var d=CLERIC_DEITIES[i];
+    h+='<div class="skill-chip" onclick="pickClericDeity(this)" data-name="'+esc(d.name)+'" data-attr="'+esc(d.attr)+'" style="padding:8px 12px;line-height:1.35">';
+    h+='<div style="font-weight:bold">'+esc(d.name)+'</div>';
+    h+='<div style="font-size:11px;opacity:0.75">属性：'+esc(d.attr)+'</div></div>';
+  }
+  h+='</div>';
+  box.innerHTML=h;
+  p.parentNode.insertBefore(box, p.nextSibling);
+  checkSpecDone();
+}
+function pickClericDeity(el){
+  CHAR.deity=el.getAttribute("data-name")||"";
+  CHAR.deityAttr=el.getAttribute("data-attr")||"";
+  var box=document.getElementById("clericDeityBox");
+  if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");}
+  el.classList.add("selected");
+  checkSpecDone();
+  updateOverview();
+}
+function showWarlockPatronChoice(clsName){
+  var old=document.getElementById("warlockPatronBox");if(old)old.remove();
+  if(clsName!=="魔契师"){checkSpecDone();return;}
+  var p=document.getElementById("classDetail");
+  var box=document.createElement("div");box.id="warlockPatronBox";
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";box.className='popup-box';
+  var h='<div style="font-size:15px;font-weight:bold;margin-bottom:6px">选择契约宗主</div>';
+  h+='<div style="font-size:13px;color:#69706b;margin-bottom:10px">魔契师必须选择一位宗主</div>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  for(var i=0;i<WARLOCK_PATRONS.length;i++){
+    var pn=WARLOCK_PATRONS[i];
+    h+='<div class="skill-chip" onclick="pickWarlockPatron(this)" data-name="'+esc(pn)+'" style="padding:8px 12px">'+esc(pn)+'</div>';
+  }
+  h+='</div>';
+  box.innerHTML=h;
+  p.parentNode.insertBefore(box, p.nextSibling);
+  checkSpecDone();
+}
+function pickWarlockPatron(el){
+  CHAR.patron=el.getAttribute("data-name")||"";
+  var box=document.getElementById("warlockPatronBox");
+  if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");}
+  el.classList.add("selected");
+  checkSpecDone();
   updateOverview();
 }
 function filterClasses(){
@@ -1864,7 +1965,8 @@ function renderReviewStep(c) {
   h+="<div class='form-group-half'><label>理念</label><textarea class='form-textarea' id='inputIdeals' oninput='onChargenProfileInput(\"ideals\",this)' placeholder='你的角色信奉什么理念？'>"+esc(CHAR.ideals)+"</textarea></div>";
   h+="<div class='form-group-half'><label>羁绊</label><textarea class='form-textarea' id='inputBonds' oninput='onChargenProfileInput(\"bonds\",this)' placeholder='你的角色有何羁绊？'>"+esc(CHAR.bonds)+"</textarea></div>";
   h+="<div class='form-group-full'><label>缺陷</label><textarea class='form-textarea' id='inputFlaws' oninput='onChargenProfileInput(\"flaws\",this)' placeholder='你的角色有何缺陷？'>"+esc(CHAR.flaws)+"</textarea></div>";
-  if(CHAR.deity) h+="<div class='form-group-half'><label>神祇</label><textarea class='form-textarea' id='inputDeity' oninput='CHAR.deity=this.value'>"+esc(CHAR.deity)+"</textarea></div>";
+  if(CHAR.deity) h+="<div class='form-group-half'><label>神祇"+(CHAR.deityAttr?"（"+esc(CHAR.deityAttr)+"）":"")+"</label><textarea class='form-textarea' id='inputDeity' oninput='CHAR.deity=this.value'>"+esc(CHAR.deity)+"</textarea></div>";
+  if(CHAR.patron) h+="<div class='form-group-half'><label>宗主</label><textarea class='form-textarea' id='inputPatron' oninput='CHAR.patron=this.value'>"+esc(CHAR.patron)+"</textarea></div>";
   if(CHAR.contacts) h+="<div class='form-group-half'><label>联系渠道</label><textarea class='form-textarea' id='inputContacts' oninput='CHAR.contacts=this.value'>"+esc(CHAR.contacts)+"</textarea></div>";
   if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='CHAR.scamType=this.value'>"+esc(CHAR.scamType)+"</textarea></div>";
   if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='CHAR.missionChannel=this.value'>"+esc(CHAR.missionChannel)+"</textarea></div>";
@@ -1874,7 +1976,9 @@ function renderReviewStep(c) {
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>角色摘要</h3>";
   h+="<div class='review-grid'>";
   h+="<div class='review-item'><div class='review-label'>职业</div><div class='review-value'>"+(CHAR.className||"未选择")+"</div></div><div class='review-item'><div class='review-label'>起始特性</div><div class='review-value'>"+(CHAR.selectedFeatures.length?CHAR.selectedFeatures.join('、'):"无")+"</div></div>";
-  h+="<div class='review-item'><div class='review-label'>种族</div><div class='review-value'>"+(CHAR.raceName||"未选择")+"</div></div>";
+  if(CHAR.deity&&CHAR.className==="牧师")h+="<div class='review-item'><div class='review-label'>神祇</div><div class='review-value'>"+esc(CHAR.deity)+(CHAR.deityAttr?"（"+esc(CHAR.deityAttr)+"）":"")+"</div></div>";
+  if(CHAR.patron&&CHAR.className==="魔契师")h+="<div class='review-item'><div class='review-label'>宗主</div><div class='review-value'>"+esc(CHAR.patron)+"</div></div>";
+  h+="<div class='review-item'><div class='review-label'>种族</div><div class='review-value'>"+(CHAR.raceName||"未选择")+(CHAR.raceName==="卓尔精灵"?" ·毒刃/制毒":"")+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>个性背景</div><div class='review-value'>"+(CHAR.bgName||"未选择")+"</div></div>";
   if(CHAR.bgCantrips&&CHAR.bgCantrips.length)h+="<div class='review-item'><div class='review-label'>背景戏法</div><div class='review-value'>"+CHAR.bgCantrips.join("、")+"</div></div>";
   if(CHAR.bgOtherPicks&&CHAR.bgOtherPicks.length)h+="<div class='review-item'><div class='review-label'>乐器/赌具</div><div class='review-value'>"+CHAR.bgOtherPicks.join("、")+"</div></div>";
@@ -2165,7 +2269,13 @@ function organizeContainers(charData){
 }
 
 function saveCharacter(){
-  if(!CHAR.charName||!CHAR.className||CHAR.raceIdx<0||CHAR.bgIdx<0||(CHAR.className==="战士"&&!CHAR.keyAttr)){alert("请完成所有步骤"+(CHAR.className==="战士"?"（战士需选择关键属性）":""));return;}
+  if(!CHAR.charName||!CHAR.className||CHAR.raceIdx<0||CHAR.bgIdx<0||(CHAR.className==="战士"&&!CHAR.keyAttr)||(CHAR.className==="牧师"&&!CHAR.deity)||(CHAR.className==="魔契师"&&!CHAR.patron)){
+    var miss="";
+    if(CHAR.className==="战士"&&!CHAR.keyAttr)miss="（战士需选择关键属性）";
+    else if(CHAR.className==="牧师"&&!CHAR.deity)miss="（牧师需选择信奉神祇）";
+    else if(CHAR.className==="魔契师"&&!CHAR.patron)miss="（魔契师需选择契约宗主）";
+    alert("请完成所有步骤"+miss);return;
+  }
   var maxFeat=(CHAR.className==="法师"?4:2);
   if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){alert("请选择起始特性");return;}
   var cl=CHAR.classData; var rd=CHAR.raceData; var bd=CHAR.bgData;
@@ -2191,7 +2301,7 @@ function saveCharacter(){
     sp_points:0,
     color_marks:{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
     hp:hp, fp:fp,
-    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
+    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -2279,7 +2389,14 @@ function saveCharacter(){
   }
   var specs=CLASS_SPECIALIZATIONS[CHAR.className]||[];
   for(var i=0;i<specs.length;i++){
-    charData.class_features.push({name:"["+CHAR.className+"] "+specs[i].n,desc:specs[i].d});
+    var _cfDesc=specs[i].d;
+    if(CHAR.className==="魔契师"&&specs[i].n==="宗主契约"&&CHAR.patron){
+      _cfDesc=_cfDesc+"（宗主："+CHAR.patron+"）";
+    }
+    if(CHAR.className==="牧师"&&specs[i].n==="神圣领域"&&CHAR.deity){
+      _cfDesc=_cfDesc+"（神祇："+CHAR.deity+(CHAR.deityAttr?" / "+CHAR.deityAttr:"")+"）";
+    }
+    charData.class_features.push({name:"["+CHAR.className+"] "+specs[i].n,desc:_cfDesc});
   }
   // Removed generic class entry
   if(CHAR.selectedFeatures && CHAR.selectedFeatures.length>0){
@@ -2309,6 +2426,17 @@ function saveCharacter(){
       var tier="一阶";
       for(var mi=0;mi<BG_MAGE_CANTRIPS.length;mi++){if(BG_MAGE_CANTRIPS[mi].n===cn){tier=BG_MAGE_CANTRIPS[mi].t;break;}}
       charData.skills.push({n:cn,src:"法师",sub:"",locked:false,granted:true,freeSlot:true,grantedBy:"法师学徒",tier:tier});
+    }
+  }
+  // 卓尔精灵·毒吻者：毒刃（游荡者）+ 制毒专业，不占技能栏
+  if(CHAR.raceName==="卓尔精灵"){
+    if(charData.professionals.indexOf("制毒")<0)charData.professionals.push("制毒");
+    var hasPoisonBlade=false;
+    for(var dsi=0;dsi<charData.skills.length;dsi++){
+      if(charData.skills[dsi].n==="毒刃"){hasPoisonBlade=true;break;}
+    }
+    if(!hasPoisonBlade){
+      charData.skills.push({n:"毒刃",src:"游荡者",sub:"",locked:false,granted:true,freeSlot:true,grantedBy:"卓尔精灵·毒吻者",tier:"一阶"});
     }
   }
   charData._savedAt=new Date().toISOString();
@@ -2670,8 +2798,10 @@ async function exportXlsxFromState(state) {
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
   if (state.flaws) set("H30", state.flaws);
-  if (state.deity) set("H33", state.deity);
+  if (state.deity) set("H33", state.deity + (state.deityAttr ? "（" + state.deityAttr + "）" : ""));
+  else if (state.patron) set("H33", "宗主：" + state.patron);
   if (state.contacts) set("H34", state.contacts);
+  else if (state.patron && state.deity) set("H34", "宗主：" + state.patron);
   if (state.scamType) set("H35", state.scamType);
   if (state.missionChannel) set("H36", state.missionChannel);
   if (state.academicDomain) set("H37", state.academicDomain);
