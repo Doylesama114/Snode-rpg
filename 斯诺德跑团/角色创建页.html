@@ -300,11 +300,18 @@ var CHAR = {
   selectedSkills: [],
   keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [], humanFreeSkill: null, raceSize: "",
   bgIdx: -1, bgName: "", bgData: null,
+  bgCantrips: [], bgOtherPicks: [], sportPreference: "",
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
   deity: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
 };
+
+/** 法师学徒可选戏法：一/二阶且关键词含「戏法」（不含钢琴类叙事） */
+var BG_MAGE_CANTRIPS = [{"n":"光亮术","t":"一阶","st":"塑能"},{"n":"舞光术","t":"一阶","st":"塑能"},{"n":"造餐术","t":"一阶","st":"咒法"},{"n":"油腻术","t":"一阶","st":"咒法"},{"n":"浮碟术","t":"一阶","st":"咒法"},{"n":"创造水源","t":"一阶","st":"咒法"},{"n":"创造篝火","t":"一阶","st":"咒法"},{"n":"侦测毒性与疾病","t":"一阶","st":"预言"},{"n":"速记术","t":"一阶","st":"预言"},{"n":"警报术","t":"一阶","st":"防护"},{"n":"魔法圈套","t":"一阶","st":"防护"},{"n":"凝光术","t":"一阶","st":"防护"},{"n":"敲击术","t":"一阶","st":"附魔"},{"n":"维生术","t":"一阶","st":"死灵"},{"n":"保存术","t":"一阶","st":"死灵"},{"n":"次级隐身术","t":"一阶","st":"幻术"},{"n":"伪造绿洲","t":"一阶","st":"幻术"},{"n":"掩饰术","t":"一阶","st":"幻术"},{"n":"映像伪装","t":"一阶","st":"幻术"},{"n":"传讯术","t":"一阶","st":"变化"},{"n":"浮空术","t":"一阶","st":"变化"},{"n":"魔石术","t":"一阶","st":"变化"},{"n":"漂染术","t":"一阶","st":"变化"},{"n":"魔法伎俩","t":"一阶","st":"变化"},{"n":"粘连术","t":"一阶","st":"变化"},{"n":"赋予黑暗视觉","t":"一阶","st":"变化"},{"n":"水下呼吸","t":"一阶","st":"变化"},{"n":"提取毒物","t":"二阶","st":"咒法"},{"n":"侦测陷阱","t":"二阶","st":"预言"},{"n":"封门术","t":"二阶","st":"防护"},{"n":"秘法锁","t":"二阶","st":"防护"},{"n":"活灵术","t":"二阶","st":"附魔"},{"n":"遗骸防护结界","t":"二阶","st":"死灵"},{"n":"七彩炫光","t":"二阶","st":"幻术"},{"n":"缓落术","t":"二阶","st":"变化"}];
+var BG_INSTRUMENTS = ["口风琴","竖琴","乐鼓","小提琴","手风琴","吉他","贝斯","萨克斯","大提琴","号角","笛子","鲁特琴","风笛","喇叭"];
+var BG_GAMBLING = ["骰子","扑克","龙棋","飞镖","骨牌","象棋","围棋","牌九","骰盅"];
+var BG_SPORTS = ["短跑","长跑","游泳","攀爬","跳高","跳远","摔跤","拳击","射箭","马术","标枪","铁饼","举重","球类"];
 
 var ATTR_NAMES = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
 
@@ -582,6 +589,10 @@ function updateOverview() {
   // 背景
   if (CHAR.bgName) {
     h += '<div class="ov-section"><div class="ov-label">🎭 背景: ' + CHAR.bgName + '</div>';
+    if (CHAR.bgCantrips && CHAR.bgCantrips.length) h += '<div class="ov-item">戏法: ' + CHAR.bgCantrips.join('、') + '</div>';
+    if (CHAR.bgOtherPicks && CHAR.bgOtherPicks.length) h += '<div class="ov-item">专业工具: ' + CHAR.bgOtherPicks.join('、') + '</div>';
+    if (CHAR.sportPreference) h += '<div class="ov-item">偏好运动: ' + CHAR.sportPreference + '</div>';
+    if (CHAR.bgProfs && CHAR.bgProfs.profInput) h += '<div class="ov-item">专业熟练: ' + CHAR.bgProfs.profInput + '</div>';
     h += '</div>';
   }
   // 装备
@@ -844,6 +855,7 @@ function bgSkillClick(el){
 function renderBgProfs(bgData){
   var old=document.getElementById("bgProfArea");if(old)old.remove();
   CHAR.bgProfs={skills:{},profInput:""};
+  CHAR.bgCantrips=[];CHAR.bgOtherPicks=[];CHAR.sportPreference="";
   var area=document.createElement("div");area.id="bgProfArea";
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:12px'>选择背景熟练项</div>";
@@ -859,7 +871,7 @@ function renderBgProfs(bgData){
         var cat=BG_SKILL_CATS[sk];
         if(!cat)continue;
         h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
-        h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>"+sk+"（自选一项）</div>";
+        h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>基础熟练项："+sk+"（自选一项）</div>";
         h+="<div class='bgProfSkillRow' data-cat='"+sk+"' style='display:flex;gap:6px;flex-wrap:wrap'>";
         for(var j=0;j<cat.opts.length;j++){
           h+="<div class='spec-btn bg-sk-btn' onclick='bgSkillClick(this)' data-skill='"+cat.opts[j]+"'>"+cat.opts[j]+"</div>";
@@ -867,7 +879,7 @@ function renderBgProfs(bgData){
         h+="</div></div>";
       }else if(mapped&&mapped.indexOf(".")>0){
         // Fixed mapping - auto apply, show as readonly
-        h+="<div style='margin-bottom:6px;font-size:13px;color:#69706b'>"+sk+" → <strong>"+mapped.split(".")[1]+"</strong>（自动）</div>";
+        h+="<div style='margin-bottom:6px;font-size:13px;color:#69706b'>基础熟练项："+sk+" → <strong>"+mapped.split(".")[1]+"</strong>（自动）</div>";
       }
     }
   }
@@ -878,7 +890,7 @@ function renderBgProfs(bgData){
     var isKnow=skText.indexOf("知识")>=0;
     if(isKnow){
       h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
-      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>任选两项知识</div>";
+      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>基础熟练项：任选两项知识</div>";
       h+="<div class='bgProfSkillRow' data-cat='知识' data-max='2' style='display:flex;gap:6px;flex-wrap:wrap'>";
       var knowOpts=BG_SKILL_CATS["知识"].opts;
       for(var i=0;i<knowOpts.length;i++){
@@ -886,27 +898,31 @@ function renderBgProfs(bgData){
       }
       h+="</div></div>";
     }else{
-      // 任选一项熟练度 - show ALL sub-skills grouped by attribute
+      // 任选一项熟练度 - grouped by attribute
       var allAttrs={力量:["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],敏捷:["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"],体质:["专注","耐力"],智力:["调查","逻辑","宗教","估价","伪造","读唇","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"],感知:["洞悉","导航","自然","驯兽","感悟","聆听","察觉"],魅力:["欺瞒","说服","表演-歌唱","表演-舞蹈","表演-演奏","恐吓"],意志:["求生","激励","决策"],幸运:["机遇","探索"]};
       h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
-      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>任选一项熟练度</div>";
-      h+="<div class='bgProfSkillRow' data-cat='_all' data-max='1' style='display:flex;gap:6px;flex-wrap:wrap'>";
+      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:8px'>基础熟练项（任选 1）</div>";
+      h+="<div class='bgProfSkillRow' data-cat='_all' data-max='1'>";
       for(var attr in allAttrs){
+        h+="<div style='margin-bottom:8px'><div style='font-size:12px;font-weight:bold;color:#a46d1f;margin-bottom:4px;padding-bottom:2px;border-bottom:1px solid #e8e2d8'>"+attr+"</div>";
+        h+="<div style='display:flex;gap:6px;flex-wrap:wrap'>";
         for(var i=0;i<allAttrs[attr].length;i++){
-          h+="<div class='spec-btn bg-sk-btn' onclick='bgSkillClick(this)' data-attr='"+attr+"' data-skill='"+allAttrs[attr][i]+"'>"+attr+"·"+allAttrs[attr][i]+"</div>";
+          h+="<div class='spec-btn bg-sk-btn' onclick='bgSkillClick(this)' data-attr='"+attr+"' data-skill='"+allAttrs[attr][i]+"'>"+allAttrs[attr][i]+"</div>";
         }
+        h+="</div></div>";
       }
       h+="</div></div>";
     }
   }
 
-  // 专业熟练项
+  // 专业熟练项 → professionals（非第二套基础熟练）
   var proText=bgData["专业熟练项"]||"";
   if(proText&&proText!=="无"){
     if(proText.indexOf("任选")>=0){
       h+="<div class='dark-bg' style='margin-bottom:10px;padding:8px 12px;background:#f6f4ef;border-radius:8px'>";
-      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>专业熟练项（自填）</div>";
-      h+="<input id='bgProfInput' placeholder='输入专业熟练项名称' oninput='CHAR.bgProfs.profInput=this.value' style='width:100%;padding:8px 12px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px'>";
+      h+="<div style='font-size:13px;font-weight:bold;margin-bottom:6px'>专业熟练项（任选 1，写入专业栏）</div>";
+      h+="<div style='font-size:12px;color:#69706b;margin-bottom:6px'>请填写一项专业熟练名称（如易容、演奏、陆运载具等）</div>";
+      h+="<input id='bgProfInput' placeholder='输入专业熟练项名称' oninput='CHAR.bgProfs.profInput=this.value;updateOverview()' style='width:100%;padding:8px 12px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px'>";
       h+="</div>";
     }else{
       h+="<div style='margin-bottom:6px;font-size:13px;color:#69706b'>专业熟练项：<strong>"+proText+"</strong>（自动）</div>";
@@ -1563,14 +1579,183 @@ function bgDetail(b){
   return h;
 }
 
-function selectBg(idx){var _rBg=function(){renderBgProfs(BACKGROUNDS[idx]);};
+function selectBg(idx){
   CHAR.bgIdx=idx; CHAR.bgName=BACKGROUNDS[idx].name; CHAR.bgData=BACKGROUNDS[idx];
+  CHAR.bgCantrips=[];CHAR.bgOtherPicks=[];CHAR.sportPreference="";
   var cards=document.querySelectorAll("#bgGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("bgDetail");p.style.display="block";p.innerHTML=bgDetail(BACKGROUNDS[idx]);setTimeout(function(){renderBgProfs(BACKGROUNDS[idx]);showLangPicker(BACKGROUNDS[idx],function(langs){CHAR.extraLanguages=langs;setTimeout(function(){showPersonalityPicker(BACKGROUNDS[idx]);},500);});},10);
+  var p=document.getElementById("bgDetail");p.style.display="block";p.innerHTML=bgDetail(BACKGROUNDS[idx]);
+  setTimeout(function(){
+    renderBgProfs(BACKGROUNDS[idx]);
+    showLangPicker(BACKGROUNDS[idx],function(langs){
+      CHAR.extraLanguages=langs;
+      runBgExtraPickers(BACKGROUNDS[idx]);
+    });
+  },10);
   document.getElementById("nextBtn").disabled=false;
   updateOverview();
+}
+
+function runBgExtraPickers(bg){
+  showBgCantripPicker(bg,function(){
+    showBgOtherToolsPicker(bg,function(){
+      showSportPreferencePicker(bg,function(){
+        setTimeout(function(){showPersonalityPicker(bg);},300);
+      });
+    });
+  });
+}
+
+function parseBgOtherPick(bg){
+  var o=bg["其他"]||"";
+  if(o.indexOf("任选两门乐器")>=0)return{kind:"instrument",count:2,label:"乐器"};
+  if(o.indexOf("任选两种赌具")>=0)return{kind:"gambling",count:2,label:"赌具"};
+  if(o.indexOf("任选一种赌具")>=0)return{kind:"gambling",count:1,label:"赌具"};
+  return null;
+}
+
+function showBgCantripPicker(bg,callback){
+  if(!bg||bg.name!=="法师学徒"){callback();return;}
+  CHAR.bgCantrips=[];
+  var overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
+  var box=document.createElement("div");box.className="popup-box";
+  box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:640px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  var h="<h3 style='margin-bottom:4px;color:#1f2522'>选择戏法（法师学徒）</h3>";
+  h+="<p style='font-size:13px;color:#69706b;margin-bottom:12px'>从法师一/二阶戏法中选择至多 <strong>2</strong> 项，加入技能列表（不占技能栏）</p>";
+  h+="<div id='bgCantripGroups'></div>";
+  h+="<div style='margin-top:14px;display:flex;gap:8px;justify-content:flex-end'>";
+  h+="<button type='button' id='bgCantripSkip' style='padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer'>跳过</button>";
+  h+="<button type='button' id='bgCantripOk' style='padding:8px 16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold'>确认</button>";
+  h+="</div>";
+  box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
+  var groups=document.getElementById("bgCantripGroups");
+  var tiers=["一阶","二阶"];
+  for(var ti=0;ti<tiers.length;ti++){
+    var tier=tiers[ti];
+    var wrap=document.createElement("div");
+    wrap.style.cssText="margin-bottom:12px;padding:10px 12px;background:#f6f4ef;border:1px solid #e8e2d8;border-radius:8px";
+    wrap.innerHTML="<div style='font-size:13px;font-weight:bold;color:#a46d1f;margin-bottom:8px'>"+tier+"戏法</div>";
+    var row=document.createElement("div");row.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
+    for(var i=0;i<BG_MAGE_CANTRIPS.length;i++){
+      var c=BG_MAGE_CANTRIPS[i];if(c.t!==tier)continue;
+      var btn=document.createElement("div");btn.className="spec-btn";
+      btn.setAttribute("data-name",c.n);btn.setAttribute("data-tier",c.t);
+      btn.textContent=c.n+(c.st?" · "+c.st:"");
+      btn.onclick=function(){
+        var nm=this.getAttribute("data-name");
+        var idx=CHAR.bgCantrips.indexOf(nm);
+        if(idx>=0){CHAR.bgCantrips.splice(idx,1);this.classList.remove("selected");}
+        else if(CHAR.bgCantrips.length<2){CHAR.bgCantrips.push(nm);this.classList.add("selected");}
+        updateOverview();
+      };
+      row.appendChild(btn);
+    }
+    wrap.appendChild(row);groups.appendChild(wrap);
+  }
+  document.getElementById("bgCantripSkip").onclick=function(){CHAR.bgCantrips=[];overlay.remove();callback();};
+  document.getElementById("bgCantripOk").onclick=function(){overlay.remove();updateOverview();callback();};
+}
+
+function showBgOtherToolsPicker(bg,callback){
+  var spec=parseBgOtherPick(bg);
+  if(!spec){callback();return;}
+  CHAR.bgOtherPicks=[];
+  var opts=spec.kind==="instrument"?BG_INSTRUMENTS:BG_GAMBLING;
+  var overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
+  var box=document.createElement("div");box.className="popup-box";
+  box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:560px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  var h="<h3 style='margin-bottom:4px;color:#1f2522'>选择"+spec.label+"（"+bg.name+"）</h3>";
+  h+="<p style='font-size:13px;color:#69706b;margin-bottom:12px'>选择 <strong>"+spec.count+"</strong> 项写入专业熟练栏；也可在下方自定义</p>";
+  h+="<div id='bgOtherGrid' style='display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px'></div>";
+  h+="<input id='bgOtherCustom' placeholder='自定义"+spec.label+"（计入名额）' style='width:100%;padding:8px 12px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px;margin-bottom:12px'>";
+  h+="<div style='display:flex;gap:8px;justify-content:flex-end'>";
+  h+="<button type='button' id='bgOtherSkip' style='padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer'>跳过</button>";
+  h+="<button type='button' id='bgOtherOk' style='padding:8px 16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold'>确认</button>";
+  h+="</div>";
+  box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
+  var grid=document.getElementById("bgOtherGrid");
+  var selected=[];
+  function rebuildPicks(){
+    var custom=(document.getElementById("bgOtherCustom").value||"").trim();
+    CHAR.bgOtherPicks=selected.slice();
+    if(custom&&CHAR.bgOtherPicks.indexOf(custom)<0)CHAR.bgOtherPicks.push(custom);
+    if(CHAR.bgOtherPicks.length>spec.count)CHAR.bgOtherPicks=CHAR.bgOtherPicks.slice(0,spec.count);
+    updateOverview();
+  }
+  function refreshCells(){
+    var cells=grid.querySelectorAll(".spec-btn");
+    for(var i=0;i<cells.length;i++){
+      var nm=cells[i].getAttribute("data-name");
+      if(selected.indexOf(nm)>=0)cells[i].classList.add("selected");
+      else cells[i].classList.remove("selected");
+    }
+  }
+  for(var i=0;i<opts.length;i++){
+    var btn=document.createElement("div");btn.className="spec-btn";btn.setAttribute("data-name",opts[i]);btn.textContent=opts[i];
+    btn.onclick=function(){
+      var nm=this.getAttribute("data-name");
+      var idx=selected.indexOf(nm);
+      if(idx>=0)selected.splice(idx,1);
+      else{
+        var custom=(document.getElementById("bgOtherCustom").value||"").trim();
+        var room=spec.count-(custom?1:0);
+        if(selected.length>=room){if(room<=0)return;selected.shift();}
+        selected.push(nm);
+      }
+      refreshCells();rebuildPicks();
+    };
+    grid.appendChild(btn);
+  }
+  document.getElementById("bgOtherCustom").oninput=function(){rebuildPicks();};
+  document.getElementById("bgOtherSkip").onclick=function(){CHAR.bgOtherPicks=[];overlay.remove();callback();};
+  document.getElementById("bgOtherOk").onclick=function(){rebuildPicks();overlay.remove();callback();};
+}
+
+function showSportPreferencePicker(bg,callback){
+  if(!bg||bg.name!=="运动员"){callback();return;}
+  CHAR.sportPreference="";
+  var overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
+  var box=document.createElement("div");box.className="popup-box";
+  box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:560px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
+  var h="<h3 style='margin-bottom:4px;color:#1f2522'>偏好运动项目（运动员）</h3>";
+  h+="<p style='font-size:13px;color:#69706b;margin-bottom:12px'>选择或自定义一项；相关检定视为专家级熟练度</p>";
+  h+="<div id='bgSportGrid' style='display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px'></div>";
+  h+="<input id='bgSportCustom' placeholder='自定义运动名称' style='width:100%;padding:8px 12px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px;margin-bottom:12px'>";
+  h+="<div style='display:flex;gap:8px;justify-content:flex-end'>";
+  h+="<button type='button' id='bgSportSkip' style='padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer'>跳过</button>";
+  h+="<button type='button' id='bgSportOk' style='padding:8px 16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold'>确认</button>";
+  h+="</div>";
+  box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
+  var grid=document.getElementById("bgSportGrid");
+  for(var i=0;i<BG_SPORTS.length;i++){
+    var btn=document.createElement("div");btn.className="spec-btn";btn.setAttribute("data-name",BG_SPORTS[i]);btn.textContent=BG_SPORTS[i];
+    btn.onclick=function(){
+      var nm=this.getAttribute("data-name");
+      var cells=grid.querySelectorAll(".spec-btn");
+      for(var k=0;k<cells.length;k++)cells[k].classList.remove("selected");
+      if(CHAR.sportPreference===nm){CHAR.sportPreference="";}
+      else{CHAR.sportPreference=nm;this.classList.add("selected");document.getElementById("bgSportCustom").value="";}
+      updateOverview();
+    };
+    grid.appendChild(btn);
+  }
+  document.getElementById("bgSportCustom").oninput=function(){
+    var v=this.value.trim();
+    CHAR.sportPreference=v;
+    var cells=grid.querySelectorAll(".spec-btn");
+    for(var k=0;k<cells.length;k++)cells[k].classList.remove("selected");
+    updateOverview();
+  };
+  document.getElementById("bgSportSkip").onclick=function(){CHAR.sportPreference="";overlay.remove();callback();};
+  document.getElementById("bgSportOk").onclick=function(){
+    var custom=(document.getElementById("bgSportCustom").value||"").trim();
+    if(custom)CHAR.sportPreference=custom;
+    overlay.remove();updateOverview();callback();
+  };
 }
 
 var ALL_LANGUAGES=["精灵语","矮人语","半身人语","侏儒语","地底通用语","龙语","地狱语","深渊语","兽人语","巨魔语","泽地语","荒漠语","鸟禽语","兽语","蛇语","鱼人语","海洋通用语","元素语"];
@@ -1691,6 +1876,10 @@ function renderReviewStep(c) {
   h+="<div class='review-item'><div class='review-label'>职业</div><div class='review-value'>"+(CHAR.className||"未选择")+"</div></div><div class='review-item'><div class='review-label'>起始特性</div><div class='review-value'>"+(CHAR.selectedFeatures.length?CHAR.selectedFeatures.join('、'):"无")+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>种族</div><div class='review-value'>"+(CHAR.raceName||"未选择")+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>个性背景</div><div class='review-value'>"+(CHAR.bgName||"未选择")+"</div></div>";
+  if(CHAR.bgCantrips&&CHAR.bgCantrips.length)h+="<div class='review-item'><div class='review-label'>背景戏法</div><div class='review-value'>"+CHAR.bgCantrips.join("、")+"</div></div>";
+  if(CHAR.bgOtherPicks&&CHAR.bgOtherPicks.length)h+="<div class='review-item'><div class='review-label'>乐器/赌具</div><div class='review-value'>"+CHAR.bgOtherPicks.join("、")+"</div></div>";
+  if(CHAR.sportPreference)h+="<div class='review-item'><div class='review-label'>偏好运动</div><div class='review-value'>"+CHAR.sportPreference+"</div></div>";
+  if(CHAR.bgProfs&&CHAR.bgProfs.profInput)h+="<div class='review-item'><div class='review-label'>专业熟练</div><div class='review-value'>"+CHAR.bgProfs.profInput+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>熟练项</div><div class='review-value'>"+(CHAR.selectedSkills.length?CHAR.selectedSkills.join("、"):"无")+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>起始装备</div><div class='review-value'>选项 "+(CHAR.equipChoice?CHAR.equipChoice.letter:"未选择")+"</div></div>";
   h+="</div>";
@@ -1900,6 +2089,13 @@ function applyBgProfs(charData){
       }
     }
   }
+  // 乐器 / 赌具任选 → professionals
+  if(CHAR.bgOtherPicks&&CHAR.bgOtherPicks.length){
+    for(var oi=0;oi<CHAR.bgOtherPicks.length;oi++){
+      var on=CHAR.bgOtherPicks[oi];
+      if(on&&charData.professionals.indexOf(on)<0)charData.professionals.push(on);
+    }
+  }
 }
 
 function bgResolveItem(name){
@@ -1995,7 +2191,7 @@ function saveCharacter(){
     sp_points:0,
     color_marks:{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
     hp:hp, fp:fp,
-    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
+    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -2074,6 +2270,13 @@ function saveCharacter(){
     charData.background=CHAR.bgName;
     if(bd["特性描述"]) charData.traits=bd["特性描述"];
   }
+  if(CHAR.sportPreference){
+    charData.sportPreference=CHAR.sportPreference;
+    var _tr=charData.traits||"";
+    if(_tr.indexOf(CHAR.sportPreference)<0){
+      charData.traits=_tr?(_tr+"（偏好："+CHAR.sportPreference+"）"):("运动员拥有一项偏好的运动项目（"+CHAR.sportPreference+"），在进行这项运动时具备专家级的熟练度");
+    }
+  }
   var specs=CLASS_SPECIALIZATIONS[CHAR.className]||[];
   for(var i=0;i<specs.length;i++){
     charData.class_features.push({name:"["+CHAR.className+"] "+specs[i].n,desc:specs[i].d});
@@ -2094,6 +2297,18 @@ function saveCharacter(){
       }else{
         charData.skills.push({n:fn,src:CHAR.className,sub:"",locked:false,granted:true});
       }
+    }
+  }
+  // 法师学徒戏法：写入技能列表，不占技能栏（freeSlot）
+  if(CHAR.bgCantrips&&CHAR.bgCantrips.length){
+    for(var ci=0;ci<CHAR.bgCantrips.length;ci++){
+      var cn=CHAR.bgCantrips[ci];
+      var already=false;
+      for(var si=0;si<charData.skills.length;si++){if(charData.skills[si].n===cn){already=true;break;}}
+      if(already)continue;
+      var tier="一阶";
+      for(var mi=0;mi<BG_MAGE_CANTRIPS.length;mi++){if(BG_MAGE_CANTRIPS[mi].n===cn){tier=BG_MAGE_CANTRIPS[mi].t;break;}}
+      charData.skills.push({n:cn,src:"法师",sub:"",locked:false,granted:true,freeSlot:true,grantedBy:"法师学徒",tier:tier});
     }
   }
   charData._savedAt=new Date().toISOString();
@@ -2437,11 +2652,18 @@ async function exportXlsxFromState(state) {
   else if (state.background && typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS[state.background]) {
     set("H18", (REF_BACKGROUNDS[state.background].description || "").replace(/\\n/g, "\n"));
   }
-  if (state.background === "运动员" && state.weapon_specs && state.weapon_specs.length) {
-    var _sport2 = state.weapon_specs[0];
+  if (state.background === "运动员" && state.sportPreference) {
+    var _sport2 = state.sportPreference;
     var _th2 = state.traits || (typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS["运动员"] ? REF_BACKGROUNDS["运动员"].description : "");
     if (_sport2 && (!_th2 || _th2.indexOf(_sport2) < 0)) {
       set("H18", _th2 ? (_th2 + "（偏好：" + _sport2 + "）") : ("运动员拥有一项偏好的运动项目（" + _sport2 + "），在进行这项运动时具备专家级的熟练度"));
+    }
+  } else if (state.background === "运动员" && state.weapon_specs && state.weapon_specs.length) {
+    // 旧档兼容：曾误用 weapon_specs 存偏好运动
+    var _sportLegacy = state.weapon_specs[0];
+    var _thLegacy = state.traits || (typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS["运动员"] ? REF_BACKGROUNDS["运动员"].description : "");
+    if (_sportLegacy && (!_thLegacy || _thLegacy.indexOf(_sportLegacy) < 0)) {
+      set("H18", _thLegacy ? (_thLegacy + "（偏好：" + _sportLegacy + "）") : ("运动员拥有一项偏好的运动项目（" + _sportLegacy + "），在进行这项运动时具备专家级的熟练度"));
     }
   }
   if (state.personality) set("H21", state.personality);

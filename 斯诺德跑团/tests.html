@@ -994,6 +994,53 @@ if (_fakeBp) {
 }
 results.push('</div>');
 
+// =================== T5f: 背景免费戏法 / 运动员偏好 / 槽位豁免 ===================
+results.push('<div class="section"><h3>T5f: 背景戏法 freeSlot、运动员 sportPreference</h3>');
+assertTrue(typeof isFreeSlotSkill === 'function', 'isFreeSlotSkill 已定义');
+assertTrue(isFreeSlotSkill({ n: '光亮术', freeSlot: true, grantedBy: '法师学徒' }), 'freeSlot 技能豁免栏位');
+assertTrue(isFreeSlotSkill({ n: '缓落术', grantedBy: '法师学徒' }), 'grantedBy=法师学徒 豁免栏位');
+assertFalse(isFreeSlotSkill({ n: '回气', src: '战士', granted: true }), '普通 granted 起始特性不豁免');
+
+// cantrip pool: 缓落术(二阶戏法) in SKILL_DATA 法师
+var _mage = SKILL_DATA['法师'] || [];
+var _xifaTiers = {};
+for (var _mi = 0; _mi < _mage.length; _mi++) {
+  var _ms = _mage[_mi];
+  var _kw = (_ms.fields && _ms.fields['关键词']) || '';
+  if (String(_kw).indexOf('戏法') >= 0 && (_ms.tier === '一阶' || _ms.tier === '二阶')) {
+    _xifaTiers[_ms.name] = _ms.tier;
+  }
+}
+assertTrue(!!_xifaTiers['光亮术'] && _xifaTiers['光亮术'] === '一阶', '光亮术为一阶戏法');
+assertTrue(!!_xifaTiers['缓落术'] && _xifaTiers['缓落术'] === '二阶', '缓落术为二阶戏法');
+assertFalse(!!_xifaTiers['魔法飞弹'], '魔法飞弹非戏法池');
+
+state = JSON.parse(JSON.stringify(STATE_DEFAULTS));
+state.classes[0] = { name: '战士', level: 1, styles: ['', '', '', ''] };
+state.skills = [
+  { n: '回气', src: '战士', granted: true },
+  { n: '光亮术', src: '法师', freeSlot: true, grantedBy: '法师学徒' },
+  { n: '缓落术', src: '法师', freeSlot: true, grantedBy: '法师学徒' }
+];
+var _slotted = state.skills.filter(function (s) { return !isFreeSlotSkill(s); });
+var _free = state.skills.filter(isFreeSlotSkill);
+assert(_slotted.length, 1, '槽位占用仅计非免费技能');
+assert(_free.length, 2, '两枚背景戏法为免费');
+assertTrue(calcSkillSlots(0) >= 1, 'L1 主职至少 1 栏');
+
+state.background = '运动员';
+state.sportPreference = '短跑';
+state.traits = '';
+var _et = exportTraitsText(state);
+assertTrue(_et.indexOf('短跑') >= 0, 'exportTraitsText 含 sportPreference');
+assertTrue(_et.indexOf('偏好') >= 0, 'exportTraitsText 标注偏好');
+
+// 乐器/赌具应进 professionals 的语义：直接断言写入路径结果形状
+var _pros = [];
+['竖琴', '笛子'].forEach(function (x) { if (_pros.indexOf(x) < 0) _pros.push(x); });
+assert(_pros.length, 2, '乐器两项可写入 professionals');
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");

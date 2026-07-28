@@ -189,7 +189,7 @@ var state={
 "sp_points":0,
 "color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
 "hp":10,"fp":8,
-"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","weapon_specs":[],
+"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","sportPreference":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
 "skills":[], "special_feats":[], "feats":[], "currency":{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -691,6 +691,11 @@ function calcSkillSlots(clsIdx) {
   }
   if (clsIdx === 0) total += (state.extra_skill_slots || 0);
   return total;
+}
+
+/** 背景免费授予等：计入技能列表但不占技能栏上限 */
+function isFreeSlotSkill(s) {
+  return !!(s && (s.freeSlot || s.grantedBy === "法师学徒"));
 }
 function getCurrentProfCap() {
   return getProfCapForLevel(getMaxLevel());
@@ -1425,9 +1430,12 @@ function exportTraitsText(state) {
   if (!traits && state.background && typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS[state.background]) {
     traits = (REF_BACKGROUNDS[state.background].description || "").replace(/\\n/g, "\n");
   }
-  if (state.background === "\u8fd0\u52a8\u5458" && state.weapon_specs && state.weapon_specs.length) {
-    var sport = state.weapon_specs[0];
-    if (sport && traits.indexOf(sport) < 0) {
+  var sport = state.sportPreference || "";
+  if (!sport && state.background === "\u8fd0\u52a8\u5458" && state.weapon_specs && state.weapon_specs.length) {
+    sport = state.weapon_specs[0]; // 旧档兼容
+  }
+  if (state.background === "\u8fd0\u52a8\u5458" && sport) {
+    if (traits.indexOf(sport) < 0) {
       traits = traits ? (traits + "\uff08\u504f\u597d\uff1a" + sport + "\uff09") : ("\u8fd0\u52a8\u5458\u62e5\u6709\u4e00\u9879\u504f\u597d\u7684\u8fd0\u52a8\u9879\u76ee\uff08" + sport + "\uff09\uff0c\u5728\u8fdb\u884c\u8fd9\u9879\u8fd0\u52a8\u65f6\u5177\u5907\u4e13\u5bb6\u7ea7\u7684\u719f\u7ec3\u5ea6");
     }
   }
@@ -4028,6 +4036,7 @@ if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系
 if(state.scamType)storyHtml+='<div class="misc-item"><div class="m-title">偏好骗局</div><div>'+state.scamType+'</div></div>';
 if(state.missionChannel)storyHtml+='<div class="misc-item"><div class="m-title">任务渠道</div><div>'+state.missionChannel+'</div></div>';
 if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">学术领域</div><div>'+state.academicDomain+'</div></div>';
+if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title">偏好运动</div><div>'+state.sportPreference+'</div></div>';
 
 
   document.getElementById("story-title").innerHTML="个性背景：\u0020"+(state.background||"未选择");
@@ -4902,16 +4911,25 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
   // === 16. Skill Tables ===
 
 
-  var mainSkills=state.skills.filter(function(s){return (!s.sub||s.sub==="")&&!isBlueprintName(s.n||s.name);});
+  var mainSkills=state.skills.filter(function(s){return (!s.sub||s.sub==="")&&!isBlueprintName(s.n||s.name)&&!isFreeSlotSkill(s);});
+  var freeMainSkills=state.skills.filter(function(s){return (!s.sub||s.sub==="")&&!isBlueprintName(s.n||s.name)&&isFreeSlotSkill(s);});
 
 
   
 
 
-  var subSkills=state.skills.filter(function(s){return s.sub&&s.sub!==""&&!isBlueprintName(s.n||s.name);});
+  var subSkills=state.skills.filter(function(s){return s.sub&&s.sub!==""&&!isBlueprintName(s.n||s.name)&&!isFreeSlotSkill(s);});
 
 
-  var skillHtml="";var mainSlots=calcSkillSlots(0);for(var ski=0;ski<mainSlots;ski++){var s=mainSkills[ski]||null;
+  var skillHtml="";
+  for(var fsi=0;fsi<freeMainSkills.length;fsi++){
+    var fs=freeMainSkills[fsi];
+    var fsStyle=getSkillStyle(fs.n,fs.src);var fsSrc=fsStyle?' <span class="skill-sub">('+fsStyle+')</span>':"";
+    var fsGrant=fs.grantedBy?' <span class="skill-sub">['+fs.grantedBy+']</span>':' <span class="skill-sub">[免费]</span>';
+    var fstm=getSkillField(fs.n,fs.src,"施展时间");var fsds=getSkillField(fs.n,fs.src,"description");var fsdr=getSkillField(fs.n,fs.src,"疲劳消耗");var fsrange=getSkillField(fs.n,fs.src,"施展距离");var fsdur=getSkillField(fs.n,fs.src,"持续时间");
+    skillHtml+='<tr><td><span class="skill-name">'+fs.n+'</span>'+fsSrc+fsGrant+'</td><td>'+(fstm||'—')+'</td><td>'+skillDescCell(fsds,state.classes[0].name,fs.n)+'</td><td>'+(fsdr?fsdr:'—')+'</td><td>'+(fsrange||'—')+'</td><td>'+(fsdur||'—')+'</td></tr>';
+  }
+  var mainSlots=calcSkillSlots(0);for(var ski=0;ski<mainSlots;ski++){var s=mainSkills[ski]||null;
 
 
     if(s){var sStyle=getSkillStyle(s.n,s.src);var src=sStyle?' <span class="skill-sub">('+sStyle+')</span>':"";var stm=getSkillField(s.n,s.src,"施展时间");var sds=getSkillField(s.n,s.src,"description");var sdr=getSkillField(s.n,s.src,"疲劳消耗");var srange=getSkillField(s.n,s.src,"施展距离");var sdur=getSkillField(s.n,s.src,"持续时间");skillHtml+='<tr><td><span class="skill-name">'+s.n+'</span>'+src+'</td><td>'+(stm||'—')+'</td><td>'+skillDescCell(sds,state.classes[0].name,s.n)+'</td><td>'+(sdr?sdr:'—')+'</td><td>'+(srange||'—')+'</td><td>'+(sdur||'—')+'</td></tr>';}
@@ -4921,7 +4939,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   document.getElementById("skill-table-body").innerHTML=skillHtml;
-  document.getElementById("mainSkillTitle").innerHTML="主职业技能列表 ("+calcSkillSlots(0)+"栏)";
+  document.getElementById("mainSkillTitle").innerHTML="主职业技能列表 ("+calcSkillSlots(0)+"栏)"+(freeMainSkills.length?" · 另含免费 "+freeMainSkills.length:" ");
 
 
    
@@ -5694,6 +5712,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
       for (var sj = 0; sj < skillList.length; sj++) {
         if (isBlueprintName(skillList[sj].n || skillList[sj].name)) continue;
+        if (isFreeSlotSkill(skillList[sj])) continue;
         if ((isSub && skillList[sj].sub) || (!isSub && !skillList[sj].sub)) currentInSlot++; }
 
 
@@ -5820,6 +5839,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
     for (var si = 0; si < skillList.length; si++) {
       if (isBlueprintName(skillList[si].n || skillList[si].name)) continue;
+      if (isFreeSlotSkill(skillList[si])) continue;
       if (isSub && skillList[si].sub) clsSkills.push(skillList[si]);
       else if (!isSub && !skillList[si].sub) clsSkills.push(skillList[si]);
     }
