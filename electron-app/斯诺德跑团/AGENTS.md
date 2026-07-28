@@ -1,8 +1,8 @@
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
-**Generated:** 2026-06-01
+**Generated:** 2026-07-29
 **Module:** Character creation, sheet rendering, save management, xlsx export
-**Version:** v1.0.542
+**Version:** v1.0.7132
 
 ## OVERVIEW
 独立 RPG 角色管理系统。纯前端（HTML+JS+CSS），localStorage 持久化，零外部依赖。14 职业、8 属性、装备槽位、天赋树、技能学习、xlsx 导入导出。
