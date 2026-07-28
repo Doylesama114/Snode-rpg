@@ -139,6 +139,70 @@ html.dark .help-pager button:hover{border-color:#d4a54a;color:#d4a54a}
 html.dark .help-pager button.active{background:#d4a54a;color:#1a1d20;border-color:#d4a54a}
 html.dark .section h4{color:#d4a54a}
 /* /HELP-PAGER-CSS */
+
+/* HELP-SEARCH-CSS */
+.help-search{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;
+  padding:12px 14px;margin:0 0 8px;
+}
+.help-search input[type="search"]{
+  flex:1 1 200px;min-width:160px;font-family:inherit;font-size:14px;
+  border:1px solid #d8d2c4;border-radius:6px;padding:8px 12px;
+  background:#fff;color:#1f2522;
+}
+.help-search input[type="search"]:focus{
+  outline:none;border-color:#a46d1f;box-shadow:0 0 0 2px rgba(164,109,31,.18);
+}
+.help-search-btn{
+  border:1px solid #d8d2c4;background:#fff;color:#1f2522;
+  border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.help-search-btn:hover:not(:disabled){border-color:#a46d1f;color:#a46d1f}
+.help-search-btn:disabled{opacity:.45;cursor:not-allowed}
+.help-search-btn-primary{background:#a46d1f;color:#fff;border-color:#a46d1f}
+.help-search-btn-primary:hover:not(:disabled){background:#c0852f;border-color:#c0852f;color:#fff}
+.help-search-status{font-size:13px;color:#69706b;min-width:4.5em;white-space:nowrap}
+.help-search-status.empty{color:#a46d1f}
+.search-highlight{
+  background:#ffe08a;color:inherit;border-radius:2px;padding:0 1px;
+  box-shadow:0 0 0 1px rgba(164,109,31,.25);
+}
+.search-hit-current{
+  outline:2px solid rgba(164,109,31,.55);
+  box-shadow:0 0 0 3px rgba(164,109,31,.12);
+  border-radius:4px;
+}
+.section,.card,.note,.p,.wrap table tr{scroll-margin-top:12px}
+.section h2,.section h3,.section h4{scroll-margin-top:12px}
+@media(max-width:600px){
+  .help-search{padding:10px}
+  .help-search input[type="search"]{flex:1 1 100%}
+}
+@media (prefers-color-scheme:dark){
+  .help-search{background:#24272b;border-color:#3a3d40}
+  .help-search input[type="search"]{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}
+  .help-search input[type="search"]:focus{border-color:#d4a54a;box-shadow:0 0 0 2px rgba(212,165,74,.2)}
+  .help-search-btn{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}
+  .help-search-btn:hover:not(:disabled){border-color:#d4a54a;color:#d4a54a}
+  .help-search-btn-primary{background:#d4a54a;color:#1a1d20;border-color:#d4a54a}
+  .help-search-status{color:#9d9b98}
+  .help-search-status.empty{color:#d4a54a}
+  .search-highlight{background:#6b5420;box-shadow:0 0 0 1px rgba(212,165,74,.35)}
+  .search-hit-current{outline-color:rgba(212,165,74,.55);box-shadow:0 0 0 3px rgba(212,165,74,.15)}
+}
+html.dark .help-search{background:#24272b;border-color:#3a3d40}
+html.dark .help-search input[type="search"]{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}
+html.dark .help-search input[type="search"]:focus{border-color:#d4a54a;box-shadow:0 0 0 2px rgba(212,165,74,.2)}
+html.dark .help-search-btn{background:#1a1d20;border-color:#3a3d40;color:#e8e6e3}
+html.dark .help-search-btn:hover:not(:disabled){border-color:#d4a54a;color:#d4a54a}
+html.dark .help-search-btn-primary{background:#d4a54a;color:#1a1d20;border-color:#d4a54a}
+html.dark .help-search-status{color:#9d9b98}
+html.dark .help-search-status.empty{color:#d4a54a}
+html.dark .search-highlight{background:#6b5420;box-shadow:0 0 0 1px rgba(212,165,74,.35)}
+html.dark .search-hit-current{outline-color:rgba(212,165,74,.55);box-shadow:0 0 0 3px rgba(212,165,74,.15)}
+/* /HELP-SEARCH-CSS */
+
 /* HELP-TTS-CSS */
 
 .tts-toolbar{
@@ -196,6 +260,13 @@ html.dark .tts-speaking{outline-color:rgba(212,165,74,.55);background:rgba(212,1
 <a class="back-link" href="启动台.html">← 返回启动台</a>
 <h1>📖 帮助文档</h1><div class="subtitle" id="help-subtitle">斯诺德规则 · 冒险者手册</div>
 <div class="help-pager" role="tablist" aria-label="帮助翻页"><button type="button" class="active" data-view="rules" role="tab">规则手册</button><button type="button" data-view="world" role="tab">世界观架构</button></div>
+<div class="help-search" id="help-search" role="search">
+  <input type="search" id="help-search-input" placeholder="检索规则与世界观…" autocomplete="off" aria-label="检索规则与世界观">
+  <button type="button" class="help-search-btn help-search-btn-primary" id="help-search-go">检索</button>
+  <button type="button" class="help-search-btn" id="help-search-prev" disabled title="上一条">上一条</button>
+  <button type="button" class="help-search-btn" id="help-search-next" disabled title="下一条">下一条</button>
+  <span class="help-search-status" id="help-search-status" aria-live="polite"></span>
+</div>
 
 <div class="help-layout" id="help-pane-rules"><aside class="toc-sidebar"><nav class="toc"><div class="toc-title">目录</div><a href="#s0">基本规则</a>
 <a href="#s1">检定规则</a>
@@ -994,9 +1065,11 @@ html.dark .tts-speaking{outline-color:rgba(212,165,74,.55);background:rgba(212,1
     initial = "world";
   }
   setView(initial === "world" ? "world" : "rules", false);
+  window.HelpPager = { setView: setView };
 })();
 </script>
 
 <!-- /HELP-PAGER-SCRIPT -->
+<script src="help-search.js"></script>
 <script src="help-tts.js"></script>
 </body></html>
