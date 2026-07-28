@@ -260,6 +260,218 @@ assert(state.profs["魅力"]["表演-演奏"], 1, "表演-演奏 可写入 profs
 
 results.push('</div>');
 
+// =================== T5d: 升级 cap / 专长熟练 / 天赋钩子 ===================
+results.push('<div class="section"><h3>T5d: 升级 cap、专长熟练、通用天赋钩子</h3>');
+
+// Cap for pending next level (4→5)
+assert(getAttrCapForLevel(4), 18, 'L4 attr_cap=18');
+assert(getAttrCapForLevel(5), 19, 'L5 attr_cap=19');
+assert(getProfCapForLevel(4), 2, 'L4 prof_cap=2');
+assert(getProfCapForLevel(5), 3, 'L5 prof_cap=3');
+
+// migrate 运动-马术 → 运动-自定义
+var _mig = {力量:{ "运动-马术":2, "运动-冲浪":1, "运动-跳跃":0 }};
+migrateProfKeys(_mig);
+assert(_mig.力量["运动-自定义"], 2, '迁移后运动-自定义取较大值');
+assertTrue(_mig.力量["运动-马术"] === undefined, '迁移后删除运动-马术');
+
+// resolveProfTarget aliases
+var _r1 = resolveProfTarget("隐匿");
+assert(_r1.attr, "敏捷", "隐匿 → 敏捷");
+assert(_r1.key, "隐匿", "隐匿 key");
+var _r2 = resolveProfTarget("医药");
+assert(_r2.key, "知识-医药", "医药 → 知识-医药");
+var _r3 = resolveProfTarget("巧手");
+assertTrue(!!(_r3 && _r3.category), "巧手为类别");
+
+// 隐伏者 fixed proficiency via applyFeatEffects
+state.attrs = {力量:10,敏捷:10,体质:10,智力:10,感知:10,魅力:10,意志:10,幸运:10};
+state.profs = JSON.parse(JSON.stringify(STATE_DEFAULTS.profs));
+state.special_feats = [];
+applyFeatEffects("隐伏者", {name:"隐伏者", choices:{profs:[{attr:"敏捷",key:"隐匿"}]}}, true);
+assert(state.profs["敏捷"]["隐匿"], 1, "隐伏者写入隐匿+1");
+assert(state.profs["敏捷"]["体操"], 0, "隐伏者不误加体操");
+
+// 持之以恒
+state.attrs = {力量:14,敏捷:10,体质:8,智力:12,感知:11,魅力:10,意志:10,幸运:10};
+var _te = {n:"持之以恒"};
+applyUniversalTalentBonus("持之以恒", true, _te);
+assert(state.attrs["力量"], 15, "持之以恒最高属性+1");
+assert(state.attrs["体质"], 9, "持之以恒最低属性+1");
+applyUniversalTalentBonus("持之以恒", false, _te);
+assert(state.attrs["力量"], 14, "持之以恒遗忘回滚最高");
+assert(state.attrs["体质"], 8, "持之以恒遗忘回滚最低");
+
+// 力量耐性
+state.profs["力量"]["豁免"] = 0;
+applyUniversalTalentBonus("力量耐性", true, null);
+assert(state.profs["力量"]["豁免"], 1, "力量耐性 → 豁免+1");
+
+// 弥补短板 future
+state.attrs = {力量:10,敏捷:10,体质:8,智力:10,感知:10,魅力:10,意志:10,幸运:10};
+state.classes = [{name:"战士",level:4},{name:"",level:0},{name:"",level:0}];
+state.special_feats = [{name:"弥补短板", level:4, choices:{attr:"体质", _futureLowestLeft:2}}];
+state.attrs["体质"] = 12;
+applyShortboardFutureBonus(5);
+assert(state.special_feats[0].choices._futureLowestLeft, 1, "弥补短板剩余次数-1");
+assertTrue(state.attrs["体质"] >= 12, "后续升级给最低属性");
+
+// 有 left=1：再升一次变 0，不重置
+applyShortboardFutureBonus(6);
+assert(state.special_feats[0].choices._futureLowestLeft, 0, "弥补短板剩余次数归零");
+var _conAfter = state.attrs["体质"];
+applyShortboardFutureBonus(7);
+assert(state.special_feats[0].choices._futureLowestLeft, 0, "归零后不再发放");
+assert(state.attrs["体质"], _conAfter, "归零后属性不变");
+
+// 缺 left、level=4、mainLevel=6 → 推断 left=0
+state.attrs = {力量:10,敏捷:10,体质:12,智力:10,感知:10,魅力:10,意志:10,幸运:10};
+state.classes = [{name:"战士",level:6},{name:"",level:0},{name:"",level:0}];
+state.special_feats = [{name:"弥补短板", level:4, choices:{attr:"体质"}}];
+ensureShortboardFutureCount(state.special_feats[0]);
+assert(state.special_feats[0].choices._futureLowestLeft, 0, "旧档缺计数且已升2级 → left=0");
+var _a6 = state.attrs["体质"];
+applyShortboardFutureBonus(7);
+assert(state.attrs["体质"], _a6, "推断 left=0 后升级不改属性");
+
+// 缺 left、level=4、mainLevel=4 → 推断 left=2；对 5、6 各发一次
+state.attrs = {力量:12,敏捷:12,体质:12,智力:12,感知:12,魅力:12,意志:12,幸运:10};
+state.classes = [{name:"战士",level:4},{name:"",level:0},{name:"",level:0}];
+state.special_feats = [{name:"弥补短板", level:4, choices:{attr:"幸运"}}];
+ensureShortboardFutureCount(state.special_feats[0]);
+assert(state.special_feats[0].choices._futureLowestLeft, 2, "同级缺计数 → 推断 left=2");
+applyShortboardFutureBonus(5);
+assert(state.special_feats[0].choices._futureLowestLeft, 1, "推断后第1次发放");
+assert(state.attrs["幸运"], 11, "第1次给最低幸运+1");
+state.classes[0].level = 5;
+applyShortboardFutureBonus(6);
+assert(state.special_feats[0].choices._futureLowestLeft, 0, "推断后第2次发放归零");
+assert(state.attrs["幸运"], 12, "第2次再+1");
+
+// 纯字符串专长 → left=0
+state.classes = [{name:"战士",level:8},{name:"",level:0},{name:"",level:0}];
+state.special_feats = ["弥补短板"];
+migrateAllShortboardFeats();
+assert(typeof state.special_feats[0], "object", "字符串专长规范化为对象");
+assert(state.special_feats[0].choices._futureLowestLeft, 0, "字符串专长保守 left=0");
+
+// extra_skill_slots
+state.extra_skill_slots = 1;
+state.classes = [{name:"战士",level:1},{name:"",level:0},{name:"",level:0}];
+assert(calcSkillSlots(0), 11, "质朴额外槽 +1 → 11");
+state.extra_skill_slots = 0;
+
+// _dirty on chooseAttr path simulation
+state._dirty = false;
+state.attrs["力量"] = 10;
+state.classes = [{name:"战士",level:4},{name:"",level:0},{name:"",level:0}];
+window._pendingLevelUp = {clsIdx:0, level:5, _done:{}};
+// Direct write mimicking chooseAttr without modal chain
+state.attrs["力量"] = 11;
+state._dirty = true;
+assertTrue(state._dirty, "属性写入后 dirty");
+
+// 存档不得剥离专长/天赋进度字段
+state._feat_ac_bonus = 1;
+state.talent_tree = [{n:"持之以恒", _persistOrig:{"力量":14,"体质":8}}];
+state.special_feats = [{name:"弥补短板", level:4, choices:{attr:"体质", _futureLowestLeft:1}, _orig:{"体质":8}}];
+var _snap = getStateSnapshot();
+assert(_snap._feat_ac_bonus, 1, "快照保留 _feat_ac_bonus");
+assert(_snap.talent_tree[0]._persistOrig["力量"], 14, "快照保留 _persistOrig");
+assert(_snap.special_feats[0].choices._futureLowestLeft, 1, "快照保留 _futureLowestLeft");
+assert(_snap.special_feats[0]._orig["体质"], 8, "快照保留 feat._orig");
+state.special_feats[0].choices._futureMigrated = true;
+var _snap2 = getStateSnapshot();
+assertTrue(_snap2.special_feats[0].choices._futureMigrated === true, "快照保留 _futureMigrated");
+results.push('</div>');
+
+// T5e: panel 型专长（原 description_only 面板句）
+results.push('<div class="section"><h3>T5e: panel 型特殊专长面板写入</h3>');
+state.attrs = {力量:10,敏捷:10,体质:10,智力:10,感知:10,魅力:10,意志:10,幸运:10};
+state.profs = JSON.parse(JSON.stringify(STATE_DEFAULTS.profs));
+state.special_feats = [];
+state.weapon_profs = {};
+state.weapon_prof_bonus = {};
+state.armor_profs = {};
+state.custom_profs = {};
+state.languages = ["通用语"];
+state.extra_slots = [];
+
+applyFeatEffects("命运直觉", {name:"命运直觉", choices:{}}, true);
+assert(state.attrs["幸运"], 11, "命运直觉 幸运+1");
+
+applyFeatEffects("创伤后成长", {name:"创伤后成长", choices:{}}, true);
+assert(state.profs["意志"]["求生"], 1, "创伤后成长 求生+1");
+
+applyFeatEffects("奇械学徒", {name:"奇械学徒", choices:{}}, true);
+assert(state.profs["智力"]["知识-工程学"], 1, "奇械学徒 工程学+1");
+
+applyFeatEffects("航海士", {name:"航海士", choices:{}}, true);
+assert(state.custom_profs["水运载具"], 1, "航海士 水运载具+1");
+
+applyFeatEffects("韧性", {name:"韧性", choices:{}}, true);
+assert(state.attrs["意志"], 11, "韧性 意志+1");
+assert(state.profs["力量"]["豁免"], 1, "韧性 力量豁免+1");
+assert(state.profs["幸运"]["豁免"], 1, "韧性 幸运豁免+1");
+
+applyFeatEffects("威风堂堂", {name:"威风堂堂", choices:{attr:"力量"}}, true);
+assert(state.attrs["力量"], 11, "威风堂堂 选力量+1");
+
+applyFeatEffects("射击手", {name:"射击手", choices:{}}, true);
+assertTrue(!!state.weapon_profs["弓箭"], "射击手 弓箭熟练项");
+assertTrue(!!state.weapon_profs["火器"], "射击手 火器熟练项");
+
+applyFeatEffects("兽人式狂怒", {name:"兽人式狂怒", choices:{}}, true);
+assert(state.weapon_prof_bonus["斧类"], 1, "兽人式狂怒 斧类+1");
+
+applyFeatEffects("盾牌大师", {name:"盾牌大师", choices:{}}, true);
+assertTrue(!!state.armor_profs["盾牌"], "盾牌大师 盾牌熟练");
+
+applyFeatEffects("天赋异禀", {name:"天赋异禀", choices:{tier:"三阶"}}, true);
+assert(state.attrs["智力"], 11, "天赋异禀 智力+1");
+assertTrue(state.extra_slots.indexOf("三阶") >= 0, "天赋异禀 三阶天赋槽");
+
+var _lingEntry = {name:"语言学家", choices:{}};
+state.languages = ["通用语"];
+state.attrs["智力"] = 10;
+applyFeatEffects("语言学家", _lingEntry, true);
+assert(state.attrs["智力"], 11, "语言学家 智力+1");
+assertTrue((_lingEntry.choices._addedLanguages || []).length > 0, "语言学家记录新增语言");
+applyFeatEffects("语言学家", _lingEntry, false);
+assert(state.languages.length, 1, "语言学家遗忘回滚仅移新增语言");
+assert(state.languages[0], "通用语", "语言学家回滚保留原有通用语");
+assert(state.attrs["智力"], 10, "语言学家遗忘回滚智力");
+
+assert(SPECIAL_FEATS["随手投掷"].effects.type, "description_only", "随手投掷仍为规则专长");
+assertTrue(SPECIAL_FEATS["随手投掷"].effects.description.indexOf("缴械大师") < 0, "随手投掷描述不再串缴械大师");
+
+// 天赋槽上限读 extra_slots
+state.extra_slots = ["三阶"];
+assert(getTalentTierlotCap("三阶"), 6, "三阶有额外槽 → 上限6");
+assert(getTalentTierlotCap("一阶"), 5, "一阶无额外槽 → 上限5");
+state.extra_slots = [];
+
+// 属性夹到20
+state.attrs["幸运"] = 20;
+var _luckEntry = {name:"命运直觉", choices:{}};
+applyFeatEffects("命运直觉", _luckEntry, true);
+assert(state.attrs["幸运"], 20, "已20时命运直觉不再加到21");
+assertTrue(_luckEntry.choices._attrGained === false, "已20时标记未实际加属性");
+applyFeatEffects("命运直觉", _luckEntry, false);
+assert(state.attrs["幸运"], 20, "未实际加属性时遗忘不扣幸运");
+
+// 旧档补发：无 _panelApplied 时 ensure 一次
+state.attrs = {力量:10,敏捷:10,体质:10,智力:10,感知:10,魅力:10,意志:10,幸运:10};
+state.profs = JSON.parse(JSON.stringify(STATE_DEFAULTS.profs));
+state.special_feats = [{name:"命运直觉", level:4, choices:{}}];
+ensurePanelFeatBonuses();
+assert(state.attrs["幸运"], 11, "ensurePanelFeatBonuses 补发幸运+1");
+assertTrue(state.special_feats[0].choices._panelApplied === true, "补发后标记 _panelApplied");
+ensurePanelFeatBonuses();
+assert(state.attrs["幸运"], 11, "再次 ensure 不重复加");
+
+results.push('</div>');
+
 // =================== T6: canPlaceInSlot ===================
 results.push('<div class="section"><h3>T6: canPlaceInSlot — 装备槽位规则</h3>');
 

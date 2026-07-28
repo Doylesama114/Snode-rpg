@@ -100,6 +100,55 @@ function applyChoiceLMasteryBonus(skillName, add) {
   state.attrs[map.attr] = Math.max(0, (state.attrs[map.attr] || 0) + (add ? 1 : -1));
 }
 
+function applyUniversalTalentBonus(skillName, add, talentEntry) {
+  if (typeof UNIVERSAL_SAVE_TALENTS !== "undefined" && UNIVERSAL_SAVE_TALENTS[skillName]) {
+    var sa = UNIVERSAL_SAVE_TALENTS[skillName];
+    bumpProf(sa, "豁免", add ? 1 : -1);
+    return true;
+  }
+  if (typeof UNIVERSAL_CUSTOM_PROF_TALENTS !== "undefined" && UNIVERSAL_CUSTOM_PROF_TALENTS[skillName]) {
+    bumpCustomProf(UNIVERSAL_CUSTOM_PROF_TALENTS[skillName], add ? 1 : -1);
+    return true;
+  }
+  if (typeof UNIVERSAL_PROF_TALENTS !== "undefined" && UNIVERSAL_PROF_TALENTS[skillName]) {
+    var up = UNIVERSAL_PROF_TALENTS[skillName];
+    bumpProf(up.attr, up.key, add ? 1 : -1);
+    return true;
+  }
+  if (skillName === "持之以恒") {
+    var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+    if (add) {
+      var hi = attrNames[0], lo = attrNames[0];
+      var hiV = state.attrs[hi] || 0, loV = state.attrs[lo] || 0;
+      for (var ai = 1; ai < attrNames.length; ai++) {
+        var v = state.attrs[attrNames[ai]] || 0;
+        if (v > hiV) { hiV = v; hi = attrNames[ai]; }
+        if (v < loV) { loV = v; lo = attrNames[ai]; }
+      }
+      var orig = {};
+      if (hiV < 20) { orig[hi] = hiV; state.attrs[hi] = hiV + 1; }
+      // recompute lowest after high bump if same attr
+      loV = state.attrs[lo] || 0;
+      for (var bi = 0; bi < attrNames.length; bi++) {
+        var bv = state.attrs[attrNames[bi]] || 0;
+        if (bv < loV) { loV = bv; lo = attrNames[bi]; }
+      }
+      if (loV < 20) {
+        if (orig[lo] === undefined) orig[lo] = loV;
+        state.attrs[lo] = loV + 1;
+      }
+      if (talentEntry) talentEntry._persistOrig = orig;
+    } else if (talentEntry && talentEntry._persistOrig) {
+      var o = talentEntry._persistOrig;
+      for (var k in o) {
+        if (o.hasOwnProperty(k)) state.attrs[k] = o[k];
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
 function applyChoiceLLevel12Boosts() {
   if (!state._cl12Done) state._cl12Done = {};
   var mainLevel = (state.classes && state.classes[0]) ? (state.classes[0].level || 0) : 0;
@@ -126,7 +175,7 @@ function applyMeditationSP(skillName, add) {
 var state={
 
 "profs":{
-  "力量":{"豁免":0,"威力":0,"承重":0,"运动-跳跃":0,"运动-攀爬":0,"运动-游泳":0,"运动-马术":0,"运动-冲浪":0},
+  "力量":{"豁免":0,"威力":0,"承重":0,"运动-跳跃":0,"运动-攀爬":0,"运动-游泳":0,"运动-自定义":0},
   "敏捷":{"豁免":0,"体操":0,"骑乘":0,"隐匿":0,"巧手-偷窃":0,"巧手-开锁":0,"巧手-拆除":0,"巧手-自定义":0},
   "体质":{"豁免":0,"专注":0,"耐力":0},
   "智力":{"豁免":0,"调查":0,"逻辑":0,"宗教":0,"估价":0,"伪造":0,"读唇":0,"奥秘-魔法学识":0,"奥秘-炼金术":0,"奥秘-神奇道具":0,"奥秘-多元宇宙":0,"知识-历史":0,"知识-地理":0,"知识-人文":0,"知识-政治":0,"知识-神秘学":0,"知识-工程学":0,"知识-珠宝学":0,"知识-草药学":0,"知识-医药":0,"知识-烹饪":0,"知识-自定义":0},
@@ -178,11 +227,24 @@ function allocateUniqueCharId(desired) {
   return desired + "_" + n;
 }
 
+/** Underscore keys that must survive save/load (game progress, not UI temps). */
+function isPersistedInternalKey(key) {
+  return key === "_hp_per_level_bonus"
+    || key === "_feat_ac_bonus"
+    || key === "_persistOrig"
+    || key === "_futureLowestLeft"
+    || key === "_futureMigrated"
+    || key === "_orig"
+    || key === "_addedLanguages"
+    || key === "_panelApplied"
+    || key === "_attrGained";
+}
+
 function getStateSnapshot() {
   // Deep clone serializable state (exclude functions, DOM refs, temp vars)
   var clone = JSON.parse(JSON.stringify(state, function(key, val) {
     // Skip internal/temp keys that should not be persisted
-    if (key.indexOf("_") === 0 && key !== "_hp_per_level_bonus" && key !== "_feat_ac_bonus") return undefined;
+    if (key.indexOf("_") === 0 && !isPersistedInternalKey(key)) return undefined;
     return val;
   }));
   clone._savedAt = new Date().toISOString();
@@ -223,7 +285,7 @@ function loadState(charName, slotIndex) {
     }
     for (dk in state) {
       if (!state.hasOwnProperty(dk)) continue;
-      if (dk.indexOf("_") === 0 && dk !== "_hp_per_level_bonus" && dk !== "_feat_ac_bonus") {
+      if (dk.indexOf("_") === 0 && !isPersistedInternalKey(dk)) {
         delete state[dk];
       }
     }
@@ -235,8 +297,11 @@ function loadState(charName, slotIndex) {
     CURRENT_CHAR = charName;
     CURRENT_SLOT = slotIndex;
     state._dirty = false;
+    migrateProfKeys(state.profs);
     ensureSpState();
     ensureClaimedLevels();
+    migrateAllShortboardFeats();
+    ensurePanelFeatBonuses();
     if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(new CustomEvent('snowd-panel-character-change', {
         detail: { charName: charName, slot: slotIndex },
@@ -482,14 +547,135 @@ function getMaxLevel() {
     return Math.max(0, mc.level - 5);
   }
 
-function getCurrentAttrCap() {
-  var maxLv = getMaxLevel();
-  var tbl = LEVEL_TABLE["\u4e3b\u804c\u4e1a"];
+var PROF_DEFS = {
+  "力量":["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],
+  "敏捷":["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],
+  "体质":["豁免","专注","耐力"],
+  "智力":["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],
+  "感知":["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],
+  "魅力":["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-演奏","表演-自定义"],
+  "意志":["豁免","求生","激励","决策"],
+  "幸运":["豁免","机遇","探索"]
+};
+
+var PROF_NAME_ALIASES = {
+  "医药":{attr:"智力",key:"知识-医药"},
+  "烹饪":{attr:"智力",key:"知识-烹饪"},
+  "草药学":{attr:"智力",key:"知识-草药学"},
+  "珠宝学":{attr:"智力",key:"知识-珠宝学"},
+  "工程学":{attr:"智力",key:"知识-工程学"},
+  "炼金术":{attr:"智力",key:"奥秘-炼金术"},
+  "开锁":{attr:"敏捷",key:"巧手-开锁"},
+  "攀爬":{attr:"力量",key:"运动-攀爬"},
+  "探索":{attr:"幸运",key:"探索"},
+  "隐匿":{attr:"敏捷",key:"隐匿"},
+  "逻辑":{attr:"智力",key:"逻辑"},
+  "歌唱":{attr:"魅力",key:"表演-歌唱"},
+  "舞蹈":{attr:"魅力",key:"表演-舞蹈"},
+  "演奏":{attr:"魅力",key:"表演-演奏"}
+};
+
+var PROF_CATEGORY_KEYS = {
+  "巧手":{attr:"敏捷",keys:["巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"]},
+  "运动":{attr:"力量",keys:["运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"]},
+  "奥秘":{attr:"智力",keys:["奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙"]},
+  "表演":{attr:"魅力",keys:["表演-歌唱","表演-舞蹈","表演-演奏","表演-自定义"]},
+  "知识":{attr:"智力",keys:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"]}
+};
+
+var CUSTOM_PROF_SKILLS = {
+  "垂钓":true,"栽培":true,"写作":true,"酿酒":true,"绘画":true,"制图":true,"裁缝":true,
+  "雕刻":true,"制皮":true,"易容":true,"制毒":true,"锻造":true,
+  "陆运载具":true,"水运载具":true,"空中载具":true
+};
+
+function findProfAttrByKey(profKey) {
+  if (!profKey) return null;
+  if (PROF_NAME_ALIASES[profKey]) return PROF_NAME_ALIASES[profKey].attr;
+  for (var attr in PROF_DEFS) {
+    if (PROF_DEFS[attr].indexOf(profKey) >= 0) return attr;
+  }
+  if (state.profs) {
+    for (var a in state.profs) {
+      if (a === "通用") continue;
+      if (state.profs[a] && state.profs[a].hasOwnProperty(profKey)) return a;
+    }
+  }
+  return null;
+}
+
+/** Resolve a proficiency display/data name to {attr,key} or {custom:name} or {category,attr,keys}. */
+function resolveProfTarget(name) {
+  if (!name) return null;
+  if (CUSTOM_PROF_SKILLS[name] || (name.indexOf("的专业") >= 0)) {
+    var cn = name.replace(/的专业熟练度.*$/, "").replace(/专业熟练度$/, "").trim();
+    if (CUSTOM_PROF_SKILLS[name]) cn = name;
+    return { custom: cn || name };
+  }
+  if (PROF_CATEGORY_KEYS[name]) {
+    var cat = PROF_CATEGORY_KEYS[name];
+    return { category: name, attr: cat.attr, keys: cat.keys.slice() };
+  }
+  if (PROF_NAME_ALIASES[name]) {
+    return { attr: PROF_NAME_ALIASES[name].attr, key: PROF_NAME_ALIASES[name].key };
+  }
+  var attr = findProfAttrByKey(name);
+  if (attr) return { attr: attr, key: name };
+  return null;
+}
+
+function ensureProfKey(attr, key) {
+  if (!state.profs) state.profs = {};
+  if (!state.profs[attr]) state.profs[attr] = {};
+  if (typeof state.profs[attr][key] !== "number") state.profs[attr][key] = 0;
+}
+
+function bumpProf(attr, key, delta) {
+  ensureProfKey(attr, key);
+  state.profs[attr][key] = Math.max(0, (state.profs[attr][key] || 0) + delta);
+}
+
+function bumpCustomProf(name, delta) {
+  if (!state.custom_profs) state.custom_profs = {};
+  state.custom_profs[name] = Math.max(0, (state.custom_profs[name] || 0) + delta);
+}
+
+function migrateProfKeys(profs) {
+  if (!profs || !profs["力量"]) return;
+  var p = profs["力量"];
+  var legacy = ["运动-马术", "运动-冲浪"];
+  var maxV = typeof p["运动-自定义"] === "number" ? p["运动-自定义"] : 0;
+  for (var i = 0; i < legacy.length; i++) {
+    if (typeof p[legacy[i]] === "number") {
+      if (p[legacy[i]] > maxV) maxV = p[legacy[i]];
+      delete p[legacy[i]];
+    }
+  }
+  if (p["运动-自定义"] === undefined || maxV > (p["运动-自定义"] || 0)) p["运动-自定义"] = maxV;
+}
+
+function getAttrCapForLevel(level) {
+  var tbl = LEVEL_TABLE["主职业"];
   var cap = 18;
+  var maxLv = level != null ? level : getMaxLevel();
   for (var li = 1; li <= maxLv; li++) {
     if (tbl[li] && tbl[li].attr_cap) cap = tbl[li].attr_cap;
   }
   return cap;
+}
+
+function getProfCapForLevel(level) {
+  var tbl = LEVEL_TABLE["主职业"];
+  var cap = 2;
+  var maxLv = level != null ? level : getMaxLevel();
+  for (var li = 1; li <= maxLv; li++) {
+    if (tbl[li] && tbl[li].prof_cap) cap = tbl[li].prof_cap;
+  }
+  return cap;
+}
+
+function getCurrentAttrCap() {
+  return getAttrCapForLevel(getMaxLevel());
 }
 
 function calcSkillSlots(clsIdx) {
@@ -503,16 +689,39 @@ function calcSkillSlots(clsIdx) {
     if (cl.name === "法师" && li > 1) add *= 2;
     total += add;
   }
+  if (clsIdx === 0) total += (state.extra_skill_slots || 0);
   return total;
 }
 function getCurrentProfCap() {
-  var maxLv = getMaxLevel();
-  var tbl = LEVEL_TABLE["\u4e3b\u804c\u4e1a"];
-  var cap = 2;
-  for (var li = 1; li <= maxLv; li++) {
-    if (tbl[li] && tbl[li].prof_cap) cap = tbl[li].prof_cap;
+  return getProfCapForLevel(getMaxLevel());
+}
+
+/** Extra talent slots granted for a tier (额外槽位 / 天赋异禀 → state.extra_slots). */
+function countExtraTalentSlots(tierName) {
+  tierName = normalizeTierName(tierName || "");
+  var slots = state.extra_slots || [];
+  var n = 0;
+  for (var i = 0; i < slots.length; i++) {
+    if (normalizeTierName(slots[i]) === tierName) n++;
   }
-  return cap;
+  return n;
+}
+
+/** Per-tier talent column capacity: base 5 + extra_slots for that tier. */
+function getTalentTierlotCap(tierName) {
+  return 5 + countExtraTalentSlots(tierName);
+}
+
+function persistLevelUpSave() {
+  state._dirty = true;
+  if (!CURRENT_CHAR) return;
+  var si = CURRENT_SLOT || 1;
+  try {
+    saveState(si);
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("_snowd_last_save_" + CURRENT_CHAR + "_" + si, JSON.stringify(state));
+    }
+  } catch (e) { /* keep dirty */ }
 }
 
 
@@ -2554,7 +2763,7 @@ function showSpecialFeatDetail(name) {
   var prereq = fd.prerequisite || "无";
   var typeLabel = "";
   if(fd.effects.type !== "description_only"){
-    var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点"};
+    var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
     typeLabel = typeMap[fd.effects.type] || fd.effects.type;
   }
   var tier = "特殊专长";
@@ -2564,19 +2773,44 @@ function showSpecialFeatDetail(name) {
 
 // Show multiple proficiency choice dialog for feats
 function showMultipleProfChoice(featName, options, count, onConfirm) {
-  var selected = [];
+  var flat = [];
+  if (!options || options.length === 0) {
+    for (var a in PROF_DEFS) {
+      var pl = PROF_DEFS[a];
+      for (var i = 0; i < pl.length; i++) {
+        if (pl[i] !== "豁免") flat.push(pl[i]);
+      }
+    }
+  } else {
+    for (var oi = 0; oi < options.length; oi++) {
+      var opt = options[oi];
+      var resolved = resolveProfTarget(opt);
+      if (resolved && resolved.category && resolved.keys) {
+        for (var ki = 0; ki < resolved.keys.length; ki++) flat.push(resolved.keys[ki]);
+      } else if (resolved && resolved.key) {
+        flat.push(resolved.key);
+      } else if (PROF_DEFS[opt]) {
+        var list = PROF_DEFS[opt];
+        for (var j = 0; j < list.length; j++) {
+          if (list[j] !== "豁免") flat.push(list[j]);
+        }
+      } else {
+        flat.push(opt);
+      }
+    }
+  }
   var h = "<div style='padding:16px;background:#2d2722;border-radius:8px;color:#f0e0d0'>";
   h += "<div style='font-size:16px;font-weight:bold;margin-bottom:12px;color:#e8a86a'>选择" + count + "项熟练项（已选0/" + count + "）</div>";
   h += "<div id='multiProfList' style='display:flex;flex-wrap:wrap;gap:6px'>";
-  for (var oi = 0; oi < options.length; oi++) {
-    h += "<div data-prof='" + options[oi] + "' onclick='toggleMultiProf(this.dataset.prof," + count + ")' style='padding:8px 16px;background:#3d3020;border:1px solid #5a4a30;border-radius:4px;cursor:pointer;font-size:14px;color:#f0e0d0'>" + options[oi] + "</div>";
+  for (var fi = 0; fi < flat.length; fi++) {
+    h += "<div data-prof='" + flat[fi] + "' onclick='toggleMultiProf(this.dataset.prof," + count + ")' style='padding:8px 16px;background:#3d3020;border:1px solid #5a4a30;border-radius:4px;cursor:pointer;font-size:14px;color:#f0e0d0'>" + flat[fi] + "</div>";
   }
   h += "</div>";
   h += "<div style='margin-top:10px'>";
   h += "<button onclick='confirmMultiProf(" + count + ")' style='padding:8px 20px;background:#4a6a3a;color:#e0e0d0;border:none;border-radius:4px;cursor:pointer'>确认</button>";
   h += "</div></div>";
   showSkillPreview(featName, "特殊专长", "", h, function(){});
-  window._multiProfPending = {featName: featName, options: options, count: count, selected: [], onConfirm: onConfirm};
+  window._multiProfPending = {featName: featName, options: flat, count: count, selected: [], onConfirm: onConfirm};
 }
 
 function toggleMultiProf(profAttr, maxCount) {
@@ -2614,17 +2848,16 @@ function confirmMultiProf(maxCount) {
   if (pending.onConfirm) {
     var result = [];
     for (var i = 0; i < pending.selected.length; i++) {
-      var attr = pending.selected[i];
-      var profKey = "";
-      if (attr === "力量") profKey = "威力";
-      else if (attr === "敏捷") profKey = "体操";
-      else if (attr === "体质") profKey = "专注";
-      else if (attr === "智力") profKey = "调查";
-      else if (attr === "感知") profKey = "察觉";
-      else if (attr === "魅力") profKey = "说服";
-      else if (attr === "意志") profKey = "激励";
-      else if (attr === "幸运") profKey = "机遇";
-      result.push({attr: attr, key: profKey});
+      var raw = pending.selected[i];
+      var resolved = resolveProfTarget(raw);
+      if (resolved && resolved.attr && resolved.key) {
+        result.push({attr: resolved.attr, key: resolved.key});
+      } else if (resolved && resolved.custom) {
+        result.push({custom: resolved.custom});
+      } else {
+        var attr = findProfAttrByKey(raw);
+        if (attr) result.push({attr: attr, key: raw});
+      }
     }
     pending.onConfirm(result);
   }
@@ -2680,7 +2913,7 @@ function showSpecialFeatSelector() {
   var html = "<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:20px;max-width:600px;width:95%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
   html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px'>";
   html += "<span style='font-size:18px;color:#e8a86a;font-weight:bold'>选择特殊专长</span>";
-  html += "<button onclick='closeReplaceModal()' style='background:none;border:none;color:#888;font-size:20px;cursor:pointer'>&times;</button></div>";
+  html += "<button onclick='closeSpecialFeatSelector()' style='background:none;border:none;color:#888;font-size:20px;cursor:pointer'>&times;</button></div>";
   
   // Group feats
   var featKeys = Object.keys(SPECIAL_FEATS).sort();
@@ -2748,12 +2981,11 @@ function applyFeatEffects(name, featEntry, add) {
         state.attrs[ap.attr] = Math.max(0, (state.attrs[ap.attr] || 0) + mult);
       }
       if (choices.prof) {
-        var profAttr = choices.prof.attr;
-        var profKey = choices.prof.key;
-        if (profAttr && profKey) {
-          if (!state.profs) state.profs = {};
-          if (!state.profs[profAttr]) state.profs[profAttr] = {};
-          state.profs[profAttr][profKey] = Math.max(0, (state.profs[profAttr][profKey] || 0) + mult);
+        if (choices.prof.custom) bumpCustomProf(choices.prof.custom, mult);
+        else {
+          var profAttr = choices.prof.attr;
+          var profKey = choices.prof.key;
+          if (profAttr && profKey) bumpProf(profAttr, profKey, mult);
         }
       }
       break;
@@ -2770,6 +3002,9 @@ function applyFeatEffects(name, featEntry, add) {
             // Store original value for undo
             if (!featEntry._orig) featEntry._orig = {};
             featEntry._orig[choices.attr] = cur;
+          }
+          if (choices._futureLowestLeft == null && eff.future_level_bonus) {
+            choices._futureLowestLeft = eff.future_level_bonus.count || 2;
           }
         } else {
           // Undo: restore original value
@@ -2790,16 +3025,16 @@ function applyFeatEffects(name, featEntry, add) {
       }
       // Proficiency
       if (choices.prof) {
-        var pa = choices.prof.attr, pk = choices.prof.key;
-        if (pa && pk) {
-          if (!state.profs) state.profs = {};
-          if (!state.profs[pa]) state.profs[pa] = {};
-          state.profs[pa][pk] = Math.max(0, (state.profs[pa][pk] || 0) + mult);
+        if (choices.prof.custom) {
+          bumpCustomProf(choices.prof.custom, mult);
+        } else {
+          var pa = choices.prof.attr, pk = choices.prof.key;
+          if (pa && pk) bumpProf(pa, pk, mult);
         }
       }
       // Skill slot
       if (eff.skill_slot) {
-        // Track in state for display (currently just display-only)
+        state.extra_skill_slots = Math.max(0, (state.extra_skill_slots || 0) + mult * (eff.skill_slot || 1));
       }
       // XP
       if (eff.xp && add) {
@@ -2829,16 +3064,23 @@ function applyFeatEffects(name, featEntry, add) {
       break;
     }
     case "proficiency": {
-      // 技巧专家等: 熟练项选择
-      var profCount = eff.proficiency_count || 1;
+      // 技巧专家等: 熟练项选择；固定熟练专长也走此分支
       if (choices.profs && Array.isArray(choices.profs)) {
         for (var pi = 0; pi < choices.profs.length; pi++) {
           var pc = choices.profs[pi];
-          if (pc.attr && pc.key) {
-            if (!state.profs) state.profs = {};
-            if (!state.profs[pc.attr]) state.profs[pc.attr] = {};
-            state.profs[pc.attr][pc.key] = Math.max(0, (state.profs[pc.attr][pc.key] || 0) + mult);
-          }
+          if (pc.custom) bumpCustomProf(pc.custom, mult);
+          else if (pc.attr && pc.key) bumpProf(pc.attr, pc.key, mult);
+        }
+      } else if (eff.proficiency && eff.proficiency.name) {
+        var fixed = resolveProfTarget(eff.proficiency.name);
+        var fval = (eff.proficiency.value || 1) * mult;
+        if (fixed && fixed.custom) bumpCustomProf(fixed.custom, fval);
+        else if (fixed && fixed.category) {
+          // Category without choice — leave for interactive path; no-op here
+        } else if (fixed && fixed.attr && fixed.key) {
+          bumpProf(fixed.attr, fixed.key, fval);
+        } else if (eff.proficiency.type === "professional") {
+          bumpCustomProf(eff.proficiency.name, fval);
         }
       }
       break;
@@ -2896,7 +3138,7 @@ function applyFeatEffects(name, featEntry, add) {
     }
     case "sp_pack": {
       // 技能点礼包: 按等级给技能点
-      var lv = state.mainClassLevel || 1;
+      var lv = (state.classes && state.classes[0] && state.classes[0].level) || 1;
       var spData = eff.sp_by_level;
       if (spData) {
         var spKey = "";
@@ -2912,7 +3154,7 @@ function applyFeatEffects(name, featEntry, add) {
     }
     case "xp_pack": {
       // 经验值礼包: 按等级给经验值
-      var lv = state.mainClassLevel || 1;
+      var lv = (state.classes && state.classes[0] && state.classes[0].level) || 1;
       var xpData = eff.xp_by_level;
       if (xpData) {
         var xpKey = "";
@@ -2941,7 +3183,155 @@ function applyFeatEffects(name, featEntry, add) {
       }
       break;
     }
+    case "panel": {
+      applyPanelFeatEffects(eff, featEntry, add);
+      break;
+    }
 
+  }
+}
+
+/** Collect unique languages from RACE_LANGUAGES (基础种族语言). */
+function collectBasicRaceLanguages() {
+  var out = [];
+  if (typeof RACE_LANGUAGES === "undefined") return out;
+  for (var race in RACE_LANGUAGES) {
+    if (!RACE_LANGUAGES.hasOwnProperty(race)) continue;
+    var langs = RACE_LANGUAGES[race] || [];
+    for (var i = 0; i < langs.length; i++) {
+      if (out.indexOf(langs[i]) < 0) out.push(langs[i]);
+    }
+  }
+  return out;
+}
+
+function applyPanelFeatEffects(eff, featEntry, add) {
+  var mult = add ? 1 : -1;
+  var choices = featEntry.choices || {};
+  // Fixed or chosen attribute +1, clamp to 20 (可突破至20)
+  var attrName = eff.attr || choices.attr;
+  if (attrName) {
+    if (!state.attrs) state.attrs = {};
+    if (add) {
+      var curA = state.attrs[attrName] || 0;
+      if (curA < 20) {
+        state.attrs[attrName] = curA + 1;
+        choices._attrGained = true;
+      } else {
+        choices._attrGained = false;
+      }
+    } else if (choices._attrGained !== false) {
+      state.attrs[attrName] = Math.max(0, (state.attrs[attrName] || 0) - 1);
+    }
+  }
+  // Skill / save proficiency
+  if (eff.proficiency && eff.proficiency.name) {
+    var fixed = resolveProfTarget(eff.proficiency.name);
+    var fval = (eff.proficiency.value || 1) * mult;
+    if (fixed && fixed.custom) bumpCustomProf(fixed.custom, fval);
+    else if (fixed && fixed.attr && fixed.key) bumpProf(fixed.attr, fixed.key, fval);
+    else if (eff.proficiency.type === "professional") bumpCustomProf(eff.proficiency.name, fval);
+  }
+  if (eff.custom_prof && eff.custom_prof.name) {
+    bumpCustomProf(eff.custom_prof.name, mult * (eff.custom_prof.value || 1));
+  }
+  // All attribute saves +N
+  if (eff.all_saves) {
+    var attrs8 = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+    for (var si = 0; si < attrs8.length; si++) {
+      bumpProf(attrs8[si], "豁免", mult * (eff.all_saves || 1));
+    }
+  }
+  // Weapon proficiency grants
+  if (eff.weapon_profs && eff.weapon_profs.length) {
+    if (!state.weapon_profs) state.weapon_profs = {};
+    for (var wi = 0; wi < eff.weapon_profs.length; wi++) {
+      var wn = eff.weapon_profs[wi];
+      if (add) state.weapon_profs[wn] = (state.weapon_profs[wn] || 0) + 1;
+      else {
+        state.weapon_profs[wn] = Math.max(0, (state.weapon_profs[wn] || 0) - 1);
+        if (!state.weapon_profs[wn]) delete state.weapon_profs[wn];
+      }
+    }
+  }
+  // Weapon proficiency numeric bonus (可破上限)
+  if (eff.weapon_prof_bonus) {
+    if (!state.weapon_prof_bonus) state.weapon_prof_bonus = {};
+    for (var wb in eff.weapon_prof_bonus) {
+      if (!eff.weapon_prof_bonus.hasOwnProperty(wb)) continue;
+      var delta = mult * (eff.weapon_prof_bonus[wb] || 0);
+      state.weapon_prof_bonus[wb] = Math.max(0, (state.weapon_prof_bonus[wb] || 0) + delta);
+      if (!state.weapon_prof_bonus[wb]) delete state.weapon_prof_bonus[wb];
+    }
+  }
+  // Armor / shield proficiency
+  if (eff.armor_proficiency) {
+    if (add) {
+      if (!state.armor_profs) state.armor_profs = {};
+      state.armor_profs[eff.armor_proficiency] = (state.armor_profs[eff.armor_proficiency] || 0) + 1;
+    } else if (state.armor_profs) {
+      state.armor_profs[eff.armor_proficiency] = Math.max(0, (state.armor_profs[eff.armor_proficiency] || 0) - 1);
+      if (!state.armor_profs[eff.armor_proficiency]) delete state.armor_profs[eff.armor_proficiency];
+    }
+  }
+  // Extra talent slot for a chosen tier
+  if (eff.extra_talent_slot && choices.tier) {
+    if (add) {
+      if (!state.extra_slots) state.extra_slots = [];
+      if (state.extra_slots.indexOf(choices.tier) < 0) state.extra_slots.push(choices.tier);
+    } else if (state.extra_slots) {
+      var ti = state.extra_slots.indexOf(choices.tier);
+      if (ti >= 0) state.extra_slots.splice(ti, 1);
+    }
+  }
+  // All basic race languages
+  if (eff.languages_all_basic) {
+    if (!state.languages) state.languages = [];
+    if (add) {
+      var added = [];
+      var allLangs = collectBasicRaceLanguages();
+      for (var li = 0; li < allLangs.length; li++) {
+        if (state.languages.indexOf(allLangs[li]) < 0) {
+          state.languages.push(allLangs[li]);
+          added.push(allLangs[li]);
+        }
+      }
+      if (!featEntry.choices) featEntry.choices = {};
+      featEntry.choices._addedLanguages = added;
+    } else {
+      var rem = (featEntry.choices && featEntry.choices._addedLanguages) || [];
+      for (var ri = 0; ri < rem.length; ri++) {
+        var rix = state.languages.indexOf(rem[ri]);
+        if (rix >= 0) state.languages.splice(rix, 1);
+      }
+    }
+  }
+  if (!featEntry.choices) featEntry.choices = choices;
+  if (add) featEntry.choices._panelApplied = true;
+  else featEntry.choices._panelApplied = false;
+}
+
+/**
+ * Old saves learned these as description_only: re-apply panel bonuses once.
+ * Skips feats that still need interactive choices (attr_choice / tier).
+ */
+function ensurePanelFeatBonuses() {
+  var feats = state.special_feats || [];
+  for (var i = 0; i < feats.length; i++) {
+    var fe = feats[i];
+    var fname = typeof fe === "string" ? fe : fe.name;
+    var fd = typeof SPECIAL_FEATS !== "undefined" ? SPECIAL_FEATS[fname] : null;
+    if (!fd || !fd.effects || fd.effects.type !== "panel") continue;
+    if (typeof fe === "string") {
+      feats[i] = { name: fe, level: 0, choices: {} };
+      fe = feats[i];
+    }
+    if (!fe.choices) fe.choices = {};
+    if (fe.choices._panelApplied) continue;
+    var eff = fd.effects;
+    if (eff.attr_choice && !fe.choices.attr) continue;
+    if (eff.extra_talent_slot && !fe.choices.tier) continue;
+    applyPanelFeatEffects(eff, fe, true);
   }
 }
 
@@ -2995,35 +3385,60 @@ function selectFeatAttrOption(featName, option) {
 }
 
 function showFeatProfChoice(featName, options, onConfirm) {
+  var flat = [];
+  for (var oi = 0; oi < (options || []).length; oi++) {
+    var opt = options[oi];
+    var resolved = resolveProfTarget(opt);
+    if (resolved && resolved.category && resolved.keys) {
+      for (var ki = 0; ki < resolved.keys.length; ki++) flat.push(resolved.keys[ki]);
+    } else if (PROF_DEFS[opt]) {
+      var list = PROF_DEFS[opt];
+      for (var j = 0; j < list.length; j++) {
+        if (list[j] !== "豁免") flat.push(list[j]);
+      }
+    } else if (resolved && resolved.key) {
+      flat.push(resolved.key);
+    } else {
+      flat.push(opt);
+    }
+  }
+  if (flat.length === 0) {
+    for (var a in PROF_DEFS) {
+      var pl = PROF_DEFS[a];
+      for (var i = 0; i < pl.length; i++) {
+        if (pl[i] !== "豁免") flat.push(pl[i]);
+      }
+    }
+  }
   var h = '<div style="padding:16px;background:#2d2722;border-radius:8px;color:#f0e0d0">';
   h += '<div style="font-size:16px;font-weight:bold;margin-bottom:12px;color:#e8a86a">选择熟练项</div>';
   h += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
-  for (var oi = 0; oi < options.length; oi++) {
-    var opt = options[oi];
-    h += '<div data-fn="' + featName + '" data-opt="' + opt + '" onclick="selectFeatProf(this.dataset.fn,this.dataset.opt)" style="padding:8px 16px;background:#3d3020;border:1px solid #5a4a30;border-radius:4px;cursor:pointer;font-size:14px;color:#f0e0d0">' + opt + '</div>';
+  for (var fi = 0; fi < flat.length; fi++) {
+    h += '<div data-fn="' + featName + '" data-opt="' + flat[fi] + '" onclick="selectFeatProf(this.dataset.fn,this.dataset.opt)" style="padding:8px 16px;background:#3d3020;border:1px solid #5a4a30;border-radius:4px;cursor:pointer;font-size:14px;color:#f0e0d0">' + flat[fi] + '</div>';
   }
   h += '</div></div>';
   showSkillPreview(featName, "特殊专长", "", h, function(){});
   window._featPendingChoice = {name: featName, onConfirm: onConfirm};
 }
 
-function selectFeatProf(featName, profAttr) {
+function selectFeatProf(featName, profKey) {
   var pending = window._featPendingChoice;
   if (!pending) return;
-  // Map attr to a default prof key
-  var profKey = "";
-  if (profAttr === "力量") profKey = "威力";
-  else if (profAttr === "敏捷") profKey = "体操";
-  else if (profAttr === "体质") profKey = "专注";
-  else if (profAttr === "智力") profKey = "调查";
-  else if (profAttr === "感知") profKey = "察觉";
-  else if (profAttr === "魅力") profKey = "说服";
-  else if (profAttr === "意志") profKey = "激励";
-  else if (profAttr === "幸运") profKey = "机遇";
-  
-  if (pending.onConfirm) {
-    pending.onConfirm({attr: profAttr, key: profKey});
+  var resolved = resolveProfTarget(profKey);
+  var payload = null;
+  if (resolved && resolved.attr && resolved.key) {
+    payload = {attr: resolved.attr, key: resolved.key};
+  } else if (resolved && resolved.custom) {
+    payload = {custom: resolved.custom};
+  } else {
+    var attr = findProfAttrByKey(profKey);
+    if (attr) payload = {attr: attr, key: profKey};
   }
+  if (!payload) {
+    alert("无法识别熟练项「" + profKey + "」");
+    return;
+  }
+  if (pending.onConfirm) pending.onConfirm(payload);
   window._featPendingChoice = null;
   closeReplaceModal();
 }
@@ -3159,12 +3574,28 @@ function addSpecialFeat(name, choices) {
         addSpecialFeat(name, {});
         return;
       case "proficiency": {
-        // 技巧专家等: show prof choice dialog
+        // Fixed proficiency grant (隐伏者等) vs interactive multi-pick (技巧专家)
+        if (eff.proficiency && eff.proficiency.name && !eff.proficiency_options) {
+          var fixedT = resolveProfTarget(eff.proficiency.name);
+          if (fixedT && fixedT.category) {
+            showFeatProfChoice(name, [eff.proficiency.name], function(profChoice) {
+              addSpecialFeat(name, {profs: [profChoice]});
+            });
+            return;
+          }
+          var entryProfs = [];
+          if (fixedT && fixedT.custom) entryProfs.push({custom: fixedT.custom});
+          else if (fixedT && fixedT.attr && fixedT.key) entryProfs.push({attr: fixedT.attr, key: fixedT.key});
+          else if (eff.proficiency.type === "professional") entryProfs.push({custom: eff.proficiency.name});
+          else {
+            alert("无法解析熟练项「" + eff.proficiency.name + "」");
+            return;
+          }
+          addSpecialFeat(name, {profs: entryProfs});
+          return;
+        }
         var profCount = eff.proficiency_count || 1;
         var profOptions = eff.proficiency_options || [];
-        if (profOptions.length === 0) {
-          profOptions = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
-        }
         showMultipleProfChoice(name, profOptions, profCount, function(profs) {
           addSpecialFeat(name, {profs: profs});
         });
@@ -3206,6 +3637,34 @@ function addSpecialFeat(name, choices) {
         });
         return;
       }
+      case "panel": {
+        // Structured panel bonuses from former description_only feats
+        if (eff.attr_choice && !(choices && choices.attr)) {
+          showFeatAttrChoice(name, eff.attr_choice, function(attr) {
+            var c = {};
+            if (choices) {
+              for (var ck in choices) if (choices.hasOwnProperty(ck)) c[ck] = choices[ck];
+            }
+            c.attr = attr;
+            addSpecialFeat(name, c);
+          });
+          return;
+        }
+        if (eff.extra_talent_slot && !(choices && choices.tier)) {
+          var tiersP = ["一阶","二阶","三阶","四阶","五阶","六阶","七阶","八阶","九阶"];
+          showTierChoice(name, tiersP, function(tier) {
+            var c2 = {};
+            if (choices) {
+              for (var ck2 in choices) if (choices.hasOwnProperty(ck2)) c2[ck2] = choices[ck2];
+            }
+            c2.tier = tier;
+            addSpecialFeat(name, c2);
+          });
+          return;
+        }
+        addSpecialFeat(name, choices || {});
+        return;
+      }
 
     }
     if (needsChoice) return;
@@ -3213,19 +3672,32 @@ function addSpecialFeat(name, choices) {
   
   // Store as object with name, level, and choices
   var lv = window._pendingLevelUp ? window._pendingLevelUp.level : 0;
+  if (!lv) lv = getMaxLevel() || 0;
   var entry = {name: name, level: lv};
   if (choices) entry.choices = choices;
+  else entry.choices = {};
+  if (name === "弥补短板" && entry.choices._futureLowestLeft == null) {
+    entry.choices._futureLowestLeft = 2;
+  }
   
   arr.push(entry);
   state.special_feats = arr;
   
   // Apply effects
   applyFeatEffects(name, entry, true);
+  state._dirty = true;
   
   var pu = window._pendingLevelUp;
   closeReplaceModal();
   if (pu) { pu._done._feat=true; applyLevelUp(pu.clsIdx); }
   render();
+}
+
+function closeSpecialFeatSelector() {
+  closeReplaceModal();
+  if (window._pendingLevelUp) {
+    alert("升级未完成：属性/熟练奖励已保留，请再次点击「升级」继续选择专长或完成升级。");
+  }
 }
 
 
@@ -3276,6 +3748,26 @@ function getArmorAC(armorName) {
   return null;
 
 
+}
+
+/** 中甲：鳞甲 / 胸甲 / 半身板甲（与 armorACMap 常见分级一致） */
+var MEDIUM_ARMOR_NAMES = {"鳞甲":1,"胸甲":1,"半身板甲":1};
+
+function isMediumArmorName(armorName) {
+  var n = itemName(armorName) || "";
+  if (MEDIUM_ARMOR_NAMES[n]) return true;
+  for (var k in MEDIUM_ARMOR_NAMES) {
+    if (n.indexOf(k) >= 0) return true;
+  }
+  return false;
+}
+
+function wearingMediumArmor() {
+  var eq = (state.equipment && state.equipment["防具"]) || [];
+  for (var i = 0; i < eq.length; i++) {
+    if (eq[i] && isMediumArmorName(eq[i])) return true;
+  }
+  return false;
 }
 
 function parseWeight(wt) {
@@ -3412,7 +3904,7 @@ function render(){ applyChoiceLLevel12Boosts();
     var _m=state.equipment["材料包"];
     for(var _mi=0;_mi<_m.length;_mi++){if(_m[_mi]&&_m[_mi].type&&!state.containerItems["材料包"+(_mi===0?"A":"B")])state.containerItems["材料包"+(_mi===0?"A":"B")]=_m[_mi].type;}
   }
- applyChoiceBLevel10Boosts(); applyChoiceBLevel10Boosts();
+ applyChoiceBLevel10Boosts();
 
 
   autoCalcStyles();autoCalcTalentTree();
@@ -3698,6 +4190,10 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   }
+  // 中甲大师等：仅着装中甲时计入 _feat_ac_bonus
+  if (state._feat_ac_bonus && wearingMediumArmor()) {
+    ac += (state._feat_ac_bonus || 0);
+  }
 
 
   // Key attribute (left, 2 rows tall)
@@ -3752,7 +4248,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   var g=document.getElementById("attr-grid");var ak=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];var ah="";
-  var _profDefs={力量:["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],敏捷:["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],体质:["豁免","专注","耐力"],智力:["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],感知:["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],魅力:["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-演奏","表演-自定义"],意志:["豁免","求生","激励","决策"],幸运:["豁免","机遇","探索"]};
+  var _profDefs=PROF_DEFS;
   for(var ai=0;ai<ak.length;ai++){var av=state.attrs[ak[ai]]||10;var am=calcMod(av);var pf=(state.profs||{})[ak[ai]]||{};var plist=_profDefs[ak[ai]]||[];var half=Math.ceil(plist.length/2);var ph="";
     for(var pi=0;pi<half;pi++){var pn1=plist[pi];var pn2=plist[pi+half];
       ph+='<div style="display:contents">';
@@ -3795,7 +4291,7 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
     var sfType=sfData.effects.type;
     var typeLabel="";
     if(sfType!=="description_only"){
-      var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点"};
+      var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
       typeLabel=typeMap[sfType]||sfType;
     }
     fh+='<div class="feat-chip" style="border-left:4px solid #a46d1f;margin-bottom:4px">';
@@ -3966,10 +4462,16 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
   th+="</div>";
 
 
-  // Render 5 rows of slots
+  // Render rows of slots (base 5 + any extra_slots / overflow)
+  var maxTalentRows = 5;
+  for (var tri = 0; tri < tiers.length; tri++) {
+    var tCap = getTalentTierlotCap(tiers[tri]);
+    var tLen = (colData[tiers[tri]] || []).length;
+    if (tCap > maxTalentRows) maxTalentRows = tCap;
+    if (tLen > maxTalentRows) maxTalentRows = tLen;
+  }
 
-
-  for(var ri=0;ri<5;ri++){
+  for(var ri=0;ri<maxTalentRows;ri++){
 
 
     th+="<div class='talent-row'>";
@@ -3979,12 +4481,16 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
       var col=colData[tiers[ci]];
+      var colCap=getTalentTierlotCap(tiers[ci]);
 
 
       if(ri<col.length){var _bd="";if(col[ri].pref){var _ph={"\u6a59\u8272":"#EE822F","\u767d\u8272":"#FFFFFF","\u7d2b\u8272":"#B94BFF","\u9ec4\u8272":"#FFF32F","\u65e0\u8272":"#D9D9D9","\u84dd\u8272":"#00B0F0","\u9752\u8272":"#00FA99","\u9ed1\u8272":"#595959","\u7ea2\u8272":"#FF0000","\u68d5\u8272":"#843F0B","\u7c89\u8272":"#FFB7E3","\u7eff\u8272":"#00B050","\u6d45\u8272":"#B3F9FF"}[col[ri].pref]||"#888";var _pl=["\u767d\u8272","\u9ec4\u8272","\u6d45\u8272","\u9752\u8272","\u65e0\u8272","\u7c89\u8272"].indexOf(col[ri].pref)>=0;_bd=" <span style=font-size:10px;background:"+_ph+";color:"+(_pl?"#1f2522":"#fff")+";padding:1px 4px;border-radius:3px>"+col[ri].pref+"</span>";}th+="<div class='"+"talent-item'>"+col[ri].n+_bd+"</div>";}
 
 
-      else{th+="<div class='talent-slot-empty'>空</div>";}
+      else if(ri<colCap){th+="<div class='talent-slot-empty'>空</div>";}
+
+
+      else{th+="<div class='talent-slot-empty' style='opacity:0.25'></div>";}
 
 
     }
@@ -4349,15 +4855,36 @@ if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">
 
 
   var ph2="";for(var pi=0;pi<state.professionals.length;pi++){ph2+='<span class="prof-tag">'+state.professionals[pi]+'</span>';}
+  if(state.custom_profs){for(var cpn in state.custom_profs){if(state.custom_profs[cpn]>0)ph2+='<span class="prof-tag">'+cpn+'+'+state.custom_profs[cpn]+'</span>';}}
 
 
   document.getElementById("prof-list").innerHTML=ph2;
 
   // Weapon proficiency section
   var mainClass=(state.classes&&state.classes[0])?state.classes[0].name:"";
-  var wp=resolveWeaponProfs(mainClass);
+  var wp=resolveWeaponProfs(mainClass).slice();
+  if(state.weapon_profs){
+    for(var wpk in state.weapon_profs){
+      if(state.weapon_profs[wpk]>0 && wp.indexOf(wpk)<0) wp.push(wpk);
+    }
+  }
   var wh="";
-  for(var wi=0;wi<wp.length;wi++){wh+='<span class="weapon-tag">'+wp[wi]+'</span>';}
+  for(var wi=0;wi<wp.length;wi++){
+    var wbonus=(state.weapon_prof_bonus&&state.weapon_prof_bonus[wp[wi]])?state.weapon_prof_bonus[wp[wi]]:0;
+    wh+='<span class="weapon-tag">'+wp[wi]+(wbonus?'+'+wbonus:'')+'</span>';
+  }
+  if(state.weapon_prof_bonus){
+    for(var wbk in state.weapon_prof_bonus){
+      if(state.weapon_prof_bonus[wbk]>0 && wp.indexOf(wbk)<0){
+        wh+='<span class="weapon-tag">'+wbk+'+'+state.weapon_prof_bonus[wbk]+'</span>';
+      }
+    }
+  }
+  if(state.armor_profs){
+    for(var apk in state.armor_profs){
+      if(state.armor_profs[apk]>0) wh+='<span class="weapon-tag">'+apk+'</span>';
+    }
+  }
   if(state.weapon_specs&&state.weapon_specs.length){
     wh+='<span style="font-size:13px;color:var(--muted);margin:0 6px">|</span>';
     for(var wsi=0;wsi<state.weapon_specs.length;wsi++){
@@ -5233,12 +5760,13 @@ function learnSkill(clsName, skillName, clsIdx) {
 
 
     var tl=state.talent_tree||[];var tier=skillData.tier||"一阶";
+    var _st=tier.replace("\u5929\u8d4b\u6811","");
 
 
-    var countInTier=0;for(var ti=0;ti<tl.length;ti++){var _st=tier.replace("\u5929\u8d4b\u6811","");if(tl[ti].tier===_st)countInTier++;}
+    var countInTier=0;for(var ti=0;ti<tl.length;ti++){if(tl[ti].tier===_st)countInTier++;}
 
-
-    if(countInTier>=5){alert(_st+"\u5929\u8d4b\u680f\u5df2\u6ee1\uff08\u6700\u591a5\u4e2a\uff09");return;}
+    var _tierCap=getTalentTierlotCap(_st);
+    if(countInTier>=_tierCap){alert(_st+"\u5929\u8d4b\u680f\u5df2\u6ee1\uff08\u6700\u591a"+_tierCap+"\u4e2a\uff09");return;}
 
 
     // Check duplicate talent
@@ -5252,14 +5780,33 @@ function learnSkill(clsName, skillName, clsIdx) {
 
     if (dupFound) { alert("\u8be5\u5929\u8d4b\u6280\u80fd\u5df2\u5b66\u4e60\uff0c\u65e0\u6cd5\u91cd\u590d\u5b66\u4e60"); return; } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u5929\u8d4b\u9501\u5b9a"); return; }
 
+    // 磨炼技艺: pick a proficiency before completing learn
+    if (skillData.name === "磨炼技艺") {
+      showFeatProfChoice("磨炼技艺", [], function(profChoice) {
+        if (!payForSkill(skillData)) return;
+        var entry = {id:skillData.id,n:skillData.name,cls:clsName,tier:tier.replace("天赋树",""),sub:isSub,locked:isLocked,profChoice:profChoice};
+        tl.push(entry);
+        state.talent_tree=tl;
+        if (profChoice.custom) bumpCustomProf(profChoice.custom, 1);
+        else if (profChoice.attr && profChoice.key) bumpProf(profChoice.attr, profChoice.key, 1);
+        applyChoiceBProfBonus(skillName,true); applyChoiceLMasteryBonus(skillName,true); applyMeditationSP(skillName,true);
+        applyUniversalTalentBonus(skillName,true,entry);
+        state._dirty=true;
+        autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
+      });
+      return;
+    }
 
     if (!payForSkill(skillData)) return;
 
 
-    tl.push({id:skillData.id,n:skillData.name,cls:clsName,tier:tier.replace("天赋树",""),sub:isSub,locked:isLocked});
+    var talentEntry={id:skillData.id,n:skillData.name,cls:clsName,tier:tier.replace("天赋树",""),sub:isSub,locked:isLocked};
+    tl.push(talentEntry);
 
 
     state.talent_tree=tl; applyChoiceBProfBonus(skillName,true); applyChoiceLMasteryBonus(skillName,true); applyMeditationSP(skillName,true);
+    applyUniversalTalentBonus(skillName,true,talentEntry);
+    state._dirty=true;
 
 
   } else {
@@ -5505,11 +6052,18 @@ function unlearnTalent(clsName, skillName, clsIdx) {
   }
 
 
+  var removedTalent = tt[idx];
   tt.splice(idx, 1);
 
 
   state.talent_tree = tt; applyChoiceBProfBonus(skillName,false); applyChoiceLMasteryBonus(skillName,false); applyMeditationSP(skillName,false);
-
+  if (removedTalent && removedTalent.profChoice) {
+    var pc = removedTalent.profChoice;
+    if (pc.custom) bumpCustomProf(pc.custom, -1);
+    else if (pc.attr && pc.key) bumpProf(pc.attr, pc.key, -1);
+  }
+  applyUniversalTalentBonus(skillName,false,removedTalent);
+  state._dirty=true;
 
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
 
@@ -5974,8 +6528,77 @@ function finalizeLevelUp(clsIdx,level){
       }
     }
   }
+  if (clsIdx === 0) applyShortboardFutureBonus(level);
   window._pendingLevelUp = null;
+  persistLevelUpSave();
   applyChoiceLLevel12Boosts();applyChoiceBLevel10Boosts();autoCalcStyles();autoCalcTalentTree();render();renderLearnPanel();
+}
+
+/** Normalize string "弥补短板" entries to objects (no default left=2). */
+function normalizeShortboardFeat(feats, index) {
+  var fe = feats[index];
+  if (typeof fe === "string") {
+    feats[index] = { name: fe, level: 0, choices: {} };
+    return feats[index];
+  }
+  if (!fe.choices) fe.choices = {};
+  return fe;
+}
+
+/**
+ * Ensure _futureLowestLeft for 弥补短板.
+ * Keep existing numeric counts; if missing, infer from mainLevel - feat.level
+ * (conservative: left=0 when feat.level unreliable).
+ */
+function ensureShortboardFutureCount(fe) {
+  if (!fe || fe.name !== "弥补短板") return fe;
+  if (!fe.choices) fe.choices = {};
+  if (typeof fe.choices._futureLowestLeft === "number") {
+    return fe;
+  }
+  var mainLevel = (state.classes && state.classes[0]) ? (state.classes[0].level || 0) : 0;
+  var featLv = fe.level;
+  var left = 0;
+  if (typeof featLv === "number" && featLv > 0) {
+    var used = Math.max(0, mainLevel - featLv);
+    left = Math.max(0, 2 - used);
+  }
+  fe.choices._futureLowestLeft = left;
+  fe.choices._futureMigrated = true;
+  return fe;
+}
+
+function migrateAllShortboardFeats() {
+  var feats = state.special_feats || [];
+  for (var i = 0; i < feats.length; i++) {
+    var fname = typeof feats[i] === "string" ? feats[i] : feats[i].name;
+    if (fname !== "弥补短板") continue;
+    ensureShortboardFutureCount(normalizeShortboardFeat(feats, i));
+  }
+}
+
+function applyShortboardFutureBonus(level) {
+  var feats = state.special_feats || [];
+  var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var cap = Math.min(20, getCurrentAttrCap());
+  for (var i = 0; i < feats.length; i++) {
+    var fname = typeof feats[i] === "string" ? feats[i] : feats[i].name;
+    if (fname !== "弥补短板") continue;
+    var fe = ensureShortboardFutureCount(normalizeShortboardFeat(feats, i));
+    if (fe.choices._futureLowestLeft <= 0) continue;
+    // Skip the level on which the feat was just learned
+    if (fe.level != null && level != null && fe.level >= level) continue;
+    var lowest = attrNames[0];
+    var minVal = state.attrs[lowest] || 0;
+    for (var ai = 1; ai < attrNames.length; ai++) {
+      var v = state.attrs[attrNames[ai]] || 0;
+      if (v < minVal) { minVal = v; lowest = attrNames[ai]; }
+    }
+    if ((state.attrs[lowest] || 0) < cap) {
+      state.attrs[lowest] = (state.attrs[lowest] || 0) + 1;
+    }
+    fe.choices._futureLowestLeft -= 1;
+  }
 }
 
 function showProfChoice(clsIdx,level){
@@ -5983,15 +6606,14 @@ function showProfChoice(clsIdx,level){
   var overlay=document.getElementById("modalOverlay")||document.createElement("div");
   if(!overlay.parentNode){overlay.id="modalOverlay";overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";document.body.appendChild(overlay);}
 
-  // Collect all available profs from state
+  // Collect all available profs from PROF_DEFS (canonical list)
   var allProfs=[];
   var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   for(var ai=0;ai<attrNames.length;ai++){
     var attr=attrNames[ai];
-    var profObj=state.profs[attr];
-    if(!profObj)continue;
-    for(var key in profObj){
-      if(key!=="豁免"&&allProfs.indexOf(key)<0)allProfs.push(key);
+    var list=PROF_DEFS[attr]||[];
+    for(var li=0;li<list.length;li++){
+      if(list[li]!=="豁免"&&allProfs.indexOf(list[li])<0)allProfs.push(list[li]);
     }
   }
 
@@ -6004,7 +6626,7 @@ function showProfChoice(clsIdx,level){
     return 0;
   }
 
-  var curCap=getCurrentProfCap();
+  var curCap=getProfCapForLevel(level);
   var html="<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:24px;max-width:700px;width:92%;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
   html+='<div style="font-size:16px;color:#e8a86a;font-weight:bold;margin-bottom:12px">选择一项熟练度 +1 <span style="color:#a08060;font-weight:normal;font-size:13px">（当前上限: '+curCap+'）</span></div>';
   html+='<div id="profList" style="max-height:500px;overflow-y:auto;margin-bottom:12px">';
@@ -6037,26 +6659,18 @@ function showProfChoice(clsIdx,level){
 
 function chooseProf(clsIdx,level,profName){
   if(!state.profs) state.profs = {};
-  // Safety check: verify prof has not reached cap
-  var curCap=getCurrentProfCap();
-  // Find which attr this prof belongs to and check its value
-  var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
-  for(var ai=0;ai<attrNames.length;ai++){
-    var attr=attrNames[ai];
-    var profObj=state.profs[attr];
-    if(profObj && profObj.hasOwnProperty(profName)){
-      var cur=typeof profObj[profName]==="number"?profObj[profName]:0;
-      if(cur>=curCap){alert("该熟练度已达当前等级上限（"+curCap+"），无法继续提升");return;}
-      profObj[profName]=cur+1;
-      window._pendingLevelUp._done._prof=true;
-      closeReplaceModal();
-      applyLevelUp(clsIdx);
-      return;
-    }
+  var curCap=getProfCapForLevel(level);
+  var attr=findProfAttrByKey(profName);
+  if(!attr){
+    alert("无法识别熟练项「"+profName+"」，请重选");
+    return;
   }
-  // If not found in any attr, add to 通用 as a new entry
-  if(!state.profs["通用"])state.profs["通用"]={};
-  state.profs["通用"][profName]=1;
+  ensureProfKey(attr, profName);
+  var cur=typeof state.profs[attr][profName]==="number"?state.profs[attr][profName]:0;
+  if(cur>=curCap){alert("该熟练度已达当前等级上限（"+curCap+"），无法继续提升");return;}
+  state.profs[attr][profName]=cur+1;
+  state._dirty=true;
+  if(!window._pendingLevelUp)window._pendingLevelUp={clsIdx:clsIdx,level:level,_done:{}};
   window._pendingLevelUp._done._prof=true;
   closeReplaceModal();
   applyLevelUp(clsIdx);
@@ -6066,7 +6680,7 @@ function showAttrChoice(clsIdx,level){
   var overlay=document.getElementById("modalOverlay")||document.createElement("div");
   if(!overlay.parentNode){overlay.id="modalOverlay";overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";document.body.appendChild(overlay);}
 
-  var curCap=getCurrentAttrCap();
+  var curCap=getAttrCapForLevel(level);
   var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
   var html="<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:20px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
   html+='<div style="font-size:16px;color:#e8a86a;font-weight:bold;margin-bottom:10px">选择一项属性 +1 <span style="color:#a08060;font-weight:normal;font-size:13px">（当前上限: '+curCap+'）</span></div>';
@@ -6099,10 +6713,12 @@ function showAttrChoice(clsIdx,level){
 }
 
 function chooseAttr(clsIdx,level,attrName){
-  var curCap=getCurrentAttrCap();
+  var curCap=getAttrCapForLevel(level);
   var curVal=state.attrs[attrName]||0;
   if(curVal>=curCap){alert("该属性已达当前等级上限（"+curCap+"），无法继续提升");return;}
   state.attrs[attrName]=curVal+1;
+  state._dirty=true;
+  if(!window._pendingLevelUp)window._pendingLevelUp={clsIdx:clsIdx,level:level,_done:{}};
   window._pendingLevelUp._done._attr=true;
   closeReplaceModal();
   applyLevelUp(clsIdx);
@@ -6116,7 +6732,9 @@ function applyLowestAttr(clsIdx,level){
     if(v<minVal){minVal=v;lowest=attrNames[ai];}
   }
   state.attrs[lowest]=(state.attrs[lowest]||0)+2;
+  state._dirty=true;
   finalizeLevelUp(clsIdx,level);
+  closeReplaceModal();
   render();
 }
 
@@ -6681,6 +7299,7 @@ async function exportXlsxFromState(state) {
     }
   }
   if(_ac===null)_ac=10+_dexMod;
+  if(state._feat_ac_bonus && typeof wearingMediumArmor==="function" && wearingMediumArmor()) _ac += (state._feat_ac_bonus||0);
   // Row 1
   set("L3", String(_hp));
   set("L4", String(_fp));
