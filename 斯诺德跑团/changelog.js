@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7133',
+    date: '2026-07-28',
+    changes: [
+      '角色创建：人类中庸自由熟练度按属性分组展示，提升可读性'
+    ]
+  },
+
+
+  {
     version: '1.0.7132',
     date: '2026-07-29',
     changes: [

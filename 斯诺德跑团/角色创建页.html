@@ -80,6 +80,15 @@ h1 { font-size: 26px; font-weight: bold; margin-bottom: 16px; padding-bottom: 10
 }
 .spec-btn:hover { border-color: #a46d1f; }
 .spec-btn.selected { background: #a46d1f; color: #fff; border-color: #a46d1f; }
+.human-skill-groups { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.human-skill-group {
+  padding: 10px 14px; background: #f6f4ef; border: 1px solid #e8e2d8; border-radius: 8px;
+}
+.human-skill-attr {
+  font-size: 13px; font-weight: bold; color: #a46d1f; margin-bottom: 8px;
+  padding-bottom: 4px; border-bottom: 1px solid #e8e2d8;
+}
+.human-skill-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .nav-buttons { display: flex; gap: 12px; justify-content: space-between; margin-top: 24px; padding-top: 16px; border-top: 1px solid #d8d2c4; }
 .btn {
   padding: 12px 28px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
@@ -182,6 +191,8 @@ html.dark .point-pool{background:#24272b;border-color:#3a3d40;color:#e8e6e3}
 html.dark .point-pool span{color:#d4a54a}
 html.dark .spec-btn{background:#24272b;border-color:#3a3d40;color:#e8e6e3}
 html.dark .spec-btn.selected{background:#d4a54a;color:#1a1d20}
+html.dark .human-skill-group{background:#1a1d20;border-color:#3a3d40}
+html.dark .human-skill-attr{color:#d4a54a;border-bottom-color:#3a3d40}
 html.dark .attr-btn{background:#24272b;border-color:#3a3d40;color:#d4a54a}
 html.dark .attr-btn:hover{background:#d4a54a;color:#fff}
 html.dark .attr-btn:disabled{opacity:.3;background:#1a1d20;color:#666;border-color:#3a3d40}
@@ -1074,15 +1085,19 @@ function showHumanFreeSkill(raceData){
   var area=document.createElement("div");area.id="humanSkillArea";
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择自由熟练度（人类·中庸）</div>";
-  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>选择 <strong>1</strong> 项熟练度</div>";
-  // Use comprehensive all Attrs list (same as bg proficiency selection) for full coverage
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:12px'>选择 <strong>1</strong> 项熟练度（按属性分组）</div>";
+  // Use comprehensive allAttrs list (same as bg proficiency selection) for full coverage
   var allAttrs={力量:["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],敏捷:["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"],体质:["专注","耐力"],智力:["调查","逻辑","宗教","估价","伪造","读唇","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"],感知:["洞悉","导航","自然","驯兽","感悟","聆听","察觉"],魅力:["欺瞒","说服","表演-歌唱","表演-舞蹈","表演-演奏","恐吓"],意志:["求生","激励","决策"],幸运:["机遇","探索"]};
-  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  h+="<div class='human-skill-groups'>";
   for(var attr in allAttrs){
+    h+="<div class='human-skill-group dark-bg'>";
+    h+="<div class='human-skill-attr'>"+attr+"</div>";
+    h+="<div class='human-skill-row'>";
     for(var i=0;i<allAttrs[attr].length;i++){
       var sk=allAttrs[attr][i];
-      h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+sk+"'>"+attr+"·"+sk+"</div>";
+      h+="<div class='spec-btn' onclick='pickHumanSkill(this)' data-skill='"+sk+"' title='"+attr+"·"+sk+"'>"+sk+"</div>";
     }
+    h+="</div></div>";
   }
   h+="</div>";
   area.innerHTML=h;
