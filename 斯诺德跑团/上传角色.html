@@ -870,26 +870,51 @@ document.getElementById("fileInput").addEventListener("change", async function(e
   }
 });
 
+function charNameExists(charName) {
+  if (!charName) return false;
+  for (var i = 1; i <= 3; i++) {
+    if (localStorage.getItem("char_" + charName + "_slot" + i)) return true;
+  }
+  return false;
+}
+function allocateUniqueCharId(desired) {
+  if (!desired) desired = "未命名角色";
+  if (!charNameExists(desired)) return desired;
+  var n = 2;
+  while (charNameExists(desired + "_" + n)) n++;
+  return desired + "_" + n;
+}
+
 function confirmImport() {
   if (!pendingState) return;
   ensureSpStateOn(pendingState);
   delete pendingState.sp;
-  var charName = pendingState.name || "未命名角色";
-  // Choose a free slot
-  for (var slot = 1; slot <= 3; slot++) {
-    var key = "char_" + charName + "_slot" + slot;
-    if (!localStorage.getItem(key)) {
-      pendingState._savedAt = new Date().toISOString();
-      localStorage.setItem(key, JSON.stringify(pendingState));
-      document.getElementById("successMsg").textContent = "✅ 成功导入！角色名：" + charName + "（存档槽 " + slot + "）";
-      document.getElementById("successMsg").style.display = "block";
-      document.getElementById("previewPanel").style.display = "none";
-      setTimeout(function(){ location.href = "角色选择页.html"; }, 1500);
-      return;
-    }
+  var displayName = pendingState.name || "未命名角色";
+  pendingState.name = displayName;
+  var storageId = allocateUniqueCharId(displayName);
+  pendingState._charName = storageId;
+  pendingState._savedAt = new Date().toISOString();
+  var key = "char_" + storageId + "_slot1";
+  var toSave = pendingState;
+  try {
+    var clone = JSON.parse(JSON.stringify(pendingState, function (k, v) {
+      if (k === "_uploadedXlsxBuf") return undefined;
+      return v;
+    }));
+    toSave = clone;
+  } catch (_e) {}
+  try {
+    localStorage.setItem(key, JSON.stringify(toSave));
+  } catch (e) {
+    alert("保存失败：" + (e.message || e));
+    return;
   }
-  // All slots full
-  alert("该角色名的3个存档槽已满，请先清理旧存档或修改角色名称。");
+  var msg = "✅ 成功导入！角色名：" + displayName + "（存档槽 1）";
+  if (storageId !== displayName) msg = "✅ 成功导入！角色名：" + displayName + "，存档为「" + storageId + "」（存档槽 1）";
+  document.getElementById("successMsg").textContent = msg;
+  document.getElementById("successMsg").style.display = "block";
+  document.getElementById("previewPanel").style.display = "none";
+  setTimeout(function(){ location.href = "角色选择页.html"; }, 1500);
 }
 
 function cancelImport() {
@@ -957,7 +982,15 @@ function _xlsxBuildZip(entries) {
     var en = entries[ei];
     var nameBuf = new TextEncoder().encode(en.name);
     var data = en.data;
-    var crc = _xlsxCrc32(data);
+    var crc;
+    if (en.uncompData) {
+      var u = en.uncompData instanceof Uint8Array ? en.uncompData : new Uint8Array(en.uncompData);
+      crc = _xlsxCrc32(u);
+    } else if (typeof en.crc32 === "number") {
+      crc = en.crc32 >>> 0;
+    } else {
+      crc = _xlsxCrc32(data);
+    }
     var lh = new ArrayBuffer(30 + nameBuf.length);
     var dv = new DataView(lh);
     dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0x0800, true);
@@ -1028,10 +1061,11 @@ async function exportXlsxFromState(state) {
     var nl = view.getUint16(p + 28, true), el = view.getUint16(p + 30, true), cl = view.getUint16(p + 32, true), nm = "";
     for (var k = 0; k < nl; k++) nm += String.fromCharCode(view.getUint8(p + 46 + k));
     var off = view.getUint32(p + 42, true), cs = view.getUint32(p + 20, true), us = view.getUint32(p + 24, true), mt = view.getUint16(p + 10, true);
+    var origCrc = view.getUint32(p + 16, true);
     var lnl = view.getUint16(off + 26, true), lel = view.getUint16(off + 28, true), ds = off + 30 + lnl + lel;
     var raw = new Uint8Array(view.buffer, view.byteOffset + ds, cs);
     var txt = mt === 0 ? new TextDecoder().decode(raw) : (raw[0]===60 ? new TextDecoder().decode(raw) : new TextDecoder().decode(await inflate(raw)));
-    entries.push({ name: nm, method: mt, rawData: raw, text: txt, compSize: cs, uncompSize: us });
+    entries.push({ name: nm, method: mt, rawData: raw, text: txt, compSize: cs, uncompSize: us, crc32: origCrc });
     p += 46 + nl + el + cl;
   }
   var ss = entries.find(function (x) { return x.name === "xl/sharedStrings.xml"; });
@@ -1062,6 +1096,17 @@ async function exportXlsxFromState(state) {
   }
 
   // Fill all data from state into cells
+  // Clear stale template cells (skills / equipment / secondary class leftovers)
+  (function clearStaleExportCells() {
+    var r, ci, cols = ["B", "D", "E", "F", "H", "I", "J"];
+    for (r = 123; r <= 162; r++) for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+    for (r = 168; r <= 209; r++) for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+    var eqRanges = [{ row: 46, max: 3 }, { row: 50, max: 2 }, { row: 52, max: 4 }, { row: 56, max: 4 }, { row: 61, max: 10 }, { row: 72, max: 5 }, { row: 78, max: 10 }];
+    for (r = 0; r < eqRanges.length; r++) for (ci = 0; ci < eqRanges[r].max; ci++) set("K" + (eqRanges[r].row + ci), "");
+    set("B23", ""); set("D23", ""); set("B29", ""); set("D29", ""); set("E17", ""); set("E18", "");
+    for (r = 0; r < 8; r++) { set("I" + (112 + r), ""); set("K" + (112 + r), ""); set("O" + (112 + r), ""); set("Q" + (112 + r), ""); }
+    [36, 38, 40, 42].forEach(function (fr) { set("K" + fr, ""); });
+  })();
   // Basic info
   if (state.player) set("C3", state.player);
   if (state.name) set("C4", state.name);
@@ -1269,6 +1314,8 @@ async function exportXlsxFromState(state) {
       en.compSize = en.rawData.length;
       en.uncompSize = b.length;
       en.method = 8;
+      en.uncompData = b;
+      delete en.crc32;
     }
   }
 
@@ -1278,11 +1325,16 @@ async function exportXlsxFromState(state) {
   var zipEntries = [];
   for (var ei = 0; ei < entries.length; ei++) {
     var en = entries[ei];
-    zipEntries.push({ name: en.name, data: en.rawData, method: en.method, compSize: en.compSize, uncompSize: en.uncompSize });
+    zipEntries.push({ name: en.name, data: en.rawData, method: en.method, compSize: en.compSize, uncompSize: en.uncompSize, uncompData: en.uncompData, crc32: en.crc32 });
   }
 
   var zipBytes = _xlsxBuildZip(zipEntries);
-  var fileName = (state.name || "角色") + "_角色档案.xlsx";
+  var _id = state._charName || (typeof allocateUniqueCharId === "function" ? allocateUniqueCharId(state.name || "角色") : (state.name || "角色"));
+  if (!state._charName) state._charName = _id;
+  var _n = String(_id).replace(/[\\/:*?"<>|]/g, "_");
+  var _d = new Date();
+  function _pad(n) { return (n < 10 ? "0" : "") + n; }
+  var fileName = _n + "_" + _d.getFullYear() + _pad(_d.getMonth() + 1) + _pad(_d.getDate()) + "_" + _pad(_d.getHours()) + _pad(_d.getMinutes()) + _pad(_d.getSeconds()) + "_角色档案.xlsx";
   var blob = new Blob([zipBytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");

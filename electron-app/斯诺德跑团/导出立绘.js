@@ -52,7 +52,8 @@ function injectPortrait(state, entries) {
       text: "",
       rawData: imgData,
       compSize: imgData.length,
-      uncompSize: imgData.length
+      uncompSize: imgData.length,
+      uncompData: imgData
     });
 
     var drXml =
@@ -78,7 +79,8 @@ function injectPortrait(state, entries) {
       text: drXml,
       rawData: drBuf,
       compSize: drBuf.length,
-      uncompSize: drBuf.length
+      uncompSize: drBuf.length,
+      uncompData: drBuf
     });
 
     var drRels =
@@ -93,7 +95,8 @@ function injectPortrait(state, entries) {
       text: drRels,
       rawData: drRelsBuf,
       compSize: drRelsBuf.length,
-      uncompSize: drRelsBuf.length
+      uncompSize: drRelsBuf.length,
+      uncompData: drRelsBuf
     });
 
     var shRels =
@@ -108,7 +111,8 @@ function injectPortrait(state, entries) {
       text: shRels,
       rawData: shRelsBuf,
       compSize: shRelsBuf.length,
-      uncompSize: shRelsBuf.length
+      uncompSize: shRelsBuf.length,
+      uncompData: shRelsBuf
     });
 
     var sh = null;
@@ -124,6 +128,8 @@ function injectPortrait(state, entries) {
       sh.compSize = shBuf2.length;
       sh.uncompSize = shBuf2.length;
       sh.method = 0;
+      sh.uncompData = shBuf2;
+      delete sh.crc32;
     }
 
     var ct = null;
@@ -145,6 +151,8 @@ function injectPortrait(state, entries) {
       ct.compSize = ctBuf.length;
       ct.uncompSize = ctBuf.length;
       ct.method = 0;
+      ct.uncompData = ctBuf;
+      delete ct.crc32;
     }
 
     return true;

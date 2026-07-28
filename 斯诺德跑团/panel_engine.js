@@ -149,6 +149,9 @@ var state={
 "forbidden_skills":[],"unlocked_tiers":["一阶","二阶"],
 "containerItems":{"背包":"已解锁","旅行腰包":"已解锁","材料包A":"","材料包B":""}};
 
+// Snapshot of pristine state for clean loads (avoids same-name slot residue)
+var STATE_DEFAULTS = JSON.parse(JSON.stringify(state));
+
 // ===== Save/Load System =====
 var CURRENT_CHAR = "";
 var CURRENT_SLOT = 0;
@@ -156,6 +159,23 @@ var SAVE_KEY_PREFIX = "char_";
 
 function getSaveKey(charName, slotIndex) {
   return SAVE_KEY_PREFIX + charName + "_slot" + slotIndex;
+}
+
+function charNameExists(charName) {
+  if (!charName) return false;
+  for (var i = 1; i <= 3; i++) {
+    if (localStorage.getItem(getSaveKey(charName, i))) return true;
+  }
+  return false;
+}
+
+/** Unique storage id for create/upload; display name stays in state.name */
+function allocateUniqueCharId(desired) {
+  if (!desired) desired = "未命名角色";
+  if (!charNameExists(desired)) return desired;
+  var n = 2;
+  while (charNameExists(desired + "_" + n)) n++;
+  return desired + "_" + n;
 }
 
 function getStateSnapshot() {
@@ -194,7 +214,19 @@ function loadState(charName, slotIndex) {
   if (!raw) return false;
   try {
     var data = JSON.parse(raw);
-    // Restore state properties (preserve functions etc.)
+    // Reset to defaults first so previous character fields cannot leak
+    var dk;
+    for (dk in STATE_DEFAULTS) {
+      if (STATE_DEFAULTS.hasOwnProperty(dk)) {
+        state[dk] = JSON.parse(JSON.stringify(STATE_DEFAULTS[dk]));
+      }
+    }
+    for (dk in state) {
+      if (!state.hasOwnProperty(dk)) continue;
+      if (dk.indexOf("_") === 0 && dk !== "_hp_per_level_bonus" && dk !== "_feat_ac_bonus") {
+        delete state[dk];
+      }
+    }
     for (var k in data) {
       if (data.hasOwnProperty(k)) {
         state[k] = data[k];
@@ -1074,6 +1106,64 @@ function clearXlsxTalentSlots(set, tierRowMap) {
     range = tierRowMap[tier];
     for (r = range[0]; r <= range[1]; r++) set("O" + r, "");
   }
+}
+
+function clearXlsxSkillRows(set) {
+  var r, cols = ["B", "D", "E", "F", "H", "I", "J"], ci;
+  for (r = 123; r <= 162; r++) {
+    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+  }
+  for (r = 168; r <= 209; r++) {
+    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+  }
+}
+
+function clearXlsxEquipmentSlots(set) {
+  var ranges = [
+    { row: 46, max: 3 },
+    { row: 50, max: 2 },
+    { row: 52, max: 4 },
+    { row: 56, max: 4 },
+    { row: 61, max: 10 },
+    { row: 72, max: 5 },
+    { row: 78, max: 10 }
+  ];
+  var ri, ii;
+  for (ri = 0; ri < ranges.length; ri++) {
+    for (ii = 0; ii < ranges[ri].max; ii++) set("K" + (ranges[ri].row + ii), "");
+  }
+}
+
+function clearXlsxClassAndFeatureSlots(set) {
+  set("B23", ""); set("D23", "");
+  set("B29", ""); set("D29", "");
+  set("E17", ""); set("E18", "");
+  var ri;
+  for (ri = 0; ri < 8; ri++) {
+    set("I" + (112 + ri), "");
+    set("K" + (112 + ri), "");
+    set("O" + (112 + ri), "");
+    set("Q" + (112 + ri), "");
+  }
+  var featRows = [36, 38, 40, 42];
+  for (ri = 0; ri < featRows.length; ri++) set("K" + featRows[ri], "");
+}
+
+function buildExportFileName(exportState) {
+  // Filename uses storage id; sheet cells still use state.name (display name)
+  var name = "";
+  if (typeof CURRENT_CHAR === "string" && CURRENT_CHAR) name = CURRENT_CHAR;
+  else if (exportState && exportState._charName) name = exportState._charName;
+  else if (exportState && exportState.name) name = exportState.name;
+  else name = "角色";
+  name = String(name).replace(/[\\/:*?"<>|]/g, "_");
+  var slot = 0;
+  if (typeof CURRENT_SLOT === "number" && CURRENT_SLOT > 0) slot = CURRENT_SLOT;
+  else if (exportState && exportState._exportSlot) slot = exportState._exportSlot;
+  var d = new Date();
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  var ts = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + "_" + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+  return name + (slot > 0 ? ("_slot" + slot) : "") + "_" + ts + "_角色档案.xlsx";
 }
 
 function fillXlsxTalents(set, talents, tierRowMap) {
@@ -6398,7 +6488,16 @@ function _xlsxBuildZip(entries) {
     var en = entries[ei];
     var nameBuf = new TextEncoder().encode(en.name);
     var data = en.data;
-    var crc = _xlsxCrc32(data);
+    // ZIP CRC-32 must cover the *uncompressed* payload (PKWARE APPNOTE)
+    var crc;
+    if (en.uncompData) {
+      var u = en.uncompData instanceof Uint8Array ? en.uncompData : new Uint8Array(en.uncompData);
+      crc = _xlsxCrc32(u);
+    } else if (typeof en.crc32 === "number") {
+      crc = en.crc32 >>> 0;
+    } else {
+      crc = _xlsxCrc32(data);
+    }
     var lh = new ArrayBuffer(30 + nameBuf.length);
     var dv = new DataView(lh);
     dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0x0800, true);
@@ -6470,10 +6569,11 @@ async function exportXlsxFromState(state) {
     var nl = view.getUint16(p + 28, true), el = view.getUint16(p + 30, true), cl = view.getUint16(p + 32, true), nm = "";
     for (var k = 0; k < nl; k++) nm += String.fromCharCode(view.getUint8(p + 46 + k));
     var off = view.getUint32(p + 42, true), cs = view.getUint32(p + 20, true), us = view.getUint32(p + 24, true), mt = view.getUint16(p + 10, true);
+    var origCrc = view.getUint32(p + 16, true);
     var lnl = view.getUint16(off + 26, true), lel = view.getUint16(off + 28, true), ds = off + 30 + lnl + lel;
     var raw = new Uint8Array(view.buffer, view.byteOffset + ds, cs);
     var txt = mt === 0 ? new TextDecoder().decode(raw) : (raw[0]===60 ? new TextDecoder().decode(raw) : new TextDecoder().decode(await inflate(raw)));
-    entries.push({ name: nm, method: mt, rawData: raw, text: txt, compSize: cs, uncompSize: us });
+    entries.push({ name: nm, method: mt, rawData: raw, text: txt, compSize: cs, uncompSize: us, crc32: origCrc });
     p += 46 + nl + el + cl;
   }
   var ss = entries.find(function (x) { return x.name === "xl/sharedStrings.xml"; });
@@ -6517,6 +6617,11 @@ async function exportXlsxFromState(state) {
   }
 
   // Fill all data from state into cells
+  // Clear stale template cells first (avoids leftover content from uploaded/same-name sheets)
+  clearXlsxSkillRows(set);
+  clearXlsxEquipmentSlots(set);
+  clearXlsxClassAndFeatureSlots(set);
+
   // Basic info
   if (state.player) set("C3", state.player);
   if (state.name) set("C4", state.name);
@@ -6753,20 +6858,35 @@ async function exportXlsxFromState(state) {
       en.compSize = packed.data.length;
       en.uncompSize = b.length;
       en.method = packed.method;
+      en.uncompData = b;
+      delete en.crc32;
     }
   }
 
   
-      if (typeof injectPortrait === "function") injectPortrait(state, entries);
+      if (typeof injectPortrait === "function") {
+        var portraitOk = injectPortrait(state, entries);
+        if (state.portrait && portraitOk === false && state.portrait.indexOf("data:image/") === 0) {
+          console.warn("Portrait skipped during export (size or format)");
+        }
+      }
 // Convert entries to ZIP format
   var zipEntries = [];
   for (var ei = 0; ei < entries.length; ei++) {
     var en = entries[ei];
-    zipEntries.push({ name: en.name, data: en.rawData, method: en.method, compSize: en.compSize, uncompSize: en.uncompSize });
+    zipEntries.push({
+      name: en.name,
+      data: en.rawData,
+      method: en.method,
+      compSize: en.compSize,
+      uncompSize: en.uncompSize,
+      uncompData: en.uncompData,
+      crc32: en.crc32
+    });
   }
 
   var zipBytes = _xlsxBuildZip(zipEntries);
-  var fileName = (state.name || "角色") + "_角色档案.xlsx";
+  var fileName = buildExportFileName(state);
   var blob = new Blob([zipBytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
