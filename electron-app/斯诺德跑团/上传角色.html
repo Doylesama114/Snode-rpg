@@ -418,22 +418,29 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     }
   }
 
-  // sub-class skills helper
+  // sub-class skills helper — fixed rows 168-209; skip empty B rows (do not break)
   function readSubSkills(label,nameCount){
     var _rs=findCell(label);if(!_rs)return;
     var _rsr=parseInt(_rs.substring(1));
-    for(var _si=_rsr+nameCount;_si<_rsr+20;_si++){
-      var _sn2=c("B"+_si);if(!_sn2||_sn2.indexOf("技能名称")>=0)break;
-      s.skills.push({n:_sn2,tm:c("C"+_si),range:c("E"+_si),dur:c("F"+_si),dr:c("G"+_si),src:s.classes[1].name||"",sub:s.classes[1].name||"",cost:"",locked:false,ds:c("J"+_si)||""});
+    var _start=_rsr+(nameCount||2);
+    if(_start<168)_start=168;
+    var _end=209;
+    var _subName=(s.classes[1]&&s.classes[1].name)||"";
+    for(var _si=_start;_si<=_end;_si++){
+      var _sn2=c("B"+_si);
+      if(!_sn2||_sn2.indexOf("技能名称")>=0)continue;
+      if(_sn2.indexOf("子职业")>=0||_sn2==="-"||_sn2==="—")continue;
+      s.skills.push({n:_sn2,tm:c("D"+_si)||c("C"+_si)||"",range:c("E"+_si),dur:c("F"+_si),dr:c("H"+_si)||c("G"+_si)||"",src:_subName,sub:_subName,cost:"",locked:false,ds:c("J"+_si)||""});
     }
   }
-  // Skills: find "技能列表", scan B column below until empty
+  // Skills: find "技能列表", scan B column below; hard-stop at 子职业 section
   _r=findCell("技能列表");if(_r){var sr=parseInt(_r.substring(1));
-    var _curSkillTier="一阶";for(var sn=sr+2;sn<sr+80;sn++){var sk=c("B"+sn);
+    var _curSkillTier="一阶";for(var sn=sr+2;sn<Math.min(sr+80,166);sn++){var sk=c("B"+sn);
+      if(sk&&(sk.indexOf("子职业")>=0))break;
       var _otier=c("O"+sn);if(_otier&&_otier.indexOf("阶天赋树")>=0){_curSkillTier=_otier.replace(/[（(]d+[）)]/,"");}
       var _kname=c("K"+sn);if(_kname&&_kname!=="-"&&_kname!=="—"&&_kname.indexOf("阶天赋树")<0&&_kname!=="技能名称"){s.skills.push({n:_kname,tm:"",range:"",dur:"",dr:"",src:s.classes[0].name,sub:"",cost:"",locked:false,ds:"",tier:_curSkillTier||""});}
       if(sk&&sk!=="-"&&sk!=="—"&&sk.indexOf("天赋树")<0&&sk!=="技能名称"&&sk.indexOf("子职业")<0&&sk.indexOf("施展时间")<0&&sk.indexOf("主职业")<0&&sk.indexOf("//")<0){
-        s.skills.push({n:sk,tm:c("C"+sn),range:c("E"+sn),dur:c("F"+sn),dr:c("G"+sn),src:c("I"+sn)||s.classes[0].name,sub:"",cost:"",locked:false,ds:c("J"+sn)||"",tier:_curSkillTier||""});
+        s.skills.push({n:sk,tm:c("D"+sn)||c("C"+sn)||"",range:c("E"+sn),dur:c("F"+sn),dr:c("H"+sn)||c("G"+sn)||"",src:c("I"+sn)||s.classes[0].name,sub:"",cost:"",locked:false,ds:c("J"+sn)||"",tier:_curSkillTier||""});
       }
       if(!sk&&!_otier&&!_kname)break;
     }
@@ -1227,7 +1234,16 @@ async function exportXlsxFromState(state) {
   }
 
   // Skills (B-M columns, rows 123-162)
-  var mainSkills = (state.skills || []).filter(function (s) { return !s.sub || s.sub === ""; });
+  var mainSkills = (state.skills || []).filter(function (s) {
+    if (!s) return false;
+    var nm = s.n || s.name || "";
+    if (nm.indexOf("（图纸）") >= 0) return false;
+    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    var sub = s.sub;
+    if (sub === true) return false;
+    if (sub === false || sub == null || sub === "") return true;
+    return String(sub) === "";
+  });
   var hasSkills = mainSkills.length > 0;
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
@@ -1273,7 +1289,16 @@ async function exportXlsxFromState(state) {
   }
 
   // Subclass skills (rows 168-209)
-  var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });
+  var subSkills = (state.skills || []).filter(function (s) {
+    if (!s) return false;
+    var nm = s.n || s.name || "";
+    if (nm.indexOf("（图纸）") >= 0) return false;
+    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    var sub = s.sub;
+    if (sub === true) return true;
+    if (sub === false || sub == null || sub === "") return false;
+    return String(sub) !== "";
+  });
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
     var sskName = ssk.n || ssk.name || "";

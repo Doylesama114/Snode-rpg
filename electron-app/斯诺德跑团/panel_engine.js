@@ -302,6 +302,7 @@ function loadState(charName, slotIndex) {
     ensureClaimedLevels();
     migrateAllShortboardFeats();
     ensurePanelFeatBonuses();
+    normalizeAllSkillSubs();
     if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(new CustomEvent('snowd-panel-character-change', {
         detail: { charName: charName, slot: slotIndex },
@@ -697,6 +698,73 @@ function calcSkillSlots(clsIdx) {
 function isFreeSlotSkill(s) {
   return !!(s && (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者"));
 }
+
+/** sub 是否标记为子职业技能（兼容旧档 boolean true） */
+function isSubSkillTagged(s) {
+  if (!s) return false;
+  var sub = s.sub;
+  if (sub === true) return true;
+  if (sub === false || sub == null || sub === "") return false;
+  return String(sub) !== "";
+}
+
+/** 规范化 skill.sub：主职 ""，子职为非空职业名字符串 */
+function normalizeSkillSubField(s) {
+  if (!s) return s;
+  var sub = s.sub;
+  if (sub === true) {
+    s.sub = s.src || s.source || (state.classes[1] && state.classes[1].name) || "子职业";
+  } else if (sub === false || sub == null) {
+    s.sub = "";
+  } else {
+    s.sub = String(sub);
+  }
+  return s;
+}
+
+function normalizeAllSkillSubs() {
+  var list = state.skills || [];
+  for (var i = 0; i < list.length; i++) normalizeSkillSubField(list[i]);
+}
+
+function isMainSkillOccupant(s) {
+  if (!s) return false;
+  if (isBlueprintName(s.n || s.name)) return false;
+  if (isFreeSlotSkill(s)) return false;
+  return !isSubSkillTagged(s);
+}
+
+function isSubSkillOccupant(s) {
+  if (!s) return false;
+  if (isBlueprintName(s.n || s.name)) return false;
+  if (isFreeSlotSkill(s)) return false;
+  return isSubSkillTagged(s);
+}
+
+/** 学习用栏位索引：通用 / 负索引一律计入主职 */
+function resolveSkillSlotClsIdx(clsIdx) {
+  if (clsIdx === 1) return 1;
+  return 0;
+}
+
+function listOccupiedSkills(clsIdx) {
+  var idx = resolveSkillSlotClsIdx(clsIdx);
+  var list = state.skills || [];
+  var out = [];
+  for (var i = 0; i < list.length; i++) {
+    if (idx === 1) {
+      if (isSubSkillOccupant(list[i])) out.push(list[i]);
+    } else if (isMainSkillOccupant(list[i])) {
+      out.push(list[i]);
+    }
+  }
+  return out;
+}
+
+function countOccupiedSkillSlots(clsIdx) {
+  return listOccupiedSkills(clsIdx).length;
+}
+
 function getCurrentProfCap() {
   return getProfCapForLevel(getMaxLevel());
 }
@@ -1080,6 +1148,7 @@ function ensureBlueprintState() {
   if (!state.blueprints) state.blueprints = [];
   if (typeof state.blueprint_bonus_slots !== "number") state.blueprint_bonus_slots = 0;
   migrateBlueprintsFromSkillsAndTalents();
+  normalizeAllSkillSubs();
 }
 
 function addBlueprintEntry(entry, opts) {
@@ -4911,15 +4980,16 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
   // === 16. Skill Tables ===
 
+  normalizeAllSkillSubs();
 
-  var mainSkills=state.skills.filter(function(s){return (!s.sub||s.sub==="")&&!isBlueprintName(s.n||s.name)&&!isFreeSlotSkill(s);});
-  var freeMainSkills=state.skills.filter(function(s){return (!s.sub||s.sub==="")&&!isBlueprintName(s.n||s.name)&&isFreeSlotSkill(s);});
+  var mainSkills=state.skills.filter(isMainSkillOccupant);
+  var freeMainSkills=state.skills.filter(function(s){return !isSubSkillTagged(s)&&!isBlueprintName(s.n||s.name)&&isFreeSlotSkill(s);});
 
 
   
 
 
-  var subSkills=state.skills.filter(function(s){return s.sub&&s.sub!==""&&!isBlueprintName(s.n||s.name)&&!isFreeSlotSkill(s);});
+  var subSkills=state.skills.filter(isSubSkillOccupant);
 
 
   var skillHtml="";
@@ -5637,6 +5707,9 @@ function learnSkill(clsName, skillName, clsIdx) {
 
 
   var isSub = (clsIdx === 1);
+  var slotClsIdx = resolveSkillSlotClsIdx(clsIdx);
+  // 通用等负索引：按主职栏占用，写入 sub:""
+  if (clsIdx !== 1) isSub = false;
 
 
   var desc = (skillData.description || []).join(" ");
@@ -5655,9 +5728,6 @@ function learnSkill(clsName, skillName, clsIdx) {
 
 
     var skillList = state.skills;
-
-
-    var isSub = (clsIdx === 1);
 
 
     for (var gi = 0; gi < grants.length; gi++) {
@@ -5705,16 +5775,8 @@ function learnSkill(clsName, skillName, clsIdx) {
       // Check if has enough slots (granted skills take slots too)
 
 
-      var skillSlots = calcSkillSlots(clsIdx);
-
-
-      var currentInSlot = 0;
-
-
-      for (var sj = 0; sj < skillList.length; sj++) {
-        if (isBlueprintName(skillList[sj].n || skillList[sj].name)) continue;
-        if (isFreeSlotSkill(skillList[sj])) continue;
-        if ((isSub && skillList[sj].sub) || (!isSub && !skillList[sj].sub)) currentInSlot++; }
+      var skillSlots = calcSkillSlots(slotClsIdx);
+      var currentInSlot = countOccupiedSkillSlots(slotClsIdx);
 
 
       if (currentInSlot >= skillSlots) { alert("\u6280\u80fd\u680f\u4f4d\u4e0d\u8db3\uff0c\u65e0\u6cd5\u83b7\u5f97" + grants[gi]); continue; }
@@ -5832,21 +5894,19 @@ function learnSkill(clsName, skillName, clsIdx) {
   } else {
 
 
-    var maxSlots = calcSkillSlots(clsIdx); var skillList = state.skills.slice(); var clsSkills = [];
+    var maxSlots = calcSkillSlots(slotClsIdx); var skillList = state.skills.slice(); var clsSkills = listOccupiedSkills(slotClsIdx);
 
 
+var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { alert("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
 
 
-
-    for (var si = 0; si < skillList.length; si++) {
-      if (isBlueprintName(skillList[si].n || skillList[si].name)) continue;
-      if (isFreeSlotSkill(skillList[si])) continue;
-      if (isSub && skillList[si].sub) clsSkills.push(skillList[si]);
-      else if (!isSub && !skillList[si].sub) clsSkills.push(skillList[si]);
+    if (clsSkills.length > maxSlots) {
+      var overflow = clsSkills.length - maxSlots;
+      alert("技能栏超出上限 " + overflow + " 个，请先替换或卸载多余技能");
+      var allLockedOv = true; for (var oi = 0; oi < clsSkills.length; oi++) { if (!clsSkills[oi].locked) { allLockedOv = false; break; } }
+      if (allLockedOv) { alert("\u6240\u6709\u6280\u80fd\u5747\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
+      showReplaceModal(skillData.name, clsSkills, skillList, maxSlots, {skillData: skillData, clsName: clsName, isSub: isSub, isLocked: isLocked}); return;
     }
-
-
-    var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { alert("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
 
 
     if (clsSkills.length >= maxSlots) {
@@ -7433,7 +7493,8 @@ async function exportXlsxFromState(state) {
   }
 
   // Skills (B-M columns, rows 123-162)
-  var mainSkills = (state.skills || []).filter(function (s) { return (!s.sub || s.sub === "") && !isBlueprintName(s.n || s.name); });
+  normalizeAllSkillSubs();
+  var mainSkills = (state.skills || []).filter(isMainSkillOccupant);
   var hasSkills = mainSkills.length > 0;
   // Helper: look up skill data from SKILL_DATA by name
   function lookupSkill(name) {
@@ -7466,7 +7527,7 @@ async function exportXlsxFromState(state) {
   fillXlsxBlueprints(set, state.blueprints || []);
 
   // Subclass skills (rows 168-209)
-  var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== "" && !isBlueprintName(s.n || s.name); });
+  var subSkills = (state.skills || []).filter(isSubSkillOccupant);
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
     var sskName = ssk.n || ssk.name || "";

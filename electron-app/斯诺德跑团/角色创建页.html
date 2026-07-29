@@ -2868,8 +2868,17 @@ async function exportXlsxFromState(state) {
     }
   }
 
-  // Skills (B-M columns, rows 123-162)
-  var mainSkills = (state.skills || []).filter(function (s) { return !s.sub || s.sub === ""; });
+  // Skills (B-M columns, rows 123-162) — exclude freeSlot/blueprint; sub-tagged go to 168+
+  var mainSkills = (state.skills || []).filter(function (s) {
+    if (!s) return false;
+    var nm = s.n || s.name || "";
+    if (nm.indexOf("（图纸）") >= 0) return false;
+    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    var sub = s.sub;
+    if (sub === true) return false;
+    if (sub === false || sub == null || sub === "") return true;
+    return String(sub) === "";
+  });
   var hasSkills = mainSkills.length > 0;
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
@@ -2915,7 +2924,16 @@ async function exportXlsxFromState(state) {
   }
 
   // Subclass skills (rows 168-209)
-  var subSkills = (state.skills || []).filter(function (s) { return s.sub && s.sub !== ""; });
+  var subSkills = (state.skills || []).filter(function (s) {
+    if (!s) return false;
+    var nm = s.n || s.name || "";
+    if (nm.indexOf("（图纸）") >= 0) return false;
+    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    var sub = s.sub;
+    if (sub === true) return true;
+    if (sub === false || sub == null || sub === "") return false;
+    return String(sub) !== "";
+  });
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
     var sskName = ssk.n || ssk.name || "";

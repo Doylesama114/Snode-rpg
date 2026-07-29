@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7136',
+    date: '2026-07-29',
+    changes: [
+      '修复技能栏未满却只能替换',
+      '通用学习计入主职栏',
+      '子职业xlsx回读不再截成一条'
+    ]
+  },
+
+
+  {
     version: '1.0.7135',
     date: '2026-07-28',
     changes: [

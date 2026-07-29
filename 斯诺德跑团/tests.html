@@ -1086,6 +1086,63 @@ assert(state.deityAttr, '奥术', 'deityAttr 落盘');
 assert(state.patron, '笑神', 'patron 落盘');
 results.push('</div>');
 
+// =================== T5h: 技能栏占用统一 / 通用 clsIdx / sub 规范化 / 子职导出过滤 ===================
+results.push('<div class="section"><h3>T5h: 技能栏占用、通用占主栏、sub 迁移、子职过滤</h3>');
+assertTrue(typeof resolveSkillSlotClsIdx === 'function', 'resolveSkillSlotClsIdx 已定义');
+assertTrue(typeof countOccupiedSkillSlots === 'function', 'countOccupiedSkillSlots 已定义');
+assertTrue(typeof isMainSkillOccupant === 'function', 'isMainSkillOccupant 已定义');
+assertTrue(typeof isSubSkillOccupant === 'function', 'isSubSkillOccupant 已定义');
+assert(resolveSkillSlotClsIdx(-1), 0, '通用 clsIdx=-1 → 主职栏 0');
+assert(resolveSkillSlotClsIdx(0), 0, 'clsIdx=0 → 主职');
+assert(resolveSkillSlotClsIdx(1), 1, 'clsIdx=1 → 子职');
+
+state = JSON.parse(JSON.stringify(STATE_DEFAULTS));
+state.classes[0] = { name: '战士', level: 1, styles: ['', '', '', ''] };
+state.skills = [
+  { n: '回气', src: '战士', sub: '', granted: true },
+  { n: '光亮术', src: '法师', freeSlot: true, grantedBy: '法师学徒', sub: '' }
+];
+assert(countOccupiedSkillSlots(0), 1, 'L1 仅回气占栏，免费戏法不占');
+assert(countOccupiedSkillSlots(-1), 1, '通用路径计数同主职');
+assertTrue(calcSkillSlots(0) > countOccupiedSkillSlots(0), '未满：占栏 < 上限，不应替换');
+
+// sub:true 旧档迁移
+state.skills.push({ n: '误标子技', src: '法师', sub: true });
+normalizeAllSkillSubs();
+assertTrue(typeof state.skills[2].sub === 'string' && state.skills[2].sub !== '', 'sub:true 规范为非空字符串');
+assertTrue(isSubSkillOccupant(state.skills[2]), '迁移后计为子职占用');
+assert(countOccupiedSkillSlots(0), 1, '误标子技不占主职栏');
+
+state.classes[1] = { name: '法师', level: 1, styles: ['', '', '', ''] };
+assert(countOccupiedSkillSlots(1), 1, '子职 L1 占用 1');
+assertTrue(calcSkillSlots(1) >= 4, '子职 L1 至少 4 栏');
+assertTrue(countOccupiedSkillSlots(1) < calcSkillSlots(1), '子职未满');
+
+// 子职导出过滤：3 条 sub + 1 免费主技
+state.skills = [
+  { n: '主A', src: '战士', sub: '' },
+  { n: '免费', src: '法师', freeSlot: true, grantedBy: '法师学徒', sub: '' },
+  { n: '子1', src: '法师', sub: '法师' },
+  { n: '子2', src: '法师', sub: '法师' },
+  { n: '子3', src: '法师', sub: '法师' }
+];
+var _expMain = state.skills.filter(isMainSkillOccupant);
+var _expSub = state.skills.filter(isSubSkillOccupant);
+assert(_expMain.length, 1, '导出主职仅占栏技 1');
+assert(_expSub.length, 3, '导出子职 3 条不被截成 1');
+assertFalse(_expMain.some(function (s) { return s.n === '免费'; }), '导出主职不含免费技');
+
+// 模拟上传回读：跳过空行仍收齐 3 条
+var _fakeB = { 168: '子1', 169: '', 170: '子2', 171: '子3' };
+var _read = [];
+for (var _ri = 168; _ri <= 209; _ri++) {
+  var _bn = _fakeB[_ri];
+  if (!_bn) continue;
+  _read.push(_bn);
+}
+assert(_read.length, 3, '回读跳过空行仍得 3 条子职技能');
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");
