@@ -2,6 +2,12 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7137',
+    date: '2026-07-30',
+  },
+
+
+  {
     version: '1.0.7136',
     date: '2026-07-29',
     changes: [

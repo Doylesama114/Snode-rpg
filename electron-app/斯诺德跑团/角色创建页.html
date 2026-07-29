@@ -269,6 +269,7 @@ html.dark #overviewToggle { background: #d4a54a; }
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
+<script src="chargen_prof.js"></script>
 </head>
 <body>
 <div class="container">
@@ -705,7 +706,8 @@ var CLASS_STARTING_FEATURES = {
 var SPEC_PROF_CHOICES = {
   "蛮斗士":{"运动健将":{attr:["力量","敏捷"],skills:{"力量":["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],"敏捷":["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"]}}},
   "战士":{"运动健将":{attr:["力量","敏捷"],skills:{"力量":["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],"敏捷":["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"]}}},
-  "法师":{"奥法学者":{single:["奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙"]},"知识传承":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}}
+  "法师":{"奥法学者":{single:["奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙"]},"知识传承":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}},
+  "奇械师":{"万用模组":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}}
 };
 var SPEC_AUTO_PROF = {
   "德鲁伊":{"自然之友":{profs:{"感知":["自然"]},professionals:["栽培"]}},
@@ -718,7 +720,11 @@ var SPEC_AUTO_PROF = {
 function buildOverviewProfLines() {
   var profLines = [];
   if (CHAR.selectedSkills && CHAR.selectedSkills.length) {
-    for (var si = 0; si < CHAR.selectedSkills.length; si++) profLines.push({ name: CHAR.selectedSkills[si], src: '职业' });
+    for (var si = 0; si < CHAR.selectedSkills.length; si++) {
+      var skn = CHAR.selectedSkills[si];
+      var rsk = typeof resolveProfSkill === "function" ? resolveProfSkill(skn) : null;
+      profLines.push({ name: (rsk && rsk.key) ? rsk.key : skn, src: '职业' });
+    }
   }
   var autoCls2 = SPEC_AUTO_PROF[CHAR.className];
   if (autoCls2) {
@@ -732,10 +738,13 @@ function buildOverviewProfLines() {
       }
     }
   }
-  if (CHAR.specChoices) {
+  if (CHAR.specChoices && typeof overviewNamesFromSpecChoices === "function") {
+    var specNames = overviewNamesFromSpecChoices(CHAR.specChoices);
+    for (var sni = 0; sni < specNames.length; sni++) profLines.push({ name: specNames[sni], src: '专精' });
+  } else if (CHAR.specChoices) {
     for (var sn in CHAR.specChoices) {
       var ch = CHAR.specChoices[sn];
-      if (ch.skill && ch.skill.indexOf('-') >= 0) profLines.push({ name: ch.skill, src: '专精' });
+      if (ch && ch.skill) profLines.push({ name: ch.skill, src: '专精' });
     }
   }
   if (CHAR.bgName && CHAR.bgData) {
@@ -759,7 +768,10 @@ function buildOverviewProfLines() {
       }
     }
   }
-  if (CHAR.humanFreeSkill) profLines.push({ name: CHAR.humanFreeSkill, src: '人类' });
+  if (CHAR.humanFreeSkill) {
+    var hr = typeof resolveProfSkill === "function" ? resolveProfSkill(CHAR.humanFreeSkill) : null;
+    profLines.push({ name: (hr && hr.key) ? hr.key : CHAR.humanFreeSkill, src: '人类' });
+  }
   return profLines;
 }
 
@@ -1467,7 +1479,8 @@ function renderSkillStep(c) {
   h+="<div style='margin-bottom:8px;font-size:14px;color:#69706b'>已选 <strong>"+CHAR.selectedSkills.length+"</strong> / 4 项</div>";
   h+="<div class='skill-select' id='skillGrid'>";
   for(var i=0;i<skills.length;i++){
-    var sk=skills[i]; var sel=CHAR.selectedSkills.indexOf(sk)>=0;if(!sel&&SKILL_CATS[sk]){var _cs=SKILL_CATS[sk];for(var _ci=0;_ci<_cs.length;_ci++){if(CHAR.selectedSkills.indexOf(_cs[_ci])>=0){sel=true;break;}}}
+    var sk=skills[i];
+    var sel=typeof isChargenSkillSelected==="function"?isChargenSkillSelected(sk,CHAR.selectedSkills):(CHAR.selectedSkills.indexOf(sk)>=0);
     if(SKILL_CATS[sk]){h+="<div class='skill-chip"+(sel?" selected":"")+"' onclick='showSubSkillChoice(\""+sk+"\",this)' style='position:relative'>"+sk+" <span style='font-size:10px;opacity:0.6'>▶</span></div>";}else{h+="<div class='skill-chip"+(sel?" selected":"")+"' onclick='toggleSkill(\""+sk+"\",this)'>"+sk+"</div>";}
   }
   h+="</div>";
@@ -1483,10 +1496,15 @@ function parseSkills(t){
   return m[1].split(/[、,，]/).map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
 }
 
-function toggleSkill(name,el){if(SKILL_CATS[name]){showSubSkillChoice(name,el);return;}
-  var idx=CHAR.selectedSkills.indexOf(name);
+function toggleSkill(name,el){
+  if(SKILL_CATS[name]){showSubSkillChoice(name,el);return;}
+  var r=typeof resolveProfSkill==="function"?resolveProfSkill(name):null;
+  if(r&&r.category){showSubSkillChoice(name,el);return;}
+  var storeName=(typeof canonicalSkillPickName==="function"?canonicalSkillPickName(name):null)||name;
+  var idx=CHAR.selectedSkills.indexOf(storeName);
+  if(idx<0&&name!==storeName) idx=CHAR.selectedSkills.indexOf(name);
   if(idx>=0) CHAR.selectedSkills.splice(idx,1);
-  else if(CHAR.selectedSkills.length<4) CHAR.selectedSkills.push(name);
+  else if(CHAR.selectedSkills.length<4) CHAR.selectedSkills.push(storeName);
   renderSkillStep(document.getElementById("stepContent"));
   updateOverview();
 }
@@ -2090,18 +2108,19 @@ function applySpecProfs(charData){
   if(CHAR.specChoices){
     for(var sn in CHAR.specChoices){
       var ch=CHAR.specChoices[sn];
-      if(ch.skill&&ch.skill.indexOf("-")>=0){
+      if(!ch||!ch.skill)continue;
+      if(typeof applyResolvedProf==="function"){
+        applyResolvedProf(charData.profs,ch.skill,ch.attr);
+      }else if(ch.skill.indexOf("-")>=0){
         var parts=ch.skill.split("-");
         var attrName=parts[0];
-        var attrMap={"奥秘":"智力","知识":"智力","运动":"力量","巧手":"敏捷","巧手-偷窃":"敏捷","巧手-开锁":"敏捷","巧手-拆除":"敏捷"};
+        var attrMap={"奥秘":"智力","知识":"智力","运动":"力量","巧手":"敏捷"};
         var actualAttr=attrMap[attrName]||attrName;
         if(charData.profs[actualAttr]&&charData.profs[actualAttr][ch.skill]!==undefined){
           charData.profs[actualAttr][ch.skill]=(charData.profs[actualAttr][ch.skill]||0)+1;
         }
-      }else if(ch.skill){
-        if(ch.attr&&charData.profs[ch.attr]&&charData.profs[ch.attr][ch.skill]!==undefined){
-          charData.profs[ch.attr][ch.skill]=(charData.profs[ch.attr][ch.skill]||0)+1;
-        }
+      }else if(ch.attr&&charData.profs[ch.attr]&&charData.profs[ch.attr][ch.skill]!==undefined){
+        charData.profs[ch.attr][ch.skill]=(charData.profs[ch.attr][ch.skill]||0)+1;
       }
     }
   }
@@ -2337,35 +2356,22 @@ function saveCharacter(){
     var attrName=saveList[si].trim();
     if(allSkills[attrName]) allSkills[attrName]["豁免"]=1;
   }
-  var skillAttrMap={
-    "威力":"力量","运动":"力量","运动-跳跃":"力量","运动-攀爬":"力量","运动-游泳":"力量","运动-自定义":"力量","承重":"力量","体操":"敏捷","骑乘":"敏捷","隐匿":"敏捷","巧手":"敏捷","巧手-偷窃":"敏捷","巧手-开锁":"敏捷","巧手-拆除":"敏捷","巧手-自定义":"敏捷",
-    "专注":"体质","耐力":"体质","调查":"智力","逻辑":"智力","宗教":"智力","估价":"智力","伪造":"智力","读唇":"智力",
-    "奥秘":"智力","奥秘-魔法学识":"智力","奥秘-炼金术":"智力","奥秘-神奇道具":"智力","奥秘-多元宇宙":"智力","知识":"智力","知识-历史":"智力","知识-地理":"智力","知识-人文":"智力","知识-政治":"智力","知识-神秘学":"智力","知识-工程学":"智力","知识-珠宝学":"智力","知识-草药学":"智力","知识-医药":"智力","知识-烹饪":"智力","知识-自定义":"智力","工程学":"智力","医药":"智力","历史":"智力","地理":"智力","人文":"智力","政治":"智力",
-    "神秘学":"智力","草药学":"智力","烹饪":"智力","珠宝学":"智力","洞悉":"感知","导航":"感知","自然":"感知",
-    "驯兽":"感知","感悟":"感知","聆听":"感知","察觉":"感知","欺瞒":"魅力","说服":"魅力","表演":"魅力","表演-歌唱":"魅力","表演-舞蹈":"魅力","表演-演奏":"魅力","表演-自定义":"魅力","恐吓":"魅力",
-    "求生":"意志","激励":"意志","决策":"意志","机遇":"幸运","探索":"幸运"
-  };
   for(var i=0;i<CHAR.selectedSkills.length;i++){
-    var skName=CHAR.selectedSkills[i];
-    var attr=skillAttrMap[skName];
-    if(!attr){
-      for(var _a in allSkills){
-        if(allSkills[_a] && allSkills[_a][skName]!==undefined){attr=_a;break;}
-      }
-    }
-    if(attr && allSkills[attr] && allSkills[attr][skName]!==undefined){
-      allSkills[attr][skName]=(allSkills[attr][skName]||0)+1;
-    }else if(attr && allSkills[attr]){
-      allSkills[attr][skName]=(allSkills[attr][skName]||0)+1;
+    if(typeof applyResolvedProf==="function"){
+      applyResolvedProf(allSkills,CHAR.selectedSkills[i]);
     }
   }
   // Human free skill from 中庸 trait
   if(CHAR.humanFreeSkill){
-    var mapped=BG_SKILL_MAP[CHAR.humanFreeSkill];
-    if(mapped && mapped!=="cat"){
-      var parts=mapped.split(".");
-      if(parts.length===2 && allSkills[parts[0]] && allSkills[parts[0]][parts[1]]!==undefined){
-        allSkills[parts[0]][parts[1]]=(allSkills[parts[0]][parts[1]]||0)+1;
+    if(typeof applyResolvedProf==="function"){
+      applyResolvedProf(allSkills,CHAR.humanFreeSkill);
+    }else{
+      var mapped=BG_SKILL_MAP[CHAR.humanFreeSkill];
+      if(mapped && mapped!=="cat"){
+        var parts=mapped.split(".");
+        if(parts.length===2 && allSkills[parts[0]] && allSkills[parts[0]][parts[1]]!==undefined){
+          allSkills[parts[0]][parts[1]]=(allSkills[parts[0]][parts[1]]||0)+1;
+        }
       }
     }
   }

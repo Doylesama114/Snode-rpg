@@ -27,6 +27,7 @@ h1 { color: #fff; }
 <script src="panel_data.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
+<script src="chargen_prof.js"></script>
 <script src="导出立绘.js"></script>
 <script>
 // Prevent panel_engine.js from auto-calling render() on tests page
@@ -720,14 +721,58 @@ var bProfs = { "力量": { "威力": 2 }, "体质": { "专注": 2 } };
 assertTrue(evalSubclassProfReq(barbReq, bProfs).ok, '蛮斗士: 力量2+体质2=4');
 
 var mageReq = REF_SUBCLASS_REQS["法师"];
-var mProfs = { "智力": { "奥秘": 2, "知识": 2, "逻辑": 2 } };
-assertTrue(evalSubclassProfReq(mageReq, mProfs).ok, '法师: 奥秘+知识+逻辑=6');
+var mProfsBare = { "智力": { "奥秘": 2, "知识": 2, "逻辑": 2 } };
+assertFalse(evalSubclassProfReq(mageReq, mProfsBare).ok, '法师: 假键奥秘/知识不计（须用正式复合键）');
+var mProfsReal = { "智力": { "奥秘-魔法学识": 2, "知识-历史": 2, "逻辑": 2 } };
+assertTrue(evalSubclassProfReq(mageReq, mProfsReal).ok, '法师: 真实键 奥秘-*+知识-*+逻辑=6');
+assertClose(evalSubclassProfReq(mageReq, mProfsReal).value, 6, '法师真实键合计6');
 
 var rogueReq = REF_SUBCLASS_REQS["游荡者"];
 var rProfs = { "敏捷": { "体操": 2 }, "智力": { "伪造": 1 }, "魅力": { "欺瞒": 1 } };
 assertTrue(evalSubclassProfReq(rogueReq, rProfs).ok, '游荡者: 敏捷2+伪造1+欺瞒1=4');
 
 assertFalse(checkSubclassReq("法师", "蛮斗士", { "力量": 16, "体质": 16 }, bProfs).ok, '法师主职不可兼职蛮斗士');
+assertFalse(checkSubclassReq("法师", "牧师", { "感知": 16 }, { "体质": { "专注": 4 } }).ok, '法师主职不可兼职牧师');
+assertFalse(checkSubclassReq("蛮斗士", "法师", { "智力": 16 }, mProfsReal).ok, '蛮斗士主职不可兼职法师');
+
+// 吟游诗人：复合熟练真实键
+var bardReq = REF_SUBCLASS_REQS["吟游诗人"];
+var bardOkProfs = {
+  "敏捷": { "巧手-开锁": 1 },
+  "智力": { "知识-人文": 1 },
+  "魅力": { "说服": 1, "表演-歌唱": 1, "欺瞒": 2, "恐吓": 2 }
+};
+var bardR = evalSubclassProfReq(bardReq, bardOkProfs);
+assertTrue(bardR.ok, '诗人: 巧手+知识+说服+表演各1=4 可兼职');
+assertClose(bardR.value, 4, '诗人合计4（欺瞒恐吓不计）');
+var bardChaOnly = { "魅力": { "说服": 1, "欺瞒": 1, "恐吓": 1, "表演-歌唱": 1 } };
+assertFalse(evalSubclassProfReq(bardReq, bardChaOnly).ok, '诗人: 仅魅力向凑4但缺巧手知识 → 不可');
+
+// 萨满：表演类别 + 神秘学别名
+var shamanReq = REF_SUBCLASS_REQS["萨满祭司"];
+var shamanProfs = {
+  "魅力": { "表演-歌唱": 1 },
+  "感知": { "自然": 1, "求生": 1 },
+  "智力": { "知识-神秘学": 1 }
+};
+assertTrue(evalSubclassProfReq(shamanReq, shamanProfs).ok, '萨满: 表演+自然+求生+知识-神秘学=4');
+
+// 德鲁伊：草药学 → 知识-草药学
+var druidReq = REF_SUBCLASS_REQS["德鲁伊"];
+var druidProfs = {
+  "感知": { "驯兽": 1, "自然": 1, "求生": 1 },
+  "智力": { "知识-草药学": 1 }
+};
+assertTrue(evalSubclassProfReq(druidReq, druidProfs).ok, '德鲁伊: 草药学正式键计入');
+
+// 牧师：「魅力」= 魅力属性下熟练合计
+var clericReq = REF_SUBCLASS_REQS["牧师"];
+var clericProfs = {
+  "体质": { "专注": 1 },
+  "智力": { "宗教": 1 },
+  "魅力": { "说服": 2, "恐吓": 0 }
+};
+assertTrue(evalSubclassProfReq(clericReq, clericProfs).ok, '牧师: 专注1+宗教1+魅力下说服2=4');
 
 results.push('</div>');
 
@@ -1141,6 +1186,41 @@ for (var _ri = 168; _ri <= 209; _ri++) {
   _read.push(_bn);
 }
 assert(_read.length, 3, '回读跳过空行仍得 3 条子职技能');
+results.push('</div>');
+
+// =================== T5i: 创建页熟练 resolve / 概览专精 / 别名正式键 ===================
+results.push('<div class="section"><h3>T5i: chargen resolveProfSkill、专精概览、别名正式键</h3>');
+(function () {
+  assertTrue(typeof resolveProfSkill === "function", "resolveProfSkill 已加载");
+  var _hist = resolveProfSkill("历史");
+  assert(_hist && _hist.key, "知识-历史", "历史 → 知识-历史");
+  assert(_hist && _hist.attr, "智力", "历史 → 智力");
+  var _wei = resolveProfSkill("威力");
+  assert(_wei && _wei.key, "威力", "威力 key");
+  assert(_wei && _wei.attr, "力量", "威力 → 力量");
+  var _cat = resolveProfSkill("知识");
+  assertTrue(!!(_cat && _cat.category), "知识为类别不可直接入库");
+
+  var _ov = overviewNamesFromSpecChoices({ "运动健将": { attr: "力量", skill: "威力" }, "武器专精": { attr: "剑类", skill: "" } });
+  assert(_ov.length, 1, "概览专精仅非空 skill");
+  assert(_ov[0], "威力", "运动健将 威力 进概览");
+
+  var _profs = emptyChargenProfs();
+  assertTrue(applyResolvedProf(_profs, "历史"), "历史写入正式键成功");
+  assert(_profs["智力"]["知识-历史"], 1, "智力.知识-历史 = 1");
+  assertTrue(_profs["智力"]["历史"] === undefined, "不创建 ghost 智力.历史");
+
+  var _p2 = emptyChargenProfs();
+  assertTrue(applyResolvedProf(_p2, "威力", "力量"), "威力写入成功");
+  assert(_p2["力量"]["威力"], 1, "力量.威力 = 1");
+
+  var _p3 = emptyChargenProfs();
+  assertTrue(applyResolvedProf(_p3, "知识-工程学"), "万用模组知识项可写");
+  assert(_p3["智力"]["知识-工程学"], 1, "智力.知识-工程学 = 1");
+
+  assertTrue(isChargenSkillSelected("历史", ["知识-历史"]), "芯片：历史 对 知识-历史 视为已选");
+  assert(canonicalSkillPickName("医药"), "知识-医药", "选医药写入正式键");
+})();
 results.push('</div>');
 
 // =================== Render Summary ===================

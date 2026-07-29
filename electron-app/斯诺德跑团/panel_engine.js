@@ -565,9 +565,22 @@ var PROF_NAME_ALIASES = {
   "草药学":{attr:"智力",key:"知识-草药学"},
   "珠宝学":{attr:"智力",key:"知识-珠宝学"},
   "工程学":{attr:"智力",key:"知识-工程学"},
+  "神秘学":{attr:"智力",key:"知识-神秘学"},
+  "历史":{attr:"智力",key:"知识-历史"},
+  "地理":{attr:"智力",key:"知识-地理"},
+  "人文":{attr:"智力",key:"知识-人文"},
+  "政治":{attr:"智力",key:"知识-政治"},
   "炼金术":{attr:"智力",key:"奥秘-炼金术"},
+  "炼金":{attr:"智力",key:"奥秘-炼金术"},
+  "魔法学识":{attr:"智力",key:"奥秘-魔法学识"},
+  "神奇道具":{attr:"智力",key:"奥秘-神奇道具"},
+  "多元宇宙":{attr:"智力",key:"奥秘-多元宇宙"},
   "开锁":{attr:"敏捷",key:"巧手-开锁"},
+  "偷窃":{attr:"敏捷",key:"巧手-偷窃"},
+  "拆除":{attr:"敏捷",key:"巧手-拆除"},
   "攀爬":{attr:"力量",key:"运动-攀爬"},
+  "跳跃":{attr:"力量",key:"运动-跳跃"},
+  "游泳":{attr:"力量",key:"运动-游泳"},
   "探索":{attr:"幸运",key:"探索"},
   "隐匿":{attr:"敏捷",key:"隐匿"},
   "逻辑":{attr:"智力",key:"逻辑"},
@@ -6830,18 +6843,72 @@ function _sumProfUnderAttr(profs, attr, excludeKeys) {
   return total;
 }
 
-function _getProfByName(profs, name, preferAttrs) {
-  if (!profs) return 0;
+/** Exact key lookup (no category / alias expand). */
+function _getProfExact(profs, key, preferAttrs) {
+  if (!profs || !key) return 0;
   if (preferAttrs) {
     for (var i = 0; i < preferAttrs.length; i++) {
       var a = preferAttrs[i];
-      if (profs[a] && profs[a][name]) return profs[a][name];
+      if (profs[a] && profs[a][key]) return profs[a][key] || 0;
     }
   }
   for (var pa in profs) {
-    if (profs[pa][name]) return profs[pa][name];
+    if (profs[pa] && profs[pa][key]) return profs[pa][key] || 0;
   }
   return 0;
+}
+
+/** Keys to exclude from attr-sum when a profNames entry was already counted. */
+function _excludeKeysForProfName(name) {
+  var exclude = {};
+  if (!name) return exclude;
+  if (PROF_DEFS[name]) {
+    var defs = PROF_DEFS[name];
+    for (var di = 0; di < defs.length; di++) {
+      if (defs[di] !== "豁免") exclude[defs[di]] = true;
+    }
+    return exclude;
+  }
+  var resolved = typeof resolveProfTarget === "function" ? resolveProfTarget(name) : null;
+  if (resolved && resolved.category && resolved.keys) {
+    for (var ci = 0; ci < resolved.keys.length; ci++) exclude[resolved.keys[ci]] = true;
+    return exclude;
+  }
+  if (resolved && resolved.key) {
+    exclude[resolved.key] = true;
+    return exclude;
+  }
+  exclude[name] = true;
+  return exclude;
+}
+
+/**
+ * Resolve rule/display name to proficiency total.
+ * - Attribute name (魅力/敏捷…) → sum under that attr
+ * - Category (表演/巧手/知识/奥秘) → sum of sub-keys
+ * - Alias (神秘学/草药学) → formal key via resolveProfTarget
+ */
+function _getProfByName(profs, name, preferAttrs) {
+  if (!profs || !name) return 0;
+  if (PROF_DEFS[name]) {
+    return _sumProfUnderAttr(profs, name, {});
+  }
+  var resolved = typeof resolveProfTarget === "function" ? resolveProfTarget(name) : null;
+  if (resolved && resolved.category && resolved.keys) {
+    var prefer = preferAttrs;
+    if ((!prefer || !prefer.length) && resolved.attr) prefer = [resolved.attr];
+    var sum = 0;
+    for (var i = 0; i < resolved.keys.length; i++) {
+      sum += _getProfExact(profs, resolved.keys[i], prefer);
+    }
+    return sum;
+  }
+  if (resolved && resolved.key) {
+    var prefer2 = preferAttrs;
+    if ((!prefer2 || !prefer2.length) && resolved.attr) prefer2 = [resolved.attr];
+    return _getProfExact(profs, resolved.key, prefer2);
+  }
+  return _getProfExact(profs, name, preferAttrs);
 }
 
 function evalSubclassAttrReq(req, attrs) {
@@ -6906,8 +6973,8 @@ function evalSubclassProfReq(req, profs) {
       var exclude = {};
       if (req.profNames) {
         for (var ei = 0; ei < req.profNames.length; ei++) {
-          var en = req.profNames[ei];
-          if (profs[attr] && profs[attr][en]) exclude[en] = true;
+          var exMap = _excludeKeysForProfName(req.profNames[ei]);
+          for (var ek in exMap) exclude[ek] = true;
         }
       }
       var attrSum = _sumProfUnderAttr(profs, attr, exclude);

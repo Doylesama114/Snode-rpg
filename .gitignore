@@ -39,3 +39,6 @@ electron-app/.env.bundle
 # Playwright MCP traces
 .playwright-mcp/
 upload-gitee-exe.sh
+
+# Local entertainment assets (do not sync)
+仅供娱乐，不用同步至git/
