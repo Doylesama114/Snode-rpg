@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7138',
+    date: '2026-07-30',
+    changes: [
+      '修复xlsx导出丢失幸运探索行',
+      '特性槽与模板对齐为6格',
+      'set按列序插入且clear不invent'
+    ]
+  },
+
+
+  {
     version: '1.0.7137',
     date: '2026-07-30',
   },

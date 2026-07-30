@@ -1200,7 +1200,7 @@ function removeBlueprintAt(idx) {
 
 function clearXlsxBlueprints(set) {
   var i;
-  for (i = 0; i < BLUEPRINT_XLSX_CELLS.length; i++) set(BLUEPRINT_XLSX_CELLS[i], "");
+  for (i = 0; i < BLUEPRINT_XLSX_CELLS.length; i++) set(BLUEPRINT_XLSX_CELLS[i], "", false);
 }
 
 function fillXlsxBlueprints(set, blueprints) {
@@ -1400,17 +1400,49 @@ function clearXlsxTalentSlots(set, tierRowMap) {
   var tier, range, r;
   for (tier in tierRowMap) {
     range = tierRowMap[tier];
-    for (r = range[0]; r <= range[1]; r++) set("O" + r, "");
+    for (r = range[0]; r <= range[1]; r++) set("O" + r, "", false);
   }
+}
+
+/** 模板种族/职业特性槽：I/K 与 O/Q，112–117（共 6 格）；勿写到 118「探索」行 */
+var XLSX_TRAIT_SLOT_START = 112;
+var XLSX_TRAIT_SLOT_COUNT = 6;
+
+/** A=1 … Z=26, AA=27 */
+function xlsxColIndex(col) {
+  var n = 0, i;
+  for (i = 0; i < col.length; i++) n = n * 26 + (col.charCodeAt(i) - 64);
+  return n;
+}
+
+/**
+ * 将 cellXml 按列序插入完整 <row>…</row> 字符串。
+ * @returns {string} 新的 row XML
+ */
+function xlsxInsertCellInRow(rowXml, colLetters, cellXml) {
+  var m = /^<row([^>]*)>([\s\S]*)<\/row>$/.exec(rowXml);
+  if (!m) return rowXml;
+  var attrs = m[1], inner = m[2], newIdx = xlsxColIndex(colLetters);
+  var cellRe = /<c r="([A-Z]+)\d+"[^>]*?(?:\/>|>[\s\S]*?<\/c>)/g;
+  var cm, out = "", inserted = false;
+  while ((cm = cellRe.exec(inner)) !== null) {
+    if (!inserted && xlsxColIndex(cm[1]) > newIdx) {
+      out += cellXml;
+      inserted = true;
+    }
+    out += cm[0];
+  }
+  if (!inserted) out += cellXml;
+  return "<row" + attrs + ">" + out + "</row>";
 }
 
 function clearXlsxSkillRows(set) {
   var r, cols = ["B", "D", "E", "F", "H", "I", "J"], ci;
   for (r = 123; r <= 162; r++) {
-    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "", false);
   }
   for (r = 168; r <= 209; r++) {
-    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "");
+    for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "", false);
   }
 }
 
@@ -1426,23 +1458,23 @@ function clearXlsxEquipmentSlots(set) {
   ];
   var ri, ii;
   for (ri = 0; ri < ranges.length; ri++) {
-    for (ii = 0; ii < ranges[ri].max; ii++) set("K" + (ranges[ri].row + ii), "");
+    for (ii = 0; ii < ranges[ri].max; ii++) set("K" + (ranges[ri].row + ii), "", false);
   }
 }
 
 function clearXlsxClassAndFeatureSlots(set) {
-  set("B23", ""); set("D23", "");
-  set("B29", ""); set("D29", "");
-  set("E17", ""); set("E18", "");
+  set("B23", "", false); set("D23", "", false);
+  set("B29", "", false); set("D29", "", false);
+  set("E17", "", false); set("E18", "", false);
   var ri;
-  for (ri = 0; ri < 8; ri++) {
-    set("I" + (112 + ri), "");
-    set("K" + (112 + ri), "");
-    set("O" + (112 + ri), "");
-    set("Q" + (112 + ri), "");
+  for (ri = 0; ri < XLSX_TRAIT_SLOT_COUNT; ri++) {
+    set("I" + (XLSX_TRAIT_SLOT_START + ri), "", false);
+    set("K" + (XLSX_TRAIT_SLOT_START + ri), "", false);
+    set("O" + (XLSX_TRAIT_SLOT_START + ri), "", false);
+    set("Q" + (XLSX_TRAIT_SLOT_START + ri), "", false);
   }
   var featRows = [36, 38, 40, 42];
-  for (ri = 0; ri < featRows.length; ri++) set("K" + featRows[ri], "");
+  for (ri = 0; ri < featRows.length; ri++) set("K" + featRows[ri], "", false);
 }
 
 function buildExportFileName(exportState) {
@@ -7373,18 +7405,23 @@ async function exportXlsxFromState(state) {
   while ((m = re.exec(sh.text)) !== null) cStyle[m[1]] = m[3] || "";
 
   var xml = sh.text;
-  function set(ref, val) {
-    var cs = cStyle[ref] || "", nc, mrow, row, rowRe;
+  /** @param {boolean} [invent=true] 模板无此格时是否创建；clear 传 false 避免 invent 破坏列序 */
+  function set(ref, val, invent) {
+    var cs = cStyle[ref] || "", nc, mrow, col, row, rowFullRe, rm;
+    if (invent === undefined) invent = true;
     if (typeof val === "number") nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : "") + "><v>" + val + "</v></c>";
     else { var si = addStr(String(val)); nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : '') + ' t="s"><v>' + si + "</v></c>"; }
     var rx = new RegExp('<c r="' + ref + '"([^>]*?)(?:/>|>[\\s\\S]*?</c>)');
     if (rx.test(xml)) xml = xml.replace(new RegExp('<c r="' + ref + '"([^>]*?)(?:/>|>[\\s\\S]*?</c>)', "g"), nc);
     else {
+      if (!invent) return;
       mrow = /^([A-Z]+)(\d+)$/.exec(ref);
       if (!mrow) return;
+      col = mrow[1];
       row = mrow[2];
-      rowRe = new RegExp('(<row[^>]*\\br="' + row + '"[^>]*>)');
-      if (rowRe.test(xml)) xml = xml.replace(rowRe, "$1" + nc);
+      rowFullRe = new RegExp('<row[^>]*\\br="' + row + '"[^>]*>[\\s\\S]*?</row>');
+      rm = rowFullRe.exec(xml);
+      if (rm) xml = xml.replace(rm[0], xlsxInsertCellInRow(rm[0], col, nc));
       else xml = xml.replace("</sheetData>", '<row r="' + row + '">' + nc + "</row></sheetData>");
       cStyle[ref] = cs;
     }
@@ -7539,23 +7576,23 @@ async function exportXlsxFromState(state) {
     }
   }
 
-  // Racial traits
+  // Racial traits（模板 I/K 仅 112–117）
   var _exportRacial = exportRacialTraits(state);
   if (_exportRacial.length > 0) {
-    for (var ri = 0; ri < Math.min(_exportRacial.length, 8); ri++) {
+    for (var ri = 0; ri < Math.min(_exportRacial.length, XLSX_TRAIT_SLOT_COUNT); ri++) {
       var rt = _exportRacial[ri];
-      set("I" + (112 + ri), rt.n || rt.name || rt);
-      if (rt.d || rt.desc || rt.effect) set("K" + (112 + ri), rt.d || rt.desc || rt.effect || "");
+      set("I" + (XLSX_TRAIT_SLOT_START + ri), rt.n || rt.name || rt);
+      if (rt.d || rt.desc || rt.effect) set("K" + (XLSX_TRAIT_SLOT_START + ri), rt.d || rt.desc || rt.effect || "");
     }
   }
 
-  // Class features
+  // Class features（模板 O/Q 仅 112–117）
   var _exportClassFeats = exportClassFeatures(state);
   if (_exportClassFeats.length > 0) {
-    for (var ci = 0; ci < Math.min(_exportClassFeats.length, 8); ci++) {
+    for (var ci = 0; ci < Math.min(_exportClassFeats.length, XLSX_TRAIT_SLOT_COUNT); ci++) {
       var cf = _exportClassFeats[ci];
-      set("O" + (112 + ci), cf.n || cf.name || cf);
-      if (cf.d || cf.desc || cf.effect) set("Q" + (112 + ci), cf.d || cf.desc || cf.effect || "");
+      set("O" + (XLSX_TRAIT_SLOT_START + ci), cf.n || cf.name || cf);
+      if (cf.d || cf.desc || cf.effect) set("Q" + (XLSX_TRAIT_SLOT_START + ci), cf.d || cf.desc || cf.effect || "");
     }
   }
 

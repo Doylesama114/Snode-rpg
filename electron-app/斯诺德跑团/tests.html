@@ -603,6 +603,31 @@ assertTrue(typeof fillXlsxProficiencies === "function", "fillXlsxProficiencies �
 assertTrue(fillXlsxProficiencies(null, _profXml, _profStrings, { profs: {} }) === undefined, "缺 set 时安全返回");
 results.push('</div>');
 
+// T12b: 特性槽上限 + 列序插入（避免破坏「探索」行 118）
+results.push('<div class="section"><h3>T12b: xlsx 特性槽 6 格 + set 列序 / clear 不 invent</h3>');
+assert(XLSX_TRAIT_SLOT_START, 112, "特性槽起始行 112");
+assert(XLSX_TRAIT_SLOT_COUNT, 6, "特性槽共 6 格");
+assert(XLSX_TRAIT_SLOT_START + XLSX_TRAIT_SLOT_COUNT - 1, 117, "末槽 117，不上探到 118");
+assert(xlsxColIndex("B"), 2, "xlsxColIndex B=2");
+assert(xlsxColIndex("I"), 9, "xlsxColIndex I=9");
+var _row118 = '<row r="118"><c r="B118" t="s"><v>0</v></c><c r="E118" t="s"><v>1</v></c><c r="G118"><v>2</v></c></row>';
+var _insI = xlsxInsertCellInRow(_row118, "I", '<c r="I118" t="s"><v>9</v></c>');
+assertTrue(_insI.indexOf('r="B118"') < _insI.indexOf('r="I118"'), "有序插入后 B 仍在 I 前");
+assertTrue(_insI.indexOf('r="G118"') < _insI.indexOf('r="I118"'), "有序插入后 G 仍在 I 前");
+assertTrue(_insI.indexOf('r="E118"') < _insI.indexOf('r="I118"'), "有序插入后 E（探索标签格）仍在 I 前");
+var _clearTraitRefs = [];
+clearXlsxClassAndFeatureSlots(function (ref, val, invent) {
+  _clearTraitRefs.push(ref);
+  assertTrue(invent === false, "clear 传 invent=false: " + ref);
+});
+assertTrue(_clearTraitRefs.indexOf("I112") >= 0, "clear 覆盖 I112");
+assertTrue(_clearTraitRefs.indexOf("I117") >= 0, "clear 覆盖 I117");
+assertTrue(_clearTraitRefs.indexOf("Q117") >= 0, "clear 覆盖 Q117");
+assertTrue(_clearTraitRefs.indexOf("I118") < 0, "clear 不写 I118");
+assertTrue(_clearTraitRefs.indexOf("K118") < 0, "clear 不写 K118");
+assertTrue(_clearTraitRefs.indexOf("O119") < 0, "clear 不写 O119");
+results.push('</div>');
+
 // T10: xlsx export skill lookup (upload / creation pages)
 results.push('<div class="section"><h3>T10: lookupSkillForExport — 导出技能字段补全</h3>');
 var _skRef = lookupSkillForExport("塑能箭");
