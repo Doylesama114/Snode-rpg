@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7154',
+    date: '2026-07-31',
+    changes: [
+      '修复APK图标显示为默认图标的问题（自适应图标前景配置）'
+    ]
+  },
+
+
+  {
     version: '1.0.7153',
     date: '2026-07-31',
     changes: [
