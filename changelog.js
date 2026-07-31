@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7146',
+    date: '2026-07-31',
+    changes: [
+      '角色面板移动端优化：天赋树/技能表横向滚动修复'
+    ]
+  },
+
+
+  {
     version: '1.0.7145',
     date: '2026-07-31',
     changes: [

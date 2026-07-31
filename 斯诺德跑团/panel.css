@@ -361,10 +361,11 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
   .battle-layout{flex-direction:column}
   .battle-key{min-width:auto}
   .battle-grid{grid-template-columns:repeat(2,1fr)}
-  .talent-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .talent-grid{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
   .talent-header-row,.talent-row,.sp-row{min-width:560px}
   .sp-mark-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .skill-table{min-width:600px;display:block;overflow-x:auto}
+  .skill-table{min-width:600px;display:block}
+  .section:has(.skill-table) .section-body{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .learn-panel{width:calc(100vw - 32px);right:16px;bottom:70px;max-height:50vh}
   .learn-toggle{bottom:16px;right:16px;padding:8px 16px;font-size:14px}
   .prof-list{grid-template-columns:1fr}
