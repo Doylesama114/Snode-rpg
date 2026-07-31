@@ -15,7 +15,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.webkit.WebViewAssetLoader
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -72,18 +71,25 @@ class MainActivity : AppCompatActivity() {
     private fun loadApp(version: String) {
         currentVersion = version
         val baseDir = File(File(filesDir, "mobile/packages"), version)
-        val loader = WebViewAssetLoader.Builder()
-            .setDomain("appassets.androidplatform.net")
-            .addPathHandler("/", FilesPathHandler(baseDir))
-            .build()
+        val handler = FilesPathHandler(baseDir)
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-                return loader.shouldInterceptRequest(request.url)
+                val url = request.url
+                return if (url.host == "appassets.androidplatform.net") {
+                    handler.handle(url.path ?: "/")
+                } else {
+                    null
+                }
             }
 
             @Deprecated("Deprecated in Java")
             override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-                return loader.shouldInterceptRequest(Uri.parse(url))
+                val u = Uri.parse(url)
+                return if (u.host == "appassets.androidplatform.net") {
+                    handler.handle(u.path ?: "/")
+                } else {
+                    null
+                }
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
@@ -112,7 +118,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        webView.loadUrl("https://appassets.androidplatform.net/index.html")
+        val indexFile = File(baseDir, "index.html")
+        if (indexFile.isFile()) {
+            val html = indexFile.readText(Charsets.UTF_8)
+            webView.loadDataWithBaseURL(
+                "https://appassets.androidplatform.net/",
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+        } else {
+            webView.loadUrl("https://appassets.androidplatform.net/index.html")
+        }
     }
 
     @Deprecated("Deprecated in Java")
