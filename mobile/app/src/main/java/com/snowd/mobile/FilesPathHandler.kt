@@ -13,7 +13,13 @@ class FilesPathHandler(private val baseDir: File) : WebViewAssetLoader.PathHandl
         for (p in candidates) {
             val file = File(baseDir, p.removePrefix("/"))
             if (file.isFile) {
-                return WebViewAssetLoader.Response(FileInputStream(file), 200, mimeFor(file.name))
+                val mime = mimeFor(file.name)
+                val encoding = if (mime.startsWith("text/") || mime == "application/json" || mime.startsWith("application/javascript")) {
+                    "UTF-8"
+                } else {
+                    null
+                }
+                return WebViewAssetLoader.Response(FileInputStream(file), 200, "OK", mime, encoding)
             }
         }
         return WebViewAssetLoader.Response("Not found", 404)
