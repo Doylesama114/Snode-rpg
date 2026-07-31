@@ -173,6 +173,8 @@ jobs:
           java-version: '17'
 
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
       - name: Build mobile resource packages
         run: |
@@ -198,6 +200,8 @@ jobs:
           KEY_ALIAS: ${{ secrets.MOBILE_KEY_ALIAS }}
           KEY_PASS: ${{ secrets.MOBILE_KEY_PASS }}
         run: |
+          gradle --version | head -5
+          echo "ANDROID_HOME=${ANDROID_HOME:-not set}"
           VERSION="${VERSION_TAG#v}"
           if [ -z "$KEYSTORE_PASS" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASS" ]; then
             echo "::error::Missing Android signing secrets (MOBILE_KEYSTORE_PASS / MOBILE_KEY_ALIAS / MOBILE_KEY_PASS)"
