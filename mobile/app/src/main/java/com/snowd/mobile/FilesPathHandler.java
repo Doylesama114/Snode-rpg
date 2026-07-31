@@ -36,6 +36,8 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
                 String mime = mimeFor(file.getName());
                 String encoding = (mime.startsWith("text/") || mime.equals("application/json")
                         || mime.startsWith("application/javascript")) ? "UTF-8" : null;
+                android.util.Log.d("SnodeApp", "serve path=" + p + " file=" + file.getName()
+                        + " mime=" + mime + " enc=" + encoding);
                 try {
                     return new WebResourceResponse(mime, encoding, new FileInputStream(file));
                 } catch (IOException e) {

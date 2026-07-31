@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById(R.id.statusText)
         retryBtn = findViewById(R.id.retryBtn)
 
+        WebView.setWebContentsDebuggingEnabled(true)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.allowFileAccess = false
@@ -121,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         val indexFile = File(baseDir, "index.html")
         if (indexFile.isFile()) {
             val html = indexFile.readText(Charsets.UTF_8)
+            android.util.Log.d("SnodeApp", "loadData html len=" + html.length + " head=" + html.take(80))
             webView.loadDataWithBaseURL(
                 "https://appassets.androidplatform.net/",
                 html,
@@ -129,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                 null
             )
         } else {
+            android.util.Log.e("SnodeApp", "index.html missing at " + baseDir.absolutePath)
             webView.loadUrl("https://appassets.androidplatform.net/index.html")
         }
     }

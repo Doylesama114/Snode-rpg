@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7148',
+    date: '2026-07-31',
+    changes: [
+      'Android APK调试诊断支持',
+      '修复首页渲染问题排查'
+    ]
+  },
+
+
+  {
     version: '1.0.7147',
     date: '2026-07-31',
     changes: [
