@@ -37,16 +37,24 @@
         return aliases[h] || h;
     }
 
+    var TYPE_HEADS = ["战技", "法术", "戏法", "天赋", "功法", "能力", "战术"];
+
     function readTags(article) {
+        var tags = [];
         var raw = article.getAttribute("data-tags");
         if (raw) {
-            return raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+            tags = raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+        } else {
+            article.querySelectorAll(".chips .chip").forEach(function(chip) {
+                var txt = chip.textContent.trim();
+                if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
+                tags.push(txt);
+            });
         }
-        var tags = [];
+        // 补充类型头（与 filter.js 一致）
         article.querySelectorAll(".chips .chip").forEach(function(chip) {
             var txt = chip.textContent.trim();
-            if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-            tags.push(txt);
+            if (TYPE_HEADS.indexOf(txt) >= 0 && tags.indexOf(txt) === -1) tags.push(txt);
         });
         return tags;
     }
@@ -71,6 +79,10 @@
         this.listeners = [];
         this.allTags = [];
         this.allColors = [];
+        this.tagCount = {};
+        this.typeTags = [];
+        this.regularTags = [];
+        this.kwFilter = "";
         this.root = null;
         this.expanded = false;
     }
@@ -121,15 +133,26 @@
     };
 
     FilterPanel.prototype.scanPage = function() {
-        var tagSet = new Set();
+        var self = this;
+        var tagCount = {};
         var colorSet = new Set();
         document.querySelectorAll("article.skill").forEach(function(article) {
-            readTags(article).forEach(function(t) { tagSet.add(t); });
+            readTags(article).forEach(function(t) {
+                tagCount[t] = (tagCount[t] || 0) + 1;
+            });
             readMarks(article).forEach(function(c) { colorSet.add(c); });
         });
-        this.allTags = Array.from(tagSet).sort(function(a, b) {
+        this.tagCount = tagCount;
+        this.allTags = Object.keys(tagCount).sort(function(a, b) {
             return a.localeCompare(b, "zh-CN");
         });
+        // 类型头组（固定顺序）与常规组（按频次降序）
+        this.typeTags = TYPE_HEADS.filter(function(t) { return tagCount[t]; });
+        this.regularTags = this.allTags.filter(function(t) { return TYPE_HEADS.indexOf(t) === -1; })
+            .sort(function(a, b) {
+                var d = (tagCount[b] || 0) - (tagCount[a] || 0);
+                return d !== 0 ? d : a.localeCompare(b, "zh-CN");
+            });
         this.allColors = Array.from(colorSet).sort();
     };
 
@@ -205,6 +228,45 @@
         return tag;
     };
 
+    FilterPanel.prototype.makeKwChip = function(kw) {
+        var self = this;
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "fp-kw-chip";
+        chip.setAttribute("data-kw", kw);
+        var name = document.createElement("span");
+        name.className = "fp-kw-name";
+        name.textContent = kw;
+        chip.appendChild(name);
+        var cnt = document.createElement("em");
+        cnt.className = "fp-kw-count";
+        cnt.textContent = String(this.tagCount[kw] || 0);
+        chip.appendChild(cnt);
+        chip.addEventListener("click", function(e) {
+            e.stopPropagation();
+            self.toggleKeyword(kw);
+        });
+        return chip;
+    };
+
+    FilterPanel.prototype.renderKeywordList = function() {
+        if (!this.root) return;
+        var filter = this.kwFilter || "";
+        var chips = this.root.querySelectorAll(".fp-kw-chip");
+        for (var i = 0; i < chips.length; i++) {
+            var kw = chips[i].getAttribute("data-kw") || "";
+            chips[i].classList.toggle("fp-hidden", filter.length > 0 && kw.toLowerCase().indexOf(filter) === -1);
+        }
+        // 组内无可见 chip 时整组隐藏
+        var groups = this.root.querySelectorAll(".fp-group");
+        for (var g = 0; g < groups.length; g++) {
+            var vis = Array.prototype.some.call(groups[g].querySelectorAll(".fp-kw-chip"), function(c) {
+                return !c.classList.contains("fp-hidden");
+            });
+            groups[g].classList.toggle("fp-empty", !vis);
+        }
+    };
+
     FilterPanel.prototype.buildUI = function() {
         var self = this;
         this.scanPage();
@@ -240,22 +302,49 @@
             var kwSec = document.createElement("div");
             kwSec.className = "fp-section";
             kwSec.innerHTML = '<div class="fp-section-title">\u5173\u952e\u8bcd</div>';
-            var kwWrap = document.createElement("div");
-            kwWrap.className = "fp-kw-list";
-            this.allTags.forEach(function(kw) {
-                var chip = document.createElement("button");
-                chip.type = "button";
-                chip.className = "fp-kw-chip";
-                chip.setAttribute("data-kw", kw);
-                chip.textContent = kw;
-                chip.addEventListener("click", function(e) {
-                    e.stopPropagation();
-                    self.toggleKeyword(kw);
-                });
-                kwWrap.appendChild(chip);
+
+            // 面板内关键词搜索框
+            var kwSearch = document.createElement("input");
+            kwSearch.type = "search";
+            kwSearch.className = "fp-kw-search";
+            kwSearch.placeholder = "\u641c\u7d22\u5173\u952e\u8bcd\u2026";
+            kwSearch.addEventListener("input", function() {
+                self.kwFilter = this.value.trim().toLowerCase();
+                self.renderKeywordList();
             });
-            kwSec.appendChild(kwWrap);
+            kwSec.appendChild(kwSearch);
+
+            var typeGroup = document.createElement("div");
+            typeGroup.className = "fp-group";
+            typeGroup.innerHTML = '<button type="button" class="fp-group-title"><span class="fp-group-arrow">\u25be</span>\u7c7b\u578b<em class="fp-kw-count">' + this.typeTags.length + '</em></button>';
+            var typeWrap = document.createElement("div");
+            typeWrap.className = "fp-kw-list";
+            this.typeTags.forEach(function(kw) {
+                typeWrap.appendChild(self.makeKwChip(kw));
+            });
+            typeGroup.appendChild(typeWrap);
+
+            var regGroup = document.createElement("div");
+            regGroup.className = "fp-group";
+            regGroup.innerHTML = '<button type="button" class="fp-group-title"><span class="fp-group-arrow">\u25be</span>\u5176\u4ed6\u5173\u952e\u8bcd<em class="fp-kw-count">' + this.regularTags.length + '</em></button>';
+            var regWrap = document.createElement("div");
+            regWrap.className = "fp-kw-list";
+            this.regularTags.forEach(function(kw) {
+                regWrap.appendChild(self.makeKwChip(kw));
+            });
+            regGroup.appendChild(regWrap);
+
+            // 组折叠
+            [typeGroup, regGroup].forEach(function(g) {
+                g.querySelector(".fp-group-title").addEventListener("click", function() {
+                    g.classList.toggle("fp-collapsed");
+                });
+            });
+
+            kwSec.appendChild(typeGroup);
+            kwSec.appendChild(regGroup);
             body.appendChild(kwSec);
+            this._kwGroups = [typeGroup, regGroup];
         }
 
         if (this.allColors.length) {
@@ -264,6 +353,7 @@
             colSec.innerHTML = '<div class="fp-section-title">\u8272\u5f69\u6807\u8bc6</div><div class="fp-color-hint">\u5305\u542b\u4efb\u4e00\u9009\u4e2d\u8272</div>';
             var colWrap = document.createElement("div");
             colWrap.className = "fp-color-list";
+            var self2 = this;
             this.allColors.forEach(function(hex) {
                 hex = canonicalizeMarkHex(hex);
                 var meta = metaByHex[hex] || { hex: hex, name: hex.replace("#", ""), light: false };
@@ -275,7 +365,7 @@
                 btn.innerHTML = '<span class="fp-dot" style="color:' + meta.hex + '">\u25cf</span><span class="fp-color-name">' + meta.name + "</span>";
                 btn.addEventListener("click", function(e) {
                     e.stopPropagation();
-                    self.toggleColor(hex);
+                    self2.toggleColor(hex);
                 });
                 colWrap.appendChild(btn);
             });

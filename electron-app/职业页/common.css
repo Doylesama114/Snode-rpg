@@ -875,6 +875,39 @@ html.dark .skill h4 .chip{color:#f0ece6;text-shadow:0 1px 2px rgba(0,0,0,.3)}
   transition: all .12s ease;
 }
 .fp-kw-chip:hover { border-color: var(--green); }
+/* 面板重构（26.07.31）：关键词搜索框 + 分组 + 计数 + 折叠 */
+.fp-kw-search {
+  width: 100%; box-sizing: border-box; margin-bottom: 8px;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); font-size: 13px; font-family: inherit;
+  outline: none;
+}
+.fp-kw-search:focus { border-color: var(--green); }
+.fp-group { margin-bottom: 6px; }
+.fp-group-title {
+  width: 100%; display: flex; align-items: center; gap: 6px;
+  padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--ink); font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: inherit; text-align: left;
+}
+.fp-group-title:hover { border-color: var(--green); }
+.fp-group-arrow { display: inline-block; font-size: 10px; color: var(--muted); transition: transform .15s; }
+.fp-group.fp-collapsed .fp-group-arrow { transform: rotate(-90deg); }
+.fp-group.fp-collapsed .fp-kw-list { display: none; }
+.fp-group .fp-kw-list { margin-top: 5px; }
+.fp-kw-chip .fp-kw-count {
+  font-style: normal; font-size: 11px; color: var(--muted);
+  background: rgba(0,0,0,.06); border-radius: 999px;
+  padding: 0 5px; margin-left: 4px; line-height: 1.5;
+}
+.fp-kw-chip.active .fp-kw-count { color: var(--green); background: rgba(47,111,94,.12); }
+.fp-kw-chip.fp-hidden { display: none; }
+.fp-group.fp-empty { display: none; }
+html.dark .fp-kw-search { background: var(--panel); }
+html.dark .fp-group-title { background: var(--panel); }
+html.dark .fp-kw-chip .fp-kw-count { background: rgba(255,255,255,.08); color: var(--muted); }
+html.dark .fp-kw-chip.active .fp-kw-count { color: var(--green); background: rgba(77,171,138,.16); }
+
 .fp-kw-chip.active {
   background: var(--green);
   border-color: var(--green);

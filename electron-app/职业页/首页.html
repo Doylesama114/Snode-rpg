@@ -375,22 +375,54 @@
         return r.json();
       })
       .then(function(data) {
-        searchIndex = data.skills || [];
-        loadError = null;
-        statusDiv.classList.add('hidden');
-        buildFilterControls();
+        acceptIndex(data);
         return searchIndex;
       })
       .catch(function(err) {
-        loadError = err;
-        loadPromise = null;
-        searchIndex = null;
-        statusDiv.classList.remove('hidden');
-        statusDiv.className = 'search-status error';
-        statusDiv.textContent = '索引加载失败（请用启动台或本地 HTTP 打开）。请确认存在 search-index.json。';
-        throw err;
+        // file:// 下 fetch 被 CORS 拦截：降级为 script 加载 search-index.js
+        return loadIndexViaScript();
       });
     return loadPromise;
+  }
+
+  function acceptIndex(data) {
+    searchIndex = data && data.skills ? data.skills : [];
+    loadError = null;
+    statusDiv.classList.add('hidden');
+    buildFilterControls();
+  }
+
+  function loadIndexViaScript() {
+    return new Promise(function(resolve, reject) {
+      var done = false;
+      function finish(err) {
+        if (done) return;
+        done = true;
+        if (err) {
+          loadError = err;
+          loadPromise = null;
+          searchIndex = null;
+          statusDiv.classList.remove('hidden');
+          statusDiv.className = 'search-status error';
+          statusDiv.textContent = '索引加载失败：无法读取 search-index.json / search-index.js。';
+          reject(err);
+        } else {
+          resolve(searchIndex);
+        }
+      }
+      var sc = document.createElement('script');
+      sc.src = 'search-index.js';
+      sc.onload = function() {
+        if (window.__SEARCH_INDEX_DATA && window.__SEARCH_INDEX_DATA.skills) {
+          acceptIndex(window.__SEARCH_INDEX_DATA);
+          finish(null);
+        } else {
+          finish(new Error('search-index.js 数据缺失'));
+        }
+      };
+      sc.onerror = function() { finish(new Error('search-index.js 加载失败')); };
+      document.head.appendChild(sc);
+    });
   }
 
   function buildFilterControls() {

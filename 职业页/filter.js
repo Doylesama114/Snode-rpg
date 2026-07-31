@@ -23,18 +23,27 @@
         return aliases[h] || h;
     }
 
+    /** 类型头关键词：chips 中展示但 data-tags 不含（26.07.31 修复筛选全灭） */
+    var TYPE_HEADS = ["战技", "法术", "戏法", "天赋", "功法", "能力", "战术"];
+
     function readTagsFromSkill(skill) {
+        var tags = [];
         var raw = skill.getAttribute("data-tags");
         if (raw) {
-            return raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+            tags = raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+        } else {
+            skill.querySelectorAll(".chips .chip").forEach(function(c) {
+                var txt = c.textContent.trim();
+                if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
+                tags.push(txt);
+            });
         }
-        var kws = [];
+        // 补充类型头（点击「战技/法术/天赋」等应能筛出全部同类技能）
         skill.querySelectorAll(".chips .chip").forEach(function(c) {
             var txt = c.textContent.trim();
-            if (txt.indexOf("\u98ce\u683c") >= 0 || txt.indexOf("\u5929\u8d4b\u6811") >= 0) return;
-            kws.push(txt);
+            if (TYPE_HEADS.indexOf(txt) >= 0 && tags.indexOf(txt) === -1) tags.push(txt);
         });
-        return kws;
+        return tags;
     }
 
     function readMarksFromSkill(skill) {

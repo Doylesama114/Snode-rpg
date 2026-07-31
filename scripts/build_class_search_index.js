@@ -129,7 +129,17 @@ function main() {
 
   meta.total = all.length;
   const out = { meta, skills: all };
-  fs.writeFileSync(OUT, JSON.stringify(out, null, 0), 'utf8');
+  const jsonText = JSON.stringify(out, null, 0);
+  fs.writeFileSync(OUT, jsonText, 'utf8');
+  // file:// 兼容副本：window.__SEARCH_INDEX_DATA（转义 </script>）
+  const jsText = 'window.__SEARCH_INDEX_DATA = ' + jsonText.split('</').join('<\\/') + ';';
+  const JS_OUT = path.join(CLASS_DIR, 'search-index.js');
+  fs.writeFileSync(JS_OUT, jsText, 'utf8');
+  // 同步 electron-app
+  const EL_OUT = path.join(ROOT, 'electron-app', '职业页', 'search-index.json');
+  const EL_JS = path.join(ROOT, 'electron-app', '职业页', 'search-index.js');
+  fs.copyFileSync(OUT, EL_OUT);
+  fs.copyFileSync(JS_OUT, EL_JS);
   console.log('\nWrote', path.relative(ROOT, OUT), 'skills:', all.length);
 }
 
