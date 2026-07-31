@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7149',
+    date: '2026-07-31',
+    changes: [
+      '角色面板移动端排版优化（信息区纵向布局/分栏堆叠/技能表行距与换行）'
+    ]
+  },
+
+
+  {
     version: '1.0.7148',
     date: '2026-07-31',
     changes: [

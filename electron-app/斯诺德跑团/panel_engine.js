@@ -4315,10 +4315,10 @@ function render(){ applyChoiceLLevel12Boosts();
     // === 1. Portrait + Info ===
 
   var profileEl=document.getElementById("info-grid");profileEl.innerHTML="";
-  var profileOuter=document.createElement("div");profileOuter.style.cssText="display:flex;gap:20px;align-items:stretch";
+  var profileOuter=document.createElement("div");profileOuter.className="profile-outer";profileOuter.style.cssText="display:flex;gap:20px;align-items:stretch";
 
   // Portrait area
-  var portraitDiv=document.createElement("div");portraitDiv.style.cssText="flex:none;width:260px;height:260px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:2px solid var(--line);border-radius:10px;cursor:pointer;overflow:hidden";
+  var portraitDiv=document.createElement("div");portraitDiv.className="portrait-box";portraitDiv.style.cssText="flex:none;width:260px;height:260px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:2px solid var(--line);border-radius:10px;cursor:pointer;overflow:hidden";
   portraitDiv.title="\u70b9\u51fb\u4e0a\u4f20\u7acb\u7ed8";
   if(state.portrait){
     portraitDiv.innerHTML="<img src=\""+state.portrait+"\" style=\"width:100%;height:100%;object-fit:contain;border-radius:8px\">";
@@ -4329,16 +4329,16 @@ function render(){ applyChoiceLLevel12Boosts();
   profileOuter.appendChild(portraitDiv);
 
   // Info columns
-  var infoCols=document.createElement("div");infoCols.style.cssText="flex:2;display:flex;gap:6px";
-  var infoLeft=document.createElement("div");infoLeft.style.cssText="flex:1;display:flex;flex-direction:column;gap:5px";
-  var infoRight=document.createElement("div");infoRight.style.cssText="flex:1;display:flex;flex-direction:column;gap:5px";
+  var infoCols=document.createElement("div");infoCols.className="info-cols";infoCols.style.cssText="flex:2;display:flex;gap:6px";
+  var infoLeft=document.createElement("div");infoLeft.className="info-col";infoLeft.style.cssText="flex:1;display:flex;flex-direction:column;gap:5px";
+  var infoRight=document.createElement("div");infoRight.className="info-col";infoRight.style.cssText="flex:1;display:flex;flex-direction:column;gap:5px";
 
   var infoData=[{f:"\u73a9\u5bb6",v:state.player},{f:"\u89d2\u8272",v:state.name},{f:"\u79cd\u65cf",v:state.race},{f:"\u6027\u522b",v:state.gender},{f:"\u5e74\u9f84",v:state.age},{f:"\u8eab\u9ad8",v:state.height},{f:"\u4f53\u91cd",v:state.weight},{f:"\u77b3\u8272",v:state.eye},{f:"\u80a4\u8272",v:state.skin},{f:"\u53d1\u8272",v:state.hair}];
   var colMap=[0,1,2,3,4];
   for(var ii=0;ii<infoData.length;ii++){
     var d=infoData[ii];
     var col=ii<5?infoLeft:infoRight;
-    var item=document.createElement("div");item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--line);min-height:48px";
+    var item=document.createElement("div");item.className="info-item";item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--line);min-height:48px";
     item.innerHTML="<span style=\"font-size:14px;color:var(--muted)\">"+d.f+"</span><span style=\"font-size:16px;color:var(--ink);font-weight:bold\">"+d.v+"</span>";
     col.appendChild(item);
   }
@@ -8096,6 +8096,16 @@ async function exportXlsxFromState(state) {
 
   var zipBytes = _xlsxBuildZip(zipEntries);
   var fileName = buildExportFileName(state);
+  if (window.mobileBridge && typeof window.mobileBridge.saveFile === "function") {
+    var u8 = zipBytes instanceof Uint8Array ? zipBytes : new Uint8Array(zipBytes);
+    var b64 = "";
+    var chunk = 0x8000;
+    for (var i = 0; i < u8.length; i += chunk) {
+      b64 += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+    }
+    window.mobileBridge.saveFile(btoa(b64), fileName);
+    return;
+  }
   var blob = new Blob([zipBytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
