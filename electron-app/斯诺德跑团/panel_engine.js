@@ -781,7 +781,9 @@ function calcSkillSlots(clsIdx) {
 
 /** 背景/种族免费授予等：计入技能列表但不占技能栏上限 */
 function isFreeSlotSkill(s) {
-  return !!(s && (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者"));
+  if (!s) return false;
+  if (s.grantedBy === "卓尔精灵·毒吻者") return false; // 毒刃免费获得但占技能栏上限
+  return !!(s.freeSlot || s.grantedBy === "法师学徒");
 }
 
 /** sub 是否标记为子职业技能（兼容旧档 boolean true） */
@@ -4618,10 +4620,10 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
   var row1=[{l:"生命值",v:state.hp},{l:"疲劳值",v:state.fp},{l:"防御等级",v:ac},{l:"先攻值",v:"D20"+mStr(calcMod(dex))},{l:"速度",v:speed}];
 
 
-  var strMod=calcMod(state.attrs["力量"]||10);var dexMod=calcMod(dex);var _keyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"魅力";if(_keyAttr==="力量或敏捷")_keyAttr=state.classes[0].keyAttr||"力量";var _keyVal=state.attrs[_keyAttr]||10;var spellMod=calcMod(_keyVal);
+  var strMod=calcMod(state.attrs["力量"]||10);var dexMod=calcMod(dex);var _keyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"魅力";if(_keyAttr==="力量或敏捷")_keyAttr=state.classes[0].keyAttr||"力量";var _keyVal=state.attrs[_keyAttr]||10;var spellMod=calcMod(_keyVal)+(state.spell_hit_bonus||0);
 
 
-  var atkMod=Math.max(strMod,dexMod);
+  var atkMod=Math.max(strMod,dexMod)+(state.atk_hit_bonus||0);
 
 
   var row2=[{l:"生命回复",v:Math.floor(state.hp/2)},{l:"疲劳回复",v:Math.floor(state.fp/2)},{l:"警惕值",v:10+calcMod(wis)},{l:"攻击命中",v:mStr(atkMod)},{l:"法术命中",v:mStr(spellMod)}];

@@ -301,7 +301,7 @@ var CHAR = {
   raceIdx: -1, raceName: "", raceData: null,
   attrs: { "力量":8, "敏捷":8, "体质":8, "智力":8, "感知":8, "魅力":8, "意志":8, "幸运":8 },
   selectedSkills: [],
-  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], selectedFeatures: [], humanFreeSkill: null, raceSize: "",
+  keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], raceSaves: [], raceSkillChoice: "", raceProfInput: "", selectedFeatures: [], humanFreeSkill: null, raceSize: "",
   bgIdx: -1, bgName: "", bgData: null,
   bgCantrips: [], bgOtherPicks: [], sportPreference: "",
   equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
@@ -500,6 +500,9 @@ function buildCreationSnapshot(){
     raceName:CHAR.raceName||"",
     raceSize:CHAR.raceSize||"",
     raceExtra:(CHAR.raceExtra||[]).slice(),
+    raceSaves:(CHAR.raceSaves||[]).slice(),
+    raceSkillChoice:CHAR.raceSkillChoice||"",
+    raceProfInput:CHAR.raceProfInput||"",
     extraLanguages:(CHAR.extraLanguages||[]).slice(),
     humanFreeSkill:CHAR.humanFreeSkill,
     wingfolkHasCommon:CHAR.wingfolkHasCommon!==false,
@@ -565,6 +568,9 @@ function applyCreationSnapshotToChar(snap){
   }
   CHAR.raceSize=snap.raceSize||"";
   CHAR.raceExtra=(snap.raceExtra||[]).slice();
+  CHAR.raceSaves=(snap.raceSaves||[]).slice();
+  CHAR.raceSkillChoice=snap.raceSkillChoice||"";
+  CHAR.raceProfInput=snap.raceProfInput||"";
   CHAR.extraLanguages=(snap.extraLanguages||[]).slice();
   CHAR.humanFreeSkill=snap.humanFreeSkill!=null?snap.humanFreeSkill:null;
   CHAR.wingfolkHasCommon=snap.wingfolkHasCommon!==false;
@@ -672,7 +678,25 @@ function updateOverview() {
       if (bs.length) h += '<div class="ov-item">' + bs.join(' ') + '</div>';
     }
     if (rd && rd['特性']) {
-      for (var ti = 0; ti < rd['特性'].length; ti++) h += '<div class="ov-item">·' + rd['特性'][ti].name + '</div>';
+      for (var ti = 0; ti < rd['特性'].length; ti++) {
+        h += '<div class="ov-item">·' + rd['特性'][ti].name;
+        if (rd['特性'][ti].save_choice && CHAR.raceSaves && CHAR.raceSaves.length) {
+          h += '?' + CHAR.raceSaves.join('/') + '豁免+1）';
+        }
+        if (rd['特性'][ti].skill_choice && CHAR.raceSkillChoice) {
+          h += '?' + CHAR.raceSkillChoice + '熟练+1）';
+        }
+        if (rd['特性'][ti].grant_atk_hit) {
+          h += '?攻击命中+' + rd['特性'][ti].grant_atk_hit + '）';
+        }
+        if (rd['特性'][ti].grant_spell_hit) {
+          h += '?法术命中+' + rd['特性'][ti].grant_spell_hit + '）';
+        }
+        if (rd['特性'][ti].prof_input && CHAR.raceProfInput) {
+          h += '?' + CHAR.raceProfInput + '）';
+        }
+        h += '</div>';
+      }
     }
     if (CHAR.raceName === '卓尔精灵') h += '<div class="ov-item">毒刃（种族）·制毒</div>';
     if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
@@ -788,7 +812,7 @@ var BG_SKILL_MAP = {
   "专注":"体质.专注","耐力":"体质.耐力",
   "导航":"感知.导航","自然":"感知.自然","感悟":"感知.感悟","聆听":"感知.聆听",
   "机遇":"幸运.机遇","探索":"幸运.探索","决策":"意志.决策",
-  "医药":"智力.知识-医药","炼金":"智力.奥秘-炼金术","草药学":"智力.知识-草药学",
+  "医药":"智力.知识-医药","炼金":"智力.奥秘-炼金术","炼金术":"智力.奥秘-炼金术","草药学":"智力.知识-草药学",
   "开锁":"敏捷.巧手-开锁","烹饪":"智力.知识-烹饪","地理":"智力.知识-地理",
   "多元宇宙":"智力.奥秘-多元宇宙",
   "魔法学识":"智力.奥秘-魔法学识","神奇道具":"智力.奥秘-神奇道具",
@@ -1367,6 +1391,87 @@ function pickRaceSize(el){
   if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
   CHAR.raceSize=size;el.classList.add("selected");
 }
+function showRaceSaveChoice(raceData){
+  var old=document.getElementById("raceSaveArea");if(old)old.remove();
+  var traits=raceData["特性"]||[];
+  var choice=null;
+  for(var i=0;i<traits.length;i++){if(traits[i].save_choice&&traits[i].save_choice.length){choice=traits[i].save_choice;break;}}
+  if(!choice)return;
+  CHAR.raceSaves=[];
+  var area=document.createElement("div");area.id="raceSaveArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择豁免加值（猫之迅疾）</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>获得 <strong>1</strong> 点豁免值，选择一项</div>";
+  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  for(var i=0;i<choice.length;i++){
+    h+="<div class='spec-btn' onclick='pickRaceSave(this)' data-save='"+choice[i]+"'>"+choice[i]+"豁免</div>";
+  }
+  h+="</div>";
+  area.innerHTML=h;
+  var p=document.getElementById("raceDetail");
+  p.parentNode.insertBefore(area, p.nextSibling);
+}
+function pickRaceSave(el){
+  var sv=el.getAttribute("data-save");
+  if(CHAR.raceSaves.indexOf(sv)>=0){CHAR.raceSaves=[];el.classList.remove("selected");return;}
+  var area=document.getElementById("raceSaveArea");
+  if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
+  CHAR.raceSaves=[sv];el.classList.add("selected");
+  updateOverview();
+}
+function showRaceSkillChoice(raceData){
+  var old=document.getElementById("raceSkillArea");if(old)old.remove();
+  var traits=raceData["特性"]||[];
+  var choice=null;
+  for(var i=0;i<traits.length;i++){if(traits[i].skill_choice&&traits[i].skill_choice.length){choice=traits[i].skill_choice;break;}}
+  if(!choice)return;
+  CHAR.raceSkillChoice="";
+  var area=document.createElement("div");area.id="raceSkillArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择熟练度加值</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>获得 <strong>1</strong> 点熟练度，选择一项</div>";
+  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  for(var i=0;i<choice.length;i++){
+    h+="<div class='spec-btn' onclick='pickRaceSkill(this)' data-skill='"+choice[i]+"'>"+choice[i]+"</div>";
+  }
+  h+="</div>";
+  area.innerHTML=h;
+  var p=document.getElementById("raceDetail");
+  p.parentNode.insertBefore(area, p.nextSibling);
+}
+function pickRaceSkill(el){
+  var sk=el.getAttribute("data-skill");
+  if(CHAR.raceSkillChoice===sk){CHAR.raceSkillChoice="";el.classList.remove("selected");return;}
+  var area=document.getElementById("raceSkillArea");
+  if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
+  CHAR.raceSkillChoice=sk;el.classList.add("selected");
+  updateOverview();
+}
+function showRaceProfInput(raceData){
+  var old=document.getElementById("raceProfArea");if(old)old.remove();
+  var traits=raceData["特性"]||[];
+  var needInput=false;
+  for(var i=0;i<traits.length;i++){if(traits[i].prof_input){needInput=true;break;}}
+  if(!needInput)return;
+  var area=document.createElement("div");area.id="raceProfArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>自定义专业熟练度</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>获得 <strong>1</strong> 点专业熟练度，输入专业名（不超过 4 个字符）</div>";
+  h+="<input id='raceProfInputBox' type='text' maxlength='4' style='width:180px;padding:8px 10px;border:1px solid #d8d2c4;border-radius:6px;font-size:14px' placeholder='如：沙筒' value='"+CHAR.raceProfInput+"'>";
+  h+="<button class='spec-btn' style='border:none;cursor:pointer' onclick='confirmRaceProf()'>确定</button>";
+  area.innerHTML=h;
+  var p=document.getElementById("raceDetail");
+  p.parentNode.insertBefore(area, p.nextSibling);
+}
+function confirmRaceProf(){
+  var box=document.getElementById("raceProfInputBox");
+  if(!box)return;
+  var v=(box.value||"").trim();
+  if(!v){alert("请输入专业名");return;}
+  if(v.length>4){alert("专业名不超过 4 个字符");return;}
+  CHAR.raceProfInput=v;
+  updateOverview();
+}
 function pickRaceAttr(el){
   var attr=el.getAttribute("data-attr");
   var idx=CHAR.raceExtra.indexOf(attr);
@@ -1519,7 +1624,7 @@ function raceDetail(r){
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);showRaceSizePicker(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);showRaceSizePicker(RACES[idx]);showRaceSaveChoice(RACES[idx]);showRaceSkillChoice(RACES[idx]);showRaceProfInput(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
   updateOverview();
 }
@@ -2522,6 +2627,45 @@ function saveCharacter(){
       }
     }
   }
+  // 种族猫之迅疾：豁免值 +1（班猫人/豹兽人）
+  if(CHAR.raceSaves&&CHAR.raceSaves.length){
+    for(var rsi=0;rsi<CHAR.raceSaves.length;rsi++){
+      var rsa=CHAR.raceSaves[rsi];
+      if(allSkills[rsa]) allSkills[rsa]["豁免"]=(allSkills[rsa]["豁免"]||0)+1;
+    }
+  }
+  // 种族特性授予：专业/技能熟练（大地精/矮人/侑儒/蛙人/翼空族/人鱼/牛头人）
+  if(rd["特性"]){
+    for(var rti=0;rti<rd["特性"].length;rti++){
+      var rt=rd["特性"][rti];
+      if(rt.grant_prof){
+        if(charData.professionals.indexOf(rt.grant_prof)<0) charData.professionals.push(rt.grant_prof);
+      }
+      if(rt.prof_input&&CHAR.raceProfInput){
+        if(charData.professionals.indexOf(CHAR.raceProfInput)<0) charData.professionals.push(CHAR.raceProfInput);
+      }
+      if(rt.grant_atk_hit){
+        charData.atk_hit_bonus=(charData.atk_hit_bonus||0)+rt.grant_atk_hit;
+      }
+      if(rt.grant_spell_hit){
+        charData.spell_hit_bonus=(charData.spell_hit_bonus||0)+rt.grant_spell_hit;
+      }
+      var grantSkill=rt.grant_skill||((rt.skill_choice&&CHAR.raceSkillChoice)?CHAR.raceSkillChoice:"");
+      if(grantSkill){
+        if(typeof applyResolvedProf==="function"){
+          applyResolvedProf(allSkills,grantSkill);
+        }else{
+          var gsm=BG_SKILL_MAP[grantSkill];
+          if(gsm&&gsm!=="cat"){
+            var gparts=gsm.split(".");
+            if(gparts.length===2&&allSkills[gparts[0]]&&allSkills[gparts[0]][gparts[1]]!==undefined){
+              allSkills[gparts[0]][gparts[1]]=(allSkills[gparts[0]][gparts[1]]||0)+1;
+            }
+          }
+        }
+      }
+    }
+  }
   charData.profs=allSkills;applySpecProfs(charData);applyBgProfs(charData);
   if(CHAR.equipChoice){
     parseEquipToSlots(CHAR.equipChoice.text, charData);organizeContainers(charData);
@@ -2589,7 +2733,7 @@ function saveCharacter(){
       if(charData.skills[dsi].n==="毒刃"){hasPoisonBlade=true;break;}
     }
     if(!hasPoisonBlade){
-      charData.skills.push({n:"毒刃",src:"游荡者",sub:"",locked:false,granted:true,freeSlot:true,grantedBy:"卓尔精灵·毒吻者",tier:"一阶"});
+      charData.skills.push({n:"毒刃",src:"游荡者",sub:"",locked:false,granted:true,grantedBy:"卓尔精灵·毒吻者",tier:"一阶"});
     }
   }
   charData._savedAt=new Date().toISOString();

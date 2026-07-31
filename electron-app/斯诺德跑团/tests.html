@@ -1188,8 +1188,8 @@ results.push('</div>');
 
 // =================== T5g: 卓尔毒刃 / 牧师神祇 / 魔契师宗主 ===================
 results.push('<div class="section"><h3>T5g: 卓尔毒刃 freeSlot、神祇属性、宗主名单</h3>');
-assertTrue(isFreeSlotSkill({ n: '毒刃', src: '游荡者', freeSlot: true, grantedBy: '卓尔精灵·毒吻者' }), '毒刃 freeSlot 豁免栏位');
-assertTrue(isFreeSlotSkill({ n: '毒刃', grantedBy: '卓尔精灵·毒吻者' }), 'grantedBy=卓尔精灵·毒吻者 豁免栏位');
+assertFalse(isFreeSlotSkill({ n: '毒刃', src: '游荡者', freeSlot: true, grantedBy: '卓尔精灵·毒吻者' }), '毒刃 即使有 freeSlot 也占栏位');
+assertFalse(isFreeSlotSkill({ n: '毒刃', grantedBy: '卓尔精灵·毒吻者' }), 'grantedBy=卓尔精灵·毒吻者 占栏位');
 assertFalse(isFreeSlotSkill({ n: '毒刃', src: '游荡者', granted: true }), '无 freeSlot 的毒刃不豁免');
 
 var _clericDeities = [
@@ -1225,7 +1225,7 @@ state.skills = [
   { n: '毒刃', src: '游荡者', granted: true, freeSlot: true, grantedBy: '卓尔精灵·毒吻者', tier: '一阶' }
 ];
 state.professionals = ['制毒'];
-assertTrue(state.skills.some(function (s) { return s.n === '毒刃' && isFreeSlotSkill(s); }), '卓尔毒刃形态正确');
+assertTrue(state.skills.some(function (s) { return s.n === '毒刃' && !isFreeSlotSkill(s); }), '卓尔毒刃免费获得但占栏位');
 assertTrue(state.professionals.indexOf('制毒') >= 0, '卓尔含制毒专业');
 assert(state.deityAttr, '奥术', 'deityAttr 落盘');
 assert(state.patron, '笑神', 'patron 落盘');
