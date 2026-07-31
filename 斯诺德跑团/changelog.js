@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7153',
+    date: '2026-07-31',
+    changes: [
+      'APK图标更换为封面设计（多密度+自适应图标）'
+    ]
+  },
+
+
+  {
     version: '1.0.7152',
     date: '2026-07-31',
     changes: [
