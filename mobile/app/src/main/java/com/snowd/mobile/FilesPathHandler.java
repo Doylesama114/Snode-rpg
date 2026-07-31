@@ -1,10 +1,14 @@
 package com.snowd.mobile;
 
 import android.net.Uri;
+import android.webkit.WebResourceResponse;
 import androidx.webkit.WebViewAssetLoader;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
@@ -16,7 +20,7 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
     }
 
     @Override
-    public WebViewAssetLoader.Response handle(String path) {
+    public WebResourceResponse handle(String path) {
         String decoded = null;
         try {
             decoded = Uri.decode(path);
@@ -33,13 +37,19 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
                 String encoding = (mime.startsWith("text/") || mime.equals("application/json")
                         || mime.startsWith("application/javascript")) ? "UTF-8" : null;
                 try {
-                    return new WebViewAssetLoader.Response(new FileInputStream(file), 200, "OK", mime, encoding);
-                } catch (java.io.IOException e) {
-                    return new WebViewAssetLoader.Response("IO error", 500);
+                    return new WebResourceResponse(mime, encoding, new FileInputStream(file));
+                } catch (IOException e) {
+                    return error(500, "IO error");
                 }
             }
         }
-        return new WebViewAssetLoader.Response("Not found", 404);
+        return error(404, "Not found");
+    }
+
+    private static WebResourceResponse error(int code, String msg) {
+        byte[] body = msg.getBytes(StandardCharsets.UTF_8);
+        return new WebResourceResponse("text/plain", "UTF-8", code, msg, null,
+                new ByteArrayInputStream(body));
     }
 
     private static String mimeFor(String name) {
