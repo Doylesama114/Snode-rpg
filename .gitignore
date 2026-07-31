@@ -16,6 +16,8 @@ backup/
 *.exe
 *.zip
 *.asar
+_deploy/
+_deploy_edgeone/
 
 # System
 .DS_Store

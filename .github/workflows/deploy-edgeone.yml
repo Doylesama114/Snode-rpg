@@ -1,0 +1,41 @@
+name: Deploy Web to EdgeOne Pages
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy-edgeone:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+
+      - name: Prepare deploy directory
+        run: |
+          mkdir -p _deploy_edgeone
+          cp -r 斯诺德跑团 _deploy_edgeone/
+          cp -r 职业页 _deploy_edgeone/
+          if [ -d electron-app/poker-game ]; then
+            cp -r electron-app/poker-game _deploy_edgeone/poker-game
+          fi
+          cp bug-report.js _deploy_edgeone/
+          cp index.html _deploy_edgeone/
+          # 注入 Bug 反馈按钮（EdgeOne 站点根目录部署，统一使用绝对路径 /bug-report.js）
+          find _deploy_edgeone -name "*.html" | while read f; do
+            sed -i 's|src="bug-report.js"|src="/bug-report.js"|g' "$f"
+            if ! grep -q "bug-report.js" "$f"; then
+              sed -i "s|</body>|<script src=\"/bug-report.js\"></script>\n</body>|" "$f"
+            fi
+          done
+          find _deploy_edgeone -name "*_backup_*" -delete 2>/dev/null || true
+          find _deploy_edgeone -name "*.bat" -delete 2>/dev/null || true
+          rm -rf _deploy_edgeone/斯诺德跑团/verify.html 2>/dev/null || true
+          rm -rf _deploy_edgeone/斯诺德跑团/tests.html 2>/dev/null || true
+
+      - name: Deploy to EdgeOne Pages
+        run: npx edgeone pages deploy _deploy_edgeone -n snode-rpg-web -t ${{ secrets.EDGEONE_API_TOKEN }}
