@@ -791,7 +791,7 @@ def marks_from_cost(skill: dict, mark_dots: list[str] | None = None) -> list[str
     return out
 
 
-def build_skill_data_attrs(skill: dict, mark_dots: list[str] | None = None) -> str:
+def build_skill_data_attrs(skill: dict, mark_dots: list[str] | None = None, class_name: str | None = None) -> str:
     import html as html_mod
 
     tags = skill.get("tags") or []
@@ -815,6 +815,8 @@ def build_skill_data_attrs(skill: dict, mark_dots: list[str] | None = None) -> s
         "data-marks": ",".join(marks),
         "data-mark-count": str(len(marks)),
     }
+    if class_name:
+        pairs["data-class"] = class_name
     parts = []
     for key, val in pairs.items():
         if val:
@@ -956,7 +958,7 @@ def sync_class(
         style = skill.get("style", "")
         detail_html = build_detail_html(block)
         data_search = build_data_search(block, style, tier_lbl, skill["tags"])
-        data_attrs = build_skill_data_attrs(skill, block["mark_dots"])
+        data_attrs = build_skill_data_attrs(skill, block["mark_dots"], class_name)
         html = patch_html(html, sid, detail_html, data_search, data_attrs)
         changed.append(skill["name"])
 

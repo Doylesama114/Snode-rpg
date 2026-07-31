@@ -199,6 +199,11 @@
     .skill[data-style="幻术"] { --style-color:#FFCBFF; --style-rgb:255,203,255; }
     .skill[data-style="变化"] { --style-color:#FFC47D; --style-rgb:255,196,125; }
     .skill[data-style="斗争"] { --style-color:#FFDB81; --style-rgb:255,219,129; }
+    /* 跨职业同名风格冲突覆盖（26.07.31） */
+    .skill[data-class="法师"][data-style="防护"] { --style-color:#FCFF99; --style-rgb:252,255,153; }
+    .skill[data-class="战士"][data-style="机敏"] { --style-color:#B0FCFF; --style-rgb:176,252,255; }
+    .skill[data-class="战士"][data-style="射击"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
+
     .skill[data-style="狂攻"] { --style-color:#FF6F6F; --style-rgb:255,111,111; }
     .skill[data-style="防护"] { --style-color:#FEFF63; --style-rgb:254,255,99; }
     .skill[data-style="射击"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
@@ -224,6 +229,11 @@
     .skill[data-style="热诚"] { --style-color:#FF6565; --style-rgb:255,101,101; }
     .skill[data-style="圣洁"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
     .skill[data-style="斗争"] { --style-color:#FFDB81; --style-rgb:255,219,129; }
+    /* 跨职业同名风格冲突覆盖（26.07.31） */
+    .skill[data-class="法师"][data-style="防护"] { --style-color:#FCFF99; --style-rgb:252,255,153; }
+    .skill[data-class="战士"][data-style="机敏"] { --style-color:#B0FCFF; --style-rgb:176,252,255; }
+    .skill[data-class="战士"][data-style="射击"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
+
     .skill[data-style="狂暴"] { --style-color:#FF4F4F; --style-rgb:255,79,79; }
     .skill[data-style="生机"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
     .skill[data-style="法咒"] { --style-color:#83BEF9; --style-rgb:131,190,249; }

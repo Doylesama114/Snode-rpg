@@ -89,7 +89,8 @@
       ],
       "flavor": "",
       "type": "starting",
-      "cost": []
+      "cost": [],
+      "style": "精准"
     },
     {
       "id": "ar-skill-2",
@@ -136,7 +137,8 @@
       },
       "type": "starting",
       "description": [],
-      "cost": []
+      "cost": [],
+      "style": "构想"
     },
     {
       "id": "ar-skill-3",
@@ -239,7 +241,8 @@
         "描述": "你可以在短休期间使团队拥有的一件已同调的装备解除同调状态，或者允许一名角色直到一次长休前能够使用未经同调的装备"
       },
       "type": "starting",
-      "cost": []
+      "cost": [],
+      "style": "支援"
     },
     {
       "id": "ar-skill-4",
@@ -308,7 +311,8 @@
       ],
       "flavor": "",
       "type": "starting",
-      "cost": []
+      "cost": [],
+      "style": "魔枢"
     },
     {
       "id": "ar-skill-5",

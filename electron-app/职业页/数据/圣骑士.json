@@ -92,7 +92,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "惩戒"
     },
     {
       "id": "p-starting-skill-2",
@@ -174,7 +175,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "惩戒"
     },
     {
       "id": "p-starting-skill-3",
@@ -222,7 +224,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "守护"
     },
     {
       "id": "p-starting-skill-4",
@@ -307,7 +310,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "圣洁"
     },
     {
       "id": "p-starting-skill-5",
@@ -393,7 +397,8 @@
         }
       ],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "圣洁"
     },
     {
       "id": "p-skill-123",

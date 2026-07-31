@@ -78,7 +78,8 @@
       ],
       "flavor": "",
       "cost": [],
-      "type": "starting"
+      "type": "starting",
+      "style": "戒律"
     },
     {
       "id": "pr-skill-2",
@@ -156,7 +157,8 @@
       ],
       "flavor": "",
       "cost": [],
-      "type": "starting"
+      "type": "starting",
+      "style": "虔佑"
     },
     {
       "id": "pr-skill-3",
@@ -228,7 +230,8 @@
       ],
       "flavor": "",
       "cost": [],
-      "type": "starting"
+      "type": "starting",
+      "style": "虔佑"
     },
     {
       "id": "pr-skill-4",
@@ -338,7 +341,8 @@
       ],
       "flavor": "",
       "cost": [],
-      "type": "starting"
+      "type": "starting",
+      "style": "魂谒"
     },
     {
       "id": "pr-skill-5",

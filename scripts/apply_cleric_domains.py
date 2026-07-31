@@ -154,7 +154,7 @@ def render_article(skill: dict, block: dict, deity: str) -> str:
     )
     data_search = f"{deity} {data_search}"
     safe = sanitize_data_search(data_search)
-    data_attrs = build_skill_data_attrs(skill, block.get("mark_dots") or [])
+    data_attrs = build_skill_data_attrs(skill, block.get("mark_dots") or [], "牧师")
     return (
         f'<article class="skill" id="{skill["id"]}" data-deity="{esc(deity)}" '
         f'data-search="{safe}"{data_attrs}>'

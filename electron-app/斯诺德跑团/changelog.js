@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7144',
+    date: '2026-07-31',
+    changes: [
+      '职业页：起始特性补全风格色（docx底纹）+跨职业同名风格冲突修复'
+    ]
+  },
+
+
+  {
     version: '1.0.7143',
     date: '2026-07-31',
     changes: [

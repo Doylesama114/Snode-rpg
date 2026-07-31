@@ -68,7 +68,8 @@
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "style": "风暴"
     },
     {
       "id": "sa-skill-2",
@@ -173,7 +174,8 @@
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "style": "火焰"
     },
     {
       "id": "sa-skill-3",
@@ -230,7 +232,8 @@
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "style": "水源"
     },
     {
       "id": "sa-skill-4",
@@ -306,7 +309,8 @@
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "style": "大地"
     },
     {
       "id": "sa-skill-5",

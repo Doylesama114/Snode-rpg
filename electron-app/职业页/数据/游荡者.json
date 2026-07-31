@@ -26,7 +26,8 @@
       ],
       "flavor": "",
       "level_upgrades": [],
-      "cost": []
+      "cost": [],
+      "style": "奇袭"
     },
     {
       "id": "r-starting-skill-2",
@@ -57,7 +58,8 @@
       ],
       "level_upgrades": [],
       "flavor": "",
-      "cost": []
+      "cost": [],
+      "style": "妙手"
     },
     {
       "id": "r-starting-skill-3",
@@ -86,7 +88,8 @@
       ],
       "flavor": "",
       "level_upgrades": [],
-      "cost": []
+      "cost": [],
+      "style": "妙手"
     },
     {
       "id": "r-starting-skill-4",
@@ -111,7 +114,8 @@
         "立即执行一次全速移动，如果你在一个自身回合中多次施展疾跑，后续的每次疲劳值消耗翻倍"
       ],
       "level_upgrades": [],
-      "cost": []
+      "cost": [],
+      "style": "魅影"
     },
     {
       "id": "r-skill-5",

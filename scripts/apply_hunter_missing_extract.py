@@ -78,7 +78,7 @@ def render_article(skill: dict, block: dict) -> str:
     detail = build_detail_html(block)
     data_search = build_data_search(block, style, f"{tier}天赋树", skill.get("tags") or [])
     safe = sanitize_data_search(data_search)
-    data_attrs = build_skill_data_attrs(skill, block["mark_dots"])
+    data_attrs = build_skill_data_attrs(skill, block["mark_dots"], CLASS)
     return (
         f'      <article class="skill" id="{skill["id"]}" data-search="{safe}"{data_attrs}>'
         f'<h4>{skill["name"]} <span class="chip" style="background:{border}">{style}风格</span></h4>\n'
