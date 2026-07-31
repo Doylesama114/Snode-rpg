@@ -57,10 +57,10 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
         int dot = lower.lastIndexOf('.');
         String ext = dot >= 0 ? lower.substring(dot + 1) : "";
         switch (ext) {
-            case "html": case "htm": return "text/html; charset=UTF-8";
-            case "js": case "mjs": return "application/javascript; charset=UTF-8";
-            case "css": return "text/css; charset=UTF-8";
-            case "json": return "application/json; charset=UTF-8";
+            case "html": case "htm": return "text/html";
+            case "js": case "mjs": return "application/javascript";
+            case "css": return "text/css";
+            case "json": return "application/json";
             case "png": return "image/png";
             case "jpg": case "jpeg": return "image/jpeg";
             case "gif": return "image/gif";
