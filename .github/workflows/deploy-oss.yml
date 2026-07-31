@@ -1,0 +1,49 @@
+name: Deploy Web to Aliyun OSS
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy-oss:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare deploy directory
+        run: |
+          mkdir -p _deploy
+          cp -r 斯诺德跑团 _deploy/
+          cp -r 职业页 _deploy/
+          if [ -d electron-app/poker-game ]; then
+            cp -r electron-app/poker-game _deploy/poker-game
+          fi
+          cp bug-report.js _deploy/
+          cp index.html _deploy/
+          # 注入 Bug 反馈按钮（OSS 子目录部署用相对路径 ../bug-report.js）
+          find _deploy -name "*.html" | while read f; do
+            sed -i 's|src="/bug-report.js"|src="../bug-report.js"|g; s|src="bug-report.js"|src="../bug-report.js"|g' "$f"
+            if ! grep -q "bug-report.js" "$f"; then
+              sed -i "s|</body>|<script src=\"../bug-report.js\"></script>\n</body>|" "$f"
+            fi
+          done
+          find _deploy -name "*_backup_*" -delete 2>/dev/null || true
+          find _deploy -name "*.bat" -delete 2>/dev/null || true
+          rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
+          rm -rf _deploy/斯诺德跑团/tests.html 2>/dev/null || true
+
+      - name: Setup ossutil
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          endpoint: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
+
+      - name: Sync web to Aliyun OSS
+        env:
+          BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+          PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
+        run: |
+          ossutil sync _deploy/ "oss://${BUCKET}/web/" --update -f --acl public-read --meta Cache-Control:no-cache
+          echo "=== OSS web mirror done ==="
+          echo "Web entry: ${PUBLIC_BASE}/web/index.html"
