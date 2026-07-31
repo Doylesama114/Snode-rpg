@@ -165,6 +165,45 @@
     }
     .skill h4 { margin: 0 0 8px; font-size: 18px; color: var(--blue); }
     .skill h4 .chip { font-size: 11px; font-weight: 400; margin-left: 6px; vertical-align: middle; }
+    /* SP 徽章（卡片右上角，属性表标识保留不动） */
+    .skill h4 { overflow: hidden; }
+    .sp-badge {
+      float: right; margin-left: 8px;
+      display: inline-flex; align-items: center; gap: 2px;
+      background: rgba(0,0,0,.06); border: 1px solid var(--line);
+      border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 700;
+      color: var(--ink); line-height: 1.5;
+    }
+    .sp-badge .sp-count { font-size: 10px; color: var(--muted); }
+    html.dark .sp-badge { background: rgba(255,255,255,.08); }
+    /* 升级行 Lv 徽标（原文保留） */
+    .upgrade-badge {
+      display: inline-block; font-style: normal; font-weight: 700;
+      font-size: 11px; color: #fff; background: var(--green);
+      border-radius: 4px; padding: 1px 5px; margin-right: 6px;
+      vertical-align: 1px; white-space: nowrap;
+    }
+    /* Scrollspy：当前导航组高亮 */
+    .nav-active > .style-summary,
+    .nav-active > .tier-summary { color: var(--green); font-weight: 700; }
+    /* 回到顶部按钮（筛选按钮上方） */
+    .back-to-top-btn {
+      position: fixed; right: 24px; bottom: 96px; z-index: 9999;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--panel); color: var(--ink);
+      border: 1px solid var(--line); font-size: 18px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(31,37,34,.18);
+      display: none; align-items: center; justify-content: center;
+      transition: opacity .2s, transform .2s;
+    }
+    .back-to-top-btn.show { display: flex; }
+    .back-to-top-btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+    html.dark .back-to-top-btn { background: var(--panel); color: var(--ink); }
+    @media (max-width: 600px) {
+      .back-to-top-btn { right: 14px; bottom: 88px; width: 40px; height: 40px; }
+      .sp-badge { font-size: 11px; padding: 1px 6px; }
+    }
+
     .chip {
       cursor: pointer;
       padding: 2px 8px;
@@ -183,6 +222,7 @@
 
     /* ===== 表格化技能详情（26.07.31 方案C）：属性两栏表 + 描述/效果/升级分区 + docx 风格底纹 ===== */
     .skill { --style-color:#c9c2b2; --style-rgb:201,194,178; }
+    .skill { position: relative; }
     .skill[data-style="荒野"] { --style-color:#70D4A2; --style-rgb:112,212,162; }
     .skill[data-style="兽灵"] { --style-color:#FFF8A3; --style-rgb:255,248,163; }
     .skill[data-style="复苏"] { --style-color:#C2FDA6; --style-rgb:194,253,166; }
@@ -229,10 +269,6 @@
     .skill[data-style="热诚"] { --style-color:#FF6565; --style-rgb:255,101,101; }
     .skill[data-style="圣洁"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
     .skill[data-style="斗争"] { --style-color:#FFDB81; --style-rgb:255,219,129; }
-    /* 跨职业同名风格冲突覆盖（26.07.31） */
-    .skill[data-class="法师"][data-style="防护"] { --style-color:#FCFF99; --style-rgb:252,255,153; }
-    .skill[data-class="战士"][data-style="机敏"] { --style-color:#B0FCFF; --style-rgb:176,252,255; }
-    .skill[data-class="战士"][data-style="射击"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
 
     .skill[data-style="狂暴"] { --style-color:#FF4F4F; --style-rgb:255,79,79; }
     .skill[data-style="生机"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
@@ -1004,3 +1040,10 @@ html.dark .fp-color-btn { background: var(--panel); border-color: var(--line); }
 .adv-card:has(.adv-detail.expand)::before{opacity:1;animation-play-state:running}
 @keyframes frameShimmer{0%{background-position:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,50% 50%}50%{background-position:-20% 10%,15% -5%,-10% -15%,20% 10%,30% 0%,-15% 20%,50% 50%}100%{background-position:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,50% 50%}}
 
+/* 搜索高亮对比度增强（26.07.31） */
+.search-highlight { box-shadow: 0 0 0 1px rgba(0,0,0,.3); }
+html.dark .search-highlight { box-shadow: 0 0 0 1px rgba(255,255,255,.55); }
+    /* 白色底纹风格浅灰视觉兜底（纯 CSS，docx 数据不变） */
+    .skill[data-style="死灵"], .skill[data-style="妙手"],
+    .skill[data-style="诩谐"], .skill[data-style="圣洁"],
+    .skill[data-style="虔佑"] { --style-color:#E3E3E3; --style-rgb:227,227,227; }

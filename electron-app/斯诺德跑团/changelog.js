@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7145',
+    date: '2026-07-31',
+    changes: [
+      '职业页UX增强：滚动定位/回到顶部/搜索高亮/前置跳转/SP徽章/升级徽标/白底风格兜底'
+    ]
+  },
+
+
+  {
     version: '1.0.7144',
     date: '2026-07-31',
     changes: [
