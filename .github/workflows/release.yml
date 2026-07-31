@@ -160,6 +160,7 @@ jobs:
       PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
       VERSION_TAG: ${{ github.ref_name }}
       BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+      GH_TOKEN2: ${{ secrets.GH_TOKEN2 }}
     steps:
       - uses: actions/checkout@v4
 
@@ -222,13 +223,52 @@ jobs:
           access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
 
-      - name: Upload mobile packages to OSS
+      - name: Upload mobile packages and APK
         run: |
           set -euo pipefail
           VERSION="${VERSION_TAG#v}"
+          # OSS 禁止默认域名公开分发 .apk，APK 改走 GitHub Release
           ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read
           ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read
+
+          # 获取或创建 GitHub Release（build job 可能仍在构建 exe）
+          REL_JSON=$(curl -s -H "Authorization: token $GH_TOKEN2" \
+            "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/tags/${VERSION_TAG}")
+          RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
+          if [ -z "$RELEASE_ID" ]; then
+            REL_JSON=$(curl -s -X POST -H "Authorization: token $GH_TOKEN2" -H "Accept: application/vnd.github+json" \
+              -d "{\"tag_name\":\"${VERSION_TAG}\",\"name\":\"${VERSION_TAG}\",\"draft\":false,\"prerelease\":false}" \
+              "https://api.github.com/repos/Doylesama114/Snode-rpg/releases")
+            RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
+            if [ -z "$RELEASE_ID" ]; then
+              REL_JSON=$(curl -s -H "Authorization: token $GH_TOKEN2" \
+                "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/tags/${VERSION_TAG}")
+              RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
+            fi
+          fi
+          if [ -z "$RELEASE_ID" ]; then
+            echo "::error::Cannot resolve GitHub release id"
+            exit 1
+          fi
+
+          APK_NAME="Snode-RPG-${VERSION}.apk"
+          ASSET_ID=$(curl -s -H "Authorization: token $GH_TOKEN2" \
+            "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets" \
+            | jq -r ".[] | select(.name==\"${APK_NAME}\") | .id")
+          if [ -n "$ASSET_ID" ]; then
+            curl -s -X DELETE -H "Authorization: token $GH_TOKEN2" \
+              "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets/$ASSET_ID"
+          fi
+          curl -s -X POST -H "Authorization: token $GH_TOKEN2" -H "Content-Type: application/octet-stream" \
+            --data-binary "@${APK_NAME}" \
+            "https://uploads.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets?name=${APK_NAME}"
+
+          # version.json 的 APK 指向 GitHub Release（OSS 不托管 apk）
+          APK_URL="https://github.com/Doylesama114/Snode-rpg/releases/download/${VERSION_TAG}/${APK_NAME}"
+          jq --arg ver "$VERSION" --arg url "$APK_URL" \
+            '.apk.version = $ver | .apk.url = $url' dist_mobile/version.json > dist_mobile/version.json.tmp
+          mv dist_mobile/version.json.tmp dist_mobile/version.json
           ossutil cp "dist_mobile/version.json" "oss://${BUCKET}/mobile/version.json" -f --acl public-read --meta Cache-Control:no-cache
-          ossutil cp "Snode-RPG-${VERSION}.apk" "oss://${BUCKET}/mobile/apk/Snode-RPG-${VERSION}.apk" -f --acl public-read
-          echo "::notice::APK ${PUBLIC_BASE}/mobile/apk/Snode-RPG-${VERSION}.apk"
+
+          echo "::notice::APK ${APK_URL}"
           echo "::notice::version.json ${PUBLIC_BASE}/mobile/version.json"
