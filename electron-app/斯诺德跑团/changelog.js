@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7158',
+    date: '2026-07-31',
+    changes: [
+      '修复职业页结构损坏：section嵌套/JSON泄露/术士错位，改用最小侵入的阶位标题方案'
+    ]
+  },
+
+
+  {
     version: '1.0.7157',
     date: '2026-07-31',
     changes: [
