@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7147',
+    date: '2026-07-31',
+    changes: [
+      '新增Android手机版（APK+资源包自动更新）',
+      '卡牌音乐wav转ogg大幅减小体积'
+    ]
+  },
+
+
+  {
     version: '1.0.7146',
     date: '2026-07-31',
     changes: [
