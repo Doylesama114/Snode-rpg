@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7159',
+    date: '2026-07-31',
+    changes: [
+      '术士混沌法术改为点数-效果对应表格展示（参照docx）'
+    ]
+  },
+
+
+  {
     version: '1.0.7158',
     date: '2026-07-31',
     changes: [

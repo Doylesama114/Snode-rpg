@@ -1062,3 +1062,12 @@ html.dark .search-highlight { box-shadow: 0 0 0 1px rgba(255,255,255,.55); }
   }
   .tt::before { display: none; }
 }
+
+/* ===== ????????? ===== */
+.chaos-wrap { margin: 10px 0; overflow-x: auto; }
+.chaos-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.chaos-table th { background: var(--panel); color: var(--muted); padding: 8px 12px; text-align: left; border: 1px solid var(--line); border-bottom: 2px solid var(--line); white-space: nowrap; }
+.chaos-table td { padding: 8px 12px; border: 1px solid var(--line); vertical-align: top; line-height: 1.7; word-break: break-word; }
+.chaos-table td:first-child { white-space: nowrap; font-weight: 700; color: var(--accent); }
+html.dark .chaos-table th { background: var(--bg); }
+@media (max-width: 600px) { .chaos-table { font-size: 12.5px; } .chaos-table td, .chaos-table th { padding: 6px 8px; } }
