@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7140',
+    date: '2026-07-31',
+    changes: [
+      'xlsx导出：改版图纸区O172–192+同名技能查找+装备占位/H18/XP·SP+未持有栏位对角线划掉'
+    ]
+  },
+
+
+  {
     version: '1.0.7139',
     date: '2026-07-31',
     changes: [

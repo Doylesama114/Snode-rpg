@@ -673,6 +673,15 @@ assertTrue(!!_skRef, "lookupSkillForExport 命中塑能箭");
 assert(_skRef && _skRef.fields && _skRef.fields['施展时间'], "1动作", "塑能箭 施展时间");
 assertTrue(lookupSkillForExport("不存在的技能XYZ") === null, "未知技能返回 null");
 assertTrue(lookupSkillForExport("") === null, "空名返回 null");
+var _mengJi = lookupSkillForExport("猛击", "战士");
+assertTrue(!!_mengJi, "猛击 prefer 战士命中");
+assertTrue(!_mengJi || (_mengJi.fields && (_mengJi.fields["描述"] || (_mengJi.description && _mengJi.description[0]))), "猛击有描述字段");
+var _mengCost = skillExportCostForXlsx({}, _mengJi);
+var _mengDesc = skillExportDescForXlsx({}, _mengJi);
+assertTrue(!!_mengDesc, "skillExportDescForXlsx 猛击有正文");
+assertTrue(_mengCost !== undefined && _mengCost !== null, "skillExportCostForXlsx 猛击可取费用");
+// 无 prefer 时也可能命中；有 prefer 必须是战士条目（通过费用/描述非空间接验证同源）
+assertTrue(!!lookupSkillForExport("猛击", "蛮斗士") || !!lookupSkillForExport("猛击"), "猛击在库中存在");
 results.push('</div>');
 
 // T9: upload xlsx SP parse (26.06.30)
@@ -1035,8 +1044,8 @@ results.push('<div class="section"><h3>T12: calcBlueprintSlots / learnSkill 图�
 assert(typeof BLUEPRINT_EXPORT_SLOTS, 'number', 'BLUEPRINT_EXPORT_SLOTS 存在');
 assert(BLUEPRINT_EXPORT_SLOTS, 20, '固定 20 格');
 assert(BLUEPRINT_XLSX_CELLS.length, 20, 'BLUEPRINT_XLSX_CELLS 长度 20');
-assert(BLUEPRINT_XLSX_CELLS[0], 'O211', '首格 O211');
-assert(BLUEPRINT_XLSX_CELLS[19], 'O230', '末格 O230');
+assert(BLUEPRINT_XLSX_CELLS[0], 'O173', '首格 O173');
+assert(BLUEPRINT_XLSX_CELLS[19], 'O192', '末格 O192');
 assertTrue(isBlueprintName('捕熊陷阱（图纸）'), '识别（图纸）');
 assertFalse(isBlueprintName('捕熊陷阱'), '无后缀非图纸');
 
@@ -1070,10 +1079,38 @@ state.skills = [];
 var _bpWrites = {};
 function _bpSet(ref, val) { _bpWrites[ref] = val; }
 fillXlsxBlueprints(_bpSet, [{ n: '图纸甲（图纸）' }, { n: '图纸乙（图纸）' }]);
-assert(_bpWrites.O210, '图纸（专业槽位）', '导出写标题 O210');
-assert(_bpWrites.O211, '图纸甲（图纸）', '导出首格');
-assert(_bpWrites.O212, '图纸乙（图纸）', '导出次格');
-assert(_bpWrites.O213, '', '清空未用格');
+assert(_bpWrites.O172, '图纸(专业槽位)', '导出写标题 O172');
+assert(_bpWrites.O173, '图纸甲（图纸）', '导出首格');
+assert(_bpWrites.O174, '图纸乙（图纸）', '导出次格');
+assert(_bpWrites.O175, '', '清空未用格');
+
+// 未持有栏位划掉
+results.push('<div class="section"><h3>T12b: markUnavailableExportSlots（仅名称列对角线）</h3>');
+assertTrue(typeof markUnavailableExportSlots === 'function', 'markUnavailableExportSlots 存在');
+assertTrue(typeof xlsxEnsureCancelSlotStyle === 'function', 'xlsxEnsureCancelSlotStyle 存在');
+var _strikePack = xlsxEnsureCancelSlotStyle('<borders count="1"><border/></borders><cellXfs count="2"><xf/><xf/></cellXfs>');
+assertTrue(_strikePack.text.indexOf('diagonalDown="1"') >= 0, '注入对角线边框');
+assert(_strikePack.styleId, '2', '新 style 索引 = 旧 count');
+var _mk = {};
+function _mkSet(ref, val, invent, styleId) { _mk[ref] = { v: val, s: styleId }; }
+markUnavailableExportSlots(_mkSet, '99', {
+  mainSkillCap: 2, mainSkillFilled: 1,
+  subSkillCap: 1, subSkillFilled: 0,
+  blueprintCap: 2, blueprintFilled: 1,
+  tierRowMap: { '一阶': [122, 126], '四阶': [143, 147] },
+  isTierUnlocked: function (t) { return t === '一阶'; },
+  getTalentCap: function () { return 5; }
+});
+assert(_mk.B125.v, '', '主职超出容量：名称列留空');
+assert(_mk.B125.s, '99', '主职名称列用 cancel style');
+assertFalse(_mk.D125, '不划 D 列');
+assertFalse(_mk.B123, '主职已填/容量内不划 B123');
+assert(_mk.B169.v, '', '子职超出容量：仅 B 留空划掉');
+assertFalse(_mk.J169, '不划子职效果列');
+assert(_mk.O175.v, '', '图纸超出容量：仅 O 留空划掉');
+assert(_mk.O143.v, '', '未解锁阶整列名称留空划掉');
+assertFalse(_mk.O122, '已解锁且容量内天赋不划');
+results.push('</div>');
 
 var _bpSkillCountBefore = (state.skills || []).length;
 var _fakeBp = null;

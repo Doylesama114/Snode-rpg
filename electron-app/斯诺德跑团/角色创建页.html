@@ -3046,14 +3046,15 @@ async function exportXlsxFromState(state) {
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
     var skName = sk.n || sk.name || "";
-    var skRef = (!sk.tm && !sk.time && !sk.cost && !sk.fp) ? lookupSkillForExport(skName) : null;
+    var skPrefer = sk.src || sk.source || cl.name || "";
+    var skRef = lookupSkillForExport(skName, skPrefer);
     set("B" + (123 + si), skName);
     set("D" + (123 + si), sk.tm || sk.time || (skRef && skRef.fields ? skRef.fields['施展时间'] : "") || "");
     set("E" + (123 + si), sk.range || (skRef && skRef.fields ? skRef.fields['施展距离'] : "") || "");
     set("F" + (123 + si), sk.dur || sk.duration || (skRef && skRef.fields ? skRef.fields['持续时间'] : "") || "");
-    set("H" + (123 + si), sk.cost || sk.fp || (skRef && skRef.cost ? skRef.cost.fp : "") || "");
-    set("I" + (123 + si), sk.src || sk.source || cl.name || "");
-    set("J" + (123 + si), sk.ds || sk.desc || sk.description || (skRef && skRef.description ? skRef.description[0] : "") || "");
+    set("H" + (123 + si), skillExportCostForXlsx(sk, skRef));
+    set("I" + (123 + si), skPrefer);
+    set("J" + (123 + si), skillExportDescForXlsx(sk, skRef));
   }
 
   // Talents (O column) — 按阶位填行，与角色面板 export 一致
@@ -3100,19 +3101,20 @@ async function exportXlsxFromState(state) {
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
     var sskName = ssk.n || ssk.name || "";
-    var sskRef = (!ssk.tm && !ssk.time && !ssk.cost && !ssk.fp) ? lookupSkillForExport(sskName) : null;
+    var sskPrefer = ssk.src || ssk.source || (sc ? sc.name : "") || "";
+    var sskRef = lookupSkillForExport(sskName, sskPrefer);
     set("B" + (168 + ssi), sskName);
     set("D" + (168 + ssi), ssk.tm || ssk.time || (sskRef && sskRef.fields ? sskRef.fields['施展时间'] : "") || "");
     set("E" + (168 + ssi), ssk.range || (sskRef && sskRef.fields ? sskRef.fields['施展距离'] : "") || "");
     set("F" + (168 + ssi), ssk.dur || ssk.duration || (sskRef && sskRef.fields ? sskRef.fields['持续时间'] : "") || "");
-    set("H" + (168 + ssi), ssk.cost || ssk.fp || (sskRef && sskRef.cost ? sskRef.cost.fp : "") || "");
-    set("I" + (168 + ssi), ssk.src || ssk.source || (sc ? sc.name : ""));
-    set("J" + (168 + ssi), ssk.ds || ssk.desc || ssk.description || (sskRef && sskRef.description ? sskRef.description[0] : "") || "");
+    set("H" + (168 + ssi), skillExportCostForXlsx(ssk, sskRef));
+    set("I" + (168 + ssi), sskPrefer);
+    set("J" + (168 + ssi), skillExportDescForXlsx(ssk, sskRef));
   }
 
-  // XP/SP
-  if (state.xp) set("U46", String(state.xp));
-  if (typeof state.sp_points === "number" && state.sp_points > 0) set("U51", String(state.sp_points));
+  // XP/SP（含 0）
+  set("U46", String(state.xp != null ? state.xp : 0));
+  set("U51", String(state.sp_points != null ? state.sp_points : 0));
 
   // Weight/Language/Profession
   if (state.carry_capacity) {
