@@ -293,6 +293,8 @@ html.dark #overviewToggle { background: #d4a54a; }
 var CLASSES = [], RACES = [], BACKGROUNDS = [];
 var CURRENT_STEP = 0;
 var TOTAL_STEPS = 8;
+var _recreateSession = false;
+var RECREATE_HANDOFF_KEY = "snowd_recreate_handoff";
 
 var CHAR = {
   classIdx: -1, className: "", classData: null,
@@ -488,8 +490,153 @@ function applyAdvisorHandoff(){
   }catch(e){console.warn("advisor handoff",e);}
 }
 
+/** 可还原向导的 CHAR 字段（不含 classIdx / *Data 等运行时引用） */
+function buildCreationSnapshot(){
+  var snap={
+    className:CHAR.className||"",
+    keyAttr:CHAR.keyAttr||"",
+    specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),
+    selectedFeatures:(CHAR.selectedFeatures||[]).slice(),
+    raceName:CHAR.raceName||"",
+    raceSize:CHAR.raceSize||"",
+    raceExtra:(CHAR.raceExtra||[]).slice(),
+    extraLanguages:(CHAR.extraLanguages||[]).slice(),
+    humanFreeSkill:CHAR.humanFreeSkill,
+    wingfolkHasCommon:CHAR.wingfolkHasCommon!==false,
+    attrs:JSON.parse(JSON.stringify(CHAR.attrs||{})),
+    selectedSkills:(CHAR.selectedSkills||[]).slice(),
+    bgName:CHAR.bgName||"",
+    bgProfs:JSON.parse(JSON.stringify(CHAR.bgProfs||{skills:{},profInput:""})),
+    bgCantrips:JSON.parse(JSON.stringify(CHAR.bgCantrips||[])),
+    bgOtherPicks:JSON.parse(JSON.stringify(CHAR.bgOtherPicks||[])),
+    sportPreference:CHAR.sportPreference||"",
+    equipIdx:typeof CHAR.equipIdx==="number"?CHAR.equipIdx:-1,
+    equipLetter:(CHAR.equipChoice&&CHAR.equipChoice.letter)?CHAR.equipChoice.letter:"",
+    weaponSpec:CHAR.weaponSpec||"",
+    playerName:CHAR.playerName||"",
+    charName:CHAR.charName||"",
+    gender:CHAR.gender||"",
+    age:CHAR.age||"",
+    height:CHAR.height||"",
+    weight:CHAR.weight||"",
+    eye:CHAR.eye||"",
+    skin:CHAR.skin||"",
+    hair:CHAR.hair||"",
+    story:CHAR.story||"",
+    personality:CHAR.personality||"",
+    traits:CHAR.traits||"",
+    ideals:CHAR.ideals||"",
+    bonds:CHAR.bonds||"",
+    flaws:CHAR.flaws||"",
+    deity:CHAR.deity||"",
+    deityAttr:CHAR.deityAttr||"",
+    patron:CHAR.patron||"",
+    contacts:CHAR.contacts||"",
+    scamType:CHAR.scamType||"",
+    missionChannel:CHAR.missionChannel||"",
+    academicDomain:CHAR.academicDomain||""
+  };
+  return snap;
+}
+
+function applyCreationSnapshotToChar(snap){
+  if(!snap||typeof snap!=="object")return false;
+  var i, opts;
+  if(snap.className){
+    for(i=0;i<CLASSES.length;i++){
+      if(CLASSES[i].name===snap.className||CLASSES[i].n===snap.className){
+        CHAR.classIdx=i;CHAR.className=CLASSES[i].name;CHAR.classData=CLASSES[i];break;
+      }
+    }
+  }
+  CHAR.keyAttr=snap.keyAttr||"";
+  CHAR.specChoices=JSON.parse(JSON.stringify(snap.specChoices||{}));
+  CHAR.selectedFeatures=(snap.selectedFeatures||[]).slice();
+  CHAR.weaponSpec=snap.weaponSpec||"";
+  CHAR.deity=snap.deity||"";
+  CHAR.deityAttr=snap.deityAttr||"";
+  CHAR.patron=snap.patron||"";
+  if(snap.raceName){
+    for(i=0;i<RACES.length;i++){
+      if(RACES[i].name===snap.raceName){
+        CHAR.raceIdx=i;CHAR.raceName=snap.raceName;CHAR.raceData=RACES[i];break;
+      }
+    }
+  }
+  CHAR.raceSize=snap.raceSize||"";
+  CHAR.raceExtra=(snap.raceExtra||[]).slice();
+  CHAR.extraLanguages=(snap.extraLanguages||[]).slice();
+  CHAR.humanFreeSkill=snap.humanFreeSkill!=null?snap.humanFreeSkill:null;
+  CHAR.wingfolkHasCommon=snap.wingfolkHasCommon!==false;
+  if(snap.attrs){
+    for(i=0;i<ATTR_NAMES.length;i++){
+      var an=ATTR_NAMES[i];
+      if(snap.attrs[an]!=null)CHAR.attrs[an]=snap.attrs[an];
+    }
+  }
+  CHAR.selectedSkills=(snap.selectedSkills||[]).slice();
+  if(snap.bgName){
+    for(i=0;i<BACKGROUNDS.length;i++){
+      if(BACKGROUNDS[i].name===snap.bgName){
+        CHAR.bgIdx=i;CHAR.bgName=snap.bgName;CHAR.bgData=BACKGROUNDS[i];break;
+      }
+    }
+  }
+  CHAR.bgProfs=JSON.parse(JSON.stringify(snap.bgProfs||{skills:{},profInput:""}));
+  CHAR.bgCantrips=JSON.parse(JSON.stringify(snap.bgCantrips||[]));
+  CHAR.bgOtherPicks=JSON.parse(JSON.stringify(snap.bgOtherPicks||[]));
+  CHAR.sportPreference=snap.sportPreference||"";
+  CHAR.equipIdx=-1;CHAR.equipChoice=null;
+  opts=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+  if(snap.equipLetter){
+    for(i=0;i<opts.length;i++){
+      if(opts[i].letter===snap.equipLetter){CHAR.equipIdx=i;CHAR.equipChoice=opts[i];break;}
+    }
+  }
+  if(!CHAR.equipChoice&&typeof snap.equipIdx==="number"&&snap.equipIdx>=0&&opts[snap.equipIdx]){
+    CHAR.equipIdx=snap.equipIdx;CHAR.equipChoice=opts[snap.equipIdx];
+  }
+  CHAR.playerName=snap.playerName||"";
+  CHAR.charName=snap.charName||"";
+  CHAR.gender=snap.gender||"";
+  CHAR.age=snap.age||"";
+  CHAR.height=snap.height||"";
+  CHAR.weight=snap.weight||"";
+  CHAR.eye=snap.eye||"";
+  CHAR.skin=snap.skin||"";
+  CHAR.hair=snap.hair||"";
+  CHAR.story=snap.story||"";
+  CHAR.personality=snap.personality||"";
+  CHAR.traits=snap.traits||"";
+  CHAR.ideals=snap.ideals||"";
+  CHAR.bonds=snap.bonds||"";
+  CHAR.flaws=snap.flaws||"";
+  CHAR.contacts=snap.contacts||"";
+  CHAR.scamType=snap.scamType||"";
+  CHAR.missionChannel=snap.missionChannel||"";
+  CHAR.academicDomain=snap.academicDomain||"";
+  return !!(CHAR.className&&CHAR.raceName&&CHAR.bgName);
+}
+
+function applyRecreateHandoff(){
+  try{
+    var params=new URLSearchParams(window.location.search||"");
+    if(params.get("recreate")!=="1")return;
+    var raw=sessionStorage.getItem(RECREATE_HANDOFF_KEY);
+    if(!raw)return;
+    var h=JSON.parse(raw);
+    sessionStorage.removeItem(RECREATE_HANDOFF_KEY);
+    if(!h||!h.snapshot)return;
+    if(applyCreationSnapshotToChar(h.snapshot)){
+      _recreateSession=true;
+      goToStep(0);
+    }
+  }catch(e){console.warn("recreate handoff",e);}
+}
+
 initWizard();
 applyAdvisorHandoff();
+applyRecreateHandoff();
 
 // ====== 悬浮角色概览 ======
 var _ovOpen = true;
@@ -2446,6 +2593,8 @@ function saveCharacter(){
     }
   }
   charData._savedAt=new Date().toISOString();
+  charData._chargenOrigin="created";
+  charData._creationSnapshot=buildCreationSnapshot();
   try{
     var displayName=CHAR.charName;
     var storageId=allocateUniqueCharId(displayName);
@@ -2453,12 +2602,20 @@ function saveCharacter(){
     charData._charName=storageId;
     CHAR._charName=storageId;
     localStorage.setItem("char_"+storageId+"_slot1",JSON.stringify(charData));
-    if(storageId!==displayName){
+    if(_recreateSession){
+      if(storageId!==displayName){
+        alert("已另存为新角色「"+storageId+"」（显示名「"+displayName+"」）");
+      }else{
+        alert("已另存为新角色「"+displayName+"」");
+      }
+      window.location.href="角色面板.html?char="+encodeURIComponent(storageId)+"&slot=1";
+    }else if(storageId!==displayName){
       alert("角色名「"+displayName+"」已存为「"+storageId+"」");
+      window.location.href="角色存档页.html?char="+encodeURIComponent(storageId);
     }else{
       alert("角色「"+displayName+"」创建成功！");
+      window.location.href="角色存档页.html?char="+encodeURIComponent(storageId);
     }
-    window.location.href="角色存档页.html?char="+encodeURIComponent(storageId);
   }catch(e){alert("保存失败："+e.message);}
 }
 

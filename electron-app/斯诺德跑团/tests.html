@@ -628,6 +628,44 @@ assertTrue(_clearTraitRefs.indexOf("K118") < 0, "clear 不写 K118");
 assertTrue(_clearTraitRefs.indexOf("O119") < 0, "clear 不写 O119");
 results.push('</div>');
 
+// T12c: 重新车卡门禁
+results.push('<div class="section"><h3>T12c: 重新车卡 — 快照门禁与进度判定</h3>');
+assertTrue(typeof hasCreationSnapshot === "function", "hasCreationSnapshot 已加载");
+assertTrue(typeof hasProgressBeyondCreation === "function", "hasProgressBeyondCreation 已加载");
+assertTrue(typeof getRecreateUnavailableReason === "function", "getRecreateUnavailableReason 已加载");
+assertTrue(typeof startRecreateFromPanel === "function", "startRecreateFromPanel 已加载");
+assertTrue(RECREATE_HANDOFF_KEY === "snowd_recreate_handoff", "handoff 键名");
+assertTrue(!hasCreationSnapshot({}), "无快照 → false");
+assertTrue(!hasCreationSnapshot({ _creationSnapshot: null }), "null 快照 → false");
+assertTrue(hasCreationSnapshot({ _creationSnapshot: { className: "战士" } }), "有快照对象 → true");
+assertTrue(!hasProgressBeyondCreation({
+  classes: [{ name: "战士", level: 1 }, { name: "", level: 0 }, { name: "", level: 0 }],
+  xp: 0, sp_points: 0, special_feats: [],
+  skills: [{ n: "起始技", granted: true }]
+}), "纯 L1 + granted 技能 → 无进度");
+assertTrue(hasProgressBeyondCreation({
+  classes: [{ name: "战士", level: 2 }, { name: "", level: 0 }, { name: "", level: 0 }],
+  xp: 0, sp_points: 0, special_feats: [], skills: []
+}), "主职 >1 → 有进度");
+assertTrue(hasProgressBeyondCreation({
+  classes: [{ name: "战士", level: 1 }, { name: "法师", level: 1 }, { name: "", level: 0 }],
+  xp: 0, sp_points: 0, special_feats: [], skills: []
+}), "副职 level>0 → 有进度");
+assertTrue(hasProgressBeyondCreation({
+  classes: [{ name: "战士", level: 1 }, { name: "", level: 0 }, { name: "", level: 0 }],
+  xp: 100, sp_points: 0, special_feats: [], skills: []
+}), "xp>0 → 有进度");
+assertTrue(hasProgressBeyondCreation({
+  classes: [{ name: "战士", level: 1 }, { name: "", level: 0 }, { name: "", level: 0 }],
+  xp: 0, sp_points: 0, special_feats: [],
+  skills: [{ n: "火球术", src: "法师" }]
+}), "面板所学（无 granted）→ 有进度");
+assertTrue(getRecreateUnavailableReason({ _chargenOrigin: "upload" }).indexOf("上传") >= 0, "上传不可用文案");
+assertTrue(getRecreateUnavailableReason({}).indexOf("创建快照") >= 0, "旧档/无快照文案");
+var _handoffShape = { version: 1, snapshot: { className: "战士", attrs: { "力量": 10 } } };
+assertTrue(_handoffShape.version === 1 && _handoffShape.snapshot.className === "战士", "handoff 字段形状");
+results.push('</div>');
+
 // T10: xlsx export skill lookup (upload / creation pages)
 results.push('<div class="section"><h3>T10: lookupSkillForExport — 导出技能字段补全</h3>');
 var _skRef = lookupSkillForExport("塑能箭");

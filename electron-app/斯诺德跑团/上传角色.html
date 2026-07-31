@@ -901,6 +901,8 @@ function confirmImport() {
   var storageId = allocateUniqueCharId(displayName);
   pendingState._charName = storageId;
   pendingState._savedAt = new Date().toISOString();
+  pendingState._chargenOrigin = "upload";
+  delete pendingState._creationSnapshot;
   var key = "char_" + storageId + "_slot1";
   var toSave = pendingState;
   try {
@@ -910,6 +912,8 @@ function confirmImport() {
     }));
     toSave = clone;
   } catch (_e) {}
+  toSave._chargenOrigin = "upload";
+  delete toSave._creationSnapshot;
   try {
     localStorage.setItem(key, JSON.stringify(toSave));
   } catch (e) {

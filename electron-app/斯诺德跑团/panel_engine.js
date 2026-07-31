@@ -237,7 +237,9 @@ function isPersistedInternalKey(key) {
     || key === "_orig"
     || key === "_addedLanguages"
     || key === "_panelApplied"
-    || key === "_attrGained";
+    || key === "_attrGained"
+    || key === "_creationSnapshot"
+    || key === "_chargenOrigin";
 }
 
 function getStateSnapshot() {
@@ -435,6 +437,76 @@ function goBackToSlots() {
     return;
   }
   window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
+}
+
+var RECREATE_HANDOFF_KEY = "snowd_recreate_handoff";
+
+function hasCreationSnapshot(st) {
+  st = st || state;
+  return !!(st && st._creationSnapshot && typeof st._creationSnapshot === "object");
+}
+
+function hasProgressBeyondCreation(st) {
+  st = st || state;
+  if (!st) return false;
+  var classes = st.classes || [];
+  if (classes[0] && classes[0].level > 1) return true;
+  if (classes[1] && classes[1].level > 0) return true;
+  if (classes[2] && classes[2].level > 0) return true;
+  if ((st.xp || 0) > 0) return true;
+  if ((st.sp_points || 0) > 0) return true;
+  if (st.special_feats && st.special_feats.length > 0) return true;
+  var skills = st.skills || [];
+  var i, s;
+  for (i = 0; i < skills.length; i++) {
+    s = skills[i];
+    if (typeof isBlueprintName === "function" && isBlueprintName(s.n || s.name)) continue;
+    if (typeof isFreeSlotSkill === "function" && isFreeSlotSkill(s)) continue;
+    if (s.granted === true) continue;
+    return true;
+  }
+  return false;
+}
+
+function getRecreateUnavailableReason(st) {
+  st = st || state;
+  if (st && st._chargenOrigin === "upload") {
+    return "上传角色无法追溯创建时的初始属性与选项，因此不可使用重新车卡。请从主页新建角色。";
+  }
+  return "此角色没有创建快照，无法重新车卡。上传角色或旧版创建的角色不受支持；请从主页新建角色。";
+}
+
+function startRecreateFromPanel() {
+  if (!hasCreationSnapshot(state)) {
+    alert(getRecreateUnavailableReason(state));
+    return;
+  }
+  if (hasProgressBeyondCreation(state)) {
+    if (!confirm("重新车卡将基于创建时的选项另存为新的 1 级角色，不会保留当前等级与已学技能；该操作无法撤回。原角色存档不受影响。是否继续？")) {
+      return;
+    }
+  }
+  function proceed() {
+    try {
+      sessionStorage.setItem(RECREATE_HANDOFF_KEY, JSON.stringify({
+        version: 1,
+        snapshot: state._creationSnapshot
+      }));
+    } catch (e) {
+      alert("无法启动重新车卡：" + (e && e.message ? e.message : e));
+      return;
+    }
+    window.location.href = "角色创建页.html?recreate=1";
+  }
+  if (state._dirty) {
+    if (confirm("当前角色有未保存的更改，是否先保存？\n\n确定 = 保存后继续\n取消 = 不保存直接继续")) {
+      showSaveDialog(function (slotIndex) {
+        if (saveState(slotIndex)) proceed();
+      });
+      return;
+    }
+  }
+  proceed();
 }
 
 function calcMod(s){return Math.floor((s-10)/2)}function mStr(v){return v>=0?'+'+v:v}
@@ -7062,6 +7134,13 @@ if (!initFromURL()) {
   backBtn.style.cssText = "position:fixed;top:10px;right:110px;z-index:9999;padding:10px 22px;background:#5a3a18;color:#f0e0d0;border:1px solid #7a5a38;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   backBtn.onclick = goBackToSlots;
   document.body.appendChild(backBtn);
+
+  var recreateBtn = document.createElement("button");
+  recreateBtn.textContent = "重新车卡";
+  recreateBtn.title = "基于创建快照另存为新的 1 级角色";
+  recreateBtn.style.cssText = "position:fixed;top:10px;right:200px;z-index:9999;padding:10px 14px;background:#3a4a6a;color:#f0e0d0;border:1px solid #5a6a8a;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
+  recreateBtn.onclick = startRecreateFromPanel;
+  document.body.appendChild(recreateBtn);
 window.showKeyPreferencePicker=function(callback){
   var overlay=document.createElement("div");
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
