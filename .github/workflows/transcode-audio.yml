@@ -1,0 +1,40 @@
+name: Transcode Poker Music to OGG (one-time)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  transcode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN2 }}
+
+      - name: Transcode wav to ogg
+        run: |
+          cd "electron-app/poker-game/music"
+          for f in Battle1 END1 HALL1; do
+            echo "== transcode $f =="
+            ffmpeg -y -i "$f.wav" -c:a libopus -b:a 96k "$f.ogg"
+            ls -la "$f.ogg"
+          done
+          rm -f Battle1.wav END1.wav HALL1.wav
+
+      - name: Update JS references
+        run: |
+          cd "electron-app/poker-game"
+          sed -i 's/\.wav/.ogg/g' assets/index-*.js
+          grep -o "music/[A-Za-z0-9]*\.[a-z0-9]*" assets/index-*.js | sort -u
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "chore: transcode poker music wav to ogg"
+            git push origin HEAD:master
+          fi

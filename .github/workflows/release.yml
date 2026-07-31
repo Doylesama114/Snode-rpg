@@ -153,3 +153,78 @@ jobs:
           echo "=== OSS mirror done ==="
           echo "::notice::OSS feed ${PUBLIC_BASE}/releases/${TAG}/"
           echo "::notice::OSS latest ${PUBLIC_BASE}/releases/latest/latest.json"
+
+  build-android:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
+      VERSION_TAG: ${{ github.ref_name }}
+      BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build mobile resource packages
+        run: |
+          VERSION="${VERSION_TAG#v}"
+          node scripts/build-mobile-packages.mjs --base "$PUBLIC_BASE" --version "$VERSION"
+          ls -la dist_mobile/
+
+      - name: Prepare keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.MOBILE_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::error::Missing secret MOBILE_KEYSTORE_B64 (run Generate Android Keystore workflow once and store the artifact)"
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > mobile/keystore-release.jks
+          ls -la mobile/keystore-release.jks
+
+      - name: Build APK
+        working-directory: mobile
+        env:
+          KEYSTORE_PASS: ${{ secrets.MOBILE_KEYSTORE_PASS }}
+          KEY_ALIAS: ${{ secrets.MOBILE_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.MOBILE_KEY_PASS }}
+        run: |
+          VERSION="${VERSION_TAG#v}"
+          if [ -z "$KEYSTORE_PASS" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASS" ]; then
+            echo "::error::Missing Android signing secrets (MOBILE_KEYSTORE_PASS / MOBILE_KEY_ALIAS / MOBILE_KEY_PASS)"
+            exit 1
+          fi
+          gradle assembleRelease             -PupdateBase="$PUBLIC_BASE"             -PversionName="$VERSION"             -PversionCode="${VERSION##*.}"             -PkeystorePath=keystore-release.jks             -PkeystorePass="$KEYSTORE_PASS"             -PkeyAlias="$KEY_ALIAS"             -PkeyPass="$KEY_PASS"
+
+      - name: Rename APK
+        run: |
+          VERSION="${VERSION_TAG#v}"
+          cp mobile/app/build/outputs/apk/release/app-release.apk "Snode-RPG-${VERSION}.apk"
+          sha256sum "Snode-RPG-${VERSION}.apk"
+
+      - name: Setup ossutil
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          endpoint: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
+
+      - name: Upload mobile packages to OSS
+        run: |
+          set -euo pipefail
+          VERSION="${VERSION_TAG#v}"
+          ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read
+          ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read
+          ossutil cp "dist_mobile/version.json" "oss://${BUCKET}/mobile/version.json" -f --acl public-read --meta Cache-Control:no-cache
+          ossutil cp "Snode-RPG-${VERSION}.apk" "oss://${BUCKET}/mobile/apk/Snode-RPG-${VERSION}.apk" -f --acl public-read
+          echo "::notice::APK ${PUBLIC_BASE}/mobile/apk/Snode-RPG-${VERSION}.apk"
+          echo "::notice::version.json ${PUBLIC_BASE}/mobile/version.json"

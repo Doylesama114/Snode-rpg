@@ -18,6 +18,7 @@ backup/
 *.asar
 _deploy/
 _deploy_edgeone/
+dist_mobile/
 
 # System
 .DS_Store

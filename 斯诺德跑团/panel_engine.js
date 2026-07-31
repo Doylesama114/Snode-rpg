@@ -8096,6 +8096,16 @@ async function exportXlsxFromState(state) {
 
   var zipBytes = _xlsxBuildZip(zipEntries);
   var fileName = buildExportFileName(state);
+  if (window.mobileBridge && typeof window.mobileBridge.saveFile === "function") {
+    var u8 = zipBytes instanceof Uint8Array ? zipBytes : new Uint8Array(zipBytes);
+    var b64 = "";
+    var chunk = 0x8000;
+    for (var i = 0; i < u8.length; i += chunk) {
+      b64 += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+    }
+    window.mobileBridge.saveFile(btoa(b64), fileName);
+    return;
+  }
   var blob = new Blob([zipBytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
