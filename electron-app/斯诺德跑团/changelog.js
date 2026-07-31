@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7151',
+    date: '2026-07-31',
+    changes: [
+      '帮助页移动端排版优化（表格列宽收敛与横向滚动、长文本换行）'
+    ]
+  },
+
+
+  {
     version: '1.0.7150',
     date: '2026-07-31',
     changes: [
