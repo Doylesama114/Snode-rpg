@@ -200,7 +200,7 @@
     .back-to-top-btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
     html.dark .back-to-top-btn { background: var(--panel); color: var(--ink); }
     @media (max-width: 600px) {
-      .back-to-top-btn { right: 14px; bottom: 88px; width: 40px; height: 40px; }
+      .back-to-top-btn { right: 14px; bottom: 136px; width: 40px; height: 40px; }
       .sp-badge { font-size: 11px; padding: 1px 6px; }
     }
 
@@ -1047,3 +1047,18 @@ html.dark .search-highlight { box-shadow: 0 0 0 1px rgba(255,255,255,.55); }
     .skill[data-style="死灵"], .skill[data-style="妙手"],
     .skill[data-style="诩谐"], .skill[data-style="圣洁"],
     .skill[data-style="虔佑"] { --style-color:#E3E3E3; --style-rgb:227,227,227; }
+
+/* ===== ??????tooltip ?? + ??????? ===== */
+@media (max-width: 600px) {
+  main { overflow-x: clip; }
+  .tt::after {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 96px;
+    transform: none;
+    min-width: 0;
+    max-width: calc(100vw - 24px);
+  }
+  .tt::before { display: none; }
+}

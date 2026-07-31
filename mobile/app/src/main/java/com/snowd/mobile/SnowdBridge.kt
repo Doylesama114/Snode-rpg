@@ -69,6 +69,34 @@ class SnowdBridge(private val activity: Activity) {
     }
 
     @JavascriptInterface
+    fun openDownloads(): String {
+        val target = if (Build.VERSION.SDK_INT >= 29) {
+            "content://com.android.externalstorage.documents/document/primary%3ADownload"
+        } else {
+            "content://com.android.externalstorage.documents/document/primary%3AAndroid%2Fdata%2Fcom.snowd.mobile%2Ffiles%2FDownload%2Fdownloads"
+        }
+        return try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(target)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            activity.startActivity(intent)
+            "ok"
+        } catch (e: Exception) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    type = "vnd.android.document/root"
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                activity.startActivity(intent)
+                "ok"
+            } catch (e2: Exception) {
+                "error:" + (e2.message ?: "unknown")
+            }
+        }
+    }
+
+    @JavascriptInterface
     fun getAppInfo(): String {
         return JSONObject().apply {
             put("appVersion", BuildConfig.VERSION_NAME)

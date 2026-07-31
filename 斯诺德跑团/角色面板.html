@@ -107,6 +107,7 @@
 
 <button id="learnToggle" class="learn-toggle" onclick="toggleLearnMode()">📚 学习技能</button>
 <button class="learn-toggle" onclick="exportCurrentXlsx()" style="bottom:90px;right:30px;background:#a46d1f" id="exportXlsxBtn">📄 导出 xlsx</button>
+<button class="learn-toggle" onclick="openExportDir()" style="bottom:150px;right:30px;background:#5a7a3a" id="openDirBtn">📂 打开导出目录</button>
 <button class="learn-toggle" onclick="cheatAdd()" style="bottom:30px;left:30px;right:auto;background:#5a7a3a" id="cheatBtn">🧪 测试加点</button>
 
 
@@ -120,6 +121,20 @@
 <script src="panel_engine.js"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
+<script>
+function openExportDir(){
+  if(window.mobileBridge && window.mobileBridge.openDownloads){
+    var r = window.mobileBridge.openDownloads();
+    if(r !== "ok"){ alert("Cannot open folder: " + r); }
+  } else {
+    alert("Please use the Android app to open the export folder.");
+  }
+}
+(function(){
+  var b = document.getElementById("openDirBtn");
+  if(b && (!window.mobileBridge || !window.mobileBridge.openDownloads)){ b.style.display = "none"; }
+})();
+</script>
 <script src="shortcuts.js"></script>
 </body>
 
