@@ -25,7 +25,10 @@ def clean_tier_structure(seg):
     seg = re.sub(r'<section class="(?:style|tier)"[^>]*>', '', seg)
     seg = re.sub(r'<section class="style[^"]*"[^>]*>', '', seg)
     seg = seg.replace('</section>', '')
-    seg = re.sub(r'<h3>[^<]*\u9636\u5929\u8d4b\u6811</h3>', '', seg)
+    seg = re.sub(r'<h3[^>]*>[^<]*\u9636\u5929\u8d4b\u6811</h3>', '', seg)
+    seg = re.sub(r'<h2>[^<]*</h2>', '', seg)
+    seg = re.sub(r'<div class="tier"[^>]*>', '', seg)
+    seg = seg.replace('</div>', '')
     return seg
 
 def art_info(main):
@@ -140,7 +143,7 @@ def process(name, dry):
             tv = m.group(1)
             if tv and (not tier_groups or tier_groups[-1] != tv):
                 tier_groups.append(tv)
-        existing = len(re.findall(r'<h3>[^<]*\u9636\u5929\u8d4b\u6811</h3>|<section class="tier"', block))
+        existing = len(re.findall(r'<h3[^>]*>[^<]*\u9636\u5929\u8d4b\u6811</h3>|<section class="tier"', block))
         if existing >= len(tier_groups) and existing > 0:
             continue
         nb = rebuild_block(block, sname, nav)
