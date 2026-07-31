@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7152',
+    date: '2026-07-31',
+    changes: [
+      'Android上传角色修复：文件选择器支持与content读取开启'
+    ]
+  },
+
+
+  {
     version: '1.0.7151',
     date: '2026-07-31',
     changes: [

@@ -1,9 +1,13 @@
 package com.snowd.mobile
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private lateinit var overlay: View
+    private var filePathCallback: ValueCallback<Array<Uri>>? = null
+    private val reqFileChooser = 1001
     private lateinit var progressBar: ProgressBar
     private lateinit var statusText: TextView
     private lateinit var retryBtn: Button
@@ -40,14 +46,63 @@ class MainActivity : AppCompatActivity() {
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.allowFileAccess = false
-        webView.settings.allowContentAccess = false
+        webView.settings.allowContentAccess = true
         webView.settings.mediaPlaybackRequiresUserGesture = false
         webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
         webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
         webView.addJavascriptInterface(SnowdBridge(this), "mobileBridge")
 
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onShowFileChooser(
+                view: WebView?,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: android.webkit.WebChromeClient.FileChooserParams?
+            ): Boolean {
+                this@MainActivity.filePathCallback?.onReceiveValue(null)
+                this@MainActivity.filePathCallback = filePathCallback
+                val intent = fileChooserParams?.createIntent()?.apply {
+                    type = "*/*"
+                } ?: Intent(Intent.ACTION_GET_CONTENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "*/*"
+                }
+                return try {
+                    startActivityForResult(intent, reqFileChooser)
+                    true
+                } catch (e: Exception) {
+                    this@MainActivity.filePathCallback = null
+                    filePathCallback?.onReceiveValue(null)
+                    false
+                }
+            }
+        }
+
         retryBtn.setOnClickListener { startUpdateFlow() }
         startUpdateFlow()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == reqFileChooser) {
+            val cb = filePathCallback
+            filePathCallback = null
+            if (cb != null) {
+                var results: Array<Uri>? = null
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val uri = data.data
+                    results = if (uri != null) {
+                        arrayOf(uri)
+                    } else if (data.clipData != null && data.clipData!!.itemCount > 0) {
+                        Array(data.clipData!!.itemCount) { data.clipData!!.getItemAt(it).uri }
+                    } else {
+                        null
+                    }
+                }
+                cb.onReceiveValue(results)
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun startUpdateFlow() {
