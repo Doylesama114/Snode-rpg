@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7141',
+    date: '2026-07-31',
+    changes: [
+      'xlsx导出：技能/风格格按职业底纹色+风格格居中'
+    ]
+  },
+
+
+  {
     version: '1.0.7140',
     date: '2026-07-31',
     changes: [

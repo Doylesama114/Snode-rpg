@@ -1206,6 +1206,135 @@ function xlsxEnsureCancelSlotStyle(stylesText) {
 function xlsxEnsureStrikeStyle(stylesText) { return xlsxEnsureCancelSlotStyle(stylesText); }
 
 /**
+ * 风格底纹色映射（26.07.31）：从 14 个基础职业 docx + 通用天赋树 docx 的表格单元格底纹提取。
+ * 法师「防护」主技能区为 FCFF99（起始特性区 FBFF81 不采用，与参考 xlsx 一致）。
+ * 白色底纹（死灵/妙手/诙谐/圣洁/虔佑）严格忠于 docx。
+ */
+var STYLE_COLOR_MAP = {
+  "德鲁伊": {"荒野":"70D4A2","兽灵":"FFF8A3","复苏":"C2FDA6","月影":"C2C3FF","日怒":"FFAD8D","星辰":"8AE3FD","精火":"FFD7F8"},
+  "法师": {"塑能":"FFA387","咒法":"B3E7FF","预言":"AFFFE6","防护":"FCFF99","附魔":"D0A5FF","死灵":"FFFFFF","幻术":"FFCBFF","变化":"FFC47D"},
+  "战士": {"斗争":"FFDB81","狂攻":"FF6F6F","防护":"FEFF63","射击":"70FF5D","军团":"B1BCFE","机敏":"B0FCFF"},
+  "游荡者": {"奇袭":"DEEBF7","妙手":"FFFFFF","狂妄":"FF8383","魅影":"E9D5FF","魔药":"5FFF88"},
+  "吟游诗人": {"激昂":"ADEFFF","灵动":"FFC3DD","舒缓":"ADFFCA","诙谐":"FFFFFF","集中":"FCFF99"},
+  "猎人": {"射击":"FFF3C7","兽群":"7FD16F","猎鹰":"DEEBF7","机敏":"C3FFF8","生存":"B6FF95"},
+  "圣骑士": {"惩戒":"FFFE6F","守护":"F7BDFF","热诚":"FF6565","圣洁":"FFFFFF"},
+  "蛮斗士": {"斗争":"FFDB81","狂暴":"FF4F4F","生机":"70FF5D","法咒":"83BEF9"},
+  "武僧": {"极斗":"FDE3B0","织雾":"C2FDA6","踏风":"B2F6FB","无尘":"FEFF63","锋岚":"B5C7EA","酒仙":"78CC96","凰火":"FB7979"},
+  "牧师": {"戒律":"FFF6C3","虔佑":"FFFFFF","魂谒":"AFE3FC"},
+  "术士": {"潜能":"EBB9FF"},
+  "魔契师": {"魔契":"A6BAF5","邪念":"93FF63","咒能":"D2B3FF","秘术":"BDF1FA"},
+  "奇械师": {"精准":"FFFDAD","构想":"D5E7FF","支援":"ADFFB7","电涌":"F9FF4F","炽擎":"FF6363","魔枢":"ADEFFF"},
+  "萨满祭司": {"风暴":"B3D5FF","水源":"B3FFEE","大地":"FFD4B3","火焰":"FF6D6D","巫术":"B6FF95"},
+  "通用": {"通用天赋":"D7D7D7"}
+};
+
+/** 起始特性技能在 SKILL_DATA 中缺 style 字段，从 docx 颜色反查补全（26.07.31） */
+var STARTING_STYLE_OVERRIDE = {
+  "德鲁伊": {"缠绕术":"荒野","野兽形态":"兽灵","回春术":"复苏","月火术":"月影","阳炎术":"日怒"},
+  "法师": {"塑能箭":"塑能","闪现术":"咒法","预知梦":"预言","法术护盾":"防护","魔法武器":"附魔","死灵弹":"死灵","次级幻影":"幻术","次级变形术":"变化"},
+  "游荡者": {"背刺":"奇袭","潜行":"妙手","闷棍":"妙手","疾跑":"魅影"},
+  "猎人": {"瞄准射击":"射击","野兽伙伴":"兽群","逃脱":"机敏","荒野医疗":"生存"},
+  "圣骑士": {"审判":"惩戒","圣光出鞘":"惩戒","盾牌格挡":"守护","圣光术":"圣洁","驱邪术":"圣洁"},
+  "武僧": {"猛虎掌":"极斗","扫堂腿":"极斗","滚地翻":"踏风","活血术":"织雾"},
+  "牧师": {"惩击":"戒律","治疗术":"虔佑","恢复术":"虔佑","责难":"魂谒"},
+  "奇械师": {"精准射击":"精准","基础材料学":"构想","同调协手":"支援","魔法武器":"魔枢"},
+  "萨满祭司": {"闪电箭":"风暴","烈焰冲击":"火焰","治疗波":"水源","大地之盾":"大地"}
+};
+
+/** 取技能所属风格的底纹色；通用天赋一律灰色；查不到返回空串（不上色） */
+function getStyleColorForSkill(sk, srcCls) {
+  if (!sk || !srcCls) return "";
+  if (srcCls === "通用" || srcCls === "通用天赋树") return STYLE_COLOR_MAP["通用"]["通用天赋"];
+  var nm = sk.n || sk.name || "";
+  var styleName = sk.style || "";
+  // state.skills 条目不存 style，回查 SKILL_DATA（按 src 职业 + 技能名）
+  if (!styleName && typeof SKILL_DATA !== "undefined" && SKILL_DATA[srcCls]) {
+    var _arr = SKILL_DATA[srcCls];
+    for (var _i2 = 0; _i2 < _arr.length; _i2++) {
+      if (_arr[_i2].name === nm) { styleName = _arr[_i2].style || ""; break; }
+    }
+  }
+  // 起始特性技能在 SKILL_DATA 中缺 style 的补全
+  if (!styleName && STARTING_STYLE_OVERRIDE[srcCls] && STARTING_STYLE_OVERRIDE[srcCls][nm]) styleName = STARTING_STYLE_OVERRIDE[srcCls][nm];
+  if (!styleName || !STYLE_COLOR_MAP[srcCls]) return "";
+  return STYLE_COLOR_MAP[srcCls][styleName] || "";
+}
+
+/** 收集去重的 (baseXf, color) 需求 */
+function xlsxPushStyleNeed(need, baseXf, color) {
+  if (!need || !color || baseXf == null) return;
+  var k = baseXf + ":" + color.toUpperCase();
+  for (var i = 0; i < need.length; i++) if (need[i].key === k) return;
+  need.push({ key: k, baseXf: baseXf, color: color.toUpperCase() });
+}
+
+/**
+ * 在 styles.xml 中按需注册底纹色：每个 (baseXf, color) 克隆一个 xf（仅改 fillId），
+ * 同色 fill 已存在则复用。返回 { text, styleIds: {"baseXf:COLOR": xfIdx} }。
+ */
+function xlsxEnsureStyleColors(stylesText, need) {
+  if (!stylesText || !need || !need.length) return { text: stylesText, styleIds: {} };
+  var fm = /<fills count="(\d+)">([\s\S]*?)<\/fills>/.exec(stylesText);
+  var xm = /<cellXfs count="(\d+)">([\s\S]*?)<\/cellXfs>/.exec(stylesText);
+  if (!fm || !xm) return { text: stylesText, styleIds: {} };
+  var fillCount = parseInt(fm[1], 10);
+  var xfCount = parseInt(xm[1], 10);
+  var fillBlocks = fm[2].split("<fill>");
+  var fillColors = [];
+  for (var i = 1; i < fillBlocks.length; i++) {
+    var cm = /<fgColor[^>]*rgb="(?:[0-9A-Fa-f]{2})?([0-9A-Fa-f]{6})"/.exec(fillBlocks[i]);
+    fillColors.push(cm ? cm[1].toUpperCase() : "");
+  }
+  var xfBlocks = xm[2].match(/<xf\b[\s\S]*?<\/xf>|<xf\b[^>]*\/>/g) || [];
+  var styleIds = {};
+  var newFills = "";
+  var newXfs = "";
+  var needFillId = {};
+  var fillAdd = 0;
+  var xfAdd = 0;
+  for (var n = 0; n < need.length; n++) {
+    var item = need[n];
+    if (styleIds[item.key] !== undefined) continue;
+    var baseXfText = xfBlocks[item.baseXf] || xfBlocks[0] || "";
+    if (!baseXfText) continue;
+    var fillId = -1;
+    if (needFillId[item.color] !== undefined) fillId = needFillId[item.color];
+    else {
+      for (var fi = 0; fi < fillColors.length; fi++) {
+        if (fillColors[fi] === item.color) { fillId = fi; break; }
+      }
+      if (fillId < 0) {
+        fillId = fillCount + fillAdd;
+        fillAdd++;
+        newFills += '<fill><patternFill patternType="solid"><fgColor rgb="FF' + item.color + '"/><bgColor indexed="64"/></patternFill></fill>';
+      }
+      needFillId[item.color] = fillId;
+    }
+    var xfText = baseXfText;
+    if (/fillId="\d+"/.test(xfText)) xfText = xfText.replace(/fillId="\d+"/, 'fillId="' + fillId + '"');
+    else xfText = xfText.replace(/<xf\b/, '<xf fillId="' + fillId + '"');
+    if (/applyFill="\d+"/.test(xfText)) xfText = xfText.replace(/applyFill="\d+"/, 'applyFill="1"');
+    else xfText = xfText.replace(/<xf\b/, '<xf applyFill="1"');
+    // 名称类单元格统一水平居中（模板 E 列风格格默认无 horizontal，与手改样例一致）
+    if (/<alignment\b/.test(xfText)) {
+      if (!/horizontal="/.test(xfText)) xfText = xfText.replace(/<alignment\b/, '<alignment horizontal="center"');
+    } else {
+      xfText = xfText.replace(/\/>$/, '><alignment horizontal="center" vertical="center"/></xf>');
+    }
+    newXfs += xfText;
+    styleIds[item.key] = xfCount + xfAdd;
+    xfAdd++;
+  }
+  if (!newFills && !newXfs) return { text: stylesText, styleIds: styleIds };
+  stylesText = stylesText.replace(/<fills count="\d+">/, '<fills count="' + (fillCount + fillAdd) + '">');
+  stylesText = stylesText.replace("</fills>", newFills + "</fills>");
+  stylesText = stylesText.replace(/<cellXfs count="\d+">/, '<cellXfs count="' + (xfCount + xfAdd) + '">');
+  stylesText = stylesText.replace("</cellXfs>", newXfs + "</cellXfs>");
+  return { text: stylesText, styleIds: styleIds };
+}
+
+
+/**
  * 将超出已解锁容量的栏位「划掉」：只动名称列（技能 B、图纸/天赋 O），格子留空 + 对角线样式。
  * 已填内容超出上限时不覆盖（从 max(容量,已填数) 起划）。
  */
@@ -7607,6 +7736,39 @@ async function exportXlsxFromState(state) {
   clearXlsxEquipmentSlots(set);
   clearXlsxClassAndFeatureSlots(set);
 
+  // ===== 风格底纹（26.07.31）：按需注册 fill + cellXf =====
+  normalizeAllSkillSubs();
+  var styleNeed = [];
+  var _bMainXf = cStyle["B123"] || 0;
+  var _bSubXf = cStyle["B168"] || _bMainXf || 0;
+  var _styleRows = [17, 23, 29];
+  for (var _ri = 0; _ri < _styleRows.length; _ri++) {
+    var _rc = state.classes[_ri];
+    if (!_rc || !_rc.name || !_rc.styles) continue;
+    for (var _sj = 0; _sj < 4; _sj++) {
+      var _sn = _rc.styles[_sj] || "";
+      if (!_sn) continue;
+      var _sColor = (STYLE_COLOR_MAP[_rc.name] || {})[_sn] || "";
+      if (_sColor) xlsxPushStyleNeed(styleNeed, cStyle["E" + (_styleRows[_ri] + _sj)] || 0, _sColor);
+    }
+  }
+  var _mainSkills = (state.skills || []).filter(isMainSkillOccupant);
+  var _subSkills = (state.skills || []).filter(isSubSkillOccupant);
+  for (var _mi = 0; _mi < _mainSkills.length; _mi++) {
+    var _ms = _mainSkills[_mi];
+    xlsxPushStyleNeed(styleNeed, _bMainXf, getStyleColorForSkill(_ms, _ms.src || _ms.source || ((state.classes[0] || {}).name || "")));
+  }
+  for (var _ui = 0; _ui < _subSkills.length; _ui++) {
+    var _us = _subSkills[_ui];
+    xlsxPushStyleNeed(styleNeed, _bSubXf, getStyleColorForSkill(_us, _us.src || _us.source || ((state.classes[1] || {}).name || "")));
+  }
+  var styleIdMap = {};
+  if (stEntry && stEntry.text && styleNeed.length) {
+    var stylePack = xlsxEnsureStyleColors(stEntry.text, styleNeed);
+    stEntry.text = stylePack.text;
+    styleIdMap = stylePack.styleIds;
+  }
+
   // Basic info
   if (state.player) set("C3", state.player);
   if (state.name) set("C4", state.name);
@@ -7674,8 +7836,19 @@ async function exportXlsxFromState(state) {
   // Class layout
   set("B17", cl.name || "");
   if(cl.level) set("D17", cl.level);
-  if(cl.styles && cl.styles[0]) set("E17", cl.styles[0]);
-  if(cl.styles && cl.styles[1]) set("E18", cl.styles[1]);
+  var _styleRows2 = [17, 23, 29];
+  var _styleCls = [cl, state.classes[1], state.classes[2]];
+  for (var _ri2 = 0; _ri2 < _styleCls.length; _ri2++) {
+    var _rc2 = _styleCls[_ri2];
+    if (!_rc2 || !_rc2.name) continue;
+    for (var _sj2 = 0; _sj2 < 4; _sj2++) {
+      var _sn2 = (_rc2.styles && _rc2.styles[_sj2]) || "";
+      if (!_sn2) continue;
+      var _sColor2 = (STYLE_COLOR_MAP[_rc2.name] || {})[_sn2] || "";
+      var _sXf2 = _sColor2 ? (styleIdMap[(cStyle["E" + (_styleRows2[_ri2] + _sj2)] || 0) + ":" + _sColor2] || "") : "";
+      set("E" + (_styleRows2[_ri2] + _sj2), _sn2, true, _sXf2);
+    }
+  }
   var sc = state.classes[1];
   if(sc && sc.name) { set("B23", sc.name); if(sc.level) set("D23", sc.level); }
   var wa = state.classes[2];
@@ -7821,7 +7994,8 @@ async function exportXlsxFromState(state) {
     var skName = sk.n || sk.name || "";
     var skPrefer = sk.src || sk.source || cl.name || "";
     var skRef = lookupSkill(skName, skPrefer);
-    set("B" + (123 + si), skName);
+    var _skColor = getStyleColorForSkill(sk, skPrefer);
+    set("B" + (123 + si), skName, true, _skColor ? (styleIdMap[_bMainXf + ":" + _skColor] || "") : "");
     set("D" + (123 + si), sk.tm || sk.time || (skRef && skRef.fields ? skRef.fields['施展时间'] : "") || "");
     set("E" + (123 + si), sk.range || (skRef && skRef.fields ? skRef.fields['施展距离'] : "") || "");
     set("F" + (123 + si), sk.dur || sk.duration || (skRef && skRef.fields ? skRef.fields['持续时间'] : "") || "");
@@ -7842,7 +8016,8 @@ async function exportXlsxFromState(state) {
     var sskName = ssk.n || ssk.name || "";
     var sskPrefer = ssk.src || ssk.source || (sc ? sc.name : "") || "";
     var sskRef = lookupSkill(sskName, sskPrefer);
-    set("B" + (168 + ssi), sskName);
+    var _sskColor = getStyleColorForSkill(ssk, sskPrefer);
+    set("B" + (168 + ssi), sskName, true, _sskColor ? (styleIdMap[_bSubXf + ":" + _sskColor] || "") : "");
     set("D" + (168 + ssi), ssk.tm || ssk.time || (sskRef && sskRef.fields ? sskRef.fields['施展时间'] : "") || "");
     set("E" + (168 + ssi), ssk.range || (sskRef && sskRef.fields ? sskRef.fields['施展距离'] : "") || "");
     set("F" + (168 + ssi), ssk.dur || ssk.duration || (sskRef && sskRef.fields ? sskRef.fields['持续时间'] : "") || "");
