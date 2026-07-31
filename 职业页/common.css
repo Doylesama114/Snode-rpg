@@ -180,6 +180,154 @@
     .detail .field { font-weight: 700; color: var(--red); }
     .btn:active, .adv-link:active, .class-card:active, .chip:active { transform: scale(0.96); }
     .detail .choice { font-size: 14px; font-weight: 700; color: var(--gold); word-break: break-word; }
+
+    /* ===== 表格化技能详情（26.07.31 方案C）：属性两栏表 + 描述/效果/升级分区 + docx 风格底纹 ===== */
+    .skill { --style-color:#c9c2b2; --style-rgb:201,194,178; }
+    .skill[data-style="荒野"] { --style-color:#70D4A2; --style-rgb:112,212,162; }
+    .skill[data-style="兽灵"] { --style-color:#FFF8A3; --style-rgb:255,248,163; }
+    .skill[data-style="复苏"] { --style-color:#C2FDA6; --style-rgb:194,253,166; }
+    .skill[data-style="月影"] { --style-color:#C2C3FF; --style-rgb:194,195,255; }
+    .skill[data-style="日怒"] { --style-color:#FFAD8D; --style-rgb:255,173,141; }
+    .skill[data-style="星辰"] { --style-color:#8AE3FD; --style-rgb:138,227,253; }
+    .skill[data-style="精火"] { --style-color:#FFD7F8; --style-rgb:255,215,248; }
+    .skill[data-style="塑能"] { --style-color:#FFA387; --style-rgb:255,163,135; }
+    .skill[data-style="咒法"] { --style-color:#B3E7FF; --style-rgb:179,231,255; }
+    .skill[data-style="预言"] { --style-color:#AFFFE6; --style-rgb:175,255,230; }
+    .skill[data-style="防护"] { --style-color:#FCFF99; --style-rgb:252,255,153; }
+    .skill[data-style="附魔"] { --style-color:#D0A5FF; --style-rgb:208,165,255; }
+    .skill[data-style="死灵"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
+    .skill[data-style="幻术"] { --style-color:#FFCBFF; --style-rgb:255,203,255; }
+    .skill[data-style="变化"] { --style-color:#FFC47D; --style-rgb:255,196,125; }
+    .skill[data-style="斗争"] { --style-color:#FFDB81; --style-rgb:255,219,129; }
+    .skill[data-style="狂攻"] { --style-color:#FF6F6F; --style-rgb:255,111,111; }
+    .skill[data-style="防护"] { --style-color:#FEFF63; --style-rgb:254,255,99; }
+    .skill[data-style="射击"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
+    .skill[data-style="军团"] { --style-color:#B1BCFE; --style-rgb:177,188,254; }
+    .skill[data-style="机敏"] { --style-color:#B0FCFF; --style-rgb:176,252,255; }
+    .skill[data-style="奇袭"] { --style-color:#DEEBF7; --style-rgb:222,235,247; }
+    .skill[data-style="妙手"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
+    .skill[data-style="狂妄"] { --style-color:#FF8383; --style-rgb:255,131,131; }
+    .skill[data-style="魅影"] { --style-color:#E9D5FF; --style-rgb:233,213,255; }
+    .skill[data-style="魔药"] { --style-color:#5FFF88; --style-rgb:95,255,136; }
+    .skill[data-style="激昂"] { --style-color:#ADEFFF; --style-rgb:173,239,255; }
+    .skill[data-style="灵动"] { --style-color:#FFC3DD; --style-rgb:255,195,221; }
+    .skill[data-style="舒缓"] { --style-color:#ADFFCA; --style-rgb:173,255,202; }
+    .skill[data-style="诙谐"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
+    .skill[data-style="集中"] { --style-color:#FCFF99; --style-rgb:252,255,153; }
+    .skill[data-style="射击"] { --style-color:#FFF3C7; --style-rgb:255,243,199; }
+    .skill[data-style="兽群"] { --style-color:#7FD16F; --style-rgb:127,209,111; }
+    .skill[data-style="猎鹰"] { --style-color:#DEEBF7; --style-rgb:222,235,247; }
+    .skill[data-style="机敏"] { --style-color:#C3FFF8; --style-rgb:195,255,248; }
+    .skill[data-style="生存"] { --style-color:#B6FF95; --style-rgb:182,255,149; }
+    .skill[data-style="惩戒"] { --style-color:#FFFE6F; --style-rgb:255,254,111; }
+    .skill[data-style="守护"] { --style-color:#F7BDFF; --style-rgb:247,189,255; }
+    .skill[data-style="热诚"] { --style-color:#FF6565; --style-rgb:255,101,101; }
+    .skill[data-style="圣洁"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
+    .skill[data-style="斗争"] { --style-color:#FFDB81; --style-rgb:255,219,129; }
+    .skill[data-style="狂暴"] { --style-color:#FF4F4F; --style-rgb:255,79,79; }
+    .skill[data-style="生机"] { --style-color:#70FF5D; --style-rgb:112,255,93; }
+    .skill[data-style="法咒"] { --style-color:#83BEF9; --style-rgb:131,190,249; }
+    .skill[data-style="极斗"] { --style-color:#FDE3B0; --style-rgb:253,227,176; }
+    .skill[data-style="织雾"] { --style-color:#C2FDA6; --style-rgb:194,253,166; }
+    .skill[data-style="踏风"] { --style-color:#B2F6FB; --style-rgb:178,246,251; }
+    .skill[data-style="无尘"] { --style-color:#FEFF63; --style-rgb:254,255,99; }
+    .skill[data-style="锋岚"] { --style-color:#B5C7EA; --style-rgb:181,199,234; }
+    .skill[data-style="酒仙"] { --style-color:#78CC96; --style-rgb:120,204,150; }
+    .skill[data-style="凰火"] { --style-color:#FB7979; --style-rgb:251,121,121; }
+    .skill[data-style="戒律"] { --style-color:#FFF6C3; --style-rgb:255,246,195; }
+    .skill[data-style="虔佑"] { --style-color:#FFFFFF; --style-rgb:255,255,255; }
+    .skill[data-style="魂谒"] { --style-color:#AFE3FC; --style-rgb:175,227,252; }
+    .skill[data-style="潜能"] { --style-color:#EBB9FF; --style-rgb:235,185,255; }
+    .skill[data-style="魔契"] { --style-color:#A6BAF5; --style-rgb:166,186,245; }
+    .skill[data-style="邪念"] { --style-color:#93FF63; --style-rgb:147,255,99; }
+    .skill[data-style="咒能"] { --style-color:#D2B3FF; --style-rgb:210,179,255; }
+    .skill[data-style="秘术"] { --style-color:#BDF1FA; --style-rgb:189,241,250; }
+    .skill[data-style="精准"] { --style-color:#FFFDAD; --style-rgb:255,253,173; }
+    .skill[data-style="构想"] { --style-color:#D5E7FF; --style-rgb:213,231,255; }
+    .skill[data-style="支援"] { --style-color:#ADFFB7; --style-rgb:173,255,183; }
+    .skill[data-style="电涌"] { --style-color:#F9FF4F; --style-rgb:249,255,79; }
+    .skill[data-style="炽擎"] { --style-color:#FF6363; --style-rgb:255,99,99; }
+    .skill[data-style="魔枢"] { --style-color:#ADEFFF; --style-rgb:173,239,255; }
+    .skill[data-style="风暴"] { --style-color:#B3D5FF; --style-rgb:179,213,255; }
+    .skill[data-style="水源"] { --style-color:#B3FFEE; --style-rgb:179,255,238; }
+    .skill[data-style="大地"] { --style-color:#FFD4B3; --style-rgb:255,212,179; }
+    .skill[data-style="火焰"] { --style-color:#FF6D6D; --style-rgb:255,109,109; }
+    .skill[data-style="巫术"] { --style-color:#B6FF95; --style-rgb:182,255,149; }
+    .skill[data-style="通用天赋"] { --style-color:#D7D7D7; --style-rgb:215,215,215; }
+    .detail > div { margin: 6px 0; }
+    .cond-row {
+      display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+      padding: 7px 10px; border-radius: 6px;
+      background: rgba(222, 130, 60, .13);
+      border-left: 4px solid #d9822b;
+    }
+    .cond-label { flex: 0 0 auto; font-weight: 700; font-size: 13px; color: #9a5a1e; }
+    .cond-text { font-size: 14px; color: var(--ink); }
+    .attr-table {
+      border: 1px solid rgba(var(--style-rgb), .6);
+      border-radius: 8px; overflow: hidden;
+    }
+    .attr-row { display: grid; grid-template-columns: 92px 1fr 92px 1fr; }
+    .attr-row.wide { grid-template-columns: 92px 1fr; }
+    .attr-row + .attr-row > span { border-top: 1px solid rgba(var(--style-rgb), .45); }
+    .attr-name {
+      background: rgba(var(--style-rgb), .48);
+      font-weight: 700; font-size: 13px; color: #3b3226;
+      padding: 6px 9px; white-space: nowrap;
+    }
+    .attr-val {
+      background: rgba(var(--style-rgb), .14);
+      padding: 6px 10px; font-size: 14px; color: var(--ink);
+      word-break: break-word; overflow-wrap: break-word;
+    }
+    .desc-cell {
+      display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+      padding: 8px 10px; border-radius: 6px;
+      background: rgba(var(--style-rgb), .34);
+      border-left: 4px solid var(--style-color);
+    }
+    .desc-label { flex: 0 0 auto; font-weight: 700; font-size: 13px; color: #4a4030; }
+    .desc-text { font-size: 14px; color: var(--ink); }
+    .effect-cell {
+      padding: 8px 10px; border-radius: 6px;
+      background: rgba(var(--style-rgb), .13);
+      border-left: 3px solid rgba(var(--style-rgb), .85);
+      font-size: 14px; line-height: 1.85; color: var(--ink);
+      word-break: break-word; overflow-wrap: break-word;
+    }
+    .upgrade-cell {
+      display: flex; gap: 4px; flex-wrap: wrap; align-items: baseline;
+      padding: 7px 10px; border-radius: 6px;
+      background: rgba(var(--style-rgb), .09);
+      border-left: 3px solid var(--style-color);
+      font-size: 13.5px; line-height: 1.75; color: var(--ink);
+      word-break: break-word; overflow-wrap: break-word;
+    }
+    .upgrade-label { font-weight: 700; color: #7a5b1e; }
+    .upgrade-cell.sub {
+      margin-left: 16px; background: transparent;
+      border-left: 2px dashed rgba(var(--style-rgb), .75);
+    }
+    .flavor-cell {
+      padding: 8px 10px; border-radius: 6px;
+      background: rgba(0,0,0,.04); border: 1px dashed var(--line);
+      font-size: 13px; color: var(--muted); line-height: 1.8;
+    }
+    html.dark .attr-name { color: #f0e8d8; background: rgba(var(--style-rgb), .28); }
+    html.dark .attr-val { background: rgba(var(--style-rgb), .08); }
+    html.dark .desc-cell { background: rgba(var(--style-rgb), .22); }
+    html.dark .desc-label { color: #e5d9c0; }
+    html.dark .effect-cell { background: rgba(var(--style-rgb), .08); }
+    html.dark .upgrade-cell { background: rgba(var(--style-rgb), .06); }
+    html.dark .upgrade-label { color: #d4b26a; }
+    html.dark .cond-label { color: #e5a76a; }
+    html.dark .cond-row { background: rgba(222,130,60,.16); }
+    html.dark .flavor-cell { background: rgba(255,255,255,.04); }
+    @media (max-width: 600px) {
+      .attr-row, .attr-row.wide { grid-template-columns: 84px 1fr; }
+      .attr-row > span:nth-child(3), .attr-row > span:nth-child(4) { border-top: 1px solid rgba(var(--style-rgb), .45); }
+    }
+
     .empty {
       padding: 24px;
       text-align: center;

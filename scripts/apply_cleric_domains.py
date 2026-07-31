@@ -144,8 +144,8 @@ def render_article(skill: dict, block: dict, deity: str) -> str:
 
     detail = build_detail_html(block)
     if not (block.get("fields") or {}) and (block.get("description") or []):
-        # feat-only body
-        paras = "".join(f"<p>{esc(p)}</p>" for p in block["description"] if p.strip())
+        # feat-only body：与表格化样式统一（效果块）
+        paras = "".join(f'<div class="effect-cell">{esc(p)}</div>' for p in block["description"] if p.strip())
         detail = paras or detail
 
     tier_label = f"{tier}天赋树" if tier and "阶" in tier else (tier or "")

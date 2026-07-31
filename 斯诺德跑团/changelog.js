@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7142',
+    date: '2026-07-31',
+    changes: [
+      '职业页：14职业+通用天赋树+牧师神圣领域表格化（docx风格底纹、升级/描述/限制补齐、顺序对齐docx、缺失技能补全）'
+    ]
+  },
+
+
+  {
     version: '1.0.7141',
     date: '2026-07-31',
     changes: [

@@ -891,7 +891,6 @@
       },
       "prerequisite": "你在本次游玩的战斗环节中使用过投掷物",
       "extra_condition": "你在本次游玩的战斗环节中投掷过五把飞镖",
-      "restriction": "你必须携带有简易武器飞镖",
       "upgrades": [
         {
           "level": 3,
@@ -3741,7 +3740,6 @@
       },
       "prerequisite": "你拥有洞悉的熟练度",
       "extra_condition": "你在本次游玩的战斗环节中豁免过致盲状态",
-      "restriction": "你能够做出对应手势、凭借言语发出声音",
       "upgrades": [
         {
           "level": 10,
@@ -3788,7 +3786,6 @@
       },
       "prerequisite": "你在本次游玩的战斗环节中制造过火焰地形",
       "extra_condition": "你与一团具有魔法性质的火焰进行过交互",
-      "restriction": "你能够做出对应手势、凭借言语发出声音",
       "upgrades": [
         {
           "level": 15,

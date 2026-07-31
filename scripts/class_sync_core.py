@@ -13,7 +13,7 @@ from xml.etree import ElementTree as ET
 NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 FIELD_ORDER = (
     "前置条件", "额外条件", "施展时间", "施展距离", "持续时间",
-    "疲劳消耗", "关键词", "施展条件", "施展限制", "标识",
+    "疲劳消耗", "关键词", "施展条件", "施展限制", "限制", "标识",
 )
 FIELD_PREFIXES = tuple(f"{k}：" for k in FIELD_ORDER) + ("费用：", "描述：")
 HEX2NAME = {
@@ -112,7 +112,7 @@ def extract_paragraphs(docx_path: Path) -> list[dict]:
 
 def split_field(text: str) -> tuple[str | None, str]:
     if text.startswith("限制："):
-        return "施展限制", text[len("限制：") :].strip()
+        return "限制", text[len("限制：") :].strip()
     for fk in (*FIELD_ORDER, "费用", "描述"):
         prefix = fk + "："
         if text.startswith(prefix):
@@ -534,55 +534,67 @@ def build_detail_html(block: dict) -> str:
     runs_by_text = {
         e["text"]: e["runs"] for e in (block.get("description_entries") or [])
     }
-    ordered: list[str] = []
-    for fk in FIELD_ORDER:
-        if fk == "标识":
-            if block["mark_dots"]:
-                ordered.append(
-                    f'<p><span class="field">标识：</span>{dots_html(block["mark_dots"])}</p>'
-                )
-            continue
+    out: list[str] = []
+
+    # 条件行（前置/额外条件）
+    for fk in ("前置条件", "额外条件"):
         if fk in fields:
-            ordered.append(field_p_html(fk, fields[fk], field_runs.get(fk)))
+            out.append(
+                f'<div class="cond-row"><span class="cond-label">{fk}：</span>'
+                f'<span class="cond-text">{fields[fk]}</span></div>'
+            )
+
+    # 属性两栏表（施展时间|距离、持续|疲劳；其余整行）
+    out.append('<div class="attr-table">')
+    for lk, rk in (("施展时间", "施展距离"), ("持续时间", "疲劳消耗")):
+        lv = fields.get(lk, "-")
+        rv = fields.get(rk, "-")
+        out.append(
+            f'<div class="attr-row"><span class="attr-name">{lk}：</span>'
+            f'<span class="attr-val">{lv}</span>'
+            f'<span class="attr-name">{rk}</span>'
+            f'<span class="attr-val">{rv}</span></div>'
+        )
+    for fk in ("关键词", "施展条件", "施展限制", "限制"):
+        if fk in fields:
+            out.append(
+                f'<div class="attr-row wide"><span class="attr-name">{fk}：</span>'
+                f'<span class="attr-val">{fields[fk]}</span></div>'
+            )
+    if block["mark_dots"]:
+        out.append(
+            f'<div class="attr-row wide"><span class="attr-name">标识：</span>'
+            f'<span class="attr-val">{dots_html(block["mark_dots"])}</span></div>'
+        )
+    out.append("</div>")
 
     desc = filter_description_lines(block["description"])
     desc = [p for p in desc if p.strip() and p.strip() != block["name"]]
-    if desc:
-        if "描述" in fields:
-            if not any(
-                x.startswith('<p><span class="field">描述：</span>')
-                for x in ordered
-            ):
-                ordered.append(
-                    field_p_html("描述", fields["描述"], field_runs.get("描述"))
-                )
-            for para in desc:
-                if para != fields.get("描述"):
-                    runs = runs_by_text.get(para)
-                    inner = (
-                        inline_runs_html(runs)
-                        if runs and runs_have_colored_dots(runs)
-                        else para
-                    )
-                    ordered.append(f"<p>{inner}</p>")
+    desc_text = fields.get("描述")
+    # 描述句单独单元格：docx 原文（描述：xxx）一字不改
+    if desc_text:
+        runs = field_runs.get("描述")
+        if runs and runs_have_colored_dots(runs):
+            desc_inner = inline_runs_html(runs)
         else:
-            first_runs = runs_by_text.get(desc[0])
-            ordered.append(
-                field_p_html(
-                    "描述",
-                    desc[0],
-                    first_runs if first_runs else None,
-                )
-            )
-            for para in desc[1:]:
-                runs = runs_by_text.get(para)
-                inner = (
-                    inline_runs_html(runs)
-                    if runs and runs_have_colored_dots(runs)
-                    else para
-                )
-                ordered.append(f"<p>{inner}</p>")
+            desc_inner = desc_text
+        out.append(
+            f'<div class="desc-cell"><span class="desc-label">描述：</span>'
+            f'<span class="desc-text">{desc_inner}</span></div>'
+        )
+    # 效果正文（描述句之外的段落）
+    for para in desc:
+        if para == desc_text:
+            continue
+        runs = runs_by_text.get(para)
+        inner = (
+            inline_runs_html(runs)
+            if runs and runs_have_colored_dots(runs)
+            else para
+        )
+        out.append(f'<div class="effect-cell">{inner}</div>')
 
+    # 升级行：保留 docx 原文前缀
     for lu in block["level_upgrades"]:
         label = lu.get("label")
         if not label:
@@ -598,18 +610,21 @@ def build_detail_html(block: dict) -> str:
             body_html = inline_runs_html(body_runs)
         else:
             body_html = lu["text"]
-        ordered.append(f'<p><span class="field">{label}</span>{body_html}</p>')
+        out.append(
+            f'<div class="upgrade-cell"><span class="upgrade-label">{label}</span>{body_html}</div>'
+        )
         for choice in lu.get("choices") or []:
-            ordered.append(f"<p>{choice}</p>")
+            out.append(f'<div class="upgrade-cell sub">{choice}</div>')
 
+    # 天赋树解锁说明等尾段（docx 原文）
     if block["flavor"]:
-        ordered.append("<p>---------------------------------------------------------------------</p>")
+        out.append('<div class="flavor-cell">')
         for line in block["flavor"].split("\n"):
             if line.strip():
-                ordered.append(f"<p>{line.strip()}</p>")
+                out.append(f"<div>{line.strip()}</div>")
+        out.append("</div>")
 
-    return "".join(ordered)
-
+    return "".join(out)
 
 def tags_from_keywords(kw: str) -> list[str]:
     if not kw or kw == "-":
@@ -680,14 +695,38 @@ def build_data_search(block: dict, style: str, tier_label: str, tags: list[str])
             parts.append(f"{fk}：{block['fields'][fk]}")
     desc = [p for p in block["description"] if p.strip() != block["name"]]
     parts.extend(desc)
+    if block["fields"].get("描述"):
+        parts.append("描述：" + block["fields"]["描述"])
     if block["flavor"]:
         parts.append(block["flavor"])
+    for lu in block["level_upgrades"]:
+        label = lu.get("label") or ""
+        parts.append(f"{label}{lu['text']}")
+        for choice in lu.get("choices") or []:
+            parts.append(choice)
     return " ".join(parts)
-
 
 def sanitize_data_search(text: str) -> str:
     text = re.sub(r"<[^>]+>", " ", text)
     return text.replace('"', "").strip()
+
+def div_close_pos(html: str, open_pos: int) -> int:
+    """返回与 open_pos 处 <div ...> 配对的 </div> 起始位置；找不到返回 -1。"""
+    depth = 0
+    pos = open_pos
+    while True:
+        o = html.find("<div", pos)
+        c = html.find("</div>", pos)
+        if c == -1:
+            return -1
+        if o != -1 and o < c:
+            depth += 1
+            pos = o + 4
+        else:
+            depth -= 1
+            if depth <= 0:
+                return c
+            pos = c + 6
 
 
 def patch_html(html: str, skill_id: str, detail_html: str, data_search: str, data_attrs: str = "") -> str:
@@ -700,7 +739,7 @@ def patch_html(html: str, skill_id: str, detail_html: str, data_search: str, dat
     h4_start = html.find("<h4>", pos)
     detail_start = html.find('<div class="detail">', h4_start)
     detail_content_start = detail_start + len('<div class="detail">')
-    detail_end = html.find("</div>", detail_content_start)
+    detail_end = div_close_pos(html, detail_start)
     article_end = html.find("</article>", detail_end)
 
     # preserve original article class attribute
@@ -727,7 +766,7 @@ def remove_skill_from_html(html: str, skill_id: str, skill_name: str) -> str:
         h4_start = html.find("<h4>", pos)
         detail_start = html.find('<div class="detail">', h4_start)
         detail_content_start = detail_start + len('<div class="detail">')
-        detail_end = html.find("</div>", detail_content_start)
+        detail_end = div_close_pos(html, detail_start)
         article_end = html.find("</article>", detail_end)
         html = html[:article_start] + html[article_end + len("</article>") :]
 
