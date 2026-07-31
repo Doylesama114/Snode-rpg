@@ -24,7 +24,7 @@ android {
         val ksPath = project.findProperty("keystorePath") as String?
         if (ksPath != null) {
             create("release") {
-                storeFile = file(ksPath)
+                storeFile = rootProject.file(ksPath)
                 storePassword = project.findProperty("keystorePass") as String?
                 keyAlias = project.findProperty("keyAlias") as String?
                 keyPassword = project.findProperty("keyPass") as String?
