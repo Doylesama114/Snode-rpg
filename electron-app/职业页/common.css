@@ -137,7 +137,22 @@
     .style h2 { margin: 0 0 8px; font-size: 28px; color: var(--red); letter-spacing: 0; }
     .intro { color: var(--muted); margin: 0 0 16px; }
     .tier { margin: 12px 0; padding-top: 10px; border-top: 1px solid var(--line); }
-    .tier h3 { margin: 0 0 4px; font-size: 20px; color: var(--green); }
+    .tier h3 {
+      margin: 18px 0 10px; font-size: 21px; color: var(--green);
+      padding: 9px 14px 9px 18px;
+      background: linear-gradient(90deg, rgba(76,175,80,.14), rgba(76,175,80,0));
+      border-left: 5px solid var(--green); border-radius: 0 8px 8px 0;
+      letter-spacing: 1px; font-weight: 800;
+    }
+    .tier h3::before { content: "\25c6 "; font-size: 13px; vertical-align: 2px; opacity: .75; }
+    .tier h3[data-tier="一阶"] { border-left-color: #4caf50; }
+    .tier h3[data-tier="二阶"] { border-left-color: #2196f3; }
+    .tier h3[data-tier="三阶"] { border-left-color: #9c27b0; }
+    .tier h3[data-tier="四阶"] { border-left-color: #ff9800; }
+    .tier h3[data-tier="五阶"] { border-left-color: #e53935; }
+    .tier h3[data-tier="六阶"] { border-left-color: #00897b; }
+    .tier h3[data-tier="七阶"] { border-left-color: #6d4c41; }
+    html.dark .tier h3 { background: linear-gradient(90deg, rgba(76,175,80,.18), rgba(76,175,80,0)); }
     .unlock { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
     .skill {
       margin: 8px 0;
