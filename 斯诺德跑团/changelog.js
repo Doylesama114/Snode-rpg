@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7160',
+    date: '2026-08-01',
+    changes: [
+      '武僧移动端补回按阶位筛选的侧边栏导航抽屉'
+    ]
+  },
+
+
+  {
     version: '1.0.7159',
     date: '2026-07-31',
     changes: [
