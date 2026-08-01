@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7161',
+    date: '2026-08-01',
+    changes: [
+      '桌面端仅保留每次启动自动检查更新，移除每4小时定时检查'
+    ]
+  },
+
+
+  {
     version: '1.0.7160',
     date: '2026-08-01',
     changes: [

@@ -599,12 +599,10 @@ app.whenReady().then(() => {
   createWindow();
 
   // 启动时自动检查更新（GitHub → 失败则自动国内镜像下载安装）
+  // 每次启动后自动检查更新（已去除定时检查，避免频繁提示）
   mainWindow.once('ready-to-show', () => {
     setTimeout(() => runAutoUpdateCheck(), 3000);
   });
-
-  // 定时检查更新（每4小时）
-  setInterval(() => runAutoUpdateCheck(), 4 * 60 * 60 * 1000);
 });
 
 app.on('window-all-closed', () => app.quit());
