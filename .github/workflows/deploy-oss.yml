@@ -27,6 +27,20 @@ jobs:
               sed -i "s|</body>|<script src=\"../bug-report.js\"></script>\n</body>|" "$f"
             fi
           done
+          # 注入移动端 AI 顾问悬浮球入口（OSS 子目录部署用相对路径）
+          find _deploy -name "*.html" | while read f; do
+            if ! grep -q "advisor-mobile-entry.js" "$f"; then
+              case "$f" in
+                *斯诺德跑团*) REL="advisor-mobile-entry.js";;
+                *职业页*) REL="../斯诺德跑团/advisor-mobile-entry.js";;
+                *) REL="斯诺德跑团/advisor-mobile-entry.js";;
+              esac
+              sed -i "s|</body>|<script src=\"$REL\"></script>\n</body>|" "$f"
+            fi
+          done
+          if [ -n "${{ vars.ADVISOR_API_BASE }}" ]; then
+            find _deploy -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|${{ vars.ADVISOR_API_BASE }}|g" {} +
+          fi
           find _deploy -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy -name "*.bat" -delete 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true

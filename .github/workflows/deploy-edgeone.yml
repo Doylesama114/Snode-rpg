@@ -32,6 +32,16 @@ jobs:
               sed -i "s|</body>|<script src=\"/bug-report.js\"></script>\n</body>|" "$f"
             fi
           done
+          # 注入移动端 AI 顾问悬浮球入口（绝对路径）
+          find _deploy_edgeone -name "*.html" | while read f; do
+            if ! grep -q "advisor-mobile-entry.js" "$f"; then
+              sed -i "s|</body>|<script src=\"/斯诺德跑团/advisor-mobile-entry.js\"></script>\n</body>|" "$f"
+            fi
+          done
+          # 写入 AI 顾问 API 地址
+          if [ -n "${{ vars.ADVISOR_API_BASE }}" ]; then
+            find _deploy_edgeone -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|${{ vars.ADVISOR_API_BASE }}|g" {} +
+          fi
           find _deploy_edgeone -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy_edgeone -name "*.bat" -delete 2>/dev/null || true
           rm -rf _deploy_edgeone/斯诺德跑团/verify.html 2>/dev/null || true

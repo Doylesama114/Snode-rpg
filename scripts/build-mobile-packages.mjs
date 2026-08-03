@@ -126,6 +126,29 @@ function injectBugReport(files) {
   }
 }
 
+
+// ---------- mobile advisor entry injection ----------
+function injectMobileEntry(files, apiBase) {
+  for (const f of files) {
+    if (!f.name.endsWith('.html')) continue;
+    let t = f.data.toString('utf8');
+    const inSN = f.name.includes(`${SNODE}/`);
+    const inJobs = f.name.includes(`${JOBS}/`);
+    const src = inSN
+      ? 'advisor-mobile-entry.js'
+      : inJobs
+        ? `../${SNODE}/advisor-mobile-entry.js`
+        : `${SNODE}/advisor-mobile-entry.js`;
+    if (!t.includes('advisor-mobile-entry.js')) {
+      t = t.replace(/<\/body>/i, `<script src="${src}"></script>\n</body>`);
+    }
+    if (apiBase && f.name.endsWith(`${SNODE}/顾问.html`)) {
+      t = t.split('__ADVISOR_API_BASE__').join(apiBase.replace(/\/+$/, ''));
+    }
+    f.data = Buffer.from(t, 'utf8');
+  }
+}
+
 // ---------- reference integrity check ----------
 function checkReferences(files) {
   const names = new Set(files.map((f) => f.name));
@@ -171,6 +194,10 @@ function main() {
     const i = args.indexOf('--base');
     return i >= 0 ? args[i + 1] : null;
   })();
+  const apiBase = (() => {
+    const i = args.indexOf('--api-base');
+    return i >= 0 ? args[i + 1] : (process.env.ADVISOR_API_BASE || '');
+  })();
   const verArg = (() => {
     const i = args.indexOf('--version');
     return i >= 0 ? args[i + 1] : null;
@@ -188,6 +215,7 @@ function main() {
   core.push(...collectDir(path.join(ROOT, JOBS), JOBS + '/'));
   core.push({ name: 'bug-report.js', data: fs.readFileSync(path.join(ROOT, 'bug-report.js')) });
   injectBugReport(core);
+  injectMobileEntry(core, apiBase);
   const poker = collectDir(POKER_SRC, 'poker-game/');
 
   fs.mkdirSync(OUT_DIR, { recursive: true });

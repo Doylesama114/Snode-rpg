@@ -161,6 +161,7 @@ jobs:
       VERSION_TAG: ${{ github.ref_name }}
       BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
       GH_TOKEN2: ${{ secrets.GH_TOKEN2 }}
+      ADVISOR_API_BASE: ${{ vars.ADVISOR_API_BASE }}
     steps:
       - uses: actions/checkout@v4
 

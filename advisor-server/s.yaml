@@ -1,0 +1,47 @@
+edition: 3.0.0
+name: snode-advisor
+access: default
+
+vars:
+  region: ${env(ALIYUN_FC_REGION)}
+  functionName: snode-advisor
+
+resources:
+  advisor:
+    component: fc3
+    props:
+      region: ${vars.region}
+      functionName: ${vars.functionName}
+      description: 斯诺德跑团 AI 助理后端（移动端）
+      runtime: custom.debian10
+      code: ./dist
+      cpu: 0.5
+      memorySize: 1024
+      diskSize: 10240
+      timeout: 180
+      instanceConcurrency: 1
+      internetAccess: true
+      layers:
+        - acs:fc:${vars.region}:official:layers/Nodejs20/versions/1
+      environmentVariables:
+        DEEPSEEK_API_KEY: ${env(DEEPSEEK_API_KEY)}
+        DEEPSEEK_MODEL: ${env(DEEPSEEK_MODEL)}
+        DEEPSEEK_BASE_URL: ${env(DEEPSEEK_BASE_URL)}
+        DEEPSEEK_TEMPERATURE: ${env(DEEPSEEK_TEMPERATURE)}
+        DEEPSEEK_THINKING: ${env(DEEPSEEK_THINKING)}
+      customRuntimeConfig:
+        command:
+          - /opt/nodejs20/bin/node
+          - server.js
+        port: 9000
+      triggers:
+        - triggerName: httpTrigger
+          triggerType: http
+          qualifier: LATEST
+          triggerConfig:
+            authType: anonymous
+            disableURLInternet: false
+            methods:
+              - GET
+              - POST
+              - OPTIONS

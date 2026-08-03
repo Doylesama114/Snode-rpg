@@ -1,0 +1,7 @@
+{
+  "name": "snode-advisor-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Snode RPG AI advisor remote service (Alibaba Cloud FC web function)"
+}
