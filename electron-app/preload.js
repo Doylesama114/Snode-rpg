@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkUpdateGitee: () => ipcRenderer.send('check-update-mirror'),
   checkUpdateMirror: () => ipcRenderer.send('check-update-mirror'),
   restart: () => ipcRenderer.send('restart-app'),
+  getAutoUpdate: () => ipcRenderer.invoke('get-auto-update'),
+  setAutoUpdate: (value) => ipcRenderer.send('set-auto-update', value),
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (_event, data) => callback(data));
   },

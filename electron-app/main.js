@@ -26,6 +26,42 @@ let updateCheckInFlight = false;
 /** @type {{ order: string[], phase: string, autoFallback: boolean, mirrorAttempted: boolean, lastSource: string|null }|null} */
 let updateSession = null;
 
+let autoUpdateEnabledCache = null;
+
+/** 启动台「自动更新」开关持久化文件（userData/snowd-settings.json） */
+function settingsFilePath() {
+  return path.join(app.getPath('userData'), 'snowd-settings.json');
+}
+function getAutoUpdateEnabled() {
+  if (autoUpdateEnabledCache !== null) return autoUpdateEnabledCache;
+  try {
+    const file = settingsFilePath();
+    if (fs.existsSync(file)) {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+      autoUpdateEnabledCache = data.autoUpdate !== false;
+    } else {
+      autoUpdateEnabledCache = true;
+    }
+  } catch (e) {
+    autoUpdateEnabledCache = true;
+  }
+  return autoUpdateEnabledCache;
+}
+function setAutoUpdateEnabled(value) {
+  autoUpdateEnabledCache = !!value;
+  try {
+    const file = settingsFilePath();
+    let data = {};
+    if (fs.existsSync(file)) {
+      try { data = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { data = {}; }
+    }
+    data.autoUpdate = autoUpdateEnabledCache;
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[设置] 保存自动更新开关失败:', e.message);
+  }
+}
+
 function sendUpdateStatus(data) {
   if (!mainWindow) return;
   mainWindow.webContents.send('update-status', data);
@@ -266,6 +302,12 @@ autoUpdater.on('error', (err) => {
 ipcMain.on('check-update', () => {
   runAutoUpdateCheck();
 });
+
+// IPC: 自动更新开关（启动台切换；默认开启）
+ipcMain.on('set-auto-update', (event, value) => {
+  setAutoUpdateEnabled(!!value);
+});
+ipcMain.handle('get-auto-update', () => getAutoUpdateEnabled());
 
 // IPC: 镜像更新 — 直接 OSS 优先全自动下载安装
 ipcMain.on('check-update-gitee', () => {
@@ -599,9 +641,11 @@ app.whenReady().then(() => {
   createWindow();
 
   // 启动时自动检查更新（GitHub → 失败则自动国内镜像下载安装）
-  // 每次启动后自动检查更新（已去除定时检查，避免频繁提示）
+  // 已去除定时检查；启动台「自动更新」开关关闭后跳过自动检查（手动检查仍可用）
   mainWindow.once('ready-to-show', () => {
-    setTimeout(() => runAutoUpdateCheck(), 3000);
+    setTimeout(() => {
+      if (getAutoUpdateEnabled()) runAutoUpdateCheck();
+    }, 3000);
   });
 });
 
