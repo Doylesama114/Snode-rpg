@@ -38,9 +38,13 @@ jobs:
               sed -i "s|</body>|<script src=\"/斯诺德跑团/advisor-mobile-entry.js\"></script>\n</body>|" "$f"
             fi
           done
-          # 写入 AI 顾问 API 地址
-          if [ -n "${{ vars.ADVISOR_API_BASE }}" ]; then
-            find _deploy_edgeone -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|${{ vars.ADVISOR_API_BASE }}|g" {} +
+          # 写入 AI 顾问 API 地址（优先变量，其次自动从 OSS 拉取 FC 发布的端点）
+          ADVISOR_API="${{ vars.ADVISOR_API_BASE }}"
+          if [ -z "$ADVISOR_API" ] && [ -n "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}" ]; then
+            ADVISOR_API=$(curl -sS --max-time 15 "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}/advisor-endpoint.txt" 2>/dev/null | tr -d '[:space:]' || true)
+          fi
+          if [ -n "$ADVISOR_API" ]; then
+            find _deploy_edgeone -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|$ADVISOR_API|g" {} +
           fi
           find _deploy_edgeone -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy_edgeone -name "*.bat" -delete 2>/dev/null || true

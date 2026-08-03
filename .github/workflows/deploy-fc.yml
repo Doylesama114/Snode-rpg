@@ -42,4 +42,24 @@ jobs:
         run: |
           s info -a default 2>&1 | tee /tmp/sinfo.txt
           echo "::notice::上面的 URL 即 AI 顾问接口地址（形如 https://snode-advisor-xxxx.cn-chengdu.fcapp.run）"
-          echo "::notice::请把它填入 GitHub Variables 的 ADVISOR_API_BASE，然后重新推送一次即可让网页/APK 生效"
+
+      - name: Setup ossutil for endpoint publish
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          endpoint: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
+
+      - name: Publish endpoint to OSS
+        env:
+          BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+        run: |
+          URL=$(grep -oE 'https://[a-zA-Z0-9.-]*fcapp\.run[^ ]*' /tmp/sinfo.txt | head -1 || true)
+          if [ -z "$URL" ]; then
+            echo "::warning::未能从 s info 输出解析 fcapp.run 地址，请到 FC 控制台查看触发器地址"
+            exit 0
+          fi
+          printf '%s' "$URL" > /tmp/advisor-endpoint.txt
+          ossutil cp /tmp/advisor-endpoint.txt "oss://${BUCKET}/advisor-endpoint.txt" -f --acl public-read
+          echo "::notice::ADVISOR_API_BASE=$URL"
+
