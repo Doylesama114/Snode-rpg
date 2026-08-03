@@ -30,7 +30,10 @@
     dirs.pop();
     var baseDir = dirs[dirs.length - 1] || '';
     var href;
-    if (baseDir === '\u65af\u8bfa\u5fb7\u8dd1\u56e2') {
+    if (window.mobileBridge) {
+      // APK 内直接用绝对 appassets 地址，避免相对路径解析异常
+      href = 'https://appassets.androidplatform.net/\u65af\u8bfa\u5fb7\u8dd1\u56e2/\u987e\u95ee.html';
+    } else if (baseDir === '\u65af\u8bfa\u5fb7\u8dd1\u56e2') {
       href = '\u987e\u95ee.html';
     } else if (baseDir === '\u804c\u4e1a\u9875') {
       href = '../\u65af\u8bfa\u5fb7\u8dd1\u56e2/\u987e\u95ee.html';

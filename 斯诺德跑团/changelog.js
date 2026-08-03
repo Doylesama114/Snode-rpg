@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7172',
+    date: '2026-08-03',
+    changes: [
+      '修复移动端 AI 助理入口：APK 内悬浮球改用绝对 appassets 地址，避免相对路径解析异常导致 Not Found',
+      '修复移动端卡牌游戏入口：网页/APK 部署后卡牌在顶层 poker-game，路径已更正',
+      '启动台在 APK 内自动注入 base 标签，兜底帮助页与脚本等相对引用'
+    ]
+  },
+
+
+  {
     version: '1.0.7171',
     date: '2026-08-03',
     changes: [
