@@ -403,6 +403,18 @@ export function applyClassRouteFilter(route, ctx = {}) {
   return route;
 }
 
+const CHARGEN_RECOMMEND_RULE = {
+  id: 'chargen_recommend',
+  patterns: [
+    /我想玩|想玩个|想玩一|玩点什么|推荐个|推荐一|推荐.*(职业|角色)|玩什么职业|什么职业.*(好|玩)|有操作感|操作感.*(角色|职业)|很帅|帅气的角色|好玩的职业|帅.*角色/,
+  ],
+  layers: ['chargen_recommend'],
+  topK: {},
+  promptProfile: 'chargen_recommend',
+};
+
+INTENT_RULES.push(CHARGEN_RECOMMEND_RULE);
+
 const DEFAULT_RULE = {
   id: 'general',
   layers: ['L0', 'L1'],

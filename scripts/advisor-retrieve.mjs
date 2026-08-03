@@ -483,6 +483,29 @@ function buildLoreResults(store, query, queryTokens, topK) {
   return scored.slice(0, topK || 8);
 }
 
+function buildChargenRecommendLayer(store) {
+  const professions = [];
+  for (const [cn, card] of Object.entries(store.classBasicsByName || {})) {
+    if (!card) continue;
+    professions.push({
+      name: cn,
+      positioning: card.rolePositioning || (card.roleSummary?.positioning || []).join('、') || '',
+      keyAttr: card.keyAttr || '',
+      blurb: (card.roleSummary?.blurb || '').slice(0, 110),
+    });
+  }
+  const races = (store.races?.races || []).map((r) => ({
+    name: r.name,
+    attrBonus: Object.entries(r.attrBonus || {}).filter(([, v]) => v).map(([k, v]) => `${k}${v > 0 ? '+' : ''}${v}`).join(' '),
+    traits: (r.traits || []).slice(0, 3).map((t) => `${t.name}（${(t.desc || '').slice(0, 28)}）`).join('；'),
+  }));
+  const backgrounds = (store.backgrounds?.backgrounds || []).map((b) => ({
+    name: b.name,
+    skills: [...new Set([...(b.baseSkills || '').split('、'), ...(b.profSkills || '').split('、')].map((x) => x.trim()).filter(Boolean))].join('、'),
+  }));
+  return { professions, races, backgrounds };
+}
+
 function buildL0Results(store, query, queryTokens, topK) {
   const out = { rulesSummary: store.rulesSummary, hits: [] };
 
@@ -1374,6 +1397,9 @@ export function retrieve(query, options = {}) {
       case 'L7':
         layers.L7 = buildLoreResults(store, query, queryTokens, k);
         break;
+      case 'chargen_recommend':
+        layers.chargen_recommend = buildChargenRecommendLayer(store);
+        break;
       default:
         if (layer.startsWith('L2-') && store.classSkillIndexes?.[layer]) {
           layers[layer] = buildL2RegistryResults(store, layer, query, queryTokens, k, l2Opts);
@@ -1542,6 +1568,26 @@ export function formatContext(retrieval) {
     for (const hit of retrieval.results.L0.hits || []) {
       lines.push(formatL0Hit(hit));
     }
+    lines.push('');
+  }
+
+  if (retrieval.results.chargen_recommend) {
+    const rec = retrieval.results.chargen_recommend;
+    lines.push('## 车卡推荐参考（职业/种族/背景）');
+    lines.push('### 职业定位');
+    for (const p of rec.professions || []) {
+      lines.push(`- ${p.name}：${p.positioning || '—'}｜关键属性：${p.keyAttr || '—'}`);
+    }
+    lines.push('### 种族（属性加值与特性）');
+    for (const r of rec.races || []) {
+      lines.push(`- ${r.name}：${r.attrBonus || '无加值'}｜${r.traits || ''}`);
+    }
+    lines.push('### 背景（熟练项）');
+    for (const b of rec.backgrounds || []) {
+      lines.push(`- ${b.name}：${b.skills || '—'}`);
+    }
+    lines.push('### 购点规则');
+    lines.push('- 种族加值在购点后叠加（如购点智力15 + 地精+2 = 最终17）');
     lines.push('');
   }
 
