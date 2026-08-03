@@ -38,10 +38,27 @@ const CASES = [
   {
     name: 'druid_advance',
     query: '德鲁伊3级能获得什么新形态？水栖形态有什么用？',
-    contextHas: ['野兽形态'],
-    mustInclude: ['水栖形态'],
-    skip: true,
-    skipReason: 'advisor 资料库缺水栖/飞禽形态升级内容（待数据补齐轮启用）',
+    contextHas: ['野兽形态', '水栖形态', '飞禽形态'],
+    mustInclude: ['水栖形态', '水下呼吸'],
+    anyOf: [['8米', '飞禽形态', '海豹']],
+  },
+  {
+    name: 'cleric_domain',
+    query: '牧师生命与丰收之神的领域技能有哪些？树莓术的效果是什么？',
+    contextHas: ['生命与丰收之神', '树莓术'],
+    mustInclude: ['树莓术', '生命与丰收之神'],
+  },
+  {
+    name: 'mage_school_seq',
+    query: '法师的塑能学派序列是什么？',
+    contextHas: ['塑能学派序列'],
+    mustInclude: ['塑能学派序列'],
+  },
+  {
+    name: 'universal_rune',
+    query: '通用天赋树里的坚韧与不息符文有什么效果？',
+    contextHas: ['坚韧与不息符文'],
+    mustInclude: ['坚韧与不息符文'],
   },
   {
     name: 'chargen_advice',

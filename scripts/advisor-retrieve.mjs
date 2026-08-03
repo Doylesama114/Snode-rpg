@@ -312,6 +312,31 @@ export function calcMageSkillSlotsAtLevel(level) {
   return 10 + 2 * (level - 1);
 }
 
+function collectLevelSkillHits(query, store) {
+  const pools = [
+    ...Object.values(store.classSkillIndexes || {}),
+    store.mageSkills,
+    store.artificerSkills,
+    store.universalSkills,
+  ].filter(Boolean);
+  const q = String(query || '');
+  const forms = [...new Set(q.match(/[\u4e00-\u9fa5]{2,4}形态/g) || [])];
+  const seen = new Set();
+  const hits = [];
+  for (const idx of pools) {
+    for (const sk of idx?.skills || []) {
+      if (!sk?.name || seen.has(sk.name)) continue;
+      const nameHit = q.includes(sk.name);
+      const formHit = forms.some((f) => sk.summary && sk.summary.includes(f));
+      if (nameHit || formHit) {
+        seen.add(sk.name);
+        hits.push({ name: sk.name, tier: sk.tier, style: sk.style, type: sk.type, summary: sk.summary });
+      }
+    }
+  }
+  return hits.slice(0, 8);
+}
+
 function formatL0Hit(hit) {
   switch (hit.type) {
     case 'main_level':
@@ -362,6 +387,9 @@ function formatL0Hit(hit) {
       return `标识：学 1 技能通常 ${hit.learnCost?.sp ?? 1} SP + 对应 color_marks；${hit.note || ''}`;
     case 'rules_bullets':
       return (hit.bullets || []).join('\n');
+    case 'level_related_skills':
+      return (hit.skills || []).map((sk) => `${sk.name}（${[sk.tier, sk.style, sk.type].filter(Boolean).join('·') || '技能'}）：${sk.summary || ''}`).join('\n')
+        + '\n（以上为升级语境相关技能；回答时须完整转述其升级条目与数值，勿遗漏。）';
     default:
       return JSON.stringify(hit).slice(0, 400);
   }
@@ -504,6 +532,11 @@ function buildL0Results(store, query, queryTokens, topK) {
     if (/3级|三阶/.test(query)) {
       const l3 = levels.find((l) => l.level === 3);
       out.hits.push({ type: 'level_3_highlight', row: l3, talentTier: store.leveling.talentTierUnlocks?.unlocks?.find((u) => u.tier === 3) });
+    }
+    // 升级语境中提及的具体技能（如水栖/飞禽形态）附带详情，避免只给升级规则
+    const levelSkillHits = collectLevelSkillHits(query, store);
+    if (levelSkillHits.length) {
+      out.hits.push({ type: 'level_related_skills', skills: levelSkillHits });
     }
   }
 

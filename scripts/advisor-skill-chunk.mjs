@@ -90,17 +90,26 @@ export function extractChoicesFrom(descriptions) {
 }
 
 export function buildSummary(skill) {
-  const parts = [];
-  if (skill.fields?.描述) parts.push(skill.fields.描述);
+  const descParts = [];
+  if (skill.fields?.描述) descParts.push(skill.fields.描述);
   for (const line of skill.description || []) {
-    if (line && !parts.includes(line)) parts.push(line);
+    if (line && !descParts.includes(line)) descParts.push(line);
   }
+  const upTexts = [];
   for (const up of skill.level_upgrades || []) {
-    if (up.text) parts.push(`L${up.level}: ${up.text}`);
+    if (up.text) upTexts.push(`L${up.level}: ${up.text}`);
   }
-  const joined = parts.join(' ').replace(/\s+/g, ' ').trim();
-  if (joined.length <= 220) return joined;
-  return `${joined.slice(0, 219)}…`;
+  const descJoined = descParts.join(' ').replace(/\s+/g, ' ').trim();
+  const upsJoined = upTexts.join(' ');
+  let joined = [descJoined, upsJoined].filter(Boolean).join(' ');
+  if (joined.length <= 600) return joined;
+  // 长技能截断时优先保留升级文本：描述压缩到 240，升级内容尽量完整（上限 900）
+  if (upsJoined.length > 0) {
+    const descCut = descJoined.length > 240 ? `${descJoined.slice(0, 239)}…` : descJoined;
+    joined = [descCut, upsJoined].filter(Boolean).join(' ');
+    if (joined.length <= 900) return joined;
+  }
+  return `${joined.slice(0, 899)}…`;
 }
 
 export function inferDamageHint(skill) {
