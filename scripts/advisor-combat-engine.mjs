@@ -270,7 +270,9 @@ export function mergeSnapshotIntoCombatScenario(scenario, snapshot, query = '') 
 export function parseAcScenarioFromQuery(query) {
   const q = String(query || '');
   const dexM = q.match(/敏捷调整值[为是]?\+(\d+)/);
-  const dexMod = dexM ? Number(dexM[1]) : null;
+  // 原始属性值（如「敏捷14」）按 abilityModifier.formula = floor((属性值-10)/2) 换算
+  const rawDexM = !dexM && q.match(/敏捷(?:属性值)?[为是]?\s*(\d{1,2})(?!调)/);
+  const dexMod = dexM ? Number(dexM[1]) : (rawDexM ? Math.floor((Number(rawDexM[1]) - 10) / 2) : null);
 
   const rules = loadCombatBasics().acRules || {};
   let armorKey = null;
