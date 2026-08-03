@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7171',
+    date: '2026-08-03',
+    changes: [
+      '移动端 AI 助理：FC 接口地址自动下发（FC 部署后发布端点到 OSS，网页与 APK 构建自动读取）',
+      '修复网页部署与 FC 端点发布的先后竞态：拉取结果增加 URL 校验，避免错误文本写入页面'
+    ]
+  },
+
+
+  {
     version: '1.0.7170',
     date: '2026-08-03',
     changes: [
