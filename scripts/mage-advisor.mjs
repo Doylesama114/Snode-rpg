@@ -13,6 +13,7 @@ import { loadSnapshotFile } from './advisor-snapshot.mjs';
 import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { planQuery, planFromRules, buildPlanCacheKey } from './advisor-planner.mjs';
 import { normalizeConversationHistory, extractGoalOverride, enrichPlannerContext } from './advisor-session.mjs';
+import { appendChoiceContext } from './advisor-choice-groups.mjs';
 import { detectStructuredQuestion } from './advisor-query-tools.mjs';
 import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
 
@@ -308,7 +309,7 @@ export async function advise(query, options = {}) {
     plan: plan || undefined,
     goalOverride: plannerCtx.goalOverride || null,
   });
-  const context = formatContext(retrieval);
+  const context = appendChoiceContext(query, formatContext(retrieval));
   const messages = buildChatMessages(query, context, {
     intent: retrieval.intent,
     mode: retrieval.mode,

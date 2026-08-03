@@ -420,12 +420,15 @@ function loadStatusNames() {
   return _statusNamesCache;
 }
 
-function resolveStatusNameFromQuery(query) {
+function resolveStatusNamesFromQuery(query) {
   const q = String(query || '');
-  for (const name of [...loadStatusNames()].sort((a, b) => b.length - a.length)) {
-    if (q.includes(name)) return name;
-  }
-  return null;
+  const names = [...loadStatusNames()].sort((a, b) => b.length - a.length);
+  return names.filter((name) => q.includes(name));
+}
+
+function resolveStatusNameFromQuery(query) {
+  const names = resolveStatusNamesFromQuery(query);
+  return names.length ? names[0] : null;
 }
 
 function classNameFromSkillIndexFile(filename) {
@@ -743,9 +746,9 @@ export function detectStructuredQuestion(query) {
     return { intent: 'feat_timing', query: q };
   }
 
-  const statusName = resolveStatusNameFromQuery(q);
-  if (statusName && STATUS_RULES_RE.test(q)) {
-    return { intent: 'status_rules', statusName, query: q };
+  const statusNames = resolveStatusNamesFromQuery(q);
+  if (statusNames.length && STATUS_RULES_RE.test(q)) {
+    return { intent: 'status_rules', statusName: statusNames[0], statusNames, query: q };
   }
 
   const bgQ = detectBackgroundQuestion(q);
@@ -1004,31 +1007,38 @@ export function buildStructuredToolContext(detected, opts = {}) {
   }
 
   if (detected.intent === 'status_rules') {
-    const status = lookupStatus(detected.statusName);
-    if (!status) return null;
-    const lines = [
-      '### Tools 层 · 异常状态（status_conditions.json · 事实）',
-      `- 语料来源：${status.sourceFile}`,
-      `- 状态名：${status.name}（${status.category || '—'} · ${status.controlTier || '—'}）`,
-      `- 效果摘要：${status.summary || status.fullEffect || '—'}`,
-    ];
-    if (status.fullEffect && status.fullEffect !== status.summary) {
-      lines.push(`- 完整效果：${String(status.fullEffect).replace(/\n/g, '；')}`);
+    const names = Array.isArray(detected.statusNames) && detected.statusNames.length
+      ? detected.statusNames
+      : (detected.statusName ? [detected.statusName] : []);
+    const statuses = names.map((n) => lookupStatus(n)).filter(Boolean);
+    if (!statuses.length) return null;
+    const lines = ['### Tools \u5c42 \u00b7 \u5f02\u5e38\u72b6\u6001\uff08status_conditions.json \u00b7 \u4e8b\u5b9e\uff09'];
+    const metaNames = [];
+    let applierTotal = 0;
+    for (const status of statuses) {
+      metaNames.push(status.name);
+      applierTotal += status.appliers.length;
+      lines.push(`- \u8bed\u6599\u6765\u6e90\uff1a${status.sourceFile}`);
+      lines.push(`- \u72b6\u6001\u300c${status.name}\u300d\uff1a${status.category || '\u2014'} \u00b7 ${status.controlTier || '\u2014'}`);
+      lines.push(`- \u6548\u679c\u6458\u8981\uff1a${status.summary || status.fullEffect || '\u2014'}`);
+      if (status.fullEffect && status.fullEffect !== status.summary) {
+        lines.push(`- \u5b8c\u6574\u6548\u679c\uff1a${String(status.fullEffect).replace(/\n/g, '\uff1b')}`);
+      }
+      if (status.buildHints?.length) {
+        lines.push(`- \u6784\u5efa\u63d0\u793a\uff1a${status.buildHints.join('\uff1b')}`);
+      }
+      lines.push(`- \u53ef\u9020\u6210\u300c${status.name}\u300d\u7684\u6280\u80fd\uff08appliesStatuses \u00b7 \u5171 ${status.appliers.length} \u9879 \u00b7 \u987b\u5b8c\u6574\u5217\u51fa\uff09\uff1a`);
+      for (const a of status.appliers) {
+        lines.push(`  \u00b7 ${a.className} \u00b7 ${a.skillName}\uff08${[a.style, a.tier].filter(Boolean).join(' \u00b7 ') || '\u2014'}\uff09`);
+      }
+      if (!status.appliers.length) lines.push('  \u00b7 \uff08\u8bed\u6599 appliesStatuses \u4e3a\u7a7a \u2014 \u5982\u5b9e\u8bf4\u660e\uff09');
     }
-    if (status.buildHints?.length) {
-      lines.push(`- 构建提示：${status.buildHints.join('；')}`);
-    }
-    lines.push(`- 可造成「${status.name}」的技能（appliesStatuses · 共 ${status.appliers.length} 项 · 须完整列出）：`);
-    for (const a of status.appliers) {
-      lines.push(`  · ${a.className} · ${a.skillName}（${[a.style, a.tier].filter(Boolean).join(' · ') || '—'}）`);
-    }
-    if (!status.appliers.length) lines.push('  · （语料 appliesStatuses 为空 — 如实说明）');
-    lines.push('- LLM 须先说明状态效果，再列全部施加技能；勿编造未收录技能名。');
+    lines.push('- LLM \u987b\u5148\u8bf4\u660e\u6bcf\u4e2a\u72b6\u6001\u7684\u6548\u679c\u4e0e\u5f7c\u6b64\u53e0\u52a0\u5173\u7cfb\uff0c\u518d\u5217\u5168\u90e8\u65bd\u52a0\u6280\u80fd\uff1b\u52ff\u7f16\u9020\u672a\u6536\u5f55\u6280\u80fd\u540d\u3002');
     return {
       intent: 'status_rules',
       promptProfile: 'status_rules',
       text: lines.join('\n'),
-      meta: { statusName: status.name, applierCount: status.appliers.length },
+      meta: { statusNames: metaNames, applierCount: applierTotal },
     };
   }
 
