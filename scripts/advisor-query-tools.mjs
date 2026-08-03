@@ -524,14 +524,70 @@ export function summarizeFeatWindows() {
   };
 }
 
+const SKILL_QUERY_SUFFIXES = [
+  '天赋效果', '被动效果', '技能效果', '法术效果',
+  '天赋', '被动', '技能', '法术', '图纸', '配方', '效果', '升级',
+];
+const SKILL_QUERY_SUFFIX_MARK = [
+  { re: /天赋|被动/, suffix: '·天赋' },
+  { re: /图纸/, suffix: '（图纸）' },
+  { re: /配方/, suffix: '（配方）' },
+];
+
+function preferSkillSuffixFromQuery(q) {
+  for (const m of SKILL_QUERY_SUFFIX_MARK) {
+    if (m.re.test(q)) return m.suffix;
+  }
+  return null;
+}
+
+function stripSkillQuerySuffixes(q) {
+  let s = String(q || '');
+  let prev = null;
+  let guard = 0;
+  while (s !== prev && guard < 20) {
+    prev = s;
+    guard += 1;
+    for (const suf of SKILL_QUERY_SUFFIXES) {
+      if (s.endsWith('的' + suf)) { s = s.slice(0, -(suf.length + 1)); break; }
+      if (s.endsWith(suf)) { s = s.slice(0, -suf.length); break; }
+    }
+  }
+  return s.trim();
+}
+
+function normalizeSkillNameVariant(name) {
+  return String(name || '').replace(/\s+/g, '').replace(/·/g, '的').replace(/[（(]/g, '').replace(/[）)]/g, '');
+}
+
 /**
  * @param {string} query
  */
 export function resolveSkillNameFromQuery(query) {
   const { allNames, byName } = buildSkillIndexFromDisk();
   const q = String(query || '');
+  const prefer = preferSkillSuffixFromQuery(q);
+  const matchOk = (name) => !prefer || name.includes(prefer);
+  // 1) 精确包含（长名优先；含语义后缀时优先匹配对应条目）
   for (const name of allNames) {
-    if (q.includes(name)) {
+    if (matchOk(name) && q.includes(name)) {
+      return { name, occurrences: byName.get(name) || [] };
+    }
+  }
+  // 2) 后缀剥离后包含
+  const stripped = stripSkillQuerySuffixes(q);
+  if (stripped && stripped !== q) {
+    for (const name of allNames) {
+      if (matchOk(name) && stripped.includes(name)) {
+        return { name, occurrences: byName.get(name) || [] };
+      }
+    }
+  }
+  // 3) 变体规范化（·↔的、去括号、去空格；“被动”等同“天赋”）
+  let qn = normalizeSkillNameVariant(q);
+  if (prefer === '·天赋') qn = qn.replace(/被动/g, '天赋');
+  for (const name of allNames) {
+    if (matchOk(name) && qn.includes(normalizeSkillNameVariant(name))) {
       return { name, occurrences: byName.get(name) || [] };
     }
   }

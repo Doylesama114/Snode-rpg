@@ -68,7 +68,7 @@ const CASES = [
   },
   {
     name: 'hunter_guard_talent',
-    query: '猎人的灵龟守护·天赋是什么效果？',
+    query: '猎人的灵龟守护的天赋效果是什么？',
     contextHas: ['灵龟守护·天赋'],
     mustInclude: ['灵龟守护'],
     anyOf: [['16点生命值', '命中检定具有劣势']],
@@ -84,6 +84,24 @@ const CASES = [
     query: '通用天赋树的自由攻势有什么效果？',
     contextHas: ['自由攻势'],
     mustInclude: ['自由攻势'],
+  },
+  {
+    name: 'hunter_guard_passive_natural',
+    query: '灵猴守护的被动是什么效果？',
+    contextHas: ['灵猴守护·天赋'],
+    mustInclude: ['灵猴守护'],
+  },
+  {
+    name: 'artificer_drawing_natural',
+    query: '奇械师的破片手雷图纸怎么做？',
+    contextHas: ['破片手雷（图纸）'],
+    mustInclude: ['破片手雷'],
+  },
+  {
+    name: 'rogue_recipe_natural',
+    query: '游荡者的猩红之瓶配方怎么做？',
+    contextHas: ['猩红之瓶（配方）'],
+    mustInclude: ['猩红之瓶'],
   },
   {
     name: 'chargen_advice',
