@@ -58,7 +58,7 @@ def level_upgrade_absorbs_choices(text: str) -> bool:
 TYPE_HEADS = ("战技", "法术", "能力", "战术", "戏法", "天赋", "功法")
 STAT_BLOCK_TAIL = ("其数据如下所示", "其数据如下所示：")
 BOILERPLATE_EXACT = frozenset({"你可以通过花费技能点的方式来获取以下能力"})
-BOILERPLATE_TALENT_TREE = re.compile(r"^.+天赋树$")
+BOILERPLATE_TALENT_TREE = re.compile(r"^[一二三四五六七八]阶天赋树$")
 
 
 def is_boilerplate_line(text: str) -> bool:
@@ -787,7 +787,10 @@ def marks_from_cost(skill: dict, mark_dots: list[str] | None = None) -> list[str
         return list(mark_dots)
     out: list[str] = []
     for c in skill.get("cost") or []:
-        out.extend([c["color"]] * c.get("count", 1))
+        if isinstance(c, str):
+            out.append(c)
+        else:
+            out.extend([c["color"]] * c.get("count", 1))
     return out
 
 
