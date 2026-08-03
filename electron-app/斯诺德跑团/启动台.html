@@ -229,7 +229,9 @@ function pokerGameHref() {
   if (window.electronAPI) return '../poker-game/index.html#/';
   var path = decodeURIComponent(location.pathname.replace(/\\/g, '/'));
   if (path.indexOf('/electron-app/') !== -1) return '../poker-game/index.html#/';
-  return '../electron-app/poker-game/index.html#/';
+  // 仓库本地 file:// 开发时卡牌在 electron-app/poker-game；网页/APK 部署时卡牌在顶层 poker-game/
+  if (location.protocol === 'file:') return '../electron-app/poker-game/index.html#/';
+  return '../poker-game/index.html#/';
 }
 function openPokerGame(e) {
   e.preventDefault();
