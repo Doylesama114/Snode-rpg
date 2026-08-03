@@ -1323,6 +1323,38 @@ results.push('<div class="section"><h3>T5i: chargen resolveProfSkill、专精概
 })();
 results.push('</div>');
 
+// =================== T5j: 猎人守护技能/天赋学习联动 ===================
+results.push('<div class="section"><h3>T5j: 猎人守护学习联动（学其一自动获得另一个）</h3>');
+(function () {
+  state = JSON.parse(JSON.stringify(STATE_DEFAULTS));
+  state.classes[0] = { name: '猎人', level: 1, styles: ['', '', '', ''] };
+  state.skills = [];
+  state.talent_tree = [];
+  // 学技能 -> 自动获得天赋
+  state.skills.push({ n: '灵龟守护', src: '猎人', sub: '' });
+  guardLinkTalent('灵龟守护', '猎人', false, false);
+  assertTrue(state.talent_tree.some(function (t) { return t.n === '灵龟守护·天赋'; }), '学灵龟守护自动获得灵龟守护·天赋');
+  guardLinkTalent('灵龟守护', '猎人', false, false);
+  assert(state.talent_tree.filter(function (t) { return t.n === '灵龟守护·天赋'; }).length, 1, '重复联动不重复添加天赋');
+  // 退学技能 -> 天赋一起移除
+  state.skills = state.skills.filter(function (s) { return s.n !== '灵龟守护'; });
+  guardUnlinkTalent('灵龟守护');
+  assertFalse(state.talent_tree.some(function (t) { return t.n === '灵龟守护·天赋'; }), '退学灵龟守护同时移除天赋');
+  // 学天赋 -> 自动获得技能
+  state.talent_tree.push({ n: '灵猴守护·天赋', cls: '猎人', tier: '二阶' });
+  guardLinkSkill('灵猴守护·天赋', '猎人', false, false, 0);
+  assertTrue(state.skills.some(function (s) { return s.n === '灵猴守护'; }), '学灵猴守护·天赋自动获得灵猴守护');
+  // 退学天赋 -> 技能一起移除
+  state.talent_tree = state.talent_tree.filter(function (t) { return t.n !== '灵猴守护·天赋'; });
+  guardUnlinkSkill('灵猴守护·天赋');
+  assertFalse(state.skills.some(function (s) { return s.n === '灵猴守护'; }), '退学灵猴守护·天赋同时移除技能');
+  // 灵狐守护反向
+  state.skills.push({ n: '灵狐守护', src: '猎人', sub: '' });
+  guardLinkTalent('灵狐守护', '猎人', false, false);
+  assertTrue(state.talent_tree.some(function (t) { return t.n === '灵狐守护·天赋'; }), '灵狐守护联动');
+})();
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");

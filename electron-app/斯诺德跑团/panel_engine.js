@@ -6018,6 +6018,12 @@ results.innerHTML = html;
   state._dirty = true;
 }
 
+// 猎人守护联动：技能 <-> 天赋 学习其一自动获得另一个
+var GUARD_LINK = {
+  "灵龟守护": "灵龟守护·天赋", "灵猴守护": "灵猴守护·天赋", "灵狐守护": "灵狐守护·天赋",
+  "灵龟守护·天赋": "灵龟守护", "灵猴守护·天赋": "灵猴守护", "灵狐守护·天赋": "灵狐守护"
+};
+
 function learnSkill(clsName, skillName, clsIdx) {
 
 
@@ -6212,6 +6218,23 @@ function learnSkill(clsName, skillName, clsIdx) {
 
     state.talent_tree=tl; applyChoiceBProfBonus(skillName,true); applyChoiceLMasteryBonus(skillName,true); applyMeditationSP(skillName,true);
     applyUniversalTalentBonus(skillName,true,talentEntry);
+    // 猎人守护联动：学习天赋自动获得对应技能（免费，占用技能栏位）
+    var _glk = GUARD_LINK[skillName];
+    if (_glk) {
+      var _sl = state.skills.slice();
+      var _dupS = _sl.some(function(_x){ return _x.n === _glk; });
+      if (!_dupS) {
+        var _ms = calcSkillSlots(slotClsIdx);
+        var _oc = listOccupiedSkills(slotClsIdx);
+        if (_oc.length >= _ms) {
+          alert("技能栏已满，无法联动获得" + _glk + "；可先卸载一个技能");
+        } else {
+          var _lsd = null;
+          for (var _li = 0; _li < clsData.length; _li++) { if (clsData[_li].name === _glk) { _lsd = clsData[_li]; break; } }
+          if (_lsd) { _sl.push(buildSkillListEntry(_lsd, clsName, isSub, isLocked)); state.skills = _sl; }
+        }
+      }
+    }
     state._dirty=true;
 
 
@@ -6258,6 +6281,23 @@ var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (ski
 
 
     state.skills = skillList; }
+    // 猎人守护联动：学习技能自动获得对应天赋（免费，占用天赋栏位）
+    var _glt = GUARD_LINK[skillName];
+    if (_glt && _glt.indexOf("·天赋") >= 0) {
+      var _tl2 = state.talent_tree || [];
+      var _dupT = _tl2.some(function(_x){ return _x.n === _glt; });
+      if (!_dupT) {
+        var _tcap = getTalentTierlotCap("二阶");
+        var _cnt2 = 0; for (var _ti2 = 0; _ti2 < _tl2.length; _ti2++) { if (_tl2[_ti2].tier === "二阶") _cnt2++; }
+        if (_cnt2 >= _tcap) {
+          alert("二阶天赋栏已满，无法联动获得" + _glt + "；可先卸载一个二阶天赋");
+        } else {
+          var _gtd = null;
+          for (var _gi2 = 0; _gi2 < clsData.length; _gi2++) { if (clsData[_gi2].name === _glt) { _gtd = clsData[_gi2]; break; } }
+          if (_gtd) { _tl2.push({id:_gtd.id, n:_glt, cls:clsName, tier:"二阶", sub:isSub, locked:isLocked}); state.talent_tree = _tl2; }
+        }
+      }
+    }
 
 
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
@@ -6384,9 +6424,19 @@ function unlearnSkill(clsName, skillName, clsIdx) {
 
 
   skillList.splice(idx, 1);
-
-
   state.skills = skillList;
+  // 猎人守护联动：退学技能同时移除对应天赋
+  var _glu = GUARD_LINK[skillName];
+  if (_glu && _glu.indexOf("·天赋") >= 0) {
+    var _tt2 = state.talent_tree || [];
+    for (var _ti3 = 0; _ti3 < _tt2.length; _ti3++) {
+      if (_tt2[_ti3].n === _glu) {
+        if (_tt2[_ti3].locked) { alert(_glu + " 已锁定，无法随技能移除"); break; }
+        _tt2.splice(_ti3, 1); break;
+      }
+    }
+    state.talent_tree = _tt2;
+  }
 
 
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
@@ -6459,6 +6509,18 @@ function unlearnTalent(clsName, skillName, clsIdx) {
 
   var removedTalent = tt[idx];
   tt.splice(idx, 1);
+  // 猎人守护联动：退学天赋同时移除对应技能
+  var _gls = GUARD_LINK[skillName];
+  if (_gls && _gls.indexOf("·天赋") < 0) {
+    var _sl2 = state.skills;
+    for (var _si2 = 0; _si2 < _sl2.length; _si2++) {
+      if (_sl2[_si2].n === _gls) {
+        if (_sl2[_si2].locked) { alert(_gls + " 已锁定，无法随天赋移除"); break; }
+        _sl2.splice(_si2, 1); break;
+      }
+    }
+    state.skills = _sl2;
+  }
 
 
   state.talent_tree = tt; applyChoiceBProfBonus(skillName,false); applyChoiceLMasteryBonus(skillName,false); applyMeditationSP(skillName,false);
