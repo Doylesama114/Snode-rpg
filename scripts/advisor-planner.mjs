@@ -160,24 +160,30 @@ async function planWithLLM(query, ctx) {
   ].filter(Boolean).join('\n\n');
 
   const url = `${config.baseUrl.replace(/\/$/, '')}/chat/completions`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${config.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: config.model,
-      messages: [
-        { role: 'system', content: system },
-        { role: 'user', content: user },
-      ],
-      temperature: 0.1,
-      max_tokens: 512,
-      response_format: { type: 'json_object' },
-    }),
-    signal: abortAfter(25_000),
-  });
+  const timeout = abortAfter(25_000);
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${config.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: user },
+        ],
+        temperature: 0.1,
+        max_tokens: 512,
+        response_format: { type: 'json_object' },
+      }),
+      signal: timeout.signal,
+    });
+  } finally {
+    timeout.cleanup();
+  }
 
   if (!res.ok) return null;
   const data = await res.json();

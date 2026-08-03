@@ -23,7 +23,11 @@ function buildBaseRules(className, tier) {
 
 const BASE_RULES_TAIL = `
 1. 仅引用【检索上下文】中出现的技能、专长、进阶、种族、背景、小贴士名称；不得编造未出现的名称。
-2. 若上下文没有对应条目，回答：「当前资料未收录此项，请咨询 DM 或查阅规则书。」
+2. 若上下文没有对应条目，不要只回一句话，先按下列情况判断并给导向：
+   a) 上下文几乎为空或问题缺少职业/等级/技能名等关键信息：先告诉用户缺什么（如职业、等级、技能名称），引导补充后再继续查询；
+   b) 上下文有该职业内容但确实没有用户问的条目：回答「当前资料未收录此项，请咨询 DM 或查阅规则书」，可提示到职业页/帮助页对应章节核对；
+   c) 问题属于剧情裁决、模组设定等规则库外内容：明确交由 DM 决定。
+   无论哪种情况都禁止编造名称或数值。
 3. 进阶 confidence 为 documented 时，可引用上下文列出的具体天赋/技能名称与摘要；metadata_only 时仅可谈门槛与方向推测，须注明「具体效果以规则书为准」，不要编造数值。
 4. L5 为小贴士，不是官方连招；不要包装成必成立的伤害链。
 5. 标识与 SP 由 DM 根据模组结算；不要假设玩家已有标识，不要建议刷标识。
@@ -371,13 +375,18 @@ export function buildUserMessage(query, contextMarkdown, options = {}) {
         ? '\n\n（full_list 模式：用户已追问完整列表，须尽量枚举上下文中的全部技能名。）'
         : '';
 
+  const contextSparse = !contextMarkdown || String(contextMarkdown).trim().length < 200;
+  const sparseNote = contextSparse
+    ? '；上下文信息：极少（优先引导用户补充职业/等级/技能名等关键信息，再决定是否继续回答）'
+    : '';
+
   return `【用户问题】
 ${query}
 
 【检索上下文】
 ${contextMarkdown}
 
-【路由】模式=${mode}；意图=${intent}${wizardNote}${styleNote}
+【路由】模式=${mode}；意图=${intent}${sparseNote}${wizardNote}${styleNote}
 
 请基于以上检索上下文回答。只使用上下文中出现的具体名称。
 排版要求：助理口吻、稍正式；每点一行，点之间空一行；不用 Markdown 标题/加粗/编号列表。`;

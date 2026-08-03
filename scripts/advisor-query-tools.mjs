@@ -58,7 +58,7 @@ const SKILL_DETAIL_RE = /这个技能|收益|代价|效果|总共|一共|支付|
 const CROSS_CLASS_RE = /相同|共同|同名|重合|一样|都有|重复/;
 const WEAPON_PROF_QUERY_RE = /哪些|什么|哪几个|哪一些/;
 const WEAPON_PROF_SUBJECT_RE = /职业|初始|主职|基础职业/;
-const COMBAT_MATH_RE = /命中加值|攻击加值|伤害加值|护甲值|防御等级|暴击率|调整值.*\+|拿着一把|开启.*开启/;
+const COMBAT_MATH_RE = /命中加值|攻击加值|伤害加值|护甲值|防御等级|暴击率|调整值.*\+|拿着一把|开启.*开启|攻击命中|命中.*公式|公式.*命中|命中.*怎么算/;
 const CHARGEN_HP_RE = /初始血量|起始生命|起始hp|创建.*血量|血量.*最大|生命.*最大|hp.*最大/i;
 const PROF_ROADMAP_PARENT_RE = /运动|巧手|奥秘|知识|表演/;
 const PROF_ROADMAP_LEAF_RE = /宗教|自然|欺瞒|洞悉|逻辑|隐匿|威逼|驯兽|医药|调查|专注|体操|运动|耐力|威力|说服|表演|探索|决策|机遇|求生|导航|聆听|察觉|感悟|激励|估价|伪造|读唇|欺瞒|恐吓|威逼/;
@@ -638,20 +638,26 @@ export function detectStructuredQuestion(query) {
   const skillHit = resolveSkillNameFromQuery(q);
   const classes = matchAllClassesFromQuery(q);
 
-  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少|怎么算|当前|我的|开启/.test(q)) {
+  // 同时问防御等级(AC) 与 命中/攻击 公式：无快照也应附带两份通用公式
+  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /命中|攻击/.test(q) && /公式|怎么算|是什么|多少/.test(q)) {
+    return { intent: 'combat_math', mode: 'ac_hit', query: q };
+  }
+
+  if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /多少|是多少|怎么算|当前|我的|开启|公式|是什么/.test(q)) {
     const acScenario = parseAcScenarioFromQuery(q);
     return { intent: 'combat_math', mode: 'ac', scenario: acScenario, query: q };
   }
 
-  if (COMBAT_MATH_RE.test(q) && !/护甲值|防御等级|\bAC\b/i.test(q) && /开启|拿着|调整值|熟练度|命中加值|攻击加值|伤害加值|暴击/.test(q)) {
+  if (COMBAT_MATH_RE.test(q) && !/护甲值|防御等级|\bAC\b/i.test(q) && /开启|拿着|调整值|熟练度|命中加值|攻击加值|伤害加值|暴击|公式|攻击命中|怎么算/.test(q)) {
     const scenario = parseCombatScenarioFromQuery(q);
     const asksDamage = /伤害加值/.test(q);
-    const asksHit = /命中加值|攻击加值|命中.*加值/.test(q);
+    const asksHit = /命中加值|攻击加值|攻击命中|命中.*加值|命中.*公式|公式.*命中|命中.*怎么算/.test(q);
     const asksCrit = /暴击/.test(q);
     if (
       ((scenario.activeBuffs?.length || scenario.weaponProfPoints || scenario.weaponDamage || scenario.weaponCategory) && /多少|分别是多少/.test(q))
       || (asksDamage && (scenario.weaponDamage || /力量|敏捷/.test(q)))
       || (asksHit && (scenario.activeBuffs?.length || scenario.weaponProfPoints || scenario.weaponCategory))
+      || (asksHit && /公式|怎么算|是什么/.test(q))
       || (asksHit && asksCrit && scenario.weaponCategory)
     ) {
       return {
@@ -965,6 +971,20 @@ export function buildStructuredToolContext(detected, opts = {}) {
   }
 
   if (detected.intent === 'combat_math') {
+    if (detected.mode === 'ac_hit') {
+      const acScenario = parseAcScenarioFromQuery(detected.query);
+      const acResult = resolveAcScenario(acScenario);
+      const acText = formatAcScenarioText(acResult);
+      const scenario = parseCombatScenarioFromQuery(detected.query);
+      const hitResult = resolveCombatScenario(scenario);
+      const hitText = formatCombatScenarioText(hitResult, { mode: 'hit' });
+      return {
+        intent: 'combat_math',
+        promptProfile: 'combat_math',
+        text: `${acText}\n\n${hitText}`,
+        meta: { ac: acResult, hit: hitResult },
+      };
+    }
     if (detected.mode === 'ac') {
       let acScenario = detected.scenario || parseAcScenarioFromQuery(detected.query);
       if (detected.snapshot) {

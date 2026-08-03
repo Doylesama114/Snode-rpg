@@ -472,6 +472,10 @@ export function parseCombatScenarioFromQuery(query) {
   const q = String(query || '');
   const strM = q.match(/力量调整值[为是]?\+(\d+)/);
   const dexM = q.match(/敏捷调整值[为是]?\+(\d+)/);
+  // 原始属性值（如「力量18」）按 abilityModifier.formula = floor((属性值-10)/2) 换算
+  const rawStrM = !strM && q.match(/力量(?:属性值)?[为是]?\s*(\d{1,2})(?!调)/);
+  const rawDexM = !dexM && q.match(/敏捷(?:属性值)?[为是]?\s*(\d{1,2})(?!调)/);
+  const toMod = (v) => Math.floor((Number(v) - 10) / 2);
   const weaponProfM = q.match(/(?:有)?(?:一点|1点|(\d+)点)(剑类|锤类|斧类|长柄|弓箭|火器|法器|简易)熟练度?/);
   const weaponM = q.match(/拿着一把(?:伤害为[^，,]+的)?([^，,]+剑)/)
     || q.match(/拿着(?:一把)?([^，,\s]{2,10}(?:剑|斧|锤|弓|弩))/);
@@ -506,8 +510,8 @@ export function parseCombatScenarioFromQuery(query) {
   return {
     attackType,
     abilityMods: {
-      力量: strM ? Number(strM[1]) : 0,
-      敏捷: dexM ? Number(dexM[1]) : 0,
+      力量: strM ? Number(strM[1]) : (rawStrM ? toMod(rawStrM[1]) : 0),
+      敏捷: dexM ? Number(dexM[1]) : (rawDexM ? toMod(rawDexM[1]) : 0),
     },
     weaponCategory,
     weaponProfPoints: weaponProfM ? (Number(weaponProfM[1]) || 1) : (weaponCategory && /熟练/.test(q) ? 1 : 0),

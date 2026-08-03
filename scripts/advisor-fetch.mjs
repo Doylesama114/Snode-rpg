@@ -65,7 +65,12 @@ export function abortAfter(ms) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new Error(`Request timed out after ${ms}ms`)), ms);
   controller.signal.addEventListener('abort', () => clearTimeout(timer), { once: true });
-  return controller.signal;
+  return {
+    signal: controller.signal,
+    cleanup() {
+      clearTimeout(timer);
+    },
+  };
 }
 
 export const fetch = typeof globalThis.fetch === 'function'

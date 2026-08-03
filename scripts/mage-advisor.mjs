@@ -13,6 +13,7 @@ import { loadSnapshotFile } from './advisor-snapshot.mjs';
 import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { planQuery, planFromRules, buildPlanCacheKey } from './advisor-planner.mjs';
 import { normalizeConversationHistory, extractGoalOverride, enrichPlannerContext } from './advisor-session.mjs';
+import { detectStructuredQuestion } from './advisor-query-tools.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -113,17 +114,27 @@ async function callDeepSeek(messages, { thinking, stream, config, onDelta, maxTo
   };
   if (thinking) {
     body.thinking = { type: 'enabled' };
+  } else {
+    // v4-flash 正式版默认开启思考，会将回答放入 reasoning_content
+    // 并消耗大量 token/时间；未开启思考时显式关闭
+    body.thinking = { type: 'disabled' };
   }
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${config.apiKey}`,
-    },
-    body: JSON.stringify(body),
-    signal: abortAfter(120_000),
-  });
+  const timeout = abortAfter(120_000);
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${config.apiKey}`,
+      },
+      body: JSON.stringify(body),
+      signal: timeout.signal,
+    });
+  } finally {
+    timeout.cleanup();
+  }
 
   if (!res.ok) {
     const errText = await res.text();
@@ -191,9 +202,11 @@ export async function advise(query, options = {}) {
       : null,
   });
 
+  // 结构化规则问题（combat_math/状态/专长/技能详情等）无需 LLM 规划，直接走规则规划器
+  const structuredDetect = options.skipPlanner ? null : detectStructuredQuestion(query);
   const plan = options.skipPlanner
     ? (options.plan || null)
-    : (options.dryRun || options.rulesOnlyPlanner)
+    : (options.dryRun || options.rulesOnlyPlanner || structuredDetect || options.usePlannerLLM === false)
       ? planFromRules(query, plannerCtx)
       : await planQuery(query, plannerCtx, {
         useLLM: options.usePlannerLLM !== false,
