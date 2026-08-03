@@ -42,6 +42,10 @@ jobs:
           if [ -z "$ADVISOR_API" ] && [ -n "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}" ]; then
             ADVISOR_API=$(curl -sS --max-time 15 "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}/advisor-endpoint.txt" 2>/dev/null | tr -d '[:space:]' || true)
           fi
+          case "$ADVISOR_API" in
+            https://*|http://*) ;;
+            *) ADVISOR_API="" ;;
+          esac
           if [ -n "$ADVISOR_API" ]; then
             find _deploy -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|$ADVISOR_API|g" {} +
           fi

@@ -185,6 +185,10 @@ jobs:
           if [ -z "$ADVISOR_API_BASE" ]; then
             ADVISOR_API_BASE=$(curl -sS --max-time 15 "${PUBLIC_BASE}/advisor-endpoint.txt" 2>/dev/null | tr -d '[:space:]' || true)
           fi
+          case "$ADVISOR_API_BASE" in
+            https://*|http://*) ;;
+            *) ADVISOR_API_BASE="" ;;
+          esac
           export ADVISOR_API_BASE
           node scripts/build-mobile-packages.mjs --base "$PUBLIC_BASE" --version "$VERSION"
           ls -la dist_mobile/
