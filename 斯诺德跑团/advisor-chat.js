@@ -168,8 +168,8 @@
       var b = document.createElement('button');
       b.textContent = opt;
       b.addEventListener('click', function () {
-        var q = state.lastQuery ? opt + '\uff0c' + state.lastQuery : opt;
-        sendQuery(q);
+        // 直接发送当前快捷问题，上下文由会话历史携带，不再拼接上一个问题
+        sendQuery(opt);
       });
       chips.appendChild(b);
     });
@@ -316,8 +316,10 @@
             if (r.done) {
               if (buffer.trim()) parseSseBlock(buffer, handleEvent);
               if (gotError) return;
-              if (gotDone) resolve(donePayload);
-              else reject(new Error('\u670d\u52a1\u6d41\u672a\u6b63\u5e38\u7ed3\u675f'));
+              if (gotDone) { resolve(donePayload); return; }
+              // 流式结尾可能被网关吞掉最后一帧：自动改走非流式兜底
+              clearTimeout(timer);
+              fetchAdvisePlain(query).then(resolve).catch(reject);
               return;
             }
             buffer += decoder.decode(r.value, { stream: true });
@@ -338,6 +340,22 @@
       }).finally(function () {
         clearTimeout(timer);
       });
+    });
+  }
+
+  // ---------- 非流式兜底 ----------
+  function fetchAdvisePlain(query) {
+    return fetch(API + '/api/advise', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ query: query, conversationHistory: historyForPayload() }),
+    }).then(function (res) {
+      if (!res.ok) {
+        return res.json().catch(function () { return { error: 'HTTP ' + res.status }; }).then(function (err) {
+          throw new Error(err.error || 'HTTP ' + res.status);
+        });
+      }
+      return res.json();
     });
   }
 

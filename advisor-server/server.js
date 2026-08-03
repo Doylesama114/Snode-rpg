@@ -177,7 +177,10 @@ async function handleAdvise(req, res) {
     } catch (err) {
       sse('error', { message: err.message || String(err) });
     } finally {
-      try { res.end(); } catch { /* ignore */ }
+      // 给客户端/网关一点时间读取最后的 done 事件，避免连接关闭竞争丢帧
+      setTimeout(() => {
+        try { res.end(); } catch { /* ignore */ }
+      }, 200);
     }
     return;
   }
