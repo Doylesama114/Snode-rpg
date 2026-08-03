@@ -252,6 +252,19 @@ def split_glued_heading(text: str) -> list[str]:
     return [text]
 
 
+_CITY_NAMES: set[str] = set()
+
+def prepare_city_names(paras: list[str]) -> None:
+    """\u57ce\u5e02\u540d\uff1a\u540e\u4e00\u884c\u4ee5\u300c\u4eba\u53e3\uff1a\u300d\u5f00\u5934\u7684\u77ed\u884c\u89c6\u4e3a\u57ce\u5e02/\u9547\u6807\u9898\u3002"""
+    global _CITY_NAMES
+    _CITY_NAMES = set()
+    for idx in range(len(paras) - 1):
+        cur = paras[idx].strip()
+        nxt = paras[idx + 1].strip()
+        if cur and nxt.startswith("\u4eba\u53e3\uff1a") and len(cur) <= 14 and not any(ch in cur for ch in "\uff1a\uff0c\u3002\u3001\uff1b"):
+            _CITY_NAMES.add(cur)
+
+
 def classify(text: str) -> str:
     """Return: skip | top | sub | era | entry | bullet | para"""
     if text == "世界观架构":
@@ -259,6 +272,11 @@ def classify(text: str) -> str:
     if is_toc_line(text):
         return "skip"
     nt = normalize_title(text)
+    raw = text.strip()
+    if raw in _CITY_NAMES:
+        return "entry"
+    if "\uff1a" in raw:
+        return "para"
     if nt in TOP_CHAPTERS:
         return "top"
     # Exact sub-chapter titles only (do NOT use startswith — body text also begins with these)
@@ -288,7 +306,7 @@ def classify(text: str) -> str:
         )
     ):
         return "entry"
-    if len(nt) <= 22 and not text.endswith("。") and not text.endswith("；") and "，" not in text[:8]:
+    if len(nt) <= 14 and not any(ch in raw for ch in "\uff1a\uff0c\u3002\u3001\uff1b") and not raw.startswith("\u5173\u4e8e"):
         # short non-sentence headings without trailing period
         if any(
             k in nt
@@ -691,6 +709,7 @@ def write_advisor_lore(paras: list[str] | None = None) -> Path:
         if not DOCX.exists():
             raise SystemExit(f"missing {DOCX}")
         paras = extract_paragraphs(DOCX)
+    prepare_city_names(paras)
     chunks = build_lore_chunks(paras)
     LORE_OUT.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -771,6 +790,7 @@ def main() -> None:
         raise SystemExit(f"missing {HELP}")
 
     paras = extract_paragraphs(DOCX)
+    prepare_city_names(paras)
     print(f"extracted {len(paras)} paragraphs")
 
     map_path = MEDIA_DIR / MAP_NAME
