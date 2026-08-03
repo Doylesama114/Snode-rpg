@@ -312,6 +312,30 @@ export function calcMageSkillSlotsAtLevel(level) {
   return 10 + 2 * (level - 1);
 }
 
+function collectFormMentionedSkills(query, store) {
+  const q = String(query || '');
+  const forms = [...new Set(q.match(/[\u4e00-\u9fa5]{2,4}\u5f62\u6001/g) || [])];
+  if (!forms.length) return [];
+  const pools = [
+    ...Object.values(store.classSkillIndexes || {}),
+    store.mageSkills,
+    store.artificerSkills,
+    store.universalSkills,
+  ].filter(Boolean);
+  const seen = new Set();
+  const hits = [];
+  for (const idx of pools) {
+    for (const sk of idx?.skills || []) {
+      if (!sk?.id || seen.has(sk.id)) continue;
+      if (forms.some((f) => sk.summary && sk.summary.includes(f))) {
+        seen.add(sk.id);
+        hits.push(sk);
+      }
+    }
+  }
+  return hits.slice(0, 3);
+}
+
 function collectLevelSkillHits(query, store) {
   const pools = [
     ...Object.values(store.classSkillIndexes || {}),
@@ -1423,6 +1447,42 @@ export function retrieve(query, options = {}) {
     }
   }
 
+  // 形态/特性补检：任何意图下提及具体形态名时，把含该形态的技能完整条目（含升级）加入检索
+  const formHits = collectFormMentionedSkills(query, store);
+  for (const sk of formHits) {
+    let layer = null;
+    for (const [l, idx] of Object.entries(store.classSkillIndexes || {})) {
+      if (idx?.skills?.some((x) => x.id === sk.id)) { layer = l; break; }
+    }
+    if (!layer && store.mageSkills?.skills?.some((x) => x.id === sk.id)) layer = MAGE_L2;
+    if (!layer && store.universalSkills?.skills?.some((x) => x.id === sk.id)) layer = 'L2-universal';
+    if (!layer) continue;
+    const list = retrieval.results[layer] || [];
+    const existingIdx = list.findIndex((x) => x.id === sk.id);
+    if (existingIdx >= 0) {
+      list[existingIdx] = { ...list[existingIdx], _full: true };
+    } else {
+      list.unshift({ ...sk, _full: true });
+    }
+    retrieval.results[layer] = list;
+    if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
+  }
+
+  // 主题优先排序：query 含形态词时，含该形态的条目前置，冲突的技能名条目（如法师水下呼吸）后置
+  const forms = [...new Set(String(query || '').match(/[\u4e00-\u9fa5]{2,4}\u5f62\u6001/g) || [])];
+  if (forms.length) {
+    for (const layer of Object.keys(retrieval.results)) {
+      const list = retrieval.results[layer];
+      if (!Array.isArray(list)) continue;
+      const withFormFull = list.filter((x) => x?._full);
+      const withForm = list.filter((x) => x?.summary && !x._full && forms.some((f) => x.summary.includes(f)));
+      const withoutForm = list.filter((x) => !(x?.summary && forms.some((f) => x.summary.includes(f))));
+      if (withFormFull.length || withForm.length) {
+        retrieval.results[layer] = [...withFormFull, ...withForm, ...withoutForm];
+      }
+    }
+  }
+
   return retrieval;
 }
 
@@ -1542,7 +1602,7 @@ export function formatContext(retrieval) {
   if (retrieval.results['L2-mage']?.length) {
     lines.push('## L2 法师技能');
     for (const s of retrieval.results['L2-mage'].slice(0, 15)) {
-      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''} 条目:${s.id || '-'}`);
+      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s._full ? (s.summary || '') : (s.summary || '').slice(0, 120)} 条目:${s.id || '-'}`);
       if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);
     }
     lines.push('');
@@ -1553,7 +1613,7 @@ export function formatContext(retrieval) {
     if (!hits?.length) continue;
     lines.push(`## L2 ${entry.className}技能`);
     for (const s of hits.slice(0, 15)) {
-      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''} 条目:${s.id || '-'}`);
+      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s._full ? (s.summary || '') : (s.summary || '').slice(0, 120)} 条目:${s.id || '-'}`);
       if (s.prerequisite) lines.push(`  前置: ${String(s.prerequisite).slice(0, 100)}`);
       if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);
     }
@@ -1565,7 +1625,7 @@ export function formatContext(retrieval) {
   if (retrieval.results['L2-universal']?.length) {
     lines.push('## L2 通用天赋');
     for (const s of retrieval.results['L2-universal'].slice(0, 12)) {
-      lines.push(`- ${s.name}: ${s.summary?.slice(0, 100) || ''} 条目:${s.id || '-'}`);
+      lines.push(`- ${s.name}: ${s._full ? (s.summary || '') : (s.summary || '').slice(0, 100)} 条目:${s.id || '-'}`);
     }
     lines.push('');
   }
