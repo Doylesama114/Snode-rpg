@@ -1,0 +1,5949 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "7167",
+    "source": "职业页/数据/items_data.js（非消耗品通用物品）",
+    "count": 371,
+    "categories": [
+      "乐器",
+      "医用,杂物,可堆叠",
+      "套装,工具",
+      "容器",
+      "护甲,防具,中甲",
+      "护甲,防具,轻甲",
+      "护甲,防具,重甲",
+      "服饰",
+      "服饰,护甲,防具",
+      "杂物",
+      "材料,元素材料",
+      "材料,工艺材料",
+      "材料,生物材料",
+      "材料,矿石,宝石",
+      "材料,矿石,矿产",
+      "材料,草药",
+      "材料,魔法材料",
+      "武器,法器,施法媒介",
+      "武器,简易",
+      "武器,简易,穿刺",
+      "武器,简易,钝击",
+      "武器,近战,挥砍",
+      "武器,近战,穿刺",
+      "武器,近战,钝击",
+      "武器,近战,钝击,简易",
+      "武器,远程,穿刺",
+      "盾牌,防具",
+      "配饰"
+    ],
+    "generatedAt": "2026-08-03"
+  },
+  "items": [
+    {
+      "name": "暗玉",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "黯淡的命运纺锤",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "4000金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "奥法之尘",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "奥术恒金",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2400金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "奥术蓝钢",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1200金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "白屈花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "白手套",
+      "category": "服饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.1磅",
+      "tags": [
+        "服饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "扳手",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "半身板甲",
+      "category": "护甲,防具,中甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：15+你的敏捷调整值（隐匿劣势）.中甲，耐久度20",
+      "price": "200金币",
+      "weight": "45磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "中甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "报刊",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "豹眼石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "贝斯",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "25金币",
+      "weight": "10磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "背包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "绷带",
+      "category": "医用,杂物,可堆叠",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "1磅",
+      "tags": [
+        "医用",
+        "杂物",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "匕首",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点穿刺伤害·灵巧武器",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "笔记本",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "便签条",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "标枪",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点穿刺伤害·灵巧武器",
+      "price": "1金币",
+      "weight": "2磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "冰霜灵核",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "冰心头饰",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者使用带有冰霜关键词的法术造成伤害在结算后+1",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "玻璃瓶",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "玻璃试管",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "玻璃珠",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "剥皮小刀",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "捕网",
+      "category": "武器,简易",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "使一名角色进行一次难度为15的敏捷豁免，对方豁免失败将被禁锢，需要花费一个附赠动作来解除",
+      "price": "2银币",
+      "weight": "2磅",
+      "tags": [
+        "武器",
+        "简易"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "布衣",
+      "category": "护甲,防具,轻甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：11+你的敏捷调整值（隐匿劣势）.轻甲，耐久度15",
+      "price": "5金币",
+      "weight": "10磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "轻甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "步枪",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D12点穿刺伤害·敏捷武器·科技",
+      "price": "55金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "裁缝材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "裁缝工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "草药材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "草药袋",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "草药工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "铲子",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "衬裙",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "衬衣",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "2磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "炽心椒",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "厨师工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "15磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "吹箭筒",
+      "category": "武器,简易,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D3点穿刺伤害·敏捷武器",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "简易",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "垂钓材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "纯洁的珍珠粉",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "纯铁",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "纯银祭器",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "刺剑",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点穿刺伤害·灵巧武器",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "萃变体汁液",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "翠绿头环",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者使用带有自然关键词的法术造成伤害在结算后+1",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "打火机",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "打火石",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "大地灵核",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "大提琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "25金币",
+      "weight": "10磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "丹参",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "丹菊",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "常见",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "单边眼镜",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "单人帐篷",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "10磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蛋白石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "祷告经书",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "地根草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "灯油",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "典礼戒指",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者每日可以释放一个能够炒热节日气氛的小戏法",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "电磁铁",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "电气粒子",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "淀粉",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "面粉",
+      "weight": "5银币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "雕刻刀",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "雕艺工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "跌打草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "冬刺草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "冬用毯子",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "斗篷",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短棒",
+      "category": "武器,简易,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点钝击伤害·力量武器",
+      "price": "2银币",
+      "weight": "2磅",
+      "tags": [
+        "武器",
+        "简易",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短斧",
+      "category": "武器,近战,挥砍",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点挥砍伤害·力量武器",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "挥砍"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短弓",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点穿刺伤害·敏捷武器",
+      "price": "25金币",
+      "weight": "2磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短剑",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点穿刺伤害·力量武器",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短披肩",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "短杖",
+      "category": "武器,近战,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点钝击伤害·力量武器",
+      "price": "2银币",
+      "weight": "2磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "队伍旗帜",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "多香果",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "噩梦藤",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "25金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "法力浮龙的灵核",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "法杖",
+      "category": "武器,法器,施法媒介",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "施法媒介",
+      "price": "150金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "法器",
+        "施法媒介"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "放大镜",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "飞镖",
+      "category": "武器,简易,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D3点穿刺伤害·投掷物",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "武器",
+        "简易",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "肥皂",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "翡翠线轴",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "300金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "翡翠玉",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "粉笔",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "风暴灵核",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "凤凰沉木",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1磅",
+      "weight": "珍稀",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "凤凰烬羽",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "500金币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "甘姜",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "钢琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "300磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "高跟鞋",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "歌唱葵",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "共鸣水晶",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "80金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "谷物种子",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "固化力场碎片",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "120金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "刮鱼刀",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "观察者眼魔的核心",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "400金币",
+      "weight": "2磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "管风琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "200金币",
+      "weight": "500磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "国王游戏",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "果篮",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "号角",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "黑口鱼油",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "黑曜石",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "500金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "红宝石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "红肉",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "兔肉",
+      "weight": "2银币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "红战士",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "虎骨片",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "虎眼石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "15金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "化妆品",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "画家工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "15磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "皇血草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "黄金参",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "200金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "黄金鱼油",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "500金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "谎言大师的根茎",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "45金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "灰女巫",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "浑浊的虚空水晶",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "900金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火把",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火柴盒",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火棘果",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火枪",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D8点穿刺伤害·敏捷武器·科技",
+      "price": "30金币",
+      "weight": "2.5磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火焰花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火焰灵核",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "火焰之油",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "吉他",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "加速吊坠",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者的基础移动速度+2米",
+      "price": "1000金币",
+      "weight": "0.5磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "夹克外套",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "2.5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "假发",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "简易野炊工具",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "剑油",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "檞寄生",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "金锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "金戈铁骨",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.5磅",
+      "weight": "稀有",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "金棘草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "金属盾牌",
+      "category": "盾牌,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级+2，耐久度10",
+      "price": "30金币",
+      "weight": "10磅",
+      "tags": [
+        "盾牌",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "紧身裤",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "荆棘藻",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "精钢锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "300金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "精钢盾牌",
+      "category": "盾牌,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级+2，耐久度30，耐久度提升",
+      "price": "200金币",
+      "weight": "15磅",
+      "tags": [
+        "盾牌",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "精金锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "400金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "酒壶",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "酒精",
+      "category": "医用,杂物,可堆叠",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "医用",
+        "杂物",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "巨斧",
+      "category": "武器,近战,挥砍",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点挥砍伤害·力量武器",
+      "price": "15金币",
+      "weight": "7.5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "挥砍"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "巨剑",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点穿刺伤害·力量武器",
+      "price": "15金币",
+      "weight": "7.5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "开锁工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "抗毒剂",
+      "category": "医用,杂物,可堆叠",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "医用",
+        "杂物",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "空气魔力",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "孔雀石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "孔雀石念珠",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "口风琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "苦橙",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "筷子",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "宽檐帽",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "矿工镐",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "矿石材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蜡烛",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2铜币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蓝宝石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蓝甲虫精髓",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "270金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蓝艳菇",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "乐鼓",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "棱光碎片",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "礼帽",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "镰刀",
+      "category": "武器,近战,挥砍",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点挥砍伤害·力量武器",
+      "price": "15金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "挥砍"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "炼金材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "炼金工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "15磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "炼狱铁",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "500金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "链甲",
+      "category": "护甲,防具,重甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：16/力量属性要求：13（隐匿劣势）.重甲，耐久度20",
+      "price": "175金币",
+      "weight": "60磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "重甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "亮银线轴",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "120金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "镣铐",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "鳞甲",
+      "category": "护甲,防具,中甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：14+你的敏捷调整值（隐匿劣势）.中甲，耐久度10",
+      "price": "50金币",
+      "weight": "50磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "中甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "灵界钢",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5000金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "灵网蛛丝",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "铃铛",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "领结",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "领巾",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "琉璃晶铁砂",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "硫磺石",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "龙井茶",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "龙棋",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "龙血葵",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "龙眼果",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "旅行腰包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "旅行者的吊坠",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者会难以因长途跋涉而进入力竭",
+      "price": "50金币",
+      "weight": "0.5磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "绿宝石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "麻绳",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "麻绳（10米）",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "25磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "马裤",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "玛瑙石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "曼陀罗",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "盲鱼肠",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1铜币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "猫眼石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "猫眼石念珠",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "毛线团",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "煤油灯",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "梦境蜘蛛的原始丝囊",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "200金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "梦露花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "迷药",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "秘银锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "200金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "明焰石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "300金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "铭文材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "磨刀石",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔棒",
+      "category": "武器,法器,施法媒介",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "施法媒介",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "法器",
+        "施法媒介"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔法尘",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔法防护吊坠",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者获得2点针对施法攻击的伤害抗性",
+      "price": "1000金币",
+      "weight": "0.5磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔法箭矢戒指",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "可以对12米内一名角色造成1D6点对应伤害",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔法箭矢手镯",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者使用箭矢类法术造成的伤害在结算后+1",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔法灵光眼镜",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "佩戴后可以看见物件上的魔法灵光",
+      "price": "150金币",
+      "weight": "0.5磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔皇草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔术道具",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "魔纹布料",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "25金币",
+      "weight": "2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "墨镜",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "墨水",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "木杯",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "木材",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "20磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "木箱",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "木杖",
+      "category": "武器,近战,钝击,简易",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点钝击伤害·单手武器·近战·简易武器",
+      "price": "5银币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击",
+        "简易"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "木质盾牌",
+      "category": "盾牌,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级+1，耐久度5，受到火焰伤害时耐久度降低（-1）",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "盾牌",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "墓地苔",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "酿酒工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "15磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "宁神花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "爬梯",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "25磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "攀爬工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "烹饪材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "皮甲",
+      "category": "护甲,防具,轻甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：11+你的敏捷调整值.轻甲，耐久度15",
+      "price": "10金币",
+      "weight": "12磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "轻甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "皮匠工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "扑克",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "七彩龙蜥的薄膜",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "350金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "其他水产",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "蚌肉",
+      "weight": "1银币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "奇械摄影机",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "强力胶",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "撬棍",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "禽类",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "鸡蛋",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "青金石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "轻锤",
+      "category": "武器,近战,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点钝击伤害·力量武器",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "轻弩",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成2D4点穿刺伤害·敏捷武器·需要装填",
+      "price": "25金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "倾慕者的信物",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "清凉膏",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "庆典粒子",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "秋辉石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "拳刃",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点穿刺伤害·灵巧武器",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "裙撑",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "2磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "燃火头冠",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者使用带有火焰关键词的法术造成伤害在结算后+1",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "任意法术学派的基础书籍",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "润滑油",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "萨克斯",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "25金币",
+      "weight": "10磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "三叉戟",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点穿刺伤害·力量武器",
+      "price": "15金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "瑟银锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "220金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "沙漏",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "山铜锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "闪电灵核",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "闪电头巾",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者使用带有雷电关键词的法术造成伤害在结算后+1",
+      "price": "150金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "闪光尘",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "哨笛",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蛇毒",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蛇鳞",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蛇藤花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蛇信草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "生火工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "圣徽",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "失心蛇胆",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "施法者头饰",
+      "category": "配饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "持有者获得1点法术命中加值",
+      "price": "300金币",
+      "weight": "1磅",
+      "tags": [
+        "配饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "石南草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "时之沙",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2000金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "史莱姆黏液",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "史莱姆粘合剂",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "收纳盒",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "手铲",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "手风琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "手弩",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成2D4点穿刺伤害·敏捷武器·需要装填",
+      "price": "25金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "狩猎陷阱",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "25磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "兽皮甲",
+      "category": "护甲,防具,中甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：12+你的敏捷调整值.中甲，耐久度15",
+      "price": "15金币",
+      "weight": "12磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "中甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蔬菜",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "土豆",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "竖琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "双人帐篷",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "15磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "霜冻粒子",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "爽身粉",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "水袋",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "水果",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "柠檬",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "水晶兰",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "0.2磅",
+      "weight": "",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "水蛭素",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "丝绸布料",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "锁",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "太阳花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "炭笔",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "探索工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "天界钢",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5000金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "甜点",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "棒棒糖",
+      "weight": "5铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "铁匠工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "30磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "听诊器",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "铜锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "投石索",
+      "category": "武器,简易,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成伤害1D3点钝击伤害，目标需要进行一次难度为10的敏捷豁免，豁免失败将被击倒·投掷物",
+      "price": "1银币",
+      "weight": "0.5磅",
+      "tags": [
+        "武器",
+        "简易",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "骰子",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "弯刀",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D6点穿刺伤害·力量武器",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "望远镜",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "20金币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "微光粒子",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "伪造玺戒",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "未经雕刻的图腾",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "无檐帽",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "洗漱用品",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "玺戒",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "香水",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "香水薄荷",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "小提琴",
+      "category": "乐器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "乐器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "写作工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "星光玫瑰",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "星界钢",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10000金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "星界银",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2500金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "星耀石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "500金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "胸甲",
+      "category": "护甲,防具,中甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：14+你的敏捷调整值.中甲，耐久度15",
+      "price": "100金币",
+      "weight": "25磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "中甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "袖剑",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点穿刺伤害·灵巧武器",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "袖扣",
+      "category": "服饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.1磅",
+      "tags": [
+        "服饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "学徒魔棒",
+      "category": "武器,法器,施法媒介",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "施法媒介",
+      "price": "50金币",
+      "weight": "1磅",
+      "tags": [
+        "武器",
+        "法器",
+        "施法媒介"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "雪狐花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "血蓟草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "血石榴",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "150金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "熏香",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5铜币",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "薰衣紫金粉",
+      "category": "材料,工艺材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "工艺材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "亚历山大钻石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1000金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "亚麻布料",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "亚麻布毯",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "烟草",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "烟斗",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "眼镜",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "0.5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "演出戏服",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "3磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "燕尾服",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "羊皮纸（10张）",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "羊绒毯",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "腰带",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "野钢花",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "医疗包",
+      "category": "医用,杂物,可堆叠",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "2.5磅",
+      "tags": [
+        "医用",
+        "杂物",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "医用材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "易容工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "音乐盒",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "银锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "银叶草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "蝇龙的脑垂体",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "350金币",
+      "weight": "2磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "影钻",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "750金币",
+      "weight": "0.5磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "幽灵菇",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "1金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "幽影尘",
+      "category": "材料,魔法材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "30金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "魔法材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "鱼类",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "泥鱼",
+      "weight": "5铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "娱乐杂志和周刊",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.2磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "渔具",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5金币",
+      "weight": "10磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "羽毛笔",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.1磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "雨燕草",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "圆顶帽",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "1磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "源质钢",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2500金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "月光石",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "300金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "月蔷薇",
+      "category": "材料,草药",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "草药"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "跃迁兽的皮革",
+      "category": "材料,生物材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "35金币",
+      "weight": "5磅",
+      "tags": [
+        "材料",
+        "生物材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "战锤",
+      "category": "武器,近战,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点钝击伤害·力量武器",
+      "price": "15金币",
+      "weight": "10磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "战斧",
+      "category": "武器,近战,挥砍",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点挥砍伤害·力量武器",
+      "price": "15金币",
+      "weight": "7.5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "挥砍"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长弓",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点穿刺伤害·敏捷武器",
+      "price": "50金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长棍",
+      "category": "武器,近战,钝击,简易",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D4点钝击伤害·单手武器·近战·简易武器",
+      "price": "5银币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击",
+        "简易"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长剑",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点穿刺伤害·力量武器",
+      "price": "15金币",
+      "weight": "7.5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长礼服",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长矛",
+      "category": "武器,近战,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点穿刺伤害·力量武器",
+      "price": "15金币",
+      "weight": "5磅",
+      "tags": [
+        "武器",
+        "近战",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "长裙",
+      "category": "服饰,护甲,防具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "2磅",
+      "tags": [
+        "服饰",
+        "护甲",
+        "防具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "折扇",
+      "category": "服饰",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "2银币",
+      "weight": "0.5磅",
+      "tags": [
+        "服饰"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "真银锭",
+      "category": "材料,矿石,矿产",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "300金币",
+      "weight": "10磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "矿产"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "臻冰",
+      "category": "材料,元素材料",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "100金币",
+      "weight": "1磅",
+      "tags": [
+        "材料",
+        "元素材料"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "正餐",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "煎蛋",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "止血剂",
+      "category": "医用,杂物,可堆叠",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "医用",
+        "杂物",
+        "可堆叠"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "指南针",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "",
+      "weight": "0.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "制毒工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "制图工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "重锤",
+      "category": "武器,近战,钝击",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成1D10点钝击伤害·力量武器",
+      "price": "15金币",
+      "weight": "10磅",
+      "tags": [
+        "武器",
+        "近战",
+        "钝击"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "重弩",
+      "category": "武器,远程,穿刺",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "造成2D6点穿刺伤害·敏捷武器·需要装填",
+      "price": "50金币",
+      "weight": "10磅",
+      "tags": [
+        "武器",
+        "远程",
+        "穿刺"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "珠宝材料包",
+      "category": "容器",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "10金币",
+      "weight": "1磅",
+      "tags": [
+        "容器"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "珠宝工具",
+      "category": "套装,工具",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "50金币",
+      "weight": "5磅",
+      "tags": [
+        "套装",
+        "工具"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "主食",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "硬面包",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "抓钩",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "5银币",
+      "weight": "2.5磅",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "紫水晶",
+      "category": "材料,矿石,宝石",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "75金币",
+      "weight": "0.2磅",
+      "tags": [
+        "材料",
+        "矿石",
+        "宝石"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
+      "name": "佐料",
+      "category": "杂物",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "",
+      "price": "大蒜",
+      "weight": "2铜币",
+      "tags": [
+        "杂物"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    }
+  ]
+}

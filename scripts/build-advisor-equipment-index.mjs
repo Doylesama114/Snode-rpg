@@ -102,15 +102,60 @@ function buildConsumablesIndex(itemsData) {
   };
 }
 
+function buildGeneralItemsIndex(itemsData, catalogItems, consumableNames) {
+  const existingNames = new Set([
+    ...(catalogItems || []).map((i) => i.name),
+    ...(consumableNames || []),
+  ]);
+  const items = [];
+  for (const [name, row] of Object.entries(itemsData || {})) {
+    if (existingNames.has(name)) continue;
+    const tags = row.tags || [];
+    const tagStr = tags.join(',');
+    items.push({
+      name,
+      category: tagStr || '物品',
+      subcategory: null,
+      type: null,
+      requirement: row.requirement || null,
+      effect: row.description || row.effect || '',
+      price: row.price ?? null,
+      weight: row.weight ?? null,
+      tags,
+      source: 'items_data.js',
+      kind: 'general',
+    });
+  }
+  items.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
+  return {
+    meta: {
+      layer: 'L1',
+      phase: '7167',
+      source: '职业页/数据/items_data.js（非消耗品通用物品）',
+      count: items.length,
+      categories: [...new Set(items.map((i) => i.category))].sort(),
+      generatedAt: new Date().toISOString().slice(0, 10),
+    },
+    items,
+  };
+}
+
 const catalog = JSON.parse(fs.readFileSync(CATALOG_JSON, 'utf8'));
 const itemsData = loadItemsData();
 const catalogIndex = buildCatalogIndex(catalog);
 const consumablesIndex = buildConsumablesIndex(itemsData);
+const generalIndex = buildGeneralItemsIndex(
+  itemsData,
+  catalogIndex.items,
+  (consumablesIndex.items || []).map((i) => i.name),
+);
 
 const catalogPath = writeJson('equipment_catalog_index.json', catalogIndex);
 const consumablesPath = writeJson('consumables_index.json', consumablesIndex);
+const generalPath = writeJson('general_items_index.json', generalIndex);
 
 console.log(`Wrote ${catalogPath} (${catalogIndex.meta.count} items)`);
 console.log(`Wrote ${consumablesPath} (${consumablesIndex.meta.count} items)`);
+console.log(`Wrote ${generalPath} (${generalIndex.meta.count} items)`);
 console.log(`Catalog categories: ${catalogIndex.meta.categories.join('、')}`);
 console.log(`Consumable kinds: ${consumablesIndex.meta.kinds.join('、')}`);

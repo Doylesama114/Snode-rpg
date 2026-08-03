@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (_event, data) => callback(data));
   },
+  sendAdvisorFeedback: (payload) => ipcRenderer.send('advisor-feedback', payload),
   sendBug: (body) => new Promise((resolve) => {
     const channel = 'bug-response-' + Date.now();
     ipcRenderer.once(channel, (_event, result) => resolve(result));

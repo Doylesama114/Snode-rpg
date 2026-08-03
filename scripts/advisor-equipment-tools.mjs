@@ -12,6 +12,8 @@ const ADVISOR = path.join(__dirname, '..', 'advisor', 'items');
 let _catalogCache = null;
 /** @type {object|null} */
 let _consumablesCache = null;
+/** @type {object|null} */
+let _generalCache = null;
 /** @type {Map<string, object>|null} */
 let _byNameCache = null;
 
@@ -43,6 +45,11 @@ function loadConsumablesIndex() {
   return _consumablesCache;
 }
 
+function loadGeneralItemsIndex() {
+  if (!_generalCache) _generalCache = loadJson('general_items_index.json');
+  return _generalCache;
+}
+
 function buildByNameMap() {
   if (_byNameCache) return _byNameCache;
   const map = new Map();
@@ -52,26 +59,39 @@ function buildByNameMap() {
   for (const it of loadConsumablesIndex().items || []) {
     if (!map.has(it.name)) map.set(it.name, it);
   }
+  for (const it of loadGeneralItemsIndex().items || []) {
+    if (!map.has(it.name)) map.set(it.name, it);
+  }
   return (_byNameCache = map);
 }
 
 export function resetEquipmentToolsCache() {
   _catalogCache = null;
   _consumablesCache = null;
+  _generalCache = null;
   _byNameCache = null;
 }
 
 /**
  * @param {string} query
  */
-export function resolveEquipmentNameFromQuery(query) {
+export function resolveEquipmentNamesFromQuery(query) {
   const q = String(query || '');
   const byName = buildByNameMap();
   const names = [...byName.keys()].sort((a, b) => b.length - a.length);
+  const found = [];
+  let rest = q;
   for (const name of names) {
-    if (q.includes(name)) return name;
+    if (rest.includes(name)) {
+      found.push(name);
+      rest = rest.split(name).join(' ');
+    }
   }
-  return null;
+  return found;
+}
+
+export function resolveEquipmentNameFromQuery(query) {
+  return resolveEquipmentNamesFromQuery(query)[0] || null;
 }
 
 /**
@@ -159,10 +179,11 @@ export function detectEquipmentQuestion(query) {
   }
   if (/这个技能|哪些职业.*学|初始职业.*武器/.test(q)) return null;
 
-  const itemName = resolveEquipmentNameFromQuery(q);
+  const itemNames = resolveEquipmentNamesFromQuery(q);
+  const itemName = itemNames[0] || null;
 
   if (itemName && EQUIP_LOOKUP_RE.test(q)) {
-    return { intent: 'equipment_lookup', itemName, query: q };
+    return { intent: 'equipment_lookup', itemName, itemNames, query: q };
   }
 
   if (EQUIP_SEARCH_RE.test(q) && EQUIP_SUBJECT_RE.test(q)) {
@@ -197,8 +218,10 @@ export function buildEquipmentToolContext(detected) {
   if (!detected) return null;
 
   if (detected.intent === 'equipment_lookup') {
-    const item = lookupEquipment(detected.itemName);
-    if (!item) {
+    const names = (detected.itemNames && detected.itemNames.length ? detected.itemNames : [detected.itemName]).filter(Boolean);
+    const items = names.map((n) => lookupEquipment(n)).filter((x) => x && x.found);
+    const missing = names.filter((n) => !items.some((x) => x.name === n));
+    if (!items.length) {
       return {
         intent: 'equipment_lookup',
         promptProfile: 'equipment_lookup',
@@ -210,24 +233,27 @@ export function buildEquipmentToolContext(detected) {
         meta: { itemName: detected.itemName, found: false },
       };
     }
-    const lines = [
-      '### Tools 层 · 装备/物品详情（equipment_catalog_index · 事实 · 勿改数字）',
-      `- 名称：${item.name}`,
-      `- 类别：${item.category || '—'}${item.subcategory ? ` · ${item.subcategory}` : ''}`,
-      `- 来源：${item.source}`,
-    ];
-    if (item.type) lines.push(`- 类型：${item.type}`);
-    if (item.requirement) lines.push(`- 要求：${item.requirement}`);
-    if (item.price) lines.push(`- 价格：${item.price}`);
-    if (item.weight) lines.push(`- 重量：${item.weight}`);
-    if (item.tags?.length) lines.push(`- 标签：${item.tags.join('、')}`);
-    lines.push(`- 效果：${String(item.effect || '—').replace(/\n/g, '；')}`);
+    const lines = ['### Tools 层 · 装备/物品详情（equipment_catalog_index · 事实 · 勿改数字）'];
+    for (const item of items) {
+      lines.push(`- 名称：${item.name}`);
+      lines.push(`- 类别：${item.category || '—'}${item.subcategory ? ` · ${item.subcategory}` : ''}`);
+      lines.push(`- 来源：${item.source}`);
+      if (item.type) lines.push(`- 类型：${item.type}`);
+      if (item.requirement) lines.push(`- 要求：${item.requirement}`);
+      if (item.price) lines.push(`- 价格：${item.price}`);
+      if (item.weight) lines.push(`- 重量：${item.weight}`);
+      if (item.tags?.length) lines.push(`- 标签：${item.tags.join('、')}`);
+      lines.push(`- 效果：${String(item.effect || '—').replace(/\n/g, '；')}`);
+    }
+    if (missing.length) {
+      lines.push(`- 未收录：${missing.join('、')}（未在索引中找到，勿编造价格/效果）`);
+    }
     lines.push('- LLM 须完整转述效果与价格；未出现在上文的数据不得编造。');
     return {
       intent: 'equipment_lookup',
       promptProfile: 'equipment_lookup',
       text: lines.join('\n'),
-      meta: { itemName: item.name, found: true, source: item.source },
+      meta: { itemName: items[0]?.name, itemNames: items.map((x) => x.name), found: true, source: items[0]?.source },
     };
   }
 

@@ -181,6 +181,7 @@
       '</div>',
       '<div class="_snowd_adv_hdr_btns">',
       '<button type="button" id="_snowd_adv_new_chat" class="_text" title="新对话">新对话</button>',
+      '<button type="button" id="_snowd_adv_export_fb" class="_text" title="导出反馈 JSON">反馈</button>',
       '<button type="button" id="_snowd_adv_min" title="关闭">×</button>',
       '</div></div>',
       '<div class="_snowd_view" id="_snowd_view_chat">',
@@ -270,7 +271,18 @@
       if (isChargenPage()) {
         appendMsg('ai', '创建页陪跑已启用：悬浮球旁会显示当前步骤的简短推荐，点击冒泡查看完整回答；也可在下方自由提问。');
       } else {
-        appendMsg('ai', '你好，我是 Build 顾问助理。创建页已支持全职业陪跑；可询问车卡、技能、进阶与兼职等（法师资料最完整）。');
+        var welcomeEl = appendMsg('ai', '你好，我是 Build 顾问助理。创建页已支持全职业陪跑；可询问车卡、技能、进阶与兼职等（法师资料最完整）。');
+        var chips = ['我想玩一个很帅、有操作感的角色', '战士1级怎么规划学习路线', '防御等级和攻击命中怎么算', '混沌法术怎么结算'];
+        var wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:8px';
+        chips.forEach(function(c) {
+          var b = document.createElement('button');
+          b.textContent = c;
+          b.style.cssText = 'padding:3px 10px;border:1px solid #a46d1f;border-radius:14px;background:transparent;color:#a46d1f;font-size:11px;cursor:pointer';
+          b.addEventListener('click', function() { sendQuery({ presetQuery: c }); });
+          wrap.appendChild(b);
+        });
+        if (welcomeEl) welcomeEl.appendChild(wrap);
       }
     }
 
@@ -584,7 +596,7 @@
           showBubble(truncateTip(full) || '…');
         });
         if (res && res.resolvedQuery) state.chargenQuery = res.resolvedQuery;
-        if (res && res.ok && !full && res.answer) full = res.answer;
+        if (res && res.ok && String(res.answer || '').trim()) full = res.answer;
         state.chargenFullAnswer = full || '（暂无建议）';
         syncChargenBubbleToSession();
         showBubble(truncateTip(state.chargenFullAnswer));
@@ -720,13 +732,102 @@
       };
       return map[cls] || '';
     }
+    var FEEDBACK_KEY = '_snowd_advisor_feedback';
+    function loadFeedback() {
+      try {
+        var raw = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+        return Array.isArray(raw) ? raw : [raw];
+      } catch (e) { return []; }
+    }
+    function saveFeedback(list) {
+      try { localStorage.setItem(FEEDBACK_KEY, JSON.stringify(list.slice(-200))); } catch (e) { /* ignore */ }
+    }
+    function recordFeedback(rating, query, answer, intent, mode) {
+      var item = {
+        rating: rating,
+        query: query,
+        answer: String(answer || '').slice(0, 4000),
+        intent: intent || '',
+        mode: mode || 'advisor',
+        ts: Date.now(),
+        source: 'widget',
+      };
+      var list = loadFeedback();
+      list.push(item);
+      saveFeedback(list);
+      if (window.electronAPI && window.electronAPI.sendAdvisorFeedback) {
+        try {
+          var pr = window.electronAPI.sendAdvisorFeedback(item);
+          if (pr && pr.catch) pr.catch(function() {});
+        } catch (e2) { /* ignore */ }
+      }
+    }
+    function appendFeedbackRow(el, query, answer, res) {
+      if (!answer || answer === '（无回答内容）') return;
+      var row = document.createElement('div');
+      row.style.cssText = 'margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap';
+      var mk = function(label, rating, icon) {
+        var b = document.createElement('button');
+        b.textContent = icon + ' ' + label;
+        b.style.cssText = 'padding:2px 8px;border:1px solid #d8d2c4;border-radius:10px;background:transparent;color:#69706b;font-size:11px;cursor:pointer';
+        b.addEventListener('click', function() {
+          recordFeedback(rating, query, answer, res && res.intent, res && res.mode);
+          var btns = row.querySelectorAll('button');
+          for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+          b.textContent = icon + ' 已记录';
+        });
+        return b;
+      };
+      var up = mk('有用', 'up', '👍');
+      var down = mk('没用', 'down', '👎');
+      var copy = document.createElement('button');
+      copy.textContent = '📋 复制';
+      copy.style.cssText = 'padding:2px 8px;border:1px solid #d8d2c4;border-radius:10px;background:transparent;color:#69706b;font-size:11px;cursor:pointer';
+      copy.addEventListener('click', function() {
+        var text = String(answer || '');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { copy.textContent = '已复制'; })
+            .catch(function() { copy.textContent = '复制失败'; });
+        } else {
+          copy.textContent = '复制失败';
+        }
+      });
+      row.appendChild(up);
+      row.appendChild(down);
+      row.appendChild(copy);
+      el.appendChild(row);
+    }
+
+    function renderClarifyChips(el, clarify) {
+      var need = clarify.needs && clarify.needs[0];
+      if (!need) return;
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'margin-top:8px;display:flex;flex-wrap:wrap;gap:6px';
+      var label = document.createElement('div');
+      label.textContent = need.prompt || '请选择：';
+      label.style.cssText = 'width:100%;color:#69706b;font-size:12px';
+      wrap.appendChild(label);
+      (need.options || []).slice(0, 12).forEach(function(opt) {
+        var b = document.createElement('button');
+        b.textContent = opt;
+        b.style.cssText = 'padding:4px 10px;border:1px solid #a46d1f;border-radius:14px;background:transparent;color:#a46d1f;font-size:12px;cursor:pointer';
+        b.addEventListener('click', function() {
+          var base = state.lastClarifyQuery || '';
+          sendQuery({ presetQuery: opt + (base ? '，' + base : '') });
+        });
+        wrap.appendChild(b);
+      });
+      el.appendChild(wrap);
+      scrollMsgs();
+    }
+
     function renderAnswerHtml(text) {
       var t = String(text || '');
       var body = t;
       var refLine = '';
-      var m = t.match(/\n?【参考】[^\n]*$/);
+      var m = t.match(/(?:\n?)(【参考】[^\n]*)[ \t]*\n*$/);
       if (m) {
-        refLine = m[0].replace(/^\n?/, '');
+        refLine = m[1];
         body = t.slice(0, m.index);
       }
       var html = _advEscapeHtml(body).replace(/\n/g, '<br>');
@@ -737,7 +838,7 @@
           if (!mm) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
           var name = mm[1].trim(), cls = mm[2].trim(), id = mm[3].trim();
           var file = _advClassToSkillPage(cls);
-          var idOk = /^[a-z]+-[a-z]+(-?\d+)+$/.test(id);
+          var idOk = /^[a-z][a-z0-9-]*$/.test(id);
           if (!file || !id || !idOk) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
           return '<a class="_adv_ref" href="../职业页/' + file + '#' + encodeURIComponent(id) + '" target="_blank">' + _advEscapeHtml(name) + '</a>';
         });
@@ -752,6 +853,7 @@
       if (!input || state.busy) return;
       var q = opts.presetQuery || input.value.trim();
       if (!q) return;
+      state.lastClarifyQuery = q;
 
       if (!window.electronAPI || (!window.electronAPI.advisorAdviseStream && !window.electronAPI.advisorAdvise)) {
         appendMsg('err', 'Build 顾问需在 Electron 客户端中使用。浏览器版待后续支持。');
@@ -804,9 +906,12 @@
           if (!gotChunk && res.answer) aiEl.textContent = res.answer;
           if (!gotChunk && res.answer && res.answer.length > 900) aiEl.classList.add('_long');
           if (!aiEl.textContent) aiEl.textContent = '（无回答内容）';
-          var finalText = aiEl.textContent;
+          // 以主进程返回的最终回答为准（引用兜底后的版本），流式累加仅作过程展示
+          var finalText = (res.answer && String(res.answer).trim()) ? String(res.answer) : aiEl.textContent;
           aiEl.innerHTML = renderAnswerHtml(finalText);
           appendSessionTurn(q, finalText);
+          if (res.clarify && res.clarify.needs && res.clarify.needs.length) renderClarifyChips(aiEl, res.clarify);
+          appendFeedbackRow(aiEl, q, finalText, res);
         } else {
           if (aiEl.parentNode) aiEl.parentNode.removeChild(aiEl);
           appendMsg('err', (res && res.error) || '请求失败，请稍后重试。');
@@ -866,6 +971,18 @@
 
     document.getElementById('_snowd_adv_new_chat').addEventListener('click', function() {
       newChatSession({ silent: false });
+    });
+
+    document.getElementById('_snowd_adv_export_fb').addEventListener('click', function() {
+      var list = loadFeedback();
+      var blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'advisor-feedback-' + Date.now() + '.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() { URL.revokeObjectURL(url); a.remove(); }, 500);
     });
 
     document.getElementById('_tab_chat').addEventListener('click', function() { switchTab('chat'); });

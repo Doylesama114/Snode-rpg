@@ -318,6 +318,27 @@ ipcMain.on('check-update-mirror', () => {
   checkForUpdatesViaGenericFeed({ sources: ['oss', 'github'], autoFallback: false, phase: 'mirror' });
 });
 
+// IPC: 顾问反馈（点赞/点踩）→ ntfy 独立主题，便于沉淀 golden 用例
+ipcMain.on('advisor-feedback', (_event, payload) => {
+  const https = require('https');
+  const data = JSON.stringify(payload || {});
+  const options = {
+    hostname: 'ntfy.sh',
+    port: 443,
+    path: '/snowd-advisor-feedback',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Title': 'Advisor Feedback',
+      'Content-Length': Buffer.byteLength(data, 'utf8'),
+    },
+  };
+  const req = https.request(options, () => {});
+  req.on('error', () => {});
+  req.write(data);
+  req.end();
+});
+
 // IPC: 手动重启
 ipcMain.on('restart-app', () => {
   app.relaunch();

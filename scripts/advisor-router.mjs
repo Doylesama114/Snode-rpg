@@ -38,7 +38,7 @@ export const INTENT_RULES = [
       /雷恩.*神|有哪些.*正神|古老的文明|周边政权|组织势力/,
     ],
     layers: ['L7'],
-    topK: { L7: 10 },
+    topK: { L7: 14 },
     promptProfile: 'worldview_lore',
   },
   {

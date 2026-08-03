@@ -2,6 +2,7 @@
  * Advisor 5.0 — structured query tools (skill, weapon, chargen HP, proficiency, status, feats, unknown gate).
  */
 import fs from 'fs';
+import { buildSkillCostContext, buildCarryCapacityContext, buildDamageExpectationContext } from './advisor-numeric-tools.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { matchAllClassesFromQuery, matchClassNameFromQuery } from './advisor-class-l2.mjs';
@@ -568,30 +569,37 @@ export function resolveSkillNameFromQuery(query) {
   const q = String(query || '');
   const prefer = preferSkillSuffixFromQuery(q);
   const matchOk = (name) => !prefer || name.includes(prefer);
+  const seen = new Set();
+  const matches = [];
   // 1) 精确包含（长名优先；含语义后缀时优先匹配对应条目）
-  for (const name of allNames) {
-    if (matchOk(name) && q.includes(name)) {
-      return { name, occurrences: byName.get(name) || [] };
-    }
-  }
-  // 2) 后缀剥离后包含
-  const stripped = stripSkillQuerySuffixes(q);
-  if (stripped && stripped !== q) {
+  const tryRaw = (hay) => {
     for (const name of allNames) {
-      if (matchOk(name) && stripped.includes(name)) {
-        return { name, occurrences: byName.get(name) || [] };
+      if (!matchOk(name) || seen.has(name)) continue;
+      if (hay.includes(name)) {
+        seen.add(name);
+        matches.push({ name, occurrences: byName.get(name) || [] });
       }
     }
-  }
-  // 3) 变体规范化（·↔的、去括号、去空格；“被动”等同“天赋”）
-  let qn = normalizeSkillNameVariant(q);
-  if (prefer === '·天赋') qn = qn.replace(/被动/g, '天赋');
-  for (const name of allNames) {
-    if (matchOk(name) && qn.includes(normalizeSkillNameVariant(name))) {
-      return { name, occurrences: byName.get(name) || [] };
+  };
+  // 2) 变体规范化（·↔的、去括号、去空格；“被动”等同“天赋”）
+  const tryNorm = (hay) => {
+    let hn = normalizeSkillNameVariant(hay);
+    if (prefer === '·天赋') hn = hn.replace(/被动/g, '天赋');
+    for (const name of allNames) {
+      if (!matchOk(name) || seen.has(name)) continue;
+      if (hn.includes(normalizeSkillNameVariant(name))) {
+        seen.add(name);
+        matches.push({ name, occurrences: byName.get(name) || [] });
+      }
     }
-  }
-  return null;
+  };
+  tryRaw(q);
+  // 3) 后缀剥离后包含
+  const stripped = stripSkillQuerySuffixes(q);
+  if (stripped && stripped !== q) tryRaw(stripped);
+  if (matches.length === 0) tryNorm(q);
+  if (!matches.length) return null;
+  return { name: matches[0].name, occurrences: matches[0].occurrences, matches };
 }
 
 /**
@@ -767,6 +775,42 @@ export function detectStructuredQuestion(query) {
     }
   }
 
+  // 升级累计类问题：确定性规则即可，无需 LLM 规划器
+  if (/从\s*\d+\s*级\s*升到\s*\d+\s*级|累计.*奖励|一共.*获得.*奖励|系统奖励/.test(q)) {
+    return { intent: 'leveling_summary', query: q };
+  }
+
+  // 风格选择类问题：强制走规则规划（class_skills），避免 LLM 规划器误判为 build_roadmap
+  const STYLE_QUESTION_RE = /流派|风格|极斗|踏风|织雾|无尘|锋岚|酒仙|凰火|戒律|虔佑|魂谒|惩戒|守护|圣洁|热诚|奇袭|妙手|魅影|狂妄|魔药|荒野|兽灵|复苏|月影|日怒|星辰|精火|风暴|火焰|水源|大地|巫术|潜能|激昂|舒缓|灵动|诙谐|集中|邪念|咒能|秘术|精准|构想|炽擎|电涌|魔枢|狂暴|生机|法咒|兽群|猎鹰|生存|斗争|狂攻|防护|射击|军团|机敏/;
+  if (STYLE_QUESTION_RE.test(q) && /怎么选|选什么|优先|哪个|哪条|推荐|对比|区别/.test(q)) {
+    return { intent: 'class_skills', query: q };
+  }
+
+  const skillCostQ = skillHit && /疲劳|FP|技能点|\bSP\b|标识|施展时间|施法时间|消耗|代价|成本/.test(q)
+    && /多少|什么|几|要|消耗/.test(q);
+  if (skillCostQ) {
+    return {
+      intent: 'skill_cost',
+      skillName: skillHit.name,
+      skillNames: (skillHit.matches || []).map((m) => m.name),
+      query: q,
+    };
+  }
+
+  if (/负重|承载|携带重量|能带多少/.test(q) && /力量|负重|承载|携带/.test(q)) {
+    return { intent: 'carry_capacity', query: q };
+  }
+
+  const damageQ = skillHit && /伤害|输出|打多少|能打|杀伤/.test(q) && !/护甲|防御|命中加值|\bAC\b/.test(q);
+  if (damageQ) {
+    return {
+      intent: 'damage_expectation',
+      skillName: skillHit.name,
+      skillNames: (skillHit.matches || []).map((m) => m.name),
+      query: q,
+    };
+  }
+
   if (skillHit) {
     const asksAggregate = SKILL_AGGREGATE_RE.test(q)
       && /哪些职业|可以学|效果一样|一样吗/.test(q);
@@ -823,6 +867,10 @@ function formatSkillOccurrence(occ) {
  */
 export function buildStructuredToolContext(detected, opts = {}) {
   if (!detected) return null;
+
+  if (detected.intent === 'skill_cost') return buildSkillCostContext(detected, opts.store);
+  if (detected.intent === 'carry_capacity') return buildCarryCapacityContext(detected, opts.store);
+  if (detected.intent === 'damage_expectation') return buildDamageExpectationContext(detected, opts.store);
 
   if (detected.intent === 'skill_detail') {
     const detail = lookupSkill(detected.skillName);

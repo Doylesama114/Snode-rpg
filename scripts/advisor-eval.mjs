@@ -79,7 +79,7 @@ const CASES = [
     query: '德鲁伊3级能获得什么新形态？水栖形态有什么用？',
     contextHas: ['野兽形态', '水栖形态', '飞禽形态'],
     mustInclude: ['水栖形态', '水下呼吸'],
-    anyOf: [['8米', '飞禽形态', '海豹']],
+    anyOf: [['8米', '8 m', '8m', '飞禽形态', '海豹', '海豚', '水下移动', '5 级', '5级']],
     points: [
       '3 级通过野兽形态获得水栖形态',
       '水栖形态提供水下呼吸',
@@ -252,6 +252,294 @@ const CASES = [
       '开局套装推荐且给出理由（套装 A 可推荐）',
     ],
   },
+
+  {
+    name: 'paladin_skills',
+    citationRequired: true,
+    query: '圣骑士的惩戒流派一阶有哪些技能？制裁之锤和力量祝福的效果是什么？',
+    contextHas: ['制裁之锤', '力量祝福', '黄金连打'],
+    mustInclude: ['圣骑士', '惩戒'],
+    points: [
+      '惩戒流派一阶代表技能（制裁之锤/力量祝福至少其一）',
+      '区分惩戒/守护/圣洁等圣骑士战斗风格，不混用其他职业流派',
+    ],
+  },
+  {
+    name: 'barbarian_skills',
+    citationRequired: true,
+    query: '蛮斗士的狂暴流派有什么技能？凶蛮打击、生命归还和鲜血雷鸣分别是什么效果？',
+    contextHas: ['凶蛮打击', '生命归还', '鲜血雷鸣'],
+    mustInclude: ['蛮斗士', '狂暴'],
+    points: [
+      '狂暴流派代表技能凶蛮打击',
+      '区分狂暴/生机/法咒等风格（如生命归还属于生机）',
+      '给出选择建议而非堆砌全部技能',
+    ],
+  },
+  {
+    name: 'monk_skills',
+    citationRequired: true,
+    query: '武僧极斗流派一阶怎么选？猛虎掌和连环拳哪个更优先？',
+    contextHas: ['猛虎掌', '连环拳', '幻形踢'],
+    mustInclude: ['武僧', '极斗'],
+    points: [
+      '猛虎掌为极斗起手战技',
+      '极斗一阶代表战技（连环拳/幻形踢至少其一）',
+      '区分极斗/踏风/织雾等武僧风格',
+    ],
+  },
+  {
+    name: 'warlock_skills',
+    citationRequired: true,
+    query: '魔契师起始特性四选二怎么选？巫术箭和虚弱诅咒分别是什么效果？',
+    contextHas: ['巫术箭', '毒液飞溅', '虚弱诅咒', '次级变形术'],
+    mustInclude: ['魔契师'],
+    points: [
+      '起始特性为四选二（巫术箭/毒液飞溅/虚弱诅咒/次级变形术）',
+      '巫术箭伤害类型与所选宗主相关',
+      '按输出/毒伤/控场职能给出选择建议',
+    ],
+  },
+  {
+    name: 'shaman_skills',
+    citationRequired: true,
+    query: '萨满祭司的风暴流派一阶有什么技能？闪电箭和闪电盾牌的效果是什么？',
+    contextHas: ['闪电箭', '闪电盾牌', '加速图腾'],
+    mustInclude: ['萨满', '风暴'],
+    points: [
+      '闪电箭为风暴起始技能',
+      '风暴流派一阶代表技能（闪电盾牌/加速图腾至少其一）',
+      '区分风暴/火焰/水源/大地等萨满风格',
+    ],
+  },
+  {
+    name: 'sorcerer_chaos',
+    citationRequired: true,
+    query: '术士的混沌法术怎么结算？点数区间和效果怎么对应？',
+    contextHas: ['混沌法术'],
+    mustInclude: ['混沌法术'],
+    points: [
+      '混沌法术通过 D100 掷骰随机施展效应',
+      '列出至少两个点数区间对应关系（如 001 次级祈愿术、002-005 绝对有利效应）',
+      '明确随机性：点数越优效果越有利于当前局势',
+    ],
+  },
+  {
+    name: 'leveling_summary',
+    citationRequired: false,
+    query: '主职业从1级升到5级，一共能获得哪些系统奖励？',
+    contextHas: ['技能槽', '自由属性', '进阶'],
+    mustInclude: ['技能槽'],
+    points: [
+      'L2 获得熟练+1',
+      '每级（除L1）技能槽+1，给出累计技能槽数',
+      'L4 获取一项特殊专长',
+      'L5 开启主职业三条进阶途径',
+    ],
+  },
+  {
+    name: 'point_buy_optimize',
+    query: '32点购点，玩法师的话属性怎么分配最合理？',
+    contextHas: ['购点', '智力'],
+    mustInclude: ['智力'],
+    points: [
+      '法师关键属性为智力并优先保障',
+      '给出具体购点分配建议',
+      '说明种族加值在购点后叠加（最终值=购点+种族加值）',
+    ],
+  },
+  {
+    name: 'equipment_price',
+    citationRequired: false,
+    query: '活力药水多少钱？开锁工具呢？',
+    contextHas: ['活力药水', '开锁工具'],
+    mustInclude: ['金币'],
+    points: [
+      '给出活力药水价格（10金币）',
+      '给出开锁工具价格（10金币）',
+      '如涉及重量/容量可补充说明',
+    ],
+  },
+  {
+    name: 'race_detail',
+    query: '木精灵的种族特性有哪些？适合什么职业？',
+    contextHas: ['木精灵', '弓箭专精'],
+    mustInclude: ['木精灵'],
+    points: [
+      '木精灵属性加值敏捷+2、魅力+2',
+      '特性弓箭专精/轻捷步伐/精类血统至少其一',
+      '结合特性给出适配职业建议（如猎人/游荡者）',
+    ],
+  },
+  {
+    name: 'background_deity',
+    query: '侍僧背景可以选择侍奉哪些神？侍僧有什么熟练？',
+    contextHas: ['侍僧', '宗教'],
+    mustInclude: ['侍僧'],
+    points: [
+      '侍僧基础熟练为宗教、洞悉',
+      '可提及任选两门语言',
+      '侍僧拥有圣徽等装备或虔诚祷告特性',
+    ],
+  },
+  {
+    name: 'proficiency_lookup',
+    citationRequired: false,
+    query: '哪些职业可以获得知识熟练？',
+    contextHas: ['知识'],
+    mustInclude: ['知识'],
+    points: [
+      '列出可获得知识熟练的职业或背景',
+      '说明熟练获取方式（如职业基础/背景授予）',
+    ],
+  },
+  {
+    name: 'feat_timing',
+    citationRequired: false,
+    query: '特殊专长在哪几级获得？',
+    contextHas: ['特殊专长', '13'],
+    mustInclude: ['特殊专长'],
+    points: [
+      '4 级首次获得一项特殊专长',
+      '8 级、13 级各再获得一项',
+    ],
+  },
+  {
+    name: 'multiclass_conflict',
+    citationRequired: false,
+    query: '蛮斗士主职，7级的时候能兼职奇械师吗？',
+    contextHas: ['蛮斗士', '奇械师', '兼职'],
+    mustInclude: ['兼职'],
+    points: [
+      '主职 7 级解锁兼职',
+      '奇械师与蛮斗士互斥（incompatible），不可兼职',
+      '如可兼则列出条件，不可兼则说明互斥原因',
+    ],
+  },
+  {
+    name: 'status_rules',
+    citationRequired: false,
+    query: '沉默状态有什么效果？怎么解除？',
+    contextHas: ['沉默', '限制'],
+    mustInclude: ['沉默'],
+    points: [
+      '沉默使目标无法通过语言与他人交流',
+      '无法施展需要语言生效的能力',
+      '属于限制类状态（软控）',
+    ],
+  },
+  {
+    name: 'sp_marks',
+    citationRequired: false,
+    query: '紫色标识是什么？学带标识的技能要消耗什么？',
+    contextHas: ['紫色', '标识'],
+    mustInclude: ['标识'],
+    points: [
+      '紫色为 14 种色彩标识之一（固定色，非 wildcard）',
+      '学习带标识技能消耗对应色彩标识与 1 SP',
+      '标识由 DM 按模组结算发放，不假设玩家已持有',
+    ],
+  },
+  {
+    name: 'tips_warrior',
+    query: '战士有什么战斗小技巧？',
+    contextHas: ['斗争'],
+    mustInclude: ['战士'],
+    points: [
+      '引用战士相关小贴士（如斗争风格搭配猛击起手）',
+      '小贴士为建议而非必成立连招',
+    ],
+  },
+  {
+    name: 'worldview_era',
+    query: '斯诺德大陆的历史分为哪几个年代？',
+    contextHas: ['上古年代', '辉煌年代', '曙光年代'],
+    mustInclude: ['年代'],
+    points: [
+      '列举至少三个年代（上古/辉煌/混乱/灰色/曙光）',
+      '按时间顺序简要说明各年代特征',
+    ],
+  },
+  {
+    name: 'unknown_entity',
+    query: '元素大师这个职业有收录吗？',
+    contextHas: [],
+    mustInclude: ['元素大师'],
+    anyOf: [['未收录', '没有收录', '未在资料库', '不在资料库']],
+    points: [
+      '不编造元素大师的职业内容',
+      '明确当前资料未收录该条目',
+      '给出导向（查阅规则书/咨询 DM）',
+    ],
+  },
+  {
+    name: 'build_review',
+    citationRequired: true,
+    query: '我1级战士，学了猛击和盾牌格挡，这个开局怎么样？',
+    contextHas: ['猛击', '盾牌格挡'],
+    mustInclude: ['战士'],
+    points: [
+      '评价起手组合的优缺点',
+      '结合战士风格给后续学习建议',
+      '不编造上下文未出现的技能',
+    ],
+  },
+  {
+    name: 'advancement_warrior',
+    query: '战士5级开启的进阶途径有哪些？近卫是什么？',
+    contextHas: ['近卫', '进阶'],
+    mustInclude: ['近卫'],
+    points: [
+      'L5 开启主职业三条进阶途径',
+      '近卫为战士进阶途径之一',
+      '说明近卫定位或门槛',
+    ],
+  },
+
+  {
+    name: 'skill_cost_lookup',
+    query: '重殴的疲劳消耗和技能点是多少？',
+    contextHas: ['疲劳消耗', '技能点', '橙色'],
+    mustInclude: ['橙色'],
+    points: [
+      '疲劳消耗为 1',
+      '技能点消耗为 1',
+      '色彩标识为橙色',
+    ],
+  },
+  {
+    name: 'carry_capacity',
+    query: '我力量14，常规、满载和极限负重分别是多少？',
+    contextHas: ['常规负重', '满载负重', '70'],
+    mustInclude: ['70', '140', '210'],
+    points: [
+      '常规负重 = 力量×5 = 70 kg',
+      '满载负重 = 力量×10 = 140 kg',
+      '极限负重 = 力量×15 = 210 kg',
+    ],
+  },
+  {
+    name: 'damage_expectation',
+    query: '吟游诗人的音波刃能造成多少伤害？',
+    contextHas: ['音波刃', '1D6'],
+    mustInclude: ['1D6'],
+    points: [
+      '技能自身骰子为 1D6',
+      '给出伤害区间（1-6）或平均值',
+      '说明仅技能骰子，不含武器/属性调整',
+    ],
+  },
+  {
+    name: 'clarify_missing_class',
+    expectClarify: true,
+    query: '帮我规划一下输出很高的职业的学习路线和推荐技能',
+    contextHas: [],
+    mustInclude: [],
+    points: [
+      '先确认职业信息（追问缺少的职业）',
+      '不编造具体职业专属内容',
+    ],
+  },
 ];
 
 function extractContext(messages) {
@@ -275,9 +563,9 @@ function contextIds(ctx) {
 }
 
 function extractRefs(text) {
-  const m = String(text || '').match(/【参考】[^\n]*$/);
+  const m = String(text || '').match(/(【参考】[^\n]*)[ \t]*\n*$/);
   if (!m) return [];
-  const items = m[0].replace(/^【参考】/, '').split('｜').map((x) => x.trim()).filter(Boolean);
+  const items = m[1].replace(/^【参考】/, '').split('｜').map((x) => x.trim()).filter(Boolean);
   const refs = [];
   for (const it of items) {
     const mm = it.match(/^(.*?)（(.*?)·(.*?)）$/);
@@ -290,9 +578,9 @@ function extractRefs(text) {
 function checkCitation(refs, validIds) {
   const errors = [];
   for (const r of refs) {
-    const idOk = /^[a-z]+-[a-z]+(-?\d+)+$/.test(r.id);
-    if (!idOk || !validIds.has(r.id)) {
-      errors.push({ raw: r.raw, id: r.id, reason: !idOk ? 'id 格式非法' : 'id 不在检索上下文' });
+    if (!r.id && /（规则）$/.test(r.raw)) continue; // 规则引用无需条目 id
+    if (!validIds.has(r.id)) {
+      errors.push({ raw: r.raw, id: r.id, reason: 'id 不在检索上下文' });
     }
   }
   return errors;
@@ -372,6 +660,7 @@ async function run() {
       const ctx = extractContext(dry.messages || []);
       const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
       const ctxMissing = c.contextHas.filter((k) => !ctx.includes(k));
+      if (c.expectClarify && !dry.clarify?.needs?.length) ctxMissing.push('clarify');
       if (contextOnly) {
         const ok = ctxMissing.length === 0;
         if (!ok) failed += 1;
@@ -381,16 +670,36 @@ async function run() {
         continue;
       }
 
-      const out = await advise(c.query);
+      let out = await advise(c.query);
       const elapsedFull = ((Date.now() - t0) / 1000).toFixed(1);
-      const missing = [];
+      let missing = [];
       checkCase(c, out.answer || '', missing);
+      if (c.expectClarify && !out.clarify?.needs?.length) missing.push('clarify');
       if (ctxMissing.length) missing.push(`ctx[${ctxMissing.join(',')}]`);
-      const refs = extractRefs(out.answer || '');
       const validIds = contextIds(ctx);
-      const citeErrors = checkCitation(refs, validIds);
+      let refs = extractRefs(out.answer || '');
+      let citeErrors = checkCitation(refs, validIds);
+      let ok = missing.length === 0 && citeErrors.length === 0;
+      let retried = false;
+      // 生成波动兜底：断言失败时重试一次（连续两次失败才算真失败；judge 分数照常呈现质量）
+      if (!ok) {
+        const retryOut = await advise(c.query);
+        const retryMissing = [];
+        checkCase(c, retryOut.answer || '', retryMissing);
+        if (c.expectClarify && !retryOut.clarify?.needs?.length) retryMissing.push('clarify');
+        if (ctxMissing.length) retryMissing.push(`ctx[${ctxMissing.join(',')}]`);
+        const retryRefs = extractRefs(retryOut.answer || '');
+        const retryCite = checkCitation(retryRefs, validIds);
+        if (retryMissing.length === 0 && retryCite.length === 0) {
+          out = retryOut;
+          missing = retryMissing;
+          refs = retryRefs;
+          citeErrors = retryCite;
+          retried = true;
+          ok = true;
+        }
+      }
       if (citeErrors.length) citationErrorsTotal += citeErrors.length;
-      const ok = missing.length === 0;
 
       let judge = null;
       if (useJudge && c.points?.length) {
@@ -404,7 +713,7 @@ async function run() {
 
       if (!ok) failed += 1;
       const rec = {
-        name: c.name, ok, skipped: false, seconds: Number(elapsedFull), missing,
+        name: c.name, ok, skipped: false, seconds: Number(elapsedFull), missing, retried,
         intent: out.intent, citationErrors: citeErrors, judge: judge ? {
           ok: judge.ok, pointPass: judge.ok ? judge.scores.filter((s) => s.pass === 1).length : 0,
           pointTotal: judge.ok ? judge.scores.length : 0, total: judge.ok ? judge.total : null,

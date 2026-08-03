@@ -407,8 +407,12 @@ function formatL0Hit(hit) {
       return `兼职：主职 L${hit.unlockLevel} 解锁；法师要求 ${JSON.stringify(hit.mageRequirement?.attrs)} / 熟练 ${JSON.stringify(hit.mageRequirement?.proficiencies)}；可兼 ${(hit.compatibleSubclasses || []).slice(0, 8).join('、')}`;
     case 'class_req':
       return `${hit.class} 兼职条件：${JSON.stringify(hit.requirement)}`;
-    case 'sp_marks':
-      return `标识：学 1 技能通常 ${hit.learnCost?.sp ?? 1} SP + 对应 color_marks；${hit.note || ''}`;
+    case 'sp_marks': {
+      const colorList = hit.allMarkNames?.length
+        ? `；14 种标识：${hit.allMarkNames.join('、')}（wildcard：${(hit.wildcards || []).join('、')}）`
+        : '';
+      return `标识：学 1 技能通常 ${hit.learnCost?.sp ?? 1} SP + 对应 color_marks；${hit.note || ''}${colorList}`;
+    }
     case 'rules_bullets':
       return (hit.bullets || []).join('\n');
     case 'level_related_skills':
@@ -476,10 +480,20 @@ function buildLoreResults(store, query, queryTokens, topK) {
       }
       if (/节日/.test(q) && (chunk.tags || []).includes('节日')) score += 12;
       if (/组织|骑士团/.test(q) && (chunk.tags || []).includes('组织')) score += 12;
+      if (/年代|纪元|历史/.test(q) && chunk.chapter === '年代记') score += 18;
       return { ...chunk, score };
     })
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score || (a.level || 9) - (b.level || 9));
+  // 年代/历史类问题：年代记章节整体前置，保证各年代条目齐备
+  if (/年代|纪元|历史/.test(q)) {
+    scored.sort((a, b) => {
+      const aEra = a.chapter === '年代记' ? 1 : 0;
+      const bEra = b.chapter === '年代记' ? 1 : 0;
+      if (aEra !== bEra) return bEra - aEra;
+      return b.score - a.score;
+    });
+  }
   return scored.slice(0, topK || 8);
 }
 
@@ -531,6 +545,8 @@ function buildL0Results(store, query, queryTokens, topK) {
       type: 'sp_marks',
       learnCost: store.spMarks.spPoints?.learnCost,
       wildcards: store.spMarks.colorMarks?.wildcards,
+      allMarkNames: store.spMarks.colorMarks?.allMarkNames || [],
+      chromaticMarkNames: store.spMarks.colorMarks?.chromaticMarkNames || [],
       note: '标识由 DM 根据模组主题结算；顾问不得建议刻意刷标识',
     });
   }
@@ -1461,8 +1477,9 @@ export function retrieve(query, options = {}) {
 
   // 指名技能补检：query 含具体技能名但未进入检索结果时追加该条目（避免截断导致“未收录”）
   const namedHit = resolveSkillNameFromQuery(query);
-  if (namedHit?.occurrences?.length) {
-    for (const occ of namedHit.occurrences) {
+  const namedHits = namedHit?.matches?.length ? namedHit.matches : (namedHit ? [namedHit] : []);
+  for (const hit of namedHits) {
+    for (const occ of hit.occurrences || []) {
       const layer = occ.layer;
       const list = retrieval.results[layer] || [];
       if (occ.skill?.id && !list.some((x) => x.id === occ.skill.id)) {
@@ -1507,6 +1524,16 @@ export function retrieve(query, options = {}) {
         retrieval.results[layer] = [...withFormFull, ...withForm, ...withoutForm];
       }
     }
+  }
+
+  // 风格选择类问题强制 class_skills：避免规划器误判 build_roadmap 导致回答缺风格细节
+  const styleDetected = detectStructuredQuestion(query);
+  if (
+    styleDetected?.intent === 'class_skills'
+    && /怎么选|选什么|优先|哪个|哪条|推荐|对比|区别/.test(String(query || ''))
+  ) {
+    retrieval.intent = 'class_skills';
+    retrieval.promptProfile = 'class_skills';
   }
 
   return retrieval;

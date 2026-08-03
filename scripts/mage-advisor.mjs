@@ -14,6 +14,7 @@ import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { planQuery, planFromRules, buildPlanCacheKey } from './advisor-planner.mjs';
 import { normalizeConversationHistory, extractGoalOverride, enrichPlannerContext } from './advisor-session.mjs';
 import { detectStructuredQuestion } from './advisor-query-tools.mjs';
+import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -170,6 +171,64 @@ function saveLogFile(query, retrieval, messages, response) {
   console.error(`\n[log] ${file}`);
 }
 
+
+/**
+ * 引用兜底：回答末尾【参考】行只保留上下文内真实存在的条目。
+ * 非法/自造 id 优先按条目名称反查上下文修复；修复不了则剔除；
+ * 全部无效时移除整行，保证展示的引用永远可溯源、可点击。
+ */
+function normalizeRefName(s) {
+  return String(s || '').replace(/\s+/g, '').toLowerCase();
+}
+
+function extractContextNameIds(context) {
+  const map = new Map();
+  for (const line of String(context || '').split('\n')) {
+    const m = line.match(/^- (.+?)(?:\s*\[[^\]]*\]|:).*?条目:([A-Za-z0-9-]+)/);
+    if (!m) continue;
+    const name = m[1].trim();
+    const id = m[2];
+    if (!name || !id || id === '-') continue;
+    const key = normalizeRefName(name);
+    if (!map.has(key)) map.set(key, new Set());
+    map.get(key).add(id);
+  }
+  return map;
+}
+
+import { detectClarify } from './advisor-clarify.mjs';
+
+export function sanitizeCitationLine(text, context) {
+  const t = String(text || '');
+  const m = t.match(/(【参考】[^\n]*)[ \t]*\n*$/);
+  if (!m) return t;
+  const body = t.slice(0, m.index);
+  const items = m[1].replace(/^【参考】/, '').split('｜').map((s) => s.trim()).filter(Boolean);
+  if (!items.length) return t;
+  const validIds = new Set();
+  for (const mm of String(context || '').matchAll(/条目:([A-Za-z0-9-]+)/g)) {
+    if (mm[1] && mm[1] !== '-') validIds.add(mm[1]);
+  }
+  const nameIds = extractContextNameIds(context);
+  const kept = [];
+  for (const it of items) {
+    if (/（规则）$/.test(it)) { kept.push(it); continue; }
+    const mm = it.match(/^(.*?)（(.*?)·(.*?)）$/);
+    if (!mm) continue;
+    const name = mm[1].trim();
+    const cls = mm[2].trim();
+    const id = mm[3].trim();
+    if (validIds.has(id)) { kept.push(it); continue; }
+    const ids = nameIds.get(normalizeRefName(name)) || new Set();
+    if (ids.size === 1) {
+      kept.push(`${name}（${cls}·${[...ids][0]}` + '）');
+    }
+    // 同名多条或查不到：剔除，不编造
+  }
+  if (!kept.length) return body.replace(/[ \t]*\n+$/, '') + '\n';
+  return body + '【参考】' + [...new Set(kept)].join('｜') + '\n';
+}
+
 export async function advise(query, options = {}) {
   const config = getAdvisorConfig();
   const thinking = options.thinking ?? config.thinkingDefault;
@@ -212,6 +271,35 @@ export async function advise(query, options = {}) {
         useLLM: options.usePlannerLLM !== false,
       });
 
+  // 主动追问：缺关键信息时跳过 LLM 规划与生成，先让用户点选补充（dryRun 仍走完整检索供评测）
+  const clarify = plan
+    ? detectClarify(query, {
+        intent: plan.intent || null,
+        mode: options.mode || 'advisor',
+        retrievalClass: retrievalClassHint || matchClassNameFromQuery(query) || null,
+        hasSnapshot: !!snapshot,
+        hasChargenState: !!wizardState || !!options.chargenState,
+      })
+    : null;
+
+  if (clarify && !options.dryRun) {
+    return {
+      query,
+      intent: plan?.intent || 'general',
+      mode: options.mode || 'advisor',
+      promptProfile: 'general',
+      answerStyle: 'general',
+      plan,
+      thinking,
+      model: config.model,
+      messages: [],
+      context: '',
+      clarify,
+      answer: `为了给你更准确的规划，请先补充一个关键信息：${clarify.needs.map((n) => n.prompt).join(' ')}（可在下方直接点选）。`,
+      skippedByClarify: true,
+    };
+  }
+
   const retrieval = retrieve(query, {
     snapshot: snapshot || undefined,
     mode: options.mode,
@@ -229,6 +317,7 @@ export async function advise(query, options = {}) {
     conversationHistory,
     goalOverride: plannerCtx.goalOverride || null,
     unknownAdvancement: retrieval.unknownAdvancement || null,
+    clarify,
     hasRoadmapOutline: !!retrieval.results._roadmapOutline,
     className: retrieval.retrievalClass
       || retrieval.wizardState?.selections?.className
@@ -250,6 +339,7 @@ export async function advise(query, options = {}) {
       model: config.model,
       messages,
       context,
+      clarify,
       answer: null,
     };
   }
@@ -259,7 +349,7 @@ export async function advise(query, options = {}) {
   }
 
   const useStream = options.stream ?? false;
-  const roadmapTokens = Math.max(config.maxTokens, 6144);
+  const roadmapTokens = Math.max(config.maxTokens, 4096);
   const result = await callDeepSeek(messages, {
     thinking,
     stream: useStream,
@@ -279,7 +369,9 @@ export async function advise(query, options = {}) {
     model: config.model,
     messages,
     context,
-    answer: result.content,
+    clarify,
+    answer: sanitizeCitationLine(result.content, context),
+    answerRaw: result.content,
     usage: result.usage,
   };
 }
