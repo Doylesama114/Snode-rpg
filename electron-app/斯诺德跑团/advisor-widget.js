@@ -737,7 +737,7 @@
           if (!mm) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
           var name = mm[1].trim(), cls = mm[2].trim(), id = mm[3].trim();
           var file = _advClassToSkillPage(cls);
-          var idOk = /^[a-z]+-[a-z]+-\d+$/.test(id);
+          var idOk = /^[a-z]+-[a-z]+(-?\d+)+$/.test(id);
           if (!file || !id || !idOk) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
           return '<a class="_adv_ref" href="../职业页/' + file + '#' + encodeURIComponent(id) + '" target="_blank">' + _advEscapeHtml(name) + '</a>';
         });

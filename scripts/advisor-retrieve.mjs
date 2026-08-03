@@ -47,7 +47,7 @@ import {
   getRoadmapRouteConfig,
 } from './advisor-build-roadmap.mjs';
 import { outlineGrowthRoadmap, formatRoadmapOutline } from './advisor-tools.mjs';
-import { detectStructuredQuestion, buildStructuredToolContext, parseProficiencyTargetsFromQuery } from './advisor-query-tools.mjs';
+import { detectStructuredQuestion, buildStructuredToolContext, parseProficiencyTargetsFromQuery, resolveSkillNameFromQuery } from './advisor-query-tools.mjs';
 import { classifyQuestion } from './advisor-classifier.mjs';
 import { mergeSnapshotIntoCombatScenario, mergeSnapshotIntoAcScenario, parseCombatScenarioFromQuery } from './advisor-combat-engine.mjs';
 
@@ -1408,6 +1408,20 @@ export function retrieve(query, options = {}) {
   }
 
   retrieval = applyStructuredTools(retrieval, query, snapshotNorm, store);
+
+  // 指名技能补检：query 含具体技能名但未进入检索结果时追加该条目（避免截断导致“未收录”）
+  const namedHit = resolveSkillNameFromQuery(query);
+  if (namedHit?.occurrences?.length) {
+    for (const occ of namedHit.occurrences) {
+      const layer = occ.layer;
+      const list = retrieval.results[layer] || [];
+      if (occ.skill?.id && !list.some((x) => x.id === occ.skill.id)) {
+        list.unshift(occ.skill);
+        retrieval.results[layer] = list;
+        if (!retrieval.layersHit.includes(layer)) retrieval.layersHit.push(layer);
+      }
+    }
+  }
 
   return retrieval;
 }

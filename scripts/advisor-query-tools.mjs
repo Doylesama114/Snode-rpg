@@ -529,7 +529,7 @@ const SKILL_QUERY_SUFFIXES = [
   '天赋', '被动', '技能', '法术', '图纸', '配方', '效果', '升级',
 ];
 const SKILL_QUERY_SUFFIX_MARK = [
-  { re: /天赋|被动/, suffix: '·天赋' },
+  { re: /天赋(?!树)|被动/, suffix: '·天赋' },
   { re: /图纸/, suffix: '（图纸）' },
   { re: /配方/, suffix: '（配方）' },
 ];
@@ -610,6 +610,7 @@ export function lookupSkill(name) {
       style: skill.style || null,
       tier: skill.tier || (skill.type === 'starting' ? '起手' : null),
       type: skill.type || null,
+      deity: skill.deity || null,
       summary: skill.summary || '',
       prerequisite: skill.prerequisite || null,
       choicesFrom: skill.choicesFrom || null,
@@ -808,6 +809,7 @@ export function detectStructuredQuestion(query) {
 
 function formatSkillOccurrence(occ) {
   const lines = [`### ${occ.className} · ${occ.name}`];
+  if (occ.deity) lines.push(`- 领域: ${occ.deity}`);
   lines.push(`- 位阶/类型：${[occ.tier, occ.type, occ.style].filter(Boolean).join(' · ') || '—'}`);
   if (occ.prerequisite) lines.push(`- 前置：${String(occ.prerequisite).slice(0, 200)}`);
   if (occ.summary) lines.push(`- 摘要：${occ.summary.slice(0, 600)}`);
