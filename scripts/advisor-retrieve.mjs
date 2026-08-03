@@ -1528,7 +1528,7 @@ export function formatContext(retrieval) {
   if (retrieval.results['L2-mage']?.length) {
     lines.push('## L2 法师技能');
     for (const s of retrieval.results['L2-mage'].slice(0, 15)) {
-      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''}`);
+      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''} 条目:${s.id || '-'}`);
       if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);
     }
     lines.push('');
@@ -1539,7 +1539,7 @@ export function formatContext(retrieval) {
     if (!hits?.length) continue;
     lines.push(`## L2 ${entry.className}技能`);
     for (const s of hits.slice(0, 15)) {
-      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''}`);
+      lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s.summary?.slice(0, 120) || ''} 条目:${s.id || '-'}`);
       if (s.prerequisite) lines.push(`  前置: ${String(s.prerequisite).slice(0, 100)}`);
       if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);
     }
@@ -1551,7 +1551,7 @@ export function formatContext(retrieval) {
   if (retrieval.results['L2-universal']?.length) {
     lines.push('## L2 通用天赋');
     for (const s of retrieval.results['L2-universal'].slice(0, 12)) {
-      lines.push(`- ${s.name}: ${s.summary?.slice(0, 100) || ''}`);
+      lines.push(`- ${s.name}: ${s.summary?.slice(0, 100) || ''} 条目:${s.id || '-'}`);
     }
     lines.push('');
   }

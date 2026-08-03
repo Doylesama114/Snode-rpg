@@ -111,6 +111,9 @@
       '._snowd_adv_msg._user{align-self:flex-end;background:#f6f4ef;border:1px solid #d8d2c4}',
       '._snowd_adv_msg._ai{align-self:flex-start;background:#fff;border:1px solid #e8e4dc}',
       '._snowd_adv_msg._ai._long{max-width:100%;font-size:13px;line-height:1.65}',
+      '._adv_refs{margin-top:10px;padding-top:8px;border-top:1px dashed #d8d2c4;font-size:12px;color:#69706b;line-height:1.8}',
+      '._adv_refs a._adv_ref{color:#a46d1f;text-decoration:underline;margin:0 2px}',
+      '._adv_refs span._adv_ref{color:#8a8a8a}',
       '._snowd_adv_msg._err{align-self:stretch;background:#ffebee;border:1px solid #ffcdd2;color:#c62828;font-size:13px}',
       '._snowd_adv_foot{padding:12px 16px;border-top:1px solid #d8d2c4;flex-shrink:0}',
       '._snowd_adv_foot textarea{width:100%;min-height:72px;max-height:140px;border:1px solid #d8d2c4;border-radius:8px;',
@@ -703,6 +706,46 @@
       if (send) send.disabled = on;
     }
 
+    function _advEscapeHtml(t) {
+      return String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function _advClassToSkillPage(cls) {
+      var map = {
+        '战士': '战士.html', '法师': '法师.html', '游荡者': '游荡者.html',
+        '牧师': '牧师.html', '圣骑士': '圣骑士.html', '德鲁伊': '德鲁伊.html',
+        '武僧': '武僧.html', '吟游诗人': '吟游诗人.html', '猎人': '猎人.html',
+        '术士': '术士.html', '魔契师': '魔契师.html', '奇械师': '奇械师.html',
+        '萨满祭司': '萨满祭司.html', '蛮斗士': '蛮斗士.html',
+        '通用': '通用天赋树.html', '通用天赋树': '通用天赋树.html',
+      };
+      return map[cls] || '';
+    }
+    function renderAnswerHtml(text) {
+      var t = String(text || '');
+      var body = t;
+      var refLine = '';
+      var m = t.match(/\n?【参考】[^\n]*$/);
+      if (m) {
+        refLine = m[0].replace(/^\n?/, '');
+        body = t.slice(0, m.index);
+      }
+      var html = _advEscapeHtml(body).replace(/\n/g, '<br>');
+      if (refLine) {
+        var items = refLine.replace(/^【参考】/, '').split('｜').map(function (x) { return x.trim(); }).filter(Boolean);
+        var links = items.map(function (it) {
+          var mm = it.match(/^(.*?)（(.*?)·(.*?)）$/);
+          if (!mm) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
+          var name = mm[1].trim(), cls = mm[2].trim(), id = mm[3].trim();
+          var file = _advClassToSkillPage(cls);
+          var idOk = /^[a-z]+-[a-z]+-\d+$/.test(id);
+          if (!file || !id || !idOk) return '<span class="_adv_ref">' + _advEscapeHtml(it) + '</span>';
+          return '<a class="_adv_ref" href="../职业页/' + file + '#' + encodeURIComponent(id) + '" target="_blank">' + _advEscapeHtml(name) + '</a>';
+        });
+        html += '<div class="_adv_refs">【参考】' + links.join('｜') + '</div>';
+      }
+      return html;
+    }
+
     async function sendQuery(opts) {
       opts = opts || {};
       var input = document.getElementById('_snowd_adv_input');
@@ -761,7 +804,9 @@
           if (!gotChunk && res.answer) aiEl.textContent = res.answer;
           if (!gotChunk && res.answer && res.answer.length > 900) aiEl.classList.add('_long');
           if (!aiEl.textContent) aiEl.textContent = '（无回答内容）';
-          appendSessionTurn(q, aiEl.textContent);
+          var finalText = aiEl.textContent;
+          aiEl.innerHTML = renderAnswerHtml(finalText);
+          appendSessionTurn(q, finalText);
         } else {
           if (aiEl.parentNode) aiEl.parentNode.removeChild(aiEl);
           appendMsg('err', (res && res.error) || '请求失败，请稍后重试。');

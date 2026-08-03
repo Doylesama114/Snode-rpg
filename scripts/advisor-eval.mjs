@@ -12,6 +12,7 @@ import { advise } from './mage-advisor.mjs';
 const CASES = [
   {
     name: 'build_warrior',
+    citationRequired: true,
     query: '我是1级战士，属性力量16敏捷14体质14，请帮我规划前几级的学习路线和推荐技能',
     contextHas: ['L2 战士技能', '猛击'],
     mustInclude: ['战士', '专长'],
@@ -25,6 +26,7 @@ const CASES = [
   },
   {
     name: 'rules_qa_long',
+    citationRequired: true,
     query: '防御等级和攻击命中的检定公式是什么？我的战士力量18，防御等级该怎么算？',
     contextHas: ['护甲值演算'],
     mustInclude: ['护甲基础', '攻击命中检定值'],
@@ -127,6 +129,9 @@ function checkCase(c, text, missing) {
     if (!group.some((k) => text.includes(k))) {
       missing.push(`anyOf[${group.join('/')}]`);
     }
+  }
+  if (c.citationRequired && !text.includes('【参考】')) {
+    missing.push('【参考】');
   }
 }
 
