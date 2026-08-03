@@ -61,6 +61,31 @@ const CASES = [
     mustInclude: ['坚韧与不息符文'],
   },
   {
+    name: 'artificer_drawing',
+    query: '奇械师的破片手雷图纸怎么制作？有什么效果？',
+    contextHas: ['破片手雷（图纸）'],
+    mustInclude: ['破片手雷'],
+  },
+  {
+    name: 'hunter_guard_talent',
+    query: '猎人的灵龟守护·天赋是什么效果？',
+    contextHas: ['灵龟守护·天赋'],
+    mustInclude: ['灵龟守护'],
+    anyOf: [['16点生命值', '命中检定具有劣势']],
+  },
+  {
+    name: 'bard_chord_restored',
+    query: '吟游诗人的治愈和弦是什么效果？',
+    contextHas: ['治愈和弦'],
+    mustInclude: ['回复', '律动节拍'],
+  },
+  {
+    name: 'universal_free_offensive',
+    query: '通用天赋树的自由攻势有什么效果？',
+    contextHas: ['自由攻势'],
+    mustInclude: ['自由攻势'],
+  },
+  {
     name: 'chargen_advice',
     query: '推荐一个适合新手的吟游诗人加点方案和开局装备',
     contextHas: ['吟游诗人', '套装 A'],

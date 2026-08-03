@@ -431,17 +431,6 @@
       "tier": "一阶"
     },
     {
-      "id": "g-skill-12",
-      "name": "抉择A·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "一阶"
-    },
-    {
       "id": "g-skill-13",
       "name": "凝聚力量",
       "fields": {
@@ -639,17 +628,6 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
-    },
-    {
-      "id": "g-skill-21",
-      "name": "抉择B·你仅能够选择其中两项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
       "tier": "一阶"
     },
     {
@@ -3981,17 +3959,6 @@
       "tier": "二阶"
     },
     {
-      "id": "g-skill-107",
-      "name": "抉择D·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "二阶"
-    },
-    {
       "id": "g-skill-108",
       "name": "地面驾驶员",
       "fields": {
@@ -6381,17 +6348,6 @@
       "tier": "三阶"
     },
     {
-      "id": "g-skill-142",
-      "name": "抉择F·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "三阶"
-    },
-    {
       "id": "g-skill-143",
       "name": "极速打击",
       "fields": {
@@ -6967,17 +6923,6 @@
       "tier": "三阶"
     },
     {
-      "id": "g-skill-155",
-      "name": "抉择G·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "三阶"
-    },
-    {
       "id": "g-skill-156",
       "name": "力量耐性",
       "fields": {
@@ -7183,17 +7128,6 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
-    },
-    {
-      "id": "g-skill-164",
-      "name": "抉择H·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
       "tier": "三阶"
     },
     {
@@ -9013,17 +8947,6 @@
       "tier": "四阶"
     },
     {
-      "id": "g-skill-222",
-      "name": "抉择I·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "四阶"
-    },
-    {
       "id": "g-skill-223",
       "name": "力量骤升",
       "fields": {
@@ -9856,17 +9779,6 @@
       "tier": "四阶"
     },
     {
-      "id": "g-skill-250",
-      "name": "抉择K·你仅能够选择其中两项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "四阶"
-    },
-    {
       "id": "g-skill-251",
       "name": "写作工具大师",
       "fields": {
@@ -10494,6 +10406,7 @@
         }
       ],
       "description": [
+        "你的一名角色分别施展两个不同的、来自通用天赋树的战技，这些战技的位阶不能超过四阶天赋树",
         "这次攻击中你能够忽视所施展战技的限制条件"
       ],
       "level_upgrades": [],
@@ -11091,17 +11004,6 @@
       "tier": "五阶"
     },
     {
-      "id": "g-skill-283",
-      "name": "抉择L·你仅能够选择其中两项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "五阶"
-    },
-    {
       "id": "g-skill-284",
       "name": "力量掌握",
       "fields": {
@@ -11355,17 +11257,6 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
-    },
-    {
-      "id": "g-skill-292",
-      "name": "抉择M·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
       "tier": "五阶"
     },
     {
@@ -11672,17 +11563,6 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
-    },
-    {
-      "id": "g-skill-316",
-      "name": "抉择O·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
       "tier": "五阶"
     },
     {
@@ -12795,17 +12675,6 @@
       "tier": "六阶"
     },
     {
-      "id": "g-skill-343",
-      "name": "抉择P·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "六阶"
-    },
-    {
       "id": "g-skill-344",
       "name": "天父在上",
       "fields": {
@@ -13205,17 +13074,6 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
-    },
-    {
-      "id": "g-skill-354",
-      "name": "抉择Q·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
       "tier": "六阶"
     },
     {
@@ -15141,17 +14999,6 @@
       "tier": "七阶"
     },
     {
-      "id": "g-skill-376",
-      "name": "抉择R·你仅能够选择其中一项习得",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "七阶"
-    },
-    {
       "id": "g-skill-377",
       "name": "以刃承伤",
       "fields": {
@@ -15582,7 +15429,7 @@
         {
           "class": "主职业职业",
           "level": 18,
-          "text": "你可以选择获得一项召唤魔法，能够通过这",
+          "text": "你可以选择获得一项召唤魔法，能够通过这 项法术来随机召唤一头野兽、怪兽、不死生物、元素生物、精类生物、天界生物、 邪魔、龙类、异怪或魔法兽",
           "label": "你的主职业职业等级到达18级时：",
           "line_runs": [
             {
@@ -15681,17 +15528,6 @@
         "补给"
       ],
       "tier": "五阶"
-    },
-    {
-      "id": "g-skill-388",
-      "name": "抉择：额外攻击/额外施法",
-      "fields": {},
-      "description": [],
-      "level_upgrades": [],
-      "flavor": "",
-      "tags": [],
-      "cost": [],
-      "tier": "七阶"
     },
     {
       "id": "g-skill-389",
@@ -16837,7 +16673,7 @@
         {
           "class": "主职业",
           "level": 18,
-          "text": "饥饿游戏的效果在执行位移时能够忽视禁锢状态；",
+          "text": "饥饿游戏的效果在执行位移时能够忽视禁锢状态； 如果选择造成伤害，那么在对方对抗失败可以令目标同时进入缴械、压制和击倒 状态",
           "label": "你的主职业等级到达18级时：",
           "line_runs": [
             {
