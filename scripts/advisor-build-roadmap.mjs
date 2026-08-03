@@ -229,8 +229,12 @@ export function isBuildReviewQuery(query, ctx = {}) {
   return PANEL_REVIEW_RE.test(query) && PANEL_SKILL_RE.test(query);
 }
 
+const WORLDVIEW_TRAVEL_RE = /君冠城|白霜城|冬怒堡|嚎叫湾|洛克镇|箭谷镇|寒鸦镇|边陲镇|绿河谷镇|银烛城|砰砰城|威斯威尔|烬铁镇|布雷泽火焰-能源集团|灰隼镇|纺锤镇|金穗城|鹅湾|晴风郡|紫藤堡|绿野镇|河谷镇|暖径镇|赤戟城|阳葵城|牛堡|旧城|跳鼠镇|狼毒镇|红杈三角洲|沙枣镇与怪柳镇|道路系统|关卡与登记|交通方式|怎么走|如何前往|从.*出发|前往.*(?:城|镇|堡|湾)|行程|旅途/;
+
 export function isPanelRoadmapQuery(query, ctx = {}) {
   if (isBuildReviewQuery(query, ctx)) return false;
+  // 地理/旅行问题（路线、城镇、关卡等）不属于车卡规划，交给世界观检索
+  if (WORLDVIEW_TRAVEL_RE.test(String(query || ''))) return false;
   if (isBuildRoadmapQuery(query)) return true;
   if (!ctx.snapshot) return false;
   return PANEL_REVIEW_RE.test(query) && PANEL_SKILL_RE.test(query);

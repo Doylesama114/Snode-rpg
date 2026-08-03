@@ -701,10 +701,17 @@ export function listClassesByWeaponProf(queryOrCategory = '') {
 /**
  * @param {string} query
  */
+const WORLDVIEW_TRAVEL_RE = /君冠城|白霜城|冬怒堡|嚎叫湾|洛克镇|箭谷镇|寒鸦镇|边陲镇|绿河谷镇|银烛城|砰砰城|威斯威尔|烬铁镇|布雷泽火焰-能源集团|灰隼镇|纺锤镇|金穗城|鹅湾|晴风郡|紫藤堡|绿野镇|河谷镇|暖径镇|赤戟城|阳葵城|牛堡|旧城|跳鼠镇|狼毒镇|红杈三角洲|沙枣镇与怪柳镇|道路系统|关卡与登记|交通方式|怎么走|如何前往|从.*出发|前往.*(?:城|镇|堡|湾)|行程|旅途/;
+
 export function detectStructuredQuestion(query) {
   const q = String(query || '');
   const skillHit = resolveSkillNameFromQuery(q);
   const classes = matchAllClassesFromQuery(q);
+
+  // 世界观地理/旅行问题：路线、城镇、关卡等强制走世界观检索
+  if (WORLDVIEW_TRAVEL_RE.test(q) && !/\u52a0\u70b9|\u6280\u80fd|\u8fdb\u9636|\u4e13\u957f|\u6210\u957f\u8def\u7ebf|\u642d\u914d/.test(q)) {
+    return { intent: 'worldview_lore', query: q };
+  }
 
   // 同时问防御等级(AC) 与 命中/攻击 公式：无快照也应附带两份通用公式
   if (COMBAT_MATH_RE.test(q) && /护甲值|防御等级|\bAC\b/i.test(q) && /命中|攻击/.test(q) && /公式|怎么算|是什么|多少/.test(q)) {
