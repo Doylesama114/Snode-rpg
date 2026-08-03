@@ -38,7 +38,7 @@ jobs:
 
       - name: Deploy to FC
         working-directory: advisor-server
-        run: s deploy -y --use-local -a default
+        run: s deploy -y -a default
 
       - name: Print function URL
         working-directory: advisor-server
