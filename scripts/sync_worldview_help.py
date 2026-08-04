@@ -574,6 +574,8 @@ def _aliases_for(title: str) -> list[str]:
     # drop parenthetical date for festivals: 新年（1月1日） → 新年
     if "（" in nt:
         aliases.append(nt.split("（", 1)[0].strip())
+    if "饮食文化" in nt:
+        aliases.extend(["吃什么", "食物", "美食", "吃的", "吃"])
     return [a for a in dict.fromkeys(aliases) if a]
 
 
