@@ -14,6 +14,7 @@ import { fetch, abortAfter } from './advisor-fetch.mjs';
 import { planQuery, planFromRules, buildPlanCacheKey } from './advisor-planner.mjs';
 import { normalizeConversationHistory, extractGoalOverride, enrichPlannerContext } from './advisor-session.mjs';
 import { appendChoiceContext } from './advisor-choice-groups.mjs';
+import { detectMultiIntent } from './advisor-multi-intent.mjs';
 import { detectStructuredQuestion } from './advisor-query-tools.mjs';
 import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
 
@@ -282,6 +283,26 @@ export async function advise(query, options = {}) {
         hasChargenState: !!wizardState || !!options.chargenState,
       })
     : null;
+
+  // 多意图/矛盾意图：引用基本规则第六条「说，你要干嘛」，引导用户先明确目标
+  const multiIntent = options.skipMultiIntent ? null : detectMultiIntent(query);
+  if (multiIntent && !options.dryRun) {
+    return {
+      query,
+      intent: 'clarify',
+      mode: options.mode || 'advisor',
+      promptProfile: 'general',
+      plan,
+      thinking,
+      model: config.model,
+      messages: [],
+      context: '',
+      clarify: null,
+      multiIntent,
+      answer: '你这一句话里好像塞了好几件事，而且目标之间可能互相冲突。按《基本规则》第六条「说，你要干嘛」：告诉 DM 你到底想干嘛。如果你自己都不清楚行动的目标，那么这可能并不是一个合适的选择；只有在了解你角色行为逻辑的前提下，主持人才能够更准确地给出符合你期望的回应。\n\n建议先想清楚这次真正想解决的一件事，用一句话告诉我，例如职业选择、加点方案、某个技能效果或某个世界观问题，分开问效果会好很多。',
+      skippedByMultiIntent: true,
+    };
+  }
 
   if (clarify && !options.dryRun) {
     return {
