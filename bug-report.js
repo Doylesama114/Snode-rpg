@@ -48,12 +48,35 @@
     if (window.electronAPI) {
       window.electronAPI.sendBug(body).then(function(r) { done(r && r.ok); });
     } else {
-      // ntfy headers must be ISO-8859-1; keep Title ASCII-only (page title is in body)
-      fetch('https://ntfy.sh/snowd-bug-report', {
-        method: 'POST',
-        headers: { 'Title': 'Snowd Bug Report' },
-        body: body
-      }).then(function(r) { done(r.ok); }).catch(function() { done(false); });
+      // \u4f18\u5148\u4e0a\u62a5\u5230 FC \u2192 OSS \u6c89\u6dc0\uff1b\u5931\u8d25\u65f6\u56de\u9000 ntfy \u63a8\u9001
+      function ntfyFallback() {
+        fetch('https://ntfy.sh/snowd-bug-report', {
+          method: 'POST',
+          headers: { 'Title': 'Snowd Bug Report' },
+          body: body
+        }).then(function(r) { done(r.ok); }).catch(function() { done(false); });
+      }
+      var api = (typeof window.SNODE_ADVISOR_API === 'string' && window.SNODE_ADVISOR_API && window.SNODE_ADVISOR_API !== '__ADVISOR_API_BASE__')
+        ? window.SNODE_ADVISOR_API.replace(/\/+$/, '') : '';
+      if (api) {
+        fetch(api + '/api/bug', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            body: body,
+            page: location.href,
+            title: document.title,
+            userAgent: navigator.userAgent || '',
+            ts: Date.now(),
+            source: 'web',
+          })
+        }).then(function(r) {
+          if (r.ok) { done(true); return; }
+          ntfyFallback();
+        }).catch(function() { ntfyFallback(); });
+      } else {
+        ntfyFallback();
+      }
     }
   }
 

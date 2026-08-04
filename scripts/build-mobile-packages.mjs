@@ -142,6 +142,10 @@ function injectMobileEntry(files, apiBase) {
     if (!t.includes('advisor-mobile-entry.js')) {
       t = t.replace(/<\/body>/i, `<script src="${src}"></script>\n</body>`);
     }
+    if (apiBase && !t.includes('SNODE_ADVISOR_API')) {
+      const base = apiBase.replace(/\/+$/, '');
+      t = t.replace(/<\/body>/i, `<script>window.SNODE_ADVISOR_API = window.SNODE_ADVISOR_API || "${base}";</script>\n</body>`);
+    }
     if (apiBase && f.name.endsWith(`${SNODE}/顾问.html`)) {
       t = t.split('__ADVISOR_API_BASE__').join(apiBase.replace(/\/+$/, ''));
     }

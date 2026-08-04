@@ -385,6 +385,33 @@ ipcMain.on('send-bug', (event, { body, channel }) => {
   req.on('error', () => { event.sender.send(channel, { ok: false }); });
   req.write(data);
   req.end();
+
+  // \u540c\u65f6\u6c89\u6dc0\u5230 FC \u2192 OSS\uff08\u4e0e\u7f51\u9875\u7edf\u4e00\u6536\u96c6\uff09
+  try {
+    const fcBase = String(process.env.ADVISOR_API_BASE || 'https://snode-advisor-qsjpoimdzj.cn-chengdu.fcapp.run').replace(/\/+$/, '');
+    const u = new URL(fcBase + '/api/bug');
+    const json = JSON.stringify({
+      body: String(body || ''),
+      page: 'electron',
+      title: 'Bug Report',
+      userAgent: 'electron/' + (process.versions.electron || ''),
+      ts: Date.now(),
+      source: 'desktop',
+    });
+    const fcreq = https.request({
+      hostname: u.hostname,
+      port: 443,
+      path: u.pathname,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(json, 'utf8'),
+      },
+    }, () => {});
+    fcreq.on('error', () => {});
+    fcreq.write(json);
+    fcreq.end();
+  } catch (err) { /* ignore */ }
 });
 
 const { pathToFileURL } = require('url');

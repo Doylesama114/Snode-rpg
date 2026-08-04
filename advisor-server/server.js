@@ -253,6 +253,43 @@ async function handleFeedback(req, res) {
   sendJson(res, 200, { ok: true });
 }
 
+
+function validateBugPayload(payload) {
+  const body = String(payload.body || '').trim();
+  if (!body || body.length > 8000) {
+    throw Object.assign(new Error('body ?????'), { status: 400 });
+  }
+  return {
+    body,
+    page: String(payload.page || '').slice(0, 500),
+    title: String(payload.title || '').slice(0, 200),
+    userAgent: String(payload.userAgent || '').slice(0, 500),
+    ts: Number(payload.ts) || Date.now(),
+    source: String(payload.source || 'unknown').slice(0, 80),
+  };
+}
+
+async function handleBug(req, res) {
+  const ip = String(req.socket.remoteAddress || 'unknown').replace(/^::ffff:/, '');
+  if (!rateCheck(ip)) {
+    sendJson(res, 429, { error: '????????????' });
+    return;
+  }
+  const text = await readBody(req);
+  let payload;
+  try {
+    payload = JSON.parse(text || '{}');
+  } catch {
+    throw Object.assign(new Error('??????? JSON'), { status: 400 });
+  }
+  const bug = validateBugPayload(payload);
+  const d = new Date(bug.ts);
+  const ymd = `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}`;
+  const key = `advisor-bug/inbox/${ymd}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.json`;
+  await ossPutJson(key, { ...bug, receivedAt: new Date().toISOString() });
+  sendJson(res, 200, { ok: true });
+}
+
 const server = http.createServer(async (req, res) => {
   cors(res);
   if (req.method === 'OPTIONS') {
@@ -294,6 +331,15 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === '/api/feedback' && req.method === 'POST') {
     try {
       await handleFeedback(req, res);
+    } catch (err) {
+      sendJson(res, err.status || 500, { error: err.message || String(err) });
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/bug' && req.method === 'POST') {
+    try {
+      await handleBug(req, res);
     } catch (err) {
       sendJson(res, err.status || 500, { error: err.message || String(err) });
     }

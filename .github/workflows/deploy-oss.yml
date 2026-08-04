@@ -48,6 +48,12 @@ jobs:
           esac
           if [ -n "$ADVISOR_API" ]; then
             find _deploy -name "顾问.html" -exec sed -i "s|__ADVISOR_API_BASE__|$ADVISOR_API|g" {} +
+            # inject SNODE_ADVISOR_API for bug report upload
+            find _deploy -name "*.html" | while read f; do
+              if ! grep -q "SNODE_ADVISOR_API" "$f"; then
+                sed -i "s|</body>|<script>window.SNODE_ADVISOR_API = window.SNODE_ADVISOR_API || \"$ADVISOR_API\";</script>\n</body>|" "$f"
+              fi
+            done
           fi
           find _deploy -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy -name "*.bat" -delete 2>/dev/null || true
