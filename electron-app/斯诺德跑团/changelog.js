@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7176',
+    date: '2026-08-04',
+    changes: [
+      '修复：移动端 APK 资源包内的 bug 上报未接入自动汇总，现与网页/桌面统一上报到 OSS'
+    ]
+  },
+
+
+  {
     version: '1.0.7175',
     date: '2026-08-04',
     changes: [

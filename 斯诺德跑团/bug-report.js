@@ -48,12 +48,35 @@
     if (window.electronAPI) {
       window.electronAPI.sendBug(body).then(function(r) { done(r && r.ok); });
     } else {
-      // ntfy headers must be ISO-8859-1; keep Title ASCII-only (page title is in body)
-      fetch('https://ntfy.sh/snowd-bug-report', {
-        method: 'POST',
-        headers: { 'Title': 'Snowd Bug Report' },
-        body: body
-      }).then(function(r) { done(r.ok); }).catch(function() { done(false); });
+      // \u4f18\u5148\u4e0a\u62a5\u5230 FC \u2192 OSS \u6c89\u6dc0\uff1b\u5931\u8d25\u65f6\u56de\u9000 ntfy \u63a8\u9001
+      function ntfyFallback() {
+        fetch('https://ntfy.sh/snowd-bug-report', {
+          method: 'POST',
+          headers: { 'Title': 'Snowd Bug Report' },
+          body: body
+        }).then(function(r) { done(r.ok); }).catch(function() { done(false); });
+      }
+      var api = (typeof window.SNODE_ADVISOR_API === 'string' && window.SNODE_ADVISOR_API && window.SNODE_ADVISOR_API !== '__ADVISOR_API_BASE__')
+        ? window.SNODE_ADVISOR_API.replace(/\/+$/, '') : '';
+      if (api) {
+        fetch(api + '/api/bug', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            body: body,
+            page: location.href,
+            title: document.title,
+            userAgent: navigator.userAgent || '',
+            ts: Date.now(),
+            source: 'web',
+          })
+        }).then(function(r) {
+          if (r.ok) { done(true); return; }
+          ntfyFallback();
+        }).catch(function() { ntfyFallback(); });
+      } else {
+        ntfyFallback();
+      }
     }
   }
 
@@ -117,8 +140,75 @@
       var btn = document.createElement('button');
       btn.id = '_snowd_bug_btn';
       btn.textContent = '🐛';
-      btn.style.cssText = 'position:fixed;top:50%;right:30px;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);margin-top:-22px;';
-      btn.addEventListener('click', function(e) { e.stopPropagation(); showBugModal(); });
+      btn.style.cssText = 'position:fixed;top:50%;right:0;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid #c62828;background:#fff;color:#c62828;font-size:20px;cursor:pointer;box-shadow:0 2px 12px rgba(198,40,40,0.3);margin-top:-22px;transition:transform .25s ease;';
+      var st = document.getElementById('_snowd_bug_styles');
+      if (!st) {
+        st = document.createElement('style');
+        st.id = '_snowd_bug_styles';
+        st.textContent = '#_snowd_bug_btn._snowd_bug_hide{transform:translateX(calc(100% - 16px))}#_snowd_bug_btn._snowd_bug_hide_left{transform:translateX(calc(-100% + 16px))}';
+        document.head.appendChild(st);
+      }
+      var bugHideTimer = null;
+      function bugApplyHide() {
+        var r = btn.getBoundingClientRect();
+        var c = window.innerWidth / 2;
+        btn.classList.remove('_snowd_bug_hide', '_snowd_bug_hide_left');
+        if (r.left + r.width / 2 < c) btn.classList.add('_snowd_bug_hide_left');
+        else btn.classList.add('_snowd_bug_hide');
+      }
+      function bugShow() {
+        btn.classList.remove('_snowd_bug_hide', '_snowd_bug_hide_left');
+        clearTimeout(bugHideTimer);
+        bugHideTimer = setTimeout(bugApplyHide, 4000);
+      }
+      function bugHideSoon() {
+        clearTimeout(bugHideTimer);
+        bugHideTimer = setTimeout(bugApplyHide, 1500);
+      }
+      bugShow();
+      var bugDrag = null;
+      btn.addEventListener('pointerdown', function(e) {
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        bugDrag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: false };
+        try { btn.setPointerCapture(e.pointerId); } catch (err2) {}
+        btn.classList.remove('_snowd_bug_hide', '_snowd_bug_hide_left');
+        clearTimeout(bugHideTimer);
+      });
+      btn.addEventListener('pointermove', function(e) {
+        if (!bugDrag) return;
+        var dx = e.clientX - bugDrag.x;
+        var dy = e.clientY - bugDrag.y;
+        if (!bugDrag.moved && Math.abs(e.clientX - bugDrag.sx) + Math.abs(e.clientY - bugDrag.sy) > 8) bugDrag.moved = true;
+        if (bugDrag.moved) {
+          var r = btn.getBoundingClientRect();
+          var left = Math.max(6, Math.min(window.innerWidth - r.width - 6, r.left + dx));
+          var top = Math.max(6, Math.min(window.innerHeight - r.height - 6, r.top + dy));
+          btn.style.left = left + 'px';
+          btn.style.top = top + 'px';
+          btn.style.right = 'auto';
+          btn.style.marginTop = '0px';
+          bugDrag.x = e.clientX;
+          bugDrag.y = e.clientY;
+        }
+      });
+      function bugDragEnd(e) {
+        if (!bugDrag) return;
+        try { btn.releasePointerCapture(e.pointerId); } catch (err2) {}
+        var moved = bugDrag.moved;
+        bugDrag = null;
+        if (moved) { bugShow(); return; }
+        if (btn.classList.contains('_snowd_bug_hide') || btn.classList.contains('_snowd_bug_hide_left')) { bugShow(); return; }
+        e.stopPropagation();
+        showBugModal();
+      }
+      btn.addEventListener('pointerup', bugDragEnd);
+      btn.addEventListener('pointercancel', function() { bugDrag = null; bugShow(); });
+      btn.addEventListener('mouseenter', function() {
+        if (!bugDrag) { btn.classList.remove('_snowd_bug_hide', '_snowd_bug_hide_left'); clearTimeout(bugHideTimer); }
+      });
+      btn.addEventListener('mouseleave', function() {
+        if (!bugDrag) bugHideSoon();
+      });
       document.body.appendChild(btn);
     } catch(e) {}
   }
