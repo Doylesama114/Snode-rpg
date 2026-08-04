@@ -337,6 +337,25 @@ ipcMain.on('advisor-feedback', (_event, payload) => {
   req.on('error', () => {});
   req.write(data);
   req.end();
+
+  // 同时沉淀到 FC → OSS（与移动端统一收集）
+  try {
+    const fcBase = String(process.env.ADVISOR_API_BASE || 'https://snode-advisor-qsjpoimdzj.cn-chengdu.fcapp.run').replace(/\/+$/, '');
+    const u = new URL(fcBase + '/api/feedback');
+    const fcreq = https.request({
+      hostname: u.hostname,
+      port: 443,
+      path: u.pathname,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data, 'utf8'),
+      },
+    }, () => {});
+    fcreq.on('error', () => {});
+    fcreq.write(data);
+    fcreq.end();
+  } catch (err) { /* ignore */ }
 });
 
 // IPC: 手动重启

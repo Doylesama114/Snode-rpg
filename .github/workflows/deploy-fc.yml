@@ -17,6 +17,10 @@ jobs:
     env:
       ALIYUN_FC_REGION: ${{ vars.ALIYUN_FC_REGION || secrets.ALIYUN_FC_REGION || 'cn-chengdu' }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
+      ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
+      ALIYUN_OSS_BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+      ALIYUN_OSS_ENDPOINT: ${{ vars.ALIYUN_OSS_ENDPOINT }}
     steps:
       - uses: actions/checkout@v4
 

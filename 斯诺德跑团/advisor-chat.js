@@ -195,10 +195,22 @@
       answer: String(answer || '').slice(0, 4000),
       intent: (meta && meta.intent) || '',
       mode: (meta && meta.mode) || 'advisor',
+      profile: (meta && meta.promptProfile) || '',
       ts: Date.now(),
       source: 'mobile',
     });
     try { localStorage.setItem(FEEDBACK_KEY, JSON.stringify(list.slice(-200))); } catch (e) { /* ignore */ }
+    // 发送到 FC 后端沉淀到 OSS（本地已保存，发送失败不打扰用户）
+    try {
+      if (API) {
+        var item = list[list.length - 1];
+        fetch(API + '/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item),
+        }).catch(function () { /* ignore */ });
+      }
+    } catch (e2) { /* ignore */ }
   }
 
   function addActions(wrap, query, answer, meta) {

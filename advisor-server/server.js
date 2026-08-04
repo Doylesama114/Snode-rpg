@@ -7,6 +7,7 @@
  */
 import http from 'http';
 import { advise } from './scripts/mage-advisor.mjs';
+import { ossPutJson } from './scripts/oss-client.mjs';
 
 const PORT = Number(process.env.ADVISOR_PORT || process.env.PORT || 9000);
 const MAX_BODY_BYTES = 128 * 1024;
@@ -208,6 +209,50 @@ async function handleAdvise(req, res) {
   }
 }
 
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function validateFeedbackPayload(payload) {
+  const rating = String(payload.rating || '');
+  if (rating !== 'up' && rating !== 'down') {
+    throw Object.assign(new Error('rating ??? up/down'), { status: 400 });
+  }
+  const query = String(payload.query || '').trim();
+  if (!query || query.length > 4000) {
+    throw Object.assign(new Error('query ?????'), { status: 400 });
+  }
+  return {
+    rating,
+    query,
+    answer: String(payload.answer || '').slice(0, 4000),
+    intent: String(payload.intent || '').slice(0, 80),
+    mode: String(payload.mode || 'advisor').slice(0, 80),
+    source: String(payload.source || 'unknown').slice(0, 80),
+    ts: Number(payload.ts) || Date.now(),
+  };
+}
+
+async function handleFeedback(req, res) {
+  const ip = String(req.socket.remoteAddress || 'unknown').replace(/^::ffff:/, '');
+  if (!rateCheck(ip)) {
+    sendJson(res, 429, { error: '????????????' });
+    return;
+  }
+  const text = await readBody(req);
+  let payload;
+  try {
+    payload = JSON.parse(text || '{}');
+  } catch {
+    throw Object.assign(new Error('??????? JSON'), { status: 400 });
+  }
+  const fb = validateFeedbackPayload(payload);
+  const d = new Date(fb.ts);
+  const ymd = `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}`;
+  const key = `advisor-feedback/inbox/${ymd}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.json`;
+  await ossPutJson(key, { ...fb, receivedAt: new Date().toISOString() });
+  sendJson(res, 200, { ok: true });
+}
+
 const server = http.createServer(async (req, res) => {
   cors(res);
   if (req.method === 'OPTIONS') {
@@ -242,6 +287,15 @@ const server = http.createServer(async (req, res) => {
       await handleAdvise(req, res);
     } catch (err) {
       sendJson(res, err.status || 400, { error: err.message || String(err) });
+    }
+    return;
+  }
+
+  if (url.pathname === '/api/feedback' && req.method === 'POST') {
+    try {
+      await handleFeedback(req, res);
+    } catch (err) {
+      sendJson(res, err.status || 500, { error: err.message || String(err) });
     }
     return;
   }

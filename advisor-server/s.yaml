@@ -25,6 +25,10 @@ resources:
         - acs:fc:${vars.region}:official:layers/Nodejs20/versions/1
       environmentVariables:
         DEEPSEEK_API_KEY: ${env(DEEPSEEK_API_KEY)}
+        ALIYUN_OSS_ACCESS_KEY_ID: ${env(ALIYUN_OSS_ACCESS_KEY_ID)}
+        ALIYUN_OSS_ACCESS_KEY_SECRET: ${env(ALIYUN_OSS_ACCESS_KEY_SECRET)}
+        ALIYUN_OSS_BUCKET: ${env(ALIYUN_OSS_BUCKET)}
+        ALIYUN_OSS_ENDPOINT: ${env(ALIYUN_OSS_ENDPOINT)}
         PATH: /opt/nodejs20/bin:/usr/local/bin:/usr/bin:/bin
       customRuntimeConfig:
         command:
