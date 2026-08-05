@@ -6023,6 +6023,69 @@ var GUARD_LINK = {
   "灵龟守护": "灵龟守护·天赋", "灵猴守护": "灵猴守护·天赋", "灵狐守护": "灵狐守护·天赋",
   "灵龟守护·天赋": "灵龟守护", "灵猴守护·天赋": "灵猴守护", "灵狐守护·天赋": "灵狐守护"
 };
+// \u8054\u52a8\u8f85\u52a9\uff1a\u5b66\u4e60\u5176\u4e00\u81ea\u52a8\u83b7\u5f97\u53e6\u4e00\u4e2a\uff08\u514d\u8d39\uff09\uff0c\u9000\u5b66\u540c\u6b65\u79fb\u9664
+function guardLinkSkill(skillName, clsName, isSub, isLocked, slotClsIdx) {
+  var _glk = GUARD_LINK[skillName];
+  if (!_glk) return;
+  var _clsData = SKILL_DATA[clsName];
+  if (!_clsData) return;
+  var _sl = state.skills.slice();
+  if (_sl.some(function(_x){ return _x.n === _glk; })) return;
+  var _ms = calcSkillSlots(slotClsIdx);
+  var _oc = listOccupiedSkills(slotClsIdx);
+  if (_oc.length >= _ms) { alert("\u6280\u80fd\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glk + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u6280\u80fd"); return; }
+  for (var _li = 0; _li < _clsData.length; _li++) {
+    if (_clsData[_li].name === _glk) {
+      _sl.push(buildSkillListEntry(_clsData[_li], clsName, isSub, isLocked));
+      state.skills = _sl;
+      break;
+    }
+  }
+}
+function guardLinkTalent(skillName, clsName, isSub, isLocked) {
+  var _glt = GUARD_LINK[skillName];
+  if (!_glt || _glt.indexOf("\u00b7\u5929\u8d4b") < 0) return;
+  var _clsData = SKILL_DATA[clsName];
+  if (!_clsData) return;
+  var _tl2 = state.talent_tree || [];
+  if (_tl2.some(function(_x){ return _x.n === _glt; })) return;
+  var _tcap = getTalentTierlotCap("\u4e8c\u9636");
+  var _cnt2 = 0;
+  for (var _ti2 = 0; _ti2 < _tl2.length; _ti2++) { if (_tl2[_ti2].tier === "\u4e8c\u9636") _cnt2++; }
+  if (_cnt2 >= _tcap) { alert("\u4e8c\u9636\u5929\u8d4b\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glt + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u4e8c\u9636\u5929\u8d4b"); return; }
+  for (var _gi2 = 0; _gi2 < _clsData.length; _gi2++) {
+    if (_clsData[_gi2].name === _glt) {
+      _tl2.push({id:_clsData[_gi2].id, n:_glt, cls:clsName, tier:"\u4e8c\u9636", sub:isSub, locked:isLocked});
+      state.talent_tree = _tl2;
+      break;
+    }
+  }
+}
+function guardUnlinkTalent(skillName) {
+  var _glu = GUARD_LINK[skillName];
+  if (!_glu || _glu.indexOf("\u00b7\u5929\u8d4b") < 0) return;
+  var _tt2 = state.talent_tree || [];
+  for (var _ti3 = 0; _ti3 < _tt2.length; _ti3++) {
+    if (_tt2[_ti3].n === _glu) {
+      if (_tt2[_ti3].locked) { alert(_glu + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u6280\u80fd\u79fb\u9664"); return; }
+      _tt2.splice(_ti3, 1); break;
+    }
+  }
+  state.talent_tree = _tt2;
+}
+function guardUnlinkSkill(skillName) {
+  var _gls = GUARD_LINK[skillName];
+  if (!_gls || _gls.indexOf("\u00b7\u5929\u8d4b") >= 0) return;
+  var _sl2 = state.skills;
+  for (var _si2 = 0; _si2 < _sl2.length; _si2++) {
+    if (_sl2[_si2].n === _gls) {
+      if (_sl2[_si2].locked) { alert(_gls + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u5929\u8d4b\u79fb\u9664"); return; }
+      _sl2.splice(_si2, 1); break;
+    }
+  }
+  state.skills = _sl2;
+}
+
 
 function learnSkill(clsName, skillName, clsIdx) {
 
@@ -6218,23 +6281,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
     state.talent_tree=tl; applyChoiceBProfBonus(skillName,true); applyChoiceLMasteryBonus(skillName,true); applyMeditationSP(skillName,true);
     applyUniversalTalentBonus(skillName,true,talentEntry);
-    // 猎人守护联动：学习天赋自动获得对应技能（免费，占用技能栏位）
-    var _glk = GUARD_LINK[skillName];
-    if (_glk) {
-      var _sl = state.skills.slice();
-      var _dupS = _sl.some(function(_x){ return _x.n === _glk; });
-      if (!_dupS) {
-        var _ms = calcSkillSlots(slotClsIdx);
-        var _oc = listOccupiedSkills(slotClsIdx);
-        if (_oc.length >= _ms) {
-          alert("技能栏已满，无法联动获得" + _glk + "；可先卸载一个技能");
-        } else {
-          var _lsd = null;
-          for (var _li = 0; _li < clsData.length; _li++) { if (clsData[_li].name === _glk) { _lsd = clsData[_li]; break; } }
-          if (_lsd) { _sl.push(buildSkillListEntry(_lsd, clsName, isSub, isLocked)); state.skills = _sl; }
-        }
-      }
-    }
+    guardLinkSkill(skillName, clsName, isSub, isLocked, slotClsIdx);
     state._dirty=true;
 
 
@@ -6281,23 +6328,7 @@ var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (ski
 
 
     state.skills = skillList; }
-    // 猎人守护联动：学习技能自动获得对应天赋（免费，占用天赋栏位）
-    var _glt = GUARD_LINK[skillName];
-    if (_glt && _glt.indexOf("·天赋") >= 0) {
-      var _tl2 = state.talent_tree || [];
-      var _dupT = _tl2.some(function(_x){ return _x.n === _glt; });
-      if (!_dupT) {
-        var _tcap = getTalentTierlotCap("二阶");
-        var _cnt2 = 0; for (var _ti2 = 0; _ti2 < _tl2.length; _ti2++) { if (_tl2[_ti2].tier === "二阶") _cnt2++; }
-        if (_cnt2 >= _tcap) {
-          alert("二阶天赋栏已满，无法联动获得" + _glt + "；可先卸载一个二阶天赋");
-        } else {
-          var _gtd = null;
-          for (var _gi2 = 0; _gi2 < clsData.length; _gi2++) { if (clsData[_gi2].name === _glt) { _gtd = clsData[_gi2]; break; } }
-          if (_gtd) { _tl2.push({id:_gtd.id, n:_glt, cls:clsName, tier:"二阶", sub:isSub, locked:isLocked}); state.talent_tree = _tl2; }
-        }
-      }
-    }
+    guardLinkTalent(skillName, clsName, isSub, isLocked);
 
 
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
@@ -6425,18 +6456,7 @@ function unlearnSkill(clsName, skillName, clsIdx) {
 
   skillList.splice(idx, 1);
   state.skills = skillList;
-  // 猎人守护联动：退学技能同时移除对应天赋
-  var _glu = GUARD_LINK[skillName];
-  if (_glu && _glu.indexOf("·天赋") >= 0) {
-    var _tt2 = state.talent_tree || [];
-    for (var _ti3 = 0; _ti3 < _tt2.length; _ti3++) {
-      if (_tt2[_ti3].n === _glu) {
-        if (_tt2[_ti3].locked) { alert(_glu + " 已锁定，无法随技能移除"); break; }
-        _tt2.splice(_ti3, 1); break;
-      }
-    }
-    state.talent_tree = _tt2;
-  }
+  guardUnlinkTalent(skillName);
 
 
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
@@ -6509,18 +6529,7 @@ function unlearnTalent(clsName, skillName, clsIdx) {
 
   var removedTalent = tt[idx];
   tt.splice(idx, 1);
-  // 猎人守护联动：退学天赋同时移除对应技能
-  var _gls = GUARD_LINK[skillName];
-  if (_gls && _gls.indexOf("·天赋") < 0) {
-    var _sl2 = state.skills;
-    for (var _si2 = 0; _si2 < _sl2.length; _si2++) {
-      if (_sl2[_si2].n === _gls) {
-        if (_sl2[_si2].locked) { alert(_gls + " 已锁定，无法随天赋移除"); break; }
-        _sl2.splice(_si2, 1); break;
-      }
-    }
-    state.skills = _sl2;
-  }
+  guardUnlinkSkill(skillName);
 
 
   state.talent_tree = tt; applyChoiceBProfBonus(skillName,false); applyChoiceLMasteryBonus(skillName,false); applyMeditationSP(skillName,false);
