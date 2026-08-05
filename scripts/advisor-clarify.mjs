@@ -15,6 +15,10 @@ export function detectClarify(query, ctx = {}) {
   const intent = ctx.intent || '';
   if (!BUILDISH_INTENTS.has(intent)) return null;
   if (ctx.mode === 'wizard' || ctx.hasChargenState || ctx.hasSnapshot) return null;
+  // 已点名牧师神圣领域的问题，不再追问风格，直接列出该领域技能
+  const CLERIC_DEITY_RE = /无尽饥饿与吞噬之神|神圣领域|生命与丰收之神|战争与谋略之神|知识与智慧之神|艺术与创造之神|爱、欲望与激情之神|幸运女神|隐秘与变化之神|公正与荣耀之神|火焰与锻造之神|死神|潮汐、引力与崩坏之神/;
+  if (CLERIC_DEITY_RE.test(q)) return null;
+
 
   const className = ctx.retrievalClass || matchClassNameFromQuery(q);
   const namedClasses = matchAllClassesFromQuery(q);

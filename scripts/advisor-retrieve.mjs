@@ -37,6 +37,7 @@ import {
   resolveL2LayerForClass,
   MAGE_QUERY_RE,
   MAGE_L2,
+  CLERIC_DEITIES,
 } from './advisor-class-l2.mjs';
 import {
   buildGenericRoadmapContext,
@@ -145,6 +146,9 @@ export function loadAdvisorStore() {
       ? loadJson('combos/universal_tips.json')
       : { tips: [] },
     classRegistry: loadJson('chargen/class_registry.json'),
+    clericDomains: fs.existsSync(path.join(ROOT, '职业页', '数据', '牧师·神圣领域.json'))
+      ? JSON.parse(fs.readFileSync(path.join(ROOT, '职业页', '数据', '牧师·神圣领域.json'), 'utf8'))
+      : null,
     lore: fs.existsSync(path.join(ADVISOR, 'lore/index.json'))
       ? loadJson('lore/index.json')
       : { meta: { layer: 'L7', chunkCount: 0 }, chunks: [] },
@@ -1536,6 +1540,51 @@ export function retrieve(query, options = {}) {
     retrieval.promptProfile = 'class_skills';
   }
 
+  // 牧师神圣领域：提及神名/神圣领域时，附上已收录领域目录，避免模型误报“未收录”
+  const mentionedDeities = CLERIC_DEITIES.filter((d) => String(query || '').includes(d));
+  if ((mentionedDeities.length || /神圣领域/.test(String(query || ''))) && store.clericDomains?.domains) {
+    const domainMap = store.clericDomains.domains || {};
+    const list = mentionedDeities.length
+      ? mentionedDeities.map((name) => domainMap[name]).filter(Boolean)
+      : Object.values(domainMap);
+    if (list.length) {
+      retrieval.deityDomains = list.map((d) => {
+        const styleCounts = {};
+        for (const sk of d.skills || []) {
+          const key = sk.style || '起手与起始';
+          styleCounts[key] = (styleCounts[key] || 0) + 1;
+        }
+        return {
+          id: d.id,
+          name: d.name,
+          combatStyles: d.combat_styles || [],
+          count: (d.skills || []).length,
+          styleCounts,
+        };
+      });
+    }
+  }
+
+  // 命中已知神领域时：将该领域全部技能注入 L2 并置顶，确保“有哪些技能”类问题不漏项
+  if (retrieval.deityDomains?.length) {
+    const clericL2 = resolveL2LayerForClass('牧师');
+    const deityNames = new Set(retrieval.deityDomains.map((d) => d.name));
+    const allDeitySkills = (store.classSkillIndexes?.[clericL2]?.skills || [])
+      .filter((s) => deityNames.has(s.deity));
+    if (allDeitySkills.length && clericL2) {
+      const existing = retrieval.results[clericL2] || [];
+      const existingById = new Map(existing.map((x) => [x.id, x]));
+      const merged = allDeitySkills.map((s) => {
+        const prev = existingById.get(s.id);
+        return prev?._full ? { ...s, _full: true } : s;
+      });
+      const seenIds = new Set(allDeitySkills.map((s) => s.id));
+      const others = existing.filter((x) => !seenIds.has(x.id));
+      retrieval.results[clericL2] = [...merged, ...others];
+      if (!retrieval.layersHit.includes(clericL2)) retrieval.layersHit.push(clericL2);
+    }
+  }
+
   return retrieval;
 }
 
@@ -1557,6 +1606,13 @@ export function formatContext(retrieval) {
   }
   lines.push(`问题: ${retrieval.query}`);
   lines.push('');
+  if (retrieval.deityDomains?.length) {
+    lines.push('## 牧师神圣领域（已收录）');
+    for (const d of retrieval.deityDomains) {
+      lines.push(`- ${d.name}（${d.id}）：战斗风格 ${(d.combatStyles || []).join('、') || '—'}；已收录 ${d.count} 项技能/专长（${Object.entries(d.styleCounts || {}).map(([k, v]) => `${k} ${v}`).join('、')}）`);
+    }
+    lines.push('');
+  }
 
   if (retrieval.results._toolsText) {
     lines.push('## Tools 层（server-side 事实）');
@@ -1685,7 +1741,7 @@ export function formatContext(retrieval) {
     const hits = retrieval.results[entry.l2Layer];
     if (!hits?.length) continue;
     lines.push(`## L2 ${entry.className}技能`);
-    for (const s of hits.slice(0, 15)) {
+    for (const s of hits.slice(0, 30)) {
       lines.push(`- ${s.name} [${s.style || '起手'}·${s.tier || '-'}] ${s._full ? (s.summary || '') : (s.summary || '').slice(0, 120)} 条目:${s.id || '-'}`);
       if (s.prerequisite) lines.push(`  前置: ${String(s.prerequisite).slice(0, 100)}`);
       if (s.choicesFrom) lines.push(`  抉择: ${s.choicesFrom}`);

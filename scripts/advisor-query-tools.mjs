@@ -796,6 +796,12 @@ export function detectStructuredQuestion(query) {
     return { intent: 'class_skills', query: q };
   }
 
+  // 牧师神圣领域列表问法：强制走 class_skills
+  const CLERIC_DEITY_RE = /无尽饥饿与吞噬之神|神圣领域|生命与丰收之神|战争与谋略之神|知识与智慧之神|艺术与创造之神|爱、欲望与激情之神|幸运女神|隐秘与变化之神|公正与荣耀之神|火焰与锻造之神|死神|潮汐、引力与崩坏之神/;
+  if (CLERIC_DEITY_RE.test(q) && /哪些|什么技能|有什么|技能|能力|专长|起始特性|天赋树/.test(q)) {
+    return { intent: 'class_skills', query: q };
+  }
+
   const skillCostQ = skillHit && /疲劳|FP|技能点|\bSP\b|标识|施展时间|施法时间|消耗|代价|成本/.test(q)
     && /多少|什么|几|要|消耗/.test(q);
   if (skillCostQ) {

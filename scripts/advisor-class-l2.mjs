@@ -104,6 +104,21 @@ export function matchClassNameFromQuery(query) {
 }
 
 /** 从问句匹配全部提及的职业（多职业并列问句）；先剥离进阶名避免「诡术士」误匹配术士 */
+export const CLERIC_DEITIES = [
+  '公正与荣耀之神',
+  '生命与丰收之神',
+  '火焰与锻造之神',
+  '战争与谋略之神',
+  '知识与智慧之神',
+  '艺术与创造之神',
+  '死神',
+  '无尽饥饿与吞噬之神',
+  '爱、欲望与激情之神',
+  '潮汐、引力与崩坏之神',
+  '幸运女神',
+  '隐秘与变化之神',
+];
+
 export function matchAllClassesFromQuery(query) {
   const q = stripAdvancementTokensFromQuery(String(query || ''));
   const found = [];
@@ -116,6 +131,9 @@ export function matchAllClassesFromQuery(query) {
   }
   if (MAGE_QUERY_RE.test(q) && !seen.has('法师')) {
     found.push('法师');
+  }
+  if (!seen.has('牧师') && (q.includes('神圣领域') || CLERIC_DEITIES.some((d) => q.includes(d)))) {
+    found.push('牧师');
   }
   return found;
 }

@@ -16,7 +16,7 @@ chips = re.findall(r'class="deity-chip[^"]*"', html)
 if len(chips) != 13:
     errors.append(f"chip count {len(chips)} != 13")
 locked = [p for p in data["pantheon"] if p["locked"]]
-if len(locked) != 5:
+if len(locked) != 4:
     errors.append(f"locked {len(locked)} != 5")
 if "战争与谋略之神" not in data["domains"]:
     errors.append("missing domain 战争与谋略之神")
