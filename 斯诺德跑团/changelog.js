@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7181',
+    date: '2026-08-05',
+    changes: [
+      '新版号发布：触发桌面端自动更新检测（标识颜色修复与 v1.0.7180 一致）'
+    ]
+  },
+
+
+  {
     version: '1.0.7180',
     date: '2026-08-05',
     changes: [
