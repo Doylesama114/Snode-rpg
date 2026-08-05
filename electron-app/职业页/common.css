@@ -632,9 +632,9 @@
         .view-home .footer { font-size:11px; }
         .searchbox input { font-size:13px; height:34px; }
     }
-    /* Black outline on all skill-point dots for visibility */
+    /* 标识点：用描边保证浅色可见，不压暗原有颜色 */
     span[style*="font-size:1.5em"] {
-        text-shadow: 0 0 1px #000, 0 0 1px #000, 0 0 1px #000 !important;
+        -webkit-text-stroke: 1px rgba(0,0,0,.5);
     }
     .kw-chip.active {
       background: var(--green) !important;
@@ -658,9 +658,9 @@
     article.skill:nth-child(5) { animation-delay: 0.20s; }
     article.skill:nth-child(6) { animation-delay: 0.25s; }
 
-    .detail span[style*="color"] { text-shadow:0 0 1px #000,0 0 1px #000,0 0 1px #000; }
+    .detail span[style*="color"] { -webkit-text-stroke: 1px rgba(0,0,0,.5); }
 
-    .detail [style*="color"] { text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000; }
+    .detail [style*="color"] { -webkit-text-stroke: 1px rgba(0,0,0,.5); }
 
     .class-card { display:flex; align-items:center; gap:12px; padding:16px; border-radius:8px; background:var(--panel); border:1px solid var(--line); text-decoration:none; color:var(--ink); transition:.15s; width:100%; min-height:80px; }
 
