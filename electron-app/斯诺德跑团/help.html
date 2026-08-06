@@ -267,6 +267,36 @@ html.dark .tts-speaking{outline-color:rgba(212,165,74,.55);background:rgba(212,1
   .wrap table td{padding:6px 7px;max-width:220px}
 }
 
+
+/* MULTICLASS-RULES-CSS */
+.mc-wrap{overflow:auto;margin:10px 0;max-width:100%;max-height:72vh}
+.mc-matrix{border-collapse:collapse;font-size:12px;white-space:nowrap}
+.mc-matrix th,.mc-matrix td{border:1px solid #d8d2c4;padding:6px 9px;text-align:center;min-width:2.8em}
+.mc-matrix thead th{position:sticky;top:0;z-index:2;background:#edeae2;color:#1f2522;font-weight:bold}
+.mc-matrix tbody th{position:sticky;left:0;z-index:1;background:#edeae2;color:#1f2522;font-weight:bold;text-align:left}
+.mc-matrix thead th:first-child{left:0;z-index:3}
+.mc-matrix td{background:#fffdf8}
+.mc-matrix td.mc-no{background:#c62828;color:#fff;font-weight:bold}
+.mc-matrix td.mc-self{background:#e8e4dc;color:#69706b}
+.mc-matrix tr.mc-hl td{background:#f3efe6}
+.mc-matrix tr.mc-hl td.mc-no{background:#d94848}
+.mc-matrix td.mc-hl-col{background:#f3efe6}
+.mc-matrix td.mc-hl-col.mc-no{background:#d94848}
+.mc-matrix td.mc-hl-col.mc-self{background:#e0dcd2}
+.mc-legend{font-size:12px;color:#69706b;margin:6px 0 4px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.mc-legend .sw{display:inline-flex;align-items:center;gap:5px}
+.mc-legend .sw::before{content:"";display:inline-block;width:14px;height:14px;border:1px solid #d8d2c4;border-radius:3px;flex:0 0 auto}
+.mc-legend .sw.mc-no::before{background:#c62828}
+.mc-legend .sw.mc-self::before{background:#e8e4dc}
+.mc-hint{font-size:12px;color:#69706b;margin:2px 0 8px}
+html.dark .mc-matrix thead th,html.dark .mc-matrix tbody th{background:#1a1d20;color:#e8e6e3;border-color:#3a3d40}
+html.dark .mc-matrix td{background:#24272b;border-color:#3a3d40;color:#e8e6e3}
+html.dark .mc-matrix td.mc-self{background:#2c2f33;color:#9d9b98}
+html.dark .mc-matrix td.mc-no{background:#a52a2a}
+html.dark .mc-matrix tr.mc-hl td,html.dark .mc-matrix td.mc-hl-col{background:#33373b}
+html.dark .mc-legend,html.dark .mc-hint{color:#9d9b98}
+/* /MULTICLASS-RULES-CSS */
+
 </style></head><body>
 <div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 <div class="container">
@@ -419,42 +449,52 @@ html.dark .tts-speaking{outline-color:rgba(212,165,74,.55);background:rgba(212,1
 </ol>
 </div>
 <div class="section" id="s4"><h2>兼职规则</h2>
+<!-- MULTICLASS-RULES -->
 <div class="wrap"><table><tr><th>职业</th><th>属性要求</th><th>熟练度要求</th><th>其他要求</th><th>不可兼职</th></tr>
 <tr><td><b>蛮斗士</b></td><td>力量属性13，体质属性13</td><td>拥有力量或体质的熟练度共计+4</td><td>-</td><td>法师、奇械师</td></tr>
 <tr><td><b>战士</b></td><td>力量/敏捷属性13，体质属性13</td><td>拥有力量或敏捷的熟练度共计+4</td><td>-</td><td>—</td></tr>
-<tr><td><b>法师</b></td><td>智力属性15</td><td>拥有奥秘、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的魔法传承</td><td>蛮斗士、牧师、圣骑士、德鲁伊、萨满祭司、术士、武僧</td></tr>
-<tr><td><b>猎人</b></td><td>敏捷属性13，感知属性13</td><td>拥有洞悉、驯兽、自然和求生的熟练度共计+4</td><td>需连续在野外生存超过一周，并狩猎至少十只野兽</td><td>—</td></tr>
-<tr><td><b>牧师</b></td><td>感知属性15</td><td>拥有专注、宗教和魅力的熟练度共计+4</td><td>选择一项信仰成为虔诚的信徒</td><td>蛮斗士、德鲁伊、萨满祭司、魔契师</td></tr>
-<tr><td><b>圣骑士</b></td><td>意志属性15</td><td>-</td><td>愿奉献自身，坚持匡扶正义，完成五次善举</td><td>蛮斗士、德鲁伊、萨满祭司、术士、武僧</td></tr>
-<tr><td><b>游荡者</b></td><td>敏捷属性14，感知属性13</td><td>拥有敏捷、伪造和欺瞒的熟练度共计+4</td><td>完成五次偷窃、刺杀或探取有价值情报的行动</td><td>—</td></tr>
-<tr><td><b>德鲁伊</b></td><td>体质属性13，感知属性14</td><td>拥有驯兽、自然、求生和草药学的熟练度共计+4</td><td>需连续在野外生存超过一周，并有良好关系的野兽或植物朋友</td><td>牧师、圣骑士、奇械师、魔契师</td></tr>
-<tr><td><b>萨满祭司</b></td><td>感知属性14</td><td>拥有表演、自然、求生和神秘学的熟练度共计+4</td><td>对某种元素具有特殊的亲和力</td><td>牧师、圣骑士、魔契师</td></tr>
-<tr><td><b>术士</b></td><td>幸运属性15</td><td>-</td><td>重复进行难度15的幸运检定。累计三次成功则兼职术士，否则失败且之后无法再尝试</td><td>圣骑士</td></tr>
-<tr><td><b>武僧</b></td><td>力量12，感知13，敏捷14</td><td>拥有敏捷和感悟的熟练度共计+4</td><td>拥有系统性学习的武学传承</td><td>—</td></tr>
-<tr><td><b>吟游诗人</b></td><td>魅力属性14</td><td>拥有巧手、知识、说服和表演的熟练度共计+4</td><td>至少拥有三名关系暧昧的对象或二十名粉丝</td><td>—</td></tr>
-<tr><td><b>魔契师</b></td><td>魅力属性14</td><td>拥有说服、欺瞒、表演和神秘学的熟练度共计+4</td><td>经历过匪夷所思的超自然事件</td><td>牧师、圣骑士、德鲁伊、萨满祭司</td></tr>
-<tr><td><b>奇械师</b></td><td>智力属性15</td><td>拥有巧手、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的奇械传承</td><td>蛮斗士、德鲁伊</td></tr>
+<tr><td><b>法师</b></td><td>智力属性15</td><td>拥有奥秘、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的魔法传承</td><td>蛮斗士、牧师、圣骑士、德鲁伊、术士、武僧</td></tr>
+<tr><td><b>猎人</b></td><td>敏捷属性13，感知属性13</td><td>拥有洞悉、驯兽、自然和求生的熟练度共计+4</td><td>本人需连续在野外中生存超过一周时间，并且狩猎过至少十只野兽</td><td>奇械师</td></tr>
+<tr><td><b>牧师</b></td><td>感知属性15</td><td>拥有专注、宗教和魅力的熟练度共计+4</td><td>选择一项信仰成为虔诚的信徒</td><td>法师、德鲁伊、萨满祭司、魔契师</td></tr>
+<tr><td><b>圣骑士</b></td><td>意志属性15</td><td>-</td><td>你愿意奉献自身，坚持走上匡扶正义的道路，并且完成五次善举</td><td>法师、游荡者、德鲁伊、萨满祭司、魔契师、奇械师</td></tr>
+<tr><td><b>游荡者</b></td><td>敏捷属性14，感知属性13</td><td>拥有敏捷、伪造和欺瞒的熟练度共计+4</td><td>完成五次偷窃、刺杀或探取有价值情报的行动</td><td>圣骑士、德鲁伊、萨满祭司</td></tr>
+<tr><td><b>德鲁伊</b></td><td>体质属性13，感知属性14</td><td>拥有驯兽、自然、求生和草药学的熟练度共计+4</td><td>本人需连续在野外中生存超过一周时间，并且有着良好关系的野兽或植物朋友</td><td>法师、牧师、圣骑士、游荡者、奇械师</td></tr>
+<tr><td><b>萨满祭司</b></td><td>感知属性14</td><td>拥有表演、自然、求生和神秘学的熟练度共计+4</td><td>你对某种元素具有特殊的亲和力</td><td>牧师、圣骑士、游荡者、奇械师</td></tr>
+<tr><td><b>术士</b></td><td>幸运属性15</td><td>-</td><td>立即重复进行难度为15的幸运检定，检定期间通过任何方式尝试修改骰子点数都会直接视作检定失败；当累计三次检定成功则兼职术士职业，否则视为失败并且之后无法再通过任何方式来尝试兼职术士职业</td><td>法师</td></tr>
+<tr><td><b>武僧</b></td><td>力量属性12，感知属性13，敏捷属性14</td><td>拥有敏捷和感悟的熟练度共计+4</td><td>拥有系统性学习的武学传承</td><td>法师、奇械师</td></tr>
+<tr><td><b>吟游诗人</b></td><td>魅力属性14</td><td>拥有巧手、知识、说服和表演的熟练度共计+4</td><td>你至少拥有三名关系暧昧的对象或是二十名粉丝（非玩家角色）</td><td>奇械师</td></tr>
+<tr><td><b>魔契师</b></td><td>魅力属性14</td><td>拥有说服、欺瞒、表演和神秘学的熟练度共计+4</td><td>你经历过匪夷所思的超自然事件</td><td>牧师、圣骑士</td></tr>
+<tr><td><b>奇械师</b></td><td>智力属性15</td><td>拥有巧手、知识和逻辑的熟练度共计+6</td><td>拥有系统性学习的奇械传承</td><td>蛮斗士、猎人、圣骑士、德鲁伊、萨满祭司、吟游诗人、魔契师</td></tr>
 </table></div>
 
 <h3>职业兼容性</h3>
-<div class="wrap"><table style="font-size:12px;white-space:nowrap">
-<tr><th></th><th>蛮</th><th>战</th><th>法</th><th>猎</th><th>牧</th><th>圣</th><th>游</th><th>德</th><th>萨</th><th>术</th><th>武</th><th>诗</th><th>魔</th><th>械</th></tr>
-<tr><td style="font-weight:bold">蛮斗士</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">战士</td><td style="color:#69706b">—</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">法师</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">猎人</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">牧师</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">圣骑士</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">游荡者</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">德鲁伊</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td></tr>
-<tr><td style="font-weight:bold">萨满祭司</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">术士</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">武僧</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">吟游诗人</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">魔契师</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td><td style="color:#2e7d32">✓</td></tr>
-<tr><td style="font-weight:bold">奇械师</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#c62828">✗</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#2e7d32">✓</td><td style="color:#69706b">—</td></tr>
-</table></div>
-
+<div class="mc-legend"><span class="sw mc-no">不可兼职</span><span class="sw mc-ok">可兼职（空白）</span><span class="sw mc-self">自身</span><span>行 = 主职业，列 = 副职</span></div>
+<div class="mc-wrap"><table class="mc-matrix"><thead><tr><th>主\副</th><th title="蛮斗士">蛮斗</th><th title="战士">战士</th><th title="法师">法师</th><th title="猎人">猎人</th><th title="牧师">牧师</th><th title="圣骑士">圣骑</th><th title="游荡者">游荡</th><th title="德鲁伊">德鲁</th><th title="萨满祭司">萨满</th><th title="术士">术士</th><th title="武僧">武僧</th><th title="吟游诗人">吟游</th><th title="魔契师">魔契</th><th title="奇械师">奇械</th></tr></thead><tbody><tr><th title="蛮斗士">蛮斗士</th><td class="mc-self" title="蛮斗士（自身）">—</td><td class="mc-ok" title="蛮斗士 可兼职 战士"></td><td class="mc-no" title="蛮斗士 不能兼职 法师">✗</td><td class="mc-ok" title="蛮斗士 可兼职 猎人"></td><td class="mc-ok" title="蛮斗士 可兼职 牧师"></td><td class="mc-ok" title="蛮斗士 可兼职 圣骑士"></td><td class="mc-ok" title="蛮斗士 可兼职 游荡者"></td><td class="mc-ok" title="蛮斗士 可兼职 德鲁伊"></td><td class="mc-ok" title="蛮斗士 可兼职 萨满祭司"></td><td class="mc-ok" title="蛮斗士 可兼职 术士"></td><td class="mc-ok" title="蛮斗士 可兼职 武僧"></td><td class="mc-ok" title="蛮斗士 可兼职 吟游诗人"></td><td class="mc-ok" title="蛮斗士 可兼职 魔契师"></td><td class="mc-no" title="蛮斗士 不能兼职 奇械师">✗</td></tr><tr><th title="战士">战士</th><td class="mc-ok" title="战士 可兼职 蛮斗士"></td><td class="mc-self" title="战士（自身）">—</td><td class="mc-ok" title="战士 可兼职 法师"></td><td class="mc-ok" title="战士 可兼职 猎人"></td><td class="mc-ok" title="战士 可兼职 牧师"></td><td class="mc-ok" title="战士 可兼职 圣骑士"></td><td class="mc-ok" title="战士 可兼职 游荡者"></td><td class="mc-ok" title="战士 可兼职 德鲁伊"></td><td class="mc-ok" title="战士 可兼职 萨满祭司"></td><td class="mc-ok" title="战士 可兼职 术士"></td><td class="mc-ok" title="战士 可兼职 武僧"></td><td class="mc-ok" title="战士 可兼职 吟游诗人"></td><td class="mc-ok" title="战士 可兼职 魔契师"></td><td class="mc-ok" title="战士 可兼职 奇械师"></td></tr><tr><th title="法师">法师</th><td class="mc-no" title="法师 不能兼职 蛮斗士">✗</td><td class="mc-ok" title="法师 可兼职 战士"></td><td class="mc-self" title="法师（自身）">—</td><td class="mc-ok" title="法师 可兼职 猎人"></td><td class="mc-no" title="法师 不能兼职 牧师">✗</td><td class="mc-no" title="法师 不能兼职 圣骑士">✗</td><td class="mc-ok" title="法师 可兼职 游荡者"></td><td class="mc-no" title="法师 不能兼职 德鲁伊">✗</td><td class="mc-ok" title="法师 可兼职 萨满祭司"></td><td class="mc-no" title="法师 不能兼职 术士">✗</td><td class="mc-no" title="法师 不能兼职 武僧">✗</td><td class="mc-ok" title="法师 可兼职 吟游诗人"></td><td class="mc-ok" title="法师 可兼职 魔契师"></td><td class="mc-ok" title="法师 可兼职 奇械师"></td></tr><tr><th title="猎人">猎人</th><td class="mc-ok" title="猎人 可兼职 蛮斗士"></td><td class="mc-ok" title="猎人 可兼职 战士"></td><td class="mc-ok" title="猎人 可兼职 法师"></td><td class="mc-self" title="猎人（自身）">—</td><td class="mc-ok" title="猎人 可兼职 牧师"></td><td class="mc-ok" title="猎人 可兼职 圣骑士"></td><td class="mc-ok" title="猎人 可兼职 游荡者"></td><td class="mc-ok" title="猎人 可兼职 德鲁伊"></td><td class="mc-ok" title="猎人 可兼职 萨满祭司"></td><td class="mc-ok" title="猎人 可兼职 术士"></td><td class="mc-ok" title="猎人 可兼职 武僧"></td><td class="mc-ok" title="猎人 可兼职 吟游诗人"></td><td class="mc-ok" title="猎人 可兼职 魔契师"></td><td class="mc-no" title="猎人 不能兼职 奇械师">✗</td></tr><tr><th title="牧师">牧师</th><td class="mc-ok" title="牧师 可兼职 蛮斗士"></td><td class="mc-ok" title="牧师 可兼职 战士"></td><td class="mc-no" title="牧师 不能兼职 法师">✗</td><td class="mc-ok" title="牧师 可兼职 猎人"></td><td class="mc-self" title="牧师（自身）">—</td><td class="mc-ok" title="牧师 可兼职 圣骑士"></td><td class="mc-ok" title="牧师 可兼职 游荡者"></td><td class="mc-no" title="牧师 不能兼职 德鲁伊">✗</td><td class="mc-no" title="牧师 不能兼职 萨满祭司">✗</td><td class="mc-ok" title="牧师 可兼职 术士"></td><td class="mc-ok" title="牧师 可兼职 武僧"></td><td class="mc-ok" title="牧师 可兼职 吟游诗人"></td><td class="mc-no" title="牧师 不能兼职 魔契师">✗</td><td class="mc-ok" title="牧师 可兼职 奇械师"></td></tr><tr><th title="圣骑士">圣骑士</th><td class="mc-ok" title="圣骑士 可兼职 蛮斗士"></td><td class="mc-ok" title="圣骑士 可兼职 战士"></td><td class="mc-no" title="圣骑士 不能兼职 法师">✗</td><td class="mc-ok" title="圣骑士 可兼职 猎人"></td><td class="mc-ok" title="圣骑士 可兼职 牧师"></td><td class="mc-self" title="圣骑士（自身）">—</td><td class="mc-no" title="圣骑士 不能兼职 游荡者">✗</td><td class="mc-no" title="圣骑士 不能兼职 德鲁伊">✗</td><td class="mc-no" title="圣骑士 不能兼职 萨满祭司">✗</td><td class="mc-ok" title="圣骑士 可兼职 术士"></td><td class="mc-ok" title="圣骑士 可兼职 武僧"></td><td class="mc-ok" title="圣骑士 可兼职 吟游诗人"></td><td class="mc-no" title="圣骑士 不能兼职 魔契师">✗</td><td class="mc-no" title="圣骑士 不能兼职 奇械师">✗</td></tr><tr><th title="游荡者">游荡者</th><td class="mc-ok" title="游荡者 可兼职 蛮斗士"></td><td class="mc-ok" title="游荡者 可兼职 战士"></td><td class="mc-ok" title="游荡者 可兼职 法师"></td><td class="mc-ok" title="游荡者 可兼职 猎人"></td><td class="mc-ok" title="游荡者 可兼职 牧师"></td><td class="mc-no" title="游荡者 不能兼职 圣骑士">✗</td><td class="mc-self" title="游荡者（自身）">—</td><td class="mc-no" title="游荡者 不能兼职 德鲁伊">✗</td><td class="mc-no" title="游荡者 不能兼职 萨满祭司">✗</td><td class="mc-ok" title="游荡者 可兼职 术士"></td><td class="mc-ok" title="游荡者 可兼职 武僧"></td><td class="mc-ok" title="游荡者 可兼职 吟游诗人"></td><td class="mc-ok" title="游荡者 可兼职 魔契师"></td><td class="mc-ok" title="游荡者 可兼职 奇械师"></td></tr><tr><th title="德鲁伊">德鲁伊</th><td class="mc-ok" title="德鲁伊 可兼职 蛮斗士"></td><td class="mc-ok" title="德鲁伊 可兼职 战士"></td><td class="mc-no" title="德鲁伊 不能兼职 法师">✗</td><td class="mc-ok" title="德鲁伊 可兼职 猎人"></td><td class="mc-no" title="德鲁伊 不能兼职 牧师">✗</td><td class="mc-no" title="德鲁伊 不能兼职 圣骑士">✗</td><td class="mc-no" title="德鲁伊 不能兼职 游荡者">✗</td><td class="mc-self" title="德鲁伊（自身）">—</td><td class="mc-ok" title="德鲁伊 可兼职 萨满祭司"></td><td class="mc-ok" title="德鲁伊 可兼职 术士"></td><td class="mc-ok" title="德鲁伊 可兼职 武僧"></td><td class="mc-ok" title="德鲁伊 可兼职 吟游诗人"></td><td class="mc-ok" title="德鲁伊 可兼职 魔契师"></td><td class="mc-no" title="德鲁伊 不能兼职 奇械师">✗</td></tr><tr><th title="萨满祭司">萨满祭司</th><td class="mc-ok" title="萨满祭司 可兼职 蛮斗士"></td><td class="mc-ok" title="萨满祭司 可兼职 战士"></td><td class="mc-ok" title="萨满祭司 可兼职 法师"></td><td class="mc-ok" title="萨满祭司 可兼职 猎人"></td><td class="mc-no" title="萨满祭司 不能兼职 牧师">✗</td><td class="mc-no" title="萨满祭司 不能兼职 圣骑士">✗</td><td class="mc-no" title="萨满祭司 不能兼职 游荡者">✗</td><td class="mc-ok" title="萨满祭司 可兼职 德鲁伊"></td><td class="mc-self" title="萨满祭司（自身）">—</td><td class="mc-ok" title="萨满祭司 可兼职 术士"></td><td class="mc-ok" title="萨满祭司 可兼职 武僧"></td><td class="mc-ok" title="萨满祭司 可兼职 吟游诗人"></td><td class="mc-ok" title="萨满祭司 可兼职 魔契师"></td><td class="mc-no" title="萨满祭司 不能兼职 奇械师">✗</td></tr><tr><th title="术士">术士</th><td class="mc-ok" title="术士 可兼职 蛮斗士"></td><td class="mc-ok" title="术士 可兼职 战士"></td><td class="mc-no" title="术士 不能兼职 法师">✗</td><td class="mc-ok" title="术士 可兼职 猎人"></td><td class="mc-ok" title="术士 可兼职 牧师"></td><td class="mc-ok" title="术士 可兼职 圣骑士"></td><td class="mc-ok" title="术士 可兼职 游荡者"></td><td class="mc-ok" title="术士 可兼职 德鲁伊"></td><td class="mc-ok" title="术士 可兼职 萨满祭司"></td><td class="mc-self" title="术士（自身）">—</td><td class="mc-ok" title="术士 可兼职 武僧"></td><td class="mc-ok" title="术士 可兼职 吟游诗人"></td><td class="mc-ok" title="术士 可兼职 魔契师"></td><td class="mc-ok" title="术士 可兼职 奇械师"></td></tr><tr><th title="武僧">武僧</th><td class="mc-ok" title="武僧 可兼职 蛮斗士"></td><td class="mc-ok" title="武僧 可兼职 战士"></td><td class="mc-no" title="武僧 不能兼职 法师">✗</td><td class="mc-ok" title="武僧 可兼职 猎人"></td><td class="mc-ok" title="武僧 可兼职 牧师"></td><td class="mc-ok" title="武僧 可兼职 圣骑士"></td><td class="mc-ok" title="武僧 可兼职 游荡者"></td><td class="mc-ok" title="武僧 可兼职 德鲁伊"></td><td class="mc-ok" title="武僧 可兼职 萨满祭司"></td><td class="mc-ok" title="武僧 可兼职 术士"></td><td class="mc-self" title="武僧（自身）">—</td><td class="mc-ok" title="武僧 可兼职 吟游诗人"></td><td class="mc-ok" title="武僧 可兼职 魔契师"></td><td class="mc-no" title="武僧 不能兼职 奇械师">✗</td></tr><tr><th title="吟游诗人">吟游诗人</th><td class="mc-ok" title="吟游诗人 可兼职 蛮斗士"></td><td class="mc-ok" title="吟游诗人 可兼职 战士"></td><td class="mc-ok" title="吟游诗人 可兼职 法师"></td><td class="mc-ok" title="吟游诗人 可兼职 猎人"></td><td class="mc-ok" title="吟游诗人 可兼职 牧师"></td><td class="mc-ok" title="吟游诗人 可兼职 圣骑士"></td><td class="mc-ok" title="吟游诗人 可兼职 游荡者"></td><td class="mc-ok" title="吟游诗人 可兼职 德鲁伊"></td><td class="mc-ok" title="吟游诗人 可兼职 萨满祭司"></td><td class="mc-ok" title="吟游诗人 可兼职 术士"></td><td class="mc-ok" title="吟游诗人 可兼职 武僧"></td><td class="mc-self" title="吟游诗人（自身）">—</td><td class="mc-ok" title="吟游诗人 可兼职 魔契师"></td><td class="mc-no" title="吟游诗人 不能兼职 奇械师">✗</td></tr><tr><th title="魔契师">魔契师</th><td class="mc-ok" title="魔契师 可兼职 蛮斗士"></td><td class="mc-ok" title="魔契师 可兼职 战士"></td><td class="mc-ok" title="魔契师 可兼职 法师"></td><td class="mc-ok" title="魔契师 可兼职 猎人"></td><td class="mc-no" title="魔契师 不能兼职 牧师">✗</td><td class="mc-no" title="魔契师 不能兼职 圣骑士">✗</td><td class="mc-ok" title="魔契师 可兼职 游荡者"></td><td class="mc-ok" title="魔契师 可兼职 德鲁伊"></td><td class="mc-ok" title="魔契师 可兼职 萨满祭司"></td><td class="mc-ok" title="魔契师 可兼职 术士"></td><td class="mc-ok" title="魔契师 可兼职 武僧"></td><td class="mc-ok" title="魔契师 可兼职 吟游诗人"></td><td class="mc-self" title="魔契师（自身）">—</td><td class="mc-ok" title="魔契师 可兼职 奇械师"></td></tr><tr><th title="奇械师">奇械师</th><td class="mc-no" title="奇械师 不能兼职 蛮斗士">✗</td><td class="mc-ok" title="奇械师 可兼职 战士"></td><td class="mc-ok" title="奇械师 可兼职 法师"></td><td class="mc-no" title="奇械师 不能兼职 猎人">✗</td><td class="mc-ok" title="奇械师 可兼职 牧师"></td><td class="mc-no" title="奇械师 不能兼职 圣骑士">✗</td><td class="mc-ok" title="奇械师 可兼职 游荡者"></td><td class="mc-no" title="奇械师 不能兼职 德鲁伊">✗</td><td class="mc-no" title="奇械师 不能兼职 萨满祭司">✗</td><td class="mc-ok" title="奇械师 可兼职 术士"></td><td class="mc-ok" title="奇械师 可兼职 武僧"></td><td class="mc-no" title="奇械师 不能兼职 吟游诗人">✗</td><td class="mc-no" title="奇械师 不能兼职 魔契师">✗</td><td class="mc-self" title="奇械师（自身）">—</td></tr></tbody></table></div>
+<script>
+(function(){
+  var t = document.querySelector('.mc-matrix');
+  if (!t) return;
+  function clear(){
+    var n = t.querySelectorAll('.mc-hl-row, .mc-hl-col');
+    for (var i = 0; i < n.length; i++) n[i].classList.remove('mc-hl-row', 'mc-hl-col');
+  }
+  t.addEventListener('mouseover', function(e){
+    var td = e.target && e.target.closest ? e.target.closest('td,th') : null;
+    if (!td || !t.contains(td)) return;
+    clear();
+    var tr = td.parentNode;
+    if (tr && tr.rowIndex > 0) tr.classList.add('mc-hl-row');
+    var ci = td.cellIndex;
+    var rows = t.rows;
+    for (var i = 0; i < rows.length; i++) {
+      var c = rows[i].cells[ci];
+      if (c) c.classList.add('mc-hl-col');
+    }
+  });
+  t.addEventListener('mouseleave', clear);
+})();
+</script>
+<!-- /MULTICLASS-RULES -->
 <div class="note"><b>附赠职业：</b>附赠职业无法直接获取，能够通过剧情的发展以及机遇和任务效果获取。附赠职业等级无法通过消耗经验值来提升，但会跟随主职业等级提升时同步提升，并且与子职业一样获取对应的熟练度、属性值和技能槽位加成，等级上限为5级。</div>
 </div>
 <div class="section" id="s5"><h2>幕间规则</h2>
