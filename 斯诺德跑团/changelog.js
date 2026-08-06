@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7187',
+    date: '2026-08-06',
+    changes: [
+      '重新发布：v1.0.7186 构建时 APK 任务被 GitHub 运行器取消，功能相同，重发确保 APK 与自动更新就绪'
+    ]
+  },
+
+
+  {
     version: '1.0.7186',
     date: '2026-08-06',
     changes: [
