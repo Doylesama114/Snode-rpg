@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7189',
+    date: '2026-08-06',
+    changes: [
+      '重新发布：v1.0.7188 发布构建因 GitHub 运行器故障失败，功能相同，重发确保 exe/APK/自动更新就绪'
+    ]
+  },
+
+
+  {
     version: '1.0.7188',
     date: '2026-08-06',
     changes: [
