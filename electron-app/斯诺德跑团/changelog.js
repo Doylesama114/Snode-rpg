@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7185',
+    date: '2026-08-06',
+    changes: [
+      '修复：牧师神圣领域「丰收的喜悦」描述内标识颜色补为橙色（#EE822F），颜色数据写入 JSON 供后续脚本复用'
+    ]
+  },
+
+
+  {
     version: '1.0.7184',
     date: '2026-08-06',
     changes: [

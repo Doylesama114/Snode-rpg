@@ -44,9 +44,9 @@ COND_LABEL_RE = re.compile(r"^(前置条件|额外条件)[:：]")
 LABEL_PREFIXES = ("前置条件：", "额外条件：", "描述：")
 ARTIFACT_RE = re.compile(r"^\s*标识[:：]\s*●+\s*$")
 
-# 已知例外：丰收的喜悦(pr-d-life-2) 的描述 ● 在当前任何 牧师子分支 docx 中均无颜色依据，
-# 保留黑色文本，不猜测颜色。
-KNOWN_NO_SOURCE = {"pr-d-life-2"}
+# 丰收的喜悦(pr-d-life-2) 的描述 ● 颜色已由用户确认（橙色 #EE822F），
+# 数据写入 牧师·神圣领域.json 的 description_entries，无例外项。
+KNOWN_NO_SOURCE = set()
 
 
 def norm(t: str) -> str:
