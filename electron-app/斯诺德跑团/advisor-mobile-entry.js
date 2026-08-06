@@ -63,7 +63,7 @@
       '#_snowd_adv_mobile_ball._hide{transform:translateX(calc(100% - 18px))}' +
       '#_snowd_adv_mobile_ball._hide_left{transform:translateX(calc(-100% + 18px))}' +
       '#_snowd_adv_mobile_ball:not(._hide):not(._hide_left):active{transform:scale(0.94)}' +
-      'html.dark #_snowd_adv_mobile_ball{background:#24272b;border-color:#d4a54a;color:#d4a54a}' + '#_snowd_adv_mobile_tip{position:fixed;z-index:2147483001;max-width:min(300px,calc(100vw - 70px));padding:10px 12px;border-radius:12px;border:1px solid #d8d2c4;background:#fffdf8;color:#1f2522;font-size:13px;line-height:1.6;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;display:none;word-break:break-word;-webkit-tap-highlight-color:transparent}' + '#_snowd_adv_mobile_tip::after{content:\"\u70b9\u51fb\u6362\u4e0b\u4e00\u6761\";display:block;font-size:11px;color:#69706b;margin-top:6px;text-align:right}' + 'html.dark #_snowd_adv_mobile_tip{background:#24272b;border-color:#d4a54a;color:#e8e6e3}' + 'html.dark #_snowd_adv_mobile_tip::after{color:#9d9b98}' + '#_snowd_adv_mobile_tip._show{display:block}'
+      'html.dark #_snowd_adv_mobile_ball{background:#24272b;border-color:#d4a54a;color:#d4a54a}' + '#_snowd_adv_mobile_tip{position:fixed;z-index:2147483001;max-width:min(240px,calc(100vw - 76px));padding:8px 10px;border-radius:12px;border:1px solid #d8d2c4;background:#fffdf8;color:#1f2522;font-size:12px;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;display:none;word-break:break-word;-webkit-tap-highlight-color:transparent}' + '#_snowd_adv_mobile_tip::after{content:\"\u70b9\u51fb\u6362\u4e0b\u4e00\u6761\";display:block;font-size:10px;color:#69706b;margin-top:4px;text-align:right}' + 'html.dark #_snowd_adv_mobile_tip{background:#24272b;border-color:#d4a54a;color:#e8e6e3}' + 'html.dark #_snowd_adv_mobile_tip::after{color:#9d9b98}' + '#_snowd_adv_mobile_tip._show{display:block}'
     document.head.appendChild(style);
 
     var ball = document.createElement('div');
@@ -76,9 +76,11 @@
     // ---------- 入口小贴士气泡：每 5 分钟轮换一条 ----------
     var TIP_INTERVAL = 5 * 60 * 1000;
     var TIP_FIRST_DELAY = 3000;
+    var TIP_SHOW_MS = 15000;
     var tipPool = [];
     var tipIdx = 0;
     var tipTimer = null;
+    var tipHideTimer = null;
     var tipEl = document.createElement('div');
     tipEl.id = '_snowd_adv_mobile_tip';
     tipEl.title = '点击换下一条';
@@ -111,13 +113,19 @@
       tipEl.textContent = tipPool[tipIdx % tipPool.length];
       tipEl.classList.add('_show');
       positionTipBubble();
+      clearTimeout(tipHideTimer);
+      tipHideTimer = setTimeout(hideTipBubble, TIP_SHOW_MS);
     }
     function hideTipBubble() {
+      clearTimeout(tipHideTimer);
       tipEl.classList.remove('_show');
     }
     function nextTip() {
       if (!tipPool.length) return;
-      tipIdx = (tipIdx + 1) % tipPool.length;
+      if (tipPool.length > 1) {
+        var n = Math.floor(Math.random() * (tipPool.length - 1));
+        tipIdx = (n >= tipIdx ? n + 1 : n) % tipPool.length;
+      }
       showTipBubble();
     }
     tipEl.addEventListener('click', function (e) {

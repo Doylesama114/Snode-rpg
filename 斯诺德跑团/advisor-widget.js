@@ -230,6 +230,7 @@
       tipPool: [],
       tipIdx: 0,
       tipTimer: null,
+      tipHideTimer: null,
     };
 
     function randomSessionId() {
@@ -545,7 +546,7 @@
     function maybeRotateTip() {
       if (!state.tipPool.length) return;
       if (isChargenBubbleVisible()) return;
-      showRotatingTip();
+      nextRotatingTip();
     }
     function showRotatingTip() {
       var tipEl = document.getElementById('_snowd_advisor_tip');
@@ -555,10 +556,17 @@
       state.rotatingTip = true;
       tipEl.classList.remove('_hidden');
       positionBubble();
+      clearTimeout(state.tipHideTimer);
+      state.tipHideTimer = setTimeout(function () {
+        hideBubble();
+      }, 15000);
     }
     function nextRotatingTip() {
       if (!state.tipPool.length) return;
-      state.tipIdx = (state.tipIdx + 1) % state.tipPool.length;
+      if (state.tipPool.length > 1) {
+        var n = Math.floor(Math.random() * (state.tipPool.length - 1));
+        state.tipIdx = (n >= state.tipIdx ? n + 1 : n) % state.tipPool.length;
+      }
       showRotatingTip();
     }
 
