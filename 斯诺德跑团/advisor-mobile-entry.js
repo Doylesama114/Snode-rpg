@@ -63,7 +63,7 @@
       '#_snowd_adv_mobile_ball._hide{transform:translateX(calc(100% - 18px))}' +
       '#_snowd_adv_mobile_ball._hide_left{transform:translateX(calc(-100% + 18px))}' +
       '#_snowd_adv_mobile_ball:not(._hide):not(._hide_left):active{transform:scale(0.94)}' +
-      'html.dark #_snowd_adv_mobile_ball{background:#24272b;border-color:#d4a54a;color:#d4a54a}';
+      'html.dark #_snowd_adv_mobile_ball{background:#24272b;border-color:#d4a54a;color:#d4a54a}' + '#_snowd_adv_mobile_tip{position:fixed;z-index:2147483001;max-width:min(300px,calc(100vw - 70px));padding:10px 12px;border-radius:12px;border:1px solid #d8d2c4;background:#fffdf8;color:#1f2522;font-size:13px;line-height:1.6;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;display:none;word-break:break-word;-webkit-tap-highlight-color:transparent}' + '#_snowd_adv_mobile_tip::after{content:\"\u70b9\u51fb\u6362\u4e0b\u4e00\u6761\";display:block;font-size:11px;color:#69706b;margin-top:6px;text-align:right}' + 'html.dark #_snowd_adv_mobile_tip{background:#24272b;border-color:#d4a54a;color:#e8e6e3}' + 'html.dark #_snowd_adv_mobile_tip::after{color:#9d9b98}' + '#_snowd_adv_mobile_tip._show{display:block}'
     document.head.appendChild(style);
 
     var ball = document.createElement('div');
@@ -72,6 +72,63 @@
     ball.title = 'AI \u987e\u95ee';
     ball.textContent = '\u2728';
     document.body.appendChild(ball);
+
+    // ---------- 入口小贴士气泡：每 5 分钟轮换一条 ----------
+    var TIP_INTERVAL = 5 * 60 * 1000;
+    var TIP_FIRST_DELAY = 3000;
+    var tipPool = [];
+    var tipIdx = 0;
+    var tipTimer = null;
+    var tipEl = document.createElement('div');
+    tipEl.id = '_snowd_adv_mobile_tip';
+    tipEl.title = '点击换下一条';
+    document.body.appendChild(tipEl);
+    try {
+      var _d = window.SNOWD_ADVISOR_TIPS || null;
+      if (_d && Array.isArray(_d.tips) && Array.isArray(_d.rules)) {
+        tipPool = _d.tips.concat(_d.rules);
+        if (tipPool.length) tipIdx = Math.floor(Math.random() * tipPool.length);
+      }
+    } catch (err) { /* ignore */ }
+
+    function positionTipBubble() {
+      if (!tipEl.classList.contains('_show')) return;
+      var r = ball.getBoundingClientRect();
+      var tw = tipEl.offsetWidth || 260;
+      var th = tipEl.offsetHeight || 70;
+      var left = r.right - tw;
+      if (left < 8) left = 8;
+      if (left + tw > window.innerWidth - 8) left = Math.max(8, window.innerWidth - tw - 8);
+      var top = r.top - th - 8;
+      if (top < 8) top = r.bottom + 8;
+      tipEl.style.left = left + 'px';
+      tipEl.style.top = top + 'px';
+      tipEl.style.right = 'auto';
+      tipEl.style.bottom = 'auto';
+    }
+    function showTipBubble() {
+      if (!tipPool.length) return;
+      tipEl.textContent = tipPool[tipIdx % tipPool.length];
+      tipEl.classList.add('_show');
+      positionTipBubble();
+    }
+    function hideTipBubble() {
+      tipEl.classList.remove('_show');
+    }
+    function nextTip() {
+      if (!tipPool.length) return;
+      tipIdx = (tipIdx + 1) % tipPool.length;
+      showTipBubble();
+    }
+    tipEl.addEventListener('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      nextTip();
+    });
+    if (tipPool.length) {
+      setTimeout(showTipBubble, TIP_FIRST_DELAY);
+      tipTimer = setInterval(nextTip, TIP_INTERVAL);
+    }
 
     var pos = loadPos();
     if (pos && typeof pos.left === 'number' && typeof pos.top === 'number') {
@@ -88,6 +145,7 @@
       ball.classList.remove('_hide', '_hide_left');
       if (r.left + r.width / 2 < center) ball.classList.add('_hide_left');
       else ball.classList.add('_hide');
+      hideTipBubble();
     }
     function scheduleHide(delay) {
       clearTimeout(hideTimer);
@@ -96,6 +154,7 @@
     function show() {
       ball.classList.remove('_hide', '_hide_left');
       scheduleHide();
+      showTipBubble();
     }
     scheduleHide();
 
@@ -120,6 +179,7 @@
         ball.style.top = top + 'px';
         ball.style.right = 'auto';
         ball.style.bottom = 'auto';
+        positionTipBubble();
         drag.x = e.clientX;
         drag.y = e.clientY;
       }

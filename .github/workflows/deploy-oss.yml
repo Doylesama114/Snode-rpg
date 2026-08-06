@@ -29,6 +29,16 @@ jobs:
           done
           # 注入移动端 AI 顾问悬浮球入口（OSS 子目录部署用相对路径）
           find _deploy -name "*.html" | while read f; do
+            if ! grep -q "advisor-tips.js" "$f"; then
+              case "$f" in
+                *斯诺德跑团*) TREL="advisor-tips.js";;
+                *职业页*) TREL="../斯诺德跑团/advisor-tips.js";;
+                *) TREL="斯诺德跑团/advisor-tips.js";;
+              esac
+              sed -i "s|</body>|<script src=\"$TREL\"></script>\n</body>|" "$f"
+            fi
+          done
+          find _deploy -name "*.html" | while read f; do
             if ! grep -q "advisor-mobile-entry.js" "$f"; then
               case "$f" in
                 *斯诺德跑团*) REL="advisor-mobile-entry.js";;

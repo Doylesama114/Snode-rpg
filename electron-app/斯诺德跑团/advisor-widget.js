@@ -90,6 +90,7 @@
       'box-shadow:0 4px 16px rgba(164,109,31,0.2);color:#1f2522;white-space:pre-wrap;word-break:break-word}',
       '#_snowd_advisor_tip._hidden{display:none}',
       '#_snowd_advisor_tip::after{content:"点击查看详情";display:block;font-size:11px;color:#69706b;margin-top:6px}',
+      '#_snowd_advisor_tip[data-mode="tip"]::after{content:"点击换下一条"}',
       '@keyframes _snowd_adv_spin{to{transform:rotate(360deg)}}',
       '#_snowd_advisor_panel{position:fixed;top:0;right:0;height:100%;width:400px;max-width:92vw;z-index:10002;',
       'background:#fffdf8;border-left:1px solid #d8d2c4;box-shadow:-8px 0 32px rgba(31,37,34,0.12);',
@@ -225,6 +226,10 @@
       chargenBusy: false,
       chargenSyncedFp: '',
       chatSession: { id: '', turns: [], bindingKey: null },
+      rotatingTip: false,
+      tipPool: [],
+      tipIdx: 0,
+      tipTimer: null,
     };
 
     function randomSessionId() {
@@ -514,8 +519,47 @@
       var tipEl = document.getElementById('_snowd_advisor_tip');
       if (!tipEl) return;
       tipEl.textContent = text || '';
+      tipEl.removeAttribute('data-mode');
+      state.rotatingTip = false;
       tipEl.classList.remove('_hidden');
       positionBubble();
+    }
+
+    // ---------- 入口小贴士：每 5 分钟轮换一条 ----------
+    function initTips() {
+      try {
+        var _d = window.SNOWD_ADVISOR_TIPS || null;
+        if (_d && Array.isArray(_d.tips) && Array.isArray(_d.rules)) {
+          state.tipPool = _d.tips.concat(_d.rules);
+          if (state.tipPool.length) state.tipIdx = Math.floor(Math.random() * state.tipPool.length);
+        }
+      } catch (err) { /* ignore */ }
+      if (!state.tipPool.length) return;
+      setTimeout(maybeRotateTip, 3000);
+      state.tipTimer = setInterval(maybeRotateTip, 5 * 60 * 1000);
+    }
+    function isChargenBubbleVisible() {
+      var tipEl = document.getElementById('_snowd_advisor_tip');
+      return !!(tipEl && !tipEl.classList.contains('_hidden') && !state.rotatingTip);
+    }
+    function maybeRotateTip() {
+      if (!state.tipPool.length) return;
+      if (isChargenBubbleVisible()) return;
+      showRotatingTip();
+    }
+    function showRotatingTip() {
+      var tipEl = document.getElementById('_snowd_advisor_tip');
+      if (!tipEl || !state.tipPool.length) return;
+      tipEl.textContent = state.tipPool[state.tipIdx % state.tipPool.length];
+      tipEl.setAttribute('data-mode', 'tip');
+      state.rotatingTip = true;
+      tipEl.classList.remove('_hidden');
+      positionBubble();
+    }
+    function nextRotatingTip() {
+      if (!state.tipPool.length) return;
+      state.tipIdx = (state.tipIdx + 1) % state.tipPool.length;
+      showRotatingTip();
     }
 
     function hideBubble() {
@@ -990,7 +1034,11 @@
 
     tip.addEventListener('click', function(e) {
       e.stopPropagation();
-      openChargenDetail();
+      if (state.rotatingTip) {
+        nextRotatingTip();
+      } else {
+        openChargenDetail();
+      }
     });
 
     document.getElementById('_snowd_adv_filter').addEventListener('input', function(e) {
@@ -1032,6 +1080,7 @@
       }
     });
 
+    initTips();
     applyBallPos();
     ensureSessionBinding();
     restoreSessionUi();

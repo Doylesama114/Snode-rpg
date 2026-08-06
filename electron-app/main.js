@@ -700,6 +700,7 @@ function createWindow() {
     const url = mainWindow.webContents.getURL();
     if (url.includes('poker-game')) return;
     injectPageScript(path.join('斯诺德跑团', 'bug-report.js'));
+    injectPageScript(path.join('斯诺德跑团', 'advisor-tips.js'));
     injectPageScript(path.join('斯诺德跑团', 'advisor-widget.js'));
   });
 }

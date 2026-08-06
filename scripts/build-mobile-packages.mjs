@@ -139,6 +139,14 @@ function injectMobileEntry(files, apiBase) {
       : inJobs
         ? `../${SNODE}/advisor-mobile-entry.js`
         : `${SNODE}/advisor-mobile-entry.js`;
+    if (!t.includes('advisor-tips.js')) {
+      const tsrc = inSN
+        ? 'advisor-tips.js'
+        : inJobs
+          ? `../${SNODE}/advisor-tips.js`
+          : `${SNODE}/advisor-tips.js`;
+      t = t.replace(/<\/body>/i, `<script src="${tsrc}"></script>\n</body>`);
+    }
     if (!t.includes('advisor-mobile-entry.js')) {
       t = t.replace(/<\/body>/i, `<script src="${src}"></script>\n</body>`);
     }

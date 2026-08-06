@@ -34,6 +34,9 @@ jobs:
           done
           # 注入移动端 AI 顾问悬浮球入口（绝对路径）
           find _deploy_edgeone -name "*.html" | while read f; do
+            if ! grep -q "advisor-tips.js" "$f"; then
+              sed -i "s|</body>|<script src=\"/斯诺德跑团/advisor-tips.js\"></script>\n</body>|" "$f"
+            fi
             if ! grep -q "advisor-mobile-entry.js" "$f"; then
               sed -i "s|</body>|<script src=\"/斯诺德跑团/advisor-mobile-entry.js\"></script>\n</body>|" "$f"
             fi
