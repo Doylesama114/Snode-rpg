@@ -74,7 +74,7 @@ export async function ossList(prefix, opts = {}) {
     throw new Error('OSS credentials not configured');
   }
   const date = new Date().toUTCString();
-  const query = `list-type=2&prefix=${encodeURIComponent(prefix)}&max-keys=1000`;
+  const query = `list-type=2&max-keys=1000&prefix=${encodeURIComponent(prefix)}`;
   const headers = { Date: date, 'Content-Type': '' };
   const resource = `/${creds.bucket}/?${query}`;
   const sig = crypto.createHmac('sha1', creds.secret)
