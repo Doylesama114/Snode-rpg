@@ -76,8 +76,8 @@ export async function ossList(prefix, opts = {}) {
   const date = new Date().toUTCString();
   const query = `list-type=2&max-keys=1000&prefix=${encodeURIComponent(prefix)}`;
   const headers = { Date: date };
-  // ???V1 ?????????sub-resource???? CanonicalizedResource?
-  // list-type/prefix/max-keys ??????????????? URL ??
+  // NOTE: V1 signature includes only sub-resources in CanonicalizedResource.
+  // list-type/prefix/max-keys are ordinary query params; they appear only in the URL.
   const resource = `/${creds.bucket}/`;
   const sig = crypto.createHmac('sha1', creds.secret)
     .update(`GET\n\n\n${date}\n${resource}`)
