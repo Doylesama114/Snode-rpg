@@ -559,7 +559,7 @@
       clearTimeout(state.tipHideTimer);
       state.tipHideTimer = setTimeout(function () {
         hideBubble();
-      }, 15000);
+      }, 5000);
     }
     function nextRotatingTip() {
       if (!state.tipPool.length) return;

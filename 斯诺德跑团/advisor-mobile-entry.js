@@ -76,7 +76,7 @@
     // ---------- 入口小贴士气泡：每 5 分钟轮换一条 ----------
     var TIP_INTERVAL = 5 * 60 * 1000;
     var TIP_FIRST_DELAY = 3000;
-    var TIP_SHOW_MS = 15000;
+    var TIP_SHOW_MS = 5000;
     var tipPool = [];
     var tipIdx = 0;
     var tipTimer = null;
