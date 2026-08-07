@@ -1,6 +1,7 @@
 (function() {
     var MARK_META = [
         { hex: "#FF0000", name: "红", light: false },
+        { hex: "#E54C5E", name: "玫红", light: false },
         { hex: "#EE822F", name: "橙", light: false },
         { hex: "#FFF32F", name: "黄", light: true },
         { hex: "#00B050", name: "绿", light: false },
@@ -153,7 +154,8 @@
                 var d = (tagCount[b] || 0) - (tagCount[a] || 0);
                 return d !== 0 ? d : a.localeCompare(b, "zh-CN");
             });
-        this.allColors = Array.from(colorSet).sort();
+        this.presentColors = colorSet;
+        this.allColors = MARK_META.map(function(m) { return canonicalizeMarkHex(m.hex); });
     };
 
     FilterPanel.prototype.syncChipStyles = function() {
@@ -357,15 +359,16 @@
             this.allColors.forEach(function(hex) {
                 hex = canonicalizeMarkHex(hex);
                 var meta = metaByHex[hex] || { hex: hex, name: hex.replace("#", ""), light: false };
+                var missing = !self2.presentColors.has(hex);
                 var btn = document.createElement("button");
                 btn.type = "button";
-                btn.className = "fp-color-btn" + (meta.light ? " light" : "");
+                btn.className = "fp-color-btn" + (meta.light ? " light" : "") + (missing ? " fp-color-missing" : "");
                 btn.setAttribute("data-color", hex);
-                btn.title = meta.name + "\u8272";
+                btn.title = meta.name + "\u8272" + (missing ? "\uff08\u672c\u9875\u65e0\u8be5\u8272\u6807\u8bc6\uff09" : "");
                 btn.innerHTML = '<span class="fp-dot" style="color:' + meta.hex + '">\u25cf</span><span class="fp-color-name">' + meta.name + "</span>";
                 btn.addEventListener("click", function(e) {
                     e.stopPropagation();
-                    self2.toggleColor(hex);
+                    if (self2.presentColors.has(hex)) self2.toggleColor(hex);
                 });
                 colWrap.appendChild(btn);
             });

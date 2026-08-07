@@ -995,6 +995,15 @@ html.dark .fp-kw-chip.active .fp-kw-count { color: var(--green); background: rgb
 .fp-color-btn.light .fp-dot {
   text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
 }
+.fp-color-btn.fp-color-missing {
+  opacity: .35;
+  cursor: default;
+  filter: grayscale(.4);
+}
+.fp-color-btn.fp-color-missing:hover {
+  border-color: var(--line);
+  box-shadow: none;
+}
 .fp-active {
   display: flex;
   flex-wrap: wrap;
