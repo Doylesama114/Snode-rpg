@@ -63,7 +63,7 @@ export async function ossPutJson(key, body, opts = {}) {
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`OSS PUT ${res.status}: ${text.slice(0, 300)}`);
+    throw new Error(`OSS PUT ${res.status}: ${text.slice(0, 2000)}`);
   }
   return res;
 }
@@ -75,8 +75,10 @@ export async function ossList(prefix, opts = {}) {
   }
   const date = new Date().toUTCString();
   const query = `list-type=2&max-keys=1000&prefix=${encodeURIComponent(prefix)}`;
-  const headers = { Date: date, 'Content-Type': '' };
-  const resource = `/${creds.bucket}/?${query}`;
+  const headers = { Date: date };
+  // ???V1 ?????????sub-resource???? CanonicalizedResource?
+  // list-type/prefix/max-keys ??????????????? URL ??
+  const resource = `/${creds.bucket}/`;
   const sig = crypto.createHmac('sha1', creds.secret)
     .update(`GET\n\n\n${date}\n${resource}`)
     .digest('base64');
@@ -85,7 +87,7 @@ export async function ossList(prefix, opts = {}) {
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`OSS LIST ${res.status}: ${text.slice(0, 300)}`);
+    throw new Error(`OSS LIST ${res.status}: ${text.slice(0, 2000)}`);
   }
   const xml = await res.text();
   const keys = [];
@@ -110,7 +112,7 @@ export async function ossGet(key, opts = {}) {
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`OSS GET ${res.status}: ${text.slice(0, 300)}`);
+    throw new Error(`OSS GET ${res.status}: ${text.slice(0, 2000)}`);
   }
   return res.text();
 }
