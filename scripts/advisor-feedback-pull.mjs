@@ -26,6 +26,10 @@ function parseArgs(argv) {
   };
 }
 
+function isPipelineTest(f) {
+  const s = JSON.stringify(f || {});
+  return s.includes('__PIPELINE_TEST__') || s.includes('pipeline-test');
+}
 function truncate(s, n) {
   const t = String(s || '').replace(/\s+/g, ' ').trim();
   return t.length > n ? t.slice(0, n) + '…' : t;
@@ -53,12 +57,17 @@ async function main() {
   for (const key of keys) {
     const name = key.split('/').pop();
     if (existing.has(name)) {
-      raw.push(JSON.parse(fs.readFileSync(path.join(INBOX, name), 'utf8')));
+      const obj = JSON.parse(fs.readFileSync(path.join(INBOX, name), 'utf8'));
+      if (!isPipelineTest(obj)) raw.push(obj);
       continue;
     }
     try {
       const text = await ossGet(key, { creds });
       const obj = JSON.parse(text);
+      if (isPipelineTest(obj)) {
+        console.warn(`[skip] pipeline test: ${key}`);
+        continue;
+      }
       fs.writeFileSync(path.join(INBOX, name), `${JSON.stringify(obj, null, 2)}\n`, 'utf8');
       raw.push(obj);
       downloaded += 1;

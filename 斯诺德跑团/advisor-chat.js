@@ -189,7 +189,7 @@
   }
   function recordFeedback(rating, query, answer, meta) {
     var list = loadFeedback();
-    list.push({
+    var item = {
       rating: rating,
       query: query,
       answer: String(answer || '').slice(0, 4000),
@@ -197,13 +197,15 @@
       mode: (meta && meta.mode) || 'advisor',
       profile: (meta && meta.promptProfile) || '',
       ts: Date.now(),
-      source: 'mobile',
-    });
+      source: window.electronAPI ? 'desktop' : 'mobile',
+    };
+    list.push(item);
     try { localStorage.setItem(FEEDBACK_KEY, JSON.stringify(list.slice(-200))); } catch (e) { /* ignore */ }
     // 发送到 FC 后端沉淀到 OSS（本地已保存，发送失败不打扰用户）
     try {
-      if (API) {
-        var item = list[list.length - 1];
+      if (window.electronAPI && window.electronAPI.sendAdvisorFeedback) {
+        window.electronAPI.sendAdvisorFeedback(item);
+      } else if (API) {
         fetch(API + '/api/feedback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
