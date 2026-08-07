@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7191',
+    date: '2026-08-07',
+    changes: [
+      '小贴士气泡显示时长由15秒缩短为5秒'
+    ]
+  },
+
+
+  {
     version: '1.0.7190',
     date: '2026-08-07',
     changes: [
