@@ -25,6 +25,10 @@ h1 { font-size: 26px; font-weight: bold; margin-bottom: 16px; padding-bottom: 10
 .step-title { font-size: 22px; font-weight: bold; margin-bottom: 16px; }
 .step-desc { font-size: 14px; color: #69706b; margin-bottom: 20px; line-height: 1.7; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.equip-group { border: 1px solid #d8d2c4; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; background: #fffdf8; }
+.equip-group-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #1f2522; }
+html.dark .equip-group, html.dark body .equip-group { background: #24272b; border-color: #3a3d40; }
+html.dark .equip-group-title { color: #e8e6e3; }
 .card {
   background: #fffdf8; border: 2px solid #d8d2c4; border-radius: 10px; padding: 16px;
   cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(31,37,34,0.04);
@@ -304,7 +308,7 @@ var CHAR = {
   keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], raceSaves: [], raceSkillChoice: "", raceProfInput: "", selectedFeatures: [], humanFreeSkill: null, raceSize: "",
   bgIdx: -1, bgName: "", bgData: null,
   bgCantrips: [], bgOtherPicks: [], sportPreference: "",
-  equipIdx: -1, equipChoice: null, wingfolkHasCommon: true,
+  equipIdx: -1, equipChoice: null, equipSel: {}, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
   deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
@@ -400,6 +404,7 @@ function chargenSnapshotChar(){
     bgName:CHAR.bgName||null,
     bgProfs:CHAR.bgProfs?JSON.parse(JSON.stringify(CHAR.bgProfs)):{},
     equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
+    equipSel:CHAR.equipSel?JSON.parse(JSON.stringify(CHAR.equipSel)):{},
     extraLanguages:(CHAR.extraLanguages||[]).slice(),
     humanFreeSkill:CHAR.humanFreeSkill||null,
     overviewProfs:typeof buildOverviewProfLines==="function"?buildOverviewProfLines().map(function(p){return{name:p.name,src:p.src};}):[],
@@ -440,7 +445,7 @@ function buildChargenFingerprint(st){
     JSON.stringify(c.specChoices||{}),
     JSON.stringify(c.bgProfs||{}),
     (c.overviewProfs||[]).map(function(p){return p.name+":"+p.src;}).join(","),
-    c.equipChoice&&c.equipChoice.letter,
+    c.equipChoice&&c.equipChoice.letter,JSON.stringify(c.equipSel||{}),
     p.story,p.personality,p.charName,p.gender,p.hair,p.eye
   ].join("|");
 }
@@ -482,8 +487,17 @@ function applyAdvisorHandoff(){
     if(h.specChoices)CHAR.specChoices=h.specChoices;
     if(h.extraLanguages)CHAR.extraLanguages=h.extraLanguages.slice();
     if(sel.equipmentKit){
-      var opts=EQUIP_DATA["法师"]||[];
-      for(var ei=0;ei<opts.length;ei++){if(opts[ei].letter===sel.equipmentKit){CHAR.equipIdx=ei;CHAR.equipChoice=opts[ei];break;}}
+      var opts=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+      if(opts.length&&opts[0]&&opts[0].options){
+        for(var ei2=0;ei2<opts.length;ei2++){
+          if(opts[ei2].letter===sel.equipmentKit&&opts[ei2].options&&opts[ei2].options[0]){
+            if(!CHAR.equipSel)CHAR.equipSel={};
+            CHAR.equipSel[opts[ei2].letter]={opt:0,text:opts[ei2].options[0].text};break;
+          }
+        }
+      }else{
+        for(var ei=0;ei<opts.length;ei++){if(opts[ei].letter===sel.equipmentKit){CHAR.equipIdx=ei;CHAR.equipChoice=opts[ei];break;}}
+      }
     }
     if(h.charName){CHAR.charName=h.charName;CHAR.playerName=CHAR.playerName||"玩家";}
     goToStep(typeof h.targetStep==="number"?h.targetStep:0);
@@ -515,6 +529,7 @@ function buildCreationSnapshot(){
     sportPreference:CHAR.sportPreference||"",
     equipIdx:typeof CHAR.equipIdx==="number"?CHAR.equipIdx:-1,
     equipLetter:(CHAR.equipChoice&&CHAR.equipChoice.letter)?CHAR.equipChoice.letter:"",
+    equipSel:JSON.parse(JSON.stringify(CHAR.equipSel||{})),
     weaponSpec:CHAR.weaponSpec||"",
     playerName:CHAR.playerName||"",
     charName:CHAR.charName||"",
@@ -592,15 +607,29 @@ function applyCreationSnapshotToChar(snap){
   CHAR.bgCantrips=JSON.parse(JSON.stringify(snap.bgCantrips||[]));
   CHAR.bgOtherPicks=JSON.parse(JSON.stringify(snap.bgOtherPicks||[]));
   CHAR.sportPreference=snap.sportPreference||"";
-  CHAR.equipIdx=-1;CHAR.equipChoice=null;
+  CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
   opts=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
-  if(snap.equipLetter){
-    for(i=0;i<opts.length;i++){
-      if(opts[i].letter===snap.equipLetter){CHAR.equipIdx=i;CHAR.equipChoice=opts[i];break;}
+  var _eqMulti=opts.length&&opts[0]&&opts[0].options;
+  if(_eqMulti){
+    if(snap.equipSel&&typeof snap.equipSel==="object"){
+      CHAR.equipSel=JSON.parse(JSON.stringify(snap.equipSel));
     }
-  }
-  if(!CHAR.equipChoice&&typeof snap.equipIdx==="number"&&snap.equipIdx>=0&&opts[snap.equipIdx]){
-    CHAR.equipIdx=snap.equipIdx;CHAR.equipChoice=opts[snap.equipIdx];
+    if(snap.equipLetter){
+      for(i=0;i<opts.length;i++){
+        if(opts[i].letter===snap.equipLetter&&opts[i].options&&opts[i].options[0]){
+          CHAR.equipSel[opts[i].letter]={opt:0,text:opts[i].options[0].text};break;
+        }
+      }
+    }
+  }else{
+    if(snap.equipLetter){
+      for(i=0;i<opts.length;i++){
+        if(opts[i].letter===snap.equipLetter){CHAR.equipIdx=i;CHAR.equipChoice=opts[i];break;}
+      }
+    }
+    if(!CHAR.equipChoice&&typeof snap.equipIdx==="number"&&snap.equipIdx>=0&&opts[snap.equipIdx]){
+      CHAR.equipIdx=snap.equipIdx;CHAR.equipChoice=opts[snap.equipIdx];
+    }
   }
   CHAR.playerName=snap.playerName||"";
   CHAR.charName=snap.charName||"";
@@ -787,7 +816,19 @@ function updateOverview() {
     h += '</div>';
   }
   // 装备
-  if (CHAR.equipChoice) {
+  var _eqOpts=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+  if(_eqOpts.length&&_eqOpts[0]&&_eqOpts[0].options){
+    var _eqParts=[];
+    for(var _gi=0;_gi<_eqOpts.length;_gi++){
+      var _g=_eqOpts[_gi];
+      var _sel=CHAR.equipSel&&CHAR.equipSel[_g.letter];
+      if(_sel){var _sn=(_sel.text||"").split("：")[0]||_sel.text||"";_eqParts.push(_g.letter+":"+_sn);}
+    }
+    if(_eqParts.length){
+      h += '<div class="ov-section"><div class="ov-label">⚔ 装备: ' + _eqParts.join(' / ') + '</div>';
+      h += '</div>';
+    }
+  } else if (CHAR.equipChoice) {
     h += '<div class="ov-section"><div class="ov-label">⚔ 装备: ' + (CHAR.equipChoice.letter || '已选') + '</div>';
     h += '</div>';
   }
@@ -1284,7 +1325,7 @@ function checkSpecDone(){
   notifyChargenChange();
 }
 function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
-  CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";
+  CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
@@ -1764,9 +1805,21 @@ function toggleSkill(name,el){
 // ====== Step 4: Background ======
 
 // ====== Step 4: Equipment ======
+function equipDataIsMulti(opts){
+  return !!(opts&&opts.length&&opts[0]&&opts[0].options);
+}
+function multiEquipDone(){
+  var opts=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+  if(!equipDataIsMulti(opts)) return false;
+  for(var gi=0;gi<opts.length;gi++){
+    if(!CHAR.equipSel||!CHAR.equipSel[opts[gi].letter]) return false;
+  }
+  return true;
+}
 function renderEquipStep(c) {
   var clsName=CHAR.className;
   var opts=EQUIP_DATA[clsName]||[];
+  if(equipDataIsMulti(opts)){ renderMultiEquipStep(c,opts); return; }
   var h="<div class='step-title'>"+STEP_LABELS[6]+"</div>";
   h+="<div class='step-desc'>选择你的起始装备套装。每个职业有 4 组不同的装备方案可供选择。</div>";
   h+="<div class='card-grid'>";
@@ -1789,6 +1842,86 @@ function renderEquipStep(c) {
   h+="</div>";
   h+=navBtns(true,CHAR.equipIdx>=0);
   c.innerHTML=h;
+}
+function renderMultiEquipStep(c,groups){
+  if(!CHAR.equipSel)CHAR.equipSel={};
+  for(var gi=0;gi<groups.length;gi++){
+    var g=groups[gi];
+    if(g.options&&g.options.length===1&&!CHAR.equipSel[g.letter]){
+      CHAR.equipSel[g.letter]={opt:0,text:g.options[0].text};
+    }
+  }
+  var h="<div class='step-title'>"+STEP_LABELS[6]+"</div>";
+  h+="<div class='step-desc'>选择你的起始装备：A、B、C、D、E 类装备各选择一种。</div>";
+  h+="<div class='equip-groups'>";
+  for(gi=0;gi<groups.length;gi++){
+    var g=groups[gi];
+    var sel=CHAR.equipSel[g.letter];
+    h+="<div class='equip-group' id='eqg-"+g.letter+"'>";
+    h+="<div class='equip-group-title'>"+esc(g.letter)+" 类 · "+esc(g.title||"")+"</div>";
+    h+="<div class='card-grid'>";
+    for(var oi=0;oi<g.options.length;oi++){
+      var o=g.options[oi];
+      var isSel=sel&&sel.opt===oi;
+      h+="<div class='card"+(isSel?" selected":"")+"' onclick=\"selectEquipGroup('"+g.letter+"',"+oi+")\">";
+      h+="<div class='card-name'>选择 "+(oi+1)+"</div>";
+      h+="<div class='card-sub'>"+esc((o.text||"").substring(0,80))+"</div>";
+      h+="<div class='card-desc' style='display:"+(isSel?"block":"none")+"'>"+esc(o.text||"")+"</div>";
+      h+="</div>";
+    }
+    h+="</div></div>";
+  }
+  h+="</div>";
+  h+="<div class='detail-panel' id='equipDetail'>";
+  var done=multiEquipDone();
+  if(done){
+    var parts=[];
+    for(gi=0;gi<groups.length;gi++){
+      var g2=groups[gi];var s2=CHAR.equipSel[g2.letter];
+      if(s2)parts.push(g2.letter+"："+(s2.text||"").split("：")[0]);
+    }
+    h+="<h3>已选装备</h3><div style='font-size:14px;line-height:1.7'>"+esc(parts.join(" / "))+"</div>";
+  }
+  h+="</div>";
+  h+=navBtns(true,done);
+  c.innerHTML=h;
+}
+function selectEquipGroup(letter,oi){
+  var opts=EQUIP_DATA[CHAR.className]||[];
+  var g=null;
+  for(var i=0;i<opts.length;i++){if(opts[i].letter===letter){g=opts[i];break;}}
+  if(!g||!g.options||!g.options[oi])return;
+  if(!CHAR.equipSel)CHAR.equipSel={};
+  CHAR.equipSel[letter]={opt:oi,text:g.options[oi].text};
+  var container=document.getElementById("stepContent");
+  var grp=container?container.querySelector("#eqg-"+letter):null;
+  if(grp){
+    var cards=grp.querySelectorAll(".card");
+    for(var i=0;i<cards.length;i++){
+      cards[i].classList.remove("selected");
+      var desc=cards[i].querySelector(".card-desc");
+      if(desc)desc.style.display="none";
+    }
+    if(cards[oi]){
+      cards[oi].classList.add("selected");
+      var desc=cards[oi].querySelector(".card-desc");
+      if(desc)desc.style.display="block";
+    }
+  }
+  var done=multiEquipDone();
+  var panel=document.getElementById("equipDetail");
+  if(panel){
+    var parts=[];
+    var opts2=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+    for(var gi=0;gi<opts2.length;gi++){
+      var g2=opts2[gi];var s2=CHAR.equipSel[g2.letter];
+      if(s2)parts.push(g2.letter+"："+(s2.text||"").split("：")[0]);
+    }
+    panel.style.display="block";
+    panel.innerHTML="<h3>已选装备</h3><div style='font-size:14px;line-height:1.7'>"+esc(parts.join(" / "))+"</div>";
+  }
+  document.getElementById("nextBtn").disabled=!done;
+  updateOverview();
 }
 
 function selectEquip(idx){
@@ -2255,7 +2388,22 @@ function renderReviewStep(c) {
   if(CHAR.sportPreference)h+="<div class='review-item'><div class='review-label'>偏好运动</div><div class='review-value'>"+CHAR.sportPreference+"</div></div>";
   if(CHAR.bgProfs&&CHAR.bgProfs.profInput)h+="<div class='review-item'><div class='review-label'>专业熟练</div><div class='review-value'>"+CHAR.bgProfs.profInput+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>熟练项</div><div class='review-value'>"+(CHAR.selectedSkills.length?CHAR.selectedSkills.join("、"):"无")+"</div></div>";
-  h+="<div class='review-item'><div class='review-label'>起始装备</div><div class='review-value'>选项 "+(CHAR.equipChoice?CHAR.equipChoice.letter:"未选择")+"</div></div>";
+  var _eqSum="未选择";
+  var _eqO=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+  if(_eqO.length&&_eqO[0]&&_eqO[0].options){
+    var _eqParts=[];
+    for(var _gi=0;_gi<_eqO.length;_gi++){
+      var _g=_eqO[_gi];
+      if(CHAR.equipSel&&CHAR.equipSel[_g.letter]){
+        var _sn=(CHAR.equipSel[_g.letter].text||"").split("：")[0]||CHAR.equipSel[_g.letter].text||"";
+        _eqParts.push(_g.letter+"："+_sn);
+      }
+    }
+    _eqSum=_eqParts.length?_eqParts.join(" / "):"未选择";
+  }else{
+    _eqSum="选项 "+(CHAR.equipChoice?CHAR.equipChoice.letter:"未选择");
+  }
+  h+="<div class='review-item'><div class='review-label'>起始装备</div><div class='review-value'>"+esc(_eqSum)+"</div></div>";
   h+="</div>";
   h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>属性值（含种族加成）</div>";
   h+="<div class='review-attrs'>";
@@ -2286,8 +2434,36 @@ function parseEquipToSlots(text, charData){
     for(var li=0;li<lines.length;li++){
       var l=lines[li].trim();if(!l) continue;
       if(/\d+枚金币/.test(l)) continue;
-      var nm=l.split("：")[0].trim().replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
-      if(nm&&nm.length>1) charData.equipment["背包"].push(nm);
+      var col=l.indexOf("：");
+      var nm=col>=0?l.slice(0,col).trim():l.trim();
+      if(col>=0){
+        nm=nm.replace(/\+20发弹药$/,"").replace(/\+20支箭矢$/,"").replace(/\+20发飞镖$/,"").replace(/\+20发$/,"").trim();
+        nm=nm.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
+        if(nm&&nm.length>1){
+          var slot=determineEquipSlot(nm);
+          if(!charData.equipment[slot])charData.equipment[slot]=[];
+          if(charData.equipment[slot].indexOf(nm)<0)charData.equipment[slot].push(nm);
+        }
+      }else{
+        var segs=nm.split("+");
+        var itemName=segs[0].trim();
+        itemName=itemName.replace(/[（(]\d+格装备槽位[)）]/,"").trim();
+        if(itemName&&itemName.length>1){
+          var slot=determineEquipSlot(itemName);
+          if(!charData.equipment[slot])charData.equipment[slot]=[];
+          if(charData.equipment[slot].indexOf(itemName)<0)charData.equipment[slot].push(itemName);
+          var contSlot=(itemName==="旅行腰包")?"旅行腰包":"背包";
+          for(var si2=1;si2<segs.length;si2++){
+            var cn=segs[si2].trim();
+            if(!cn||/\d+枚/.test(cn)||cn.length<=1)continue;
+            cn=cn.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
+            if(cn&&cn.length>1){
+              if(!charData.equipment[contSlot])charData.equipment[contSlot]=[];
+              if(charData.equipment[contSlot].indexOf(cn)<0)charData.equipment[contSlot].push(cn);
+            }
+          }
+        }
+      }
     }
     return;
   }
@@ -2667,8 +2843,20 @@ function saveCharacter(){
     }
   }
   charData.profs=allSkills;applySpecProfs(charData);applyBgProfs(charData);
-  if(CHAR.equipChoice){
-    parseEquipToSlots(CHAR.equipChoice.text, charData);organizeContainers(charData);
+  var _eqOut=(CHAR.className&&typeof EQUIP_DATA!=="undefined")?(EQUIP_DATA[CHAR.className]||[]):[];
+  var _equipText="";
+  if(_eqOut.length&&_eqOut[0]&&_eqOut[0].options){
+    var _eqLines=[];
+    for(var _gi=0;_gi<_eqOut.length;_gi++){
+      var _g=_eqOut[_gi];
+      if(CHAR.equipSel&&CHAR.equipSel[_g.letter])_eqLines.push(CHAR.equipSel[_g.letter].text);
+    }
+    _equipText=_eqLines.join("\n");
+  }else if(CHAR.equipChoice){
+    _equipText=CHAR.equipChoice.text||"";
+  }
+  if(_equipText){
+    parseEquipToSlots(_equipText, charData);organizeContainers(charData);
   }
   if(bd){
     var ms=(bd["资金"]||"").match(/(\d+)/);

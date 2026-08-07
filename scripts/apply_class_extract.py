@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from class_sync_core import (  # noqa: E402
+    append_tables_to_search,
     build_data_search,
     build_detail_html,
     build_skill_data_attrs,
@@ -93,6 +94,8 @@ def extract_to_block(ex: dict) -> dict:
         "description_entries": ex.get("description_entries") or [],
         "level_upgrades": list(ex.get("level_upgrades") or []),
         "flavor": ex.get("flavor") or "",
+        "unit_tables": ex.get("unit_tables") or [],
+        "roll_tables": ex.get("roll_tables") or [],
     }
 
 
@@ -118,6 +121,10 @@ def extract_to_site_skill(ex: dict, sid: str) -> dict:
         skill["description_entries"] = block["description_entries"]
     if ex.get("choice_group"):
         skill["choice_group"] = ex["choice_group"]
+    if block["unit_tables"]:
+        skill["unit_tables"] = block["unit_tables"]
+    if block["roll_tables"]:
+        skill["roll_tables"] = block["roll_tables"]
     return skill
 
 
@@ -136,8 +143,12 @@ def render_article(skill: dict, block: dict) -> str:
     color = STYLE_CHIP.get(style, "#888")
     chip_label = f"{style}风格" if style else ""
     tier_lbl = f"{tier}天赋树" if tier.endswith("阶") else tier
-    detail = build_detail_html(block)
+    detail = build_detail_html(block, {
+        "unit_tables": block.get("unit_tables") or [],
+        "roll_tables": block.get("roll_tables") or [],
+    })
     data_search = build_data_search(block, style, tier_lbl, skill.get("tags") or [])
+    data_search = append_tables_to_search(data_search, block)
     safe = sanitize_data_search(data_search)
     data_attrs = build_skill_data_attrs(skill, block["mark_dots"])
     return (

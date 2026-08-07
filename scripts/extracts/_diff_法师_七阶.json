@@ -1,0 +1,529 @@
+{
+  "class_name": "法师",
+  "tier_filter": "七阶",
+  "extract_count": 43,
+  "site_count": 43,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 43,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "二重防护结界",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "侵蚀之匕",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "冰川壁垒",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法盾",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "原初守护",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "召唤卡尔之龙",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "召唤异界盟军",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "召唤魔法豪宅",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "命运抉择",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "咒法护盾",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "塑能学派序列",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "宿命环·回溯",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "宿命环·未来",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "宿命环·现界",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "幻术学派序列",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "异界传送",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "弱智术",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "必中真眼",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "怪物支配术",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "怪物显现",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "战锤术",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "欧文海德的回响之咒",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "混沌漩涡",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "烈焰风暴",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "真名显露",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "真实幻境术",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "空间电荷",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "空间禁锢术",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "精神监牢",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "统御意志",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "群体魅惑术",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "虚实转化",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "虚无之影",
+      "style": "幻术",
+      "tier": "七阶",
+      "id": "m-skill-7-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "虹光射线",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "裁剪生命之线",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "防护学派序列",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "阿卡迪亚的静止领域",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "附魔学派序列",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "附魔武器·赋予生命",
+      "style": "附魔",
+      "tier": "七阶",
+      "id": "m-skill-5-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "预言学派序列",
+      "style": "咒法",
+      "tier": "七阶",
+      "id": "m-skill-2-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "预言学派序列",
+      "style": "预言",
+      "tier": "七阶",
+      "id": "m-skill-3-7-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "驱离术",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "魔网崩解",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

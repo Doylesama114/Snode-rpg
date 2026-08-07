@@ -1,0 +1,97 @@
+{
+  "class_name": "战士",
+  "tier_filter": "七阶",
+  "extract_count": 10,
+  "site_count": 10,
+  "missing_on_site": [],
+  "missing_in_docx": [],
+  "field_diffs_count": 7,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "军用施法者",
+      "style": "军团",
+      "tier": "七阶",
+      "id": "w-skill-5-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "巨人打击",
+      "style": "斗争",
+      "tier": "七阶",
+      "id": "w-skill-1-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "战场壁垒",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "w-skill-4-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "战术优势",
+      "style": "军团",
+      "tier": "七阶",
+      "id": "w-skill-5-7-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "葬送！",
+      "style": "斗争",
+      "tier": "七阶",
+      "id": "w-skill-1-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "重整指令",
+      "style": "军团",
+      "tier": "七阶",
+      "id": "w-skill-5-7-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "钢铁防御者",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "w-skill-4-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

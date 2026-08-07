@@ -6,6 +6,7 @@ import json
 import re
 import shutil
 import zipfile
+import html as html_mod
 from collections import defaultdict
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -528,7 +529,234 @@ def field_p_html(label: str, value: str, runs: list[dict] | None = None) -> str:
     return field_p(label, value)
 
 
-def build_detail_html(block: dict) -> str:
+
+# ---------------------------------------------------------------------------
+# 单位属性表 / 随机效果表（A/B 类）
+# ---------------------------------------------------------------------------
+UNIT_ANCHOR_RE = re.compile(r"防御等级\s*[:：]\s*\d+.*生命值\s*[:：]\s*\d+")
+UNIT_STOP_PREFIXES = (
+    "研发材料：", "研发时间：", "参考价格：", "负重：", "类别：", "使用限制：",
+    "加工材料：", "费用：", "描述：", "前置条件：", "额外条件：", "施展时间：",
+    "关键词：", "施展条件：", "施展限制：", "限制：", "标识：",
+)
+UNIT_NAME_RE = re.compile(r"^[^\s·•，,。:：;；、（）()]{1,24}$")
+D_ROW_RE = re.compile(r"(?:^|[·•])\s*(D\d+(?:[-–]\d+)?)\s*[.：:：]")
+NUM_ROW_RE = re.compile(r"[·•]\s*(\d{1,4}(?:[-–]\d+)?)\s*[.：:：]")
+SPLIT_ROW_RE = re.compile(r"[·•]\s*(D\d+(?:[-–]\d+)?|\d{1,4}(?:[-–]\d+)?)\s*[.：:：]")
+PURE_LABEL_RE = re.compile(r"^\d{1,4}(?:[-–]\d{1,4})?$")
+UNIT_STAT_LABELS = (
+    "感官", "移动速度", "战斗加成", "战斗加值", "伤害抗性", "伤害免疫",
+    "伤害易伤", "状态免疫", "状态抗性", "状态易伤", "语言", "挑战等级",
+)
+
+
+def detect_unit_blocks(lines):
+    """在描述行中定位“单位数据块”（防御等级+生命值锚点）。"""
+    arr = [ln.strip() for ln in (lines or []) if ln.strip()]
+    out = []
+    i = 0
+    while i < len(arr):
+        ln = arr[i]
+        if UNIT_ANCHOR_RE.search(ln):
+            start = i
+            name = None
+            for j in range(max(0, i - 2), i):
+                cand = arr[j]
+                if (
+                    UNIT_NAME_RE.match(cand)
+                    and not re.search(r"[:：,，。]", cand)
+                    and not cand.startswith(("·", "•"))
+                ):
+                    name = cand
+                    start = j
+                    break
+            if name is None:
+                m = re.match(
+                    r"^(.{1,24}?)\s+(?:中小型|中型|大型|中大型|微型|小型|巨型|超大型)\S*\s*[，,]?\s*防御等级",
+                    ln,
+                )
+                name = m.group(1) if m else ln[:22] + "…"
+            end = i + 1
+            while end < len(arr) and not UNIT_ANCHOR_RE.search(arr[end]):
+                if arr[end].startswith(UNIT_STOP_PREFIXES):
+                    break
+                end += 1
+            out.append({"name": name, "lines": arr[start:end]})
+            i = end
+        else:
+            i += 1
+    return out
+
+
+def _row_match(ln):
+    """行首匹配：D 前缀骰子行，或 ·前缀数字行（排除 1. / 2. 序号）。"""
+    m = D_ROW_RE.match(ln)
+    if m:
+        return m
+    m = NUM_ROW_RE.match(ln)
+    if m:
+        return m
+    return None
+
+
+def collect_roll_rows(lines):
+    """从描述行中提取“点数/区间 → 效果”行（支持一行多行合并）。"""
+    arr = [ln.strip() for ln in (lines or []) if ln.strip()]
+    rows = []
+    i = 0
+    while i < len(arr):
+        ln = arr[i]
+        m = _row_match(ln)
+        if m:
+            label = m.group(1)
+            rest = ln[m.end():]
+            parts = []
+            pos = 0
+            for mm in re.finditer(SPLIT_ROW_RE, rest):
+                parts.append((label, rest[pos:mm.start()].strip(" ·•")))
+                label = mm.group(1)
+                pos = mm.end()
+            parts.append((label, rest[pos:].strip(" ·•")))
+            for lb, tx in parts:
+                rows.append({"label": lb, "text": tx, "raw": ln})
+            i += 1
+            # 仅吸收“短行/子条目”续行（如 D5 的选项列表），避免吞掉后续正文
+            while (
+                i < len(arr)
+                and _row_match(arr[i]) is None
+                and not PURE_LABEL_RE.fullmatch(arr[i])
+                and len(arr[i]) <= 40
+                and not arr[i].startswith(("·", "•", "-"))
+                and not re.match(r"^\d+[.、]", arr[i])
+                and not re.match(r"^你的.+等级到达\d+级时", arr[i])
+            ):
+                rows[-1]["text"] = (rows[-1]["text"] + " " if rows[-1]["text"] else "") + arr[i]
+                rows[-1]["raw"] = rows[-1]["raw"] + "\n" + arr[i]
+                i += 1
+            continue
+        if PURE_LABEL_RE.fullmatch(ln):
+            label = ln
+            i += 1
+            parts = []
+            while i < len(arr) and _row_match(arr[i]) is None and not PURE_LABEL_RE.fullmatch(arr[i]):
+                parts.append(arr[i])
+                i += 1
+            text = " ".join(parts)
+            raw = label + ("\n" + "\n".join(parts) if parts else "")
+            rows.append({"label": label, "text": text, "raw": raw})
+            continue
+        i += 1
+    return rows
+
+
+def tables_skip_lines(unit_tables, roll_tables):
+    """生成渲染时应从效果正文中剔除的行（避免与表格重复）。"""
+    skip = set()
+    for ut in unit_tables or []:
+        if ut.get("name"):
+            skip.add(ut["name"].strip())
+        for ln in ut.get("lines") or []:
+            if ln.strip():
+                skip.add(ln.strip())
+    for row in roll_tables or []:
+        if row.get("raw"):
+            skip.update(x.strip() for x in row["raw"].split("\n") if x.strip())
+        if row.get("label"):
+            skip.add(row["label"].strip())
+        if row.get("text"):
+            skip.add(row["text"].strip())
+    return skip
+
+
+def render_unit_tables_html(unit_tables):
+    if not unit_tables:
+        return ""
+    out = []
+    for ut in unit_tables:
+        head = ut.get("head") or {}
+        out.append('<div class="unit-card">')
+        out.append('<div class="unit-head">')
+        out.append('<span class="unit-name">' + html_mod.escape(ut.get("name") or "") + '</span>')
+        if head.get("type_size"):
+            out.append('<span class="unit-type">' + html_mod.escape(head["type_size"]) + '</span>')
+        out.append("</div>")
+        badges = []
+        if head.get("ac"):
+            badges.append('<span class="unit-badge">防御等级 ' + html_mod.escape(head["ac"]) + '</span>')
+        if head.get("hp"):
+            badges.append('<span class="unit-badge">生命值 ' + html_mod.escape(head["hp"]) + '</span>')
+        if badges:
+            out.append('<div class="unit-badges">' + "".join(badges) + '</div>')
+        for a in ut.get("attrs") or []:
+            out.append('<div class="unit-attrs">' + html_mod.escape(a) + '</div>')
+        if ut.get("stats"):
+            out.append('<div class="unit-stats">')
+            for label, value in ut["stats"]:
+                out.append(
+                    '<div class="unit-stat">'
+                    '<span class="unit-stat-label">' + html_mod.escape(label) + '</span>'
+                    '<span class="unit-stat-value">' + html_mod.escape(value) + '</span>'
+                    "</div>"
+                )
+            out.append("</div>")
+        if ut.get("abilities"):
+            out.append('<div class="unit-abilities">')
+            for ab in ut["abilities"]:
+                out.append('<div class="unit-ability">')
+                out.append(
+                    '<span class="unit-ability-name">'
+                    + html_mod.escape(ab.get("name") or "")
+                    + "</span>"
+                )
+                out.append('<div class="unit-ability-body">')
+                for line in (ab.get("text") or "").split("\n"):
+                    line = line.strip()
+                    if not line:
+                        continue
+                    cls = (
+                        "unit-ability-sub"
+                        if line.startswith(("·", "•"))
+                        else "unit-ability-desc"
+                    )
+                    out.append(
+                        f'<div class="{cls}">' + html_mod.escape(line) + "</div>"
+                    )
+                out.append("</div>")
+                out.append("</div>")
+            out.append("</div>")
+        for n in ut.get("notes") or []:
+            out.append('<div class="unit-note">' + html_mod.escape(n) + '</div>')
+        out.append("</div>")
+    return "".join(out)
+
+
+def render_roll_tables_html(roll_tables):
+    if not roll_tables:
+        return ""
+    rows = ['<div class="roll-row roll-head"><span class="roll-label">点数</span><span class="roll-text">效果</span></div>']
+    for r in roll_tables:
+        rows.append(
+            '<div class="roll-row">'
+            '<span class="roll-label">' + html_mod.escape(r.get("label") or "") + '</span>'
+            '<span class="roll-text">' + html_mod.escape(r.get("text") or "") + '</span>'
+            "</div>"
+        )
+    return '<div class="roll-table">' + "".join(rows) + '</div>'
+
+
+def append_tables_to_search(data_search, skill):
+    """把单位表/随机效果表内容追加进搜索串，保证可检索。"""
+    extra = []
+    for ut in skill.get("unit_tables") or []:
+        extra.extend(ut.get("lines") or [])
+    for row in skill.get("roll_tables") or []:
+        extra.append((str(row.get("label") or "") + " " + str(row.get("text") or "")).strip())
+    if not extra:
+        return data_search
+    return (data_search + " " + " ".join(extra)).strip()
+
+
+def build_detail_html(block: dict, tables: dict | None = None) -> str:
     fields = block["fields"]
     field_runs = block.get("field_runs") or {}
     runs_by_text = {
@@ -570,6 +798,14 @@ def build_detail_html(block: dict) -> str:
 
     desc = filter_description_lines(block["description"])
     desc = [p for p in desc if p.strip() and p.strip() != block["name"]]
+    skip = tables_skip_lines(
+        (tables or {}).get("unit_tables"),
+        (tables or {}).get("roll_tables"),
+    )
+    for blk in detect_unit_blocks(desc):
+        skip.update(ln.strip() for ln in blk["lines"] if ln.strip())
+    for row in collect_roll_rows(desc):
+        skip.update(x.strip() for x in row["raw"].split("\n") if x.strip())
     desc_text = fields.get("描述")
     # 描述句单独单元格：docx 原文（描述：xxx）一字不改
     if desc_text:
@@ -582,9 +818,12 @@ def build_detail_html(block: dict) -> str:
             f'<div class="desc-cell"><span class="desc-label">描述：</span>'
             f'<span class="desc-text">{desc_inner}</span></div>'
         )
-    # 效果正文（描述句之外的段落）
+    # 效果正文（描述句之外的段落）；加工材料行组成独立升级块
+    process_open = False
     for para in desc:
         if para == desc_text:
+            continue
+        if para in skip or para.strip() in skip:
             continue
         runs = runs_by_text.get(para)
         inner = (
@@ -592,7 +831,27 @@ def build_detail_html(block: dict) -> str:
             if runs and runs_have_colored_dots(runs)
             else para
         )
-        out.append(f'<div class="effect-cell">{inner}</div>')
+        if para.startswith("加工材料"):
+            if process_open:
+                out.append("</div>")
+            out.append(
+                f'<div class="process-block"><div class="process-mat">{inner}</div>'
+            )
+            process_open = True
+        elif process_open:
+            if para.startswith("参考价格"):
+                out.append(f'<div class="process-price">{inner}</div>')
+            else:
+                out.append(f'<div class="process-effect">{inner}</div>')
+        else:
+            out.append(f'<div class="effect-cell">{inner}</div>')
+    if process_open:
+        out.append("</div>")
+
+    # 单位属性表 / 随机效果表
+    if tables:
+        out.append(render_unit_tables_html(tables.get("unit_tables")))
+        out.append(render_roll_tables_html(tables.get("roll_tables")))
 
     # 升级行：保留 docx 原文前缀
     for lu in block["level_upgrades"]:
@@ -620,7 +879,7 @@ def build_detail_html(block: dict) -> str:
     if block["flavor"]:
         out.append('<div class="flavor-cell">')
         for line in block["flavor"].split("\n"):
-            if line.strip():
+            if line.strip() and line.strip() not in skip:
                 out.append(f"<div>{line.strip()}</div>")
         out.append("</div>")
 
@@ -942,7 +1201,7 @@ def sync_class(
             fields["标识"] = "".join("●" for _ in block["mark_dots"])
         fields.pop("费用", None)
         desc_body = [p for p in block["description"] if not p.startswith("限制：") and p.strip() != block["name"]]
-        if "描述" not in fields and desc_body:
+        if "描述" not in fields and desc_body and not desc_body[0].startswith("研发材料"):
             fields["描述"] = desc_body[0]
             skill["description"] = desc_body[1:] if len(desc_body) > 1 else []
         else:
@@ -959,8 +1218,13 @@ def sync_class(
 
         tier_lbl = tier_label_from_skill(skill)
         style = skill.get("style", "")
-        detail_html = build_detail_html(block)
+        tables = {
+            "unit_tables": skill.get("unit_tables") or [],
+            "roll_tables": skill.get("roll_tables") or [],
+        }
+        detail_html = build_detail_html(block, tables)
         data_search = build_data_search(block, style, tier_lbl, skill["tags"])
+        data_search = append_tables_to_search(data_search, skill)
         data_attrs = build_skill_data_attrs(skill, block["mark_dots"], class_name)
         html = patch_html(html, sid, detail_html, data_search, data_attrs)
         changed.append(skill["name"])

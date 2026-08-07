@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from apply_class_extract import extract_to_block, extract_to_site_skill  # noqa: E402
 from class_sync_core import (  # noqa: E402
+    append_tables_to_search,
     build_data_search,
     build_detail_html,
     build_skill_data_attrs,
@@ -142,7 +143,10 @@ def render_article(skill: dict, block: dict, deity: str) -> str:
     else:
         label = tier or "神圣领域"
 
-    detail = build_detail_html(block)
+    detail = build_detail_html(block, {
+        "unit_tables": block.get("unit_tables") or [],
+        "roll_tables": block.get("roll_tables") or [],
+    })
     if not (block.get("fields") or {}) and (block.get("description") or []):
         # feat-only body：与表格化样式统一（效果块）
         paras = "".join(f'<div class="effect-cell">{esc(p)}</div>' for p in block["description"] if p.strip())
@@ -153,6 +157,7 @@ def render_article(skill: dict, block: dict, deity: str) -> str:
         block, style or deity, tier_label or label, skill.get("tags") or []
     )
     data_search = f"{deity} {data_search}"
+    data_search = append_tables_to_search(data_search, block)
     safe = sanitize_data_search(data_search)
     data_attrs = build_skill_data_attrs(skill, block.get("mark_dots") or [], "牧师")
     return (

@@ -354,6 +354,19 @@
       margin-left: 16px; background: transparent;
       border-left: 2px dashed rgba(var(--style-rgb), .75);
     }
+    .process-block {
+      margin-top: 6px; padding: 8px 10px; border-radius: 8px;
+      background: rgba(var(--style-rgb), .10);
+      border: 1px solid rgba(var(--style-rgb), .55);
+    }
+    .process-mat { font-weight: 700; font-size: 14px; color: #7a5b1e; }
+    .process-price { margin-top: 2px; font-size: 13px; color: var(--muted); }
+    .process-effect {
+      margin-top: 4px; padding-left: 10px;
+      border-left: 2px dashed rgba(var(--style-rgb), .75);
+      font-size: 13.5px; line-height: 1.8; color: var(--ink);
+      word-break: break-word; overflow-wrap: break-word;
+    }
     .flavor-cell {
       padding: 8px 10px; border-radius: 6px;
       background: rgba(0,0,0,.04); border: 1px dashed var(--line);
@@ -366,6 +379,9 @@
     html.dark .effect-cell { background: rgba(var(--style-rgb), .08); }
     html.dark .upgrade-cell { background: rgba(var(--style-rgb), .06); }
     html.dark .upgrade-label { color: #d4b26a; }
+    html.dark .process-block { background: rgba(var(--style-rgb), .06); }
+    html.dark .process-mat { color: #d4b26a; }
+    html.dark .process-effect { color: #e8e0d0; }
     html.dark .cond-label { color: #e5a76a; }
     html.dark .cond-row { background: rgba(222,130,60,.16); }
     html.dark .flavor-cell { background: rgba(255,255,255,.04); }
@@ -1079,3 +1095,48 @@ html.dark .chaos-table th { background: var(--bg); }
 .beast-detail { font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 4px; }
 html.dark .beast-form { background: var(--bg); }
 @media (max-width: 600px) { .beast-form { padding: 8px 10px; } .beast-stats { font-size: 12.5px; } .beast-detail { font-size: 12px; } }
+
+/* ===== 单位属性表（召唤物/变身形态） ===== */
+.unit-card { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin: 10px 0; background: var(--panel); }
+.unit-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.unit-name { font-weight: 700; color: var(--green); font-size: 15.5px; }
+.unit-type { font-size: 12.5px; color: var(--muted); }
+.unit-badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 8px; }
+.unit-badge { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12.5px; color: var(--ink); background: var(--bg); }
+.unit-attrs { font-size: 13.5px; line-height: 1.8; color: var(--ink); }
+.unit-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; margin: 8px 0; }
+.unit-stat { display: flex; gap: 8px; font-size: 13px; line-height: 1.7; }
+.unit-stat-label { flex: 0 0 auto; color: var(--muted); }
+.unit-stat-value { color: var(--ink); word-break: break-word; }
+.unit-abilities { margin-top: 6px; border-top: 1px dashed var(--line); padding-top: 6px; display: grid; gap: 4px; }
+.unit-ability {
+  margin: 8px 0 0; padding: 6px 10px;
+  border-left: 3px solid rgba(var(--style-rgb), .75);
+  border-radius: 6px; background: rgba(var(--style-rgb), .05);
+  font-size: 13px; line-height: 1.7;
+}
+.unit-ability-name { display: block; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.unit-ability-desc { color: var(--ink); word-break: break-word; }
+.unit-ability-sub {
+  margin: 3px 0 0 14px; padding-left: 8px;
+  border-left: 1px dashed rgba(var(--style-rgb), .55);
+  color: var(--ink); word-break: break-word;
+}
+.unit-note { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+html.dark .unit-card { background: var(--bg); }
+
+/* ===== 随机效果表（点数/区间 → 效果） ===== */
+.roll-table { margin: 10px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.roll-row { display: grid; grid-template-columns: minmax(84px, auto) 1fr; gap: 10px; padding: 7px 12px; font-size: 13px; line-height: 1.7; border-top: 1px solid var(--line); }
+.roll-row:first-child { border-top: 0; }
+.roll-head { background: var(--panel); color: var(--muted); font-weight: 700; }
+.roll-label { font-weight: 700; color: var(--green); white-space: nowrap; }
+.roll-text { color: var(--ink); word-break: break-word; }
+.roll-row:nth-child(even) { background: rgba(128, 128, 128, 0.05); }
+html.dark .roll-head { background: var(--bg); }
+@media (max-width: 600px) {
+  .unit-card { padding: 8px 10px; }
+  .unit-stats { grid-template-columns: 1fr; }
+  .unit-ability-sub { margin-left: 8px; }
+  .roll-row { grid-template-columns: 72px 1fr; gap: 8px; padding: 6px 10px; font-size: 12.5px; }
+}
