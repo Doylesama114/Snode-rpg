@@ -41,10 +41,18 @@ jobs:
         run: |
           git config user.name "snode-bot"
           git config user.email "snode-bot@users.noreply.github.com"
-          if ! git diff --quiet -- advisor/feedback/reports advisor/bug/reports; then
+          # 注意：reports 目录首次生成时是未跟踪文件，git diff 检测不到，必须用 status --porcelain
+          if [ -n "$(git status --porcelain -- advisor/feedback/reports advisor/bug/reports)" ]; then
             git add advisor/feedback/reports advisor/bug/reports
             git commit -m "chore: 更新 AI/Bug 反馈汇总报告"
             git push
           else
             echo "无新反馈，跳过提交"
           fi
+
+      - name: Show reports
+        run: |
+          echo '--- AI 反馈汇总 ---'
+          cat advisor/feedback/reports/feedback-report.md 2>/dev/null || echo '(暂无 AI 反馈报告)'
+          echo '--- Bug 反馈汇总 ---'
+          cat advisor/bug/reports/bug-report.md 2>/dev/null || echo '(暂无 Bug 反馈报告)'
