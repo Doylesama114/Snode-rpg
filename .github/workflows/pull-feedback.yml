@@ -1,0 +1,50 @@
+name: Pull Feedback & Bug Reports
+
+on:
+  schedule:
+    # 每天北京时间 08:00（GitHub cron 为 UTC）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  ALIYUN_OSS_ACCESS_KEY_ID: ${{ secrets.ALIYUN_OSS_READ_ACCESS_KEY_ID }}
+  ALIYUN_OSS_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_OSS_READ_ACCESS_KEY_SECRET }}
+  ALIYUN_OSS_BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+  ALIYUN_OSS_ENDPOINT: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache feedback inbox
+        uses: actions/cache@v4
+        with:
+          path: |
+            advisor/feedback/inbox
+            advisor/bug/inbox
+          key: feedback-inbox-${{ github.run_id }}
+          restore-keys: |
+            feedback-inbox-
+
+      - name: Pull AI feedback
+        run: node scripts/advisor-feedback-pull.mjs
+
+      - name: Pull bug feedback
+        run: node scripts/advisor-bug-pull.mjs
+
+      - name: Commit reports if changed
+        run: |
+          git config user.name "snode-bot"
+          git config user.email "snode-bot@users.noreply.github.com"
+          if ! git diff --quiet -- advisor/feedback/reports advisor/bug/reports; then
+            git add advisor/feedback/reports advisor/bug/reports
+            git commit -m "chore: 更新 AI/Bug 反馈汇总报告"
+            git push
+          else
+            echo "无新反馈，跳过提交"
+          fi

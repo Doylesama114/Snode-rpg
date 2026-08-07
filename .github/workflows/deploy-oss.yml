@@ -3,6 +3,7 @@ name: Deploy Web to Aliyun OSS
 on:
   push:
     branches: [master]
+    paths-ignore: ['advisor/**']
 
 jobs:
   deploy-oss:

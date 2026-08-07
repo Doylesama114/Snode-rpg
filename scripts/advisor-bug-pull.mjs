@@ -80,10 +80,16 @@ async function main() {
   const rows = (m) => [...m.entries()].sort((a, b) => b[1] - a[1])
     .map(([k, v]) => `| ${k} | ${v} |`).join('\n');
 
+  const latestTs = raw.length
+    ? new Date(Math.max(...raw.map((f) => {
+        const v = f.ts || f.receivedAt || 0;
+        return typeof v === 'number' ? v : (new Date(v).getTime() || 0);
+      }))).toISOString()
+    : '暂无数据';
   const md = [
     '# Bug 反馈汇总',
     '',
-    `生成时间：${new Date().toISOString()}`,
+    `数据截止：${latestTs}`,
     '',
     `| 指标 | 数量 |`,
     `|---|---|`,
