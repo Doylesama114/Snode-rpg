@@ -756,6 +756,27 @@ def append_tables_to_search(data_search, skill):
     return (data_search + " " + " ".join(extra)).strip()
 
 
+def colorize_mark_fallback(text, colors):
+    """无 run 颜色时，按 cost 标识色给正文 ● 上色。"""
+    if not text or chr(0x25cf) not in text or not colors:
+        return text
+    flat = []
+    for c in colors:
+        if isinstance(c, dict):
+            flat.extend([str(c.get("color"))] * int(c.get("count") or 1))
+        else:
+            flat.append(str(c))
+    out = []
+    ci = 0
+    for ch in text:
+        if ch == chr(0x25cf):
+            out.append('<span style="font-size:1.5em;color:%s;">%s</span>' % (flat[ci % len(flat)], chr(0x25cf)))
+            ci += 1
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
 def build_detail_html(block: dict, tables: dict | None = None) -> str:
     fields = block["fields"]
     field_runs = block.get("field_runs") or {}
@@ -767,9 +788,14 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
     # 条件行（前置/额外条件）
     for fk in ("前置条件", "额外条件"):
         if fk in fields:
+            runs = field_runs.get(fk)
+            if runs and runs_have_colored_dots(runs):
+                cond_inner = inline_runs_html(runs)
+            else:
+                cond_inner = fields[fk]
             out.append(
                 f'<div class="cond-row"><span class="cond-label">{fk}：</span>'
-                f'<span class="cond-text">{fields[fk]}</span></div>'
+                f'<span class="cond-text">{cond_inner}</span></div>'
             )
 
     # 属性两栏表（施展时间|距离、持续|疲劳；其余整行）
@@ -813,7 +839,7 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
         if runs and runs_have_colored_dots(runs):
             desc_inner = inline_runs_html(runs)
         else:
-            desc_inner = desc_text
+            desc_inner = colorize_mark_fallback(desc_text, block.get("mark_dots") or [])
         out.append(
             f'<div class="desc-cell"><span class="desc-label">描述：</span>'
             f'<span class="desc-text">{desc_inner}</span></div>'
@@ -829,7 +855,7 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
         inner = (
             inline_runs_html(runs)
             if runs and runs_have_colored_dots(runs)
-            else para
+            else colorize_mark_fallback(para, block.get("mark_dots") or [])
         )
         if para.startswith("加工材料"):
             if process_open:

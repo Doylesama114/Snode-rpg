@@ -13,6 +13,7 @@ from class_sync_core import (
     cost_json,
     dots_html,
     extract_paragraphs,
+    inline_runs_html,
     mark_dots_from_runs,
     normalize_runs,
     runs_have_colored_dots,
@@ -237,6 +238,45 @@ def build_feats_page(feats, categories=None):
         costs = f.get("cost") or []
         mark_colors = [str(c.get("color") or "") for c in costs if c.get("color")]
         mark_count = sum(int(c.get("count") or 0) for c in costs)
+        expanded_marks = []
+        for c in costs:
+            expanded_marks.extend([str(c.get("color"))] * int(c.get("count") or 1))
+        # ??/?????? run??? docx ?????
+        colored_lines = {}
+        for e in f.get("description_entries") or []:
+            runs = e.get("runs") or []
+            if not runs_have_colored_dots(runs):
+                continue
+            lines = [[]]
+            for r in runs:
+                text = r.get("text") or ""
+                color = r.get("color")
+                for idx, part in enumerate(text.split("\n")):
+                    if idx > 0:
+                        lines.append([])
+                    if part:
+                        lines[-1].append({"text": part, "color": color})
+            for line in lines:
+                if line:
+                    colored_lines["".join(x["text"] for x in line)] = line
+
+        def colored_html(para, run_lines, fallback_colors):
+            if para in run_lines:
+                runs = run_lines[para]
+                if runs_have_colored_dots(runs):
+                    return inline_runs_html(runs)
+            if "●" in para and fallback_colors:
+                out_parts = []
+                ci = 0
+                for ch in para:
+                    if ch == "●":
+                        out_parts.append('<span style="font-size:1.5em;color:%s;">●</span>' % fallback_colors[ci % len(fallback_colors)])
+                        ci += 1
+                    else:
+                        out_parts.append(html.escape(ch))
+                return "".join(out_parts)
+            return esc_text(para)
+
         ds = " ".join([name, prereq, cat, " ".join(tags), desc.replace("\n", " ").replace("\r", " ")])
         parts = []
         parts.append('<article class="skill" id="%s" data-search="%s" data-tags="%s" data-marks="%s" data-mark-count="%d" data-category="%s">' % (
@@ -247,13 +287,13 @@ def build_feats_page(feats, categories=None):
         parts.append('<div class="detail">')
         parts.append('<div class="cond-row"><span class="cond-label">前置条件：</span><span class="cond-text">%s</span></div>' % esc_text(prereq))
         if intro:
-            parts.append('<div class="desc-cell"><span class="desc-label">描述：</span><span class="desc-text">%s</span></div>' % esc_text(intro))
+            parts.append('<div class="desc-cell"><span class="desc-label">描述：</span><span class="desc-text">%s</span></div>' % colored_html(intro, colored_lines, expanded_marks))
         for e in effects:
-            parts.append('<div class="effect-cell">%s</div>' % esc_text(e))
+            parts.append('<div class="effect-cell">%s</div>' % colored_html(e, colored_lines, expanded_marks))
         for n in notes:
             parts.append('<div class="note-cell">%s</div>' % esc_text(n))
-        if mark_colors and mark_count:
-            parts.append('<div class="mark-row"><span class="mark-label">标识：</span><span class="mark-dot" style="color:%s">%s</span></div>' % (mark_colors[0], "●" * mark_count))
+        if expanded_marks:
+            parts.append('<div class="mark-row"><span class="mark-label">标识：</span>%s</div>' % dots_html(expanded_marks))
         parts.append("</div>")
         parts.append("</article>")
         return "\n".join(parts)
