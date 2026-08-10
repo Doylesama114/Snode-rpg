@@ -79,6 +79,7 @@ h1{font-size:26px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid 
 </div>
 
 <script>
+var ATTR_NAMES=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
 // ========== ZIP Reader ==========
 async function readZIP(buffer) {
   var view = new DataView(buffer);
@@ -306,7 +307,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   function findClassNameNear(ref,scanRange){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));scanRange=scanRange||5;for(var r=row-scanRange;r<=row+scanRange;r++){for(var ci=0;ci<=scanRange;ci++){var v=c(String.fromCharCode(col+ci)+r);if(v){var cls=findClassName(v);if(cls&&CLASS_NAMES.indexOf(cls)>=0)return cls;}}}return"";}
   function colNumToRef(col,row){if(col<26)return String.fromCharCode(65+col)+row;return String.fromCharCode(64+Math.floor(col/26))+String.fromCharCode(65+(col%26))+row;}
   function refToColNum(ref){var m=ref.match(/^([A-Z]+)(\d+)$/);if(!m)return[-1,-1];var col=0;for(var i=0;i<m[1].length;i++)col=col*26+(m[1].charCodeAt(i)-64);return[col-1,parseInt(m[2])];}
-  function scanAttrsHorizontal(){var attrs={};var names=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];for(var k in cells){for(var i=0;i<names.length;i++){if(cells[k]===names[i]){var rc=refToColNum(k);if(rc[0]<0)continue;var v=cn(colNumToRef(rc[0]+1,rc[1]));if(!v)v=cn(colNumToRef(rc[0],rc[1]+1));if(v)attrs[names[i]]=v;}}}return attrs;}
+  function scanAttrsHorizontal(){var attrs={};var names=ATTR_NAMES;for(var k in cells){for(var i=0;i<names.length;i++){if(cells[k]===names[i]){var rc=refToColNum(k);if(rc[0]<0)continue;var v=cn(colNumToRef(rc[0]+1,rc[1]));if(!v)v=cn(colNumToRef(rc[0],rc[1]+1));if(v)attrs[names[i]]=v;}}}return attrs;}
 
   var s={profs:{},player:"",name:"",race:"",gender:"",age:"",height:"",weight:"",
     eye:"",skin:"",hair:"",portrait:"",xp:0,
@@ -381,7 +382,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.flaws=scanLabel(["缺陷"],2);
 
   // Attributes: scan with value range check (1-50)
-  var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var an=ATTR_NAMES;
   var _attrFound=0;
   for(var ai=0;ai<an.length;ai++){var av=scanLabelNum([an[ai]],3);if(av&&av>0&&av<50){s.attrs[an[ai]]=av;_attrFound++;}else s.attrs[an[ai]]=10;}
   if(_attrFound<8){var ha=scanAttrsHorizontal();for(var hk in ha){if(ha[hk]&&ha[hk]!==s.attrs[hk]&&ha[hk]>0&&ha[hk]<50)s.attrs[hk]=ha[hk];}}
@@ -634,7 +635,7 @@ function validateRequired(s){var _missing=[];
   if(!s.race)_missing.push("种族");
   if(!s.classes[0].name)_missing.push("主职业");
   if(!s.classes[0].level||s.classes[0].level<1)_missing.push("主职业等级");
-  var _an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var _an=ATTR_NAMES;
   var _attrMissing=0;for(var _ai=0;_ai<_an.length;_ai++){if(!s.attrs[_an[_ai]]||s.attrs[_an[_ai]]===0)_attrMissing++;}
   if(_attrMissing>=8)_missing.push("属性值(全部未填写)");
   return _missing;
@@ -718,7 +719,7 @@ function showBgPicker(state,callback){
 function showPreview(s,parsed){
   var clsStr=s.classes[0].name+" Lv."+s.classes[0].level;
   if(s.classes[1].name)clsStr+=" / "+s.classes[1].name+" Lv."+s.classes[1].level;
-  var attrStr="";var an=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrStr="";var an=ATTR_NAMES;
   for(var ai=0;ai<an.length;ai++)attrStr+=an[ai]+":"+(s.attrs[an[ai]]||10)+" ";
   document.getElementById("previewContent").innerHTML=    "<div class=preview-row><span class=label>角色名</span><span class=value>"+(s.name||"未填写")+"</span></div>"+    "<div class=preview-row><span class=label>种族</span><span class=value>"+(s.race||"未填写")+"</span></div>"+    "<div class=preview-row><span class=label>职业</span><span class=value>"+clsStr+"</span></div>"+    "<div class=preview-row><span class=label>HP / FP</span><span class=value>"+(s.hp||0)+" / "+(s.fp||0)+"</span></div>"+    "<div class=preview-row><span class=label>属性</span><span class=value>"+attrStr+"</span></div>"+    "<div class=preview-row><span class=label>技能数</span><span class=value>"+s.skills.length+" 个</span></div>"+    "<div class=preview-row><span class=label>天赋数</span><span class=value>"+s.talent_tree.length+" 个</span></div>"+    "<div class=preview-row><span class=label>语言</span><span class=value>"+(s.languages.join("、")||"未填写")+"</span></div>";  var cellList=Object.keys(parsed.cells).sort().slice(0,80);  var dbg="字符串数: "+parsed.strings.length+" | 单元格: "+cellList.length+"\n";  for(var dk=0;dk<cellList.length;dk++){dbg+=cellList[dk]+"="+(parsed.cells[cellList[dk]]||"").substring(0,20)+"\n";}  document.getElementById("debugInfo").textContent=dbg;  document.getElementById("previewPanel").style.display="block";}
 // ========== Confirm Dialog ==========
@@ -862,7 +863,7 @@ document.getElementById("fileInput").addEventListener("change", async function(e
     if (s.classes[1].name) clsStr += " / " + s.classes[1].name + " Lv." + s.classes[1].level;
 
     var attrStr = "";
-    var an = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+    var an = ATTR_NAMES;
     for (var ai = 0; ai < an.length; ai++) attrStr += an[ai] + ":" + (s.attrs[an[ai]]||10) + " ";
 
     document.getElementById("previewContent").innerHTML =

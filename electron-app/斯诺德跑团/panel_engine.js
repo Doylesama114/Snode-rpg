@@ -1,3 +1,4 @@
+var ATTR_NAMES=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
 function canonicalSkillStyle(style) {
   if (!style) return "";
   var s = String(style).trim();
@@ -116,7 +117,7 @@ function applyUniversalTalentBonus(skillName, add, talentEntry) {
     return true;
   }
   if (skillName === "持之以恒") {
-    var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+    var attrNames = ATTR_NAMES;
     if (add) {
       var hi = attrNames[0], lo = attrNames[0];
       var hiV = state.attrs[hi] || 0, loV = state.attrs[lo] || 0;
@@ -2466,6 +2467,10 @@ function gd_mousedown(e) {
   _justDragged = false;
 }
 
+// 顶层注册一次（原 render 内重复注册被浏览器去重，此处仅为代码整洁）
+document.addEventListener("mousemove", gd_mousemove);
+document.addEventListener("mouseup", gd_mouseup);
+
 function gd_mousemove(e) {
   if (!_dragFrom) return;
   if (!_dragGhost) {
@@ -3638,7 +3643,7 @@ function applyPanelFeatEffects(eff, featEntry, add) {
   }
   // All attribute saves +N
   if (eff.all_saves) {
-    var attrs8 = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+    var attrs8 = ATTR_NAMES;
     for (var si = 0; si < attrs8.length; si++) {
       bumpProf(attrs8[si], "豁免", mult * (eff.all_saves || 1));
     }
@@ -3914,7 +3919,7 @@ function addSpecialFeat(name, choices) {
     switch (eff.type) {
       case "attribute": {
         // Show option A (3 pts, 3 different) or B (2 pts, same)
-        var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+        var attrNames = ATTR_NAMES;
         var html = "<div style='padding:16px;background:#2d2722;border-radius:8px;color:#f0e0d0'>";
         html += "<div style='font-size:16px;font-weight:bold;margin-bottom:12px;color:#e8a86a'>强化属性</div>";
         html += "<div style='margin-bottom:10px'>";
@@ -3943,7 +3948,7 @@ function addSpecialFeat(name, choices) {
         // Find lowest attrs
         var attrs = state.attrs || {};
         var minVal = 999; var lowest = [];
-        var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+        var attrNames = ATTR_NAMES;
         for (var ai = 0; ai < attrNames.length; ai++) {
           var v = attrs[attrNames[ai]] || 0;
           if (v < minVal) { minVal = v; lowest = [attrNames[ai]]; }
@@ -3960,7 +3965,7 @@ function addSpecialFeat(name, choices) {
       }
       case "multi": {
         // 质朴: need attr + prof choices
-        var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+        var attrNames = ATTR_NAMES;
         showFeatAttrChoice(name, attrNames, function(attr) {
           window._featPendingProf = {name: name, attr: attr};
           // Show prof choice dialog with all attr categories
@@ -4314,6 +4319,30 @@ function render(){ applyChoiceLLevel12Boosts();
 
 
 
+
+  renderProfile();
+  renderClassRow();
+  renderStory();
+  renderXP();
+  // === 4b. Skill Points ===
+
+  ensureSpState();
+  document.getElementById("sp-bar").innerHTML = renderMarkOverviewHtml();
+
+  renderBattleStats();
+  renderAttrGrid();
+  renderFeats();
+  renderCurrency();
+  renderWeight();
+  renderTalentGrid();
+  renderEquipment();
+  renderTraits();
+  renderLangProfs();
+  renderSkillTables();
+  renderBlueprints();
+}
+
+function renderProfile(){
     // === 1. Portrait + Info ===
 
   var profileEl=document.getElementById("info-grid");profileEl.innerHTML="";
@@ -4348,6 +4377,9 @@ function render(){ applyChoiceLLevel12Boosts();
   profileOuter.appendChild(infoCols);
   profileEl.appendChild(profileOuter);
 
+}
+
+function renderClassRow(){
 // === 2. Class Row ===
 
 
@@ -4420,6 +4452,9 @@ function render(){ applyChoiceLLevel12Boosts();
 
 
 
+}
+
+function renderStory(){
   // === 3. Story Block ===
 
 
@@ -4442,6 +4477,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderXP(){
   // === 4. XP ===
 
 
@@ -4479,16 +4517,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
   xpEl.innerHTML=xpHTML;
 
 
-  // === 4b. Skill Points ===
+}
 
-
-  ensureSpState();
-  document.getElementById("sp-bar").innerHTML = renderMarkOverviewHtml();
-
-
-
-
-
+function renderBattleStats(){
     // === 5. Battle Stats ===
 
 
@@ -4648,9 +4679,12 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
   document.getElementById("stat-row").innerHTML=battleHtml;// === 6. Attribute Grid (2 per row, 2-column profs) ===
+}
+
+function renderAttrGrid(){
 
 
-  var g=document.getElementById("attr-grid");var ak=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];var ah="";
+  var g=document.getElementById("attr-grid");var ak=ATTR_NAMES;var ah="";
   var _profDefs=PROF_DEFS;
   for(var ai=0;ai<ak.length;ai++){var av=state.attrs[ak[ai]]||10;var am=calcMod(av);var pf=(state.profs||{})[ak[ai]]||{};var plist=_profDefs[ak[ai]]||[];var half=Math.ceil(plist.length/2);var ph="";
     for(var pi=0;pi<half;pi++){var pn1=plist[pi];var pn2=plist[pi+half];
@@ -4678,6 +4712,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderFeats(){
   // === 7. Feats ===
 
 
@@ -4720,6 +4757,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderCurrency(){
   // === 8. Currency ===
 
 
@@ -4732,6 +4772,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderWeight(){
   // === 9. Weight (3 tiers) ===
 
 
@@ -4835,6 +4878,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderTalentGrid(){
   // === 10. Talent Tree (6 columns x 5 rows) ===
 
 
@@ -4908,6 +4954,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
   document.getElementById("talent-grid").innerHTML=th;
 
 
+}
+
+function renderEquipment(){
       // === 11. Equipment (with stacking) ===
 
 
@@ -5199,10 +5248,10 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
   }
 
 
-  document.addEventListener("mousemove", gd_mousemove);
-  document.addEventListener("mouseup", gd_mouseup);
-  ;
 
+}
+
+function renderTraits(){
 // === 12. Racial Traits ===
   // Auto-fill from REF_RACES if empty
   if(!state.racial_traits||!state.racial_traits.length){
@@ -5242,6 +5291,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderLangProfs(){
   // === 14. Languages ===
 
 
@@ -5302,6 +5354,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
 
 
+}
+
+function renderSkillTables(){
   // === 16. Skill Tables ===
 
   normalizeAllSkillSubs();
@@ -5352,6 +5407,9 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
   document.getElementById("subSkillTitle").innerHTML="子职业技能列表 ("+calcSkillSlots(1)+"栏)";
 
+}
+
+function renderBlueprints(){
   // === Blueprints (professional slots) ===
   ensureBlueprintState();
   var _bpUsed = state.blueprints.length;
@@ -5379,6 +5437,7 @@ document.getElementById("sub-skill-table-body").innerHTML=subSkillHtml;
     _bpGrid.innerHTML = _bph;
   }
 }
+
 function addBlueprintManual() {
   var name = prompt("输入图纸名称（建议以（图纸）结尾）");
   if (!name) return;
@@ -7055,7 +7114,7 @@ function migrateAllShortboardFeats() {
 
 function applyShortboardFutureBonus(level) {
   var feats = state.special_feats || [];
-  var attrNames = ["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrNames = ATTR_NAMES;
   var cap = Math.min(20, getCurrentAttrCap());
   for (var i = 0; i < feats.length; i++) {
     var fname = typeof feats[i] === "string" ? feats[i] : feats[i].name;
@@ -7084,7 +7143,7 @@ function showProfChoice(clsIdx,level){
 
   // Collect all available profs from PROF_DEFS (canonical list)
   var allProfs=[];
-  var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrNames=ATTR_NAMES;
   for(var ai=0;ai<attrNames.length;ai++){
     var attr=attrNames[ai];
     var list=PROF_DEFS[attr]||[];
@@ -7157,7 +7216,7 @@ function showAttrChoice(clsIdx,level){
   if(!overlay.parentNode){overlay.id="modalOverlay";overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";document.body.appendChild(overlay);}
 
   var curCap=getAttrCapForLevel(level);
-  var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrNames=ATTR_NAMES;
   var html="<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:20px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
   html+='<div style="font-size:16px;color:#e8a86a;font-weight:bold;margin-bottom:10px">选择一项属性 +1 <span style="color:#a08060;font-weight:normal;font-size:13px">（当前上限: '+curCap+'）</span></div>';
   html+='<div style="margin-bottom:12px">';
@@ -7201,7 +7260,7 @@ function chooseAttr(clsIdx,level,attrName){
 }
 
 function applyLowestAttr(clsIdx,level){
-  var attrNames=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrNames=ATTR_NAMES;
   var lowest=attrNames[0];var minVal=state.attrs[lowest]||0;
   for(var ai=1;ai<attrNames.length;ai++){
     var v=state.attrs[attrNames[ai]]||0;

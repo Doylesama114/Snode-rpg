@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7198',
+    date: '2026-08-10',
+    changes: [
+      '角色面板 render() 拆分15个区块函数+装备监听器顶层注册',
+      '属性数组统一ATTR_NAMES（3文件16处）',
+      '新增数据一致性校验并接入发版检查（职业页JSON/SKILL_DATA/effects三源0差异）',
+      '修复三数据源漂移（SKILL_DATA重建2096条、effects重建、法师幻术三阶7技能归位、起始特性tier修正）'
+    ]
+  },
+
+
+  {
     version: '1.0.7197',
     date: '2026-08-10',
     changes: [
