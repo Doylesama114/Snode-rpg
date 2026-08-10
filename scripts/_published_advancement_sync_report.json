@@ -1,10 +1,8 @@
 {
   "extract": {
-    "count": 50,
-    "complete": 49,
-    "incomplete": [
-      "冰霜法师"
-    ]
+    "count": 55,
+    "complete": 55,
+    "incomplete": []
   },
   "upsert": {
     "applied": [
@@ -50,94 +48,37 @@
       "战地医师",
       "塑形者",
       "离群野兽",
+      "冰霜法师",
       "魔剑士",
       "狮心骑士",
       "牧魂人",
       "丰收祭司",
       "骑兵",
       "自然行者",
-      "利爪德鲁伊"
+      "利爪德鲁伊",
+      "狂热十字军",
+      "刺客",
+      "防御者",
+      "青龙尊者",
+      "朱鹤尊者"
     ],
-    "skipped_incomplete": [
-      "冰霜法师"
-    ],
+    "skipped_incomplete": [],
     "preserved_extras": [],
-    "total": 49
+    "total": 55
   },
   "buttons": {
-    "files": [
-      {
-        "file": "吟游诗人·进阶.html",
-        "flipped": 24
-      },
-      {
-        "file": "圣骑士·进阶.html",
-        "flipped": 18
-      },
-      {
-        "file": "奇械师·进阶.html",
-        "flipped": 23
-      },
-      {
-        "file": "德鲁伊·进阶.html",
-        "flipped": 22
-      },
-      {
-        "file": "战士·进阶.html",
-        "flipped": 12
-      },
-      {
-        "file": "术士·进阶.html",
-        "flipped": 18
-      },
-      {
-        "file": "武僧·进阶.html",
-        "flipped": 18
-      },
-      {
-        "file": "法师·进阶.html",
-        "flipped": 28
-      },
-      {
-        "file": "游荡者·进阶.html",
-        "flipped": 20
-      },
-      {
-        "file": "牧师·进阶.html",
-        "flipped": 50
-      },
-      {
-        "file": "猎人·进阶.html",
-        "flipped": 22
-      },
-      {
-        "file": "萨满祭司·进阶.html",
-        "flipped": 25
-      },
-      {
-        "file": "蛮斗士·进阶.html",
-        "flipped": 17
-      },
-      {
-        "file": "通用·进阶.html",
-        "flipped": 5
-      },
-      {
-        "file": "魔契师·进阶.html",
-        "flipped": 105
-      }
-    ],
-    "detail_name_count": 49
+    "files": [],
+    "detail_name_count": 55
   },
   "electron_copied": 17,
   "advisor": {
-    "documented_count": 49,
+    "documented_count": 55,
     "log_tail": [
       "Advancement skills build complete:",
-      "  documented: 49",
+      "  documented: 55",
       "  catalog added: 0, patched: 0, total: 281",
-      "  斗士, 熊战士, 武器大师, 前锋, 旗手, 指挥官, 铳士, 剑圣, 神射手, 狂徒, 醉酒大师, 守护骑士, 圣洁骑士, 耀阳德鲁伊, 蝰蛇, 飞贼, 原始人英雄, 密探, 赋生者, 狂野术士, 预言家, 兽群领主, 怪物, 升腾者, 救赎骑士, 毁灭骑士, 诡术师, 狂战士, 原始术士, 凤凰术士, 巨龙术士, 秀逗魔导士, 棍术师, 惩戒骑士, 奥术师, 卷轴学者, 近卫, 高阶冒险者, 战斗大师, 战地医师, 塑形者, 离群野兽, 魔剑士, 狮心骑士, 牧魂人, 丰收祭司, 骑兵, 自然行者, 利爪德鲁伊"
+      "  斗士, 熊战士, 武器大师, 前锋, 旗手, 指挥官, 铳士, 剑圣, 神射手, 狂徒, 醉酒大师, 守护骑士, 圣洁骑士, 耀阳德鲁伊, 蝰蛇, 飞贼, 原始人英雄, 密探, 赋生者, 狂野术士, 预言家, 兽群领主, 怪物, 升腾者, 救赎骑士, 毁灭骑士, 诡术师, 狂战士, 原始术士, 凤凰术士, 巨龙术士, 秀逗魔导士, 棍术师, 惩戒骑士, 奥术师, 卷轴学者, 近卫, 高阶冒险者, 战斗大师, 战地医师, 塑形者, 离群野兽, 冰霜法师, 魔剑士, 狮心骑士, 牧魂人, 丰收祭司, 骑兵, 自然行者, 利爪德鲁伊, 狂热十字军, 刺客, 防御者, 青龙尊者, 朱鹤尊者"
     ]
   },
-  "details_total": 49
+  "details_total": 55
 }

@@ -35,7 +35,7 @@ ok('documented confidence', skillsDoc.byName['预言家']?.confidence === 'docum
 const catalog = getAdvancementCatalog(loadSnapshotFile('advisor/snapshots/mock-frost-ready.json'));
 ok('catalog >= 65 条', catalog.advancements.length >= 65);
 ok('catalog 含 eligibility', catalog.advancements.some((a) => a.name === '冰霜法师' && a.eligibility?.eligible === true));
-ok('catalog frost documented flag', catalog.advancements.find((a) => a.name === '冰霜法师')?.documented === false);
+ok('catalog frost documented flag', catalog.advancements.find((a) => a.name === '冰霜法师')?.documented === true);
 
 const rAdv = retrieve('预言家进阶有什么技能？');
 ok('retrieve L3 documentedSkills', (rAdv.results.L3?.documentedSkills || []).some((d) => d.name === '预言家'));

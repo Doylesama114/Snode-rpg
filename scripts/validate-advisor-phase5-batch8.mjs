@@ -20,7 +20,7 @@ const detailNames = loadAdvancementDetails().map((d) => d.name);
 const skillsDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/advancement_skills.json'), 'utf8'));
 const advDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'advisor/advancements.json'), 'utf8'));
 
-if (skillsDoc.meta?.documentedCount === 27) pass('27 documented in advancement_skills');
+if (skillsDoc.meta?.documentedCount === 55) pass('55 documented in advancement_skills');
 else fail('documented count', skillsDoc.meta?.documentedCount);
 
 for (const name of detailNames) {
@@ -36,11 +36,11 @@ if (berserk?.confidence === 'documented') pass('catalog 狂战士 documented');
 else fail('catalog 狂战士', berserk?.confidence);
 
 const frost = advDoc.advancements.find((a) => a.name === '冰霜法师');
-if (frost?.confidence === 'metadata_only') pass('冰霜法师 still metadata_only');
+if (frost?.confidence === 'documented') pass('冰霜法师 now documented');
 else fail('frost confidence', frost?.confidence);
 
 const store = loadAdvisorStore();
-if (Object.keys(store.advancementSkills.byName).length === 27) pass('store loads 27 skills');
+if (Object.keys(store.advancementSkills.byName).length === 55) pass('store loads 55 skills');
 else fail('store skill count');
 
 const retBerserk = retrieve('狂战士进阶有什么技能');
@@ -57,7 +57,7 @@ if (ctxProphet.includes('精准预言')) pass('预言家 talents intact');
 else fail('预言家 context');
 
 const catalog = getAdvancementCatalog();
-if (catalog.meta.documentedCount === 27) pass('catalog documentedCount');
+if (catalog.meta.documentedCount === 55) pass('catalog documentedCount');
 else fail('catalog documentedCount', catalog.meta.documentedCount);
 if (catalog.advancements.find((a) => a.name === '守护骑士')?.documented) pass('catalog 守护骑士 flag');
 else fail('catalog 守护骑士');

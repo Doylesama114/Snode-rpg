@@ -22,6 +22,7 @@ EXPECTED_NEW = {
     "秀逗魔导士", "奥术师", "卷轴学者", "近卫", "高阶冒险者", "战斗大师",
     "战地医师", "塑形者", "离群野兽", "魔剑士", "狮心骑士", "牧魂人",
     "丰收祭司", "骑兵", "自然行者", "利爪德鲁伊",
+    "冰霜法师", "狂热十字军", "刺客", "防御者", "青龙尊者", "朱鹤尊者",
 }
 EXPECTED_UPDATED_SPOT = {
     "斗士": ["无畏斗志"],
@@ -74,7 +75,7 @@ def main() -> int:
         EXTRACT_OUT.read_text(encoding="utf-8")
     )
     # refresh extract if stale / missing nested fields
-    need_refresh = extract.get("count") != 50
+    need_refresh = extract.get("count") != 55
     if not need_refresh:
         sample = next(
             (r for r in extract.get("records", []) if r.get("name") == "诡术师"),
@@ -94,17 +95,17 @@ def main() -> int:
     if need_refresh:
         extract = extract_all()
 
-    if extract["count"] != 50:
-        errors.append(f"extract count={extract['count']} want 50")
-    if extract.get("incomplete_names") != ["冰霜法师"]:
-        errors.append(f"incomplete={extract.get('incomplete_names')} want [冰霜法师]")
-    if len(extract.get("complete_names", [])) != 49:
-        errors.append(f"complete={len(extract.get('complete_names', []))} want 49")
+    if extract["count"] != 55:
+        errors.append(f"extract count={extract['count']} want 55")
+    if extract.get("incomplete_names") != []:
+        errors.append(f"incomplete={extract.get('incomplete_names')} want []")
+    if len(extract.get("complete_names", [])) != 55:
+        errors.append(f"complete={len(extract.get('complete_names', []))} want 55")
 
     details = load_details_js()
     names = {e["name"] for e in details}
-    if len(details) < 49:
-        errors.append(f"details count={len(details)} want >=49")
+    if len(details) < 55:
+        errors.append(f"details count={len(details)} want >=55")
     missing_new = sorted(EXPECTED_NEW - names)
     if missing_new:
         errors.append(f"missing NEW in details: {missing_new}")
@@ -224,12 +225,12 @@ def main() -> int:
             doc_count = sum(1 for v in entries.values() if (v.get("confidence") == "documented"))
         else:
             doc_count = skills.get("meta", {}).get("count")
-    if not doc_count or doc_count < 49:
+    if not doc_count or doc_count < 55:
         # try alternate meta keys
         alt = skills.get("meta", {})
         doc_count = alt.get("documentedCount") or alt.get("documented") or 0
-    if doc_count < 49:
-        errors.append(f"advisor documentedCount={doc_count} want >=49")
+    if doc_count < 55:
+        errors.append(f"advisor documentedCount={doc_count} want >=55")
 
     electron_details = ELECTRON_ADV / "advancement_details.js"
     if not electron_details.exists():
