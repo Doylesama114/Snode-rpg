@@ -49,3 +49,7 @@ upload-gitee-exe.sh
 # 反馈原始 JSON（不提交仓库，仅保留汇总报告）
 advisor/feedback/inbox/
 advisor/bug/inbox/
+
+# Python
+__pycache__/
+*.pyc
