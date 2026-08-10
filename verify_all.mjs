@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 import { readdirSync } from 'fs';
 import { join } from 'path';
+import { spawnSync } from 'child_process';
 
 const BASE = 'D:\\Download\\scholar-agent-main';
 const RUN_DIRS = ['斯诺德跑团', '职业页'];
@@ -52,8 +53,17 @@ if (te.length) { console.log('Console errors:'); te.forEach(e => console.log('  
 await tp.close();
 await browser.close();
 
+// 数据一致性校验（职业页 JSON vs SKILL_DATA vs skill_effects）
+console.log('\n=== 数据一致性 ===');
+let dataCheck = spawnSync('python', [join(BASE, 'scripts', 'verify_panel_data_sync.py')], { encoding: 'utf-8' });
+if (dataCheck.stdout) console.log(dataCheck.stdout.trim());
+if (dataCheck.stderr) console.error(dataCheck.stderr.trim());
+let dataOK = dataCheck.status === 0;
+console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
+totalErrors += dataOK ? 0 : 1;
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK ? 0 : 1);

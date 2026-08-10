@@ -188,6 +188,9 @@ def merge_class(
     json_ids = set(by_id)
     old_by_id = {s["id"]: s for s in old_skills if s.get("id")}
     for sid, skill in by_id.items():
+        # 起始特性技能（type=starting）不继承旧 tier——docx 语义无阶位
+        if skill.get("type") == "starting":
+            continue
         if not skill.get("tier") and sid in old_by_id:
             ot = old_by_id[sid].get("tier")
             if ot:
