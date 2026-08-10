@@ -2449,6 +2449,24 @@
       "tier": "二阶"
     },
     {
+      "id": "r-skill-84",
+      "name": "猩红之瓶",
+      "tags": [
+        "药水",
+        "火焰",
+        "回复"
+      ],
+      "fields": {
+        "描述": "效果见「猩红之瓶（配方）」条目。"
+      },
+      "description": [],
+      "level_upgrades": [],
+      "flavor": "",
+      "style": "狂妄",
+      "tier": "二阶",
+      "reference_to": "猩红之瓶（配方）"
+    },
+    {
       "id": "r-skill-44",
       "name": "快速备战",
       "tags": [
@@ -3208,6 +3226,24 @@
       "tier": "二阶"
     },
     {
+      "id": "r-skill-85",
+      "name": "菊花茶",
+      "tags": [
+        "药水",
+        "回复",
+        "净化"
+      ],
+      "fields": {
+        "描述": "效果见「菊花茶（配方）」条目。"
+      },
+      "description": [],
+      "level_upgrades": [],
+      "flavor": "",
+      "style": "魔药",
+      "tier": "二阶",
+      "reference_to": "菊花茶（配方）"
+    },
+    {
       "id": "r-skill-55",
       "name": "速效毒药（配方）",
       "tags": [
@@ -3614,6 +3650,24 @@
       "flavor": "",
       "style": "妙手",
       "tier": "一阶"
+    },
+    {
+      "id": "r-skill-83",
+      "name": "机关巧手",
+      "tags": [
+        "巧手",
+        "偷窃",
+        "图纸"
+      ],
+      "fields": {
+        "描述": "效果见「机关巧手（图纸）」条目。"
+      },
+      "description": [],
+      "level_upgrades": [],
+      "flavor": "",
+      "style": "妙手",
+      "tier": "一阶",
+      "reference_to": "机关巧手（图纸）"
     },
     {
       "id": "r-skill-63",
@@ -4359,7 +4413,7 @@
       ],
       "flavor": "",
       "style": "狂妄",
-      "tier": "四阶"
+      "tier": "二阶"
     },
     {
       "id": "r-skill-75",
@@ -4769,7 +4823,7 @@
       ],
       "flavor": "",
       "style": "魔药",
-      "tier": "三阶"
+      "tier": "二阶"
     },
     {
       "id": "r-skill-80",

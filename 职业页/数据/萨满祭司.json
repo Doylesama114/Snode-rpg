@@ -4773,7 +4773,7 @@
       ],
       "level_upgrades": [],
       "flavor": "",
-      "style": "大地",
+      "style": "水源",
       "tier": "五阶"
     },
     {
@@ -5940,8 +5940,8 @@
         }
       ],
       "flavor": "",
-      "style": "巫术",
-      "tier": "二阶"
+      "style": "水源",
+      "tier": "五阶"
     },
     {
       "id": "sa-skill-83",
@@ -6466,8 +6466,8 @@
         }
       ],
       "flavor": "",
-      "style": "巫术",
-      "tier": "三阶"
+      "style": "大地",
+      "tier": "五阶"
     },
     {
       "id": "sa-skill-92",
@@ -6512,8 +6512,8 @@
       ],
       "level_upgrades": [],
       "flavor": "",
-      "style": "巫术",
-      "tier": "三阶"
+      "style": "大地",
+      "tier": "五阶"
     },
     {
       "id": "sa-skill-93",
@@ -6613,8 +6613,8 @@
         }
       ],
       "flavor": "",
-      "style": "巫术",
-      "tier": "三阶"
+      "style": "大地",
+      "tier": "五阶"
     },
     {
       "id": "sa-skill-94",
@@ -6649,8 +6649,8 @@
       ],
       "level_upgrades": [],
       "flavor": "",
-      "style": "巫术",
-      "tier": "三阶"
+      "style": "水源",
+      "tier": "五阶"
     },
     {
       "id": "sa-skill-102",
@@ -6745,7 +6745,7 @@
         }
       ],
       "flavor": "",
-      "style": "巫术",
+      "style": "大地",
       "tier": "五阶"
     }
   ]
