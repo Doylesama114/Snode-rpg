@@ -16,8 +16,8 @@ chips = re.findall(r'class="deity-chip[^"]*"', html)
 if len(chips) != 13:
     errors.append(f"chip count {len(chips)} != 13")
 locked = [p for p in data["pantheon"] if p["locked"]]
-if len(locked) != 4:
-    errors.append(f"locked {len(locked)} != 5")
+if len(locked) != 3:
+    errors.append(f"locked {len(locked)} != 3")
 if "战争与谋略之神" not in data["domains"]:
     errors.append("missing domain 战争与谋略之神")
 if 'class="deity-chip locked" data-deity="战争与谋略之神"' in html:
@@ -41,7 +41,7 @@ for sid in ("pr-skill-1", "pr-skill-5", "pr-style-戒律"):
         errors.append(f"missing common {sid}")
 
 # sample domain skills
-for needle in ("树莓术", "好运飞弹", "爱箭恋矢", "奥术箭", "快速拨弦", "无形之手", "冲锋", "战争潮流"):
+for needle in ("树莓术", "好运飞弹", "爱箭恋矢", "奥术箭", "快速拨弦", "无形之手", "冲锋", "战争潮流", "审判", "圣光出鞘", "神谕真言·耀", "保护之手"):
     if needle not in html:
         errors.append(f"missing skill text {needle}")
 
@@ -78,6 +78,8 @@ for pid in (
     "pr-panel-love",
     "pr-panel-luck",
     "pr-panel-secret",
+    "pr-panel-hunger",
+    "pr-panel-glory",
 ):
     if f'id="{pid}"' not in inside:
         errors.append(f"panel not inside .content: {pid}")

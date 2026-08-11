@@ -34,6 +34,7 @@ EXTRA_DEITIES: list[dict] = [
 
 # Canonical deity name -> source docx under 牧师子分支/
 DOMAIN_DOCX: dict[str, str] = {
+    "公正与荣耀之神": "神圣领域-公正与荣耀之神.docx",
     "生命与丰收之神": "神圣领域-生命与丰收之神.docx",
     "战争与谋略之神": "神圣领域-战争与谋略之神.docx",
     "知识与智慧之神": "神圣领域-知识与智慧之神.docx",
