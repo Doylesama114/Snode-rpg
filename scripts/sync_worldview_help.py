@@ -201,31 +201,60 @@ def slugify(title: str) -> str:
     return t[:48] or "sec"
 
 
-def extract_paragraphs(docx: Path) -> list[str]:
+def extract_paragraphs(docx: Path) -> list[dict]:
+    """Structured paragraphs: {text, runs[(text,bold)], all_bold, image(media rel path or None)}"""
     with zipfile.ZipFile(docx) as zf:
         xml = zf.read("word/document.xml").decode("utf-8")
-    paras: list[str] = []
+        rels = zf.read("word/_rels/document.xml.rels").decode("utf-8")
+    rid_map: dict[str, str] = {}
+    for m in re.finditer(r'Id="(rId\d+)"[^>]*Target="([^"]+)"', rels):
+        rid_map[m.group(1)] = m.group(2)
+
+    paras: list[dict] = []
     for pxml in re.findall(r"<w:p[\s\S]*?</w:p>", xml):
-        parts = re.findall(r"<w:t[^>]*>(.*?)</w:t>", pxml)
-        if not parts:
+        image = None
+        m = re.search(r'r:embed="(rId\d+)"', pxml)
+        if m:
+            tgt = rid_map.get(m.group(1), "")
+            if "media/" in tgt:
+                image = tgt
+        runs: list[tuple[str, bool]] = []
+        for r in re.finditer(r"<w:r[ >][\s\S]*?</w:r>", pxml):
+            rt = "".join(re.findall(r"<w:t[^>]*>(.*?)</w:t>", r.group(0)))
+            if not rt:
+                continue
+            bold = "<w:b/>" in r.group(0) or "<w:b " in r.group(0)
+            runs.append((rt.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">"), bold))
+        text = "".join(t for t, _b in runs).strip()
+        if not text and not image:
             continue
-        text = "".join(parts).strip()
-        if text:
-            paras.append(text)
+        all_bold = bool(runs) and all(b for _t, b in runs)
+        paras.append(
+            {
+                "text": text,
+                "runs": runs,
+                "all_bold": all_bold,
+                "image": image,
+            }
+        )
     return paras
 
 
-def extract_map(docx: Path, dest: Path) -> bool:
-    dest.parent.mkdir(parents=True, exist_ok=True)
+def extract_all_images(docx: Path, dest: Path) -> list[str]:
+    """Extract every word/media/* image into dest; return extracted filenames."""
+    dest.mkdir(parents=True, exist_ok=True)
+    out: list[str] = []
     with zipfile.ZipFile(docx) as zf:
-        media = [n for n in zf.namelist() if n.startswith("word/media/") and not n.endswith("/")]
-        if not media:
-            return False
-        # Prefer largest image (map)
-        media.sort(key=lambda n: zf.getinfo(n).file_size, reverse=True)
-        data = zf.read(media[0])
-        dest.write_bytes(data)
-        return True
+        media = sorted(
+            (n for n in zf.namelist() if n.startswith("word/media/") and not n.endswith("/")),
+            key=lambda n: zf.getinfo(n).file_size,
+            reverse=True,
+        )
+        for name in media:
+            fname = name.rsplit("/", 1)[-1]
+            (dest / fname).write_bytes(zf.read(name))
+            out.append(fname)
+    return out
 
 
 def is_toc_line(text: str) -> bool:
@@ -254,13 +283,14 @@ def split_glued_heading(text: str) -> list[str]:
 
 _CITY_NAMES: set[str] = set()
 
-def prepare_city_names(paras: list[str]) -> None:
-    """\u57ce\u5e02\u540d\uff1a\u540e\u4e00\u884c\u4ee5\u300c\u4eba\u53e3\uff1a\u300d\u5f00\u5934\u7684\u77ed\u884c\u89c6\u4e3a\u57ce\u5e02/\u9547\u6807\u9898\u3002"""
+def prepare_city_names(paras: list[dict]) -> None:
+    """城市名：后一行以「人口：」开头的短行视为城市/镇标题。"""
     global _CITY_NAMES
     _CITY_NAMES = set()
-    for idx in range(len(paras) - 1):
-        cur = paras[idx].strip()
-        nxt = paras[idx + 1].strip()
+    texts = [p["text"] for p in paras]
+    for idx in range(len(texts) - 1):
+        cur = texts[idx].strip()
+        nxt = texts[idx + 1].strip()
         if cur and nxt.startswith("\u4eba\u53e3\uff1a") and len(cur) <= 14 and not any(ch in cur for ch in "\uff1a\uff0c\u3002\u3001\uff1b"):
             _CITY_NAMES.add(cur)
 
@@ -335,7 +365,7 @@ def classify(text: str) -> str:
     return "para"
 
 
-def build_world_pane(paras: list[str], map_rel: str) -> tuple[str, list[tuple[str, str]]]:
+def build_world_pane(paras: list[dict], media_dir_rel: str) -> tuple[str, list[tuple[str, str]]]:
     """Return (pane_inner_html without outer markers, toc list of (id, title))."""
     toc: list[tuple[str, str]] = []
     body: list[str] = []
@@ -357,8 +387,24 @@ def build_world_pane(paras: list[str], map_rel: str) -> tuple[str, list[tuple[st
         used_ids.add(sid)
         return sid
 
+    def render_runs(runs: list[tuple[str, bool]]) -> str:
+        """Escape text and wrap bold runs in <b>."""
+        out: list[str] = []
+        for t, b in runs:
+            e = esc(t)
+            out.append(f"<b>{e}</b>" if b else e)
+        return "".join(out)
+
     for raw in paras:
-        for text in split_glued_heading(raw):
+        # image-only paragraph: insert at current position (keeps doc order)
+        if raw.get("image") and not raw["text"]:
+            fname = raw["image"].rsplit("/", 1)[-1]
+            body.append(
+                f'<div class="p world-img"><img src="{media_dir_rel}/{esc(fname)}" '
+                f'alt="" loading="lazy" /></div>\n'
+            )
+            continue
+        for text in split_glued_heading(raw["text"]):
             kind = classify(text)
             if kind == "skip":
                 continue
@@ -369,10 +415,6 @@ def build_world_pane(paras: list[str], map_rel: str) -> tuple[str, list[tuple[st
                 toc.append((sid, title))
                 body.append(f'<div class="section" id="{sid}"><h2>{esc(title)}</h2>\n')
                 open_section = True
-                if title == "斯诺德地图志":
-                    body.append(
-                        f'<div class="p"><img src="{esc(map_rel)}" alt="斯诺德地图" loading="lazy" /></div>\n'
-                    )
                 continue
             if not open_section:
                 # orphan content before first top — wrap under intro
@@ -387,9 +429,21 @@ def build_world_pane(paras: list[str], map_rel: str) -> tuple[str, list[tuple[st
             elif kind == "entry":
                 body.append(f"<h4>{esc(normalize_title(text))}</h4>\n")
             elif kind == "bullet":
-                body.append(f'<div class="p">{esc(text)}</div>\n')
+                body.append(f'<div class="p">{render_runs(raw["runs"])}</div>\n')
             else:
-                body.append(f'<div class="p">{esc(text)}</div>\n')
+                # 整段粗体短标题（宗主名等 docx 粗体标题行未被 entry 识别的）→ h4
+                nt = normalize_title(text)
+                is_bold_short_title = (
+                    raw["all_bold"]
+                    and len(nt) <= 20
+                    and not any(ch in nt for ch in "：，。、；？！·—")
+                )
+                if is_bold_short_title:
+                    body.append(f"<h4>{esc(nt)}</h4>\n")
+                elif raw["all_bold"]:
+                    body.append(f'<div class="p"><b>{render_runs(raw["runs"])}</b></div>\n')
+                else:
+                    body.append(f'<div class="p">{render_runs(raw["runs"])}</div>\n')
 
     close_section()
 
@@ -668,13 +722,14 @@ def build_lore_chunks(paras: list[str]) -> list[dict]:
         body = []
 
     for raw in paras:
-        for text in split_glued_heading(raw):
-            k = classify(text)
+        text = raw["text"]
+        for piece in split_glued_heading(text):
+            k = classify(piece)
             if k == "skip":
                 continue
             if k == "top":
                 flush()
-                chapter = normalize_title(text)
+                chapter = normalize_title(piece)
                 title = chapter
                 level = 2
                 kind = "top"
@@ -682,14 +737,14 @@ def build_lore_chunks(paras: list[str]) -> list[dict]:
                 continue
             if k in ("sub", "era"):
                 flush()
-                title = normalize_title(text) if k == "sub" else text.strip()
+                title = normalize_title(piece) if k == "sub" else piece.strip()
                 level = 3
                 kind = k
                 body = [title]
                 continue
             if k == "entry":
                 flush()
-                title = normalize_title(text)
+                title = normalize_title(piece)
                 level = 4
                 kind = "entry"
                 body = [title]
@@ -706,7 +761,7 @@ def build_lore_chunks(paras: list[str]) -> list[dict]:
     return chunks
 
 
-def write_advisor_lore(paras: list[str] | None = None) -> Path:
+def write_advisor_lore(paras: list[dict] | None = None) -> Path:
     if paras is None:
         if not DOCX.exists():
             raise SystemExit(f"missing {DOCX}")
@@ -761,22 +816,23 @@ def verify(html: str, toc: list[tuple[str, str]]) -> None:
         errors.append("missing 斯诺德地图志")
     if "雷恩王国" not in html:
         errors.append("missing 雷恩王国")
-    map_path = MEDIA_DIR / MAP_NAME
-    if not map_path.exists() or map_path.stat().st_size < 1000:
-        errors.append("world-map.png missing/too small")
-    if f'src="help-media/{MAP_NAME}"' not in html:
-        errors.append("map img src missing")
+    media_names = [p.name for p in MEDIA_DIR.iterdir()] if MEDIA_DIR.exists() else []
+    if len(media_names) < 20:
+        errors.append(f"help-media images too few: {len(media_names)}")
+    world_imgs = re.findall(r'<img src="help-media/([^"]+)"', html)
+    if len(world_imgs) < 20:
+        errors.append(f"world pane images too few: {len(world_imgs)}")
     if len(toc) < 4:
         errors.append(f"toc too short: {toc}")
     e_help = ELECTRON_DIR / "help.html"
-    e_map = ELECTRON_DIR / "help-media" / MAP_NAME
+    e_media = ELECTRON_DIR / "help-media"
     e_tts = ELECTRON_DIR / "help-tts.js"
     if not e_help.exists():
         errors.append("electron help.html missing")
     elif e_help.stat().st_size != HELP.stat().st_size:
         errors.append("electron help.html size mismatch")
-    if not e_map.exists():
-        errors.append("electron map missing")
+    if not e_media.exists() or len(list(e_media.iterdir())) < 20:
+        errors.append("electron help-media missing/too few")
     if not e_tts.exists():
         errors.append("electron help-tts.js missing")
     if errors:
@@ -795,13 +851,15 @@ def main() -> None:
     prepare_city_names(paras)
     print(f"extracted {len(paras)} paragraphs")
 
-    map_path = MEDIA_DIR / MAP_NAME
-    if extract_map(DOCX, map_path):
-        print(f"wrote {map_path.relative_to(ROOT)} ({map_path.stat().st_size} bytes)")
-    else:
-        print("WARN: no media in docx")
+    images = extract_all_images(DOCX, MEDIA_DIR)
+    print(f"extracted {len(images)} images -> help-media/")
+    # 移除不再使用的旧 world-map.png（由 docx 内嵌地图图替代）
+    old_map = MEDIA_DIR / MAP_NAME
+    if old_map.exists() and old_map.name not in images:
+        old_map.unlink()
+        print("removed legacy world-map.png")
 
-    pane, toc = build_world_pane(paras, f"help-media/{MAP_NAME}")
+    pane, toc = build_world_pane(paras, "help-media")
     html = HELP.read_text(encoding="utf-8")
     html = ensure_pager_css(html)
     html = ensure_tts_css(html)
