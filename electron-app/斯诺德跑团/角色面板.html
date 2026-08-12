@@ -16,95 +16,86 @@
 
 <div class="container">
 
+  <!-- ===== 页头 ===== -->
+  <header class="sheet-head">
+    <div class="char-id">
+      <h1 id="charName">角色</h1>
+      <div class="char-chips" id="charChips"></div>
+    </div>
+    <div class="head-actions">
+      <button class="btn-battle" id="headerBattleToggle" onclick="SB_toggleBattle()">⚔ 进入战斗</button>
+      <button class="btn-primary" onclick="toggleLearnMode()">📚 学习技能</button>
+      <button class="btn-ghost" onclick="cheatAdd()">🧪 测试加点</button>
+      <button class="btn-ghost" onclick="exportCurrentXlsx()">📄 导出档案</button>
+      <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
+    </div>
+  </header>
 
-<div class="info-grid hide-in-battle" id="info-grid"></div>
+  <!-- ===== 行1：基础信息（含职业） | 战斗数据 ===== -->
+  <section class="grid-3">
+    <div class="card hide-in-battle">
+      <h2>基础信息</h2>
+      <div class="info-grid" id="info-grid"></div>
+      <div class="class-row" id="class-row"></div>
+    </div>
+    <div class="card battle-section">
+      <h2>战斗数据</h2>
+      <div class="stat-row" id="stat-row"></div>
+    </div>
+  </section>
 
+  <!-- ===== 行2：经验值 | 技能点 ===== -->
+  <section class="xp-sp-grid">
+    <div class="card hide-in-battle"><h2>经验值</h2><div class="xp-panel" id="xp-bar"></div></div>
+    <div class="card sp-section hide-in-battle"><h2>技能点</h2><div class="sp-panel" id="sp-bar"></div></div>
+  </section>
 
-<div class="section hide-in-battle"><div class="section-title"> 职业信息</div><div class="class-row" id="class-row"></div></div>
+  <!-- ===== 行3：个性背景 + 特性 ===== -->
+  <section class="grid-2-1">
+    <div class="card hide-in-battle">
+      <h2 id="story-title">个性背景</h2>
+      <div class="story-block" id="story-block"></div>
+    </div>
+    <div class="side-col">
+      <div class="card hide-in-battle"><h2>种族特性</h2><div class="trait-section" id="racial-traits"></div></div>
+      <div class="card hide-in-battle"><h2>职业特性</h2><div class="trait-section" id="class-features"></div></div>
+    </div>
+  </section>
 
+  <!-- ===== 行4：属性 | 专长/货币/语言·负重 ===== -->
+  <section class="attr-side">
+    <div class="card hide-in-battle"><h2>属性</h2><div class="attr-grid" id="attr-grid"></div></div>
+    <div class="side-col">
+      <div class="card hide-in-battle"><h2>特殊专长</h2><div class="feat-list" id="feat-list"></div></div>
+      <div class="card hide-in-battle"><h2>货币</h2><div class="currency-row" id="currency-row"></div></div>
+      <div class="card hide-in-battle"><h2>语言 · 熟练 · 负重</h2>
+        <div id="lang-list" style="text-align:center"></div>
+        <div id="prof-list" style="text-align:center"></div>
+        <div id="weapon-profs" style="text-align:center"></div>
+        <div class="weight-block" id="weight-block"></div>
+      </div>
+    </div>
+  </section>
 
-<div class="section hide-in-battle"><div class="section-title" id="story-title"> 个性背景</div><div class="section-body"><div class="story-block" id="story-block"></div></div></div>
+  <!-- ===== 行5：装备 ===== -->
+  <section class="card equip-section"><h2>装备栏</h2><div class="equip-grid" id="equip-grid"></div></section>
 
+  <!-- ===== 行6：主/子技能 | 天赋树 ===== -->
+  <section class="skills-grid">
+    <div class="card hide-in-battle">
+      <h2 id="mainSkillTitle">主职业技能列表</h2>
+      <table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="skill-table-body"></tbody></table>
+      <div style="margin-top:16px"><div style="font-size:15px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
+      <table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div>
+    </div>
+    <div class="card hide-in-battle"><h2>天赋树</h2><div class="talent-grid" id="talent-grid"></div></div>
+  </section>
 
-<div class="split-row split-2" style="display:flex;gap:18px;align-items:stretch">
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 经验值</div><div class="section-body"><div class="xp-panel" id="xp-bar"></div></div></div>
-
-
-<div class="section sp-section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 技能点</div><div class="section-body"><div class="sp-panel" id="sp-bar"></div></div></div>
-
-
-</div>
-
-
-<div class="section battle-section"><div class="section-title"> 战斗数据</div><div class="section-body"><div class="stat-row" id="stat-row"></div></div></div>
-
-
-<div class="section hide-in-battle"><div class="section-title"> 属性</div><div class="section-body"><div class="attr-grid" id="attr-grid"></div></div></div>
-
-
-<div class="split-row split-3" style="display:flex;gap:18px;align-items:stretch">
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 特殊专长</div><div class="section-body"><div class="feat-list" id="feat-list"></div></div></div>
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 货币</div><div class="section-body"><div class="currency-row" id="currency-row"></div></div></div>
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 负重</div><div class="section-body"><div class="weight-block" id="weight-block"></div></div></div>
-
-
-</div><div class="section hide-in-battle"><div class="section-title"> 天赋树</div><div class="section-body"><div class="talent-grid" id="talent-grid"></div></div></div>
-
-
-<div class="section equip-section"><div class="section-title"> 装备栏</div><div class="section-body"><div class="equip-grid" id="equip-grid"></div></div></div>
-
-
-<div class="split-row split-3" style="display:flex;gap:18px;align-items:stretch">
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 种族特性</div><div class="section-body"><div class="trait-section" id="racial-traits"></div></div></div>
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 职业特性</div><div class="section-body"><div class="trait-section" id="class-features"></div></div></div>
-
-
-<div style="display:flex;flex-direction:column;gap:12px;flex:1">
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 语言</div><div class="section-body"><div id="lang-list" style="text-align:center"></div></div></div>
-
-
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 专业熟练项</div><div class="section-body"><div id="prof-list" style="text-align:center"></div></div></div>
-<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 武器熟练</div><div class="section-body"><div id="weapon-profs" style="text-align:center"></div></div></div>
-
-
-</div>
-
-
-</div>
-
-
-<div class="section hide-in-battle"><div class="section-title" id="mainSkillTitle"> 主职业技能列表</div>
-
-
-<div class="section-body"><table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="skill-table-body"></tbody></table>
-
-
-<div style="margin-top:16px"><div style="font-size:17px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
-
-
-<table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div></div></div>
-
-
-<div class="section hide-in-battle"><div class="section-title" id="blueprintTitle">图纸（专业槽位）</div>
-<div class="section-body">
-<p id="blueprintHint" style="font-size:12px;color:var(--muted,#69706b);margin:0 0 10px"></p>
-<div class="blueprint-grid" id="blueprint-grid"></div>
-</div></div>
-
+  <!-- ===== 行7：图纸 ===== -->
+  <section class="card hide-in-battle"><h2 id="blueprintTitle">图纸（专业槽位）</h2>
+    <p id="blueprintHint" style="font-size:12px;color:var(--muted,#69706b);margin:0 0 10px"></p>
+    <div class="blueprint-grid" id="blueprint-grid"></div>
+  </section>
 
 </div>
 

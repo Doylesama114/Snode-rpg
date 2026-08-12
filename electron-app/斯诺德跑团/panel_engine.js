@@ -8531,6 +8531,8 @@ function SB_toggleBattle() {
     SB_battle.active = true;
     document.body.classList.add('battle');
     SB_log('⚔ 进入战斗（生命 ' + SB_battle.cur.hp + ' / 疲劳 ' + SB_battle.cur.fp + ' / 防御等级 ' + st.ac + '）', 'battle');
+    var hb = document.getElementById('headerBattleToggle');
+    if (hb) hb.textContent = '⚔ 退出战斗';
     SB_moveIntoBattleView();
     renderBattleStats();
     renderSkillTables();
@@ -8560,6 +8562,8 @@ function SB_toggleBattle() {
     window.scrollTo(0, 0);
     document.body.classList.add('battle-exit');
     document.body.classList.remove('battle');
+    var hb2 = document.getElementById('headerBattleToggle');
+    if (hb2) hb2.textContent = '⚔ 进入战斗';
     SB_log('退出战斗：生命/疲劳/防御等级已恢复初始值（' + st.hpMax + '/' + st.fpMax + '/' + st.ac + '）', 'battle');
     renderBattleStats();
     renderSkillTables();
@@ -8814,6 +8818,8 @@ renderSkillTables = function() {
       var nameEl = tr.querySelector('.skill-name');
       if (!nameEl) continue;
       var name = nameEl.textContent.trim();
+      tr.setAttribute('onclick', 'SB_rowSkill(\'' + name.replace(/'/g, '') + '\')');
+      tr.style.cursor = 'pointer';
       var td = document.createElement('td');
       td.className = 'skill-use-cell';
       if (SB_battle.active) {
@@ -8830,6 +8836,7 @@ var SB_BV_PLACEHOLDERS = [];
 function SB_moveIntoBattleView() {
   SB_BV_PLACEHOLDERS = [];
   var moves = [
+    { sel: '.sheet-head', host: 'bvHead' },
     { sel: '.battle-section', host: 'bvVitals' },
     { sel: '.equip-section', host: 'bvEquipHost' },
     { sel: '#battleDrawer', host: 'bvOverview' },
@@ -8855,6 +8862,9 @@ function SB_moveBackFromBattleView() {
     if (p.ph.parentNode) p.ph.remove();
   }
   SB_BV_PLACEHOLDERS = [];
+}
+function SB_rowSkill(name) {
+  SB_showSkillDetail(name);
 }
 function SB_renderBattleDrawer() {
   var bdAttrs = document.getElementById('bdAttrs');
@@ -8939,7 +8949,19 @@ function SB_renderBattleDrawer() {
   }
 }
 function SB_showSkillTip(name) {
-  SB_toast('技能「' + name + '」——战斗中点击 ⚔ 使用 释放', '');
+  SB_showSkillDetail(name);
+}
+function SB_showSkillDetail(name) {
+  var sk = null;
+  for (var i = 0; i < (state.skills || []).length; i++) {
+    var s = state.skills[i];
+    if ((s.n || s.name) === name) { sk = s; break; }
+  }
+  if (!sk || !sk.src || !SKILL_DATA[sk.src]) {
+    SB_toast('技能「' + name + '」暂无详情数据', 'warn');
+    return;
+  }
+  showSkillDetail(sk.src, name);
 }
 /* render 包装：战斗中重绘后刷新速览 */
 var SB_origRender = render;
@@ -9201,3 +9223,31 @@ renderStory = function() {
     title.appendChild(btn);
   }
 };
+
+/* ============ 页头动态渲染 ============ */
+function SB_renderCharHeader() {
+  var nameEl = document.getElementById('charName');
+  if (nameEl) nameEl.textContent = state.name || '角色';
+  var chips = document.getElementById('charChips');
+  if (chips) {
+    var html = '<span>' + (state.race || '—') + '</span><span>' + (state.gender || '—') + '</span><span>' + (state.age || '—') + '岁</span>';
+    var m0 = state.classes && state.classes[0];
+    var s0 = state.classes && state.classes[1];
+    if (m0 && m0.name) html += '<span>' + m0.name + ' ' + m0.level + '级</span>';
+    if (s0 && s0.name) html += '<span>' + s0.name + ' ' + s0.level + '级</span>';
+    html += '<span>经验 ' + (state.xp || 0) + '</span>';
+    chips.innerHTML = html;
+  }
+}
+/* render 包装中同步页头 */
+var SB_origRender2 = render;
+render = function() {
+  SB_origRender2();
+  SB_renderCharHeader();
+  if (SB_battle.active) {
+    SB_renderBattleDrawer();
+    SB_renderOrbs();
+    renderSkillTables();
+  }
+};
+SB_renderCharHeader();

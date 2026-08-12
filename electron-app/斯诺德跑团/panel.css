@@ -697,3 +697,47 @@ body.battle .hide-in-battle{display:none !important}
   body.battle .b-top .orb-wrap{min-width:112px}
   body.battle .b-top .mini-balls{gap:8px}
 }
+
+/* ============ 紧凑网格布局（对齐展示版） ============ */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;min-width:0;margin-bottom:0}
+.card h2{font-size:16px;font-weight:bold;margin-bottom:10px;padding-left:8px;border-left:4px solid var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--ink)}
+.card h2 .sb-edit-btn{font-size:12px}
+.container{display:flex;flex-direction:column;gap:12px}
+.grid-3{display:grid;grid-template-columns:1.15fr 1.5fr;gap:12px}
+.xp-sp-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+.grid-2-1{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}
+.attr-side{display:grid;grid-template-columns:1.85fr 1fr;gap:12px}
+.side-col{display:flex;flex-direction:column;gap:12px}
+.skills-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:12px}
+/* 页头 */
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 20px;flex-wrap:wrap}
+.char-id{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.char-id h1{font-size:24px;letter-spacing:1px;color:var(--ink);margin:0}
+.char-chips{display:flex;gap:6px;flex-wrap:wrap}
+.char-chips span{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:2px 9px;font-size:12.5px;color:var(--muted)}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.head-actions button{border:none;border-radius:6px;padding:7px 14px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+.head-actions .btn-primary{background:var(--accent);color:#fff}
+.head-actions .btn-primary:hover{background:var(--accent-hover)}
+.head-actions .btn-ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.head-actions .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.head-actions .btn-battle{background:var(--accent);color:#fff}
+.head-actions .btn-battle:hover{background:var(--accent-hover)}
+.head-actions .btn-battle.in-battle{background:#6a1a7e}
+/* 战斗子页内页头 */
+.battle-view .sheet-head{margin-bottom:0}
+/* 移动端单列 */
+@media (max-width:980px){
+  .grid-3,.grid-2-1,.attr-side,.skills-grid,.xp-sp-grid{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .sheet-head{padding:10px 12px}
+  .char-id h1{font-size:20px}
+  .card{padding:12px 12px}
+}
+
+/* 紧凑布局：移动端技能表横向滚动 */
+@media (max-width:600px){
+  .skills-grid .card{overflow-x:auto}
+  .skills-grid .skill-table{min-width:640px}
+}
