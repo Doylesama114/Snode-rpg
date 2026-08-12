@@ -110,7 +110,7 @@
 /* ===== 响应式布局 ===== */
 
 
-<style>
+
 :root{
   --bg:#f6f4ef; --panel:#fffdf8; --ink:#1f2522; --muted:#69706b;
   --line:#ddd6c8; --accent:#a46d1f; --accent-hover:#c0852f;
@@ -2622,7 +2622,8 @@ function SB_reinit() {
   var tOrder = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶', '七阶'];
   for (var oi = 0; oi < tOrder.length; oi++) {
     var nm = tOrder[oi];
-    TIERS.push({ name: nm, cells: tiersMap[nm] || [], unlocked: nm === '一阶' || nm === '二阶', cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
+    var cellsArr = tiersMap[nm] || [];
+    TIERS.push({ name: nm, cells: cellsArr, unlocked: cellsArr.length > 0, cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
   }
   S = SB_buildS(state);
   S.battle = wasBattle;
@@ -3049,6 +3050,26 @@ function SB_renderPortrait() {
     if (badge) badge.textContent = '✎ 更换立绘';
   }
 }
+/* Fix3：兼职按钮（已兼职不显示锁定） */
+var SB_origRenderSubclass = renderSubclass;
+renderSubclass = function() {
+  var btn = document.getElementById('subclassBtn');
+  if (!btn) return;
+  var sub = (typeof T !== 'undefined' && T && T.classes && T.classes[1]) ? T.classes[1] : null;
+  if (sub && sub.name) {
+    btn.textContent = '✓ 已兼职 ' + sub.name + ' Lv.' + sub.level;
+    btn.disabled = false;
+  } else {
+    var ml = (typeof T !== 'undefined' && T && T.classes && T.classes[0]) ? T.classes[0].level : 0;
+    if (ml >= 7) {
+      btn.textContent = '＋ 选择兼职职业';
+      btn.disabled = false;
+    } else {
+      btn.textContent = '🔒 兼职需主职业 7 级（当前 ' + ml + ' 级）';
+      btn.disabled = true;
+    }
+  }
+};
 /* P1：学习面板移出隐藏占位（body 层级） */
 (function() {
   var lp = document.getElementById('learnPanel');
