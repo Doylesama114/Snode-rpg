@@ -1080,6 +1080,39 @@ body.battle .fab{display:none}
 <script>
 
 /* ============ 桥接层 Part1：TEST_DATA 从 state 构建（SB_ 前缀） ============ */
+var SB_srcRenderWeight = (typeof renderWeight === 'function') ? renderWeight : null;
+function SB_calcTotalWeight() {
+  var tw = 0;
+  var eq = (typeof state !== 'undefined' && state.equipment) ? state.equipment : {};
+  var slots = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包'];
+  for (var si = 0; si < slots.length; si++) {
+    var arr = eq[slots[si]] || [];
+    for (var ii = 0; ii < arr.length; ii++) {
+      if (!arr[ii]) continue;
+      try { tw += resolveWeight(arr[ii]) || 0; } catch (e) {}
+    }
+  }
+  var mp = eq['材料包'] || [];
+  for (var mi = 0; mi < mp.length; mi++) {
+    var items = (mp[mi] && mp[mi].items) || [];
+    for (var j = 0; j < items.length; j++) {
+      if (!items[j]) continue;
+      try { tw += resolveWeight(items[j]) || 0; } catch (e) {}
+    }
+  }
+  return tw;
+}
+function SB_findSkillMeta(name) {
+  if (typeof SKILL_DATA === 'undefined' || !SKILL_DATA || !name) return null;
+  for (var k in SKILL_DATA) {
+    var arr = SKILL_DATA[k];
+    if (!arr || !arr.length) continue;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] && arr[i].name === name) return arr[i];
+    }
+  }
+  return null;
+}
 function SB_buildTestData(st) {
   st = st || (typeof state !== 'undefined' ? state : null);
   if (!st) return null;
@@ -1109,7 +1142,18 @@ function SB_buildTestData(st) {
   var talents = [];
   if (st.talent_tree) for (var ti = 0; ti < st.talent_tree.length; ti++) {
     var tg = st.talent_tree[ti];
-    talents.push({ tier: tg.tier || '一阶', n: tg.n || tg.name || '', desc: tg.desc || '', learned: true });
+    var tn = tg.n || tg.name || '';
+    var meta = SB_findSkillMeta(tn);
+    var mf = (meta && meta.fields) || {};
+    var tdesc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || tg.desc || '');
+    var tfields = {
+      '施展时间': mf['施展时间'] || '-', '施展距离': mf['施展距离'] || '-', '持续时间': mf['持续时间'] || '-',
+      '疲劳消耗': mf['疲劳消耗'] || '-', '关键词': mf['关键词'] || '', '前置条件': mf['前置条件'] || mf['施展条件'] || '-', '额外条件': mf['额外条件'] || mf['施展限制'] || '-', '描述': tdesc
+    };
+    var tdescList = (meta && meta.description && meta.description.length) ? meta.description.slice() : (tdesc ? [tdesc] : []);
+    var tdescEntries = [];
+    for (var tdi = 0; tdi < tdescList.length; tdi++) tdescEntries.push({ text: tdescList[tdi], runs: null });
+    talents.push({ tier: tg.tier || '一阶', n: tn, desc: tdesc, learned: true, fields: tfields, cost: (meta && meta.cost) || [], descList: tdescList, descEntries: tdescEntries, fieldRuns: (meta && meta.field_runs) || {} });
   }
   var feats = [];
   if (st.special_feats) {
@@ -1124,16 +1168,21 @@ function SB_buildTestData(st) {
   if (st.skills) for (var si = 0; si < st.skills.length; si++) {
     var s = st.skills[si];
     if (!s || !(s.n || s.name)) continue;
-    var sd = (typeof SKILL_DATA !== 'undefined') ? SKILL_DATA[s.src] : null;
-    var meta = null;
-    if (sd) for (var mi = 0; mi < sd.length; mi++) { if (sd[mi].name === (s.n || s.name)) { meta = sd[mi]; break; } }
-    var cast = (meta && meta.fields && meta.fields['施展时间']) || '-';
-    var fp = (meta && meta.fields && meta.fields['疲劳消耗']) || '-';
-    var range = (meta && meta.fields && meta.fields['施展距离']) || '-';
-    var dur = (meta && meta.fields && meta.fields['持续时间']) || '-';
-    var desc = (meta && meta.description && meta.description.join(' ')) || '';
+    var meta = SB_findSkillMeta(s.n || s.name);
+    var mf = (meta && meta.fields) || {};
+    var cast = mf['施展时间'] || '-';
+    var fp = mf['疲劳消耗'] || '-';
+    var range = mf['施展距离'] || '-';
+    var dur = mf['持续时间'] || '-';
+    var desc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || '');
+    var kw = mf['关键词'] || '';
+    var cond = mf['前置条件'] || mf['施展条件'] || '-';
+    var ext = mf['额外条件'] || mf['施展限制'] || '-';
+    var upArr = [];
+    if (meta && meta.level_upgrades) for (var ui = 0; ui < meta.level_upgrades.length; ui++) if (meta.level_upgrades[ui] && meta.level_upgrades[ui].text) upArr.push(meta.level_upgrades[ui].text);
     var style = (meta && meta.style) || '';
-    var entry = { n: s.n || s.name, style: style, cast: cast, range: range, dur: dur, fp: fp, kw: '', cond: '-', ext: '-', desc: desc, descBody: [desc], up: [], marks: [], sub: false, react: cast === '反应动作', fieldRuns: {}, descEntries: [] };
+    var cost = (meta && meta.cost) || [];
+    var entry = { n: s.n || s.name, style: style, cast: cast, range: range, dur: dur, fp: fp, kw: kw, cond: cond, ext: ext, desc: desc, descBody: [desc], up: upArr, marks: [], sub: false, react: cast === '反应动作', fieldRuns: (meta && meta.field_runs) || {}, descEntries: [], cost: cost };
     if (s.sub || s.isSub) entry.sub = true;
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
   }
@@ -1291,7 +1340,7 @@ function renderEquip() {
     var slot = EQUIP_ORDER[si];
     var items = EQUIP[slot] || [];
     var filled = items.filter(function(x){ return x; }).length;
-    var locked = slot === '材料包B';
+    var locked = slot === '材料包B' && !(typeof state !== 'undefined' && state.containerItems && state.containerItems['材料包B']);
     var title = slot + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
     html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span></h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
@@ -2197,11 +2246,12 @@ function renderTraits() {
   document.getElementById('classTraits').innerHTML = ct;
 }
 function renderWeight() {
-  var w = { cur: '—', reg: 45, full: 90, max: 135 }; // 力量9 → 常规45/满载90/极限135
-  var html = '<div class="w-item cur"><span>当前</span><b>' + w.cur + '</b></div>' +
-    '<div class="w-item"><span>常规</span><b>' + w.reg + '</b></div>' +
-    '<div class="w-item"><span>满载</span><b>' + w.full + '</b></div>' +
-    '<div class="w-item"><span>极限</span><b>' + w.max + '</b></div>';
+  var carryStr = ((typeof state !== 'undefined' && state.attrs && state.attrs['力量']) || 8) + ((typeof state !== 'undefined' && state.profs && state.profs['力量'] && state.profs['力量']['承重']) || 0);
+  var cur = (typeof SB_calcTotalWeight === 'function') ? SB_calcTotalWeight() : 0;
+  var html = '<div class="w-item cur"><span>当前</span><b>' + cur + 'kg</b></div>' +
+    '<div class="w-item"><span>常规</span><b>' + (carryStr * 5) + '</b></div>' +
+    '<div class="w-item"><span>满载</span><b>' + (carryStr * 10) + '</b></div>' +
+    '<div class="w-item"><span>极限</span><b>' + (carryStr * 15) + '</b></div>';
   document.getElementById('weightLine').innerHTML = html;
 }
 function renderCurrency() {
@@ -2601,16 +2651,30 @@ function SB_reinit() {
   SKILLS = { main: T ? buildSkills(T.skillsMain, false) : [], sub: T ? buildSkills(T.skillsSub, true) : [] };
   FEATS = T ? T.feats : [];
   EQUIP = {};
+  var SB_EQUIP_CAPS = { '主手武器': 3, '副手武器': 4, '防具': 2, '配饰': 4, '背包': 10, '杂物包': 10, '旅行腰包': 5, '材料包A': 10, '材料包B': 10 };
+  function SB_normItems(arr) {
+    var out = [];
+    for (var ni = 0; ni < arr.length; ni++) {
+      var x = arr[ni];
+      if (!x) { out.push(null); continue; }
+      var itName = x.item || x.name;
+      if (typeof itName === 'string' && itName.indexOf('{') >= 0) { out.push(null); continue; }
+      out.push({ item: itName, cnt: (x.count || x.cnt || 1), w: x.w || '' });
+    }
+    return out;
+  }
   if (T && T.equipment) {
     for (var es in T.equipment) {
-      var esArr = T.equipment[es] || [];
-      EQUIP[es] = esArr.map(function(x) {
-        if (!x) return null;
-        var itName = x.item || x.name;
-        if (typeof itName === 'string' && itName.indexOf('{') >= 0) return null;
-        return { item: itName, cnt: (x.count || x.cnt || 1), w: x.w || '' };
-      });
+      if (es === '材料包') continue;
+      EQUIP[es] = SB_normItems(T.equipment[es] || []);
     }
+  }
+  var SB_matPack = (T && T.equipment && T.equipment['材料包']) || [];
+  EQUIP['材料包A'] = SB_normItems((SB_matPack[0] && SB_matPack[0].items) || []);
+  EQUIP['材料包B'] = SB_normItems((SB_matPack[1] && SB_matPack[1].items) || []);
+  for (var capK in SB_EQUIP_CAPS) {
+    var capArr = EQUIP[capK] || (EQUIP[capK] = []);
+    while (capArr.length < SB_EQUIP_CAPS[capK]) capArr.push(null);
   }
   TIERS = [];
   var tiersMap = { '一阶': [], '二阶': [], '三阶': [], '四阶': [], '五阶': [], '六阶': [], '七阶': [] };
@@ -2682,7 +2746,9 @@ renderXpSp = function() {
 /* ============ 写回同步：测试版交互 → state ============ */
 function SB_syncEquipToState() {
   if (!state.equipment) return;
-  for (var es in EQUIP) {
+  var fixedSlots = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包'];
+  for (var fi = 0; fi < fixedSlots.length; fi++) {
+    var es = fixedSlots[fi];
     var arr = EQUIP[es] || [];
     if (!state.equipment[es]) state.equipment[es] = [];
     for (var i = 0; i < arr.length; i++) {
@@ -2692,6 +2758,19 @@ function SB_syncEquipToState() {
       state.equipment[es][i] = { item: x.item, count: x.cnt, w: x.w, weight: prev.weight, type: prev.type };
     }
     state.equipment[es].length = arr.length;
+  }
+  if (!state.equipment['材料包']) state.equipment['材料包'] = [{ type: '', items: [] }, { type: '', items: [] }];
+  for (var pi = 0; pi < 2; pi++) {
+    var pack = state.equipment['材料包'][pi] || (state.equipment['材料包'][pi] = { type: '', items: [] });
+    var arr2 = EQUIP[pi === 0 ? '材料包A' : '材料包B'] || [];
+    if (!pack.items) pack.items = [];
+    for (var j = 0; j < arr2.length; j++) {
+      var y = arr2[j];
+      if (!y) { pack.items[j] = null; continue; }
+      var prev2 = pack.items[j] || {};
+      pack.items[j] = { item: y.item, count: y.cnt, w: y.w, weight: prev2.weight };
+    }
+    pack.items.length = arr2.length;
   }
 }
 var SB_origMoveEquip = moveEquip;
@@ -2900,8 +2979,7 @@ function SB_renderLangRows() {
 }
 function SB_weightSummary() {
   var carryStr = (state.attrs['力量'] || 8) + ((state.profs && state.profs['力量'] && state.profs['力量']['承重']) || 0);
-  var w = state.carry_capacity || {};
-  return '常规 ' + (carryStr * 5) + ' · 满载 ' + (carryStr * 10) + ' · 极限 ' + (carryStr * 15) + ' · 当前 ' + (w['当前'] || 0);
+  return '常规 ' + (carryStr * 5) + ' · 满载 ' + (carryStr * 10) + ' · 极限 ' + (carryStr * 15) + ' · 当前 ' + (typeof SB_calcTotalWeight === 'function' ? SB_calcTotalWeight() : 0);
 }
 function SB_editWeight() { toast('负重由力量与承重熟练自动计算', 'warn'); }
 /* 列表编辑（语言/专业/武器） */
