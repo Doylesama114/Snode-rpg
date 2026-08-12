@@ -9,93 +9,97 @@
 
 <body>
 
+<!-- ===== 移动端吸顶导航 + 战斗状态条 ===== -->
+<div class="mobile-tabbar" id="mobileTabbar"><div class="mt-scroll" id="mobileTabs"></div></div>
+<div class="mobile-battlestrip" id="mobileBattleStrip"></div>
+
 
 <div class="container">
 
 
-<div class="info-grid" id="info-grid"></div>
+<div class="info-grid hide-in-battle" id="info-grid"></div>
 
 
-<div class="section"><div class="section-title"> 职业信息</div><div class="class-row" id="class-row"></div></div>
+<div class="section hide-in-battle"><div class="section-title"> 职业信息</div><div class="class-row" id="class-row"></div></div>
 
 
-<div class="section"><div class="section-title" id="story-title"> 个性背景</div><div class="section-body"><div class="story-block" id="story-block"></div></div></div>
+<div class="section hide-in-battle"><div class="section-title" id="story-title"> 个性背景</div><div class="section-body"><div class="story-block" id="story-block"></div></div></div>
 
 
 <div class="split-row split-2" style="display:flex;gap:18px;align-items:stretch">
 
 
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 经验值</div><div class="section-body"><div class="xp-panel" id="xp-bar"></div></div></div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 经验值</div><div class="section-body"><div class="xp-panel" id="xp-bar"></div></div></div>
 
 
-<div class="section sp-section" style="flex:1;margin-bottom:0"><div class="section-title"> 技能点</div><div class="section-body"><div class="sp-panel" id="sp-bar"></div></div></div>
+<div class="section sp-section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 技能点</div><div class="section-body"><div class="sp-panel" id="sp-bar"></div></div></div>
 
 
 </div>
 
 
-<div class="section"><div class="section-title"> 战斗数据</div><div class="section-body"><div class="stat-row" id="stat-row"></div></div></div>
+<div class="section battle-section"><div class="section-title"> 战斗数据</div><div class="section-body"><div class="stat-row" id="stat-row"></div></div></div>
 
 
-<div class="section"><div class="section-title"> 属性</div><div class="section-body"><div class="attr-grid" id="attr-grid"></div></div></div>
-
-
-<div class="split-row split-3" style="display:flex;gap:18px;align-items:stretch">
-
-
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 特殊专长</div><div class="section-body"><div class="feat-list" id="feat-list"></div></div></div>
-
-
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 货币</div><div class="section-body"><div class="currency-row" id="currency-row"></div></div></div>
-
-
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 负重</div><div class="section-body"><div class="weight-block" id="weight-block"></div></div></div>
-
-
-</div><div class="section"><div class="section-title"> 天赋树</div><div class="section-body"><div class="talent-grid" id="talent-grid"></div></div></div>
-
-
-<div class="section"><div class="section-title"> 装备栏</div><div class="section-body"><div class="equip-grid" id="equip-grid"></div></div></div>
+<div class="section hide-in-battle"><div class="section-title"> 属性</div><div class="section-body"><div class="attr-grid" id="attr-grid"></div></div></div>
 
 
 <div class="split-row split-3" style="display:flex;gap:18px;align-items:stretch">
 
 
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 种族特性</div><div class="section-body"><div class="trait-section" id="racial-traits"></div></div></div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 特殊专长</div><div class="section-body"><div class="feat-list" id="feat-list"></div></div></div>
 
 
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 职业特性</div><div class="section-body"><div class="trait-section" id="class-features"></div></div></div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 货币</div><div class="section-body"><div class="currency-row" id="currency-row"></div></div></div>
+
+
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 负重</div><div class="section-body"><div class="weight-block" id="weight-block"></div></div></div>
+
+
+</div><div class="section hide-in-battle"><div class="section-title"> 天赋树</div><div class="section-body"><div class="talent-grid" id="talent-grid"></div></div></div>
+
+
+<div class="section equip-section"><div class="section-title"> 装备栏</div><div class="section-body"><div class="equip-grid" id="equip-grid"></div></div></div>
+
+
+<div class="split-row split-3" style="display:flex;gap:18px;align-items:stretch">
+
+
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 种族特性</div><div class="section-body"><div class="trait-section" id="racial-traits"></div></div></div>
+
+
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 职业特性</div><div class="section-body"><div class="trait-section" id="class-features"></div></div></div>
 
 
 <div style="display:flex;flex-direction:column;gap:12px;flex:1">
 
 
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 语言</div><div class="section-body"><div id="lang-list" style="text-align:center"></div></div></div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 语言</div><div class="section-body"><div id="lang-list" style="text-align:center"></div></div></div>
 
 
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 专业熟练项</div><div class="section-body"><div id="prof-list" style="text-align:center"></div></div></div>
-<div class="section" style="flex:1;margin-bottom:0"><div class="section-title"> 武器熟练</div><div class="section-body"><div id="weapon-profs" style="text-align:center"></div></div></div>
-
-
-</div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 专业熟练项</div><div class="section-body"><div id="prof-list" style="text-align:center"></div></div></div>
+<div class="section hide-in-battle" style="flex:1;margin-bottom:0"><div class="section-title"> 武器熟练</div><div class="section-body"><div id="weapon-profs" style="text-align:center"></div></div></div>
 
 
 </div>
 
 
-<div class="section"><div class="section-title" id="mainSkillTitle"> 主职业技能列表</div>
+</div>
 
 
-<div class="section-body"><table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th></tr></thead><tbody id="skill-table-body"></tbody></table>
+<div class="section hide-in-battle"><div class="section-title" id="mainSkillTitle"> 主职业技能列表</div>
+
+
+<div class="section-body"><table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="skill-table-body"></tbody></table>
 
 
 <div style="margin-top:16px"><div style="font-size:17px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
 
 
-<table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div></div></div>
+<table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div></div></div>
 
 
-<div class="section"><div class="section-title" id="blueprintTitle">图纸（专业槽位）</div>
+<div class="section hide-in-battle"><div class="section-title" id="blueprintTitle">图纸（专业槽位）</div>
 <div class="section-body">
 <p id="blueprintHint" style="font-size:12px;color:var(--muted,#69706b);margin:0 0 10px"></p>
 <div class="blueprint-grid" id="blueprint-grid"></div>
@@ -112,6 +116,112 @@
 
 
 <div id="learnPanel" class="learn-panel"></div>
+
+<!-- ===== 战斗子页面（战斗中平铺三栏） ===== -->
+<div class="battle-view" id="battleView">
+  <div class="bv-cols">
+    <div class="bv-card" id="bvOverview"></div>
+    <div class="bv-main" id="bvMain">
+      <div class="bv-card" id="bvHead"></div>
+      <div class="bv-card" id="bvVitals"></div>
+      <div class="bv-card" id="bvEquipHost"></div>
+    </div>
+    <div class="bv-card" id="bvLog"></div>
+  </div>
+</div>
+
+<!-- ===== 左侧战斗速览（战斗子页左栏） ===== -->
+<div class="battle-drawer" id="battleDrawer">
+  <div class="bd-head"><span>⚔ 战斗速览</span><button onclick="toggleBdDrawer()">收起 ▸</button></div>
+  <div class="bd-body">
+    <div class="bd-sec"><h3>当前属性 <small>关键属性高亮</small></h3><div class="bd-attrs" id="bdAttrs"></div></div>
+    <div class="bd-sec"><h3>技能 <small id="bdSkillCnt">0</small></h3><div id="bdSkills"></div></div>
+    <div class="bd-sec"><h3>天赋</h3><div id="bdTalents"></div></div>
+    <div class="bd-sec"><h3>专长</h3><div id="bdFeats"></div></div>
+  </div>
+</div>
+
+<!-- ===== 战斗日志（战斗子页右栏） ===== -->
+<div class="log-drawer" id="logDrawer">
+  <div class="log-head"><span>⚔ 战斗日志</span><button onclick="toggleLogDrawer()">收起 ▸</button></div>
+  <div class="log-body" id="logBody"></div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ===== 背景故事编辑弹层 ===== -->
+<div class="overlay" id="storyOverlay" onclick="if(event.target===this)closeOverlay('storyOverlay')">
+  <div class="pop" style="max-width:640px">
+    <div class="pop-head"><h3>编辑背景故事</h3><button class="close" onclick="closeOverlay('storyOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div class="story-edit-fields" id="storyEditFields"></div>
+      <div class="mini-edit-pop" style="margin-top:14px">
+        <button class="ok" onclick="SB_saveStory()">保存</button>
+        <button class="cancel" onclick="closeOverlay('storyOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 列表编辑弹层（语言/专业/武器熟练） ===== -->
+<div class="overlay" id="listOverlay" onclick="if(event.target===this)closeOverlay('listOverlay')">
+  <div class="pop" style="max-width:420px">
+    <div class="pop-head"><h3 id="listTitle">编辑列表</h3><button class="close" onclick="closeOverlay('listOverlay')">✕</button></div>
+    <div class="pop-body">
+      <p id="listHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p>
+      <div class="mini-edit-pop">
+        <input type="text" id="listInput" value="">
+        <button class="ok" onclick="SB_saveList()">确定</button>
+        <button class="cancel" onclick="closeOverlay('listOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 通用数值编辑弹层（临时生命/护甲值/防御等级/护盾） ===== -->
+<div class="overlay" id="miniOverlay" onclick="if(event.target===this)closeOverlay('miniOverlay')">
+  <div class="pop" style="max-width:360px">
+    <div class="pop-head"><h3 id="miniTitle">修改数值</h3><button class="close" onclick="closeOverlay('miniOverlay')">✕</button></div>
+    <div class="pop-body">
+      <p id="miniHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p>
+      <div class="mini-edit-pop">
+        <input type="number" id="miniInput" value="0" min="0" max="999">
+        <button class="ok" onclick="SB_saveMiniDispatch()">确定</button>
+        <button class="cancel" onclick="closeOverlay('miniOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 先攻编辑弹层 ===== -->
+<div class="overlay" id="initOverlay" onclick="if(event.target===this)closeOverlay('initOverlay')">
+  <div class="pop" style="max-width:360px">
+    <div class="pop-head"><h3>设置先攻值</h3><button class="close" onclick="closeOverlay('initOverlay')">✕</button></div>
+    <div class="pop-body">
+      <p id="initHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px">输入本场战斗你的先攻骰结果（含调整值）。</p>
+      <div class="mini-edit-pop">
+        <input type="number" id="initInput" value="10" min="0" max="99">
+        <button class="ok" onclick="saveInit()">确定</button>
+        <button class="cancel" onclick="closeOverlay('initOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 力竭详情弹层 ===== -->
+<div class="overlay" id="exhaustOverlay" onclick="if(event.target===this)closeOverlay('exhaustOverlay')">
+  <div class="pop">
+    <div class="pop-head"><h3>力竭状态 <span id="exhaustCurrent" style="font-size:13px;color:var(--muted);font-weight:normal"></span></h3><button class="close" onclick="closeOverlay('exhaustOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div class="exhaust-list" id="exhaustList"></div>
+      <div style="margin-top:12px;font-size:12px;color:var(--muted)">力竭层数在退出战斗后清零。四层力竭进入失能状态（无法使用技能）。</div>
+      <div class="mini-edit-pop" style="margin-top:14px">
+        <button class="ok" onclick="SB_addExhaust()">+1 层力竭</button>
+        <button class="cancel" onclick="SB_resetExhaustManual()">清零</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script src="../职业页/数据/items_data.js"></script>
