@@ -461,3 +461,239 @@ html.dark .learn-toggle{box-shadow:0 4px 12px rgba(0,0,0,0.3)}
   .portrait-box{height:180px !important}
   .talent-item{font-size:12px;min-height:30px}
 }
+
+/* ============ 战斗模式 v2（移植自新版面板） ============ */
+/* 移动端吸顶导航 */
+.mobile-tabbar{display:none;position:sticky;top:0;z-index:1100;background:rgba(246,244,239,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:6px 10px;margin:-16px -16px 8px}
+.mobile-tabbar .mt-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.mobile-tabbar .mt-scroll::-webkit-scrollbar{display:none}
+.mt-btn{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:16px;padding:5px 9px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.mt-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:480px){.mobile-tabbar{margin:-12px -12px 8px}}
+/* 战斗状态条 */
+.mobile-battlestrip{display:none;position:sticky;top:0;z-index:69;background:rgba(23,19,26,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid rgba(212,165,74,.4);padding:5px 8px;margin:0 -16px 8px;color:#f0e8e0;align-items:center}
+.mbs-items{display:flex;flex-direction:column;align-items:stretch;gap:6px;width:100%}
+.mbs-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mbs-orb{display:flex;align-items:center;gap:4px;font-size:12px;flex:none}
+.mbs-orb b{font-weight:bold;color:#fff}
+.mbs-orb .mbs-dot{width:16px;height:16px;border-radius:50%;flex:none}
+.mbs-dot.hp{background:#c0392b}
+.mbs-dot.fp{background:#2e6db4}
+.mbs-sep{width:1px;height:16px;background:rgba(212,165,74,.35);flex:none}
+.mbs-btn{flex:none;border:1px solid rgba(212,165,74,.5);background:transparent;color:#d4a54a;border-radius:14px;padding:3px 10px;font-size:11.5px;cursor:pointer;font-family:inherit}
+.mbs-btn:hover{background:rgba(212,165,74,.15)}
+.mbs-btn.exit{color:#e08070;border-color:rgba(224,128,112,.5)}
+.mbs-btn:active{transform:scale(.95)}
+.mbs-flash{animation:bvFlash .5s ease 4}
+/* toast */
+#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2d2722;color:#f0e0d0;padding:10px 20px;border-radius:8px;font-size:14px;z-index:200;transition:transform .25s;box-shadow:0 6px 24px rgba(0,0,0,.35);pointer-events:none;max-width:80vw}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.warn{background:#5a2a20}
+#toast.exhaust-toast{background:#4a1a5e}
+/* 通用弹层 */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:150;padding:16px}
+.overlay.show{display:flex}
+.pop{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;width:100%;max-width:480px;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.pop-head{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;font-size:15px;color:var(--accent)}
+.pop-head h3{margin:0;font-size:15px}
+.pop-head .close{border:none;background:transparent;color:var(--muted);font-size:16px;cursor:pointer;font-family:inherit}
+.pop-head .close:hover{color:var(--ink)}
+.pop-body{padding:14px 16px;overflow:auto}
+.mini-edit-pop{display:flex;gap:10px;align-items:center;margin-top:10px}
+.mini-edit-pop input{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-size:15px;min-width:0}
+.mini-edit-pop button{border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-family:inherit;font-size:14px}
+.mini-edit-pop .ok{background:var(--accent);color:#fff}
+.mini-edit-pop .ok:hover{background:var(--accent-hover)}
+.mini-edit-pop .cancel{background:var(--line);color:var(--ink)}
+/* 战斗子页面（战斗中平铺三栏） */
+.battle-view{display:none;position:relative;z-index:30}
+.bv-cols{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start;grid-template-areas:"ov main lg"}
+#bvOverview{grid-area:ov}
+#bvMain{grid-area:main;display:flex;flex-direction:column;gap:18px}
+#bvLog{grid-area:lg}
+@media (max-width:980px){.bv-cols{grid-template-columns:1fr;grid-template-areas:"main" "ov" "lg"}}
+/* 速览/日志（默认左侧/右侧滑出隐藏） */
+.battle-drawer{position:fixed;left:14px;top:14px;bottom:auto;width:280px;max-height:62vh;background:rgba(28,23,32,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(212,165,74,.35);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.4);transform:translateX(-120%);transition:transform .28s ease;z-index:89;display:flex;flex-direction:column;overflow:hidden;color:#f0e8e0}
+.battle-drawer.open{transform:translateX(0)}
+.bd-head{padding:10px 14px;border-bottom:1px solid rgba(74,63,53,.7);display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:14px;color:#d4a54a}
+.bd-head button{border:none;background:transparent;color:#a89e92;cursor:pointer;font-size:12px;font-family:inherit}
+.bd-head button:hover{color:#fff}
+.bd-body{padding:10px 14px;overflow-y:auto;flex:1}
+.bd-sec{margin-bottom:12px}
+.bd-sec h3{margin:0 0 6px;font-size:12.5px;color:#d4a54a;font-weight:bold}
+.bd-sec h3 small{font-weight:normal;color:#a89e92}
+.bd-attrs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.bd-attr{background:#2a2430;border:1px solid #3a3338;border-radius:4px;padding:3px 6px;font-size:12px;display:flex;justify-content:space-between}
+.bd-attr.key{border-color:#a46d1f;color:#f0d9a0}
+.bd-attr b{color:#f0e8e0}
+.bd-skgroup h4{margin:6px 0 4px;font-size:12px;color:#d4a54a;font-weight:bold}
+.bd-skgroup:first-child h4{margin-top:0}
+.bd-skill{display:flex;align-items:center;gap:6px;background:#2a2430;border:1px solid #3a3338;border-radius:4px;padding:3px 6px;font-size:12px;margin-bottom:3px;cursor:pointer;transition:border-color .12s}
+.bd-skill:hover{border-color:#a46d1f}
+.bd-skill .bd-sn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.bd-skill .bd-fp{color:#a89e92;font-size:10.5px;flex:none}
+.bd-skill .bd-use{margin-left:auto;flex:none;border:none;background:var(--accent);color:#fff;border-radius:3px;padding:1px 8px;font-size:11px;cursor:pointer;font-family:inherit}
+.bd-skill .bd-use:hover{background:var(--accent-hover)}
+.bd-empty{color:#8a827a;font-size:12px;padding:6px 0}
+.bd-tier{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:5px}
+.bd-tlabel{font-size:11px;color:#c9753e;margin-right:4px}
+.bd-tcell{background:#3a2f22;border:1px solid #5a4528;border-radius:4px;padding:1px 6px;font-size:11px;color:#f0e0c8;cursor:default}
+.bd-feat{margin-bottom:6px;font-size:12px}
+.bd-feat span{color:#f0e8e0}
+.bd-fd{color:#a89e92;font-size:11px;margin-top:2px}
+.log-drawer{position:fixed;right:14px;top:14px;bottom:auto;width:300px;max-height:50vh;background:rgba(28,23,32,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(212,165,74,.35);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.4);transform:translateX(120%);transition:transform .28s ease;z-index:89;display:flex;flex-direction:column;overflow:hidden;color:#f0e8e0}
+.log-drawer.open{transform:translateX(0)}
+.log-head{padding:10px 14px;border-bottom:1px solid rgba(74,63,53,.7);display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:14px;color:#d4a54a}
+.log-head button{border:none;background:transparent;color:#a89e92;cursor:pointer;font-size:12px;font-family:inherit}
+.log-head button:hover{color:#fff}
+.log-body{padding:10px 14px;overflow-y:auto;flex:1;font-size:12px;line-height:1.7}
+.log-line{margin-bottom:4px}
+.log-line .t{color:#8a827a;margin-right:6px;font-size:11px}
+.log-line.heal{color:#8fd19a}
+.log-line.exhaust{color:#c98ad9}
+.log-line.dead{color:#e08070}
+.log-line.battle{color:#d4a54a}
+/* 战斗模式子页覆盖（速览/日志平铺为栏） */
+.battle-view .battle-drawer,.battle-view .log-drawer{position:static;transform:none;width:auto;max-height:none;height:auto;z-index:auto;margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:inherit}
+.battle-view .bd-head,.battle-view .log-head{border-bottom:1px solid var(--line)}
+.battle-view .bd-head button,.battle-view .log-head button{display:none}
+.battle-view .log-body{color:var(--muted)}
+@keyframes bvFlash{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 2px rgba(212,165,74,.75)}}
+/* 移动端显示规则 */
+@media (max-width:600px){
+  .mobile-tabbar{display:block}
+  #toast{top:56px}
+}
+@media (min-width:601px){
+  .mobile-tabbar,.mobile-battlestrip{display:none !important}
+}
+
+/* 移动端：顶部导航按钮（保存/返回/重新车卡）下移避让吸顶 Tab 栏 */
+@media (max-width:600px){
+  .sb-top-btn{top:48px !important;right:10px !important;padding:6px 12px !important;font-size:13px !important;z-index:1101 !important}
+}
+
+/* ============ 战斗数据卡（阶段2） ============ */
+.battle-card{display:flex;flex-direction:column;gap:14px}
+.battle-card .b-top{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.key-attr{flex:1;background:linear-gradient(160deg,#f8ead0,#eed9a8);border:2px solid var(--accent);border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:130px}
+.key-attr .ka-label{font-size:12px;color:#7a5a10;font-weight:bold;letter-spacing:1px}
+.key-attr .ka-name{font-size:24px;font-weight:bold;color:#5a3a10}
+.key-attr .ka-mod{font-size:13px;color:#8a6a20}
+.mini-balls{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:4px 2px;flex:none}
+.mini-ball{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.5);font-weight:bold;font-size:14.5px;color:#fff;position:relative;transition:transform .15s,box-shadow .3s;box-shadow:0 0 8px rgba(0,0,0,.15)}
+.mini-ball:hover{transform:scale(1.1)}
+.mini-ball .n{text-shadow:0 1px 2px rgba(0,0,0,.55)}
+.mini-ball .lbl{position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);font-size:9.5px;color:var(--muted);white-space:nowrap;font-weight:normal}
+.mb-tmphp{background:radial-gradient(circle,#e6f7dd 0%,#7fc46a 55%,#2e8b57 100%)}
+.mb-tmphp:hover{box-shadow:0 0 12px rgba(46,139,87,.6)}
+.mb-ac{background:radial-gradient(circle,#fdf3dd 0%,#e0b86a 55%,#a46d1f 100%)}
+.mb-ac:hover{box-shadow:0 0 12px rgba(164,109,31,.6)}
+.mb-shield{background:radial-gradient(circle,#e2ebff 0%,#7a9fd6 55%,#3a5a8a 100%)}
+.mb-shield:hover{box-shadow:0 0 12px rgba(58,90,138,.6)}
+.orb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:128px;padding:6px 4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;position:relative}
+.orb-svg{width:112px;height:112px;display:block}
+.orb-bg{fill:rgba(0,0,0,.18);stroke:var(--line)}
+.orb-fill{fill:none;stroke-width:9;stroke-linecap:round}
+.orb-text{fill:var(--ink);font-size:17px;font-weight:bold}
+.orb-text .orb-slash{fill:var(--muted);font-size:13px}
+.orb-text .orb-max{fill:var(--muted);font-size:13px}
+.orb-label{font-size:12px;color:var(--muted);font-weight:bold}
+.orb-ctrl{display:flex;gap:4px}
+.orb-ctrl button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:4px;padding:2px 8px;font-size:12px;cursor:pointer;font-family:inherit}
+.orb-ctrl button:hover{border-color:var(--accent);color:var(--accent)}
+.orb-ctrl button.b5{padding:2px 6px;font-size:11px}
+.orb-low .orb-fill{animation:orbPulse 1s ease infinite}
+@keyframes orbPulse{0%,100%{opacity:1}50%{opacity:.45}}
+.exhaust-anchor{position:relative}
+.exhaust-badge{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #8a4a9a;font-weight:bold;font-size:14px;color:#fff;background:radial-gradient(circle,#f2e2f7 0%,#c98ad9 var(--exhaust-depth,92%),#6a1a7e var(--exhaust-depth,92%),#6a1a7e 100%);transition:background .5s ease,box-shadow .3s;box-shadow:0 0 0 0 rgba(106,26,126,0)}
+.exhaust-badge:hover{box-shadow:0 0 12px rgba(106,26,126,.6)}
+.exhaust-badge .n{text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.exhaust-badge.pulse{animation:exPulse .5s ease 2}
+@keyframes exPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.shield-box{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;min-width:112px;cursor:pointer;position:relative}
+.shield-box:hover{border-color:var(--accent)}
+.shield-svg{width:80px;height:90px}
+.shield-path{fill:var(--panel);stroke:var(--accent);stroke-width:3}
+.shield-text{font-size:26px;font-weight:bold;fill:var(--ink)}
+.shield-label{font-size:12px;color:var(--muted);font-weight:bold}
+.shield-edit-hint{font-size:10.5px;color:var(--muted);opacity:.8}
+.battle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.b-item{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;text-align:center}
+.b-item small{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
+.b-item b{font-size:16px;color:var(--ink)}
+.battle-actions{display:flex;gap:10px;justify-content:flex-end}
+.btn-battle{border:none;border-radius:8px;padding:8px 20px;font-size:14px;cursor:pointer;font-family:inherit;background:var(--accent);color:#fff}
+.btn-battle:hover{background:var(--accent-hover)}
+.btn-battle.in-battle{background:#6a1a7e}
+.exhaust-list .ex-lv{margin-bottom:8px;font-size:12.5px}
+.exhaust-list .ex-lv b{color:#c98ad9}
+.exhaust-list .ex-lv.done{opacity:.45}
+@media (max-width:600px){
+  .battle-grid{grid-template-columns:repeat(2,1fr)}
+  .b-top{flex-direction:column;align-items:center}
+  .key-attr{width:100%;min-width:0}
+  .mini-balls{flex-direction:row;justify-content:center;gap:14px}
+  .mini-ball .lbl{display:none}
+  .orb-wrap{width:100%;min-width:0}
+  .shield-box{width:100%;min-width:0}
+}
+@media (max-width:600px){
+  body.battle .b-top{flex-direction:row;flex-wrap:wrap;align-items:stretch}
+  body.battle .b-top .key-attr{flex:1 1 100%;min-width:0}
+  body.battle .b-top .mini-balls{flex-direction:column;justify-content:center;gap:10px}
+  body.battle .b-top .orb-wrap{flex:1 1 0;min-width:124px}
+  body.battle .b-top .shield-box{flex:1 1 100%;min-width:0;flex-direction:row;justify-content:center;gap:10px}
+}
+
+/* ============ 阶段3：技能使用 ============ */
+.skill-use-cell{text-align:center;white-space:nowrap}
+.use-btn{border:none;background:var(--accent);color:#fff;border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.use-btn:hover{background:var(--accent-hover)}
+.use-btn:disabled{background:#8a827a;cursor:not-allowed}
+.use-btn.fired{background:#c0392b}
+.used-cnt{font-size:11px;color:var(--muted);margin-left:4px}
+.exhaust-list .ex-lv{margin-bottom:8px;font-size:12.5px}
+.exhaust-list .ex-lv b{color:#c98ad9}
+.exhaust-list .ex-lv.done{opacity:.45}
+
+/* ============ 阶段4：战斗子页 + 合拢动画 ============ */
+body.battle .container{animation:bvCollapse .32s ease forwards;pointer-events:none}
+body.battle .battle-view{display:block;animation:bvIn .38s ease .12s both}
+body.battle .mobile-tabbar{display:none}
+.battle-exit .container{animation:bvRestore .32s ease both}
+.battle-exit .battle-view{animation:bvOut .3s ease both}
+@keyframes bvCollapse{to{transform:scaleX(.9) translateX(-8px);opacity:0;visibility:hidden}}
+@keyframes bvIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes bvOut{to{opacity:0;transform:translateY(12px) scale(.98)}}
+@keyframes bvRestore{from{transform:scaleX(.9) translateX(-8px);opacity:0;visibility:visible}to{transform:none;opacity:1}}
+body.battle .hide-in-battle{display:none !important}
+.battle-view .battle-drawer,.battle-view .log-drawer{position:static;transform:none;width:auto;max-height:none;height:auto;z-index:auto;margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:inherit}
+.battle-view .bd-head,.battle-view .log-head{border-bottom:1px solid var(--line)}
+.battle-view .bd-head button,.battle-view .log-head button{display:none}
+.battle-view .log-body{color:var(--muted)}
+.battle-view .battle-section,.battle-view .equip-section{border:1px solid var(--line);border-radius:12px;margin-bottom:0}
+@media (prefers-reduced-motion: reduce){
+  body.battle .container,.battle-exit .container,.battle-exit .battle-view{animation:none;opacity:1;transform:none;visibility:visible}
+}
+@media (max-width:600px){
+  body.battle .battle-section .section-title,body.battle .equip-section .section-title{font-size:20px}
+}
+
+/* ============ 阶段5：移动端战斗 ============ */
+@media (max-width:600px){
+  body.battle .mobile-battlestrip{display:flex;margin:0 0 8px}
+  body.battle .learn-toggle,body.battle .sb-top-btn{display:none !important}
+  body.battle #toast{top:auto;bottom:96px}
+}
+@media (min-width:601px){
+  .mobile-battlestrip{display:none !important}
+}
+
+/* 阶段5修复：移动端次要浮动按钮隐藏 + 战斗 vitals 防裁切 */
+@media (max-width:600px){
+  #exportXlsxBtn,#openDirBtn,#cheatBtn{display:none !important}
+  body.battle .battle-section{padding:12px 10px}
+  body.battle .b-top .orb-wrap{min-width:112px}
+  body.battle .b-top .mini-balls{gap:8px}
+}

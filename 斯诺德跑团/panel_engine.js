@@ -7455,6 +7455,7 @@ if (!initFromURL()) {
 (function() {
   var saveBtn = document.createElement("button");
   saveBtn.textContent = "保存";
+  saveBtn.className = "sb-top-btn";
   saveBtn.style.cssText = "position:fixed;top:10px;right:10px;z-index:9999;padding:10px 22px;background:#4a6a3a;color:#f0e0d0;border:1px solid #6a8a5a;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   saveBtn.onclick = function() {
     showSaveDialog(function(slotIndex) {
@@ -7468,12 +7469,14 @@ if (!initFromURL()) {
   // Add back button
   var backBtn = document.createElement("button");
   backBtn.textContent = "返回";
+  backBtn.className = "sb-top-btn";
   backBtn.style.cssText = "position:fixed;top:10px;right:110px;z-index:9999;padding:10px 22px;background:#5a3a18;color:#f0e0d0;border:1px solid #7a5a38;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   backBtn.onclick = goBackToSlots;
   document.body.appendChild(backBtn);
 
   var recreateBtn = document.createElement("button");
   recreateBtn.textContent = "重新车卡";
+  recreateBtn.className = "sb-top-btn";
   recreateBtn.title = "基于创建快照另存为新的 1 级角色";
   recreateBtn.style.cssText = "position:fixed;top:10px;right:200px;z-index:9999;padding:10px 14px;background:#3a4a6a;color:#f0e0d0;border:1px solid #5a6a8a;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.4)";
   recreateBtn.onclick = startRecreateFromPanel;
@@ -8355,3 +8358,846 @@ if (typeof window !== 'undefined') {
   };
 }
 
+
+/* ============ 战斗模式 v2（移植自新版面板，SB_ 前缀） ============ */
+var SB_toastTimer = null;
+function SB_toast(msg, cls) {
+  var el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = (cls || '') + ' show';
+  if (SB_toastTimer) clearTimeout(SB_toastTimer);
+  SB_toastTimer = setTimeout(function() { el.className = ''; }, 2600);
+}
+function openOverlay(id) { var el = document.getElementById(id); if (el) el.classList.add('show'); }
+function closeOverlay(id) { var el = document.getElementById(id); if (el) el.classList.remove('show'); }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.overlay.show').forEach(function(o) { o.classList.remove('show'); });
+  }
+});
+function SB_log(msg, cls) {
+  var body = document.getElementById('logBody');
+  if (!body) return;
+  var d = new Date();
+  var t = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2) + ':' + ('0'+d.getSeconds()).slice(-2);
+  var line = document.createElement('div');
+  line.className = 'log-line ' + (cls || '');
+  line.innerHTML = '<span class="t">' + t + '</span>' + msg;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+/* 移动端吸顶 Tab（锚点映射源 id） */
+var SB_MOBILE_SECTIONS = [
+  { id: '基础', sel: '#info-grid' },
+  { id: '战斗', sel: '#stat-row' },
+  { id: '属性', sel: '#attr-grid' },
+  { id: '装备', sel: '#equip-grid' },
+  { id: '技能', sel: '#skill-table-body' },
+  { id: '天赋', sel: '#talent-grid' },
+  { id: '图纸', sel: '#blueprint-grid' }
+];
+function SB_renderMobileTabs() {
+  var wrap = document.getElementById('mobileTabs');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 0; i < SB_MOBILE_SECTIONS.length; i++) {
+    html += '<button class="mt-btn" data-tab="' + SB_MOBILE_SECTIONS[i].id + '">' + SB_MOBILE_SECTIONS[i].id + '</button>';
+  }
+  wrap.innerHTML = html;
+  var btns = wrap.querySelectorAll('.mt-btn');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].addEventListener('click', (function(idx) {
+      return function() {
+        var sec = document.querySelector(SB_MOBILE_SECTIONS[idx].sel);
+        if (sec) {
+          var rect = sec.getBoundingClientRect();
+          var absTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+          window.scrollTo(0, Math.max(0, absTop - 120));
+        }
+      };
+    })(j));
+  }
+}
+function SB_mobileScrollspy() {
+  var tabs = document.querySelectorAll('#mobileTabs .mt-btn');
+  if (!tabs.length) return;
+  var cur = null;
+  for (var i = 0; i < SB_MOBILE_SECTIONS.length; i++) {
+    var el = document.querySelector(SB_MOBILE_SECTIONS[i].sel);
+    if (!el) continue;
+    var r = el.getBoundingClientRect();
+    if (r.top <= 130 && r.bottom > 130) { cur = SB_MOBILE_SECTIONS[i].id; break; }
+  }
+  if (!cur) cur = SB_MOBILE_SECTIONS[0].id;
+  for (var j = 0; j < tabs.length; j++) {
+    tabs[j].classList.toggle('active', tabs[j].getAttribute('data-tab') === cur);
+  }
+}
+document.addEventListener('scroll', function() {
+  if (window.innerWidth <= 600) SB_mobileScrollspy();
+}, { passive: true });
+window.addEventListener('resize', function() { SB_renderMobileTabs(); });
+SB_renderMobileTabs();
+
+/* ============ 阶段2：战斗会话 + 战斗数据卡 ============ */
+function SB_ensureBattleFields() {
+  if (state.armor === undefined) state.armor = 0;
+  if (state.tmpHp === undefined) state.tmpHp = 0;
+  if (state.shield === undefined) state.shield = 0;
+}
+SB_ensureBattleFields();
+var SB_battle = { active: false, cur: null, max: null, init: null, exhaust: 0, usage: {}, log: [] };
+var SB_EXHAUST = {
+  1: '角色的基础移动力减半。',
+  2: '角色进行的检定具有劣势，如果造成的效果需要攻击来源进行检定，那么对方会具有优势。',
+  3: '角色进行的检定具有极大劣势，如果造成的效果需要攻击来源进行检定，那么对方会具有极大优势。',
+  4: '角色进入失能状态，无法自主行动。',
+  5: '角色因力竭而死亡。'
+};
+function SB_calcAC() {
+  var dex = state.attrs['敏捷'] || 10;
+  var dexMod = calcMod(dex);
+  var eqArmor = (state.equipment && state.equipment['防具']) || [];
+  var armorAC = null;
+  for (var ai = 0; ai < eqArmor.length; ai++) {
+    var aInfo = getArmorAC(eqArmor[ai]);
+    if (!aInfo) {
+      if (eqArmor[ai] == '演出戏服' || eqArmor[ai] == '高档服装' || eqArmor[ai] == '布衣' || eqArmor[ai] == '披风') {
+        aInfo = { 'base': 11, 'addDex': true };
+      }
+    }
+    if (aInfo) {
+      var thisAC = aInfo.addDex ? (aInfo.base + dexMod) : aInfo.base;
+      if (armorAC === null || thisAC > armorAC) armorAC = thisAC;
+    }
+  }
+  var ac = armorAC === null ? (10 + dexMod) : armorAC;
+  if (state._feat_ac_bonus && typeof wearingMediumArmor === 'function' && wearingMediumArmor()) {
+    ac += (state._feat_ac_bonus || 0);
+  }
+  return ac;
+}
+function SB_battleStats() {
+  var con = state.attrs['体质'] || 10;
+  var dex = state.attrs['敏捷'] || 10;
+  var wis = state.attrs['感知'] || 10;
+  var mc = state.classes[0].name, ml = state.classes[0].level;
+  var sc = state.classes[1] ? state.classes[1].name : '', sl = state.classes[1] ? state.classes[1].level : 0;
+  var featHPBonus = 0;
+  for (var fhi = 0; fhi < (state.special_feats || []).length; fhi++) {
+    var fhn = state.special_feats[fhi];
+    var fnName = typeof fhn === 'string' ? fhn : (fhn && fhn.name);
+    if (fnName === '健美教练') featHPBonus += 10;
+    if (fnName === '健壮') featHPBonus += 2 * (ml + (sc && sl > 0 ? sl - 1 : 0));
+  }
+  var hpMax = calcTotalHP(mc, ml, sc, sl, con, state.race, state.background, featHPBonus);
+  if (isNaN(hpMax) || hpMax <= 0) hpMax = state.hp || 1;
+  var fpKeyAttr = REF_CLASSES[mc] ? REF_CLASSES[mc].key_attr : '';
+  if (fpKeyAttr === '力量或敏捷') fpKeyAttr = (state.classes[0].keyAttr || '力量');
+  var fpKeyVal = state.attrs[fpKeyAttr] || 10;
+  var fpMax = calcTotalFP(mc, ml, sc, sl, fpKeyAttr, fpKeyVal, state.race, 0);
+  if (isNaN(fpMax) || fpMax <= 0) fpMax = state.fp || 1;
+  var raceData = REF_RACES[state.race] || {};
+  var speed = raceData.speed || '6米';
+  var ac = SB_calcAC();
+  var keyAttr = getKeyAttr(state.classes[0]);
+  var strMod = calcMod(state.attrs['力量'] || 10);
+  var dexMod = calcMod(dex);
+  var _keyAttr = REF_CLASSES[mc] ? REF_CLASSES[mc].key_attr : '魅力';
+  if (_keyAttr === '力量或敏捷') _keyAttr = (state.classes[0].keyAttr || '力量');
+  var _keyVal = state.attrs[_keyAttr] || 10;
+  var spellMod = calcMod(_keyVal) + (state.spell_hit_bonus || 0);
+  var atkMod = Math.max(strMod, dexMod) + (state.atk_hit_bonus || 0);
+  return {
+    hpMax: hpMax, fpMax: fpMax, speed: speed, ac: ac, keyAttr: keyAttr,
+    keyVal: state.attrs[keyAttr] || 10, keyMod: calcMod(state.attrs[keyAttr] || 10),
+    hpRecover: Math.floor(hpMax / 2), fpRecover: Math.floor(fpMax / 2),
+    watch: 10 + calcMod(wis), atk: atkMod, spell: spellMod, dexMod: dexMod
+  };
+}
+function SB_toggleBattle() {
+  var st = SB_battleStats();
+  if (!SB_battle.active) {
+    SB_battle.cur = { hp: st.hpMax, fp: st.fpMax };
+    SB_battle.max = { hp: st.hpMax, fp: st.fpMax };
+    SB_battle.acSnap = st.ac;
+    SB_battle.armorSnap = state.armor || 0;
+    SB_battle.tmpHpSnap = state.tmpHp || 0;
+    SB_battle.shieldSnap = state.shield || 0;
+    SB_battle.init = null;
+    SB_battle.exhaust = 0;
+    SB_battle.usage = {};
+    SB_battle.active = true;
+    document.body.classList.add('battle');
+    SB_log('⚔ 进入战斗（生命 ' + SB_battle.cur.hp + ' / 疲劳 ' + SB_battle.cur.fp + ' / 防御等级 ' + st.ac + '）', 'battle');
+    SB_moveIntoBattleView();
+    renderBattleStats();
+    renderSkillTables();
+    SB_renderBattleDrawer();
+    SB_renderMobileBattleStrip();
+    setTimeout(function() {
+      if (SB_battle.active) SB_flashInit();
+    }, 700);
+    setTimeout(function() {
+      var c = document.querySelector('.container');
+      if (c && SB_battle.active) c.style.display = 'none';
+      window.scrollTo(0, 0);
+    }, 420);
+  } else {
+    var wasExhaust = SB_battle.exhaust;
+    state.armor = SB_battle.armorSnap;
+    state.tmpHp = SB_battle.tmpHpSnap;
+    state.shield = SB_battle.shieldSnap;
+    SB_battle.active = false;
+    SB_battle.cur = null;
+    SB_battle.max = null;
+    SB_battle.init = null;
+    if (wasExhaust > 0) SB_log('退出战斗：力竭 ' + wasExhaust + ' 层清零', 'battle');
+    SB_battle.exhaust = 0;
+    var cEl = document.querySelector('.container');
+    if (cEl) cEl.style.display = '';
+    window.scrollTo(0, 0);
+    document.body.classList.add('battle-exit');
+    document.body.classList.remove('battle');
+    SB_log('退出战斗：生命/疲劳/防御等级已恢复初始值（' + st.hpMax + '/' + st.fpMax + '/' + st.ac + '）', 'battle');
+    renderBattleStats();
+    renderSkillTables();
+    SB_renderMobileBattleStrip();
+    setTimeout(function() {
+      SB_moveBackFromBattleView();
+      document.body.classList.remove('battle-exit');
+    }, 430);
+  }
+}
+function SB_flashInit() {
+  var el = document.getElementById('initItem');
+  if (el) {
+    el.classList.add('mbs-flash');
+    setTimeout(function() { el.classList.remove('mbs-flash'); }, 3000);
+  }
+}
+function SB_renderMiniBalls() {
+  var set = function(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
+  set('tmpHpNum', state.tmpHp || 0);
+  set('armorNum', state.armor || 0);
+  set('shieldNum', state.shield || 0);
+  var st = document.getElementById('shieldText');
+  if (st) st.textContent = SB_battle.active ? SB_battle.acSnap : SB_calcAC();
+  var bga = document.getElementById('bgAc');
+  if (bga) bga.textContent = SB_battle.active ? SB_battle.acSnap : SB_calcAC();
+  SB_ensureBattleFields();
+}
+function SB_renderOrbs() {
+  var st = SB_battleStats();
+  var hpCur = SB_battle.active ? SB_battle.cur.hp : st.hpMax;
+  var fpCur = SB_battle.active ? SB_battle.cur.fp : st.fpMax;
+  var set = function(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
+  set('hpCur', hpCur); set('hpMax', st.hpMax);
+  set('fpCur', fpCur); set('fpMax', st.fpMax);
+  set('kaName', st.keyAttr);
+  set('kaMod', st.keyVal + '（' + (st.keyMod >= 0 ? '+' : '') + st.keyMod + '）');
+  set('bgAc', SB_battle.active ? SB_battle.acSnap : st.ac);
+  set('bgHpRecover', st.hpRecover);
+  set('bgFpRecover', st.fpRecover);
+  set('bgSpeed', st.speed);
+  set('bgWatch', st.watch);
+  set('bgAtk', (st.atk >= 0 ? '+' : '') + st.atk);
+  set('bgSpell', (st.spell >= 0 ? '+' : '') + st.spell);
+  set('exhaustNum', SB_battle.exhaust);
+  var ORB_C = 2 * Math.PI * 50;
+  var hpArc = document.getElementById('hpArc');
+  var fpArc = document.getElementById('fpArc');
+  if (hpArc) {
+    var hpPct = st.hpMax > 0 ? hpCur / st.hpMax : 0;
+    hpArc.setAttribute('stroke-dasharray', (Math.max(0, Math.min(1, hpPct)) * ORB_C).toFixed(1) + ' ' + ORB_C.toFixed(1));
+    hpArc.setAttribute('stroke', hpPct > 0.66 ? '#2e8b57' : (hpPct > 0.33 ? '#d4a017' : '#c0392b'));
+    hpArc.parentNode.classList.toggle('orb-low', hpPct < 0.25);
+  }
+  if (fpArc) {
+    var fpPct = st.fpMax > 0 ? fpCur / st.fpMax : 0;
+    fpArc.setAttribute('stroke-dasharray', (Math.max(0, Math.min(1, fpPct)) * ORB_C).toFixed(1) + ' ' + ORB_C.toFixed(1));
+    fpArc.setAttribute('stroke', fpPct > 0.5 ? '#2e6db4' : (fpPct > 0.25 ? '#5a9bd5' : '#a8cbea'));
+    fpArc.parentNode.classList.toggle('orb-low', fpPct < 0.25 && SB_battle.active);
+  }
+  var initEl = document.getElementById('initItem');
+  if (initEl) {
+    var mod = st.dexMod;
+    var val = SB_battle.active ? (SB_battle.init !== null ? SB_battle.init : 'D20' + (mod >= 0 ? '+' : '') + mod) : 'D20' + (mod >= 0 ? '+' : '') + mod;
+    initEl.innerHTML = '<small>先攻值</small><b>' + val + ' <span class="init-edit">✎</span></b>';
+  }
+  var depth = 92 - (SB_battle.exhaust - 1) * 13;
+  document.documentElement.style.setProperty('--exhaust-depth', (SB_battle.exhaust > 0 ? depth : 92) + '%');
+  SB_renderMiniBalls();
+  SB_renderMobileBattleStrip();
+}
+function SB_adjHp(d) {
+  if (!SB_battle.active) return;
+  SB_battle.cur.hp = Math.max(0, Math.min(SB_battle.max.hp, SB_battle.cur.hp + d));
+  SB_log((d > 0 ? '受到治疗 +' : '受到伤害 ') + Math.abs(d) + ' → 生命 ' + SB_battle.cur.hp + '/' + SB_battle.max.hp, d > 0 ? 'heal' : '');
+  SB_renderOrbs();
+}
+function SB_adjFp(d) {
+  if (!SB_battle.active) return;
+  SB_battle.cur.fp = Math.max(0, Math.min(SB_battle.max.fp, SB_battle.cur.fp + d));
+  SB_log('疲劳值调整 ' + (d > 0 ? '+' : '') + d + ' → 疲劳 ' + SB_battle.cur.fp + '/' + SB_battle.max.fp);
+  SB_renderOrbs();
+}
+var SB_MINI_CFG = {
+  tmpHp: { t: '临时生命', key: 'tmpHp', hint: '临时生命：战斗中临时获得的额外生命，退出战斗后恢复为进入时数值。' },
+  armor: { t: '护甲值', key: 'armor', hint: '护甲值：角色护甲提供的防护值（与防御等级不同）。战斗中修改，退出战斗后恢复为进入时数值。' },
+  ac: { t: '防御等级', key: 'ac', hint: '防御等级：战斗中修改，退出战斗后将恢复为初始值。' },
+  shield: { t: '护盾值', key: 'shield', hint: '护盾值：战斗中获得的额外防护，退出战斗后恢复为进入时数值。' }
+};
+var SB_MINI_KIND = 'tmpHp';
+function SB_editMini(kind) {
+  var cfg = SB_MINI_CFG[kind];
+  if (!cfg) return;
+  if (kind === 'ac' && !SB_battle.active) { SB_toast('防御等级由护甲与属性计算，战斗中可临时调整', 'warn'); return; }
+  SB_MINI_KIND = kind;
+  document.getElementById('miniTitle').textContent = cfg.t;
+  document.getElementById('miniInput').value = kind === 'ac' ? SB_battle.acSnap : (state[cfg.key] || 0);
+  document.getElementById('miniHint').textContent = cfg.hint + (SB_battle.active ? '（战斗中修改）' : '（非战斗修改将记为初始值）');
+  openOverlay('miniOverlay');
+}
+function SB_saveMini() {
+  var cfg = SB_MINI_CFG[SB_MINI_KIND];
+  if (!cfg) return;
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  if (isNaN(v) || v < 0) { SB_toast('请输入有效' + cfg.t, 'warn'); return; }
+  if (cfg.key === 'ac') {
+    if (SB_battle.active && SB_battle.acSnap !== v) {
+      SB_battle.acSnap = v;
+      SB_log('战斗中防御等级调整 → ' + v);
+      SB_renderMiniBalls();
+    }
+    closeOverlay('miniOverlay');
+    return;
+  }
+  if (SB_battle.active) {
+    state[cfg.key] = v;
+    SB_log('战斗中' + cfg.t + '调整 → ' + v);
+  } else if ((state[cfg.key] || 0) !== v) {
+    state[cfg.key] = v;
+    SB_toast('已记录新' + cfg.t + '初始值：' + v);
+    SB_log('非战斗修改' + cfg.t + ' → ' + v + '（记为初始值）');
+  }
+  SB_renderMiniBalls();
+  closeOverlay('miniOverlay');
+}
+/* 覆盖 renderBattleStats：新版战斗数据卡 */
+var SB_origRenderBattleStats = renderBattleStats;
+renderBattleStats = function() {
+  var st = SB_battleStats();
+  var hpCur = SB_battle.active ? SB_battle.cur.hp : st.hpMax;
+  var fpCur = SB_battle.active ? SB_battle.cur.fp : st.fpMax;
+  var acShow = SB_battle.active ? SB_battle.acSnap : st.ac;
+  var keyModStr = (st.keyMod >= 0 ? '+' : '') + st.keyMod;
+  var initVal = 'D20' + (st.dexMod >= 0 ? '+' : '') + st.dexMod;
+  var html =
+    '<div class="battle-card">' +
+    '<div class="b-top">' +
+    '<div class="key-attr">' +
+    '<span class="ka-label">关键属性</span>' +
+    '<span class="ka-name" id="kaName">' + st.keyAttr + '</span>' +
+    '<span class="ka-mod" id="kaMod">' + st.keyVal + '（' + keyModStr + '）</span>' +
+    '</div>' +
+    '<div class="mini-balls">' +
+    '<div class="mini-ball mb-tmphp" onclick="SB_editMini(\'tmpHp\')" title="点击修改临时生命"><span class="n" id="tmpHpNum">' + (state.tmpHp || 0) + '</span><span class="lbl">临时生命</span></div>' +
+    '<div class="mini-ball mb-ac" onclick="SB_editMini(\'armor\')" title="点击修改护甲值"><span class="n" id="armorNum">' + (state.armor || 0) + '</span><span class="lbl">护甲值</span></div>' +
+    '<div class="mini-ball mb-shield" onclick="SB_editMini(\'shield\')" title="点击修改护盾值"><span class="n" id="shieldNum">' + (state.shield || 0) + '</span><span class="lbl">护盾</span></div>' +
+    '</div>' +
+    '<div class="orb-wrap exhaust-anchor">' +
+    '<div class="exhaust-badge" onclick="SB_showExhaust()" title="点击查看力竭详情"><span class="n" id="exhaustNum">' + SB_battle.exhaust + '</span></div>' +
+    '<svg class="orb-svg" viewBox="0 0 120 120"><circle class="orb-bg" cx="60" cy="60" r="50"></circle><circle class="orb-fill" id="hpArc" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle><text class="orb-text" x="60" y="66" text-anchor="middle"><tspan id="hpCur">' + hpCur + '</tspan><tspan class="orb-slash"> / </tspan><tspan class="orb-max" id="hpMax">' + st.hpMax + '</tspan></text></svg>' +
+    '<div class="orb-label">生命值</div>' +
+    '<div class="orb-ctrl"><button class="b5" onclick="SB_adjHp(-5)">−5</button><button onclick="SB_adjHp(-1)">−1</button><button onclick="SB_adjHp(1)">+1</button><button class="b5" onclick="SB_adjHp(5)">+5</button><button class="b5" onclick="SB_editHpFp(\'hp\')" title="输入精确数值">✏</button></div>' +
+    '</div>' +
+    '<div class="orb-wrap">' +
+    '<svg class="orb-svg" viewBox="0 0 120 120"><circle class="orb-bg" cx="60" cy="60" r="50"></circle><circle class="orb-fill" id="fpArc" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle><text class="orb-text" x="60" y="66" text-anchor="middle"><tspan id="fpCur">' + fpCur + '</tspan><tspan class="orb-slash"> / </tspan><tspan class="orb-max" id="fpMax">' + st.fpMax + '</tspan></text></svg>' +
+    '<div class="orb-label">疲劳值</div>' +
+    '<div class="orb-ctrl"><button class="b5" onclick="SB_adjFp(-5)">−5</button><button onclick="SB_adjFp(-1)">−1</button><button onclick="SB_adjFp(1)">+1</button><button class="b5" onclick="SB_adjFp(5)">+5</button><button class="b5" onclick="SB_editHpFp(\'fp\')" title="输入精确数值">✏</button></div>' +
+    '</div>' +
+    '<div class="shield-box" onclick="SB_editMini(\'ac\')" title="点击修改防御等级">' +
+    '<svg class="shield-svg" viewBox="0 0 100 110"><path class="shield-path" d="M50 4 L92 18 V56 C92 82 74 98 50 106 C26 98 8 82 8 56 V18 Z"></path><text class="shield-text" id="shieldText" x="50" y="62" text-anchor="middle">' + acShow + '</text></svg>' +
+    '<div class="shield-label">防御等级</div><div class="shield-edit-hint">点击编辑</div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="battle-grid">' +
+    '<div class="b-item"><small>生命回复</small><b id="bgHpRecover">' + st.hpRecover + '</b></div>' +
+    '<div class="b-item"><small>疲劳回复</small><b id="bgFpRecover">' + st.fpRecover + '</b></div>' +
+    '<div class="b-item"><small>防御等级</small><b id="bgAc">' + acShow + '</b></div>' +
+    '<div class="b-item" id="initItem" style="cursor:pointer" title="点击设置先攻值" onclick="SB_editInit()"><small>先攻值</small><b>' + initVal + ' <span class="init-edit">✎</span></b></div>' +
+    '<div class="b-item"><small>基础速度</small><b id="bgSpeed">' + st.speed + '</b></div>' +
+    '<div class="b-item"><small>警惕值</small><b id="bgWatch">' + st.watch + '</b></div>' +
+    '<div class="b-item" style="cursor:pointer" title="点击编辑攻击命中加成" onclick="SB_editHitBonus(\'atk\')"><small>攻击命中</small><b id="bgAtk">' + (st.atk >= 0 ? '+' : '') + st.atk + '</b></div>' +
+    '<div class="b-item" style="cursor:pointer" title="点击编辑法术命中加成" onclick="SB_editHitBonus(\'spell\')"><small>法术命中</small><b id="bgSpell">' + (st.spell >= 0 ? '+' : '') + st.spell + '</b></div>' +
+    '</div>' +
+    '<div class="battle-actions"><button class="btn-battle' + (SB_battle.active ? ' in-battle' : '') + '" id="battleToggle" onclick="SB_toggleBattle()">' + (SB_battle.active ? '⚔ 退出战斗' : '⚔ 进入战斗') + '</button></div>' +
+    '</div>';
+  var host = document.getElementById('stat-row');
+  if (host) host.innerHTML = html;
+  SB_renderOrbs();
+};
+function SB_editInit() {
+  if (!SB_battle.active) { SB_toast('进入战斗记录模式后可设置本场先攻值', 'warn'); return; }
+  document.getElementById('initInput').value = SB_battle.init !== null ? SB_battle.init : 10;
+  openOverlay('initOverlay');
+}
+function SB_saveInit() {
+  var v = parseInt(document.getElementById('initInput').value, 10);
+  if (isNaN(v)) { SB_toast('请输入有效先攻值', 'warn'); return; }
+  SB_battle.init = v;
+  SB_renderOrbs();
+  SB_log('记录本场先攻值：' + v);
+  SB_toast('先攻值已设为 ' + v);
+  closeOverlay('initOverlay');
+}
+function SB_showExhaust() {
+  var cur = SB_battle.exhaust;
+  var list = document.getElementById('exhaustList');
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    html += '<div class="ex-lv' + (i <= cur ? '' : ' done') + '"><b>第 ' + i + ' 层：</b>' + SB_EXHAUST[i] + '</div>';
+  }
+  list.innerHTML = html;
+  document.getElementById('exhaustCurrent').textContent = cur > 0 ? '当前 ' + cur + ' 层' : '未力竭';
+  openOverlay('exhaustOverlay');
+}
+
+/* 阶段2：启动后强制以新版战斗数据卡渲染 stat-row */
+if (document.getElementById('stat-row')) { renderBattleStats(); }
+
+/* ============ 阶段3：力竭 / 技能使用 / 技能表注入 ============ */
+function SB_addExhaust() {
+  if (SB_battle.exhaust >= 5) return;
+  SB_battle.exhaust++;
+  var depth = 92 - (SB_battle.exhaust - 1) * 13;
+  document.documentElement.style.setProperty('--exhaust-depth', depth + '%');
+  SB_log('获得第 ' + SB_battle.exhaust + ' 层力竭：' + SB_EXHAUST[SB_battle.exhaust], 'exhaust');
+  if (SB_battle.exhaust === 4) SB_toast('四层力竭：进入失能状态，无法使用技能', 'exhaust-toast');
+  if (SB_battle.exhaust === 5) SB_toast('五层力竭：角色因力竭而死亡', 'exhaust-toast');
+  SB_renderOrbs();
+}
+function SB_useSkill(name) {
+  if (!SB_battle.active) { SB_toast('请先进入战斗记录模式', 'warn'); return; }
+  if (SB_battle.exhaust >= 4) { SB_toast('失能状态：无法使用技能', 'exhaust-toast'); return; }
+  var sk = null;
+  for (var i = 0; i < (state.skills || []).length; i++) {
+    var s = state.skills[i];
+    if ((s.n || s.name) === name) { sk = s; break; }
+  }
+  if (!sk) return;
+  var cost = parseFloat(getSkillField(name, sk.src, '疲劳消耗')) || 0;
+  var before = SB_battle.cur.fp;
+  if (SB_battle.cur.fp < cost) {
+    SB_toast('疲劳值不足！获得第 ' + (SB_battle.exhaust + 1) + ' 层力竭', 'exhaust-toast');
+    SB_addExhaust();
+  }
+  SB_battle.cur.fp = Math.max(0, SB_battle.cur.fp - cost);
+  SB_battle.usage[name] = (SB_battle.usage[name] || 0) + 1;
+  SB_log('使用技能「' + name + '」疲劳 -' + cost + ' → ' + SB_battle.cur.fp + '/' + SB_battle.max.fp);
+  SB_renderOrbs();
+  if (SB_battle.exhaust >= 4) { SB_log('四层力竭：进入失能状态（无法继续使用技能）', 'exhaust'); }
+}
+var SB_origRenderSkillTables = renderSkillTables;
+renderSkillTables = function() {
+  SB_origRenderSkillTables();
+  var bodies = ['skill-table-body', 'sub-skill-table-body'];
+  for (var b = 0; b < bodies.length; b++) {
+    var tb = document.getElementById(bodies[b]);
+    if (!tb) continue;
+    var rows = tb.querySelectorAll('tr');
+    for (var ri = 0; ri < rows.length; ri++) {
+      var tr = rows[ri];
+      if (tr.classList.contains('empty-slot')) continue;
+      var nameEl = tr.querySelector('.skill-name');
+      if (!nameEl) continue;
+      var name = nameEl.textContent.trim();
+      var td = document.createElement('td');
+      td.className = 'skill-use-cell';
+      if (SB_battle.active) {
+        var used = SB_battle.usage[name] ? ' <span class="used-cnt">已用 ' + SB_battle.usage[name] + ' 次</span>' : '';
+        td.innerHTML = '<button class="use-btn" onclick="event.stopPropagation();SB_useSkill(\'' + name.replace(/'/g, '') + '\')">⚔ 使用</button>' + used;
+      }
+      tr.appendChild(td);
+    }
+  }
+};
+
+/* ============ 阶段4：战斗子页三栏 + 速览渲染 ============ */
+var SB_BV_PLACEHOLDERS = [];
+function SB_moveIntoBattleView() {
+  SB_BV_PLACEHOLDERS = [];
+  var moves = [
+    { sel: '.battle-section', host: 'bvVitals' },
+    { sel: '.equip-section', host: 'bvEquipHost' },
+    { sel: '#battleDrawer', host: 'bvOverview' },
+    { sel: '#logDrawer', host: 'bvLog' }
+  ];
+  for (var i = 0; i < moves.length; i++) {
+    var node = document.querySelector(moves[i].sel);
+    if (!node) continue;
+    var host = document.getElementById(moves[i].host);
+    if (!host) continue;
+    var ph = document.createElement('span');
+    ph.className = 'bv-placeholder';
+    ph.style.display = 'none';
+    node.parentNode.insertBefore(ph, node);
+    host.appendChild(node);
+    SB_BV_PLACEHOLDERS.push({ ph: ph, node: node });
+  }
+}
+function SB_moveBackFromBattleView() {
+  for (var i = SB_BV_PLACEHOLDERS.length - 1; i >= 0; i--) {
+    var p = SB_BV_PLACEHOLDERS[i];
+    if (p.ph.parentNode) p.ph.parentNode.insertBefore(p.node, p.ph);
+    if (p.ph.parentNode) p.ph.remove();
+  }
+  SB_BV_PLACEHOLDERS = [];
+}
+function SB_renderBattleDrawer() {
+  var bdAttrs = document.getElementById('bdAttrs');
+  if (bdAttrs) {
+    var key = getKeyAttr(state.classes[0]);
+    var ah = '';
+    var order = ['力量', '敏捷', '体质', '智力', '感知', '魅力', '意志', '幸运'];
+    for (var ai = 0; ai < order.length; ai++) {
+      var nm = order[ai];
+      var v = state.attrs[nm] || 0;
+      var m = Math.floor((v - 10) / 2);
+      ah += '<div class="bd-attr' + (nm === key ? ' key' : '') + '"><span>' + nm + '</span><b>' + v + '(' + (m >= 0 ? '+' : '') + m + ')</b></div>';
+    }
+    bdAttrs.innerHTML = ah;
+  }
+  var bdSkills = document.getElementById('bdSkills');
+  var bdSkillCnt = document.getElementById('bdSkillCnt');
+  if (bdSkills) {
+    var all = [];
+    for (var i = 0; i < (state.skills || []).length; i++) {
+      var s = state.skills[i];
+      if (!s || !(s.n || s.name)) continue;
+      var cast = getSkillField(s.n || s.name, s.src, '施展时间') || '—';
+      var fp = getSkillField(s.n || s.name, s.src, '疲劳消耗') || '';
+      all.push({ n: s.n || s.name, cast: cast, fp: fp });
+    }
+    var groups = { '0动作': [], '1动作': [], '其他': [] };
+    for (var si = 0; si < all.length; si++) {
+      var sk = all[si];
+      var g = (sk.cast === '0动作') ? '0动作' : (sk.cast === '1动作' ? '1动作' : '其他');
+      groups[g].push(sk);
+    }
+    var sh = '';
+    var cnt = 0;
+    var gOrder = ['0动作', '1动作', '其他'];
+    for (var gi = 0; gi < gOrder.length; gi++) {
+      var gName = gOrder[gi];
+      var list = groups[gName];
+      if (!list.length) continue;
+      sh += '<div class="bd-skgroup"><h4>' + gName + '</h4>';
+      for (var kj = 0; kj < list.length; kj++) {
+        var sk2 = list[kj];
+        cnt++;
+        var used = SB_battle.usage[sk2.n] ? ' <span style="color:#8fd19a;font-size:10px">×' + SB_battle.usage[sk2.n] + '</span>' : '';
+        sh += '<div class="bd-skill"><span class="bd-sn" onclick="SB_showSkillTip(\'' + sk2.n.replace(/'/g, '') + '\')">' + sk2.n + '</span>' +
+          (sk2.fp ? '<span class="bd-fp">' + sk2.fp + '疲</span>' : '') +
+          '<button class="bd-use" onclick="SB_useSkill(\'' + sk2.n.replace(/'/g, '') + '\')">⚔ 使用</button>' + used + '</div>';
+      }
+      sh += '</div>';
+    }
+    bdSkills.innerHTML = sh || '<div class="bd-empty">暂无技能</div>';
+    if (bdSkillCnt) bdSkillCnt.textContent = cnt + ' 个';
+  }
+  var bdTalents = document.getElementById('bdTalents');
+  if (bdTalents) {
+    var th = '';
+    var tl = state.talent_tree || [];
+    var tiers = ['一阶', '二阶'];
+    for (var ti = 0; ti < tiers.length; ti++) {
+      var names = [];
+      for (var tj = 0; tj < tl.length; tj++) {
+        if (tl[tj].tier === tiers[ti]) names.push(tl[tj]);
+      }
+      if (!names.length) continue;
+      th += '<div class="bd-tier"><span class="bd-tlabel">' + tiers[ti] + '</span>';
+      for (var tk = 0; tk < names.length; tk++) {
+        th += '<span class="bd-tcell" title="' + (names[tk].desc || '').replace(/"/g, '&quot;') + '">' + names[tk].n + '</span>';
+      }
+      th += '</div>';
+    }
+    bdTalents.innerHTML = th || '<div class="bd-empty">暂无已学天赋</div>';
+  }
+  var bdFeats = document.getElementById('bdFeats');
+  if (bdFeats) {
+    var fh = '';
+    for (var fi = 0; fi < (state.special_feats || []).length; fi++) {
+      var f = state.special_feats[fi];
+      var fn = typeof f === 'string' ? f : (f && f.name);
+      if (fn) fh += '<div class="bd-feat"><span>' + fn + '</span></div>';
+    }
+    bdFeats.innerHTML = fh || '<div class="bd-empty">未选择专长</div>';
+  }
+}
+function SB_showSkillTip(name) {
+  SB_toast('技能「' + name + '」——战斗中点击 ⚔ 使用 释放', '');
+}
+/* render 包装：战斗中重绘后刷新速览 */
+var SB_origRender = render;
+render = function() {
+  SB_origRender();
+  if (SB_battle.active) {
+    SB_renderBattleDrawer();
+    SB_renderOrbs();
+    renderSkillTables();
+  }
+};
+
+/* ============ 阶段5：移动端状态条 ============ */
+function SB_renderMobileBattleStrip() {
+  var strip = document.getElementById('mobileBattleStrip');
+  if (!strip) return;
+  if (!SB_battle.active) { strip.innerHTML = ''; return; }
+  var initTxt = SB_battle.init !== null ? '先攻 ' + SB_battle.init : '先攻 ✎';
+  strip.innerHTML =
+    '<div class="mbs-items">' +
+    '<div class="mbs-row">' +
+    '<div class="mbs-orb"><span class="mbs-dot hp"></span><b>' + SB_battle.cur.hp + '/' + SB_battle.max.hp + '</b></div>' +
+    '<div class="mbs-orb"><span class="mbs-dot fp"></span><b>' + SB_battle.cur.fp + '/' + SB_battle.max.fp + '</b></div>' +
+    '<span class="mbs-sep"></span>' +
+    '<button class="mbs-btn" onclick="SB_editInit()">' + initTxt + '</button>' +
+    '<button class="mbs-btn" onclick="SB_showExhaust()">力竭 ' + SB_battle.exhaust + '</button>' +
+    '</div>' +
+    '<div class="mbs-row">' +
+    '<button class="mbs-btn" onclick="SB_mobileBvJump(\'overview\')">速览</button>' +
+    '<button class="mbs-btn" onclick="SB_mobileBvJump(\'log\')">日志</button>' +
+    '<button class="mbs-btn exit" onclick="SB_toggleBattle()">退出</button>' +
+    '</div>' +
+    '</div>';
+}
+function SB_mobileBvJump(which) {
+  var el = document.getElementById(which === 'overview' ? 'bvOverview' : 'bvLog');
+  if (el) {
+    var rect = el.getBoundingClientRect();
+    var absTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+    window.scrollTo(0, Math.max(0, absTop - 60));
+    el.classList.add('bv-flash');
+    setTimeout(function() { el.classList.remove('bv-flash'); }, 900);
+  }
+}
+/* 先攻提示：移动端闪状态条按钮，桌面闪卡片先攻行 */
+function SB_flashInit() {
+  if (window.innerWidth <= 600) {
+    var b = document.querySelector('#mobileBattleStrip .mbs-btn[onclick="SB_editInit()"]');
+    if (b) {
+      b.classList.add('mbs-flash');
+      setTimeout(function() { b.classList.remove('mbs-flash'); }, 3000);
+    }
+    return;
+  }
+  var el = document.getElementById('initItem');
+  if (el) {
+    el.classList.add('mbs-flash');
+    setTimeout(function() { el.classList.remove('mbs-flash'); }, 3000);
+  }
+}
+
+/* ============ 货币可编辑 ============ */
+var SB_CUR_KIND = null;
+function SB_saveMiniDispatch() {
+  if (SB_CUR_KIND) SB_saveCurrency(); else SB_saveMini();
+}
+function SB_editCurrency(kind) {
+  SB_CUR_KIND = kind;
+  document.getElementById('miniTitle').textContent = kind;
+  document.getElementById('miniInput').value = state.currency[kind] || 0;
+  document.getElementById('miniHint').textContent = '输入' + kind + '数量（含调整值）。';
+  openOverlay('miniOverlay');
+}
+function SB_saveCurrency() {
+  if (!SB_CUR_KIND) return;
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  if (isNaN(v) || v < 0) { SB_toast('请输入有效数量', 'warn'); return; }
+  state.currency[SB_CUR_KIND] = v;
+  SB_log('货币调整：' + SB_CUR_KIND + ' → ' + v);
+  SB_CUR_KIND = null;
+  renderCurrency();
+  closeOverlay('miniOverlay');
+}
+var SB_origRenderCurrency = renderCurrency;
+renderCurrency = function() {
+  SB_origRenderCurrency();
+  var row = document.getElementById('currency-row');
+  if (!row) return;
+  var items = row.querySelectorAll('.currency-item');
+  var keys = Object.keys(state.currency);
+  for (var i = 0; i < items.length; i++) {
+    items[i].style.cursor = 'pointer';
+    items[i].title = '点击修改数量';
+    items[i].onclick = (function(idx) {
+      return function() {
+        SB_editCurrency(keys[idx]);
+      };
+    })(i);
+  }
+};
+
+/* ============ C 组：力竭手动 / 精确数值 / 列表编辑 / 背景故事 / 命中加成 ============ */
+/* ---- 1. 力竭手动 ---- */
+function SB_resetExhaustManual() {
+  if (!SB_battle.active) { SB_toast('进入战斗记录模式后可调整力竭', 'warn'); return; }
+  SB_battle.exhaust = 0;
+  SB_log('力竭清零（手动）', 'battle');
+  SB_renderOrbs();
+  closeOverlay('exhaustOverlay');
+}
+/* ---- 2. 生命/疲劳精确数值 ---- */
+var SB_HPFP_KIND = null;
+function SB_editHpFp(kind) {
+  if (!SB_battle.active) { SB_toast('进入战斗记录模式后可调整生命值/疲劳值', 'warn'); return; }
+  SB_HPFP_KIND = kind;
+  var cur = kind === 'hp' ? SB_battle.cur.hp : SB_battle.cur.fp;
+  var max = kind === 'hp' ? SB_battle.max.hp : SB_battle.max.fp;
+  document.getElementById('miniTitle').textContent = kind === 'hp' ? '生命值' : '疲劳值';
+  document.getElementById('miniInput').value = cur;
+  document.getElementById('miniHint').textContent = '输入当前' + (kind === 'hp' ? '生命' : '疲劳') + '值（0-' + max + '）。';
+  openOverlay('miniOverlay');
+}
+function SB_saveHpFp() {
+  if (!SB_HPFP_KIND) return;
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  if (isNaN(v) || v < 0) { SB_toast('请输入有效数值', 'warn'); return; }
+  var max = SB_HPFP_KIND === 'hp' ? SB_battle.max.hp : SB_battle.max.fp;
+  var nv = Math.max(0, Math.min(max, v));
+  var kindTxt = SB_HPFP_KIND === 'hp' ? '生命' : '疲劳';
+  if (SB_HPFP_KIND === 'hp') SB_battle.cur.hp = nv; else SB_battle.cur.fp = nv;
+  SB_log(kindTxt + '值设为 ' + nv + '（' + (SB_HPFP_KIND === 'hp' ? SB_battle.cur.hp : SB_battle.cur.fp) + '/' + max + '）', SB_HPFP_KIND === 'hp' ? 'heal' : '');
+  SB_HPFP_KIND = null;
+  SB_renderOrbs();
+  closeOverlay('miniOverlay');
+}
+/* ---- 3. 语言/专业/武器熟练 列表编辑 ---- */
+var SB_LIST_KIND = null;
+function SB_editList(kind) {
+  SB_LIST_KIND = kind;
+  var cfg = kind === 'lang' ? { t: '语言', v: (state.languages || []).join('，') }
+    : kind === 'prof' ? { t: '专业熟练项', v: (state.professionals || []).join('，') }
+    : { t: '武器熟练', v: Object.keys(state.weapon_profs || {}).join('，') };
+  document.getElementById('listTitle').textContent = cfg.t;
+  document.getElementById('listInput').value = cfg.v;
+  document.getElementById('listHint').textContent = '用逗号分隔多项，如：通用语，精灵语';
+  openOverlay('listOverlay');
+}
+function SB_saveList() {
+  if (!SB_LIST_KIND) return;
+  var raw = document.getElementById('listInput').value;
+  var items = raw.split(/[，,、\n]/).map(function(s) { return s.trim(); }).filter(Boolean);
+  if (SB_LIST_KIND === 'lang') {
+    state.languages = items;
+    SB_log('语言更新：' + items.join('、'));
+  } else if (SB_LIST_KIND === 'prof') {
+    state.professionals = items;
+    SB_log('专业熟练项更新：' + items.join('、'));
+  } else {
+    var wp = {};
+    for (var i = 0; i < items.length; i++) wp[items[i]] = 1;
+    state.weapon_profs = wp;
+    SB_log('武器熟练更新：' + items.join('、'));
+  }
+  SB_LIST_KIND = null;
+  renderLangProfs();
+  closeOverlay('listOverlay');
+}
+/* ---- 4. 背景故事编辑 ---- */
+var SB_STORY_FIELDS = [
+  ['story', '背景故事'], ['personality', '个性'], ['traits', '特性'],
+  ['ideals', '理念'], ['bonds', '羁绊'], ['flaws', '缺陷']
+];
+function SB_editStory() {
+  var box = document.getElementById('storyEditFields');
+  var html = '';
+  for (var i = 0; i < SB_STORY_FIELDS.length; i++) {
+    var f = SB_STORY_FIELDS[i];
+    html += '<div class="story-field" style="margin-bottom:10px">' +
+      '<label style="display:block;font-size:12.5px;color:var(--accent);margin-bottom:4px;font-weight:bold">' + f[1] + '</label>' +
+      '<textarea id="sbStory_' + f[0] + '" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13.5px;resize:vertical;box-sizing:border-box">' +
+      (state[f[0]] || '') + '</textarea></div>';
+  }
+  box.innerHTML = html;
+  openOverlay('storyOverlay');
+}
+function SB_saveStory() {
+  for (var i = 0; i < SB_STORY_FIELDS.length; i++) {
+    var f = SB_STORY_FIELDS[i];
+    var el = document.getElementById('sbStory_' + f[0]);
+    if (el) state[f[0]] = el.value.trim();
+  }
+  SB_log('背景故事已更新');
+  renderStory();
+  closeOverlay('storyOverlay');
+}
+/* ---- 5. 攻击/法术命中加成 ---- */
+var SB_HIT_KIND = null;
+function SB_editHitBonus(kind) {
+  SB_HIT_KIND = kind;
+  var key = kind === 'atk' ? 'atk_hit_bonus' : 'spell_hit_bonus';
+  document.getElementById('miniTitle').textContent = kind === 'atk' ? '攻击命中加成' : '法术命中加成';
+  document.getElementById('miniInput').value = state[key] || 0;
+  document.getElementById('miniHint').textContent = '输入额外加成（可为负数）。面板显示值为属性调整+此加成。';
+  openOverlay('miniOverlay');
+}
+function SB_saveHitBonus() {
+  if (!SB_HIT_KIND) return;
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  if (isNaN(v)) { SB_toast('请输入有效数值', 'warn'); return; }
+  var key = SB_HIT_KIND === 'atk' ? 'atk_hit_bonus' : 'spell_hit_bonus';
+  state[key] = v;
+  SB_log((SB_HIT_KIND === 'atk' ? '攻击命中' : '法术命中') + '加成 → ' + v);
+  SB_HIT_KIND = null;
+  renderBattleStats();
+  closeOverlay('miniOverlay');
+}
+/* 分发：统一确定按钮 */
+function SB_saveMiniDispatch() {
+  if (SB_CUR_KIND) { SB_saveCurrency(); return; }
+  if (SB_HPFP_KIND) { SB_saveHpFp(); return; }
+  if (SB_LIST_KIND) { SB_saveList(); return; }
+  if (SB_HIT_KIND) { SB_saveHitBonus(); return; }
+  SB_saveMini();
+}
+/* renderLangProfs 覆盖：加编辑按钮 */
+var SB_origRenderLangProfs = renderLangProfs;
+renderLangProfs = function() {
+  SB_origRenderLangProfs();
+  var lang = document.getElementById('lang-list');
+  if (lang) {
+    lang.style.cursor = 'pointer';
+    lang.title = '点击编辑语言';
+    lang.onclick = function() { SB_editList('lang'); };
+  }
+  var prof = document.getElementById('prof-list');
+  if (prof) {
+    prof.style.cursor = 'pointer';
+    prof.title = '点击编辑专业熟练项';
+    prof.onclick = function() { SB_editList('prof'); };
+  }
+  var wp = document.getElementById('weapon-profs');
+  if (wp) {
+    wp.style.cursor = 'pointer';
+    wp.title = '点击编辑武器熟练';
+    wp.onclick = function() { SB_editList('weapon'); };
+  }
+};
+/* renderStory 覆盖：加编辑按钮 */
+var SB_origRenderStory = renderStory;
+renderStory = function() {
+  SB_origRenderStory();
+  var title = document.getElementById('story-title');
+  if (title) {
+    var btn = document.createElement('button');
+    btn.className = 'sb-edit-btn';
+    btn.textContent = '✎ 编辑';
+    btn.onclick = SB_editStory;
+    btn.style.cssText = 'margin-left:10px;border:1px solid var(--line);background:var(--bg);color:var(--accent);border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit;vertical-align:middle';
+    title.appendChild(btn);
+  }
+};
