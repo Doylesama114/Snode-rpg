@@ -9251,3 +9251,201 @@ render = function() {
   }
 };
 SB_renderCharHeader();
+
+/* ============ 新版样式：渲染函数输出结构对齐展示版 ============ */
+function SB_esc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+/* 基础信息：圆形头像 + kv 5 列网格 */
+var SB_origRenderProfile = renderProfile;
+renderProfile = function() {
+  var host = document.getElementById('info-grid');
+  if (!host) return;
+  var p = state.portrait ? '<img src="' + state.portrait + '">' : '';
+  var html = '<div class="portrait-row">' +
+    '<div class="portrait-round" title="点击上传立绘" onclick="SB_pickPortrait()">' + p + '<div class="edit-badge">✎ 立绘</div></div>' +
+    '<dl class="kv">' +
+    '<div><dt>玩家</dt><dd>' + SB_esc(state.player) + '</dd></div>' +
+    '<div><dt>角色</dt><dd>' + SB_esc(state.name) + '</dd></div>' +
+    '<div><dt>种族</dt><dd>' + SB_esc(state.race) + '</dd></div>' +
+    '<div><dt>性别</dt><dd>' + SB_esc(state.gender) + '</dd></div>' +
+    '<div><dt>年龄</dt><dd>' + SB_esc(state.age) + '</dd></div>' +
+    '<div><dt>身高</dt><dd>' + SB_esc(state.height) + '</dd></div>' +
+    '<div><dt>体重</dt><dd>' + SB_esc(state.weight) + '</dd></div>' +
+    '<div><dt>瞳色</dt><dd>' + SB_esc(state.eye) + '</dd></div>' +
+    '<div><dt>肤色</dt><dd>' + SB_esc(state.skin) + '</dd></div>' +
+    '<div><dt>发色</dt><dd>' + SB_esc(state.hair) + '</dd></div>' +
+    '</dl></div>';
+  host.innerHTML = html;
+};
+function SB_pickPortrait() {
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) { state.portrait = ev.target.result; render(); };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+/* 职业卡：.cls 行 + 风格标签 */
+var SB_origRenderClassRow = renderClassRow;
+renderClassRow = function() {
+  var host = document.getElementById('class-row');
+  if (!host) return;
+  var html = '<div class="classes">';
+  for (var ci = 0; ci < 2; ci++) {
+    var cl = state.classes[ci] || { name: '', level: 0, styles: ['', '', '', ''] };
+    if (!cl.name) continue;
+    var styles = '';
+    for (var si = 0; si < (cl.styles || []).length; si++) {
+      var st = cl.styles[si];
+      if (st) styles += '<span class="style-tag">' + SB_esc(st) + '</span>';
+    }
+    html += '<div class="cls"><span class="cls-name">' + SB_esc(cl.name) + ' <span class="cls-lv">Lv.' + cl.level + '</span></span>' +
+      '<span class="styles">' + (styles || '<span class="style-tag empty">—</span>') + '</span></div>';
+  }
+  var addon = state.classes[2] && state.classes[2].name ? state.classes[2].name : '未解锁';
+  html += '<div class="cls addon"><span>附赠职业</span><span style="color:var(--muted)">' + SB_esc(addon) + '</span></div>';
+  html += '</div>';
+  host.innerHTML = html;
+};
+/* 个性背景：bg-fields 双列小格（保留标题编辑按钮） */
+var SB_origRenderStory3 = renderStory;
+renderStory = function() {
+  var host = document.getElementById('story-block');
+  if (host) {
+    var fields = [
+      ['故事', state.story, true], ['个性', state.personality, false],
+      ['特性', state.traits, false], ['理念', state.ideals, false],
+      ['羁绊', state.bonds, false], ['缺陷', state.flaws, false]
+    ];
+    var html = '<div class="bg-fields">';
+    for (var i = 0; i < fields.length; i++) {
+      html += '<div class="bg-field' + (fields[i][2] ? ' wide' : '') + '"><span class="bf-label">' + fields[i][0] + '</span><span class="bf-val">' + SB_esc(fields[i][1]) + '</span></div>';
+    }
+    html += '</div>';
+    host.innerHTML = html;
+  }
+  var title = document.getElementById('story-title');
+  if (title && !title.querySelector('.sb-edit-btn')) {
+    var btn = document.createElement('button');
+    btn.className = 'sb-edit-btn';
+    btn.textContent = '✎ 编辑';
+    btn.onclick = SB_editStory;
+    btn.style.cssText = 'margin-left:10px;border:1px solid var(--line);background:var(--bg);color:var(--accent);border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit;vertical-align:middle';
+    title.appendChild(btn);
+  }
+};
+/* 属性：.attr 小卡（名称/值/修正 + 熟练标签） */
+var SB_origRenderAttrGrid = renderAttrGrid;
+renderAttrGrid = function() {
+  var g = document.getElementById('attr-grid');
+  if (!g) return;
+  var ak = (typeof ATTR_NAMES !== 'undefined' ? ATTR_NAMES : ['力量', '敏捷', '体质', '智力', '感知', '魅力', '意志', '幸运']);
+  var _profDefs = typeof PROF_DEFS !== 'undefined' ? PROF_DEFS : {};
+  var ah = '';
+  for (var ai = 0; ai < ak.length; ai++) {
+    var av = state.attrs[ak[ai]] || 10;
+    var am = calcMod(av);
+    var pf = (state.profs || {})[ak[ai]] || {};
+    var plist = _profDefs[ak[ai]] || [];
+    var ph = '';
+    for (var pi = 0; pi < plist.length; pi++) {
+      var pn = plist[pi];
+      var pv = pf[pn] || 0;
+      if (!pv) continue;
+      var cls = pn === '豁免' ? ' saved' : (pv > 0 ? ' learned' : '');
+      ph += '<span class="attr-prof' + cls + '">' + SB_esc(pn) + (pv > 0 ? ' ' + pv : '') + '</span>';
+    }
+    ah += '<div class="attr"><div class="attr-top"><span class="attr-name">' + ak[ai] + '</span><span class="attr-val">' + av + '</span><span class="attr-mod">' + mStr(am) + '</span></div>' +
+      (ph ? '<div class="attr-profs">' + ph + '</div>' : '') + '</div>';
+  }
+  g.innerHTML = ah;
+};
+
+/* ============ 对齐修正：经验区 / 背景 / 特性（展示版结构） ============ */
+/* 经验值：xp-cls 行（职业名/Lv/经验/升级需求/升级按钮），保留源升级功能 */
+var SB_origRenderXP = renderXP;
+renderXP = function() {
+  var xpEl = document.getElementById('xp-bar');
+  if (!xpEl) return;
+  var html = '';
+  for (var ci = 0; ci < (state.classes || []).length; ci++) {
+    var cl = state.classes[ci];
+    if (!cl || !cl.name || cl.level <= 0) continue;
+    var nextLv = cl.level + 1;
+    var tbl = LEVEL_TABLE && (LEVEL_TABLE[ci === 1 ? '子职业' : '主职业']);
+    var needXP = (tbl && tbl[nextLv]) ? (tbl[nextLv].xp || 0) : 0;
+    var canUp = needXP > 0 && state.xp >= needXP;
+    var subCapMsg = '';
+    if (ci === 1 && typeof getMaxSubLevel === 'function') {
+      if (nextLv > getMaxSubLevel()) subCapMsg = ' (主职业等级不足)';
+    }
+    var disabled = !(canUp && !subCapMsg);
+    html += '<div class="xp-cls"><span class="xc-name">' + SB_esc(cl.name) + '</span>' +
+      '<span class="xc-lv">Lv.' + cl.level + '</span>' +
+      '<span class="xc-xp">经验 <b style="color:var(--accent)">' + state.xp + '</b></span>' +
+      '<span class="xc-need">升 ' + nextLv + ' 级需 ' + needXP + (subCapMsg ? subCapMsg : '') + '</span>' +
+      '<button class="xc-btn" ' + (disabled ? 'disabled' : '') + ' onclick="showLevelUpModal(' + ci + ')">' + (disabled ? '经验不足' : '升级！') + '</button></div>';
+  }
+  html += '<div class="xp-hint" style="font-size:11.5px;color:var(--muted);margin-top:2px">属性上限 ' + (typeof getCurrentAttrCap === 'function' ? getCurrentAttrCap() : 18) + ' · 熟练度上限 ' + (typeof getCurrentProfCap === 'function' ? getCurrentProfCap() : 2) + '</div>';
+  xpEl.innerHTML = html;
+};
+/* 背景：story-title 重置 + 6 项双列（故事不跨行） */
+var SB_origRenderStory4 = renderStory;
+renderStory = function() {
+  var host = document.getElementById('story-block');
+  if (host) {
+    var fields = [
+      ['故事', state.story], ['个性', state.personality],
+      ['特性', state.traits], ['理念', state.ideals],
+      ['羁绊', state.bonds], ['缺陷', state.flaws]
+    ];
+    var html = '<div class="bg-fields">';
+    for (var i = 0; i < fields.length; i++) {
+      html += '<div class="bg-field"><span class="bf-label">' + fields[i][0] + '</span><span class="bf-val">' + SB_esc(fields[i][1]) + '</span></div>';
+    }
+    html += '</div>';
+    host.innerHTML = html;
+  }
+  var title = document.getElementById('story-title');
+  if (title) {
+    title.textContent = '个性背景';
+    if (!title.querySelector('.sb-edit-btn')) {
+      var btn = document.createElement('button');
+      btn.className = 'sb-edit-btn';
+      btn.textContent = '✎ 编辑';
+      btn.onclick = SB_editStory;
+      btn.style.cssText = 'margin-left:10px;border:1px solid var(--line);background:var(--bg);color:var(--accent);border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit;vertical-align:middle';
+      title.appendChild(btn);
+    }
+  }
+};
+/* 特性：trait-item 标题/描述分行（种族+职业） */
+var SB_origRenderTraits = renderTraits;
+renderTraits = function() {
+  var autoFill = function(arr) {
+    if (!arr || !arr.length) {
+      var rd = REF_RACES[state.race];
+      if (rd && rd.talents) return rd.talents.map(function(t) { return { name: t.name, desc: t.desc }; });
+    }
+    return arr || [];
+  };
+  var rt = autoFill(state.racial_traits);
+  var rth = '';
+  for (var ri = 0; ri < rt.length; ri++) {
+    rth += '<div class="trait-item"><b>' + SB_esc(rt[ri].name) + '</b><span>' + SB_esc(rt[ri].desc) + '</span></div>';
+  }
+  var re = document.getElementById('racial-traits');
+  if (re) re.innerHTML = rth;
+  var cf = state.class_features || [];
+  var cfh = '';
+  for (var ci = 0; ci < cf.length; ci++) {
+    cfh += '<div class="trait-item"><b>' + SB_esc(cf[ci].name) + '</b><span>' + SB_esc(cf[ci].desc) + '</span></div>';
+  }
+  var ce = document.getElementById('class-features');
+  if (ce) ce.innerHTML = cfh;
+};

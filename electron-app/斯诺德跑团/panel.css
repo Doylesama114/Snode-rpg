@@ -2,10 +2,10 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 
-body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans SC,system-ui,sans-serif;padding:30px;min-height:100vh;font-size:15px}
+body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans SC,system-ui,sans-serif;padding:16px;min-height:100vh;font-size:14.5px;line-height:1.55}
 
 
-.container{max-width:1400px;margin:0 auto;animation:fadeInUp 0.45s ease-out both}
+.container{max-width:1680px;margin:0 auto;animation:fadeInUp 0.45s ease-out both}
 
 
 .section{background:var(--panel);border-radius:10px;margin-bottom:20px;padding:20px 28px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(31,37,34,0.06)}
@@ -736,8 +736,96 @@ body.battle .hide-in-battle{display:none !important}
   .card{padding:12px 12px}
 }
 
+/* 技能表限高滚动（对齐展示版） */
+.skills-grid .card:first-child{max-height:640px;overflow:auto;scrollbar-width:thin;border-radius:var(--radius)}
 /* 紧凑布局：移动端技能表横向滚动 */
 @media (max-width:600px){
   .skills-grid .card{overflow-x:auto}
   .skills-grid .skill-table{min-width:640px}
 }
+
+/* ============ 新版样式语言（对齐展示版） ============ */
+:root{
+  --soft:#edeae2; --gold:#b8860b; --gold-soft:#f5e6c8;
+  --green:#2f6f5e; --red:#9d2f2f; --blue:#315f8f;
+  --radius:8px; --pad:12px 16px;
+  --fs-title:18px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--soft:#2e3135;--gold-soft:#3a3320}
+}
+.card{border-radius:var(--radius);padding:var(--pad)}
+.card h2{font-size:var(--fs-title)}
+.card h2 .sub{font-size:12px;font-weight:normal;color:var(--muted)}
+.sheet-head{border-radius:var(--radius)}
+/* 基础信息：圆形头像 + kv 网格 + 职业卡 */
+.portrait-row{display:flex;align-items:flex-start;gap:16px}
+.portrait-round{width:140px;height:140px;border-radius:50%;flex:none;position:relative;overflow:hidden;cursor:pointer;border:3px solid var(--accent);box-shadow:0 4px 14px rgba(31,37,34,.18);background-color:#8b6b4d;background-image:radial-gradient(circle at 35% 30%,#c9a87c,#8b6b4d 70%)}
+.portrait-round img{width:100%;height:100%;object-fit:cover;display:block}
+.portrait-round .edit-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:11px;text-align:center;padding:3px 0}
+.kv{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
+.kv div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:4px 9px;min-width:0}
+.kv dt{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.kv dd{font-size:12.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 职业卡 */
+.classes{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.cls{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cls .cls-name{font-size:15px;font-weight:bold;min-width:52px;color:var(--ink)}
+.cls .cls-lv{font-size:12px;color:var(--muted);font-weight:normal}
+.cls .styles{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.style-tag{border-radius:4px;padding:1px 9px;font-size:11.5px;border:1px solid var(--line);background:var(--panel)}
+.style-tag.empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;background:transparent;font-size:10.5px}
+.cls.addon{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;gap:8px}
+/* 个性背景：双列小格 */
+.bg-fields{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.bg-field{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;display:flex;gap:8px;align-items:flex-start}
+.bg-field.wide{grid-column:span 2}
+.bg-field .bf-label{font-size:11.5px;color:var(--accent);font-weight:bold;flex:none;min-width:52px}
+.bg-field .bf-val{font-size:12.5px;color:var(--ink);line-height:1.5}
+/* 属性小卡 */
+.attr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.attr{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 11px;display:flex;flex-direction:column;gap:5px}
+.attr-top{display:flex;align-items:baseline;gap:8px}
+.attr-top .attr-name{font-size:13.5px;font-weight:bold;color:var(--ink)}
+.attr-top .attr-val{font-size:17px;font-weight:bold;color:var(--accent)}
+.attr-top .attr-mod{font-size:12px;color:var(--muted)}
+.attr-profs{display:flex;flex-wrap:wrap;gap:4px}
+.attr-prof{font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:0 6px;color:var(--muted)}
+.attr-prof.saved{border-color:var(--gold);color:var(--gold)}
+.attr-prof.learned{border-color:var(--green);color:var(--green)}
+@media (max-width:600px){
+  .kv{grid-template-columns:repeat(2,1fr)}
+  .bg-fields{grid-template-columns:1fr}
+  .attr-grid{grid-template-columns:1fr}
+  .portrait-row{flex-direction:column;align-items:center}
+  .portrait-round{width:120px;height:120px}
+}
+
+/* ============ 对齐修正（A/B 对比） ============ */
+/* 进入战斗按钮：红（战斗中绿） */
+.head-actions .btn-battle{background:var(--red);color:#fff}
+.head-actions .btn-battle:hover{filter:brightness(1.15)}
+body.battle .head-actions .btn-battle{background:var(--green)}
+/* kv 不截断（允许换行） */
+.kv dd{white-space:normal;word-break:break-all;overflow:visible;text-overflow:clip}
+/* 桌面端：保存/返回/重新车卡 移到底部浮动，避开页头 */
+@media (min-width:601px){
+  .sb-top-btn{top:auto !important;bottom:80px !important;padding:6px 12px !important;font-size:13px !important;z-index:1101 !important}
+}
+
+/* ============ 对齐修正 v2 ============ */
+/* 经验区：竖排行（覆盖源横排样式） */
+.xp-panel{display:flex;flex-direction:column;gap:5px;align-items:stretch;justify-content:flex-start;min-height:0}
+.xp-panel span{font-size:inherit;color:inherit;font-weight:inherit}
+.xp-cls{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;flex-wrap:wrap}
+.xp-cls .xc-name{font-weight:bold;color:var(--ink)}
+.xp-cls .xc-lv{color:var(--muted);font-size:12.5px}
+.xp-cls .xc-xp{margin-left:auto;font-size:13px}
+.xp-cls .xc-need{font-size:12px;color:var(--muted)}
+.xc-btn{border:none;border-radius:5px;padding:5px 12px;font-size:12.5px;cursor:pointer;background:var(--accent);color:#fff;font-family:inherit}
+.xc-btn:disabled{background:#8a827a;cursor:not-allowed}
+/* 特性：标题/描述分行 */
+.trait-item b{display:block;font-size:13px;margin-bottom:1px;color:var(--ink)}
+.trait-item span{color:var(--muted);font-size:12.5px}
+/* 旧浮动按钮收敛到页头（功能已并入页头按钮组） */
+.learn-toggle,.sb-top-btn{display:none !important}

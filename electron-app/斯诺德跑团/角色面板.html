@@ -27,6 +27,8 @@
       <button class="btn-primary" onclick="toggleLearnMode()">📚 学习技能</button>
       <button class="btn-ghost" onclick="cheatAdd()">🧪 测试加点</button>
       <button class="btn-ghost" onclick="exportCurrentXlsx()">📄 导出档案</button>
+      <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
+      <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
     </div>
   </header>
@@ -34,20 +36,20 @@
   <!-- ===== 行1：基础信息（含职业） | 战斗数据 ===== -->
   <section class="grid-3">
     <div class="card hide-in-battle">
-      <h2>基础信息</h2>
+      <h2>基础信息 <span class="sub">角色档案</span></h2>
       <div class="info-grid" id="info-grid"></div>
       <div class="class-row" id="class-row"></div>
     </div>
     <div class="card battle-section">
-      <h2>战斗数据</h2>
+      <h2>战斗数据 <span class="sub">非战斗 · 修改数值将记为初始值</span></h2>
       <div class="stat-row" id="stat-row"></div>
     </div>
   </section>
 
   <!-- ===== 行2：经验值 | 技能点 ===== -->
   <section class="xp-sp-grid">
-    <div class="card hide-in-battle"><h2>经验值</h2><div class="xp-panel" id="xp-bar"></div></div>
-    <div class="card sp-section hide-in-battle"><h2>技能点</h2><div class="sp-panel" id="sp-bar"></div></div>
+    <div class="card hide-in-battle"><h2>经验值 <span class="sub">等级与升级</span></h2><div class="xp-panel" id="xp-bar"></div></div>
+    <div class="card sp-section hide-in-battle"><h2>技能点 <span class="sub">色彩标识持有</span></h2><div class="sp-panel" id="sp-bar"></div></div>
   </section>
 
   <!-- ===== 行3：个性背景 + 特性 ===== -->
@@ -64,7 +66,7 @@
 
   <!-- ===== 行4：属性 | 专长/货币/语言·负重 ===== -->
   <section class="attr-side">
-    <div class="card hide-in-battle"><h2>属性</h2><div class="attr-grid" id="attr-grid"></div></div>
+    <div class="card hide-in-battle"><h2>属性 <span class="sub">上限 18</span></h2><div class="attr-grid" id="attr-grid"></div></div>
     <div class="side-col">
       <div class="card hide-in-battle"><h2>特殊专长</h2><div class="feat-list" id="feat-list"></div></div>
       <div class="card hide-in-battle"><h2>货币</h2><div class="currency-row" id="currency-row"></div></div>
@@ -78,7 +80,7 @@
   </section>
 
   <!-- ===== 行5：装备 ===== -->
-  <section class="card equip-section"><h2>装备栏</h2><div class="equip-grid" id="equip-grid"></div></section>
+  
 
   <!-- ===== 行6：主/子技能 | 天赋树 ===== -->
   <section class="skills-grid">
@@ -88,7 +90,7 @@
       <div style="margin-top:16px"><div style="font-size:15px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
       <table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div>
     </div>
-    <div class="card hide-in-battle"><h2>天赋树</h2><div class="talent-grid" id="talent-grid"></div></div>
+    <div class="card hide-in-battle"><h2>天赋树 <span class="sub">已学</span></h2><div class="talent-grid" id="talent-grid"></div></div>
   </section>
 
   <!-- ===== 行7：图纸 ===== -->
@@ -96,6 +98,10 @@
     <p id="blueprintHint" style="font-size:12px;color:var(--muted,#69706b);margin:0 0 10px"></p>
     <div class="blueprint-grid" id="blueprint-grid"></div>
   </section>
+
+  <!-- ===== 行8：装备（最后） ===== -->
+  <section class="card equip-section"><h2>装备栏 <span class="sub">点击选中 → 点击槽位移入 · 右键拆分</span></h2><div class="equip-grid" id="equip-grid"></div></section>
+
 
 </div>
 
