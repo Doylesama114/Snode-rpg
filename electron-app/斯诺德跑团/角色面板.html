@@ -4,17 +4,665 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>角色 - 角色面板</title>
-<link rel="stylesheet" href="panel.css">
+<style>
+/* 隐藏源引擎浮动按钮（页头已有） */
+.sb-top-btn{display:none !important}
+/* ===== 源功能样式（学习面板等） ===== */
+.learn-panel{display:none;position:fixed;bottom:100px;right:30px;width:600px;max-height:70vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;z-index:999;font-size:15px;color:var(--ink);box-shadow:0 8px 30px rgba(31,37,34,0.1);transform-origin:bottom right}
+.learn-panel.show{display:block;animation:panelIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)}
+
+
+.xp-panel{display:flex;align-items:center;justify-content:center;min-height:44px}
+
+
+.xp-panel span{font-size:24px;color:var(--ink);font-weight:bold}
+
+
+.sp-panel{display:flex;flex-direction:column;gap:8px;width:100%}
+
+
+.sp-overview-label{font-size:13px;color:var(--muted,#69706b);margin-bottom:2px}
+
+
+.sp-overview-total{font-size:24px;font-weight:bold;color:var(--ink);line-height:1.2;margin-bottom:4px}
+
+
+.sp-mark-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%}
+
+
+.sp-mark-chip{display:flex;align-items:center;gap:4px;padding:3px 5px;border-radius:4px;border:1px solid var(--line);background:var(--bg);min-width:0}
+
+
+.sp-mark-chip.active{border-color:var(--accent);background:var(--panel);box-shadow:0 0 0 1px rgba(164,109,31,0.2)}
+
+
+.sp-mark-chip.inactive{opacity:.72}
+
+
+.sp-mark-dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.12);flex-shrink:0}
+
+
+.sp-mark-name{font-size:11px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+
+.sp-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+
+
+.sp-item{display:flex;align-items:center;justify-content:center;gap:5px;padding:3px 6px;background:var(--bg);border-radius:4px;border:1px solid #e8e2d8}
+
+
+.sp-dot{display:inline-block;width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,0.12)}
+
+
+.sp-dot-premium{background:linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99);border-color:rgba(164,109,31,0.3)}
+
+
+.sp-count{font-size:16px;color:var(--ink);font-weight:bold;min-width:14px;text-align:center}
+
+
+.trait-section{display:flex;flex-direction:column;gap:6px}
+
+
+.trait-section .trait-item{margin-bottom:0}
+
+
+.battle-layout{display:flex;gap:12px;align-items:stretch}
+
+
+.battle-key{flex:0 0 auto;min-width:100px;display:flex}
+
+
+.battle-key .stat-item{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 14px;background:#edeae2;border-radius:8px;border:1px solid var(--line)}
+
+
+.battle-grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:1fr 1fr;gap:8px}
+
+
+.style-item{background:#edeae2;border-radius:4px;padding:3px 8px;font-size:14px;color:var(--ink);text-align:center;border:1px solid var(--line)}
+
+
+.style-item-empty{background:transparent;border-radius:4px;padding:3px 8px;font-size:12px;color:var(--muted);font-style:italic;text-align:center;border:1px dashed var(--line)}
+
+
+
+
+
+.lang-tag{display:inline-block;padding:4px 8px;margin:3px;background:var(--bg);border-radius:4px;font-size:16px;color:var(--ink);border:1px solid var(--line)}
+
+
+.prof-tag{display:inline-block;padding:4px 12px;margin:3px;background:var(--bg);border-radius:4px;font-size:16px;color:var(--ink);border:1px solid var(--line)}
+
+.weapon-tag{display:inline-block;padding:4px 10px;margin:3px;background:var(--bg);border-radius:4px;font-size:15px;color:var(--muted);border:1px solid var(--line)}
+.weapon-spec-tag{display:inline-block;padding:4px 12px;margin:3px;background:#c0852f;border-radius:4px;font-size:15px;color:#fff;border:1px solid #a46d1f}
+
+
+/* 技能学习面板增强样式 */
+
+
+#learnPanel { margin-top:12px; }
+
+
+.learn-toggle { padding:8px 18px;font-size:14px;background:#c9753e;color:#fff;border:none;border-radius:6px;cursor:pointer; }
+
+
+.learn-toggle:hover { background:#d9854e; }
+
+/* ===== 响应式布局 ===== */
+
+
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#fffdf8; --ink:#1f2522; --muted:#69706b;
+  --line:#ddd6c8; --accent:#a46d1f; --accent-hover:#c0852f;
+  --soft:#edeae2; --gold:#b8860b; --gold-soft:#f5e6c8;
+  --green:#2f6f5e; --red:#9d2f2f; --blue:#315f8f;
+  --radius:8px; --pad:12px 16px;
+  --fs:14.5px; --fs-title:18px;
+  --exhaust-depth:92%;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans SC,system-ui,sans-serif;font-size:var(--fs);line-height:1.55;padding:16px;min-height:100vh}
+.page{max-width:1680px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad);min-width:0}
+.card h2{font-size:var(--fs-title);font-weight:bold;margin-bottom:10px;padding-left:8px;border-left:4px solid var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h2 .sub{font-size:12.5px;color:var(--muted);font-weight:normal}
+.grid-3{display:grid;grid-template-columns:1.15fr 1.5fr;gap:12px}
+.grid-2-1{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}
+.attr-side{display:grid;grid-template-columns:1.85fr 1fr;gap:12px}
+.side-col{display:flex;flex-direction:column;gap:12px}
+.skills-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:12px}
+
+/* ===== 页头 ===== */
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 20px;flex-wrap:wrap}
+.char-id{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.char-id h1{font-size:27px;letter-spacing:1px}
+.char-chips{display:flex;gap:6px;flex-wrap:wrap}
+.char-chips span{background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:2px 9px;font-size:12.5px;color:var(--muted)}
+.char-chips .battle-badge{display:none}
+body.battle .char-chips .battle-badge{display:inline-block;background:var(--red);color:#fff;border-color:var(--red);animation:battlePulse 1.6s infinite}
+@keyframes battlePulse{0%,100%{opacity:1}50%{opacity:.55}}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.head-actions button{border:none;border-radius:6px;padding:8px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-ghost{background:transparent;border:1px solid var(--line)!important;color:var(--muted)}
+.btn-ghost:hover{border-color:var(--accent)!important;color:var(--ink)}
+.btn-battle{background:var(--red);color:#fff}
+.btn-battle:hover{filter:brightness(1.15)}
+body.battle .btn-battle{background:var(--green)}
+
+/* ===== 行1 左：信息+立绘+职业 ===== */
+.info-card{display:flex;flex-direction:column;gap:10px}
+.portrait-row{display:flex;align-items:flex-start;gap:16px}
+.portrait-round{width:140px;height:140px;border-radius:50%;flex:none;position:relative;overflow:hidden;cursor:pointer;border:3px solid var(--accent);box-shadow:0 4px 14px rgba(31,37,34,.18);background-color:#8b6b4d;background-image:radial-gradient(circle at 32% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(circle at 68% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(ellipse at 50% 42%,#f0d9bd 0 30%,transparent 31%),radial-gradient(ellipse at 50% 62%,#7a4a2a 0 45%,transparent 46%),radial-gradient(circle at 50% 78%,#a46d1f 0 8%,transparent 9%);background-size:220% 220%;background-position:center;user-select:none}
+.portrait-round:hover{filter:brightness(1.06)}
+.portrait-round .edit-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:11px;text-align:center;padding:3px 0;opacity:0;transition:opacity .15s}
+.portrait-round:hover .edit-badge{opacity:1}
+.portrait-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
+.kv{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
+.kv div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:4px 9px;min-width:0}
+.kv dt{color:var(--muted);font-size:12px;white-space:nowrap}
+.kv dd{font-weight:bold;font-size:14.5px;text-align:right;word-break:break-word}
+/* 职业（紧凑行式） */
+.classes{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.cls{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cls .cls-name{font-size:15.5px;font-weight:bold;min-width:52px}
+.cls .cls-lv{font-size:12px;color:var(--muted);font-weight:normal}
+.cls .styles{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.style-tag{border-radius:4px;padding:1px 9px;font-size:11.5px;border:1px solid var(--line)}
+.style-tag.empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;background:transparent;font-size:10.5px}
+.cls.addon{display:flex;align-items:center;justify-content:center;border-style:dashed;color:var(--muted);font-size:12.5px;padding:3px 10px}
+
+/* ===== 战斗数据卡 ===== */
+.battle-card .b-top{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.key-attr{flex:1;background:linear-gradient(160deg,#f8ead0,#eed9a8);border:2px solid var(--gold);border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:130px}
+.key-attr .ka-label{font-size:12px;color:#7a5a10;font-weight:bold;letter-spacing:1px}
+.key-attr .ka-name{font-size:24px;font-weight:bold;color:#5a4008}
+.key-attr .ka-mod{font-size:16px;color:#7a5a10;font-weight:bold}
+.orb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:128px;padding:6px 4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;position:relative}
+.orb-svg{width:112px;height:112px;display:block}
+.orb-bg{fill:rgba(0,0,0,.18);stroke:var(--line)}
+.orb-fill{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dasharray .5s ease, stroke .5s ease}
+.orb-text{font-size:13px;font-weight:bold;fill:var(--ink);text-anchor:middle}
+.orb-text .orb-cur{font-size:23px}
+.orb-text .orb-slash{font-size:13px;fill:var(--muted)}
+.orb-text .orb-max{font-size:15px;fill:var(--muted)}
+.orb-label{font-size:12px;color:var(--muted);font-weight:bold}
+.orb-ctrl{display:flex;gap:4px}
+.orb-ctrl button{width:26px;height:22px;border:1px solid var(--line);background:var(--panel);border-radius:4px;cursor:pointer;font-size:12px;color:var(--ink);font-family:inherit}
+.orb-ctrl button:hover{background:var(--soft)}
+.orb-ctrl button.b5{width:34px;font-size:11px;color:var(--accent)}
+.orb-low{animation:orbFlash 1s infinite}
+@keyframes orbFlash{0%,100%{opacity:1}50%{opacity:.5}}
+.shield-box{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;min-width:112px;cursor:pointer;position:relative}
+.shield-box:hover{border-color:var(--accent)}
+.shield-svg{width:80px;height:90px}
+.shield-path{fill:var(--panel);stroke:#8a7a60;stroke-width:3}
+.shield-text{font-size:26px;font-weight:bold;fill:var(--ink)}
+.shield-label{font-size:12px;color:var(--muted);font-weight:bold}
+.shield-edit-hint{font-size:10.5px;color:var(--muted);opacity:.8}
+.exhaust-anchor{position:relative}
+.exhaust-badge{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #8a4a9a;font-weight:bold;font-size:14px;color:#fff;background:radial-gradient(circle,#f2e2f7 0%,#c98ad9 var(--exhaust-depth),#6a1a7e var(--exhaust-depth),#6a1a7e 100%);transition:background .5s ease,box-shadow .3s;box-shadow:0 0 0 0 rgba(106,26,126,0)}
+.exhaust-badge:hover{box-shadow:0 0 12px rgba(106,26,126,.6)}
+.exhaust-badge.pulse{animation:exPulse .5s ease 2}
+@keyframes exPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.exhaust-badge .n{text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.exhaust-tip{position:absolute;bottom:0;right:0;font-size:10px;color:#6a1a7e;font-weight:bold}
+.battle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:10px}
+.battle-grid .b-item{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.battle-grid .b-item small{color:var(--muted);font-size:11.5px}
+.battle-grid .b-item b{font-size:16.5px}
+.battle-grid .hot{color:var(--red)}
+.battle-grid .cool{color:var(--green)}
+
+/* ===== 背景（字段行同级，无主块） ===== */
+.bg-fields{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.bg-field{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;display:flex;gap:8px;align-items:flex-start;transition:border-color .15s, box-shadow .15s}
+.bg-field:hover{border-color:var(--accent);box-shadow:0 1px 5px rgba(164,109,31,.12)}
+.bg-field.wide{grid-column:span 2}
+.bg-field .bf-label{flex:none;font-size:12px;color:var(--muted);font-weight:bold;white-space:nowrap;padding-top:1px}
+.bg-field .bf-val{font-size:13.5px;line-height:1.6;word-break:break-word}
+.bg-switch{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.bg-switch button{border:1px solid var(--line);background:var(--bg);border-radius:5px;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--muted);font-family:inherit}
+.bg-switch button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ===== 属性（豁免独立 + 熟练项 2 列列表） ===== */
+.attr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.attr{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 11px;display:flex;flex-direction:column;gap:5px}
+.attr-top{display:flex;align-items:baseline;gap:10px}
+.attr-name{font-weight:bold;font-size:15.5px}
+.attr-val{font-size:25px;font-weight:bold;line-height:1}
+.attr-mod{font-size:14px;font-weight:bold}
+.attr-mod.pos{color:var(--green)}
+.attr-mod.neg{color:var(--red)}
+.attr-mod.zero{color:var(--muted)}
+.attr-count{margin-left:auto;font-size:11px;color:var(--muted)}
+.attr-save{display:flex;align-items:center;gap:8px;border-top:1px dashed var(--line);padding-top:4px;font-size:13px}
+.attr-save .sv-label{color:var(--muted);font-weight:bold;font-size:12px}
+.attr-save .sv-val{font-weight:bold;font-size:15px}
+.attr-save .sv-val.have{color:var(--accent)}
+.attr-save .sv-val.none{color:var(--muted)}
+.prof-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.prof-item{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--panel);border:1px solid #e8e2d8;border-radius:3px;padding:2px 7px;font-size:12.5px;min-width:0;transition:border-color .12s, background .12s}
+.prof-item:hover{border-color:var(--accent);background:var(--gold-soft)}
+.prof-item .pn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prof-item .pv{flex:none;font-weight:bold;color:var(--accent)}
+.prof-item.learned{border-color:#d8c29a;background:var(--gold-soft)}
+.prof-item.unlearned{color:var(--muted);border-style:dashed;background:transparent}
+.prof-item.unlearned .pv{color:var(--muted);font-weight:normal}
+
+/* ===== 右侧列 ===== */
+.feat-slot{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:5px;padding:5px 10px;display:flex;align-items:center;gap:8px;font-size:13.5px}
+.feat-slot .lv{background:var(--accent);color:#fff;border-radius:3px;font-size:11px;padding:0 6px;flex:none}
+.feat-slot .type{background:#3a5a7a;color:#ddd;border-radius:3px;font-size:11px;padding:0 6px;flex:none}
+.feat-slot.empty{border-left-color:var(--line);border-style:dashed;color:var(--muted);cursor:pointer;justify-content:space-between;font-size:12.5px}
+.feat-slot.empty:hover{border-color:var(--accent);border-left-color:var(--accent)}
+.feat-slot.empty .lv{background:var(--soft);color:var(--muted)}
+.feat-list{display:flex;flex-direction:column;gap:5px}
+.misc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.misc-grid h3{font-size:12px;color:var(--muted);grid-column:span 2;margin-top:4px;font-weight:bold}
+.misc-grid .m-item{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;display:flex;justify-content:space-between;font-size:14px;transition:border-color .15s}
+.misc-grid .m-item:hover{border-color:var(--accent)}
+.misc-grid .m-item b{color:var(--accent)}
+.lang-rows{display:flex;flex-direction:column;gap:5px}
+.lang-row{display:flex;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;align-items:flex-start;transition:border-color .15s}
+.lang-row:hover{border-color:var(--accent)}
+.lang-row .lr-label{flex:none;font-size:12px;color:var(--muted);font-weight:bold;min-width:62px;padding-top:1px}
+.lang-row .lr-val{font-size:13.5px;line-height:1.6;word-break:break-word}
+.lang-row .lr-val .spec{color:var(--accent);font-weight:bold}
+
+/* ===== 装备 ===== */
+.equip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.equip-slot{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.equip-slot h3{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between}
+.equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.eq{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
+.eq:hover{border-color:var(--accent)}
+.eq .w{color:var(--muted);font-size:11px;white-space:nowrap}
+.eq-empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;border-radius:4px;padding:4px 8px;font-size:12.5px;text-align:center;cursor:pointer}
+.eq-empty:hover{border-color:var(--accent);background:var(--panel)}
+.eq.selected{outline:2px solid var(--accent);outline-offset:1px;background:var(--gold-soft)}
+.eq .cnt{color:var(--accent);font-weight:bold}
+
+/* ===== 技能 ===== */
+.skill-table{width:100%;border-collapse:collapse;font-size:13px}
+.skill-table thead th{position:sticky;top:0;background:var(--soft);padding:6px 8px;text-align:left;color:var(--muted);border-bottom:2px solid var(--line);white-space:nowrap;z-index:1}
+.skill-table tbody td{padding:5px 8px;border-bottom:1px solid #ece7dd;vertical-align:top}
+.skill-table tbody tr{cursor:pointer;transition:background .12s}
+.skill-table tbody tr:hover{background:rgba(164,109,31,.07)}
+.skill-name{font-weight:bold;white-space:nowrap}
+.skill-sub{font-size:11.5px;color:var(--muted);font-weight:normal}
+.skill-desc{color:#4a4f4a;line-height:1.5;word-break:break-word}
+.skill-empty{color:var(--muted);font-style:italic}
+.react-tag{display:none}
+body.battle .react-tag{display:inline-block;background:var(--red);color:#fff;border-radius:3px;font-size:10.5px;padding:0 5px;margin-left:5px;vertical-align:1px;animation:battlePulse 1.6s infinite}
+.use-btn{display:none;border:none;background:var(--accent);color:#fff;border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:transform .1s, background .15s}
+body.battle .use-btn{display:inline-block}
+.use-btn:hover{background:var(--accent-hover)}
+.use-btn:active{transform:scale(.9)}
+.use-btn:disabled{background:#6a5a4a;cursor:not-allowed}
+.use-btn:disabled::after{content:' 失能';font-size:10.5px}
+.use-btn.fired{animation:useFire .45s ease}
+@keyframes useFire{0%{transform:scale(1)}35%{transform:scale(1.18);background:var(--green)}100%{transform:scale(1)}}
+.used-cnt{display:none;font-size:11px;color:var(--accent);font-weight:bold}
+body.battle .used-cnt{display:inline-block}
+.skills-scroll{max-height:540px;overflow:auto;border:1px solid var(--line);border-radius:6px;scrollbar-width:thin}
+.sub-title{margin-top:12px;font-size:14px;font-weight:bold;color:var(--green);display:flex;align-items:center;gap:6px}
+
+/* ===== 左侧战斗悬浮窗（半透明浮动卡片） ===== */
+.battle-drawer{position:fixed;left:14px;top:14px;bottom:auto;width:280px;max-height:62vh;background:rgba(28,23,32,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(212,165,74,.35);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.4);transform:translateX(-120%);transition:transform .28s ease;z-index:89;display:flex;flex-direction:column;overflow:hidden;color:#f0e8e0}
+.battle-drawer.open{transform:translateX(0)}
+.bd-head{padding:10px 14px;border-bottom:1px solid rgba(74,63,53,.7);display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:14px;color:var(--accent)}
+.bd-head button{border:none;background:transparent;color:#a89e92;cursor:pointer;font-size:12px;font-family:inherit}
+.bd-head button:hover{color:#fff}
+.bd-body{flex:1;overflow:auto;padding:9px 12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin}
+.bd-sec h3{font-size:12px;color:#a89e92;border-bottom:1px solid #4a3f35;padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between}
+.bd-sec h3 small{font-weight:normal;font-size:10.5px;color:#6a6258}
+.bd-attrs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.bd-attr{background:#2a2430;border:1px solid #3a3338;border-radius:4px;padding:3px 8px;display:flex;justify-content:space-between;font-size:12px}
+.bd-attr b{color:#f0d080;font-weight:bold}
+.bd-attr.key{border-color:var(--accent);background:#2c2620}
+.bd-skill{display:flex;align-items:center;gap:6px;background:#2a2430;border:1px solid #3a3338;border-radius:4px;padding:3px 6px;font-size:12px;margin-bottom:3px;cursor:pointer;transition:border-color .12s}
+.bd-skill:hover{border-color:var(--accent)}
+.bd-skill .bd-sname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd-skill .bd-fp{color:#a89e92;font-size:10.5px;flex:none}
+.bd-skill .bd-use{margin-left:auto;flex:none;border:none;background:var(--accent);color:#fff;border-radius:3px;padding:1px 8px;font-size:11px;cursor:pointer;font-family:inherit}
+.bd-skill .bd-use:hover{background:var(--accent-hover)}
+.bd-skill .bd-use:disabled{background:#6a5a4a;cursor:not-allowed}
+.bd-skgroup h4{margin:6px 0 4px;font-size:12px;color:#d4a54a;font-weight:bold}
+.bd-skgroup:first-child h4{margin-top:0}
+.bd-tier{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:5px}
+.bd-tlabel{font-size:11px;color:#c9753e;margin-right:4px}
+.bd-tcell{background:#3a2f22;border:1px solid #5a4528;border-radius:4px;padding:1px 6px;font-size:11px;color:#f0e0c8;cursor:default}
+.bd-skill .bd-cnt{font-size:10px;color:#d4a54a;flex:none}
+.bd-talent{background:#2a2430;border:1px solid #3a3338;border-radius:4px;padding:3px 8px;font-size:12px;margin-bottom:3px;cursor:help}
+.bd-talent:hover{border-color:var(--accent)}
+.bd-feat{background:#2a2430;border:1px solid #3a3338;border-left:3px solid var(--accent);border-radius:4px;padding:3px 8px;font-size:12px;margin-bottom:3px}
+.bd-feat .bd-fd{font-size:10.5px;color:#a89e92}
+.bd-empty{color:#6a6258;font-size:11.5px;font-style:italic;padding:2px 4px}
+
+/* ===== 先攻编辑弹层 ===== */
+.init-input-row{display:flex;gap:8px;align-items:center;padding:10px 0}
+.init-input-row input{width:110px;padding:7px 9px;border:1px solid var(--line);border-radius:5px;font-size:18px;font-weight:bold;text-align:center}
+.init-input-row button{border:none;border-radius:5px;padding:8px 16px;cursor:pointer;font-family:inherit}
+.init-input-row .ok{background:var(--accent);color:#fff}
+.init-input-row .cancel{background:var(--soft);color:var(--muted)}
+.init-edit{display:inline-block;border:none;background:var(--soft);border-radius:3px;padding:0 6px;font-size:10.5px;cursor:pointer;color:var(--muted);margin-left:4px}
+.init-edit:hover{color:var(--ink)}
+
+/* ===== 天赋树（右侧列，中等放大） ===== */
+.talent-tier{display:grid;grid-template-columns:60px repeat(5,1fr);gap:5px;align-items:center}
+.talent-tier .t-label{font-size:12.5px;color:var(--muted);font-weight:bold;white-space:nowrap}
+.talent-cell{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 5px;font-size:13px;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;gap:4px;transition:border-color .12s, transform .12s;cursor:default}
+.talent-cell.filled{cursor:pointer;font-weight:bold}
+.talent-cell.filled:hover{border-color:var(--accent);transform:translateY(-1px)}
+.talent-cell.lock{color:var(--muted);font-style:italic}
+.talent-cell.lock.compact{min-height:20px;font-size:10.5px;opacity:.4;padding:2px 4px}
+.talent-locked-grid{display:grid;grid-template-columns:1fr;gap:5px}
+.talent-locked-row{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px dashed var(--line);border-radius:5px;padding:4px 9px;font-size:12px;color:var(--muted)}
+.talent-locked-row .tl-name{font-weight:bold;min-width:36px;font-size:12.5px}
+.talent-locked-row .tl-cost{font-size:11px;color:var(--muted);white-space:nowrap}
+.unlock-btn{margin-left:auto;border:none;background:var(--accent);color:#fff;border-radius:4px;padding:2px 9px;font-size:11.5px;cursor:pointer;font-family:inherit;flex:none}
+.unlock-btn:hover{background:var(--accent-hover)}
+.unlock-btn:disabled{background:#6a5a4a;cursor:not-allowed;opacity:.6}
+.talent-desc-list{display:flex;flex-direction:column;gap:5px;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.td-item{background:var(--bg);border:1px solid var(--line);border-left:3px solid #b99a6a;border-radius:5px;padding:5px 9px}
+.td-item b{font-size:13px;color:var(--ink)}
+.td-item .td-tier{font-size:10.5px;color:var(--accent);font-weight:normal;margin-left:6px}
+.td-item p{font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px}
+.talent-note{margin-top:8px;font-size:12px;color:var(--muted)}
+
+/* ===== XP / SP 卡 ===== */
+.xp-sp-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+.xp-panel{display:flex;flex-direction:column;gap:5px}
+.xp-cls{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;flex-wrap:wrap}
+.xp-cls .xc-name{font-weight:bold;font-size:15px;min-width:48px}
+.xp-cls .xc-lv{font-size:20px;font-weight:bold;color:var(--accent)}
+.xp-cls .xc-xp{font-size:12.5px;color:var(--muted)}
+.xp-cls .xc-need{font-size:12px;color:var(--muted)}
+.xp-cls .xc-btn{margin-left:auto;border:none;background:#c9753e;color:#fff;border-radius:5px;padding:4px 12px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.xp-cls .xc-btn:hover{background:#d9854e}
+.xp-cls .xc-btn:disabled{background:#6a5a4a;cursor:not-allowed}
+.xp-cap{font-size:11.5px;color:var(--muted);padding-left:2px}
+.sp-panel{display:flex;flex-direction:column;gap:6px}
+.sp-total{font-size:22px;font-weight:bold;color:var(--accent);display:flex;align-items:baseline;gap:8px}
+.sp-total small{font-size:12px;color:var(--muted);font-weight:normal}
+.sp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.sp-chip{display:flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 5px;font-size:11px;min-width:0;cursor:pointer;transition:transform .12s, box-shadow .15s, border-color .15s, opacity .15s}
+.sp-chip:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(31,37,34,.15)}
+.sp-chip:active{transform:scale(.94)}
+.sp-chip .dot{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+.sp-chip .dot.premium{background:linear-gradient(135deg,#FFD700,#FF6B6B,#B94BFF,#00B0F0,#00FA99)}
+.sp-chip.on{border-color:var(--accent);box-shadow:0 0 0 1px rgba(164,109,31,.2)}
+.sp-chip.off{opacity:.55}
+.sp-chip.flash{animation:chipFlash .5s ease}
+@keyframes chipFlash{0%,100%{transform:scale(1)}40%{transform:scale(1.25)}}
+.sp-chip .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== 特性卡（压缩） ===== */
+.trait-list{display:flex;flex-direction:column;gap:4px}
+.trait-item{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:5px;padding:4px 9px;font-size:12.5px}
+.trait-item b{display:block;font-size:13px;margin-bottom:1px}
+.trait-item span{color:var(--muted);font-size:12px;line-height:1.45}
+
+/* ===== 反应提示块（子技能卡补充内容） ===== */
+.react-note{margin-top:10px;background:rgba(157,47,47,.05);border:1px dashed rgba(157,47,47,.35);border-radius:6px;padding:7px 10px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.react-note b{color:var(--red);font-size:13px}
+
+/* ===== 图纸（4列紧凑，槽位动态） ===== */
+.bp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.bp{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 8px;font-size:11.5px;display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:26px;transition:border-color .12s, transform .12s}
+.bp.filled:hover{border-color:var(--accent);transform:translateY(-1px)}
+.bp .idx{color:var(--muted);font-size:10px;flex:none}
+.bp.empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;cursor:pointer;justify-content:center;font-size:11px;transition:border-color .12s, background .12s}
+.bp.empty:hover{border-color:var(--accent);background:var(--panel);color:var(--accent)}
+
+/* ===== 负重行（并入语言卡） ===== */
+.weight-line{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px}
+.weight-line .w-item{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:4px 8px;display:flex;flex-direction:column;align-items:center;font-size:12px}
+.weight-line .w-item b{font-size:15px;color:var(--accent)}
+.weight-line .w-item.cur{border-color:var(--accent);background:var(--gold-soft)}
+
+/* ===== 遮罩/弹层 ===== */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,16,24,.55);backdrop-filter:blur(2px);z-index:100;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.pop{background:var(--panel);border:1px solid var(--line);border-radius:10px;max-width:640px;width:100%;max-height:82vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.pop .pop-head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--panel);z-index:2}
+.pop .pop-head h3{font-size:17px}
+.pop .pop-head .close{margin-left:auto;border:none;background:var(--soft);border-radius:4px;width:28px;height:28px;cursor:pointer;font-size:15px;color:var(--muted)}
+.pop .pop-body{padding:14px 18px}
+.skill-detail-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.skill-detail-table td{border:1px solid var(--line);padding:6px 10px;vertical-align:top}
+.skill-detail-table td.k{background:var(--soft);color:var(--muted);white-space:nowrap;width:110px;font-weight:bold}
+.skill-detail-table .marks{font-size:16px}
+.exhaust-list{display:flex;flex-direction:column;gap:6px}
+.exhaust-item{border:1px solid var(--line);border-radius:6px;padding:8px 12px;display:flex;gap:10px;align-items:flex-start}
+.exhaust-item.active{border-color:#8a4a9a;background:rgba(122,26,138,.07)}
+.exhaust-item .lv{flex:none;background:#6a1a7e;color:#fff;border-radius:4px;font-size:12px;font-weight:bold;padding:2px 8px;min-width:44px;text-align:center}
+.exhaust-item .txt{font-size:13px;line-height:1.6}
+.exhaust-item .include{font-size:11px;color:var(--muted);margin-top:2px}
+.shield-edit-pop{display:flex;gap:8px;align-items:center;padding:10px 0}
+.shield-edit-pop input{width:90px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;font-size:16px;font-weight:bold;text-align:center}
+.shield-edit-pop button{border:none;border-radius:5px;padding:7px 14px;cursor:pointer;font-family:inherit}
+.shield-edit-pop .ok{background:var(--accent);color:#fff}
+.shield-edit-pop .cancel{background:var(--soft);color:var(--muted)}
+
+/* ===== 头像设置弹窗 ===== */
+.avatar-stage{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;padding:6px 0}
+.avatar-canvas-wrap{position:relative;width:260px;height:260px;border-radius:50%;overflow:hidden;border:2px solid var(--accent);box-shadow:0 4px 18px rgba(31,37,34,.2)}
+.avatar-canvas{position:absolute;inset:0;cursor:grab;background-color:#8b6b4d;background-image:radial-gradient(circle at 32% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(circle at 68% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(ellipse at 50% 42%,#f0d9bd 0 30%,transparent 31%),radial-gradient(ellipse at 50% 62%,#7a4a2a 0 45%,transparent 46%),radial-gradient(circle at 50% 78%,#a46d1f 0 8%,transparent 9%);background-repeat:no-repeat;user-select:none}
+.avatar-canvas:active{cursor:grabbing}
+.avatar-preview{width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid var(--accent);background-color:#8b6b4d;background-image:radial-gradient(circle at 32% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(circle at 68% 30%,#e8c9a8 0 12%,transparent 13%),radial-gradient(ellipse at 50% 42%,#f0d9bd 0 30%,transparent 31%),radial-gradient(ellipse at 50% 62%,#7a4a2a 0 45%,transparent 46%),radial-gradient(circle at 50% 78%,#a46d1f 0 8%,transparent 9%);background-repeat:no-repeat;flex:none}
+.avatar-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 0 4px}
+.avatar-controls label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.avatar-controls input[type=range]{width:160px}
+.avatar-btns{display:flex;gap:8px;margin-left:auto}
+.avatar-btns button{border:none;border-radius:5px;padding:7px 18px;cursor:pointer;font-family:inherit;font-size:13.5px}
+.avatar-btns .ok{background:var(--accent);color:#fff}
+.avatar-btns .cancel{background:var(--soft);color:var(--muted)}
+.avatar-hint{font-size:11.5px;color:var(--muted);text-align:center;padding-top:2px}
+
+/* ===== 战斗日志（半透明浮动卡片） ===== */
+.log-drawer{position:fixed;right:14px;top:14px;bottom:auto;width:300px;max-height:50vh;background:rgba(28,23,32,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(212,165,74,.35);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.4);transform:translateX(120%);transition:transform .28s ease;z-index:89;display:flex;flex-direction:column;overflow:hidden;color:#f0e8e0}
+.log-drawer.open{transform:translateX(0)}
+.log-head{padding:10px 14px;border-bottom:1px solid rgba(74,63,53,.7);display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:14px;color:var(--accent)}
+.log-head button{border:none;background:transparent;color:#a89e92;cursor:pointer;font-size:12px;font-family:inherit}
+.log-head button:hover{color:#fff}
+.log-body{flex:1;overflow:auto;font-size:12px;font-family:Consolas,monospace;padding:6px 0}
+.log-line{padding:3px 12px;border-bottom:1px dashed #3a3338;color:#a89e92}
+.log-line .t{color:var(--accent);margin-right:8px}
+.log-line.exhaust{color:#c98ad9;background:rgba(122,26,138,.12);font-weight:bold}
+.log-line.dead{color:#e05a5a;font-weight:bold}
+.log-line.heal{color:#7ab87a}
+.log-line.damage{color:#e08070}
+.log-line.battle{color:#7aa8d9;font-weight:bold}
+
+/* toast */
+#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2d2722;color:#f0e0d0;padding:10px 20px;border-radius:8px;font-size:14px;z-index:200;transition:transform .25s;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.warn{background:#5a2a20}
+#toast.exhaust-toast{background:#4a1a5e}
+
+/* 悬浮 */
+.fab{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:95}
+.fab button{border:none;border-radius:24px;padding:9px 18px;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(31,37,34,.18)}
+.fab .learn{background:#c9753e;color:#fff}
+.fab .up{background:var(--accent);color:#fff}
+
+/* ===== 战斗模式（深色金边） ===== */
+body.battle{--bg:#17131a;--panel:#221c28;--ink:#f0e8e0;--muted:#a89e92;--line:#4a3f35;--soft:#2a2430;--gold-soft:#3a2f1a;--accent:#d4a54a;--accent-hover:#e8be5a}
+body.battle .card{border-color:#5a4a35;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+body.battle .card h2{border-left-color:var(--accent)}
+body.battle .key-attr{background:linear-gradient(160deg,#4a3a18,#3a2c12);border-color:var(--accent)}
+body.battle .key-attr .ka-label{color:#d4a54a}
+body.battle .key-attr .ka-name{color:#f0d080}
+body.battle .key-attr .ka-mod{color:#d4a54a}
+body.battle .battle-grid .b-item,body.battle .kv div,body.battle .attr,body.battle .orb-wrap,body.battle .shield-box,body.battle .equip-slot,body.battle .bg-field,body.battle .feat-slot,body.battle .m-item,body.battle .lang-row,body.battle .cls,body.battle .bp,body.battle .talent-cell,body.battle .eq,body.battle .misc-grid .m-item,body.battle .xp-cls,body.battle .sp-chip,body.battle .trait-item,body.battle .weight-line .w-item,body.battle .talent-locked-row{background:#2a2430;border-color:#4a3f35}
+body.battle .react-note{background:rgba(200,80,80,.08);border-color:rgba(200,80,80,.4);color:#c9b8b0}
+body.battle .prof-item,body.battle .eq{background:#332c3a;border-color:#4a3f35;color:var(--ink)}
+body.battle .prof-item.learned{background:#3a2f1a;border-color:#5a4a30}
+body.battle .prof-item.unlearned{background:transparent;border-color:#4a3f35}
+body.battle .skill-table tbody td{border-color:#3a3338}
+body.battle .skill-table tbody tr:hover{background:rgba(212,165,74,.08)}
+body.battle .skill-desc{color:#cfc4b8}
+body.battle .skill-table thead th{background:#332c3a}
+body.battle .orb-bg{fill:rgba(0,0,0,.35)}
+body.battle .sheet-head{background:#221c28;border-color:#5a4a35}
+body.battle .char-chips span{background:#2a2430;border-color:#4a3f35;color:#a89e92}
+body.battle .btn-ghost{color:#a89e92;border-color:#4a3f35}
+body.battle .bg-switch button{background:#2a2430;border-color:#4a3f35;color:#a89e92}
+body.battle .bg-switch button.on{background:var(--accent);color:#fff}
+body.battle .xp-cls .xc-btn{background:#a8724a}
+body.battle .xp-cls .xc-btn:hover{background:#c08a5e}
+
+/* ===== 移动端吸顶导航 + 战斗状态条 ===== */
+.mobile-tabbar{display:none;position:sticky;top:0;z-index:70;background:rgba(246,244,239,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:6px 8px;margin:0 -10px 8px}
+.mobile-tabbar .mt-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.mobile-tabbar .mt-scroll::-webkit-scrollbar{display:none}
+.mt-btn{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:16px;padding:5px 9px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.mt-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.mobile-battlestrip{display:none;position:sticky;top:40px;z-index:69;background:rgba(23,19,26,.92);backdrop-filter:blur(6px);border-bottom:1px solid rgba(212,165,74,.4);padding:5px 8px;margin:0 -10px 8px;color:#f0e8e0;align-items:center;gap:8px}
+.mbs-items{display:flex;flex-direction:column;align-items:stretch;gap:6px;width:100%}
+.mbs-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mbs-items::-webkit-scrollbar{display:none}
+.mbs-orb{display:flex;align-items:center;gap:4px;font-size:12px;flex:none}
+.mbs-orb .mbs-dot{width:16px;height:16px;border-radius:50%;flex:none}
+.mbs-orb .mbs-dot.hp{background:conic-gradient(#c0392b var(--hp-pct,100%), rgba(255,255,255,.15) 0)}
+.mbs-orb .mbs-dot.fp{background:conic-gradient(#2e6db4 var(--fp-pct,100%), rgba(255,255,255,.15) 0)}
+.mbs-orb b{font-size:13px}
+.mbs-sep{width:1px;height:16px;background:rgba(212,165,74,.4);flex:none}
+.mbs-btn{flex:none;border:1px solid rgba(212,165,74,.5);background:transparent;color:#d4a54a;border-radius:14px;padding:3px 10px;font-size:11.5px;cursor:pointer;font-family:inherit}
+.mbs-btn:hover{background:rgba(212,165,74,.15)}
+.mbs-btn.exit{color:#e08070;border-color:rgba(224,128,112,.5)}
+.mbs-btn:active{transform:scale(.95)}
+
+
+@media (max-width:1200px){
+  .grid-3{grid-template-columns:1fr}
+  .kv{grid-template-columns:repeat(3,1fr)}
+  .attr-grid{grid-template-columns:1fr}
+  .battle-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:860px){
+  .grid-2-1,.attr-side,.skills-grid,.xp-sp-grid{grid-template-columns:1fr}
+  .equip-grid{grid-template-columns:1fr 1fr}
+  .kv{grid-template-columns:repeat(2,1fr)}
+  .battle-grid{grid-template-columns:repeat(2,1fr)}
+  .log-drawer{width:85vw}
+}
+@media (max-width:600px){
+  body{padding:10px;font-size:13.5px}
+  .kv{grid-template-columns:1fr 1fr}
+  .portrait-row{flex-direction:column;align-items:center}
+  .portrait-round{width:130px;height:130px}
+  .b-top{flex-direction:column;align-items:center}
+  .key-attr{width:100%;min-width:0}
+  .orb-wrap{width:100%;min-width:0}
+  .shield-box{width:100%;min-width:0}
+  .battle-grid{grid-template-columns:1fr 1fr}
+  .equip-grid{grid-template-columns:1fr}
+  .skill-table{min-width:640px}
+  .skills-scroll{overflow-x:auto}
+  .bp-grid{grid-template-columns:repeat(2,1fr)}
+  .bg-fields{grid-template-columns:1fr}
+  .bg-field.wide{grid-column:span 1}
+  .sp-grid{grid-template-columns:repeat(4,1fr)}
+  .weight-line{grid-template-columns:repeat(2,1fr)}
+  .char-id h1{font-size:21px}
+  .avatar-canvas-wrap{width:220px;height:220px}
+  .log-drawer{width:100vw}
+}
+@media (max-width:480px){
+  .kv{grid-template-columns:1fr}
+  .battle-grid{grid-template-columns:1fr 1fr}
+  .misc-grid{grid-template-columns:1fr}
+  .attr-top{flex-wrap:wrap}
+  .head-actions button{padding:7px 11px;font-size:12.5px}
+  .talent-tier{grid-template-columns:1fr;gap:2px}
+  .talent-tier .t-label{grid-column:span 1}
+  .talent-tier .talent-cell{min-height:22px;font-size:10.5px}
+}
+/* ===== 战斗模式：3 小球（临时生命/防御等级/护盾） ===== */
+.mini-balls{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:4px 2px;flex:none}
+.mini-ball{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.5);font-weight:bold;font-size:14.5px;color:#fff;position:relative;transition:transform .15s,box-shadow .3s;box-shadow:0 0 8px rgba(0,0,0,.15)}
+.mini-ball:hover{transform:scale(1.1)}
+.mini-ball .n{text-shadow:0 1px 2px rgba(0,0,0,.55)}
+.mini-ball .lbl{position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);font-size:9.5px;color:var(--muted);white-space:nowrap;font-weight:normal}
+.mb-tmphp{background:radial-gradient(circle,#e6f7dd 0%,#7fc46a 55%,#2e8b57 100%)}
+.mb-tmphp:hover{box-shadow:0 0 12px rgba(46,139,87,.6)}
+.mb-ac{background:radial-gradient(circle,#fdf3dd 0%,#e0b86a 55%,#a46d1f 100%)}
+.mb-ac:hover{box-shadow:0 0 12px rgba(164,109,31,.6)}
+.mb-shield{background:radial-gradient(circle,#e2ebff 0%,#7a9fd6 55%,#3a5a8a 100%)}
+.mb-shield:hover{box-shadow:0 0 12px rgba(58,90,138,.6)}
+
+/* ===== 战斗模式：子页面 + 合拢动画 ===== */
+.battle-view{display:none;position:relative;z-index:30}
+body.battle .page{animation:bvCollapse .32s ease forwards;pointer-events:none}
+body.battle .battle-view{display:block;animation:bvIn .38s ease .12s both}
+body.battle .mobile-tabbar{display:none}
+body.battle .mobile-battlestrip{top:0}
+body.battle #toast{top:auto;bottom:96px}
+body.battle .fab{display:none}
+.battle-exit .page{animation:bvRestore .32s ease both}
+.battle-exit .battle-view{animation:bvOut .3s ease both}
+@keyframes bvCollapse{to{transform:scaleX(.9) translateX(-8px);opacity:0;visibility:hidden}}
+@keyframes bvIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes bvOut{to{opacity:0;transform:translateY(12px) scale(.98)}}
+@keyframes bvRestore{from{transform:scaleX(.9) translateX(-8px);opacity:0;visibility:visible}to{transform:none;opacity:1}}
+@keyframes bvFlash{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 2px rgba(212,165,74,.75)}}
+.bv-cols{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start;grid-template-areas:"ov main lg"}
+#bvOverview{grid-area:ov}
+#bvMain{grid-area:main;display:flex;flex-direction:column;gap:18px}
+#bvLog{grid-area:lg}
+.battle-view .sheet-head{margin-bottom:0}
+.battle-view .battle-drawer,.battle-view .log-drawer{position:static;transform:none;width:auto;max-height:none;height:auto;z-index:auto;margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:inherit}
+.battle-view .bd-head,.battle-view .log-head{border-bottom:1px solid var(--line)}
+.battle-view .bd-head button,.battle-view .log-head button{display:none}
+.battle-view .log-body{color:var(--muted)}
+@media (max-width:980px){
+  .bv-cols{grid-template-columns:1fr;grid-template-areas:"main" "ov" "lg"}
+}
+.bv-flash{animation:bvFlash .6s ease}
+.mbs-flash{animation:bvFlash .5s ease 4}
+@media (max-width:860px){.bv-grid{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .mini-balls{flex-direction:row;justify-content:center;gap:14px}
+  .mini-ball .lbl{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  body.battle .page,.battle-exit .page,.battle-exit .battle-view{animation:none;opacity:1;transform:none;visibility:visible}
+}
+
+/* ===== 移动端：浮窗改底部 sheet ===== */
+@media (max-width:600px){
+  .mobile-tabbar{display:block}
+  body.battle .mobile-battlestrip{display:flex}
+  #toast{top:56px}
+  .battle-drawer,.log-drawer{top:auto;bottom:0;left:0;right:0;width:100%;max-height:62vh;border-radius:14px 14px 0 0;border:1px solid rgba(212,165,74,.4);border-bottom:none;transform:translateY(120%);z-index:95}
+  .battle-drawer.open,.log-drawer.open{transform:translateY(0)}
+  .bd-head,.log-head{border-radius:14px 14px 0 0}
+  body.battle .page{margin-top:0}
+}
+@media (min-width:601px){
+  .mobile-tabbar,.mobile-battlestrip{display:none !important}
+}
+@media (max-width:600px){
+  body.battle .b-top{flex-direction:row;flex-wrap:wrap;align-items:stretch}
+  body.battle .b-top .key-attr{flex:1 1 100%;min-width:0}
+  body.battle .b-top .mini-balls{flex-direction:column;justify-content:center;gap:10px}
+  body.battle .b-top .orb-wrap{flex:1 1 0;min-width:124px}
+  body.battle .b-top .shield-box{flex:1 1 100%;min-width:0;flex-direction:row;justify-content:center;gap:10px}
+}
+
+</style>
 </head>
-
 <body>
-
-<!-- ===== 移动端吸顶导航 + 战斗状态条 ===== -->
+<body>
+<!-- ===== 移动端吸顶导航 + 战斗状态条（body 直属，不受 .page 合拢影响） ===== -->
 <div class="mobile-tabbar" id="mobileTabbar"><div class="mt-scroll" id="mobileTabs"></div></div>
 <div class="mobile-battlestrip" id="mobileBattleStrip"></div>
 
-
-<div class="container">
+<div class="page">
 
   <!-- ===== 页头 ===== -->
   <header class="sheet-head">
@@ -23,98 +671,243 @@
       <div class="char-chips" id="charChips"></div>
     </div>
     <div class="head-actions">
-      <button class="btn-battle" id="headerBattleToggle" onclick="SB_toggleBattle()">⚔ 进入战斗</button>
-      <button class="btn-primary" onclick="toggleLearnMode()">📚 学习技能</button>
-      <button class="btn-ghost" onclick="cheatAdd()">🧪 测试加点</button>
-      <button class="btn-ghost" onclick="exportCurrentXlsx()">📄 导出档案</button>
-      <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
-      <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
+      <button class="btn-battle" id="battleToggle" onclick="toggleBattle()">⚔ 进入战斗</button>
+      <button class="btn-primary" onclick="toast('测试页：学习面板未接入')">📚 学习技能</button>
+      <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
+      <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
+      <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
     </div>
   </header>
 
-  <!-- ===== 行1：基础信息（含职业） | 战斗数据 ===== -->
+  <!-- ===== 行1：信息+立绘+职业 | 战斗数据 ===== -->
   <section class="grid-3">
-    <div class="card hide-in-battle">
-      <h2>基础信息 <span class="sub">角色档案</span></h2>
-      <div class="info-grid" id="info-grid"></div>
-      <div class="class-row" id="class-row"></div>
+    <div class="card info-card hide-in-battle">
+      <h2>基础信息</h2>
+      <div class="portrait-row">
+        <div class="portrait-round" id="portrait" onclick="openAvatar()" title="点击设置头像">
+          <div class="edit-badge">✎ 设置头像</div>
+        </div>
+        <dl class="kv">
+          <div><dt>玩家</dt><dd id="kvPlayer">—</dd></div>
+          <div><dt>角色</dt><dd id="kvChar">—</dd></div>
+          <div><dt>种族</dt><dd id="kvRace">—</dd></div>
+          <div><dt>性别</dt><dd id="kvGender">—</dd></div>
+          <div><dt>年龄</dt><dd id="kvAge">—</dd></div>
+          <div><dt>身高</dt><dd id="kvHeight">—</dd></div>
+          <div><dt>体重</dt><dd id="kvWeight">—</dd></div>
+          <div><dt>瞳色</dt><dd id="kvEye">—</dd></div>
+          <div><dt>肤色</dt><dd id="kvSkin">—</dd></div>
+          <div><dt>发色</dt><dd id="kvHair">—</dd></div>
+        </dl>
+      </div>
+      <div class="classes">
+        <div class="cls">
+          <span class="cls-name" id="clsMainName">— <span class="cls-lv" id="clsMainLv"></span></span>
+          <span class="styles" id="clsMainStyles"></span>
+        </div>
+        <div class="cls">
+          <span class="cls-name" id="clsSubName">— <span class="cls-lv" id="clsSubLv"></span></span>
+          <span class="styles" id="clsSubStyles"></span>
+          <button id="subclassBtn" class="xc-btn" onclick="showSubclassModal()" style="margin-left:auto;border:none;border-radius:5px;padding:3px 10px;font-size:11.5px;background:#3a5a7a;color:#ddd;cursor:pointer;font-family:inherit">🔒 兼职需主职业 7 级</button>
+        </div>
+        <div class="cls addon">附赠职业 · 未解锁</div>
+      </div>
     </div>
-    <div class="card battle-section">
-      <h2>战斗数据 <span class="sub">非战斗 · 修改数值将记为初始值</span></h2>
-      <div class="stat-row" id="stat-row"></div>
+
+    <div class="card battle-card">
+      <h2>战斗数据 <span class="sub" id="battleModeHint">非战斗 · 修改数值将记为初始值</span></h2>
+      <div class="b-top">
+        <div class="key-attr">
+          <span class="ka-label">关键属性</span>
+          <span class="ka-name" id="kaName">—</span>
+          <span class="ka-mod" id="kaMod">—</span>
+        </div>
+        <div class="mini-balls">
+          <div class="mini-ball mb-tmphp" id="tmpHpBall" onclick="editMini('tmpHp')" title="点击修改临时生命">
+            <span class="n" id="tmpHpNum">0</span>
+            <span class="lbl">临时生命</span>
+          </div>
+          <div class="mini-ball mb-ac" id="armorBall" onclick="editMini('armor')" title="点击修改护甲值">
+            <span class="n" id="armorNum">0</span>
+            <span class="lbl">护甲值</span>
+          </div>
+          <div class="mini-ball mb-shield" id="shieldBall" onclick="editMini('shield')" title="点击修改护盾值">
+            <span class="n" id="shieldNum">0</span>
+            <span class="lbl">护盾</span>
+          </div>
+        </div>
+        <div class="orb-wrap exhaust-anchor">
+          <div class="exhaust-badge" id="exhaustBadge" onclick="showExhaustDetail()" title="点击查看力竭详情">
+            <span class="n" id="exhaustNum">0</span>
+          </div>
+          <svg class="orb-svg" viewBox="0 0 120 120">
+            <circle class="orb-bg" cx="60" cy="60" r="50"></circle>
+            <circle class="orb-fill" id="hpArc" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
+            <text class="orb-text" x="60" y="66">
+              <tspan class="orb-cur" id="hpCur">29</tspan>
+              <tspan class="orb-slash"> / </tspan>
+              <tspan class="orb-max" id="hpMax">29</tspan>
+            </text>
+          </svg>
+          <div class="orb-label">生命值</div>
+          <div class="orb-ctrl">
+            <button class="b5" onclick="adjHp(-5)">−5</button>
+            <button onclick="adjHp(-1)">−1</button>
+            <button onclick="adjHp(1)">+1</button>
+            <button class="b5" onclick="adjHp(5)">+5</button>
+          </div>
+        </div>
+        <div class="orb-wrap">
+          <svg class="orb-svg" viewBox="0 0 120 120">
+            <circle class="orb-bg" cx="60" cy="60" r="50"></circle>
+            <circle class="orb-fill" id="fpArc" cx="60" cy="60" r="50" transform="rotate(-90 60 60)"></circle>
+            <text class="orb-text" x="60" y="66">
+              <tspan class="orb-cur" id="fpCur">13</tspan>
+              <tspan class="orb-slash"> / </tspan>
+              <tspan class="orb-max" id="fpMax">13</tspan>
+            </text>
+          </svg>
+          <div class="orb-label">疲劳值</div>
+          <div class="orb-ctrl">
+            <button class="b5" onclick="adjFp(-5)">−5</button>
+            <button onclick="adjFp(-1)">−1</button>
+            <button onclick="adjFp(1)">+1</button>
+            <button class="b5" onclick="adjFp(5)">+5</button>
+          </div>
+        </div>
+        <div class="shield-box" id="shieldBox" onclick="editMini('ac')" title="点击修改防御等级">
+          <svg class="shield-svg" viewBox="0 0 100 110">
+            <path class="shield-path" d="M50 4 L92 18 V56 C92 82 74 98 50 106 C26 98 8 82 8 56 V18 Z"></path>
+            <text class="shield-text" id="shieldText" x="50" y="62" text-anchor="middle">12</text>
+          </svg>
+          <div class="shield-label">防御等级</div>
+          <div class="shield-edit-hint">点击编辑</div>
+        </div>
+      </div>
+      <div class="battle-grid">
+        <div class="b-item"><small>生命回复</small><b id="bgHpRecover">—</b></div>
+        <div class="b-item"><small>疲劳回复</small><b id="bgFpRecover">—</b></div>
+        <div class="b-item"><small>防御等级</small><b id="bgAc">—</b></div>
+        <div class="b-item" id="initItem" onclick="editInit()" style="cursor:pointer" title="点击设置先攻值"><small>先攻值</small><b>D20+1 <span class="init-edit">✎</span></b></div>
+        <div class="b-item"><small>基础速度</small><b id="bgSpeed">—</b></div>
+        <div class="b-item"><small>警惕值</small><b id="bgWatch">—</b></div>
+        <div class="b-item"><small>攻击命中</small><b id="bgAtk">—</b></div>
+        <div class="b-item"><small>法术命中</small><b id="bgSpell">—</b></div>
+      </div>
     </div>
   </section>
 
-  <!-- ===== 行2：经验值 | 技能点 ===== -->
-  <section class="xp-sp-grid">
-    <div class="card hide-in-battle"><h2>经验值 <span class="sub">等级与升级</span></h2><div class="xp-panel" id="xp-bar"></div></div>
-    <div class="card sp-section hide-in-battle"><h2>技能点 <span class="sub">色彩标识持有</span></h2><div class="sp-panel" id="sp-bar"></div></div>
+  <!-- ===== 行2：XP | SP ===== -->
+  <section class="xp-sp-grid hide-in-battle">
+    <div class="card">
+      <h2>经验值 <span class="sub">等级与升级</span></h2>
+      <div class="xp-panel" id="xpPanel"></div>
+    </div>
+    <div class="card">
+      <h2>技能点 <span class="sub">色彩标识持有情况</span></h2>
+      <div class="sp-panel" id="spPanel"></div>
+    </div>
   </section>
 
   <!-- ===== 行3：个性背景 + 特性 ===== -->
-  <section class="grid-2-1">
-    <div class="card hide-in-battle">
-      <h2 id="story-title">个性背景</h2>
-      <div class="story-block" id="story-block"></div>
+  <section class="grid-2-1 hide-in-battle">
+    <div class="card">
+      <h2>个性背景 <span class="sub" id="bgTitle">画师</span></h2>
+      <div class="bg-fields" id="bgFields"></div>
     </div>
     <div class="side-col">
-      <div class="card hide-in-battle"><h2>种族特性</h2><div class="trait-section" id="racial-traits"></div></div>
-      <div class="card hide-in-battle"><h2>职业特性</h2><div class="trait-section" id="class-features"></div></div>
+      <div class="card">
+        <h2>种族特性</h2>
+        <div class="trait-list" id="raceTraits"></div>
+      </div>
+      <div class="card">
+        <h2>职业特性</h2>
+        <div class="trait-list" id="classTraits"></div>
+      </div>
     </div>
   </section>
 
-  <!-- ===== 行4：属性 | 专长/货币/语言·负重 ===== -->
+  <!-- ===== 行4：属性 | 右侧列 ===== -->
   <section class="attr-side">
-    <div class="card hide-in-battle"><h2>属性 <span class="sub">上限 18</span></h2><div class="attr-grid" id="attr-grid"></div></div>
+    <div class="card">
+      <h2>属性 <span class="sub">上限 18 · 熟练度上限 2</span></h2>
+      <div class="attr-grid" id="attrGrid"></div>
+    </div>
+
     <div class="side-col">
-      <div class="card hide-in-battle"><h2>特殊专长</h2><div class="feat-list" id="feat-list"></div></div>
-      <div class="card hide-in-battle"><h2>货币</h2><div class="currency-row" id="currency-row"></div></div>
-      <div class="card hide-in-battle"><h2>语言 · 熟练 · 负重</h2>
-        <div id="lang-list" style="text-align:center"></div>
-        <div id="prof-list" style="text-align:center"></div>
-        <div id="weapon-profs" style="text-align:center"></div>
-        <div class="weight-block" id="weight-block"></div>
+      <div class="card">
+        <h2>特殊专长</h2>
+        <div class="feat-list" id="featList"></div>
       </div>
+      <div class="card hide-in-battle">
+        <h2>货币</h2>
+        <div class="misc-grid" id="currencyGrid"></div>
+      </div>
+      <div class="card hide-in-battle">
+        <h2>语言 · 熟练 · 负重</h2>
+        <div class="lang-rows">
+          <div class="lang-row"><span class="lr-label">语言</span><span class="lr-val">通用语 · 妖精语 · 炼狱语</span></div>
+          <div class="lang-row"><span class="lr-label">专业</span><span class="lr-val">绘画 · 演奏</span></div>
+          <div class="lang-row"><span class="lr-label">武器熟练</span><span class="lr-val">—</span></div>
+        </div>
+        <div class="weight-line" id="weightLine"></div>
+      </div>
+      
     </div>
   </section>
 
   <!-- ===== 行5：装备 ===== -->
   
 
-  <!-- ===== 行6：主/子技能 | 天赋树 ===== -->
+  <!-- ===== 行6：主技能 | 子技能 ===== -->
   <section class="skills-grid">
-    <div class="card hide-in-battle">
-      <h2 id="mainSkillTitle">主职业技能列表</h2>
-      <table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="skill-table-body"></tbody></table>
-      <div style="margin-top:16px"><div style="font-size:15px;color:#c9753e;margin-bottom:8px" id="subSkillTitle">子职业技能列表</div>
-      <table class="skill-table"><thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳消耗</th><th>距离</th><th>持续</th><th>操作</th></tr></thead><tbody id="sub-skill-table-body"></tbody></table></div>
+    <div class="card">
+      <h2>主职业技能 <span class="sub">点击行查看详情 · 战斗模式可一键使用</span></h2>
+      <div class="skills-scroll">
+        <table class="skill-table">
+          <thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳</th><th>距离</th><th>持续</th><th>操作</th></tr></thead>
+          <tbody id="mainSkillBody"></tbody>
+        </table>
+      </div>
+      <div class="react-note" style="border-color:rgba(164,109,31,.4);background:rgba(164,109,31,.05);color:var(--muted)">
+        <b style="color:var(--accent)">💡 技能栏位说明</b>
+        <div id="skillSlotNote"></div>
+      </div>
+      <div class="sub-title">子职业技能 <span class="skill-sub" id="subSkillTitle">—</span></div>
+      <div class="skills-scroll" style="margin-top:6px">
+        <table class="skill-table">
+          <thead><tr><th>技能</th><th>施展</th><th>描述</th><th>疲劳</th><th>距离</th><th>持续</th><th>操作</th></tr></thead>
+          <tbody id="subSkillBody"></tbody>
+        </table>
+      </div>
+      <div class="react-note" id="reactNote">
+        <b>⚡ 反应动作提示</b>
+        <div id="reactNoteText"></div>
+      </div>
+
     </div>
-    <div class="card hide-in-battle"><h2>天赋树 <span class="sub">已学</span></h2><div class="talent-grid" id="talent-grid"></div></div>
+    <div class="card">
+        <h2>天赋树 <span class="sub" id="talentTitle">已学 0</span></h2>
+        <div class="talent-list" id="talentList"></div>
+        <div class="talent-note" id="talentNote"></div>
+      </div>
   </section>
 
-  <!-- ===== 行7：图纸 ===== -->
-  <section class="card hide-in-battle"><h2 id="blueprintTitle">图纸（专业槽位）</h2>
-    <p id="blueprintHint" style="font-size:12px;color:var(--muted,#69706b);margin:0 0 10px"></p>
-    <div class="blueprint-grid" id="blueprint-grid"></div>
+  <!-- ===== 行7：图纸（槽位=10+智力调整） ===== -->
+  
+
+<section class="card hide-in-battle">
+    <h2>图纸（专业槽位） <span class="sub" id="bpTitle"></span></h2>
+    <div class="bp-grid" id="bpGrid"></div>
   </section>
-
-  <!-- ===== 行8：装备（最后） ===== -->
-  <section class="card equip-section"><h2>装备栏 <span class="sub">点击选中 → 点击槽位移入 · 右键拆分</span></h2><div class="equip-grid" id="equip-grid"></div></section>
-
-
+<section class="card equip-host-card">
+    <h2>装备栏 <span class="sub">点击物品选中 → 点击目标槽移动 · 右键可拆分堆叠</span></h2>
+    <div class="equip-grid" id="equipGrid"></div>
+  </section>
 </div>
 
-
-<button id="learnToggle" class="learn-toggle" onclick="toggleLearnMode()">📚 学习技能</button>
-<button class="learn-toggle" onclick="exportCurrentXlsx()" style="bottom:90px;right:30px;background:#a46d1f" id="exportXlsxBtn">📄 导出 xlsx</button>
-<button class="learn-toggle" onclick="openExportDir()" style="bottom:150px;right:30px;background:#5a7a3a" id="openDirBtn">📂 打开导出目录</button>
-<button class="learn-toggle" onclick="cheatAdd()" style="bottom:30px;left:30px;right:auto;background:#5a7a3a" id="cheatBtn">🧪 测试加点</button>
-
-
-<div id="learnPanel" class="learn-panel"></div>
-
-<!-- ===== 战斗子页面（战斗中平铺三栏） ===== -->
+<!-- ===== 战斗子页面（战斗中平铺） ===== -->
 <div class="battle-view" id="battleView">
   <div class="bv-cols">
     <div class="bv-card" id="bvOverview"></div>
@@ -127,6 +920,98 @@
   </div>
 </div>
 
+<!-- ===== 悬浮 ===== -->
+<div class="fab">
+  <button class="learn" onclick="toast('测试页：学习面板未接入')">📚 学习技能</button>
+  <button class="up" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+</div>
+
+<!-- ===== 战斗日志侧边栏 ===== -->
+<div class="log-drawer" id="logDrawer">
+  <div class="log-head"><span>⚔ 战斗日志</span><button onclick="toggleLogDrawer()">收起 ▸</button></div>
+  <div class="log-body" id="logBody"></div>
+</div>
+
+<!-- ===== 技能详情遮罩 ===== -->
+<div class="overlay" id="skillOverlay" onclick="if(event.target===this)closeOverlay('skillOverlay')">
+  <div class="pop">
+    <div class="pop-head"><h3 id="sdName">技能详情</h3><button class="close" onclick="closeOverlay('skillOverlay')">✕</button></div>
+    <div class="pop-body">
+      <table class="skill-detail-table" id="sdTable"></table>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="use-btn" id="sdUseBtn" style="display:none" onclick="useSkillFromDetail()">⚔ 使用技能</button>
+        <span class="used-cnt" id="sdUsed"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 力竭详情遮罩 ===== -->
+<div class="overlay" id="exhaustOverlay" onclick="if(event.target===this)closeOverlay('exhaustOverlay')">
+  <div class="pop">
+    <div class="pop-head"><h3>力竭状态 <span style="font-size:13px;color:var(--muted);font-weight:normal" id="exhaustCurrent"></span></h3><button class="close" onclick="closeOverlay('exhaustOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div class="exhaust-list" id="exhaustList"></div>
+      <div style="margin-top:12px;font-size:12px;color:var(--muted)">力竭层数在退出战斗后清零。四层力竭进入失能状态（无法使用技能，圣骑士例外——暂未实现）。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 临时生命/防御等级/护盾 编辑弹层 ===== -->
+<div class="overlay" id="miniOverlay" onclick="if(event.target===this)closeOverlay('miniOverlay')">
+  <div class="pop" style="max-width:360px">
+    <div class="pop-head"><h3 id="miniTitle">修改数值</h3><button class="close" onclick="closeOverlay('miniOverlay')">✕</button></div>
+    <div class="pop-body">
+      <p id="miniHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p>
+      <div class="shield-edit-pop">
+        <input type="number" id="miniInput" value="0" min="0" max="999">
+        <button class="ok" onclick="saveMini()">确定</button>
+        <button class="cancel" onclick="closeOverlay('miniOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 拆分弹层 ===== -->
+<div class="overlay" id="splitOverlay" onclick="if(event.target===this)closeOverlay('splitOverlay')">
+  <div class="pop" style="max-width:360px">
+    <div class="pop-head"><h3 id="splitTitle">拆分堆叠</h3><button class="close" onclick="closeOverlay('splitOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div class="shield-edit-pop">
+        <input type="number" id="splitInput" value="1" min="1">
+        <button class="ok" onclick="doSplit()">拆分</button>
+        <button class="cancel" onclick="closeOverlay('splitOverlay')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 头像设置弹窗 ===== -->
+<div class="overlay" id="avatarOverlay" onclick="if(event.target===this)cancelAvatar()">
+  <div class="pop" style="max-width:560px">
+    <div class="pop-head"><h3>设置头像</h3><button class="close" onclick="cancelAvatar()">✕</button></div>
+    <div class="pop-body">
+      <div class="avatar-stage">
+        <div class="avatar-canvas-wrap">
+          <div class="avatar-canvas" id="avatarCanvas"></div>
+        </div>
+        <div class="avatar-preview" id="avatarPreview"></div>
+      </div>
+      <div class="avatar-controls">
+        <label>缩放 <input type="range" id="avatarZoom" min="50" max="300" value="160" oninput="avatarZoomChange(this.value)"></label>
+        <span id="avatarZoomVal" style="font-size:12px;color:var(--muted);min-width:34px">160%</span>
+        <div class="avatar-btns">
+          <button class="ok" onclick="applyAvatar()">确定</button>
+          <button class="cancel" onclick="cancelAvatar()">取消</button>
+        </div>
+      </div>
+      <div class="avatar-hint">在圆圈内拖动图片调整位置，滑块缩放大小</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <!-- ===== 左侧战斗速览（战斗子页左栏） ===== -->
 <div class="battle-drawer" id="battleDrawer">
   <div class="bd-head"><span>⚔ 战斗速览</span><button onclick="toggleBdDrawer()">收起 ▸</button></div>
@@ -138,65 +1023,13 @@
   </div>
 </div>
 
-<!-- ===== 战斗日志（战斗子页右栏） ===== -->
-<div class="log-drawer" id="logDrawer">
-  <div class="log-head"><span>⚔ 战斗日志</span><button onclick="toggleLogDrawer()">收起 ▸</button></div>
-  <div class="log-body" id="logBody"></div>
-</div>
-
-<div id="toast"></div>
-
-<!-- ===== 背景故事编辑弹层 ===== -->
-<div class="overlay" id="storyOverlay" onclick="if(event.target===this)closeOverlay('storyOverlay')">
-  <div class="pop" style="max-width:640px">
-    <div class="pop-head"><h3>编辑背景故事</h3><button class="close" onclick="closeOverlay('storyOverlay')">✕</button></div>
-    <div class="pop-body">
-      <div class="story-edit-fields" id="storyEditFields"></div>
-      <div class="mini-edit-pop" style="margin-top:14px">
-        <button class="ok" onclick="SB_saveStory()">保存</button>
-        <button class="cancel" onclick="closeOverlay('storyOverlay')">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== 列表编辑弹层（语言/专业/武器熟练） ===== -->
-<div class="overlay" id="listOverlay" onclick="if(event.target===this)closeOverlay('listOverlay')">
-  <div class="pop" style="max-width:420px">
-    <div class="pop-head"><h3 id="listTitle">编辑列表</h3><button class="close" onclick="closeOverlay('listOverlay')">✕</button></div>
-    <div class="pop-body">
-      <p id="listHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p>
-      <div class="mini-edit-pop">
-        <input type="text" id="listInput" value="">
-        <button class="ok" onclick="SB_saveList()">确定</button>
-        <button class="cancel" onclick="closeOverlay('listOverlay')">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== 通用数值编辑弹层（临时生命/护甲值/防御等级/护盾） ===== -->
-<div class="overlay" id="miniOverlay" onclick="if(event.target===this)closeOverlay('miniOverlay')">
-  <div class="pop" style="max-width:360px">
-    <div class="pop-head"><h3 id="miniTitle">修改数值</h3><button class="close" onclick="closeOverlay('miniOverlay')">✕</button></div>
-    <div class="pop-body">
-      <p id="miniHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p>
-      <div class="mini-edit-pop">
-        <input type="number" id="miniInput" value="0" min="0" max="999">
-        <button class="ok" onclick="SB_saveMiniDispatch()">确定</button>
-        <button class="cancel" onclick="closeOverlay('miniOverlay')">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ===== 先攻编辑弹层 ===== -->
 <div class="overlay" id="initOverlay" onclick="if(event.target===this)closeOverlay('initOverlay')">
   <div class="pop" style="max-width:360px">
     <div class="pop-head"><h3>设置先攻值</h3><button class="close" onclick="closeOverlay('initOverlay')">✕</button></div>
     <div class="pop-body">
       <p id="initHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px">输入本场战斗你的先攻骰结果（含调整值）。</p>
-      <div class="mini-edit-pop">
+      <div class="init-input-row">
         <input type="number" id="initInput" value="10" min="0" max="99">
         <button class="ok" onclick="saveInit()">确定</button>
         <button class="cancel" onclick="closeOverlay('initOverlay')">取消</button>
@@ -205,44 +1038,1703 @@
   </div>
 </div>
 
-<!-- ===== 力竭详情弹层 ===== -->
-<div class="overlay" id="exhaustOverlay" onclick="if(event.target===this)closeOverlay('exhaustOverlay')">
-  <div class="pop">
-    <div class="pop-head"><h3>力竭状态 <span id="exhaustCurrent" style="font-size:13px;color:var(--muted);font-weight:normal"></span></h3><button class="close" onclick="closeOverlay('exhaustOverlay')">✕</button></div>
-    <div class="pop-body">
-      <div class="exhaust-list" id="exhaustList"></div>
-      <div style="margin-top:12px;font-size:12px;color:var(--muted)">力竭层数在退出战斗后清零。四层力竭进入失能状态（无法使用技能）。</div>
-      <div class="mini-edit-pop" style="margin-top:14px">
-        <button class="ok" onclick="SB_addExhaust()">+1 层力竭</button>
-        <button class="cancel" onclick="SB_resetExhaustManual()">清零</button>
-      </div>
-    </div>
+<!-- ===== 升级弹窗 ===== -->
+<div class="overlay" id="levelUpOverlay" onclick="if(event.target===this)closeOverlay('levelUpOverlay')">
+  <div class="pop" style="max-width:520px">
+    <div class="pop-head"><h3>升级</h3><button class="close" onclick="closeOverlay('levelUpOverlay')">✕</button></div>
+    <div class="pop-body" id="luBody"></div>
   </div>
 </div>
 
+<!-- ===== 测试加点弹窗 ===== -->
+<div class="overlay" id="cheatOverlay" onclick="if(event.target===this)closeOverlay('cheatOverlay')">
+  <div class="pop" style="max-width:480px">
+    <div class="pop-head"><h3>🧪 测试加点（GM 工具）</h3><button class="close" onclick="closeOverlay('cheatOverlay')">✕</button></div>
+    <div class="pop-body" id="cheatBody"></div>
+  </div>
+</div>
+
+<!-- ===== 兼职要求弹窗 ===== -->
+<div class="overlay" id="subclassOverlay" onclick="if(event.target===this)closeOverlay('subclassOverlay')">
+  <div class="pop" style="max-width:640px">
+    <div class="pop-head"><h3>兼职职业要求（真实数据）</h3><button class="close" onclick="closeOverlay('subclassOverlay')">✕</button></div>
+    <div class="pop-body" id="subclassBody"></div>
+  </div>
+</div><!-- ===== 源引擎兼容占位 ===== -->
+<div id="snowd-legacy" style="display:none">
+  <div id="info-grid"></div><div id="class-row"></div><div id="story-block"></div><div id="story-title"></div><div id="xp-bar"></div><div id="sp-bar"></div><div id="stat-row"></div>
+  <div id="attr-grid"></div><div id="feat-list"></div><div id="currency-row"></div><div id="weight-block"></div><div id="talent-grid"></div><div id="equip-grid"></div><div id="racial-traits"></div><div id="class-features"></div>
+  <div id="lang-list"></div><div id="prof-list"></div><div id="weapon-profs"></div><div id="skill-table-body"></div><div id="sub-skill-table-body"></div><div id="mainSkillTitle"></div><div id="subSkillTitle"></div><div id="blueprintTitle"></div><div id="blueprintHint"></div><div id="blueprint-grid"></div>
+  <div id="learnPanel"></div>
+</div>
 
 <script src="../职业页/数据/items_data.js"></script>
-<script src="导出立绘.js"></script>
-<script src="xlsx_proficiency_export.js"></script>
 <script src="panel_data.js"></script>
 <script src="panel_engine.js"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
+<script src="shortcuts.js"></script>
 <script>
-function openExportDir(){
-  if(window.mobileBridge && window.mobileBridge.openDownloads){
-    var r = window.mobileBridge.openDownloads();
-    if(r !== "ok"){ alert("Cannot open folder: " + r); }
-  } else {
-    alert("Please use the Android app to open the export folder.");
+
+/* ============ 桥接层 Part1：TEST_DATA 从 state 构建（SB_ 前缀） ============ */
+function SB_buildTestData(st) {
+  st = st || (typeof state !== 'undefined' ? state : null);
+  if (!st) return null;
+  function clsRow(c) { return { name: c.name || '', sub: '', level: c.level || 0, styles: (c.styles || ['', '', '', '']) }; }
+  var classes = [];
+  if (st.classes && st.classes[0] && st.classes[0].name) classes.push(clsRow(st.classes[0]));
+  if (st.classes && st.classes[1] && st.classes[1].name) classes.push(clsRow(st.classes[1]));
+  while (classes.length < 3) classes.push({ name: '', sub: '', level: 0, styles: ['', '', '', ''] });
+  var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
+  var strMod = Math.floor((((st.attrs && st.attrs['力量']) || 10) - 10) / 2);
+  var keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
+  var keyMod = Math.floor((((st.attrs && st.attrs[keyAttr]) || 10) - 10) / 2);
+  var battle = {
+    hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
+    hpRecover: Math.floor((st.hp || 0) / 2), fpRecover: Math.floor((st.fp || 0) / 2),
+    ac: 10 + dexMod, init: '', speed: String((typeof REF_RACES !== 'undefined' && REF_RACES[st.race] && REF_RACES[st.race].speed) ? REF_RACES[st.race].speed : '5').replace('米', ''),
+    keyAttr: keyAttr, atk: Math.max(strMod, dexMod) + (st.atk_hit_bonus || 0), spell: keyMod + (st.spell_hit_bonus || 0)
+  };
+  var bgFields = [];
+  var bgMap = [['故事', st.story], ['特性', st.traits], ['特点', st.personality], ['理念', st.ideals], ['羁绊', st.bonds], ['缺陷', st.flaws]];
+  for (var bi = 0; bi < bgMap.length; bi++) { if (bgMap[bi][1]) bgFields.push({ label: bgMap[bi][0], v: bgMap[bi][1] }); }
+  var spMarks = [];
+  if (st.color_marks) {
+    var order = ['红', '橙', '黄', '绿', '青', '蓝', '浅', '紫', '粉', '棕', '白', '黑', '无', '碧', '炫彩'];
+    for (var oi = 0; oi < order.length; oi++) if (st.color_marks[order[oi]]) spMarks.push(order[oi]);
+  }
+  var talents = [];
+  if (st.talent_tree) for (var ti = 0; ti < st.talent_tree.length; ti++) {
+    var tg = st.talent_tree[ti];
+    talents.push({ tier: tg.tier || '一阶', n: tg.n || tg.name || '', desc: tg.desc || '', learned: true });
+  }
+  var feats = [];
+  if (st.special_feats) {
+    var lvSeq = ['4级', '8级', '12级', '16级'];
+    for (var fi = 0; fi < st.special_feats.length; fi++) {
+      var f = st.special_feats[fi];
+      var fn = typeof f === 'string' ? f : (f && f.name);
+      feats.push({ lv: (f && f.level) || lvSeq[fi] || '', name: fn || '', type: '专长', desc: '资料库暂无详细数据' });
+    }
+  }
+  var skillsMain = [], skillsSub = [];
+  if (st.skills) for (var si = 0; si < st.skills.length; si++) {
+    var s = st.skills[si];
+    if (!s || !(s.n || s.name)) continue;
+    var sd = (typeof SKILL_DATA !== 'undefined') ? SKILL_DATA[s.src] : null;
+    var meta = null;
+    if (sd) for (var mi = 0; mi < sd.length; mi++) { if (sd[mi].name === (s.n || s.name)) { meta = sd[mi]; break; } }
+    var cast = (meta && meta.fields && meta.fields['施展时间']) || '-';
+    var fp = (meta && meta.fields && meta.fields['疲劳消耗']) || '-';
+    var range = (meta && meta.fields && meta.fields['施展距离']) || '-';
+    var dur = (meta && meta.fields && meta.fields['持续时间']) || '-';
+    var desc = (meta && meta.description && meta.description.join(' ')) || '';
+    var style = (meta && meta.style) || '';
+    var entry = { n: s.n || s.name, style: style, cast: cast, range: range, dur: dur, fp: fp, kw: '', cond: '-', ext: '-', desc: desc, descBody: [desc], up: [], marks: [], sub: false, react: cast === '反应动作', fieldRuns: {}, descEntries: [] };
+    if (s.sub || s.isSub) entry.sub = true;
+    if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
+  }
+  var raceTraits = [];
+  if (st.racial_traits) for (var ri = 0; ri < st.racial_traits.length; ri++) raceTraits.push({ n: st.racial_traits[ri].name, d: st.racial_traits[ri].desc });
+  var classTraits = [];
+  if (st.class_features) for (var ci2 = 0; ci2 < st.class_features.length; ci2++) classTraits.push({ n: st.class_features[ci2].name, d: st.class_features[ci2].desc });
+  return {
+    char: { player: st.player || '', name: st.name || '', race: st.race || '', gender: st.gender || '', age: st.age || '', height: st.height || '', weight: st.weight || '', eye: st.eye || '', skin: st.skin || '', hair: st.hair || '', bg: '' },
+    classes: classes, attrs: st.attrs || {}, attrsSave: st.attrsSave || {},
+    attrsLearned: st.profs || {}, battle: battle, languages: st.languages || [],
+    professionals: st.professionals || [], bgFields: bgFields, skillsMain: skillsMain,
+    skillsSub: skillsSub, talents: talents, feats: feats, raceTraits: raceTraits,
+    classTraits: classTraits, equipment: st.equipment || {}, spMarks: spMarks
+  };
+}
+var TEST_DATA = SB_buildTestData();
+
+</script>
+<script>
+
+/* ================= 状态（真实数据初始化） ================= */
+var T = typeof TEST_DATA !== 'undefined' ? TEST_DATA : null;
+
+var S = {
+  battle: false,
+  hp: T ? T.battle.hp : 29, hpMax: T ? T.battle.hpMax : 29,
+  fp: T ? T.battle.fp : 13, fpMax: T ? T.battle.fpMax : 13,
+  ac: T ? T.battle.ac : 12, tmpHp: 0, armor: 0, shield: 0,
+  snap: null,
+  exhaust: 0,
+  usage: {},
+  log: [],
+  selEquip: null,
+  splitData: null,
+  xp: 0,
+  mainLv: 6,
+  subLv: 1,
+  heldMarks: T ? (T.spMarks || []).slice() : [],
+  init: null
+};
+var MARK_HEX = { '红':'#FF0000','橙':'#EE822F','黄':'#FFF32F','绿':'#00B050','青':'#00FA99','蓝':'#00B0F0','浅':'#B3F9FF','紫':'#B94BFF','粉':'#FFB7E3','棕':'#843F0B','白':'#FFFFFF','黑':'#595959','无':'#D9D9D9','碧':'#00FA99','炫彩':'premium' };
+
+var EXHAUST = {
+  1: { txt: '角色的基础移动力减半。' },
+  2: { txt: '角色进行的检定具有劣势，如果造成的效果需要攻击来源进行检定，那么对方会具有优势。' },
+  3: { txt: '角色进行的检定具有极大劣势，如果造成的效果需要攻击来源进行检定，那么对方会具有极大优势。' },
+  4: { txt: '角色进入失能状态，无法自主行动。' },
+  5: { txt: '角色因力竭而死亡。' }
+};
+
+/* ================= 技能（真实数据） ================= */
+function buildSkills(list, isSub) {
+  var out = [];
+  for (var i = 0; i < list.length; i++) {
+    var s = list[i];
+    out.push({
+      n: s.n, style: s.style, fp: s.fp, cast: s.cast, range: s.range, dur: s.dur,
+      kw: s.kw, cond: s.cond, ext: s.ext, desc: s.desc, up: (s.up || []).join('；') || '—',
+      react: s.react, sub: isSub
+    });
+  }
+  return out;
+}
+var SKILLS = {
+  main: T ? buildSkills(T.skillsMain, false) : [],
+  sub: T ? buildSkills(T.skillsSub, true) : []
+};
+
+/* ================= 属性（真实值 + 模板全集） ================= */
+var ATTR_ORDER = ['力量', '敏捷', '体质', '智力', '感知', '魅力', '意志', '幸运'];
+var ATTR_VALS = T ? T.attrs : { '力量': 9, '敏捷': 12, '体质': 12, '智力': 14, '感知': 15, '魅力': 16, '意志': 9, '幸运': 14 };
+var ATTR_SAVE = T ? T.attrsSave : {};
+var ATTR_LEARNED = T ? T.attrsLearned : {};
+var ATTR_PROFS = {
+  '力量': ['运动', '威力', '承重', '跳跃', '攀爬', '游泳', '自定义'],
+  '敏捷': ['隐匿', '体操', '骑乘', '巧手-偷窃', '巧手-开锁', '巧手-拆除', '巧手-自定义'],
+  '体质': ['专注', '耐力'],
+  '智力': ['宗教', '调查', '估价', '伪造', '读唇', '逻辑', '奥秘-魔法学识', '奥秘-炼金术', '奥秘-神奇道具', '奥秘-多元宇宙', '知识-历史', '知识-地理', '知识-人文', '知识-政治', '知识-神秘学', '知识-工程学', '知识-珠宝学', '知识-草药学', '知识-医药', '知识-烹饪', '知识-自定义'],
+  '感知': ['洞悉', '导航', '自然', '驯兽', '感悟', '聆听', '察觉'],
+  '魅力': ['欺瞒', '恐吓', '说服', '表演-歌唱', '表演-舞蹈', '表演-自定义'],
+  '意志': ['求生', '激励', '决策'],
+  '幸运': ['机遇', '探索']
+};
+function renderAttrs() {
+  var html = '';
+  for (var ai = 0; ai < ATTR_ORDER.length; ai++) {
+    var name = ATTR_ORDER[ai];
+    var val = ATTR_VALS[name] || 0;
+    var mod = Math.floor((val - 10) / 2);
+    var modCls = mod > 0 ? 'pos' : (mod < 0 ? 'neg' : 'zero');
+    var modStr = mod >= 0 ? '+' + mod : '' + mod;
+    var profs = ATTR_PROFS[name];
+    var learned = ATTR_LEARNED[name] || {};
+    var learnedCount = 0;
+    for (var k in learned) if (learned[k] > 0) learnedCount++;
+    var saveVal = ATTR_SAVE[name];
+    var saveHtml = saveVal && saveVal > 0
+      ? '<span class="sv-val have">' + saveVal + '</span>'
+      : '<span class="sv-val none">✗</span>';
+    var profHtml = '';
+    for (var pi = 0; pi < profs.length; pi++) {
+      var pn = profs[pi];
+      var pv = learned[pn] || 0;
+      var cls = pv > 0 ? 'learned' : 'unlearned';
+      var pvStr = pv > 0 ? pv : '—';
+      profHtml += '<div class="prof-item ' + cls + '"><span class="pn">' + pn + '</span><span class="pv">' + pvStr + '</span></div>';
+    }
+    html += '<div class="attr"><div class="attr-top"><span class="attr-name">' + name + '</span>' +
+      '<span class="attr-val">' + val + '</span><span class="attr-mod ' + modCls + '">' + modStr + '</span>' +
+      '<span class="attr-count">熟练 ' + learnedCount + '/' + profs.length + '</span></div>' +
+      '<div class="attr-save"><span class="sv-label">豁免</span>' + saveHtml + '</div>' +
+      '<div class="prof-grid">' + profHtml + '</div></div>';
+  }
+  document.getElementById('attrGrid').innerHTML = html;
+}
+
+/* ================= 特殊专长（真实 4 槽） ================= */
+var FEATS = (T ? T.feats : []).concat([{ lv: '六阶', name: null, type: '天赋位' }]);
+function renderFeats() {
+  var html = '';
+  for (var i = 0; i < 4; i++) {
+    var f = FEATS[i] || { lv: '', name: null };
+    if (f.name) {
+      var descTip = f.desc ? ' title="' + f.desc.replace(/"/g, '&quot;') + '"' : '';
+      html += '<div class="feat-slot"' + descTip + '><span class="lv">' + f.lv + '</span>' + f.name +
+        (f.type ? '<span class="type">' + f.type + '</span>' : '') + '</div>';
+    } else {
+      html += '<div class="feat-slot empty" onclick="toast(\'测试页：专长选择未接入\')"><span class="lv">' + (f.lv || '—') + '</span>未选择<span style="color:var(--muted)">+ 选择</span></div>';
+    }
+  }
+  document.getElementById('featList').innerHTML = html;
+}
+
+/* ================= 个性背景（真实画师数据） ================= */
+function renderBg() {
+  var fields = T ? T.bgFields : [];
+  document.getElementById('bgTitle').textContent = (T && T.char.bg) ? T.char.bg : '';
+  var html = '';
+  for (var i = 0; i < fields.length; i++) {
+    var f = fields[i];
+    var wide = f.label === '背景故事' ? ' wide' : '';
+    html += '<div class="bg-field' + wide + '"><span class="bf-label">' + f.label + '</span><span class="bf-val">' + f.v + '</span></div>';
+  }
+  document.getElementById('bgFields').innerHTML = html;
+}
+
+/* ================= 装备（真实） ================= */
+var EQUIP = T ? JSON.parse(JSON.stringify(T.equipment)) : {};
+var EQUIP_ORDER = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包', '材料包A', '材料包B'];
+function renderEquip() {
+  var grid = document.getElementById('equipGrid');
+  var html = '';
+  for (var si = 0; si < EQUIP_ORDER.length; si++) {
+    var slot = EQUIP_ORDER[si];
+    var items = EQUIP[slot] || [];
+    var filled = items.filter(function(x){ return x; }).length;
+    var locked = slot === '材料包B';
+    var title = slot + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
+    html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span></h3><div class="equip-items">';
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      if (it) {
+        var sel = S.selEquip && S.selEquip.slot === slot && S.selEquip.idx === i ? ' selected' : '';
+        var cnt = it.cnt > 1 ? ' <span class="cnt">×' + it.cnt + '</span>' : '';
+        html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)">' +
+          '<span>' + it.item + cnt + '</span>' + (it.w ? '<span class="w">' + it.w + '</span>' : '') + '</div>';
+      } else {
+        var txt = locked ? '未购买' : '空栏位';
+        html += '<div class="eq-empty" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)">' + txt + '</div>';
+      }
+    }
+    html += '</div></div>';
+  }
+  grid.innerHTML = html;
+}
+function eqClick(el) {
+  var slot = el.getAttribute('data-slot');
+  var idx = parseInt(el.getAttribute('data-idx'), 10);
+  if (S.selEquip) {
+    moveEquip(S.selEquip.slot, S.selEquip.idx, slot, idx);
+    S.selEquip = null;
+    renderEquip();
+    return;
+  }
+  var it = EQUIP[slot][idx];
+  if (it) {
+    S.selEquip = { slot: slot, idx: idx };
+    renderEquip();
+    toast('已选中 ' + it.item + '，点击目标槽位移动');
   }
 }
-(function(){
-  var b = document.getElementById("openDirBtn");
-  if(b && (!window.mobileBridge || !window.mobileBridge.openDownloads)){ b.style.display = "none"; }
-})();
-</script>
-<script src="shortcuts.js"></script>
-</body>
+function eqCtx(ev, el) {
+  ev.preventDefault();
+  var slot = el.getAttribute('data-slot');
+  var idx = parseInt(el.getAttribute('data-idx'), 10);
+  var it = EQUIP[slot][idx];
+  if (!it || it.cnt <= 1) { toast('该物品不可拆分（数量 1）', 'warn'); return; }
+  S.splitData = { slot: slot, idx: idx, max: it.cnt };
+  document.getElementById('splitTitle').textContent = '拆分 ' + it.item + '（现有 ' + it.cnt + ' 个）';
+  document.getElementById('splitInput').value = 1;
+  document.getElementById('splitInput').max = it.cnt - 1;
+  document.getElementById('splitOverlay').classList.add('show');
+}
+function doSplit() {
+  var d = S.splitData;
+  var n = parseInt(document.getElementById('splitInput').value, 10);
+  if (!d || isNaN(n) || n < 1 || n >= d.max) { toast('请输入有效数量（1-' + (d.max - 1) + '）', 'warn'); return; }
+  var slotArr = EQUIP[d.slot];
+  var target = -1;
+  for (var i = 0; i < slotArr.length; i++) if (!slotArr[i]) { target = i; break; }
+  if (target < 0) { toast('该槽位已满，无法拆分', 'warn'); closeOverlay('splitOverlay'); return; }
+  var src = slotArr[d.idx];
+  var newItem = { item: src.item, w: src.w, cnt: n };
+  src.cnt -= n;
+  slotArr[target] = newItem;
+  log('拆分 ' + src.item + ' ×' + n + ' → ' + d.slot + ' 空位');
+  S.splitData = null;
+  closeOverlay('splitOverlay');
+  renderEquip();
+}
+function moveEquip(fromSlot, fromIdx, toSlot, toIdx) {
+  var fromArr = EQUIP[fromSlot];
+  var toArr = EQUIP[toSlot];
+  var it = fromArr[fromIdx];
+  var tgt = toArr[toIdx];
+  if (!it) return;
+  if (tgt) {
+    if (tgt.item === it.item) {
+      tgt.cnt += it.cnt;
+      fromArr[fromIdx] = null;
+      log('合并 ' + it.item + ' ×' + it.cnt + ' → ' + toSlot);
+      return;
+    }
+    fromArr[fromIdx] = tgt;
+    toArr[toIdx] = it;
+    log('交换 ' + it.item + ' ↔ ' + tgt.item);
+    return;
+  }
+  toArr[toIdx] = it;
+  fromArr[fromIdx] = null;
+  log('移动 ' + it.item + ' → ' + toSlot);
+}
 
+/* ================= toast ================= */
+var toastTimer = null;
+function toast(msg, cls) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = cls || '';
+  el.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2600);
+}
+
+/* ================= 战斗日志（侧边栏） ================= */
+function log(msg, cls) {
+  var d = new Date();
+  var t = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2) + ':' + ('0'+d.getSeconds()).slice(-2);
+  S.log.push({ t: t, msg: msg, cls: cls || '' });
+  var body = document.getElementById('logBody');
+  var line = document.createElement('div');
+  line.className = 'log-line ' + (cls || '');
+  line.innerHTML = '<span class="t">' + t + '</span>' + msg;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+function toggleLogDrawer() {
+  document.getElementById('logDrawer').classList.toggle('open');
+}
+function setLogDrawer(open) {
+  document.getElementById('logDrawer').classList.toggle('open', open);
+}
+function mobileBvJump(which) {
+  var el = document.getElementById(which === 'overview' ? 'bvOverview' : 'bvLog');
+  if (el) {
+    var rect = el.getBoundingClientRect();
+    var absTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+    window.scrollTo(0, Math.max(0, absTop - 60));
+    el.classList.add('bv-flash');
+    setTimeout(function() { el.classList.remove('bv-flash'); }, 900);
+  }
+}
+
+/* ================= 血球/疲球 ================= */
+var ORB_C = 2 * Math.PI * 50;
+function setArc(id, pct, color) {
+  var el = document.getElementById(id);
+  var dash = Math.max(0, Math.min(1, pct)) * ORB_C;
+  el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + ORB_C.toFixed(1));
+  el.setAttribute('stroke', color);
+}
+function hpColor() {
+  var pct = S.hp / S.hpMax;
+  if (pct > 0.66) return '#2e8b57';
+  if (pct > 0.33) return '#d4a017';
+  return '#c0392b';
+}
+function fpColor() {
+  var pct = S.fp / S.fpMax;
+  if (pct > 0.5) return '#2e6db4';
+  if (pct > 0.25) return '#5a9bd5';
+  return '#a8cbea';
+}
+function renderOrbs() {
+  document.getElementById('hpCur').textContent = S.hp;
+  document.getElementById('hpMax').textContent = S.hpMax;
+  document.getElementById('fpCur').textContent = S.fp;
+  document.getElementById('fpMax').textContent = S.fpMax;
+  var hpArc = document.getElementById('hpArc');
+  var fpArc = document.getElementById('fpArc');
+  setArc('hpArc', S.hp / S.hpMax, hpColor());
+  setArc('fpArc', S.fp / S.fpMax, fpColor());
+  hpArc.classList.toggle('orb-low', S.hp <= 0 || S.hp / S.hpMax < 0.25);
+  fpArc.classList.toggle('orb-low', S.fp / S.fpMax < 0.25 && S.battle);
+  document.body.classList.toggle('dead', S.exhaust >= 5);
+  if (S.exhaust >= 5) hpArc.setAttribute('stroke', '#1a1a1a');
+  renderMiniBalls();
+}
+function adjHp(d) {
+  S.hp = Math.max(0, S.hp + d);
+  if (!S.battle) { S.hpMax = S.hp; log('非战斗调整生命值 → ' + S.hp + '（记为初始值）', 'heal'); toast('已记录新生命初始值：' + S.hp); }
+  else { log((d > 0 ? '受到治疗 +' : '受到伤害 ') + Math.abs(d) + ' → 生命 ' + S.hp + '/' + S.hpMax, d > 0 ? 'heal' : 'damage'); }
+  renderOrbs();
+}
+function adjFp(d) {
+  S.fp = Math.max(0, S.fp + d);
+  if (!S.battle) { S.fpMax = S.fp; log('非战斗调整疲劳值 → ' + S.fp + '（记为初始值）'); toast('已记录新疲劳初始值：' + S.fp); }
+  else { log((d > 0 ? '恢复疲劳 +' : '消耗疲劳 ') + Math.abs(d) + ' → 疲劳 ' + S.fp + '/' + S.fpMax); }
+  renderOrbs();
+}
+
+/* ================= 临时生命 / 防御等级 / 护盾（小球编辑） ================= */
+var MINI_CFG = {
+  tmpHp:  { t: '临时生命', key: 'tmpHp',  hint: '临时生命：战斗中临时获得的额外生命，退出战斗后恢复为进入时数值。' },
+  armor:  { t: '护甲值',   key: 'armor',  hint: '护甲值：角色护甲提供的防护值（与防御等级不同）。战斗中修改，退出战斗后恢复为进入时数值。' },
+  ac:     { t: '防御等级', key: 'ac',     hint: '防御等级：战斗中修改，退出战斗后将恢复为初始值。' },
+  shield: { t: '护盾值',   key: 'shield', hint: '护盾值：战斗中获得的额外防护，退出战斗后恢复为进入时数值。' }
+};
+var MINI_KIND = 'tmpHp';
+function editMini(kind) {
+  var cfg = MINI_CFG[kind];
+  if (!cfg) return;
+  MINI_KIND = kind;
+  document.getElementById('miniTitle').textContent = cfg.t;
+  document.getElementById('miniInput').value = S[cfg.key];
+  document.getElementById('miniHint').textContent = cfg.hint + (S.battle ? '（战斗中修改）' : '（非战斗修改将记为初始值）');
+  document.getElementById('miniOverlay').classList.add('show');
+}
+function saveMini() {
+  var cfg = MINI_CFG[MINI_KIND];
+  if (!cfg) return;
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  if (isNaN(v) || v < 0) { toast('请输入有效' + cfg.t, 'warn'); return; }
+  if (S.battle) {
+    S[cfg.key] = v;
+    log('战斗中' + cfg.t + '调整 → ' + v);
+  } else if (S[cfg.key] !== v) {
+    S[cfg.key] = v;
+    toast('已记录新' + cfg.t + '初始值：' + v);
+    log('非战斗修改' + cfg.t + ' → ' + v + '（记为初始值）');
+  }
+  renderMiniBalls();
+  refreshMobileBattleStrip();
+  closeOverlay('miniOverlay');
+}
+function renderMiniBalls() {
+  var a = document.getElementById('tmpHpNum'); if (a) a.textContent = S.tmpHp;
+  var b = document.getElementById('armorNum'); if (b) b.textContent = S.armor;
+  var c = document.getElementById('shieldNum'); if (c) c.textContent = S.shield;
+  var st = document.getElementById('shieldText'); if (st) st.textContent = S.ac;
+}
+
+/* ================= 力竭 ================= */
+function addExhaust() {
+  if (S.exhaust >= 5) return;
+  S.exhaust++;
+  var depth = 92 - (S.exhaust - 1) * 13;
+  document.documentElement.style.setProperty('--exhaust-depth', depth + '%');
+  var badge = document.getElementById('exhaustBadge');
+  document.getElementById('exhaustNum').textContent = S.exhaust;
+  badge.classList.remove('pulse');
+  void badge.offsetWidth;
+  badge.classList.add('pulse');
+  log('疲劳值不足！获得第 ' + S.exhaust + ' 层力竭', 'exhaust');
+  if (S.exhaust === 4) {
+    toast('四层力竭：进入失能状态，无法使用技能', 'exhaust-toast');
+    log('四层力竭：角色进入失能状态（圣骑士例外暂未实现）', 'exhaust');
+  }
+  if (S.exhaust === 5) {
+    toast('五层力竭：角色因力竭而死亡', 'exhaust-toast');
+    log('五层力竭：角色因力竭而死亡（测试页仅视觉展示）', 'dead');
+  }
+  renderOrbs();
+  renderSkillTables();
+}
+function resetExhaust() {
+  S.exhaust = 0;
+  document.documentElement.style.setProperty('--exhaust-depth', '92%');
+  document.getElementById('exhaustNum').textContent = 0;
+  document.body.classList.remove('dead');
+}
+function showExhaustDetail() {
+  var list = document.getElementById('exhaustList');
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    var active = i <= S.exhaust ? 'active' : '';
+    var include = i > 1 ? '<div class="include">（包含第 1–' + (i - 1) + ' 层效果）</div>' : '';
+    html += '<div class="exhaust-item ' + active + '"><span class="lv">' + i + '层</span><div class="txt">' + EXHAUST[i].txt + include + '</div></div>';
+  }
+  list.innerHTML = html;
+  document.getElementById('exhaustCurrent').textContent = S.exhaust > 0 ? '当前：' + S.exhaust + ' 层' : '当前：无';
+  document.getElementById('exhaustOverlay').classList.add('show');
+}
+
+/* ================= 技能表（真实） ================= */
+function skillRowHtml(sk, isSub) {
+  var react = sk.react ? '<span class="react-tag">⚡反应</span>' : '';
+  var used = S.usage[sk.n] || 0;
+  var usedHtml = used > 0 ? '<span class="used-cnt">已用 ' + used + ' 次</span>' : '<span class="used-cnt"></span>';
+  var disabled = S.battle && S.exhaust >= 4 ? 'disabled' : '';
+  var cls = sk.style ? '<span class="skill-sub">(' + sk.style + ')</span>' : '';
+  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" onclick="showSkillDetail(this)">' +
+    '<td class="skill-name">' + sk.n + ' ' + cls + react + '</td>' +
+    '<td>' + sk.cast + '</td>' +
+    '<td class="skill-desc">' + sk.desc + '</td>' +
+    '<td>' + sk.fp + '</td>' +
+    '<td>' + sk.range + '</td>' +
+    '<td>' + sk.dur + '</td>' +
+    '<td><button class="use-btn" ' + disabled + ' onclick="event.stopPropagation();useSkill(\'' + sk.n + '\')">⚔ 使用</button> ' + usedHtml + '</td>' +
+    '</tr>';
+}
+function renderSkillTables() {
+  var main = document.getElementById('mainSkillBody');
+  var sub = document.getElementById('subSkillBody');
+  var mh = '';
+  for (var i = 0; i < SKILLS.main.length; i++) mh += skillRowHtml(SKILLS.main[i], false);
+  if (!SKILLS.main.length) mh += '<tr class="skill-empty"><td>（资料库无此风格技能数据）</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
+  mh += '<tr class="skill-empty"><td>空栏位</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
+  main.innerHTML = mh;
+  var sh = '';
+  for (var j = 0; j < SKILLS.sub.length; j++) sh += skillRowHtml(SKILLS.sub[j], true);
+  if (!SKILLS.sub.length) sh += '<tr class="skill-empty"><td>（子职业暂无技能数据）</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
+  sh += '<tr class="skill-empty"><td>空栏位</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
+  sub.innerHTML = sh;
+  // 反应提示
+  var reacts = [];
+  var all = SKILLS.main.concat(SKILLS.sub);
+  for (var k = 0; k < all.length; k++) if (all[k].react) reacts.push(all[k].n);
+  document.getElementById('reactNoteText').textContent = reacts.length
+    ? '当前持有 ' + reacts.length + ' 个反应技能：' + reacts.join(' / ') + '——战斗中被触发时，可在技能列表一键使用。'
+    : '当前技能列表中无反应动作技能。';
+}
+
+/* ================= 技能详情 ================= */
+var curDetailSkill = null;
+function showSkillDetail(tr) {
+  var name = tr.getAttribute('data-name');
+  var isSub = tr.getAttribute('data-sub') === 'true';
+  var sk = findSkill(name, isSub);
+  if (!sk) return;
+  curDetailSkill = { sk: sk, isSub: isSub };
+  document.getElementById('sdName').textContent = sk.n + (sk.react ? ' ⚡反应' : '');
+  var rows = [
+    ['施展时间', sk.cast], ['施展距离', sk.range], ['持续时间', sk.dur],
+    ['疲劳消耗', sk.fp], ['关键词', sk.kw], ['前置条件', sk.cond], ['额外条件', sk.ext]
+  ];
+  var runs = (sk.fieldRuns || {})['描述'];
+  var descHtml = runs && runs.length ? renderFieldRuns(runs) : escHtml(sk.desc);
+  rows.push(['描述', descHtml]);
+  rows.push(['升级', sk.up]);
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+  }
+  document.getElementById('sdTable').innerHTML = html;
+  var btn = document.getElementById('sdUseBtn');
+  btn.style.display = S.battle ? 'inline-block' : 'none';
+  btn.disabled = S.battle && S.exhaust >= 4;
+  document.getElementById('sdUsed').textContent = (S.usage[sk.n] || 0) > 0 ? '已使用 ' + S.usage[sk.n] + ' 次' : '';
+  document.getElementById('skillOverlay').classList.add('show');
+}
+function toggleBdDrawer() {
+  document.getElementById('battleDrawer').classList.toggle('open');
+}
+function setBdDrawer(open) {
+  document.getElementById('battleDrawer').classList.toggle('open', open);
+}
+function findSkill(name, isSub) {
+  var arr = isSub ? SKILLS.sub : SKILLS.main;
+  for (var i = 0; i < arr.length; i++) if (arr[i].n === name) return arr[i];
+  return null;
+}
+function useSkillFromDetail() {
+  if (curDetailSkill) useSkill(curDetailSkill.sk.n);
+}
+function useSkill(name) {
+  if (!S.battle) { toast('请先进入战斗记录模式', 'warn'); return; }
+  if (S.exhaust >= 4) { toast('失能状态：无法使用技能（圣骑士例外暂未实现）', 'exhaust-toast'); return; }
+  var sk = findSkill(name, false) || findSkill(name, true);
+  if (!sk) return;
+  var before = S.fp;
+  var cost = parseFloat(sk.fp) || 0;
+  S.fp = Math.max(0, S.fp - cost);
+  S.usage[name] = (S.usage[name] || 0) + 1;
+  // 按钮视觉反馈
+  var btns = document.querySelectorAll('.use-btn');
+  for (var bi = 0; bi < btns.length; bi++) {
+    if (btns[bi].getAttribute('onclick') && btns[bi].getAttribute('onclick').indexOf(name) >= 0) {
+      btns[bi].classList.add('fired');
+      var self = btns[bi];
+      setTimeout(function(){ self.classList.remove('fired'); }, 480);
+      break;
+    }
+  }
+  log('使用技能「' + name + '」疲劳 -' + cost + ' → ' + S.fp + '/' + S.fpMax + '（第 ' + S.usage[name] + ' 次）');
+  if (S.fp <= 0 && before - cost < 0) {
+    var short = cost - before;
+    log('疲劳值不足 ' + short + ' 点，仍然释放技能 → 力竭 +1', 'exhaust');
+    addExhaust();
+  }
+  renderOrbs();
+  renderSkillTables();
+  if (typeof renderBattleDrawer === 'function') renderBattleDrawer();
+  closeOverlay('skillOverlay');
+  if (S.exhaust === 5) return;
+}
+
+/* ================= 先攻值编辑 ================= */
+function renderInit() {
+  var el = document.getElementById('initItem');
+  if (!el) return;
+  var mod = 0;
+  if (T && T.attrs && T.attrs['敏捷']) mod = Math.floor((T.attrs['敏捷'] - 10) / 2);
+  var val = S.init !== null ? S.init : 'D20' + (mod >= 0 ? '+' : '') + mod;
+  el.innerHTML = '<small>先攻值</small><b>' + val + ' <span class="init-edit">✎</span></b>';
+}
+/* ================= 页头/静态信息（由 T 驱动） ================= */
+function renderCharHeader() {
+  if (!T) return;
+  var c = T.char || {};
+  var el = document.getElementById('charName');
+  if (el) el.textContent = c.name || '角色';
+  var chips = document.getElementById('charChips');
+  if (chips) {
+    var html = '<span>' + (c.race || '—') + '</span><span>' + (c.gender || '—') + '</span><span>' + (c.age || '—') + '岁</span>';
+    var m0 = T.classes && T.classes[0];
+    var s0 = T.classes && T.classes[1];
+    if (m0) html += '<span>' + m0.name + ' ' + m0.level + '级</span>';
+    if (s0) html += '<span>' + s0.name + ' ' + s0.level + '级</span>';
+    html += '<span>经验 —</span>';
+    chips.innerHTML = html;
+  }
+  var set = function(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; };
+  var kaName = document.getElementById('kaName');
+  var kaMod = document.getElementById('kaMod');
+  if (kaName && kaMod && T.attrs && T.battle) {
+    var ka = T.battle.keyAttr || '力量';
+    var v = T.attrs[ka] || 0;
+    var mod = Math.floor((v - 10) / 2);
+    kaName.textContent = ka;
+    kaMod.textContent = v + '（' + (mod >= 0 ? '+' : '') + mod + '）';
+  }
+  if (T.battle) {
+    set('bgHpRecover', T.battle.hpRecover);
+    set('bgFpRecover', T.battle.fpRecover);
+    set('bgAc', T.battle.ac);
+    set('bgSpeed', (T.battle.speed || '') + 'm');
+    var atk = T.battle.atk, sp = T.battle.spell;
+    set('bgAtk', (atk >= 0 ? '+' : '') + atk);
+    set('bgSpell', (sp >= 0 ? '+' : '') + sp);
+  }
+  set('bgWatch', '—');
+  var clsMainName = document.getElementById('clsMainName');
+  var clsMainStyles = document.getElementById('clsMainStyles');
+  if (clsMainName && T.classes && T.classes[0]) {
+    var m = T.classes[0];
+    clsMainName.innerHTML = m.name + ' <span class="cls-lv">Lv.' + m.level + '</span>';
+    if (clsMainStyles) {
+      var sh = '';
+      for (var i = 0; i < (m.styles || []).length; i++) {
+        var st = m.styles[i];
+        if (st) sh += '<span class="style-tag">' + st + '</span>';
+      }
+      clsMainStyles.innerHTML = sh || '<span class="style-tag empty">—</span>';
+    }
+  }
+  var clsSubName = document.getElementById('clsSubName');
+  var clsSubStyles = document.getElementById('clsSubStyles');
+  var subBtn = document.getElementById('subclassBtn');
+  if (T.classes && T.classes[1]) {
+    var s = T.classes[1];
+    if (clsSubName) clsSubName.innerHTML = s.name + ' <span class="cls-lv">Lv.' + s.level + '</span>';
+    if (clsSubStyles) {
+      var sh2 = '';
+      for (var j = 0; j < (s.styles || []).length; j++) {
+        var st2 = s.styles[j];
+        if (st2) sh2 += '<span class="style-tag">' + st2 + '</span>';
+      }
+      clsSubStyles.innerHTML = sh2 || '<span class="style-tag empty">—</span>';
+    }
+    if (subBtn) {
+      var ml = T.classes[0] ? T.classes[0].level : 0;
+      subBtn.textContent = ml >= 7 ? '✓ 兼职已解锁' : '🔒 兼职需主职业 7 级';
+    }
+  } else if (subBtn) {
+    subBtn.textContent = '🔒 兼职需主职业 7 级';
+  }
+  var kvMap = { kvPlayer: c.player, kvChar: c.name, kvRace: c.race, kvGender: c.gender,
+    kvAge: c.age, kvHeight: c.height, kvWeight: c.weight, kvEye: c.eye, kvSkin: c.skin, kvHair: c.hair };
+  for (var k in kvMap) set(k, kvMap[k] || '—');
+  var sst = document.getElementById('subSkillTitle');
+  if (sst && T.classes && T.classes[1]) sst.textContent = T.classes[1].name + ' Lv.' + T.classes[1].level;
+}
+function editInit() {
+  if (!S.battle) { toast('进入战斗记录模式后可设置本场先攻值', 'warn'); return; }
+  document.getElementById('initInput').value = S.init !== null ? S.init : 10;
+  document.getElementById('initOverlay').classList.add('show');
+}
+function saveInit() {
+  var v = parseInt(document.getElementById('initInput').value, 10);
+  if (isNaN(v)) { toast('请输入有效先攻值', 'warn'); return; }
+  S.init = v;
+  renderInit();
+  log('记录本场先攻值：' + v);
+  toast('先攻值已设为 ' + v);
+  closeOverlay('initOverlay');
+}
+
+/* ================= 左侧战斗速览悬浮窗 ================= */
+function renderBattleDrawer() {
+  var key = T ? (T.battle.keyAttr || '感知') : '感知';
+  var ah = '';
+  for (var ai = 0; ai < ATTR_ORDER.length; ai++) {
+    var nm = ATTR_ORDER[ai];
+    var v = ATTR_VALS[nm] || 0;
+    var m = Math.floor((v - 10) / 2);
+    var cls = nm === key ? ' key' : '';
+    ah += '<div class="bd-attr' + cls + '"><span>' + nm + '</span><b>' + v + '(' + (m >= 0 ? '+' : '') + m + ')</b></div>';
+  }
+  var bdAttrs = document.getElementById('bdAttrs');
+  if (bdAttrs) bdAttrs.innerHTML = ah;
+  var all = SKILLS.main.concat(SKILLS.sub);
+  var groups = { '0动作': [], '1动作': [], '其他': [] };
+  for (var si = 0; si < all.length; si++) {
+    var sk = all[si];
+    var g = (sk.cast === '0动作') ? '0动作' : (sk.cast === '1动作' ? '1动作' : '其他');
+    groups[g].push(sk);
+  }
+  var sh = '';
+  var cnt = 0;
+  var gOrder = ['0动作', '1动作', '其他'];
+  for (var gi = 0; gi < gOrder.length; gi++) {
+    var gName = gOrder[gi];
+    var list = groups[gName];
+    if (!list.length) continue;
+    sh += '<div class="bd-skgroup"><h4>' + gName + '</h4>';
+    for (var kj = 0; kj < list.length; kj++) {
+      var sk2 = list[kj];
+      cnt++;
+      sh += '<div class="bd-skill">' +
+        '<span class="bd-sn" onclick="showSkillFromDrawer(\'' + sk2.n.replace(/'/g, '') + '\')">' + sk2.n + '</span>' +
+        (sk2.fp ? '<span class="bd-fp">' + sk2.fp + '疲</span>' : '') +
+        '<button class="bd-use" onclick="useSkill(\'' + sk2.n.replace(/'/g, '') + '\')">⚔ 使用</button>' +
+        '</div>';
+    }
+    sh += '</div>';
+  }
+  var bdSkills = document.getElementById('bdSkills');
+  if (bdSkills) bdSkills.innerHTML = sh || '<div class="bd-empty">暂无技能</div>';
+  var bdSkillCnt = document.getElementById('bdSkillCnt');
+  if (bdSkillCnt) bdSkillCnt.textContent = cnt + ' 个';
+  var th = '';
+  for (var ti = 0; ti < TIERS.length; ti++) {
+    var t = TIERS[ti];
+    if (!t.unlocked) continue;
+    th += '<div class="bd-tier"><span class="bd-tlabel">' + t.name + '</span>';
+    for (var ci = 0; ci < 5; ci++) {
+      var cell = t.cells[ci];
+      if (cell) th += '<span class="bd-tcell" title="' + (cell.desc || '').replace(/"/g, '&quot;') + '">' + cell.n + '</span>';
+    }
+    th += '</div>';
+  }
+  var bdTalents = document.getElementById('bdTalents');
+  if (bdTalents) bdTalents.innerHTML = th || '<div class="bd-empty">暂无已学天赋</div>';
+  var fh = '';
+  for (var fi = 0; fi < FEATS.length; fi++) {
+    var f = FEATS[fi];
+    if (f && f.name) {
+      fh += '<div class="bd-feat"><span>' + f.lv + ' · ' + f.name + '</span><div class="bd-fd">' + (f.desc || '') + '</div></div>';
+    }
+  }
+  var bdFeats = document.getElementById('bdFeats');
+  if (bdFeats) bdFeats.innerHTML = fh || '<div class="bd-empty">未选择专长</div>';
+}
+
+function showSkillFromDrawer(name) {
+  var sk = findSkill(name, false) || findSkill(name, true);
+  if (!sk) return;
+  curDetailSkill = { sk: sk, isSub: !!sk.sub };
+  document.getElementById('sdName').textContent = sk.n + (sk.react ? ' ⚡反应' : '');
+  var rows = [
+    ['施展时间', sk.cast], ['施展距离', sk.range], ['持续时间', sk.dur],
+    ['疲劳消耗', sk.fp], ['关键词', sk.kw], ['前置条件', sk.cond], ['额外条件', sk.ext]
+  ];
+  var runs = (sk.fieldRuns || {})['描述'];
+  var descHtml = runs && runs.length ? renderFieldRuns(runs) : escHtml(sk.desc);
+  rows.push(['描述', descHtml]);
+  rows.push(['升级', sk.up]);
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+  }
+  document.getElementById('sdTable').innerHTML = html;
+  var btn = document.getElementById('sdUseBtn');
+  btn.style.display = S.battle ? 'inline-block' : 'none';
+  btn.disabled = S.battle && S.exhaust >= 4;
+  document.getElementById('sdUsed').textContent = (S.usage[sk.n] || 0) > 0 ? '已使用 ' + S.usage[sk.n] + ' 次' : '';
+  document.getElementById('skillOverlay').classList.add('show');
+}
+
+/* ================= 战斗模式 ================= */
+/* ================= 战斗子页面（DOM 平铺） ================= */
+var BV_PLACEHOLDERS = [];
+function moveIntoBattleView() {
+  BV_PLACEHOLDERS = [];
+  var moves = [
+    { sel: '.sheet-head', host: 'bvHead' },
+    { sel: '.battle-card', host: 'bvVitals' },
+    { sel: '.equip-host-card', host: 'bvEquipHost' },
+    { sel: '#battleDrawer', host: 'bvOverview' },
+    { sel: '#logDrawer', host: 'bvLog' }
+  ];
+  for (var i = 0; i < moves.length; i++) {
+    var node = document.querySelector(moves[i].sel);
+    if (!node) continue;
+    var host = document.getElementById(moves[i].host);
+    if (!host) continue;
+    var ph = document.createElement('span');
+    ph.className = 'bv-placeholder';
+    ph.style.display = 'none';
+    node.parentNode.insertBefore(ph, node);
+    host.appendChild(node);
+    BV_PLACEHOLDERS.push({ ph: ph, node: node });
+  }
+}
+function moveBackFromBattleView() {
+  for (var i = BV_PLACEHOLDERS.length - 1; i >= 0; i--) {
+    var p = BV_PLACEHOLDERS[i];
+    if (p.ph.parentNode) p.ph.parentNode.insertBefore(p.node, p.ph);
+    if (p.ph.parentNode) p.ph.remove();
+  }
+  BV_PLACEHOLDERS = [];
+}
+var BV_TRANSITIONING = false;
+function toggleBattle() {
+  if (BV_TRANSITIONING) return;
+  if (!S.battle) {
+    BV_TRANSITIONING = true;
+    S.snap = { hp: S.hp, fp: S.fp, ac: S.ac, tmpHp: S.tmpHp, armor: S.armor, shield: S.shield };
+    S.battle = true;
+    S.usage = {};
+    S.init = null;
+    document.body.classList.add('battle');
+    document.getElementById('battleToggle').textContent = '⚔ 退出战斗';
+    document.getElementById('battleModeHint').textContent = '战斗中 · 退出后恢复初始值';
+    log('⚔ 进入战斗（快照：生命 ' + S.snap.hp + ' / 疲劳 ' + S.snap.fp + ' / 防御等级 ' + S.snap.ac + '）', 'battle');
+    moveIntoBattleView();
+    setLogDrawer(true);
+    setBdDrawer(true);
+    renderBattleDrawer();
+    renderOrbs();
+    renderSkillTables();
+    refreshMobileBattleStrip();
+    setTimeout(function() { BV_TRANSITIONING = false; }, 520);
+    // 合拢动画结束后移除 .page 占位（battleView 上移到视口）
+    setTimeout(function() {
+      var pg = document.querySelector('.page');
+      if (pg && S.battle) pg.style.display = 'none';
+      window.scrollTo(0, 0);
+    }, 420);
+    // 进入战斗自动提示设置先攻
+    setTimeout(function() {
+      if (S.battle) {
+        if (window.innerWidth <= 600) {
+          var ib = document.querySelector('.mbs-btn[onclick="editInit()"]');
+          if (ib) {
+            ib.classList.add('mbs-flash');
+            setTimeout(function() { ib.classList.remove('mbs-flash'); }, 3000);
+          }
+        } else {
+          var it = document.getElementById('initItem');
+          if (it) {
+            it.classList.add('mbs-flash');
+            setTimeout(function() { it.classList.remove('mbs-flash'); }, 3000);
+          }
+        }
+      }
+    }, 700);
+  } else {
+    BV_TRANSITIONING = true;
+    var wasExhaust = S.exhaust;
+    var snap = S.snap;
+    S.hp = snap.hp; S.fp = snap.fp; S.ac = snap.ac;
+    S.tmpHp = snap.tmpHp; S.armor = snap.armor; S.shield = snap.shield;
+    S.battle = false;
+    S.snap = null;
+    S.init = null;
+    var pgEl = document.querySelector('.page');
+    if (pgEl) pgEl.style.display = '';
+    window.scrollTo(0, 0);
+    document.body.classList.add('battle-exit');
+    document.body.classList.remove('battle');
+    document.getElementById('battleToggle').textContent = '⚔ 进入战斗';
+    document.getElementById('battleModeHint').textContent = '非战斗 · 修改数值将记为初始值';
+    if (wasExhaust > 0) {
+      log('退出战斗：力竭 ' + wasExhaust + ' 层清零', 'battle');
+      resetExhaust();
+    }
+    log('退出战斗：生命/疲劳/防御等级已恢复初始值（' + S.hp + '/' + S.fp + '/' + S.ac + '）', 'battle');
+    setLogDrawer(false);
+    setBdDrawer(false);
+    renderInit();
+    renderOrbs();
+    renderSkillTables();
+    refreshMobileBattleStrip();
+    setTimeout(function() {
+      moveBackFromBattleView();
+      document.body.classList.remove('battle-exit');
+      BV_TRANSITIONING = false;
+    }, 430);
+  }
+}
+
+/* ================= XP / SP / 特性 / 负重 / 货币（真实） ================= */
+function getLevelInfo(tblKey, lv) {
+  var tbl = (T && T.levelTable) ? T.levelTable[tblKey] : null;
+  return tbl && tbl[lv] ? tbl[lv] : null;
+}
+function renderXpSp() {
+  var xp = document.getElementById('xpPanel');
+  var mainNext = getLevelInfo('主职业', S.mainLv + 1);
+  var need = mainNext ? mainNext.xp : 0;
+  var canUp = need > 0 && S.xp >= need;
+  var html = '';
+  html += '<div class="xp-cls"><span class="xc-name">牧师（艺人）</span><span class="xc-lv">Lv.' + S.mainLv + '</span>' +
+    '<span class="xc-xp">经验 <b id="xpVal" style="color:var(--accent)">' + S.xp + '</b></span>' +
+    '<span class="xc-need">升 ' + (S.mainLv + 1) + ' 级需 ' + need + '</span>' +
+    '<button class="xc-btn" id="mainUpBtn" ' + (canUp ? '' : 'disabled') + ' onclick="showLevelUpModal()">' + (canUp ? '升级！' : '经验不足') + '</button></div>';
+  var subNext = getLevelInfo('子职业', S.subLv + 1);
+  var subNeed = subNext ? subNext.xp : 0;
+  html += '<div class="xp-cls"><span class="xc-name">牧师（欲望）</span><span class="xc-lv">Lv.' + S.subLv + '</span>' +
+    '<span class="xc-xp">经验 ' + S.xp + '</span>' +
+    '<span class="xc-need">升 ' + (S.subLv + 1) + ' 级需 ' + subNeed + '</span>' +
+    '<button class="xc-btn" disabled onclick="toast(\'测试页：子职业升级未接入\')">经验不足</button></div>';
+  var mainCap = mainNext ? (mainNext.attr_cap || 18) : 18;
+  var profCap = mainNext ? (mainNext.prof_cap || 2) : 2;
+  html += '<div class="xp-cap">属性上限 ' + mainCap + ' · 熟练度上限 ' + profCap + ' · 当前经验 ' + S.xp + '</div>';
+  xp.innerHTML = html;
+
+  var sp = document.getElementById('spPanel');
+  var marks = S.heldMarks;
+  var sh = '<div class="sp-total">—<small>技能点未记录 · 已持有 ' + marks.length + ' 色标识（点击芯片切换）</small></div>';
+  sh += '<div class="sp-grid">';
+  var hold = {};
+  for (var i = 0; i < marks.length; i++) hold[marks[i]] = true;
+  var order = ['红','橙','黄','绿','青','蓝','浅','紫','粉','棕','白','黑','无','碧','炫彩'];
+  for (var mi = 0; mi < order.length; mi++) {
+    var mn = order[mi];
+    var hex = MARK_HEX[mn] || '#888';
+    var on = !!hold[mn];
+    var dot = hex === 'premium'
+      ? '<span class="dot premium"></span>'
+      : '<span class="dot" style="background:' + hex + '"></span>';
+    sh += '<div class="sp-chip ' + (on ? 'on' : 'off') + '" onclick="toggleMark(\'' + mn + '\')" title="' + mn + '（点击切换持有）">' + dot + '<span class="nm">' + mn + '</span></div>';
+  }
+  sh += '</div>';
+  sp.innerHTML = sh;
+}
+function toggleMark(name) {
+  var idx = S.heldMarks.indexOf(name);
+  if (idx >= 0) {
+    S.heldMarks.splice(idx, 1);
+    toast('移除标识：' + name);
+    log('移除色彩标识：' + name);
+  } else {
+    S.heldMarks.push(name);
+    toast('获得标识：' + name);
+    log('获得色彩标识：' + name);
+  }
+  renderXpSp();
+  refreshMarkGrids(name);
+}
+function markChipHtml(mn, onClick) {
+  var hold = {};
+  for (var i = 0; i < S.heldMarks.length; i++) hold[S.heldMarks[i]] = true;
+  var hex = MARK_HEX[mn] || '#888';
+  var on = !!hold[mn];
+  var dot = hex === 'premium' ? '<span class="dot premium"></span>' : '<span class="dot" style="background:' + hex + '"></span>';
+  return '<div class="sp-chip ' + (on ? 'on' : 'off') + '" onclick="' + onClick + '(\'' + mn + '\')" title="' + mn + '（点击切换持有）">' + dot + '<span class="nm">' + mn + '</span></div>';
+}
+function refreshMarkGrids(flashName) {
+  // 加点面板网格
+  var grid = document.getElementById('chMarkGrid');
+  if (grid) {
+    var order = ['红','橙','黄','绿','青','蓝','浅','紫','粉','棕','白','黑','无','碧','炫彩'];
+    var g = '';
+    for (var mi = 0; mi < order.length; mi++) {
+      var chip = markChipHtml(order[mi], 'toggleMark');
+      if (order[mi] === flashName) chip = chip.replace('class="sp-chip', 'class="sp-chip flash');
+      g += chip;
+    }
+    grid.innerHTML = g;
+  }
+  // 主 SP 卡闪烁
+  if (flashName) {
+    var mainChips = document.querySelectorAll('#spPanel .sp-chip');
+    for (var ci = 0; ci < mainChips.length; ci++) {
+      if (mainChips[ci].getAttribute('title').indexOf(flashName) === 0) {
+        mainChips[ci].classList.add('flash');
+        var self = mainChips[ci];
+        setTimeout(function(){ self.classList.remove('flash'); }, 520);
+      }
+    }
+  }
+}
+
+/* ================= 升级系统（真实 LEVEL_TABLE 奖励） ================= */
+function showLevelUpModal() {
+  var info = getLevelInfo('主职业', S.mainLv + 1);
+  if (!info) { toast('已达最高等级'); return; }
+  if (S.xp < info.xp) { toast('经验不足：需 ' + info.xp + ' XP', 'warn'); return; }
+  var rewards = [];
+  rewards.push('升级消耗：' + info.xp + ' XP');
+  if (info.slot) rewards.push('技能栏 +' + info.slot + ' 槽');
+  if (info.attr) rewards.push('属性 +' + info.attr + ' 点（可选）');
+  if (info.prof) rewards.push('熟练度 +' + info.prof + ' 点（可选）');
+  if (info.attr_cap) rewards.push('属性上限提升至 ' + info.attr_cap);
+  if (info.prof_cap) rewards.push('熟练度上限提升至 ' + info.prof_cap);
+  if (info.notes) rewards.push(info.notes);
+  var html = '<table class="skill-detail-table"><tr><td class="k">升级目标</td><td>牧师（艺人） ' + S.mainLv + ' → ' + (S.mainLv + 1) + ' 级</td></tr>';
+  for (var i = 0; i < rewards.length; i++) {
+    html += '<tr><td class="k">' + (i === 0 ? '奖励' : '') + '</td><td>' + rewards[i] + '</td></tr>';
+  }
+  html += '</table>';
+  html += '<div style="margin-top:12px;display:flex;gap:10px"><button class="ok" style="border:none;border-radius:5px;padding:7px 18px;background:var(--accent);color:#fff;cursor:pointer;font-family:inherit" onclick="confirmLevelUp()">确认升级（扣 ' + info.xp + ' XP）</button>' +
+    '<button class="cancel" style="border:none;border-radius:5px;padding:7px 18px;background:var(--soft);color:var(--muted);cursor:pointer;font-family:inherit" onclick="closeOverlay(\'levelUpOverlay\')">取消</button></div>';
+  document.getElementById('luBody').innerHTML = html;
+  document.getElementById('levelUpOverlay').classList.add('show');
+}
+function confirmLevelUp() {
+  var info = getLevelInfo('主职业', S.mainLv + 1);
+  if (!info || S.xp < info.xp) { toast('经验不足', 'warn'); return; }
+  S.xp -= info.xp;
+  S.mainLv++;
+  // 阶位解锁检测（notes 含 X阶）
+  var m = /([一二三四五六七八九])阶/.exec(info.notes || '');
+  if (m) {
+    var tierName = m[1] + '阶';
+    for (var i = 0; i < TIERS.length; i++) {
+      if (TIERS[i].name === tierName && !TIERS[i].unlocked) {
+        TIERS[i].unlocked = true;
+        log('升级解锁：' + tierName + '天赋树');
+      }
+    }
+  }
+  log('升级成功：牧师（艺人）Lv.' + S.mainLv + '（-' + info.xp + ' XP，剩余 ' + S.xp + '）', 'battle');
+  toast('升级成功：牧师（艺人）Lv.' + S.mainLv);
+  closeOverlay('levelUpOverlay');
+  renderXpSp();
+  renderTalent();
+  renderOrbs();
+  renderSubclass();
+}
+
+/* ================= 测试加点面板（GM 工具） ================= */
+function cheatAdd() {
+  var html = '<div style="display:flex;flex-direction:column;gap:8px">';
+  html += '<div style="font-size:13px;color:var(--muted)">经验值：<b style="color:var(--accent);font-size:16px" id="chXpVal">' + S.xp + '</b></div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+    '<button class="ch-btn" onclick="cheatXp(-100)">-100</button>' +
+    '<button class="ch-btn" onclick="cheatXp(-1000)">-1000</button>' +
+    '<button class="ch-btn" onclick="cheatXp(100)">+100</button>' +
+    '<button class="ch-btn" onclick="cheatXp(1000)">+1000</button>' +
+    '<input id="chXpInput" type="number" value="500" style="width:80px;padding:4px 6px;border:1px solid var(--line);border-radius:4px">' +
+    '<button class="ch-btn" onclick="cheatXp(parseInt(document.getElementById(\'chXpInput\').value)||0)">设置</button></div>';
+  html += '<div style="font-size:13px;color:var(--muted);margin-top:6px">色彩标识（点击切换持有）：</div><div class="sp-grid" id="chMarkGrid"></div>';
+  html += '<div style="margin-top:8px;font-size:12px;color:var(--muted)">技能点：档案未记录 SP 数值，仅支持标识管理</div>';
+  html += '</div>';
+  document.getElementById('cheatBody').innerHTML = html;
+  refreshMarkGrids();
+  document.getElementById('cheatOverlay').classList.add('show');
+}
+function cheatXp(d) {
+  S.xp = Math.max(0, S.xp + d);
+  log('测试加点：经验值 ' + (d >= 0 ? '+' : '') + d + ' → ' + S.xp);
+  renderXpSp();
+  renderTalent();
+  var v = document.getElementById('chXpVal');
+  if (v) v.textContent = S.xp;
+  cheatAdd();
+}
+
+/* ================= 兼职系统（真实 REF_SUBCLASS_REQS） ================= */
+function renderSubclass() {
+  var btn = document.getElementById('subclassBtn');
+  if (!btn) return;
+  var canMulticlass = S.mainLv >= 7;
+  btn.disabled = !canMulticlass;
+  btn.textContent = canMulticlass ? '＋ 选择兼职职业' : '🔒 兼职需主职业 7 级（当前 ' + S.mainLv + ' 级）';
+}
+function showSubclassModal() {
+  var reqs = (T && T.subclassReqs) ? T.subclassReqs : {};
+  var names = Object.keys(reqs);
+  var rows = '';
+  var attrs = ATTR_VALS;
+  var learned = ATTR_LEARNED;
+  for (var i = 0; i < names.length; i++) {
+    var nm = names[i];
+    var r = reqs[nm];
+    var parts = [];
+    var ok = true;
+    for (var k in (r.attrs || {})) {
+      var need = r.attrs[k];
+      var have = attrs[k] || 0;
+      var met = have >= need;
+      if (!met) ok = false;
+      parts.push(k + ' ' + have + '/' + need + (met ? ' ✓' : ' ✗'));
+    }
+    if (r.profTotal) {
+      var total = 0;
+      for (var pi = 0; pi < (r.profNames || []).length; pi++) {
+        for (var ai = 0; ai < 8; ai++) {
+          var an = ATTR_ORDER[ai];
+          var v = (learned[an] || {})[r.profNames[pi]] || 0;
+          total += v;
+        }
+      }
+      var met2 = total >= r.profTotal;
+      if (!met2) ok = false;
+      parts.push('熟练 ' + total + '/' + r.profTotal + (met2 ? ' ✓' : ' ✗'));
+    }
+    rows += '<tr><td class="k">' + nm + '</td><td>' + parts.join(' · ') + (ok ? ' <b style="color:var(--green)">可兼职</b>' : ' <b style="color:var(--muted)">未达标</b>') + '</td></tr>';
+  }
+  var html = '<table class="skill-detail-table"><tr><td class="k">说明</td><td>主职业 ≥7 级可兼职一个不冲突的基础职业（真实要求数据）</td></tr>' + rows + '</table>';
+  document.getElementById('subclassBody').innerHTML = html;
+  document.getElementById('subclassOverlay').classList.add('show');
+}
+function renderTraits() {
+  var rt = '';
+  var rl = T ? T.raceTraits : [];
+  for (var i = 0; i < rl.length; i++) {
+    rt += '<div class="trait-item"><b>' + rl[i].n + '</b><span>' + rl[i].d + '</span></div>';
+  }
+  document.getElementById('raceTraits').innerHTML = rt;
+  var ct = '';
+  var cl = T ? T.classTraits : [];
+  for (var j = 0; j < cl.length; j++) {
+    ct += '<div class="trait-item"><b>' + cl[j].n + '</b><span>' + cl[j].d + '</span></div>';
+  }
+  document.getElementById('classTraits').innerHTML = ct;
+}
+function renderWeight() {
+  var w = { cur: '—', reg: 45, full: 90, max: 135 }; // 力量9 → 常规45/满载90/极限135
+  var html = '<div class="w-item cur"><span>当前</span><b>' + w.cur + '</b></div>' +
+    '<div class="w-item"><span>常规</span><b>' + w.reg + '</b></div>' +
+    '<div class="w-item"><span>满载</span><b>' + w.full + '</b></div>' +
+    '<div class="w-item"><span>极限</span><b>' + w.max + '</b></div>';
+  document.getElementById('weightLine').innerHTML = html;
+}
+function renderCurrency() {
+  var html = '<div class="m-item"><span>金币</span><b>—</b></div>' +
+    '<div class="m-item"><span>银币</span><b>—</b></div>' +
+    '<div class="m-item"><span>铜币</span><b>—</b></div>' +
+    '<div class="m-item"><span>其他货币</span><b>—</b></div>';
+  document.getElementById('currencyGrid').innerHTML = html;
+}
+
+/* ================= 天赋（真实数据） ================= */
+var TIERS = [];
+var TIER_COSTS = { '三阶': 50, '四阶': 100, '五阶': 300, '六阶': 500, '七阶': 1000 };
+(function() {
+  if (!T) return;
+  var tiers = { '一阶': [], '二阶': [], '三阶': [], '四阶': [], '五阶': [], '六阶': [], '七阶': [] };
+  for (var i = 0; i < T.talents.length; i++) {
+    var tg = T.talents[i];
+    var arr = tiers[tg.tier] || [];
+    arr.push({ n: tg.n, desc: tg.desc });
+  }
+  var order = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶', '七阶'];
+  for (var oi = 0; oi < order.length; oi++) {
+    var name = order[oi];
+    var cells = tiers[name] || [];
+    var unlocked = name === '一阶' || name === '二阶';
+    TIERS.push({ name: name, cells: cells, unlocked: unlocked, cost: TIER_COSTS[name] || 0 });
+  }
+})();
+function renderTalent() {
+  var html = '';
+  var learnedTotal = 0;
+  var learnedList = [];
+  for (var ti = 0; ti < TIERS.length; ti++) {
+    var t = TIERS[ti];
+    if (t.unlocked) {
+      html += '<div class="talent-tier"><span class="t-label">' + t.name + '</span>';
+      for (var ci = 0; ci < 5; ci++) {
+        var cell = t.cells[ci];
+        if (cell) {
+          learnedTotal++;
+          learnedList.push({ tier: t.name, n: cell.n, desc: cell.desc });
+          html += '<div class="talent-cell filled" onclick="showTalentDetail(\'' + t.name + '\',\'' + cell.n.replace(/'/g, '') + '\')" title="点击查看详情">' + cell.n + '</div>';
+        } else {
+          html += '<div class="talent-cell lock compact" onclick="toast(\'此槽位尚未学习天赋\',\'warn\')">空</div>';
+        }
+      }
+      html += '</div>';
+    }
+  }
+  // 未解锁阶：单列（每行一个天赋树），经验足够可解锁
+  var locked = TIERS.filter(function(x){ return !x.unlocked; });
+  if (locked.length) {
+    html += '<div class="talent-locked-grid">';
+    for (var li = 0; li < locked.length; li++) {
+      var l = locked[li];
+      var canUnlock = S.xp >= l.cost;
+      html += '<div class="talent-locked-row"><span class="tl-name">' + l.name + '</span>' +
+        '<span class="tl-cost">需 ' + l.cost + ' XP</span>' +
+        '<button class="unlock-btn" ' + (canUnlock ? '' : 'disabled') + ' onclick="unlockTier(\'' + l.name + '\')">' + (canUnlock ? '🔓 解锁' : '经验不足') + '</button></div>';
+    }
+    html += '</div>';
+  }
+  // 已学天赋效果列表（填充内容 + 实用）
+  if (learnedList.length) {
+    html += '<div class="talent-desc-list">';
+    for (var di = 0; di < learnedList.length; di++) {
+      var l2 = learnedList[di];
+      html += '<div class="td-item" onclick="showTalentDetail(\'' + l2.tier + '\',\'' + l2.n.replace(/'/g, '') + '\')" title="点击查看详情"><b>' + l2.n + '<span class="td-tier">' + l2.tier + '</span></b>' +
+        (l2.desc ? '<p>' + l2.desc + '</p>' : '') + '</div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById('talentList').innerHTML = html;
+  document.getElementById('talentTitle').textContent = '已学 ' + learnedTotal;
+  document.getElementById('talentNote').textContent = '天赋效果点击查看。未解锁阶位需花费经验值解锁（档案未记录经验）。';
+}
+
+function unlockTier(name) {
+  for (var i = 0; i < TIERS.length; i++) {
+    if (TIERS[i].name === name && !TIERS[i].unlocked) {
+      if (S.xp < TIERS[i].cost) { toast('经验不足：需 ' + TIERS[i].cost + ' XP', 'warn'); return; }
+      S.xp -= TIERS[i].cost;
+      TIERS[i].unlocked = true;
+      toast('已解锁' + name + '天赋树（-' + TIERS[i].cost + ' XP）');
+      log('解锁' + name + '天赋树，花费 ' + TIERS[i].cost + ' XP，剩余 ' + S.xp);
+      renderTalent();
+      renderXpSp();
+      return;
+    }
+  }
+}
+
+/* ================= 天赋表格式详情（与技能一致） ================= */
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function colorizeMarks(text, cost) {
+  if (!text || text.indexOf('●') === -1) return text;
+  var colors = [];
+  for (var i = 0; i < (cost || []).length; i++) {
+    var c = cost[i];
+    var hex = (c && c.color) || '#888';
+    var cnt = (c && c.count) || 1;
+    for (var j = 0; j < cnt; j++) colors.push(hex);
+  }
+  if (!colors.length) colors = ['#888'];
+  var ci = 0;
+  return String(text).replace(/●/g, function() {
+    var h = colors[ci % colors.length];
+    ci++;
+    return '<span style="color:' + h + '">●</span>';
+  });
+}
+function renderFieldRuns(runs) {
+  /* docx run 级真实颜色：逐 run 输出（含 '/' 等分隔符着色），格式对齐通用天赋树页面 */
+  if (!runs || !runs.length) return '';
+  var out = '';
+  for (var i = 0; i < runs.length; i++) {
+    var r = runs[i];
+    var t = r.text == null ? '' : String(r.text);
+    if (r.color) out += '<span style="color:' + r.color + '">' + escHtml(t) + '</span>';
+    else out += escHtml(t);
+  }
+  return out;
+}
+function findTalentData(tier, name) {
+  if (!T) return null;
+  for (var i = 0; i < T.talents.length; i++) {
+    var t = T.talents[i];
+    if (t.tier === tier && t.n === name) return t;
+  }
+  return null;
+}
+function showTalentDetail(tier, name) {
+  var t = findTalentData(tier, name);
+  if (!t) return;
+  document.getElementById('sdName').innerHTML = escHtml(name) + ' <span style="font-size:13px;color:var(--muted);font-weight:normal">' + tier + '天赋</span>';
+  var rows = [];
+  var f = t.fields || {};
+  var pairs = [
+    ['施展时间', '施展时间'], ['施展距离', '施展距离'], ['持续时间', '持续时间'],
+    ['疲劳消耗', '疲劳消耗'], ['关键词', '关键词'], ['前置条件', '前置条件'], ['额外条件', '额外条件']
+  ];
+  for (var pi = 0; pi < pairs.length; pi++) {
+    var v = f[pairs[pi][1]];
+    if (v) rows.push([pairs[pi][0], v]);
+  }
+  var marks = (t.cost || []).map(function(c){ return c.name; }).filter(Boolean);
+  if (marks.length) rows.push(['标识', marks.join(' · ')]);
+  // 描述：优先 run 级真实颜色（对齐通用天赋树页面），无 run 时按 cost 兜底
+  var runs = (t.fieldRuns || {})['描述'];
+  var descHtml = runs && runs.length ? renderFieldRuns(runs) : colorizeMarks(f['描述'], t.cost);
+  if (f['描述']) rows.push(['描述', descHtml]);
+  // 效果段落：descEntries 逐段 run 渲染
+  var body = (t.descList || []).join('<br>');
+  if (body) {
+    var ents = t.descEntries || [];
+    if (ents.length) {
+      var eh = '';
+      for (var ei = 0; ei < ents.length; ei++) {
+        eh += renderFieldRuns(ents[ei].runs) || escHtml(ents[ei].text || '');
+        if (ei < ents.length - 1) eh += '<br>';
+      }
+      if (eh) rows.push(['效果', eh]);
+      else rows.push(['效果', body]);
+    } else {
+      rows.push(['效果', colorizeMarks(body, t.cost)]);
+    }
+  }
+  var ups = (t.upgrades || []).filter(function(v, i, a){ return a.indexOf(v) === i; });
+  if (ups.length) rows.push(['升级', ups.join('<br>')]);
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+  }
+  document.getElementById('sdTable').innerHTML = html;
+  var btn = document.getElementById('sdUseBtn');
+  btn.style.display = 'none';
+  document.getElementById('sdUsed').textContent = '';
+  document.getElementById('skillOverlay').classList.add('show');
+}
+
+/* ================= 图纸（槽位 = 10+智力调整） ================= */
+var BLUEPRINTS = [];
+function renderBlueprint() {
+  var intel = ATTR_VALS['智力'] || 10;
+  var intMod = Math.floor((intel - 10) / 2);
+  var slots = 10 + intMod;
+  var used = BLUEPRINTS.length;
+  document.getElementById('bpTitle').textContent = '占用 ' + used + ' / ' + slots + ' · 规则上限 10+智力调整(' + intMod + ')';
+  var html = '';
+  for (var i = 0; i < slots; i++) {
+    if (i < used) {
+      html += '<div class="bp filled"><span>' + BLUEPRINTS[i] + '</span><span class="idx">' + (i + 1) + '</span></div>';
+    } else {
+      html += '<div class="bp empty" onclick="toast(\'图纸槽位可学习图纸技能（学习面板未接入）\',\'warn\')">+</div>';
+    }
+  }
+  document.getElementById('bpGrid').innerHTML = html;
+}
+
+/* ================= 技能栏位说明 ================= */
+function renderSlotNote() {
+  var mainCount = SKILLS.main.length;
+  document.getElementById('skillSlotNote').textContent = '主职业技能 ' + mainCount + ' 项已学（牧师 6 级，来源：角色档案技能列表）。档案中"绘彩术/艺术之眼/音画同调"等技能在站点资料库中暂无对应数据，未列入。';
+}
+
+/* ================= 头像设置（社交模式） ================= */
+var AV = { zoom: 160, px: 50, py: 50, maxOffset: 45 };
+function avatarStyle(el) {
+  el.style.backgroundSize = AV.zoom + '% ' + AV.zoom + '%';
+  el.style.backgroundPosition = AV.px + '% ' + AV.py + '%';
+}
+function openAvatar() {
+  var c = document.getElementById('avatarCanvas');
+  var p = document.getElementById('avatarPreview');
+  avatarStyle(c);
+  avatarStyle(p);
+  document.getElementById('avatarZoom').value = AV.zoom;
+  document.getElementById('avatarZoomVal').textContent = AV.zoom + '%';
+  document.getElementById('avatarOverlay').classList.add('show');
+}
+function avatarZoomChange(v) {
+  AV.zoom = parseInt(v, 10);
+  document.getElementById('avatarZoomVal').textContent = AV.zoom + '%';
+  avatarStyle(document.getElementById('avatarCanvas'));
+  avatarStyle(document.getElementById('avatarPreview'));
+}
+function applyAvatar() {
+  avatarStyle(document.getElementById('portrait'));
+  closeOverlay('avatarOverlay');
+  toast('头像已更新');
+}
+function cancelAvatar() {
+  closeOverlay('avatarOverlay');
+}
+(function() {
+  var canvas = document.getElementById('avatarCanvas');
+  var dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+  canvas.addEventListener('mousedown', function(e) {
+    if (!document.getElementById('avatarOverlay').classList.contains('show')) return;
+    dragging = true;
+    sx = e.clientX; sy = e.clientY;
+    ox = AV.px; oy = AV.py;
+    canvas.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    var w = canvas.offsetWidth;
+    AV.px = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, ox + dx / w * 100));
+    AV.py = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, oy + dy / w * 100));
+    avatarStyle(canvas);
+    avatarStyle(document.getElementById('avatarPreview'));
+  });
+  window.addEventListener('mouseup', function() {
+    if (dragging) { dragging = false; canvas.style.cursor = 'grab'; }
+  });
+})();
+
+/* ================= 遮罩通用 ================= */
+function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.overlay.show').forEach(function(o){ o.classList.remove('show'); });
+    S.splitData = null;
+  }
+});
+
+/* ================= 移动端：吸顶 Tab + 战斗状态条 + sheet ================= */
+var MOBILE_SECTIONS = [
+  { id: '基础', sel: '.info-card' },
+  { id: '战斗', sel: '.battle-card' },
+  { id: '属性', sel: '#attrGrid' },
+  { id: '装备', sel: '#equipGrid' },
+  { id: '技能', sel: '#mainSkillBody' },
+  { id: '天赋', sel: '#talentList' },
+  { id: '图纸', sel: '#bpGrid' }
+];
+function renderMobileTabs() {
+  var wrap = document.getElementById('mobileTabs');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 0; i < MOBILE_SECTIONS.length; i++) {
+    html += '<button class="mt-btn" data-tab="' + MOBILE_SECTIONS[i].id + '">' + MOBILE_SECTIONS[i].id + '</button>';
+  }
+  wrap.innerHTML = html;
+  var btns = wrap.querySelectorAll('.mt-btn');
+  for (var bi = 0; bi < btns.length; bi++) {
+    btns[bi].addEventListener('click', function() {
+      var tabId = this.getAttribute('data-tab');
+      var sel = '.info-card';
+      for (var k = 0; k < MOBILE_SECTIONS.length; k++) {
+        if (MOBILE_SECTIONS[k].id === tabId) { sel = MOBILE_SECTIONS[k].sel; break; }
+      }
+      var sec = document.querySelector(sel);
+      if (sec) {
+        var rect = sec.getBoundingClientRect();
+        var absTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        window.scrollTo(0, Math.max(0, absTop - 120));
+      }
+    });
+  }
+}
+function mobileScrollspy() {
+  var tabs = document.querySelectorAll('#mobileTabs .mt-btn');
+  if (!tabs.length) return;
+  if (S.battle) return;
+  var cur = null;
+  for (var i = 0; i < MOBILE_SECTIONS.length; i++) {
+    var el = document.querySelector(MOBILE_SECTIONS[i].sel);
+    if (!el) continue;
+    var r = el.getBoundingClientRect();
+    if (r.top <= 130 && r.bottom > 130) { cur = MOBILE_SECTIONS[i].id; break; }
+  }
+  if (!cur) cur = MOBILE_SECTIONS[0].id;
+  for (var j = 0; j < tabs.length; j++) {
+    tabs[j].classList.toggle('active', tabs[j].getAttribute('data-tab') === cur);
+  }
+}
+function renderMobileBattleStrip() {
+  var strip = document.getElementById('mobileBattleStrip');
+  if (!strip) return;
+  if (!S.battle) { strip.innerHTML = ''; return; }
+  var hpPct = Math.max(0, Math.min(100, Math.round(S.hp / S.hpMax * 100)));
+  var fpPct = Math.max(0, Math.min(100, Math.round(S.fp / S.fpMax * 100)));
+  strip.innerHTML =
+    '<div class="mbs-items">' +
+    '<div class="mbs-row">' +
+    '<div class="mbs-orb"><span class="mbs-dot hp" style="--hp-pct:' + hpPct + '%"></span><b>' + S.hp + '/' + S.hpMax + '</b></div>' +
+    '<div class="mbs-orb"><span class="mbs-dot fp" style="--fp-pct:' + fpPct + '%"></span><b>' + S.fp + '/' + S.fpMax + '</b></div>' +
+    '<span class="mbs-sep"></span>' +
+    '<button class="mbs-btn" onclick="editInit()">先攻' + (S.init !== null ? ' ' + S.init : ' ✎') + '</button>' +
+    '<button class="mbs-btn" onclick="showExhaustDetail()">力竭 ' + S.exhaust + '</button>' +
+    '</div>' +
+    '<div class="mbs-row">' +
+    '<button class="mbs-btn" onclick="mobileBvJump(\'overview\')">速览</button>' +
+    '<button class="mbs-btn" onclick="mobileBvJump(\'log\')">日志</button>' +
+    '<button class="mbs-btn exit" onclick="toggleBattle()">退出</button>' +
+    '</div>' +
+    '</div>';
+}
+function refreshMobileBattleStrip() {
+  if (window.innerWidth <= 600) renderMobileBattleStrip();
+}
+document.addEventListener('scroll', function() {
+  if (window.innerWidth <= 600) mobileScrollspy();
+}, { passive: true });
+window.addEventListener('resize', function() {
+  renderMobileTabs();
+  if (S.battle) renderMobileBattleStrip();
+});
+
+/* ================= 初始化 ================= */
+renderCharHeader();
+renderOrbs();
+renderSkillTables();
+renderEquip();
+renderAttrs();
+renderFeats();
+renderBg();
+renderXpSp();
+renderTraits();
+renderWeight();
+renderCurrency();
+renderTalent();
+renderBlueprint();
+renderSlotNote();
+renderSubclass();
+renderInit();
+renderMobileTabs();
+log('角色面板加载完成（真实数据：基尼泰·梅 角色档案 + 站点资料库）', 'battle');
+</script>
+<script>
+
+/* ============ 桥接层 Part2：初始化与功能接入（SB_ 前缀） ============ */
+function SB_buildS(st) {
+  var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
+  return {
+    battle: false, hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
+    ac: 10 + dexMod, tmpHp: 0, armor: 0, shield: 0, snap: null, exhaust: 0, usage: {}, log: [],
+    selEquip: null, splitData: null, xp: st.xp || 0,
+    mainLv: (st.classes && st.classes[0] && st.classes[0].level) || 0,
+    subLv: (st.classes && st.classes[1] && st.classes[1].level) || 0,
+    heldMarks: (typeof T !== 'undefined' && T && T.spMarks) ? T.spMarks.slice() : [], init: null
+  };
+}
+function SB_reinit() {
+  var wasBattle = (typeof S !== 'undefined') ? S.battle : false;
+  TEST_DATA = SB_buildTestData(state);
+  T = TEST_DATA;
+  ATTR_VALS = T ? T.attrs : ATTR_VALS;
+  ATTR_SAVE = T ? T.attrsSave : ATTR_SAVE;
+  ATTR_LEARNED = T ? T.attrsLearned : ATTR_LEARNED;
+  SKILLS = { main: T ? buildSkills(T.skillsMain, false) : [], sub: T ? buildSkills(T.skillsSub, true) : [] };
+  FEATS = T ? T.feats : [];
+  EQUIP = {};
+  if (T && T.equipment) {
+    for (var es in T.equipment) {
+      var esArr = T.equipment[es] || [];
+      EQUIP[es] = esArr.map(function(x) {
+        if (!x) return null;
+        var itName = x.item || x.name;
+        if (typeof itName === 'string' && itName.indexOf('{') >= 0) return null;
+        return { item: itName, cnt: (x.count || x.cnt || 1), w: x.w || '' };
+      });
+    }
+  }
+  TIERS = [];
+  var tiersMap = { '一阶': [], '二阶': [], '三阶': [], '四阶': [], '五阶': [], '六阶': [], '七阶': [] };
+  if (T && T.talents) for (var i = 0; i < T.talents.length; i++) {
+    var tg = T.talents[i];
+    var arr = tiersMap[tg.tier] || [];
+    arr.push({ n: tg.n, desc: tg.desc });
+  }
+  var tOrder = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶', '七阶'];
+  for (var oi = 0; oi < tOrder.length; oi++) {
+    var nm = tOrder[oi];
+    TIERS.push({ name: nm, cells: tiersMap[nm] || [], unlocked: nm === '一阶' || nm === '二阶', cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
+  }
+  S = SB_buildS(state);
+  S.battle = wasBattle;
+}
+window.render = function() {
+  SB_reinit();
+  renderCharHeader(); renderOrbs(); renderSkillTables(); renderEquip(); renderAttrs();
+  renderFeats(); renderBg(); renderXpSp(); renderTraits(); renderWeight();
+  renderCurrency(); renderTalent(); renderBlueprint(); renderSlotNote(); renderSubclass();
+  renderInit(); renderMiniBalls(); renderMobileTabs();
+};
+/* renderXpSp 覆盖：职业名动态（测试版硬编码为基尼泰） */
+var SB_origXpSp = renderXpSp;
+renderXpSp = function() {
+  var xp = document.getElementById('xpPanel');
+  if (!xp) return;
+  var html = '';
+  var clist = (T && T.classes) ? T.classes : [];
+  for (var ci = 0; ci < clist.length; ci++) {
+    var cl = clist[ci];
+    if (!cl || !cl.name) continue;
+    var lv = ci === 1 ? S.subLv : S.mainLv;
+    var need = '—';
+    if (typeof LEVEL_TABLE !== 'undefined') {
+      var tbl = LEVEL_TABLE[ci === 1 ? '子职业' : '主职业'];
+      if (tbl && tbl[lv + 1]) need = tbl[lv + 1].xp || 0;
+    }
+    var canUp = need !== '—' && need > 0 && S.xp >= need;
+    html += '<div class="xp-cls"><span class="xc-name">' + cl.name + '</span>' +
+      '<span class="xc-lv">Lv.' + lv + '</span>' +
+      '<span class="xc-xp">经验 <b style="color:var(--accent)">' + S.xp + '</b></span>' +
+      '<span class="xc-need">升 ' + (lv + 1) + ' 级需 ' + need + '</span>' +
+      '<button class="xc-btn" ' + (canUp ? '' : 'disabled') + ' onclick="showLevelUpModal(' + ci + ')">' + (canUp ? '升级！' : '经验不足') + '</button></div>';
+  }
+  xp.innerHTML = html;
+  /* sp 区（测试版逻辑） */
+  var sp = document.getElementById('spPanel');
+  if (sp) {
+    var marks = (typeof S !== 'undefined' && S.heldMarks) ? S.heldMarks : [];
+    var sh = '<div class="sp-total">' + (typeof getSpTotal === 'function' ? getSpTotal() : '—') + '<small>已持有 ' + marks.length + ' 色标识（点击芯片切换）</small></div>';
+    sh += '<div class="sp-grid">';
+    var hold = {};
+    for (var i = 0; i < marks.length; i++) hold[marks[i]] = true;
+    var order = ['红', '橙', '黄', '绿', '青', '蓝', '浅', '紫', '粉', '棕', '白', '黑', '无', '碧', '炫彩'];
+    for (var mi = 0; mi < order.length; mi++) {
+      var mn = order[mi];
+      var hex = (typeof MARK_HEX !== 'undefined' && MARK_HEX[mn]) || '#888';
+      var on = !!hold[mn];
+      var dot = hex === 'premium' ? '<span class="dot premium"></span>' : '<span class="dot" style="background:' + hex + '"></span>';
+      sh += '<div class="sp-chip ' + (on ? 'on' : 'off') + '" onclick="toggleMark(\'' + mn + '\')" title="' + mn + '（点击切换持有）">' + dot + '<span class="nm">' + mn + '</span></div>';
+    }
+    sh += '</div>';
+    sp.innerHTML = sh;
+  }
+};
+/* ============ 写回同步：测试版交互 → state ============ */
+function SB_syncEquipToState() {
+  if (!state.equipment) return;
+  for (var es in EQUIP) {
+    var arr = EQUIP[es] || [];
+    if (!state.equipment[es]) state.equipment[es] = [];
+    for (var i = 0; i < arr.length; i++) {
+      var x = arr[i];
+      if (!x) { state.equipment[es][i] = null; continue; }
+      var prev = state.equipment[es][i] || {};
+      state.equipment[es][i] = { item: x.item, count: x.cnt, w: x.w, weight: prev.weight, type: prev.type };
+    }
+    state.equipment[es].length = arr.length;
+  }
+}
+var SB_origMoveEquip = moveEquip;
+moveEquip = function(fromSlot, fromIdx, toSlot, toIdx) {
+  SB_origMoveEquip(fromSlot, fromIdx, toSlot, toIdx);
+  SB_syncEquipToState();
+  state._dirty = true;
+};
+var SB_origSplit = doSplit;
+doSplit = function() {
+  SB_origSplit();
+  SB_syncEquipToState();
+  state._dirty = true;
+};
+var SB_origToggleMark = toggleMark;
+toggleMark = function(name) {
+  SB_origToggleMark(name);
+  if (state.color_marks) {
+    var hold = {};
+    for (var i = 0; i < S.heldMarks.length; i++) hold[S.heldMarks[i]] = true;
+    for (var k in state.color_marks) state.color_marks[k] = !!hold[k];
+  }
+  state._dirty = true;
+};
+var SB_origSaveMini = saveMini;
+saveMini = function() {
+  SB_origSaveMini();
+  if (MINI_KIND === 'armor') state.armor = S.armor;
+  if (MINI_KIND === 'tmpHp') state.tmpHp = S.tmpHp;
+  if (MINI_KIND === 'shield') state.shield = S.shield;
+  state._dirty = true;
+};
+function SB_bindHeader() {
+  var btns = document.querySelectorAll('.head-actions button');
+  for (var i = 0; i < btns.length; i++) {
+    var b = btns[i];
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf('toast(') >= 0) {
+      if (b.textContent.indexOf('导出') >= 0) b.setAttribute('onclick', 'exportCurrentXlsx()');
+      else if (b.textContent.indexOf('学习') >= 0) b.setAttribute('onclick', 'toggleLearnMode()');
+    }
+  }
+}
+SB_bindHeader();
+window.addEventListener('load', function() {
+  if (!(typeof initFromURL === 'function' && initFromURL())) window.render();
+});
+
+</script>
+</body>
 </html>
