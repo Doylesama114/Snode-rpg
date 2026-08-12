@@ -677,6 +677,8 @@ body.battle .fab{display:none}
       <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
       <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
+      <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
+      <button class="btn-ghost" onclick="startRecreateFromPanel()">🔁 重新车卡</button>
     </div>
   </header>
 
@@ -922,7 +924,7 @@ body.battle .fab{display:none}
 
 <!-- ===== 悬浮 ===== -->
 <div class="fab">
-  <button class="learn" onclick="toast('测试页：学习面板未接入')">📚 学习技能</button>
+  <button class="learn" onclick="toggleLearnMode()">📚 学习技能</button>
   <button class="up" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 </div>
 
@@ -1065,7 +1067,8 @@ body.battle .fab{display:none}
   <div id="info-grid"></div><div id="class-row"></div><div id="story-block"></div><div id="story-title"></div><div id="xp-bar"></div><div id="sp-bar"></div><div id="stat-row"></div>
   <div id="attr-grid"></div><div id="feat-list"></div><div id="currency-row"></div><div id="weight-block"></div><div id="talent-grid"></div><div id="equip-grid"></div><div id="racial-traits"></div><div id="class-features"></div>
   <div id="lang-list"></div><div id="prof-list"></div><div id="weapon-profs"></div><div id="skill-table-body"></div><div id="sub-skill-table-body"></div><div id="mainSkillTitle"></div><div id="subSkillTitle"></div><div id="blueprintTitle"></div><div id="blueprintHint"></div><div id="blueprint-grid"></div>
-  <div id="learnPanel"></div>
+  <div id="learnPanel" class="learn-panel"></div>
+  <div id="learnToggle"></div>
 </div>
 
 <script src="../职业页/数据/items_data.js"></script>
@@ -2731,6 +2734,336 @@ function SB_bindHeader() {
   }
 }
 SB_bindHeader();
+/* P2：专长选择（feat-slot 接源选择器）+ P3：图纸删除 */
+var SB_origRenderFeats2 = renderFeats;
+renderFeats = function() {
+  var host = document.getElementById('featList');
+  if (!host) return;
+  var lvSeq = ['4级', '8级', '12级', '16级'];
+  var html = '';
+  for (var i = 0; i < 4; i++) {
+    var f = (state.special_feats && state.special_feats[i]) ? state.special_feats[i] : null;
+    var fName = typeof f === 'string' ? f : (f && f.name);
+    var lv = (f && f.level) || lvSeq[i] || '';
+    if (fName) {
+      var sd = (typeof SPECIAL_FEATS !== 'undefined') ? SPECIAL_FEATS[fName] : null;
+      var desc = (sd && sd.effects && sd.effects.description) ? sd.effects.description : '资料库暂无详细数据';
+      var type = '';
+      if (sd && sd.effects && sd.effects.type) {
+        var tm = { 'attribute': '属性', 'multi': '复合', 'proficiency': '熟练度', 'professional': '专业', 'attribute_health': '属性+生命', 'health_growth': '生命成长', 'attribute_proficiency': '属性+熟练', 'attribute_boost': '属性强化', 'sp_pack': '技能点', 'xp_pack': '经验值', 'armor_ac': '防御', 'heavy_armor': '重甲防御', 'extra_slot': '额外槽位', 'professional_sp': '专业+技能点', 'panel': '面板加成', 'description_only': '规则' };
+        type = tm[sd.effects.type] || sd.effects.type;
+      }
+      html += '<div class="feat-slot" title="' + desc.replace(/"/g, '&quot;') + '" style="cursor:default">' +
+        '<span class="lv">' + lv + '</span>' + fName +
+        (type ? '<span class="type">' + type + '</span>' : '') +
+        '<span style="margin-left:auto;font-size:11px;color:#c06040;cursor:pointer" onclick="SB_removeFeat(\'' + fName.replace(/'/g, '') + '\')">✕ 移除</span></div>';
+    } else {
+      html += '<div class="feat-slot empty" onclick="showSpecialFeatSelector()"><span class="lv">' + lv + '</span>未选择<span style="color:var(--muted)">+ 选择</span></div>';
+    }
+  }
+  host.innerHTML = html;
+};
+function SB_removeFeat(name) {
+  if (typeof removeSpecialFeat === 'function') { removeSpecialFeat(name); }
+  if (typeof window.render === 'function') window.render();
+}
+var SB_origRenderBlueprints2 = renderBlueprints;
+renderBlueprints = function() {
+  var host = document.getElementById('bpGrid');
+  if (!host) return;
+  if (typeof ensureBlueprintState === 'function') ensureBlueprintState();
+  var intel = state.attrs['智力'] || 10;
+  var intMod = Math.floor((intel - 10) / 2);
+  var slots = 10 + intMod + (state.blueprint_bonus_slots || 0);
+  var bps = state.blueprints || [];
+  var used = bps.length;
+  var title = document.getElementById('bpTitle');
+  if (title) title.innerHTML = '图纸（专业槽位） <span class="sub">占用 ' + used + ' / ' + slots + ' · 规则上限 10+智力调整(' + intMod + ')' + ((state.blueprint_bonus_slots || 0) ? ' + 加成 ' + state.blueprint_bonus_slots : '') + '</span>';
+  var html = '';
+  for (var i = 0; i < slots; i++) {
+    if (i < used) {
+      var bp = bps[i];
+      var bpName = (bp && (bp.n || bp.name)) || '';
+      html += '<div class="bp filled" title="点击移除图纸" style="cursor:pointer" onclick="SB_removeBlueprint(' + i + ')"><span>' + bpName.replace(/</g, '&lt;') + '</span><span class="idx">' + (i + 1) + '</span></div>';
+    } else {
+      html += '<div class="bp empty" onclick="addBlueprintManual()" title="添加图纸">+</div>';
+    }
+  }
+  host.innerHTML = html;
+};
+function SB_removeBlueprint(idx) {
+  if (typeof removeBlueprintAt === 'function') { removeBlueprintAt(idx); }
+  if (typeof window.render === 'function') window.render();
+}
+/* P5：编辑增强（货币/语言/背景/命中/精确数值） */
+if (typeof openOverlay !== 'function') {
+  window.openOverlay = function(id) { var el = document.getElementById(id); if (el) el.classList.add('show'); };
+}
+var SB_EDIT_MODE = null;
+function SB_saveMiniDispatch() {
+  if (SB_EDIT_MODE === 'cur') { SB_saveCurrency(); return; }
+  if (SB_EDIT_MODE === 'hit') { SB_saveHitBonus(); return; }
+  if (SB_EDIT_MODE === 'hpfp') { SB_saveHpFp(); return; }
+  saveMini();
+}
+function SB_bindMiniOK() {
+  var btn = document.querySelector('#miniOverlay .ok');
+  if (btn && btn.getAttribute('onclick') !== 'SB_saveMiniDispatch()') btn.setAttribute('onclick', 'SB_saveMiniDispatch()');
+}
+function SB_editValue(title, val, hint, mode) {
+  SB_EDIT_MODE = mode;
+  document.getElementById('miniTitle').textContent = title;
+  document.getElementById('miniInput').value = val;
+  document.getElementById('miniHint').textContent = hint || '';
+  SB_bindMiniOK();
+  openOverlay('miniOverlay');
+}
+function SB_takeValue() {
+  var v = parseInt(document.getElementById('miniInput').value, 10);
+  return isNaN(v) ? null : v;
+}
+/* 货币编辑 */
+function SB_editCurrency(k) {
+  SB_editValue(k, state.currency[k] || 0, '输入' + k + '数量（含调整值）。', 'cur');
+  SB_EDIT_KEY = k;
+}
+function SB_saveCurrency() {
+  var v = SB_takeValue();
+  if (v === null || v < 0) { toast('请输入有效数量', 'warn'); return; }
+  state.currency[SB_EDIT_KEY] = v;
+  state._dirty = true;
+  SB_EDIT_MODE = null;
+  closeOverlay('miniOverlay');
+  window.render();
+}
+/* 命中加成编辑 */
+function SB_editHitBonus(kind) {
+  var key = kind === 'atk' ? 'atk_hit_bonus' : 'spell_hit_bonus';
+  SB_EDIT_KEY = key;
+  SB_editValue(kind === 'atk' ? '攻击命中加成' : '法术命中加成', state[key] || 0, '输入额外加成（可为负数）。面板显示值为属性调整+此加成。', 'hit');
+}
+function SB_saveHitBonus() {
+  var v = SB_takeValue();
+  if (v === null) { toast('请输入有效数值', 'warn'); return; }
+  state[SB_EDIT_KEY] = v;
+  state._dirty = true;
+  SB_EDIT_MODE = null;
+  closeOverlay('miniOverlay');
+  window.render();
+}
+/* 精确 hp/fp（战斗中） */
+function SB_editHpFp(kind) {
+  if (!S.battle) { toast('进入战斗记录模式后可调整生命值/疲劳值', 'warn'); return; }
+  SB_EDIT_KEY = kind;
+  SB_editValue(kind === 'hp' ? '生命值' : '疲劳值', kind === 'hp' ? S.hp : S.fp, '输入当前数值（0-上限）。', 'hpfp');
+}
+function SB_saveHpFp() {
+  var v = SB_takeValue();
+  if (v === null || v < 0) { toast('请输入有效数值', 'warn'); return; }
+  var max = SB_EDIT_KEY === 'hp' ? S.hpMax : S.fpMax;
+  var nv = Math.max(0, Math.min(max, v));
+  if (SB_EDIT_KEY === 'hp') S.hp = nv; else S.fp = nv;
+  log((SB_EDIT_KEY === 'hp' ? '生命' : '疲劳') + '值设为 ' + nv, 'battle');
+  SB_EDIT_MODE = null;
+  closeOverlay('miniOverlay');
+  renderOrbs();
+  renderMiniBalls();
+}
+/* 货币渲染覆盖：m-item + 点击编辑 */
+var SB_origRenderCurrency3 = renderCurrency;
+renderCurrency = function() {
+  var row = document.getElementById('currencyGrid');
+  if (!row) return;
+  var html = '';
+  var keys = Object.keys(state.currency || {});
+  for (var i = 0; i < keys.length; i++) {
+    (function(k) {
+      html += '<div class="m-item" title="点击修改数量" style="cursor:pointer" onclick="SB_editCurrency(\'' + k + '\')"><span>' + k + '</span><b>' + (state.currency[k] || '—') + '</b></div>';
+    })(keys[i]);
+  }
+  row.innerHTML = html;
+};
+/* 语言渲染：lang-rows 动态 + 点击编辑 */
+function SB_renderLangRows() {
+  var host = document.querySelector('.lang-rows');
+  if (!host) return;
+  var wp = (typeof resolveWeaponProfs === 'function' && state.classes && state.classes[0]) ? resolveWeaponProfs(state.classes[0].name).slice() : [];
+  if (state.weapon_profs) for (var wpk in state.weapon_profs) { if (state.weapon_profs[wpk] > 0 && wp.indexOf(wpk) < 0) wp.push(wpk); }
+  var row = function(label, val, fn, title) {
+    return '<div class="lang-row" style="cursor:pointer" title="' + title + '" onclick="' + fn + '"><span class="lr-label">' + label + '</span><span class="lr-val">' + (val || '—') + '</span></div>';
+  };
+  host.innerHTML = row('语言', (state.languages || []).join(' · '), "SB_editList('lang')", '点击编辑语言') +
+    row('专业', (state.professionals || []).join(' · '), "SB_editList('prof')", '点击编辑专业熟练项') +
+    row('武器熟练', wp.join(' · '), "SB_editList('weapon')", '点击编辑武器熟练') +
+    row('负重', SB_weightSummary(), 'SB_editWeight()', '负重（力量×5/10/15 + 承重熟练）');
+}
+function SB_weightSummary() {
+  var carryStr = (state.attrs['力量'] || 8) + ((state.profs && state.profs['力量'] && state.profs['力量']['承重']) || 0);
+  var w = state.carry_capacity || {};
+  return '常规 ' + (carryStr * 5) + ' · 满载 ' + (carryStr * 10) + ' · 极限 ' + (carryStr * 15) + ' · 当前 ' + (w['当前'] || 0);
+}
+function SB_editWeight() { toast('负重由力量与承重熟练自动计算', 'warn'); }
+/* 列表编辑（语言/专业/武器） */
+var SB_LIST_KIND = null;
+function SB_editList(kind) {
+  SB_LIST_KIND = kind;
+  var cfg = kind === 'lang' ? { t: '语言', v: (state.languages || []).join('，') }
+    : kind === 'prof' ? { t: '专业熟练项', v: (state.professionals || []).join('，') }
+    : { t: '武器熟练', v: Object.keys(state.weapon_profs || {}).join('，') };
+  var ov = document.getElementById('listOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'listOverlay';
+    ov.className = 'overlay';
+    ov.innerHTML = '<div class="pop" style="max-width:420px"><div class="pop-head"><h3 id="listTitle">编辑列表</h3><button class="close" onclick="closeOverlay(\'listOverlay\')">✕</button></div><div class="pop-body"><p id="listHint" style="font-size:12.5px;color:var(--muted);margin-bottom:6px"></p><div class="mini-edit-pop"><input type="text" id="listInput" value=""><button class="ok" onclick="SB_saveList()">确定</button><button class="cancel" onclick="closeOverlay(\'listOverlay\')">取消</button></div></div></div>';
+    document.body.appendChild(ov);
+  }
+  document.getElementById('listTitle').textContent = cfg.t;
+  document.getElementById('listInput').value = cfg.v;
+  document.getElementById('listHint').textContent = '用逗号分隔多项，如：通用语，精灵语';
+  openOverlay('listOverlay');
+}
+function SB_saveList() {
+  var raw = document.getElementById('listInput').value;
+  var items = raw.split(/[，,、\n]/).map(function(s) { return s.trim(); }).filter(Boolean);
+  if (SB_LIST_KIND === 'lang') state.languages = items;
+  else if (SB_LIST_KIND === 'prof') state.professionals = items;
+  else {
+    var wp = {};
+    for (var i = 0; i < items.length; i++) wp[items[i]] = 1;
+    state.weapon_profs = wp;
+  }
+  state._dirty = true;
+  SB_LIST_KIND = null;
+  closeOverlay('listOverlay');
+  SB_renderLangRows();
+}
+/* 背景编辑 */
+var SB_STORY_FIELDS = [['story', '背景故事'], ['personality', '个性'], ['traits', '特性'], ['ideals', '理念'], ['bonds', '羁绊'], ['flaws', '缺陷']];
+function SB_editStory() {
+  var ov = document.getElementById('storyOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'storyOverlay';
+    ov.className = 'overlay';
+    ov.innerHTML = '<div class="pop" style="max-width:640px"><div class="pop-head"><h3>编辑背景故事</h3><button class="close" onclick="closeOverlay(\'storyOverlay\')">✕</button></div><div class="pop-body"><div id="storyEditFields"></div><div class="mini-edit-pop" style="margin-top:14px"><button class="ok" onclick="SB_saveStory()">保存</button><button class="cancel" onclick="closeOverlay(\'storyOverlay\')">取消</button></div></div></div>';
+    document.body.appendChild(ov);
+  }
+  var box = document.getElementById('storyEditFields');
+  var html = '';
+  for (var i = 0; i < SB_STORY_FIELDS.length; i++) {
+    var f = SB_STORY_FIELDS[i];
+    html += '<div style="margin-bottom:10px"><label style="display:block;font-size:12.5px;color:var(--accent);margin-bottom:4px;font-weight:bold">' + f[1] + '</label><textarea id="sbStory_' + f[0] + '" rows="3" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13.5px;resize:vertical;box-sizing:border-box">' + (state[f[0]] || '') + '</textarea></div>';
+  }
+  box.innerHTML = html;
+  openOverlay('storyOverlay');
+}
+function SB_saveStory() {
+  for (var i = 0; i < SB_STORY_FIELDS.length; i++) {
+    var f = SB_STORY_FIELDS[i];
+    var el = document.getElementById('sbStory_' + f[0]);
+    if (el) state[f[0]] = el.value.trim();
+  }
+  state._dirty = true;
+  closeOverlay('storyOverlay');
+  window.render();
+}
+/* 命中项点击编辑（网格） */
+function SB_bindHitItems() {
+  var atk = document.getElementById('bgAtk');
+  var sp = document.getElementById('bgSpell');
+  if (atk && atk.parentElement && !atk.parentElement.getAttribute('onclick')) {
+    atk.parentElement.setAttribute('onclick', "SB_editHitBonus('atk')");
+    atk.parentElement.style.cursor = 'pointer';
+    atk.parentElement.title = '点击编辑攻击命中加成';
+  }
+  if (sp && sp.parentElement && !sp.parentElement.getAttribute('onclick')) {
+    sp.parentElement.setAttribute('onclick', "SB_editHitBonus('spell')");
+    sp.parentElement.style.cursor = 'pointer';
+    sp.parentElement.title = '点击编辑法术命中加成';
+  }
+}
+/* 精确数值按钮（orb-ctrl ✏） */
+function SB_bindHpFpEdit() {
+  var ctrls = document.querySelectorAll('.orb-ctrl');
+  ctrls.forEach(function(c, idx) {
+    if (c.querySelector('.b5.edit')) return;
+    var kind = idx === 0 ? 'hp' : 'fp';
+    var btn = document.createElement('button');
+    btn.className = 'b5 edit';
+    btn.textContent = '✏';
+    btn.title = '输入精确数值';
+    btn.onclick = function() { SB_editHpFp(kind); };
+    c.appendChild(btn);
+  });
+}
+/* 背景标题编辑按钮 */
+function SB_bindStoryEdit() {
+  var title = document.querySelector('.grid-2-1 .card h2');
+  if (title && title.textContent.includes('个性背景') && !title.querySelector('.sb-edit-btn')) {
+    var btn = document.createElement('button');
+    btn.className = 'sb-edit-btn';
+    btn.textContent = '✎ 编辑';
+    btn.onclick = SB_editStory;
+    btn.style.cssText = 'margin-left:10px;border:1px solid var(--line);background:var(--bg);color:var(--accent);border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;font-family:inherit;vertical-align:middle';
+    title.appendChild(btn);
+  }
+}
+/* 挂载（render 后） */
+var SB_origRender5 = window.render;
+window.render = function() {
+  SB_origRender5();
+  SB_bindMiniOK();
+  SB_renderLangRows();
+  SB_bindHitItems();
+  SB_bindHpFpEdit();
+  SB_bindStoryEdit();
+  SB_renderPortrait();
+};
+/* P6：立绘持久化（state.portrait）+ portrait 渲染 */
+function SB_pickPortrait() {
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) { state.portrait = ev.target.result; state._dirty = true; window.render(); };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+window.openAvatar = SB_pickPortrait;
+function SB_renderPortrait() {
+  var pr = document.querySelector('.portrait-round');
+  if (!pr) return;
+  var badge = pr.querySelector('.edit-badge');
+  if (state.portrait) {
+    var img = pr.querySelector('img');
+    if (!img) {
+      img = document.createElement('img');
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+      pr.insertBefore(img, pr.firstChild);
+    }
+    img.src = state.portrait;
+    if (badge) badge.textContent = '✎ 更换立绘';
+  }
+}
+/* P1：学习面板移出隐藏占位（body 层级） */
+(function() {
+  var lp = document.getElementById('learnPanel');
+  if (lp && lp.parentElement && lp.parentElement.id === 'snowd-legacy') {
+    document.body.appendChild(lp);
+  }
+  /* P4：清理源引擎浮动按钮（保存/返回/重新车卡——页头已有对应入口） */
+  var hides = { '保存': true, '返回': true, '重新车卡': true };
+  document.querySelectorAll('button').forEach(function(b) {
+    var cs = getComputedStyle(b);
+    if (cs.position === 'fixed' && hides[(b.textContent || '').trim()]) {
+      b.style.display = 'none';
+    }
+  });
+})();
 window.addEventListener('load', function() {
   if (!(typeof initFromURL === 'function' && initFromURL())) window.render();
 });
