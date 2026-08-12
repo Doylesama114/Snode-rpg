@@ -212,12 +212,11 @@ def extract_paragraphs(docx: Path) -> list[dict]:
 
     paras: list[dict] = []
     for pxml in re.findall(r"<w:p[\s\S]*?</w:p>", xml):
-        image = None
-        m = re.search(r'r:embed="(rId\d+)"', pxml)
-        if m:
+        images: list[str] = []
+        for m in re.finditer(r'r:embed="(rId\d+)"', pxml):
             tgt = rid_map.get(m.group(1), "")
             if "media/" in tgt:
-                image = tgt
+                images.append(tgt)
         runs: list[tuple[str, bool]] = []
         for r in re.finditer(r"<w:r[ >][\s\S]*?</w:r>", pxml):
             rt = "".join(re.findall(r"<w:t[^>]*>(.*?)</w:t>", r.group(0)))
@@ -226,7 +225,7 @@ def extract_paragraphs(docx: Path) -> list[dict]:
             bold = "<w:b/>" in r.group(0) or "<w:b " in r.group(0)
             runs.append((rt.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">"), bold))
         text = "".join(t for t, _b in runs).strip()
-        if not text and not image:
+        if not text and not images:
             continue
         all_bold = bool(runs) and all(b for _t, b in runs)
         paras.append(
@@ -234,7 +233,7 @@ def extract_paragraphs(docx: Path) -> list[dict]:
                 "text": text,
                 "runs": runs,
                 "all_bold": all_bold,
-                "image": image,
+                "images": images,
             }
         )
     return paras
@@ -396,13 +395,20 @@ def build_world_pane(paras: list[dict], media_dir_rel: str) -> tuple[str, list[t
         return "".join(out)
 
     for raw in paras:
+        img_html = None
+        imgs = raw.get("images") or []
+        if imgs:
+            img_html = ""
+            for ipath in imgs:
+                fname = ipath.rsplit("/", 1)[-1]
+                img_html += (
+                    f'<div class="p world-img"><img src="{media_dir_rel}/{esc(fname)}" '
+                    f'alt="" loading="lazy" /></div>\n'
+                )
         # image-only paragraph: insert at current position (keeps doc order)
-        if raw.get("image") and not raw["text"]:
-            fname = raw["image"].rsplit("/", 1)[-1]
-            body.append(
-                f'<div class="p world-img"><img src="{media_dir_rel}/{esc(fname)}" '
-                f'alt="" loading="lazy" /></div>\n'
-            )
+        if not raw["text"]:
+            if img_html:
+                body.append(img_html)
             continue
         for text in split_glued_heading(raw["text"]):
             kind = classify(text)
@@ -444,6 +450,8 @@ def build_world_pane(paras: list[dict], media_dir_rel: str) -> tuple[str, list[t
                     body.append(f'<div class="p"><b>{render_runs(raw["runs"])}</b></div>\n')
                 else:
                     body.append(f'<div class="p">{render_runs(raw["runs"])}</div>\n')
+        if img_html:
+            body.append(img_html)
 
     close_section()
 
