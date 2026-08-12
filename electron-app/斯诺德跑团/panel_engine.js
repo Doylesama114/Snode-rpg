@@ -4193,6 +4193,7 @@ function parseWeight(wt) {
 
 }
 function getItemWeight(itemName) {
+  if (itemName == null || typeof itemName !== 'string') return null;
 
 
   if (typeof ITEM_DATA !== "undefined") {
@@ -8461,6 +8462,7 @@ function SB_calcAC() {
   var eqArmor = (state.equipment && state.equipment['防具']) || [];
   var armorAC = null;
   for (var ai = 0; ai < eqArmor.length; ai++) {
+    if (!eqArmor[ai] || typeof eqArmor[ai] !== 'string') continue;
     var aInfo = getArmorAC(eqArmor[ai]);
     if (!aInfo) {
       if (eqArmor[ai] == '演出戏服' || eqArmor[ai] == '高档服装' || eqArmor[ai] == '布衣' || eqArmor[ai] == '披风') {
@@ -9263,7 +9265,7 @@ renderProfile = function() {
   if (!host) return;
   var p = state.portrait ? '<img src="' + state.portrait + '">' : '';
   var html = '<div class="portrait-row">' +
-    '<div class="portrait-round" title="点击上传立绘" onclick="SB_pickPortrait()">' + p + '<div class="edit-badge">✎ 立绘</div></div>' +
+    '<div class="portrait-round" title="点击上传立绘" onclick="SB_pickPortrait()">' + p + '<div class="edit-badge">✎ 设置头像</div></div>' +
     '<dl class="kv">' +
     '<div><dt>玩家</dt><dd>' + SB_esc(state.player) + '</dd></div>' +
     '<div><dt>角色</dt><dd>' + SB_esc(state.name) + '</dd></div>' +
@@ -9448,4 +9450,263 @@ renderTraits = function() {
   }
   var ce = document.getElementById('class-features');
   if (ce) ce.innerHTML = cfh;
+};
+
+/* ============ 全量对齐：装备/技能点/专长/货币/语言/天赋/图纸 ============ */
+/* ---- 装备：equip-slot + h3(名+计数) + 物品格（内联源交互） ---- */
+var SB_origRenderEquipment = renderEquipment;
+renderEquipment = function() {
+  var eg = document.getElementById('equip-grid');
+  if (!eg) return;
+  var ek = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包', '材料包'];
+  var totalSlotsMap = { '主手武器': 3, '副手武器': 4, '防具': 2, '配饰': 4, '背包': 10, '杂物包': 10, '旅行腰包': 5, '材料包': 10 };
+  var eh = '';
+  for (var ei = 0; ei < ek.length; ei++) {
+    var slotName = ek[ei];
+    var items = state.equipment[slotName] || [];
+    if (slotName === '材料包') {
+      for (var pi = 0; pi < 2; pi++) {
+        var packSlot = items[pi] || {};
+        var packType = packSlot.type || '';
+        var packItems = packSlot.items || [];
+        var hasPack = packType.length > 0;
+        var mpLocked = !state.containerItems || !state.containerItems['材料包' + (pi === 0 ? 'A' : 'B')];
+        var pName = '材料包' + (pi === 0 ? 'A' : 'B');
+        var pFilled = packItems ? packItems.filter(function(x) { return x && x.item; }).length : 0;
+        eh += '<div class="equip-slot"><h3><span>' + pName + '</span><span>' + (mpLocked ? '—' : pFilled + '/10') + '</span></h3><div class="equip-items">';
+        if (mpLocked) {
+          eh += '<div class="equip-empty" style="grid-column:span 2">未装备此容器</div>';
+        } else {
+          for (var bi = 0; bi < 10; bi++) {
+            var stack = packItems[bi] || null;
+            if (stack && stack.item) {
+              var cnt2 = (stack.count || 1) > 1 ? ' <span class="cnt">×' + (stack.count || 1) + '</span>' : '';
+              eh += '<div class="equip-item" data-slot="材料包" data-bag-type="' + SB_esc(packType) + '" data-bag-idx="' + pi + '" data-item="' + SB_esc(stack.item) + '" data-count="' + (stack.count || 1) + '">' + SB_esc(stack.item) + cnt2 + '</div>';
+            } else {
+              eh += '<div class="equip-empty" data-slot="材料包" data-item="">空栏位</div>';
+            }
+          }
+        }
+        eh += '</div></div>';
+      }
+      continue;
+    }
+    var filled = items.filter(function(x) { return x && (x.item || x.name); }).length;
+    eh += '<div class="equip-slot"><h3><span>' + slotName + '</span><span>' + filled + '/' + items.length + '</span></h3><div class="equip-items">';
+    for (var si2 = 0; si2 < items.length; si2++) {
+      var it2 = items[si2];
+      if (it2 && (it2.item || it2.name)) {
+        var iname = it2.item || it2.name;
+        var icnt = (it2.count || it2.cnt || 1) > 1 ? ' <span class="cnt">×' + (it2.count || it2.cnt || 1) + '</span>' : '';
+        eh += '<div class="equip-item" data-slot="' + slotName + '" data-item="' + SB_esc(iname) + '" data-count="' + (it2.count || it2.cnt || 1) + '">' + SB_esc(iname) + icnt + '</div>';
+      } else {
+        eh += '<div class="equip-empty" data-slot="' + slotName + '" data-item="">空栏位</div>';
+      }
+    }
+    eh += '</div></div>';
+  }
+  eg.innerHTML = eh;
+  var allEquip = eg.querySelectorAll('.equip-item, .equip-empty');
+  for (var ei2 = 0; ei2 < allEquip.length; ei2++) {
+    (function(el) {
+      el.onclick = function(e) {
+        if (_justDragged) { _justDragged = false; return; }
+        var slot = el.getAttribute('data-slot');
+        var itemName = el.getAttribute('data-item') || '';
+        var count = parseInt(el.getAttribute('data-count')) || 1;
+        if (slot === '材料包') {
+          if (!itemName) {
+            if (!_selectedEquip) return;
+            var from0 = _selectedEquip;
+            var bagType0 = el.getAttribute('data-bag-type');
+            var bagIdx0 = parseInt(el.getAttribute('data-bag-idx')) || 0;
+            clearEquipSelection();
+            tryMoveItem(from0.slot, from0.item, from0.count || 1, slot, itemName || null, from0.bagIdx, bagIdx0);
+            return;
+          }
+          if (!_selectedEquip) {
+            var bagType1 = el.getAttribute('data-bag-type');
+            var bagIdx1 = parseInt(el.getAttribute('data-bag-idx')) || 0;
+            _selectedEquip = { slot: slot, item: itemName, count: count, bagType: bagType1, bagIdx: bagIdx1 };
+            el.classList.add('equip-selected');
+          } else {
+            var from1 = _selectedEquip;
+            var bagType2 = el.getAttribute('data-bag-type');
+            var bagIdx2 = parseInt(el.getAttribute('data-bag-idx')) || 0;
+            clearEquipSelection();
+            tryMoveItem(from1.slot, from1.item, from1.count || 1, slot, itemName || null, from1.bagIdx, bagIdx2);
+          }
+          return;
+        }
+        if (!_selectedEquip) {
+          if (!itemName) return;
+          _selectedEquip = { slot: slot, item: itemName, count: count };
+          el.classList.add('equip-selected');
+        } else {
+          var from2 = _selectedEquip;
+          clearEquipSelection();
+          tryMoveItem(from2.slot, from2.item, from2.count || 1, slot, itemName || null, from2.bagIdx);
+        }
+      };
+      el.addEventListener('mousedown', gd_mousedown);
+      el.addEventListener('contextmenu', gd_contextmenu);
+    })(allEquip[ei2]);
+  }
+};
+
+/* ---- 技能点：sp-total + sp-grid + sp-chip（点击切换持有） ---- */
+var SB_origRenderMarkOverview = renderMarkOverviewHtml;
+renderMarkOverviewHtml = function() {
+  if (typeof ensureSpState === 'function') ensureSpState();
+  var held = 0;
+  for (var hk in state.color_marks) { if (state.color_marks[hk]) held++; }
+  var html = '<div class="sp-total"><span>' + (typeof getSpTotal === 'function' ? getSpTotal() : 0) + '</span><small>已持有 ' + held + ' 色标识（点击芯片切换）</small></div>';
+  html += '<div class="sp-grid">';
+  var order = (typeof MARK_COLOR_NAMES !== 'undefined') ? MARK_COLOR_NAMES : [];
+  for (var i = 0; i < order.length; i++) {
+    var cn = order[i];
+    var hex = MARK_COLOR_HEX[cn] || '#888';
+    var key = cn.replace('色', '');
+    var on = !!(state.color_marks && state.color_marks[key]);
+    var dot = cn === '炫彩' ? '<span class="dot premium"></span>' : '<span class="dot" style="background:' + hex + '"></span>';
+    html += '<div class="sp-chip ' + (on ? 'on' : 'off') + '" onclick="SB_toggleMark(\'' + cn + '\')" title="' + cn + '（点击切换持有）">' + dot + '<span class="nm">' + cn + '</span></div>';
+  }
+  html += '</div>';
+  return html;
+};
+function SB_toggleMark(name) {
+  if (typeof ensureSpState === 'function') ensureSpState();
+  var key = String(name).replace('色', '');
+  if (state.color_marks && state.color_marks[key]) {
+    state.color_marks[key] = false;
+    SB_toast('移除标识：' + name);
+  } else {
+    if (state.color_marks) { state.color_marks[key] = true; }
+    SB_toast('获得标识：' + name);
+  }
+  SB_log('色彩标识' + (state.color_marks && state.color_marks[name] ? '获得' : '移除') + '：' + name);
+  var sp = document.getElementById('sp-bar');
+  if (sp) sp.innerHTML = renderMarkOverviewHtml();
+}
+/* ---- 特殊专长：feat-slot 结构 ---- */
+var SB_origRenderFeats = renderFeats;
+renderFeats = function() {
+  var host = document.getElementById('feat-list');
+  if (!host) return;
+  var lvSeq = ['4级', '8级', '12级', '16级'];
+  var html = '';
+  for (var i = 0; i < 4; i++) {
+    var f = state.special_feats[i];
+    var fName = typeof f === 'string' ? f : (f && f.name);
+    var lv = (f && f.level) || lvSeq[i] || '';
+    if (fName) {
+      var sd = SPECIAL_FEATS && SPECIAL_FEATS[fName];
+      var desc = (sd && sd.effects && sd.effects.description) ? sd.effects.description : '资料库暂无详细数据';
+      var type = '';
+      if (sd && sd.effects && sd.effects.type) {
+        var tm = { 'attribute': '属性', 'multi': '复合', 'proficiency': '熟练度', 'professional': '专业', 'attribute_health': '属性+生命', 'health_growth': '生命成长', 'attribute_proficiency': '属性+熟练', 'attribute_boost': '属性强化', 'sp_pack': '技能点', 'xp_pack': '经验值', 'armor_ac': '防御', 'heavy_armor': '重甲防御', 'extra_slot': '额外槽位', 'professional_sp': '专业+技能点', 'panel': '面板加成', 'description_only': '规则' };
+        type = tm[sd.effects.type] || sd.effects.type;
+      }
+      html += '<div class="feat-slot" title="' + SB_esc(desc) + '"><span class="lv">' + SB_esc(lv) + '</span>' + SB_esc(fName) +
+        (type ? '<span class="type">' + SB_esc(type) + '</span>' : '') + '</div>';
+    } else {
+      html += '<div class="feat-slot empty"><span class="lv">' + SB_esc(lv) + '</span>未选择<span style="color:var(--muted)">+ 选择</span></div>';
+    }
+  }
+  host.innerHTML = html;
+};
+/* ---- 货币：m-item 结构 + 保留点击编辑 ---- */
+var SB_origRenderCurrency2 = renderCurrency;
+renderCurrency = function() {
+  var row = document.getElementById('currency-row');
+  if (!row) return;
+  var html = '';
+  var keys = Object.keys(state.currency);
+  for (var i = 0; i < keys.length; i++) {
+    (function(k, idx) {
+      html += '<div class="m-item" title="点击修改数量" style="cursor:pointer" onclick="SB_editCurrency(\'' + k + '\')"><span>' + k + '</span><b>' + (state.currency[k] || '—') + '</b></div>';
+    })(keys[i], i);
+  }
+  row.innerHTML = html;
+};
+/* ---- 语言/专业/武器：lang-rows 行式 + 保留点击编辑 ---- */
+var SB_origRenderLangProfs2 = renderLangProfs;
+renderLangProfs = function() {
+  var langRow = document.getElementById('lang-list');
+  var profRow = document.getElementById('prof-list');
+  var wpRow = document.getElementById('weapon-profs');
+  var wp = (typeof resolveWeaponProfs === 'function' && state.classes && state.classes[0]) ? resolveWeaponProfs(state.classes[0].name).slice() : [];
+  if (state.weapon_profs) {
+    for (var wpk in state.weapon_profs) {
+      if (state.weapon_profs[wpk] > 0 && wp.indexOf(wpk) < 0) wp.push(wpk);
+    }
+  }
+  var mkRow = function(label, val, clickFn, title) {
+    return '<div class="lang-row" style="cursor:pointer" title="' + title + '" onclick="' + clickFn + '"><span class="lr-label">' + label + '</span><span class="lr-val">' + (val || '—') + '</span></div>';
+  };
+  var html = mkRow('语言', (state.languages || []).join(' · '), "SB_editList('lang')", '点击编辑语言');
+  html += mkRow('专业', (state.professionals || []).join(' · '), "SB_editList('prof')", '点击编辑专业熟练项');
+  html += mkRow('武器熟练', wp.join(' · '), "SB_editList('weapon')", '点击编辑武器熟练');
+  if (langRow) langRow.innerHTML = html;
+  if (profRow) profRow.innerHTML = '';
+  if (wpRow) wpRow.innerHTML = '';
+};
+/* ---- 天赋树：talent-tier + talent-cell ---- */
+var SB_origRenderTalentGrid = renderTalentGrid;
+renderTalentGrid = function() {
+  var host = document.getElementById('talent-grid');
+  if (!host) return;
+  var tl = state.talent_tree || [];
+  var tierOrder = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶', '七阶'];
+  var byTier = {};
+  for (var i = 0; i < tl.length; i++) {
+    var t = tl[i];
+    var k = t.tier || '';
+    if (!byTier[k]) byTier[k] = [];
+    byTier[k].push(t);
+  }
+  var html = '';
+  for (var ti = 0; ti < tierOrder.length; ti++) {
+    var name = tierOrder[ti];
+    var cells = byTier[name] || [];
+    if (cells.length) {
+      html += '<div class="talent-tier"><span class="t-label">' + name + '</span>';
+      for (var ci = 0; ci < 5; ci++) {
+        var cell = cells[ci];
+        if (cell) {
+          html += '<div class="talent-cell filled" title="' + SB_esc(cell.desc || '') + '">' + SB_esc(cell.n) + '</div>';
+        } else {
+          html += '<div class="talent-cell lock compact">空</div>';
+        }
+      }
+      html += '</div>';
+    }
+  }
+  if (!html) html = '<div class="bd-empty">暂无已学天赋</div>';
+  host.innerHTML = html;
+};
+/* ---- 图纸：bp 结构（保留 addBlueprintManual） ---- */
+var SB_origRenderBlueprints = renderBlueprints;
+renderBlueprints = function() {
+  var host = document.getElementById('blueprint-grid');
+  if (!host) return;
+  if (typeof ensureBlueprintState === 'function') ensureBlueprintState();
+  var intel = state.attrs['智力'] || 10;
+  var intMod = Math.floor((intel - 10) / 2);
+  var slots = 10 + intMod + (state.blueprint_bonus_slots || 0);
+  var bps = state.blueprints || [];
+  var used = bps.length;
+  var title = document.getElementById('blueprintTitle');
+  if (title) title.innerHTML = '图纸（专业槽位） <span class="sub">占用 ' + used + ' / ' + slots + ' · 规则上限 10+智力调整(' + intMod + ')' + ((state.blueprint_bonus_slots || 0) ? ' + 加成 ' + state.blueprint_bonus_slots : '') + '</span>';
+  var html = '';
+  for (var i = 0; i < slots; i++) {
+    if (i < used) {
+      var bp = bps[i];
+      var bpName = (bp && (bp.n || bp.name)) || '';
+      html += '<div class="bp filled"><span>' + SB_esc(bpName) + '</span><span class="idx">' + (i + 1) + '</span></div>';
+    } else {
+      html += '<div class="bp empty" onclick="addBlueprintManual()" title="添加图纸">+</div>';
+    }
+  }
+  host.innerHTML = html;
 };

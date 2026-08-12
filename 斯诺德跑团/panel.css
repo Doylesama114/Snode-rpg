@@ -829,3 +829,58 @@ body.battle .head-actions .btn-battle{background:var(--green)}
 .trait-item span{color:var(--muted);font-size:12.5px}
 /* 旧浮动按钮收敛到页头（功能已并入页头按钮组） */
 .learn-toggle,.sb-top-btn{display:none !important}
+
+/* ============ 全量对齐 CSS（测试版结构） ============ */
+/* 装备：equip-slot + h3 计数 + 物品格 */
+.equip-slot{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.equip-slot h3{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between;font-weight:bold}
+.equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.equip-item{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
+.equip-item:hover{border-color:var(--accent)}
+.equip-item .cnt{color:var(--muted);font-size:11px}
+.equip-empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;border-radius:4px;padding:4px 8px;font-size:12.5px;text-align:center;cursor:pointer}
+.equip-empty:hover{border-color:var(--accent);background:var(--panel)}
+.equip-item.equip-selected,.equip-empty.equip-selected{border-color:var(--accent);background:var(--gold-soft)}
+/* 技能点 */
+.sp-total{font-size:22px;font-weight:bold;color:var(--accent);display:flex;align-items:baseline;gap:8px}
+.sp-total small{font-size:12px;color:var(--muted);font-weight:normal}
+.sp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.sp-chip{display:flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 5px;font-size:11px;min-width:0;cursor:pointer;transition:transform .12s,box-shadow .15s,border-color .15s,opacity .15s}
+.sp-chip:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.sp-chip.on{border-color:var(--accent);opacity:1}
+.sp-chip.off{opacity:.5}
+.sp-chip .dot{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+.sp-chip .dot.premium{background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)}
+.sp-chip .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 专长 */
+.feat-slot{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:5px;padding:5px 10px;display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:4px}
+.feat-slot .lv{background:var(--accent);color:#fff;border-radius:3px;font-size:11px;padding:0 6px;flex:none}
+.feat-slot .type{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.feat-slot.empty{color:var(--muted);font-style:italic}
+/* 货币 */
+.m-item{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;display:flex;justify-content:space-between;font-size:14px;transition:border-color .15s;margin-bottom:4px}
+.m-item:hover{border-color:var(--accent)}
+.m-item b{color:var(--accent)}
+/* 语言行 */
+.lang-rows{display:flex;flex-direction:column;gap:5px}
+.lang-row{display:flex;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px 10px;align-items:flex-start;transition:border-color .15s}
+.lang-row:hover{border-color:var(--accent)}
+.lang-row .lr-label{flex:none;font-size:12px;color:var(--muted);font-weight:bold;min-width:62px;padding-top:1px}
+.lang-row .lr-val{font-size:13.5px;line-height:1.6;word-break:break-word}
+/* 天赋 */
+.talent-tier{display:grid;grid-template-columns:60px repeat(5,1fr);gap:5px;align-items:center;margin-bottom:6px}
+.talent-tier .t-label{font-size:12.5px;color:var(--muted);font-weight:bold;white-space:nowrap}
+.talent-cell{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:5px;font-size:13px;text-align:center;min-height:32px;display:flex;align-items:center;justify-content:center;gap:4px;cursor:default}
+.talent-cell.filled{cursor:pointer;color:var(--ink)}
+.talent-cell.filled:hover{border-color:var(--accent);transform:translateY(-1px)}
+.talent-cell.lock{color:var(--muted);border-style:dashed}
+.talent-cell.compact{min-height:28px;padding:3px 5px;font-size:12px}
+/* 图纸 */
+.bp{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 8px;font-size:11.5px;display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:26px;transition:border-color .12s,transform .12s}
+.bp .idx{color:var(--muted);font-size:10px;flex:none}
+.bp.empty{border:1px dashed var(--line);color:var(--muted);font-style:italic;cursor:pointer;justify-content:center;font-size:11px;transition:border-color .12s,background .12s}
+.bp.empty:hover{border-color:var(--accent);background:var(--panel);color:var(--accent)}
+@media (max-width:600px){
+  .sp-grid{grid-template-columns:repeat(4,1fr)}
+  .equip-items{grid-template-columns:1fr}
+}
