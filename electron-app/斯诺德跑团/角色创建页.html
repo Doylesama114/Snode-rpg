@@ -306,6 +306,7 @@ var CHAR = {
   attrs: { "力量":8, "敏捷":8, "体质":8, "智力":8, "感知":8, "魅力":8, "意志":8, "幸运":8 },
   selectedSkills: [],
   keyAttr: "", specChoices: {}, bgProfs: {skills: {}, profInput: ""}, raceExtra: [], raceSaves: [], raceSkillChoice: "", raceProfInput: "", selectedFeatures: [], humanFreeSkill: null, raceSize: "",
+  bpPicks: [],
   bgIdx: -1, bgName: "", bgData: null,
   bgCantrips: [], bgOtherPicks: [], sportPreference: "",
   equipIdx: -1, equipChoice: null, equipSel: {}, wingfolkHasCommon: true,
@@ -511,6 +512,7 @@ function buildCreationSnapshot(){
     keyAttr:CHAR.keyAttr||"",
     specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),
     selectedFeatures:(CHAR.selectedFeatures||[]).slice(),
+    bpPicks:(CHAR.bpPicks||[]).slice(),
     raceName:CHAR.raceName||"",
     raceSize:CHAR.raceSize||"",
     raceExtra:(CHAR.raceExtra||[]).slice(),
@@ -570,6 +572,7 @@ function applyCreationSnapshotToChar(snap){
   CHAR.keyAttr=snap.keyAttr||"";
   CHAR.specChoices=JSON.parse(JSON.stringify(snap.specChoices||{}));
   CHAR.selectedFeatures=(snap.selectedFeatures||[]).slice();
+  CHAR.bpPicks=(snap.bpPicks||[]).slice();
   CHAR.weaponSpec=snap.weaponSpec||"";
   CHAR.deity=snap.deity||"";
   CHAR.deityAttr=snap.deityAttr||"";
@@ -1324,7 +1327,7 @@ function checkSpecDone(){
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
   notifyChargenChange();
 }
-function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];
+function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
   CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
   CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
@@ -2341,9 +2344,67 @@ function toggleFeature(el){
   var name=el.getAttribute('data-name');
   var maxPick=parseInt(el.getAttribute('data-max'));
   var idx=CHAR.selectedFeatures.indexOf(name);
-  if(idx>=0) CHAR.selectedFeatures.splice(idx,1);
-  else if(CHAR.selectedFeatures.length<maxPick) CHAR.selectedFeatures.push(name);
+  var adding=false;
+  if(idx>=0){ CHAR.selectedFeatures.splice(idx,1); if(name==="基础材料学")CHAR.bpPicks=[]; }
+  else if(CHAR.selectedFeatures.length<maxPick){ CHAR.selectedFeatures.push(name); adding=true; }
   renderStartFeaturesStep(document.getElementById('stepContent'));
+  notifyChargenChange();
+  if(name==="基础材料学"&&adding) openQixieBlueprintPicker();
+}
+/* 奇械师·基础材料学：初始图纸四选二 */
+var QIXIE_START_BLUEPRINTS=['破片手雷（图纸）','万能遥控器（图纸）','发条老鼠（图纸）','报警机器人（图纸）'];
+var QIXIE_START_BP_PICK=2;
+function openQixieBlueprintPicker(){
+  var ov=document.getElementById('qixieBpOverlay');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='qixieBpOverlay';
+    ov.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center';
+    ov.onclick=function(e){if(e.target===ov){};};
+    document.body.appendChild(ov);
+  }
+  ov.style.display='flex';
+  var h='<div style="background:#fffdf8;border:1px solid #d8d2c4;border-radius:12px;padding:20px;max-width:560px;width:92%;box-shadow:0 8px 32px rgba(0,0,0,0.35)">';
+  h+='<div style="font-size:17px;font-weight:bold;margin-bottom:6px;color:#a46d1f">基础材料学 · 初始图纸选择</div>';
+  h+='<div style="font-size:13px;color:#69706b;margin-bottom:12px">从以下四张图纸中选择 <strong>'+QIXIE_START_BP_PICK+'</strong> 张（加入专业槽位）：</div>';
+  h+='<div id="qixieBpList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">';
+  for(var i=0;i<QIXIE_START_BLUEPRINTS.length;i++){
+    var bn=QIXIE_START_BLUEPRINTS[i];
+    var sel=CHAR.bpPicks&&CHAR.bpPicks.indexOf(bn)>=0;
+    h+='<div id="qixieBpItem_'+i+'" onclick="toggleBpPick('+i+')" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid '+(sel?'#a46d1f':'#d8d2c4')+';border-radius:8px;cursor:pointer;background:'+(sel?'#fdf3e3':'#fff')+'">';
+    h+='<span style="width:18px;height:18px;border-radius:50%;border:2px solid '+(sel?'#a46d1f':'#c9c2b4')+';display:flex;align-items:center;justify-content:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:'+(sel?'#a46d1f':'transparent')+'"></span></span>';
+    h+='<span style="font-size:14px">'+bn+'</span></div>';
+  }
+  h+='</div>';
+  h+='<div id="qixieBpHint" style="font-size:12px;color:#a46d1f;margin-bottom:12px">已选 '+(CHAR.bpPicks||[]).length+' / '+QIXIE_START_BP_PICK+'</div>';
+  h+='<div style="display:flex;gap:8px;justify-content:flex-end">';
+  h+='<button onclick="closeQixieBpPicker(false)" style="padding:8px 18px;background:#eee;border:1px solid #d8d2c4;border-radius:6px;cursor:pointer;font-size:13px">取消</button>';
+  h+='<button onclick="closeQixieBpPicker(true)" style="padding:8px 18px;background:#a46d1f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px">确定</button>';
+  h+='</div></div>';
+  ov.innerHTML=h;
+}
+function toggleBpPick(i){
+  var bn=QIXIE_START_BLUEPRINTS[i];
+  if(!CHAR.bpPicks)CHAR.bpPicks=[];
+  var idx=CHAR.bpPicks.indexOf(bn);
+  if(idx>=0)CHAR.bpPicks.splice(idx,1);
+  else if(CHAR.bpPicks.length<QIXIE_START_BP_PICK)CHAR.bpPicks.push(bn);
+  openQixieBlueprintPicker();
+}
+function closeQixieBpPicker(confirm){
+  var ov=document.getElementById('qixieBpOverlay');
+  if(confirm){
+    if(!CHAR.bpPicks||CHAR.bpPicks.length<QIXIE_START_BP_PICK){
+      alert('请选择 '+QIXIE_START_BP_PICK+' 张初始图纸（已选 '+(CHAR.bpPicks||[]).length+' 张）');
+      return;
+    }
+  }else{
+    var name='基础材料学';
+    var idx=CHAR.selectedFeatures.indexOf(name);
+    if(idx>=0){CHAR.selectedFeatures.splice(idx,1);renderStartFeaturesStep(document.getElementById('stepContent'));}
+    CHAR.bpPicks=[];
+  }
+  if(ov)ov.style.display='none';
   notifyChargenChange();
 }
 function renderReviewStep(c) {
@@ -2725,6 +2786,10 @@ function saveCharacter(){
   }
   var maxFeat=(CHAR.className==="法师"?4:2);
   if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){alert("请选择起始特性");return;}
+  if(CHAR.selectedFeatures.indexOf("基础材料学")>=0&&(!CHAR.bpPicks||CHAR.bpPicks.length<QIXIE_START_BP_PICK)){
+    alert("请为「基础材料学」选择 "+QIXIE_START_BP_PICK+" 张初始图纸（破片手雷/万能遥控器/发条老鼠/报警机器人 四选二，当前已选 "+(CHAR.bpPicks||[]).length+" 张）");
+    return;
+  }
   var cl=CHAR.classData; var rd=CHAR.raceData; var bd=CHAR.bgData;
   var con=CHAR.attrs["体质"]+(rd["属性加成"]?rd["属性加成"]["体质"]||0:0);
   var raceHp=rd["生命值加成"]||0;
@@ -2888,6 +2953,18 @@ function saveCharacter(){
     var featData=CLASS_STARTING_FEATURES[CHAR.className]||[];
     for(var i=0;i<CHAR.selectedFeatures.length;i++){
       var fn=CHAR.selectedFeatures[i];
+      if(fn==="基础材料学"){
+        // 初始图纸：写入专业槽位（blueprints），不写入技能列表
+        if(!charData.blueprints)charData.blueprints=[];
+        var bpList=CHAR.bpPicks||[];
+        for(var bpi=0;bpi<bpList.length;bpi++){
+          var bpN=bpList[bpi];
+          var bpDup=false;
+          for(var bj=0;bj<charData.blueprints.length;bj++){if((charData.blueprints[bj].n||charData.blueprints[bj].name)===bpN){bpDup=true;break;}}
+          if(!bpDup)charData.blueprints.push({id:"",n:bpN,src:CHAR.className,tier:"一阶",note:""});
+        }
+        continue;
+      }
       var fd=null;
       for(var j=0;j<featData.length;j++){if(featData[j].n===fn){fd=featData[j];break;}}
       var hasTalent=(fn.indexOf("天赋")>=0||(fd&&fd.d&&fd.d.indexOf("天赋")>=0)||(typeof SKILL_TIER!=='undefined'&&SKILL_TIER[fn]));
