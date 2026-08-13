@@ -315,6 +315,23 @@ var CHAR = {
   deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
 };
 
+// Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
+var CLS_OVERRIDE = {
+      '蛮斗士':{key_attr:'力量', hp:12, fp:8, saves:'力量、体质'},
+      '战士':{key_attr:'力量或敏捷', hp:10, fp:8, saves:'力量、敏捷'},
+      '法师':{key_attr:'智力', hp:8, fp:12, saves:'智力、感知'},
+      '德鲁伊':{key_attr:'感知', hp:8, fp:8, saves:'智力、感知'},
+      '游荡者':{key_attr:'敏捷', hp:8, fp:8, saves:'敏捷、感知'},
+      '吟游诗人':{key_attr:'魅力', hp:8, fp:8, saves:'敏捷、魅力'},
+      '猎人':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
+      '圣骑士':{key_attr:'意志', hp:10, fp:8, saves:'感知、魅力'},
+      '武僧':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
+      '牧师':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'},
+      '术士':{key_attr:'幸运', hp:8, fp:8, saves:'体质、魅力'},
+      '魔契师':{key_attr:'魅力', hp:8, fp:8, saves:'感知、魅力'},
+      '奇械师':{key_attr:'智力', hp:8, fp:8, saves:'体质、智力'},
+      '萨满祭司':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'}
+    };
 /** 牧师信奉神祇（创建必选） */
 var CLERIC_DEITIES = [
   { name:"公正与荣耀之神", attr:"神圣" },
@@ -762,23 +779,6 @@ function updateOverview() {
     var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? 
       (function(rh){var hpParts=rh.split("/");if(hpParts.length===2){var hp0=parseInt(hpParts[0])||0;var hp1=parseInt(hpParts[1])||0;return (CHAR.raceSize&&CHAR.raceSize.indexOf("小")<0)?hp1:hp0;}else{var m=rh.match(/(\d+)/);return m?parseInt(m[1]):0;}})(rd2['生命值加成']) : rd2['生命值加成']) : 0;
     var bgHp = (CHAR.bgData && CHAR.bgData['生命值加成']) ? parseInt(CHAR.bgData['生命值加成']) || 0 : 0;
-    // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
-    var CLS_OVERRIDE = {
-      '蛮斗士':{key_attr:'力量', hp:12, fp:8, saves:'力量、体质'},
-      '战士':{key_attr:'力量或敏捷', hp:10, fp:8, saves:'力量、敏捷'},
-      '法师':{key_attr:'智力', hp:8, fp:12, saves:'智力、感知'},
-      '德鲁伊':{key_attr:'感知', hp:8, fp:8, saves:'智力、感知'},
-      '游荡者':{key_attr:'敏捷', hp:8, fp:8, saves:'敏捷、感知'},
-      '吟游诗人':{key_attr:'魅力', hp:8, fp:8, saves:'敏捷、魅力'},
-      '猎人':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
-      '圣骑士':{key_attr:'意志', hp:10, fp:8, saves:'感知、魅力'},
-      '武僧':{key_attr:'敏捷', hp:8, fp:8, saves:'力量、敏捷'},
-      '牧师':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'},
-      '术士':{key_attr:'幸运', hp:8, fp:8, saves:'体质、魅力'},
-      '魔契师':{key_attr:'魅力', hp:8, fp:8, saves:'感知、魅力'},
-      '奇械师':{key_attr:'魅力', hp:8, fp:8, saves:'体质、智力'},
-      '萨满祭司':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'}
-    };
     var co = CLS_OVERRIDE[CHAR.className];
     var hpFirst = co ? co.hp : 8;
     var fpFirst = co ? co.fp : 8;
@@ -791,7 +791,7 @@ function updateOverview() {
     if (cl.fp_formula && cl.fp_formula.first) fpFirst = cl.fp_formula.first;
     var hpFromCon = Math.floor((con - 10) / 2);
     var hp = hpFirst + hpFromCon + raceHp + bgHp;
-    var fpKey = CHAR.keyAttr || (cl.key_attr || (co ? co.key_attr : '魅力'));
+    var fpKey = CHAR.keyAttr || (cl["关键属性"] || cl.key_attr || (co ? co.key_attr : '魅力'));
     if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
     var fpVal = CHAR.attrs[fpKey] || 10;
     var fpFromKey = Math.floor((fpVal - 10) / 2);
@@ -2801,8 +2801,8 @@ function saveCharacter(){
       raceHp=(CHAR.raceSize&&CHAR.raceSize.indexOf("小")<0)?hp1:hp0;
     }else{var m=raceHp.match(/(\d+)/);raceHp=m?parseInt(m[1]):0;}
   }
-  var bgHp=0;if(bd&&bd["生命值加成"]){bgHp=parseInt(bd["生命值加成"])||0;}var classFirst=(CHAR.classData&&CHAR.classData["hp_formula"])?CHAR.classData["hp_formula"].first:8;var hp=classFirst+calcMod(con)+raceHp+bgHp;
-  var classFirstFP=(CHAR.classData&&CHAR.classData["fp_formula"])?CHAR.classData["fp_formula"].first:8;var fpKeyAttr=CHAR.keyAttr||(CHAR.classData?CHAR.classData.key_attr:"");if(fpKeyAttr==="力量或敏捷")fpKeyAttr=CHAR.keyAttr||"力量";var fpKeyVal=CHAR.attrs[fpKeyAttr]||10;if(rd["属性加成"]&&rd["属性加成"][fpKeyAttr])fpKeyVal+=rd["属性加成"][fpKeyAttr];var raceFP=rd["疲劳值加成"]||0;if(typeof raceFP==="string"){var m2=raceFP.match(/(\d+)/);raceFP=m2?parseInt(m2[1]):0;}var fp=classFirstFP+calcMod(fpKeyVal)+raceFP;
+  var bgHp=0;if(bd&&bd["生命值加成"]){bgHp=parseInt(bd["生命值加成"])||0;}var classFirst=(CHAR.classData&&CHAR.classData["hp_formula"])?CHAR.classData["hp_formula"].first:(typeof CLS_OVERRIDE!=="undefined"&&CLS_OVERRIDE[CHAR.className]?CLS_OVERRIDE[CHAR.className].hp:8);var hp=classFirst+calcMod(con)+raceHp+bgHp;
+  var classFirstFP=(CHAR.classData&&CHAR.classData["fp_formula"])?CHAR.classData["fp_formula"].first:(typeof CLS_OVERRIDE!=="undefined"&&CLS_OVERRIDE[CHAR.className]?CLS_OVERRIDE[CHAR.className].fp:8);var fpKeyAttr=CHAR.keyAttr||(CHAR.classData?(CHAR.classData["关键属性"]||CHAR.classData.key_attr||""):"");if(fpKeyAttr==="力量或敏捷")fpKeyAttr=CHAR.keyAttr||"力量";var fpKeyVal=CHAR.attrs[fpKeyAttr]||10;if(rd["属性加成"]&&rd["属性加成"][fpKeyAttr])fpKeyVal+=rd["属性加成"][fpKeyAttr];var raceFP=rd["疲劳值加成"]||0;if(typeof raceFP==="string"){var m2=raceFP.match(/(\d+)/);raceFP=m2?parseInt(m2[1]):0;}var fp=classFirstFP+calcMod(fpKeyVal)+raceFP;
   var charData={
     profs:{},
     player:CHAR.playerName||"玩家", name:CHAR.charName, race:CHAR.raceName, raceSize:CHAR.raceSize||"",
