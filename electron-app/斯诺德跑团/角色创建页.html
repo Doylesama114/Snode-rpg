@@ -2779,7 +2779,7 @@ function organizeContainers(charData){
   var matPacks=charData.equipment["材料包"]||[];
   for(var mi=0;mi<matPacks.length;mi++){
     if(matPacks[mi]&&matPacks[mi].type){
-      charData.containerItems["材料包"+(mi===0?"A":"B")]=matPacks[mi].type;
+      charData.containerItems[matPacks[mi].type]="已解锁";
     }
   }
 }
@@ -2825,7 +2825,7 @@ function saveCharacter(){
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||(CHAR.classData?CHAR.classData["关键属性"]:"")||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
-    equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},containerItems:{"背包":"","旅行腰包":"","材料包A":"","材料包B":""},
+    equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},containerItems:{"背包":"","旅行腰包":"","烹饪材料包":"","垂钓材料包":"","医用材料包":"","草药材料包":"","裁缝材料包":"","矿石材料包":"","珠宝材料包":"","炼金材料包":"","铭文材料包":""},
     racial_traits:[], class_features:[], languages:(function(){var l=(RACE_LANGS[CHAR.raceName]||[]).slice();if(CHAR.raceName==="翼空族"&&CHAR.wingfolkHasCommon!==false)l.push("通用语");return l.concat(CHAR.extraLanguages||[]);})(), professionals:[], talent_tree:[],
     forbidden_skills:[], unlocked_tiers:["一阶","二阶"]
   };

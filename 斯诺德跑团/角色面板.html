@@ -299,6 +299,15 @@ body.battle .btn-battle{background:var(--green)}
 .store-item .si-held{flex:none;font-size:11.5px;color:var(--muted);white-space:nowrap}
 .store-item .si-refund{flex:none;background:#5a5a5a;color:#fff;border:none;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
 .store-item .si-refund:hover{background:#7a7a7a}
+.store-item .si-cat{display:inline-block;font-size:11px;color:#5a7a9a;background:#e8f0f8;border-radius:4px;padding:1px 6px;margin-right:8px}
+.store-group{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.store-group-head{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--panel);cursor:pointer;font-size:13px;font-weight:bold;color:var(--ink);user-select:none}
+.store-group-head:hover{background:var(--line)}
+.store-group-head .sg-count{font-size:11px;color:var(--muted);font-weight:normal}
+.store-group-head .sg-arrow{margin-left:auto;font-size:11px;color:var(--muted);transition:transform .15s}
+.store-group.collapsed .sg-arrow{transform:rotate(-90deg)}
+.store-group.collapsed .store-group-body{display:none}
+.store-group-body{display:flex;flex-direction:column;gap:6px;padding:8px}
 .cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cf-grid label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
 .cf-grid input,.cf-grid select{font-family:inherit;padding:5px 7px;border:1px solid var(--line);border-radius:5px;font-size:12.5px;background:var(--bg);color:var(--ink)}
@@ -1006,6 +1015,7 @@ body.battle .fab{display:none}
         <b id="itCount" style="font-size:15px;min-width:28px;text-align:center">1</b>
         <button class="ok" id="itInc" style="padding:4px 12px">＋</button>
         <span style="flex:1"></span>
+        <button class="cancel" id="itMoveBtn" onclick="moveFromDetail()" style="padding:6px 14px;background:#4a6a8a;color:#fff;border:none;border-radius:6px;cursor:pointer">移动</button>
         <button class="cancel" id="itRemoveBtn" style="padding:6px 14px;background:#a04030;color:#fff;border:none;border-radius:6px;cursor:pointer">移除</button>
       </div>
     </div>
@@ -1029,7 +1039,7 @@ body.battle .fab{display:none}
     <div class="pop-head"><h3>🏪 斯诺德商店 <span id="storeGold" style="font-size:12.5px;color:var(--muted);font-weight:normal;margin-left:8px"></span></h3><button class="close" onclick="closeOverlay('storeOverlay')">✕</button></div>
     <div class="pop-body">
       <div id="storeCats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
-      <input id="storeSearch" type="text" placeholder="搜索物品..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="renderStore()">
+      <input id="storeSearch" type="text" placeholder="搜索物品..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="STORE_Q=this.value;renderStore()">
       <div id="storeList" style="max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
     </div>
   </div>
@@ -1040,8 +1050,23 @@ body.battle .fab{display:none}
   <div class="pop" style="max-width:560px">
     <div class="pop-head"><h3>➕ 自定义物品 <span style="font-size:12px;color:var(--muted);font-weight:normal">（删除不返还金币）</span></h3><button class="close" onclick="closeOverlay('customOverlay')">✕</button></div>
     <div class="pop-body">
-      <button class="ok" onclick="openCustomForm()" style="margin-bottom:10px;width:100%;padding:8px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:13px">＋ 新建自定义物品</button>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="ok" onclick="openCustomForm()" style="flex:1;padding:8px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:13px">＋ 新建自定义物品</button>
+        <button class="ok" onclick="openStorePick()" style="flex:1;padding:8px;border:none;border-radius:6px;background:#4a6a8a;color:#fff;cursor:pointer;font-size:13px">🏪 从商店添加</button>
+      </div>
       <div id="customList" style="max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 从商店添加（自定义物品来源选择） ===== -->
+<div class="overlay" id="storePickOverlay" onclick="if(event.target===this)closeOverlay('storePickOverlay')">
+  <div class="pop" style="max-width:640px">
+    <div class="pop-head"><h3>从商店选择物品</h3><button class="close" onclick="closeOverlay('storePickOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div id="spCats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
+      <input id="spSearch" type="text" placeholder="搜索物品..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="STORE_PICK_Q=this.value;renderStorePick()">
+      <div id="spList" style="max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
     </div>
   </div>
 </div>
@@ -1049,7 +1074,7 @@ body.battle .fab{display:none}
 <!-- ===== 自定义物品表单弹层 ===== -->
 <div class="overlay" id="customFormOverlay" onclick="if(event.target===this)closeOverlay('customFormOverlay')">
   <div class="pop" style="max-width:640px">
-    <div class="pop-head"><h3>新建自定义物品</h3><button class="close" onclick="closeOverlay('customFormOverlay')">✕</button></div>
+    <div class="pop-head"><h3 id="cfFormTitle">新建自定义物品</h3><button class="close" onclick="closeOverlay('customFormOverlay')">✕</button></div>
     <div class="pop-body">
       <div class="cf-grid">
         <label>名称 *<input id="cfName" type="text" placeholder="物品名称"></label>
@@ -1064,7 +1089,7 @@ body.battle .fab{display:none}
         <label>载重<input id="cfWeight" type="text" placeholder="如 0.5磅"></label>
         <label>堆叠上限<select id="cfStack"><option value="1">1（不可堆叠）</option><option value="5" selected>5（材料）</option><option value="20">20（弹药）</option></select></label>
         <label>槽位<select id="cfSlot">
-          <option>杂物包</option><option>主手武器</option><option>副手武器</option><option>防具</option><option>配饰</option><option>背包</option><option>旅行腰包</option><option>材料包A</option><option>材料包B</option>
+          <option>杂物包</option><option>主手武器</option><option>副手武器</option><option>防具</option><option>配饰</option><option>背包</option><option>旅行腰包</option><option>烹饪材料包</option><option>垂钓材料包</option><option>医用材料包</option><option>草药材料包</option><option>裁缝材料包</option><option>矿石材料包</option><option>珠宝材料包</option><option>炼金材料包</option><option>铭文材料包</option>
         </select></label>
         <label>武器伤害骰<input id="cfWeapon" type="text" placeholder="如 1D6点穿刺·力量武器"></label>
         <label>防具 AC<input id="cfAc" type="number" min="0" placeholder="0"></label>
@@ -1072,6 +1097,7 @@ body.battle .fab{display:none}
         <label>盾牌加成<input id="cfShield" type="number" min="0" placeholder="0"></label>
         <label>容器类型<select id="cfContainer"><option value="">—</option><option>烹饪材料包</option><option>垂钓材料包</option><option>医用材料包</option><option>草药材料包</option><option>裁缝材料包</option></select></label>
       </div>
+      <label style="margin-top:8px">效果<textarea id="cfEffect" rows="2" style="width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;font-family:inherit" placeholder="物品效果：如 命中+1、造成 1D6 点火焰伤害…"></textarea></label>
       <label style="margin-top:8px">描述<textarea id="cfDesc" rows="2" style="width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;font-family:inherit"></textarea></label>
       <div style="margin-top:8px;font-size:12.5px;color:var(--muted)">标签（驱动堆叠/槽位/容器规则）：</div>
       <div id="cfTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
@@ -1486,7 +1512,7 @@ function renderBg() {
 
 /* ================= 装备（真实） ================= */
 var EQUIP = T ? JSON.parse(JSON.stringify(T.equipment)) : {};
-var EQUIP_ORDER = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包', '材料包A', '材料包B'];
+var EQUIP_ORDER = ['主手武器', '副手武器', '防具', '配饰', '背包', '杂物包', '旅行腰包'].concat(typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS : []);
 function renderEquip() {
   var grid = document.getElementById('equipGrid');
   var html = '';
@@ -1494,12 +1520,9 @@ function renderEquip() {
     var slot = EQUIP_ORDER[si];
     var items = EQUIP[slot] || [];
     var filled = items.filter(function(x){ return x; }).length;
-    var locked = slot === '材料包B' && !(typeof state !== 'undefined' && state.containerItems && state.containerItems['材料包B']);
+    var isBag = typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0;
+    var locked = isBag && !(typeof state !== 'undefined' && state.containerItems && state.containerItems[slot]);
     var title = slot;
-    if (typeof state !== 'undefined' && state.containerItems && (slot === '材料包A' || slot === '材料包B')) {
-      var _bt = state.containerItems[slot];
-      if (_bt) title = slot + '（' + _bt + '）';
-    }
     title = title + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
     html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span>' +
       (locked ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
@@ -1508,11 +1531,11 @@ function renderEquip() {
       if (it) {
         var sel = S.selEquip && S.selEquip.slot === slot && S.selEquip.idx === i ? ' selected' : '';
         var cnt = it.cnt > 1 ? ' <span class="cnt">×' + it.cnt + '</span>' : '';
-        html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)" ondblclick="showItemDetail(\'' + slot + '\',' + i + ')" title="单击移动 · 双击详情">' +
+        html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" draggable="true" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)" ondragstart="eqDragStart(event,this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)" ondragend="eqDragEnd()" title="单击详情 · 拖拽移动 · 右键拆分">' +
           '<span>' + it.item + cnt + '</span>' + (it.w ? '<span class="w">' + it.w + '</span>' : '') + '</div>';
       } else {
         var txt = locked ? '未购买' : '空栏位';
-        html += '<div class="eq-empty" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)">' + txt + '</div>';
+        html += '<div class="eq-empty" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)">' + txt + '</div>';
       }
     }
     html += '</div></div>';
@@ -1523,6 +1546,7 @@ function eqClick(el) {
   var slot = el.getAttribute('data-slot');
   var idx = parseInt(el.getAttribute('data-idx'), 10);
   if (S.selEquip) {
+    // 移动模式（详情弹层「移动」按钮进入）：点击目标槽位完成移动
     if (S.selEquip.slot === slot && S.selEquip.idx === idx) {
       S.selEquip = null;
       renderEquip();
@@ -1531,15 +1555,37 @@ function eqClick(el) {
     moveEquip(S.selEquip.slot, S.selEquip.idx, slot, idx);
     S.selEquip = null;
     renderEquip();
+    SB_syncEquipToState();
+    state._dirty = true;
     return;
   }
-  var it = EQUIP[slot][idx];
-  if (it) {
-    S.selEquip = { slot: slot, idx: idx };
-    renderEquip();
-    toast('已选中 ' + it.item + '，点击目标槽位移动');
-  }
+  // 默认：单击查看物品详情表格
+  var it = EQUIP[slot] && EQUIP[slot][idx];
+  if (it) showItemDetail(slot, idx);
 }
+/* 拖拽移动（v1.0.7227）：拖动物品到目标槽位 */
+var EQ_DRAG = null;
+function eqDragStart(ev, el) {
+  var it = EQUIP[el.getAttribute('data-slot')] && EQUIP[el.getAttribute('data-slot')][parseInt(el.getAttribute('data-idx'), 10)];
+  if (!it) { ev.preventDefault(); return; }
+  EQ_DRAG = { slot: el.getAttribute('data-slot'), idx: parseInt(el.getAttribute('data-idx'), 10) };
+  ev.dataTransfer.effectAllowed = 'move';
+  ev.dataTransfer.setData('text/plain', EQ_DRAG.slot + ':' + EQ_DRAG.idx);
+}
+function eqDragOver(ev) { ev.preventDefault(); ev.dataTransfer.dropEffect = 'move'; }
+function eqDrop(ev, el) {
+  ev.preventDefault();
+  if (!EQ_DRAG) return;
+  var toSlot = el.getAttribute('data-slot');
+  var toIdx = parseInt(el.getAttribute('data-idx'), 10);
+  if (EQ_DRAG.slot === toSlot && EQ_DRAG.idx === toIdx) { EQ_DRAG = null; return; }
+  moveEquip(EQ_DRAG.slot, EQ_DRAG.idx, toSlot, toIdx);
+  EQ_DRAG = null;
+  renderEquip();
+  SB_syncEquipToState();
+  state._dirty = true;
+}
+function eqDragEnd() { EQ_DRAG = null; }
 function eqCtx(ev, el) {
   ev.preventDefault();
   var slot = el.getAttribute('data-slot');
@@ -1560,6 +1606,7 @@ function itemMeta(name) {
     m.price = customPriceText(cust) || '';
     m.weight = cust.weight || '';
     m.desc = cust.desc || '';
+    m.effect = cust.effect || '';
     m.quality = cust.quality || '';
     m.tags = (cust.tags || []).slice();
     m.stackLimit = cust.stackLimit || 1;
@@ -1578,6 +1625,15 @@ function itemMeta(name) {
     if (t && t.length) m.tags = t.slice();
   }
   if (typeof getStackLimit === 'function') m.stackLimit = getStackLimit(name);
+  if (!m.cat && typeof STORE_DATA !== 'undefined') {
+    for (var _ck in STORE_DATA) {
+      var _arr = STORE_DATA[_ck] || [];
+      for (var _ci = 0; _ci < _arr.length; _ci++) {
+        if (_arr[_ci].name === name && _arr[_ci].cat) { m.cat = _arr[_ci].cat; break; }
+      }
+      if (m.cat) break;
+    }
+  }
   return m;
 }
 function showItemDetail(slot, idx) {
@@ -1588,6 +1644,7 @@ function showItemDetail(slot, idx) {
   document.getElementById('itName').innerHTML = escHtml(name) + (meta.quality ? ' <span class="it-q">' + escHtml(meta.quality) + '</span>' : '');
   var rows = [];
   rows.push(['所属槽位', slot + (idx + 1)]);
+  if (meta.cat) rows.push(['小类', escHtml(meta.cat)]);
   if (meta.price) rows.push(['价格', escHtml(meta.price)]);
   if (meta.weight) rows.push(['载重', escHtml(meta.weight)]);
   rows.push(['持有数量', it.cnt]);
@@ -1600,6 +1657,7 @@ function showItemDetail(slot, idx) {
     if (cust.shieldBonus) rows.push(['盾牌加成', '+' + cust.shieldBonus]);
     if (cust.containerType) rows.push(['容器', escHtml(cust.containerType)]);
   }
+  if (meta.effect) rows.push(['效果', escHtml(meta.effect)]);
   if (meta.desc) rows.push(['描述', escHtml(meta.desc)]);
   var html = '<table class="skill-detail-table">';
   for (var i = 0; i < rows.length; i++) html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
@@ -1608,9 +1666,17 @@ function showItemDetail(slot, idx) {
   document.getElementById('itCount').textContent = it.cnt;
   var rm = document.getElementById('itRemoveBtn');
   if (rm) { rm.style.display = 'inline-block'; rm.setAttribute('onclick', "removeItem('" + slot + "'," + idx + ")"); }
+  var mv = document.getElementById('itMoveBtn');
+  if (mv) mv.setAttribute('onclick', "startMoveFromDetail('" + slot + "'," + idx + ")");
   document.getElementById('itInc').setAttribute('onclick', "adjItemCnt('" + slot + "'," + idx + ",1)");
   document.getElementById('itDec').setAttribute('onclick', "adjItemCnt('" + slot + "'," + idx + ",-1)");
   document.getElementById('itemOverlay').classList.add('show');
+}
+function startMoveFromDetail(slot, idx) {
+  closeOverlay('itemOverlay');
+  S.selEquip = { slot: slot, idx: idx };
+  renderEquip();
+  toast('已进入移动模式，点击目标槽位完成移动');
 }
 function adjItemCnt(slot, idx, d) {
   var arr = EQUIP[slot];
@@ -1760,6 +1826,67 @@ function customPriceText(c) {
   if (c.priceC) parts.push(c.priceC + '铜币');
   return parts.join('') || '';
 }
+/* ===== 从商店添加（自定义物品来源） ===== */
+var STORE_PICK_CAT = '杂物';
+var STORE_PICK_Q = '';
+function openStorePick() {
+  if (typeof STORE_DATA === 'undefined') { toast('商店数据未加载', 'warn'); return; }
+  STORE_PICK_CAT = Object.keys(STORE_DATA)[0] || '杂物';
+  STORE_PICK_Q = '';
+  renderStorePick();
+  document.getElementById('storePickOverlay').classList.add('show');
+}
+function renderStorePick() {
+  if (typeof STORE_DATA === 'undefined') return;
+  var cats = document.getElementById('spCats');
+  var ch = '';
+  var keys = Object.keys(STORE_DATA);
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    ch += '<button class="store-cat' + (k === STORE_PICK_CAT ? ' on' : '') + '" onclick="STORE_PICK_CAT=\'' + k + '\';renderStorePick()">' + k + '</button>';
+  }
+  cats.innerHTML = ch;
+  var q = STORE_PICK_Q.toLowerCase();
+  var items = STORE_DATA[STORE_PICK_CAT] || [];
+  var list = document.getElementById('spList');
+  var html = '';
+  var shown = 0;
+  for (var i2 = 0; i2 < items.length; i2++) {
+    var it = items[i2];
+    if (q && it.name.toLowerCase().indexOf(q) < 0) continue;
+    html += '<div class="pk-item" onclick="storePickSelect(\'' + it.name.replace(/'/g, '\\u0027') + '\')">' +
+      '<span class="pk-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + '</span>' +
+      (it.price ? '<span class="pk-price">' + escHtml(it.price) + '</span>' : '') +
+      (it.weight ? '<span class="pk-w">' + escHtml(it.weight) + '</span>' : '') + '</div>';
+    shown++;
+  }
+  if (!shown) html = '<div class="pk-empty">（无匹配物品）</div>';
+  list.innerHTML = html;
+}
+function storePickSelect(name) {
+  var it = null;
+  for (var _ck in STORE_DATA) {
+    var _arr = STORE_DATA[_ck] || [];
+    for (var _ci = 0; _ci < _arr.length; _ci++) if (_arr[_ci].name === name) { it = _arr[_ci]; break; }
+    if (it) break;
+  }
+  if (!it) return;
+  if (customItemByName(name)) { toast('已有同名自定义物品，请先改名再添加', 'warn'); return; }
+  var c = parseCopper(it.price);
+  var seed = {
+    name: it.name,
+    cat: it.cat || '',
+    quality: it.quality || '',
+    weight: it.weight || '',
+    desc: it.desc || '',
+    tags: (typeof itemBagHints === 'function') ? itemBagHints(it.name) : [],
+    priceG: Math.floor(c / 100),
+    priceS: Math.floor((c % 100) / 10),
+    priceC: c % 10
+  };
+  closeOverlay('storePickOverlay');
+  openCustomForm(seed);
+}
 function openCustomManager() {
   renderCustomList();
   document.getElementById('customOverlay').classList.add('show');
@@ -1778,15 +1905,16 @@ function renderCustomList() {
   if (!arr.length) html = '<div class="pk-empty">暂无自定义物品</div>';
   list.innerHTML = html;
 }
-function openCustomForm() {
-  document.getElementById('cfName').value = '';
-  document.getElementById('cfCat').value = '杂物';
-  document.getElementById('cfQuality').value = '';
-  document.getElementById('cfG').value = '';
-  document.getElementById('cfS').value = '';
-  document.getElementById('cfC').value = '';
-  document.getElementById('cfWeight').value = '';
-  document.getElementById('cfDesc').value = '';
+function openCustomForm(seed) {
+  document.getElementById('cfName').value = (seed && seed.name) ? seed.name : '';
+  document.getElementById('cfCat').value = (seed && seed.cat) ? seed.cat : '杂物';
+  document.getElementById('cfQuality').value = (seed && seed.quality) ? seed.quality : '';
+  document.getElementById('cfG').value = (seed && seed.priceG) ? seed.priceG : '';
+  document.getElementById('cfS').value = (seed && seed.priceS) ? seed.priceS : '';
+  document.getElementById('cfC').value = (seed && seed.priceC) ? seed.priceC : '';
+  document.getElementById('cfWeight').value = (seed && seed.weight) ? seed.weight : '';
+  document.getElementById('cfDesc').value = (seed && seed.desc) ? seed.desc : '';
+  document.getElementById('cfEffect').value = (seed && seed.effect) ? seed.effect : '';
   document.getElementById('cfStack').value = '5';
   document.getElementById('cfSlot').value = '杂物包';
   document.getElementById('cfWeapon').value = '';
@@ -1795,6 +1923,12 @@ function openCustomForm() {
   document.getElementById('cfShield').value = '';
   document.getElementById('cfContainer').value = '';
   refreshCustomTags();
+  if (seed && seed.tags && seed.tags.length) {
+    var checks = document.querySelectorAll('#cfTags input');
+    for (var i = 0; i < checks.length; i++) checks[i].checked = seed.tags.indexOf(checks[i].value) >= 0;
+  }
+  var t = document.getElementById('cfFormTitle');
+  if (t) t.textContent = seed ? '编辑自定义物品' : '新建自定义物品';
   document.getElementById('customFormOverlay').classList.add('show');
 }
 function refreshCustomTags() {
@@ -1824,6 +1958,7 @@ function saveCustomItem() {
     priceS: parseInt(document.getElementById('cfS').value, 10) || 0,
     priceC: parseInt(document.getElementById('cfC').value, 10) || 0,
     weight: document.getElementById('cfWeight').value.trim(),
+    effect: document.getElementById('cfEffect').value.trim(),
     desc: document.getElementById('cfDesc').value.trim(),
     tags: tags,
     stackLimit: parseInt(document.getElementById('cfStack').value, 10) || 1,
@@ -1893,7 +2028,7 @@ function openStore() {
   renderStore();
   document.getElementById('storeOverlay').classList.add('show');
 }
-var CONTAINER_ITEMS = ['背包', '旅行腰包', '烹饪材料包', '垂钓材料包', '医用材料包', '草药材料包', '裁缝材料包'];
+var CONTAINER_ITEMS = ['背包', '旅行腰包'].concat(typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS : []);
 function isContainerItem(name) { return CONTAINER_ITEMS.indexOf(name) >= 0; }
 function itemBagHints(name) {
   var tags = (typeof getItemTags === 'function') ? getItemTags(name).slice() : [];
@@ -1929,6 +2064,30 @@ function storePriceOf(name) {
   }
   return null;
 }
+var STORE_COLLAPSED = {};
+function storeGroupKey(sub) { return STORE_CAT + '\u0001' + sub; }
+function toggleStoreGroup(el) {
+  var key = el.getAttribute('data-gk');
+  if (STORE_COLLAPSED[key]) delete STORE_COLLAPSED[key];
+  else STORE_COLLAPSED[key] = true;
+  var g = el.parentNode;
+  g.classList.toggle('collapsed', !!STORE_COLLAPSED[key]);
+}
+function storeItemCard(it, q) {
+  var price = parseCopper(it.price);
+  var held = countHeldItem(it.name);
+  var containerHeld = isContainerItem(it.name) && state.containerItems && Object.keys(state.containerItems).some(function(k2) {
+    return k2 === it.name && state.containerItems[k2];
+  });
+  var heldShow = isContainerItem(it.name) ? (containerHeld ? '已装备' : '未持有') : ('已持 ×' + held);
+  return '<div class="store-item">' +
+    '<div class="si-main"><span class="si-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
+    '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
+    (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
+    '<span class="si-held">' + heldShow + '</span>' +
+    (held > 0 || containerHeld ? '<button class="si-refund" onclick="refundItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="全额退货">退货</button>' : '') +
+    '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
+}
 function renderStore() {
   if (typeof STORE_DATA === 'undefined') return;
   var gold = document.getElementById('storeGold');
@@ -1941,28 +2100,36 @@ function renderStore() {
     ch += '<button class="store-cat' + (k === STORE_CAT ? ' on' : '') + '" onclick="STORE_CAT=\'' + k + '\';renderStore()">' + k + '</button>';
   }
   cats.innerHTML = ch;
-  var q = STORE_Q.toLowerCase();
+  var q = (STORE_Q || '').toLowerCase();
   var items = STORE_DATA[STORE_CAT] || [];
-  var list = document.getElementById('storeList');
-  var html = '';
-  var shown = 0;
+  // 按小类（cat）分组，保持 xlsx 原顺序
+  var groups = [];
+  var groupIdx = {};
   for (var i2 = 0; i2 < items.length; i2++) {
     var it = items[i2];
     if (q && (it.name.toLowerCase().indexOf(q) < 0 && (it.desc || '').toLowerCase().indexOf(q) < 0)) continue;
-    var price = parseCopper(it.price);
-    var held = countHeldItem(it.name);
-    var containerHeld = isContainerItem(it.name) && state.containerItems && Object.keys(state.containerItems).some(function(k2) {
-      return (k2 === it.name) || (it.name.indexOf('材料包') >= 0 && state.containerItems[k2] === it.name);
-    });
-    var heldShow = isContainerItem(it.name) ? (containerHeld ? '已装备' : '未持有') : ('已持 ×' + held);
-    html += '<div class="store-item">' +
-      '<div class="si-main"><span class="si-name">' + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
-      '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
-      (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
-      '<span class="si-held">' + heldShow + '</span>' +
-      (held > 0 || containerHeld ? '<button class="si-refund" onclick="refundItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="全额退货">退货</button>' : '') +
-      '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
-    shown++;
+    var sub = it.cat || '其他';
+    if (!(sub in groupIdx)) {
+      groupIdx[sub] = groups.length;
+      groups.push({ sub: sub, items: [] });
+    }
+    groups[groupIdx[sub]].items.push(it);
+  }
+  var list = document.getElementById('storeList');
+  var html = '';
+  var shown = 0;
+  for (var gi = 0; gi < groups.length; gi++) {
+    var g = groups[gi];
+    if (!g.items.length) continue;
+    shown += g.items.length;
+    var gk = storeGroupKey(g.sub);
+    var collapsed = !!STORE_COLLAPSED[gk];
+    html += '<div class="store-group' + (collapsed ? ' collapsed' : '') + '">' +
+      '<div class="store-group-head" data-gk="' + gk + '" onclick="toggleStoreGroup(this)">' + escHtml(g.sub) +
+      ' <span class="sg-count">' + g.items.length + ' 件</span><span class="sg-arrow">▾</span></div>' +
+      '<div class="store-group-body">';
+    for (var ii = 0; ii < g.items.length; ii++) html += storeItemCard(g.items[ii], q);
+    html += '</div></div>';
   }
   if (!shown) html = '<div class="pk-empty">（无匹配物品）</div>';
   list.innerHTML = html;
@@ -2026,11 +2193,9 @@ function unlockContainerByBuy(name) {
     state.containerItems['旅行腰包'] = '已解锁';
     return { ok: true, msg: '旅行腰包已解锁' };
   }
-  if (name.indexOf('材料包') >= 0) {
-    var slot = state.containerItems['材料包A'] ? '材料包B' : '材料包A';
-    if (state.containerItems[slot]) return { ok: false, msg: '材料包位已满，无法购买' };
-    state.containerItems[slot] = name;
-    return { ok: true, msg: '材料包A/B 已装备「' + name + '」' };
+  if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(name) >= 0) {
+    state.containerItems[name] = '已解锁';
+    return { ok: true, msg: '「' + name + '」已装备' };
   }
   return { ok: false, msg: '无法解锁该容器' };
 }
@@ -2049,10 +2214,9 @@ function refundItem(name) {
     var freed = false;
     if (name === '背包') { state.containerItems['背包'] = ''; freed = true; }
     if (name === '旅行腰包') { state.containerItems['旅行腰包'] = ''; freed = true; }
-    if (name.indexOf('材料包') >= 0) {
-      for (var k in state.containerItems) {
-        if (state.containerItems[k] === name) { state.containerItems[k] = ''; freed = true; }
-      }
+    if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(name) >= 0) {
+      state.containerItems[name] = '';
+      freed = true;
     }
     if (freed) {
       deductCopper(-price);
@@ -2091,18 +2255,16 @@ function pickSlotForItem(name) {
   if (has('武器')) return '主手武器';
   if (has('防具') || has('盾牌')) return '防具';
   if (has('配饰')) return '配饰';
-  if (has('材料') || has('草药') || has('食材')) {
-    var mp = ['材料包A', '材料包B'];
-    for (var i = 0; i < mp.length; i++) {
-      var bt = (state.containerItems && state.containerItems[mp[i]]) || '';
-      if (bt && typeof canPlaceInSlot === 'function' && canPlaceInSlot(itemBagHints(name), '材料包', name, bt)) return mp[i];
-    }
-    return '杂物包';
+  // 任意物品都尝试放入已解锁的匹配材料包（独立槽位语义：食品→烹饪/水产→垂钓/医用→医用/草药→草药/缝纫→裁缝/矿产→矿石/宝石→珠宝/材料→炼金/卷轴→铭文）
+  var bags = (typeof BAG_SLOTS !== 'undefined') ? BAG_SLOTS : [];
+  for (var i = 0; i < bags.length; i++) {
+    var bt = (state.containerItems && state.containerItems[bags[i]]) || '';
+    if (bt && typeof canPlaceInSlot === 'function' && canPlaceInSlot(itemBagHints(name), bags[i], name, bags[i])) return bags[i];
   }
   return '杂物包';
 }
 function findAnyFreeSlot(slot) {
-  var order = ['主手武器', '副手武器', '防具', '配饰', '背包', '旅行腰包', '材料包A', '材料包B', '杂物包'];
+  var order = ['主手武器', '副手武器', '防具', '配饰', '背包', '旅行腰包'].concat(typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS : []).concat(['杂物包']);
   for (var i = 0; i < order.length; i++) {
     if (order[i] === slot) continue;
     var arr = EQUIP[order[i]] || [];
@@ -2131,10 +2293,10 @@ function moveEquip(fromSlot, fromIdx, toSlot, toIdx) {
   if (fromSlot === toSlot && fromIdx === toIdx) return;
   var it = EQUIP[fromSlot] && EQUIP[fromSlot][fromIdx];
   if (!it) return;
-  if (toSlot.indexOf('材料包') === 0) {
-    var bagType = (state.containerItems && state.containerItems[toSlot]) || '';
+  if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(toSlot) >= 0) {
+    var bagType = (state.containerItems && state.containerItems[toSlot]) ? toSlot : '';
     var tags = itemBagHints(it.item);
-    if (bagType && typeof canPlaceInSlot === 'function' && !canPlaceInSlot(tags, '材料包', it.item, bagType)) {
+    if (bagType && typeof canPlaceInSlot === 'function' && !canPlaceInSlot(tags, toSlot, it.item, toSlot)) {
       toast('「' + it.item + '」不能放入该材料包（仅限对应属性材料）', 'warn');
       return;
     }
@@ -3420,6 +3582,7 @@ function SB_buildS(st) {
 }
 function SB_reinit() {
   var wasBattle = (typeof S !== 'undefined') ? S.battle : false;
+  if (typeof migrateContainerState === 'function') migrateContainerState();
   TEST_DATA = SB_buildTestData(state);
   T = TEST_DATA;
   ATTR_VALS = T ? T.attrs : ATTR_VALS;
@@ -3428,7 +3591,9 @@ function SB_reinit() {
   SKILLS = { main: T ? buildSkills(T.skillsMain, false) : [], sub: T ? buildSkills(T.skillsSub, true) : [] };
   FEATS = T ? T.feats : [];
   EQUIP = {};
-  var SB_EQUIP_CAPS = { '主手武器': 3, '副手武器': 4, '防具': 2, '配饰': 4, '背包': 10, '杂物包': 10, '旅行腰包': 5, '材料包A': 10, '材料包B': 10 };
+  var SB_EQUIP_CAPS = { '主手武器': 3, '副手武器': 4, '防具': 2, '配饰': 4, '背包': 10, '杂物包': 10, '旅行腰包': 5 };
+  var _bagCaps = (typeof BAG_SLOTS !== 'undefined') ? BAG_SLOTS : [];
+  for (var _bc = 0; _bc < _bagCaps.length; _bc++) SB_EQUIP_CAPS[_bagCaps[_bc]] = 10;
   function SB_normItems(arr) {
     var out = [];
     for (var ni = 0; ni < arr.length; ni++) {
@@ -3447,8 +3612,14 @@ function SB_reinit() {
     }
   }
   var SB_matPack = (T && T.equipment && T.equipment['材料包']) || [];
-  EQUIP['材料包A'] = SB_normItems((SB_matPack[0] && SB_matPack[0].items) || []);
-  EQUIP['材料包B'] = SB_normItems((SB_matPack[1] && SB_matPack[1].items) || []);
+  var _bs = (typeof BAG_SLOTS !== 'undefined') ? BAG_SLOTS : [];
+  for (var _bi = 0; _bi < _bs.length; _bi++) {
+    var _pk = null;
+    for (var _pj = 0; _pj < SB_matPack.length; _pj++) {
+      if (SB_matPack[_pj] && SB_matPack[_pj].type === _bs[_bi]) { _pk = SB_matPack[_pj]; break; }
+    }
+    EQUIP[_bs[_bi]] = SB_normItems((_pk && _pk.items) || []);
+  }
   for (var capK in SB_EQUIP_CAPS) {
     var capArr = EQUIP[capK] || (EQUIP[capK] = []);
     while (capArr.length < SB_EQUIP_CAPS[capK]) capArr.push(null);
@@ -3600,10 +3771,12 @@ function SB_syncEquipToState() {
     }
     state.equipment[es].length = arr.length;
   }
-  if (!state.equipment['材料包']) state.equipment['材料包'] = [{ type: '', items: [] }, { type: '', items: [] }];
-  for (var pi = 0; pi < 2; pi++) {
-    var pack = state.equipment['材料包'][pi] || (state.equipment['材料包'][pi] = { type: '', items: [] });
-    var arr2 = EQUIP[pi === 0 ? '材料包A' : '材料包B'] || [];
+  var _bags = (typeof BAG_SLOTS !== 'undefined') ? BAG_SLOTS : [];
+  if (!state.equipment['材料包']) state.equipment['材料包'] = [];
+  for (var pi = 0; pi < _bags.length; pi++) {
+    var pack = state.equipment['材料包'][pi] || (state.equipment['材料包'][pi] = { type: _bags[pi], items: [] });
+    pack.type = _bags[pi];
+    var arr2 = EQUIP[_bags[pi]] || [];
     if (!pack.items) pack.items = [];
     for (var j = 0; j < arr2.length; j++) {
       var y = arr2[j];
@@ -3613,6 +3786,7 @@ function SB_syncEquipToState() {
     }
     pack.items.length = arr2.length;
   }
+  state.equipment['材料包'].length = _bags.length;
 }
 var SB_origMoveEquip = moveEquip;
 moveEquip = function(fromSlot, fromIdx, toSlot, toIdx) {

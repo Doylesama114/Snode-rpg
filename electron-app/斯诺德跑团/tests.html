@@ -1353,6 +1353,46 @@ results.push('<div class="section"><h3>T5j: 猎人守护学习联动（学其一
   guardLinkTalent('灵狐守护', '猎人', false, false);
   assertTrue(state.talent_tree.some(function (t) { return t.n === '灵狐守护·天赋'; }), '灵狐守护联动');
 })();
+// =================== 商店引擎测试（v1.0.7227） ===================
+(function () {
+  results.push('<div class="section"><h3>商店引擎：材料包独立槽位</h3>');
+  // 解锁全部材料包槽位（canPlaceInSlot 受 isSlotLocked 约束）
+  if (!state.containerItems) state.containerItems = {};
+  for (var _bi = 0; _bi < BAG_SLOTS.length; _bi++) state.containerItems[BAG_SLOTS[_bi]] = '已解锁';
+  // BAG_SLOTS 9 种
+  assert((typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS.length : 0), 9, 'BAG_SLOTS 定义 9 种材料包');
+  // canPlaceInSlot：具名槽位 + 各类材料
+  assertTrue(canPlaceInSlot(['食品'], '烹饪材料包', '面粉', '烹饪材料包'), '烹饪材料包收食品');
+  assertFalse(canPlaceInSlot(['水产'], '烹饪材料包', '虾肉', '烹饪材料包'), '烹饪材料包不收水产');
+  assertTrue(canPlaceInSlot(['水产'], '垂钓材料包', '虾肉', '垂钓材料包'), '垂钓材料包收水产');
+  assertTrue(canPlaceInSlot(['医用'], '医用材料包', '绷带', '医用材料包'), '医用材料包收医用');
+  assertTrue(canPlaceInSlot(['草药'], '草药材料包', '银叶草', '草药材料包'), '草药材料包收草药');
+  assertTrue(canPlaceInSlot(['缝纫'], '裁缝材料包', '毛线团', '裁缝材料包'), '裁缝材料包收缝纫（修复）');
+  assertTrue(canPlaceInSlot(['矿产'], '矿石材料包', '铜锭', '矿石材料包'), '矿石材料包收矿产');
+  assertTrue(canPlaceInSlot(['宝石'], '珠宝材料包', '红宝石', '珠宝材料包'), '珠宝材料包收宝石');
+  assertTrue(canPlaceInSlot(['材料', '魔法材料'], '炼金材料包', '魔法尘', '炼金材料包'), '炼金材料包收魔法材料');
+  assertTrue(canPlaceInSlot([], '铭文材料包', '空白的魔法卷轴', '铭文材料包'), '铭文材料包收空白卷轴');
+  assertFalse(canPlaceInSlot(['食品'], '草药材料包', '面粉', '草药材料包'), '草药材料包不收食品');
+  // 旧格式迁移
+  var _savedState = state;
+  state = {
+    containerItems: { '背包': '已解锁', '旅行腰包': '已解锁', '材料包A': '烹饪材料包', '材料包B': '草药材料包' },
+    equipment: { '材料包': [
+      { type: '烹饪材料包', items: [{ item: '面粉', count: 2, w: '' }] },
+      { type: '草药材料包', items: [] }
+    ] }
+  };
+  migrateContainerState();
+  assert(state.containerItems['烹饪材料包'], '已解锁', '迁移：材料包A → 烹饪材料包已解锁');
+  assert(state.containerItems['草药材料包'], '已解锁', '迁移：材料包B → 草药材料包已解锁');
+  assertFalse('材料包A' in state.containerItems || '材料包B' in state.containerItems, '迁移：旧键已删除');
+  assert(state.equipment['材料包'].length, 9, '迁移：材料包数组 9 元素');
+  assert(state.equipment['材料包'][0].items.length, 1, '迁移：烹饪材料包物品保留');
+  assert(state.equipment['材料包'][8].type, '铭文材料包', '迁移：末位为铭文材料包');
+  state = _savedState;
+  results.push('</div>');
+})();
+
 results.push('</div>');
 
 // =================== Render Summary ===================

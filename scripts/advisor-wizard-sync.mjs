@@ -284,7 +284,7 @@ export function exportWizardToPanel(wizardState, store = loadAdvisorStore(), opt
       粉色: false, 绿色: false, 浅色: false, 炫彩: false,
     },
     equipment: buildEquipmentFromKit(kit, store),
-    containerItems: { 背包: '', 旅行腰包: '', 材料包A: '', 材料包B: '' },
+    containerItems: { 背包: '', 旅行腰包: '', 烹饪材料包: '', 垂钓材料包: '', 医用材料包: '', 草药材料包: '', 裁缝材料包: '', 矿石材料包: '', 珠宝材料包: '', 炼金材料包: '', 铭文材料包: '' },
     currency: { 金币: totalGold, 银币: 0, 铜币: 0, 其他: '' },
     languages: extractLanguagesFromWizard(sel, store),
     professionals: [],
