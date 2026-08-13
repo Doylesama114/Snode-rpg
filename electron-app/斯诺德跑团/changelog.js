@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7234',
+    date: '2026-08-13',
+    changes: [
+      '修复：点击兼职报 showSubclassModal is not defined——engine 顶层 render() 在 script 执行时（DOM 未完整）抛错会中断后续定义（兼职弹窗/选择函数全部丢失）；顶层 render 包 try/catch，渲染异常不再阻断函数定义（DOM 就绪后 load 事件会重新渲染）'
+    ]
+  },
+
+
+  {
     version: '1.0.7233',
     date: '2026-08-13',
     changes: [

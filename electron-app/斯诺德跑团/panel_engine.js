@@ -7549,8 +7549,14 @@ function checkSubclassReq(mainClassName, targetClass, attrs, profs) {
 }
 
 // First try to load saved character, then render
-if (!initFromURL()) {
-  render();
+// 注意：此处在 <script> 执行时运行，DOM 尚未完整；render 抛错绝不能中断后续定义
+// （window.showSubclassModal / selectSubclass 等依赖本文件末尾的顶层执行）
+try {
+  if (!initFromURL()) {
+    render();
+  }
+} catch (e) {
+  if (window.console) console.error('initial render failed (retried on load):', e);
 }
 
 // Add save button to the page
