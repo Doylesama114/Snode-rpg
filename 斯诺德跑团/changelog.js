@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7233',
+    date: '2026-08-13',
+    changes: [
+      '修复：兼职按钮点击无反馈——engine 兼职弹窗/选择路径的 alert 在 Electron（contextIsolation）下不可见，改为 toast 提示（等级不足/条件不满足时现在有明确提示）'
+    ]
+  },
+
+
+  {
     version: '1.0.7232',
     date: '2026-08-13',
     changes: [

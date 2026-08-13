@@ -7606,7 +7606,7 @@ window.showKeyPreferencePicker=function(callback){
 }
 window.showSubclassModal=function(){
   var mc=state.classes[0]; var ml=mc.level;
-  if(ml<7){alert("主职业需达到7级才能选择子职业");return;}
+  if(ml<7){if(window.toast)window.toast("主职业需达到 7 级才能选择子职业（当前 " + ml + " 级）","warn");return;}
   var overlay=document.createElement("div");
   overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
   var box=document.createElement("div");
@@ -7646,9 +7646,9 @@ window.showSubclassModal=function(){
 }
 window.selectSubclass=function(cn){
   var mc=state.classes[0];
-  if(!mc||mc.level<7){alert("主职业需达到7级才能选择子职业");return;}
+  if(!mc||mc.level<7){if(window.toast)window.toast("主职业需达到 7 级才能选择子职业","warn");return;}
   var check=checkSubclassReq(mc.name,cn,state.attrs,state.profs);
-  if(!check.ok){alert("不满足兼职条件："+check.reasons.join("，"));return;}
+  if(!check.ok){if(window.toast)window.toast("不满足兼职条件："+check.reasons.join("，"),"warn");return;}
   var o=document.getElementById("subclassOverlay");if(o)o.remove();
   state.classes[1]={name:cn,level:1,keyAttr:REF_CLASSES[cn]?REF_CLASSES[cn].key_attr||"":"",styles:["","","",""]};
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
