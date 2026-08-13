@@ -299,6 +299,15 @@ body.battle .btn-battle{background:var(--green)}
 .store-item .si-held{flex:none;font-size:11.5px;color:var(--muted);white-space:nowrap}
 .store-item .si-refund{flex:none;background:#5a5a5a;color:#fff;border:none;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
 .store-item .si-refund:hover{background:#7a7a7a}
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cf-grid label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.cf-grid input,.cf-grid select{font-family:inherit;padding:5px 7px;border:1px solid var(--line);border-radius:5px;font-size:12.5px;background:var(--bg);color:var(--ink)}
+.cf-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:3px 8px;cursor:pointer;background:var(--bg)}
+.custom-item{display:flex;align-items:center;gap:10px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.custom-item .ci-main{flex:1;min-width:0}
+.custom-item .ci-name{font-weight:bold;font-size:13.5px}
+.custom-item .ci-meta{font-size:11.5px;color:var(--muted)}
+.custom-item .ci-del{flex:none;background:#a04030;color:#fff;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
 .equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .eq{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
 .eq:hover{border-color:var(--accent)}
@@ -700,6 +709,7 @@ body.battle .fab{display:none}
       <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
       <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
       <button class="btn-ghost" onclick="openStore()">🏪 商店</button>
+      <button class="btn-ghost" onclick="openCustomManager()">➕ 自定义</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
       <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
       <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
@@ -1021,6 +1031,54 @@ body.battle .fab{display:none}
       <div id="storeCats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
       <input id="storeSearch" type="text" placeholder="搜索物品..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="renderStore()">
       <div id="storeList" style="max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 自定义物品管理弹层 ===== -->
+<div class="overlay" id="customOverlay" onclick="if(event.target===this)closeOverlay('customOverlay')">
+  <div class="pop" style="max-width:560px">
+    <div class="pop-head"><h3>➕ 自定义物品 <span style="font-size:12px;color:var(--muted);font-weight:normal">（删除不返还金币）</span></h3><button class="close" onclick="closeOverlay('customOverlay')">✕</button></div>
+    <div class="pop-body">
+      <button class="ok" onclick="openCustomForm()" style="margin-bottom:10px;width:100%;padding:8px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:13px">＋ 新建自定义物品</button>
+      <div id="customList" style="max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 自定义物品表单弹层 ===== -->
+<div class="overlay" id="customFormOverlay" onclick="if(event.target===this)closeOverlay('customFormOverlay')">
+  <div class="pop" style="max-width:640px">
+    <div class="pop-head"><h3>新建自定义物品</h3><button class="close" onclick="closeOverlay('customFormOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div class="cf-grid">
+        <label>名称 *<input id="cfName" type="text" placeholder="物品名称"></label>
+        <label>类别<select id="cfCat">
+          <option>杂物</option><option>武器</option><option>草药</option><option>宝石</option><option>零件</option>
+          <option>常见道具</option><option>卷轴</option><option>生物素材</option><option>魔法道具</option><option>防具</option><option>容器</option><option>自定义</option>
+        </select></label>
+        <label>品质<select id="cfQuality"><option value="">—</option><option>常见</option><option>精良</option><option>稀有</option><option>珍奇</option></select></label>
+        <label>价格 金币<input id="cfG" type="number" min="0" placeholder="0"></label>
+        <label>价格 银币<input id="cfS" type="number" min="0" placeholder="0"></label>
+        <label>价格 铜币<input id="cfC" type="number" min="0" placeholder="0"></label>
+        <label>载重<input id="cfWeight" type="text" placeholder="如 0.5磅"></label>
+        <label>堆叠上限<select id="cfStack"><option value="1">1（不可堆叠）</option><option value="5" selected>5（材料）</option><option value="20">20（弹药）</option></select></label>
+        <label>槽位<select id="cfSlot">
+          <option>杂物包</option><option>主手武器</option><option>副手武器</option><option>防具</option><option>配饰</option><option>背包</option><option>旅行腰包</option><option>材料包A</option><option>材料包B</option>
+        </select></label>
+        <label>武器伤害骰<input id="cfWeapon" type="text" placeholder="如 1D6点穿刺·力量武器"></label>
+        <label>防具 AC<input id="cfAc" type="number" min="0" placeholder="0"></label>
+        <label>敏捷上限<input id="cfDexCap" type="number" min="0" placeholder="0=无限制"></label>
+        <label>盾牌加成<input id="cfShield" type="number" min="0" placeholder="0"></label>
+        <label>容器类型<select id="cfContainer"><option value="">—</option><option>烹饪材料包</option><option>垂钓材料包</option><option>医用材料包</option><option>草药材料包</option><option>裁缝材料包</option></select></label>
+      </div>
+      <label style="margin-top:8px">描述<textarea id="cfDesc" rows="2" style="width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;font-family:inherit"></textarea></label>
+      <div style="margin-top:8px;font-size:12.5px;color:var(--muted)">标签（驱动堆叠/槽位/容器规则）：</div>
+      <div id="cfTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+        <button class="cancel" onclick="closeOverlay('customFormOverlay')" style="padding:8px 18px;border-radius:6px;cursor:pointer">取消</button>
+        <button class="ok" onclick="saveCustomItem()" style="padding:8px 22px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer">保存</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1497,6 +1555,16 @@ function eqCtx(ev, el) {
 /* ================= 装备详情 + 增删（v1.0.7222） ================= */
 function itemMeta(name) {
   var m = { name: name };
+  var cust = customItemByName(name);
+  if (cust) {
+    m.price = customPriceText(cust) || '';
+    m.weight = cust.weight || '';
+    m.desc = cust.desc || '';
+    m.quality = cust.quality || '';
+    m.tags = (cust.tags || []).slice();
+    m.stackLimit = cust.stackLimit || 1;
+    return m;
+  }
   if (typeof ITEM_DATA !== 'undefined' && ITEM_DATA[name]) {
     var d = ITEM_DATA[name];
     m.price = d.price || '';
@@ -1525,6 +1593,13 @@ function showItemDetail(slot, idx) {
   rows.push(['持有数量', it.cnt]);
   if (meta.stackLimit > 1) rows.push(['堆叠', '可堆叠 ×' + meta.stackLimit]);
   if (meta.tags && meta.tags.length) rows.push(['标签', escHtml(meta.tags.join(' · '))]);
+  var cust = customItemByName(name);
+  if (cust) {
+    if (cust.weaponDice) rows.push(['武器', escHtml(cust.weaponDice)]);
+    if (cust.ac) rows.push(['防御等级', cust.ac + (cust.dexCap ? '（敏捷最多+' + cust.dexCap + '）' : '')]);
+    if (cust.shieldBonus) rows.push(['盾牌加成', '+' + cust.shieldBonus]);
+    if (cust.containerType) rows.push(['容器', escHtml(cust.containerType)]);
+  }
   if (meta.desc) rows.push(['描述', escHtml(meta.desc)]);
   var html = '<table class="skill-detail-table">';
   for (var i = 0; i < rows.length; i++) html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
@@ -1541,7 +1616,7 @@ function adjItemCnt(slot, idx, d) {
   var arr = EQUIP[slot];
   var it = arr && arr[idx];
   if (!it) return;
-  var limit = (typeof getStackLimit === 'function') ? getStackLimit(it.item) : 1;
+  var limit = customStackLimit(it.item) || ((typeof getStackLimit === 'function') ? getStackLimit(it.item) : 1);
   var nv = it.cnt + d;
   if (nv <= 0) {
     arr[idx] = null;
@@ -1588,6 +1663,26 @@ function renderEquipPicker() {
   var names = (typeof ITEM_DATA !== 'undefined') ? Object.keys(ITEM_DATA) : [];
   names.sort();
   var shown = 0;
+  var customArr = (state && state.custom_items) ? state.custom_items.slice() : [];
+  for (var ci3 = 0; ci3 < customArr.length; ci3++) {
+    var cm = customArr[ci3];
+    if (q && cm.name.toLowerCase().indexOf(q) < 0) continue;
+    if (cm.slot && cm.slot !== slot) continue;
+    var cTags = cm.tags || [];
+    if (slot.indexOf('材料包') === 0) {
+      var cBag = (state.containerItems && state.containerItems[slot]) || '';
+      if (typeof canPlaceInSlot === 'function' && !canPlaceInSlot(itemBagHints(cm.name), '材料包', cm.name, cBag)) continue;
+    }
+    var alreadyC = false;
+    var arrC = EQUIP[slot] || [];
+    for (var jc = 0; jc < arrC.length; jc++) if (arrC[jc] && arrC[jc].item === cm.name) { alreadyC = true; break; }
+    html += '<div class="pk-item" onclick="pickItem(\'' + cm.name.replace(/'/g, '\\u0027') + '\')"' + (alreadyC ? ' style="opacity:.5"' : '') + '>' +
+      '<span class="pk-name">' + escHtml(cm.name) + ' <span class="it-q" style="background:#d8e8ff">自定义</span></span>' +
+      (customPriceText(cm) ? '<span class="pk-price">' + escHtml(customPriceText(cm)) + '</span>' : '') +
+      (cm.weight ? '<span class="pk-w">' + escHtml(cm.weight) + '</span>' : '') +
+      (alreadyC ? '<span class="pk-have">已有</span>' : '') + '</div>';
+    shown++;
+  }
   for (var i = 0; i < names.length; i++) {
     var nm = names[i];
     if (q && nm.toLowerCase().indexOf(q) < 0) continue;
@@ -1615,7 +1710,7 @@ function pickItem(name) {
   var slot = EQUIP_PICKER_SLOT;
   if (!slot) return;
   var arr = EQUIP[slot] || (EQUIP[slot] = []);
-  var limit = (typeof getStackLimit === 'function') ? getStackLimit(name) : 1;
+  var limit = customStackLimit(name) || ((typeof getStackLimit === 'function') ? getStackLimit(name) : 1);
   for (var i = 0; i < arr.length; i++) {
     var x = arr[i];
     if (x && x.item === name && limit > 1 && x.cnt < limit) {
@@ -1642,7 +1737,119 @@ function pickerSearch(v) {
   EQUIP_PICKER_Q = v || '';
   renderEquipPicker();
 }
-/* ================= 商店（v1.0.7223） ================= */
+/* ================= 自定义物品（v1.0.7225） ================= */
+function customItemByName(name) {
+  if (!state || !state.custom_items) return null;
+  for (var i = 0; i < state.custom_items.length; i++) {
+    if (state.custom_items[i].name === name) return state.custom_items[i];
+  }
+  return null;
+}
+function customStackLimit(name) {
+  var c = customItemByName(name);
+  return c && c.stackLimit ? c.stackLimit : null;
+}
+function customTags(name) {
+  var c = customItemByName(name);
+  return c && c.tags ? c.tags.slice() : null;
+}
+function customPriceText(c) {
+  var parts = [];
+  if (c.priceG) parts.push(c.priceG + '金币');
+  if (c.priceS) parts.push(c.priceS + '银币');
+  if (c.priceC) parts.push(c.priceC + '铜币');
+  return parts.join('') || '';
+}
+function openCustomManager() {
+  renderCustomList();
+  document.getElementById('customOverlay').classList.add('show');
+}
+function renderCustomList() {
+  var list = document.getElementById('customList');
+  var arr = (state && state.custom_items) || [];
+  var html = '';
+  for (var i = 0; i < arr.length; i++) {
+    var c = arr[i];
+    html += '<div class="custom-item">' +
+      '<div class="ci-main"><span class="ci-name">' + escHtml(c.name) + (c.quality ? ' <span class="it-q">' + escHtml(c.quality) + '</span>' : '') + '</span>' +
+      '<span class="ci-meta">' + (c.cat ? escHtml(c.cat) : '') + (customPriceText(c) ? ' · ' + escHtml(customPriceText(c)) : '') + (c.weight ? ' · ' + escHtml(c.weight) : '') + '</span></div>' +
+      '<button class="ci-del" onclick="deleteCustomItem(' + i + ')">删除</button></div>';
+  }
+  if (!arr.length) html = '<div class="pk-empty">暂无自定义物品</div>';
+  list.innerHTML = html;
+}
+function openCustomForm() {
+  document.getElementById('cfName').value = '';
+  document.getElementById('cfCat').value = '杂物';
+  document.getElementById('cfQuality').value = '';
+  document.getElementById('cfG').value = '';
+  document.getElementById('cfS').value = '';
+  document.getElementById('cfC').value = '';
+  document.getElementById('cfWeight').value = '';
+  document.getElementById('cfDesc').value = '';
+  document.getElementById('cfStack').value = '5';
+  document.getElementById('cfSlot').value = '杂物包';
+  document.getElementById('cfWeapon').value = '';
+  document.getElementById('cfAc').value = '';
+  document.getElementById('cfDexCap').value = '';
+  document.getElementById('cfShield').value = '';
+  document.getElementById('cfContainer').value = '';
+  refreshCustomTags();
+  document.getElementById('customFormOverlay').classList.add('show');
+}
+function refreshCustomTags() {
+  var box = document.getElementById('cfTags');
+  var opts = ['材料', '可堆叠', '按重量', '防具', '盾牌', '容器', '武器', '草药', '食品', '水产', '医用'];
+  var html = '';
+  for (var i = 0; i < opts.length; i++) {
+    html += '<label class="cf-tag"><input type="checkbox" value="' + opts[i] + '">' + opts[i] + '</label>';
+  }
+  box.innerHTML = html;
+}
+function saveCustomItem() {
+  var name = document.getElementById('cfName').value.trim();
+  if (!name) { toast('请输入物品名称', 'warn'); return; }
+  if (!state.custom_items) state.custom_items = [];
+  for (var i = 0; i < state.custom_items.length; i++) {
+    if (state.custom_items[i].name === name) { toast('已存在同名自定义物品', 'warn'); return; }
+  }
+  var tags = [];
+  var checks = document.querySelectorAll('#cfTags input:checked');
+  for (var j = 0; j < checks.length; j++) tags.push(checks[j].value);
+  var item = {
+    name: name,
+    cat: document.getElementById('cfCat').value,
+    quality: document.getElementById('cfQuality').value.trim(),
+    priceG: parseInt(document.getElementById('cfG').value, 10) || 0,
+    priceS: parseInt(document.getElementById('cfS').value, 10) || 0,
+    priceC: parseInt(document.getElementById('cfC').value, 10) || 0,
+    weight: document.getElementById('cfWeight').value.trim(),
+    desc: document.getElementById('cfDesc').value.trim(),
+    tags: tags,
+    stackLimit: parseInt(document.getElementById('cfStack').value, 10) || 1,
+    slot: document.getElementById('cfSlot').value,
+    weaponDice: document.getElementById('cfWeapon').value.trim(),
+    ac: parseInt(document.getElementById('cfAc').value, 10) || 0,
+    dexCap: parseInt(document.getElementById('cfDexCap').value, 10) || 0,
+    shieldBonus: parseInt(document.getElementById('cfShield').value, 10) || 0,
+    containerType: document.getElementById('cfContainer').value
+  };
+  state.custom_items.push(item);
+  state._dirty = true;
+  closeOverlay('customFormOverlay');
+  renderCustomList();
+  toast('已创建自定义物品「' + name + '」');
+}
+function deleteCustomItem(idx) {
+  var arr = state.custom_items || [];
+  var it = arr[idx];
+  if (!it) return;
+  if (!confirm('确定删除自定义物品「' + it.name + '」？（删除不返还任何金币）')) return;
+  arr.splice(idx, 1);
+  state._dirty = true;
+  renderCustomList();
+  toast('已删除「' + it.name + '」');
+}
 var STORE_CAT = '杂物';
 var STORE_Q = '';
 function parseCopper(priceStr) {
