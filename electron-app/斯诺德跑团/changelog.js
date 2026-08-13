@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7239',
+    date: '2026-08-13',
+    changes: [
+      '改良：顾问小贴士改为全局发送间隔——时间戳存 localStorage 跨页面共享（5 分钟内不再弹新贴士），桌面 widget 与移动端入口同步生效'
+    ]
+  },
+
+
+  {
     version: '1.0.7238',
     date: '2026-08-13',
     changes: [

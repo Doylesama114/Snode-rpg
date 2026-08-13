@@ -536,6 +536,13 @@
         }
       } catch (err) { /* ignore */ }
       if (!state.tipPool.length) return;
+      // 全局发送间隔（v1.0.7239）：时间戳存 localStorage 跨页面共享，避免每进一个新页面都弹贴士
+      try {
+        var _lastTipAt = parseInt(localStorage.getItem('_snowd_tip_last_at') || '0', 10);
+        var _tipGap = 5 * 60 * 1000;
+        if (Date.now() - _lastTipAt < _tipGap) return;
+        localStorage.setItem('_snowd_tip_last_at', String(Date.now()));
+      } catch (e) { /* ignore */ }
       setTimeout(maybeRotateTip, 3000);
       state.tipTimer = setInterval(maybeRotateTip, 5 * 60 * 1000);
     }

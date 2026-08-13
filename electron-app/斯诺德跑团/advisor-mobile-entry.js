@@ -133,6 +133,13 @@
       e.preventDefault();
       nextTip();
     });
+    // 全局发送间隔（v1.0.7239）：与桌面入口共享 localStorage 时间戳，5 分钟内跨页面不再弹贴士
+    try {
+      var _lastTipT = parseInt(localStorage.getItem('_snowd_tip_last_at') || '0', 10);
+      var _tipGapT = 5 * 60 * 1000;
+      if (Date.now() - _lastTipT < _tipGapT) tipPool = [];
+      else localStorage.setItem('_snowd_tip_last_at', String(Date.now()));
+    } catch (e) { /* ignore */ }
     if (tipPool.length) {
       setTimeout(showTipBubble, TIP_FIRST_DELAY);
       tipTimer = setInterval(nextTip, TIP_INTERVAL);
