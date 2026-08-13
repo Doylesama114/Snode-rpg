@@ -2175,19 +2175,50 @@ function cheatAdd() {
     '<input id="chXpInput" type="number" value="500" style="width:80px;padding:4px 6px;border:1px solid var(--line);border-radius:4px">' +
     '<button class="ch-btn" onclick="cheatXp(parseInt(document.getElementById(\'chXpInput\').value)||0)">设置</button></div>';
   html += '<div style="font-size:13px;color:var(--muted);margin-top:6px">色彩标识（点击切换持有）：</div><div class="sp-grid" id="chMarkGrid"></div>';
-  html += '<div style="margin-top:8px;font-size:12px;color:var(--muted)">技能点：档案未记录 SP 数值，仅支持标识管理</div>';
+  html += '<div style="font-size:13px;color:var(--muted);margin-top:8px">技能点（SP）：<b style="color:var(--accent);font-size:16px" id="chSpVal">' + (typeof getSpTotal === 'function' ? getSpTotal() : ((typeof state !== 'undefined' && state.sp_points) || 0)) + '</b>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">' +
+    '<button class="ch-btn" onclick="cheatSp(-1)">-1</button>' +
+    '<button class="ch-btn" onclick="cheatSp(1)">+1</button>' +
+    '<button class="ch-btn" onclick="cheatSp(-5)">-5</button>' +
+    '<button class="ch-btn" onclick="cheatSp(5)">+5</button>' +
+    '<input id="chSpInput" type="number" value="5" min="0" style="width:70px;padding:4px 6px;border:1px solid var(--line);border-radius:4px">' +
+    '<button class="ch-btn" onclick="cheatSetSp(parseInt(document.getElementById(\'chSpInput\').value)||0)">设置</button></div></div>';
   html += '</div>';
   document.getElementById('cheatBody').innerHTML = html;
   refreshMarkGrids();
   document.getElementById('cheatOverlay').classList.add('show');
 }
+function cheatSp(d) {
+  if (typeof state === 'undefined') return;
+  state.sp_points = Math.max(0, (state.sp_points || 0) + d);
+  state._dirty = true;
+  log('测试加点：技能点 ' + (d >= 0 ? '+' : '') + d + ' → ' + state.sp_points);
+  renderXpSp();
+  if (typeof renderLearnPanel === 'function') renderLearnPanel();
+  var v = document.getElementById('chSpVal');
+  if (v) v.textContent = state.sp_points;
+}
+function cheatSetSp(v) {
+  if (typeof state === 'undefined') return;
+  state.sp_points = Math.max(0, v);
+  state._dirty = true;
+  log('测试加点：技能点设为 ' + state.sp_points);
+  renderXpSp();
+  if (typeof renderLearnPanel === 'function') renderLearnPanel();
+  var el = document.getElementById('chSpVal');
+  if (el) el.textContent = state.sp_points;
+}
 function cheatXp(d) {
-  S.xp = Math.max(0, S.xp + d);
-  log('测试加点：经验值 ' + (d >= 0 ? '+' : '') + d + ' → ' + S.xp);
+  if (typeof state !== 'undefined') {
+    state.xp = Math.max(0, ((state.xp != null ? state.xp : 0) + d));
+    state._dirty = true;
+  }
+  S.xp = state.xp;
+  log('测试加点：经验值 ' + (d >= 0 ? '+' : '') + d + ' → ' + state.xp);
   renderXpSp();
   renderTalent();
   var v = document.getElementById('chXpVal');
-  if (v) v.textContent = S.xp;
+  if (v) v.textContent = state.xp;
   cheatAdd();
 }
 
