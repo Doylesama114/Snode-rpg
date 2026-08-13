@@ -86,15 +86,24 @@ ok('持有金币显示 1000金币', (await page.textContent('#storeGold')).inclu
 const groups0 = await page.$$eval('#storeList .store-group', els => els.map(e => e.querySelector('.store-group-head').textContent.trim()));
 console.log('  杂物小类:', groups0.join(' | '));
 ok('小类分组渲染（≥4 组）', groups0.length >= 4);
-ok('分组默认展开', await page.$$eval('#storeList .store-group', els => els.every(e => !e.classList.contains('collapsed'))));
+ok('分组默认收起（新语义）', await page.$$eval('#storeList .store-group', els => els.every(e => e.classList.contains('collapsed'))));
 await page.evaluate(() => { const el = document.querySelector('#storeList .store-group-head'); toggleStoreGroup(el); });
 await page.waitForTimeout(100);
 const collapsed = await page.$eval('#storeList .store-group >> nth=0', e => e.classList.contains('collapsed'));
-ok('点击小类头可收起', collapsed);
-await page.evaluate(() => { const el = document.querySelector('#storeList .store-group-head'); toggleStoreGroup(el); });
-await page.waitForTimeout(100);
-const expanded = await page.$eval('#storeList .store-group >> nth=0', e => !e.classList.contains('collapsed'));
-ok('再次点击展开', expanded);
+ok('点击小类头可展开（收起→展开）', !collapsed);
+// 搜索时自动展开
+await page.fill('#storeSearch', '长剑');
+await page.waitForTimeout(150);
+const searchExpanded = await page.$$eval('#storeList .store-group', els => els.every(e => !e.classList.contains('collapsed')));
+ok('搜索时自动展开全部小组', searchExpanded);
+// 跨大类搜索（P4-2）：杂物分类下搜武器
+const crossNames = await page.$$eval('#storeList .si-name', els => els.map(e => e.textContent.trim()));
+ok('搜索跨大类（杂物分类下搜到长剑）', crossNames.some(n => n.includes('长剑')), crossNames.slice(0, 3).join(','));
+const crossGroups = await page.$$eval('#storeList .store-group-head', els => els.map(e => e.textContent.trim()));
+console.log('  跨大类搜索分组:', crossGroups.slice(0, 6).join(' | '));
+ok('跨大类搜索分组带大类名', crossGroups.some(g => g.includes('武器 · ')));
+await page.fill('#storeSearch', '');
+await page.waitForTimeout(150);
 
 // ===== 2.5 商店滚动与物品可见性（修复：flex 压缩） =====
 const scrollOK = await page.evaluate(() => {
@@ -113,6 +122,20 @@ const scrollOK = await page.evaluate(() => {
 });
 ok('商店列表可滚动（修复 flex 压缩）', scrollOK.scrollable && scrollOK.changed, JSON.stringify(scrollOK));
 ok('物品卡高度正常（>40px）', scrollOK.sampleHeights.every(h => h > 40), JSON.stringify(scrollOK.sampleHeights));
+
+// ===== 2.7 商店物品卡点击详情预览（M1） =====
+await page.evaluate(() => { STORE_CAT = '杂物'; renderStore(); });
+await page.waitForTimeout(150);
+await page.evaluate(() => storePreview('粉笔'));
+await page.waitForTimeout(200);
+const spv = await page.evaluate(() => {
+  const vis = document.getElementById('storePreviewOverlay').classList.contains('show');
+  const rows = Array.from(document.querySelectorAll('#spvBody tr')).map(e => e.textContent.trim());
+  return { vis: vis, rows: rows };
+});
+ok('商店物品卡详情预览打开', spv.vis);
+ok('预览含价格/载重行', spv.rows.some(r => r.startsWith('价格')) && spv.rows.some(r => r.startsWith('载重')), JSON.stringify(spv.rows));
+await page.evaluate(() => closeOverlay('storePreviewOverlay'));
 
 // 3. 搜索（武器分类）
 await page.evaluate(() => { STORE_CAT = '武器'; renderStore(); });
@@ -196,8 +219,16 @@ await page.evaluate(() => openStorePick());
 await page.waitForTimeout(200);
 await page.evaluate(() => { STORE_PICK_CAT = '武器'; renderStorePick(); });
 await page.waitForTimeout(100);
+// U1: 选择器小类分组
+const pickGroups = await page.$$eval('#spList .store-group-head', els => els.map(e => e.textContent.trim()));
+console.log('  选择器小类分组:', pickGroups.slice(0, 6).join(' | '));
+ok('选择器按小类分组（武器分类）', pickGroups.some(g => g.includes('近战武器')) && pickGroups.some(g => g.includes('远程武器')), JSON.stringify(pickGroups));
+// 选择器默认收起
+ok('选择器分组默认收起', await page.$$eval('#spList .store-group', els => els.every(e => e.classList.contains('collapsed'))));
 await page.fill('#spSearch', '长剑');
 await page.waitForTimeout(150);
+const pickSearchExpanded = await page.$$eval('#spList .store-group', els => els.every(e => !e.classList.contains('collapsed')));
+ok('选择器搜索时自动展开', pickSearchExpanded);
 await page.click('#spList .pk-item');
 await page.waitForTimeout(200);
 const formName = await page.inputValue('#cfName');
@@ -219,6 +250,23 @@ await page.fill('#cfEffect', '挥砍造成2D6伤害');
 await page.click('#customFormOverlay .ok');
 await page.waitForTimeout(200);
 ok('全新自定义「测试神剑」已保存', await page.evaluate(() => !!customItemByName('测试神剑')));
+
+// P4-1: 编辑自定义物品
+const editOK = await page.evaluate(() => {
+  const idx = state.custom_items.findIndex(c => c.name === '测试神剑');
+  if (idx < 0) return 'no item';
+  editCustomItem(idx);
+  // 表单应预填
+  const nameVal = document.getElementById('cfName').value;
+  const effVal = document.getElementById('cfEffect').value;
+  document.getElementById('cfName').value = '测试神剑改';
+  document.getElementById('cfEffect').value = '挥砍造成2D6伤害+1';
+  saveCustomItem();
+  const updated = state.custom_items.find(c => c.name === '测试神剑改');
+  return { prefill: (nameVal === '测试神剑' && effVal === '挥砍造成2D6伤害'), updated: !!(updated && updated.effect === '挥砍造成2D6伤害+1') };
+});
+ok('编辑预填表单', editOK.prefill, JSON.stringify(editOK));
+ok('编辑保存生效（改名+改效果）', editOK.updated, JSON.stringify(editOK));
 
 // ===== 10.5 材料包按购买显示 =====
 const bagDisp0 = await page.evaluate(() => {
@@ -270,7 +318,7 @@ await page.evaluate(() => { closeOverlay('itemOverlay'); });
 await page.evaluate(() => {
   const arr = EQUIP['杂物包'];
   const idx = arr.findIndex(x => !x);
-  if (idx >= 0) arr[idx] = { item: '测试神剑', cnt: 1, w: '' };
+  if (idx >= 0) arr[idx] = { item: '测试神剑改', cnt: 1, w: '' };
   renderEquip();
   const el = document.querySelector('.eq[data-slot="杂物包"][data-idx="' + idx + '"]');
   if (el) el.click();
@@ -278,7 +326,23 @@ await page.evaluate(() => {
 await page.waitForTimeout(250);
 const custRows = await page.$$eval('#itBody tr', els => els.map(e => e.textContent.trim()));
 console.log('  自定义详情行:', custRows.join(' | '));
-ok('自定义详情含效果行', custRows.some(r => r.startsWith('效果') && r.includes('2D6')));
+ok('自定义详情含效果行', custRows.some(r => r.startsWith('效果') && r.includes('2D6伤害+1')), JSON.stringify(custRows));
+// M4: 从商店添加的自定义物品详情含小类行
+const catRowOK = await page.evaluate(() => {
+  closeOverlay('itemOverlay');
+  const arr = EQUIP['杂物包'];
+  const idx = arr.findIndex(x => !x);
+  if (idx < 0) return 'no slot';
+  arr[idx] = { item: '长剑', cnt: 1, w: '' };
+  renderEquip();
+  const el = document.querySelector('.eq[data-slot="杂物包"][data-idx="' + idx + '"]');
+  el.click();
+  return true;
+});
+await page.waitForTimeout(250);
+const catRows = await page.$$eval('#itBody tr', els => els.map(e => e.textContent.trim()));
+ok('商店来源自定义物品详情含小类行', catRows.some(r => r.startsWith('小类') && r.includes('近战武器')), JSON.stringify(catRows));
+await page.evaluate(() => closeOverlay('itemOverlay'));
 
 // 12. 拖拽移动
 await page.evaluate(() => { closeOverlay('itemOverlay'); });
@@ -306,6 +370,39 @@ const dragOK = await page.evaluate(() => {
   return inDst && !inSrc ? 'moved' : 'not moved (dst=' + inDst + ' src=' + inSrc + ')';
 });
 ok('拖拽移动物品（草药包→杂物包）', dragOK === 'moved', dragOK);
+
+// M2: 锁定槽位拒绝拖入（退货背包后）
+const lockTest = await page.evaluate(() => {
+  // 退货背包（锁定背包槽）
+  refundItem('背包');
+  renderEquip();
+  // 尝试把银叶草拖入背包空位
+  let srcEl = null, dstEl = null;
+  for (const s of BAG_SLOTS.concat(['杂物包'])) {
+    const arr = EQUIP[s] || [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] && arr[i].item === '银叶草') { srcEl = document.querySelector('.eq[data-slot="' + s + '"][data-idx="' + i + '"]'); break; }
+    }
+    if (srcEl) break;
+  }
+  const dstIdx = EQUIP['背包'].findIndex(x => !x);
+  dstEl = document.querySelector('.eq-empty[data-slot="背包"][data-idx="' + dstIdx + '"], .eq[data-slot="背包"][data-idx="' + dstIdx + '"]');
+  if (!srcEl || !dstEl) return 'missing el';
+  const dt = new DataTransfer();
+  srcEl.dispatchEvent(new DragEvent('dragstart', { bubbles: true, dataTransfer: dt }));
+  dstEl.dispatchEvent(new DragEvent('dragover', { bubbles: true, cancelable: true, dataTransfer: dt }));
+  dstEl.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: dt }));
+  let inBag = false;
+  (EQUIP['背包'] || []).forEach(x => { if (x && x.item === '银叶草') inBag = true; });
+  // 背包槽位无 + 号按钮
+  const bagSlot = Array.from(document.querySelectorAll('.equip-slot')).find(sl => (sl.querySelector('h3') || {}).textContent && sl.querySelector('h3').textContent.indexOf('背包') === 0);
+  const addBtn = bagSlot ? bagSlot.querySelector('.eq-add-btn') : null;
+  // 重新买回背包
+  buyItem('背包');
+  return { inBag: inBag, addBtnHidden: !addBtn };
+});
+ok('锁定背包槽拒绝拖入', lockTest.inBag === false, JSON.stringify(lockTest));
+ok('锁定背包槽隐藏添加按钮', lockTest.addBtnHidden, JSON.stringify(lockTest));
 
 // 13. 详情「移动」按钮模式
 const moveModeOK = await page.evaluate(() => {
@@ -367,6 +464,18 @@ ok('旧存档迁移：材料包数组 9 元素', migrated.len === 9 && migrated.
 ok('旧存档迁移：物品保留', migrated.flour === 1, 'flour=' + migrated.flour);
 ok('迁移后无 JS 错误', errors.length === 0, errors.join(' | '));
 
+// 失败时自动截图存档（配合视觉审核）
+if (fail > 0) {
+  try {
+    const shotDir = 'D:\\Download\\scholar-agent-main\\screenshots';
+    fs.mkdirSync(shotDir, { recursive: true });
+    const shotPath = shotDir + '\\store-fail-' + new Date().toISOString().replace(/[:.]/g, '-') + '.png';
+    await page.screenshot({ path: shotPath, fullPage: false });
+    console.log('\n📸 失败截图已保存: ' + shotPath);
+  } catch (e) {
+    console.log('截图失败:', e.message);
+  }
+}
 await browser.close();
 await new Promise(resolve => server.close(resolve));
 console.log('\n========================');

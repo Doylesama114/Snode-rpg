@@ -1061,6 +1061,16 @@ body.battle .fab{display:none}
   </div>
 </div>
 
+<!-- ===== 商店物品详情预览 ===== -->
+<div class="overlay" id="storePreviewOverlay" onclick="if(event.target===this)closeOverlay('storePreviewOverlay')">
+  <div class="pop" style="max-width:480px">
+    <div class="pop-head"><h3 id="spvName">物品详情</h3><button class="close" onclick="closeOverlay('storePreviewOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div id="spvBody"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 从商店添加（自定义物品来源选择） ===== -->
 <div class="overlay" id="storePickOverlay" onclick="if(event.target===this)closeOverlay('storePickOverlay')">
   <div class="pop" style="max-width:640px">
@@ -1523,11 +1533,13 @@ function renderEquip() {
     var isBag = typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0;
     // 材料包：未购买（未解锁）不显示，购买后自动出现对应槽位
     if (isBag && !(typeof state !== 'undefined' && state.containerItems && state.containerItems[slot])) continue;
+    // 固定容器（背包/旅行腰包）：退货后锁定——不显示添加按钮，禁止拖入
+    var lockedFixed = (slot === '背包' || slot === '旅行腰包') && !(typeof state !== 'undefined' && state.containerItems && state.containerItems[slot]);
     var items = EQUIP[slot] || [];
     var filled = items.filter(function(x){ return x; }).length;
-    var title = slot;
+    var title = slot + (lockedFixed ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
     html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + filled + '/' + items.length + '</span>' +
-      '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button></h3><div class="equip-items">';
+      (lockedFixed ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       if (it) {
@@ -1621,6 +1633,7 @@ function itemMeta(name) {
     m.quality = cust.quality || '';
     m.tags = (cust.tags || []).slice();
     m.stackLimit = cust.stackLimit || 1;
+    m.cat = cust.subcat || cust.cat || '';  // 小类优先（从商店添加时继承）
     return m;
   }
   if (typeof ITEM_DATA !== 'undefined' && ITEM_DATA[name]) {
@@ -1746,9 +1759,9 @@ function renderEquipPicker() {
     if (q && cm.name.toLowerCase().indexOf(q) < 0) continue;
     if (cm.slot && cm.slot !== slot) continue;
     var cTags = cm.tags || [];
-    if (slot.indexOf('材料包') === 0) {
-      var cBag = (state.containerItems && state.containerItems[slot]) || '';
-      if (typeof canPlaceInSlot === 'function' && !canPlaceInSlot(itemBagHints(cm.name), '材料包', cm.name, cBag)) continue;
+    if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0) {
+      var cBag = (state.containerItems && state.containerItems[slot]) ? slot : '';
+      if (typeof canPlaceInSlot === 'function' && !canPlaceInSlot(itemBagHints(cm.name), slot, cm.name, slot)) continue;
     }
     var alreadyC = false;
     var arrC = EQUIP[slot] || [];
@@ -1764,10 +1777,13 @@ function renderEquipPicker() {
     var nm = names[i];
     if (q && nm.toLowerCase().indexOf(q) < 0) continue;
     var tags = (typeof getItemTags === 'function') ? getItemTags(nm) : [];
-    if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') !== 0 && !canPlaceInSlot(tags, slot, nm)) continue;
-    if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') === 0) {
-      var bagType = (state.containerItems && state.containerItems[slot]) || '';
-      if (!canPlaceInSlot(itemBagHints(nm), '材料包', nm, bagType)) continue;
+    var _isBagSlot = typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0;
+    // M5：杂物包与购买逻辑对齐（购买不校验「杂物」标签）；锁定槽位不显示物品
+    if (_isBagSlot) {
+      var bagType2 = (state.containerItems && state.containerItems[slot]) ? slot : '';
+      if (!bagType2 || (typeof canPlaceInSlot === 'function' && !canPlaceInSlot(itemBagHints(nm), slot, nm, slot))) continue;
+    } else if (slot !== '杂物包' && typeof canPlaceInSlot === 'function' && !canPlaceInSlot(tags, slot, nm)) {
+      continue;
     }
     var d = ITEM_DATA[nm] || {};
     var already = false;
@@ -1786,6 +1802,12 @@ function renderEquipPicker() {
 function pickItem(name) {
   var slot = EQUIP_PICKER_SLOT;
   if (!slot) return;
+  // 锁定槽位拒绝添加
+  if (typeof isSlotLocked === 'function' && isSlotLocked(slot)) {
+    toast('该槽位未装备/未解锁，无法添加', 'warn');
+    closeOverlay('pickerOverlay');
+    return;
+  }
   var arr = EQUIP[slot] || (EQUIP[slot] = []);
   var limit = customStackLimit(name) || ((typeof getStackLimit === 'function') ? getStackLimit(name) : 1);
   for (var i = 0; i < arr.length; i++) {
@@ -1858,18 +1880,53 @@ function renderStorePick() {
   }
   cats.innerHTML = ch;
   var q = STORE_PICK_Q.toLowerCase();
-  var items = STORE_DATA[STORE_PICK_CAT] || [];
+  var searching = q.length > 0;
+  // 搜索时跨大类（与商店页一致）
+  var items = [];
+  if (searching) {
+    for (var _pk in STORE_DATA) {
+      var _pkArr = STORE_DATA[_pk] || [];
+      for (var _pi2 = 0; _pi2 < _pkArr.length; _pi2++) _pkArr[_pi2]._catName = _pk;
+      items = items.concat(_pkArr);
+    }
+  } else {
+    items = STORE_DATA[STORE_PICK_CAT] || [];
+  }
   var list = document.getElementById('spList');
   var html = '';
   var shown = 0;
+  // 按小类分组（复用商店页分组结构）
+  var groups = [];
+  var groupIdx = {};
   for (var i2 = 0; i2 < items.length; i2++) {
     var it = items[i2];
     if (q && it.name.toLowerCase().indexOf(q) < 0) continue;
-    html += '<div class="pk-item" onclick="storePickSelect(\'' + it.name.replace(/'/g, '\\u0027') + '\')">' +
-      '<span class="pk-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + '</span>' +
-      (it.price ? '<span class="pk-price">' + escHtml(it.price) + '</span>' : '') +
-      (it.weight ? '<span class="pk-w">' + escHtml(it.weight) + '</span>' : '') + '</div>';
-    shown++;
+    var sub = it.cat || '其他';
+    if (searching) sub = (it._catName || '') + ' · ' + sub;
+    if (!(sub in groupIdx)) {
+      groupIdx[sub] = groups.length;
+      groups.push({ sub: sub, items: [] });
+    }
+    groups[groupIdx[sub]].items.push(it);
+  }
+  for (var gi = 0; gi < groups.length; gi++) {
+    var g = groups[gi];
+    if (!g.items.length) continue;
+    shown += g.items.length;
+    var gk = storeGroupKey(g.sub, searching ? '' : STORE_PICK_CAT);
+    var collapsed = searching ? false : !STORE_COLLAPSED[gk];
+    html += '<div class="store-group' + (collapsed ? ' collapsed' : '') + '">' +
+      '<div class="store-group-head" data-gk="' + gk + '" onclick="toggleStoreGroup(this)">' + escHtml(g.sub) +
+      ' <span class="sg-count">' + g.items.length + ' 件</span><span class="sg-arrow">▾</span></div>' +
+      '<div class="store-group-body">';
+    for (var ii = 0; ii < g.items.length; ii++) {
+      var it2 = g.items[ii];
+      html += '<div class="pk-item" onclick="storePickSelect(\'' + it2.name.replace(/'/g, '\\u0027') + '\')">' +
+        '<span class="pk-name">' + escHtml(it2.name) + '</span>' +
+        (it2.price ? '<span class="pk-price">' + escHtml(it2.price) + '</span>' : '') +
+        (it2.weight ? '<span class="pk-w">' + escHtml(it2.weight) + '</span>' : '') + '</div>';
+    }
+    html += '</div></div>';
   }
   if (!shown) html = '<div class="pk-empty">（无匹配物品）</div>';
   list.innerHTML = html;
@@ -1910,13 +1967,35 @@ function renderCustomList() {
     var c = arr[i];
     html += '<div class="custom-item">' +
       '<div class="ci-main"><span class="ci-name">' + escHtml(c.name) + (c.quality ? ' <span class="it-q">' + escHtml(c.quality) + '</span>' : '') + '</span>' +
-      '<span class="ci-meta">' + (c.cat ? escHtml(c.cat) : '') + (customPriceText(c) ? ' · ' + escHtml(customPriceText(c)) : '') + (c.weight ? ' · ' + escHtml(c.weight) : '') + '</span></div>' +
+      '<span class="ci-meta">' + (c.cat ? escHtml(c.cat) : '') + (c.subcat ? ' › ' + escHtml(c.subcat) : '') + (customPriceText(c) ? ' · ' + escHtml(customPriceText(c)) : '') + (c.weight ? ' · ' + escHtml(c.weight) : '') + (c.effect ? ' · 效果:' + escHtml(c.effect) : '') + '</span></div>' +
+      '<button class="ci-del" onclick="editCustomItem(' + i + ')" style="background:#4a6a8a">编辑</button>' +
       '<button class="ci-del" onclick="deleteCustomItem(' + i + ')">删除</button></div>';
   }
   if (!arr.length) html = '<div class="pk-empty">暂无自定义物品</div>';
   list.innerHTML = html;
 }
-function openCustomForm(seed) {
+var CUSTOM_EDITING_IDX = -1;
+var CUSTOM_SEED_SUBCAT = '';  // 从商店添加时继承的小类
+function customToSeed(c) {
+  return {
+    name: c.name, cat: c.cat || '', quality: c.quality || '',
+    priceG: c.priceG || 0, priceS: c.priceS || 0, priceC: c.priceC || 0,
+    weight: c.weight || '', desc: c.desc || '', effect: c.effect || '',
+    tags: (c.tags || []).slice(),
+    stackLimit: c.stackLimit || 5, slot: c.slot || '杂物包', weaponDice: c.weaponDice || '',
+    ac: c.ac || 0, dexCap: c.dexCap || 0, shieldBonus: c.shieldBonus || 0,
+    containerType: c.containerType || ''
+  };
+}
+function editCustomItem(idx) {
+  var arr = state.custom_items || [];
+  var c = arr[idx];
+  if (!c) return;
+  openCustomForm(customToSeed(c), idx);
+}
+function openCustomForm(seed, editIdx) {
+  CUSTOM_EDITING_IDX = (typeof editIdx === 'number' && editIdx >= 0) ? editIdx : -1;
+  CUSTOM_SEED_SUBCAT = (seed && seed.cat) ? seed.cat : '';
   document.getElementById('cfName').value = (seed && seed.name) ? seed.name : '';
   document.getElementById('cfCat').value = (seed && seed.cat) ? seed.cat : '杂物';
   document.getElementById('cfQuality').value = (seed && seed.quality) ? seed.quality : '';
@@ -1926,13 +2005,13 @@ function openCustomForm(seed) {
   document.getElementById('cfWeight').value = (seed && seed.weight) ? seed.weight : '';
   document.getElementById('cfDesc').value = (seed && seed.desc) ? seed.desc : '';
   document.getElementById('cfEffect').value = (seed && seed.effect) ? seed.effect : '';
-  document.getElementById('cfStack').value = '5';
-  document.getElementById('cfSlot').value = '杂物包';
-  document.getElementById('cfWeapon').value = '';
-  document.getElementById('cfAc').value = '';
-  document.getElementById('cfDexCap').value = '';
-  document.getElementById('cfShield').value = '';
-  document.getElementById('cfContainer').value = '';
+  document.getElementById('cfStack').value = (seed && seed.stackLimit) ? seed.stackLimit : '5';
+  document.getElementById('cfSlot').value = (seed && seed.slot) ? seed.slot : '杂物包';
+  document.getElementById('cfWeapon').value = (seed && seed.weaponDice) ? seed.weaponDice : '';
+  document.getElementById('cfAc').value = (seed && seed.ac) ? seed.ac : '';
+  document.getElementById('cfDexCap').value = (seed && seed.dexCap) ? seed.dexCap : '';
+  document.getElementById('cfShield').value = (seed && seed.shieldBonus) ? seed.shieldBonus : '';
+  document.getElementById('cfContainer').value = (seed && seed.containerType) ? seed.containerType : '';
   refreshCustomTags();
   if (seed && seed.tags && seed.tags.length) {
     var checks = document.querySelectorAll('#cfTags input');
@@ -1955,8 +2034,10 @@ function saveCustomItem() {
   var name = document.getElementById('cfName').value.trim();
   if (!name) { toast('请输入物品名称', 'warn'); return; }
   if (!state.custom_items) state.custom_items = [];
-  for (var i = 0; i < state.custom_items.length; i++) {
-    if (state.custom_items[i].name === name) { toast('已存在同名自定义物品', 'warn'); return; }
+  if (CUSTOM_EDITING_IDX < 0) {
+    for (var i = 0; i < state.custom_items.length; i++) {
+      if (state.custom_items[i].name === name) { toast('已存在同名自定义物品', 'warn'); return; }
+    }
   }
   var tags = [];
   var checks = document.querySelectorAll('#cfTags input:checked');
@@ -1964,6 +2045,7 @@ function saveCustomItem() {
   var item = {
     name: name,
     cat: document.getElementById('cfCat').value,
+    subcat: CUSTOM_SEED_SUBCAT || '',
     quality: document.getElementById('cfQuality').value.trim(),
     priceG: parseInt(document.getElementById('cfG').value, 10) || 0,
     priceS: parseInt(document.getElementById('cfS').value, 10) || 0,
@@ -1980,6 +2062,15 @@ function saveCustomItem() {
     shieldBonus: parseInt(document.getElementById('cfShield').value, 10) || 0,
     containerType: document.getElementById('cfContainer').value
   };
+  if (CUSTOM_EDITING_IDX >= 0 && state.custom_items[CUSTOM_EDITING_IDX]) {
+    state.custom_items[CUSTOM_EDITING_IDX] = item;
+    CUSTOM_EDITING_IDX = -1;
+    state._dirty = true;
+    closeOverlay('customFormOverlay');
+    renderCustomList();
+    toast('已更新自定义物品「' + name + '」');
+    return;
+  }
   state.custom_items.push(item);
   state._dirty = true;
   closeOverlay('customFormOverlay');
@@ -2076,13 +2167,14 @@ function storePriceOf(name) {
   return null;
 }
 var STORE_COLLAPSED = {};
-function storeGroupKey(sub) { return STORE_CAT + '\u0001' + sub; }
+function storeGroupKey(sub, cat) { return (cat || STORE_CAT) + '\u0001' + sub; }
+// 折叠语义（v1.0.7229）：默认收起；STORE_COLLAPSED[key]=true 表示已展开
 function toggleStoreGroup(el) {
   var key = el.getAttribute('data-gk');
   if (STORE_COLLAPSED[key]) delete STORE_COLLAPSED[key];
   else STORE_COLLAPSED[key] = true;
   var g = el.parentNode;
-  g.classList.toggle('collapsed', !!STORE_COLLAPSED[key]);
+  g.classList.toggle('collapsed', !STORE_COLLAPSED[key]);
 }
 function storeItemCard(it, q) {
   var price = parseCopper(it.price);
@@ -2092,12 +2184,34 @@ function storeItemCard(it, q) {
   });
   var heldShow = isContainerItem(it.name) ? (containerHeld ? '已装备' : '未持有') : ('已持 ×' + held);
   return '<div class="store-item">' +
-    '<div class="si-main"><span class="si-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
+    '<div class="si-main" style="cursor:pointer" onclick="storePreview(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="点击查看详情"><span class="si-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
     '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
     (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
     '<span class="si-held">' + heldShow + '</span>' +
     (held > 0 || containerHeld ? '<button class="si-refund" onclick="refundItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="全额退货">退货</button>' : '') +
     '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
+}
+/* 商店物品详情预览（购买前查看属性和效果） */
+function storePreview(name) {
+  var it = null;
+  for (var _ck in STORE_DATA) {
+    var _arr = STORE_DATA[_ck] || [];
+    for (var _ci = 0; _ci < _arr.length; _ci++) if (_arr[_ci].name === name) { it = _arr[_ci]; break; }
+    if (it) break;
+  }
+  if (!it) return;
+  var rows = [];
+  if (it.cat) rows.push(['小类', escHtml(it.cat)]);
+  if (it.price) rows.push(['价格', escHtml(it.price)]);
+  if (it.weight) rows.push(['载重', escHtml(it.weight)]);
+  if (it.quality) rows.push(['品质', escHtml(it.quality)]);
+  if (it.desc) rows.push(['简介/效果', escHtml(it.desc)]);
+  var html = '<table class="skill-detail-table">';
+  for (var i = 0; i < rows.length; i++) html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+  html += '</table>';
+  document.getElementById('spvName').innerHTML = escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '');
+  document.getElementById('spvBody').innerHTML = html;
+  document.getElementById('storePreviewOverlay').classList.add('show');
 }
 function renderStore() {
   if (typeof STORE_DATA === 'undefined') return;
@@ -2112,14 +2226,26 @@ function renderStore() {
   }
   cats.innerHTML = ch;
   var q = (STORE_Q || '').toLowerCase();
-  var items = STORE_DATA[STORE_CAT] || [];
-  // 按小类（cat）分组，保持 xlsx 原顺序
+  var searching = q.length > 0;
+  // 搜索时跨大类（P4-2）：q 非空 → 全部分类；否则当前分类
+  var items = [];
+  if (searching) {
+    for (var _sk in STORE_DATA) {
+      var _skArr = STORE_DATA[_sk] || [];
+      for (var _si2 = 0; _si2 < _skArr.length; _si2++) _skArr[_si2]._catName = _sk;
+      items = items.concat(_skArr);
+    }
+  } else {
+    items = STORE_DATA[STORE_CAT] || [];
+  }
+  // 按小类（cat）分组，保持 xlsx 原顺序（搜索跨大类时标题带大类名前缀）
   var groups = [];
   var groupIdx = {};
   for (var i2 = 0; i2 < items.length; i2++) {
     var it = items[i2];
     if (q && (it.name.toLowerCase().indexOf(q) < 0 && (it.desc || '').toLowerCase().indexOf(q) < 0)) continue;
     var sub = it.cat || '其他';
+    if (searching) sub = (it._catName || '') + ' · ' + sub;
     if (!(sub in groupIdx)) {
       groupIdx[sub] = groups.length;
       groups.push({ sub: sub, items: [] });
@@ -2134,7 +2260,7 @@ function renderStore() {
     if (!g.items.length) continue;
     shown += g.items.length;
     var gk = storeGroupKey(g.sub);
-    var collapsed = !!STORE_COLLAPSED[gk];
+    var collapsed = searching ? false : !STORE_COLLAPSED[gk];
     html += '<div class="store-group' + (collapsed ? ' collapsed' : '') + '">' +
       '<div class="store-group-head" data-gk="' + gk + '" onclick="toggleStoreGroup(this)">' + escHtml(g.sub) +
       ' <span class="sg-count">' + g.items.length + ' 件</span><span class="sg-arrow">▾</span></div>' +
@@ -2308,6 +2434,11 @@ function moveEquip(fromSlot, fromIdx, toSlot, toIdx) {
   if (fromSlot === toSlot && fromIdx === toIdx) return;
   var it = EQUIP[fromSlot] && EQUIP[fromSlot][fromIdx];
   if (!it) return;
+  // 锁定槽位（背包/旅行腰包退货、材料包未解锁）拒绝放入
+  if (typeof isSlotLocked === 'function' && isSlotLocked(toSlot)) {
+    toast('该槽位未装备/未解锁，无法放入', 'warn');
+    return;
+  }
   if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(toSlot) >= 0) {
     var bagType = (state.containerItems && state.containerItems[toSlot]) ? toSlot : '';
     var tags = itemBagHints(it.item);

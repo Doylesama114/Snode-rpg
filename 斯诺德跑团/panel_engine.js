@@ -4918,7 +4918,13 @@ function renderWeight(){
   var wt = state.carry_capacity;
 
 
-  document.getElementById("weight-block").innerHTML="<span>常规负重: "+wtReg+"kg</span><span>满载负重: "+wtFull+"kg</span><span>极限负重: "+wtMax+"kg</span><span class='weight-current'>当前负重: "+totalWeight+"kg</span>";
+  // 超限警告（v1.0.7229）：常规/满载/极限 三级
+  var _warnHtml = "";
+  var _curCls = "weight-current";
+  if (totalWeight > wtMax) { _warnHtml = " <span style='color:#c04030;font-weight:bold' title='负重超过极限上限'>⚠ 超极限负重</span>"; _curCls = "weight-current weight-over-max"; }
+  else if (totalWeight > wtFull) { _warnHtml = " <span style='color:#d08020;font-weight:bold' title='负重超过满载上限'>⚠ 超满载负重</span>"; _curCls = "weight-current weight-over-full"; }
+  else if (totalWeight > wtReg) { _warnHtml = " <span style='color:#c0a030;font-weight:bold' title='负重超过常规上限'>⚠ 超常规负重</span>"; _curCls = "weight-current weight-over-reg"; }
+  document.getElementById("weight-block").innerHTML="<span>常规负重: "+wtReg+"kg</span><span>满载负重: "+wtFull+"kg</span><span>极限负重: "+wtMax+"kg</span><span class='"+_curCls+"'>当前负重: "+totalWeight+"kg</span>"+_warnHtml;
 
 
 
