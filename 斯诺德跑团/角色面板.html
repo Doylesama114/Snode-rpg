@@ -1270,8 +1270,15 @@ function SB_calcTotalWeight() {
   }
   return tw;
 }
-function SB_findSkillMeta(name) {
+// 按 (name, src) 精确取技能数据；src 未命中时全局 fallback（兼容旧数据/缺 src 条目）
+function SB_findSkillMeta(name, src) {
   if (typeof SKILL_DATA === 'undefined' || !SKILL_DATA || !name) return null;
+  if (src && SKILL_DATA[src]) {
+    var arr0 = SKILL_DATA[src];
+    for (var i0 = 0; i0 < arr0.length; i0++) {
+      if (arr0[i0] && arr0[i0].name === name) return arr0[i0];
+    }
+  }
   for (var k in SKILL_DATA) {
     var arr = SKILL_DATA[k];
     if (!arr || !arr.length) continue;
@@ -1334,7 +1341,7 @@ function SB_buildTestData(st) {
   if (st.talent_tree) for (var ti = 0; ti < st.talent_tree.length; ti++) {
     var tg = st.talent_tree[ti];
     var tn = tg.n || tg.name || '';
-    var meta = SB_findSkillMeta(tn);
+    var meta = SB_findSkillMeta(tn, tg.cls || (st.classes && st.classes[0] && st.classes[0].name));
     var mf = (meta && meta.fields) || {};
     var tdesc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || tg.desc || '');
     var tfields = {
@@ -1359,7 +1366,7 @@ function SB_buildTestData(st) {
   if (st.skills) for (var si = 0; si < st.skills.length; si++) {
     var s = st.skills[si];
     if (!s || !(s.n || s.name)) continue;
-    var meta = SB_findSkillMeta(s.n || s.name);
+    var meta = SB_findSkillMeta(s.n || s.name, s.src);
     var mf = (meta && meta.fields) || {};
     var cast = mf['施展时间'] || '-';
     var fp = mf['疲劳消耗'] || '-';
@@ -1373,7 +1380,7 @@ function SB_buildTestData(st) {
     if (meta && meta.level_upgrades) for (var ui = 0; ui < meta.level_upgrades.length; ui++) if (meta.level_upgrades[ui] && meta.level_upgrades[ui].text) upArr.push(meta.level_upgrades[ui].text);
     var style = (meta && meta.style) || '';
     var cost = (meta && meta.cost) || [];
-    var entry = { n: s.n || s.name, style: style, cast: cast, range: range, dur: dur, fp: fp, kw: kw, cond: cond, ext: ext, desc: desc, descBody: [desc], up: upArr, marks: [], sub: false, react: cast === '反应动作', fieldRuns: (meta && meta.field_runs) || {}, descEntries: [], cost: cost };
+    var entry = { n: s.n || s.name, src: s.src || '', style: style, cast: cast, range: range, dur: dur, fp: fp, kw: kw, cond: cond, ext: ext, desc: desc, descBody: [desc], up: upArr, marks: [], sub: false, react: cast === '反应动作', fieldRuns: (meta && meta.field_runs) || {}, descEntries: [], cost: cost };
     if (s.sub || s.isSub) entry.sub = true;
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
   }

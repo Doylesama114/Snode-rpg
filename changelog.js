@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7230',
+    date: '2026-08-13',
+    changes: [
+      '修复：同名技能效果按职业精确取（奇械师魔法武器不再显示法师版本，214 组跨职业同名全覆盖，SB_findSkillMeta 增加 src 优先查找+全局回退）',
+      '修复：起始技能/起始天赋不再纳入风格自动判断（autoCalcStyles 天赋统计排除起始，与技能统计对齐；非起始同名天赋保留计入）',
+      '新增：scripts/verify_skill_dupes.mjs 同名技能校验（同名不同效果 89 组清单+同职业重名检测，接入 verify_all 发版检查）',
+      '加固：showSkillDetailFromAll 支持按职业精确查详情',
+      '测试：verify_store_e2e.mjs 新增 5 断言（60/60 全绿），tests.html 870 全绿'
+    ]
+  },
+
+
+  {
     version: '1.0.7229',
     date: '2026-08-13',
     changes: [

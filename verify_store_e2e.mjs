@@ -436,7 +436,43 @@ const persisted = await page.evaluate(() => {
 });
 ok('存档持久化（解锁+自定义物品）', persisted === 'ok', persisted);
 
-// 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
+// ===== 14.5 风格判断与同名技能效果（v1.0.7230） =====
+const styleTest = await page.evaluate(() => {
+  const out = {};
+  // 1) 起始技能 + 起始天赋 → 不计入风格
+  state = JSON.parse(JSON.stringify(state));
+  state.classes = [{ name: '法师', level: 1, styles: ['', '', '', ''], keyAttr: '智力' }, { name: '', level: 0, styles: ['', '', '', ''] }, { name: '', level: 0, styles: ['', '', '', ''] }];
+  state.skills = [{ n: '塑能箭', src: '法师', sub: '' }];
+  state.talent_tree = [{ n: '塑能箭', cls: '法师', tier: '一阶' }];
+  autoCalcStyles();
+  out.startingOnly = JSON.stringify(state.classes[0].styles);
+  // 2) 起始技能 + 真实风格技能 → 正确风格
+  state.skills = [{ n: '塑能箭', src: '法师', sub: '' }, { n: '火球术', src: '法师', sub: '' }];
+  state.talent_tree = [];
+  autoCalcStyles();
+  out.withNormal = JSON.stringify(state.classes[0].styles);
+  // 3) 非起始同名天赋保留计入（导入场景）
+  state.skills = [];
+  state.talent_tree = [{ n: '火球术', cls: '法师', tier: '一阶' }];
+  autoCalcStyles();
+  out.nonStartingTalent = JSON.stringify(state.classes[0].styles);
+  // 4) 同名技能效果按 src 精确取：奇械师魔法武器 vs 法师魔法武器
+  const mageMeta = SB_findSkillMeta('魔法武器', '法师');
+  const artiMeta = SB_findSkillMeta('魔法武器', '奇械师');
+  out.mageDesc = (mageMeta && mageMeta.description || []).join(' ').slice(0, 30);
+  out.artiDesc = (artiMeta && artiMeta.description || []).join(' ').slice(0, 30);
+  out.same = out.mageDesc === out.artiDesc;
+  // 5) fallback：无 src 时全局查仍可用
+  out.fallback = !!SB_findSkillMeta('魔法武器');
+  return out;
+});
+ok('起始技能+起始天赋不计入风格（styles 全空）', styleTest.startingOnly === '["","","",""]', styleTest.startingOnly);
+ok('起始技能+真实风格技能推断正确', styleTest.withNormal.includes('塑能'), styleTest.withNormal);
+ok('非起始同名天赋保留计入', styleTest.nonStartingTalent.includes('塑能'), styleTest.nonStartingTalent);
+ok('同名技能按 src 精确取效果（奇械师≠法师）', !styleTest.same, JSON.stringify({ 法师: styleTest.mageDesc, 奇械师: styleTest.artiDesc }));
+ok('无 src 时全局 fallback 正常', styleTest.fallback);
+
+// // 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
 const migrated = await page.evaluate(() => {
   const oldState = {
     name: 'E2E商店侠', containerItems: { '背包': '已解锁', '旅行腰包': '已解锁', '材料包A': '烹饪材料包', '材料包B': '草药材料包' },

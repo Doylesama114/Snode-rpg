@@ -888,6 +888,37 @@ function persistLevelUpSave() {
 
 
 
+/** 按名在 SKILL_DATA 中定位首个来源职业（用于无 cls 天赋的起始判定） */
+function findSkillSrcClass(name) {
+  for (var _key in SKILL_DATA) {
+    if (_key === "通用") continue;
+    var _arr = SKILL_DATA[_key];
+    if (!_arr) continue;
+    for (var _i = 0; _i < _arr.length; _i++) {
+      if (_arr[_i].name === name) return _key;
+    }
+  }
+  return '';
+}
+
+/** 判断技能/天赋名是否为该职业的起始特性（type=starting 或 REF_CLASSES.starting_features 匹配） */
+function isStartingSkill(name, srcCls) {
+  if (!name || !srcCls || srcCls === "通用") return false;
+  var _sd = SKILL_DATA[srcCls];
+  if (_sd) {
+    for (var _si = 0; _si < _sd.length; _si++) {
+      if (_sd[_si].name === name && _sd[_si].type === "starting") return true;
+    }
+  }
+  var _rc = REF_CLASSES[srcCls];
+  if (_rc && _rc.starting_features) {
+    for (var _rci = 0; _rci < _rc.starting_features.length; _rci++) {
+      if (_rc.starting_features[_rci].name === name) return true;
+    }
+  }
+  return false;
+}
+
 function autoCalcStyles(){
   // Preserve styles from upload/xlsx: skip only if styles were manually set (all 4 non-empty)
   for(var pi=0;pi<state.classes.length;pi++){
@@ -900,7 +931,7 @@ function autoCalcStyles(){
 
 
     var s=state.skills[i];if(!s.src||s.src==="通用")continue;
-    var _isST=!1;var _sd=SKILL_DATA[s.src];if(_sd){for(var _si=0;_si<_sd.length;_si++){if(_sd[_si].name===s.n&&_sd[_si].type==="starting"){_isST=!0;break;}}}var _rc=REF_CLASSES[s.src];if(!_isST&&_rc&&_rc.starting_features){for(var _rci=0;_rci<_rc.starting_features.length;_rci++){if(_rc.starting_features[_rci].name===s.n){_isST=!0;break;}}}if(_isST)continue;
+    if(isStartingSkill(s.n,s.src))continue;
 
     var ci=(s.sub&&s.sub!='')?1:0;
 
@@ -911,7 +942,11 @@ function autoCalcStyles(){
   // Count styles from talent tree
   for(var ti=0;ti<state.talent_tree.length;ti++){
     var t=state.talent_tree[ti];if(!t||!t.n)continue;
-    var tCls=t.cls||"";if(tCls==="通用")continue;var tStyle=tCls?getSkillStyle(t.n,tCls):findSkillStyleAnywhere(t.n);
+    var tCls=t.cls||"";if(tCls==="通用")continue;
+    // 起始特性天赋不计入风格判断（与技能统计一致）
+    if(tCls){if(isStartingSkill(t.n,tCls))continue;}
+    else{var _anyStyle=findSkillStyleAnywhere(t.n);if(_anyStyle){var _anyCls=findSkillSrcClass(t.n);if(_anyCls&&isStartingSkill(t.n,_anyCls))continue;}}
+    var tStyle=tCls?getSkillStyle(t.n,tCls):findSkillStyleAnywhere(t.n);
     if(!tStyle)continue;
     var tci=((t.sub&&t.sub!="")||(t.cls&&state.classes[1].name&&t.cls===state.classes[1].name))?1:0;
     if(!sc[tci])sc[tci]={};if(!sc[tci][tStyle])sc[tci][tStyle]=0;sc[tci][tStyle]++;}
@@ -6893,11 +6928,22 @@ function showSkillDetail(clsName, skillName) {
 
 
 
-function showSkillDetailFromAll(skillName) {
+function showSkillDetailFromAll(skillName, clsName) {
 
 
-  // Search all SKILL_DATA for a skill by name
+  // Search all SKILL_DATA for a skill by name (同名技能优先精确职业)
 
+  if (clsName && SKILL_DATA[clsName]) {
+    var _cArr = SKILL_DATA[clsName];
+    for (var _ci = 0; _ci < _cArr.length; _ci++) {
+      if (_cArr[_ci].name === skillName) {
+        var _sd2 = _cArr[_ci];
+        var _desc2 = formatSkillDetailHtml(_sd2);
+        showSkillPreview(skillName, _sd2.style || clsName, _sd2.tier || "", _desc2, null, clsName);
+        return;
+      }
+    }
+  }
 
   for (var cls in SKILL_DATA) {
 

@@ -83,6 +83,20 @@ if (process.env.VERIFY_VISUAL === '0') {
   totalErrors += visOK ? 0 : 1;
 }
 
+// 同名技能冲突校验（同名不同效果应人工核对；同职业重名报警）
+console.log('\n=== 同名技能校验 ===');
+let dupeOK = true;
+try {
+  let dupeOut = spawnSync('node', [join(BASE, 'scripts', 'verify_skill_dupes.mjs')], { encoding: 'utf-8', timeout: 60000 });
+  if (dupeOut.stdout) console.log(dupeOut.stdout.trim().slice(0, 2500));
+  if (dupeOut.status !== 0) dupeOK = false;
+} catch (e) {
+  dupeOK = false;
+  console.log('❌ 同名技能校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(dupeOK ? '✅ 同名技能校验通过' : '❌ 同名技能校验发现问题');
+totalErrors += dupeOK ? 0 : 1;
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
