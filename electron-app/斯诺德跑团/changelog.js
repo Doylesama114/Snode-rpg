@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7232',
+    date: '2026-08-13',
+    changes: [
+      '修复：兼职职业选择列表——移除角色面板旧版 showSubclassModal（要求空表格）覆盖，恢复 engine 完整兼职选择弹窗（14 职业/达标状态/选择写入）；兼职同名职业为允许规则（法师可兼职法师），列表保留主职业，兼容性由 incompatible 判定',
+      '修复：基础信息长名字显示——kv 从 5 列 grid 改为 2 列纵向（label 上/值下），长名字不再每行 2 字破碎显示；页头角色名 h1 单行不折行',
+      '加固：engine renderProfile 值 nowrap/ellipsis 防御',
+      '测试：verify_store_e2e.mjs 新增 6 断言（68/68 全绿）'
+    ]
+  },
+
+
+  {
     version: '1.0.7231',
     date: '2026-08-13',
     changes: [

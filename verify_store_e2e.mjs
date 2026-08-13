@@ -496,6 +496,66 @@ const portraitOK = await page.evaluate(async () => {
 ok('竖版立绘按宽等比缩放（非 160% 160% 压扁）', portraitOK.vertical.ratio === 0.5 && portraitOK.vertical.size === '160%', JSON.stringify(portraitOK.vertical));
 ok('横版立绘按高等比缩放', portraitOK.horizontal.ratio === 2 && portraitOK.horizontal.size === 'auto 160%', JSON.stringify(portraitOK.horizontal));
 
+// // ===== 14.9 兼职职业选择 + 长名字显示（v1.0.7232） =====
+const subclassOK = await page.evaluate(() => {
+  const out = {};
+  // 1) 主职业 7 级可打开兼职选择弹窗（engine window.showSubclassModal）
+  state = JSON.parse(JSON.stringify(state));
+  state.classes = [{ name: '法师', level: 7, styles: ['', '', '', ''], keyAttr: '智力' }, { name: '', level: 0, styles: ['', '', '', ''] }, { name: '', level: 0, styles: ['', '', '', ''] }];
+  // 达标数据：全属性 20 + 熟练度（法师兼职战士：力量/体质 13+13、力量熟练合计 4）
+  state.attrs = { '力量': 20, '敏捷': 20, '体质': 20, '智力': 20, '感知': 20, '魅力': 20, '幸运': 20, '意志': 20 };
+  state.profs = { '力量': { '运动': 4, '威力': 4, '承重': 4, '跳跃': 4, '攀爬': 4, '游泳': 4, '自定义': 4 }, '敏捷': { '体操': 4, '隐匿': 4, '骑乘': 4, '巧手-偷窃': 4 }, '体质': { '专注': 4, '耐力': 4 }, '智力': { '奥秘-魔法学识': 4, '逻辑': 4, '知识-历史': 4, '宗教': 4, '调查': 4, '估价': 4, '读唇': 4, '伪造': 4, '知识-地理': 4, '知识-人文': 4, '知识-政治': 4, '知识-神秘学': 4, '知识-工程学': 4, '知识-珠宝学': 4, '知识-草药学': 4, '知识-医药': 4, '知识-烹饪': 4, '知识-自定义': 4 }, '感知': { '洞悉': 4, '导航': 4, '自然': 4, '驯兽': 4, '感悟': 4, '聆听': 4, '察觉': 4 }, '魅力': { '欺瞒': 4, '恐吓': 4, '说服': 4, '表演-歌唱': 4, '表演-舞蹈': 4, '表演-自定义': 4 }, '意志': { '求生': 4 } };
+  window.showSubclassModal();
+  const overlay = document.querySelector('body > div:last-child');
+  const box = overlay ? overlay.querySelector('.popup-box') : null;
+  if (!box) { out.modalOpened = false; return out; }
+  out.modalOpened = true;
+  const rows = Array.from(box.querySelectorAll('div')).filter(d => d.children.length >= 2 && d.querySelector('button.subclassSelectBtn, span[style*="c62828"]'));
+  out.classNames = rows.map(r => (r.querySelector('span') || {}).textContent).filter(Boolean);
+  out.hasMage = out.classNames.includes('法师'); // 主职业不应出现
+  out.selectable = rows.filter(r => r.querySelector('.subclassSelectBtn')).length;
+  // 2) 选一个可兼职职业（战士：力量13体质13 达标需属性——法师 7 级默认属性可能不达标，直接找第一个可选并点击）
+  const btn = box.querySelector('.subclassSelectBtn');
+  if (btn) {
+    btn.click();
+    out.subSelected = (state.classes[1] && state.classes[1].name) || '';
+  } else {
+    out.subSelected = 'none selectable';
+  }
+  overlay.remove();
+  return out;
+});
+ok('兼职弹窗打开（职业列表出现）', subclassOK.modalOpened === true, JSON.stringify(subclassOK));
+ok('兼职列表允许同名职业（可兼职相同职业）', subclassOK.hasMage === true, JSON.stringify(subclassOK.classNames));
+ok('兼职列表含可选项（选择按钮）', (subclassOK.selectable || 0) >= 1, JSON.stringify(subclassOK));
+// 同名职业兼职直接验证（法师兼职法师）
+const sameClsOK = await page.evaluate(() => {
+  state.classes[1] = { name: '', level: 0, styles: ['', '', '', ''] };
+  window.selectSubclass('法师');
+  return (state.classes[1] && state.classes[1].name) || '';
+});
+ok('同名职业兼职写入成功（法师兼职法师）', sameClsOK === '法师', sameClsOK);
+
+// 长名字显示：kvChar 单行完整
+const longNameOK = await page.evaluate(() => {
+  state = JSON.parse(JSON.stringify(state));
+  state.name = '爱丽丝·玛格特罗伊德';
+  SB_reinit();
+  renderCharHeader();
+  const el = document.getElementById('kvChar');
+  if (!el) return { found: false };
+  el.textContent = state.name;
+  const r = el.getBoundingClientRect();
+  const st = getComputedStyle(el);
+  // 单行 = 元素高度接近行高（不换行）且文本完整可见
+  const oneLine = el.clientHeight <= Math.ceil(parseFloat(st.lineHeight || '17')) + 2;
+  const h1 = document.getElementById('charName');
+  const h1OneLine = h1 ? h1.clientHeight <= Math.ceil(parseFloat(getComputedStyle(h1).lineHeight || '32')) + 3 : null;
+  return { found: true, height: el.clientHeight, lineHeight: st.lineHeight, oneLine: oneLine, h1OneLine: h1OneLine };
+});
+ok('长名字 kvChar 单行显示（不再每行2字）', longNameOK.found && longNameOK.oneLine, JSON.stringify(longNameOK));
+ok('长名字页头 h1 单行', longNameOK.h1OneLine === true, 'h1OneLine=' + longNameOK.h1OneLine);
+
 // // 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
 const migrated = await page.evaluate(() => {
   const oldState = {

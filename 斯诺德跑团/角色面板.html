@@ -135,7 +135,7 @@ body{background:var(--bg);color:var(--ink);font-family:Microsoft YaHei,Noto Sans
 /* ===== 页头 ===== */
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 20px;flex-wrap:wrap}
 .char-id{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.char-id h1{font-size:27px;letter-spacing:1px}
+.char-id h1{font-size:27px;letter-spacing:1px;white-space:nowrap}
 .char-chips{display:flex;gap:6px;flex-wrap:wrap}
 .char-chips span{background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:2px 9px;font-size:12.5px;color:var(--muted)}
 .char-chips .battle-badge{display:none}
@@ -159,10 +159,10 @@ body.battle .btn-battle{background:var(--green)}
 .portrait-round .edit-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:11px;text-align:center;padding:3px 0;opacity:0;transition:opacity .15s}
 .portrait-round:hover .edit-badge{opacity:1}
 .portrait-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
-.kv{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
-.kv div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:3px 7px;min-width:0}
-.kv dt{color:var(--muted);font-size:11.5px;white-space:nowrap;flex:none}
-.kv dd{font-weight:bold;font-size:12.5px;text-align:right;word-break:break-word;min-width:0}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;flex:1}
+.kv div{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:4px 8px;min-width:0}
+.kv dt{color:var(--muted);font-size:11px;white-space:nowrap;flex:none}
+.kv dd{font-weight:bold;font-size:12.5px;text-align:left;word-break:break-word;min-width:0;line-height:1.35}
 /* 职业（紧凑行式） */
 .classes{display:flex;flex-direction:column;gap:5px;margin-top:2px}
 .cls{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -3274,43 +3274,7 @@ function renderSubclass() {
   btn.disabled = !canMulticlass;
   btn.textContent = canMulticlass ? '＋ 选择兼职职业' : '🔒 兼职需主职业 7 级（当前 ' + S.mainLv + ' 级）';
 }
-function showSubclassModal() {
-  var reqs = (T && T.subclassReqs) ? T.subclassReqs : {};
-  var names = Object.keys(reqs);
-  var rows = '';
-  var attrs = ATTR_VALS;
-  var learned = ATTR_LEARNED;
-  for (var i = 0; i < names.length; i++) {
-    var nm = names[i];
-    var r = reqs[nm];
-    var parts = [];
-    var ok = true;
-    for (var k in (r.attrs || {})) {
-      var need = r.attrs[k];
-      var have = attrs[k] || 0;
-      var met = have >= need;
-      if (!met) ok = false;
-      parts.push(k + ' ' + have + '/' + need + (met ? ' ✓' : ' ✗'));
-    }
-    if (r.profTotal) {
-      var total = 0;
-      for (var pi = 0; pi < (r.profNames || []).length; pi++) {
-        for (var ai = 0; ai < 8; ai++) {
-          var an = ATTR_ORDER[ai];
-          var v = (learned[an] || {})[r.profNames[pi]] || 0;
-          total += v;
-        }
-      }
-      var met2 = total >= r.profTotal;
-      if (!met2) ok = false;
-      parts.push('熟练 ' + total + '/' + r.profTotal + (met2 ? ' ✓' : ' ✗'));
-    }
-    rows += '<tr><td class="k">' + nm + '</td><td>' + parts.join(' · ') + (ok ? ' <b style="color:var(--green)">可兼职</b>' : ' <b style="color:var(--muted)">未达标</b>') + '</td></tr>';
-  }
-  var html = '<table class="skill-detail-table"><tr><td class="k">说明</td><td>主职业 ≥7 级可兼职一个不冲突的基础职业（真实要求数据）</td></tr>' + rows + '</table>';
-  document.getElementById('subclassBody').innerHTML = html;
-  document.getElementById('subclassOverlay').classList.add('show');
-}
+/* 兼职职业选择由 panel_engine.js 的 window.showSubclassModal 提供（v1.0.7232 起移除旧版要求表格） */
 function renderTraits() {
   var rt = '';
   var rl = T ? T.raceTraits : [];

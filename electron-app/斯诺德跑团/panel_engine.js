@@ -4454,7 +4454,7 @@ function renderProfile(){
     var d=infoData[ii];
     var col=ii<5?infoLeft:infoRight;
     var item=document.createElement("div");item.className="info-item";item.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--line);min-height:48px";
-    item.innerHTML="<span style=\"font-size:14px;color:var(--muted)\">"+d.f+"</span><span style=\"font-size:16px;color:var(--ink);font-weight:bold\">"+d.v+"</span>";
+    item.innerHTML="<span style=\"font-size:14px;color:var(--muted);flex:none\">"+d.f+"</span><span style=\"font-size:16px;color:var(--ink);font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0\">"+d.v+"</span>";
     col.appendChild(item);
   }
   infoCols.appendChild(infoLeft);infoCols.appendChild(infoRight);
@@ -7617,8 +7617,7 @@ window.showSubclassModal=function(){
   var allClasses=["蛮斗士","战士","法师","猎人","牧师","圣骑士","游荡者","德鲁伊","萨满祭司","术士","武僧","吟游诗人","魔契师","奇械师"];
   for(var i=0;i<allClasses.length;i++){
     var cn=allClasses[i]; var req=REF_SUBCLASS_REQS[cn]; if(!req)continue;
-    // Skip main class
-    
+    // 兼职同名职业是允许的（如法师兼职法师），主职业不跳过；兼容性由 REF_SUBCLASS_REQS.incompatible 判定
     var check=checkSubclassReq(mc.name,cn,state.attrs,state.profs);
     var attrDetail=check.attrDetail+(check.profDetail?" | "+check.profDetail:"");
     var allOK=check.ok;
