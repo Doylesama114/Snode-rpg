@@ -2503,7 +2503,9 @@ function parseEquipToSlots(text, charData){
         if(nm&&nm.length>1){
           var slot=determineEquipSlot(nm);
           if(!charData.equipment[slot])charData.equipment[slot]=[];
-          if(charData.equipment[slot].indexOf(nm)<0)charData.equipment[slot].push(nm);
+          var hasIt=false;
+          for(var _hi=0;_hi<charData.equipment[slot].length;_hi++){var _ei=charData.equipment[slot][_hi];if((_ei&&(_ei.item||_ei.name))===nm){hasIt=true;break;}}
+          if(!hasIt)charData.equipment[slot].push({item:nm});
         }
       }else{
         var segs=nm.split("+");
@@ -2512,7 +2514,9 @@ function parseEquipToSlots(text, charData){
         if(itemName&&itemName.length>1){
           var slot=determineEquipSlot(itemName);
           if(!charData.equipment[slot])charData.equipment[slot]=[];
-          if(charData.equipment[slot].indexOf(itemName)<0)charData.equipment[slot].push(itemName);
+          var hasIt2=false;
+          for(var _hi2=0;_hi2<charData.equipment[slot].length;_hi2++){var _ei2=charData.equipment[slot][_hi2];if((_ei2&&(_ei2.item||_ei2.name))===itemName){hasIt2=true;break;}}
+          if(!hasIt2)charData.equipment[slot].push({item:itemName});
           var contSlot=(itemName==="旅行腰包")?"旅行腰包":"背包";
           for(var si2=1;si2<segs.length;si2++){
             var cn=segs[si2].trim();
@@ -2520,7 +2524,9 @@ function parseEquipToSlots(text, charData){
             cn=cn.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
             if(cn&&cn.length>1){
               if(!charData.equipment[contSlot])charData.equipment[contSlot]=[];
-              if(charData.equipment[contSlot].indexOf(cn)<0)charData.equipment[contSlot].push(cn);
+              var hasIt3=false;
+              for(var _hi3=0;_hi3<charData.equipment[contSlot].length;_hi3++){var _ei3=charData.equipment[contSlot][_hi3];if((_ei3&&(_ei3.item||_ei3.name))===cn){hasIt3=true;break;}}
+              if(!hasIt3)charData.equipment[contSlot].push({item:cn});
             }
           }
         }
@@ -2564,15 +2570,15 @@ function parseEquipToSlots(text, charData){
     var slot=determineEquipSlot(itemName);
     if(!charData.equipment[slot]) charData.equipment[slot]=[];
     var dup=false;
-    for(var si=0;si<charData.equipment[slot].length;si++){if(charData.equipment[slot][si]===itemName){dup=true;break;}}
-    if(!dup) charData.equipment[slot].push(itemName);
+    for(var si=0;si<charData.equipment[slot].length;si++){var _eit=charData.equipment[slot][si];if(_eit&&(_eit.item||_eit.name)===itemName){dup=true;break;}}
+    if(!dup) charData.equipment[slot].push({item:itemName});
     if(contents){var _ts="背包";if(itemName==="旅行腰包")_ts="旅行腰包";if(itemName==="背包")_ts="背包";
       for(var ci2=0;ci2<contents.length;ci2++){
         var cn=contents[ci2].trim();
         if(!cn||/\d+枚/.test(cn)||cn.length<=1) continue;
         var _qOrig=cn;cn=cn.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
         for(var ak2 in toolAlias){if(cn.indexOf(ak2)>=0){cn=toolAlias[ak2];break;}}
-        if(cn&&cn.length>1){var _qcnt=_getQty(_qOrig);for(var _qi=0;_qi<_qcnt;_qi++)charData.equipment[_ts].push(cn)}
+        if(cn&&cn.length>1){var _qcnt=_getQty(_qOrig);for(var _qi=0;_qi<_qcnt;_qi++){var _dupC=false;for(var _ck=0;_ck<charData.equipment[_ts].length;_ck++){var _cit=charData.equipment[_ts][_ck];if(_cit&&(_cit.item||_cit.name)===cn){_dupC=true;break;}}if(!_dupC)charData.equipment[_ts].push({item:cn})}}
       }
     }
   }
@@ -2806,7 +2812,7 @@ function saveCharacter(){
   var charData={
     profs:{},
     player:CHAR.playerName||"玩家", name:CHAR.charName, race:CHAR.raceName, raceSize:CHAR.raceSize||"",
-    gender:CHAR.gender||"", age:CHAR.age||"", height:CHAR.height||"", weight:CHAR.weight||"",
+    gender:CHAR.gender||"", age:(typeof CHAR.age==="string"?CHAR.age.replace(/岁$/,""):(CHAR.age||"")), height:CHAR.height||"", weight:CHAR.weight||"",
     eye:CHAR.eye||"", skin:CHAR.skin||"", hair:CHAR.hair||"", portrait:"",
     xp:0,
     carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
@@ -2926,7 +2932,7 @@ function saveCharacter(){
   if(bd){
     var ms=(bd["资金"]||"").match(/(\d+)/);
     if(ms) charData.currency["金币"]=(charData.currency["金币"]||0)+parseInt(ms[1]);
-    if(bd["装备"]){var items=bd["装备"].split("\n");for(var i=0;i<items.length;i++){var it=items[i].trim();if(it){var _qn=_getQty(it);var _cn=it.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄条发盏颗封卷张帖袋捆顶份种项支门本]/,"").trim();if(_cn&&_cn.length>1){_cn=bgResolveItem(_cn);var _slot=bgItemSlot(_cn);if(!charData.equipment[_slot])charData.equipment[_slot]=[];for(var _qi=0;_qi<_qn;_qi++)charData.equipment[_slot].push(_cn)}}}}
+    if(bd["装备"]){var items=bd["装备"].split("\n");for(var i=0;i<items.length;i++){var it=items[i].trim();if(it){var _qn=_getQty(it);var _cn=it.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄条发盏颗封卷张帖袋捆顶份种项支门本]/,"").trim();if(_cn&&_cn.length>1){_cn=bgResolveItem(_cn);var _slot=bgItemSlot(_cn);if(!charData.equipment[_slot])charData.equipment[_slot]=[];for(var _qi=0;_qi<_qn;_qi++){var _dupB=false;for(var _bk=0;_bk<charData.equipment[_slot].length;_bk++){var _bit=charData.equipment[_slot][_bk];if(_bit&&(_bit.item||_bit.name)===_cn){_dupB=true;break;}}if(!_dupB)charData.equipment[_slot].push({item:_cn})}}}}}
     charData.background=CHAR.bgName;
     if(bd["特性描述"]) charData.traits=bd["特性描述"];
   }
@@ -2954,7 +2960,7 @@ function saveCharacter(){
     for(var i=0;i<CHAR.selectedFeatures.length;i++){
       var fn=CHAR.selectedFeatures[i];
       if(fn==="基础材料学"){
-        // 初始图纸：写入专业槽位（blueprints），不写入技能列表
+        // 初始图纸：写入专业槽位（blueprints）
         if(!charData.blueprints)charData.blueprints=[];
         var bpList=CHAR.bpPicks||[];
         for(var bpi=0;bpi<bpList.length;bpi++){
@@ -2963,13 +2969,14 @@ function saveCharacter(){
           for(var bj=0;bj<charData.blueprints.length;bj++){if((charData.blueprints[bj].n||charData.blueprints[bj].name)===bpN){bpDup=true;break;}}
           if(!bpDup)charData.blueprints.push({id:"",n:bpN,src:CHAR.className,tier:"一阶",note:""});
         }
+        charData.talent_tree.push({n:fn,src:CHAR.className,tier:"一阶",desc:fd?fd.d:""});
         continue;
       }
       var fd=null;
       for(var j=0;j<featData.length;j++){if(featData[j].n===fn){fd=featData[j];break;}}
       var hasTalent=(fn.indexOf("天赋")>=0||(fd&&fd.d&&fd.d.indexOf("天赋")>=0)||(typeof SKILL_TIER!=='undefined'&&SKILL_TIER[fn]));
       // Known天赋 skills that don't have "天赋" in name/desc
-      var knownTalents=["预知梦","闪电链","盲目信念","预知攻击","光环掌握","自然之友","坊间逸闻","神秘专家","奇械构装","生命之息","人之勇气"];
+      var knownTalents=["预知梦","闪电链","盲目信念","预知攻击","光环掌握","自然之友","坊间逸闻","神秘专家","奇械构装","生命之息","人之勇气","同调协手","基础材料学"];
       if(!hasTalent&&knownTalents.indexOf(fn)>=0)hasTalent=true;
       if(hasTalent){
         charData.talent_tree.push({n:fn,src:CHAR.className,tier:"一阶",desc:fd?fd.d:""});

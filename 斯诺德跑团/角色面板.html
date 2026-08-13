@@ -1733,7 +1733,7 @@ function renderCharHeader() {
   if (el) el.textContent = c.name || '角色';
   var chips = document.getElementById('charChips');
   if (chips) {
-    var html = '<span>' + (c.race || '—') + '</span><span>' + (c.gender || '—') + '</span><span>' + (c.age || '—') + '岁</span>';
+    var html = '<span>' + (c.race || '—') + '</span><span>' + (c.gender || '—') + '</span><span>' + String(c.age || '—').replace(/岁$/, '') + '岁</span>';
     var m0 = T.classes && T.classes[0];
     var s0 = T.classes && T.classes[1];
     if (m0) html += '<span>' + m0.name + ' ' + m0.level + '级</span>';
@@ -2524,6 +2524,12 @@ function avatarZoomChange(v) {
 }
 function applyAvatar() {
   avatarStyle(document.getElementById('portrait'));
+  if (typeof state !== 'undefined') {
+    state.avatar_zoom = AV.zoom;
+    state.avatar_px = AV.px;
+    state.avatar_py = AV.py;
+    state._dirty = true;
+  }
   closeOverlay('avatarOverlay');
   toast('头像已更新');
 }
@@ -3212,25 +3218,48 @@ function SB_pickPortrait() {
     var file = e.target.files[0];
     if (!file) return;
     var reader = new FileReader();
-    reader.onload = function(ev) { state.portrait = ev.target.result; state._dirty = true; window.render(); };
+    reader.onload = function(ev) {
+      state.portrait = ev.target.result;
+      state._dirty = true;
+      SB_openAvatarAdjust();
+    };
     reader.readAsDataURL(file);
   };
   inp.click();
 }
-window.openAvatar = SB_pickPortrait;
+function SB_openAvatarAdjust() {
+  var c = document.getElementById('avatarCanvas');
+  var p = document.getElementById('avatarPreview');
+  var img = state.portrait ? 'url("' + state.portrait + '")' : '';
+  if (c) { c.style.backgroundImage = img; avatarStyle(c); }
+  if (p) { p.style.backgroundImage = img; avatarStyle(p); }
+  var z = document.getElementById('avatarZoom');
+  if (z) z.value = AV.zoom;
+  var zv = document.getElementById('avatarZoomVal');
+  if (zv) zv.textContent = AV.zoom + '%';
+  document.getElementById('avatarOverlay').classList.add('show');
+}
+window.openAvatar = function() {
+  if (state && state.portrait) { SB_openAvatarAdjust(); return; }
+  SB_pickPortrait();
+};
 function SB_renderPortrait() {
   var pr = document.querySelector('.portrait-round');
   if (!pr) return;
   var badge = pr.querySelector('.edit-badge');
   if (state.portrait) {
-    var img = pr.querySelector('img');
-    if (!img) {
-      img = document.createElement('img');
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
-      pr.insertBefore(img, pr.firstChild);
+    if (typeof AV !== 'undefined') {
+      if (typeof state.avatar_zoom === 'number') AV.zoom = state.avatar_zoom;
+      if (typeof state.avatar_px === 'number') AV.px = state.avatar_px;
+      if (typeof state.avatar_py === 'number') AV.py = state.avatar_py;
     }
-    img.src = state.portrait;
+    pr.style.backgroundImage = 'url("' + state.portrait + '")';
+    if (typeof AV !== 'undefined') avatarStyle(pr);
+    var img = pr.querySelector('img');
+    if (img) img.style.display = 'none';
     if (badge) badge.textContent = '✎ 更换立绘';
+  } else {
+    if (badge) badge.textContent = '✎ 设置头像';
   }
 }
 /* Fix3：兼职按钮（已兼职不显示锁定） */
