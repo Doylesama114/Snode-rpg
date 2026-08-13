@@ -300,7 +300,7 @@ body.battle .btn-battle{background:var(--green)}
 .store-item .si-refund{flex:none;background:#5a5a5a;color:#fff;border:none;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
 .store-item .si-refund:hover{background:#7a7a7a}
 .store-item .si-cat{display:inline-block;font-size:11px;color:#5a7a9a;background:#e8f0f8;border-radius:4px;padding:1px 6px;margin-right:8px}
-.store-group{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.store-group{border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
 .store-group-head{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--panel);cursor:pointer;font-size:13px;font-weight:bold;color:var(--ink);user-select:none}
 .store-group-head:hover{background:var(--line)}
 .store-group-head .sg-count{font-size:11px;color:var(--muted);font-weight:normal}
@@ -718,7 +718,6 @@ body.battle .fab{display:none}
       <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
       <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
       <button class="btn-ghost" onclick="openStore()">🏪 商店</button>
-      <button class="btn-ghost" onclick="openCustomManager()">➕ 自定义</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
       <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
       <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
@@ -948,8 +947,11 @@ body.battle .fab{display:none}
     <div class="bp-grid" id="bpGrid"></div>
   </section>
 <section class="card equip-host-card">
-    <h2>装备栏 <span class="sub">点击物品选中 → 点击目标槽移动 · 右键可拆分堆叠</span></h2>
+    <h2>装备栏 <span class="sub">单击物品查看详情 · 拖拽移动 · 右键拆分堆叠</span>
+      <button class="btn-ghost" onclick="openCustomManager()" style="float:right;padding:3px 12px;font-size:12.5px">➕ 自定义物品</button>
+    </h2>
     <div class="equip-grid" id="equipGrid"></div>
+    <div class="equip-hint" id="equipHint" style="margin-top:8px;font-size:12px;color:var(--muted)">💡 材料包可在商店购买（🏪 商店 → 容器分类），购买后自动解锁对应存放空间</div>
   </section>
 </div>
 
@@ -1518,14 +1520,14 @@ function renderEquip() {
   var html = '';
   for (var si = 0; si < EQUIP_ORDER.length; si++) {
     var slot = EQUIP_ORDER[si];
+    var isBag = typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0;
+    // 材料包：未购买（未解锁）不显示，购买后自动出现对应槽位
+    if (isBag && !(typeof state !== 'undefined' && state.containerItems && state.containerItems[slot])) continue;
     var items = EQUIP[slot] || [];
     var filled = items.filter(function(x){ return x; }).length;
-    var isBag = typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(slot) >= 0;
-    var locked = isBag && !(typeof state !== 'undefined' && state.containerItems && state.containerItems[slot]);
     var title = slot;
-    title = title + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
-    html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span>' +
-      (locked ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
+    html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + filled + '/' + items.length + '</span>' +
+      '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button></h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       if (it) {
@@ -1534,13 +1536,22 @@ function renderEquip() {
         html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" draggable="true" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)" ondragstart="eqDragStart(event,this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)" ondragend="eqDragEnd()" title="单击详情 · 拖拽移动 · 右键拆分">' +
           '<span>' + it.item + cnt + '</span>' + (it.w ? '<span class="w">' + it.w + '</span>' : '') + '</div>';
       } else {
-        var txt = locked ? '未购买' : '空栏位';
-        html += '<div class="eq-empty" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)">' + txt + '</div>';
+        html += '<div class="eq-empty" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)">空栏位</div>';
       }
     }
     html += '</div></div>';
   }
   grid.innerHTML = html;
+  // 材料包提示：存在未购买的材料包时显示
+  var _hint = document.getElementById('equipHint');
+  if (_hint) {
+    var _lockedAny = false;
+    for (var _bi2 = 0; _bi2 < (typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS : []).length; _bi2++) {
+      var _bs2 = BAG_SLOTS[_bi2];
+      if (!(state.containerItems && state.containerItems[_bs2])) { _lockedAny = true; break; }
+    }
+    _hint.style.display = _lockedAny ? '' : 'none';
+  }
 }
 function eqClick(el) {
   var slot = el.getAttribute('data-slot');
@@ -2267,8 +2278,12 @@ function findAnyFreeSlot(slot) {
   var order = ['主手武器', '副手武器', '防具', '配饰', '背包', '旅行腰包'].concat(typeof BAG_SLOTS !== 'undefined' ? BAG_SLOTS : []).concat(['杂物包']);
   for (var i = 0; i < order.length; i++) {
     if (order[i] === slot) continue;
-    var arr = EQUIP[order[i]] || [];
-    for (var j = 0; j < arr.length; j++) if (!arr[j]) return order[i];
+    // 材料包：只找已购买（已解锁）的槽位
+    var _os = order[i];
+    if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(_os) >= 0 &&
+        !(state.containerItems && state.containerItems[_os])) continue;
+    var arr = EQUIP[_os] || [];
+    for (var j = 0; j < arr.length; j++) if (!arr[j]) return _os;
   }
   return null;
 }

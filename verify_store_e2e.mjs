@@ -64,6 +64,16 @@ await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 15000 });
 await page.waitForTimeout(800);
 ok('页面加载无 JS 错误', errors.length === 0, errors.join(' | '));
 
+// ===== 0.5 页头与装备栏按钮 =====
+const btnCheck = await page.evaluate(() => {
+  const headBtns = Array.from(document.querySelectorAll('.head-actions button, header button')).map(b => (b.textContent || '').trim());
+  const equipCard = document.querySelector('.equip-host-card');
+  const equipBtns = equipCard ? Array.from(equipCard.querySelectorAll('button')).map(b => (b.textContent || '').trim()) : [];
+  return { headCustom: headBtns.includes('➕ 自定义'), equipCustom: equipBtns.some(t => t.includes('自定义')) };
+});
+ok('页头不再有自定义按钮', !btnCheck.headCustom);
+ok('装备栏卡片有自定义按钮', btnCheck.equipCustom);
+
 // 1. 打开商店
 await page.evaluate(() => window.openStore());
 await page.waitForTimeout(200);
@@ -85,6 +95,24 @@ await page.evaluate(() => { const el = document.querySelector('#storeList .store
 await page.waitForTimeout(100);
 const expanded = await page.$eval('#storeList .store-group >> nth=0', e => !e.classList.contains('collapsed'));
 ok('再次点击展开', expanded);
+
+// ===== 2.5 商店滚动与物品可见性（修复：flex 压缩） =====
+const scrollOK = await page.evaluate(() => {
+  const list = document.getElementById('storeList');
+  const items = Array.from(document.querySelectorAll('#storeList .store-item'));
+  const sample = items.slice(0, 5).map(el => el.getBoundingClientRect().height);
+  const before = list.scrollTop;
+  list.scrollTop = 500;
+  const changed = list.scrollTop !== before;
+  list.scrollTop = 0;
+  return {
+    scrollable: list.scrollHeight > list.clientHeight,
+    changed: changed,
+    sampleHeights: sample
+  };
+});
+ok('商店列表可滚动（修复 flex 压缩）', scrollOK.scrollable && scrollOK.changed, JSON.stringify(scrollOK));
+ok('物品卡高度正常（>40px）', scrollOK.sampleHeights.every(h => h > 40), JSON.stringify(scrollOK.sampleHeights));
 
 // 3. 搜索（武器分类）
 await page.evaluate(() => { STORE_CAT = '武器'; renderStore(); });
@@ -191,6 +219,29 @@ await page.fill('#cfEffect', '挥砍造成2D6伤害');
 await page.click('#customFormOverlay .ok');
 await page.waitForTimeout(200);
 ok('全新自定义「测试神剑」已保存', await page.evaluate(() => !!customItemByName('测试神剑')));
+
+// ===== 10.5 材料包按购买显示 =====
+const bagDisp0 = await page.evaluate(() => {
+  if (state.containerItems['裁缝材料包']) refundItem('裁缝材料包');
+  renderEquip();
+  const titles = Array.from(document.querySelectorAll('#equipGrid .equip-slot h3')).map(h => h.textContent);
+  return { titles: titles, bagTitles: titles.filter(t => t.includes('材料包')), hintVisible: (document.getElementById('equipHint').style.display !== 'none') };
+});
+ok('未购买材料包不显示（仅草药材料包）', bagDisp0.bagTitles.length === 1 && bagDisp0.bagTitles[0].includes('草药材料包'), JSON.stringify(bagDisp0.titles));
+ok('材料包提示行可见', bagDisp0.hintVisible);
+const bagDisp1 = await page.evaluate(() => {
+  for (const b of BAG_SLOTS) state.containerItems[b] = '已解锁';
+  renderEquip();
+  const titles = Array.from(document.querySelectorAll('#equipGrid .equip-slot h3')).map(h => h.textContent);
+  return { bagTitles: titles.filter(t => t.includes('材料包')), hintHidden: (document.getElementById('equipHint').style.display === 'none'), total: titles.length };
+});
+ok('全部购买后 9 个材料包槽位全显示', bagDisp1.bagTitles.length === 9, JSON.stringify(bagDisp1));
+ok('全购买后提示行隐藏', bagDisp1.hintHidden);
+await page.evaluate(() => {
+  for (const b of BAG_SLOTS) if (b !== '草药材料包') state.containerItems[b] = '';
+  renderEquip();
+});
+await page.waitForTimeout(100);
 
 // 11. 单击物品 → 详情表格
 await page.evaluate(() => { window.renderEquip(); });
