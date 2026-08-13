@@ -714,12 +714,12 @@ body.battle .fab{display:none}
     </div>
     <div class="head-actions">
       <button class="btn-battle" id="battleToggle" onclick="toggleBattle()">⚔ 进入战斗</button>
-      <button class="btn-primary" onclick="toast('测试页：学习面板未接入')">📚 学习技能</button>
+      <button class="btn-primary" onclick="toggleLearnMode()">📚 学习技能</button>
       <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
-      <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
+      <button class="btn-ghost" onclick="exportCurrentXlsx()">📄 导出档案</button>
       <button class="btn-ghost" onclick="openStore()">🏪 商店</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
-      <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
+      <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) toast('已保存到存档位'+s); })">💾 保存</button>
       <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
       <button class="btn-ghost" onclick="startRecreateFromPanel()">🔁 重新车卡</button>
     </div>
@@ -1017,7 +1017,7 @@ body.battle .fab{display:none}
         <b id="itCount" style="font-size:15px;min-width:28px;text-align:center">1</b>
         <button class="ok" id="itInc" style="padding:4px 12px">＋</button>
         <span style="flex:1"></span>
-        <button class="cancel" id="itMoveBtn" onclick="moveFromDetail()" style="padding:6px 14px;background:#4a6a8a;color:#fff;border:none;border-radius:6px;cursor:pointer">移动</button>
+        <button class="cancel" id="itMoveBtn" style="padding:6px 14px;background:#4a6a8a;color:#fff;border:none;border-radius:6px;cursor:pointer">移动</button>
         <button class="cancel" id="itRemoveBtn" style="padding:6px 14px;background:#a04030;color:#fff;border:none;border-radius:6px;cursor:pointer">移除</button>
       </div>
     </div>

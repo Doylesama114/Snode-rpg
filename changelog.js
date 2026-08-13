@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7235',
+    date: '2026-08-13',
+    changes: [
+      '改良：alert 统一替换为 toast（Electron contextIsolation 下 alert 不可见，学习/升级/保存/导出/专长/图纸/兼职等 51 处校验反馈全部可见，SB_toast 优先 toast 无 toast 环境回退 alert）',
+      '改良：页头「学习技能」「导出档案」按钮直接接入真实功能（不再依赖运行时占位替换）',
+      '改良：详情弹层「移动」按钮清理无效初始 onclick（运行时 setAttribute 提供）',
+      '保存成功提示 alert 改 toast'
+    ]
+  },
+
+
+  {
     version: '1.0.7234',
     date: '2026-08-13',
     changes: [

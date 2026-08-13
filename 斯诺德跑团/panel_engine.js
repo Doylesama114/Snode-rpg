@@ -1,4 +1,10 @@
 var ATTR_NAMES=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+/** alert 替代：Electron（contextIsolation）下 alert 不可见；优先 toast，无 toast 环境回退 alert（v1.0.7235） */
+function SB_toast(msg, cls) {
+  if (typeof window !== 'undefined' && window.toast) { window.toast(msg, cls || 'warn'); return; }
+  if (typeof window !== 'undefined' && window.alert) { window.alert(msg); }
+}
+
 function canonicalSkillStyle(style) {
   if (!style) return "";
   var s = String(style).trim();
@@ -257,7 +263,7 @@ function getStateSnapshot() {
 
 function saveState(slotIndex) {
   var charName = CURRENT_CHAR || state.name;
-  if (!charName) { alert("没有角色可保存"); return false; }
+  if (!charName) { SB_toast("没有角色可保存"); return false; }
   var si = slotIndex || CURRENT_SLOT || 1;
   var key = getSaveKey(charName, si);
   var snapshot = getStateSnapshot();
@@ -268,7 +274,7 @@ function saveState(slotIndex) {
     CURRENT_SLOT = si;
     return true;
   } catch(e) {
-    alert("保存失败: " + e.message);
+    SB_toast("保存失败: " + e.message);
     return false;
   }
 }
@@ -479,7 +485,7 @@ function getRecreateUnavailableReason(st) {
 
 function startRecreateFromPanel() {
   if (!hasCreationSnapshot(state)) {
-    alert(getRecreateUnavailableReason(state));
+    SB_toast(getRecreateUnavailableReason(state));
     return;
   }
   if (hasProgressBeyondCreation(state)) {
@@ -494,7 +500,7 @@ function startRecreateFromPanel() {
         snapshot: state._creationSnapshot
       }));
     } catch (e) {
-      alert("无法启动重新车卡：" + (e && e.message ? e.message : e));
+      SB_toast("无法启动重新车卡：" + (e && e.message ? e.message : e));
       return;
     }
     window.location.href = "角色创建页.html?recreate=1";
@@ -1487,7 +1493,7 @@ function addBlueprintEntry(entry, opts) {
   }
   ruleCap = calcBlueprintSlots();
   if (!opts.silent && state.blueprints.length >= ruleCap) {
-    alert("\u5f53\u524d\u56fe\u7eb8\u6570\u5df2\u8fbe\u6216\u8d85\u8fc7\u89c4\u5219\u4e0a\u9650\uff08" + ruleCap + "\uff09\uff0c\u4ecd\u53ef\u8bb0\u5f55\uff08\u7269\u7406\u683c\u5b50 " + BLUEPRINT_EXPORT_SLOTS + "\uff09");
+    SB_toast("\u5f53\u524d\u56fe\u7eb8\u6570\u5df2\u8fbe\u6216\u8d85\u8fc7\u89c4\u5219\u4e0a\u9650\uff08" + ruleCap + "\uff09\uff0c\u4ecd\u53ef\u8bb0\u5f55\uff08\u7269\u7406\u683c\u5b50 " + BLUEPRINT_EXPORT_SLOTS + "\uff09");
   }
   state.blueprints.push({
     id: entry.id || "",
@@ -1587,7 +1593,7 @@ function canLearnSkill(skillData) {
 
 function payForSkill(skillData) {
   var check = canLearnSkill(skillData);
-  if (!check.ok) { alert(check.reason); return false; }
+  if (!check.ok) { SB_toast(check.reason); return false; }
   if (skillHasCost(skillData)) { ensureSpState(); state.sp_points--; }
   return true;
 }
@@ -3285,7 +3291,7 @@ function confirmMultiProf(maxCount) {
   var pending = window._multiProfPending;
   if (!pending) return;
   if (pending.selected.length !== maxCount) {
-    alert("请选择恰好" + maxCount + "项熟练项");
+    SB_toast("请选择恰好" + maxCount + "项熟练项");
     return;
   }
   closeReplaceModal();
@@ -3879,7 +3885,7 @@ function selectFeatProf(featName, profKey) {
     if (attr) payload = {attr: attr, key: profKey};
   }
   if (!payload) {
-    alert("无法识别熟练项「" + profKey + "」");
+    SB_toast("无法识别熟练项「" + profKey + "」");
     return;
   }
   if (pending.onConfirm) pending.onConfirm(payload);
@@ -3933,7 +3939,7 @@ function confirmMultiAttr(featName, maxCount) {
   var pending = window._multiAttrPending;
   if (!pending) return;
   if (pending.selected.length !== maxCount) {
-    alert("请选择恰好" + maxCount + "项属性");
+    SB_toast("请选择恰好" + maxCount + "项属性");
     return;
   }
   closeReplaceModal();
@@ -4032,7 +4038,7 @@ function addSpecialFeat(name, choices) {
           else if (fixedT && fixedT.attr && fixedT.key) entryProfs.push({attr: fixedT.attr, key: fixedT.key});
           else if (eff.proficiency.type === "professional") entryProfs.push({custom: eff.proficiency.name});
           else {
-            alert("无法解析熟练项「" + eff.proficiency.name + "」");
+            SB_toast("无法解析熟练项「" + eff.proficiency.name + "」");
             return;
           }
           addSpecialFeat(name, {profs: entryProfs});
@@ -4140,7 +4146,7 @@ function addSpecialFeat(name, choices) {
 function closeSpecialFeatSelector() {
   closeReplaceModal();
   if (window._pendingLevelUp) {
-    alert("升级未完成：属性/熟练奖励已保留，请再次点击「升级」继续选择专长或完成升级。");
+    SB_toast("升级未完成：属性/熟练奖励已保留，请再次点击「升级」继续选择专长或完成升级。");
   }
 }
 
@@ -5536,7 +5542,7 @@ function addBlueprintManual() {
   if (!name) return;
   if (!isBlueprintName(name)) name = name + "（图纸）";
   var res = addBlueprintEntry({ id: "", n: name, src: "手动", tier: "", note: "" });
-  if (!res.ok) { alert(res.reason || "添加失败"); return; }
+  if (!res.ok) { SB_toast(res.reason || "添加失败"); return; }
   render();
 }
 
@@ -5552,7 +5558,7 @@ function editBlueprintBonusSlots() {
   var v = prompt("手动专业槽位加成（如万用模组等，不含独具匠心）", String(cur));
   if (v === null) return;
   var n = parseInt(v, 10);
-  if (isNaN(n)) { alert("请输入数字"); return; }
+  if (isNaN(n)) { SB_toast("请输入数字"); return; }
   state.blueprint_bonus_slots = n;
   render();
 }
@@ -6183,7 +6189,7 @@ function guardLinkSkill(skillName, clsName, isSub, isLocked, slotClsIdx) {
   if (_sl.some(function(_x){ return _x.n === _glk; })) return;
   var _ms = calcSkillSlots(slotClsIdx);
   var _oc = listOccupiedSkills(slotClsIdx);
-  if (_oc.length >= _ms) { alert("\u6280\u80fd\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glk + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u6280\u80fd"); return; }
+  if (_oc.length >= _ms) { SB_toast("\u6280\u80fd\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glk + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u6280\u80fd"); return; }
   for (var _li = 0; _li < _clsData.length; _li++) {
     if (_clsData[_li].name === _glk) {
       _sl.push(buildSkillListEntry(_clsData[_li], clsName, isSub, isLocked));
@@ -6202,7 +6208,7 @@ function guardLinkTalent(skillName, clsName, isSub, isLocked) {
   var _tcap = getTalentTierlotCap("\u4e8c\u9636");
   var _cnt2 = 0;
   for (var _ti2 = 0; _ti2 < _tl2.length; _ti2++) { if (_tl2[_ti2].tier === "\u4e8c\u9636") _cnt2++; }
-  if (_cnt2 >= _tcap) { alert("\u4e8c\u9636\u5929\u8d4b\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glt + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u4e8c\u9636\u5929\u8d4b"); return; }
+  if (_cnt2 >= _tcap) { SB_toast("\u4e8c\u9636\u5929\u8d4b\u680f\u5df2\u6ee1\uff0c\u65e0\u6cd5\u8054\u52a8\u83b7\u5f97" + _glt + "\uff1b\u53ef\u5148\u5378\u8f7d\u4e00\u4e2a\u4e8c\u9636\u5929\u8d4b"); return; }
   for (var _gi2 = 0; _gi2 < _clsData.length; _gi2++) {
     if (_clsData[_gi2].name === _glt) {
       _tl2.push({id:_clsData[_gi2].id, n:_glt, cls:clsName, tier:"\u4e8c\u9636", sub:isSub, locked:isLocked});
@@ -6217,7 +6223,7 @@ function guardUnlinkTalent(skillName) {
   var _tt2 = state.talent_tree || [];
   for (var _ti3 = 0; _ti3 < _tt2.length; _ti3++) {
     if (_tt2[_ti3].n === _glu) {
-      if (_tt2[_ti3].locked) { alert(_glu + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u6280\u80fd\u79fb\u9664"); return; }
+      if (_tt2[_ti3].locked) { SB_toast(_glu + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u6280\u80fd\u79fb\u9664"); return; }
       _tt2.splice(_ti3, 1); break;
     }
   }
@@ -6229,7 +6235,7 @@ function guardUnlinkSkill(skillName) {
   var _sl2 = state.skills;
   for (var _si2 = 0; _si2 < _sl2.length; _si2++) {
     if (_sl2[_si2].n === _gls) {
-      if (_sl2[_si2].locked) { alert(_gls + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u5929\u8d4b\u79fb\u9664"); return; }
+      if (_sl2[_si2].locked) { SB_toast(_gls + " \u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u968f\u5929\u8d4b\u79fb\u9664"); return; }
       _sl2.splice(_si2, 1); break;
     }
   }
@@ -6322,7 +6328,7 @@ function learnSkill(clsName, skillName, clsIdx) {
       var currentInSlot = countOccupiedSkillSlots(slotClsIdx);
 
 
-      if (currentInSlot >= skillSlots) { alert("\u6280\u80fd\u680f\u4f4d\u4e0d\u8db3\uff0c\u65e0\u6cd5\u83b7\u5f97" + grants[gi]); continue; }
+      if (currentInSlot >= skillSlots) { SB_toast("\u6280\u80fd\u680f\u4f4d\u4e0d\u8db3\uff0c\u65e0\u6cd5\u83b7\u5f97" + grants[gi]); continue; }
 
 
       // Add the granted skill
@@ -6364,7 +6370,7 @@ function learnSkill(clsName, skillName, clsIdx) {
     _bpRes = addBlueprintEntry({ id: skillData.id, n: skillData.name, src: clsName, tier: skillData.tier || "", note: "" });
     if (!_bpRes.ok) {
       refundSkillPoint(skillData);
-      alert(_bpRes.reason || "无法学习图纸");
+      SB_toast(_bpRes.reason || "无法学习图纸");
       return;
     }
     autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel();
@@ -6391,7 +6397,7 @@ function learnSkill(clsName, skillName, clsIdx) {
     var countInTier=0;for(var ti=0;ti<tl.length;ti++){if(tl[ti].tier===_st)countInTier++;}
 
     var _tierCap=getTalentTierlotCap(_st);
-    if(countInTier>=_tierCap){alert(_st+"\u5929\u8d4b\u680f\u5df2\u6ee1\uff08\u6700\u591a"+_tierCap+"\u4e2a\uff09");return;}
+    if(countInTier>=_tierCap){SB_toast(_st+"\u5929\u8d4b\u680f\u5df2\u6ee1\uff08\u6700\u591a"+_tierCap+"\u4e2a\uff09");return;}
 
 
     // Check duplicate talent
@@ -6403,7 +6409,7 @@ function learnSkill(clsName, skillName, clsIdx) {
     for (var ti = 0; ti < tl.length; ti++) { if (tl[ti].n === skillData.name && (!tl[ti].cls || tl[ti].cls === clsName)) { dupFound = true; break; } if (tl[ti].n === skillData.name && tl[ti].cls && tl[ti].cls !== clsName) { crossLocked = true; } }
 
 
-    if (dupFound) { alert("\u8be5\u5929\u8d4b\u6280\u80fd\u5df2\u5b66\u4e60\uff0c\u65e0\u6cd5\u91cd\u590d\u5b66\u4e60"); return; } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u5929\u8d4b\u9501\u5b9a"); return; }
+    if (dupFound) { SB_toast("\u8be5\u5929\u8d4b\u6280\u80fd\u5df2\u5b66\u4e60\uff0c\u65e0\u6cd5\u91cd\u590d\u5b66\u4e60"); return; } if (crossLocked) { SB_toast("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u5929\u8d4b\u9501\u5b9a"); return; }
 
     // 磨炼技艺: pick a proficiency before completing learn
     if (skillData.name === "磨炼技艺") {
@@ -6441,14 +6447,14 @@ function learnSkill(clsName, skillName, clsIdx) {
     var maxSlots = calcSkillSlots(slotClsIdx); var skillList = state.skills.slice(); var clsSkills = listOccupiedSkills(slotClsIdx);
 
 
-var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { alert("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { alert("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
+var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { SB_toast("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { SB_toast("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
 
 
     if (clsSkills.length > maxSlots) {
       var overflow = clsSkills.length - maxSlots;
-      alert("技能栏超出上限 " + overflow + " 个，请先替换或卸载多余技能");
+      SB_toast("技能栏超出上限 " + overflow + " 个，请先替换或卸载多余技能");
       var allLockedOv = true; for (var oi = 0; oi < clsSkills.length; oi++) { if (!clsSkills[oi].locked) { allLockedOv = false; break; } }
-      if (allLockedOv) { alert("\u6240\u6709\u6280\u80fd\u5747\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
+      if (allLockedOv) { SB_toast("\u6240\u6709\u6280\u80fd\u5747\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
       showReplaceModal(skillData.name, clsSkills, skillList, maxSlots, {skillData: skillData, clsName: clsName, isSub: isSub, isLocked: isLocked}); return;
     }
 
@@ -6459,7 +6465,7 @@ var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (ski
       var allLocked = true; for (var si = 0; si < clsSkills.length; si++) { if (!clsSkills[si].locked) { allLocked = false; break; } }
 
 
-      if (allLocked) { alert("\u6240\u6709\u6280\u80fd\u5747\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
+      if (allLocked) { SB_toast("\u6240\u6709\u6280\u80fd\u5747\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
 
 
       var msg = "\u6280\u80fd\u5217\u8868\u5df2\u6ee1\uff01\u8bf7\u9009\u62e9\u8981\u66ff\u6362\u7684\u6280\u80fd\u7f16\u53f7 (1-" + maxSlots + "):\\n";
@@ -6527,19 +6533,19 @@ function toggleCollapse(key) {
 function unlockTier(tierName) {
   tierName = normalizeTierName(tierName);
   var info = TIER_UNLOCK_COST[tierName];
-  if (!info) { alert("该阶位不需要解锁"); return; }
+  if (!info) { SB_toast("该阶位不需要解锁"); return; }
   var cost = info.cost;
   var minLevel = info.minLevel || 99;
   var maxLv = getMaxLevel();
-  if (maxLv < minLevel) { alert("当前最高职业等级为" + maxLv + "级，需要主职业达到" + minLevel + "级才能解锁" + tierName + "天赋树"); return; }
-  if (cost > state.xp) { alert("经验值不足，需要" + cost + "点经验值（当前拥有" + state.xp + "点）"); return; }
+  if (maxLv < minLevel) { SB_toast("当前最高职业等级为" + maxLv + "级，需要主职业达到" + minLevel + "级才能解锁" + tierName + "天赋树"); return; }
+  if (cost > state.xp) { SB_toast("经验值不足，需要" + cost + "点经验值（当前拥有" + state.xp + "点）"); return; }
   if (!confirm("确定要花费" + cost + "点经验值解锁" + tierName + "天赋树吗？当前经验值：" + state.xp + "点")) return;
   state.xp -= cost;
   if (!state.unlocked_tiers) state.unlocked_tiers = ["一阶","二阶"];
   if (state.unlocked_tiers.indexOf(tierName) < 0) state.unlocked_tiers.push(tierName);
   renderLearnPanel();
   render();
-  alert("解锁成功！已解锁" + tierName + "天赋树");
+  SB_toast("解锁成功！已解锁" + tierName + "天赋树");
 }
 function confirmUnlearn(clsName, skillName, clsIdx) {
 
@@ -6577,7 +6583,7 @@ function unlearnSkill(clsName, skillName, clsIdx) {
   if (idx < 0) return;
 
 
-  if (skillList[idx].locked) { alert("\u8be5\u6280\u80fd\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u53d6\u6d88\u5b66\u4e60"); return; }
+  if (skillList[idx].locked) { SB_toast("\u8be5\u6280\u80fd\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u53d6\u6d88\u5b66\u4e60"); return; }
 
 
   // Return SP
@@ -6650,7 +6656,7 @@ function unlearnTalent(clsName, skillName, clsIdx) {
   if (idx < 0) return;
 
 
-  if (tt[idx].locked) { alert("\u8be5\u5929\u8d4b\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u53d6\u6d88\u5b66\u4e60"); return; }
+  if (tt[idx].locked) { SB_toast("\u8be5\u5929\u8d4b\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u53d6\u6d88\u5b66\u4e60"); return; }
 
 
   // Return SP
@@ -6859,7 +6865,7 @@ function doReplace(idx) {
   var clsSkills = data.clsSkills; var skillList = data.skillList;
 
 
-  if (clsSkills[idx].locked) { alert("\u8be5\u6280\u80fd\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
+  if (clsSkills[idx].locked) { SB_toast("\u8be5\u6280\u80fd\u5df2\u9501\u5b9a\uff0c\u65e0\u6cd5\u66ff\u6362"); return; }
 
 
   var removed = clsSkills[idx];
@@ -7051,12 +7057,12 @@ function showLevelUpModal(clsIdx){
   var nextLv=cl.level+1;
   var tbl=LEVEL_TABLE[clsIdx===1?"子职业":"主职业"];
   var data=tbl[nextLv];
-  if(!data){alert("已达最高等级");return;}
+  if(!data){SB_toast("已达最高等级");return;}
   if(clsIdx===1){
     var maxSub=getMaxSubLevel();
-    if(nextLv>maxSub){alert("子职业等级不可超过主职业等级-5，请先提升主职业等级");return;}
+    if(nextLv>maxSub){SB_toast("子职业等级不可超过主职业等级-5，请先提升主职业等级");return;}
   }
-  if(state.xp<data.xp){alert("经验值不足");return;}
+  if(state.xp<data.xp){SB_toast("经验值不足");return;}
 
   var overlay=document.createElement("div");
   overlay.id="modalOverlay";
@@ -7093,7 +7099,7 @@ function applyLevelUp(clsIdx){
   var nextLv=cl.level+1;
   if(clsIdx===1){
     var maxSub=getMaxSubLevel();
-    if(nextLv>maxSub){alert("子职业等级不可超过主职业等级-5，请先提升主职业等级");closeReplaceModal();return;}
+    if(nextLv>maxSub){SB_toast("子职业等级不可超过主职业等级-5，请先提升主职业等级");closeReplaceModal();return;}
   }
   var tbl=LEVEL_TABLE[clsIdx===1?"子职业":"主职业"];
   var data=tbl[nextLv];
@@ -7299,12 +7305,12 @@ function chooseProf(clsIdx,level,profName){
   var curCap=getProfCapForLevel(level);
   var attr=findProfAttrByKey(profName);
   if(!attr){
-    alert("无法识别熟练项「"+profName+"」，请重选");
+    SB_toast("无法识别熟练项「"+profName+"」，请重选");
     return;
   }
   ensureProfKey(attr, profName);
   var cur=typeof state.profs[attr][profName]==="number"?state.profs[attr][profName]:0;
-  if(cur>=curCap){alert("该熟练度已达当前等级上限（"+curCap+"），无法继续提升");return;}
+  if(cur>=curCap){SB_toast("该熟练度已达当前等级上限（"+curCap+"），无法继续提升");return;}
   state.profs[attr][profName]=cur+1;
   state._dirty=true;
   if(!window._pendingLevelUp)window._pendingLevelUp={clsIdx:clsIdx,level:level,_done:{}};
@@ -7352,7 +7358,7 @@ function showAttrChoice(clsIdx,level){
 function chooseAttr(clsIdx,level,attrName){
   var curCap=getAttrCapForLevel(level);
   var curVal=state.attrs[attrName]||0;
-  if(curVal>=curCap){alert("该属性已达当前等级上限（"+curCap+"），无法继续提升");return;}
+  if(curVal>=curCap){SB_toast("该属性已达当前等级上限（"+curCap+"），无法继续提升");return;}
   state.attrs[attrName]=curVal+1;
   state._dirty=true;
   if(!window._pendingLevelUp)window._pendingLevelUp={clsIdx:clsIdx,level:level,_done:{}};
@@ -7567,7 +7573,7 @@ try {
   saveBtn.onclick = function() {
     showSaveDialog(function(slotIndex) {
       if (saveState(slotIndex)) {
-        alert("已保存到存档位" + slotIndex);
+        SB_toast("已保存到存档位" + slotIndex);
       }
     });
   };
@@ -7662,11 +7668,11 @@ window.selectSubclass=function(cn){
 })();
 
 function exportCurrentXlsx(){
- if(!state){alert("请先导入或创建角色");return;}
+ if(!state){SB_toast("请先导入或创建角色");return;}
  exportXlsxFromState(state).catch(function(e){
    console.error("Export error:",e);
    var msg=(e&&e.message)?e.message:"未知错误";
-   alert("导出失败：" + msg);
+   SB_toast("导出失败：" + msg);
  });
 }
 // ========== XLSX Export Engine ==========
@@ -7891,7 +7897,7 @@ async function exportXlsxFromState(state) {
   for (var i = templateBuf.byteLength - 22; i >= Math.max(0, templateBuf.byteLength - 65557); i--) {
     if (view.getUint32(i, true) === 0x06054b50) { e = i; break; }
   }
-  if (e < 0) { alert("导出失败：模板文件损坏，请重新上传角色文件或刷新页面后重试"); return; }
+  if (e < 0) { SB_toast("导出失败：模板文件损坏，请重新上传角色文件或刷新页面后重试"); return; }
   var cd = view.getUint32(e + 16, true), total = view.getUint16(e + 10, true);
   var p = cd, entries = [];
   for (var j = 0; j < total; j++) {
@@ -7909,7 +7915,7 @@ async function exportXlsxFromState(state) {
   var sh = entries.find(function (x) { return x.name === "xl/worksheets/sheet1.xml"; });
   var stEntry = entries.find(function (x) { return x.name === "xl/styles.xml"; });
   if (!ss || !sh) {
-    alert("导出失败：模板缺少 sharedStrings 或 sheet1，请重新上传角色 xlsx 或刷新页面后重试");
+    SB_toast("导出失败：模板缺少 sharedStrings 或 sheet1，请重新上传角色 xlsx 或刷新页面后重试");
     return;
   }
 
@@ -8365,14 +8371,14 @@ function exportAllSaves(){
       count++;
     }
   }
-  if(count===0){alert("暂无存档可导出");return;}
+  if(count===0){SB_toast("暂无存档可导出");return;}
   var meta={exportedAt:new Date().toISOString(),version:"1.0",charCount:count};
   var blob=new Blob([JSON.stringify({meta:meta,saves:saves},null,2)],{type:"application/json"});
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
   var d=new Date();a.download="斯诺德存档_"+d.getFullYear()+"-"+(d.getMonth()+1).toString().padStart(2,"0")+"-"+d.getDate().toString().padStart(2,"0")+"_"+d.getHours().toString().padStart(2,"0")+d.getMinutes().toString().padStart(2,"0")+d.getSeconds().toString().padStart(2,"0")+".json";
   a.click();URL.revokeObjectURL(a.href);
-  alert("已导出 "+count+" 个角色存档");
+  SB_toast("已导出 "+count+" 个角色存档");
 }
 function importSaves(){
   var input=document.createElement("input");
@@ -8383,7 +8389,7 @@ function importSaves(){
     reader.onload=function(ev){
       try{
         var data=JSON.parse(ev.target.result);
-        if(!data.saves){alert("存档文件格式无效");return;}
+        if(!data.saves){SB_toast("存档文件格式无效");return;}
         var keys=Object.keys(data.saves);var overwrites=[];
         for(var i=0;i<keys.length;i++){
           if(localStorage.getItem(keys[i])!==null)overwrites.push(keys[i]);
@@ -8392,9 +8398,9 @@ function importSaves(){
         if(overwrites.length>0)confirmMsg+="\n\n以下存档将被覆盖：\n"+overwrites.join("\n");
         if(!confirm(confirmMsg+"\n\n确认导入？"))return;
         for(var i=0;i<keys.length;i++)localStorage.setItem(keys[i],data.saves[keys[i]]);
-        alert("已导入 "+keys.length+" 个存档\n\n请刷新页面查看");
+        SB_toast("已导入 "+keys.length+" 个存档\n\n请刷新页面查看");
         location.reload();
-      }catch(ex){alert("文件解析失败："+ex.message);}
+      }catch(ex){SB_toast("文件解析失败："+ex.message);}
     };
     reader.readAsText(file);
   };
