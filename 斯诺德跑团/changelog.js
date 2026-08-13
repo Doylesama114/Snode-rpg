@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7231',
+    date: '2026-08-13',
+    changes: [
+      '修复：角色面板立绘压扁——avatarStyle 的 background-size 从双维度同百分比（160% 160%）改为单维度等比缩放（竖版按宽 zoom% auto、横版按高 auto zoom%），预加载立绘原始宽高比（SB_loadPortraitRatio），面板头像/调整弹层/预览三处同步修复',
+      '测试：verify_store_e2e.mjs 新增 2 断言（竖版/横版等比缩放）62/62 全绿'
+    ]
+  },
+
+
+  {
     version: '1.0.7230',
     date: '2026-08-13',
     changes: [

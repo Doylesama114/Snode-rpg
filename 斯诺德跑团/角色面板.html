@@ -3546,9 +3546,19 @@ function renderSlotNote() {
 }
 
 /* ================= 头像设置（社交模式） ================= */
-var AV = { zoom: 160, px: 50, py: 50, maxOffset: 150 };
+var AV = { zoom: 160, px: 50, py: 50, maxOffset: 150, imgRatio: 1 };
+/* 预加载立绘原始宽高比（修复压扁：background-size 双百分比会把非正方形立绘压成正方形） */
+function SB_loadPortraitRatio(cb) {
+  if (!state || !state.portrait) { AV.imgRatio = 1; if (cb) cb(); return; }
+  var img = new Image();
+  img.onload = function() { AV.imgRatio = img.width / img.height; if (cb) cb(); };
+  img.onerror = function() { AV.imgRatio = 1; if (cb) cb(); };
+  img.src = state.portrait;
+}
 function avatarStyle(el) {
-  el.style.backgroundSize = AV.zoom + '% ' + AV.zoom + '%';
+  // 单维度等比缩放：竖版立绘按宽 zoom%、高度 auto；横版按高 zoom%、宽度 auto（溢出部分靠 background-position 裁剪）
+  if (AV.imgRatio > 1) el.style.backgroundSize = 'auto ' + AV.zoom + '%';
+  else el.style.backgroundSize = AV.zoom + '% auto';
   el.style.backgroundPosition = AV.px + '% ' + AV.py + '%';
 }
 function openAvatar() {
@@ -4289,23 +4299,25 @@ function SB_pickPortrait() {
     reader.onload = function(ev) {
       state.portrait = ev.target.result;
       state._dirty = true;
-      SB_openAvatarAdjust();
+      SB_loadPortraitRatio(function(){ SB_openAvatarAdjust(); });
     };
     reader.readAsDataURL(file);
   };
   inp.click();
 }
 function SB_openAvatarAdjust() {
-  var c = document.getElementById('avatarCanvas');
-  var p = document.getElementById('avatarPreview');
-  var img = state.portrait ? 'url("' + state.portrait + '")' : '';
-  if (c) { c.style.backgroundImage = img; avatarStyle(c); }
-  if (p) { p.style.backgroundImage = img; avatarStyle(p); }
-  var z = document.getElementById('avatarZoom');
-  if (z) z.value = AV.zoom;
-  var zv = document.getElementById('avatarZoomVal');
-  if (zv) zv.textContent = AV.zoom + '%';
-  document.getElementById('avatarOverlay').classList.add('show');
+  SB_loadPortraitRatio(function() {
+    var c = document.getElementById('avatarCanvas');
+    var p = document.getElementById('avatarPreview');
+    var img = state.portrait ? 'url("' + state.portrait + '")' : '';
+    if (c) { c.style.backgroundImage = img; avatarStyle(c); }
+    if (p) { p.style.backgroundImage = img; avatarStyle(p); }
+    var z = document.getElementById('avatarZoom');
+    if (z) z.value = AV.zoom;
+    var zv = document.getElementById('avatarZoomVal');
+    if (zv) zv.textContent = AV.zoom + '%';
+    document.getElementById('avatarOverlay').classList.add('show');
+  });
 }
 window.openAvatar = function() {
   if (state && state.portrait) { SB_openAvatarAdjust(); return; }
@@ -4322,7 +4334,9 @@ function SB_renderPortrait() {
       if (typeof state.avatar_py === 'number') AV.py = state.avatar_py;
     }
     pr.style.backgroundImage = 'url("' + state.portrait + '")';
-    if (typeof AV !== 'undefined') avatarStyle(pr);
+    if (typeof AV !== 'undefined') {
+      SB_loadPortraitRatio(function() { avatarStyle(pr); });
+    }
     var img = pr.querySelector('img');
     if (img) img.style.display = 'none';
     if (badge) badge.textContent = '✎ 更换立绘';

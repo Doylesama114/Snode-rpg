@@ -472,6 +472,30 @@ ok('非起始同名天赋保留计入', styleTest.nonStartingTalent.includes('�
 ok('同名技能按 src 精确取效果（奇械师≠法师）', !styleTest.same, JSON.stringify({ 法师: styleTest.mageDesc, 奇械师: styleTest.artiDesc }));
 ok('无 src 时全局 fallback 正常', styleTest.fallback);
 
+// // ===== 14.8 立绘等比显示（修复压扁） =====
+const portraitOK = await page.evaluate(async () => {
+  const cv = document.createElement('canvas');
+  cv.width = 200; cv.height = 400; // 竖版 1:2
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#4a90d9'; ctx.fillRect(0, 0, 200, 400);
+  state.portrait = cv.toDataURL('image/png');
+  await new Promise(res => SB_loadPortraitRatio(res));
+  const el = document.createElement('div');
+  el.style.width = '140px'; el.style.height = '140px';
+  el.style.backgroundImage = 'url("' + state.portrait + '")';
+  avatarStyle(el);
+  const vertical = { ratio: AV.imgRatio, size: el.style.backgroundSize };
+  cv.width = 400; cv.height = 200; // 横版 2:1
+  ctx.fillStyle = '#d94a4a'; ctx.fillRect(0, 0, 400, 200);
+  state.portrait = cv.toDataURL('image/png');
+  await new Promise(res => SB_loadPortraitRatio(res));
+  avatarStyle(el);
+  const horizontal = { ratio: AV.imgRatio, size: el.style.backgroundSize };
+  return { vertical: vertical, horizontal: horizontal };
+});
+ok('竖版立绘按宽等比缩放（非 160% 160% 压扁）', portraitOK.vertical.ratio === 0.5 && portraitOK.vertical.size === '160%', JSON.stringify(portraitOK.vertical));
+ok('横版立绘按高等比缩放', portraitOK.horizontal.ratio === 2 && portraitOK.horizontal.size === 'auto 160%', JSON.stringify(portraitOK.horizontal));
+
 // // 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
 const migrated = await page.evaluate(() => {
   const oldState = {
