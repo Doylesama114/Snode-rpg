@@ -1898,6 +1898,9 @@ function isContainerItem(name) { return CONTAINER_ITEMS.indexOf(name) >= 0; }
 function itemBagHints(name) {
   var tags = (typeof getItemTags === 'function') ? getItemTags(name).slice() : [];
   var n = String(name || '');
+  if (/(剑|刀|斧|锤|矛|枪|弓|弩|杖|棒|匕首|镰刀|武器)/.test(n)) tags.push('武器');
+  if (/(护甲|盔甲|甲$|铠甲|战甲|盾牌)/.test(n)) tags.push('防具');
+  if (/(戒指|项链|耳环|徽章|护符|饰品)/.test(n)) tags.push('配饰');
   if (/(面包|肉|奶酪|炖菜|粮食|干粮|食物|食品|餐|汤|酒|水$|野果|蔬菜|水果|烤|饼|饭|蛋|奶)/.test(n)) tags.push('食品');
   if (/(鱼|虾|蟹|贝|水产|鱿鱼|海带|螺)/.test(n)) tags.push('水产');
   if (/(药水|药剂|药膏|绷带|医疗|治疗|急救)/.test(n)) tags.push('医用');
@@ -2083,7 +2086,7 @@ function refundItem(name) {
   toast('已退货 ' + name + '（+ ' + copperText(price) + '）');
 }
 function pickSlotForItem(name) {
-  var tags = (typeof getItemTags === 'function') ? getItemTags(name) : [];
+  var tags = itemBagHints(name);
   function has(t) { return tags.indexOf(t) >= 0; }
   if (has('武器')) return '主手武器';
   if (has('防具') || has('盾牌')) return '防具';
