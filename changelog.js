@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7238',
+    date: '2026-08-13',
+    changes: [
+      '修复：术士「魔力恩赐/魔力萦绕/魔力焕发」技能描述残留 D1（提取管线把掷骰表标签误填进 description 字段）——4 处数据源修复（panel_data.js/职业页术士.html/术士.json/skill_effects_术士.json），描述与 docx 原文一致，重建搜索索引并同步 electron-app'
+    ]
+  },
+
+
+  {
     version: '1.0.7237',
     date: '2026-08-13',
     changes: [
