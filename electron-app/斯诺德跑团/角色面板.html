@@ -1077,10 +1077,14 @@ body.battle .fab{display:none}
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
+<script src="xlsx_proficiency_export.js"></script>
 <script>
 
 /* ============ 桥接层 Part1：TEST_DATA 从 state 构建（SB_ 前缀） ============ */
 var SB_srcRenderWeight = (typeof renderWeight === 'function') ? renderWeight : null;
+var SB_srcShowLevelUpModal = (typeof showLevelUpModal === 'function') ? showLevelUpModal : null;
+var SB_srcUnlockTier = (typeof unlockTier === 'function') ? unlockTier : null;
+var SB_srcLearnSkill = (typeof learnSkill === 'function') ? learnSkill : null;
 function SB_calcTotalWeight() {
   var tw = 0;
   var eq = (typeof state !== 'undefined' && state.equipment) ? state.equipment : {};
@@ -1733,7 +1737,7 @@ function renderCharHeader() {
     var s0 = T.classes && T.classes[1];
     if (m0) html += '<span>' + m0.name + ' ' + m0.level + '级</span>';
     if (s0) html += '<span>' + s0.name + ' ' + s0.level + '级</span>';
-    html += '<span>经验 —</span>';
+    html += '<span>经验 ' + (typeof state !== 'undefined' && state.xp != null ? state.xp : '—') + '</span>';
     chips.innerHTML = html;
   }
   var set = function(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; };
@@ -2264,7 +2268,9 @@ function renderCurrency() {
 
 /* ================= 天赋（真实数据） ================= */
 var TIERS = [];
-var TIER_COSTS = { '三阶': 50, '四阶': 100, '五阶': 300, '六阶': 500, '七阶': 1000 };
+var TIER_COSTS = (typeof TIER_UNLOCK_COST !== 'undefined')
+  ? (function() { var m = {}; for (var k in TIER_UNLOCK_COST) { if (TIER_UNLOCK_COST[k] && TIER_UNLOCK_COST[k].cost) m[k] = TIER_UNLOCK_COST[k].cost; } return m; })()
+  : { '三阶': 50, '四阶': 100, '五阶': 300, '六阶': 500, '七阶': 1000 };
 (function() {
   if (!T) return;
   var tiers = { '一阶': [], '二阶': [], '三阶': [], '四阶': [], '五阶': [], '六阶': [], '七阶': [] };
@@ -2289,7 +2295,8 @@ function renderTalent() {
     var t = TIERS[ti];
     if (t.unlocked) {
       html += '<div class="talent-tier"><span class="t-label">' + t.name + '</span>';
-      for (var ci = 0; ci < 5; ci++) {
+      var cellCap = Math.max(5, t.cells.length);
+      for (var ci = 0; ci < cellCap; ci++) {
         var cell = t.cells[ci];
         if (cell) {
           learnedTotal++;
@@ -2457,7 +2464,9 @@ function renderBlueprint() {
 /* ================= 技能栏位说明 ================= */
 function renderSlotNote() {
   var mainCount = SKILLS.main.length;
-  document.getElementById('skillSlotNote').textContent = '主职业技能 ' + mainCount + ' 项已学（牧师 6 级，来源：角色档案技能列表）。档案中"绘彩术/艺术之眼/音画同调"等技能在站点资料库中暂无对应数据，未列入。';
+  var m0 = (T && T.classes && T.classes[0]) ? T.classes[0] : null;
+  var label = (m0 && m0.name) ? (m0.name + ' ' + m0.level + ' 级') : '角色';
+  document.getElementById('skillSlotNote').textContent = '主职业技能 ' + mainCount + ' 项已学（' + label + '，来源：角色档案技能列表）。';
 }
 
 /* ================= 头像设置（社交模式） ================= */
@@ -2684,11 +2693,50 @@ function SB_reinit() {
     arr.push({ n: tg.n, desc: tg.desc });
   }
   var tOrder = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶', '七阶'];
+  var unlockedSet = [];
+  if (state && state.unlocked_tiers) {
+    for (var ui = 0; ui < state.unlocked_tiers.length; ui++) {
+      var ut = state.unlocked_tiers[ui];
+      if (typeof normalizeTierName === 'function') ut = normalizeTierName(ut);
+      unlockedSet.push(ut);
+    }
+  }
+  function tierUnlocked(nm) {
+    if (nm === '一阶' || nm === '二阶') return true;
+    if (unlockedSet.indexOf(nm) >= 0) return true;
+    return false;
+  }
   for (var oi = 0; oi < tOrder.length; oi++) {
     var nm = tOrder[oi];
     var cellsArr = tiersMap[nm] || [];
-    TIERS.push({ name: nm, cells: cellsArr, unlocked: cellsArr.length > 0, cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
+    TIERS.push({ name: nm, cells: cellsArr, unlocked: cellsArr.length > 0 || tierUnlocked(nm), cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
   }
+  /* 生命/疲劳重算：未手动编辑时按源公式随等级正确计算 */
+  function SB_recalcDerived() {
+    var mc0 = state.classes && state.classes[0];
+    if (!mc0 || !mc0.name) return;
+    var ml = mc0.level || 0;
+    var sc = (state.classes[1] && state.classes[1].name) || '';
+    var sl = (state.classes[1] && state.classes[1].level) || 0;
+    if (!state._hpManual && typeof calcTotalHP === 'function') {
+      var con = (state.attrs && state.attrs['体质']) || 10;
+      var featHP = 0;
+      if (state.special_feats) for (var fi = 0; fi < state.special_feats.length; fi++) {
+        var fn = state.special_feats[fi];
+        var fnN = typeof fn === 'string' ? fn : (fn && fn.name);
+        if (fnN === '健美教练') featHP += 10;
+        if (fnN === '健壮') featHP += 2 * (ml + (sl > 0 ? sl - 1 : 0));
+      }
+      state.hp = calcTotalHP(mc0.name, ml, sc, sl, con, state.race, state.background, featHP);
+    }
+    if (!state._fpManual && typeof calcTotalFP === 'function') {
+      var ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name]) ? REF_CLASSES[mc0.name].key_attr : '';
+      if (ka === '力量或敏捷') ka = mc0.keyAttr || '力量';
+      var kv = (state.attrs && state.attrs[ka]) || 10;
+      state.fp = calcTotalFP(mc0.name, ml, sc, sl, ka, kv, state.race, 0);
+    }
+  }
+  SB_recalcDerived();
   S = SB_buildS(state);
   S.battle = wasBattle;
 }
@@ -2696,9 +2744,23 @@ window.render = function() {
   SB_reinit();
   renderCharHeader(); renderOrbs(); renderSkillTables(); renderEquip(); renderAttrs();
   renderFeats(); renderBg(); renderXpSp(); renderTraits(); renderWeight();
-  renderCurrency(); renderTalent(); renderBlueprint(); renderSlotNote(); renderSubclass();
+  renderCurrency(); renderTalent(); renderBlueprints(); renderSlotNote(); renderSubclass();
   renderInit(); renderMiniBalls(); renderMobileTabs();
 };
+/* 升级系统覆盖：接源真实升级（LEVEL_TABLE 奖励 + 写回 state + 持久化） */
+if (SB_srcShowLevelUpModal) {
+  window.showLevelUpModal = function(clsIdx) {
+    if (typeof clsIdx !== 'number') clsIdx = 0;
+    SB_srcShowLevelUpModal(clsIdx);
+  };
+}
+/* 天赋解锁覆盖：接源真实解锁（等级门槛 + 扣 XP + 写回 unlocked_tiers + 持久化） */
+if (SB_srcUnlockTier) {
+  window.unlockTier = function(name) {
+    SB_srcUnlockTier(name);
+    if (typeof window.render === 'function') window.render();
+  };
+}
 /* renderXpSp 覆盖：职业名动态（测试版硬编码为基尼泰） */
 var SB_origXpSp = renderXpSp;
 renderXpSp = function() {
@@ -2942,7 +3004,9 @@ function SB_saveHpFp() {
   if (v === null || v < 0) { toast('请输入有效数值', 'warn'); return; }
   var max = SB_EDIT_KEY === 'hp' ? S.hpMax : S.fpMax;
   var nv = Math.max(0, Math.min(max, v));
-  if (SB_EDIT_KEY === 'hp') S.hp = nv; else S.fp = nv;
+  if (SB_EDIT_KEY === 'hp') { S.hp = nv; state._hpManual = true; }
+  else { S.fp = nv; state._fpManual = true; }
+  state._dirty = true;
   log((SB_EDIT_KEY === 'hp' ? '生命' : '疲劳') + '值设为 ' + nv, 'battle');
   SB_EDIT_MODE = null;
   closeOverlay('miniOverlay');
