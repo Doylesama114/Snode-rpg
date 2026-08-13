@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7240',
+    date: '2026-08-13',
+    changes: [
+      '同步：斯诺德世界观架构.docx 图片更新（help-media 5 张重导出，含 106/107/167/168/183）→ help.html 随文渲染更新 + electron 镜像 + L7 lore 重建（216 块）；页面结构与章节无变化'
+    ]
+  },
+
+
+  {
     version: '1.0.7239',
     date: '2026-08-13',
     changes: [
