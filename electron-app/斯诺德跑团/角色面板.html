@@ -1127,7 +1127,8 @@ function SB_buildTestData(st) {
   while (classes.length < 3) classes.push({ name: '', sub: '', level: 0, styles: ['', '', '', ''] });
   var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
   var strMod = Math.floor((((st.attrs && st.attrs['力量']) || 10) - 10) / 2);
-  var keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
+  var keyAttr = (st.classes && st.classes[0] && (st.classes[0].keyAttr || (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[st.classes[0].name] && REF_CLASSES[st.classes[0].name].key_attr))) || '力量';
+  if (keyAttr === '力量或敏捷') keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
   var keyMod = Math.floor((((st.attrs && st.attrs[keyAttr]) || 10) - 10) / 2);
   var battle = {
     hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
@@ -2502,7 +2503,7 @@ function renderSlotNote() {
 }
 
 /* ================= 头像设置（社交模式） ================= */
-var AV = { zoom: 160, px: 50, py: 50, maxOffset: 45 };
+var AV = { zoom: 160, px: 50, py: 50, maxOffset: 150 };
 function avatarStyle(el) {
   el.style.backgroundSize = AV.zoom + '% ' + AV.zoom + '%';
   el.style.backgroundPosition = AV.px + '% ' + AV.py + '%';
@@ -2551,8 +2552,8 @@ function cancelAvatar() {
     if (!dragging) return;
     var dx = e.clientX - sx, dy = e.clientY - sy;
     var w = canvas.offsetWidth;
-    AV.px = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, ox + dx / w * 100));
-    AV.py = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, oy + dy / w * 100));
+    AV.px = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, ox + dx / w * 160));
+    AV.py = Math.max(-AV.maxOffset, Math.min(AV.maxOffset, oy + dy / w * 160));
     avatarStyle(canvas);
     avatarStyle(document.getElementById('avatarPreview'));
   });
@@ -2769,7 +2770,10 @@ function SB_reinit() {
     }
     if (!state._fpManual && typeof calcTotalFP === 'function') {
       var ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name]) ? REF_CLASSES[mc0.name].key_attr : '';
+      if (!ka) ka = mc0.keyAttr || '';
+      if (!ka) ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name] && REF_CLASSES[mc0.name].key_attr) || '';
       if (ka === '力量或敏捷') ka = mc0.keyAttr || '力量';
+      if (!ka) ka = '力量';
       var kv = (state.attrs && state.attrs[ka]) || 10;
       state.fp = calcTotalFP(mc0.name, ml, sc, sl, ka, kv, state.race, 0);
     }

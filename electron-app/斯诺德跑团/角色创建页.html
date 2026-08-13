@@ -2821,7 +2821,7 @@ function saveCharacter(){
     hp:hp, fp:fp,
     story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     attrs:{},
-    classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
+    classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||(CHAR.classData?CHAR.classData["关键属性"]:"")||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
     equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},containerItems:{"背包":"","旅行腰包":"","材料包A":"","材料包B":""},
     racial_traits:[], class_features:[], languages:(function(){var l=(RACE_LANGS[CHAR.raceName]||[]).slice();if(CHAR.raceName==="翼空族"&&CHAR.wingfolkHasCommon!==false)l.push("通用语");return l.concat(CHAR.extraLanguages||[]);})(), professionals:[], talent_tree:[],
