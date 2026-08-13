@@ -296,6 +296,9 @@ body.battle .btn-battle{background:var(--green)}
 .store-item .si-desc{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .store-item .si-buy{flex:none;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 16px;cursor:pointer;font-size:13px;font-family:inherit}
 .store-item .si-buy:hover{background:#c0852f}
+.store-item .si-held{flex:none;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.store-item .si-refund{flex:none;background:#5a5a5a;color:#fff;border:none;border-radius:6px;padding:7px 12px;cursor:pointer;font-size:12.5px;font-family:inherit}
+.store-item .si-refund:hover{background:#7a7a7a}
 .equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .eq{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
 .eq:hover{border-color:var(--accent)}
@@ -1434,7 +1437,12 @@ function renderEquip() {
     var items = EQUIP[slot] || [];
     var filled = items.filter(function(x){ return x; }).length;
     var locked = slot === '材料包B' && !(typeof state !== 'undefined' && state.containerItems && state.containerItems['材料包B']);
-    var title = slot + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
+    var title = slot;
+    if (typeof state !== 'undefined' && state.containerItems && (slot === '材料包A' || slot === '材料包B')) {
+      var _bt = state.containerItems[slot];
+      if (_bt) title = slot + '（' + _bt + '）';
+    }
+    title = title + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
     html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span>' +
       (locked ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
@@ -1587,7 +1595,7 @@ function renderEquipPicker() {
     if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') !== 0 && !canPlaceInSlot(tags, slot, nm)) continue;
     if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') === 0) {
       var bagType = (state.containerItems && state.containerItems[slot]) || '';
-      if (!canPlaceInSlot(tags, slot, nm, bagType)) continue;
+      if (!canPlaceInSlot(itemBagHints(nm), '材料包', nm, bagType)) continue;
     }
     var d = ITEM_DATA[nm] || {};
     var already = false;
@@ -1674,8 +1682,42 @@ function deductCopper(total) {
 function openStore() {
   STORE_CAT = Object.keys(typeof STORE_DATA !== 'undefined' ? STORE_DATA : {})[0] || '杂物';
   STORE_Q = '';
+  ensureStoreContainers();
   renderStore();
   document.getElementById('storeOverlay').classList.add('show');
+}
+var CONTAINER_ITEMS = ['背包', '旅行腰包', '烹饪材料包', '垂钓材料包', '医用材料包', '草药材料包', '裁缝材料包'];
+function isContainerItem(name) { return CONTAINER_ITEMS.indexOf(name) >= 0; }
+function itemBagHints(name) {
+  var tags = (typeof getItemTags === 'function') ? getItemTags(name).slice() : [];
+  var n = String(name || '');
+  if (/(面包|肉|奶酪|炖菜|粮食|干粮|食物|食品|餐|汤|酒|水$|野果|蔬菜|水果|烤|饼|饭|蛋|奶)/.test(n)) tags.push('食品');
+  if (/(鱼|虾|蟹|贝|水产|鱿鱼|海带|螺)/.test(n)) tags.push('水产');
+  if (/(药水|药剂|药膏|绷带|医疗|治疗|急救)/.test(n)) tags.push('医用');
+  if (/(草|花|根|叶|果|菌|蘑菇|药材|草药|参)/.test(n)) tags.push('草药');
+  if (/(布|线|针|缝|皮革|皮料)/.test(n)) tags.push('缝纫');
+  return tags;
+}
+function ensureStoreContainers() {
+  if (typeof STORE_DATA === 'undefined') return;
+  if (STORE_DATA['容器']) return;
+  var arr = [];
+  for (var i = 0; i < CONTAINER_ITEMS.length; i++) {
+    var nm = CONTAINER_ITEMS[i];
+    var d = (typeof ITEM_DATA !== 'undefined' && ITEM_DATA[nm]) ? ITEM_DATA[nm] : {};
+    arr.push({ name: nm, price: d.price || '', weight: d.weight || '', desc: d.description || '', quality: d.quality || '', cat: '容器' });
+  }
+  STORE_DATA['容器'] = arr;
+}
+function storePriceOf(name) {
+  if (typeof STORE_DATA === 'undefined') return null;
+  for (var _ck in STORE_DATA) {
+    var _arr = STORE_DATA[_ck] || [];
+    for (var _ci = 0; _ci < _arr.length; _ci++) {
+      if (_arr[_ci].name === name && _arr[_ci].price) return _arr[_ci].price;
+    }
+  }
+  return null;
 }
 function renderStore() {
   if (typeof STORE_DATA === 'undefined') return;
@@ -1698,10 +1740,17 @@ function renderStore() {
     var it = items[i2];
     if (q && (it.name.toLowerCase().indexOf(q) < 0 && (it.desc || '').toLowerCase().indexOf(q) < 0)) continue;
     var price = parseCopper(it.price);
+    var held = countHeldItem(it.name);
+    var containerHeld = isContainerItem(it.name) && state.containerItems && Object.keys(state.containerItems).some(function(k2) {
+      return (k2 === it.name) || (it.name.indexOf('材料包') >= 0 && state.containerItems[k2] === it.name);
+    });
+    var heldShow = isContainerItem(it.name) ? (containerHeld ? '已装备' : '未持有') : ('已持 ×' + held);
     html += '<div class="store-item">' +
       '<div class="si-main"><span class="si-name">' + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
       '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
       (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
+      '<span class="si-held">' + heldShow + '</span>' +
+      (held > 0 || containerHeld ? '<button class="si-refund" onclick="refundItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="全额退货">退货</button>' : '') +
       '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
     shown++;
   }
@@ -1710,19 +1759,21 @@ function renderStore() {
 }
 function buyItem(name) {
   var meta = itemMeta(name);
-  var storePrice = null;
-  if (typeof STORE_DATA !== 'undefined') {
-    for (var _ck in STORE_DATA) {
-      var _arr = STORE_DATA[_ck] || [];
-      for (var _ci = 0; _ci < _arr.length; _ci++) {
-        if (_arr[_ci].name === name && _arr[_ci].price) { storePrice = _arr[_ci].price; break; }
-      }
-      if (storePrice) break;
-    }
-  }
+  var storePrice = storePriceOf(name);
   var price = parseCopper(storePrice || meta.price);
   if (price <= 0) { toast('该物品无价格，无法购买', 'warn'); return; }
   if (!deductCopper(price)) { toast('金币不足：需 ' + copperText(price), 'warn'); return; }
+  // 容器类：购买解锁容器
+  if (isContainerItem(name)) {
+    var cRes = unlockContainerByBuy(name);
+    if (!cRes.ok) { deductCopper(-price); toast(cRes.msg, 'warn'); return; }
+    closeOverlay('storeOverlay');
+    renderEquip();
+    SB_syncEquipToState();
+    state._dirty = true;
+    toast('已购买 ' + name + '（' + cRes.msg + '，- ' + copperText(price) + '）');
+    return;
+  }
   var slot = pickSlotForItem(name);
   if (!slot) { toast('没有可用槽位放置该物品', 'warn'); deductCopper(-price); return; }
   var arr = EQUIP[slot] || (EQUIP[slot] = []);
@@ -1755,6 +1806,75 @@ function buyItem(name) {
   renderStore();
   toast('已购买 ' + name + '（- ' + copperText(price) + '）');
 }
+function unlockContainerByBuy(name) {
+  if (!state.containerItems) state.containerItems = {};
+  if (name === '背包') {
+    state.containerItems['背包'] = '已解锁';
+    return { ok: true, msg: '背包已解锁' };
+  }
+  if (name === '旅行腰包') {
+    state.containerItems['旅行腰包'] = '已解锁';
+    return { ok: true, msg: '旅行腰包已解锁' };
+  }
+  if (name.indexOf('材料包') >= 0) {
+    var slot = state.containerItems['材料包A'] ? '材料包B' : '材料包A';
+    if (state.containerItems[slot]) return { ok: false, msg: '材料包位已满，无法购买' };
+    state.containerItems[slot] = name;
+    return { ok: true, msg: '材料包A/B 已装备「' + name + '」' };
+  }
+  return { ok: false, msg: '无法解锁该容器' };
+}
+function countHeldItem(name) {
+  var total = 0;
+  for (var s in EQUIP) {
+    var arr = EQUIP[s] || [];
+    for (var i = 0; i < arr.length; i++) if (arr[i] && arr[i].item === name) total += arr[i].cnt || 1;
+  }
+  return total;
+}
+function refundItem(name) {
+  var price = parseCopper(storePriceOf(name));
+  if (isContainerItem(name)) {
+    if (!state.containerItems) return;
+    var freed = false;
+    if (name === '背包') { state.containerItems['背包'] = ''; freed = true; }
+    if (name === '旅行腰包') { state.containerItems['旅行腰包'] = ''; freed = true; }
+    if (name.indexOf('材料包') >= 0) {
+      for (var k in state.containerItems) {
+        if (state.containerItems[k] === name) { state.containerItems[k] = ''; freed = true; }
+      }
+    }
+    if (freed) {
+      deductCopper(-price);
+      state._dirty = true;
+      renderEquip();
+      renderStore();
+      toast('已退货 ' + name + '（+ ' + copperText(price) + '）');
+    } else { toast('未持有该容器', 'warn'); }
+    return;
+  }
+  var found = false;
+  for (var s in EQUIP) {
+    var arr = EQUIP[s] || [];
+    for (var i = 0; i < arr.length; i++) {
+      var x = arr[i];
+      if (x && x.item === name && x.cnt > 0) {
+        x.cnt--;
+        if (x.cnt <= 0) arr[i] = null;
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+  if (!found) { toast('未持有该物品', 'warn'); return; }
+  deductCopper(-price);
+  SB_syncEquipToState();
+  state._dirty = true;
+  renderEquip();
+  renderStore();
+  toast('已退货 ' + name + '（+ ' + copperText(price) + '）');
+}
 function pickSlotForItem(name) {
   var tags = (typeof getItemTags === 'function') ? getItemTags(name) : [];
   function has(t) { return tags.indexOf(t) >= 0; }
@@ -1765,7 +1885,7 @@ function pickSlotForItem(name) {
     var mp = ['材料包A', '材料包B'];
     for (var i = 0; i < mp.length; i++) {
       var bt = (state.containerItems && state.containerItems[mp[i]]) || '';
-      if (bt && typeof canPlaceInSlot === 'function' && canPlaceInSlot(tags, mp[i], name, bt)) return mp[i];
+      if (bt && typeof canPlaceInSlot === 'function' && canPlaceInSlot(itemBagHints(name), '材料包', name, bt)) return mp[i];
     }
     return '杂物包';
   }
@@ -1799,6 +1919,16 @@ function doSplit() {
 }
 function moveEquip(fromSlot, fromIdx, toSlot, toIdx) {
   if (fromSlot === toSlot && fromIdx === toIdx) return;
+  var it = EQUIP[fromSlot] && EQUIP[fromSlot][fromIdx];
+  if (!it) return;
+  if (toSlot.indexOf('材料包') === 0) {
+    var bagType = (state.containerItems && state.containerItems[toSlot]) || '';
+    var tags = itemBagHints(it.item);
+    if (bagType && typeof canPlaceInSlot === 'function' && !canPlaceInSlot(tags, '材料包', it.item, bagType)) {
+      toast('「' + it.item + '」不能放入该材料包（仅限对应属性材料）', 'warn');
+      return;
+    }
+  }
   var fromArr = EQUIP[fromSlot];
   var toArr = EQUIP[toSlot];
   var it = fromArr[fromIdx];
