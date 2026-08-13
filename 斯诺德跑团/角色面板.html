@@ -1131,7 +1131,7 @@ function SB_buildTestData(st) {
   var keyAttr = (st.classes && st.classes[0] && (st.classes[0].keyAttr || (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[st.classes[0].name] && REF_CLASSES[st.classes[0].name].key_attr))) || '力量';
   if (keyAttr === '力量或敏捷') keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
   var keyMod = Math.floor((((st.attrs && st.attrs[keyAttr]) || 10) - 10) / 2);
-  var ac = 10 + dexMod;
+  var ac = null;
   try {
     var eqArmor = (st.equipment && st.equipment['防具']) || [];
     for (var ai = 0; ai < eqArmor.length; ai++) {
@@ -1142,9 +1142,12 @@ function SB_buildTestData(st) {
       }
       if (aInfo) {
         var ac2 = aInfo.addDex ? (aInfo.base + dexMod) : aInfo.base;
-        if (ac2 > ac) ac = ac2;
+        if (ac === null || ac2 > ac) ac = ac2;
       }
     }
+  } catch (e) {}
+  if (ac === null) ac = 10 + dexMod;
+  try {
     if (st._feat_ac_bonus && typeof wearingMediumArmor === 'function' && wearingMediumArmor()) ac += (st._feat_ac_bonus || 0);
   } catch (e) {}
   var battle = {
@@ -2703,9 +2706,10 @@ log('角色面板加载完成（真实数据：基尼泰·梅 角色档案 + 站
 /* ============ 桥接层 Part2：初始化与功能接入（SB_ 前缀） ============ */
 function SB_buildS(st) {
   var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
+  var baseAc = (typeof T !== 'undefined' && T && T.battle && typeof T.battle.ac === 'number') ? T.battle.ac : (10 + dexMod);
   return {
     battle: false, hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
-    ac: 10 + dexMod, tmpHp: 0, armor: 0, shield: 0, snap: null, exhaust: 0, usage: {}, log: [],
+    ac: baseAc, tmpHp: 0, armor: 0, shield: 0, snap: null, exhaust: 0, usage: {}, log: [],
     selEquip: null, splitData: null, xp: st.xp || 0,
     mainLv: (st.classes && st.classes[0] && st.classes[0].level) || 0,
     subLv: (st.classes && st.classes[1] && st.classes[1].level) || 0,
