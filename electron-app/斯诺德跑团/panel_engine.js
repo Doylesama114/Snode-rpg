@@ -4156,6 +4156,19 @@ function getArmorAC(armorName) {
 
 }
 
+function getShieldBonus(state) {
+  var b = 0;
+  var eq = (state && state.equipment && state.equipment["防具"]) || [];
+  for (var i = 0; i < eq.length; i++) {
+    var nm = itemName(eq[i]) || "";
+    if (nm.indexOf("\u76fe\u724c") < 0) continue;
+    var d = (typeof ITEM_DATA !== "undefined" && ITEM_DATA[nm] && ITEM_DATA[nm].description) ? ITEM_DATA[nm].description : "";
+    var m = d.match(/\u9632\u5fa1\u7b49\u7ea7\+(\d+)/) || d.match(/\u9632\u5fa1\u7b49\u7ea7\uff1a(\d+)/);
+    if (m) b += parseInt(m[1], 10);
+  }
+  return b;
+}
+
 /** 中甲：鳞甲 / 胸甲 / 半身板甲（与 armorACMap 常见分级一致） */
 var MEDIUM_ARMOR_NAMES = {"鳞甲":1,"胸甲":1,"半身板甲":1};
 
@@ -7935,7 +7948,9 @@ async function exportXlsxFromState(state) {
   if(_ka==="力量或敏捷")_ka=cl.keyAttr||"力量";
   var _kaVal = (state.attrs||{})[_ka]||10;
   var _spellMod = _mhp(_kaVal);
-  // AC (mirrors line 4415-4530)
+  
+
+// AC (mirrors line 4415-4530)
   var _ac=null;
   var _eqArmor=(state.equipment&&state.equipment["防具"])||[];
   for(var _ai=0;_ai<_eqArmor.length;_ai++){
@@ -7947,11 +7962,12 @@ async function exportXlsxFromState(state) {
       }
     }
     if(_aInfo){
-      var _ac2=_aInfo.addDex?(_aInfo.base+_dexMod):_aInfo.base;
+      var _ac2=_aInfo.addDex?(_aInfo.base+Math.min(_dexMod,_aInfo.dexCap!=null?_aInfo.dexCap:999)):_aInfo.base;
       if(_ac===null||_ac2>_ac)_ac=_ac2;
     }
   }
   if(_ac===null)_ac=10+_dexMod;
+  if(typeof getShieldBonus==="function")_ac+=getShieldBonus(state);
   if(state._feat_ac_bonus && typeof wearingMediumArmor==="function" && wearingMediumArmor()) _ac += (state._feat_ac_bonus||0);
   // Row 1
   set("L3", String(_hp));

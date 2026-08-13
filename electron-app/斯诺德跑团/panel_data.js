@@ -1162,7 +1162,7 @@ var armorACMap = {
   "布衣": {"base": 11, "addDex": true},
 
 
-  "皮甲": {"base": 11, "addDex": true},
+  "皮甲": {"base": 11, "addDex": true, "dexCap": 2},
 
 
   "兽皮甲": {"base": 12, "addDex": true},
