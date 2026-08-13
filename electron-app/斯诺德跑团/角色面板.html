@@ -274,7 +274,17 @@ body.battle .btn-battle{background:var(--green)}
 /* ===== 装备 ===== */
 .equip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .equip-slot{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
-.equip-slot h3{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between}
+.equip-slot h3{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.equip-slot h3 .eq-add-btn{background:var(--bg);border:1px solid var(--line);border-radius:4px;color:var(--accent);cursor:pointer;font-size:13px;line-height:1;padding:2px 7px;margin-left:6px}
+.equip-slot h3 .eq-add-btn:hover{border-color:var(--accent)}
+.it-q{font-size:12px;color:#8a6a2a;font-weight:normal;background:#f5e8c8;border-radius:4px;padding:1px 6px;margin-left:6px}
+.pk-item{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:13px;background:var(--bg)}
+.pk-item:hover{border-color:var(--accent)}
+.pk-item .pk-name{flex:1;font-weight:bold}
+.pk-item .pk-price{color:#8a6a2a;font-size:12px}
+.pk-item .pk-w{color:var(--muted);font-size:12px}
+.pk-item .pk-have{color:var(--muted);font-size:11px}
+.pk-empty{padding:16px;text-align:center;color:var(--muted);font-size:13px}
 .equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .eq{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
 .eq:hover{border-color:var(--accent)}
@@ -959,6 +969,35 @@ body.battle .fab{display:none}
   </div>
 </div>
 
+<!-- ===== 物品详情弹层 ===== -->
+<div class="overlay" id="itemOverlay" onclick="if(event.target===this)closeOverlay('itemOverlay')">
+  <div class="pop" style="max-width:520px">
+    <div class="pop-head"><h3 id="itName">物品详情</h3><button class="close" onclick="closeOverlay('itemOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div id="itBody"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:13px;color:var(--muted)">数量：</span>
+        <button class="ok" id="itDec" style="padding:4px 12px">−</button>
+        <b id="itCount" style="font-size:15px;min-width:28px;text-align:center">1</b>
+        <button class="ok" id="itInc" style="padding:4px 12px">＋</button>
+        <span style="flex:1"></span>
+        <button class="cancel" id="itRemoveBtn" style="padding:6px 14px;background:#a04030;color:#fff;border:none;border-radius:6px;cursor:pointer">移除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 物品添加选择弹层 ===== -->
+<div class="overlay" id="pickerOverlay" onclick="if(event.target===this)closeOverlay('pickerOverlay')">
+  <div class="pop" style="max-width:560px">
+    <div class="pop-head"><h3 id="pickerTitle">添加物品</h3><button class="close" onclick="closeOverlay('pickerOverlay')">✕</button></div>
+    <div class="pop-body">
+      <input id="pickerSearch" type="text" placeholder="搜索物品名称..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="pickerSearch(this.value)">
+      <div id="pickerList" style="max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 临时生命/防御等级/护盾 编辑弹层 ===== -->
 <div class="overlay" id="miniOverlay" onclick="if(event.target===this)closeOverlay('miniOverlay')">
   <div class="pop" style="max-width:360px">
@@ -1371,13 +1410,14 @@ function renderEquip() {
     var filled = items.filter(function(x){ return x; }).length;
     var locked = slot === '材料包B' && !(typeof state !== 'undefined' && state.containerItems && state.containerItems['材料包B']);
     var title = slot + (locked ? ' <span style="color:#c06040;font-weight:normal">[未装备]</span>' : '');
-    html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span></h3><div class="equip-items">';
+    html += '<div class="equip-slot"><h3><span>' + title + '</span><span>' + (locked ? '—' : filled + '/' + items.length) + '</span>' +
+      (locked ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       if (it) {
         var sel = S.selEquip && S.selEquip.slot === slot && S.selEquip.idx === i ? ' selected' : '';
         var cnt = it.cnt > 1 ? ' <span class="cnt">×' + it.cnt + '</span>' : '';
-        html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)">' +
+        html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)" ondblclick="showItemDetail(\'' + slot + '\',' + i + ')" title="单击移动 · 双击详情">' +
           '<span>' + it.item + cnt + '</span>' + (it.w ? '<span class="w">' + it.w + '</span>' : '') + '</div>';
       } else {
         var txt = locked ? '未购买' : '空栏位';
@@ -1420,6 +1460,154 @@ function eqCtx(ev, el) {
   document.getElementById('splitInput').value = 1;
   document.getElementById('splitInput').max = it.cnt - 1;
   document.getElementById('splitOverlay').classList.add('show');
+}
+/* ================= 装备详情 + 增删（v1.0.7222） ================= */
+function itemMeta(name) {
+  var m = { name: name };
+  if (typeof ITEM_DATA !== 'undefined' && ITEM_DATA[name]) {
+    var d = ITEM_DATA[name];
+    m.price = d.price || '';
+    m.weight = d.weight || '';
+    m.desc = d.description || '';
+    m.quality = d.quality || '';
+    m.tags = (d.tags || []).slice();
+  }
+  if (typeof getItemTags === 'function') {
+    var t = getItemTags(name);
+    if (t && t.length) m.tags = t.slice();
+  }
+  if (typeof getStackLimit === 'function') m.stackLimit = getStackLimit(name);
+  return m;
+}
+function showItemDetail(slot, idx) {
+  var it = EQUIP[slot] && EQUIP[slot][idx];
+  if (!it) return;
+  var name = it.item;
+  var meta = itemMeta(name);
+  document.getElementById('itName').innerHTML = escHtml(name) + (meta.quality ? ' <span class="it-q">' + escHtml(meta.quality) + '</span>' : '');
+  var rows = [];
+  rows.push(['所属槽位', slot + (idx + 1)]);
+  if (meta.price) rows.push(['价格', escHtml(meta.price)]);
+  if (meta.weight) rows.push(['载重', escHtml(meta.weight)]);
+  rows.push(['持有数量', it.cnt]);
+  if (meta.stackLimit > 1) rows.push(['堆叠', '可堆叠 ×' + meta.stackLimit]);
+  if (meta.tags && meta.tags.length) rows.push(['标签', escHtml(meta.tags.join(' · '))]);
+  if (meta.desc) rows.push(['描述', escHtml(meta.desc)]);
+  var html = '<table class="skill-detail-table">';
+  for (var i = 0; i < rows.length; i++) html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+  html += '</table>';
+  document.getElementById('itBody').innerHTML = html;
+  document.getElementById('itCount').textContent = it.cnt;
+  var rm = document.getElementById('itRemoveBtn');
+  if (rm) { rm.style.display = 'inline-block'; rm.setAttribute('onclick', "removeItem('" + slot + "'," + idx + ")"); }
+  document.getElementById('itInc').setAttribute('onclick', "adjItemCnt('" + slot + "'," + idx + ",1)");
+  document.getElementById('itDec').setAttribute('onclick', "adjItemCnt('" + slot + "'," + idx + ",-1)");
+  document.getElementById('itemOverlay').classList.add('show');
+}
+function adjItemCnt(slot, idx, d) {
+  var arr = EQUIP[slot];
+  var it = arr && arr[idx];
+  if (!it) return;
+  var limit = (typeof getStackLimit === 'function') ? getStackLimit(it.item) : 1;
+  var nv = it.cnt + d;
+  if (nv <= 0) {
+    arr[idx] = null;
+    toast('已移除 ' + it.item);
+    closeOverlay('itemOverlay');
+    renderEquip();
+    SB_syncEquipToState();
+    state._dirty = true;
+    return;
+  }
+  if (nv > limit) { toast('堆叠上限 ' + limit, 'warn'); return; }
+  it.cnt = nv;
+  document.getElementById('itCount').textContent = nv;
+  renderEquip();
+  SB_syncEquipToState();
+  state._dirty = true;
+}
+function removeItem(slot, idx) {
+  var arr = EQUIP[slot];
+  var it = arr && arr[idx];
+  if (!it) return;
+  if (!confirm('确定移除「' + it.item + '」？')) return;
+  arr[idx] = null;
+  closeOverlay('itemOverlay');
+  renderEquip();
+  SB_syncEquipToState();
+  state._dirty = true;
+  toast('已移除 ' + it.item);
+}
+var EQUIP_PICKER_SLOT = null;
+var EQUIP_PICKER_Q = '';
+function showEquipPicker(slot) {
+  EQUIP_PICKER_SLOT = slot;
+  EQUIP_PICKER_Q = '';
+  renderEquipPicker();
+  document.getElementById('pickerOverlay').classList.add('show');
+}
+function renderEquipPicker() {
+  var slot = EQUIP_PICKER_SLOT;
+  if (!slot) return;
+  var q = EQUIP_PICKER_Q.toLowerCase();
+  var list = document.getElementById('pickerList');
+  var html = '';
+  var names = (typeof ITEM_DATA !== 'undefined') ? Object.keys(ITEM_DATA) : [];
+  names.sort();
+  var shown = 0;
+  for (var i = 0; i < names.length; i++) {
+    var nm = names[i];
+    if (q && nm.toLowerCase().indexOf(q) < 0) continue;
+    var tags = (typeof getItemTags === 'function') ? getItemTags(nm) : [];
+    if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') !== 0 && !canPlaceInSlot(tags, slot, nm)) continue;
+    if (typeof canPlaceInSlot === 'function' && slot.indexOf('材料包') === 0) {
+      var bagType = (state.containerItems && state.containerItems[slot]) || '';
+      if (!canPlaceInSlot(tags, slot, nm, bagType)) continue;
+    }
+    var d = ITEM_DATA[nm] || {};
+    var already = false;
+    var arr = EQUIP[slot] || [];
+    for (var j = 0; j < arr.length; j++) if (arr[j] && arr[j].item === nm) { already = true; break; }
+    html += '<div class="pk-item" onclick="pickItem(\'' + nm.replace(/'/g, '\\u0027') + '\')"' + (already ? ' style="opacity:.5"' : '') + '>' +
+      '<span class="pk-name">' + escHtml(nm) + '</span>' +
+      (d.price ? '<span class="pk-price">' + escHtml(d.price) + '</span>' : '') +
+      (d.weight ? '<span class="pk-w">' + escHtml(d.weight) + '</span>' : '') +
+      (already ? '<span class="pk-have">已有</span>' : '') + '</div>';
+    shown++;
+  }
+  if (!shown) html = '<div class="pk-empty">（无匹配物品）</div>';
+  list.innerHTML = html;
+}
+function pickItem(name) {
+  var slot = EQUIP_PICKER_SLOT;
+  if (!slot) return;
+  var arr = EQUIP[slot] || (EQUIP[slot] = []);
+  var limit = (typeof getStackLimit === 'function') ? getStackLimit(name) : 1;
+  for (var i = 0; i < arr.length; i++) {
+    var x = arr[i];
+    if (x && x.item === name && limit > 1 && x.cnt < limit) {
+      x.cnt++;
+      closeOverlay('pickerOverlay');
+      renderEquip();
+      SB_syncEquipToState();
+      state._dirty = true;
+      toast('已添加 ' + name + '（堆叠 ×' + x.cnt + '）');
+      return;
+    }
+  }
+  var target = -1;
+  for (var j = 0; j < arr.length; j++) if (!arr[j]) { target = j; break; }
+  if (target < 0) { toast('该槽位已满，无法添加', 'warn'); return; }
+  arr[target] = { item: name, cnt: 1, w: '' };
+  closeOverlay('pickerOverlay');
+  renderEquip();
+  SB_syncEquipToState();
+  state._dirty = true;
+  toast('已添加 ' + name);
+}
+function pickerSearch(v) {
+  EQUIP_PICKER_Q = v || '';
+  renderEquipPicker();
 }
 function doSplit() {
   var d = S.splitData;

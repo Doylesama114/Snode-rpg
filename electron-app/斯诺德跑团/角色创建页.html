@@ -2510,6 +2510,7 @@ function parseEquipToSlots(text, charData){
       }else{
         var segs=nm.split("+");
         var itemName=segs[0].trim();
+        itemName=itemName.replace(/^其中包括有[：:]?/,"").trim();
         itemName=itemName.replace(/[（(]\d+格装备槽位[)）]/,"").trim();
         if(itemName&&itemName.length>1){
           var slot=determineEquipSlot(itemName);
@@ -2524,6 +2525,7 @@ function parseEquipToSlots(text, charData){
             cn=cn.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄]/,"").trim();
             if(cn&&cn.length>1){
               if(!charData.equipment[contSlot])charData.equipment[contSlot]=[];
+              if(cn==="背包"||cn==="旅行腰包"||cn==="材料包")continue;
               var hasIt3=false;
               for(var _hi3=0;_hi3<charData.equipment[contSlot].length;_hi3++){var _ei3=charData.equipment[contSlot][_hi3];if((_ei3&&(_ei3.item||_ei3.name))===cn){hasIt3=true;break;}}
               if(!hasIt3)charData.equipment[contSlot].push({item:cn});
