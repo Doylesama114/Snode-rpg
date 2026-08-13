@@ -56,3 +56,6 @@ __pycache__/
 
 # DSH harness（本地工具，不同步 git）
 deepseek-harness/
+
+# Visual check screenshots
+screenshots/

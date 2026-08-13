@@ -62,8 +62,29 @@ let dataOK = dataCheck.status === 0;
 console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
 totalErrors += dataOK ? 0 : 1;
 
+// 视觉层检查（截图 → 视觉模型，免费优先降级百炼；VERIFY_VISUAL=0 可跳过）
+console.log('\n=== 视觉检查（免费模型优先 → 百炼降级） ===');
+let visOK = true;
+if (process.env.VERIFY_VISUAL === '0') {
+  console.log('✅ 视觉检查跳过（VERIFY_VISUAL=0）');
+} else {
+  let visOut = null;
+  try {
+    visOut = spawnSync('node', [join(BASE, 'verify_visual.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024 });
+  } catch (e) {
+    visOK = false;
+    console.log('❌ 视觉检查执行失败: ' + e.message.split('\n')[0]);
+  }
+  if (visOut) {
+    if (visOut.stdout) console.log(visOut.stdout.trim().slice(0, 3000));
+    if (visOut.status !== 0) visOK = false;
+  }
+  console.log(visOK ? '✅ 视觉检查通过' : '❌ 视觉检查发现问题（见上方报告）');
+  totalErrors += visOK ? 0 : 1;
+}
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK ? 0 : 1);

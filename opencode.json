@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "allow",
+  "model": "opencode/deepseek-v4-flash-free",
+  "small_model": "opencode/deepseek-v4-flash-free",
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "vision": {
+      "description": "多模态图像分析：识别截图、UI 设计稿、图表、流程图、报错截图等图片内容。当用户发送图片或需要理解图像时使用",
+      "mode": "subagent",
+      "model": "opencode/mimo-v2.5-free",
+      "temperature": 0.1,
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    }
+  }
+}
