@@ -1140,7 +1140,7 @@ function SB_buildTestData(st) {
   for (var bi = 0; bi < bgMap.length; bi++) { if (bgMap[bi][1]) bgFields.push({ label: bgMap[bi][0], v: bgMap[bi][1] }); }
   var spMarks = [];
   if (st.color_marks) {
-    var order = ['红', '橙', '黄', '绿', '青', '蓝', '浅', '紫', '粉', '棕', '白', '黑', '无', '碧', '炫彩'];
+    var order = (typeof MARK_ORDER !== 'undefined') ? MARK_ORDER : (typeof MARK_COLOR_NAMES !== 'undefined' ? MARK_COLOR_NAMES : []);
     for (var oi = 0; oi < order.length; oi++) if (st.color_marks[order[oi]]) spMarks.push(order[oi]);
   }
   var talents = [];
@@ -1228,7 +1228,8 @@ var S = {
   heldMarks: T ? (T.spMarks || []).slice() : [],
   init: null
 };
-var MARK_HEX = { '红':'#FF0000','橙':'#EE822F','黄':'#FFF32F','绿':'#00B050','青':'#00FA99','蓝':'#00B0F0','浅':'#B3F9FF','紫':'#B94BFF','粉':'#FFB7E3','棕':'#843F0B','白':'#FFFFFF','黑':'#595959','无':'#D9D9D9','碧':'#00FA99','炫彩':'premium' };
+var MARK_HEX = (typeof MARK_COLOR_HEX !== 'undefined') ? MARK_COLOR_HEX : { '橙色':'#EE822F','白色':'#FFFFFF','紫色':'#B94BFF','黄色':'#FFF32F','无色':'#D9D9D9','蓝色':'#00B0F0','青色':'#00FA99','黑色':'#595959','红色':'#FF0000','棕色':'#843F0B','粉色':'#FFB7E3','绿色':'#00B050','浅色':'#B3F9FF','炫彩':'premium' };
+var MARK_ORDER = (typeof MARK_COLOR_NAMES !== 'undefined') ? MARK_COLOR_NAMES.slice() : ['橙色','白色','紫色','黄色','无色','蓝色','青色','黑色','红色','棕色','粉色','绿色','浅色','炫彩'];
 
 var EXHAUST = {
   1: { txt: '角色的基础移动力减半。' },
@@ -2053,7 +2054,7 @@ function renderXpSp() {
   sh += '<div class="sp-grid">';
   var hold = {};
   for (var i = 0; i < marks.length; i++) hold[marks[i]] = true;
-  var order = ['红','橙','黄','绿','青','蓝','浅','紫','粉','棕','白','黑','无','碧','炫彩'];
+  var order = (typeof MARK_ORDER !== 'undefined') ? MARK_ORDER : ['橙色','白色','紫色','黄色','无色','蓝色','青色','黑色','红色','棕色','粉色','绿色','浅色','炫彩'];
   for (var mi = 0; mi < order.length; mi++) {
     var mn = order[mi];
     var hex = MARK_HEX[mn] || '#888';
@@ -2092,7 +2093,7 @@ function refreshMarkGrids(flashName) {
   // 加点面板网格
   var grid = document.getElementById('chMarkGrid');
   if (grid) {
-    var order = ['红','橙','黄','绿','青','蓝','浅','紫','粉','棕','白','黑','无','碧','炫彩'];
+    var order = (typeof MARK_ORDER !== 'undefined') ? MARK_ORDER : ['橙色','白色','紫色','黄色','无色','蓝色','青色','黑色','红色','棕色','粉色','绿色','浅色','炫彩'];
     var g = '';
     for (var mi = 0; mi < order.length; mi++) {
       var chip = markChipHtml(order[mi], 'toggleMark');
@@ -2793,7 +2794,7 @@ renderXpSp = function() {
     sh += '<div class="sp-grid">';
     var hold = {};
     for (var i = 0; i < marks.length; i++) hold[marks[i]] = true;
-    var order = ['红', '橙', '黄', '绿', '青', '蓝', '浅', '紫', '粉', '棕', '白', '黑', '无', '碧', '炫彩'];
+    var order = (typeof MARK_ORDER !== 'undefined') ? MARK_ORDER : ['橙色','白色','紫色','黄色','无色','蓝色','青色','黑色','红色','棕色','粉色','绿色','浅色','炫彩'];
     for (var mi = 0; mi < order.length; mi++) {
       var mn = order[mi];
       var hex = (typeof MARK_HEX !== 'undefined' && MARK_HEX[mn]) || '#888';
@@ -2853,7 +2854,16 @@ toggleMark = function(name) {
   if (state.color_marks) {
     var hold = {};
     for (var i = 0; i < S.heldMarks.length; i++) hold[S.heldMarks[i]] = true;
-    for (var k in state.color_marks) state.color_marks[k] = !!hold[k];
+    var order = (typeof MARK_ORDER !== 'undefined') ? MARK_ORDER : ['橙色','白色','紫色','黄色','无色','蓝色','青色','黑色','红色','棕色','粉色','绿色','浅色','炫彩'];
+    var nm;
+    for (var k in state.color_marks) {
+      if (order.indexOf(k) < 0) continue;
+      state.color_marks[k] = !!hold[k];
+    }
+    for (var oi = 0; oi < order.length; oi++) {
+      nm = order[oi];
+      if (!(nm in state.color_marks)) state.color_marks[nm] = !!hold[nm];
+    }
   }
   state._dirty = true;
 };
