@@ -1355,7 +1355,7 @@ function SB_buildTestData(st) {
   }
   var feats = [];
   if (st.special_feats) {
-    var lvSeq = ['4级', '8级', '12级', '16级'];
+    var lvSeq = ['4级', '8级', '13级', '六阶天赋'];
     for (var fi = 0; fi < st.special_feats.length; fi++) {
       var f = st.special_feats[fi];
       var fn = typeof f === 'string' ? f : (f && f.name);
@@ -3970,7 +3970,7 @@ var SB_origRenderFeats2 = renderFeats;
 renderFeats = function() {
   var host = document.getElementById('featList');
   if (!host) return;
-  var lvSeq = ['4级', '8级', '12级', '16级'];
+  var lvSeq = ['4级', '8级', '13级', '六阶天赋'];
   var html = '';
   for (var i = 0; i < 4; i++) {
     var f = (state.special_feats && state.special_feats[i]) ? state.special_feats[i] : null;
