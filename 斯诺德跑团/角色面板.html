@@ -285,6 +285,17 @@ body.battle .btn-battle{background:var(--green)}
 .pk-item .pk-w{color:var(--muted);font-size:12px}
 .pk-item .pk-have{color:var(--muted);font-size:11px}
 .pk-empty{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+.store-cat{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.store-cat.on{border-color:var(--accent);color:var(--accent);font-weight:bold}
+.store-item{display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.store-item .si-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.store-item .si-name{font-weight:bold;font-size:13.5px}
+.store-item .si-meta{display:flex;gap:10px;font-size:12px}
+.store-item .si-price{color:#8a6a2a}
+.store-item .si-w{color:var(--muted)}
+.store-item .si-desc{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.store-item .si-buy{flex:none;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 16px;cursor:pointer;font-size:13px;font-family:inherit}
+.store-item .si-buy:hover{background:#c0852f}
 .equip-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .eq{background:var(--panel);border:1px solid #e8e2d8;border-radius:4px;padding:4px 8px;font-size:13px;display:flex;justify-content:space-between;gap:4px;cursor:pointer;user-select:none}
 .eq:hover{border-color:var(--accent)}
@@ -685,6 +696,7 @@ body.battle .fab{display:none}
       <button class="btn-primary" onclick="toast('测试页：学习面板未接入')">📚 学习技能</button>
       <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
       <button class="btn-ghost" onclick="toast('测试页：导出未接入')">📄 导出档案</button>
+      <button class="btn-ghost" onclick="openStore()">🏪 商店</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
       <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) alert('已保存到存档位'+s); })">💾 保存</button>
       <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
@@ -998,6 +1010,18 @@ body.battle .fab{display:none}
   </div>
 </div>
 
+<!-- ===== 商店弹层 ===== -->
+<div class="overlay" id="storeOverlay" onclick="if(event.target===this)closeOverlay('storeOverlay')">
+  <div class="pop" style="max-width:760px">
+    <div class="pop-head"><h3>🏪 斯诺德商店 <span id="storeGold" style="font-size:12.5px;color:var(--muted);font-weight:normal;margin-left:8px"></span></h3><button class="close" onclick="closeOverlay('storeOverlay')">✕</button></div>
+    <div class="pop-body">
+      <div id="storeCats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
+      <input id="storeSearch" type="text" placeholder="搜索物品..." style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;font-size:13px;font-family:inherit" oninput="renderStore()">
+      <div id="storeList" style="max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== 临时生命/防御等级/护盾 编辑弹层 ===== -->
 <div class="overlay" id="miniOverlay" onclick="if(event.target===this)closeOverlay('miniOverlay')">
   <div class="pop" style="max-width:360px">
@@ -1118,6 +1142,7 @@ body.battle .fab{display:none}
 <script src="shortcuts.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
 <script src="导出立绘.js"></script>
+<script src="store_data.js"></script>
 <script>
 
 /* ============ 桥接层 Part1：TEST_DATA 从 state 构建（SB_ 前缀） ============ */
@@ -1608,6 +1633,152 @@ function pickItem(name) {
 function pickerSearch(v) {
   EQUIP_PICKER_Q = v || '';
   renderEquipPicker();
+}
+/* ================= 商店（v1.0.7223） ================= */
+var STORE_CAT = '杂物';
+var STORE_Q = '';
+function parseCopper(priceStr) {
+  if (!priceStr) return 0;
+  var s = String(priceStr);
+  var total = 0, m, pat;
+  pat = /(\d+)\s*金币/g; while ((m = pat.exec(s))) total += parseInt(m[1], 10) * 100;
+  pat = /(\d+)\s*银币/g; while ((m = pat.exec(s))) total += parseInt(m[1], 10) * 10;
+  pat = /(\d+)\s*铜币/g; while ((m = pat.exec(s))) total += parseInt(m[1], 10);
+  return total;
+}
+function stateCopper() {
+  var cur = (typeof state !== 'undefined' && state.currency) ? state.currency : {};
+  return (parseFloat(cur['金币']) || 0) * 100 + (parseFloat(cur['银币']) || 0) * 10 + (parseFloat(cur['铜币']) || 0);
+}
+function copperText(total) {
+  var g = Math.floor(total / 100), s = Math.floor((total % 100) / 10), c = total % 10;
+  var parts = [];
+  if (g) parts.push(g + '金币');
+  if (s) parts.push(s + '银币');
+  if (c) parts.push(c + '铜币');
+  return parts.join('') || '0铜币';
+}
+function deductCopper(total) {
+  var cur = state.currency || (state.currency = {});
+  var remain = total;
+  var g = parseFloat(cur['金币']) || 0, s = parseFloat(cur['银币']) || 0, c = parseFloat(cur['铜币']) || 0;
+  var all = g * 100 + s * 10 + c;
+  if (all < remain) return false;
+  g *= 100; s *= 10;
+  var pool = g + s + c - remain;
+  cur['金币'] = Math.floor(pool / 100);
+  cur['银币'] = Math.floor((pool % 100) / 10);
+  cur['铜币'] = pool % 10;
+  return true;
+}
+function openStore() {
+  STORE_CAT = Object.keys(typeof STORE_DATA !== 'undefined' ? STORE_DATA : {})[0] || '杂物';
+  STORE_Q = '';
+  renderStore();
+  document.getElementById('storeOverlay').classList.add('show');
+}
+function renderStore() {
+  if (typeof STORE_DATA === 'undefined') return;
+  var gold = document.getElementById('storeGold');
+  if (gold) gold.textContent = '持有：' + copperText(stateCopper());
+  var cats = document.getElementById('storeCats');
+  var ch = '';
+  var keys = Object.keys(STORE_DATA);
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    ch += '<button class="store-cat' + (k === STORE_CAT ? ' on' : '') + '" onclick="STORE_CAT=\'' + k + '\';renderStore()">' + k + '</button>';
+  }
+  cats.innerHTML = ch;
+  var q = STORE_Q.toLowerCase();
+  var items = STORE_DATA[STORE_CAT] || [];
+  var list = document.getElementById('storeList');
+  var html = '';
+  var shown = 0;
+  for (var i2 = 0; i2 < items.length; i2++) {
+    var it = items[i2];
+    if (q && (it.name.toLowerCase().indexOf(q) < 0 && (it.desc || '').toLowerCase().indexOf(q) < 0)) continue;
+    var price = parseCopper(it.price);
+    html += '<div class="store-item">' +
+      '<div class="si-main"><span class="si-name">' + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
+      '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
+      (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
+      '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
+    shown++;
+  }
+  if (!shown) html = '<div class="pk-empty">（无匹配物品）</div>';
+  list.innerHTML = html;
+}
+function buyItem(name) {
+  var meta = itemMeta(name);
+  var storePrice = null;
+  if (typeof STORE_DATA !== 'undefined') {
+    for (var _ck in STORE_DATA) {
+      var _arr = STORE_DATA[_ck] || [];
+      for (var _ci = 0; _ci < _arr.length; _ci++) {
+        if (_arr[_ci].name === name && _arr[_ci].price) { storePrice = _arr[_ci].price; break; }
+      }
+      if (storePrice) break;
+    }
+  }
+  var price = parseCopper(storePrice || meta.price);
+  if (price <= 0) { toast('该物品无价格，无法购买', 'warn'); return; }
+  if (!deductCopper(price)) { toast('金币不足：需 ' + copperText(price), 'warn'); return; }
+  var slot = pickSlotForItem(name);
+  if (!slot) { toast('没有可用槽位放置该物品', 'warn'); deductCopper(-price); return; }
+  var arr = EQUIP[slot] || (EQUIP[slot] = []);
+  var limit = (typeof getStackLimit === 'function') ? getStackLimit(name) : 1;
+  for (var i = 0; i < arr.length; i++) {
+    var x = arr[i];
+    if (x && x.item === name && limit > 1 && x.cnt < limit) {
+      x.cnt++;
+      closeOverlay('storeOverlay');
+      renderEquip();
+      SB_syncEquipToState();
+      state._dirty = true;
+      renderStore();
+      toast('已购买 ' + name + '（堆叠 ×' + x.cnt + '，- ' + copperText(price) + '）');
+      return;
+    }
+  }
+  var target = -1;
+  for (var j = 0; j < arr.length; j++) if (!arr[j]) { target = j; break; }
+  if (target < 0) {
+    var alt = findAnyFreeSlot(slot);
+    if (alt) { slot = alt; arr = EQUIP[alt]; target = -1; for (var j2 = 0; j2 < arr.length; j2++) if (!arr[j2]) { target = j2; break; } }
+  }
+  if (target < 0) { toast('槽位已满，无法购买', 'warn'); deductCopper(-price); return; }
+  arr[target] = { item: name, cnt: 1, w: '' };
+  closeOverlay('storeOverlay');
+  renderEquip();
+  SB_syncEquipToState();
+  state._dirty = true;
+  renderStore();
+  toast('已购买 ' + name + '（- ' + copperText(price) + '）');
+}
+function pickSlotForItem(name) {
+  var tags = (typeof getItemTags === 'function') ? getItemTags(name) : [];
+  function has(t) { return tags.indexOf(t) >= 0; }
+  if (has('武器')) return '主手武器';
+  if (has('防具') || has('盾牌')) return '防具';
+  if (has('配饰')) return '配饰';
+  if (has('材料') || has('草药') || has('食材')) {
+    var mp = ['材料包A', '材料包B'];
+    for (var i = 0; i < mp.length; i++) {
+      var bt = (state.containerItems && state.containerItems[mp[i]]) || '';
+      if (bt && typeof canPlaceInSlot === 'function' && canPlaceInSlot(tags, mp[i], name, bt)) return mp[i];
+    }
+    return '杂物包';
+  }
+  return '杂物包';
+}
+function findAnyFreeSlot(slot) {
+  var order = ['主手武器', '副手武器', '防具', '配饰', '背包', '旅行腰包', '材料包A', '材料包B', '杂物包'];
+  for (var i = 0; i < order.length; i++) {
+    if (order[i] === slot) continue;
+    var arr = EQUIP[order[i]] || [];
+    for (var j = 0; j < arr.length; j++) if (!arr[j]) return order[i];
+  }
+  return null;
 }
 function doSplit() {
   var d = S.splitData;
