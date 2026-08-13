@@ -1078,6 +1078,7 @@ body.battle .fab{display:none}
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
+<script src="导出立绘.js"></script>
 <script>
 
 /* ============ 桥接层 Part1：TEST_DATA 从 state 构建（SB_ 前缀） ============ */
@@ -1130,10 +1131,26 @@ function SB_buildTestData(st) {
   var keyAttr = (st.classes && st.classes[0] && (st.classes[0].keyAttr || (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[st.classes[0].name] && REF_CLASSES[st.classes[0].name].key_attr))) || '力量';
   if (keyAttr === '力量或敏捷') keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
   var keyMod = Math.floor((((st.attrs && st.attrs[keyAttr]) || 10) - 10) / 2);
+  var ac = 10 + dexMod;
+  try {
+    var eqArmor = (st.equipment && st.equipment['防具']) || [];
+    for (var ai = 0; ai < eqArmor.length; ai++) {
+      var aInfo = (typeof getArmorAC === 'function') ? getArmorAC(eqArmor[ai]) : null;
+      if (!aInfo) {
+        var an = (typeof itemName === 'function') ? itemName(eqArmor[ai]) : (eqArmor[ai] && (eqArmor[ai].item || eqArmor[ai].name)) || '';
+        if (an === '演出戏服' || an === '高档服装' || an === '布衣' || an === '披风') aInfo = { base: 11, addDex: true };
+      }
+      if (aInfo) {
+        var ac2 = aInfo.addDex ? (aInfo.base + dexMod) : aInfo.base;
+        if (ac2 > ac) ac = ac2;
+      }
+    }
+    if (st._feat_ac_bonus && typeof wearingMediumArmor === 'function' && wearingMediumArmor()) ac += (st._feat_ac_bonus || 0);
+  } catch (e) {}
   var battle = {
     hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
     hpRecover: Math.floor((st.hp || 0) / 2), fpRecover: Math.floor((st.fp || 0) / 2),
-    ac: 10 + dexMod, init: '', speed: String((typeof REF_RACES !== 'undefined' && REF_RACES[st.race] && REF_RACES[st.race].speed) ? REF_RACES[st.race].speed : '5').replace('米', ''),
+    ac: ac, init: '', speed: String((typeof REF_RACES !== 'undefined' && REF_RACES[st.race] && REF_RACES[st.race].speed) ? REF_RACES[st.race].speed : '5').replace('米', ''),
     keyAttr: keyAttr, atk: Math.max(strMod, dexMod) + (st.atk_hit_bonus || 0), spell: keyMod + (st.spell_hit_bonus || 0)
   };
   var bgFields = [];
@@ -1762,7 +1779,7 @@ function renderCharHeader() {
     set('bgHpRecover', T.battle.hpRecover);
     set('bgFpRecover', T.battle.fpRecover);
     set('bgAc', T.battle.ac);
-    set('bgSpeed', (T.battle.speed || '') + 'm');
+    set('bgSpeed', (T.battle.speed || '') + '米');
     var atk = T.battle.atk, sp = T.battle.spell;
     set('bgAtk', (atk >= 0 ? '+' : '') + atk);
     set('bgSpell', (sp >= 0 ? '+' : '') + sp);

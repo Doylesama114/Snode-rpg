@@ -1332,11 +1332,7 @@ async function exportXlsxFromState(state) {
   set("U51", String(state.sp_points != null ? state.sp_points : 0));
 
   // Weight/Language/Profession
-  if (state.carry_capacity) {
-    set("Q3", String(state.carry_capacity["常规"] || 0));
-    set("Q4", String(state.carry_capacity["满载"] || 0));
-    set("Q5", String(state.carry_capacity["极限"] || 0));
-  }
+  var _cS = ((state.attrs && state.attrs["力量"]) || 8) + ((state.profs && state.profs["力量"] && state.profs["力量"]["承重"]) || 0); set("Q3", String(_cS * 5)); set("Q4", String(_cS * 10)); set("Q5", String(_cS * 15));
   if (state.languages && state.languages.length > 0) set("P7", state.languages.join(", "));
   if (state.professionals && state.professionals.length > 0) set("Q8", state.professionals[0]);
 

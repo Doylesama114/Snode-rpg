@@ -7963,8 +7963,8 @@ async function exportXlsxFromState(state) {
   // Row 2
   set("L5", String(Math.floor(_hp/2)));
   set("L6", String(Math.floor(_fp/2)));
-  set("L11", String(Math.max(_strMod,_dexMod)));
-  set("L12", String(_spellMod));
+  set("L11", String(Math.max(_strMod,_dexMod) + ((state && state.atk_hit_bonus) || 0)));
+  set("L12", String(_spellMod + ((state && state.spell_hit_bonus) || 0)));
   // Class layout
   set("B17", cl.name || "");
   if(cl.level) set("D17", cl.level);
@@ -8177,11 +8177,10 @@ async function exportXlsxFromState(state) {
   set("U51", String(state.sp_points != null ? state.sp_points : 0));
 
   // Weight/Language/Profession
-  if (state.carry_capacity) {
-    set("Q3", String(state.carry_capacity["常规"] || 0));
-    set("Q4", String(state.carry_capacity["满载"] || 0));
-    set("Q5", String(state.carry_capacity["极限"] || 0));
-  }
+  var _carryStr = ((state.attrs && state.attrs["力量"]) || 8) + ((state.profs && state.profs["力量"] && state.profs["力量"]["承重"]) || 0);
+  set("Q3", String(_carryStr * 5));
+  set("Q4", String(_carryStr * 10));
+  set("Q5", String(_carryStr * 15));
   if (state.languages && state.languages.length > 0) set("P7", state.languages.join(", "));
   if (state.professionals && state.professionals.length > 0) set("Q8", state.professionals[0]);
 
