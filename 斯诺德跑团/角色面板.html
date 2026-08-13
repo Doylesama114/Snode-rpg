@@ -160,9 +160,9 @@ body.battle .btn-battle{background:var(--green)}
 .portrait-round:hover .edit-badge{opacity:1}
 .portrait-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
 .kv{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
-.kv div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:4px 9px;min-width:0}
-.kv dt{color:var(--muted);font-size:12px;white-space:nowrap}
-.kv dd{font-weight:bold;font-size:14.5px;text-align:right;word-break:break-word}
+.kv div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:3px 7px;min-width:0}
+.kv dt{color:var(--muted);font-size:11.5px;white-space:nowrap;flex:none}
+.kv dd{font-weight:bold;font-size:12.5px;text-align:right;word-break:break-word;min-width:0}
 /* 职业（紧凑行式） */
 .classes{display:flex;flex-direction:column;gap:5px;margin-top:2px}
 .cls{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1369,6 +1369,11 @@ function eqClick(el) {
   var slot = el.getAttribute('data-slot');
   var idx = parseInt(el.getAttribute('data-idx'), 10);
   if (S.selEquip) {
+    if (S.selEquip.slot === slot && S.selEquip.idx === idx) {
+      S.selEquip = null;
+      renderEquip();
+      return;
+    }
     moveEquip(S.selEquip.slot, S.selEquip.idx, slot, idx);
     S.selEquip = null;
     renderEquip();
@@ -1411,6 +1416,7 @@ function doSplit() {
   renderEquip();
 }
 function moveEquip(fromSlot, fromIdx, toSlot, toIdx) {
+  if (fromSlot === toSlot && fromIdx === toIdx) return;
   var fromArr = EQUIP[fromSlot];
   var toArr = EQUIP[toSlot];
   var it = fromArr[fromIdx];
@@ -2779,6 +2785,14 @@ function SB_reinit() {
     }
   }
   SB_recalcDerived();
+  if (T && T.battle) {
+    T.battle.hp = state.hp || 0;
+    T.battle.hpMax = state.hp || 0;
+    T.battle.fp = state.fp || 0;
+    T.battle.fpMax = state.fp || 0;
+    T.battle.hpRecover = Math.floor((state.hp || 0) / 2);
+    T.battle.fpRecover = Math.floor((state.fp || 0) / 2);
+  }
   S = SB_buildS(state);
   S.battle = wasBattle;
 }
