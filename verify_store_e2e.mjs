@@ -556,6 +556,30 @@ const longNameOK = await page.evaluate(() => {
 ok('长名字 kvChar 单行显示（不再每行2字）', longNameOK.found && longNameOK.oneLine, JSON.stringify(longNameOK));
 ok('长名字页头 h1 单行', longNameOK.h1OneLine === true, 'h1OneLine=' + longNameOK.h1OneLine);
 
+// // ===== 14.95 通用六阶天赋「潜在专长」授予第 4 专长（v1.0.7237） =====
+await page.evaluate(() => {
+  state = JSON.parse(JSON.stringify(state));
+  state.classes = [{ name: '法师', level: 12, styles: ['', '', '', ''], keyAttr: '智力' }, { name: '', level: 0, styles: ['', '', '', ''] }, { name: '', level: 0, styles: ['', '', '', ''] }];
+  state.xp = 10000;
+  state.sp_points = 100;
+  state.color_marks = { '蓝色': 5, '青色': 5, '白色': 5, '橙色': 5, '紫色': 5, '红色': 5, '黄色': 5, '绿色': 5, '黑色': 5, '棕色': 5, '粉色': 5, '浅色': 5, '无色': 5 };
+  state.special_feats = ['强健体魄', '妙手空空', '法术精通'];
+  state.talent_tree = [];
+  state.unlocked_tiers = ['一阶', '二阶', '三阶', '四阶', '五阶', '六阶'];
+  window.confirm = function() { return true; };
+  learnSkill('通用', '潜在专长', 0);
+  return true;
+});
+await page.waitForTimeout(500);
+const tierFeatOK2 = await page.evaluate(() => {
+  const overlayOpen = !!document.getElementById('modalOverlay');
+  const ov = document.getElementById('modalOverlay');
+  if (ov) ov.remove();
+  const inTalentTree = (state.talent_tree || []).some(t => t.n === '潜在专长');
+  return { feats: state.special_feats.length, selectorOpened: overlayOpen, learned: inTalentTree };
+});
+ok('学习「潜在专长」天赋授予第 4 个专长（选择器打开）', tierFeatOK2.feats === 3 && tierFeatOK2.selectorOpened && tierFeatOK2.learned, JSON.stringify(tierFeatOK2));
+
 // // 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
 const migrated = await page.evaluate(() => {
   const oldState = {

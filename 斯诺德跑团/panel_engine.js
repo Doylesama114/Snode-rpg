@@ -6439,6 +6439,14 @@ function learnSkill(clsName, skillName, clsIdx) {
     applyUniversalTalentBonus(skillName,true,talentEntry);
     guardLinkSkill(skillName, clsName, isSub, isLocked, slotClsIdx);
     state._dirty=true;
+    // 六阶天赋「潜在专长」：获得第 4 个特殊专长（获取方式：4级/8级/13级/潜在专长，v1.0.7237）
+    if (skillData.name === "潜在专长") {
+      if ((state.special_feats || []).length < 4) {
+        showSpecialFeatSelector();
+      } else {
+        SB_toast("已获取全部 4 个特殊专长");
+      }
+    }
 
 
   } else {
