@@ -730,6 +730,7 @@ body.battle .fab{display:none}
       <button class="btn-primary" onclick="cheatAdd()">🧪 测试加点</button>
       <button class="btn-ghost" onclick="exportCurrentXlsx()">📄 导出档案</button>
       <button class="btn-ghost" onclick="openStore()">🏪 商店</button>
+      <button class="btn-ghost" onclick="enterSandbox()">⚔ 演练场</button>
       <button class="btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
       <button class="btn-ghost" onclick="showSaveDialog(function(s){ if(saveState(s)) toast('已保存到存档位'+s); })">💾 保存</button>
       <button class="btn-ghost" onclick="goBackToSlots()">↩ 返回</button>
@@ -3840,6 +3841,42 @@ function SB_reinit() {
   }
   S = SB_buildS(state);
   S.battle = wasBattle;
+}
+/* ================= 演练场：携带真实角色进入模拟战斗 ================= */
+function enterSandbox() {
+  if (!state || !state.name) { SB_toast("请先加载角色"); return; }
+  try {
+    var skills = [];
+    (state.skills || []).forEach(function (s) {
+      var sn = s.n || s.name;
+      var src = s.src || "";
+      var ref = null;
+      if (typeof SKILL_DATA !== "undefined" && SKILL_DATA[src]) {
+        var list = SKILL_DATA[src] || [];
+        for (var i = 0; i < list.length; i++) if ((list[i].n || list[i].name) === sn) { ref = list[i]; break; }
+      }
+      if (!ref) return;
+      var f = ref.fields || {};
+      var time = f["施展时间"] || "";
+      if (!time || time.indexOf("分钟") >= 0 || time.indexOf("短休") >= 0 || time.indexOf("长休") >= 0) return;
+      skills.push({ n: sn, time: time, range: f["施展距离"] || "近战", fp: f["疲劳消耗"] || "0", kw: f["关键词"] || "", desc: (ref.description || []).join(" ") });
+    });
+    var payload = {
+      source: { char: CURRENT_CHAR || state.name, slot: CURRENT_SLOT || 1 },
+      name: state.name, race: state.race,
+      cls: (state.classes && state.classes[0] && state.classes[0].name) || "",
+      level: (state.classes && state.classes[0] && state.classes[0].level) || 1,
+      hp: state.hp || 10, fp: state.fp || 8, hpMax: state.hp || 10, fpMax: state.fp || 8,
+      ac: S.battle.ac, speed: parseInt(S.battle.speed, 10) || 5, keyAttr: S.battle.keyAttr || "敏捷",
+      attrs: state.attrs || {}, skills: skills
+    };
+    localStorage.setItem("_snowd_sandbox_char", JSON.stringify(payload));
+    // 战斗页未随正式版发布：存在才跳转，否则优雅降级提示
+    fetch("combat_sandbox.html", { method: "HEAD" }).then(function (r) {
+      if (!r.ok) { SB_toast("演练场未包含在当前版本中（战斗页未随本版发布）"); return; }
+      location.href = "combat_sandbox.html";
+    }).catch(function () { SB_toast("演练场未包含在当前版本中（战斗页未随本版发布）"); });
+  } catch (e) { SB_toast("进入演练场失败：" + e.message); }
 }
 window.render = function() {
   SB_reinit();
