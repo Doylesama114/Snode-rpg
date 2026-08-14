@@ -580,6 +580,69 @@ const tierFeatOK2 = await page.evaluate(() => {
 });
 ok('学习「潜在专长」天赋授予第 4 个专长（选择器打开）', tierFeatOK2.feats === 3 && tierFeatOK2.selectorOpened && tierFeatOK2.learned, JSON.stringify(tierFeatOK2));
 
+// // ===== 14.99 移动端视口（v1.0.7241） =====
+const mctx = await browser.newContext({ viewport: { width: 375, height: 667 } });
+await mctx.addInitScript((charJSON) => {
+  try { localStorage.setItem('char_E2E商店侠_slot1', charJSON); } catch (e) {}
+}, JSON.stringify(buildChar()));
+const mpage = await mctx.newPage();
+const merrs = [];
+mpage.on('pageerror', e => merrs.push(e.message));
+await mpage.goto(URL, { waitUntil: 'domcontentloaded', timeout: 15000 });
+await mpage.waitForTimeout(1000);
+
+// 1. 学习面板不溢出视口
+const learnOK = await mpage.evaluate(() => {
+  window.toggleLearnMode();
+  const p = document.getElementById('learnPanel');
+  if (!p) return { opened: false };
+  const r = p.getBoundingClientRect();
+  return { opened: true, left: r.left, right: r.right, vw: window.innerWidth, fits: r.left >= -1 && r.right <= window.innerWidth + 1 };
+});
+ok('移动端学习面板打开且不溢出视口', learnOK.opened && learnOK.fits, JSON.stringify(learnOK));
+await mpage.evaluate(() => { try { window.toggleLearnMode(); } catch (e) {} });
+
+// 2. cf-grid 单列（480 以下）
+const cfOK = await mpage.evaluate(() => {
+  const cols = getComputedStyle(document.querySelector('.cf-grid')).gridTemplateColumns;
+  return cols;
+});
+ok('移动端自定义表单单列', cfOK.split(' ').length === 1, 'cols=' + cfOK);
+
+// 3. undefined 防御：坏条目显示空位
+const undefOK = await mpage.evaluate(() => {
+  SB_reinit();
+  EQUIP['杂物包'][0] = { item: undefined, cnt: 1, w: '' };
+  renderEquip();
+  return { hasUndef: (document.getElementById('equipGrid').textContent || '').indexOf('undefined') >= 0, normalized: !EQUIP['杂物包'][0] };
+});
+ok('坏装备条目不再显示 undefined', !undefOK.hasUndef, JSON.stringify(undefOK));
+
+// 4. 快速导航滚动不反复跳：滚到页面底部，active 应保持最后命中的项
+const tabOK = await mpage.evaluate(() => {
+  window.scrollTo(0, document.body.scrollHeight);
+  mobileScrollspy();
+  const active1 = (document.querySelector('#mobileTabs .mt-btn.active') || {}).getAttribute ? document.querySelector('#mobileTabs .mt-btn.active').getAttribute('data-tab') : null;
+  mobileScrollspy();
+  const active2 = document.querySelector('#mobileTabs .mt-btn.active').getAttribute('data-tab');
+  return { active1: active1, active2: active2, stable: active1 === active2, isBasic: active1 === '基础' };
+});
+ok('底部滚动时导航高亮稳定（不跳回基础）', tabOK.stable && !tabOK.isBasic, JSON.stringify(tabOK));
+
+// 5. 商店弹层不溢出
+await mpage.evaluate(() => { window.openStore(); });
+await mpage.waitForTimeout(300);
+const storeOK = await mpage.evaluate(() => {
+  const pop = document.querySelector('#storeOverlay .pop');
+  if (!pop) return { opened: false };
+  const r = pop.getBoundingClientRect();
+  return { opened: true, left: r.left, right: r.right, vw: window.innerWidth, fits: r.left >= -1 && r.right <= window.innerWidth + 1 };
+});
+ok('移动端商店弹层不溢出', storeOK.opened && storeOK.fits, JSON.stringify(storeOK));
+await mpage.evaluate(() => { try { closeOverlay('storeOverlay'); } catch (e) {} });
+ok('移动端页面无 JS 错误', merrs.length === 0, merrs.join(' | '));
+await mctx.close();
+
 // // 15. 旧存档迁移（页面内构造旧格式 state 直接验证迁移函数）
 const migrated = await page.evaluate(() => {
   const oldState = {

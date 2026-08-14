@@ -613,9 +613,17 @@ body.battle .xp-cls .xc-btn:hover{background:#c08a5e}
   .char-id h1{font-size:21px}
   .avatar-canvas-wrap{width:220px;height:220px}
   .log-drawer{width:100vw}
+  .learn-panel{width:calc(100vw - 20px);left:10px;right:auto;bottom:70px;max-height:62vh;font-size:14px}
+  .learn-panel .skill-detail-table,.learn-panel table{max-width:100%}
+  .store-item{flex-wrap:wrap;gap:6px 10px}
+  .store-item .si-main{flex:1 1 100%}
+  .store-item .si-buy,.store-item .si-refund{padding:6px 12px}
 }
 @media (max-width:480px){
   .kv{grid-template-columns:1fr}
+  .kv div{flex-direction:row;align-items:center;justify-content:space-between;gap:6px}
+  .kv dt{flex:none}
+  .kv dd{text-align:right;flex:1}
   .battle-grid{grid-template-columns:1fr 1fr}
   .misc-grid{grid-template-columns:1fr}
   .attr-top{flex-wrap:wrap}
@@ -623,6 +631,9 @@ body.battle .xp-cls .xc-btn:hover{background:#c08a5e}
   .talent-tier{grid-template-columns:1fr;gap:2px}
   .talent-tier .t-label{grid-column:span 1}
   .talent-tier .talent-cell{min-height:22px;font-size:10.5px}
+  .cf-grid{grid-template-columns:1fr}
+  .pop{max-height:88vh;padding:14px}
+  .overlay{padding:10px}
 }
 /* ===== 战斗模式：3 小球（临时生命/防御等级/护盾） ===== */
 .mini-balls{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:4px 2px;flex:none}
@@ -1549,7 +1560,7 @@ function renderEquip() {
       (lockedFixed ? '' : '<button class="eq-add-btn" onclick="showEquipPicker(\'' + slot + '\')" title="添加物品">＋</button>') + '</h3><div class="equip-items">';
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
-      if (it) {
+      if (it && typeof it.item === 'string' && it.item) {
         var sel = S.selEquip && S.selEquip.slot === slot && S.selEquip.idx === i ? ' selected' : '';
         var cnt = it.cnt > 1 ? ' <span class="cnt">×' + it.cnt + '</span>' : '';
         html += '<div class="eq' + sel + '" data-slot="' + slot + '" data-idx="' + i + '" draggable="true" onclick="eqClick(this)" oncontextmenu="eqCtx(event,this)" ondragstart="eqDragStart(event,this)" ondragover="eqDragOver(event)" ondrop="eqDrop(event,this)" ondragend="eqDragEnd()" title="单击详情 · 拖拽移动 · 右键拆分">' +
@@ -3623,6 +3634,7 @@ function renderMobileTabs() {
     });
   }
 }
+var _mtCur = '基础';
 function mobileScrollspy() {
   var tabs = document.querySelectorAll('#mobileTabs .mt-btn');
   if (!tabs.length) return;
@@ -3634,9 +3646,10 @@ function mobileScrollspy() {
     var r = el.getBoundingClientRect();
     if (r.top <= 130 && r.bottom > 130) { cur = MOBILE_SECTIONS[i].id; break; }
   }
-  if (!cur) cur = MOBILE_SECTIONS[0].id;
+  // 未命中任何 section（区块间隙/页面底部）时保持上一次高亮，避免在「基础」与其他项之间反复跳（v1.0.7241）
+  if (cur) _mtCur = cur;
   for (var j = 0; j < tabs.length; j++) {
-    tabs[j].classList.toggle('active', tabs[j].getAttribute('data-tab') === cur);
+    tabs[j].classList.toggle('active', tabs[j].getAttribute('data-tab') === _mtCur);
   }
 }
 function renderMobileBattleStrip() {
@@ -3727,7 +3740,9 @@ function SB_reinit() {
       var x = arr[ni];
       if (!x) { out.push(null); continue; }
       var itName = x.item || x.name;
-      if (typeof itName === 'string' && itName.indexOf('{') >= 0) { out.push(null); continue; }
+      // 防御：条目缺 item/name（数据损坏）视为空位，避免渲染 undefined（v1.0.7241）
+      if (typeof itName !== 'string' || !itName) { out.push(null); continue; }
+      if (itName.indexOf('{') >= 0) { out.push(null); continue; }
       out.push({ item: itName, cnt: (x.count || x.cnt || 1), w: x.w || '' });
     }
     return out;
@@ -3892,7 +3907,7 @@ function SB_syncEquipToState() {
     if (!state.equipment[es]) state.equipment[es] = [];
     for (var i = 0; i < arr.length; i++) {
       var x = arr[i];
-      if (!x) { state.equipment[es][i] = null; continue; }
+      if (!x || typeof x.item !== 'string' || !x.item) { state.equipment[es][i] = null; continue; }
       var prev = state.equipment[es][i] || {};
       state.equipment[es][i] = { item: x.item, count: x.cnt, w: x.w, weight: prev.weight, type: prev.type };
     }
