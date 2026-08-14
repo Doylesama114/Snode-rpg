@@ -1,27 +1,57 @@
 # Bug 反馈汇总
 
-数据截止：2026-08-11T19:48:42.666Z
+数据截止：2026-08-13T17:32:03.044Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 2 |
-| 本次新拉取 | 0 |
+| 总反馈 | 4 |
+| 本次新拉取 | 2 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
-| desktop | 1 |
+| desktop | 3 |
 | web | 1 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
-| electron | 1 |
+| electron | 3 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-08-13T17:32:03.044Z｜desktop
+- 页面：electron｜标题：Bug Report
+```
+页面: file:///D:/BaiduNetdiskDownload/snowd-skill-tree/resources/app.asar/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E8%A7%92%E8%89%B2%E9%9D%A2%E6%9D%BF.html?char=%E7%88%B1%E4%B8%BD%E4%B8%9D%C2%B7%E7%8E%9B%E6%A0%BC%E7%89%B9%E7%BD%97%E4%BC%8A%E5%BE%B7_3&slot=1
+ERR: Uncaught ReferenceError: showSubclassModal is not defined
+2026/8/14 01:32:03
+
+有bug
+
+--- 最近错误 ---
+2026-06-01T06:45:53.782Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+2026-06-01T06:45:53.933Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+2026-06-01T06:45:54.101Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+```
+
+### 2026-08-13T16:05:46.764Z｜desktop
+- 页面：electron｜标题：Bug Report
+```
+页面: file:///D:/BaiduNetdiskDownload/snowd-skill-tree/resources/app.asar/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E8%A7%92%E8%89%B2%E9%9D%A2%E6%9D%BF.html?char=%E7%88%B1%E4%B8%BD%E4%B8%9D%C2%B7%E7%8E%9B%E6%A0%BC%E7%89%B9%E7%BD%97%E4%BC%8A%E5%BE%B7_3&slot=1
+ERR: Uncaught TypeError: Cannot read properties of null (reading 'indexOf')
+2026/8/14 00:05:46
+
+好像出现了bug
+
+--- 最近错误 ---
+2026-06-01T06:45:53.782Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+2026-06-01T06:45:53.933Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+2026-06-01T06:45:54.101Z: Uncaught TypeError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': String contains non ISO-8859-1 code point.
+```
 
 ### 2026-08-11T19:48:42.666Z｜desktop
 - 页面：electron｜标题：Bug Report
