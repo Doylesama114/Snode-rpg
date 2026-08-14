@@ -3728,6 +3728,12 @@ function SB_reinit() {
   if (typeof migrateContainerState === 'function') migrateContainerState();
   TEST_DATA = SB_buildTestData(state);
   T = TEST_DATA;
+  // 同步升级面板所需字段（S 为陈旧包装对象，此前 S.xp/mainLv 不随存档更新，导致「经验」页升级按钮恒为经验不足）
+  if (typeof S !== 'undefined' && typeof state !== 'undefined' && state) {
+    S.xp = (typeof state.xp === 'number') ? state.xp : (S.xp || 0);
+    S.mainLv = (state.classes && state.classes[0] && state.classes[0].level) || 1;
+    S.subLv = (state.classes && state.classes[1] && state.classes[1].level) || 0;
+  }
   ATTR_VALS = T ? T.attrs : ATTR_VALS;
   ATTR_SAVE = T ? T.attrsSave : ATTR_SAVE;
   ATTR_LEARNED = T ? T.attrsLearned : ATTR_LEARNED;

@@ -359,7 +359,7 @@ assert(state.special_feats[0].choices._futureLowestLeft, 0, "字符串专长保�
 // extra_skill_slots
 state.extra_skill_slots = 1;
 state.classes = [{name:"战士",level:1},{name:"",level:0},{name:"",level:0}];
-assert(calcSkillSlots(0), 11, "质朴额外槽 +1 → 11");
+assert(calcSkillSlots(0), 11, "额外槽（技能槽）+1 → 11");
 state.extra_skill_slots = 0;
 
 // _dirty on chooseAttr path simulation
@@ -1035,7 +1035,7 @@ assert(xlsxWrites.O136, 'T3A', '三阶 O136');
 assert(xlsxWrites.O137, 'T3B', '三阶 O137');
 assertFalse(xlsxWrites.O125, 'T2A 不在一阶区 O125');
 assert(featDisplayName({ name: '健壮', level: 4 }), '健壮', 'featDisplayName 对象');
-assert(featDisplayName('质朴'), '质朴', 'featDisplayName 字符串');
+assert(featDisplayName('额外槽'), '额外槽', 'featDisplayName 字符串');
 results.push('</div>');
 
 // =================== T12: Blueprints / professional slots ===================

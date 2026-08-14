@@ -3211,14 +3211,18 @@ function showSpecialFeatDetail(name) {
   if (!fd) return;
   var desc = fd.effects.description || "暂无详细描述";
   var prereq = fd.prerequisite || "无";
+  var cat = (typeof SPECIAL_FEAT_CATEGORIES !== "undefined" && SPECIAL_FEAT_CATEGORIES[name]) ? SPECIAL_FEAT_CATEGORIES[name] : "";
+  var prereqLine = (prereq && prereq !== "无")
+    ? "前置要求：" + prereq + "（仅提示，不强制）"
+    : "前置条件：无";
   var typeLabel = "";
   if(fd.effects.type !== "description_only"){
-    var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
+    var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
     typeLabel = typeMap[fd.effects.type] || fd.effects.type;
   }
-  var tier = "特殊专长";
+  var tier = cat ? ("特殊专长 · " + cat) : "特殊专长";
   var styleInfo = typeLabel ? "[" + typeLabel + "]" : "";
-  showSkillPreview(name, styleInfo, tier, "前置条件：" + prereq + "<br><br>" + desc, null);
+  showSkillPreview(name, styleInfo, tier, prereqLine + "<br><br>" + desc, null);
 }
 
 // Show multiple proficiency choice dialog for feats
@@ -3337,6 +3341,34 @@ function selectTier(tier) {
   window._tierPending = null;
 }
 
+function showExtraSlotPicks(featName, total, picked) {
+  var left = total - picked.length;
+  var opts = ["技能槽", "一阶天赋槽", "二阶天赋槽", "三阶天赋槽", "四阶天赋槽", "五阶天赋槽", "六阶天赋槽", "七阶天赋槽", "八阶天赋槽", "九阶天赋槽"];
+  var h = "<div style='padding:16px;background:#2d2722;border-radius:8px;color:#f0e0d0'>";
+  h += "<div style='font-size:16px;font-weight:bold;margin-bottom:4px;color:#e8a86a'>额外槽</div>";
+  h += "<div style='font-size:12px;color:#b09070;margin-bottom:12px'>还差 " + left + " 个槽位待选择（共 " + total + " 个，可重复选同类）" + (picked.length ? "；已选：" + picked.join("、") : "") + "</div>";
+  h += "<div style='display:flex;flex-wrap:wrap;gap:6px'>";
+  for (var i = 0; i < opts.length; i++) {
+    h += "<div data-opt='" + opts[i] + "' onclick='pickExtraSlotOpt(this.dataset.opt)' style='padding:8px 14px;background:#3d3020;border:1px solid #5a4a30;border-radius:6px;cursor:pointer;font-size:13px'>" + opts[i] + "</div>";
+  }
+  h += "</div></div>";
+  showSkillPreview(featName, "特殊专长", "", h, function(){});
+  window._extraSlotPending = { featName: featName, total: total, picked: picked };
+}
+
+function pickExtraSlotOpt(opt) {
+  var p = window._extraSlotPending;
+  if (!p) return;
+  p.picked.push(opt);
+  if (p.picked.length >= p.total) {
+    var done = p.picked;
+    window._extraSlotPending = null;
+    addSpecialFeat(p.featName, { picks: done });
+  } else {
+    showExtraSlotPicks(p.featName, p.total, p.picked);
+  }
+}
+
 function removeSpecialFeat(name) {
   if(!confirm("确定移除特殊专长「"+name+"」吗？")) return;
   var arr = state.special_feats;
@@ -3356,41 +3388,122 @@ function removeSpecialFeat(name) {
 function showSpecialFeatSelector() {
   closeReplaceModal();
   var overlay = document.createElement("div");
-  overlay.id = "modalOverlay";
+  overlay.id = "specialFeatOverlay";
   overlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center";
   document.body.appendChild(overlay);
-  
-  var html = "<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:20px;max-width:600px;width:95%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
-  html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px'>";
+
+  var FEAT_CATS = ["全部", "战斗强化", "防御与生存", "属性与潜力", "施法与神秘", "探索与冒险", "社交与扮演", "生产与生活", "特殊彩蛋"];
+  var html = "<div style='background:#2d2722;border:1px solid #5a3a18;border-radius:12px;padding:16px;max-width:700px;width:95%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.5)'>";
+  html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px'>";
   html += "<span style='font-size:18px;color:#e8a86a;font-weight:bold'>选择特殊专长</span>";
-  html += "<button onclick='closeSpecialFeatSelector()' style='background:none;border:none;color:#888;font-size:20px;cursor:pointer'>&times;</button></div>";
-  
-  // Group feats
-  var featKeys = Object.keys(SPECIAL_FEATS).sort();
-  for(var fi=0;fi<featKeys.length;fi++){
-    var fn = featKeys[fi];
-    var fd = SPECIAL_FEATS[fn];
-    var isLearned = false;
-    for(var si=0;si<state.special_feats.length;si++){var sn=typeof state.special_feats[si]==="string"?state.special_feats[si]:state.special_feats[si].name;if(sn===fn){isLearned=true;break;}}
-    
-    html += "<div style='background:#3a322a;border-radius:8px;padding:10px 14px;margin-bottom:6px;border:1px solid "+(isLearned?"#6a5a3a":"#4a3a2a")+"'>";
-    html += "<div style='display:flex;align-items:center;gap:8px'>";
-    html += "<span style='font-weight:bold;color:"+(isLearned?"#b09070":"#e8d8c0")+";font-size:15px'>"+fn+"</span>";
-    html += "<span style='font-size:10px;color:#907050'>["+fd.prerequisite+"]</span>";
-    if(isLearned){
-      html += "<span style='margin-left:auto;font-size:11px;color:#6a8a5a'>已学习</span>";
-    } else {
-      html += "<button data-feat=\""+fn.replace(/"/g,"&quot;")+"\" onclick='addSpecialFeat(this.dataset.feat)' style='margin-left:auto;padding:2px 10px;background:#3a5a3a;color:#e0e0d0;border:none;border-radius:4px;cursor:pointer;font-size:12px'>学习</button>";
-    }
-    html += "</div>";
-    var descPreview = fd.effects.description||"";
-    if(descPreview.length>120) descPreview = descPreview.substring(0,120)+"...";
-    html += "<div style='font-size:12px;color:#b09070;margin-top:4px'>"+descPreview+"</div>";
-    html += "</div>";
+  html += "<span id='featSelCount' style='font-size:12px;color:#8a7a60'></span>";
+  html += "<button onclick='closeSpecialFeatSelector()' style='background:none;border:none;color:#888;font-size:22px;cursor:pointer'>&times;</button></div>";
+  html += "<input id='featSelSearch' type='text' placeholder='搜索专长名称 / 前置条件 / 效果…' oninput='refreshSpecialFeatSelector()' style='width:100%;box-sizing:border-box;padding:9px 12px;border-radius:8px;border:1px solid #5a4a30;background:#241f1a;color:#f0e0d0;font-size:14px;font-family:inherit;margin-bottom:10px;outline:none'>";
+  html += "<div id='featSelCats' style='display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px'>";
+  for (var ci = 0; ci < FEAT_CATS.length; ci++) {
+    html += "<button data-cat='" + FEAT_CATS[ci] + "' onclick='pickFeatCategory(this)' class='featCatChip' style='padding:4px 12px;border-radius:999px;border:1px solid #5a4a30;background:#241f1a;color:#b09878;cursor:pointer;font-size:12px;font-family:inherit'>" + FEAT_CATS[ci] + "</button>";
   }
-  
+  html += "</div>";
+  html += "<div id='featSelList' style='overflow-y:auto;padding-right:4px;min-height:160px'></div>";
   html += "</div>";
   overlay.innerHTML = html;
+  window._featSelState = { query: "", cat: "全部" };
+  refreshSpecialFeatSelector();
+}
+
+function _featSelEsc(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function _featCardHtml(item, idx, isLearned) {
+  var fn = item.fn, fd = item.fd, cat = item.cat;
+  var prereq = fd.prerequisite || "无";
+  var hasPrereq = prereq && prereq !== "无";
+  var desc = (fd.effects && fd.effects.description) || "";
+  var h = "<div style='background:" + (isLearned ? "#37302a" : "#332c25") + ";border:1px solid " + (isLearned ? "#6a5a3a" : "#4a3a2a") + ";border-radius:8px;padding:10px 12px;margin-bottom:6px'>";
+  h += "<div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'>";
+  h += "<span style='cursor:pointer;font-weight:bold;color:" + (isLearned ? "#b09070" : "#e8d8c0") + ";font-size:15px' onclick='toggleFeatCard(" + idx + ")'>" + _featSelEsc(fn) + "</span>";
+  h += "<span style='font-size:10px;padding:1px 8px;border-radius:999px;background:#3d3020;color:#c8a878;border:1px solid #5a4a30'>" + _featSelEsc(cat) + "</span>";
+  if (hasPrereq) {
+    h += "<span title='前置条件（仅提示，不强制）' style='font-size:10px;color:#e8b050;background:#3a3020;padding:1px 8px;border-radius:999px;border:1px dashed #8a6a30'>⚠ 前置</span>";
+  }
+  if (isLearned) {
+    h += "<span style='margin-left:auto;font-size:11px;color:#6a8a5a'>已学习</span>";
+  } else {
+    h += "<span style='margin-left:auto'></span>";
+    h += "<button data-feat=\"" + _featSelEsc(fn) + "\" onclick='addSpecialFeat(this.dataset.feat)' style='padding:3px 12px;background:#3a5a3a;border:none;border-radius:6px;color:#e8f0e0;cursor:pointer;font-size:13px;font-family:inherit'>学习</button>";
+  }
+  h += "</div>";
+  if (hasPrereq) {
+    h += "<div style='font-size:11px;color:#e8b050;margin-top:5px'>前置要求：" + _featSelEsc(prereq) + "（仅提示，不强制）</div>";
+  }
+  h += "<div id='featCardDetail-" + idx + "' style='display:none;margin-top:8px;border-top:1px dashed #4a3a2a;padding-top:8px'>";
+  h += "<div style='font-size:12px;color:#c0b090;line-height:1.75;white-space:pre-wrap'>" + _featSelEsc(desc) + "</div>";
+  h += "</div>";
+  h += "</div>";
+  return h;
+}
+
+function refreshSpecialFeatSelector() {
+  var listEl = document.getElementById("featSelList");
+  if (!listEl) return;
+  var st = window._featSelState || { query: "", cat: "全部" };
+  var q = (st.query || "").toLowerCase();
+  var featKeys = Object.keys(SPECIAL_FEATS).sort();
+  var learned = {}, learnedN = 0;
+  for (var si = 0; si < state.special_feats.length; si++) {
+    var sn = typeof state.special_feats[si] === "string" ? state.special_feats[si] : state.special_feats[si].name;
+    if (SPECIAL_FEATS[sn]) { learned[sn] = true; learnedN++; }
+  }
+  var cats = (typeof SPECIAL_FEAT_CATEGORIES !== "undefined") ? SPECIAL_FEAT_CATEGORIES : {};
+  var learnedList = [], otherList = [];
+  for (var i = 0; i < featKeys.length; i++) {
+    var fn = featKeys[i];
+    var fd = SPECIAL_FEATS[fn];
+    var cat = cats[fn] || "未分类";
+    if (st.cat !== "全部" && cat !== st.cat) continue;
+    var hay = (fn + " " + (fd.prerequisite || "") + " " + ((fd.effects && fd.effects.description) || "") + " " + cat).toLowerCase();
+    if (q && hay.indexOf(q) < 0) continue;
+    (learned[fn] ? learnedList : otherList).push({ fn: fn, fd: fd, cat: cat });
+  }
+  otherList.sort(function (a, b) {
+    if (a.cat !== b.cat) return a.cat < b.cat ? -1 : 1;
+    return a.fn < b.fn ? -1 : 1;
+  });
+  var total = learnedList.length + otherList.length;
+  var countEl = document.getElementById("featSelCount");
+  if (countEl) countEl.textContent = "共 " + featKeys.length + " 项 · 已学习 " + learnedN + " · 显示 " + total;
+  var html = "";
+  if (learnedList.length > 0) {
+    html += "<div style='font-size:12px;color:#8a7a60;margin:2px 0 6px'>已学习（" + learnedList.length + "）</div>";
+    for (var li = 0; li < learnedList.length; li++) html += _featCardHtml(learnedList[li], li, true);
+  }
+  if (learnedList.length > 0 && otherList.length > 0) {
+    html += "<div style='font-size:12px;color:#8a7a60;margin:10px 0 6px'>可选（" + otherList.length + "）</div>";
+  }
+  for (var oi = 0; oi < otherList.length; oi++) html += _featCardHtml(otherList[oi], learnedList.length + oi, false);
+  if (total === 0) html = "<div style='color:#8a7a60;text-align:center;padding:24px 0'>没有匹配的专长</div>";
+  listEl.innerHTML = html;
+  var searchEl = document.getElementById("featSelSearch");
+  if (searchEl) st.query = searchEl.value || "";
+}
+
+function toggleFeatCard(idx) {
+  var el = document.getElementById("featCardDetail-" + idx);
+  if (el) el.style.display = (el.style.display === "none") ? "block" : "none";
+}
+
+function pickFeatCategory(btn) {
+  var st = window._featSelState || { query: "", cat: "全部" };
+  st.cat = btn.getAttribute("data-cat") || "全部";
+  var chips = document.querySelectorAll("#featSelCats .featCatChip");
+  for (var i = 0; i < chips.length; i++) {
+    var active = chips[i].getAttribute("data-cat") === st.cat;
+    chips[i].style.background = active ? "#4a6a3a" : "#241f1a";
+    chips[i].style.color = active ? "#fff" : "#b09878";
+    chips[i].style.borderColor = active ? "#6a8a4a" : "#5a4a30";
+  }
+  refreshSpecialFeatSelector();
 }
 
 
@@ -3619,8 +3732,26 @@ function applyFeatEffects(name, featEntry, add) {
       break;
     }
     case "extra_slot": {
-      // 额外槽位: 额外天赋槽位
-      if (choices.tier && add) {
+      // 额外槽: 三选（技能槽/各阶天赋槽，可重复）
+      if (choices.picks && Array.isArray(choices.picks)) {
+        for (var pk = 0; pk < choices.picks.length; pk++) {
+          var pick = choices.picks[pk];
+          if (pick === "技能槽") {
+            state.extra_skill_slots = Math.max(0, (state.extra_skill_slots || 0) + mult);
+          } else {
+            var tm = /^(.阶)天赋槽$/.exec(pick);
+            if (tm) {
+              if (add) {
+                if (!state.extra_slots) state.extra_slots = [];
+                state.extra_slots.push(tm[1]);
+              } else if (state.extra_slots) {
+                var ei = state.extra_slots.lastIndexOf(tm[1]);
+                if (ei >= 0) state.extra_slots.splice(ei, 1);
+              }
+            }
+          }
+        }
+      } else if (choices.tier && add) {
         if (!state.extra_slots) state.extra_slots = [];
         if (state.extra_slots.indexOf(choices.tier) < 0) {
           state.extra_slots.push(choices.tier);
@@ -4080,7 +4211,12 @@ function addSpecialFeat(name, choices) {
         addSpecialFeat(name, {});
         return;
       case "extra_slot": {
-        // 额外槽位: show tier selection dialog
+        // 额外槽: 3 个槽位自由选择（技能槽/各阶天赋槽，可重复）
+        var es = eff.extra_slot;
+        if (es && es.skill_or_talent && !(choices && choices.picks)) {
+          showExtraSlotPicks(name, es.count || 3, []);
+          return;
+        }
         var tiers = ["一阶","二阶","三阶","四阶","五阶","六阶","七阶","八阶","九阶"];
         showTierChoice(name, tiers, function(tier) {
           addSpecialFeat(name, {tier: tier});
@@ -4139,13 +4275,17 @@ function addSpecialFeat(name, choices) {
   
   var pu = window._pendingLevelUp;
   closeReplaceModal();
+  closeSpecialFeatSelector(true);
   if (pu) { pu._done._feat=true; applyLevelUp(pu.clsIdx); }
   render();
 }
 
-function closeSpecialFeatSelector() {
+function closeSpecialFeatSelector(silent) {
   closeReplaceModal();
-  if (window._pendingLevelUp) {
+  var ov = document.getElementById("specialFeatOverlay");
+  if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  window._featSelState = null;
+  if (!silent && window._pendingLevelUp) {
     SB_toast("升级未完成：属性/熟练奖励已保留，请再次点击「升级」继续选择专长或完成升级。");
   }
 }
@@ -4821,7 +4961,7 @@ function renderFeats(){
     var sfType=sfData.effects.type;
     var typeLabel="";
     if(sfType!=="description_only"){
-      var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽位","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
+      var typeMap={"attribute":"属性","multi":"复合","proficiency":"熟练度","professional":"专业","attribute_health":"属性+生命","health_growth":"生命成长","attribute_proficiency":"属性+熟练","attribute_boost":"属性强化","sp_pack":"技能点","xp_pack":"经验值","armor_ac":"防御","heavy_armor":"重甲防御","extra_slot":"额外槽","professional_sp":"专业+技能点","panel":"面板加成","description_only":"规则"};
       typeLabel=typeMap[sfType]||sfType;
     }
     fh+='<div class="feat-chip" style="border-left:4px solid #a46d1f;margin-bottom:4px">';
@@ -7060,15 +7200,20 @@ function showLevelUpModal(clsIdx){
   html+='<div style="font-size:18px;color:#e8a86a;font-weight:bold;margin-bottom:12px">'+cl.name+' Lv.'+nextLv+' 升级奖励</div>';
 
   var rewards=[];
-  if(data.prof>0)rewards.push("熟练度 +"+data.prof);
-  if(data.attr>0)rewards.push("属性值 +"+data.attr);
-  if(data.slot>0)rewards.push("技能槽位 +"+data.slot);
-  if(data.notes)rewards.push(data.notes);
-  if(data.special==="feat")rewards.push("获取一项特殊专长");
+  if(data.prof>0)rewards.push("🎯 熟练度 +"+data.prof+"（可选）");
+  if(data.attr>0)rewards.push("⭐ 属性值 +"+data.attr+"（可选）");
+  if(data.slot>0)rewards.push("🎒 技能槽位 +"+data.slot);
+  if(data.attr_cap)rewards.push("📈 属性上限提升至 "+data.attr_cap);
+  if(data.prof_cap)rewards.push("📈 熟练度上限提升至 "+data.prof_cap);
+  if(data.notes)rewards.push("📜 "+data.notes);
 
   html+='<div style="margin-bottom:14px">';
+  html+='<div style="padding:5px 10px;margin:4px 0;background:#1f1a16;border-radius:4px;font-size:13px;color:#ddd">💰 升级消耗：'+data.xp+' XP</div>';
   for(var ri=0;ri<rewards.length;ri++){
-    html+='<div style="padding:5px 10px;margin:4px 0;background:#1f1a16;border-radius:4px;font-size:13px;color:#ddd">'+'▸ '+rewards[ri]+'</div>';
+    html+='<div style="padding:5px 10px;margin:4px 0;background:#1f1a16;border-radius:4px;font-size:13px;color:#ddd">'+rewards[ri]+'</div>';
+  }
+  if(data.special==="feat"){
+    html+='<div style="padding:6px 10px;margin:4px 0;background:#2a2418;border:1px solid #8a6a30;border-radius:4px;font-size:13px;color:#e8b050;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span>✨ 获取一项特殊专长</span><button onclick="startLevelUpFeatPick('+clsIdx+')" style="margin-left:auto;padding:3px 12px;background:#8a6a30;border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:12px;font-family:inherit">去选择专长 →</button></div>';
   }
   html+='</div>';
 
@@ -7078,6 +7223,11 @@ function showLevelUpModal(clsIdx){
   html+='</div></div>';
 
   overlay.innerHTML=html;
+}
+
+function startLevelUpFeatPick(clsIdx){
+  closeReplaceModal();
+  applyLevelUp(clsIdx);
 }
 
 function applyLevelUp(clsIdx){

@@ -43,6 +43,7 @@ h1{font-size:26px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid 
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
+<script src="xlsx_proficiency_import.js"></script>
 </head>
 <body>
 <div class="container">
@@ -498,24 +499,13 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   }
   s.talent_tree=_ntt;
 
-  // === Scan proficiencies from xlsx ===
-  var _profDefs={"力量":["豁免","威力","承重","运动-跳跃","运动-攀爬","运动-游泳","运动-自定义"],"敏捷":["豁免","体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除","巧手-自定义"],"体质":["豁免","专注","耐力"],"智力":["豁免","宗教","调查","估价","伪造","读唇","逻辑","奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙","知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪","知识-自定义"],"感知":["豁免","洞悉","导航","自然","驯兽","感悟","聆听","察觉","警惕值"],"魅力":["豁免","欺瞒","恐吓","说服","表演-歌唱","表演-舞蹈","表演-演奏","表演-自定义"],"意志":["豁免","求生","激励","决策"],"幸运":["豁免","机遇","探索"]};
-  for(var _pa in _profDefs){
-    var _pr=findCell(_pa);if(!_pr&&_pa==="意志")_pr=findCell("意志");if(!_pr&&_pa==="幸运")_pr=findCell("幸运");
-    console.log("PROF SCAN: found "+_pa+" at "+_pr);if(!_pr)continue;var _prow=parseInt(_pr.substring(1));
-    var _pList=_profDefs[_pa];
-    for(var _pi=0;_pi<_pList.length;_pi++){
-      var _pn=_pList[_pi];
-      var _saveEval=c("E"+_prow);if(_saveEval==="豁免"){var _saveVal=parseInt(c("G"+_prow))||0;if(_saveVal>0){if(!s.profs[_pa])s.profs[_pa]={};s.profs[_pa]["豁免"]=_saveVal;}}
-    for(var _prr=_prow+1;_prr<_prow+30;_prr++){var _eval=c("E"+_prr);
-        if(_pa==="力量"){var _keys=Object.keys(cells).filter(function(k){var r=parseInt(k.substring(1));return r>=36&&r<=45;}).sort();}
-        if(!_eval||_eval===_pa||_profDefs[_eval])break;
-        if(_eval===_pn||_eval.indexOf(_pn)>=0){
-          var _pval=parseInt(c("G"+_prr))||0;
-          if(_pval>0){if(!s.profs[_pa])s.profs[_pa]={};s.profs[_pa][_pn]=_pval;console.log("PROF: "+_pa+"."+_pn+"="+_pval);}
-          break;
-        }
-      }
+  // === Scan proficiencies from xlsx（固定行区映射，与 xlsx_proficiency_export.js 同构）===
+  var _profScan = (typeof scanXlsxProficiencies === "function") ? scanXlsxProficiencies(cells) : {};
+  for (var _psa in _profScan) {
+    if (!_profScan.hasOwnProperty(_psa)) continue;
+    if (!s.profs[_psa]) s.profs[_psa] = {};
+    for (var _psk in _profScan[_psa]) {
+      if (_profScan[_psa].hasOwnProperty(_psk)) s.profs[_psa][_psk] = _profScan[_psa][_psk];
     }
   }
   // 期望进阶路线（自描述单元格 H39，旧文件缺失时自动跳过）

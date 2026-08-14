@@ -62,6 +62,20 @@ let dataOK = dataCheck.status === 0;
 console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
 totalErrors += dataOK ? 0 : 1;
 
+// 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
+console.log('\n=== 特殊专长一致性 ===');
+let featOK = true;
+try {
+  let featOut = spawnSync('node', [join(BASE, 'scripts', 'verify_feats_sync.mjs')], { encoding: 'utf-8', timeout: 60000 });
+  if (featOut.stdout) console.log(featOut.stdout.trim().slice(0, 2500));
+  if (featOut.status !== 0) featOK = false;
+} catch (e) {
+  featOK = false;
+  console.log('❌ 特殊专长校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(featOK ? '✅ 特殊专长一致性通过' : '❌ 特殊专长一致性失败');
+totalErrors += featOK ? 0 : 1;
+
 // 视觉层检查（截图 → 视觉模型，免费优先降级百炼；VERIFY_VISUAL=0 可跳过）
 console.log('\n=== 视觉检查（免费模型优先 → 百炼降级） ===');
 let visOK = true;
