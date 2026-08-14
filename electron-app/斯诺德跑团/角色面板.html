@@ -613,7 +613,7 @@ body.battle .xp-cls .xc-btn:hover{background:#c08a5e}
   .char-id h1{font-size:21px}
   .avatar-canvas-wrap{width:220px;height:220px}
   .log-drawer{width:100vw}
-  .learn-panel{width:calc(100vw - 20px);left:10px;right:auto;bottom:70px;max-height:62vh;font-size:14px}
+  .learn-panel{width:calc(100vw - 20px);left:10px;right:auto;bottom:120px;max-height:calc(100vh - 132px);font-size:14px}
   .learn-panel .skill-detail-table,.learn-panel table{max-width:100%}
   .store-item{flex-wrap:wrap;gap:6px 10px}
   .store-item .si-main{flex:1 1 100%}
@@ -3603,11 +3603,13 @@ document.addEventListener('keydown', function(e) {
 var MOBILE_SECTIONS = [
   { id: '基础', sel: '.info-card' },
   { id: '战斗', sel: '.battle-card' },
+  { id: '经验', sel: '.xp-sp-grid' },
+  { id: '背景', sel: '.grid-2-1' },
   { id: '属性', sel: '#attrGrid' },
-  { id: '装备', sel: '#equipGrid' },
   { id: '技能', sel: '#mainSkillBody' },
   { id: '天赋', sel: '#talentList' },
-  { id: '图纸', sel: '#bpGrid' }
+  { id: '图纸', sel: '#bpGrid' },
+  { id: '装备', sel: '#equipGrid' }
 ];
 function renderMobileTabs() {
   var wrap = document.getElementById('mobileTabs');

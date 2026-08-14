@@ -600,6 +600,14 @@ const learnOK = await mpage.evaluate(() => {
   return { opened: true, left: r.left, right: r.right, vw: window.innerWidth, fits: r.left >= -1 && r.right <= window.innerWidth + 1 };
 });
 ok('移动端学习面板打开且不溢出视口', learnOK.opened && learnOK.fits, JSON.stringify(learnOK));
+const learnFabOK = await mpage.evaluate(() => {
+  const p = document.getElementById('learnPanel');
+  const f = document.querySelector('.fab .learn');
+  if (!p || !f) return { missing: true };
+  const pr = p.getBoundingClientRect(), fr = f.getBoundingClientRect();
+  return { panelTop: Math.round(pr.top), panelBottom: Math.round(pr.bottom), fabTop: Math.round(fr.top), fabBottom: Math.round(fr.bottom), clear: pr.top >= -1 && fr.top >= pr.bottom - 1, label: f.textContent };
+});
+ok('移动端学习面板不遮挡右下角按钮', learnFabOK.clear, JSON.stringify(learnFabOK));
 await mpage.evaluate(() => { try { window.toggleLearnMode(); } catch (e) {} });
 
 // 2. cf-grid 单列（480 以下）
@@ -628,6 +636,8 @@ const tabOK = await mpage.evaluate(() => {
   return { active1: active1, active2: active2, stable: active1 === active2, isBasic: active1 === '基础' };
 });
 ok('底部滚动时导航高亮稳定（不跳回基础）', tabOK.stable && !tabOK.isBasic, JSON.stringify(tabOK));
+const navOrder = await mpage.evaluate(() => Array.from(document.querySelectorAll('#mobileTabs .mt-btn')).map(b => b.getAttribute('data-tab')));
+ok('移动端导航顺序与页面模块顺序一致', JSON.stringify(navOrder) === JSON.stringify(['基础','战斗','经验','背景','属性','技能','天赋','图纸','装备']), JSON.stringify(navOrder));
 
 // 5. 商店弹层不溢出
 await mpage.evaluate(() => { window.openStore(); });

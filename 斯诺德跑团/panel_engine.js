@@ -5639,40 +5639,19 @@ function _cheatAdjSPPoints(delta){ensureSpState();state.sp_points=Math.max(0,(st
 function _cheatSetSPPoints(val){ensureSpState();state.sp_points=Math.max(0,parseInt(val)||0);_cheatRefreshPanel();render();}
 function _cheatToggleMark(color){ensureSpState();state.color_marks[color]=!state.color_marks[color];_cheatRefreshPanel();}
 function toggleLearnMode() {
-
-
   var panel = document.getElementById("learnPanel");
-
-
   var btn = document.getElementById("learnToggle");
-
-
   if (!panel || !btn) return;
-
-
+  var fabBtn = document.querySelector('.fab .learn');
   if (panel.classList.contains("show")) {
-
-
     panel.classList.remove("show"); panel.style.display = "none";
-
-
     btn.innerHTML = "📚 学习技能";
-
-
+    if (fabBtn) fabBtn.innerHTML = "📚 学习技能";
   } else {
-
-
-    try { renderLearnPanel(); panel.style.display = ""; panel.classList.add("show"); btn.innerHTML = "✕ 关闭"; }
-
-
+    try { renderLearnPanel(); panel.style.display = ""; panel.classList.add("show"); btn.innerHTML = "✕ 关闭"; if (fabBtn) fabBtn.innerHTML = "✕ 关闭面板"; }
     catch(e) { panel.innerHTML = "<div style='padding:20px;color:#e06060'>Error: " + e.message + "</div>"; panel.style.display = "block"; }
-
-
   }
-
-
 }
-
 
 function onLearnSearchInput() {
 
