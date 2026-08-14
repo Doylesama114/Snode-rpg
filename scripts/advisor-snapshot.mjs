@@ -233,6 +233,7 @@ export function analyzeSnapshot(snapshot, options = {}) {
       mainLevel,
       attrs: snapshot.attrs,
       skillNames: (snapshot.skills || []).map((s) => s.name),
+      aspirationPath: snapshot.aspirationPath || null,
     },
     subclasses,
     profHighlights,
@@ -273,6 +274,14 @@ export function formatSnapshotContext(analysis, options = {}) {
   lines.push('### 进阶达标（属性门槛）');
   for (const a of analysis.advancements.slice(0, 8)) {
     lines.push(`- ${a.advancementName}：${a.eligible ? '✓' : '✗'}${Object.keys(a.gaps || {}).length ? ` gaps=${JSON.stringify(a.gaps)}` : ''}`);
+  }
+  const aspiration = analysis.snapshot.aspirationPath || null;
+  if (aspiration && ((aspiration.picks || []).length || String(aspiration.text || '').trim())) {
+    lines.push('');
+    lines.push('### 期望进阶路线（玩家愿景）');
+    if ((aspiration.picks || []).length) lines.push(`- 期望进阶：${aspiration.picks.join(' → ')}`);
+    if (String(aspiration.text || '').trim()) lines.push(`- 备注：${String(aspiration.text).trim()}`);
+    lines.push('- 回答时应结合该期望方向给出取舍评价；若问题涉及 build/技能/加点，需先点明期望目标及达标状态。');
   }
 
   if (includeMulticlass && analysis.multiclass.mainClass === '法师') {

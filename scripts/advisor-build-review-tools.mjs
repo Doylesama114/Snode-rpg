@@ -254,6 +254,7 @@ export function formatBuildReviewToolsText(review) {
   }
 
   lines.push('- LLM 须先评价现状与进阶衔接，再列 3～4 项可立即学习的技能；勿建议超出位阶的五阶及以上技能；勿把进阶与 L7 兼职混淆。');
+  lines.push('- 若上方存在「评价目标进阶」（来自玩家期望路线），回答开头必须点明该目标（例如「你期望的进阶是火焰法师」），并给出达标状态（✓ 或差距），后续建议围绕该方向取舍；期望路线备注也应作为偏好参考。');
   lines.push(`- 免责声明（回答末尾须复述）：${ROADMAP_DISCLAIMER}`);
   return lines.join('\n');
 }
