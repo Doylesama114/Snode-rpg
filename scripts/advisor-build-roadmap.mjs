@@ -139,10 +139,16 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
     if (sub?.name) subClass = sub.name;
   }
 
+  const aspiration = snapshot?.aspirationPath || null;
   let advancementName = resolveAdvancementName(q);
   const unknownAdvancement = advancementName ? null : detectUnknownAdvancementQuery(q);
   const kitId = detectRoadmapKitId(q);
   const baseClassPick = !!(advancementName && isAdvancementBaseClassPickQuery(q));
+
+  // 期望进阶路线（aspirationPath）作为无显式目标时的默认方向
+  if (!advancementName && aspiration?.picks?.length) {
+    advancementName = String(aspiration.picks[0]).trim() || null;
+  }
 
   if (goalOverride) {
     if (goalOverride.advancementName) advancementName = goalOverride.advancementName;
@@ -193,6 +199,7 @@ export function parseRoadmapGoal(query, snapshot = null, goalOverride = null) {
     roadmapMode,
     baseClassPick,
     goalOverride: goalOverride || null,
+    aspiration: aspiration || null,
   };
 }
 

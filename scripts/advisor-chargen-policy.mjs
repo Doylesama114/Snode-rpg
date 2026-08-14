@@ -224,5 +224,12 @@ export function buildChargenExtraContext(snapshot) {
     ]));
   }
   if (step >= 7) parts.push(formatCharacterProfileContext(char));
+  const aspiration = char.aspiration || null;
+  if (aspiration && ((aspiration.picks || []).length || String(aspiration.text || '').trim())) {
+    const aspParts = [];
+    if ((aspiration.picks || []).length) aspParts.push('期望进阶途径：' + aspiration.picks.join(' → '));
+    if (String(aspiration.text || '').trim()) aspParts.push('备注：' + String(aspiration.text).trim());
+    parts.push('【期望进阶路线】' + aspParts.join('；') + '。后续陪跑建议应在该期望方向下给出取舍评价；若当前选择与该方向冲突，请温和指出。');
+  }
   return parts.filter(Boolean).join('\n\n');
 }

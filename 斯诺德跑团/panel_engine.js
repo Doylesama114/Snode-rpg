@@ -8115,6 +8115,14 @@ async function exportXlsxFromState(state) {
   if (state.scamType) set("H35", state.scamType);
   if (state.missionChannel) set("H36", state.missionChannel);
   if (state.academicDomain) set("H37", state.academicDomain);
+  var _aspObj = state.aspirationPath || null;
+  var _aspStr = "";
+  if (_aspObj) {
+    var _aspP = (_aspObj.picks || []).join(" → ");
+    var _aspT = (_aspObj.text != null ? String(_aspObj.text).trim() : "");
+    _aspStr = (_aspP + (_aspT ? ("；" + _aspT) : "")).trim();
+  }
+  if (_aspStr) set("H39", "期望进阶路线：" + _aspStr, true);
 
   // Proficiencies (E 列标签 → G 列加值)
   if (typeof fillXlsxProficiencies === "function") fillXlsxProficiencies(set, xml, strings, state);

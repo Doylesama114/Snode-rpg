@@ -133,6 +133,7 @@ export function normalizeSnapshot(raw) {
     xp: raw.xp ?? null,
     sp_points: raw.sp_points ?? null,
     color_marks: raw.color_marks || {},
+    aspirationPath: raw.aspirationPath || null,
     equipment: raw.equipment || null,
     armor: raw.armor || raw.equipment?.armor || null,
     shield: raw.shield || raw.equipment?.shield || null,

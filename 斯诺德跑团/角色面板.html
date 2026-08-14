@@ -707,6 +707,7 @@ body.battle .fab{display:none}
   body.battle .b-top .shield-box{flex:1 1 100%;min-width:0;flex-direction:row;justify-content:center;gap:10px}
 }
 
+
 </style>
 </head>
 <body>
@@ -3840,6 +3841,25 @@ window.render = function() {
   renderFeats(); renderBg(); renderXpSp(); renderTraits(); renderWeight();
   renderCurrency(); renderTalent(); renderBlueprints(); renderSlotNote(); renderSubclass();
   renderInit(); renderMiniBalls(); renderMobileTabs();
+  // 移动端顾问角色快照移交（剔除大字段，供 顾问.html 读取）
+  try {
+    if (typeof state !== "undefined" && state && state.name) {
+      var _advSnap = {
+        name: state.name, race: state.race, background: state.background,
+        attrs: state.attrs || {},
+        classes: (state.classes || []).map(function(c){ return { name: c.name, level: c.level || 0, styles: (c.styles || []).slice() }; }),
+        profs: state.profs || {},
+        skills: (state.skills || []).slice(),
+        talent_tree: (state.talent_tree || []).slice(),
+        special_feats: (state.special_feats || []).slice(),
+        feats: (state.feats || []).slice(),
+        aspirationPath: state.aspirationPath || null,
+        xp: state.xp || 0, sp_points: state.sp_points || 0,
+        unlocked_tiers: state.unlocked_tiers || []
+      };
+      localStorage.setItem("_snowd_adv_last_snapshot", JSON.stringify(_advSnap));
+    }
+  } catch(e) {}
 };
 /* 升级系统覆盖：接源真实升级（LEVEL_TABLE 奖励 + 写回 state + 持久化） */
 if (SB_srcShowLevelUpModal) {

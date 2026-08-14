@@ -692,6 +692,10 @@ function createWindow() {
     if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) {
       return { action: 'allow' };
     }
+    // 角色创建页「查看技能树 / 进阶职业」新标签页跳转（本地职业页）
+    if (url.startsWith('file://')) {
+      return { action: 'allow' };
+    }
     return { action: 'deny' };
   });
 

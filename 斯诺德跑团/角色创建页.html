@@ -269,6 +269,79 @@ html.dark #overviewToggle { background: #d4a54a; }
   #charOverview { right: 0; top: auto; bottom: -55vh; width: 100%; max-height: 52vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
   #charOverview.panel-open { bottom: 0; right: 0; }
 }
+/* ====== BG3 式双栏布局：左侧步骤 / 右侧实时角色状态 ====== */
+@media (min-width: 901px) {
+  body { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; align-items: start; max-width: 1400px; margin: 0 auto; }
+  .container { max-width: none; margin: 0; min-width: 0; grid-column: 1; grid-row: 1; }
+  #overviewToggle { display: none; }
+  #charOverview { position: sticky; top: 24px; right: auto; left: auto; width: auto; max-height: calc(100vh - 48px); border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); grid-column: 2; grid-row: 1; transition: none; }
+  #charOverview.panel-open { right: auto; }
+  #charOverview .ov-close { display: none; }
+}
+.ov-jump { margin: 0 0 10px; }
+.ov-jump-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.ov-jump a, .ov-jump button { font-size: 12px; padding: 4px 10px; border: 1px solid #a46d1f; border-radius: 14px; color: #a46d1f; text-decoration: none; display: inline-flex; align-items: center; gap: 3px; background: transparent; cursor: pointer; font-family: inherit; line-height: 1.5; }
+.ov-jump a:hover, .ov-jump button:hover { background: #a46d1f; color: #fff; }
+.ov-draft-clear { font-size: 11px; color: #69706b; cursor: pointer; text-decoration: underline; }
+.asp-text { width: 100%; min-height: 56px; padding: 8px 10px; border: 1px solid #d8d2c4; border-radius: 8px; font-size: 12.5px; font-family: inherit; background: #fffdf8; resize: vertical; line-height: 1.6; }
+.asp-text:focus { outline: none; border-color: #a46d1f; }
+.asp-picks { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; max-height: 120px; overflow-y: auto; }
+.asp-chip { font-size: 11.5px; padding: 3px 8px; border: 1px solid #d8d2c4; border-radius: 12px; cursor: pointer; background: #fffdf8; user-select: none; }
+.asp-chip.selected { background: #a46d1f; color: #fff; border-color: #a46d1f; }
+.asp-hint { font-size: 11px; color: #69706b; margin-top: 4px; }
+html.dark .asp-text { background: #1a1d20; border-color: #3a3d40; color: #e8e6e3; }
+html.dark .asp-chip { background: #24272b; border-color: #3a3d40; color: #e8e6e3; }
+html.dark .asp-chip.selected { background: #d4a54a; color: #1a1d20; border-color: #d4a54a; }
+
+/* ====== 职业页全屏预览浮层 ====== */
+.ov-viewer { position: fixed; inset: 0; z-index: 2000; background: rgba(18,15,20,.6); display: none; flex-direction: column; }
+.ov-viewer.show { display: flex; }
+body.ov-viewer-open { overflow: hidden; }
+.ov-viewer-bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: #2d2722; color: #fff; flex: none; }
+.ov-viewer-back { background: #a46d1f; color: #fff; border: none; border-radius: 6px; padding: 7px 16px; cursor: pointer; font-size: 14px; font-weight: bold; font-family: inherit; }
+.ov-viewer-back:hover { background: #c0852f; }
+.ov-viewer-title { flex: 1; font-size: 14px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ov-viewer-ext { background: transparent; color: #d8d2c4; border: 1px solid #6a6359; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 12.5px; font-family: inherit; }
+.ov-viewer-ext:hover { border-color: #d8d2c4; color: #fff; }
+.ov-viewer iframe { flex: 1; width: 100%; border: none; background: #fff; }
+@media (max-width: 600px) {
+  .ov-viewer-bar { padding: 6px 8px; gap: 8px; }
+  .ov-viewer-back { padding: 6px 12px; font-size: 13px; }
+  .ov-viewer-title { font-size: 13px; }
+}
+/* ====== 移动端吸顶迷你状态条 ====== */
+.cc-strip { display: none; }
+@media (max-width: 900px) {
+  .cc-strip { display: flex; position: sticky; top: 0; z-index: 60; align-items: center; gap: 8px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 7px 10px; margin: -8px -16px 12px; background: rgba(246,244,239,.95); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-bottom: 1px solid #d8d2c4; font-size: 12.5px; color: #1f2522; cursor: pointer; white-space: nowrap; }
+  .cc-strip::-webkit-scrollbar { display: none; }
+  .cc-strip b { color: #a46d1f; font-size: 13px; }
+  .cc-strip-sep { color: #c9c2b4; }
+  .cc-strip-more { margin-left: auto; }
+  .cc-strip-open { margin-left: 2px; }
+  html.dark .cc-strip { background: rgba(26,29,32,.95); border-bottom-color: #3a3d40; color: #e8e6e3; }
+}
+@media (max-width: 480px) { .cc-strip { margin-left: -12px; margin-right: -12px; } }
+/* ====== 移动端步骤胶囊 ====== */
+.step-dot .step-pill-num, .step-dot .step-pill-label { display: none; }
+@media (max-width: 900px) {
+  .step-indicator { flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 2px 0 6px; scrollbar-width: none; }
+  .step-indicator::-webkit-scrollbar { display: none; }
+  .step-dot { flex: none; height: auto; display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 16px; background: #e8e2d8; font-size: 12px; color: #69706b; white-space: nowrap; cursor: pointer; }
+  .step-dot .step-pill-num { display: inline-flex; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,.12); color: inherit; align-items: center; justify-content: center; font-size: 10px; flex: none; }
+  .step-dot .step-pill-label { display: inline; }
+  .step-dot.active { background: #a46d1f; color: #fff; transform: none; }
+  .step-dot.active .step-pill-num { background: rgba(255,255,255,.25); }
+  .step-dot.done { background: #6b8f5e; color: #fff; }
+  html.dark .step-dot { background: #3a3d40; color: #9d9b98; }
+}
+/* ====== 移动端状态抽屉：抓手 + 遮罩 ====== */
+.ov-sheet-backdrop { display: none; }
+.ov-sheet-handle { display: none; }
+@media (max-width: 600px) {
+  .ov-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.28); z-index: 897; }
+  #charOverview.panel-open ~ .ov-sheet-backdrop { display: block; }
+  .ov-sheet-handle { display: block; width: 44px; height: 5px; border-radius: 3px; background: #d8d2c4; margin: -8px auto 10px; }
+}
 </style>
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
@@ -283,14 +356,40 @@ html.dark #overviewToggle { background: #d4a54a; }
   <div id="stepContent"></div>
 </div>
 
+<!-- 移动端吸顶迷你状态条 -->
+<div class="cc-strip" id="ccStrip" onclick="openOvSheet()">
+  <span class="cc-strip-item" id="ccStripCls">未选职业</span>
+  <span class="cc-strip-sep">·</span>
+  <span class="cc-strip-item">HP <b id="ccStripHp">–</b></span>
+  <span class="cc-strip-sep">·</span>
+  <span class="cc-strip-item">FP <b id="ccStripFp">–</b></span>
+  <span class="cc-strip-sep">·</span>
+  <span class="cc-strip-item">点数 <b id="ccStripPts">32</b></span>
+  <span class="cc-strip-more" id="ccStripAsp" title="已填写期望路线">🧭</span>
+  <span class="cc-strip-open" title="展开角色状态">📊</span>
+</div>
 <!-- 悬浮角色概览 -->
 <button id="overviewToggle" onclick="toggleOverview()">角色概览</button>
 <div id="charOverview" class="panel-open">
   <h3 style="display:flex;justify-content:space-between;align-items:center">
     📋 角色概览
-    <span onclick="toggleOverview()" style="cursor:pointer;font-size:18px;color:#69706b">&times;</span>
+    <span class="ov-close" onclick="toggleOverview()" style="cursor:pointer;font-size:18px;color:#69706b">&times;</span>
   </h3>
+  <div class="ov-sheet-handle"></div>
+  <div class="ov-jump" id="ovJump"></div>
   <div id="ovContent"><div class="ov-empty">逐步完成创建，概览将实时更新</div></div>
+  <div id="ovAspiration"></div>
+</div>
+
+<div class="ov-sheet-backdrop" id="ovSheetBackdrop" onclick="toggleOverview()"></div>
+
+<div class="ov-viewer" id="ovViewer">
+  <div class="ov-viewer-bar">
+    <button class="ov-viewer-back" onclick="closeOvViewer()">← 返回创建</button>
+    <span class="ov-viewer-title" id="ovViewerTitle">职业页预览</span>
+    <button class="ov-viewer-ext" id="ovViewerExt" onclick="openOvViewerExternal()" title="在新标签页打开">↗ 新标签页打开</button>
+  </div>
+  <iframe id="ovViewerFrame" title="职业页预览"></iframe>
 </div>
 
 <script>
@@ -298,7 +397,10 @@ var CLASSES = [], RACES = [], BACKGROUNDS = [];
 var CURRENT_STEP = 0;
 var TOTAL_STEPS = 8;
 var _recreateSession = false;
+var _handoffApplied = false;
+var _maxVisitedStep = 0;
 var RECREATE_HANDOFF_KEY = "snowd_recreate_handoff";
+var CHARGEN_DRAFT_KEY = "snowd_chargen_draft_v1";
 
 var CHAR = {
   classIdx: -1, className: "", classData: null,
@@ -312,7 +414,8 @@ var CHAR = {
   equipIdx: -1, equipChoice: null, equipSel: {}, wingfolkHasCommon: true,
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
-  deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: ""
+  deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: "",
+  aspiration: { text: "", picks: [] }
 };
 
 // Fallback lookup for classes_data.js missing key_attr/hp/fp_formula
@@ -382,12 +485,13 @@ function calcCost(){var t=0;for(var i=0;i<ATTR_NAMES.length;i++)t+=calcAttrCost(
 <script src="../职业页/数据/backgrounds_data.js"></script>
 <script src="../职业页/数据/equipment_data.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
+<script src="chargen_adv_paths.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
 <script>
 // ====== Wizard ======
 function initWizard() {
   var h="";
-  for(var i=0;i<TOTAL_STEPS;i++) h+="<div class='step-dot' data-step='"+i+"'></div>";
+  for(var i=0;i<TOTAL_STEPS;i++) h+="<div class='step-dot' data-step='"+i+"' onclick='jumpToStep("+i+")'><span class='step-pill-num'>"+(i+1)+"</span><span class='step-pill-label'>"+STEP_LABELS[i]+"</span></div>";
   document.getElementById("stepIndicator").innerHTML=h;
   goToStep(0);
 }
@@ -443,12 +547,14 @@ function chargenSnapshotChar(){
       ideals:CHAR.ideals||"",
       bonds:CHAR.bonds||"",
       flaws:CHAR.flaws||""
-    }
+    },
+    aspiration:CHAR.aspiration?JSON.parse(JSON.stringify(CHAR.aspiration)):null
   };
 }
 function onChargenProfileInput(field,el){
   CHAR[field]=el.value;
   if(field==="charName")checkRv();
+  updateOverview();
   notifyChargenChange();
 }
 function buildChargenFingerprint(st){
@@ -518,6 +624,7 @@ function applyAdvisorHandoff(){
       }
     }
     if(h.charName){CHAR.charName=h.charName;CHAR.playerName=CHAR.playerName||"玩家";}
+    _handoffApplied=true;
     goToStep(typeof h.targetStep==="number"?h.targetStep:0);
   }catch(e){console.warn("advisor handoff",e);}
 }
@@ -571,7 +678,8 @@ function buildCreationSnapshot(){
     contacts:CHAR.contacts||"",
     scamType:CHAR.scamType||"",
     missionChannel:CHAR.missionChannel||"",
-    academicDomain:CHAR.academicDomain||""
+    academicDomain:CHAR.academicDomain||"",
+    aspiration:CHAR.aspiration?JSON.parse(JSON.stringify(CHAR.aspiration)):{text:"",picks:[]}
   };
   return snap;
 }
@@ -670,6 +778,7 @@ function applyCreationSnapshotToChar(snap){
   CHAR.scamType=snap.scamType||"";
   CHAR.missionChannel=snap.missionChannel||"";
   CHAR.academicDomain=snap.academicDomain||"";
+  CHAR.aspiration = snap.aspiration ? JSON.parse(JSON.stringify(snap.aspiration)) : { text: "", picks: [] };
   return !!(CHAR.className&&CHAR.raceName&&CHAR.bgName);
 }
 
@@ -692,6 +801,20 @@ function applyRecreateHandoff(){
 initWizard();
 applyAdvisorHandoff();
 applyRecreateHandoff();
+// 草稿恢复/期望路线/跳转入口统一延迟到 DOMContentLoaded：
+// 此时脚本内所有 var 数据（BG_SKILL_MAP/SPEC_AUTO_PROF 等）已赋值，updateOverview 不会因未初始化而抛错
+function _initChargenLivePanels() {
+  if (window.innerWidth <= 600) {
+    _ovOpen = false;
+    var _p0 = document.getElementById('charOverview'); if (_p0) _p0.classList.remove('panel-open');
+    var _b0 = document.getElementById('overviewToggle'); if (_b0) _b0.classList.remove('panel-open');
+  }
+  if (!_handoffApplied && !_recreateSession) { try { restoreChargenDraft(); } catch(e){ console.warn("draft restore", e); } }
+  renderAspirationPanel();
+  renderOvJump();
+}
+if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", _initChargenLivePanels); }
+else { _initChargenLivePanels(); }
 
 // ====== 悬浮角色概览 ======
 var _ovOpen = true;
@@ -704,6 +827,14 @@ function toggleOverview() {
 }
 function updateOverview() {
   var h = '';
+  var _ovHp = null, _ovFp = null;
+  // 角色名（实时）
+  if (CHAR.charName || CHAR.gender || CHAR.age) {
+    h += '<div class="ov-section"><div class="ov-label">🧑 角色</div>';
+    if (CHAR.charName) h += '<div class="ov-item">' + esc(CHAR.charName) + '</div>';
+    if (CHAR.gender || CHAR.age) h += '<div class="ov-item">' + (CHAR.gender || '—') + (CHAR.age ? (' · ' + esc(String(CHAR.age))) : '') + '</div>';
+    h += '</div>';
+  }
   // 职业
   if (CHAR.className) {
     h += '<div class="ov-section"><div class="ov-label">🗡 职业</div>';
@@ -774,7 +905,7 @@ function updateOverview() {
   // HP/FP
   if (CHAR.className && CHAR.classData) {
     var cl = CHAR.classData;
-    var con = CHAR.attrs['体质'] || 8;
+    var con = (CHAR.attrs['体质'] || 8) + _raceAttrBonus('体质');
     var rd2 = CHAR.raceData;
     var raceHp = (rd2 && rd2['生命值加成']) ? (typeof rd2['生命值加成']==='string' ? 
       (function(rh){var hpParts=rh.split("/");if(hpParts.length===2){var hp0=parseInt(hpParts[0])||0;var hp1=parseInt(hpParts[1])||0;return (CHAR.raceSize&&CHAR.raceSize.indexOf("小")<0)?hp1:hp0;}else{var m=rh.match(/(\d+)/);return m?parseInt(m[1]):0;}})(rd2['生命值加成']) : rd2['生命值加成']) : 0;
@@ -793,10 +924,11 @@ function updateOverview() {
     var hp = hpFirst + hpFromCon + raceHp + bgHp;
     var fpKey = CHAR.keyAttr || (cl["关键属性"] || cl.key_attr || (co ? co.key_attr : '魅力'));
     if (fpKey === '力量或敏捷') fpKey = CHAR.keyAttr || '力量';
-    var fpVal = CHAR.attrs[fpKey] || 10;
+    var fpVal = (CHAR.attrs[fpKey] || 10) + _raceAttrBonus(fpKey);
     var fpFromKey = Math.floor((fpVal - 10) / 2);
     var raceFP = (rd2 && rd2['疲劳值加成']) ? (typeof rd2['疲劳值加成']==='string' ? parseInt(rd2['疲劳值加成']) : rd2['疲劳值加成']) : 0;
     var fp = fpFirst + fpFromKey + raceFP;
+    _ovHp = hp; _ovFp = fp;
     h += '<div class="ov-section"><div class="ov-label">❤️ 生命 / 疲劳</div>';
     h += '<div class="ov-hp"><span>HP: ' + hp + '</span><span>FP: ' + fp + '</span></div></div>';
   }
@@ -837,6 +969,8 @@ function updateOverview() {
   }
   if (!h) h = '<div class="ov-empty">逐步完成创建，概览将实时更新</div>';
   document.getElementById('ovContent').innerHTML = h;
+  updateCcStrip(_ovHp, _ovFp);
+  autosaveChargenDraft();
   notifyChargenChange();
 }
 
@@ -846,6 +980,172 @@ renderStep = function(n) {
   _origRenderStep(n);
   updateOverview();
 };
+// ====== BG3 式实时状态：跳转入口 / 期望进阶路线 / 草稿自动保存 ======
+// CHARGEN_DRAFT_KEY 已在文件顶部声明
+function ovClassPageUrl(name, adv) { return "../职业页/" + encodeURIComponent(name + (adv ? "·进阶" : "")) + ".html"; }
+// 种族属性加值（与 saveCharacter 同口径，保证预览数值 == 存档数值）
+function _raceAttrBonus(an) {
+  var rd = CHAR.raceData;
+  if (!rd || !rd["属性加成"]) return 0;
+  var bv = rd["属性加成"][an];
+  if (bv === "X") return (CHAR.raceExtra && CHAR.raceExtra.indexOf(an) >= 0) ? 1 : 0;
+  return (typeof bv === "number") ? bv : 0;
+}
+function renderOvJump() {
+  var el = document.getElementById('ovJump'); if (!el) return;
+  var h = '';
+  if (CHAR.className) {
+    h += '<div class="ov-jump-row">';
+    h += '<button type="button" class="ov-jump-btn" onclick="openOvViewer(\'' + ovClassPageUrl(CHAR.className, false) + '\', \'📖 ' + esc(CHAR.className) + ' · 技能树\')">📖 查看技能树</button>';
+    h += '<button type="button" class="ov-jump-btn" onclick="openOvViewer(\'' + ovClassPageUrl(CHAR.className, true) + '\', \'🌱 ' + esc(CHAR.className) + ' · 进阶职业\')">🌱 查看进阶职业</button>';
+    h += '</div>';
+  }
+  try { if (localStorage.getItem(CHARGEN_DRAFT_KEY)) h += '<div style="text-align:right"><span class="ov-draft-clear" onclick="clearChargenDraft()">🗑 清空草稿重新开始</span></div>'; } catch(e){}
+  el.innerHTML = h;
+}
+function clearChargenDraft() {
+  if (!confirm('确定清空草稿并重新开始？')) return;
+  try { localStorage.removeItem(CHARGEN_DRAFT_KEY); } catch(e){}
+  location.reload();
+}
+function autosaveChargenDraft() {
+  try {
+    var snap = buildCreationSnapshot();
+    snap._step = CURRENT_STEP; snap._savedAt = Date.now();
+    localStorage.setItem(CHARGEN_DRAFT_KEY, JSON.stringify(snap));
+  } catch(e){}
+  renderOvJump();
+}
+function restoreChargenDraft() {
+  try {
+    var raw = localStorage.getItem(CHARGEN_DRAFT_KEY); if (!raw) return false;
+    var d = JSON.parse(raw);
+    if (!d || (!d.className && !d.raceName && !d.bgName && !d.charName)) return false;
+    applyCreationSnapshotToChar(d);
+    if (!CHAR.className && !CHAR.raceName && !CHAR.bgName && !CHAR.charName) return false;
+    var st = (typeof d._step === "number") ? d._step : 0;
+    if (st < 0) st = 0; if (st > TOTAL_STEPS - 1) st = TOTAL_STEPS - 1;
+    goToStep(st);
+    updateOverview();
+    if (window.toast) window.toast("已恢复上次未完成的创建", "info");
+    return true;
+  } catch(e) { return false; }
+}
+// 期望进阶路线（可选，仅作愿景）
+function renderAspirationPanel() {
+  var el = document.getElementById('ovAspiration'); if (!el) return;
+  if (!CHAR.aspiration) CHAR.aspiration = { text: "", picks: [] };
+  var opts = (typeof window.CHARGEN_ADV_PATHS !== "undefined" && CHAR.className && window.CHARGEN_ADV_PATHS[CHAR.className]) ? window.CHARGEN_ADV_PATHS[CHAR.className] : [];
+  var chips = '';
+  for (var i = 0; i < opts.length; i++) {
+    var sel = CHAR.aspiration.picks.indexOf(opts[i]) >= 0 ? ' selected' : '';
+    chips += '<span class="asp-chip' + sel + '" data-name="' + esc(opts[i]) + '" onclick="pickAspiration(this)">' + esc(opts[i]) + '</span>';
+  }
+  var h = '<div class="ov-section"><div class="ov-label">🧭 期望进阶路线 <span style="font-weight:normal;font-size:11px;color:#69706b">（可选）</span></div>';
+  h += '<textarea id="aspText" class="asp-text" placeholder="例如：法师 → 火焰法师，13 级前点出六阶天赋…" oninput="aspTextInput(this)">' + esc(CHAR.aspiration.text || '') + '</textarea>';
+  if (opts.length) {
+    h += '<div class="asp-picks" id="aspPicks">' + chips + '</div>';
+    h += '<div class="asp-hint">可点选 1–3 条进阶途径（仅作期望，不影响建卡与规则）</div>';
+  }
+  h += '</div>';
+  el.innerHTML = h;
+}
+function aspTextInput(el) { if (!CHAR.aspiration) CHAR.aspiration = { text: "", picks: [] }; CHAR.aspiration.text = el.value; autosaveChargenDraft(); notifyChargenChange(); }
+function pickAspiration(el) {
+  if (!CHAR.aspiration) CHAR.aspiration = { text: "", picks: [] };
+  var name = el.getAttribute('data-name') || '';
+  var idx = CHAR.aspiration.picks.indexOf(name);
+  if (idx >= 0) { CHAR.aspiration.picks.splice(idx, 1); el.classList.remove('selected'); }
+  else {
+    if (CHAR.aspiration.picks.length >= 3) { if (window.toast) window.toast("至多选择 3 条进阶途径", "warn"); return; }
+    CHAR.aspiration.picks.push(name); el.classList.add('selected');
+  }
+  autosaveChargenDraft(); notifyChargenChange();
+}
+
+// ====== 移动端步骤胶囊跳转（仅允许回到已达步骤） ======
+function jumpToStep(n) {
+  if (typeof n !== "number" || n < 0 || n > TOTAL_STEPS - 1) return;
+  if (n > _maxVisitedStep) return;
+  goToStep(n);
+}
+// ====== 职业页全屏预览浮层 ======
+var _ovViewerCurrent = null;
+function openOvViewer(url, title) {
+  var v = document.getElementById('ovViewer'); if (!v) return;
+  _ovViewerCurrent = { url: url, title: title || '' };
+  var f = document.getElementById('ovViewerFrame');
+  document.getElementById('ovViewerTitle').textContent = title || '职业页预览';
+  document.getElementById('ovViewerExt').setAttribute('data-url', url);
+  f.src = url;
+  v.classList.add('show');
+  document.body.classList.add('ov-viewer-open');
+}
+function closeOvViewer() {
+  var v = document.getElementById('ovViewer'); if (!v) return;
+  v.classList.remove('show');
+  document.body.classList.remove('ov-viewer-open');
+  var f = document.getElementById('ovViewerFrame');
+  if (f) f.src = 'about:blank';
+}
+function openOvViewerExternal() {
+  var btn = document.getElementById('ovViewerExt');
+  var url = btn ? (btn.getAttribute('data-url') || '') : '';
+  if (url) { try { window.open(url, '_blank'); } catch(e){} }
+}
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    var v = document.getElementById('ovViewer');
+    if (v && v.classList.contains('show')) { closeOvViewer(); e.preventDefault(); e.stopImmediatePropagation(); }
+  }
+});
+// ====== 移动端底部状态抽屉：状态条 + 手势 ======
+function openOvSheet() {
+  var panel = document.getElementById('charOverview'); if (!panel) return;
+  if (panel.classList.contains('panel-open')) { toggleOverview(); return; }
+  panel.classList.add('panel-open');
+  var btn = document.getElementById('overviewToggle'); if (btn) btn.classList.add('panel-open');
+  _ovOpen = true;
+}
+function updateCcStrip(hp, fp) {
+  var strip = document.getElementById('ccStrip'); if (!strip) return;
+  var elCls = document.getElementById('ccStripCls'); if (elCls) elCls.textContent = CHAR.className || '未选职业';
+  var elHp = document.getElementById('ccStripHp'); if (elHp) elHp.textContent = (hp != null) ? hp : '–';
+  var elFp = document.getElementById('ccStripFp'); if (elFp) elFp.textContent = (fp != null) ? fp : '–';
+  var elPts = document.getElementById('ccStripPts'); if (elPts) elPts.textContent = TOTAL_POINTS - (typeof calcCost === 'function' ? calcCost() : 0);
+  var elAsp = document.getElementById('ccStripAsp');
+  if (elAsp) {
+    var hasAsp = CHAR.aspiration && ((String(CHAR.aspiration.text || '').trim()) || (CHAR.aspiration.picks || []).length);
+    elAsp.style.visibility = hasAsp ? 'visible' : 'hidden';
+  }
+}
+(function initOvSheetSwipe() {
+  var sheet = document.getElementById('charOverview'); if (!sheet) return;
+  var startY = null, lastDy = 0;
+  sheet.addEventListener('touchstart', function (e) {
+    var t = e.touches && e.touches[0];
+    if (!t) return;
+    var src = e.target;
+    if (src && src.closest && (src.closest('.ov-sheet-handle') || src.closest('h3'))) { startY = t.clientY; lastDy = 0; }
+  }, { passive: true });
+  sheet.addEventListener('touchmove', function (e) {
+    if (startY == null) return;
+    var t = e.touches && e.touches[0]; if (!t) return;
+    var dy = t.clientY - startY; lastDy = dy;
+    var damped = dy < 0 ? dy * 0.55 : dy;
+    if (damped < 0) damped = 0;
+    sheet.style.transition = 'none';
+    sheet.style.transform = 'translateY(' + damped + 'px)';
+  }, { passive: true });
+  sheet.addEventListener('touchend', function () {
+    if (startY == null) return;
+    startY = null;
+    sheet.style.transition = '';
+    sheet.style.transform = '';
+    if (lastDy > 70 && window.innerWidth <= 600) toggleOverview();
+  });
+})();
+
 // ====== 职业专精数据 ======
 
 var BG_SKILL_MAP = {
@@ -993,12 +1293,14 @@ function buildOverviewProfLines() {
 function goToStep(n) {
   if(window.snd)snd.play('step');
   CURRENT_STEP=n;
+  if(n>_maxVisitedStep)_maxVisitedStep=n;
   var dots=document.querySelectorAll(".step-dot");
   for(var i=0;i<dots.length;i++){
     dots[i].className="step-dot";
     if(i<n) dots[i].classList.add("done");
     else if(i===n) dots[i].classList.add("active");
   }
+  try{var _ad=document.querySelector(".step-dot.active");if(_ad&&_ad.scrollIntoView)_ad.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}
   renderStep(n);
 }
 
@@ -1338,6 +1640,8 @@ function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatu
   showClericDeityChoice(CLASSES[idx].name);
   showWarlockPatronChoice(CLASSES[idx].name);
   renderSpecChoices(CLASSES[idx].name);
+  CHAR.aspiration = { text: (CHAR.aspiration && CHAR.aspiration.text) || "", picks: [] };
+  renderAspirationPanel();
   updateOverview();
 }
 
@@ -1398,6 +1702,7 @@ function pickHumanSkill(el){
   if(CHAR.humanFreeSkill===skill){
     CHAR.humanFreeSkill=null;
     el.classList.remove("selected");
+    updateOverview();
     return;
   }
   var area=document.getElementById("humanSkillArea");
@@ -1434,6 +1739,7 @@ function pickRaceSize(el){
   var area=document.getElementById("raceSizeArea");
   if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
   CHAR.raceSize=size;el.classList.add("selected");
+  updateOverview();
 }
 function showRaceSaveChoice(raceData){
   var old=document.getElementById("raceSaveArea");if(old)old.remove();
@@ -1527,6 +1833,7 @@ function pickRaceAttr(el){
   if(CHAR.raceExtra.length>=2)return;
   CHAR.raceExtra.push(attr);
   el.classList.add("selected");
+  updateOverview();
 }
 function showKeyAttrChoice(clsName){
   var p=document.getElementById("classDetail");
@@ -2348,6 +2655,7 @@ function toggleFeature(el){
   if(idx>=0){ CHAR.selectedFeatures.splice(idx,1); if(name==="基础材料学")CHAR.bpPicks=[]; }
   else if(CHAR.selectedFeatures.length<maxPick){ CHAR.selectedFeatures.push(name); adding=true; }
   renderStartFeaturesStep(document.getElementById('stepContent'));
+  updateOverview();
   notifyChargenChange();
   if(name==="基础材料学"&&adding) openQixieBlueprintPicker();
 }
@@ -2429,12 +2737,12 @@ function renderReviewStep(c) {
   h+="<div class='form-group-half'><label>理念</label><textarea class='form-textarea' id='inputIdeals' oninput='onChargenProfileInput(\"ideals\",this)' placeholder='你的角色信奉什么理念？'>"+esc(CHAR.ideals)+"</textarea></div>";
   h+="<div class='form-group-half'><label>羁绊</label><textarea class='form-textarea' id='inputBonds' oninput='onChargenProfileInput(\"bonds\",this)' placeholder='你的角色有何羁绊？'>"+esc(CHAR.bonds)+"</textarea></div>";
   h+="<div class='form-group-full'><label>缺陷</label><textarea class='form-textarea' id='inputFlaws' oninput='onChargenProfileInput(\"flaws\",this)' placeholder='你的角色有何缺陷？'>"+esc(CHAR.flaws)+"</textarea></div>";
-  if(CHAR.deity) h+="<div class='form-group-half'><label>神祇"+(CHAR.deityAttr?"（"+esc(CHAR.deityAttr)+"）":"")+"</label><textarea class='form-textarea' id='inputDeity' oninput='CHAR.deity=this.value'>"+esc(CHAR.deity)+"</textarea></div>";
-  if(CHAR.patron) h+="<div class='form-group-half'><label>宗主</label><textarea class='form-textarea' id='inputPatron' oninput='CHAR.patron=this.value'>"+esc(CHAR.patron)+"</textarea></div>";
-  if(CHAR.contacts) h+="<div class='form-group-half'><label>联系渠道</label><textarea class='form-textarea' id='inputContacts' oninput='CHAR.contacts=this.value'>"+esc(CHAR.contacts)+"</textarea></div>";
-  if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='CHAR.scamType=this.value'>"+esc(CHAR.scamType)+"</textarea></div>";
-  if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='CHAR.missionChannel=this.value'>"+esc(CHAR.missionChannel)+"</textarea></div>";
-  if(CHAR.academicDomain) h+="<div class='form-group-half'><label>学术领域</label><textarea class='form-textarea' id='inputAcademicDomain' oninput='CHAR.academicDomain=this.value'>"+esc(CHAR.academicDomain)+"</textarea></div>";
+  if(CHAR.deity) h+="<div class='form-group-half'><label>神祇"+(CHAR.deityAttr?"（"+esc(CHAR.deityAttr)+"）":"")+"</label><textarea class='form-textarea' id='inputDeity' oninput='onChargenProfileInput(\"deity\",this)'>"+esc(CHAR.deity)+"</textarea></div>";
+  if(CHAR.patron) h+="<div class='form-group-half'><label>宗主</label><textarea class='form-textarea' id='inputPatron' oninput='onChargenProfileInput(\"patron\",this)'>"+esc(CHAR.patron)+"</textarea></div>";
+  if(CHAR.contacts) h+="<div class='form-group-half'><label>联系渠道</label><textarea class='form-textarea' id='inputContacts' oninput='onChargenProfileInput(\"contacts\",this)'>"+esc(CHAR.contacts)+"</textarea></div>";
+  if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='onChargenProfileInput(\"scamType\",this)'>"+esc(CHAR.scamType)+"</textarea></div>";
+  if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='onChargenProfileInput(\"missionChannel\",this)'>"+esc(CHAR.missionChannel)+"</textarea></div>";
+  if(CHAR.academicDomain) h+="<div class='form-group-half'><label>学术领域</label><textarea class='form-textarea' id='inputAcademicDomain' oninput='onChargenProfileInput(\"academicDomain\",this)'>"+esc(CHAR.academicDomain)+"</textarea></div>";
   h+="</div>";
   h+="<div class='popup-box' style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>角色摘要</h3>";
@@ -3013,6 +3321,7 @@ function saveCharacter(){
   charData._savedAt=new Date().toISOString();
   charData._chargenOrigin="created";
   charData._creationSnapshot=buildCreationSnapshot();
+  charData.aspirationPath = CHAR.aspiration ? JSON.parse(JSON.stringify(CHAR.aspiration)) : { text: "", picks: [] };
   try{
     var displayName=CHAR.charName;
     var storageId=allocateUniqueCharId(displayName);
@@ -3020,6 +3329,7 @@ function saveCharacter(){
     charData._charName=storageId;
     CHAR._charName=storageId;
     localStorage.setItem("char_"+storageId+"_slot1",JSON.stringify(charData));
+    try{localStorage.removeItem(CHARGEN_DRAFT_KEY);}catch(e){}
     if(_recreateSession){
       if(storageId!==displayName){
         alert("已另存为新角色「"+storageId+"」（显示名「"+displayName+"」）");
@@ -3594,9 +3904,13 @@ window.addEventListener('beforeunload', function() {
 document.addEventListener('click', function(e) {
   var ov = document.getElementById('charOverview');
   var btn = document.getElementById('overviewToggle');
-  if (ov && btn && ov.classList.contains('panel-open') && !ov.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+  var strip = document.getElementById('ccStrip');
+  var onStrip = strip && (e.target === strip || strip.contains(e.target));
+  var onBackdrop = e.target && e.target.closest && e.target.closest('.ov-sheet-backdrop');
+  if (ov && btn && ov.classList.contains('panel-open') && !ov.contains(e.target) && e.target !== btn && !btn.contains(e.target) && !onStrip && !onBackdrop) {
     ov.classList.remove('panel-open');
     btn.classList.remove('panel-open');
+    if (typeof _ovOpen !== 'undefined') _ovOpen = false;
   }
 });
 </script>

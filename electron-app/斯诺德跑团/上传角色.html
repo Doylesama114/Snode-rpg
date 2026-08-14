@@ -518,6 +518,21 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
       }
     }
   }
+  // 期望进阶路线（自描述单元格 H39，旧文件缺失时自动跳过）
+  var _aspRef = null;
+  for (var _ak in cells) {
+    var _av = cells[_ak];
+    if (_av && typeof _av === "string" && _av.indexOf("期望进阶路线") === 0 && _av.length > 8) { _aspRef = _ak; break; }
+  }
+  if (!_aspRef) _aspRef = findCellFuzzy(["期望进阶路线"]);
+  if (_aspRef) {
+    var _aspRaw = String(c(_aspRef) || "").replace(/^期望进阶路线[：:]\s*/, "");
+    if (_aspRaw) {
+      var _aspParts = _aspRaw.split("；");
+      var _aspPicks = (_aspParts[0] || "").split(/[→]/).map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+      s.aspirationPath = { text: _aspParts.slice(1).join("；").trim(), picks: _aspPicks };
+    }
+  }
   return s;
 }
 
@@ -1182,6 +1197,14 @@ async function exportXlsxFromState(state) {
   if (state.ideals) set("H24", state.ideals);
   if (state.bonds) set("H27", state.bonds);
   if (state.flaws) set("H30", state.flaws);
+  var _aspObj = state.aspirationPath || null;
+  var _aspStr = "";
+  if (_aspObj) {
+    var _aspP = (_aspObj.picks || []).join(" → ");
+    var _aspT = (_aspObj.text != null ? String(_aspObj.text).trim() : "");
+    _aspStr = (_aspP + (_aspT ? ("；" + _aspT) : "")).trim();
+  }
+  if (_aspStr) set("H39", "期望进阶路线：" + _aspStr);
 
   // Attributes
   var an = ["力量", "敏捷", "体质", "智力", "感知", "魅力", "意志", "幸运"];

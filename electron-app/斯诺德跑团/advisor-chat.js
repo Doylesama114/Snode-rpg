@@ -34,6 +34,22 @@
   }
   var API = resolveApi();
 
+  // 角色面板移交的角色快照（_snowd_adv_last_snapshot）——移动端顾问据此分析当前角色
+  function handoffSnapshot() {
+    try {
+      var raw = localStorage.getItem('_snowd_adv_last_snapshot');
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      return d && (d.classes || d.name) ? d : null;
+    } catch (e) { return null; }
+  }
+  function buildAdviseBody(query) {
+    var body = { query: query, conversationHistory: historyForPayload() };
+    var snap = handoffSnapshot();
+    if (snap) body.snapshot = snap;
+    return body;
+  }
+
   // ---------- 会话持久化 ----------
   function loadSession() {
     try {
@@ -290,7 +306,7 @@
       fetch(API + '/api/advise', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
-        body: JSON.stringify({ query: query, conversationHistory: historyForPayload() }),
+        body: JSON.stringify(buildAdviseBody(query)),
         signal: controller ? controller.signal : undefined,
       }).then(function (res) {
         if (!res.ok) {
@@ -362,7 +378,7 @@
     return fetch(API + '/api/advise', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ query: query, conversationHistory: historyForPayload() }),
+      body: JSON.stringify(buildAdviseBody(query)),
     }).then(function (res) {
       if (!res.ok) {
         return res.json().catch(function () { return { error: 'HTTP ' + res.status }; }).then(function (err) {
