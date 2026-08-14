@@ -270,6 +270,35 @@ const browser = await chromium.launch({ headless: true });
   });
   ok('点状态条展开抽屉并显示遮罩，再点收起', sheetFlow.opened && sheetFlow.bdShown && sheetFlow.closed && sheetFlow.bdGone, JSON.stringify(sheetFlow));
 
+  // 概览按钮：醒目悬浮胶囊 + 文案切换 + 不遮挡底部导航按钮
+  const btnVis = await page.evaluate(() => {
+    const b = document.getElementById('overviewToggle');
+    const r = b.getBoundingClientRect();
+    return { visible: r.top >= 0 && r.bottom <= window.innerHeight + 1 && r.width >= 100, pos: getComputedStyle(b).position, label: b.textContent.trim() };
+  });
+  ok('移动端角色概览按钮为醒目悬浮胶囊', btnVis.visible && btnVis.pos === 'fixed', JSON.stringify(btnVis));
+  const btnLabelFlow = await page.evaluate(() => {
+    document.getElementById('ccStrip').click();
+    const openLabel = document.getElementById('overviewToggle').textContent.trim();
+    toggleOverview();
+    const closedLabel = document.getElementById('overviewToggle').textContent.trim();
+    return { openLabel, closedLabel };
+  });
+  ok('概览按钮文案随开合切换', btnLabelFlow.openLabel.indexOf('收起') >= 0 && btnLabelFlow.closedLabel.indexOf('角色概览') >= 0, JSON.stringify(btnLabelFlow));
+  const noCover = await page.evaluate(() => {
+    goToStep(3);
+    window.scrollTo(0, document.body.scrollHeight);
+    const toggle = document.getElementById('overviewToggle').getBoundingClientRect();
+    const navs = document.querySelectorAll('.nav-buttons button');
+    let clear = true, detail = '';
+    for (const n of navs) {
+      const r = n.getBoundingClientRect();
+      if (r.bottom > toggle.top + 1 && r.top < toggle.bottom - 1) { clear = false; detail = '覆盖: ' + n.textContent; break; }
+    }
+    return { clear, detail, toggleTop: Math.round(toggle.top), navBottom: navs.length ? Math.round(navs[navs.length - 1].getBoundingClientRect().bottom) : -1 };
+  });
+  ok('概览按钮不遮挡底部导航按钮', noCover.clear, JSON.stringify(noCover));
+
   // 预览浮层在移动端也可用
   await page.evaluate(() => {
     document.getElementById('ccStrip').click();

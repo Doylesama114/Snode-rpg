@@ -264,10 +264,11 @@ html.dark #charOverview .ov-attrs span { background: #1a1d20; }
 html.dark #charOverview .ov-hp span { color: #e8e6e3; }
 html.dark #overviewToggle { background: #d4a54a; }
 @media (max-width: 600px) {
-  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -38px; width: 70px; height: 38px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 8px 8px 0 0; font-size: 14px; padding: 8px; transition: bottom 0.3s ease; }
-  #overviewToggle.panel-open { bottom: 47vh; right: auto; }
+  #overviewToggle { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: 10px; width: auto; min-width: 136px; height: 42px; writing-mode: horizontal-tb; letter-spacing: 0; border-radius: 21px; font-size: 14.5px; font-weight: bold; padding: 0 18px; background: #a46d1f; color: #fff; box-shadow: 0 4px 16px rgba(164,109,31,.45); z-index: 960; transition: bottom 0.3s ease, background 0.2s ease; }
+  #overviewToggle.panel-open { bottom: calc(52vh + 6px); right: auto; }
   #charOverview { right: 0; top: auto; bottom: -55vh; width: 100%; max-height: 52vh; border-radius: 10px 10px 0 0; transition: bottom 0.3s ease; }
   #charOverview.panel-open { bottom: 0; right: 0; }
+  .container { padding-bottom: 76px; }
 }
 /* ====== BG3 式双栏布局：左侧步骤 / 右侧实时角色状态 ====== */
 @media (min-width: 901px) {
@@ -824,6 +825,7 @@ function toggleOverview() {
   var btn = document.getElementById('overviewToggle');
   if (_ovOpen) { panel.classList.add('panel-open'); btn.classList.add('panel-open'); }
   else { panel.classList.remove('panel-open'); btn.classList.remove('panel-open'); }
+  _refreshOverviewToggleLabel();
 }
 function updateOverview() {
   var h = '';
@@ -1106,6 +1108,11 @@ function openOvSheet() {
   panel.classList.add('panel-open');
   var btn = document.getElementById('overviewToggle'); if (btn) btn.classList.add('panel-open');
   _ovOpen = true;
+  _refreshOverviewToggleLabel();
+}
+function _refreshOverviewToggleLabel() {
+  var btn = document.getElementById('overviewToggle');
+  if (btn && window.innerWidth <= 600) btn.textContent = _ovOpen ? '📋 收起概览 ▲' : '📋 角色概览';
 }
 function updateCcStrip(hp, fp) {
   var strip = document.getElementById('ccStrip'); if (!strip) return;
