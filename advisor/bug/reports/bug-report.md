@@ -1,27 +1,37 @@
 # Bug 反馈汇总
 
-数据截止：2026-08-13T17:32:03.044Z
+数据截止：2026-08-14T09:18:11.427Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 4 |
-| 本次新拉取 | 2 |
+| 总反馈 | 5 |
+| 本次新拉取 | 1 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
-| desktop | 3 |
+| desktop | 4 |
 | web | 1 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
-| electron | 3 |
+| electron | 4 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-08-14T09:18:11.427Z｜desktop
+- 页面：electron｜标题：Bug Report
+```
+页面: file:///D:/snode/snowd-skill-tree/resources/app.asar/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E8%A7%92%E8%89%B2%E9%9D%A2%E6%9D%BF.html?char=%E4%BC%BD%E7%A7%91%E6%96%AF&slot=1
+LOADED - 角色 - 角色面板
+2026/8/14 17:18:11
+
+导入卡时，感知栏鉴定项能正常识别，其他的没有在导入后小程序内的面板上显示
+```
 
 ### 2026-08-13T17:32:03.044Z｜desktop
 - 页面：electron｜标题：Bug Report
