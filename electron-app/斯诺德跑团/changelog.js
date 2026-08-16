@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7248',
+    date: '2026-08-16',
+    changes: [
+      '修复：角色面板导出崩溃（装备槽含 null 时 getArmorAC/装备K列/专长槽位/图纸/天赋遍历 null 读属性崩溃——全链路 null 防护：getArmorAC 兜底空串、AC循环/装备列/专长/图纸/天赋/面板数据构建跳过 null 项）',
+      '修复：技能检索同义词（眩晕↔晕眩，normSearchQ 公共函数应用于职业页/首页/奇械师/学习面板——搜怪物眩晕术命中怪物晕眩术）'
+    ]
+  },
+
+
+  {
     version: '1.0.7247',
     date: '2026-08-16',
     changes: [

@@ -492,6 +492,9 @@
     if (loadError) return;
 
     var terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (typeof window.normSearchQ === 'function') {
+      terms = terms.map(function(t) { return window.normSearchQ(t); });
+    }
     if (!hasActiveQuery()) {
       summaryDiv.classList.add('hidden');
       statusDiv.classList.remove('hidden');

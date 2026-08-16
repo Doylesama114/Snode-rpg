@@ -1369,12 +1369,14 @@ createFilterController("view-artificer", "ar");
 (function() {
     var inp = document.getElementById("ar-search");
     if (!inp) return;
-    inp.addEventListener("input", function() {
+    inp.    addEventListener("input", function() {
         var q = this.value.trim().toLowerCase();
+        if (typeof window.normSearchQ === 'function') q = window.normSearchQ(q);
         var el = document.querySelectorAll(".skill");
         for (var i = 0; i < el.length; i++) {
             var s = el[i];
             var d = (s.getAttribute("data-search") || s.textContent).toLowerCase();
+            if (typeof window.normSearchQ === 'function') d = window.normSearchQ(d);
             if (q === "" || d.indexOf(q) >= 0) {
                 s.classList.remove("filter-hidden");
             } else {

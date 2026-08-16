@@ -1,6 +1,11 @@
 (function() {
     window.__filterControllers = window.__filterControllers || {};
 
+    window.normSearchQ = function(q) {
+        if (!q) return q;
+        return String(q).replace(/眩晕/g, "晕眩");
+    };
+
     function q(sel) {
         return document.querySelectorAll(sel);
     }
@@ -256,6 +261,7 @@
 
         _clearHighlights(this.viewId);
         var term = this.sr.value.trim().toLowerCase();
+        term = normSearchQ(term);
 
         q(".hidden").forEach(function(el) { el.classList.remove("hidden"); });
 
@@ -273,8 +279,8 @@
                 skill.classList.add("hidden");
                 return;
             }
-            var data = (skill.getAttribute("data-search") || "").toLowerCase();
-            var text = (skill.textContent || "").toLowerCase();
+            var data = normSearchQ(skill.getAttribute("data-search") || "").toLowerCase();
+            var text = normSearchQ(skill.textContent || "").toLowerCase();
             var matchAll = terms.every(function(t) { return data.indexOf(t) !== -1 || text.indexOf(t) !== -1; });
             skill.classList.toggle("hidden", !matchAll);
             if (matchAll) any = true;

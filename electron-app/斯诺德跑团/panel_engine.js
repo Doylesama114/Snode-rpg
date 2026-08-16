@@ -1421,6 +1421,7 @@ function isBlueprintName(name) {
 function sumExtraProfessionalSlotsFromFeats() {
   var bonus = 0, i, name, fd, feats = state.special_feats || [];
   for (i = 0; i < feats.length; i++) {
+    if (!feats[i]) continue;
     name = typeof feats[i] === "string" ? feats[i] : (feats[i].name || feats[i].n || "");
     if (!name || typeof SPECIAL_FEATS === "undefined") continue;
     fd = SPECIAL_FEATS[name];
@@ -1521,6 +1522,7 @@ function fillXlsxBlueprints(set, blueprints) {
   set(BLUEPRINT_XLSX_TITLE, BLUEPRINT_XLSX_TITLE_TEXT);
   clearXlsxBlueprints(set);
   for (i = 0; i < list.length && i < max; i++) {
+    if (!list[i]) continue;
     n = list[i].n || list[i].name || "";
     if (n) set(BLUEPRINT_XLSX_CELLS[i], n);
   }
@@ -1825,6 +1827,7 @@ function fillXlsxTalents(set, talents, tierRowMap) {
   var ti, tName, tTier, range, slot;
   for (ti = 0; ti < tierOrder.length; ti++) tierSlots[tierOrder[ti]] = 0;
   for (ti = 0; ti < talents.length; ti++) {
+    if (!talents[ti]) continue;
     tName = talents[ti].n || talents[ti].name || "";
     if (!tName) continue;
     tTier = normalizeExportTalentTier(talents[ti]);
@@ -1847,6 +1850,7 @@ function fillXlsxSpecialFeats(set, feats) {
   var levelRows = { 4: 36, 8: 38, 12: 40 };
   var fi, name, lv, row, used = {};
   for (fi = 0; fi < feats.length; fi++) {
+    if (!feats[fi]) continue;
     name = featDisplayName(feats[fi]);
     if (!name) continue;
     lv = feats[fi].level || 0;
@@ -4322,7 +4326,7 @@ function isSlotLocked(slot){
 
 
 function getArmorAC(armorName) {
-  armorName = itemName(armorName);
+  armorName = itemName(armorName) || "";
 
   if (armorACMap[armorName]) return armorACMap[armorName];
 
@@ -5815,6 +5819,7 @@ function renderLearnPanel() {
 
 
   var searchQ = window._learnSearchQ || "";
+  if (typeof window.normSearchQ === 'function') searchQ = window.normSearchQ(searchQ);
 
 
   searchQ = searchQ.toLowerCase();
@@ -5970,6 +5975,7 @@ function renderLearnResults() {
   var results = document.getElementById("learnResults");
   if (!results) return;
   var searchQ = window._learnSearchQ || "";
+  if (typeof window.normSearchQ === 'function') searchQ = window.normSearchQ(searchQ);
   searchQ = searchQ.toLowerCase();
   var html = "";
 
@@ -8191,6 +8197,7 @@ async function exportXlsxFromState(state) {
   var _ac=null;
   var _eqArmor=(state.equipment&&state.equipment["防具"])||[];
   for(var _ai=0;_ai<_eqArmor.length;_ai++){
+    if(!_eqArmor[_ai])continue;
     var _aInfo=typeof getArmorAC==="function"?getArmorAC(_eqArmor[_ai]):null;
     if(!_aInfo){
       var _an=itemName(_eqArmor[_ai])||"";
@@ -8314,7 +8321,7 @@ async function exportXlsxFromState(state) {
       var writeIdx = 0;
       for (var ii = 0; ii < items.length && slot.row + writeIdx <= 100; ii++) {
         var eqItemName = items[ii];
-        if (typeof eqItemName === 'object') eqItemName = eqItemName.item || eqItemName.name || '';
+        if (eqItemName && typeof eqItemName === 'object') eqItemName = eqItemName.item || eqItemName.name || '';
         if (!eqItemName || isEquipPlaceholder(eqItemName)) continue;
         if (writeIdx === 0) set("I" + slot.row, slot.label);
         set("K" + (slot.row + writeIdx), String(eqItemName));

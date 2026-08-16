@@ -1353,6 +1353,7 @@ function SB_buildTestData(st) {
   var talents = [];
   if (st.talent_tree) for (var ti = 0; ti < st.talent_tree.length; ti++) {
     var tg = st.talent_tree[ti];
+    if (!tg) continue;
     var tn = tg.n || tg.name || '';
     var meta = SB_findSkillMeta(tn, tg.cls || (st.classes && st.classes[0] && st.classes[0].name));
     var mf = (meta && meta.fields) || {};
@@ -1368,9 +1369,10 @@ function SB_buildTestData(st) {
   }
   var feats = [];
   if (st.special_feats) {
-    var lvSeq = ['4级', '8级', '13级', '六阶天赋'];
+    var lvSeq = ['4级', '8级', '12级', '16级'];
     for (var fi = 0; fi < st.special_feats.length; fi++) {
       var f = st.special_feats[fi];
+      if (!f) continue;
       var fn = typeof f === 'string' ? f : (f && f.name);
       feats.push({ lv: (f && f.level) || lvSeq[fi] || '', name: fn || '', type: '专长', desc: '资料库暂无详细数据' });
     }
@@ -1398,9 +1400,15 @@ function SB_buildTestData(st) {
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
   }
   var raceTraits = [];
-  if (st.racial_traits) for (var ri = 0; ri < st.racial_traits.length; ri++) raceTraits.push({ n: st.racial_traits[ri].name, d: st.racial_traits[ri].desc });
+  if (st.racial_traits) for (var ri = 0; ri < st.racial_traits.length; ri++) {
+    if (!st.racial_traits[ri]) continue;
+    raceTraits.push({ n: st.racial_traits[ri].name, d: st.racial_traits[ri].desc });
+  }
   var classTraits = [];
-  if (st.class_features) for (var ci2 = 0; ci2 < st.class_features.length; ci2++) classTraits.push({ n: st.class_features[ci2].name, d: st.class_features[ci2].desc });
+  if (st.class_features) for (var ci2 = 0; ci2 < st.class_features.length; ci2++) {
+    if (!st.class_features[ci2]) continue;
+    classTraits.push({ n: st.class_features[ci2].name, d: st.class_features[ci2].desc });
+  }
   return {
     char: { player: st.player || '', name: st.name || '', race: st.race || '', gender: st.gender || '', age: st.age || '', height: st.height || '', weight: st.weight || '', eye: st.eye || '', skin: st.skin || '', hair: st.hair || '', bg: '' },
     classes: classes, attrs: st.attrs || {}, attrsSave: st.attrsSave || {},
