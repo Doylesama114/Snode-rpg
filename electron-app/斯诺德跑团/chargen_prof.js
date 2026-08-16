@@ -50,6 +50,8 @@ var CHAR_GEN_PROF_CATS = {
  */
 function resolveProfSkill(name) {
   if (!name) return null;
+  // 运动为可加熟练项（背包客等规则），优先于分类表
+  if (name === "运动") return { attr: "力量", key: "运动" };
   var cats = (typeof SKILL_CATS !== "undefined" && SKILL_CATS) ? SKILL_CATS : CHAR_GEN_PROF_CATS;
   if (cats[name]) return { category: true, name: name };
 
@@ -65,8 +67,8 @@ function resolveProfSkill(name) {
 
   var attr = CHAR_GEN_SKILL_ATTR_MAP[name];
   if (attr) {
-    // 类别名若未进 cats（兜底）
-    if (name === "运动" || name === "奥秘" || name === "知识" || name === "巧手" || name === "表演") {
+    // 其余类别名若未进 cats（兜底）
+    if (name === "奥秘" || name === "知识" || name === "巧手" || name === "表演") {
       return { category: true, name: name };
     }
     return { attr: attr, key: name };
@@ -98,7 +100,8 @@ function applyResolvedProf(profs, name, preferAttr) {
   var r = resolveProfSkill(name);
   if (!r || r.category || !r.key) return false;
   var attr = r.attr || preferAttr;
-  if (!attr || !profs[attr] || profs[attr][r.key] === undefined) return false;
+  if (!attr || !profs[attr]) return false;
+  if (profs[attr][r.key] === undefined) profs[attr][r.key] = 0;
   profs[attr][r.key] = (profs[attr][r.key] || 0) + 1;
   return true;
 }

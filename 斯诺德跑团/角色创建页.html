@@ -1780,13 +1780,15 @@ function showRaceSkillChoice(raceData){
   var old=document.getElementById("raceSkillArea");if(old)old.remove();
   var traits=raceData["特性"]||[];
   var choice=null;
-  for(var i=0;i<traits.length;i++){if(traits[i].skill_choice&&traits[i].skill_choice.length){choice=traits[i].skill_choice;break;}}
+  var points=1;
+  for(var i=0;i<traits.length;i++){if(traits[i].skill_choice&&traits[i].skill_choice.length){choice=traits[i].skill_choice;points=traits[i].grant_skill_points||1;break;}}
   if(!choice)return;
-  CHAR.raceSkillChoice="";
+  CHAR.raceSkillChoice=(points>1)?[]:"";
+  CHAR.raceSkillPoints=points;
   var area=document.createElement("div");area.id="raceSkillArea";
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择熟练度加值</div>";
-  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>获得 <strong>1</strong> 点熟练度，选择一项</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>获得 <strong>"+points+"</strong> 点熟练度，选择 "+points+" 项（每项至多 1 点）</div>";
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
   for(var i=0;i<choice.length;i++){
     h+="<div class='spec-btn' onclick='pickRaceSkill(this)' data-skill='"+choice[i]+"'>"+choice[i]+"</div>";
@@ -1798,6 +1800,13 @@ function showRaceSkillChoice(raceData){
 }
 function pickRaceSkill(el){
   var sk=el.getAttribute("data-skill");
+  if(Array.isArray(CHAR.raceSkillChoice)){
+    var idx=CHAR.raceSkillChoice.indexOf(sk);
+    if(idx>=0){CHAR.raceSkillChoice.splice(idx,1);el.classList.remove("selected");}
+    else if(CHAR.raceSkillChoice.length<(CHAR.raceSkillPoints||1)){CHAR.raceSkillChoice.push(sk);el.classList.add("selected");}
+    updateOverview();
+    return;
+  }
   if(CHAR.raceSkillChoice===sk){CHAR.raceSkillChoice="";el.classList.remove("selected");return;}
   var area=document.getElementById("raceSkillArea");
   if(area){var btns=area.querySelectorAll(".spec-btn");for(var i=0;i<btns.length;i++)btns[i].classList.remove("selected");}
@@ -3216,14 +3225,17 @@ function saveCharacter(){
       }
       var grantSkill=rt.grant_skill||((rt.skill_choice&&CHAR.raceSkillChoice)?CHAR.raceSkillChoice:"");
       if(grantSkill){
-        if(typeof applyResolvedProf==="function"){
-          applyResolvedProf(allSkills,grantSkill);
-        }else{
-          var gsm=BG_SKILL_MAP[grantSkill];
-          if(gsm&&gsm!=="cat"){
-            var gparts=gsm.split(".");
-            if(gparts.length===2&&allSkills[gparts[0]]&&allSkills[gparts[0]][gparts[1]]!==undefined){
-              allSkills[gparts[0]][gparts[1]]=(allSkills[gparts[0]][gparts[1]]||0)+1;
+        var gsList=Array.isArray(grantSkill)?grantSkill:[grantSkill];
+        for(var gsi=0;gsi<gsList.length;gsi++){
+          if(typeof applyResolvedProf==="function"){
+            applyResolvedProf(allSkills,gsList[gsi]);
+          }else{
+            var gsm=BG_SKILL_MAP[gsList[gsi]];
+            if(gsm&&gsm!=="cat"){
+              var gparts=gsm.split(".");
+              if(gparts.length===2&&allSkills[gparts[0]]&&allSkills[gparts[0]][gparts[1]]!==undefined){
+                allSkills[gparts[0]][gparts[1]]=(allSkills[gparts[0]][gparts[1]]||0)+1;
+              }
             }
           }
         }

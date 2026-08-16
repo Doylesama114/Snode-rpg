@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7227',
+    date: '2026-08-16',
+    changes: [
+      '修复：狐人背包客种族效果未授予熟练项（补 3 点自由分配：运动/承重/骑乘/地理/人文/导航/求生/自然/探索/机遇 十选三，创建页多选 UI 与写入逻辑，每项至多1点）',
+      '修复：侏儒工程达人未授予工程学熟练（补 grant_skill）',
+      '兼容：运动作为可加熟练项（resolveProfSkill 特判+applyResolvedProf 兜底创建键，PROF_DEFS 补运动）'
+    ]
+  },
+
+
+  {
     version: '1.0.7246',
     date: '2026-08-14',
     changes: [
