@@ -202,7 +202,7 @@
             q(".chip").forEach(function(c) {
                 c.classList.remove("filter-active", "filter-inactive");
             });
-            q(".skill, .skill-link, .nav-tier, .nav-group, .style-link, .tier-list a").forEach(function(el) {
+            q(".skill, .skill-link, .nav-tier, .nav-group, .style-link, .tier-list a, .choice-note, .nav-choice").forEach(function(el) {
                 el.classList.remove("filter-hidden");
             });
             if (this.em) this.em.classList.add("hidden");
@@ -248,6 +248,13 @@
             note.classList.toggle("filter-hidden", !(next && !next.classList.contains("filter-hidden")));
         });
 
+        q(".nav-choice").forEach(function(link) {
+            var href = link.getAttribute("href");
+            if (!href) return;
+            var target = document.getElementById(href.replace("#", ""));
+            link.classList.toggle("filter-hidden", !!(target && target.classList.contains("filter-hidden")));
+        });
+
         var any = q("article.skill:not(.filter-hidden)").length > 0;
         if (this.em) this.em.classList.toggle("hidden", any);
     };
@@ -267,7 +274,7 @@
 
         if (!term) {
             if (em) em.classList.add("hidden");
-            q("a.skill-link, .nav-tier, .nav-group").forEach(function(el) { el.classList.remove("hidden"); });
+            q("a.skill-link, .nav-tier, .nav-group, .choice-note, .nav-choice").forEach(function(el) { el.classList.remove("hidden"); });
             return;
         }
 
@@ -284,6 +291,19 @@
             var matchAll = terms.every(function(t) { return data.indexOf(t) !== -1 || text.indexOf(t) !== -1; });
             skill.classList.toggle("hidden", !matchAll);
             if (matchAll) any = true;
+        });
+
+        q(".choice-note").forEach(function(note) {
+            var next = note.nextElementSibling;
+            while (next && !next.classList.contains("skill")) next = next.nextElementSibling;
+            note.classList.toggle("hidden", !(next && !next.classList.contains("hidden")));
+        });
+
+        q(".nav-choice").forEach(function(link) {
+            var href = link.getAttribute("href");
+            if (!href) return;
+            var target = document.getElementById(href.replace("#", ""));
+            link.classList.toggle("hidden", !!(target && target.classList.contains("hidden")));
         });
 
         q(".tier").forEach(function(tier) {

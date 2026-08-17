@@ -1,0 +1,1982 @@
+{
+  "version": 1,
+  "generated_from": "root 基础职业-*.docx + 通用天赋树.docx",
+  "groups": [
+    {
+      "page": "吟游诗人",
+      "key": "吟游诗人-choice-2df77485a6",
+      "title": "抉择：创造水源/创造篝火",
+      "max": 1,
+      "members": [
+        "b-skill-26",
+        "b-skill-27"
+      ],
+      "runs": [
+        {
+          "before": "b-skill-26",
+          "ids": [
+            "b-skill-26",
+            "b-skill-27"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "圣骑士",
+      "key": "圣骑士-choice-4179895c4e",
+      "title": "抉择：力量祝福/智慧祝福",
+      "max": 1,
+      "members": [
+        "p-skill-138",
+        "p-skill-439"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-138",
+          "ids": [
+            "p-skill-138"
+          ]
+        },
+        {
+          "before": "p-skill-439",
+          "ids": [
+            "p-skill-439"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "圣骑士",
+      "key": "圣骑士-choice-e2bb59fa8e",
+      "title": "抉择：惩戒光环/警戒光环/虔诚光环",
+      "max": 1,
+      "members": [
+        "p-skill-230",
+        "p-skill-504",
+        "p-skill-703"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-230",
+          "ids": [
+            "p-skill-230"
+          ]
+        },
+        {
+          "before": "p-skill-504",
+          "ids": [
+            "p-skill-504"
+          ]
+        },
+        {
+          "before": "p-skill-703",
+          "ids": [
+            "p-skill-703"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "圣骑士",
+      "key": "圣骑士-choice-4a01f33c4d",
+      "title": "抉择：愤怒之剑/仲裁之剑",
+      "max": 1,
+      "members": [
+        "p-skill-916",
+        "p-skill-933"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-916",
+          "ids": [
+            "p-skill-916",
+            "p-skill-933"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "奇械师",
+      "key": "奇械师-choice-a1d13fb5af",
+      "title": "抉择：燃烧之手/冻结之触",
+      "max": 1,
+      "members": [
+        "ar-skill-84",
+        "ar-skill-137"
+      ],
+      "runs": [
+        {
+          "before": "ar-skill-84",
+          "ids": [
+            "ar-skill-84",
+            "ar-skill-137"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "奇械师",
+      "key": "奇械师-choice-4a12c4c472",
+      "title": "抉择：闪光手雷（图纸）/斥力手雷（图纸）",
+      "max": 1,
+      "members": [
+        "ar-skill-110",
+        "ar-skill-108"
+      ],
+      "runs": [
+        {
+          "before": "ar-skill-108",
+          "ids": [
+            "ar-skill-108"
+          ]
+        },
+        {
+          "before": "ar-skill-110",
+          "ids": [
+            "ar-skill-110"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "德鲁伊",
+      "key": "德鲁伊-choice-e8b07070d3",
+      "title": "抉择：创造水源/创造篝火",
+      "max": 1,
+      "members": [
+        "d-skill-64",
+        "d-skill-65"
+      ],
+      "runs": [
+        {
+          "before": "d-skill-64",
+          "ids": [
+            "d-skill-64",
+            "d-skill-65"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "德鲁伊",
+      "key": "德鲁伊-choice-1748e157ce",
+      "title": "抉择：物件定位术/生物定位术",
+      "max": 1,
+      "members": [
+        "d-skill-59",
+        "d-skill-60"
+      ],
+      "runs": [
+        {
+          "before": "d-skill-59",
+          "ids": [
+            "d-skill-59",
+            "d-skill-60"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "战士",
+      "key": "战士-choice-7213db60b3",
+      "title": "抉择（你仅能够选择其中两项习得）：龙卷风射击/陆行鲨之咬/天鹅湖之匕",
+      "max": 2,
+      "members": [
+        "w-skill-6-6-2",
+        "w-skill-6-6-3",
+        "w-skill-6-6-4"
+      ],
+      "runs": [
+        {
+          "before": "w-skill-6-6-2",
+          "ids": [
+            "w-skill-6-6-2",
+            "w-skill-6-6-3",
+            "w-skill-6-6-4"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "战士",
+      "key": "战士-choice-f7961d6520",
+      "title": "抉择：剑盾猛攻/盾牌猛击",
+      "max": 1,
+      "members": [
+        "w-skill-3-5-2",
+        "w-skill-3-5-3"
+      ],
+      "runs": [
+        {
+          "before": "w-skill-3-5-2",
+          "ids": [
+            "w-skill-3-5-2",
+            "w-skill-3-5-3"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "战士",
+      "key": "战士-choice-f54c43895c",
+      "title": "抉择：战斗姿态/防御姿态/迅疾姿态",
+      "max": 1,
+      "members": [
+        "w-skill-1-1-2",
+        "w-skill-3-1-2",
+        "w-skill-4-1-2"
+      ],
+      "runs": [
+        {
+          "before": "w-skill-1-1-2",
+          "ids": [
+            "w-skill-1-1-2"
+          ]
+        },
+        {
+          "before": "w-skill-3-1-2",
+          "ids": [
+            "w-skill-3-1-2"
+          ]
+        },
+        {
+          "before": "w-skill-4-1-2",
+          "ids": [
+            "w-skill-4-1-2"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "战士",
+      "key": "战士-choice-c4e2ddb5ad",
+      "title": "抉择：摄魂怒吼/挫战怒吼",
+      "max": 1,
+      "members": [
+        "w-skill-5-5-3",
+        "w-skill-5-5-5"
+      ],
+      "runs": [
+        {
+          "before": "w-skill-5-5-3",
+          "ids": [
+            "w-skill-5-5-3",
+            "w-skill-5-5-5"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "战士",
+      "key": "战士-choice-a6258ad7cd",
+      "title": "抉择：施法者警戒/决斗者警戒",
+      "max": 1,
+      "members": [
+        "w-skill-6-5-3",
+        "w-skill-6-5-4"
+      ],
+      "runs": [
+        {
+          "before": "w-skill-6-5-3",
+          "ids": [
+            "w-skill-6-5-3",
+            "w-skill-6-5-4"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "术士",
+      "key": "术士-choice-74ceb7bce0",
+      "title": "抉择：秘仪之力·战车/秘仪之力·火焰/秘仪之力·智者/秘仪之力·午夜",
+      "max": 1,
+      "members": [
+        "wl-skill-35",
+        "wl-skill-36",
+        "wl-skill-37",
+        "wl-skill-38"
+      ],
+      "runs": [
+        {
+          "before": "wl-skill-35",
+          "ids": [
+            "wl-skill-35",
+            "wl-skill-36",
+            "wl-skill-37",
+            "wl-skill-38"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "武僧",
+      "key": "武僧-choice-7ea956b6af",
+      "title": "抉择：壮胆酒/虎眼酒",
+      "max": 1,
+      "members": [
+        "mo-skill-89",
+        "mo-skill-90"
+      ],
+      "runs": [
+        {
+          "before": "mo-skill-89",
+          "ids": [
+            "mo-skill-89",
+            "mo-skill-90"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-765c7b4b5b",
+      "title": "抉择·你仅能够选择其中两项习得：善良之墙/邪恶之墙/秩序之墙/混乱之墙",
+      "max": 2,
+      "members": [
+        "m-skill-4-5-7",
+        "m-skill-4-5-8",
+        "m-skill-4-5-9",
+        "m-skill-4-5-10"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-4-5-7",
+          "ids": [
+            "m-skill-4-5-7",
+            "m-skill-4-5-8",
+            "m-skill-4-5-9",
+            "m-skill-4-5-10"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-c12750e2b3",
+      "title": "抉择·选择其中两项习得 ：寒冰箭/火焰箭/雷光箭/强酸箭",
+      "max": 2,
+      "members": [
+        "m-skill-1-1-2",
+        "m-skill-1-1-3",
+        "m-skill-1-1-4",
+        "m-skill-1-1-5"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-1-1-2",
+          "ids": [
+            "m-skill-1-1-2",
+            "m-skill-1-1-3",
+            "m-skill-1-1-4",
+            "m-skill-1-1-5"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-84fdc36e2f",
+      "title": "抉择：人形晕眩术/怪物晕眩术",
+      "max": 1,
+      "members": [
+        "m-skill-5-3-8",
+        "m-skill-5-3-9"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-5-3-8",
+          "ids": [
+            "m-skill-5-3-8",
+            "m-skill-5-3-9"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-0c4a1486d7",
+      "title": "抉择：侦测秩序/侦测混乱",
+      "max": 1,
+      "members": [
+        "m-skill-3-3-7",
+        "m-skill-3-3-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-3-7",
+          "ids": [
+            "m-skill-3-3-7",
+            "m-skill-3-3-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-cfc1186b86",
+      "title": "抉择：冰锥术/雷鸣斩",
+      "max": 1,
+      "members": [
+        "m-skill-1-2-3",
+        "m-skill-1-2-4"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-1-2-3",
+          "ids": [
+            "m-skill-1-2-3",
+            "m-skill-1-2-4"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-2f3d8a27bd",
+      "title": "抉择：创造水源/创造篝火",
+      "max": 1,
+      "members": [
+        "m-skill-2-1-7",
+        "m-skill-2-1-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-2-1-7",
+          "ids": [
+            "m-skill-2-1-7",
+            "m-skill-2-1-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-49f8487958",
+      "title": "抉择：召唤火元素/召唤水元素",
+      "max": 1,
+      "members": [
+        "m-skill-2-3-7",
+        "m-skill-2-3-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-2-3-7",
+          "ids": [
+            "m-skill-2-3-7",
+            "m-skill-2-3-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-d12f49b063",
+      "title": "抉择：增强武器/锐化武器",
+      "max": 1,
+      "members": [
+        "m-skill-5-2-6",
+        "m-skill-5-2-7"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-5-2-6",
+          "ids": [
+            "m-skill-5-2-6",
+            "m-skill-5-2-7"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-727718c683",
+      "title": "抉择：奥术箭/魔爆术",
+      "max": 1,
+      "members": [
+        "m-skill-2-1-5",
+        "m-skill-2-1-6"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-2-1-5",
+          "ids": [
+            "m-skill-2-1-5",
+            "m-skill-2-1-6"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-be136abd2c",
+      "title": "抉择：宿命环·回溯/宿命环·现界/宿命环·未来",
+      "max": 1,
+      "members": [
+        "m-skill-3-7-2",
+        "m-skill-3-7-4",
+        "m-skill-3-7-3"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-7-2",
+          "ids": [
+            "m-skill-3-7-2",
+            "m-skill-3-7-3",
+            "m-skill-3-7-4"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-c5d6802197",
+      "title": "抉择：封门术/秘法锁",
+      "max": 1,
+      "members": [
+        "m-skill-4-2-6",
+        "m-skill-4-2-7"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-4-2-6",
+          "ids": [
+            "m-skill-4-2-6",
+            "m-skill-4-2-7"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-9c5ab0426f",
+      "title": "抉择：巨化术/缩小术",
+      "max": 1,
+      "members": [
+        "m-skill-8-4-8",
+        "m-skill-8-4-9"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-8-4-8",
+          "ids": [
+            "m-skill-8-4-8",
+            "m-skill-8-4-9"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-03b80fdd5f",
+      "title": "抉择：明焰术/暗蚀术",
+      "max": 1,
+      "members": [
+        "m-skill-1-4-7",
+        "m-skill-1-4-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-1-4-7",
+          "ids": [
+            "m-skill-1-4-7",
+            "m-skill-1-4-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-226e1115d6",
+      "title": "抉择：溢流飞火/溢流寒霜",
+      "max": 1,
+      "members": [
+        "m-skill-1-5-8",
+        "m-skill-1-5-9"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-1-5-8",
+          "ids": [
+            "m-skill-1-5-8",
+            "m-skill-1-5-9"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-ee1731e41f",
+      "title": "抉择：灾祸术/祝福术",
+      "max": 1,
+      "members": [
+        "m-skill-5-3-6",
+        "m-skill-5-3-7"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-5-3-6",
+          "ids": [
+            "m-skill-5-3-6",
+            "m-skill-5-3-7"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-839c664a95",
+      "title": "抉择：熔岩护盾/冰霜护盾/奥术护盾",
+      "max": 1,
+      "members": [
+        "m-skill-4-2-3",
+        "m-skill-4-2-4",
+        "m-skill-4-2-5"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-4-2-3",
+          "ids": [
+            "m-skill-4-2-3",
+            "m-skill-4-2-4",
+            "m-skill-4-2-5"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-357b14dd98",
+      "title": "抉择：燃烧之手/冻结之触",
+      "max": 1,
+      "members": [
+        "m-skill-1-2-5",
+        "m-skill-1-2-6"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-1-2-5",
+          "ids": [
+            "m-skill-1-2-5",
+            "m-skill-1-2-6"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-106da2e370",
+      "title": "抉择：物件定位术/生物定位术",
+      "max": 1,
+      "members": [
+        "m-skill-3-2-7",
+        "m-skill-3-2-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-2-7",
+          "ids": [
+            "m-skill-3-2-7",
+            "m-skill-3-2-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-26e3fbb9fe",
+      "title": "抉择：精准法术强化/范围法术强化",
+      "max": 1,
+      "members": [
+        "m-skill-5-1-6",
+        "m-skill-5-1-7"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-5-1-6",
+          "ids": [
+            "m-skill-5-1-6",
+            "m-skill-5-1-7"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-adbd941fd9",
+      "title": "抉择：致盲术/致聋术",
+      "max": 1,
+      "members": [
+        "m-skill-6-1-7",
+        "m-skill-6-1-8"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-6-1-7",
+          "ids": [
+            "m-skill-6-1-7",
+            "m-skill-6-1-8"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-8118b28a27",
+      "title": "抉择：识破潜行/辨识伪装",
+      "max": 1,
+      "members": [
+        "m-skill-3-3-5",
+        "m-skill-3-3-6"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-3-5",
+          "ids": [
+            "m-skill-3-3-5",
+            "m-skill-3-3-6"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-4fbfb4cec8",
+      "title": "抉择：通晓语言/通晓兽语",
+      "max": 1,
+      "members": [
+        "m-skill-3-1-4",
+        "m-skill-3-1-5"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-1-4",
+          "ids": [
+            "m-skill-3-1-4",
+            "m-skill-3-1-5"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "法师",
+      "key": "法师-choice-d6350bb772",
+      "title": "抉择：锐耳术/鹰眼术",
+      "max": 1,
+      "members": [
+        "m-skill-3-2-9",
+        "m-skill-3-2-10"
+      ],
+      "runs": [
+        {
+          "before": "m-skill-3-2-9",
+          "ids": [
+            "m-skill-3-2-9",
+            "m-skill-3-2-10"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "游荡者",
+      "key": "游荡者-choice-3daeaf458d",
+      "title": "抉择：侦测陷阱/侦测毒性与疾病",
+      "max": 1,
+      "members": [
+        "r-skill-17",
+        "r-skill-62"
+      ],
+      "runs": [
+        {
+          "before": "r-skill-17",
+          "ids": [
+            "r-skill-17",
+            "r-skill-62"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "游荡者",
+      "key": "游荡者-choice-0fc36ffc27",
+      "title": "抉择：自愈秘酿（配方）/活力酊剂（配方）",
+      "max": 1,
+      "members": [
+        "r-skill-57",
+        "r-skill-80"
+      ],
+      "runs": [
+        {
+          "before": "r-skill-57",
+          "ids": [
+            "r-skill-57",
+            "r-skill-80"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-18b7238399",
+      "title": "抉择（2）：捕熊陷阱（图纸）/焦油陷阱（图纸）/毒蛇陷阱（图纸）",
+      "max": 2,
+      "members": [
+        "h-skill-705",
+        "h-skill-718",
+        "h-skill-730"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-705",
+          "ids": [
+            "h-skill-705",
+            "h-skill-718",
+            "h-skill-730"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-ac7b6dd7aa",
+      "title": "抉择：侦测陷阱/侦测毒性与疾病",
+      "max": 1,
+      "members": [
+        "h-skill-679",
+        "h-skill-692"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-679",
+          "ids": [
+            "h-skill-679",
+            "h-skill-692"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-b67c14979a",
+      "title": "抉择：冰冻陷阱（图纸）/爆炸陷阱（图纸）",
+      "max": 1,
+      "members": [
+        "h-skill-781",
+        "h-skill-795"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-781",
+          "ids": [
+            "h-skill-781",
+            "h-skill-795"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-48d0d2ca11",
+      "title": "抉择：弹溅射击/穿透射击",
+      "max": 1,
+      "members": [
+        "h-skill-224",
+        "h-skill-242"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-224",
+          "ids": [
+            "h-skill-224",
+            "h-skill-242"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-47311e227a",
+      "title": "抉择：捕食专精/践踏专精/飞禽专精/蚊沼专精",
+      "max": 1,
+      "members": [
+        "h-skill-1082",
+        "h-skill-1083",
+        "h-skill-1087",
+        "h-skill-1091"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-1082",
+          "ids": [
+            "h-skill-1082",
+            "h-skill-1083",
+            "h-skill-1091"
+          ]
+        },
+        {
+          "before": "h-skill-1087",
+          "ids": [
+            "h-skill-1087"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "猎人",
+      "key": "猎人-choice-ee1d199f46",
+      "title": "抉择：灵龟守护/灵猴守护/灵狐守护",
+      "max": 1,
+      "members": [
+        "h-skill-387",
+        "h-skill-409",
+        "h-skill-428"
+      ],
+      "runs": [
+        {
+          "before": "h-skill-387",
+          "ids": [
+            "h-skill-387"
+          ]
+        },
+        {
+          "before": "h-skill-409",
+          "ids": [
+            "h-skill-409"
+          ]
+        },
+        {
+          "before": "h-skill-428",
+          "ids": [
+            "h-skill-428"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "萨满祭司",
+      "key": "萨满祭司-choice-c5124351ae",
+      "title": "抉择：寒霜之息/冰霜震击",
+      "max": 1,
+      "members": [
+        "sa-skill-46",
+        "sa-skill-47"
+      ],
+      "runs": [
+        {
+          "before": "sa-skill-46",
+          "ids": [
+            "sa-skill-46",
+            "sa-skill-47"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "萨满祭司",
+      "key": "萨满祭司-choice-b808e93a41",
+      "title": "抉择：急流飞浪/静水流深",
+      "max": 1,
+      "members": [
+        "sa-skill-94",
+        "sa-skill-99"
+      ],
+      "runs": [
+        {
+          "before": "sa-skill-94",
+          "ids": [
+            "sa-skill-94",
+            "sa-skill-99"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "魔契师",
+      "key": "魔契师-choice-1e05e6dc68",
+      "title": "抉择·你仅能够选择其中两项习得：善良之墙/邪恶之墙/秩序之墙/混乱之墙",
+      "max": 2,
+      "members": [
+        "p-skill-126",
+        "p-skill-131",
+        "p-skill-128",
+        "p-skill-127"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-126",
+          "ids": [
+            "p-skill-126",
+            "p-skill-131",
+            "p-skill-128",
+            "p-skill-127"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "魔契师",
+      "key": "魔契师-choice-3a4ea59270",
+      "title": "抉择：人形晕眩术/怪物晕眩术",
+      "max": 1,
+      "members": [
+        "p-skill-77",
+        "p-skill-78"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-77",
+          "ids": [
+            "p-skill-77",
+            "p-skill-78"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "魔契师",
+      "key": "魔契师-choice-1250d14aaa",
+      "title": "抉择：召唤精类生物/召唤深渊恶魔/召唤域外生命",
+      "max": 1,
+      "members": [
+        "p-skill-120",
+        "p-skill-119",
+        "p-skill-118"
+      ],
+      "runs": [
+        {
+          "before": "p-skill-120",
+          "ids": [
+            "p-skill-120",
+            "p-skill-119",
+            "p-skill-118"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-af7d480885",
+      "title": "抉择A·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-13",
+        "g-skill-14",
+        "g-skill-15",
+        "g-skill-16",
+        "g-skill-17",
+        "g-skill-18",
+        "g-skill-19",
+        "g-skill-20"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-13",
+          "ids": [
+            "g-skill-13",
+            "g-skill-14",
+            "g-skill-15",
+            "g-skill-16",
+            "g-skill-17",
+            "g-skill-18",
+            "g-skill-19",
+            "g-skill-20"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-3776550248",
+      "title": "抉择B·你仅能够选择其中两项习得",
+      "max": 2,
+      "members": [
+        "g-skill-22",
+        "g-skill-23",
+        "g-skill-24",
+        "g-skill-25",
+        "g-skill-26",
+        "g-skill-27",
+        "g-skill-28",
+        "g-skill-29",
+        "g-skill-30",
+        "g-skill-31",
+        "g-skill-32",
+        "g-skill-33",
+        "g-skill-34",
+        "g-skill-35",
+        "g-skill-36",
+        "g-skill-37",
+        "g-skill-38",
+        "g-skill-39",
+        "g-skill-40",
+        "g-skill-41",
+        "g-skill-42",
+        "g-skill-43",
+        "g-skill-44",
+        "g-skill-45",
+        "g-skill-46",
+        "g-skill-47",
+        "g-skill-48",
+        "g-skill-49",
+        "g-skill-50",
+        "g-skill-51",
+        "g-skill-52",
+        "g-skill-53",
+        "g-skill-54",
+        "g-skill-55",
+        "g-skill-56",
+        "g-skill-57",
+        "g-skill-58",
+        "g-skill-59",
+        "g-skill-60",
+        "g-skill-61",
+        "g-skill-62",
+        "g-skill-63",
+        "g-skill-64",
+        "g-skill-65",
+        "g-skill-66",
+        "g-skill-67",
+        "g-skill-68",
+        "g-skill-69",
+        "g-skill-70"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-22",
+          "ids": [
+            "g-skill-22",
+            "g-skill-23",
+            "g-skill-24",
+            "g-skill-25",
+            "g-skill-26",
+            "g-skill-27",
+            "g-skill-28",
+            "g-skill-29",
+            "g-skill-30",
+            "g-skill-31",
+            "g-skill-32",
+            "g-skill-33",
+            "g-skill-34",
+            "g-skill-35",
+            "g-skill-36",
+            "g-skill-37",
+            "g-skill-38",
+            "g-skill-39",
+            "g-skill-40",
+            "g-skill-41",
+            "g-skill-42",
+            "g-skill-43",
+            "g-skill-44",
+            "g-skill-45",
+            "g-skill-46",
+            "g-skill-47",
+            "g-skill-48",
+            "g-skill-49",
+            "g-skill-50",
+            "g-skill-51",
+            "g-skill-52",
+            "g-skill-53",
+            "g-skill-54",
+            "g-skill-55",
+            "g-skill-56",
+            "g-skill-57",
+            "g-skill-58",
+            "g-skill-59",
+            "g-skill-60",
+            "g-skill-61",
+            "g-skill-62",
+            "g-skill-63",
+            "g-skill-64",
+            "g-skill-65",
+            "g-skill-66",
+            "g-skill-67",
+            "g-skill-68",
+            "g-skill-69",
+            "g-skill-70"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-86eeaa1766",
+      "title": "抉择C·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-93",
+        "g-skill-94",
+        "g-skill-95",
+        "g-skill-96"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-93",
+          "ids": [
+            "g-skill-93",
+            "g-skill-94",
+            "g-skill-95",
+            "g-skill-96"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-e1ac20204b",
+      "title": "抉择D·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-97",
+        "g-skill-98",
+        "g-skill-99",
+        "g-skill-100",
+        "g-skill-101",
+        "g-skill-102",
+        "g-skill-103",
+        "g-skill-104",
+        "g-skill-105",
+        "g-skill-106"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-97",
+          "ids": [
+            "g-skill-97",
+            "g-skill-98",
+            "g-skill-99",
+            "g-skill-100",
+            "g-skill-101",
+            "g-skill-102",
+            "g-skill-103",
+            "g-skill-104",
+            "g-skill-105",
+            "g-skill-106"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-0ecc12e7c6",
+      "title": "抉择E·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-108",
+        "g-skill-109",
+        "g-skill-110"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-108",
+          "ids": [
+            "g-skill-108",
+            "g-skill-109",
+            "g-skill-110"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-fb5d359d9d",
+      "title": "抉择F·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-112",
+        "g-skill-113",
+        "g-skill-114",
+        "g-skill-115",
+        "g-skill-116",
+        "g-skill-117",
+        "g-skill-118",
+        "g-skill-119",
+        "g-skill-120",
+        "g-skill-121",
+        "g-skill-122",
+        "g-skill-123"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-112",
+          "ids": [
+            "g-skill-112",
+            "g-skill-113",
+            "g-skill-114",
+            "g-skill-115",
+            "g-skill-116",
+            "g-skill-117",
+            "g-skill-118",
+            "g-skill-119",
+            "g-skill-120",
+            "g-skill-121",
+            "g-skill-122",
+            "g-skill-123"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-7d2cefb378",
+      "title": "抉择G·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-125",
+        "g-skill-126",
+        "g-skill-127",
+        "g-skill-128",
+        "g-skill-129",
+        "g-skill-130",
+        "g-skill-131",
+        "g-skill-132",
+        "g-skill-133",
+        "g-skill-134",
+        "g-skill-135",
+        "g-skill-136",
+        "g-skill-137",
+        "g-skill-138"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-125",
+          "ids": [
+            "g-skill-125",
+            "g-skill-126",
+            "g-skill-127",
+            "g-skill-128",
+            "g-skill-129",
+            "g-skill-130",
+            "g-skill-131",
+            "g-skill-132",
+            "g-skill-133",
+            "g-skill-134",
+            "g-skill-135",
+            "g-skill-136",
+            "g-skill-137",
+            "g-skill-138"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-b526052f8a",
+      "title": "抉择H·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-156",
+        "g-skill-157",
+        "g-skill-158",
+        "g-skill-159",
+        "g-skill-160",
+        "g-skill-161",
+        "g-skill-162",
+        "g-skill-163"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-156",
+          "ids": [
+            "g-skill-156",
+            "g-skill-157",
+            "g-skill-158",
+            "g-skill-159",
+            "g-skill-160",
+            "g-skill-161",
+            "g-skill-162",
+            "g-skill-163"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-7ae28846b5",
+      "title": "抉择I·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-165",
+        "g-skill-166",
+        "g-skill-167",
+        "g-skill-168",
+        "g-skill-169",
+        "g-skill-170",
+        "g-skill-171",
+        "g-skill-172",
+        "g-skill-173",
+        "g-skill-174",
+        "g-skill-175",
+        "g-skill-176",
+        "g-skill-177",
+        "g-skill-178",
+        "g-skill-179",
+        "g-skill-180",
+        "g-skill-181",
+        "g-skill-182",
+        "g-skill-183",
+        "g-skill-184",
+        "g-skill-185",
+        "g-skill-186",
+        "g-skill-187",
+        "g-skill-188",
+        "g-skill-189",
+        "g-skill-190",
+        "g-skill-191",
+        "g-skill-192",
+        "g-skill-193",
+        "g-skill-194",
+        "g-skill-195",
+        "g-skill-196",
+        "g-skill-197",
+        "g-skill-198",
+        "g-skill-199",
+        "g-skill-200",
+        "g-skill-201",
+        "g-skill-202",
+        "g-skill-203",
+        "g-skill-204"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-165",
+          "ids": [
+            "g-skill-165",
+            "g-skill-166",
+            "g-skill-167",
+            "g-skill-168",
+            "g-skill-169",
+            "g-skill-170",
+            "g-skill-171",
+            "g-skill-172",
+            "g-skill-173",
+            "g-skill-174",
+            "g-skill-175",
+            "g-skill-176",
+            "g-skill-177",
+            "g-skill-178",
+            "g-skill-179",
+            "g-skill-180",
+            "g-skill-181",
+            "g-skill-182",
+            "g-skill-183",
+            "g-skill-184",
+            "g-skill-185",
+            "g-skill-186",
+            "g-skill-187",
+            "g-skill-188",
+            "g-skill-189",
+            "g-skill-190",
+            "g-skill-191",
+            "g-skill-192",
+            "g-skill-193",
+            "g-skill-194",
+            "g-skill-195",
+            "g-skill-196",
+            "g-skill-197",
+            "g-skill-198",
+            "g-skill-199",
+            "g-skill-200",
+            "g-skill-201",
+            "g-skill-202",
+            "g-skill-203",
+            "g-skill-204"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-086f9e14c4",
+      "title": "抉择J·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-223",
+        "g-skill-224",
+        "g-skill-225",
+        "g-skill-226",
+        "g-skill-227",
+        "g-skill-228",
+        "g-skill-229",
+        "g-skill-230"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-223",
+          "ids": [
+            "g-skill-223",
+            "g-skill-224",
+            "g-skill-225",
+            "g-skill-226",
+            "g-skill-227",
+            "g-skill-228",
+            "g-skill-229",
+            "g-skill-230"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-a99a3ac7bd",
+      "title": "抉择K·你仅能够选择其中两项习得",
+      "max": 2,
+      "members": [
+        "g-skill-232",
+        "g-skill-233",
+        "g-skill-234",
+        "g-skill-235",
+        "g-skill-236",
+        "g-skill-237",
+        "g-skill-238",
+        "g-skill-239",
+        "g-skill-240",
+        "g-skill-241",
+        "g-skill-242",
+        "g-skill-243",
+        "g-skill-244",
+        "g-skill-245",
+        "g-skill-246",
+        "g-skill-247",
+        "g-skill-248",
+        "g-skill-249"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-232",
+          "ids": [
+            "g-skill-232",
+            "g-skill-233",
+            "g-skill-234",
+            "g-skill-235",
+            "g-skill-236",
+            "g-skill-237",
+            "g-skill-238",
+            "g-skill-239",
+            "g-skill-240",
+            "g-skill-241",
+            "g-skill-242",
+            "g-skill-243",
+            "g-skill-244",
+            "g-skill-245",
+            "g-skill-246",
+            "g-skill-247",
+            "g-skill-248",
+            "g-skill-249"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-20304cecfb",
+      "title": "抉择L·你仅能够选择其中两项习得",
+      "max": 2,
+      "members": [
+        "g-skill-251",
+        "g-skill-252",
+        "g-skill-253",
+        "g-skill-254",
+        "g-skill-255",
+        "g-skill-256",
+        "g-skill-257",
+        "g-skill-258",
+        "g-skill-259",
+        "g-skill-260",
+        "g-skill-261",
+        "g-skill-262",
+        "g-skill-263",
+        "g-skill-264",
+        "g-skill-265",
+        "g-skill-266",
+        "g-skill-267"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-251",
+          "ids": [
+            "g-skill-251",
+            "g-skill-252",
+            "g-skill-253",
+            "g-skill-254",
+            "g-skill-255",
+            "g-skill-256",
+            "g-skill-257",
+            "g-skill-258",
+            "g-skill-259",
+            "g-skill-260",
+            "g-skill-261",
+            "g-skill-262",
+            "g-skill-263",
+            "g-skill-264",
+            "g-skill-265",
+            "g-skill-266",
+            "g-skill-267"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-5bcf7f0fe6",
+      "title": "抉择M·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-377",
+        "g-skill-378",
+        "g-skill-379",
+        "g-skill-380"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-377",
+          "ids": [
+            "g-skill-377",
+            "g-skill-378",
+            "g-skill-379",
+            "g-skill-380"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-55b6a41941",
+      "title": "抉择N·你仅能够选择其中两项习得",
+      "max": 2,
+      "members": [
+        "g-skill-284",
+        "g-skill-285",
+        "g-skill-286",
+        "g-skill-287",
+        "g-skill-288",
+        "g-skill-289",
+        "g-skill-290",
+        "g-skill-291"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-284",
+          "ids": [
+            "g-skill-284",
+            "g-skill-285",
+            "g-skill-286",
+            "g-skill-287",
+            "g-skill-288",
+            "g-skill-289",
+            "g-skill-290",
+            "g-skill-291"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-acec48b703",
+      "title": "抉择O·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-306",
+        "g-skill-307",
+        "g-skill-308",
+        "g-skill-309",
+        "g-skill-310",
+        "g-skill-311",
+        "g-skill-312",
+        "g-skill-429",
+        "g-skill-314",
+        "g-skill-315"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-306",
+          "ids": [
+            "g-skill-306",
+            "g-skill-307",
+            "g-skill-308",
+            "g-skill-309",
+            "g-skill-310",
+            "g-skill-311",
+            "g-skill-312",
+            "g-skill-429",
+            "g-skill-314",
+            "g-skill-315"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-2350c24697",
+      "title": "抉择P·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-317",
+        "g-skill-318",
+        "g-skill-319",
+        "g-skill-320",
+        "g-skill-321",
+        "g-skill-322",
+        "g-skill-323",
+        "g-skill-324"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-317",
+          "ids": [
+            "g-skill-317",
+            "g-skill-318",
+            "g-skill-319",
+            "g-skill-320",
+            "g-skill-321",
+            "g-skill-322",
+            "g-skill-323",
+            "g-skill-324"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-aef1c617bb",
+      "title": "抉择Q·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-430",
+        "g-skill-431",
+        "g-skill-432",
+        "g-skill-433",
+        "g-skill-434",
+        "g-skill-435",
+        "g-skill-436",
+        "g-skill-437"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-430",
+          "ids": [
+            "g-skill-430",
+            "g-skill-431",
+            "g-skill-432",
+            "g-skill-433",
+            "g-skill-434",
+            "g-skill-435",
+            "g-skill-436",
+            "g-skill-437"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-b318165c80",
+      "title": "抉择R·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-344",
+        "g-skill-345",
+        "g-skill-346",
+        "g-skill-347",
+        "g-skill-348",
+        "g-skill-349",
+        "g-skill-350",
+        "g-skill-351",
+        "g-skill-352",
+        "g-skill-353"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-344",
+          "ids": [
+            "g-skill-344",
+            "g-skill-345",
+            "g-skill-346",
+            "g-skill-347",
+            "g-skill-348",
+            "g-skill-349",
+            "g-skill-350",
+            "g-skill-351",
+            "g-skill-352",
+            "g-skill-353"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-81aa9d31b4",
+      "title": "抉择S·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-355",
+        "g-skill-356",
+        "g-skill-357",
+        "g-skill-358",
+        "g-skill-359",
+        "g-skill-360",
+        "g-skill-361",
+        "g-skill-362",
+        "g-skill-363",
+        "g-skill-364",
+        "g-skill-365",
+        "g-skill-366",
+        "g-skill-367",
+        "g-skill-368",
+        "g-skill-369",
+        "g-skill-370"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-355",
+          "ids": [
+            "g-skill-355",
+            "g-skill-356",
+            "g-skill-357",
+            "g-skill-358",
+            "g-skill-359",
+            "g-skill-360",
+            "g-skill-361",
+            "g-skill-362",
+            "g-skill-363",
+            "g-skill-364",
+            "g-skill-365",
+            "g-skill-366",
+            "g-skill-367",
+            "g-skill-368",
+            "g-skill-369",
+            "g-skill-370"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-29d62c61c7",
+      "title": "抉择T·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-392",
+        "g-skill-393",
+        "g-skill-394",
+        "g-skill-395",
+        "g-skill-396",
+        "g-skill-397",
+        "g-skill-398",
+        "g-skill-399",
+        "g-skill-400",
+        "g-skill-401",
+        "g-skill-402",
+        "g-skill-403",
+        "g-skill-404",
+        "g-skill-405"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-392",
+          "ids": [
+            "g-skill-392",
+            "g-skill-393",
+            "g-skill-394",
+            "g-skill-395",
+            "g-skill-396",
+            "g-skill-397",
+            "g-skill-398",
+            "g-skill-399",
+            "g-skill-400",
+            "g-skill-401",
+            "g-skill-402",
+            "g-skill-403",
+            "g-skill-404",
+            "g-skill-405"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-86f3a9b292",
+      "title": "抉择U·你仅能够选择其中两项习得",
+      "max": 2,
+      "members": [
+        "g-skill-413",
+        "g-skill-414",
+        "g-skill-415",
+        "g-skill-416",
+        "g-skill-417",
+        "g-skill-418",
+        "g-skill-419",
+        "g-skill-420"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-413",
+          "ids": [
+            "g-skill-413",
+            "g-skill-414",
+            "g-skill-415",
+            "g-skill-416",
+            "g-skill-417",
+            "g-skill-418",
+            "g-skill-419",
+            "g-skill-420"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-d71aa18bb8",
+      "title": "抉择·你仅能够选择其中一项习得",
+      "max": 1,
+      "members": [
+        "g-skill-143",
+        "g-skill-144"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-143",
+          "ids": [
+            "g-skill-143",
+            "g-skill-144"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-67b0131453",
+      "title": "抉择：英雄弧光/深渊呢喃",
+      "max": 1,
+      "members": [
+        "g-skill-427",
+        "g-skill-428"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-427",
+          "ids": [
+            "g-skill-427",
+            "g-skill-428"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "通用天赋树",
+      "key": "通用天赋树-choice-364690fd55",
+      "title": "抉择：额外攻击/额外施法",
+      "max": 1,
+      "members": [
+        "g-skill-389",
+        "g-skill-390"
+      ],
+      "runs": [
+        {
+          "before": "g-skill-389",
+          "ids": [
+            "g-skill-389",
+            "g-skill-390"
+          ]
+        }
+      ]
+    }
+  ]
+}

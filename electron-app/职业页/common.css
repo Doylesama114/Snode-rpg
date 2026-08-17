@@ -1149,3 +1149,43 @@ html.dark .roll-head { background: var(--bg); }
   .unit-ability-sub { margin-left: 8px; }
   .roll-row { grid-template-columns: 72px 1fr; gap: 8px; padding: 6px 10px; font-size: 12.5px; }
 }
+
+/* ===== 抉择组（26.08） ===== */
+.skill[data-choice] {
+  border-left: 4px solid var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(164,109,31,.05);
+}
+.choice-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border: 1px solid rgba(164,109,31,.45);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--gold);
+  background: rgba(164,109,31,.08);
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.nav-choice {
+  display: block;
+  margin: 6px 0 2px;
+  padding: 5px 9px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 5px 5px 0;
+  color: var(--gold);
+  background: rgba(164,109,31,.07);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.nav-choice:hover { background: rgba(164,109,31,.14); color: var(--ink); }
+.nav-choice.filter-hidden, .nav-choice.hidden { display: none !important; }
+@media (max-width: 600px) {
+  .choice-tag { font-size: 10px; padding: 1px 6px; }
+  .nav-choice { font-size: 11px; padding: 4px 7px; margin: 4px 0 2px; }
+}
