@@ -251,3 +251,34 @@ function focusSkillFromHash() {
     addUpgradeBadges();
   });
 })();
+
+// ===== 职业专长顶部 chips（26.08） =====
+(function() {
+  function initClassFeatureTabs() {
+    var groups = document.querySelectorAll(".class-features");
+    for (var i = 0; i < groups.length; i++) {
+      var group = groups[i];
+      var chips = group.querySelectorAll(".class-feature-chip");
+      var panels = group.querySelectorAll(".class-feature-panel");
+      if (!chips.length || !panels.length) continue;
+      for (var j = 0; j < chips.length; j++) {
+        (function(chip, index) {
+          chip.addEventListener("click", function() {
+            for (var k = 0; k < chips.length; k++) {
+              chips[k].classList.toggle("active", k === index);
+              chips[k].setAttribute("aria-selected", k === index ? "true" : "false");
+            }
+            for (var p = 0; p < panels.length; p++) {
+              panels[p].classList.toggle("active", p === index);
+            }
+          });
+        })(chips[j], j);
+      }
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initClassFeatureTabs);
+  } else {
+    initClassFeatureTabs();
+  }
+})();

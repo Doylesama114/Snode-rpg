@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7251',
+    date: '2026-08-17',
+    changes: [
+      '职业页新增顶部职业专长面板：14职业chips切换展示docx初始专长内容',
+      '牧师职业专长面板置于神圣领域切换上方且不重复神祇列表',
+      '新增class_features数据提取与页面应用脚本',
+      'common.css/common.js增加专长面板样式与切换逻辑'
+    ]
+  },
+
+
+  {
     version: '1.0.7250',
     date: '2026-08-17',
     changes: [

@@ -1189,3 +1189,57 @@ html.dark .roll-head { background: var(--bg); }
   .choice-tag { font-size: 10px; padding: 1px 6px; }
   .nav-choice { font-size: 11px; padding: 4px 7px; margin: 4px 0 2px; }
 }
+
+/* ===== 职业专长顶部面板（26.08） ===== */
+.class-features {
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255,253,248,.92);
+}
+.class-feature-head { margin-bottom: 10px; }
+.class-feature-head h2 { margin: 0 0 4px; font-size: 22px; color: var(--class-color, var(--red)); letter-spacing: 1px; }
+.class-feature-intro { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.class-feature-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+.class-feature-chip {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s, border-color .15s, background .15s, color .15s;
+}
+.class-feature-chip:hover { transform: translateY(-1px); border-color: var(--class-color, var(--green)); }
+.class-feature-chip.active {
+  background: var(--class-color, var(--green));
+  color: #fff;
+  border-color: var(--class-color, var(--green));
+}
+.class-feature-panels { display: grid; gap: 10px; }
+.class-feature-panel { display: none; }
+.class-feature-panel.active { display: block; animation: fadeInUp .22s ease-out both; }
+.class-feature-panel h3 { margin: 0 0 8px; font-size: 17px; color: var(--green); }
+.class-feature-body { line-height: 1.85; color: var(--ink); }
+.class-feature-body p { margin: 6px 0; word-break: break-word; overflow-wrap: break-word; }
+.class-feature-body p.class-feature-bullet { margin: 4px 0 4px 14px; padding-left: 8px; border-left: 2px solid rgba(164,109,31,.35); }
+.class-feature-table { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+.class-feature-table-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
+.class-feature-table-row + .class-feature-table-row { border-top: 1px solid var(--line); }
+.class-feature-table-cell {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--panel); font-size: 12.5px; color: var(--ink);
+}
+html.dark .class-features { background: var(--bg); }
+@media (max-width: 600px) {
+  .class-features { padding: 12px 10px; }
+  .class-feature-head h2 { font-size: 19px; }
+  .class-feature-chip { font-size: 12px; padding: 5px 10px; }
+  .class-feature-panel h3 { font-size: 16px; }
+  .class-feature-body { font-size: 13.5px; }
+}
+.class-feature-note { color: var(--gold); font-weight: 700; }
