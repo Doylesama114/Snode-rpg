@@ -1,27 +1,37 @@
 # Bug 反馈汇总
 
-数据截止：2026-08-14T09:18:11.427Z
+数据截止：2026-08-18T14:36:54.154Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 5 |
-| 本次新拉取 | 0 |
+| 总反馈 | 6 |
+| 本次新拉取 | 1 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
-| desktop | 4 |
+| desktop | 5 |
 | web | 1 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
-| electron | 4 |
+| electron | 5 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-08-18T14:36:54.154Z｜desktop
+- 页面：electron｜标题：Bug Report
+```
+页面: file:///E:/SNODE/snowd-skill-tree/resources/app.asar/%E8%81%8C%E4%B8%9A%E9%A1%B5/%E6%B8%B8%E8%8D%A1%E8%80%85.html#r-skill-23
+游荡者 · 斯诺德职业技能索引
+2026/8/18 22:36:54
+
+偷师学艺描述bug
+```
 
 ### 2026-08-14T09:18:11.427Z｜desktop
 - 页面：electron｜标题：Bug Report
