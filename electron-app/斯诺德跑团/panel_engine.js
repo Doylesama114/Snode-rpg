@@ -4362,8 +4362,8 @@ function getShieldBonus(state) {
   return b;
 }
 
-/** 中甲：鳞甲 / 胸甲 / 半身板甲（与 armorACMap 常见分级一致） */
-var MEDIUM_ARMOR_NAMES = {"鳞甲":1,"胸甲":1,"半身板甲":1};
+/** 中甲：兽皮甲 / 鳞甲 / 胸甲 / 半身板甲（与 armorACMap 常见分级一致） */
+var MEDIUM_ARMOR_NAMES = {"兽皮甲":1,"鳞甲":1,"胸甲":1,"半身板甲":1};
 
 function isMediumArmorName(armorName) {
   var n = itemName(armorName) || "";
@@ -4822,10 +4822,13 @@ function renderBattleStats(){
       // treat as clothing if mapped to 布衣 or 披风
 
 
-      if (eqArmor[ai] == "演出戏服" || eqArmor[ai] == "高档服装" || eqArmor[ai] == "布衣" || eqArmor[ai] == "披风") {
+      var _armorName = itemName(eqArmor[ai]) || "";
 
 
-        aInfo = {"base": 11, "addDex": true};
+      if (_armorName == "演出戏服" || _armorName == "高档服装" || _armorName == "布衣" || _armorName == "披风") {
+
+
+        aInfo = {"base": 11, "addDex": true, "dexCap": 2};
 
 
       }
@@ -4837,7 +4840,7 @@ function renderBattleStats(){
     if (aInfo) {
 
 
-      var thisAC = aInfo.addDex ? (aInfo.base + dexMod) : aInfo.base;
+      var thisAC = aInfo.addDex ? (aInfo.base + Math.min(dexMod, aInfo.dexCap != null ? aInfo.dexCap : 999)) : aInfo.base;
 
 
       if (armorAC === null || thisAC > armorAC) armorAC = thisAC;
@@ -4862,6 +4865,8 @@ function renderBattleStats(){
 
 
   }
+  // 盾牌防御加成
+  if (typeof getShieldBonus === "function") ac += getShieldBonus(state);
   // 中甲大师等：仅着装中甲时计入 _feat_ac_bonus
   if (state._feat_ac_bonus && wearingMediumArmor()) {
     ac += (state._feat_ac_bonus || 0);
@@ -8242,7 +8247,7 @@ async function exportXlsxFromState(state) {
     if(!_aInfo){
       var _an=itemName(_eqArmor[_ai])||"";
       if(_an==="演出戏服"||_an==="高档服装"||_an==="布衣"||_an==="披风"){
-        _aInfo={base:11,addDex:true};
+        _aInfo={base:11,addDex:true,dexCap:2};
       }
     }
     if(_aInfo){

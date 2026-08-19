@@ -1179,22 +1179,22 @@ const LEVEL_TABLE = {
 var armorACMap = {
 
 
-  "布衣": {"base": 11, "addDex": true},
+  "布衣": {"base": 11, "addDex": true, "dexCap": 2},
 
 
   "皮甲": {"base": 11, "addDex": true, "dexCap": 2},
 
 
-  "兽皮甲": {"base": 12, "addDex": true},
+  "兽皮甲": {"base": 12, "addDex": true, "dexCap": 2},
 
 
-  "鳞甲": {"base": 14, "addDex": true},
+  "鳞甲": {"base": 14, "addDex": true, "dexCap": 2},
 
 
-  "胸甲": {"base": 14, "addDex": true},
+  "胸甲": {"base": 14, "addDex": true, "dexCap": 2},
 
 
-  "半身板甲": {"base": 15, "addDex": true},
+  "半身板甲": {"base": 15, "addDex": true, "dexCap": 2},
 
 
   "链甲": {"base": 16, "addDex": false},

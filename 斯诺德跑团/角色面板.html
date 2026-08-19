@@ -1322,7 +1322,7 @@ function SB_buildTestData(st) {
       var aInfo = (typeof getArmorAC === 'function') ? getArmorAC(eqArmor[ai]) : null;
       if (!aInfo) {
         var an = (typeof itemName === 'function') ? itemName(eqArmor[ai]) : (eqArmor[ai] && (eqArmor[ai].item || eqArmor[ai].name)) || '';
-        if (an === '演出戏服' || an === '高档服装' || an === '布衣' || an === '披风') aInfo = { base: 11, addDex: true };
+        if (an === '演出戏服' || an === '高档服装' || an === '布衣' || an === '披风') aInfo = { base: 11, addDex: true, dexCap: 2 };
       }
       if (aInfo) {
         var ac2 = aInfo.addDex ? (aInfo.base + Math.min(dexMod, aInfo.dexCap != null ? aInfo.dexCap : 999)) : aInfo.base;

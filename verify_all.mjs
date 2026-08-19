@@ -97,6 +97,20 @@ try {
 console.log(uiOK ? '✅ UI 结构回归通过' : '❌ UI 结构回归失败');
 totalErrors += uiOK ? 0 : 1;
 
+// 护甲/防御等级规则（所有装备型护甲敏捷加成上限 +2；面板/旧引擎/导出/创建页一致性）
+console.log('\n=== 护甲/防御等级规则 ===');
+let armorOK = true;
+try {
+  let armorOut = spawnSync('node', [join(BASE, 'verify_armor_ac_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (armorOut.stdout) console.log(armorOut.stdout.trim());
+  if (armorOut.stderr) console.error(armorOut.stderr.trim());
+  if (armorOut.status !== 0) armorOK = false;
+} catch (e) {
+  armorOK = false;
+  console.log('❌ 护甲/防御等级规则验证执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(armorOK ? '✅ 护甲/防御等级规则通过' : '❌ 护甲/防御等级规则失败');
+totalErrors += armorOK ? 0 : 1;
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
 let featOK = true;
@@ -149,5 +163,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK ? 0 : 1);

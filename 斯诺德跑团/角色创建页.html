@@ -475,6 +475,71 @@ function calcMod(v) { return Math.floor((v-10)/2); }
 function modStr(v) { var m=calcMod(v); return (m>=0?"+":"")+m; }
 function esc(s) { if(!s)return ""; return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
+// ==== 护甲 AC 计算（与角色面板 armorACMap 同一规则：装备型护甲敏捷加成上限 +2） ====
+var CHAR_ARMOR_AC_MAP = {
+  "布衣": {"base": 11, "addDex": true, "dexCap": 2},
+  "皮甲": {"base": 11, "addDex": true, "dexCap": 2},
+  "兽皮甲": {"base": 12, "addDex": true, "dexCap": 2},
+  "鳞甲": {"base": 14, "addDex": true, "dexCap": 2},
+  "胸甲": {"base": 14, "addDex": true, "dexCap": 2},
+  "半身板甲": {"base": 15, "addDex": true, "dexCap": 2},
+  "链甲": {"base": 16, "addDex": false},
+  "板甲": {"base": 18, "addDex": false}
+};
+var CHAR_CLOTHING_NAMES = {"演出戏服":1,"高档服装":1,"布衣":1,"披风":1};
+function charItemName(x) { return (x && typeof x === "object") ? (x.item || x.name || "") : (x || ""); }
+function charGetArmorAC(armorName) {
+  armorName = charItemName(armorName) || "";
+  if (CHAR_ARMOR_AC_MAP[armorName]) return CHAR_ARMOR_AC_MAP[armorName];
+  for (var key in CHAR_ARMOR_AC_MAP) {
+    if (armorName.indexOf(key) >= 0) return CHAR_ARMOR_AC_MAP[key];
+  }
+  if (CHAR_CLOTHING_NAMES[armorName]) return {"base": 11, "addDex": true, "dexCap": 2};
+  return null;
+}
+function charGetShieldBonus(state) {
+  var b = 0;
+  var slots = ["防具", "副手武器"];
+  for (var si = 0; si < slots.length; si++) {
+    var eq = (state && state.equipment && state.equipment[slots[si]]) || [];
+    for (var i = 0; i < eq.length; i++) {
+      var nm = charItemName(eq[i]) || "";
+      if (nm.indexOf("盾牌") < 0 && nm.indexOf("盾") < 0) continue;
+      var d = (typeof ITEM_DATA !== "undefined" && ITEM_DATA[nm] && ITEM_DATA[nm].description) ? ITEM_DATA[nm].description : "";
+      var m = d.match(/防御等级\+(\d+)/) || d.match(/防御等级：(\d+)/);
+      if (m) b += parseInt(m[1], 10);
+    }
+  }
+  return b;
+}
+function charWearingMediumArmor(state) {
+  var medium = {"兽皮甲":1,"鳞甲":1,"胸甲":1,"半身板甲":1};
+  var eq = (state && state.equipment && state.equipment["防具"]) || [];
+  for (var i = 0; i < eq.length; i++) {
+    var n = charItemName(eq[i]) || "";
+    if (medium[n]) return true;
+    for (var k in medium) if (n.indexOf(k) >= 0) return true;
+  }
+  return false;
+}
+function charCalcAC(state) {
+  var dexMod = calcMod((state.attrs && state.attrs["敏捷"]) || 10);
+  var ac = null;
+  var eqArmor = (state.equipment && state.equipment["防具"]) || [];
+  for (var i = 0; i < eqArmor.length; i++) {
+    if (!eqArmor[i]) continue;
+    var aInfo = charGetArmorAC(eqArmor[i]);
+    if (aInfo) {
+      var ac2 = aInfo.addDex ? (aInfo.base + Math.min(dexMod, aInfo.dexCap != null ? aInfo.dexCap : 999)) : aInfo.base;
+      if (ac === null || ac2 > ac) ac = ac2;
+    }
+  }
+  if (ac === null) ac = 10 + dexMod;
+  ac += charGetShieldBonus(state);
+  if (state._feat_ac_bonus && charWearingMediumArmor(state)) ac += (state._feat_ac_bonus || 0);
+  return ac;
+}
+
 </script>
 <script>
 function calcAttrCost(v){if(v<=8)return 0;if(v<=13)return v-8;return 5+(v-13)*2;}
@@ -3714,7 +3779,7 @@ async function exportXlsxFromState(state) {
       set("L6", (_REF&&_REF.fp_formula?("1d"+(_REF.fp_formula.level_up*2||6)):""));
       set("L10", _REF.key_attr || cl.keyAttr || "力量");
     }
-    set("L7", String(10 + (typeof calcMod === "function" ? calcMod(state.attrs["敏捷"] || 10) : Math.floor(((state.attrs["敏捷"] || 10)-10)/2))));
+    set("L7", String(charCalcAC(state)));
     set("L8", String((typeof calcMod === "function" ? calcMod(state.attrs["敏捷"] || 10) : Math.floor(((state.attrs["敏捷"] || 10)-10)/2))));
     set("L9", (typeof _REF_RACES==="object"&&_REF_RACES[state.race]&&_REF_RACES[state.race].speed)?_REF_RACES[state.race].speed:"");
     set("L11", String((typeof calcProfBonus === "function" ? calcProfBonus(cl.level || 1) : Math.ceil((cl.level || 1)/4)+1) + (typeof calcMod === "function" ? calcMod(state.attrs["力量"] || 10) : Math.floor(((state.attrs["力量"] || 10)-10)/2))));

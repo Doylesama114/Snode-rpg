@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-val verName: String = (project.findProperty("versionName") as String?) ?: "1.0.7253"
+val verName: String = (project.findProperty("versionName") as String?) ?: "1.0.7254"
 val verCode: Int = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: verName.split(".").lastOrNull()?.toIntOrNull() ?: 1
 val updateBase: String = (project.findProperty("updateBase") as String?) ?: "https://snode-rpg-releases.oss-cn-chengdu.aliyuncs.com"
 
