@@ -1,4 +1,4 @@
-﻿const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+﻿const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
@@ -622,6 +622,44 @@ ipcMain.handle('advisor-wizard', async (_event, payload) => {
   }
 });
 
+ipcMain.on('js-alert', (event, message) => {
+  try {
+    const win = BrowserWindow.fromWebContents(event.sender) || mainWindow;
+    if (win) dialog.showMessageBoxSync(win, { type: 'info', title: '提示', message: String(message || ''), buttons: ['确定'] });
+  } catch (_) {}
+  event.returnValue = true;
+});
+
+ipcMain.on('js-confirm', (event, message) => {
+  let confirmed = false;
+  try {
+    const win = BrowserWindow.fromWebContents(event.sender) || mainWindow;
+    if (win) {
+      const r = dialog.showMessageBoxSync(win, { type: 'question', title: '确认', message: String(message || ''), buttons: ['确定', '取消'], defaultId: 0, cancelId: 1 });
+      confirmed = r === 0;
+    }
+  } catch (_) {}
+  event.returnValue = confirmed;
+});
+
+ipcMain.handle('save-export', async (event, payload) => {
+  try {
+    const win = BrowserWindow.fromWebContents(event.sender) || mainWindow;
+    const fileName = String((payload && payload.fileName) || '角色档案.xlsx').replace(/[\/:*?"<>|]/g, '_');
+    const result = await dialog.showSaveDialog(win, {
+      title: '导出角色档案',
+      defaultPath: path.join(app.getPath('downloads'), fileName),
+      filters: [{ name: 'Excel 工作簿', extensions: ['xlsx'] }],
+    });
+    if (result.canceled || !result.filePath) return { ok: false, canceled: true };
+    const buf = Buffer.from(String(payload && payload.base64 || ''), 'base64');
+    fs.writeFileSync(result.filePath, buf);
+    return { ok: true, canceled: false, filePath: result.filePath };
+  } catch (err) {
+    return { ok: false, canceled: false, error: err.message || String(err) };
+  }
+});
+
 ipcMain.handle('advisor-catalog', async (_event, payload) => {
   try {
     const { pathToFileURL } = require('url');
@@ -653,6 +691,8 @@ function createWindow() {
   });
 
   Menu.setApplicationMenu(null);
+  // 版本升级后旧 CSS/JS 可能命中缓存；启动时清一次 HTTP 缓存
+  try { mainWindow.webContents.session.clearCache().catch(() => {}); } catch (_) {}
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
 
   // 中文文件名 / asar 偶发把 .html 导航误判为下载；取消下载并改为页面内打开
@@ -661,6 +701,19 @@ function createWindow() {
     const url = item.getURL() || '';
     let decoded = url;
     try { decoded = decodeURIComponent(url); } catch (_) {}
+    // xlsx 导出：使用绑定主窗口的原生保存对话框，避免 Chromium 默认下载对话框不可控
+    if (/\.xlsx?$/i.test(name) || /\.xlsx?(?:[?#]|$)/i.test(decoded)) {
+      event.preventDefault();
+      dialog.showSaveDialog(mainWindow, {
+        title: '导出角色档案',
+        defaultPath: path.join(app.getPath('downloads'), name),
+        filters: [{ name: 'Excel 工作簿', extensions: ['xlsx'] }],
+      }).then((result) => {
+        if (result.canceled || !result.filePath) { item.cancel(); return; }
+        item.setSavePath(result.filePath);
+      }).catch(() => {});
+      return;
+    }
     if (!/\.html?$/i.test(name) && !/\.html?(?:[?#]|$)/i.test(decoded)) return;
     event.preventDefault();
     const target = webContents && !webContents.isDestroyed() ? webContents : mainWindow.webContents;
@@ -702,6 +755,10 @@ function createWindow() {
   // 非对决页注入 Bug 反馈 + Build 顾问
   mainWindow.webContents.on('did-finish-load', () => {
     const url = mainWindow.webContents.getURL();
+    // 主世界兜底：Electron 下 alert/confirm 不可见，改写为原生对话框 IPC
+    mainWindow.webContents.executeJavaScript(
+      '(function(){try{if(window.electronAPI){window.alert=function(m){window.electronAPI.jsAlert(m);};window.confirm=function(m){return !!window.electronAPI.jsConfirm(m);};}}catch(e){}})();'
+    ).catch(() => {});
     if (url.includes('poker-game')) return;
     injectPageScript(path.join('斯诺德跑团', 'bug-report.js'));
     injectPageScript(path.join('斯诺德跑团', 'advisor-tips.js'));

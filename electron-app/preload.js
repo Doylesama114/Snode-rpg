@@ -35,4 +35,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   advisorConfig: () => ipcRenderer.invoke('advisor-config'),
   advisorCatalog: (payload) => ipcRenderer.invoke('advisor-catalog', payload || {}),
   advisorWizard: (payload) => ipcRenderer.invoke('advisor-wizard', payload || {}),
+  saveExport: (fileName, base64) => ipcRenderer.invoke('save-export', { fileName, base64 }),
+  jsAlert: (message) => ipcRenderer.sendSync('js-alert', String(message == null ? '' : message)),
+  jsConfirm: (message) => ipcRenderer.sendSync('js-confirm', String(message == null ? '' : message)),
 });

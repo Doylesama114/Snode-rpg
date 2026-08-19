@@ -1247,6 +1247,7 @@ body.battle .fab{display:none}
 </div>
 
 <script src="../职业页/数据/items_data.js"></script>
+<script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
 <script src="panel_engine.js"></script>
 <script src="bug-report.js"></script>
@@ -1756,13 +1757,14 @@ function removeItem(slot, idx) {
   var arr = EQUIP[slot];
   var it = arr && arr[idx];
   if (!it) return;
-  if (!confirm('确定移除「' + it.item + '」？')) return;
-  arr[idx] = null;
-  closeOverlay('itemOverlay');
-  renderEquip();
-  SB_syncEquipToState();
-  state._dirty = true;
-  toast('已移除 ' + it.item);
+  SD_confirm('确定移除「' + it.item + '」？', function() {
+    arr[idx] = null;
+    closeOverlay('itemOverlay');
+    renderEquip();
+    SB_syncEquipToState();
+    state._dirty = true;
+    toast('已移除 ' + it.item);
+  });
 }
 var EQUIP_PICKER_SLOT = null;
 var EQUIP_PICKER_Q = '';
@@ -2109,11 +2111,12 @@ function deleteCustomItem(idx) {
   var arr = state.custom_items || [];
   var it = arr[idx];
   if (!it) return;
-  if (!confirm('确定删除自定义物品「' + it.name + '」？（删除不返还任何金币）')) return;
-  arr.splice(idx, 1);
-  state._dirty = true;
-  renderCustomList();
-  toast('已删除「' + it.name + '」');
+  SD_confirm('确定删除自定义物品「' + it.name + '」？（删除不返还任何金币）', function() {
+    arr.splice(idx, 1);
+    state._dirty = true;
+    renderCustomList();
+    toast('已删除「' + it.name + '」');
+  });
 }
 var STORE_CAT = '杂物';
 var STORE_Q = '';

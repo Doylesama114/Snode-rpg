@@ -184,14 +184,14 @@ function getCharSummary(charName) {
 }
 
 function deleteChar(charName) {
-  if (!confirm("确定要删除「" + charName + "」的所有存档吗？此操作不可恢复。")) return;
-  var deleted = 0;
-  for (var si = 1; si <= 3; si++) {
-    var key = "char_" + charName + "_slot" + si;
-    if (localStorage.getItem(key)) { localStorage.removeItem(key); deleted++; }
-  }
-  alert("已删除「" + charName + "」的 " + deleted + " 个存档");
-  location.reload();
+  SD_confirm("确定要删除「" + charName + "」的所有存档吗？此操作不可恢复。", function() {
+    var deleted = 0;
+    for (var si = 1; si <= 3; si++) {
+      var key = "char_" + charName + "_slot" + si;
+      if (localStorage.getItem(key)) { localStorage.removeItem(key); deleted++; }
+    }
+    SD_alert("已删除「" + charName + "」的 " + deleted + " 个存档", function() { location.reload(); });
+  });
 }
 
 function renderCharList() {
@@ -228,8 +228,9 @@ function renderCharList() {
 }
 
 renderCharList();
-function clearAllChars(){if(confirm("确定要删除所有角色存档吗？此操作不可恢复。")){var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf("char_")===0)keys.push(k);}for(var i=0;i<keys.length;i++)localStorage.removeItem(keys[i]);alert("已清空 "+keys.length+" 个角色存档");location.reload();}}
+function clearAllChars(){SD_confirm("确定要删除所有角色存档吗？此操作不可恢复。", function(){var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf("char_")===0)keys.push(k);}for(var i=0;i<keys.length;i++)localStorage.removeItem(keys[i]);SD_alert("已清空 "+keys.length+" 个角色存档", function(){location.reload();});});}
 </script>
+<script src="ui_dialog.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
 </body>

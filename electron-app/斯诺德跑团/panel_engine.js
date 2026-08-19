@@ -2,6 +2,7 @@ var ATTR_NAMES=["力量","敏捷","体质","智力","感知","魅力","意志","
 /** alert 替代：Electron（contextIsolation）下 alert 不可见；优先 toast，无 toast 环境回退 alert（v1.0.7235） */
 function SB_toast(msg, cls) {
   if (typeof window !== 'undefined' && window.toast) { window.toast(msg, cls || 'warn'); return; }
+  if (typeof window !== 'undefined' && window.SD_alert) { window.SD_alert(msg); return; }
   if (typeof window !== 'undefined' && window.alert) { window.alert(msg); }
 }
 
@@ -430,20 +431,19 @@ window.addEventListener("beforeunload", function(e) {
 
 // Custom back navigation
 function goBackToSlots() {
+  var target = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
   if (state._dirty) {
-    if (confirm("当前角色有未保存的更改，是否保存？")) {
+    SD_confirm("当前角色有未保存的更改，是否保存？", function() {
       showSaveDialog(function(slotIndex) {
-        if (saveState(slotIndex)) {
-          window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
-        }
+        if (saveState(slotIndex)) window.location.href = target;
       });
-      return;
-    }
-    // 不保存 → 直接返回
-    window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
+    }, function() {
+      // 不保存 → 直接返回
+      window.location.href = target;
+    });
     return;
   }
-  window.location.href = "角色存档页.html?char=" + (CURRENT_CHAR || state.name);
+  window.location.href = target;
 }
 
 var RECREATE_HANDOFF_KEY = "snowd_recreate_handoff";
@@ -488,11 +488,6 @@ function startRecreateFromPanel() {
     SB_toast(getRecreateUnavailableReason(state));
     return;
   }
-  if (hasProgressBeyondCreation(state)) {
-    if (!confirm("重新车卡将基于创建时的选项另存为新的 1 级角色，不会保留当前等级与已学技能；该操作无法撤回。原角色存档不受影响。是否继续？")) {
-      return;
-    }
-  }
   function proceed() {
     try {
       sessionStorage.setItem(RECREATE_HANDOFF_KEY, JSON.stringify({
@@ -505,17 +500,23 @@ function startRecreateFromPanel() {
     }
     window.location.href = "角色创建页.html?recreate=1";
   }
-  if (state._dirty) {
-    if (confirm("当前角色有未保存的更改，是否先保存？\n\n确定 = 保存后继续\n取消 = 不保存直接继续")) {
-      showSaveDialog(function (slotIndex) {
-        if (saveState(slotIndex)) proceed();
-      });
+  function saveThenProceed() {
+    if (state._dirty) {
+      SD_confirm("当前角色有未保存的更改，是否先保存？\n\n确定 = 保存后继续\n取消 = 不保存直接继续", function() {
+        showSaveDialog(function (slotIndex) {
+          if (saveState(slotIndex)) proceed();
+        });
+      }, proceed);
       return;
     }
+    proceed();
   }
-  proceed();
+  if (hasProgressBeyondCreation(state)) {
+    SD_confirm("重新车卡将基于创建时的选项另存为新的 1 级角色，不会保留当前等级与已学技能；该操作无法撤回。原角色存档不受影响。是否继续？", saveThenProceed);
+    return;
+  }
+  saveThenProceed();
 }
-
 function calcMod(s){return Math.floor((s-10)/2)}function mStr(v){return v>=0?'+'+v:v}
 
 
@@ -2657,34 +2658,35 @@ function gd_contextmenu(e) {
       var total = 0;
       for (var si = 0; si < arr.length; si++) { if (arr[si] === item) total++; }
       if (total < 2) return;
-      var amt = parseInt(prompt("拆分 " + item + " (当前堆叠: " + total + ")\n请输入要移动的数量 (1-" + (total-1) + "):", "1"));
-      if (!amt || amt < 1 || amt >= total) return;
-      var moved = 0;
-      for (var si = arr.length - 1; si >= 0 && moved < amt; si--) {
-        if (arr[si] === item) { arr.splice(si, 1); moved++; }
-      }
-      // Choose insertion position farthest from remaining items of same type
-      var firstPos = -1, lastPos = -1;
-      for (var si = 0; si < arr.length; si++) {
-        if (arr[si] === item) {
-          if (firstPos === -1) firstPos = si;
-          lastPos = si;
+      showSplitDialog(item, total, function(amt) {
+        if (!amt || amt < 1 || amt >= total) return;
+        var moved = 0;
+        for (var si = arr.length - 1; si >= 0 && moved < amt; si--) {
+          if (arr[si] === item) { arr.splice(si, 1); moved++; }
         }
-      }
-      var insertPos;
-      if (firstPos === -1) {
-        insertPos = arr.length;
-      } else {
-        var distToStart = firstPos;
-        var distToEnd = arr.length - 1 - lastPos;
-        if (distToStart >= distToEnd) {
-          insertPos = 0;
-        } else {
+        // Choose insertion position farthest from remaining items of same type
+        var firstPos = -1, lastPos = -1;
+        for (var si = 0; si < arr.length; si++) {
+          if (arr[si] === item) {
+            if (firstPos === -1) firstPos = si;
+            lastPos = si;
+          }
+        }
+        var insertPos;
+        if (firstPos === -1) {
           insertPos = arr.length;
+        } else {
+          var distToStart = firstPos;
+          var distToEnd = arr.length - 1 - lastPos;
+          if (distToStart >= distToEnd) {
+            insertPos = 0;
+          } else {
+            insertPos = arr.length;
+          }
         }
-      }
-      for (var mi = 0; mi < moved; mi++) { arr.splice(insertPos + mi, 0, item); }
-      render();
+        for (var mi = 0; mi < moved; mi++) { arr.splice(insertPos + mi, 0, item); }
+        render();
+      });
     } else if (act === "detail") {
       showEquipMessage("\u67e5\u770b\u8be6\u60c5 - \u5f85\u5b9e\u73b0");
     }
@@ -3374,19 +3376,20 @@ function pickExtraSlotOpt(opt) {
 }
 
 function removeSpecialFeat(name) {
-  if(!confirm("确定移除特殊专长「"+name+"」吗？")) return;
-  var arr = state.special_feats;
-  for(var i=0;i<arr.length;i++){
-    var n=typeof arr[i]==="string"?arr[i]:arr[i].name;
-    if(n===name){
-      // Undo effects before removing
-      applyFeatEffects(name, arr[i], false);
-      arr.splice(i,1);
-      break;
+  SD_confirm("确定移除特殊专长「"+name+"」吗？", function() {
+    var arr = state.special_feats;
+    for(var i=0;i<arr.length;i++){
+      var n=typeof arr[i]==="string"?arr[i]:arr[i].name;
+      if(n===name){
+        // Undo effects before removing
+        applyFeatEffects(name, arr[i], false);
+        arr.splice(i,1);
+        break;
+      }
     }
-  }
-  state.special_feats = arr;
-  render();
+    state.special_feats = arr;
+    render();
+  });
 }
 
 function showSpecialFeatSelector() {
@@ -4188,10 +4191,11 @@ function addSpecialFeat(name, choices) {
       }
       case "professional": {
         // 独具匠心: ask for custom prof name
-        var profName = prompt("请输入自定义专业熟练项名称：");
-        if (profName && profName.trim()) {
-          addSpecialFeat(name, {profName: profName.trim()});
-        }
+        SD_prompt({ title: "自定义专业熟练项", message: "请输入自定义专业熟练项名称：", placeholder: "例如：易容、陆运载具" }, function(profName) {
+          if (profName && profName.trim()) {
+            addSpecialFeat(name, {profName: profName.trim()});
+          }
+        });
         return;
       }
       case "professional_sp":
@@ -5680,31 +5684,39 @@ function renderBlueprints(){
 }
 
 function addBlueprintManual() {
-  var name = prompt("输入图纸名称（建议以（图纸）结尾）");
-  if (!name) return;
-  name = String(name).trim();
-  if (!name) return;
-  if (!isBlueprintName(name)) name = name + "（图纸）";
-  var res = addBlueprintEntry({ id: "", n: name, src: "手动", tier: "", note: "" });
-  if (!res.ok) { SB_toast(res.reason || "添加失败"); return; }
-  render();
+  SD_prompt({ title: "添加图纸", message: "输入图纸名称（建议以（图纸）结尾）" }, function(val) {
+    if (!val) return;
+    var name = String(val).trim();
+    if (!name) return;
+    if (!isBlueprintName(name)) name = name + "（图纸）";
+    var res = addBlueprintEntry({ id: "", n: name, src: "手动", tier: "", note: "" });
+    if (!res.ok) { SB_toast(res.reason || "添加失败"); return; }
+    render();
+  });
 }
 
 function removeBlueprintSlot(idx) {
-  if (!confirm("移除该图纸？")) return;
-  removeBlueprintAt(idx);
-  render();
+  SD_confirm("移除该图纸？", function() {
+    removeBlueprintAt(idx);
+    render();
+  });
 }
 
 function editBlueprintBonusSlots() {
   ensureBlueprintState();
   var cur = state.blueprint_bonus_slots || 0;
-  var v = prompt("手动专业槽位加成（如万用模组等，不含独具匠心）", String(cur));
-  if (v === null) return;
-  var n = parseInt(v, 10);
-  if (isNaN(n)) { SB_toast("请输入数字"); return; }
-  state.blueprint_bonus_slots = n;
-  render();
+  SD_prompt({
+    title: "编辑专业槽位加成",
+    message: "手动专业槽位加成（如万用模组等，不含独具匠心）",
+    defaultValue: String(cur),
+    type: "number",
+    validate: function(v) { if (v === "" || isNaN(parseInt(v, 10))) return "请输入数字"; return null; }
+  }, function(val) {
+    var n = parseInt(val, 10);
+    if (isNaN(n)) return;
+    state.blueprint_bonus_slots = n;
+    render();
+  });
 }
 
 function cheatAdd(){
@@ -5928,7 +5940,7 @@ function renderLearnPanel() {
     resetBtn.textContent = "\u91cd\u7f6e\u975e\u9501\u5b9a\u6280\u80fd";
 
 
-    resetBtn.onclick = function() { if(confirm("\u786e\u5b9a\u8981\u91cd\u7f6e\u6240\u6709\u975e\u9501\u5b9a\u6280\u80fd\u5417\uff1f")) batchResetSkills(); };
+    resetBtn.onclick = function() { SD_confirm("确定要重置所有非锁定技能吗？", function() { batchResetSkills(); }); };
 
 
     resetBtn.style.cssText = "padding:5px 10px;font-size:12px;background:#8a3a2a;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer";
@@ -6672,13 +6684,14 @@ function unlockTier(tierName) {
   var maxLv = getMaxLevel();
   if (maxLv < minLevel) { SB_toast("当前最高职业等级为" + maxLv + "级，需要主职业达到" + minLevel + "级才能解锁" + tierName + "天赋树"); return; }
   if (cost > state.xp) { SB_toast("经验值不足，需要" + cost + "点经验值（当前拥有" + state.xp + "点）"); return; }
-  if (!confirm("确定要花费" + cost + "点经验值解锁" + tierName + "天赋树吗？当前经验值：" + state.xp + "点")) return;
+  SD_confirm("确定要花费" + cost + "点经验值解锁" + tierName + "天赋树吗？当前经验值：" + state.xp + "点", function() {
   state.xp -= cost;
   if (!state.unlocked_tiers) state.unlocked_tiers = ["一阶","二阶"];
   if (state.unlocked_tiers.indexOf(tierName) < 0) state.unlocked_tiers.push(tierName);
   renderLearnPanel();
   render();
   SB_toast("解锁成功！已解锁" + tierName + "天赋树");
+});
 }
 function confirmUnlearn(clsName, skillName, clsIdx) {
 
@@ -7810,9 +7823,36 @@ window.selectSubclass=function(cn){
 }
 })();
 
+function _xlsxU8ToBase64(u8) {
+  return new Promise(function(resolve, reject) {
+    try {
+      var blob = new Blob([u8], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      var fr = new FileReader();
+      fr.onload = function() {
+        var result = String(fr.result || "");
+        var comma = result.indexOf(",");
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      fr.onerror = function() { reject(new Error("Base64 转换失败")); };
+      fr.readAsDataURL(blob);
+    } catch (e) { reject(e); }
+  });
+}
+
 function exportCurrentXlsx(){
  if(!state){SB_toast("请先导入或创建角色");return;}
- exportXlsxFromState(state).catch(function(e){
+ var btn = null;
+ try {
+   var buttons = document.querySelectorAll("button");
+   for (var bi = 0; bi < buttons.length; bi++) {
+     if (buttons[bi].textContent.indexOf("导出档案") >= 0) { btn = buttons[bi]; break; }
+   }
+ } catch (e) {}
+ var oldText = btn ? btn.textContent : "";
+ if (btn) { btn.disabled = true; btn.textContent = "⏳ 导出中..."; }
+ function restoreBtn() { if (btn) { btn.disabled = false; btn.textContent = oldText; } }
+ exportXlsxFromState(state).then(restoreBtn, function(e){
+   restoreBtn();
    console.error("Export error:",e);
    var msg=(e&&e.message)?e.message:"未知错误";
    SB_toast("导出失败：" + msg);
@@ -8495,16 +8535,37 @@ async function exportXlsxFromState(state) {
 
   var zipBytes = _xlsxBuildZip(zipEntries);
   var fileName = buildExportFileName(state);
-  if (window.mobileBridge && typeof window.mobileBridge.saveFile === "function") {
-    var u8 = zipBytes instanceof Uint8Array ? zipBytes : new Uint8Array(zipBytes);
-    var b64 = "";
-    var chunk = 0x8000;
-    for (var i = 0; i < u8.length; i += chunk) {
-      b64 += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+  var u8 = zipBytes instanceof Uint8Array ? zipBytes : new Uint8Array(zipBytes);
+
+  // Electron：走主进程受控保存对话框（避免 Chromium 默认下载对话框不可点击/阻塞）
+  if (window.electronAPI && typeof window.electronAPI.saveExport === "function") {
+    try {
+      var eb64 = await _xlsxU8ToBase64(u8);
+      var er = await window.electronAPI.saveExport(fileName, eb64);
+      if (er && er.ok) { SB_toast("档案已导出"); }
+      else if (!er || !er.canceled) { SB_toast("导出失败" + (er && er.error ? "：" + er.error : "")); }
+    } catch (e) {
+      SB_toast("导出失败：" + ((e && e.message) || "未知错误"));
     }
-    window.mobileBridge.saveFile(btoa(b64), fileName);
     return;
   }
+
+  // Android APK：异步转 base64，避免大文件同步循环阻塞 WebView 主线程
+  if (window.mobileBridge && typeof window.mobileBridge.saveFile === "function") {
+    try {
+      var mb64 = await _xlsxU8ToBase64(u8);
+      var mr = window.mobileBridge.saveFile(mb64, fileName);
+      if (typeof mr === "string" && mr.indexOf("error:") === 0) {
+        SB_toast("导出失败：" + mr.slice(6));
+      } else {
+        SB_toast("档案已保存到下载目录");
+      }
+    } catch (e) {
+      SB_toast("导出失败：" + ((e && e.message) || "未知错误"));
+    }
+    return;
+  }
+
   var blob = new Blob([zipBytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
@@ -8548,10 +8609,11 @@ function importSaves(){
         }
         var confirmMsg="将导入 "+keys.length+" 个存档";
         if(overwrites.length>0)confirmMsg+="\n\n以下存档将被覆盖：\n"+overwrites.join("\n");
-        if(!confirm(confirmMsg+"\n\n确认导入？"))return;
+        SD_confirm(confirmMsg+"\n\n确认导入？", function() {
         for(var i=0;i<keys.length;i++)localStorage.setItem(keys[i],data.saves[keys[i]]);
         SB_toast("已导入 "+keys.length+" 个存档\n\n请刷新页面查看");
         location.reload();
+      });
       }catch(ex){SB_toast("文件解析失败："+ex.message);}
     };
     reader.readAsText(file);
@@ -8575,8 +8637,9 @@ function importSaves(){
     e.preventDefault();
     var changed=hasUnsavedChanges();
     if(changed){
-      var r=confirm('当前角色有未保存的更改，是否保存后返回？\n\n"确定" = 保存并返回\n"取消" = 不保存直接返回');
-      if(r){saveCurrentSlot();}
+      SD_confirm('当前角色有未保存的更改，是否保存后返回？\n\n"确定" = 保存并返回\n"取消" = 不保存直接返回', function() {
+        saveCurrentSlot();
+      });
     }
     // Always navigate regardless of save choice
     setTimeout(function(){ location.href='角色选择页.html'; }, 100);

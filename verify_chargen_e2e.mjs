@@ -161,6 +161,7 @@ const browser = await chromium.launch({ headless: true });
     CHAR.raceIdx = 0; CHAR.raceName = RACES[0].name; CHAR.raceData = RACES[0];
     CHAR.bgIdx = 0; CHAR.bgName = BACKGROUNDS[0].name; CHAR.bgData = BACKGROUNDS[0];
     CHAR.charName = 'E2E建卡侠' + Date.now();
+    CHAR.selectedSkills = ['体操', '专注', '耐力', '洞悉'];
     CHAR.aspiration = { text: '期望走武器大师路线', picks: ['武器大师', '斗士'] };
     updateOverview();
     const ovText = document.getElementById('ovContent').textContent;
@@ -298,6 +299,109 @@ const browser = await chromium.launch({ headless: true });
     return { clear, detail, toggleTop: Math.round(toggle.top), navBottom: navs.length ? Math.round(navs[navs.length - 1].getBoundingClientRect().bottom) : -1 };
   });
   ok('概览按钮不遮挡底部导航按钮', noCover.clear, JSON.stringify(noCover));
+
+  // ====== 熟练项步骤：选满 / 换职业重置 / 同类子项替换 / 猎人选项按 docx ======
+  await page.evaluate(() => { goToStep(4); });
+  await page.waitForTimeout(120);
+  const skillInit = await page.evaluate(() => ({
+    nextDisabled: document.getElementById('nextBtn').disabled,
+    selected: CHAR.selectedSkills.slice(),
+    chips: Array.from(document.querySelectorAll('#skillGrid .skill-chip')).map(c => c.textContent.trim())
+  }));
+  ok('熟练项步骤初始 0/4 且下一步禁用', skillInit.nextDisabled && skillInit.selected.length === 0 && skillInit.chips.length > 0, JSON.stringify(skillInit));
+
+  const pickPlainSkill = async (label) => {
+    await page.evaluate((label) => {
+      const chips = document.querySelectorAll('#skillGrid .skill-chip');
+      for (const c of chips) { if (c.textContent.trim() === label) { c.click(); break; } }
+    }, label);
+    await page.waitForTimeout(60);
+  };
+  for (const name of ['专注', '调查', '逻辑', '洞悉']) await pickPlainSkill(name);
+  const skillFilled = await page.evaluate(() => ({
+    selected: CHAR.selectedSkills.slice(),
+    nextDisabled: document.getElementById('nextBtn').disabled,
+    selectedChips: Array.from(document.querySelectorAll('#skillGrid .skill-chip.selected')).map(c => c.textContent.trim())
+  }));
+  ok('移动端选满 4 项后下一步解锁', skillFilled.selected.length === 4 && !skillFilled.nextDisabled && skillFilled.selectedChips.length === 4, JSON.stringify(skillFilled));
+
+  // 换职业必须清空旧职业熟练项
+  await page.evaluate(() => { goToStep(0); });
+  await page.evaluate(() => {
+    const cards = document.querySelectorAll('#classGrid .card');
+    for (const c of cards) { if (c.querySelector('.card-name').textContent.trim() === '蛮斗士') { c.click(); break; } }
+  });
+  const afterClassSwitch = await page.evaluate(() => ({ cls: CHAR.className, selected: CHAR.selectedSkills.slice() }));
+  ok('更换职业后旧熟练项被清空', afterClassSwitch.cls === '蛮斗士' && afterClassSwitch.selected.length === 0, JSON.stringify(afterClassSwitch));
+  await page.evaluate(() => { goToStep(4); });
+  await page.waitForTimeout(120);
+  const barbSkillStep = await page.evaluate(() => ({
+    nextDisabled: document.getElementById('nextBtn').disabled,
+    selectedChips: document.querySelectorAll('#skillGrid .skill-chip.selected').length,
+    overviewHasOld: document.getElementById('ovContent').textContent.indexOf('专注') >= 0
+  }));
+  ok('换职业后熟练项步骤回到未完成状态', barbSkillStep.nextDisabled && barbSkillStep.selectedChips === 0 && !barbSkillStep.overviewHasOld, JSON.stringify(barbSkillStep));
+
+  // 猎人按 docx：8 项，不再出现「求生」
+  await page.evaluate(() => { goToStep(0); });
+  await page.evaluate(() => {
+    const cards = document.querySelectorAll('#classGrid .card');
+    for (const c of cards) { if (c.querySelector('.card-name').textContent.trim() === '猎人') { c.click(); break; } }
+  });
+  await page.evaluate(() => { goToStep(4); });
+  await page.waitForTimeout(120);
+  const hunterSkills = await page.evaluate(() => Array.from(document.querySelectorAll('#skillGrid .skill-chip')).map(c => c.textContent.trim()));
+  ok('猎人熟练项与 docx 一致（8 项且无求生）', hunterSkills.length === 8 && !hunterSkills.some(t => t.indexOf('求生') >= 0), JSON.stringify(hunterSkills));
+
+  // 旧草稿若残留「求生」，进入熟练项步骤会被静默清理
+  const hunterPrune = await page.evaluate(() => {
+    CHAR.selectedSkills = ['求生', '运动-跳跃', '体操', '隐匿'];
+    renderSkillStep(document.getElementById('stepContent'));
+    return { selected: CHAR.selectedSkills.slice(), nextDisabled: document.getElementById('nextBtn').disabled };
+  });
+  ok('猎人旧草稿残留「求生」会被清理', hunterPrune.selected.indexOf('求生') < 0 && hunterPrune.selected.length === 3 && hunterPrune.nextDisabled, JSON.stringify(hunterPrune));
+
+  // 满 4 项后同大类子项可直接替换
+  await page.evaluate(() => { goToStep(0); });
+  await page.evaluate(() => {
+    const cards = document.querySelectorAll('#classGrid .card');
+    for (const c of cards) { if (c.querySelector('.card-name').textContent.trim() === '吟游诗人') { c.click(); break; } }
+  });
+  await page.evaluate(() => { goToStep(4); });
+  await page.waitForTimeout(120);
+  const pickSubSkill = async (catLabel, subLabel) => {
+    await page.evaluate((catLabel) => {
+      const chips = document.querySelectorAll('#skillGrid .skill-chip');
+      for (const c of chips) { if (c.textContent.indexOf(catLabel) >= 0) { c.click(); break; } }
+    }, catLabel);
+    await page.waitForTimeout(80);
+    await page.evaluate((subLabel) => {
+      const chips = document.querySelectorAll('#subSkillPopup .skill-chip');
+      for (const c of chips) { if (c.textContent.trim() === subLabel) { c.click(); break; } }
+    }, subLabel);
+    await page.waitForTimeout(80);
+  };
+  await pickSubSkill('巧手', '巧手-偷窃');
+  await pickSubSkill('知识', '知识-历史');
+  await pickSubSkill('表演', '表演-歌唱');
+  await pickPlainSkill('洞悉');
+  const beforeSwap = await page.evaluate(() => CHAR.selectedSkills.slice());
+  await page.evaluate(() => {
+    const chips = document.querySelectorAll('#skillGrid .skill-chip');
+    for (const c of chips) { if (c.textContent.indexOf('巧手') >= 0) { c.click(); break; } }
+  });
+  await page.waitForTimeout(80);
+  await page.evaluate(() => {
+    const chips = document.querySelectorAll('#subSkillPopup .skill-chip');
+    for (const c of chips) { if (c.textContent.trim() === '巧手-开锁') { c.click(); break; } }
+  });
+  await page.waitForTimeout(120);
+  const afterSwap = await page.evaluate(() => ({
+    selected: CHAR.selectedSkills.slice(),
+    nextDisabled: document.getElementById('nextBtn').disabled,
+    qiaoShouSelected: Array.from(document.querySelectorAll('#skillGrid .skill-chip')).some(c => c.textContent.indexOf('巧手') >= 0 && c.classList.contains('selected'))
+  }));
+  ok('满 4 项后同大类子项可替换', beforeSwap.indexOf('巧手-偷窃') >= 0 && afterSwap.selected.indexOf('巧手-开锁') >= 0 && afterSwap.selected.indexOf('巧手-偷窃') < 0 && afterSwap.selected.length === 4 && !afterSwap.nextDisabled && afterSwap.qiaoShouSelected, JSON.stringify({ beforeSwap, afterSwap }));
 
   // 预览浮层在移动端也可用
   await page.evaluate(() => {

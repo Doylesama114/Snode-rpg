@@ -106,6 +106,12 @@ def patch_page(path, prefix, data, apply):
     content_pos = nav_end + m.start()
     text = text[:content_pos] + panel + text[content_pos:]
 
+    # idempotent: remove any previously inserted class-features nav links first
+    text = re.sub(
+        r'\s*<a class="style-link" href="#[^"]*class-features">职业专长</a>',
+        "",
+        text,
+    )
     # nav link before starting-features link
     mnav = re.search(
         r'<a class="style-link" href="#[^"]*starting[^"]*"',

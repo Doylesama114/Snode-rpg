@@ -189,22 +189,23 @@ function renderSlots() {
 
 function deleteSlot(slotIndex) {
   var charName = getCharName();
-  if (!confirm("确定要删除「" + charName + "」存档位 " + slotIndex + " 吗？此操作不可恢复。")) return;
-  localStorage.removeItem("char_" + charName + "_slot" + slotIndex);
-  renderSlots();
+  SD_confirm("确定要删除「" + charName + "」存档位 " + slotIndex + " 吗？此操作不可恢复。", function() {
+    localStorage.removeItem("char_" + charName + "_slot" + slotIndex);
+    renderSlots();
+  });
 }
 
 function openSlot(slotIndex) {
   var charName = getCharName();
   if (!charName) {
-    alert("未指定角色");
+    SD_alert("未指定角色");
     return;
   }
   // Check if slot has data
   var key = "char_" + charName + "_slot" + slotIndex;
   var raw = localStorage.getItem(key);
   if (!raw) {
-    alert("该存档位为空，请先在角色面板中保存角色到此位置");
+    SD_alert("该存档位为空，请先在角色面板中保存角色到此位置");
     return;
   }
   // Navigate to character panel with char and slot params
@@ -213,6 +214,7 @@ function openSlot(slotIndex) {
 
 renderSlots();
 </script>
+<script src="ui_dialog.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
 </body>

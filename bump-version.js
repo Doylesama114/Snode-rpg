@@ -24,6 +24,12 @@ const files = [
       [/"version"\s*:\s*"[\d.]+"/, '"version": "' + newVersion + '"'],
     ]
   },
+  {
+    path: path.join(ROOT, 'mobile', 'app', 'build.gradle.kts'),
+    rules: [
+      [/: \"[\d.]+\"/, ': "' + newVersion + '"'],
+    ]
+  },
 ];
 
 for (let f of files) {
@@ -34,6 +40,20 @@ for (let f of files) {
   }
   fs.writeFileSync(f.path, content, 'utf8');
   console.log('OK: ' + path.relative(ROOT, f.path));
+}
+
+// 同步职业页 CSS 缓存版本号（common.css 每次修改后必须让客户端重新拉取）
+const cssDirs = [path.join(ROOT, '职业页'), path.join(ROOT, 'electron-app', '职业页')];
+for (const cssDir of cssDirs) {
+  if (!fs.existsSync(cssDir)) continue;
+  for (const name of fs.readdirSync(cssDir)) {
+    if (!name.endsWith('.html')) continue;
+    const fp = path.join(cssDir, name);
+    let html = fs.readFileSync(fp, 'utf8');
+    html = html.replace(/common\.css\?v=[\d.]+/g, 'common.css?v=' + newVersion);
+    fs.writeFileSync(fp, html, 'utf8');
+  }
+  console.log('CSS-VERSION: ' + path.relative(ROOT, cssDir) + ' → v' + newVersion);
 }
 
 // 同步到 electron-app

@@ -347,6 +347,7 @@ body.ov-viewer-open { overflow: hidden; }
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
+<script src="ui_dialog.js"></script>
 <script src="chargen_prof.js"></script>
 </head>
 <body>
@@ -1006,9 +1007,10 @@ function renderOvJump() {
   el.innerHTML = h;
 }
 function clearChargenDraft() {
-  if (!confirm('确定清空草稿并重新开始？')) return;
-  try { localStorage.removeItem(CHARGEN_DRAFT_KEY); } catch(e){}
-  location.reload();
+  SD_confirm('确定清空草稿并重新开始？', function() {
+    try { localStorage.removeItem(CHARGEN_DRAFT_KEY); } catch(e){}
+    location.reload();
+  });
 }
 function autosaveChargenDraft() {
   try {
@@ -1636,9 +1638,12 @@ function checkSpecDone(){
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
   notifyChargenChange();
 }
-function selectClass(idx){CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
+function selectClass(idx){
+  var newClassName=CLASSES[idx].name;
+  if(CHAR.className&&CHAR.className!==newClassName){CHAR.selectedSkills=[];}
+  CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
   CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
-  CHAR.classIdx=idx; CHAR.className=CLASSES[idx].name; CHAR.classData=CLASSES[idx];
+  CHAR.classIdx=idx; CHAR.className=newClassName; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
   if(cards[idx]){cards[idx].classList.add("selected");cards[idx].querySelector(".card-desc").style.display="block";}
@@ -1833,8 +1838,8 @@ function confirmRaceProf(){
   var box=document.getElementById("raceProfInputBox");
   if(!box)return;
   var v=(box.value||"").trim();
-  if(!v){alert("请输入专业名");return;}
-  if(v.length>4){alert("专业名不超过 4 个字符");return;}
+  if(!v){SD_alert("请输入专业名");return;}
+  if(v.length>4){SD_alert("专业名不超过 4 个字符");return;}
   CHAR.raceProfInput=v;
   updateOverview();
 }
@@ -2071,16 +2076,33 @@ function showSubSkillChoice(cat,el){
   popup.onclick=function(e){if(e.target===popup)closeSubPopup();};
   document.body.appendChild(popup);
 }
+function showChargenToast(msg){
+  var old=document.getElementById("chargenToast");if(old)old.remove();
+  var t=document.createElement("div");t.id="chargenToast";
+  t.style.cssText="position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:rgba(31,37,34,0.92);color:#fff;padding:10px 16px;border-radius:20px;z-index:1500;font-size:13px;line-height:1.5;max-width:86vw;text-align:center;pointer-events:none;transition:opacity 0.3s";
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity="0";setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},350);},1800);
+}
 function pickSubSkill(el){var name=el.getAttribute("data-skill");var cat=el.getAttribute("data-cat");
   var idx=CHAR.selectedSkills.indexOf(name);
   if(idx>=0){CHAR.selectedSkills.splice(idx,1);}
-  else if(CHAR.selectedSkills.length<4){
-    // Remove any other sub-skill from same category
+  else{
     var catSubs=SKILL_CATS[cat]||[];
+    var sameIdx=-1;
     for(var i=CHAR.selectedSkills.length-1;i>=0;i--){
-      if(catSubs.indexOf(CHAR.selectedSkills[i])>=0)CHAR.selectedSkills.splice(i,1);
+      if(catSubs.indexOf(CHAR.selectedSkills[i])>=0){sameIdx=i;break;}
     }
-    CHAR.selectedSkills.push(name);
+    if(CHAR.selectedSkills.length<4){
+      if(sameIdx>=0)CHAR.selectedSkills.splice(sameIdx,1);
+      CHAR.selectedSkills.push(name);
+    }else if(sameIdx>=0){
+      // 已满 4 项时，同大类内允许直接替换旧子项
+      CHAR.selectedSkills[sameIdx]=name;
+    }else{
+      showChargenToast("已选满 4 项熟练项，请先取消一项再更换");
+      return;
+    }
   }
   var popup=document.getElementById("subSkillPopup");if(popup)closeSubPopup();
   renderSkillStep(document.getElementById("stepContent"));
@@ -2091,10 +2113,16 @@ function closeSubPopup(){
 }
 function renderSkillStep(c) {
   var cl=CHAR.classData; var txt=cl?(cl["技巧"]||""):"";
+  var skillInfo=typeof getClassSkillOptionInfo==="function"?getClassSkillOptionInfo(cl):null;
+  var skills=skillInfo?skillInfo.options:parseSkills(txt);
+  // 清理换职业残留/草稿中不属于当前职业的熟练项
+  if(typeof filterValidClassSkillPicks==="function"){
+    var validPicks=filterValidClassSkillPicks(CHAR.selectedSkills,cl);
+    if(validPicks.length!==CHAR.selectedSkills.length)CHAR.selectedSkills=validPicks;
+  }
   var h="<div class='step-title'>"+STEP_LABELS[4]+"</div>";
   h+="<div class='step-desc'>从职业可选熟练项中选择 4 项。</div>";
   h+="<div class='dark-bg dark-label' style='background:#f6f4ef;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;color:#1f2522'><strong>可选熟练项：</strong>"+esc(txt)+"</div>";
-  var skills=parseSkills(txt);
   h+="<div style='margin-bottom:8px;font-size:14px;color:#69706b'>已选 <strong>"+CHAR.selectedSkills.length+"</strong> / 4 项</div>";
   h+="<div class='skill-select' id='skillGrid'>";
   for(var i=0;i<skills.length;i++){
@@ -2104,7 +2132,8 @@ function renderSkillStep(c) {
   }
   h+="</div>";
   if(!skills.length) h+="<div class='empty-msg'>该职业没有可选熟练项</div>";
-  h+=navBtns(true,CHAR.selectedSkills.length===4||skills.length===0);
+  var done=typeof classSkillPicksComplete==="function"?classSkillPicksComplete(CHAR.selectedSkills,cl):(CHAR.selectedSkills.length===4||skills.length===0);
+  h+=navBtns(true,done);
   c.innerHTML=h;
 }
 
@@ -2124,6 +2153,7 @@ function toggleSkill(name,el){
   if(idx<0&&name!==storeName) idx=CHAR.selectedSkills.indexOf(name);
   if(idx>=0) CHAR.selectedSkills.splice(idx,1);
   else if(CHAR.selectedSkills.length<4) CHAR.selectedSkills.push(storeName);
+  else{showChargenToast("已选满 4 项熟练项，请先取消一项再更换");return;}
   renderSkillStep(document.getElementById("stepContent"));
   updateOverview();
 }
@@ -2719,7 +2749,7 @@ function closeQixieBpPicker(confirm){
   var ov=document.getElementById('qixieBpOverlay');
   if(confirm){
     if(!CHAR.bpPicks||CHAR.bpPicks.length<QIXIE_START_BP_PICK){
-      alert('请选择 '+QIXIE_START_BP_PICK+' 张初始图纸（已选 '+(CHAR.bpPicks||[]).length+' 张）');
+      SD_alert('请选择 '+QIXIE_START_BP_PICK+' 张初始图纸（已选 '+(CHAR.bpPicks||[]).length+' 张）');
       return;
     }
   }else{
@@ -3114,15 +3144,23 @@ function saveCharacter(){
     if(CHAR.className==="战士"&&!CHAR.keyAttr)miss="（战士需选择关键属性）";
     else if(CHAR.className==="牧师"&&!CHAR.deity)miss="（牧师需选择信奉神祇）";
     else if(CHAR.className==="魔契师"&&!CHAR.patron)miss="（魔契师需选择契约宗主）";
-    alert("请完成所有步骤"+miss);return;
+    SD_alert("请完成所有步骤"+miss);return;
   }
   var maxFeat=(CHAR.className==="法师"?4:2);
-  if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){alert("请选择起始特性");return;}
+  if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){SD_alert("请选择起始特性");return;}
   if(CHAR.selectedFeatures.indexOf("基础材料学")>=0&&(!CHAR.bpPicks||CHAR.bpPicks.length<QIXIE_START_BP_PICK)){
-    alert("请为「基础材料学」选择 "+QIXIE_START_BP_PICK+" 张初始图纸（破片手雷/万能遥控器/发条老鼠/报警机器人 四选二，当前已选 "+(CHAR.bpPicks||[]).length+" 张）");
+    SD_alert("请为「基础材料学」选择 "+QIXIE_START_BP_PICK+" 张初始图纸（破片手雷/万能遥控器/发条老鼠/报警机器人 四选二，当前已选 "+(CHAR.bpPicks||[]).length+" 张）");
     return;
   }
   var cl=CHAR.classData; var rd=CHAR.raceData; var bd=CHAR.bgData;
+  if(typeof classSkillPicksComplete==="function"){
+    var validSkillPicks=filterValidClassSkillPicks(CHAR.selectedSkills,cl);
+    if(!classSkillPicksComplete(CHAR.selectedSkills,cl)){
+      SD_alert("请完成「选择熟练项」：从当前职业可选熟练项中选择 4 项");
+      return;
+    }
+    if(validSkillPicks.length!==CHAR.selectedSkills.length)CHAR.selectedSkills=validSkillPicks;
+  }
   var con=CHAR.attrs["体质"]+(rd["属性加成"]?rd["属性加成"]["体质"]||0:0);
   var raceHp=rd["生命值加成"]||0;
   if(typeof raceHp==="string"){
@@ -3351,19 +3389,19 @@ function saveCharacter(){
     try{localStorage.removeItem(CHARGEN_DRAFT_KEY);}catch(e){}
     if(_recreateSession){
       if(storageId!==displayName){
-        alert("已另存为新角色「"+storageId+"」（显示名「"+displayName+"」）");
+        SD_alert("已另存为新角色「"+storageId+"」（显示名「"+displayName+"」）");
       }else{
-        alert("已另存为新角色「"+displayName+"」");
+        SD_alert("已另存为新角色「"+displayName+"」");
       }
       window.location.href="角色面板.html?char="+encodeURIComponent(storageId)+"&slot=1";
     }else if(storageId!==displayName){
-      alert("角色名「"+displayName+"」已存为「"+storageId+"」");
+      SD_alert("角色名「"+displayName+"」已存为「"+storageId+"」");
       window.location.href="角色存档页.html?char="+encodeURIComponent(storageId);
     }else{
-      alert("角色「"+displayName+"」创建成功！");
+      SD_alert("角色「"+displayName+"」创建成功！");
       window.location.href="角色存档页.html?char="+encodeURIComponent(storageId);
     }
-  }catch(e){alert("保存失败："+e.message);}
+  }catch(e){SD_alert("保存失败："+e.message);}
 }
 
 function charNameExists(charName){
@@ -3382,7 +3420,7 @@ function allocateUniqueCharId(desired){
 }
 
 function exportCreateXlsx(){
- if(!CHAR||!CHAR.raceName){alert("请先完成角色创建");return;}
+ if(!CHAR||!CHAR.raceName){SD_alert("请先完成角色创建");return;}
  CHAR.name=CHAR.charName;
  if(!CHAR._charName)CHAR._charName=allocateUniqueCharId(CHAR.charName);
  exportXlsxFromState(CHAR).catch(function(e){console.log("Export error:",e);});

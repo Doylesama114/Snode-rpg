@@ -506,12 +506,13 @@
     });
     $('clearBtn').addEventListener('click', function () {
       if (!state.session.messages.length) return;
-      if (!window.confirm('\u786e\u5b9a\u5f00\u59cb\u65b0\u5bf9\u8bdd\uff1f\u5f53\u524d\u804a\u5929\u8bb0\u5f55\u5c06\u6e05\u7a7a\u3002')) return;
-      state.session = { messages: [] };
-      saveSession();
-      restoreSession();
+      SD_confirm('确定开始新对话？当前聊天记录将清空。', function () {
+        state.session = { messages: [] };
+        saveSession();
+        restoreSession();
+      });
     });
-    $('backBtn').addEventListener('click', function () {
+$('backBtn').addEventListener('click', function () {
       if (window.history && window.history.length > 1) window.history.back();
       else location.href = '\u542f\u52a8\u53f0.html';
     });

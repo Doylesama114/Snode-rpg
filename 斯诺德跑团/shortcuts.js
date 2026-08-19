@@ -62,7 +62,7 @@
   function cleanupOverlays(){
     var removed=0;
     // Remove known overlay IDs
-    var ids=['_cheatPanel','_shortcutHelp','_snowd_bug_overlay','subSkillPopup','langGrid','humanSkillArea','raceChoiceArea','keyAttrBox'];
+    var ids=['_cheatPanel','_shortcutHelp','_snowd_bug_overlay','subSkillPopup','langGrid','humanSkillArea','raceChoiceArea','keyAttrBox','snowdUiDialog','qixieBpOverlay'];
     for(var i=0;i<ids.length;i++){
       var el=document.getElementById(ids[i]);
       if(el){el.remove();removed++;}

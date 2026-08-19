@@ -28,6 +28,27 @@ for (let i = 0; i < pages.length; i++) {
   try {
     await page.goto(p.path, { waitUntil: 'domcontentloaded', timeout: 10000 });
     await page.waitForTimeout(300);
+    try {
+      const struct = await page.evaluate(() => {
+        const features = document.querySelector('.class-features');
+        const content = document.querySelector('main .content');
+        if (!features || !content) return null;
+        const nav = document.querySelector('main nav');
+        const navRight = nav ? nav.getBoundingClientRect().right : 0;
+        const bad = [];
+        for (const a of document.querySelectorAll('article.skill')) {
+          const b = a.getBoundingClientRect();
+          const inDeity = a.closest('.deity-panel') || a.closest('[id*="deity"]');
+          if (!inDeity && (!a.closest('.content') || b.left < navRight - 1)) bad.push(a.id + '@x' + Math.round(b.left));
+        }
+        const navLinks = document.querySelectorAll('a[href*="class-features"]').length;
+        return { bad, navLinks };
+      });
+      if (struct) {
+        if (struct.bad && struct.bad.length) errors.push('STRUCT articles outside content: ' + struct.bad.slice(0, 8).join(','));
+        if (struct.navLinks !== 1) errors.push('STRUCT class-features nav links: ' + struct.navLinks);
+      }
+    } catch (e) { errors.push('STRUCT CHECK FAILED: ' + e.message); }
   } catch (e) { errors.push('LOAD FAILED: ' + e.message); }
   totalErrors += errors.length;
   console.log(`${errors.length ? '❌' : '✅'} ${p.dir}/${p.file}${errors.length ? ' ('+errors.length+' err)' : ''}`);
@@ -61,6 +82,20 @@ if (dataCheck.stderr) console.error(dataCheck.stderr.trim());
 let dataOK = dataCheck.status === 0;
 console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
 totalErrors += dataOK ? 0 : 1;
+
+// UI 结构回归（原生对话框/职业专长导航/CSS 版本/文章 div 平衡）
+console.log('\n=== UI 结构回归 ===');
+let uiOK = true;
+try {
+  let uiOut = spawnSync('python', [join(BASE, 'scripts', 'verify_ui_dialogs.py')], { encoding: 'utf-8', timeout: 60000 });
+  if (uiOut.stdout) console.log(uiOut.stdout.trim().slice(0, 2000));
+  if (uiOut.status !== 0) uiOK = false;
+} catch (e) {
+  uiOK = false;
+  console.log('❌ UI 结构回归执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(uiOK ? '✅ UI 结构回归通过' : '❌ UI 结构回归失败');
+totalErrors += uiOK ? 0 : 1;
 
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
@@ -114,5 +149,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK ? 0 : 1);

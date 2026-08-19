@@ -142,3 +142,82 @@ function canonicalSkillPickName(optionName) {
   if (!r || r.category) return null;
   return r.key || optionName;
 }
+
+
+/** 职业创建页第 5 步：职业熟练项数量（docx：从选项中选择四项各+1） */
+var CHAR_GEN_CLASS_SKILL_PICK_COUNT = 4;
+
+/** 解析「从……中选择」的职业熟练项原文（与创建页 parseSkills 同口径） */
+function parseClassSkillOptions(txt) {
+  if (!txt) return [];
+  txt = String(txt);
+  var m = txt.match(/从(.+?)中/);
+  if (!m) {
+    return txt.split(/[、,，]/).map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0 && s.indexOf("选择") < 0; });
+  }
+  return m[1].split(/[、,，]/).map(function (s) { return s.trim(); })
+    .filter(function (s) { return s.length > 0; });
+}
+
+/**
+ * 当前职业熟练项选择信息。
+ * @returns {{options:string[], validMap:Object<string,boolean>, validNames:string[]}}
+ */
+function getClassSkillOptionInfo(classData) {
+  var txt = (classData && (classData["技巧"] || classData.skills)) || "";
+  var options = parseClassSkillOptions(txt);
+  var cats = (typeof SKILL_CATS !== "undefined" && SKILL_CATS) ? SKILL_CATS : CHAR_GEN_PROF_CATS;
+  var validMap = {};
+  var validNames = [];
+  var i, j, opt, key, subs, r;
+  for (i = 0; i < options.length; i++) {
+    opt = options[i];
+    // 父级大类自身也算合法（兼容旧草稿直接存「知识」等）
+    if (validMap[opt] !== true) { validMap[opt] = true; validNames.push(opt); }
+    if (cats[opt]) {
+      subs = cats[opt];
+      for (j = 0; j < subs.length; j++) {
+        key = subs[j];
+        if (validMap[key] !== true) { validMap[key] = true; validNames.push(key); }
+      }
+    } else {
+      r = resolveProfSkill(opt);
+      key = (r && r.key) ? r.key : opt;
+      if (key !== opt && validMap[key] !== true) { validMap[key] = true; validNames.push(key); }
+    }
+  }
+  return { options: options, validMap: validMap, validNames: validNames };
+}
+
+/** 判断某项是否属于当前职业的可选熟练项（含别名→正式键） */
+function isClassSkillPickValid(pick, classData) {
+  if (!pick) return false;
+  var info = getClassSkillOptionInfo(classData);
+  if (info.validMap[pick] === true) return true;
+  var r = resolveProfSkill(pick);
+  if (r && r.key && info.validMap[r.key] === true) return true;
+  return false;
+}
+
+/** 过滤当前职业不合法项与重复项，保持原顺序 */
+function filterValidClassSkillPicks(selectedSkills, classData) {
+  var out = [];
+  if (!selectedSkills || !selectedSkills.length) return out;
+  var seen = {};
+  for (var i = 0; i < selectedSkills.length; i++) {
+    var pick = selectedSkills[i];
+    if (!isClassSkillPickValid(pick, classData)) continue;
+    if (seen[pick] === true) continue;
+    seen[pick] = true;
+    out.push(pick);
+  }
+  return out;
+}
+
+/** 职业熟练项是否已完成：无选项的职业视为完成，否则需恰好选满 4 项合法项 */
+function classSkillPicksComplete(selectedSkills, classData) {
+  var info = getClassSkillOptionInfo(classData);
+  if (!info.options.length) return true;
+  return filterValidClassSkillPicks(selectedSkills, classData).length === CHAR_GEN_CLASS_SKILL_PICK_COUNT;
+}

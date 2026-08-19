@@ -2,13 +2,16 @@ package com.snowd.mobile
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.webkit.JsPromptResult
+import android.webkit.JsResult
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -16,6 +19,8 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +58,74 @@ class MainActivity : AppCompatActivity() {
         webView.addJavascriptInterface(SnowdBridge(this), "mobileBridge")
 
         webView.webChromeClient = object : WebChromeClient() {
+            override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
+                try {
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("提示")
+                        .setMessage(message ?: "")
+                        .setCancelable(false)
+                        .setPositiveButton("确定") { _, _ -> result.confirm() }
+                        .setOnCancelListener { result.cancel() }
+                        .show()
+                } catch (e: Exception) {
+                    result.cancel()
+                }
+                return true
+            }
+
+            override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult): Boolean {
+                try {
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("确认")
+                        .setMessage(message ?: "")
+                        .setCancelable(false)
+                        .setPositiveButton("确定") { _, _ -> result.confirm() }
+                        .setNegativeButton("取消") { _, _ -> result.cancel() }
+                        .setOnCancelListener { result.cancel() }
+                        .show()
+                } catch (e: Exception) {
+                    result.cancel()
+                }
+                return true
+            }
+
+            override fun onJsPrompt(
+                view: WebView?,
+                url: String?,
+                message: String?,
+                defaultValue: String?,
+                result: JsPromptResult
+            ): Boolean {
+                try {
+                    val input = EditText(this@MainActivity)
+                    input.setText(defaultValue ?: "")
+                    input.setSelection((defaultValue ?: "").length)
+                    val container = LinearLayout(this@MainActivity)
+                    container.orientation = LinearLayout.VERTICAL
+                    val pad = (16 * resources.displayMetrics.density).toInt()
+                    container.setPadding(pad, pad / 2, pad, pad / 2)
+                    container.addView(
+                        input,
+                        LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                    )
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("输入")
+                        .setMessage(message ?: "")
+                        .setView(container)
+                        .setCancelable(false)
+                        .setPositiveButton("确定") { _, _ -> result.confirm(input.text.toString()) }
+                        .setNegativeButton("取消") { _, _ -> result.cancel() }
+                        .setOnCancelListener { result.cancel() }
+                        .show()
+                } catch (e: Exception) {
+                    result.cancel()
+                }
+                return true
+            }
+
             override fun onShowFileChooser(
                 view: WebView?,
                 filePathCallback: ValueCallback<Array<Uri>>?,
@@ -128,6 +201,8 @@ class MainActivity : AppCompatActivity() {
         currentVersion = version
         val baseDir = File(File(filesDir, "mobile/packages"), version)
         val handler = FilesPathHandler(baseDir)
+        // 版本升级后清除 WebView 缓存，避免继续命中旧版 common.css
+        try { webView.clearCache(false) } catch (_: Exception) {}
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url

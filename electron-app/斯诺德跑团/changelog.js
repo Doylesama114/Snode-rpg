@@ -2,6 +2,23 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7253',
+    date: '2026-08-19',
+    changes: [
+      '修复游荡者正文错位：偷师学艺多一个</div>导致后续技能跑到导航栏下',
+      '14个职业页清理重复职业专长导航并修复apply_class_features幂等性',
+      '职业页CSS缓存版本统一v1.0.7253并随发布自动同步，Electron/Android更新时清缓存',
+      '导出档案：Electron改受控保存对话框、Android改异步base64并防重复点击',
+      'Android WebView补齐onJsAlert/onJsConfirm/onJsPrompt对话框桥接',
+      '新增SD_alert/SD_confirm/SD_prompt统一页面弹窗并替换全部原生alert/confirm/prompt',
+      '创建页换职业清空旧熟练项、满4项同类子项可替换、保存前校验',
+      '猎人职业熟练项按docx修正为8项',
+      '新增42项创建页E2E与UI结构回归检查'
+    ]
+  },
+
+
+  {
     version: '1.0.7252',
     date: '2026-08-18',
     changes: [
