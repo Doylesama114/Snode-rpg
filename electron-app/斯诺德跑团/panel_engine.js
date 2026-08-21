@@ -4507,6 +4507,13 @@ function hasTierUnlockCost(tierName) {
   return !!(TIER_UNLOCK_COST && TIER_UNLOCK_COST[tierName]);
 }
 function resolveWeaponProfs(className){return CLASS_WEAPON_PROFS[className]||[];}
+
+/** 面板展示用：docx 原文武器熟练（具体武器，不再只显示大类标签） */
+function resolveWeaponProfDocx(className){
+  var txt=(typeof CLASS_WEAPON_PROF_DOCX!=="undefined"&&CLASS_WEAPON_PROF_DOCX[className])||"";
+  if(!txt) return resolveWeaponProfs(className);
+  return txt.split(/[、，,]/).map(function(x){return x.trim();}).filter(Boolean);
+}
 // 容器状态迁移（v1.0.7227）：材料包A/B 旧格式 → 9 种具名材料包槽位
 function migrateContainerState() {
   if (!state) return;
@@ -5567,7 +5574,7 @@ function renderLangProfs(){
 
   // Weapon proficiency section
   var mainClass=(state.classes&&state.classes[0])?state.classes[0].name:"";
-  var wp=resolveWeaponProfs(mainClass).slice();
+  var wp=resolveWeaponProfDocx(mainClass).slice();
   if(state.weapon_profs){
     for(var wpk in state.weapon_profs){
       if(state.weapon_profs[wpk]>0 && wp.indexOf(wpk)<0) wp.push(wpk);

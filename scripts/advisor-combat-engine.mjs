@@ -43,7 +43,7 @@ export function abilityModFromScore(score) {
   return Math.floor((n - 10) / 2);
 }
 
-const WEAPON_CAT_HINTS = ['剑类', '锤类', '斧类', '长柄', '弓箭', '火器', '法器', '简易'];
+const WEAPON_CAT_HINTS = ['剑类', '锤类', '斧类', '长柄', '弓箭', '火器', '法器', '简易', '拳刃'];
 
 function categoryBonusApplies(bonus, attackType) {
   const when = bonus?.when;
@@ -478,7 +478,7 @@ export function parseCombatScenarioFromQuery(query) {
   const rawStrM = !strM && q.match(/力量(?:属性值)?[为是]?\s*(\d{1,2})(?!调)/);
   const rawDexM = !dexM && q.match(/敏捷(?:属性值)?[为是]?\s*(\d{1,2})(?!调)/);
   const toMod = (v) => Math.floor((Number(v) - 10) / 2);
-  const weaponProfM = q.match(/(?:有)?(?:一点|1点|(\d+)点)(剑类|锤类|斧类|长柄|弓箭|火器|法器|简易)熟练度?/);
+  const weaponProfM = q.match(/(?:有)?(?:一点|1点|(\d+)点)(剑类|锤类|斧类|长柄|弓箭|火器|法器|简易|拳刃)熟练度?/);
   const weaponM = q.match(/拿着一把(?:伤害为[^，,]+的)?([^，,]+剑)/)
     || q.match(/拿着(?:一把)?([^，,\s]{2,10}(?:剑|斧|锤|弓|弩))/);
   const damageM = q.match(/伤害为([^，,]+)/);
@@ -489,6 +489,7 @@ export function parseCombatScenarioFromQuery(query) {
     else if (/弓箭|长弓|短弓|手弩|弩/.test(q)) weaponCategory = '弓箭';
     else if (/锤类|锤子/.test(q)) weaponCategory = '锤类';
     else if (/斧类|斧头|双手斧|战斧/.test(q)) weaponCategory = '斧类';
+    else if (/拳刃/.test(q)) weaponCategory = '拳刃';
   }
 
   const activeBuffs = parseActiveBuffsFromQuery(q);

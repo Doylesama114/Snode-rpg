@@ -111,6 +111,31 @@ try {
 }
 console.log(armorOK ? '✅ 护甲/防御等级规则通过' : '❌ 护甲/防御等级规则失败');
 totalErrors += armorOK ? 0 : 1;
+
+// 武器熟练度（docx 原文：CLASSES / REF_CLASSES / 面板展示 / 旧引擎）
+console.log('');
+console.log('=== 武器熟练度（docx 原文） ===');
+let weaponOK = true;
+try {
+  let weaponPy = spawnSync('python', [join(BASE, 'scripts', 'verify_class_weapon_profs.py')], { encoding: 'utf-8', timeout: 120000 });
+  if (weaponPy.stdout) console.log(weaponPy.stdout.trim());
+  if (weaponPy.stderr) console.error(weaponPy.stderr.trim());
+  if (weaponPy.status !== 0) weaponOK = false;
+} catch (e) {
+  weaponOK = false;
+  console.log('❌ 武器熟练度 docx 一致性校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+try {
+  let weaponE2e = spawnSync('node', [join(BASE, 'verify_weapon_profs_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (weaponE2e.stdout) console.log(weaponE2e.stdout.trim());
+  if (weaponE2e.stderr) console.error(weaponE2e.stderr.trim());
+  if (weaponE2e.status !== 0) weaponOK = false;
+} catch (e) {
+  weaponOK = false;
+  console.log('❌ 武器熟练度 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(weaponOK ? '✅ 武器熟练度校验通过' : '❌ 武器熟练度校验失败');
+totalErrors += weaponOK ? 0 : 1;
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
 let featOK = true;
@@ -163,5 +188,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK ? 0 : 1);

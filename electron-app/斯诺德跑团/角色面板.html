@@ -4211,7 +4211,7 @@ renderCurrency = function() {
 function SB_renderLangRows() {
   var host = document.querySelector('.lang-rows');
   if (!host) return;
-  var wp = (typeof resolveWeaponProfs === 'function' && state.classes && state.classes[0]) ? resolveWeaponProfs(state.classes[0].name).slice() : [];
+  var wp = (typeof resolveWeaponProfDocx === 'function' && state.classes && state.classes[0]) ? resolveWeaponProfDocx(state.classes[0].name).slice() : ((typeof resolveWeaponProfs === 'function' && state.classes && state.classes[0]) ? resolveWeaponProfs(state.classes[0].name).slice() : []);
   if (state.weapon_profs) for (var wpk in state.weapon_profs) { if (state.weapon_profs[wpk] > 0 && wp.indexOf(wpk) < 0) wp.push(wpk); }
   var row = function(label, val, fn, title) {
     return '<div class="lang-row" style="cursor:pointer" title="' + title + '" onclick="' + fn + '"><span class="lr-label">' + label + '</span><span class="lr-val">' + (val || '—') + '</span></div>';
