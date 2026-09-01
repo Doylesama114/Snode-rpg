@@ -1,0 +1,103 @@
+{
+  "added": 16,
+  "names": [
+    {
+      "id": "pr-skill-55",
+      "style": "戒律",
+      "tier": "五阶",
+      "name": "信仰武装"
+    },
+    {
+      "id": "pr-skill-56",
+      "style": "戒律",
+      "tier": "五阶",
+      "name": "坚毅术"
+    },
+    {
+      "id": "pr-skill-57",
+      "style": "戒律",
+      "tier": "五阶",
+      "name": "心灵专注"
+    },
+    {
+      "id": "pr-skill-58",
+      "style": "戒律",
+      "tier": "五阶",
+      "name": "法术无效结界"
+    },
+    {
+      "id": "pr-skill-59",
+      "style": "戒律",
+      "tier": "五阶",
+      "name": "神谕真言·镇"
+    },
+    {
+      "id": "pr-skill-60",
+      "style": "虔佑",
+      "tier": "五阶",
+      "name": "生命之泉化身"
+    },
+    {
+      "id": "pr-skill-61",
+      "style": "虔佑",
+      "tier": "五阶",
+      "name": "神谕真言·佑"
+    },
+    {
+      "id": "pr-skill-62",
+      "style": "虔佑",
+      "tier": "五阶",
+      "name": "神谕真言·涤"
+    },
+    {
+      "id": "pr-skill-63",
+      "style": "虔佑",
+      "tier": "五阶",
+      "name": "移除诅咒"
+    },
+    {
+      "id": "pr-skill-64",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "善良之墙"
+    },
+    {
+      "id": "pr-skill-65",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "孤高者"
+    },
+    {
+      "id": "pr-skill-66",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "混乱之墙"
+    },
+    {
+      "id": "pr-skill-67",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "秩序之墙"
+    },
+    {
+      "id": "pr-skill-68",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "致痛祈咒"
+    },
+    {
+      "id": "pr-skill-69",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "邪恶之墙"
+    },
+    {
+      "id": "pr-skill-70",
+      "style": "魂谒",
+      "tier": "五阶",
+      "name": "静密沉寂"
+    }
+  ],
+  "site_skills": 70,
+  "fx_entries": 70
+}

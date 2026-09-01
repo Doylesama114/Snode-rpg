@@ -11,7 +11,7 @@ data = json.loads((ROOT / "职业页" / "数据" / f"{CLASS}.json").read_text(en
 fx_path = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 fx = json.loads(fx_path.read_text(encoding="utf-8")) if fx_path.exists() else {CLASS: []}
 
-articles = set(re.findall(r'<article class="skill(?: starting)?" id="(mo-[^"]+)"', html))
+articles = set(re.findall(r'<article\b[^>]*id="(mo-[^"]+)"', html))
 json_ids = {s["id"] for s in data["skills"]}
 fx_ids = {s["id"] for s in fx.get(CLASS, [])}
 

@@ -134,41 +134,53 @@ def close_div_after(html: str, id_attr: str) -> int:
     raise ValueError(f"unclosed div for {id_attr}")
 
 
+def _find_tier_anchor(html: str, style: str, style_n: int, tier: str, tier_n: int):
+    for tid in (f'id="m-tier-{style_n}-{tier_n}"', f'id="m-tier-{style}-{tier}"'):
+        if tid in html:
+            return tid
+    return ""
+
+
 def ensure_tier_section(html: str, style: str, style_n: int, tier: str, tier_n: int) -> str:
-    tid = f'id="m-tier-{style_n}-{tier_n}"'
-    if tid in html:
+    if _find_tier_anchor(html, style, style_n, tier, tier_n):
         return html
-    # insert before end of style section
-    style_id = f'id="m-style-{style_n}"'
-    # find next section or end of content
+    style_id = f'id="m-style-{style}"'
     pos = html.find(style_id)
     if pos == -1:
+        style_id = f'id="m-style-{style_n}"'
+        pos = html.find(style_id)
+    if pos == -1:
         raise ValueError(f"missing style {style}")
-    # find following <section class="style" or end marker
     next_sec = html.find('<section class="style"', pos + 10)
     if next_sec == -1:
         next_sec = html.find("</main>", pos)
-    insert_at = next_sec
+    tid = f'id="m-tier-{style}-{tier}"'
     section = (
-        f'<div class="tier" id="m-tier-{style_n}-{tier_n}">\n'
-        f"<h3>{tier}天赋树</h3>\n"
-        f"</div>\n"
+        f'<section class="tier" {tid}>'
+        + chr(10) +
+        f"<h3>{tier}天赋树</h3>"
+        + chr(10) +
+        f"</section>"
+        + chr(10)
     )
-    return html[:insert_at] + section + html[insert_at:]
+    return html[:next_sec] + section + html[next_sec:]
 
 
-def ensure_nav_tier(html: str, style_n: int, tier: str, tier_n: int) -> str:
-    href = f'href="#m-tier-{style_n}-{tier_n}"'
-    if href in html:
-        return html
-    # find style nav group and append before its closing </details> that closes nav-group
-    style_href = f'href="#m-style-{style_n}"'
-    pos = html.find(style_href)
-    if pos == -1:
-        raise ValueError(f"nav style missing {style_n}")
-    # find nav-group details start
-    det_start = html.rfind('<details class="nav-group">', 0, pos)
-    # find matching close of this nav-group: walk details depth
+def ensure_nav_tier(html: str, style: str, style_n: int, tier: str, tier_n: int) -> str:
+    for href in (f'href="#m-tier-{style_n}-{tier_n}"', f'href="#m-tier-{style}-{tier}"'):
+        if href in html:
+            return html
+    style_pos = -1
+    for href in (f'href="#m-style-{style}"', f'href="#m-style-{style_n}"'):
+        pos = html.find(href)
+        if pos != -1:
+            style_pos = pos
+            break
+    if style_pos == -1:
+        raise ValueError(f"nav style missing {style}")
+    det_start = html.rfind('<details class="nav-group">', 0, style_pos)
+    if det_start == -1:
+        raise ValueError(f"nav-group start missing {style}")
     depth = 0
     i = det_start
     n = len(html)
@@ -187,26 +199,48 @@ def ensure_nav_tier(html: str, style_n: int, tier: str, tier_n: int) -> str:
             continue
         i += 1
     if group_end is None:
-        raise ValueError(f"nav-group end missing {style_n}")
+        raise ValueError(f"nav-group end missing {style}")
     nav = (
         f'<details class="nav-tier"><summary class="tier-summary">'
-        f'<a href="#m-tier-{style_n}-{tier_n}">{tier}天赋树</a></summary>\n'
+        f'<a href="#m-tier-{style}-{tier}">{tier}天赋树</a></summary>'
+        + chr(10) +
         f"</details>"
     )
     return html[:group_end] + nav + html[group_end:]
 
 
-def append_skill_to_tier(html: str, style_n: int, tier_n: int, article: str, skill_name: str, sid: str) -> str:
-    tid = f'id="m-tier-{style_n}-{tier_n}"'
-    end = close_div_after(html, tid)
-    # insert article before closing </div>
-    # close_div_after returns index after </div>, so back up
-    close_pos = html.rfind("</div>", 0, end)
-    html = html[:close_pos] + article + html[close_pos:]
-    # nav link
-    href = f'href="#m-tier-{style_n}-{tier_n}"'
-    # find this nav-tier details block and append link before </details>
-    pos = html.find(href)
+def append_skill_to_tier(html: str, style: str, style_n: int, tier: str, tier_n: int, article: str, skill_name: str, sid: str) -> str:
+    found = None
+    for tid in (f'id="m-tier-{style_n}-{tier_n}"', f'id="m-tier-{style_n}-{tier}"',
+                f'id="m-tier-{style}-{tier}"', f'id="m-tier-{style}-{tier_n}"'):
+        if tid in html:
+            found = tid
+            break
+    if not found:
+        raise ValueError(f"tier anchor missing {style}/{tier_n}")
+    open_pos = html.rfind("<section", 0, html.find(found))
+    depth = 0
+    i = open_pos
+    n = len(html)
+    while i < n:
+        if html.startswith("<section", i) and (i + 8 >= n or html[i + 8] in (" ", chr(9), chr(10), ">")):
+            depth += 1
+            i = html.find(">", i) + 1
+            continue
+        if html.startswith("</section>", i):
+            depth -= 1
+            i += len("</section>")
+            if depth == 0:
+                insert_at = i - len("</section>")
+                html = html[:insert_at] + article + html[insert_at:]
+                break
+            continue
+        i += 1
+    # nav link：在对应 tier summary 的 details 内追加
+    nav_href = f'href="#{found[4:]}"'
+    pos = html.find(nav_href)
+    if pos == -1:
+        return html
     det_start = html.rfind("<details", 0, pos)
     depth = 0
     i = det_start
@@ -220,7 +254,6 @@ def append_skill_to_tier(html: str, style_n: int, tier_n: int, article: str, ski
             depth -= 1
             if depth == 0:
                 link = f'<a class="skill-link" href="#{sid}">{skill_name}</a>'
-                # avoid duplicate
                 if f'href="#{sid}"' not in html[det_start:i]:
                     html = html[:i] + link + html[i:]
                 break
@@ -328,12 +361,12 @@ def main() -> None:
         style_n = STYLE_NUM[style]
         tier_n = TIER_NUM[tier]
         html = ensure_tier_section(html, style, style_n, tier, tier_n)
-        html = ensure_nav_tier(html, style_n, tier, tier_n)
+        html = ensure_nav_tier(html, style, style_n, tier, tier_n)
         sid = next_slot_id(site["skills"] + added, style_n, tier_n)
         skill = extract_to_site_skill(ex, sid)
         block = extract_to_block(ex)
         article = render_article(skill, block)
-        html = append_skill_to_tier(html, style_n, tier_n, article, skill["name"], sid)
+        html = append_skill_to_tier(html, style, style_n, tier, tier_n, article, skill["name"], sid)
         site["skills"].append(skill)
         added.append(skill)
         if sid not in fx_by_id:

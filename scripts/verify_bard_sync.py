@@ -65,8 +65,8 @@ print(f"\n=== 五阶 ===")
 print(f"JSON 五阶 count: {len(t5)} (expect 30)")
 print(f"subtitle 一至五阶: {'一至五阶' in html}")
 for style in ("激昂", "舒缓", "灵动", "诙谐", "集中"):
-    nav = f'href="#b-tier-{style}-5"' in html
-    sec = f'id="b-tier-{style}-5"' in html
+    nav = (f'href="#b-tier-{style}-5"' in html) or (f'href="#b-tier-{style}-五阶"' in html)
+    sec = (f'id="b-tier-{style}-5"' in html) or (f'id="b-tier-{style}-五阶"' in html)
     print(f"  {style}: nav={nav} section={sec}")
     if not (nav and sec):
         spot_fail.append(f"tier5-{style}")

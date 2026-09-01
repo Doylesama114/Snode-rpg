@@ -6,7 +6,7 @@ import vm from "node:vm";
 
 const HTML_PATH = "职业页/特殊专长.html";
 const DATA_PATH = "斯诺德跑团/panel_data.js";
-const LEGACY_KEYS = ["质朴", "额外槽位"];
+const LEGACY_KEYS = ["质朴", "额外槽"];
 // 页面 cond-text 异常、面板侧人工校正的前置条件（页面为错数据时使用）
 const PREQ_OVERRIDES = {
   "鲜明特点": "你开启了个性背景的特殊效果",

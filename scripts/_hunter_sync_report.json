@@ -1,8 +1,13 @@
 {
   "class": "猎人",
-  "docx_skills_indexed": 108,
-  "json_skills": 77,
-  "updated": 77,
-  "removed_not_in_docx": [],
-  "fx_entries": 77
+  "docx_skills_indexed": 120,
+  "json_skills": 86,
+  "updated": 86,
+  "removed_not_in_docx": [
+    "蚊沼专精",
+    "灵龟守护·天赋",
+    "灵猴守护·天赋",
+    "灵狐守护·天赋"
+  ],
+  "fx_entries": 86
 }

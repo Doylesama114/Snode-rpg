@@ -1,0 +1,25 @@
+{
+  "restored": [
+    {
+      "id": "h-skill-1088",
+      "name": "灵龟守护·天赋",
+      "style": "兽群",
+      "tier": "二阶"
+    },
+    {
+      "id": "h-skill-1089",
+      "name": "灵猴守护·天赋",
+      "style": "兽群",
+      "tier": "二阶"
+    },
+    {
+      "id": "h-skill-1090",
+      "name": "灵狐守护·天赋",
+      "style": "兽群",
+      "tier": "二阶"
+    }
+  ],
+  "json_skills": 89,
+  "fx_entries": 89,
+  "html_articles": 89
+}

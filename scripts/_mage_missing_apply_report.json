@@ -1,0 +1,68 @@
+{
+  "fixes": [],
+  "added": 10,
+  "names": [
+    {
+      "id": "m-skill-2-7-8",
+      "style": "咒法",
+      "tier": "七阶",
+      "name": "咒法学派序列"
+    },
+    {
+      "id": "m-skill-8-5-1",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "变形术·枭熊"
+    },
+    {
+      "id": "m-skill-8-5-2",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "变形术·鱼"
+    },
+    {
+      "id": "m-skill-8-5-3",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "变形术·鸟"
+    },
+    {
+      "id": "m-skill-8-5-4",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "四臂术"
+    },
+    {
+      "id": "m-skill-8-5-5",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "爆裂术"
+    },
+    {
+      "id": "m-skill-8-5-6",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "石化术"
+    },
+    {
+      "id": "m-skill-8-5-7",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "穿墙术"
+    },
+    {
+      "id": "m-skill-8-5-8",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "软泥形态"
+    },
+    {
+      "id": "m-skill-8-5-9",
+      "style": "变化",
+      "tier": "五阶",
+      "name": "隐匿传讯术"
+    }
+  ],
+  "site_skills": 423,
+  "fx_entries": 423
+}
