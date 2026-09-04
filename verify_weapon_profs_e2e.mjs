@@ -36,7 +36,8 @@ const DOCX = {
   '武僧': '拳刃、长柄武器、简易武器',
   '吟游诗人': '刺剑、匕首、手弩、火枪、简易武器',
   '魔契师': '匕首、手弩、魔棒、简易武器',
-  '奇械师': '匕首、枪械武器、简易武器'
+  '奇械师': '匕首、枪械武器、简易武器',
+  '守望者': '除枪械武器以外的全部武器'
 };
 
 const browser = await chromium.launch({ headless: true });
@@ -110,7 +111,7 @@ const displayOf = (s) => s.split('、').join(' · ');
       if (legacy.indexOf(token) < 0) bad.push(name + ':旧引擎缺[' + token + ']实际[' + legacy + ']');
     }
   }
-  ok('面板武器熟练行：14 职业均显示 docx 具体武器', bad.length === 0, bad.slice(0, 5).join(' | '));
+  ok('面板武器熟练行：15 职业均显示 docx 具体武器', bad.length === 0, bad.slice(0, 5).join(' | '));
   ok('额外武器熟练（弓弩+1）仍追加显示', panel.extra.value && panel.extra.value.indexOf('弓弩') >= 0, JSON.stringify(panel.extra));
   await page.close();
 }
@@ -131,7 +132,7 @@ const displayOf = (s) => s.split('、').join(' · ');
   });
   let cgBad = [];
   for (const name in DOCX) if (got[name] !== DOCX[name]) cgBad.push(name + ':期望[' + DOCX[name] + ']实际[' + got[name] + ']');
-  ok('创建页 CLASSES：14 职业武器文案与 docx 一致', cgBad.length === 0, cgBad.join(' | '));
+  ok('创建页 CLASSES：15 职业武器文案与 docx 一致', cgBad.length === 0, cgBad.join(' | '));
   await page.close();
 }
 

@@ -9,7 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ADV_DIR = path.join(ROOT, '职业页');
 const OUT = path.join(ROOT, '斯诺德跑团', 'chargen_adv_paths.js');
 
-const CLASS_ORDER = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师'];
+const CLASS_ORDER = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者'];
 
 const result = {};
 for (const cls of CLASS_ORDER) {

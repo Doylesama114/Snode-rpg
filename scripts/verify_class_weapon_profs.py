@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""校验 14 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
+"""校验 15 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
 import json
 import re
 import sys
@@ -46,7 +46,7 @@ if not m_docx_map or not m_cat_map:
 prof_docx = json.loads(m_docx_map.group(1))
 prof_cat = json.loads(m_cat_map.group(1))
 
-CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师"]
+CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者"]
 
 errors = []
 for name in CLASS_NAMES:
@@ -76,10 +76,23 @@ if "火器" not in prof_cat.get("猎人", []):
 if not {"拳刃", "长柄"}.issubset(set(prof_cat.get("武僧", []))):
     errors.append(f"武僧内部类别映射缺少 拳刃/长柄: {prof_cat.get('武僧')}")
 
+# 守望者字段修复点
+wd = ref_classes.get("守望者", {})
+if wd.get("key_attr") != "意志":
+    errors.append(f"守望者 REF key_attr 错误: {wd.get('key_attr')}")
+if wd.get("armor") != "全部护甲、盾牌":
+    errors.append(f"守望者 REF armor 错误: {wd.get('armor')}")
+if wd.get("saves") != ["体质", "意志"]:
+    errors.append(f"守望者 REF saves 错误: {wd.get('saves')}")
+if wd.get("skills") != "从承重、专注、耐力、自然、洞悉、聆听、察觉、求生中选择四项熟练度各+1":
+    errors.append(f"守望者 REF skills 错误: {wd.get('skills')}")
+if not {"剑类", "斧类", "锤类", "长柄", "弓箭", "简易", "法器"}.issubset(set(prof_cat.get("守望者", []))):
+    errors.append(f"守望者内部类别映射缺少类别: {prof_cat.get('守望者')}")
+
 if errors:
     print("武器熟练度 docx 一致性校验失败：")
     for e in errors:
         print(" -", e)
     sys.exit(1)
 
-print("武器熟练度 docx 一致性校验通过：14 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师字段已恢复；猎人/武僧类别映射已修正")
+print("武器熟练度 docx 一致性校验通过：15 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师/守望者字段已恢复；猎人/武僧类别映射已修正")

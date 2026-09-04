@@ -23,7 +23,7 @@
       "体质": 14,
       "意志": 13
     },
-    "source": "蛮斗士、战士、圣骑士",
+    "source": "蛮斗士、战士、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
       "赢得十场战斗环节的胜利",
@@ -54,7 +54,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -101,7 +101,7 @@
       "力量": 14,
       "敏捷": 14
     },
-    "source": "蛮斗士、猎人",
+    "source": "蛮斗士、猎人、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "击杀五只大型体型的单位",
@@ -274,7 +274,7 @@
       "智力": 10,
       "感知": 12
     },
-    "source": "蛮斗士、猎人、牧师、萨满祭司",
+    "source": "蛮斗士、牧师、萨满祭司",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你满足以下任意一种条件：①你的种族为温迪戈、巨魔或食人妖②你的特殊专长中包含有嗜血者或暴食者③你烹饪并食用过五名智慧生物的血肉",
@@ -289,7 +289,7 @@
       "体质": 14,
       "感知": 15
     },
-    "source": "蛮斗士、德鲁伊、萨满祭司",
+    "source": "蛮斗士、德鲁伊、萨满祭司、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "在野外环境的陆地上进行十次成功的专注、聆听或感悟检定",
@@ -321,7 +321,7 @@
       "敏捷": 12,
       "体质": 12
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
+    "source": "战士、牧师、圣骑士、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有技巧专家、武器精通或战技专家",
@@ -352,7 +352,7 @@
       "敏捷": 10,
       "体质": 16
     },
-    "source": "战士、牧师、圣骑士",
+    "source": "战士、牧师、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "确保在十场战斗环节中你为团队中承受伤害最多的角色",
@@ -368,7 +368,7 @@
       "体质": 14,
       "意志": 13
     },
-    "source": "蛮斗士、战士、圣骑士",
+    "source": "蛮斗士、战士、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
       "赢得十场战斗环节的胜利",
@@ -399,7 +399,7 @@
       "体质": 15,
       "智力": 12
     },
-    "source": "战士",
+    "source": "战士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "击败二十名施法者主职业的角色（不计算玩家在内）",
@@ -490,7 +490,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -521,7 +521,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师",
+    "source": "战士、猎人、奇械师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -537,7 +537,7 @@
       "体质": 13,
       "感知": 14
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你执行过十次回避动作",
@@ -1145,18 +1145,18 @@
   },
   {
     "class": "猎人",
-    "name": "武器大师",
+    "name": "巡林客",
     "attrs": {
-      "力量": 15,
-      "敏捷": 12,
-      "体质": 12
+      "敏捷": 14,
+      "体质": 13,
+      "感知": 15
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "source": "猎人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
-      "你的特殊专长中包含有技巧专家、武器精通或战技专家",
-      "在战斗环节中累计使用过全部武器类别发起过攻击",
-      "持有三把稀有品质或以上的武器，并且其中一把武器至少拥有珍稀品质"
+      "在森林环境中赢得十场战斗环节的胜利",
+      "在林地中追踪并找到五处隐藏的野兽巢穴或敌人营地",
+      "你满足以下任意一种条件：①引导一支队伍安全穿过一片被诅咒或被腐化的森林，期间无人死亡②挫败一伙敌对势力在森林中将要进行的巨大阴谋"
     ]
   },
   {
@@ -1257,7 +1257,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师",
+    "source": "战士、猎人、奇械师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -1287,7 +1287,7 @@
       "体质": 13,
       "感知": 14
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你执行过十次回避动作",
@@ -1362,7 +1362,7 @@
       "力量": 14,
       "敏捷": 14
     },
-    "source": "蛮斗士、猎人",
+    "source": "蛮斗士、猎人、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "击杀五只大型体型的单位",
@@ -1463,19 +1463,17 @@
   },
   {
     "class": "猎人",
-    "name": "温迪戈战士",
+    "name": "夜枭猎手",
     "attrs": {
-      "力量": 15,
-      "体质": 15,
-      "智力": 10,
-      "感知": 12
+      "敏捷": 15,
+      "感知": 15
     },
-    "source": "蛮斗士、猎人、牧师、萨满祭司",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "source": "猎人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
-      "你满足以下任意一种条件：①你的种族为温迪戈、巨魔或食人妖②你的特殊专长中包含有嗜血者或暴食者③你烹饪并食用过五名智慧生物的血肉",
-      "击杀二十名能够提供经验值的角色",
-      "击败并吃掉一名精英级的智慧生物"
+      "在黑暗环境下猎杀二十名能够提供经验值的角色",
+      "在夜晚或黑暗环境下率先发起十场战斗环节",
+      "在夜晚或黑暗环境中击杀一名精英级单位"
     ]
   },
   {
@@ -1486,7 +1484,7 @@
       "感知": 14,
       "幸运": 13
     },
-    "source": "猎人、游荡者、吟游诗人",
+    "source": "猎人、游荡者、吟游诗人、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "惩治十名破坏自然、欺凌弱小、压迫他人的角色（不计算玩家在内）",
@@ -1567,7 +1565,7 @@
       "体质": 15,
       "意志": 15
     },
-    "source": "牧师、圣骑士、魔契师",
+    "source": "牧师、圣骑士、魔契师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "你为了守护无辜的人们而主动发起十场战斗",
@@ -1865,7 +1863,7 @@
       "敏捷": 12,
       "体质": 12
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
+    "source": "战士、牧师、圣骑士、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有技巧专家、武器精通或战技专家",
@@ -1967,7 +1965,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -2035,7 +2033,7 @@
       "敏捷": 12,
       "体质": 12
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
+    "source": "战士、牧师、圣骑士、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有技巧专家、武器精通或战技专家",
@@ -2052,7 +2050,7 @@
       "敏捷": 10,
       "体质": 16
     },
-    "source": "战士、牧师、圣骑士",
+    "source": "战士、牧师、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "确保在十场战斗环节中你为团队中承受伤害最多的角色",
@@ -2102,7 +2100,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -2688,7 +2686,7 @@
       "敏捷": 12,
       "体质": 12
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
+    "source": "战士、牧师、圣骑士、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有技巧专家、武器精通或战技专家",
@@ -2703,7 +2701,7 @@
       "敏捷": 10,
       "体质": 16
     },
-    "source": "战士、牧师、圣骑士",
+    "source": "战士、牧师、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "确保在十场战斗环节中你为团队中承受伤害最多的角色",
@@ -2719,7 +2717,7 @@
       "体质": 14,
       "意志": 13
     },
-    "source": "蛮斗士、战士、圣骑士",
+    "source": "蛮斗士、战士、圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
       "赢得十场战斗环节的胜利",
@@ -2749,7 +2747,7 @@
       "体质": 15,
       "意志": 15
     },
-    "source": "牧师、圣骑士、魔契师",
+    "source": "牧师、圣骑士、魔契师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "你为了守护无辜的人们而主动发起十场战斗",
@@ -2885,7 +2883,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -3014,7 +3012,7 @@
       "感知": 14,
       "意志": 15
     },
-    "source": "圣骑士",
+    "source": "圣骑士、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你拥有某个在俗世层面已然销声匿迹的势力或国度传承",
@@ -3030,7 +3028,7 @@
       "感知": 13,
       "意志": 15
     },
-    "source": "圣骑士、武僧",
+    "source": "圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色承受本应由他们承担的痛苦",
@@ -3257,7 +3255,7 @@
       "体质": 13,
       "感知": 14
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你执行过十次回避动作",
@@ -3408,7 +3406,7 @@
       "感知": 14,
       "幸运": 13
     },
-    "source": "猎人、游荡者、吟游诗人",
+    "source": "猎人、游荡者、吟游诗人、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "惩治十名破坏自然、欺凌弱小、压迫他人的角色（不计算玩家在内）",
@@ -3791,7 +3789,7 @@
       "体质": 14,
       "感知": 15
     },
-    "source": "蛮斗士、德鲁伊、萨满祭司",
+    "source": "蛮斗士、德鲁伊、萨满祭司、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "在野外环境的陆地上进行十次成功的专注、聆听或感悟检定",
@@ -4102,7 +4100,7 @@
       "智力": 10,
       "感知": 12
     },
-    "source": "蛮斗士、猎人、牧师、萨满祭司",
+    "source": "蛮斗士、牧师、萨满祭司",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你满足以下任意一种条件：①你的种族为温迪戈、巨魔或食人妖②你的特殊专长中包含有嗜血者或暴食者③你烹饪并食用过五名智慧生物的血肉",
@@ -4117,7 +4115,7 @@
       "体质": 14,
       "感知": 15
     },
-    "source": "蛮斗士、德鲁伊、萨满祭司",
+    "source": "蛮斗士、德鲁伊、萨满祭司、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "在野外环境的陆地上进行十次成功的专注、聆听或感悟检定",
@@ -4520,7 +4518,7 @@
       "敏捷": 12,
       "体质": 14
     },
-    "source": "蛮斗士、战士、牧师、圣骑士、武僧",
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有冲锋手或大步奔行",
@@ -4688,7 +4686,7 @@
       "感知": 13,
       "意志": 15
     },
-    "source": "圣骑士、武僧",
+    "source": "圣骑士、武僧、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色承受本应由他们承担的痛苦",
@@ -5041,17 +5039,17 @@
   },
   {
     "class": "吟游诗人",
-    "name": "回声猎犬",
+    "name": "归隐诗人",
     "attrs": {
-      "敏捷": 15,
-      "智力": 15
+      "魅力": 15,
+      "意志": 15
     },
-    "source": "吟游诗人",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "source": "吟游诗人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
-      "进行十次成功的聆听检定",
-      "发现十名不在场的敌人",
-      "使你被过去的自己目击，并确保自身不被时间流撕碎"
+      "你满足以下任意一种条件：①你的个性背景为隐士②在无人定居的自然环境中（例如森林、山脉、荒野等）独自生活半年时长",
+      "运用诗歌、音乐或故事，安抚或化解三场将要在偏远地区发生的冲突（例如猎人之间的争执、村民对野兽的恐惧等）",
+      "在隐居的偏远地区遭遇一次外界的重大威胁（例如战火蔓延、瘟疫逼近、巨兽入侵等）时走出宁静，以非暴力或最小干涉的方式化解危机"
     ]
   },
   {
@@ -5062,7 +5060,7 @@
       "感知": 14,
       "幸运": 13
     },
-    "source": "猎人、游荡者、吟游诗人",
+    "source": "猎人、游荡者、吟游诗人、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
       "惩治十名破坏自然、欺凌弱小、压迫他人的角色（不计算玩家在内）",
@@ -5176,7 +5174,7 @@
       "体质": 15,
       "意志": 15
     },
-    "source": "牧师、圣骑士、魔契师",
+    "source": "牧师、圣骑士、魔契师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "你为了守护无辜的人们而主动发起十场战斗",
@@ -5596,7 +5594,7 @@
       "感知": 15,
       "幸运": 12
     },
-    "source": "魔契师",
+    "source": "魔契师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "击败十名闯入森林中的角色（不计算玩家在内）",
@@ -7064,7 +7062,7 @@
       "敏捷": 12,
       "体质": 12
     },
-    "source": "战士、猎人、牧师、圣骑士、奇械师",
+    "source": "战士、牧师、圣骑士、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有技巧专家、武器精通或战技专家",
@@ -7108,7 +7106,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师",
+    "source": "战士、猎人、奇械师、守望者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -7427,6 +7425,393 @@
       "制作十种非战斗侧的奇械设备",
       "施展二十次非伤害性的戏法",
       "通过你制作的神奇道具为一场节日庆典带来更加鼎盛的热度，使所有参与者为这些富有创意性的设施所折服"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "斗士",
+    "attrs": {
+      "力量": 15,
+      "体质": 14,
+      "意志": 13
+    },
+    "source": "蛮斗士、战士、圣骑士、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
+    "conditions": [
+      "赢得十场战斗环节的胜利",
+      "赢得十次力量对抗的胜利",
+      "在万众瞩目下击败一名公认的劲敌并得到众人的喝彩"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "前锋",
+    "attrs": {
+      "力量": 14,
+      "敏捷": 12,
+      "体质": 14
+    },
+    "source": "蛮斗士、战士、牧师、圣骑士、武僧、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你的特殊专长中包含有冲锋手或大步奔行",
+      "在十场战斗环节中作为团队中率先发起攻击的角色",
+      "在一场至关重要的战斗中冲垮敌人的阵型，为己方团队争取足够的输出和生存空间"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "巨怪猎手",
+    "attrs": {
+      "力量": 14,
+      "敏捷": 14
+    },
+    "source": "蛮斗士、猎人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "击杀五只大型体型的单位",
+      "击杀三只超大型体型的单位",
+      "击杀一只巨型或以上体型的单位"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "大地旅者",
+    "attrs": {
+      "体质": 14,
+      "感知": 15
+    },
+    "source": "蛮斗士、德鲁伊、萨满祭司、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "在野外环境的陆地上进行十次成功的专注、聆听或感悟检定",
+      "与土元素及其他大地种族进行过五次友善的互动",
+      "在没有装备、魔法及奇械等外物辅助的情况下，脚踏实地的穿行长达一千公里的路径，期间与这片土地上的生灵进行紧密的交流"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "防御者",
+    "attrs": {
+      "敏捷": 10,
+      "体质": 16
+    },
+    "source": "战士、牧师、圣骑士、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "确保在十场战斗环节中你为团队中承受伤害最多的角色",
+      "在战斗环节中累计承受超过500点伤害（包括过量伤害）",
+      "在一场己方阵营至少存在三名其他角色的战斗环节中，保持你是团队中唯一承受过伤害的角色"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "破法者",
+    "attrs": {
+      "体质": 15,
+      "智力": 12
+    },
+    "source": "战士、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "击败二十名施法者主职业的角色（不计算玩家在内）",
+      "打断五次施法者职业角色的法术或戏法，又或是使其退出专注状态（不计算玩家在内）",
+      "承受来自一本魔典的压迫，并使其不再对你能够产生威胁"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "神射手",
+    "attrs": {
+      "敏捷": 15,
+      "感知": 15
+    },
+    "source": "战士、猎人、奇械师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "进行三十次成功的攻击命中检定",
+      "连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算）",
+      "在一次劣势或极大劣势的攻击中触发暴击"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "游侠",
+    "attrs": {
+      "敏捷": 15,
+      "体质": 13,
+      "感知": 14
+    },
+    "source": "战士、猎人、游荡者、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你执行过十次回避动作",
+      "你在战斗环节中布置过十个陷阱，或者包含阻碍关键词的效应",
+      "你在同一个自身回合中使用近战攻击和远程攻击分别击杀一名能够获取经验值的角色，并且这场战斗环节有角色死于你的陷阱效果"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "夜枭猎手",
+    "attrs": {
+      "敏捷": 15,
+      "感知": 15
+    },
+    "source": "猎人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "在黑暗环境下猎杀二十名能够提供经验值的角色",
+      "在夜晚或黑暗环境下率先发起十场战斗环节",
+      "在夜晚或黑暗环境中击杀一名精英级单位"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "巡林客",
+    "attrs": {
+      "敏捷": 14,
+      "体质": 13,
+      "感知": 15
+    },
+    "source": "猎人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "在森林环境中赢得十场战斗环节的胜利",
+      "在林地中追踪并找到五处隐藏的野兽巢穴或敌人营地",
+      "你满足以下任意一种条件：①引导一支队伍安全穿过一片被诅咒或被腐化的森林，期间无人死亡②挫败一伙敌对势力在森林中将要进行的巨大阴谋"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "潮汐守望者",
+    "attrs": {
+      "力量": 14,
+      "体质": 15,
+      "感知": 14
+    },
+    "source": "牧师、魔契师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "解救至少二十名落水或遭遇海难的船员（不计算玩家在内）",
+      "击退或击沉三艘敌对船只",
+      "平息一场由海洋生物（例如海怪、波涛元素、强大的娜迦施法者等）引发的巨大威胁，确保沿海居民的安全"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "黎明守卫",
+    "attrs": {
+      "感知": 15,
+      "魅力": 13,
+      "意志": 14
+    },
+    "source": "牧师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
+    "conditions": [
+      "在黎明时分赢得五场战斗环节的胜利",
+      "驱逐或消灭二十只黑暗生物、不死生物或邪魔",
+      "守护一处圣地或居民聚集地直至天亮，期间成功抵御夜间不断的侵袭"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "黑暗监管者",
+    "attrs": {
+      "感知": 15,
+      "意志": 15
+    },
+    "source": "牧师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在黑暗环境中赢得十场战斗环节的胜利",
+      "截获或破坏五起与黑暗生物相关的阴谋（不计算玩家在内）",
+      "镇压一个与黑暗、负能量或邪恶相关的精英级单位，成为其监管者"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "无面人",
+    "attrs": {
+      "感知": 14,
+      "魅力": 13,
+      "意志": 15
+    },
+    "source": "牧师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在不被发觉真实身份的情况下进入三处高度警戒的场所（例如贵族宅邸、军事要塞、异教神殿等）并全身而退",
+      "在社交场合中，以伪装身份面见二十名NPC角色，并且未被识破",
+      "创造一个广为流传的虚构身份，使该身份被当地势力正式承认并记录在案"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "守护骑士",
+    "attrs": {
+      "体质": 15,
+      "意志": 15
+    },
+    "source": "牧师、圣骑士、魔契师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "你为了守护无辜的人们而主动发起十场战斗",
+      "完成十次善举并获得他人的感激（不计算玩家在内）",
+      "你挫败了一场巨大的邪恶并因此挽救了数百人的生命"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "朝圣骑士",
+    "attrs": {
+      "体质": 13,
+      "感知": 14,
+      "意志": 15
+    },
+    "source": "圣骑士、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你拥有某个在俗世层面已然销声匿迹的势力或国度传承",
+      "前往三处你所拥有的传承于世间的古老遗迹以完成朝圣",
+      "以你的传承名义在世间留下一桩正面意义的壮举，让人们知晓这一切还尚未被遗忘"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "苦修士",
+    "attrs": {
+      "体质": 14,
+      "感知": 13,
+      "意志": 15
+    },
+    "source": "圣骑士、武僧、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "为十名角色承受本应由他们承担的痛苦",
+      "在战斗环节中累计承受超过500点伤害（包括过量伤害）",
+      "在完成上述前置条件①和②后，进行长达五年的幕间物语，通过隐居苦修来参悟进阶的道路，在幕间结束时重复进行难度为15的感悟检定，直到你累计完成三次成功检定以晋升为苦修士，或者检定失败，届时你需要重新进行这个幕间物语才能再次尝试进阶（检定过程中使用任意重掷或修改骰面等效果都会导致检定的直接失败）"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "松鼠党",
+    "attrs": {
+      "敏捷": 15,
+      "感知": 14,
+      "幸运": 13
+    },
+    "source": "猎人、游荡者、吟游诗人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "惩治十名破坏自然、欺凌弱小、压迫他人的角色（不计算玩家在内）",
+      "完成五次善举并获得他人的感激（不计算玩家在内）",
+      "带领民众打倒一名祸害当地的暴君、官僚或恶霸，并使其痛哭流涕地向大家诚心认错"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "归隐诗人",
+    "attrs": {
+      "魅力": 15,
+      "意志": 15
+    },
+    "source": "吟游诗人、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "你满足以下任意一种条件：①你的个性背景为隐士②在无人定居的自然环境中（例如森林、山脉、荒野等）独自生活半年时长",
+      "运用诗歌、音乐或故事，安抚或化解三场将要在偏远地区发生的冲突（例如猎人之间的争执、村民对野兽的恐惧等）",
+      "在隐居的偏远地区遭遇一次外界的重大威胁（例如战火蔓延、瘟疫逼近、巨兽入侵等）时走出宁静，以非暴力或最小干涉的方式化解危机"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "绿骑士",
+    "attrs": {
+      "体质": 12,
+      "感知": 15,
+      "幸运": 12
+    },
+    "source": "魔契师、守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "击败十名闯入森林中的角色（不计算玩家在内）",
+      "举行、参与五场与森林或绿植有关的自然仪式，这些仪式不能来源与氏族或部落的古老传统",
+      "创造一段被他人流传为森林中童话故事的经历"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "哨塔",
+    "attrs": {
+      "体质": 15,
+      "感知": 15
+    },
+    "source": "守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "进行十次成功的洞悉或察觉检定",
+      "在五场战斗环节中，你为团队中承受伤害最多、并且累计未主动位移超过一次全速移动距离的角色",
+      "在一场关键战役中，你保持至少三轮没有变更过自身位置，并且成功以此阻挡敌方的突破尝试"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "高地守卫",
+    "attrs": {
+      "力量": 13,
+      "敏捷": 14,
+      "感知": 15
+    },
+    "source": "守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "利用高地优势成功阻止五次敌人的攀爬或突进",
+      "在你处于比敌人更高的地势（如城墙、山丘、屋顶）的情况下击杀十名角色",
+      "以你所在的制高点为支点，引导团队完成一场关键战役的胜利"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "蚀印行者",
+    "attrs": {
+      "意志": 16
+    },
+    "source": "守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "发现并记录五处异常现象（例如空间裂隙、诅咒印记、超自然遗迹等）",
+      "成功阻止三次超自然威胁事件的扩散或爆发",
+      "成为某处古老遗迹或超自然结界的守望者，并且获得该处掌控者或原先守望者的承认"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "魂誓行者",
+    "attrs": {
+      "感知": 15,
+      "意志": 15
+    },
+    "source": "守望者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "驱散或超度十个不死生物（通过物理手段击杀无效）",
+      "为五名未能安息的亡魂完成执念，使其得以安息",
+      "与一名精英级或以上的亡魂签订灵魂契约，使其自愿放弃执念并得以安息，以此阻止一次可能发生的亡灵灾变"
+    ]
+  },
+  {
+    "class": "守望者",
+    "name": "龙脉誓约者",
+    "attrs": {
+      "力量": 14,
+      "魅力": 15,
+      "幸运": 13
+    },
+    "source": "守望者、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任",
+      "参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等）",
+      "在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠"
     ]
   },
   {

@@ -27,7 +27,7 @@ ELECTRON_ADV = ROOT / "electron-app" / "职业页"
 STAT_KEYS = ("力量", "敏捷", "体质", "智力", "感知", "魅力", "意志", "幸运")
 BASE_CLASSES = (
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊",
-    "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师",
+    "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
 )
 SKIP_NAMES = frozenset({"进阶", "属性值需求", "来源", "标识", "特殊条件", "1", "2", "3", *STAT_KEYS})
 
@@ -65,6 +65,7 @@ CLASS_SLUG = {
     "吟游诗人": "bard",
     "魔契师": "sorcerer",
     "奇械师": "artificer",
+    "守望者": "wd",
     "通用": "common",
 }
 
@@ -83,6 +84,7 @@ CONTAINER_ID = {
     "吟游诗人": "bard-adv-container",
     "魔契师": "sorcerer-adv-container",
     "奇械师": "artificer-adv-container",
+    "守望者": "wd-adv-container",
     "通用": "common-adv-container",
 }
 
@@ -101,6 +103,7 @@ EMPTY_DIV_ID = {
     "吟游诗人": "bard-adv-empty",
     "魔契师": "sorcerer-adv-empty",
     "奇械师": "artificer-adv-empty",
+    "守望者": "wd-adv-empty",
     "通用": "common-adv-empty",
 }
 

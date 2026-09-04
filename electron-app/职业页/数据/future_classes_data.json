@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "未来基础职业接口数据",
+    "description": "仅作为后续版本接入接口，当前版本不加载、不展示、不参与任何现有逻辑。",
+    "enabled": false,
+    "version": "1.0.7258-preview"
+  },
+  "classes": [
+    {
+      "id": "谋士",
+      "name": "谋士",
+      "status": "planned",
+      "playable": false,
+      "key_attr": "智力",
+      "armor": "轻甲",
+      "weapons": "匕首、手弩、简易",
+      "saves": [
+        "智力",
+        "魅力"
+      ],
+      "skills": [
+        "专注",
+        "调查",
+        "逻辑",
+        "知识",
+        "洞悉",
+        "欺瞒",
+        "说服",
+        "决策"
+      ],
+      "specializations": [
+        "运筹帷幄",
+        "博闻识料",
+        "先机权变"
+      ],
+      "starting_features": [
+        "交友术",
+        "战斗部署",
+        "奇计",
+        "借刀杀人"
+      ]
+    },
+    {
+      "id": "召唤师",
+      "name": "召唤师",
+      "status": "planned",
+      "playable": false,
+      "key_attr": "幸运",
+      "armor": "轻甲",
+      "weapons": "法杖、魔棒、匕首、手弩、简易",
+      "saves": [
+        "感知",
+        "幸运"
+      ],
+      "skills": [
+        "专注",
+        "奥秘",
+        "多元宇宙",
+        "神秘学",
+        "洞悉",
+        "驯兽",
+        "感悟",
+        "机遇"
+      ],
+      "specializations": [
+        "召唤联结",
+        "异界感知",
+        "契约召唤"
+      ],
+      "starting_features": [
+        "魔法飞弹",
+        "次级召唤术",
+        "唤回"
+      ]
+    },
+    {
+      "id": "战舞者",
+      "name": "战舞者",
+      "status": "planned",
+      "playable": false,
+      "key_attr": "敏捷或魅力",
+      "armor": "轻甲",
+      "weapons": "匕首、环刃、刺剑、拳刃、简易",
+      "saves": [
+        "敏捷",
+        "魅力"
+      ],
+      "skills": [
+        "体操",
+        "隐匿",
+        "巧手",
+        "洞悉",
+        "察觉",
+        "欺瞒",
+        "说服",
+        "激励"
+      ],
+      "specializations": [
+        "舞步流畅",
+        "节奏连击",
+        "优雅身姿"
+      ],
+      "starting_features": [
+        "回旋斩",
+        "魅惑之舞",
+        "激励旋步",
+        "闪避舞步"
+      ]
+    }
+  ]
+}
