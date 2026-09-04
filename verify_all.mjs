@@ -83,6 +83,21 @@ let dataOK = dataCheck.status === 0;
 console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
 totalErrors += dataOK ? 0 : 1;
 
+// 技能文本格式（docx 缩进续行合并 + 升级选项吸收）
+console.log('\n=== 技能文本格式 ===');
+let fmtOK = true;
+try {
+  let fmtOut = spawnSync('python', [join(BASE, 'scripts', 'verify_skill_text_format.py')], { encoding: 'utf-8', timeout: 120000 });
+  if (fmtOut.stdout) console.log(fmtOut.stdout.trim());
+  if (fmtOut.stderr) console.error(fmtOut.stderr.trim());
+  if (fmtOut.status !== 0) fmtOK = false;
+} catch (e) {
+  fmtOK = false;
+  console.log('❌ 技能文本格式校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(fmtOK ? '✅ 技能文本格式通过' : '❌ 技能文本格式失败');
+totalErrors += fmtOK ? 0 : 1;
+
 // UI 结构回归（原生对话框/职业专长导航/CSS 版本/文章 div 平衡）
 console.log('\n=== UI 结构回归 ===');
 let uiOK = true;
@@ -96,6 +111,21 @@ try {
 }
 console.log(uiOK ? '✅ UI 结构回归通过' : '❌ UI 结构回归失败');
 totalErrors += uiOK ? 0 : 1;
+
+// 移动端职业页导航抽屉（法师/魔契师等窄屏目录可用性）
+console.log('\n=== 移动端导航抽屉 ===');
+let navOK = true;
+try {
+  let navOut = spawnSync('node', [join(BASE, 'verify_mobile_nav_drawer.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
+  if (navOut.stdout) console.log(navOut.stdout.trim().slice(-1200));
+  if (navOut.stderr) console.error(navOut.stderr.trim());
+  if (navOut.status !== 0) navOK = false;
+} catch (e) {
+  navOK = false;
+  console.log('❌ 移动端导航抽屉执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(navOK ? '✅ 移动端导航抽屉通过' : '❌ 移动端导航抽屉失败');
+totalErrors += navOK ? 0 : 1;
 
 // 护甲/防御等级规则（所有装备型护甲敏捷加成上限 +2；面板/旧引擎/导出/创建页一致性）
 console.log('\n=== 护甲/防御等级规则 ===');

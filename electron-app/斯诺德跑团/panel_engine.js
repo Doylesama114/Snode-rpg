@@ -520,7 +520,24 @@ function startRecreateFromPanel() {
 function calcMod(s){return Math.floor((s-10)/2)}function mStr(v){return v>=0?'+'+v:v}
 
 
-function calcTotalHP(mc,ml,sc,sl,con,race,bg,fb){
+function parseHpBonus(value, raceSize) {
+  if (typeof value === "number") return value;
+  if (!value) return 0;
+  if (typeof value === "string") {
+    var parts = value.split("/");
+    if (parts.length === 2) {
+      var small = parseInt(parts[0], 10); if (isNaN(small)) small = 0;
+      var large = parseInt(parts[1], 10); if (isNaN(large)) large = 0;
+      return (raceSize && String(raceSize).indexOf("小") >= 0) ? small : large;
+    }
+    var m = value.match(/([-+])?\d+/);
+    return m ? parseInt(m[0], 10) : 0;
+  }
+  return 0;
+}
+
+
+function calcTotalHP(mc,ml,sc,sl,con,race,bg,fb,raceSize){
 
 
   if(!mc||!ml)return 0;var cm=calcMod(con);
@@ -533,7 +550,7 @@ function calcTotalHP(mc,ml,sc,sl,con,race,bg,fb){
   var u=hd&&hd.hp_formula?hd.hp_formula.level_up:2;
 
 
-  var rhp=0;if(race&&REF_RACES[race]){rhp=REF_RACES[race]["hp_bonus"]||0;}var bhp=0;if(bg&&REF_BACKGROUNDS&&REF_BACKGROUNDS[bg]){var _bv=REF_BACKGROUNDS[bg]["hp_bonus"];if(typeof _bv==="string"){_bv=parseInt(_bv)||0;}if(typeof _bv==="number")bhp=_bv;}var hp=f+cm+rhp+bhp+u*(ml-1)+cm*(ml-1);
+  var rhp=0;if(race&&REF_RACES[race]){var rs=raceSize||(REF_RACES[race].size||"");rhp=parseHpBonus(REF_RACES[race]["hp_bonus"],rs);}var bhp=0;if(bg&&REF_BACKGROUNDS&&REF_BACKGROUNDS[bg]){bhp=parseHpBonus(REF_BACKGROUNDS[bg]["hp_bonus"],"");}var hp=f+cm+rhp+bhp+u*(ml-1)+cm*(ml-1);
 
 
   if(sc&&sl>0){
@@ -560,7 +577,7 @@ function calcTotalHP(mc,ml,sc,sl,con,race,bg,fb){
   if(fb) hp+=fb;
 
 
-  return hp;}
+  return Math.max(0, Number(hp) || 0);}
 
 
 function calcTotalFP(mc,ml,sc,sl,ka,kv,race,fb){
@@ -4788,7 +4805,7 @@ function renderBattleStats(){
     if(fnName==="健美教练") featHPBonus+=10;
     if(fnName==="健壮") featHPBonus+=2*(ml+(sc&&sl>0?sl-1:0));
   }
-  state.hp=calcTotalHP(mc,ml,sc,sl,con,state.race,state.background,featHPBonus);
+  state.hp=calcTotalHP(mc,ml,sc,sl,con,state.race,state.background,featHPBonus,state.raceSize);
 
 
   var fpKeyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"";if(fpKeyAttr==="力量或敏捷")fpKeyAttr=state.classes[0].keyAttr||"力量";var fpKeyVal=state.attrs[fpKeyAttr]||10;state.fp=calcTotalFP(mc,ml,sc,sl,fpKeyAttr,fpKeyVal,state.race,0);
@@ -4898,7 +4915,7 @@ function renderBattleStats(){
   // Right side: 2x5 grid
 
 
-  var row1=[{l:"生命值",v:state.hp},{l:"疲劳值",v:state.fp},{l:"防御等级",v:ac},{l:"先攻值",v:"D20"+mStr(calcMod(dex))},{l:"速度",v:speed}];
+  var row1=[{l:"生命值",v:Number(state.hp||0)},{l:"疲劳值",v:Number(state.fp||0)},{l:"防御等级",v:ac},{l:"先攻值",v:"D20"+mStr(calcMod(dex))},{l:"速度",v:speed}];
 
 
   var strMod=calcMod(state.attrs["力量"]||10);var dexMod=calcMod(dex);var _keyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"魅力";if(_keyAttr==="力量或敏捷")_keyAttr=state.classes[0].keyAttr||"力量";var _keyVal=state.attrs[_keyAttr]||10;var spellMod=calcMod(_keyVal)+(state.spell_hit_bonus||0);
@@ -4907,7 +4924,7 @@ function renderBattleStats(){
   var atkMod=Math.max(strMod,dexMod)+(state.atk_hit_bonus||0);
 
 
-  var row2=[{l:"生命回复",v:Math.floor(state.hp/2)},{l:"疲劳回复",v:Math.floor(state.fp/2)},{l:"警惕值",v:10+calcMod(wis)},{l:"攻击命中",v:mStr(atkMod)},{l:"法术命中",v:mStr(spellMod)}];
+  var row2=[{l:"生命回复",v:Math.floor(Number(state.hp||0)/2)},{l:"疲劳回复",v:Math.floor(Number(state.fp||0)/2)},{l:"警惕值",v:10+calcMod(wis)},{l:"攻击命中",v:mStr(atkMod)},{l:"法术命中",v:mStr(spellMod)}];
 
 
   for(var ri=0;ri<2;ri++){
@@ -8233,7 +8250,7 @@ async function exportXlsxFromState(state) {
   if (wa && wa.name) { set("B29", wa.name); if (wa.level) set("D29", wa.level); }
 
         // Combat values (mirrors panel render logic in 角色面板.html line 4415-4562)
-  var _hp = state.hp||0; var _fp = state.fp||0;
+  var _hp = Number(state.hp)||0; var _fp = Number(state.fp)||0;
   var _mhp = typeof calcMod==="function"?calcMod:function(v){return Math.floor((v-10)/2);};
   var _dex = (state.attrs||{})["敏捷"]||10;
   var _dexMod = _mhp(_dex);

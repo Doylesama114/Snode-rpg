@@ -133,6 +133,18 @@ assertClose(hp7, 28, '战士L0不增加HP → 28');
 var hp8 = calcTotalHP("", 0, "", 0, 10, "", "", 0);
 assertClose(hp8, 0, '空职业 → 0');
 
+// 犬牙族/翼空族 hp_bonus 为 "+0/+2"：小体型 +0，中体型 +2
+var hpDogSmall = calcTotalHP("蛮斗士", 1, "", 0, 14, "犬牙族", "", 0, "小型");
+assertClose(hpDogSmall, 14, '犬牙族小体型 → 12+2+0=14');
+assertTrue(typeof hpDogSmall === 'number', '犬牙族HP必须是number');
+var hpDogMedium = calcTotalHP("蛮斗士", 1, "", 0, 14, "犬牙族", "", 0, "中型");
+assertClose(hpDogMedium, 16, '犬牙族中体型 → 12+2+2=16');
+assertTrue(typeof hpDogMedium === 'number', '犬牙族中体型HP必须是number');
+assertClose(Math.floor(hpDogMedium / 2), 8, '犬牙族生命回复=8，不为NaN');
+var hpWingMedium = calcTotalHP("蛮斗士", 1, "", 0, 14, "翼空族", "", 0, "中型");
+assertClose(hpWingMedium, 16, '翼空族中体型 → 12+2+2=16');
+assertTrue(typeof hpWingMedium === 'number', '翼空族HP必须是number');
+
 results.push('</div>');
 
 // =================== T4: calcTotalFP ===================

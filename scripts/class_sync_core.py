@@ -54,8 +54,27 @@ LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
 LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.+)$")
 
 
+LEVEL_CHOICE_LEAD_TAILS = (
+    "以下增益效果", "以下增益效果：", "以下效果", "以下效果：", "以下信息", "以下信息：",
+    "以下指令", "以下指令：", "以下能力", "以下能力：", "以下所列", "以下所列：",
+    "效果如下", "效果如下：", "如下所示", "如下所示：", "额外的效果", "额外的效果：",
+    "额外类型", "额外类型：", "新的可选项", "新的可选项：", "新的可选选项", "新的可选选项：",
+)
+
+
+NEW_ITEM_RE = re.compile(r"^(?:[（(]?\d+[)）]|\d+[.、]|[-+·•])")
+
+
+def is_new_list_item(text: str) -> bool:
+    """编号/新 bullet 不应拼进上一 bullet，即使段落带缩进。"""
+    return bool(NEW_ITEM_RE.match(text.strip()))
+
+
 def level_upgrade_absorbs_choices(text: str) -> bool:
-    return "抉择" in text or text.rstrip().endswith("：")
+    t = text.rstrip()
+    if "抉择" in text or t.endswith("："):
+        return True
+    return any(t.endswith(tail) for tail in LEVEL_CHOICE_LEAD_TAILS)
 TYPE_HEADS = ("战技", "法术", "能力", "战术", "戏法", "天赋", "功法")
 STAT_BLOCK_TAIL = ("其数据如下所示", "其数据如下所示：")
 BOILERPLATE_EXACT = frozenset({"你可以通过花费技能点的方式来获取以下能力"})
@@ -90,6 +109,8 @@ def extract_paragraphs(docx_path: Path) -> list[dict]:
         tree = ET.fromstring(z.read("word/document.xml"))
     paras = []
     for p in tree.iter(f"{{{NS}}}p"):
+        ppr = p.find(f"{{{NS}}}pPr")
+        indent = ppr is not None and ppr.find(f"{{{NS}}}ind") is not None
         runs = []
         for r in p.iter(f"{{{NS}}}r"):
             txt = "".join(t.text or "" for t in r.iter(f"{{{NS}}}t"))
@@ -107,7 +128,7 @@ def extract_paragraphs(docx_path: Path) -> list[dict]:
             runs.append({"text": txt, "color": hex_c})
         text = "".join(r["text"] for r in runs).strip()
         if text:
-            paras.append({"text": text, "runs": runs})
+            paras.append({"text": text, "runs": runs, "indent": indent})
     return paras
 
 
@@ -180,11 +201,64 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
     flavor_parts: list[str] = []
     phase = "pre"
     absorb_choices = False
+    pending_upgrade_indent = False
     i = start + 1
+
+    def append_description(text: str, runs: list[dict], is_indent: bool) -> None:
+        """合并 docx 中缩进的续行：上一行以 · 开头时拼回同一 bullet。"""
+        if (
+            is_indent
+            and description
+            and description[-1].startswith("·")
+            and not is_new_list_item(text)
+        ):
+            prev_text = description[-1]
+            description[-1] += text
+            if description_entries and description_entries[-1]["text"] == prev_text:
+                description_entries[-1]["text"] += text
+                description_entries[-1]["runs"] = (
+                    description_entries[-1].get("runs") or []
+                ) + (runs or [])
+            return
+        description.append(text)
+        description_entries.append({"text": text, "runs": runs})
+
+    def append_choice(text: str, is_indent: bool) -> None:
+        choices = level_upgrades[-1].setdefault("choices", [])
+        if (
+            is_indent
+            and choices
+            and choices[-1].startswith("·")
+            and not is_new_list_item(text)
+        ):
+            choices[-1] += text
+            return
+        choices.append(text)
 
     while i < len(paras):
         text = paras[i]["text"]
         runs = paras[i]["runs"]
+        is_indent = bool(paras[i].get("indent"))
+
+        if pending_upgrade_indent:
+            next_is_level = text.startswith("你的") and (LEVEL_RE.match(text) or LEVEL_RE2.match(text))
+            if (
+                is_indent
+                and level_upgrades
+                and not absorb_choices
+                and not is_new_list_item(text)
+                and not next_is_level
+                and not is_skill_name_line(text, names)
+                and not is_section_break(text)
+            ):
+                level_upgrades[-1]["text"] += text
+                if runs:
+                    level_upgrades[-1].setdefault("line_runs", [])
+                    if isinstance(level_upgrades[-1].get("line_runs"), list):
+                        level_upgrades[-1]["line_runs"].extend(runs)
+                i += 1
+                continue
+            pending_upgrade_indent = False
 
         if is_skill_name_line(text, names):
             break
@@ -235,7 +309,9 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                     "label": label,
                     "line_runs": runs,
                 })
-                absorb_choices = level_upgrade_absorbs_choices(body)
+                next_text = paras[i + 1]["text"] if i + 1 < len(paras) else ""
+                absorb_choices = level_upgrade_absorbs_choices(body) or next_text.startswith("·")
+                pending_upgrade_indent = True
                 i += 1
                 continue
             m2 = LEVEL_RE2.match(text)
@@ -249,7 +325,9 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
                     "label": label,
                     "line_runs": runs,
                 })
-                absorb_choices = level_upgrade_absorbs_choices(body)
+                next_text = paras[i + 1]["text"] if i + 1 < len(paras) else ""
+                absorb_choices = level_upgrade_absorbs_choices(body) or next_text.startswith("·")
+                pending_upgrade_indent = True
                 i += 1
                 continue
 
@@ -293,16 +371,14 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
 
         if phase == "post_mark":
             if absorb_choices and level_upgrades:
-                level_upgrades[-1].setdefault("choices", []).append(text)
+                append_choice(text, is_indent)
                 i += 1
                 continue
             if not is_boilerplate_line(text):
-                description.append(text)
-                description_entries.append({"text": text, "runs": runs})
+                append_description(text, runs, is_indent)
         elif phase == "fields" and not any(text.startswith(p) for p in FIELD_PREFIXES):
             if not is_boilerplate_line(text):
-                description.append(text)
-                description_entries.append({"text": text, "runs": runs})
+                append_description(text, runs, is_indent)
 
         i += 1
 
