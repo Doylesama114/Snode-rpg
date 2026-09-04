@@ -99,7 +99,8 @@ function buildEquipmentRules(className, refClass, classesRow) {
     `创建页护甲熟练：${armor || '—'}`,
     `创建页武器熟练：${weapons || '—'}`,
   ];
-  if (/枪械/.test(weapons) || className === '奇械师') {
+  const allowsGuns = /枪械/.test(weapons) && !/除枪械|枪械武器以外|不含枪械/.test(weapons);
+  if (allowsGuns || className === '奇械师') {
     keyRules.push('枪械类武器消耗弹药；远程攻击规则见基础规则与职业页。');
   }
   if (/法杖|魔棒/.test(weapons)) {

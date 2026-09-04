@@ -2,7 +2,7 @@
   "meta": {
     "layer": "L0",
     "version": "1.0.7038",
-    "phase": "5-batch8"
+    "phase": "5-batch10"
   },
   "bullets": [
     "斯诺德跑团规则与 D&D 不同，顾问不得套用 D&D 法术位/短休长休等概念。",
@@ -29,12 +29,12 @@
     "L5 检索器：advisor-retrieve.mjs；15 题 spot-check 通过",
     "L2 技能索引：14 职业均有 L2（法师 356 + 通用 390 + 13×partial 索引）",
     "Phase 5 完成（7030–7038）：全职业 partial L2 + 实体/起手装备/L3A/L5 stub/档位 audit；回归见 validate-advisor-phase5-regression.mjs",
-    "职业档位 audit：full 14/1 ready；partial 0/13 ready（class_tier_audit.json）",
     "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
     "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
     "名望/声望：见 help.html #s9；名望=知名度广度（0～19-20 称号），声望=阵营观感深度（仇恨→崇拜），二者独立且不直接加属性。其他补充裁定见 #s10（含射程、反应动作细则/终结技锁定与后发先置、掩体、图纸专业槽 10+智力调整值）。",
     "L3 进阶库：283 条（全职业·进阶 docx 同步后去重合并）",
-    "L3A 进阶技能：advancement_skills.json（55/283 条 documented）"
+    "L3A 进阶技能：advancement_skills.json（55/283 条 documented）",
+    "职业档位 audit：full 15 职业 ready；partial 0 职业 ready（class_tier_audit.json）"
   ]
 }

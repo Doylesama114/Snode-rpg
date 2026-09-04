@@ -42,7 +42,7 @@ function ok(name, cond, extra) { if (cond) { pass++; console.log('PASS', name); 
   });
   ok('游荡者所有技能都在正文列', r.bad.length === 0, JSON.stringify(r));
   ok('游荡者职业专长导航仅一条', r.navLinks === 1, JSON.stringify(r));
-  ok('游荡者CSS版本号已更新', r.css.indexOf('v=1.0.7258') >= 0, r.css);
+  ok('游荡者CSS版本号已更新', r.css.indexOf('v=1.0.7259') >= 0, r.css);
   ok('游荡者无横向溢出', r.overflow === 0, r.overflow);
   ok('游荡者无JS错误', errs.length === 0, errs.join('|'));
   await page.close();

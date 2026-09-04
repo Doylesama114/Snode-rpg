@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7052",
-    "note": "14职业顾问全部full；7052奇械师升full Phase5收尾"
+    "version": "1.0.7259",
+    "note": "15个基础职业：守望者已升至 full"
   },
   "defaults": {
     "tier": "basic",
@@ -292,6 +292,29 @@
       "promptProfile": "warlock_skills",
       "fullL2MinSkills": 80,
       "l5MinTips": 20
+    },
+    "守望者": {
+      "tier": "full",
+      "keyAttr": "意志",
+      "l2Slug": "warden",
+      "l2Layer": "L2-warden",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "specProfChoices": [
+        "哨兵",
+        "铁壁",
+        "荒野庇护"
+      ],
+      "styleKeywords": [
+        "守望者",
+        "守护",
+        "警戒",
+        "坚韧",
+        "原野"
+      ],
+      "promptProfile": "warden_skills",
+      "fullL2MinSkills": 36,
+      "l5MinTips": 15
     }
   }
 }

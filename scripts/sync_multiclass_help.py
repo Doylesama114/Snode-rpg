@@ -26,7 +26,7 @@ ELECTRON_HELP = ROOT / "electron-app" / "斯诺德跑团" / "help.html"
 
 CLASSES = [
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者",
-    "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师",
+    "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
 ]
 
 # 矩阵列头缩写（title 显示全名）
@@ -34,7 +34,7 @@ SHORT = {
     "蛮斗士": "蛮斗", "战士": "战士", "法师": "法师", "猎人": "猎人",
     "牧师": "牧师", "圣骑士": "圣骑", "游荡者": "游荡", "德鲁伊": "德鲁",
     "萨满祭司": "萨满", "术士": "术士", "武僧": "武僧", "吟游诗人": "吟游",
-    "魔契师": "魔契", "奇械师": "奇械",
+    "魔契师": "魔契", "奇械师": "奇械", "守望者": "守望",
 }
 
 BEGIN_BODY = "<!-- MULTICLASS-RULES -->"
@@ -48,13 +48,13 @@ def load_xlsx() -> dict:
     wb = openpyxl.load_workbook(XLSX, data_only=True)
     ws = wb["兼职规则"]
     data = {}
-    for r in range(3, 17):
+    for r in range(3, 18):
         name = ws.cell(r, 2).value
         if not name:
             continue
         compatible = [
             ws.cell(r, c).value
-            for c in range(6, 20)
+            for c in range(6, 21)
             if ws.cell(r, c).value and ws.cell(r, c).value != "-"
         ]
         incompatible = [c for c in CLASSES if c not in compatible]
@@ -224,13 +224,13 @@ def verify(html: str, data: dict) -> list:
     if BEGIN_BODY in body and END_BODY in body:
         body = body[body.index(BEGIN_BODY): body.index(END_BODY)]
 
-    # 1) 兼职规则表：14 职业 × 4 列
+    # 1) 兼职规则表：15 职业 × 4 列
     rows = re.findall(
         r"<tr><td><b>([^<]+)</b></td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>",
         body,
     )
-    if len(rows) != 14:
-        errors.append(f"兼职规则表行数 {len(rows)} != 14")
+    if len(rows) != 15:
+        errors.append(f"兼职规则表行数 {len(rows)} != 15")
     for name, attr, prof, other, inc in rows:
         d = data.get(name)
         if not d:
@@ -246,7 +246,7 @@ def verify(html: str, data: dict) -> list:
         if inc != expect_inc:
             errors.append(f"{name} 不可兼职: {inc} != {expect_inc}")
 
-    # 2) 稀疏矩阵：182 个方向对
+    # 2) 稀疏矩阵：210 个方向对
     m = re.search(r'<table class="mc-matrix">.*?</table>', body, re.S)
     if not m:
         errors.append("未找到 mc-matrix 矩阵")
@@ -255,14 +255,14 @@ def verify(html: str, data: dict) -> list:
         # 需要按行分组验证；直接按类顺序逐格解析
         matrix = re.findall(r"<tr>(.*?)</tr>", m.group(0), re.S)
         data_rows = matrix[1:]  # 去掉表头
-        if len(data_rows) != 14:
-            errors.append(f"矩阵数据行数 {len(data_rows)} != 14")
+        if len(data_rows) != 15:
+            errors.append(f"矩阵数据行数 {len(data_rows)} != 15")
         for ri, rn in enumerate(CLASSES):
             if ri >= len(data_rows):
                 break
             tds = re.findall(r'<td class="(mc-no|mc-ok|mc-self)"', data_rows[ri])
-            if len(tds) != 14:
-                errors.append(f"{rn} 矩阵列数 {len(tds)} != 14")
+            if len(tds) != 15:
+                errors.append(f"{rn} 矩阵列数 {len(tds)} != 15")
                 continue
             for ci, cn in enumerate(CLASSES):
                 expect = (
@@ -296,7 +296,7 @@ def main() -> int:
             for e in errors:
                 print("  -", e)
             return 1
-        print("VERIFY PASS：兼职规则表 56 项断言 + 矩阵 182 方向对全部一致")
+        print("VERIFY PASS：兼职规则表 60 项断言 + 矩阵 210 方向对全部一致")
         return 0
 
     html = sync_css(html)

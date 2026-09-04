@@ -1,0 +1,528 @@
+{
+  "meta": {
+    "layer": "L5",
+    "phase": "5-full",
+    "targetClass": "守望者",
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 15,
+    "byKind": {
+      "style_guide": 4,
+      "tactic": 8,
+      "combat_rule": 1,
+      "chargen": 2
+    },
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
+    "generatedAt": "2026-09-04"
+  },
+  "tips": [
+    {
+      "id": "tip-warden-style-守护",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者·守护风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "守护",
+      "summary": "守护：偏阻碍、力量/敏捷豁免（12）、每场战斗限一次、天赋等能力。",
+      "detail": "低阶代表：牵制位、援助架势、危难共担。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "牵制位",
+        "援助架势",
+        "危难共担"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "守护",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "牵制位",
+          "source": "warden"
+        },
+        {
+          "name": "援助架势",
+          "source": "warden"
+        },
+        {
+          "name": "危难共担",
+          "source": "warden"
+        }
+      ],
+      "searchText": "守望者·守护风格 style_guide auto_generated 守护：偏阻碍、力量/敏捷豁免（12）、每场战斗限一次、天赋等能力。 低阶代表：牵制位、援助架势、危难共担。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 守望者 守护 战斗风格 style_guide 牵制位 援助架势 危难共担"
+    },
+    {
+      "id": "tip-warden-style-警戒",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者·警戒风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "警戒",
+      "summary": "警戒：偏探知、光环、唯一性、战技等能力。",
+      "detail": "低阶代表：警戒姿态、预警术、先声夺人。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "警戒姿态",
+        "预警术",
+        "先声夺人"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "警戒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "警戒姿态",
+          "source": "warden"
+        },
+        {
+          "name": "预警术",
+          "source": "warden"
+        },
+        {
+          "name": "先声夺人",
+          "source": "warden"
+        }
+      ],
+      "searchText": "守望者·警戒风格 style_guide auto_generated 警戒：偏探知、光环、唯一性、战技等能力。 低阶代表：警戒姿态、预警术、先声夺人。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 守望者 警戒 战斗风格 style_guide 警戒姿态 预警术 先声夺人"
+    },
+    {
+      "id": "tip-warden-style-坚韧",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者·坚韧风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "坚韧",
+      "summary": "坚韧：偏韧性、短休/长休、战技、防御等能力。",
+      "detail": "低阶代表：沉着之心、硬气、防御姿态。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "沉着之心",
+        "硬气",
+        "防御姿态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "坚韧",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "沉着之心",
+          "source": "warden"
+        },
+        {
+          "name": "硬气",
+          "source": "warden"
+        },
+        {
+          "name": "防御姿态",
+          "source": "warden"
+        }
+      ],
+      "searchText": "守望者·坚韧风格 style_guide auto_generated 坚韧：偏韧性、短休/长休、战技、防御等能力。 低阶代表：沉着之心、硬气、防御姿态。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 守望者 坚韧 战斗风格 style_guide 沉着之心 硬气 防御姿态"
+    },
+    {
+      "id": "tip-warden-style-原野",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者·原野风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "原野",
+      "summary": "原野：偏自然、战技、交涉、激活等能力。",
+      "detail": "低阶代表：荒野识途、通晓兽语、防护毒素。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "荒野识途",
+        "通晓兽语",
+        "防护毒素"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "原野",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "荒野识途",
+          "source": "warden"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "warden"
+        },
+        {
+          "name": "防护毒素",
+          "source": "warden"
+        }
+      ],
+      "searchText": "守望者·原野风格 style_guide auto_generated 原野：偏自然、战技、交涉、激活等能力。 低阶代表：荒野识途、通晓兽语、防护毒素。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 守望者 原野 战斗风格 style_guide 荒野识途 通晓兽语 防护毒素"
+    },
+    {
+      "id": "tip-warden-prio-守护",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守护 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "守护",
+      "summary": "守护线前三级可优先：牵制位、援助架势、危难共担；与起手特性/专精规划一致再扩展。",
+      "detail": "守望者 守护 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "牵制位",
+        "援助架势",
+        "危难共担"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "守护",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "牵制位",
+          "source": "warden"
+        },
+        {
+          "name": "援助架势",
+          "source": "warden"
+        },
+        {
+          "name": "危难共担",
+          "source": "warden"
+        }
+      ],
+      "searchText": "守护 1～3 阶优先 tactic auto_generated 守护线前三级可优先：牵制位、援助架势、危难共担；与起手特性/专精规划一致再扩展。 守望者 守护 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 守望者 守护 优先学 tactic 牵制位 援助架势 危难共担"
+    },
+    {
+      "id": "tip-warden-prio-警戒",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "警戒 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "警戒",
+      "summary": "警戒线前三级可优先：警戒姿态、预警术、先声夺人；与起手特性/专精规划一致再扩展。",
+      "detail": "守望者 警戒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "警戒姿态",
+        "预警术",
+        "先声夺人"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "警戒",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "警戒姿态",
+          "source": "warden"
+        },
+        {
+          "name": "预警术",
+          "source": "warden"
+        },
+        {
+          "name": "先声夺人",
+          "source": "warden"
+        }
+      ],
+      "searchText": "警戒 1～3 阶优先 tactic auto_generated 警戒线前三级可优先：警戒姿态、预警术、先声夺人；与起手特性/专精规划一致再扩展。 守望者 警戒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 守望者 警戒 优先学 tactic 警戒姿态 预警术 先声夺人"
+    },
+    {
+      "id": "tip-warden-prio-坚韧",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "坚韧 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "坚韧",
+      "summary": "坚韧线前三级可优先：沉着之心、硬气、防御姿态；与起手特性/专精规划一致再扩展。",
+      "detail": "守望者 坚韧 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "沉着之心",
+        "硬气",
+        "防御姿态"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "坚韧",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "沉着之心",
+          "source": "warden"
+        },
+        {
+          "name": "硬气",
+          "source": "warden"
+        },
+        {
+          "name": "防御姿态",
+          "source": "warden"
+        }
+      ],
+      "searchText": "坚韧 1～3 阶优先 tactic auto_generated 坚韧线前三级可优先：沉着之心、硬气、防御姿态；与起手特性/专精规划一致再扩展。 守望者 坚韧 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 守望者 坚韧 优先学 tactic 沉着之心 硬气 防御姿态"
+    },
+    {
+      "id": "tip-warden-prio-原野",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "原野 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "原野",
+      "summary": "原野线前三级可优先：荒野识途、通晓兽语、防护毒素；与起手特性/专精规划一致再扩展。",
+      "detail": "守望者 原野 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "荒野识途",
+        "通晓兽语",
+        "防护毒素"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "原野",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "荒野识途",
+          "source": "warden"
+        },
+        {
+          "name": "通晓兽语",
+          "source": "warden"
+        },
+        {
+          "name": "防护毒素",
+          "source": "warden"
+        }
+      ],
+      "searchText": "原野 1～3 阶优先 tactic auto_generated 原野线前三级可优先：荒野识途、通晓兽语、防护毒素；与起手特性/专精规划一致再扩展。 守望者 原野 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 守望者 原野 优先学 tactic 荒野识途 通晓兽语 防护毒素"
+    },
+    {
+      "id": "tip-warden-start-挫志打击",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "起手·挫志打击",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "挫志打击（起手）：你对敌人发起攻击并削减对方反击的威能 如果对方的下一次攻击带有AOE关键词，那么改为在结算后-2 L8: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后",
+      "detail": "守望者 4 选 2 起手特性之一。你对敌人发起攻击并削减对方反击的威能 如果对方的下一次攻击带有AOE关键词，那么改为在结算后-2 L8: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后-6，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-3 L12: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后-8，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-4 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "挫志打击"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "挫志打击",
+          "source": "warden"
+        }
+      ],
+      "searchText": "起手·挫志打击 tactic auto_generated 挫志打击（起手）：你对敌人发起攻击并削减对方反击的威能 如果对方的下一次攻击带有AOE关键词，那么改为在结算后-2 L8: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后 守望者 4 选 2 起手特性之一。你对敌人发起攻击并削减对方反击的威能 如果对方的下一次攻击带有AOE关键词，那么改为在结算后-2 L8: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后-6，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-3 L12: 挫志打击改为使目标在持续时间内造成的下一次伤害在结算后-8，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-4 与后续 起手 风格技能可形成初期连招，但非强制绑定。 守望者 起手特性 车卡 tactic 挫志打击"
+    },
+    {
+      "id": "tip-warden-start-警戒之眼",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "起手·警戒之眼",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "警戒之眼（起手）：你对外界时刻保持着警觉，即便是微小的变化也逃不过你的眼睛 L5: 警戒之眼的关键词变更为短休/长休（2） L10: 即便目标脱离你的视野范围，你也能够在其产生异",
+      "detail": "守望者 4 选 2 起手特性之一。你对外界时刻保持着警觉，即便是微小的变化也逃不过你的眼睛 L5: 警戒之眼的关键词变更为短休/长休（2） L10: 即便目标脱离你的视野范围，你也能够在其产生异样的变化时触发微弱的提示 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "警戒之眼"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "警戒之眼",
+          "source": "warden"
+        }
+      ],
+      "searchText": "起手·警戒之眼 tactic auto_generated 警戒之眼（起手）：你对外界时刻保持着警觉，即便是微小的变化也逃不过你的眼睛 L5: 警戒之眼的关键词变更为短休/长休（2） L10: 即便目标脱离你的视野范围，你也能够在其产生异 守望者 4 选 2 起手特性之一。你对外界时刻保持着警觉，即便是微小的变化也逃不过你的眼睛 L5: 警戒之眼的关键词变更为短休/长休（2） L10: 即便目标脱离你的视野范围，你也能够在其产生异样的变化时触发微弱的提示 与后续 起手 风格技能可形成初期连招，但非强制绑定。 守望者 起手特性 车卡 tactic 警戒之眼"
+    },
+    {
+      "id": "tip-warden-start-盾牌格挡",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "起手·盾牌格挡",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "盾牌格挡（起手）：你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果",
+      "detail": "守望者 4 选 2 起手特性之一。你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值 L8: 盾牌格挡的关键词变为短休/长休（2） 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "盾牌格挡"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "盾牌格挡",
+          "source": "warden"
+        }
+      ],
+      "searchText": "起手·盾牌格挡 tactic auto_generated 盾牌格挡（起手）：你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果 守望者 4 选 2 起手特性之一。你举起盾牌以应对即将到来的伤害 盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦 如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值 L8: 盾牌格挡的关键词变为短休/长休（2） 与后续 起手 风格技能可形成初期连招，但非强制绑定。 守望者 起手特性 车卡 tactic 盾牌格挡"
+    },
+    {
+      "id": "tip-warden-start-荒野医疗",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "起手·荒野医疗",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "荒野医疗（起手）：荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 L3: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 L5: ",
+      "detail": "守望者 4 选 2 起手特性之一。荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 L3: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 L5: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "荒野医疗"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "荒野医疗",
+          "source": "warden"
+        }
+      ],
+      "searchText": "起手·荒野医疗 tactic auto_generated 荒野医疗（起手）：荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 L3: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 L5:  守望者 4 选 2 起手特性之一。荒野的知识令你懂得如何运用古朴的秘方为他人疗伤 L3: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 L5: 你可以在施展荒野医疗时额外消耗一组草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果 与后续 起手 风格技能可形成初期连招，但非强制绑定。 守望者 起手特性 车卡 tactic 荒野医疗"
+    },
+    {
+      "id": "tip-warden-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "FP 与技能节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "技能消耗 FP；规划回合节奏，避免空 FP。",
+      "detail": "低阶技能优先；长战注意短休/长休回复（见基础规则）。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "FP 与技能节奏 combat_rule auto_generated 技能消耗 FP；规划回合节奏，避免空 FP。 低阶技能优先；长战注意短休/长休回复（见基础规则）。 守望者 FP combat_rule"
+    },
+    {
+      "id": "tip-warden-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "意志：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "关键属性购点通常≥15；与战斗风格/武器规划一致。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "车卡",
+        "属性",
+        "chargen"
+      ],
+      "skillRefs": [],
+      "searchText": "守望者关键属性 chargen auto_generated 意志：创建购点通常至少一项≥15，与主武器/战斗风格一致。 关键属性购点通常≥15；与战斗风格/武器规划一致。 守望者 车卡 属性 chargen"
+    },
+    {
+      "id": "tip-warden-chargen-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "守望者"
+      ],
+      "title": "守望者专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "创建页专精：哨兵、铁壁、荒野庇护；与武器与风格规划一致即可。",
+      "detail": "",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "守望者",
+        "车卡",
+        "专精",
+        "chargen"
+      ],
+      "skillRefs": [],
+      "searchText": "守望者专精选择 chargen auto_generated 创建页专精：哨兵、铁壁、荒野庇护；与武器与风格规划一致即可。 守望者 车卡 专精 chargen"
+    }
+  ]
+}

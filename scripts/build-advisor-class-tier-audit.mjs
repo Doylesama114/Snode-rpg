@@ -21,15 +21,15 @@ function main() {
     const summary = JSON.parse(fs.readFileSync(SUMMARY, 'utf8'));
     summary.bullets = summary.bullets.filter((b) => !b.startsWith('职业档位 audit'));
     summary.bullets.push(
-      `职业档位 audit：full ${doc.meta.fullReady}/1 ready；partial ${doc.meta.partialReady}/13 ready（class_tier_audit.json）`,
+      `职业档位 audit：full ${doc.meta.fullReady} 职业 ready；partial ${doc.meta.partialReady} 职业 ready（class_tier_audit.json）`,
     );
     summary.meta = { ...summary.meta, phase: '5-batch10' };
     fs.writeFileSync(SUMMARY, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
   }
 
   console.log('Class tier audit:');
-  console.log(`  full ready: ${doc.meta.fullReady}/1`);
-  console.log(`  partial ready: ${doc.meta.partialReady}/13`);
+  console.log(`  full ready: ${doc.meta.fullReady}/${doc.meta.classCount}`);
+  console.log(`  partial ready: ${doc.meta.partialReady}`);
   for (const a of doc.audits) {
     const mark = a.ready ? 'OK' : 'GAP';
     console.log(`  [${mark}] ${a.className} ${a.passCount}/${a.total}`);

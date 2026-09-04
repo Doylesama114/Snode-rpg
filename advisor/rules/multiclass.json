@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L0",
     "version": "1.0.0",
-    "source": "斯诺德跑团/帮助.html §兼职",
-    "generatedAt": "2026-07-06",
+    "source": "斯诺德跑团/help.html 兼职规则表（含守望者）",
+    "generatedAt": "2026-09-04",
     "mainClassUnlockLevel": 7
   },
   "requirements": [
@@ -144,6 +144,16 @@
       "incompatibleWith": [
         "蛮斗士",
         "德鲁伊"
+      ]
+    },
+    {
+      "class": "守望者",
+      "attrRequired": "感知属性13，意志属性14",
+      "profRequired": "拥有自然、洞悉、察觉和意志的熟练度共计+4",
+      "otherRequired": "本人非邪恶阵营角色，并且完成过五次涉及守护、自然或追查的事件",
+      "incompatibleWith": [
+        "法师",
+        "奇械师"
       ]
     }
   ],

@@ -166,6 +166,21 @@ try {
 }
 console.log(weaponOK ? '✅ 武器熟练度校验通过' : '❌ 武器熟练度校验失败');
 totalErrors += weaponOK ? 0 : 1;
+// 守望者创建页 E2E（起手套装 A–D + HP/FP 公式）
+console.log('\n=== 守望者创建页与生命/疲劳公式 ===');
+let watchmanOK = true;
+try {
+  let wdOut = spawnSync('node', [join(BASE, 'verify_watchman_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  if (wdOut.stdout) console.log(wdOut.stdout.trim());
+  if (wdOut.stderr) console.error(wdOut.stderr.trim());
+  if (wdOut.status !== 0) watchmanOK = false;
+} catch (e) {
+  watchmanOK = false;
+  console.log('❌ 守望者创建页 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(watchmanOK ? '✅ 守望者创建页 E2E 通过' : '❌ 守望者创建页 E2E 失败');
+totalErrors += watchmanOK ? 0 : 1;
+
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
 let featOK = true;
@@ -218,5 +233,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK ? 0 : 1);
