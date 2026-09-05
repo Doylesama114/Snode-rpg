@@ -181,6 +181,21 @@ try {
 console.log(watchmanOK ? '✅ 守望者创建页 E2E 通过' : '❌ 守望者创建页 E2E 失败');
 totalErrors += watchmanOK ? 0 : 1;
 
+// 技能标识 AND/OR 筛选 E2E（仅色彩标识；关键词仍为 AND）
+console.log('=== 技能标识 AND/OR E2E ===');
+let markAndOrOK = true;
+try {
+  let moOut = spawnSync('node', [join(BASE, 'verify_mark_filter_and_or.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  if (moOut.stdout) console.log(moOut.stdout.trim());
+  if (moOut.stderr) console.error(moOut.stderr.trim());
+  if (moOut.status !== 0) markAndOrOK = false;
+} catch (e) {
+  markAndOrOK = false;
+  console.log('❌ 技能标识 AND/OR E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(markAndOrOK ? '✅ 技能标识 AND/OR E2E 通过' : '❌ 技能标识 AND/OR E2E 失败');
+totalErrors += markAndOrOK ? 0 : 1;
+
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
 let featOK = true;
@@ -233,5 +248,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK ? 0 : 1);

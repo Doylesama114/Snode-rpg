@@ -23,6 +23,7 @@ from class_sync_core import (  # noqa: E402
     build_data_search,
     build_detail_html,
     build_docx_index,
+    build_skill_data_attrs,
     cost_json,
     extract_paragraphs,
     extract_skill_block,
@@ -272,8 +273,9 @@ def render_article(skill: dict, block: dict) -> str:
     detail = build_detail_html(block)
     data_search = build_data_search(block, style_for_search, tier_label, tags)
     safe = sanitize_data_search(data_search)
+    data_attrs = build_skill_data_attrs(skill, class_name=CLASS)
     return (
-        f'<article class="skill" id="{sid}" data-search="{safe}">\n'
+        f'<article class="skill" id="{sid}" data-search="{safe}"{data_attrs}>\n'
         f'        <h4>{name} <span class="chip" style="background:{color};color:#fff">{chip_label}</span></h4>\n'
         f'        <div class="chips">{chips_html(tags)}</div>\n'
         f'        <div class="detail">{detail}</div>\n'
@@ -376,6 +378,8 @@ FOOT = """
 </main>
 
 <script src="common.js"></script>
+<script src="mark-colors.js"></script>
+<script src="filter-panel.js"></script>
 <script src="filter.js"></script>
 <script>
 createFilterController("view-watchman", "wd");

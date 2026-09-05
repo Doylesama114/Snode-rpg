@@ -1004,6 +1004,39 @@ html.dark .fp-kw-chip.active .fp-kw-count { color: var(--green); background: rgb
   border-color: var(--line);
   box-shadow: none;
 }
+.fp-mark-mode {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0 8px;
+}
+.fp-mark-mode-btn {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--muted);
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: .03em;
+  transition: all .12s ease;
+}
+.fp-mark-mode-btn:hover { border-color: var(--green); color: var(--ink); }
+.fp-mark-mode-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(47,111,94,.18);
+}
+.fp-active-tag.fp-mark-mode-tag {
+  background: var(--ink);
+  color: var(--bg);
+  letter-spacing: .04em;
+}
+html.dark .fp-mark-mode-btn { background: var(--panel); color: var(--muted); border-color: var(--line); }
+html.dark .fp-mark-mode-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+html.dark .fp-active-tag.fp-mark-mode-tag { background: #e8e6e3; color: #1f2522; }
 .fp-active {
   display: flex;
   flex-wrap: wrap;

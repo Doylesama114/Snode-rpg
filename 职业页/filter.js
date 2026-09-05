@@ -124,7 +124,7 @@
     FilterController.prototype.getFilterState = function() {
         var panel = window.__filterPanel;
         if (panel) return panel.getState();
-        return { keywords: new Set(), colors: new Set() };
+        return { keywords: new Set(), colors: new Set(), markMode: "or" };
     };
 
     FilterController.prototype.skillMatchesFilters = function(skill) {
@@ -143,11 +143,20 @@
 
         if (state.colors.size > 0) {
             if (!marks.length) return false;
-            var colorOk = false;
-            state.colors.forEach(function(c) {
-                if (marks.indexOf(normHex(c)) !== -1) colorOk = true;
-            });
-            if (!colorOk) return false;
+            var markMode = state.markMode === "and" ? "and" : "or";
+            if (markMode === "and") {
+                var allOk = true;
+                state.colors.forEach(function(c) {
+                    if (marks.indexOf(normHex(c)) === -1) allOk = false;
+                });
+                if (!allOk) return false;
+            } else {
+                var colorOk = false;
+                state.colors.forEach(function(c) {
+                    if (marks.indexOf(normHex(c)) !== -1) colorOk = true;
+                });
+                if (!colorOk) return false;
+            }
         }
 
         return true;

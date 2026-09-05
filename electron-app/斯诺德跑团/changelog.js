@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7260',
+    date: '2026-09-05',
+    changes: [
+      '技能标识筛选新增AND/OR模式按钮：OR任一命中（默认）、AND全部命中，仅作用于色彩标识',
+      '关键词筛选保持全部命中且不增加模式按钮',
+      '守望者技能页补齐筛选面板脚本与data-marks/data-tags等筛选属性',
+      '新增技能标识AND/OR筛选E2E并纳入全量校验'
+    ]
+  },
+
+
+  {
     version: '1.0.7259',
     date: '2026-09-04',
     changes: [

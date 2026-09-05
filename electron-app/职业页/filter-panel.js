@@ -77,6 +77,7 @@
     function FilterPanel() {
         this.keywords = new Set();
         this.colors = new Set();
+        this.markMode = "or";
         this.listeners = [];
         this.allTags = [];
         this.allColors = [];
@@ -102,7 +103,8 @@
     FilterPanel.prototype.getState = function() {
         return {
             keywords: this.keywords,
-            colors: this.colors
+            colors: this.colors,
+            markMode: this.markMode
         };
     };
 
@@ -121,11 +123,20 @@
         this.notify();
     };
 
+    FilterPanel.prototype.setMarkMode = function(mode) {
+        if (mode !== "and" && mode !== "or") return;
+        if (this.markMode === mode) return;
+        this.markMode = mode;
+        this.syncMarkModeStyles();
+        this.notify();
+    };
+
     FilterPanel.prototype.clear = function() {
         this.keywords.clear();
         this.colors.clear();
         this.syncChipStyles();
         this.syncColorStyles();
+        this.syncMarkModeStyles();
         this.notify();
     };
 
@@ -181,6 +192,18 @@
         });
     };
 
+    FilterPanel.prototype.syncMarkModeStyles = function() {
+        var self = this;
+        if (!this.root) return;
+        this.root.querySelectorAll(".fp-mark-mode-btn").forEach(function(btn) {
+            var active = btn.getAttribute("data-mark-mode") === self.markMode;
+            btn.classList.toggle("active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        var tag = this.root.querySelector(".fp-mark-mode-tag");
+        if (tag) tag.textContent = "标识 · " + (self.markMode === "and" ? "AND" : "OR");
+    };
+
     FilterPanel.prototype.updateBadge = function() {
         if (!this.root) return;
         var badge = this.root.querySelector(".fp-badge");
@@ -202,6 +225,12 @@
             return;
         }
         box.classList.remove("empty");
+        if (self.colors.size > 0) {
+            var modeTag = document.createElement("span");
+            modeTag.className = "fp-active-tag fp-mark-mode-tag";
+            modeTag.textContent = "标识 · " + (self.markMode === "and" ? "AND" : "OR");
+            box.appendChild(modeTag);
+        }
         this.keywords.forEach(function(kw) {
             box.appendChild(self.makeActiveTag(kw, "kw"));
         });
@@ -352,7 +381,25 @@
         if (this.allColors.length) {
             var colSec = document.createElement("div");
             colSec.className = "fp-section";
-            colSec.innerHTML = '<div class="fp-section-title">\u8272\u5f69\u6807\u8bc6</div><div class="fp-color-hint">\u5305\u542b\u4efb\u4e00\u9009\u4e2d\u8272</div>';
+            colSec.innerHTML = '<div class="fp-section-title">色彩标识</div>';
+            var modeBar = document.createElement("div");
+            modeBar.className = "fp-mark-mode";
+            modeBar.setAttribute("role", "group");
+            modeBar.setAttribute("aria-label", "色彩标识匹配方式");
+            [["or", "OR · 任一"], ["and", "AND · 全部"]].forEach(function(item) {
+                var mb = document.createElement("button");
+                mb.type = "button";
+                mb.className = "fp-mark-mode-btn" + (self.markMode === item[0] ? " active" : "");
+                mb.setAttribute("data-mark-mode", item[0]);
+                mb.setAttribute("aria-pressed", self.markMode === item[0] ? "true" : "false");
+                mb.textContent = item[1];
+                mb.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    self.setMarkMode(item[0]);
+                });
+                modeBar.appendChild(mb);
+            });
+            colSec.appendChild(modeBar);
             var colWrap = document.createElement("div");
             colWrap.className = "fp-color-list";
             var self2 = this;
@@ -404,6 +451,7 @@
 
         document.body.appendChild(root);
         this.root = root;
+        this.syncMarkModeStyles();
         this.renderActive();
         this.updateBadge();
     };

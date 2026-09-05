@@ -35,6 +35,11 @@ def check(cond: bool, msg: str) -> None:
     if not cond:
         errors.append(msg)
 
+check('src="mark-colors.js"' in html, "守望者页缺少 mark-colors.js")
+check('src="filter-panel.js"' in html, "守望者页缺少 filter-panel.js")
+check('data-marks="' in html, "守望者页技能缺少 data-marks 属性")
+check('data-class="守望者"' in html, "守望者页技能缺少 data-class 属性")
+
 check(len(skills) == 40, f"技能总数应为 40，实际 {len(skills)}")
 check(len(starting) == 4, f"起始特性应为 4，实际 {len(starting)}")
 check([s["name"] for s in starting] == ["挫志打击", "警戒之眼", "盾牌格挡", "荒野医疗"],
