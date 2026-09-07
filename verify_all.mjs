@@ -181,6 +181,21 @@ try {
 console.log(watchmanOK ? '✅ 守望者创建页 E2E 通过' : '❌ 守望者创建页 E2E 失败');
 totalErrors += watchmanOK ? 0 : 1;
 
+// 职业页导航阶位分组（nav-tier 与 article data-tier/style 一致）
+console.log('=== 职业页导航阶位分组 ===');
+let navTierOK = true;
+try {
+  let ntOut = spawnSync('python', [join(BASE, 'scripts', 'verify_nav_tier_groups.py')], { encoding: 'utf-8', timeout: 60000 });
+  if (ntOut.stdout) console.log(ntOut.stdout.trim());
+  if (ntOut.stderr) console.error(ntOut.stderr.trim());
+  if (ntOut.status !== 0) navTierOK = false;
+} catch (e) {
+  navTierOK = false;
+  console.log('❌ 导航阶位分组校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(navTierOK ? '✅ 职业页导航阶位分组通过' : '❌ 职业页导航阶位分组失败');
+totalErrors += navTierOK ? 0 : 1;
+
 // 技能标识 AND/OR 筛选 E2E（仅色彩标识；关键词仍为 AND）
 console.log('=== 技能标识 AND/OR E2E ===');
 let markAndOrOK = true;
@@ -248,5 +263,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK && navTierOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK && navTierOK ? 0 : 1);

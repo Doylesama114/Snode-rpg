@@ -87,12 +87,14 @@ def insert_after_nth_article_close(html: str, marker: str, n: int, article: str)
     return html[:pos] + article + html[pos:]
 
 
-def add_nav_links(html: str, links: list[str]) -> str:
-    anchor = '<a class="skill-link" href="#h-skill-351">倒刺射击</a>'
-    if anchor not in html:
-        raise RuntimeError("兽群一阶导航锚点缺失")
-    return html.replace(anchor, anchor + "\n" + "\n".join(links), 1)
-
+def add_nav_link_after_base(html: str, base_id: str, link: str) -> str:
+    """把联动天赋链接插到其基础技能导航链接之后（兽群二阶），而不是一阶锚点。"""
+    anchor = f'<a class="skill-link" href="#{base_id}">'
+    pos = html.find(anchor)
+    if pos == -1:
+        raise RuntimeError(f"兽群导航锚点缺失: {base_id}")
+    end = html.find("</a>", pos) + len("</a>")
+    return html[:end] + link + html[end:]
 
 def main() -> None:
     data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
@@ -127,11 +129,8 @@ def main() -> None:
             html = insert_after_nth_article_close(html, f'id="{base_id}"', 2, article)
 
         if f'href="#{talent_id}"' not in html:
-            nav_links.append(f'<a class="skill-link" href="#{talent_id}">{skill["name"]}</a>')
-
-    if nav_links:
-        html = add_nav_links(html, nav_links)
-
+            link = f'<a class="skill-link" href="#{talent_id}">{skill["name"]}</a>'
+            html = add_nav_link_after_base(html, base_id, link)
     # FX entries in the same order as the site JSON (1088, 1089, 1090 at tail).
     for skill in restored:
         entry = json_to_fx_entry(skill, CLASS)
