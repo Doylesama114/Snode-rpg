@@ -196,7 +196,7 @@ var state={
 "xp":0, "carry_capacity":{"常规":45,"满载":60,"极限":75,"当前":5},
 "sp_points":0,
 "color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
-"hp":10,"fp":8,
+"hp":10,"fp":8,"raceSize":"","_hpManual":false,"_fpManual":false,"_hpCurrent":null,"_fpCurrent":null,
 "story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","deityAttr":"","patron":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","sportPreference":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
@@ -247,7 +247,11 @@ function isPersistedInternalKey(key) {
     || key === "_panelApplied"
     || key === "_attrGained"
     || key === "_creationSnapshot"
-    || key === "_chargenOrigin";
+    || key === "_chargenOrigin"
+    || key === "_hpManual"
+    || key === "_fpManual"
+    || key === "_hpCurrent"
+    || key === "_fpCurrent";
 }
 
 function getStateSnapshot() {
@@ -5569,6 +5573,19 @@ function renderTraits(){
 
 }
 
+function weaponSpecBonusForState(cat){
+  var cls=(typeof state!=="undefined"&&state&&state.classes&&state.classes[0]&&state.classes[0].name)||"";
+  var def=(typeof WEAPON_SPEC_BY_CLASS!=="undefined")?WEAPON_SPEC_BY_CLASS[cls]:null;
+  var lookupCat=cat;
+  if(cls==="猎人"){
+    if(lookupCat==="长柄")lookupCat="长柄武器";
+    if(lookupCat==="简易")lookupCat="简易武器";
+  }
+  var bonuses=(def&&def.bonuses)?def.bonuses:(WEAPON_SPEC_BONUSES||{});
+  var bonus=bonuses[lookupCat]||"";
+  if(!bonus&&def&&def.bonuses&&WEAPON_SPEC_BONUSES[cat])bonus=WEAPON_SPEC_BONUSES[cat]+"（旧档，请重新选择）";
+  return bonus;
+}
 function renderLangProfs(){
   // === 14. Languages ===
 
@@ -5620,7 +5637,7 @@ function renderLangProfs(){
     wh+='<span style="font-size:13px;color:var(--muted);margin:0 6px">|</span>';
     for(var wsi=0;wsi<state.weapon_specs.length;wsi++){
       var cat=state.weapon_specs[wsi];
-      var bonus=WEAPON_SPEC_BONUSES[cat]||"";
+      var bonus=weaponSpecBonusForState(cat);
       wh+='<span class="weapon-spec-tag">⭐'+cat+(bonus?'（'+bonus+'）':'')+'</span>';
     }
   }

@@ -6,6 +6,9 @@ Apply missing 法师 skills from scripts/extracts/法师.json into site HTML/JSO
 - Creates 七阶 tier sections/nav when missing
 - Fixes 元素循环 if it still holds 火山术 body
 - Also extends apply_class_extract allow-list for documentation consistency
+
+注意：变化五阶 9 个技能在源 docx 中暂缺（原作者待补）。当前站点保留这 9 条，
+本脚本会按“已存在则跳过”处理，不会重复添加或删除；不要为其增加会阻止保留的 docx 白名单。
 """
 from __future__ import annotations
 

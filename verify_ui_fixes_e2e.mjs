@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
+const APP_VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, 'electron-app', 'package.json'), 'utf8')).version;
 const PORT = 8152;
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png' };
 const server = http.createServer((req, res) => {
@@ -42,7 +43,7 @@ function ok(name, cond, extra) { if (cond) { pass++; console.log('PASS', name); 
   });
   ok('游荡者所有技能都在正文列', r.bad.length === 0, JSON.stringify(r));
   ok('游荡者职业专长导航仅一条', r.navLinks === 1, JSON.stringify(r));
-  ok('游荡者CSS版本号已更新', r.css.indexOf('v=1.0.7261') >= 0, r.css);
+  ok('游荡者CSS版本号已更新', r.css.indexOf('v=' + APP_VERSION) >= 0, r.css);
   ok('游荡者无横向溢出', r.overflow === 0, r.overflow);
   ok('游荡者无JS错误', errs.length === 0, errs.join('|'));
   await page.close();

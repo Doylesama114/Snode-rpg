@@ -1272,6 +1272,7 @@ def sync_class(
     electron_data: Path,
     electron_fx: Path | None,
     report_path: Path,
+    preserve_names: set[str] | None = None,
 ) -> dict:
     data = json.loads(data_path.read_text(encoding="utf-8"))
     fx_doc = None
@@ -1288,12 +1289,16 @@ def sync_class(
     html = html_path.read_text(encoding="utf-8")
     nav_tiers = tier_map_from_html_nav(html)
     removed = []
+    preserved = []
     changed = []
 
     for skill in data["skills"]:
         sid = skill["id"]
         block = pick_block(docx_index, skill, used)
         if not block:
+            if preserve_names and skill["name"] in preserve_names:
+                preserved.append(skill["name"])
+                continue
             removed.append(skill["name"])
             html = remove_skill_from_html(html, sid, skill["name"])
             continue
@@ -1359,6 +1364,7 @@ def sync_class(
         "json_skills": len(data["skills"]),
         "updated": len(changed),
         "removed_not_in_docx": removed,
+        "preserved_not_in_docx": preserved,
         "fx_entries": len(fx_entries),
     }
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

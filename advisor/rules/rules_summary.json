@@ -27,7 +27,6 @@
     "L5 法师小贴士：mage_tips 24 条（user 18 + supplement 6）",
     "L5 职业小贴士：13 职业 class_tips auto_stub 90 条（style_guide + chargen + partial 说明）+ universal_tips",
     "L5 检索器：advisor-retrieve.mjs；15 题 spot-check 通过",
-    "L2 技能索引：14 职业均有 L2（法师 356 + 通用 390 + 13×partial 索引）",
     "Phase 5 完成（7030–7038）：全职业 partial L2 + 实体/起手装备/L3A/L5 stub/档位 audit；回归见 validate-advisor-phase5-regression.mjs",
     "L6 DeepSeek CLI：mage-advisor.mjs（deepseek-v4-flash，默认 thinking 关）",
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
@@ -35,6 +34,7 @@
     "名望/声望：见 help.html #s9；名望=知名度广度（0～19-20 称号），声望=阵营观感深度（仇恨→崇拜），二者独立且不直接加属性。其他补充裁定见 #s10（含射程、反应动作细则/终结技锁定与后发先置、掩体、图纸专业槽 10+智力调整值）。",
     "L3 进阶库：283 条（全职业·进阶 docx 同步后去重合并）",
     "L3A 进阶技能：advancement_skills.json（55/283 条 documented）",
-    "职业档位 audit：full 15 职业 ready；partial 0 职业 ready（class_tier_audit.json）"
+    "职业档位 audit：full 15 职业 ready；partial 0 职业 ready（class_tier_audit.json）",
+    "L2 技能索引：法师 423 + 通用 400 + 奇械师 146"
   ]
 }

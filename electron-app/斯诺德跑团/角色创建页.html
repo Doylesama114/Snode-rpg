@@ -767,6 +767,12 @@ function applyCreationSnapshotToChar(snap){
   CHAR.selectedFeatures=(snap.selectedFeatures||[]).slice();
   CHAR.bpPicks=(snap.bpPicks||[]).slice();
   CHAR.weaponSpec=snap.weaponSpec||"";
+  if(CHAR.className==="猎人"){
+    CHAR.weaponSpec=normalizeHunterWeaponSpec(CHAR.weaponSpec);
+    var _hunterCats=weaponSpecDefForClass("猎人").cats||[];
+    if(CHAR.weaponSpec&&_hunterCats.indexOf(CHAR.weaponSpec)<0)CHAR.weaponSpec="";
+    if(CHAR.specChoices&&CHAR.specChoices["武器专精"])CHAR.specChoices["武器专精"].attr=CHAR.weaponSpec;
+  }
   CHAR.deity=snap.deity||"";
   CHAR.deityAttr=snap.deityAttr||"";
   CHAR.patron=snap.patron||"";
@@ -1583,6 +1589,18 @@ function checkBgDone(){
   // But we could add validation here if needed
 }
 var WEAPON_SPEC_BONUSES={"剑类":"近战伤害骰=1可重掷","斧类":"暴击率+1","锤类":"对重甲敌伤害骰最低4点","长柄":"可单手持有","弓箭":"命中检定+2","简易":"每场战斗限一次:附赠动作基础攻击"};
+var WEAPON_SPEC_BY_CLASS={
+  "战士":{cats:["剑类","斧类","锤类","长柄","弓箭","简易"],bonuses:WEAPON_SPEC_BONUSES},
+  "猎人":{cats:["长柄武器","弓箭","弓弩","枪械","简易武器"],bonuses:{"长柄武器":"可通过单手持有长柄武器","弓箭":"攻击命中检定值+2","弓弩":"结算造成伤害值后+2","枪械":"攻击未命中或伤害骰为1/2时可重掷一次并接受重掷结果","简易武器":"每场战斗限一次:附赠动作基础攻击(无法以此施展技能)"}}
+};
+function weaponSpecDefForClass(clsName){
+  return WEAPON_SPEC_BY_CLASS[clsName]||{cats:[],bonuses:WEAPON_SPEC_BONUSES||{}};
+}
+function normalizeHunterWeaponSpec(spec){
+  if(spec==="长柄")return "长柄武器";
+  if(spec==="简易")return "简易武器";
+  return spec||"";
+}
 function renderSpecChoices(clsName){
   var old=document.getElementById("specChoiceArea");if(old)old.remove();
   CHAR.specChoices={};
@@ -1603,8 +1621,9 @@ function renderSpecChoices(clsName){
     var sd=specs[si].d;
     var pc=SPEC_PROF_CHOICES[clsName]?SPEC_PROF_CHOICES[clsName][sn]:null;
     if(sn==="武器专精"){
-      var cats=["剑类","斧类","锤类","长柄","弓箭","简易"];
-      var bonuses=WEAPON_SPEC_BONUSES||{};
+      var specDef=weaponSpecDefForClass(clsName);
+      var cats=specDef.cats||[];
+      var bonuses=specDef.bonuses||{};
       h+="<div class='specGroup dark-bg' style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' data-spec='"+sn+"'>";
       h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>武器专精</div>";
       h+="<div style='font-size:12px;color:#69706b;margin-bottom:8px'>选择一项武器类别获得对应增益</div>";

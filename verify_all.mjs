@@ -166,6 +166,52 @@ try {
 }
 console.log(weaponOK ? '✅ 武器熟练度校验通过' : '❌ 武器熟练度校验失败');
 totalErrors += weaponOK ? 0 : 1;
+
+// 猎人武器专精（创建页 5 类 + 面板按职业展示）
+console.log('\n=== 猎人武器专精 ===');
+let weaponSpecOK = true;
+try {
+  let wsOut = spawnSync('node', [join(BASE, 'verify_weapon_spec_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  if (wsOut.stdout) console.log(wsOut.stdout.trim());
+  if (wsOut.stderr) console.error(wsOut.stderr.trim());
+  if (wsOut.status !== 0) weaponSpecOK = false;
+} catch (e) {
+  weaponSpecOK = false;
+  console.log('❌ 猎人武器专精 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(weaponSpecOK ? '✅ 猎人武器专精通过' : '❌ 猎人武器专精失败');
+totalErrors += weaponSpecOK ? 0 : 1;
+
+// 法师变化五阶保留 + docx 定向增量（不删除待作者补齐内容）
+console.log('\n=== 法师变化五阶保留与增量 ===');
+let magePreserveOK = true;
+try {
+  let mpOut = spawnSync('python', [join(BASE, 'scripts', 'verify_mage_preserved.py')], { encoding: 'utf-8', timeout: 120000 });
+  if (mpOut.stdout) console.log(mpOut.stdout.trim());
+  if (mpOut.stderr) console.error(mpOut.stderr.trim());
+  if (mpOut.status !== 0) magePreserveOK = false;
+} catch (e) {
+  magePreserveOK = false;
+  console.log('❌ 法师变化五阶保留校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(magePreserveOK ? '✅ 法师变化五阶保留与增量通过' : '❌ 法师变化五阶保留与增量失败');
+totalErrors += magePreserveOK ? 0 : 1;
+
+// 种族体型 HP 加成 + 面板 HP/FP 手动持久化
+console.log('\n=== 种族体型 HP / 面板 HP·FP 持久化 ===');
+let hpFpOK = true;
+try {
+  let hpOut = spawnSync('node', [join(BASE, 'verify_hp_fp_race_size_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  if (hpOut.stdout) console.log(hpOut.stdout.trim());
+  if (hpOut.stderr) console.error(hpOut.stderr.trim());
+  if (hpOut.status !== 0) hpFpOK = false;
+} catch (e) {
+  hpFpOK = false;
+  console.log('❌ 种族体型 HP / HP·FP 持久化 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(hpFpOK ? '✅ 种族体型 HP / HP·FP 持久化通过' : '❌ 种族体型 HP / HP·FP 持久化失败');
+totalErrors += hpFpOK ? 0 : 1;
+
 // 守望者创建页 E2E（起手套装 A–D + HP/FP 公式）
 console.log('\n=== 守望者创建页与生命/疲劳公式 ===');
 let watchmanOK = true;
@@ -263,5 +309,5 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK && navTierOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && watchmanOK && markAndOrOK && navTierOK ? 0 : 1);
+console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK ? 0 : 1);

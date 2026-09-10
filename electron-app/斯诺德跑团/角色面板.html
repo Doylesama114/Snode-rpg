@@ -1337,9 +1337,15 @@ function SB_buildTestData(st) {
   try {
     if (st._feat_ac_bonus && typeof wearingMediumArmor === 'function' && wearingMediumArmor()) ac += (st._feat_ac_bonus || 0);
   } catch (e) {}
+  var _hpMaxV = Number(st.hp) || 0;
+  var _fpMaxV = Number(st.fp) || 0;
+  var _hpCurV = (typeof st._hpCurrent === 'number' && isFinite(st._hpCurrent)) ? st._hpCurrent : _hpMaxV;
+  var _fpCurV = (typeof st._fpCurrent === 'number' && isFinite(st._fpCurrent)) ? st._fpCurrent : _fpMaxV;
+  _hpCurV = Math.max(0, Math.min(_hpMaxV, _hpCurV));
+  _fpCurV = Math.max(0, Math.min(_fpMaxV, _fpCurV));
   var battle = {
-    hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
-    hpRecover: Math.floor((st.hp || 0) / 2), fpRecover: Math.floor((st.fp || 0) / 2),
+    hp: _hpCurV, hpMax: _hpMaxV, fp: _fpCurV, fpMax: _fpMaxV,
+    hpRecover: Math.floor(_hpMaxV / 2), fpRecover: Math.floor(_fpMaxV / 2),
     ac: ac, init: '', speed: String((typeof REF_RACES !== 'undefined' && REF_RACES[st.race] && REF_RACES[st.race].speed) ? REF_RACES[st.race].speed : '5').replace('米', ''),
     keyAttr: keyAttr, atk: Math.max(strMod, dexMod) + (st.atk_hit_bonus || 0), spell: keyMod + (st.spell_hit_bonus || 0)
   };
@@ -2576,15 +2582,41 @@ function renderOrbs() {
   renderMiniBalls();
 }
 function adjHp(d) {
-  S.hp = Math.max(0, S.hp + d);
-  if (!S.battle) { S.hpMax = S.hp; log('非战斗调整生命值 → ' + S.hp + '（记为初始值）', 'heal'); toast('已记录新生命初始值：' + S.hp); }
-  else { log((d > 0 ? '受到治疗 +' : '受到伤害 ') + Math.abs(d) + ' → 生命 ' + S.hp + '/' + S.hpMax, d > 0 ? 'heal' : 'damage'); }
+  if (!S.battle) {
+    S.hp = Math.max(0, S.hp + d);
+    state.hp = S.hp;
+    S.hpMax = S.hp;
+    state._hpCurrent = S.hp;
+    state._hpManual = true;
+    state._dirty = true;
+    if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
+    log('非战斗调整生命值 → ' + S.hp + '（记为初始值）', 'heal');
+    toast('已记录新生命初始值：' + S.hp);
+  } else {
+    S.hp = Math.max(0, S.hp + d);
+    state._hpCurrent = S.hp;
+    state._dirty = true;
+    log((d > 0 ? '受到治疗 +' : '受到伤害 ') + Math.abs(d) + ' → 生命 ' + S.hp + '/' + S.hpMax, d > 0 ? 'heal' : 'damage');
+  }
   renderOrbs();
 }
 function adjFp(d) {
-  S.fp = Math.max(0, S.fp + d);
-  if (!S.battle) { S.fpMax = S.fp; log('非战斗调整疲劳值 → ' + S.fp + '（记为初始值）'); toast('已记录新疲劳初始值：' + S.fp); }
-  else { log((d > 0 ? '恢复疲劳 +' : '消耗疲劳 ') + Math.abs(d) + ' → 疲劳 ' + S.fp + '/' + S.fpMax); }
+  if (!S.battle) {
+    S.fp = Math.max(0, S.fp + d);
+    state.fp = S.fp;
+    S.fpMax = S.fp;
+    state._fpCurrent = S.fp;
+    state._fpManual = true;
+    state._dirty = true;
+    if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
+    log('非战斗调整疲劳值 → ' + S.fp + '（记为初始值）');
+    toast('已记录新疲劳初始值：' + S.fp);
+  } else {
+    S.fp = Math.max(0, S.fp + d);
+    state._fpCurrent = S.fp;
+    state._dirty = true;
+    log((d > 0 ? '恢复疲劳 +' : '消耗疲劳 ') + Math.abs(d) + ' → 疲劳 ' + S.fp + '/' + S.fpMax);
+  }
   renderOrbs();
 }
 
@@ -3061,9 +3093,12 @@ function toggleBattle() {
     var snap = S.snap;
     S.hp = snap.hp; S.fp = snap.fp; S.ac = snap.ac;
     S.tmpHp = snap.tmpHp; S.armor = snap.armor; S.shield = snap.shield;
+    state._hpCurrent = S.hp;
+    state._fpCurrent = S.fp;
     S.battle = false;
     S.snap = null;
     S.init = null;
+    if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
     var pgEl = document.querySelector('.page');
     if (pgEl) pgEl.style.display = '';
     window.scrollTo(0, 0);
@@ -3726,14 +3761,41 @@ log('角色面板加载完成（真实数据：基尼泰·梅 角色档案 + 站
 function SB_buildS(st) {
   var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
   var baseAc = (typeof T !== 'undefined' && T && T.battle && typeof T.battle.ac === 'number') ? T.battle.ac : (10 + dexMod);
+  var hpMax = Number(st.hp) || 0;
+  var fpMax = Number(st.fp) || 0;
+  var hpCur = (typeof st._hpCurrent === 'number' && isFinite(st._hpCurrent)) ? st._hpCurrent : hpMax;
+  var fpCur = (typeof st._fpCurrent === 'number' && isFinite(st._fpCurrent)) ? st._fpCurrent : fpMax;
+  hpCur = Math.max(0, Math.min(hpMax, hpCur));
+  fpCur = Math.max(0, Math.min(fpMax, fpCur));
   return {
-    battle: false, hp: st.hp || 0, hpMax: st.hp || 0, fp: st.fp || 0, fpMax: st.fp || 0,
+    battle: false, hp: hpCur, hpMax: hpMax, fp: fpCur, fpMax: fpMax,
     ac: baseAc, tmpHp: 0, armor: 0, shield: 0, snap: null, exhaust: 0, usage: {}, log: [],
     selEquip: null, splitData: null, xp: st.xp || 0,
     mainLv: (st.classes && st.classes[0] && st.classes[0].level) || 0,
     subLv: (st.classes && st.classes[1] && st.classes[1].level) || 0,
     heldMarks: (typeof T !== 'undefined' && T && T.spMarks) ? T.spMarks.slice() : [], init: null
   };
+}
+/* 同步当前值/上限/回复值到 T.battle 与页面显示；不改变非战斗的初始值语义 */
+function SB_syncBattleVitals() {
+  if (typeof T === 'undefined' || !T || !T.battle) return;
+  var hpMax = Number(state.hp) || 0;
+  var fpMax = Number(state.fp) || 0;
+  var hpCur = (typeof state._hpCurrent === 'number' && isFinite(state._hpCurrent)) ? state._hpCurrent : ((typeof S !== 'undefined' && S && isFinite(S.hp)) ? S.hp : hpMax);
+  var fpCur = (typeof state._fpCurrent === 'number' && isFinite(state._fpCurrent)) ? state._fpCurrent : ((typeof S !== 'undefined' && S && isFinite(S.fp)) ? S.fp : fpMax);
+  hpCur = Math.max(0, Math.min(hpMax, hpCur));
+  fpCur = Math.max(0, Math.min(fpMax, fpCur));
+  state._hpCurrent = hpCur;
+  state._fpCurrent = fpCur;
+  T.battle.hp = hpCur;
+  T.battle.hpMax = hpMax;
+  T.battle.fp = fpCur;
+  T.battle.fpMax = fpMax;
+  T.battle.hpRecover = Math.floor(hpMax / 2);
+  T.battle.fpRecover = Math.floor(fpMax / 2);
+  var el;
+  if ((el = document.getElementById('bgHpRecover'))) el.textContent = T.battle.hpRecover;
+  if ((el = document.getElementById('bgFpRecover'))) el.textContent = T.battle.fpRecover;
 }
 function SB_reinit() {
   var wasBattle = (typeof S !== 'undefined') ? S.battle : false;
@@ -3813,13 +3875,17 @@ function SB_reinit() {
     var cellsArr = tiersMap[nm] || [];
     TIERS.push({ name: nm, cells: cellsArr, unlocked: cellsArr.length > 0 || tierUnlocked(nm), cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
   }
-  /* 生命/疲劳重算：未手动编辑时按源公式随等级正确计算 */
+  /* 生命/疲劳重算：未手动编辑时按源公式随等级正确计算；手动锁定时保留当前值 */
   function SB_recalcDerived() {
     var mc0 = state.classes && state.classes[0];
     if (!mc0 || !mc0.name) return;
     var ml = mc0.level || 0;
     var sc = (state.classes[1] && state.classes[1].name) || '';
     var sl = (state.classes[1] && state.classes[1].level) || 0;
+    var prevHpMax = Number(state.hp) || 0;
+    var prevFpMax = Number(state.fp) || 0;
+    var prevHpCur = (typeof state._hpCurrent === 'number' && isFinite(state._hpCurrent)) ? state._hpCurrent : null;
+    var prevFpCur = (typeof state._fpCurrent === 'number' && isFinite(state._fpCurrent)) ? state._fpCurrent : null;
     if (!state._hpManual && typeof calcTotalHP === 'function') {
       var con = (state.attrs && state.attrs['体质']) || 10;
       var featHP = 0;
@@ -3829,7 +3895,7 @@ function SB_reinit() {
         if (fnN === '健美教练') featHP += 10;
         if (fnN === '健壮') featHP += 2 * (ml + (sl > 0 ? sl - 1 : 0));
       }
-      state.hp = calcTotalHP(mc0.name, ml, sc, sl, con, state.race, state.background, featHP);
+      state.hp = calcTotalHP(mc0.name, ml, sc, sl, con, state.race, state.background, featHP, state.raceSize);
     }
     if (!state._fpManual && typeof calcTotalFP === 'function') {
       var ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name]) ? REF_CLASSES[mc0.name].key_attr : '';
@@ -3840,15 +3906,24 @@ function SB_reinit() {
       var kv = (state.attrs && state.attrs[ka]) || 10;
       state.fp = calcTotalFP(mc0.name, ml, sc, sl, ka, kv, state.race, 0);
     }
+    var newHpMax = Number(state.hp) || 0;
+    var newFpMax = Number(state.fp) || 0;
+    if (prevHpCur === null || (prevHpMax > 0 && prevHpCur === prevHpMax)) {
+      state._hpCurrent = newHpMax;
+    } else {
+      state._hpCurrent = Math.max(0, Math.min(newHpMax, prevHpCur));
+    }
+    if (prevFpCur === null || (prevFpMax > 0 && prevFpCur === prevFpMax)) {
+      state._fpCurrent = newFpMax;
+    } else {
+      state._fpCurrent = Math.max(0, Math.min(newFpMax, prevFpCur));
+    }
   }
   SB_recalcDerived();
   if (T && T.battle) {
-    T.battle.hp = state.hp || 0;
-    T.battle.hpMax = state.hp || 0;
-    T.battle.fp = state.fp || 0;
-    T.battle.fpMax = state.fp || 0;
-    T.battle.hpRecover = Math.floor((state.hp || 0) / 2);
-    T.battle.fpRecover = Math.floor((state.fp || 0) / 2);
+    if (typeof state._hpCurrent !== 'number' || !isFinite(state._hpCurrent)) state._hpCurrent = Number(state.hp) || 0;
+    if (typeof state._fpCurrent !== 'number' || !isFinite(state._fpCurrent)) state._fpCurrent = Number(state.fp) || 0;
+    SB_syncBattleVitals();
   }
   S = SB_buildS(state);
   S.battle = wasBattle;
@@ -4173,21 +4248,45 @@ function SB_saveHitBonus() {
   closeOverlay('miniOverlay');
   window.render();
 }
-/* 精确 hp/fp（战斗中） */
+/* 精确 hp/fp（非战斗=初始/上限，战斗=当前值） */
 function SB_editHpFp(kind) {
-  if (!S.battle) { toast('进入战斗记录模式后可调整生命值/疲劳值', 'warn'); return; }
   SB_EDIT_KEY = kind;
-  SB_editValue(kind === 'hp' ? '生命值' : '疲劳值', kind === 'hp' ? S.hp : S.fp, '输入当前数值（0-上限）。', 'hpfp');
+  SB_editValue(
+    kind === 'hp' ? '生命值' : '疲劳值',
+    kind === 'hp' ? S.hp : S.fp,
+    S.battle ? '输入当前数值（0-上限）。' : '输入初始/上限数值。',
+    'hpfp'
+  );
 }
 function SB_saveHpFp() {
   var v = SB_takeValue();
   if (v === null || v < 0) { toast('请输入有效数值', 'warn'); return; }
-  var max = SB_EDIT_KEY === 'hp' ? S.hpMax : S.fpMax;
-  var nv = Math.max(0, Math.min(max, v));
-  if (SB_EDIT_KEY === 'hp') { S.hp = nv; state._hpManual = true; }
-  else { S.fp = nv; state._fpManual = true; }
-  state._dirty = true;
-  log((SB_EDIT_KEY === 'hp' ? '生命' : '疲劳') + '值设为 ' + nv, 'battle');
+  if (!S.battle) {
+    var nv = Math.max(0, v);
+    if (SB_EDIT_KEY === 'hp') {
+      state.hp = nv;
+      S.hpMax = nv;
+      S.hp = nv;
+      state._hpCurrent = nv;
+      state._hpManual = true;
+    } else {
+      state.fp = nv;
+      S.fpMax = nv;
+      S.fp = nv;
+      state._fpCurrent = nv;
+      state._fpManual = true;
+    }
+    state._dirty = true;
+    if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
+    log((SB_EDIT_KEY === 'hp' ? '生命' : '疲劳') + '值初始值设为 ' + nv, 'heal');
+  } else {
+    var max = SB_EDIT_KEY === 'hp' ? S.hpMax : S.fpMax;
+    var nv2 = Math.max(0, Math.min(max, v));
+    if (SB_EDIT_KEY === 'hp') { S.hp = nv2; state._hpCurrent = nv2; }
+    else { S.fp = nv2; state._fpCurrent = nv2; }
+    state._dirty = true;
+    log((SB_EDIT_KEY === 'hp' ? '生命' : '疲劳') + '值设为 ' + nv2, 'battle');
+  }
   SB_EDIT_MODE = null;
   closeOverlay('miniOverlay');
   renderOrbs();
@@ -4315,7 +4414,7 @@ function SB_bindHpFpEdit() {
     var btn = document.createElement('button');
     btn.className = 'b5 edit';
     btn.textContent = '✏';
-    btn.title = '输入精确数值';
+    btn.title = '输入精确数值（非战斗=初始值，战斗=当前值）';
     btn.onclick = function() { SB_editHpFp(kind); };
     c.appendChild(btn);
   });
