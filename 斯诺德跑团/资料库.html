@@ -29,14 +29,14 @@
   table.flow td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;white-space:pre-wrap;word-break:break-word;max-width:320px}
   table.flow td:empty{background:var(--row-alt)}
   .bgLayout{display:grid;grid-template-columns:216px 1fr;gap:14px;align-items:start}
-  .bgSide{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px;position:sticky;top:14px;max-height:78vh;display:flex;flex-direction:column}
+  .bgSide{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px;position:sticky;top:14px;max-height:78vh;display:flex;flex-direction:column;min-width:0}
   .bgSideHead{font-size:14px;font-weight:bold;color:var(--accent);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
   .bgSide input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:13px;margin-bottom:8px}
   .bgList{overflow:auto;display:flex;flex-direction:column;gap:3px;padding-right:2px}
-  .bgListItem{padding:7px 9px;border-radius:8px;font-size:14px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .bgListItem{padding:7px 9px;border-radius:8px;font-size:14px;line-height:1.5;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);flex:0 0 auto}
   .bgListItem:hover{background:var(--paper);color:var(--accent)}
   .bgListItem.active{background:var(--accent);color:#fff}
-  .bgPage{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:66vh}
+  .bgPage{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:66vh;min-width:0}
   .bgPageHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:12px}
   .bgPageTitle{font-size:22px;font-weight:bold;color:var(--accent)}
   .bgPageMeta{color:var(--muted);font-size:13px;margin-top:4px}
@@ -279,13 +279,18 @@ function _bgWarnings(b,p){
   if(String(b['基础熟练项']||'').indexOf('任选')>=0||String(b['专业熟练项']||'').indexOf('任选')>=0)warn.push('创建时必须完成对应熟练项/专业的选择。');
   return warn;
 }
+function _bgEsc(v){
+  // 数据里存在 &#10; 形式的换行实体，先还原成真正的换行，再转义并渲染为 <br>
+  return esc(String(v==null?'':v).replace(/&#10;/g,'\n')).replace(/\n/g,'<br>');
+}
 function _bgField(label,value){
-  return '<div class="fieldLabel">'+esc(label)+'</div><div class="fieldValue">'+esc(value||'无')+'</div>';
+  var v=_bgEsc(value||'无');
+  return '<div class="fieldLabel">'+esc(label)+'</div><div class="fieldValue">'+v+'</div>';
 }
 function _bgOptions(title,arr){
   if(!arr||!arr.length)return '';
   var h='<div class="bgSection">'+esc(title)+'</div><div class="bgOptionGrid">';
-  for(var i=0;i<arr.length;i++)h+='<div class="bgOption">'+esc(arr[i])+'</div>';
+  for(var i=0;i<arr.length;i++)h+='<div class="bgOption">'+_bgEsc(arr[i])+'</div>';
   return h+'</div>';
 }
 function renderBgList(){
