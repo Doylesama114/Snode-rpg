@@ -28,14 +28,37 @@
   table.flow{border-collapse:collapse;min-width:960px;width:100%;table-layout:fixed;font-size:12px;line-height:1.45}
   table.flow td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;white-space:pre-wrap;word-break:break-word;max-width:320px}
   table.flow td:empty{background:var(--row-alt)}
-  .bgGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-  details.bg{border:1px solid var(--line);border-radius:10px;background:var(--soft);padding:10px 12px}
-  details.bg summary{cursor:pointer;font-weight:bold;color:var(--accent);font-size:15px}
-  .bgBody{max-height:360px;overflow:auto;padding-right:4px;margin-top:6px}
-  .bg .row{font-size:13px;margin-top:6px;line-height:1.6}
-  .bg .label{color:var(--muted)}
-  .bg ul{margin:4px 0 0 18px;padding:0}
+  .bgLayout{display:grid;grid-template-columns:216px 1fr;gap:14px;align-items:start}
+  .bgSide{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px;position:sticky;top:14px;max-height:78vh;display:flex;flex-direction:column}
+  .bgSideHead{font-size:14px;font-weight:bold;color:var(--accent);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+  .bgSide input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:13px;margin-bottom:8px}
+  .bgList{overflow:auto;display:flex;flex-direction:column;gap:3px;padding-right:2px}
+  .bgListItem{padding:7px 9px;border-radius:8px;font-size:14px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .bgListItem:hover{background:var(--paper);color:var(--accent)}
+  .bgListItem.active{background:var(--accent);color:#fff}
+  .bgPage{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:66vh}
+  .bgPageHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:12px}
+  .bgPageTitle{font-size:22px;font-weight:bold;color:var(--accent)}
+  .bgPageMeta{color:var(--muted);font-size:13px;margin-top:4px}
+  .bgPageNav{display:flex;gap:8px;flex:none}
+  .bgPageNav button{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);cursor:pointer;font-size:13px}
+  .bgPageNav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .bgPageNav button:disabled{opacity:.4;cursor:not-allowed}
+  .bgFields{display:grid;grid-template-columns:132px 1fr;gap:6px 12px;font-size:14px;line-height:1.75}
+  .bgFields .fieldLabel{color:var(--muted);font-weight:bold}
+  .bgFields .fieldValue{color:var(--ink);white-space:pre-wrap;word-break:break-word}
+  .bgSection{margin:16px 0 8px;font-size:16px;font-weight:bold;color:var(--accent);border-left:4px solid var(--accent);padding-left:8px}
+  .bgOptionGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+  .bgOption{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;line-height:1.6}
   .warn{background:var(--row-alt);border:1px solid var(--line);color:var(--accent);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
+  @media(max-width:860px){
+    .bgLayout{grid-template-columns:1fr}
+    .bgSide{position:static;max-height:none}
+    .bgList{flex-direction:row;overflow-x:auto;padding-bottom:4px}
+    .bgListItem{flex:none;max-width:160px}
+    .bgFields{grid-template-columns:96px 1fr}
+    .bgPageTitle{font-size:19px}
+  }
   .cardLink{display:block;border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--soft);text-decoration:none;color:var(--ink);margin-bottom:12px}
   .cardLink b{color:var(--accent)}
   .cardLink span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
@@ -83,11 +106,14 @@
   </div>
 
   <div class="panel" id="panel-bg">
-    <div class="toolbar">
-      <input id="bgQ" placeholder="搜索背景名称、基础熟练项、专业、其他、特性描述…">
-      <span class="meta" id="bgCount"></span>
+    <div class="bgLayout">
+      <aside class="bgSide">
+        <div class="bgSideHead"><span>个性背景</span><span class="meta" id="bgCount"></span></div>
+        <input id="bgQ" placeholder="搜索背景名称、熟练项、特性描述…">
+        <div class="bgList" id="bgList"></div>
+      </aside>
+      <main class="bgPage" id="bgPage"></main>
     </div>
-    <div class="bgGrid" id="bgGrid"></div>
   </div>
 
   <div class="panel" id="panel-store">
@@ -226,52 +252,113 @@ document.getElementById('flowNavHead').onclick=function(){
 renderSheetTabs();renderFlow();renderFlowNav();
 
 /* ===== backgrounds ===== */
-function listBlock(title,arr){
-  if(!arr||!arr.length)return '';
-  var h='<div class="row"><span class="label">'+esc(title)+'：</span></div><ul>';
-  for(var i=0;i<arr.length;i++)h+='<li>'+esc(arr[i])+'</li>';
-  return h+'</ul>';
+var _bgIdx=0;
+function _bgMatch(b,p,q){
+  if(!q)return true;
+  var hay=(String(b.name||'')+' '+String(b['基础熟练项']||'')+' '+String(b['专业熟练项']||'')+' '+String(b['其他']||'')+' '+String(b['特性描述']||'')+' '+String((p&&p.desc)||'')).toLowerCase();
+  return hay.indexOf(q)>=0;
 }
-function renderBackgrounds(){
+function _bgFiltered(){
   var q=(document.getElementById('bgQ').value||'').trim().toLowerCase();
-  var h='',count=0;
+  var out=[];
   for(var i=0;i<BACKGROUNDS.length;i++){
-    var b=BACKGROUNDS[i]||{},name=b.name||'';
-    var p=BG_PERSONALITY[name]||{};
-    var hay=(name+' '+(b['基础熟练项']||'')+' '+(b['专业熟练项']||'')+' '+(b['其他']||'')+' '+(b['特性描述']||'')+' '+(p.desc||'')).toLowerCase();
-    if(q&&hay.indexOf(q)<0)continue;
-    count++;
-    var warn='';
-    if(name==='法师学徒')warn='<div class="warn">创建时：必须从法师一阶戏法中选择满 2 个，加入技能列表且不占技能栏；不允许二阶戏法。</div>';
-    if(p.deities&&p.deities.length)warn+='<div class="warn">创建时必须从神祇列表选择 1 项。</div>';
-    if(p.contacts&&p.contacts.length)warn+='<div class="warn">创建时必须从联系渠道列表选择 1 项。</div>';
-    if(p.scam_types&&p.scam_types.length)warn+='<div class="warn">创建时必须从偏好骗局列表选择 1 项。</div>';
-    if(p.mission_channels&&p.mission_channels.length)warn+='<div class="warn">创建时必须从任务渠道列表选择 1 项。</div>';
-    if(p.academic_domains&&p.academic_domains.length)warn+='<div class="warn">创建时必须从学术领域列表选择 1 项。</div>';
-    if((b['其他']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成「'+(b['其他']||'')+'」的选择。</div>';
-    if((b['基础熟练项']||'').indexOf('任选')>=0||(b['专业熟练项']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成对应熟练项/专业的选择。</div>';
-    var body='';
-    body+='<div class="row"><span class="label">简介：</span>'+nl2br(p.desc||b.description||'无')+'</div>';
-    body+='<div class="row"><span class="label">基础熟练项：</span>'+esc(b['基础熟练项']||'无')+'</div>';
-    body+='<div class="row"><span class="label">专业熟练项：</span>'+esc(b['专业熟练项']||'无')+'</div>';
-    body+='<div class="row"><span class="label">其他：</span>'+esc(b['其他']||'无')+'</div>';
-    body+='<div class="row"><span class="label">装备：</span>'+esc((b['装备']||'').replace(/\n/g,'、'))+'</div>';
-    body+='<div class="row"><span class="label">特性描述：</span>'+nl2br(b['特性描述']||'无')+'</div>';
-    body+=listBlock('特点选项',p.traits);body+=listBlock('理念选项',p.ideals);body+=listBlock('羁绊选项',p.bonds);body+=listBlock('缺陷选项',p.flaws);
-    body+=listBlock('神祇选项',p.deities);body+=listBlock('联系渠道选项',p.contacts);body+=listBlock('偏好骗局选项',p.scam_types);body+=listBlock('任务渠道选项',p.mission_channels);body+=listBlock('学术领域选项',p.academic_domains);
-    h+='<details class="bg"><summary>'+esc(name)+'　HP '+(b['生命值加成']||'+0')+' · '+(b['资金']||'无资金')+'</summary><div class="bgBody">'+body+warn+'</div></details>';
+    var b=BACKGROUNDS[i]||{},p=BG_PERSONALITY[b.name]||{};
+    if(_bgMatch(b,p,q))out.push({i:i,b:b,p:p});
   }
-  document.getElementById('bgGrid').innerHTML=h||'<div class="empty">没有匹配的背景</div>';
-  document.getElementById('bgCount').textContent='共 '+count+' 个背景';
+  return out;
 }
-document.getElementById('bgQ').addEventListener('input',renderBackgrounds);
-document.addEventListener('toggle',function(e){
-  if(e.target&&e.target.tagName==='DETAILS'&&e.target.classList.contains('bg')&&e.target.open){
-    var all=document.querySelectorAll('details.bg');
-    for(var i=0;i<all.length;i++){if(all[i]!==e.target)all[i].open=false;}
+function _bgWarnings(b,p){
+  var name=b.name||'',warn=[];
+  if(name==='法师学徒')warn.push('创建时：必须从法师一阶戏法中选择满 2 个，加入技能列表且不占技能栏；不允许二阶戏法。');
+  if(p.deities&&p.deities.length)warn.push('创建时必须从神祇列表选择 1 项。');
+  if(p.contacts&&p.contacts.length)warn.push('创建时必须从联系渠道列表选择 1 项。');
+  if(p.scam_types&&p.scam_types.length)warn.push('创建时必须从偏好骗局列表选择 1 项。');
+  if(p.mission_channels&&p.mission_channels.length)warn.push('创建时必须从任务渠道列表选择 1 项。');
+  if(p.academic_domains&&p.academic_domains.length)warn.push('创建时必须从学术领域列表选择 1 项。');
+  if(String(b['其他']||'').indexOf('任选')>=0)warn.push('创建时必须完成「'+b['其他']+'」的选择。');
+  if(String(b['基础熟练项']||'').indexOf('任选')>=0||String(b['专业熟练项']||'').indexOf('任选')>=0)warn.push('创建时必须完成对应熟练项/专业的选择。');
+  return warn;
+}
+function _bgField(label,value){
+  return '<div class="fieldLabel">'+esc(label)+'</div><div class="fieldValue">'+esc(value||'无')+'</div>';
+}
+function _bgOptions(title,arr){
+  if(!arr||!arr.length)return '';
+  var h='<div class="bgSection">'+esc(title)+'</div><div class="bgOptionGrid">';
+  for(var i=0;i<arr.length;i++)h+='<div class="bgOption">'+esc(arr[i])+'</div>';
+  return h+'</div>';
+}
+function renderBgList(){
+  var items=_bgFiltered();
+  if(!items.length){document.getElementById('bgList').innerHTML='<div class="meta" style="padding:8px">没有匹配的背景</div>';document.getElementById('bgCount').textContent='0';return items;}
+  var found=false;
+  for(var i=0;i<items.length;i++){if(items[i].i===_bgIdx)found=true;}
+  if(!found)_bgIdx=items[0].i;
+  var h='';
+  for(var j=0;j<items.length;j++){
+    var it=items[j];
+    h+='<div class="bgListItem'+(_bgIdx===it.i?' active':'')+'" data-idx="'+it.i+'" title="'+esc(it.b.name)+'">'+esc(it.b.name)+'</div>';
   }
-},true);
-renderBackgrounds();
+  document.getElementById('bgList').innerHTML=h;
+  document.getElementById('bgCount').textContent=String(items.length);
+  var list=document.querySelectorAll('#bgList .bgListItem');
+  for(var k=0;k<list.length;k++){
+    list[k].onclick=function(){selectBackground(parseInt(this.getAttribute('data-idx'),10)||0);};
+  }
+  return items;
+}
+function selectBackground(i){
+  _bgIdx=i;
+  renderBgList();
+  renderBgPage();
+  var el=document.querySelector('#bgList .bgListItem.active');
+  if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest',inline:'nearest'});
+}
+function stepBackground(delta){
+  var items=_bgFiltered();
+  if(!items.length)return;
+  var pos=-1;
+  for(var i=0;i<items.length;i++){if(items[i].i===_bgIdx){pos=i;break;}}
+  if(pos<0)pos=0;
+  var next=pos+delta;
+  if(next<0)next=0;
+  if(next>=items.length)next=items.length-1;
+  selectBackground(items[next].i);
+}
+function renderBgPage(){
+  var page=document.getElementById('bgPage');
+  var items=_bgFiltered();
+  var b=null,p={},pos=-1;
+  for(var i=0;i<items.length;i++)if(items[i].i===_bgIdx){b=items[i].b;p=items[i].p||{};pos=i;break;}
+  if(!b){page.innerHTML='<div class="empty">没有匹配的背景</div>';return;}
+  var h='<div class="bgPageHead"><div><div class="bgPageTitle">'+esc(b.name||'')+'</div><div class="bgPageMeta">HP '+(b['生命值加成']||'+0')+' · '+(b['资金']||'无资金')+' · 第 '+(pos+1)+' / '+items.length+' 页</div></div>';
+  h+='<div class="bgPageNav"><button '+(pos<=0?'disabled':'')+' onclick="stepBackground(-1)">← 上一个</button><button '+(pos>=items.length-1?'disabled':'')+' onclick="stepBackground(1)">下一个 →</button></div></div>';
+  var warn=_bgWarnings(b,p);
+  if(warn.length){h+='<div class="warn">'+warn.map(function(x){return esc(x);}).join('<br>')+'</div>';}
+  h+='<div class="bgFields">';
+  h+=_bgField('简介',p.desc||b.description||'');
+  h+=_bgField('生命值加成',b['生命值加成']||'+0');
+  h+=_bgField('基础熟练项',b['基础熟练项']||'无');
+  h+=_bgField('专业熟练项',b['专业熟练项']||'无');
+  h+=_bgField('其他',b['其他']||'无');
+  h+=_bgField('资金',b['资金']||'无');
+  h+=_bgField('装备','\n'+String(b['装备']||'').split('\n').filter(function(x){return x;}).map(function(x){return '· '+x;}).join('\n'));
+  h+=_bgField('特性描述',b['特性描述']||'无');
+  h+='</div>';
+  h+=_bgOptions('特点选项',p.traits);
+  h+=_bgOptions('理念选项',p.ideals);
+  h+=_bgOptions('羁绊选项',p.bonds);
+  h+=_bgOptions('缺陷选项',p.flaws);
+  h+=_bgOptions('神祇选项',p.deities);
+  h+=_bgOptions('联系渠道选项',p.contacts);
+  h+=_bgOptions('偏好骗局选项',p.scam_types);
+  h+=_bgOptions('任务渠道选项',p.mission_channels);
+  h+=_bgOptions('学术领域选项',p.academic_domains);
+  page.innerHTML=h;
+}
+document.getElementById('bgQ').addEventListener('input',function(){renderBgList();renderBgPage();});
+renderBgList();
+renderBgPage();
 </script>
 </body>
 </html>
