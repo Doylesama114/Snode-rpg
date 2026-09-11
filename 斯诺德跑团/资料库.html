@@ -41,6 +41,18 @@
   .cardLink span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
   .empty{padding:24px;color:var(--muted);text-align:center}
   .recList{display:flex;flex-direction:column;gap:12px}
+  .recCard{scroll-margin-top:14px}
+  .flowNav{position:fixed;right:14px;top:96px;width:188px;max-height:72vh;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(31,37,34,.14);z-index:60;overflow:hidden}
+  .flowNav.collapsed{width:auto;max-height:none}
+  .flowNavHead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;background:var(--soft);border-bottom:1px solid var(--line);font-size:13px;font-weight:bold;color:var(--accent);cursor:pointer;white-space:nowrap}
+  .flowNav.collapsed .flowNavHead{border-bottom:none}
+  .flowNavList{overflow:auto;padding:6px}
+  .flowNav.collapsed .flowNavList{display:none}
+  .flowNavItem{padding:5px 8px;border-radius:6px;font-size:13px;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .flowNavItem:hover{background:var(--soft);color:var(--accent)}
+  @media(max-width:1180px){.flowNav{width:166px;top:88px}}
+  @media(max-width:820px){.flowNav{right:8px;left:8px;top:auto;bottom:10px;width:auto;max-height:40vh}}
+
   .recCard{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px}
   .recTitle{font-size:16px;font-weight:bold;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px}
   .kvRow{display:grid;grid-template-columns:118px 1fr;gap:8px;font-size:13px;line-height:1.6;margin:4px 0}
@@ -93,6 +105,10 @@
   </div>
 </div>
 
+<div id="flowNav" class="flowNav" style="display:none">
+  <div class="flowNavHead" id="flowNavHead"><span id="flowNavTitle">跳转</span><span id="flowNavToggle">−</span></div>
+  <div class="flowNavList" id="flowNavList"></div>
+</div>
 <script src="../职业页/数据/backgrounds_data.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
 <script src="资料库/creation_flow_data.js"></script>
@@ -110,6 +126,7 @@ for(var ti=0;ti<tabs.length;ti++){
     var panels=['flow','bg','store','base'];
     for(var j=0;j<panels.length;j++)document.getElementById('panel-'+panels[j]).classList.remove('active');
     document.getElementById('panel-'+id).classList.add('active');
+    if(typeof renderFlowNav==='function')renderFlowNav();
   };
 }
 
@@ -128,7 +145,7 @@ function renderFlowRecords(sh){
   var h='<div class="recList">';
   for(var i=0;i<sh.records.length;i++){
     var rec=sh.records[i]||{};
-    h+='<div class="recCard"><div class="recTitle">'+esc(rec.title||'')+'</div>';
+    h+='<div class="recCard" id="flowRec_'+i+'"><div class="recTitle">'+esc(rec.title||'')+'</div>';
     var fields=rec.fields||[];
     for(var j=0;j<fields.length;j++){
       var f=fields[j]||{};
@@ -170,10 +187,43 @@ function renderSheetTabs(){
   document.getElementById('sheetTabs').innerHTML=h;
   var tabs=document.querySelectorAll('.sheetTab');
   for(var j=0;j<tabs.length;j++){
-    tabs[j].onclick=function(){_flowIdx=parseInt(this.getAttribute('data-idx'),10)||0;renderSheetTabs();renderFlow();};
+    tabs[j].onclick=function(){_flowIdx=parseInt(this.getAttribute('data-idx'),10)||0;renderSheetTabs();renderFlow();renderFlowNav();};
   }
 }
-renderSheetTabs();renderFlow();
+var _flowNavCollapsed = window.innerWidth < 1280;
+function scrollToFlowRecord(i){
+  var el=document.getElementById('flowRec_'+i);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderFlowNav(){
+  var nav=document.getElementById('flowNav');
+  var panel=document.getElementById('panel-flow');
+  var sh=CREATION_FLOW_DATA.sheets[_flowIdx];
+  if(!nav||!panel||!panel.classList.contains('active')||!sh||!sh.records||!sh.records.length){if(nav)nav.style.display='none';return;}
+  nav.style.display='flex';
+  if(_flowNavCollapsed)nav.classList.add('collapsed');else nav.classList.remove('collapsed');
+  var title=String(sh.name||'').replace(/^NO\.\d+/, '');
+  document.getElementById('flowNavTitle').textContent='跳转 · '+title;
+  document.getElementById('flowNavToggle').textContent=_flowNavCollapsed?'+':'−';
+  var h='';
+  for(var i=0;i<sh.records.length;i++){
+    h+='<div class="flowNavItem" data-idx="'+i+'" title="'+esc(sh.records[i].title||'')+'">'+esc(sh.records[i].title||'')+'</div>';
+  }
+  document.getElementById('flowNavList').innerHTML=h;
+  var items=document.querySelectorAll('#flowNavList .flowNavItem');
+  for(var j=0;j<items.length;j++){
+    items[j].onclick=function(){
+      var idx=parseInt(this.getAttribute('data-idx'),10)||0;
+      scrollToFlowRecord(idx);
+      if(window.innerWidth<820){_flowNavCollapsed=true;renderFlowNav();}
+    };
+  }
+}
+document.getElementById('flowNavHead').onclick=function(){
+  _flowNavCollapsed=!_flowNavCollapsed;
+  renderFlowNav();
+};
+renderSheetTabs();renderFlow();renderFlowNav();
 
 /* ===== backgrounds ===== */
 function listBlock(title,arr){
