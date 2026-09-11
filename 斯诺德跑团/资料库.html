@@ -50,6 +50,8 @@
   .bgSection{margin:16px 0 8px;font-size:16px;font-weight:bold;color:var(--accent);border-left:4px solid var(--accent);padding-left:8px}
   .bgOptionGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
   .bgOption{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;line-height:1.6}
+  .bgOptionSub{margin-top:5px;color:var(--muted);font-size:12.5px;line-height:1.55}
+  .bgOptionSub b{color:var(--accent);font-weight:bold}
   .warn{background:var(--row-alt);border:1px solid var(--line);color:var(--accent);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
   @media(max-width:860px){
     .bgLayout{grid-template-columns:1fr}
@@ -119,7 +121,7 @@
   <div class="panel" id="panel-store">
     <a class="cardLink" href="物资大全.html">
       <b>📦 打开斯诺德物资大全</b>
-      <span>按原文件的大分类 + 小分类分组展示全部物品（名称 / 小类 / 价格 / 重量），支持搜索。</span>
+      <span>按原文件的大分类 + 小分类分组展示全部物品（名称 / 小类 / 效果与简介 / 价格 / 载重与负重 / 品质），武器伤害、卷轴与魔法道具效果、品质、容器负重、租借与购买价全部可见，支持搜索。</span>
     </a>
   </div>
 
@@ -270,11 +272,16 @@ function _bgFiltered(){
 function _bgWarnings(b,p){
   var name=b.name||'',warn=[];
   if(name==='法师学徒')warn.push('创建时：必须从法师一阶戏法中选择满 2 个，加入技能列表且不占技能栏；不允许二阶戏法。');
-  if(p.deities&&p.deities.length)warn.push('创建时必须从神祇列表选择 1 项。');
+  if(p.deities&&p.deities.length)warn.push('创建时必须从神祇列表选择 1 项（下方附各神祇简介）。');
   if(p.contacts&&p.contacts.length)warn.push('创建时必须从联系渠道列表选择 1 项。');
-  if(p.scam_types&&p.scam_types.length)warn.push('创建时必须从偏好骗局列表选择 1 项。');
+  if(p.scam_types&&p.scam_types.length)warn.push('创建时必须从偏好骗局列表选择 1 项（并取得对应的骗局装备）。');
   if(p.mission_channels&&p.mission_channels.length)warn.push('创建时必须从任务渠道列表选择 1 项。');
-  if(p.academic_domains&&p.academic_domains.length)warn.push('创建时必须从学术领域列表选择 1 项。');
+  if(p.academic_domains&&p.academic_domains.length)warn.push('创建时必须从学术领域列表选择 1 项（决定熟练度加成与额外装备）。');
+  if(p.crime_details&&p.crime_details.length)warn.push('创建时必须从罪名列表选择 1 项（决定你的接头人）。');
+  if(p.seclusion_reasons&&p.seclusion_reasons.length)warn.push('创建时必须从隐居原因列表选择 1 项。');
+  if(p.military_roles&&p.military_roles.length)warn.push('创建时必须从专职列表选择 1 项（决定熟练度加成与额外装备）。');
+  if(p.foreign_origins&&p.foreign_origins.length)warn.push('创建时必须从造访原因列表选择 1 项（不同原因获得不同加成）。');
+  if(p.companions&&p.companions.length)warn.push('创建时必须从名望加成列表选择 1 种动物伙伴。');
   if(String(b['其他']||'').indexOf('任选')>=0)warn.push('创建时必须完成「'+b['其他']+'」的选择。');
   if(String(b['基础熟练项']||'').indexOf('任选')>=0||String(b['专业熟练项']||'').indexOf('任选')>=0)warn.push('创建时必须完成对应熟练项/专业的选择。');
   return warn;
@@ -291,6 +298,30 @@ function _bgOptions(title,arr){
   if(!arr||!arr.length)return '';
   var h='<div class="bgSection">'+esc(title)+'</div><div class="bgOptionGrid">';
   for(var i=0;i<arr.length;i++)h+='<div class="bgOption">'+_bgEsc(arr[i])+'</div>';
+  return h+'</div>';
+}
+/* 带附加说明的选项（如 神祇简介 / 专职熟练度+额外装备 / 名望加成表） */
+function _bgRichOptions(title,arr,fields){
+  if(!arr||!arr.length)return '';
+  var h='<div class="bgSection">'+esc(title)+'</div><div class="bgOptionGrid">';
+  for(var i=0;i<arr.length;i++){
+    var it=arr[i];
+    if(typeof it==='string'||it==null){h+='<div class="bgOption">'+_bgEsc(it)+'</div>';continue;}
+    var main='';
+    for(var f=0;f<fields.length;f++){
+      var key=fields[f][0];
+      if(key==='name'||key==='level'){main=_bgEsc(it[key]||'');break;}
+    }
+    if(!main)main=_bgEsc(it.name||it.level||'');
+    var sub='';
+    for(var g=0;g<fields.length;g++){
+      var k2=fields[g][0],lbl=fields[g][1];
+      if(k2==='name'||k2==='level')continue;
+      if(!it[k2])continue;
+      sub+='<div class="bgOptionSub"><b>'+esc(lbl)+'：</b>'+_bgEsc(it[k2])+'</div>';
+    }
+    h+='<div class="bgOption">'+main+sub+'</div>';
+  }
   return h+'</div>';
 }
 function renderBgList(){
@@ -354,11 +385,17 @@ function renderBgPage(){
   h+=_bgOptions('理念选项',p.ideals);
   h+=_bgOptions('羁绊选项',p.bonds);
   h+=_bgOptions('缺陷选项',p.flaws);
-  h+=_bgOptions('神祇选项',p.deities);
+  h+=_bgRichOptions('神祇选项（创建时选 1 项）',p.deity_details||p.deities,[['name','神祇'],['desc','简介']]);
   h+=_bgOptions('联系渠道选项',p.contacts);
-  h+=_bgOptions('偏好骗局选项',p.scam_types);
+  h+=_bgRichOptions('偏好骗局选项（创建时选 1 项）',p.scam_details||p.scam_types,[['name','骗局'],['gear','对应装备']]);
   h+=_bgOptions('任务渠道选项',p.mission_channels);
-  h+=_bgOptions('学术领域选项',p.academic_domains);
+  h+=_bgRichOptions('学术领域选项（创建时选 1 项）',p.academic_details||p.academic_domains,[['name','学科'],['prof','熟练度加成'],['gear','额外装备']]);
+  h+=_bgRichOptions('罪名选项（创建时选 1 项）',p.crime_details||p.crimes,[['name','罪名'],['contact','接头人']]);
+  h+=_bgRichOptions('专职选项（创建时选 1 项）',p.military_roles||p.roles,[['name','职务'],['prof','熟练度加成'],['gear','额外装备']]);
+  h+=_bgRichOptions('造访原因选项（创建时选 1 项）',p.foreign_origins||p.origins,[['name','身份'],['desc','介绍']]);
+  h+=_bgOptions('隐居原因选项（创建时选 1 项）',p.seclusion_reasons);
+  h+=_bgOptions('动物伙伴选项（创建时选 1 种）',p.companions);
+  h+=_bgRichOptions('名望加成',p.fame_tiers&&p.fame_tiers.length&&p.fame_tiers[0]&&p.fame_tiers[0].level?p.fame_tiers:null,[['level','等级'],['bonus','魅力相关检定增益']]);
   page.innerHTML=h;
 }
 document.getElementById('bgQ').addEventListener('input',function(){renderBgList();renderBgPage();});

@@ -293,6 +293,9 @@ body.battle .btn-battle{background:var(--green)}
 .store-item .si-meta{display:flex;gap:10px;font-size:12px}
 .store-item .si-price{color:#8a6a2a}
 .store-item .si-w{color:var(--muted)}
+.store-item .si-pl{color:#8a6a2a;font-size:11.5px;margin-left:1px}
+.store-item .si-p2{color:var(--muted);font-size:11.5px}
+.store-item .si-cap{color:var(--muted);font-size:11.5px}
 .store-item .si-desc{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .store-item .si-buy{flex:none;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 16px;cursor:pointer;font-size:13px;font-family:inherit}
 .store-item .si-buy:hover{background:#c0852f}
@@ -1247,6 +1250,7 @@ body.battle .fab{display:none}
 </div>
 
 <script src="../职业页/数据/items_data.js"></script>
+<script src="../职业页/数据/bg_personality_data.js"></script>
 <script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
 <script src="panel_engine.js"></script>
@@ -1957,10 +1961,12 @@ function renderStorePick() {
       '<div class="store-group-body">';
     for (var ii = 0; ii < g.items.length; ii++) {
       var it2 = g.items[ii];
-      html += '<div class="pk-item" onclick="storePickSelect(\'' + it2.name.replace(/'/g, '\\u0027') + '\')">' +
-        '<span class="pk-name">' + escHtml(it2.name) + '</span>' +
-        (it2.price ? '<span class="pk-price">' + escHtml(it2.price) + '</span>' : '') +
-        (it2.weight ? '<span class="pk-w">' + escHtml(it2.weight) + '</span>' : '') + '</div>';
+      html += '<div class="pk-item" title="' + escHtml((it2.desc || '') + (it2.cap ? (' 负重 ' + it2.cap) : '')) + '" onclick="storePickSelect(\'' + it2.name.replace(/'/g, '\\u0027') + '\')">' +
+        '<span class="pk-name">' + escHtml(it2.name) + (it2.quality ? ' <span class="it-q">' + escHtml(it2.quality) + '</span>' : '') + '</span>' +
+        (it2.price ? '<span class="pk-price">' + escHtml(it2.price) + (it2.priceLabel && it2.priceLabel !== '售价' ? ('/' + escHtml(it2.priceLabel)) : '') + '</span>' : '') +
+        (it2.price2 ? '<span class="pk-price">· ' + escHtml(it2.price2) + '</span>' : '') +
+        (it2.weight ? '<span class="pk-w">' + escHtml(it2.weight) + '</span>' : '') +
+        (it2.cap ? '<span class="pk-w">负重 ' + escHtml(it2.cap) + '</span>' : '') + '</div>';
     }
     html += '</div></div>';
   }
@@ -2220,29 +2226,53 @@ function storeItemCard(it, q) {
     return k2 === it.name && state.containerItems[k2];
   });
   var heldShow = isContainerItem(it.name) ? (containerHeld ? '已装备' : '未持有') : ('已持 ×' + held);
+  var meta = '';
+  if (it.price) {
+    meta += '<b class="si-price">' + escHtml(it.price) + '</b>';
+    if (it.priceLabel && it.priceLabel !== '售价') meta += '<span class="si-pl">/' + escHtml(it.priceLabel) + '</span>';
+  }
+  if (it.price2) meta += '<span class="si-p2">· ' + escHtml(it.price2) + (it.price2Label ? (' ' + escHtml(it.price2Label)) : '') + '</span>';
+  if (it.weight) meta += '<span class="si-w">' + escHtml(it.weight) + '</span>';
+  if (it.cap) meta += '<span class="si-cap">负重 ' + escHtml(it.cap) + '</span>';
+  var extraTxt = '';
+  if (it.extra && it.extra.length) {
+    for (var ei = 0; ei < it.extra.length; ei++) {
+      var pr = it.extra[ei] || [];
+      extraTxt += (extraTxt ? ' · ' : '') + escHtml((pr[0] || '') + '：' + (pr[1] || ''));
+    }
+  }
   return '<div class="store-item">' +
-    '<div class="si-main" style="cursor:pointer" onclick="storePreview(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="点击查看详情"><span class="si-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
-    '<span class="si-meta">' + (it.price ? '<b class="si-price">' + escHtml(it.price) + '</b>' : '') + (it.weight ? ' <span class="si-w">' + escHtml(it.weight) + '</span>' : '') + '</span>' +
-    (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') + '</div>' +
+    '<div class="si-main" style="cursor:pointer" onclick="storePreview(\'' + it.name.replace(/'/g, '\\u0027') + '\',\'' + String(it.cat || '').replace(/'/g, '\\u0027') + '\')" title="点击查看详情"><span class="si-name">' + (it.cat ? '<span class="si-cat">' + escHtml(it.cat) + '</span>' : '') + escHtml(it.name) + (it.quality ? ' <span class="it-q">' + escHtml(it.quality) + '</span>' : '') + '</span>' +
+    '<span class="si-meta">' + meta + '</span>' +
+    (it.desc ? '<span class="si-desc">' + escHtml(it.desc) + '</span>' : '') +
+    (extraTxt ? '<span class="si-desc">' + extraTxt + '</span>' : '') + '</div>' +
     '<span class="si-held">' + heldShow + '</span>' +
     (held > 0 || containerHeld ? '<button class="si-refund" onclick="refundItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')" title="全额退货">退货</button>' : '') +
     '<button class="si-buy" onclick="buyItem(\'' + it.name.replace(/'/g, '\\u0027') + '\')">购买</button></div>';
 }
 /* 商店物品详情预览（购买前查看属性和效果） */
-function storePreview(name) {
+function storePreview(name, cat) {
   var it = null;
   for (var _ck in STORE_DATA) {
     var _arr = STORE_DATA[_ck] || [];
-    for (var _ci = 0; _ci < _arr.length; _ci++) if (_arr[_ci].name === name) { it = _arr[_ci]; break; }
+    for (var _ci = 0; _ci < _arr.length; _ci++) {
+      if (_arr[_ci].name === name && (!cat || _arr[_ci].cat === cat)) { it = _arr[_ci]; break; }
+    }
     if (it) break;
   }
   if (!it) return;
   var rows = [];
   if (it.cat) rows.push(['小类', escHtml(it.cat)]);
-  if (it.price) rows.push(['价格', escHtml(it.price)]);
+  if (it.price) rows.push([(it.priceLabel && it.priceLabel !== '售价') ? it.priceLabel : '价格', escHtml(it.price)]);
+  if (it.price2) rows.push([it.price2Label || '第二价格', escHtml(it.price2)]);
   if (it.weight) rows.push(['载重', escHtml(it.weight)]);
+  if (it.cap) rows.push(['负重', escHtml(it.cap)]);
   if (it.quality) rows.push(['品质', escHtml(it.quality)]);
   if (it.desc) rows.push(['简介/效果', escHtml(it.desc)]);
+  if (it.extra) for (var ei = 0; ei < it.extra.length; ei++) {
+    var pr = it.extra[ei] || [];
+    rows.push([pr[0] || '附加', escHtml(pr[1] || '')]);
+  }
   var html = '<table class="skill-detail-table">';
   for (var i = 0; i < rows.length; i++) html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
   html += '</table>';

@@ -316,7 +316,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
     sp_points:0,
     color_marks:defaultColorMarks(),
-    hp:0,fp:0,story:"",personality:"",traits:"",ideals:"",bonds:"",flaws:"",background:"",
+    hp:0,fp:0,story:"",personality:"",traits:"",ideals:"",bonds:"",flaws:"",background:"",deity:"",deityAttr:"",patron:"",contacts:"",scamType:"",missionChannel:"",academicDomain:"",crime:"",seclusion:"",militaryRole:"",foreignOrigin:"",companion:"",sportPreference:"",
     attrs:{},classes:[{name:"",level:1,keyAttr:"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[],special_feats:[],feats:[],currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
     equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},
@@ -325,7 +325,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     dragonType:"",dragonBreath:"",dragonResistance:"",
     raceChoices:{extraAttrs:[],humanFreeSkill:"",raceSaves:[],raceSkillChoice:"",raceProfInput:"",wingfolkHasCommon:true},
     classChoices:{weaponSpec:"",weaponSpecBonus:"",specChoices:{}},
-    backgroundChoices:{deity:"",contacts:"",scamType:"",missionChannel:"",academicDomain:""},
+    backgroundChoices:{deity:"",contacts:"",scamType:"",missionChannel:"",academicDomain:"",crime:"",seclusion:"",militaryRole:"",foreignOrigin:"",companion:""},
     bgOtherPicks:[],
     racial_traits:[],class_features:[],languages:[],professionals:[],talent_tree:[],
     blueprints:[],blueprint_bonus_slots:0,
@@ -587,14 +587,19 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   }
   function _segTake(seg,prefix){if(!seg)return"";var s2=String(seg);return s2.indexOf(prefix)===0?s2.slice(prefix.length).trim():"";}
   var _u27=String(c("U27")||""),_u30=String(c("U30")||"");
-  var _u27segs=_u27.split(/[；;]/),_u30segs=_u30.split(/[；;]/),_sv;
+  var _u27segs=_u27.split(/[；;]/),_u30segs=_u30.split(/[；;]/),_sv,_sv2;
   for(var _ui=0;_ui<_u27segs.length;_ui++){
     var _seg=_u27segs[_ui];
     _sv=_segTake(_seg,"神祇：")||_segTake(_seg,"神祇:");if(_sv){var _dm2=_sv.match(/^([^（(]+)(?:[（(]([^）)]+)[）)])?$/);if(_dm2){s.backgroundChoices.deity=_dm2[1].trim();if(!s.deity)s.deity=s.backgroundChoices.deity;if(_dm2[2]){s.backgroundChoices.deityAttr=_dm2[2].trim();if(!s.deityAttr)s.deityAttr=s.backgroundChoices.deityAttr;}}}
     _sv=_segTake(_seg,"联系渠道：")||_segTake(_seg,"联系渠道:");if(_sv){s.backgroundChoices.contacts=_sv;if(!s.contacts)s.contacts=_sv;}
-    _sv=_segTake(_seg,"偏好骗局：")||_segTake(_seg,"偏好骗局:");if(_sv){s.backgroundChoices.scamType=_sv;if(!s.scamType)s.scamType=_sv;}
+    _sv=_segTake(_seg,"偏好骗局：")||_segTake(_seg,"偏好骗局:");if(_sv){var _st2=_sv.match(/^([^（(]+)/);if(_st2){_sv2=_st2[1].trim();s.backgroundChoices.scamType=_sv2;if(!s.scamType)s.scamType=_sv2;}}
     _sv=_segTake(_seg,"任务渠道：")||_segTake(_seg,"任务渠道:");if(_sv){s.backgroundChoices.missionChannel=_sv;if(!s.missionChannel)s.missionChannel=_sv;}
-    _sv=_segTake(_seg,"学术领域：")||_segTake(_seg,"学术领域:");if(_sv){s.backgroundChoices.academicDomain=_sv;if(!s.academicDomain)s.academicDomain=_sv;}
+    _sv=_segTake(_seg,"学术领域：")||_segTake(_seg,"学术领域:");if(_sv){var _ad2=_sv.match(/^([^（(]+)/);if(_ad2){_sv2=_ad2[1].trim();s.backgroundChoices.academicDomain=_sv2;if(!s.academicDomain)s.academicDomain=_sv2;}}
+    _sv=_segTake(_seg,"罪名：")||_segTake(_seg,"罪名:");if(_sv){var _cr2=_sv.match(/^([^（(]+)/);if(_cr2){_sv2=_cr2[1].trim();s.backgroundChoices.crime=_sv2;if(!s.crime)s.crime=_sv2;}}
+    _sv=_segTake(_seg,"隐居原因：")||_segTake(_seg,"隐居原因:");if(_sv){var _se2=_sv.match(/^([^（(]+)/);if(_se2){_sv2=_se2[1].trim();s.backgroundChoices.seclusion=_sv2;if(!s.seclusion)s.seclusion=_sv2;}}
+    _sv=_segTake(_seg,"专职：")||_segTake(_seg,"专职:");if(_sv){var _mr2=_sv.match(/^([^（(]+)/);if(_mr2){_sv2=_mr2[1].trim();s.backgroundChoices.militaryRole=_sv2;if(!s.militaryRole)s.militaryRole=_sv2;}}
+    _sv=_segTake(_seg,"造访原因：")||_segTake(_seg,"造访原因:");if(_sv){var _fo2=_sv.match(/^([^（(]+)/);if(_fo2){_sv2=_fo2[1].trim();s.backgroundChoices.foreignOrigin=_sv2;if(!s.foreignOrigin)s.foreignOrigin=_sv2;}}
+    _sv=_segTake(_seg,"动物伙伴：")||_segTake(_seg,"动物伙伴:");if(_sv){var _cp2=_sv.match(/^([^（(]+)/);if(_cp2){_sv2=_cp2[1].trim();s.backgroundChoices.companion=_sv2;if(!s.companion)s.companion=_sv2;}}
   }
   for(var _uj=0;_uj<_u30segs.length;_uj++){
     var _seg2=_u30segs[_uj];

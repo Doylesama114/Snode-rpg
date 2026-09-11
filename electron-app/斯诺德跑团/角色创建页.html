@@ -418,6 +418,7 @@ var CHAR = {
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
   deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: "",
+  crime: "", seclusion: "", militaryRole: "", foreignOrigin: "", companion: "",
   aspiration: { text: "", picks: [] }
 };
 
@@ -751,6 +752,11 @@ function buildCreationSnapshot(){
     scamType:CHAR.scamType||"",
     missionChannel:CHAR.missionChannel||"",
     academicDomain:CHAR.academicDomain||"",
+    crime:CHAR.crime||"",
+    seclusion:CHAR.seclusion||"",
+    militaryRole:CHAR.militaryRole||"",
+    foreignOrigin:CHAR.foreignOrigin||"",
+    companion:CHAR.companion||"",
     aspiration:CHAR.aspiration?JSON.parse(JSON.stringify(CHAR.aspiration)):{text:"",picks:[]}
   };
   return snap;
@@ -859,6 +865,11 @@ function applyCreationSnapshotToChar(snap){
   CHAR.scamType=snap.scamType||"";
   CHAR.missionChannel=snap.missionChannel||"";
   CHAR.academicDomain=snap.academicDomain||"";
+  CHAR.crime=snap.crime||"";
+  CHAR.seclusion=snap.seclusion||"";
+  CHAR.militaryRole=snap.militaryRole||"";
+  CHAR.foreignOrigin=snap.foreignOrigin||"";
+  CHAR.companion=snap.companion||"";
   CHAR.aspiration = snap.aspiration ? JSON.parse(JSON.stringify(snap.aspiration)) : { text: "", picks: [] };
   return !!(CHAR.className&&CHAR.raceName&&CHAR.bgName);
 }
@@ -1028,6 +1039,11 @@ function updateOverview() {
     h += '<div class="ov-section"><div class="ov-label">🎭 背景: ' + CHAR.bgName + '</div>';
     if (CHAR.bgCantrips && CHAR.bgCantrips.length) h += '<div class="ov-item">戏法: ' + CHAR.bgCantrips.join('、') + '</div>';
     if (CHAR.bgOtherPicks && CHAR.bgOtherPicks.length) h += '<div class="ov-item">专业工具: ' + CHAR.bgOtherPicks.join('、') + '</div>';
+    if (CHAR.crime) h += '<div class="ov-item">罪名: ' + esc(CHAR.crime) + '</div>';
+    if (CHAR.seclusion) h += '<div class="ov-item">隐居原因: ' + esc(CHAR.seclusion) + '</div>';
+    if (CHAR.militaryRole) h += '<div class="ov-item">专职: ' + esc(CHAR.militaryRole) + '</div>';
+    if (CHAR.foreignOrigin) h += '<div class="ov-item">造访原因: ' + esc(CHAR.foreignOrigin) + '</div>';
+    if (CHAR.companion) h += '<div class="ov-item">动物伙伴: ' + esc(CHAR.companion) + '</div>';
     if (CHAR.sportPreference) h += '<div class="ov-item">偏好运动: ' + CHAR.sportPreference + '</div>';
     if (CHAR.bgProfs && CHAR.bgProfs.profInput) h += '<div class="ov-item">专业熟练: ' + CHAR.bgProfs.profInput + '</div>';
     h += '</div>';
@@ -2458,13 +2474,15 @@ function showPersonalityPicker(bg){
   p.style.cssText="font-size:13px;color:#69706b;margin-bottom:16px";
   p.textContent="选择或自定义角色的个性特征";
   b.appendChild(p);
-  function makeSection(label,key,items,count){
+  function makeSection(label,key,items,count,hints){
     var div=document.createElement("div");
     div.style.marginBottom="14px";
     var lb=document.createElement("label");
     lb.style.cssText="font-size:14px;font-weight:bold;color:#1f2522;display:block;margin-bottom:4px";
     lb.textContent=label+"（选"+count+"项）";
     div.appendChild(lb);
+    if(hints&&!window._PERS_HINTS)window._PERS_HINTS={};
+    if(hints)window._PERS_HINTS[key]=hints;
     var ex=CHAR[key]||"";
     var ep=ex.split(/[ ；;]/);
     for(var i=0;i<count;i++){
@@ -2492,6 +2510,12 @@ function showPersonalityPicker(bg){
       inp.style.cssText="width:100%;padding:6px;margin-top:2px;border:1px solid #d8d2c4;border-radius:4px;font-size:13px;display:none";
       if(ep[i])inp.value=ep[i].trim();
       div.appendChild(inp);
+      if(hints){
+        var hd=document.createElement("div");
+        hd.id="pershint_"+key+"_"+i;
+        hd.style.cssText="font-size:12px;color:#69706b;line-height:1.5;margin-top:2px";
+        div.appendChild(hd);
+      }
     }
     b.appendChild(div);
   }
@@ -2500,14 +2524,55 @@ function showPersonalityPicker(bg){
   makeSection("羁绊","bonds",data.bonds,1);
   makeSection("缺陷","flaws",data.flaws,1);
   var bgName=bg.name;
-  if(bgName==="侍僧"&&data.deities&&data.deities.length) makeSection("神祇","deity",data.deities,1);
+  /* 选项说明（来自 个性与背景创建规则.xlsx 的附加列） */
+  function _hints(arr,key,fields){
+    var m={};
+    for(var i=0;i<arr.length;i++){
+      var it=arr[i],parts=[];
+      for(var f=0;f<fields.length;f++){
+        if(it[fields[f][0]])parts.push(fields[f][1]+"："+it[fields[f][0]]);
+      }
+      m[it[key]]=parts.join(" ｜ ");
+    }
+    return m;
+  }
+  if(bgName==="侍僧"&&data.deity_details&&data.deity_details.length)
+    makeSection("神祇","deity",data.deity_details.map(function(x){return x.name;}),1,_hints(data.deity_details,"name",[["desc","简介"]]));
+  else if(bgName==="侍僧"&&data.deities&&data.deities.length) makeSection("神祇","deity",data.deities,1);
   else if(bgName==="侦探"&&data.contacts&&data.contacts.length) makeSection("联系渠道","contacts",data.contacts,1);
+  else if(bgName==="骗子"&&data.scam_details&&data.scam_details.length)
+    makeSection("偏好骗局","scamType",data.scam_details.map(function(x){return x.name;}),1,_hints(data.scam_details,"name",[["gear","对应装备"]]));
   else if(bgName==="骗子"&&data.scam_types&&data.scam_types.length) makeSection("偏好骗局","scamType",data.scam_types,1);
   else if(bgName==="职业杀手"&&data.mission_channels&&data.mission_channels.length) makeSection("任务渠道","missionChannel",data.mission_channels,1);
+  else if(bgName==="教授"&&data.academic_details&&data.academic_details.length)
+    makeSection("学术领域","academicDomain",data.academic_details.map(function(x){return x.name;}),1,_hints(data.academic_details,"name",[["prof","熟练度加成"],["gear","额外装备"]]));
   else if(bgName==="教授"&&data.academic_domains&&data.academic_domains.length) makeSection("学术领域","academicDomain",data.academic_domains,1);
+  else if(bgName==="恶棍"&&data.crime_details&&data.crime_details.length)
+    makeSection("罪名","crime",data.crime_details.map(function(x){return x.name;}),1,_hints(data.crime_details,"name",[["contact","接头人"]]));
+  else if(bgName==="隐士"&&data.seclusion_reasons&&data.seclusion_reasons.length) makeSection("隐居原因","seclusion",data.seclusion_reasons,1);
+  else if(bgName==="士兵"&&data.military_roles&&data.military_roles.length)
+    makeSection("专职","militaryRole",data.military_roles.map(function(x){return x.name;}),1,_hints(data.military_roles,"name",[["prof","熟练度加成"],["gear","额外装备"]]));
+  else if(bgName==="外乡人"&&data.foreign_origins&&data.foreign_origins.length)
+    makeSection("造访原因","foreignOrigin",data.foreign_origins.map(function(x){return x.name;}),1,_hints(data.foreign_origins,"name",[["desc","加成"]]));
+  else if(bgName==="驯兽师"&&data.companions&&data.companions.length) makeSection("动物伙伴","companion",data.companions,1);
+  if((bgName==="乐师"||bgName==="艺人")&&data.fame_tiers&&data.fame_tiers.length){
+    var ft=document.createElement("div");
+    ft.style.cssText="margin-bottom:14px";
+    var ftl=document.createElement("label");
+    ftl.style.cssText="font-size:14px;font-weight:bold;color:#1f2522;display:block;margin-bottom:4px";
+    ftl.textContent="名望加成（被动）";
+    ft.appendChild(ftl);
+    var ftd=document.createElement("div");
+    ftd.style.cssText="font-size:12px;color:#69706b;line-height:1.6";
+    var fts=[];
+    for(var fi=0;fi<data.fame_tiers.length;fi++)fts.push("等级 "+data.fame_tiers[fi].level+"："+data.fame_tiers[fi].bonus);
+    ftd.textContent=fts.join("；");
+    ft.appendChild(ftd);
+    b.appendChild(ft);
+  }
   var btns=document.createElement("div");
   btns.style.cssText="margin-top:18px;display:flex;gap:8px;justify-content:flex-end";
-  var _requiredBgChoice={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain"}[bg.name]||"";
+  var _requiredBgChoice={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain",恶棍:"crime",隐士:"seclusion",士兵:"militaryRole",外乡人:"foreignOrigin",驯兽师:"companion"}[bg.name]||"";
   var skipBtn=document.createElement("button");
   skipBtn.textContent="跳过";
   skipBtn.onclick=function(){
@@ -2527,15 +2592,18 @@ function showPersonalityPicker(bg){
   updatePersonalityCustom();
 }
 function updatePersonalityCustom(){
-  var ks=["personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain"];
+  var ks=["personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain","crime","seclusion","militaryRole","foreignOrigin","companion"];
   for(var i=0;i<ks.length;i++){
     var s=document.getElementById("pers_"+ks[i]+"_0");
     var ci=document.getElementById("pers_"+ks[i]+"_0_custom");
     if(s&&ci)ci.style.display=s.value==="__custom__"?"block":"none";
+    var hd=document.getElementById("pershint_"+ks[i]+"_0");
+    var hm=window._PERS_HINTS&&window._PERS_HINTS[ks[i]];
+    if(hd&&hm)hd.textContent=hm[s?s.value:"__custom__"]||"";
   }
 }
 function confirmPersonalityPicker(){
-  var m={personality:["personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"],deity:["deity"],contacts:["contacts"],scamType:["scamType"],missionChannel:["missionChannel"],academicDomain:["academicDomain"]};
+  var m={personality:["personality"],ideals:["ideals"],bonds:["bonds"],flaws:["flaws"],deity:["deity"],contacts:["contacts"],scamType:["scamType"],missionChannel:["missionChannel"],academicDomain:["academicDomain"],crime:["crime"],seclusion:["seclusion"],militaryRole:["militaryRole"],foreignOrigin:["foreignOrigin"],companion:["companion"]};
   for(var k in m){
     var pp=[];
     for(var i=0;i<m[k].length;i++){
@@ -2547,7 +2615,7 @@ function confirmPersonalityPicker(){
     }
     CHAR[k]=pp.join("；")||CHAR[k]||"";
   }
-  var _req={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain"}[CHAR.bgName]||"";
+  var _req={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain",恶棍:"crime",隐士:"seclusion",士兵:"militaryRole",外乡人:"foreignOrigin",驯兽师:"companion"}[CHAR.bgName]||"";
   if(_req&&!CHAR[_req]){SD_alert("请完成该背景的强制特殊选择");return;}
   if(window._persOverlay)window._persOverlay.remove();window._persOverlay=null;
 }
@@ -2934,6 +3002,11 @@ function renderReviewStep(c) {
   if(CHAR.scamType) h+="<div class='form-group-half'><label>偏好骗局</label><textarea class='form-textarea' id='inputScamType' oninput='onChargenProfileInput(\"scamType\",this)'>"+esc(CHAR.scamType)+"</textarea></div>";
   if(CHAR.missionChannel) h+="<div class='form-group-half'><label>任务渠道</label><textarea class='form-textarea' id='inputMissionChannel' oninput='onChargenProfileInput(\"missionChannel\",this)'>"+esc(CHAR.missionChannel)+"</textarea></div>";
   if(CHAR.academicDomain) h+="<div class='form-group-half'><label>学术领域</label><textarea class='form-textarea' id='inputAcademicDomain' oninput='onChargenProfileInput(\"academicDomain\",this)'>"+esc(CHAR.academicDomain)+"</textarea></div>";
+  if(CHAR.crime) h+="<div class='form-group-half'><label>罪名</label><textarea class='form-textarea' id='inputCrime' oninput='onChargenProfileInput(\"crime\",this)'>"+esc(CHAR.crime)+"</textarea></div>";
+  if(CHAR.seclusion) h+="<div class='form-group-half'><label>隐居原因</label><textarea class='form-textarea' id='inputSeclusion' oninput='onChargenProfileInput(\"seclusion\",this)'>"+esc(CHAR.seclusion)+"</textarea></div>";
+  if(CHAR.militaryRole) h+="<div class='form-group-half'><label>专职</label><textarea class='form-textarea' id='inputMilitaryRole' oninput='onChargenProfileInput(\"militaryRole\",this)'>"+esc(CHAR.militaryRole)+"</textarea></div>";
+  if(CHAR.foreignOrigin) h+="<div class='form-group-half'><label>造访原因</label><textarea class='form-textarea' id='inputForeignOrigin' oninput='onChargenProfileInput(\"foreignOrigin\",this)'>"+esc(CHAR.foreignOrigin)+"</textarea></div>";
+  if(CHAR.companion) h+="<div class='form-group-full'><label>动物伙伴</label><textarea class='form-textarea' id='inputCompanion' oninput='onChargenProfileInput(\"companion\",this)'>"+esc(CHAR.companion)+"</textarea></div>";
   h+="</div>";
   h+="<div class='popup-box' style='background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px;padding:20px;margin-bottom:16px'>";
   h+="<h3 style='font-size:18px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e2d8'>角色摘要</h3>";
@@ -2945,6 +3018,11 @@ function renderReviewStep(c) {
   h+="<div class='review-item'><div class='review-label'>个性背景</div><div class='review-value'>"+(CHAR.bgName||"未选择")+"</div></div>";
   if(CHAR.bgCantrips&&CHAR.bgCantrips.length)h+="<div class='review-item'><div class='review-label'>背景戏法</div><div class='review-value'>"+CHAR.bgCantrips.join("、")+"</div></div>";
   if(CHAR.bgOtherPicks&&CHAR.bgOtherPicks.length)h+="<div class='review-item'><div class='review-label'>乐器/赌具</div><div class='review-value'>"+CHAR.bgOtherPicks.join("、")+"</div></div>";
+  if(CHAR.crime)h+="<div class='review-item'><div class='review-label'>罪名</div><div class='review-value'>"+esc(CHAR.crime)+"</div></div>";
+  if(CHAR.seclusion)h+="<div class='review-item'><div class='review-label'>隐居原因</div><div class='review-value'>"+esc(CHAR.seclusion)+"</div></div>";
+  if(CHAR.militaryRole)h+="<div class='review-item'><div class='review-label'>专职</div><div class='review-value'>"+esc(CHAR.militaryRole)+"</div></div>";
+  if(CHAR.foreignOrigin)h+="<div class='review-item'><div class='review-label'>造访原因</div><div class='review-value'>"+esc(CHAR.foreignOrigin)+"</div></div>";
+  if(CHAR.companion)h+="<div class='review-item'><div class='review-label'>动物伙伴</div><div class='review-value'>"+esc(CHAR.companion)+"</div></div>";
   if(CHAR.sportPreference)h+="<div class='review-item'><div class='review-label'>偏好运动</div><div class='review-value'>"+CHAR.sportPreference+"</div></div>";
   if(CHAR.bgProfs&&CHAR.bgProfs.profInput)h+="<div class='review-item'><div class='review-label'>专业熟练</div><div class='review-value'>"+CHAR.bgProfs.profInput+"</div></div>";
   h+="<div class='review-item'><div class='review-label'>熟练项</div><div class='review-value'>"+(CHAR.selectedSkills.length?CHAR.selectedSkills.join("、"):"无")+"</div></div>";
@@ -3320,6 +3398,8 @@ function saveCharacter(){
   if(!_bgMsg&&_otherSpec&&(CHAR.bgOtherPicks||[]).length!==_otherSpec.count)_bgMsg="请选择"+_otherSpec.count+"项"+_otherSpec.label;
   if(!_bgMsg&&CHAR.bgName==="运动员"&&!CHAR.sportPreference)_bgMsg="请选择运动员的偏好运动";
   if(!_bgMsg&&CHAR.bgName==="法师学徒"&&(CHAR.bgCantrips||[]).length!==2)_bgMsg="法师学徒必须选择两个一阶戏法";
+  var _bgReq={侍僧:["deity","神祇"],侦探:["contacts","联系渠道"],骗子:["scamType","偏好骗局"],职业杀手:["missionChannel","任务渠道"],教授:["academicDomain","学术领域"],恶棍:["crime","罪名"],隐士:["seclusion","隐居原因"],士兵:["militaryRole","专职"],外乡人:["foreignOrigin","造访原因"],驯兽师:["companion","动物伙伴"]}[CHAR.bgName];
+  if(!_bgMsg&&_bgReq&&!CHAR[_bgReq[0]])_bgMsg="请完成背景「"+CHAR.bgName+"」的"+_bgReq[1]+"选择";
   if(_bgMsg){SD_alert(_bgMsg);return;}
   var maxFeat=(CHAR.className==="法师"?4:2);
   if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){SD_alert("请选择起始特性");return;}
@@ -3358,11 +3438,11 @@ function saveCharacter(){
     sp_points:0,
     color_marks:{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
     hp:hp, fp:fp,
-    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
+    story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", crime:CHAR.crime||"", seclusion:CHAR.seclusion||"", militaryRole:CHAR.militaryRole||"", foreignOrigin:CHAR.foreignOrigin||"", companion:CHAR.companion||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     dragonType:CHAR.dragonType||"", dragonBreath:CHAR.dragonBreath||"", dragonResistance:CHAR.dragonResistance||"",
     raceChoices:{extraAttrs:(CHAR.raceExtra||[]).slice(),humanFreeSkill:CHAR.humanFreeSkill||"",raceSaves:(CHAR.raceSaves||[]).slice(),raceSkillChoice:Array.isArray(CHAR.raceSkillChoice)?CHAR.raceSkillChoice.slice():(CHAR.raceSkillChoice||""),raceProfInput:CHAR.raceProfInput||"",wingfolkHasCommon:CHAR.wingfolkHasCommon!==false},
     classChoices:(function(){var _wb="";if(CHAR.weaponSpec&&typeof WEAPON_SPEC_BY_CLASS!=="undefined"&&WEAPON_SPEC_BY_CLASS[CHAR.className]&&WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses){_wb=WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses[CHAR.weaponSpec]||"";}return {weaponSpec:CHAR.weaponSpec||"",weaponSpecBonus:_wb,specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{}))};})(),
-    backgroundChoices:{deity:(CHAR.bgName==="侍僧"?(CHAR.deity||""):""),contacts:CHAR.contacts||"",scamType:CHAR.scamType||"",missionChannel:CHAR.missionChannel||"",academicDomain:CHAR.academicDomain||""},
+    backgroundChoices:{deity:(CHAR.bgName==="侍僧"?(CHAR.deity||""):""),contacts:CHAR.contacts||"",scamType:CHAR.scamType||"",missionChannel:CHAR.missionChannel||"",academicDomain:CHAR.academicDomain||"",crime:CHAR.crime||"",seclusion:CHAR.seclusion||"",militaryRole:CHAR.militaryRole||"",foreignOrigin:CHAR.foreignOrigin||"",companion:CHAR.companion||""},
     bgOtherPicks:(CHAR.bgOtherPicks||[]).slice(),
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||(CHAR.classData?CHAR.classData["关键属性"]:"")||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],

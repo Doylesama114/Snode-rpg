@@ -286,6 +286,21 @@ try {
 console.log(featOK ? '✅ 特殊专长一致性通过' : '❌ 特殊专长一致性失败');
 totalErrors += featOK ? 0 : 1;
 
+// 背景特殊选择（个性与背景创建规则.xlsx 补录内容）与导出文案
+console.log('\n=== 背景特殊选择数据与导出文案 ===');
+let bgChoiceOK = true;
+try {
+  let bcOut = spawnSync('node', [join(BASE, 'scripts', 'verify_bg_choices.mjs')], { encoding: 'utf-8', timeout: 60000 });
+  if (bcOut.stdout) console.log(bcOut.stdout.trim().split('\n').slice(-3).join('\n'));
+  if (bcOut.stderr) console.error(bcOut.stderr.trim());
+  if (bcOut.status !== 0) bgChoiceOK = false;
+} catch (e) {
+  bgChoiceOK = false;
+  console.log('❌ 背景特殊选择校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
+totalErrors += bgChoiceOK ? 0 : 1;
+
 // 视觉层检查（截图 → 视觉模型，免费优先降级百炼；VERIFY_VISUAL=0 可跳过）
 console.log('\n=== 视觉检查（免费模型优先 → 百炼降级） ===');
 let visOK = true;

@@ -109,6 +109,26 @@ try {
     return f;
   });
 
+  await runCase('士兵背景专职导出/回读', Object.assign(overridesA(), { background: '士兵', name: '验证士兵', backgroundChoices: { deity: '', contacts: '', scamType: '', missionChannel: '', academicDomain: '', crime: '', seclusion: '', militaryRole: '军官', foreignOrigin: '', companion: '' } }), ({ cells, state }) => {
+    const f = [];
+    const u27 = cells.U27 || '';
+    if (!/专职：军官/.test(u27)) f.push('U27 缺少专职');
+    if (!/熟练度加成：说服/.test(u27)) f.push('U27 缺少熟练度加成');
+    if (!/额外装备：一枚镶金怀表/.test(u27)) f.push('U27 缺少额外装备');
+    if (state.backgroundChoices.militaryRole !== '军官') f.push('回读专职错误: ' + state.backgroundChoices.militaryRole);
+    if ((cells.H33 || cells.H34 || cells.H35 || cells.H36 || cells.H37 || cells.H38 || cells.H39)) f.push('H33-H39 不应有内容');
+    return f;
+  });
+
+  await runCase('外乡人造访原因导出/回读', Object.assign(overridesA(), { background: '外乡人', name: '验证外乡人', backgroundChoices: { deity: '', contacts: '', scamType: '', missionChannel: '', academicDomain: '', crime: '', seclusion: '', militaryRole: '', foreignOrigin: '游客', companion: '' } }), ({ cells, state }) => {
+    const f = [];
+    const u27 = cells.U27 || '';
+    if (!/造访原因：游客/.test(u27)) f.push('U27 缺少造访原因');
+    if (!/额外获得50金币的起始资金/.test(u27)) f.push('U27 缺少原因加成说明');
+    if (state.backgroundChoices.foreignOrigin !== '游客') f.push('回读造访原因错误: ' + state.backgroundChoices.foreignOrigin);
+    return f;
+  });
+
   await runCase('半精灵法师导出/回读', overridesB(), ({ cells, state }) => {
     const f = [];
     if (!/精灵语/.test(cells.Q6 || '')) f.push('Q6 语言缺失');

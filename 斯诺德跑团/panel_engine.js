@@ -200,9 +200,9 @@ var state={
 "dragonType":"","dragonBreath":"","dragonResistance":"",
 "raceChoices":{"extraAttrs":[],"humanFreeSkill":"","raceSaves":[],"raceSkillChoice":"","raceProfInput":"","wingfolkHasCommon":true},
 "classChoices":{"weaponSpec":"","weaponSpecBonus":"","specChoices":{}},
-"backgroundChoices":{"deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":""},
+"backgroundChoices":{"deity":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","crime":"","seclusion":"","militaryRole":"","foreignOrigin":"","companion":""},
 "bgOtherPicks":[],
-"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","deityAttr":"","patron":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","sportPreference":"","weapon_specs":[],
+"story":"","personality":"","traits":"","ideals":"","bonds":"","flaws":"","deity":"","deityAttr":"","patron":"","contacts":"","scamType":"","missionChannel":"","academicDomain":"","crime":"","seclusion":"","militaryRole":"","foreignOrigin":"","companion":"","sportPreference":"","weapon_specs":[],
 "attrs":{"力量":10,"敏捷":10,"体质":10,"智力":10,"感知":10,"魅力":10,"意志":10,"幸运":10},
 "classes":[{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]},{"name":"","level":0,"styles":["","","",""]}],
 "skills":[], "special_feats":[], "feats":[], "currency":{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -2025,7 +2025,9 @@ function exportBackgroundChoiceText(state) {
   }
   if (bg === "骗子") {
     var st = bc.scamType || state.scamType || "";
-    return st ? ("偏好骗局：" + st) : "";
+    if (!st) return "";
+    var stGear = _bgDetail(state, "scam_details", st, "gear");
+    return "偏好骗局：" + st + (stGear ? ("（装备：" + stGear + "）") : "");
   }
   if (bg === "职业杀手") {
     var mc = bc.missionChannel || state.missionChannel || "";
@@ -2033,7 +2035,57 @@ function exportBackgroundChoiceText(state) {
   }
   if (bg === "教授") {
     var ad = bc.academicDomain || state.academicDomain || "";
-    return ad ? ("学术领域：" + ad) : "";
+    if (!ad) return "";
+    var adProf = _bgDetail(state, "academic_details", ad, "prof");
+    var adGear = _bgDetail(state, "academic_details", ad, "gear");
+    var adExtra = [];
+    if (adProf) adExtra.push("熟练度加成：" + adProf);
+    if (adGear) adExtra.push("额外装备：" + adGear);
+    return "学术领域：" + ad + (adExtra.length ? ("（" + adExtra.join("；") + "）") : "");
+  }
+  if (bg === "恶棍") {
+    var cr = bc.crime || state.crime || "";
+    if (!cr) return "";
+    var crContact = _bgDetail(state, "crime_details", cr, "contact");
+    return "罪名：" + cr + (crContact ? ("（接头人：" + crContact + "）") : "");
+  }
+  if (bg === "隐士") {
+    var se = bc.seclusion || state.seclusion || "";
+    return se ? ("隐居原因：" + se) : "";
+  }
+  if (bg === "士兵") {
+    var mr = bc.militaryRole || state.militaryRole || "";
+    if (!mr) return "";
+    var mrProf = _bgDetail(state, "military_roles", mr, "prof");
+    var mrGear = _bgDetail(state, "military_roles", mr, "gear");
+    var mrExtra = [];
+    if (mrProf) mrExtra.push("熟练度加成：" + mrProf);
+    if (mrGear) mrExtra.push("额外装备：" + mrGear);
+    return "专职：" + mr + (mrExtra.length ? ("（" + mrExtra.join("；") + "）") : "");
+  }
+  if (bg === "外乡人") {
+    var fo = bc.foreignOrigin || state.foreignOrigin || "";
+    if (!fo) return "";
+    var foDesc = _bgDetail(state, "foreign_origins", fo, "desc");
+    return "造访原因：" + fo + (foDesc ? ("（" + foDesc + "）") : "");
+  }
+  if (bg === "驯兽师") {
+    var cp = bc.companion || state.companion || "";
+    return cp ? ("动物伙伴：" + cp) : "";
+  }
+  return "";
+}
+/* 从背景数据里取某个选项对应的附加说明（熟练度加成 / 额外装备 / 接头人 / 加成等） */
+function _bgDetail(state, field, value, key) {
+  if (!value) return "";
+  var all = (typeof BG_PERSONALITY !== "undefined" && BG_PERSONALITY) || null;
+  if (!all) return "";
+  var data = all[state.background || ""];
+  if (!data || !data[field]) return "";
+  var arr = data[field] || [];
+  for (var i = 0; i < arr.length; i++) {
+    var it = arr[i];
+    if (it && (it.name === value || it.level === value)) return it[key] || "";
   }
   return "";
 }
@@ -4868,6 +4920,11 @@ if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系
 if(state.scamType)storyHtml+='<div class="misc-item"><div class="m-title">偏好骗局</div><div>'+state.scamType+'</div></div>';
 if(state.missionChannel)storyHtml+='<div class="misc-item"><div class="m-title">任务渠道</div><div>'+state.missionChannel+'</div></div>';
 if(state.academicDomain)storyHtml+='<div class="misc-item"><div class="m-title">学术领域</div><div>'+state.academicDomain+'</div></div>';
+if(state.crime)storyHtml+='<div class="misc-item"><div class="m-title">罪名</div><div>'+state.crime+'</div></div>';
+if(state.seclusion)storyHtml+='<div class="misc-item"><div class="m-title">隐居原因</div><div>'+state.seclusion+'</div></div>';
+if(state.militaryRole)storyHtml+='<div class="misc-item"><div class="m-title">专职</div><div>'+state.militaryRole+'</div></div>';
+if(state.foreignOrigin)storyHtml+='<div class="misc-item"><div class="m-title">造访原因</div><div>'+state.foreignOrigin+'</div></div>';
+if(state.companion)storyHtml+='<div class="misc-item"><div class="m-title">动物伙伴</div><div>'+state.companion+'</div></div>';
 if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title">偏好运动</div><div>'+state.sportPreference+'</div></div>';
 
 
