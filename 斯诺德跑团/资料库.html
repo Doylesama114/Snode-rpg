@@ -5,36 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>资料库 - 斯诺德跑团</title>
 <style>
-  :root{--ink:#1f2522;--muted:#69706b;--paper:#f6f4ef;--line:#d8d2c4;--accent:#a46d1f;--good:#4caf50}
+  :root{--ink:#1f2522;--muted:#69706b;--paper:#fbf8f1;--soft:#f1ebdf;--bg:#f6f4ef;--line:#d8d2c4;--accent:#a46d1f;--good:#4caf50;--row:#fbf8f1;--row-alt:#f3eee3}
+  html.dark{--ink:#e8e6e3;--muted:#9d9b98;--paper:#24272b;--soft:#2b2f33;--bg:#1a1d20;--line:#3a3d40;--accent:#d4a54a;--good:#7ec87b;--row:#24272b;--row-alt:#2b2f33}
   *{box-sizing:border-box}
-  body{margin:0;background:#efece5;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif}
   .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
   a.back{color:var(--accent);text-decoration:none;font-size:14px}
   h1{margin:10px 0 4px;font-size:28px}
   .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
   .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
-  .tab{padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px}
+  .tab{padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer;font-size:14px}
   .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .panel{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .panel{display:none;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}
   .panel.active{display:block}
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
-  .toolbar input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+  .toolbar input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:var(--soft);color:var(--ink)}
   .meta{color:var(--muted);font-size:13px}
   .sheetTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-  .sheetTab{padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:#fbfaf7;cursor:pointer;font-size:13px}
-  .sheetTab.active{background:var(--good);color:#fff;border-color:var(--good)}
-  .tableBox{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
-  table.flow{border-collapse:collapse;min-width:900px;width:100%}
-  table.flow td,table.flow th{border:1px solid #e6e0d4;padding:6px 8px;font-size:13px;vertical-align:top;white-space:pre-wrap;word-break:break-word}
-  table.flow td:empty{background:#fbfaf7}
+  .sheetTab{padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);cursor:pointer;font-size:13px}
+  .sheetTab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tableBox{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--paper);max-height:68vh}
+  table.flow{border-collapse:collapse;min-width:960px;width:100%;table-layout:fixed;font-size:12px;line-height:1.45}
+  table.flow td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;white-space:pre-wrap;word-break:break-word;max-width:320px}
+  table.flow td:empty{background:var(--row-alt)}
   .bgGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-  details.bg{border:1px solid var(--line);border-radius:10px;background:#fbfaf7;padding:10px 12px}
+  details.bg{border:1px solid var(--line);border-radius:10px;background:var(--soft);padding:10px 12px}
   details.bg summary{cursor:pointer;font-weight:bold;color:var(--accent);font-size:15px}
+  .bgBody{max-height:360px;overflow:auto;padding-right:4px;margin-top:6px}
   .bg .row{font-size:13px;margin-top:6px;line-height:1.6}
   .bg .label{color:var(--muted)}
   .bg ul{margin:4px 0 0 18px;padding:0}
-  .warn{background:#fff4e0;border:1px solid #e8c98a;color:#7a5712;border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
-  .cardLink{display:block;border:1px solid var(--line);border-radius:12px;padding:18px;background:#fbfaf7;text-decoration:none;color:var(--ink);margin-bottom:12px}
+  .warn{background:var(--row-alt);border:1px solid var(--line);color:var(--accent);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
+  .cardLink{display:block;border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--soft);text-decoration:none;color:var(--ink);margin-bottom:12px}
   .cardLink b{color:var(--accent)}
   .cardLink span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
   .empty{padding:24px;color:var(--muted);text-align:center}
@@ -54,7 +56,7 @@
   </div>
 
   <div class="panel active" id="panel-flow">
-    <div class="meta" style="margin-bottom:10px">来源：冒险者角色创建流程.xlsx；按原表合并单元格渲染。</div>
+    <div class="meta" style="margin-bottom:10px">来源：冒险者角色创建流程.xlsx；按原表合并单元格渲染，可滚动查看。</div>
     <div class="sheetTabs" id="sheetTabs"></div>
     <div class="tableBox" id="flowBox"></div>
   </div>
@@ -70,7 +72,7 @@
   <div class="panel" id="panel-store">
     <a class="cardLink" href="物资大全.html">
       <b>📦 打开斯诺德物资大全</b>
-      <span>按分类查看全部物品的表格化视图（名称 / 类别 / 价格 / 重量），支持搜索。</span>
+      <span>按原文件的大分类 + 小分类分组展示全部物品（名称 / 小类 / 价格 / 重量），支持搜索。</span>
     </a>
   </div>
 
@@ -171,21 +173,27 @@ function renderBackgrounds(){
     if(p.academic_domains&&p.academic_domains.length)warn+='<div class="warn">创建时必须从学术领域列表选择 1 项。</div>';
     if((b['其他']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成「'+(b['其他']||'')+'」的选择。</div>';
     if((b['基础熟练项']||'').indexOf('任选')>=0||(b['专业熟练项']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成对应熟练项/专业的选择。</div>';
-    h+='<details class="bg"><summary>'+esc(name)+'　HP '+(b['生命值加成']||'+0')+' · '+(b['资金']||'无资金')+'</summary>';
-    h+='<div class="row"><span class="label">简介：</span>'+nl2br(p.desc||b.description||'无')+'</div>';
-    h+='<div class="row"><span class="label">基础熟练项：</span>'+esc(b['基础熟练项']||'无')+'</div>';
-    h+='<div class="row"><span class="label">专业熟练项：</span>'+esc(b['专业熟练项']||'无')+'</div>';
-    h+='<div class="row"><span class="label">其他：</span>'+esc(b['其他']||'无')+'</div>';
-    h+='<div class="row"><span class="label">装备：</span>'+esc((b['装备']||'').replace(/\n/g,'、'))+'</div>';
-    h+='<div class="row"><span class="label">特性描述：</span>'+nl2br(b['特性描述']||'无')+'</div>';
-    h+=listBlock('特点选项',p.traits);h+=listBlock('理念选项',p.ideals);h+=listBlock('羁绊选项',p.bonds);h+=listBlock('缺陷选项',p.flaws);
-    h+=listBlock('神祇选项',p.deities);h+=listBlock('联系渠道选项',p.contacts);h+=listBlock('偏好骗局选项',p.scam_types);h+=listBlock('任务渠道选项',p.mission_channels);h+=listBlock('学术领域选项',p.academic_domains);
-    h+=warn+'</details>';
+    var body='';
+    body+='<div class="row"><span class="label">简介：</span>'+nl2br(p.desc||b.description||'无')+'</div>';
+    body+='<div class="row"><span class="label">基础熟练项：</span>'+esc(b['基础熟练项']||'无')+'</div>';
+    body+='<div class="row"><span class="label">专业熟练项：</span>'+esc(b['专业熟练项']||'无')+'</div>';
+    body+='<div class="row"><span class="label">其他：</span>'+esc(b['其他']||'无')+'</div>';
+    body+='<div class="row"><span class="label">装备：</span>'+esc((b['装备']||'').replace(/\n/g,'、'))+'</div>';
+    body+='<div class="row"><span class="label">特性描述：</span>'+nl2br(b['特性描述']||'无')+'</div>';
+    body+=listBlock('特点选项',p.traits);body+=listBlock('理念选项',p.ideals);body+=listBlock('羁绊选项',p.bonds);body+=listBlock('缺陷选项',p.flaws);
+    body+=listBlock('神祇选项',p.deities);body+=listBlock('联系渠道选项',p.contacts);body+=listBlock('偏好骗局选项',p.scam_types);body+=listBlock('任务渠道选项',p.mission_channels);body+=listBlock('学术领域选项',p.academic_domains);
+    h+='<details class="bg"><summary>'+esc(name)+'　HP '+(b['生命值加成']||'+0')+' · '+(b['资金']||'无资金')+'</summary><div class="bgBody">'+body+warn+'</div></details>';
   }
   document.getElementById('bgGrid').innerHTML=h||'<div class="empty">没有匹配的背景</div>';
   document.getElementById('bgCount').textContent='共 '+count+' 个背景';
 }
 document.getElementById('bgQ').addEventListener('input',renderBackgrounds);
+document.addEventListener('toggle',function(e){
+  if(e.target&&e.target.tagName==='DETAILS'&&e.target.classList.contains('bg')&&e.target.open){
+    var all=document.querySelectorAll('details.bg');
+    for(var i=0;i<all.length;i++){if(all[i]!==e.target)all[i].open=false;}
+  }
+},true);
 renderBackgrounds();
 </script>
 </body>
