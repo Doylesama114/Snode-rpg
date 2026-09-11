@@ -40,6 +40,15 @@
   .cardLink b{color:var(--accent)}
   .cardLink span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
   .empty{padding:24px;color:var(--muted);text-align:center}
+  .recList{display:flex;flex-direction:column;gap:12px}
+  .recCard{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .recTitle{font-size:16px;font-weight:bold;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px}
+  .kvRow{display:grid;grid-template-columns:118px 1fr;gap:8px;font-size:13px;line-height:1.6;margin:4px 0}
+  .kvLabel{color:var(--muted);font-weight:bold;word-break:keep-all}
+  .kvValue{color:var(--ink);word-break:break-word;white-space:pre-wrap}
+  .recSection{margin:10px 0 4px;font-weight:bold;color:var(--accent);font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+  .recText{font-size:13px;line-height:1.75;margin:5px 0;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+  @media(max-width:700px){.kvRow{grid-template-columns:86px 1fr}}
 </style>
 </head>
 <body>
@@ -115,9 +124,27 @@ function buildMergeMap(sh){
   }
   return map;
 }
+function renderFlowRecords(sh){
+  var h='<div class="recList">';
+  for(var i=0;i<sh.records.length;i++){
+    var rec=sh.records[i]||{};
+    h+='<div class="recCard"><div class="recTitle">'+esc(rec.title||'')+'</div>';
+    var fields=rec.fields||[];
+    for(var j=0;j<fields.length;j++){
+      var f=fields[j]||{};
+      if(f.type==='section')h+='<div class="recSection">'+esc(f.text||'')+'</div>';
+      else if(f.type==='kv')h+='<div class="kvRow"><span class="kvLabel">'+esc(f.label||'')+'</span><span class="kvValue">'+esc(f.value||'')+'</span></div>';
+      else h+='<div class="recText">'+esc(f.text||'')+'</div>';
+    }
+    h+='</div>';
+  }
+  return h+'</div>';
+}
 function renderFlow(){
   var sh=CREATION_FLOW_DATA.sheets[_flowIdx];
   if(!sh){document.getElementById('flowBox').innerHTML='<div class="empty">没有数据</div>';return;}
+  if(sh.records&&sh.records.length){document.getElementById('flowBox').innerHTML=renderFlowRecords(sh);return;}
+  // 兼容：没有结构化 records 时回退到原始表格
   var map=buildMergeMap(sh);
   var h='<table class="flow"><tbody>';
   for(var r=0;r<sh.rows.length;r++){
