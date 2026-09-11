@@ -414,6 +414,7 @@ var CHAR = {
   bgIdx: -1, bgName: "", bgData: null,
   bgCantrips: [], bgOtherPicks: [], sportPreference: "",
   equipIdx: -1, equipChoice: null, equipSel: {}, wingfolkHasCommon: true,
+  dragonType: "", dragonBreath: "", dragonResistance: "",
   playerName: "", charName: "", gender: "", age: "", height: "", weight: "", eye: "", skin: "", hair: "",
   story: "", personality: "", ideals: "", bonds: "", flaws: "", extraLanguages: [],
   deity: "", deityAttr: "", patron: "", contacts: "", scamType: "", missionChannel: "", academicDomain: "",
@@ -707,6 +708,9 @@ function buildCreationSnapshot(){
     bpPicks:(CHAR.bpPicks||[]).slice(),
     raceName:CHAR.raceName||"",
     raceSize:CHAR.raceSize||"",
+    dragonType:CHAR.dragonType||"",
+    dragonBreath:CHAR.dragonBreath||"",
+    dragonResistance:CHAR.dragonResistance||"",
     raceExtra:(CHAR.raceExtra||[]).slice(),
     raceSaves:(CHAR.raceSaves||[]).slice(),
     raceSkillChoice:CHAR.raceSkillChoice||"",
@@ -784,6 +788,9 @@ function applyCreationSnapshotToChar(snap){
     }
   }
   CHAR.raceSize=snap.raceSize||"";
+  CHAR.dragonType=snap.dragonType||"";
+  CHAR.dragonBreath=snap.dragonBreath||"";
+  CHAR.dragonResistance=snap.dragonResistance||"";
   CHAR.raceExtra=(snap.raceExtra||[]).slice();
   CHAR.raceSaves=(snap.raceSaves||[]).slice();
   CHAR.raceSkillChoice=snap.raceSkillChoice||"";
@@ -1840,6 +1847,37 @@ function pickRaceSize(el){
   CHAR.raceSize=size;el.classList.add("selected");
   updateOverview();
 }
+function showDragonTypeChoice(raceData){
+  var old=document.getElementById("dragonTypeArea");if(old)old.remove();
+  if(!raceData||raceData.name!=="龙裔"){CHAR.dragonType="";CHAR.dragonBreath="";CHAR.dragonResistance="";return;}
+  var area=document.createElement("div");area.id="dragonTypeArea";
+  area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
+  var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择龙种（龙裔必选）</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>不同龙种决定吐息伤害类型和抗性。黑龙/赤铜龙按原文为冰霜伤害+护甲检定。</div>";
+  h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
+  for(var i=0;i<DRAGON_TYPES.length;i++){
+    var d=DRAGON_TYPES[i];
+    h+="<div class='spec-btn"+(CHAR.dragonType===d.name?" selected":"")+"' data-dragon='"+d.name+"'>"+d.name+"</div>";
+  }
+  h+="</div>";
+  area.innerHTML=h;
+  var btns=area.querySelectorAll(".spec-btn");
+  for(var bi=0;bi<btns.length;bi++){
+    btns[bi].onclick=function(){
+      var nm=this.getAttribute("data-dragon");var d=null;
+      for(var di=0;di<DRAGON_TYPES.length;di++){if(DRAGON_TYPES[di].name===nm){d=DRAGON_TYPES[di];break;}}
+      if(!d)return;
+      if(CHAR.dragonType===nm){CHAR.dragonType="";CHAR.dragonBreath="";CHAR.dragonResistance="";}
+      else{CHAR.dragonType=nm;CHAR.dragonBreath=d.breath;CHAR.dragonResistance=d.resistance;}
+      var all=area.querySelectorAll(".spec-btn");
+      for(var ai=0;ai<all.length;ai++)all[ai].classList.remove("selected");
+      if(CHAR.dragonType===nm)this.classList.add("selected");
+      updateOverview();
+      if(typeof checkRv==="function")checkRv();
+    };
+  }
+  var p=document.getElementById("raceDetail");p.parentNode.insertBefore(area,p.nextSibling);
+}
 function showRaceSaveChoice(raceData){
   var old=document.getElementById("raceSaveArea");if(old)old.remove();
   var traits=raceData["特性"]||[];
@@ -2032,6 +2070,18 @@ function filterClasses(){
 
 // ====== Step 1: Race ======
 var RACE_LANGS={人类:["通用语"],矮人:["通用语","矮人语"],半身人:["通用语","半身人语"],侏儒:["通用语","侏儒语"],半精灵:["通用语","精灵语"],木精灵:["通用语","精灵语"],高等精灵:["通用语","精灵语"],卓尔精灵:["通用语","精灵语","地底通用语"],黑暗精灵:["通用语","精灵语","地底通用语"],龙裔:["通用语","龙语"],魔裔:["通用语","地狱语"],兽人:["通用语","兽人语"],巨魔:["通用语","巨魔语"],地精:["通用语","地底通用语"],狗头人:["通用语","龙语"],蜥蜴人:["通用语","龙语"],蛙人:["通用语","泽地语"],鼠人:["通用语","地底通用语"],狼人:["通用语","兽语"],血族:["通用语","深渊语"],斑猫人:["通用语","兽语"],豹兽人:["通用语","兽语"],犬牙族:["通用语","兽语"],翼空族:["鸟禽语"],牛头人:["通用语","兽语"],狐人:["通用语","兽语"],蛇人:["通用语","蛇语","荒漠语"],鱼人:["鱼人语"],人鱼:["通用语","鱼人语","海洋通用语"],龟人:["通用语","海洋通用语"]};
+var DRAGON_TYPES=[
+  {name:"金龙",breath:"光耀",resistance:"光耀"},
+  {name:"红龙",breath:"火焰",resistance:"火焰"},
+  {name:"黄铜龙",breath:"火焰",resistance:"火焰"},
+  {name:"银龙",breath:"奥术",resistance:"奥术"},
+  {name:"绿龙",breath:"毒素",resistance:"毒素"},
+  {name:"白龙",breath:"寒冷",resistance:"寒冷"},
+  {name:"蓝龙",breath:"闪电",resistance:"闪电"},
+  {name:"青铜龙",breath:"闪电",resistance:"闪电"},
+  {name:"黑龙",breath:"冰霜",resistance:"冰霜 + 护甲检定"},
+  {name:"赤铜龙",breath:"冰霜",resistance:"冰霜 + 护甲检定"}
+];
 function renderRaceStep(c) {
   var h="<div class='step-title'>"+STEP_LABELS[2]+"</div>";
   h+="<div class='step-desc'>选择你的种族。不同种族提供不同的属性加成和独特天赋。</div>";
@@ -2079,11 +2129,12 @@ function raceDetail(r){
   }
   return h;
 }function selectRace(idx){CHAR.raceExtra=[];
+  CHAR.dragonType="";CHAR.dragonBreath="";CHAR.dragonResistance="";
   CHAR.raceIdx=idx; CHAR.raceName=RACES[idx].name; CHAR.raceData=RACES[idx];
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
   if(cards[idx]) cards[idx].classList.add("selected");
-  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);  showHumanFreeSkill(RACES[idx]);showRaceSizePicker(RACES[idx]);showRaceSaveChoice(RACES[idx]);showRaceSkillChoice(RACES[idx]);showRaceProfInput(RACES[idx]);
+  var p=document.getElementById("raceDetail");p.style.display="block";p.innerHTML=raceDetail(RACES[idx]);showRaceAttrChoice(RACES[idx]);showHumanFreeSkill(RACES[idx]);showRaceSizePicker(RACES[idx]);showDragonTypeChoice(RACES[idx]);showRaceSaveChoice(RACES[idx]);showRaceSkillChoice(RACES[idx]);showRaceProfInput(RACES[idx]);
   document.getElementById("nextBtn").disabled=false;
   updateOverview();
 }
@@ -2456,9 +2507,13 @@ function showPersonalityPicker(bg){
   else if(bgName==="教授"&&data.academic_domains&&data.academic_domains.length) makeSection("学术领域","academicDomain",data.academic_domains,1);
   var btns=document.createElement("div");
   btns.style.cssText="margin-top:18px;display:flex;gap:8px;justify-content:flex-end";
+  var _requiredBgChoice={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain"}[bg.name]||"";
   var skipBtn=document.createElement("button");
   skipBtn.textContent="跳过";
-  skipBtn.onclick=function(){if(window._persOverlay)window._persOverlay.remove();};
+  skipBtn.onclick=function(){
+    if(_requiredBgChoice&&!CHAR[_requiredBgChoice]){SD_alert("该背景必须完成对应的特殊选择");return;}
+    if(window._persOverlay)window._persOverlay.remove();
+  };
   skipBtn.style.cssText="padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer;font-size:14px";
   var confBtn=document.createElement("button");
   confBtn.textContent="确认";
@@ -2492,6 +2547,8 @@ function confirmPersonalityPicker(){
     }
     CHAR[k]=pp.join("；")||CHAR[k]||"";
   }
+  var _req={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain"}[CHAR.bgName]||"";
+  if(_req&&!CHAR[_req]){SD_alert("请完成该背景的强制特殊选择");return;}
   if(window._persOverlay)window._persOverlay.remove();window._persOverlay=null;
 }
 function renderBgStep(c) {
@@ -2570,7 +2627,7 @@ function showBgCantripPicker(bg,callback){
   var box=document.createElement("div");box.className="popup-box";
   box.style.cssText="background:#fffdf8;border-radius:10px;padding:24px;max-width:640px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
   var h="<h3 style='margin-bottom:4px;color:#1f2522'>选择戏法（法师学徒）</h3>";
-  h+="<p style='font-size:13px;color:#69706b;margin-bottom:12px'>从法师一/二阶戏法中选择至多 <strong>2</strong> 项，加入技能列表（不占技能栏）</p>";
+  h+="<p style='font-size:13px;color:#69706b;margin-bottom:12px'>必须选择 <strong>2</strong> 项一阶戏法，加入技能列表（不占技能栏）</p>";
   h+="<div id='bgCantripGroups'></div>";
   h+="<div style='margin-top:14px;display:flex;gap:8px;justify-content:flex-end'>";
   h+="<button type='button' id='bgCantripSkip' style='padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer'>跳过</button>";
@@ -2578,7 +2635,7 @@ function showBgCantripPicker(bg,callback){
   h+="</div>";
   box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
   var groups=document.getElementById("bgCantripGroups");
-  var tiers=["一阶","二阶"];
+  var tiers=["一阶"];
   for(var ti=0;ti<tiers.length;ti++){
     var tier=tiers[ti];
     var wrap=document.createElement("div");
@@ -2601,8 +2658,8 @@ function showBgCantripPicker(bg,callback){
     }
     wrap.appendChild(row);groups.appendChild(wrap);
   }
-  document.getElementById("bgCantripSkip").onclick=function(){CHAR.bgCantrips=[];overlay.remove();callback();};
-  document.getElementById("bgCantripOk").onclick=function(){overlay.remove();updateOverview();callback();};
+  document.getElementById("bgCantripSkip").onclick=function(){SD_alert("法师学徒必须选择两个一阶戏法");};
+  document.getElementById("bgCantripOk").onclick=function(){if(CHAR.bgCantrips.length!==2){SD_alert("请选择两个一阶戏法");return;}overlay.remove();updateOverview();callback();};
 }
 
 function showBgOtherToolsPicker(bg,callback){
@@ -2657,8 +2714,8 @@ function showBgOtherToolsPicker(bg,callback){
     grid.appendChild(btn);
   }
   document.getElementById("bgOtherCustom").oninput=function(){rebuildPicks();};
-  document.getElementById("bgOtherSkip").onclick=function(){CHAR.bgOtherPicks=[];overlay.remove();callback();};
-  document.getElementById("bgOtherOk").onclick=function(){rebuildPicks();overlay.remove();callback();};
+  document.getElementById("bgOtherSkip").onclick=function(){SD_alert("必须选择"+spec.count+"项"+spec.label);};
+  document.getElementById("bgOtherOk").onclick=function(){rebuildPicks();if(CHAR.bgOtherPicks.length!==spec.count){SD_alert("必须选择"+spec.count+"项"+spec.label);return;}overlay.remove();callback();};
 }
 
 function showSportPreferencePicker(bg,callback){
@@ -2697,10 +2754,11 @@ function showSportPreferencePicker(bg,callback){
     for(var k=0;k<cells.length;k++)cells[k].classList.remove("selected");
     updateOverview();
   };
-  document.getElementById("bgSportSkip").onclick=function(){CHAR.sportPreference="";overlay.remove();callback();};
+  document.getElementById("bgSportSkip").onclick=function(){SD_alert("运动员必须选择一项偏好运动");};
   document.getElementById("bgSportOk").onclick=function(){
     var custom=(document.getElementById("bgSportCustom").value||"").trim();
     if(custom)CHAR.sportPreference=custom;
+    if(!CHAR.sportPreference){SD_alert("运动员必须选择一项偏好运动");return;}
     overlay.remove();updateOverview();callback();
   };
 }
@@ -2747,8 +2805,8 @@ function showLangPicker(bg,callback){
     };
     grid.appendChild(cell);
   }
-  document.getElementById("langCancelBtn").onclick=function(){overlay.remove();callback([]);};
-  document.getElementById("langConfirmBtn").onclick=function(){overlay.remove();callback(selected);};
+  document.getElementById("langCancelBtn").onclick=function(){SD_alert("必须选择"+count+"门额外语言");};
+  document.getElementById("langConfirmBtn").onclick=function(){if(selected.length!==count){SD_alert("必须选择"+count+"门额外语言");return;}overlay.remove();callback(selected);};
 }
 function filterBgs(){
   var q=document.getElementById("bgSearch").value.trim().toLowerCase();
@@ -3226,13 +3284,43 @@ function organizeContainers(charData){
 }
 
 function saveCharacter(){
-  if(!CHAR.charName||!CHAR.className||CHAR.raceIdx<0||CHAR.bgIdx<0||(CHAR.className==="战士"&&!CHAR.keyAttr)||(CHAR.className==="牧师"&&!CHAR.deity)||(CHAR.className==="魔契师"&&!CHAR.patron)){
+  if(!CHAR.charName||!CHAR.className||CHAR.raceIdx<0||CHAR.bgIdx<0||(CHAR.raceName==="龙裔"&&!CHAR.dragonType)||(CHAR.className==="战士"&&!CHAR.keyAttr)||(CHAR.className==="牧师"&&!CHAR.deity)||(CHAR.className==="魔契师"&&!CHAR.patron)){
     var miss="";
     if(CHAR.className==="战士"&&!CHAR.keyAttr)miss="（战士需选择关键属性）";
     else if(CHAR.className==="牧师"&&!CHAR.deity)miss="（牧师需选择信奉神祇）";
     else if(CHAR.className==="魔契师"&&!CHAR.patron)miss="（魔契师需选择契约宗主）";
     SD_alert("请完成所有步骤"+miss);return;
   }
+  // 种族强制选择
+  var _rd=CHAR.raceData||{};
+  var _traits=_rd["特性"]||[];
+  var _needRace=false,_raceMsg="";
+  if(_rd.name==="半精灵"&&(CHAR.raceExtra||[]).length!==2){_needRace=true;_raceMsg="请为半精灵选择两项属性加成";}
+  if(!_needRace&&(_rd.name==="犬牙族"||_rd.name==="翼空族")&&!CHAR.raceSize){_needRace=true;_raceMsg="请选择种族体型";}
+  if(!_needRace){
+    for(var _ti=0;_ti<_traits.length;_ti++){
+      var _tr=_traits[_ti];
+      if(_tr.name==="中庸"&&!CHAR.humanFreeSkill){_needRace=true;_raceMsg="请选择人类·中庸的自由熟练度";break;}
+      if(_tr.save_choice&&(!CHAR.raceSaves||CHAR.raceSaves.length<1)){_needRace=true;_raceMsg="请选择"+_tr.name+"的豁免加值";break;}
+      if(_tr.skill_choice){
+        var _pts=_tr.grant_skill_points||1;
+        var _sel=Array.isArray(CHAR.raceSkillChoice)?CHAR.raceSkillChoice.length:(CHAR.raceSkillChoice?1:0);
+        if(_sel<_pts){_needRace=true;_raceMsg="请完成"+_tr.name+"的熟练度选择（"+_pts+"项）";break;}
+      }
+      if(_tr.prof_input&&!CHAR.raceProfInput){_needRace=true;_raceMsg="请输入"+_tr.name+"的自定义专业";break;}
+    }
+  }
+  if(_needRace){SD_alert(_raceMsg);return;}
+  // 背景强制选择
+  var _bd=CHAR.bgData||{};
+  var _bgMsg="";
+  var _langCount=typeof parseBgLangCount==="function"?parseBgLangCount(_bd):0;
+  if(_langCount>0&&(CHAR.extraLanguages||[]).length!==_langCount)_bgMsg="请选择"+_langCount+"门额外语言";
+  var _otherSpec=typeof parseBgOtherPick==="function"?parseBgOtherPick(_bd):null;
+  if(!_bgMsg&&_otherSpec&&(CHAR.bgOtherPicks||[]).length!==_otherSpec.count)_bgMsg="请选择"+_otherSpec.count+"项"+_otherSpec.label;
+  if(!_bgMsg&&CHAR.bgName==="运动员"&&!CHAR.sportPreference)_bgMsg="请选择运动员的偏好运动";
+  if(!_bgMsg&&CHAR.bgName==="法师学徒"&&(CHAR.bgCantrips||[]).length!==2)_bgMsg="法师学徒必须选择两个一阶戏法";
+  if(_bgMsg){SD_alert(_bgMsg);return;}
   var maxFeat=(CHAR.className==="法师"?4:2);
   if(!CHAR.selectedFeatures||CHAR.selectedFeatures.length<maxFeat){SD_alert("请选择起始特性");return;}
   if(CHAR.selectedFeatures.indexOf("基础材料学")>=0&&(!CHAR.bpPicks||CHAR.bpPicks.length<QIXIE_START_BP_PICK)){
@@ -3271,6 +3359,11 @@ function saveCharacter(){
     color_marks:{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
     hp:hp, fp:fp,
     story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
+    dragonType:CHAR.dragonType||"", dragonBreath:CHAR.dragonBreath||"", dragonResistance:CHAR.dragonResistance||"",
+    raceChoices:{extraAttrs:(CHAR.raceExtra||[]).slice(),humanFreeSkill:CHAR.humanFreeSkill||"",raceSaves:(CHAR.raceSaves||[]).slice(),raceSkillChoice:Array.isArray(CHAR.raceSkillChoice)?CHAR.raceSkillChoice.slice():(CHAR.raceSkillChoice||""),raceProfInput:CHAR.raceProfInput||"",wingfolkHasCommon:CHAR.wingfolkHasCommon!==false},
+    classChoices:(function(){var _wb="";if(CHAR.weaponSpec&&typeof WEAPON_SPEC_BY_CLASS!=="undefined"&&WEAPON_SPEC_BY_CLASS[CHAR.className]&&WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses){_wb=WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses[CHAR.weaponSpec]||"";}return {weaponSpec:CHAR.weaponSpec||"",weaponSpecBonus:_wb,specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{}))};})(),
+    backgroundChoices:{deity:(CHAR.bgName==="侍僧"?(CHAR.deity||""):""),contacts:CHAR.contacts||"",scamType:CHAR.scamType||"",missionChannel:CHAR.missionChannel||"",academicDomain:CHAR.academicDomain||""},
+    bgOtherPicks:(CHAR.bgOtherPicks||[]).slice(),
     attrs:{},
     classes:[{name:CHAR.className,level:1,keyAttr:CHAR.keyAttr||(CHAR.classData?CHAR.classData["关键属性"]:"")||"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
     skills:[], special_feats:[], feats:[], currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
@@ -3284,6 +3377,33 @@ function saveCharacter(){
   }
   if(rd["特性"]){
     for(var i=0;i<rd["特性"].length;i++) charData.racial_traits.push({name:rd["特性"][i].name,desc:rd["特性"][i].desc});
+    function _joinChoice(v){if(v==null)return"";if(Array.isArray(v))return v.join("、");return String(v);}
+    for(var _rri=0;_rri<charData.racial_traits.length;_rri++){
+      var _rt=charData.racial_traits[_rri]||{};var _rn=_rt.name||"";var _rd2=_rt.desc||"";
+      if(CHAR.raceName==="龙裔"){
+        if(_rn.indexOf("龙族血脉")>=0&&CHAR.dragonType)_rd2="龙种："+CHAR.dragonType;
+        else if(_rn.indexOf("巨龙吐息")>=0&&CHAR.dragonBreath)_rd2="吐息："+CHAR.dragonBreath;
+        else if(_rn.indexOf("传承抗性")>=0&&CHAR.dragonResistance)_rd2="抗性："+CHAR.dragonResistance;
+      }else if(CHAR.raceName==="半精灵"){
+        if(_rn.indexOf("精灵恩惠")>=0&&CHAR.raceExtra&&CHAR.raceExtra.length)_rd2="属性选择："+_joinChoice(CHAR.raceExtra);
+      }else if(CHAR.raceName==="人类"){
+        if(_rn.indexOf("中庸")>=0&&CHAR.humanFreeSkill)_rd2="自由熟练："+CHAR.humanFreeSkill;
+      }else if(CHAR.raceName==="斑猫人"||CHAR.raceName==="豹兽人"){
+        if(_rn.indexOf("猫之迅疾")>=0&&CHAR.raceSaves&&CHAR.raceSaves.length)_rd2="豁免选择："+_joinChoice(CHAR.raceSaves);
+      }else if(CHAR.raceName==="地精"){
+        if(_rn.indexOf("化学达人")>=0&&CHAR.raceSkillChoice)_rd2="技能选择："+_joinChoice(CHAR.raceSkillChoice);
+      }else if(CHAR.raceName==="牛头人"){
+        if(_rn.indexOf("威慑力")>=0&&CHAR.raceSkillChoice)_rd2="技能选择："+_joinChoice(CHAR.raceSkillChoice);
+      }else if(CHAR.raceName==="狐人"){
+        if(_rn.indexOf("背包客")>=0&&CHAR.raceSkillChoice)_rd2="技能选择："+_joinChoice(CHAR.raceSkillChoice);
+      }else if(CHAR.raceName==="龟人"){
+        if(_rn.indexOf("悠闲生活")>=0&&CHAR.raceProfInput)_rd2="自定义专业："+CHAR.raceProfInput;
+      }
+      if((CHAR.raceName==="犬牙族"||CHAR.raceName==="翼空族")&&CHAR.raceSize&&(_rn.indexOf("黑暗视觉")>=0||_rn.indexOf("飞行")>=0)){
+        _rd2=_rd2?(_rd2+"；体型："+CHAR.raceSize):("体型："+CHAR.raceSize);
+      }
+      charData.racial_traits[_rri]={name:_rn,desc:_rd2};
+    }
   }
   var allSkills={
     "力量":{"豁免":0,"威力":0,"承重":0,"运动-跳跃":0,"运动-攀爬":0,"运动-游泳":0,"运动-自定义":0},
@@ -3399,14 +3519,24 @@ function saveCharacter(){
   }
   var specs=CLASS_SPECIALIZATIONS[CHAR.className]||[];
   for(var i=0;i<specs.length;i++){
-    var _cfDesc=specs[i].d;
-    if(CHAR.className==="魔契师"&&specs[i].n==="宗主契约"&&CHAR.patron){
-      _cfDesc=_cfDesc+"（宗主："+CHAR.patron+"）";
+    var _cfDesc=specs[i].d,_cfName=specs[i].n;
+    if(_cfName==="武器专精"&&CHAR.weaponSpec){
+      var _wsBonus="";
+      if(typeof WEAPON_SPEC_BY_CLASS!=="undefined"&&WEAPON_SPEC_BY_CLASS[CHAR.className]&&WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses){
+        _wsBonus=WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses[CHAR.weaponSpec]||"";
+      }
+      _cfDesc=CHAR.weaponSpec+(_wsBonus?("："+_wsBonus):"");
+    }else if(_cfName==="运动健将"&&CHAR.specChoices&&CHAR.specChoices["运动健将"]&&CHAR.specChoices["运动健将"].skill){
+      var _mj=CHAR.specChoices["运动健将"];
+      _cfDesc=(_mj.attr?(_mj.attr+"·"):"")+_mj.skill;
+    }else if((_cfName==="奥法学者"||_cfName==="知识传承"||_cfName==="万用模组")&&CHAR.specChoices&&CHAR.specChoices[_cfName]&&CHAR.specChoices[_cfName].skill){
+      _cfDesc=CHAR.specChoices[_cfName].skill;
+    }else if(_cfName==="神圣领域"&&CHAR.deity){
+      _cfDesc="信奉："+CHAR.deity+(CHAR.deityAttr?("（"+CHAR.deityAttr+"）"):"");
+    }else if(_cfName==="宗主契约"&&CHAR.patron){
+      _cfDesc="宗主："+CHAR.patron;
     }
-    if(CHAR.className==="牧师"&&specs[i].n==="神圣领域"&&CHAR.deity){
-      _cfDesc=_cfDesc+"（神祇："+CHAR.deity+(CHAR.deityAttr?" / "+CHAR.deityAttr:"")+"）";
-    }
-    charData.class_features.push({name:"["+CHAR.className+"] "+specs[i].n,desc:_cfDesc});
+    charData.class_features.push({name:"["+CHAR.className+"] "+_cfName,desc:_cfDesc});
   }
   // Removed generic class entry
   if(CHAR.selectedFeatures && CHAR.selectedFeatures.length>0){

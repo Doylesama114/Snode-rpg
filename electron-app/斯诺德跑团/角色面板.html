@@ -964,7 +964,7 @@ body.battle .fab{display:none}
       <button class="btn-ghost" onclick="openCustomManager()" style="float:right;padding:3px 12px;font-size:12.5px">➕ 自定义物品</button>
     </h2>
     <div class="equip-grid" id="equipGrid"></div>
-    <div class="equip-hint" id="equipHint" style="margin-top:8px;font-size:12px;color:var(--muted)">💡 材料包可在商店购买（🏪 商店 → 容器分类），购买后自动解锁对应存放空间</div>
+    <div class="equip-hint" id="equipHint" style="margin-top:8px;font-size:12px;color:var(--muted)">💡 材料包可在商店购买（🏪 商店 → 容器分类），最多同时携带 2 个，可退货替换</div>
   </section>
 </div>
 
@@ -2368,6 +2368,12 @@ function unlockContainerByBuy(name) {
     return { ok: true, msg: '旅行腰包已解锁' };
   }
   if (typeof BAG_SLOTS !== 'undefined' && BAG_SLOTS.indexOf(name) >= 0) {
+    if (state.containerItems[name] === '已解锁') return { ok: true, msg: '「' + name + '」已装备' };
+    var _active = 0;
+    for (var _bi = 0; _bi < BAG_SLOTS.length; _bi++) {
+      if (state.containerItems[BAG_SLOTS[_bi]] === '已解锁') _active++;
+    }
+    if (_active >= 2) return { ok: false, msg: '最多只能同时携带两个材料包，请先在商店退货/舍弃一个再购买' };
     state.containerItems[name] = '已解锁';
     return { ok: true, msg: '「' + name + '」已装备' };
   }

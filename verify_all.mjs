@@ -212,6 +212,21 @@ try {
 console.log(hpFpOK ? '✅ 种族体型 HP / HP·FP 持久化通过' : '❌ 种族体型 HP / HP·FP 持久化失败');
 totalErrors += hpFpOK ? 0 : 1;
 
+// 导出映射与回读（新模板：K/Q/U 动态效果、Q6/Q8/R/Q36-Q42、I89/I100、法师戏法）
+console.log('\n=== 导出映射与回读 ===');
+let exportMapOK = true;
+try {
+  let emOut = spawnSync('node', [join(BASE, 'verify_export_mapping_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (emOut.stdout) console.log(emOut.stdout.trim());
+  if (emOut.stderr) console.error(emOut.stderr.trim());
+  if (emOut.status !== 0) exportMapOK = false;
+} catch (e) {
+  exportMapOK = false;
+  console.log('❌ 导出映射与回读 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(exportMapOK ? '✅ 导出映射与回读通过' : '❌ 导出映射与回读失败');
+totalErrors += exportMapOK ? 0 : 1;
+
 // 守望者创建页 E2E（起手套装 A–D + HP/FP 公式）
 console.log('\n=== 守望者创建页与生命/疲劳公式 ===');
 let watchmanOK = true;

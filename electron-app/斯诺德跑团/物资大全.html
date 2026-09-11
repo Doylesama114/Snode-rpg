@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>物资大全 - 斯诺德资料库</title>
+<style>
+  :root{--ink:#1f2522;--muted:#69706b;--paper:#f6f4ef;--line:#d8d2c4;--accent:#a46d1f;--good:#4caf50}
+  *{box-sizing:border-box}
+  body{margin:0;background:#efece5;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+  a.back{color:var(--accent);text-decoration:none;font-size:14px}
+  h1{margin:10px 0 4px;font-size:26px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+  .toolbar input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .tab{padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:13px}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .meta{color:var(--muted);font-size:13px;margin:8px 0}
+  .tableBox{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:auto}
+  table{border-collapse:collapse;width:100%;min-width:620px}
+  th,td{border:1px solid #e6e0d4;padding:7px 9px;font-size:13px;vertical-align:top;text-align:left}
+  th{background:#f1ecdf;color:var(--accent);position:sticky;top:0;z-index:1}
+  tr:nth-child(even) td{background:#fbfaf7}
+  .empty{padding:24px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="资料库.html">← 返回资料库</a>
+  <h1>📦 斯诺德物资大全</h1>
+  <div class="sub">来自《斯诺德物资大全.xlsx》的表格化视图；支持分类切换与搜索。</div>
+  <div class="toolbar">
+    <input id="q" placeholder="搜索物品名称、小类、价格、重量…">
+    <span class="meta" id="count"></span>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="tableBox">
+    <table id="tbl">
+      <thead><tr><th style="width:26%">名称</th><th style="width:16%">类别</th><th style="width:22%">价格</th><th style="width:18%">重量</th><th>所属分类</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none">没有匹配的物品</div>
+  </div>
+</div>
+<script src="store_data.js"></script>
+<script>
+var _cat = '全部';
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function allItems(){
+  var out=[];
+  for(var cat in STORE_DATA){
+    if(!STORE_DATA.hasOwnProperty(cat))continue;
+    var arr=STORE_DATA[cat]||[];
+    for(var i=0;i<arr.length;i++){
+      var it=arr[i]||{};
+      out.push({name:it.name||'',cat:it.cat||'',price:it.price||'',weight:it.weight||'',group:cat});
+    }
+  }
+  return out;
+}
+var ALL = allItems();
+function renderTabs(){
+  var cats=['全部'].concat(Object.keys(STORE_DATA));
+  var h='';
+  for(var i=0;i<cats.length;i++){
+    h+='<div class="tab'+(cats[i]===_cat?' active':'')+'" data-cat="'+esc(cats[i])+'">'+esc(cats[i])+'</div>';
+  }
+  document.getElementById('tabs').innerHTML=h;
+  var tabs=document.querySelectorAll('#tabs .tab');
+  for(var j=0;j<tabs.length;j++){
+    tabs[j].onclick=function(){_cat=this.getAttribute('data-cat');renderTabs();renderTable();};
+  }
+}
+function renderTable(){
+  var q=(document.getElementById('q').value||'').trim().toLowerCase();
+  var rows=[];
+  for(var i=0;i<ALL.length;i++){
+    var it=ALL[i];
+    if(_cat!=='全部'&&it.group!==_cat)continue;
+    if(q){
+      var hay=(it.name+' '+it.cat+' '+it.price+' '+it.weight+' '+it.group).toLowerCase();
+      if(hay.indexOf(q)<0)continue;
+    }
+    rows.push(it);
+  }
+  var h='';
+  for(var r=0;r<rows.length;r++){
+    h+='<tr><td>'+esc(rows[r].name)+'</td><td>'+esc(rows[r].cat)+'</td><td>'+esc(rows[r].price)+'</td><td>'+esc(rows[r].weight)+'</td><td>'+esc(rows[r].group)+'</td></tr>';
+  }
+  document.getElementById('tbody').innerHTML=h;
+  document.getElementById('empty').style.display=rows.length?'none':'block';
+  document.getElementById('count').textContent='共 '+rows.length+' 项';
+}
+document.getElementById('q').addEventListener('input',renderTable);
+renderTabs();
+renderTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>资料库 - 斯诺德跑团</title>
+<style>
+  :root{--ink:#1f2522;--muted:#69706b;--paper:#f6f4ef;--line:#d8d2c4;--accent:#a46d1f;--good:#4caf50}
+  *{box-sizing:border-box}
+  body{margin:0;background:#efece5;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+  a.back{color:var(--accent);text-decoration:none;font-size:14px}
+  h1{margin:10px 0 4px;font-size:28px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+  .tab{padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .panel{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .panel.active{display:block}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
+  .toolbar input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+  .meta{color:var(--muted);font-size:13px}
+  .sheetTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .sheetTab{padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:#fbfaf7;cursor:pointer;font-size:13px}
+  .sheetTab.active{background:var(--good);color:#fff;border-color:var(--good)}
+  .tableBox{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+  table.flow{border-collapse:collapse;min-width:900px;width:100%}
+  table.flow td,table.flow th{border:1px solid #e6e0d4;padding:6px 8px;font-size:13px;vertical-align:top;white-space:pre-wrap;word-break:break-word}
+  table.flow td:empty{background:#fbfaf7}
+  .bgGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  details.bg{border:1px solid var(--line);border-radius:10px;background:#fbfaf7;padding:10px 12px}
+  details.bg summary{cursor:pointer;font-weight:bold;color:var(--accent);font-size:15px}
+  .bg .row{font-size:13px;margin-top:6px;line-height:1.6}
+  .bg .label{color:var(--muted)}
+  .bg ul{margin:4px 0 0 18px;padding:0}
+  .warn{background:#fff4e0;border:1px solid #e8c98a;color:#7a5712;border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
+  .cardLink{display:block;border:1px solid var(--line);border-radius:12px;padding:18px;background:#fbfaf7;text-decoration:none;color:var(--ink);margin-bottom:12px}
+  .cardLink b{color:var(--accent)}
+  .cardLink span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+  .empty{padding:24px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="主页.html">← 返回冒险者手册</a>
+  <h1>📚 资料库</h1>
+  <div class="sub">创建流程、个性与背景规则、物资大全与基础规则统一入口。</div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="flow">创建流程</div>
+    <div class="tab" data-tab="bg">个性与背景创建规则</div>
+    <div class="tab" data-tab="store">物资大全</div>
+    <div class="tab" data-tab="base">基础规则</div>
+  </div>
+
+  <div class="panel active" id="panel-flow">
+    <div class="meta" style="margin-bottom:10px">来源：冒险者角色创建流程.xlsx；按原表合并单元格渲染。</div>
+    <div class="sheetTabs" id="sheetTabs"></div>
+    <div class="tableBox" id="flowBox"></div>
+  </div>
+
+  <div class="panel" id="panel-bg">
+    <div class="toolbar">
+      <input id="bgQ" placeholder="搜索背景名称、基础熟练项、专业、其他、特性描述…">
+      <span class="meta" id="bgCount"></span>
+    </div>
+    <div class="bgGrid" id="bgGrid"></div>
+  </div>
+
+  <div class="panel" id="panel-store">
+    <a class="cardLink" href="物资大全.html">
+      <b>📦 打开斯诺德物资大全</b>
+      <span>按分类查看全部物品的表格化视图（名称 / 类别 / 价格 / 重量），支持搜索。</span>
+    </a>
+  </div>
+
+  <div class="panel" id="panel-base">
+    <a class="cardLink" href="help.html">
+      <b>📖 打开冒险者基础规则</b>
+      <span>包含冒险者基础规则.xlsx 已整合的内容。</span>
+    </a>
+  </div>
+</div>
+
+<script src="../职业页/数据/backgrounds_data.js"></script>
+<script src="../职业页/数据/bg_personality_data.js"></script>
+<script src="资料库/creation_flow_data.js"></script>
+<script>
+function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function nl2br(t){return esc(t).replace(/\n/g,'<br>');}
+
+/* ===== tabs ===== */
+var tabs=document.querySelectorAll('.tab');
+for(var ti=0;ti<tabs.length;ti++){
+  tabs[ti].onclick=function(){
+    for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('active');
+    this.classList.add('active');
+    var id=this.getAttribute('data-tab');
+    var panels=['flow','bg','store','base'];
+    for(var j=0;j<panels.length;j++)document.getElementById('panel-'+panels[j]).classList.remove('active');
+    document.getElementById('panel-'+id).classList.add('active');
+  };
+}
+
+/* ===== creation flow ===== */
+var _flowIdx=0;
+function buildMergeMap(sh){
+  var map={};
+  for(var i=0;i<sh.merges.length;i++){
+    var m=sh.merges[i],c1=m[0],r1=m[1],c2=m[2],r2=m[3];
+    map[r1+','+c1]={rowspan:r2-r1+1,colspan:c2-c1+1};
+    for(var r=r1;r<=r2;r++)for(var c=c1;c<=c2;c++){if(r!==r1||c!==c1)map[r+','+c]='covered';}
+  }
+  return map;
+}
+function renderFlow(){
+  var sh=CREATION_FLOW_DATA.sheets[_flowIdx];
+  if(!sh){document.getElementById('flowBox').innerHTML='<div class="empty">没有数据</div>';return;}
+  var map=buildMergeMap(sh);
+  var h='<table class="flow"><tbody>';
+  for(var r=0;r<sh.rows.length;r++){
+    h+='<tr>';
+    for(var c=0;c<sh.maxCol;c++){
+      var key=(r+1)+','+(c+1);var mk=map[key];
+      if(mk==='covered')continue;
+      var v=sh.rows[r][c]||'';
+      var attrs='';
+      if(mk&&mk!=='covered'){if(mk.rowspan>1)attrs+=' rowspan="'+mk.rowspan+'"';if(mk.colspan>1)attrs+=' colspan="'+mk.colspan+'"';}
+      h+='<td'+attrs+'>'+(v?nl2br(v):'')+'</td>';
+    }
+    h+='</tr>';
+  }
+  h+='</tbody></table>';
+  document.getElementById('flowBox').innerHTML=h;
+}
+function renderSheetTabs(){
+  var h='';
+  for(var i=0;i<CREATION_FLOW_DATA.sheets.length;i++){
+    h+='<div class="sheetTab'+(_flowIdx===i?' active':'')+'" data-idx="'+i+'">'+esc(CREATION_FLOW_DATA.sheets[i].name)+'</div>';
+  }
+  document.getElementById('sheetTabs').innerHTML=h;
+  var tabs=document.querySelectorAll('.sheetTab');
+  for(var j=0;j<tabs.length;j++){
+    tabs[j].onclick=function(){_flowIdx=parseInt(this.getAttribute('data-idx'),10)||0;renderSheetTabs();renderFlow();};
+  }
+}
+renderSheetTabs();renderFlow();
+
+/* ===== backgrounds ===== */
+function listBlock(title,arr){
+  if(!arr||!arr.length)return '';
+  var h='<div class="row"><span class="label">'+esc(title)+'：</span></div><ul>';
+  for(var i=0;i<arr.length;i++)h+='<li>'+esc(arr[i])+'</li>';
+  return h+'</ul>';
+}
+function renderBackgrounds(){
+  var q=(document.getElementById('bgQ').value||'').trim().toLowerCase();
+  var h='',count=0;
+  for(var i=0;i<BACKGROUNDS.length;i++){
+    var b=BACKGROUNDS[i]||{},name=b.name||'';
+    var p=BG_PERSONALITY[name]||{};
+    var hay=(name+' '+(b['基础熟练项']||'')+' '+(b['专业熟练项']||'')+' '+(b['其他']||'')+' '+(b['特性描述']||'')+' '+(p.desc||'')).toLowerCase();
+    if(q&&hay.indexOf(q)<0)continue;
+    count++;
+    var warn='';
+    if(name==='法师学徒')warn='<div class="warn">创建时：必须从法师一阶戏法中选择满 2 个，加入技能列表且不占技能栏；不允许二阶戏法。</div>';
+    if(p.deities&&p.deities.length)warn+='<div class="warn">创建时必须从神祇列表选择 1 项。</div>';
+    if(p.contacts&&p.contacts.length)warn+='<div class="warn">创建时必须从联系渠道列表选择 1 项。</div>';
+    if(p.scam_types&&p.scam_types.length)warn+='<div class="warn">创建时必须从偏好骗局列表选择 1 项。</div>';
+    if(p.mission_channels&&p.mission_channels.length)warn+='<div class="warn">创建时必须从任务渠道列表选择 1 项。</div>';
+    if(p.academic_domains&&p.academic_domains.length)warn+='<div class="warn">创建时必须从学术领域列表选择 1 项。</div>';
+    if((b['其他']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成「'+(b['其他']||'')+'」的选择。</div>';
+    if((b['基础熟练项']||'').indexOf('任选')>=0||(b['专业熟练项']||'').indexOf('任选')>=0)warn+='<div class="warn">创建时必须完成对应熟练项/专业的选择。</div>';
+    h+='<details class="bg"><summary>'+esc(name)+'　HP '+(b['生命值加成']||'+0')+' · '+(b['资金']||'无资金')+'</summary>';
+    h+='<div class="row"><span class="label">简介：</span>'+nl2br(p.desc||b.description||'无')+'</div>';
+    h+='<div class="row"><span class="label">基础熟练项：</span>'+esc(b['基础熟练项']||'无')+'</div>';
+    h+='<div class="row"><span class="label">专业熟练项：</span>'+esc(b['专业熟练项']||'无')+'</div>';
+    h+='<div class="row"><span class="label">其他：</span>'+esc(b['其他']||'无')+'</div>';
+    h+='<div class="row"><span class="label">装备：</span>'+esc((b['装备']||'').replace(/\n/g,'、'))+'</div>';
+    h+='<div class="row"><span class="label">特性描述：</span>'+nl2br(b['特性描述']||'无')+'</div>';
+    h+=listBlock('特点选项',p.traits);h+=listBlock('理念选项',p.ideals);h+=listBlock('羁绊选项',p.bonds);h+=listBlock('缺陷选项',p.flaws);
+    h+=listBlock('神祇选项',p.deities);h+=listBlock('联系渠道选项',p.contacts);h+=listBlock('偏好骗局选项',p.scam_types);h+=listBlock('任务渠道选项',p.mission_channels);h+=listBlock('学术领域选项',p.academic_domains);
+    h+=warn+'</details>';
+  }
+  document.getElementById('bgGrid').innerHTML=h||'<div class="empty">没有匹配的背景</div>';
+  document.getElementById('bgCount').textContent='共 '+count+' 个背景';
+}
+document.getElementById('bgQ').addEventListener('input',renderBackgrounds);
+renderBackgrounds();
+</script>
+</body>
+</html>
