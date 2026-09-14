@@ -2,8 +2,8 @@
   "meta": {
     "layer": "L1",
     "phase": "5-complete",
-    "version": "1.0.7259",
-    "note": "15个基础职业：守望者已升至 full"
+    "version": "1.0.7270",
+    "note": "16个基础职业：守望者、谋士已升至 full"
   },
   "defaults": {
     "tier": "basic",
@@ -314,6 +314,34 @@
       ],
       "promptProfile": "warden_skills",
       "fullL2MinSkills": 36,
+      "l5MinTips": 15
+    },
+    "谋士": {
+      "tier": "full",
+      "keyAttr": "智力",
+      "l2Slug": "strategist",
+      "l2Layer": "L2-strategist",
+      "startingFeaturePick": 2,
+      "skillPickCount": 4,
+      "specProfChoices": [
+        "权谋",
+        "军团",
+        "先见",
+        "鸩毒",
+        "混乱",
+        "博物"
+      ],
+      "styleKeywords": [
+        "谋士",
+        "权谋",
+        "军团",
+        "先见",
+        "鸩毒",
+        "混乱",
+        "博物"
+      ],
+      "promptProfile": "strategist_skills",
+      "fullL2MinSkills": 100,
       "l5MinTips": 15
     }
   }

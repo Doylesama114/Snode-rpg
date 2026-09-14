@@ -1,0 +1,688 @@
+{
+  "meta": {
+    "layer": "L5",
+    "phase": "5-full",
+    "targetClass": "谋士",
+    "tier": "full",
+    "status": "auto_generated",
+    "count": 19,
+    "byKind": {
+      "style_guide": 6,
+      "tactic": 10,
+      "combat_rule": 1,
+      "chargen": 2
+    },
+    "note": "full 档由 build-advisor-class-full.mjs 从 L2 索引与 REF 生成；可人工覆盖",
+    "generatedAt": "2026-09-14"
+  },
+  "tips": [
+    {
+      "id": "tip-strategist-style-权谋",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·权谋风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "权谋",
+      "summary": "权谋：偏补给、天赋、创建骰池、短休/长休等能力。",
+      "detail": "低阶代表：弃子、丝绒手套、观人入微。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "弃子",
+        "丝绒手套",
+        "观人入微"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "权谋",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "弃子",
+          "source": "strategist"
+        },
+        {
+          "name": "丝绒手套",
+          "source": "strategist"
+        },
+        {
+          "name": "观人入微",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·权谋风格 style_guide auto_generated 权谋：偏补给、天赋、创建骰池、短休/长休等能力。 低阶代表：弃子、丝绒手套、观人入微。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 权谋 战斗风格 style_guide 弃子 丝绒手套 观人入微"
+    },
+    {
+      "id": "tip-strategist-style-军团",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·军团风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "军团",
+      "summary": "军团：偏增益、媒介、光环、唯一性等能力。",
+      "detail": "低阶代表：策略军旗、伺机待发、侧击指示。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "策略军旗",
+        "伺机待发",
+        "侧击指示"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "军团",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "策略军旗",
+          "source": "strategist"
+        },
+        {
+          "name": "伺机待发",
+          "source": "strategist"
+        },
+        {
+          "name": "侧击指示",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·军团风格 style_guide auto_generated 军团：偏增益、媒介、光环、唯一性等能力。 低阶代表：策略军旗、伺机待发、侧击指示。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 军团 战斗风格 style_guide 策略军旗 伺机待发 侧击指示"
+    },
+    {
+      "id": "tip-strategist-style-先见",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·先见风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "先见",
+      "summary": "先见：偏探知、天赋、异能、增益等能力。",
+      "detail": "低阶代表：规划路线、闻风而动、先手之利。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "规划路线",
+        "闻风而动",
+        "先手之利"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "先见",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "规划路线",
+          "source": "strategist"
+        },
+        {
+          "name": "闻风而动",
+          "source": "strategist"
+        },
+        {
+          "name": "先手之利",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·先见风格 style_guide auto_generated 先见：偏探知、天赋、异能、增益等能力。 低阶代表：规划路线、闻风而动、先手之利。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 先见 战斗风格 style_guide 规划路线 闻风而动 先手之利"
+    },
+    {
+      "id": "tip-strategist-style-鸩毒",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·鸩毒风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "鸩毒",
+      "summary": "鸩毒：偏配方、毒性、惑控、感知豁免（15）等能力。",
+      "detail": "低阶代表：迷魂香（配方）、下毒手法、口蜜腹剑。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "迷魂香（配方）",
+        "下毒手法",
+        "口蜜腹剑"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "鸩毒",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "迷魂香（配方）",
+          "source": "strategist"
+        },
+        {
+          "name": "下毒手法",
+          "source": "strategist"
+        },
+        {
+          "name": "口蜜腹剑",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·鸩毒风格 style_guide auto_generated 鸩毒：偏配方、毒性、惑控、感知豁免（15）等能力。 低阶代表：迷魂香（配方）、下毒手法、口蜜腹剑。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 鸩毒 战斗风格 style_guide 迷魂香（配方） 下毒手法 口蜜腹剑"
+    },
+    {
+      "id": "tip-strategist-style-混乱",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·混乱风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "混乱",
+      "summary": "混乱：偏异能、阻碍、短休/长休、机制等能力。",
+      "detail": "低阶代表：乱其阵脚、无中生有、混淆视听。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "乱其阵脚",
+        "无中生有",
+        "混淆视听"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "混乱",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "乱其阵脚",
+          "source": "strategist"
+        },
+        {
+          "name": "无中生有",
+          "source": "strategist"
+        },
+        {
+          "name": "混淆视听",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·混乱风格 style_guide auto_generated 混乱：偏异能、阻碍、短休/长休、机制等能力。 低阶代表：乱其阵脚、无中生有、混淆视听。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 混乱 战斗风格 style_guide 乱其阵脚 无中生有 混淆视听"
+    },
+    {
+      "id": "tip-strategist-style-博物",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士·博物风格",
+      "kind": "style_guide",
+      "confidence": "auto_generated",
+      "style": "博物",
+      "summary": "博物：偏交涉、激活、法术、补给等能力。",
+      "detail": "低阶代表：通晓语言、探求精神、鉴识眼。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。",
+      "relatedSkills": [
+        "通晓语言",
+        "探求精神",
+        "鉴识眼"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "博物",
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [
+        {
+          "name": "通晓语言",
+          "source": "strategist"
+        },
+        {
+          "name": "探求精神",
+          "source": "strategist"
+        },
+        {
+          "name": "鉴识眼",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "谋士·博物风格 style_guide auto_generated 博物：偏交涉、激活、法术、补给等能力。 低阶代表：通晓语言、探求精神、鉴识眼。顾问自动摘要（非官方连招）；数值与前置以规则书/创建页为准。 谋士 博物 战斗风格 style_guide 通晓语言 探求精神 鉴识眼"
+    },
+    {
+      "id": "tip-strategist-prio-权谋",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "权谋 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "权谋",
+      "summary": "权谋线前三级可优先：弃子、丝绒手套、观人入微；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 权谋 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "弃子",
+        "丝绒手套",
+        "观人入微"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "权谋",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "弃子",
+          "source": "strategist"
+        },
+        {
+          "name": "丝绒手套",
+          "source": "strategist"
+        },
+        {
+          "name": "观人入微",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "权谋 1～3 阶优先 tactic auto_generated 权谋线前三级可优先：弃子、丝绒手套、观人入微；与起手特性/专精规划一致再扩展。 谋士 权谋 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 权谋 优先学 tactic 弃子 丝绒手套 观人入微"
+    },
+    {
+      "id": "tip-strategist-prio-军团",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "军团 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "军团",
+      "summary": "军团线前三级可优先：策略军旗、伺机待发、侧击指示；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 军团 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "策略军旗",
+        "伺机待发",
+        "侧击指示"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "军团",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "策略军旗",
+          "source": "strategist"
+        },
+        {
+          "name": "伺机待发",
+          "source": "strategist"
+        },
+        {
+          "name": "侧击指示",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "军团 1～3 阶优先 tactic auto_generated 军团线前三级可优先：策略军旗、伺机待发、侧击指示；与起手特性/专精规划一致再扩展。 谋士 军团 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 军团 优先学 tactic 策略军旗 伺机待发 侧击指示"
+    },
+    {
+      "id": "tip-strategist-prio-先见",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "先见 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "先见",
+      "summary": "先见线前三级可优先：规划路线、闻风而动、先手之利；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 先见 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "规划路线",
+        "闻风而动",
+        "先手之利"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "先见",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "规划路线",
+          "source": "strategist"
+        },
+        {
+          "name": "闻风而动",
+          "source": "strategist"
+        },
+        {
+          "name": "先手之利",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "先见 1～3 阶优先 tactic auto_generated 先见线前三级可优先：规划路线、闻风而动、先手之利；与起手特性/专精规划一致再扩展。 谋士 先见 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 先见 优先学 tactic 规划路线 闻风而动 先手之利"
+    },
+    {
+      "id": "tip-strategist-prio-鸩毒",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "鸩毒 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "鸩毒",
+      "summary": "鸩毒线前三级可优先：迷魂香（配方）、下毒手法、口蜜腹剑；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 鸩毒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "迷魂香（配方）",
+        "下毒手法",
+        "口蜜腹剑"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "鸩毒",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "迷魂香（配方）",
+          "source": "strategist"
+        },
+        {
+          "name": "下毒手法",
+          "source": "strategist"
+        },
+        {
+          "name": "口蜜腹剑",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "鸩毒 1～3 阶优先 tactic auto_generated 鸩毒线前三级可优先：迷魂香（配方）、下毒手法、口蜜腹剑；与起手特性/专精规划一致再扩展。 谋士 鸩毒 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 鸩毒 优先学 tactic 迷魂香（配方） 下毒手法 口蜜腹剑"
+    },
+    {
+      "id": "tip-strategist-prio-混乱",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "混乱 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "混乱",
+      "summary": "混乱线前三级可优先：乱其阵脚、无中生有、混淆视听；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 混乱 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "乱其阵脚",
+        "无中生有",
+        "混淆视听"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "混乱",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "乱其阵脚",
+          "source": "strategist"
+        },
+        {
+          "name": "无中生有",
+          "source": "strategist"
+        },
+        {
+          "name": "混淆视听",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "混乱 1～3 阶优先 tactic auto_generated 混乱线前三级可优先：乱其阵脚、无中生有、混淆视听；与起手特性/专精规划一致再扩展。 谋士 混乱 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 混乱 优先学 tactic 乱其阵脚 无中生有 混淆视听"
+    },
+    {
+      "id": "tip-strategist-prio-博物",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "博物 1～3 阶优先",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": "博物",
+      "summary": "博物线前三级可优先：通晓语言、探求精神、鉴识眼；与起手特性/专精规划一致再扩展。",
+      "detail": "谋士 博物 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。",
+      "relatedSkills": [
+        "通晓语言",
+        "探求精神",
+        "鉴识眼"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "博物",
+        "优先学",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "通晓语言",
+          "source": "strategist"
+        },
+        {
+          "name": "探求精神",
+          "source": "strategist"
+        },
+        {
+          "name": "鉴识眼",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "博物 1～3 阶优先 tactic auto_generated 博物线前三级可优先：通晓语言、探求精神、鉴识眼；与起手特性/专精规划一致再扩展。 谋士 博物 风格在 L2 索引中一～三阶技能较多；车卡后优先点亮与武器/属性匹配的 low-tier 节点。 谋士 博物 优先学 tactic 通晓语言 探求精神 鉴识眼"
+    },
+    {
+      "id": "tip-strategist-start-交友术",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "起手·交友术",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "交友术（起手）：你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时",
+      "detail": "谋士 4 选 2 起手特性之一。你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时立即中断，对方会意识到自身受到了惑控的影响，这可能会导致目标转变为敌对状态 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "交友术"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "交友术",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "起手·交友术 tactic auto_generated 交友术（起手）：你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时 谋士 4 选 2 起手特性之一。你用单手在对方眼前挥过，对方感到一阵粉色的香气扑面而来，因不适而数次眨眼后自身的认知便发生了变化，将眼前的你视作友人 交友术在持续时间结束或是目标进入战斗环节时立即中断，对方会意识到自身受到了惑控的影响，这可能会导致目标转变为敌对状态 与后续 起手 风格技能可形成初期连招，但非强制绑定。 谋士 起手特性 车卡 tactic 交友术"
+    },
+    {
+      "id": "tip-strategist-start-战术部署",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "起手·战术部署",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "战术部署（起手）：1.你快速分析战场局势，当一场战斗环节开始时，你可以选择令每一名其他友方角色在首个自身回合分别获得以下一项效果 ·攻击命中检定值+1 ·攻击造成的伤害值在结算后",
+      "detail": "谋士 4 选 2 起手特性之一。1.你快速分析战场局势，当一场战斗环节开始时，你可以选择令每一名其他友方角色在首个自身回合分别获得以下一项效果 ·攻击命中检定值+1 ·攻击造成的伤害值在结算后+1D4 ·获得一颗D2的战术骰，可以在自身进行一次攻击命中、伤害、属性或熟练项检定时掷出，将骰值附加在检定结果上，这颗战术骰在这个自身回合结束时将会消散 ·获得1D4点护盾，无法以此抵挡神圣、邪能或星界伤害，持续1轮 ·可以在首个自身回合开始时先位移至多2米 2.如果友方角色人数超过部署的种类数量，那么你必须选择哪些角色能够获得战术部署的效果 L5: 提升每一项战术部署的效果 L10: 你可以在战术部署时不选择将效果分别分配给每个其他友方角色，而是选择令某名角色分别获得多个效果 L15: 你可以选择自身作为战术部署的目标 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "战术部署"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "战术部署",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "起手·战术部署 tactic auto_generated 战术部署（起手）：1.你快速分析战场局势，当一场战斗环节开始时，你可以选择令每一名其他友方角色在首个自身回合分别获得以下一项效果 ·攻击命中检定值+1 ·攻击造成的伤害值在结算后 谋士 4 选 2 起手特性之一。1.你快速分析战场局势，当一场战斗环节开始时，你可以选择令每一名其他友方角色在首个自身回合分别获得以下一项效果 ·攻击命中检定值+1 ·攻击造成的伤害值在结算后+1D4 ·获得一颗D2的战术骰，可以在自身进行一次攻击命中、伤害、属性或熟练项检定时掷出，将骰值附加在检定结果上，这颗战术骰在这个自身回合结束时将会消散 ·获得1D4点护盾，无法以此抵挡神圣、邪能或星界伤害，持续1轮 ·可以在首个自身回合开始时先位移至多2米 2.如果友方角色人数超过部署的种类数量，那么你必须选择哪些角色能够获得战术部署的效果 L5: 提升每一项战术部署的效果 L10: 你可以在战术部署时不选择将效果分别分配给每个其他友方角色，而是选择令某名角色分别获得多个效果 L15: 你可以选择自身作为战术部署的目标 与后续 起手 风格技能可形成初期连招，但非强制绑定。 谋士 起手特性 车卡 tactic 战术部署"
+    },
+    {
+      "id": "tip-strategist-start-毒刃",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "起手·毒刃",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "毒刃（起手）：你在武器上萃上毒剂，对敌人发起恶毒地一击",
+      "detail": "谋士 4 选 2 起手特性之一。你在武器上萃上毒剂，对敌人发起恶毒地一击 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "毒刃"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "毒刃",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "起手·毒刃 tactic auto_generated 毒刃（起手）：你在武器上萃上毒剂，对敌人发起恶毒地一击 谋士 4 选 2 起手特性之一。你在武器上萃上毒剂，对敌人发起恶毒地一击 与后续 起手 风格技能可形成初期连招，但非强制绑定。 谋士 起手特性 车卡 tactic 毒刃"
+    },
+    {
+      "id": "tip-strategist-start-离间",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "起手·离间",
+      "kind": "tactic",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "离间（起手）：你离间敌人和其盟友，令他们的关系暂时恶化 2.目标在每个轮次开始阶段还会再次进行一次难度为15的智力或魅力豁免（取决于你先前选择的对抗类型），如果对方豁免成功将",
+      "detail": "谋士 4 选 2 起手特性之一。你离间敌人和其盟友，令他们的关系暂时恶化 2.目标在每个轮次开始阶段还会再次进行一次难度为15的智力或魅力豁免（取决于你先前选择的对抗类型），如果对方豁免成功将会提前结束离间的效果 谋士天赋树 L5: 离间的持续时间结束后目标的下一次攻击命中检定具有劣势 L10: 离间的持续时间结束后目标会承受2D6点心灵伤害，持续2轮 与后续 起手 风格技能可形成初期连招，但非强制绑定。",
+      "relatedSkills": [
+        "离间"
+      ],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "起手特性",
+        "车卡",
+        "tactic"
+      ],
+      "skillRefs": [
+        {
+          "name": "离间",
+          "source": "strategist"
+        }
+      ],
+      "searchText": "起手·离间 tactic auto_generated 离间（起手）：你离间敌人和其盟友，令他们的关系暂时恶化 2.目标在每个轮次开始阶段还会再次进行一次难度为15的智力或魅力豁免（取决于你先前选择的对抗类型），如果对方豁免成功将 谋士 4 选 2 起手特性之一。你离间敌人和其盟友，令他们的关系暂时恶化 2.目标在每个轮次开始阶段还会再次进行一次难度为15的智力或魅力豁免（取决于你先前选择的对抗类型），如果对方豁免成功将会提前结束离间的效果 谋士天赋树 L5: 离间的持续时间结束后目标的下一次攻击命中检定具有劣势 L10: 离间的持续时间结束后目标会承受2D6点心灵伤害，持续2轮 与后续 起手 风格技能可形成初期连招，但非强制绑定。 谋士 起手特性 车卡 tactic 离间"
+    },
+    {
+      "id": "tip-strategist-cr-fp",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "FP 与技能节奏",
+      "kind": "combat_rule",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "技能消耗 FP；规划回合节奏，避免空 FP。",
+      "detail": "低阶技能优先；长战注意短休/长休回复（见基础规则）。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "FP",
+        "combat_rule"
+      ],
+      "skillRefs": [],
+      "searchText": "FP 与技能节奏 combat_rule auto_generated 技能消耗 FP；规划回合节奏，避免空 FP。 低阶技能优先；长战注意短休/长休回复（见基础规则）。 谋士 FP combat_rule"
+    },
+    {
+      "id": "tip-strategist-chargen-attr",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士关键属性",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "智力：创建购点通常至少一项≥15，与主武器/战斗风格一致。",
+      "detail": "关键属性购点通常≥15；与战斗风格/武器规划一致。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "车卡",
+        "属性",
+        "chargen"
+      ],
+      "skillRefs": [],
+      "searchText": "谋士关键属性 chargen auto_generated 智力：创建购点通常至少一项≥15，与主武器/战斗风格一致。 关键属性购点通常≥15；与战斗风格/武器规划一致。 谋士 车卡 属性 chargen"
+    },
+    {
+      "id": "tip-strategist-chargen-spec",
+      "scope": "class",
+      "applicableClasses": [
+        "谋士"
+      ],
+      "title": "谋士专精选择",
+      "kind": "chargen",
+      "confidence": "auto_generated",
+      "style": null,
+      "summary": "创建页专精：权谋、军团、先见、鸩毒、混乱、博物；与武器与风格规划一致即可。",
+      "detail": "",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "谋士",
+        "车卡",
+        "专精",
+        "chargen"
+      ],
+      "skillRefs": [],
+      "searchText": "谋士专精选择 chargen auto_generated 创建页专精：权谋、军团、先见、鸩毒、混乱、博物；与武器与风格规划一致即可。 谋士 车卡 专精 chargen"
+    }
+  ]
+}

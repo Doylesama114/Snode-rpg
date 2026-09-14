@@ -32,9 +32,9 @@
     "L8 Build 顾问 UI：advisor-widget.js + Electron IPC（侧滑面板，无 chips）",
     "L6 角色快照：advisor-snapshot.mjs + 3 mock；与 retrieve/mage-advisor --snapshot 联调",
     "名望/声望：见 help.html #s9；名望=知名度广度（0～19-20 称号），声望=阵营观感深度（仇恨→崇拜），二者独立且不直接加属性。其他补充裁定见 #s10（含射程、反应动作细则/终结技锁定与后发先置、掩体、图纸专业槽 10+智力调整值）。",
-    "职业档位 audit：full 15 职业 ready；partial 0 职业 ready（class_tier_audit.json）",
     "L2 技能索引：法师 423 + 通用 400 + 奇械师 146",
     "L3 进阶库：300 条（全职业·进阶 docx 同步后去重合并）",
-    "L3A 进阶技能：advancement_skills.json（55/300 条 documented）"
+    "L3A 进阶技能：advancement_skills.json（55/300 条 documented）",
+    "职业档位 audit：full 16 职业 ready；partial 0 职业 ready（class_tier_audit.json）"
   ]
 }

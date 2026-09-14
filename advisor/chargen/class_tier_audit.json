@@ -1,9 +1,9 @@
 {
   "meta": {
     "phase": "5-batch10",
-    "generatedAt": "2026-09-04",
-    "classCount": 15,
-    "fullReady": 15,
+    "generatedAt": "2026-09-14",
+    "classCount": 16,
+    "fullReady": 16,
     "partialReady": 0
   },
   "audits": [
@@ -1124,6 +1124,81 @@
         {
           "id": "prompt_profile",
           "label": "promptProfile=warden_skills",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 11,
+      "total": 11,
+      "ready": true
+    },
+    {
+      "className": "谋士",
+      "tier": "full",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=full",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥100 技能",
+          "pass": true,
+          "note": "got 109"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥6",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥15",
+          "pass": true,
+          "note": "got 19"
+        },
+        {
+          "id": "prompt_profile",
+          "label": "promptProfile=strategist_skills",
           "pass": true,
           "note": ""
         }
