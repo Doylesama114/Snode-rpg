@@ -164,7 +164,7 @@
       "意志": 12,
       "幸运": 13
     },
-    "source": "蛮斗士、游荡者",
+    "source": "蛮斗士、牧师、游荡者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "击杀十名水手、海商、海军成员、海盗或海上走私者",
@@ -474,7 +474,7 @@
       "魅力": 15,
       "意志": 12
     },
-    "source": "战士、魔契师",
+    "source": "战士、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
       "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
@@ -1000,7 +1000,7 @@
     "attrs": {
       "智力": 16
     },
-    "source": "法师、牧师",
+    "source": "法师、牧师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "完成十次来自魔法、奇械或其他机关设置的谜题",
@@ -1016,7 +1016,7 @@
       "感知": 14,
       "魅力": 15
     },
-    "source": "法师、牧师、魔契师",
+    "source": "法师、牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
@@ -1059,7 +1059,7 @@
     "attrs": {
       "智力": 15
     },
-    "source": "法师、牧师",
+    "source": "法师、牧师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有卷轴助理",
@@ -1778,7 +1778,7 @@
     "attrs": {
       "魅力": 15
     },
-    "source": "牧师、魔契师",
+    "source": "牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态",
@@ -1914,7 +1914,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -1947,7 +1947,7 @@
       "智力": 15,
       "感知": 15
     },
-    "source": "牧师",
+    "source": "牧师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋",
@@ -1981,7 +1981,7 @@
     "attrs": {
       "智力": 15
     },
-    "source": "牧师、游荡者、魔契师",
+    "source": "牧师、游荡者、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "进行十次成功的欺瞒检定",
@@ -2247,7 +2247,7 @@
     "attrs": {
       "智力": 16
     },
-    "source": "法师、牧师",
+    "source": "法师、牧师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "完成十次来自魔法、奇械或其他机关设置的谜题",
@@ -2265,7 +2265,7 @@
       "感知": 14,
       "魅力": 15
     },
-    "source": "法师、牧师、魔契师",
+    "source": "法师、牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
@@ -2297,7 +2297,7 @@
     "attrs": {
       "智力": 18
     },
-    "source": "牧师、奇械师",
+    "source": "牧师、奇械师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "你阅读过二十本不同类型的书籍",
@@ -2333,7 +2333,7 @@
     "attrs": {
       "智力": 15
     },
-    "source": "法师、牧师",
+    "source": "法师、牧师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你的特殊专长中包含有卷轴助理",
@@ -2567,7 +2567,7 @@
     "attrs": {
       "感知": 16
     },
-    "source": "牧师、萨满祭司、魔契师",
+    "source": "牧师、萨满祭司、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
@@ -2835,7 +2835,7 @@
       "智力": 15,
       "魅力": 12
     },
-    "source": "圣骑士",
+    "source": "圣骑士、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服",
@@ -3284,7 +3284,7 @@
     "attrs": {
       "智力": 15
     },
-    "source": "牧师、游荡者、魔契师",
+    "source": "牧师、游荡者、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "进行十次成功的欺瞒检定",
@@ -3359,7 +3359,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -3952,7 +3952,7 @@
     "attrs": {
       "感知": 16
     },
-    "source": "牧师、萨满祭司、魔契师",
+    "source": "牧师、萨满祭司、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
@@ -4894,7 +4894,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -5029,7 +5029,7 @@
     "attrs": {
       "魅力": 15
     },
-    "source": "吟游诗人",
+    "source": "吟游诗人、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你目击到其他角色进行十次成功的表演检定",
@@ -5234,7 +5234,7 @@
     "attrs": {
       "魅力": 15
     },
-    "source": "牧师、魔契师",
+    "source": "牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态",
@@ -5359,7 +5359,7 @@
     "attrs": {
       "感知": 16
     },
-    "source": "牧师、萨满祭司、魔契师",
+    "source": "牧师、萨满祭司、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
@@ -5627,7 +5627,7 @@
       "感知": 14,
       "魅力": 15
     },
-    "source": "法师、牧师、魔契师",
+    "source": "法师、牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
@@ -5986,7 +5986,7 @@
     "attrs": {
       "体质": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "召唤十只深渊恶魔来到主物质位面",
@@ -6016,7 +6016,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "在秩序场所引发三起混乱的事件",
@@ -6109,7 +6109,7 @@
     "attrs": {
       "体质": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "召唤十只深渊恶魔来到主物质位面",
@@ -6457,7 +6457,7 @@
     "attrs": {
       "智力": 15
     },
-    "source": "牧师、游荡者、魔契师",
+    "source": "牧师、游荡者、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "进行十次成功的欺瞒检定",
@@ -6505,7 +6505,7 @@
       "智力": 15,
       "魅力": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "分别进行十次成功的欺瞒和说服检定",
@@ -6827,7 +6827,7 @@
       "魅力": 15,
       "意志": 12
     },
-    "source": "战士、魔契师",
+    "source": "战士、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
       "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
@@ -6842,7 +6842,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -6857,7 +6857,7 @@
     "attrs": {
       "智力": 16
     },
-    "source": "奇械师、魔契师",
+    "source": "魔契师、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你体验过三次不同渠道的传送门服务",
@@ -6935,7 +6935,7 @@
       "感知": 14,
       "魅力": 15
     },
-    "source": "法师、牧师、魔契师",
+    "source": "法师、牧师、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
@@ -7030,7 +7030,7 @@
     "attrs": {
       "魅力": 16
     },
-    "source": "魔契师",
+    "source": "魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
     "conditions": [
       "使五名角色陷入永久的疯狂状态",
@@ -7120,7 +7120,7 @@
     "attrs": {
       "智力": 18
     },
-    "source": "牧师、奇械师",
+    "source": "牧师、奇械师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你阅读过二十本不同类型的书籍",
@@ -7282,7 +7282,7 @@
     "attrs": {
       "智力": 16
     },
-    "source": "奇械师、魔契师",
+    "source": "魔契师、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "你体验过三次不同渠道的传送门服务",
@@ -7636,7 +7636,7 @@
       "魅力": 13,
       "意志": 15
     },
-    "source": "牧师、守望者",
+    "source": "牧师、守望者、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在不被发觉真实身份的情况下进入三处高度警戒的场所（例如贵族宅邸、军事要塞、异教神殿等）并全身而退",
@@ -7812,6 +7812,374 @@
       "与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任",
       "参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等）",
       "在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "指挥官",
+    "attrs": {
+      "智力": 12,
+      "魅力": 15,
+      "意志": 12
+    },
+    "source": "战士、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
+    "conditions": [
+      "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
+      "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
+      "参与一场能够影响局部地区走势的战役并在其中脱颖而出"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "解密学者",
+    "attrs": {
+      "智力": 16
+    },
+    "source": "法师、牧师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "完成十次来自魔法、奇械或其他机关设置的谜题",
+      "破获三次来自秘密组织的重要情报",
+      "破解或设置一道惊人的谜题"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "心灵导师",
+    "attrs": {
+      "智力": 13,
+      "感知": 14,
+      "魅力": 15
+    },
+    "source": "法师、牧师、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
+      "使十名角色进入困惑、混乱、忏悔或眩晕状态",
+      "倾听一名挑战等级或名望等级为10或以上角色的内心述说，为其开导解开对方的心结并获得其感激（不计算玩家在内）"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "卷轴学者",
+    "attrs": {
+      "智力": 15
+    },
+    "source": "法师、牧师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你的特殊专长中包含有卷轴助理",
+      "使用二十张法术卷轴",
+      "你花费过幕间物语来阅读并抄录一本任意学派的魔典"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "和睦使者",
+    "attrs": {
+      "魅力": 15
+    },
+    "source": "牧师、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你使二十名对团队处于冷淡或敌对状态的NPC角色转变为友善状态",
+      "阻止三场即将爆发的战斗环节",
+      "促成两个相互敌对的组织势力达成和解，并且获得双方的感激"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "策略大师",
+    "attrs": {
+      "智力": 15,
+      "感知": 15
+    },
+    "source": "牧师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋",
+      "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
+      "你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "阴谋家",
+    "attrs": {
+      "智力": 15
+    },
+    "source": "牧师、游荡者、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "进行十次成功的欺瞒检定",
+      "通过真实的讯息、而非虚假的情报使十名角色对己方盟友产生误解，并最终导致双方的敌对",
+      "策划一场惊天阴谋"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "博学者",
+    "attrs": {
+      "智力": 18
+    },
+    "source": "牧师、奇械师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你阅读过二十本不同类型的书籍",
+      "你花费过幕间物语来阅读一本任意类型的魔典",
+      "花费一次长达十年时间的幕间物语去潜心学习、阅读书本和获取知识以成为真正的博学者"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "灵媒",
+    "attrs": {
+      "感知": 16
+    },
+    "source": "牧师、萨满祭司、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
+      "造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往",
+      "驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "律法之手",
+    "attrs": {
+      "智力": 15,
+      "魅力": 12
+    },
+    "source": "圣骑士、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "主持三场公开且合法的审判宣告你的惩戒结果并得到众人的信服",
+      "令十名角色意识到法律的神圣不容侵犯（不计算玩家在内）",
+      "颁布一条成文的法令，或令一个具有影响力的势力（包括官方、组织或是教团）采纳、认可你提出的准则并将其编辑在册"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "密探",
+    "attrs": {
+      "感知": 15
+    },
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
+      "你知晓了三个非己方阵营机构、教团或组织的隐藏据点",
+      "揭露一场惊天阴谋"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "戏剧大师",
+    "attrs": {
+      "魅力": 15
+    },
+    "source": "吟游诗人、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你目击到其他角色进行十次成功的表演检定",
+      "创作一部戏剧并累计获得一千名观众",
+      "在你的精心布置、着手准备下，将一场关键战役化作跌宕起伏的剧目"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "无面人",
+    "attrs": {
+      "感知": 14,
+      "魅力": 13,
+      "意志": 15
+    },
+    "source": "牧师、守望者、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在不被发觉真实身份的情况下进入三处高度警戒的场所（例如贵族宅邸、军事要塞、异教神殿等）并全身而退",
+      "在社交场合中，以伪装身份面见二十名NPC角色，并且未被识破",
+      "创造一个广为流传的虚构身份，使该身份被当地势力正式承认并记录在案"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "混乱导师",
+    "attrs": {
+      "感知": 15
+    },
+    "source": "魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "在秩序场所引发三起混乱的事件",
+      "通过诱导的手段使二十名秩序阵营的角色转变为混乱阵营",
+      "引导一场大规模的动乱，并确保足够数量的人在失序中死亡，在人们的惊魂未定中感受晋升的力量"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "恶魔使徒",
+    "attrs": {
+      "体质": 15
+    },
+    "source": "魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "召唤十只深渊恶魔来到主物质位面",
+      "通过诱导或恐吓的手段使二十名角色成为深渊的追随者",
+      "完成足以令大恶魔满意的功绩，以此获得晋升为恶魔使徒的机会"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "魔鬼收契人",
+    "attrs": {
+      "智力": 15,
+      "魅力": 15
+    },
+    "source": "魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "分别进行十次成功的欺瞒和说服检定",
+      "签署并回收三份涉及灵魂的魔鬼契约（不计算玩家在内）",
+      "与一名比你强大得多的角色签署一份涉及灵魂的魔鬼契约（不计算玩家在内）"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "虚妄先知",
+    "attrs": {
+      "魅力": 16
+    },
+    "source": "魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "使五名角色陷入永久的疯狂状态",
+      "通过虚假的预言改变十名角色的人生轨迹、或是阻止既定场景的发生",
+      "制造一起令当地官方势力震动的虚假预言，并最终使这份预言实现"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "御前谋士",
+    "attrs": {
+      "智力": 15,
+      "感知": 13,
+      "魅力": 14
+    },
+    "source": "谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你拥有至少一位贵族或当权者作为长期联络人，双方至少保持着合作关系",
+      "在公开场合的辩论中驳倒过五位对手",
+      "成功劝谏一位当权者改变已经下达的决策，并因此避免了重大损失"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "势力掮客",
+    "attrs": {
+      "智力": 14,
+      "魅力": 15
+    },
+    "source": "魔契师、谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你在三个不同势力中拥有不低于合作关系的联络人",
+      "出卖一方势力，并且成功将责任转嫁给第三方",
+      "你成功的同时为两个敌对势力完成一项关键委托，并且令双方都感到满意"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "织网人",
+    "attrs": {
+      "智力": 15,
+      "感知": 14
+    },
+    "source": "谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你拥有五名长期线人，并且分布在至少三个不同的地区或势力中",
+      "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报",
+      "使十名彼此之间毫无纠葛、互不相识的NPC角色不约而同成为你计划中的一环，以此达成你策划的一场关键计谋"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "持棋手",
+    "attrs": {
+      "智力": 15,
+      "感知": 15
+    },
+    "source": "谋士、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人",
+      "在一款策略游戏圈层的名望等级达到7级",
+      "在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "军师",
+    "attrs": {
+      "智力": 18
+    },
+    "source": "谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你在一支军队中担任有参谋或副官的军衔",
+      "你成功五次预判敌人的意图，并且提前布置准备",
+      "在一场极端以少对多的关键战役中（至少1:10比例劣势），凭借战前布局（建造工事、结盟、探查情报）、非战斗手段（断粮断水、离间、谣言）以及正确的战术决策获得胜利"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "蚀骨策士",
+    "attrs": {
+      "智力": 15,
+      "意志": 14
+    },
+    "source": "谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你通过伪造的证据毁掉十名角色",
+      "你使五名NPC角色知晓你的所作所为，但使对方无法证明或不敢揭发",
+      "你通过长期“腐蚀”使一个组织的核心成员全部倒戈或覆灭"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "鸩酒调师",
+    "attrs": {
+      "敏捷": 13,
+      "智力": 14,
+      "感知": 15
+    },
+    "source": "谋士",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你成功对十份菜肴、酒水投毒，并且确保正确的人将其服用",
+      "通过剧毒伤害击杀十名角色",
+      "通过在菜肴或酒水中投毒为手段谋杀一名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓"
+    ]
+  },
+  {
+    "class": "谋士",
+    "name": "灵唤参谋",
+    "attrs": {
+      "感知": 15,
+      "魅力": 15
+    },
+    "source": "谋士、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你为五个鬼魂、精魄或幽灵系召唤物提供过建议",
+      "你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索",
+      "与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役"
     ]
   },
   {

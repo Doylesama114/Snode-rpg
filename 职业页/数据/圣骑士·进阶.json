@@ -388,7 +388,8 @@
       "id": "adv-paladin-律法之手",
       "name": "律法之手",
       "source_classes": [
-        "圣骑士"
+        "圣骑士",
+        "谋士"
       ],
       "attrs": {
         "智力": 15,

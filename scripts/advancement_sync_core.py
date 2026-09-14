@@ -28,6 +28,7 @@ STAT_KEYS = ("力量", "敏捷", "体质", "智力", "感知", "魅力", "意志
 BASE_CLASSES = (
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊",
     "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
+    "谋士",
 )
 SKIP_NAMES = frozenset({"进阶", "属性值需求", "来源", "标识", "特殊条件", "1", "2", "3", *STAT_KEYS})
 
@@ -66,6 +67,7 @@ CLASS_SLUG = {
     "魔契师": "sorcerer",
     "奇械师": "artificer",
     "守望者": "wd",
+    "谋士": "st",
     "通用": "common",
 }
 
@@ -85,6 +87,7 @@ CONTAINER_ID = {
     "魔契师": "sorcerer-adv-container",
     "奇械师": "artificer-adv-container",
     "守望者": "wd-adv-container",
+    "谋士": "st-adv-container",
     "通用": "common-adv-container",
 }
 
@@ -104,6 +107,7 @@ EMPTY_DIV_ID = {
     "魔契师": "sorcerer-adv-empty",
     "奇械师": "artificer-adv-empty",
     "守望者": "wd-adv-empty",
+    "谋士": "st-adv-empty",
     "通用": "common-adv-empty",
 }
 
@@ -564,11 +568,43 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def unify_source_classes(parsed: dict) -> int:
+    """同名进阶在多个职业章节出现时，来源取全章节并集并回写。
+
+    背景：docx 中「谋士」章节列出了 17 条共有进阶的完整来源，但它们在原职业章节里
+    的来源串未同步（另有「海上恶狼」等历史不一致）。统一后任意入口显示同一来源。
+    通用章节的「全职业」不参与并集。
+    """
+    union: dict[str, list[str]] = {}
+    for cls, cards in parsed.items():
+        if cls == "通用":
+            continue
+        for card in cards:
+            names = union.setdefault(card["name"], [])
+            for src in card.get("source_classes", []):
+                if src and src not in names:
+                    names.append(src)
+    order = {c: i for i, c in enumerate((*BASE_CLASSES, "通用"))}
+    changed = 0
+    for cls, cards in parsed.items():
+        if cls == "通用":
+            continue
+        for card in cards:
+            names = union.get(card["name"]) or []
+            expected = sorted(names, key=lambda n: order.get(n, 99))
+            if card.get("source_classes") != expected:
+                card["source_classes"] = expected
+                changed += 1
+    return changed
+
+
 def sync_advancements(docx: Path = DOCX) -> dict:
     parsed = parse_docx(docx)
+    unified = unify_source_classes(parsed)
     universal = parsed.get("通用", [])
     detail_names = load_detail_names()
-    report: dict = {"classes": {}, "universal_count": len(universal), "branches": {}}
+    report: dict = {"classes": {}, "universal_count": len(universal),
+                    "branches": {}, "unified_source_cards": unified}
 
     flat_data: list[dict] = []
 
