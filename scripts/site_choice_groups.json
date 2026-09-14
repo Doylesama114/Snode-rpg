@@ -815,6 +815,39 @@
       ]
     },
     {
+      "page": "牧师",
+      "key": "牧师-choice-23f7625271",
+      "title": "抉择·你仅能够选择其中两项习得：善良之墙/邪恶之墙/秩序之墙/混乱之墙",
+      "max": 2,
+      "members": [
+        "pr-skill-64",
+        "pr-skill-69",
+        "pr-skill-67",
+        "pr-skill-66"
+      ],
+      "runs": [
+        {
+          "before": "pr-skill-64",
+          "ids": [
+            "pr-skill-64"
+          ]
+        },
+        {
+          "before": "pr-skill-66",
+          "ids": [
+            "pr-skill-66",
+            "pr-skill-67"
+          ]
+        },
+        {
+          "before": "pr-skill-69",
+          "ids": [
+            "pr-skill-69"
+          ]
+        }
+      ]
+    },
+    {
       "page": "猎人",
       "key": "猎人-choice-18b7238399",
       "title": "抉择（2）：捕熊陷阱（图纸）/焦油陷阱（图纸）/毒蛇陷阱（图纸）",
@@ -900,16 +933,14 @@
       "members": [
         "h-skill-1082",
         "h-skill-1083",
-        "h-skill-1087",
-        "h-skill-1091"
+        "h-skill-1087"
       ],
       "runs": [
         {
           "before": "h-skill-1082",
           "ids": [
             "h-skill-1082",
-            "h-skill-1083",
-            "h-skill-1091"
+            "h-skill-1083"
           ]
         },
         {
@@ -1048,6 +1079,44 @@
             "p-skill-120",
             "p-skill-119",
             "p-skill-118"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "谋士",
+      "key": "谋士-choice-26fc322a9a",
+      "title": "抉择：识破潜行/辨识伪装",
+      "max": 1,
+      "members": [
+        "st-skill-51",
+        "st-skill-52"
+      ],
+      "runs": [
+        {
+          "before": "st-skill-51",
+          "ids": [
+            "st-skill-51",
+            "st-skill-52"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "谋士",
+      "key": "谋士-choice-f45a3ce52c",
+      "title": "抉择：锐耳术/鹰眼术",
+      "max": 1,
+      "members": [
+        "st-skill-44",
+        "st-skill-45"
+      ],
+      "runs": [
+        {
+          "before": "st-skill-44",
+          "ids": [
+            "st-skill-44",
+            "st-skill-45"
           ]
         }
       ]

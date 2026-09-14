@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""校验 15 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
+"""校验 16 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
 import json
 import re
 import sys
@@ -46,7 +46,7 @@ if not m_docx_map or not m_cat_map:
 prof_docx = json.loads(m_docx_map.group(1))
 prof_cat = json.loads(m_cat_map.group(1))
 
-CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者"]
+CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者", "谋士"]
 
 errors = []
 for name in CLASS_NAMES:
@@ -89,10 +89,23 @@ if wd.get("skills") != "从承重、专注、耐力、自然、洞悉、聆听�
 if not {"剑类", "斧类", "锤类", "长柄", "弓箭", "简易", "法器"}.issubset(set(prof_cat.get("守望者", []))):
     errors.append(f"守望者内部类别映射缺少类别: {prof_cat.get('守望者')}")
 
+# 谋士字段
+ms = ref_classes.get("谋士", {})
+if ms.get("key_attr") != "智力":
+    errors.append(f"谋士 REF key_attr 错误: {ms.get('key_attr')}")
+if ms.get("armor") != "轻甲":
+    errors.append(f"谋士 REF armor 错误: {ms.get('armor')}")
+if ms.get("saves") != ["智力", "魅力"]:
+    errors.append(f"谋士 REF saves 错误: {ms.get('saves')}")
+if ms.get("skills") != "从专注、调查、逻辑、知识、洞悉、欺瞒、说服、决策中选择四项熟练度各+1":
+    errors.append(f"谋士 REF skills 错误: {ms.get('skills')}")
+if not {"剑类", "弓箭", "简易"}.issubset(set(prof_cat.get("谋士", []))):
+    errors.append(f"谋士内部类别映射缺少类别: {prof_cat.get('谋士')}")
+
 if errors:
     print("武器熟练度 docx 一致性校验失败：")
     for e in errors:
         print(" -", e)
     sys.exit(1)
 
-print("武器熟练度 docx 一致性校验通过：15 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师/守望者字段已恢复；猎人/武僧类别映射已修正")
+print("武器熟练度 docx 一致性校验通过：16 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师/守望者字段已恢复；猎人/武僧类别映射已修正")

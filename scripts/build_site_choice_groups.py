@@ -21,7 +21,7 @@ OUT = ROOT / "scripts" / "site_choice_groups.json"
 
 BASE_CLASSES = [
     "吟游诗人", "圣骑士", "奇械师", "德鲁伊", "战士", "术士", "武僧",
-    "法师", "游荡者", "牧师", "猎人", "萨满祭司", "蛮斗士", "魔契师",
+    "法师", "游荡者", "牧师", "猎人", "萨满祭司", "蛮斗士", "魔契师", "谋士",
 ]
 TIER_HEAD = re.compile(r"^([一二三四五六七八])阶天赋树")
 
@@ -98,7 +98,7 @@ def canonical_name(raw: str, names: set[str]) -> str | None:
 
 def article_order(html: str):
     arts = []
-    for m in re.finditer(r'<article class="skill[^"]*" id="([^"]+)"[^>]*><h4>(.*?)</h4>', html, re.S):
+    for m in re.finditer(r'<article class="skill[^"]*" id="([^"]+)"[^>]*>\s*<h4>(.*?)</h4>', html, re.S):
         inner = m.group(2)
         name = inner[: inner.find("<span")] if "<span" in inner else inner
         name = re.sub(r"<[^>]+>", "", name).strip()
