@@ -301,6 +301,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 兼职规则四方一致（xlsx ↔ help.html ↔ REF_SUBCLASS_REQS ↔ advisor）
+console.log('\n=== 兼职规则一致性（xlsx/help/面板/顾问） ===');
+let mcOK = true;
+try {
+  let mcOut = spawnSync('python', [join(BASE, 'scripts', 'verify_multiclass_sync.py')], { encoding: 'utf-8', timeout: 120000 });
+  if (mcOut.stdout) console.log(mcOut.stdout.trim());
+  if (mcOut.stderr) console.error(mcOut.stderr.trim());
+  if (mcOut.status !== 0) mcOK = false;
+} catch (e) {
+  mcOK = false;
+  console.log('❌ 兼职规则一致性校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(mcOK ? '✅ 兼职规则一致性通过' : '❌ 兼职规则一致性失败');
+totalErrors += mcOK ? 0 : 1;
+
 // 视觉层检查（截图 → 视觉模型，免费优先降级百炼；VERIFY_VISUAL=0 可跳过）
 console.log('\n=== 视觉检查（免费模型优先 → 百炼降级） ===');
 let visOK = true;

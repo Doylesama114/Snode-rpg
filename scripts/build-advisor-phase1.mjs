@@ -97,7 +97,7 @@ function parseHelpSubLeveling() {
 const CLASS_SHORT = {
   蛮斗士: '蛮', 战士: '战', 法师: '法', 猎人: '猎', 牧师: '牧', 圣骑士: '圣',
   游荡者: '游', 德鲁伊: '德', 萨满祭司: '萨', 术士: '术', 武僧: '武',
-  吟游诗人: '诗', 魔契师: '魔', 奇械师: '械',
+  吟游诗人: '诗', 魔契师: '魔', 奇械师: '械', 守望者: '守', 谋士: '谋',
 };
 
 function parseMulticlassFromHelp() {
@@ -118,18 +118,19 @@ function parseMulticlassFromHelp() {
 
   const compatSection = html.match(/<h3>职业兼容性<\/h3>[\s\S]*?<\/table>/);
   if (!compatSection) throw new Error('职业兼容性 table not found');
+  // 现矩阵行格式：<tr><th title="主职业">主职业</th><td class="mc-*" ...>…</td>×N</tr>
   const compatRows = [...compatSection[0].matchAll(
-    /<tr><td style="font-weight:bold">([^<]+)<\/td>((?:<td[^>]*>[^<]*<\/td>){14})<\/tr>/g
+    /<tr><th title="([^"]+)">[^<]*<\/th>((?:<td[^>]*>[^<]*<\/td>)+)<\/tr>/g
   )];
-  const classOrder = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师'];
+  const classOrder = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士'];
   const compatibility = {};
   for (const row of compatRows) {
     const main = row[1].trim();
-    const cells = [...row[2].matchAll(/<td[^>]*>([^<]*)<\/td>/g)].map((c) => c[1].trim());
+    const cells = [...row[2].matchAll(/<td class="(mc-no|mc-ok|mc-self)"[^>]*>[^<]*<\/td>/g)]
+      .map((m) => (m[1] === 'mc-no' ? false : m[1] === 'mc-ok' ? true : null));
     const subs = {};
     classOrder.forEach((cls, i) => {
-      const v = cells[i];
-      subs[cls] = v === '✓' ? true : v === '✗' ? false : null;
+      subs[cls] = cells[i] === undefined ? null : cells[i];
     });
     compatibility[main] = subs;
   }
