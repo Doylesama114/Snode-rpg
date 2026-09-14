@@ -27,6 +27,7 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parent.parent
 MOUSHI_DOCX = ROOT / '基础职业-谋士.docx'
+MOUSHI_JSON = ROOT / '职业页' / '数据' / '谋士.json'
 ADV_DOCX = ROOT / '《基础职业进阶途径》.docx'
 XLSX = ROOT / '冒险者基础规则.xlsx'
 OUT = Path(__file__).resolve().parent / '_strategist_gap_report.json'
@@ -95,7 +96,8 @@ def parse_moushi() -> dict:
         rows = rows_of(Table(child, d))
         flat = ' '.join(' '.join(r) for r in rows)
         name = rows[0][0] if rows and rows[0] else ''
-        is_skill = ('施展时间' in flat) or ('关键词' in flat and '持续时间' in flat)
+        is_list = len(rows) >= 4 and all(len(r) == 1 for r in rows) and '：' not in flat
+        is_skill = (not is_list) and (('关键词：' in flat) or ('施展时间：' in flat))
         # 起始特性清单表（紧跟「起始特性」段落的第一张表）→ 记录特性名
         if zone == 'starting' and out.get('_pending_start_list') and len(rows) > 1:
             out['starting_list'] = [r[0] for r in rows if r and r[0]]
@@ -123,6 +125,30 @@ def parse_moushi() -> dict:
     out['features'] = feats
     out['starting_features'] = out.get('starting_list', [])
     out.pop('_pending_start_list', None)
+    # 技能清单改用与重建脚本一致的段落索引法（表格扫描会漏 1 列格式）
+    try:
+        sys.path.insert(0, str(ROOT / 'scripts'))
+        from class_sync_core import extract_paragraphs, build_docx_index  # noqa: E402
+        cand = set()
+        import docx as _docx
+        _d = _docx.Document(str(MOUSHI_DOCX))
+        for tb in _d.tables:
+            if tb.rows:
+                t0 = tb.rows[0].cells[0].text.strip().split('\n')[0].strip()
+                if t0 and t0 not in ('权谋', '军团', '先见', '鸩毒', '混乱', '博物'):
+                    cand.add(t0)
+        _paras = extract_paragraphs(MOUSHI_DOCX)
+        _idx = build_docx_index(_paras, cand)
+        skills = []
+        for nm, blocks in _idx.items():
+            for b in blocks:
+                st = b.get('_style', '')
+                skills.append({'name': nm, 'style': st if st in ('权谋', '军团', '先见', '鸩毒', '混乱', '博物') else '起始特性',
+                               'tier': None, 'choice': None})
+        out['skills'] = skills
+    except Exception as e:  # 保底：退回表格扫描结果
+        print('WARN: 段落索引法失败，使用表格扫描: %s' % e)
+
     # 关键数值（段落抽取）
     def grab(prefix):
         for p in out['paragraphs']:
@@ -271,11 +297,17 @@ def main() -> int:
     mc = parse_multiclass()
     app = parse_app_state()
 
-    skills = moushi['skills']
-    starting_features = moushi.get('starting_features') or [s['name'] for s in skills if s['style'] == '起始特性']
+    # 若已生成 职业页/数据/谋士.json，则以它为权威（docx 段落索引仅作兜底）
+    if MOUSHI_JSON.exists():
+        j = json.loads(MOUSHI_JSON.read_text(encoding='utf-8'))
+        skills = j['skills']
+        starting_features = [s['name'] for s in skills if s.get('type') == 'starting']
+    else:
+        skills = moushi['skills']
+        starting_features = moushi.get('starting_features') or [s['name'] for s in skills if s['style'] == '起始特性']
     by_tier = defaultdict(list)
     for s in skills:
-        if s['style'] == '起始特性':
+        if s.get('type') == 'starting' or s.get('style') == '起始特性' or not s.get('style'):
             continue
         by_tier['%s/%s' % (s['style'], s['tier'])].append(s['name'])
     report = OrderedDict()
@@ -304,7 +336,9 @@ def main() -> int:
         'starting_features': starting_features,
         'talents_by_style_tier': dict(by_tier),
         'recipes': [s['name'] for s in skills if '（配方）' in s['name']],
-        'choices': sorted({s['choice'] for s in skills if s.get('choice')}),
+        'choices': sorted({s['choice'] for s in skills if s.get('choice')}) or [
+            g['title'] for g in json.loads((ROOT / 'scripts' / 'site_choice_groups.json')
+                                           .read_text(encoding='utf-8'))['groups'] if g['page'] == '谋士'],
         'app': {
             'in_classes_data': '谋士' in app['classes_data'],
             'in_class_features': '谋士' in app['class_features'],
@@ -313,6 +347,10 @@ def main() -> int:
             'has_skill_effects': any('谋士' in x for x in app['skill_effects']),
         },
     }
+    report['known_docx_gaps'] = [
+        {'style': '混乱', 'tier': '二阶', 'issue': '清单含「鬼火萤萤」但缺少详情表，未入库（待作者补齐）'},
+        {'style': '博物', 'tier': '三阶', 'issue': '详情含「谜巢」但清单未列，已按详情入库'},
+    ]
     report['app_state'] = app
     OUT.write_text(json.dumps(report, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
 

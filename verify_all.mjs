@@ -301,6 +301,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 谋士同步校验（docx ↔ JSON/HTML/面板/清单/兼职/顾问）
+console.log('\n=== 谋士数据同步 ===');
+let msSyncOK = true;
+try {
+  let msOut = spawnSync('python', [join(BASE, 'scripts', 'verify_strategist_sync.py')], { encoding: 'utf-8', timeout: 120000 });
+  if (msOut.stdout) console.log(msOut.stdout.trim());
+  if (msOut.stderr) console.error(msOut.stderr.trim());
+  if (msOut.status !== 0) msSyncOK = false;
+} catch (e) {
+  msSyncOK = false;
+  console.log('❌ 谋士同步校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(msSyncOK ? '✅ 谋士数据同步通过' : '❌ 谋士数据同步失败');
+totalErrors += msSyncOK ? 0 : 1;
+
 // 谋士创建页 E2E（起手套装 A–D + 起始特性 + HP/FP 公式）
 console.log('\n=== 谋士创建页与生命/疲劳公式 ===');
 let stOK = true;
