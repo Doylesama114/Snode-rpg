@@ -580,6 +580,10 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     else if(_cfn.indexOf("奥法学者")>=0){s.classChoices.specChoices["奥法学者"]={attr:"",skill:_cfd.trim()};}
     else if(_cfn.indexOf("知识传承")>=0){s.classChoices.specChoices["知识传承"]={attr:"",skill:_cfd.trim()};}
     else if(_cfn.indexOf("万用模组")>=0){s.classChoices.specChoices["万用模组"]={attr:"",skill:_cfd.trim()};}
+    else if(_cfn.indexOf("博闻强识")>=0){
+      var _mbs=String(_cfd||"").replace(/^知识熟练度[:：]\s*/,"").split(/[、,，]/).map(function(x){return x.trim();}).filter(Boolean);
+      s.classChoices.specChoices["博闻强识"]={skills:_mbs};
+    }
     else if(_cfn.indexOf("神圣领域")>=0){
       var _md=_cfd.match(/信奉[:：]\s*([^（(]+)(?:[（(]([^）)]+)[）)])?/);
       if(_md){s.deity=_md[1].trim();if(_md[2])s.deityAttr=_md[2].trim();}

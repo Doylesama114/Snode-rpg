@@ -106,14 +106,22 @@ function applyResolvedProf(profs, name, preferAttr) {
   return true;
 }
 
-/** 概览用：从 specChoices 收集非空 skill 的正式显示名 */
+/** 概览用：从 specChoices 收集非空 skill / skills（多选，如谋士·博闻强识）的正式显示名 */
 function overviewNamesFromSpecChoices(specChoices) {
   var out = [];
   if (!specChoices) return out;
   for (var sn in specChoices) {
     if (!Object.prototype.hasOwnProperty.call(specChoices, sn)) continue;
     var ch = specChoices[sn];
-    if (!ch || !ch.skill) continue;
+    if (!ch) continue;
+    if (ch.skills && ch.skills.length) {
+      for (var i = 0; i < ch.skills.length; i++) {
+        var rm = resolveProfSkill(ch.skills[i]);
+        out.push((rm && rm.key) ? rm.key : ch.skills[i]);
+      }
+      continue;
+    }
+    if (!ch.skill) continue;
     var r = resolveProfSkill(ch.skill);
     out.push((r && r.key) ? r.key : ch.skill);
   }

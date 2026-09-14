@@ -1306,7 +1306,7 @@ var CLASS_SPECIALIZATIONS = {
   "魔契师":[{n:"宗主契约",d:"能够通过宗主获得额外能力"},{n:"神秘专家",d:"获得神秘学的熟练度"}],
   "奇械师":[{n:"奇械构装",d:"获得工程学的熟练度"},{n:"万用模组",d:"获得知识熟练度和额外专业槽位"},{n:"脑力强化",d:"提升一次智力检定效果"}],
   "守望者":[{n:"哨兵",d:"提升自身的警惕值"},{n:"铁壁",d:"持有盾牌时获得额外防御等级"},{n:"荒野庇护",d:"获得在野外环境的加成"}],
-  "谋士":[{n:"权谋",d:"洞察人心、操弄信息，以言语与策略改变局势"},{n:"军团",d:"指挥调度与布阵，为团队提供战术增益"},{n:"先见",d:"对战局的前瞻洞察与精密预判"},{n:"鸩毒",d:"以毒物与毒计让敌人悄然衰弱"},{n:"混乱",d:"以干扰、误导与谣言制造无序"},{n:"博物",d:"博闻广识，以知识本身为武器"}],
+  "谋士":[{n:"运筹帷幄",d:"每次游玩开始时，为每名其他玩家角色指定一个不同的熟练项，其首次对应检定具有优势"},{n:"博闻强识",d:"获得 2 点任意不同的知识熟练度"},{n:"料敌机先",d:"掷先攻骰后可主动下调自身先攻区间（先锋席→中坚席→后卫席→殿军席）"}],
 };
 // ====== 起始特性数据 ======
 var CLASS_STARTING_FEATURES = {
@@ -1331,7 +1331,8 @@ var SPEC_PROF_CHOICES = {
   "蛮斗士":{"运动健将":{attr:["力量","敏捷"],skills:{"力量":["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],"敏捷":["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"]}}},
   "战士":{"运动健将":{attr:["力量","敏捷"],skills:{"力量":["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],"敏捷":["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"]}}},
   "法师":{"奥法学者":{single:["奥秘-魔法学识","奥秘-炼金术","奥秘-神奇道具","奥秘-多元宇宙"]},"知识传承":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}},
-  "奇械师":{"万用模组":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}}
+  "奇械师":{"万用模组":{single:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}},
+  "谋士":{"博闻强识":{multi:2,pick:["知识-历史","知识-地理","知识-人文","知识-政治","知识-神秘学","知识-工程学","知识-珠宝学","知识-草药学","知识-医药","知识-烹饪"]}},
 };
 var SPEC_AUTO_PROF = {
   "德鲁伊":{"自然之友":{profs:{"感知":["自然"]},professionals:["栽培"]}},
@@ -1368,7 +1369,9 @@ function buildOverviewProfLines() {
   } else if (CHAR.specChoices) {
     for (var sn in CHAR.specChoices) {
       var ch = CHAR.specChoices[sn];
-      if (ch && ch.skill) profLines.push({ name: ch.skill, src: '专精' });
+      if (ch && ch.skills && ch.skills.length) {
+        for (var _mi = 0; _mi < ch.skills.length; _mi++) profLines.push({ name: ch.skills[_mi], src: '专长' });
+      } else if (ch && ch.skill) profLines.push({ name: ch.skill, src: '专精' });
     }
   }
   if (CHAR.bgName && CHAR.bgData) {
@@ -1673,6 +1676,16 @@ function renderSpecChoices(clsName){
       h+="</div>";
       h+="<div class='specSkillRow' style='display:flex;gap:6px;flex-wrap:wrap'></div>";
     }
+    if(pc.multi){
+      var _picked=(CHAR.specChoices&&CHAR.specChoices[sn]&&CHAR.specChoices[sn].skills)||[];
+      h+="<div class='specMultiRow' data-multi='"+pc.multi+"' style='display:flex;gap:6px;flex-wrap:wrap'>";
+      for(var mi=0;mi<pc.pick.length;mi++){
+        var _sel=_picked.indexOf(pc.pick[mi])>=0;
+        h+="<div class='spec-btn spec-skill"+(_sel?" selected":"")+"' data-skill='"+pc.pick[mi]+"'>"+pc.pick[mi]+"</div>";
+      }
+      h+="</div>";
+      h+="<div class='specMultiHint' style='font-size:12px;color:#69706b;margin-top:6px'>已选 <b>"+_picked.length+"</b>/"+pc.multi+"（需 "+pc.multi+" 项不同）</div>";
+    }
     if(pc.single){
       h+="<div class='specSingleRow' style='display:flex;gap:6px;flex-wrap:wrap'>";
       for(var si2=0;si2<pc.single.length;si2++){
@@ -1717,7 +1730,26 @@ function renderSpecChoices(clsName){
     if(t.classList.contains("spec-skill")){
       var sn=t.parentNode.parentNode.getAttribute("data-spec");
       var isSingle=t.parentNode.classList.contains("specSingleRow");
+      var isMulti=t.parentNode.classList.contains("specMultiRow");
       if(!CHAR.specChoices)CHAR.specChoices={};
+      if(isMulti){
+        var _grp=t.parentNode;
+        var _need=parseInt(_grp.getAttribute("data-multi"),10)||1;
+        var _list=(CHAR.specChoices[sn]&&CHAR.specChoices[sn].skills)?CHAR.specChoices[sn].skills.slice():[];
+        var _val=t.getAttribute("data-skill");
+        var _idx=_list.indexOf(_val);
+        if(_idx>=0)_list.splice(_idx,1);
+        else{if(_list.length>=_need)_list.shift();_list.push(_val);}
+        CHAR.specChoices[sn]={skills:_list.slice()};
+        var _btns=_grp.querySelectorAll(".spec-skill");
+        for(var _bi=0;_bi<_btns.length;_bi++){
+          if(_list.indexOf(_btns[_bi].getAttribute("data-skill"))>=0)_btns[_bi].classList.add("selected");
+          else _btns[_bi].classList.remove("selected");
+        }
+        var _hint=_grp.parentNode.querySelector(".specMultiHint");
+        if(_hint)_hint.innerHTML="已选 <b>"+_list.length+"</b>/"+_need+"（需 "+_need+" 项不同）";
+        checkSpecDone();return;
+      }
       if(isSingle){CHAR.specChoices[sn]={attr:"",skill:t.getAttribute("data-skill")};}
       else{if(!CHAR.specChoices[sn])CHAR.specChoices[sn]={};CHAR.specChoices[sn].skill=t.getAttribute("data-skill");}
       var sib=t.parentNode.querySelectorAll(".spec-skill");
@@ -1744,6 +1776,7 @@ function checkSpecDone(){
       var pc=SPEC_PROF_CHOICES[clsName]?SPEC_PROF_CHOICES[clsName][sn]:null;
       if(!pc)continue;
       var ch=CHAR.specChoices?CHAR.specChoices[sn]:null;
+      if(pc.multi){var _arr=(ch&&ch.skills)||[];if(_arr.length!==pc.multi){allDone=false;break;}continue;}
       if(!ch||!ch.skill){allDone=false;break;}
       if(pc.attr&&!ch.attr){allDone=false;break;}
     }
@@ -3185,6 +3218,12 @@ function applySpecProfs(charData){
   if(CHAR.specChoices){
     for(var sn in CHAR.specChoices){
       var ch=CHAR.specChoices[sn];
+      if(ch&&ch.skills&&ch.skills.length){
+        for(var _si3=0;_si3<ch.skills.length;_si3++){
+          if(typeof applyResolvedProf==="function")applyResolvedProf(charData.profs,ch.skills[_si3],"");
+        }
+        continue;
+      }
       if(!ch||!ch.skill)continue;
       if(typeof applyResolvedProf==="function"){
         applyResolvedProf(charData.profs,ch.skill,ch.attr);
@@ -3612,6 +3651,8 @@ function saveCharacter(){
     }else if(_cfName==="运动健将"&&CHAR.specChoices&&CHAR.specChoices["运动健将"]&&CHAR.specChoices["运动健将"].skill){
       var _mj=CHAR.specChoices["运动健将"];
       _cfDesc=(_mj.attr?(_mj.attr+"·"):"")+_mj.skill;
+    }else if(_cfName==="博闻强识"&&CHAR.specChoices&&CHAR.specChoices["博闻强识"]&&(CHAR.specChoices["博闻强识"].skills||[]).length){
+      _cfDesc="知识熟练度："+CHAR.specChoices["博闻强识"].skills.join("、");
     }else if((_cfName==="奥法学者"||_cfName==="知识传承"||_cfName==="万用模组")&&CHAR.specChoices&&CHAR.specChoices[_cfName]&&CHAR.specChoices[_cfName].skill){
       _cfDesc=CHAR.specChoices[_cfName].skill;
     }else if(_cfName==="神圣领域"&&CHAR.deity){

@@ -1996,6 +1996,8 @@ function exportClassFeatures(state) {
       fdesc = cc.weaponSpec + (cc.weaponSpecBonus ? ("：" + cc.weaponSpecBonus) : "");
     } else if ((fcls === "战士" || fcls === "蛮斗士") && fname.indexOf("运动健将") >= 0 && sc["运动健将"] && sc["运动健将"].skill) {
       fdesc = (sc["运动健将"].attr ? (sc["运动健将"].attr + "·") : "") + sc["运动健将"].skill;
+    } else if (fname.indexOf("博闻强识") >= 0 && sc["博闻强识"] && (sc["博闻强识"].skills || []).length) {
+      fdesc = (sc["博闻强识"].skills || []).join("、");
     } else if (fcls === "法师" && fname.indexOf("奥法学者") >= 0 && sc["奥法学者"] && sc["奥法学者"].skill) {
       fdesc = sc["奥法学者"].skill;
     } else if (fcls === "法师" && fname.indexOf("知识传承") >= 0 && sc["知识传承"] && sc["知识传承"].skill) {

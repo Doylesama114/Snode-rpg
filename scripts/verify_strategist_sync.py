@@ -141,8 +141,8 @@ def main() -> int:
         r = ref_classes[CLASS]
         if r['key_attr'] != '智力' or r['weapons'] != '匕首、手弩、简易武器' or r['saves'] != ['智力', '魅力']:
             errors.append('REF_CLASSES.谋士 关键字段不符')
-        if len(r.get('specializations') or []) != 6 or len(r.get('starting_features') or []) != 4:
-            errors.append('REF_CLASSES.谋士 专长/起始特性数量不符')
+        if [x.get('name') for x in (r.get('specializations') or [])] != ['运筹帷幄', '博闻强识', '料敌机先']                 or len(r.get('starting_features') or []) != 4:
+            errors.append('REF_CLASSES.谋士 职业专长应为 3 条 / 起始特性 4 条')
     for name, regex in (
         ('CLASS_WEAPON_PROF_DOCX', r'var CLASS_WEAPON_PROF_DOCX=(\{[^;]+\});'),
         ('CLASS_WEAPON_PROFS', r'var CLASS_WEAPON_PROFS=(\{[^;]+\});'),

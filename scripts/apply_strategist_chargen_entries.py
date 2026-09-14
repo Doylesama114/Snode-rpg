@@ -66,7 +66,7 @@ def main() -> int:
         line = m.group(1).rstrip()
         if not line.endswith(','):
             line += ','
-        text = text[:m.start()] + line + '\n' + SPECS_LINE + text[m.end() + 1:]
+        text = text[:m.start()] + line + '\n' + SPECS_LINE + text[m.end(1) + 1:]
     if not has_start:
         m = re.search(r'^(  "守望者":\[\{n:"挫志打击".*?)\n', text, re.M)
         if not m:
@@ -74,7 +74,7 @@ def main() -> int:
         line = m.group(1).rstrip()
         if not line.endswith(','):
             line += ','
-        text = text[:m.start()] + line + '\n' + START_LINE + text[m.end() + 1:]
+        text = text[:m.start()] + line + '\n' + START_LINE + text[m.end(1) + 1:]
 
     CHARGEN.write_text(text, encoding='utf-8', newline='')
     if MIRROR.exists():

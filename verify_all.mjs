@@ -316,6 +316,21 @@ try {
 console.log(msSyncOK ? '✅ 谋士数据同步通过' : '❌ 谋士数据同步失败');
 totalErrors += msSyncOK ? 0 : 1;
 
+// 谋士「博闻强识」专长选择 E2E（2 项知识熟练度：UI/校验/总览/导出/快照）
+console.log('\n=== 谋士职业专长与博闻强识选择 ===');
+let stFeatOK = true;
+try {
+  let fOut = spawnSync('node', [join(BASE, 'verify_strategist_feature_choices.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (fOut.stdout) console.log(fOut.stdout.trim());
+  if (fOut.stderr) console.error(fOut.stderr.trim());
+  if (fOut.status !== 0) stFeatOK = false;
+} catch (e) {
+  stFeatOK = false;
+  console.log('❌ 谋士专长选择 E2E 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(stFeatOK ? '✅ 谋士专长选择 E2E 通过' : '❌ 谋士专长选择 E2E 失败');
+totalErrors += stFeatOK ? 0 : 1;
+
 // 谋士创建页 E2E（起手套装 A–D + 起始特性 + HP/FP 公式）
 console.log('\n=== 谋士创建页与生命/疲劳公式 ===');
 let stOK = true;

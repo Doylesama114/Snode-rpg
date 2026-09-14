@@ -58,7 +58,7 @@ function ok(name, cond, extra) { if (cond) { pass++; console.log('PASS', name); 
   ok('谋士关键属性=智力、护甲=轻甲', r.hpFormula && r.fpFormula, JSON.stringify({ hp: r.hpFormula, fp: r.fpFormula }));
   ok('谋士 HP 公式 = 8 + 体质调整值（每级+2）', r.hpFormula?.first === 8 && r.hpFormula?.level_up === 2, JSON.stringify(r.hpFormula));
   ok('谋士 FP 公式 = 10 + 智力调整值（每级+1）', r.fpFormula?.first === 10 && r.fpFormula?.level_up === 1, JSON.stringify(r.fpFormula));
-  ok('谋士专长 = 6 战斗风格', r.specs.join('、') === '权谋、军团、先见、鸩毒、混乱、博物', r.specs.join('、'));
+  ok('谋士职业专长 = 运筹帷幄/博闻强识/料敌机先', r.specs.join('、') === '运筹帷幄、博闻强识、料敌机先', r.specs.join('、'));
   ok('谋士起始特性 = 4 条（交友术/战术部署/毒刃/离间）',
     r.starting.map(x => x.n).join('、') === '交友术、战术部署、毒刃、离间' && r.starting.every(x => x.d),
     JSON.stringify(r.starting));
@@ -81,10 +81,16 @@ function ok(name, cond, extra) { if (cond) { pass++; console.log('PASS', name); 
     const hp3 = calcTotalHP('谋士', 3, '', 0, 14, '人类', 0, 0, '中型');
     const fp = calcTotalFP('谋士', 1, '', 0, '智力', 16, '人类', 0);
     const fp3 = calcTotalFP('谋士', 3, '', 0, '智力', 16, '人类', 0);
-    return { hp, hp3, fp, fp3, hasRef: !!REF_CLASSES['谋士'], startFeatures: (REF_CLASSES['谋士'] || {}).starting_features?.map(x => x.name) };
+    return { hp, hp3, fp, fp3, hasRef: !!REF_CLASSES['谋士'],
+      startFeatures: (REF_CLASSES['谋士'] || {}).starting_features?.map(x => x.name),
+      specs: (REF_CLASSES['谋士'] || {}).specializations?.map(x => x.name),
+      styles: Object.keys(STYLE_COLOR_MAP['谋士'] || {}) };
   });
   ok('谋士面板加载无 JS 错误', errs.length === 0, errs.join('|'));
-  ok('面板 REF_CLASSES 含谋士（6 专长/4 起始特性）', r.hasRef && r.startFeatures?.length === 4, JSON.stringify(r.startFeatures));
+  ok('面板 REF_CLASSES 含谋士（3 专长/4 起始特性）',
+    r.hasRef && r.startFeatures?.length === 4 && r.specs?.join('、') === '运筹帷幄、博闻强识、料敌机先',
+    JSON.stringify({ start: r.startFeatures, specs: r.specs }));
+  ok('面板谋士战斗风格配色 = 6', r.styles?.join('、') === '权谋、军团、先见、鸩毒、混乱、博物', (r.styles || []).join('、'));
   ok('面板 HP：1级=12（8+2体质+2人类）', r.hp === 12, String(r.hp));
   ok('面板 HP：3级=20（12 + 2×(2+2)）', r.hp3 === 20, String(r.hp3));
   ok('面板 FP：1级=13（10+3智力）', r.fp === 13, String(r.fp));
