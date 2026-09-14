@@ -301,6 +301,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 谋士创建页 E2E（起手套装 A–D + 起始特性 + HP/FP 公式）
+console.log('\n=== 谋士创建页与生命/疲劳公式 ===');
+let stOK = true;
+try {
+  let stOut = spawnSync('node', [join(BASE, 'verify_strategist_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (stOut.stdout) console.log(stOut.stdout.trim());
+  if (stOut.stderr) console.error(stOut.stderr.trim());
+  if (stOut.status !== 0) stOK = false;
+} catch (e) {
+  stOK = false;
+  console.log('❌ 谋士创建页 E2E 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(stOK ? '✅ 谋士创建页 E2E 通过' : '❌ 谋士创建页 E2E 失败');
+totalErrors += stOK ? 0 : 1;
+
 // 兼职规则四方一致（xlsx ↔ help.html ↔ REF_SUBCLASS_REQS ↔ advisor）
 console.log('\n=== 兼职规则一致性（xlsx/help/面板/顾问） ===');
 let mcOK = true;
