@@ -9,11 +9,11 @@
     {
       "id": "谋士",
       "name": "谋士",
-      "status": "planned",
-      "playable": false,
+      "status": "released",
+      "playable": true,
       "key_attr": "智力",
       "armor": "轻甲",
-      "weapons": "匕首、手弩、简易",
+      "weapons": "匕首、手弩、简易武器",
       "saves": [
         "智力",
         "魅力"
@@ -29,15 +29,18 @@
         "决策"
       ],
       "specializations": [
-        "运筹帷幄",
-        "博闻识料",
-        "先机权变"
+        "权谋",
+        "军团",
+        "先见",
+        "鸩毒",
+        "混乱",
+        "博物"
       ],
       "starting_features": [
         "交友术",
-        "战斗部署",
-        "奇计",
-        "借刀杀人"
+        "战术部署",
+        "毒刃",
+        "离间"
       ]
     },
     {
