@@ -8183,507 +8183,6 @@
     ]
   },
   {
-    "class": "谋士",
-    "name": "焰灵师",
-    "attrs": {
-      "魅力": 15,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为火焰系契约生物提升过3个等级②你拥有两个或以上的火焰系契约生物",
-      "与火焰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个火焰系契约生物完成首次进化②在火焰环境中（例如火山、熔岩区、燃烧的森林等）习得一项火焰系契约生物能力③得到一位焰灵师的认可，对方给予你一枚焰灵纹章"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "霜灵师",
-    "attrs": {
-      "体质": 13,
-      "魅力": 14,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为寒冰系契约生物提升过3个等级②你拥有两个或以上的寒冰系契约生物",
-      "与寒冰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个寒冰系契约生物完成首次进化②在寒冷环境中（例如雪山、冰原、极地等）习得一项寒冰系契约生物能力③得到一位霜灵师的认可，对方给予你一枚霜灵纹章"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "荒野召唤师",
-    "attrs": {
-      "体质": 15,
-      "感知": 13,
-      "幸运": 14
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为岩石或森林系契约生物提升过3个等级②你拥有两个或以上的岩石或森林系契约生物",
-      "与岩石或森林系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个岩石或森林系契约生物完成首次进化②在自然环境中习得一项岩石或森林系契约生物能力③得到一份来自自然的馈赠"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "潮灵师",
-    "attrs": {
-      "感知": 15,
-      "魅力": 13,
-      "幸运": 14
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为水源系契约生物提升过3个等级②你拥有两个或以上的水源系契约生物",
-      "与水源系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个水源系契约生物完成首次进化②在水域环境中习得一项寒冰系契约生物能力③得到一位潮灵师的认可，对方给予你一枚潮灵纹章"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "风雷召唤师",
-    "attrs": {
-      "力量": 14,
-      "敏捷": 14,
-      "意志": 13
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为雷电系契约生物提升过3个等级②你拥有两个或以上的雷电系契约生物",
-      "与雷电系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个雷电系契约生物完成首次进化②在雷暴或风暴环境中习得一项雷电系契约生物能力③准备一颗闪电灵核，与雷电系契约生物在雷暴环境下一同举行晋升为风雷召唤师的仪式"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "光之召唤师",
-    "attrs": {
-      "魅力": 15,
-      "意志": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为光耀系契约生物提升过3个等级②你拥有两个或以上的光耀系契约生物",
-      "与光耀系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "准备一份光源、一根天界生物的羽翼和光明召唤媒介，在光芒笼罩的环境下怀着平静与尊重的心情成功举行一场召唤强大光明存在的仪式"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "暗之召唤师",
-    "attrs": {
-      "感知": 15,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为暗影系契约生物提升过3个等级②你拥有两个或以上的暗影系契约生物",
-      "与暗影系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "准备一颗暗玉、一颗纯正的暗影之心和黑暗召唤媒介，在无光的黑暗环境下怀着谨慎与敬畏的心情成功举行一场召唤强大黑暗存在的仪式"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "瘴气牧者",
-    "attrs": {
-      "体质": 13,
-      "感知": 14,
-      "意志": 14
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
-    "conditions": [
-      "你成功使十名敌人进入中毒或感染状态",
-      "通过召唤物或场地效应所产生的剧毒伤害击杀二十名角色",
-      "在一场关键战役中通过持续性的负面效果所造成的伤害终结一名精英级的敌方单位"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "空中王牌",
-    "attrs": {},
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "召唤具有飞行能力的召唤物或在空中状态下击败二十名角色",
-      "通过空中特性快速传递五条重要讯息，并且最终凭借速度抢得先机",
-      "在一场关键战役中依靠空中特性成功扭转战局"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "操虫使",
-    "attrs": {
-      "体质": 14,
-      "感知": 14
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
-    "conditions": [
-      "通过虫类生物获得过五次具有价值的情报",
-      "通过虫类生物击杀二十名角色",
-      "利用那个虫类生物在一场关键战役中破坏敌方的阵型来获取胜利"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "钢铁驯兽师",
-    "attrs": {
-      "体质": 14,
-      "智力": 14
-    },
-    "source": "猎人、奇械师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你拥有一台奇械构造体作为你的“野兽伙伴”或“契约生物”",
-      "令你的奇械野兽伙伴或契约生物击杀二十名角色",
-      "使这台奇械构造体觉醒机魂，成为真正的伙伴"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "秘能召唤者",
-    "attrs": {
-      "智力": 15,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "施展二十次带有奥术、增益或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
-      "消灭或驱逐十个因你追求知识、魔法和禁忌而来的异界追击者",
-      "与一个强大的魔法生物缔结永久的契约效果"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "灵唤参谋",
-    "attrs": {
-      "感知": 15,
-      "魅力": 15
-    },
-    "source": "谋士、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你为五个鬼魂、精魄或幽灵系召唤物提供过建议",
-      "你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索",
-      "与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "心灵召唤者",
-    "attrs": {
-      "感知": 16
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "与十名NPC角色进行过心灵层面的沟通",
-      "召唤十次仅有目标本身能够目击的单位",
-      "召唤一个源于他人心中所虚构的存在，，并使其与自身或诞生来源缔结契约效果"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "妖精召唤者",
-    "attrs": {
-      "魅力": 16
-    },
-    "source": "牧师、魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "召唤十只精类生物来到主物质位面",
-      "经历三场由自然界的精类生物所引发的事件",
-      "造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "深渊召唤者",
-    "attrs": {
-      "体质": 12,
-      "魅力": 15
-    },
-    "source": "术士、魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00B050;\">●</span>",
-    "conditions": [
-      "召唤十只深渊恶魔来到主物质位面",
-      "通过献祭、赐福或血脉觉醒等手段，而非学习、传授等方式获得三个包含邪能关键词的技能",
-      "开启一道传送门以使得一支深渊的完备部队能够进驻这个位面，并且...确保自身活下去！"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "地狱犬大师",
-    "attrs": {
-      "体质": 15,
-      "魅力": 15
-    },
-    "source": "魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
-    "conditions": [
-      "召唤十只地狱犬来到主物质位面",
-      "通过地狱犬击杀二十名角色",
-      "带领地狱犬参与一场关键战役并击杀一名精英级单位"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "龙脉誓约者",
-    "attrs": {
-      "力量": 14,
-      "魅力": 15,
-      "幸运": 13
-    },
-    "source": "守望者、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
-    "conditions": [
-      "与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任",
-      "参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等）",
-      "在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "星灵师",
-    "attrs": {
-      "感知": 15,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
-    "conditions": [
-      "你满足以下任意一种条件：①你为星辰系契约生物提升过3个等级②你拥有两个或以上的星辰系契约生物",
-      "与星辰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
-      "你满足以下任意两种条件：①为一个星辰系契约生物完成首次进化②在星界、宇宙环境，或者能够目睹群星的地点中（例如山顶、外空间、广袤无垠的夜空等）习得一项星辰系契约生物能力③得到一位星灵师的认可，对方给予你一枚星灵纹章"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "召唤大师",
-    "attrs": {
-      "智力": 14,
-      "感知": 13,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "施展二十次带有召唤单位关键词的能力",
-      "拥有至少四个契约生物",
-      "你满足以下任意两种条件：①为一个契约生物完成高级进化②为你的契约生物提升过共计8个等级③通过咒灵召唤或灵摆召唤掷出过001"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "咒法师",
-    "attrs": {
-      "智力": 15,
-      "幸运": 12
-    },
-    "source": "法师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
-    "conditions": [
-      "施展二十次带有跃迁、随机性或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
-      "施展三次超过当前位阶的法术",
-      "通过任意仪式召唤一只异界生物，并与对方缔结永久的契约效果"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "持棋手",
-    "attrs": {
-      "智力": 15,
-      "感知": 15
-    },
-    "source": "谋士、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人",
-      "在一款策略游戏圈层的名望等级达到7级",
-      "在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "灵兽使",
-    "attrs": {
-      "感知": 14,
-      "魅力": 15,
-      "幸运": 13
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你曾经有一个契约生物，但如今已逝去或消亡",
-      "调查五处关于灵魂兽的传闻，并且期间就与至少十名与灵魂兽息息相关的角色产生过交互（不计算玩家在内）",
-      "与已逝去、消亡的契约生物重新缔结契约"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "魔兽使",
-    "attrs": {
-      "魅力": 15,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
-    "conditions": [
-      "你成功召唤十次凶悍的野兽、怪兽或魔法兽，并且没有受到对方攻击",
-      "穿行一片以魔兽而著称的野外环境，在此期间没有进入过战斗环节",
-      "与一位魔法兽之王、幻兽领主或上古魔兽建立正式契约，获得对方的部分权柄"
-    ]
-  },
-  {
-    "class": "谋士",
-    "name": "异界学者",
-    "attrs": {
-      "智力": 16,
-      "幸运": 15
-    },
-    "source": "召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
-    "conditions": [
-      "你阅读过十本关于异位面或次级维度的书籍",
-      "你花费过幕间物语来阅读一本涉及异界的魔典",
-      "通过亲自探索，获得一份来自异位面或次级维度的传承"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "咒法师",
-    "attrs": {
-      "智力": 15,
-      "幸运": 12
-    },
-    "source": "法师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
-    "conditions": [
-      "施展二十次带有跃迁、随机性或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
-      "施展三次超过当前位阶的法术",
-      "通过任意仪式召唤一只异界生物，并与对方缔结永久的契约效果"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "钢铁驯兽师",
-    "attrs": {
-      "体质": 14,
-      "智力": 14
-    },
-    "source": "猎人、奇械师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你拥有一台奇械构造体作为你的“野兽伙伴”或“契约生物”",
-      "令你的奇械野兽伙伴或契约生物击杀二十名角色",
-      "使这台奇械构造体觉醒机魂，成为真正的伙伴"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "妖精召唤者",
-    "attrs": {
-      "魅力": 16
-    },
-    "source": "牧师、魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "召唤十只精类生物来到主物质位面",
-      "经历三场由自然界的精类生物所引发的事件",
-      "造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面"
-    ],
-    "branch": "艺人",
-    "branch_full": "艺术与创造之神"
-  },
-  {
-    "class": "召唤师",
-    "name": "深渊召唤者",
-    "attrs": {
-      "体质": 12,
-      "魅力": 15
-    },
-    "source": "术士、魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00B050;\">●</span>",
-    "conditions": [
-      "召唤十只深渊恶魔来到主物质位面",
-      "通过献祭、赐福或血脉觉醒等手段，而非学习、传授等方式获得三个包含邪能关键词的技能",
-      "开启一道传送门以使得一支深渊的完备部队能够进驻这个位面，并且...确保自身活下去！"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "地狱犬大师",
-    "attrs": {
-      "体质": 15,
-      "魅力": 15
-    },
-    "source": "魔契师、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
-    "conditions": [
-      "召唤十只地狱犬来到主物质位面",
-      "通过地狱犬击杀二十名角色",
-      "带领地狱犬参与一场关键战役并击杀一名精英级单位"
-    ],
-    "branch": "黑暗王子"
-  },
-  {
-    "class": "召唤师",
-    "name": "龙脉誓约者",
-    "attrs": {
-      "力量": 14,
-      "魅力": 15,
-      "幸运": 13
-    },
-    "source": "守望者、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
-    "conditions": [
-      "与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任",
-      "参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等）",
-      "在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "持棋手",
-    "attrs": {
-      "智力": 15,
-      "感知": 15
-    },
-    "source": "谋士、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人",
-      "在一款策略游戏圈层的名望等级达到7级",
-      "在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利"
-    ]
-  },
-  {
-    "class": "召唤师",
-    "name": "灵唤参谋",
-    "attrs": {
-      "感知": 15,
-      "魅力": 15
-    },
-    "source": "谋士、召唤师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
-    "conditions": [
-      "你为五个鬼魂、精魄或幽灵系召唤物提供过建议",
-      "你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索",
-      "与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役"
-    ]
-  },
-  {
     "class": "召唤师",
     "name": "焰灵师",
     "attrs": {
@@ -8837,6 +8336,21 @@
   },
   {
     "class": "召唤师",
+    "name": "钢铁驯兽师",
+    "attrs": {
+      "体质": 14,
+      "智力": 14
+    },
+    "source": "猎人、奇械师、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你拥有一台奇械构造体作为你的“野兽伙伴”或“契约生物”",
+      "令你的奇械野兽伙伴或契约生物击杀二十名角色",
+      "使这台奇械构造体觉醒机魂，成为真正的伙伴"
+    ]
+  },
+  {
+    "class": "召唤师",
     "name": "秘能召唤者",
     "attrs": {
       "智力": 15,
@@ -8852,6 +8366,21 @@
   },
   {
     "class": "召唤师",
+    "name": "灵唤参谋",
+    "attrs": {
+      "感知": 15,
+      "魅力": 15
+    },
+    "source": "谋士、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你为五个鬼魂、精魄或幽灵系召唤物提供过建议",
+      "你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索",
+      "与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役"
+    ]
+  },
+  {
+    "class": "召唤师",
     "name": "心灵召唤者",
     "attrs": {
       "感知": 16
@@ -8862,6 +8391,66 @@
       "与十名NPC角色进行过心灵层面的沟通",
       "召唤十次仅有目标本身能够目击的单位",
       "召唤一个源于他人心中所虚构的存在，，并使其与自身或诞生来源缔结契约效果"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "妖精召唤者",
+    "attrs": {
+      "魅力": 16
+    },
+    "source": "牧师、魔契师、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "召唤十只精类生物来到主物质位面",
+      "经历三场由自然界的精类生物所引发的事件",
+      "造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "深渊召唤者",
+    "attrs": {
+      "体质": 12,
+      "魅力": 15
+    },
+    "source": "术士、魔契师、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00B050;\">●</span>",
+    "conditions": [
+      "召唤十只深渊恶魔来到主物质位面",
+      "通过献祭、赐福或血脉觉醒等手段，而非学习、传授等方式获得三个包含邪能关键词的技能",
+      "开启一道传送门以使得一支深渊的完备部队能够进驻这个位面，并且...确保自身活下去！"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "地狱犬大师",
+    "attrs": {
+      "体质": 15,
+      "魅力": 15
+    },
+    "source": "魔契师、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "召唤十只地狱犬来到主物质位面",
+      "通过地狱犬击杀二十名角色",
+      "带领地狱犬参与一场关键战役并击杀一名精英级单位"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "龙脉誓约者",
+    "attrs": {
+      "力量": 14,
+      "魅力": 15,
+      "幸运": 13
+    },
+    "source": "守望者、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任",
+      "参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等）",
+      "在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠"
     ]
   },
   {
@@ -8893,6 +8482,36 @@
       "施展二十次带有召唤单位关键词的能力",
       "拥有至少四个契约生物",
       "你满足以下任意两种条件：①为一个契约生物完成高级进化②为你的契约生物提升过共计8个等级③通过咒灵召唤或灵摆召唤掷出过001"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "咒法师",
+    "attrs": {
+      "智力": 15,
+      "幸运": 12
+    },
+    "source": "法师、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "conditions": [
+      "施展二十次带有跃迁、随机性或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
+      "施展三次超过当前位阶的法术",
+      "通过任意仪式召唤一只异界生物，并与对方缔结永久的契约效果"
+    ]
+  },
+  {
+    "class": "召唤师",
+    "name": "持棋手",
+    "attrs": {
+      "智力": 15,
+      "感知": 15
+    },
+    "source": "谋士、召唤师",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人",
+      "在一款策略游戏圈层的名望等级达到7级",
+      "在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利"
     ]
   },
   {

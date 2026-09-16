@@ -31,24 +31,19 @@ PREFIX = 'sm'
 PAGE = ROOT / '职业页' / f'{CLASS}·进阶.html'
 MIRROR = ROOT / 'electron-app' / '职业页' / f'{CLASS}·进阶.html'
 TEMPLATE = ROOT / '职业页' / '守望者·进阶.html'
-NOTICE = (
-    '<div class="adv-notice" style="max-width:900px;margin:16px auto 0;padding:12px 18px;'
-    'border:1px solid #e0c98a;background:#fff8e6;border-radius:8px;color:#7a5c12;font-size:14px;line-height:1.7">'
-    '⏳ <b>《基础职业进阶途径》暂无召唤师专属章节</b><br>'
-    '本页收录<b>来源包含「召唤师」的进阶 25 条</b>（咒法师、召唤大师、龙脉誓约者、焰灵师、霜灵师、星灵师、魔兽使…）'
-    '与<b>通用进阶 10 条</b>，共 35 条；进阶文档中新增的召唤师相关卡片会随来源自动并入本页。'
-    '</div>'
-)
+NOTICE = ''  # 作者已补召唤师章节（标题笔误由 advancement_sync_core 按目录纠正），页面不再注入提示
 
 
-def build_articles() -> tuple[str, int]:
-    parsed = A.parse_docx(A.DOCX)
-    universal = parsed.get('通用', [])
-    detail_names = A.load_detail_names()
-    seen: dict = {}
-    entries = [A.card_to_json_entry(c, '通用', A.CLASS_SLUG['通用'], seen) for c in universal]
-    articles = '\n'.join(A.build_article(c, e['id'], detail_names) for c, e in zip(universal, entries))
-    return articles, len(universal)
+def remove_notice() -> int:
+    """移除页首提示（如历史遗留的「等待更新」块）。"""
+    for path in (PAGE, MIRROR):
+        if not path.exists():
+            continue
+        text = path.read_text(encoding='utf-8')
+        text = re.sub(r'\n?<div class="adv-notice"[\s\S]*?</div>\n?', chr(10), text, count=1)
+        path.write_text(text, encoding='utf-8')
+    print('✅ 已移除召唤师·进阶页提示块')
+    return 0
 
 
 def update_notice_only() -> int:
@@ -69,12 +64,16 @@ def update_notice_only() -> int:
 
 
 def main() -> int:
+    if '--remove-notice' in sys.argv:
+        return remove_notice()
     if '--notice-only' in sys.argv:
         return update_notice_only()
     check = '--check' in sys.argv
     if check:
-        ok = PAGE.exists() and 'adv-notice' in PAGE.read_text(encoding='utf-8')
-        print('召唤师·进阶占位页:', '已生成' if ok else '缺失')
+        text = PAGE.read_text(encoding='utf-8') if PAGE.exists() else ''
+        cards = len(re.findall(r'class="adv-card"', text))
+        ok = bool(text) and 'adv-notice' not in text and cards >= 30
+        print('召唤师·进阶页: %s（卡片 %d，无等待提示）' % ('OK' if ok else '缺失/异常', cards))
         print('OK' if ok else 'FAIL')
         return 0 if ok else 1
 

@@ -201,8 +201,8 @@ def main() -> int:
         errors.append('缺少召唤师·进阶.html')
     else:
         t = adv.read_text(encoding='utf-8')
-        if '暂无召唤师专属章节' not in t:
-            errors.append('进阶页缺少来源说明提示')
+        if 'adv-notice' in t:
+            errors.append('进阶页仍残留等待更新提示（作者已补召唤师章节）')
         if len(re.findall(r'class="adv-card"', t)) != 35:
             errors.append('进阶页卡片 != 35（25 来源含召唤师 + 通用 10）')
     ms_adv = json.loads((ROOT / '职业页' / '数据' / f'{CLASS}·进阶.json').read_text(encoding='utf-8'))['advancements']
@@ -220,7 +220,7 @@ def main() -> int:
                     f'契约指令·回避已改名，灵猫/灵枭/灵狐守护双块已合并')
     ok_notes.append(f'契约生物 20 个（8 属性 + 特性/动作齐全）；页面 47 卡 + 23 chip（3 专长 + 20 契约）')
     ok_notes.append('创建页（第 1 步选契约生物 + 起始特性全给 + FP=幸运）/ 面板（REF_CLASSES + 契约卡）/')
-    ok_notes.append('进阶页：来源含召唤师 25 条 + 通用 10 条（共 35）；首页 + 搜索索引 + 清单数据 全部就位')
+    ok_notes.append('进阶页：召唤师章节 25 条 + 通用 10 条（共 35，无等待提示）；首页 + 搜索索引 + 清单数据 全部就位')
 
     if errors:
         print('FAIL：召唤师同步校验未通过（%d 处）' % len(errors))

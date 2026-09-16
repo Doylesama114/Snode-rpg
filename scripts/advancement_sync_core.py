@@ -50,6 +50,8 @@ EXPECTED_WARLOCK_BRANCHES = (
 )
 BRANCHED_CLASSES = frozenset({"牧师", "魔契师"})
 BRANCH_LABEL_RE = re.compile(r"^-{3,}\s*(.+?)\s*-{3,}$")
+TOC_LINE_RE = re.compile(r"^(.+?)\.{3,}(\d+)$")
+TOC_ENTRY_RE = re.compile(r"([一-龥]{2,6})\.{3,}(\d+)")
 
 CLASS_SLUG = {
     "蛮斗士": "barb",
@@ -268,9 +270,27 @@ def parse_docx(docx: Path = DOCX) -> dict[str, list[dict]]:
     bounds.append((len(paras), "END"))
     by_class: dict[str, list[dict]] = defaultdict(list)
 
+    # 目录顺序 = 章节顺序（docx 存在标题笔误时以此纠正，例如第 2 个「谋士进阶途径」实为召唤师章节）
+    toc_order: list[str] = []
+    toc_text = chr(10).join(p["text"] for p in paras[:40])
+    for m in TOC_ENTRY_RE.finditer(toc_text):
+        name = m.group(1)
+        if (name in BASE_CLASSES or name == "通用") and name not in toc_order:
+            toc_order.append(name)
+    next_after = {toc_order[i]: toc_order[i + 1] for i in range(len(toc_order) - 1)}
+    warnings: list[str] = []
+    seen_headings: dict[str, int] = {}
+
     for bi in range(len(bounds) - 1):
         start, cls = bounds[bi]
         end, _ = bounds[bi + 1]
+        seen_headings[cls] = seen_headings.get(cls, 0) + 1
+        if seen_headings[cls] > 1 and cls not in BRANCHED_CLASSES and cls in next_after:
+            # 非分支职业的重复标题 = 作者标题笔误（如召唤师章节误写为「谋士进阶途径」）
+            expected = next_after[cls]
+            warnings.append("章节标题笔误：%r 按目录应为 %r（第 %d 次出现）" % (cls, expected, seen_headings[cls]))
+            cls = expected
+            seen_headings[cls] = seen_headings.get(cls, 0) + 1
         if cls not in BASE_CLASSES and cls != "通用":
             continue
         i = start + 1
@@ -294,6 +314,8 @@ def parse_docx(docx: Path = DOCX) -> dict[str, list[dict]]:
                 i = ni
             else:
                 i += 1
+    if warnings:
+        parse_docx.warnings = warnings  # type: ignore[attr-defined]
     return dict(by_class)
 
 
