@@ -83,6 +83,22 @@ const edited = await page.evaluate(() => {
 });
 ok('手填等级/羁绊点数生效并回显', edited.level === 7 && edited.bond === 12 && edited.valueLevel && edited.valueBond, JSON.stringify(edited));
 
+const dice = await page.evaluate(() => {
+  const zl = (SKILL_DATA['召唤师'] || []).find(x => x.name === '咒灵召唤');
+  const html = formatSkillDetailHtml(zl);
+  const hh = (SKILL_DATA['召唤师'] || []).find(x => x.name === '召唤火元素');
+  const unitHtml = formatSkillDetailHtml(hh).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  return {
+    rollRows: (zl.roll_tables || []).length,
+    hasTable: /<table/.test(html) && html.includes('100'),
+    hasIntro: html.includes('D100'),
+    unitName: /召唤单位： 火元素/.test(unitHtml) || /召唤单位：火元素/.test(unitHtml),
+    unitHead: /中型元素生物/.test(unitHtml) && /防御等级 10/.test(unitHtml),
+  };
+});
+ok('面板骰表：13 行 + 100 + 施法说明', dice.hasTable && dice.rollRows === 13 && dice.hasIntro, JSON.stringify(dice));
+ok('面板召唤单位卡：名称/类型/防御等级', dice.unitName && dice.unitHead, JSON.stringify(dice));
+
 const learned = await page.evaluate(() => {
   for (const k of Object.keys(state.color_marks)) state.color_marks[k] = true;
   state.sp_points = 99;

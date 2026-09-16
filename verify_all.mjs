@@ -301,6 +301,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 技能描述完整性（17 职业 docx 规则行全入库）
+console.log('\n=== 技能描述完整性 ===');
+let descOK = true;
+try {
+  let descOut = spawnSync('python', [join(BASE, 'scripts', 'verify_skill_description_complete.py')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (descOut.stdout) console.log(descOut.stdout.trim());
+  if (descOut.stderr) console.error(descOut.stderr.trim());
+  if (descOut.status !== 0) descOK = false;
+} catch (e) {
+  descOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(descOK ? '✅ 技能描述完整性 通过' : '❌ 技能描述完整性 失败');
+totalErrors += descOK ? 0 : 1;
+
 // 龙裔种族详情同步（PNG ↔ 三处数据 ↔ 创建页 DRAGON_TYPES/面板）
 console.log('\n=== 龙裔种族详情同步 ===');
 let dbSyncOK = true;

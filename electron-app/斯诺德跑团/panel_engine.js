@@ -2387,6 +2387,28 @@ function formatSkillDetailHtml(skillData) {
   }
 
 
+  var rollTables = skillData.roll_tables || [];
+  if (rollTables.length) {
+    html += "<p><span style='color:#b0a090;font-weight:bold'>随机效果：</span></p>";
+    html += "<table style='width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 8px'><tr><th style='text-align:left;color:#b0a090;border-bottom:1px solid var(--line);padding:2px 6px'>点数</th><th style='text-align:left;color:#b0a090;border-bottom:1px solid var(--line);padding:2px 6px'>效果</th></tr>";
+    for (var rt = 0; rt < rollTables.length; rt++) {
+      html += "<tr><td style='border-bottom:1px solid var(--line);padding:2px 6px;white-space:nowrap;vertical-align:top'>" + escapeHtmlText(rollTables[rt].label || "") + "</td><td style='border-bottom:1px solid var(--line);padding:2px 6px'>" + escapeHtmlText(rollTables[rt].text || "") + "</td></tr>";
+    }
+    html += "</table>";
+  }
+  var unitTables = skillData.unit_tables || [];
+  for (var ut = 0; ut < unitTables.length; ut++) {
+    var U = unitTables[ut] || {}, UH = U.head || {};
+    html += "<p><span style='color:#b0a090;font-weight:bold'>召唤单位：</span>" + escapeHtmlText(U.name || "");
+    if (UH.type_size) html += "　" + escapeHtmlText(UH.type_size);
+    if (UH.ac) html += "　防御等级 " + escapeHtmlText(String(UH.ac));
+    if (UH.hp) html += "　生命值 " + escapeHtmlText(String(UH.hp));
+    html += "</p>";
+    var attrs = U.attrs || [];
+    for (var ua = 0; ua < attrs.length; ua++) {
+      html += "<p style='font-size:13px;color:var(--muted)'>" + escapeHtmlText(typeof attrs[ua] === "string" ? attrs[ua] : JSON.stringify(attrs[ua])) + "</p>";
+    }
+  }
   var upgrades = skillData.level_upgrades || [], ui, lu, label, lineRuns;
 
 
