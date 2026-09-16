@@ -46,11 +46,11 @@
     {
       "id": "召唤师",
       "name": "召唤师",
-      "status": "planned",
-      "playable": false,
+      "status": "released",
+      "playable": true,
       "key_attr": "幸运",
       "armor": "轻甲",
-      "weapons": "法杖、魔棒、匕首、手弩、简易",
+      "weapons": "法杖、魔棒、匕首、手弩、简易武器",
       "saves": [
         "感知",
         "幸运"
@@ -66,9 +66,8 @@
         "机遇"
       ],
       "specializations": [
-        "召唤联结",
-        "异界感知",
-        "契约召唤"
+        "咒法",
+        "降灵"
       ],
       "starting_features": [
         "魔法飞弹",

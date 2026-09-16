@@ -1122,6 +1122,69 @@
       ]
     },
     {
+      "page": "召唤师",
+      "key": "召唤师-choice-6458eba1cf",
+      "title": "抉择：创造水源/创造篝火",
+      "max": 1,
+      "members": [
+        "sm-skill-5",
+        "sm-skill-6"
+      ],
+      "runs": [
+        {
+          "before": "sm-skill-5",
+          "ids": [
+            "sm-skill-5",
+            "sm-skill-6"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "召唤师",
+      "key": "召唤师-choice-435c04fba0",
+      "title": "抉择：召唤风元素/召唤火元素/召唤水元素/召唤土元素",
+      "max": 1,
+      "members": [
+        "sm-skill-40",
+        "sm-skill-41",
+        "sm-skill-42",
+        "sm-skill-43"
+      ],
+      "runs": [
+        {
+          "before": "sm-skill-40",
+          "ids": [
+            "sm-skill-40",
+            "sm-skill-41",
+            "sm-skill-42",
+            "sm-skill-43"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "召唤师",
+      "key": "召唤师-choice-cc73f85c08",
+      "title": "抉择：灵猫守护/灵枭守护/灵狐守护",
+      "max": 1,
+      "members": [
+        "sm-skill-32",
+        "sm-skill-33",
+        "sm-skill-34"
+      ],
+      "runs": [
+        {
+          "before": "sm-skill-32",
+          "ids": [
+            "sm-skill-32",
+            "sm-skill-33",
+            "sm-skill-34"
+          ]
+        }
+      ]
+    },
+    {
       "page": "通用天赋树",
       "key": "通用天赋树-choice-af7d480885",
       "title": "抉择A·你仅能够选择其中一项习得",

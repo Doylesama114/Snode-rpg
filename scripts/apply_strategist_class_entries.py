@@ -116,7 +116,9 @@ def main() -> int:
         cd.append(dict(ENTRY, hp_formula=dict(HP), fp_formula=dict(FP)))
         body = json.dumps(cd, ensure_ascii=False, indent=2)
         text = classes_data.read_text(encoding='utf-8')
-        text = re.sub(r'var\s+CLASSES\s*=\s*\[.*?\];', 'var CLASSES = ' + body + ';', text, count=1, flags=re.S)
+        # re.sub 的替换串会把反斜杠转义解释掉，因此用 lambda 原样返回
+        text = re.sub(r'var\s+CLASSES\s*=\s*\[.*?\];', lambda m: 'var CLASSES = ' + body + ';',
+                      text, count=1, flags=re.S)
         classes_data.write_text(text, encoding='utf-8')
 
     if not has_eq:
