@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.7277',
+    date: '2026-09-16',
+    changes: [
+      '修复召唤师「职业专长」按钮串扰：点击「召唤联结 / 异界感知 / 机缘召唤」现在正确切换职业专长面板，不再误切契约生物的「火焰系·烬火狐 / 寒冰系·霜绒貂 / 岩石系·陶土魔偶」',
+      '根因：common.js 的职业专长切换脚本里 chips/panels 用 var 声明并在循环外复用，闭包捕获的是最后一个 .class-features 区；此前每页只有一个这样的区块所以没有症状，召唤师新增「契约生物」区块后暴露',
+      '修复方式：每个 .class-features 区独立绑定各自的 chips/panels（含 aria-selected 同步）；召唤师页两个区块现互不干扰',
+      '新增回归门禁 verify_class_feature_tabs_e2e.mjs：19 个职业页逐页校验「点第 2 个 chip → 第 2 个面板激活，且仅 1 个面板激活」；召唤师职业页 E2E 增加双区互不干扰断言'
+    ]
+  },
+
+
+  {
     version: '1.0.7276',
     date: '2026-09-16',
     changes: [
