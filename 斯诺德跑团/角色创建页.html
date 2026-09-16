@@ -439,7 +439,8 @@ var CLS_OVERRIDE = {
       '奇械师':{key_attr:'智力', hp:8, fp:8, saves:'体质、智力'},
       '萨满祭司':{key_attr:'感知', hp:8, fp:8, saves:'感知、魅力'},
       '守望者':{key_attr:'意志', hp:12, fp:8, saves:'体质、意志'},
-      '谋士':{key_attr:'智力', hp:8, fp:10, saves:'智力、魅力'}
+      '谋士':{key_attr:'智力', hp:8, fp:10, saves:'智力、魅力'},
+      '召唤师':{key_attr:'幸运', hp:8, fp:8, saves:'感知、幸运'}
     };
 /** 牧师信奉神祇（创建必选） */
 var CLERIC_DEITIES = [
@@ -551,6 +552,7 @@ function calcCost(){var t=0;for(var i=0;i<ATTR_NAMES.length;i++)t+=calcAttrCost(
 </script>
 
 <!-- Data files -->
+<script src="../职业页/数据/summoner_contracts_data.js"></script>
 <script src="../职业页/数据/classes_data.js"></script>
 <script src="../职业页/数据/races_data.js"></script>
 <script src="../职业页/数据/backgrounds_data.js"></script>
@@ -707,6 +709,7 @@ function buildCreationSnapshot(){
     keyAttr:CHAR.keyAttr||"",
     specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),
     selectedFeatures:(CHAR.selectedFeatures||[]).slice(),
+    contractCreature:CHAR.contractCreature?JSON.parse(JSON.stringify(CHAR.contractCreature)):null,
     bpPicks:(CHAR.bpPicks||[]).slice(),
     raceName:CHAR.raceName||"",
     raceSize:CHAR.raceSize||"",
@@ -776,6 +779,7 @@ function applyCreationSnapshotToChar(snap){
   CHAR.keyAttr=snap.keyAttr||"";
   CHAR.specChoices=JSON.parse(JSON.stringify(snap.specChoices||{}));
   CHAR.selectedFeatures=(snap.selectedFeatures||[]).slice();
+  CHAR.contractCreature=snap.contractCreature?JSON.parse(JSON.stringify(snap.contractCreature)):null;
   CHAR.bpPicks=(snap.bpPicks||[]).slice();
   CHAR.weaponSpec=snap.weaponSpec||"";
   if(CHAR.className==="猎人"){
@@ -1307,6 +1311,7 @@ var CLASS_SPECIALIZATIONS = {
   "奇械师":[{n:"奇械构装",d:"获得工程学的熟练度"},{n:"万用模组",d:"获得知识熟练度和额外专业槽位"},{n:"脑力强化",d:"提升一次智力检定效果"}],
   "守望者":[{n:"哨兵",d:"提升自身的警惕值"},{n:"铁壁",d:"持有盾牌时获得额外防御等级"},{n:"荒野庇护",d:"获得在野外环境的加成"}],
   "谋士":[{n:"运筹帷幄",d:"每次游玩开始时，为每名其他玩家角色指定一个不同的熟练项，其首次对应检定具有优势"},{n:"博闻强识",d:"获得 2 点任意不同的知识熟练度"},{n:"料敌机先",d:"掷先攻骰后可主动下调自身先攻区间（先锋席→中坚席→后卫席→殿军席）"}],
+  "召唤师":[{n:"召唤联结",d:"与契约生物存在深层联结，可感知其情绪、状态与方位"},{n:"异界感知",d:"感知周围 24 米内的传送门、异界裂隙、召唤法阵与位面锚点"},{n:"机缘召唤",d:"与异界灵魂缔结契约，获得契约生物伙伴（创建时随机抽取或自选）"}],
 };
 // ====== 起始特性数据 ======
 var CLASS_STARTING_FEATURES = {
@@ -1326,6 +1331,7 @@ var CLASS_STARTING_FEATURES = {
   "奇械师":[{n:"精准射击",d:"造成远程伤害"},{n:"基础材料学",d:"获得奇械研发图纸"},{n:"同调协手",d:"解除一件装备的同调效果"},{n:"魔法武器",d:"为一把武器附加魔法伤害"}],
   "守望者":[{n:"挫志打击",d:"攻击后降低敌人的伤害"},{n:"警戒之眼",d:"察觉周围可能存在的危险"},{n:"盾牌格挡",d:"抵挡一次攻击的伤害"},{n:"荒野医疗",d:"利用草药回复生命值"}],
   "谋士":[{n:"交友术",d:"使一名角色将你视作好友"},{n:"战术部署",d:"为友方角色分配战术增益效果"},{n:"毒刃",d:"在武器上淬毒并发起一击"},{n:"离间",d:"离间敌人和其盟友，令关系暂时恶化"}],
+  "召唤师":[{n:"魔法飞弹",d:"向一名角色发射魔法飞弹，造成1D8点力场伤害"},{n:"次级召唤术",d:"随机召唤一名角色或物件来到身边"},{n:"唤回",d:"将契约生物唤回身边或遣返回原位面"}],
 };
 var SPEC_PROF_CHOICES = {
   "蛮斗士":{"运动健将":{attr:["力量","敏捷"],skills:{"力量":["威力","承重","运动-跳跃","运动-攀爬","运动-游泳"],"敏捷":["体操","骑乘","隐匿","巧手-偷窃","巧手-开锁","巧手-拆除"]}}},
@@ -1769,6 +1775,7 @@ function checkSpecDone(){
   if(clsName==="战士"&&!CHAR.keyAttr)allDone=false;
   if(clsName==="牧师"&&!CHAR.deity)allDone=false;
   if(clsName==="魔契师"&&!CHAR.patron)allDone=false;
+  if(clsName==="召唤师"&&!CHAR.contractCreature)allDone=false;
   var specs=CLASS_SPECIALIZATIONS[clsName];
   if(specs){
     for(var si=0;si<specs.length;si++){
@@ -1784,11 +1791,105 @@ function checkSpecDone(){
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
   notifyChargenChange();
 }
+
+/** 召唤师：契约生物选择（第 1 步「选择职业」内）——数据来自 CONTRACT_CREATURES */
+function showSummonerContractChoice(clsName){
+  var old=document.getElementById("summonerContractArea");
+  if(old)old.remove();
+  if(clsName!=="召唤师")return;
+  if(typeof CONTRACT_CREATURES==="undefined"||!CONTRACT_CREATURES.length)return;
+  var p=document.getElementById("classDetail");
+  var box=document.createElement("div");box.id="summonerContractArea";
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";box.className='popup-box';
+  var h="<div style='font-size:15px;font-weight:bold;margin-bottom:6px'>选择契约生物（机缘召唤）</div>";
+  h+="<div style='font-size:12px;color:#69706b;margin-bottom:10px'>共 "+CONTRACT_CREATURES.length+" 个系别，可自选或随机抽取；未选择无法进入下一步</div>";
+  h+="<div style='margin-bottom:10px'><button type='button' class='btn btn-secondary' onclick='rollSummonerContract()'>🎲 随机抽取</button></div>";
+  h+="<div id='contractChips' style='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px'>";
+  for(var i=0;i<CONTRACT_CREATURES.length;i++){
+    var c=CONTRACT_CREATURES[i];
+    h+="<div class='skill-chip' data-cycle='"+i+"' onclick='pickSummonerContract(this)' style='font-size:12px;padding:6px 10px'>"+c.category+"·"+c.name+"</div>";
+  }
+  h+="</div><div id='contractCard'></div>";
+  box.innerHTML=h;
+  p.parentNode.insertBefore(box, p.nextSibling);
+  if(CHAR.contractCreature)selectSummonerContractChip(CHAR.contractCreature.name);
+  else renderSummonerContractCard(null);
+  checkSpecDone();
+}
+function _contractByName(name){
+  if(typeof CONTRACT_CREATURES==="undefined")return null;
+  for(var i=0;i<CONTRACT_CREATURES.length;i++)if(CONTRACT_CREATURES[i].name===name)return CONTRACT_CREATURES[i];
+  return null;
+}
+function selectSummonerContractChip(name){
+  var chips=document.querySelectorAll("#contractChips .skill-chip");
+  for(var i=0;i<chips.length;i++){
+    var idx=parseInt(chips[i].getAttribute("data-cycle"),10);
+    var c=(typeof CONTRACT_CREATURES!=="undefined")?CONTRACT_CREATURES[idx]:null;
+    chips[i].classList.toggle("selected",!!(c&&c.name===name));
+  }
+}
+function renderSummonerContractCard(c){
+  var el=document.getElementById("contractCard");
+  if(!el)return;
+  if(!c){el.innerHTML="<div style='font-size:12px;color:#69706b'>尚未选择契约生物</div>";return;}
+  var attrs="";
+  var order=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  attrs+="<div style='display:flex;gap:8px;flex-wrap:wrap;margin:6px 0'>";
+  for(var i=0;i<order.length;i++){
+    var a=c.attrs[order[i]]||{};
+    attrs+="<span style='font-size:12px;background:#f6f4ef;border:1px solid #e8e2d8;border-radius:6px;padding:3px 8px'>"+order[i]+" "+(a.value===null||a.value===undefined?"—":a.value)+(a.mod===null||a.mod===undefined?"":"（"+(a.mod>=0?"+":"")+a.mod+"）")+"</span>";
+  }
+  attrs+="</div>";
+  var t="<div style='font-weight:bold;margin-bottom:4px'>"+c.name+" <span class='chip'>"+c.category+"</span></div>";
+  t+="<div style='font-size:12px;color:#69706b;margin-bottom:6px'>"+c.type+" ｜ 防御等级 "+c.ac+" ｜ 生命值 "+c.hp+" ｜ 挑战等级 "+c.cr+"</div>";
+  t+=attrs;
+  t+="<div style='font-size:12px;margin-bottom:4px'>感官："+c.senses+"　移动速度："+c.speed+"</div>";
+  t+="<div style='font-size:12px;margin-bottom:4px'>战斗加成："+c.combat+"</div>";
+  var dmg=[];
+  if(c.vulnerable&&c.vulnerable.length)dmg.push("伤害易伤："+c.vulnerable.join("、"));
+  if(c.resist&&c.resist.length)dmg.push("伤害抗性："+c.resist.join("、"));
+  if(c.immune&&c.immune.length)dmg.push("伤害免疫："+c.immune.join("、"));
+  if(c.statusImmune&&c.statusImmune.length)dmg.push("状态免疫："+c.statusImmune.join("、"));
+  if(dmg.length)t+="<div style='font-size:12px;margin-bottom:4px'>"+dmg.join("　")+"</div>";
+  t+="<div style='font-size:12px;margin-bottom:4px'>语言："+(c.languages||"—")+"</div>";
+  if(c.traits&&c.traits.length){
+    t+="<div style='font-size:12px;font-weight:bold;margin-top:6px'>特性</div><ul style='margin:2px 0 6px 18px;padding:0;font-size:12px'>";
+    for(var j=0;j<c.traits.length;j++)t+="<li><b>"+c.traits[j].name+"</b>："+c.traits[j].text+"</li>";
+    t+="</ul>";
+  }
+  if(c.actions&&c.actions.length){
+    t+="<div style='font-size:12px;font-weight:bold'>动作</div><ul style='margin:2px 0 0 18px;padding:0;font-size:12px'>";
+    for(var k=0;k<c.actions.length;k++)t+="<li><b>"+c.actions[k].name+"</b>："+c.actions[k].text+"</li>";
+    t+="</ul>";
+  }
+  el.innerHTML=t;
+}
+function pickSummonerContract(el){
+  var idx=parseInt(el.getAttribute("data-cycle"),10);
+  var c=CONTRACT_CREATURES[idx];
+  if(!c)return;
+  CHAR.contractCreature={name:c.name,category:c.category};
+  selectSummonerContractChip(c.name);
+  renderSummonerContractCard(c);
+  if(window.snd)snd.play('select');
+  checkSpecDone();updateOverview();
+}
+function rollSummonerContract(){
+  if(typeof CONTRACT_CREATURES==="undefined"||!CONTRACT_CREATURES.length)return;
+  var c=CONTRACT_CREATURES[Math.floor(Math.random()*CONTRACT_CREATURES.length)];
+  CHAR.contractCreature={name:c.name,category:c.category};
+  selectSummonerContractChip(c.name);
+  renderSummonerContractCard(c);
+  if(window.snd)snd.play('select');
+  checkSpecDone();updateOverview();
+}
+
 function selectClass(idx){
   var newClassName=CLASSES[idx].name;
   if(CHAR.className&&CHAR.className!==newClassName){CHAR.selectedSkills=[];}
   CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
-  CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
+  CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.contractCreature=null;CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
   CHAR.classIdx=idx; CHAR.className=newClassName; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
   for(var i=0;i<cards.length;i++){cards[i].classList.remove("selected");cards[i].querySelector(".card-desc").style.display="none";}
@@ -1797,6 +1898,7 @@ function selectClass(idx){
   showKeyAttrChoice(CLASSES[idx].name);
   showClericDeityChoice(CLASSES[idx].name);
   showWarlockPatronChoice(CLASSES[idx].name);
+  showSummonerContractChoice(CLASSES[idx].name);
   renderSpecChoices(CLASSES[idx].name);
   CHAR.aspiration = { text: (CHAR.aspiration && CHAR.aspiration.text) || "", picks: [] };
   renderAspirationPanel();
@@ -2925,10 +3027,10 @@ function renderStartFeaturesStep(c) {
   var cl=CHAR.classData;
   if(!cl){c.innerHTML='<div class="step-title">'+STEP_LABELS[1]+'</div><div class="empty-msg">请先在第一步选择职业</div>';return;}
   var features=CLASS_STARTING_FEATURES[CHAR.className]||[];
-  var maxPick;if(CHAR.className==="术士"){maxPick=features.length;if(!CHAR.selectedFeatures.length){for(var i=0;i<features.length;i++)CHAR.selectedFeatures.push(features[i].n);}}else if(CHAR.className==="法师"){maxPick=4;}else{maxPick=2;}
+  var maxPick;if(CHAR.className==="术士"||CHAR.className==="召唤师"){maxPick=features.length;if(!CHAR.selectedFeatures.length){for(var i=0;i<features.length;i++)CHAR.selectedFeatures.push(features[i].n);}}else if(CHAR.className==="法师"){maxPick=4;}else{maxPick=2;}
   if(!CHAR.selectedFeatures) CHAR.selectedFeatures=[];
   var h='<div class="step-title">'+STEP_LABELS[1]+'</div>';
-  h+='<div class="step-desc">'+(CHAR.className==="术士"?'术士初始拥有全部起始特性':'从起始特性中选择 <strong>'+maxPick+'</strong> 项。')+'</div>';
+  h+='<div class="step-desc">'+(CHAR.className==="术士"||CHAR.className==="召唤师"?(CHAR.className+'初始拥有全部起始特性'):'从起始特性中选择 <strong>'+maxPick+'</strong> 项。')+'</div>';
   h+="<div class='skill-select' id='featGrid'>";
   for(var i=0;i<features.length;i++){
     var f=features[i]; var sel=CHAR.selectedFeatures.indexOf(f.n)>=0;
@@ -3653,6 +3755,7 @@ function saveCharacter(){
       _cfDesc=(_mj.attr?(_mj.attr+"·"):"")+_mj.skill;
     }else if(_cfName==="博闻强识"&&CHAR.specChoices&&CHAR.specChoices["博闻强识"]&&(CHAR.specChoices["博闻强识"].skills||[]).length){
       _cfDesc="知识熟练度："+CHAR.specChoices["博闻强识"].skills.join("、");
+    }else if(_cfName==="机缘召唤"&&CHAR.contractCreature){_cfDesc="契约生物："+CHAR.contractCreature.name+"（"+CHAR.contractCreature.category+"）";
     }else if((_cfName==="奥法学者"||_cfName==="知识传承"||_cfName==="万用模组")&&CHAR.specChoices&&CHAR.specChoices[_cfName]&&CHAR.specChoices[_cfName].skill){
       _cfDesc=CHAR.specChoices[_cfName].skill;
     }else if(_cfName==="神圣领域"&&CHAR.deity){
