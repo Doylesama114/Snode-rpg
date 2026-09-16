@@ -301,6 +301,36 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 龙裔种族详情同步（PNG ↔ 三处数据 ↔ 创建页 DRAGON_TYPES/面板）
+console.log('\n=== 龙裔种族详情同步 ===');
+let dbSyncOK = true;
+try {
+  let out_dbSync = spawnSync('python', [join(BASE, 'scripts', 'verify_dragonborn_sync.py')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_dbSync.stdout) console.log(out_dbSync.stdout.trim());
+  if (out_dbSync.stderr) console.error(out_dbSync.stderr.trim());
+  if (out_dbSync.status !== 0) dbSyncOK = false;
+} catch (e) {
+  dbSyncOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(dbSyncOK ? '✅ 龙裔种族详情同步 通过' : '❌ 龙裔种族详情同步 失败');
+totalErrors += dbSyncOK ? 0 : 1;
+
+// 龙裔详情 E2E（龙种选择/XD6 吐息/2 点抗性/速度 5 米）
+console.log('\n=== 龙裔详情 E2E ===');
+let dbE2EOK = true;
+try {
+  let out_dbE2E = spawnSync('node', [join(BASE, 'verify_dragonborn_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_dbE2E.stdout) console.log(out_dbE2E.stdout.trim());
+  if (out_dbE2E.stderr) console.error(out_dbE2E.stderr.trim());
+  if (out_dbE2E.status !== 0) dbE2EOK = false;
+} catch (e) {
+  dbE2EOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(dbE2EOK ? '✅ 龙裔详情 E2E 通过' : '❌ 龙裔详情 E2E 失败');
+totalErrors += dbE2EOK ? 0 : 1;
+
 // 召唤师数据同步（docx ↔ 技能/契约生物/清单/面板/创建页/进阶占位页）
 console.log('\n=== 召唤师数据同步 ===');
 let smSyncOK = true;

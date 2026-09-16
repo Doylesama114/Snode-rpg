@@ -9,7 +9,7 @@ const UPLOAD = 'file:///' + join(BASE, '斯诺德跑团', '上传角色.html').r
 function overridesA() {
   return {
     race: '龙裔', background: '职业杀手', name: '验证龙裔战士',
-    dragonType: '赤铜龙', dragonBreath: '冰霜', dragonResistance: '冰霜 + 护甲检定',
+    dragonType: '赤铜龙', dragonBreath: '强酸', dragonResistance: '强酸（2 点）',
     raceChoices: { extraAttrs: [], humanFreeSkill: '', raceSaves: [], raceSkillChoice: '', raceProfInput: '', wingfolkHasCommon: true },
     classChoices: { weaponSpec: '斧类', weaponSpecBonus: '暴击率+1', specChoices: { '运动健将': { attr: '力量', skill: '运动-跳跃' } } },
     backgroundChoices: { deity: '', contacts: '', scamType: '', missionChannel: '公会密线', academicDomain: '' },
@@ -97,7 +97,9 @@ try {
     if ((cells.H33 || cells.H34 || cells.H35 || cells.H36 || cells.H37 || cells.H38 || cells.H39)) f.push('H33-H39 不应有内容');
     if (!/龙种/.test(cells.K112 || '')) f.push('K112 龙种缺失');
     if (!/吐息/.test(cells.K113 || '')) f.push('K113 吐息缺失');
+    if (!/强酸/.test(cells.K113 || '')) f.push('K113 吐息应为强酸（赤铜龙）');
     if (!/抗性/.test(cells.K114 || '')) f.push('K114 抗性缺失');
+    if (!/强酸（2 点）/.test(cells.K114 || '')) f.push('K114 抗性应为强酸（2 点）');
     if (!/斧类/.test(cells.Q112 || '')) f.push('Q112 武器专精缺失');
     if (!/运动-跳跃/.test(cells.Q113 || '')) f.push('Q113 运动健将缺失');
     if (!(cells.I89 || /材料包/.test(cells.I89 || ''))) f.push('I89 材料包标题缺失');

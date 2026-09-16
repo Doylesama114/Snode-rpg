@@ -1944,7 +1944,7 @@ function exportRacialTraits(state) {
     var name = base[i].name || "", desc = base[i].desc || "";
     if (race === "龙裔") {
       if (name.indexOf("龙族血脉") >= 0 && state.dragonType) desc = "龙种：" + state.dragonType;
-      else if (name.indexOf("巨龙吐息") >= 0 && state.dragonBreath) desc = "吐息：" + state.dragonBreath;
+      else if (name.indexOf("巨龙吐息") >= 0 && state.dragonBreath) { var _lv = (state.classes && state.classes[0] && state.classes[0].level) || 1; desc = "吐息：" + state.dragonBreath + "（" + _lv + "D6 · X=角色等级）"; }
       else if (name.indexOf("传承抗性") >= 0 && state.dragonResistance) desc = "抗性：" + state.dragonResistance;
     } else if (race === "半精灵") {
       if (name.indexOf("精灵恩惠") >= 0 && extraAttrs) desc = "属性选择：" + extraAttrs;

@@ -808,6 +808,7 @@ function applyCreationSnapshotToChar(snap){
   CHAR.raceProfInput=snap.raceProfInput||"";
   CHAR.extraLanguages=(snap.extraLanguages||[]).slice();
   CHAR.humanFreeSkill=snap.humanFreeSkill!=null?snap.humanFreeSkill:null;
+  if(CHAR.humanFreeSkill&&!raceHasTrait("中庸"))CHAR.humanFreeSkill=null;
   CHAR.wingfolkHasCommon=snap.wingfolkHasCommon!==false;
   if(snap.attrs){
     for(i=0;i<ATTR_NAMES.length;i++){
@@ -977,7 +978,7 @@ function updateOverview() {
       }
     }
     if (CHAR.raceName === '卓尔精灵') h += '<div class="ov-item">毒刃（种族）·制毒</div>';
-    if (CHAR.humanFreeSkill) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
+    if (CHAR.humanFreeSkill && raceHasTrait("中庸")) h += '<div class="ov-item">自由熟练: ' + CHAR.humanFreeSkill + '</div>';
     h += '</div>';
   }
   // 属性 (含种族加成)
@@ -1347,6 +1348,13 @@ var SPEC_AUTO_PROF = {
   "奇械师":{"奇械构装":{profs:{"智力":["知识-工程学"]}}}
 };
 
+/** 当前角色种族是否拥有指定特性（如人类的「中庸」） */
+function raceHasTrait(traitName) {
+  var traits = (CHAR.raceData && CHAR.raceData["特性"]) || [];
+  for (var i = 0; i < traits.length; i++) { if (traits[i] && traits[i].name === traitName) return true; }
+  return false;
+}
+
 /** 与悬浮「角色概览」熟练区同源；供概览渲染与 snowdChargen 快照共用 */
 function buildOverviewProfLines() {
   var profLines = [];
@@ -1401,7 +1409,7 @@ function buildOverviewProfLines() {
       }
     }
   }
-  if (CHAR.humanFreeSkill) {
+  if (CHAR.humanFreeSkill && raceHasTrait("中庸")) {
     var hr = typeof resolveProfSkill === "function" ? resolveProfSkill(CHAR.humanFreeSkill) : null;
     profLines.push({ name: (hr && hr.key) ? hr.key : CHAR.humanFreeSkill, src: '人类' });
   }
@@ -1933,7 +1941,7 @@ function showHumanFreeSkill(raceData){
   var traits=raceData["特性"]||[];
   var hasHumanSkill=false;
   for(var i=0;i<traits.length;i++){if(traits[i].name==="中庸"){hasHumanSkill=true;break;}}
-  if(!hasHumanSkill)return;
+  if(!hasHumanSkill){CHAR.humanFreeSkill=null;return;}
   CHAR.humanFreeSkill=null;
   var area=document.createElement("div");area.id="humanSkillArea";
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
@@ -2007,7 +2015,7 @@ function showDragonTypeChoice(raceData){
   var area=document.createElement("div");area.id="dragonTypeArea";
   area.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";area.className='popup-box';
   var h="<div style='font-size:16px;font-weight:bold;margin-bottom:8px'>选择龙种（龙裔必选）</div>";
-  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>不同龙种决定吐息伤害类型和抗性。黑龙/赤铜龙按原文为冰霜伤害+护甲检定。</div>";
+  h+="<div style='font-size:13px;color:#69706b;margin-bottom:10px'>不同龙种决定吐息伤害类型与抗性（对应类型 2 点）。巨龙吐息为 XD6（X=角色等级），闪避成功仍承受一半；黑龙/赤铜龙为强酸。</div>";
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
   for(var i=0;i<DRAGON_TYPES.length;i++){
     var d=DRAGON_TYPES[i];
@@ -2224,18 +2232,7 @@ function filterClasses(){
 
 // ====== Step 1: Race ======
 var RACE_LANGS={人类:["通用语"],矮人:["通用语","矮人语"],半身人:["通用语","半身人语"],侏儒:["通用语","侏儒语"],半精灵:["通用语","精灵语"],木精灵:["通用语","精灵语"],高等精灵:["通用语","精灵语"],卓尔精灵:["通用语","精灵语","地底通用语"],黑暗精灵:["通用语","精灵语","地底通用语"],龙裔:["通用语","龙语"],魔裔:["通用语","地狱语"],兽人:["通用语","兽人语"],巨魔:["通用语","巨魔语"],地精:["通用语","地底通用语"],狗头人:["通用语","龙语"],蜥蜴人:["通用语","龙语"],蛙人:["通用语","泽地语"],鼠人:["通用语","地底通用语"],狼人:["通用语","兽语"],血族:["通用语","深渊语"],斑猫人:["通用语","兽语"],豹兽人:["通用语","兽语"],犬牙族:["通用语","兽语"],翼空族:["鸟禽语"],牛头人:["通用语","兽语"],狐人:["通用语","兽语"],蛇人:["通用语","蛇语","荒漠语"],鱼人:["鱼人语"],人鱼:["通用语","鱼人语","海洋通用语"],龟人:["通用语","海洋通用语"]};
-var DRAGON_TYPES=[
-  {name:"金龙",breath:"光耀",resistance:"光耀"},
-  {name:"红龙",breath:"火焰",resistance:"火焰"},
-  {name:"黄铜龙",breath:"火焰",resistance:"火焰"},
-  {name:"银龙",breath:"奥术",resistance:"奥术"},
-  {name:"绿龙",breath:"毒素",resistance:"毒素"},
-  {name:"白龙",breath:"寒冷",resistance:"寒冷"},
-  {name:"蓝龙",breath:"闪电",resistance:"闪电"},
-  {name:"青铜龙",breath:"闪电",resistance:"闪电"},
-  {name:"黑龙",breath:"冰霜",resistance:"冰霜 + 护甲检定"},
-  {name:"赤铜龙",breath:"冰霜",resistance:"冰霜 + 护甲检定"}
-];
+var DRAGON_TYPES=[{name:"红龙",breath:"火焰",resistance:"火焰（2 点）"}, {name:"金龙",breath:"火焰",resistance:"火焰（2 点）"}, {name:"蓝龙",breath:"雷电",resistance:"雷电（2 点）"}, {name:"银龙",breath:"奥术",resistance:"奥术（2 点）"}, {name:"绿龙",breath:"剧毒",resistance:"剧毒（2 点）"}, {name:"青铜龙",breath:"雷电",resistance:"雷电（2 点）"}, {name:"黑龙",breath:"强酸",resistance:"强酸（2 点）"}, {name:"黄铜龙",breath:"火焰",resistance:"火焰（2 点）"}, {name:"白龙",breath:"冰冻",resistance:"冰冻（2 点）"}, {name:"赤铜龙",breath:"强酸",resistance:"强酸（2 点）"}];
 function renderRaceStep(c) {
   var h="<div class='step-title'>"+STEP_LABELS[2]+"</div>";
   h+="<div class='step-desc'>选择你的种族。不同种族提供不同的属性加成和独特天赋。</div>";
@@ -2284,6 +2281,7 @@ function raceDetail(r){
   return h;
 }function selectRace(idx){CHAR.raceExtra=[];
   CHAR.dragonType="";CHAR.dragonBreath="";CHAR.dragonResistance="";
+  CHAR.raceSaves=[];CHAR.raceSkillChoice="";CHAR.raceProfInput="";CHAR.raceSize="";CHAR.humanFreeSkill=null;
   CHAR.raceIdx=idx; CHAR.raceName=RACES[idx].name; CHAR.raceData=RACES[idx];
   var cards=document.querySelectorAll("#raceGrid .card");
   for(var i=0;i<cards.length;i++) cards[i].classList.remove("selected");
@@ -3606,7 +3604,7 @@ function saveCharacter(){
       var _rt=charData.racial_traits[_rri]||{};var _rn=_rt.name||"";var _rd2=_rt.desc||"";
       if(CHAR.raceName==="龙裔"){
         if(_rn.indexOf("龙族血脉")>=0&&CHAR.dragonType)_rd2="龙种："+CHAR.dragonType;
-        else if(_rn.indexOf("巨龙吐息")>=0&&CHAR.dragonBreath)_rd2="吐息："+CHAR.dragonBreath;
+        else if(_rn.indexOf("巨龙吐息")>=0&&CHAR.dragonBreath)_rd2="吐息："+CHAR.dragonBreath+"（XD6，X=角色等级）";
         else if(_rn.indexOf("传承抗性")>=0&&CHAR.dragonResistance)_rd2="抗性："+CHAR.dragonResistance;
       }else if(CHAR.raceName==="半精灵"){
         if(_rn.indexOf("精灵恩惠")>=0&&CHAR.raceExtra&&CHAR.raceExtra.length)_rd2="属性选择："+_joinChoice(CHAR.raceExtra);
@@ -3655,8 +3653,8 @@ function saveCharacter(){
       applyResolvedProf(allSkills,CHAR.selectedSkills[i]);
     }
   }
-  // Human free skill from 中庸 trait
-  if(CHAR.humanFreeSkill){
+  // Human free skill from 中庸 trait（仅当当前种族拥有该特性）
+  if(CHAR.humanFreeSkill && raceHasTrait("中庸")){
     if(typeof applyResolvedProf==="function"){
       applyResolvedProf(allSkills,CHAR.humanFreeSkill);
     }else{
