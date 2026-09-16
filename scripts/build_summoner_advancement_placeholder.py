@@ -34,10 +34,9 @@ TEMPLATE = ROOT / '职业页' / '守望者·进阶.html'
 NOTICE = (
     '<div class="adv-notice" style="max-width:900px;margin:16px auto 0;padding:12px 18px;'
     'border:1px solid #e0c98a;background:#fff8e6;border-radius:8px;color:#7a5c12;font-size:14px;line-height:1.7">'
-    '⏳ <b>召唤师专属进阶途径等待《基础职业进阶途径》更新</b><br>'
-    '当前页面先收录<b>通用进阶 10 条</b>；此外进阶文档中已有 3 条允许召唤师晋升'
-    '（龙脉誓约者 · 守望者/召唤师；持棋手 · 谋士/召唤师；灵唤参谋 · 谋士/召唤师），'
-    '待专属来源表更新后并入本页。'
+    '⏳ <b>《基础职业进阶途径》暂无召唤师专属章节</b><br>'
+    '本页收录<b>来源包含「召唤师」的进阶 25 条</b>（咒法师、召唤大师、龙脉誓约者、焰灵师、霜灵师、星灵师、魔兽使…）'
+    '与<b>通用进阶 10 条</b>，共 35 条；进阶文档中新增的召唤师相关卡片会随来源自动并入本页。'
     '</div>'
 )
 
@@ -52,7 +51,26 @@ def build_articles() -> tuple[str, int]:
     return articles, len(universal)
 
 
+def update_notice_only() -> int:
+    """sync 之后仅刷新页首提示文案（不动卡片）。"""
+    for path in (PAGE, MIRROR):
+        if not path.exists():
+            continue
+        text = path.read_text(encoding='utf-8')
+        if 'class="adv-notice"' in text:
+            start = text.index('<div class="adv-notice"')
+            end = text.index('</div>', start) + len('</div>')
+            text = text[:start] + NOTICE + text[end:]
+        else:
+            text = text.replace('</header>', '</header>' + chr(10) + NOTICE, 1)
+        path.write_text(text, encoding='utf-8')
+    print('✅ 已刷新召唤师·进阶页提示文案')
+    return 0
+
+
 def main() -> int:
+    if '--notice-only' in sys.argv:
+        return update_notice_only()
     check = '--check' in sys.argv
     if check:
         ok = PAGE.exists() and 'adv-notice' in PAGE.read_text(encoding='utf-8')

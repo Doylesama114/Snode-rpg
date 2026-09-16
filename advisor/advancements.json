@@ -20,20 +20,21 @@
       "职业页/数据/魔契师·进阶.json",
       "职业页/数据/奇械师·进阶.json",
       "职业页/数据/守望者·进阶.json",
-      "职业页/数据/谋士·进阶.json"
+      "职业页/数据/谋士·进阶.json",
+      "职业页/数据/召唤师·进阶.json"
     ],
-    "sourceRows": 539,
-    "count": 300,
-    "catalogCount": 300,
+    "sourceRows": 589,
+    "count": 317,
+    "catalogCount": 317,
     "scopeCounts": {
-      "class-advancement": 275,
-      "mage-only": 15,
+      "class-advancement": 293,
+      "mage-only": 14,
       "universal": 10
     },
     "universalNameCount": 10,
     "dedupeNote": "按进阶名去重；多职业同名合并 sourceClasses；牧师/魔契师写入 branches[]",
     "confidenceNote": "55 条 documented（advancement_details.js）；其余 metadata_only",
-    "generatedAt": "2026-09-14",
+    "generatedAt": "2026-09-16",
     "documentedCount": 55
   },
   "advancements": [
@@ -78,6 +79,48 @@
       "confidence": "metadata_only",
       "mageEligible": false,
       "searchText": "阿修罗 mage-only 武僧 力量15 体质14 意志13 红色1 橙色1 黑色1 赢得十场战斗环节的胜利 完成五次善举，但由于个人因素而未能获得他人的感激（不计算玩家在内） 在身行微恶后，回诸善根 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-暗之召唤师",
+      "name": "暗之召唤师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "感知": 15,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "黑色",
+          "amount": 1,
+          "color": "#595959"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为暗影系契约生物提升过3个等级②你拥有两个或以上的暗影系契约生物",
+        "与暗影系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "准备一颗暗玉、一颗纯正的暗影之心和黑暗召唤媒介，在无光的黑暗环境下怀着谨慎与敬畏的心情成功举行一场召唤强大黑暗存在的仪式"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "暗之召唤师 class-advancement 召唤师 感知15 幸运15 蓝色1 紫色1 黑色1 你满足以下任意一种条件：①你为暗影系契约生物提升过3个等级②你拥有两个或以上的暗影系契约生物 与暗影系的契约生物或召唤物一同赢得十场战斗环节的胜利 准备一颗暗玉、一颗纯正的暗影之心和黑暗召唤媒介，在无光的黑暗环境下怀着谨慎与敬畏的心情成功举行一场召唤强大黑暗存在的仪式 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-warrior-奥法骑士",
@@ -683,6 +726,47 @@
       "searchText": "彩虹裁缝 mage-only 吟游诗人 魅力15 红色1 橙色1 黄色1 绿色1 青色1 蓝色1 紫色1 粉色1 白色1 你的团队获得过每种不同的基础色彩标识 你习得过每种不同颜色标识的能力（不包括自由色彩标识） 制作一件珍稀品质或以上的服饰，并且具备足够的美学象征 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
+      "id": "adv-st-操虫使",
+      "name": "操虫使",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "体质": 14,
+        "感知": 14
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "粉色",
+          "amount": 1,
+          "color": "#FFB7E3"
+        },
+        {
+          "name": "棕色",
+          "amount": 1,
+          "color": "#843F0B"
+        }
+      ],
+      "conditions": [
+        "通过虫类生物获得过五次具有价值的情报",
+        "通过虫类生物击杀二十名角色",
+        "利用那个虫类生物在一场关键战役中破坏敌方的阵型来获取胜利"
+      ],
+      "inferenceTag": [
+        "general"
+      ],
+      "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "操虫使 class-advancement 召唤师 体质14 感知14 蓝色1 粉色1 棕色1 通过虫类生物获得过五次具有价值的情报 通过虫类生物击杀二十名角色 利用那个虫类生物在一场关键战役中破坏敌方的阵型来获取胜利 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+    },
+    {
       "id": "adv-priest-骑士-策略大师",
       "name": "策略大师",
       "scope": "class-advancement",
@@ -714,7 +798,8 @@
       "conditions": [
         "你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋",
         "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
-        "你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降"
+        "你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降",
+        "你运用己方团队的配合、情报和资源将敌对势力玩弄于股掌之中，并且迫使对方最终选择投降"
       ],
       "inferenceTag": [
         "general"
@@ -722,7 +807,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "策略大师 class-advancement 牧师 谋士 骑士 战争与谋略之神 智力15 感知15 蓝色1 橙色1 黑色1 你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋 在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点 你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
+      "searchText": "策略大师 class-advancement 牧师 谋士 骑士 战争与谋略之神 智力15 感知15 蓝色1 橙色1 黑色1 你通过自身的缜密思维而非运用检定破获三次敌对势力针对团队发起的阴谋 在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点 你运用己方团队的配合、情报和资源将敌对势力玩弄于鼓掌之中，并且迫使对方最终选择投降 你运用己方团队的配合、情报和资源将敌对势力玩弄于股掌之中，并且迫使对方最终选择投降 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "branches": [
         "骑士"
       ],
@@ -816,6 +901,49 @@
       "confidence": "metadata_only",
       "mageEligible": false,
       "searchText": "朝圣骑士 class-advancement 圣骑士 守望者 体质13 感知14 意志15 黄色1 青色1 白色1 你拥有某个在俗世层面已然销声匿迹的势力或国度传承 前往三处你所拥有的传承于世间的古老遗迹以完成朝圣 以你的传承名义在世间留下一桩正面意义的壮举，让人们知晓这一切还尚未被遗忘 tank defense 名称指向护卫/承伤方向，具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-潮灵师",
+      "name": "潮灵师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "感知": 15,
+        "魅力": 13,
+        "幸运": 14
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "青色",
+          "amount": 1,
+          "color": "#00FA99"
+        },
+        {
+          "name": "浅色",
+          "amount": 1,
+          "color": "#B3F9FF"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为水源系契约生物提升过3个等级②你拥有两个或以上的水源系契约生物",
+        "与水源系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个水源系契约生物完成首次进化②在水域环境中习得一项寒冰系契约生物能力③得到一位潮灵师的认可，对方给予你一枚潮灵纹章"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "潮灵师 class-advancement 召唤师 感知15 魅力13 幸运14 蓝色1 青色1 浅色1 你满足以下任意一种条件：①你为水源系契约生物提升过3个等级②你拥有两个或以上的水源系契约生物 与水源系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个水源系契约生物完成首次进化②在水域环境中习得一项寒冰系契约生物能力③得到一位潮灵师的认可，对方给予你一枚潮灵纹章 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-shaman-潮汐歌者",
@@ -993,7 +1121,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": false,
-      "searchText": "持棋手 mage-only 谋士 召唤师 智力15 感知15 蓝色1 橙色1 白色1 你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人 在一款策略游戏圈层的名望等级达到7级 在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+      "searchText": "持棋手 class-advancement 谋士 召唤师 智力15 感知15 蓝色1 橙色1 白色1 你在五场战斗环节不亲自出手，仅依靠召唤物或雇佣的NPC单位击败敌人 在一款策略游戏圈层的名望等级达到7级 在一场关键战役中牺牲足够数量的友方单位，以换取最终的胜利 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-sorcerer-超维元首-齿轮",
@@ -1167,7 +1295,8 @@
       "name": "地狱犬大师",
       "scope": "class-advancement",
       "sourceClasses": [
-        "魔契师"
+        "魔契师",
+        "召唤师"
       ],
       "attrsRequired": {
         "体质": 15,
@@ -1202,7 +1331,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "地狱犬大师 mage-only 魔契师 黑暗王子 体质15 魅力15 红色1 棕色1 黑色1 召唤十只地狱犬来到主物质位面 通过地狱犬击杀二十名角色 带领地狱犬参与一场关键战役并击杀一名精英级单位 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
+      "searchText": "地狱犬大师 class-advancement 魔契师 召唤师 黑暗王子 体质15 魅力15 红色1 棕色1 黑色1 召唤十只地狱犬来到主物质位面 通过地狱犬击杀二十名角色 带领地狱犬参与一场关键战役并击杀一名精英级单位 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
       "branches": [
         "黑暗王子"
       ]
@@ -1955,6 +2084,49 @@
       "searchText": "风暴主祭 mage-only 萨满祭司 力量12 体质15 感知12 蓝色1 青色1 白色1 通过带有风暴关键词的法术击杀十名角色 击溃十个风元素生物 挑战一尊强大的、与雷电、风暴或海洋具有强关联的超自然存在，以此得到那些愚钝之人的敬畏 lightning burst 名称与条件指向雷电/爆发方向，具体技能以规则书为准"
     },
     {
+      "id": "adv-st-风雷召唤师",
+      "name": "风雷召唤师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "力量": 14,
+        "敏捷": 14,
+        "意志": 13
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "黄色",
+          "amount": 1,
+          "color": "#FFF32F"
+        },
+        {
+          "name": "青色",
+          "amount": 1,
+          "color": "#00FA99"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为雷电系契约生物提升过3个等级②你拥有两个或以上的雷电系契约生物",
+        "与雷电系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个雷电系契约生物完成首次进化②在雷暴或风暴环境中习得一项雷电系契约生物能力③准备一颗闪电灵核，与雷电系契约生物在雷暴环境下一同举行晋升为风雷召唤师的仪式"
+      ],
+      "inferenceTag": [
+        "lightning",
+        "burst"
+      ],
+      "inferenceBlurb": "名称与条件指向雷电/爆发方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "风雷召唤师 class-advancement 召唤师 力量14 敏捷14 意志13 蓝色1 黄色1 青色1 你满足以下任意一种条件：①你为雷电系契约生物提升过3个等级②你拥有两个或以上的雷电系契约生物 与雷电系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个雷电系契约生物完成首次进化②在雷暴或风暴环境中习得一项雷电系契约生物能力③准备一颗闪电灵核，与雷电系契约生物在雷暴环境下一同举行晋升为风雷召唤师的仪式 lightning burst 名称与条件指向雷电/爆发方向，具体技能以规则书为准"
+    },
+    {
       "id": "adv-monk-风行者",
       "name": "风行者",
       "scope": "class-advancement",
@@ -2319,7 +2491,8 @@
       "scope": "class-advancement",
       "sourceClasses": [
         "猎人",
-        "奇械师"
+        "奇械师",
+        "召唤师"
       ],
       "attrsRequired": {
         "体质": 14,
@@ -2343,8 +2516,8 @@
         }
       ],
       "conditions": [
-        "你拥有一台奇械构造体作为你的“野兽伙伴”",
-        "令你的奇械野兽伙伴击杀二十名角色",
+        "你拥有一台奇械构造体作为你的“野兽伙伴”或“契约生物”",
+        "令你的奇械野兽伙伴或契约生物击杀二十名角色",
         "使这台奇械构造体觉醒机魂，成为真正的伙伴"
       ],
       "inferenceTag": [
@@ -2353,7 +2526,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "钢铁驯兽师 class-advancement 猎人 奇械师 体质14 智力14 紫色1 棕色1 白色1 你拥有一台奇械构造体作为你的“野兽伙伴” 令你的奇械野兽伙伴击杀二十名角色 使这台奇械构造体觉醒机魂，成为真正的伙伴 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+      "searchText": "钢铁驯兽师 class-advancement 猎人 奇械师 召唤师 体质14 智力14 紫色1 棕色1 白色1 你拥有一台奇械构造体作为你的“野兽伙伴”或“契约生物” 令你的奇械野兽伙伴或契约生物击杀二十名角色 使这台奇械构造体觉醒机魂，成为真正的伙伴 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
       "id": "adv-wd-高地守卫",
@@ -2732,6 +2905,48 @@
       "branchFulls": [
         "公正与荣耀之神"
       ]
+    },
+    {
+      "id": "adv-st-光之召唤师",
+      "name": "光之召唤师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "魅力": 15,
+        "意志": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "黄色",
+          "amount": 1,
+          "color": "#FFF32F"
+        },
+        {
+          "name": "浅色",
+          "amount": 1,
+          "color": "#B3F9FF"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为光耀系契约生物提升过3个等级②你拥有两个或以上的光耀系契约生物",
+        "与光耀系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "准备一份光源、一根天界生物的羽翼和光明召唤媒介，在光芒笼罩的环境下怀着平静与尊重的心情成功举行一场召唤强大光明存在的仪式"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "光之召唤师 class-advancement 召唤师 魅力15 意志15 蓝色1 黄色1 浅色1 你满足以下任意一种条件：①你为光耀系契约生物提升过3个等级②你拥有两个或以上的光耀系契约生物 与光耀系的契约生物或召唤物一同赢得十场战斗环节的胜利 准备一份光源、一根天界生物的羽翼和光明召唤媒介，在光芒笼罩的环境下怀着平静与尊重的心情成功举行一场召唤强大光明存在的仪式 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-priest-天父-光铸者",
@@ -3493,6 +3708,49 @@
       "confidence": "metadata_only",
       "mageEligible": true,
       "searchText": "幻术师 class-advancement 法师 吟游诗人 智力14 魅力14 蓝色1 青色1 粉色1 你通过惑控或幻象效果成功欺骗二十名角色 你花费过幕间物语来阅读一本幻术学派的魔典 令三个不同势力或阵营的、具有一定身份地位的角色相信你已进阶幻术师 你通过惑控或幻象效果效果成功欺骗二十名角色 illusion control 名称指向幻术/控场方向，具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-荒野召唤师",
+      "name": "荒野召唤师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "体质": 15,
+        "感知": 13,
+        "幸运": 14
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "绿色",
+          "amount": 1,
+          "color": "#00B050"
+        },
+        {
+          "name": "棕色",
+          "amount": 1,
+          "color": "#843F0B"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为岩石或森林系契约生物提升过3个等级②你拥有两个或以上的岩石或森林系契约生物",
+        "与岩石或森林系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个岩石或森林系契约生物完成首次进化②在自然环境中习得一项岩石或森林系契约生物能力③得到一份来自自然的馈赠"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "荒野召唤师 class-advancement 召唤师 体质15 感知13 幸运14 蓝色1 绿色1 棕色1 你满足以下任意一种条件：①你为岩石或森林系契约生物提升过3个等级②你拥有两个或以上的岩石或森林系契约生物 与岩石或森林系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个岩石或森林系契约生物完成首次进化②在自然环境中习得一项岩石或森林系契约生物能力③得到一份来自自然的馈赠 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-priest-隐者-灰袍收割者",
@@ -4872,6 +5130,45 @@
       ]
     },
     {
+      "id": "adv-st-空中王牌",
+      "name": "空中王牌",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {},
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "橙色",
+          "amount": 1,
+          "color": "#EE822F"
+        },
+        {
+          "name": "浅色",
+          "amount": 1,
+          "color": "#B3F9FF"
+        }
+      ],
+      "conditions": [
+        "召唤具有飞行能力的召唤物或在空中状态下击败二十名角色",
+        "通过空中特性快速传递五条重要讯息，并且最终凭借速度抢得先机",
+        "在一场关键战役中依靠空中特性成功扭转战局"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "空中王牌 class-advancement 召唤师 蓝色1 橙色1 浅色1 召唤具有飞行能力的召唤物或在空中状态下击败二十名角色 通过空中特性快速传递五条重要讯息，并且最终凭借速度抢得先机 在一场关键战役中依靠空中特性成功扭转战局 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+    },
+    {
       "id": "adv-sorcerer-鲜血大公-恐惧主教",
       "name": "恐惧主教",
       "scope": "class-advancement",
@@ -5689,7 +5986,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": false,
-      "searchText": "灵唤参谋 mage-only 谋士 召唤师 感知15 魅力15 紫色1 粉色1 白色1 你为五个鬼魂、精魄或幽灵系召唤物提供过建议 你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索 与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+      "searchText": "灵唤参谋 class-advancement 谋士 召唤师 感知15 魅力15 紫色1 粉色1 白色1 你为五个鬼魂、精魄或幽灵系召唤物提供过建议 你得到三次来自鬼魂、精魄或幽灵系召唤物的警示和重要线索 与至少三位鬼魂、精魄或幽灵系召唤物完整参与一场战役 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-priest-隐者-灵魂炼金师",
@@ -5816,7 +6113,8 @@
       "conditions": [
         "举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通",
         "造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往",
-        "驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作"
+        "驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作",
+        "造访三处在当地预示着不祥、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往"
       ],
       "inferenceTag": [
         "general"
@@ -5824,7 +6122,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "灵媒 class-advancement 牧师 萨满祭司 魔契师 谋士 隐者 夜之国女王 死神 感知16 青色1 紫色1 白色1 举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通 造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往 驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
+      "searchText": "灵媒 class-advancement 牧师 萨满祭司 魔契师 谋士 隐者 夜之国女王 死神 感知16 青色1 紫色1 白色1 举行十次降灵仪式来与鬼魂、幽灵或其他被吸引而来的不死生物沟通 造访三处在当地预示着不详、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往 驱散一个具有深刻过往、危害当地多年的恶灵，并将这些经历撰写为一本发行的著作 造访三处在当地预示着不祥、拥有着凶兆传闻的地标建筑，与栖息在此的鬼魂进行交谈，了解对方的过往 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "branches": [
         "隐者",
         "夜之国女王"
@@ -5874,6 +6172,48 @@
       "confidence": "metadata_only",
       "mageEligible": true,
       "searchText": "灵能术士 mage-only 术士 魅力15 幸运15 青色1 紫色1 粉色1 设法使自身成为一名潜在的灵能者 通过意外遭遇、人体实验或血脉觉醒等手段，而非学习、传授等方式获得三个包含灵能关键词的技能 使自身的躯体暴露在外空间环境下，承受灵能风暴余波的影响以觉醒体内的血脉 lightning burst 名称与条件指向雷电/爆发方向，具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-灵兽使",
+      "name": "灵兽使",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "感知": 14,
+        "魅力": 15,
+        "幸运": 13
+      },
+      "markCost": [
+        {
+          "name": "青色",
+          "amount": 1,
+          "color": "#00FA99"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "白色",
+          "amount": 1,
+          "color": "#FFFFFF"
+        }
+      ],
+      "conditions": [
+        "你曾经有一个契约生物，但如今已逝去或消亡",
+        "调查五处关于灵魂兽的传闻，并且期间就与至少十名与灵魂兽息息相关的角色产生过交互（不计算玩家在内）",
+        "与已逝去、消亡的契约生物重新缔结契约"
+      ],
+      "inferenceTag": [
+        "general"
+      ],
+      "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "灵兽使 class-advancement 召唤师 感知14 魅力15 幸运13 青色1 紫色1 白色1 你曾经有一个契约生物，但如今已逝去或消亡 调查五处关于灵魂兽的传闻，并且期间就与至少十名与灵魂兽息息相关的角色产生过交互（不计算玩家在内） 与已逝去、消亡的契约生物重新缔结契约 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
       "id": "adv-sorcerer-星空吞噬者-领航员",
@@ -6006,7 +6346,7 @@
       "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": false,
-      "searchText": "龙脉誓约者 mage-only 守望者 召唤师 力量14 魅力15 幸运13 红色1 蓝色1 紫色1 与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任 参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等） 在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+      "searchText": "龙脉誓约者 class-advancement 守望者 召唤师 力量14 魅力15 幸运13 红色1 蓝色1 紫色1 与一头巨龙或亚龙种生物进行友善的互动，获得对方的认可或信任 参与三场与龙类相关的事件（例如巨龙会晤、龙裔、狗头人的大型集会、龙族遗迹探索等） 在一次对巨龙或其眷属的重大威胁中挺身而出，以获得对方的馈赠 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
       "id": "adv-paladin-律法之手",
@@ -6314,6 +6654,48 @@
       "confidence": "metadata_only",
       "mageEligible": true,
       "searchText": "秘法师 mage-only 法师 智力15 幸运12 蓝色1 紫色1 黑色1 在秘教集会的过程中获取五次有价值的魔法情报 你花费过幕间物语来阅读一本黑魔法、神秘学或其他非主流学派的魔典 准备一颗影钻、一个超自然生物的核心部位和一件神秘学物质，在通过秘法构建的空间中举行晋升为秘法师的仪式 arcane utility 名称指向奥术/多功能施法方向，具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-秘能召唤者",
+      "name": "秘能召唤者",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "智力": 15,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "白色",
+          "amount": 1,
+          "color": "#FFFFFF"
+        }
+      ],
+      "conditions": [
+        "施展二十次带有奥术、增益或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
+        "消灭或驱逐十个因你追求知识、魔法和禁忌而来的异界追击者",
+        "与一个强大的魔法生物缔结永久的契约效果"
+      ],
+      "inferenceTag": [
+        "arcane",
+        "utility"
+      ],
+      "inferenceBlurb": "名称指向奥术/多功能施法方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "秘能召唤者 class-advancement 召唤师 智力15 幸运15 蓝色1 紫色1 白色1 施展二十次带有奥术、增益或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次） 消灭或驱逐十个因你追求知识、魔法和禁忌而来的异界追击者 与一个强大的魔法生物缔结永久的契约效果 arcane utility 名称指向奥术/多功能施法方向，具体技能以规则书为准"
     },
     {
       "id": "adv-priest-铁匠-秘银猎手",
@@ -6633,6 +7015,48 @@
       "branches": [
         "夜之国女王"
       ]
+    },
+    {
+      "id": "adv-st-魔兽使",
+      "name": "魔兽使",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "魅力": 15,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "橙色",
+          "amount": 1,
+          "color": "#EE822F"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "棕色",
+          "amount": 1,
+          "color": "#843F0B"
+        }
+      ],
+      "conditions": [
+        "你成功召唤十次凶悍的野兽、怪兽或魔法兽，并且没有受到对方攻击",
+        "穿行一片以魔兽而著称的野外环境，在此期间没有进入过战斗环节",
+        "与一位魔法兽之王、幻兽领主或上古魔兽建立正式契约，获得对方的部分权柄"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "魔兽使 class-advancement 召唤师 魅力15 幸运15 橙色1 紫色1 棕色1 你成功召唤十次凶悍的野兽、怪兽或魔法兽，并且没有受到对方攻击 穿行一片以魔兽而著称的野外环境，在此期间没有进入过战斗环节 与一位魔法兽之王、幻兽领主或上古魔兽建立正式契约，获得对方的部分权柄 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-mage-魔药学家",
@@ -7824,7 +8248,8 @@
       "scope": "class-advancement",
       "sourceClasses": [
         "术士",
-        "魔契师"
+        "魔契师",
+        "召唤师"
       ],
       "attrsRequired": {
         "体质": 12,
@@ -7859,7 +8284,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "深渊召唤者 class-advancement 术士 魔契师 深渊炎魔 暴虐领主 体质12 魅力15 红色1 蓝色1 绿色1 召唤十只深渊恶魔来到主物质位面 通过献祭、赐福或血脉觉醒等手段，而非学习、传授等方式获得三个包含邪能关键词的技能 开启一道传送门以使得一支深渊的完备部队能够进驻这个位面，并且...确保自身活下去！ conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
+      "searchText": "深渊召唤者 class-advancement 术士 魔契师 召唤师 深渊炎魔 暴虐领主 体质12 魅力15 红色1 蓝色1 绿色1 召唤十只深渊恶魔来到主物质位面 通过献祭、赐福或血脉觉醒等手段，而非学习、传授等方式获得三个包含邪能关键词的技能 开启一道传送门以使得一支深渊的完备部队能够进驻这个位面，并且...确保自身活下去！ conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
       "branches": [
         "深渊炎魔",
         "暴虐领主"
@@ -8725,6 +9150,49 @@
       "branchFulls": [
         "艺术与创造之神"
       ]
+    },
+    {
+      "id": "adv-st-霜灵师",
+      "name": "霜灵师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "体质": 13,
+        "魅力": 14,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "浅色",
+          "amount": 1,
+          "color": "#B3F9FF"
+        },
+        {
+          "name": "白色",
+          "amount": 1,
+          "color": "#FFFFFF"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为寒冰系契约生物提升过3个等级②你拥有两个或以上的寒冰系契约生物",
+        "与寒冰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个寒冰系契约生物完成首次进化②在寒冷环境中（例如雪山、冰原、极地等）习得一项寒冰系契约生物能力③得到一位霜灵师的认可，对方给予你一枚霜灵纹章"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "霜灵师 class-advancement 召唤师 体质13 魅力14 幸运15 蓝色1 浅色1 白色1 你满足以下任意一种条件：①你为寒冰系契约生物提升过3个等级②你拥有两个或以上的寒冰系契约生物 与寒冰系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个寒冰系契约生物完成首次进化②在寒冷环境中（例如雪山、冰原、极地等）习得一项寒冰系契约生物能力③得到一位霜灵师的认可，对方给予你一枚霜灵纹章 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-shaman-水晶学者",
@@ -10265,6 +10733,47 @@
       ]
     },
     {
+      "id": "adv-st-心灵召唤者",
+      "name": "心灵召唤者",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "感知": 16
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "青色",
+          "amount": 1,
+          "color": "#00FA99"
+        },
+        {
+          "name": "白色",
+          "amount": 1,
+          "color": "#FFFFFF"
+        }
+      ],
+      "conditions": [
+        "与十名NPC角色进行过心灵层面的沟通",
+        "召唤十次仅有目标本身能够目击的单位",
+        "召唤一个源于他人心中所虚构的存在，，并使其与自身或诞生来源缔结契约效果"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "心灵召唤者 class-advancement 召唤师 感知16 蓝色1 青色1 白色1 与十名NPC角色进行过心灵层面的沟通 召唤十次仅有目标本身能够目击的单位 召唤一个源于他人心中所虚构的存在，，并使其与自身或诞生来源缔结契约效果 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+    },
+    {
       "id": "adv-sorcerer-星空吞噬者-星骸骑士",
       "name": "星骸骑士",
       "scope": "class-advancement",
@@ -10309,6 +10818,48 @@
       "branches": [
         "星空吞噬者"
       ]
+    },
+    {
+      "id": "adv-st-星灵师",
+      "name": "星灵师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "感知": 15,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "青色",
+          "amount": 1,
+          "color": "#00FA99"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为星辰系契约生物提升过3个等级②你拥有两个或以上的星辰系契约生物",
+        "与星辰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个星辰系契约生物完成首次进化②在星界、宇宙环境，或者能够目睹群星的地点中（例如山顶、外空间、广袤无垠的夜空等）习得一项星辰系契约生物能力③得到一位星灵师的认可，对方给予你一枚星灵纹章"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "星灵师 class-advancement 召唤师 感知15 幸运15 蓝色1 青色1 紫色1 你满足以下任意一种条件：①你为星辰系契约生物提升过3个等级②你拥有两个或以上的星辰系契约生物 与星辰系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个星辰系契约生物完成首次进化②在星界、宇宙环境，或者能够目睹群星的地点中（例如山顶、外空间、广袤无垠的夜空等）习得一项星辰系契约生物能力③得到一位星灵师的认可，对方给予你一枚星灵纹章 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-sorcerer-星空吞噬者-星渊引导者",
@@ -11014,6 +11565,48 @@
       "searchText": "烟火技师 class-advancement 吟游诗人 奇械师 敏捷13 智力14 魅力12 红色1 青色1 紫色1 制作十种非战斗侧的奇械设备 施展二十次非伤害性的戏法 通过你制作的神奇道具为一场节日庆典带来更加鼎盛的热度，使所有参与者为这些富有创意性的设施所折服 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
+      "id": "adv-st-焰灵师",
+      "name": "焰灵师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "魅力": 15,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "红色",
+          "amount": 1,
+          "color": "#FF0000"
+        },
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "橙色",
+          "amount": 1,
+          "color": "#EE822F"
+        }
+      ],
+      "conditions": [
+        "你满足以下任意一种条件：①你为火焰系契约生物提升过3个等级②你拥有两个或以上的火焰系契约生物",
+        "与火焰系的契约生物或召唤物一同赢得十场战斗环节的胜利",
+        "你满足以下任意两种条件：①为一个火焰系契约生物完成首次进化②在火焰环境中（例如火山、熔岩区、燃烧的森林等）习得一项火焰系契约生物能力③得到一位焰灵师的认可，对方给予你一枚焰灵纹章"
+      ],
+      "inferenceTag": [
+        "fire",
+        "burst"
+      ],
+      "inferenceBlurb": "名称与条件指向火焰/爆发输出方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "焰灵师 class-advancement 召唤师 魅力15 幸运15 红色1 蓝色1 橙色1 你满足以下任意一种条件：①你为火焰系契约生物提升过3个等级②你拥有两个或以上的火焰系契约生物 与火焰系的契约生物或召唤物一同赢得十场战斗环节的胜利 你满足以下任意两种条件：①为一个火焰系契约生物完成首次进化②在火焰环境中（例如火山、熔岩区、燃烧的森林等）习得一项火焰系契约生物能力③得到一位焰灵师的认可，对方给予你一枚焰灵纹章 fire burst 名称与条件指向火焰/爆发输出方向，具体技能以规则书为准"
+    },
+    {
       "id": "adv-paladin-焰刃骑士",
       "name": "焰刃骑士",
       "scope": "class-advancement",
@@ -11107,7 +11700,8 @@
       "scope": "class-advancement",
       "sourceClasses": [
         "牧师",
-        "魔契师"
+        "魔契师",
+        "召唤师"
       ],
       "attrsRequired": {
         "魅力": 16
@@ -11141,7 +11735,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "妖精召唤者 class-advancement 牧师 魔契师 艺人 蝶神 四季姐妹 艺术与创造之神 魅力16 蓝色1 青色1 粉色1 召唤十只精类生物来到主物质位面 经历三场由自然界的精类生物所引发的事件 造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
+      "searchText": "妖精召唤者 class-advancement 牧师 魔契师 召唤师 艺人 蝶神 四季姐妹 艺术与创造之神 魅力16 蓝色1 青色1 粉色1 召唤十只精类生物来到主物质位面 经历三场由自然界的精类生物所引发的事件 造访妖精荒野的一个位面，与当地居民进行友善的交互，并且最后由该位面的宗主将你送返回主物质位面 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准",
       "branches": [
         "艺人",
         "蝶神",
@@ -11356,6 +11950,47 @@
       "confidence": "metadata_only",
       "mageEligible": false,
       "searchText": "异教徒杀手 mage-only 游荡者 感知15 红色1 黑色1 白色1 你对某个神祇、宗主或是其他超自然存在拥有深刻信仰，并且在所属势力中的名望等级不为0 击杀二十名你所属的信仰敌对势力的角色 杀死三名你所属的信仰敌对势力当中具有一定影响力的角色（包括敌对教团的高层、资助者或其他深度关联者等） general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-异界学者",
+      "name": "异界学者",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "智力": 16,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "黑色",
+          "amount": 1,
+          "color": "#595959"
+        }
+      ],
+      "conditions": [
+        "你阅读过十本关于异位面或次级维度的书籍",
+        "你花费过幕间物语来阅读一本涉及异界的魔典",
+        "通过亲自探索，获得一份来自异位面或次级维度的传承"
+      ],
+      "inferenceTag": [
+        "general"
+      ],
+      "inferenceBlurb": "仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "异界学者 class-advancement 召唤师 智力16 幸运15 蓝色1 紫色1 黑色1 你阅读过十本关于异位面或次级维度的书籍 你花费过幕间物语来阅读一本涉及异界的魔典 通过亲自探索，获得一份来自异位面或次级维度的传承 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
       "id": "adv-sorcerer-鲜血大公-疫病使者",
@@ -12700,6 +13335,49 @@
       "searchText": "战斗法师 class-advancement 法师 吟游诗人 敏捷12 体质12 智力15 蓝色1 青色1 紫色1 赢得十场战斗环节的胜利 使用法术击杀二十名角色 通过实战技巧战胜一名挑战等级高于你的角色等级的法师职业者 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
     },
     {
+      "id": "adv-st-瘴气牧者",
+      "name": "瘴气牧者",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "体质": 13,
+        "感知": 14,
+        "意志": 14
+      },
+      "markCost": [
+        {
+          "name": "绿色",
+          "amount": 1,
+          "color": "#00B050"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "黑色",
+          "amount": 1,
+          "color": "#595959"
+        }
+      ],
+      "conditions": [
+        "你成功使十名敌人进入中毒或感染状态",
+        "通过召唤物或场地效应所产生的剧毒伤害击杀二十名角色",
+        "在一场关键战役中通过持续性的负面效果所造成的伤害终结一名精英级的敌方单位"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "瘴气牧者 class-advancement 召唤师 体质13 感知14 意志14 绿色1 紫色1 黑色1 你成功使十名敌人进入中毒或感染状态 通过召唤物或场地效应所产生的剧毒伤害击杀二十名角色 在一场关键战役中通过持续性的负面效果所造成的伤害终结一名精英级的敌方单位 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+    },
+    {
       "id": "adv-shaman-沼泽巫师",
       "name": "沼泽巫师",
       "scope": "class-advancement",
@@ -12738,6 +13416,49 @@
       "confidence": "metadata_only",
       "mageEligible": false,
       "searchText": "沼泽巫师 mage-only 萨满祭司 感知15 绿色1 浅色1 紫色1 你满足以下任意两种条件：①造成十次自然或剧毒伤害②触发过十次生命值回复效果③施加过十次异常状态 在自然环境下发起三次突袭轮次，并且在这些过程中为敌人附加过异常状态 为当地的自然生态留下一段令人印象深刻的禁忌传闻 general 仅有进阶元数据（属性/标识/剧情条件），具体技能以规则书为准"
+    },
+    {
+      "id": "adv-st-召唤大师",
+      "name": "召唤大师",
+      "scope": "class-advancement",
+      "sourceClasses": [
+        "召唤师"
+      ],
+      "attrsRequired": {
+        "智力": 14,
+        "感知": 13,
+        "幸运": 15
+      },
+      "markCost": [
+        {
+          "name": "蓝色",
+          "amount": 1,
+          "color": "#00B0F0"
+        },
+        {
+          "name": "紫色",
+          "amount": 1,
+          "color": "#B94BFF"
+        },
+        {
+          "name": "白色",
+          "amount": 1,
+          "color": "#FFFFFF"
+        }
+      ],
+      "conditions": [
+        "施展二十次带有召唤单位关键词的能力",
+        "拥有至少四个契约生物",
+        "你满足以下任意两种条件：①为一个契约生物完成高级进化②为你的契约生物提升过共计8个等级③通过咒灵召唤或灵摆召唤掷出过001"
+      ],
+      "inferenceTag": [
+        "conjuration",
+        "summon"
+      ],
+      "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
+      "confidence": "metadata_only",
+      "mageEligible": false,
+      "searchText": "召唤大师 class-advancement 召唤师 智力14 感知13 幸运15 蓝色1 紫色1 白色1 施展二十次带有召唤单位关键词的能力 拥有至少四个契约生物 你满足以下任意两种条件：①为一个契约生物完成高级进化②为你的契约生物提升过共计8个等级③通过咒灵召唤或灵摆召唤掷出过001 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-st-鸩酒调师",
@@ -13054,9 +13775,10 @@
     {
       "id": "adv-mage-咒法师",
       "name": "咒法师",
-      "scope": "mage-only",
+      "scope": "class-advancement",
       "sourceClasses": [
-        "法师"
+        "法师",
+        "召唤师"
       ],
       "attrsRequired": {
         "智力": 15,
@@ -13091,7 +13813,7 @@
       "inferenceBlurb": "名称指向咒法/召唤方向，具体技能以规则书为准",
       "confidence": "metadata_only",
       "mageEligible": true,
-      "searchText": "咒法师 mage-only 法师 智力15 幸运12 蓝色1 青色1 紫色1 施展二十次带有跃迁、随机性或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次） 施展三次超过当前位阶的法术 通过任意仪式召唤一只异界生物，并与对方缔结永久的契约效果 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
+      "searchText": "咒法师 class-advancement 法师 召唤师 智力15 幸运12 蓝色1 青色1 紫色1 施展二十次带有跃迁、随机性或召唤单位关键词的能力（一个能力同时具有多个关键词时仅计算一次） 施展三次超过当前位阶的法术 通过任意仪式召唤一只异界生物，并与对方缔结永久的契约效果 conjuration summon 名称指向咒法/召唤方向，具体技能以规则书为准"
     },
     {
       "id": "adv-monk-朱鹤尊者",

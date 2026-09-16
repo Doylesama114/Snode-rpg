@@ -28,7 +28,7 @@ STAT_KEYS = ("力量", "敏捷", "体质", "智力", "感知", "魅力", "意志
 BASE_CLASSES = (
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊",
     "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
-    "谋士",
+    "谋士", "召唤师",
 )
 SKIP_NAMES = frozenset({"进阶", "属性值需求", "来源", "标识", "特殊条件", "1", "2", "3", *STAT_KEYS})
 
@@ -68,6 +68,7 @@ CLASS_SLUG = {
     "奇械师": "artificer",
     "守望者": "wd",
     "谋士": "st",
+    "召唤师": "sm",
     "通用": "common",
 }
 
@@ -88,6 +89,7 @@ CONTAINER_ID = {
     "奇械师": "artificer-adv-container",
     "守望者": "wd-adv-container",
     "谋士": "st-adv-container",
+    "召唤师": "sm-adv-container",
     "通用": "common-adv-container",
 }
 
@@ -108,6 +110,7 @@ EMPTY_DIV_ID = {
     "奇械师": "artificer-adv-empty",
     "守望者": "wd-adv-empty",
     "谋士": "st-adv-empty",
+    "召唤师": "sm-adv-empty",
     "通用": "common-adv-empty",
 }
 
@@ -568,6 +571,26 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def cards_for_class(parsed: dict, cls: str) -> list[dict]:
+    """取该职业的进阶卡：有章节用章节；无章节（如召唤师）则汇总所有来源含本职业的卡片。
+
+    同名卡片跨章节只取一次（来源并集已由 unify_source_classes 统一）。
+    """
+    own = parsed.get(cls)
+    if own is not None:
+        return list(own)
+    out: list[dict] = []
+    seen: set[str] = set()
+    for other, cards in parsed.items():
+        if other == "通用":
+            continue
+        for c in cards:
+            if cls in (c.get("source_classes") or []) and c["name"] not in seen:
+                seen.add(c["name"])
+                out.append(c)
+    return out
+
+
 def unify_source_classes(parsed: dict) -> int:
     """同名进阶在多个职业章节出现时，来源取全章节并集并回写。
 
@@ -610,7 +633,7 @@ def sync_advancements(docx: Path = DOCX) -> dict:
 
     for cls in BASE_CLASSES:
         slug = CLASS_SLUG[cls]
-        class_cards = list(parsed.get(cls, []))
+        class_cards = cards_for_class(parsed, cls)
         merged_cards = class_cards + universal
         seen_ids: dict[str, int] = {}
         entries = [card_to_json_entry(c, cls, slug, seen_ids) for c in merged_cards]

@@ -16,7 +16,7 @@ const RULES_SUMMARY = path.join(ROOT, 'advisor', 'rules', 'rules_summary.json');
 
 const BASE_CLASSES = [
   '蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊',
-  '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士',
+  '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士', '召唤师',
 ];
 
 const CASTER_CLASSES = new Set([
