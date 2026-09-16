@@ -301,6 +301,66 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 召唤师数据同步（docx ↔ 技能/契约生物/清单/面板/创建页/进阶占位页）
+console.log('\n=== 召唤师数据同步 ===');
+let smSyncOK = true;
+try {
+  let out_smSync = spawnSync('python', [join(BASE, 'scripts', 'verify_summoner_sync.py')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_smSync.stdout) console.log(out_smSync.stdout.trim());
+  if (out_smSync.stderr) console.error(out_smSync.stderr.trim());
+  if (out_smSync.status !== 0) smSyncOK = false;
+} catch (e) {
+  smSyncOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(smSyncOK ? '✅ 召唤师数据同步 通过' : '❌ 召唤师数据同步 失败');
+totalErrors += smSyncOK ? 0 : 1;
+
+// 召唤师职业页与契约生物切换区 E2E
+console.log('\n=== 召唤师职业页与契约生物切换区 E2E ===');
+let smPageOK = true;
+try {
+  let out_smPage = spawnSync('node', [join(BASE, 'verify_summoner_class_page_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_smPage.stdout) console.log(out_smPage.stdout.trim());
+  if (out_smPage.stderr) console.error(out_smPage.stderr.trim());
+  if (out_smPage.status !== 0) smPageOK = false;
+} catch (e) {
+  smPageOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(smPageOK ? '✅ 召唤师职业页与契约生物切换区 E2E 通过' : '❌ 召唤师职业页与契约生物切换区 E2E 失败');
+totalErrors += smPageOK ? 0 : 1;
+
+// 召唤师创建页 E2E，第1步选契约生物/起始特性全给/FP=幸运
+console.log('\n=== 召唤师创建页 E2E ===');
+let smChgOK = true;
+try {
+  let out_smChg = spawnSync('node', [join(BASE, 'verify_summoner_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_smChg.stdout) console.log(out_smChg.stdout.trim());
+  if (out_smChg.stderr) console.error(out_smChg.stderr.trim());
+  if (out_smChg.status !== 0) smChgOK = false;
+} catch (e) {
+  smChgOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(smChgOK ? '✅ 召唤师创建页 E2E 通过' : '❌ 召唤师创建页 E2E 失败');
+totalErrors += smChgOK ? 0 : 1;
+
+// 召唤师面板 E2E，SKILL_DATA/配色/契约生物卡
+console.log('\n=== 召唤师面板 E2E ===');
+let smPanelOK = true;
+try {
+  let out_smPanel = spawnSync('node', [join(BASE, 'verify_summoner_panel_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (out_smPanel.stdout) console.log(out_smPanel.stdout.trim());
+  if (out_smPanel.stderr) console.error(out_smPanel.stderr.trim());
+  if (out_smPanel.status !== 0) smPanelOK = false;
+} catch (e) {
+  smPanelOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(smPanelOK ? '✅ 召唤师面板 E2E 通过' : '❌ 召唤师面板 E2E 失败');
+totalErrors += smPanelOK ? 0 : 1;
+
 // 谋士同步校验（docx ↔ JSON/HTML/面板/清单/兼职/顾问）
 console.log('\n=== 谋士数据同步 ===');
 let msSyncOK = true;
