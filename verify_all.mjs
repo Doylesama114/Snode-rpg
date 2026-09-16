@@ -301,6 +301,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 职业专长切换回归（19 页 chip→面板 独立切换）
+console.log('\n=== 职业专长切换回归 ===');
+let tabOK = true;
+try {
+  let tabOut = spawnSync('node', [join(BASE, 'verify_class_feature_tabs_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (tabOut.stdout) console.log(tabOut.stdout.trim());
+  if (tabOut.stderr) console.error(tabOut.stderr.trim());
+  if (tabOut.status !== 0) tabOK = false;
+} catch (e) {
+  tabOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(tabOK ? '✅ 职业专长切换回归 通过' : '❌ 职业专长切换回归 失败');
+totalErrors += tabOK ? 0 : 1;
+
 // 技能描述完整性（17 职业 docx 规则行全入库）
 console.log('\n=== 技能描述完整性 ===');
 let descOK = true;

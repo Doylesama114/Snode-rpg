@@ -60,6 +60,38 @@ const sw = await page.evaluate(() => {
 ok('切换到水源系·潮汐龟', sw[0].id === 'sm-contract-潮汐龟' && /防御等级 16/.test(sw[0].txt), JSON.stringify(sw[0]));
 ok('切换到通用系·棕纹狼', sw[1].id === 'sm-contract-棕纹狼' && /啃咬/.test(sw[1].txt), JSON.stringify(sw[1]));
 
+// 两个 class-features 区互不干扰（职业专长 chip 不应切换契约生物面板）
+const tabs = await page.evaluate(async () => {
+  const g0 = document.getElementById('sm-class-features');
+  const g1 = document.getElementById('sm-contract-creatures');
+  const chips0 = [...g0.querySelectorAll('.class-feature-chip')];
+  const before = (g1.querySelector('.class-feature-panel.active h3') || {}).textContent || '';
+  const out = [{ before }];
+  for (const idx of [1, 2]) {
+    chips0[idx].click();
+    await new Promise(r => setTimeout(r, 60));
+    out.push({
+      clicked: chips0[idx].textContent.trim(),
+      own: (g0.querySelector('.class-feature-panel.active h3') || {}).textContent || '',
+      contract: (g1.querySelector('.class-feature-panel.active h3') || {}).textContent || '',
+      contractChip: (g1.querySelector('.class-feature-chip.active') || {}).textContent || '',
+    });
+  }
+  // 契约区自身仍可切换
+  const chips1 = [...g1.querySelectorAll('.class-feature-chip')];
+  chips1[2].click();
+  await new Promise(r => setTimeout(r, 60));
+  out.push({
+    clicked: chips1[2].textContent.trim(),
+    own: (g0.querySelector('.class-feature-panel.active h3') || {}).textContent || '',
+    contract: (g1.querySelector('.class-feature-panel.active h3') || {}).textContent || '',
+  });
+  return out;
+});
+ok('职业专长 chip 只切换自身面板（异界感知）', tabs[1].own === '异界感知' && tabs[1].contract === tabs[0].before, JSON.stringify(tabs[1]));
+ok('职业专长 chip 只切换自身面板（机缘召唤）', tabs[2].own === '机缘召唤' && tabs[2].contract === tabs[0].before, JSON.stringify(tabs[2]));
+ok('契约生物 chip 独立切换（岩石系·陶土魔偶）', tabs[3].contract.startsWith('陶土魔偶') && tabs[3].own === '机缘召唤', JSON.stringify(tabs[3]));
+
 // 搜索只做高亮（不隐藏），契约区不受影响
 await page.fill('#sm-search', '蓝焰术');
 await page.waitForTimeout(600);

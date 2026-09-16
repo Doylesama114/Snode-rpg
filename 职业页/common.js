@@ -257,23 +257,28 @@ function focusSkillFromHash() {
   function initClassFeatureTabs() {
     var groups = document.querySelectorAll(".class-features");
     for (var i = 0; i < groups.length; i++) {
-      var group = groups[i];
-      var chips = group.querySelectorAll(".class-feature-chip");
-      var panels = group.querySelectorAll(".class-feature-panel");
-      if (!chips.length || !panels.length) continue;
-      for (var j = 0; j < chips.length; j++) {
-        (function(chip, index) {
-          chip.addEventListener("click", function() {
-            for (var k = 0; k < chips.length; k++) {
-              chips[k].classList.toggle("active", k === index);
-              chips[k].setAttribute("aria-selected", k === index ? "true" : "false");
-            }
-            for (var p = 0; p < panels.length; p++) {
-              panels[p].classList.toggle("active", p === index);
-            }
-          });
-        })(chips[j], j);
-      }
+      // 每个 .class-features 区独立绑定自己的 chips/panels。
+      // 修复：原先 chips/panels 用 var 在同一作用域复用，页面出现第二个
+      // .class-features 区（召唤师「契约生物」）后，所有 chip 的点击都会去
+      // 切换最后一个区的面板（表现为点「机缘召唤」切到「岩石系·陶土魔偶」）。
+      (function(group) {
+        var chips = group.querySelectorAll(".class-feature-chip");
+        var panels = group.querySelectorAll(".class-feature-panel");
+        if (!chips.length || !panels.length) return;
+        for (var j = 0; j < chips.length; j++) {
+          (function(chip, index) {
+            chip.addEventListener("click", function() {
+              for (var k = 0; k < chips.length; k++) {
+                chips[k].classList.toggle("active", k === index);
+                chips[k].setAttribute("aria-selected", k === index ? "true" : "false");
+              }
+              for (var p = 0; p < panels.length; p++) {
+                panels[p].classList.toggle("active", p === index);
+              }
+            });
+          })(chips[j], j);
+        }
+      })(groups[i]);
     }
   }
   if (document.readyState === "loading") {
