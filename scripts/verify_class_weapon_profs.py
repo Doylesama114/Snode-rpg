@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""校验 16 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
+"""校验 17 个基础职业武器熟练度：docx 原文 == CLASSES == REF_CLASSES == CLASS_WEAPON_PROF_DOCX。"""
 import json
 import re
 import sys
@@ -46,7 +46,7 @@ if not m_docx_map or not m_cat_map:
 prof_docx = json.loads(m_docx_map.group(1))
 prof_cat = json.loads(m_cat_map.group(1))
 
-CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者", "谋士"]
+CLASS_NAMES = ["蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者", "谋士", "召唤师"]
 
 errors = []
 for name in CLASS_NAMES:
@@ -102,10 +102,23 @@ if ms.get("skills") != "从专注、调查、逻辑、知识、洞悉、欺瞒�
 if not {"剑类", "弓箭", "简易"}.issubset(set(prof_cat.get("谋士", []))):
     errors.append(f"谋士内部类别映射缺少类别: {prof_cat.get('谋士')}")
 
+# 召唤师字段
+sm = ref_classes.get("召唤师", {})
+if sm.get("key_attr") != "幸运":
+    errors.append(f"召唤师 REF key_attr 错误: {sm.get('key_attr')}")
+if sm.get("armor") != "轻甲":
+    errors.append(f"召唤师 REF armor 错误: {sm.get('armor')}")
+if sm.get("saves") != ["感知", "幸运"]:
+    errors.append(f"召唤师 REF saves 错误: {sm.get('saves')}")
+if sm.get("skills") != "从专注、奥秘、多元宇宙、神秘学、洞悉、驯兽、感悟、机遇中选择四项熟练度各+1":
+    errors.append(f"召唤师 REF skills 错误: {sm.get('skills')}")
+if not {"法器", "剑类", "弓箭", "简易"}.issubset(set(prof_cat.get("召唤师", []))):
+    errors.append(f"召唤师内部类别映射缺少类别: {prof_cat.get('召唤师')}")
+
 if errors:
     print("武器熟练度 docx 一致性校验失败：")
     for e in errors:
         print(" -", e)
     sys.exit(1)
 
-print("武器熟练度 docx 一致性校验通过：16 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师/守望者字段已恢复；猎人/武僧类别映射已修正")
+print("武器熟练度 docx 一致性校验通过：17 职业 CLASSES / REF_CLASSES / CLASS_WEAPON_PROF_DOCX 全部一致；奇械师/守望者字段已恢复；猎人/武僧类别映射已修正")

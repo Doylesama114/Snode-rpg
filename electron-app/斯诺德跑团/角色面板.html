@@ -1249,6 +1249,7 @@ body.battle .fab{display:none}
   <div id="learnToggle"></div>
 </div>
 
+<script src="../职业页/数据/summoner_contracts_data.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
 <script src="ui_dialog.js"></script>
@@ -3382,6 +3383,7 @@ function renderTraits() {
   for (var j = 0; j < cl.length; j++) {
     ct += '<div class="trait-item"><b>' + cl[j].n + '</b><span>' + cl[j].d + '</span></div>';
   }
+  ct += (typeof summonerContractHtml === 'function' ? summonerContractHtml() : '');
   document.getElementById('classTraits').innerHTML = ct;
 }
 function renderWeight() {

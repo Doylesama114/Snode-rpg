@@ -1297,6 +1297,7 @@ var STYLE_COLOR_MAP = {
   "奇械师": {"精准":"FFFDAD","构想":"D5E7FF","支援":"ADFFB7","电涌":"F9FF4F","炽擎":"FF6363","魔枢":"ADEFFF"},
   "守望者": {"守护":"D6EAFF","警戒":"FFF0B3","坚韧":"FFD0CC","原野":"C8F7C5"},
   "谋士": {"权谋":"E4D9FF","军团":"D6EAFF","先见":"FFF0B3","鸩毒":"D6F7D8","混乱":"FFD8D8","博物":"FFE7CC"},
+  "召唤师": {"咒法":"C0A8FF","降灵":"8ED7F5"},
   "萨满祭司": {"风暴":"B3D5FF","水源":"B3FFEE","大地":"FFD4B3","火焰":"FF6D6D","巫术":"B6FF95"},
   "通用": {"通用天赋":"D7D7D7"}
 };
@@ -1313,7 +1314,8 @@ var STARTING_STYLE_OVERRIDE = {
   "奇械师": {"精准射击":"精准","基础材料学":"构想","同调协手":"支援","魔法武器":"魔枢"},
   "萨满祭司": {"闪电箭":"风暴","烈焰冲击":"火焰","治疗波":"水源","大地之盾":"大地"},
   "守望者": {"挫志打击":"守护","警戒之眼":"警戒","盾牌格挡":"守护","荒野医疗":"原野"},
-  "谋士": {"交友术":"权谋","战术部署":"军团","毒刃":"鸩毒","离间":"混乱"}
+  "谋士": {"交友术":"权谋","战术部署":"军团","毒刃":"鸩毒","离间":"混乱"},
+  "召唤师": {"魔法飞弹":"咒法","次级召唤术":"咒法","唤回":"降灵"}
 };
 
 /** 取技能所属风格的底纹色；通用天赋一律灰色；查不到返回空串（不上色） */
@@ -5727,6 +5729,79 @@ function renderEquipment(){
 
 }
 
+
+
+/** 召唤师契约生物卡（数据来自 CONTRACT_CREATURES；等级/羁绊点数可手填） */
+function summonerContractName(){
+  if(state.contract&&state.contract.name)return state.contract.name;
+  var feats=state.class_features||[];
+  for(var i=0;i<feats.length;i++){
+    var nm=String(feats[i].name||""),ds=String(feats[i].desc||"");
+    if(nm.indexOf("机缘召唤")>=0){
+      var m=ds.match(/契约生物[:：]\s*([^（(]+)(?:[（(]([^）)]+)[）)])?/);
+      if(m)return m[1].trim();
+    }
+  }
+  return "";
+}
+function summonerContractData(){
+  var nm=summonerContractName();
+  if(!nm||typeof CONTRACT_CREATURES==="undefined")return null;
+  for(var i=0;i<CONTRACT_CREATURES.length;i++)if(CONTRACT_CREATURES[i].name===nm)return CONTRACT_CREATURES[i];
+  return null;
+}
+function setContractLevel(v){
+  if(!state.contract)state.contract={name:summonerContractName(),level:1,bond:0};
+  state.contract.level=Math.max(1,Math.min(15,parseInt(v,10)||1));
+  renderTraits();
+}
+function setContractBond(v){
+  if(!state.contract)state.contract={name:summonerContractName(),level:1,bond:0};
+  state.contract.bond=Math.max(0,parseInt(v,10)||0);
+  renderTraits();
+}
+function summonerContractHtml(){
+  var c=summonerContractData();
+  if(!c)return "";
+  if(!state.contract)state.contract={name:c.name,level:1,bond:0};
+  var order=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+  var attrs="";
+  for(var i=0;i<order.length;i++){
+    var a=(c.attrs||{})[order[i]]||{};
+    attrs+='<span style="display:inline-block;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 7px;margin:2px 3px 2px 0">'+order[i]+' '+(a.value===null||a.value===undefined?'—':a.value)+(a.mod===null||a.mod===undefined?'':'（'+(a.mod>=0?'+':'')+a.mod+'）')+'</span>';
+  }
+  var dmg=[];
+  if(c.vulnerable&&c.vulnerable.length)dmg.push("易伤 "+c.vulnerable.join("、"));
+  if(c.resist&&c.resist.length)dmg.push("抗性 "+c.resist.join("、"));
+  if(c.immune&&c.immune.length)dmg.push("免疫 "+c.immune.join("、"));
+  if(c.statusImmune&&c.statusImmune.length)dmg.push("状态免疫 "+c.statusImmune.join("、"));
+  var h='<div class="trait-item" style="border-left:4px solid #8ED7F5">';
+  h+='<span class="trait-name">契约生物 · '+c.name+'（'+c.category+'）</span>';
+  h+='<div style="font-size:12px;color:var(--muted);margin:4px 0 6px">'+c.type+' ｜ 防御等级 '+c.ac+' ｜ 生命值 '+c.hp+' ｜ 挑战等级 '+c.cr+'</div>';
+  h+='<div style="margin-bottom:4px">'+attrs+'</div>';
+  h+='<div style="font-size:12px;margin-bottom:2px">感官：'+(c.senses||"—")+'　移动速度：'+(c.speed||"—")+'</div>';
+  h+='<div style="font-size:12px;margin-bottom:2px">战斗加成：'+(c.combat||"—")+'</div>';
+  if(dmg.length)h+='<div style="font-size:12px;margin-bottom:2px">'+dmg.join("　")+'</div>';
+  h+='<div style="font-size:12px;margin-bottom:6px">语言：'+(c.languages||"—")+'</div>';
+  if(c.traits&&c.traits.length){
+    h+='<div style="font-size:12px;font-weight:bold">特性</div><ul style="margin:2px 0 6px 18px;padding:0;font-size:12px">';
+    for(var j=0;j<c.traits.length;j++)h+='<li><b>'+c.traits[j].name+'</b>：'+c.traits[j].text+'</li>';
+    h+='</ul>';
+  }
+  if(c.actions&&c.actions.length){
+    h+='<div style="font-size:12px;font-weight:bold">动作</div><ul style="margin:2px 0 6px 18px;padding:0;font-size:12px">';
+    for(var k=0;k<c.actions.length;k++)h+='<li><b>'+c.actions[k].name+'</b>：'+c.actions[k].text+'</li>';
+    h+='</ul>';
+  }
+  h+='<div style="display:flex;gap:10px;align-items:center;font-size:12px;margin-top:6px">';
+  h+='<label>等级 <input type="number" min="1" max="15" value="'+(state.contract.level||1)+'" onchange="setContractLevel(this.value)" style="width:60px"></label>';
+  h+='<label>羁绊点数 <input type="number" min="0" value="'+(state.contract.bond||0)+'" onchange="setContractBond(this.value)" style="width:70px"></label>';
+  h+='<span style="color:var(--muted)">（成长细则待作者补充，暂为手填）</span>';
+  h+='</div></div>';
+  return h;
+}
+
+
 function renderTraits(){
 // === 12. Racial Traits ===
   // Auto-fill from REF_RACES if empty
@@ -5761,6 +5836,7 @@ function renderTraits(){
   var cfh="";for(var ci=0;ci<state.class_features.length;ci++){cfh+='<div class="trait-item"><span class="trait-name">'+state.class_features[ci].name+'</span>: '+state.class_features[ci].desc+'</div>';}
 
 
+  cfh+=summonerContractHtml();
   document.getElementById("class-features").innerHTML=cfh;
 
 
