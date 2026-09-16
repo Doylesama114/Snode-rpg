@@ -30,7 +30,25 @@ from class_sync_core import (  # noqa: E402
     json_to_fx_entry,
     pick_block,
     sanitize_data_search,
+    split_skill_description,
     tags_from_keywords,
+  # noqa: E402
+    build_data_search,
+    build_detail_html,
+    build_docx_index,
+    build_skill_data_attrs,
+    cost_json,
+    extract_paragraphs,
+    extract_skill_block,
+    json_to_fx_entry,
+    pick_block,
+    sanitize_data_search,
+    split_skill_description,
+    tags_from_keywords,
+    detect_unit_blocks,
+    collect_roll_rows,
+    filter_description_lines,
+    append_tables_to_search,
 )
 
 CLASS = "谋士"
@@ -220,21 +238,27 @@ def block_to_skill(stub: dict, block: dict) -> dict:
         fields["标识"] = "".join("●" for _ in block["mark_dots"])
     fields.pop("费用", None)
     desc_body = [
-        p for p in block["description"]
+        p for p in (block.get("description") or [])
         if not p.startswith("限制：") and p.strip() != block["name"]
     ]
     if "描述" not in fields and desc_body:
         fields["描述"] = desc_body[0]
-    description = desc_body[1:] if len(desc_body) > 1 else ([] if "描述" in fields else desc_body)
-    if "描述" in fields and desc_body and fields["描述"] == desc_body[0]:
-        description = desc_body[1:]
+        description = desc_body[1:] if len(desc_body) > 1 else []
+    else:
+        description = split_skill_description(fields, desc_body)
 
+    _desc_for_tables = [p for p in filter_description_lines(block.get('description') or [])
+                        if p.strip() and p.strip() != block['name']]
+    unit_tables = detect_unit_blocks(_desc_for_tables)
+    roll_tables = collect_roll_rows(_desc_for_tables)
     skill = {
         "id": stub["id"],
         "name": block["name"],
         "tags": tags_from_keywords(fields.get("关键词", "")),
         "fields": fields,
         "cost": cost_json(block["mark_dots"]),
+        'unit_tables': unit_tables,
+        'roll_tables': roll_tables,
         "description": description,
         "level_upgrades": block["level_upgrades"],
         "flavor": block["flavor"],
@@ -267,8 +291,10 @@ def render_article(skill: dict, block: dict) -> str:
         color = STYLE_COLORS.get(style, "#888")
         style_for_search = style
         tier_label = f"{tier}阶天赋树"
-    detail = build_detail_html(block)
+    tables = {'unit_tables': skill.get('unit_tables') or [], 'roll_tables': skill.get('roll_tables') or []}
+    detail = build_detail_html(block, tables)
     data_search = build_data_search(block, style_for_search, tier_label, tags)
+    data_search = append_tables_to_search(data_search, skill)
     safe = sanitize_data_search(data_search)
     data_attrs = build_skill_data_attrs(skill, class_name=CLASS)
     return (

@@ -25,6 +25,17 @@ TIERS = ['一阶', '二阶', '三阶']
 STARTING = ['交友术', '战术部署', '毒刃', '离间']
 
 errors: list[str] = []
+# 攻心：D4 随机效果表（应渲染为表格）
+_gx = json.loads((ROOT / '职业页' / '数据' / '谋士.json').read_text(encoding='utf-8'))
+_gx_skill = next((x for x in _gx['skills'] if x['name'] == '攻心'), None)
+_gx_html = (ROOT / '职业页' / '谋士.html').read_text(encoding='utf-8')
+if not _gx_skill or not (_gx_skill.get('roll_tables') or []):
+    errors.append('攻心 缺 roll_tables 数据')
+else:
+    _m = re.search(r'<article class="skill" id="%s".*?</article>' % re.escape(_gx_skill['id']), _gx_html, re.S)
+    if not _m or 'roll-table' not in _m.group(0):
+        errors.append('攻心 页面未渲染随机效果表')
+
 ok_notes: list[str] = []
 warnings: list[str] = []
 

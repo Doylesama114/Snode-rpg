@@ -70,6 +70,30 @@ def main() -> int:
         if not sk or sk.get('merged_parts') != 2:
             errors.append(f'{nm} 未合并双块（异能+天赋）')
 
+    # 2.5) D100 随机表（咒灵召唤/灵摆召唤）与图标区分
+    for nm in ('咒灵召唤', '灵摆召唤'):
+        sk = next((x for x in talents if x['name'] == nm), None)
+        desc = (sk or {}).get('description') or []
+        if not sk:
+            errors.append(f'缺少 {nm}')
+            continue
+        if not any('D100' in d for d in desc):
+            errors.append(f'{nm} 缺 D100 施法说明（描述首行丢失回归）')
+        rolls = sk.get('roll_tables') or []
+        if len(rolls) != 13:
+            errors.append(f'{nm} roll_tables 行数 {len(rolls)} != 13')
+        if not any((r.get('label') or '') == '100' for r in rolls):
+            errors.append(f'{nm} roll_tables 缺 100 行')
+        if not any(d.strip() == '001' for d in desc) or not any(d.strip() == '100' for d in desc):
+            errors.append(f'{nm} 描述缺原始骰值行（001/100）')
+    home = (ROOT / '职业页' / '首页.html').read_text(encoding='utf-8')
+    mage_icon = re.search(r'href="法师.html"><span class="btn-icon">([^<]*)</span>', home)
+    sm_icon = re.search(r'href="召唤师.html"><span class="btn-icon">([^<]*)</span>', home)
+    if not mage_icon or not sm_icon:
+        errors.append('首页缺少法师/召唤师入口图标')
+    elif mage_icon.group(1) == sm_icon.group(1):
+        errors.append('召唤师图标与法师重复: %s' % sm_icon.group(1))
+
     # 3) HTML：卡片数 / 专长 / 契约生物 chip
     html = (ROOT / '职业页' / f'{CLASS}.html').read_text(encoding='utf-8')
     cards = re.findall(r'<article class="skill" id="([^"]+)"', html)
@@ -83,6 +107,23 @@ def main() -> int:
         errors.append('契约生物面板数 != 20')
     if 'id="sm-contract-creatures"' not in html:
         errors.append('缺少契约生物切换区')
+
+    # 3.5) 表格渲染：D100 随机表 + 召唤单位数据卡（此前只进 data-search 不显示）
+    for nm, rows in (('咒灵召唤', 13), ('灵摆召唤', 13)):
+        sk = next((x for x in talents if x['name'] == nm), None)
+        seg = ''
+        if sk:
+            m2 = re.search(r'<article class="skill" id="%s".*?</article>' % re.escape(sk['id']), html, re.S)
+            seg = m2.group(0) if m2 else ''
+        if 'roll-table' not in seg or len(re.findall(r'class="roll-row"', seg)) != rows:
+            errors.append(f'{nm} 页面未渲染 {rows} 行 D100 随机表')
+    unit_skills = [s2 for s2 in talents if (s2.get('unit_tables') or [])]
+    for sk in unit_skills:
+        m3 = re.search(r'<article class="skill" id="%s".*?</article>' % re.escape(sk['id']), html, re.S)
+        if not m3 or 'unit-card' not in m3.group(0):
+            errors.append(f'{sk["name"]} 召唤单位数据卡未渲染')
+    if len(unit_skills) != 6:
+        errors.append(f'含单位数据卡的技能数 {len(unit_skills)} != 6')
 
     # 4) 抉择组
     groups = json.loads((ROOT / 'scripts' / 'site_choice_groups.json').read_text(encoding='utf-8'))['groups']

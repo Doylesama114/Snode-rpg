@@ -44,6 +44,7 @@ SKIP_JSON = {
 PANEL_SKILL_KEYS = (
     "id", "name", "type", "style", "tier", "tags", "fields", "cost",
     "description", "flavor", "level_upgrades", "field_runs", "description_entries",
+    "roll_tables", "unit_tables",
     "grants", "color", "composite", "choices",
 )
 

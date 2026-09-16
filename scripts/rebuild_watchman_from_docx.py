@@ -30,6 +30,7 @@ from class_sync_core import (  # noqa: E402
     json_to_fx_entry,
     pick_block,
     sanitize_data_search,
+    split_skill_description,
     tags_from_keywords,
 )
 
@@ -223,14 +224,14 @@ def block_to_skill(stub: dict, block: dict) -> dict:
         fields["标识"] = "".join("●" for _ in block["mark_dots"])
     fields.pop("费用", None)
     desc_body = [
-        p for p in block["description"]
+        p for p in (block.get("description") or [])
         if not p.startswith("限制：") and p.strip() != block["name"]
     ]
     if "描述" not in fields and desc_body:
         fields["描述"] = desc_body[0]
-    description = desc_body[1:] if len(desc_body) > 1 else ([] if "描述" in fields else desc_body)
-    if "描述" in fields and desc_body and fields["描述"] == desc_body[0]:
-        description = desc_body[1:]
+        description = desc_body[1:] if len(desc_body) > 1 else []
+    else:
+        description = split_skill_description(fields, desc_body)
 
     skill = {
         "id": stub["id"],

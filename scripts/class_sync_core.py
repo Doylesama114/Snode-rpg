@@ -987,6 +987,20 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
 
     return "".join(out)
 
+def split_skill_description(fields: dict, desc_body: list[str]) -> list[str]:
+    """把 docx 描述行拆成 (fields["描述"], description 列表)。
+
+    规则：仅当 desc_body 首行与 fields["描述"] 完全重复时才丢弃它；
+    否则全部保留（历史缺陷：无条件丢弃首行，导致规则首句丢失，如召唤师 D100 说明）。
+    """
+    body = [x for x in (desc_body or []) if x is not None]
+    if not body:
+        return []
+    if fields.get("描述") and body[0].strip() == str(fields["描述"]).strip():
+        return body[1:]
+    return body
+
+
 def tags_from_keywords(kw: str) -> list[str]:
     if not kw or kw == "-":
         return []

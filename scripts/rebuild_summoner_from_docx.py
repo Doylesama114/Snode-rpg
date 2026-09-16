@@ -24,15 +24,21 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from build_class_features import body_events, is_boundary  # noqa: E402
+from extract_unit_tables import parse_unit_block
 from class_sync_core import (  # noqa: E402
+    append_tables_to_search,
     build_data_search,
     build_detail_html,
     build_skill_data_attrs,
+    collect_roll_rows,
     cost_json,
+    detect_unit_blocks,
     extract_paragraphs,
     extract_skill_block,
+    filter_description_lines,
     json_to_fx_entry,
     sanitize_data_search,
+    split_skill_description,
     tags_from_keywords,
 )
 
@@ -56,6 +62,7 @@ STARTING_ORDER = ["魔法飞弹", "次级召唤术", "唤回"]
 FEATURE_NAMES = ["召唤联结", "异界感知", "机缘召唤"]
 FEATURE_SECTION_ID = f"{PREFIX}-class-features"
 SEP_RE = re.compile(r"^-{3,}$")
+DICE_RANGE_RE = re.compile(r'^\d{3}(-\d{3})?$')
 REUSE_FROM_OTHER = {"蓝焰术": ("法师", "咒法", "二阶")}
 # 清单笔误 → 详情表真名（用户确认）
 LIST_ALIASES = {"召唤指令·回避": "契约指令·回避"}
@@ -151,8 +158,10 @@ def render_article(skill: dict, block: dict) -> str:
         color = STYLE_COLORS.get(style, "#888")
         style_for_search = style
         tier_label = f"{tier}阶天赋树"
-    detail = build_detail_html(block)
+    tables = {'unit_tables': skill.get('unit_tables') or [], 'roll_tables': skill.get('roll_tables') or []}
+    detail = build_detail_html(block, tables)
     data_search = build_data_search(block, style_for_search, tier_label, tags)
+    data_search = append_tables_to_search(data_search, skill)
     safe = sanitize_data_search(data_search)
     data_attrs = build_skill_data_attrs(skill, class_name=CLASS)
     return (
@@ -569,12 +578,13 @@ def block_to_skill(stub: dict, block: dict) -> dict:
     if block['mark_dots']:
         fields['标识'] = ''.join('●' for _ in block['mark_dots'])
     fields.pop('费用', None)
-    desc_body = [p for p in block['description'] if not p.startswith('限制：') and p.strip() != block['name']]
+    desc_body = [p for p in (block.get('description') or [])
+                 if not p.startswith('限制：') and p.strip() != block['name']]
     if '描述' not in fields and desc_body:
         fields['描述'] = desc_body[0]
-    description = desc_body[1:] if len(desc_body) > 1 else ([] if '描述' in fields else desc_body)
-    if '描述' in fields and desc_body and fields['描述'] == desc_body[0]:
-        description = desc_body[1:]
+        description = desc_body[1:] if len(desc_body) > 1 else []
+    else:
+        description = split_skill_description(fields, desc_body)
     raw_tags = tags_from_keywords(fields.get('关键词', ''))
     tags: list[str] = []
     for t in raw_tags:
@@ -582,12 +592,18 @@ def block_to_skill(stub: dict, block: dict) -> dict:
             part = part.strip()
             if part and part not in tags:
                 tags.append(part)
+    _desc_for_tables = [p for p in filter_description_lines(block.get('description') or [])
+                        if p.strip() and p.strip() != block['name']]
+    unit_tables = [parse_unit_block(b['lines']) for b in detect_unit_blocks(_desc_for_tables)]
+    roll_tables = collect_roll_rows(_desc_for_tables)
     skill = {
         'id': stub['id'],
         'name': block['name'],
         'tags': tags,
         'fields': fields,
         'cost': cost_json(block['mark_dots']),
+        'unit_tables': unit_tables,
+        'roll_tables': roll_tables,
         'description': description,
         'level_upgrades': block['level_upgrades'],
         'flavor': block['flavor'],
