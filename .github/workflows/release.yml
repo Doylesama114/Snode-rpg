@@ -4,15 +4,42 @@ on:
   push:
     tags:
       - 'v*'
+  # 手动补发：某个 tag 的 Release 资源缺失/上传失败时，可在 Actions 页直接重跑（使用默认分支上最新的
+  # 工作流文件，因此能吃到上传重试等修复），无需移动 tag 或改版本号。
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '要构建并发布的目标 tag（例如 v1.0.7278）'
+        required: true
+        type: string
+
+# 同一 tag 只保留一个发布流程，避免重复上传互相覆盖
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
     # Pin 2022: windows-latest 镜像变动曾导致 electron-builder/NSIS 偶发失败
     runs-on: windows-2022
+    outputs:
+      tag: ${{ steps.target.outputs.tag }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
     steps:
+      # 解析本次构建的目标 tag：tag 推送用 ref_name；手动补发用 inputs.tag
+      - name: Resolve target tag
+        id: target
+        shell: pwsh
+        run: |
+          $t = "${{ inputs.tag }}"
+          if ([string]::IsNullOrWhiteSpace($t)) { $t = "${{ github.ref_name }}" }
+          Write-Host "target tag: $t"
+          "tag=$t" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.tag }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -72,21 +99,47 @@ jobs:
           }
           if (-not $ok) { exit 1 }
 
-      - name: Upload to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            electron-app/dist/*.exe
-            electron-app/dist/*.yml
-            electron-app/dist/*.blockmap
-          token: ${{ secrets.GH_TOKEN2 }}
-
-      - name: Upload dist as artifact (for mirror job)
+      # 先留存构建产物：即使后面的 Release 上传失败，也能从 artifact 直接恢复，无需重新构建
+      - name: Upload dist as artifact (for mirror job / recovery)
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
           path: electron-app/dist/*
           retention-days: 1
+
+      # 逐文件重试上传：大文件偶发 "other side closed"（GitHub 侧连接中断）；
+      # gh 自带分块上传，--clobber 幂等，重跑不会产生重复资源。
+      # 脚本正文保持纯 ASCII，避免 runner 端编码差异影响 PowerShell 解析。
+      - name: Upload to GitHub Release (retry per file)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $tag = "${{ steps.target.outputs.tag }}"
+          $repo = $env:GITHUB_REPOSITORY
+          gh release view $tag --repo $repo --json tagName *> $null
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "Release $tag not found, creating..."
+            gh release create $tag --repo $repo --title $tag
+            if ($LASTEXITCODE -ne 0) { Write-Host "::error::failed to create release $tag"; exit 1 }
+          }
+          $files = @(Get-ChildItem -Path electron-app/dist -File |
+            Where-Object { $_.Extension -in '.exe', '.yml', '.blockmap' })
+          if ($files.Count -eq 0) { Write-Host "::error::no dist files to upload"; exit 1 }
+          foreach ($f in $files) {
+            $ok = $false
+            for ($i = 1; $i -le 5; $i++) {
+              $mb = [math]::Round($f.Length / 1MB, 1)
+              Write-Host "=== upload $($f.Name) attempt $i/5 ($mb MB) ==="
+              gh release upload $tag $f.FullName --repo $repo --clobber
+              if ($LASTEXITCODE -eq 0) { $ok = $true; break }
+              Write-Host "upload interrupted (exit $LASTEXITCODE), retry in $((15 * $i))s"
+              Start-Sleep -Seconds (15 * $i)
+            }
+            if (-not $ok) { Write-Host "::error::upload failed after 5 attempts: $($f.Name)"; exit 1 }
+          }
+          Write-Host "release $tag assets uploaded"
 
   mirror-oss:
     needs: build
@@ -106,7 +159,7 @@ jobs:
 
       - name: Sync release assets to Aliyun OSS
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ needs.build.outputs.tag }}
           BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
           PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
         run: |
@@ -158,12 +211,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
-      VERSION_TAG: ${{ github.ref_name }}
       BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
       GH_TOKEN2: ${{ secrets.GH_TOKEN2 }}
       ADVISOR_API_BASE: ${{ vars.ADVISOR_API_BASE }}
     steps:
+      # 解析目标 tag（与 build job 同规则：手动补发用 inputs.tag）
+      - name: Resolve target tag
+        shell: bash
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          TAG="${INPUT_TAG:-${GITHUB_REF_NAME}}"
+          echo "VERSION_TAG=$TAG" >> "$GITHUB_ENV"
+          echo "target tag: $TAG"
+
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
