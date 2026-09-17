@@ -26,7 +26,9 @@ PANEL = ROOT / '斯诺德跑团' / 'panel_data.js'
 ADV = ROOT / 'advisor' / 'rules' / 'multiclass.json'
 
 CLASSES = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司',
-           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士']
+           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士', '召唤师', '战舞者']
+PLANNED = {'战舞者'}          # 未开放：表内保留、help 标注、不作为兼职候选
+PLAYABLE_SUBCLASSES = [c for c in CLASSES if c not in PLANNED]
 errors: list[str] = []
 notes: list[str] = []
 
@@ -55,7 +57,10 @@ def load_help() -> dict:
     body = html
     if '<!-- MULTICLASS-RULES -->' in body:
         body = body[body.index('<!-- MULTICLASS-RULES -->'):]
-    rows = re.findall(r'<tr><td><b>([^<]+)</b></td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>', body)
+    # 未开放职业在 <b> 后带 <span> 标注（如「战舞者（未开放）」），解析时容忍
+    rows = re.findall(
+        r'<tr><td><b>([^<]+)</b>(?:<span[^>]*>[^<]*</span>)?</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>',
+        body)
     if len(rows) != len(CLASSES):
         errors.append('help.html 兼职规则表行数 %d != %d' % (len(rows), len(CLASSES)))
     data = {}

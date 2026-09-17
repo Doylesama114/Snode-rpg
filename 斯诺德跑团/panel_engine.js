@@ -8124,7 +8124,7 @@ window.showSubclassModal=function(){
   var h="<h3 style=margin-bottom:8px;color:var(--ink)>选择子职业</h3>";
   h+="<p style=font-size:13px;color:var(--muted);margin-bottom:16px>需满足属性值、熟练度要求，且与主职业兼容</p>";
   h+="<div style=display:flex;flex-direction:column;gap:6px>";
-  var allClasses=["蛮斗士","战士","法师","猎人","牧师","圣骑士","游荡者","德鲁伊","萨满祭司","术士","武僧","吟游诗人","魔契师","奇械师","守望者","谋士"];
+  var allClasses=["蛮斗士","战士","法师","猎人","牧师","圣骑士","游荡者","德鲁伊","萨满祭司","术士","武僧","吟游诗人","魔契师","奇械师","守望者","谋士","召唤师"]  // v1.0.7278：召唤师可作为兼职目标；战舞者未开放不列入;
   for(var i=0;i<allClasses.length;i++){
     var cn=allClasses[i]; var req=REF_SUBCLASS_REQS[cn]; if(!req)continue;
     // 兼职同名职业是允许的（如法师兼职法师），主职业不跳过；兼容性由 REF_SUBCLASS_REQS.incompatible 判定

@@ -35,7 +35,9 @@ PANEL = ROOT / '斯诺德跑团' / 'panel_data.js'
 PANEL_ELECTRON = ROOT / 'electron-app' / '斯诺德跑团' / 'panel_data.js'
 
 CLASSES = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司',
-           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士']
+           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士', '召唤师', '战舞者']
+# 表内熟练项 → 应用侧熟练项键名（战舞者的「舞蹈」属于 表演 系列）
+PROF_ALIAS = {'舞蹈': '表演-舞蹈', '歌唱': '表演-歌唱', '演奏': '表演-演奏'}
 ATTRS = ['力量', '敏捷', '体质', '智力', '感知', '魅力', '意志', '幸运']
 LINE_RE = re.compile(r'var REF_SUBCLASS_REQS = \{.*?\};', re.S)
 
@@ -77,7 +79,7 @@ def parse_profs(text: str):
             elif not prof_attr_alt:
                 prof_attr_alt = t
         else:
-            names.append(t)
+            names.append(PROF_ALIAS.get(t, t))
     return prof_attr, prof_attr_alt, names, total
 
 

@@ -10,6 +10,7 @@ import { buildStatusConditions } from './advisor-status-extract.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
+const MULTICLASS_ONLY = process.argv.includes('--multiclass-only');   // 只刷新 multiclass.json（避免旧脚本覆盖后续阶段的 leveling/races/rules_summary 等）
 const OUT_RULES = path.join(ROOT, 'advisor', 'rules');
 const OUT_CHARGEN = path.join(ROOT, 'advisor', 'chargen');
 
@@ -98,6 +99,7 @@ const CLASS_SHORT = {
   蛮斗士: '蛮', 战士: '战', 法师: '法', 猎人: '猎', 牧师: '牧', 圣骑士: '圣',
   游荡者: '游', 德鲁伊: '德', 萨满祭司: '萨', 术士: '术', 武僧: '武',
   吟游诗人: '诗', 魔契师: '魔', 奇械师: '械', 守望者: '守', 谋士: '谋',
+  召唤师: '召', 战舞者: '舞',
 };
 
 function parseMulticlassFromHelp() {
@@ -106,7 +108,7 @@ function parseMulticlassFromHelp() {
   if (!section) throw new Error('兼职规则 section not found');
 
   const reqRows = [...section[0].matchAll(
-    /<tr><td><b>([^<]+)<\/b><\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><\/tr>/g
+    /<tr><td><b>([^<]+)<\/b>(?:<span[^>]*>[^<]*<\/span>)?<\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><td>([^<]*)<\/td><\/tr>/g
   )];
   const requirements = reqRows.map((r) => ({
     class: r[1].trim(),
@@ -122,7 +124,8 @@ function parseMulticlassFromHelp() {
   const compatRows = [...compatSection[0].matchAll(
     /<tr><th title="([^"]+)">[^<]*<\/th>((?:<td[^>]*>[^<]*<\/td>)+)<\/tr>/g
   )];
-  const classOrder = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士'];
+  const classOrder = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司', '术士',
+    '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士', '召唤师', '战舞者'];
   const compatibility = {};
   for (const row of compatRows) {
     const main = row[1].trim();
@@ -392,7 +395,7 @@ function main() {
     intBonus: typeof r['属性加成']?.['智力'] === 'number' ? r['属性加成']['智力'] : null,
   }));
 
-  writeJson(path.join(OUT_RULES, 'leveling.json'), leveling);
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_RULES, 'leveling.json'), leveling);
   writeJson(path.join(OUT_RULES, 'multiclass.json'), {
     meta: {
       layer: 'L0',
@@ -412,23 +415,23 @@ function main() {
       incompatibleSubclasses: mageReq?.incompatibleWith || [],
     },
   });
-  writeJson(path.join(OUT_RULES, 'sp_marks.json'), buildSpMarks());
-  writeJson(path.join(OUT_RULES, 'rules_summary.json'), buildRulesSummary());
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_RULES, 'sp_marks.json'), buildSpMarks());
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_RULES, 'rules_summary.json'), buildRulesSummary());
   const statusConditions = buildStatusConditions(HELP_HTML);
-  writeJson(path.join(OUT_RULES, 'status_conditions.json'), statusConditions);
-  writeJson(path.join(OUT_CHARGEN, 'races.json'), {
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_RULES, 'status_conditions.json'), statusConditions);
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_CHARGEN, 'races.json'), {
     meta: { layer: 'L1', count: races.length, source: '职业页/数据/races_data.js', generatedAt: new Date().toISOString().slice(0, 10) },
     races,
   });
-  writeJson(path.join(OUT_CHARGEN, 'backgrounds.json'), {
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_CHARGEN, 'backgrounds.json'), {
     meta: { layer: 'L1', count: backgrounds.length, source: '斯诺德跑团/panel_data.js → REF_BACKGROUNDS', generatedAt: new Date().toISOString().slice(0, 10) },
     backgrounds,
   });
-  writeJson(path.join(OUT_CHARGEN, 'mage_class.json'), {
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_CHARGEN, 'mage_class.json'), {
     meta: { layer: 'L1', source: '斯诺德跑团/panel_data.js → REF_CLASSES.法师 + 帮助.html', generatedAt: new Date().toISOString().slice(0, 10) },
     ...mageClass,
   });
-  writeJson(path.join(OUT_CHARGEN, 'mage_hints.json'), buildMageHints(races, backgrounds, mageClass, multiclass));
+  if (!MULTICLASS_ONLY) writeJson(path.join(OUT_CHARGEN, 'mage_hints.json'), buildMageHints(races, backgrounds, mageClass, multiclass));
 
   console.log('Phase 1 + 1.5 build complete:');
   console.log('  races:', races.length);

@@ -27,7 +27,7 @@ ELECTRON_HELP = ROOT / "electron-app" / "斯诺德跑团" / "help.html"
 CLASSES = [
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者",
     "德鲁伊", "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
-    "谋士",
+    "谋士", "召唤师", "战舞者",
 ]
 
 # 矩阵列头缩写（title 显示全名）
@@ -36,7 +36,10 @@ SHORT = {
     "牧师": "牧师", "圣骑士": "圣骑", "游荡者": "游荡", "德鲁伊": "德鲁",
     "萨满祭司": "萨满", "术士": "术士", "武僧": "武僧", "吟游诗人": "吟游",
     "魔契师": "魔契", "奇械师": "奇械", "守望者": "守望", "谋士": "谋",
+    "召唤师": "召唤", "战舞者": "战舞",
 }
+# 未开放职业：表内保留并标注，不作为兼职候选（兼职候选来自 REF_CLASSES）
+PLANNED = {"战舞者"}
 
 BEGIN_BODY = "<!-- MULTICLASS-RULES -->"
 END_BODY = "<!-- /MULTICLASS-RULES -->"
@@ -49,13 +52,13 @@ def load_xlsx() -> dict:
     wb = openpyxl.load_workbook(XLSX, data_only=True)
     ws = wb["兼职规则"]
     data = {}
-    for r in range(3, 19):
+    for r in range(3, 3 + len(CLASSES)):
         name = ws.cell(r, 2).value
         if not name:
             continue
         compatible = [
             ws.cell(r, c).value
-            for c in range(6, 22)
+            for c in range(6, 6 + len(CLASSES))
             if ws.cell(r, c).value and ws.cell(r, c).value != "-"
         ]
         incompatible = [c for c in CLASSES if c not in compatible]
@@ -90,6 +93,8 @@ CSS = f"""
 .mc-legend .sw.mc-no::before{{background:#c62828}}
 .mc-legend .sw.mc-self::before{{background:#e8e4dc}}
 .mc-hint{{font-size:12px;color:#69706b;margin:2px 0 8px}}
+.mc-planned{{color:#a06a00;font-size:12px;font-weight:normal}}
+html.dark .mc-planned{{color:#e0b063}}
 html.dark .mc-matrix thead th,html.dark .mc-matrix tbody th{{background:#1a1d20;color:#e8e6e3;border-color:#3a3d40}}
 html.dark .mc-matrix td{{background:#24272b;border-color:#3a3d40;color:#e8e6e3}}
 html.dark .mc-matrix td.mc-self{{background:#2c2f33;color:#9d9b98}}
@@ -131,8 +136,10 @@ def build_rule_table(data: dict) -> str:
     for name in CLASSES:
         d = data[name]
         inc = "、".join(d["incompatible"]) if d["incompatible"] else "—"
+        mark = ('<span class="mc-planned" title="未开放职业，暂不可作为兼职目标">（未开放）</span>'
+                if name in PLANNED else '')
         rows.append(
-            f'<tr><td><b>{name}</b></td><td>{d["attr"]}</td><td>{d["prof"]}</td>'
+            f'<tr><td><b>{name}</b>{mark}</td><td>{d["attr"]}</td><td>{d["prof"]}</td>'
             f'<td>{d["other"]}</td><td>{inc}</td></tr>'
         )
     rows.append("</table></div>")
@@ -162,6 +169,7 @@ def build_matrix(data: dict) -> str:
         '<span class="sw mc-ok">可兼职（空白）</span>'
         '<span class="sw mc-self">自身</span>'
         '<span>行 = 主职业，列 = 副职</span>'
+        '<span class="mc-planned">战舞者为未开放职业，暂不可作为兼职目标</span>'
         '</div>\n'
         '<div class="mc-wrap"><table class="mc-matrix">'
         "<thead>" + "".join(head) + "</thead><tbody>"
@@ -225,9 +233,9 @@ def verify(html: str, data: dict) -> list:
     if BEGIN_BODY in body and END_BODY in body:
         body = body[body.index(BEGIN_BODY): body.index(END_BODY)]
 
-    # 1) 兼职规则表：16 职业 × 4 列
+    # 1) 兼职规则表：N 职业 × 4 列（未开放职业带 <span> 标注）
     rows = re.findall(
-        r"<tr><td><b>([^<]+)</b></td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>",
+        r"<tr><td><b>([^<]+)</b>(?:<span[^>]*>[^<]*</span>)?</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>",
         body,
     )
     if len(rows) != len(CLASSES):

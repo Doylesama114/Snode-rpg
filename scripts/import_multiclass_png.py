@@ -1,158 +1,194 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把《兼职需求(谋士版本).png》写入 冒险者基础规则.xlsx 的「兼职规则」工作表。
+"""把《兼职条件.png》写入 冒险者基础规则.xlsx 的「兼职规则」工作表（18 职业版）。
 
 数据来源与可信度：
-- 兼容矩阵由 PNG 逐格像素解析得到（表内每格写明列职业名=可兼职，'-'=不可兼职），
-  并对角线自兼容、像素分离度做断言；非对称关系按作者原图保留。
-- 谋士行的「属性值要求/熟练度要求/其他要求」文本为人工转录（PNG 无 OCR 通道），
-  常量写在 MOUSHI_REQ，便于核对。
-- 相对旧表的 3 处差异（按作者提供的 PNG 落地）：
-  1. 法师 × 守望者：兼容 → 不兼容
-  2. 奇械师 × 守望者：兼容 → 不兼容
-  3. 守望者「其他要求」：…追查的事件 → …追查的事迹
+- 兼容矩阵：PNG 逐格像素解析（格内写列职业名=可兼职，'-'=不可兼职）；网格线自动检测
+  （竖向 23 条 → 22 列 = 职业/属性/熟练度/其他 + 18 职业列；横向 20 条 → 表头 + 18 行）。
+- 新增两行（召唤师/战舞者）的属性/熟练度/其他要求为人工转录（常量 NEW_ROWS），便于核对。
+- 旧 16 行文本沿用表中既有值（本轮图与表逐行抽查一致），兼容矩阵整体以图为准覆盖。
 
 用法：
-  python scripts/import_multiclass_png.py --check   # 只解析 PNG 并打印矩阵，不写文件
-  python scripts/import_multiclass_png.py           # 写入 xlsx（Excel COM，保留样式）
+  python scripts/import_multiclass_png.py --check   # 只解析 PNG 并与当前 xlsx 对比
+  python scripts/import_multiclass_png.py --write   # 写入 xlsx（Excel COM，保留样式）
 """
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
+from openpyxl.utils import get_column_letter
+
 ROOT = Path(__file__).resolve().parent.parent
-PNG = ROOT / '兼职需求(谋士版本).png'
+DEFAULT_PNG = ROOT / '兼职条件.png'
 XLSX = ROOT / '冒险者基础规则.xlsx'
+SHEET = '兼职规则'
 
 CLASSES = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司',
-           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士']
+           '术士', '武僧', '吟游诗人', '魔契师', '奇械师', '守望者', '谋士', '召唤师', '战舞者']
 
-# PNG 网格线（像素）：列 45/131/457/863 为前四列，其后每 86px 一个职业列
-COL_LINES = [45, 131, 457, 863, 1469, 1555, 1641, 1727, 1813, 1899, 1985, 2071, 2157, 2243,
-             2329, 2415, 2501, 2587, 2673, 2759, 2845]
-ROW_LINES = [25, 51, 77, 103, 129, 155, 181, 207, 233, 259, 285, 365, 391, 417, 443, 469, 495, 521]
-
-# 谋士行的要求（人工转录自 PNG）
-MOUSHI_REQ = {
-    'attr': '智力属性15',
-    'prof': '拥有知识、逻辑、洞悉和决策的熟练度共计+6',
-    'other': '在一个势力、组织或机构担任过文职人员',
+# 新增行（人工转录自 PNG；战舞者的「舞蹈」在应用侧按 表演-舞蹈 归一，见 ref_subclass_reqs.py）
+NEW_ROWS = {
+    '召唤师': {
+        'attr': '智力属性13，幸运属性14',
+        'prof': '拥有奥秘、神秘学和机遇的熟练度共计+4',
+        'other': '进行过系统性的咒法学派、降灵学科以及召唤学或契约学知识学习',
+    },
+    '战舞者': {
+        'attr': '敏捷属性13，魅力属性13',
+        'prof': '拥有体操、洞悉和舞蹈的熟练度共计+4',
+        'other': '-',
+    },
 }
-# 按 PNG 落地的差异
-WATCHMAN_OTHER_OLD = '本人非邪恶阵营角色，并且完成过五次涉及守护、自然或追查的事件'
-WATCHMAN_OTHER_NEW = '本人非邪恶阵营角色，并且完成过五次涉及守护、自然或追查的事迹'
-FORCE_INCOMPATIBLE = [('法师', '守望者'), ('奇械师', '守望者')]
+PLANNED = {'战舞者'}  # 未开放职业：表内保留，帮助页标注「未开放」，兼职候选不出现
 
 
-def extract_matrix() -> dict[str, dict[str, bool]]:
-    try:
-        from PIL import Image
-        import numpy as np
-    except ImportError as e:  # pragma: no cover
-        raise SystemExit('需要 Pillow/numpy：%s' % e)
-    im = Image.open(PNG).convert('RGB')
-    a = np.array(im).astype(int)
+def detect_grid(png: Path):
+    """检测表格网格线，返回 (col_lines, row_lines)。"""
+    import numpy as np
+    from PIL import Image
+    a = np.array(Image.open(png).convert('RGB')).astype(int)
+    h, w, _ = a.shape
+    dark = (a[:, :, 0] < 200) & (a[:, :, 1] < 170) & (a[:, :, 2] < 140)
+    col_ink = dark.sum(axis=0)
+    row_ink = dark.sum(axis=1)
+
+    def group(idx):
+        out = []
+        for x in idx:
+            if out and x - out[-1][-1] <= 3:
+                out[-1].append(x)
+            else:
+                out.append([x])
+        return [int(sum(g) / len(g)) for g in out]
+
+    cols = group([x for x in range(w) if col_ink[x] > h * 0.6])
+    rows = group([y for y in range(h) if row_ink[y] > w * 0.6])
+    return cols, rows
+
+
+def extract_matrix(png: Path):
+    import numpy as np
+    from PIL import Image
+    cols, rows = detect_grid(png)
+    if len(cols) != 4 + len(CLASSES) + 1:
+        raise SystemExit('网格检测异常：竖向线 %d 条（期望 %d）：%s' % (len(cols), 4 + len(CLASSES) + 1, cols))
+    if len(rows) != len(CLASSES) + 2:
+        raise SystemExit('网格检测异常：横向线 %d 条（期望 %d）：%s' % (len(rows), len(CLASSES) + 2, rows))
+    a = np.array(Image.open(png).convert('RGB')).astype(int)
     ink = (a[:, :, 0] < 235) & (a[:, :, 1] < 215) & (a[:, :, 2] < 190)
     mat: dict[str, dict[str, bool]] = {}
     for ri, rname in enumerate(CLASSES):
-        y0, y1 = ROW_LINES[ri + 1], ROW_LINES[ri + 2]
+        y0, y1 = rows[ri + 1], rows[ri + 2]
         mat[rname] = {}
         for ci, cname in enumerate(CLASSES):
-            x0, x1 = COL_LINES[4 + ci], COL_LINES[5 + ci]
-            cnt = int(ink[y0 + 6:y1 - 5, x0 + 6:x1 - 6].sum())
-            mat[rname][cname] = cnt > 45
-    # 断言：对角线自兼容；'-' 与职业名的像素分离度足够
-    assert all(mat[c][c] for c in CLASSES), '对角线存在不兼容，PNG 解析异常'
-    for r in CLASSES:
-        for c in CLASSES:
-            if r == c:
-                continue
-    return mat
+            x0, x1 = cols[4 + ci], cols[5 + ci]
+            cnt = int(ink[y0 + 4:y1 - 4, x0 + 4:x1 - 4].sum())
+            mat[rname][cname] = cnt > 40
+    bad = [c for c in CLASSES if not mat[c][c]]
+    if bad:
+        raise SystemExit('对角线自兼容断言失败：%s' % bad)
+    return mat, cols, rows
+
+
+def read_xlsx_matrix() -> dict:
+    import openpyxl
+    ws = openpyxl.load_workbook(XLSX, data_only=True)[SHEET]
+    out = {}
+    for r in range(3, ws.max_row + 1):
+        name = str(ws.cell(r, 2).value or '').strip()
+        if not name:
+            continue
+        row = {}
+        for ci, cn in enumerate(CLASSES):
+            row[cn] = str(ws.cell(r, 6 + ci).value or '').strip() == cn
+        out[name] = row
+    return out
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--check', action='store_true', help='只解析并打印，不写 xlsx')
-    ap.add_argument('--xlsx', default=str(XLSX))
+    ap.add_argument('--check', action='store_true')
+    ap.add_argument('--write', action='store_true')
+    ap.add_argument('--png', default=str(DEFAULT_PNG))
     args = ap.parse_args()
 
-    mat = extract_matrix()
-    for pair in FORCE_INCOMPATIBLE:
-        mat[pair[0]][pair[1]] = False
-    print('已解析 %d×%d 兼容矩阵（对角线自兼容，含 %d 处强制不兼容差异）'
-          % (len(CLASSES), len(CLASSES), len(FORCE_INCOMPATIBLE)))
+    png = Path(args.png)
+    if not png.exists():
+        raise SystemExit('未找到 %s' % png)
+    mat, cols, rows = extract_matrix(png)
+    print('网格: 竖 %d 条 / 横 %d 条 → %d×%d 矩阵' % (len(cols), len(rows), len(CLASSES), len(CLASSES)))
+    asym = [(r, c) for r in CLASSES for c in CLASSES if r != c and mat[r][c] != mat[c][r]]
+    print('非对称关系 %d 对（按作者原图保留）：%s'
+          % (len(asym), '、'.join('%s×%s' % p for p in asym[:8]) or '无'))
     for r in CLASSES:
-        print('  %-6s 可兼职: %s' % (r, '、'.join(c for c in CLASSES if mat[r][c]) or '（无）'))
-    if args.check:
-        return 0
+        print('  %-5s%s 可兼职: %s' % (r, '（未开放）' if r in PLANNED else '      ',
+                                     '、'.join(c for c in CLASSES if mat[r][c]) or '（无）'))
 
-    xlsx = Path(args.xlsx)
-    if not xlsx.exists():
-        raise SystemExit('未找到 %s' % xlsx)
+    cur = read_xlsx_matrix()
+    diffs = []
+    for r, row in mat.items():
+        for c, v in row.items():
+            if r in cur and c in cur.get(r, {}):
+                if cur[r].get(c) != v:
+                    diffs.append((r, c, cur[r].get(c), v))
+    print('与当前 xlsx 的矩阵差异: %d 处%s' % (len(diffs), '（旧 16×16 部分完全一致）' if not diffs else ''))
+    for r, c, old, new in diffs[:20]:
+        print('   %s × %s: %s → %s' % (r, c, old, new))
+    missing_rows = [c for c in CLASSES if c not in cur]
+    if missing_rows:
+        print('xlsx 待新增职业行:', '、'.join(missing_rows))
+    if args.check or not args.write:
+        print('（未写入；需要写入请加 --write）')
+        return 0
 
     try:
         import win32com.client as win32  # type: ignore
     except ImportError:
-        win32 = None
-
-    if win32 is None:
         raise SystemExit('需要 pywin32 才能保留 Excel 样式；请安装后再运行')
 
     excel = win32.DispatchEx('Excel.Application')
     excel.Visible = False
     excel.DisplayAlerts = False
     try:
-        wb = excel.Workbooks.Open(str(xlsx))
+        wb = excel.Workbooks.Open(str(XLSX))
         try:
-            ws = wb.Worksheets('兼职规则')
-            # 1) 新增行 18 = 谋士：复制 17 行的格式
-            ws.Rows(17).Copy()
-            ws.Rows(18).PasteSpecial(-4122)  # xlPasteFormats
+            ws = wb.Worksheets(SHEET)
+            base_row, base_col = 18, 21          # 现有 16 职业：行 3..18、列 6..21（F..U）
+            for i in range(len(CLASSES) - 16):
+                ws.Rows(base_row).Copy()
+                ws.Rows(base_row + 1 + i).PasteSpecial(-4122)   # xlPasteFormats
+            for i in range(len(CLASSES) - 16):
+                ws.Columns(base_col).Copy()
+                ws.Columns(base_col + 1 + i).PasteSpecial(-4122)
             excel.CutCopyMode = False
-            # 2) 新增列 U(21) = 谋士：复制 T(20) 列的格式
-            ws.Columns(20).Copy()
-            ws.Columns(21).PasteSpecial(-4122)
-            excel.CutCopyMode = False
-            # 3) 表头合并区扩到 U
+            last_col = 5 + len(CLASSES)              # 18 职业 → 第 23 列（W）
+            last_addr = get_column_letter(last_col)   # COM 的 Address 在此为属性，改用 openpyxl 工具函数
             try:
-                ws.Range('F2:S2').UnMerge()
+                ws.Range('F2:U2').UnMerge()
             except Exception:
                 pass
-            ws.Range('F2:U2').Merge()
+            ws.Range('F2:%s2' % last_addr).Merge()
             ws.Range('F2').Value = '兼容要求'
             ws.Range('F2').Copy()
-            ws.Range('F2:U2').PasteSpecial(-4122)
+            ws.Range('F2:%s2' % last_addr).PasteSpecial(-4122)
             excel.CutCopyMode = False
-            # 4) 写入矩阵值（第 3..18 行 = 16 个职业；F..U 列 = 6..21）
             for ri, rname in enumerate(CLASSES):
                 row = 3 + ri
-                # 行标签/要求列只在必要时写
-                if rname == '谋士':
-                    ws.Cells(row, 2).Value = '谋士'
-                    ws.Cells(row, 3).Value = MOUSHI_REQ['attr']
-                    ws.Cells(row, 4).Value = MOUSHI_REQ['prof']
-                    ws.Cells(row, 5).Value = MOUSHI_REQ['other']
+                if rname in NEW_ROWS:
+                    ws.Cells(row, 2).Value = rname
+                    ws.Cells(row, 3).Value = NEW_ROWS[rname]['attr']
+                    ws.Cells(row, 4).Value = NEW_ROWS[rname]['prof']
+                    ws.Cells(row, 5).Value = NEW_ROWS[rname]['other']
                 for ci, cname in enumerate(CLASSES):
-                    col = 6 + ci
-                    ws.Cells(row, col).Value = cname if mat[rname][cname] else '-'
-            # 5) 守望者「其他要求」措辞修正
-            for row in range(3, 19):
-                if ws.Cells(row, 2).Value == '守望者':
-                    cur = str(ws.Cells(row, 5).Value or '')
-                    if cur in (WATCHMAN_OTHER_OLD, WATCHMAN_OTHER_NEW):
-                        ws.Cells(row, 5).Value = WATCHMAN_OTHER_NEW
-                        print('  守望者其他要求: %s → %s' % (cur[-4:], WATCHMAN_OTHER_NEW[-4:]))
-                    else:
-                        print('  ⚠ 守望者其他要求与预期不同，未改动: %r' % cur)
+                    ws.Cells(row, 6 + ci).Value = cname if mat[rname][cname] else '-'
             wb.Save()
         finally:
             wb.Close(SaveChanges=False)
     finally:
         excel.Quit()
-    print('✅ 已写入 %s' % xlsx)
+    print('✅ 已写入 %s（%d 职业，矩阵 %d×%d）' % (XLSX.name, len(CLASSES), len(CLASSES), len(CLASSES)))
     return 0
 
 

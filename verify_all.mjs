@@ -466,6 +466,21 @@ try {
 console.log(stOK ? '✅ 谋士创建页 E2E 通过' : '❌ 谋士创建页 E2E 失败');
 totalErrors += stOK ? 0 : 1;
 
+// 兼职表 18 职业 E2E（召唤师候选/战舞者未开放/help 表结构）
+console.log('\n=== 兼职表 18 职业 E2E ===');
+let mcE2EOK = true;
+try {
+  let mcOut = spawnSync('node', [join(BASE, 'verify_multiclass_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (mcOut.stdout) console.log(mcOut.stdout.trim());
+  if (mcOut.stderr) console.error(mcOut.stderr.trim());
+  if (mcOut.status !== 0) mcE2EOK = false;
+} catch (e) {
+  mcE2EOK = false;
+  console.log('❌ 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(mcE2EOK ? '✅ 兼职表 18 职业 E2E 通过' : '❌ 兼职表 18 职业 E2E 失败');
+totalErrors += mcE2EOK ? 0 : 1;
+
 // 兼职规则四方一致（xlsx ↔ help.html ↔ REF_SUBCLASS_REQS ↔ advisor）
 console.log('\n=== 兼职规则一致性（xlsx/help/面板/顾问） ===');
 let mcOK = true;

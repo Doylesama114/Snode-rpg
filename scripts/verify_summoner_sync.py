@@ -18,6 +18,8 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / 'scripts'))
+import class_sync_core as C  # noqa: E402
 DOCX = ROOT / '基础职业-召唤师.docx'
 CLASS = '召唤师'
 STYLES = ['咒法', '降灵']
@@ -31,6 +33,10 @@ CHOICE_GROUPS = [
     '抉择：灵猫守护/灵枭守护/灵狐守护',
     '抉择：召唤风元素/召唤火元素/召唤水元素/召唤土元素',
 ]
+def norm_text(t: str) -> str:
+    return re.sub(r'\s+', '', str(t or ''))
+
+
 errors: list[str] = []
 ok_notes: list[str] = []
 
@@ -93,6 +99,29 @@ def main() -> int:
         errors.append('首页缺少法师/召唤师入口图标')
     elif mage_icon.group(1) == sm_icon.group(1):
         errors.append('召唤师图标与法师重复: %s' % sm_icon.group(1))
+
+    # 2.7) 字段与标识（成本点）必须与 docx 完全一致（防增量漂移，如 v1.0.7278 的 18 技能标识）
+    _names = {s2['name'] for s2 in skills}
+    _paras = C.extract_paragraphs(DOCX)
+    _index = C.build_docx_index(_paras, _names)
+    _used: set[int] = set()
+    _field_checked = 0
+    for _sk in skills:
+        _blk = C.pick_block(_index, _sk, _used)
+        if not _blk:
+            continue
+        _dots = len(_blk['mark_dots'])
+        if len(_sk.get('cost') or []) != _dots:
+            errors.append(f"{_sk['name']} 标识点数 {len(_sk.get('cost') or [])} != docx {_dots}")
+        if _sk.get('merged_parts'):
+            continue  # 双块合并技能：字段为两块并集，不做逐字段比对
+        for _k, _v in (_blk.get('fields') or {}).items():
+            if _k in ('描述',):
+                continue
+            _app_v = (_sk.get('fields') or {}).get(_k, '')
+            if norm_text(str(_v)) != norm_text(str(_app_v)):
+                errors.append(f"{_sk['name']} 字段「{_k}」与 docx 不一致：docx={str(_v)[:30]!r} app={str(_app_v)[:30]!r}")
+        _field_checked += 1
 
     # 3) HTML：卡片数 / 专长 / 契约生物 chip
     html = (ROOT / '职业页' / f'{CLASS}.html').read_text(encoding='utf-8')

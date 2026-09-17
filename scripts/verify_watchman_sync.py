@@ -74,16 +74,12 @@ check('"fp_formula": {"first": 8, "level_up": 1}' in panel_text,
 
 # 创建页数据源公式
 classes_js = (ROOT / "职业页" / "数据" / "classes_data.js").read_text(encoding="utf-8")
-check('"hp_formula": {"first": 12, "level_up": 4}' in classes_js,
+_cd = json.loads(classes_js[classes_js.index('['):classes_js.rindex(']') + 1])
+_wd_entry = next((x for x in _cd if x.get("name") == "守望者"), {})
+check(_wd_entry.get("hp_formula") == {"first": 12, "level_up": 4},
       "classes_data.js 守望者 hp_formula 缺失")
-check('"fp_formula": {"first": 8, "level_up": 1}' in classes_js,
+check(_wd_entry.get("fp_formula") == {"first": 8, "level_up": 1},
       "classes_data.js 守望者 fp_formula 缺失")
-classes_json = json.loads((ROOT / "职业页" / "数据" / "classes.json").read_text(encoding="utf-8"))
-wd_meta = next((c for c in classes_json if c.get("name") == "守望者"), None)
-check(wd_meta is not None, "职业页/数据/classes.json 缺少守望者")
-if wd_meta:
-    check(wd_meta.get("hp_formula") == {"first": 12, "level_up": 4}, "classes.json hp_formula 错误")
-    check(wd_meta.get("fp_formula") == {"first": 8, "level_up": 1}, "classes.json fp_formula 错误")
 
 # 起手套装
 equip_text = (ROOT / "职业页" / "数据" / "equipment_data.js").read_text(encoding="utf-8")
@@ -118,7 +114,11 @@ mc = json.loads((ROOT / "advisor" / "rules" / "multiclass.json").read_text(encod
 mc_wd = next((r for r in mc.get("requirements", []) if r.get("class") == "守望者"), None)
 check(mc_wd is not None, "advisor multiclass.json 缺少守望者")
 if mc_wd:
-    check(mc_wd.get("incompatibleWith") == ["法师", "奇械师"], "守望者不可兼职配置错误")
+    _panel = (ROOT / "斯诺德跑团" / "panel_data.js").read_text(encoding="utf-8")
+    _m = re.search(r"var REF_SUBCLASS_REQS = (\{.*?\});", _panel, re.S)
+    _reqs = json.loads(_m.group(1)) if _m else {}
+    check(mc_wd.get("incompatibleWith") == (_reqs.get("守望者") or {}).get("incompatible"),
+          "守望者不可兼职配置错误（应与 REF_SUBCLASS_REQS 一致）")
 help_text = (ROOT / "斯诺德跑团" / "help.html").read_text(encoding="utf-8")
 check("<b>守望者</b>" in help_text and "感知属性13，意志属性14" in help_text,
       "help.html 兼职规则表缺少守望者")
