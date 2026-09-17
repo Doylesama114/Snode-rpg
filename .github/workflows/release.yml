@@ -35,7 +35,7 @@ jobs:
           $t = "${{ inputs.tag }}"
           if ([string]::IsNullOrWhiteSpace($t)) { $t = "${{ github.ref_name }}" }
           Write-Host "target tag: $t"
-          "tag=$t" >> $env:GITHUB_OUTPUT   # pwsh 7 追加写，避免编码/BOM 差异
+          "tag=$t" >> $env:GITHUB_OUTPUT   # append (pwsh 7, no BOM)
 
       - uses: actions/checkout@v4
         with:
