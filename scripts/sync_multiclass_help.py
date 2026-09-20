@@ -39,7 +39,7 @@ SHORT = {
     "召唤师": "召唤", "战舞者": "战舞",
 }
 # 未开放职业：表内保留并标注，不作为兼职候选（兼职候选来自 REF_CLASSES）
-PLANNED = {"战舞者"}
+PLANNED = set()  # 战舞者已于 v1.0.8004 开放
 
 BEGIN_BODY = "<!-- MULTICLASS-RULES -->"
 END_BODY = "<!-- /MULTICLASS-RULES -->"
@@ -169,7 +169,7 @@ def build_matrix(data: dict) -> str:
         '<span class="sw mc-ok">可兼职（空白）</span>'
         '<span class="sw mc-self">自身</span>'
         '<span>行 = 主职业，列 = 副职</span>'
-        '<span class="mc-planned">战舞者为未开放职业，暂不可作为兼职目标</span>'
+        ''
         '</div>\n'
         '<div class="mc-wrap"><table class="mc-matrix">'
         "<thead>" + "".join(head) + "</thead><tbody>"

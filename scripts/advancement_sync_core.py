@@ -28,7 +28,7 @@ STAT_KEYS = ("力量", "敏捷", "体质", "智力", "感知", "魅力", "意志
 BASE_CLASSES = (
     "蛮斗士", "战士", "法师", "猎人", "牧师", "圣骑士", "游荡者", "德鲁伊",
     "萨满祭司", "术士", "武僧", "吟游诗人", "魔契师", "奇械师", "守望者",
-    "谋士", "召唤师",
+    "谋士", "召唤师", "战舞者",
 )
 SKIP_NAMES = frozenset({"进阶", "属性值需求", "来源", "标识", "特殊条件", "1", "2", "3", *STAT_KEYS})
 
@@ -71,6 +71,7 @@ CLASS_SLUG = {
     "守望者": "wd",
     "谋士": "st",
     "召唤师": "sm",
+    "战舞者": "zw",
     "通用": "common",
 }
 
@@ -92,6 +93,7 @@ CONTAINER_ID = {
     "守望者": "wd-adv-container",
     "谋士": "st-adv-container",
     "召唤师": "sm-adv-container",
+    "战舞者": "zw-adv-container",
     "通用": "common-adv-container",
 }
 
@@ -113,6 +115,7 @@ EMPTY_DIV_ID = {
     "守望者": "wd-adv-empty",
     "谋士": "st-adv-empty",
     "召唤师": "sm-adv-empty",
+    "战舞者": "zw-adv-empty",
     "通用": "common-adv-empty",
 }
 

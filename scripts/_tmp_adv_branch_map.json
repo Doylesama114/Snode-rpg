@@ -1,0 +1,3523 @@
+{
+  "priest_blocks": [
+    {
+      "index": 0,
+      "para_start": 3020,
+      "para_end": 3322,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "圣堂刺客",
+        "惩戒骑士",
+        "守护骑士",
+        "圣洁骑士",
+        "光铸者",
+        "正义导师",
+        "戒律神官",
+        "光之侍",
+        "圣堂武士",
+        "神谕使者"
+      ],
+      "context_before": [
+        {
+          "i": 3000,
+          "text": "鬼灵猎人",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3001,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3002,
+          "text": "12",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3003,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3004,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3005,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3006,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3007,
+          "text": "12",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3008,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3009,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3010,
+          "text": "猎人",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3011,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3012,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3013,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3014,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3015,
+          "text": "你的特殊专长中包含有幽灵忠犬，或者你拥有一只与幽灵、暗影或鬼怪相关的野兽伙伴",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3016,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3017,
+          "text": "驱散十个不死生物（通过物理手段击杀丧尸、骷髅等行径不视为驱散）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3018,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3019,
+          "text": "与一只死去的野兽伙伴缔结更为紧密的灵魂契约，使其灵魂得以继续停留在物质位面",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "3042:牧师",
+        "3047:刺杀二十名与自身所在教团敌对的角色",
+        "3049:完成三场在突袭轮次结束阶段前结束的战斗环节"
+      ]
+    },
+    {
+      "index": 1,
+      "para_start": 3322,
+      "para_end": 3624,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "自然行者",
+        "丰收祭司",
+        "神谕使者",
+        "净化大师",
+        "植物学家",
+        "和睦使者",
+        "赋生者",
+        "田园守护者",
+        "季节法师",
+        "祈雨者"
+      ],
+      "context_before": [
+        {
+          "i": 3302,
+          "text": "神谕使者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3303,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3304,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3305,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3306,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3307,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3308,
+          "text": "16",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3309,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3310,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3311,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3312,
+          "text": "牧师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3313,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3314,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3315,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3316,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3317,
+          "text": "进行十次虔诚祷告",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3318,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3319,
+          "text": "施展二十次带有神谕真言关键词的技能",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3320,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3321,
+          "text": "获得一次神灵的启示，通过先机完美解决即将发生的事件",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "3344:猎人、牧师、德鲁伊",
+        "3349:进行十次成功的自然检定",
+        "3351:拥有五次与野生的野兽与怪兽共同狩猎并平分战利品的经历"
+      ]
+    },
+    {
+      "index": 2,
+      "para_start": 3624,
+      "para_end": 3926,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "武器大师",
+        "剑圣",
+        "刺客",
+        "密探",
+        "旗手",
+        "策略大师",
+        "前锋",
+        "阴谋家",
+        "神谕使者",
+        "骑兵"
+      ],
+      "context_before": [
+        {
+          "i": 3604,
+          "text": "祈雨者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3605,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3606,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3607,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3608,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3609,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3610,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3611,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3612,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3613,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3614,
+          "text": "牧师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3615,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3616,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3617,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3618,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3619,
+          "text": "向十名有需求者分享水源并得到对方的感谢（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3620,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3621,
+          "text": "为三座村庄开垦可长期使用的水井",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3622,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3623,
+          "text": "获得一位水元素领主或自然精魄的认可，随后举行一场祈雨仪式令一座长期受到干涸困扰的聚居地感受雨露的恩泽",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "3646:战士、猎人、牧师、圣骑士、奇械师",
+        "3651:你的特殊专长中包含有技巧专家、武器精通或战技专家",
+        "3653:在战斗环节中累计使用过全部武器类别发起过攻击"
+      ]
+    },
+    {
+      "index": 3,
+      "para_start": 3926,
+      "para_end": 4228,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "武器大师",
+        "防御者",
+        "火焰法师",
+        "附魔师",
+        "前锋",
+        "神谕使者",
+        "战锤祭司",
+        "秘银猎手",
+        "熔炉守护者",
+        "破舰者"
+      ],
+      "context_before": [
+        {
+          "i": 3906,
+          "text": "骑兵",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3907,
+          "text": "14",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3908,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3909,
+          "text": "14",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3910,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3911,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3912,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3913,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3914,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3915,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3916,
+          "text": "战士、牧师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3917,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3918,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3919,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3920,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3921,
+          "text": "你的特殊专长中包含有冲锋手、枪兵或骑乘战斗",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3922,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3923,
+          "text": "你在保持骑乘状态的情况下完成五场战斗环节",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3924,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 3925,
+          "text": "为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "3948:战士、猎人、牧师、圣骑士、奇械师",
+        "3953:你的特殊专长中包含有技巧专家、武器精通或战技专家",
+        "3955:在战斗环节中累计使用过全部武器类别发起过攻击"
+      ]
+    },
+    {
+      "index": 4,
+      "para_start": 4228,
+      "para_end": 4528,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "奥术师",
+        "古典巫师",
+        "魔药学家",
+        "解密学者",
+        "心灵导师",
+        "神谕使者",
+        "博学者",
+        "镜影师",
+        "卷轴学者"
+      ],
+      "context_before": [
+        {
+          "i": 4208,
+          "text": "破舰者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4209,
+          "text": "16",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4210,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4211,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4212,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4213,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4214,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4215,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4216,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4217,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4218,
+          "text": "蛮斗士、牧师、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4219,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4220,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4221,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4222,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4223,
+          "text": "破坏五处战斗地图中的可摧毁物品",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4224,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4225,
+          "text": "击败十名着装有重甲和盾牌的角色（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4226,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4227,
+          "text": "摧毁一台防御等级为24或以上的构造体或奇械设备",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "4250:法师、牧师",
+        "4257:你花费过幕间物语来阅读一本奥术法术的魔典"
+      ]
+    },
+    {
+      "index": 5,
+      "para_start": 4528,
+      "para_end": 4830,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "戏法师",
+        "诡术师",
+        "妖精召唤者",
+        "神谕使者",
+        "竖琴精灵",
+        "狂欢骑士",
+        "音乐侦探",
+        "幻灵诗人",
+        "圣乐演奏家",
+        "绘梦画师"
+      ],
+      "context_before": [
+        {
+          "i": 4508,
+          "text": "卷轴学者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4509,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4510,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4511,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4512,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4513,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4514,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4515,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4516,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4517,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4518,
+          "text": "法师、牧师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4519,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4520,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4521,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4522,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4523,
+          "text": "你的特殊专长中包含有卷轴助理",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4524,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4525,
+          "text": "使用二十张法术卷轴",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4526,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4527,
+          "text": "你花费过幕间物语来阅读并抄录一本任意学派的魔典",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "4550:法师、牧师、术士、吟游诗人、魔契师",
+        "4555:对十名角色施展戏法（不计算玩家在内）",
+        "4557:使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 6,
+      "para_start": 4830,
+      "para_end": 5132,
+      "title": "牧师进阶途径",
+      "style": null,
+      "cards": [
+        "死灵法师",
+        "神谕使者",
+        "缝合怪专家",
+        "灵媒",
+        "灰袍收割者",
+        "灵魂炼金师",
+        "赋生者",
+        "渡魂典卫",
+        "净化大师",
+        "彼界战士"
+      ],
+      "context_before": [
+        {
+          "i": 4810,
+          "text": "绘梦画师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4811,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4812,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4813,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4814,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4815,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4816,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4817,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4818,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4819,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4820,
+          "text": "牧师、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4821,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4822,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4823,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4824,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4825,
+          "text": "你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4826,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4827,
+          "text": "令十名敌人惊叹你的画作，并解除与你的敌对状态",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4828,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 4829,
+          "text": "在一场节日庆典、文化沙龙或艺术展活动中进行公开创作，用你的画作令所有参与者重拾心中的梦想",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "4852:法师、牧师、魔契师",
+        "4857:你成功对二十名敌人造成生命流失效果",
+        "4859:你花费过幕间物语来阅读一本死灵学派或黑魔法的魔典"
+      ]
+    }
+  ],
+  "warlock_blocks": [
+    {
+      "index": 0,
+      "para_start": 10090,
+      "para_end": 10332,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "守护骑士",
+        "圣洁骑士",
+        "独角兽骑士",
+        "净化大师",
+        "和睦使者",
+        "赋生者",
+        "渡魂典卫",
+        "预言家"
+      ],
+      "context_before": [
+        {
+          "i": 10070,
+          "text": "死亡金属骑士",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10071,
+          "text": "14",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10072,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10073,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10074,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10075,
+          "text": "13",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10076,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10077,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10078,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10079,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10080,
+          "text": "吟游诗人",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10081,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10082,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10083,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10084,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10085,
+          "text": "击败十名传统的吟游诗人职业者（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10086,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10087,
+          "text": "将十名原先对你的演奏嗤之以鼻的角色转化为你的崇拜者（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10088,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10089,
+          "text": "在一场他人的演出中喧宾夺主，并且使观众完成从困惑、质疑、怒骂到喝彩的转变",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "10112:牧师、圣骑士、魔契师",
+        "10117:你为了守护无辜的人们而主动发起十场战斗",
+        "10119:完成十次善举并获得他人的感激（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 1,
+      "para_start": 10332,
+      "para_end": 10574,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "魔剑士",
+        "冰霜法师",
+        "冬霜祭司",
+        "午夜法官",
+        "灵媒",
+        "梦魇",
+        "影裔魔导士",
+        "寂静者"
+      ],
+      "context_before": [
+        {
+          "i": 10312,
+          "text": "预言家",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10313,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10314,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10315,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10316,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10317,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10318,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10319,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10320,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10321,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10322,
+          "text": "法师、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10323,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10324,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10325,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10326,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10327,
+          "text": "通过任意方式将二十次失败检定转变为成功",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10328,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10329,
+          "text": "以预言作为引子改变十名角色的人生轨迹、或是阻止不幸场景的发生",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10330,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10331,
+          "text": "使众人信服你为能够通晓未来的先知",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "10354:战士、法师、吟游诗人、魔契师",
+        "10359:使用魔法类型的剑类武器参与十场战斗环节",
+        "10361:为你的剑类武器附加十种不同的增益效果"
+      ]
+    },
+    {
+      "index": 2,
+      "para_start": 10574,
+      "para_end": 10816,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "戏法师",
+        "魔弹射手",
+        "妖精召唤者",
+        "花之舞者",
+        "翼法师",
+        "影裔魔导士",
+        "竖琴精灵",
+        "蝶魔术师"
+      ],
+      "context_before": [
+        {
+          "i": 10554,
+          "text": "寂静者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10555,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10556,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10557,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10558,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10559,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10560,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10561,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10562,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10563,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10564,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10565,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10566,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10567,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10568,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10569,
+          "text": "你使十名角色进入耳鸣或沉默状态（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10570,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10571,
+          "text": "在对方未进行言语（包括叫喊或施法等）的情况下击杀十名角色",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10572,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10573,
+          "text": "留下一处战斗的痕迹，令后续的目击者遭遇时均情不自禁地噤声而非失声尖叫",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "10596:法师、牧师、术士、吟游诗人、魔契师",
+        "10601:对十名角色施展戏法（不计算玩家在内）",
+        "10603:使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 3,
+      "para_start": 10816,
+      "para_end": 11058,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "戏法师",
+        "预言家",
+        "梦境编织者",
+        "绿骑士",
+        "梦魇",
+        "心灵导师",
+        "绘梦画师",
+        "妖精龙骑士"
+      ],
+      "context_before": [
+        {
+          "i": 10796,
+          "text": "蝶魔术师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10797,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10798,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10799,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10800,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10801,
+          "text": "12",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10802,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10803,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10804,
+          "text": "12",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10805,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10806,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10807,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10808,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10809,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10810,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10811,
+          "text": "与蝶类生物进行过五次友善的交互",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10812,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10813,
+          "text": "你通过惑控或幻象效果成功欺骗二十名角色",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10814,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 10815,
+          "text": "准备五种不同的、非暴力手段获取的蝴蝶翅膀、一份花粉和花蜜，在种植着花卉、蝴蝶纷飞的温室环境下举行晋升蝶魔术师的仪式",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "10838:法师、牧师、术士、吟游诗人、魔契师",
+        "10843:对十名角色施展戏法（不计算玩家在内）",
+        "10845:使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 4,
+      "para_start": 11058,
+      "para_end": 11300,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "戏法师",
+        "诡术师",
+        "秀逗魔导士",
+        "笑匠",
+        "狂欢骑士",
+        "镜影师",
+        "小丑刺客",
+        "泡泡大师"
+      ],
+      "context_before": [
+        {
+          "i": 11038,
+          "text": "妖精龙骑士",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11039,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11040,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11041,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11042,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11043,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11044,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11045,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11046,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11047,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11048,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11049,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11050,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11051,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11052,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11053,
+          "text": "你拥有五次使自身体型缩小以完成恶作剧的经历",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11054,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11055,
+          "text": "使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11056,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11057,
+          "text": "你完成一场趣味横生的恶作剧，以至于一只妖精龙乐于帮助你晋升为妖精龙骑士",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "11080:法师、牧师、术士、吟游诗人、魔契师",
+        "11085:对十名角色施展戏法（不计算玩家在内）",
+        "11087:使十名角色进入致盲、困惑、击倒、昏睡或忏悔状态（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 5,
+      "para_start": 11300,
+      "para_end": 11542,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "冬霜祭司",
+        "妖精召唤者",
+        "丰收祭司",
+        "热情奏者",
+        "繁春信使",
+        "天气术士",
+        "仲夏骑士",
+        "季节法师"
+      ],
+      "context_before": [
+        {
+          "i": 11280,
+          "text": "泡泡大师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11281,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11282,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11283,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11284,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11285,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11286,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11287,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11288,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11289,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11290,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11291,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11292,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11293,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11294,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11295,
+          "text": "向二十名孩童分发泡泡棒、棉花糖、气球或风车等节日活动道具",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11296,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11297,
+          "text": "在游乐园、马戏团或其他庆典活动中运用泡泡棒或皮球进行十次成功的表演检定",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11298,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11299,
+          "text": "使一名名望等级10级或以上的NPC角色在游乐园、马戏团或其他庆典活动中接受你给予的活动道具，并且将其视作珍藏",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "11322:萨满祭司、魔契师",
+        "11327:你造成三十次冰霜伤害",
+        "11329:在寒冷环境下进行五次萨满教义的先祖仪式或异界灵感"
+      ]
+    },
+    {
+      "index": 6,
+      "para_start": 11542,
+      "para_end": 11784,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "火焰法师",
+        "火焰祭司",
+        "毁灭骑士",
+        "深渊召唤者",
+        "恶魔使徒",
+        "纵火者",
+        "混乱导师",
+        "爆燃引擎"
+      ],
+      "context_before": [
+        {
+          "i": 11522,
+          "text": "季节法师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11523,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11524,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11525,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11526,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11527,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11528,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11529,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11530,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11531,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11532,
+          "text": "牧师、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11533,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11534,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11535,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11536,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11537,
+          "text": "分别参与一场春季、夏季、秋季和冬季发生的战斗环节，并且战斗场景具备足够的季节特征",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11538,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11539,
+          "text": "分别击败一名象征着新生、炎热、衰败和寒冷的敌人（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11540,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11541,
+          "text": "分别准备一份能够象征春季、夏季、秋季和冬季的物件和代表四季的各一种矿石珠宝和植株，在不存在明显季节特征的温室中举行晋升为季节法师的仪式",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "11564:法师、牧师、魔契师",
+        "11569:你成功使十名敌人进入灼烧状态",
+        "11571:你花费过幕间物语来阅读一本火焰法术的魔典"
+      ]
+    },
+    {
+      "index": 7,
+      "para_start": 11784,
+      "para_end": 12026,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "行刑官",
+        "毁灭骑士",
+        "毁灭术士",
+        "深渊召唤者",
+        "恶魔使徒",
+        "咆哮战士",
+        "破舰者",
+        "邪魂典狱长"
+      ],
+      "context_before": [
+        {
+          "i": 11764,
+          "text": "爆燃引擎",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11765,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11766,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11767,
+          "text": "16",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11768,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11769,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11770,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11771,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11772,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11773,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11774,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11775,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11776,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11777,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11778,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11779,
+          "text": "引发三起公众场所的爆炸事件，并确保至少拥有十人规模的伤亡",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11780,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11781,
+          "text": "击杀二十名角色，并且通过焚烧或爆炸销毁遗体",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11782,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 11783,
+          "text": "炸毁一座城市或城镇的标志性建筑，令当地居民因此而陷入恐慌",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "11806:战士、游荡者、魔契师",
+        "11811:主持五场公开且合法的审判，或是具有黑幕、非公开的处刑",
+        "11813:击杀二十名触犯法律、或是饱含冤屈的角色"
+      ]
+    },
+    {
+      "index": 8,
+      "para_start": 12026,
+      "para_end": 12268,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "死灵法师",
+        "符文法师",
+        "魔药学家",
+        "缝合怪专家",
+        "灵魂炼金师",
+        "亵渎祭司",
+        "龙魂战士",
+        "奇美拉"
+      ],
+      "context_before": [
+        {
+          "i": 12006,
+          "text": "邪魂典狱长",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12007,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12008,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12009,
+          "text": "14",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12010,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12011,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12012,
+          "text": "13",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12013,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12014,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12015,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12016,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12017,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12018,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12019,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12020,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12021,
+          "text": "你通过炼狱法术击杀二十名角色",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12022,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12023,
+          "text": "向地狱、深渊及其他永恒炼狱位面引渡二十个灵魂",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12024,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12025,
+          "text": "获得一个来自精英级单位的灵魂，将其作为你的珍藏",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "12048:法师、牧师、魔契师",
+        "12053:你成功对二十名敌人造成生命流失效果",
+        "12055:你花费过幕间物语来阅读一本死灵学派或黑魔法的魔典"
+      ]
+    },
+    {
+      "index": 9,
+      "para_start": 12268,
+      "para_end": 12510,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "午夜法官",
+        "血魔法师",
+        "红袍收割者",
+        "饮命者",
+        "疫病使者",
+        "恐惧主教",
+        "血影刺客",
+        "屠夫"
+      ],
+      "context_before": [
+        {
+          "i": 12248,
+          "text": "奇美拉",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12249,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12250,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12251,
+          "text": "16",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12252,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12253,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12254,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12255,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12256,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12257,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12258,
+          "text": "德鲁伊、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12259,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12260,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12261,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12262,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12263,
+          "text": "猎杀三只野兽或怪兽，移植对方的核心器官",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12264,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12265,
+          "text": "注入狮类、羊类和蛇类精英级生物的血统因子各一份",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12266,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12267,
+          "text": "触发不可控突变",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "12290:圣骑士、游荡者、吟游诗人、魔契师",
+        "12295:在夜晚或黑暗环境下击杀二十名邪恶阵营的角色",
+        "12297:打击五场正在进行的邪恶举止（不计算玩家在内）"
+      ]
+    },
+    {
+      "index": 10,
+      "para_start": 12510,
+      "para_end": 12752,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "炼狱行者",
+        "黑暗骑士",
+        "阴谋家",
+        "混沌魔灵",
+        "灵魂炼金师",
+        "魔鬼收契人",
+        "小鬼领主",
+        "地狱犬大师"
+      ],
+      "context_before": [
+        {
+          "i": 12490,
+          "text": "屠夫",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12491,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12492,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12493,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12494,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12495,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12496,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12497,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12498,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12499,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12500,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12501,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12502,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12503,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12504,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12505,
+          "text": "屠宰二十名能够提供经验值的智慧生物",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12506,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12507,
+          "text": "屠宰二十头能够提供经验值的野兽或怪兽",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12508,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12509,
+          "text": "使用处决技消灭一名能够提供经验值的角色",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "12532:魔契师",
+        "12537:造访十次地狱、深渊及其他永恒炼狱所在的位面",
+        "12539:你通过炼狱法术击杀二十名角色"
+      ]
+    },
+    {
+      "index": 11,
+      "para_start": 12752,
+      "para_end": 12994,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "混沌魔灵",
+        "灵魂炼金师",
+        "亵渎祭司",
+        "疫病使者",
+        "天启术士",
+        "恐惧主教",
+        "影裔魔导士",
+        "破舰者"
+      ],
+      "context_before": [
+        {
+          "i": 12732,
+          "text": "地狱犬大师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12733,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12734,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12735,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12736,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12737,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12738,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12739,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12740,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12741,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12742,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12743,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12744,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12745,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12746,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12747,
+          "text": "召唤十只地狱犬来到主物质位面",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12748,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12749,
+          "text": "通过地狱犬击杀二十名角色",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12750,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12751,
+          "text": "带领地狱犬参与一场关键战役并击杀一名精英级单位",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "12774:魔契师",
+        "12781:令三名孩童在无意识间成为你阴谋的一环，并且这个期间确保孩童没有受到实际伤害"
+      ]
+    },
+    {
+      "index": 12,
+      "para_start": 12994,
+      "para_end": 13236,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "升腾者",
+        "星骸骑士",
+        "虚空之嗣",
+        "寰宇龙兽",
+        "领航员",
+        "星渊引导者",
+        "奇兽",
+        "宇宙海妖"
+      ],
+      "context_before": [
+        {
+          "i": 12974,
+          "text": "破舰者",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12975,
+          "text": "16",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12976,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12977,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12978,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12979,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12980,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12981,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12982,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12983,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12984,
+          "text": "蛮斗士、牧师、魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12985,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12986,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12987,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12988,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12989,
+          "text": "破坏五处战斗地图中的可摧毁物品",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12990,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12991,
+          "text": "击败十名着装有重甲和盾牌的角色（不计算玩家在内）",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12992,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 12993,
+          "text": "摧毁一台防御等级为24或以上的构造体或奇械设备",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "13016:萨满祭司、魔契师",
+        "13021:你的特殊专长中包含有元素亲和、仪式魔法或弥补短板",
+        "13023:吸收一名精英级或以上元素生物的核心能量"
+      ]
+    },
+    {
+      "index": 13,
+      "para_start": 13236,
+      "para_end": 13478,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "掠夺者",
+        "指挥官",
+        "密探",
+        "空间架构师",
+        "领航员",
+        "齿轮",
+        "破界者",
+        "星之炬"
+      ],
+      "context_before": [
+        {
+          "i": 13216,
+          "text": "宇宙海妖",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13217,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13218,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13219,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13220,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13221,
+          "text": "14",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13222,
+          "text": "17",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13223,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13224,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13225,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13226,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13227,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13228,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13229,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13230,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13231,
+          "text": "你的歌唱熟练度超过4",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13232,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13233,
+          "text": "你面向星空进行十次成功的歌唱检定",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13234,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13235,
+          "text": "使自身的躯体暴露在宇宙环境下，通过无声的歌唱与群星间的频率同调完成宇宙海妖的异变",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "13258:蛮斗士、魔契师",
+        "13263:击败十名官方势力的角色（不计算玩家在内）",
+        "13265:抢夺共计价值超过2000金币的财富"
+      ]
+    },
+    {
+      "index": 14,
+      "para_start": 13478,
+      "para_end": 13720,
+      "title": "魔契师进阶途径",
+      "style": null,
+      "cards": [
+        "心灵导师",
+        "神谕使者",
+        "亵渎祭司",
+        "虚空之嗣",
+        "星渊引导者",
+        "秽形术士",
+        "虚妄先知",
+        "超侵蚀者"
+      ],
+      "context_before": [
+        {
+          "i": 13458,
+          "text": "星之炬",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13459,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13460,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13461,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13462,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13463,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13464,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13465,
+          "text": "15",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13466,
+          "text": "-",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13467,
+          "text": "来源",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13468,
+          "text": "魔契师",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13469,
+          "text": "标识",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13470,
+          "text": "●●●",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13471,
+          "text": "特殊条件",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13472,
+          "text": "1",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13473,
+          "text": "造访一个具备文明的异界，并令当地人相信你为友善的存在",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13474,
+          "text": "2",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13475,
+          "text": "令十名来自异界的NPC角色将你视作好友",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13476,
+          "text": "3",
+          "style": null,
+          "imgs": []
+        },
+        {
+          "i": 13477,
+          "text": "点亮这个异界的坐标",
+          "style": null,
+          "imgs": []
+        }
+      ],
+      "imgs_in_block": [],
+      "early_extras": [
+        "13500:法师、牧师、魔契师",
+        "13505:为十名角色提供建议使其走上与原先不同的人生轨迹（不计算玩家在内）",
+        "13507:使十名角色进入困惑、混乱、忏悔或眩晕状态"
+      ]
+    }
+  ],
+  "notes": [],
+  "deity_like_near_sections": [
+    "2955|style=None|惩治十名破坏自然、欺凌弱小、压迫他人的角色（不计算玩家在内）",
+    "3019|style=None|与一只死去的野兽伙伴缔结更为紧密的灵魂契约，使其灵魂得以继续停留在物质位面",
+    "3062|style=None|惩戒骑士",
+    "3072|style=None|牧师、圣骑士",
+    "3092|style=None|守护骑士",
+    "3102|style=None|牧师、圣骑士、魔契师",
+    "3111|style=None|你挫败了一场巨大的邪恶并因此挽救了数百人的生命",
+    "3122|style=None|圣洁骑士",
+    "3132|style=None|牧师、圣骑士、魔契师",
+    "3162|style=None|牧师、圣骑士",
+    "3182|style=None|正义导师",
+    "3192|style=None|牧师、圣骑士",
+    "3334|style=None|自然行者",
+    "3349|style=None|进行十次成功的自然检定",
+    "3531|style=None|累计十次将生命值降至0或更低的角色生命值回复到至少1点",
+    "3533|style=None|为一名注定死亡的角色赋予新生",
+    "3646|style=None|战士、猎人、牧师、圣骑士、奇械师",
+    "3826|style=None|蛮斗士、战士、牧师、圣骑士、武僧",
+    "3925|style=None|为你的坐骑投入价值2000金币的花费，并参与一场战役、骑士对决或骑术锦标赛",
+    "3948|style=None|战士、猎人、牧师、圣骑士、奇械师",
+    "3978|style=None|战士、牧师、圣骑士",
+    "4068|style=None|蛮斗士、战士、牧师、圣骑士、武僧",
+    "4163|style=None|驱逐十只邪魔、精类生物或不死生物",
+    "4360|style=None|心灵导师",
+    "4439|style=None|花费一次长达十年时间的幕间物语去潜心学习、阅读书本和获取知识以成为真正的博学者",
+    "4467|style=None|与一位古代英灵或时间领主签订契约，使对方协助你完成晋升为古代魔导士的仪式",
+    "4600|style=None|妖精召唤者",
+    "4617|style=None|经历三场由自然界的精类生物所引发的事件",
+    "4677|style=None|使五位超自然存在成为你的听众",
+    "4690|style=None|狂欢骑士",
+    "4825|style=None|你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作",
+    "4857|style=None|你成功对二十名敌人造成生命流失效果",
+    "4979|style=None|击杀十个试图使用黑魔法或其他劣等手段来维持生命延续的角色",
+    "4981|style=None|目送一名对你至关重要的人寿终正寝，期间抗拒来自生命延续的诱惑",
+    "5007|style=None|通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态",
+    "5011|style=None|炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂",
+    "5039|style=None|累计十次将生命值降至0或更低的角色生命值回复到至少1点",
+    "5041|style=None|为一名注定死亡的角色赋予新生",
+    "5132|style=None|圣骑士进阶途径",
+    "5153|style=None|战士、猎人、牧师、圣骑士、奇械师",
+    "5183|style=None|战士、牧师、圣骑士",
+    "10070|style=None|死亡金属骑士",
+    "10102|style=None|守护骑士",
+    "10112|style=None|牧师、圣骑士、魔契师",
+    "10121|style=None|你挫败了一场巨大的邪恶并因此挽救了数百人的生命",
+    "10132|style=None|圣洁骑士",
+    "10142|style=None|牧师、圣骑士、魔契师",
+    "10162|style=None|独角兽骑士",
+    "10269|style=None|累计十次将生命值降至0或更低的角色生命值回复到至少1点",
+    "10271|style=None|为一名注定死亡的角色赋予新生",
+    "10444|style=None|圣骑士、游荡者、吟游诗人、魔契师",
+    "10509|style=None|在夜晚、黑暗或梦境环境下击杀二十名角色",
+    "10513|style=None|制造一个流传于他人梦境中的可怕怪谈",
+    "10646|style=None|妖精召唤者",
+    "10663|style=None|经历三场由自然界的精类生物所引发的事件",
+    "10691|style=None|在自然公园或花园进行十次成功的舞蹈检定",
+    "10783|style=None|使五位超自然存在成为你的听众",
+    "10888|style=None|梦境编织者",
+    "10905|style=None|与五名角色谈论关于梦境的话题，并从中获取有用的信息（不计算玩家在内）",
+    "10907|style=None|造访一名角色的梦境，通过交互使对方在苏醒后无意识地做出新的抉择以改写原本的结局",
+    "10918|style=None|绿骑士",
+    "10935|style=None|举行、参与五场与森林或绿植有关的自然仪式，这些仪式不能来源与氏族或部落的古老传统",
+    "10963|style=None|在夜晚、黑暗或梦境环境下击杀二十名角色",
+    "10967|style=None|制造一个流传于他人梦境中的可怕怪谈",
+    "10978|style=None|心灵导师",
+    "11023|style=None|你倾听他人讲述的梦想或梦境故事，并根据此为蓝本创作十副画作",
+    "11038|style=None|妖精龙骑士",
+    "11057|style=None|你完成一场趣味横生的恶作剧，以至于一只妖精龙乐于帮助你晋升为妖精龙骑士",
+    "11190|style=None|狂欢骑士",
+    "11265|style=None|你拥有艺人、小丑或驯兽师的个性背景",
+    "11342|style=None|妖精召唤者",
+    "11359|style=None|经历三场由自然界的精类生物所引发的事件",
+    "11492|style=None|仲夏骑士",
+    "11614|style=None|毁灭骑士",
+    "11624|style=None|圣骑士、魔契师",
+    "11734|style=None|混乱导师",
+    "11826|style=None|毁灭骑士",
+    "11836|style=None|圣骑士、魔契师",
+    "12053|style=None|你成功对二十名敌人造成生命流失效果",
+    "12173|style=None|通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态",
+    "12177|style=None|炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂",
+    "12290|style=None|圣骑士、游荡者、吟游诗人、魔契师",
+    "12327|style=None|触发十次生命值偷取效果",
+    "12387|style=None|进行三次通过汲取他人灵魂的方式以延续自身的生命力",
+    "12552|style=None|黑暗骑士",
+    "12562|style=None|圣骑士、魔契师",
+    "12571|style=None|向秩序世界宣告黑暗骑士的到来",
+    "12657|style=None|通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态",
+    "12661|style=None|炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂",
+    "12672|style=None|魔鬼收契人",
+    "12689|style=None|签署并回收三份涉及灵魂的魔鬼契约（不计算玩家在内）",
+    "12691|style=None|与一名比你强大得多的角色签署一份涉及灵魂的魔鬼契约（不计算玩家在内）",
+    "12809|style=None|通过令其饮用药剂的方式使二十名生命值为0或以下的角色恢复状态",
+    "12813|style=None|炼制出一瓶能够使饮用者当场死亡或复活的禁忌药剂",
+    "13036|style=None|星骸骑士",
+    "13051|style=None|在宇宙、星界或外空间等环境下参与十场战斗环节",
+    "13053|style=None|在宇宙、星界或外空间等环境下进行十次长休",
+    "13066|style=None|虚空之嗣",
+    "13081|style=None|徒手接触三件来源与虚空的物品，随后进行成功的聆听检定",
+    "13085|style=None|使自身的躯体暴露在宇宙、星界或外空间等环境下，在虚空意志的驱使下觉醒血脉中的力量",
+    "13113|style=None|消灭五头星界生物并汲取其能量",
+    "13171|style=None|召唤五只星界生物来到主物质位面",
+    "13173|style=None|进行十次多元宇宙、天文学或星界知识的检定获取对当前有用的情报",
+    "13175|style=None|召唤一头能级32500以上的星界单位进入主物质位面",
+    "13417|style=None|作为基层必不可少的一环完整参与战争规模的战役",
+    "13490|style=None|心灵导师",
+    "13580|style=None|虚空之嗣",
+    "13595|style=None|徒手接触三件来源与虚空的物品，随后进行成功的聆听检定",
+    "13599|style=None|使自身的躯体暴露在宇宙、星界或外空间等环境下，在虚空意志的驱使下觉醒血脉中的力量",
+    "13625|style=None|召唤五只星界生物来到主物质位面",
+    "13627|style=None|进行十次多元宇宙、天文学或星界知识的检定获取对当前有用的情报",
+    "13629|style=None|召唤一头能级指数32500以上的星界单位进入主物质位面",
+    "13741|style=None|战士、猎人、牧师、圣骑士、奇械师"
+  ],
+  "intro": [
+    "0|None|进阶途径目录",
+    "1|None|蛮斗士................................................2",
+    "2|None|战士.................................................12",
+    "3|None|法师.................................................25",
+    "4|None|猎人.................................................40",
+    "5|None|牧师.................................................53",
+    "6|None|圣骑士...............................................88",
+    "7|None|游荡者..............................................101",
+    "8|None|德鲁伊..............................................114",
+    "9|None|萨满祭司............................................127",
+    "10|None|术士................................................140",
+    "11|None|武僧................................................150",
+    "12|None|吟游诗人............................................160",
+    "13|None|魔契师..............................................173",
+    "14|None|奇械师..............................................233",
+    "15|None|通用................................................246",
+    "16|None|蛮斗士进阶途径",
+    "17|None|进阶",
+    "18|None|属性值需求",
+    "19|None|力量",
+    "20|None|敏捷",
+    "21|None|体质",
+    "22|None|智力",
+    "23|None|感知",
+    "24|None|魅力",
+    "25|None|意志",
+    "26|None|幸运",
+    "27|None|狂战士",
+    "28|None|15",
+    "29|None|-",
+    "30|None|15",
+    "31|None|10",
+    "32|None|-",
+    "33|None|-",
+    "34|None|-",
+    "35|None|-",
+    "36|None|来源",
+    "37|None|蛮斗士、战士",
+    "38|None|标识",
+    "39|None|●●●",
+    "40|None|特殊条件",
+    "41|None|1",
+    "42|None|你通过近战攻击击杀二十名能够提供经验值的角色",
+    "43|None|2",
+    "44|None|你在五场战斗环节中以低于X点生命值结束战斗（X为你的25%最大生命值）",
+    "45|None|3",
+    "46|None|在你的当前生命值为1的情况下，由你击杀最后的敌人来结束一场战斗环节",
+    "47|None|进阶",
+    "48|None|属性值需求",
+    "49|None|力量",
+    "50|None|敏捷",
+    "51|None|体质",
+    "52|None|智力",
+    "53|None|感知",
+    "54|None|魅力",
+    "55|None|意志",
+    "56|None|幸运",
+    "57|None|斗士",
+    "58|None|15",
+    "59|None|-",
+    "60|None|14",
+    "61|None|-",
+    "62|None|-",
+    "63|None|-",
+    "64|None|13",
+    "65|None|-",
+    "66|None|来源",
+    "67|None|蛮斗士、战士、圣骑士",
+    "68|None|标识",
+    "69|None|●●●",
+    "70|None|特殊条件",
+    "71|None|1",
+    "72|None|赢得十场战斗环节的胜利",
+    "73|None|2",
+    "74|None|赢得十次力量对抗的胜利",
+    "75|None|3",
+    "76|None|在万众瞩目下击败一名公认的劲敌并得到众人的喝彩",
+    "77|None|进阶",
+    "78|None|属性值需求",
+    "79|None|力量"
+  ],
+  "class_docx_基础职业-牧师.docx": {
+    "para_count": 924,
+    "keyword_hits_sample": [
+      "2|牧师能够为队友提供充足的治疗和增益效果，深受大家的信赖，他们可以念诵祷言给予众人神灵的赐福，同时对亵渎之人降下惩戒。若是前线需要援手，牧师也不介意手持盾牌和战锤守护在队友身前，以神的旨意向敌人发起冲锋。此外根据信奉神祇的不同，牧师们能够展现...",
+      "47|神圣领域",
+      "48|每名牧师都有着自己所信奉的神灵，根据神灵的不同牧师会额外获得一套对应神域的天赋树列表来获取独属的能力，参考下方神祇列表选择你所侍奉的神祇：",
+      "49|·公正与荣耀之神.神祇属性为神圣",
+      "50|·生命与丰收之神.神祇属性为自然",
+      "51|·火焰与锻造之神.神祇属性为火焰",
+      "52|·战争与谋略之神.神祇属性为物理",
+      "53|·知识与智慧之神.神祇属性为奥术",
+      "54|·艺术与创造之神.神祇属性为音爆",
+      "55|·死神.神祇属性为无属性",
+      "56|·无尽饥饿与吞噬之神.神祇属性为暗影",
+      "57|·爱、欲望与激情之神.神祇属性为心灵",
+      "58|·潮汐、引力与崩坏之神.神祇属性为力场",
+      "61|虔诚的向神祇祷告是每位信徒应尽的义务，而真正的信仰者也能够得到主的回应；同时因为神明的关注，你的言行举止在一定程度上会影响祂对你的观感度。神灵对你的初始观感度为无谓。",
+      "72|你能够拥有至多四种战斗风格，神圣领域所提供的战斗风格与之共享上限，你在学习第三、第四种战斗风格的能力时需要完成那个能力的额外条件。",
+      "88|你对一名角色释放惩击，造成1D6点伤害（伤害类型与你所信奉的神灵相关）",
+      "150|你对直线方向上的一名角色发起攻击，造成2D6点伤害（伤害类型与你所信奉的神灵相关）",
+      "166|·本次攻击在结算造成的伤害值后额外附加X点伤害（伤害类型与你所信奉的神灵相关）",
+      "380|额外条件：你成为当地对应神祇信仰的典范",
+      "484|前置条件：你以神祇的名义为他人传达过祝福",
+      "556|你的牧师职业等级到达10级时：每场战斗限一次.你可以花费一个反应动作来令一名与你具有相同神祇信仰、并且自愿的角色飞向你相邻的一个未被占据的位置",
+      "601|恩赐洗礼",
+      "619|恩赐洗礼",
+      "631|1.你为一名角色进行恩赐洗礼，在持续时间内你可以选择以下一项生效：",
+      "636|2.多次接受恩赐洗礼效果的角色将会被逐步视作对应神灵的深度信徒",
+      "637|你的牧师职业等级到达15级时：移除恩赐洗礼的唯一性关键词",
+      "736|你使一名角色进行一次难度为15的感知豁免，对方豁免失败将在每个自身回合开始时受到1D3点伤害（伤害类型与你所信奉的神灵相关）",
+      "741|前置条件：你以神祇的名义为他人传达过惩戒"
+    ]
+  },
+  "class_docx_基础职业-魔契师.docx": {
+    "para_count": 2031,
+    "keyword_hits_sample": [
+      "2|魔契师时常遭受到世俗的误解，他们时常被认为是为了追求禁忌力量而投身恶魔与魔鬼怀抱的卑劣投机者，通过签订契约的方式用利益交换来换取强大的力量。虽然魔契师对禁忌的知识和力量充满了强烈的渴望，但他们并非都是邪恶的存在，力量本身无关对错，只要魔契师...",
+      "46|宗主契约",
+      "47|你与一名来自其他位面的异界宗主或遥远国度的伟大存在签订契约，成为祂的代行者，你的部分技能会因为宗主而得到异化，也会因为宗主的恩赐解锁一些独有的技能，你与宗主大多情况下处于互惠互利的合作关系，你必须满足祂们的喜好，否则可能被收回赐予的恩惠，或...",
+      "48|你在首次创建角色时会从宗主列表中选择一位宗主进行契约，也可以选择掷一颗对应分类的骰子来随机决定宗主，在游玩过程中多次尝试与不同的宗主契约可能会产生极大的风险，但也存在更大的机遇。",
+      "70|你对一名角色发射巫术箭，造成1D10点伤害，伤害类型与你所签订契约的宗主相关",
+      "117|恩赐魔刃",
+      "123|恩赐魔刃",
+      "124|额外条件：你获得过一次来自宗主的馈赠",
+      "133|描述：你做出对应的施法动作、并念诵法咒凭空生出一把契约武器，特殊的色泽能够令人一眼便认出此乃神奇的魔法构成",
+      "134|你创造一把契约武器，从近战武器列表中选择它的形态",
+      "136|你必须在创造这把武器时选定其造成的伤害类别为物理伤害类型或是与你所契约的宗主相关",
+      "137|如果你将契约武器交予他人，那么在持续时间结束前你会失去对应疲劳值消耗的疲劳值上限",
+      "138|你的魔契师职业等级到达5级时：恩赐魔刃创造的武器伤害骰点数至少为3（将点数1/2视作3）",
+      "140|额外条件：你获得过一次来自宗主的馈赠",
+      "149|描述：你将自身的思维投向遥远异界回到宗主的身边，以接受委托或索取报酬",
+      "150|你使自己的躯体停留在物质位面，而灵魂则抵达宗主的领域，持续时间内你的躯体在外界看来已经陷入失能",
+      "151|你可以在持续时间内与你的宗主对话、向其寻求答案或是祈求祂赐予你更多的力量，异界灵感的持续时间结束、或是你的宗主下达逐客后你的灵魂会强制回到身体中并促使你醒来",
+      "152|警告：在宗主的领域中死亡可能会导致你在物质位面彻底陷入沉寂！",
+      "153|你的魔契师职业等级到达10级时：非战斗环节.你可以选择使你的身体也一同进入宗主的领域",
+      "165|描述：你做出对应的施法动作、并念诵法咒召唤一个象征着宗主的魔法结界，随后来自宗主的眷属或随从将被你召唤至物质位面",
+      "166|你随机召唤一个属于宗主的存在来协助你，你可以事先表明期望响应召唤者能够为你带来何种帮助、并侍奉足够份额的进贡品，随后掷一颗D20骰来决定魔宠的类别是否符合及功效强度，魔宠的外观和能力与你所契约的宗主相关",
+      "167|宗主对你的观感度和准备的进贡品会直观影响到随机性的结果",
+      "192|你透支自身的潜力提前向宗主索取更加高昂的酬劳，在接下来的五场战斗环节中你将获取的经验值及技能点支付给宗主并获得以下效果：",
+      "210|恩赐法术",
+      "277|恩赐法术",
+      "278|前置条件：你达成了你所契约宗主的一项意愿",
+      "279|额外条件：你在本次游玩过程中达成了你所契约宗主的一项意愿",
+      "282|你可以从你所契约的宗主那里习得一项能力，具体获得的收益由你的宗主决定",
+      "295|额外条件：你促成一次所契约的宗主与他人的交易",
+      "305|契约锁链",
+      "310|宗主代行者",
+      "360|契约锁链",
+      "361|前置条件：你在本位阶及后成功完成过宗主交付的任务",
+      "373|·对方自愿承受：持续时间内你可以使自身消耗的疲劳值由对方来支付（包括施展契约锁链的疲劳值消耗）",
+      "375|契约锁链束缚，持续时间内进入禁锢状态，并且无法施展带有跃迁关键词的能力",
+      "376|2.当契约锁链存在期间，你可以花费一个附赠动作将目标朝你所在方向拖拽至多4米，并且受到2D6点钝击伤害",
+      "377|3.承受契约锁链的目标当距离你超过12米时，将会解除这个效果，此外目标可以在每个自身回合结束时再次进行对应的力量豁免检定，如果豁免成功同样会解除这个效果",
+      "378|你的魔契师职业等级到达6级时：你可以同时发射出两条契约锁链指定不同的角色为目标",
+      "450|宗主代行者",
+      "452|额外条件：你在本位阶及后公开代表你的宗主完成过一项委托，随后他人因为你的言行对你的宗主表示出过赞赏",
+      "455|你在与异界生物进行社交相关的检定时具有优势，如果对方与你的宗主同属一个位面或阵营，那么起始态度至少为友善",
+      "457|你每完成一项宗主交付的任务，便会获得一个代行者点数；你可以消耗一个代行者点数视作执行一次异界灵感，你最多拥有三个代行者点数",
+      "460|契约魔刃",
+      "462|契约护盾",
+      "464|宗主凝视",
+      "465|恩赐·契约强化",
+      "466|契约魔刃",
+      "467|前置条件：你拥有法术.恩赐魔刃，将其升级为契约魔刃",
+      "477|描述：你做出对应的施法动作、并念诵法咒凭空生成一把契约武器，闪烁的魔法光泽能够令人认定这绝非凡品",
+      "478|你创造一把契约武器，从近战武器列表中选择它的形态",
+      "480|你必须在创造这把武器时选定其造成的伤害类别为物理伤害类型或是与你所契约的宗主相关",
+      "485|·契灵在每个你的自身回合中可以发起一次近战攻击，本次攻击的伤害值根据武器类型而变化，造成的伤害类别与你创造的契约武器相同，并且攻击命中检定值与附加伤害类型与你本身相同",
+      "486|·你必须进行过一次短休或长休后施展契约魔刃才会再次召唤出契灵",
+      "487|如果你将契约武器交予他人，那么在持续时间结束前你会失去对应疲劳值消耗的疲劳值上限",
+      "488|契约魔刃创造的武器和契灵伤害骰点数至少为4（将点数1/2/3视作4）",
+      "489|你的魔契师职业等级到达15级时：契约魔刃能够额外召唤一个契灵",
+      "491|前置条件：你通过契约、规定或条例限制过他人",
+      "492|额外条件：你在本次游玩过程中通过契约、规定或条例限制过他人",
+      "505|·选择目标在下一个自身回合中如果执行以下一项效果，将会承受10点与你所签订契约的宗主所对应的伤害",
+      "512|·额外承受1D10点伤害，伤害类型与你所签订契约的宗主相关",
+      "514|契约护盾",
+      "515|前置条件：你与一名玩家角色签署过契约并且得到履行",
+      "516|额外条件：你在本位阶及后与一名NPC角色签署过契约并且得到履行",
+      "527|如果契约护盾因承受伤害而消失，那么还会使目标的下一个施法攻击在结算造成的伤害值后+1D8",
+      "529|你的魔契师职业等级到达10级时：契约护盾的关键词变更为短休/长休（2）",
+      "544|宗主凝视",
+      "545|前置条件：你拥有神术.异界灵感，并且在本位阶及后主动向宗主祈求过援助",
+      "555|描述：你念诵神言短暂地将宗主的视线引向敌人，那来自异界的注视足以令凡人心智崩溃",
+      "557|你的魔契师职业等级到达10级时：宗主凝视生效后，你对目标施展的下一次巫术箭或混乱箭的伤害骰按最大值计算",
+      "559|恩赐·契约强化",
+      "560|前置条件：你拥有天赋.恩赐法术，并且已经再次支付过费用来学习这项天赋",
+      "561|额外条件：你在本次游玩过程中为宗主举行过一次庄重的献祭仪式",
+      "564|你获得一个额外的契约法术槽位，这个槽位仅能够用于放置带有恩惠关键词的能力、或者通过恩赐法术获得的能力",
+      "565|揭示恩赐·契约强化中所放置法术的真正潜力",
+      "566|你的魔契师职业等级到达10级时：你额外获得一个契约法术槽位",
+      "567|你的魔契师职业等级到达15级时：你额外获得一个契约法术槽位",
+      "762|你借助宗主的力量倾斜胜利的天秤，在一次你与他人进行一次属性对抗时，能够使自身的本次检定获得优势并且使对方具有劣势",
+      "1270|前置条件：你以神祇的名义为他人传达过惩戒",
+      "1311|描述：你念诵招魂咒语，将这片土地短暂地化作灵异领域",
+      "1984|额外条件：你成功带领一名其他角色前往宗主的领域"
+    ]
+  }
+}

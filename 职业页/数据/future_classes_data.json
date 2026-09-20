@@ -78,11 +78,11 @@
     {
       "id": "战舞者",
       "name": "战舞者",
-      "status": "planned",
-      "playable": false,
+      "status": "released",
+      "playable": true,
       "key_attr": "敏捷或魅力",
       "armor": "轻甲",
-      "weapons": "匕首、环刃、刺剑、拳刃、简易",
+      "weapons": "匕首、环刃、刺剑、拳刃、简易武器",
       "saves": [
         "敏捷",
         "魅力"

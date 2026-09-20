@@ -30,7 +30,7 @@ const data = await page.evaluate(() => {
   };
 });
 ok('REF_SUBCLASS_REQS = 18 职业', data.reqCount === 18, String(data.reqCount));
-ok('REF_CLASSES 可玩 17 职业（含召唤师、不含战舞者）', data.playableCount === 17 && data.playerHasSummoner && !data.playerHasDancer,
+ok('REF_CLASSES 可玩 18 职业（含召唤师与战舞者）', data.playableCount === 18 && data.playerHasSummoner && data.playerHasDancer,
   JSON.stringify({ n: data.playableCount, s: data.playerHasSummoner, d: data.playerHasDancer }));
 ok('召唤师要求：智力13/幸运14 + 奥秘/神秘学/机遇 +4',
   data.summoner?.attrs?.['智力'] === 13 && data.summoner?.attrs?.['幸运'] === 14
@@ -58,14 +58,25 @@ const modal = await page.evaluate(() => {
   return out;
 });
 ok('兼职弹窗出现召唤师候选', (modal.btnNames.includes('召唤师') || modal.hasSummoner), JSON.stringify(modal.btnNames));
-ok('兼职弹窗不出现未开放的战舞者', !modal.hasDancer, modal.text);
+ok('战舞者已开放但需满足熟练要求才列入候选（当前熟练不足 → 不入候选）', !modal.hasDancer && !!data.dancer, 'hasDancer=' + modal.hasDancer);
+// 满足战舞者熟练要求（体操/洞悉/表演-舞蹈 共 +4）后应可作为候选
+const modal2 = await page.evaluate(() => {
+  state.attrs = Object.assign({}, state.attrs, { 敏捷: 14, 魅力: 14 });
+  state.profs = Object.assign({}, state.profs || {}, { 体操: 2, 洞悉: 1, '表演-舞蹈': 1 });
+  window.showSubclassModal();
+  const box = document.querySelector('.popup-box');
+  const names = [...box.querySelectorAll('.subclassSelectBtn')].map(b => b.getAttribute('data-cn'));
+  const cancel = document.getElementById('subclassCancelBtn'); if (cancel) cancel.click();
+  return { names: names, hasDancer: box.textContent.includes('战舞者') };
+});
+ok('战舞者已进入可玩职业与兼职要求表', data.playerHasDancer && data.reqCount === 18, JSON.stringify({ playable: data.playerHasDancer, reqs: data.reqCount }));
 
 // help.html 表结构
 const help = fs.readFileSync('斯诺德跑团/help.html', 'utf8');
 const body = help.slice(help.indexOf('<!-- MULTICLASS-RULES -->'), help.indexOf('<!-- /MULTICLASS-RULES -->'));
 ok('help 规则表 18 行', (body.match(/<tr><td><b>/g) || []).length === 18, String((body.match(/<tr><td><b>/g) || []).length));
 ok('help 矩阵 18×18', (body.match(/<td class="mc-(no|ok|self)"/g) || []).length === 18 * 18, String((body.match(/<td class="mc-(no|ok|self)"/g) || []).length));
-ok('help 标注战舞者未开放', body.includes('战舞者为未开放职业'), '');
+ok('help 不再标注未开放（战舞者已上线）', !help.includes('未开放'), '仍含未开放标注');
 ok('面板无 JS 错误', errs.length === 0, errs.join(' | '));
 
 await browser.close();

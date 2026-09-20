@@ -1,0 +1,2433 @@
+{
+  "class_name": "法师",
+  "tier_filter": null,
+  "extract_count": 412,
+  "site_count": 355,
+  "missing_on_site": [
+    {
+      "name": "塑能箭",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "闪现术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "法术护盾",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "魔法武器",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "死灵弹",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级幻影",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级变形术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "火山术",
+      "style": "塑能",
+      "tier": "六阶",
+      "cost": [
+        "#FF0000",
+        "#FFF32F",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "虹光射线",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#00FA99",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "烈焰风暴",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#EE822F",
+        "#00FA99"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        }
+      ]
+    },
+    {
+      "name": "冰川壁垒",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00B050",
+        "#B3F9FF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "混沌漩涡",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#00B050",
+        "#FFF32F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        }
+      ]
+    },
+    {
+      "name": "欧文海德的回响之咒",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#595959",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "侵蚀之匕",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#00B050",
+        "#B94BFF",
+        "#843F0B",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "塑能学派序列",
+      "style": "塑能",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#00B050",
+        "#FFF32F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        }
+      ]
+    },
+    {
+      "name": "空间电荷",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#00FA99",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "咒法护盾",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "异界传送",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "空间禁锢术",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#EE822F",
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "召唤魔法豪宅",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#EE822F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "召唤异界盟军",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#EE822F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "预言学派序列",
+      "style": "咒法",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#B3F9FF",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "心灵蛛网",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#00FA99",
+        "#FFB7E3",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "群体洞悉",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "揭示之域",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#FFF32F",
+        "#00FA99",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "厄运缠身",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "致命预兆",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "先攻预感",
+      "style": "预言",
+      "tier": "六阶",
+      "cost": [
+        "#EE822F",
+        "#00FA99",
+        "#B3F9FF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        }
+      ]
+    },
+    {
+      "name": "裁剪生命之线",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "真名显露",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00FA99",
+        "#B94BFF",
+        "#595959",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "宿命环·回溯",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#843F0B",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "宿命环·现界",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#EE822F",
+        "#00FA99",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "宿命环·未来",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "必中真眼",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00FA99",
+        "#EE822F",
+        "#B3F9FF",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "命运抉择",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "预言学派序列",
+      "style": "预言",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B3F9FF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "防范箭矢",
+      "style": "防护",
+      "tier": "四阶",
+      "cost": [
+        "#FFF32F",
+        "#EE822F"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        }
+      ]
+    },
+    {
+      "name": "压制结界",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#EE822F",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "斥离术",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#FF0000",
+        "#EE822F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "守护转移",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B3F9FF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        }
+      ]
+    },
+    {
+      "name": "庇护之环",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#FFF32F",
+        "#00FA99",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "法术捕网",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "相位护盾",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B3F9FF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        }
+      ]
+    },
+    {
+      "name": "魔法封印",
+      "style": "防护",
+      "tier": "六阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "原初守护",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "战锤术",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#FFF32F",
+        "#EE822F",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "驱离术",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#EE822F",
+        "#FFB7E3",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "阿卡迪亚的静止领域",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B3F9FF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "魔网崩解",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "二重防护结界",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B3F9FF",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "防护学派序列",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "统御意志",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "怪物支配术",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#00B050",
+        "#00FA99",
+        "#B94BFF",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "群体魅惑术",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#EE822F",
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "弱智术",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#EE822F",
+        "#B94BFF",
+        "#843F0B",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "附魔武器·赋予生命",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        }
+      ]
+    },
+    {
+      "name": "制作魔法盾",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#FFF32F",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "附魔学派序列",
+      "style": "附魔",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF",
+        "#FFB7E3",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "真实幻境术",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00B050",
+        "#FFB7E3",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00B050",
+          "name": "绿"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "召唤卡尔之龙",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00FA99",
+        "#FFB7E3",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "怪物显现",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "精神监牢",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#00FA99",
+        "#FFB7E3",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "虚无之影",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "虚实转化",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00FA99",
+        "#B94BFF",
+        "#FFB7E3",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "幻术学派序列",
+      "style": "幻术",
+      "tier": "七阶",
+      "cost": [
+        "#00B0F0",
+        "#B94BFF",
+        "#FFB7E3",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFB7E3",
+          "name": "粉"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "m-starting-skill-1",
+      "name": "塑能箭",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-2",
+      "name": "闪现术",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-3",
+      "name": "预知梦",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-4",
+      "name": "法术护盾",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-5",
+      "name": "魔法武器",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-6",
+      "name": "死灵弹",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-7",
+      "name": "次级幻影",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-8",
+      "name": "次级变形术",
+      "style": null,
+      "tier": null
+    }
+  ],
+  "field_diffs_count": 341,
+  "mark_diffs_count": 2,
+  "field_diffs": [
+    {
+      "name": "一叶障目",
+      "style": "咒法",
+      "tier": "五阶",
+      "id": "m-skill-2-5-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "七彩炫光",
+      "style": "幻术",
+      "tier": "二阶",
+      "id": "m-skill-7-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "亡者丧钟",
+      "style": "死灵",
+      "tier": "三阶",
+      "id": "m-skill-6-3-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "交友术",
+      "style": "附魔",
+      "tier": "一阶",
+      "id": "m-skill-5-1-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "人形晕眩术",
+      "style": "附魔",
+      "tier": "三阶",
+      "id": "m-skill-5-3-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "传讯术",
+      "style": "变化",
+      "tier": "一阶",
+      "id": "m-skill-8-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "传送禁令",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "m-skill-4-4-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "伪造绿洲",
+      "style": "幻术",
+      "tier": "一阶",
+      "id": "m-skill-7-1-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伪造讯息",
+      "style": "幻术",
+      "tier": "三阶",
+      "id": "m-skill-7-3-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "位面防御术",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "m-skill-4-5-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "侦测思想",
+      "style": "预言",
+      "tier": "四阶",
+      "id": "m-skill-3-4-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "预言",
+      "tier": "一阶",
+      "id": "m-skill-3-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测混乱",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测秩序",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测陷阱",
+      "style": "预言",
+      "tier": "二阶",
+      "id": "m-skill-3-2-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测魔法",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "俘获思绪",
+      "style": "附魔",
+      "tier": "六阶",
+      "id": "m-skill-5-6-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "保存术",
+      "style": "死灵",
+      "tier": "一阶",
+      "id": "m-skill-6-1-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "信以为真",
+      "style": "幻术",
+      "tier": "五阶",
+      "id": "m-skill-7-5-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "就连你也对自身施展的幻术信以为真，你可以选择自身的一个第三或第四战斗风格，令其可以视作你的第二个战斗风格"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "修复微伤",
+      "style": "变化",
+      "tier": "一阶",
+      "id": "m-skill-8-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "修复术",
+      "style": "变化",
+      "tier": "二阶",
+      "id": "m-skill-8-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "储能魔杖（图纸）",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "催眠图纹",
+      "style": "幻术",
+      "tier": "四阶",
+      "id": "m-skill-7-4-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "元素墙",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "元素循环",
+      "style": "塑能",
+      "tier": "六阶",
+      "id": "m-skill-1-6-8",
+      "fields": {
+        "关键词": {
+          "extract": "天赋.机制",
+          "site": "法术.AOE.火焰.大地.创建地形.敏捷豁免（15）.长休"
+        },
+        "前置条件": {
+          "extract": "你的特殊专长拥有元素亲和，或者你阅读过元素学派的魔典",
+          "site": "你在本位阶及后于一座活火山或炎热环境下完成过至少一次长休，并且在那里成功施展过一次火焰法术"
+        },
+        "持续时间": {
+          "extract": null,
+          "site": "5轮"
+        },
+        "描述": {
+          "extract": null,
+          "site": "你抬起双手、并念诵法咒令大地开始震颤，紧接着一座微型火山自地表涌现，向周边喷涌灼热的岩浆"
+        },
+        "施展时间": {
+          "extract": null,
+          "site": "1动作"
+        },
+        "施展条件": {
+          "extract": null,
+          "site": "你能够做出对应手势、凭借言语发出声音"
+        },
+        "施展距离": {
+          "extract": null,
+          "site": "12米"
+        },
+        "施展限制": {
+          "extract": null,
+          "site": "-"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        },
+        "疲劳消耗": {
+          "extract": null,
+          "site": "6"
+        },
+        "额外条件": {
+          "extract": "你的进阶职业拥有元素法师、元素领主或元素巫医",
+          "site": "本风格不能是你的法师职业的第三或第四种战斗风格"
+        }
+      }
+    },
+    {
+      "name": "元素转换",
+      "style": "塑能",
+      "tier": "六阶",
+      "id": "m-skill-1-6-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你掌握着元素能量的转换规律，可以将任意一种自身施展的能量攻击手段转化为其他能量类别（火焰、冰霜、雷电、自然、强酸、剧毒、暗影、光耀）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "先制预兆",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "m-skill-4-5-11",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "在一场战斗环节开始时根据你的先攻时序值产生不同的效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "光亮术",
+      "style": "塑能",
+      "tier": "一阶",
+      "id": "m-skill-1-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰冷血脉",
+      "style": "死灵",
+      "tier": "二阶",
+      "id": "m-skill-6-2-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你的血脉逐渐变得冰冷，常规的寒冷环境将难以对你产生负面影响,并且热感视野将会难以捕捉到你的存在"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰枪术",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰锥术",
+      "style": "塑能",
+      "tier": "二阶",
+      "id": "m-skill-1-2-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰霜护盾",
+      "style": "防护",
+      "tier": "二阶",
+      "id": "m-skill-4-2-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰霜新星",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冷冻射线",
+      "style": "塑能",
+      "tier": "四阶",
+      "id": "m-skill-1-4-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冻结之触",
+      "style": "塑能",
+      "tier": "二阶",
+      "id": "m-skill-1-2-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凋零辐射",
+      "style": "死灵",
+      "tier": "三阶",
+      "id": "m-skill-6-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凝光术",
+      "style": "防护",
+      "tier": "一阶",
+      "id": "m-skill-4-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造捷径",
+      "style": "预言",
+      "tier": "五阶",
+      "id": "m-skill-3-5-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "创造水源",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "m-skill-2-1-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造篝火",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "m-skill-2-1-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "制作奇物",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造那些神奇道具，你可以在接下来的一个月时长中每日花费长休时段以及共计价值1500金币的财富去制作奇物，从《斯诺德装备大全》中选择一件稀有品质的道具制作完成"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "制作法力宝石",
+      "style": "附魔",
+      "tier": "三阶",
+      "id": "m-skill-5-3-5",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "使用限制：-"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作秘法披风",
+      "style": "附魔",
+      "tier": "六阶",
+      "id": "m-skill-5-6-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去编织出华丽的魔法披风，你可以花费一周时长以及共计价值3000金币的财富去制作秘法披风"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "制作防护吊坠",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造精致的防护吊坠，你可以花费三日的长休时段以及共计价值500金币的财富去制作防护吊坠"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作附魔卷轴",
+      "style": "附魔",
+      "tier": "四阶",
+      "id": "m-skill-5-4-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够将自身对习得魔法的领悟绘制在卷轴上以供他人使用，你可以花费十分钟时间和X点疲劳值来选择自身技能槽位中一个当前未被锁定的法术或戏法，你会在24小时内暂时失去那个能力并将一张空白的魔法卷轴制作成对应的法术卷轴（X为那个法术或戏法的疲劳值消耗）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法戒指",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造精致的魔法戒指，你可以花费三日的长休时段以及共计价值300金币的财富去制作魔法戒指，使其获得以下一种效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法服饰",
+      "style": "附魔",
+      "tier": "六阶",
+      "id": "m-skill-5-6-9",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去裁剪出精美的魔法服饰，你可以花费一周时长以及共计价值3000金币的财富去制作魔法服饰，这件服饰的数据等同于布衣"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法雕文",
+      "style": "附魔",
+      "tier": "四阶",
+      "id": "m-skill-5-4-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够将自身的魔力及对魔法的理解作用于外物上，你可以花费一分钟时间和1点疲劳值来通过魔法颜料在物件上绘制魔法雕文来产生不同的效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "力场波",
+      "style": "附魔",
+      "tier": "二阶",
+      "id": "m-skill-5-2-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "力场飞弹",
+      "style": "塑能",
+      "tier": "四阶",
+      "id": "m-skill-1-4-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "元素循环",
+      "style": "塑能",
+      "tier": "六阶",
+      "id": "m-skill-1-6-8",
+      "extract": [
+        "#FF0000",
+        "#00B0F0",
+        "#B3F9FF"
+      ],
+      "site": [
+        "#FF0000",
+        "#FFF32F",
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "防范阵营倾向",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "m-skill-4-4-5",
+      "extract": [
+        "#00B0F0",
+        "#FFF32F"
+      ],
+      "site": [
+        "#FFF32F",
+        "#EE822F"
+      ]
+    }
+  ]
+}

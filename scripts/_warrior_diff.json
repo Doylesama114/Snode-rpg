@@ -1,0 +1,967 @@
+{
+  "class_name": "战士",
+  "tier_filter": null,
+  "extract_count": 119,
+  "site_count": 109,
+  "missing_on_site": [
+    {
+      "name": "猛击",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "冲锋",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "盾牌格挡",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "瞄准射击",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "巨人打击",
+      "style": "斗争",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#EE822F",
+        "#B94BFF",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "葬送！",
+      "style": "斗争",
+      "tier": "七阶",
+      "cost": [
+        "#EE822F",
+        "#00FA99",
+        "#595959",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#00FA99",
+          "name": "青"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "战场壁垒",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#FFF32F",
+        "#B94BFF",
+        "#843F0B"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#843F0B",
+          "name": "棕"
+        }
+      ]
+    },
+    {
+      "name": "钢铁防御者",
+      "style": "防护",
+      "tier": "七阶",
+      "cost": [
+        "#FFF32F",
+        "#EE822F",
+        "#B94BFF",
+        "#FFFFFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FFF32F",
+          "name": "黄"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#FFFFFF",
+          "name": "白"
+        }
+      ]
+    },
+    {
+      "name": "重整指令",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [
+        "#EE822F",
+        "#B3F9FF",
+        "#B94BFF",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B3F9FF",
+          "name": "浅"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "战术优势",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#EE822F",
+        "#595959"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#595959",
+          "name": "黑"
+        }
+      ]
+    },
+    {
+      "name": "军用施法者",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [
+        "#FF0000",
+        "#00B0F0",
+        "#EE822F",
+        "#B94BFF"
+      ],
+      "cost_meta": [
+        {
+          "hex": "#FF0000",
+          "name": "红"
+        },
+        {
+          "hex": "#00B0F0",
+          "name": "蓝"
+        },
+        {
+          "hex": "#EE822F",
+          "name": "橙"
+        },
+        {
+          "hex": "#B94BFF",
+          "name": "紫"
+        }
+      ]
+    },
+    {
+      "name": "对军流星爆",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "军队传送门",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "军用传导术",
+      "style": "军团",
+      "tier": "七阶",
+      "cost": [],
+      "cost_meta": []
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "w-starting-skill-1",
+      "name": "猛击",
+      "style": "斗争",
+      "tier": "一阶"
+    },
+    {
+      "id": "w-starting-skill-2",
+      "name": "冲锋",
+      "style": "狂攻",
+      "tier": "一阶"
+    },
+    {
+      "id": "w-starting-skill-3",
+      "name": "盾牌格挡",
+      "style": "防护",
+      "tier": "一阶"
+    },
+    {
+      "id": "w-starting-skill-4",
+      "name": "瞄准射击",
+      "style": "射击",
+      "tier": "一阶"
+    }
+  ],
+  "field_diffs_count": 103,
+  "mark_diffs_count": 0,
+  "field_diffs": [
+    {
+      "name": "一石二鸟",
+      "style": "机敏",
+      "tier": "四阶",
+      "id": "w-skill-6-4-2",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你通过远程武器或简易武器发起一次远程攻击时，可以额外指定本次攻击指定目标周围4米范围内的另一名角色，这次攻击会对另一名角色触发相同的伤害值和特殊效果"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "不屈",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "w-skill-3-4-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你受到一次不超过你的100%最大生命值的伤害而进入死亡裁决时，改为将你的生命值降至1点"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "乘胜追击",
+      "style": "军团",
+      "tier": "五阶",
+      "id": "w-skill-5-5-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你对溃败的敌人展开追击，当你使一名能够提供经验值的角色生命值降至0或更低时，立即获得一个仅可用于执行攻击和位移的主要动作"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "二连斩",
+      "style": "斗争",
+      "tier": "三阶",
+      "id": "w-skill-1-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "二重射击",
+      "style": "射击",
+      "tier": "三阶",
+      "id": "w-skill-4-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "全副武装",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "w-skill-3-4-2",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你将自身武装到牙齿，在你的每次长休结束后可以掷三颗D6的护甲骰，将点数总和记为你的护甲值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "兵者诡道",
+      "style": "军团",
+      "tier": "四阶",
+      "id": "w-skill-5-4-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你隐藏自己真正的攻击意图，当你通过战技发起一次攻击未命中目标时，你可以视作未施展这个战技，返还所有的疲劳消耗和限定次数、再选择另一个施展时间相同的战技对同一目标发起攻击"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "再度冲锋",
+      "style": "狂攻",
+      "tier": "五阶",
+      "id": "w-skill-2-5-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冲势破敌",
+      "style": "狂攻",
+      "tier": "二阶",
+      "id": "w-skill-2-2-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你令敌人感受到你的强势，当你对一名相邻位置的角色造成伤害后，你可以与目标进行一次力量对抗，如果对方对抗失败将被击退2米"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "决斗者警戒",
+      "style": "机敏",
+      "tier": "五阶",
+      "id": "w-skill-6-5-4",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你对决斗者的存在保持警惕，当你即将承受一次来自蛮斗士、战士、猎人、术士、游荡者或武僧的豁免效果时，你可以使这次豁免具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "刀刀烈火",
+      "style": "狂攻",
+      "tier": "三阶",
+      "id": "w-skill-2-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "利剑华尔兹",
+      "style": "机敏",
+      "tier": "三阶",
+      "id": "w-skill-6-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "剑盾猛攻",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "w-skill-3-5-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "动作如潮",
+      "style": "斗争",
+      "tier": "三阶",
+      "id": "w-skill-1-3-4",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你对一名角色发起一次额外的基础攻击（无法以此施展技能）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "勇士战吼",
+      "style": "斗争",
+      "tier": "五阶",
+      "id": "w-skill-1-5-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "勘破未知",
+      "style": "狂攻",
+      "tier": "四阶",
+      "id": "w-skill-2-4-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "协同进攻",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "w-skill-5-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "卓越打击",
+      "style": "军团",
+      "tier": "六阶",
+      "id": "w-skill-5-6-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "卓越远见",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "w-skill-5-3-2",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你富有远见、能够带领队伍找到正确的方向，当你的一个自身回合开始时你可以声明使用这个效果：你能够在本回合实际行动前先对所有需要执行的动作进行一次推演，这会使你完整的预演这个回合，随后你再正式开始自己的回合"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "反射闪避",
+      "style": "射击",
+      "tier": "五阶",
+      "id": "w-skill-4-5-4",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当一名角色通过挥砍、射击或魔法飞弹等能够被目击的手段对你发起攻击并且命中后，你可以在受到伤害前进行一次难度为15的敏捷豁免尝试闪避本次攻击，豁免成功则你不会受到本次攻击所造成的影响"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "号令军旗",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "w-skill-5-2-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "嘲讽",
+      "style": "防护",
+      "tier": "一阶",
+      "id": "w-skill-3-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "坚韧守卫",
+      "style": "防护",
+      "tier": "三阶",
+      "id": "w-skill-3-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "大地猛击",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "w-skill-3-5-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "天鹅湖之匕",
+      "style": "机敏",
+      "tier": "六阶",
+      "id": "w-skill-6-6-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "奇窍技巧",
+      "style": "机敏",
+      "tier": "六阶",
+      "id": "w-skill-6-6-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.每当你满足以下一项条件时，便会获得1个技巧点数，你至多拥有3个技巧点数："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "守护军旗",
+      "style": "军团",
+      "tier": "五阶",
+      "id": "w-skill-5-5-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "对空斩",
+      "style": "狂攻",
+      "tier": "三阶",
+      "id": "w-skill-2-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "巨龙冲锋",
+      "style": "斗争",
+      "tier": "六阶",
+      "id": "w-skill-1-6-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "弓息法",
+      "style": "射击",
+      "tier": "六阶",
+      "id": "w-skill-4-6-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你调整射击与行动间的节奏，每当你进行一次远程攻击后，你可以立即位移至多4米，这个过程中无法穿插其他行动"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "强钢连射",
+      "style": "射击",
+      "tier": "六阶",
+      "id": "w-skill-4-6-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "征战于烈焰",
+      "style": "狂攻",
+      "tier": "六阶",
+      "id": "w-skill-2-6-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "待宰羔羊",
+      "style": "斗争",
+      "tier": "四阶",
+      "id": "w-skill-1-4-2",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你磨刀霍霍走向那些失去抵抗能力的敌人，当你对一名处于失能状态下的角色造成伤害时，这个伤害数值必定暴击"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "快速搭弦",
+      "style": "射击",
+      "tier": "四阶",
+      "id": "w-skill-4-4-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你快速准备好射击的节奏，使你的下一个原先需要花费一个主要动作来施展的战技变为仅需花费一个附赠动作"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "急速冲锋",
+      "style": "机敏",
+      "tier": "三阶",
+      "id": "w-skill-6-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "愈战愈勇",
+      "style": "斗争",
+      "tier": "六阶",
+      "id": "w-skill-1-6-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你在面对敌人时愈战愈勇，战斗环节中如果存在有敌方角色与你交战，那么每进入一个新的战斗轮时，你造成的伤害值在结算后+1，其他角色对你造成的伤害值在结算后-1，这个效果至多叠加至5点"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "战场调度者",
+      "style": "军团",
+      "tier": "六阶",
+      "id": "w-skill-5-6-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你为团队开辟一片新的交战区域，在战斗环节开始时，DM会额外为你的团队准备一个3*3的起始区域，玩家角色可以选择将自身放置在默认起始区域或者通过战场调度者设置的新起始区域"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "战斗姿态",
+      "style": "斗争",
+      "tier": "一阶",
+      "id": "w-skill-1-1-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "战术掌握",
+      "style": "军团",
+      "tier": "五阶",
+      "id": "w-skill-5-5-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你洞悉战场上的局势并做出正确的判断，在战斗环节中所有友方角色投掷先攻检定后，你可以选择两名角色调换双方的先攻时序值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "战术翻滚",
+      "style": "射击",
+      "tier": "四阶",
+      "id": "w-skill-4-4-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "护甲大师",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "w-skill-3-5-4",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你乃是精通防御的大师，每当你在战斗环节中施展战技.盾牌格挡、坚韧守卫和援护时，都会使你立即获得10点护甲值，未使用完的护甲值会在你进行一次长休时消散"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "拦截",
+      "style": "机敏",
+      "tier": "三阶",
+      "id": "w-skill-6-3-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "挑战怒吼",
+      "style": "狂攻",
+      "tier": "五阶",
+      "id": "w-skill-2-5-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "挫战怒吼",
+      "style": "军团",
+      "tier": "五阶",
+      "id": "w-skill-5-5-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "振奋怒吼",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "w-skill-5-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "掷刃斩",
+      "style": "狂攻",
+      "tier": "一阶",
+      "id": "w-skill-2-1-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "援护",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "w-skill-3-4-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "摄魂怒吼",
+      "style": "军团",
+      "tier": "五阶",
+      "id": "w-skill-5-5-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "摔绊",
+      "style": "机敏",
+      "tier": "四阶",
+      "id": "w-skill-6-4-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当一名角色在执行一个位移效果与你相邻时，你能够取消对方的剩余移动步数"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "救援",
+      "style": "防护",
+      "tier": "二阶",
+      "id": "w-skill-3-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": []
+}

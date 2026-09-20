@@ -93,12 +93,18 @@ def main() -> int:
         if not any(d.strip() == '001' for d in desc) or not any(d.strip() == '100' for d in desc):
             errors.append(f'{nm} 描述缺原始骰值行（001/100）')
     home = (ROOT / '职业页' / '首页.html').read_text(encoding='utf-8')
-    mage_icon = re.search(r'href="法师.html"><span class="btn-icon">([^<]*)</span>', home)
-    sm_icon = re.search(r'href="召唤师.html"><span class="btn-icon">([^<]*)</span>', home)
-    if not mage_icon or not sm_icon:
+    # 图标允许两种形式：emoji（<span class="btn-icon">）或自绘 SVG 徽记（<svg class="btn-icon"><use href="#ce-xxx">）
+    def _icon_of(name):
+        pat = r'href="' + name + r'\.html">(?:<span class="btn-icon">([^<]*)</span>|<svg class="btn-icon"[^>]*>\s*<use href="#([^"]+)")'
+        return re.search(pat, home)
+    mage_icon = _icon_of('法师')
+    sm_icon = _icon_of('召唤师')
+    mage_key = (mage_icon.group(1) or mage_icon.group(2)) if mage_icon else None
+    sm_key = (sm_icon.group(1) or sm_icon.group(2)) if sm_icon else None
+    if not mage_key or not sm_key:
         errors.append('首页缺少法师/召唤师入口图标')
-    elif mage_icon.group(1) == sm_icon.group(1):
-        errors.append('召唤师图标与法师重复: %s' % sm_icon.group(1))
+    elif mage_key == sm_key:
+        errors.append('召唤师图标与法师重复: %s' % sm_key)
 
     # 2.7) 字段与标识（成本点）必须与 docx 完全一致（防增量漂移，如 v1.0.7278 的 18 技能标识）
     _names = {s2['name'] for s2 in skills}

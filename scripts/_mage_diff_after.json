@@ -1,0 +1,767 @@
+{
+  "class_name": "法师",
+  "tier_filter": null,
+  "extract_count": 412,
+  "site_count": 413,
+  "missing_on_site": [
+    {
+      "name": "塑能箭",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "闪现术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "法术护盾",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "魔法武器",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "死灵弹",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级幻影",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级变形术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "m-starting-skill-1",
+      "name": "塑能箭",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-2",
+      "name": "闪现术",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-3",
+      "name": "预知梦",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-4",
+      "name": "法术护盾",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-5",
+      "name": "魔法武器",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-6",
+      "name": "死灵弹",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-7",
+      "name": "次级幻影",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "m-starting-skill-8",
+      "name": "次级变形术",
+      "style": null,
+      "tier": null
+    }
+  ],
+  "field_diffs_count": 399,
+  "mark_diffs_count": 1,
+  "field_diffs": [
+    {
+      "name": "一叶障目",
+      "style": "咒法",
+      "tier": "五阶",
+      "id": "m-skill-2-5-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "七彩炫光",
+      "style": "幻术",
+      "tier": "二阶",
+      "id": "m-skill-7-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "二重防护结界",
+      "style": "防护",
+      "tier": "七阶",
+      "id": "m-skill-4-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "亡者丧钟",
+      "style": "死灵",
+      "tier": "三阶",
+      "id": "m-skill-6-3-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "交友术",
+      "style": "附魔",
+      "tier": "一阶",
+      "id": "m-skill-5-1-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "人形晕眩术",
+      "style": "附魔",
+      "tier": "三阶",
+      "id": "m-skill-5-3-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "传讯术",
+      "style": "变化",
+      "tier": "一阶",
+      "id": "m-skill-8-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "传送禁令",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "m-skill-4-4-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "伪造绿洲",
+      "style": "幻术",
+      "tier": "一阶",
+      "id": "m-skill-7-1-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伪造讯息",
+      "style": "幻术",
+      "tier": "三阶",
+      "id": "m-skill-7-3-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "位面防御术",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "m-skill-4-5-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "侦测思想",
+      "style": "预言",
+      "tier": "四阶",
+      "id": "m-skill-3-4-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "预言",
+      "tier": "一阶",
+      "id": "m-skill-3-1-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测混乱",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测秩序",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测陷阱",
+      "style": "预言",
+      "tier": "二阶",
+      "id": "m-skill-3-2-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测魔法",
+      "style": "预言",
+      "tier": "三阶",
+      "id": "m-skill-3-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侵蚀之匕",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "俘获思绪",
+      "style": "附魔",
+      "tier": "六阶",
+      "id": "m-skill-5-6-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "保存术",
+      "style": "死灵",
+      "tier": "一阶",
+      "id": "m-skill-6-1-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "信以为真",
+      "style": "幻术",
+      "tier": "五阶",
+      "id": "m-skill-7-5-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "就连你也对自身施展的幻术信以为真，你可以选择自身的一个第三或第四战斗风格，令其可以视作你的第二个战斗风格"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "修复微伤",
+      "style": "变化",
+      "tier": "一阶",
+      "id": "m-skill-8-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "修复术",
+      "style": "变化",
+      "tier": "二阶",
+      "id": "m-skill-8-2-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "储能魔杖（图纸）",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "催眠图纹",
+      "style": "幻术",
+      "tier": "四阶",
+      "id": "m-skill-7-4-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "元素墙",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "元素循环",
+      "style": "塑能",
+      "tier": "六阶",
+      "id": "m-skill-1-6-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "元素转换",
+      "style": "塑能",
+      "tier": "六阶",
+      "id": "m-skill-1-6-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你掌握着元素能量的转换规律，可以将任意一种自身施展的能量攻击手段转化为其他能量类别（火焰、冰霜、雷电、自然、强酸、剧毒、暗影、光耀）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "先制预兆",
+      "style": "防护",
+      "tier": "五阶",
+      "id": "m-skill-4-5-11",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "在一场战斗环节开始时根据你的先攻时序值产生不同的效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "先攻预感",
+      "style": "预言",
+      "tier": "六阶",
+      "id": "m-skill-3-6-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "光亮术",
+      "style": "塑能",
+      "tier": "一阶",
+      "id": "m-skill-1-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰冷血脉",
+      "style": "死灵",
+      "tier": "二阶",
+      "id": "m-skill-6-2-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你的血脉逐渐变得冰冷，常规的寒冷环境将难以对你产生负面影响,并且热感视野将会难以捕捉到你的存在"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰川壁垒",
+      "style": "塑能",
+      "tier": "七阶",
+      "id": "m-skill-1-7-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "冰枪术",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰锥术",
+      "style": "塑能",
+      "tier": "二阶",
+      "id": "m-skill-1-2-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰霜护盾",
+      "style": "防护",
+      "tier": "二阶",
+      "id": "m-skill-4-2-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冰霜新星",
+      "style": "塑能",
+      "tier": "三阶",
+      "id": "m-skill-1-3-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冷冻射线",
+      "style": "塑能",
+      "tier": "四阶",
+      "id": "m-skill-1-4-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冻结之触",
+      "style": "塑能",
+      "tier": "二阶",
+      "id": "m-skill-1-2-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凋零辐射",
+      "style": "死灵",
+      "tier": "三阶",
+      "id": "m-skill-6-3-1",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凝光术",
+      "style": "防护",
+      "tier": "一阶",
+      "id": "m-skill-4-1-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造捷径",
+      "style": "预言",
+      "tier": "五阶",
+      "id": "m-skill-3-5-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "创造水源",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "m-skill-2-1-7",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造篝火",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "m-skill-2-1-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "制作奇物",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造那些神奇道具，你可以在接下来的一个月时长中每日花费长休时段以及共计价值1500金币的财富去制作奇物，从《斯诺德装备大全》中选择一件稀有品质的道具制作完成"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "制作法力宝石",
+      "style": "附魔",
+      "tier": "三阶",
+      "id": "m-skill-5-3-5",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "使用限制：-"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作秘法披风",
+      "style": "附魔",
+      "tier": "六阶",
+      "id": "m-skill-5-6-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去编织出华丽的魔法披风，你可以花费一周时长以及共计价值3000金币的财富去制作秘法披风"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "制作防护吊坠",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造精致的防护吊坠，你可以花费三日的长休时段以及共计价值500金币的财富去制作防护吊坠"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作附魔卷轴",
+      "style": "附魔",
+      "tier": "四阶",
+      "id": "m-skill-5-4-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够将自身对习得魔法的领悟绘制在卷轴上以供他人使用，你可以花费十分钟时间和X点疲劳值来选择自身技能槽位中一个当前未被锁定的法术或戏法，你会在24小时内暂时失去那个能力并将一张空白的魔法卷轴制作成对应的法术卷轴（X为那个法术或戏法的疲劳值消耗）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法戒指",
+      "style": "附魔",
+      "tier": "五阶",
+      "id": "m-skill-5-5-6",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你能够运用魔法工艺去锻造精致的魔法戒指，你可以花费三日的长休时段以及共计价值300金币的财富去制作魔法戒指，使其获得以下一种效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "防范阵营倾向",
+      "style": "防护",
+      "tier": "四阶",
+      "id": "m-skill-4-4-5",
+      "extract": [
+        "#00B0F0",
+        "#FFF32F"
+      ],
+      "site": [
+        "#FFF32F",
+        "#EE822F"
+      ]
+    }
+  ]
+}

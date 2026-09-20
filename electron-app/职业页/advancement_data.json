@@ -226,7 +226,7 @@
       "敏捷": 12,
       "感知": 14
     },
-    "source": "蛮斗士、战士、游荡者、武僧",
+    "source": "蛮斗士、游荡者、武僧",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "通过徒手攻击击败二十名角色（不计算玩家在内）",
@@ -384,7 +384,7 @@
       "敏捷": 13,
       "感知": 14
     },
-    "source": "战士、牧师",
+    "source": "战士、牧师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你持有剑类武器击败二十名持有剑类武器的角色",
@@ -444,7 +444,7 @@
       "力量": 10,
       "敏捷": 16
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你受到十次借机攻击而没有受到伤害",
@@ -477,7 +477,7 @@
     "source": "战士、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
-      "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
+      "参与三场玩家人数至少为五人的战斗并为赢得胜利付出了足够的贡献",
       "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
       "参与一场能够影响局部地区走势的战役并在其中脱颖而出"
     ]
@@ -521,7 +521,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师、守望者",
+    "source": "战士、猎人、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -655,18 +655,17 @@
   },
   {
     "class": "战士",
-    "name": "拳击手",
+    "name": "吟游剑士",
     "attrs": {
-      "力量": 14,
-      "敏捷": 12,
-      "感知": 14
+      "敏捷": 14,
+      "魅力": 15
     },
-    "source": "蛮斗士、战士、游荡者、武僧",
-    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "source": "战士、吟游诗人、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
-      "通过徒手攻击击败二十名角色（不计算玩家在内）",
-      "参与五次酒馆斗殴并取得胜利",
-      "参与一场观众规模超过五百人的拳击比赛，取得冠军称号并得到众人的喝彩"
+      "累计十次通过剑类武器击杀一名敌人后立即进行一次表演检定",
+      "获得五次战斗环节的胜利并且得到观众喝彩或荣誉奖励",
+      "在剑术或社交层面的名望等级提升至7"
     ]
   },
   {
@@ -957,7 +956,7 @@
       "智力": 13,
       "魅力": 14
     },
-    "source": "法师、牧师、游荡者、吟游诗人、魔契师",
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
@@ -1211,7 +1210,7 @@
       "力量": 10,
       "敏捷": 16
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你受到十次借机攻击而没有受到伤害",
@@ -1257,7 +1256,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师、守望者",
+    "source": "战士、猎人、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -1881,7 +1880,7 @@
       "敏捷": 13,
       "感知": 14
     },
-    "source": "战士、牧师",
+    "source": "战士、牧师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你持有剑类武器击败二十名持有剑类武器的角色",
@@ -1898,7 +1897,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "牧师、游荡者",
+    "source": "牧师、游荡者、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "使用终结技击杀十名能够提供经验值的角色",
@@ -1914,7 +1913,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -2368,7 +2367,7 @@
       "智力": 13,
       "魅力": 14
     },
-    "source": "法师、牧师、游荡者、吟游诗人、魔契师",
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
@@ -2433,7 +2432,7 @@
       "魅力": 15,
       "幸运": 15
     },
-    "source": "牧师、吟游诗人、魔契师",
+    "source": "牧师、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在庆典活动中击败二十名角色（不计算玩家在内）",
@@ -2546,17 +2545,17 @@
   },
   {
     "class": "牧师",
-    "name": "缝合怪专家",
+    "name": "亡灵舞者",
     "attrs": {
-      "体质": 14,
-      "智力": 14
+      "感知": 15,
+      "魅力": 15
     },
-    "source": "牧师、魔契师",
-    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "source": "牧师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
-      "消灭十个不死生物，并回收他们的躯体",
-      "处理二十具受到损坏的遗体",
-      "创造一头属于自己的憎恶"
+      "你通过舞蹈或挽歌为十名逝者送别，并且安抚悲痛的生者，使其重获平静",
+      "你通过舞蹈使五个不死生物或灵体停止了攻击或自愿消散",
+      "在万圣节、亡灵节或其他与死者相关的节日中带领归来的亡者们一同共舞，并且使那些不愿离去的逝者最终得以安息"
     ],
     "branch": "隐者",
     "branch_full": "死神"
@@ -3073,7 +3072,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "牧师、游荡者",
+    "source": "牧师、游荡者、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "使用终结技击杀十名能够提供经验值的角色",
@@ -3118,7 +3117,7 @@
       "敏捷": 15,
       "魅力": 15
     },
-    "source": "游荡者、武僧",
+    "source": "游荡者、武僧、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "在黑暗环境下击败二十名角色（不计算玩家在内）",
@@ -3150,7 +3149,7 @@
       "智力": 13,
       "魅力": 14
     },
-    "source": "法师、牧师、游荡者、吟游诗人、魔契师",
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
@@ -3223,7 +3222,7 @@
       "力量": 10,
       "敏捷": 16
     },
-    "source": "战士、猎人、游荡者",
+    "source": "战士、猎人、游荡者、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你受到十次借机攻击而没有受到伤害",
@@ -3359,7 +3358,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -3375,7 +3374,7 @@
       "敏捷": 12,
       "感知": 14
     },
-    "source": "蛮斗士、战士、游荡者、武僧",
+    "source": "蛮斗士、游荡者、武僧",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "通过徒手攻击击败二十名角色（不计算玩家在内）",
@@ -3438,7 +3437,7 @@
       "感知": 13,
       "魅力": 15
     },
-    "source": "游荡者、吟游诗人",
+    "source": "游荡者、吟游诗人、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行二十次成功的伪造检定",
@@ -3799,16 +3798,18 @@
   },
   {
     "class": "德鲁伊",
-    "name": "牧魂人",
+    "name": "荆棘舞者",
     "attrs": {
-      "感知": 16
+      "体质": 14,
+      "感知": 13,
+      "魅力": 12
     },
-    "source": "德鲁伊、萨满祭司",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "source": "德鲁伊、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
     "conditions": [
-      "为十名在自然界中死亡的己方阵营角色举行安息仪式",
-      "累计十次将生命值降至0或更低的角色生命值回复到至少1点",
-      "陪同并确保一名未能安息的亡魂在自然环境下存续一周时长，使其能够完成执念并最终得以安息"
+      "在自然环境下进行十次成功的舞蹈检定",
+      "你引诱十名来犯的敌人落入荆棘与藤蔓等危险的自然陷阱当中",
+      "你通过舞蹈唤醒一片自然的群落，使其为你而战并击溃敌军"
     ]
   },
   {
@@ -4487,7 +4488,7 @@
       "敏捷": 15,
       "魅力": 15
     },
-    "source": "游荡者、武僧",
+    "source": "游荡者、武僧、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "在黑暗环境下击败二十名角色（不计算玩家在内）",
@@ -4624,7 +4625,7 @@
       "敏捷": 12,
       "感知": 14
     },
-    "source": "蛮斗士、战士、游荡者、武僧",
+    "source": "蛮斗士、游荡者、武僧",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "通过徒手攻击击败二十名角色（不计算玩家在内）",
@@ -4655,7 +4656,7 @@
       "敏捷": 14,
       "感知": 13
     },
-    "source": "武僧",
+    "source": "武僧、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "使用简易武器参与十场战斗环节",
@@ -4798,18 +4799,17 @@
   },
   {
     "class": "吟游诗人",
-    "name": "战斗法师",
+    "name": "吟游剑士",
     "attrs": {
-      "敏捷": 12,
-      "体质": 12,
-      "智力": 15
+      "敏捷": 14,
+      "魅力": 15
     },
-    "source": "法师、吟游诗人",
-    "cost_html": "<span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span>",
+    "source": "战士、吟游诗人、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
-      "赢得十场战斗环节的胜利",
-      "使用法术击杀二十名角色",
-      "通过实战技巧战胜一名挑战等级高于你的角色等级的法师职业者"
+      "累计十次通过剑类武器击杀一名敌人后立即进行一次表演检定",
+      "获得五次战斗环节的胜利并且得到观众喝彩或荣誉奖励",
+      "在剑术或社交层面的名望等级提升至7"
     ]
   },
   {
@@ -4850,7 +4850,7 @@
       "智力": 13,
       "魅力": 14
     },
-    "source": "法师、牧师、游荡者、吟游诗人、魔契师",
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
@@ -4894,7 +4894,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -4939,7 +4939,7 @@
       "魅力": 15,
       "幸运": 15
     },
-    "source": "牧师、吟游诗人、魔契师",
+    "source": "牧师、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在庆典活动中击败二十名角色（不计算玩家在内）",
@@ -5015,7 +5015,7 @@
     "attrs": {
       "魅力": 16
     },
-    "source": "吟游诗人",
+    "source": "吟游诗人、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在公众场所击败十名向你发起挑战的角色（不计算玩家在内）",
@@ -5113,7 +5113,7 @@
       "感知": 13,
       "魅力": 15
     },
-    "source": "游荡者、吟游诗人",
+    "source": "游荡者、吟游诗人、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行十次成功的伪造检定",
@@ -5467,7 +5467,7 @@
     "attrs": {
       "魅力": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在自然公园或花园进行十次成功的舞蹈检定",
@@ -5692,7 +5692,7 @@
       "智力": 13,
       "魅力": 14
     },
-    "source": "法师、牧师、游荡者、吟游诗人、魔契师",
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
@@ -5739,7 +5739,7 @@
       "魅力": 15,
       "幸运": 15
     },
-    "source": "牧师、吟游诗人、魔契师",
+    "source": "牧师、吟游诗人、魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "在庆典活动中击败二十名角色（不计算玩家在内）",
@@ -5847,7 +5847,7 @@
     "attrs": {
       "魅力": 15
     },
-    "source": "魔契师",
+    "source": "魔契师、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行十次成功的舞蹈检定",
@@ -6830,7 +6830,7 @@
     "source": "战士、魔契师、谋士",
     "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00B0F0;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
     "conditions": [
-      "参与三场玩家人数至少为六人的战斗并为赢得胜利付出了足够的贡献",
+      "参与三场玩家人数至少为五人的战斗并为赢得胜利付出了足够的贡献",
       "在不进入战斗环节的情况下带领团队拔除一个敌方势力的据点",
       "参与一场能够影响局部地区走势的战役并在其中脱颖而出"
     ],
@@ -6842,7 +6842,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -7106,7 +7106,7 @@
       "敏捷": 15,
       "感知": 15
     },
-    "source": "战士、猎人、奇械师、守望者",
+    "source": "战士、猎人、奇械师",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
       "进行三十次成功的攻击命中检定",
@@ -7521,17 +7521,17 @@
   },
   {
     "class": "守望者",
-    "name": "神射手",
+    "name": "月下骑士",
     "attrs": {
-      "敏捷": 15,
-      "感知": 15
+      "感知": 15,
+      "意志": 14
     },
-    "source": "战士、猎人、奇械师、守望者",
-    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "source": "守望者、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
     "conditions": [
-      "进行三十次成功的攻击命中检定",
-      "连续进行十次成功的攻击命中检定（如果你的攻击命中检定失败，那么必须重新进行计算）",
-      "在一次劣势或极大劣势的攻击中触发暴击"
+      "在夜晚环境下安抚十名失眠或焦虑的NPC角色",
+      "累计三次在黑夜环境下通过障碍、舞蹈或肢体语言使敌人误判了己方的位置或人数，为你和盟友争取到战术优势",
+      "在一处被魔法黑暗或超自然阴影笼罩的区域中，通过你的鼓舞与激励令人们坚持到月光照耀的时刻"
     ]
   },
   {
@@ -7966,7 +7966,7 @@
     "attrs": {
       "感知": 15
     },
-    "source": "牧师、游荡者、吟游诗人、魔契师、谋士",
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
     "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
     "conditions": [
       "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
@@ -8558,6 +8558,384 @@
       "你阅读过十本关于异位面或次级维度的书籍",
       "你花费过幕间物语来阅读一本涉及异界的魔典",
       "通过亲自探索，获得一份来自异位面或次级维度的传承"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "剑圣",
+    "attrs": {
+      "力量": 12,
+      "敏捷": 13,
+      "感知": 14
+    },
+    "source": "战士、牧师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你持有剑类武器击败二十名持有剑类武器的角色",
+      "在你持有剑类武器攻击命中失败后，使用任意手段将攻击命中检定改为成功十次",
+      "完整掌握一门剑术绝学、或是在一对一演武中取得优胜，以完成另一名剑圣的试炼"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "游击士",
+    "attrs": {
+      "力量": 10,
+      "敏捷": 16
+    },
+    "source": "战士、猎人、游荡者、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你受到十次借机攻击而没有受到伤害",
+      "你执行过十次回避动作",
+      "你在每个战斗轮均进行全速移动的情况下结束一场战斗环节，并且这一过程中你击败过能够提供经验值的角色"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "诡术师",
+    "attrs": {
+      "敏捷": 12,
+      "智力": 13,
+      "魅力": 14
+    },
+    "source": "法师、牧师、游荡者、吟游诗人、魔契师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "这个进阶的基础职业所对应的主职业/子职业为法师、吟游诗人或魔契师",
+      "伪装成一名与你自身相悖的职业或身份并完美欺骗十名非敌方角色（不计算玩家在内）",
+      "在一座城镇留下一起被当地人津津乐道的怪谈"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "狂欢骑士",
+    "attrs": {
+      "魅力": 15,
+      "幸运": 15
+    },
+    "source": "牧师、吟游诗人、魔契师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在庆典活动中击败二十名角色（不计算玩家在内）",
+      "与上述前置条件①中被击败的角色开怀畅饮、纵情欢歌",
+      "参与到举办一场地区性质的盛大嘉年华活动过程当中，并且在其中起到足够亮眼的表现"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "刺客",
+    "attrs": {
+      "敏捷": 15,
+      "感知": 15
+    },
+    "source": "牧师、游荡者、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "使用终结技击杀十名能够提供经验值的角色",
+      "完成三场在突袭轮次结束阶段前结束的战斗环节",
+      "刺杀三名具有一定影响力的角色（包括实权贵族、官方人员、组织干部或是业界名流等）并不被他人（玩家除外）所知晓"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "影舞者",
+    "attrs": {
+      "敏捷": 15,
+      "魅力": 15
+    },
+    "source": "游荡者、武僧、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "在黑暗环境下击败二十名角色（不计算玩家在内）",
+      "施展二十次带有暗影、隐秘或躲闪关键词的能力（一个能力同时具有多个关键词时仅计算一次）",
+      "策划并使一处热闹的公共演出场所被黑暗笼罩（包括酒馆、剧院或舞会地点等），在敌人们尚处于慌乱中时发起突袭轮次并且在轮次结束阶段前完成这场战斗环节，在这个过程中你不能作为来自外界的突袭者、而是原先便在场所内的表演者身份发起战斗"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "密探",
+    "attrs": {
+      "感知": 15
+    },
+    "source": "牧师、游荡者、吟游诗人、魔契师、谋士、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span>",
+    "conditions": [
+      "你截获了五次来源某个机构、教团或组织所发布的秘密任务或情报，并交予另一个与之对立的势力",
+      "你知晓了三个非己方阵营机构、教团或组织的隐藏据点",
+      "揭露一场惊天阴谋"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "奇招武师",
+    "attrs": {
+      "力量": 12,
+      "敏捷": 14,
+      "感知": 13
+    },
+    "source": "武僧、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "使用简易武器参与十场战斗环节",
+      "使用简易武器击败二十名角色（不计算玩家在内）",
+      "在一场关键战役中不依赖战技和功法、或者装备和道具等外力的帮助，单纯依靠简易武器的特性打倒对手"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "明星决斗家",
+    "attrs": {
+      "魅力": 16
+    },
+    "source": "吟游诗人、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在公众场所击败十名向你发起挑战的角色（不计算玩家在内）",
+      "参与一场地区级别或以上的赛事并获得足够份量的名次",
+      "使你的地区名望等级达到10级，并且将你的讯息刊登在地区级别或以上的报刊杂志上"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "伪装大师",
+    "attrs": {
+      "智力": 13,
+      "感知": 13,
+      "魅力": 15
+    },
+    "source": "游荡者、吟游诗人、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "进行二十次成功的伪造检定",
+      "花费1000枚伪造金币，或者售出同等价值的赝品",
+      "在一起关键事件中完全扮演另一名无关联的角色贯彻始末，并且没有被其他角色察觉（玩家除外）"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "花之舞者",
+    "attrs": {
+      "魅力": 15
+    },
+    "source": "魔契师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在自然公园或花园进行十次成功的舞蹈检定",
+      "编织十种不同花卉制成的花环并赠予他人并获得对方的感谢（不计算玩家在内）",
+      "在一场以鲜花为主题的庆典活动中成为舞者并吸引所有参与者的目光，在表演结束后获得众人或超自然存在的一致掌声"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "热情奏者",
+    "attrs": {
+      "魅力": 15
+    },
+    "source": "魔契师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "进行十次成功的舞蹈检定",
+      "在华丽大赛或其他庆典活动中击败三支演出队伍",
+      "造访一座盛夏的岛屿，与当地居民发起一场超过百人的大型舞蹈活动，在彻夜狂欢中感受到真正的热情"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "旋刃大师",
+    "attrs": {
+      "敏捷": 15,
+      "感知": 14
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B3F9FF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你通过投掷行动击杀过十名角色",
+      "累计十五次在战斗环节中使掷出的武器返回自身手中",
+      "在一场关键战役中通过投掷武器来终结一名精英级单位"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "醉梦歌姬",
+    "attrs": {
+      "敏捷": 13,
+      "感知": 14,
+      "魅力": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在非战斗环节下，通过舞蹈或歌唱来使五名原先处于敌对状态的NPC角色上升为友善态度",
+      "你使十名原先表示过抗拒的NPC角色与你一同饮酒",
+      "在一场社交场合上令你的所有敌人全部醉倒，以此达成你的目的"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "协奏指挥",
+    "attrs": {
+      "智力": 13,
+      "感知": 14,
+      "魅力": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "参与三场玩家人数至少为五人的战斗并为赢得胜利付出了足够的贡献",
+      "通过节奏效果为其他友方角色提供过十五次增益效果",
+      "参与一场能够影响局部地区走势的战役并且通过非战斗的方式在其中脱颖而出"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "狂舞者",
+    "attrs": {
+      "敏捷": 13,
+      "魅力": 13,
+      "意志": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "累计十次通过AOE攻击手段在一次攻击中命中过至少三名角色",
+      "在战斗环节中进行十五次舞蹈检定",
+      "你在公众场合众人明确制止的情况下继续忘我的狂舞，不顾他人阻挠和意见并最终达成自身的目的"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "影蝶",
+    "attrs": {
+      "敏捷": 15,
+      "魅力": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你在黑暗环境下使十名角色进入过困惑、魅惑或混乱状态",
+      "你通过幻术、视觉骗局或言语诱骗过十名敌对角色",
+      "你将敌人的主力吸引至一个由你虚构的重要场地，随后与团队一同前往真实的目的地并且达成最终目的"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "绝命舞者",
+    "attrs": {
+      "力量": 13,
+      "敏捷": 15,
+      "意志": 14
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FF0000;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你通过近战攻击击杀二十名能够提供经验值的角色",
+      "累计五次通过单次攻击击杀未损失生命值的敌人",
+      "你患有某种绝症或时日不多的诅咒，在期限将至时完成一段绝命之舞"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "随机之刃",
+    "attrs": {
+      "幸运": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "累计三次在同一场战斗环节中触发四种不同的节拍骰效果",
+      "在战斗环节中重掷二十次攻击命中检定",
+      "与另一位具备随机能力的强大存在对决，并且最终依靠随机性产生的效果取得胜利"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "吟游剑士",
+    "attrs": {
+      "敏捷": 14,
+      "魅力": 15
+    },
+    "source": "战士、吟游诗人、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#EE822F;\">●</span> <span style=\"font-size:1.2em;color:#00FA99;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "累计十次通过剑类武器击杀一名敌人后立即进行一次表演检定",
+      "获得五次战斗环节的胜利并且得到观众喝彩或荣誉奖励",
+      "在剑术或社交层面的名望等级提升至7"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "垂死天鹅",
+    "attrs": {
+      "感知": 15,
+      "意志": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你拥有一段刻骨铭心的爱情，并且恋人已经逝去",
+      "你与十名同逝去恋人生前有过交集的NPC角色进行过交互，通过一段舞蹈来表示对其怀念",
+      "在你逝去恋人的安息之地进行一场战斗，以胜利告终后以一段舞蹈作为终幕"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "合众舞者",
+    "attrs": {
+      "魅力": 15
+    },
+    "source": "战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#EE822F;\">●</span>",
+    "conditions": [
+      "为其他友方角色提供十次增益、回复或护盾效果",
+      "在其他友方角色进行行动的同时执行自身行动累计五次",
+      "在一场关键战役的终局确保你与团队所有成员一同战胜最终的敌人，这个过程中没有角色死亡、陷入濒死或被迫退场"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "荆棘舞者",
+    "attrs": {
+      "体质": 14,
+      "感知": 13,
+      "魅力": 12
+    },
+    "source": "德鲁伊、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#00B050;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#843F0B;\">●</span>",
+    "conditions": [
+      "在自然环境下进行十次成功的舞蹈检定",
+      "你引诱十名来犯的敌人落入荆棘与藤蔓等危险的自然陷阱当中",
+      "你通过舞蹈唤醒一片自然的群落，使其为你而战并击溃敌军"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "亡灵舞者",
+    "attrs": {
+      "感知": 15,
+      "魅力": 15
+    },
+    "source": "牧师、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#B94BFF;\">●</span> <span style=\"font-size:1.2em;color:#FFB7E3;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "你通过舞蹈或挽歌为十名逝者送别，并且安抚悲痛的生者，使其重获平静",
+      "你通过舞蹈使五个不死生物或灵体停止了攻击或自愿消散",
+      "在万圣节、亡灵节或其他与死者相关的节日中带领归来的亡者们一同共舞，并且使那些不愿离去的逝者最终得以安息"
+    ]
+  },
+  {
+    "class": "战舞者",
+    "name": "月下骑士",
+    "attrs": {
+      "感知": 15,
+      "意志": 14
+    },
+    "source": "守望者、战舞者",
+    "cost_html": "<span style=\"font-size:1.2em;color:#FFF32F;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span> <span style=\"font-size:1.2em;color:#595959;\">●</span> <span style=\"font-size:1.2em;color:#FFFFFF;text-shadow:0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000,0 0 1.5px #000;\">●</span>",
+    "conditions": [
+      "在夜晚环境下安抚十名失眠或焦虑的NPC角色",
+      "累计三次在黑夜环境下通过障碍、舞蹈或肢体语言使敌人误判了己方的位置或人数，为你和盟友争取到战术优势",
+      "在一处被魔法黑暗或超自然阴影笼罩的区域中，通过你的鼓舞与激励令人们坚持到月光照耀的时刻"
     ]
   },
   {
