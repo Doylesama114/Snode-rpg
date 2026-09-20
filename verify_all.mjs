@@ -112,6 +112,21 @@ try {
 console.log(uiOK ? '✅ UI 结构回归通过' : '❌ UI 结构回归失败');
 totalErrors += uiOK ? 0 : 1;
 
+// 工会 UI 共享层（阶段 A/B：上下文跳转 / 无角色死链 / 返回语义 / 懒挂载 / 自定义配置）
+console.log('\n=== 工会 UI 共享层（guild-ui） ===');
+let guildOK = true;
+try {
+  let gOut = spawnSync('node', [join(BASE, 'verify_guild_ui_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  if (gOut.stdout) console.log(gOut.stdout.trim().slice(-1500));
+  if (gOut.stderr) console.error(gOut.stderr.trim());
+  if (gOut.status !== 0) guildOK = false;
+} catch (e) {
+  guildOK = false;
+  console.log('❌ 工会 UI 共享层执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(guildOK ? '✅ 工会 UI 共享层通过' : '❌ 工会 UI 共享层失败');
+totalErrors += guildOK ? 0 : 1;
+
 // 移动端职业页导航抽屉（法师/魔契师等窄屏目录可用性）
 console.log('\n=== 移动端导航抽屉 ===');
 let navOK = true;
