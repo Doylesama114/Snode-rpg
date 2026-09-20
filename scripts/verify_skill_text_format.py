@@ -29,9 +29,24 @@ def docx_for(cls: str) -> Path:
 
 
 def contains_entry(haystack: list[str], needle: str) -> bool:
+    """docx 整条项目是否在站点条目中出现。
+
+    两种合法形态：
+      ① 站点某一条以该 docx 整条文本开头（1:1 或更长的合并条目）；
+      ② 站点把 docx 的长段落**拆分**成连续多条 —— 连续拼接后恰好等于该整条文本。
+    形态 ② 是站点为可读性做的分段，内容并未丢失；仍然能抓住"整段消失/改写"的真实缺陷。
+    """
     for entry in haystack:
         if entry.startswith(needle):
             return True
+    for i in range(len(haystack)):
+        joined = ""
+        for j in range(i, min(i + 6, len(haystack))):
+            joined += haystack[j]
+            if joined == needle:
+                return True
+            if not needle.startswith(joined):
+                break
     return False
 
 

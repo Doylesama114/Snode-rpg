@@ -404,3 +404,31 @@ html.dark.gui-class-page body.gui-page .class-features,
 html.dark.gui-class-page body.gui-page nav,
 html.dark.gui-class-page body.gui-page nav .nav-inner {
   background:#24272b !important; border-color:#3a3d40 !important; }
+
+/* ===== 角色创建向导（body.gui-page 作用域） ===== */
+body.gui-page .step-indicator { gap:8px !important; }
+body.gui-page .step-dot { height:9px !important; border-radius:5px !important;
+  background: rgba(120,85,35,.26) !important; transform:none !important;
+  box-shadow: inset 0 1px 2px rgba(90,60,20,.35) !important; }
+body.gui-page .step-dot.done { background: linear-gradient(180deg,#e6c37c,#a8802f) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(40,24,6,.3) !important; }
+body.gui-page .step-dot.active { background: linear-gradient(180deg,#8a6234,#5b3d1e) !important;
+  transform: scaleY(1.45) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 2px 6px rgba(40,24,6,.4) !important; }
+body.gui-page .step-title { font-family:Georgia,"Songti SC",serif !important; color:#3a2a13 !important;
+  text-shadow:0 1px 0 rgba(255,246,224,.7); }
+body.gui-page .step-desc { color:#6d5942 !important; }
+body.gui-page #charOverview { background: linear-gradient(180deg,#fdf8ec,#f3e9d4) !important;
+  border:1px solid #c9ab74 !important; border-radius:8px !important;
+  box-shadow:0 5px 12px rgba(40,24,6,.22), inset 0 1px 0 rgba(255,255,255,.8) !important; }
+
+/* ===== AI 顾问页头（自带 <header class="hdr">，按设计不注入木梁） ===== */
+body.gui-page header.hdr { background: linear-gradient(180deg,#6b4a28,#54381c 62%,#3f2913) !important;
+  border-bottom:3px solid #2c1c0b !important; color:#f4e9d6 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 10px 24px rgba(0,0,0,.32) !important; }
+body.gui-page header.hdr h1, body.gui-page header.hdr p { color:#f4e9d6 !important; }
+html.dark body.gui-page header.hdr { background: linear-gradient(180deg,#3a2c1c,#2a2018) !important; }
+html.dark body.gui-page #charOverview { background:#24272b !important; border-color:#3a3d40 !important; }
+
+/* ===== AI 顾问聊天区（#app 原是象牙白，改为羊皮纸） ===== */
+body.gui-page #app.app { background: linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; }
+html.dark body.gui-page #app.app { background:#24272b !important; }

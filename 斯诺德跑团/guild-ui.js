@@ -255,7 +255,10 @@
   /* ---------------- ⑨ 木梁注入（给没有 header 的页面统一外壳） ---------------- */
   function beamBoot() {
     if (!window.__guiBeam) return;
-    if (document.querySelector('header')) return;              // 已有顶栏的页面不动
+    if (document.querySelector('header')) return;
+    /* body 为 grid/flex 时跳过：注入的 header 会被自动排版到其它网格单元（曾导致木梁跑到页面底部） */
+    var bd = getComputedStyle(document.body).display;
+    if (bd === "grid" || bd === "flex") return;              // 已有顶栏的页面不动
     var mk = el('header', 'gui-beam');
     mk.innerHTML = '<svg style="width:26px;height:26px" viewBox="0 0 32 32"><use href="#gui-crest"/></svg>' +
       '<span class="gui-title"></span><span class="gui-sp"></span>' +
