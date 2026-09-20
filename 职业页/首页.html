@@ -177,6 +177,17 @@
         cursor: pointer; font-family: inherit;
     }
     .gs-more:hover { border-color: var(--green); }
+    /* 搜索结果同页预览：不再整页跳转（每次跳转要重解析 3.8MB 索引 + 上千新 DOM） */
+    .gs-preview { position: fixed; inset: 0; z-index: 9998; display: none; flex-direction: column; background: rgba(18,15,20,.72); }
+    .gs-preview.show { display: flex; }
+    .gs-preview-bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: #2d2722; color: #fff; flex: none; }
+    .gs-preview-back { background: #a46d1f; color: #fff; border: none; border-radius: 6px; padding: 7px 16px; cursor: pointer; font-size: 14px; font-weight: bold; }
+    .gs-preview-back:hover { background: #c0852f; }
+    .gs-preview-title { flex: 1; font-size: 14px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gs-preview-ext { background: transparent; color: #d8d2c4; border: 1px solid #6a6359; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+    .gs-preview-ext:hover { border-color: #d8d2c4; color: #fff; }
+    .gs-preview iframe { flex: 1; width: 100%; border: none; background: #fff; }
+
     /* 跳转反馈遮罩：整页跳转到职业页需要 1~2 秒，点击后立即给出反馈 */
     .gs-jump-mask {
       position: fixed; inset: 0; z-index: 9999; display: none;
@@ -282,6 +293,14 @@
 </div>
 
 <button class="search-float-btn" id="searchFloatBtn" title="搜索全部职业技能">🔍</button>
+<div class="gs-preview" id="gsPreview">
+  <div class="gs-preview-bar">
+    <button class="gs-preview-back" type="button" onclick="closeGsPreview()">← 返回搜索</button>
+    <span class="gs-preview-title" id="gsPreviewTitle">技能预览</span>
+    <button class="gs-preview-ext" type="button" onclick="openGsPreviewExternal()" title="在新窗口打开">↗ 新窗口</button>
+  </div>
+</div>
+
 <div class="search-overlay hidden" id="searchOverlay">
   <div class="search-panel">
     <div class="search-panel-header">
@@ -679,7 +698,10 @@
   closeBtn.addEventListener('click', closeOverlay);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) closeOverlay(); });
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeOverlay();
+    if (e.key !== 'Escape') return;
+    var pv = document.getElementById('gsPreview');
+    if (pv && pv.classList.contains('show')) { closeGsPreview(); return; }
+    if (!overlay.classList.contains('hidden')) closeOverlay();
   });
 
   input.addEventListener('input', function() {
@@ -703,8 +725,44 @@
     scheduleQuery();
   });
 
-  // 点击结果行会整页跳到职业页（实测 1.4~1.9s），期间页面无任何反馈；
-  // 这里立即显示轻量遮罩，跳转完成后随文档销毁自动消失。
+  // ===== 搜索结果同页预览（26.09.20）=====
+  // 原先点击结果会整页跳到职业页：首页要重新解析 3.82MB 搜索索引，目标页又新建上万 DOM，
+  // 来回切换实测可累积到 1GB 内存并导致渲染进程被杀。现在改为当前页浮层 iframe 打开，
+  // 关闭时移除节点并显式 GC（不残留）。
+  var gsPreviewUrl = '';
+  function closeGsPreviewFrame() {
+    var f = document.getElementById('gsPreviewFrame');
+    if (f && f.parentNode) f.parentNode.removeChild(f);
+    setTimeout(function () { try { if (typeof window.gc === 'function') window.gc(); } catch (e) {} }, 800);
+  }
+  function openGsPreview(href, title) {
+    var box = document.getElementById('gsPreview');
+    if (!box || !href) return false;
+    gsPreviewUrl = href;
+    document.getElementById('gsPreviewTitle').textContent = title || '技能预览';
+    closeGsPreviewFrame();
+    var f = document.createElement('iframe');
+    f.id = 'gsPreviewFrame';
+    f.title = '技能预览';
+    f.src = href;
+    box.appendChild(f);
+    box.classList.add('show');
+    return true;
+  }
+  function closeGsPreview() {
+    var box = document.getElementById('gsPreview');
+    if (!box) return;
+    box.classList.remove('show');
+    closeGsPreviewFrame();
+  }
+  function openGsPreviewExternal() {
+    if (gsPreviewUrl) { try { window.open(gsPreviewUrl, '_blank'); } catch (e) {} }
+  }
+  window.openGsPreview = openGsPreview;
+  window.closeGsPreview = closeGsPreview;
+  window.openGsPreviewExternal = openGsPreviewExternal;
+
+  // 兜底：预览不可用时，仍在原地给出「正在打开」反馈（整页跳转）
   function showJumpMask(name) {
     var mask = document.getElementById('gsJumpMask');
     if (!mask) {
@@ -732,7 +790,9 @@
     var rowLink = e.target.closest('a.gs-row-main');
     if (rowLink) {
       var nameEl = rowLink.querySelector('.gs-row-name');
-      showJumpMask(nameEl ? nameEl.textContent.trim() : '');
+      var label = nameEl ? nameEl.textContent.trim() : '';
+      if (openGsPreview(rowLink.getAttribute('href'), label)) { e.preventDefault(); return; }   // 同页预览
+      showJumpMask(label);                                                                     // 兜底：整页跳转 + 反馈
     }
     var head = e.target.closest('[data-toggle-group]');
     if (head) {

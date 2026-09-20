@@ -78,6 +78,10 @@ function focusSkillFromHash() {
   try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
   var el = document.getElementById(id);
   if (!el) return;
+  // 懒渲染：目标卡可能尚未实例化，先补上再定位，保证用户能看到详情
+  if (el.classList && el.classList.contains("skill") && window.__snowdLazySkills) {
+    window.__snowdLazySkills.hydrate(el);
+  }
 
   var node = el.parentElement;
   while (node) {
@@ -203,10 +207,10 @@ function focusSkillFromHash() {
     }
     return null;
   }
-  function linkSkillRefs() {
+  function linkSkillRefs(root) {
     var heads = ["\u6218\u6280", "\u6cd5\u672f", "\u620f\u6cd5", "\u5929\u8d4b", "\u529f\u6cd5", "\u80fd\u529b", "\u4e13\u957f"];
     var re = new RegExp("(" + heads.join("|") + ")\\.([\\u4e00-\\u9fa5\u00b7A-Za-z0-9\uff08\uff09\u3010\u3011]+)", "g");
-    var nodes = document.querySelectorAll(".cond-text");
+    var nodes = (root || document).querySelectorAll(".cond-text");
     for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
       if (node.querySelector("a")) continue;
@@ -220,8 +224,8 @@ function focusSkillFromHash() {
   }
 
   // 4) SP 徽章（卡片右上角，属性表标识保留）
-  function addSpBadges() {
-    var arts = document.querySelectorAll("article.skill");
+  function addSpBadges(root) {
+    var arts = skillsIn(root);
     for (var i = 0; i < arts.length; i++) {
       var art = arts[i];
       var marks = (art.getAttribute("data-marks") || "").split(",").filter(Boolean);
@@ -248,8 +252,8 @@ function focusSkillFromHash() {
   }
 
   // 5) 升级行 Lv 徽标（原文保留）
-  function addUpgradeBadges() {
-    var cells = document.querySelectorAll(".upgrade-cell");
+  function addUpgradeBadges(root) {
+    var cells = (root || document).querySelectorAll(".upgrade-cell");
     for (var i = 0; i < cells.length; i++) {
       var label = cells[i].querySelector(".upgrade-label");
       if (!label || label.querySelector(".upgrade-badge")) continue;
@@ -262,12 +266,30 @@ function focusSkillFromHash() {
     }
   }
 
+  /** 取 root 内的技能卡；root 本身是卡片时也计入 */
+  function skillsIn(root) {
+    if (!root || root === document) return document.querySelectorAll("article.skill");
+    var list = [];
+    if (root.matches && root.matches("article.skill")) list.push(root);
+    var inner = root.querySelectorAll ? root.querySelectorAll("article.skill") : [];
+    for (var i = 0; i < inner.length; i++) list.push(inner[i]);
+    return list;
+  }
+
+  /** 单张卡的增强（懒渲染实例化后同样要走一遍） */
+  function enhanceSkill(art) {
+    linkSkillRefs(art);
+    addSpBadges(art);
+    addUpgradeBadges(art);
+  }
+  window.__snowdEnhanceSkill = enhanceSkill;
+
   onReady(function() {
     initScrollSpy();
     initBackToTop();
-    linkSkillRefs();
     addSpBadges();
     addUpgradeBadges();
+    if (window.__snowdLazySkills) window.__snowdLazySkills.init();
   });
 })();
 
@@ -305,4 +327,72 @@ function focusSkillFromHash() {
   } else {
     initClassFeatureTabs();
   }
+})();
+
+// ===== 技能卡懒渲染（26.09.20）=====
+// 职业页单页最多 423 张卡 / 2.7 万节点：全部常驻 DOM 会让首屏布局耗时 1.6s，
+// 且整页导航后旧文档迟迟不回收（实测 12 轮切换累积 35 万节点 / 1 GB → 渲染进程被杀 → 白屏）。
+// 改造：每张卡的 div.detail 放进 <template class="skill-body">，接近视口时再实例化；
+// article 上的 data-search / data-tags / data-marks 保留，搜索与筛选无需实例化即可命中。
+(function () {
+  var PRELOAD_PX = 800;        // 提前量：进入视口前 800px 就实例化
+  var io = null;
+
+  function templateOf(art) {
+    for (var i = 0; i < art.children.length; i++) {
+      var c = art.children[i];
+      if (c.tagName === "TEMPLATE" && c.classList.contains("skill-body")) return c;
+    }
+    return null;
+  }
+
+  function hydrate(art) {
+    if (!art || art.getAttribute("data-hydrated") === "1") return false;
+    var tpl = templateOf(art);
+    art.setAttribute("data-hydrated", "1");
+    if (!tpl) return false;
+    if (tpl.content) art.insertBefore(tpl.content.cloneNode(true), tpl);
+    tpl.parentNode.removeChild(tpl);
+    if (window.__snowdEnhanceSkill) window.__snowdEnhanceSkill(art);
+    var terms = window.__snowdActiveTerms;
+    if (terms && terms.length && window.__snowdHighlightIn) {
+      for (var i = 0; i < terms.length; i++) window.__snowdHighlightIn(art, terms[i]);
+    }
+    return true;
+  }
+
+  function hydrateAll(root) {
+    var cards = (root || document).querySelectorAll("article.skill");
+    for (var i = 0; i < cards.length; i++) hydrate(cards[i]);
+  }
+
+  function init() {
+    var cards = document.querySelectorAll("article.skill");
+    if (!cards.length) return;
+    if (!("IntersectionObserver" in window)) { hydrateAll(document); return; }
+    io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        hydrate(entries[i].target);
+        io.unobserve(entries[i].target);
+      }
+    }, { rootMargin: PRELOAD_PX + "px 0px " + PRELOAD_PX + "px 0px" });
+    for (var i = 0; i < cards.length; i++) io.observe(cards[i]);
+  }
+
+  window.__snowdLazySkills = {
+    init: init,
+    hydrate: hydrate,
+    hydrateAll: hydrateAll,
+    /** 搜索/筛选命中后：只实例化"当前可见"的卡片，其余交给滚动按需实例化 */
+    hydrateVisible: function (limit) {
+      var vis = document.querySelectorAll("article.skill:not(.hidden):not(.filter-hidden)");
+      var n = 0, cap = limit || 40;
+      for (var i = 0; i < vis.length && n < cap; i++) {
+        var r = vis[i].getBoundingClientRect();
+        if (r.bottom > -PRELOAD_PX && r.top < (window.innerHeight || 900) + PRELOAD_PX) { if (hydrate(vis[i])) n++; }
+      }
+      return n;
+    },
+  };
 })();

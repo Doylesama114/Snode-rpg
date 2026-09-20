@@ -295,6 +295,7 @@
         q(".hidden").forEach(function(el) { el.classList.remove("hidden"); });
 
         if (!term) {
+            window.__snowdActiveTerms = null;
             if (em) em.classList.add("hidden");
             q("a.skill-link, .nav-tier, .nav-group, .choice-note, .nav-choice").forEach(function(el) { el.classList.remove("hidden"); });
             return;
@@ -357,7 +358,13 @@
         });
 
         if (em) em.classList.toggle("hidden", any);
-        if (any) _applyHighlights(this.viewId, terms);
+        if (any) {
+            // 懒渲染：先实例化当前可见的命中卡片，再高亮；其余卡片滚动到时按此词补高亮
+            window.__snowdActiveTerms = terms;
+            window.__snowdHighlightIn = _highlightInElement;
+            if (window.__snowdLazySkills) window.__snowdLazySkills.hydrateVisible(60);
+            _applyHighlights(this.viewId, terms);
+        }
     };
 
     window.createFilterController = function(viewId, prefix) {
