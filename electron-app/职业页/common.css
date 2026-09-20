@@ -1276,3 +1276,145 @@ html.dark .class-features { background: var(--bg); }
   .class-feature-body { font-size: 13.5px; }
 }
 .class-feature-note { color: var(--gold); font-weight: 700; }
+
+/* ==========================================================================
+   工会风格覆盖层（P5 · 职业页 31 页共用）
+   原则：重映射既有 CSS 变量 + 重写外壳组件，不改动任何页面结构与数据。
+   规格来源：设计风格规范.md
+   ========================================================================== */
+:root {
+  --bg: #d0a97a;
+  --panel: #fdf8ec;
+  --ink: #2f2317;
+  --muted: #6d5942;
+  --line: #d9c8a4;
+  --red: #9c2f24;
+  --green: #a8802f;          /* 原"主色绿"→ 黄铜，使所有 hover/active 统一 */
+  --gold: #a8802f;
+  --blue: #6b4a28;           /* 原"信息蓝"→ 深木 */
+  --shadow: 0 14px 30px rgba(50, 30, 8, .28);
+  --gui-wood-1:#6b4a28; --gui-wood-2:#54381c; --gui-wood-3:#3f2913;
+  --gui-brass-hi:#e6c37c; --gui-brass-lo:#a8802f;
+  --gui-sink: inset 0 2px 5px rgba(90,60,20,.32), inset 0 -1px 0 rgba(255,255,255,.5);
+}
+body {
+  background-color:#d0a97a;
+  background-image:
+    radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+    repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12)) !important;
+  background-attachment: scroll !important;
+}
+/* 顶部顶栏 → 木梁 */
+header {
+  background: linear-gradient(180deg, var(--gui-wood-1), var(--gui-wood-2) 62%, var(--gui-wood-3)) !important;
+  border-bottom: 3px solid #2c1c0b !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 10px 24px rgba(0,0,0,.3);
+  backdrop-filter: none !important;
+}
+header h1, header .title { color: #f6ecd6 !important; text-shadow: 0 1px 2px rgba(0,0,0,.55); }
+header .subtitle, header .sub { color: rgba(246,236,214,.72) !important; }
+header input[type="search"] {
+  background: linear-gradient(180deg, rgba(120,85,35,.35), rgba(255,255,255,.22)) !important;
+  border: 1px solid #6d5223 !important; color: #fdf8ec !important;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.35) !important;
+}
+header input[type="search"]::placeholder { color: rgba(246,236,214,.6) !important; }
+/* 「← 返回」→ 黄铜牌 */
+.back-btn {
+  color:#2a1c0a !important; font-weight:700 !important; border:1px solid #6d5223 !important;
+  background: linear-gradient(180deg, var(--gui-brass-hi), #c39a4a 60%, var(--gui-brass-lo)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 6px rgba(40,24,6,.35) !important;
+  border-radius:5px !important;
+}
+.back-btn:hover { filter:brightness(1.06); border-color:#6d5223 !important; background:linear-gradient(180deg,#f0d79a,#cba255 60%,#b3892f) !important; }
+/* 侧栏 → 羊皮纸面板 + 书签链接 */
+nav, .sidebar, aside {
+  background: linear-gradient(180deg, #fdf8ec, #f3e9d4) !important;
+  border: 1px solid #c9ab74 !important; border-radius: 7px !important;
+  box-shadow: var(--gui-sink), 0 10px 22px rgba(50,30,8,.22) !important;
+}
+nav a, .nav-group a, .skill-link, .style-link {
+  border-radius: 0 5px 5px 0 !important;
+  border-left: 3px solid transparent;
+}
+nav a:hover, .skill-link:hover, .style-link:hover, .tier-summary:hover, .style-summary:hover {
+  background: linear-gradient(180deg, #f1e5c8, #e6d7b4) !important;
+  border-left-color: #a8802f;
+  color: var(--ink) !important;
+}
+nav a.active, .skill-link.active { background: linear-gradient(180deg,#6b4a28,#4a3018) !important; color:#f6ecd6 !important; }
+/* 筛选按钮 → 黄铜小牌 */
+.filter-bar button, .filter-btn, .filter-bar .btn, button.chip {
+  border:1px solid #8a6234 !important; border-radius:5px !important;
+  background: linear-gradient(180deg, #e8cfa4, #d9b982) !important; color:#2f2317 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 5px rgba(40,24,6,.22) !important;
+}
+.filter-bar button:hover, .filter-bar .btn:hover { filter:brightness(1.05); }
+.filter-bar button.active, .filter-bar .btn.active, .filter-bar button[aria-pressed="true"] {
+  background: linear-gradient(180deg,#6b4a28,#4a3018) !important; color:#f6ecd6 !important;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.45) !important;
+}
+/* 技能卡 → 羊皮纸卷轴 */
+article.skill, .skill, section.tier > article, .adv-card {
+  background: linear-gradient(180deg, #fffdf6, #f7eed9) !important;
+  border: 1px solid #d9c8a4 !important; border-radius: 6px !important;
+  box-shadow: 0 4px 10px rgba(60,38,10,.22), inset 0 1px 0 #fff !important;
+}
+article.skill:hover, .skill:hover { box-shadow: 0 10px 22px rgba(60,38,10,.3), inset 0 1px 0 #fff !important; }
+article.skill h4, .skill h4, .skill h3 {
+  color: #43301a !important;
+  border-bottom: 2px solid rgba(168,128,47,.5);
+  padding-bottom: 6px;
+}
+/* 风格/阶位标题 → 木牌条 */
+section.style > h2, section.style > h3, .style-title, .tier-title, h2.tier, h3.tier {
+  background: linear-gradient(180deg, #6b4a28, #54381c) !important;
+  color: #f6ecd6 !important; border-radius: 5px !important; padding: 8px 14px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 4px 10px rgba(40,24,6,.3) !important;
+}
+/* 关键词 chip → 羊皮纸小签 */
+.chip, .kw-chip {
+  background: linear-gradient(180deg,#f6ecd3,#eadfc0) !important;
+  border: 1px solid #c9ab74 !important; color: #5b411f !important; border-radius: 4px !important;
+}
+.chip:hover, .kw-chip:hover { background: linear-gradient(180deg,#fffdf6,#f1e5c8) !important; border-color:#a8802f !important; }
+/* 技能属性表 → 账本式（黄铜表头由 th 承担时更明显） */
+article.skill table th, .skill table th {
+  background: linear-gradient(180deg, var(--gui-brass-hi), #c39a4a 70%, var(--gui-brass-lo)) !important;
+  color: #2a1c0a !important; border-color: #6d5223 !important;
+}
+article.skill table td, .skill table td { border-color: rgba(120,85,35,.25) !important; }
+/* 抽屉/浮动按钮（移动端）→ 黄铜 */
+.nav-toggle, .drawer-toggle, button.float {
+  background: linear-gradient(180deg, var(--gui-brass-hi), #c39a4a 60%, var(--gui-brass-lo)) !important;
+  color: #2a1c0a !important; border: 1px solid #6d5223 !important;
+}
+/* 夜间模式：木色压暗（保留既有 html.dark 逻辑） */
+html.dark body { background-color:#2a2018 !important;
+  background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)) !important; }
+html.dark header { background: linear-gradient(180deg,#2f2317,#241a0f) !important; }
+html.dark nav, html.dark .sidebar, html.dark aside { background: linear-gradient(180deg,#3d362a,#332d22) !important; border-color:#5a4a35 !important; }
+html.dark article.skill, html.dark .skill { background: linear-gradient(180deg,#453d2f,#3a3327) !important; border-color:#5a4a35 !important; }
+
+/* ---------- P5 定点修复（真实选择器：.adv-link / .attr-table / .attr-row） ---------- */
+a.adv-link {
+  background: linear-gradient(135deg, #8a6234, #54381c) !important;
+  color: #f6ecd6 !important; border: 1px solid #3f2913 !important; border-radius: 6px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 8px 16px rgba(40,24,6,.35) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.5);
+}
+a.adv-link:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.attr-table { border: 1px solid #c9ab74 !important; border-radius: 6px !important; overflow: hidden; background: #fdf8ec !important; }
+.attr-row { background: linear-gradient(180deg, #fdf7ea, #f6ecd6) !important; border-bottom: 1px solid rgba(120,85,35,.16) !important; }
+.attr-row:nth-child(even) { background: linear-gradient(180deg, #f7eed9, #f1e5c8) !important; }
+.attr-row > *:first-child { background: linear-gradient(180deg, #e8cfa4, #d9b982) !important; color: #43301a !important; font-weight: 700 !important; }
+.attr-row > * { color: #5b411f !important; border-color: rgba(120,85,35,.2) !important; }
+html.dark .attr-table { background: #3a3327 !important; border-color: #5a4a35 !important; }
+html.dark .attr-row { background: linear-gradient(180deg,#453d2f,#3d362a) !important; }
+html.dark .attr-row > * { color: #e8e0cc !important; }
+html.dark .attr-row > *:first-child { background: linear-gradient(180deg,#5c4529,#4a3620) !important; color: #f0e6d2 !important; }

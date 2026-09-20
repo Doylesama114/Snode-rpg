@@ -27,7 +27,7 @@
     h1 { margin: 0; font-size: 24px; }
     .subtitle { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
     .searchbox input { width: 100%; height: 40px; border: 1px solid var(--line); border-radius: 6px; padding: 0 12px; font-size: 15px; background: var(--panel); color: var(--ink); outline: none; }
-    .searchbox input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(47,111,94,.16); }
+    .searchbox input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(138,98,52,.16); }
     @media (max-width: 600px) {
         .topbar { flex-direction: column; gap: 8px; padding: 12px 16px; }
         .adv-container { padding: 12px; }
@@ -39,7 +39,7 @@
     transition: all 0.2s; letter-spacing: 1px; }
 .detail-btn:hover, .detail-btn.active { background: var(--green, #00B050); color: #fff; }
 .locked-btn { display: block; width: 100%; margin-top: 12px; padding: 10px 16px;
-    border: 2px solid #666; border-radius: 6px; background: #333; color: #888;
+    border: 2px solid #6d5942; border-radius: 6px; background: #2f2317; color: #8a7050;
     font-size: 13px; font-weight: 700; cursor: not-allowed; letter-spacing: 1px; opacity: 0.6; }
 
 /* === 方案⑥ 整体背景分层 === */
@@ -47,13 +47,13 @@
     margin-top: 16px; padding: 0 20px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--panel), rgba(47,111,94,0.02) 80%);
+    background: linear-gradient(135deg, var(--panel), rgba(138,98,52,0.02) 80%);
     font-size: 15px;
     line-height: 1.7;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
     max-height: 0; opacity: 0;
-    box-shadow: 0 2px 16px rgba(31,37,34,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 2px 16px rgba(60,38,10,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
 /* === 方案⑤ 展开动画 === */
@@ -71,7 +71,7 @@
     color: var(--ink); margin-bottom: 16px;
     font-size: 16px; line-height: 1.8;
     padding: 14px 18px;
-    background: rgba(47,111,94,0.03);
+    background: rgba(138,98,52,0.03);
     border-radius: 8px;
     border-left: 3px solid var(--green);
     position: relative;
@@ -82,21 +82,21 @@
     margin: 14px 0; padding: 16px 18px 18px;
     border: 1px solid var(--line);
     border-left: 4px solid var(--green);
-    border-top: 1px solid rgba(47,111,94,0.08);
+    border-top: 1px solid rgba(138,98,52,0.08);
     border-radius: 8px;
     background: var(--panel);
-    box-shadow: 0 2px 8px rgba(31,37,34,0.04), 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 2px 8px rgba(60,38,10,0.04), 0 1px 0 rgba(255,255,255,0.3);
     transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
 }
 .adv-detail .detail-ability:hover {
     transform: translateX(4px);
-    box-shadow: 0 4px 16px rgba(31,37,34,0.08), 0 1px 0 rgba(255,255,255,0.3);
-    border-left-color: var(--gold, #a46d1f);
+    box-shadow: 0 4px 16px rgba(60,38,10,0.08), 0 1px 0 rgba(255,255,255,0.3);
+    border-left-color: var(--gold, #a8802f);
 }
 .adv-detail .detail-ability:hover {
     transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(31,37,34,0.08);
+    box-shadow: 0 4px 12px rgba(60,38,10,0.08);
 }
 
 /* === 方案② 文字排版 === */
@@ -117,7 +117,7 @@
     font-size: 13px;
     color: var(--green);
     margin-left: 8px;
-    border: 1px solid rgba(47,111,94,0.2);
+    border: 1px solid rgba(138,98,52,0.2);
     padding: 1px 10px;
     border-radius: 12px;
     display: inline-block;
@@ -132,7 +132,7 @@
     font-size: 13px;
     color: var(--green);
     margin-left: 8px;
-    background: rgba(47,111,94,0.08);
+    background: rgba(138,98,52,0.08);
     padding: 2px 8px;
     border-radius: 10px;
     display: inline-block;
@@ -144,19 +144,19 @@
     border: 1px solid var(--line);
     border-left: 4px solid var(--red);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(157,47,47,0.03), var(--panel) 60%);
-    box-shadow: 0 2px 8px rgba(31,37,34,0.04);
+    background: linear-gradient(135deg, rgba(156,47,36,0.03), var(--panel) 60%);
+    box-shadow: 0 2px 8px rgba(60,38,10,0.04);
 }
 .adv-detail .detail-insight-title {
     font-weight: 800; font-size: 16px;
     color: var(--red);
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(157,47,47,0.1);
+    border-bottom: 1px solid rgba(156,47,36,0.1);
     margin-bottom: 6px;
 }
 .adv-detail .detail-insight-tags {
     font-size: 13px; color: var(--muted);
-    border: 1px solid rgba(157,47,47,0.15);
+    border: 1px solid rgba(156,47,36,0.15);
     padding: 1px 10px;
     border-radius: 12px;
     display: inline-block;
@@ -167,7 +167,7 @@
     line-height: 1.8;
     
     padding-left: 12px;
-    border-left: 2px solid rgba(157,47,47,0.08);
+    border-left: 2px solid rgba(156,47,36,0.08);
 }
 .adv-detail .detail-insight-title {
     font-weight: 800; font-size: 16px;
@@ -176,7 +176,7 @@
 }
 .adv-detail .detail-insight-tags {
     font-size: 13px; color: var(--muted);
-    background: rgba(157,47,47,0.06);
+    background: rgba(156,47,36,0.06);
     padding: 1px 8px;
     border-radius: 10px;
     display: inline-block;
@@ -201,11 +201,11 @@
     border: 1px solid var(--line);
     border-radius: 8px; cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 8px rgba(31,37,34,0.06);
+    box-shadow: 0 2px 8px rgba(60,38,10,0.06);
 }
 .adv-detail .detail-images .img-item img:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(31,37,34,0.1);
+    box-shadow: 0 6px 20px rgba(60,38,10,0.1);
 }
 .adv-detail .detail-images .img-item img.zoomed {
     max-width: 100%; max-height: 80vh;
@@ -227,11 +227,11 @@
     border: 1px solid var(--line);
     border-radius: 8px; cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 8px rgba(31,37,34,0.08);
+    box-shadow: 0 2px 8px rgba(60,38,10,0.08);
 }
 .adv-detail .detail-images .img-item img:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(31,37,34,0.12);
+    box-shadow: 0 4px 16px rgba(60,38,10,0.12);
 }
 .adv-detail .detail-images .img-item img.zoomed {
     max-width: 100%; max-height: 80vh;
@@ -255,7 +255,7 @@
 }
 /* Detail text enhancements */
 .adv-detail .ab-desc .hl-num {
-  color: var(--gold, #a46d1f);
+  color: var(--gold, #a8802f);
   font-weight: 700;
 }
 .adv-detail .ab-desc .hl-field {
@@ -282,7 +282,7 @@
   position: absolute;
   left: 0;
   top: 3px;
-  color: var(--gold, #a46d1f);
+  color: var(--gold, #a8802f);
   font-size: 12px;
 }
 
@@ -309,10 +309,10 @@
     color: var(--ink);
 }
 .adv-detail .detail-table tr:nth-child(even) td {
-    background: rgba(47,111,94,0.03);
+    background: rgba(138,98,52,0.03);
 }
 .adv-detail .detail-table tr:hover td {
-    background: rgba(47,111,94,0.06);
+    background: rgba(138,98,52,0.06);
 }
 .adv-detail .detail-table {
     width: 100%; border-collapse: collapse;
@@ -331,10 +331,10 @@
     color: var(--ink);
 }
 .adv-detail .detail-table tr:nth-child(even) td {
-    background: rgba(47,111,94,0.03);
+    background: rgba(138,98,52,0.03);
 }
 .adv-detail .detail-table tr:hover td {
-    background: rgba(47,111,94,0.06);
+    background: rgba(138,98,52,0.06);
 }
 
 .search-highlight {
@@ -356,7 +356,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: var(--green, #2F6F5E);
+  background: var(--green, #8a6234);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -441,7 +441,7 @@
         <h4>近卫</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>力量14</span>  <span>体质15</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FFF32F;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>赢得十场战斗环节的胜利</li>
@@ -455,7 +455,7 @@
         <h4>高阶冒险者</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#00FA99;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#00FA99;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>赢得十场战斗环节的胜利</li>
@@ -469,7 +469,7 @@
         <h4>战斗大师</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>力量13</span>  <span>敏捷14</span>  <span>感知13</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#595959;">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#EE822F;">●</span> <span style="font-size:1.5em;color:#595959;">●</span> <span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>赢得十场战斗环节的胜利</li>
@@ -483,7 +483,7 @@
         <h4>复仇者</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>意志15</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FF0000;">●</span> <span style="font-size:1.5em;color:#FFF32F;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#B94BFF;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FF0000;">●</span> <span style="font-size:1.5em;color:#FFF32F;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#B94BFF;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>你拥有一名刻骨铭心、无论如何都必须向其复仇的对象</li>
@@ -497,7 +497,7 @@
         <h4>骑士扈从</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>你拥有一名宣誓效忠的对象，与对方同吃同住、荣辱与共</li>
@@ -511,7 +511,7 @@
         <h4>战地医师</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>智力12</span>  <span>感知14</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FF0000;">●</span> <span style="font-size:1.5em;color:#00FA99;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#FF0000;">●</span> <span style="font-size:1.5em;color:#00FA99;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>进行十次成功的医药检定</li>
@@ -525,7 +525,7 @@
         <h4>边界行者</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>感知14</span>  <span>意志13</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#00B050;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#00B050;">●</span> <span style="font-size:1.5em;color:#843F0B;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>击败二十名来自任意边境地区的敌人</li>
@@ -539,7 +539,7 @@
         <h4>自由骑士</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#FFB7E3;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#B3F9FF;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#FFB7E3;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span> <span style="font-size:1.5em;color:#FFFFFF;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>你未加入任何冒险团、骑士团、军队或类似组织（或已正式退出）</li>
@@ -553,7 +553,7 @@
         <h4>塑形者</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span>力量X</span>  <span>敏捷X</span>  <span>体质X</span>  <span>智力X</span>  <span>感知X</span>  <span>魅力X</span>  <span>意志X</span>  <span>幸运X</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>你的至少六项属性值为12或更高时才能够解锁该项进阶途径，你拥有每种属性所对应的至少1点熟练度</li>
@@ -567,7 +567,7 @@
         <h4>凡人勇士</h4>
         <p><span class="field">来源：</span>全职业</p>
         <p><span class="field">属性需求：</span><span style="color:#FF0000">力量15</span>  <span style="color:#FF0000">敏捷15</span>  <span style="color:#FF0000">体质15</span>  <span style="color:#FF0000">智力15</span>  <span style="color:#FF0000">感知15</span>  <span style="color:#FF0000">魅力15</span>  <span style="color:#FF0000">意志15</span>  <span style="color:#FF0000">幸运15</span></p>
-        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;">●</span></p>
+        <p><span class="field">标识：</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span><span style="font-size:1.5em;color:#D9D9D9;text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;">●</span></p>
         <p><span class="field">特殊条件：</span></p>
         <ol>
           <li>你的特殊专长中不能包含有强化属性、技巧专家、奇羡珍宝、战技专家、魔法专家、天赋异禀、幸运儿、影界触碰、元素亲和、神奇动物专家或弥补短板</li>
@@ -950,5 +950,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 <script src="common_tooltip.js"></script>
 <script src="../斯诺德跑团/snd.js"></script>
 <script src="../斯诺德跑团/shortcuts.js"></script>
+<script>window.__guiSkin = true; document.documentElement.classList.add("gui-class-page");</script>
+<script src="../斯诺德跑团/guild-ui.js"></script>
 </body>
 </html>

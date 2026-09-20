@@ -17,35 +17,64 @@
     }
     .back-link:hover { color: var(--green); }
 
-    .section-title {
-        font-size: 16px; font-weight: 700; color: var(--ink);
-        margin: 32px 0 12px; padding-left: 2px;
-    }
-    
-    .btn-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 12px;
-        max-width: 100%;
-    }
-    .btn-grid.two-col { grid-template-columns: repeat(2, 1fr); max-width: 272px; }
-    .btn-grid.three-col { grid-template-columns: repeat(3, 1fr); max-width: 404px; }
-    .home-btn {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        gap: 8px; aspect-ratio: 1 / 1;
-        border: 1px solid var(--line); border-radius: 10px;
-        background: var(--panel); color: var(--ink);
-        text-decoration: none; font-size: 15px; font-weight: 600;
-        box-shadow: 0 1px 4px rgba(31,37,34,0.03);
-        transition: all 0.2s ease;
-        box-sizing: border-box;
-    }
-    .home-btn:hover {
-        border-color: var(--green); color: var(--green);
-        box-shadow: 0 0 0 3px rgba(47,111,94,0.12);
-        transform: translateY(-1px);
-    }
-    .home-btn .btn-icon { font-size: 26px; line-height: 1; }
+    /* ===== 分区标题：木牌标题栏（拉丁副标 + 右延细线） ===== */
+.section-title { display:flex; align-items:baseline; gap:10px;
+  background: linear-gradient(180deg,#6f4d2a,#4e3319); border:1px solid #3f2913; border-bottom-width:3px;
+  border-radius:6px; padding:9px 15px; margin: 26px 0 14px !important;
+  color:#f4e9d2 !important; font-family:Georgia,"Songti SC",serif !important; font-size:17px !important;
+  letter-spacing:.06em; text-shadow:0 1px 2px rgba(0,0,0,.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 8px 18px rgba(40,24,6,.3) !important; }
+.section-title .st-lat { font-family:Inter,"PingFang SC",sans-serif; font-size:9.5px; letter-spacing:.3em;
+  color:#c8a25a; font-weight:700; }
+.section-title::after { content:""; flex:1; height:2px; border-radius:1px;
+  background:linear-gradient(90deg, rgba(200,162,90,.5), transparent); }
+
+/* ===== 格子：凸起木牌（顶光 + 底暗边 + hover 抬起 / 按下内陷） ===== */
+.btn-grid { display:grid !important; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)) !important;
+  gap:14px !important; max-width:100% !important; }
+.btn-grid.two-col { grid-template-columns: repeat(2,1fr) !important; max-width:272px !important; }
+.btn-grid.three-col { grid-template-columns: repeat(3,1fr) !important; max-width:404px !important; }
+.home-btn {
+  display:flex !important; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  box-sizing:border-box; text-decoration:none; font-size:15px;
+  border:1px solid #c9ab74 !important; border-radius:9px !important; aspect-ratio: 1/1;
+  background: linear-gradient(180deg,#fffdf6,#f4e9cf) !important;
+  box-shadow: 0 4px 10px rgba(40,24,6,.28), inset 0 1px 0 rgba(255,255,255,.85),
+              inset 0 -2px 0 rgba(120,85,35,.16) !important;
+  color:#3a2a13 !important; font-weight:800 !important; position:relative;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+.home-btn:hover {
+  transform: translateY(-3px); border-color:#a8802f !important;
+  background: linear-gradient(180deg,#fffef9,#f8efd9) !important;
+  box-shadow: 0 14px 26px rgba(40,24,6,.36), inset 0 1px 0 rgba(255,255,255,.95),
+              inset 0 -2px 0 rgba(120,85,35,.12) !important; color:#2f2317 !important; }
+.home-btn:active { transform: translateY(0);
+  box-shadow: inset 0 3px 7px rgba(90,60,20,.35) !important; }
+
+/* emoji 坐进"刻出来的圆槽" */
+.home-btn .btn-icon { display:inline-grid !important; place-items:center; width:46px !important; height:46px !important;
+  border-radius:50%; margin:0 auto 7px !important; font-size:24px !important; line-height:1 !important;
+  background: linear-gradient(180deg,#e8dabb,#f8f1df);
+  box-shadow: inset 0 2px 5px rgba(90,60,20,.3), inset 0 -1px 0 rgba(255,255,255,.9), 0 1px 0 rgba(255,255,255,.45) !important; }
+
+/* ===== 分区层级区分 ===== */
+/* 通用：黄铜描边 + 铜色圆槽 */
+[data-sec="general"] .home-btn { border-color:#a8802f !important; }
+[data-sec="general"] .home-btn .btn-icon { background: linear-gradient(180deg,#f0dca6,#e6c37c); }
+/* 进阶：深木描边 + 顶部一条"进阶"色带 + 左下角标记 */
+[data-sec="adv"] .home-btn { border-color:#8a6234 !important;
+  background: linear-gradient(180deg,#fdf7ea,#efe0c2) !important; }
+[data-sec="adv"] .home-btn::before { content:""; position:absolute; left:10px; right:10px; top:6px; height:3px;
+  border-radius:2px; background: linear-gradient(90deg, rgba(168,128,47,.85), rgba(168,128,47,.15)); }
+[data-sec="adv"] .home-btn::after { content:"进"; position:absolute; right:7px; bottom:6px; font-size:10px;
+  font-weight:800; color:#8a6234; opacity:.8; }
+
+/* 夜间：中性深色 + 木色描边 */
+html.dark .section-title { background: linear-gradient(180deg,#3a2c1c,#2a2018) !important; border-color:#1b1409 !important; }
+html.dark .home-btn { background: linear-gradient(180deg,#2f3338,#24272b) !important;
+  border-color:#4a4034 !important; color:#e8e0cc !important; }
+html.dark .home-btn .btn-icon { background: linear-gradient(180deg,#3a3f45,#2b3036) !important; }
+html.dark [data-sec="adv"] .home-btn { background: linear-gradient(180deg,#2b2f34,#212427) !important; border-color:#5a4a35 !important; }
     
     .footer-link { text-align: center; margin-top: 36px; font-size: 13px; }
     .footer-link a { color: var(--muted); text-decoration: none; }
@@ -56,14 +85,14 @@
         position: fixed; bottom: 28px; right: 28px; z-index: 9999;
         width: 56px; height: 56px; border-radius: 50%; border: none;
         background: var(--green); color: #fff; font-size: 26px;
-        cursor: pointer; box-shadow: 0 4px 20px rgba(31,37,34,0.25);
+        cursor: pointer; box-shadow: 0 4px 20px rgba(60,38,10,0.25);
         transition: transform 0.2s, box-shadow 0.2s;
         display: flex; align-items: center; justify-content: center;
     }
-    .search-float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(31,37,34,0.35); }
+    .search-float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(60,38,10,0.35); }
     .search-overlay {
         position: fixed; inset: 0; z-index: 9998;
-        background: rgba(31,37,34,0.45); display: flex; justify-content: center;
+        background: rgba(60,38,10,0.45); display: flex; justify-content: center;
         padding-top: 40px; overflow-y: auto;
     }
     .search-overlay.hidden { display: none; }
@@ -83,7 +112,7 @@
         padding: 12px 16px; font-size: 16px; font-family: inherit;
         background: var(--bg); color: var(--ink); outline: none;
     }
-    .search-widget-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(47,111,94,0.12); }
+    .search-widget-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(138,98,52,0.12); }
     .search-close-btn {
         width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
         background: var(--bg); color: var(--muted); font-size: 18px;
@@ -115,17 +144,17 @@
         cursor: pointer; font-family: inherit; line-height: 1.3;
     }
     .search-chip.active {
-        border-color: var(--green); background: rgba(47,111,94,0.12); color: var(--green);
+        border-color: var(--green); background: rgba(138,98,52,0.12); color: var(--green);
     }
     .search-color-btn {
         border: 1px solid var(--line); background: var(--panel); border-radius: 8px;
         padding: 4px 8px; font-size: 12px; cursor: pointer; font-family: inherit;
         display: inline-flex; align-items: center; gap: 4px; color: var(--ink);
     }
-    .search-color-btn.active { border-color: var(--green); box-shadow: 0 0 0 2px rgba(47,111,94,0.15); }
+    .search-color-btn.active { border-color: var(--green); box-shadow: 0 0 0 2px rgba(138,98,52,0.15); }
     .search-color-btn .gs-dot { font-size: 14px; line-height: 1; }
     .search-color-btn.light .gs-dot {
-        text-shadow: -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 1px 0 #333;
+        text-shadow: -1px -1px 0 #2f2317, 1px -1px 0 #2f2317, -1px 1px 0 #2f2317, 1px 1px 0 #2f2317;
     }
     .search-summary {
         padding: 8px 16px; font-size: 12px; color: var(--muted);
@@ -144,7 +173,7 @@
         padding: 10px 16px; border: none; background: var(--bg); color: var(--ink);
         font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; text-align: left;
     }
-    .gs-group-head:hover { background: rgba(47,111,94,0.06); }
+    .gs-group-head:hover { background: rgba(138,98,52,0.06); }
     .gs-group-head .gs-count { color: var(--muted); font-weight: 600; }
     .gs-group-body.collapsed { display: none; }
     .gs-row {
@@ -155,7 +184,7 @@
         flex: 1; display: flex; align-items: center; gap: 8px;
         padding: 8px 6px 8px 16px; text-decoration: none; color: inherit; min-width: 0;
     }
-    .gs-row-main:hover { background: rgba(47,111,94,0.05); }
+    .gs-row-main:hover { background: rgba(138,98,52,0.05); }
     .gs-row-name { font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gs-row-marks { display: inline-flex; gap: 1px; flex-shrink: 0; }
     .gs-row-marks .gs-dot { font-size: 13px; line-height: 1; }
@@ -181,11 +210,11 @@
     .gs-preview { position: fixed; inset: 0; z-index: 9998; display: none; flex-direction: column; background: rgba(18,15,20,.72); }
     .gs-preview.show { display: flex; }
     .gs-preview-bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: #2d2722; color: #fff; flex: none; }
-    .gs-preview-back { background: #a46d1f; color: #fff; border: none; border-radius: 6px; padding: 7px 16px; cursor: pointer; font-size: 14px; font-weight: bold; }
+    .gs-preview-back { background: #a8802f; color: #fff; border: none; border-radius: 6px; padding: 7px 16px; cursor: pointer; font-size: 14px; font-weight: bold; }
     .gs-preview-back:hover { background: #c0852f; }
     .gs-preview-title { flex: 1; font-size: 14px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .gs-preview-ext { background: transparent; color: #d8d2c4; border: 1px solid #6a6359; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
-    .gs-preview-ext:hover { border-color: #d8d2c4; color: #fff; }
+    .gs-preview-ext { background: transparent; color: #d9c8a4; border: 1px solid #6a6359; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+    .gs-preview-ext:hover { border-color: #d9c8a4; color: #fff; }
     .gs-preview iframe { flex: 1; width: 100%; border: none; background: #fff; }
 
     /* 跳转反馈遮罩：整页跳转到职业页需要 1~2 秒，点击后立即给出反馈 */
@@ -198,12 +227,12 @@
     .gs-jump-card {
       display: flex; align-items: center; gap: 10px;
       background: var(--panel, #fffdf8); color: var(--ink, #2d2722);
-      border: 1px solid var(--line, #d8d2c4); border-radius: 10px;
+      border: 1px solid var(--line, #d9c8a4); border-radius: 10px;
       padding: 14px 22px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.22);
     }
     .gs-jump-spinner {
       width: 15px; height: 15px; border-radius: 50%;
-      border: 2px solid rgba(164,109,31,.28); border-top-color: #a46d1f;
+      border: 2px solid rgba(164,109,31,.28); border-top-color: #a8802f;
       animation: gsJumpSpin .8s linear infinite;
     }
     @keyframes gsJumpSpin { to { transform: rotate(360deg); } }
@@ -233,6 +262,36 @@
         .search-filters { max-height: 32vh; }
         .gs-row-meta { display: none; }
     }
+
+/* ---------- P2 首页：徽章墙（凹槽格位 + 徽记） ---------- */
+/* 背景交给 guild-ui.css 的 .gui-page（共享层单一来源） */
+.home-container { max-width: 1040px !important; padding: 26px 22px 56px !important; }
+h1 { font-family: Georgia, "Songti SC", serif !important; color: #3a2a13 !important; letter-spacing: .06em;
+  text-shadow: 0 1px 0 rgba(255,246,224,.75); }
+.subtitle { color: #5b411f !important; }
+.back-link { color:#2a1c0a !important; font-weight:700 !important; padding:6px 13px; border-radius:5px;
+  border:1px solid #6d5223; background:linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 6px rgba(40,24,6,.3); }
+.section-title { font-family: Georgia,"Songti SC",serif !important; color:#43301a !important; font-size:17px !important;
+  letter-spacing:.08em; margin: 26px 0 12px !important; padding-left:0 !important;
+  border-bottom: 2px solid rgba(168,128,47,.45); padding-bottom:6px; }
+.btn-grid { gap: 14px !important; }
+.home-btn {
+  border: 0 !important; border-radius: 8px !important; aspect-ratio: 1/1;
+  background: linear-gradient(180deg, rgba(120,85,35,.14), rgba(255,255,255,.5)) !important;
+  box-shadow: inset 0 2px 5px rgba(90,60,20,.3), inset 0 -1px 0 rgba(255,255,255,.6) !important;
+  color: #43301a !important; font-weight: 700 !important;
+}
+.home-btn:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.96)) !important;
+  box-shadow: inset 0 1px 2px rgba(90,60,20,.18), 0 8px 16px rgba(60,38,10,.28) !important;
+  color: #2f2317 !important; transform: translateY(-2px); border-color: transparent !important;
+}
+.home-btn .btn-icon { font-size: 27px !important; line-height: 1 !important; width: auto !important; height: auto !important; }
+
+/* 悬浮搜索按钮 → 黄铜 */
+.search-float-btn { background: linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important; color:#2a1c0a !important;
+  box-shadow: 0 6px 18px rgba(40,24,6,.4) !important; border:1px solid #6d5223 !important; }
 </style>
 </head>
 <body>
@@ -241,15 +300,15 @@
   <h1>⚔ 斯诺德全职业技能树</h1>
     <p class="subtitle">选择职业查看天赋树 · 进阶途径</p>
     
-    <div class="section-title">基础职业</div>
-    <div class="btn-grid">
+    <div class="section-title"><span class="st-cn">基础职业</span><span class="st-lat">BASE CLASSES</span></div>
+    <div data-sec="base" class="btn-grid">
         <a class="home-btn" href="战士.html"><span class="btn-icon">⚔️</span>战士</span></a>
         <a class="home-btn" href="圣骑士.html"><span class="btn-icon">⚜️</span>圣骑士</span></a>
         <a class="home-btn" href="猎人.html"><span class="btn-icon">🏹</span>猎人</span></a>
         <a class="home-btn" href="游荡者.html"><span class="btn-icon">🗡️</span>游荡者</span></a>
         <a class="home-btn" href="武僧.html"><span class="btn-icon">🥋</span>武僧</span></a>
         <a class="home-btn" href="法师.html"><span class="btn-icon">🔮</span>法师</span></a>
-        <a class="home-btn" href="术士.html"><span class="btn-icon">❓</span>术士</span></a>
+        <a class="home-btn" href="术士.html"><span class="btn-icon">🩸</span>术士</span></a>
         <a class="home-btn" href="牧师.html"><span class="btn-icon">🙏</span>牧师</span></a>
         <a class="home-btn" href="德鲁伊.html"><span class="btn-icon">🌿</span>德鲁伊</span></a>
         <a class="home-btn" href="吟游诗人.html"><span class="btn-icon">🎶</span>吟游诗人</span></a>
@@ -262,22 +321,22 @@
         <a class="home-btn" href="召唤师.html"><span class="btn-icon">🌀</span>召唤师</span></a>
     </div>
     
-    <div class="section-title">通用</div>
-    <div class="btn-grid three-col">
-        <a class="home-btn" href="通用天赋树.html"><span class="btn-icon">⚪</span>通用天赋树</span></a>
-        <a class="home-btn" href="通用·进阶.html"><span class="btn-icon">⚪</span>通用进阶</span></a>
+    <div class="section-title"><span class="st-cn">通用</span><span class="st-lat">GENERAL</span></div>
+    <div data-sec="general" class="btn-grid three-col">
+        <a class="home-btn" href="通用天赋树.html"><span class="btn-icon">🌳</span>通用天赋树</span></a>
+        <a class="home-btn" href="通用·进阶.html"><span class="btn-icon">⏫</span>通用进阶</span></a>
         <a class="home-btn" href="特殊专长.html"><span class="btn-icon">⭐</span>特殊专长</span></a>
     </div>
     
-    <div class="section-title">进阶途径</div>
-    <div class="btn-grid">
+    <div class="section-title"><span class="st-cn">进阶途径</span><span class="st-lat">ADVANCED</span></div>
+    <div data-sec="adv" class="btn-grid">
         <a class="home-btn" href="战士·进阶.html"><span class="btn-icon">⚔️</span>战士进阶</a>
         <a class="home-btn" href="圣骑士·进阶.html"><span class="btn-icon">⚜️</span>圣骑士进阶</a>
         <a class="home-btn" href="猎人·进阶.html"><span class="btn-icon">🏹</span>猎人进阶</a>
         <a class="home-btn" href="游荡者·进阶.html"><span class="btn-icon">🗡️</span>游荡者进阶</a>
         <a class="home-btn" href="武僧·进阶.html"><span class="btn-icon">🥋</span>武僧进阶</a>
         <a class="home-btn" href="法师·进阶.html"><span class="btn-icon">🔮</span>法师进阶</a>
-        <a class="home-btn" href="术士·进阶.html"><span class="btn-icon">❓</span>术士进阶</a>
+        <a class="home-btn" href="术士·进阶.html"><span class="btn-icon">🩸</span>术士进阶</a>
         <a class="home-btn" href="牧师·进阶.html"><span class="btn-icon">🙏</span>牧师进阶</a>
         <a class="home-btn" href="德鲁伊·进阶.html"><span class="btn-icon">🌿</span>德鲁伊进阶</a>
         <a class="home-btn" href="吟游诗人·进阶.html"><span class="btn-icon">🎶</span>吟游诗人进阶</a>
@@ -598,7 +657,7 @@
       var meta = metaByHex[hex] || { light: false };
       var cls = meta.light ? 'gs-dot light' : 'gs-dot';
       var shadow = meta.light
-        ? 'text-shadow:-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333,1px 1px 0 #333;'
+        ? 'text-shadow:-1px -1px 0 #2f2317,1px -1px 0 #2f2317,-1px 1px 0 #2f2317,1px 1px 0 #2f2317;'
         : '';
       return '<span class="' + cls + '" style="color:' + hex + ';' + shadow + '">●</span>';
     }).join('');
@@ -823,5 +882,7 @@
 </script>
 <script src="common_tooltip.js"></script>
 <script src="../斯诺德跑团/shortcuts.js"></script>
+<script>window.__guiSkin = true; document.documentElement.classList.add("gui-class-page");</script>
+<script src="../斯诺德跑团/guild-ui.js"></script>
 </body>
 </html>
