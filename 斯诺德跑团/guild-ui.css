@@ -470,3 +470,66 @@ body.gui-page .footer { margin-top:14px !important; }
 /* ===== 深底浅字：标题栏统一加深（保证米色文字对比度 ≥4.5） ===== */
 body.gui-page .section-title { background: linear-gradient(180deg,#3f2711,#2a1a0a) !important; }
 body.gui-page .gui-sec-head .t, body.gui-page .section-title .st-cn { color:#f6eeda !important; }
+
+/* ===== v1.0.8003 弹窗统一（木框 + 木牌标题栏 + 羊皮纸 + 黄铜） ===== */
+/* 规则手册：恢复原本 1200px 宽度（职业兼容性表格不再被挤压） */
+html.gui-help-page .container { max-width:1200px !important; }
+html.gui-help-page .wrap { max-width:100% !important; }
+
+/* ① 首页检索弹窗 */
+.search-overlay { background:rgba(24,14,4,.55) !important; }
+.search-panel { background:linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; border:1px solid #c9ab74 !important;
+  border-radius:9px !important; box-shadow:0 0 0 8px #54381c, 0 30px 60px -18px rgba(20,12,4,.75) !important; }
+.search-panel-header { background:linear-gradient(180deg,#3f2711,#2a1a0a) !important; border-bottom:3px solid #2c1c0b !important;
+  border-radius:6px 6px 0 0 !important; padding:12px 16px !important; }
+.search-panel-header * { color:#f6eeda !important; }
+.search-widget-input { background:rgba(255,253,246,.96) !important; border-color:#8a6234 !important; color:#2f2317 !important; }
+.search-close-btn { background:linear-gradient(180deg,#e6c37c,#c39a4a) !important; border-color:#6d5223 !important; color:#2a1c0a !important; }
+.search-chip-wrap > * { background:linear-gradient(180deg,#fffdf6,#f1e5c8) !important; border:1px solid #c9ab74 !important; color:#43301a !important; }
+.search-chip-wrap > .on, .search-chip-wrap > .active, .search-chip-wrap > .selected {
+  background:linear-gradient(180deg,#6b4a28,#4a3018) !important; color:#f6eeda !important; border-color:#3f2913 !important; }
+
+/* ② 职业页筛选面板 */
+.fp-body { background:linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; border:1px solid #c9ab74 !important;
+  border-radius:9px !important; box-shadow:0 0 0 8px #54381c, 0 30px 60px -18px rgba(20,12,4,.75) !important; }
+.fp-head { background:linear-gradient(180deg,#3f2711,#2a1a0a) !important; color:#f6eeda !important;
+  border-radius:6px 6px 0 0 !important; padding:10px 12px !important; }
+.fp-head * { color:#f6eeda !important; }
+.fp-toggle { background:linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important; color:#2a1c0a !important;
+  border:1px solid #6d5223 !important; border-radius:5px !important; font-weight:700 !important; }
+.fp-group { background:linear-gradient(180deg,#efdcb4,#e3cf9f) !important; border:1px solid #c9ab74 !important; border-radius:6px !important; }
+.fp-kw-chip { background:linear-gradient(180deg,#fffdf6,#f1e5c8) !important; border:1px solid #c9ab74 !important; color:#43301a !important; }
+.fp-kw-chip.on { background:linear-gradient(180deg,#6b4a28,#4a3018) !important; color:#f6eeda !important; }
+.fp-active-tag { background:linear-gradient(180deg,#e6c37c,#c39a4a) !important; color:#2a1c0a !important; border-color:#6d5223 !important; }
+
+/* ③ 首页同页预览浮层 */
+.gs-preview-bar { background:linear-gradient(180deg,#3f2711,#2a1a0a) !important; border-bottom:3px solid #2c1c0b !important; }
+.gs-preview-title { color:#f6eeda !important; }
+.gs-preview-back { background:linear-gradient(180deg,#e6c37c,#c39a4a) !important; color:#2a1c0a !important; }
+.gs-preview-ext { color:#e8dcc4 !important; border-color:#8a6234 !important; }
+
+/* ④ 快捷键面板 */
+#_shortcutHelp { background:linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; border:1px solid #c9ab74 !important;
+  border-radius:9px !important; box-shadow:0 0 0 8px #54381c, 0 30px 60px -18px rgba(20,12,4,.75) !important; color:#2f2317 !important; }
+#_shortcutHelp > div:first-child { background:linear-gradient(180deg,#3f2711,#2a1a0a) !important; color:#f6eeda !important;
+  margin:-24px -28px 16px !important; padding:13px 18px !important; border-radius:8px 8px 0 0 !important;
+  font-family:Georgia,"Songti SC",serif !important; }
+#_shortcutHelp b { display:inline-block; min-width:54px; text-align:center;
+  background:linear-gradient(180deg,#e6c37c,#c39a4a) !important; color:#2a1c0a !important; border:1px solid #6d5223 !important;
+  border-radius:4px !important; padding:1px 6px !important; font-family:Consolas,monospace !important; font-size:12.5px !important; }
+#_shortcutHelp > div:last-child { color:#6d5942 !important; }
+
+/* ⑤ 角色面板商店弹窗 */
+#storeOverlay { background:rgba(24,14,4,.55) !important; }
+#storeOverlay .pop { background:linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; border:1px solid #c9ab74 !important;
+  box-shadow:0 0 0 8px #54381c, 0 30px 60px -18px rgba(20,12,4,.75) !important; }
+#storeOverlay .pop-head { background:linear-gradient(180deg,#3f2711,#2a1a0a) !important; border-radius:7px 7px 0 0 !important; }
+#storeOverlay .pop-head h3, #storeOverlay .pop-head * { color:#f6eeda !important; }
+.store-cat { background:linear-gradient(180deg,#fffdf6,#f1e5c8) !important; border-color:#c9ab74 !important; color:#43301a !important; }
+.store-cat.on { background:linear-gradient(180deg,#6b4a28,#4a3018) !important; color:#f6eeda !important; border-color:#3f2913 !important; }
+.store-item { background:linear-gradient(180deg,#fffdf6,#f6ecd3) !important; border-color:#d9c8a4 !important; }
+.store-item .si-price { color:#a8802f !important; }
+/* 弹窗关闭钮：木牌标题栏内的 ✕ 必须是深色（否则浅色字形看不见） */
+#storeOverlay .pop-head .close, .pop-head .close {
+  color:#2a1c0a !important; background:linear-gradient(180deg,#e6c37c,#c39a4a) !important;
+  border:1px solid #6d5223 !important; border-radius:50% !important; }

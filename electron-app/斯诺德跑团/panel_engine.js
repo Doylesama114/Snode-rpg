@@ -280,6 +280,7 @@ function saveState(slotIndex) {
   try {
     localStorage.setItem(key, JSON.stringify(snapshot));
     state._dirty = false;
+    reportPanelDirty(false);   // 已保存 → 允许自动重启安装（策略 B 安全网）
     CURRENT_CHAR = charName;
     CURRENT_SLOT = si;
     return true;
@@ -412,8 +413,13 @@ function selectSaveSlot(slotIndex) {
   window._saveCallback = null;
 }
 
+/* 把「有未保存改动」上报给主进程：自动更新重启前会等它变干净（策略 B 的安全网） */
+function reportPanelDirty(v) {
+  try { if (window.electronAPI && window.electronAPI.setPanelDirty) window.electronAPI.setPanelDirty(!!v); } catch (e) {}
+}
 function autoSave() {
   state._dirty = true;
+  reportPanelDirty(true);
 }
 
 // Initialize from URL params
@@ -9028,6 +9034,7 @@ function importSaves(){
       var key='char_'+cn+'_slot'+sl;
       localStorage.setItem(key,JSON.stringify(state));
       localStorage.setItem('_snowd_last_save_'+cn+'_'+sl,JSON.stringify(state));
+      reportPanelDirty(false);   // 已保存 → 允许自动重启安装
     }catch(e){}
   }
 })();

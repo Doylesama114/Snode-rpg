@@ -12,7 +12,7 @@ app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
 // 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
 autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = false; // 手动重启以立即生效
+autoUpdater.autoInstallOnAppQuit = true;  // 已下载的更新在退出时自动安装（策略 B：手动检查走立即重启）
 autoUpdater.logger = console;
 
 const UPDATE_SOURCES = {
@@ -282,7 +282,14 @@ autoUpdater.on('update-available', (info) => {
     status: 'available',
     version: info.version,
     fromMirror: !!fromMirror,
-    message: '发现新版本 v' + info.version + '（当前 v' + app.getVersion() + '）',
+    message: '发现新版本 v' + info.version + '（当前 v' + app.getVersion() + '），即将自动下载',
+  });
+  /* 策略 B：不再等用户点「下载更新」，直接静默下载 */
+  console.log('[更新] 自动开始下载 v' + info.version);
+  sendUpdateStatus({ status: 'downloading', version: info.version, percent: 0, message: '正在下载更新 v' + info.version + '…' });
+  autoUpdater.downloadUpdate().catch(function (err) {
+    console.error('[更新] 自动下载失败:', err && err.message);
+    sendUpdateStatus({ status: 'error', message: '下载更新失败：' + ((err && err.message) || '未知错误') });
   });
 });
 autoUpdater.on('update-not-available', () => {
@@ -297,8 +304,10 @@ autoUpdater.on('update-downloaded', (info) => {
   sendUpdateStatus({
     status: 'downloaded',
     version: info.version,
-    message: '更新已就绪（v' + info.version + '），重启后生效',
+    message: '更新已就绪（v' + info.version + '）',
   });
+  /* 手动检查 → 立即重启安装（策略 B）；自动检查 → 只提示，退出时由 autoInstallOnAppQuit 安装 */
+  if (manualCheckRequested) maybeInstallNow();
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
@@ -310,8 +319,39 @@ autoUpdater.on('error', (err) => {
   sendUpdateStatus({ status: 'error', message: formatUpdateError(err.message || String(err)) });
 });
 
+/* ===== 全自动更新（策略 B）=====
+   手动检查：发现 → 自动下载 → 下载完「立即重启安装」；自动检查：自动下载但不重启，退出时安装。
+   安全网：任一窗口（角色面板）报告有未保存改动时，先提示保存，保存后自动继续安装。 */
+var manualCheckRequested = false;
+var dirtyWindows = new Set();
+var installPending = false;
+function anyDirty() { return dirtyWindows.size > 0; }
+function maybeInstallNow() {
+  if (!pendingUpdate || !pendingUpdate.ready) return;
+  if (anyDirty()) {
+    installPending = true;
+    sendUpdateStatus({ status: 'waiting-save', version: pendingUpdate.version, message: '检测到未保存的角色改动：保存后将自动重启安装' });
+    return;
+  }
+  installPending = false;
+  console.log('[更新] 立即重启安装 v' + pendingUpdate.version);
+  sendUpdateStatus({ status: 'installing', version: pendingUpdate.version, message: '更新已就绪，正在重启安装…' });
+  setTimeout(function () { autoUpdater.quitAndInstall(true, true); }, 400);
+}
+ipcMain.on('panel-dirty', (e, flag) => {
+  var id = e.sender.id;
+  if (flag) { dirtyWindows.add(id); e.sender.once('destroyed', function () { dirtyWindows.delete(id); }); }
+  else { dirtyWindows.delete(id); }
+  if (!flag && installPending) setTimeout(maybeInstallNow, 300);
+});
+autoUpdater.on('download-progress', (p) => {
+  var pct = Math.max(0, Math.min(100, Math.round((p && p.percent) || 0)));
+  sendUpdateStatus({ status: 'downloading', percent: pct, version: pendingUpdate ? pendingUpdate.version : '', message: '正在下载更新 ' + pct + '%' });
+});
+
 // IPC: 手动检查更新 — GitHub 优先，失败自动镜像
-ipcMain.on('check-update', () => {
+ipcMain.on('check-update', (e, opts) => {
+  manualCheckRequested = !!(opts && opts.manual);   // 手动检查：下载完立即重启安装
   runAutoUpdateCheck();
 });
 

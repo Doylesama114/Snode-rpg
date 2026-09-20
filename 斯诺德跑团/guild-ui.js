@@ -535,10 +535,10 @@
   function boot() {
     injectCss(); injectSprite();
     themeBoot();                            // 主题与导航层无关：必须在下面的提前 return 之前
-    if (window.__guiNoNav) return;          // 启动台/设置页可关闭导航层（仅关导航）
+    skinBoot();                             // 皮肤与导航层无关（设置页也要）
+    escBoot();                              // ESC 与导航层无关（设置页也要能 ESC 返回）
+    if (window.__guiNoNav) return;          // 启动台/设置页只关闭「导航面板」
     beamBoot();
-    skinBoot();
-    escBoot();
     navBoot();
     backFix();
   }

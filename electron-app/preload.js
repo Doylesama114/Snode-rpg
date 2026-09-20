@@ -1,12 +1,13 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  checkUpdate: () => ipcRenderer.send('check-update'),
+  checkUpdate: (manual) => ipcRenderer.send('check-update', { manual: !!manual }),
   checkUpdateGitee: () => ipcRenderer.send('check-update-mirror'),
   checkUpdateMirror: () => ipcRenderer.send('check-update-mirror'),
   restart: () => ipcRenderer.send('restart-app'),
   downloadUpdate: () => ipcRenderer.send('download-update'),
   installUpdate: () => ipcRenderer.send('install-update'),
+  setPanelDirty: (flag) => ipcRenderer.send('panel-dirty', !!flag),
   getAutoUpdate: () => ipcRenderer.invoke('get-auto-update'),
   perfReport: () => ipcRenderer.invoke('perf-report'),
   setAutoUpdate: (value) => ipcRenderer.send('set-auto-update', value),

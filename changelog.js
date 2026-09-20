@@ -2,6 +2,55 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8003',
+    date: '2026-09-20',
+    changes: [
+      '更新流程改为全自动：手动点「检查更新」后自动下载并立即重启安装，无需再点两次（自动检查仍只下载、退出时安装）',
+      '新增未保存保护：角色面板有未保存改动时先提示保存，保存后自动继续重启安装，避免丢失改动',
+      '规则手册恢复原本 1200px 宽度：职业兼容性等宽表格不再被挤压截断',
+      '设置页支持 ESC 返回上一级（此前 ESC 层未在该页注册）',
+      '弹窗风格统一：首页检索、职业页筛选、快捷键面板、角色面板商店、通用确认框、更新日志弹窗统一为木框+木牌标题栏+羊皮纸+黄铜',
+      '修复更新日志弹窗打不开的问题（历史条目缺少 changes 字段导致抛错）',
+      '新增两套验收脚本（更新流程 20 断言 / 弹窗与宽度 17 断言）并接入全量门禁'
+    ]
+  },
+
+
+  {
+    version: '1.0.8002',
+    date: '2026-09-20',
+    changes: [
+      '修复桌面端非全屏时启动台显示不全：新增紧凑布局，1400×900 / 1400×860 / 1280×800 均一屏不滚动',
+      '修复「斯诺德对决」在桌面端点开白屏：恢复打包/开发/网页三环境路径解析（并补回 hash 路由）',
+      '修复职业页分区标题文字对比度过低：深棕木牌配米色字，实测对比度 4.54（原 2.95）',
+      'ESC 行为统一：先关功能导航面板 → 页面自身弹层优先 → 否则返回上一级（职业页→职业页首页、资料库→启动台等）',
+      '启动台柜台「资料库」改为「规则手册」，与告示板去重；已保存的旧配置自动迁移',
+      '修复角色创建页切换步骤时宽度跳变：容器拉伸至整列宽，卡片改为自适应多列',
+      '修复切换大系统时功能导航面板被误关闭；「工会」更名为更易懂的「功能导航」',
+      '首次进入的更新提示改为右下角卡片，不再遮挡启动台界面',
+      '主页/资料库/顾问等页面在 900 高窗口下的轻微溢出收紧；支持系统「减少动态效果」设置'
+    ]
+  },
+
+
+  {
+    version: '1.0.8001',
+    date: '2026-09-20',
+    changes: [
+      '全新「冒险者工会」界面风格：明亮木质 + 羊皮纸 + 黄铜，按钮/图标/图钉等全部改为自绘 SVG',
+      '启动台重做为「柜台 + 告示板」：4 个主入口木牌 + 可自定义的告示板纸条',
+      '新增「设置」页：启动台自定义（换柜台入口/增删告示板条目/固定某个角色一键直达/导入导出/恢复默认）',
+      '新增顶部「工会」快速跳转：任意页面一键跳转，无角色时置灰提示，返回可回启动台',
+      '角色面板、资料库、角色选择/存档/创建/上传、物资大全、AI 顾问、帮助等页面统一风格',
+      '职业页 38 个页面统一风格；首页恢复 emoji 图标并区分基础/通用/进阶三个层级',
+      '夜间模式全面适配（共享层 + 角色面板 + 设置页）',
+      '修复：更新日志弹窗在条目数据缺失时中断的问题',
+      '修复：技能文本校验放宽为允许合法分段，全量校验 Errors 归零'
+    ]
+  },
+
+
+  {
     version: '1.0.7279',
     date: '2026-09-20',
     changes: [
@@ -1556,6 +1605,7 @@ var SNOWD_CHANGELOG = [
   {
     version: '1.0.7137',
     date: '2026-07-30',
+    changes: [],
   },
 
 
@@ -5429,29 +5479,30 @@ var SNOWD_CHANGELOG = [
 
 function showChangelog(showLatest) {
   var overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(24,14,4,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto';
   
   var modal = document.createElement('div');
-  modal.style.cssText = 'background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522';
+  modal.style.cssText = 'background:linear-gradient(180deg,#fdf8ec,#f3e9d4);border:1px solid #c9ab74;box-shadow:0 0 0 8px #54381c,0 16px 48px rgba(0,0,0,.4);border-radius:9px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522';
 
-  var html = '<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>';
+  var html = '<h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>';
   html += '<div style="font-size:13px;color:#69706b;margin-bottom:16px">斯诺德跑团 · 版本历史</div>';
 
   for (var i = 0; i < SNOWD_CHANGELOG.length; i++) {
     var v = SNOWD_CHANGELOG[i];
     var isNew = showLatest && i === 0;
-    html += '<div style="background:'+(isNew?'#f6f4ef':'#fff')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
+    html += '<div style="background:'+(isNew?'#f7eeda':'#fffdf6')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
     html += '<div style="font-size:16px;font-weight:bold;color:'+(isNew?'#a46d1f':'#1f2522')+'">v' + v.version + (isNew?' <span style="font-size:12px;color:#c62828">🆕 最新</span>':'') + '</div>';
     html += '<div style="font-size:12px;color:#69706b;margin-bottom:8px">' + v.date + '</div>';
-    for (var j = 0; j < v.changes.length; j++) {
-      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + v.changes[j] + '</div>';
+    var _chs = v.changes || [];   // 护栏：历史条目可能无 changes（曾导致整个弹窗打不开）
+    for (var j = 0; j < _chs.length; j++) {
+      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + _chs[j] + '</div>';
     }
     html += '</div>';
   }
 
   // 右上角关闭按钮（插入到弹窗内部标题之前）
-  html = html.replace('<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>',
-    '<button id="_clog_close" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:1" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>\n  <h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>');
+  html = html.replace('<h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>',
+    '<button id="_clog_close" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:1" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>\n  <h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>');
 
   modal.innerHTML = html;
   modal.style.position = 'relative';

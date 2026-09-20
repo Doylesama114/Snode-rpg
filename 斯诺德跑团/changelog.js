@@ -2,6 +2,21 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8003',
+    date: '2026-09-20',
+    changes: [
+      '更新流程改为全自动：手动点「检查更新」后自动下载并立即重启安装，无需再点两次（自动检查仍只下载、退出时安装）',
+      '新增未保存保护：角色面板有未保存改动时先提示保存，保存后自动继续重启安装，避免丢失改动',
+      '规则手册恢复原本 1200px 宽度：职业兼容性等宽表格不再被挤压截断',
+      '设置页支持 ESC 返回上一级（此前 ESC 层未在该页注册）',
+      '弹窗风格统一：首页检索、职业页筛选、快捷键面板、角色面板商店、通用确认框、更新日志弹窗统一为木框+木牌标题栏+羊皮纸+黄铜',
+      '修复更新日志弹窗打不开的问题（历史条目缺少 changes 字段导致抛错）',
+      '新增两套验收脚本（更新流程 20 断言 / 弹窗与宽度 17 断言）并接入全量门禁'
+    ]
+  },
+
+
+  {
     version: '1.0.8002',
     date: '2026-09-20',
     changes: [
@@ -1590,6 +1605,7 @@ var SNOWD_CHANGELOG = [
   {
     version: '1.0.7137',
     date: '2026-07-30',
+    changes: [],
   },
 
 
@@ -5463,29 +5479,30 @@ var SNOWD_CHANGELOG = [
 
 function showChangelog(showLatest) {
   var overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(24,14,4,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto';
   
   var modal = document.createElement('div');
-  modal.style.cssText = 'background:#fffdf8;border-radius:12px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522';
+  modal.style.cssText = 'background:linear-gradient(180deg,#fdf8ec,#f3e9d4);border:1px solid #c9ab74;box-shadow:0 0 0 8px #54381c,0 16px 48px rgba(0,0,0,.4);border-radius:9px;padding:24px 28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.2);font-family:"Microsoft YaHei",sans-serif;color:#1f2522';
 
-  var html = '<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>';
+  var html = '<h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>';
   html += '<div style="font-size:13px;color:#69706b;margin-bottom:16px">斯诺德跑团 · 版本历史</div>';
 
   for (var i = 0; i < SNOWD_CHANGELOG.length; i++) {
     var v = SNOWD_CHANGELOG[i];
     var isNew = showLatest && i === 0;
-    html += '<div style="background:'+(isNew?'#f6f4ef':'#fff')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
+    html += '<div style="background:'+(isNew?'#f7eeda':'#fffdf6')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
     html += '<div style="font-size:16px;font-weight:bold;color:'+(isNew?'#a46d1f':'#1f2522')+'">v' + v.version + (isNew?' <span style="font-size:12px;color:#c62828">🆕 最新</span>':'') + '</div>';
     html += '<div style="font-size:12px;color:#69706b;margin-bottom:8px">' + v.date + '</div>';
-    for (var j = 0; j < v.changes.length; j++) {
-      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + v.changes[j] + '</div>';
+    var _chs = v.changes || [];   // 护栏：历史条目可能无 changes（曾导致整个弹窗打不开）
+    for (var j = 0; j < _chs.length; j++) {
+      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + _chs[j] + '</div>';
     }
     html += '</div>';
   }
 
   // 右上角关闭按钮（插入到弹窗内部标题之前）
-  html = html.replace('<h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>',
-    '<button id="_clog_close" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:1" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>\n  <h2 style="margin:0 0 4px;font-size:22px">📋 更新日志</h2>');
+  html = html.replace('<h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>',
+    '<button id="_clog_close" style="position:absolute;top:14px;right:16px;width:32px;height:32px;border:none;background:#f6f4ef;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;color:#69706b;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:1" onmouseover="this.style.background=\'#d8d2c4\';this.style.color=\'#c62828\'" onmouseout="this.style.background=\'#f6f4ef\';this.style.color=\'#69706b\'">✕</button>\n  <h2 style="margin:-24px -28px 14px;padding:14px 20px;font-size:20px;background:linear-gradient(180deg,#3f2711,#2a1a0a);color:#f6eeda;border-radius:8px 8px 0 0;letter-spacing:.04em">📋 更新日志</h2>');
 
   modal.innerHTML = html;
   modal.style.position = 'relative';

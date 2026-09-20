@@ -21,11 +21,11 @@
   }
 
   function boxStyle() {
-    return 'background:#fffdf8;border:1px solid #d8d2c4;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.3);padding:20px 22px;max-width:440px;width:100%;color:#1f2522;font-size:14px;line-height:1.7;box-sizing:border-box';
+    return 'background:linear-gradient(180deg,#fdf8ec,#f3e9d4);border:1px solid #c9ab74;border-radius:9px;box-shadow:0 0 0 8px #54381c,0 12px 40px rgba(0,0,0,.35);padding:20px 22px;max-width:440px;width:100%;color:#2f2317;font-size:14px;line-height:1.7;box-sizing:border-box';
   }
 
   function buttonStyle(primary) {
-    return 'padding:9px 18px;border-radius:8px;border:1px solid ' + (primary ? '#a46d1f' : '#d8d2c4') + ';background:' + (primary ? '#a46d1f' : '#fff') + ';color:' + (primary ? '#fff' : '#1f2522') + ';cursor:pointer;font-size:14px;font-weight:700;font-family:inherit';
+    return 'padding:9px 18px;border-radius:8px;border:1px solid ' + (primary ? '#6d5223' : '#c9ab74') + ';background:' + (primary ? 'linear-gradient(180deg,#e6c37c,#c39a4a)' : '#fffdf6') + ';color:' + (primary ? '#fff' : '#1f2522') + ';cursor:pointer;font-size:14px;font-weight:700;font-family:inherit';
   }
 
   function closeWith(ov, fn) {

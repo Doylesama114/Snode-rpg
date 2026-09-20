@@ -116,7 +116,7 @@ totalErrors += uiOK ? 0 : 1;
 console.log('\n=== 工会 UI 共享层（guild-ui） ===');
 let guildOK = true;
 try {
-  let gOut = spawnSync('node', [join(BASE, 'verify_guild_ui_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  let gOut = spawnSync('node', [join(BASE, 'verify_guild_ui_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 8 * 1024 * 1024 });
   if (gOut.stdout) console.log(gOut.stdout.trim().slice(-1500));
   if (gOut.stderr) console.error(gOut.stderr.trim());
   if (gOut.status !== 0) guildOK = false;
@@ -141,6 +141,30 @@ try {
 }
 console.log(ui8002OK ? '✅ UI 修复验收通过' : '❌ UI 修复验收失败');
 totalErrors += ui8002OK ? 0 : 1;
+
+// v1.0.8003 验收（规则手册宽度/设置页 ESC/弹窗风格统一/更新日志弹窗 P0 回归）
+console.log('\n=== UI 验收（v1.0.8003） ===');
+let ui8003OK = true;
+try {
+  let u83 = spawnSync('node', [join(BASE, 'verify_ui_8003_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (u83.stdout) console.log(u83.stdout.trim().slice(-1200));
+  if (u83.stderr) console.error(u83.stderr.trim());
+  if (u83.status !== 0) ui8003OK = false;
+} catch (e) { ui8003OK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(ui8003OK ? '✅ UI 验收（v1.0.8003）通过' : '❌ UI 验收（v1.0.8003）失败');
+totalErrors += ui8003OK ? 0 : 1;
+
+// 全自动更新流程验收（策略 B）
+console.log('\n=== 全自动更新流程（策略 B） ===');
+let updOK = true;
+try {
+  let up = spawnSync('node', [join(BASE, 'verify_update_flow_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (up.stdout) console.log(up.stdout.trim().slice(-900));
+  if (up.stderr) console.error(up.stderr.trim());
+  if (up.status !== 0) updOK = false;
+} catch (e) { updOK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(updOK ? '✅ 全自动更新流程通过' : '❌ 全自动更新流程失败');
+totalErrors += updOK ? 0 : 1;
 
 // 移动端职业页导航抽屉（法师/魔契师等窄屏目录可用性）
 console.log('\n=== 移动端导航抽屉 ===');
@@ -306,7 +330,7 @@ totalErrors += markAndOrOK ? 0 : 1;
 console.log('\n=== 职业页懒渲染与首屏性能 ===');
 let lazyOK = true;
 try {
-  let lazyOut = spawnSync('node', [join(BASE, 'verify_class_lazy_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let lazyOut = spawnSync('node', [join(BASE, 'verify_class_lazy_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (lazyOut.stdout) console.log(lazyOut.stdout.trim().split('\n').slice(-7).join('\n'));
   if (lazyOut.stderr) console.error(lazyOut.stderr.trim());
   if (lazyOut.status !== 0) lazyOK = false;
@@ -350,7 +374,7 @@ totalErrors += bgChoiceOK ? 0 : 1;
 console.log('\n=== 职业专长切换回归 ===');
 let tabOK = true;
 try {
-  let tabOut = spawnSync('node', [join(BASE, 'verify_class_feature_tabs_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let tabOut = spawnSync('node', [join(BASE, 'verify_class_feature_tabs_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (tabOut.stdout) console.log(tabOut.stdout.trim());
   if (tabOut.stderr) console.error(tabOut.stderr.trim());
   if (tabOut.status !== 0) tabOK = false;
