@@ -272,6 +272,21 @@ try {
 console.log(markAndOrOK ? '✅ 技能标识 AND/OR E2E 通过' : '❌ 技能标识 AND/OR E2E 失败');
 totalErrors += markAndOrOK ? 0 : 1;
 
+// 职业页懒渲染与首屏性能（26.09.20 性能修复的回归门禁）
+console.log('\n=== 职业页懒渲染与首屏性能 ===');
+let lazyOK = true;
+try {
+  let lazyOut = spawnSync('node', [join(BASE, 'verify_class_lazy_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (lazyOut.stdout) console.log(lazyOut.stdout.trim().split('\n').slice(-7).join('\n'));
+  if (lazyOut.stderr) console.error(lazyOut.stderr.trim());
+  if (lazyOut.status !== 0) lazyOK = false;
+} catch (e) {
+  lazyOK = false;
+  console.log('❌ 懒渲染 E2E 执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(lazyOK ? '✅ 职业页懒渲染与首屏性能通过' : '❌ 职业页懒渲染与首屏性能失败');
+totalErrors += lazyOK ? 0 : 1;
+
 // 特殊专长一致性（职业页 100 条 vs 面板 SPECIAL_FEATS）
 console.log('\n=== 特殊专长一致性 ===');
 let featOK = true;
@@ -534,5 +549,6 @@ totalErrors += dupeOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-console.log(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK ? '✅ ALL CLEAN' : '❌ ISSUES');
-process.exit(clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK ? 0 : 1);
+const allOK = clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK;
+console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
+process.exit(allOK ? 0 : 1);
