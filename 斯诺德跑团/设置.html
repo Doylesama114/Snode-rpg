@@ -18,6 +18,19 @@
       linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
     background-attachment: scroll; min-height:100vh;
   }
+  /* 夜间：木底压暗、文字转浅（本页自带内联样式，需单独声明） */
+  html.dark body { background-color:#2a2018 !important;
+    background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)) !important; }
+  html.dark .top h1, html.dark .top .ver { color:#e8dcc4 !important; }
+  html.dark .card { background:linear-gradient(180deg,#2f3338,#24272b) !important;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,.4), 0 10px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06) !important; }
+  html.dark .card h2, html.dark .card .name, html.dark .item .n, html.dark .slot4 .n { color:#e8e0cc !important; }
+  html.dark .card .hint, html.dark .card .desc, html.dark .item .d, html.dark .slot4 .d, html.dark .about { color:#b9a888 !important; }
+  html.dark .item, html.dark .slot4 { background:linear-gradient(180deg,#2b2f34,#212427) !important; border-color:#3a3d40 !important; }
+  html.dark select, html.dark input[type=text], html.dark textarea { background:#1a1d20 !important; color:#e8e0cc !important; border-color:#3a3d40 !important; }
+
   .wrap { max-width:1000px; margin:0 auto; padding:26px 18px 60px; }
   .top { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
   .top a.back { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#3a2a13;

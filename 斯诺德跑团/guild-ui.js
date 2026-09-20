@@ -470,12 +470,12 @@
   /* ---------------- 自动执行 ---------------- */
   function boot() {
     injectCss(); injectSprite();
-    if (window.__guiNoNav) return;          // 启动台/设置页可关闭导航层
+    themeBoot();                            // 主题与导航层无关：必须在下面的提前 return 之前
+    if (window.__guiNoNav) return;          // 启动台/设置页可关闭导航层（仅关导航）
     beamBoot();
     skinBoot();
     navBoot();
     backFix();
-    themeBoot();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

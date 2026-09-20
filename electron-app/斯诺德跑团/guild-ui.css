@@ -432,3 +432,16 @@ html.dark body.gui-page #charOverview { background:#24272b !important; border-co
 /* ===== AI 顾问聊天区（#app 原是象牙白，改为羊皮纸） ===== */
 body.gui-page #app.app { background: linear-gradient(180deg,#fdf8ec,#f3e9d4) !important; }
 html.dark body.gui-page #app.app { background:#24272b !important; }
+
+/* ===== 面板硬编码浅色的夜间覆盖（.attr / .equip-slot 等用的是写死的 #f6f4ef） ===== */
+html.dark body.gui-page .attr, html.dark body.gui-page .equip-slot,
+html.dark body.gui-page .stat-item, html.dark body.gui-page .save-display {
+  background:#1a1d20 !important; }
+html.dark body.gui-page .attr, html.dark body.gui-page .equip-slot { border-color:#3a3d40 !important; }
+
+/* ===== 面板页自身变量的夜间映射（角色面板.html 只有 :root 浅色，无暗色块） ===== */
+html.dark.gui-panel-page {
+  --bg:#1a1d20; --panel:#24272b; --ink:#e8e6e3; --muted:#9d9b98; --line:#3a3d40;
+  --soft:#242830; --accent:#d4a54a; --accent-hover:#e8be5a;
+  --green:#4dab8a; --red:#e05555; --blue:#5a8fd0;
+}
