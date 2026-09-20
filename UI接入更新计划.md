@@ -240,3 +240,19 @@ D4 发布后回归（verify_all + 真机）
 | 完整性 | `latest.yml` size 105,564,964 与 Release 产物**精确一致** |
 | 镜像 | OSS `latest.json`/`latest.yml` = 1.0.8002，exe HTTP 200；移动端 `version.json` = 1.0.8002 |
 | 发版前截图 | `_scratch/verify/release/01..06`（启动台一屏 / 更新卡片 / 分区标题 / 向导宽度 / 功能导航面板 / 法师页） |
+
+---
+
+### v1.0.8003（2026-09-20）· 全自动更新 + 5 项 UI 修复 + 弹窗统一
+
+| 项 | 结果 |
+| --- | --- |
+| 更新流程（策略 B） | 手动检查 → 自动下载 → **立即重启安装**；自动检查只下载、退出时安装；**未保存改动时先提示保存再自动安装** |
+| 用户 5 项反馈 | ①规则手册恢复 1200px（26 张表无截断）②设置页 ESC 可返回 ③首页检索弹窗统一 ④职业页筛选弹窗统一 ⑤其他弹窗体检并统一 6 处 |
+| 额外修复（P0） | **更新日志弹窗打不开**（历史条目 v1.0.7137 缺 `changes` 字段 → 抛错）；根因在**根目录** `changelog.js`（bump 脚本的编辑对象），此前只修了副本 → 已修源头并同步 |
+| 提交 / 标签 | `fcb9e25`（101 项）→ tag `v1.0.8003` 已推送 |
+| CI | 3/3 成功 |
+| 门禁 | 新增 `verify_ui_8003_e2e.mjs`（17 断言）+ `verify_update_flow_e2e.mjs`（20 断言）并接入 verify_all；全量 **Clean 54/54 · Errors 0 · Tests 890P 0F · ALL CLEAN** |
+| 产物 | GitHub Release 5 个：exe 100.68 MB、apk 2.74 MB、latest.yml、blockmap、builder-debug |
+| 完整性 | `latest.yml` size 105,567,482 与 Release 产物**精确一致**；OSS `latest.json/latest.yml` = 1.0.8003；移动端 `version.json` = 1.0.8003 |
+| 发版前截图 | `_scratch/verify/release8003/01..08`（规则手册宽度 / 检索弹窗 / 筛选弹窗 / 更新日志弹窗 / 快捷键面板 / 确认框 / 商店弹窗 / 设置页） |
