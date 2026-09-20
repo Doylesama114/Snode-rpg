@@ -166,6 +166,18 @@ try {
 console.log(updOK ? '✅ 全自动更新流程通过' : '❌ 全自动更新流程失败');
 totalErrors += updOK ? 0 : 1;
 
+// 手机系统返回键 = 回上一级（v1.0.8005）
+console.log('\n=== 返回键回上一级 ===');
+let backOK = true;
+try {
+  let bk = spawnSync('node', [join(BASE, 'verify_back_key_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (bk.stdout) console.log(bk.stdout.trim().slice(-800));
+  if (bk.stderr) console.error(bk.stderr.trim());
+  if (bk.status !== 0) backOK = false;
+} catch (e) { backOK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(backOK ? '✅ 返回键回上一级通过' : '❌ 返回键回上一级失败');
+totalErrors += backOK ? 0 : 1;
+
 // 移动端职业页导航抽屉（法师/魔契师等窄屏目录可用性）
 console.log('\n=== 移动端导航抽屉 ===');
 let navOK = true;

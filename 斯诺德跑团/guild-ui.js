@@ -500,10 +500,17 @@
     '资料库.html': '启动台.html', '物资大全.html': '启动台.html', '顾问.html': '启动台.html',
     'help.html': '启动台.html', '帮助.html': '启动台.html', '主页.html': '启动台.html',
   };
-  function lastSegment(p) { var a = String(p || '').replace(/[?&#].*$/, '').split('/'); return a[a.length - 1] || ''; }
+  function decodePath(p) { try { return decodeURIComponent(p); } catch (e) { return String(p || ''); } }
+  function lastSegment(p) { var a = decodePath(String(p || '').replace(/[?&#].*$/, '')).split('/'); return a[a.length - 1] || ''; }
   function parentTarget() {
     var seg = lastSegment(location.pathname);
-    if (location.pathname.indexOf('/职业页/') >= 0) return seg === '首页.html' ? '../斯诺德跑团/启动台.html' : '首页.html';
+    var path = decodePath(location.pathname);
+    if (path.indexOf('/职业页/') >= 0) {
+      if (seg === '首页.html') return '../斯诺德跑团/启动台.html';
+      /* X·进阶.html → X.html（返回所属职业页），其余回职业页首页 */
+      var adv = seg.match(/^(.+)·进阶.html$/);
+      return adv ? adv[1] + '.html' : '首页.html';
+    }
     if (PARENTS[seg]) return PARENTS[seg];
     return BASE + '启动台.html';
   }
@@ -530,6 +537,19 @@
       }, 0);
     });
   }
+
+  /* ---------------- ⑫ 手机系统返回键 / 浏览器返回：优先「回上一级」 ---------------- */
+  window.__guiBack = function () {
+    if (navApi.isOpen()) { navApi.close(); return true; }   // 面板打开时先关面板
+    var t = parentTarget();
+    if (!t) return false;
+    try {
+      var a = document.createElement("a"); a.href = t;
+      if (decodePath(a.pathname) === decodePath(location.pathname)) return false;     // 自己 → 不处理（由系统退出）
+      location.href = t;
+      return true;
+    } catch (e) { return false; }
+  };
 
   /* ---------------- 自动执行 ---------------- */
   function boot() {

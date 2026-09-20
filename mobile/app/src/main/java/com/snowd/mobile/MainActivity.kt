@@ -268,6 +268,11 @@ class MainActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
+        // 优先「回上一级」（由网页判定父级）；无父级时回退浏览历史，最后才退出 App
+        webView.evaluateJavascript("String(!!(window.__guiBack && window.__guiBack()))") { result ->
+            if (result != "true") {
+                if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
+            }
+        }
     }
 }
