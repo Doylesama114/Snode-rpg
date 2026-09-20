@@ -92,8 +92,21 @@
             });
         });
 
-        this.sr.addEventListener("input", function() {
+        // 输入防抖 200ms：applySearch 在大页面（法师页 423 张卡 / 2.7 万节点）需要
+        // 清高亮 + 全文扫描 + 9 遍全文档 querySelectorAll，实测单次阻塞 24~46ms；
+        // 中文输入法一次输入会连发多个 input 事件，无防抖时体感明显卡顿。
+        var searchTimer = null;
+        function runSearchNow() {
+            if (searchTimer) { clearTimeout(searchTimer); searchTimer = null; }
             self.applySearch();
+        }
+        this.sr.addEventListener("input", function() {
+            if (searchTimer) clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() { searchTimer = null; self.applySearch(); }, 200);
+        });
+        // 回车立即执行，避免"输完就回车"时等待防抖窗口
+        this.sr.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") { e.preventDefault(); runSearchNow(); }
         });
 
         var navInner = q1(".nav-inner");

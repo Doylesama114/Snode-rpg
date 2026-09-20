@@ -177,6 +177,25 @@
         cursor: pointer; font-family: inherit;
     }
     .gs-more:hover { border-color: var(--green); }
+    /* 跳转反馈遮罩：整页跳转到职业页需要 1~2 秒，点击后立即给出反馈 */
+    .gs-jump-mask {
+      position: fixed; inset: 0; z-index: 9999; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(24,20,16,.32); backdrop-filter: blur(1px);
+    }
+    .gs-jump-mask.show { display: flex; }
+    .gs-jump-card {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--panel, #fffdf8); color: var(--ink, #2d2722);
+      border: 1px solid var(--line, #d8d2c4); border-radius: 10px;
+      padding: 14px 22px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.22);
+    }
+    .gs-jump-spinner {
+      width: 15px; height: 15px; border-radius: 50%;
+      border: 2px solid rgba(164,109,31,.28); border-top-color: #a46d1f;
+      animation: gsJumpSpin .8s linear infinite;
+    }
+    @keyframes gsJumpSpin { to { transform: rotate(360deg); } }
     .search-highlight {
         background: #ffdd00; color: #000 !important;
         animation: search-blink 0.8s ease-in-out 3;
@@ -684,12 +703,36 @@
     scheduleQuery();
   });
 
+  // 点击结果行会整页跳到职业页（实测 1.4~1.9s），期间页面无任何反馈；
+  // 这里立即显示轻量遮罩，跳转完成后随文档销毁自动消失。
+  function showJumpMask(name) {
+    var mask = document.getElementById('gsJumpMask');
+    if (!mask) {
+      mask = document.createElement('div');
+      mask.id = 'gsJumpMask';
+      mask.className = 'gs-jump-mask';
+      mask.innerHTML = '<div class="gs-jump-card"><span class="gs-jump-spinner"></span>' +
+        '<span class="gs-jump-text">正在打开技能…</span></div>';
+      document.body.appendChild(mask);
+    }
+    var t = mask.querySelector('.gs-jump-text');
+    if (t) t.textContent = name ? ('正在打开：' + name) : '正在打开技能…';
+    mask.classList.add('show');
+    // 跳转失败/被取消时兜底自动隐藏
+    setTimeout(function() { mask.classList.remove('show'); }, 8000);
+  }
+
   resultsDiv.addEventListener('click', function(e) {
     var more = e.target.closest('#gsShowMore');
     if (more) {
       visibleLimit += PAGE_STEP;
       runQuery();
       return;
+    }
+    var rowLink = e.target.closest('a.gs-row-main');
+    if (rowLink) {
+      var nameEl = rowLink.querySelector('.gs-row-name');
+      showJumpMask(nameEl ? nameEl.textContent.trim() : '');
     }
     var head = e.target.closest('[data-toggle-group]');
     if (head) {

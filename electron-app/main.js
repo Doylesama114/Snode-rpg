@@ -1,4 +1,4 @@
-﻿const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, webContents } = require('electron');
 const path = require('path');
 const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
@@ -6,7 +6,12 @@ bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
 const mirrorConfig = require('./update-mirror-config');
 
-autoUpdater.autoDownload = true;
+// 允许渲染进程调用 window.gc()：职业页/预览会产生数万 DOM 节点，
+// 显式 GC 能在 ~90ms 内把这些游离文档真正回收（否则会累积到数百 MB 直到崩溃）。
+app.commandLine.appendSwitch('js-flags', '--expose-gc');
+
+// 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
+autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = false; // 手动重启以立即生效
 autoUpdater.logger = console;
 
@@ -27,6 +32,8 @@ let updateCheckInFlight = false;
 let updateSession = null;
 
 let autoUpdateEnabledCache = null;
+/** 已发现但等待用户确认下载/重启的更新 @type {{version: string, ready?: boolean}|null} */
+let pendingUpdate = null;
 
 /** 启动台「自动更新」开关持久化文件（userData/snowd-settings.json） */
 function settingsFilePath() {
@@ -267,12 +274,15 @@ autoUpdater.on('checking-for-update', () => {
     : '正在检查更新...' });
 });
 autoUpdater.on('update-available', (info) => {
-  console.log('[更新] 发现 v' + info.version + '，正在下载...');
+  console.log('[更新] 发现 v' + info.version + '（等待用户确认下载）');
   var fromMirror = updateSession && (updateSession.phase === 'mirror' || updateSession.lastSource === 'oss');
+  pendingUpdate = { version: info.version, ready: false };
+  updateCheckInFlight = false;
   sendUpdateStatus({
-    status: 'downloading',
+    status: 'available',
     version: info.version,
-    message: fromMirror ? '正在从国内镜像下载 v' + info.version + '...' : '正在下载更新 v' + info.version + '...',
+    fromMirror: !!fromMirror,
+    message: '发现新版本 v' + info.version + '（当前 v' + app.getVersion() + '）',
   });
 });
 autoUpdater.on('update-not-available', () => {
@@ -281,12 +291,14 @@ autoUpdater.on('update-not-available', () => {
   sendUpdateStatus({ status: 'uptodate' });
 });
 autoUpdater.on('update-downloaded', (info) => {
-  console.log('[更新] v' + info.version + ' 下载完成，即将重启...');
+  console.log('[更新] v' + info.version + ' 下载完成（等待用户确认重启）');
   updateCheckInFlight = false;
-  sendUpdateStatus({ status: 'downloaded', version: info.version });
-  setTimeout(() => {
-    autoUpdater.quitAndInstall(true, true);
-  }, 3000);
+  pendingUpdate = { version: info.version, ready: true };
+  sendUpdateStatus({
+    status: 'downloaded',
+    version: info.version,
+    message: '更新已就绪（v' + info.version + '），重启后生效',
+  });
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
@@ -301,6 +313,34 @@ autoUpdater.on('error', (err) => {
 // IPC: 手动检查更新 — GitHub 优先，失败自动镜像
 ipcMain.on('check-update', () => {
   runAutoUpdateCheck();
+});
+
+// IPC: 用户在启动台确认下载更新（autoDownload=false）
+ipcMain.on('download-update', () => {
+  if (!pendingUpdate || pendingUpdate.ready) {
+    sendUpdateStatus({ status: 'error', message: '当前没有可下载的更新，请先「检查更新」。' });
+    return;
+  }
+  console.log('[更新] 用户确认下载 v' + pendingUpdate.version);
+  sendUpdateStatus({
+    status: 'downloading',
+    version: pendingUpdate.version,
+    message: '正在下载更新 v' + pendingUpdate.version + '...',
+  });
+  autoUpdater.downloadUpdate().catch((err) => {
+    console.error('[更新] 下载失败:', err && err.message);
+    sendUpdateStatus({ status: 'error', message: '下载更新失败：' + ((err && err.message) || '未知错误') });
+  });
+});
+
+// IPC: 用户在启动台确认重启并安装
+ipcMain.on('install-update', () => {
+  if (!pendingUpdate || !pendingUpdate.ready) {
+    sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
+    return;
+  }
+  console.log('[更新] 用户确认重启安装 v' + pendingUpdate.version);
+  autoUpdater.quitAndInstall(true, true);
 });
 
 // IPC: 自动更新开关（启动台切换；默认开启）
@@ -678,6 +718,31 @@ function injectPageScript(relativePath) {
   mainWindow.webContents.executeJavaScript(fs.readFileSync(full, 'utf8')).catch(() => {});
 }
 
+/**
+ * 内存看门狗：渲染进程 RSS 超阈值时让页面显式 GC（不打断用户操作）。
+ * 实测职业页反复切换可在数分钟内堆到 1 GB 并导致渲染进程被杀（白屏），
+ * 这里在 600 MB 就介入回收，1.2 GB 仍降不下来则记录告警。
+ */
+function startMemoryWatchdog() {
+  const SOFT_MB = 600;
+  const HARD_MB = 1200;
+  setInterval(function () {
+    let metrics = [];
+    try { metrics = app.getAppMetrics(); } catch (e) { return; }
+    const all = webContents.getAllWebContents().filter(function (w) { return !w.isDestroyed(); });
+    for (const m of metrics) {
+      if (m.type !== 'Tab' && m.type !== 'Renderer') continue;
+      const mb = Math.round(((m.memory && m.memory.workingSetSize) || 0) / 1024);
+      if (mb < SOFT_MB) continue;
+      const wc = all.find(function (w) { return w.getOSProcessId() === m.pid; });
+      if (!wc) continue;
+      console.log('[内存] 渲染进程 ' + mb + ' MB 超阈值，触发显式 GC');
+      wc.executeJavaScript('(function(){try{if(typeof window.gc==="function")window.gc();}catch(e){}})();').catch(function () {});
+      if (mb >= HARD_MB) console.warn('[内存] 渲染进程 ' + mb + ' MB 仍偏高（已提示 GC）');
+    }
+  }, 20000);
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
@@ -694,6 +759,59 @@ function createWindow() {
   // 版本升级后旧 CSS/JS 可能命中缓存；启动时清一次 HTTP 缓存
   try { mainWindow.webContents.session.clearCache().catch(() => {}); } catch (_) {}
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
+
+  // ---- 崩溃自愈：职业页/面板内存暴涨后渲染进程可能被杀，此前表现为「白屏且无法恢复」----
+  let lastUrl = '';
+  let recentCrashes = [];
+  function injectBanner(text) {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    var js = '(function(){try{' +
+      'var id="__snowdRecoverBanner";var old=document.getElementById(id);if(old)old.remove();' +
+      'var d=document.createElement("div");d.id=id;d.textContent=' + JSON.stringify(String(text)) + ';' +
+      'd.style.cssText="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:2147483647;' +
+      'background:#a46d1f;color:#fff;padding:9px 18px;border-radius:8px;font-size:14px;' +
+      'box-shadow:0 6px 20px rgba(0,0,0,.28);font-family:system-ui,-apple-system,sans-serif";' +
+      '(document.body||document.documentElement).appendChild(d);' +
+      'setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";' +
+      'setTimeout(function(){d.remove();},700);},8000);' +
+      '}catch(e){}})();';
+    mainWindow.webContents.executeJavaScript(js).catch(() => {});
+  }
+  function recoverFromCrash(reason) {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    var now = Date.now();
+    recentCrashes = recentCrashes.filter(function (t) { return now - t < 60000; });
+    recentCrashes.push(now);
+    var wc = mainWindow.webContents;
+    if (recentCrashes.length >= 2) {
+      console.warn('[崩溃] 一分钟内多次异常，退回启动台:', reason);
+      wc.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'))
+        .then(function () { injectBanner('页面连续出现异常，已回到启动台；如仍不稳定请重启软件。'); })
+        .catch(function () {});
+      return;
+    }
+    console.warn('[崩溃] 自动恢复:', reason, lastUrl || '(启动台)');
+    var load = lastUrl && lastUrl.indexOf('file://') === 0
+      ? wc.loadURL(lastUrl)
+      : wc.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
+    load.then(function () { injectBanner('页面刚刚发生异常，已自动恢复。'); }).catch(function () {});
+  }
+  mainWindow.webContents.on('did-navigate', function (_event, url) {
+    if (url && url.indexOf('file://') === 0) lastUrl = url;
+  });
+  mainWindow.webContents.on('render-process-gone', function (_event, details) {
+    var reason = (details && details.reason) || 'unknown';
+    console.error('[崩溃] 渲染进程退出: ' + reason + ' exitCode=' + (details && details.exitCode));
+    if (reason === 'clean-exit') return;
+    recoverFromCrash('render-process-gone:' + reason);
+  });
+  var unresponsiveTimer = null;
+  mainWindow.webContents.on('unresponsive', function () {
+    console.warn('[崩溃] 页面无响应；6 秒后仍未恢复则自动重载');
+    clearTimeout(unresponsiveTimer);
+    unresponsiveTimer = setTimeout(function () { recoverFromCrash('unresponsive'); }, 6000);
+  });
+  mainWindow.webContents.on('responsive', function () { clearTimeout(unresponsiveTimer); });
 
   // 中文文件名 / asar 偶发把 .html 导航误判为下载；取消下载并改为页面内打开
   mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
@@ -746,7 +864,18 @@ function createWindow() {
       return { action: 'allow' };
     }
     // 角色创建页「查看技能树 / 进阶职业」新标签页跳转（本地职业页）
+    // 限流：职业页窗口最多 2 个，超出时复用最早打开的窗口（每个窗口 = 一个独立渲染进程，约 90~170 MB）
     if (url.startsWith('file://')) {
+      const MAX_TOOL_WINDOWS = 2;
+      const others = BrowserWindow.getAllWindows().filter(function (w) { return w !== mainWindow && !w.isDestroyed(); });
+      if (others.length >= MAX_TOOL_WINDOWS) {
+        const reuse = others[0];
+        console.log('[窗口] 已达上限 ' + MAX_TOOL_WINDOWS + '，复用已有窗口打开: ' + url);
+        reuse.loadURL(url).catch(() => {});
+        if (reuse.isMinimized()) reuse.restore();
+        reuse.focus();
+        return { action: 'deny' };
+      }
       return { action: 'allow' };
     }
     return { action: 'deny' };
@@ -768,13 +897,15 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
+  startMemoryWatchdog();
 
-  // 启动时自动检查更新（GitHub → 失败则自动国内镜像下载安装）
-  // 已去除定时检查；启动台「自动更新」开关关闭后跳过自动检查（手动检查仍可用）
+  // 启动后延迟检查更新（GitHub → 失败则自动国内镜像）
+  // 延迟到 90 秒：避免与首屏渲染/首次操作抢资源；启动台「自动更新」开关关闭后跳过（手动检查仍可用）
+  // 发现新版本只提示、不下载，由用户确认（见 download-update IPC）
   mainWindow.once('ready-to-show', () => {
     setTimeout(() => {
       if (getAutoUpdateEnabled()) runAutoUpdateCheck();
-    }, 3000);
+    }, 90000);
   });
 });
 

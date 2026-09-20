@@ -156,6 +156,7 @@ html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3}html.
     <div style="margin-top:8px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px">
       <span style="color:#a46d1f;font-size:13px;font-weight:bold" id="versionDisplay">v1.0.7278</span>
       <button onclick="checkUpdate()" id="updateBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">检查更新</button>
+      <button onclick="updateAction()" id="updateActionBtn" style="display:none;color:#fff;font-size:12px;padding:4px 12px;border:1px solid #a46d1f;border-radius:4px;background:#a46d1f;cursor:pointer;font-weight:bold">下载更新</button>
       <button onclick="showChangelog(false)" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">📋 更新日志</button>
       <button onclick="mirrorDownload()" id="mirrorBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">⬇️ 镜像更新</button>
       <label id="autoUpdateLabel" title="关闭后不再自动检查更新，手动「检查更新」仍可用" style="color:#69706b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none">
@@ -345,6 +346,36 @@ if (window.electronAPI) {
   window.electronAPI.onUpdateStatus(function(data) { showUpdateMsg(data); });
 }
 
+var _pendingUpdate = null;   // { version, ready } —— 主进程发现但尚未下载/安装的更新
+
+function _updateActionBtn(text, show) {
+  var btn = document.getElementById('updateActionBtn');
+  if (!btn) return;
+  if (text) btn.textContent = text;
+  btn.style.display = show ? 'inline-block' : 'none';
+}
+
+/** 更新操作按钮：未下载→确认下载；已下载→确认重启安装 */
+function updateAction() {
+  if (!_pendingUpdate) { _updateActionBtn(null, false); return; }
+  if (window.electronAPI) {
+    if (_pendingUpdate.ready) {
+      if (window.confirm('更新已下载完成，现在重启并安装？')) {
+        _updateActionBtn('正在重启...', true);
+        window.electronAPI.installUpdate();
+      }
+    } else {
+      _updateActionBtn('下载中...', true);
+      document.getElementById('updateMsg').style.color = '#a46d1f';
+      document.getElementById('updateMsg').textContent = '开始下载 v' + _pendingUpdate.version + '...';
+      window.electronAPI.downloadUpdate();
+    }
+    return;
+  }
+  // Web 模式：走镜像直链下载
+  mirrorDownload();
+}
+
 function showUpdateMsg(data) {
   var msg = document.getElementById('updateMsg');
   if (!msg) return;
@@ -352,13 +383,31 @@ function showUpdateMsg(data) {
     msg.style.color='#a46d1f';
     msg.textContent = data.message || '正在检查更新...';
   }
+  else if (data.status === 'available') {
+    _pendingUpdate = { version: data.version, ready: false };
+    msg.style.color='#2e7d32';
+    msg.textContent = (data.message || ('发现新版本 v'+(data.version||''))) + '，可点击右侧按钮下载';
+    _updateActionBtn('下载更新', true);
+  }
   else if (data.status === 'downloading') {
     msg.style.color='#a46d1f';
     msg.textContent = data.message || ('正在下载更新 v'+(data.version||'')+'...');
+    _updateActionBtn('下载中...', true);
   }
-  else if (data.status === 'downloaded') { msg.style.color='#2e7d32'; msg.innerHTML='更新已就绪，<b>即将自动重启</b>...'; }
-  else if (data.status === 'uptodate') { msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION; }
-  else if (data.status === 'error') { msg.style.color='#c62828'; msg.textContent=(data.message||'更新检查失败'); }
+  else if (data.status === 'downloaded') {
+    _pendingUpdate = { version: data.version, ready: true };
+    msg.style.color='#2e7d32';
+    msg.textContent = data.message || ('更新已就绪（v'+(data.version||'')+'），重启后生效');
+    _updateActionBtn('立即重启安装', true);
+  }
+  else if (data.status === 'uptodate') {
+    _pendingUpdate = null; _updateActionBtn(null, false);
+    msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION;
+  }
+  else if (data.status === 'error') {
+    msg.style.color='#c62828'; msg.textContent=(data.message||'更新检查失败');
+    if (!_pendingUpdate) _updateActionBtn(null, false);
+  }
 }
 
 

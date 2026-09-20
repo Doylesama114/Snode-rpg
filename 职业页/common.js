@@ -59,6 +59,17 @@ function _highlightInElement(root, term) {
   }
 }
 
+// ===== 页面卸载主动瘦身（26.09.20）=====
+// 职业页 DOM 规模达 2~2.7 万节点；整页导航后旧文档会一直留在渲染进程里，
+// 反复切换职业页实测可累积到 35 万节点 / 1 GB，最终渲染进程被杀 → 白屏。
+// 离开页面时显式 GC，把此前已游离的文档立刻回收（主进程已开启 --expose-gc）。
+(function () {
+  window.addEventListener("pagehide", function (e) {
+    if (e && e.persisted) return;   // 进入往返缓存时不清理
+    try { if (typeof window.gc === "function") window.gc(); } catch (err) { /* 未开启 gc 时忽略 */ }
+  }, { once: true });
+})();
+
 /** Scroll to skill from URL hash (global search / deep links). */
 function focusSkillFromHash() {
   var raw = (location.hash || "").replace(/^#/, "");
@@ -74,18 +85,26 @@ function focusSkillFromHash() {
     node = node.parentElement;
   }
 
-  function scrollOnce() {
+  function headerOffset() {
     var header = document.querySelector("header");
-    var offset = header ? header.getBoundingClientRect().height + 12 : 12;
-    var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-    el.classList.add("skill-hash-focus");
-    setTimeout(function() { el.classList.remove("skill-hash-focus"); }, 2600);
+    return header ? header.getBoundingClientRect().height + 12 : 12;
+  }
+  // 大页面（法师页 2.7 万节点）下跨万像素的平滑滚动、以及重复的第二次滚动
+  // 会长时间占用主线程；改为一次即时定位 + 一次小幅校正。
+  function scrollToTarget() {
+    var top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
   }
 
   requestAnimationFrame(function() {
-    scrollOnce();
-    setTimeout(scrollOnce, 120);
+    scrollToTarget();                 // 跨文档跳转时这里是 0 → 上万像素，即时到位
+    el.classList.add("skill-hash-focus");
+    setTimeout(function() { el.classList.remove("skill-hash-focus"); }, 1800);
+    // 展开 <details> 等布局变化后只做一次小幅校正，不再整段平滑滚动
+    setTimeout(function() {
+      var delta = el.getBoundingClientRect().top - headerOffset();
+      if (Math.abs(delta) > 8) window.scrollBy({ top: delta, behavior: "auto" });
+    }, 160);
   });
 }
 

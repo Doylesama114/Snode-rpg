@@ -1176,13 +1176,33 @@ function jumpToStep(n) {
 }
 // ====== 职业页全屏预览浮层 ======
 var _ovViewerCurrent = null;
+// 预览用的 iframe 生命周期：实测（Electron 22 / Chromium 108）
+//   · 仅把 src 置为 'about:blank'：子文档节点不释放（6 万节点一直留着）
+//   · 用新节点替换旧节点：同样不释放
+//   · 直接把 iframe 节点从文档树移除：5 秒内全部释放（10.6 万 → 480）
+// 因此这里统一采用「关闭即移除、打开即新建」。
+function removeOvViewerFrame() {
+  var f = document.getElementById('ovViewerFrame');
+  if (f && f.parentNode) f.parentNode.removeChild(f);
+  // 移除只是"可回收"，不会立刻回收：这里分两次显式 GC（主进程已开 --expose-gc）。
+  // 第一次在移除后 800ms（多数情况已够），第二次 2.4s 兜底（Chromium 帧销毁是异步的）。
+  [800, 2400].forEach(function (delay) {
+    setTimeout(function () {
+      try { if (typeof window.gc === 'function') window.gc(); } catch (e) {}
+    }, delay);
+  });
+}
 function openOvViewer(url, title) {
   var v = document.getElementById('ovViewer'); if (!v) return;
   _ovViewerCurrent = { url: url, title: title || '' };
-  var f = document.getElementById('ovViewerFrame');
   document.getElementById('ovViewerTitle').textContent = title || '职业页预览';
   document.getElementById('ovViewerExt').setAttribute('data-url', url);
+  removeOvViewerFrame();                      // 先移除上一次的预览（含其全部 DOM）
+  var f = document.createElement('iframe');   // 每次都用新节点，避免复用上一份页面
+  f.id = 'ovViewerFrame';
+  f.title = '职业页预览';
   f.src = url;
+  v.appendChild(f);
   v.classList.add('show');
   document.body.classList.add('ov-viewer-open');
 }
@@ -1190,8 +1210,7 @@ function closeOvViewer() {
   var v = document.getElementById('ovViewer'); if (!v) return;
   v.classList.remove('show');
   document.body.classList.remove('ov-viewer-open');
-  var f = document.getElementById('ovViewerFrame');
-  if (f) f.src = 'about:blank';
+  removeOvViewerFrame();
 }
 function openOvViewerExternal() {
   var btn = document.getElementById('ovViewerExt');
