@@ -2,6 +2,23 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8001',
+    date: '2026-09-20',
+    changes: [
+      '全新「冒险者工会」界面风格：明亮木质 + 羊皮纸 + 黄铜，按钮/图标/图钉等全部改为自绘 SVG',
+      '启动台重做为「柜台 + 告示板」：4 个主入口木牌 + 可自定义的告示板纸条',
+      '新增「设置」页：启动台自定义（换柜台入口/增删告示板条目/固定某个角色一键直达/导入导出/恢复默认）',
+      '新增顶部「工会」快速跳转：任意页面一键跳转，无角色时置灰提示，返回可回启动台',
+      '角色面板、资料库、角色选择/存档/创建/上传、物资大全、AI 顾问、帮助等页面统一风格',
+      '职业页 38 个页面统一风格；首页恢复 emoji 图标并区分基础/通用/进阶三个层级',
+      '夜间模式全面适配（共享层 + 角色面板 + 设置页）',
+      '修复：更新日志弹窗在条目数据缺失时中断的问题',
+      '修复：技能文本校验放宽为允许合法分段，全量校验 Errors 归零'
+    ]
+  },
+
+
+  {
     version: '1.0.7279',
     date: '2026-09-20',
     changes: [
@@ -5443,9 +5460,8 @@ function showChangelog(showLatest) {
     html += '<div style="background:'+(isNew?'#f6f4ef':'#fff')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
     html += '<div style="font-size:16px;font-weight:bold;color:'+(isNew?'#a46d1f':'#1f2522')+'">v' + v.version + (isNew?' <span style="font-size:12px;color:#c62828">🆕 最新</span>':'') + '</div>';
     html += '<div style="font-size:12px;color:#69706b;margin-bottom:8px">' + v.date + '</div>';
-    var _chs = v.changes || [];
-    for (var j = 0; j < _chs.length; j++) {
-      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + _chs[j] + '</div>';
+    for (var j = 0; j < v.changes.length; j++) {
+      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + v.changes[j] + '</div>';
     }
     html += '</div>';
   }
