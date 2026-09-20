@@ -110,7 +110,9 @@ const learned = await page.evaluate(() => {
 });
 ok('面板可学习召唤师技能', learned.some(x => x.n === '契约指令·攻击' && x.src === '召唤师'), JSON.stringify(learned));
 
-await page.screenshot({ path: '_shot_summoner_m7_panel.png' });
+const SHOT_DIR = path.join(ROOT, 'screenshots');
+fs.mkdirSync(SHOT_DIR, { recursive: true });
+await page.screenshot({ path: path.join(SHOT_DIR, 'summoner-panel.png') });
 ok('面板无 JS 错误', errs.length === 0, errs.join(' | '));
 
 await browser.close(); server.close();

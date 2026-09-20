@@ -35,6 +35,10 @@ temp/
 *.tmp
 nul
 
+# 临时工作区：一次性脚本与产物（发版前按《文件整理规范》归档到 备份区/YYYY-MM/）
+_scratch/
+_docx_tmp/
+
 # Secrets
 .env
 electron-app/.env.bundle
