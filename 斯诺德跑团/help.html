@@ -309,6 +309,59 @@ html.dark .mc-legend,html.dark .mc-hint{color:#9d9b98}
 
 
 
+
+/* ---------- 工会风格覆盖层（通用，CSS-only） ---------- */
+body { background-color:#d0a97a !important;
+  background-image: radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+    repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12)) !important;
+  background-attachment: scroll !important; color:#2f2317 !important; min-height:100vh; }
+h1 { font-family: Georgia, "Songti SC", "SimSun", serif !important; color:#3a2a13 !important;
+  letter-spacing:.06em; text-shadow: 0 1px 0 rgba(255,246,224,.75); }
+h2, h3 { color:#43301a !important; }
+p, .subtitle, .lead, .hint { color:#5b411f !important; }
+.card, .panel, .box, .section, .item {
+  background: linear-gradient(180deg,#fdf8ec,#f3e9d4) !important;
+  border: 1px solid #c9ab74 !important; border-radius: 7px !important;
+  box-shadow: inset 0 2px 5px rgba(90,60,20,.22), 0 10px 22px rgba(50,30,8,.24) !important;
+}
+.card:hover, .item:hover { border-color:#a8802f !important; }
+.btn, button.btn, .btn-primary, a.btn, .card-btn, .action, button {
+  border:1px solid #6d5223 !important; border-radius:6px !important; color:#2a1c0a !important;
+  background: linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 6px rgba(40,24,6,.3) !important;
+  font-weight:700;
+}
+.btn:hover, button:hover, .card-btn:hover { filter: brightness(1.06); }
+.btn.ghost, button.ghost, .btn.secondary { background: transparent !important; color:#5b411f !important;
+  border-color: rgba(120,85,35,.45) !important; box-shadow:none !important; }
+input, select, textarea {
+  background: linear-gradient(180deg, rgba(120,85,35,.10), rgba(255,255,255,.55)) !important;
+  border: 1px solid #c9ab74 !important; color:#2f2317 !important; border-radius:6px !important;
+  box-shadow: inset 0 2px 5px rgba(90,60,20,.22) !important;
+}
+input:focus, select:focus, textarea:focus { outline:none !important; border-color:#a8802f !important;
+  box-shadow: inset 0 1px 2px rgba(90,60,20,.2), 0 0 0 3px rgba(200,162,90,.3) !important; }
+table { border-color:#c9ab74 !important; }
+table th { background: linear-gradient(180deg,#e6c37c,#c39a4a 70%,#a8802f) !important; color:#2a1c0a !important;
+  border-color:#6d5223 !important; font-weight:800 !important; }
+table td { border-color: rgba(120,85,35,.22) !important; color:#43301a !important; }
+table tbody tr:nth-child(even) { background: rgba(120,85,35,.07) !important; }
+table tbody tr:hover { background: rgba(200,162,90,.2) !important; }
+.chip, .tag, .badge, .pill { background: linear-gradient(180deg,#f6ecd3,#eadfc0) !important;
+  border:1px solid #c9ab74 !important; color:#5b411f !important; border-radius:4px !important; }
+a { color:#7a4a12; }
+a:hover { color:#a8802f; }
+html.dark body { background-color:#2a2018 !important;
+  background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)) !important; color:#e8dcc4 !important; }
+html.dark h1, html.dark h2, html.dark h3 { color:#f0e6d2 !important; }
+html.dark .card, html.dark .panel, html.dark .box, html.dark .section, html.dark .item {
+  background: linear-gradient(180deg,#453d2f,#3a3327) !important; border-color:#5a4a35 !important; color:#e8e0cc !important; }
+html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.18) !important; }
 </style></head><body>
 <div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 <div class="container">
@@ -2042,4 +2095,6 @@ html.dark .mc-legend,html.dark .mc-hint{color:#9d9b98}
 <!-- /HELP-PAGER-SCRIPT -->
 <script src="help-search.js"></script>
 <script src="help-tts.js"></script>
+<script>window.__guiBeam="规则手册";; window.__guiSkin = true;</script>
+<script src="guild-ui.js"></script>
 </body></html>

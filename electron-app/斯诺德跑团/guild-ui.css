@@ -1,0 +1,406 @@
+/* ==========================================================================
+   斯诺德跑团 · 工会 UI 共享层（guild-ui.css）
+   规格来源：设计风格规范.md（v7 定稿）。四层+两态立体模型 + SVG 手绘。
+   任何页面只需 <script src="guild-ui.js"> 一行，样式与图标由脚本自动注入。
+   ========================================================================== */
+:root {
+  --gui-wood-1:#6b4a28; --gui-wood-2:#54381c; --gui-wood-3:#3f2913;
+  --gui-plank-1:#e8cfa4; --gui-plank-2:#d9b982;
+  --gui-parch-1:#fdf8ec; --gui-parch-2:#f3e9d4;
+  --gui-cork:#c9ad7f;
+  --gui-gold:#c8a25a; --gui-brass-hi:#e6c37c; --gui-brass-lo:#a8802f;
+  --gui-seal:#a83226;
+  --gui-ink:#2f2317; --gui-ink-2:#6d5942;
+  --gui-sink: inset 0 2px 5px rgba(90,60,20,.32), inset 0 -1px 0 rgba(255,255,255,.5);
+  --gui-lift: 0 5px 12px rgba(40,24,6,.38), inset 0 1px 0 rgba(255,255,255,.75);
+  --gui-lift-hi: 0 14px 26px rgba(40,24,6,.46), inset 0 1px 0 rgba(255,255,255,.85);
+}
+/* ---------- 触发按钮（黄铜牌） ---------- */
+.gui-trigger {
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  padding:7px 14px; font-size:13px; font-weight:800; letter-spacing:.05em; color:#2a1c0a;
+  background:linear-gradient(180deg,var(--gui-brass-hi),#c39a4a 58%,var(--gui-brass-lo));
+  border:1px solid #6d5223; border-radius:5px; font-family:inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 3px 7px rgba(0,0,0,.35);
+  transition: transform .15s, box-shadow .15s, filter .15s;
+}
+.gui-trigger:hover { filter:brightness(1.06); transform:translateY(-1px); }
+.gui-trigger:active, .gui-trigger[aria-expanded="true"] { box-shadow: inset 0 2px 6px rgba(0,0,0,.45); }
+.gui-trigger .gui-crest { width:16px; height:16px; flex:none; }
+.gui-trigger.gui-floating { position:fixed; top:12px; left:12px; z-index:2147482000; }
+
+/* ---------- 遮罩 + 下拉面板（第 4 层） ---------- */
+.gui-scrim { position:fixed; inset:0; z-index:2147482600; background:rgba(16,9,2,.5); backdrop-filter:blur(2px); }
+.gui-scrim[hidden], .gui-drop[hidden] { display:none; }
+.gui-drop { position:fixed; left:0; right:0; top:56px; z-index:2147482700; display:flex; justify-content:center; padding:0 14px; }
+.gui-panel {
+  width:min(880px,100%); max-height:78vh; overflow:auto; padding:10px; border-radius:9px;
+  background:linear-gradient(180deg,#6f4d2a,#4a3018);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), inset 0 -3px 0 rgba(0,0,0,.45), 0 34px 64px rgba(0,0,0,.6);
+  animation: guiPop .18s cubic-bezier(.2,.9,.3,1.05);
+}
+@keyframes guiPop { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
+.gui-head { display:flex; align-items:center; gap:10px; padding:4px 6px 10px; color:#f4e9d2; }
+.gui-head .gui-hmark { width:26px; height:26px; }
+.gui-head .gui-hn { font-size:15px; font-weight:800; letter-spacing:.08em; }
+.gui-head .gui-hl { font-size:8.5px; letter-spacing:.3em; opacity:.6; font-weight:700; }
+.gui-head .gui-sp { flex:1; }
+.gui-head .gui-hv { font-family:Consolas,monospace; font-size:11px; opacity:.7; }
+.gui-x { width:28px; height:28px; border-radius:50%; cursor:pointer; border:1px solid #6d5223; color:#2a1c0a;
+  background:linear-gradient(180deg,var(--gui-brass-hi),#c39a4a); font-family:inherit; font-size:13px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
+.gui-body { padding:13px; border-radius:5px; background:linear-gradient(180deg,var(--gui-parch-1),var(--gui-parch-2)); box-shadow:var(--gui-sink); }
+.gui-chips { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:12px; }
+.gui-chips button { display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; font-weight:700;
+  padding:7px 13px; border-radius:999px; color:#43301a; border:1px solid #c9ab74; font-family:inherit;
+  background:linear-gradient(180deg,#fffdf6,#f1e5c8); box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(60,38,10,.22); }
+.gui-chips button svg { width:15px; height:15px; color:#6b4a28; }
+.gui-chips button[aria-selected="true"] { color:#f6ecd6; border-color:#3f2913; background:linear-gradient(180deg,#6b4a28,#4a3018);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.5); }
+.gui-chips button[aria-selected="true"] svg { color:#f0d79a; }
+.gui-notes { display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:13px; padding:8px 2px 2px; }
+.gui-note { position:relative; display:block; text-decoration:none; color:var(--gui-ink); padding:14px 15px; border-radius:2px;
+  background:linear-gradient(180deg,#fffdf6,#f6ecd3); box-shadow:0 5px 10px rgba(60,38,10,.3), inset 0 1px 0 #fff;
+  transform:rotate(-1deg); transition:transform .18s ease, box-shadow .18s ease; }
+.gui-note:nth-child(even) { transform:rotate(.9deg); }
+.gui-note:hover { transform:rotate(0) translateY(-3px); box-shadow:0 16px 26px rgba(60,38,10,.4); }
+.gui-note .gui-pin { position:absolute; left:50%; top:-11px; width:22px; height:22px; margin-left:-11px; }
+.gui-note .gui-k { position:absolute; right:12px; top:12px; font-size:10px; color:var(--gui-brass-lo); letter-spacing:.06em; }
+.gui-note .gui-nn { font-size:14.5px; font-weight:800; }
+.gui-note .gui-dd { font-size:11.5px; color:var(--gui-ink-2); margin-top:4px; }
+/* 无角色时的置灰态（阶段 A1/A4） */
+.gui-note.gui-off { opacity:.55; cursor:not-allowed; filter:saturate(.4); }
+.gui-note.gui-off::after { content:"需先创建角色"; position:absolute; left:14px; bottom:-2px; font-size:10px; color:var(--gui-seal); }
+.gui-empty { padding:26px 20px; text-align:center; color:var(--gui-ink-2); font-size:13px; }
+.gui-empty b { color:var(--gui-ink); }
+.gui-sets { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:13px; padding-top:11px; border-top:1px dashed rgba(120,85,35,.35); }
+.gui-sets .gui-lb { font-size:10.5px; color:var(--gui-ink-2); letter-spacing:.14em; margin-right:4px; }
+.gui-sets a, .gui-sets button { cursor:pointer; font-size:11.5px; color:var(--gui-ink-2); padding:5px 10px; border-radius:999px;
+  background:transparent; border:1px solid transparent; text-decoration:none; font-family:inherit; }
+.gui-sets a:hover, .gui-sets button:hover { color:var(--gui-ink); background:rgba(120,85,35,.10); border-color:rgba(120,85,35,.28); }
+.gui-toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%); z-index:2147483000;
+  background:#2a1c0a; color:#f6ecd6; font-size:13px; padding:10px 18px; border-radius:999px;
+  box-shadow:0 10px 24px rgba(0,0,0,.5); }
+@media (max-width:760px) {
+  .gui-drop { top:52px; }
+  .gui-panel { max-height:88vh; }
+  .gui-notes { grid-template-columns:1fr; }
+}
+
+/* ==========================================================================
+   P0 组件库（原型 A–G 通用）—— 规格见 设计风格规范.md
+   新增：外壳 / 木梁 / 黄铜牌 / 书签 / 卷轴 / 凹槽格位 / 凹槽输入 / 账本表格
+   ========================================================================== */
+
+/* ---------- 页面外壳（所有统合页共用） ---------- */
+.gui-shell {
+  margin:0; color:var(--gui-ink); font-size:15px; line-height:1.55;
+  font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  background-color:#d0a97a;
+  background-image:
+    radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+    repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
+  background-attachment: scroll; min-height:100vh;
+}
+.gui-shell::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: radial-gradient(125% 95% at 50% 44%, transparent 46%, rgba(78,50,16,.26) 100%); }
+html.dark .gui-shell { background-color:#2a2018;
+  background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)); color:#e8dcc4; }
+
+/* ---------- 顶部木梁 ---------- */
+.gui-beam { position:relative; z-index:30; display:flex; align-items:center; gap:12px;
+  padding:11px clamp(14px,3.4vw,40px); color:#f4e9d2;
+  background:linear-gradient(180deg,var(--gui-wood-1),var(--gui-wood-2) 62%,var(--gui-wood-3));
+  border-bottom:3px solid #2c1c0b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(0,0,0,.5), 0 10px 24px rgba(0,0,0,.35); }
+.gui-beam .gui-title { font-size:16px; font-weight:800; letter-spacing:.06em; text-shadow:0 1px 2px rgba(0,0,0,.6); }
+.gui-beam .gui-sub { font-size:11.5px; opacity:.7; }
+.gui-beam .gui-sp { flex:1; }
+.gui-beam a.gui-back { display:inline-flex; align-items:center; gap:6px; text-decoration:none;
+  color:#2a1c0a; font-size:12.5px; font-weight:700; padding:6px 12px; border-radius:5px;
+  background:linear-gradient(180deg,var(--gui-brass-hi),#c39a4a 60%,var(--gui-brass-lo));
+  border:1px solid #6d5223; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 5px rgba(0,0,0,.35); }
+.gui-beam a.gui-back:hover { filter:brightness(1.06); }
+
+/* ---------- 主内容容器 ---------- */
+.gui-wrap { position:relative; z-index:10; max-width:1120px; margin:0 auto; padding:22px clamp(14px,3.4vw,40px) 52px; }
+.gui-h1 { margin:0 0 6px; font-family:Georgia,"Songti SC",serif; font-weight:700; letter-spacing:.06em;
+  font-size:clamp(24px,3.2vw,34px); color:#3a2a13; text-shadow:0 1px 0 rgba(255,246,224,.75); }
+html.dark .gui-h1 { color:#f0e6d2; text-shadow:none; }
+.gui-lead { margin:0 0 16px; color:#5b411f; font-size:13.5px; }
+html.dark .gui-lead { color:#c3b393; }
+
+/* ---------- 板（内容载体）：木框 + 羊皮纸 ---------- */
+.gui-board { position:relative; padding:12px; border-radius:8px;
+  background:linear-gradient(180deg,var(--gui-wood-1),var(--gui-wood-2) 66%,var(--gui-wood-3));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), inset 0 -3px 0 rgba(0,0,0,.42), 0 20px 38px rgba(50,30,8,.4); }
+.gui-page { border-radius:5px; padding:18px 20px; background:linear-gradient(180deg,var(--gui-parch-1),var(--gui-parch-2));
+  box-shadow: var(--gui-sink), inset 0 0 0 1px rgba(120,85,35,.2); }
+html.dark .gui-page { background:linear-gradient(180deg,#3d362a,#332d22); color:#e8e0cc; box-shadow: inset 0 2px 5px rgba(0,0,0,.5); }
+
+/* ---------- 按钮：黄铜牌（次级） ---------- */
+.gui-brass { display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-family:inherit;
+  font-size:12.5px; font-weight:700; color:#2a1c0a; padding:7px 13px; border-radius:5px;
+  background:linear-gradient(180deg,var(--gui-brass-hi),#c39a4a 58%,var(--gui-brass-lo));
+  border:1px solid #6d5223; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 6px rgba(40,24,6,.32);
+  text-decoration:none; }
+.gui-brass:hover { filter:brightness(1.06); transform:translateY(-1px); }
+.gui-brass:active { transform:translateY(1px); box-shadow: inset 0 2px 5px rgba(0,0,0,.45); }
+.gui-brass.ghost { background:transparent; border-color:rgba(120,85,35,.45); color:#5b411f; box-shadow:none; }
+html.dark .gui-brass.ghost { color:#c3b393; border-color:rgba(220,190,140,.3); }
+
+/* ---------- 书签目录（原型 D/F） ---------- */
+.gui-bookmarks { display:flex; flex-direction:column; gap:6px; }
+.gui-bookmark { position:relative; display:block; text-decoration:none; color:#43301a; font-size:13.5px; font-weight:600;
+  padding:9px 12px 9px 16px; border-radius:0 5px 5px 0; background:linear-gradient(180deg,#f1e5c8,#e6d7b4);
+  border:1px solid #c9ab74; border-left:4px solid #a8802f; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
+.gui-bookmark:hover { background:linear-gradient(180deg,#fffdf6,#f1e5c8); transform:translateX(2px); }
+.gui-bookmark.on { background:linear-gradient(180deg,#6b4a28,#4a3018); color:#f6ecd6; border-color:#3f2913;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.4); }
+.gui-bookmark.on::after { content:""; position:absolute; right:-1px; top:50%; transform:translateY(-50%);
+  border:7px solid transparent; border-right-color:#fdf8ec; }
+html.dark .gui-bookmark { background:linear-gradient(180deg,#4a4234,#3d362a); color:#e8e0cc; border-color:#5a4a35; }
+
+/* ---------- 卷轴（原型 D/E/F 的正文载体） ---------- */
+.gui-scroll { position:relative; border-radius:4px; background:linear-gradient(180deg,#fffdf6,#f7eed9);
+  border:1px solid #d9c8a4; box-shadow:0 4px 10px rgba(60,38,10,.24), inset 0 1px 0 #fff; }
+.gui-scroll::before, .gui-scroll::after { content:""; position:absolute; left:-6px; right:-6px; height:9px;
+  background:linear-gradient(180deg,#e2d0aa,#cbb488); border:1px solid #b99f70; border-radius:5px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
+.gui-scroll::before { top:-5px; } .gui-scroll::after { bottom:-5px; transform:scaleY(-1); }
+.gui-scroll .gui-scroll-in { padding:18px 18px 16px; }
+html.dark .gui-scroll { background:linear-gradient(180deg,#453d2f,#3a3327); border-color:#5a4a35; }
+html.dark .gui-scroll::before, html.dark .gui-scroll::after { background:linear-gradient(180deg,#5a4a35,#4a3d2c); border-color:#2f2317; }
+
+/* ---------- 凹槽格位（原型 B 徽章墙 / C 列表） ---------- */
+.gui-sockets { display:grid; grid-template-columns:repeat(auto-fill, minmax(112px,1fr)); gap:12px; }
+.gui-socket { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  aspect-ratio:1/1; padding:10px; border-radius:7px; text-decoration:none; color:#43301a; font-size:13px; font-weight:700;
+  background:linear-gradient(180deg,rgba(120,85,35,.12),rgba(255,255,255,.42));
+  box-shadow: var(--gui-sink); transition:background .18s ease, box-shadow .18s ease, transform .18s ease; }
+.gui-socket:hover { background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.95));
+  box-shadow: inset 0 1px 2px rgba(90,60,20,.18), 0 8px 16px rgba(60,38,10,.28); transform:translateY(-2px); }
+.gui-socket svg { width:34px; height:34px; color:#6b4a28; }
+html.dark .gui-socket { background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(255,255,255,.06)); color:#e8e0cc; }
+html.dark .gui-socket svg { color:#e0b063; }
+
+/* ---------- 凹槽输入（原型 G/E） ---------- */
+.gui-input, input.gui-input, select.gui-input, textarea.gui-input {
+  font-family:inherit; font-size:13.5px; color:var(--gui-ink); width:100%;
+  padding:9px 12px; border-radius:6px; border:1px solid #c9ab74;
+  background:linear-gradient(180deg,rgba(120,85,35,.10),rgba(255,255,255,.5));
+  box-shadow: var(--gui-sink); outline:none; }
+.gui-input:focus { border-color:#a8802f; background:linear-gradient(180deg,rgba(255,255,255,.85),#fff);
+  box-shadow: inset 0 1px 2px rgba(90,60,20,.2), 0 0 0 3px rgba(200,162,90,.28); }
+html.dark .gui-input { background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(255,255,255,.05)); color:#e8e0cc; border-color:#5a4a35; }
+
+/* ---------- 账本表格（原型 E） ---------- */
+.gui-ledger { width:100%; border-collapse:separate; border-spacing:0; font-size:13px; }
+.gui-ledger thead th { position:sticky; top:0; z-index:2; text-align:left; padding:10px 12px; font-weight:800; color:#2a1c0a;
+  background:linear-gradient(180deg,var(--gui-brass-hi),#c39a4a 70%,var(--gui-brass-lo));
+  border-bottom:1px solid #6d5223; border-right:1px solid rgba(109,82,35,.5); white-space:nowrap; }
+.gui-ledger thead th:last-child { border-right:0; }
+.gui-ledger thead th .gui-sort { display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.gui-ledger thead th svg { width:12px; height:12px; opacity:.7; }
+.gui-ledger tbody tr:nth-child(odd) { background:rgba(255,255,255,.5); }
+.gui-ledger tbody tr:nth-child(even) { background:rgba(120,85,35,.07); }
+.gui-ledger tbody tr:hover { background:rgba(200,162,90,.22); }
+.gui-ledger tbody td { padding:9px 12px; border-bottom:1px solid rgba(120,85,35,.18); vertical-align:top; }
+html.dark .gui-ledger tbody tr:nth-child(odd) { background:rgba(255,255,255,.04); }
+html.dark .gui-ledger tbody tr:nth-child(even) { background:rgba(0,0,0,.18); }
+html.dark .gui-ledger tbody td { color:#e8e0cc; border-bottom-color:rgba(220,190,140,.16); }
+
+/* ---------- 分区标题（小） ---------- */
+.gui-sechead { display:flex; align-items:center; gap:10px; margin:0 0 12px; }
+.gui-sechead .t { font-size:15px; font-weight:800; color:#43301a; letter-spacing:.04em; }
+.gui-sechead .m { font-size:11.5px; color:var(--gui-ink-2); }
+.gui-sechead .line { flex:1; height:2px; border-radius:1px; background:linear-gradient(90deg,rgba(120,85,35,.35),rgba(120,85,35,.05)); }
+html.dark .gui-sechead .t { color:#e8dcc4; }
+
+/* ===== 页面外壳与通用组件（opt-in：window.__guiSkin 时 body 会带 .gui-page） ===== */
+body.gui-page {
+  color:#2f2317; font-size:15px; line-height:1.55;
+  font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  background-color:#d0a97a; min-height:100vh;
+  background-image:
+    radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+    repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
+  background-attachment:scroll; margin:0;
+}
+body.gui-page::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background: radial-gradient(125% 95% at 50% 44%, transparent 46%, rgba(78,50,16,.26) 100%); }
+body.gui-page .gui-wrap { position:relative; z-index:10; max-width:1160px; margin:0 auto; padding:26px 18px 54px; }
+
+/* 木梁（beamBoot 注入） */
+.gui-beam { background:linear-gradient(180deg,#6b4a28,#54381c 62%,#3f2913); border-bottom:3px solid #2c1c0b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(0,0,0,.5), 0 10px 24px rgba(0,0,0,.35);
+  color:#f4e9d2; padding:12px clamp(14px,4vw,44px); }
+.gui-beam .gui-back { background:linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f); color:#2a1c0a;
+  border:1px solid #6d5223; border-radius:5px; padding:6px 12px; font-size:12.5px; font-weight:700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 5px rgba(0,0,0,.35); }
+
+/* Hero */
+.gui-hero { text-align:center; color:#3a2a13; margin:0 0 22px; text-shadow:0 1px 0 rgba(255,246,224,.75); }
+.gui-hero h1 { margin:0 0 6px; font-family:Georgia,"Songti SC",serif; font-weight:700;
+  font-size:clamp(30px,4.4vw,46px); letter-spacing:.07em; }
+.gui-hero p { margin:0; font-size:14px; color:#5b411f; }
+.gui-hero .gui-stats { margin-top:10px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-size:12px; color:#5b411f; }
+.gui-hero .gui-stats b { color:#7a4a12; }
+
+/* 分区标题 */
+.gui-sec-head { display:flex; align-items:center; gap:10px; margin:0 0 14px; }
+.gui-sec-head .t { font-size:15px; font-weight:800; color:#43301a; letter-spacing:.05em; }
+.gui-sec-head .m { font-size:11.5px; color:#6d5942; }
+.gui-sec-head .line { flex:1; height:2px; border-radius:1px; background:linear-gradient(90deg,rgba(120,85,35,.35),rgba(120,85,35,.05)); }
+
+/* 柜台 */
+.gui-counter { position:relative; margin-bottom:32px; }
+.gui-counter .top { position:relative; padding:18px 18px 22px; border-radius:8px;
+  background:linear-gradient(180deg,#e8cfa4,#d9b982 72%,#c9a468); border:2px solid #8a6234;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.55), inset 0 -6px 0 rgba(90,58,20,.28), 0 18px 34px rgba(50,30,8,.42); }
+.gui-counter .top::after { content:""; position:absolute; left:10px; right:10px; bottom:-9px; height:10px; border-radius:0 0 8px 8px;
+  background:linear-gradient(180deg,#8a6234,#6d4a24); box-shadow:0 6px 14px rgba(40,24,6,.45); }
+.gui-counter .rail { position:absolute; left:16px; right:16px; bottom:14px; height:6px; border-radius:3px;
+  background:linear-gradient(180deg,#e6c37c,#a8802f); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.3); }
+
+/* 木牌（SVG 手绘按钮） */
+.gui-planks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.gui-plank { position:relative; display:block; text-decoration:none; color:#2f2317; padding:0; border:0; background:transparent;
+  filter:drop-shadow(0 5px 9px rgba(40,24,6,.34)); transition:transform .18s ease, filter .18s ease; }
+.gui-plank:hover { transform:translateY(-3px); filter:drop-shadow(0 13px 20px rgba(40,24,6,.42)); }
+.gui-plank:active { transform:translateY(1px); filter:drop-shadow(0 3px 5px rgba(40,24,6,.4)); }
+.gui-plank .face { position:absolute; inset:0; width:100%; height:100%; }
+.gui-plank .inner { position:relative; display:flex; align-items:center; gap:14px; padding:15px 54px 15px 66px; min-height:84px; }
+.gui-plank .pico { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:44px; height:44px; color:#6b4a28; }
+.gui-plank .txt { display:flex; flex-direction:column; min-width:0; }
+.gui-plank .n { font-size:17px; font-weight:800; line-height:1.3; }
+.gui-plank .d { font-size:12.5px; color:#6d5942; margin-top:3px; }
+.gui-plank .go { position:absolute; right:16px; top:50%; transform:translateY(-50%); width:26px; height:26px; }
+
+/* 页脚 */
+.gui-foot { margin-top:22px; text-align:center; color:#5b411f; font-size:12px; }
+
+/* 深色模式 */
+html.dark body.gui-page { background-color:#2a2018;
+  background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)); }
+html.dark body.gui-page::before { background: radial-gradient(125% 95% at 50% 44%, transparent 40%, rgba(0,0,0,.45) 100%); }
+html.dark .gui-hero, html.dark .gui-hero p, html.dark .gui-hero .gui-stats, html.dark .gui-foot { color:#e8dcc4; }
+html.dark .gui-hero .gui-stats b { color:#e0b063; }
+html.dark .gui-sec-head .t { color:#e8dcc4; } html.dark .gui-sec-head .m { color:#b9a888; }
+html.dark .gui-counter .top { background:linear-gradient(180deg,#5c4529,#4a3620 72%,#3d2c19); border-color:#2a1c0b; }
+html.dark .gui-plank .n { color:#2f2317; }
+
+@media (max-width:780px) { .gui-planks { grid-template-columns:1fr; } }
+
+/* ===== 旧页面适配器（body.gui-page 时生效：把历史页面统一到工会语言） ===== */
+body.gui-page .container, body.gui-page .wrap { position:relative; z-index:10; max-width:980px; margin:0 auto;
+  padding:26px 18px 54px; background:transparent; }
+/* 木梁已显示页面名与返回，页内重复的返回链接隐藏 */
+body.gui-page .back-link, body.gui-page a.back { display:none !important; }
+/* 页内标题降级为次级标题（木梁已承担主标题） */
+body.gui-page h1 { font-family:Georgia,"Songti SC","SimSun",serif !important; font-size:26px !important;
+  text-align:center; color:#3a2a13 !important; margin:6px 0 4px !important; letter-spacing:.05em;
+  text-shadow:0 1px 0 rgba(255,246,224,.7); }
+body.gui-page .subtitle, body.gui-page .char-subtitle { text-align:center; color:#5b411f !important; }
+/* 卡片：羊皮纸 + 木色描边 + 抬起 */
+body.gui-page .card, body.gui-page .cardLink, body.gui-page .char-card,
+body.gui-page .slot-card, body.gui-page .feat-slot {
+  background:linear-gradient(180deg,#fffdf6,#f4e9cf) !important;
+  border:1px solid #c9ab74 !important; border-radius:8px !important; color:#2f2317 !important;
+  box-shadow:0 5px 12px rgba(40,24,6,.28), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+body.gui-page .card:hover, body.gui-page .cardLink:hover, body.gui-page .char-card:hover,
+body.gui-page .slot-card:hover {
+  transform:translateY(-2px); border-color:#a8802f !important;
+  box-shadow:0 14px 26px rgba(40,24,6,.36), inset 0 1px 0 rgba(255,255,255,.9) !important; }
+body.gui-page .card .icon, body.gui-page .char-card .icon { background:linear-gradient(180deg,#e8dabb,#f8f1df) !important;
+  box-shadow: inset 0 2px 5px rgba(90,60,20,.3) !important; border-radius:8px !important; }
+/* 按钮：黄铜牌 */
+body.gui-page .btn, body.gui-page button.btn, body.gui-page a.btn {
+  background:linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important; color:#2a1c0a !important;
+  border:1px solid #6d5223 !important; border-radius:5px !important; font-weight:700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 6px rgba(40,24,6,.32) !important; }
+body.gui-page .btn:hover { filter:brightness(1.06); }
+/* 页脚 */
+body.gui-page .footer { color:#5b411f !important; text-align:center; margin-top:18px; }
+/* 深色模式下的旧页面 */
+html.dark body.gui-page .card, html.dark body.gui-page .cardLink, html.dark body.gui-page .char-card,
+html.dark body.gui-page .slot-card {
+  background:linear-gradient(180deg,#4a4234,#3d362a) !important; color:#e8e0cc !important; border-color:#6b5a3e !important; }
+html.dark body.gui-page h1 { color:#e8dcc4 !important; }
+
+/* ===== 角色面板皮肤（body.gui-page .sheet-head 存在时才生效；不动 panel.css 的变量体系） ===== */
+body.gui-page .sheet-head {
+  background:linear-gradient(180deg,#6b4a28,#54381c 62%,#3f2913) !important;
+  border:1px solid #4a3016 !important; border-bottom:3px solid #2c1c0b !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 10px 24px rgba(0,0,0,.3) !important;
+  color:#f4e9d2 !important; }
+body.gui-page .sheet-head .char-id h1 { color:#f6ecd6 !important; text-shadow:0 1px 2px rgba(0,0,0,.55); }
+body.gui-page .sheet-head .char-chips span { background:rgba(255,255,255,.12) !important;
+  border-color:#8a6234 !important; color:#e8dcc4 !important; }
+body.gui-page .sheet-head .btn-ghost { color:#e8dcc4 !important; border-color:#8a6234 !important; }
+body.gui-page .sheet-head .btn-ghost:hover { border-color:#e0b063 !important; color:#fff !important; }
+/* 战斗态保持面板自己的配色（紫黑战斗主题） */
+body.battle.gui-page .sheet-head { background:#221c28 !important; border-color:#5a4a35 !important; }
+/* 内容面板：加一层"纸片抬起"的阴影，深浅色都安全 */
+body.gui-page .section, body.gui-page .card { box-shadow:0 5px 12px rgba(40,24,6,.20), 0 1px 0 rgba(255,255,255,.5) !important; }
+html.dark body.gui-page .section, html.dark body.gui-page .card { box-shadow:0 6px 16px rgba(0,0,0,.35) !important; }
+/* 面板页的木底稍微压暗一点，让密集内容更清晰 */
+html.gui-panel-page body.gui-page::before { z-index:-1; background: radial-gradient(120% 90% at 50% 40%, transparent 38%, rgba(70,44,14,.34) 100%) !important; }
+
+/* ===== 面板页顶层容器强制不透明（夜间模式下卡片原本透明，木底会透上来染成橄榄色） ===== */
+html.gui-panel-page body.gui-page .section,
+html.gui-panel-page body.gui-page .card { background-color:#fffdf6 !important; }
+html.dark.gui-panel-page body.gui-page .section,
+html.dark.gui-panel-page body.gui-page .card { background-color:#24272b !important; }
+/* 页头保持木梁（已在上面定义），战斗态例外 */
+
+/* ===== 职业页皮肤（试点：html.gui-class-page） ===== */
+/* 顶栏 → 木质梁（该 header 只含标题与搜索框，不含密集目录，安全） */
+html.gui-class-page body.gui-page header {
+  background:linear-gradient(180deg,#6b4a28,#54381c 62%,#3f2913) !important;
+  border-bottom:3px solid #2c1c0b !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 10px 24px rgba(0,0,0,.35) !important; }
+html.gui-class-page body.gui-page header h1 { color:#f6ecd6 !important; text-shadow:0 1px 2px rgba(0,0,0,.55); }
+html.gui-class-page body.gui-page header .subtitle { color:#e0cfae !important; }
+html.gui-class-page body.gui-page header input[type=search] {
+  background:rgba(255,253,246,.96) !important; border-color:#8a6234 !important; color:#2f2317 !important; }
+/* 左侧目录：羊皮纸账本 */
+html.gui-class-page body.gui-page nav .nav-inner,
+html.gui-class-page body.gui-page nav { background:linear-gradient(180deg,#fdf8ec,#f3e9d4) !important;
+  border:1px solid #c9ab74 !important; border-radius:8px !important;
+  box-shadow:0 5px 12px rgba(40,24,6,.22), inset 0 1px 0 rgba(255,255,255,.8) !important; }
+/* 技能卡片：羊皮纸 + 木描边 + hover 抬起 */
+html.gui-class-page body.gui-page article.skill,
+html.gui-class-page body.gui-page section.style,
+html.gui-class-page body.gui-page section.tier,
+html.gui-class-page body.gui-page .class-features {
+  background:linear-gradient(180deg,#fffdf6,#f7efdd) !important;
+  border:1px solid #c9ab74 !important; border-radius:8px !important;
+  box-shadow:0 5px 12px rgba(40,24,6,.20), inset 0 1px 0 rgba(255,255,255,.8) !important; }
+html.gui-class-page body.gui-page article.skill:hover {
+  border-color:#a8802f !important; box-shadow:0 14px 26px rgba(40,24,6,.32), inset 0 1px 0 rgba(255,255,255,.9) !important; }
+/* 返回按钮 → 黄铜牌（它现在是固定浮动按钮） */
+html.gui-class-page body.gui-page .back-btn {
+  background:linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important; color:#2a1c0a !important;
+  border-color:#6d5223 !important; font-weight:700; }
+/* 夜间：顶栏与卡片切回中性深色，仅保留木色描边 */
+html.dark.gui-class-page body.gui-page header {
+  background:linear-gradient(180deg,#3a2c1c,#2a2018) !important; border-bottom-color:#1b1409 !important; }
+html.dark.gui-class-page body.gui-page article.skill,
+html.dark.gui-class-page body.gui-page section.style,
+html.dark.gui-class-page body.gui-page section.tier,
+html.dark.gui-class-page body.gui-page .class-features,
+html.dark.gui-class-page body.gui-page nav,
+html.dark.gui-class-page body.gui-page nav .nav-inner {
+  background:#24272b !important; border-color:#3a3d40 !important; }

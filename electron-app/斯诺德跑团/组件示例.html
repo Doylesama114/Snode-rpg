@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组件示例 · 斯诺德跑团</title>
+</head>
+<body class="gui-shell">
+<header class="gui-beam">
+  <svg style="width:26px;height:26px" viewBox="0 0 32 32"><use href="#gui-crest"/></svg>
+  <span class="gui-title">组件示例</span>
+  <span class="gui-sub">P0 令牌与组件验收页</span>
+  <span class="gui-sp"></span>
+  <a class="gui-back" href="启动台.html">← 返回启动台</a>
+</header>
+
+<div class="gui-wrap">
+  <h1 class="gui-h1">组件库</h1>
+  <p class="gui-lead">本页只用于验收：所有按钮、容器、表格、图标都在这里一眼看全。</p>
+
+  <div class="gui-board"><div class="gui-page">
+    <div class="gui-sechead"><span class="t">① 按钮</span><span class="m">SVG 木牌（主）/ 黄铜牌（次）</span><span class="line"></span></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+      <a class="gui-plankbtn" href="#" style="min-width:260px">
+        <svg class="face" viewBox="0 0 400 100" preserveAspectRatio="none"><use href="#gui-plaque"/></svg>
+        <svg class="pico" viewBox="0 0 24 24"><use href="#i-character"/></svg>
+        <span class="inner"><span class="txt"><span class="n">主按钮（木牌）</span><span class="d">带切角、内斜面与厚度</span></span></span>
+        <svg class="go" viewBox="0 0 26 26"><use href="#gui-go"/></svg>
+      </a>
+      <button class="gui-brass">黄铜按钮</button>
+      <button class="gui-brass ghost">次级幽灵按钮</button>
+    </div>
+
+    <div class="gui-sechead" style="margin-top:22px"><span class="t">② 凹槽输入</span><span class="m">聚焦时描边转黄铜</span><span class="line"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <input class="gui-input" placeholder="搜索技能、物品…">
+      <select class="gui-input"><option>全部类型</option><option>武器</option></select>
+      <textarea class="gui-input" rows="1" placeholder="备注"></textarea>
+    </div>
+  </div></div>
+
+  <div class="gui-board" style="margin-top:18px"><div class="gui-page">
+    <div class="gui-sechead"><span class="t">③ 书签目录（原型 D/F）</span><span class="m">当前项凸起且反向高亮</span><span class="line"></span></div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:16px">
+      <div class="gui-bookmarks">
+        <a class="gui-bookmark on" href="#">职业专长</a>
+        <a class="gui-bookmark" href="#">起始特性</a>
+        <a class="gui-bookmark" href="#">塑能风格</a>
+        <a class="gui-bookmark" href="#">咒法风格</a>
+      </div>
+      <div class="gui-scroll"><div class="gui-scroll-in">
+        <div class="gui-sechead"><span class="t">卷轴容器</span><span class="m">上下卷边由 SVG 感的 CSS 卷边实现</span></div>
+        <p style="margin:0;font-size:13.5px;line-height:1.75">正文放在羊皮纸卷轴上：上沿白色高光、下沿暗边、左右卷边，形成"摊开的卷轴"。</p>
+      </div></div>
+    </div>
+  </div></div>
+
+  <div class="gui-board" style="margin-top:18px"><div class="gui-page">
+    <div class="gui-sechead"><span class="t">④ 职业徽记（17 + 3）</span><span class="m">全部为自绘 SVG，请对照检查是否可辨识</span><span class="line"></span></div>
+    <div class="gui-sockets" id="emblemGrid"></div>
+  </div></div>
+
+  <div class="gui-board" style="margin-top:18px"><div class="gui-page">
+    <div class="gui-sechead"><span class="t">⑤ 账本表格（原型 E）</span><span class="m">黄铜表头 + 斑马纹 + SVG 排序箭头</span><span class="line"></span></div>
+    <table class="gui-ledger">
+      <thead><tr>
+        <th><span class="gui-sort">名称 <svg viewBox="0 0 12 12"><use href="#gui-sort-asc"/></svg></span></th>
+        <th>价格</th><th>类型</th><th>来源</th><th><span class="gui-sort">品级 <svg viewBox="0 0 12 12"><use href="#gui-sort-desc"/></svg></span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>长剑</td><td>15 金</td><td>武器</td><td>武器店</td><td>普通</td></tr>
+        <tr><td>锁子甲</td><td>75 金</td><td>护甲</td><td>护甲店</td><td>精制</td></tr>
+        <tr><td>治疗药水</td><td>50 金</td><td>消耗品</td><td>药剂店</td><td>普通</td></tr>
+      </tbody>
+    </table>
+  </div></div>
+
+  <div class="gui-board" style="margin-top:18px"><div class="gui-page">
+    <div class="gui-sechead"><span class="t">⑥ 纸条与图钉（原型 C）</span><span class="m">用于列表/存档/告示</span><span class="line"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding-top:8px">
+      <a class="gui-note" href="#"><svg class="gui-pin" viewBox="0 0 22 22"><use href="#gui-pin"/></svg><div class="gui-nn">纸条条目</div><div class="gui-dd">图钉 + 轻微旋转 + 卷角</div></a>
+      <a class="gui-note" href="#"><svg class="gui-pin" viewBox="0 0 22 22"><use href="#gui-pin"/></svg><div class="gui-nn">第二条</div><div class="gui-dd">偶数项反向旋转</div></a>
+    </div>
+  </div></div>
+</div>
+
+<script src="guild-ui.js"></script>
+<script>
+(function () {
+  window.__guiNoNav = true;
+  var LIST = [
+    ['战士', 'ce-warrior'], ['圣骑士', 'ce-paladin'], ['猎人', 'ce-hunter'], ['游荡者', 'ce-rogue'],
+    ['武僧', 'ce-monk'], ['法师', 'ce-mage'], ['术士', 'ce-warlock'], ['牧师', 'ce-priest'],
+    ['德鲁伊', 'ce-druid'], ['吟游诗人', 'ce-bard'], ['萨满祭司', 'ce-shaman'], ['蛮斗士', 'ce-barbarian'],
+    ['奇械师', 'ce-artificer'], ['魔契师', 'ce-contractor'], ['守望者', 'ce-warden'], ['谋士', 'ce-strategist'],
+    ['召唤师', 'ce-summoner'], ['通用天赋树', 'ce-tree'], ['通用进阶', 'ce-advance'], ['特殊专长', 'ce-feats'],
+  ];
+  document.getElementById('emblemGrid').innerHTML = LIST.map(function (x) {
+    return '<a class="gui-socket" href="#"><svg viewBox="0 0 32 32"><use href="#' + x[1] + '"/></svg><span>' + x[0] + '</span></a>';
+  }).join('');
+  /* 木牌按钮的样式（示例页内联，正式版由各页复用同一类） */
+  var st = document.createElement('style');
+  st.textContent = '.gui-plankbtn{position:relative;display:block;text-decoration:none;color:var(--gui-ink);filter:drop-shadow(0 5px 9px rgba(40,24,6,.34));transition:transform .18s ease,filter .18s ease}' +
+    '.gui-plankbtn:hover{transform:translateY(-3px);filter:drop-shadow(0 13px 20px rgba(40,24,6,.42))}' +
+    '.gui-plankbtn .face{position:absolute;inset:0;width:100%;height:100%}' +
+    '.gui-plankbtn .inner{position:relative;display:flex;align-items:center;padding:14px 52px 14px 66px;min-height:80px}' +
+    '.gui-plankbtn .pico{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:42px;height:42px;color:#6b4a28}' +
+    '.gui-plankbtn .txt{display:flex;flex-direction:column}.gui-plankbtn .n{font-size:16.5px;font-weight:800}' +
+    '.gui-plankbtn .d{font-size:12.5px;color:var(--gui-ink-2);margin-top:3px}' +
+    '.gui-plankbtn .go{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:26px;height:26px}';
+  document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>

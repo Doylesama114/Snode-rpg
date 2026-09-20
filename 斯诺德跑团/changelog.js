@@ -5443,8 +5443,9 @@ function showChangelog(showLatest) {
     html += '<div style="background:'+(isNew?'#f6f4ef':'#fff')+';border:1px solid '+(isNew?'#a46d1f':'#d8d2c4')+';border-radius:8px;padding:14px 16px;margin-bottom:10px">';
     html += '<div style="font-size:16px;font-weight:bold;color:'+(isNew?'#a46d1f':'#1f2522')+'">v' + v.version + (isNew?' <span style="font-size:12px;color:#c62828">🆕 最新</span>':'') + '</div>';
     html += '<div style="font-size:12px;color:#69706b;margin-bottom:8px">' + v.date + '</div>';
-    for (var j = 0; j < v.changes.length; j++) {
-      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + v.changes[j] + '</div>';
+    var _chs = v.changes || [];
+    for (var j = 0; j < _chs.length; j++) {
+      html += '<div style="font-size:14px;line-height:1.8;color:#1f2522">' + _chs[j] + '</div>';
     }
     html += '</div>';
   }

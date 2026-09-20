@@ -6,169 +6,201 @@
 <title>斯诺德 · 冒险者工具集</title>
 <script>if(window.mobileBridge){var _b=document.createElement('base');_b.href='https://appassets.androidplatform.net/\u65af\u8bfa\u5fb7\u8dd1\u56e2/';document.head.appendChild(_b);}</script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
-  background: #f6f4ef;
-  color: #1f2522;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-}
-.container { max-width: 460px; width: 100%; animation: fadeInUp 0.45s ease-out both; }
-h1 {
-  font-size: 28px;
-  color: #1f2522;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 4px;
-}
-.subtitle {
-  font-size: 14px;
-  color: #69706b;
-  text-align: center;
-  margin-bottom: 32px;
-}
-.card {
-  background: #fffdf8;
-  border: 1px solid #d8d2c4;
-  border-radius: 12px;
-  padding: 24px 28px;
-  margin-bottom: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  box-shadow: 0 4px 12px rgba(31,37,34,0.04);
-  text-decoration: none;
-  color: inherit;
-  animation: fadeInUp 0.4s ease-out both;
-}
-.card:hover {
-  background: #f6f4ef;
-  border-color: #a46d1f;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(31,37,34,0.08);
-}
-.icon {
-  font-size: 36px;
-  width: 58px;
-  height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f6f4ef;
-  border-radius: 10px;
-  flex-shrink: 0;
-  border: 1px solid #d8d2c4;
-}
-.card-text h2 {
-  font-size: 19px;
-  color: #1f2522;
-  margin-bottom: 4px;
-}
-.card-text p {
-  font-size: 13px;
-  color: #69706b;
-  line-height: 1.5;
-}
-.footer {
-  margin-top: 36px;
-  font-size: 12px;
-  color: #69706b;
-  text-align: center;
-}
-#themeToggle{position:fixed;top:16px;right:16px;z-index:999;background:transparent;border:1px solid #d8d2c4;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;transition:all 0.2s}
-#themeToggle:hover{background:#f6f4ef;border-color:#a46d1f}
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: none; }
-}
-.card:nth-child(2) { animation-delay: 0.05s; }
-.card:nth-child(3) { animation-delay: 0.10s; }
-@media (prefers-color-scheme:dark) { body{background:#1a1d20;color:#e8e6e3} h1{color:#e8e6e3} .subtitle{color:#9d9b98} .card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)} .card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)} .icon{background:#1a1d20;border-color:#3a3d40} .card-text h2{color:#e8e6e3} .card-text p{color:#9d9b98} .footer{color:#9d9b98} }
-html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3}html.dark .subtitle{color:#9d9b98}html.dark .card{background:#24272b;border-color:#3a3d40;box-shadow:0 4px 12px rgba(0,0,0,.2)}html.dark .card:hover{background:#1a1d20;border-color:#d4a54a;box-shadow:0 6px 20px rgba(0,0,0,.3)}html.dark .icon{background:#1a1d20;border-color:#3a3d40}html.dark .card-text h2{color:#e8e6e3}html.dark .card-text p{color:#9d9b98}html.dark .footer{color:#9d9b98}html.dark #themeToggle{border-color:#3a3d40;color:#e8e6e3}html.dark #themeToggle:hover{background:#24272b;border-color:#d4a54a}
-@media (max-width:860px) {
-  body { padding: 20px; }
-}
-@media (max-width:600px) {
-  body { padding: 16px; }
-  h1 { font-size: 24px; }
-  .card { padding: 18px 20px; gap: 14px; }
-  .icon { width: 50px; height: 50px; font-size: 30px; }
-  .card-text h2 { font-size: 17px; }
-}
-@media (max-width:480px) {
-  body { padding: 12px; }
-  h1 { font-size: 22px; }
-  .subtitle { font-size: 12px; }
-  .card { padding: 14px 16px; }
-  .card-text h2 { font-size: 16px; }
-  .card-text p { font-size: 12px; }
-}
+  /* ===== 启动台 · 冒险者工会（明亮木质）v7 规格 ===== */
+  * { box-sizing: border-box; }
+  :root {
+    --wood-1:#6b4a28; --wood-2:#54381c; --wood-3:#3f2913;
+    --plank-1:#e8cfa4; --plank-2:#d9b982;
+    --parch-1:#fdf8ec; --parch-2:#f3e9d4; --cork:#c9ad7f;
+    --gold:#c8a25a; --brass-hi:#e6c37c; --brass-lo:#a8802f; --seal:#a83226;
+    --ink:#2f2317; --ink-2:#6d5942; --muted:#6d5942; --line:#c9ab74; --panel:#fdf8ec; --soft:#f4e9cf;
+    --sink: inset 0 2px 5px rgba(90,60,20,.32), inset 0 -1px 0 rgba(255,255,255,.5);
+    --lift: 0 5px 12px rgba(40,24,6,.38), inset 0 1px 0 rgba(255,255,255,.75);
+    --lift-hi: 0 14px 26px rgba(40,24,6,.46), inset 0 1px 0 rgba(255,255,255,.85);
+  }
+  html, body { min-height: 100%; }
+  body {
+    margin:0; color:var(--ink); font-size:15px; line-height:1.55;
+    font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    background-color:#d0a97a;
+    background-image:
+      radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+      repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+      repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+      linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
+    background-attachment: scroll;
+  }
+  body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(125% 95% at 50% 44%, transparent 46%, rgba(78,50,16,.26) 100%); }
+
+  /* 左上角浮动控件（沿用原 ID） */
+  #themeToggle, #muteToggle, #shortcutBtn { position:fixed; right:16px; z-index:999; width:38px; height:38px;
+    border-radius:50%; cursor:pointer; font-size:16px; color:#2a1c0a; border:1px solid #6d5223;
+    background:linear-gradient(180deg,var(--brass-hi),#c39a4a 60%,var(--brass-lo));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 3px 8px rgba(40,24,6,.4); }
+  #themeToggle { top:16px; } #muteToggle { top:62px; } #shortcutBtn { top:108px; }
+  #themeToggle:hover, #muteToggle:hover, #shortcutBtn:hover { filter:brightness(1.07); }
+
+  .container { position:relative; z-index:10; max-width:1160px; margin:0 auto; padding:26px 18px 54px; }
+  h1 { margin:0 0 6px; text-align:center; font-family:Georgia,"Songti SC",serif; font-weight:700;
+    font-size:clamp(30px,4.4vw,46px); letter-spacing:.07em; color:#3a2a13; text-shadow:0 1px 0 rgba(255,246,224,.75); }
+  .subtitle { text-align:center; color:#5b411f; font-size:14px; margin-bottom:6px; }
+  .hero-stats { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-size:12px; color:#5b411f; margin-bottom:22px; }
+  .hero-stats b { color:#7a4a12; }
+
+  /* 物件 1：柜台 */
+  .counter { position:relative; margin-bottom:32px; }
+  .counter .top { position:relative; padding:18px 18px 22px; border-radius:8px;
+    background:linear-gradient(180deg,var(--plank-1),var(--plank-2) 72%,#c9a468); border:2px solid #8a6234;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.55), inset 0 -6px 0 rgba(90,58,20,.28), 0 18px 34px rgba(50,30,8,.42); }
+  .counter .top::after { content:""; position:absolute; left:10px; right:10px; bottom:-9px; height:10px; border-radius:0 0 8px 8px;
+    background:linear-gradient(180deg,#8a6234,#6d4a24); box-shadow:0 6px 14px rgba(40,24,6,.45); }
+  .counter .rail { position:absolute; left:16px; right:16px; bottom:14px; height:6px; border-radius:3px;
+    background:linear-gradient(180deg,var(--brass-hi),var(--brass-lo)); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.3); }
+  .sec-head { display:flex; align-items:center; gap:10px; margin:0 0 14px; }
+  .sec-head .t { font-size:15px; font-weight:800; color:#43301a; letter-spacing:.05em; }
+  .sec-head .m { font-size:11.5px; color:var(--ink-2); }
+  .sec-head .line { flex:1; height:2px; border-radius:1px; background:linear-gradient(90deg,rgba(120,85,35,.35),rgba(120,85,35,.05)); }
+  .planks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+
+  /* SVG 木牌按钮 */
+  .plank { position:relative; display:block; text-decoration:none; color:var(--ink); padding:0; border:0; background:transparent;
+    filter:drop-shadow(0 5px 9px rgba(40,24,6,.34)); transition:transform .18s ease, filter .18s ease; }
+  .plank:hover { transform:translateY(-3px); filter:drop-shadow(0 13px 20px rgba(40,24,6,.42)); }
+  .plank:active { transform:translateY(1px); filter:drop-shadow(0 3px 5px rgba(40,24,6,.4)); }
+  .plank .face { position:absolute; inset:0; width:100%; height:100%; }
+  .plank .inner { position:relative; display:flex; align-items:center; gap:14px; padding:15px 54px 15px 66px; min-height:84px; }
+  .plank .pico { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:44px; height:44px; color:#6b4a28; }
+  .plank .txt { display:flex; flex-direction:column; min-width:0; }
+  .plank .n { font-size:17px; font-weight:800; line-height:1.3; }
+  .plank .d { font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .plank .go { position:absolute; right:16px; top:50%; transform:translateY(-50%); width:26px; height:26px; }
+
+  /* 物件 2：告示板 */
+  .board-frame { position:relative; padding:16px; border-radius:8px;
+    background:linear-gradient(180deg,#7a5530,#5b3d1e 62%,#4a3018);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.28), inset 0 -6px 0 rgba(0,0,0,.42), 0 22px 40px rgba(50,30,8,.45); }
+  .board-frame .ropes { position:absolute; left:0; right:0; top:-26px; height:26px; width:100%; }
+  .board { position:relative; border-radius:4px; padding:22px 20px 20px; background-color:var(--cork);
+    background-image: radial-gradient(circle at 18% 26%, rgba(120,86,40,.16), transparent 38%),
+      radial-gradient(circle at 78% 70%, rgba(120,86,40,.14), transparent 42%),
+      repeating-linear-gradient(45deg, rgba(120,86,40,.05) 0 2px, transparent 2px 6px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 7px);
+    box-shadow: var(--sink), inset 0 0 0 1px rgba(90,60,20,.35); }
+  .board-title { position:relative; text-align:center; margin:2px 0 18px; }
+  .board-title .t { font-family:Georgia,"Songti SC",serif; font-size:17px; font-weight:700; letter-spacing:.12em; color:#4a3018; }
+  .board-title .s { font-size:11px; color:#6d4f26; letter-spacing:.18em; }
+  .notes { position:relative; display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:16px; }
+  .note { position:relative; display:block; text-decoration:none; color:var(--ink); padding:16px 16px 15px; border-radius:2px;
+    background:linear-gradient(180deg,#fffdf6,#f6ecd3); box-shadow:0 5px 10px rgba(60,38,10,.32), inset 0 1px 0 #fff;
+    transform:rotate(-1.2deg); transition:transform .18s ease, box-shadow .18s ease; }
+  .note:nth-child(even) { transform:rotate(1.1deg); }
+  .note:nth-child(3n) { transform:rotate(-.5deg) translateY(4px); }
+  .note:hover { transform:rotate(0) translateY(-3px) scale(1.012); box-shadow:0 16px 26px rgba(60,38,10,.42), inset 0 1px 0 #fff; z-index:5; }
+  .note .pin { position:absolute; left:50%; top:-11px; width:22px; height:22px; margin-left:-11px; }
+  .note .n { font-size:15px; font-weight:800; }
+  .note .d { font-size:11.5px; color:var(--ink-2); margin-top:4px; line-height:1.5; }
+  .note .corner { position:absolute; right:0; bottom:0; width:22px; height:22px; opacity:.55; }
+  .note .k { position:absolute; right:12px; top:12px; font-size:10px; color:var(--brass-lo); letter-spacing:.06em; }
+  .note.off { opacity:.55; cursor:not-allowed; filter:saturate(.4); }
+  .note.off::after { content:"需先创建角色"; position:absolute; left:16px; bottom:2px; font-size:10px; color:var(--seal); }
+  .note.addnew { display:grid; place-items:center; min-height:92px; border:1px dashed #c9ab74; background:rgba(255,255,255,.35);
+    box-shadow:none; font-size:12.5px; color:#6d4f26; }
+  .note.addnew:hover { background:rgba(255,255,255,.6); }
+
+  /* 页脚（保留原功能按钮） */
+  .footer { margin-top:22px; text-align:center; color:#5b411f; font-size:12px; }
+  .footer .tools { margin-top:8px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; }
+  .footer .tools button, .footer .tools label {
+    color:#43301a; font-size:12px; font-family:inherit; padding:5px 11px; border-radius:5px; border:1px solid #8a6234;
+    background:linear-gradient(180deg,#e8cfa4,#d9b982); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 5px rgba(40,24,6,.25); cursor:pointer; }
+  .footer .tools button:hover { filter:brightness(1.05); }
+  #versionDisplay { color:#7a4a12; font-weight:800; font-size:13px; }
+  #autoUpdateLabel { display:inline-flex; align-items:center; gap:6px; }
+  #autoUpdateToggle { accent-color:#a8802f; cursor:pointer; margin:0; width:14px; height:14px; }
+  #updateMsg { margin-top:8px; font-size:12px; color:#5b411f; }
+
+  /* 夜间模式：木色压暗、文字转浅 */
+  html.dark body { background-color:#2a2018;
+    background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)); }
+  html.dark body::before { background: radial-gradient(125% 95% at 50% 44%, transparent 40%, rgba(0,0,0,.45) 100%); }
+  html.dark h1, html.dark .subtitle, html.dark .hero-stats, html.dark .footer { color:#e8dcc4; }
+  html.dark .hero-stats b { color:#e0b063; }
+  html.dark .counter .top { background:linear-gradient(180deg,#5c4529,#4a3620 72%,#3d2c19); border-color:#2a1c0b; }
+  html.dark .sec-head .t { color:#e8dcc4; } html.dark .sec-head .m { color:#b9a888; }
+  html.dark .plank .n { color:#2f2317; }
+  html.dark .board { background-color:#3a3020; }
+  html.dark .board-title .t { color:#e8dcc4; }
+  html.dark .note { background:linear-gradient(180deg,#4a4234,#3d362a); color:#e8e0cc; box-shadow:0 5px 10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.12); }
+  html.dark .note .d { color:#b9a888; }
+  html.dark .footer .tools button, html.dark .footer .tools label { background:linear-gradient(180deg,#5c4529,#4a3620); color:#e8dcc4; border-color:#2a1c0b; }
+
+  @media (max-width:780px) {
+    .planks { grid-template-columns:1fr; }
+    .notes { grid-template-columns:1fr; }
+    .container { padding:20px 12px 40px; }
+  }
 </style>
 </head>
 <body>
 <button id="themeToggle">☀️</button>
-<button id="muteToggle" onclick="snd.toggle();this.textContent=snd.muted?'🔇':'🔊'" style="position:fixed;top:62px;right:16px;z-index:999;background:transparent;border:1px solid #d8d2c4;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;transition:all 0.2s">🔊</button>
-<button id="shortcutBtn" onclick="showShortcutHelp()" style="position:fixed;top:108px;right:16px;z-index:999;background:transparent;border:1px solid #d8d2c4;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;transition:all 0.2s" title="快捷键">⌨️</button>
+<button id="muteToggle" onclick="snd.toggle();this.textContent=snd.muted?'🔇':'🔊'">🔊</button>
+<button id="shortcutBtn" onclick="showShortcutHelp()" title="快捷键">⌨</button>
+
 <div class="container">
-  <h1>⚔ 斯诺德</h1>
-  <div class="subtitle">冒险者工具集</div>
+  <h1>欢迎回到斯诺德跑团</h1>
+  <div class="subtitle">查规则、查技能、管理角色、开局对决 —— 都在这一处。</div>
+  <div class="hero-stats">
+    <span><b>19</b> 个职业</span><span><b>2,588</b> 条技能</span>
+    <span>本地离线可用 · 数据不出本机</span>
+  </div>
 
-  <a class="card" href="主页.html">
-    <div class="icon">📜</div>
-    <div class="card-text">
-      <h2>角色系统</h2>
-      <p>创建、管理你的冒险者角色，查看角色面板与装备</p>
+  <!-- 柜台：4 个主入口（可在设置页自定义） -->
+  <section class="counter">
+    <div class="top">
+      <div class="sec-head"><span class="t">柜台 · 常去的地方</span><span class="m">推开哪扇门</span><span class="line"></span></div>
+      <div class="planks" id="counterPlanks"></div>
+      <div class="rail"></div>
     </div>
-  </a>
+  </section>
 
-  <a class="card" href="../职业页/首页.html">
-    <div class="icon">📖</div>
-    <div class="card-text">
-      <h2>职业技能</h2>
-      <p>浏览各职业的天赋树、技能详情与进阶途径</p>
+  <!-- 告示板：可自定义的快捷入口 -->
+  <section class="board-frame">
+    <svg class="ropes" viewBox="0 0 1000 26" preserveAspectRatio="none">
+      <path d="M120 26 C 170 2, 260 2, 300 26" fill="none" stroke="#6d4f26" stroke-width="3"/>
+      <path d="M700 26 C 740 2, 830 2, 880 26" fill="none" stroke="#6d4f26" stroke-width="3"/>
+    </svg>
+    <div class="board">
+      <span class="nail" style="position:absolute;left:8px;top:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;right:8px;top:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;left:8px;bottom:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;right:8px;bottom:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <div class="board-title"><div class="t">告 示 板</div><div class="s">NOTICE BOARD</div></div>
+      <div class="notes" id="boardNotes"></div>
     </div>
-  </a>
-
-  <a class="card" href="#" onclick="openPokerGame(event)">
-    <div class="icon">🃏</div>
-    <div class="card-text">
-      <h2>斯诺德对决</h2>
-      <p>回合制策略对战 · 支持联网对战</p>
-    </div>
-  </a>
-
-  <a class="card" href="help.html" onclick="openHelpPage(event)">
-    <div class="icon">❓</div>
-    <div class="card-text">
-      <h2>帮助</h2>
-      <p>查看使用指南、规则说明与常见问题</p>
-    </div>
-  </a>
+  </section>
 
   <div class="footer">
     斯诺德规则 · 冒险者工具集
-    <div style="margin-top:8px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px">
-      <span style="color:#a46d1f;font-size:13px;font-weight:bold" id="versionDisplay">v1.0.7279</span>
-      <button onclick="checkUpdate()" id="updateBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">检查更新</button>
-      <button onclick="updateAction()" id="updateActionBtn" style="display:none;color:#fff;font-size:12px;padding:4px 12px;border:1px solid #a46d1f;border-radius:4px;background:#a46d1f;cursor:pointer;font-weight:bold">下载更新</button>
-      <button onclick="showChangelog(false)" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">📋 更新日志</button>
-      <button onclick="showPerfReport()" id="perfBtn" title="查看各进程内存占用，反馈卡顿时可附上" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">📊 性能自检</button>
-      <button onclick="mirrorDownload()" id="mirrorBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">⬇️ 镜像更新</button>
-      <label id="autoUpdateLabel" title="关闭后不再自动检查更新，手动「检查更新」仍可用" style="color:#69706b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none">
-        <input type="checkbox" id="autoUpdateToggle" checked style="accent-color:#a46d1f;cursor:pointer;margin:0;width:14px;height:14px">
-        自动更新
+    <div class="tools">
+      <span id="versionDisplay">v1.0.7279</span>
+      <button onclick="checkUpdate()" id="updateBtn">检查更新</button>
+      <button onclick="updateAction()" id="updateActionBtn" style="display:none">下载更新</button>
+      <button onclick="showChangelog(false)">更新日志</button>
+      <button onclick="showPerfReport()" id="perfBtn" title="查看各进程内存占用，反馈卡顿时可附上">性能自检</button>
+      <button onclick="mirrorDownload()" id="mirrorBtn">镜像更新</button>
+      <label id="autoUpdateLabel" title="关闭后不再自动检查更新，手动「检查更新」仍可用">
+        <input type="checkbox" id="autoUpdateToggle" checked>自动更新
       </label>
+      <a href="设置.html" style="color:#43301a;font-size:12px">设置 / 自定义启动台</a>
     </div>
-    <div id="updateMsg" style="margin-top:6px;font-size:12px"></div>
-  </div>
+    <div id="updateMsg"></div>
   </div>
 </div>
+
 <script src="bug-report.js"></script>
 <script src="changelog.js"></script>
 <script>
@@ -480,5 +512,59 @@ function showUpdateMsg(data) {
 </script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
+<script>window.__guiNoNav = true;</script>
+<script src="guild-ui.js"></script>
+<script>
+/* 启动台渲染：从 SnowdGuild 配置生成柜台与告示板（阶段 B/C） */
+(function () {
+  var G = window.SnowdGuild;
+  if (!G) return;
+  var layout = G.getLayout();
+
+  function plankHtml(id) {
+    var c = G.catById(id);
+    if (!c) return '';
+    var href = (G.base + c.href).replace(/\\/g, '/');
+    return '<a class="plank" href="' + href + '">' +
+      '<svg class="face" viewBox="0 0 400 100" preserveAspectRatio="none"><use href="#gui-plaque"/></svg>' +
+      '<svg class="pico" viewBox="0 0 24 24"><use href="#' + c.icon + '"/></svg>' +
+      '<span class="inner"><span class="txt"><span class="n">' + c.name + '</span><span class="d">' + c.desc + '</span></span></span>' +
+      '<svg class="go" viewBox="0 0 26 26"><use href="#gui-go"/></svg></a>';
+  }
+  document.getElementById('counterPlanks').innerHTML = layout.counter.map(plankHtml).join('');
+
+  function noteHtml(e) {
+    var pin = '<svg class="pin" viewBox="0 0 22 22"><use href="#gui-pin"/></svg>';
+    var fold = '<svg class="corner" viewBox="0 0 22 22"><use href="#gui-fold"/></svg>';
+    if (e.type === 'char') {
+      var parts = String(e.id).split('#'), name = parts[0], slot = parts[1] || 1;
+      var exists = G.listCharacters().some(function (c) { return c.name === name && c.slots.indexOf(parseInt(slot, 10)) >= 0; });
+      if (!exists) return '<a class="note off" href="#" data-off="1">' + pin +
+        '<div class="n">' + (e.label || name) + '</div><div class="d">这个角色存档已不存在</div></a>';
+      return '<a class="note" href="' + G.panelHref(name, slot, true) + '" data-char="' + name + '" data-slot="' + slot + '">' + pin +
+        '<span class="k">角色</span><div class="n">' + (e.label || name) + '</div>' +
+        '<div class="d">直达角色面板 · 存档位 ' + slot + '</div>' + fold + '</a>';
+    }
+    if (e.type === 'url') {
+      return '<a class="note" href="' + e.id + '" target="_blank" rel="noopener">' + pin +
+        '<span class="k">链接</span><div class="n">' + (e.label || e.id) + '</div><div class="d">' + e.id + '</div>' + fold + '</a>';
+    }
+    var c = G.catById(e.id); if (!c) return '';
+    var href = (G.base + c.href).replace(/\\/g, '/');
+    return '<a class="note" href="' + href + '">' + pin +
+      '<div class="n">' + c.name + '</div><div class="d">' + c.desc + '</div>' + fold + '</a>';
+  }
+  var boardHost = document.getElementById('boardNotes');
+  boardHost.innerHTML = layout.board.map(noteHtml).join('') +
+    '<a class="note addnew" href="设置.html">＋ 自定义这里显示什么</a>';
+
+  boardHost.addEventListener('click', function (ev) {
+    var a = ev.target.closest('a.note'); if (!a) return;
+    if (a.getAttribute('data-off') === '1') { ev.preventDefault(); G.toast('这个角色存档不存在了，去设置里换一个'); return; }
+    var nm = a.getAttribute('data-char');
+    if (nm) G.setRecentChar(nm, parseInt(a.getAttribute('data-slot') || '1', 10));
+  });
+})();
+</script>
 </body>
 </html>

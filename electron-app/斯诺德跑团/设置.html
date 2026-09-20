@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设置 · 斯诺德冒险者工会</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin:0; color:#2f2317; font-size:15px; line-height:1.55;
+    font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    background-color:#d0a97a;
+    background-image:
+      radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+      repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+      repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+      linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
+    background-attachment: scroll; min-height:100vh;
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:26px 18px 60px; }
+  .top { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .top a.back { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#3a2a13;
+    padding:7px 13px; border-radius:5px; border:1px solid #8a6234; background:linear-gradient(180deg,#e8cfa4,#d9b982);
+    font-size:13px; font-weight:700; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 3px 7px rgba(40,24,6,.3); }
+  .top h1 { margin:0; font-family:Georgia,"Songti SC",serif; font-size:26px; letter-spacing:.05em; color:#3a2a13; }
+  .top .ver { margin-left:auto; font-family:Consolas,monospace; font-size:12px; color:#5b411f; }
+
+  .card { background:linear-gradient(180deg,#fdf8ec,#f3e9d4); border-radius:8px; padding:16px 18px; margin-bottom:18px;
+    box-shadow: inset 0 2px 5px rgba(90,60,20,.28), 0 10px 22px rgba(50,30,8,.30), inset 0 0 0 1px rgba(120,85,35,.18); }
+  .card h2 { margin:0 0 4px; font-size:16px; color:#43301a; display:flex; align-items:center; gap:8px; }
+  .card h2 svg { width:18px; height:18px; color:#6b4a28; }
+  .card .hint { font-size:12px; color:#6d5942; margin:0 0 14px; }
+  .row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px dashed rgba(120,85,35,.28); }
+  .row:last-child { border-bottom:0; }
+  .row .name { flex:1; font-size:13.5px; font-weight:700; color:#43301a; }
+  .row .desc { font-size:11.5px; color:#6d5942; }
+  .btn { cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:700; color:#2a1c0a; padding:7px 13px; border-radius:5px;
+    border:1px solid #8a6234; background:linear-gradient(180deg,#e8cfa4,#d9b982);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 5px rgba(40,24,6,.28); }
+  .btn:hover { filter:brightness(1.05); }
+  .btn.ghost { background:transparent; border-color:rgba(120,85,35,.4); color:#5b411f; box-shadow:none; }
+  .btn.danger { border-color:#9c2f24; color:#7d2119; }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+
+  /* 柜台 4 格 */
+  .counter-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
+  .slot4 { position:relative; padding:12px 14px; border-radius:6px; background:linear-gradient(180deg,#fffdf6,#f4e9cf);
+    border:1px solid #c9ab74; box-shadow: inset 0 1px 0 #fff, 0 3px 7px rgba(60,38,10,.22); }
+  .slot4 .idx { position:absolute; right:10px; top:8px; font-family:Consolas,monospace; font-size:11px; color:#a8802f; }
+  .slot4 .n { font-size:14px; font-weight:800; }
+  .slot4 .d { font-size:11px; color:#6d5942; margin-top:3px; }
+  .slot4.empty { display:grid; place-items:center; min-height:74px; border-style:dashed; color:#8a6f45; font-size:12px; }
+
+  /* 告示板条目 */
+  .board-list { display:grid; gap:8px; }
+  .item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:5px;
+    background:linear-gradient(180deg,#fffdf6,#f6ecd3); border:1px solid #d9c8a4; box-shadow:0 3px 7px rgba(60,38,10,.2); }
+  .item .ico { width:20px; height:20px; flex:none; color:#6b4a28; }
+  .item .tx { flex:1; min-width:0; }
+  .item .n { font-size:13.5px; font-weight:800; }
+  .item .d { font-size:11px; color:#6d5942; }
+  .item .tag { font-size:10px; color:#a8802f; border:1px solid rgba(168,128,47,.5); border-radius:3px; padding:1px 5px; }
+  .item .ops { display:flex; gap:4px; }
+  .item .ops button { cursor:pointer; font-family:inherit; font-size:12px; padding:5px 8px; border-radius:4px;
+    border:1px solid rgba(120,85,35,.35); background:transparent; color:#5b411f; }
+  .item .ops button:hover { background:rgba(120,85,35,.1); }
+  .addbar { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+  select, input[type=text] { font-family:inherit; font-size:13px; padding:7px 10px; border-radius:5px;
+    border:1px solid #c9ab74; background:#fffdf6; color:#2f2317; }
+  .count { font-size:12px; color:#6d5942; margin-left:auto; }
+  .count b { color:#43301a; }
+  .tip { font-size:11.5px; color:#8a3a2a; margin-top:8px; }
+  .about { font-size:12.5px; color:#5b411f; line-height:1.7; }
+  .about code { font-family:Consolas,monospace; background:rgba(120,85,35,.1); padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="启动台.html">← 返回启动台</a>
+    <h1>设置</h1>
+    <span class="ver" id="verLine">v1.0.7279</span>
+  </div>
+
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24"><use href="#i-library"/></svg>启动台 · 柜台（4 个主入口）</h2>
+    <p class="hint">点下方入口池里的项目即可替换选中的格子；先点一个格子，再点入口池的项目。</p>
+    <div class="counter-grid" id="counterGrid"></div>
+    <div class="addbar"><span style="font-size:12px;color:#6d5942">入口池：</span><span id="poolCounter"></span></div>
+  </div>
+
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24"><use href="#i-target"/></svg>启动台 · 告示板</h2>
+    <p class="hint">最多 12 条。可以固定某个角色，一键直达他的角色面板。</p>
+    <div class="board-list" id="boardList"></div>
+    <div class="addbar">
+      <select id="pageSel"></select>
+      <button class="btn" id="addPage">＋ 加入告示板</button>
+      <select id="charSel"></select>
+      <button class="btn" id="addChar">＋ 固定某角色</button>
+      <input type="text" id="urlInput" placeholder="自定义链接 https://…" style="min-width:210px">
+      <input type="text" id="urlLabel" placeholder="显示名" style="width:110px">
+      <button class="btn" id="addUrl">＋ 自定义链接</button>
+    </div>
+    <div class="addbar">
+      <span class="count">已用 <b id="bCount">0</b> / 12</span>
+      <button class="btn ghost" id="expBtn">导出配置</button>
+      <button class="btn ghost" id="impBtn">导入配置</button>
+      <button class="btn danger" id="resetBtn">恢复默认</button>
+    </div>
+    <div class="tip" id="tip"></div>
+    <textarea id="ioBox" style="display:none;width:100%;height:130px;margin-top:10px;font-family:Consolas,monospace;font-size:12px;border-radius:5px;border:1px solid #c9ab74;background:#fffdf6;padding:8px"></textarea>
+  </div>
+
+  <div class="card">
+    <h2><svg viewBox="0 0 24 24"><use href="#i-gear"/></svg>偏好</h2>
+    <div class="row"><div class="name">音效<span class="desc"> · 界面与卡牌音效</span></div><button class="btn" id="soundBtn">切换</button></div>
+    <div class="row"><div class="name">主题<span class="desc"> · 日间 / 夜间</span></div><button class="btn" id="themeBtn">切换</button></div>
+    <div class="row"><div class="name">自动更新<span class="desc"> · 有新版本时提示（桌面端）</span></div><button class="btn" id="autoBtn">切换</button></div>
+    <div class="row"><div class="name">检查更新<span class="desc"> · 桌面端可用</span></div><button class="btn" id="checkBtn">立即检查</button></div>
+    <div class="row"><div class="name">性能自检<span class="desc"> · 桌面端可用</span></div><button class="btn" id="perfBtn">运行</button></div>
+  </div>
+
+  <div class="card" id="about">
+    <h2><svg viewBox="0 0 24 24"><use href="#i-info"/></svg>关于 · 许可</h2>
+    <div class="about">
+      <div><b>斯诺德跑团</b> · 冒险者工具集 · 版本 <code id="ver2">v1.0.7279</code></div>
+      <div>界面风格：冒险者工会（明亮木质）。按钮、图标、图钉、钉子等全部为本项目 <b>自绘 SVG</b>。</div>
+      <div>字体：系统字体（Inter / 苹方 / 微软雅黑）。</div>
+      <div>音频：Kenney 等 CC0 素材（详见 <code>docs/audio-licenses.md</code>）。</div>
+      <div>世界观插图：项目自有，仅用于背景与说明，不作为界面卡片素材。</div>
+      <div>数据全部保存在本机（localStorage），不上传。</div>
+    </div>
+  </div>
+</div>
+<script src="guild-ui.js"></script>
+<script>
+(function () {
+  window.__guiNoNav = true;                       // 设置页不挂载导航触发按钮
+  var G = window.SnowdGuild;
+  var layout = G.getLayout();
+  var picked = 0;                                  // 当前选中的柜台格
+  var $ = function (id) { return document.getElementById(id); };
+
+  function icon(id) { return '<svg class="ico" viewBox="0 0 24 24"><use href="#' + id + '"/></svg>'; }
+  function tip(msg, ok) { var t = $('tip'); t.textContent = msg || ''; t.style.color = ok ? '#3f6b3a' : '#8a3a2a'; }
+
+  /* ---------- 柜台 ---------- */
+  function renderCounter() {
+    var host = $('counterGrid');
+    host.innerHTML = [0, 1, 2, 3].map(function (i) {
+      var id = layout.counter[i]; var c = id ? G.catById(id) : null;
+      if (!c) return '<div class="slot4 empty" data-i="' + i + '">（空）点这里再选入口</div>';
+      return '<div class="slot4" data-i="' + i + '" style="' + (picked === i ? 'border-color:#a8802f;box-shadow:0 0 0 2px rgba(168,128,47,.35), inset 0 1px 0 #fff' : '') + '">' +
+        '<span class="idx">' + (i + 1) + '</span><div class="n">' + c.name + '</div><div class="d">' + c.desc + '</div></div>';
+    }).join('');
+    $('poolCounter').innerHTML = G.catalog.map(function (c) {
+      return '<button class="btn ghost" data-pid="' + c.id + '" style="margin:2px">' + c.name + '</button>';
+    }).join('');
+  }
+  $('counterGrid').addEventListener('click', function (e) {
+    var s = e.target.closest('[data-i]'); if (!s) return;
+    picked = parseInt(s.getAttribute('data-i'), 10); renderCounter();
+  });
+  $('poolCounter').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pid]'); if (!b) return;
+    var id = b.getAttribute('data-pid');
+    var at = layout.counter.indexOf(id);
+    if (at >= 0) {                       // 已在柜台 → 与选中格交换
+      var tmp = layout.counter[picked]; layout.counter[picked] = id; layout.counter[at] = tmp;
+    } else { layout.counter[picked] = id; }
+    G.setLayout(layout); layout = G.getLayout(); renderCounter(); tip('已更新柜台第 ' + (picked + 1) + ' 格', true);
+  });
+
+  /* ---------- 告示板 ---------- */
+  function entryView(e, i) {
+    if (e.type === 'char') {
+      var parts = String(e.id).split('#');
+      return { icon: 'i-character', n: e.label || '我的角色', d: '角色面板直达 · ' + parts[0] + ' 存档位 ' + parts[1], tag: '角色' };
+    }
+    if (e.type === 'url') return { icon: 'i-compass', n: e.label || e.id, d: e.id, tag: '链接' };
+    var c = G.catById(e.id) || { name: e.id, desc: '', icon: 'i-book' };
+    return { icon: c.icon, n: c.name, d: c.desc, tag: '页面' };
+  }
+  function renderBoard() {
+    var host = $('boardList');
+    if (!layout.board.length) { host.innerHTML = '<div class="item"><div class="tx"><div class="n">（空）</div><div class="d">从下方添加条目</div></div></div>'; }
+    else host.innerHTML = layout.board.map(function (e, i) {
+      var v = entryView(e, i);
+      return '<div class="item">' + icon(v.icon) + '<div class="tx"><div class="n">' + v.n + '</div><div class="d">' + v.d + '</div></div>' +
+        '<span class="tag">' + v.tag + '</span><div class="ops">' +
+        '<button data-op="up" data-i="' + i + '" title="上移">↑</button>' +
+        '<button data-op="down" data-i="' + i + '" title="下移">↓</button>' +
+        '<button data-op="del" data-i="' + i + '" title="移除">✕</button></div></div>';
+    }).join('');
+    $('bCount').textContent = layout.board.length;
+    $('addPage').disabled = layout.board.length >= G.boardMax;
+    $('addChar').disabled = layout.board.length >= G.boardMax;
+    $('addUrl').disabled = layout.board.length >= G.boardMax;
+  }
+  $('boardList').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-op]'); if (!b) return;
+    var i = parseInt(b.getAttribute('data-i'), 10), op = b.getAttribute('data-op');
+    if (op === 'del') layout.board.splice(i, 1);
+    else if (op === 'up' && i > 0) { var t = layout.board[i - 1]; layout.board[i - 1] = layout.board[i]; layout.board[i] = t; }
+    else if (op === 'down' && i < layout.board.length - 1) { var t2 = layout.board[i + 1]; layout.board[i + 1] = layout.board[i]; layout.board[i] = t2; }
+    G.setLayout(layout); layout = G.getLayout(); renderBoard();
+  });
+  function addEntry(e) {
+    if (layout.board.length >= G.boardMax) { tip('告示板最多 ' + G.boardMax + ' 条', false); return; }
+    layout.board.push(e); G.setLayout(layout); layout = G.getLayout(); renderBoard(); tip('已加入告示板', true);
+  }
+  $('addPage').addEventListener('click', function () { addEntry({ type: 'page', id: $('pageSel').value }); });
+  $('addChar').addEventListener('click', function () {
+    var v = $('charSel').value; if (!v) { tip('还没有角色存档，先去创建一个', false); return; }
+    var parts = v.split('#'); addEntry({ type: 'char', id: v, label: parts[0] + ' · 存档' + parts[1] });
+  });
+  $('addUrl').addEventListener('click', function () {
+    var u = $('urlInput').value.trim(), l = $('urlLabel').value.trim();
+    if (!/^https?:\/\//i.test(u)) { tip('请填写以 http(s):// 开头的链接', false); return; }
+    addEntry({ type: 'url', id: u, label: l || u });
+    $('urlInput').value = ''; $('urlLabel').value = '';
+  });
+  $('resetBtn').addEventListener('click', function () {
+    layout = G.resetLayout(); renderCounter(); renderBoard(); tip('已恢复默认布局', true);
+  });
+  $('expBtn').addEventListener('click', function () {
+    var box = $('ioBox'); box.style.display = 'block'; box.value = G.exportLayout(); box.select();
+    tip('已生成配置，复制走即可备份', true);
+  });
+  $('impBtn').addEventListener('click', function () {
+    var box = $('ioBox');
+    if (box.style.display === 'none' || !box.value.trim()) { box.style.display = 'block'; box.value = ''; box.placeholder = '把配置 JSON 粘贴到这里，再点一次「导入配置」'; tip('请粘贴配置后再点一次', true); return; }
+    var r = G.importLayout(box.value);
+    tip(r.msg, r.ok);
+    if (r.ok) { layout = G.getLayout(); renderCounter(); renderBoard(); }
+  });
+
+  /* ---------- 偏好 ---------- */
+  function paintPrefs() {
+    $('soundBtn').textContent = G.isMuted() ? '已静音（点击开启）' : '开启中（点击静音）';
+    $('themeBtn').textContent = G.isDark() ? '夜间（点击切日间）' : '日间（点击切夜间）';
+    var auto = null; try { auto = localStorage.getItem('_snowd_auto_update'); } catch (e) {}
+    $('autoBtn').textContent = (auto === '0') ? '已关闭' : '已开启（桌面端）';
+  }
+  $('soundBtn').addEventListener('click', function () { G.toggleMute(); paintPrefs(); });
+  $('themeBtn').addEventListener('click', function () { G.toggleTheme(); paintPrefs(); });
+  $('autoBtn').addEventListener('click', function () {
+    var cur = null; try { cur = localStorage.getItem('_snowd_auto_update'); } catch (e) {}
+    var next = (cur === '0') ? '1' : '0';
+    try { localStorage.setItem('_snowd_auto_update', next); } catch (e) {}
+    paintPrefs(); tip(next === '0' ? '已关闭自动更新提示' : '已开启自动更新提示', true);
+  });
+  $('checkBtn').addEventListener('click', function () {
+    if (typeof window.downloadUpdate === 'function' || window.electronAPI) { tip('桌面端已发起检查', true); }
+    else tip('检查更新仅在桌面端可用（网页版不可用）', false);
+  });
+  $('perfBtn').addEventListener('click', function () {
+    if (typeof window.perfReport === 'function' || window.electronAPI) { tip('桌面端已运行性能自检', true); }
+    else tip('性能自检仅在桌面端可用', false);
+  });
+
+  /* ---------- 初始化 ---------- */
+  $('pageSel').innerHTML = G.catalog.map(function (c) { return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('');
+  var chars = G.listCharacters();
+  $('charSel').innerHTML = chars.length
+    ? chars.map(function (c) { return c.slots.map(function (s) { return '<option value="' + c.name + '#' + s + '">' + c.name + ' · 存档' + s + '</option>'; }).join(''); }).join('')
+    : '<option value="">（暂无角色存档）</option>';
+  renderCounter(); renderBoard(); paintPrefs();
+})();
+</script>
+</body>
+</html>
