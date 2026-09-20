@@ -50,6 +50,9 @@ upload-gitee-exe.sh
 # Local entertainment assets (do not sync)
 仅供娱乐，不用同步至git/
 
+# 测试型更新：本地草案、预览截图与待评估素材（不入库，供内部/用户评审）
+测试型更新/
+
 # 反馈原始 JSON（不提交仓库，仅保留汇总报告）
 advisor/feedback/inbox/
 advisor/bug/inbox/
