@@ -224,3 +224,19 @@ D4 发布后回归（verify_all + 真机）
 | OSS 镜像 | latest.json / latest.yml 均为 1.0.8001；exe HTTP 200（100.68 MB） |
 | 移动端 | /mobile/version.json = 1.0.8001，core/poker 包已上传；**APK 按设计只走 GitHub Release**（OSS 禁止默认域名分发 apk） |
 | 发版前门禁 | verify_all **Clean 54/54 · Errors 0 · Tests 890P 0F · ALL CLEAN** |
+
+---
+
+### v1.0.8002（2026-09-20）· 桌面端 8 项反馈修复
+
+| 项 | 结果 |
+| --- | --- |
+| 修复内容 | ①启动台紧凑适配 ②对决白屏（打包路径）③分区标题对比度 2.95→4.54 ④ESC 统一回退 ⑤柜台改「规则手册」+旧配置迁移 ⑥向导页宽度跳变 ⑦功能导航改名+切换不关闭 ⑧首访更新卡片（另含轻微溢出收紧与减少动态效果支持） |
+| 提交 | `e3c7a95`（93 项）|
+| 标签 | `v1.0.8002` 已推送 |
+| CI | 3/3 成功 |
+| 门禁 | 新增 `verify_ui_8002_e2e.mjs`（**20 断言**）并接入 `verify_all`；全量 **Clean 54/54 · Errors 0 · Tests 890P 0F · ALL CLEAN**（含工会 UI 27P、懒渲染 32P、导航抽屉 114P） |
+| 产物 | GitHub Release 5 个：exe 100.67 MB、apk 2.74 MB、latest.yml、blockmap、builder-debug |
+| 完整性 | `latest.yml` size 105,564,964 与 Release 产物**精确一致** |
+| 镜像 | OSS `latest.json`/`latest.yml` = 1.0.8002，exe HTTP 200；移动端 `version.json` = 1.0.8002 |
+| 发版前截图 | `_scratch/verify/release/01..06`（启动台一屏 / 更新卡片 / 分区标题 / 向导宽度 / 功能导航面板 / 法师页） |
