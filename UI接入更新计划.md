@@ -207,3 +207,20 @@ D4 发布后回归（verify_all + 真机）
 | AI 顾问 | `header.hdr` 改木梁、聊天区改羊皮纸 |
 | 缺陷（自查） | 向导页 `body` 是 CSS Grid，注入的木梁被自动排版到页面底部（y=1568）导致"没有木梁却把页内标题隐藏" → 加 grid/flex 防护并撤回该页标记 |
 | 提交 | `58ce980` |
+
+---
+
+## 7. 发布记录
+
+### v1.0.8001（2026-09-20）· 冒险者工会界面风格
+
+| 项 | 结果 |
+| --- | --- |
+| 提交 | `1a51eff` bump: v1.0.8001（含 UI 工作 86 项）+ `f7fdd92` 文档 |
+| 标签 | `v1.0.8001` 已推送 |
+| CI | 3/3 成功：Build and Release Electron App / Deploy Web to Aliyun OSS / Deploy to GitHub Pages |
+| GitHub Release | 5 个产物：exe 100.68 MB、apk 2.74 MB、latest.yml、blockmap、builder-debug |
+| 完整性 | latest.yml 的 size 105,566,582 与 Release 产物字节数**精确一致**，sha512 齐备 |
+| OSS 镜像 | latest.json / latest.yml 均为 1.0.8001；exe HTTP 200（100.68 MB） |
+| 移动端 | /mobile/version.json = 1.0.8001，core/poker 包已上传；**APK 按设计只走 GitHub Release**（OSS 禁止默认域名分发 apk） |
+| 发版前门禁 | verify_all **Clean 54/54 · Errors 0 · Tests 890P 0F · ALL CLEAN** |
