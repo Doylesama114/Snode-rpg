@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   downloadUpdate: () => ipcRenderer.send('download-update'),
   installUpdate: () => ipcRenderer.send('install-update'),
   getAutoUpdate: () => ipcRenderer.invoke('get-auto-update'),
+  perfReport: () => ipcRenderer.invoke('perf-report'),
   setAutoUpdate: (value) => ipcRenderer.send('set-auto-update', value),
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (_event, data) => callback(data));

@@ -158,6 +158,7 @@ html.dark body{background:#1a1d20;color:#e8e6e3}html.dark h1{color:#e8e6e3}html.
       <button onclick="checkUpdate()" id="updateBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">检查更新</button>
       <button onclick="updateAction()" id="updateActionBtn" style="display:none;color:#fff;font-size:12px;padding:4px 12px;border:1px solid #a46d1f;border-radius:4px;background:#a46d1f;cursor:pointer;font-weight:bold">下载更新</button>
       <button onclick="showChangelog(false)" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">📋 更新日志</button>
+      <button onclick="showPerfReport()" id="perfBtn" title="查看各进程内存占用，反馈卡顿时可附上" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">📊 性能自检</button>
       <button onclick="mirrorDownload()" id="mirrorBtn" style="color:#69706b;font-size:12px;padding:4px 10px;border:1px solid #d8d2c4;border-radius:4px;background:transparent;cursor:pointer">⬇️ 镜像更新</button>
       <label id="autoUpdateLabel" title="关闭后不再自动检查更新，手动「检查更新」仍可用" style="color:#69706b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none">
         <input type="checkbox" id="autoUpdateToggle" checked style="accent-color:#a46d1f;cursor:pointer;margin:0;width:14px;height:14px">
@@ -322,6 +323,24 @@ function mirrorDownload() {
       btn.textContent = origText; btn.disabled = false;
       msg.style.color='#c62828'; msg.textContent='网络连接失败，请稍后重试';
     });
+}
+
+// 性能自检：把各进程内存/CPU 汇总显示（反馈卡顿时可直接截图给作者）
+function showPerfReport() {
+  var msg = document.getElementById('updateMsg');
+  if (!msg) return;
+  if (!window.electronAPI || !window.electronAPI.perfReport) { msg.style.color = '#69706b'; msg.textContent = '性能自检仅桌面端可用'; return; }
+  msg.style.color = '#69706b';
+  msg.textContent = '正在采集进程数据...';
+  window.electronAPI.perfReport().then(function (r) {
+    if (!r || !r.ok) { msg.style.color = '#c62828'; msg.textContent = '采集失败：' + ((r && r.error) || '未知错误'); return; }
+    var parts = r.processes.map(function (p) { return p.type + ' ' + p.memoryMB + 'MB'; }).join(' · ');
+    msg.style.color = r.totalMB > 800 ? '#c62828' : '#2e7d32';
+    msg.textContent = 'v' + r.version + '（Electron ' + r.electron + ' / Chromium ' + r.chrome + '）｜合计 ' + r.totalMB + ' MB｜' + parts;
+  }).catch(function (e) {
+    msg.style.color = '#c62828';
+    msg.textContent = '采集失败：' + (e && e.message ? e.message : e);
+  });
 }
 
 function compareVersions(a, b) {

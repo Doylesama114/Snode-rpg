@@ -9013,9 +9013,10 @@ function importSaves(){
       var urlParams=new URLSearchParams(location.search);
       var cn=urlParams.get('char');var sl=parseInt(urlParams.get('slot'))||1;
       var key='_snowd_last_save_'+cn+'_'+sl;
+      // 只读比较：此前这里会把当前（未保存的）状态写回基线，
+      // 导致第二次判断永远返回 false（ESC 返回时不再提示未保存 → 可能丢改动）
       var prev=localStorage.getItem(key);
       var curr=JSON.stringify(state);
-      localStorage.setItem(key,curr);
       return prev!==null&&prev!==curr;
     }catch(e){return false;}
   }

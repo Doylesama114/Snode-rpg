@@ -1,4 +1,4 @@
-﻿appId: com.snowd.skilltree
+appId: com.snowd.skilltree
 productName: "斯诺德跑团"
 directories:
   output: dist
@@ -11,6 +11,7 @@ files:
   - spawn_monkey_patch.js
   - sync-check.js
   - 职业页/**/*
+  - "!职业页/_monk_test_top.html"      # 一次性测试页，不能进安装包
   - 斯诺德跑团/**/*
   - poker-game/**/*
 extraFiles:

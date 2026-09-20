@@ -349,6 +349,32 @@ ipcMain.on('set-auto-update', (event, value) => {
 });
 ipcMain.handle('get-auto-update', () => getAutoUpdateEnabled());
 
+// IPC: 性能自检 —— 汇总各进程内存/CPU，便于用户在反馈卡顿时附带真实数据
+ipcMain.handle('perf-report', () => {
+  try {
+    const metrics = app.getAppMetrics();
+    const processes = metrics.map(function (m) {
+      return {
+        pid: m.pid,
+        type: m.type,
+        memoryMB: Math.round((((m.memory && m.memory.workingSetSize) || 0) / 1024)),
+        cpuPercent: m.cpu ? Math.round(m.cpu.percentCPUUsage * 10) / 10 : 0,
+      };
+    });
+    const totalMB = processes.reduce(function (a, p) { return a + p.memoryMB; }, 0);
+    return {
+      ok: true,
+      totalMB: totalMB,
+      processes: processes,
+      version: app.getVersion(),
+      electron: process.versions.electron,
+      chrome: process.versions.chrome,
+    };
+  } catch (err) {
+    return { ok: false, error: err.message || String(err) };
+  }
+});
+
 // IPC: 镜像更新 — 直接 OSS 优先全自动下载安装
 ipcMain.on('check-update-gitee', () => {
   checkForUpdatesViaGenericFeed({ sources: ['oss', 'github'], autoFallback: false, phase: 'mirror' });
@@ -711,11 +737,27 @@ ipcMain.handle('advisor-catalog', async (_event, payload) => {
   }
 });
 
-function injectPageScript(relativePath) {
-  const fs = require('fs');
-  const full = path.join(__dirname, relativePath);
-  if (!fs.existsSync(full)) return;
-  mainWindow.webContents.executeJavaScript(fs.readFileSync(full, 'utf8')).catch(() => {});
+/** 注入脚本内容缓存：这些脚本每次导航都要注入，避免重复读盘 */
+const PAGE_SCRIPT_CACHE = new Map();
+function readPageScript(relativePath) {
+  if (PAGE_SCRIPT_CACHE.has(relativePath)) return PAGE_SCRIPT_CACHE.get(relativePath);
+  let code = '';
+  try {
+    const full = path.join(__dirname, relativePath);
+    if (fs.existsSync(full)) code = fs.readFileSync(full, 'utf8');
+  } catch (err) {
+    console.warn('[注入] 读取失败 ' + relativePath + ': ' + err.message);
+    code = '';
+  }
+  PAGE_SCRIPT_CACHE.set(relativePath, code);
+  return code;
+}
+/** 合并注入：一次 executeJavaScript 代替多次；脚本之间用换行分隔，互不影响作用域 */
+function injectPageScripts(relativePaths) {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  const code = relativePaths.map(readPageScript).filter(Boolean).join('\n;\n');
+  if (!code) return;
+  mainWindow.webContents.executeJavaScript(code).catch(() => {});
 }
 
 /**
@@ -889,9 +931,11 @@ function createWindow() {
       '(function(){try{if(window.electronAPI){window.alert=function(m){window.electronAPI.jsAlert(m);};window.confirm=function(m){return !!window.electronAPI.jsConfirm(m);};}}catch(e){}})();'
     ).catch(() => {});
     if (url.includes('poker-game')) return;
-    injectPageScript(path.join('斯诺德跑团', 'bug-report.js'));
-    injectPageScript(path.join('斯诺德跑团', 'advisor-tips.js'));
-    injectPageScript(path.join('斯诺德跑团', 'advisor-widget.js'));
+    injectPageScripts([
+      path.join('斯诺德跑团', 'bug-report.js'),
+      path.join('斯诺德跑团', 'advisor-tips.js'),
+      path.join('斯诺德跑团', 'advisor-widget.js'),
+    ]);
   });
 }
 
