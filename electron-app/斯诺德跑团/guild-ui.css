@@ -445,3 +445,28 @@ html.dark.gui-panel-page {
   --soft:#242830; --accent:#d4a54a; --accent-hover:#e8be5a;
   --green:#4dab8a; --red:#e05555; --blue:#5a8fd0;
 }
+
+/* ===== 向导页容器拉伸（原来宽度由当前步骤内容决定 → 换步会跳变） ===== */
+html.gui-wizard-page body.gui-page .container { width:100% !important; max-width:none !important;
+  margin:0 !important; justify-self:stretch !important; align-self:start !important; }
+html.gui-wizard-page body.gui-page .card-grid { grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)) !important; }
+
+/* ===== 深底浅字：统一让木牌/木梁上的文字足够亮 ===== */
+body.gui-page .section-title, body.gui-page .section-title .st-cn { color:#f6eeda !important; }
+body.gui-page .section-title .st-lat { color:#e6c37c !important; }
+body.gui-page h1 { color:#241a0d !important; }
+
+/* ===== 尊重系统的"减少动态效果" ===== */
+@media (prefers-reduced-motion: reduce) {
+  body.gui-page *, body.gui-page *::before, body.gui-page *::after {
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}
+
+/* ===== 页脚与容器底部收紧（桌面 900 高下的轻微溢出） ===== */
+body.gui-page .container, body.gui-page .wrap { padding-bottom:26px !important; }
+body.gui-page .footer { margin-top:14px !important; }
+
+/* ===== 深底浅字：标题栏统一加深（保证米色文字对比度 ≥4.5） ===== */
+body.gui-page .section-title { background: linear-gradient(180deg,#3f2711,#2a1a0a) !important; }
+body.gui-page .gui-sec-head .t, body.gui-page .section-title .st-cn { color:#f6eeda !important; }

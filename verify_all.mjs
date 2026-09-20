@@ -127,6 +127,21 @@ try {
 console.log(guildOK ? '✅ 工会 UI 共享层通过' : '❌ 工会 UI 共享层失败');
 totalErrors += guildOK ? 0 : 1;
 
+// v1.0.8002 UI 修复验收（启动台适配/对决入口/对比度/ESC/柜台默认/向导宽度/面板不误关）
+console.log('\n=== UI 修复验收（v1.0.8002） ===');
+let ui8002OK = true;
+try {
+  let u8Out = spawnSync('node', [join(BASE, 'verify_ui_8002_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (u8Out.stdout) console.log(u8Out.stdout.trim().slice(-1200));
+  if (u8Out.stderr) console.error(u8Out.stderr.trim());
+  if (u8Out.status !== 0) ui8002OK = false;
+} catch (e) {
+  ui8002OK = false;
+  console.log('❌ UI 修复验收执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(ui8002OK ? '✅ UI 修复验收通过' : '❌ UI 修复验收失败');
+totalErrors += ui8002OK ? 0 : 1;
+
 // 移动端职业页导航抽屉（法师/魔契师等窄屏目录可用性）
 console.log('\n=== 移动端导航抽屉 ===');
 let navOK = true;

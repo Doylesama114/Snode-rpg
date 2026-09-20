@@ -46,20 +46,30 @@
     { id: 'library',   name: '资料库',     desc: '背景 / 种族 / 世界观词条',      icon: 'i-library',   href: '资料库.html' },
     { id: 'rulebook',  name: '规则手册',   desc: '基础规则 + 世界观架构',         icon: 'i-book',      href: 'help.html' },
     { id: 'items',     name: '物资大全',   desc: '装备、消耗品与价格',            icon: 'i-items',     href: '物资大全.html' },
-    { id: 'duel',      name: '斯诺德对决', desc: '回合制卡牌对战 · 支持联网',     icon: 'i-dice',      href: '../electron-app/poker-game/index.html' },
+    { id: 'duel',      name: '斯诺德对决', desc: '回合制卡牌对战 · 支持联网',     icon: 'i-dice',      href: '__POKER__' },
     { id: 'advisor',   name: 'AI 顾问',    desc: '车卡推荐与规则问答',            icon: 'i-character', href: '顾问.html' },
   ];
   function catById(id) { for (var i = 0; i < CATALOG.length; i++) if (CATALOG[i].id === id) return CATALOG[i]; return null; }
+  /** 斯诺德对决入口：打包/镜像包用 ../poker-game；仓库 file:// 开发用 ../electron-app/poker-game（hash 路由必须带 #/） */
+  function pokerHref() {
+    if (window.electronAPI) return '../poker-game/index.html#/';
+    if (location.pathname.indexOf('/electron-app/') !== -1) return '../poker-game/index.html#/';
+    if (location.protocol === 'file:') return '../electron-app/poker-game/index.html#/';
+    return '../poker-game/index.html#/';
+  }
+
   function catHref(entry) {
+    if (entry.id === 'duel') return BASE + pokerHref();
     if (entry.type === 'url') return entry.id;
     var c = catById(entry.id); return c ? (BASE + c.href).replace(/\\/g, '/') : '#';
   }
 
   /* ---------------- ④ 启动台布局配置 ---------------- */
+  var LAYOUT_V = 2;   // v2：柜台默认由 library 改为 rulebook（避免与告示板重复）
   var LAYOUT_KEY = 'snowd_launcher_layout';
   var DEFAULT_LAYOUT = {
     v: 1,
-    counter: ['home', 'classes', 'library', 'duel'],       /* 柜台：4 个主入口 */
+    counter: ['home', 'classes', 'rulebook', 'duel'],       /* 柜台：4 个主入口 */
     board: [                                                /* 告示板：≤12 条 */
       { type: 'page', id: 'chargen' }, { type: 'page', id: 'upload' },
       { type: 'page', id: 'select' },   { type: 'page', id: 'library' },
@@ -88,16 +98,23 @@
   function getLayout() {
     var raw = null;
     try { raw = JSON.parse(localStorage.getItem(LAYOUT_KEY) || 'null'); } catch (e) { raw = null; }
-    if (!raw || raw.v !== 1) return clone(DEFAULT_LAYOUT);
-    var out = { v: 1, counter: [], board: [] };
+    if (!raw || (raw.v !== 1 && raw.v !== 2)) return clone(DEFAULT_LAYOUT);
+    var out = { v: LAYOUT_V, counter: [], board: [] };
     (raw.counter || []).forEach(function (id) { if (catById(id) && out.counter.length < 4 && out.counter.indexOf(id) < 0) out.counter.push(id); });
     while (out.counter.length < 4) { var d = DEFAULT_LAYOUT.counter[out.counter.length]; if (out.counter.indexOf(d) < 0) out.counter.push(d); else break; }
     (raw.board || []).forEach(function (e) { var s = saneEntry(e); if (s && out.board.length < BOARD_MAX) out.board.push(s); });
     if (!out.board.length) out.board = clone(DEFAULT_LAYOUT.board);
+    /* v1→v2 迁移：柜台与告示板同时出现「资料库」时，柜台改为「规则手册」 */
+    if (raw.v === 1) {
+      var boardHasLib = out.board.some(function (e) { return e.id === 'library'; });
+      var ci = out.counter.indexOf('library');
+      if (boardHasLib && ci >= 0) out.counter[ci] = 'rulebook';
+      try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(out)); } catch (e) {}
+    }
     return out;
   }
   function setLayout(l) {
-    var out = { v: 1, counter: [], board: [] };
+    var out = { v: LAYOUT_V, counter: [], board: [] };
     ((l && l.counter) || []).forEach(function (id) { if (catById(id) && out.counter.length < 4 && out.counter.indexOf(id) < 0) out.counter.push(id); });
     ((l && l.board) || []).forEach(function (e) { var s = saneEntry(e); if (s && out.board.length < BOARD_MAX) out.board.push(s); });
     try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(out)); } catch (e) {}
@@ -243,6 +260,7 @@
   function skinBoot() {
     if (!window.__guiSkin) return;
     document.body.classList.add("gui-page");
+    if (window.__guiWizard) document.documentElement.classList.add("gui-wizard-page");
     /* 木梁已显示页面名：若页内 h1 与它重复（忽略 emoji/符号），隐藏以免重复 */
     if (!window.__guiBeam) return;
     var norm = function (s) { return String(s || "").replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF\uFE0F\s]/gu, ""); };
@@ -271,8 +289,8 @@
     var trigger = el('button', 'gui-trigger');
     trigger.type = 'button';
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.title = '工会 · 系统跳转（ESC 收起）';
-    trigger.innerHTML = '<svg class="gui-crest" viewBox="0 0 32 32"><use href="#gui-crest"/></svg><span>工会</span>';
+    trigger.title = '功能导航 · 系统跳转（ESC 收起）';
+    trigger.innerHTML = '<svg class="gui-crest" viewBox="0 0 32 32"><use href="#gui-crest"/></svg><span>功能导航</span>';
 
     var wrap = null, scrim = null, drop = null, open = false, built = false, cur = 'character';
 
@@ -298,7 +316,7 @@
       sys.ids.forEach(function (id) {
         var c = catById(id); if (!c) return;
         if (out.some(function (x) { return x.n === c.name; })) return;
-        out.push({ n: c.name, d: c.desc, k: '', href: (BASE + c.href).replace(/\\/g, '/'), icon: c.icon });
+        out.push({ n: c.name, d: c.desc, k: '', href: catHref({ id: c.id }).replace(/\\/g, '/'), icon: c.icon });
       });
       return out;
     }
@@ -310,7 +328,7 @@
         '<div class="gui-scrim" hidden></div>' +
         '<div class="gui-drop" hidden><div class="gui-panel">' +
           '<div class="gui-head"><svg class="gui-hmark" viewBox="0 0 32 32"><use href="#gui-crest"/></svg>' +
-            '<span class="gui-hn">冒险者工会</span><span class="gui-hl">ALL SYSTEMS</span><span class="gui-sp"></span>' +
+            '<span class="gui-hn">功能导航</span><span class="gui-hl">ALL SYSTEMS</span><span class="gui-sp"></span>' +
             '<span class="gui-hv">v1.0.7279</span><button class="gui-x" type="button" title="收起">✕</button></div>' +
           '<div class="gui-body"><div class="gui-chips"></div><div class="gui-notes"></div>' +
             '<div class="gui-sets"><span class="gui-lb">设置</span><span class="gui-setbtns"></span></div></div>' +
@@ -375,6 +393,8 @@
       if (!bottom || bottom < 8) bottom = 56;
       drop.style.paddingTop = Math.max(6, bottom + 6) + 'px';
     }
+    navApi.isOpen = function () { return !!open; };
+    navApi.close = function () { setOpen(false); };
     function setOpen(v) {
       open = v; trigger.setAttribute('aria-expanded', v ? 'true' : 'false');
       if (v) { build(); render(); place(); }
@@ -382,9 +402,14 @@
       if (drop) drop.hidden = !v;
     }
     trigger.addEventListener('click', function (e) { e.stopPropagation(); setOpen(!open); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setOpen(false); });
+    /* ESC 由统一的 escBoot 处理（见下），此处不再单独注册 */
     document.addEventListener('click', function (e) {
-      if (open && wrap && !e.target.closest('#guiRoot') && !e.target.closest('.gui-trigger')) setOpen(false);
+      if (!open || !wrap) return;
+      /* 切换系统时重建 innerHTML 会让 e.target 脱离文档，closest 会误判为点击面板外 */
+      var path = (e.composedPath && e.composedPath()) || [];
+      if (path.indexOf(wrap) >= 0 || path.indexOf(trigger) >= 0) return;
+      if (e.target && e.target.closest && (e.target.closest('#guiRoot') || e.target.closest('.gui-trigger'))) return;
+      setOpen(false);
     });
     window.addEventListener('resize', function () { if (open) place(); });
 
@@ -467,6 +492,45 @@
     if (t === 'light' && isDark()) document.documentElement.classList.remove('dark');
   }
 
+  /* ---------------- ⑪ 统一 ESC：关面板 → 页面自处理 → 回上一级 ---------------- */
+  var navApi = { isOpen: function () { return false; }, close: function () {} };
+  var PARENTS = {
+    '角色创建页.html': '主页.html', '角色选择页.html': '主页.html',
+    '角色存档页.html': '主页.html', '上传角色.html': '主页.html',
+    '资料库.html': '启动台.html', '物资大全.html': '启动台.html', '顾问.html': '启动台.html',
+    'help.html': '启动台.html', '帮助.html': '启动台.html', '主页.html': '启动台.html',
+  };
+  function lastSegment(p) { var a = String(p || '').replace(/[?&#].*$/, '').split('/'); return a[a.length - 1] || ''; }
+  function parentTarget() {
+    var seg = lastSegment(location.pathname);
+    if (location.pathname.indexOf('/职业页/') >= 0) return seg === '首页.html' ? '../斯诺德跑团/启动台.html' : '首页.html';
+    if (PARENTS[seg]) return PARENTS[seg];
+    return BASE + '启动台.html';
+  }
+  function visibleOverlay() {
+    var sels = ['#modalOverlay', '.ui-dialog', '.ov-viewer', '.nav-drawer.open', '.nav-overlay.show',
+      '#searchOverlay:not(.hidden)', '.ctx-menu:not(.hidden)', '.learn-panel.show'];
+    for (var i = 0; i < sels.length; i++) {
+      var e = document.querySelector(sels[i]);
+      if (e && e.offsetParent !== null && e.getBoundingClientRect().width > 40) return true;
+    }
+    return false;
+  }
+  function escBoot() {
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' && e.keyCode !== 27) return;
+      if (navApi.isOpen()) { navApi.close(); return; }        // ① 关功能导航面板
+      if (e.defaultPrevented) return;                          // ② 页面已处理
+      setTimeout(function () {                                 // 让同一次派发里的其它处理器先跑完
+        if (e.defaultPrevented || navApi.isOpen() || visibleOverlay()) return;
+        var t = parentTarget();
+        /* 优先用确定性的父级映射；仅当来源是应用内同源页面时才用 history.back()（file:// 下 referrer 为空 → 走映射） */
+        var sameOriginRef = document.referrer && location.origin && location.origin !== 'null' && document.referrer.indexOf(location.origin) === 0;
+        if (sameOriginRef && history.length > 1) { history.back(); } else if (t) { location.href = t; }
+      }, 0);
+    });
+  }
+
   /* ---------------- 自动执行 ---------------- */
   function boot() {
     injectCss(); injectSprite();
@@ -474,6 +538,7 @@
     if (window.__guiNoNav) return;          // 启动台/设置页可关闭导航层（仅关导航）
     beamBoot();
     skinBoot();
+    escBoot();
     navBoot();
     backFix();
   }
