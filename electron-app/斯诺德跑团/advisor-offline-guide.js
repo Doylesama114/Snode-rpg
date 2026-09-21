@@ -44,7 +44,7 @@
   function render() {
     if (resolveApi()) return;
     if (document.getElementById('advOfflineGuide')) return;
-    var host = pick(['#messages', '.messages', '.msg-list', '.chat-body', '.body', '.app']);
+    var host = pick(['.msgs', '#messages', '.messages', '.msg-list', '.chat-body', '.app']);
     if (!host) return;
     var brief = buildBrief();
     var text = (brief ? '【我的角色】\n' + brief + '\n\n' : '') + '【我的问题】\n（在这里写你的问题，例如：战士 3 级怎么加点？）';
