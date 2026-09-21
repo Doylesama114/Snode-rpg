@@ -457,5 +457,37 @@ renderBgPage();
 </script>
 <script>window.__guiBeam="资料库";; window.__guiSkin = true;</script>
 <script src="guild-ui.js"></script>
+<style>
+/* ===== 手机端优化（v1.0.8007）：给底部跳转条留位 + 放大正文与点击目标 + 表格滑动 ===== */
+@media (max-width: 640px) {
+  html { scroll-behavior: smooth; }
+  body { padding: 12px 10px 76px !important; }
+  h1 { font-size: 22px; margin: 8px 0 4px; }
+  .sub { font-size: 14px; margin-bottom: 12px; }
+  /* 分类/工作表胶囊：整行更宽、点得准 */
+  .tabs { gap: 6px; margin: 10px 0 14px; }
+  .tab { padding: 11px 12px !important; font-size: 14.5px; flex: 1 1 auto; text-align: center; }
+  .sheetTab, .sheetTabs .tab { padding: 10px 12px; font-size: 13.5px; }
+  /* 工具栏搜索框占满 */
+  .toolbar { flex-wrap: wrap; gap: 8px; }
+  .toolbar input { min-width: 0 !important; width: 100%; font-size: 15px; }
+  /* 宽表：容器内横向滑动，触屏惯性 */
+  .tableBox { max-height: 62vh; border-radius: 8px; -webkit-overflow-scrolling: touch; }
+  table.flow { font-size: 13px; }
+  .meta { font-size: 13px; }
+  /* 列表 / 表单 / 说明文字放大 */
+  .bgListItem { font-size: 15px; padding: 9px 10px; }
+  .bgSide input { font-size: 15px; padding: 10px; }
+  .bgPageTitle { font-size: 20px; }
+  .kvRow { grid-template-columns: 92px 1fr !important; font-size: 15px; }
+  .card, .panel { padding: 14px !important; }
+  [id] { scroll-margin-top: 14px; }
+  /* 底部「跳转」条：不被内容压住、点击目标更大 */
+  .flowNav { bottom: 8px; max-height: 46vh; box-shadow: 0 8px 22px rgba(40, 24, 6, .22); }
+  .flowNavHead { padding: 11px 12px; font-size: 14px; }
+  .flowNavHead #flowNavTitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .flowNavItem { padding: 10px 10px; font-size: 14.5px; }
+}
+</style>
 </body>
 </html>
