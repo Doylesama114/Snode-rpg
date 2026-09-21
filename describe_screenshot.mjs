@@ -29,6 +29,16 @@ const prompt = `你是 UI 质检员。分析这张 RPG 角色面板/商店界面
 - [严重度: 高/中/低] 位置（如"商店列表区"）: 问题描述
 逐条列出，不要泛泛而谈。`;
 
+/* 百炼（DashScope）端点：可用 DASHSCOPE_BASE_URL 覆盖（如业务空间专属域名）
+ * 例：DASHSCOPE_BASE_URL=https://{workspaceId}.{region}.maas.aliyuncs.com/compatible-mode/v1
+ * 不配置则沿用共享域名（2026-09-30 起进入维护，现有服务仍可用） */
+const DASHSCOPE_BASE = (process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1').replace(/\/+$/, '');
+
+if (process.argv.includes('--print-endpoint')) {
+  console.log(DASHSCOPE_BASE + '/chat/completions');
+  process.exit(0);
+}
+
 function hasQwenKey() { return !!process.env.QWEN_API_KEY; }
 
 function runOpencode() {
@@ -49,7 +59,7 @@ async function runQwen() {
   const b64 = fs.readFileSync(imgPath).toString('base64');
   const ext = path.extname(imgPath).slice(1).toLowerCase() || 'png';
   const mime = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : ext === 'webp' ? 'image/webp' : 'image/png';
-  const res = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+  const res = await fetch(DASHSCOPE_BASE + '/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({
