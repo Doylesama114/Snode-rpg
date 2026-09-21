@@ -93,6 +93,8 @@ def looks_like_skill_name(text: str) -> bool:
         return False
     if is_section_break(t) or is_boilerplate_line(t):
         return False
+    if t.startswith(("·", "★")) or re.match(r"^\d+[.、]", t):
+        return False   # 要点行（·/★/数字.）属于上一条技能的效应列表，不是技能名
     if t.startswith("-----"):
         return False
     if t.startswith("你的") and (LEVEL_RE.match(t) or LEVEL_RE2.match(t)):

@@ -258,11 +258,15 @@ def load_skills() -> tuple[list[dict], dict[str, dict]]:
             fields["标识"] = "".join("●" for _ in mark_dots)
         keyword = fields.get("关键词", "")
         tags: list[str] = []
-        for t in tags_from_keywords(keyword):
+        # 行为关键词 + **全部原始关键词**（含 法术/战技/天赋/戏法/短休/长休 等类型词）
+        for t in list(tags_from_keywords(keyword)) + [x.strip() for x in re.split(r"[.。/，,]", keyword) if x.strip()]:
             for part in re.split(r"[/,，]", t):
                 part = part.strip()
                 if part and part not in tags:
                     tags.append(part)
+        ktype = e.get("type") or ""
+        if ktype and ktype not in tags:
+            tags.insert(0, ktype)
         skill = {
             "id": sid,
             "name": e["name"],
