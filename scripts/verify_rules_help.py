@@ -51,13 +51,35 @@ for sid, sheet in [("s1", "检定规则"), ("s2", "战斗规则"), ("s-adventure
     cols = max((len(re.findall(r"<t[dh]", tr)) for tr in re.findall(r"<tr>(.*?)</tr>", body, re.S)), default=0)
     ok("%s 空单元比 ≤0.25（%.2f）" % (sheet, ratio), ratio <= 0.25, "%.2f" % ratio)
     ok("%s 最大列数 ≤8（%d）" % (sheet, cols), cols <= 8, str(cols))
-    if sheet in ("其他规则", "冒险规则"):
-        ok("%s 已线性化（无表格）" % sheet, "<table" not in body)
-    else:
+    if sheet not in ("其他规则", "冒险规则"):
         ok("%s 保留合并单元格（colspan）" % sheet, "colspan" in body)
-oks = len(re.findall(r"<h3>", section("s10")))
-ok("其他规则线性化（h3 ≥10，实际 %d）" % oks, oks >= 10)
+# 其他规则已改为三列表，h3 断言由「表格化」区块覆盖
 wb.close()
+
+print()
+print('▌表格化（v1.0.8010）')
+expect = {
+    "s1": ("检定规则", 4),
+    "s2": ("战斗规则", 4),
+    "s-adventure": ("冒险规则", 2),
+    "s10": ("其他规则", 1),
+}
+for sid, (name, need) in expect.items():
+    body = section(sid)
+    tables = body.count("<table")
+    ok("%s 表格数 ≥%d（实际 %d）" % (name, need, tables), tables >= need, str(tables))
+    ok("%s 每张表都有表头行（<th>）" % name, tables == 0 or body.count("<th") >= tables, "th=%d" % body.count("<th"))
+oth = section("s10")
+rows = len(re.findall(r"<tr>", oth))
+ok("其他规则 条目行 ≥20（实际 %d）" % rows, rows >= 20, str(rows))
+ok("其他规则 为三列表（col-idx/条目/内容）", "col-idx" in oth and "条目" in oth and "内容" in oth)
+bat = section("s2")
+ok("战斗规则 含先攻席位表（先锋席/殿军席）", "先锋席" in bat and "殿军席" in bat)
+ok("战斗规则 含敌人阈值表", "敌人阈值" in bat)
+chk = section("s1")
+ok("检定规则 含事件检定与变体检定表", "事件检定" in chk and "可选变体检定规则" in chk)
+adv = section("s-adventure")
+ok("冒险规则 含权重占比与时刻表两张表", "权重占比" in adv and "时刻表" in adv)
 print('\n' + '─' * 46)
 print(('✅ 规则章节验收通过' if fail_n == 0 else '❌ 有失败项') + '  %dP / %dF' % (pass_n, fail_n))
 sys.exit(0 if fail_n == 0 else 1)
