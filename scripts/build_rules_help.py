@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""从 冒险者基础规则.xlsx 生成 help.html 的规则章节（内容照原文，排版对齐手写章节）。
+"""从 冒险者基础规则.xlsx 生成 help.html 的规则章节。
 
-v3 = 逐节模板（表格化，修复 v1.0.8009 线性化导致的"无表格"问题）：
-  · 手写章节范式：<h3>分组</h3> + <table><tr><th>名称</th><th>内容</th></tr><tr><td><b>项</b></td><td>正文<br>续行</td></tr></table>
-  · 检定规则 / 战斗规则：合并单元格→colspan，空列压缩，首行转 <th> 表头（≥4 张表）
-  · 冒险规则：两张表（权重占比 / 时刻表进度）+「荒野之中」小节
-  · 其他规则：一张三列表（# | 条目 | 内容），25 行
-用法：
-  python scripts/build_rules_help.py --check
-  python scripts/build_rules_help.py --write
+v5（按语义编排，内容照原文单元格）：
+  · 战斗规则 = ① 战斗流程图（三列：时刻 | 执行/结算 | 阶段归类，归类列合并）② 动作表（主要/附赠）
+              ③ 特别注释（反应动作 / 先攻顺位 / 战斗区间四席位 / 敌人阈值）
+  · 冒险规则 = ① 基本架构 ② 时刻表（含进度表）③ 权重占比（含表下注解）④ 荒野之中
+  · 其他规则 = 两列（条目 | 内容），**单元格软换行合并为自然段**，仅保留列表标记处断行
+用法：python scripts/build_rules_help.py --write
 """
 from __future__ import annotations
 
@@ -32,261 +30,194 @@ XLSX = ROOT / '冒险者基础规则.xlsx'
 HELP = ROOT / '斯诺德跑团' / 'help.html'
 MIRROR = ROOT / 'electron-app' / '斯诺德跑团' / 'help.html'
 NL = chr(10)
-HEADING_MAX = 16
-NUM_ITEM = re.compile(r'^\s*\d+[.、]\s*\S')
-
-SHEETS = [
-    ('检定规则', 's1', None),
-    ('战斗规则', 's2', None),
-    ('冒险规则', 's-adventure', 's2'),
-    ('其他规则', 's10', None),
-]
-
-EXTRA_CSS = """
-<style>
-/* ==== 规则章节表格（v1.0.8010）：对齐手写章节（表头行 + 名称加粗 + 斑马纹） ==== */
-.rules-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 14.5px; line-height: 1.66; }
-.rules-table th { background: linear-gradient(180deg, #efe0bd, #e4d2a8); color: #43301a; font-weight: 700; }
-.rules-table th, .rules-table td { border: 1px solid rgba(120, 96, 60, .3); padding: 8px 10px; text-align: left; vertical-align: top; }
-.rules-table td b { color: #6b4a28; }
-.rules-table tbody tr:nth-child(even) td { background: rgba(255, 252, 244, .55); }
-.rules-table .col-idx { width: 44px; text-align: center; color: #a8802f; font-weight: 700; }
-.rules-table .col-name { width: 210px; }
-.rules-table.fixed { table-layout: fixed; }
-@media (max-width: 640px) {
-  .rules-table { font-size: 14px; }
-  .rules-table .col-name { width: 128px; }
-}
-</style>
-"""
+LIST_MARK = re.compile(r'^\s*([0-9]+[.、]|[·★①②③④⑤⑥⑦⑧⑨⑩]|D[1-9][.、]|→|↓)')
+NAME_W = '150px'
 
 
-def load_blocks(name: str):
-    """把 xlsx 解析为 [(标题, 正文)]：标题=短单元格，正文=其下方/右侧的合并块文本。"""
+def sheet(name):
     wb = openpyxl.load_workbook(XLSX, data_only=True)
-    ws = wb[name]
+    return wb, wb[name]
+
+
+def flat(text: str) -> str:
+    """单元格软换行 → 自然段：只在列表标记处断行，其余行合并。"""
+    if not text:
+        return ''
+    lines = [l.strip() for l in str(text).split(NL) if l.strip()]
+    out = []
+    for l in lines:
+        if LIST_MARK.match(l) or not out:
+            out.append(l)
+        else:
+            out[-1] = out[-1] + l
+    return '<br>'.join(html.escape(x) for x in out)
+
+
+def table(rows, header=None, widths=None) -> str:
+    n = max([len(r) for r in rows] + ([len(header)] if header else [0]))
+    widths = widths or [NAME_W] + [''] * (n - 1)
+    cols = ''.join('<col style="width:%s">' % w if w else '<col>' for w in widths[:n])
+    parts = ['<div class="wrap">', '<table>', '<colgroup>%s</colgroup>' % cols]
+    if header:
+        parts.append('<tr>%s</tr>' % ''.join('<th>%s</th>' % h for h in header))
+    for r in rows:
+        tds = []
+        for i, cell in enumerate(r):
+            if isinstance(cell, tuple):          # (内容, rowspan)
+                tds.append('<td rowspan="%d">%s</td>' % (cell[1], cell[0]))
+            else:
+                tds.append('<td>%s</td>' % cell)
+        parts.append('<tr>%s</tr>' % ''.join(tds))
+    parts += ['</table>', '</div>']
+    return NL.join(parts)
+
+
+# ---------------- 战斗规则 ----------------
+
+def render_combat() -> str:
+    wb, ws = sheet('战斗规则')
+
+    def v(r, c):
+        x = ws.cell(row=r, column=c).value
+        return '' if x is None else str(x).strip()
+
+    def f(r, c):
+        return flat(v(r, c))
+
+    flow = []
+    stages = [(4, '战斗开始的准备工作'), (6, None), (8, '战斗环节中的流程' + '<br>（以此循环往复）'), (10, None), (48, None), (50, '最终结果的结算')]
+    rows = []
+    spans = {0: 2, 2: 3, 5: 1}          # 归类列合并：1-2 / 3-5 / 6
+    for idx, (r, label) in enumerate(stages):
+        time_cell = f(r, 2)
+        if r == 10:                      # 行动时刻：明确列出主要动作与附赠动作
+            time_cell = f(r, 2)
+            row_content = '主要动作<br>附赠动作<br><span style="color:#69706b">（详见下表）</span>'
+        row = [time_cell, row_content if r == 10 else f(r, 8)]
+        if idx in spans and label:
+            row.append((label, spans[idx]))
+        rows.append(row)
+    parts = ['<h3>战斗流程图</h3>', table(rows, ['时刻', '该时刻执行 / 结算的内容', '阶段归类'], [NAME_W, '', '190px'])]
+
+    main_items = [v(r, 11) for r in range(10, 25, 2) if v(r, 11)]
+    bonus_items = [v(r, 11) for r in range(26, 47, 2) if v(r, 11)]
+    nums = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫'
+    m_html = '<br>'.join('%s%s' % (nums[i] if i < len(nums) else '%d.' % (i + 1), flat(t)) for i, t in enumerate(main_items))
+    b_html = '<br>'.join('%s%s' % (nums[i] if i < len(nums) else '%d.' % (i + 1), flat(t)) for i, t in enumerate(bonus_items))
+    parts.append('<h3>行动时刻可执行的动作</h3>')
+    parts.append(table([[v(10, 8), m_html], [v(26, 8), b_html]], ['动作类型', '可执行行为'], ['150px', '']))
+
+    parts.append('<h3>特别注释</h3>')
+    parts.append(table([[v(52, 8), f(52, 11)], [v(55, 8), f(55, 11)]], ['项目', '说明'], ['150px', '']))
+    seats = [[f(r, 11), f(r, 13)] for r in range(59, 63)]
+    parts.append(table(seats, ['战斗区间', '先攻检定结果'], ['150px', '']))
+    parts.append(table([[v(64, 8), f(64, 11) + '<br>' + f(65, 11)]], ['项目', '说明'], ['150px', '']))
+    parts.append(table([[f(r, 11), f(r, 16)] for r in range(66, 69)], ['情形', '阈值变化'], ['320px', '']))
+    parts.append('<p style="font-size:13.5px;color:#4a4238;line-height:1.75;margin:-6px 0 14px">%s</p>' % f(69, 11))
+    wb.close()
+    return NL.join(parts)
+
+
+# ---------------- 冒险规则 ----------------
+
+def render_adventure() -> str:
+    wb, ws = sheet('冒险规则')
+
+    def v(r, c):
+        x = ws.cell(row=r, column=c).value
+        return '' if x is None else str(x).strip()
+
+    def f(r, c):
+        return flat(v(r, c))
+
+    parts = ['<h3>冒险故事的基本架构</h3>', '<p>%s</p>' % flat(v(4, 2))]
+    parts.append('<h3>冒险时刻表</h3>')
+    parts.append('<p>%s</p>' % flat(v(4, 8)))
+    parts.append(table([[v(r, 9), flat(v(r, 10))] for r in (10, 14, 18)], ['进度', '场景'], ['96px', '']))
+    parts.append('<h3>冒险故事权重占比</h3>')
+    wrows = [[v(14, 2), flat(v(14, 3))], [v(18, 2), flat(v(18, 3))], [v(22, 2), flat(v(22, 3))], [v(26, 2), flat(v(26, 3))]]
+    parts.append(table(wrows, ['占比项', '说明'], ['150px', '']))
+    parts.append('<p class="rules-note" style="font-size:13px;color:#69706b;line-height:1.8;margin:-6px 0 14px">%s</p>' % flat(v(30, 2)))
+    parts.append('<h3>可选扩展规则：荒野之中</h3>')
+    parts.append('<p>%s</p>' % flat(v(24, 8)))
+    wb.close()
+    return NL.join(parts)
+
+
+# ---------------- 其他规则 ----------------
+
+def render_other_rules() -> str:
+    wb, ws = sheet('其他规则')
     covered = {}
     for rng in ws.merged_cells.ranges:
         for r in range(rng.min_row, rng.max_row + 1):
             for c in range(rng.min_col, rng.max_col + 1):
                 if (r, c) != (rng.min_row, rng.min_col):
                     covered[(r, c)] = (rng.min_row, rng.min_col)
-
-    def text(r, c):
-        v = ws.cell(row=r, column=c).value
-        return '' if v is None else str(v).strip()
-
-    items = []          # (row, col, title)
-    bodies = {}         # (row, col) -> list[str]
+    titles, bodies = [], {}
     for rng in ws.merged_cells.ranges:
-        r0, c0 = rng.min_row, rng.min_col
-        t = text(r0, c0)
-        if not t:
+        t = ws.cell(row=rng.min_row, column=rng.min_col).value
+        if t is None or not str(t).strip():
             continue
-        if rng.max_row > r0:
-            bodies[(r0, c0)] = [t]
-        elif len(t) > HEADING_MAX or '。' in t:
-            bodies[(r0, c0)] = [t]
+        t = str(t).strip()
+        if rng.max_row > rng.min_row or len(t) > 16 or '。' in t:
+            bodies[(rng.min_row, rng.min_col)] = t
         else:
-            items.append((r0, c0, t))
-    for r in range(1, ws.max_row + 1):
-        for c in range(1, ws.max_column + 1):
-            if (r, c) in covered or (r, c) in bodies:
-                continue
-            t = text(r, c)
-            if not t:
-                continue
-            merged = any(rng.min_row <= r <= rng.max_row and rng.min_col <= c <= rng.max_col for rng in ws.merged_cells.ranges)
-            if merged:
-                continue
-            if len(t) <= HEADING_MAX and '。' not in t and not t.startswith(('·', '★', '↓', '→', 'D')):
-                items.append((r, c, t))
-            else:
-                bodies[(r, c)] = [t]
+            titles.append((rng.min_row, rng.min_col, t))
+    titles.sort(key=lambda x: (x[0], x[1]))
+    rows, n = [], 0
+    for (r, c, title) in titles:
+        n += 1
+        body = [t for (br, bc), t in sorted(bodies.items()) if bc == c and r < br <= r + 12]
+        clean = re.sub(r'^\s*\d+[.、]\s*', '', title)
+        rows.append(['%d. %s' % (n, html.escape(clean)), '<br>'.join(flat(b) for b in body)])
     wb.close()
-
-    items.sort(key=lambda x: (x[0], x[1]))
-    out = []
-    for (r, c, title) in items:
-        body = []
-        for (br, bc), txts in bodies.items():
-            if bc == c and br > r and br <= r + 12:
-                body.extend(txts)
-        out.append((title, body))
-    return out, bodies
+    return table(rows, ['条目', '内容'], ['190px', ''])
 
 
-def load_sheet(name: str):
-    """单元格/合并感知的表网格（保留 colspan/rowspan，压掉全空列）。"""
-    wb = openpyxl.load_workbook(XLSX, data_only=True)
-    ws = wb[name]
-    top_left, covered = {}, set()
+def render_check() -> str:
+    """检定规则：两列重排（小节标题 + 名称/说明表），合并单元格感知。"""
+    wb, ws = sheet('检定规则')
+    covered = set()
     for rng in ws.merged_cells.ranges:
-        r1, c1, r2, c2 = rng.min_row, rng.min_col, rng.max_row, rng.max_col
-        top_left[(r1, c1)] = (r2 - r1 + 1, c2 - c1 + 1)
-        for r in range(r1, r2 + 1):
-            for c in range(c1, c2 + 1):
-                if (r, c) != (r1, c1):
+        for r in range(rng.min_row, rng.max_row + 1):
+            for c in range(rng.min_col, rng.max_col + 1):
+                if (r, c) != (rng.min_row, rng.min_col):
                     covered.add((r, c))
+    parts, buf = [], []
 
-    def val(r, c):
-        v = ws.cell(row=r, column=c).value
-        return '' if v is None else str(v).strip()
+    def flush():
+        nonlocal buf
+        if buf:
+            parts.append(table(buf, ['项目', '说明'], ['168px', '']))
+            buf = []
 
-    rows = []
     for r in range(1, ws.max_row + 1):
-        cells = []
+        texts = []
         for c in range(1, ws.max_column + 1):
             if (r, c) in covered:
                 continue
-            t = val(r, c)
-            rowspan, colspan = top_left.get((r, c), (1, 1))
-            if colspan > 4:
-                colspan = 1
-            if rowspan > 4:
-                rowspan = 1
-            if not t and rowspan == 1 and colspan == 1:
-                continue
-            cells.append({'text': t, 'rowspan': rowspan, 'colspan': colspan})
-        if any(x['text'] for x in cells):
-            rows.append(cells)
-    wb.close()
-    used = set()
-    for r in rows:
-        for i, x in enumerate(r):
-            if x['text'] or x['rowspan'] > 1 or x['colspan'] > 1:
-                used.add(i)
-    if used:
-        keep = sorted(used)
-        rows = [[x for i, x in enumerate(r) if i in keep] for r in rows]
-    return rows
-
-
-def esc(t: str) -> str:
-    return html.escape(t).replace(NL, '<br>').replace(chr(10), '<br>')
-
-
-def render_table(rows, header: bool = True, cls: str = 'rules-table') -> str:
-    out = ['<table class="%s">' % cls]
-    for i, row in enumerate(rows):
-        tds = []
-        for x in row:
-            attrs = ''
-            if x['colspan'] > 1:
-                attrs += ' colspan="%d"' % x['colspan']
-            if x['rowspan'] > 1:
-                attrs += ' rowspan="%d"' % x['rowspan']
-            tag = 'th' if (header and i == 0 and x['text']) else 'td'
-            body = esc(x['text'])
-            if tag == 'td' and x['text'] and len(x['text']) <= 18 and '。' not in x['text']:
-                body = '<b>%s</b>' % body
-            tds.append('<%s%s>%s</%s>' % (tag, attrs, body, tag))
-        out.append('<tr>%s</tr>' % ''.join(tds))
-    out.append('</table>')
-    return NL.join(out)
-
-
-def render_rows(rows) -> str:
-    """检定/战斗：连续多列行成表；单列短行→h3；单列长文→p。"""
-    parts, table = [], []
-
-    def flush():
-        nonlocal table
-        if table:
-            parts.append(render_table(table))
-            table = []
-
-    for row in rows:
-        texts = [x['text'] for x in row if x['text']]
+            x = ws.cell(row=r, column=c).value
+            if x is not None and str(x).strip():
+                texts.append(str(x).strip())
+        texts = [t for t in texts if t]
         if not texts:
             continue
         if len(texts) == 1:
             flush()
             t = texts[0]
-            if len(t) <= HEADING_MAX and '。' not in t:
-                parts.append('<h3>%s</h3>' % esc(t))
+            if len(t) <= 16 and '。' not in t:
+                parts.append('<h3>%s</h3>' % html.escape(t))
             else:
-                parts.append('<p>%s</p>' % esc(t))
+                parts.append('<p>%s</p>' % flat(t))
             continue
-        table.append(row)
+        buf.append([html.escape(texts[0]), '<br>'.join(flat(t) for t in texts[1:])])
     flush()
+    wb.close()
     return NL.join(parts)
 
 
-def render_other_rules(blocks) -> str:
-    """其他规则：三列表（# | 条目 | 内容），对齐「名望等级」范式。"""
-    rows = ['<table class="rules-table fixed">',
-            '<tr><th class="col-idx">#</th><th class="col-name">条目</th><th>内容</th></tr>']
-    n = 0
-    for title, body in blocks:
-        if not title:
-            continue
-        n += 1
-        clean = re.sub(r'^\s*\d+[.、]\s*', '', title)
-        content = '<br>'.join(esc(b) for b in body) if body else ''
-        rows.append('<tr><td class="col-idx">%d</td><td><b>%s</b></td><td>%s</td></tr>' % (n, esc(clean), content))
-    rows.append('</table>')
-    return NL.join(rows)
-
-
-def is_progress(x) -> bool:
-    x = (x or '').strip()
-    return bool(x) and all(ch.isdigit() or ch in '~-+' for ch in x)
-
-
-def render_adventure(blocks, rows=None) -> str:
-    """冒险规则：权重占比表 + 时刻表 + 荒野之中（从表网格取行，保证成表）"""
-    parts: list[str] = []
-    flat = rows or []
-    texts = [[x["text"] for x in r if x["text"]] for r in flat]
-
-    def find_row(*keys):
-        for ts in texts:
-            if ts and any(k in ts[0] for k in keys):
-                return ts
-        return None
-
-    # 1) 基本架构说明
-    intro = find_row("冒险的过程")
-    parts.append("<h3>冒险故事的基本架构</h3>")
-    if intro:
-        parts.append("<p>%s</p>" % esc(" ".join(intro)))
-    # 2) 权重占比表
-    parts.append("<h3>冒险故事权重占比</h3>")
-    wrows = [[{"text": "占比项", "rowspan": 1, "colspan": 1}, {"text": "说明", "rowspan": 1, "colspan": 1}]]
-    for ts in texts:
-        if not ts:
-            continue
-        head = ts[0].replace(chr(10), "")
-        if head in ("不可避免的战斗", "可避免的战斗", "剧情交涉", "解谜"):
-            wrows.append([{"text": head, "rowspan": 1, "colspan": 1},
-                          {"text": " ".join(ts[1:]).strip(), "rowspan": 1, "colspan": 1}])
-    if len(wrows) > 1:
-        parts.append(render_table(wrows))
-    # 3) 时刻表
-    parts.append("<h3>冒险时刻表</h3>")
-    trows = [[{"text": "进度", "rowspan": 1, "colspan": 1}, {"text": "场景", "rowspan": 1, "colspan": 1}]]
-    for ts in texts:
-        if len(ts) >= 2 and is_progress(ts[-2] if len(ts) >= 3 else ""):
-            key = ts[-2]
-            scene = ts[-1]
-            trows.append([{"text": key, "rowspan": 1, "colspan": 1}, {"text": scene, "rowspan": 1, "colspan": 1}])
-        elif len(ts) >= 3 and is_progress(ts[1]):
-            trows.append([{"text": ts[1], "rowspan": 1, "colspan": 1}, {"text": " ".join(ts[2:]), "rowspan": 1, "colspan": 1}])
-    if len(trows) > 1:
-        parts.append(render_table(trows))
-    else:
-        parts.append("<p>一个 DM 与玩家均可视化的进度条：玩家在特定场景做出决定即推进时刻表；达到阈值仍未执行对应行动时会产生后果。</p>")
-    # 4) 荒野之中
-    wild = [ts for ts in texts if ts and "荒野" in ts[0]]
-    parts.append("<h3>可选扩展规则：荒野之中</h3>")
-    for ts in wild:
-        body = " ".join(ts[1:]).strip()
-        if body:
-            parts.append("<p>%s</p>" % esc(body))
-    return NL.join(parts)
-
-def build_section(title: str, sid: str, body: str) -> str:
+def build_section(title, sid, body):
     return '<div class="section" id="%s"><h2>%s</h2>%s%s</div>' % (sid, html.escape(title), NL, body)
 
 
@@ -297,37 +228,14 @@ def main() -> int:
     args = ap.parse_args()
 
     text = HELP.read_text(encoding='utf-8')
-    report, built = [], {}
-    for name, sid, after in SHEETS:
-        if name in ('其他规则', '冒险规则'):
-            blocks, _ = load_blocks(name)
-            grid = load_sheet(name)
-            body = render_other_rules(blocks) if name == '其他规则' else render_adventure(blocks, grid)
-        else:
-            body = render_rows(load_sheet(name))
-        tables = body.count('<table')
-        built[sid] = (name, after, build_section(name, sid, body))
-        report.append('%-12s id=%-12s 表格=%-2d h3=%-3d p=%-3d 长度=%d' % (
-            name, sid, tables, body.count('<h3>'), body.count('<p>'), len(body)))
-
-    for sid, (name, after, section) in built.items():
-        block_re = re.compile(r'<div class="section" id="%s">.*?(?=<div class="section" id=|</main>)' % re.escape(sid), re.S)
-        if block_re.search(text):
-            if args.write:
-                text = block_re.sub(lambda m: section + NL, text, count=1)
-        elif after:
-            anchor_re = re.compile(r'(<div class="section" id="%s">.*?)(?=<div class="section" id=|</main>)' % re.escape(after), re.S)
-            m = anchor_re.search(text)
-            if m:
-                if args.write:
-                    text = text[:m.end()] + section + NL + text[m.end():]
-                report.append('  （%s 为新增章节，插在 %s 之后）' % (name, after))
-            else:
-                report.append('✗ 找不到插入锚点 %s' % after)
-        else:
-            report.append('✗ 未找到章节 %s' % sid)
-
-    print(NL.join(report))
+    built = {
+        's1': ('检定规则', None, render_check()),
+        's2': ('战斗规则', None, render_combat()),
+        's-adventure': ('冒险规则', 's2', render_adventure()),
+        's10': ('其他规则', None, render_other_rules()),
+    }
+    for sid, (name, after, body) in built.items():
+        print('%-10s 表格=%d wrap=%d h3=%d' % (name, body.count('<table'), body.count('class="wrap"'), body.count('<h3>')))
     if args.check:
         print('OK')
         return 0
@@ -335,16 +243,20 @@ def main() -> int:
         ap.print_help()
         return 0
 
-    if 'rules-table' not in text:
-        text = text.replace('</body>', EXTRA_CSS + NL + '</body>', 1)
-    if 'href="#s-adventure"' not in text:
-        m = re.search(r'(<a href="#s2">战斗规则</a>\s*)', text)
-        if m:
-            text = text[:m.end()] + '<a href="#s-adventure">冒险规则</a>' + NL + text[m.end():]
+    for sid, (name, after, body) in built.items():
+        section = build_section(name, sid, body)
+        block_re = re.compile(r'<div class="section" id="%s">.*?(?=<div class="section" id=|</main>)' % re.escape(sid), re.S)
+        if block_re.search(text):
+            text = block_re.sub(lambda m: section + NL, text, count=1)
+        elif after:
+            anchor_re = re.compile(r'(<div class="section" id="%s">.*?)(?=<div class="section" id=|</main>)' % re.escape(after), re.S)
+            m = anchor_re.search(text)
+            if m:
+                text = text[:m.end()] + section + NL + text[m.end():]
     HELP.write_text(text, encoding='utf-8', newline='')
     if MIRROR.parent.exists():
         shutil.copyfile(HELP, MIRROR)
-    print('✅ help.html 规则章节已按 xlsx 重建（逐节表格模板）并同步镜像')
+    print('✅ 战斗/冒险/其他规则已按语义编排重建并同步镜像')
     return 0
 
 

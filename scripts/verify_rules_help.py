@@ -51,8 +51,8 @@ for sid, sheet in [("s1", "检定规则"), ("s2", "战斗规则"), ("s-adventure
     cols = max((len(re.findall(r"<t[dh]", tr)) for tr in re.findall(r"<tr>(.*?)</tr>", body, re.S)), default=0)
     ok("%s 空单元比 ≤0.25（%.2f）" % (sheet, ratio), ratio <= 0.25, "%.2f" % ratio)
     ok("%s 最大列数 ≤8（%d）" % (sheet, cols), cols <= 8, str(cols))
-    if sheet not in ("其他规则", "冒险规则"):
-        ok("%s 保留合并单元格（colspan）" % sheet, "colspan" in body)
+    ok("%s 使用页面原生 .wrap 表格" % sheet,
+       (body.count(chr(34) + "wrap" + chr(34)) >= body.count("<table")) if body.count("<table") else True)
 # 其他规则已改为三列表，h3 断言由「表格化」区块覆盖
 wb.close()
 
@@ -72,7 +72,7 @@ for sid, (name, need) in expect.items():
 oth = section("s10")
 rows = len(re.findall(r"<tr>", oth))
 ok("其他规则 条目行 ≥20（实际 %d）" % rows, rows >= 20, str(rows))
-ok("其他规则 为三列表（col-idx/条目/内容）", "col-idx" in oth and "条目" in oth and "内容" in oth)
+ok("其他规则 为两列表（条目/内容）", "<th>条目</th>" in oth and "<th>内容</th>" in oth)
 bat = section("s2")
 ok("战斗规则 含先攻席位表（先锋席/殿军席）", "先锋席" in bat and "殿军席" in bat)
 ok("战斗规则 含敌人阈值表", "敌人阈值" in bat)
