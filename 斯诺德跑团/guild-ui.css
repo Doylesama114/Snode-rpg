@@ -533,3 +533,16 @@ html.gui-help-page .wrap { max-width:100% !important; }
 #storeOverlay .pop-head .close, .pop-head .close {
   color:#2a1c0a !important; background:linear-gradient(180deg,#e6c37c,#c39a4a) !important;
   border:1px solid #6d5223 !important; border-radius:50% !important; }
+
+/* ===== 窄屏页头压缩（v1.0.8006）：标题不换行、按钮一行放下 ===== */
+@media (max-width: 640px) {
+  .gui-beam { gap: 8px; padding: 8px 10px !important; flex-wrap: nowrap; }
+  .gui-beam .gui-title { font-size: 14px; white-space: nowrap; letter-spacing: .02em; }
+  .gui-beam .gui-sub { display: none; }
+  .gui-beam a.gui-back { font-size: 12.5px; padding: 7px 10px !important; white-space: nowrap; }
+  .gui-beam .gui-title .ico, .gui-beam .gui-title img { width: 16px; height: 16px; }
+  /* 页面自带顶栏（职业页 header.hdr）同样压缩 */
+  header.hdr { gap: 8px !important; padding: 8px 10px !important; }
+  header.hdr h1 { font-size: 15px !important; white-space: nowrap; }
+  header.hdr .sub, header.hdr p { display: none !important; }
+}

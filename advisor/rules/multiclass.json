@@ -3,7 +3,7 @@
     "layer": "L0",
     "version": "1.0.0",
     "source": "斯诺德跑团/帮助.html §兼职",
-    "generatedAt": "2026-09-17",
+    "generatedAt": "2026-09-21",
     "mainClassUnlockLevel": 7
   },
   "requirements": [
@@ -64,7 +64,8 @@
         "德鲁伊",
         "萨满祭司",
         "魔契师",
-        "召唤师"
+        "召唤师",
+        "战舞者"
       ]
     },
     {
@@ -337,7 +338,7 @@
       "守望者": true,
       "谋士": true,
       "召唤师": false,
-      "战舞者": true
+      "战舞者": false
     },
     "圣骑士": {
       "蛮斗士": true,

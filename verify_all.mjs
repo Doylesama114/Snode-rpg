@@ -166,6 +166,18 @@ try {
 console.log(updOK ? '✅ 全自动更新流程通过' : '❌ 全自动更新流程失败');
 totalErrors += updOK ? 0 : 1;
 
+// 手机端帮助页阅读与跳转（v1.0.8006）
+console.log('\n=== 手机端帮助页 ===');
+let mhOK = true;
+try {
+  let mh = spawnSync('node', [join(BASE, 'verify_mobile_help.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (mh.stdout) console.log(mh.stdout.trim().slice(-700));
+  if (mh.stderr) console.error(mh.stderr.trim());
+  if (mh.status !== 0) mhOK = false;
+} catch (e) { mhOK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(mhOK ? '✅ 手机端帮助页通过' : '❌ 手机端帮助页失败');
+totalErrors += mhOK ? 0 : 1;
+
 // 手机系统返回键 = 回上一级（v1.0.8005）
 console.log('\n=== 返回键回上一级 ===');
 let backOK = true;
