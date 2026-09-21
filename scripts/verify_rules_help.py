@@ -80,6 +80,25 @@ chk = section("s1")
 ok("检定规则 含事件检定与变体检定表", "事件检定" in chk and "可选变体检定规则" in chk)
 adv = section("s-adventure")
 ok("冒险规则 含权重占比与时刻表两张表", "权重占比" in adv and "时刻表" in adv)
+
+print()
+print('▌检定规则语义表（v1.0.8013）')
+chk = section("s1")
+heads = re.findall(r"<th>(.*?)</th>", chk)
+for want in ["是否拥有熟练项", "色彩骰", "检定类型", "难度", "区间", "检定结果"]:
+    ok("表头含「%s」" % want, want in heads, ",".join(heads[:10]))
+def rows_of(header):
+    m = re.search(r"<table>(?:(?!</table>).)*?<th>" + re.escape(header) + r"</th>.*?</table>", chk, re.S)
+    return len(re.findall(r"<tr>", m.group(0))) if m else 0
+ok("色彩骰表 8 行（实际 %d）" % rows_of("色彩骰"), rows_of("色彩骰") == 9)
+ok("难度表 6 行（实际 %d）" % rows_of("难度"), rows_of("难度") == 7)
+ok("区间表 4 行（实际 %d）" % rows_of("区间"), rows_of("区间") == 5)
+ok("熟练项表 2 行（实际 %d）" % rows_of("是否拥有熟练项"), rows_of("是否拥有熟练项") == 3)
+ok("检定类型含 D20 与 D100", "D20" in chk and "D100" in chk)
+ok("判定表 3 列 4 行", chk.count("<th>骰型条件</th>") == 1 and chk.count("<th>判定</th>") == 1)
+ok("无单元格混入多个小节标题", not re.search(r"<td>[^<]{0,40}检定规则[^<]{0,40}检定规则", chk))
+order = [chk.find(x) for x in ["基础熟练项的检定规则", "专业熟练项的检定规则", "描述检定的过程", "其他检定规则", "可选变体检定规则"]]
+ok("小节顺序正确", all(order[i] > 0 and order[i] < order[i + 1] for i in range(len(order) - 1)), str(order))
 print('\n' + '─' * 46)
 print(('✅ 规则章节验收通过' if fail_n == 0 else '❌ 有失败项') + '  %dP / %dF' % (pass_n, fail_n))
 sys.exit(0 if fail_n == 0 else 1)

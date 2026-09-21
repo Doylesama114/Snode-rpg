@@ -176,43 +176,56 @@ def render_other_rules() -> str:
 
 
 def render_check() -> str:
-    """检定规则：两列重排（小节标题 + 名称/说明表），合并单元格感知。"""
+    """检定规则：逐节模板（内容按原表单元格取数）。"""
     wb, ws = sheet('检定规则')
-    covered = set()
-    for rng in ws.merged_cells.ranges:
-        for r in range(rng.min_row, rng.max_row + 1):
-            for c in range(rng.min_col, rng.max_col + 1):
-                if (r, c) != (rng.min_row, rng.min_col):
-                    covered.add((r, c))
-    parts, buf = [], []
 
-    def flush():
-        nonlocal buf
-        if buf:
-            parts.append(table(buf, ['项目', '说明'], ['168px', '']))
-            buf = []
+    def v(r, c):
+        x = ws.cell(row=r, column=c).value
+        return '' if x is None else str(x).strip()
 
-    for r in range(1, ws.max_row + 1):
-        texts = []
-        for c in range(1, ws.max_column + 1):
-            if (r, c) in covered:
-                continue
-            x = ws.cell(row=r, column=c).value
-            if x is not None and str(x).strip():
-                texts.append(str(x).strip())
-        texts = [t for t in texts if t]
-        if not texts:
-            continue
-        if len(texts) == 1:
-            flush()
-            t = texts[0]
-            if len(t) <= 16 and '。' not in t:
-                parts.append('<h3>%s</h3>' % html.escape(t))
-            else:
-                parts.append('<p>%s</p>' % flat(t))
-            continue
-        buf.append([html.escape(texts[0]), '<br>'.join(flat(t) for t in texts[1:])])
-    flush()
+    def f(r, c):
+        return flat(v(r, c))
+
+    parts = []
+    # ① 基础熟练项的检定规则
+    parts.append('<h3>基础熟练项的检定规则</h3>')
+    parts.append('<p>%s</p>' % f(4, 2))
+    parts.append(table([[f(6, 2), f(6, 4)], [f(10, 2), f(10, 4)]],
+                       ['是否拥有熟练项', '检定骰'], ['170px', '']))
+    if f(14, 4):
+        parts.append('<p>%s</p>' % f(14, 4))
+    colours = []
+    for r in (19, 22, 25, 28, 31, 34, 37, 40):
+        name = v(r, 5)
+        desc = ''
+        if '.' in name:
+            name, desc = name.split('.', 1)
+        colours.append([name.strip(), desc.strip()])
+    parts.append(table(colours, ['色彩骰', '说明'], ['96px', '']))
+    # ② 专业熟练项的检定规则
+    parts.append('<h3>专业熟练项的检定规则</h3>')
+    parts.append('<p>%s</p>' % f(4, 8))
+    # ③ 描述检定的过程
+    parts.append('<h3>描述检定的过程</h3>')
+    parts.append('<p>%s</p>' % f(4, 14))
+    # ④ 其他检定规则
+    parts.append('<h3>其他检定规则</h3>')
+    parts.append('<p>%s</p>' % f(10, 8))
+    kinds = []
+    for r, dice in ((12, 12), (16, 12), (20, 12), (24, 12), (28, 28)):
+        if v(r, 8):
+            kinds.append([f(r, 8), f(dice, 10)])
+    parts.append(table(kinds, ['检定类型', '检定骰'], ['170px', '']))
+    diff_rows = [[v(r, 9), v(r, 11)] for r in range(33, 39) if v(r, 9)]
+    parts.append(table(diff_rows, ['难度', '程度'], ['96px', '']))
+    evt_rows = [[v(r, 9), v(r, 11)] for r in range(39, 43) if v(r, 9)]
+    parts.append(table(evt_rows, ['区间', '结果'], ['110px', '']))
+    # ⑤ 可选变体检定规则
+    parts.append('<h3>可选变体检定规则</h3>')
+    note = [f(46, 2), f(46, 8), f(48, 2)]
+    parts.append('<p>%s</p>' % '<br>'.join([x for x in note if x]))
+    judge = [[f(r, 2), f(r, 4), f(r, 8)] for r in range(50, 54)]
+    parts.append(table(judge, ['检定结果', '骰型条件', '判定'], ['120px', '150px', '']))
     wb.close()
     return NL.join(parts)
 
