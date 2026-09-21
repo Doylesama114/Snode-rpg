@@ -31,6 +31,8 @@ const CLASSES = [
   ['barbarian', '蛮斗士.json', '蛮斗士'],
   ['warden', '守望者.json', '守望者'],
   ['strategist', '谋士.json', '谋士'],
+  ['summoner', '召唤师.json', '召唤师'],
+  ['wardancer', '战舞者.json', '战舞者'],
   ['universal', '通用天赋树.json', '通用天赋树'],
 ];
 
