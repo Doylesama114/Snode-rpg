@@ -166,6 +166,18 @@ try {
 console.log(updOK ? '✅ 全自动更新流程通过' : '❌ 全自动更新流程失败');
 totalErrors += updOK ? 0 : 1;
 
+// 规则章节对照 xlsx（v1.0.8008）
+console.log('\n=== 规则章节（对照冒险者基础规则.xlsx） ===');
+let rulesOK = true;
+try {
+  let ru = spawnSync('python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_rules_help.py')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (ru.stdout) console.log(ru.stdout.trim().slice(-900));
+  if (ru.stderr) console.error(ru.stderr.trim());
+  if (ru.status !== 0) rulesOK = false;
+} catch (e) { rulesOK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(rulesOK ? '✅ 规则章节通过' : '❌ 规则章节失败');
+totalErrors += rulesOK ? 0 : 1;
+
 // 手机端资料库显示（v1.0.8007）
 console.log('\n=== 手机端资料库 ===');
 let mlOK = true;
