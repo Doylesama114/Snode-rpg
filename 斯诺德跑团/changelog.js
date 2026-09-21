@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8014',
+    date: '2026-09-21',
+    changes: [
+      '表格居中全站推广：表头与单行短内容居中，多行段落自动左对齐（阈值随单元格行数/表格宽度自适应）',
+      '覆盖三类载体：静态 <table>（规则手册/面板/物资大全等 46 张）、JS 动态与懒渲染表格（MutationObserver 节流处理）、技能卡 div 网格 .attr-table（2803 处）',
+      '共享层实现（guild-ui.css/js），移除 help.html 的临时内联样式',
+      '新增 verify_table_center.mjs（10 断言：短内容居中/长文左对齐/懒渲染后生效/布局 grid 未被误改）'
+    ]
+  },
+
+
+  {
     version: '1.0.8013',
     date: '2026-09-21',
     changes: [

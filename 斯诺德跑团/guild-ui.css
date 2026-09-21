@@ -546,3 +546,28 @@ html.gui-help-page .wrap { max-width:100% !important; }
   header.hdr h1 { font-size: 15px !important; white-space: nowrap; }
   header.hdr .sub, header.hdr p { display: none !important; }
 }
+
+/* ===== 表格居中（v1.0.8014）：表头/短内容居中，长段落由 JS 打 .tl 左对齐 ===== */
+.wrap table th, .wrap table td,
+.rules-table th, .rules-table td,
+.data-table th, .data-table td,
+.attr-table .attr-name, .attr-table .attr-val,
+.kv-row .k, .kv-row .v { text-align: center !important; }
+.wrap table .tl, .wrap table .tl *,
+.rules-table .tl, .rules-table .tl *,
+.data-table .tl, .data-table .tl *,
+.attr-table .tl, .attr-table .tl * { text-align: left !important; }
+body.gui-page .keep-left, body.gui-page .keep-left * { text-align: left !important; }
+
+/* ===== 加强优先级（v1.0.8014b）：压过页面自带 text-align ===== */
+body.gui-page .wrap table th, body.gui-page .wrap table td,
+body.gui-page .rules-table th, body.gui-page .rules-table td,
+body.gui-page .data-table th, body.gui-page .data-table td,
+body.gui-page .attr-table .attr-name, body.gui-page .attr-table .attr-val,
+body.gui-page .kv-row .k, body.gui-page .kv-row .v { text-align: center !important; }
+body.gui-page .wrap table .tl, body.gui-page .wrap table .tl *,
+body.gui-page .attr-table .tl, body.gui-page .attr-table .tl * { text-align: left !important; }
+
+/* ===== 覆盖未包裹 .wrap 的表格（如角色面板，v1.0.8014c） ===== */
+body.gui-page table th, body.gui-page table td { text-align: center !important; }
+body.gui-page table .tl, body.gui-page table .tl * { text-align: left !important; }

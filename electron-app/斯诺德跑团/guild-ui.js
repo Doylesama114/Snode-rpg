@@ -182,7 +182,7 @@
     boardMax: BOARD_MAX,
     listCharacters: listCharacters, recentChar: recentChar, setRecentChar: setRecentChar,
     hasCharacters: hasCharacters, panelHref: panelHref,
-    catById: catById, catHref: catHref, toast: toast, fromLauncher: fromLauncher,
+    catById: catById, catHref: catHref, centerTables: centerTables, toast: toast, fromLauncher: fromLauncher,
     isDark: isDark, setTheme: setTheme, toggleTheme: toggleTheme,
     isMuted: isMuted, toggleMute: toggleMute,
     _internal: { injectCss: injectCss, injectSprite: injectSprite, el: el },
@@ -551,12 +551,47 @@
     } catch (e) { return false; }
   };
 
+  /* ---------------- ⑬ 表格居中（阈值随单元格行数自适应） ---------------- */
+  var _ctTimer = null;
+  function centerTables(scope) {
+    var root = scope || document.body;
+    var sel = 'table th, table td, .attr-table .attr-val, .attr-table .attr-name, .kv-row .v, .kv-row .k';
+    var cells = root.querySelectorAll(sel);
+    for (var i = 0; i < cells.length; i++) {
+      var el = cells[i];
+      if (el.tagName === 'TH') { el.classList.remove('tl'); continue; }
+      var cs = getComputedStyle(el);
+      var lh = parseFloat(cs.lineHeight) || 20;
+      var lines = 1;
+      try {
+        var rg = document.createRange();
+        rg.selectNodeContents(el);
+        var rects = rg.getClientRects();
+        lines = Math.max(1, rects.length);
+      } catch (e) { lines = Math.max(1, Math.round(el.scrollHeight / lh)); }
+      var txt = (el.textContent || '').trim();
+      var isLong = lines >= 2 || txt.length > 46 || !!el.querySelector('table, ul, ol');
+      if (isLong) el.classList.add('tl'); else el.classList.remove('tl');
+    }
+  }
+  function scheduleCenter() {
+    if (_ctTimer) clearTimeout(_ctTimer);
+    _ctTimer = setTimeout(function () { _ctTimer = null; centerTables(); }, 200);
+  }
+  function centerBoot() {
+    centerTables();
+    scheduleCenter();
+    try { new MutationObserver(scheduleCenter).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+    window.addEventListener('scroll', scheduleCenter, { passive: true });
+  }
+
   /* ---------------- 自动执行 ---------------- */
   function boot() {
     injectCss(); injectSprite();
     themeBoot();                            // 主题与导航层无关：必须在下面的提前 return 之前
     skinBoot();                             // 皮肤与导航层无关（设置页也要）
-    escBoot();                              // ESC 与导航层无关（设置页也要能 ESC 返回）
+    escBoot();
+    centerBoot();                              // ESC 与导航层无关（设置页也要能 ESC 返回）
     if (window.__guiNoNav) return;          // 启动台/设置页只关闭「导航面板」
     beamBoot();
     navBoot();
