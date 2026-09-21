@@ -38,6 +38,26 @@ ok('其他规则章节仍存在且非空', len(oth) > 200)
 ok('页面无未闭合 table（%d 个 <table> / %d 个 </table>）' % (text.count('<table'), text.count('</table>')),
    text.count('<table') == text.count('</table>'))
 ok('镜像与源一致', text == mirror)
+
+print()
+print('▌结构质量（v1.0.8009）')
+import openpyxl
+wb = openpyxl.load_workbook(ROOT / "冒险者基础规则.xlsx", data_only=True)
+for sid, sheet in [("s1", "检定规则"), ("s2", "战斗规则"), ("s-adventure", "冒险规则"), ("s10", "其他规则")]:
+    body = section(sid)
+    tds = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", body, re.S)
+    empty = sum(1 for t in tds if not re.sub(r"<[^>]+>", "", t).strip())
+    ratio = (empty / len(tds)) if tds else 0.0
+    cols = max((len(re.findall(r"<t[dh]", tr)) for tr in re.findall(r"<tr>(.*?)</tr>", body, re.S)), default=0)
+    ok("%s 空单元比 ≤0.25（%.2f）" % (sheet, ratio), ratio <= 0.25, "%.2f" % ratio)
+    ok("%s 最大列数 ≤8（%d）" % (sheet, cols), cols <= 8, str(cols))
+    if sheet in ("其他规则", "冒险规则"):
+        ok("%s 已线性化（无表格）" % sheet, "<table" not in body)
+    else:
+        ok("%s 保留合并单元格（colspan）" % sheet, "colspan" in body)
+oks = len(re.findall(r"<h3>", section("s10")))
+ok("其他规则线性化（h3 ≥10，实际 %d）" % oks, oks >= 10)
+wb.close()
 print('\n' + '─' * 46)
 print(('✅ 规则章节验收通过' if fail_n == 0 else '❌ 有失败项') + '  %dP / %dF' % (pass_n, fail_n))
 sys.exit(0 if fail_n == 0 else 1)
