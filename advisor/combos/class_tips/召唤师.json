@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "layer": "L5",
+    "phase": "5-batch9",
+    "targetClass": "召唤师",
+    "tier": "full",
+    "status": "auto_stub",
+    "count": 3,
+    "byKind": {
+      "style_guide": 2,
+      "chargen": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-09-21"
+  },
+  "tips": [
+    {
+      "id": "tip-summoner-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "召唤师"
+      ],
+      "title": "召唤师·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "召唤师·咒法：契约指令·攻击、瞬闪召唤、造餐术、浮碟术、创造水源 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "召唤师",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "召唤师 undefined 召唤师·咒法：契约指令·攻击、瞬闪召唤、造餐术、浮碟术、创造水源 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-summoner-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "召唤师"
+      ],
+      "title": "召唤师·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "召唤师·降灵：召唤指令·强化、魂灵之眼、骚灵现象、灵摆术、魂灵馈赠 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "召唤师",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "召唤师 undefined 召唤师·降灵：召唤指令·强化、魂灵之眼、骚灵现象、灵摆术、魂灵馈赠 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-summoner-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "召唤师"
+      ],
+      "title": "召唤师创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "召唤师 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。",
+      "detail": "召唤师 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "召唤师",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "召唤师 创建 车卡 召唤师 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。 chargen auto_stub"
+    }
+  ]
+}

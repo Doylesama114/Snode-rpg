@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "layer": "L1",
+    "phase": "5-full",
+    "source": "职业页/数据/召唤师.json + REF_CLASSES + summoner_index.json",
+    "generatedAt": "2026-09-21",
+    "advisorTier": "full"
+  },
+  "id": "召唤师",
+  "name": "召唤师",
+  "description": "",
+  "rolePositioning": "",
+  "roleSummary": {
+    "positioning": [],
+    "blurb": ""
+  },
+  "keyAttr": "幸运",
+  "armor": "轻甲",
+  "weapons": "法杖、魔棒、匕首、手弩、简易武器",
+  "weaponProfCategories": [
+    "法器",
+    "剑类",
+    "弓箭",
+    "简易"
+  ],
+  "weaponCategoryNote": "创建页武器为具体类型；面板武器熟练类别见 weaponProfCategories（剑类/斧类等为分组）。",
+  "saves": [
+    "感知",
+    "幸运"
+  ],
+  "skills": "从专注、奥秘、多元宇宙、神秘学、洞悉、驯兽、感悟、机遇中选择四项熟练度各+1",
+  "startingFeatures": [
+    {
+      "name": "魔法飞弹",
+      "desc": "向一名角色发射魔法飞弹，造成1D8点力场伤害"
+    },
+    {
+      "name": "次级召唤术",
+      "desc": "随机召唤一名角色或物件来到身边"
+    },
+    {
+      "name": "唤回",
+      "desc": "将契约生物唤回身边或遣返回原位面"
+    }
+  ],
+  "startingChoice": "all",
+  "hpFormula": {
+    "first": "8+体质调整值",
+    "levelUp": "每召唤师等级+2+体质调整值"
+  },
+  "fpFormula": {
+    "first": "8+关键属性调整值",
+    "levelUp": "每召唤师等级+1"
+  },
+  "multiclassRequirements": {
+    "class": "召唤师",
+    "attrRequired": "智力属性13，幸运属性14",
+    "profRequired": "拥有奥秘、神秘学和机遇的熟练度共计+4",
+    "otherRequired": "进行过系统性的咒法学派、降灵学科以及召唤学或契约学知识学习",
+    "incompatibleWith": [
+      "蛮斗士",
+      "猎人",
+      "牧师",
+      "圣骑士",
+      "德鲁伊",
+      "萨满祭司",
+      "武僧",
+      "守望者"
+    ]
+  },
+  "specializations": [
+    {
+      "name": "召唤联结",
+      "effect": "与契约生物存在深层联结，可感知其情绪、状态与方位",
+      "buildHint": "创建页专精「召唤联结」；与主属性/武器规划一致即可。"
+    },
+    {
+      "name": "异界感知",
+      "effect": "感知周围 24 米内的传送门、异界裂隙、召唤法阵与位面锚点",
+      "buildHint": "创建页专精「异界感知」；与主属性/武器规划一致即可。"
+    },
+    {
+      "name": "机缘召唤",
+      "effect": "与异界灵魂缔结契约，获得契约生物伙伴（创建时随机抽取或自选）",
+      "buildHint": "创建页专精「机缘召唤」；与主属性/武器规划一致即可。"
+    }
+  ],
+  "combatStyles": [
+    {
+      "name": "咒法",
+      "summary": "咒法：偏互动、短休、长休、奥术等能力。",
+      "buildHint": "咒法：偏互动、短休、长休、奥术等能力。",
+      "sampleSkills": [
+        "契约指令·攻击",
+        "瞬闪召唤",
+        "造餐术"
+      ]
+    },
+    {
+      "name": "降灵",
+      "summary": "降灵：偏增益、互动、短休、长休等能力。",
+      "buildHint": "降灵：偏增益、互动、短休、长休等能力。",
+      "sampleSkills": [
+        "召唤指令·强化",
+        "魂灵之眼",
+        "骚灵现象"
+      ]
+    }
+  ]
+}

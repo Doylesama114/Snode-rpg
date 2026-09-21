@@ -3,7 +3,7 @@
     "layer": "L1",
     "phase": "5-complete",
     "version": "1.0.7270",
-    "note": "18个基础职业：守望者、谋士已升至 full；召唤师/战舞者暂为 partial（待生成 L5 小贴士后升 full）"
+    "note": "18个基础职业：守望者、谋士已升至 full；召唤师/战舞者经 class-full 构建链路判定为 full（技能 47/54、风格 2/5、小贴士 3/6，小贴士为通用自动生成，可人工覆盖）"
   },
   "defaults": {
     "tier": "basic",
@@ -342,7 +342,7 @@
       "l5MinTips": 15
     },
     "战舞者": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "敏捷或魅力",
       "l2Slug": "wardancer",
       "l2Layer": "L2-wardancer",
@@ -360,10 +360,13 @@
         "谐合",
         "机敏",
         "激昂"
-      ]
+      ],
+      "promptProfile": "wardancer_skills",
+      "fullL2MinSkills": 36,
+      "l5MinTips": 6
     },
     "召唤师": {
-      "tier": "partial",
+      "tier": "full",
       "keyAttr": "幸运",
       "isCaster": true,
       "l2Slug": "summoner",
@@ -379,7 +382,10 @@
         "召唤师",
         "咒法",
         "降灵"
-      ]
+      ],
+      "promptProfile": "summoner_skills",
+      "fullL2MinSkills": 30,
+      "l5MinTips": 3
     }
   }
 }

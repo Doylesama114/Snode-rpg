@@ -1,7 +1,7 @@
 {
   "meta": {
     "phase": "5-infra",
-    "generatedAt": "2026-09-14",
+    "generatedAt": "2026-09-21",
     "sources": [
       "职业页/数据/races_data.js",
       "斯诺德跑团/panel_data.js → REF_BACKGROUNDS",
@@ -10,7 +10,7 @@
       "职业页/数据/classes_data.js",
       "advisor/entities/aliases.manual.json"
     ],
-    "entryCount": 94
+    "entryCount": 97
   },
   "entries": [
     {
@@ -478,6 +478,14 @@
       "manual": true
     },
     {
+      "key": "吸血鬼",
+      "entityType": "race",
+      "id": "血族",
+      "aliases": [],
+      "isAlias": true,
+      "manual": true
+    },
+    {
       "key": "法师",
       "entityType": "class",
       "id": "法师",
@@ -580,6 +588,18 @@
       "key": "谋士",
       "entityType": "class",
       "id": "谋士",
+      "aliases": []
+    },
+    {
+      "key": "战舞者",
+      "entityType": "class",
+      "id": "战舞者",
+      "aliases": []
+    },
+    {
+      "key": "召唤师",
+      "entityType": "class",
+      "id": "召唤师",
       "aliases": []
     },
     {

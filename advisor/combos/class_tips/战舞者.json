@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "layer": "L5",
+    "phase": "5-batch9",
+    "targetClass": "战舞者",
+    "tier": "full",
+    "status": "auto_stub",
+    "count": 6,
+    "byKind": {
+      "style_guide": 5,
+      "chargen": 1
+    },
+    "note": "由 hints.styleHints 自动生成 style_guide；人工可覆盖本文件",
+    "generatedAt": "2026-09-21"
+  },
+  "tips": [
+    {
+      "id": "tip-wardancer-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "战舞者·刃舞：弹射之刃、剑刃防护、投刃、双刃回旋、连环奇袭 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 undefined 战舞者·刃舞：弹射之刃、剑刃防护、投刃、双刃回旋、连环奇袭 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-wardancer-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "战舞者·迷情：眼波流转、魅惑人形、掠心之舞、柔声细语、魅惑幻象 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 undefined 战舞者·迷情：眼波流转、魅惑人形、掠心之舞、柔声细语、魅惑幻象 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-wardancer-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "战舞者·谐合：共鸣步、和风旋刃、音愈、踏影步、谐奏回响 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 undefined 战舞者·谐合：共鸣步、和风旋刃、音愈、踏影步、谐奏回响 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-wardancer-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "战舞者·机敏：疾影刃、二段跳、身轻如燕、舞空轻羽、无迹风舞 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 undefined 战舞者·机敏：疾影刃、二段跳、身轻如燕、舞空轻羽、无迹风舞 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-wardancer-style-undefined",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者·undefined风格",
+      "kind": "style_guide",
+      "confidence": "auto_stub",
+      "summary": "战舞者·激昂：踢踏节奏、热血节拍、我的舞台！、摇摆之刃、沸血之舞 等技能构成该风格主线。",
+      "detail": "此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        null,
+        "战斗风格",
+        "style_guide"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 undefined 战舞者·激昂：踢踏节奏、热血节拍、我的舞台！、摇摆之刃、沸血之舞 等技能构成该风格主线。 此为顾问自动摘要（非官方连招）；具体数值与前置以规则书/创建页为准。partial 档职业勿假设标识或进阶路线已完整收录。  style_guide auto_stub"
+    },
+    {
+      "id": "tip-wardancer-chargen-1",
+      "scope": "class",
+      "applicableClasses": [
+        "战舞者"
+      ],
+      "title": "战舞者创建要点",
+      "kind": "chargen",
+      "confidence": "auto_stub",
+      "style": null,
+      "summary": "战舞者 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。",
+      "detail": "战舞者 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。",
+      "relatedSkills": [],
+      "relatedTipIds": [],
+      "tags": [
+        "战舞者",
+        "车卡",
+        "创建"
+      ],
+      "skillRefs": [],
+      "searchText": "战舞者 创建 车卡 战舞者 full 档：可检索 L2 技能名、战斗风格与 L5 小贴士；标识/进阶以规则书与 DM 为准。 chargen auto_stub"
+    }
+  ]
+}

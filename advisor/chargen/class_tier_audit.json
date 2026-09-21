@@ -1,9 +1,9 @@
 {
   "meta": {
     "phase": "5-batch10",
-    "generatedAt": "2026-09-14",
-    "classCount": 16,
-    "fullReady": 16,
+    "generatedAt": "2026-09-21",
+    "classCount": 18,
+    "fullReady": 3,
     "partialReady": 0
   },
   "audits": [
@@ -143,8 +143,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 26"
+          "pass": false,
+          "note": "got 7"
         },
         {
           "id": "prompt_profile",
@@ -153,9 +153,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "蛮斗士",
@@ -218,8 +218,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 20"
+          "pass": false,
+          "note": "got 5"
         },
         {
           "id": "prompt_profile",
@@ -228,9 +228,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "战士",
@@ -293,8 +293,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 22"
+          "pass": false,
+          "note": "got 7"
         },
         {
           "id": "prompt_profile",
@@ -303,9 +303,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "猎人",
@@ -368,8 +368,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 22"
+          "pass": false,
+          "note": "got 6"
         },
         {
           "id": "prompt_profile",
@@ -378,9 +378,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "牧师",
@@ -443,8 +443,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 20"
+          "pass": false,
+          "note": "got 4"
         },
         {
           "id": "prompt_profile",
@@ -453,9 +453,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "圣骑士",
@@ -518,8 +518,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 21"
+          "pass": false,
+          "note": "got 5"
         },
         {
           "id": "prompt_profile",
@@ -528,9 +528,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "游荡者",
@@ -593,8 +593,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 22"
+          "pass": false,
+          "note": "got 6"
         },
         {
           "id": "prompt_profile",
@@ -603,9 +603,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "德鲁伊",
@@ -668,8 +668,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 27"
+          "pass": false,
+          "note": "got 8"
         },
         {
           "id": "prompt_profile",
@@ -678,9 +678,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "萨满祭司",
@@ -743,8 +743,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 22"
+          "pass": false,
+          "note": "got 6"
         },
         {
           "id": "prompt_profile",
@@ -753,9 +753,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "术士",
@@ -818,8 +818,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 20"
+          "pass": false,
+          "note": "got 2"
         },
         {
           "id": "prompt_profile",
@@ -828,9 +828,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "武僧",
@@ -893,8 +893,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 28"
+          "pass": false,
+          "note": "got 8"
         },
         {
           "id": "prompt_profile",
@@ -903,9 +903,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "吟游诗人",
@@ -968,8 +968,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 25"
+          "pass": false,
+          "note": "got 6"
         },
         {
           "id": "prompt_profile",
@@ -978,9 +978,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "魔契师",
@@ -1043,8 +1043,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥20",
-          "pass": true,
-          "note": "got 24"
+          "pass": false,
+          "note": "got 6"
         },
         {
           "id": "prompt_profile",
@@ -1053,9 +1053,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "守望者",
@@ -1118,8 +1118,8 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥15",
-          "pass": true,
-          "note": "got 15"
+          "pass": false,
+          "note": "got 5"
         },
         {
           "id": "prompt_profile",
@@ -1128,9 +1128,9 @@
           "note": ""
         }
       ],
-      "passCount": 11,
+      "passCount": 10,
       "total": 11,
-      "ready": true
+      "ready": false
     },
     {
       "className": "谋士",
@@ -1193,12 +1193,162 @@
         {
           "id": "l5_tips",
           "label": "L5 小贴士 ≥15",
-          "pass": true,
-          "note": "got 19"
+          "pass": false,
+          "note": "got 7"
         },
         {
           "id": "prompt_profile",
           "label": "promptProfile=strategist_skills",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 10,
+      "total": 11,
+      "ready": false
+    },
+    {
+      "className": "战舞者",
+      "tier": "full",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=full",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥36 技能",
+          "pass": true,
+          "note": "got 54"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥5",
+          "pass": true,
+          "note": "got 5"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
+          "note": "got 6"
+        },
+        {
+          "id": "prompt_profile",
+          "label": "promptProfile=wardancer_skills",
+          "pass": true,
+          "note": ""
+        }
+      ],
+      "passCount": 11,
+      "total": 11,
+      "ready": true
+    },
+    {
+      "className": "召唤师",
+      "tier": "full",
+      "checks": [
+        {
+          "id": "registry_tier",
+          "label": "registry tier=full",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_layer",
+          "label": "L2 路由配置",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "l2_index",
+          "label": "L2 索引 ≥30 技能",
+          "pass": true,
+          "note": "got 47"
+        },
+        {
+          "id": "l1_class",
+          "label": "L1 职业基础",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "entity_card",
+          "label": "实体卡",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "starting_gear",
+          "label": "起手套装 A–D",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "equipment_rules",
+          "label": "装备规则",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "proficiencies",
+          "label": "classSkillPick",
+          "pass": true,
+          "note": ""
+        },
+        {
+          "id": "hints_styles",
+          "label": "hints 战斗风格 ≥2",
+          "pass": true,
+          "note": "got 2"
+        },
+        {
+          "id": "l5_tips",
+          "label": "L5 小贴士 ≥3",
+          "pass": true,
+          "note": "got 3"
+        },
+        {
+          "id": "prompt_profile",
+          "label": "promptProfile=summoner_skills",
           "pass": true,
           "note": ""
         }

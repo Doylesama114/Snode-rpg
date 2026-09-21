@@ -3,7 +3,7 @@
     "layer": "L1",
     "phase": "5-full",
     "source": "职业页/数据/战士.json + REF_CLASSES + warrior_index.json",
-    "generatedAt": "2026-07-07",
+    "generatedAt": "2026-09-21",
     "advisorTier": "full"
   },
   "id": "战士",
@@ -69,7 +69,9 @@
     "attrRequired": "力量/敏捷属性13，体质属性13",
     "profRequired": "拥有力量或敏捷的熟练度共计+4",
     "otherRequired": null,
-    "incompatibleWith": []
+    "incompatibleWith": [
+      "召唤师"
+    ]
   },
   "specializations": [
     {
@@ -89,9 +91,9 @@
       "summary": "斗争：偏徒手攻击、连锁反应、增益、光环等能力。",
       "buildHint": "近战正面与徒手连段；力量型常见，可搭配猛击起手。",
       "sampleSkills": [
-        "重殴",
-        "战斗姿态",
-        "顺劈斩"
+        "巨人打击",
+        "葬送！",
+        "重殴"
       ]
     },
     {
@@ -109,9 +111,9 @@
       "summary": "防护：偏惑控、魅力豁免（15）/效果递减（-5）、防御、光环等能力。",
       "buildHint": "嘲讽、格挡与减伤；盾牌格挡起手契合坦克。",
       "sampleSkills": [
-        "嘲讽",
-        "防御姿态",
-        "盾牌冲撞"
+        "战场壁垒",
+        "钢铁防御者",
+        "嘲讽"
       ]
     },
     {
@@ -129,9 +131,9 @@
       "summary": "军团：偏韧性、短休/长休（2）、防御、互动等能力。",
       "buildHint": "团队号令与阵型增益；偏辅助指挥。",
       "sampleSkills": [
-        "振奋怒吼",
-        "铁壁阵型",
-        "号令军旗"
+        "军用传导术",
+        "军用施法者",
+        "军队传送门"
       ]
     },
     {
