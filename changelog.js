@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8015',
+    date: '2026-09-21',
+    changes: [
+      '表格文字改为「水平 + 垂直」双居中：单元格 vertical-align: middle，网格型表格（技能卡 .attr-table）align-items: center',
+      '新增垂直居中断言（规则手册 / 技能卡 / 角色面板）'
+    ]
+  },
+
+
+  {
     version: '1.0.8014',
     date: '2026-09-21',
     changes: [

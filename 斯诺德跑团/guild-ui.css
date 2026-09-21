@@ -571,3 +571,13 @@ body.gui-page .attr-table .tl, body.gui-page .attr-table .tl * { text-align: lef
 /* ===== 覆盖未包裹 .wrap 的表格（如角色面板，v1.0.8014c） ===== */
 body.gui-page table th, body.gui-page table td { text-align: center !important; }
 body.gui-page table .tl, body.gui-page table .tl * { text-align: left !important; }
+
+/* ===== 垂直居中（v1.0.8015）：单元格文字上下居中 ===== */
+body.gui-page table th, body.gui-page table td,
+body.gui-page .wrap table th, body.gui-page .wrap table td,
+body.gui-page .rules-table th, body.gui-page .rules-table td,
+body.gui-page .data-table th, body.gui-page .data-table td { vertical-align: middle !important; }
+body.gui-page .attr-table, body.gui-page .attr-row,
+body.gui-page .kv-row, body.gui-page .kv-list .kv { align-items: center !important; }
+body.gui-page .attr-table .attr-name, body.gui-page .attr-table .attr-val,
+body.gui-page .kv-row .k, body.gui-page .kv-row .v { vertical-align: middle !important; align-self: center !important; }
