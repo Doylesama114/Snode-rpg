@@ -340,14 +340,6 @@
       "promptProfile": "strategist_skills",
       "fullL2MinSkills": 100,
       "l5MinTips": 15
-    },
-    "召唤师": {
-      "className": "召唤师",
-      "l2Slug": "summoner"
-    },
-    "战舞者": {
-      "className": "战舞者",
-      "l2Slug": "wardancer"
     }
   }
 }
