@@ -616,8 +616,8 @@ totalErrors += mcOK ? 0 : 1;
 // 视觉层检查（截图 → 视觉模型，免费优先降级百炼；VERIFY_VISUAL=0 可跳过）
 console.log('\n=== 视觉检查（免费模型优先 → 百炼降级） ===');
 let visOK = true;
-if (process.env.VERIFY_VISUAL === '0') {
-  console.log('✅ 视觉检查跳过（VERIFY_VISUAL=0）');
+if (process.env.VERIFY_VISUAL !== '1') {   // 默认跳过：识图复核由发版前截图评审承担
+  console.log('✅ 视觉检查已跳过（默认；需要时设 VERIFY_VISUAL=1 显式开启）');
 } else {
   let visOut = null;
   try {
