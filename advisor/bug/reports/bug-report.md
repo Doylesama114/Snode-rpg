@@ -1,27 +1,38 @@
 # Bug 反馈汇总
 
-数据截止：2026-08-18T14:36:54.154Z
+数据截止：2026-09-23T01:36:24.892Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 6 |
-| 本次新拉取 | 0 |
+| 总反馈 | 7 |
+| 本次新拉取 | 1 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
 | desktop | 5 |
-| web | 1 |
+| web | 2 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
 | electron | 5 |
+| https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5% | 1 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-09-23T01:36:24.892Z｜web
+- 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E9%A1%BE%E9%97%AE.html｜标题：斯诺德 · AI 顾问
+```
+页面: https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E9%A1%BE%E9%97%AE.html
+斯诺德 · AI 顾问
+2026/9/23 09:36:24
+
+战士斗争五阶技能被跳过了
+```
 
 ### 2026-08-18T14:36:54.154Z｜desktop
 - 页面：electron｜标题：Bug Report
