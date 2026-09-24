@@ -2209,6 +2209,10 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
     var rules = document.getElementById("help-pane-rules");
     var world = document.getElementById("help-pane-world");
     if(rules) rules.classList.toggle("help-pane-hidden", view !== "rules");
+  try {
+    if (rules) rules.style.setProperty("display", view === "rules" ? "" : "none", "important");
+    if (world) world.style.setProperty("display", view === "world" ? "" : "none", "important");
+  } catch (e) {}
     if(world) world.classList.toggle("help-pane-hidden", view !== "world");
     document.querySelectorAll(".help-pager button").forEach(function(btn){
       btn.classList.toggle("active", btn.getAttribute("data-view") === view);
