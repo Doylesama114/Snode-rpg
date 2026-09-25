@@ -30,6 +30,13 @@ The Snode desktop app must be running.
 Options: --connection <path> overrides SNODE_CLI_CONNECTION and the default app data path.
 Every command prints one JSON document. Errors use a nonzero exit code.`;
 
+function jsonForConsole(value) {
+  // Windows PowerShell 5.1 may decode native stdout as GBK even though Node
+  // writes UTF-8. ASCII JSON escapes survive either decoding and round-trip.
+  return JSON.stringify(value, null, 2).replace(/[^\x00-\x7f]/g, char =>
+    '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0'));
+}
+
 function flag(args, name) {
   const index = args.indexOf(name);
   return index < 0 ? undefined : args[index + 1];
@@ -57,7 +64,7 @@ function parse(args) {
       if (action === 'patch') {
         const input = flag(args, '--input');
         if (!input) throw new Error('draft patch 需要 --input <patch.json>');
-        return { op: 'draft-patch', id, patch: JSON.parse(fs.readFileSync(path.resolve(input), 'utf8')) };
+        return { op: 'draft-patch', id, patch: JSON.parse(fs.readFileSync(path.resolve(input), 'utf8').replace(/^\uFEFF/, '')) };
       }
     }
   }
@@ -115,9 +122,9 @@ try {
     catch (_) { throw new Error('未找到运行中的 Snode 桌面应用；连接文件：' + file); }
     if (connection.apiVersion !== 1) throw new Error('Snode CLI API 版本不匹配');
     const value = await call(connection, input);
-    process.stdout.write(JSON.stringify(value, null, 2) + '\n');
+    process.stdout.write(jsonForConsole(value) + '\n');
   }
 } catch (error) {
-  process.stderr.write(JSON.stringify({ ok: false, error: error.message }) + '\n');
+  process.stderr.write(jsonForConsole({ ok: false, error: error.message }) + '\n');
   process.exitCode = 1;
 }

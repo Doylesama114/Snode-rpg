@@ -20,8 +20,12 @@ const call = (...args) => {
 const name = 'CLI_E2E_' + Date.now();
 let id;
 try {
-  const flow = call('chargen', 'flow');
+  const flowRun = spawnSync(process.execPath, [cli, 'chargen', 'flow'], { cwd: repo, env, encoding: 'utf8' });
+  assert.equal(flowRun.status, 0, flowRun.stderr);
+  assert.ok(/^[\x00-\x7f]*$/.test(flowRun.stdout), 'JSON output must survive legacy Windows console encodings');
+  const flow = JSON.parse(flowRun.stdout);
   assert.equal(flow.steps.length, 8);
+  assert.equal(flow.steps[0].label, '选择职业');
   assert.equal(call('chargen', 'catalog', 'classes').data.length, 18);
   assert.equal(call('chargen', 'catalog', 'races').data.length, 30);
   assert.equal(call('chargen', 'catalog', 'backgrounds').data.length, 42);
@@ -77,7 +81,7 @@ try {
   assert.equal(call('character', 'list').length, before + 1);
 
   const updatedPatchPath = path.join(testWork, 'chargen-cli-e2e-update.json');
-  fs.writeFileSync(updatedPatchPath, JSON.stringify({ story: '通过 CLI 更新的背景故事' }), 'utf8');
+  fs.writeFileSync(updatedPatchPath, '\uFEFF' + JSON.stringify({ story: '通过 CLI 更新的背景故事' }), 'utf8');
   call('chargen', 'draft', 'patch', draft.id, '--input', updatedPatchPath);
   const updated = call('character', 'update', id, '--draft', draft.id);
   assert.equal(updated.updated, true);
