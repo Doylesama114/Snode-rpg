@@ -551,6 +551,46 @@
     } catch (e) { return false; }
   };
 
+  /* ---------------- ⑭ 右下浮动按钮自动避让（v1.0.8017） ---------------- */
+  function avoidFabOverlap() {
+    if (window.self !== window.top) return;
+    var nodes = [].slice.call(document.querySelectorAll("body *")).filter(function (el) {
+      var cs = getComputedStyle(el);
+      if (cs.position !== "fixed" || cs.display === "none" || cs.visibility === "hidden") return false;
+      var r = el.getBoundingClientRect();
+      if (r.width < 28 || r.width > 120 || r.height < 28 || r.height > 120) return false;
+      return (window.innerHeight - r.bottom) < 160 && (window.innerWidth - r.right) < 160;
+    });
+    if (nodes.length < 2) return;
+    nodes.sort(function (a, b) { return b.getBoundingClientRect().bottom - a.getBoundingClientRect().bottom; });
+    var used = [];
+    nodes.forEach(function (el, i) {
+      var r = el.getBoundingClientRect();
+      var bottom = window.innerHeight - r.bottom;
+      var tries = 0;
+      while (tries < 12 && used.some(function (u) { return Math.abs(u.bottom - bottom) < r.height + 6 && Math.abs(u.right - (window.innerWidth - r.right)) < r.width + 6; })) {
+        bottom += r.height + 10; tries++;
+      }
+      if (tries > 0) { var _dy = Math.round(bottom - (window.innerHeight - r.bottom)); el.style.setProperty("transform", "translateY(-" + _dy + "px)", "important"); }   // transform 最稳：不受 bottom/inset 定位方式影响
+      used.push({ bottom: bottom, right: window.innerWidth - r.right });
+    });
+  }
+  var _fabTimer = null;
+  function scheduleFab() { if (_fabTimer) clearTimeout(_fabTimer); _fabTimer = setTimeout(function () { _fabTimer = null; avoidFabOverlap(); }, 300); }
+  window.addEventListener("load", scheduleFab);
+  setTimeout(scheduleFab, 300);
+  setTimeout(scheduleFab, 800);   // 首屏也跑一次，避免加载后短暂重叠
+  setTimeout(scheduleFab, 1500);   // 顾问球等延迟注入的按钮出现后再避让一次
+  setTimeout(scheduleFab, 2500);
+  window.addEventListener("scroll", scheduleFab, { passive: true });
+  try { new MutationObserver(scheduleFab).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+
+  /* ---------------- ⓪ iframe 守卫：被内嵌时不注入边缘 UI（v1.0.8017） ---------------- */
+  if (window.self !== window.top) {
+    try { window.__guiInFrame = true; } catch (e) {}
+    return;   // 预览 iframe 内的页面不再绘制 功能导航/beam，避免与父页头部叠加
+  }
+
   /* ---------------- ⑬ 表格居中（阈值随单元格行数自适应） ---------------- */
   var _ctTimer = null;
   function centerTables(scope) {

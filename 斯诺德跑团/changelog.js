@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8017',
+    date: '2026-09-25',
+    changes: [
+      '修复职业页搜索结果预览层重复头部：guild-ui 增加 iframe 守卫（被内嵌页面不再注入功能导航/beam）',
+      '新增右下角浮动按钮自动避让（transform 方案，不受 bottom/inset 定位差异影响）',
+      '清理编辑器临时文件（首页.html~*.TMP）'
+    ]
+  },
+
+
+  {
     version: '1.0.8016',
     date: '2026-09-24',
     changes: [
