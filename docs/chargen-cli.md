@@ -10,7 +10,7 @@
 .\snode.cmd chargen flow
 ```
 
-也可以使用 `node scripts/snode-cli.mjs ...`。应用启动时在应用数据目录的 `snode-rpg-cli/chargen-cli-connection.json` 写入仅供本机使用的连接文件，CLI 自动读取。安装包也包含 `snode.cmd` 和 CLI 脚本。测试或多实例环境可以用 `--connection <路径>` 或 `SNODE_CLI_CONNECTION` 指定连接文件。应用关闭时 CLI 会报告连接不可用。
+`snode.cmd` 优先使用安装包同目录（或仓库 `electron-app/dist/win-unpacked/`）中的应用运行时，无需单独安装 Node.js；没有打包运行时时才使用系统中的 `node`。也可以手动运行 `node scripts/snode-cli.mjs ...`。应用启动时在应用数据目录的 `snode-rpg-cli/chargen-cli-connection.json` 写入仅供本机使用的连接文件，CLI 自动读取。安装包也包含 `snode.cmd` 和 CLI 脚本。测试或多实例环境可以用 `--connection <路径>` 或 `SNODE_CLI_CONNECTION` 指定连接文件。应用关闭时 CLI 会报告连接不可用。
 
 ## 查询创建信息
 
