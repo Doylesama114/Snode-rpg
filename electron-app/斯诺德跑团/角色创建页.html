@@ -899,8 +899,10 @@ function applyRecreateHandoff(){
 }
 
 initWizard();
-applyAdvisorHandoff();
-applyRecreateHandoff();
+if (!new URLSearchParams(location.search).has('cli')) {
+  applyAdvisorHandoff();
+  applyRecreateHandoff();
+}
 // 草稿恢复/期望路线/跳转入口统一延迟到 DOMContentLoaded：
 // 此时脚本内所有 var 数据（BG_SKILL_MAP/SPEC_AUTO_PROF 等）已赋值，updateOverview 不会因未初始化而抛错
 function _initChargenLivePanels() {
@@ -909,7 +911,7 @@ function _initChargenLivePanels() {
     var _p0 = document.getElementById('charOverview'); if (_p0) _p0.classList.remove('panel-open');
     var _b0 = document.getElementById('overviewToggle'); if (_b0) _b0.classList.remove('panel-open');
   }
-  if (!_handoffApplied && !_recreateSession) { try { restoreChargenDraft(); } catch(e){ console.warn("draft restore", e); } }
+  if (!_handoffApplied && !_recreateSession && !new URLSearchParams(location.search).has('cli')) { try { restoreChargenDraft(); } catch(e){ console.warn("draft restore", e); } }
   renderAspirationPanel();
   renderOvJump();
 }
@@ -1116,6 +1118,7 @@ function clearChargenDraft() {
   });
 }
 function autosaveChargenDraft() {
+  if (new URLSearchParams(location.search).has('cli')) return;
   try {
     var snap = buildCreationSnapshot();
     snap._step = CURRENT_STEP; snap._savedAt = Date.now();
@@ -4414,6 +4417,7 @@ async function exportXlsxFromState(state) {
 }
 
 </script>
+<script src="chargen_cli_api.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
 <script>
