@@ -23,8 +23,9 @@ The Snode desktop app must be running.
   snode chargen validate <draft-id>
   snode chargen commit <draft-id>
   snode character list
-  snode character get <id> [--slot 1]
+  snode character get <id> [--slot 1] [--include-portrait]
   snode character update <id> --draft <draft-id> [--slot 1]
+  snode character portrait <id> --file <image-path> [--slot 1]
   snode character delete <id> --yes [--slot 1]  (default: all slots)
 
 Options: put --json before a command for ASCII-only JSON output from snode.cmd.
@@ -41,6 +42,13 @@ function jsonForConsole(value) {
 function flag(args, name) {
   const index = args.indexOf(name);
   return index < 0 ? undefined : args[index + 1];
+}
+
+function characterSlot(args) {
+  if (!args.includes('--slot')) return 1;
+  const value = flag(args, '--slot');
+  if (!/^[123]$/.test(value || '')) throw new Error('--slot 只能为 1、2 或 3');
+  return Number(value);
 }
 
 function parse(args) {
@@ -71,13 +79,19 @@ function parse(args) {
   }
   if (root === 'character') {
     const id = rest[0];
-    const slot = Number(flag(args, '--slot') || 1);
     if (command === 'list') return { op: 'character-list' };
-    if (command === 'get') return { op: 'character-get', id, slot };
+    if (!id || id.startsWith('--')) throw new Error('需要角色 ID');
+    const slot = characterSlot(args);
+    if (command === 'get') return { op: 'character-get', id, slot, includePortrait: args.includes('--include-portrait') };
     if (command === 'update') return { op: 'character-update', id, slot, draftId: flag(args, '--draft') };
+    if (command === 'portrait') {
+      const file = flag(args, '--file');
+      if (!id || !file) throw new Error('设置头像需要角色 ID 和 --file <图片路径>');
+      return { op: 'character-portrait', id, slot, filePath: path.resolve(file) };
+    }
     if (command === 'delete') {
       if (!args.includes('--yes')) throw new Error('删除角色需要 --yes');
-      return { op: 'character-delete', id, slot: flag(args, '--slot') ? slot : undefined };
+      return { op: 'character-delete', id, slot: args.includes('--slot') ? slot : undefined };
     }
   }
   throw new Error('未知命令；运行 snode --help 查看用法');

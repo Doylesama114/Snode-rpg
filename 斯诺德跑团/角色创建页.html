@@ -3313,6 +3313,13 @@ function parseEquipToSlots(text, charData){
     var dup=false;
     for(var si=0;si<charData.equipment[slot].length;si++){var _eit=charData.equipment[slot][si];if(_eit&&(_eit.item||_eit.name)===itemName){dup=true;break;}}
     if(!dup) charData.equipment[slot].push({item:itemName});
+    // Starting sets that grant two daggers need one in each hand.
+    if(itemName==="匕首"&&_getQty(part)>=2){
+      var offHand=charData.equipment["副手武器"];
+      var hasOffHand=false;
+      for(var oi=0;oi<offHand.length;oi++){var _off=offHand[oi];if(_off&&(_off.item||_off.name)===itemName){hasOffHand=true;break;}}
+      if(!hasOffHand)offHand.push({item:itemName});
+    }
     if(contents){var _ts="背包";if(itemName==="旅行腰包")_ts="旅行腰包";if(itemName==="背包")_ts="背包";
       for(var ci2=0;ci2<contents.length;ci2++){
         var cn=contents[ci2].trim();

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -86,11 +87,61 @@ try {
   const updated = call('character', 'update', id, '--draft', draft.id);
   assert.equal(updated.updated, true);
   assert.equal(call('character', 'get', id).story, '通过 CLI 更新的背景故事');
+
+  const beforePortrait = call('character', 'get', id);
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL/nwAAAABJRU5ErkJggg==', 'base64');
+  const portraitPath = path.join(testWork, 'chargen-cli-e2e-portrait.png');
+  fs.writeFileSync(portraitPath, png);
+  const portrait = call('character', 'portrait', id, '--file', portraitPath, '--slot', '1');
+  assert.equal(portrait.updated, true);
+  assert.equal(portrait.bytes, png.length);
+  assert.equal(portrait.sha256, crypto.createHash('sha256').update(png).digest('hex'));
+  const compact = call('character', 'get', id);
+  assert.equal(compact.portrait, undefined);
+  assert.deepEqual(compact.portraitInfo, { mime: 'image/png', bytes: png.length });
+  const complete = call('character', 'get', id, '--include-portrait');
+  assert.equal(complete.portrait, 'data:image/png;base64,' + png.toString('base64'));
+  delete beforePortrait.portrait;
+  delete beforePortrait._savedAt;
+  delete compact.portraitInfo;
+  delete compact._savedAt;
+  assert.deepEqual(compact, beforePortrait, 'portrait update must preserve every other saved field');
+
+  for (const slotArgs of [['--slot'], ['--slot', '4'], ['--slot', 'oops']]) {
+    const run = spawnSync(process.execPath, [cli, 'character', 'delete', id, '--yes', ...slotArgs], { cwd: repo, env, encoding: 'utf8' });
+    assert.notEqual(run.status, 0, `invalid ${slotArgs.join(' ')} must fail`);
+    assert.match(JSON.parse(run.stderr).error, /--slot/);
+    assert.equal(call('character', 'get', id).name, name, 'invalid slot must not delete the role');
+  }
+
   call('character', 'delete', id, '--yes');
   id = undefined;
   assert.equal(call('character', 'list').length, before);
 
-  console.log(JSON.stringify({ ok: true, checked: ['flow', 'catalog', 'full preview and hidden skill details', 'targeted skill lookup', 'draft', 'invalid validate', 'options', 'preview', 'valid validate', 'commit', 'get', 'list', 'update', 'delete'] }));
+  const dancerDraft = call('chargen', 'draft', 'new');
+  const dancerPatchPath = path.join(testWork, 'chargen-cli-e2e-dancer.json');
+  fs.writeFileSync(dancerPatchPath, JSON.stringify({
+    className: '战舞者', keyAttr: '敏捷', selectedFeatures: ['回旋斩', '激励旋步'],
+    raceName: '木精灵',
+    attrs: { 力量: 8, 敏捷: 15, 体质: 14, 智力: 8, 感知: 13, 魅力: 14, 意志: 12, 幸运: 8 },
+    selectedSkills: ['隐匿', '洞悉', '察觉', '激励'],
+    bgName: '运动员', bgProfs: { skills: { 运动: ['运动-跳跃'] }, profInput: '' },
+    sportPreference: '短跑', equipLetter: 'B', charName: name + '_DANCER'
+  }), 'utf8');
+  call('chargen', 'draft', 'patch', dancerDraft.id, '--input', dancerPatchPath);
+  const dancerValid = call('chargen', 'validate', dancerDraft.id);
+  assert.equal(dancerValid.ok, true, JSON.stringify(dancerValid.errors));
+  const dancer = call('chargen', 'commit', dancerDraft.id);
+  assert.equal(dancer.ok, true, JSON.stringify(dancer.errors));
+  id = dancer.id;
+  const dancerSheet = call('character', 'get', id);
+  assert.ok(dancerSheet.equipment['主手武器'].some(item => item.item === '匕首'));
+  assert.ok(dancerSheet.equipment['副手武器'].some(item => item.item === '匕首'));
+  call('character', 'delete', id, '--yes');
+  id = undefined;
+  assert.equal(call('character', 'list').length, before);
+
+  console.log(JSON.stringify({ ok: true, checked: ['flow', 'catalog', 'full preview and hidden skill details', 'targeted skill lookup', 'draft', 'invalid validate', 'options', 'preview', 'valid validate', 'commit', 'get', 'list', 'update', 'portrait', 'compact get', 'slot validation', 'dual daggers', 'delete'] }));
 } finally {
   if (id) {
     try { call('character', 'delete', id, '--yes'); } catch (_) {}

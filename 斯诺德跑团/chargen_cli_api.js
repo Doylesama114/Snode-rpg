@@ -358,12 +358,33 @@
     var raw = localStorage.getItem(key);
     if (action === 'get') {
       if (!raw) throw new Error('角色不存在：' + key);
-      return JSON.parse(raw);
+      var result = JSON.parse(raw);
+      if (value !== true && result.portrait) {
+        var match = /^data:(image\/(?:png|jpeg|webp|gif));base64,(.*)$/.exec(result.portrait);
+        if (match) {
+          var encoded = match[2];
+          var padding = encoded.slice(-2) === '==' ? 2 : encoded.slice(-1) === '=' ? 1 : 0;
+          result.portraitInfo = { mime: match[1], bytes: Math.floor(encoded.length * 3 / 4) - padding };
+        } else {
+          result.portraitInfo = { kind: 'other' };
+        }
+        delete result.portrait;
+      }
+      return result;
     }
     if (action === 'delete') {
       if (!raw) throw new Error('角色不存在：' + key);
       localStorage.removeItem(key);
       return { deleted: true, key: key };
+    }
+    if (action === 'portrait') {
+      if (!raw) throw new Error('角色不存在：' + key);
+      if (typeof value !== 'string' || !/^data:image\/(?:png|jpeg|webp|gif);base64,/.test(value)) throw new Error('头像图片格式无效');
+      var character = JSON.parse(raw);
+      character.portrait = value;
+      character._savedAt = new Date().toISOString();
+      localStorage.setItem(key, JSON.stringify(character));
+      return { updated: true, key: key, id: id, slot: slot || 1 };
     }
     if (action === 'update') {
       if (!raw) throw new Error('角色不存在：' + key);

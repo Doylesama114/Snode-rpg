@@ -8,6 +8,7 @@ const { BrowserWindow, app } = require('electron');
 
 const API_VERSION = 1;
 const MAX_BODY = 4 * 1024 * 1024;
+const MAX_PORTRAIT_BYTES = 3 * 1024 * 1024;
 const CREATION_PAGE = path.join(__dirname, '斯诺德跑团', '角色创建页.html');
 const CLASS_PAGES = path.join(__dirname, '职业页');
 const CONNECTION_FILE = 'chargen-cli-connection.json';
@@ -24,6 +25,27 @@ function merge(base, patch) {
     result[key] = isObject(value) && isObject(base[key]) ? merge(base[key], value) : value;
   }
   return result;
+}
+
+function readPortrait(filePath) {
+  if (typeof filePath !== 'string' || !filePath.trim()) throw new Error('需要头像图片路径');
+  const file = path.resolve(filePath);
+  const stat = fs.statSync(file);
+  if (!stat.isFile()) throw new Error('头像路径必须是文件');
+  if (!stat.size || stat.size > MAX_PORTRAIT_BYTES) throw new Error('头像图片须小于等于 3 MiB');
+  const bytes = fs.readFileSync(file);
+  let mime;
+  if (bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) mime = 'image/png';
+  else if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) mime = 'image/jpeg';
+  else if (bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP') mime = 'image/webp';
+  else if (['GIF87a', 'GIF89a'].includes(bytes.toString('ascii', 0, 6))) mime = 'image/gif';
+  else throw new Error('头像仅支持 PNG、JPEG、WebP 或 GIF 图片');
+  return {
+    dataUrl: 'data:' + mime + ';base64,' + bytes.toString('base64'),
+    mime,
+    bytes: bytes.length,
+    sha256: crypto.createHash('sha256').update(bytes).digest('hex')
+  };
 }
 
 function readDrafts(file) {
@@ -177,7 +199,13 @@ function startChargenCliServer(mainWindow) {
       return created;
     }
     if (op === 'character-list') return inCreationPage({ op: 'characters', action: 'list' }, false);
-    if (op === 'character-get') return inCreationPage({ op: 'characters', action: 'get', id: input.id, slot: input.slot }, false);
+    if (op === 'character-get') return inCreationPage({ op: 'characters', action: 'get', id: input.id, slot: input.slot, value: !!input.includePortrait }, false);
+    if (op === 'character-portrait') {
+      const portrait = readPortrait(input.filePath);
+      const updated = await inCreationPage({ op: 'characters', action: 'portrait', id: input.id, slot: input.slot, value: portrait.dataUrl }, false);
+      refreshCharacterViews(mainWindow);
+      return { ...updated, mime: portrait.mime, bytes: portrait.bytes, sha256: portrait.sha256 };
+    }
     if (op === 'character-delete') {
       const deleted = await inCreationPage({ op: 'characters', action: 'delete', id: input.id, slot: input.slot }, false);
       refreshCharacterViews(mainWindow);
