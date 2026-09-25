@@ -25,6 +25,7 @@ The Snode desktop app must be running.
   snode character list
   snode character get <id> [--slot 1] [--include-portrait]
   snode character update <id> --draft <draft-id> [--slot 1]
+  snode character profile <id> --input <patch.json> [--slot 1]
   snode character portrait <id> --file <image-path> [--slot 1]
   snode character delete <id> --yes [--slot 1]  (default: all slots)
 
@@ -84,6 +85,11 @@ function parse(args) {
     const slot = characterSlot(args);
     if (command === 'get') return { op: 'character-get', id, slot, includePortrait: args.includes('--include-portrait') };
     if (command === 'update') return { op: 'character-update', id, slot, draftId: flag(args, '--draft') };
+    if (command === 'profile') {
+      const input = flag(args, '--input');
+      if (!input) throw new Error('修改角色资料需要 --input <patch.json>');
+      return { op: 'character-profile', id, slot, patch: JSON.parse(fs.readFileSync(path.resolve(input), 'utf8').replace(/^\uFEFF/, '')) };
+    }
     if (command === 'portrait') {
       const file = flag(args, '--file');
       if (!id || !file) throw new Error('设置头像需要角色 ID 和 --file <图片路径>');

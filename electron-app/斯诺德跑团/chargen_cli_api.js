@@ -377,6 +377,23 @@
       localStorage.removeItem(key);
       return { deleted: true, key: key };
     }
+    if (action === 'profile') {
+      if (!raw) throw new Error('角色不存在：' + key);
+      if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('角色资料补丁必须是 JSON 对象');
+      var allowed = ['gender', 'age', 'height', 'weight', 'eye', 'skin', 'hair', 'story', 'personality', 'traits', 'ideals', 'bonds', 'flaws'];
+      var fields = Object.keys(value);
+      if (!fields.length || fields.some(function (field) { return allowed.indexOf(field) < 0 || typeof value[field] !== 'string'; })) {
+        throw new Error('角色资料仅支持性别、外貌与背景文字字段，值必须为字符串');
+      }
+      var profile = JSON.parse(raw);
+      fields.forEach(function (field) {
+        profile[field] = value[field];
+        if (profile._creationSnapshot && typeof profile._creationSnapshot === 'object') profile._creationSnapshot[field] = value[field];
+      });
+      profile._savedAt = new Date().toISOString();
+      localStorage.setItem(key, JSON.stringify(profile));
+      return { updated: true, key: key, id: id, slot: slot || 1, fields: fields };
+    }
     if (action === 'portrait') {
       if (!raw) throw new Error('角色不存在：' + key);
       if (typeof value !== 'string' || !/^data:image\/(?:png|jpeg|webp|gif);base64,/.test(value)) throw new Error('头像图片格式无效');

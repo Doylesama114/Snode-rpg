@@ -200,6 +200,11 @@ function startChargenCliServer(mainWindow) {
     }
     if (op === 'character-list') return inCreationPage({ op: 'characters', action: 'list' }, false);
     if (op === 'character-get') return inCreationPage({ op: 'characters', action: 'get', id: input.id, slot: input.slot, value: !!input.includePortrait }, false);
+    if (op === 'character-profile') {
+      const updated = await inCreationPage({ op: 'characters', action: 'profile', id: input.id, slot: input.slot, value: input.patch }, false);
+      refreshCharacterViews(mainWindow);
+      return updated;
+    }
     if (op === 'character-portrait') {
       const portrait = readPortrait(input.filePath);
       const updated = await inCreationPage({ op: 'characters', action: 'portrait', id: input.id, slot: input.slot, value: portrait.dataUrl }, false);

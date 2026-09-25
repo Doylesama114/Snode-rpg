@@ -3763,12 +3763,12 @@ function saveCharacter(){
     if(ms) charData.currency["金币"]=(charData.currency["金币"]||0)+parseInt(ms[1]);
     if(bd["装备"]){var items=bd["装备"].split("\n");for(var i=0;i<items.length;i++){var it=items[i].trim();if(it){var _qn=_getQty(it);var _cn=it.replace(/^[一二两三四五六七八九十\d]+[把根面副个对瓶组块枚件套柄条发盏颗封卷张帖袋捆顶份种项支门本]/,"").trim();if(_cn&&_cn.length>1){_cn=bgResolveItem(_cn);var _slot=bgItemSlot(_cn);if(!charData.equipment[_slot])charData.equipment[_slot]=[];for(var _qi=0;_qi<_qn;_qi++){var _dupB=false;for(var _bk=0;_bk<charData.equipment[_slot].length;_bk++){var _bit=charData.equipment[_slot][_bk];if(_bit&&(_bit.item||_bit.name)===_cn){_dupB=true;break;}}if(!_dupB)charData.equipment[_slot].push({item:_cn})}}}}}
     charData.background=CHAR.bgName;
-    if(bd["特性描述"]) charData.traits=bd["特性描述"];
+    if(bd["特性描述"]&&!CHAR.traits) charData.traits=bd["特性描述"];
   }
   if(CHAR.sportPreference){
     charData.sportPreference=CHAR.sportPreference;
     var _tr=charData.traits||"";
-    if(_tr.indexOf(CHAR.sportPreference)<0){
+    if(!CHAR.traits&&_tr.indexOf(CHAR.sportPreference)<0){
       charData.traits=_tr?(_tr+"（偏好："+CHAR.sportPreference+"）"):("运动员拥有一项偏好的运动项目（"+CHAR.sportPreference+"），在进行这项运动时具备专家级的熟练度");
     }
   }
@@ -4203,13 +4203,13 @@ async function exportXlsxFromState(state) {
   else if (state.background && typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS[state.background]) {
     set("H18", (REF_BACKGROUNDS[state.background].description || "").replace(/\\n/g, "\n"));
   }
-  if (state.background === "运动员" && state.sportPreference) {
+  if (state.background === "运动员" && state.sportPreference && (!state.traits || state.traits.indexOf("运动员拥有一项偏好的运动项目") >= 0)) {
     var _sport2 = state.sportPreference;
     var _th2 = state.traits || (typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS["运动员"] ? REF_BACKGROUNDS["运动员"].description : "");
     if (_sport2 && (!_th2 || _th2.indexOf(_sport2) < 0)) {
       set("H18", _th2 ? (_th2 + "（偏好：" + _sport2 + "）") : ("运动员拥有一项偏好的运动项目（" + _sport2 + "），在进行这项运动时具备专家级的熟练度"));
     }
-  } else if (state.background === "运动员" && state.weapon_specs && state.weapon_specs.length) {
+  } else if (state.background === "运动员" && state.weapon_specs && state.weapon_specs.length && (!state.traits || state.traits.indexOf("运动员拥有一项偏好的运动项目") >= 0)) {
     // 旧档兼容：曾误用 weapon_specs 存偏好运动
     var _sportLegacy = state.weapon_specs[0];
     var _thLegacy = state.traits || (typeof REF_BACKGROUNDS !== "undefined" && REF_BACKGROUNDS["运动员"] ? REF_BACKGROUNDS["运动员"].description : "");

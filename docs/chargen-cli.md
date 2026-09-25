@@ -87,12 +87,15 @@ $cli = Join-Path (Split-Path $exe) 'snode.cmd'
 .\snode.cmd character get <角色ID> --slot 1
 .\snode.cmd character get <角色ID> --slot 1 --include-portrait
 .\snode.cmd character update <角色ID> --draft <完整草稿ID> --slot 1
+.\snode.cmd character profile <角色ID> --input .\profile.json --slot 1
 .\snode.cmd character portrait <角色ID> --file .\avatar.png --slot 1
 .\snode.cmd character delete <角色ID> --yes
 .\snode.cmd character delete <角色ID> --yes --slot 2
 ```
 
-`list` 按角色分组列出存档位。`get` 默认省略已保存头像的 Base64 数据，以 `portraitInfo` 返回 MIME 和字节数，避免单次查询输出数 MB；需要完整存档（例如备份）时加 `--include-portrait`。`update` 使用经创建校验的完整草稿重建角色，仅允许更新尚未升级的角色。`portrait` 只更新指定存档的头像，支持不超过 3 MiB 的 PNG、JPEG、WebP 或 GIF 文件，保留其他角色数据。它返回图片的 MIME、字节数和 SHA-256，不输出整张图片。`delete` 默认删除该角色全部存档位；指定 `--slot` 只删除一个存档位。角色命令的 `--slot` 仅接受 1、2 或 3；漏填或填错会直接失败，避免误写其他存档。修改后若客户端停留在角色选择页或角色存档页，页面会刷新。
+`list` 按角色分组列出存档位。`get` 默认省略已保存头像的 Base64 数据，以 `portraitInfo` 返回 MIME 和字节数，避免单次查询输出数 MB；需要完整存档（例如备份）时加 `--include-portrait`。`update` 使用经创建校验的完整草稿重建角色，仅允许更新尚未升级的角色。`profile` 接受 JSON 对象，只能修改 `gender`、`age`、`height`、`weight`、`eye`、`skin`、`hair`、`story`、`personality`、`traits`、`ideals`、`bonds`、`flaws` 等资料文字；会同步创建记录，保留属性、装备、进度和头像。`portrait` 只更新指定存档的头像，支持不超过 3 MiB 的 PNG、JPEG、WebP 或 GIF 文件，保留其他角色数据。它返回图片的 MIME、字节数和 SHA-256，不输出整张图片。`delete` 默认删除该角色全部存档位；指定 `--slot` 只删除一个存档位。角色命令的 `--slot` 仅接受 1、2 或 3；漏填或填错会直接失败，避免误写其他存档。修改后若客户端停留在角色选择页或角色存档页，页面会刷新。
+
+创建或重建角色时，自定义的 `traits` 文字优先于背景默认描述。运动员仍需选择偏好运动，但它不会被追加到自定义特性文字中。
 
 ## 覆盖约定
 

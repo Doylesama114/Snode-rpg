@@ -88,6 +88,25 @@ try {
   assert.equal(updated.updated, true);
   assert.equal(call('character', 'get', id).story, '通过 CLI 更新的背景故事');
 
+  const beforeProfile = call('character', 'get', id);
+  const profilePath = path.join(testWork, 'chargen-cli-e2e-profile.json');
+  fs.writeFileSync(profilePath, JSON.stringify({ gender: '女', traits: '会奔向有羁绊的人' }), 'utf8');
+  const profile = call('character', 'profile', id, '--input', profilePath);
+  assert.deepEqual(profile.fields, ['gender', 'traits']);
+  const afterProfile = call('character', 'get', id);
+  assert.equal(afterProfile.gender, '女');
+  assert.equal(afterProfile.traits, '会奔向有羁绊的人');
+  assert.equal(afterProfile._creationSnapshot.gender, '女');
+  assert.equal(afterProfile._creationSnapshot.traits, '会奔向有羁绊的人');
+  const protectedPatchPath = path.join(testWork, 'chargen-cli-e2e-protected.json');
+  fs.writeFileSync(protectedPatchPath, JSON.stringify({ attrs: { 力量: 99 } }), 'utf8');
+  const rejectedPatch = spawnSync(process.execPath, [cli, 'character', 'profile', id, '--input', protectedPatchPath], { cwd: repo, env, encoding: 'utf8' });
+  assert.notEqual(rejectedPatch.status, 0);
+  assert.deepEqual(call('character', 'get', id), afterProfile, 'rejected profile patch must leave the role unchanged');
+  const expectedProfile = { ...beforeProfile, gender: '女', traits: '会奔向有羁绊的人', _savedAt: afterProfile._savedAt };
+  expectedProfile._creationSnapshot = { ...beforeProfile._creationSnapshot, gender: '女', traits: '会奔向有羁绊的人' };
+  assert.deepEqual(afterProfile, expectedProfile, 'profile patch must preserve mechanical data and portrait');
+
   const beforePortrait = call('character', 'get', id);
   const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL/nwAAAABJRU5ErkJggg==', 'base64');
   const portraitPath = path.join(testWork, 'chargen-cli-e2e-portrait.png');
@@ -126,7 +145,7 @@ try {
     attrs: { 力量: 8, 敏捷: 15, 体质: 14, 智力: 8, 感知: 13, 魅力: 14, 意志: 12, 幸运: 8 },
     selectedSkills: ['隐匿', '洞悉', '察觉', '激励'],
     bgName: '运动员', bgProfs: { skills: { 运动: ['运动-跳跃'] }, profInput: '' },
-    sportPreference: '短跑', equipLetter: 'B', charName: name + '_DANCER'
+    sportPreference: '短跑', traits: '她会奔向有羁绊的人', equipLetter: 'B', charName: name + '_DANCER'
   }), 'utf8');
   call('chargen', 'draft', 'patch', dancerDraft.id, '--input', dancerPatchPath);
   const dancerValid = call('chargen', 'validate', dancerDraft.id);
@@ -137,11 +156,13 @@ try {
   const dancerSheet = call('character', 'get', id);
   assert.ok(dancerSheet.equipment['主手武器'].some(item => item.item === '匕首'));
   assert.ok(dancerSheet.equipment['副手武器'].some(item => item.item === '匕首'));
+  assert.equal(dancerSheet.traits, '她会奔向有羁绊的人');
+  assert.equal(dancerSheet.sportPreference, '短跑');
   call('character', 'delete', id, '--yes');
   id = undefined;
   assert.equal(call('character', 'list').length, before);
 
-  console.log(JSON.stringify({ ok: true, checked: ['flow', 'catalog', 'full preview and hidden skill details', 'targeted skill lookup', 'draft', 'invalid validate', 'options', 'preview', 'valid validate', 'commit', 'get', 'list', 'update', 'portrait', 'compact get', 'slot validation', 'dual daggers', 'delete'] }));
+  console.log(JSON.stringify({ ok: true, checked: ['flow', 'catalog', 'full preview and hidden skill details', 'targeted skill lookup', 'draft', 'invalid validate', 'options', 'preview', 'valid validate', 'commit', 'get', 'list', 'update', 'profile', 'portrait', 'compact get', 'slot validation', 'dual daggers', 'delete'] }));
 } finally {
   if (id) {
     try { call('character', 'delete', id, '--yes'); } catch (_) {}
