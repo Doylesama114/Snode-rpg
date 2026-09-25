@@ -1,5 +1,15 @@
 @echo off
 setlocal
+if "%SNODE_CLI_MACHINE%"=="1" goto machine
+if /I "%~1"=="--json" goto machine
+if exist "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" goto display
+goto machine
+
+:display
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\snode-display.ps1" %*
+exit /b %ERRORLEVEL%
+
+:machine
 set "SNODE_CLI_SCRIPT=%~dp0scripts\snode-cli.mjs"
 set "SNODE_CLI_RUNTIME="
 for %%F in ("%~dp0*.exe") do if exist "%%~fF" call :candidate "%%~fF"

@@ -10,6 +10,12 @@
 .\snode.cmd chargen flow
 ```
 
+`snode.cmd` 默认把 JSON 中的中文直接显示出来。Agent 或脚本需要与终端编码无关的稳定输出时，在子命令前加全局参数 `--json`；中文会用标准 `\uXXXX` 表示，解析结果仍是中文：
+
+```powershell
+.\snode.cmd --json chargen flow
+```
+
 只安装应用、没有仓库时，先启动应用，再在任意 PowerShell 目录定位安装版 CLI：
 
 ```powershell
@@ -18,9 +24,9 @@ $cli = Join-Path (Split-Path $exe) 'snode.cmd'
 & $cli chargen flow
 ```
 
-`snode.cmd` 优先使用安装包同目录（或仓库 `electron-app/dist/win-unpacked/`）中的应用运行时，无需单独安装 Node.js；没有打包运行时时才使用系统中的 `node`。也可以手动运行 `node scripts/snode-cli.mjs ...`。应用启动时在应用数据目录的 `snode-rpg-cli/chargen-cli-connection.json` 写入仅供本机使用的连接文件，CLI 自动读取。安装包同目录还包含 `snode.cmd`、`CLI.md` 和 CLI 脚本；命令未注册到系统 PATH，需要从安装目录调用 `snode.cmd`。测试或多实例环境可以用 `--connection <路径>` 或 `SNODE_CLI_CONNECTION` 指定连接文件。应用关闭时 CLI 会报告连接不可用。
+`snode.cmd` 优先使用安装包同目录（或仓库 `electron-app/dist/win-unpacked/`）中的应用运行时，无需单独安装 Node.js；没有打包运行时时才使用系统中的 `node`。也可以手动运行 `node scripts/snode-cli.mjs ...`。应用启动时在应用数据目录的 `snode-rpg-cli/chargen-cli-connection.json` 写入仅供本机使用的连接文件，CLI 自动读取。安装包同目录还包含 `snode.cmd`、`CLI.md` 和 CLI 脚本；命令未注册到系统 PATH，需要从安装目录调用。测试或多实例环境可以用 `--connection <路径>` 或 `SNODE_CLI_CONNECTION` 指定连接文件。应用关闭时 CLI 会报告连接不可用。
 
-JSON 中的中文使用标准 `\uXXXX` 转义，避免 Windows PowerShell 5.1 把 UTF-8 输出误读为 GBK。Agent 直接解析 JSON 即可；在 PowerShell 中可用 `(.\snode.cmd chargen flow | ConvertFrom-Json).steps | Format-Table` 查看正常中文。
+`--json` 输出仅含 ASCII 字节，避免 Windows PowerShell 5.1 把 UTF-8 中文误读为 GBK。默认显示模式在 PowerShell 中解析这份 JSON 后再输出，因此可直接阅读中文。在 PowerShell 中也可以用 `(.\snode.cmd --json chargen flow | ConvertFrom-Json).steps | Format-Table` 查看表格。
 
 ## 查询创建信息
 

@@ -24,6 +24,7 @@ extraFiles:
     to: scripts
     filter:
       - "**/*.mjs"
+      - "**/*.ps1"
   - from: ../advisor
     to: advisor
   - from: ../.env.example

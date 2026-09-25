@@ -27,7 +27,8 @@ The Snode desktop app must be running.
   snode character update <id> --draft <draft-id> [--slot 1]
   snode character delete <id> --yes [--slot 1]  (default: all slots)
 
-Options: --connection <path> overrides SNODE_CLI_CONNECTION and the default app data path.
+Options: put --json before a command for ASCII-only JSON output from snode.cmd.
+         --connection <path> overrides SNODE_CLI_CONNECTION and the default app data path.
 Every command prints one JSON document. Errors use a nonzero exit code.`;
 
 function jsonForConsole(value) {
@@ -111,7 +112,7 @@ function call(connection, input) {
 }
 
 try {
-  const args = process.argv.slice(2);
+  const args = process.argv.slice(2).filter(arg => arg !== '--json');
   const input = parse(args);
   if (!input) {
     process.stdout.write(HELP + '\n');
