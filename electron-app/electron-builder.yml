@@ -18,6 +18,8 @@ files:
 extraFiles:
   - from: ../snode.cmd
     to: snode.cmd
+  - from: ../docs/chargen-cli.md
+    to: CLI.md
   - from: ../scripts
     to: scripts
     filter:
