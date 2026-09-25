@@ -1,9 +1,9 @@
 {
   "meta": {
     "phase": "5-batch10",
-    "generatedAt": "2026-09-21",
+    "generatedAt": "2026-09-25",
     "classCount": 18,
-    "fullReady": 3,
+    "fullReady": 18,
     "partialReady": 0
   },
   "audits": [
@@ -142,8 +142,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥7",
+          "pass": true,
           "note": "got 7"
         },
         {
@@ -153,9 +153,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "蛮斗士",
@@ -217,8 +217,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥5",
+          "pass": true,
           "note": "got 5"
         },
         {
@@ -228,9 +228,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "战士",
@@ -292,8 +292,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥7",
+          "pass": true,
           "note": "got 7"
         },
         {
@@ -303,9 +303,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "猎人",
@@ -367,8 +367,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
           "note": "got 6"
         },
         {
@@ -378,9 +378,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "牧师",
@@ -442,8 +442,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥4",
+          "pass": true,
           "note": "got 4"
         },
         {
@@ -453,9 +453,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "圣骑士",
@@ -517,8 +517,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥5",
+          "pass": true,
           "note": "got 5"
         },
         {
@@ -528,9 +528,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "游荡者",
@@ -592,8 +592,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
           "note": "got 6"
         },
         {
@@ -603,9 +603,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "德鲁伊",
@@ -667,8 +667,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥8",
+          "pass": true,
           "note": "got 8"
         },
         {
@@ -678,9 +678,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "萨满祭司",
@@ -742,8 +742,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
           "note": "got 6"
         },
         {
@@ -753,9 +753,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "术士",
@@ -817,8 +817,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥2",
+          "pass": true,
           "note": "got 2"
         },
         {
@@ -828,9 +828,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "武僧",
@@ -892,8 +892,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥8",
+          "pass": true,
           "note": "got 8"
         },
         {
@@ -903,9 +903,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "吟游诗人",
@@ -967,8 +967,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
           "note": "got 6"
         },
         {
@@ -978,9 +978,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "魔契师",
@@ -1042,8 +1042,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥20",
-          "pass": false,
+          "label": "L5 小贴士 ≥6",
+          "pass": true,
           "note": "got 6"
         },
         {
@@ -1053,9 +1053,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "守望者",
@@ -1117,8 +1117,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥15",
-          "pass": false,
+          "label": "L5 小贴士 ≥5",
+          "pass": true,
           "note": "got 5"
         },
         {
@@ -1128,9 +1128,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "谋士",
@@ -1192,8 +1192,8 @@
         },
         {
           "id": "l5_tips",
-          "label": "L5 小贴士 ≥15",
-          "pass": false,
+          "label": "L5 小贴士 ≥7",
+          "pass": true,
           "note": "got 7"
         },
         {
@@ -1203,9 +1203,9 @@
           "note": ""
         }
       ],
-      "passCount": 10,
+      "passCount": 11,
       "total": 11,
-      "ready": false
+      "ready": true
     },
     {
       "className": "战舞者",

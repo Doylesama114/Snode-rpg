@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8018',
+    date: '2026-09-25',
+    changes: [
+      '修复搜索结果预览「套娃」叠加：被 iframe 内嵌时禁用搜索预览（防止内层再开一套条）',
+      '预览打开时 body 加 gs-preview-open 并屏蔽下层返回/功能导航；关闭时清理',
+      '父页监听 iframe 内"关闭预览"消息，内嵌时隐藏搜索入口'
+    ]
+  },
+
+
+  {
     version: '1.0.8017',
     date: '2026-09-25',
     changes: [

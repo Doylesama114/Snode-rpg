@@ -35,6 +35,6 @@
     "L2 技能索引：法师 423 + 通用 400 + 奇械师 146",
     "L3A 进阶技能：advancement_skills.json（55/330 条 documented）",
     "L3 进阶库：330 条（全职业·进阶 docx 同步后去重合并）",
-    "职业档位 audit：full 3 职业 ready；partial 0 职业 ready（class_tier_audit.json）"
+    "职业档位 audit：full 18 职业 ready；partial 0 职业 ready（class_tier_audit.json）"
   ]
 }

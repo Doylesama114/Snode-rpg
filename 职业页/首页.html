@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>斯诺德全职业技能树 · 首页</title>
-    <link rel="stylesheet" href="common.css?v=1.0.8017"/>
+    <link rel="stylesheet" href="common.css?v=1.0.8018"/>
     <script src="common.js"></script>
     <style>
     body { background: var(--bg); }
@@ -292,6 +292,7 @@ h1 { font-family: Georgia, "Songti SC", serif !important; color: #241a0d !import
 /* 悬浮搜索按钮 → 黄铜 */
 .search-float-btn { background: linear-gradient(180deg,#e6c37c,#c39a4a 60%,#a8802f) !important; color:#2a1c0a !important;
   box-shadow: 0 6px 18px rgba(40,24,6,.4) !important; border:1px solid #6d5223 !important; }
+body.gs-preview-open .back-btn, body.gs-preview-open .gui-trigger { pointer-events: none !important; opacity: .35; }
 </style>
 </head>
 <body>
@@ -797,6 +798,24 @@ h1 { font-family: Georgia, "Songti SC", serif !important; color: #241a0d !import
     setTimeout(function () { try { if (typeof window.gc === 'function') window.gc(); } catch (e) {} }, 800);
   }
   function openGsPreview(href, title) {
+    /* __noNestedPreview: 被 iframe 内嵌时不开预览（防止预览套娃） */
+    if (window.self !== window.top) {
+      try { parent.postMessage({ type: 'gs-preview-close' }, '*'); } catch (e) {}
+      return;
+    }
+    document.body.classList.add('gs-preview-open');
+    /* __stripFrameGui: 预览 iframe 内不再显示功能导航/beam（父页兜底清理） */
+    try {
+      var __f = document.querySelector('#gsPreview iframe');
+      if (__f) {
+        __f.addEventListener('load', function () {
+          try {
+            var __d = __f.contentDocument;
+            if (__d) __d.querySelectorAll('.gui-beam, .gui-trigger, #guiNav').forEach(function (x) { x.remove(); });
+          } catch (e) {}
+        });
+      }
+    } catch (e) {}
     var box = document.getElementById('gsPreview');
     if (!box || !href) return false;
     gsPreviewUrl = href;
@@ -811,6 +830,13 @@ h1 { font-family: Georgia, "Songti SC", serif !important; color: #241a0d !import
     return true;
   }
   function closeGsPreview() {
+    try { document.body.classList.remove('gs-preview-open'); } catch (e) {}
+    /* __previewMsg: 接收 iframe 内的"关闭预览"请求 + 清理残留 */
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'gs-preview-close') { try { closeGsPreview(); } catch (err) {} }
+    });
+    /* 内嵌时隐藏搜索入口，避免"点了没反应" */
+    if (window.self !== window.top) { var __sb = document.getElementById('searchFloatBtn'); if (__sb) __sb.style.display = 'none'; }
     var box = document.getElementById('gsPreview');
     if (!box) return;
     box.classList.remove('show');

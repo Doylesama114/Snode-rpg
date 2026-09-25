@@ -6,6 +6,8 @@
    规格：设计风格规范.md（v7 定稿）
    ========================================================================== */
 (function () {
+  /* __guiTopGuard: 被 iframe 内嵌时，本文件后续所有边缘 UI 都不注入 */
+  if (window.self !== window.top) { try { window.__guiInFrame = true; } catch (e) {} return; }
   if (window.SnowdGuild) return;
 
   var SELF = document.currentScript || (function () {
