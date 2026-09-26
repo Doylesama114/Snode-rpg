@@ -14,7 +14,7 @@
   }
   function state() { try { return JSON.parse(read() || '{}'); } catch (e) { return {}; } }
   function mark(k, v) { var s = state(); s[k] = v; write(JSON.stringify(s)); }
-  var STEPS = {
+  var STEPS = window.ONBOARD_STEPS || {
     launcher: [
       { kw: '角色|建卡|角色系统', title: '这里是冒险者工会', text: '先从「角色系统」开始：建一个属于你的冒险者。' },
       { kw: '职业|天赋|技能树', title: '职业技能树', text: '20 个基础职业 + 19 条进阶途径；可搜索任意技能并全屏预览。' },
@@ -41,6 +41,7 @@
         var el = nodes[j];
         var r = el.getBoundingClientRect();
         if (r.width < 8 || r.height < 8) continue;
+        if (r.width > window.innerWidth * 0.6) continue;   /* __rejectContainer：宽度超屏 60% 视为容器，不作为高亮目标 ✗（宁缺毋滥 ✓） */
         if (!step.kw) return el;
         var txt = (el.textContent || '') + ' ' + (el.getAttribute('href') || '') + ' ' + (el.getAttribute('data-href') || '');
         try { if (new RegExp(step.kw).test(txt)) return el; } catch (e) {}
