@@ -219,67 +219,29 @@ body {
   <main class="center">
     <div class="compass3d" id="compass">
       <div class="tilt" id="tilt">
-        <!-- L1：雷恩王国 + 周边舆图（按 image187 转绘，大致线条，远处径向淡出） -->
-        <svg class="layer l1 map-svg" viewBox="77 95 1100 1100" fill="none">
-          <defs>
-            <radialGradient id="mapFade" gradientUnits="userSpaceOnUse" cx="627" cy="650" r="540">
-              <stop offset="58%" stop-color="#ffffff"/>
-              <stop offset="82%" stop-color="#ffffff" stop-opacity=".38"/>
-              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-            </radialGradient>
-            <mask id="fadeMask"><rect x="77" y="95" width="1100" height="1100" fill="url(#mapFade)"/></mask>
-          </defs>
-
-          <!-- ===== 周边区域（淡出组） ===== -->
-          <g mask="url(#fadeMask)">
-            <!-- 拜伦帝国（北） -->
-            <path class="map-neighbor" d="M480 160 L560 130 L650 90 L800 70 L880 95 L930 120 L1010 85 L1120 55 L1210 40 L1210 0 L480 0 Z"/>
-            <text class="map-geo" x="900" y="42" style="font-size:30px;fill-opacity:.6">拜伦帝国</text>
-            <!-- 斯特纳森公国（西北） -->
-            <path class="map-neighbor" d="M300 200 L420 130 L540 165 L560 200 L520 300 L480 390 L450 420 L400 360 L340 290 Z"/>
-            <text class="map-geo" x="330" y="230" style="font-size:24px">斯特纳森公国</text>
-            <!-- 狂暴海（西） -->
-            <path class="map-wave" d="M160 380 q10 -10 20 0 q10 10 20 0 M140 450 q10 -10 20 0 q10 10 20 0 M170 520 q10 -10 20 0 q10 10 20 0 M150 600 q10 -10 20 0 q10 10 20 0"/>
-            <text class="map-geo" x="130" y="340" style="font-size:28px">狂暴海</text>
-            <!-- 暗礁海域礁石点 -->
-            <g fill="#8fb8d8" fill-opacity=".3">
-              <circle cx="285" cy="470" r="3"/><circle cx="262" cy="545" r="2.5"/><circle cx="300" cy="600" r="3"/><circle cx="245" cy="490" r="2"/>
-            </g>
-            <!-- 西天界峰（东北东） -->
-            <path class="map-terrain" d="M1000 260 l16 -26 l16 26 M1050 240 l16 -26 l16 26 M1100 265 l16 -26 l16 26"/>
-            <text class="map-geo" x="1000" y="215" style="font-size:24px">西天界峰</text>
-            <!-- 轻语森林（东，成片） -->
-            <path class="map-neighbor" d="M960 250 L1060 235 L1120 320 L1100 480 L1000 560 L945 480 L940 400 Z"/>
-            <path class="map-terrain" d="M990 330 l10 -16 l10 16 M1000 336 v9 M1030 380 l10 -16 l10 16 M1040 386 v9 M975 420 l10 -16 l10 16 M985 426 v9 M1020 470 l10 -16 l10 16 M1030 476 v9 M1060 430 l10 -16 l10 16 M1070 436 v9"/>
-            <text class="map-geo" x="990" y="300" style="font-size:26px">轻语森林</text>
-            <!-- 荒漠地（西南） -->
-            <path class="map-neighbor" d="M120 860 L280 830 L380 760 L420 820 L470 815 L520 800 L560 850 L520 950 L380 1010 L180 1000 Z"/>
-            <text class="map-geo" x="240" y="920" style="font-size:28px">荒漠地</text>
-            <!-- 城市联盟（南） -->
-            <path class="map-neighbor" d="M600 870 L650 890 L740 845 L830 800 L880 840 L895 920 L840 1000 L640 1010 Z"/>
-            <text class="map-geo" x="670" y="950" style="font-size:26px">城市联盟</text>
-            <!-- 翡翠海（东南） -->
-            <path class="map-wave" d="M980 780 q10 -10 20 0 q10 10 20 0 M1010 850 q10 -10 20 0 q10 10 20 0 M960 920 q10 -10 20 0 q10 10 20 0"/>
-            <text class="map-geo" x="1000" y="740" style="font-size:26px">翡翠海</text>
-            <!-- 探险虚线航路：君冠城 → 四境之外 -->
-            <path d="M627 615 C 700 500 850 380 1000 300" stroke="#c9a25a" stroke-opacity=".35" stroke-width="1.6" stroke-dasharray="6 9" fill="none"/>
-            <path d="M627 615 C 500 560 350 480 240 420" stroke="#c9a25a" stroke-opacity=".3" stroke-width="1.6" stroke-dasharray="6 9" fill="none"/>
-            <path d="M627 615 C 640 760 600 880 560 960" stroke="#c9a25a" stroke-opacity=".3" stroke-width="1.6" stroke-dasharray="6 9" fill="none"/>
-          </g>
-
-          <!-- ===== 雷恩王国本体（保持清晰） ===== -->
+        <!-- L1：雷恩王国地图层（按 image187 转绘，大致线条） -->
+        <svg class="layer l1 map-svg" viewBox="227 215 800 800" fill="none">
+          <!-- 王国疆域 -->
           <path class="map-outer" d="M480 390 L520 300 L560 200 L610 130 L700 80 L800 70 L880 95 L930 120 L955 190 L960 250 L950 330 L940 400 L945 480 L930 560 L905 630 L880 700 L855 750 L830 800 L740 845 L650 890 L600 870 L560 850 L520 800 L470 815 L420 820 L380 760 L330 745 L280 730 L245 695 L220 660 L260 610 L300 560 L375 540 L450 520 L435 485 L420 450 L450 420 Z"/>
+          <!-- 四境分界 -->
           <path class="map-inner" d="M450 520 L560 505 L700 500 L855 540"/>
           <path class="map-inner" d="M760 510 L790 430"/>
           <path class="map-inner" d="M560 680 L700 690 L830 700"/>
           <path class="map-inner" d="M560 680 L520 800"/>
           <path class="map-inner" d="M830 700 L830 800"/>
           <path class="map-inner" d="M450 520 L520 620 L497 755"/>
+          <!-- 寒脊山脉（北界） -->
           <path class="map-terrain" d="M630 150 l12 -18 l12 18 M700 110 l12 -18 l12 18 M770 100 l12 -18 l12 18 M840 115 l12 -18 l12 18 M900 140 l12 -18 l12 18"/>
+          <!-- 兔脚山脉（南境西） -->
           <path class="map-terrain" d="M545 795 l10 -14 l10 14 M590 805 l10 -14 l10 14 M635 800 l10 -14 l10 14"/>
+          <!-- 明镜湖 + 辉光河 -->
           <ellipse class="map-lake" cx="815" cy="405" rx="30" ry="18"/>
           <path class="map-river" d="M815 420 C 790 480 735 525 700 555 S 640 595 627 615 S 622 700 652 855"/>
+          <!-- 暗礁海域（西侧海湾波纹） -->
           <path class="map-wave" d="M250 460 q9 -9 18 0 q9 9 18 0 M235 520 q9 -9 18 0 q9 9 18 0 M255 580 q9 -9 18 0 q9 9 18 0"/>
+          <!-- 轻语森林（东界树记） -->
+          <path class="map-terrain" d="M912 440 l9 -14 l9 14 M921 445 v8 M920 495 l9 -14 l9 14 M929 500 v8 M905 545 l9 -14 l9 14 M914 550 v8"/>
+          <!-- 城市点位 -->
           <g>
             <circle class="map-dot" cx="745" cy="468" r="5"/><text class="map-city" x="758" y="462">白霜城</text>
             <circle class="map-dot" cx="828" cy="280" r="5"/><text class="map-city" x="841" y="275">冬怒堡</text>
@@ -294,20 +256,23 @@ body {
             <circle class="map-dot" cx="410" cy="708" r="5"/><text class="map-city" x="375" y="732">阳葵城</text>
             <circle class="map-dot" cx="497" cy="755" r="5"/><text class="map-city" x="478" y="780">牛堡</text>
           </g>
+          <!-- 四境名 -->
           <text class="map-region" x="660" y="310">北境</text>
           <text class="map-region" x="755" y="665">东境</text>
           <text class="map-region" x="640" y="765">南境</text>
           <text class="map-region" x="355" y="695">西境</text>
+          <!-- 地理注记 -->
           <text class="map-geo" x="690" y="52">寒脊山脉</text>
           <text class="map-geo" x="300" y="500">暗礁海域</text>
           <text class="map-geo" x="845" y="390">明镜湖</text>
+          <!-- 王都：君冠城 -->
           <circle cx="627" cy="615" r="15" stroke="#ffdf9e" stroke-opacity=".55" fill="none" stroke-width="1.5"/>
           <path class="map-capital" d="M627 601 l4.3 8.8 9.7 1.4 -7 6.8 1.7 9.6 -8.7 -4.6 -8.7 4.6 1.7 -9.6 -7 -6.8 9.7 -1.4 z"/>
           <text class="map-city" x="648" y="600" style="font-size:26px;fill:#ffdf9e">君冠城</text>
         </svg>
         <!-- L3：D20 真 3D 线框（JS 逐帧投影，可点击掷骰） -->
         <svg class="layer l3" id="d20layer" viewBox="0 0 600 600" fill="none">
-          <circle cx="300" cy="226" r="96" fill="#c9a25a" fill-opacity=".05"/>
+          <circle cx="300" cy="300" r="128" fill="#c9a25a" fill-opacity=".05"/>
           <g id="d20Faces"></g>
           <g id="d20Edges"></g>
         </svg>
@@ -427,7 +392,7 @@ body {
     var l = document.createElementNS(NS, 'line');
     l.setAttribute('stroke', '#e6c37c'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
 
-  var R = 78, D = 3.4, CX = 300, CY = 226, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
+  var R = 112, D = 3.4, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
   var PX = [], PY = [], PZ = [];
   function renderDie() {
     var ca = Math.cos(ay), sa = Math.sin(ay), cb = Math.cos(ax), sb = Math.sin(ax);
@@ -436,7 +401,7 @@ body {
       var x1 = x * ca + z * sa, z1 = -x * sa + z * ca;
       var y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
       var s = D / (D - z2);
-      PX[i] = CX + x1 * s * R; PY[i] = CY - y1 * s * R; PZ[i] = z2;
+      PX[i] = 300 + x1 * s * R; PY[i] = 300 - y1 * s * R; PZ[i] = z2;
     }
     var order = FACES.map(function (f, idx) { return idx; }).sort(function (a, b) {
       var za = (PZ[FACES[a][0]] + PZ[FACES[a][1]] + PZ[FACES[a][2]]) / 3;
@@ -476,12 +441,30 @@ body {
   }
   loop();
 
-  /* ---------- 掷骰 ---------- */
+  /* ---------- 掷骰 + 大成功 ---------- */
   var rolling = false, badge = document.getElementById('rollBadge');
   function showResult(n) {
     document.getElementById('rollNum').textContent = n;
+    badge.classList.toggle('crit', n === 20);
     badge.classList.add('show');
-    setTimeout(function () { badge.classList.remove('show'); }, 2600);
+    if (n === 20) {
+      var flash = document.getElementById('critFlash'), ring = document.getElementById('critRing');
+      flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+      ring.classList.remove('go'); void ring.offsetWidth; ring.classList.add('go');
+      compass.classList.add('shake'); setTimeout(function () { compass.classList.remove('shake'); }, 480);
+      for (var p = 0; p < 14; p++) {
+        var sp = document.createElement('span'); sp.className = 'crit-p';
+        compass.appendChild(sp);
+        (function (el, ang, dist) {
+          requestAnimationFrame(function () {
+            el.style.transform = 'translate(' + Math.cos(ang) * dist + 'px,' + Math.sin(ang) * dist + 'px) scale(.2)';
+            el.style.opacity = '0';
+          });
+          setTimeout(function () { el.remove(); }, 1000);
+        })(sp, (p / 14) * Math.PI * 2 + Math.random() * .4, 130 + Math.random() * 90);
+      }
+    }
+    setTimeout(function () { badge.classList.remove('show'); }, n === 20 ? 4200 : 2600);
   }
   function roll(forceN) {
     if (rolling) return; rolling = true;
