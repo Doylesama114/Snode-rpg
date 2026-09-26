@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斯诺德 · 冒险者工具集</title>
+<script>if(window.mobileBridge){var _b=document.createElement('base');_b.href='https://appassets.androidplatform.net/\u65af\u8bfa\u5fb7\u8dd1\u56e2/';document.head.appendChild(_b);}</script>
+<style>
+  /* ===== 启动台 · 冒险者工会（明亮木质）v7 规格 ===== */
+  * { box-sizing: border-box; }
+  :root {
+    --wood-1:#6b4a28; --wood-2:#54381c; --wood-3:#3f2913;
+    --plank-1:#e8cfa4; --plank-2:#d9b982;
+    --parch-1:#fdf8ec; --parch-2:#f3e9d4; --cork:#c9ad7f;
+    --gold:#c8a25a; --brass-hi:#e6c37c; --brass-lo:#a8802f; --seal:#a83226;
+    --ink:#2f2317; --ink-2:#6d5942; --muted:#6d5942; --line:#c9ab74; --panel:#fdf8ec; --soft:#f4e9cf;
+    --sink: inset 0 2px 5px rgba(90,60,20,.32), inset 0 -1px 0 rgba(255,255,255,.5);
+    --lift: 0 5px 12px rgba(40,24,6,.38), inset 0 1px 0 rgba(255,255,255,.75);
+    --lift-hi: 0 14px 26px rgba(40,24,6,.46), inset 0 1px 0 rgba(255,255,255,.85);
+  }
+  html, body { min-height: 100%; }
+  body {
+    margin:0; color:var(--ink); font-size:15px; line-height:1.55;
+    font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    background-color:#d0a97a;
+    background-image:
+      radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.6), transparent 72%),
+      repeating-linear-gradient(90deg, rgba(96,64,26,.055) 0 2px, transparent 2px 9px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 5px, transparent 5px 26px),
+      repeating-linear-gradient(0deg, rgba(88,58,22,.09) 0 1px, transparent 1px 172px),
+      linear-gradient(180deg, rgba(255,255,255,.22), rgba(120,80,30,.12));
+    background-attachment: scroll;
+  }
+  body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(125% 95% at 50% 44%, transparent 46%, rgba(78,50,16,.26) 100%); }
+
+  /* 左上角浮动控件（沿用原 ID） */
+  #themeToggle, #muteToggle, #shortcutBtn { position:fixed; right:16px; z-index:999; width:38px; height:38px;
+    border-radius:50%; cursor:pointer; font-size:16px; color:#2a1c0a; border:1px solid #6d5223;
+    background:linear-gradient(180deg,var(--brass-hi),#c39a4a 60%,var(--brass-lo));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 3px 8px rgba(40,24,6,.4); }
+  #themeToggle { top:16px; } #muteToggle { top:62px; } #shortcutBtn { top:108px; }
+  #themeToggle:hover, #muteToggle:hover, #shortcutBtn:hover { filter:brightness(1.07); }
+
+  .container { position:relative; z-index:10; max-width:1160px; margin:0 auto; padding:26px 18px 54px; }
+  h1 { margin:0 0 6px; text-align:center; font-family:Georgia,"Songti SC",serif; font-weight:700;
+    font-size:clamp(30px,4.4vw,46px); letter-spacing:.07em; color:#3a2a13; text-shadow:0 1px 0 rgba(255,246,224,.75); }
+  .subtitle { text-align:center; color:#5b411f; font-size:14px; margin-bottom:6px; }
+  .hero-stats { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-size:12px; color:#5b411f; margin-bottom:22px; }
+  .hero-stats b { color:#7a4a12; }
+
+  /* 物件 1：柜台 */
+  .counter { position:relative; margin-bottom:32px; }
+  .counter .top { position:relative; padding:18px 18px 22px; border-radius:8px;
+    background:linear-gradient(180deg,var(--plank-1),var(--plank-2) 72%,#c9a468); border:2px solid #8a6234;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.55), inset 0 -6px 0 rgba(90,58,20,.28), 0 18px 34px rgba(50,30,8,.42); }
+  .counter .top::after { content:""; position:absolute; left:10px; right:10px; bottom:-9px; height:10px; border-radius:0 0 8px 8px;
+    background:linear-gradient(180deg,#8a6234,#6d4a24); box-shadow:0 6px 14px rgba(40,24,6,.45); }
+  .counter .rail { position:absolute; left:16px; right:16px; bottom:14px; height:6px; border-radius:3px;
+    background:linear-gradient(180deg,var(--brass-hi),var(--brass-lo)); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.3); }
+  .sec-head { display:flex; align-items:center; gap:10px; margin:0 0 14px; }
+  .sec-head .t { font-size:15px; font-weight:800; color:#43301a; letter-spacing:.05em; }
+  .sec-head .m { font-size:11.5px; color:var(--ink-2); }
+  .sec-head .line { flex:1; height:2px; border-radius:1px; background:linear-gradient(90deg,rgba(120,85,35,.35),rgba(120,85,35,.05)); }
+  .planks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+
+  /* SVG 木牌按钮 */
+  .plank { position:relative; display:block; text-decoration:none; color:var(--ink); padding:0; border:0; background:transparent;
+    filter:drop-shadow(0 5px 9px rgba(40,24,6,.34)); transition:transform .18s ease, filter .18s ease; }
+  .plank:hover { transform:translateY(-3px); filter:drop-shadow(0 13px 20px rgba(40,24,6,.42)); }
+  .plank:active { transform:translateY(1px); filter:drop-shadow(0 3px 5px rgba(40,24,6,.4)); }
+  .plank .face { position:absolute; inset:0; width:100%; height:100%; }
+  .plank .inner { position:relative; display:flex; align-items:center; gap:14px; padding:15px 54px 15px 66px; min-height:84px; }
+  .plank .pico { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:44px; height:44px; color:#6b4a28; }
+  .plank .txt { display:flex; flex-direction:column; min-width:0; }
+  .plank .n { font-size:17px; font-weight:800; line-height:1.3; }
+  .plank .d { font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .plank .go { position:absolute; right:16px; top:50%; transform:translateY(-50%); width:26px; height:26px; }
+
+  /* 物件 2：告示板 */
+  .board-frame { position:relative; padding:16px; border-radius:8px;
+    background:linear-gradient(180deg,#7a5530,#5b3d1e 62%,#4a3018);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.28), inset 0 -6px 0 rgba(0,0,0,.42), 0 22px 40px rgba(50,30,8,.45); }
+  .board-frame .ropes { position:absolute; left:0; right:0; top:-26px; height:26px; width:100%; }
+  .board { position:relative; border-radius:4px; padding:22px 20px 20px; background-color:var(--cork);
+    background-image: radial-gradient(circle at 18% 26%, rgba(120,86,40,.16), transparent 38%),
+      radial-gradient(circle at 78% 70%, rgba(120,86,40,.14), transparent 42%),
+      repeating-linear-gradient(45deg, rgba(120,86,40,.05) 0 2px, transparent 2px 6px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 7px);
+    box-shadow: var(--sink), inset 0 0 0 1px rgba(90,60,20,.35); }
+  .board-title { position:relative; text-align:center; margin:2px 0 18px; }
+  .board-title .t { font-family:Georgia,"Songti SC",serif; font-size:17px; font-weight:700; letter-spacing:.12em; color:#4a3018; }
+  .board-title .s { font-size:11px; color:#6d4f26; letter-spacing:.18em; }
+  .notes { position:relative; display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:16px; }
+  .note { position:relative; display:block; text-decoration:none; color:var(--ink); padding:16px 16px 15px; border-radius:2px;
+    background:linear-gradient(180deg,#fffdf6,#f6ecd3); box-shadow:0 5px 10px rgba(60,38,10,.32), inset 0 1px 0 #fff;
+    transform:rotate(-1.2deg); transition:transform .18s ease, box-shadow .18s ease; }
+  .note:nth-child(even) { transform:rotate(1.1deg); }
+  .note:nth-child(3n) { transform:rotate(-.5deg) translateY(4px); }
+  .note:hover { transform:rotate(0) translateY(-3px) scale(1.012); box-shadow:0 16px 26px rgba(60,38,10,.42), inset 0 1px 0 #fff; z-index:5; }
+  .note .pin { position:absolute; left:50%; top:-11px; width:22px; height:22px; margin-left:-11px; }
+  .note .n { font-size:15px; font-weight:800; }
+  .note .d { font-size:11.5px; color:var(--ink-2); margin-top:4px; line-height:1.5; }
+  .note .corner { position:absolute; right:0; bottom:0; width:22px; height:22px; opacity:.55; }
+  .note .k { position:absolute; right:12px; top:12px; font-size:10px; color:var(--brass-lo); letter-spacing:.06em; }
+  .note.off { opacity:.55; cursor:not-allowed; filter:saturate(.4); }
+  .note.off::after { content:"需先创建角色"; position:absolute; left:16px; bottom:2px; font-size:10px; color:var(--seal); }
+  .note.addnew { display:grid; place-items:center; min-height:92px; border:1px dashed #c9ab74; background:rgba(255,255,255,.35);
+    box-shadow:none; font-size:12.5px; color:#6d4f26; }
+  .note.addnew:hover { background:rgba(255,255,255,.6); }
+
+  /* 页脚（保留原功能按钮） */
+  .footer { margin-top:22px; text-align:center; color:#5b411f; font-size:12px; }
+  .footer .tools { margin-top:8px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; }
+  .footer .tools button, .footer .tools label {
+    color:#43301a; font-size:12px; font-family:inherit; padding:5px 11px; border-radius:5px; border:1px solid #8a6234;
+    background:linear-gradient(180deg,#e8cfa4,#d9b982); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 5px rgba(40,24,6,.25); cursor:pointer; }
+  .footer .tools button:hover { filter:brightness(1.05); }
+  #versionDisplay { color:#7a4a12; font-weight:800; font-size:13px; }
+  #autoUpdateLabel { display:inline-flex; align-items:center; gap:6px; }
+  #autoUpdateToggle { accent-color:#a8802f; cursor:pointer; margin:0; width:14px; height:14px; }
+  #updateMsg { margin-top:8px; font-size:12px; color:#5b411f; }
+
+  /* 夜间模式：木色压暗、文字转浅 */
+  html.dark body { background-color:#2a2018;
+    background-image: radial-gradient(1000px 400px at 50% -6%, rgba(120,90,50,.35), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, rgba(255,225,180,.06), rgba(0,0,0,.35)); }
+  html.dark body::before { background: radial-gradient(125% 95% at 50% 44%, transparent 40%, rgba(0,0,0,.45) 100%); }
+  html.dark h1, html.dark .subtitle, html.dark .hero-stats, html.dark .footer { color:#e8dcc4; }
+  html.dark .hero-stats b { color:#e0b063; }
+  html.dark .counter .top { background:linear-gradient(180deg,#5c4529,#4a3620 72%,#3d2c19); border-color:#2a1c0b; }
+  html.dark .sec-head .t { color:#e8dcc4; } html.dark .sec-head .m { color:#b9a888; }
+  html.dark .plank .n { color:#2f2317; }
+  html.dark .board { background-color:#3a3020; }
+  html.dark .board-title .t { color:#e8dcc4; }
+  html.dark .note { background:linear-gradient(180deg,#4a4234,#3d362a); color:#e8e0cc; box-shadow:0 5px 10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.12); }
+  html.dark .note .d { color:#b9a888; }
+  html.dark .footer .tools button, html.dark .footer .tools label { background:linear-gradient(180deg,#5c4529,#4a3620); color:#e8dcc4; border-color:#2a1c0b; }
+
+  @media (max-width:780px) {
+    .planks { grid-template-columns:1fr; }
+    .notes { grid-template-columns:1fr; }
+    .container { padding:20px 12px 40px; }
+  }
+
+  /* ===== 紧凑模式：桌面默认窗口（1400x900，扣掉标题栏约 860 可用）内不出现滚动 ===== */
+  @media (max-height: 960px) {
+    .container { padding: 14px 16px 20px; }
+    .hero h1 { font-size: clamp(24px, 3vw, 34px); margin-bottom: 4px; }
+    .hero .subtitle, .hero p { font-size: 13px; margin-bottom: 2px; }
+    .hero .stats { margin-top: 6px; font-size: 11.5px; gap: 12px; }
+    .counter { margin-bottom: 18px; }
+    .counter .top { padding: 12px 14px 16px; }
+    .sec-head { margin-bottom: 10px; }
+    .planks { gap: 12px; }
+    .plank .inner { min-height: 62px; padding: 10px 48px 10px 58px; }
+    .plank .pico { width: 34px; height: 34px; left: 12px; }
+    .plank .n { font-size: 15px; }
+    .plank .d { font-size: 11.5px; margin-top: 1px; }
+    .plank .go { width: 22px; height: 22px; right: 14px; }
+    .counter .rail { bottom: 11px; height: 5px; }
+    .board-frame { padding: 12px; }
+    .board { padding: 14px 14px 12px; }
+    .board-title { margin: 0 0 10px; }
+    .board-title .t { font-size: 15px; }
+    .notes { gap: 10px; }
+    .note { padding: 11px 12px 10px; }
+    .note .n { font-size: 13.5px; }
+    .note .d { font-size: 11px; margin-top: 2px; }
+    .footer { margin-top: 12px; font-size: 11.5px; }
+    .footer .tools { gap: 8px; margin-top: 6px; }
+  }
+  @media (max-height: 800px) {
+    .hero h1 { font-size: 24px; }
+    .hero .stats { display: none; }
+    .plank .inner { min-height: 54px; }
+    .note .d { display: none; }
+  }
+</style>
+</head>
+<body>
+<button id="themeToggle">☀️</button>
+<button id="muteToggle" onclick="snd.toggle();this.textContent=snd.muted?'🔇':'🔊'">🔊</button>
+<button id="shortcutBtn" onclick="showShortcutHelp()" title="快捷键">⌨</button>
+
+<div class="container">
+  <h1>欢迎回到斯诺德跑团</h1>
+  <div class="subtitle">查规则、查技能、管理角色、开局对决 —— 都在这一处。</div>
+  <div class="hero-stats">
+    <span><b>19</b> 个职业</span><span><b>2,588</b> 条技能</span>
+    <span>本地离线可用 · 数据不出本机</span>
+  </div>
+
+  <!-- 柜台：4 个主入口（可在设置页自定义） -->
+  <section class="counter">
+    <div class="top">
+      <div class="sec-head"><span class="t">柜台 · 常去的地方</span><span class="m">推开哪扇门</span><span class="line"></span></div>
+      <div class="planks" id="counterPlanks"></div>
+      <div class="rail"></div>
+    </div>
+  </section>
+
+  <!-- 告示板：可自定义的快捷入口 -->
+  <section class="board-frame">
+    <svg class="ropes" viewBox="0 0 1000 26" preserveAspectRatio="none">
+      <path d="M120 26 C 170 2, 260 2, 300 26" fill="none" stroke="#6d4f26" stroke-width="3"/>
+      <path d="M700 26 C 740 2, 830 2, 880 26" fill="none" stroke="#6d4f26" stroke-width="3"/>
+    </svg>
+    <div class="board">
+      <span class="nail" style="position:absolute;left:8px;top:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;right:8px;top:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;left:8px;bottom:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <span class="nail" style="position:absolute;right:8px;bottom:8px"><svg viewBox="0 0 12 12" width="14" height="14"><use href="#gui-nail"/></svg></span>
+      <div class="board-title"><div class="t">告 示 板</div><div class="s">NOTICE BOARD</div></div>
+      <div class="notes" id="boardNotes"></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    斯诺德规则 · 冒险者工具集
+    <div class="tools">
+      <span id="versionDisplay">v1.0.8018</span>
+      <button onclick="checkUpdate()" id="updateBtn">检查更新</button>
+      <button onclick="updateAction()" id="updateActionBtn" style="display:none">下载更新</button>
+      <button onclick="showChangelog(false)">更新日志</button>
+      <button onclick="showPerfReport()" id="perfBtn" title="查看各进程内存占用，反馈卡顿时可附上">性能自检</button>
+      <button onclick="mirrorDownload()" id="mirrorBtn">镜像更新</button>
+      <label id="autoUpdateLabel" title="关闭后不再自动检查更新，手动「检查更新」仍可用">
+        <input type="checkbox" id="autoUpdateToggle" checked>自动更新
+      </label>
+      <a href="设置.html" style="color:#43301a;font-size:12px">设置 / 自定义启动台</a>
+    </div>
+    <div id="updateMsg"></div>
+  </div>
+</div>
+
+<script src="bug-report.js"></script>
+<script src="changelog.js"></script>
+<script>
+// 版本号
+var APP_VERSION = '1.0.8018';
+document.getElementById('versionDisplay').textContent = 'v' + APP_VERSION;
+
+// 国内镜像（阿里云 OSS）— 与 electron-app/update-mirror-config.js 保持一致
+var OSS_MIRROR_BASE = 'https://snode-rpg-releases.oss-cn-chengdu.aliyuncs.com';
+var OSS_LATEST_JSON = OSS_MIRROR_BASE + '/releases/latest/latest.json';
+var GITHUB_LATEST_API = 'https://api.github.com/repos/Doylesama114/Snode-rpg/releases/latest';
+
+function normalizeHttpsUrl(url) {
+  if (!url) return url;
+  var u = String(url).trim();
+  if (/^https?:\/\//i.test(u)) return u;
+  return 'https://' + u.replace(/^\/+/, '');
+}
+
+/** 优先 OSS latest.json，失败回退 GitHub API */
+function fetchLatestReleaseInfo() {
+  return fetch(OSS_LATEST_JSON, { cache: 'no-store' })
+    .then(function(r) {
+      if (!r.ok) throw new Error('oss http ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (!data || !data.version) throw new Error('oss json invalid');
+      var exeUrl = normalizeHttpsUrl(data.exeUrl);
+      return {
+        version: String(data.version).replace(/^v/, ''),
+        tag: data.tag || ('v' + data.version),
+        exeUrl: exeUrl,
+        downloadUrl: exeUrl,
+        htmlUrl: data.githubRelease || GITHUB_LATEST_API,
+        source: 'oss',
+      };
+    })
+    .catch(function() {
+      return fetch(GITHUB_LATEST_API)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var exe = null;
+          for (var i = 0; i < (data.assets || []).length; i++) {
+            if (/\.exe$/.test(data.assets[i].name)) { exe = data.assets[i]; break; }
+          }
+          return {
+            version: (data.tag_name || '').replace(/^v/, ''),
+            tag: data.tag_name || '',
+            exeUrl: exe ? exe.browser_download_url : null,
+            downloadUrl: exe ? exe.browser_download_url : null,
+            htmlUrl: data.html_url || '',
+            source: 'github',
+          };
+        });
+    });
+}
+
+/** 斯诺德对决入口：Electron/镜像包用 ../poker-game，仓库开发用 ../electron-app/poker-game */
+function pokerGameHref() {
+  if (window.electronAPI) return '../poker-game/index.html#/';
+  var path = decodeURIComponent(location.pathname.replace(/\\/g, '/'));
+  if (path.indexOf('/electron-app/') !== -1) return '../poker-game/index.html#/';
+  // 仓库本地 file:// 开发时卡牌在 electron-app/poker-game；网页/APK 部署时卡牌在顶层 poker-game/
+  if (location.protocol === 'file:') return '../electron-app/poker-game/index.html#/';
+  return '../poker-game/index.html#/';
+}
+function openPokerGame(e) {
+  e.preventDefault();
+  location.href = pokerGameHref();
+}
+
+/** 帮助页用 ASCII 文件名，避免 Electron/asar 下中文路径被当成附件下载 */
+function openHelpPage(e) {
+  if (e) e.preventDefault();
+  location.href = 'help.html';
+}
+
+// 首次看到新版本时自动弹出更新日志
+(function(){
+  var seen = localStorage.getItem('_snowd_changelog_seen');
+  if (seen !== APP_VERSION) {
+    setTimeout(function () {
+      var box = document.createElement('div');
+      box.id = 'updateToast';
+      box.style.cssText = 'position:fixed;right:20px;bottom:20px;z-index:9998;max-width:320px;padding:14px 16px;border-radius:10px;' +
+        'background:linear-gradient(180deg,#fdf8ec,#f3e9d4);border:1px solid #c9ab74;box-shadow:0 12px 28px rgba(40,24,6,.35);' +
+        'color:#2f2317;font-size:13px;line-height:1.6';
+      box.innerHTML = '<div style="font-weight:800;font-size:14px;margin-bottom:4px">已更新到 v' + APP_VERSION + '</div>' +
+        '<div style="color:#6d5942;margin-bottom:10px">想看看这次改了什么吗？</div>' +
+        '<div style="display:flex;gap:8px"><button id="updateToastOpen" style="cursor:pointer;font-family:inherit;font-size:12.5px;' +
+        'font-weight:700;padding:6px 12px;border-radius:5px;border:1px solid #6d5223;color:#2a1c0a;background:linear-gradient(180deg,#e6c37c,#c39a4a)">查看更新日志</button>' +
+        '<button id="updateToastClose" style="cursor:pointer;font-family:inherit;font-size:12.5px;padding:6px 10px;border-radius:5px;' +
+        'border:1px solid rgba(120,85,35,.4);background:transparent;color:#5b411f">以后再说</button></div>';
+      document.body.appendChild(box);
+      document.getElementById('updateToastOpen').onclick = function () { box.remove(); showChangelog(true); };
+      document.getElementById('updateToastClose').onclick = function () { box.remove(); };
+    }, 1200);
+    localStorage.setItem('_snowd_changelog_seen', APP_VERSION);
+  }
+})();
+
+// 更新检查
+function checkUpdate() {
+  // Electron 模式：通过 IPC 触发 autoUpdater
+  if (window.electronAPI) {
+    var btn = document.getElementById('updateBtn');
+    var msg = document.getElementById('updateMsg');
+    btn.textContent = '检查中...'; btn.disabled = true;
+    msg.style.color = '#a46d1f'; msg.textContent = '正在检查更新...';
+    window.electronAPI.checkUpdate(true);   // true = 手动检查：下载完立即重启安装
+    setTimeout(function() { btn.textContent = '检查更新'; btn.disabled = false; }, 5000);
+    return;
+  }
+
+  // Web 模式：优先 OSS 检查版本
+  var btn = document.getElementById('updateBtn');
+  var msg = document.getElementById('updateMsg');
+  btn.textContent = '检查中...'; btn.disabled = true;
+  msg.style.color = '#69706b'; msg.textContent = '';
+
+  fetchLatestReleaseInfo()
+    .then(function(info) {
+      var latest = info.version;
+      btn.textContent = '检查更新'; btn.disabled = false;
+      if (!latest) { msg.style.color='#c62828'; msg.textContent='无法获取更新信息'; return; }
+      if (compareVersions(latest, APP_VERSION) > 0) {
+        msg.style.color='#2e7d32';
+        var href = info.downloadUrl || info.htmlUrl;
+        var label = info.source === 'oss' ? '国内镜像下载' : '前往下载';
+        msg.innerHTML='发现新版本 v'+latest+'！<a href="'+href+'" target="_blank">'+label+'</a>';
+      } else { msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION; }
+    })
+    .catch(function() {
+      btn.textContent = '检查更新'; btn.disabled = false;
+      msg.style.color='#c62828'; msg.textContent='网络连接失败';
+    });
+}
+
+// 镜像下载/更新
+function mirrorDownload() {
+  var msg = document.getElementById('updateMsg');
+  // Electron 模式：走国内镜像自动更新（OSS → GitHub）
+  if (window.electronAPI) {
+    msg.style.color = '#a46d1f'; msg.textContent = '正在从国内镜像获取最新版本...';
+    var api = window.electronAPI.checkUpdateMirror || window.electronAPI.checkUpdateGitee;
+    api();
+    return;
+  }
+  // Web 模式：OSS 直链下载 exe
+  var btn = document.getElementById('mirrorBtn');
+  var origText = btn.textContent;
+  btn.textContent = '获取中...'; btn.disabled = true;
+
+  fetchLatestReleaseInfo()
+    .then(function(info) {
+      btn.textContent = origText; btn.disabled = false;
+      if (info.downloadUrl) {
+        msg.style.color='#2e7d32';
+        msg.textContent='正在从'+(info.source==='oss'?'国内镜像':'GitHub')+'下载 v'+info.version+'...';
+        window.open(info.downloadUrl, '_blank');
+      } else {
+        msg.style.color='#c62828'; msg.textContent='未找到安装包';
+      }
+    })
+    .catch(function() {
+      btn.textContent = origText; btn.disabled = false;
+      msg.style.color='#c62828'; msg.textContent='网络连接失败，请稍后重试';
+    });
+}
+
+// 性能自检：把各进程内存/CPU 汇总显示（反馈卡顿时可直接截图给作者）
+function showPerfReport() {
+  var msg = document.getElementById('updateMsg');
+  if (!msg) return;
+  if (!window.electronAPI || !window.electronAPI.perfReport) { msg.style.color = '#69706b'; msg.textContent = '性能自检仅桌面端可用'; return; }
+  msg.style.color = '#69706b';
+  msg.textContent = '正在采集进程数据...';
+  window.electronAPI.perfReport().then(function (r) {
+    if (!r || !r.ok) { msg.style.color = '#c62828'; msg.textContent = '采集失败：' + ((r && r.error) || '未知错误'); return; }
+    var parts = r.processes.map(function (p) { return p.type + ' ' + p.memoryMB + 'MB'; }).join(' · ');
+    msg.style.color = r.totalMB > 800 ? '#c62828' : '#2e7d32';
+    msg.textContent = 'v' + r.version + '（Electron ' + r.electron + ' / Chromium ' + r.chrome + '）｜合计 ' + r.totalMB + ' MB｜' + parts;
+  }).catch(function (e) {
+    msg.style.color = '#c62828';
+    msg.textContent = '采集失败：' + (e && e.message ? e.message : e);
+  });
+}
+
+function compareVersions(a, b) {
+  var pa = a.split('.'), pb = b.split('.');
+  for (var i = 0; i < Math.max(pa.length, pb.length); i++) {
+    var na = parseInt(pa[i]) || 0, nb = parseInt(pb[i]) || 0;
+    if (na > nb) return 1;
+    if (na < nb) return -1;
+  }
+  return 0;
+}
+
+// Electron autoUpdater 事件监听
+if (typeof require !== 'undefined') {
+  try { var { ipcRenderer } = require('electron');
+    ipcRenderer.on('update-status', function(event, data) { showUpdateMsg(data); });
+  } catch(e) {}
+}
+
+// 监听 Electron IPC 更新状态
+if (window.electronAPI) {
+  window.electronAPI.onUpdateStatus(function(data) { showUpdateMsg(data); });
+}
+
+var _pendingUpdate = null;   // { version, ready } —— 主进程发现但尚未下载/安装的更新
+
+function _updateActionBtn(text, show) {
+  var btn = document.getElementById('updateActionBtn');
+  if (!btn) return;
+  if (text) btn.textContent = text;
+  btn.style.display = show ? 'inline-block' : 'none';
+}
+
+/** 更新操作按钮：未下载→确认下载；已下载→确认重启安装 */
+function updateAction() {
+  if (!_pendingUpdate) { _updateActionBtn(null, false); return; }
+  if (window.electronAPI) {
+    if (_pendingUpdate.ready) {
+      if (window.confirm('更新已下载完成，现在重启并安装？')) {
+        _updateActionBtn('正在重启...', true);
+        window.electronAPI.installUpdate();
+      }
+    } else {
+      _updateActionBtn('下载中...', true);
+      document.getElementById('updateMsg').style.color = '#a46d1f';
+      document.getElementById('updateMsg').textContent = '开始下载 v' + _pendingUpdate.version + '...';
+      window.electronAPI.downloadUpdate();
+    }
+    return;
+  }
+  // Web 模式：走镜像直链下载
+  mirrorDownload();
+}
+
+function showUpdateMsg(data) {
+  var msg = document.getElementById('updateMsg');
+  if (!msg) return;
+  if (data.status === 'checking') {
+    msg.style.color='#a46d1f';
+    msg.textContent = data.message || '正在检查更新...';
+  }
+  else if (data.status === 'available') {
+    _pendingUpdate = { version: data.version, ready: false };
+    msg.style.color='#2e7d32';
+    msg.textContent = (data.message || ('发现新版本 v'+(data.version||''))) + '，可点击右侧按钮下载';
+    _updateActionBtn('下载更新', true);
+  }
+  else if (data.status === 'downloading') {
+    msg.style.color='#a46d1f';
+    var _pct = (typeof data.percent === 'number' && data.percent > 0) ? (' ' + data.percent + '%') : '';
+    msg.textContent = data.message || ('正在下载更新 v'+(data.version||'')+'…' + _pct);
+    _updateActionBtn(null, false);   // 自动下载中，无需用户操作
+  }
+  else if (data.status === 'installing') {
+    msg.style.color='#2e7d32';
+    msg.textContent = data.message || '更新已就绪，正在重启安装…';
+    _updateActionBtn(null, false);
+  }
+  else if (data.status === 'waiting-save') {
+    msg.style.color='#a46d1f';
+    msg.textContent = data.message || '检测到未保存的改动，保存后将自动重启安装';
+    _updateActionBtn(null, false);
+  }
+  else if (data.status === 'downloaded') {
+    _pendingUpdate = { version: data.version, ready: true };
+    msg.style.color='#2e7d32';
+    msg.textContent = data.message || ('更新已就绪（v'+(data.version||'')+'），重启后生效');
+    _updateActionBtn('立即重启安装', true);
+  }
+  else if (data.status === 'uptodate') {
+    _pendingUpdate = null; _updateActionBtn(null, false);
+    msg.style.color='#69706b'; msg.textContent='已是最新版本 v'+APP_VERSION;
+  }
+  else if (data.status === 'error') {
+    msg.style.color='#c62828'; msg.textContent=(data.message||'更新检查失败');
+    if (!_pendingUpdate) _updateActionBtn(null, false);
+  }
+}
+
+
+// 自动更新开关（默认开启；Electron 由主进程持久化，Web/移动端存 localStorage）
+(function initAutoUpdateToggle(){
+  var t = document.getElementById('autoUpdateToggle');
+  if (!t) return;
+  if (window.electronAPI && window.electronAPI.getAutoUpdate) {
+    window.electronAPI.getAutoUpdate().then(function(v){ t.checked = !!v; }).catch(function(){ t.checked = true; });
+  } else {
+    t.checked = localStorage.getItem('_snowd_auto_update') !== '0';
+  }
+  t.addEventListener('change', function(){
+    var on = t.checked;
+    if (window.electronAPI && window.electronAPI.setAutoUpdate) {
+      window.electronAPI.setAutoUpdate(on);
+    } else {
+      localStorage.setItem('_snowd_auto_update', on ? '1' : '0');
+      if (on) checkUpdate();
+    }
+    var msg = document.getElementById('updateMsg');
+    if (msg) {
+      msg.style.color = '#69706b';
+      msg.textContent = on ? '已开启自动更新：每次打开时自动检查' : '已关闭自动更新：仅保留手动检查';
+    }
+  });
+})();
+
+// 自动检查更新（Web 模式 — Electron 由主进程 autoUpdater 处理）
+(function(){
+  if (window.electronAPI) return; // Electron 模式由主进程接管
+  // 开关关闭时不自动检查；手动「检查更新」始终可用
+  if (localStorage.getItem('_snowd_auto_update') !== '0') {
+    setTimeout(checkUpdate, 2000); // 启动时检查（延迟2秒）
+  }
+  // 定时检查（每4小时，开关关闭时跳过）
+  setInterval(function(){
+    if (localStorage.getItem('_snowd_auto_update') !== '0') checkUpdate();
+  }, 4 * 60 * 60 * 1000);
+})();
+</script>
+<script>
+(function(){
+  var t=document.getElementById('themeToggle'),h=document.documentElement;
+  function apply(d){h.classList.toggle('dark',d);t.textContent=d?'🌙':'☀️';}
+  var s=localStorage.getItem('_snowd_theme');
+  if(s!==null)apply(s==='dark');
+  else apply(window.matchMedia('(prefers-color-scheme:dark)').matches);
+  t.onclick=function(){var d=!h.classList.contains('dark');apply(d);localStorage.setItem('_snowd_theme',d?'dark':'light');if(window.snd)snd.play('toggle');};
+})();
+</script>
+<script src="snd.js"></script>
+<script src="shortcuts.js"></script>
+<script>window.__guiNoNav = true;</script>
+<script src="guild-ui.js"></script>
+<script>(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='_mock_launcher.css';document.head.appendChild(l);})();</script>
+<script>
+/* 启动台渲染：从 SnowdGuild 配置生成柜台与告示板（阶段 B/C） */
+(function () {
+  var G = window.SnowdGuild;
+  if (!G) return;
+  var layout = G.getLayout();
+
+  function plankHtml(id) {
+    var c = G.catById(id);
+    if (!c) return '';
+    var href = (G.catHref({ id: c.id }) || (G.base + c.href)).replace(/\\/g, '/');
+    return '<a class="plank" href="' + href + '">' +
+      '<svg class="face" viewBox="0 0 400 100" preserveAspectRatio="none"><use href="#gui-plaque"/></svg>' +
+      '<svg class="pico" viewBox="0 0 24 24"><use href="#' + c.icon + '"/></svg>' +
+      '<span class="inner"><span class="txt"><span class="n">' + c.name + '</span><span class="d">' + c.desc + '</span></span></span>' +
+      '<svg class="go" viewBox="0 0 26 26"><use href="#gui-go"/></svg></a>';
+  }
+  document.getElementById('counterPlanks').innerHTML = layout.counter.map(plankHtml).join('');
+
+  function noteHtml(e) {
+    var pin = '<svg class="pin" viewBox="0 0 22 22"><use href="#gui-pin"/></svg>';
+    var fold = '<svg class="corner" viewBox="0 0 22 22"><use href="#gui-fold"/></svg>';
+    if (e.type === 'char') {
+      var parts = String(e.id).split('#'), name = parts[0], slot = parts[1] || 1;
+      var exists = G.listCharacters().some(function (c) { return c.name === name && c.slots.indexOf(parseInt(slot, 10)) >= 0; });
+      if (!exists) return '<a class="note off" href="#" data-off="1">' + pin +
+        '<div class="n">' + (e.label || name) + '</div><div class="d">这个角色存档已不存在</div></a>';
+      return '<a class="note" href="' + G.panelHref(name, slot, true) + '" data-char="' + name + '" data-slot="' + slot + '">' + pin +
+        '<span class="k">角色</span><div class="n">' + (e.label || name) + '</div>' +
+        '<div class="d">直达角色面板 · 存档位 ' + slot + '</div>' + fold + '</a>';
+    }
+    if (e.type === 'url') {
+      return '<a class="note" href="' + e.id + '" target="_blank" rel="noopener">' + pin +
+        '<span class="k">链接</span><div class="n">' + (e.label || e.id) + '</div><div class="d">' + e.id + '</div>' + fold + '</a>';
+    }
+    var c = G.catById(e.id); if (!c) return '';
+    var href = (G.catHref({ id: c.id }) || (G.base + c.href)).replace(/\\/g, '/');
+    return '<a class="note" href="' + href + '">' + pin +
+      '<div class="n">' + c.name + '</div><div class="d">' + c.desc + '</div>' + fold + '</a>';
+  }
+  var boardHost = document.getElementById('boardNotes');
+  boardHost.innerHTML = layout.board.map(noteHtml).join('') +
+    '<a class="note addnew" href="设置.html">＋ 自定义这里显示什么</a>';
+
+  boardHost.addEventListener('click', function (ev) {
+    var a = ev.target.closest('a.note'); if (!a) return;
+    if (a.getAttribute('data-off') === '1') { ev.preventDefault(); G.toast('这个角色存档不存在了，去设置里换一个'); return; }
+    var nm = a.getAttribute('data-char');
+    if (nm) G.setRecentChar(nm, parseInt(a.getAttribute('data-slot') || '1', 10));
+  });
+})();
+</script>
+<script src="onboard.js"></script>
+</body>
+</html>

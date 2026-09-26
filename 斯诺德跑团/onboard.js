@@ -19,7 +19,7 @@
       { kw: '角色|建卡|角色系统', title: '这里是冒险者工会', text: '先从「角色系统」开始：建一个属于你的冒险者。' },
       { kw: '职业|天赋|技能树', title: '职业技能树', text: '20 个基础职业 + 19 条进阶途径；可搜索任意技能并全屏预览。' },
       { kw: '帮助|规则|手册', title: '帮助：规则手册 + 世界观', text: '12 章规则与设定集；新手建议先看「基本规则 / 检定规则 / 升级规则」。' },
-      { kw: '顾问', title: 'AI 顾问', text: '可以问职业、加点、进阶；需连接 AI 服务，未连接也有三步离线引导。' },
+      { sels: ['#_snowd_advisor_ball', '#_snowd_advisor_panel', '.advisor-ball'], title: 'AI 顾问', text: '右下角这个 ✦ 就是顾问：可以问职业、加点、进阶；需连接 AI 服务，未连接也有三步离线引导。' },
       { kw: '设置', title: '随时可以重看', text: '设置里能重看这份向导；现在就开始吧 —— 先建一个角色！' }
     ],
     chargen: [
@@ -34,7 +34,7 @@
   };
   var idx = 0, key = '', list = [], els = {};
   function findTarget(step) {
-    var sels = step.sels || ['a', 'button', '[data-href]', '.card', 'input'];
+    var sels = step.sels || ['a', 'button', '[data-href]', '.card', 'input', 'section', '.step', '.step-panel', '[class*=step]', 'h2', 'h3', 'label'];
     for (var i = 0; i < sels.length; i++) {
       var nodes = [].slice.call(document.querySelectorAll(sels[i]));
       for (var j = 0; j < nodes.length; j++) {
@@ -79,8 +79,11 @@
       var by = r.bottom + 14;
       if (by > window.innerHeight - 200) by = Math.max(12, r.top - 186);
       els.b.style.transform = 'none';
-      els.b.style.left = bx + 'px';
-      els.b.style.top = by + 'px';
+      var bh = els.b.offsetHeight || 170, bw = els.b.offsetWidth || 330;   /* 夹取到视口内，保证按钮一定可点 */
+      var maxLeft = Math.max(12, window.innerWidth - bw - 12);
+      var maxTop = Math.max(12, window.innerHeight - bh - 12);
+      els.b.style.left = Math.min(Math.max(12, bx), maxLeft) + 'px';
+      els.b.style.top = Math.min(Math.max(12, by), maxTop) + 'px';
     } else {
       els.b.style.transform = 'translateX(-50%)';
       els.b.style.left = '50%';
@@ -105,6 +108,20 @@
     bar.appendChild(mk(idx === list.length - 1 ? '开始使用 ✓' : '下一步', next, true));
     bar.appendChild(mk('跳过引导', function () { finish('skipped'); }));
     els.b.appendChild(bar);
+    /* __reclampAfterBar：加入按钮后再按真实高度夹取一次（避免低估高度导致气泡出屏） */
+    try {
+      var bh2 = els.b.offsetHeight || 0, bw2 = els.b.offsetWidth || 0;
+      if (bh2 > 0) {
+        var curTop = parseFloat(els.b.style.top) || 0;
+        var maxTop2 = Math.max(12, window.innerHeight - bh2 - 12);
+        els.b.style.top = Math.min(Math.max(12, curTop), maxTop2) + 'px';
+      }
+      if (bw2 > 0) {
+        var curLeft = parseFloat(els.b.style.left) || 0;
+        var maxLeft2 = Math.max(12, window.innerWidth - bw2 - 12);
+        els.b.style.left = Math.min(Math.max(12, curLeft), maxLeft2) + 'px';
+      }
+    } catch (e) {}
   }
   function next() { if (idx >= list.length - 1) { finish('done'); return; } idx++; render(); }
   function prev() { if (idx > 0) { idx--; render(); } }

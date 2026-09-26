@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斯诺德 · 冒险者工会（设计草案 mock2）</title>
+<style>
+/* ============================================================
+   启动台 · 异形设计草案「勘测罗盘」
+   构图：中央罗盘地图(身份) + 四周功能(实用)
+   语言：深胡桃木底 / 羊皮纸 / 黄铜线稿 / 唯一火漆红强调
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --wood-0:#14100a; --wood-1:#221a10; --wood-2:#2e2214;
+  --parch-1:#f4e9cd; --parch-2:#e6d5ae; --parch-dim:#cbbb92;
+  --brass:#c9a25a; --brass-lo:#a8802f; --brass-hi:#e6c37c;
+  --ink:#241a0e; --seal:#b03a2a; --seal-lo:#8c2b1e;
+}
+html, body { height: 100%; }
+body {
+  font-family: "PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  color: var(--parch-1);
+  background:
+    radial-gradient(1100px 620px at 50% 46%, rgba(201,162,90,.10), transparent 62%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.20) 0 1px, transparent 1px 190px),
+    radial-gradient(130% 105% at 50% 40%, var(--wood-2) 0%, var(--wood-1) 46%, var(--wood-0) 100%);
+  overflow: hidden;
+}
+/* 桌面上的探险虚线路线（背景装饰层） */
+.bg-routes { position: fixed; inset: 0; z-index: 0; opacity: .5; pointer-events: none; }
+
+.stage { position: relative; z-index: 2; height: 100vh; display: grid;
+  grid-template-columns: 300px 1fr 300px; grid-template-rows: 64px 1fr 108px;
+  grid-template-areas: "top top top" "left center right" "bottom bottom bottom"; }
+
+/* ---------- 顶栏 ---------- */
+.topbar { grid-area: top; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 26px; border-bottom: 1px solid rgba(201,162,90,.22); }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand svg { width: 34px; height: 34px; }
+.brand .cn { font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif; font-size: 19px; letter-spacing: .22em; color: var(--parch-1); }
+.brand .en { font-size: 9.5px; letter-spacing: .34em; color: var(--brass); opacity: .85; margin-top: 2px; }
+.top-ops { display: flex; align-items: center; gap: 18px; font-size: 12px; color: var(--parch-dim); }
+.top-ops .ver { font-family: Georgia,serif; letter-spacing: .08em; color: var(--brass); }
+.top-ops a { color: var(--parch-dim); text-decoration: none; letter-spacing: .1em; display: inline-flex; align-items: center; gap: 6px; }
+.top-ops a:hover { color: var(--brass-hi); }
+.top-ops .sep { width: 1px; height: 14px; background: rgba(201,162,90,.3); }
+
+/* ---------- 通用：斜切纸签按钮 ---------- */
+.chip { position: relative; display: block; text-decoration: none; cursor: pointer;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.5)); transition: transform .16s ease, filter .16s ease; }
+.chip:hover { transform: translateY(-3px); filter: drop-shadow(0 12px 20px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(201,162,90,.25)); }
+.chip:active { transform: translateY(1px); }
+.chip .edge, .chip .face2 { position: absolute; inset: 0; clip-path: inherit; }
+.chip .edge { background: linear-gradient(160deg, var(--brass-hi), var(--brass-lo) 60%, #6d5223); }
+.chip .face2 { inset: 2px; background: linear-gradient(170deg, var(--parch-1), var(--parch-2) 78%, #d9c79c); }
+.chip .ct { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; color: var(--ink); }
+
+/* ---------- 左列：主入口（梯形大签） ---------- */
+.rail { grid-area: left; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 0 0 0 26px; }
+.rail .chip { height: 92px; clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%); }
+.rail .chip .ct { padding: 0 20px 0 18px; gap: 14px; }
+.rail .no { font-family: Georgia,serif; font-size: 26px; font-weight: 700; color: var(--brass-lo); opacity: .55; }
+.rail .ic { width: 34px; height: 34px; color: #4a3018; flex: none; }
+.rail .tx { display: flex; flex-direction: column; min-width: 0; }
+.rail .tx .n { font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif; font-size: 19px; font-weight: 700; letter-spacing: .1em; color: var(--ink); }
+.rail .tx .d { font-size: 10.5px; letter-spacing: .12em; color: #6d5942; margin-top: 3px; white-space: nowrap; }
+.rail-label { font-size: 10px; letter-spacing: .3em; color: var(--brass); opacity: .7; padding-left: 4px; }
+
+/* ---------- 中央：伪 3D 罗盘（三层景深 + 鼠标视差 + 可掷骰） ---------- */
+.center { grid-area: center; position: relative; display: grid; place-items: center; }
+.compass3d { width: min(62vh, 620px); height: min(62vh, 620px); position: relative; perspective: 1000px; }
+.tilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.layer { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.layer svg { width: 100%; height: 100%; display: block; }
+.l1 { transform: translateZ(0px); }
+.l2 { transform: translateZ(26px); }
+.l3 { transform: translateZ(56px); pointer-events: auto; cursor: pointer; }
+.roll-badge { position: absolute; left: 50%; top: 50%; z-index: 5; text-align: center;
+  transform: translate(-50%,-50%) scale(.5); opacity: 0; pointer-events: none;
+  transition: transform .3s cubic-bezier(.2,1.4,.4,1), opacity .25s ease; }
+.roll-badge.show { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+.roll-badge b { display: block; font-family: Georgia,serif; font-size: 58px; font-weight: 700; color: var(--brass-hi);
+  text-shadow: 0 0 22px rgba(230,195,124,.65), 0 2px 4px rgba(0,0,0,.6); }
+.roll-badge i { font-style: normal; font-size: 10px; letter-spacing: .4em; color: var(--parch-dim); }
+.roll-badge .crit-label { display: none; font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif;
+  font-size: 18px; letter-spacing: .4em; text-indent: .4em; color: #ff7a52; margin-top: 4px;
+  text-shadow: 0 0 14px rgba(255,110,70,.8); }
+.roll-badge.crit b { font-size: 76px; color: #ffe3a6;
+  text-shadow: 0 0 34px rgba(255,200,90,.95), 0 0 70px rgba(255,120,60,.5); }
+.roll-badge.crit i { color: var(--brass-hi); }
+.roll-badge.crit .crit-label { display: block; animation: critPulse .8s ease-in-out infinite; }
+@keyframes critPulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+/* 大成功演出：金光爆闪 + 冲击环 + 火花粒子 */
+.crit-flash { position: absolute; inset: -12%; z-index: 6; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,220,130,.6), rgba(255,170,70,.18) 42%, transparent 68%); }
+.crit-flash.go { animation: critFlash .75s ease-out; }
+@keyframes critFlash { 0% { opacity: 0; } 22% { opacity: 1; } 100% { opacity: 0; } }
+.crit-ring { position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin: -180px;
+  border: 2px solid rgba(255,216,130,.9); border-radius: 50%; opacity: 0; z-index: 6; pointer-events: none; }
+.crit-ring.go { animation: critRing .85s cubic-bezier(.15,.7,.3,1); }
+@keyframes critRing { 0% { opacity: .95; transform: scale(.3); } 100% { opacity: 0; transform: scale(1.7); } }
+.crit-p { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; border-radius: 50%; z-index: 6;
+  background: #ffd678; box-shadow: 0 0 9px rgba(255,214,120,.95); pointer-events: none;
+  transition: transform .95s cubic-bezier(.1,.75,.25,1), opacity .95s ease; }
+.compass3d.shake .tilt { animation: compShake .45s ease; }
+@keyframes compShake { 0%,100% { margin-left: 0; } 25% { margin-left: -5px; } 50% { margin-left: 4px; } 75% { margin-left: -2px; } }
+.roll-hint { position: absolute; top: -26px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; letter-spacing: .3em; text-indent: .3em; color: var(--parch-dim); opacity: .65; white-space: nowrap; }
+.center-caption { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  text-align: center; font-size: 10px; letter-spacing: .42em; text-indent: .42em; color: var(--brass); opacity: .75; white-space: nowrap; }
+
+/* ---------- 右列：工具阵（小方签 2x4） ---------- */
+.grid9 { grid-area: right; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  align-content: center; padding: 0 26px 0 10px; }
+.grid9 .chip { height: 86px; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.grid9 .chip .ct { flex-direction: column; justify-content: center; gap: 8px; }
+.grid9 .ic { width: 26px; height: 26px; color: #4a3018; }
+.grid9 .n { font-size: 13.5px; font-weight: 700; letter-spacing: .14em; color: var(--ink); }
+.grid9 .k { position: absolute; top: 7px; right: 12px; z-index: 3; font-size: 8.5px; letter-spacing: .12em; color: var(--brass-lo); opacity: .8; }
+.grid-label { grid-column: 1 / -1; font-size: 10px; letter-spacing: .3em; color: var(--brass); opacity: .7; padding-left: 4px; }
+
+/* ---------- 底栏：角色名牌 + 继续冒险 ---------- */
+.bottombar { grid-area: bottom; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 0 26px; border-top: 1px solid rgba(201,162,90,.22); }
+.hero-card { display: flex; align-items: center; gap: 14px; }
+.hero-card .ava { width: 62px; height: 62px; flex: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
+.hero-card .who .nm { font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif; font-size: 19px; letter-spacing: .1em; color: var(--parch-1); }
+.hero-card .who .meta { font-size: 11px; color: var(--parch-dim); letter-spacing: .12em; margin-top: 4px; }
+.hero-card .who .meta b { color: var(--brass); font-weight: 600; }
+.hero-tag { font-size: 9px; letter-spacing: .3em; color: var(--brass); opacity: .7; margin-bottom: 4px; }
+
+.go { display: flex; align-items: center; gap: 14px; text-decoration: none;
+  padding: 13px 30px 13px 16px; cursor: pointer;
+  clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  background: linear-gradient(170deg, #c4452f, var(--seal) 55%, var(--seal-lo));
+  filter: drop-shadow(0 8px 18px rgba(140,43,30,.45));
+  transition: transform .16s ease, filter .16s ease; }
+.go:hover { transform: translateY(-2px); filter: drop-shadow(0 12px 24px rgba(140,43,30,.55)) drop-shadow(0 0 18px rgba(196,69,47,.4)); }
+.go:active { transform: translateY(1px); }
+.go .seal-ic { width: 40px; height: 40px; flex: none; }
+.go .t1 { font-size: 10px; letter-spacing: .34em; color: #f3d9b8; opacity: .9; }
+.go .t2 { font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif; font-size: 21px; font-weight: 700; letter-spacing: .1em; color: #fdf3df; margin-top: 2px; }
+.go .arr { width: 22px; height: 22px; color: #f3d9b8; margin-left: 6px; }
+
+.bottom-right { justify-self: end; display: flex; align-items: center; gap: 10px;
+  font-size: 10.5px; letter-spacing: .2em; color: var(--parch-dim); }
+.bottom-right .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brass); opacity: .8; }
+
+/* 角部刻度装饰 */
+.corner { position: fixed; width: 46px; height: 46px; z-index: 3; pointer-events: none; opacity: .55; }
+.corner.tl { top: 8px; left: 8px; } .corner.tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.corner.bl { bottom: 8px; left: 8px; transform: scaleY(-1); } .corner.br { bottom: 8px; right: 8px; transform: scale(-1); }
+</style>
+</head>
+<body>
+
+<!-- 背景：探险虚线路线 -->
+<svg class="bg-routes" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
+  <path d="M-20 830 Q 240 700 380 760 T 760 640" stroke="#c9a25a" stroke-opacity=".14" stroke-width="1.5" stroke-dasharray="7 8"/>
+  <path d="M1480 120 Q 1200 230 1090 180 T 820 300" stroke="#c9a25a" stroke-opacity=".12" stroke-width="1.5" stroke-dasharray="7 8"/>
+  <path d="M120 900 Q 180 520 430 470" stroke="#c9a25a" stroke-opacity=".10" stroke-width="1.5" stroke-dasharray="7 8"/>
+  <circle cx="380" cy="760" r="4" fill="#c9a25a" fill-opacity=".22"/>
+  <circle cx="760" cy="640" r="4" fill="#c9a25a" fill-opacity=".18"/>
+  <circle cx="1090" cy="180" r="4" fill="#c9a25a" fill-opacity=".2"/>
+</svg>
+
+<!-- 角饰 -->
+<svg class="corner tl" viewBox="0 0 46 46" fill="none" stroke="#c9a25a" stroke-width="2"><path d="M2 44V12Q2 2 12 2h32"/><path d="M9 44V16q0-7 7-7h28" stroke-opacity=".4"/></svg>
+<svg class="corner tr" viewBox="0 0 46 46" fill="none" stroke="#c9a25a" stroke-width="2"><path d="M2 44V12Q2 2 12 2h32"/><path d="M9 44V16q0-7 7-7h28" stroke-opacity=".4"/></svg>
+<svg class="corner bl" viewBox="0 0 46 46" fill="none" stroke="#c9a25a" stroke-width="2"><path d="M2 44V12Q2 2 12 2h32"/><path d="M9 44V16q0-7 7-7h28" stroke-opacity=".4"/></svg>
+<svg class="corner br" viewBox="0 0 46 46" fill="none" stroke="#c9a25a" stroke-width="2"><path d="M2 44V12Q2 2 12 2h32"/><path d="M9 44V16q0-7 7-7h28" stroke-opacity=".4"/></svg>
+
+<div class="stage">
+
+  <!-- ===== 顶栏 ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 64 64" fill="none" stroke="#c9a25a" stroke-width="3" stroke-linecap="round">
+        <path d="M32 5v54M9.7 18.5l44.6 27M54.3 18.5l-44.6 27"/>
+        <path d="M32 5l-6.5 8.5M32 5l6.5 8.5M32 59l-6.5-8.5M32 59l6.5-8.5" stroke-width="2.4"/>
+        <circle cx="32" cy="32" r="5" stroke-width="2.4"/>
+      </svg>
+      <div>
+        <div class="cn">斯诺德跑团</div>
+        <div class="en">SNODE · ADVENTURER'S GUILD</div>
+      </div>
+    </div>
+    <nav class="top-ops">
+      <span class="ver">v1.0.8018</span><span class="sep"></span>
+      <a href="#">检查更新</a><a href="#">更新日志</a><a href="#">性能自检</a><span class="sep"></span>
+      <a href="#">设置</a>
+    </nav>
+  </header>
+
+  <!-- ===== 左列：主入口 ===== -->
+  <aside class="rail">
+    <div class="rail-label">委托 · COMMISSION</div>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="ct">
+      <span class="no">01</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+      <span class="tx"><span class="n">角色管理</span><span class="d">已有角色 · 面板与存档</span></span>
+    </span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="ct">
+      <span class="no">02</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+      <span class="tx"><span class="n">职业技能树</span><span class="d">19 职业 · 2,588 条技能</span></span>
+    </span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="ct">
+      <span class="no">03</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="13" height="16" rx="2"/><path d="M8 3h11a2 2 0 012 2v14"/></svg>
+      <span class="tx"><span class="n">斯诺德对决</span><span class="d">回合制卡牌 · 支持联机</span></span>
+    </span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="ct">
+      <span class="no">04</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 3h12a2 2 0 012 2v14H7a2 2 0 01-2-2V3z"/><path d="M9 7h6M9 11h6"/></svg>
+      <span class="tx"><span class="n">规则手册</span><span class="d">基础规则 · 世界观架构</span></span>
+    </span></a>
+  </aside>
+
+  <!-- ===== 中央：伪 3D 勘测罗盘（纯 SVG 线稿 + 视差 + 掷骰） ===== -->
+  <main class="center">
+    <div class="compass3d" id="compass">
+      <div class="tilt" id="tilt">
+        <!-- L1：刻度环层（最深远） -->
+        <svg class="layer l1" viewBox="0 0 600 600" fill="none">
+          <circle cx="300" cy="300" r="292" stroke="#c9a25a" stroke-opacity=".5" stroke-width="1.5"/>
+          <circle cx="300" cy="300" r="278" stroke="#c9a25a" stroke-opacity=".28" stroke-width="1"/>
+          <g stroke="#c9a25a" stroke-opacity=".6">
+            <path d="M300 8v22M450 40.3l-11 19M560 150l-19 11M592 300h-22M560 450l-19-11M450 559.7l-11-19M300 592v-22M150 560l11-19M40.3 450l19-11M8 300h22M40.3 150l19 11M150 40.3l11 19" stroke-width="2"/>
+          </g>
+          <g stroke="#c9a25a" stroke-opacity=".3">
+            <path d="M375 15.6l-5.5 20.7M524.6 75.4l-14.6 14.6M584.4 225l-20.7 5.5M584.4 375l-20.7-5.5M524.6 524.6l-14.6-14.6M375 584.4l-5.5-20.7M225 584.4l5.5-20.7M75.4 524.6l14.6-14.6M15.6 375l20.7-5.5M15.6 225l20.7 5.5M75.4 75.4l14.6 14.6M225 15.6l5.5 20.7" stroke-width="1"/>
+          </g>
+          <g fill="#c9a25a" font-family="Georgia,serif" font-size="20" text-anchor="middle">
+            <text x="300" y="58">N</text><text x="300" y="556">S</text>
+            <text x="552" y="307">E</text><text x="48" y="307">W</text>
+          </g>
+          <circle cx="300" cy="300" r="238" stroke="#c9a25a" stroke-opacity=".35" stroke-width="1" stroke-dasharray="3 7"/>
+          <circle cx="300" cy="300" r="196" stroke="#c9a25a" stroke-opacity=".22" stroke-width="1"/>
+        </svg>
+        <!-- L2：罗盘玫瑰层（中层） -->
+        <svg class="layer l2" viewBox="0 0 600 600" fill="none">
+          <g stroke="#c9a25a" stroke-opacity=".8">
+            <path d="M300 92l16 176-16 240-16-240z" fill="#c9a25a" fill-opacity=".10" stroke-width="1.5"/>
+            <path d="M92 300l176-16 240 16-240 16z" fill="#c9a25a" fill-opacity=".10" stroke-width="1.5"/>
+            <path d="M153 153l119 91 175 203-91-119z" fill="#c9a25a" fill-opacity=".06" stroke-width="1"/>
+            <path d="M447 153l-91 119-203 175 119-91z" fill="#c9a25a" fill-opacity=".06" stroke-width="1"/>
+          </g>
+        </svg>
+        <!-- L3：D20 真 3D 线框（JS 逐帧投影，可点击掷骰） -->
+        <svg class="layer l3" id="d20layer" viewBox="0 0 600 600" fill="none">
+          <circle cx="300" cy="300" r="128" fill="#c9a25a" fill-opacity=".05"/>
+          <g id="d20Faces"></g>
+          <g id="d20Edges"></g>
+        </svg>
+      </div>
+      <div class="crit-flash" id="critFlash"></div>
+      <div class="crit-ring" id="critRing"></div>
+      <div class="roll-badge" id="rollBadge"><b id="rollNum">20</b><i>D20</i><s class="crit-label">大成功</s></div>
+      <div class="roll-hint">点击骰子 · 掷一次 D20</div>
+      <div class="center-caption">斯诺德全境 · 勘测罗盘</div>
+    </div>
+  </main>
+
+  <!-- ===== 右列：工具阵 ===== -->
+  <aside class="grid9">
+    <div class="grid-label">架位 · ARCHIVE</div>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A1</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16v14H4z"/><path d="M4 9h16M9 9v10"/></svg>
+      <span class="n">资料库</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A2</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8h12l-1.5 12h-9z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+      <span class="n">物资大全</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A3</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+      <span class="n">特殊专长</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A4</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20h16M6 20v-6l6-9 6 9v6"/><path d="M12 5V2"/></svg>
+      <span class="n">进阶途径</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A5</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21V9M12 9C12 5 9 3 5 3c0 4 3 6 7 6zM12 9c0-4 3-6 7-6 0 4-3 6-7 6z"/></svg>
+      <span class="n">通用天赋树</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A6</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+      <span class="n">上传角色</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A7</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-.5a6.5 6.5 0 0113 0v.5"/><path d="M16 4.5a3.5 3.5 0 010 7M17.5 14.5c2.4.8 4 2.7 4 5.5"/></svg>
+      <span class="n">角色选择</span></span></a>
+
+    <a class="chip" href="#"><span class="edge"></span><span class="face2"></span><span class="k">A8</span><span class="ct">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>
+      <span class="n">AI 顾问</span></span></a>
+  </aside>
+
+  <!-- ===== 底栏 ===== -->
+  <footer class="bottombar">
+    <div class="hero-card">
+      <svg class="ava" viewBox="0 0 62 62">
+        <circle cx="31" cy="31" r="29" fill="#2e2214" stroke="#c9a25a" stroke-width="2"/>
+        <circle cx="31" cy="24" r="9" fill="none" stroke="#e6c37c" stroke-width="2"/>
+        <path d="M14 48a17 17 0 0134 0" fill="none" stroke="#e6c37c" stroke-width="2"/>
+      </svg>
+      <div class="who">
+        <div class="hero-tag">当前冒险者 · ACTIVE</div>
+        <div class="nm">甘九 · 顽石</div>
+        <div class="meta">人类 · 战士 <b>Lv.6</b> · 斗争风格</div>
+      </div>
+    </div>
+
+    <a class="go" href="#">
+      <svg class="seal-ic" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="#f3d9b8" stroke-width="2" stroke-opacity=".8"/>
+        <circle cx="20" cy="20" r="12.5" fill="none" stroke="#f3d9b8" stroke-width="1" stroke-opacity=".5"/>
+        <path d="M20 11l2.4 5.1 5.6.7-4.1 3.9 1 5.5-4.9-2.7-4.9 2.7 1-5.5-4.1-3.9 5.6-.7z" fill="#f3d9b8"/>
+      </svg>
+      <span>
+        <div class="t1">继续冒险 · CONTINUE</div>
+        <div class="t2">甘九 · 顽石</div>
+      </span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <div class="bottom-right">
+      <span class="dot"></span><span>本地离线可用</span>
+      <span class="dot"></span><span>数据不出本机</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ===== 伪 3D 罗盘：鼠标视差 + 真 3D D20 线框 + 掷骰/大成功（草案用，无依赖） ===== */
+(function () {
+  var compass = document.getElementById('compass');
+  var tilt = document.getElementById('tilt');
+
+  /* ---------- 鼠标视差 ---------- */
+  var tx = 0, ty = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', function (e) {
+    var r = compass.getBoundingClientRect();
+    var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+    var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+    ty = Math.max(-1, Math.min(1, dx * 2)) * 16;
+    tx = Math.max(-1, Math.min(1, dy * 2)) * -16;
+  });
+  document.addEventListener('mouseleave', function () { tx = 0; ty = 0; });
+
+  /* ---------- 真 3D 二十面体 ---------- */
+  var PHI = (1 + Math.sqrt(5)) / 2, NORM = Math.sqrt(1 + PHI * PHI);
+  var V = [[0,1,PHI],[0,1,-PHI],[0,-1,PHI],[0,-1,-PHI],[1,PHI,0],[1,-PHI,0],[-1,PHI,0],[-1,-PHI,0],[PHI,0,1],[-PHI,0,1],[PHI,0,-1],[-PHI,0,-1]]
+    .map(function (v) { return [v[0] / NORM, v[1] / NORM, v[2] / NORM]; });
+  function d2(a, b) { var x = a[0]-b[0], y = a[1]-b[1], z = a[2]-b[2]; return x*x + y*y + z*z; }
+  var EDGES = [], FACES = [], i, j, k;
+  for (i = 0; i < 12; i++) for (j = i + 1; j < 12; j++) if (d2(V[i], V[j]) < 1.3) EDGES.push([i, j]);
+  for (i = 0; i < 12; i++) for (j = i + 1; j < 12; j++) for (k = j + 1; k < 12; k++)
+    if (d2(V[i],V[j]) < 1.3 && d2(V[j],V[k]) < 1.3 && d2(V[i],V[k]) < 1.3) FACES.push([i, j, k]);
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var facesG = document.getElementById('d20Faces'), edgesG = document.getElementById('d20Edges');
+  var faceEls = FACES.map(function () {
+    var p = document.createElementNS(NS, 'polygon');
+    p.setAttribute('fill', '#c9a25a'); facesG.appendChild(p); return p; });
+  var edgeEls = EDGES.map(function () {
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('stroke', '#e6c37c'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
+
+  var R = 112, D = 3.4, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
+  var PX = [], PY = [], PZ = [];
+  function renderDie() {
+    var ca = Math.cos(ay), sa = Math.sin(ay), cb = Math.cos(ax), sb = Math.sin(ax);
+    for (i = 0; i < 12; i++) {
+      var x = V[i][0], y = V[i][1], z = V[i][2];
+      var x1 = x * ca + z * sa, z1 = -x * sa + z * ca;
+      var y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
+      var s = D / (D - z2);
+      PX[i] = 300 + x1 * s * R; PY[i] = 300 - y1 * s * R; PZ[i] = z2;
+    }
+    var order = FACES.map(function (f, idx) { return idx; }).sort(function (a, b) {
+      var za = (PZ[FACES[a][0]] + PZ[FACES[a][1]] + PZ[FACES[a][2]]) / 3;
+      var zb = (PZ[FACES[b][0]] + PZ[FACES[b][1]] + PZ[FACES[b][2]]) / 3;
+      return za - zb; });
+    for (i = 0; i < order.length; i++) {
+      var f = FACES[order[i]], el = faceEls[order[i]];
+      var z = (PZ[f[0]] + PZ[f[1]] + PZ[f[2]]) / 3;
+      el.setAttribute('points', PX[f[0]] + ',' + PY[f[0]] + ' ' + PX[f[1]] + ',' + PY[f[1]] + ' ' + PX[f[2]] + ',' + PY[f[2]]);
+      if (z < -0.02) { el.setAttribute('fill-opacity', '0'); }          /* 背面剔除 */
+      else { el.setAttribute('fill-opacity', (0.30 + z * 0.25).toFixed(3)); } /* 前面半实心遮挡 */
+      facesG.appendChild(el); /* 深度排序：重挂到正确层序 */
+    }
+    for (i = 0; i < EDGES.length; i++) {
+      var e = EDGES[i], l = edgeEls[i];
+      var ze = (PZ[e[0]] + PZ[e[1]]) / 2;
+      l.setAttribute('x1', PX[e[0]].toFixed(1)); l.setAttribute('y1', PY[e[0]].toFixed(1));
+      l.setAttribute('x2', PX[e[1]].toFixed(1)); l.setAttribute('y2', PY[e[1]].toFixed(1));
+      if (ze < -0.02) { l.setAttribute('stroke-opacity', '0.07'); l.setAttribute('stroke-width', '1'); }
+      else {
+        l.setAttribute('stroke-opacity', (0.55 + ze * 0.45).toFixed(3));
+        l.setAttribute('stroke-width', (1.2 + ze * 1.4).toFixed(2));
+      }
+    }
+  }
+
+  /* ---------- 主循环 ---------- */
+  function loop() {
+    if (!window.__freezeTilt) {
+      cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+      tilt.style.transform = 'rotateX(' + cx.toFixed(2) + 'deg) rotateY(' + cy.toFixed(2) + 'deg)';
+      if (rolling) { ay += velY; ax += velX; velY *= .962; velX *= .962; }
+      else { ay += .006; ax = -0.35 + Math.sin(ay * .5) * .18; }
+      renderDie();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  /* ---------- 掷骰 + 大成功 ---------- */
+  var rolling = false, badge = document.getElementById('rollBadge');
+  function showResult(n) {
+    document.getElementById('rollNum').textContent = n;
+    badge.classList.toggle('crit', n === 20);
+    badge.classList.add('show');
+    if (n === 20) {
+      var flash = document.getElementById('critFlash'), ring = document.getElementById('critRing');
+      flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+      ring.classList.remove('go'); void ring.offsetWidth; ring.classList.add('go');
+      compass.classList.add('shake'); setTimeout(function () { compass.classList.remove('shake'); }, 480);
+      for (var p = 0; p < 14; p++) {
+        var sp = document.createElement('span'); sp.className = 'crit-p';
+        compass.appendChild(sp);
+        (function (el, ang, dist) {
+          requestAnimationFrame(function () {
+            el.style.transform = 'translate(' + Math.cos(ang) * dist + 'px,' + Math.sin(ang) * dist + 'px) scale(.2)';
+            el.style.opacity = '0';
+          });
+          setTimeout(function () { el.remove(); }, 1000);
+        })(sp, (p / 14) * Math.PI * 2 + Math.random() * .4, 130 + Math.random() * 90);
+      }
+    }
+    setTimeout(function () { badge.classList.remove('show'); }, n === 20 ? 4200 : 2600);
+  }
+  function roll(forceN) {
+    if (rolling) return; rolling = true;
+    badge.classList.remove('show');
+    velY = .32 + Math.random() * .14; velX = .16 + Math.random() * .1;
+    var n = forceN || (1 + Math.floor(Math.random() * 20));
+    setTimeout(function () { rolling = false; showResult(n); }, 1050);
+  }
+  document.getElementById('d20layer').addEventListener('click', function () { roll(); });
+  window.__demoRoll = roll; /* 截图/调试用 */
+})();
+</script>
+</body>
+</html>

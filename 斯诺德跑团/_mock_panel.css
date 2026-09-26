@@ -1,0 +1,114 @@
+/* ===== 角色面板 · 平面设计打样（A色彩收口 / B纸质化 / C层级收敛 / E字体） ===== */
+
+/* --- A0. 全局色板：暖纸 + 收敛的点缀色 --- */
+:root {
+  --bg: #efe6d0 !important;
+  --panel: #faf3e2 !important;
+  --ink: #2b2114 !important;
+  --muted: #71603f !important;
+  --line: #d8c8a2 !important;
+  --accent: #a46d1f !important;
+  --accent-hover: #c0852f !important;
+}
+
+/* --- B0. 页底：与启动台同源的浅木纹，打通两个页面的场景感 --- */
+body {
+  background-color: #d8bd90 !important;
+  background-image:
+    radial-gradient(1200px 460px at 50% -6%, rgba(255,240,205,.55), transparent 72%),
+    repeating-linear-gradient(90deg, rgba(96,64,26,.05) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(0deg, rgba(88,58,22,.07) 0 1px, transparent 1px 172px),
+    linear-gradient(180deg, rgba(255,255,255,.2), rgba(120,80,30,.1)) !important;
+}
+
+/* --- C. 顶栏：全页唯一深色区（木纹 + 黄铜底线），层级立刻分明 --- */
+body.gui-page .sheet-head {
+  background: linear-gradient(180deg, #6b4a28, #54381c 68%, #462e15) !important;
+  border: 1px solid #8a6234 !important;
+  border-bottom: 3px solid #a8802f !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255,240,205,.28), 0 12px 26px rgba(50,30,8,.38) !important;
+}
+body.gui-page .sheet-head .char-id h1 {
+  font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif !important;
+  letter-spacing: .1em;
+}
+
+/* --- A1. 按钮收口：只剩三种语义（危险=深红 / 主行动=黄铜 / 次行动=描边） --- */
+.head-actions button {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  font-size: 13px !important;
+  letter-spacing: .04em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 2px 6px rgba(30,18,4,.3);
+}
+.head-actions button:hover { filter: brightness(1.07); }
+.head-actions .mi { width: 15px; height: 15px; flex: none; }
+
+.head-actions .btn-battle {
+  background: linear-gradient(180deg, #b3402f, #9d2f2f) !important;
+  color: #fff !important;
+  border: 1px solid #7c1f1f !important;
+}
+.head-actions .btn-primary {
+  background: linear-gradient(180deg, #e6c37c, #c39a4a 62%, #a8802f) !important;
+  color: #2a1c0a !important;
+  border: 1px solid #8a6234 !important;
+}
+.head-actions .btn-ghost {
+  background: rgba(253,248,236,.10) !important;
+  color: #efe2c4 !important;
+  border: 1px solid #8a6234 !important;
+}
+.head-actions .btn-ghost:hover {
+  background: rgba(253,248,236,.22) !important;
+  border-color: #e0b063 !important;
+}
+
+/* --- B1. 卡片纸质化：暖纸面 + 黄铜内发线 + 统一 8px 圆角 --- */
+.card {
+  background: linear-gradient(180deg, #fdf8ec, #f7ecd4) !important;
+  border: 1px solid #c9ab74 !important;
+  border-radius: 8px !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 6px 16px rgba(80,52,16,.16) !important;
+}
+
+/* --- B2/E4. 区块标题：去粗色条，改衬线 + 黄铜下划线 + 菱形记 --- */
+.card h2 {
+  border-left: none !important;
+  padding-left: 0 !important;
+  font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif !important;
+  font-size: 17px !important;
+  letter-spacing: .08em;
+  color: #43301a !important;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, rgba(164,109,31,.65), rgba(164,109,31,0)) left bottom / 100% 2px no-repeat;
+}
+.card h2::before {
+  content: "◆";
+  color: #a8802f;
+  font-size: 10px;
+  margin-right: 8px;
+  vertical-align: 2px;
+}
+
+/* --- B3. 战斗数据区：灰色圆形暖化 --- */
+.orb-wrap {
+  background: #f7ecd4 !important;
+  border-color: #d8c8a2 !important;
+}
+.orb-bg { fill: rgba(164,109,31,.10) !important; stroke: #d8c8a2 !important; }
+.battle-key .stat-item { background: #f2e6cc !important; }
+
+/* --- B4. 立绘位：黄铜细环 --- */
+.portrait-round {
+  border: 2px solid rgba(168,128,47,.55) !important;
+  box-shadow: inset 0 0 0 3px rgba(253,248,236,.8), 0 4px 10px rgba(80,52,16,.2) !important;
+}
+
+/* --- B5. 信息字段：输入格暖纸化 --- */
+.kv dd, .kv dt {
+  background: rgba(253,248,236,.7);
+}

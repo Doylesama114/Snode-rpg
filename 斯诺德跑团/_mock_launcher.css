@@ -1,0 +1,67 @@
+/* ===== 启动台 · 平面设计打样（E字体层级 / F纹章 / 细节收口） =====
+   打样目标：展示级衬线标题 + 公会纹章 + 字距系统 + 信息条黄铜发线 */
+
+/* --- E1. 标题：展示衬线（楷体系 fallback 链，离线可用系统字体） --- */
+h1 {
+  font-family: "Kaiti SC","STKaiti","KaiTi","TW-Kai","BiauKai","SimSun",serif !important;
+  font-size: clamp(34px, 4.8vw, 52px) !important;
+  letter-spacing: .14em !important;
+  color: #33230e !important;
+  text-shadow: 0 1px 0 rgba(255,246,224,.8), 0 3px 10px rgba(90,58,20,.18) !important;
+}
+
+/* --- F. 纹章：标题上方雪花徽记（公会母题，黄铜描线） --- */
+h1::before {
+  content: "";
+  display: block;
+  width: 58px; height: 58px;
+  margin: 0 auto 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23a8802f' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M32 5v54M9.7 18.5l44.6 27M54.3 18.5l-44.6 27'/%3E%3Cpath d='M32 5l-6.5 8.5M32 5l6.5 8.5M32 59l-6.5-8.5M32 59l6.5-8.5M9.7 18.5l10.6.8M9.7 18.5l1-10.6M54.3 45.5l-10.6-.8M54.3 45.5l-1 10.6M54.3 18.5l-10.6.8M54.3 18.5l-1-10.6M9.7 45.5l10.6-.8M9.7 45.5l1 10.6'/%3E%3Ccircle cx='32' cy='32' r='5'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(90,58,20,.35));
+}
+
+/* --- E2. 副标题与统计条：letter-spaced 小字系统（推广 BASE CLASSES 式细节） --- */
+.subtitle {
+  letter-spacing: .26em !important;
+  text-indent: .26em; /* 补偿末字间距，保持视觉居中 */
+  color: #6b4a22 !important;
+  font-size: 13.5px !important;
+}
+.hero-stats {
+  gap: 22px !important;
+  font-size: 11.5px !important;
+  letter-spacing: .14em !important;
+  color: #7a5a2e !important;
+  padding: 10px 0 14px;
+  margin-bottom: 26px !important;
+  background:
+    linear-gradient(90deg, transparent, rgba(168,128,47,.55) 18%, rgba(168,128,47,.55) 82%, transparent) left top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(168,128,47,.55) 18%, rgba(168,128,47,.55) 82%, transparent) left bottom / 100% 1px no-repeat;
+}
+.hero-stats b { color: #8a5a14 !important; letter-spacing: .05em; }
+
+/* --- E3. 分区标题：衬线化 + 字距 --- */
+.sec-head .t, .board-title .t {
+  font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif !important;
+  letter-spacing: .12em !important;
+  font-size: 16px !important;
+}
+.board-title .s { letter-spacing: .3em !important; text-indent: .3em; }
+
+/* --- 木牌/便签名称：衬线加粗，仪式感 --- */
+.plank .n, .note .n {
+  font-family: "Kaiti SC","STKaiti","KaiTi","SimSun",serif !important;
+  letter-spacing: .05em;
+}
+.plank .n { font-size: 17.5px !important; }
+
+/* --- 细节收口：柜台黄铜内发线、页脚按钮统一 --- */
+.counter .top {
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.55), inset 0 -6px 0 rgba(90,58,20,.28),
+    inset 0 0 0 1px rgba(230,195,124,.35), 0 18px 34px rgba(50,30,8,.42) !important;
+}
+.footer .tools button, .footer .tools label {
+  border-radius: 4px !important;
+  letter-spacing: .06em;
+}
+#versionDisplay { font-family: Georgia, serif; letter-spacing: .04em; }
