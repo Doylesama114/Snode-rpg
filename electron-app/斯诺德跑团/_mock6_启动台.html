@@ -22,10 +22,9 @@ body {
   font-family: "PingFang SC","Microsoft YaHei",system-ui,sans-serif;
   color: var(--parch-1);
   background:
-    radial-gradient(1100px 620px at 50% 46%, rgba(201,162,90,.10), transparent 62%),
     repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0 2px, transparent 2px 9px),
     repeating-linear-gradient(0deg, rgba(0,0,0,.20) 0 1px, transparent 1px 190px),
-    radial-gradient(130% 105% at 50% 40%, var(--wood-2) 0%, var(--wood-1) 46%, var(--wood-0) 100%);
+    radial-gradient(130% 110% at 50% 42%, #1e1508 0%, #1a1307 55%, #161009 100%);
   overflow: hidden;
 }
 /* 桌面上的探险虚线路线（背景装饰层） */
@@ -84,7 +83,6 @@ body {
   mask-image: radial-gradient(circle at 50% 50%, #000 50%, rgba(0,0,0,.45) 74%, transparent 97%); }
 /* 以雷恩王国为中心放大取景（裁掉过远的外围） */
 .starmap-img { position: absolute; width: 147.6%; height: 147.6%; left: -25.58%; top: -6.98%; display: block; mix-blend-mode: screen;
-  filter: invert(1) grayscale(1) sepia(.85) saturate(2.2) brightness(.68) contrast(1.15);
   opacity: .95; }
 /* 王都标记（对应原图君冠城在取景窗内的相对位置） */
 .capital-mark { position: absolute; left: 47.3%; top: 64.5%; transform: translate(-50%,-50%); pointer-events: none; }
@@ -235,10 +233,25 @@ body {
 
   <!-- ===== 中央：负片烫印雷恩王国全图（真图反相 + 滤色融入） ===== -->
   <main class="center">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <!-- 烫印滤镜链：反相 → 灰阶 → 黑位压零(消底色) → 暖金映射 -->
+        <filter id="goldEtch" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"/>
+          <feColorMatrix type="saturate" values="0"/>
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="1.9" intercept="-0.30"/>
+            <feFuncG type="linear" slope="1.9" intercept="-0.30"/>
+            <feFuncB type="linear" slope="1.9" intercept="-0.30"/>
+          </feComponentTransfer>
+          <feColorMatrix type="matrix" values="1 0 0 0 0.05  0 0.84 0 0 0.035  0 0 0.48 0 0  0 0 0 1 0"/>
+        </filter>
+      </defs>
+    </svg>
     <div class="maptilt" id="tilt">
       <div class="mapview" id="mapView">
         <div class="starmap">
-          <img class="starmap-img" src="help-media/image187.jpeg" alt="雷恩王国全舆" draggable="false">
+          <img class="starmap-img" src="help-media/image187-psfix.png" alt="雷恩王国全舆" draggable="false">
           <div class="capital-mark"><span class="cm-star">★</span><span class="cm-ring"></span></div>
         </div>
       </div>

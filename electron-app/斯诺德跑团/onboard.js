@@ -33,6 +33,7 @@
     ]
   };
   var idx = 0, key = '', list = [], els = {};
+  function isNarrow() { return (window.innerWidth || 360) < 480; }
   function findTarget(step) {
     var sels = step.sels || ['a', 'button', '[data-href]', '.card', 'input', 'section', '.step', '.step-panel', '[class*=step]', 'h2', 'h3', 'label'];
     for (var i = 0; i < sels.length; i++) {
@@ -55,7 +56,8 @@
     m.style.cssText = 'position:fixed;inset:0;z-index:2147483000;pointer-events:none';
     var b = document.createElement('div');
     b.id = 'onboardBox';
-    b.style.cssText = 'position:fixed;z-index:2147483002;pointer-events:auto;max-width:330px;padding:14px 16px;border:1px solid #c9ab74;border-radius:10px;background:linear-gradient(180deg,#fdf8ec,#f3e9d4);box-shadow:0 12px 28px rgba(50,30,8,.38);font-size:13.5px;line-height:1.7;color:#3a2a13';
+    
+    b.style.cssText = 'position:fixed;z-index:2147483002;pointer-events:auto;box-sizing:border-box;max-width:min(330px,calc(100vw - 24px));width:auto;padding:' + (isNarrow() ? '11px 12px' : '14px 16px') + ';border:1px solid #c9ab74;border-radius:10px;background:linear-gradient(180deg,#fdf8ec,#f3e9d4);box-shadow:0 12px 28px rgba(50,30,8,.38);font-size:' + (isNarrow() ? '12.5px' : '13.5px') + ';line-height:1.6;color:#3a2a13;word-break:break-word';
     document.body.appendChild(m);
     document.body.appendChild(b);
     els.m = m; els.b = b;
@@ -92,7 +94,7 @@
     }
     els.b.innerHTML = '<div style="font-weight:bold;margin-bottom:6px">' + step.title + '</div><div style="margin-bottom:10px">' + step.text + '</div>';
     var bar = document.createElement('div');
-    bar.style.cssText = 'display:flex;gap:8px;align-items:center;justify-content:flex-end';
+    bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:' + (isNarrow() ? '6px' : '8px') + ';align-items:center;justify-content:flex-end';
     var cnt = document.createElement('span');
     cnt.textContent = (idx + 1) + ' / ' + list.length;
     cnt.style.cssText = 'margin-right:auto;font-size:12px;color:#8a7a5e';
@@ -101,7 +103,7 @@
       var b2 = document.createElement('button');
       b2.type = 'button';
       b2.textContent = label;
-      b2.style.cssText = 'padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;border:1px solid ' + (primary ? '#b9903f' : '#c9ab74') + ';background:' + (primary ? '#f3e6c9' : 'transparent') + ';color:#6d5223';
+      b2.style.cssText = 'padding:' + (isNarrow() ? '6px 9px' : '6px 12px') + ';border-radius:8px;cursor:pointer;font-size:' + (isNarrow() ? '12.5px' : '13px') + ';white-space:nowrap;border:1px solid ' + (primary ? '#b9903f' : '#c9ab74') + ';background:' + (primary ? '#f3e6c9' : 'transparent') + ';color:#6d5223';
       b2.onclick = function (ev) { try { if (ev && ev.preventDefault) ev.preventDefault(); } catch (e) {} fn(); };
       return b2;
     }
@@ -109,18 +111,17 @@
     bar.appendChild(mk(idx === list.length - 1 ? '开始使用 ✓' : '下一步', next, true));
     bar.appendChild(mk('跳过引导', function () { finish('skipped'); }));
     els.b.appendChild(bar);
-    /* __reclampAfterBar：加入按钮后再按真实高度夹取一次（避免低估高度导致气泡出屏） */
+    /* __clipByRect：按真实矩形做增量修正，兼容 translateX(-50%) 居中（修复移动端提示框飘出屏幕） */
     try {
-      var bh2 = els.b.offsetHeight || 0, bw2 = els.b.offsetWidth || 0;
-      if (bh2 > 0) {
-        var curTop = parseFloat(els.b.style.top) || 0;
-        var maxTop2 = Math.max(12, window.innerHeight - bh2 - 12);
-        els.b.style.top = Math.min(Math.max(12, curTop), maxTop2) + 'px';
-      }
-      if (bw2 > 0) {
-        var curLeft = parseFloat(els.b.style.left) || 0;
-        var maxLeft2 = Math.max(12, window.innerWidth - bw2 - 12);
-        els.b.style.left = Math.min(Math.max(12, curLeft), maxLeft2) + 'px';
+      var rc = els.b.getBoundingClientRect();
+      var dx = 0, dy = 0, PAD = 8;
+      if (rc.left < PAD) dx = PAD - rc.left;
+      else if (rc.right > window.innerWidth - PAD) dx = (window.innerWidth - PAD) - rc.right;
+      if (rc.top < PAD) dy = PAD - rc.top;
+      else if (rc.bottom > window.innerHeight - PAD) dy = (window.innerHeight - PAD) - rc.bottom;
+      if (dx || dy) {
+        els.b.style.left = ((parseFloat(els.b.style.left) || 0) + dx) + 'px';
+        els.b.style.top = ((parseFloat(els.b.style.top) || 0) + dy) + 'px';
       }
     } catch (e) {}
   }
