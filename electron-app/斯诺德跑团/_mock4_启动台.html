@@ -76,9 +76,9 @@ body {
 .topbar { background: linear-gradient(180deg, rgba(18,14,8,.72), rgba(18,14,8,0)); border-bottom: none; }
 .bottombar { background: linear-gradient(0deg, rgba(18,14,8,.78), rgba(18,14,8,0)); border-top: none; }
 .maptilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
-.mapview { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 0 0;
-  cursor: grab; user-select: none; -webkit-user-select: none; }
-.mapview.panning { cursor: grabbing; }
+.mapview { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 0 0; }
+.center { cursor: grab; user-select: none; -webkit-user-select: none; }
+.center.panning { cursor: grabbing; }
 /* 羊皮纸 */
 .paper { position: relative; width: min(78vh, 760px); aspect-ratio: 1/1; transform: rotate(-.5deg);
   background:
@@ -124,9 +124,11 @@ body {
   border: 1.5px solid rgba(140,43,30,.75); border-radius: 50%;
   animation: cmPing 2.4s ease-out infinite; }
 @keyframes cmPing { 0% { transform: scale(.35); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
-/* 骰子 dock（视口中心，不随地图动） */
+/* 骰子 dock（视口中心，不随地图动；羊皮纸上用深墨线稿） */
 .die-dock { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 4; pointer-events: none; }
 .die-dock svg { width: 160px; height: 160px; pointer-events: auto; cursor: pointer; }
+.roll-badge b { color: #6b3a10 !important; text-shadow: 0 0 14px rgba(255,240,200,.9), 0 1px 2px rgba(60,38,10,.4) !important; }
+.roll-badge i { color: #8a6234 !important; }
 .tilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
 .layer { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
 .layer svg { width: 100%; height: 100%; display: block; }
@@ -160,7 +162,8 @@ body {
 .roll-hint { position: absolute; top: 72px; left: 50%; transform: translateX(-50%);
   font-size: 10px; letter-spacing: .3em; text-indent: .3em; color: var(--parch-dim); opacity: .65; white-space: nowrap; }
 .center-caption { position: absolute; bottom: 98px; left: 50%; transform: translateX(-50%);
-  text-align: center; font-size: 10px; letter-spacing: .42em; text-indent: .42em; color: var(--brass); opacity: .75; white-space: nowrap; }
+  text-align: center; font-size: 10px; letter-spacing: .42em; text-indent: .42em; color: #6b4a22; opacity: .85; white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255,246,224,.6); }
 
 /* ---------- 右列：工具阵（小方签 2x4） ---------- */
 .grid9 { grid-area: right; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
@@ -303,7 +306,7 @@ body {
     <!-- D20 真 3D 线框：固定视口中心，不随地图动 -->
     <div class="die-dock">
       <svg id="d20layer" viewBox="0 0 160 160" fill="none">
-        <circle cx="80" cy="80" r="52" fill="#c9a25a" fill-opacity=".08"/>
+        <circle cx="80" cy="80" r="52" fill="#6b4a22" fill-opacity=".07"/>
         <g id="d20Faces"></g>
         <g id="d20Edges"></g>
       </svg>
@@ -413,10 +416,10 @@ body {
   var facesG = document.getElementById('d20Faces'), edgesG = document.getElementById('d20Edges');
   var faceEls = FACES.map(function () {
     var p = document.createElementNS(NS, 'polygon');
-    p.setAttribute('fill', '#c9a25a'); facesG.appendChild(p); return p; });
+    p.setAttribute('fill', '#4a3018'); facesG.appendChild(p); return p; });
   var edgeEls = EDGES.map(function () {
     var l = document.createElementNS(NS, 'line');
-    l.setAttribute('stroke', '#e6c37c'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
+    l.setAttribute('stroke', '#3a2a13'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
 
   var R = 30, D = 3.4, CX = 80, CY = 80, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
   var PX = [], PY = [], PZ = [];
@@ -467,14 +470,14 @@ body {
   }
   loop();
 
-  /* ---------- 地图缩放 / 平移（像素空间） ---------- */
+  /* ---------- 地图缩放 / 平移（像素空间，事件挂整区，骰子区也能拖动） ---------- */
   var mapView = document.getElementById('mapView');
   var centerEl = mapView.parentElement.parentElement;
   var view = { k: 1, x: 0, y: 0 }, panned = false;
   function applyView() {
     mapView.style.transform = 'translate(' + view.x + 'px,' + view.y + 'px) scale(' + view.k + ')';
   }
-  mapView.addEventListener('wheel', function (e) {
+  centerEl.addEventListener('wheel', function (e) {
     e.preventDefault();
     var old = view.k, k = Math.max(1, Math.min(3.5, old * (e.deltaY > 0 ? 1 / 1.15 : 1.15)));
     var r = centerEl.getBoundingClientRect();
@@ -491,19 +494,19 @@ body {
     var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (Math.abs(dx) + Math.abs(dy) > 6) {
       drag.moved = true; panned = true;
-      mapView.classList.add('panning');
+      centerEl.classList.add('panning');
       view.x = Math.max(-600, Math.min(600, drag.vx + dx));
       view.y = Math.max(-600, Math.min(600, drag.vy + dy));
       applyView();
     }
   }
   function onDragEnd() {
-    drag = null; mapView.classList.remove('panning');
+    drag = null; centerEl.classList.remove('panning');
     window.removeEventListener('pointermove', onDragMove);
     window.removeEventListener('pointerup', onDragEnd);
     setTimeout(function () { panned = false; }, 0);
   }
-  mapView.addEventListener('pointerdown', function (e) {
+  centerEl.addEventListener('pointerdown', function (e) {
     drag = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y, moved: false };
     window.addEventListener('pointermove', onDragMove);
     window.addEventListener('pointerup', onDragEnd);
