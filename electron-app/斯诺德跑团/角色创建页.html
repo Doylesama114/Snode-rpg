@@ -2734,7 +2734,7 @@ function showPersonalityPicker(bg){
   var _requiredBgChoice={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain",恶棍:"crime",隐士:"seclusion",士兵:"militaryRole",外乡人:"foreignOrigin",驯兽师:"companion"}[bg.name]||"";
   var skipBtn=document.createElement("button");
   skipBtn.textContent="跳过";
-  skipBtn.onclick=function(){
+  skipBtn.onclick=function(){/* __bgClearAll */ try{var _BGO={侍僧:["deity"],侦探:["contacts"],骗子:["scamType"],职业杀手:["missionChannel"],教授:["academicDomain"],恶棍:["crime"],隐士:["seclusion"],士兵:["militaryRole"],外乡人:["foreignOrigin"],驯兽师:["companion"],运动员:["sportPreference"]};for(var _b in _BGO){for(var _i=0;_i<_BGO[_b].length;_i++){var _f=_BGO[_b][_i];if(CHAR[_f]!==undefined){try{delete CHAR[_f];}catch(e){CHAR[_f]="";}}}}}catch(e){}
     if(_requiredBgChoice&&!CHAR[_requiredBgChoice]){SD_alert("该背景必须完成对应的特殊选择");return;}
     if(window._persOverlay)window._persOverlay.remove();
   };
@@ -2772,7 +2772,15 @@ function confirmPersonalityPicker(){
       var v=s.value==="__custom__"?(ci?ci.value:""):s.value;
       if(v&&v!=="__custom__")pp.push(v);
     }
-    CHAR[k]=pp.join("；")||CHAR[k]||"";
+    /* __bgClearOthers：切换背景时清空其它背景的专属字段（修复"专职"等残留；不影响同背景重选） */
+(function(){
+  var BG_OWN={侍僧:["deity"],侦探:["contacts"],骗子:["scamType"],职业杀手:["missionChannel"],教授:["academicDomain"],恶棍:["crime"],隐士:["seclusion"],士兵:["militaryRole"],外乡人:["foreignOrigin"],驯兽师:["companion"],运动员:["sportPreference"]};
+  var ALL=[],b,i,j;for(b in BG_OWN){for(i=0;i<BG_OWN[b].length;i++)ALL.push(BG_OWN[b][i]);}
+  var cur="";try{cur=(typeof bgName!=="undefined"&&bgName)?bgName:(CHAR.bgName||"");}catch(e){cur=CHAR.bgName||"";}
+  var keep=BG_OWN[cur]||[];
+  for(j=0;j<ALL.length;j++){if(keep.indexOf(ALL[j])<0&&CHAR[ALL[j]]!==undefined){try{delete CHAR[ALL[j]];}catch(e){CHAR[ALL[j]]="";}}}
+})();
+CHAR[k]=pp.join("；")||CHAR[k]||"";
   }
   var _req={侍僧:"deity",侦探:"contacts",骗子:"scamType",职业杀手:"missionChannel",教授:"academicDomain",恶棍:"crime",隐士:"seclusion",士兵:"militaryRole",外乡人:"foreignOrigin",驯兽师:"companion"}[CHAR.bgName]||"";
   if(_req&&!CHAR[_req]){SD_alert("请完成该背景的强制特殊选择");return;}

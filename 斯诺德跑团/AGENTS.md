@@ -1,91 +1,75 @@
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
-**Generated:** 2026-07-29
-**Module:** Character creation, sheet rendering, save management, xlsx export
-**Version:** v1.0.7146
+**版本：v1.0.8024** ｜ 部分内容已于本轮更新（世界观 46 章 / 80 目录跳转点 / 移动端向导修复）
 
 ## OVERVIEW
-独立 RPG 角色管理系统。纯前端（HTML+JS+CSS），localStorage 持久化，零外部依赖。14 职业、8 属性、装备槽位、天赋树、技能学习、xlsx 导入导出。
+纯前端（HTML + JS + CSS）TRPG 工具集，**零构建步骤**，localStorage 持久化；Electron 桌面壳 + Android WebView 移动端；同时部署在 GitHub Pages 与阿里云 OSS 镜像。
+核心模块：**角色系统**（建卡 / 面板 / 存档 / xlsx 导入导出）、**职业技能树**（20 基础职业 + 19 条进阶途径）、**帮助**（规则手册 + 世界观架构）、**斯诺德对决**（卡牌对战，独立子站）。
 
-## STRUCTURE
+## STRUCTURE（关键文件）
 ```
 斯诺德跑团/
-├── 角色面板.html      # 薄壳加载器 (115行) — <link> + <script src> only
-├── panel.css           # 全部样式 (290行)
-├── panel_data.js       # 全量数据 (~1160行) — REF_CLASSES/REF_RACES/SKILL_DATA...
-├── panel_engine.js     # 纯引擎 (~6430行) — 126函数 + xlsx导出 + save/load
-├── 导出立绘.js          # OOXML portrait embedding
-├── tests.html          # 运行时测试 (46断言) — 加载 data + engine 后跑
-├── verify.html         # 验证总控 — 自动检测所有数据定义/函数存在
-├── 启动台.html          # 统一入口 (→ 角色系统 / 职业技能 / 帮助)
-├── 主页.html            # 角色管理主页 (选择/创建/上传)
-├── 角色创建页.html       # 多步骤向导 (种族→职业→属性→装备→导出)
-├── 上传角色.html         # xlsx 解析导入 + SKILL_LOOKUP模糊匹配 + 阶位检测
-├── 角色选择页.html       # localStorage char_* 扫描列表
-├── 角色存档页.html       # 每角色3存档位
-└── 帮助.html            # 规则文档 (9章节)
+  启动台.html            统一入口（卡片由 JS 生成）
+  主页.html              角色管理薄壳（选择 / 创建 / 上传）
+  角色创建页.html         7 步建卡向导（职业 → 起始特性 → 种族 → 属性 → 熟练项 → 背景 → 装备）
+  角色选择页.html / 角色存档页.html
+  角色面板.html           薄壳：panel.css + 数据与引擎
+  help.html              规则手册 + 世界观架构（世界观 46 章，含 4 张地图）
+  设置.html / 资料库.html / 物资大全.html
+  panel_data.js          数据（REF_CLASSES / REF_RACES / SKILL_DATA / REF_SUBCLASS_REQS…）
+  panel_engine.js        引擎（126+ 函数、xlsx 导出、存档读写）
+  导出立绘.js             OOXML 立绘嵌入
+  guild-ui.js/.css        ★ 全站共享 UI 层（导航 / 皮肤 / 返回键 / 表格居中 / FAB 避让）
+  onboard.js + onboard_steps.js   ★ 新手向导引擎与步骤文案
+  world-toc.js            ★ 帮助页世界观两级目录（运行时按内容生成）
+  ui_dialog.js / snd.js / shortcuts.js / bug-report.js
+职业页/                   职业技能树子站（common.js / filter-panel.js / filter.js / common_tooltip.js）
+advisor/                  AI 顾问知识库（chargen / skills / combos / lore / entities）
+scripts/                  数据构建与校验脚本（verify_*.py / build-*.mjs）
+electron-app/             桌面壳（★ 是镜像：改根目录后同步，勿直接改）
 ```
 
-## LOAD ORDER (CRITICAL)
+## LOAD ORDER（CRITICAL）
 ```
 items_data.js → 导出立绘.js → panel_data.js → panel_engine.js
-     ↓              ↓              ↓               ↓
-  SKILL_DATA    injectPortrait   REF_* + data    All 126 functions
 ```
-**脚本必须在 `</body>` 之前加载** — `render()` 需要完整 DOM。
+脚本必须放在 </body> 之前（render() 需要完整 DOM）；共享层 guild-ui.js 最后注入。
+⚠ 校验脚本（verify_panel_data_sync.py 等）用**裸 JS 上下文**解析 panel_data.js：文件顶层不得直接调用浏览器 API（setTimeout / document），必须加 typeof 守卫。
 
-## WHERE TO LOOK
-| Task | File | Line/Area |
-|------|------|-----------|
-| HP计算 | panel_engine.js | `function calcTotalHP` (~line 1268) |
-| FP计算 | panel_engine.js | `function calcTotalFP` (~line 1311) |
-| 装备槽位规则 | panel_engine.js | `function canPlaceInSlot` (~line 2163) |
-| 渲染主函数 | panel_engine.js | `function render()` (~line 3745) |
-| 技能学习 | panel_engine.js | `function learnSkill()` (~line 5000) |
-| xlsx导出 | panel_engine.js | `exportXlsxFromState` (~line 6300) |
-| 存档导入导出 | panel_engine.js | `exportAllSaves()` / `importSaves()` (末尾) |
-| 职业定义数据 | panel_data.js | `REF_CLASSES = JSON.parse(...)` (line 1) |
-| 种族数据 | panel_data.js | `REF_RACES = JSON.parse(...)` (line 1) |
-| 升级表 | panel_data.js | `LEVEL_TABLE = {...}` |
-| 特殊专长 | panel_data.js | `SPECIAL_FEATS = {...}` |
+## 关键机制
+| 机制 | 位置 | 说明 |
+| --- | --- | --- |
+| 面板切换互斥 | help.html setView() | #help-pane-rules / #help-pane-world，隐藏用 .help-pane-hidden |
+| 世界观插图按需加载 | help.html 注入脚本 | 191 张 JPEG 用 data-src + 透明占位，切到世界观时 __worldImgHydrate() 注入（首屏 24.6MB → 189KB） |
+| 世界观两级目录 | world-toc.js | 只追加不覆盖原目录（保住朗读等控件）；标签剔除「朗读」文字但保留元素节点 |
+| 新手向导 | onboard.js | 启动台 5 步 / 建卡 3 步 / 空状态 1 步；遮罩 pointer-events:none（不挡按钮）；气泡按真实矩形夹取到视口内；三级存储降级；看过后不再弹（设置页可重看） |
+| 表格居中规范 | guild-ui.css | .wrap table + 全站 body.gui-page th/td 水平与垂直居中；.tl 豁免 |
+| 职业页懒渲染 | 职业页/*.html | 技能详情放在 template.skill-body；filter-panel.js 的 scanPage() 首屏遍历全部卡片（性能热点） |
 
 ## CONVENTIONS
-- 函数命名: camelCase (`calcTotalHP`, `canPlaceInSlot`)
-- 全局变量: `var` (非 const/let)，兼容旧浏览器
-- 中文属性名: `state.attrs["力量"]` 等
-- 装备容器: `state.containerItems["背包"] = "已解锁"` / `""`
-- SP 技能点: 颜色名映射 (`"红色": "#FF0000"`)
-- 数据声明: `JSON.parse('...')` 或内联 JS 对象字面量
+- 零构建：直接改 HTML/JS/CSS，版本号以 ?v= 做缓存失效
+- 全局变量用 var；函数 camelCase；中文属性名 state.attrs["力量"]
+- **禁改超大单行文件**（panel_data.js 等）——用脚本改；**禁 PowerShell 改中文文件内容**（会破坏编码）
+- electron-app/ 与根目录同名文件必须同步
+- 发版：node bump-version.js <版本> "<a;b;c>" → node verify_all.mjs → tag → CI → OSS/移动端核验
+
+## TESTS / 验证
+```
+node verify_all.mjs                              # 全量门禁（63 页面/脚本 + 890 断言）
+node verify_perf.mjs                             # 性能基线（DCL/体积/资源/DOM）
+node verify_table_center.mjs / verify_rules_layout.mjs / verify_mobile_help.mjs
+python -X utf8 scripts/verify_panel_data_sync.py # 三数据源一致性
+python -X utf8 scripts/verify_strategist_sync.py # 谋士/职业数据同步
+```
+浮层类改动（向导 / 弹窗）必须同时跑 360 / 390 / 1440 三视口 + Electron 真机。
 
 ## GOTCHAS
-1. **`calcTotalHP`: con modifier 加了两次** — base + `(ml-1)` 各一次
-2. **`calcTotalFP`: `ka` 参数传入但不使用** — 仅用 `kv` 值
-3. **背景 `hp_bonus` 是字符串** — `"+1"` 需 `parseInt`
-4. **法师技能槽翻倍** — `calcSkillSlots` 对 `level > 1` 的法师 ×2
-5. **SKILL_DATA vs JSON 文件结构不同** — JSON: `{id, name, skills:[]}`, SKILL_DATA: `{"职业名": [...]}`
-6. **`render()` 中 7 个嵌套函数已提升** — `getArmorAC`, `getItemWeight`, `parseWeight`, `resolveWeight`, `isTierUnlocked`, `getTierUnlockCost`, `getTierMinLevel` 均为模块顶层
+1. Electron 下 location.href 会被主进程拦截 → 导航用**点击**；取文件名用 decodeURIComponent(location.pathname.split("/").pop())
+2. 帮助页 help-pane-hidden 依赖 CSS 类，**类未定义等于没隐藏**（曾出过 bug）
+3. 职业页 filter-panel.js 首屏 scanPage() 遍历全部技能卡 → 法师页约 1s 长任务（延迟该调用会让筛选面板暂时为空，需谨慎）
+4. 拆大文件必须**枚举每个全局量的精确边界**：曾误把 SKILL_DATA 移出 panel_data.js → 触发 27 项门禁错误
+5. 发版流水线「Upload mobile packages and APK」「Sync release assets to Aliyun OSS」失败时，**先查阿里云 OSS 账号是否欠费 / 密钥是否有效**（曾因欠费导致 8020–8022 三版镜像失败）
+6. OSS 上的 latest.yml / mobile/version.json 由 mirror-oss job 维护：该 job 失败 → **App 自动更新会停在旧版本**
 
-## ANTI-PATTERNS
-- ❌ 不要把脚本放在 `<head>` — DOM 未就绪时 `render()` 会 crash
-- ❌ 不要用 PowerShell 操作文件内容 — UTF-8 中文会被破坏
-- ❌ 不要用 AI Agent 的 `edit` 工具操作超大单行 — JSON.parse 内容可能损坏
-- ❌ 不要改 `state` 对象的初始化顺序 — 依赖链不确定
-
-## TESTS
-```
-node verify_all.mjs    # Playwright 全量验证 (40页面 + 46断言)
-node verify.mjs        # HTTP 版快速验证
-浏览器打开 tests.html   # 手动跑测试
-```
-
-## GIT
-```
-05bd932  v1.0.542: 修复NSIS静默安装(/S处理) + GitHub Pages部署(action方式)
-15ceed2  v1.0.541: 修复静默安装 quitAndInstall(true)
-323e431  v1.0.540: 修复更新日志同步 + GitHub Pages部署
-ee5d862  v1.0.539: 安装可选目录 + 更新静默 + Cloudflare Pages镜像
-b0d148d  第四波：Playwright验证环境
-f37e670  第三波：数据提取 + 核心测试
-5c7d15e  第二波：拆分为4文件 + 导入导出
-6fbb889  初始提交
-```
+## 发布产物（发布后必核五项）
+① Release exe ② Release APK ③ latest.yml 的 size 与 exe 精确一致 ④ OSS exe HTTP 200 ⑤ 移动端 mobile/version.json = 新版本
