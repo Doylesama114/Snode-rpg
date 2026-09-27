@@ -302,8 +302,10 @@ jobs:
           set -euo pipefail
           VERSION="${VERSION_TAG#v}"
           # OSS 禁止默认域名公开分发 .apk，APK 改走 GitHub Release
-          ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read
-          ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read
+          ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read \
+            || echo "::warning::core 包上传失败，继续后续发布"
+          ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read \
+            || echo "::warning::poker 包上传失败，继续后续发布"
 
           # 获取或创建 GitHub Release（build job 可能仍在构建 exe）
           REL_JSON=$(curl -s -H "Authorization: token $GH_TOKEN2" \

@@ -78,13 +78,19 @@ body {
 .bottombar { background: linear-gradient(0deg, rgba(18,14,8,.78), rgba(18,14,8,0)); border-top: none; }
 .maptilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
 .mapview { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 0 0; }
-/* 负片烫印：反相→灰阶→暖金；滤色混合使暗部消融入木，无矩形边界 */
-.starmap { position: relative; width: min(100vh, 960px); aspect-ratio: 1/1; }
-.starmap-img { width: 100%; height: 100%; display: block; mix-blend-mode: screen;
-  filter: invert(1) grayscale(1) sepia(.85) saturate(2.2) brightness(.52) contrast(1.25);
-  opacity: .85; }
-/* 王都标记（对应原图君冠城相对位置） */
-.capital-mark { position: absolute; left: 49.4%; top: 48.5%; transform: translate(-50%,-50%); pointer-events: none; }
+/* 负片烫印：反相→灰阶→暖金；滤色混合使暗部消融入木，圆形取景 + 长坡淡出 */
+.starmap { position: relative; width: min(100vh, 960px); aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; }
+/* 以雷恩王国为中心放大取景（裁掉过远的外围）；淡出长坡，边缘毫不突兀 */
+.starmap-img { position: absolute; width: 147.6%; height: 147.6%; left: -25.58%; top: -6.98%; display: block; mix-blend-mode: screen;
+  filter: invert(1) grayscale(1) sepia(.85) saturate(2.2) brightness(.68) contrast(1.15);
+  opacity: .95;
+  -webkit-mask-image: radial-gradient(circle at 51% 42%, #000 46%, rgba(0,0,0,.55) 66%, transparent 88%);
+  mask-image: radial-gradient(circle at 51% 42%, #000 46%, rgba(0,0,0,.55) 66%, transparent 88%); }
+/* 取景口细铜环（弱化圆的"切口"感） */
+.starmap::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(201,162,90,.18), inset 0 0 60px rgba(201,162,90,.08); }
+/* 王都标记（对应原图君冠城在取景窗内的相对位置） */
+.capital-mark { position: absolute; left: 47.3%; top: 64.5%; transform: translate(-50%,-50%); pointer-events: none; }
 .cm-star { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
   color: #ff8a5c; font-size: 16px; text-shadow: 0 0 10px rgba(255,130,80,.95); }
 .cm-ring { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px;
@@ -413,6 +419,15 @@ body {
   function applyView() {
     mapView.style.transform = 'translate(' + view.x + 'px,' + view.y + 'px) scale(' + view.k + ')';
   }
+  function clampView() {
+    /* 地图中心不许偏离视口中心超过 0.30×当前图幅 —— 永远看不到图外 */
+    var s = document.querySelector('.starmap').offsetWidth * view.k;
+    var r = centerEl.getBoundingClientRect();
+    var L = 0.26 * s;
+    var bx = (1 - view.k) * r.width / 2, by = (1 - view.k) * r.height / 2;
+    view.x = Math.max(bx - L, Math.min(bx + L, view.x));
+    view.y = Math.max(by - L, Math.min(by + L, view.y));
+  }
   centerEl.addEventListener('wheel', function (e) {
     e.preventDefault();
     var old = view.k, k = Math.max(1, Math.min(3.5, old * (e.deltaY > 0 ? 1 / 1.15 : 1.15)));
@@ -422,6 +437,7 @@ body {
     view.y = my - (my - view.y) * (k / old);
     view.k = k;
     if (k === 1) { view.x = 0; view.y = 0; } /* 缩到最小自动回中 */
+    clampView();
     applyView();
   }, { passive: false });
   var drag = null;
@@ -431,8 +447,9 @@ body {
     if (Math.abs(dx) + Math.abs(dy) > 6) {
       drag.moved = true; panned = true;
       centerEl.classList.add('panning');
-      view.x = Math.max(-600, Math.min(600, drag.vx + dx));
-      view.y = Math.max(-600, Math.min(600, drag.vy + dy));
+      view.x = drag.vx + dx;
+      view.y = drag.vy + dy;
+      clampView();
       applyView();
     }
   }

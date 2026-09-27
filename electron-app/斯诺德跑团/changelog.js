@@ -2,6 +2,24 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8022',
+    date: '2026-09-27',
+    changes: [
+      '修复发版流水线：Android 步骤的 OSS 包上传改为失败告警不中断（避免 dist_mobile 缺失导致整步失败、APK 无法上传）；内容版含世界观 46 章 / 80 跳转点'
+    ]
+  },
+
+
+  {
+    version: '1.0.8022',
+    date: '2026-09-27',
+    changes: [
+      '修复发版流水线：Android 上传步骤改为幂等（Release 已存在则跳过创建），解决 v1.0.8020/8021 的 422 already_exists 级联失败；世界观内容已在 8021 补齐（46 章 / 80 跳转点）'
+    ]
+  },
+
+
+  {
     version: '1.0.8021',
     date: '2026-09-27',
     changes: [
