@@ -2,6 +2,11 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, webContents } = require('elec
 const path = require('path');
 const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
+const { startChargenCliServer } = require('./chargen-cli-server');
+if (process.env.SNODE_CLI_TEST_USER_DATA) {
+  require('fs').mkdirSync(process.env.SNODE_CLI_TEST_USER_DATA, { recursive: true });
+  app.setPath('userData', process.env.SNODE_CLI_TEST_USER_DATA);
+}
 bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
 const mirrorConfig = require('./update-mirror-config');
@@ -827,6 +832,7 @@ function startMemoryWatchdog() {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
+    show: process.env.SNODE_CLI_TEST !== '1',
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
     title: '斯诺德跑团',
     icon: path.join(__dirname, '斯诺德跑团', 'favicon.ico'),
@@ -981,6 +987,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
+  startChargenCliServer(mainWindow);
   startMemoryWatchdog();
 
   // 启动后延迟检查更新（GitHub → 失败则自动国内镜像）
