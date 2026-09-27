@@ -79,16 +79,13 @@ body {
 .maptilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
 .mapview { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 0 0; }
 /* 负片烫印：反相→灰阶→暖金；滤色混合使暗部消融入木，圆形取景 + 长坡淡出 */
-.starmap { position: relative; width: min(100vh, 960px); aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; }
-/* 以雷恩王国为中心放大取景（裁掉过远的外围）；淡出长坡，边缘毫不突兀 */
+.starmap { position: relative; width: min(100vh, 960px); aspect-ratio: 1/1; border-radius: 50%;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 50%, rgba(0,0,0,.45) 74%, transparent 97%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 50%, rgba(0,0,0,.45) 74%, transparent 97%); }
+/* 以雷恩王国为中心放大取景（裁掉过远的外围） */
 .starmap-img { position: absolute; width: 147.6%; height: 147.6%; left: -25.58%; top: -6.98%; display: block; mix-blend-mode: screen;
   filter: invert(1) grayscale(1) sepia(.85) saturate(2.2) brightness(.68) contrast(1.15);
-  opacity: .95;
-  -webkit-mask-image: radial-gradient(circle at 51% 42%, #000 46%, rgba(0,0,0,.55) 66%, transparent 88%);
-  mask-image: radial-gradient(circle at 51% 42%, #000 46%, rgba(0,0,0,.55) 66%, transparent 88%); }
-/* 取景口细铜环（弱化圆的"切口"感） */
-.starmap::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(201,162,90,.18), inset 0 0 60px rgba(201,162,90,.08); }
+  opacity: .95; }
 /* 王都标记（对应原图君冠城在取景窗内的相对位置） */
 .capital-mark { position: absolute; left: 47.3%; top: 64.5%; transform: translate(-50%,-50%); pointer-events: none; }
 .cm-star { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
@@ -344,7 +341,7 @@ body {
   });
   document.addEventListener('mouseleave', function () { tx = 0; ty = 0; });
 
-  /* ---------- 真 3D 二十面体 ---------- */
+  /* ---------- 真 3D 二十面体（精修：面数/铜珠/双层描边/悬浮投影） ---------- */
   var PHI = (1 + Math.sqrt(5)) / 2, NORM = Math.sqrt(1 + PHI * PHI);
   var V = [[0,1,PHI],[0,1,-PHI],[0,-1,PHI],[0,-1,-PHI],[1,PHI,0],[1,-PHI,0],[-1,PHI,0],[-1,-PHI,0],[PHI,0,1],[-PHI,0,1],[PHI,0,-1],[-PHI,0,-1]]
     .map(function (v) { return [v[0] / NORM, v[1] / NORM, v[2] / NORM]; });
@@ -354,59 +351,131 @@ body {
   for (i = 0; i < 12; i++) for (j = i + 1; j < 12; j++) for (k = j + 1; k < 12; k++)
     if (d2(V[i],V[j]) < 1.3 && d2(V[j],V[k]) < 1.3 && d2(V[i],V[k]) < 1.3) FACES.push([i, j, k]);
 
+  /* 面心 + 对面和为 21 的真实编号 */
+  var FC = FACES.map(function (f) {
+    var c = [0, 0, 0];
+    f.forEach(function (vi) { c[0] += V[vi][0]; c[1] += V[vi][1]; c[2] += V[vi][2]; });
+    var l = Math.hypot(c[0], c[1], c[2]); return [c[0]/l, c[1]/l, c[2]/l]; });
+  var FNUM = new Array(FACES.length).fill(0), num = 1;
+  for (i = 0; i < FACES.length; i++) {
+    if (FNUM[i]) continue;
+    FNUM[i] = num;
+    for (j = 0; j < FACES.length; j++) {
+      if (FNUM[j] || j === i) continue;
+      if (FC[i][0]*FC[j][0] + FC[i][1]*FC[j][1] + FC[i][2]*FC[j][2] < -0.98) { FNUM[j] = 21 - num; break; }
+    }
+    num++;
+  }
+
   var NS = 'http://www.w3.org/2000/svg';
   var facesG = document.getElementById('d20Faces'), edgesG = document.getElementById('d20Edges');
+  var dieSvg = facesG.parentNode;
+  /* 层序：光晕圆 → 投影 → 面 → 边发光 → 边芯 → 顶点铜珠 → 面数 */
+  var shadow = document.createElementNS(NS, 'ellipse');
+  shadow.setAttribute('cx', '80'); shadow.setAttribute('cy', '128'); shadow.setAttribute('rx', '26'); shadow.setAttribute('ry', '7');
+  shadow.setAttribute('fill', '#000'); shadow.setAttribute('opacity', '.32');
+  shadow.style.filter = 'blur(4px)';
+  dieSvg.insertBefore(shadow, facesG);
+  var glowG = document.createElementNS(NS, 'g'); dieSvg.insertBefore(glowG, edgesG);
+  var vertsG = document.createElementNS(NS, 'g'); dieSvg.appendChild(vertsG);
+  var numsG = document.createElementNS(NS, 'g'); dieSvg.appendChild(numsG);
+
   var faceEls = FACES.map(function () {
     var p = document.createElementNS(NS, 'polygon');
     p.setAttribute('fill', '#c9a25a'); facesG.appendChild(p); return p; });
+  var glowEls = EDGES.map(function () {
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('stroke', '#e6c37c'); l.setAttribute('stroke-linecap', 'round'); glowG.appendChild(l); return l; });
   var edgeEls = EDGES.map(function () {
     var l = document.createElementNS(NS, 'line');
-    l.setAttribute('stroke', '#e6c37c'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
+    l.setAttribute('stroke', '#f0d49a'); l.setAttribute('stroke-linecap', 'round'); edgesG.appendChild(l); return l; });
+  var vertEls = V.map(function () {
+    var c = document.createElementNS(NS, 'circle');
+    c.setAttribute('fill', '#f0d49a'); vertsG.appendChild(c); return c; });
+  var numEls = FACES.map(function (f, fi) {
+    var t = document.createElementNS(NS, 'text');
+    t.textContent = FNUM[fi];
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+    t.setAttribute('fill', '#f0d49a'); t.setAttribute('font-family', 'Georgia,serif'); t.setAttribute('font-weight', '700');
+    numsG.appendChild(t); return t; });
 
-  var R = 30, D = 3.4, CX = 80, CY = 80, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
+  var R = 34, D = 3.4, CX = 80, CY = 80, ax = -0.35, ay = 0.6, velX = 0, velY = 0;
   var PX = [], PY = [], PZ = [];
-  function renderDie() {
+  function renderDie(bob) {
+    bob = bob || 0;
+    var cy0 = CY + bob;
+    shadow.setAttribute('rx', (26 - bob * 1.6).toFixed(1));
+    shadow.setAttribute('opacity', (0.32 - bob * 0.03).toFixed(3));
     var ca = Math.cos(ay), sa = Math.sin(ay), cb = Math.cos(ax), sb = Math.sin(ax);
     for (i = 0; i < 12; i++) {
       var x = V[i][0], y = V[i][1], z = V[i][2];
       var x1 = x * ca + z * sa, z1 = -x * sa + z * ca;
       var y1 = y * cb - z1 * sb, z2 = y * sb + z1 * cb;
       var s = D / (D - z2);
-      PX[i] = CX + x1 * s * R; PY[i] = CY - y1 * s * R; PZ[i] = z2;
+      PX[i] = CX + x1 * s * R; PY[i] = cy0 - y1 * s * R; PZ[i] = z2;
     }
     var order = FACES.map(function (f, idx) { return idx; }).sort(function (a, b) {
       var za = (PZ[FACES[a][0]] + PZ[FACES[a][1]] + PZ[FACES[a][2]]) / 3;
       var zb = (PZ[FACES[b][0]] + PZ[FACES[b][1]] + PZ[FACES[b][2]]) / 3;
       return za - zb; });
     for (i = 0; i < order.length; i++) {
-      var f = FACES[order[i]], el = faceEls[order[i]];
+      var fi = order[i], f = FACES[fi], el = faceEls[fi];
       var z = (PZ[f[0]] + PZ[f[1]] + PZ[f[2]]) / 3;
       el.setAttribute('points', PX[f[0]] + ',' + PY[f[0]] + ' ' + PX[f[1]] + ',' + PY[f[1]] + ' ' + PX[f[2]] + ',' + PY[f[2]]);
-      if (z < -0.02) { el.setAttribute('fill-opacity', '0'); }          /* 背面剔除 */
-      else { el.setAttribute('fill-opacity', (0.30 + z * 0.25).toFixed(3)); } /* 前面半实心遮挡 */
-      facesG.appendChild(el); /* 深度排序：重挂到正确层序 */
+      if (z < -0.02) { el.setAttribute('fill-opacity', '0'); }
+      else { el.setAttribute('fill-opacity', (0.14 + z * 0.16).toFixed(3)); }
+      facesG.appendChild(el);
     }
     for (i = 0; i < EDGES.length; i++) {
-      var e = EDGES[i], l = edgeEls[i];
+      var e = EDGES[i], l = edgeEls[i], gl = glowEls[i];
       var ze = (PZ[e[0]] + PZ[e[1]]) / 2;
-      l.setAttribute('x1', PX[e[0]].toFixed(1)); l.setAttribute('y1', PY[e[0]].toFixed(1));
-      l.setAttribute('x2', PX[e[1]].toFixed(1)); l.setAttribute('y2', PY[e[1]].toFixed(1));
-      if (ze < -0.02) { l.setAttribute('stroke-opacity', '0.07'); l.setAttribute('stroke-width', '1'); }
-      else {
-        l.setAttribute('stroke-opacity', (0.55 + ze * 0.45).toFixed(3));
-        l.setAttribute('stroke-width', (1.2 + ze * 1.4).toFixed(2));
+      var p = [PX[e[0]].toFixed(1), PY[e[0]].toFixed(1), PX[e[1]].toFixed(1), PY[e[1]].toFixed(1)];
+      l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', p[2]); l.setAttribute('y2', p[3]);
+      gl.setAttribute('x1', p[0]); gl.setAttribute('y1', p[1]); gl.setAttribute('x2', p[2]); gl.setAttribute('y2', p[3]);
+      if (ze < -0.02) {
+        l.setAttribute('stroke-opacity', '0.05'); l.setAttribute('stroke-width', '1');
+        gl.setAttribute('stroke-opacity', '0');
+      } else {
+        l.setAttribute('stroke-opacity', (0.6 + ze * 0.4).toFixed(3));
+        l.setAttribute('stroke-width', (1.1 + ze * 1.1).toFixed(2));
+        gl.setAttribute('stroke-opacity', (0.10 + ze * 0.14).toFixed(3));
+        gl.setAttribute('stroke-width', (3.5 + ze * 2.5).toFixed(2));
       }
+    }
+    for (i = 0; i < 12; i++) {
+      var vc = vertEls[i], zv = PZ[i];
+      vc.setAttribute('cx', PX[i].toFixed(1)); vc.setAttribute('cy', PY[i].toFixed(1));
+      if (zv < -0.02) { vc.setAttribute('opacity', '0.05'); }
+      else {
+        vc.setAttribute('opacity', (0.45 + zv * 0.55).toFixed(3));
+        vc.setAttribute('r', (1.1 + zv * 1.3).toFixed(2));
+      }
+    }
+    for (i = 0; i < FACES.length; i++) {
+      var ff = FACES[i], t = numEls[i];
+      var zf = (PZ[ff[0]] + PZ[ff[1]] + PZ[ff[2]]) / 3;
+      if (zf > 0.10) {
+        var gx = (PX[ff[0]] + PX[ff[1]] + PX[ff[2]]) / 3, gy = (PY[ff[0]] + PY[ff[1]] + PY[ff[2]]) / 3;
+        var ang = Math.atan2(PY[ff[1]] - PY[ff[0]], PX[ff[1]] - PX[ff[0]]) * 180 / Math.PI;
+        var sc = Math.max(.55, D / (D - zf) * .82);
+        t.setAttribute('transform', 'translate(' + gx.toFixed(1) + ' ' + gy.toFixed(1) + ') rotate(' + ang.toFixed(1) + ') scale(' + sc.toFixed(2) + ')');
+        t.setAttribute('font-size', '10.5');
+        t.setAttribute('opacity', Math.min(1, (zf - 0.10) * 3.5).toFixed(2));
+      } else { t.setAttribute('opacity', '0'); }
     }
   }
 
   /* ---------- 主循环 ---------- */
+  var bobT = 0;
   function loop() {
     if (!window.__freezeTilt) {
       cx += (tx - cx) * .06; cy += (ty - cy) * .06;
       tilt.style.transform = 'rotateX(' + cx.toFixed(2) + 'deg) rotateY(' + cy.toFixed(2) + 'deg)';
+      bobT += .02;
+      var bob = Math.sin(bobT) * 2.2;   /* 悬浮呼吸 */
       if (rolling) { ay += velY; ax += velX; velY *= .962; velX *= .962; }
       else { ay += .006; ax = -0.35 + Math.sin(ay * .5) * .18; }
-      renderDie();
+      renderDie(bob);
     }
     requestAnimationFrame(loop);
   }

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8023',
+    date: '2026-09-27',
+    changes: [
+      '重新发布：阿里云欠费已解决，重跑 OSS 镜像与 Android 上传；含世界观 46 章 / 80 目录跳转点 / 新手向导 / 规则手册插图按需加载'
+    ]
+  },
+
+
+  {
     version: '1.0.8022',
     date: '2026-09-27',
     changes: [
