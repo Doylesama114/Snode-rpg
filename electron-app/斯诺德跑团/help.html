@@ -2771,75 +2771,216 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
   }, false);
 })();
 </script>
+
 <style>
-/* help-mobile-v2：中等宽表手机端卡片化（免横滑）；超宽矩阵保留首列吸附+横滑；回到顶部浮标 */
+/* help-mobile-v3：卡片宽度自适应 + 只有真交叉轴矩阵才保留横滑 + 矩阵行选择模式 */
 @media (max-width: 860px) {
-  table.cardstack { border: 0 !important; background: transparent !important; }
+  table.cardstack { width: 100% !important; min-width: 0 !important; table-layout: auto !important; border: 0 !important; background: transparent !important; }
   table.cardstack thead { display: none !important; }
-  table.cardstack tr {
-    display: block; margin-bottom: 8px; padding: 8px 10px;
-    border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8;
-  }
-  table.cardstack td {
-    display: flex; gap: 10px; align-items: flex-start;
-    border: 1px solid transparent !important; padding: 3px 0 !important; text-align: left !important;
-  }
-  table.cardstack td::before {
-    content: attr(data-label); flex: 0 0 32%; max-width: 32%;
-    color: #8a7a5e; font-size: 11.5px; line-height: 1.5; padding-top: 1px;
-  }
-  table.cardstack td:empty { display: none; }
+  table.cardstack tbody, table.cardstack tr { width: 100% !important; box-sizing: border-box; }
+  table.cardstack tr { display: block; margin-bottom: 8px; padding: 8px 10px; border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8; }
+  table.cardstack td { display: flex !important; gap: 10px; align-items: flex-start; width: 100% !important; box-sizing: border-box;
+    border: 1px solid transparent !important; padding: 3px 0 !important; text-align: left !important; }
+  table.cardstack td::before { content: attr(data-label); flex: 0 0 30%; max-width: 30%; color: #8a7a5e; font-size: 11.5px; line-height: 1.5; padding-top: 1px; }
+  table.cardstack td:empty { display: none !important; }
+  .mtx-row { margin: 6px 0 10px; }
+  .mtx-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 6px; }
+  .mtx-chip { flex: none; padding: 6px 11px; font-size: 12.5px; border: 1px solid #d8d2c4; border-radius: 14px; background: #fffdf8; cursor: pointer; }
+  .mtx-chip.on { background: #a46d1f; color: #fff; border-color: #a46d1f; }
+  .mtx-list { border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8; padding: 6px 10px; }
+  .mtx-line { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px dashed #ece7dc; font-size: 13px; }
+  .mtx-line:last-child { border-bottom: 0; }
+  .mtx-line .k { flex: 0 0 34%; color: #6d5942; }
+  .mtx-line .v { flex: 1; color: #2f2317; }
+  .mtx-toggle { display: inline-block; margin: 2px 0 8px; padding: 4px 10px; font-size: 12px; border: 1px solid #c9ab74; border-radius: 6px; background: #f6f4ef; cursor: pointer; }
 }
-#helpToTop {
-  position: fixed; left: 12px; bottom: 16px; z-index: 9998;
-  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
-  border: 1px solid #8a6234; color: #2a1c0a; font-size: 17px; line-height: 1;
-  background: linear-gradient(180deg, #e6c37c, #c39a4a);
-  box-shadow: 0 4px 12px rgba(40,24,6,.4); display: none;
-}
+#helpToTop { position: fixed; left: 12px; bottom: 16px; z-index: 9998; width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  border: 1px solid #8a6234; color: #2a1c0a; font-size: 17px; background: linear-gradient(180deg, #e6c37c, #c39a4a);
+  box-shadow: 0 4px 12px rgba(40,24,6,.4); display: none; }
 #helpToTop.show { display: block; }
 </style>
 <script>
-/* help-mobile-v2：宽表自动分类（中等宽→卡片化；超宽矩阵→保留横滑） + 回到顶部 */
+/* help-mobile-v3：宽表分类（交叉轴矩阵 vs 逐行独立）+ 卡片宽度自适应 + 矩阵行选择 */
 (function () {
-  function markTables() {
+  var BS = String.fromCharCode(92);
+  function isMatrix(tb, cols) {
+    var h = tb.querySelector('thead tr') || tb.querySelector('tr');
+    var first = h && h.children.length ? (h.children[0].textContent || '').trim() : '';
+    if (tb.getAttribute('data-mobile') === 'scroll') return true;
+    if (tb.getAttribute('data-mobile') === 'cards') return false;
+    return cols >= 5 && first.indexOf(BS) >= 0;      /* 首列表头含反斜杠 => 交叉轴矩阵 */
+  }
+  function markCards(tb) {
+    var h = tb.querySelector('thead tr') || tb.querySelector('tr');
+    var ths = h ? h.children : [];
+    var rows = tb.querySelectorAll('tr');
+    for (var r = 0; r < rows.length; r++) {
+      if (rows[r].parentNode && rows[r].parentNode.tagName === 'THEAD') continue;
+      var tds = rows[r].children;
+      for (var c = 0; c < tds.length; c++) {
+        var lab = ths[c] ? (ths[c].textContent || '').trim() : '';
+        if (lab && !tds[c].getAttribute('data-label')) tds[c].setAttribute('data-label', lab);
+      }
+    }
+    tb.classList.add('cardstack');
+  }
+  function buildMatrixUI(tb) {
+    if (tb.__mtxBuilt) return;
+    tb.__mtxBuilt = true;
+    var head = tb.querySelectorAll('tr')[0];
+    var cols = head ? head.children.length : 0;
+    var heads = [].slice.call(head.children).map(function (c) { return (c.textContent || '').trim(); });
+    var rows = [].slice.call(tb.querySelectorAll('tbody tr')).length ? [].slice.call(tb.querySelectorAll('tbody tr')) : [].slice.call(tb.querySelectorAll('tr')).slice(1);
+    var wrap = document.createElement('div');
+    wrap.className = 'mtx-row';
+    var chips = document.createElement('div'); chips.className = 'mtx-chips';
+    var list = document.createElement('div'); list.className = 'mtx-list';
+    var toggle = document.createElement('div'); toggle.className = 'mtx-toggle'; toggle.textContent = '切换矩阵视图（横滑）';
+    function show(idx) {
+      var cs = chips.querySelectorAll('.mtx-chip');
+      for (var i = 0; i < cs.length; i++) cs[i].classList.toggle('on', i === idx);
+      var tr = rows[idx];
+      if (!tr) return;
+      var tds = tr.children;
+      var html = '';
+      for (var c = 1; c < tds.length; c++) {
+        var k = heads[c] || ('第' + c + '列');
+        var v = (tds[c].textContent || '').trim() || '—';
+        html += '<div class="mtx-line"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+      }
+      list.innerHTML = html;
+    }
+    rows.forEach(function (tr, i) {
+      var c = document.createElement('div');
+      c.className = 'mtx-chip';
+      c.textContent = (tr.children[0] ? tr.children[0].textContent : '').trim() || ('行' + (i + 1));
+      c.onclick = function () { show(i); };
+      chips.appendChild(c);
+    });
+    toggle.onclick = function () {
+      var on = wrap.getAttribute('data-matrix') === '1';
+      wrap.setAttribute('data-matrix', on ? '0' : '1');
+      list.style.display = on ? 'block' : 'none';
+      chips.style.display = on ? 'flex' : 'none';
+      toggle.textContent = on ? '切换矩阵视图（横滑）' : '切回行选择（竖读）';
+    };
+    wrap.appendChild(chips); wrap.appendChild(list); wrap.appendChild(toggle);
+    tb.parentNode.insertBefore(wrap, tb);
+    show(0);
+  }
+  function apply() {
     var narrow = window.matchMedia('(max-width: 860px)').matches;
     var tables = document.querySelectorAll('.wrap table, .mc-wrap table');
     for (var i = 0; i < tables.length; i++) {
       var tb = tables[i];
-      var head = tb.querySelector('thead tr') || tb.querySelector('tr');
-      var cols = head ? head.children.length : 0;
-      if (cols >= 5 && cols <= 8) {
-        if (narrow) {
-          var ths = head ? head.children : [];
-          var rows = tb.querySelectorAll('tr');
-          for (var r = 0; r < rows.length; r++) {
-            if (rows[r].parentNode && rows[r].parentNode.tagName === 'THEAD') continue;
-            var tds = rows[r].children;
-            for (var c = 0; c < tds.length; c++) {
-              var lab = ths[c] ? (ths[c].textContent || '').trim() : '';
-              if (lab && !tds[c].getAttribute('data-label')) tds[c].setAttribute('data-label', lab);
-            }
-          }
-          tb.classList.add('cardstack');
-        } else {
-          tb.classList.remove('cardstack');
-        }
+      var h = tb.querySelector('tr');
+      var cols = h ? h.children.length : 0;
+      if (cols < 5) continue;
+      if (narrow && isMatrix(tb, cols)) {
+        tb.classList.remove('cardstack');
+        buildMatrixUI(tb);
+      } else if (narrow) {
+        markCards(tb);
+      } else {
+        tb.classList.remove('cardstack');
       }
     }
   }
-  markTables();
+  apply();
   var lastW = window.innerWidth;
-  window.addEventListener('resize', function () { if (Math.abs(window.innerWidth - lastW) > 40) { lastW = window.innerWidth; markTables(); } });
-  /* 回到顶部 */
+  window.addEventListener('resize', function () { if (Math.abs(window.innerWidth - lastW) > 40) { lastW = window.innerWidth; apply(); } });
   var btn = document.createElement('button');
-  btn.id = 'helpToTop'; btn.type = 'button'; btn.title = '回到顶部'; btn.textContent = '↑';
+  btn.id = 'helpToTop'; btn.type = 'button'; btn.title = '回到顶部'; btn.textContent = String.fromCharCode(8593);
   btn.onclick = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); };
   document.body.appendChild(btn);
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
-  }, { passive: true });
-  window.__helpMobileV2 = true;
+  window.addEventListener('scroll', function () { btn.classList.toggle('show', window.scrollY > 600); }, { passive: true });
+  window.__helpMobileV3 = true;
+})();
+</script>
+<style>
+/* help-mobile-v3b：覆盖导致卡片宽度失控的规则（.wrap table 的 max-content、内联 table-layout、各列 min-width / nowrap） */
+@media (max-width: 860px) {
+  table.cardstack { width: 100% !important; min-width: 0 !important; max-width: 100% !important; table-layout: auto !important; }
+  table.cardstack tbody, table.cardstack tr { width: 100% !important; min-width: 0 !important; max-width: 100% !important; }
+  table.cardstack th, table.cardstack td { min-width: 0 !important; max-width: 100% !important; white-space: normal !important; word-break: break-word; overflow-wrap: anywhere; }
+  table.cardstack td.col-other, table.cardstack th.col-other,
+  table.cardstack td.col-rank, table.cardstack th.col-rank,
+  table.cardstack td.col-gain, table.cardstack th.col-gain,
+  table.cardstack .col-other, table.cardstack .col-rank, table.cardstack .col-gain { min-width: 0 !important; white-space: normal !important; }
+}
+</style>
+<script>
+/* help-mobile-v3c：卡片宽度的最终兜底（内联样式直接覆盖，含内联 table-layout 与按内容收缩的行） */
+(function () {
+  function fix() {
+    if (!window.matchMedia('(max-width: 860px)').matches) return;
+    var tables = document.querySelectorAll('table.cardstack');
+    for (var i = 0; i < tables.length; i++) {
+      var tb = tables[i];
+      tb.style.width = '100%'; tb.style.maxWidth = '100%'; tb.style.minWidth = '0'; tb.style.tableLayout = 'auto';
+      var rows = tb.querySelectorAll('tr');
+      for (var r = 0; r < rows.length; r++) {
+        if (rows[r].parentNode && rows[r].parentNode.tagName === 'THEAD') continue;
+        rows[r].style.width = '100%'; rows[r].style.maxWidth = '100%'; rows[r].style.boxSizing = 'border-box';
+        var tds = rows[r].children;
+        for (var c = 0; c < tds.length; c++) { tds[c].style.minWidth = '0'; tds[c].style.maxWidth = '100%'; tds[c].style.boxSizing = 'border-box'; }
+      }
+    }
+  }
+  fix();
+  setTimeout(fix, 800);
+  window.addEventListener('load', fix);
+  window.__helpMobileV3c = true;
+})();
+</script>
+<style>
+/* help-mobile-v3d：div 卡片（不依赖表格布局，宽度天然 100%） */
+@media (max-width: 860px) {
+  .cardbox { display: block; width: 100%; }
+  .rcard { width: 100%; box-sizing: border-box; margin: 0 0 8px; padding: 8px 10px;
+    border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8; }
+  .rline { display: flex; gap: 10px; align-items: flex-start; padding: 3px 0; }
+  .rline .rk { flex: 0 0 30%; max-width: 30%; color: #8a7a5e; font-size: 11.5px; line-height: 1.5; padding-top: 1px; }
+  .rline .rv { flex: 1; min-width: 0; font-size: 13px; line-height: 1.6; color: #2f2317; word-break: break-word; overflow-wrap: anywhere; }
+}
+</style>
+<script>
+/* help-mobile-v3d：把"逐行独立宽表"用 JS 重建为 div 卡片（绕开匿名表格盒与 table-layout 的干扰） */
+(function () {
+  function rebuild() {
+    if (!window.matchMedia('(max-width: 860px)').matches) return;
+    var tables = document.querySelectorAll('table.cardstack');
+    for (var i = 0; i < tables.length; i++) {
+      var tb = tables[i];
+      if (tb.__cardBox) continue;
+      var head = tb.querySelector('tr');
+      var heads = head ? [].slice.call(head.children).map(function (c) { return (c.textContent || '').trim(); }) : [];
+      var trs = [].slice.call(tb.querySelectorAll('tr'));
+      var box = document.createElement('div'); box.className = 'cardbox';
+      for (var r = 0; r < trs.length; r++) {
+        var tr = trs[r];
+        if (tr === head) continue;
+        if (tr.parentNode && tr.parentNode.tagName === 'THEAD') continue;
+        var card = document.createElement('div'); card.className = 'rcard';
+        var tds = tr.children;
+        for (var c = 0; c < tds.length; c++) {
+          var val = (tds[c].textContent || '').trim();
+          if (!val || val === '-') { if (!val) continue; }
+          var line = document.createElement('div'); line.className = 'rline';
+          var k = document.createElement('span'); k.className = 'rk'; k.textContent = heads[c] || '';
+          var v = document.createElement('span'); v.className = 'rv'; v.textContent = val;
+          line.appendChild(k); line.appendChild(v); card.appendChild(line);
+        }
+        box.appendChild(card);
+      }
+      tb.parentNode.insertBefore(box, tb);
+      tb.style.display = 'none';
+      tb.__cardBox = box;
+    }
+  }
+  rebuild();
+  setTimeout(rebuild, 900);
+  window.__helpMobileV3d = true;
 })();
 </script>
 </body></html>
