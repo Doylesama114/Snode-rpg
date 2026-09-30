@@ -1914,7 +1914,7 @@ function exportTraitsText(state) {
   if (!sport && state.background === "\u8fd0\u52a8\u5458" && state.weapon_specs && state.weapon_specs.length) {
     sport = state.weapon_specs[0]; // 旧档兼容
   }
-  if (state.background === "\u8fd0\u52a8\u5458" && sport) {
+  if (state.background === "\u8fd0\u52a8\u5458" && sport && (!traits || traits.indexOf("\u8fd0\u52a8\u5458\u62e5\u6709\u4e00\u9879\u504f\u597d\u7684\u8fd0\u52a8\u9879\u76ee") >= 0)) {
     if (traits.indexOf(sport) < 0) {
       traits = traits ? (traits + "\uff08\u504f\u597d\uff1a" + sport + "\uff09") : ("\u8fd0\u52a8\u5458\u62e5\u6709\u4e00\u9879\u504f\u597d\u7684\u8fd0\u52a8\u9879\u76ee\uff08" + sport + "\uff09\uff0c\u5728\u8fdb\u884c\u8fd9\u9879\u8fd0\u52a8\u65f6\u5177\u5907\u4e13\u5bb6\u7ea7\u7684\u719f\u7ec3\u5ea6");
     }

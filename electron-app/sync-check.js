@@ -76,11 +76,11 @@ for (const pair of DIR_PAIRS) {
       continue;
     }
 
-    // 检查源文件是否比目标文件新
+    // Git checkout/copy may change mtimes without changing contents.
     const srcStat = fs.statSync(srcFile.fullPath);
     const destStat = fs.statSync(destFile);
-    if (srcStat.mtimeMs > destStat.mtimeMs) {
-      console.error(`❌ 文件不同步: ${pair.dest}/${srcFile.relativePath} —— 源文件已更新，需要重新同步`);
+    if (srcStat.size !== destStat.size || !fs.readFileSync(srcFile.fullPath).equals(fs.readFileSync(destFile))) {
+      console.error(`❌ 文件不同步: ${pair.dest}/${srcFile.relativePath} —— 内容不同，需要重新同步`);
       hasErrors = true;
     }
   }
