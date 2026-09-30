@@ -2965,6 +2965,8 @@ function showBgCantripPicker(bg,callback){
       btn.textContent=c.n+(c.st?" · "+c.st:"");
       btn.onclick=function(){
         var nm=this.getAttribute("data-name");
+var _ct=null;for(var _ti=0;_ti<BG_MAGE_CANTRIPS.length;_ti++){if(BG_MAGE_CANTRIPS[_ti].n===nm){_ct=BG_MAGE_CANTRIPS[_ti];break;}}
+if(CHAR.opposingSchool&&_ct&&_ct.st===CHAR.opposingSchool){SD_alert("该风格已对立，无法学习");return;}
         var idx=CHAR.bgCantrips.indexOf(nm);
         if(idx>=0){CHAR.bgCantrips.splice(idx,1);this.classList.remove("selected");}
         else if(CHAR.bgCantrips.length<2){CHAR.bgCantrips.push(nm);this.classList.add("selected");}
@@ -3155,6 +3157,12 @@ function renderStartFeaturesStep(c) {
   c.innerHTML=h;
 }
 function toggleFeature(el){
+  if (CHAR.className === "法师" && CHAR.opposingSchool) {
+    var _MFS = {"塑能箭":"塑能","闪现术":"咒法","预知梦":"预言","法术护盾":"防护","魔法武器":"附魔","死灵弹":"死灵","次级幻影":"幻术","次级变形术":"变化"};
+    var _picked = (typeof el === "object" && el && el.n) ? el.n : String(el);
+    if (_MFS[_picked] === CHAR.opposingSchool) { SD_alert("该风格已对立，无法学习"); return; }
+  }
+
   var name=el.getAttribute('data-name');
   var maxPick=parseInt(el.getAttribute('data-max'));
   var idx=CHAR.selectedFeatures.indexOf(name);
