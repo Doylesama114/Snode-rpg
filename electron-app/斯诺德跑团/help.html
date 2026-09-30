@@ -2771,4 +2771,75 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
   }, false);
 })();
 </script>
+<style>
+/* help-mobile-v2：中等宽表手机端卡片化（免横滑）；超宽矩阵保留首列吸附+横滑；回到顶部浮标 */
+@media (max-width: 860px) {
+  table.cardstack { border: 0 !important; background: transparent !important; }
+  table.cardstack thead { display: none !important; }
+  table.cardstack tr {
+    display: block; margin-bottom: 8px; padding: 8px 10px;
+    border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8;
+  }
+  table.cardstack td {
+    display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid transparent !important; padding: 3px 0 !important; text-align: left !important;
+  }
+  table.cardstack td::before {
+    content: attr(data-label); flex: 0 0 32%; max-width: 32%;
+    color: #8a7a5e; font-size: 11.5px; line-height: 1.5; padding-top: 1px;
+  }
+  table.cardstack td:empty { display: none; }
+}
+#helpToTop {
+  position: fixed; left: 12px; bottom: 16px; z-index: 9998;
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  border: 1px solid #8a6234; color: #2a1c0a; font-size: 17px; line-height: 1;
+  background: linear-gradient(180deg, #e6c37c, #c39a4a);
+  box-shadow: 0 4px 12px rgba(40,24,6,.4); display: none;
+}
+#helpToTop.show { display: block; }
+</style>
+<script>
+/* help-mobile-v2：宽表自动分类（中等宽→卡片化；超宽矩阵→保留横滑） + 回到顶部 */
+(function () {
+  function markTables() {
+    var narrow = window.matchMedia('(max-width: 860px)').matches;
+    var tables = document.querySelectorAll('.wrap table, .mc-wrap table');
+    for (var i = 0; i < tables.length; i++) {
+      var tb = tables[i];
+      var head = tb.querySelector('thead tr') || tb.querySelector('tr');
+      var cols = head ? head.children.length : 0;
+      if (cols >= 5 && cols <= 8) {
+        if (narrow) {
+          var ths = head ? head.children : [];
+          var rows = tb.querySelectorAll('tr');
+          for (var r = 0; r < rows.length; r++) {
+            if (rows[r].parentNode && rows[r].parentNode.tagName === 'THEAD') continue;
+            var tds = rows[r].children;
+            for (var c = 0; c < tds.length; c++) {
+              var lab = ths[c] ? (ths[c].textContent || '').trim() : '';
+              if (lab && !tds[c].getAttribute('data-label')) tds[c].setAttribute('data-label', lab);
+            }
+          }
+          tb.classList.add('cardstack');
+        } else {
+          tb.classList.remove('cardstack');
+        }
+      }
+    }
+  }
+  markTables();
+  var lastW = window.innerWidth;
+  window.addEventListener('resize', function () { if (Math.abs(window.innerWidth - lastW) > 40) { lastW = window.innerWidth; markTables(); } });
+  /* 回到顶部 */
+  var btn = document.createElement('button');
+  btn.id = 'helpToTop'; btn.type = 'button'; btn.title = '回到顶部'; btn.textContent = '↑';
+  btn.onclick = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  document.body.appendChild(btn);
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+  }, { passive: true });
+  window.__helpMobileV2 = true;
+})();
+</script>
 </body></html>
