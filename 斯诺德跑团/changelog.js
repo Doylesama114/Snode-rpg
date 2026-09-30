@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8029',
+    date: '2026-09-30',
+    changes: [
+      '修复启动台顶栏层叠：检查更新/更新日志/性能自检/设置被全屏地图层遮挡导致点不到（补 .topbar 的 position:relative',
+      'z-index:5），并完成全页可点性审计（桌面+移动 24 个交互元素全部可点）'
+    ]
+  },
+
+
+  {
     version: '1.0.8028',
     date: '2026-09-30',
     changes: [
