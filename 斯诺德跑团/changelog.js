@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8027',
+    date: '2026-09-30',
+    changes: [
+      '重试发布（v1.0.8026 的 CI 在 GitHub Release 上传步骤失败）：启动台地图罗盘版 + AI 高清底图（q96 WebP）'
+    ]
+  },
+
+
+  {
     version: '1.0.8026',
     date: '2026-09-30',
     changes: [
