@@ -1418,3 +1418,39 @@ html.dark .attr-table { background: #3a3327 !important; border-color: #5a4a35 !i
 html.dark .attr-row { background: linear-gradient(180deg,#453d2f,#3d362a) !important; }
 html.dark .attr-row > * { color: #e8e0cc !important; }
 html.dark .attr-row > *:first-child { background: linear-gradient(180deg,#5c4529,#4a3620) !important; color: #f0e6d2 !important; }
+
+/* class-page-mobile-v1：职业页 ≤600px 密度提升 + 标题避让主题齿轮 */
+@media (max-width: 600px) {
+  html body, body { font-size: 13.5px !important; line-height: 1.45 !important; }
+  p, li, .desc, .skill-desc, .card-desc { font-size: 13px !important; line-height: 1.45 !important; }
+  h1 { font-size: 19px !important; } h2 { font-size: 16.5px !important; } h3 { font-size: 15px !important; } h4 { font-size: 13.5px !important; }
+  /* 标题避让右上角主题齿轮（#themeToggle 约 36x36 固定在 16px 处） */
+  /* 双向安全距离：左躲 .gui-trigger(8-117)，右躲 #themeToggle(323-359) */
+  h1 {
+    padding-left: 124px !important; padding-right: 64px !important;
+    max-width: none !important; box-sizing: border-box; overflow-wrap: anywhere;
+  }
+  h2, .section-title, .page-title, .title, .class-title, .header h1, header h1 {
+    padding-right: 64px !important; max-width: none !important; box-sizing: border-box;
+  }
+  /* 技能卡与表格：更小字号、更紧行距、整体收紧约 20% */
+  table, .skill table { font-size: 12px !important; }
+  th, td, .skill th, .skill td { font-size: 12px !important; padding: 4px 5px !important; line-height: 1.45 !important; }
+  .skill, article.skill, .skill-card { margin-bottom: 8px !important; padding: 8px 10px !important; }
+  .chip, .filter-chip, [class*="chip"], .tag { font-size: 11.5px !important; padding: 3px 8px !important; line-height: 1.4 !important; }
+  .grid, .cards, .skill-list, .list { gap: 8px !important; }
+  .card, .panel, .box { padding: 10px 12px !important; }
+}
+
+/* class-page-mobile-v2：压缩顶部装饰区与技能卡内边距（首屏 580px 装饰区是密度主因） */
+@media (max-width: 600px) {
+  .topbar { padding: 6px 10px !important; margin-bottom: 6px !important; }
+  .topbar .brand, .topbar .brand-name { padding-right: 0 !important; font-size: 15px !important; }
+  header, .header, .page-head, .hero, .class-head, .intro, .banner { padding: 8px 10px !important; margin-bottom: 8px !important; }
+  header p, .hero p, .intro p, .banner p, .lead { font-size: 12.5px !important; line-height: 1.4 !important; margin: 4px 0 !important; }
+  .filter-panel, .filters, .toolbar, .tabs { padding: 5px 8px !important; margin-bottom: 6px !important; }
+  .skill, article.skill, .skill-card { padding: 7px 9px !important; margin-bottom: 7px !important; }
+  .skill table td, .skill table td * { padding: 3px 4px !important; }
+  h1 { margin: 6px 0 !important; } h2 { margin: 6px 0 !important; } h3 { margin: 4px 0 !important; }
+  * { scroll-margin-top: 60px; }
+}

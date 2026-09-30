@@ -2723,7 +2723,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 <style>/* 手机端目录溢出 */@media(max-width:860px){#help-pane-world .toc{overflow-x:auto;-webkit-overflow-scrolling:touch}#help-pane-world .toc a{white-space:nowrap}#help-pane-world .toc .toc-sub a{white-space:normal}}</style>
 <style>
 /* mobile-help-opt：手机端排版优化（更小字号 = 一屏更多内容；宽表首列吸附 + 横滑提示） */
-@media (max-width: 860px) {
+@media (max-width: 600px) {
   html body, body { font-size: 14px !important; line-height: 1.62 !important; }
   .p, p, li { font-size: 13.5px !important; line-height: 1.7 !important; }
   .p, p { font-size: 13.5px; line-height: 1.7; }
@@ -2734,8 +2734,8 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
   .toc-sidebar { padding: 8px 10px; }
   .help-layout { display: block; }
   /* 宽表：更小字号 + 更紧行距 + 首列吸附，左右滑动时行标题始终可见 */
-  .mc-wrap table, .wrap table { font-size: 12.5px; }
-  .mc-wrap th, .mc-wrap td, .wrap th, .wrap td { font-size: 12.5px; padding: 4px 6px; line-height: 1.45; }
+  .mc-wrap table, .wrap table { font-size: 12px; }
+  .mc-wrap th, .mc-wrap td, .wrap th, .wrap td { font-size: 12px; padding: 4px 6px; line-height: 1.45; }
   .mc-wrap th:first-child, .mc-wrap td:first-child,
   .wrap th:first-child, .wrap td:first-child {
     position: sticky; left: 0; z-index: 2;
@@ -2774,7 +2774,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 
 <style>
 /* help-mobile-v3：卡片宽度自适应 + 只有真交叉轴矩阵才保留横滑 + 矩阵行选择模式 */
-@media (max-width: 860px) {
+@media (max-width: 600px) {
   table.cardstack { width: 100% !important; min-width: 0 !important; table-layout: auto !important; border: 0 !important; background: transparent !important; }
   table.cardstack thead { display: none !important; }
   table.cardstack tbody, table.cardstack tr { width: 100% !important; box-sizing: border-box; }
@@ -2869,7 +2869,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
     show(0);
   }
   function apply() {
-    var narrow = window.matchMedia('(max-width: 860px)').matches;
+    var narrow = window.matchMedia('(max-width: 600px)').matches;
     var tables = document.querySelectorAll('.wrap table, .mc-wrap table');
     for (var i = 0; i < tables.length; i++) {
       var tb = tables[i];
@@ -2899,7 +2899,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 </script>
 <style>
 /* help-mobile-v3b：覆盖导致卡片宽度失控的规则（.wrap table 的 max-content、内联 table-layout、各列 min-width / nowrap） */
-@media (max-width: 860px) {
+@media (max-width: 600px) {
   table.cardstack { width: 100% !important; min-width: 0 !important; max-width: 100% !important; table-layout: auto !important; }
   table.cardstack tbody, table.cardstack tr { width: 100% !important; min-width: 0 !important; max-width: 100% !important; }
   table.cardstack th, table.cardstack td { min-width: 0 !important; max-width: 100% !important; white-space: normal !important; word-break: break-word; overflow-wrap: anywhere; }
@@ -2913,7 +2913,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 /* help-mobile-v3c：卡片宽度的最终兜底（内联样式直接覆盖，含内联 table-layout 与按内容收缩的行） */
 (function () {
   function fix() {
-    if (!window.matchMedia('(max-width: 860px)').matches) return;
+    if (!window.matchMedia('(max-width: 600px)').matches) return;
     var tables = document.querySelectorAll('table.cardstack');
     for (var i = 0; i < tables.length; i++) {
       var tb = tables[i];
@@ -2935,7 +2935,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 </script>
 <style>
 /* help-mobile-v3d：div 卡片（不依赖表格布局，宽度天然 100%） */
-@media (max-width: 860px) {
+@media (max-width: 600px) {
   .cardbox { display: block; width: 100%; }
   .rcard { width: 100%; box-sizing: border-box; margin: 0 0 8px; padding: 8px 10px;
     border: 1px solid #d8d2c4; border-radius: 8px; background: #fffdf8; }
@@ -2948,7 +2948,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 /* help-mobile-v3d：把"逐行独立宽表"用 JS 重建为 div 卡片（绕开匿名表格盒与 table-layout 的干扰） */
 (function () {
   function rebuild() {
-    if (!window.matchMedia('(max-width: 860px)').matches) return;
+    if (!window.matchMedia('(max-width: 600px)').matches) return;
     var tables = document.querySelectorAll('table.cardstack');
     for (var i = 0; i < tables.length; i++) {
       var tb = tables[i];
@@ -2981,6 +2981,81 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
   rebuild();
   setTimeout(rebuild, 900);
   window.__helpMobileV3d = true;
+})();
+</script>
+<style>
+/* help-mobile-v4：仍溢出视口的宽表 → 自动重建为 div 卡片；矩阵保留横滑并给可感知提示 */
+@media (max-width: 600px) {
+  /* 关键：max-content 会让表格永不换行 → 手机端一律强制 100% 宽 */
+  .wrap table, .mc-wrap table { width: 100% !important; min-width: 0 !important; max-width: 100% !important; table-layout: auto !important; }
+  .wrap th, .wrap td, .mc-wrap th, .mc-wrap td, .mc-matrix th, .mc-matrix td {
+    white-space: normal !important; min-width: 0 !important; word-break: break-word; overflow-wrap: anywhere; }
+  .mc-wrap { position: relative; }
+  .scroll-hint { display: none; font-size: 11px; color: #8a7a5e; margin: 2px 0 3px; }
+  .has-scroll > .scroll-hint { display: block; }
+  .has-scroll::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 18px; pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,253,248,0), rgba(120,85,35,.25)); }
+  .help-tabs, .section-bar, .pill-bar, .pills { overflow-x: auto !important; }
+  .help-tabs > *, .section-bar > *, .pill { flex: none !important; font-size: 12.5px !important; padding: 3px 9px !important; white-space: nowrap !important; }
+}
+</style>
+<script>
+/* help-mobile-v4：宽表兜底——先缩字号，仍溢出则重建为 div 卡片（矩阵除外，矩阵给横滑提示） */
+(function () {
+  function narrow() { return window.matchMedia('(max-width: 600px)').matches; }
+  function buildCards(tb) {
+    if (tb.__cardBox) return;
+    var head = tb.querySelector('tr');
+    var heads = head ? [].slice.call(head.children).map(function (c) { return (c.textContent || '').trim(); }) : [];
+    var trs = [].slice.call(tb.querySelectorAll('tr'));
+    var box = document.createElement('div'); box.className = 'cardbox';
+    for (var r = 0; r < trs.length; r++) {
+      var tr = trs[r];
+      if (tr === head) continue;
+      if (tr.parentNode && tr.parentNode.tagName === 'THEAD') continue;
+      var card = document.createElement('div'); card.className = 'rcard';
+      var tds = tr.children;
+      for (var c = 0; c < tds.length; c++) {
+        var val = (tds[c].textContent || '').trim();
+        if (!val) continue;
+        var line = document.createElement('div'); line.className = 'rline';
+        var k = document.createElement('span'); k.className = 'rk'; k.textContent = heads[c] || '';
+        var v = document.createElement('span'); v.className = 'rv'; v.textContent = val;
+        line.appendChild(k); line.appendChild(v); card.appendChild(line);
+      }
+      box.appendChild(card);
+    }
+    if (!box.children.length) return;
+    tb.parentNode.insertBefore(box, tb);
+    tb.style.display = 'none';
+    tb.__cardBox = box;
+  }
+  function addHint(wrap) {
+    if (!wrap.querySelector('.scroll-hint')) {
+      var h = document.createElement('div'); h.className = 'scroll-hint'; h.textContent = '表格可左右滑动 →';
+      wrap.insertBefore(h, wrap.firstChild);
+    }
+  }
+  function apply() {
+    if (!narrow()) return;
+    var tables = document.querySelectorAll('.wrap table, .mc-wrap table');
+    for (var i = 0; i < tables.length; i++) {
+      var tb = tables[i];
+      var head = tb.querySelector('tr');
+      var cols = head ? head.children.length : 0;
+      if (cols < 5) continue;
+      var wrap = tb.parentElement;
+      var isMtx = tb.classList.contains('mc-matrix');
+      if (tb.__cardBox) { wrap.classList.remove('has-scroll'); continue; }
+      if (!isMtx && tb.scrollWidth > wrap.clientWidth - 6) buildCards(tb);
+      if (!tb.__cardBox && tb.scrollWidth > wrap.clientWidth - 6) { wrap.classList.add('has-scroll'); addHint(wrap); }
+      else { wrap.classList.remove('has-scroll'); }
+    }
+  }
+  apply();
+  setTimeout(apply, 1000);
+  window.addEventListener('load', apply);
+  window.__helpMobileV4 = true;
 })();
 </script>
 </body></html>

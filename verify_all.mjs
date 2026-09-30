@@ -127,6 +127,21 @@ try {
 console.log(guildOK ? '✅ 工会 UI 共享层通过' : '❌ 工会 UI 共享层失败');
 totalErrors += guildOK ? 0 : 1;
 
+// 移动端排版验收（≤600px：无横向溢出 / 超宽表卡片化或滑动提示 / 标题避让主题齿轮 / FAB 不重合）
+console.log('\n=== 移动端排版验收（≤600px） ===');
+let mobOK = true;
+try {
+  let mOut = spawnSync('node', [join(BASE, 'verify_mobile_layout.mjs')], { encoding: 'utf-8', timeout: 900000, maxBuffer: 8 * 1024 * 1024 });
+  if (mOut.stdout) console.log(mOut.stdout.trim().slice(-1500));
+  if (mOut.stderr) console.error(mOut.stderr.trim());
+  if (mOut.status !== 0) mobOK = false;
+} catch (e) {
+  mobOK = false;
+  console.log('❌ 移动端排版验收执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(mobOK ? '✅ 移动端排版验收通过' : '❌ 移动端排版验收失败');
+totalErrors += mobOK ? 0 : 1;
+
 // v1.0.8002 UI 修复验收（启动台适配/对决入口/对比度/ESC/柜台默认/向导宽度/面板不误关）
 console.log('\n=== UI 修复验收（v1.0.8002） ===');
 let ui8002OK = true;
