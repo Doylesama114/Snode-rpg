@@ -21,6 +21,41 @@ for (const w of [375, 390]) {
   const bad = r.tables.filter(t => !t.hidden && !t.rebuilt && !t.hint && t.w > r.vw + 2);
   ok('[' + w + 'px] 所有超宽表已卡片化或有滑动提示', bad.length === 0, bad.map(t => '#' + t.i + '(' + t.w + ')').join(','));
   ok('[' + w + 'px] 帮助页 0 报错', errs.length === 0, errs.slice(0, 2).join(' | '));
+  const squeeze = await p.evaluate(() => {
+    const bad = [];
+    document.querySelectorAll('table').forEach((t, i) => {
+      if (getComputedStyle(t).display === 'none' || t.classList.contains('mc-matrix')) return;
+      const head = t.querySelector('tr'); const cols = head ? head.children.length : 0;
+      if (cols < 2) return;
+      if (!t.classList.contains('cardstack') && !t.__cardBox) {
+        const rows = [].slice.call(t.querySelectorAll('tr')).filter(tr => tr !== head).slice(0, 12);
+        for (const tr of rows) for (const td of tr.children) {
+          const rr = td.getBoundingClientRect();
+          if (rr.width > 0 && rr.width < 64) { bad.push('#' + (i + 1) + ' 列宽 ' + Math.round(rr.width) + 'px 未卡片化'); return; }
+        }
+      }
+    });
+    /* 未卡片化的表：单元格被迫逐字换行（高 > 4 倍行高）也算畸形 */
+    document.querySelectorAll('table').forEach((t, i) => {
+      if (getComputedStyle(t).display === 'none' || t.classList.contains('mc-matrix')) return;
+      const head = t.querySelector('tr');
+      const rows = [].slice.call(t.querySelectorAll('tr')).filter(tr => tr !== head).slice(0, 12);
+      for (const tr of rows) for (const td of tr.children) {
+        const lh = parseFloat(getComputedStyle(td).lineHeight) || 18;
+        if (td.offsetHeight > lh * 4 && td.getBoundingClientRect().width < 120) {
+          bad.push('#' + (i + 1) + ' 单元格竖排 高=' + td.offsetHeight + ' 宽=' + Math.round(td.getBoundingClientRect().width));
+          return;
+        }
+      }
+    });
+    /* 卡片值区宽度必须够读（窄于 100px 视为被压） */
+    document.querySelectorAll('.rcard .rv').forEach(v => {
+      const w = v.getBoundingClientRect().width;
+      if (w > 0 && w < 100) bad.push('卡片值过窄 ' + Math.round(w) + 'px');
+    });
+    return bad;
+  });
+  ok('[' + w + 'px] 不存在被压成逐字竖排的表格/卡片值', squeeze.length === 0, squeeze.slice(0, 3).join(' , '));
   await p.close();
 }
 for (const name of CLASSES) {

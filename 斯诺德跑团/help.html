@@ -3028,6 +3028,7 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
     if (!box.children.length) return;
     tb.parentNode.insertBefore(box, tb);
     tb.style.display = 'none';
+    tb.classList.add('cardstack');
     tb.__cardBox = box;
   }
   function addHint(wrap) {
@@ -3043,12 +3044,26 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
       var tb = tables[i];
       var head = tb.querySelector('tr');
       var cols = head ? head.children.length : 0;
-      if (cols < 5) continue;
+      if (cols < 2) continue;
       var wrap = tb.parentElement;
       var isMtx = tb.classList.contains('mc-matrix');
       if (tb.__cardBox) { wrap.classList.remove('has-scroll'); continue; }
-      if (!isMtx && tb.scrollWidth > wrap.clientWidth - 6) buildCards(tb);
-      if (!tb.__cardBox && tb.scrollWidth > wrap.clientWidth - 6) { wrap.classList.add('has-scroll'); addHint(wrap); }
+      /* 新准则：不只看超宽——列被压到 <64px，或单元格被迫逐字换行（高 > 4 倍行高）也要转卡片 */
+      var overWide = tb.scrollWidth > wrap.clientWidth - 6;
+      var squeezed = false, tallCell = false;
+      var probeRows = [].slice.call(tb.querySelectorAll('tr')).filter(function (tr) { return tr !== head; }).slice(0, 12);
+      for (var r = 0; r < probeRows.length && !squeezed; r++) {
+        var tds = probeRows[r].children;
+        for (var c = 0; c < tds.length; c++) {
+          var rr = tds[c].getBoundingClientRect();
+          if (rr.width > 0 && rr.width < 64) { squeezed = true; break; }
+          var lh = parseFloat(getComputedStyle(tds[c]).lineHeight) || 18;
+          if (tds[c].offsetHeight > lh * 4) { tallCell = true; break; }
+        }
+      }
+      var needCards = !isMtx && (overWide || squeezed || tallCell);
+      if (needCards) buildCards(tb);
+      if (!tb.__cardBox && overWide) { wrap.classList.add('has-scroll'); addHint(wrap); }
       else { wrap.classList.remove('has-scroll'); }
     }
   }
