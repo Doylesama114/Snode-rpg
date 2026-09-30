@@ -468,7 +468,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
 
   // Special feats - try multiple offsets from label, with fuzzy matching
   function readFeat(label,level){var ref=findCellFuzzy([label]);if(!ref)ref=findCell(label);if(!ref)return;var row=parseInt(ref.substring(1));var col=ref.charCodeAt(0);for(var o=1;o<=6;o++){var v=c(String.fromCharCode(col+o)+row);if(v&&v!==label&&v.indexOf("级")<0&&v!=="豁免"&&v!=="类别"&&v!=="金币"&&v!=="银币"&&v!=="铜币"&&v!=="其他货币"&&v!=="六阶"){var clean=stripParens(v);s.special_feats.push({name:clean,level:level});break;}}}
-  readFeat("4级",4);readFeat("8级",8);readFeat("12级",12);
+  readFeat("4级",4);readFeat("8级",8);readFeat("13级",13);
   // Currency 旧模板回退（新模板已在上方按 Q36-Q42 读取）
   if(!s.currency["金币"]){_r=findCell("金币");if(_r)s.currency["金币"]=adjNum(_r,1);}
   if(!s.currency["银币"]){_r=findCell("银币");if(_r)s.currency["银币"]=adjNum(_r,1);}

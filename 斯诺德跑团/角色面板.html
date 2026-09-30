@@ -1381,7 +1381,7 @@ function SB_buildTestData(st) {
   }
   var feats = [];
   if (st.special_feats) {
-    var lvSeq = ['4级', '8级', '12级', '16级'];
+    var lvSeq = ['4级', '8级', '13级', '六阶天赋'];
     for (var fi = 0; fi < st.special_feats.length; fi++) {
       var f = st.special_feats[fi];
       if (!f) continue;
@@ -2747,7 +2747,7 @@ function skillRowHtml(sk, isSub) {
   var usedHtml = used > 0 ? '<span class="used-cnt">已用 ' + used + ' 次</span>' : '<span class="used-cnt"></span>';
   var disabled = S.battle && S.exhaust >= 4 ? 'disabled' : '';
   var cls = sk.style ? '<span class="skill-sub">(' + sk.style + ')</span>' : '';
-  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" onclick="showSkillDetail(this)">' +
+  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" onclick="showSkillDetailRow(this)">' +
     '<td class="skill-name">' + sk.n + ' ' + cls + react + '</td>' +
     '<td>' + sk.cast + '</td>' +
     '<td class="skill-desc">' + sk.desc + '</td>' +
@@ -2781,7 +2781,7 @@ function renderSkillTables() {
 
 /* ================= 技能详情 ================= */
 var curDetailSkill = null;
-function showSkillDetail(tr) {
+function showSkillDetailRow(tr) {
   var name = tr.getAttribute('data-name');
   var isSub = tr.getAttribute('data-sub') === 'true';
   var sk = findSkill(name, isSub);

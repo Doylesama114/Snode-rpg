@@ -1508,6 +1508,7 @@ function renderClassStep(c) {
   if(CHAR.classIdx>=0){
     var _cn=CLASSES[CHAR.classIdx].name;
     showKeyAttrChoice(_cn);
+  showOpposedSchoolChoice(_cn);
     showClericDeityChoice(_cn);
     showWarlockPatronChoice(_cn);
     renderSpecChoices(_cn);
@@ -1650,6 +1651,7 @@ function renderBgProfs(bgData){
   }
 
   area.innerHTML=h;
+  area.addEventListener("click", function(ev){ var el=ev.target.closest?ev.target.closest(".spec-btn[data-field]"):null; if(!el)return; pickSpecOpt(el, el.getAttribute("data-field"), el.getAttribute("data-val")); });
 
   var p=document.getElementById("bgDetail");p.parentNode.insertBefore(area, p.nextSibling);
 }
@@ -1670,6 +1672,26 @@ function normalizeHunterWeaponSpec(spec){
   if(spec==="简易")return "简易武器";
   return spec||"";
 }
+var SPEC_OPT_CHOICES = {
+  "猎人": { "自然探索": { field:"terrain", label:"地形", opts:["极地","海岸","荒漠","丛林","草原","山地","沼泽","地穴"] } },
+  "术士": { "魔力血脉": { field:"bloodline", label:"伤害类型", opts:["奥术","火焰","冰霜","雷电","暗影","自然"] } },
+  "萨满祭司": { "元素亲和": { field:"element", label:"元素", opts:["火焰","冰霜","雷电","自然"] } }
+};
+function specOptOf(clsName, sn){
+  var m = SPEC_OPT_CHOICES[clsName];
+  return (m && m[sn]) ? m[sn] : null;
+}
+function pickSpecOpt(el, field, val){
+  CHAR.specOpts = CHAR.specOpts || {};
+  CHAR.specOpts[field] = val;
+  var area = document.getElementById("specChoiceArea");
+  if(area){
+    var chips = area.querySelectorAll(".spec-btn[data-field='" + field + "']");
+    for(var i=0;i<chips.length;i++) chips[i].classList.remove("selected");
+  }
+  el.classList.add("selected");
+  updateOverview();
+}
 function renderSpecChoices(clsName){
   var old=document.getElementById("specChoiceArea");if(old)old.remove();
   CHAR.specChoices={};
@@ -1679,7 +1701,7 @@ function renderSpecChoices(clsName){
   for(var si=0;si<specs.length;si++){
     var sn=specs[si].n;
     var pc=SPEC_PROF_CHOICES[clsName]?SPEC_PROF_CHOICES[clsName][sn]:null;
-    if(pc||sn==="武器专精")hasChoice=true;
+    if(pc||sn==="武器专精"||specOptOf(clsName,sn))hasChoice=true;
   }
   if(!hasChoice)return;
   var area=document.createElement("div");area.id="specChoiceArea";
@@ -1700,6 +1722,20 @@ function renderSpecChoices(clsName){
       for(var ci=0;ci<cats.length;ci++){
         var bc=bonuses[cats[ci]]||"";
         h+="<div class='spec-btn weapon-spec-btn"+(CHAR.weaponSpec===cats[ci]?" selected":"")+"' data-spec='"+cats[ci]+"' style='padding:8px 12px;cursor:pointer' title='"+bc+"'>"+cats[ci]+(bc?" - "+bc:"")+"</div>";
+      }
+      h+="</div></div>";
+      continue;
+    }
+    var _so = specOptOf(clsName, sn);
+    if(_so){
+      h+="<div class='specGroup dark-bg' style='margin-bottom:12px;padding:10px 14px;background:#f6f4ef;border-radius:8px;border:1px solid #e8e2d8' data-spec='"+sn+"'>";
+      h+="<div style='font-size:14px;font-weight:bold;margin-bottom:6px'>"+sn+"</div>";
+      h+="<div style='font-size:12px;color:#69706b;margin-bottom:8px'>请选择一项"+_so.label+"</div>";
+      h+="<div class='specAttrRow' style='display:flex;gap:8px;flex-wrap:wrap'>";
+      var _cur = (CHAR.specOpts||{})[_so.field]||"";
+      for(var _oi=0;_oi<_so.opts.length;_oi++){
+        var _ov=_so.opts[_oi];
+        h+="<div class='spec-btn" + (_cur===_ov?" selected":"") + "' data-field='"+_so.field+"' data-val='"+_ov+"'>"+_ov+"</div>";
       }
       h+="</div></div>";
       continue;
@@ -1930,6 +1966,7 @@ function selectClass(idx){
   if(cards[idx]){cards[idx].classList.add("selected");cards[idx].querySelector(".card-desc").style.display="block";}
   var p=document.getElementById("classDetail");p.style.display="block";p.innerHTML=classDetail(CLASSES[idx]);
   showKeyAttrChoice(CLASSES[idx].name);
+showOpposedSchoolChoice(CLASSES[idx].name);
   showClericDeityChoice(CLASSES[idx].name);
   showWarlockPatronChoice(CLASSES[idx].name);
   showSummonerContractChoice(CLASSES[idx].name);
@@ -2171,17 +2208,28 @@ function pickRaceAttr(el){
 }
 function showKeyAttrChoice(clsName){
   var p=document.getElementById("classDetail");
-  // Remove old choice if exists
   var old=document.getElementById("keyAttrBox");if(old)old.remove();
-  if(clsName!=="战士"){checkSpecDone();return;}
+  var KA={"战士":"力量或敏捷","战舞者":"敏捷或魅力"};
+  var ka=KA[clsName]||"";
+  var opts=ka.indexOf("或")>=0?ka.split("或"):[];
+  if(opts.length<2){checkSpecDone();return;}
   var box=document.createElement("div");box.id="keyAttrBox";
-  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";box.className='popup-box';
-  box.innerHTML='<div style="font-size:15px;font-weight:bold;margin-bottom:10px">选择关键属性</div>'+
-    '<div style="display:flex;gap:10px">'+
-    '<div class="skill-chip" onclick="pickKeyAttr(this,\'力量\')" style="flex:1;text-align:center;font-size:15px;padding:10px">力量</div>'+
-    '<div class="skill-chip" onclick="pickKeyAttr(this,\'敏捷\')" style="flex:1;text-align:center;font-size:15px;padding:10px">敏捷</div>'+
-    '</div>';
-  p.parentNode.insertBefore(box, p.nextSibling);
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  var title=document.createElement("div");
+  title.style.cssText="font-size:15px;font-weight:bold;margin-bottom:10px";
+  title.textContent="选择关键属性（"+ka+"）";
+  box.appendChild(title);
+  var row=document.createElement("div");row.style.cssText="display:flex;gap:10px";
+  for(var i=0;i<opts.length;i++){(function(o){
+    o=o.trim();
+    var chip=document.createElement("div");
+    chip.className="skill-chip";chip.style.cssText="flex:1;text-align:center;font-size:15px;padding:10px";chip.textContent=o;
+    if(CHAR.keyAttr===o)chip.classList.add("selected");
+    chip.onclick=function(){pickKeyAttr(chip,o);};
+    row.appendChild(chip);
+  })(opts[i]);}
+  box.appendChild(row);
+  p.parentNode.insertBefore(box,p.nextSibling);
   checkSpecDone();
 }
 function pickKeyAttr(el,v){
@@ -2189,6 +2237,36 @@ function pickKeyAttr(el,v){
   var box=document.getElementById("keyAttrBox");
   if(box){var chips=box.querySelectorAll(".skill-chip");for(var i=0;i<chips.length;i++)chips[i].classList.remove("selected");el.classList.add("selected");}
   checkSpecDone();
+  updateOverview();
+}
+function showOpposedSchoolChoice(clsName){
+  var p=document.getElementById("classDetail");
+  var old=document.getElementById("opposedBox");if(old)old.remove();
+  if(clsName!=="法师")return;
+  var SS=["塑能","咒法","防护","幻术","死灵","变化","附魔","预言"];
+  var box=document.createElement("div");box.id="opposedBox";
+  box.style.cssText="margin-top:12px;padding:16px 20px;background:#fffdf8;border:1px solid #d8d2c4;border-radius:10px";
+  var title=document.createElement("div");
+  title.style.cssText="font-size:15px;font-weight:bold;margin-bottom:6px";title.textContent="选择对立学派";
+  var tip=document.createElement("div");
+  tip.style.cssText="font-size:12.5px;color:#69706b;margin-bottom:10px";tip.textContent="法师必须指定一个对立学派；此后无法学习该风格的技能";
+  var row=document.createElement("div");row.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
+  for(var i=0;i<SS.length;i++){(function(s){
+    var chip=document.createElement("div");
+    chip.className="skill-chip";chip.setAttribute("data-school",s);chip.style.cssText="padding:8px 14px";chip.textContent=s;
+    if(CHAR.opposingSchool===s)chip.classList.add("selected");
+    chip.onclick=function(){pickOpposedSchool(chip);};
+    row.appendChild(chip);
+  })(SS[i]);}
+  box.appendChild(title);box.appendChild(tip);box.appendChild(row);
+  p.parentNode.insertBefore(box,p.nextSibling);
+}
+function pickOpposedSchool(el){
+  CHAR.opposingSchool=el.getAttribute("data-school");
+  var box=document.getElementById("opposedBox");
+  if(box){var cs=box.querySelectorAll(".skill-chip");for(var i=0;i<cs.length;i++)cs[i].classList.remove("selected");}
+  el.classList.add("selected");
+  if(window.snd)try{snd.play("toggle");}catch(e){}
   updateOverview();
 }
 function showClericDeityChoice(clsName){

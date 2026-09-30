@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>斯诺德全职业技能树 · 首页</title>
-    <link rel="stylesheet" href="common.css?v=1.0.8026"/>
+    <link rel="stylesheet" href="common.css?v=1.0.8028"/>
     <script src="common.js"></script>
     <style>
     body { background: var(--bg); }
@@ -878,7 +878,7 @@ body.gs-preview-open .back-btn, body.gs-preview-open .gui-trigger { pointer-even
     if (rowLink) {
       var nameEl = rowLink.querySelector('.gs-row-name');
       var label = nameEl ? nameEl.textContent.trim() : '';
-      if (openGsPreview(rowLink.getAttribute('href'), label)) { e.preventDefault(); return; }   // 同页预览
+      e.preventDefault(); var _href = rowLink.getAttribute('href'); try { closeOverlay(); } catch (_e) {} location.href = _href; return;   // 同页预览
       showJumpMask(label);                                                                     // 兜底：整页跳转 + 反馈
     }
     var head = e.target.closest('[data-toggle-group]');

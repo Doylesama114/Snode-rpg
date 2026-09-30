@@ -2317,7 +2317,7 @@ function formatSkillDetailHtml(skillData) {
   var fields = skillData.fields || {}, fieldRuns = skillData.field_runs || {}, html = "", fk, fi;
 
 
-  var fieldOrder = ["\u65bd\u5c55\u65f6\u95f4","\u65bd\u5c55\u8ddd\u79bb","\u6301\u7eed\u65f6\u95f4","\u75b2\u52b3\u6d88\u8017","\u524d\u7f6e\u6761\u4ef6","\u989d\u5916\u6761\u4ef6","\u65bd\u5c55\u6761\u4ef6","\u65bd\u5c55\u9650\u5236","\u5173\u952e\u8bcd"];
+  var fieldOrder = ["\u65bd\u5c55\u65f6\u95f4","\u65bd\u5c55\u8ddd\u79bb","\u6301\u7eed\u65f6\u95f4","\u75b2\u52b3\u6d88\u8017","\u524d\u7f6e\u6761\u4ef6","\u989d\u5916\u6761\u4ef6","\u65bd\u5c55\u6761\u4ef6","\u65bd\u5c55\u9650\u5236","\u5173\u952e\u8bcd","效果"];
 
 
   for (fi = 0; fi < fieldOrder.length; fi++) {
@@ -2341,7 +2341,7 @@ function formatSkillDetailHtml(skillData) {
   if (skillData.cost && skillData.cost.length) {
 
 
-    html += "<p><span style='color:#b0a090;font-weight:bold'>\u6807\u8bc6\uff1a</span>" + markDotsHtml(skillData.cost) + "</p>";
+    html += "<p><span style='color:#b0a090;font-weight:bold'>\u6807\u8bc6\uff1a</span>" + markDotsHtml(skillData.cost) + "</p>"; if (skillData.effects && skillData.effects.length) { html += "<p><span style='color:#b0a090;font-weight:bold'>效果：</span></p>"; for (var _ei = 0; _ei < skillData.effects.length; _ei++) { html += "<p style='margin:2px 0 2px 10px'>· " + escapeHtmlText(skillData.effects[_ei]) + "</p>"; } }
 
 
   }
@@ -6853,6 +6853,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
   if (isBlueprintName(skillData.name)) {
     var _bpRes;
+    if (state.opposingSchool && skillData && skillData.style === state.opposingSchool) { SB_toast("该风格已对立，无法学习"); return; }
     if (!payForSkill(skillData)) return;
     _bpRes = addBlueprintEntry({ id: skillData.id, n: skillData.name, src: clsName, tier: skillData.tier || "", note: "" });
     if (!_bpRes.ok) {
