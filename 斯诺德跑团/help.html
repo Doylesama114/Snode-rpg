@@ -2721,4 +2721,54 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 <style>#help-pane-world .toc .toc-sub{margin:2px 0 6px;padding-left:12px;border-left:2px solid #e8e2d8}#help-pane-world .toc .toc-sub a{font-size:12.5px !important;color:#6b5a3e !important}#help-pane-world .toc .toc-sub a.toc-active{color:#a46d1f !important;font-weight:bold}</style>
 <script src="world-toc.js"></script>
 <style>/* 手机端目录溢出 */@media(max-width:860px){#help-pane-world .toc{overflow-x:auto;-webkit-overflow-scrolling:touch}#help-pane-world .toc a{white-space:nowrap}#help-pane-world .toc .toc-sub a{white-space:normal}}</style>
+<style>
+/* mobile-help-opt：手机端排版优化（更小字号 = 一屏更多内容；宽表首列吸附 + 横滑提示） */
+@media (max-width: 860px) {
+  html body, body { font-size: 14px !important; line-height: 1.62 !important; }
+  .p, p, li { font-size: 13.5px !important; line-height: 1.7 !important; }
+  .p, p { font-size: 13.5px; line-height: 1.7; }
+  h1 { font-size: 21px; } h2 { font-size: 18px; } h3 { font-size: 15.5px; }
+  .card .desc, .card .num { font-size: 13px; }
+  .toc a { font-size: 13px; padding: 5px 8px; }
+  .toc-title { font-size: 13px; }
+  .toc-sidebar { padding: 8px 10px; }
+  .help-layout { display: block; }
+  /* 宽表：更小字号 + 更紧行距 + 首列吸附，左右滑动时行标题始终可见 */
+  .mc-wrap table, .wrap table { font-size: 12.5px; }
+  .mc-wrap th, .mc-wrap td, .wrap th, .wrap td { font-size: 12.5px; padding: 4px 6px; line-height: 1.45; }
+  .mc-wrap th:first-child, .mc-wrap td:first-child,
+  .wrap th:first-child, .wrap td:first-child {
+    position: sticky; left: 0; z-index: 2;
+    background: #edeae2; box-shadow: 1px 0 0 #d8d2c4;
+  }
+  .mc-wrap { max-height: 62vh; }
+  .mc-wrap::-webkit-scrollbar, .wrap::-webkit-scrollbar { height: 6px; }
+  .mc-wrap::-webkit-scrollbar-thumb, .wrap::-webkit-scrollbar-thumb { background: rgba(120,85,35,.4); border-radius: 3px; }
+  /* 横滑提示（仅手机显示） */
+  .mc-wrap::after {
+    content: "90 de6+f3ed1*a87e5Ǹb\886883c)85bb9 92";
+    display: block; position: sticky; left: 0; font-size: 10.5px; color: #8a7a5e;
+    padding: 2px 0 0; letter-spacing: .08em;
+  }
+}
+#s0, [id^="s"], [id^="w-"] { scroll-margin-top: 76px; }
+</style>
+<script>
+/* mobile-help-opt：目录点击兜底——同一项重复点击也能跳（WebView 对相同 hash 不再滚动） */
+(function () {
+  document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var inToc = a.closest('.toc, .toc-sidebar, .toc-sub, [class*=toc]');
+    if (!inToc) return;
+    var id = (a.getAttribute('href') || '').slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    ev.preventDefault();
+    try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, false);
+})();
+</script>
 </body></html>
