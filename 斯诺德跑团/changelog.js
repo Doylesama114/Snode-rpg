@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8038',
+    date: '2026-10-01',
+    changes: [
+      '补齐技能描述缺失：召唤物/变形形态数据块 20 个技能共 88 行、升级行 12 行；覆盖 5 类权威数据源与镜像；新增技能描述防复发校验 verify_skill_desc 并接入门禁'
+    ]
+  },
+
+
+  {
     version: '1.0.8037',
     date: '2026-10-01',
     changes: [
