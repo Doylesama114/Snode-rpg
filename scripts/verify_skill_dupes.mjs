@@ -23,11 +23,13 @@ function skillFingerprint(s) {
 }
 
 const byName = {};
+const domainNames = {};
 for (const cls in SKILL_DATA) {
   const arr = SKILL_DATA[cls] || [];
   for (const s of arr) {
     if (!s.name) continue;
     if (!byName[s.name]) byName[s.name] = [];
+    if (cls === '牧师·神圣领域') { domainNames[s.name] = (domainNames[s.name] || 0) + 1; continue; }   // 神圣领域为独立数据源，不参与跨职业异常计数
     byName[s.name].push({ cls, fp: skillFingerprint(s), type: s.type || '' });
   }
 }
@@ -61,6 +63,7 @@ if (diffGroups.length) {
     console.log('  ' + nm + ': ' + detail);
   }
 }
+console.log('\n【神圣领域】与职业技能重名（独立数据源，各神域自有文本，不计入异常）：' + Object.keys(domainNames).length + ' 个名称');
 const WARN_LIMIT = 120; // 89 组为正常跨职业同名不同效果（规则设计）
 if (diffGroups.length > WARN_LIMIT) {
   console.error('FAIL: 同名不同效果组数异常（>' + WARN_LIMIT + '），请核查 docx 数据');

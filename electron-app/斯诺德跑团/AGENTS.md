@@ -31,7 +31,7 @@ electron-app/             桌面壳（★ 是镜像：改根目录后同步，�
 
 ## LOAD ORDER（CRITICAL）
 ```
-items_data.js → 导出立绘.js → panel_data.js → panel_engine.js
+items_data.js → 导出立绘.js → panel_data.js → skill_index.js → character_io.js → character_import_ui.js → panel_engine.js
 ```
 脚本必须放在 </body> 之前（render() 需要完整 DOM）；共享层 guild-ui.js 最后注入。
 ⚠ 校验脚本（verify_panel_data_sync.py 等）用**裸 JS 上下文**解析 panel_data.js：文件顶层不得直接调用浏览器 API（setTimeout / document），必须加 typeof 守卫。
@@ -73,3 +73,13 @@ python -X utf8 scripts/verify_strategist_sync.py # 谋士/职业数据同步
 
 ## 发布产物（发布后必核五项）
 ① Release exe ② Release APK ③ latest.yml 的 size 与 exe 精确一致 ④ OSS exe HTTP 200 ⑤ 移动端 mobile/version.json = 新版本
+
+
+## 角色工作簿导入维护（2026-10-01）
+- character_io.js 统一解码 OOXML、识别角色表、读写 _SNODE_META v2，兼容 v1。
+- 导入顺序：原始单元格 → 本文件元数据关联 → 当前技能索引 → 默认值；禁止恢复 _LAST_META_ROWS 全局暂存。
+- src/cls 为职业来源，via/grantedBy 为获取途径，place/sub 为栏位，free 与 occupies 独立；占栏判定优先 occupies。
+- 天赋 tier 来自同列 O/R 的物理阶位标题，catalogTier 来自当前数据；不得恢复旧 SKILL_TIER/SKILL_LOOKUP 单名表。
+- 详情与转换按 UID 定位条目，以来源 + 技能 ID 读取规则；同名未确认只展示原文与补选入口。
+- 修改根目录角色脚本后同步 electron-app；更新技能数据后运行 python -X utf8 scripts/gen_skill_index.py。
+- 回归：node verify_character_import_roundtrip.cjs；桌面/浮层：node verify_character_import_roundtrip.cjs --electron；全量：node verify_all.mjs。

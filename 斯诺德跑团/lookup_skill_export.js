@@ -1,27 +1,12 @@
 // Shared skill lookup for xlsx export (upload / creation / tests)
 // Prefer class (sk.src / 主职) first so homonyms like「猛击」不串到其它职业。
-function lookupSkillForExport(name, preferClass) {
-  if (!name || typeof SKILL_DATA === "undefined") return null;
-  var prefer = preferClass || "";
-  var fallback = null, cn, arr, i, hit;
-  if (prefer && SKILL_DATA[prefer]) {
-    arr = SKILL_DATA[prefer];
-    for (i = 0; i < arr.length; i++) {
-      if (arr[i].name === name || arr[i].n === name) return arr[i];
-    }
-  }
-  for (cn in SKILL_DATA) {
-    if (!Object.prototype.hasOwnProperty.call(SKILL_DATA, cn)) continue;
-    arr = SKILL_DATA[cn];
-    if (!arr) continue;
-    for (i = 0; i < arr.length; i++) {
-      hit = arr[i];
-      if (hit.name === name || hit.n === name) {
-        if (!fallback) fallback = hit;
-      }
-    }
-  }
-  return fallback;
+function lookupSkillForExport(name, preferClass, id) {
+  if(!name||typeof SKILL_DATA==="undefined")return null;
+  var hits=[];
+  Object.keys(SKILL_DATA).forEach(function(cls){
+    if(preferClass&&preferClass!==cls)return;
+    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id))hits.push(s);});
+  });return hits.length===1?hits[0]:null;
 }
 
 function skillExportDescForXlsx(sk, skRef) {

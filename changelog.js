@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8039',
+    date: '2026-10-01',
+    changes: [
+      '角色工作簿导入导出重构：新增 character_io.js 统一 I/O 层与 character_import_ui.js 来源补选对话框；_SNODE_META v2（兼容 v1）+ 元数据按文件隔离；UID 贯穿转换链，详情按来源+技能 ID 解析；技能索引改用按职业多候选；神圣领域详情数据并入；旧格式与溢出条目完整保留；新增 verify_character_import_roundtrip.cjs 回归（32 项，含 Electron 与三视口）'
+    ]
+  },
+
+
+  {
     version: '1.0.8038',
     date: '2026-10-01',
     changes: [

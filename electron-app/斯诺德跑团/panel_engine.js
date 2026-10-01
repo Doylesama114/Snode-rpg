@@ -318,6 +318,7 @@ function loadState(charName, slotIndex) {
     CURRENT_SLOT = slotIndex;
     state._dirty = false;
     migrateProfKeys(state.profs);
+    migrateSkillMeta(state);
     ensureSpState();
     ensureClaimedLevels();
     migrateAllShortboardFeats();
@@ -821,9 +822,10 @@ function calcSkillSlots(clsIdx) {
 
 /** 背景/种族免费授予等：计入技能列表但不占技能栏上限 */
 function isFreeSlotSkill(s) {
-  if (!s) return false;
-  if (s.grantedBy === "卓尔精灵·毒吻者") return false; // 毒刃免费获得但占技能栏上限
-  return !!(s.freeSlot || s.grantedBy === "法师学徒");
+  if(!s)return false;
+  if(s.occupies!==undefined)return s.occupies===false;
+  if(s.grantedBy==="卓尔精灵·毒吻者")return false;
+  return !!(s.freeSlot||s.grantedBy==="法师学徒");
 }
 
 /** sub 是否标记为子职业技能（兼容旧档 boolean true） */
@@ -1029,6 +1031,13 @@ function costHtml(c){return c||'\u2014';}
 
 
 function skillDescCell(d, cn, sn) {
+  // P4: 详情必须按【真实来源职业】查找；cn 通常传的是栏位职业（主/子），此处纠正
+  try {
+    var _cnList = (typeof SKILL_DATA !== "undefined" && SKILL_DATA[cn]) ? SKILL_DATA[cn] : null;
+    var _has = false;
+    if (_cnList) { for (var _ci = 0; _ci < _cnList.length; _ci++) { if (_cnList[_ci] && _cnList[_ci].name === sn) { _has = true; break; } } }
+    if (!_has) { var _srcC = (typeof findSkillSrcClass === "function") ? findSkillSrcClass(sn) : ""; if (_srcC) cn = _srcC; }
+  } catch (e) {}
 
 
   if (!d) return "—";
@@ -1424,6 +1433,17 @@ function xlsxEnsureStyleColors(stylesText, need) {
  * 已填内容超出上限时不覆盖（从 max(容量,已填数) 起划）。
  */
 function markUnavailableExportSlots(set, cancelStyleId, opts) {
+  // #3: 保护本次导出已写入的能力格（✗ 不因解锁记录缺失而清空已有能力；也不自动授予解锁进度）
+  try {
+    var _occupied = {};
+    var _tt = (opts && opts.talents) || (typeof state !== "undefined" && state && state.talent_tree) || [];
+    for (var _ti = 0; _ti < _tt.length; _ti++) { var _t = _tt[_ti]; if (_t && _t.writtenToVisible && _t.cellRef) _occupied[_t.cellRef] = 1; }
+    var _origSet = set;
+    set = function (ref, value) {
+      if (value === "" && _occupied[ref]) return;
+      return _origSet.apply(null, arguments);
+    };
+  } catch (eProt) {}
   if (!cancelStyleId) return;
   var r, i, tier, range, cap, strikeFrom;
   var mainCap = Math.max(0, opts.mainSkillCap | 0);
@@ -1432,6 +1452,7 @@ function markUnavailableExportSlots(set, cancelStyleId, opts) {
   var subFilled = Math.max(0, opts.subSkillFilled | 0);
   var bpCap = Math.max(0, opts.blueprintCap | 0);
   var bpFilled = Math.max(0, opts.blueprintFilled | 0);
+  if (mainCap <= 0) { /* #2: 容量未知 → 不划掉已有能力 */ return; }
   strikeFrom = Math.max(mainCap, mainFilled);
   for (r = 123 + strikeFrom; r <= 162; r++) set("B" + r, "", true, cancelStyleId);
   strikeFrom = Math.max(subCap, subFilled);
@@ -1446,10 +1467,10 @@ function markUnavailableExportSlots(set, cancelStyleId, opts) {
       range = opts.tierRowMap[tier];
       if (!range) continue;
       if (opts.isTierUnlocked && !opts.isTierUnlocked(tier)) {
-        for (r = range[0]; r <= range[1]; r++) set("O" + r, "", true, cancelStyleId);
+        for (r = range[0]; r <= range[1]; r++) set((opts.talentColumn || "O") + r, "", true, cancelStyleId);
       } else {
         cap = (opts.getTalentCap ? opts.getTalentCap(tier) : 5) | 0;
-        for (r = range[0] + cap; r <= range[1]; r++) set("O" + r, "", true, cancelStyleId);
+        for (r = range[0] + cap; r <= range[1]; r++) set((opts.talentColumn || "O") + r, "", true, cancelStyleId);
       }
     }
   }
@@ -1706,15 +1727,7 @@ function renderMarkOverviewHtml() {
 }
 
 function normalizeExportTalentTier(t) {
-  var tName = t.n || t.name || "";
-  var tTier = (t.tier || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
-  var numMap = { "1": "\u4e00\u9636", "2": "\u4e8c\u9636", "3": "\u4e09\u9636", "4": "\u56db\u9636", "5": "\u4e94\u9636", "6": "\u516d\u9636", "7": "\u4e03\u9636" };
-  if (/^\d+\u9636$/.test(tTier)) tTier = (numMap[tTier.charAt(0)] || tTier);
-  if ((!tTier || tTier.indexOf("\u9636") < 0) && typeof SKILL_TIER !== "undefined") {
-    tTier = (SKILL_TIER[tName] || "").replace(/\u5929\u8d4b\u6811.*$/, "").replace(/[\uff08(]\d+[\uff09)]/g, "").trim();
-  }
-  if (!tTier || tTier.indexOf("\u9636") < 0) tTier = "\u4e00\u9636";
-  return tTier;
+  var r=SNOWD_CHARACTER_IO.resolve(t);return SNOWD_CHARACTER_IO.tier(t.tier)||(r.pick?r.pick.tier:"")||"一阶";
 }
 
 function defaultTalentTierRowMap() {
@@ -1724,50 +1737,14 @@ function defaultTalentTierRowMap() {
   };
 }
 
-function buildTalentTierRowMap(strings, xml) {
-  var tierOrder = ["\u4e00\u9636", "\u4e8c\u9636", "\u4e09\u9636", "\u56db\u9636", "\u4e94\u9636", "\u516d\u9636", "\u4e03\u9636"];
-  var headers = {}, re = /<c r="O(\d+)"[^>]*t="s"[^>]*><v>(\d+)<\/v><\/c>/g, m;
-  while ((m = re.exec(xml)) !== null) {
-    var row = parseInt(m[1], 10), text = strings[parseInt(m[2], 10)] || "";
-    if (text.indexOf("\u5929\u8d4b\u6811") < 0) continue;
-    for (var ti = 0; ti < tierOrder.length; ti++) {
-      if (text.indexOf(tierOrder[ti]) >= 0) { headers[tierOrder[ti]] = row; break; }
-    }
-  }
-  /** 图纸区标题行；末阶天赋不得侵入 O172+ */
-  var blueprintTitleRow = 172;
-  var bpTitleRe = /<c r="O(\d+)"[^>]*t="s"[^>]*><v>(\d+)<\/v><\/c>/g;
-  while ((m = bpTitleRe.exec(xml)) !== null) {
-    text = strings[parseInt(m[2], 10)] || "";
-    if (text.indexOf("\u56fe\u7eb8") >= 0 && text.indexOf("\u4e13\u4e1a") >= 0) {
-      blueprintTitleRow = parseInt(m[1], 10);
-      break;
-    }
-  }
-  var tierRowMap = {}, hdr, nextHdr, start, end, ti, tj, tier;
-  for (ti = 0; ti < tierOrder.length; ti++) {
-    tier = tierOrder[ti];
-    hdr = headers[tier];
-    if (!hdr) continue;
-    nextHdr = blueprintTitleRow;
-    for (tj = ti + 1; tj < tierOrder.length; tj++) {
-      if (headers[tierOrder[tj]]) { nextHdr = headers[tierOrder[tj]]; break; }
-    }
-    start = hdr + 1;
-    end = nextHdr - 2;
-    if (end < start) end = start;
-    if (end >= blueprintTitleRow) end = blueprintTitleRow - 1;
-    tierRowMap[tier] = [start, end];
-  }
-  if (!tierRowMap["\u4e00\u9636"]) return defaultTalentTierRowMap();
-  return tierRowMap;
-}
+function buildTalentTierRowMap(strings,xml){return SNOWD_CHARACTER_IO.talentLayout(xml,strings).rows;}
 
-function clearXlsxTalentSlots(set, tierRowMap) {
+function clearXlsxTalentSlots(set, tierRowMap, column) {
+  column=column||"O";
   var tier, range, r;
   for (tier in tierRowMap) {
     range = tierRowMap[tier];
-    for (r = range[0]; r <= range[1]; r++) set("O" + r, "", false);
+    for (r = range[0]; r <= range[1]; r++) set(column + r, "", false);
   }
 }
 
@@ -1805,7 +1782,7 @@ function xlsxInsertCellInRow(rowXml, colLetters, cellXml) {
 
 function clearXlsxSkillRows(set) {
   var r, cols = ["B", "D", "E", "F", "H", "I", "J"], ci;
-  for (r = 123; r <= 162; r++) {
+  for (r = 123; r <= 165; r++) {
     for (ci = 0; ci < cols.length; ci++) set(cols[ci] + r, "", false);
   }
   for (r = 168; r <= 209; r++) {
@@ -1861,12 +1838,19 @@ function buildExportFileName(exportState) {
   return name + (slot > 0 ? ("_slot" + slot) : "") + "_" + ts + "_角色档案.xlsx";
 }
 
-function fillXlsxTalents(set, talents, tierRowMap) {
+function fillXlsxTalents(set, talents, tierRowMap, column) {
+  column=column||"O";
   if (!tierRowMap) tierRowMap = defaultTalentTierRowMap();
-  clearXlsxTalentSlots(set, tierRowMap);
+  clearXlsxTalentSlots(set, tierRowMap, column);
   var tierSlots = {}, tierOrder = ["\u4e00\u9636", "\u4e8c\u9636", "\u4e09\u9636", "\u56db\u9636", "\u4e94\u9636", "\u516d\u9636", "\u4e03\u9636"];
   var ti, tName, tTier, range, slot;
   for (ti = 0; ti < tierOrder.length; ti++) tierSlots[tierOrder[ti]] = 0;
+  // #4: writtenToVisible 必须来自真实写入结果（✗ 不默认全部已写入）
+  for (ti = 0; ti < talents.length; ti++) {
+    if (!talents[ti]) continue;
+    talents[ti].writtenToVisible = false;
+    talents[ti].cellRef = "";
+  }
   for (ti = 0; ti < talents.length; ti++) {
     if (!talents[ti]) continue;
     tName = talents[ti].n || talents[ti].name || "";
@@ -1875,8 +1859,11 @@ function fillXlsxTalents(set, talents, tierRowMap) {
     range = tierRowMap[tTier];
     if (!range) continue;
     slot = tierSlots[tTier] || 0;
-    if (slot >= range[1] - range[0] + 1) continue;
-    set("O" + (range[0] + slot), tName);
+    if (slot >= range[1] - range[0] + 1) continue;   // 模板位满 → 保持 writtenToVisible=false（溢出条目）
+    set(column + (range[0] + slot), tName);
+    talents[ti].writtenToVisible = true;
+    talents[ti].cellRef = column + (range[0] + slot);
+    talents[ti].region = "talent"; talents[ti].place = "talent";
     tierSlots[tTier] = slot + 1;
   }
 }
@@ -2374,6 +2361,7 @@ function formatSkillDetailHtml(skillData) {
   var descParas = skillData.description || [];
 
 
+  var _udSet = (skillData.unit_tables && skillData.unit_tables.length) ? buildUnitTextSet(skillData) : null;
   for (di = 0; di < descParas.length; di++) {
 
 
@@ -2381,6 +2369,7 @@ function formatSkillDetailHtml(skillData) {
 
 
     if (!para || (hasDescField && para === descText)) continue;
+    if (_udSet && para && _udSet[normUnitText(para)]) continue;
 
 
     runs = entryRuns[para];
@@ -2404,7 +2393,8 @@ function formatSkillDetailHtml(skillData) {
     }
     html += "</table>";
   }
-  var unitTables = skillData.unit_tables || [];
+  html += renderUnitTables(skillData);
+  var unitTables = [];
   for (var ut = 0; ut < unitTables.length; ut++) {
     var U = unitTables[ut] || {}, UH = U.head || {};
     html += "<p><span style='color:#b0a090;font-weight:bold'>召唤单位：</span>" + escapeHtmlText(U.name || "");
@@ -7413,23 +7403,25 @@ function doReplace(idx) {
 
 
 
-function showSkillDetail(clsName, skillName) {
-
-
-  var clsData = SKILL_DATA[clsName]; if (!clsData) return;
-
-
-  var skillData = null; for (var i = 0; i < clsData.length; i++) { if (clsData[i].name === skillName) { skillData = clsData[i]; break; } }
-
-
-  if (!skillData) return;
-
-
-  var desc = formatSkillDetailHtml(skillData);showSkillPreview(skillName, skillData.style || clsName, skillData.tier || "", desc, null, clsName); }
-
-
-
-
+function showSkillDetail(clsName, skillName, skillId) {
+  // #2: 只解析一次；多候选绝不取第一项
+  var _res = (typeof resolveSkillData === "function") ? resolveSkillData({ src: clsName, id: skillId, n: skillName }) : { data: null, ambiguous: false };
+  if (_res && _res.data) {
+    showSkillPreview(skillName, _res.data.style || clsName, _res.data.tier || "", formatSkillDetailHtml(_res.data), null, clsName);
+    return;
+  }
+  var _raw = "";
+  try {
+    var _all = (state.skills || []).concat(state.talent_tree || []);
+    for (var _i = 0; _i < _all.length; _i++) {
+      var _en = _all[_i];
+      if (!_en) continue;
+      if ((skillId && _en.uid === skillId) || _en.n === skillName) { _raw = _en.ds || _en.rawDesc || ""; if (_raw) break; }
+    }
+  } catch (e2) {}
+  showSkillPreview(skillName, (_res && _res.ambiguous) ? "来源待确认（多候选）" : "来源待确认", "",
+    _raw ? escapeHtmlText(_raw) : "<p style=\"color:var(--muted)\">该技能未匹配到数据库条目，来源待确认。</p>", null, clsName);
+}
 
 function showSkillDetailFromAll(skillName, clsName) {
 
@@ -8271,32 +8263,7 @@ async function readFileEntry(files, entry) {
 }
 
 // ========== XLSX Parser (regex-based, no DOMParser) ==========
-async function parseXLSX(buffer) {
-  var zip = await readZIP(buffer);
-  if(!zip["xl/sharedStrings.xml"]||!zip["xl/worksheets/sheet1.xml"])throw new Error("模板格式不正确");
-  var ssXML=await readFileEntry(zip,"xl/sharedStrings.xml");
-  var sheetXML=await readFileEntry(zip,"xl/worksheets/sheet1.xml");
-  // Parse shared strings with regex (avoids DOMParser namespace issues)
-  var strings=[];
-  var siRe=/<si>([\s\S]*?)<\/si>/g;var sm;
-  while((sm=siRe.exec(ssXML))!==null){strings.push(sm[1].replace(/<[^>]+>/g,""));}
-  // Parse cells with regex: match <c r="XX" ...><v>N</v></c>
-  var cells={},rawValues={};
-  var cRe=/<c r="([A-Z]+\d+)"(?:[^>]*?t="([^"]*)")?[^>]*>(?:<is>(?:<t[^>]*>)?([^<]*)(?:<\/t>)?<\/is>|<v>(\d+(?:\.\d+)?)<\/v>)<\/c>/g;
-  var cm;
-  while((cm=cRe.exec(sheetXML))!==null){
-    var ref=cm[1],tAttr=cm[2]||"",inline=cm[3],vNum=cm[4];
-    var rawVal=vNum||inline||"";
-    var textVal=rawVal;
-    if(tAttr==="s"&&vNum){
-      var idx=parseInt(vNum);
-      textVal=(idx<strings.length)?strings[idx]:vNum;
-    }
-    if(rawVal){rawValues[ref]=rawVal;}
-    if(textVal){cells[ref]=textVal;if(ref=="C17"||ref=="C22")console.log("REGEX FOUND",ref,"rawVal="+rawVal,"textVal="+textVal);}
-  }
-  console.log("REGEX PARSER: strings="+strings.length+" cells="+Object.keys(cells).length);return{cells:cells,rawValues:rawValues,strings:strings};
-}
+async function parseXLSX(buffer) { return SNOWD_CHARACTER_IO.readWorkbook(buffer, readZIP, readFileEntry); }
 
 // ========== Calculation Helpers ==========
 
@@ -8413,9 +8380,23 @@ function _xlsxBuildZip(entries) {
   return result;
 }
 
+
+// ===== P2b-2: _SNODE_META 隐藏工作表（技能元信息随 xlsx 往返）=====
+function _metaEsc(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function _metaColName(n) {
+  var s = "", x = n;
+  while (x > 0) { var r = (x - 1) % 26; s = String.fromCharCode(65 + r) + s; x = Math.floor((x - 1) / 26); }
+  return s;
+}
+function buildSkillMetaSheetXML(state){return SNOWD_CHARACTER_IO.metaXML(state);}
+// 把 _SNODE_META 挂进 zip 条目：新增 sheet2 + 打补丁 workbook/rels/contentTypes
+function attachSkillMetaSheet(entries,state){return SNOWD_CHARACTER_IO.attachMeta(entries,state);}
 async function exportXlsxFromState(state) {
   // Use the embedded enhanced template or the original uploaded ZIP
   var templateBuf = _normalizeXlsxBuffer(state._uploadedXlsxBuf);
+  if(!templateBuf)state._xlsxSheetPath="xl/worksheets/sheet1.xml";
   // Guard: ensure templateBuf is a valid non-empty ArrayBuffer
   if (!templateBuf) {
     // Fallback: use embedded blank template
@@ -8445,8 +8426,8 @@ async function exportXlsxFromState(state) {
     entries.push({ name: nm, method: mt, rawData: raw, text: txt, compSize: cs, uncompSize: us, crc32: origCrc });
     p += 46 + nl + el + cl;
   }
-  var ss = entries.find(function (x) { return x.name === "xl/sharedStrings.xml"; });
-  var sh = entries.find(function (x) { return x.name === "xl/worksheets/sheet1.xml"; });
+  var ss = SNOWD_CHARACTER_IO.ensureSharedPart(entries);
+  var sh = entries.find(function (x) { return x.name === (state._xlsxSheetPath || "xl/worksheets/sheet1.xml"); });
   var stEntry = entries.find(function (x) { return x.name === "xl/styles.xml"; });
   if (!ss || !sh) {
     SB_toast("导出失败：模板缺少 sharedStrings 或 sheet1，请重新上传角色 xlsx 或刷新页面后重试");
@@ -8468,6 +8449,7 @@ async function exportXlsxFromState(state) {
     var tm = m[0].match(/<t(?:[^>]*)?>([\s\S]*?)<\/t>/);
     strings.push(tm ? tm[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&apos;/g, "'") : '');
   }
+  strings = SNOWD_CHARACTER_IO.sharedStrings(ss.text);
   function addStr(s) { if (!s) s = ""; var i = strings.indexOf(s); if (i >= 0) return i; strings.push(s); siBlocks.push("<si><t>" + s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "") + "</t></si>"); return strings.length - 1; }
 
   // Parse cell styles
@@ -8509,9 +8491,11 @@ async function exportXlsxFromState(state) {
     }
   }
 
+  SNOWD_CHARACTER_IO.prepareExport(state);
   // Fill all data from state into cells
   // Clear stale template cells first (avoids leftover content from uploaded/same-name sheets)
   clearXlsxSkillRows(set);
+  SNOWD_CHARACTER_IO.skillHeaders(set);
   clearXlsxEquipmentSlots(set);
   clearXlsxClassAndFeatureSlots(set);
 
@@ -8737,30 +8721,11 @@ async function exportXlsxFromState(state) {
   // Skills (B-M columns, rows 123-162)
   normalizeAllSkillSubs();
   var mainSkills = (state.skills || []).filter(isMainSkillOccupant);
-  var freeCantrips = (state.skills || []).filter(function (s) { return s && (s.grantedBy === "法师学徒" || (s.freeSlot && s.src === "法师")); });
+  var freeCantrips = (state.skills || []).filter(function (s) { return s && isFreeSlotSkill(s) && (s.grantedBy === "法师学徒" || (s.freeSlot && s.src === "法师")); });
   /** 同名技能优先按 src / 主职匹配，避免「猛击」等串到其他职业 */
-  function lookupSkill(name, preferClass) {
-    if (!name || typeof SKILL_DATA === 'undefined') return null;
-    var prefer = preferClass || "";
-    var fallback = null, cn, arr, i, hit;
-    if (prefer && SKILL_DATA[prefer]) {
-      arr = SKILL_DATA[prefer];
-      for (i = 0; i < arr.length; i++) {
-        if (arr[i].name === name || arr[i].n === name) return arr[i];
-      }
-    }
-    for (cn in SKILL_DATA) {
-      if (!Object.prototype.hasOwnProperty.call(SKILL_DATA, cn)) continue;
-      arr = SKILL_DATA[cn];
-      if (!arr) continue;
-      for (i = 0; i < arr.length; i++) {
-        hit = arr[i];
-        if (hit.name === name || hit.n === name) {
-          if (!fallback) fallback = hit;
-        }
-      }
-    }
-    return fallback;
+  function lookupSkill(name, source, id){
+    var rr=SNOWD_CHARACTER_IO.resolve({n:name,src:source,id:id}),p=rr.pick;if(!p)return null;
+    return (SKILL_DATA[p.cls]||[]).filter(function(s){return s.id===p.id;})[0]||null;
   }
   function skillExportDesc(sk, skRef) {
     if (sk.ds || sk.desc || sk.description) return sk.ds || sk.desc || sk.description || "";
@@ -8776,9 +8741,10 @@ async function exportXlsxFromState(state) {
   }
   for (var si = 0; si < mainSkills.length && 123 + si <= 162; si++) {
     var sk = mainSkills[si];
+    SNOWD_CHARACTER_IO.recordWrite(sk,"B"+(123+si),"main","main");
     var skName = sk.n || sk.name || "";
-    var skPrefer = sk.src || sk.source || cl.name || "";
-    var skRef = lookupSkill(skName, skPrefer);
+    var skPrefer = sk.src || sk.source || "";
+    var skRef = lookupSkill(skName, skPrefer, sk.id);
     var _skColor = getStyleColorForSkill(sk, skPrefer);
     set("B" + (123 + si), skName, true, _skColor ? (styleIdMap[_bMainXf + ":" + _skColor] || "") : "");
     set("D" + (123 + si), sk.tm || sk.time || (skRef && skRef.fields ? skRef.fields['施展时间'] : "") || "");
@@ -8791,16 +8757,18 @@ async function exportXlsxFromState(state) {
 
   // Talents (O column) — grouped by tier; clear stale cells then fill
   var _talentTierMap = buildTalentTierRowMap(strings, sh.text);
-  fillXlsxTalents(set, state.talent_tree || [], _talentTierMap);
+  var _talentColumn=SNOWD_CHARACTER_IO.talentLayout(sh.text,strings).column;
+  fillXlsxTalents(set, state.talent_tree || [], _talentTierMap, _talentColumn);
   fillXlsxBlueprints(set, state.blueprints || []);
 
   // Subclass skills (rows 168-209)
   var subSkills = (state.skills || []).filter(isSubSkillOccupant);
   for (var ssi = 0; ssi < subSkills.length && 168 + ssi <= 209; ssi++) {
     var ssk = subSkills[ssi];
+    SNOWD_CHARACTER_IO.recordWrite(ssk,"B"+(168+ssi),"sub","sub");
     var sskName = ssk.n || ssk.name || "";
-    var sskPrefer = ssk.src || ssk.source || (sc ? sc.name : "") || "";
-    var sskRef = lookupSkill(sskName, sskPrefer);
+    var sskPrefer = ssk.src || ssk.source || "";
+    var sskRef = lookupSkill(sskName, sskPrefer, ssk.id);
     var _sskColor = getStyleColorForSkill(ssk, sskPrefer);
     set("B" + (168 + ssi), sskName, true, _sskColor ? (styleIdMap[_bSubXf + ":" + _sskColor] || "") : "");
     set("D" + (168 + ssi), ssk.tm || ssk.time || (sskRef && sskRef.fields ? sskRef.fields['施展时间'] : "") || "");
@@ -8820,6 +8788,7 @@ async function exportXlsxFromState(state) {
     blueprintCap: typeof calcBlueprintSlots === "function" ? calcBlueprintSlots() : 0,
     blueprintFilled: (state.blueprints || []).length,
     tierRowMap: _talentTierMap,
+    talentColumn: _talentColumn,
     isTierUnlocked: typeof isTierUnlocked === "function" ? isTierUnlocked : function () { return true; },
     getTalentCap: typeof getTalentTierlotCap === "function" ? getTalentTierlotCap : function () { return 5; }
   });
@@ -8833,12 +8802,13 @@ async function exportXlsxFromState(state) {
       if (!_fcName) continue;
       var _fcRef = lookupSkill(_fcName, "法师学徒");
       var _fcRow = _cantripRow + _fci;
+      SNOWD_CHARACTER_IO.recordWrite(_fc,"B"+_fcRow,"main","main");
       set("B" + _fcRow, _fcName, true, _bMainXf);
       set("D" + _fcRow, _fc.tm || _fc.time || (_fcRef && _fcRef.fields ? _fcRef.fields['施展时间'] : "") || "");
       set("E" + _fcRow, _fc.range || (_fcRef && _fcRef.fields ? _fcRef.fields['施展距离'] : "") || "");
       set("F" + _fcRow, _fc.dur || _fc.duration || (_fcRef && _fcRef.fields ? _fcRef.fields['持续时间'] : "") || "");
       set("H" + _fcRow, skillExportCost(_fc, _fcRef));
-      set("I" + _fcRow, "法师学徒");
+      set("I" + _fcRow, _fc.src || "法师");
       set("J" + _fcRow, skillExportDesc(_fc, _fcRef));
     }
   }
@@ -8866,10 +8836,12 @@ async function exportXlsxFromState(state) {
   ss.text = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="' + strings.length + '" uniqueCount="' + strings.length + '">\n' + siBlocks.join("\n") + '\n</sst>';
   sh.text = xml;
 
-  // Recompress modified entries
+  attachSkillMetaSheet(entries, state);
+
+// Recompress modified entries
   for (var ei = 0; ei < entries.length; ei++) {
     var en = entries[ei];
-    if (en.name === "xl/worksheets/sheet1.xml" || en.name === "xl/sharedStrings.xml" || en.name === "xl/styles.xml") {
+    if (en._dirty || en.name === sh.name || en.name === "xl/sharedStrings.xml" || en.name === "xl/styles.xml") {
       var b = new TextEncoder().encode(en.text);
       var packed = await _xlsxPackEntry(b);
       en.rawData = packed.data;
@@ -9057,3 +9029,139 @@ if (typeof window !== 'undefined') {
   };
 }
 
+
+// ===== P2b: 技能元信息（来源/栏位/免费/占栏/获取途径/成长依据）迁移与兼容层 =====
+// 旧值里表示「获取途径」而非职业的写法（保留其免费栏位语义）
+var SKILL_VIA_LEGACY = { "法师学徒": 1, "战士学徒": 1, "牧师学徒": 1, "游荡者学徒": 1, "学徒": 1, "背景": 1, "起源": 1 };
+// 只补元信息：不重跑学习、不扣技能点、不发专长奖励；既有选择与机制字段一律不动
+function migrateSkillMeta(state) {
+  if (!state || !Array.isArray(state.skills)) return { migrated: 0, issues: 0 };
+  var issues = [], n = 0, lists = [state.skills, state.talent_tree || []];
+  for (var li = 0; li < lists.length; li++) {
+    var arr = lists[li];
+    if (!Array.isArray(arr)) continue;
+    for (var i = 0; i < arr.length; i++) {
+      var s = arr[i];
+      if (!s || typeof s !== "object") continue;
+      if (!s.uid) { s.uid = "sk-" + li + "-" + i + "-" + (s.n || s.name || ""); n++; }
+      var legacy = s.src || s.source || s.cls || "";
+      if (legacy && SKILL_VIA_LEGACY[legacy]) {
+        if (!s.via) s.via = legacy;
+        s.src = "";
+        if (s.free === undefined) s.free = true;
+        issues.push({ uid: s.uid, kind: "src-unknown", note: "旧值「" + legacy + "」是获取途径，来源待确认" });
+      } else if (legacy) {
+        if (s.src === undefined || s.src === "") s.src = legacy;
+      } else if (s.src === undefined) { s.src = ""; }
+      if (s.place === undefined) s.place = s.sub ? "sub" : (li === 1 ? "talent" : "main");
+      if (s.free === undefined) s.free = !!s.freeSlot;
+      if (s.occupies === undefined) s.occupies = !s.freeSlot;
+      if (s.growthBy === undefined) s.growthBy = "";
+      if (s.via === undefined) s.via = "";
+    }
+  }
+  var _prevIssues = state.importIssues;
+  if (_prevIssues && !Array.isArray(_prevIssues)) { _prevIssues = [].concat(_prevIssues.moved || [], _prevIssues.typos || [], _prevIssues.unknown || []); }
+  state.importIssues = (_prevIssues || []).concat(issues);
+  return { migrated: n, issues: issues.length };
+}
+// 兼容层：上传条目 <-> 面板技能（双向，保留既有字段语义）
+function entryToPanelSkill(entry) {
+  var s=Object.assign({},entry||{});s.n=s.n||s.name||"";
+  s.src=s.src||s.cls||"";s.place=s.place||(s.sub?"sub":"main");
+  if(s.place!=="sub")s.sub="";
+  else if(!s.sub)s.sub="子职业";
+  if(s.free===undefined)s.free=!!s.freeSlot;
+  if(s.occupies===undefined)s.occupies=!s.freeSlot;
+  s.freeSlot=s.occupies===false;s.grantedBy=s.grantedBy||s.via||"";
+  return s;
+}
+function panelSkillToEntry(skill) {
+  var s=Object.assign({},skill||{});s.n=s.n||s.name||"";s.src=s.src||s.cls||"";
+  s.place=s.place||(s.sub?"sub":"main");if(s.free===undefined)s.free=!!s.freeSlot;
+  if(s.occupies===undefined)s.occupies=!s.freeSlot;s.via=s.via||s.grantedBy||"";
+  return s;
+}
+
+// ===== P5: 单位数据完整渲染（结构化优先，lines 仅补缺/兜底）=====
+function normUnitText(s) {
+  return String(s == null ? "" : s).replace(/[\s　·▲●◆■□★☆（）()、，,。.；;：:》〉\[\]【】"\']/g, "");
+}
+// 单位卡片中"可明确确认重复"的文本集合（供描述段去重：仅精确匹配才跳过）
+function buildUnitTextSet(skillData) {
+  var set = {}, U = skillData.unit_tables || [], i, j, u, arr;
+  for (i = 0; i < U.length; i++) {
+    u = U[i] || {};
+    if (u.name) set[normUnitText(u.name)] = 1;
+    arr = u.lines || [];
+    for (j = 0; j < arr.length; j++) set[normUnitText(arr[j])] = 1;
+    arr = u.stats || [];
+    for (j = 0; j < arr.length; j++) {
+      var st = arr[j];
+      if (Array.isArray(st)) { set[normUnitText(st[0] + "：" + st[1])] = 1; set[normUnitText(st[0] + st[1])] = 1; }
+      else set[normUnitText(typeof st === "string" ? st : JSON.stringify(st))] = 1;
+    }
+    arr = u.abilities || [];
+    for (j = 0; j < arr.length; j++) {
+      var ab = arr[j] || {};
+      if (ab.text) set[normUnitText(ab.text)] = 1;
+      if (ab.name && ab.text) set[normUnitText(ab.name + "：" + ab.text)] = 1;
+    }
+    arr = u.notes || [];
+    for (j = 0; j < arr.length; j++) set[normUnitText(arr[j])] = 1;
+  }
+  return set;
+}
+// 完整渲染单位卡：head → attrs → stats → abilities → notes；结构化不足时用 lines 补缺
+
+// ===== #2: 统一的技能数据解析（只解析一次，始终使用该结果）=====
+function resolveSkillData(entry) {
+  var out={data:null,ambiguous:false,candidates:[]};
+  if(!entry||typeof SKILL_DATA==="undefined")return out;
+  var src=entry.src||entry.cls||"",id=entry.id||entry.skillId||"",name=entry.n||entry.name||"",hits=[];
+  Object.keys(SKILL_DATA).forEach(function(cls){
+    if(src&&cls!==src)return;
+    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id))hits.push(s);});
+  });
+  if(hits.length===1)out.data=hits[0];else if(hits.length>1){out.ambiguous=true;out.candidates=hits;}
+  return out;
+}
+function renderUnitTables(skillData) {
+  var U = (skillData && skillData.unit_tables) || [], html = "", i, j;
+  for (i = 0; i < U.length; i++) {
+    var u = U[i] || {}, h = u.head || {};
+    var hasStruct = (u.stats && u.stats.length) || (u.abilities && u.abilities.length) || (u.notes && u.notes.length);
+    html += "<div style=\"border:1px solid var(--line);border-radius:6px;padding:6px 8px;margin:6px 0;background:rgba(255,255,255,0.03)\">";
+    html += "<p style=\"margin:2px 0\"><span style=\"color:#b0a090;font-weight:bold\">召唤单位：</span>" + escapeHtmlText(u.name || "");
+    if (h.type_size) html += "　" + escapeHtmlText(h.type_size);
+    if (h.ac) html += "　防御等级 " + escapeHtmlText(String(h.ac));
+    if (h.hp) html += "　生命值 " + escapeHtmlText(String(h.hp));
+    html += "</p>";
+    var attrs = u.attrs || [];
+    for (j = 0; j < attrs.length; j++) {
+      html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(typeof attrs[j] === "string" ? attrs[j] : JSON.stringify(attrs[j])) + "</p>";
+    }
+    var stats = u.stats || [];
+    for (j = 0; j < stats.length; j++) {
+      var st = stats[j], lab = "", val = "";
+      if (Array.isArray(st)) { lab = st[0]; val = st[1]; }
+      else if (st && typeof st === "object") { lab = st.label || st.name || ""; val = st.value || st.val || ""; }
+      else { val = st; }
+      html += "<p style=\"font-size:13px;margin:1px 0;color:var(--muted)\">" + (lab ? "<span style=\"color:#b0a090\">" + escapeHtmlText(String(lab)) + "：</span>" : "") + escapeHtmlText(String(val == null ? "" : val)) + "</p>";
+    }
+    var abs = u.abilities || [];
+    if (abs.length) html += "<p style=\"color:#b0a090;font-weight:bold;margin:4px 0 2px\">固有技能：</p>";
+    for (j = 0; j < abs.length; j++) {
+      var ab = abs[j] || {};
+      html += "<p style=\"font-size:13px;margin:1px 0\">" + escapeHtmlText(ab.name || "") + "</p>";
+      if (ab.text) html += "<p style=\"font-size:13px;color:var(--muted);margin:0 0 3px 10px\">" + escapeHtmlText(ab.text) + "</p>";
+    }
+    var notes = u.notes || [];
+    for (j = 0; j < notes.length; j++) html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(typeof notes[j] === "string" ? notes[j] : JSON.stringify(notes[j])) + "</p>";
+    if (!hasStruct && u.lines && u.lines.length) {
+      for (j = 0; j < u.lines.length; j++) html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(u.lines[j]) + "</p>";
+    }
+    html += "</div>";
+  }
+  return html;
+}

@@ -3,7 +3,9 @@ import { readdirSync } from 'fs';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 
-const BASE = 'D:\\Download\\scholar-agent-main';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const BASE = dirname(fileURLToPath(import.meta.url));
 const RUN_DIRS = ['斯诺德跑团', '职业页'];
 
 let pages = [];
@@ -663,9 +665,33 @@ try {
 console.log(dupeOK ? '✅ 同名技能校验通过' : '❌ 同名技能校验发现问题');
 totalErrors += dupeOK ? 0 : 1;
 
+// 技能索引校验（独立枚举 + 内容级可达性）
+console.log('\n=== 技能索引 ===');
+let idxOK = true;
+try {
+  let idxOut = spawnSync('node', [join(BASE, 'verify_skill_index.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (idxOut.stdout) console.log(idxOut.stdout.trim());
+  if (idxOut.stderr) console.error(idxOut.stderr.trim());
+  if (idxOut.status !== 0) idxOK = false;
+} catch (e) {
+  idxOK = false;
+  console.log('❌ 技能索引校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(idxOK ? '✅ 技能索引通过' : '❌ 技能索引失败');
+totalErrors += idxOK ? 0 : 1;
+
+
+// 角色工作簿业务回归（不以索引条目数替代导入行为验收）
+console.log('\n=== 角色导入导出往返 ===');
+const characterIO = spawnSync('node', [join(BASE, 'verify_character_import_roundtrip.cjs')], {encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+if(characterIO.stdout)console.log(characterIO.stdout.trim());
+if(characterIO.stderr)console.error(characterIO.stderr.trim());
+const characterIOOK=characterIO.status===0;
+totalErrors+=characterIOOK?0:1;
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK;
+const allOK = totalErrors === 0 && characterIOOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

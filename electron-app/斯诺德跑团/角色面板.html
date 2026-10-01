@@ -1249,11 +1249,15 @@ body.battle .fab{display:none}
   <div id="learnToggle"></div>
 </div>
 
+<details id="panelImportIssues" style="margin:12px auto;padding:12px;max-width:1100px;box-sizing:border-box;display:none"></details>
 <script src="../职业页/数据/summoner_contracts_data.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
 <script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
+<script src="skill_index.js"></script>
+<script src="character_io.js"></script>
+<script src="character_import_ui.js"></script>
 <script src="panel_engine.js"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
@@ -1290,22 +1294,8 @@ function SB_calcTotalWeight() {
   return tw;
 }
 // 按 (name, src) 精确取技能数据；src 未命中时全局 fallback（兼容旧数据/缺 src 条目）
-function SB_findSkillMeta(name, src) {
-  if (typeof SKILL_DATA === 'undefined' || !SKILL_DATA || !name) return null;
-  if (src && SKILL_DATA[src]) {
-    var arr0 = SKILL_DATA[src];
-    for (var i0 = 0; i0 < arr0.length; i0++) {
-      if (arr0[i0] && arr0[i0].name === name) return arr0[i0];
-    }
-  }
-  for (var k in SKILL_DATA) {
-    var arr = SKILL_DATA[k];
-    if (!arr || !arr.length) continue;
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] && arr[i].name === name) return arr[i];
-    }
-  }
-  return null;
+function SB_findSkillMeta(name, src, id) {
+  var r=resolveSkillData({n:name,src:src||"",id:id||""});return r.data||null;
 }
 function SB_buildTestData(st) {
   st = st || (typeof state !== 'undefined' ? state : null);
@@ -1367,7 +1357,7 @@ function SB_buildTestData(st) {
     var tg = st.talent_tree[ti];
     if (!tg) continue;
     var tn = tg.n || tg.name || '';
-    var meta = SB_findSkillMeta(tn, tg.cls || (st.classes && st.classes[0] && st.classes[0].name));
+    var meta = SB_findSkillMeta(tn, tg.src || tg.cls || "", tg.id);
     var mf = (meta && meta.fields) || {};
     var tdesc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || tg.desc || '');
     var tfields = {
@@ -1393,13 +1383,13 @@ function SB_buildTestData(st) {
   if (st.skills) for (var si = 0; si < st.skills.length; si++) {
     var s = st.skills[si];
     if (!s || !(s.n || s.name)) continue;
-    var meta = SB_findSkillMeta(s.n || s.name, s.src);
+    var meta = SB_findSkillMeta(s.n || s.name, s.src, s.id);
     var mf = (meta && meta.fields) || {};
-    var cast = mf['施展时间'] || '-';
-    var fp = mf['疲劳消耗'] || '-';
-    var range = mf['施展距离'] || '-';
-    var dur = mf['持续时间'] || '-';
-    var desc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || '');
+    var cast = s.tm || s.time || mf['施展时间'] || '-';
+    var fp = s.cost || s.dr || s.fp || mf['疲劳消耗'] || '-';
+    var range = s.range || mf['施展距离'] || '-';
+    var dur = s.dur || s.duration || mf['持续时间'] || '-';
+    var desc = s.ds || s.desc || mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || '');
     var kw = mf['关键词'] || '';
     var cond = mf['前置条件'] || mf['施展条件'] || '-';
     var ext = mf['额外条件'] || mf['施展限制'] || '-';
@@ -1408,6 +1398,16 @@ function SB_buildTestData(st) {
     var style = (meta && meta.style) || '';
     var cost = (meta && meta.cost) || [];
     var entry = { n: s.n || s.name, src: s.src || '', style: style, cast: cast, range: range, dur: dur, fp: fp, kw: kw, cond: cond, ext: ext, desc: desc, descBody: [desc], up: upArr, marks: [], sub: false, react: cast === '反应动作', fieldRuns: (meta && meta.field_runs) || {}, descEntries: [], cost: cost };
+    // #1: 原始字段贯穿完整转换链（✗ 不再丢 ds/id/uid/place/kind/tier）
+    Object.assign(entry, {
+      id: s.id || (meta && meta.id) || "",
+      uid: s.uid || "",
+      ds: s.ds || s.rawDesc || "",
+      place: s.place || (s.sub || s.isSub ? "sub" : "main"),
+      kind: s.kind || "",
+      fieldRuns: s.ds && s.ds !== mf['描述'] ? {} : (meta && meta.field_runs) || {},
+      tier: s.tier || ""
+    });
     if (s.sub || s.isSub) entry.sub = true;
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
   }
@@ -1474,7 +1474,7 @@ function buildSkills(list, isSub) {
     out.push({
       n: s.n, style: s.style, fp: s.fp, cast: s.cast, range: s.range, dur: s.dur,
       kw: s.kw, cond: s.cond, ext: s.ext, desc: s.desc, up: (s.up || []).join('；') || '—',
-      react: s.react, sub: isSub
+      react: s.react, sub: isSub, src: s.src || '', id: s.id || '', uid: s.uid || '', ds: s.ds || '', place: s.place || '', kind: s.kind || '', tier: s.tier || ''
     });
   }
   return out;
@@ -2747,7 +2747,7 @@ function skillRowHtml(sk, isSub) {
   var usedHtml = used > 0 ? '<span class="used-cnt">已用 ' + used + ' 次</span>' : '<span class="used-cnt"></span>';
   var disabled = S.battle && S.exhaust >= 4 ? 'disabled' : '';
   var cls = sk.style ? '<span class="skill-sub">(' + sk.style + ')</span>' : '';
-  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" onclick="showSkillDetailRow(this)">' +
+  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" data-uid="' + escHtml(sk.uid || '') + '" onclick="showSkillDetailRow(this)">' +
     '<td class="skill-name">' + sk.n + ' ' + cls + react + '</td>' +
     '<td>' + sk.cast + '</td>' +
     '<td class="skill-desc">' + sk.desc + '</td>' +
@@ -2784,7 +2784,7 @@ var curDetailSkill = null;
 function showSkillDetailRow(tr) {
   var name = tr.getAttribute('data-name');
   var isSub = tr.getAttribute('data-sub') === 'true';
-  var sk = findSkill(name, isSub);
+  var sk = findSkill(name, isSub, tr.getAttribute("data-uid") || "");
   if (!sk) return;
   curDetailSkill = { sk: sk, isSub: isSub };
   document.getElementById('sdName').textContent = sk.n + (sk.react ? ' ⚡反应' : '');
@@ -2796,9 +2796,20 @@ function showSkillDetailRow(tr) {
   var descHtml = runs && runs.length ? renderFieldRuns(runs) : escHtml(sk.desc);
   rows.push(['描述', descHtml]);
   rows.push(['升级', sk.up]);
+  // #1b/#2: 统一解析 + 完整渲染器（效果正文/单位数据/升级说明）；未识别显示 Excel 原文
+  try {
+    var _uid = tr.getAttribute('data-uid') || '';
+    var _pool = (typeof state !== 'undefined' && state) ? (state.skills || []).concat(state.talent_tree || []) : [];
+    var _ent = null;
+    for (var _pi = 0; _pi < _pool.length; _pi++) { var _p = _pool[_pi]; if (_p && (_uid ? _p.uid === _uid : (_p.n === name && !!_p.sub === isSub))) { _ent = _p; break; } }
+    if (!_ent) _ent = { n: name, src: sk.src || '', id: sk.id || '', ds: sk.ds || '' };
+    var _res = (typeof resolveSkillData === 'function') ? resolveSkillData(_ent) : { data: null };
+    if (_res && _res.data && typeof formatSkillDetailHtml === 'function') rows.push(['完整详情', formatSkillDetailHtml(_res.data)]);
+    else { var _raw = _ent.ds || sk.ds || ''; rows.push(['原始描述', _raw ? escHtml(_raw) : '（未匹配到数据库条目，来源待确认）']); }
+  } catch (eFull) {}
   var html = '';
   for (var i = 0; i < rows.length; i++) {
-    html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
+    html += '<tr><td class=k>' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
   }
   document.getElementById('sdTable').innerHTML = html;
   var btn = document.getElementById('sdUseBtn');
@@ -2813,9 +2824,9 @@ function toggleBdDrawer() {
 function setBdDrawer(open) {
   document.getElementById('battleDrawer').classList.toggle('open', open);
 }
-function findSkill(name, isSub) {
-  var arr = isSub ? SKILLS.sub : SKILLS.main;
-  for (var i = 0; i < arr.length; i++) if (arr[i].n === name) return arr[i];
+function findSkill(name, isSub, uid) {
+  var arr=isSub?SKILLS.sub:SKILLS.main;
+  for(var i=0;i<arr.length;i++)if(uid?arr[i].uid===uid:arr[i].n===name)return arr[i];
   return null;
 }
 function useSkillFromDetail() {
