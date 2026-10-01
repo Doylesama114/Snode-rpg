@@ -1454,3 +1454,26 @@ html.dark .attr-row > *:first-child { background: linear-gradient(180deg,#5c4529
   h1 { margin: 6px 0 !important; } h2 { margin: 6px 0 !important; } h3 { margin: 4px 0 !important; }
   * { scroll-margin-top: 60px; }
 }
+
+/* mobile-header-v1：移动端标题区不常驻 + 隐藏副标题 + 标题不折行（text-indent 只缩首行） */
+@media (max-width: 600px) {
+  /* 用 relative 而非 static：既不常驻，又保留作为后代绝对定位包含块的作用（否则导航抽屉/遮罩会错位） */
+  /* relative + 显式 z-index：不常驻，同时保持顶层，避免 ☰ 按钮被 adv-card 等卡片盖住 */
+  header { position: relative !important; top: auto !important; z-index: 60 !important; backdrop-filter: none !important; background: rgba(246,244,239,0.98) !important; }
+  /* 移动端改为纵向：标题独占一行（避免被搜索框挤到只剩两个字），搜索框另起一行 */
+  header .topbar { padding: 6px 10px !important; gap: 6px !important; flex-direction: column !important; align-items: stretch !important; }
+  header .subtitle, header p.subtitle { display: none !important; }
+  /* flex 子项 min-width:auto 会被 nowrap 标题撑破视口（导致布局视口从 375 变 451，☰ 按钮被挤出屏幕） */
+  header .topbar > div, header .topbar > div:first-child { min-width: 0 !important; flex: 1 1 auto !important; }
+  header .topbar > label, header .topbar > .searchbox { min-width: 0 !important; }
+  /* 标题行抬到浮动按钮（功能导航 y45-78 / 主题齿轮 y16-52）的纵向区间之外，两侧不必再内缩 */
+  h1 {
+    text-indent: 0 !important; padding-left: 0 !important; padding-right: 0 !important;
+    font-size: 15px !important; line-height: 1.2 !important; margin: 0 !important;
+    white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  }
+  /* 关键：整块标题区下移到两个浮动按钮（y16-78）之下，标题即可全宽、不截断、无遮挡 */
+  header .topbar { padding-top: 62px !important; }
+  header label, header .searchbox { width: 100% !important; margin: 0 !important; }
+  header input[type="search"], header input { font-size: 12.5px !important; padding: 5px 8px !important; width: 100% !important; box-sizing: border-box; }
+}
