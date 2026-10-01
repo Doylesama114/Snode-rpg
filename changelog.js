@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8036',
+    date: '2026-10-01',
+    changes: [
+      '启动台地图改版：平面星图升级为球面穹顶（2D canvas 伪 3D），地名与冒险钉按 UV 投影跟随球面转动，支持拖拽地图 / 点击骰子 D20 / 单击落下冒险钉；同步 electron 与移动端版本号'
+    ]
+  },
+
+
+  {
     version: '1.0.8035',
     date: '2026-09-30',
     changes: [

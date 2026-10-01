@@ -92,10 +92,21 @@ a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid 
   mask-image: radial-gradient(circle at 50% 50%, #000 50%, rgba(0,0,0,.45) 74%, transparent 97%); }
 .starmap-img { position: absolute; width: 147.6%; height: 147.6%; left: -25.58%; top: -6.98%; display: block;
   mix-blend-mode: screen; opacity: .95; }
+/* 穹顶画布（WebGL 凸面投影；GL 可用时隐藏位图） */
+.mapgl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.starmap.gl-on .starmap-img { display: none; }
 .capital-mark { position: absolute; left: 47.3%; top: 64.5%; transform: translate(-50%,-50%); pointer-events: none; }
 .cm-star { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); color: #ff8a5c; font-size: 16px; text-shadow: 0 0 10px rgba(255,130,80,.95); }
 .cm-ring { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px; border: 1.5px solid rgba(255,130,80,.7); border-radius: 50%; animation: cmPing 2.4s ease-out infinite; }
 @keyframes cmPing { 0% { transform: scale(.35); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
+/* 冒险者图钉（跟随地图变换） */
+.adv-pin { position: absolute; width: 30px; height: 30px; transform: translate(-50%, -96%); pointer-events: none; z-index: 3; display: none;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.55)); }
+.adv-pin svg { width: 100%; height: 100%; display: block; }
+.adv-pin .pin-ring { position: absolute; left: 50%; top: 74%; width: 26px; height: 26px; margin-left: -13px;
+  border: 1.5px solid rgba(230,195,124,.75); border-radius: 50%; animation: cmPing 2.2s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .adv-pin .pin-ring { animation: none; } }
+@media (max-width: 860px) { .center { touch-action: pan-y; } .adv-pin { width: 22px; height: 22px; } }
 .die-dock { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 4; pointer-events: none; }
 .die-dock svg { width: 160px; height: 160px; pointer-events: auto; cursor: pointer; }
 .roll-badge { position: absolute; left: 50%; top: 50%; z-index: 5; text-align: center;
@@ -263,7 +274,12 @@ a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid 
       <div class="mapview" id="mapView">
         <div class="starmap" id="starmap">
           <img class="starmap-img" id="mapImg" src="help-media/image187-hd-opt.webp" alt="雷恩王国全舆" draggable="false" onerror="__mapFallback(this)">
+          <canvas class="mapgl" id="mapGL" aria-hidden="true"></canvas>
           <div class="capital-mark"><span class="cm-star">&#9733;</span><span class="cm-ring"></span></div>
+          <div class="adv-pin" id="advPin" aria-label="冒险者当前位置">
+            <svg viewBox="0 0 30 30"><path d="M15 2.5 C9.8 2.5 5.8 6.5 5.8 11.5 C5.8 18.5 15 27 15 27 C15 27 24.2 18.5 24.2 11.5 C24.2 6.5 20.2 2.5 15 2.5 Z" fill="#e6c37c" stroke="#3a2a13" stroke-width="1.6"/><circle cx="15" cy="11.5" r="3.6" fill="#3a2a13"/></svg>
+            <span class="pin-ring"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -275,7 +291,7 @@ a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid 
       </svg>
     </div>
     <div class="roll-badge" id="rollBadge"><b id="rollNum">20</b><i>D20</i></div>
-    <div class="roll-hint">点击骰子 &middot; 掷一次 D20 &#65372; 滚轮缩放 &middot; 拖拽平移</div>
+    <div class="roll-hint">点击骰子掷 D20 &#65372; 拖拽滑动地图 &#65372; 单击落下冒险图钉</div>
     <div class="center-caption">雷恩王国 &middot; 王都君冠城</div>
   </main>
 
@@ -332,7 +348,7 @@ a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid 
 <script src="changelog.js"></script>
 <script>
 /* ===== 版本与更新流程（沿用原启动台逻辑，函数名与 #updateMsg 契约保持不变）===== */
-var APP_VERSION = '1.0.8035';
+var APP_VERSION = '1.0.8036';
 (function(){ var el = document.getElementById('versionDisplay'); if (el) el.textContent = 'v' + APP_VERSION; })();
 
 var OSS_MIRROR_BASE = 'https://snode-rpg-releases.oss-cn-chengdu.aliyuncs.com';
@@ -716,6 +732,7 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
 
   /* ---------- 鼠标视差（≤7°，移动端与减少动效时关闭） ---------- */
   var tx = 0, ty = 0, cx = 0, cy = 0;
+  var drag = null;
   if (!RM) {
     document.addEventListener('mousemove', function (e) {
       if (isMobile()) { tx = 0; ty = 0; return; }
@@ -834,6 +851,94 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
     }
   }
 
+  /* ---------- 穹顶地图（WebGL 鱼眼凸面投影；GL 不可用时退化为平面静态图） ---------- */
+  var mapImg = document.getElementById('mapImg');
+  var MAXA = 1.15;                 /* 取景口角半径（弧度）：隆起强度 */
+  var CROP0 = 0.678;               /* 静息可视贴图跨度（对应原取景窗 860/1269） */
+  var domeK = 1;                   /* 缩放 1~3.5 */
+  var domeC = { u: 0.518, v: 0.391 };  /* 当前对准的贴图 uv（v 从顶部起） */
+  var domeV = { u: 0, v: 0 };
+  var domeDirty = false;
+  function uvPerRad() { return CROP0 / (2 * MAXA * domeK); }
+  function domeRange() { var hs = uvPerRad() * MAXA; return Math.max(0, 0.5 - hs) * 0.8; }
+
+  var glc = document.getElementById('mapGL');
+  var mctx = null, domeOK = false;
+  var TILES = 28;                     /* 网格密度（球面失真按格近似） */
+  var gridGeo = null;                 /* 预计算目标格几何 */
+  function initDome() {
+    if (!glc || !mapImg || !mapImg.naturalWidth) return false;
+    mctx = glc.getContext('2d');
+    return !!mctx;
+  }
+  function sizeGL() {
+    if (!glc) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var w = Math.round((glc.parentElement ? glc.parentElement.offsetWidth : 300) * dpr);
+    if (w && glc.width !== w) {
+      glc.width = w; glc.height = w;
+      gridGeo = null;
+      domeDirty = true; renderDome();
+    }
+  }
+  /* 屏幕点（-1..1）→ 贴图 uv（穹顶投影逆采样） */
+  function domeUV(px, py, out) {
+    var r = Math.sqrt(px * px + py * py);
+    var th = Math.asin(Math.min(1, r) * Math.sin(MAXA)), spr = uvPerRad();
+    var dx = r > 1e-4 ? px / r : 0, dy = r > 1e-4 ? py / r : 0;
+    out.u = domeC.u + dx * th * spr;
+    out.v = domeC.v + dy * th * spr;
+    return out;
+  }
+  function renderDome() {
+    if (!domeOK || !mctx || !mapImg.naturalWidth) return;
+    var W = glc.width, T = TILES, tw = W / T;
+    if (!gridGeo) {
+      gridGeo = { tw: tw };
+    }
+    var imgW = mapImg.naturalWidth, imgH = mapImg.naturalHeight;
+    mctx.fillStyle = '#000';
+    mctx.fillRect(0, 0, W, W);
+    var uv0 = { u: 0, v: 0 }, uv1 = { u: 0, v: 0 };
+    for (var gy = 0; gy < T; gy++) {
+      for (var gx = 0; gx < T; gx++) {
+        var x0 = gx * tw, y0 = gy * tw;
+        /* 格四角归一化坐标（-1..1） */
+        var nx0 = x0 / W * 2 - 1, nx1 = (x0 + tw) / W * 2 - 1;
+        var ny0 = y0 / W * 2 - 1, ny1 = (y0 + tw) / W * 2 - 1;
+        if (nx0 * nx0 + ny0 * ny0 > 1.32 && nx1 * nx1 + ny1 * ny1 > 1.32) continue;   /* 圆外粗剔除 */
+        domeUV(nx0, ny0, uv0); domeUV(nx1, ny1, uv1);
+        var su = Math.min(uv0.u, uv1.u) * imgW, sv = Math.min(uv0.v, uv1.v) * imgH;
+        var sw = Math.abs(uv1.u - uv0.u) * imgW, sh = Math.abs(uv1.v - uv0.v) * imgH;
+        if (sw < 0.5 || sh < 0.5) continue;
+        mctx.drawImage(mapImg, su, sv, sw, sh, x0, y0, tw + 0.6, tw + 0.6);
+      }
+    }
+    /* 穹顶暗角（limb 压暗） */
+    var g = mctx.createRadialGradient(W / 2, W / 2, W * 0.55, W / 2, W / 2, W * 0.5);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,0.5)');
+    mctx.fillStyle = g;
+    mctx.fillRect(0, 0, W, W);
+    /* 凸面高光（左上反射弧，强化隆起感） */
+    var hl = mctx.createRadialGradient(W * 0.36, W * 0.32, 0, W * 0.36, W * 0.32, W * 0.55);
+    hl.addColorStop(0, 'rgba(255,240,200,0.10)');
+    hl.addColorStop(1, 'rgba(255,240,200,0)');
+    mctx.fillStyle = hl;
+    mctx.fillRect(0, 0, W, W);
+    domeDirty = false;
+    placeOverlays();
+  }
+  /* 贴图 uv → 取景口屏幕%（穹顶投影；肢外返回 null） */
+  function projectUV(u, v) {
+    var du = u - domeC.u, dv = v - domeC.v;
+    var d = Math.sqrt(du * du + dv * dv), spr = uvPerRad();
+    var th = d / spr;
+    if (th > MAXA * 1.03) return null;
+    var r = Math.sin(th) / Math.sin(MAXA), dx = d > 1e-6 ? du / d : 0, dy = d > 1e-6 ? dv / d : 0;
+    return { x: 50 + dx * r * 50, y: 50 + dy * r * 50, s: Math.pow(Math.max(0.2, Math.cos(th)), 0.6) };
+  }
+
   /* ---------- 主循环（hidden 时停帧；减少动效时静止） ---------- */
   var rolling = false, bobT = 0;
   /* 骰子渲染限帧 60 FPS（视觉无差别，GPU 工作量约减半）；用时间缩放保持视觉速度不变 */
@@ -850,6 +955,22 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
       if (!RM) {
         cx += (tx - cx) * .06; cy += (ty - cy) * .06;
       }
+      /* 穹顶：惯性滑行 + 出界回弹（拖拽中不施加） */
+      if (!drag && domeOK) {
+        if (!RM && (Math.abs(domeV.u) > 1e-5 || Math.abs(domeV.v) > 1e-5)) {
+          domeC.u += domeV.u * dtF; domeC.v += domeV.v * dtF;
+          domeV.u *= Math.pow(.95, dtF); domeV.v *= Math.pow(.95, dtF);
+          if (Math.abs(domeV.u) <= 1e-5) domeV.u = 0;
+          if (Math.abs(domeV.v) <= 1e-5) domeV.v = 0;
+          domeDirty = true;
+        }
+        var C = domeRange();
+        if (domeC.u > 0.5 + C) { domeC.u += (0.5 + C - domeC.u) * .08 * dtF; domeDirty = true; }
+        if (domeC.u < 0.5 - C) { domeC.u += (0.5 - C - domeC.u) * .08 * dtF; domeDirty = true; }
+        if (domeC.v > 0.5 + C) { domeC.v += (0.5 + C - domeC.v) * .08 * dtF; domeDirty = true; }
+        if (domeC.v < 0.5 - C) { domeC.v += (0.5 - C - domeC.v) * .08 * dtF; domeDirty = true; }
+        if (domeDirty) renderDome();
+      }
       if (tilt) tilt.style.transform = 'rotateX(' + cx.toFixed(2) + 'deg) rotateY(' + cy.toFixed(2) + 'deg)';
       if (!RM) {
         bobT += .02 * dtF;
@@ -861,47 +982,52 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
   renderDie(0);
   loop();
 
-  /* ---------- 地图缩放 / 平移（移动端不启用） ---------- */
+  /* ---------- 穹顶缩放（滚轮；光标处为不动点） ---------- */
   var mapView = document.getElementById('mapView');
   var centerEl = document.getElementById('centerEl');
   var starmap = document.getElementById('starmap');
-  var view = { k: 1, x: 0, y: 0 }, panned = false;
-  function applyView() { if (mapView) mapView.style.transform = 'translate(' + view.x + 'px,' + view.y + 'px) scale(' + view.k + ')'; }
-  function clampView() {
-    if (!starmap || !centerEl) return;
-    var s = starmap.offsetWidth * view.k;
-    var r = centerEl.getBoundingClientRect();
-    var L = 0.26 * s;
-    var bx = (1 - view.k) * r.width / 2, by = (1 - view.k) * r.height / 2;
-    view.x = Math.max(bx - L, Math.min(bx + L, view.x));
-    view.y = Math.max(by - L, Math.min(by + L, view.y));
-  }
+  var panned = false;
   if (centerEl && !isMobile()) {
     centerEl.addEventListener('wheel', function (e) {
-      if (isMobile()) return;
+      if (isMobile() || !domeOK) return;
       e.preventDefault();
-      var old = view.k, k = Math.max(1, Math.min(3.5, old * (e.deltaY > 0 ? 1 / 1.15 : 1.15)));
-      var r = centerEl.getBoundingClientRect();
-      var mx = e.clientX - r.left, my = e.clientY - r.top;
-      view.x = mx - (mx - view.x) * (k / old);
-      view.y = my - (my - view.y) * (k / old);
-      view.k = k;
-      if (k === 1) { view.x = 0; view.y = 0; }
-      clampView(); applyView();
+      var old = domeK, k = Math.max(1, Math.min(3.5, old * (e.deltaY > 0 ? 1 / 1.15 : 1.15)));
+      var r0 = starmap.getBoundingClientRect();
+      var px = (e.clientX - (r0.left + r0.width / 2)) / (r0.width / 2);
+      var py = (e.clientY - (r0.top + r0.height / 2)) / (r0.height / 2);
+      var r = Math.sqrt(px * px + py * py);
+      if (r <= 1.02) {
+        var th = Math.asin(Math.min(1, r) * Math.sin(MAXA)), dx = r > 1e-4 ? px / r : 0, dy = r > 1e-4 ? py / r : 0;
+        var so = uvPerRad(), sn = CROP0 / (2 * MAXA * k);
+        domeC.u += dx * th * (so - sn);
+        domeC.v += dy * th * (so - sn);
+      }
+      domeK = k; domeDirty = true; renderDome();
     }, { passive: false });
   }
-  var drag = null;
+
+  /* ---------- 穹顶拖拽滑动（球面错觉手感；松手惯性滑行） ---------- */
   function onDragMove(e) {
     if (!drag || !centerEl) return;
-    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (Math.abs(dx) + Math.abs(dy) > 6) {
-      drag.moved = true; panned = true;
-      centerEl.classList.add('panning');
-      view.x = drag.vx + dx; view.y = drag.vy + dy;
-      clampView(); applyView();
+    var dx = e.clientX - drag.lx, dy = e.clientY - drag.ly;
+    drag.lx = e.clientX; drag.ly = e.clientY;
+    if (!drag.moved && Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 6) {
+      drag.moved = true; panned = true; centerEl.classList.add('panning');
     }
+    if (!drag.moved || !domeOK) return;
+    var R = (starmap.offsetWidth / 2) || 1, spr = uvPerRad();
+    var C = domeRange();
+    var res = (Math.abs(domeC.u - 0.5) > C) ? 0.3 : 1;
+    var du = -dx / R * MAXA * spr * res;
+    var dvv = isMobile() ? 0 : -dy / R * MAXA * spr * (Math.abs(domeC.v - 0.5) > C ? 0.3 : 1);
+    domeC.u += du; domeC.v += dvv;
+    drag.vU = drag.vU * 0.75 + du * 0.25;
+    drag.vV = drag.vV * 0.75 + dvv * 0.25;
+    renderDome();
   }
   function onDragEnd() {
+    if (drag && !drag.moved) placePin(drag.x, drag.y);
+    if (drag && drag.moved) { domeV.u = drag.vU || 0; domeV.v = drag.vV || 0; }
     drag = null;
     if (centerEl) centerEl.classList.remove('panning');
     window.removeEventListener('pointermove', onDragMove);
@@ -910,12 +1036,66 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
   }
   if (centerEl) {
     centerEl.addEventListener('pointerdown', function (e) {
-      if (isMobile()) return;
-      drag = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y, moved: false };
+      if (e.target && e.target.closest && e.target.closest('#d20layer, .rail, .grid9, .topbar, .bottombar, .gui-trigger, .go, a, button')) return;
+      drag = { x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, moved: false, vU: 0, vV: 0 };
       window.addEventListener('pointermove', onDragMove);
       window.addEventListener('pointerup', onDragEnd);
     });
   }
+
+  /* ---------- 冒险者图钉（全站单一位置，贴图 uv 持久化） ---------- */
+  var advPin = document.getElementById('advPin');
+  var capMark = document.querySelector('.capital-mark');
+  var CAP_UV = { u: 0.500, v: 0.490 };   /* 君冠城在贴图中的位置 */
+  var PIN_KEY = '_snowd_adv_loc';
+  var pinPos = { u: CAP_UV.u, v: CAP_UV.v };
+  try {
+    var raw = JSON.parse(localStorage.getItem(PIN_KEY) || 'null');
+    if (raw && raw._v === 2 && typeof raw.u === 'number') pinPos = { u: raw.u, v: raw.v };
+    else if (raw && typeof raw.x === 'number') pinPos = { u: (220 + raw.x / 100 * 860) / 1269, v: (60 + raw.y / 100 * 860) / 1269 };  /* 旧版取景窗%迁移 */
+  } catch (err) {}
+  function placeOverlays() {
+    if (advPin) {
+      var pp = projectUV(pinPos.u, pinPos.v);
+      if (pp) { advPin.style.display = 'block'; advPin.style.left = pp.x + '%'; advPin.style.top = pp.y + '%'; advPin.style.transform = 'translate(-50%,-96%) scale(' + pp.s.toFixed(3) + ')'; }
+      else advPin.style.display = 'none';
+    }
+    if (capMark) {
+      var cp = projectUV(CAP_UV.u, CAP_UV.v);
+      if (cp) { capMark.style.display = 'block'; capMark.style.left = cp.x + '%'; capMark.style.top = cp.y + '%'; }
+      else capMark.style.display = 'none';
+    }
+  }
+  function setPinUV(u, v, save) {
+    pinPos.u = Math.max(0.02, Math.min(0.98, u));
+    pinPos.v = Math.max(0.02, Math.min(0.98, v));
+    placeOverlays();
+    if (save !== false) { try { localStorage.setItem(PIN_KEY, JSON.stringify({ _v: 2, u: pinPos.u, v: pinPos.v })); } catch (err) {} }
+  }
+  function placePin(clientX, clientY) {
+    if (!domeOK || !starmap) return;
+    var r0 = starmap.getBoundingClientRect();
+    var px = (clientX - (r0.left + r0.width / 2)) / (r0.width / 2);
+    var py = (clientY - (r0.top + r0.height / 2)) / (r0.height / 2);
+    var r = Math.sqrt(px * px + py * py);
+    if (r > 1.02) return;
+    var th = Math.asin(Math.min(1, r) * Math.sin(MAXA)), dx = r > 1e-4 ? px / r : 0, dy = r > 1e-4 ? py / r : 0;
+    setPinUV(domeC.u + dx * th * uvPerRad(), domeC.v + dy * th * uvPerRad(), true);
+  }
+  /* 穹顶启动：贴图就绪后初始化；失败则保持平面图 */
+  function tryStartGL() {
+    if (domeOK) return;
+    domeOK = initDome();
+    if (domeOK && starmap) {
+      starmap.classList.add('gl-on');
+      sizeGL(); domeDirty = true; renderDome();
+    }
+  }
+  if (mapImg) {
+    if (mapImg.complete && mapImg.naturalWidth > 0) tryStartGL();
+    mapImg.addEventListener('load', tryStartGL);
+  }
+  window.addEventListener('resize', sizeGL);
 
   /* ---------- 掷骰 ---------- */
   var badge = document.getElementById('rollBadge'), rollNum = document.getElementById('rollNum');
