@@ -1256,16 +1256,19 @@ body.battle .fab{display:none}
 <script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
 <script src="skill_index.js"></script>
-<script src="character_class_data.js?v=20261003"></script>
-<script src="character_classes.js?v=20261003"></script>
-<script src="character_stats.js?v=20261003"></script>
-<script src="character_workbook_cache.js?v=20261003"></script>
-<script src="character_io.js?v=20261003"></script>
-<script src="character_layout.js?v=20261003"></script>
-<script src="character_fields.js?v=20261003"></script>
-<script src="character_export.js?v=20261003"></script>
-<script src="character_import_ui.js?v=20261003"></script>
-<script src="panel_engine.js?v=20261003"></script>
+<script src="character_import_schema.js?v=20261003-general1"></script>
+<script src="character_structure.js?v=20261003-general1"></script>
+<script src="character_class_data.js?v=20261003-general1"></script>
+<script src="character_classes.js?v=20261003-general1"></script>
+<script src="character_stats.js?v=20261003-general1"></script>
+<script src="character_workbook_cache.js?v=20261003-general1"></script>
+<script src="character_io.js?v=20261003-general1"></script>
+<script src="character_layout.js?v=20261003-general1"></script>
+<script src="character_fields.js?v=20261003-general1"></script>
+<script src="character_export.js?v=20261003-general1"></script>
+<script src="character_review_ui.js?v=20261003-general1"></script>
+<script src="character_import_ui.js?v=20261003-general1"></script>
+<script src="panel_engine.js?v=20261003-general1"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
@@ -1377,7 +1380,7 @@ function SB_buildTestData(st) {
       place: s.place || (s.sub || s.isSub ? "sub" : "main"),
       kind: s.kind || "",
       fieldRuns: s.ds && s.ds !== mf['描述'] ? {} : (meta && meta.field_runs) || {},
-      tier: s.tier || "", resolution:s.resolution||"",via:s.via||s.grantedBy||"",occupies:s.occupies,summonNotes:s.summonNotes||"",ownerClassIndex:s.ownerClassIndex,mergedNotes:s.mergedNotes||[],requiresEquipment:s.requiresEquipment||""
+      tier: s.tier || "", resolution:s.resolution||"",via:s.via||s.grantedBy||"",occupies:s.occupies,summonNotes:s.summonNotes||"",ownerClassIndex:s.ownerClassIndex,mergedNotes:s.mergedNotes||[],requiresEquipment:s.requiresEquipment||"",activation:s.activation||null,linkedItem:s.linkedItem||""
     });
     if (s.sub || s.isSub) entry.sub = true;
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
@@ -1445,7 +1448,7 @@ function buildSkills(list, isSub) {
     out.push({
       n: s.n, style: s.style, fp: s.fp, cast: s.cast, range: s.range, dur: s.dur,
       kw: s.kw, cond: s.cond, ext: s.ext, desc: s.desc, up: (s.up || []).join('；') || '—',
-      react: s.react, sub: isSub, src: s.src || '', id: s.id || '', uid: s.uid || '', ds: s.ds || '', place: s.place || '', kind: s.kind || '', tier: s.tier || '',resolution:s.resolution||'',via:s.via||'',occupies:s.occupies,ownerClassIndex:s.ownerClassIndex,requiresEquipment:s.requiresEquipment||'',mergedNotes:s.mergedNotes||[]
+      react: s.react, sub: isSub, src: s.src || '', id: s.id || '', uid: s.uid || '', ds: s.ds || '', place: s.place || '', kind: s.kind || '', tier: s.tier || '',resolution:s.resolution||'',via:s.via||'',occupies:s.occupies,ownerClassIndex:s.ownerClassIndex,requiresEquipment:s.requiresEquipment||'',activation:s.activation||null,linkedItem:s.linkedItem||'',mergedNotes:s.mergedNotes||[]
     });
   }
   return out;
@@ -2795,16 +2798,18 @@ function findSkill(name, isSub, uid) {
 function useSkillFromDetail() {
   if (curDetailSkill) useSkill(curDetailSkill.sk.n,curDetailSkill.sk.uid);
 }
-function useSkill(name,uid) {
+function useSkill(name,uid,oneTimeCost) {
   if (!S.battle) { toast('请先进入战斗记录模式', 'warn'); return; }
   if (S.exhaust >= 4) { toast('失能状态：无法使用技能（圣骑士例外暂未实现）', 'exhaust-toast'); return; }
   var sk = findSkill(name,false,uid) || findSkill(name,true,uid);
   if (!sk) return;
   var before = S.fp;
   if(sk.requiresEquipment){var equipped=["主手武器","副手武器","防具","服饰","配饰"].some(function(slot){return (state.equipment[slot]||[]).some(function(e){return (e.item||e.name)===sk.requiresEquipment;});});if(!equipped){SD_alert("需要装备："+sk.requiresEquipment);return;}}
+  if(sk.activation&&sk.activation.mode==="unknown"){SD_alert("请先确认该能力的生效条件。");openIssueResolver(uid,state);return;}
+  if(sk.activation&&sk.activation.mode==="owned"){var held=false;Object.keys(state.equipment||{}).forEach(function(slot){(state.equipment[slot]||[]).forEach(function(e){(e.items||[e]).forEach(function(n){if((n.item||n.name)===sk.activation.item)held=true;});});});if(!held){SD_alert("需要持有："+sk.activation.item);return;}}
   var rawCost=String(sk.fp==null?"":sk.fp).trim();
-  if(rawCost&&!/^\d+(?:\.\d+)?$/.test(rawCost)&&rawCost!=="—"&&rawCost!=="-"){SD_alert("该能力的疲劳消耗需要按原文确认："+rawCost);return;}
-  var cost = Number(rawCost) || 0;
+  if(oneTimeCost===undefined&&rawCost&&!/^\d+(?:\.\d+)?$/.test(rawCost)&&rawCost!=="—"&&rawCost!=="-"){SD_prompt({title:"本次技能消耗",message:"原规则："+rawCost+"。填写本次实际疲劳消耗，原规则会继续保留。",type:"number",validate:function(v){var n=Number(v);return v.trim()!==""&&Number.isFinite(n)&&n>=0?"":"请输入有效的非负数。";}},function(v){useSkill(name,uid,Number(v));});return;}
+  var cost = oneTimeCost===undefined?Number(rawCost)||0:oneTimeCost;
   S.fp = Math.max(0, S.fp - cost);
   S.usage[name] = (S.usage[name] || 0) + 1;
   // 按钮视觉反馈
@@ -4494,5 +4499,6 @@ window.addEventListener('load', function() {
 <script>window.__guiSkin = true; document.documentElement.classList.add("gui-panel-page");</script>
 <script src="guild-ui.js"></script>
 <script src="desktop_recovery.js"></script>
+<script src="user_preferences.js"></script>
 </body>
 </html>

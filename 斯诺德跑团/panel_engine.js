@@ -8090,7 +8090,7 @@ async function readFileEntry(files, entry) {
 }
 
 // ========== XLSX Parser (regex-based, no DOMParser) ==========
-async function parseXLSX(buffer) { return SNOWD_CHARACTER_IO.readWorkbook(buffer, readZIP, readFileEntry); }
+async function parseXLSX(buffer,options) { return SNOWD_CHARACTER_IO.readWorkbook(buffer, SNOWD_CHARACTER_IO.readZIP, readFileEntry,options); }
 
 // ========== Calculation Helpers ==========
 

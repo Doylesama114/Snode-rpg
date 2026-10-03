@@ -123,8 +123,9 @@ sec('④ 更新日志弹窗（P0 回归）');
   await p.evaluate(() => { const b = [].slice.call(document.querySelectorAll('button')).find(x => /更新日志/.test(x.textContent)); if (b) b.click(); });
   await p.waitForTimeout(900);
   const st = await p.evaluate(() => {
-    const h2 = document.querySelector('h2');
-    const modal = h2 && h2.parentElement;
+    const close = document.getElementById('_clog_close');
+    const modal = close && close.parentElement;
+    const h2 = modal && modal.querySelector('h2');
     return { hasModal: !!modal, headBg: h2 ? getComputedStyle(h2).backgroundImage : '', close: !!document.getElementById('_clog_close'), text: (document.body.innerText || '').slice(0, 30) };
   });
   ok('点击「更新日志」弹窗能打开', st.hasModal, JSON.stringify(st.text));

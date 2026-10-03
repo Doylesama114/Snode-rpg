@@ -38,7 +38,8 @@ var SNOWD_CHARACTER_STATS=(function(){
   if(race&&!d.races[race])reasons.push("种族规则未确认");if(bg&&!d.backgrounds[bg])reasons.push("背景规则未确认");
   var effectiveMain=mc.confirmedTotalLevel||mc.level,effectiveSub=sc.ruleEnabled===false?0:sc.level;
   var feat=0;(s.special_feats||[]).forEach(function(f){var n=typeof f==="string"?f:f.name;if(n==="健壮")feat+=2*((Number(effectiveMain)||0)+(Number(effectiveSub)>0?Number(effectiveSub)-1:0));if(n==="健美教练")feat+=10;});
-  var ready=reasons.length===0,hp=ready?totalHP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,a["体质"]||10,race,bg,feat,s.raceSize):null,fp=ready?totalFP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,key,a[key]||10,race,0):null,ac=armor(s),r=d.races[race];
+  if(s.fieldSources){if(!valid(a["体质"]))reasons.push("体质未读取");if(!valid(a[key]))reasons.push("关键属性未读取");}
+  var ready=reasons.length===0,hp=ready?totalHP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,(valid(a["体质"])?a["体质"]:10),race,bg,feat,s.raceSize):null,fp=ready?totalFP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,key,valid(a[key])?a[key]:10,race,0):null,ac=armor(s),r=d.races[race];
   return {hp:hp,fp:fp,ac:ac.missing.length?null:ac.value,acEstimate:ac.value,atk:Math.max(mod(a["力量"]||10),mod(a["敏捷"]||10))+(Number(s.atk_hit_bonus)||0),spell:mod(a[key]||10)+(Number(s.spell_hit_bonus)||0),init:mod(a["敏捷"]||10),speed:r&&r.speed!==undefined?String(r.speed).replace(/米$/,""):null,hpRecover:hp===null?null:Math.floor(hp/2),fpRecover:fp===null?null:Math.floor(fp/2),keyAttr:key,reasons:reasons,unknownArmor:ac.missing};
  }
  function policy(s){return s.combatStats&&s.combatStats.fields||{};}

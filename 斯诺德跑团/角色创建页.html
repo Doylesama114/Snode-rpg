@@ -589,7 +589,7 @@ function chargenSnapshotChar(){
   var rd=CHAR.raceData;
   var raceAttrBonuses=rd&&rd["属性加成"]?JSON.parse(JSON.stringify(rd["属性加成"])):{};
   return{
-    className: char.className||null,
+    className: CHAR.className||null,
     keyAttr:CHAR.keyAttr||null,
     raceName:CHAR.raceName||null,
     attrs:CHAR.attrs?JSON.parse(JSON.stringify(CHAR.attrs)):{},
@@ -4547,6 +4547,7 @@ document.addEventListener('click', function(e) {
 </script>
 <script>window.__guiSkin = true; window.__guiWizard = true;</script>
 <script src="guild-ui.js"></script>
+<script src="user_preferences.js"></script>
 <script src="onboard_steps.js"></script>
 <script src="onboard.js"></script>
 <script src="desktop_recovery.js"></script>

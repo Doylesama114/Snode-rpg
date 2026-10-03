@@ -29,10 +29,11 @@ async function launch(settings = {}, setup, options = {}) {
     if (path.dirname(profile) === scratch && path.basename(profile).startsWith('desktop-test-')) fs.rmSync(profile,{recursive:true,force:true});
     throw e;
   }
+  const processId = app.process().pid;
   return {
     app, profile, env, executablePath, args,
     async close() {
-      const fallback = path.join(os.tmpdir(), 'snode-diagnostics-' + app.process().pid);
+      const fallback = path.join(os.tmpdir(), 'snode-diagnostics-' + processId);
       await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows().forEach(w => w.destroy())).catch(() => {});
       await app.close().catch(() => {});
       if (path.dirname(fallback) !== path.resolve(os.tmpdir()) || !path.basename(fallback).startsWith('snode-diagnostics-')) throw new Error('unsafe diagnostic cleanup');

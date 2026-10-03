@@ -3,12 +3,12 @@ var SNOWD_CHARACTER_EXPORT=(function(){
  function readSources(parsed){return SNOWD_CHARACTER_FIELDS.read(parsed);}
  function text(s){return String(s==null?"":s);}
  function write(set,state,parsed,original){
-  var l=SNOWD_CHARACTER_LAYOUT,g=l.grid(parsed),data=readSources(parsed),stats=SNOWD_CHARACTER_STATS.read(state),dest=data.sources;
+  var l=SNOWD_CHARACTER_LAYOUT;parsed=Object.assign({},parsed,{fieldBindings:state.importFieldBindings||[],entityScope:state.importEntityScope||"",entityId:state.importEntityId||"",equipmentMappings:state.importEquipmentMappings||[]});var g=l.grid(parsed),data=readSources(parsed),stats=SNOWD_CHARACTER_STATS.read(state),dest=data.sources;
   function putSource(source,value){if(!source||!source.cellRef||value===null||value===undefined)return;if(source.inline)set(source.cellRef,source.label.split(/[:：]/)[0]+"："+value);else set(source.cellRef,value);}
   if(original){
    Object.keys(dest).forEach(function(k){if(Object.prototype.hasOwnProperty.call(SNOWD_CHARACTER_STATS.labels,k))putSource(dest[k],stats[k]);else if(k==="keyAttr")putSource(dest[k],stats.keyAttr);else if(k==="languages"||k==="professionals")putSource(dest[k],(state[k]||[]).map(function(v){return v&&typeof v==="object"?v.name||v.n||v.item||"":v;}).filter(Boolean).join("、"));else if(state[k]!==undefined)putSource(dest[k],state[k]);});
-   Object.keys(data.attrSources).forEach(function(k){if(state.attrs&&state.attrs[k]!==undefined)set(data.attrSources[k],state.attrs[k]);});
-   Object.keys(data.profSources).forEach(function(k){Object.keys(data.profSources[k]).forEach(function(n){var v=state.profs&&state.profs[k]&&state.profs[k][n];set(data.profSources[k][n],v===undefined?"":v);});});
+   Object.keys(data.attrSources).forEach(function(k){if(data.attrSources[k]&&state.attrs&&state.attrs[k]!==undefined)set(data.attrSources[k],state.attrs[k]);});
+   Object.keys(data.profSources).forEach(function(k){Object.keys(data.profSources[k]).forEach(function(n){var v=state.profs&&state.profs[k]&&state.profs[k][n];if(data.profSources[k][n])set(data.profSources[k][n],v===undefined?"":v);});});
    Object.keys(data.carrySources).forEach(function(k){if(state.carry_capacity&&state.carry_capacity[k]!==undefined)set(data.carrySources[k],state.carry_capacity[k]);});
    ["金币","银币","铜币","其他货币"].forEach(function(label){
     var v=SNOWD_CHARACTER_FIELDS.readLabel(parsed,g,[label]);if(v.cellRef){var key=label==="其他货币"?"其他":label;putSource(v,state.currency&&state.currency[key]);}
@@ -16,9 +16,9 @@ var SNOWD_CHARACTER_EXPORT=(function(){
    (state.importFieldMappings||[]).forEach(function(m){if(m.sheet===parsed.sheetName&&state.currency&&state.currency[m.field]!==undefined)set(m.cellRef,state.currency[m.field]);});
    (state.racial_traits||[]).concat(state.class_features||[]).forEach(function(f){var p=f.provenance;if(p&&p.sheet===parsed.sheetName){set(p.nameRef,f.name);if(p.descRef)set(p.descRef,f.desc||"");}});
    (state.special_feats||[]).forEach(function(f){var ref=f.cellRef||f.provenance&&f.provenance.nameRef;if(ref)set(ref,f.originalName||f.name||"");});
-   [["主职业"],["子职业","副职业"],["附赠职业"]].forEach(function(labels,i){
-    var label=l.findLabel(parsed,labels);if(!label)return;var p=l.point(label),span=g.span(label),row=span.bottom+1,head=g.byRow[row]||[],name=head.find(function(a){return a.text==="名称"||a.text==="职业名称";}),level=head.find(function(a){return a.text==="等级";}),style=head.find(function(a){return a.text==="风格";}),r=name?row+1:row,c=state.classes&&state.classes[i];
-    if(c){var nr=l.ref(name?name.col:p.col,r),lr=l.ref(level?level.col:p.col+2,r);set(nr,c.name||"");set(lr,c.name?c.level:"");if(style)for(var j=0;j<4;j++)set(l.ref(style.col,r+j),c.styles&&c.styles[j]||"");if(c.name)c.provenance={sheet:parsed.sheetName,fields:{name:nr,level:lr},section:label};}
+   var classRead=SNOWD_CHARACTER_CLASSES.read(parsed);
+   (state.classes||[]).forEach(function(c,i){var dest=classRead.classes[i],p=dest&&dest.provenance;if(!p)return;
+    var n=p.fields.name,lv=p.fields.level;if(n)set(n,p.inlineName?String(g.cells[n]).split(/[:：=]/)[0]+"："+c.name:c.name||"");if(lv)set(lv,p.inlineLevel?String(g.cells[lv]).split(/[:：=]/)[0]+"："+c.level:c.name?c.level:"");c.provenance=p;
    });
   }else{
    var cells={hp:"L3",fp:"L4",ac:"L7",atk:"L11",spell:"L12",init:"L8",speed:"L9",hpRecover:"L5",fpRecover:"L6"};Object.keys(cells).forEach(function(k){if(stats[k]!==null&&stats[k]!==undefined)set(cells[k],stats[k]);});set("L10",stats.keyAttr);
@@ -26,8 +26,8 @@ var SNOWD_CHARACTER_EXPORT=(function(){
    var written={};
    (data.equipmentGroups||[]).forEach(function(group){
     var list=(state.equipment&&state.equipment[group.slot]||[]).reduce(function(out,e){return e.items?(e.rawLabel===group.label||!e.rawLabel&&(!e.type||group.label.indexOf(e.type)>=0)?out.concat(e.items):out):out.concat(e);},[]);
-    var available=[];for(var r=group.start;r<group.end;r++){var nameRef=l.ref(group.nameCol,r),raw=g.cells[nameRef];if(raw&&/^(?:名称|效果|说明|重量|磅重)$/.test(l.normalize(raw)))continue;if(!raw&&(parsed.formulas||{})[l.ref(group.weightCol,r)])continue;available.push(r);}
-    for(var i=0;i<available.length;i++){var row=available[i],e=list[i];set(l.ref(group.nameCol,row),e?e.item||e.name:"");set(l.ref(group.descCol,row),e?e.desc||"":"");set(l.ref(group.weightCol,row),e?(e.weightStatus==="quantity"?(e.count||0)+(e.quantityUnit||""):e.weightStatus==="unknown"?e.rawWeight||"":e.weight):"");if(e){written[e.uid||group.slot+"-"+i]=true;e.provenance={sheet:parsed.sheetName,nameRef:l.ref(group.nameCol,row),descRef:l.ref(group.descCol,row),weightRef:l.ref(group.weightCol,row)};}}
+    var available=[];for(var r=group.start;r<group.end;r++){var nameRef=l.ref(group.nameCol,r),raw=g.cells[nameRef];if(raw&&/^(?:名称|效果|说明|重量|磅重)$/.test(l.normalize(raw)))continue;if(!raw&&group.weightCol!=null&&(parsed.formulas||{})[l.ref(group.weightCol,r)])continue;available.push(r);}
+    for(var i=0;i<available.length;i++){var row=available[i],e=list[i];set(l.ref(group.nameCol,row),e?e.item||e.name:"");if(group.descCol!=null)set(l.ref(group.descCol,row),e?e.desc||"":"");if(group.weightCol!=null)set(l.ref(group.weightCol,row),e?(e.weightStatus==="quantity"?(e.count||0)+(e.quantityUnit||""):e.weightStatus==="unknown"?e.rawWeight||"":e.weight):"");if(group.quantityCol!=null)set(l.ref(group.quantityCol,row),e?(e.count===undefined?"":String(e.count)+(e.quantityUnit||"")):"");if(e){written[e.uid||group.slot+"-"+i]=true;e.provenance={sheet:parsed.sheetName,nameRef:l.ref(group.nameCol,row),descRef:group.descCol==null?"":l.ref(group.descCol,row),weightRef:group.weightCol==null?"":l.ref(group.weightCol,row),quantityRef:group.quantityCol==null?"":l.ref(group.quantityCol,row)};}}
    });
    var next=Math.max(240,g.maxRow+3,parsed.exportNextRow||0),extra=[],oldExtra=g.all.find(function(a){return a.text==="装备补充列表";});if(oldExtra){for(var row=oldExtra.row;row<=g.maxRow;row++){if(row>oldExtra.row&&g.cells["B"+row]&&g.cells["B"+row].indexOf("列表")>=0)break;["B","D","E","F","G"].forEach(function(col){set(col+row,"");});}next=oldExtra.row;}
    Object.keys(state.equipment||{}).forEach(function(slot){(state.equipment[slot]||[]).forEach(function(e,i){if(!e.items&&!written[e.uid||slot+"-"+i])extra.push({slot:slot,item:e});});});
@@ -44,6 +44,11 @@ var SNOWD_CHARACTER_EXPORT=(function(){
    var row=Math.max(240,g.maxRow+3,parsed.exportNextRow||0,next||0)+(extras.length?extras.length+4:0);
    set("B"+row++,"角色补充字段");
    unmapped.forEach(function(k){set("B"+row,SNOWD_CHARACTER_STATS.labels[k]);set("D"+row,stats[k]);dest[k]={cellRef:"D"+row,labelRef:"B"+row,sheet:parsed.sheetName,status:"valid",raw:text(stats[k]),value:stats[k],label:SNOWD_CHARACTER_STATS.labels[k]};row++;});
+  }
+  if(!original&&(state.importUnreviewed||[]).length){
+   var start=Math.max(300,g.maxRow+3,parsed.exportNextRow||0,next||0)+(extras.length?extras.length+4:0)+(unmapped.length?unmapped.length+3:0);
+   set("B"+start++,"原始未分类内容");set("B"+start,"原始位置");set("D"+start,"原文");set("F"+start++,"来源表");
+   state.importUnreviewed.forEach(function(r){set("B"+start,r.cellRef);set("D"+start,r.raw);set("F"+start,r.sheet||"");start++;});
   }
   state.fieldSources={schemaVersion:1,scalar:dest,attrs:data.attrSources,profs:data.profSources,carry:data.carrySources};
   Object.keys(dest).forEach(function(k){if(Object.prototype.hasOwnProperty.call(SNOWD_CHARACTER_STATS.labels,k)){dest[k].raw=text(stats[k]);dest[k].status=stats[k]===null?"missing":"valid";dest[k].value=stats[k];}});

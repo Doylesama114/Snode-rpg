@@ -63,6 +63,8 @@ catch (e) {
 }
 const mirrorConfig = require('./update-mirror-config');
 const { RecoveryStore } = require('./recovery-store');
+const { DesktopSettings } = require('./desktop-settings');
+const desktopSettings = new DesktopSettings(path.join(app.getPath('userData'), 'snowd-settings.json'));
 const { createWindowLifecycle } = require('./window-lifecycle');
 const launcherUrl = pathToFileURL(path.join(__dirname, '斯诺德跑团', '启动台.html')).href;
 const recoveryStore = new RecoveryStore(path.join(app.getPath('userData'), 'recovery-drafts'));
@@ -91,6 +93,20 @@ function handled(channel, handler) {
     catch (e) { diagnostics.error(channel + '-failed', e); return { ok: false, error: /^恢复|^草稿/.test(e.message || '') ? e.message : '此操作未完成，请检查目录权限或导出诊断。' }; }
   });
 }
+function broadcastPromptPreferences(result) {
+  if (result.ok && result.preferences) for (const wc of webContents.getAllWebContents()) {
+    try { if (!wc.isDestroyed() && lifecycle.internal(wc.getURL())) wc.send('prompt-preferences-changed', result.preferences); }
+    catch (e) { diagnostics.error('preferences-broadcast-failed', e); }
+  }
+  return result;
+}
+handled('get-prompt-preferences', (event, payload) => {
+  trusted(event);
+  return { ok: true, preferences: desktopSettings.preferences(payload && payload.legacySeen) };
+});
+handled('set-prompt-preferences', (event, patch) => { trusted(event); return broadcastPromptPreferences(desktopSettings.switches(patch)); });
+handled('mark-onboarding-seen', (event, payload) => { trusted(event); return broadcastPromptPreferences(desktopSettings.seen(payload.scene, payload.status)); });
+handled('claim-advisor-tip', event => { trusted(event); return broadcastPromptPreferences(desktopSettings.claimTip()); });
 handled('recovery-write', (event, payload) => {
   const id = recoveryIdentity(event, payload && payload.identity);
   const ack = recoveryStore.write(id, payload.snapshot, payload.savedAt);
@@ -121,12 +137,7 @@ handled('desktop-status', event => {
 handled('desktop-action', (event, action) => { trusted(event); return lifecycle.action(event.sender, action); });
 handled('desktop-compatibility', (event, enabled) => {
   trusted(event);
-  let data = {};
-  const file = settingsFilePath();
-  try { data = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
-  data.compatibilityMode = !!enabled;
-  fs.writeFileSync(file + '.tmp', JSON.stringify(data, null, 2), 'utf8');
-  fs.renameSync(file + '.tmp', file);
+  desktopSettings.patchRoot({ compatibilityMode: !!enabled });
   return { ok: true, nextStart: true };
 });
 handled('desktop-export-diagnostics', async event => {
@@ -208,18 +219,10 @@ function getAutoUpdateEnabled() {
   return autoUpdateEnabledCache;
 }
 function setAutoUpdateEnabled(value) {
-  autoUpdateEnabledCache = !!value;
   try {
-    const file = settingsFilePath();
-    let data = {};
-    if (fs.existsSync(file)) {
-      try { data = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { data = {}; }
-    }
-    data.autoUpdate = autoUpdateEnabledCache;
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
-  } catch (e) {
-    console.error('[设置] 保存自动更新开关失败:', e.message);
-  }
+    desktopSettings.patchRoot({ autoUpdate: !!value });
+    autoUpdateEnabledCache = !!value;
+  } catch (e) { diagnostics.error('auto-update-setting-write-failed', e); }
 }
 
 function sendUpdateStatus(data) {
@@ -830,7 +833,7 @@ ipcMain.handle('advisor-advise-stream', async (event, payload) => {
       stream: true,
       onDelta: (delta) => {
         if (!sender.isDestroyed()) {
-          sender.send('advisor-stream-chunk', { delta });
+          sender.send('advisor-stream-chunk', { delta, streamId: payload.__streamId });
         }
       },
     });
@@ -1088,6 +1091,7 @@ async function createWindow() {
     if (url.includes('poker-game')) return;
     injectPageScripts([
       path.join('斯诺德跑团', 'bug-report.js'),
+      path.join('斯诺德跑团', 'user_preferences.js'),
       path.join('斯诺德跑团', 'advisor-tips.js'),
       path.join('斯诺德跑团', 'advisor-widget.js'),
     ]);
@@ -1116,6 +1120,6 @@ app.on('window-all-closed', () => app.quit());
 app.on('activate', () => {
   if (!mainWindow || mainWindow.isDestroyed()) createWindow();
 });
-module.exports = { diagnostics, lifecycle, recoveryStore };
+module.exports = { diagnostics, lifecycle, recoveryStore, desktopSettings };
 if (process.env.SNODE_CLI_TEST === '1') app.__snodeDesktop = { ...module.exports, fatalMain };
 }

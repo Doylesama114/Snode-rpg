@@ -29,10 +29,11 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     });
     all.sort(function(a,b){return a.row-b.row||a.col-b.col;});
     Object.keys(byRow).forEach(function(r){byRow[r].sort(function(a,b){return a.col-b.col;});});
+    var spanCache=Object.create(null);
     function span(k) {
-      var p=point(k);
-      for(var i=0;i<merges.length;i++){var m=merges[i];if(p.col>=m.left&&p.col<=m.right&&p.row>=m.top&&p.row<=m.bottom)return m;}
-      return {left:p.col,right:p.col,top:p.row,bottom:p.row};
+      if(spanCache[k])return spanCache[k];var p=point(k);
+      for(var i=0;i<merges.length;i++){var m=merges[i];if(p.col>=m.left&&p.col<=m.right&&p.row>=m.top&&p.row<=m.bottom)return spanCache[k]=m;}
+      return spanCache[k]={left:p.col,right:p.col,top:p.row,bottom:p.row};
     }
     function value(col,row) {
       var k=ref(col,row);if(cells[k]!==undefined&&cells[k]!=="")return String(cells[k]);
@@ -54,7 +55,7 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     for(var key in aliases)if(aliases[key].indexOf(text)>=0)return key;
     return "";
   }
-  function skillTitle(text) {return /^(?:技能列表|技能栏|技能表|职业技能列表|法术列表)$/.test(titleKey(text))||extraTitle(text);}
+  function skillTitle(text) {if(typeof SNOWD_CHARACTER_IMPORT_SCHEMA!=="undefined"){var t=SNOWD_CHARACTER_IMPORT_SCHEMA.title(text);if(t&&t.type==="skills")return true;}return /^(?:技能列表|技能栏|技能表|职业技能列表|法术列表)$/.test(titleKey(text))||extraTitle(text);}
   function caption(text) {
     text=titleKey(text);
     if(typeof SNOWD_CHARACTER_CLASSES!=="undefined"){var c=SNOWD_CHARACTER_CLASSES.title(text);if(c)return c.slot===1?"sub":"main";}
@@ -67,6 +68,7 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     return m?{tier:(/^[1-7]$/.test(m[1])?"一二三四五六七".charAt(Number(m[1])-1):m[1])+"阶",capacity:m[2]?Number(m[2]):5}:null;
   }
   function otherTitle(text) {
+    if(typeof SNOWD_CHARACTER_IMPORT_SCHEMA!=="undefined"){var t=SNOWD_CHARACTER_IMPORT_SCHEMA.title(text);if(t&&(t.kind==="entity"||["combat","attributes","classes","equipment","background","features","notes","fields"].indexOf(t.type)>=0))return true;}
     return /^(?:属性信息|职业信息|基本信息|角色信息|装备栏|装备列表|装备信息|物品列表|货币信息|背景信息|角色补充字段|装备补充列表|额外专长列表|未分类字段|导入排除记录|导入备注|天赋列表|天赋树|专业列表|图纸(?:列表|[（(].*[）)])?)$/.test(titleKey(text))||blueprintTitle(text);
   }
   function nearestAnchor(g,item) {
@@ -107,6 +109,7 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
       if(nextHeader&&!g.all.some(function(x){return x.col===a.col&&x.row>a.row&&x.row<nextHeader.row&&!caption(x.text)&&!otherTitle(x.text)&&aliases.name.indexOf(x.text)<0;}))return;
       var previous=sections.filter(function(s){return s.nameCol===a.col&&s.row<a.row;}).sort(function(x,y){return y.row-x.row;})[0];
       if(!previous)return;
+      if(typeof SNOWD_CHARACTER_STRUCTURE!=="undefined"){var boundaries=SNOWD_CHARACTER_STRUCTURE.analyze({cells:g.cells,merges:g.merges||[]},g);if(boundaries.titles.some(function(h){return h.row>previous.row&&h.row<a.row&&h.type!=="skills"&&boundaries.boundaryAt(h,previous.nameCol,previous.right);}))return;}
       var nextRow=g.byRow[a.row+1]||[],knownHeaders=nextRow.filter(function(c){return c.col>=a.col&&c.col<=previous.right&&!!field(c.text);}).length;
       if(knownHeaders>=2){
         if(!g.headerProblems)g.headerProblems=[];
@@ -146,7 +149,7 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
         var end=i+1<group.length?group[i+1].row:g.maxRow+1;
         var boundary=false;
         g.all.forEach(function(a){if(a.row>h.row&&a.row<end&&a.col===h.col&&otherTitle(a.text)){end=a.row;boundary=true;}});
-        if(i===group.length-1&&!boundary)end=Math.min(end,h.row+Math.max(1,label.capacity)+1);
+        // Physical rows are not limited by a declared slot capacity.
         var fields={name:h.col},start=h.row+1;
         var header=(g.byRow[start]||[]).filter(function(c){return c.col>=span.left&&c.col<=span.right;});
         var nameHeader=header.filter(function(c){return /^(?:天赋名称|天赋名|技能名称|名称)$/.test(c.text);})[0];
@@ -156,8 +159,23 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     });
     return out;
   }
+  function transposedSections(g){
+    var out=[];
+    g.all.filter(function(a){return /^(?:\u6280\u80fd\u540d\u79f0|\u6280\u80fd\u540d|\u80fd\u529b\u540d\u79f0|\u6cd5\u672f\u540d\u79f0|\u5929\u8d4b\u540d\u79f0|\u5929\u8d4b\u540d|\u914d\u65b9\u540d\u79f0|\u56fe\u7eb8\u540d\u79f0)$/.test(a.text);}).forEach(function(h){
+      if((g.byRow[h.row]||[]).some(function(a){return a.col>h.col&&!!field(a.text);}))return;
+      var end=g.maxRow+1;g.all.forEach(function(a){if(a.row>h.row&&a.col===h.col&&isBoundary(a.text))end=Math.min(end,a.row);});
+      var rows={name:h.row};g.all.forEach(function(a){if(a.col===h.col&&a.row>h.row&&a.row<end){var k=field(a.text);if(k&&k!=="name"&&rows[k]===undefined)rows[k]=a.row;}});
+      var talent=/^\u5929\u8d4b/.test(h.text),blueprint=/^(?:\u914d\u65b9|\u56fe\u7eb8)/.test(h.text),specific=["tm","range","dur"].filter(function(k){return rows[k]!==undefined;}).length;
+      if(talent||blueprint){if(rows.ds===undefined)return;}else if(specific<1||Object.keys(rows).length<3)return;
+      var columns=(g.byRow[h.row]||[]).filter(function(a){return a.col>g.span(h.ref).right&&Object.keys(rows).some(function(k){return k!=="name"&&g.value(a.col,rows[k])&&!SNOWD_CHARACTER_IMPORT_SCHEMA.isLabel(g.value(a.col,rows[k]));});}).map(function(a){return a.col;});
+      if(!columns.length)return;
+      var parent=g.all.filter(function(a){return a.row<h.row&&a.col===h.col&&(caption(a.text)||skillTitle(a.text)||/^(?:\u5929\u8d4b\u5217\u8868|\u56fe\u7eb8|\u914d\u65b9\u5217\u8868)/.test(a.text));}).sort(function(a,b){return b.row-a.row;})[0],place=talent?"talent":blueprint?"blueprint":parent&&caption(parent.text)||"main";
+      out.push({header:h.ref,row:h.row,start:h.row,end:Math.max.apply(null,Object.keys(rows).map(function(k){return rows[k];}))+1,nameCol:columns[0],right:Math.max.apply(null,columns),fields:rows,fieldRows:rows,recordColumns:columns,orientation:"columns",place:place,tier:"",ownerClassIndex:parent?ownerOf(parent.text):place==="sub"?1:0,evidence:"\u5b57\u6bb5\u5217\u4e0e\u80fd\u529b\u6570\u636e\u5217"});
+    });return out;
+  }
+
   function detect(parsed) {
-    var g=grid(parsed),skills=skillSections(g),talents=talentSections(g),simple=simpleSections(g),issues=[];
+    var g=grid(parsed),ownership=typeof SNOWD_CHARACTER_STRUCTURE!=="undefined"?SNOWD_CHARACTER_STRUCTURE.analyze(parsed,g):null,transposed=transposedSections(g),skills=skillSections(g).concat(transposed.filter(function(s){return s.place==="main"||s.place==="sub";})),talents=talentSections(g),simple=simpleSections(g).concat(transposed.filter(function(s){return s.place==="blueprint"||s.place==="talent";})),issues=[];
     talents=talents.concat(simple.filter(function(s){return s.place==="talent";}));
     issues=issues.concat(g.headerProblems||[]);
     var skillTitles=g.all.filter(function(a){return skillTitle(a.text);});
@@ -173,15 +191,25 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     });
     if(!talents.length)g.all.filter(function(a){return /^(?:天赋列表|天赋树)$/.test(a.text);}).forEach(function(a){issues.push({kind:"layout-unrecognized",cellRef:a.ref,place:"talent",note:"找到天赋标题，但未识别同一区域的阶位或表头。请映射名称和说明列。"});});
     if(!skills.length&&!talents.length&&!simple.length)issues.push({kind:"layout-unrecognized",cellRef:"__sheet__",note:"尚未识别能力区块。请指定数据范围与名称列，或明确确认此工作表没有要导入的能力。"});
+    if(ownership)skills.concat(talents,simple).forEach(function(section){ownership.titles.forEach(function(h){if(h.row>section.row&&ownership.boundaryAt(h,section.nameCol,section.right))section.end=Math.min(section.end,h.row);});});
     return {grid:g,skills:skills,talents:talents,blueprints:simple.filter(function(s){return s.place==="blueprint";}),issues:issues};
   }
   function readAbilities(parsed,classes) {
     var layout=applyMappings(parsed,detect(parsed)),g=layout.grid,skills=[],talents=[],blueprints=[],used={};
-    layout.skills=layout.skills.concat(auxiliarySections(g,classes));
-    function read(section,list) {
+    g.abilitySections=layout.skills.concat(layout.talents,layout.blueprints);var auxiliary=auxiliarySections(g,classes,parsed),reviewSections=auxiliary.filter(function(s){return s.reviewOnly;});layout.skills=layout.skills.concat(auxiliary.filter(function(s){return !s.reviewOnly;}));
+    function read(section,list,allowReference) {
+      if(section.orientation==="columns"){
+        section.recordColumns.forEach(function(col){
+          var cell=ref(col,section.fieldRows.name);if(used[cell]||context&&!allowReference&&(!context.eligible({ref:cell,col:col,row:section.fieldRows.name})||context.pending))return;
+          var name=g.value(col,section.fieldRows.name);if(!name)return;used[cell]=true;var v={name:name,src:"",tier:section.tier||"",tm:"",range:"",dur:"",dr:"",ds:"",sheet:parsed.sheetName,cellRef:cell,region:section.place,place:section.place},refs={name:cell};
+          Object.keys(section.fieldRows).forEach(function(k){if(k!=="name"){v[k]=g.value(col,section.fieldRows[k]);refs[k]=ref(col,section.fieldRows[k]);}});
+          list.push({n:name,src:v.src,tm:v.tm,range:v.range,dur:v.dur,dr:v.dr,ds:v.ds,note:section.place==="blueprint"?v.ds:"",tier:v.tier,place:section.place,region:section.place,sub:section.place==="sub"?classes&&classes[1]&&classes[1].name||"\u5b50\u804c\u4e1a":"",cellRef:cell,ownerClassIndex:section.ownerClassIndex,provenance:{sheet:parsed.sheetName,fields:refs,section:section.header,orientation:"columns",evidence:section.evidence},original:{name:name,src:v.src,tm:v.tm,range:v.range,dur:v.dur,dr:v.dr,ds:v.ds,tier:v.tier},_visible:v});
+        });return;
+      }
       for(var r=section.start;r<section.end;r++){
         var cell=ref(section.nameCol,r),raw=g.cells[cell],name=raw==null?"":String(raw).trim(),n=normalize(name);
         if(!n||/^(?:-|—|\/\/.*)$/.test(n)||used[cell])continue;
+        if(context&&!allowReference&&(!context.eligible({ref:cell,col:section.nameCol,row:r})||context.pending))continue;
         if(aliases.name.indexOf(n)>=0||/^(?:天赋名称|天赋名|来源|属性值需求|特殊条件)$/.test(n)||isBoundary(n))continue;
         used[cell]=true;
         var visible={name:name,src:"",tier:section.tier||"",tm:"",range:"",dur:"",dr:"",ds:"",sheet:parsed.sheetName||"",cellRef:cell,region:section.place,place:section.place},fieldRefs={name:cell};
@@ -211,15 +239,18 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
         var sub=section.place==="sub"?((classes&&classes[1]&&classes[1].name)||"子职业"):"";
         var original={name:name,src:visible.src,tm:visible.tm,range:visible.range,dur:visible.dur,dr:visible.dr,ds:visible.ds,tier:visible.tier};
         list.push({n:name,src:visible.src,tm:visible.tm,range:visible.range,dur:visible.dur,dr:visible.dr,ds:visible.ds,note:section.place==="blueprint"?visible.ds:"",cost:"",tier:visible.tier,sub:sub,place:section.place,region:section.place,cellRef:cell,locked:false,
-          ownerClassIndex:section.ownerClassIndex===undefined?(section.place==="sub"?1:0):section.ownerClassIndex,mergedNotes:mergedNotes,origin:section.origin||null,requiresEquipment:section.requiresEquipment||"",resolution:section.auxiliary?"custom":undefined,free:section.auxiliary?null:undefined,occupies:section.auxiliary||section.ownerClassIndex===2?null:undefined,
+          ownerClassIndex:section.ownerClassIndex===undefined?(section.place==="sub"?1:0):section.ownerClassIndex,mergedNotes:mergedNotes,origin:section.origin||null,requiresEquipment:section.requiresEquipment||"",linkedItem:section.linkedItem||"",activation:section.activation||null,resolution:section.auxiliary?"custom":undefined,free:section.auxiliary?null:undefined,occupies:section.auxiliary||section.ownerClassIndex===2?null:undefined,
           provenance:{sheet:parsed.sheetName||"",fields:fieldRefs,section:section.header,evidence:section.evidence||(section.manual?"玩家确认映射":"区块标题与列标题")},
           original:original,_visible:visible});
       }
     }
+    var context=typeof SNOWD_CHARACTER_STRUCTURE!=="undefined"?SNOWD_CHARACTER_STRUCTURE.analyze(parsed,g):null;
+    if(context&&context.pending)layout.issues.push({kind:"entity-unconfirmed",note:"工作表有多个角色主体，请选择当前角色范围。"});
     layout.skills.forEach(function(s){read(s,skills);});
-    layout.talents.forEach(function(s){read(s,talents);});
+    layout.talents.forEach(function(s){var before=talents.length;read(s,talents);if(s.capacity!==undefined&&talents.length-before>s.capacity)layout.issues.push({kind:"capacity-conflict",cellRef:s.header,note:"实际天赋记录多于标题容量，全部保留；请确认占位规则。"});});
     layout.blueprints.forEach(function(s){read(s,blueprints);});
-    return {skills:skills,talents:talents,blueprints:blueprints,issues:layout.issues,sections:{skills:layout.skills,talents:layout.talents,blueprints:layout.blueprints}};
+    var candidates=reviewSections.map(function(section){var list=[];read(section,list,true);return {uid:"candidate-block-"+section.header,kind:"ability-block",status:section.subject==="current"?"pending":"reference",raw:list.map(function(e){return e.n+"："+e.ds;}).join("\n"),cellRef:section.header,sheet:parsed.sheetName,items:list,note:section.evidence};}).filter(function(c){return c.items.length;});
+    return {skills:skills,talents:talents,blueprints:blueprints,candidates:candidates,issues:layout.issues,sections:{skills:layout.skills,talents:layout.talents,blueprints:layout.blueprints}};
   }
   function findLabel(parsed,keywords) {
     var g=grid(parsed),keys=keywords.map(normalize);
@@ -235,12 +266,23 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
 
 
   function ownerOf(text){var c=typeof SNOWD_CHARACTER_CLASSES!=="undefined"?SNOWD_CHARACTER_CLASSES.title(text):null;return c?c.slot:null;}
-  function auxiliarySections(g,classes){
-    var out=[];
-    g.all.filter(function(a){return /^.{1,20}进阶(?:战术|能力|特性)表\(已习得\)$/.test(a.text)||/^战术家(?:的)?棋局战术$/.test(a.text);}).forEach(function(h){
-      var span=g.span(h.ref),end=g.maxRow+1;g.all.forEach(function(a){if(a.row>h.row&&a.col===h.col&&(/^(?:额外|宠物|战术家(?:的)?棋局战术)$/.test(a.text)||/^(?:目前|当前)(?:经验|技能点)/.test(a.text)))end=Math.min(end,a.row);});
-      var equipment=/棋局/.test(h.text),source=equipment?"战术家的棋局":h.text.replace(/进阶.*$/,""),owner=(classes||[]).findIndex(function(c){return c.name===source;});
-      out.push({header:h.ref,start:span.bottom+1,end:end,nameCol:h.col,right:span.right>h.col?span.right:h.col+3,fields:{name:h.col,ds:h.col+1},place:"main",ownerClassIndex:owner<0?0:owner,auxiliary:true,origin:{type:equipment?"equipment":"advancement",label:source,declared:true},requiresEquipment:equipment?source:"",evidence:equipment?"已装备道具的战术说明":"表格明确标注已习得"});
+  function auxiliarySections(g,classes,parsed){
+    var out=[],schema=SNOWD_CHARACTER_IMPORT_SCHEMA,context=parsed&&SNOWD_CHARACTER_STRUCTURE.analyze(parsed,g),equipment=[];
+    if(parsed&&typeof SNOWD_CHARACTER_FIELDS!=="undefined"){var fields=SNOWD_CHARACTER_FIELDS.read(parsed);Object.keys(fields.equipment||{}).forEach(function(slot){(fields.equipment[slot]||[]).forEach(function(e){(e.items||[e]).forEach(function(n){equipment.push(n.item||n.name||"");});});});}
+    function heading(a){
+      var info=schema.supplemental(a.value);if(!info)return null;if(info.rule||info.declared)return info;
+      var span=g.span(a.ref),next=g.byRow[span.bottom+1]||[],name=next.find(function(n){return n.col===a.col;}),previous=g.cells[ref(a.col,a.row-1)];
+      if(!name)return null;var named=schema.abilityField(name.value)==="name",description=next.some(function(n){return n.col>g.span(name.ref).right;});
+      if(span.right>a.col||named||!previous&&description)return info;return null;
+    }
+    g.all.forEach(function(h){
+      var info=heading(h);if(!info)return;if((g.abilitySections||[]).some(function(s){return h.row>=s.start&&h.row<s.end&&h.col>=s.nameCol&&h.col<=s.right;}))return;var span=g.span(h.ref),end=g.maxRow+1,right=span.right>h.col?span.right:g.maxCol;
+      var row=g.byRow[span.bottom+1]||[],header=row.find(function(a){return a.col>=h.col&&schema.abilityField(a.value)==="name";}),fields={name:h.col,ds:h.col+1},start=span.bottom+1;
+      if(header){fields={name:header.col};row.forEach(function(a){var k=schema.abilityField(a.value);if(k&&a.col>=header.col)fields[k]=a.col;});start++;}
+      g.all.forEach(function(a){if(a.row<start||a.col!==h.col)return;if(schema.title(a.value)||heading(a)||schema.isLabel(a.value)||/^(?:额外|宠物)$/.test(a.text))end=Math.min(end,a.row);});
+      var matching=equipment.some(function(n){return schema.normalize(n)===schema.normalize(info.label);}),owner=(classes||[]).findIndex(function(c){return schema.normalize(c.name)===schema.normalize(info.label);}),subject=context?context.owner(h.ref):{owner:"current"};
+      var owned=subject.owner==="current"&&(info.declared||matching),condition=info.rule?info.rule.condition:"unknown";
+      out.push({header:h.ref,start:start,end:end,nameCol:fields.name,right:right,fields:fields,place:"main",ownerClassIndex:owner<0?null:owner,auxiliary:true,reviewOnly:!owned,subject:subject.owner,origin:{type:info.kind,label:info.label,declared:info.declared},linkedItem:info.kind==="equipment"?info.label:"",requiresEquipment:condition==="equipped"?info.label:"",activation:info.kind==="equipment"?{mode:condition,item:info.label} :{mode:"always"},evidence:info.declared?"标题明确标注已学":matching?"与角色物品记录关联":"结构为能力列表，归属待确认"});
     });return out;
   }
   function candidatesFromNotes(parsed,read){
@@ -248,11 +290,11 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     owned.forEach(function(e){Object.keys(e.provenance&&e.provenance.fields||{}).forEach(function(k){used[e.provenance.fields[k]]=true;});});
     var out=[];
     g.all.forEach(function(a){
-      if(used[a.ref]||a.row<30)return;
+      if(used[a.ref])return;var context=SNOWD_CHARACTER_STRUCTURE.analyze(parsed,g);if(!context.eligible(a))return;
       if(a.value.length<=25&&typeof SNOWD_CHARACTER_IO!=="undefined"&&SNOWD_CHARACTER_IO.candidates(a.value).some(function(c){return c.cls==="特殊专长";})&&!((read.feats||[]).some(function(e){return e.name===a.value;}))){
         out.push({uid:"candidate-"+a.ref,kind:"feat",name:a.value,raw:a.value,cellRef:a.ref,sheet:parsed.sheetName,status:"pending",note:"发现区块之外的专长名称，请确认是否已拥有。"});return;
       }
-      if(a.row>=115&&a.value.length<=100&&/[\s、,，]/.test(a.value)){
+      if(a.value.length<=100&&/[\s、,，]/.test(a.value)){
         var words=a.value.trim().split(/[\s、,，]+/).filter(Boolean);
         var matches=words.filter(function(n){return owned.some(function(e){return e.n===n;});});
         if(words.length>=3&&words.length<=12&&matches.length>=2)out.push({uid:"candidate-"+a.ref,kind:"ability-list",raw:a.value,cellRef:a.ref,sheet:parsed.sheetName,status:"pending",items:words.map(function(n){var e=owned.find(function(e){return e.n===n;});return {name:n,existingUid:e&&e.uid||"",alreadyListed:!!e};}),note:"散列能力备注包含已有条目和未归属名称，请确认用途。"});
@@ -297,14 +339,15 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
   function mappingSection(g,m,sheetName) {
     if(m.sheet&&m.sheet!==sheetName)return null;
     var b=box(m.range);if(!b||b.top<1||b.bottom<b.top||b.right<b.left)throw new Error("映射范围无效");
-    var fields={},input=m.fields||{};
+    var fields={},input=m.fields||{},columnsMode=m.orientation==="columns";
     Object.keys(input).forEach(function(k){
-      if(!aliases[k])return;var p=point(String(input[k]).toUpperCase()+"1");
+      if(!aliases[k])return;if(columnsMode){var row=Number(input[k]);if(!Number.isInteger(row)||row<b.top||row>b.bottom)throw new Error("字段行须在范围内："+k);fields[k]=row;return;}var p=point(String(input[k]).toUpperCase()+"1");
       if(!p||p.col<b.left||p.col>b.right)throw new Error("映射列必须位于选择范围内："+k);
       fields[k]=p.col;
     });
     if(fields.name===undefined)throw new Error("请选择名称列");
     if(["main","sub","talent","blueprint"].indexOf(m.place)<0)throw new Error("请选择有效栏位");
+    if(columnsMode){var columns=[];for(var col=b.left;col<=b.right;col++)if(g.value(col,fields.name))columns.push(col);return {header:ref(b.left,b.top),start:b.top,end:b.bottom+1,nameCol:b.left,right:b.right,fields:fields,fieldRows:fields,recordColumns:columns,orientation:"columns",place:m.place,tier:m.tier||"",ownerClassIndex:m.ownerClassIndex===undefined?(m.place==="sub"?1:0):m.ownerClassIndex,manual:true,evidence:"玩家确认的字段行映射"};}
     return {header:ref(b.left,b.top),start:b.top,end:b.bottom+1,nameCol:fields.name,right:b.right,fields:fields,place:m.place,tier:m.tier||"",ownerClassIndex:m.ownerClassIndex===undefined?(m.place==="sub"?1:0):m.ownerClassIndex,manual:true,evidence:"玩家确认的列映射"};
   }
   function overlap(a,b) { return a.start<b.end&&b.start<a.end&&a.nameCol<=b.right&&b.nameCol<=a.right; }
@@ -373,5 +416,5 @@ var SNOWD_CHARACTER_LAYOUT = (function () {
     return {feats:head?feats:null,values:values,refs:refs,issues:issues};
   }
 
-  return {candidatesFromNotes:candidatesFromNotes,auxiliarySections:auxiliarySections,supplemental:supplemental,mappingSignature:mappingSignature,mappingSection:mappingSection,normalize:normalize,point:point,ref:ref,grid:grid,detect:detect,readAbilities:readAbilities,findLabel:findLabel};
+  return {transposedSections:transposedSections,candidatesFromNotes:candidatesFromNotes,auxiliarySections:auxiliarySections,supplemental:supplemental,mappingSignature:mappingSignature,mappingSection:mappingSection,normalize:normalize,point:point,ref:ref,grid:grid,detect:detect,readAbilities:readAbilities,findLabel:findLabel};
 })();

@@ -31,7 +31,7 @@ electron-app/             桌面壳（★ 是镜像：改根目录后同步，�
 
 ## LOAD ORDER（CRITICAL）
 ```
-items_data.js → 导出立绘.js → panel_data.js → skill_index.js → character_class_data.js → character_classes.js → character_stats.js → character_workbook_cache.js → character_io.js → character_layout.js → character_fields.js → character_export.js → character_import_ui.js → panel_engine.js
+items_data.js → 导出立绘.js → panel_data.js → skill_index.js → character_import_schema.js → character_structure.js → character_class_data.js → character_classes.js → character_stats.js → character_workbook_cache.js → character_io.js → character_layout.js → character_fields.js → character_export.js → character_review_ui.js → character_import_ui.js → panel_engine.js
 ```
 脚本必须放在 </body> 之前（render() 需要完整 DOM）；共享层 guild-ui.js 最后注入。
 ⚠ 校验脚本（verify_panel_data_sync.py 等）用**裸 JS 上下文**解析 panel_data.js：文件顶层不得直接调用浏览器 API（setTimeout / document），必须加 typeof 守卫。
@@ -125,3 +125,14 @@ python -X utf8 scripts/verify_strategist_sync.py # 谋士/职业数据同步
 - 两个导出入口调用 character_export.js；原工作簿缓存保存完再跳转。缓存丢失回退需保留可移植参考表与补充区，不声称保住原图像/格式。
 - characterState 仍放 _SNODE_META v3，使用 schemaVersion=1 对象；可见修改/清空优先，不能因隐藏 JSON 而复活删除条目。
 - 门禁：node verify_character_integrity_import.cjs [--electron] [--fixture <个人路径>]，以及既有两套角色回归和 verify_all.mjs。个人原件只读，不进入仓库。
+
+## 通用上传边界维护 2026-10-03
+- 结构识别由 character_import_schema.js / character_structure.js 提供词汇、主体、区块、候选与证据。禁止以正文包含关键词、文件名、C4/B17打分选择角色表。
+- 标签和值读取须遵守主体与区块；空字段不得跨入下一标签，同名多候选须待确认。不能把关键属性值“智力”当成智力标签。
+- 天赋/技能读取范围与游戏容量独立，超出容量完整保留并提示。补充列表名称不得成为新的结构分支；规则关联放数据中。
+- buildStateLegacyTemplate 只对完整匹配的标准模板启用；结构化导入不依赖旧坐标填值，不补属性10。
+- 转置表 orientation=columns 使用 fieldRows / recordColumns，读取与写回保持方向。
+- importFieldBindings 需有确认与标签/区块/主体证据；改变依据须重新确认。角色范围变化不带入另一个主体的确认和身份。
+- importCoverage 记录每个非空单元格去向；importUnreviewed 保留未读内容，缓存缺失时仍需可见保存原文。原始缓存完整不等于已识别完整。
+- 装备 activation 分 always/unknown/owned/equipped；一次消耗独立于原规则，不能将X永久改成某一次数字。
+- 门禁 node verify_character_general_import.cjs [--electron]；180开发变换不能称盲测，留出布局及真实文件独立报告。个人附件只读、不提交。

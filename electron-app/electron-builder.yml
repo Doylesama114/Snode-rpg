@@ -8,6 +8,7 @@ files:
   - desktop-diagnostics.js
   - window-lifecycle.js
   - recovery-store.js
+  - desktop-settings.js
   - desktop-error.html
   - desktop-error.js
   - update-mirror-config.js

@@ -69,6 +69,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node verify_desktop_faults.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_prompt_preferences.cjs --desktop-only
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Create release notes
         working-directory: electron-app
@@ -127,6 +129,8 @@ jobs:
           node verify_desktop_recovery.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node verify_desktop_faults.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_prompt_preferences.cjs --desktop-only
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       # 先留存构建产物：即使后面的 Release 上传失败，也能从 artifact 直接恢复，无需重新构建

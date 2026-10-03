@@ -19,22 +19,33 @@ var SNOWD_CHARACTER_CLASSES=(function(){
   return null;
  }
  function read(parsed){
-  var l=SNOWD_CHARACTER_LAYOUT,g=l.grid(parsed),out=[{name:"",level:1,styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],issues=[];
-  [["主职业","职业"],["子职业","副职业"],["附赠职业","赠送职业"]].forEach(function(labels,slot){
-   var label=l.findLabel(parsed,labels);if(!label)return;var p=l.point(label),span=g.span(label),end=Math.min(g.maxRow+1,p.row+9);
-   g.all.forEach(function(a){if(a.row>p.row&&a.row<end&&a.col===p.col&&(title(a.text)||/^(?:属性信息|装备信息|技能列表|天赋列表)$/.test(a.text)))end=a.row;});
-   var header=(g.byRow[span.bottom+1]||[]),nameHead=header.find(function(a){return a.col>=p.col&&/^(?:名称|职业名称|职业名)$/.test(a.text);});
-   var nameCol=nameHead?nameHead.col:p.col,levelHead=header.find(function(a){return /^(?:等级|职业等级)$/.test(a.text);}),styleHead=header.find(function(a){return /^(?:风格|风格名)$/.test(a.text);});
-   var row=(nameHead?nameHead.row+1:span.bottom+1),raw="",found=0;
-   for(var r=row;r<end;r++){var v=g.cells[l.ref(nameCol,r)];if(v&&String(v).trim()&&!/^(?:名称|等级|风格)$/.test(l.normalize(v))){raw=String(v).trim();found=r;break;}}
-   if(!raw)return;var levelRef=levelHead?l.ref(levelHead.col,found):l.ref(nameCol+2,found),rawLevel=String(g.cells[levelRef]==null?"":g.cells[levelRef]).trim(),levelMatch=rawLevel.match(/^(\d+)\s*级?$/),number=levelMatch?Number(levelMatch[1]):NaN,c=out[slot],id=identify(raw);
-   c.name=raw;c._rawName=raw;c.originalName=raw;c.level=Number.isFinite(number)&&Number.isInteger(number)&&number>=0?number:null;c.levelStatus=c.level===null?(rawLevel?"invalid":"missing"):"valid";c.rawLevel=rawLevel;c.kind=id.kind;c.baseClass=id.baseClass||"";c.baseCandidates=id.baseCandidates;c.advancementId=id.definition?id.definition.ids[0]:"";c.ownerClassIndex=slot;
-   c.provenance={sheet:parsed.sheetName,fields:{name:l.ref(nameCol,found),level:levelRef},section:label};c.uid="class-"+slot+"-"+l.ref(nameCol,found);
-   if(styleHead)for(var j=0;j<4&&found+j<end;j++)c.styles[j]=String(g.cells[l.ref(styleHead.col,found+j)]||"");
-   if(id.kind==="advanced"||id.kind==="unknown")issues.push({kind:"class-unconfirmed",classIndex:slot,name:raw,note:id.kind==="advanced"?"已识别进阶职业，请确认规则基础职业；保留原名及等级。":"职业原名已保留，规则基础待确认。",candidates:id.baseCandidates});
+  var l=SNOWD_CHARACTER_LAYOUT,g=l.grid(parsed),context=SNOWD_CHARACTER_STRUCTURE.analyze(parsed,g),schema=SNOWD_CHARACTER_IMPORT_SCHEMA,out=[{name:"",level:null,styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],issues=[],extra=[];
+  [["主职业","主职","职业"],["子职业","副职业","副职"],["附赠职业","赠送职业"]].forEach(function(labels,slot){
+   var candidates=g.all.filter(function(a){return context.eligible(a)&&schema.match(a.value,labels)&&!(context.sectionAt(a.ref)&&["skills","talents","blueprints"].indexOf(context.sectionAt(a.ref).type)>=0);}),tables=[];
+   candidates.forEach(function(h){
+    var span=g.span(h.ref),end=g.maxRow+1;
+    g.all.forEach(function(a){if(a.row>span.bottom&&a.col===h.col&&(title(a.text)||schema.title(a.value)&&schema.title(a.value).type!=="classes"))end=Math.min(end,a.row);});
+    var header=g.all.find(function(a){return a.row>span.bottom&&a.row<end&&a.col>=h.col&&/^(?:名称|职业名称|职业名)$/.test(a.text)&&(g.byRow[a.row]||[]).some(function(n){return n.col>a.col&&/^(?:等级|职业等级)$/.test(n.text);});});
+    if(!header)return;var row=g.byRow[header.row]||[],levelHead=row.find(function(a){return a.col>header.col&&/^(?:等级|职业等级)$/.test(a.text);}),styleHead=row.find(function(a){return a.col>header.col&&/^(?:风格|风格名)$/.test(a.text);});
+    var found=g.all.find(function(a){return a.row>header.row&&a.row<end&&a.col===header.col&&!schema.isLabel(a.value);});if(!found)return;
+    tables.push({raw:found.value,levelRaw:g.value(levelHead.col,found.row),nameRef:found.ref,levelRef:l.ref(levelHead.col,found.row),header:h.ref,row:found.row,end:end,styleHead:styleHead,evidence:"class-table-headings"});
+   });
+   var nameBinding=(parsed.fieldBindings||[]).find(function(m){return m.field==="classes."+slot+".name"&&m.confirmed;});
+   if(nameBinding)tables=[];
+   var chosen=tables.length===1?tables[0]:null;
+   if(tables.length>1){issues.push({kind:"class-field-ambiguous",classIndex:slot,note:"职业表存在多个合理候选，请绑定名称和等级。",candidates:tables});return;}
+   if(!chosen&&typeof SNOWD_CHARACTER_FIELDS!=="undefined"){
+    var scoped=Object.assign({},g,{_parsed:parsed,_context:context}),name=SNOWD_CHARACTER_FIELDS.readLabel(parsed,scoped,schema.aliases["classes."+slot+".name"],{key:"classes."+slot+".name"}),level=SNOWD_CHARACTER_FIELDS.readLabel(parsed,scoped,schema.aliases["classes."+slot+".level"],{key:"classes."+slot+".level",numeric:true,nonnegative:true});
+    if(name.status==="valid")chosen={raw:name.value,levelRaw:level.raw,nameRef:name.cellRef,levelRef:level.cellRef,header:name.labelRef,inline:name.inline,levelInline:level.inline,evidence:name.evidence,styleHead:null};
+    else if(name.status==="ambiguous")issues.push({kind:"class-field-ambiguous",classIndex:slot,note:"职业名称有多个候选，需确认。",candidates:name.candidates});
+   }
+   if(!chosen)return;var raw=String(chosen.raw).trim(),levelText=String(chosen.levelRaw||"").trim(),number=Number(levelText.replace(/级$/,"")),valid=levelText!==""&&Number.isFinite(number)&&Number.isInteger(number)&&number>=0,c=out[slot],id=identify(raw);
+   Object.assign(c,{name:raw,_rawName:raw,originalName:raw,level:valid?number:null,levelStatus:valid?"valid":levelText?"invalid":"missing",rawLevel:levelText,kind:id.kind,baseClass:id.baseClass||"",baseCandidates:id.baseCandidates,advancementId:id.definition?id.definition.ids[0]:"",ownerClassIndex:slot,uid:"class-"+slot+"-"+chosen.nameRef,provenance:{sheet:parsed.sheetName,fields:{name:chosen.nameRef,level:chosen.levelRef},section:chosen.header,evidence:chosen.evidence,inlineName:chosen.inline,inlineLevel:chosen.levelInline}});
+   if(chosen.styleHead)for(var j=0;j<4&&chosen.row+j<chosen.end;j++){var value=g.value(chosen.styleHead.col,chosen.row+j);if(value&&!schema.isLabel(value))c.styles[j]=value;}
+   if(id.kind==="advanced"||id.kind==="unknown")issues.push({kind:"class-unconfirmed",classIndex:slot,name:raw,note:"职业原名和等级已保留，规则基础待确认。",candidates:id.baseCandidates});
   });
-  if(out[0].name&&out[1].name&&out[0].name===out[1].name){out[1].levelMeaning="unconfirmed";issues.push({kind:"class-record-conflict",classIndex:1,name:out[1].name,note:"主副栏填写同名职业，已保留两条记录；请确认是独立职业记录还是续写等级。"});}
-  return {classes:out,issues:issues};
+  if(out[0].name&&out[1].name&&out[0].name===out[1].name){out[1].levelMeaning="unconfirmed";issues.push({kind:"class-record-conflict",classIndex:1,name:out[1].name,note:"同名主副职业记录含义待确认。"});}
+  return {classes:out,issues:issues,additional:extra};
  }
  function confirmBase(c,base,levelMeaning){
   var id=identify(c.name);if(id.kind==="advanced"&&id.baseCandidates.indexOf(base)<0)throw new Error("请选择该进阶允许的基础职业");

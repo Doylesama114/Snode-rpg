@@ -1,6 +1,8 @@
 // Snode RPG - mobile AI advisor floating ball entry (draggable + edge-collapse)
 (function () {
   'use strict';
+  var prefs = window.SnowdPreferences;
+  if (!prefs) return;
   if (window.__snowdAdvisorMobileEntry) return;
   window.__snowdAdvisorMobileEntry = true;
 
@@ -79,7 +81,7 @@
     var TIP_SHOW_MS = 5000;
     var tipPool = [];
     var tipIdx = 0;
-    var tipTimer = null;
+    var tipTimer = null, firstTipTimer = null, tipEpoch = 0;
     var tipHideTimer = null;
     var tipEl = document.createElement('div');
     tipEl.id = '_snowd_adv_mobile_tip';
@@ -109,7 +111,7 @@
       tipEl.style.bottom = 'auto';
     }
     function showTipBubble() {
-      if (!tipPool.length) return;
+      if (!tipPool.length || !tipsAllowed()) return;
       tipEl.textContent = tipPool[tipIdx % tipPool.length];
       tipEl.classList.add('_show');
       positionTipBubble();
@@ -120,30 +122,30 @@
       clearTimeout(tipHideTimer);
       tipEl.classList.remove('_show');
     }
-    function nextTip() {
-      if (!tipPool.length) return;
-      if (tipPool.length > 1) {
-        var n = Math.floor(Math.random() * (tipPool.length - 1));
-        tipIdx = (n >= tipIdx ? n + 1 : n) % tipPool.length;
-      }
+    function tipsAllowed() { return prefs.get().advisorAutoTipsEnabled && prefs.status().durable; }
+    async function nextTip() {
+      if (!tipPool.length || !tipsAllowed()) return;
+      var epoch = tipEpoch;
+      var r = await prefs.claimTip();
+      if (!r.ok || !r.claimed || epoch !== tipEpoch || !tipsAllowed()) return;
+      if (tipPool.length > 1) tipIdx = (tipIdx + 1 + Math.floor(Math.random() * (tipPool.length - 1))) % tipPool.length;
       showTipBubble();
     }
     tipEl.addEventListener('click', function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      nextTip();
+      e.stopPropagation(); e.preventDefault();
+      if (tipsAllowed() && tipPool.length) { tipIdx = (tipIdx + 1) % tipPool.length; showTipBubble(); }
     });
-    // 全局发送间隔（v1.0.7239）：与桌面入口共享 localStorage 时间戳，5 分钟内跨页面不再弹贴士
-    try {
-      var _lastTipT = parseInt(localStorage.getItem('_snowd_tip_last_at') || '0', 10);
-      var _tipGapT = 5 * 60 * 1000;
-      if (Date.now() - _lastTipT < _tipGapT) tipPool = [];
-      else localStorage.setItem('_snowd_tip_last_at', String(Date.now()));
-    } catch (e) { /* ignore */ }
-    if (tipPool.length) {
-      setTimeout(showTipBubble, TIP_FIRST_DELAY);
+    function applyTips() {
+      clearTimeout(firstTipTimer); clearInterval(tipTimer); clearTimeout(tipHideTimer);
+      firstTipTimer = tipTimer = tipHideTimer = null; tipEpoch++; hideTipBubble();
+      if (!tipsAllowed() || !tipPool.length) return;
+      firstTipTimer = setTimeout(nextTip, TIP_FIRST_DELAY);
       tipTimer = setInterval(nextTip, TIP_INTERVAL);
     }
+    applyTips();
+    var enabled = tipsAllowed();
+    prefs.subscribe(function () { var next = tipsAllowed(); if (next !== enabled) { enabled = next; applyTips(); } });
+    window.addEventListener('pagehide', function () { clearTimeout(firstTipTimer); clearInterval(tipTimer); clearTimeout(tipHideTimer); });
 
     var pos = loadPos();
     if (pos && typeof pos.left === 'number' && typeof pos.top === 'number') {
@@ -233,8 +235,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function () { prefs.ready.then(init); });
   } else {
-    init();
+    prefs.ready.then(init);
   }
 })();

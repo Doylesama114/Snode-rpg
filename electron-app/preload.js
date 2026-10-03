@@ -1,6 +1,16 @@
 const { contextBridge, ipcRenderer } = require('electron');
+let advisorStreamSequence = 0;
 
 if (location.protocol === 'file:') contextBridge.exposeInMainWorld('electronAPI', {
+  getPromptPreferences: payload => ipcRenderer.invoke('get-prompt-preferences', payload || {}),
+  setPromptPreferences: patch => ipcRenderer.invoke('set-prompt-preferences', patch),
+  markOnboardingSeen: payload => ipcRenderer.invoke('mark-onboarding-seen', payload),
+  claimAdvisorTip: () => ipcRenderer.invoke('claim-advisor-tip'),
+  onPromptPreferences: callback => {
+    const listener = (_event, data) => callback(data);
+    ipcRenderer.on('prompt-preferences-changed', listener);
+    return () => ipcRenderer.removeListener('prompt-preferences-changed', listener);
+  },
   recoveryWrite: payload => ipcRenderer.invoke('recovery-write', payload),
   recoveryRead: identity => ipcRenderer.invoke('recovery-read', identity),
   recoveryClear: payload => ipcRenderer.invoke('recovery-clear', payload),
@@ -31,11 +41,13 @@ if (location.protocol === 'file:') contextBridge.exposeInMainWorld('electronAPI'
   }),
   advisorAdvise: (payload) => ipcRenderer.invoke('advisor-advise', payload),
   advisorAdviseStream: (payload, onDelta) => new Promise((resolve, reject) => {
+    const streamId = ++advisorStreamSequence;
+    const request = { ...payload, __streamId: streamId };
     const handler = (_event, data) => {
-      if (data && data.delta && onDelta) onDelta(data.delta);
+      if (data && data.streamId === streamId && data.delta && onDelta) onDelta(data.delta);
     };
     ipcRenderer.on('advisor-stream-chunk', handler);
-    ipcRenderer.invoke('advisor-advise-stream', payload)
+    ipcRenderer.invoke('advisor-advise-stream', request)
       .then((res) => {
         ipcRenderer.removeListener('advisor-stream-chunk', handler);
         resolve(res);

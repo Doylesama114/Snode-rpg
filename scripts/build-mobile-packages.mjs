@@ -139,6 +139,10 @@ function injectMobileEntry(files, apiBase) {
       : inJobs
         ? `../${SNODE}/advisor-mobile-entry.js`
         : `${SNODE}/advisor-mobile-entry.js`;
+    if (!t.includes('user_preferences.js')) {
+      const psrc = inSN ? 'user_preferences.js' : inJobs ? '../' + SNODE + '/user_preferences.js' : SNODE + '/user_preferences.js';
+      t = t.replace(/<\/body>/i, '<script src="' + psrc + '"></script>\n</body>');
+    }
     if (!t.includes('advisor-tips.js')) {
       const tsrc = inSN
         ? 'advisor-tips.js'

@@ -711,6 +711,12 @@ const integrityIO=spawnSync('node',[join(BASE,'verify_character_integrity_import
 if(integrityIO.stdout)console.log(integrityIO.stdout.trim());if(integrityIO.stderr)console.error(integrityIO.stderr.trim());
 const integrityIOOK=integrityIO.status===0;totalErrors+=integrityIOOK?0:1;
 
+console.log('\n=== 自动引导与顾问提示偏好 ===');
+const prompts = spawnSync(process.execPath, [join(BASE, 'verify_prompt_preferences.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+if (prompts.stdout) console.log(prompts.stdout.trim());
+if (prompts.stderr) console.error(prompts.stderr.trim());
+if (prompts.status !== 0) totalErrors++;
+
 // Desktop tests run the real entry point with isolated user data. CI also runs packaged smoke.
 if (process.platform === 'win32') {
   console.log('\n=== Windows desktop startup + recovery ===');
@@ -724,9 +730,13 @@ if (process.platform === 'win32') {
   console.log('Windows desktop checks require a Windows runner.');
 }
 
+console.log('\n=== 主体范围、通用字段和布局变换 ===');
+const generalImportCheck=spawnSync('node',[join(BASE,'verify_character_general_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+if(generalImportCheck.stdout)console.log(generalImportCheck.stdout.trim());if(generalImportCheck.stderr)console.error(generalImportCheck.stderr.trim());
+const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK?0:1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

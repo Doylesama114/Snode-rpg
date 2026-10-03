@@ -1,19 +1,8 @@
 /* 新手向导引擎 · onboard.js（干净重写版） */
 (function () {
-  var LS = '_snowd_onboard_v2';
-  var mem = {};
-  function read() {
-    try { var v = localStorage.getItem(LS); if (v) return v; } catch (e) {}
-    try { var s = sessionStorage.getItem(LS); if (s) return s; } catch (e) {}
-    return mem[LS] || null;
-  }
-  function write(v) {
-    mem[LS] = v;
-    try { localStorage.setItem(LS, v); } catch (e) {}
-    try { sessionStorage.setItem(LS, v); } catch (e) {}
-  }
-  function state() { try { return JSON.parse(read() || '{}'); } catch (e) { return {}; } }
-  function mark(k, v) { var s = state(); s[k] = v; write(JSON.stringify(s)); }
+  var prefs = window.SnowdPreferences;
+  if (!prefs) return;
+  var running = false, starting = false, manual = false, autoTimer = null;
   var STEPS = window.ONBOARD_STEPS || {
     launcher: [
       { kw: '角色|建卡|角色系统', title: '这里是冒险者工会', text: '先从「角色系统」开始：建一个属于你的冒险者。' },
@@ -67,7 +56,7 @@
     els = {};
   }
   function render() {
-    if (!document.body) return;
+    if (!document.body || (!manual && !prefs.get().onboardingEnabled)) return;
     if (!els.b) build();
     var step = list[idx] || { title: '', text: '' };
     if (els.s) { try { els.s.parentNode.removeChild(els.s); } catch (e) {} els.s = null; }
@@ -127,27 +116,42 @@
   }
   function next() { if (idx >= list.length - 1) { finish('done'); return; } idx++; render(); }
   function prev() { if (idx > 0) { idx--; render(); } }
-  function finish(v) { try { mark(key, v); } catch (e) {} cleanup(); }
-  function start(k) {
-    key = k; list = STEPS[k] || []; idx = 0;
-    if (!list.length) return false;
-    if (state()[k]) return false;
-    render();
-    return true;
+  function finish(v) {
+    if (key) prefs.markSeen(key, v).catch(function () {});
+    running = false; cleanup();
   }
-  function reset() { write('{}'); }
+  async function start(k, options) {
+    options = options || {};
+    if (starting || (running && !options.manual)) return false;
+    starting = true;
+    try {
+      await prefs.ready;
+      var configuration = prefs.get();
+      if (!options.manual && (!configuration.onboardingEnabled || configuration.onboardingSeen[k])) return false;
+      if (options.manual) { running = false; cleanup(); }
+      key = k; list = STEPS[k] || []; idx = 0; manual = !!options.manual;
+      if (!list.length) return false;
+      if (!manual) {
+        var result = await prefs.markSeen(k, 'shown');
+        if (!result.ok || result.claimed === false || !prefs.get().onboardingEnabled) return false;
+      }
+      running = true; render(); return true;
+    } finally { starting = false; }
+  }
+  function reset(k) { return start(k || 'launcher', { manual: true }); }
   function settingsButton() {
-    if (document.getElementById('onboardReplayBtn')) return;
+    if (document.getElementById('onboardReplayBtn') || document.getElementById('promptSettingsCard')) return;
     var wrap = document.querySelector('.container, .wrap, main, body');
     var b = document.createElement('button');
     b.id = 'onboardReplayBtn';
     b.type = 'button';
     b.textContent = '🎓 重看新手向导';
     b.style.cssText = 'margin:16px 0;padding:9px 14px;border:1px solid #b9903f;border-radius:9px;background:#f3e6c9;color:#6d5223;cursor:pointer;font-size:14px';
-    b.onclick = function () { reset(); start('launcher'); };
+    b.onclick = function () { start('launcher', { manual: true }); };
     if (wrap) wrap.appendChild(b);
   }
   function auto() {
+    if (new URLSearchParams(location.search).has('cli') || running || starting) return;
     var f = '';
     try { f = decodeURIComponent((location.pathname || '').split('/').pop() || ''); } catch (e) { f = (location.pathname || '').split('/').pop() || ''; }
     if (f === '启动台.html') start('launcher');
@@ -155,8 +159,15 @@
     else if (f === '角色选择页.html') start('picker');
     else if (f === '设置.html') settingsButton();
   }
-  window.Onboard = { run: start, reset: reset, steps: STEPS, auto: auto };
+  prefs.subscribe(function (event) {
+    if (!event.preferences.onboardingEnabled) {
+      clearTimeout(autoTimer);
+      if (!manual) { running = false; cleanup(); }
+    }
+  });
+  window.Onboard = { run: start, reset: reset, steps: STEPS, auto: auto,
+    stop: function () { running = false; cleanup(); } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', auto);
   else auto();
-  setTimeout(auto, 700);
+  autoTimer = setTimeout(auto, 700);
 })();

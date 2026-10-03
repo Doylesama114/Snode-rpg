@@ -96,15 +96,18 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 <script src="ui_dialog.js"></script>
 <script src="skill_index.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
-<script src="character_class_data.js?v=20261003"></script>
-<script src="character_classes.js?v=20261003"></script>
-<script src="character_stats.js?v=20261003"></script>
-<script src="character_workbook_cache.js?v=20261003"></script>
-<script src="character_io.js?v=20261003"></script>
-<script src="character_layout.js?v=20261003"></script>
-<script src="character_fields.js?v=20261003"></script>
-<script src="character_export.js?v=20261003"></script>
-<script src="character_import_ui.js?v=20261003"></script>
+<script src="character_import_schema.js?v=20261003-general1"></script>
+<script src="character_structure.js?v=20261003-general1"></script>
+<script src="character_class_data.js?v=20261003-general1"></script>
+<script src="character_classes.js?v=20261003-general1"></script>
+<script src="character_stats.js?v=20261003-general1"></script>
+<script src="character_workbook_cache.js?v=20261003-general1"></script>
+<script src="character_io.js?v=20261003-general1"></script>
+<script src="character_layout.js?v=20261003-general1"></script>
+<script src="character_fields.js?v=20261003-general1"></script>
+<script src="character_export.js?v=20261003-general1"></script>
+<script src="character_review_ui.js?v=20261003-general1"></script>
+<script src="character_import_ui.js?v=20261003-general1"></script>
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
@@ -341,7 +344,41 @@ function applyXpSpPickerResult(state,result){
   state.importIssues=(state.importIssues||[]).filter(function(i){return !(i.kind==="field-invalid"&&["xp","sp_points"].indexOf(i.field)>=0);});
 }
 
-function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValues || cells;
+function buildState(parsed){
+  var cells=parsed.cells||{},signature=[["B4","角色名称"],["K3","生命值"],["B15","主职业"],["B122","技能名称"]],legacy=signature.filter(function(p){return SNOWD_CHARACTER_IMPORT_SCHEMA.match(cells[p[0]]||"",[p[1]]);}).length===signature.length&&!parsed.entityScope&&!parsed.entityId;
+  if(legacy){var result=buildStateLegacyTemplate(parsed);result.importAdapter="verified-standard-template";result.importRawLayout={sheetName:parsed.sheetName,merges:parsed.merges||[],formulas:parsed.formulas||{}};return result;}
+  var s={profs:{},player:"",name:"",race:"",gender:"",age:"",height:"",weight:"",
+    eye:"",skin:"",hair:"",portrait:"",xp:0,
+    carry_capacity:{"常规":45,"满载":60,"极限":75,"当前":5},
+    sp_points:0,
+    color_marks:defaultColorMarks(),
+    hp:0,fp:0,story:"",personality:"",traits:"",ideals:"",bonds:"",flaws:"",background:"",deity:"",deityAttr:"",patron:"",contacts:"",scamType:"",missionChannel:"",academicDomain:"",crime:"",seclusion:"",militaryRole:"",foreignOrigin:"",companion:"",sportPreference:"",
+    attrs:{},classes:[{name:"",level:1,keyAttr:"",styles:["","","",""]},{name:"",level:0,styles:["","","",""]},{name:"",level:0,styles:["","","",""]}],
+    skills:[],special_feats:[],feats:[],currency:{"金币":0,"银币":0,"铜币":0,"其他":""},
+    equipment:{"主手武器":[],"副手武器":[],"防具":[],"配饰":[],"背包":[],"杂物包":[],"旅行腰包":[],"材料包":[]},
+    containerItems:{"背包":"已解锁","旅行腰包":"已解锁","烹饪材料包":"","垂钓材料包":"","医用材料包":"","草药材料包":"","裁缝材料包":"","矿石材料包":"","珠宝材料包":"","炼金材料包":"","铭文材料包":""},
+    raceSize:"",
+    dragonType:"",dragonBreath:"",dragonResistance:"",
+    raceChoices:{extraAttrs:[],humanFreeSkill:"",raceSaves:[],raceSkillChoice:"",raceProfInput:"",wingfolkHasCommon:true},
+    classChoices:{weaponSpec:"",weaponSpecBonus:"",specChoices:{}},
+    backgroundChoices:{deity:"",contacts:"",scamType:"",missionChannel:"",academicDomain:"",crime:"",seclusion:"",militaryRole:"",foreignOrigin:"",companion:""},
+    bgOtherPicks:[],
+    racial_traits:[],class_features:[],languages:[],professionals:[],talent_tree:[],
+    blueprints:[],blueprint_bonus_slots:0,
+    forbidden_skills:[],unlocked_tiers:["一阶","二阶"]};
+  s.hp=null;s.fp=null;s.carry_capacity={};s.importIssues=[];s.importAdapter="structural";
+  var classes=SNOWD_CHARACTER_CLASSES.read(parsed);s.classes=classes.classes;s.classIssues=classes.issues;s.importIssues=s.importIssues.concat(classes.issues);
+  SNOWD_CHARACTER_FIELDS.apply(s,parsed);var abilities=SNOWD_CHARACTER_LAYOUT.readAbilities(parsed,s.classes);
+  s.skills=abilities.skills.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
+  s.talent_tree=abilities.talents.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
+  s.blueprints=abilities.blueprints.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
+  s.importIssues=s.importIssues.concat(abilities.issues);s._importLayoutIssues=abilities.issues.filter(function(i){return ["layout-unrecognized","entity-unconfirmed"].indexOf(i.kind)>=0;});s._abilitySections=abilities.sections;s.importLayoutMappings=parsed.layoutMappings||[];
+  s.importCandidates=(abilities.candidates||[]).concat(SNOWD_CHARACTER_LAYOUT.candidatesFromNotes(parsed,{skills:s.skills,talents:s.talent_tree,feats:s.special_feats}));
+  s.importCoverage=SNOWD_CHARACTER_STRUCTURE.coverage(parsed,s);s.importUnreviewed=s.importCoverage.review;s.importRawLayout={sheetName:parsed.sheetName,merges:parsed.merges||[],formulas:parsed.formulas||{}};
+  s._xlsxMeta=parsed.meta||{status:"absent",rows:[]};s._xlsxSheetPath=parsed.sheetPath||"xl/worksheets/sheet1.xml";s.supportingSheets=parsed.otherSheets||[];pendingParsed=parsed;return s;
+}
+
+function buildStateLegacyTemplate(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValues || cells;
   function c(ref){return cells[ref]||"";}
   function cn(ref){var dc=cells[ref];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50)return dn;var v=rawVals[ref];if(v==null||v==="")return 0;var n=parseInt(v);return isNaN(n)?0:n;}
   function findCellFuzzy(keywords){return SNOWD_CHARACTER_LAYOUT.findLabel(parsed,keywords);}
@@ -508,7 +545,7 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.skills=abilityRead.skills.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
   s.talent_tree=abilityRead.talents.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
   s.importIssues=(s.importIssues||[]).concat(abilityRead.issues);
-  s._importLayoutIssues=abilityRead.issues;
+  s._importLayoutIssues=abilityRead.issues.filter(function(i){return ["layout-unrecognized","entity-unconfirmed"].indexOf(i.kind)>=0;});
   s._abilitySections=abilityRead.sections;
   s.importLayoutMappings=parsed.layoutMappings||[];
   pendingParsed=parsed;
@@ -661,7 +698,8 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   s.unmappedFields=supplemental.issues.filter(function(i){return i.kind==="field-unmapped";});
   s.importIssues=s.importIssues.concat(supplemental.issues);
   SNOWD_CHARACTER_FIELDS.apply(s,parsed);
-  s.importCandidates=SNOWD_CHARACTER_LAYOUT.candidatesFromNotes(parsed,{skills:s.skills,talents:s.talent_tree,feats:s.special_feats});
+  s.importCandidates=(abilityRead.candidates||[]).concat(SNOWD_CHARACTER_LAYOUT.candidatesFromNotes(parsed,{skills:s.skills,talents:s.talent_tree,feats:s.special_feats}));
+  s.importCoverage=SNOWD_CHARACTER_STRUCTURE.coverage(parsed,s);s.importUnreviewed=s.importCoverage.review;
   s._xlsxMeta=parsed.meta||{status:"absent",rows:[]};
   s._xlsxSheetPath=parsed.sheetPath||"xl/worksheets/sheet1.xml";s.supportingSheets=parsed.otherSheets||[];
   return s;
@@ -983,7 +1021,7 @@ document.getElementById("fileInput").addEventListener("change", async function(e
     })();
 
       pendingState._uploadedXlsxBuf = buffer;
-	  autoCalcStyles(pendingState); autoUnlockTiers(pendingState); console.log("Styles:",JSON.stringify(pendingState.classes[0].styles),"Tiers:",pendingState.unlocked_tiers);
+	  if(pendingState.importAdapter==="verified-standard-template")autoCalcStyles(pendingState); autoUnlockTiers(pendingState); console.log("Styles:",JSON.stringify(pendingState.classes[0].styles),"Tiers:",pendingState.unlocked_tiers);
   var _violations=checkTierViolations(pendingState);
   if(_violations.length>0){
     showWarningDialog(_violations,function(_keep){
@@ -1074,8 +1112,8 @@ async function confirmImport(draft) {
   if(!draft&&pendingParsed&&pendingParsed.sheetSelectionPending){SD_alert("请先确认要导入的工作表。");openImportSheetPicker();return;}
   var required=validateRequired(pendingState);if(!draft&&required.length){SD_alert("请补充必须字段："+required.join("、"));openLayoutResolver();return;}
   var classPending=SNOWD_CHARACTER_CLASSES.pending(pendingState);if(!draft&&classPending.length){SD_alert("职业身份已保留，请先确认规则基础或保存草稿。");openClassResolver(pendingState);return;}
-  var invalid=(pendingState.importIssues||[]).filter(function(i){return ["field-invalid","field-cleared"].indexOf(i.kind)>=0;});
-  if(!draft&&invalid.length){SD_alert("部分字段无法可靠读取，请确认数值采用方式或保存草稿。");openCombatStatResolver(pendingState);return;}
+  var invalid=(pendingState.importIssues||[]).filter(function(i){return ["field-invalid","field-cleared","field-ambiguous","entity-unconfirmed","class-field-ambiguous"].indexOf(i.kind)>=0;});
+  if(!draft&&invalid.length){SD_alert("部分字段无法可靠读取，请确认数值采用方式或保存草稿。");openFieldBindingResolver(pendingState);return;}
   pendingState.importDraft=draft;if(!draft)SNOWD_CHARACTER_STATS.synchronize(pendingState);
   ensureSpStateOn(pendingState);
   delete pendingState.sp;
@@ -1588,5 +1626,6 @@ function _pad(n) { return (n < 10 ? "0" : "") + n; }
 <script src="shortcuts.js"></script>
 <script>window.__guiBeam="上传角色";; window.__guiSkin = true;</script>
 <script src="guild-ui.js"></script>
+<script src="user_preferences.js"></script>
 </body>
 </html>

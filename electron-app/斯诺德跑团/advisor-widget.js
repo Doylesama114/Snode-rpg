@@ -1,6 +1,8 @@
 // 斯诺德跑团 — Build Advisor 悬浮球 + 侧滑面板（阶段 8A，Electron）
 (function() {
   'use strict';
+  var prefs = window.SnowdPreferences;
+  if (!prefs) return;
 
   var POS_KEY = '_snowd_advisor_pos';
   var USE_CHAR_KEY = '_snowd_advisor_use_char';
@@ -192,6 +194,7 @@
       '<div class="_snowd_adv_foot">',
       '<textarea id="_snowd_adv_input" placeholder="输入 build 问题，Enter 发送"></textarea>',
       '<div class="_snowd_adv_actions">',
+      '<button type="button" id="_snowd_adv_chargen_help" style="display:none">当前建卡建议</button>',
       '<button type="button" id="_snowd_adv_send">发送</button>',
       '</div>',
       '<div class="_snowd_adv_hint">Build 顾问回答由 AI 整理，仅作参考；标识与 SP 由 DM 按模组结算。</div>',
@@ -230,6 +233,9 @@
       tipPool: [],
       tipIdx: 0,
       tipTimer: null,
+      firstTipTimer: null,
+      chargenDelayTimer: null,
+      bubbleEpoch: 0,
       tipHideTimer: null,
     };
 
@@ -518,7 +524,7 @@
 
     function showBubble(text) {
       var tipEl = document.getElementById('_snowd_advisor_tip');
-      if (!tipEl) return;
+      if (!tipEl || !automaticAllowed()) return;
       tipEl.textContent = text || '';
       tipEl.removeAttribute('data-mode');
       state.rotatingTip = false;
@@ -526,54 +532,44 @@
       positionBubble();
     }
 
-    // ---------- 入口小贴士：每 5 分钟轮换一条 ----------
+    function automaticAllowed() { return prefs.get().advisorAutoTipsEnabled && prefs.status().durable; }
+    function stopAutomatic() {
+      clearTimeout(state.firstTipTimer); clearInterval(state.tipTimer); clearTimeout(state.tipHideTimer); clearTimeout(state.chargenDelayTimer);
+      state.firstTipTimer = state.tipTimer = state.tipHideTimer = state.chargenDelayTimer = null;
+      state.bubbleEpoch++; hideBubble();
+    }
     function initTips() {
-      try {
-        var _d = window.SNOWD_ADVISOR_TIPS || null;
-        if (_d && Array.isArray(_d.tips) && Array.isArray(_d.rules)) {
-          state.tipPool = _d.tips.concat(_d.rules);
-          if (state.tipPool.length) state.tipIdx = Math.floor(Math.random() * state.tipPool.length);
-        }
-      } catch (err) { /* ignore */ }
-      if (!state.tipPool.length) return;
-      // 全局发送间隔（v1.0.7239）：时间戳存 localStorage 跨页面共享，避免每进一个新页面都弹贴士
-      try {
-        var _lastTipAt = parseInt(localStorage.getItem('_snowd_tip_last_at') || '0', 10);
-        var _tipGap = 5 * 60 * 1000;
-        if (Date.now() - _lastTipAt < _tipGap) return;
-        localStorage.setItem('_snowd_tip_last_at', String(Date.now()));
-      } catch (e) { /* ignore */ }
-      setTimeout(maybeRotateTip, 3000);
-      state.tipTimer = setInterval(maybeRotateTip, 5 * 60 * 1000);
+      stopAutomatic();
+      if (!automaticAllowed()) return;
+      var data = window.SNOWD_ADVISOR_TIPS;
+      state.tipPool = data && Array.isArray(data.tips) && Array.isArray(data.rules) ? data.tips.concat(data.rules) : [];
+      if (state.tipPool.length) {
+        state.tipIdx = Math.floor(Math.random() * state.tipPool.length);
+        state.firstTipTimer = setTimeout(maybeRotateTip, 3000);
+        state.tipTimer = setInterval(maybeRotateTip, 300000);
+      }
+      if (isChargenPage()) state.chargenDelayTimer = setTimeout(refreshChargenTip, 400);
     }
     function isChargenBubbleVisible() {
-      var tipEl = document.getElementById('_snowd_advisor_tip');
-      return !!(tipEl && !tipEl.classList.contains('_hidden') && !state.rotatingTip);
+      var el = document.getElementById('_snowd_advisor_tip');
+      return !!(el && !el.classList.contains('_hidden') && !state.rotatingTip);
     }
-    function maybeRotateTip() {
-      if (!state.tipPool.length) return;
-      if (isChargenBubbleVisible()) return;
-      nextRotatingTip();
+    async function maybeRotateTip() {
+      if (!automaticAllowed() || !state.tipPool.length || isChargenBubbleVisible()) return;
+      var epoch = state.bubbleEpoch;
+      var result = await prefs.claimTip();
+      if (result.ok && result.claimed && epoch === state.bubbleEpoch && automaticAllowed() && !isChargenBubbleVisible()) nextRotatingTip();
     }
     function showRotatingTip() {
-      var tipEl = document.getElementById('_snowd_advisor_tip');
-      if (!tipEl || !state.tipPool.length) return;
-      tipEl.textContent = state.tipPool[state.tipIdx % state.tipPool.length];
-      tipEl.setAttribute('data-mode', 'tip');
-      state.rotatingTip = true;
-      tipEl.classList.remove('_hidden');
-      positionBubble();
-      clearTimeout(state.tipHideTimer);
-      state.tipHideTimer = setTimeout(function () {
-        hideBubble();
-      }, 5000);
+      var el = document.getElementById('_snowd_advisor_tip');
+      if (!el || !state.tipPool.length || !automaticAllowed()) return;
+      el.textContent = state.tipPool[state.tipIdx % state.tipPool.length]; el.setAttribute('data-mode', 'tip');
+      state.rotatingTip = true; el.classList.remove('_hidden'); positionBubble();
+      clearTimeout(state.tipHideTimer); state.tipHideTimer = setTimeout(hideBubble, 5000);
     }
     function nextRotatingTip() {
-      if (!state.tipPool.length) return;
-      if (state.tipPool.length > 1) {
-        var n = Math.floor(Math.random() * (state.tipPool.length - 1));
-        state.tipIdx = (n >= state.tipIdx ? n + 1 : n) % state.tipPool.length;
-      }
+      if (!automaticAllowed() || !state.tipPool.length) return;
+      if (state.tipPool.length > 1) state.tipIdx = (state.tipIdx + 1 + Math.floor(Math.random() * (state.tipPool.length - 1))) % state.tipPool.length;
       showRotatingTip();
     }
 
@@ -612,6 +608,8 @@
     }
 
     async function refreshChargenTip() {
+      if (!automaticAllowed()) return;
+      var epoch = state.bubbleEpoch;
       if (!isChargenPage()) {
         hideBubble();
         return;
@@ -651,15 +649,18 @@
           conversationHistory: conversationHistoryForPayload(),
         };
         var res = await window.electronAPI.advisorAdviseStream(payload, function(delta) {
+          if (!automaticAllowed() || epoch !== state.bubbleEpoch) return;
           full += delta;
           showBubble(truncateTip(full) || '…');
         });
+        if (!automaticAllowed() || epoch !== state.bubbleEpoch) return;
         if (res && res.resolvedQuery) state.chargenQuery = res.resolvedQuery;
         if (res && res.ok && String(res.answer || '').trim()) full = res.answer;
         state.chargenFullAnswer = full || '（暂无建议）';
         syncChargenBubbleToSession();
         showBubble(truncateTip(state.chargenFullAnswer));
       } catch (e) {
+        if (!automaticAllowed() || epoch !== state.bubbleEpoch) return;
         showBubble('推荐暂时不可用');
         state.chargenFullAnswer = null;
       } finally {
@@ -1062,6 +1063,9 @@
     });
 
     document.getElementById('_snowd_adv_send').addEventListener('click', sendQuery);
+    var manualHelp = document.getElementById('_snowd_adv_chargen_help');
+    if (isChargenPage()) manualHelp.style.display = '';
+    manualHelp.addEventListener('click', function () { sendQuery({ presetQuery: '请根据我的当前建卡步骤给出建议' }); });
 
     var inputEl = document.getElementById('_snowd_adv_input');
     inputEl.addEventListener('keydown', function(e) {
@@ -1099,9 +1103,13 @@
     applyBallPos();
     ensureSessionBinding();
     restoreSessionUi();
-    if (isChargenPage()) {
-      setTimeout(refreshChargenTip, 400);
-    }
+    var automaticEnabled = automaticAllowed();
+    prefs.subscribe(function () {
+      var enabled = automaticAllowed();
+      if (enabled === automaticEnabled) return;
+      automaticEnabled = enabled; initTips();
+    });
+    window.addEventListener('pagehide', stopAutomatic);
   }
 
   function init() {
@@ -1112,8 +1120,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function () { prefs.ready.then(init); });
   } else {
-    init();
+    prefs.ready.then(init);
   }
 })();

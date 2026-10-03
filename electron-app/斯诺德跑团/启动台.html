@@ -348,7 +348,7 @@ a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid 
 <script src="changelog.js"></script>
 <script>
 /* ===== 版本与更新流程（沿用原启动台逻辑，函数名与 #updateMsg 契约保持不变）===== */
-var APP_VERSION = '1.0.8040';
+var APP_VERSION = '1.0.8041';
 (function(){ var el = document.getElementById('versionDisplay'); if (el) el.textContent = 'v' + APP_VERSION; })();
 
 var OSS_MIRROR_BASE = 'https://snode-rpg-releases.oss-cn-chengdu.aliyuncs.com';
@@ -1120,6 +1120,8 @@ if (window.electronAPI && window.electronAPI.onUpdateStatus) window.electronAPI.
   window.__demoRoll = roll;
 })();
 </script>
+<script src="user_preferences.js"></script>
+<script src="prompt_controls.js"></script>
 <script src="onboard_steps.js"></script>
 <script src="onboard.js"></script>
 <script src="desktop_tools.js"></script>

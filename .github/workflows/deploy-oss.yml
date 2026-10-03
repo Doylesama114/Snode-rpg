@@ -28,6 +28,17 @@ jobs:
               sed -i "s|</body>|<script src=\"../bug-report.js\"></script>\n</body>|" "$f"
             fi
           done
+          # Shared preference gate must precede automatically injected advisor scripts.
+          find _deploy -name "*.html" | while read f; do
+            if ! grep -q "user_preferences.js" "$f"; then
+              case "$f" in
+                *斯诺德跑团*) PREF="user_preferences.js";;
+                *职业页*) PREF="../斯诺德跑团/user_preferences.js";;
+                *) PREF="斯诺德跑团/user_preferences.js";;
+              esac
+              sed -i "s|</body>|<script src=\"$PREF\"></script>\n</body>|" "$f"
+            fi
+          done
           # 注入移动端 AI 顾问悬浮球入口（OSS 子目录部署用相对路径）
           find _deploy -name "*.html" | while read f; do
             if ! grep -q "advisor-tips.js" "$f"; then
