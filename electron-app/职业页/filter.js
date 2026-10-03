@@ -53,7 +53,8 @@
 
     function readMarksFromSkill(skill) {
         var raw = skill.getAttribute("data-marks");
-        if (raw) {
+        if (raw !== null || skill.getAttribute("data-mark-count") === "0") {
+            raw = raw || "";
             return raw.split(",").map(canonicalizeMarkHex).filter(Boolean);
         }
         var marks = [];

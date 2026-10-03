@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from class_sync_core import (  # noqa: E402
     collect_roll_rows,
     detect_unit_blocks,
+    is_skill_header,
     extract_paragraphs,
     is_section_break,
 )
@@ -303,7 +304,7 @@ def collect_unit_blocks(
                 i = j
                 continue
             break
-        if t in all_names or is_section_break(t):
+        if is_skill_header(paras, i, all_names) or is_section_break(t):
             break
         if t in unit_set:
             block = [t]
@@ -315,7 +316,7 @@ def collect_unit_blocks(
                     continue
                 if u in unit_set:
                     break
-                if u in all_names or is_section_break(u) or SEP_RE.match(u):
+                if is_skill_header(paras, i, all_names) or is_section_break(u) or SEP_RE.match(u):
                     break
                 block.append(u)
                 i += 1
@@ -335,73 +336,65 @@ def skill_lines_map(data: dict) -> dict[str, dict]:
     return {sk.get("name"): sk for sk in data.get("skills") or []}
 
 
+
+def enrich_skill(skill: dict) -> None:
+    lines = list(skill.get("description") or [])
+    units = [parse_unit_block(b["lines"]) for b in detect_unit_blocks(lines)]
+    for upgrade in skill.get("level_upgrades") or []:
+        extra = list(upgrade.get("choices") or [])
+        for b in detect_unit_blocks(extra):
+            unit = parse_unit_block(b["lines"])
+            unit["level"] = upgrade["level"]
+            units.append(unit)
+    if units:
+        skill["unit_tables"] = units
+    rolls = collect_roll_rows(lines)
+    if rolls:
+        skill["roll_tables"] = rolls
+    else:
+        skill.pop("roll_tables", None)
+
+
+
 def enrich_base_class(cls: str, apply: bool) -> dict:
-    docx_path = ROOT / f"基础职业-{cls}.docx"
-    json_path = ROOT / "职业页" / "数据" / f"{cls}.json"
-    if not docx_path.exists() or not json_path.exists():
+    path = ROOT / "\u804c\u4e1a\u9875" / "\u6570\u636e" / f"{cls}.json"
+    if not path.exists():
         return {"class": cls, "error": "missing files"}
-    data = json.loads(json_path.read_text(encoding="utf-8"))
-    skills = {sk.get("name"): sk for sk in data.get("skills") or []}
-    names = set(skills)
-    paras = extract_paragraphs(docx_path)
+    data = json.loads(path.read_text(encoding="utf8"))
     report = {"class": cls, "units": {}, "rolls": {}}
-    for skill_name, unit_names in A_SPECS.get(cls, {}).items():
-        sk = skills.get(skill_name)
-        if sk is None:
-            report["units"][skill_name] = "SKILL NOT FOUND"
-            continue
-        start = find_skill_para(paras, skill_name, names)
-        if start is None:
-            report["units"][skill_name] = "DOCX SKILL NOT FOUND"
-            continue
-        blocks = collect_unit_blocks(paras, start, unit_names, names)
-        parsed = [parse_unit_block(b) for b in blocks]
-        report["units"][skill_name] = [u["name"] for u in parsed]
-        if apply:
-            sk["unit_tables"] = parsed
-    for skill_name in B_SPECS.get(cls, []):
-        sk = skills.get(skill_name)
-        if sk is None:
-            report["rolls"][skill_name] = "SKILL NOT FOUND"
-            continue
-        rows = collect_roll_rows(sk.get("description") or [])
-        report["rolls"][skill_name] = len(rows)
-        if apply:
-            sk["roll_tables"] = rows
+    for skill in data.get("skills") or []:
+        enrich_skill(skill)
+        if skill.get("unit_tables"):
+            report["units"][skill["name"]] = [u["name"] for u in skill["unit_tables"]]
+        if skill.get("roll_tables"):
+            report["rolls"][skill["name"]] = len(skill["roll_tables"])
     if apply:
-        json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf8")
     return report
+
 
 
 def enrich_domain_json(path: Path, apply: bool) -> dict:
     if not path.exists():
         return {"path": str(path), "error": "missing"}
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf8"))
     report = {"path": str(path), "units": {}, "rolls": {}}
     for dom in data.get("domains", {}).values():
-        for sk in dom.get("skills") or []:
-            name = sk.get("name")
-            desc = sk.get("description") or []
-            if name in A_SPECS.get("牧师·神圣领域", {}):
-                blocks = detect_unit_blocks(desc)
-                parsed = [parse_unit_block(b["lines"]) for b in blocks]
-                report["units"][name] = [u["name"] for u in parsed]
-                if apply:
-                    sk["unit_tables"] = parsed
-            if name in B_SPECS.get("牧师·神圣领域", []):
-                rows = collect_roll_rows(desc)
-                report["rolls"][name] = len(rows)
-                if apply:
-                    sk["roll_tables"] = rows
+        for skill in dom.get("skills") or []:
+            enrich_skill(skill)
+            if skill.get("unit_tables"):
+                report["units"][skill["id"]] = [u["name"] for u in skill["unit_tables"]]
+            if skill.get("roll_tables"):
+                report["rolls"][skill["id"]] = len(skill["roll_tables"])
     if apply:
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf8")
     return report
 
 
 def main() -> None:
     apply = "--apply" in sys.argv
     print("apply =", apply)
-    for cls in A_SPECS:
+    for cls in [c["name"] for c in json.loads((ROOT / "职业页/数据/classes.json").read_text(encoding="utf8"))]:
         rep = enrich_base_class(cls, apply)
         print("###", cls, "units:", rep.get("units"), "rolls:", rep.get("rolls"))
     rep = enrich_domain_json(ROOT / "职业页" / "数据" / "牧师·神圣领域.json", apply)

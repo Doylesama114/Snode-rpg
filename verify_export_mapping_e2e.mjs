@@ -1,8 +1,9 @@
 // 导出映射 + 回读 E2E：验证新模板的 K/Q/U 动态效果、Q6/Q8/R/Q36-Q42、I89/I100、戏法与 H33-H39 不写
 import { chromium } from 'playwright';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const BASE = 'D:\\Download\\scholar-agent-main';
+const BASE = dirname(fileURLToPath(import.meta.url));
 const PANEL = 'file:///' + join(BASE, '斯诺德跑团', '角色面板.html').replace(/\\/g, '/');
 const UPLOAD = 'file:///' + join(BASE, '斯诺德跑团', '上传角色.html').replace(/\\/g, '/');
 
@@ -80,7 +81,8 @@ try {
 
     const rt = await upload.evaluate(async (arr) => {
       const parsed = await window.parseXLSX(new Uint8Array(arr).buffer);
-      return { cells: parsed.cells, state: window.buildState(parsed) };
+      const state=window.buildState(parsed);window.autoCorrect(state);
+      return { cells: parsed.cells, state };
     }, bytes);
 
     const failures = checks(rt);
@@ -142,12 +144,12 @@ try {
       if(b.indexOf('魔法伎俩')>=0||b.indexOf('光亮术')>=0)cantripRows.push(r);
     }
     if(cantripRows.length<2) f.push('法师戏法未写入主技能列表');
-    else if(!cantripRows.every(r=>String(cells['I'+r]||'').indexOf('法师学徒')>=0)) f.push('法师戏法来源缺失');
+    else if(!cantripRows.every(r=>String(cells['I'+r]||'')==='法师')) f.push('法师戏法来源缺失');
     if ((cells.H33 || cells.H34 || cells.H35 || cells.H36 || cells.H37 || cells.H38 || cells.H39)) f.push('H33-H39 不应有内容');
     if ((state.raceChoices.extraAttrs || []).join('、') !== '敏捷、感知') f.push('回读半精灵属性错误');
     if (!state.classChoices.specChoices || !state.classChoices.specChoices['奥法学者']) f.push('回读法师专长缺失');
     const cantrips = (state.skills || []).filter(s => s.grantedBy === '法师学徒');
-    if (cantrips.length < 2) f.push('回读戏法 freeSlot 标记缺失');
+    if (cantrips.length < 2 || !cantrips.every(s=>s.src==='法师'&&s.via==='法师学徒'&&s.free===true&&s.occupies===false&&s.freeSlot===true)) f.push('回读戏法来源、获取途径或免费栏位语义错误');
     return f;
   });
 } finally {

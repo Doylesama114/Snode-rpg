@@ -5,7 +5,7 @@ function lookupSkillForExport(name, preferClass, id) {
   var hits=[];
   Object.keys(SKILL_DATA).forEach(function(cls){
     if(preferClass&&preferClass!==cls)return;
-    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id))hits.push(s);});
+    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id||(s.legacy_ids||[]).indexOf(id)!==-1))hits.push(s);});
   });return hits.length===1?hits[0]:null;
 }
 

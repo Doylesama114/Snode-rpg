@@ -81,7 +81,12 @@ def next_skill_id(skills: list[dict], prefix: str = ID_PREFIX) -> int:
 
 def extract_to_block(ex: dict) -> dict:
     fields = dict(ex.get("fields") or {})
-    mark_dots = [c for c in (ex.get("cost") or []) if c]
+    mark_dots = []
+    for c in ex.get("cost") or []:
+        if isinstance(c, dict):
+            mark_dots.extend([c["color"]] * c.get("count", 1))
+        elif c:
+            mark_dots.append(c)
     if mark_dots:
         fields["标识"] = "".join("●" for _ in mark_dots)
     fields.pop("费用", None)

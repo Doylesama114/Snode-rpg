@@ -51,11 +51,18 @@ function resolveEnvPaths() {
   });
 }
 
-function bootstrapAdvisorEnv() {
+function bootstrapAdvisorEnv(diagnostics) {
   if (process.env.DEEPSEEK_API_KEY) return null;
   for (const envPath of resolveEnvPaths()) {
     if (!fs.existsSync(envPath)) continue;
-    const fileVars = parseEnvFile(fs.readFileSync(envPath, 'utf8'));
+    let fileVars;
+    try {
+      if (!fs.statSync(envPath).isFile()) throw new Error('configuration is not a file');
+      fileVars = parseEnvFile(fs.readFileSync(envPath, 'utf8'));
+    } catch (error) {
+      if (diagnostics) diagnostics.error('advisor-config-unreadable', error);
+      continue;
+    }
     for (const [k, v] of Object.entries(fileVars)) {
       if (process.env[k] === undefined || process.env[k] === '') {
         process.env[k] = v;

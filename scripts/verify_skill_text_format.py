@@ -18,7 +18,7 @@ from class_sync_core import build_docx_index, extract_paragraphs, pick_block  # 
 
 CLASSES = (
     "蛮斗士", "吟游诗人", "圣骑士", "德鲁伊", "战士", "术士", "武僧",
-    "法师", "游荡者", "牧师", "猎人", "萨满祭司", "魔契师", "守望者", "通用天赋树",
+    "法师", "游荡者", "牧师", "猎人", "萨满祭司", "魔契师", "守望者", "通用天赋树", "奇械师", "谋士", "召唤师", "战舞者",
 )
 
 
@@ -88,6 +88,8 @@ def main() -> int:
                         for u in actual_up
                         if u.get("level") == eu.get("level")
                         and u.get("class") == eu.get("class")
+                        and u.get("section", "") == eu.get("section", "")
+                        and u.get("text", "") == eu.get("text", "")
                     ),
                     None,
                 )

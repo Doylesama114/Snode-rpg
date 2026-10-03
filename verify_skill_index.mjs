@@ -15,6 +15,7 @@ const ok = (n, c, extra) => { if (c) { pass++; console.log('  PASS ' + n + (extr
 const CLASSES = ['召唤师','吟游诗人','圣骑士','奇械师','守望者','德鲁伊','战士','战舞者','术士','武僧','法师','游荡者','牧师','猎人','萨满祭司','蛮斗士','谋士','魔契师'];
 let expect = 0, missing = [], identityMissing = [], staleFields = [];
 const detailFail = [];
+const expectedAliases={};
 for (const cls of CLASSES.concat(['通用天赋树', '特殊专长', '牧师·神圣领域'])) {
   const p = path.join(D, cls + '.json');
   if (!fs.existsSync(p)) { missing.push(cls + '(文件缺失)'); continue; }
@@ -27,6 +28,7 @@ for (const cls of CLASSES.concat(['通用天赋树', '特殊专长', '牧师·�
   for(const s of arr){
     if(!s||!s.name)continue;
     const srcClass=cls==='通用天赋树'?'通用':cls;
+    for(const alias of s.legacy_ids||[])expectedAliases[srcClass+'\t'+alias]=srcClass+'\t'+s.id;
     const exact=(I.rows||[]).filter(r=>r[0]===s.name&&r[1]===(s.id||'')&&r[2]===srcClass);
     if(exact.length!==1)identityMissing.push(srcClass+'/'+s.name+'/'+s.id);
     else if(exact[0][6]!==String(s.tier||'')||(cls!=='牧师·神圣领域'&&exact[0][5]!==String(s.style||'')))staleFields.push(srcClass+'/'+s.name);
@@ -50,8 +52,11 @@ ok('内容级可达性', detailFail.length === 0, detailFail.length ? '无内容
 /* ② byKey 唯一 + 重号候选保留 */
 const keys = Object.keys(I.byKey || {});
 const rowKeys=(I.rows||[]).filter(r=>r[1]).map(r=>r[2]+'\t'+r[1]);
-const dupKeys=rowKeys.length!==new Set(rowKeys).size||keys.length!==rowKeys.length||I.rows.some((r,i)=>r[1]&&I.byKey[r[2]+'\t'+r[1]]!==i);
+const acceptedKeys=new Set(rowKeys.concat(Object.keys(expectedAliases)));
+const dupKeys=rowKeys.length!==new Set(rowKeys).size||keys.length!==acceptedKeys.size||keys.some(k=>!acceptedKeys.has(k))||I.rows.some((r,i)=>r[1]&&I.byKey[r[2]+'\t'+r[1]]!==i)
+  ||Object.entries(expectedAliases).some(([oldKey,newKey])=>I.byKey[oldKey]!==I.byKey[newKey]);
 ok('byKey 无冲突', !dupKeys, keys.length + ' 个键');
+ok('旧 ID 别名有独立来源且指向正确条目',Object.keys(I.aliases||{}).length===Object.keys(expectedAliases).length&&Object.entries(expectedAliases).every(([oldKey,newKey])=>I.aliases[oldKey]===newKey.split('\t')[1]),Object.keys(expectedAliases).length+' 个别名');
 const dupIds = Object.entries(I.byId || {}).filter(([, v]) => v.length > 1);
 ok('重号 ID 候选保留', dupIds.length === 2, '检测到 ' + dupIds.length + ' 组: ' + dupIds.map(([k, v]) => k + '(' + v.length + ')').join(' '));
 /* ③ 同名候选保留 */

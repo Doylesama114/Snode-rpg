@@ -91,7 +91,12 @@
       "flavor": "",
       "cost": [],
       "type": "starting",
-      "style": "戒律"
+      "style": "戒律",
+      "source": {
+        "kind": "docx",
+        "para_start": 79,
+        "para_end": 91
+      }
     },
     {
       "id": "pr-skill-2",
@@ -144,7 +149,8 @@
             {
               "text": "点生命值"
             }
-          ]
+          ],
+          "section": "你为一名角色回复1D4+2点生命值"
         },
         {
           "class": "牧师职业",
@@ -176,13 +182,19 @@
             {
               "text": "点生命值"
             }
-          ]
+          ],
+          "section": "你为一名角色回复1D4+2点生命值"
         }
       ],
       "flavor": "",
       "cost": [],
       "type": "starting",
-      "style": "虔佑"
+      "style": "虔佑",
+      "source": {
+        "kind": "docx",
+        "para_start": 91,
+        "para_end": 103
+      }
     },
     {
       "id": "pr-skill-3",
@@ -273,7 +285,12 @@
       "flavor": "",
       "cost": [],
       "type": "starting",
-      "style": "虔佑"
+      "style": "虔佑",
+      "source": {
+        "kind": "docx",
+        "para_start": 103,
+        "para_end": 115
+      }
     },
     {
       "id": "pr-skill-4",
@@ -295,8 +312,7 @@
       },
       "description": [
         "1.你使一名角色进行一次难度为12的意志豁免，对方豁免失败将进入忏悔状态",
-        "2.责难无法在同一场战斗环节中对相同角色生效多次",
-        "牧师天赋树"
+        "2.责难无法在同一场战斗环节中对相同角色生效多次"
       ],
       "level_upgrades": [
         {
@@ -391,7 +407,12 @@
       "flavor": "",
       "cost": [],
       "type": "starting",
-      "style": "魂谒"
+      "style": "魂谒",
+      "source": {
+        "kind": "docx",
+        "para_start": 115,
+        "para_end": 128
+      }
     },
     {
       "id": "pr-skill-5",
@@ -492,7 +513,13 @@
         }
       ],
       "style": "戒律",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 139,
+        "para_end": 153
+      }
     },
     {
       "id": "pr-skill-6",
@@ -587,7 +614,13 @@
         }
       ],
       "style": "戒律",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 153,
+        "para_end": 169
+      }
     },
     {
       "id": "pr-skill-7",
@@ -652,7 +685,13 @@
       ],
       "style": "戒律",
       "tier": "一阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 169,
+        "para_end": 183
+      }
     },
     {
       "id": "pr-skill-8",
@@ -718,7 +757,13 @@
       ],
       "style": "戒律",
       "tier": "一阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 183,
+        "para_end": 197
+      }
     },
     {
       "id": "pr-skill-9",
@@ -837,7 +882,13 @@
       ],
       "style": "戒律",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 203,
+        "para_end": 219
+      }
     },
     {
       "id": "pr-skill-10",
@@ -860,8 +911,7 @@
         "标识": "●"
       },
       "description": [
-        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果",
-        "盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
+        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
         "如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值"
       ],
       "level_upgrades": [
@@ -914,7 +964,13 @@
         }
       ],
       "style": "戒律",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 219,
+        "para_end": 235
+      }
     },
     {
       "id": "pr-skill-11",
@@ -1070,7 +1126,13 @@
       ],
       "style": "戒律",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 235,
+        "para_end": 252
+      }
     },
     {
       "id": "pr-skill-12",
@@ -1084,10 +1146,11 @@
         "前置条件": "你拥有专注和感悟的熟练度",
         "额外条件": "你拥有侍僧或狂信徒的个性背景",
         "关键词": "天赋.防御.参悟.长休",
-        "标识": "●",
-        "描述": "你通过苦修来对抗世间的磨难，当你即将承受一次伤害时，可以消耗X点疲劳值来抵挡等量的伤害值，这个效果至多使你的疲劳值降至1点"
+        "标识": "●"
       },
-      "description": [],
+      "description": [
+        "你通过苦修来对抗世间的磨难，当你即将承受一次伤害时，可以消耗X点疲劳值来抵挡等量的伤害值，这个效果至多使你的疲劳值降至1点"
+      ],
       "level_upgrades": [
         {
           "class": "牧师职业",
@@ -1147,7 +1210,13 @@
       ],
       "style": "戒律",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 252,
+        "para_end": 259
+      }
     },
     {
       "id": "pr-skill-13",
@@ -1244,7 +1313,13 @@
       ],
       "style": "戒律",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 265,
+        "para_end": 281
+      }
     },
     {
       "id": "pr-skill-14",
@@ -1270,8 +1345,7 @@
       "description": [
         "你对一名能够触及的角色发起盾牌冲锋，朝直线方向位移至目标身前并发起攻击，这次攻击对目标结算造成的伤害值时额外附加一次你的体质调整值",
         "目标需要与你进行一次力量对抗，对方对抗失败后将会被你击退至多4米",
-        "如果目标在被击退至少2米的过程中撞击其他角色或障碍物，那么还需要再次进行难度为12的力量豁免，这次豁免失败将会使目标进入眩晕状态",
-        "施展距离的X为你的基础移动速度"
+        "如果目标在被击退至少2米的过程中撞击其他角色或障碍物，那么还需要再次进行难度为12的力量豁免，这次豁免失败将会使目标进入眩晕状态施展距离的X为你的基础移动速度"
       ],
       "level_upgrades": [
         {
@@ -1307,7 +1381,8 @@
             {
               "text": "米"
             }
-          ]
+          ],
+          "section": "施展距离的X为你的基础移动速度"
         },
         {
           "class": "牧师职业",
@@ -1345,7 +1420,8 @@
             {
               "text": "邪能或星界伤害）"
             }
-          ]
+          ],
+          "section": "施展距离的X为你的基础移动速度"
         }
       ],
       "flavor": "",
@@ -1358,7 +1434,13 @@
         }
       ],
       "style": "戒律",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 281,
+        "para_end": 299
+      }
     },
     {
       "id": "pr-skill-15",
@@ -1401,7 +1483,13 @@
       ],
       "style": "戒律",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 299,
+        "para_end": 316
+      }
     },
     {
       "id": "pr-skill-16",
@@ -1414,10 +1502,11 @@
         "前置条件": "你进行过虔诚祷告",
         "额外条件": "你怀着责罚他人的心情进行过虔诚祷告",
         "关键词": "神术.恩惠",
-        "标识": "●",
-        "描述": "你将日常念诵的戒律化作对敌人的惩戒，如果你在本日进行过虔诚祷告，那么在本日的每场战斗环节中你拥有一次使用附赠动作来施展惩击的机会"
+        "标识": "●"
       },
-      "description": [],
+      "description": [
+        "你将日常念诵的戒律化作对敌人的惩戒，如果你在本日进行过虔诚祷告，那么在本日的每场战斗环节中你拥有一次使用附赠动作来施展惩击的机会"
+      ],
       "level_upgrades": [
         {
           "class": "牧师职业",
@@ -1488,7 +1577,13 @@
       ],
       "style": "戒律",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 316,
+        "para_end": 324
+      }
     },
     {
       "id": "pr-skill-17",
@@ -1534,7 +1629,13 @@
       "style": "戒律",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 330,
+        "para_end": 344
+      }
     },
     {
       "id": "pr-skill-18",
@@ -1609,7 +1710,13 @@
         }
       ],
       "style": "戒律",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 344,
+        "para_end": 359
+      }
     },
     {
       "id": "pr-skill-19",
@@ -1661,7 +1768,13 @@
       "style": "戒律",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 359,
+        "para_end": 378
+      }
     },
     {
       "id": "pr-skill-20",
@@ -1673,10 +1786,11 @@
         "前置条件": "你为宣扬神灵的教义赋予了实践",
         "额外条件": "你成为当地对应神祇信仰的典范",
         "关键词": "天赋.回复",
-        "标识": "●●",
-        "描述": "你的身躯与心灵融为一体，皆贯彻在宣扬主的道路上，每当你消耗疲劳值时，为自身回复等量的生命值，这个效果不会附加你的关键属性和其他增益效果"
+        "标识": "●●"
       },
-      "description": [],
+      "description": [
+        "你的身躯与心灵融为一体，皆贯彻在宣扬主的道路上，每当你消耗疲劳值时，为自身回复等量的生命值，这个效果不会附加你的关键属性和其他增益效果"
+      ],
       "cost": [
         {
           "color": "#00FA99",
@@ -1694,7 +1808,13 @@
       "style": "戒律",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 378,
+        "para_end": 384
+      }
     },
     {
       "id": "pr-skill-21",
@@ -1734,7 +1854,13 @@
       ],
       "style": "虔佑",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 472,
+        "para_end": 488
+      }
     },
     {
       "id": "pr-skill-22",
@@ -1772,7 +1898,13 @@
       ],
       "style": "虔佑",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 488,
+        "para_end": 501
+      }
     },
     {
       "id": "pr-skill-23",
@@ -1832,7 +1964,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "戏法",
+      "source": {
+        "kind": "docx",
+        "para_start": 501,
+        "para_end": 515
+      }
     },
     {
       "id": "pr-skill-24",
@@ -1866,7 +2004,13 @@
       ],
       "style": "虔佑",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "戏法",
+      "source": {
+        "kind": "docx",
+        "para_start": 515,
+        "para_end": 527
+      }
     },
     {
       "id": "pr-skill-25",
@@ -1997,7 +2141,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 527,
+        "para_end": 541
+      }
     },
     {
       "id": "pr-skill-26",
@@ -2114,7 +2264,13 @@
       ],
       "style": "虔佑",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 547,
+        "para_end": 562
+      }
     },
     {
       "id": "pr-skill-27",
@@ -2152,7 +2308,13 @@
       "style": "虔佑",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 562,
+        "para_end": 576
+      }
     },
     {
       "id": "pr-skill-28",
@@ -2189,7 +2351,13 @@
       "style": "虔佑",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 576,
+        "para_end": 591
+      }
     },
     {
       "id": "pr-skill-29",
@@ -2203,8 +2371,7 @@
         "前置条件": "你拥有求生或机遇的熟练度",
         "额外条件": "你为救助他人而进行过一次超过二十公里的跋涉",
         "关键词": "天赋.位移.悟性.长休",
-        "标识": "●",
-        "描述": "你早已踏上救赎他人的道理，你可以使用一个反应动作来尝试向一名生命值未满的友方角色进行一次基础移动"
+        "标识": "●"
       },
       "level_upgrades": [
         {
@@ -2260,7 +2427,15 @@
       ],
       "style": "虔佑",
       "tier": "二阶",
-      "description": []
+      "description": [
+        "你早已踏上救赎他人的道理，你可以使用一个反应动作来尝试向一名生命值未满的友方角色进行一次基础移动"
+      ],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 591,
+        "para_end": 598
+      }
     },
     {
       "id": "pr-skill-30",
@@ -2316,7 +2491,8 @@
             {
               "text": "点伤害"
             }
-          ]
+          ],
+          "section": "你为一名角色回复4D4+8点生命值"
         },
         {
           "class": "牧师职业",
@@ -2348,7 +2524,8 @@
             {
               "text": "点伤害"
             }
-          ]
+          ],
+          "section": "你为一名角色回复4D4+8点生命值"
         },
         {
           "class": "牧师职业",
@@ -2374,7 +2551,8 @@
             {
               "text": "强效治疗术能够忽视对方拥有的降低生命值回复数值的效果"
             }
-          ]
+          ],
+          "section": "你为一名角色回复4D4+8点生命值"
         }
       ],
       "flavor": "",
@@ -2387,7 +2565,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 604,
+        "para_end": 620
+      }
     },
     {
       "id": "pr-skill-31",
@@ -2440,7 +2624,8 @@
             {
               "text": "你也可以选择不令对方位移，而是由你生长出羽翼向目标进行一次位移"
             }
-          ]
+          ],
+          "section": "2.位移过程中目标视为空中状态"
         },
         {
           "class": "牧师职业",
@@ -2493,7 +2678,8 @@
             {
               "text": "未被占据的位置"
             }
-          ]
+          ],
+          "section": "2.位移过程中目标视为空中状态"
         }
       ],
       "cost": [
@@ -2506,7 +2692,13 @@
       ],
       "style": "虔佑",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 620,
+        "para_end": 636
+      }
     },
     {
       "id": "pr-skill-32",
@@ -2627,7 +2819,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 636,
+        "para_end": 653
+      }
     },
     {
       "id": "pr-skill-33",
@@ -2653,7 +2851,8 @@
         "·目标对剧毒、强酸和暗影伤害具有4点抗性",
         "·目标对力场、心灵和神圣伤害具有4点抗性",
         "·目标在进行魅惑、恐惧、混乱和忏悔检定时的豁免难度-2",
-        "·目标的防御等级+2，无法通过此方式使防御等级超过21你无法在一次长休前对同一名角色多次使用守护刻印"
+        "·目标的防御等级+2，无法通过此方式使防御等级超过21",
+        "你无法在一次长休前对同一名角色多次使用守护刻印"
       ],
       "level_upgrades": [
         {
@@ -2758,7 +2957,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 653,
+        "para_end": 677
+      }
     },
     {
       "id": "pr-skill-34",
@@ -2868,7 +3073,13 @@
         }
       ],
       "style": "虔佑",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 683,
+        "para_end": 698
+      }
     },
     {
       "id": "pr-skill-35",
@@ -2945,7 +3156,13 @@
       ],
       "style": "虔佑",
       "tier": "四阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 698,
+        "para_end": 717
+      }
     },
     {
       "id": "pr-skill-36",
@@ -2957,12 +3174,12 @@
       ],
       "fields": {
         "前置条件": "你通过虔诚祷告获得过一次神灵的启示",
-        "额外条件": "神灵对你的观感度为赞扬或以上",
+        "额外条件": "你在本次游玩过程中通过虔诚祷告获得过一次神灵的启示\n神灵对你的观感度为赞扬或以上",
         "关键词": "神术.命运.充能（1）",
-        "标识": "●●",
-        "描述": "1.你曾受到过神灵的注目，或许这便是你能够更容易接收到启示的原由?当你进行一次虔诚祷告后，你无需掷D100骰，立即获得神灵给予的答案"
+        "标识": "●●"
       },
       "description": [
+        "1.你曾受到过神灵的注目，或许这便是你能够更容易接收到启示的原由?当你进行一次虔诚祷告后，你无需掷D100骰，立即获得神灵给予的答案",
         "2.每当神灵对你的观感度首次上升一个等级时，你恢复一层充能",
         "3.启迪生效后，你失去X点疲劳值（X为你的50%最大疲劳值）"
       ],
@@ -2983,7 +3200,13 @@
       "style": "虔佑",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 717,
+        "para_end": 726
+      }
     },
     {
       "id": "pr-skill-37",
@@ -2995,8 +3218,7 @@
         "前置条件": "你在教堂或寺庙等正规宗教场所中完成过一次福音的传播",
         "额外条件": "你在教堂或寺庙等正规宗教场所中完成过一次超过百人的福音传播",
         "关键词": "天赋.上限提升",
-        "标识": "●●",
-        "描述": "具备虔诚信仰的人们有福啦，当你通过带有治疗术或神谕真言关键词的技能回复生命值时，使结算后的回复数值+2"
+        "标识": "●●"
       },
       "flavor": "",
       "cost": [
@@ -3015,8 +3237,16 @@
       ],
       "style": "虔佑",
       "tier": "四阶",
-      "description": [],
-      "level_upgrades": []
+      "description": [
+        "具备虔诚信仰的人们有福啦，当你通过带有治疗术或神谕真言关键词的技能回复生命值时，使结算后的回复数值+2"
+      ],
+      "level_upgrades": [],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 726,
+        "para_end": 732
+      }
     },
     {
       "id": "pr-skill-38",
@@ -3120,7 +3350,13 @@
       ],
       "style": "魂谒",
       "tier": "一阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 808,
+        "para_end": 825
+      }
     },
     {
       "id": "pr-skill-39",
@@ -3234,7 +3470,13 @@
       ],
       "style": "魂谒",
       "tier": "一阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 825,
+        "para_end": 840
+      }
     },
     {
       "id": "pr-skill-40",
@@ -3271,7 +3513,13 @@
       ],
       "style": "魂谒",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 840,
+        "para_end": 853
+      }
     },
     {
       "id": "pr-skill-41",
@@ -3307,7 +3555,13 @@
       ],
       "style": "魂谒",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 853,
+        "para_end": 865
+      }
     },
     {
       "id": "pr-skill-42",
@@ -3469,7 +3723,13 @@
       ],
       "style": "魂谒",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 871,
+        "para_end": 887
+      }
     },
     {
       "id": "pr-skill-43",
@@ -3508,7 +3768,13 @@
       "style": "魂谒",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 887,
+        "para_end": 901
+      }
     },
     {
       "id": "pr-skill-44",
@@ -3552,7 +3818,13 @@
       "style": "魂谒",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 901,
+        "para_end": 915
+      }
     },
     {
       "id": "pr-skill-45",
@@ -3591,7 +3863,13 @@
       "style": "魂谒",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "戏法",
+      "source": {
+        "kind": "docx",
+        "para_start": 915,
+        "para_end": 930
+      }
     },
     {
       "id": "pr-skill-46",
@@ -3631,7 +3909,35 @@
       "style": "魂谒",
       "tier": "三阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 937,
+        "para_end": 953
+      },
+      "roll_tables": [
+        {
+          "label": "D1",
+          "text": "恶性创伤",
+          "raw": "D1.恶性创伤  D2.耳聋  D3.目盲  D4.沉默"
+        },
+        {
+          "label": "D2",
+          "text": "耳聋",
+          "raw": "D1.恶性创伤  D2.耳聋  D3.目盲  D4.沉默"
+        },
+        {
+          "label": "D3",
+          "text": "目盲",
+          "raw": "D1.恶性创伤  D2.耳聋  D3.目盲  D4.沉默"
+        },
+        {
+          "label": "D4",
+          "text": "沉默",
+          "raw": "D1.恶性创伤  D2.耳聋  D3.目盲  D4.沉默"
+        }
+      ]
     },
     {
       "id": "pr-skill-47",
@@ -3668,7 +3974,13 @@
       ],
       "style": "魂谒",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 953,
+        "para_end": 966
+      }
     },
     {
       "id": "pr-skill-48",
@@ -3789,7 +4101,13 @@
         }
       ],
       "style": "魂谒",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 966,
+        "para_end": 983
+      }
     },
     {
       "id": "pr-skill-49",
@@ -3897,7 +4215,13 @@
       ],
       "style": "魂谒",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 983,
+        "para_end": 1001
+      }
     },
     {
       "id": "pr-skill-50",
@@ -3910,10 +4234,10 @@
         "前置条件": "敏捷和智力属性不为你最低的属性值",
         "额外条件": "智力属性为你最高的属性值之一",
         "关键词": "天赋.阻碍.每日限一次",
-        "标识": "●●",
-        "描述": "1.高速神言的优先级高于速攻关键词"
+        "标识": "●●"
       },
       "description": [
+        "1.高速神言的优先级高于速攻关键词",
         "2.当一名角色施展包含速攻关键词的技能时，取消其中的速攻关键词"
       ],
       "cost": [
@@ -3933,7 +4257,13 @@
       "style": "魂谒",
       "tier": "三阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 1001,
+        "para_end": 1008
+      }
     },
     {
       "id": "pr-skill-51",
@@ -4043,7 +4373,13 @@
         }
       ],
       "style": "魂谒",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1014,
+        "para_end": 1029
+      }
     },
     {
       "id": "pr-skill-52",
@@ -4094,7 +4430,8 @@
             {
               "text": "如果直到持续时间结束时你没有受到过伤害，并且你的相邻位置没有敌方角色，你进入潜行状态"
             }
-          ]
+          ],
+          "section": "2.持续时间内你的基础移动速度+2米"
         }
       ],
       "cost": [
@@ -4113,7 +4450,13 @@
       ],
       "style": "魂谒",
       "tier": "四阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1029,
+        "para_end": 1044
+      }
     },
     {
       "id": "pr-skill-53",
@@ -4155,7 +4498,13 @@
       "style": "魂谒",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1044,
+        "para_end": 1057
+      }
     },
     {
       "id": "pr-skill-54",
@@ -4198,7 +4547,13 @@
       "style": "魂谒",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1057,
+        "para_end": 1071
+      }
     },
     {
       "id": "pr-skill-55",
@@ -4213,8 +4568,7 @@
         "前置条件": "你在本次游玩的战斗环节中使用过至少两种不同类型的武器",
         "额外条件": "你所信奉的神灵属于战争领域，或者至少具有战争、审判或守护相关的神职",
         "关键词": "天赋.恩惠.护盾.媒介.上限提升",
-        "标识": "●●",
-        "描述": "你通过信仰之力加固于器物之中，你可以在短休期间进行虔诚祷告来为一套中甲或重甲附魔，使其可以掷三颗D6的护甲骰，将点数总和记为对方的护甲值"
+        "标识": "●●"
       },
       "cost": [
         {
@@ -4231,6 +4585,7 @@
         }
       ],
       "description": [
+        "你通过信仰之力加固于器物之中，你可以在短休期间进行虔诚祷告来为一套中甲或重甲附魔，使其可以掷三颗D6的护甲骰，将点数总和记为对方的护甲值",
         "每当对方受到伤害时总是会优先结算护盾数值，其次是消耗护甲值，最后是临时生命值和对方本身的生命值",
         "护甲值无法抵挡心灵和星界类别的伤害",
         "护甲值在承受钝击、雷电、力场和邪能类别的伤害值会在结算后翻倍",
@@ -4277,7 +4632,12 @@
       "flavor": "",
       "style": "戒律",
       "tier": "五阶",
-      "type": "skill"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 440,
+        "para_end": 452
+      }
     },
     {
       "id": "pr-skill-56",
@@ -4350,7 +4710,12 @@
       "flavor": "",
       "style": "戒律",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 426,
+        "para_end": 440
+      }
     },
     {
       "id": "pr-skill-57",
@@ -4364,8 +4729,7 @@
         "前置条件": "感知属性为你最高的属性值",
         "额外条件": "你在本次游玩的战斗环节中承受过至少30点心灵伤害",
         "关键词": "天赋.心灵.韧性.短休/长休",
-        "标识": "●●",
-        "描述": "你可以选择以下一项效果执行："
+        "标识": "●●"
       },
       "cost": [
         {
@@ -4382,6 +4746,7 @@
         }
       ],
       "description": [
+        "你可以选择以下一项效果执行：",
         "·当你正在维持的专注状态将要被打断时，阻止那个效果的发生",
         "·抵挡一次魅惑、恐惧或忏悔效果",
         "·使自身进行的一次感知豁免具有优势"
@@ -4470,7 +4835,12 @@
       "flavor": "",
       "style": "戒律",
       "tier": "五阶",
-      "type": "skill"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 452,
+        "para_end": 463
+      }
     },
     {
       "id": "pr-skill-58",
@@ -4597,7 +4967,12 @@
       "flavor": "",
       "style": "戒律",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 408,
+        "para_end": 426
+      }
     },
     {
       "id": "pr-skill-59",
@@ -4756,7 +5131,12 @@
       "flavor": "",
       "style": "戒律",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 391,
+        "para_end": 408
+      }
     },
     {
       "id": "pr-skill-60",
@@ -4869,7 +5249,12 @@
       "flavor": "",
       "style": "虔佑",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 783,
+        "para_end": 800
+      }
     },
     {
       "id": "pr-skill-61",
@@ -4947,7 +5332,12 @@
       "flavor": "",
       "style": "虔佑",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 754,
+        "para_end": 770
+      }
     },
     {
       "id": "pr-skill-62",
@@ -5062,7 +5452,12 @@
       "flavor": "",
       "style": "虔佑",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 738,
+        "para_end": 754
+      }
     },
     {
       "id": "pr-skill-63",
@@ -5107,7 +5502,12 @@
       "flavor": "",
       "style": "虔佑",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 770,
+        "para_end": 783
+      }
     },
     {
       "id": "pr-skill-64",
@@ -5221,7 +5621,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1115,
+        "para_end": 1135
+      }
     },
     {
       "id": "pr-skill-65",
@@ -5234,8 +5639,7 @@
         "前置条件": "你在本次游玩过程中独立完成过一次难度高于自身角色等级的个人挑战（由DM判定）",
         "额外条件": "你的身份地位高于玩家团队中的其他角色",
         "关键词": "天赋.增益.韧性",
-        "标识": "●●",
-        "描述": "当你处于落单状态时，你产生的伤害、回复和护盾骰规格提升一档（即D6提升至D8、D8提升至D10，以此类推至多提升至D20）"
+        "标识": "●●"
       },
       "cost": [
         {
@@ -5252,6 +5656,7 @@
         }
       ],
       "description": [
+        "当你处于落单状态时，你产生的伤害、回复和护盾骰规格提升一档（即D6提升至D8、D8提升至D10，以此类推至多提升至D20）",
         "短休/长休.当你承受一次困惑、魅惑、忏悔或醉酒状态时，阻止那个效果的发生"
       ],
       "level_upgrades": [
@@ -5323,7 +5728,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 1194,
+        "para_end": 1203
+      }
     },
     {
       "id": "pr-skill-66",
@@ -5446,7 +5856,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1175,
+        "para_end": 1194
+      }
     },
     {
       "id": "pr-skill-67",
@@ -5566,7 +5981,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1155,
+        "para_end": 1175
+      }
     },
     {
       "id": "pr-skill-68",
@@ -5679,7 +6099,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1080,
+        "para_end": 1098
+      }
     },
     {
       "id": "pr-skill-69",
@@ -5799,7 +6224,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1135,
+        "para_end": 1155
+      }
     },
     {
       "id": "pr-skill-70",
@@ -5840,8 +6270,7 @@
       "description": [
         "你隔绝一片3*3区域内的所有使用，区域外的角色无法听见内部发出的声响，反之亦然",
         "位于区域内的角色承受来自外界的音爆伤害在结算后减半，反之亦然",
-        "静密沉寂在施展时位于区域内的角色需要进行一次难度为15的感知豁免，豁免失败的角色会进入沉默状态，持续1轮，这个效果在战斗环节中对每名角色仅生效一次",
-        "抉择·你仅能够选择其中两项习得：善良之墙/邪恶之墙/秩序之墙/混乱之墙"
+        "静密沉寂在施展时位于区域内的角色需要进行一次难度为15的感知豁免，豁免失败的角色会进入沉默状态，持续1轮，这个效果在战斗环节中对每名角色仅生效一次"
       ],
       "level_upgrades": [
         {
@@ -5877,7 +6306,12 @@
       "flavor": "",
       "style": "魂谒",
       "tier": "五阶",
-      "type": "skill"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1098,
+        "para_end": 1114
+      }
     }
   ]
 }

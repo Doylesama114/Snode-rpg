@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline'">
+<title>页面恢复</title><style>body{margin:0;background:#171b22;color:#eee;font:16px system-ui;display:grid;place-items:center;min-height:100vh}main{max-width:620px;padding:32px}h1{font-size:24px}p{line-height:1.7;color:#c9cdd5}button{margin:8px 8px 0 0;padding:10px 16px;background:#3e5269;color:white;border:0;border-radius:6px;cursor:pointer}#status{font-size:14px}button:disabled{opacity:.5}</style>
+</head><body><main><h1>暂时无法显示这个页面</h1><p id="reason">页面加载失败或连续出现异常。未处理的恢复草稿仍被保留。</p><p>可以重试、回到启动台或导出诊断记录。兼容渲染模式将在下次启动生效。</p><button data-action="retry">重试此页</button><button data-action="launcher">回到启动台</button><button data-action="export">导出诊断</button><button data-action="compatibility">启用兼容渲染模式</button><p id="status" role="status"></p></main><script src="desktop-error.js"></script></body></html>

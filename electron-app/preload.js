@@ -1,6 +1,15 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('electronAPI', {
+if (location.protocol === 'file:') contextBridge.exposeInMainWorld('electronAPI', {
+  recoveryWrite: payload => ipcRenderer.invoke('recovery-write', payload),
+  recoveryRead: identity => ipcRenderer.invoke('recovery-read', identity),
+  recoveryClear: payload => ipcRenderer.invoke('recovery-clear', payload),
+  recoveryList: () => ipcRenderer.invoke('recovery-list'),
+  recoveryDiscard: payload => ipcRenderer.invoke('recovery-discard', payload),
+  desktopStatus: () => ipcRenderer.invoke('desktop-status'),
+  desktopAction: action => ipcRenderer.invoke('desktop-action', action),
+  exportDiagnostics: () => ipcRenderer.invoke('desktop-export-diagnostics'),
+  setCompatibilityMode: enabled => ipcRenderer.invoke('desktop-compatibility', !!enabled),
   checkUpdate: (manual) => ipcRenderer.send('check-update', { manual: !!manual }),
   checkUpdateGitee: () => ipcRenderer.send('check-update-mirror'),
   checkUpdateMirror: () => ipcRenderer.send('check-update-mirror'),
@@ -43,3 +52,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   jsAlert: (message) => ipcRenderer.sendSync('js-alert', String(message == null ? '' : message)),
   jsConfirm: (message) => ipcRenderer.sendSync('js-confirm', String(message == null ? '' : message)),
 });
+
+window.addEventListener('error', event => { if (location.protocol === 'file:') ipcRenderer.send('desktop-renderer-error', { url: event.filename || location.href, type: 'script' }); });
+window.addEventListener('unhandledrejection', () => { if (location.protocol === 'file:') ipcRenderer.send('desktop-renderer-error', { url: location.href, type: 'promise' }); });

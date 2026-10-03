@@ -85,6 +85,18 @@ let dataOK = dataCheck.status === 0;
 console.log(dataOK ? '✅ 三数据源一致' : '❌ 数据一致性校验失败');
 totalErrors += dataOK ? 0 : 1;
 
+// Independent complete skill effects and real detail entry points.
+console.log('\n=== \u6280\u80fd\u6548\u679c\u5b8c\u6574\u6027 ===');
+for (const [cmd,args] of [
+  ['python',['-B','-X','utf8',join(BASE,'scripts','verify_skill_effects_complete.py')]],
+  ['node',[join(BASE,'verify_skill_effects_e2e.cjs')]]
+]) {
+  const out=spawnSync(cmd,args,{encoding:'utf8',timeout:240000,maxBuffer:8*1024*1024});
+  if(out.stdout)console.log(out.stdout.trim());
+  if(out.stderr)console.error(out.stderr.trim().slice(-2000));
+  if(out.status!==0)totalErrors++;
+}
+
 // 技能文本格式（docx 缩进续行合并 + 升级选项吸收）
 console.log('\n=== 技能文本格式 ===');
 let fmtOK = true;
@@ -689,9 +701,32 @@ if(characterIO.stderr)console.error(characterIO.stderr.trim());
 const characterIOOK=characterIO.status===0;
 totalErrors+=characterIOOK?0:1;
 
+console.log('\n=== 异形角色表与额外能力 ===');
+const unusualIO=spawnSync('node',[join(BASE,'verify_character_unusual_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+if(unusualIO.stdout)console.log(unusualIO.stdout.trim());if(unusualIO.stderr)console.error(unusualIO.stderr.trim());
+const unusualIOOK=unusualIO.status===0;totalErrors+=unusualIOOK?0:1;
+
+console.log('\n=== 角色字段、进阶职业及原始工作簿完整性 ===');
+const integrityIO=spawnSync('node',[join(BASE,'verify_character_integrity_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+if(integrityIO.stdout)console.log(integrityIO.stdout.trim());if(integrityIO.stderr)console.error(integrityIO.stderr.trim());
+const integrityIOOK=integrityIO.status===0;totalErrors+=integrityIOOK?0:1;
+
+// Desktop tests run the real entry point with isolated user data. CI also runs packaged smoke.
+if (process.platform === 'win32') {
+  console.log('\n=== Windows desktop startup + recovery ===');
+  for (const name of ['verify_desktop_startup.cjs', 'verify_desktop_recovery.cjs', 'verify_desktop_faults.cjs']) {
+    const out = spawnSync(process.execPath, [join(BASE, name)], { encoding:'utf-8', timeout:180000, maxBuffer:8*1024*1024 });
+    if (out.stdout) console.log(out.stdout.trim());
+    if (out.stderr) console.error(out.stderr.trim());
+    if (out.status !== 0) totalErrors++;
+  }
+} else {
+  console.log('Windows desktop checks require a Windows runner.');
+}
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

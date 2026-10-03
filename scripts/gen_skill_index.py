@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """gen_skill_index.py —— 生成上传页/面板共用技能索引（瘦身版，自动生成勿手改）。"""
-import json, os, re, time, shutil
+import json, os, re, time, shutil, hashlib
 from pathlib import Path
 from collections import Counter
 ROOT = Path(__file__).resolve().parent.parent
@@ -73,11 +73,32 @@ for i, r in enumerate(rows):
         byKey[key] = i
         byId.setdefault(r[1], []).append(i)
     if r[7]: starts.setdefault(r[0], []).append(i)
+aliases = {}
+for cls in CLASSES:
+    data = json.loads((D / f"{cls}.json").read_text(encoding="utf8"))
+    for skill in data.get("skills", []):
+        for old_id in skill.get("legacy_ids", []):
+            old_key = cls + chr(9) + old_id
+            new_key = cls + chr(9) + skill["id"]
+            if old_key in byKey and byKey[old_key] != byKey[new_key]:
+                raise ValueError("Conflicting legacy skill ID: " + old_key)
+            byKey[old_key] = byKey[new_key]
+            aliases[old_key] = skill["id"]
 meta = {'entries': len(rows), 'dupIds': sum(1 for v in byId.values() if len(v) > 1), 'dupNames': sum(1 for v in byName.values() if len(v) > 1),
         'starts': len(starts), 'noDetail': sum(1 for r in rows if not r[8]), 'perClass': {}}
 for r in rows: meta['perClass'][r[2]] = meta['perClass'].get(r[2], 0) + 1
 out = {'v': 1, 'at': time.strftime('%Y-%m-%d %H:%M'), 'cols': ['name','id','cls','kind','type','style','tier','isStarting','hasDetail'],
-       'rows': rows, 'byName': byName, 'byKey': byKey, 'starts': starts, 'byId': byId, 'meta': meta}
+       'rows': rows, 'aliases': aliases, 'byName': byName, 'byKey': byKey, 'starts': starts, 'byId': byId, 'meta': meta}
+source_files = [D / f"{cls}.json" for cls in CLASSES] + [D / "\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df.json", D / "\u901a\u7528\u5929\u8d4b\u6811.json", D / "\u7279\u6b8a\u4e13\u957f.json"]
+out["sourceHash"] = hashlib.sha256(b"".join(p.read_bytes() for p in source_files if p.exists())).hexdigest()
+previous = FX / "skill_index.js"
+if previous.exists():
+    text = previous.read_text(encoding="utf8")
+    start = text.find("window.SNOWD_SKILL_INDEX = ")
+    if start >= 0:
+        prior, _ = json.JSONDecoder().raw_decode(text[start + len("window.SNOWD_SKILL_INDEX = "):])
+        if prior.get("sourceHash") == out["sourceHash"]:
+            out["at"] = prior["at"]
 js = ('// 自动生成，勿手改。生成：python scripts/gen_skill_index.py\n'
       'window.SNOWD_SKILL_INDEX = ' + json.dumps(out, ensure_ascii=False, separators=(',', ':')) + ';\n')
 open(FX / 'skill_index.js', 'w', encoding='utf-8', newline='').write(js)

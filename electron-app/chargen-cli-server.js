@@ -6,6 +6,25 @@ const path = require('path');
 const crypto = require('crypto');
 const { BrowserWindow, app } = require('electron');
 
+let desktopLifecycle = null;
+let desktopDiagnostics = null;
+const TASK_TIMEOUT = 20000;
+async function windowTask(window, task) {
+  if (desktopLifecycle) desktopLifecycle.attach(window, 'cli');
+  let timer, crashed, closed;
+  try {
+    return await Promise.race([Promise.resolve().then(task), new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('CLI 页面任务超时，请先核对角色列表再重试写入操作')), TASK_TIMEOUT);
+      crashed = () => reject(new Error('CLI 页面渲染进程退出'));
+      closed = () => reject(new Error('CLI 页面已关闭'));
+      window.webContents.once('render-process-gone', crashed);
+      window.once('closed', closed);
+    })]);
+  } finally {
+    clearTimeout(timer);
+    if (!window.isDestroyed()) { window.webContents.removeListener('render-process-gone', crashed); window.removeListener('closed', closed); window.destroy(); }
+  }
+}
 const API_VERSION = 1;
 const MAX_BODY = 4 * 1024 * 1024;
 const MAX_PORTRAIT_BYTES = 3 * 1024 * 1024;
@@ -52,7 +71,7 @@ function readDrafts(file) {
   try {
     const value = JSON.parse(fs.readFileSync(file, 'utf8'));
     return isObject(value) ? value : {};
-  } catch (_) { return {}; }
+  } catch (error) { if (error.code === 'ENOENT') return {}; throw error; }
 }
 
 function saveDrafts(file, drafts) {
@@ -65,14 +84,12 @@ async function inCreationPage(request, isolated) {
   const webPreferences = { nodeIntegration: false, contextIsolation: true };
   if (isolated) webPreferences.partition = 'chargen-cli-' + crypto.randomUUID();
   const window = new BrowserWindow({ show: false, skipTaskbar: true, webPreferences });
-  try {
+  return windowTask(window, async () => {
     await window.loadFile(CREATION_PAGE, { query: { cli: '1' } });
     return await window.webContents.executeJavaScript(
       'window.snowdChargenCli.call(' + JSON.stringify(request) + ')', true
     );
-  } finally {
-    if (!window.isDestroyed()) window.destroy();
-  }
+  });
 }
 
 async function fullClassPreview(name, includeSource, requestedPart) {
@@ -85,7 +102,7 @@ async function fullClassPreview(name, includeSource, requestedPart) {
       continue;
     }
     const window = new BrowserWindow({ show: false, skipTaskbar: true, webPreferences: { nodeIntegration: false, contextIsolation: true } });
-    try {
+    const page = await windowTask(window, async () => {
       await window.loadFile(file);
       const content = await window.webContents.executeJavaScript(`(() => {
         const body = document.body.cloneNode(true);
@@ -119,15 +136,15 @@ async function fullClassPreview(name, includeSource, requestedPart) {
           }))
         };
       })()`, true);
-      pages.push({ part, available: true, ...content, ...(includeSource ? { sourceHtml: fs.readFileSync(file, 'utf8') } : {}) });
-    } finally {
-      if (!window.isDestroyed()) window.destroy();
-    }
+      return { part, available: true, ...content, ...(includeSource ? { sourceHtml: fs.readFileSync(file, 'utf8') } : {}) };
+    });
+    pages.push(page);
   }
   return pages;
 }
 
 function refreshCharacterViews(mainWindow) {
+  if (typeof mainWindow === 'function') mainWindow = mainWindow();
   if (!mainWindow || mainWindow.isDestroyed()) return;
   mainWindow.webContents.executeJavaScript(`(() => {
     window.dispatchEvent(new CustomEvent('snowd-characters-changed'));
@@ -135,7 +152,9 @@ function refreshCharacterViews(mainWindow) {
   })()`).catch(() => {});
 }
 
-function startChargenCliServer(mainWindow) {
+function startChargenCliServer(mainWindow, options = {}) {
+  desktopLifecycle = options.lifecycle;
+  desktopDiagnostics = options.diagnostics;
   const userData = app.getPath('userData');
   const connectionDir = process.env.SNODE_CLI_TEST_USER_DATA || path.join(app.getPath('appData'), 'snode-rpg-cli');
   const connectionPath = path.join(connectionDir, CONNECTION_FILE);
@@ -230,6 +249,7 @@ function startChargenCliServer(mainWindow) {
 
   const server = http.createServer((request, response) => {
     function reply(status, value) {
+      if (response.destroyed || response.writableEnded) return;
       response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
       response.end(JSON.stringify(value));
     }
@@ -246,16 +266,22 @@ function startChargenCliServer(mainWindow) {
       let input;
       try { input = JSON.parse(Buffer.concat(chunks).toString('utf8')); }
       catch (_) { return reply(400, { ok: false, error: 'Invalid JSON' }); }
-      const next = queue.then(() => dispatch(input));
+      const next = queue.then(() => { if (response.destroyed) throw new Error('请求已取消'); return dispatch(input); });
       queue = next.catch(() => {});
       next.then(value => reply(200, { ok: true, value })).catch(error => reply(400, { ok: false, error: error.message }));
     });
   });
   server.listen(0, '127.0.0.1', () => {
-    fs.mkdirSync(connectionDir, { recursive: true });
-    fs.writeFileSync(connectionPath, JSON.stringify({ apiVersion: API_VERSION, port: server.address().port, token, pid: process.pid }), { encoding: 'utf8', mode: 0o600 });
+    try {
+      fs.mkdirSync(connectionDir, { recursive: true });
+      fs.writeFileSync(connectionPath, JSON.stringify({ apiVersion: API_VERSION, port: server.address().port, token, pid: process.pid }), { encoding: 'utf8', mode: 0o600 });
+      if (desktopDiagnostics) desktopDiagnostics.log('cli-ready');
+    } catch (error) {
+      if (desktopDiagnostics) desktopDiagnostics.error('cli-connection-write-failed', error);
+      server.close();
+    }
   });
-  server.on('error', error => console.error('[chargen-cli] server error:', error));
+  server.on('error', error => { if (desktopDiagnostics) desktopDiagnostics.error('cli-listen-failed', error); server.close(); });
   app.on('before-quit', () => {
     server.close();
     try {

@@ -1,24 +1,173 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, webContents } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, webContents, crashReporter } = require('electron');
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
 const https = require('https');
-const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
-const { startChargenCliServer } = require('./chargen-cli-server');
+const { pathToFileURL, fileURLToPath } = require('url');
 if (process.env.SNODE_CLI_TEST_USER_DATA) {
-  require('fs').mkdirSync(process.env.SNODE_CLI_TEST_USER_DATA, { recursive: true });
+  fs.mkdirSync(process.env.SNODE_CLI_TEST_USER_DATA, { recursive: true });
   app.setPath('userData', process.env.SNODE_CLI_TEST_USER_DATA);
-}
-bootstrapAdvisorEnv();
-const { autoUpdater } = require('electron-updater');
-const mirrorConfig = require('./update-mirror-config');
+  app.setPath('sessionData', process.env.SNODE_CLI_TEST_USER_DATA);
 
+}
+const ownsInstance = app.requestSingleInstanceLock();
+if (!ownsInstance) {
+  app.quit();
+} else {
+const { createDiagnostics } = require('./desktop-diagnostics');
+const diagnostics = createDiagnostics(app);
+let fatalExiting = false;
+function fatalMain(error) {
+  if (fatalExiting) return;
+  fatalExiting = true;
+  diagnostics.error('main-fatal', error);
+  if (process.env.SNODE_CLI_TEST !== '1') {
+    dialog.showErrorBox('斯诺德跑团发生启动异常', '程序将退出。重新打开后可导出诊断；已保存角色和恢复草稿会被保留。');
+  }
+  app.exit(1);
+}
+process.on('uncaughtException', fatalMain);
+process.on('unhandledRejection', fatalMain);
+try {
+  const dumpDir = path.join(diagnostics.directory || app.getPath('userData'), 'crash-dumps');
+  fs.mkdirSync(dumpDir, { recursive: true });
+  app.setPath('crashDumps', dumpDir);
+} catch (e) { diagnostics.error('crash-directory-unavailable', e); }
+let mainWindow = null;
+let pendingFocus = false;
+app.on('second-instance', () => {
+  diagnostics.log('second-instance');
+  pendingFocus = true;
+  if (app.isReady()) {
+    if (!mainWindow || mainWindow.isDestroyed()) createWindow();
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    if (process.env.SNODE_CLI_TEST !== '1') mainWindow.show();
+    mainWindow.focus(); pendingFocus = false;
+  }
+});
+let earlySettings = {};
+try { earlySettings = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'snowd-settings.json'), 'utf8')); }
+catch (e) { if (e.code !== 'ENOENT') diagnostics.error('settings-read-failed', e); }
+if (earlySettings.compatibilityMode === true) app.disableHardwareAcceleration();
+diagnostics.log('render-mode', { mode: earlySettings.compatibilityMode === true ? 'compatibility' : 'hardware' });
+try { require('./advisor-env-bootstrap').bootstrapAdvisorEnv(diagnostics); }
+catch (e) { diagnostics.error('advisor-bootstrap-disabled', e); }
+let autoUpdater;
+try { autoUpdater = require('electron-updater').autoUpdater; }
+catch (e) {
+  diagnostics.error('updater-disabled', e);
+  autoUpdater = new (require('events').EventEmitter)();
+  autoUpdater.setFeedURL = () => {};
+  autoUpdater.checkForUpdates = autoUpdater.downloadUpdate = () => Promise.reject(new Error('更新功能不可用'));
+  autoUpdater.quitAndInstall = () => {};
+}
+const mirrorConfig = require('./update-mirror-config');
+const { RecoveryStore } = require('./recovery-store');
+const { createWindowLifecycle } = require('./window-lifecycle');
+const launcherUrl = pathToFileURL(path.join(__dirname, '斯诺德跑团', '启动台.html')).href;
+const recoveryStore = new RecoveryStore(path.join(app.getPath('userData'), 'recovery-drafts'));
+const lifecycle = createWindowLifecycle({ app, BrowserWindow, dialog, diagnostics, root: __dirname, launcher: launcherUrl, onPageReady: wc => { dirtyWindows.delete(wc.id); }, hidden: process.env.SNODE_CLI_TEST === '1', allowTestDialogs: process.env.SNODE_CLI_TEST === '1' && process.env.SNODE_TEST_DIALOGS === '1', preload: path.join(__dirname, 'preload.js') });
+function trusted(event) {
+  const frame = event.senderFrame;
+  if (!frame || frame !== event.sender.mainFrame || !lifecycle.internal(frame.url)) throw new Error('桌面接口仅供内部主页面使用');
+}
+function recoveryIdentity(event, identity) {
+  trusted(event);
+  const id = recoveryStore.validateIdentity(identity);
+  const url = new URL(event.senderFrame.url);
+  const filename = path.basename(fileURLToPath(url));
+  if (id.module === 'panel') {
+    if (filename !== '角色面板.html' || (url.searchParams.get('char') && id.character !== url.searchParams.get('char')) ||
+        id.slot !== (parseInt(url.searchParams.get('slot'), 10) || 1)) throw new Error('草稿与当前角色或槽位不匹配');
+  } else {
+    if (filename !== '角色创建页.html' || url.searchParams.has('cli') ||
+        id.character !== (url.searchParams.get('recreate') || 'new') || id.slot !== 0) throw new Error('草稿与创建会话不匹配');
+  }
+  return id;
+}
+function handled(channel, handler) {
+  ipcMain.handle(channel, async (event, payload) => {
+    try { return await handler(event, payload); }
+    catch (e) { diagnostics.error(channel + '-failed', e); return { ok: false, error: /^恢复|^草稿/.test(e.message || '') ? e.message : '此操作未完成，请检查目录权限或导出诊断。' }; }
+  });
+}
+handled('recovery-write', (event, payload) => {
+  const id = recoveryIdentity(event, payload && payload.identity);
+  const ack = recoveryStore.write(id, payload.snapshot, payload.savedAt);
+  lifecycle.acknowledged(event.sender, ack.seq);
+  diagnostics.log('recovery-ack', { windowId: BrowserWindow.fromWebContents(event.sender).id, seq: ack.seq });
+  return ack;
+});
+handled('recovery-read', (event, identity) => {
+  const draft = recoveryStore.read(recoveryIdentity(event, identity));
+  lifecycle.acknowledged(event.sender, draft ? draft.seq : 0);
+  return { ok: true, draft };
+});
+handled('recovery-clear', (event, payload) => {
+  const result = recoveryStore.clear(recoveryIdentity(event, payload.identity), payload.seq);
+  lifecycle.acknowledged(event.sender, 0);
+  return result;
+});
+handled('recovery-list', event => { trusted(event); return { ok: true, drafts: recoveryStore.list() }; });
+handled('recovery-discard', (event, payload) => {
+  trusted(event);
+  if (path.basename(fileURLToPath(new URL(event.senderFrame.url))) !== '启动台.html') throw new Error('仅启动台可管理草稿');
+  return recoveryStore.clear(payload.identity, payload.seq);
+});
+handled('desktop-status', event => {
+  trusted(event);
+  return { ok: true, ...lifecycle.status(event.sender), compatibilityMode: earlySettings.compatibilityMode === true, diagnosticsDegraded: diagnostics.degraded };
+});
+handled('desktop-action', (event, action) => { trusted(event); return lifecycle.action(event.sender, action); });
+handled('desktop-compatibility', (event, enabled) => {
+  trusted(event);
+  let data = {};
+  const file = settingsFilePath();
+  try { data = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  data.compatibilityMode = !!enabled;
+  fs.writeFileSync(file + '.tmp', JSON.stringify(data, null, 2), 'utf8');
+  fs.renameSync(file + '.tmp', file);
+  return { ok: true, nextStart: true };
+});
+handled('desktop-export-diagnostics', async event => {
+  trusted(event);
+  const result = await dialog.showSaveDialog(BrowserWindow.fromWebContents(event.sender), {
+    title: '导出桌面诊断', defaultPath: path.join(app.getPath('downloads'), 'snode-desktop-diagnostics.jsonl'),
+    filters: [{ name: '诊断日志', extensions: ['jsonl'] }]
+  });
+  if (result.canceled || !result.filePath) return { ok: true, canceled: true };
+  diagnostics.log('diagnostics-export');
+  return diagnostics.exportTo(result.filePath);
+});
+app.on('child-process-gone', (_event, details) => {
+  diagnostics.log('child-process-gone', { type: details.type, reason: details.reason, exitCode: details.exitCode });
+});
+ipcMain.on('desktop-renderer-error', (event, details) => {
+  try { trusted(event); diagnostics.log('renderer-error', { url: details && details.url, type: details && details.type }); }
+  catch (_) {}
+});
+let gpuInfoRecorded = false;
+app.on('gpu-info-update', () => {
+  try {
+    for (const [name, status] of Object.entries(app.getGPUFeatureStatus())) diagnostics.log('gpu-feature', { name, status });
+    if (!gpuInfoRecorded && app.isReady()) {
+      gpuInfoRecorded = true;
+      app.getGPUInfo('basic').then(info => {
+        const aux = info.auxAttributes || {};
+        for (const device of info.gpuDevice || []) diagnostics.log('gpu-device', { vendor: device.vendorId, device: device.deviceId, driver: device.driverVersion || aux.driverVersion || device.driverVendor || '' });
+      }).catch(e => diagnostics.error('gpu-info-unavailable', e));
+    }
+  } catch (e) { diagnostics.error('gpu-diagnostics-failed', e); }
+});
 // 允许渲染进程调用 window.gc()：职业页/预览会产生数万 DOM 节点，
 // 显式 GC 能在 ~90ms 内把这些游离文档真正回收（否则会累积到数百 MB 直到崩溃）。
-app.commandLine.appendSwitch('js-flags', '--expose-gc');
+const testHeapMB = process.env.SNODE_CLI_TEST === '1' ? parseInt(process.env.SNODE_TEST_HEAP_MB, 10) : 0;
+app.commandLine.appendSwitch('js-flags', '--expose-gc' + (testHeapMB >= 128 && testHeapMB <= 2048 ? ' --max-old-space-size=' + testHeapMB : ''));
 
 // 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;  // 已下载的更新在退出时自动安装（策略 B：手动检查走立即重启）
-autoUpdater.logger = console;
+autoUpdater.logger = { info: () => diagnostics.log('updater-info'), warn: () => diagnostics.log('updater-warning'), error: e => diagnostics.error('updater-error', e), debug: () => {} };
 
 const UPDATE_SOURCES = {
   oss: {
@@ -31,7 +180,6 @@ const UPDATE_SOURCES = {
   },
 };
 
-let mainWindow = null;
 let updateCheckInFlight = false;
 /** @type {{ order: string[], phase: string, autoFallback: boolean, mirrorAttempted: boolean, lastSource: string|null }|null} */
 let updateSession = null;
@@ -75,7 +223,7 @@ function setAutoUpdateEnabled(value) {
 }
 
 function sendUpdateStatus(data) {
-  if (!mainWindow) return;
+  if (!mainWindow || mainWindow.isDestroyed() || mainWindow.webContents.isDestroyed()) return;
   mainWindow.webContents.send('update-status', data);
 }
 
@@ -329,6 +477,7 @@ autoUpdater.on('error', (err) => {
    安全网：任一窗口（角色面板）报告有未保存改动时，先提示保存，保存后自动继续安装。 */
 var manualCheckRequested = false;
 var dirtyWindows = new Set();
+app.on('web-contents-created', (_event, wc) => wc.once('destroyed', () => dirtyWindows.delete(wc.id)));
 var installPending = false;
 function anyDirty() { return dirtyWindows.size > 0; }
 function maybeInstallNow() {
@@ -345,7 +494,8 @@ function maybeInstallNow() {
 }
 ipcMain.on('panel-dirty', (e, flag) => {
   var id = e.sender.id;
-  if (flag) { dirtyWindows.add(id); e.sender.once('destroyed', function () { dirtyWindows.delete(id); }); }
+  lifecycle.setDirty(e.sender, flag);
+  if (flag) { dirtyWindows.add(id); }
   else { dirtyWindows.delete(id); }
   if (!flag && installPending) setTimeout(maybeInstallNow, 300);
 });
@@ -525,8 +675,7 @@ ipcMain.on('send-bug', (event, { body, channel }) => {
   } catch (err) { /* ignore */ }
 });
 
-const { pathToFileURL } = require('url');
-const fs = require('fs');
+
 
 function getAdvisorRoot() {
   const candidates = [
@@ -789,9 +938,9 @@ function readPageScript(relativePath) {
   let code = '';
   try {
     const full = path.join(__dirname, relativePath);
-    if (fs.existsSync(full)) code = fs.readFileSync(full, 'utf8');
+    code = fs.readFileSync(full, 'utf8');
   } catch (err) {
-    console.warn('[注入] 读取失败 ' + relativePath + ': ' + err.message);
+    diagnostics.error('optional-script-read-failed', err, { url: pathToFileURL(path.join(__dirname, relativePath)).href });
     code = '';
   }
   PAGE_SCRIPT_CACHE.set(relativePath, code);
@@ -802,7 +951,7 @@ function injectPageScripts(relativePaths) {
   if (!mainWindow || mainWindow.isDestroyed()) return;
   const code = relativePaths.map(readPageScript).filter(Boolean).join('\n;\n');
   if (!code) return;
-  mainWindow.webContents.executeJavaScript(code).catch(() => {});
+  mainWindow.webContents.executeJavaScript(code).catch(e => diagnostics.error('optional-script-injection-failed', e));
 }
 
 /**
@@ -810,29 +959,48 @@ function injectPageScripts(relativePaths) {
  * 实测职业页反复切换可在数分钟内堆到 1 GB 并导致渲染进程被杀（白屏），
  * 这里在 600 MB 就介入回收，1.2 GB 仍降不下来则记录告警。
  */
+let memoryTimer = null;
+const gcWork = new Map();
 function startMemoryWatchdog() {
-  const SOFT_MB = 600;
-  const HARD_MB = 1200;
-  setInterval(function () {
-    let metrics = [];
-    try { metrics = app.getAppMetrics(); } catch (e) { return; }
-    const all = webContents.getAllWebContents().filter(function (w) { return !w.isDestroyed(); });
+  if (memoryTimer) return;
+  memoryTimer = setInterval(async () => {
+    let metrics;
+    try { metrics = app.getAppMetrics(); }
+    catch (e) { diagnostics.error('memory-sample-failed', e); return; }
+    diagnostics.log('memory-sample', { mb: Math.round(metrics.reduce((sum, m) => sum + ((m.memory && m.memory.workingSetSize) || 0), 0) / 1024), freeMB: Math.round(os.freemem() / 1048576), windows: BrowserWindow.getAllWindows().length });
+    const all = webContents.getAllWebContents().filter(w => !w.isDestroyed());
+    const pids = new Set(metrics.map(m => m.pid));
+    for (const pid of gcWork.keys()) if (!pids.has(pid)) gcWork.delete(pid);
     for (const m of metrics) {
       if (m.type !== 'Tab' && m.type !== 'Renderer') continue;
       const mb = Math.round(((m.memory && m.memory.workingSetSize) || 0) / 1024);
-      if (mb < SOFT_MB) continue;
-      const wc = all.find(function (w) { return w.getOSProcessId() === m.pid; });
-      if (!wc) continue;
-      console.log('[内存] 渲染进程 ' + mb + ' MB 超阈值，触发显式 GC');
-      wc.executeJavaScript('(function(){try{if(typeof window.gc==="function")window.gc();}catch(e){}})();').catch(function () {});
-      if (mb >= HARD_MB) console.warn('[内存] 渲染进程 ' + mb + ' MB 仍偏高（已提示 GC）');
+      const prev = gcWork.get(m.pid);
+      if (mb < 600 || (prev && (prev.inFlight || Date.now() - prev.at < 60000))) continue;
+      const wc = all.find(w => { try { return !w.isDestroyed() && w.getOSProcessId() === m.pid; } catch (_) { return false; } });
+      if (!wc || wc.isCrashed()) continue;
+      const task = { at: Date.now(), inFlight: true }; gcWork.set(m.pid, task);
+      let timer;
+      try {
+        await Promise.race([
+          wc.executeJavaScript('if(typeof window.gc==="function")window.gc();'),
+          new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('GC_TIMEOUT')), 5000); })
+        ]);
+        diagnostics.log('memory-gc', { pid: m.pid, mb });
+        if (mb >= 1200) {
+          const idle = [...lifecycle.records.values()].find(r => !r.win.isDestroyed() && r.role === 'preview' && !r.dirty && !r.win.isFocused() && Date.now() - r.lastActivity > 300000);
+          if (idle) { diagnostics.log('idle-preview-disposed', { role: idle.role, url: idle.target }); idle.win.destroy(); }
+        }
+      } catch (e) { diagnostics.error('memory-gc-failed', e, { pid: m.pid, mb }); }
+      finally { clearTimeout(timer); task.inFlight = false; }
     }
   }, 20000);
 }
-
-function createWindow() {
+let updateTimer = null;
+app.on('will-quit', () => { clearInterval(memoryTimer); clearTimeout(updateTimer); gcWork.clear(); });
+async function createWindow() {
   mainWindow = new BrowserWindow({
-    show: process.env.SNODE_CLI_TEST !== '1',
+    show: false,
+    backgroundColor: '#171b22',
     width: 1400, height: 900, minWidth: 900, minHeight: 600,
     title: '斯诺德跑团',
     icon: path.join(__dirname, '斯诺德跑团', 'favicon.ico'),
@@ -844,64 +1012,23 @@ function createWindow() {
   });
 
   Menu.setApplicationMenu(null);
-  // 版本升级后旧 CSS/JS 可能命中缓存；启动时清一次 HTTP 缓存
-  try { mainWindow.webContents.session.clearCache().catch(() => {}); } catch (_) {}
-  mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
-
-  // ---- 崩溃自愈：职业页/面板内存暴涨后渲染进程可能被杀，此前表现为「白屏且无法恢复」----
-  let lastUrl = '';
-  let recentCrashes = [];
-  function injectBanner(text) {
-    if (!mainWindow || mainWindow.isDestroyed()) return;
-    var js = '(function(){try{' +
-      'var id="__snowdRecoverBanner";var old=document.getElementById(id);if(old)old.remove();' +
-      'var d=document.createElement("div");d.id=id;d.textContent=' + JSON.stringify(String(text)) + ';' +
-      'd.style.cssText="position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:2147483647;' +
-      'background:#a46d1f;color:#fff;padding:9px 18px;border-radius:8px;font-size:14px;' +
-      'box-shadow:0 6px 20px rgba(0,0,0,.28);font-family:system-ui,-apple-system,sans-serif";' +
-      '(document.body||document.documentElement).appendChild(d);' +
-      'setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";' +
-      'setTimeout(function(){d.remove();},700);},8000);' +
-      '}catch(e){}})();';
-    mainWindow.webContents.executeJavaScript(js).catch(() => {});
-  }
-  function recoverFromCrash(reason) {
-    if (!mainWindow || mainWindow.isDestroyed()) return;
-    var now = Date.now();
-    recentCrashes = recentCrashes.filter(function (t) { return now - t < 60000; });
-    recentCrashes.push(now);
-    var wc = mainWindow.webContents;
-    if (recentCrashes.length >= 2) {
-      console.warn('[崩溃] 一分钟内多次异常，退回启动台:', reason);
-      wc.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'))
-        .then(function () { injectBanner('页面连续出现异常，已回到启动台；如仍不稳定请重启软件。'); })
-        .catch(function () {});
-      return;
+  const created = mainWindow;
+  lifecycle.attach(created, 'main');
+  created.once('closed', () => { if (mainWindow === created) mainWindow = null; });
+  diagnostics.log('startup-stage', { stage: 'window-created', windowId: created.id });
+  const cacheMarker = path.join(app.getPath('userData'), 'http-cache-version');
+  try {
+    if (!fs.existsSync(cacheMarker) || fs.readFileSync(cacheMarker, 'utf8') !== app.getVersion()) {
+      let cacheTimer;
+      await Promise.race([created.webContents.session.clearCache(), new Promise((_, reject) => { cacheTimer = setTimeout(() => reject(new Error('cache timeout')), 5000); })]).finally(() => clearTimeout(cacheTimer));
+      fs.writeFileSync(cacheMarker, app.getVersion(), 'utf8');
     }
-    console.warn('[崩溃] 自动恢复:', reason, lastUrl || '(启动台)');
-    var load = lastUrl && lastUrl.indexOf('file://') === 0
-      ? wc.loadURL(lastUrl)
-      : wc.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
-    load.then(function () { injectBanner('页面刚刚发生异常，已自动恢复。'); }).catch(function () {});
-  }
-  mainWindow.webContents.on('did-navigate', function (_event, url) {
-    if (url && url.indexOf('file://') === 0) lastUrl = url;
-  });
-  mainWindow.webContents.on('render-process-gone', function (_event, details) {
-    var reason = (details && details.reason) || 'unknown';
-    console.error('[崩溃] 渲染进程退出: ' + reason + ' exitCode=' + (details && details.exitCode));
-    if (reason === 'clean-exit') return;
-    recoverFromCrash('render-process-gone:' + reason);
-  });
-  var unresponsiveTimer = null;
-  mainWindow.webContents.on('unresponsive', function () {
-    console.warn('[崩溃] 页面无响应；6 秒后仍未恢复则自动重载');
-    clearTimeout(unresponsiveTimer);
-    unresponsiveTimer = setTimeout(function () { recoverFromCrash('unresponsive'); }, 6000);
-  });
-  mainWindow.webContents.on('responsive', function () { clearTimeout(unresponsiveTimer); });
+  } catch (e) { diagnostics.error('http-cache-clear-failed', e); }
 
   // 中文文件名 / asar 偶发把 .html 导航误判为下载；取消下载并改为页面内打开
+  if (created.isDestroyed() || mainWindow !== created) return;
+  if (!mainWindow.webContents.session.__snodeDownloadHandler) {
+  mainWindow.webContents.session.__snodeDownloadHandler = true;
   mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
     const name = item.getFilename() || '';
     const url = item.getURL() || '';
@@ -922,21 +1049,26 @@ function createWindow() {
     }
     if (!/\.html?$/i.test(name) && !/\.html?(?:[?#]|$)/i.test(decoded)) return;
     event.preventDefault();
-    const target = webContents && !webContents.isDestroyed() ? webContents : mainWindow.webContents;
+    const target = webContents && !webContents.isDestroyed() ? webContents : mainWindow && !mainWindow.isDestroyed() ? mainWindow.webContents : null;
     if (!target || target.isDestroyed()) return;
     // 帮助页统一落到 ASCII 文件，避免 file:// 中文路径再次触发下载
     if (/help\.html|\u5e2e\u52a9\.html|%E5%B8%AE%E5%8A%A9/i.test(url + name + decoded)) {
-      target.loadFile(path.join(__dirname, '\u65af\u8bfa\u5fb7\u8dd1\u56e2', 'help.html')).catch(() => {});
+      const owner = BrowserWindow.fromWebContents(target);
+      if (owner) {
+        const canonical = pathToFileURL(path.join(__dirname, '斯诺德跑团', 'help.html'));
+        try { const original = new URL(url); canonical.search = original.search; canonical.hash = original.hash; }
+        catch (e) { diagnostics.error('help-url-invalid', e); }
+        void lifecycle.safeLoad(owner, canonical.href);
+      }
       return;
     }
-    if (decoded.startsWith('file://')) {
-      let fp = decoded.replace(/^file:\/\//i, '');
-      if (/^\/[A-Za-z]:/.test(fp)) fp = fp.slice(1);
-      fp = decodeURIComponent(fp).replace(/\//g, path.sep);
-      target.loadFile(fp).catch(() => {});
+    if (url.startsWith('file://')) {
+      const win = BrowserWindow.fromWebContents(target);
+      if (win) void lifecycle.safeLoad(win, url);
     }
   });
 
+  }
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
     if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) return;
@@ -944,34 +1076,11 @@ function createWindow() {
     if (!url.startsWith('file://')) event.preventDefault();
   });
 
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) {
-      return { action: 'allow' };
-    }
-    if (url.startsWith(mirrorConfig.OSS_PUBLIC_BASE)) {
-      return { action: 'allow' };
-    }
-    // 角色创建页「查看技能树 / 进阶职业」新标签页跳转（本地职业页）
-    // 限流：职业页窗口最多 2 个，超出时复用最早打开的窗口（每个窗口 = 一个独立渲染进程，约 90~170 MB）
-    if (url.startsWith('file://')) {
-      const MAX_TOOL_WINDOWS = 2;
-      const others = BrowserWindow.getAllWindows().filter(function (w) { return w !== mainWindow && !w.isDestroyed(); });
-      if (others.length >= MAX_TOOL_WINDOWS) {
-        const reuse = others[0];
-        console.log('[窗口] 已达上限 ' + MAX_TOOL_WINDOWS + '，复用已有窗口打开: ' + url);
-        reuse.loadURL(url).catch(() => {});
-        if (reuse.isMinimized()) reuse.restore();
-        reuse.focus();
-        return { action: 'deny' };
-      }
-      return { action: 'allow' };
-    }
-    return { action: 'deny' };
-  });
-
   // 非对决页注入 Bug 反馈 + Build 顾问
   mainWindow.webContents.on('did-finish-load', () => {
-    const url = mainWindow.webContents.getURL();
+    if (!mainWindow || mainWindow.isDestroyed() || created !== mainWindow) return;
+    const url = created.webContents.getURL();
+    if (!lifecycle.internal(url) || url.includes('desktop-error.html')) return;
     // 主世界兜底：Electron 下 alert/confirm 不可见，改写为原生对话框 IPC
     mainWindow.webContents.executeJavaScript(
       '(function(){try{if(window.electronAPI){window.alert=function(m){window.electronAPI.jsAlert(m);};window.confirm=function(m){return !!window.electronAPI.jsConfirm(m);};}}catch(e){}})();'
@@ -983,24 +1092,30 @@ function createWindow() {
       path.join('斯诺德跑团', 'advisor-widget.js'),
     ]);
   });
+  await lifecycle.safeLoad(created, launcherUrl);
+  if (pendingFocus && !created.isDestroyed()) { created.focus(); pendingFocus = false; }
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  startChargenCliServer(mainWindow);
+app.whenReady().then(async () => {
+  try {
+    const dumpDir = app.getPath('crashDumps');
+    fs.mkdirSync(dumpDir, { recursive: true });
+    app.setPath('crashDumps', dumpDir);
+    crashReporter.start({ uploadToServer: false, compress: true });
+  } catch (e) { diagnostics.error('local-crash-dumps-unavailable', e); }
+  diagnostics.log('startup-stage', { stage: 'app-ready' });
+  await createWindow();
+  try { require('./chargen-cli-server').startChargenCliServer(() => mainWindow, { diagnostics, lifecycle }); }
+  catch (e) { diagnostics.error('cli-disabled', e); }
   startMemoryWatchdog();
-
-  // 启动后延迟检查更新（GitHub → 失败则自动国内镜像）
-  // 延迟到 90 秒：避免与首屏渲染/首次操作抢资源；启动台「自动更新」开关关闭后跳过（手动检查仍可用）
-  // 发现新版本只提示、不下载，由用户确认（见 download-update IPC）
-  mainWindow.once('ready-to-show', () => {
-    setTimeout(() => {
-      if (getAutoUpdateEnabled()) runAutoUpdateCheck();
-    }, 90000);
-  });
-});
-
+  if (process.env.SNODE_CLI_TEST !== '1') {
+    updateTimer = setTimeout(() => { if (getAutoUpdateEnabled()) runAutoUpdateCheck(); }, 90000);
+  }
+}).catch(fatalMain);
 app.on('window-all-closed', () => app.quit());
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (!mainWindow || mainWindow.isDestroyed()) createWindow();
 });
+module.exports = { diagnostics, lifecycle, recoveryStore };
+if (process.env.SNODE_CLI_TEST === '1') app.__snodeDesktop = { ...module.exports, fatalMain };
+}

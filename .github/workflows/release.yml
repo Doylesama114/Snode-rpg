@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: npm
           cache-dependency-path: electron-app/package-lock.json
 
@@ -56,6 +56,23 @@ jobs:
       - name: Install dependencies
         working-directory: electron-app
         run: npm ci
+
+      - name: Install desktop test dependencies
+        run: npm ci
+
+      - name: Verify real desktop entry point
+        shell: pwsh
+        run: |
+          node verify_desktop_startup.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_desktop_recovery.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_desktop_faults.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Create release notes
+        working-directory: electron-app
+        run: node ../scripts/create_release_notes.cjs
 
       - name: Embed DeepSeek config
         shell: cmd
@@ -99,6 +116,19 @@ jobs:
           }
           if (-not $ok) { exit 1 }
 
+      - name: Verify packaged desktop executable
+        shell: pwsh
+        run: |
+          $packagedExe = Get-ChildItem -LiteralPath electron-app/dist/win-unpacked -Filter *.exe | Select-Object -First 1
+          if (-not $packagedExe) { throw "Packaged application missing" }
+          $env:SNODE_PACKAGED_EXE = $packagedExe.FullName
+          node verify_desktop_startup.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_desktop_recovery.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify_desktop_faults.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       # 先留存构建产物：即使后面的 Release 上传失败，也能从 artifact 直接恢复，无需重新构建
       - name: Upload dist as artifact (for mirror job / recovery)
         uses: actions/upload-artifact@v4
@@ -121,9 +151,11 @@ jobs:
           gh release view $tag --repo $repo --json tagName *> $null
           if ($LASTEXITCODE -ne 0) {
             Write-Host "Release $tag not found, creating..."
-            gh release create $tag --repo $repo --title $tag
+            gh release create $tag --repo $repo --title $tag --notes-file "docs/releases/$tag.md"
             if ($LASTEXITCODE -ne 0) { Write-Host "::error::failed to create release $tag"; exit 1 }
           }
+          gh release edit $tag --repo $repo --title $tag --notes-file "docs/releases/$tag.md"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $files = @(Get-ChildItem -Path electron-app/dist -File |
             Where-Object { $_.Extension -in '.exe', '.yml', '.blockmap' })
           if ($files.Count -eq 0) { Write-Host "::error::no dist files to upload"; exit 1 }

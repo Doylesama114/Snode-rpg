@@ -31,35 +31,27 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "挫志打击改为",
-              "color": null
+              "text": "挫志打击改为"
             },
             {
-              "text": "使目标在持续时间内造成的下一次伤害在结算后-6，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-3",
-              "color": null
+              "text": "使目标在持续时间内造成的下一次伤害在结算后-6，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-3"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -68,39 +60,36 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "挫志打击改为",
-              "color": null
+              "text": "挫志打击改为"
             },
             {
-              "text": "使目标在持续时间内造成的下一次伤害在结算后-8，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-4",
-              "color": null
+              "text": "使目标在持续时间内造成的下一次伤害在结算后-8，如果对方的下一次攻击带有AOE关键词，那么改为在结算后-4"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "source": {
+        "kind": "docx",
+        "para_start": 74,
+        "para_end": 87
+      }
     },
     {
       "id": "wd-starting-skill-2",
@@ -133,31 +122,24 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "警戒之眼的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "警戒之眼的关键词变更为短休/长休（2）"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -166,35 +148,33 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "即便目标脱离你的视野范围，你也能够在其产生异样的变化时触发微弱的提示",
-              "color": null
+              "text": "即便目标脱离你的视野范围，你也能够在其产生异样的变化时触发微弱的提示"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "source": {
+        "kind": "docx",
+        "para_start": 87,
+        "para_end": 99
+      }
     },
     {
       "id": "wd-starting-skill-3",
@@ -215,8 +195,7 @@
       },
       "cost": [],
       "description": [
-        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果",
-        "盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
+        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
         "如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值"
       ],
       "level_upgrades": [
@@ -227,27 +206,27 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达8级时：盾牌格挡的关键词变为短休/长休（2）",
-              "color": null
+              "text": "职业等级到达8级时：盾牌格挡的关键词变为短休/长休（2）"
             },
             {
-              "text": " ",
-              "color": null
+              "text": " "
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "source": {
+        "kind": "docx",
+        "para_start": 99,
+        "para_end": 112
+      }
     },
     {
       "id": "wd-starting-skill-4",
@@ -278,24 +257,19 @@
           "label": "你的守望者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达3级时：你可以在施展荒野医疗时额外消耗一",
-              "color": null
+              "text": "职业等级到达3级时：你可以在施展荒野医疗时额外消耗一"
             },
             {
-              "text": "组",
-              "color": null
+              "text": "组"
             },
             {
-              "text": "草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果",
-              "color": null
+              "text": "草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果"
             }
           ],
           "choices": [
@@ -310,24 +284,19 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达5级时：你可以在施展荒野医疗时额外消耗一",
-              "color": null
+              "text": "职业等级到达5级时：你可以在施展荒野医疗时额外消耗一"
             },
             {
-              "text": "组",
-              "color": null
+              "text": "组"
             },
             {
-              "text": "草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果",
-              "color": null
+              "text": "草药，随后根据这项草药的类别在轮次结束阶段产生额外的增益效果"
             }
           ],
           "choices": [
@@ -340,7 +309,12 @@
         }
       ],
       "flavor": "",
-      "type": "starting"
+      "type": "starting",
+      "source": {
+        "kind": "docx",
+        "para_start": 112,
+        "para_end": 131
+      }
     },
     {
       "id": "wd-skill-1",
@@ -353,8 +327,7 @@
       "fields": {
         "额外条件": "你在本次游玩的战斗环节中对与你相邻的敌方角色造成过伤害",
         "关键词": "天赋.阻碍.力量/敏捷豁免（12）.每场战斗限一次",
-        "标识": "●",
-        "描述": "当一名与你相邻的敌方角色将要通过位移离开你的相邻位置时，你可以使目标进行一次难度为12的力量或敏捷豁免（由你选择），对方豁免失败则本次位移的距离减半"
+        "标识": "●"
       },
       "cost": [
         {
@@ -364,7 +337,9 @@
           "id": "橙色"
         }
       ],
-      "description": [],
+      "description": [
+        "当一名与你相邻的敌方角色将要通过位移离开你的相邻位置时，你可以使目标进行一次难度为12的力量或敏捷豁免（由你选择），对方豁免失败则本次位移的距离减半"
+      ],
       "level_upgrades": [
         {
           "class": "守望者职业",
@@ -373,35 +348,27 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "牵制位的关键词变更为",
-              "color": null
+              "text": "牵制位的关键词变更为"
             },
             {
-              "text": "力量/敏捷豁免（15）",
-              "color": null
+              "text": "力量/敏捷豁免（15）"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -410,36 +377,35 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "牵制位生效后，你可以位移至多等同于目标失去的步数，这个过程中具有迅捷关键词",
-              "color": null
+              "text": "牵制位生效后，你可以位移至多等同于目标失去的步数，这个过程中具有迅捷关键词"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 161,
+        "para_end": 168
+      }
     },
     {
       "id": "wd-skill-2",
@@ -481,31 +447,24 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "援助架势的关键词变更为短休/长休（2）",
-              "color": null
+              "text": "援助架势的关键词变更为短休/长休（2）"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -514,36 +473,35 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你最终成功为友方角色规避或承担本次伤害，那么在下一个自身回合为你返还一个附赠动作",
-              "color": null
+              "text": "如果你最终成功为友方角色规避或承担本次伤害，那么在下一个自身回合为你返还一个附赠动作"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 142,
+        "para_end": 156
+      }
     },
     {
       "id": "wd-skill-3",
@@ -556,8 +514,7 @@
       "fields": {
         "额外条件": "你目击过一名队友因承受伤害而进入濒死状态",
         "关键词": "天赋.防御.互动.短休/长休",
-        "标识": "●",
-        "描述": "当与你相邻的一名友方角色将要承受一次带有AOE关键词的伤害时，你可以代替目标承受一半的结算后伤害值"
+        "标识": "●"
       },
       "cost": [
         {
@@ -567,11 +524,19 @@
           "id": "黄色"
         }
       ],
-      "description": [],
+      "description": [
+        "当与你相邻的一名友方角色将要承受一次带有AOE关键词的伤害时，你可以代替目标承受一半的结算后伤害值"
+      ],
       "level_upgrades": [],
       "flavor": "",
       "style": "守护",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 156,
+        "para_end": 161
+      }
     },
     {
       "id": "wd-skill-4",
@@ -614,48 +579,44 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "以身作盾生效时",
-              "color": null
+              "text": "以身作盾生效时"
             },
             {
-              "text": "会为你生成一个能够抵挡1",
-              "color": null
+              "text": "会为你生成一个能够抵挡1"
             },
             {
-              "text": "D10",
-              "color": null
+              "text": "D10"
             },
             {
-              "text": "点任意伤害的护盾（这个效果不能抵挡心灵、神圣、邪能或星界伤害）",
-              "color": null
+              "text": "点任意伤害的护盾（这个效果不能抵挡心灵、神圣、邪能或星界伤害）"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 203,
+        "para_end": 218
+      }
     },
     {
       "id": "wd-skill-5",
@@ -689,13 +650,18 @@
       ],
       "description": [
         "你尝试立即进行一次基础移动来抵达一名能够触及的友方角色身边，并代替对方承受一次还未结算的伤害",
-        "如果你无法通过一次基础移动位移至对方身边，你仍然能够触发这个效果来尽可能拉近双方的距离",
-        "救援仅能够为他人抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被救援承担"
+        "如果你无法通过一次基础移动位移至对方身边，你仍然能够触发这个效果来尽可能拉近双方的距离救援仅能够为他人抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被救援承担"
       ],
       "level_upgrades": [],
       "flavor": "",
       "style": "守护",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 173,
+        "para_end": 188
+      }
     },
     {
       "id": "wd-skill-6",
@@ -738,24 +704,26 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达8级时：目标在持续时间内视为进入掩体效果",
-              "color": null
+              "text": "职业等级到达8级时：目标在持续时间内视为进入掩体效果"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 188,
+        "para_end": 203
+      }
     },
     {
       "id": "wd-skill-7",
@@ -791,7 +759,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "守护",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 257,
+        "para_end": 271
+      }
     },
     {
       "id": "wd-skill-8",
@@ -833,31 +807,24 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果目标没有来源于初始专长或护甲以外的防御等级加成，那么持续时间内当你处于目标周围2米内时，目标的防御等级+1",
-              "color": null
+              "text": "如果目标没有来源于初始专长或护甲以外的防御等级加成，那么持续时间内当你处于目标周围2米内时，目标的防御等级+1"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -866,56 +833,50 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "持续时间内当你处于目标周围2米内时，",
-              "color": null
+              "text": "持续时间内当你处于目标周围2米内时，"
             },
             {
-              "text": "你可以",
-              "color": null
+              "text": "你可以"
             },
             {
-              "text": "为目标",
-              "color": null
+              "text": "为目标"
             },
             {
-              "text": "施展",
-              "color": null
+              "text": "施展"
             },
             {
-              "text": "一次",
-              "color": null
+              "text": "一次"
             },
             {
-              "text": "盾牌格挡",
-              "color": null
+              "text": "盾牌格挡"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 223,
+        "para_end": 238
+      }
     },
     {
       "id": "wd-skill-9",
@@ -962,35 +923,27 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以以自身基础速度一半的速度进行位移而不中断",
-              "color": null
+              "text": "你可以以自身基础速度一半的速度进行位移而不中断"
             },
             {
-              "text": "固守阵线的效果",
-              "color": null
+              "text": "固守阵线的效果"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -999,44 +952,41 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "固守阵线还会在持续时间内为你提供",
-              "color": null
+              "text": "固守阵线还会在持续时间内为你提供"
             },
             {
-              "text": "10点护甲值",
-              "color": null
+              "text": "10点护甲值"
             },
             {
-              "text": " ",
-              "color": null
+              "text": " "
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 238,
+        "para_end": 257
+      }
     },
     {
       "id": "wd-skill-10",
@@ -1077,31 +1027,24 @@
           "label": "你的守望者等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达5级时：",
-              "color": null
+              "text": "等级到达5级时："
             },
             {
-              "text": "警戒",
-              "color": null
+              "text": "警戒"
             },
             {
-              "text": "姿态",
-              "color": null
+              "text": "姿态"
             },
             {
-              "text": "能够在非战斗环节中生效",
-              "color": null
+              "text": "能够在非战斗环节中生效"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者",
@@ -1110,44 +1053,41 @@
           "label": "你的守望者等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达",
-              "color": null
+              "text": "等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "警戒",
-              "color": null
+              "text": "警戒"
             },
             {
-              "text": "姿态",
-              "color": null
+              "text": "姿态"
             },
             {
-              "text": "会让进入自身周围4米内的首个潜行单位立即显现",
-              "color": null
+              "text": "会让进入自身周围4米内的首个潜行单位立即显现"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 293,
+        "para_end": 307
+      }
     },
     {
       "id": "wd-skill-11",
@@ -1186,7 +1126,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "警戒",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 279,
+        "para_end": 292
+      }
     },
     {
       "id": "wd-skill-12",
@@ -1197,8 +1143,7 @@
       "fields": {
         "额外条件": "你在本次游玩的战斗环节先攻区间处于先锋席",
         "关键词": "天赋.备战",
-        "标识": "●",
-        "描述": "战斗环节开始时如果你的先攻区间为先锋席，那么你的第一次攻击命中检定具有优势，并且可以在首个自身回合无需花费附赠动作便能够说一段较长的话"
+        "标识": "●"
       },
       "cost": [
         {
@@ -1208,7 +1153,9 @@
           "id": "浅色"
         }
       ],
-      "description": [],
+      "description": [
+        "战斗环节开始时如果你的先攻区间为先锋席，那么你的第一次攻击命中检定具有优势，并且可以在首个自身回合无需花费附赠动作便能够说一段较长的话"
+      ],
       "level_upgrades": [
         {
           "class": "守望者",
@@ -1217,23 +1164,18 @@
           "label": "你的守望者等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达5级时：",
-              "color": null
+              "text": "等级到达5级时："
             },
             {
-              "text": "如果你的先攻区间为中坚席，你可以选择将自身提升至先锋席",
-              "color": null
+              "text": "如果你的先攻区间为中坚席，你可以选择将自身提升至先锋席"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者",
@@ -1242,31 +1184,24 @@
           "label": "你的守望者等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达",
-              "color": null
+              "text": "等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你的先攻区间为后卫席，你可以选择将自身提升至先锋席",
-              "color": null
+              "text": "如果你的先攻区间为后卫席，你可以选择将自身提升至先锋席"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者",
@@ -1275,36 +1210,35 @@
           "label": "你的守望者等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达",
-              "color": null
+              "text": "等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果你的先攻区间为殿军席，你可以选择将自身提升至先锋席",
-              "color": null
+              "text": "如果你的先攻区间为殿军席，你可以选择将自身提升至先锋席"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 307,
+        "para_end": 315
+      }
     },
     {
       "id": "wd-skill-13",
@@ -1317,8 +1251,7 @@
         "前置条件": "敏捷属性不为你最低的属性值",
         "额外条件": "本风格不能是你的守望者职业的第三或第四种战斗风格",
         "关键词": "天赋.躲闪.每场战斗限一次",
-        "标识": "●",
-        "描述": "当一名角色通过挥砍、射击或魔法飞弹等能够被目击的手段对你发起攻击并且命中后，你可以在受到伤害前进行一次难度为15的敏捷豁免尝试闪避本次攻击，豁免成功则你不会受到本次攻击所造成的影响"
+        "标识": "●"
       },
       "cost": [
         {
@@ -1328,11 +1261,19 @@
           "id": "黑色"
         }
       ],
-      "description": [],
+      "description": [
+        "当一名角色通过挥砍、射击或魔法飞弹等能够被目击的手段对你发起攻击并且命中后，你可以在受到伤害前进行一次难度为15的敏捷豁免尝试闪避本次攻击，豁免成功则你不会受到本次攻击所造成的影响"
+      ],
       "level_upgrades": [],
       "flavor": "",
       "style": "警戒",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 342,
+        "para_end": 348
+      }
     },
     {
       "id": "wd-skill-14",
@@ -1373,36 +1314,35 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果本次攻击命中，那么目标的位移行动将会被中断，停留在与你相邻的位置",
-              "color": null
+              "text": "如果本次攻击命中，那么目标的位移行动将会被中断，停留在与你相邻的位置"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 320,
+        "para_end": 334
+      }
     },
     {
       "id": "wd-skill-15",
@@ -1416,8 +1356,7 @@
         "前置条件": "你使一名敌方角色使用过反应动作",
         "额外条件": "你在本次游玩的战斗环节中使一名敌方角色使用过反应动作",
         "关键词": "天赋.媒介.补给.每场战斗限一次",
-        "标识": "●",
-        "描述": "当一名视野范围内的敌方角色施展反应动作后，你可以选择立即获得一个附赠动作"
+        "标识": "●"
       },
       "cost": [
         {
@@ -1427,7 +1366,9 @@
           "id": "浅色"
         }
       ],
-      "description": [],
+      "description": [
+        "当一名视野范围内的敌方角色施展反应动作后，你可以选择立即获得一个附赠动作"
+      ],
       "level_upgrades": [
         {
           "class": "守望者",
@@ -1436,31 +1377,24 @@
           "label": "你的守望者等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达",
-              "color": null
+              "text": "等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "捕捉时机可以对友方角色生效",
-              "color": null
+              "text": "捕捉时机可以对友方角色生效"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者",
@@ -1469,36 +1403,35 @@
           "label": "你的守望者等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "等级到达",
-              "color": null
+              "text": "等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "捕捉时机可以在敌方角色的一次攻击命中检定失败、或者掷出大失败时生效",
-              "color": null
+              "text": "捕捉时机可以在敌方角色的一次攻击命中检定失败、或者掷出大失败时生效"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 334,
+        "para_end": 342
+      }
     },
     {
       "id": "wd-skill-16",
@@ -1541,27 +1474,21 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达5级时：",
-              "color": null
+              "text": "职业等级到达5级时："
             },
             {
-              "text": "守望视野",
-              "color": null
+              "text": "守望视野"
             },
             {
-              "text": "改为对一片10*10的区域进行扫描",
-              "color": null
+              "text": "改为对一片10*10的区域进行扫描"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -1570,36 +1497,35 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "你可以选择使守望视野的持续时间变更为1分钟，即便你变动自身位置也依旧能顾获悉范围内的信息",
-              "color": null
+              "text": "你可以选择使守望视野的持续时间变更为1分钟，即便你变动自身位置也依旧能顾获悉范围内的信息"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 385,
+        "para_end": 403
+      }
     },
     {
       "id": "wd-skill-17",
@@ -1645,40 +1571,38 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达10级时：",
-              "color": null
+              "text": "职业等级到达10级时："
             },
             {
-              "text": "闪击突刺进行的近战攻击会在",
-              "color": null
+              "text": "闪击突刺进行的近战攻击会在"
             },
             {
-              "text": "结算造成的伤害后额外附加一次你的",
-              "color": null
+              "text": "结算造成的伤害后额外附加一次你的"
             },
             {
-              "text": "感知",
-              "color": null
+              "text": "感知"
             },
             {
-              "text": "调整值",
-              "color": null
+              "text": "调整值"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "警戒",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 353,
+        "para_end": 370
+      }
     },
     {
       "id": "wd-skill-18",
@@ -1724,7 +1648,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "警戒",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 370,
+        "para_end": 385
+      }
     },
     {
       "id": "wd-skill-19",
@@ -1736,8 +1666,7 @@
       "fields": {
         "额外条件": "你拥有专注的熟练度",
         "关键词": "战技.韧性.短休/长休",
-        "标识": "●",
-        "描述": "1.当你将要进行一次恐惧、魅惑或混乱状态的豁免检定时，你可以令本次豁免具有优势"
+        "标识": "●"
       },
       "cost": [
         {
@@ -1748,6 +1677,7 @@
         }
       ],
       "description": [
+        "1.当你将要进行一次恐惧、魅惑或混乱状态的豁免检定时，你可以令本次豁免具有优势",
         "2.如果你已经拥有那项豁免优势的效果，那么可以改为获得一次额外的豁免机会"
       ],
       "level_upgrades": [
@@ -1758,31 +1688,24 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "沉着之心可以对困惑和忏悔状态生效",
-              "color": null
+              "text": "沉着之心可以对困惑和忏悔状态生效"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -1791,36 +1714,35 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "沉着之心改为令本次豁免的规格提升一档（即普通→优势，优势→极大优势，以此类推）",
-              "color": null
+              "text": "沉着之心改为令本次豁免的规格提升一档（即普通→优势，优势→极大优势，以此类推）"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 441,
+        "para_end": 449
+      }
     },
     {
       "id": "wd-skill-20",
@@ -1860,31 +1782,25 @@
           "label": "你的守望者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "承受的伤害值改为在结算后-3",
-              "color": null
+              "text": "承受的伤害值改为在结算后-3"
             }
           ],
-          "choices": []
+          "section": "2.持续时间内你无法进行全速移动"
         },
         {
           "class": "守望者职业",
@@ -1893,36 +1809,36 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "承受的伤害值改为在结算后-4",
-              "color": null
+              "text": "承受的伤害值改为在结算后-4"
             }
           ],
-          "choices": []
+          "section": "2.持续时间内你无法进行全速移动"
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 411,
+        "para_end": 426
+      }
     },
     {
       "id": "wd-skill-21",
@@ -1964,23 +1880,18 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达8级时：",
-              "color": null
+              "text": "职业等级到达8级时："
             },
             {
-              "text": "开启防御姿态会使你获得8+你的体质调整值的临时生命值，这些临时生命值会在持续时间结束时消散，直到你进行一次短休或长休前再次开启防御姿态不会获得新的临时生命值",
-              "color": null
+              "text": "开启防御姿态会使你获得8+你的体质调整值的临时生命值，这些临时生命值会在持续时间结束时消散，直到你进行一次短休或长休前再次开启防御姿态不会获得新的临时生命值"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -1989,28 +1900,29 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达12级时：",
-              "color": null
+              "text": "职业等级到达12级时："
             },
             {
-              "text": "开启防御姿态进入战斗环节后，改为你首次受到的伤害值降低X点（X为你的防御等级点数）",
-              "color": null
+              "text": "开启防御姿态进入战斗环节后，改为你首次受到的伤害值降低X点（X为你的防御等级点数）"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 427,
+        "para_end": 441
+      }
     },
     {
       "id": "wd-skill-22",
@@ -2022,8 +1934,7 @@
         "前置条件": "你累计参与过十场战斗环节，并且在这些战斗中没有执行过撤离行动",
         "额外条件": "你在一次短休或长休前参与过多次战斗环节",
         "关键词": "天赋.回复",
-        "标识": "●",
-        "描述": "在同一场战斗环节中每当你承受一种新的伤害类型后，你获得4点临时生命值，这些临时生命值不附加你的关键属性和其他增益效果，允许与其他临时生命值叠加"
+        "标识": "●"
       },
       "cost": [
         {
@@ -2033,11 +1944,19 @@
           "id": "棕色"
         }
       ],
-      "description": [],
+      "description": [
+        "在同一场战斗环节中每当你承受一种新的伤害类型后，你获得4点临时生命值，这些临时生命值不附加你的关键属性和其他增益效果，允许与其他临时生命值叠加"
+      ],
       "level_upgrades": [],
       "flavor": "",
       "style": "坚韧",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 484,
+        "para_end": 490
+      }
     },
     {
       "id": "wd-skill-23",
@@ -2080,44 +1999,41 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达1",
-              "color": null
+              "text": "职业等级到达1"
             },
             {
-              "text": "0",
-              "color": null
+              "text": "0"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "壁立千仞",
-              "color": null
+              "text": "壁立千仞"
             },
             {
-              "text": "在",
-              "color": null
+              "text": "在"
             },
             {
-              "text": "豁免成功后还会为你提供2D8点临时生命值",
-              "color": null
+              "text": "豁免成功后还会为你提供2D8点临时生命值"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 454,
+        "para_end": 470
+      }
     },
     {
       "id": "wd-skill-24",
@@ -2159,32 +2075,32 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达12级时：",
-              "color": null
+              "text": "职业等级到达12级时："
             },
             {
-              "text": "逆境强化也能够将极大劣势效果转化为优势",
-              "color": null
+              "text": "逆境强化也能够将极大劣势效果转化为优势"
             },
             {
-              "text": " ",
-              "color": null
+              "text": " "
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 470,
+        "para_end": 484
+      }
     },
     {
       "id": "wd-skill-25",
@@ -2197,8 +2113,7 @@
         "前置条件": "你在本次游玩过程中承受过流血状态",
         "额外条件": "你在本次游玩过程中承受过灼烧状态",
         "关键词": "天赋.增益.回复",
-        "标识": "●",
-        "描述": "1.你消耗自身的X点生命值来激活这个效果"
+        "标识": "●"
       },
       "cost": [
         {
@@ -2209,6 +2124,7 @@
         }
       ],
       "description": [
+        "1.你消耗自身的X点生命值来激活这个效果",
         "·当你需要结算灼烧或流血状态时，改为为自身回复等量的生命值，持续2轮",
         "·你获得一颗D6的固防骰，可以在自身承受一次伤害或获得护盾、护甲值时投掷，将掷骰数值减免或附加在那个结果上",
         "2.X为你的20%当前生命值"
@@ -2221,36 +2137,36 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "燃血固防改为获得两颗固防骰",
-              "color": null
+              "text": "燃血固防改为获得两颗固防骰"
             }
           ],
-          "choices": []
+          "section": "2.X为你的20%当前生命值"
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 519,
+        "para_end": 529
+      }
     },
     {
       "id": "wd-skill-26",
@@ -2294,23 +2210,19 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达5级时：",
-              "color": null
+              "text": "职业等级到达5级时："
             },
             {
-              "text": "移除坚韧守卫带来的基础移动速度减半效果",
-              "color": null
+              "text": "移除坚韧守卫带来的基础移动速度减半效果"
             }
           ],
-          "choices": []
+          "section": "持续时间内你的基础移动速度减半"
         },
         {
           "class": "守望者职业",
@@ -2319,28 +2231,30 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达10级时：",
-              "color": null
+              "text": "职业等级到达10级时："
             },
             {
-              "text": "持续时间内你对眩晕状态的豁免难度-2",
-              "color": null
+              "text": "持续时间内你对眩晕状态的豁免难度-2"
             }
           ],
-          "choices": []
+          "section": "持续时间内你的基础移动速度减半"
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 495,
+        "para_end": 511
+      }
     },
     {
       "id": "wd-skill-27",
@@ -2353,8 +2267,7 @@
         "前置条件": "意志属性不为你最低的属性值",
         "额外条件": "你在本次游玩过程中进行过一次成功的体质或意志豁免",
         "关键词": "天赋.韧性.短休/长休",
-        "标识": "●",
-        "描述": "你咬紧牙关忍耐住所受到的痛楚，当你承受一次伤害后，可以选择为你抵挡其中的8点伤害值"
+        "标识": "●"
       },
       "cost": [
         {
@@ -2364,7 +2277,9 @@
           "id": "黄色"
         }
       ],
-      "description": [],
+      "description": [
+        "你咬紧牙关忍耐住所受到的痛楚，当你承受一次伤害后，可以选择为你抵挡其中的8点伤害值"
+      ],
       "level_upgrades": [
         {
           "class": "守望者职业",
@@ -2373,31 +2288,24 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达12级时：",
-              "color": null
+              "text": "职业等级到达12级时："
             },
             {
-              "text": "痛楚忍耐",
-              "color": null
+              "text": "痛楚忍耐"
             },
             {
-              "text": "改为",
-              "color": null
+              "text": "改为"
             },
             {
-              "text": "可以选择为你抵挡其中的12点伤害值",
-              "color": null
+              "text": "可以选择为你抵挡其中的12点伤害值"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -2406,36 +2314,35 @@
           "label": "你的守望者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达15级时：",
-              "color": null
+              "text": "职业等级到达15级时："
             },
             {
-              "text": "痛楚忍耐",
-              "color": null
+              "text": "痛楚忍耐"
             },
             {
-              "text": "改为",
-              "color": null
+              "text": "改为"
             },
             {
-              "text": "可以选择为你抵挡其中的15点伤害值",
-              "color": null
+              "text": "可以选择为你抵挡其中的15点伤害值"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "坚韧",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 511,
+        "para_end": 519
+      }
     },
     {
       "id": "wd-skill-28",
@@ -2469,31 +2376,24 @@
           "label": "你的守望者职业等级到达3级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "3",
-              "color": null
+              "text": "3"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "持续时间内当你需要为追踪他人而进行洞悉检定时具有优势",
-              "color": null
+              "text": "持续时间内当你需要为追踪他人而进行洞悉检定时具有优势"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -2502,36 +2402,35 @@
           "label": "你的守望者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "持续时间内你遭遇环境影响需要进行求生检定时具有优势",
-              "color": null
+              "text": "持续时间内你遭遇环境影响需要进行求生检定时具有优势"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 550,
+        "para_end": 567
+      }
     },
     {
       "id": "wd-skill-29",
@@ -2566,7 +2465,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "原野",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 567,
+        "para_end": 579
+      }
     },
     {
       "id": "wd-skill-30",
@@ -2605,36 +2510,36 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：防护毒素改为立即移除自身所受到的所有中毒状态",
-              "color": null
+              "text": "级时：防护毒素改为立即移除自身所受到的所有中毒状态"
             },
             {
-              "text": " ",
-              "color": null
+              "text": " "
             }
           ],
-          "choices": []
+          "section": "立即移除自身受到的1D4层中毒状态"
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 537,
+        "para_end": 550
+      }
     },
     {
       "id": "wd-skill-31",
@@ -2681,35 +2586,27 @@
           "label": "你的守望者职业等级到达6级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "6",
-              "color": null
+              "text": "6"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "丛林餐桌烹饪的食物可供人数提升至十二名",
-              "color": null
+              "text": "丛林餐桌烹饪的食物可供人数提升至十二名"
             },
             {
-              "text": "中型体型角色",
-              "color": null
+              "text": "中型体型角色"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -2718,48 +2615,44 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "丛林餐桌烹饪的食物可供人数提升至",
-              "color": null
+              "text": "丛林餐桌烹饪的食物可供人数提升至"
             },
             {
-              "text": "二十四",
-              "color": null
+              "text": "二十四"
             },
             {
-              "text": "名",
-              "color": null
+              "text": "名"
             },
             {
-              "text": "中型体型角色",
-              "color": null
+              "text": "中型体型角色"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 620,
+        "para_end": 638
+      }
     },
     {
       "id": "wd-skill-32",
@@ -2807,47 +2700,36 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "自然召集的关键词变更为",
-              "color": null
+              "text": "自然召集的关键词变更为"
             },
             {
-              "text": "短休/长休",
-              "color": null
+              "text": "短休/长休"
             },
             {
-              "text": "（",
-              "color": null
+              "text": "（"
             },
             {
-              "text": "2",
-              "color": null
+              "text": "2"
             },
             {
-              "text": "）",
-              "color": null
+              "text": "）"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -2856,36 +2738,35 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "自然召集可以招募到植物类怪兽",
-              "color": null
+              "text": "自然召集可以招募到植物类怪兽"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 584,
+        "para_end": 605
+      }
     },
     {
       "id": "wd-skill-33",
@@ -2927,31 +2808,24 @@
           "label": "你的守望者职业等级到达5级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "5",
-              "color": null
+              "text": "5"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果当前处于自然环境，那么在结算后额外回复等同于你自然熟练度的生命值",
-              "color": null
+              "text": "如果当前处于自然环境，那么在结算后额外回复等同于你自然熟练度的生命值"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -2960,52 +2834,47 @@
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "扎根",
-              "color": null
+              "text": "扎根"
             },
             {
-              "text": "改为",
-              "color": null
+              "text": "改为"
             },
             {
-              "text": "回复1D",
-              "color": null
+              "text": "回复1D"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "点生命值",
-              "color": null
+              "text": "点生命值"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 605,
+        "para_end": 620
+      }
     },
     {
       "id": "wd-skill-34",
@@ -3050,31 +2919,24 @@
           "label": "你的守望者职业等级到达8级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "8",
-              "color": null
+              "text": "8"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "通过自然吐纳回复的生命值如果超过自身生命值上限，那么超出的部分会转变为临时生命值",
-              "color": null
+              "text": "通过自然吐纳回复的生命值如果超过自身生命值上限，那么超出的部分会转变为临时生命值"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -3083,36 +2945,35 @@
           "label": "你的守望者职业等级到达12级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "12",
-              "color": null
+              "text": "12"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "自然吐纳的持续时间+1轮",
-              "color": null
+              "text": "自然吐纳的持续时间+1轮"
             }
-          ],
-          "choices": []
+          ]
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 676,
+        "para_end": 691
+      }
     },
     {
       "id": "wd-skill-35",
@@ -3150,7 +3011,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "原野",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 643,
+        "para_end": 657
+      }
     },
     {
       "id": "wd-skill-36",
@@ -3184,45 +3051,34 @@
       "description": [
         "当你处以自然环境中时，你可以花费施展时间来进行伏击准备，在持续时间内你在这个区域内进行隐匿检定具有优势，如果你在这个区域进入战斗环节，那么获得以下效果：",
         "·在本场战斗开始结算先攻值时，你可以立即发起一次远程攻击或带有远程攻击关键词、施展时间不超过一个主要动作的战技",
-        "·你可以立即选择场上的一个未被占据的位置放置一个陷阱"
+        "·你可以立即选择场上的一个未被占据的位置放置一个陷阱自身回合攻击命中检定具有优势"
       ],
       "level_upgrades": [
         {
           "class": "守望者职业",
           "level": 10,
-          "text": "伏击准备还会令你在进入战斗环节后的首个自身回合攻击命中检定具有优势",
+          "text": "伏击准备还会令你在进入战斗环节后的首个",
           "label": "你的守望者职业等级到达10级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "10",
-              "color": null
+              "text": "10"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "伏击准备还会令你在进入战斗环节后的首个",
-              "color": null
-            },
-            {
-              "text": "自身回合攻击命中检定具有优势",
-              "color": null
+              "text": "伏击准备还会令你在进入战斗环节后的首个"
             }
-          ],
-          "choices": []
+          ]
         },
         {
           "class": "守望者职业",
@@ -3231,40 +3087,40 @@
           "label": "你的守望者职业等级到达15级时：",
           "line_runs": [
             {
-              "text": "你的",
-              "color": null
+              "text": "你的"
             },
             {
-              "text": "守望者",
-              "color": null
+              "text": "守望者"
             },
             {
-              "text": "职业等级到达",
-              "color": null
+              "text": "职业等级到达"
             },
             {
-              "text": "15",
-              "color": null
+              "text": "15"
             },
             {
-              "text": "级时：",
-              "color": null
+              "text": "级时："
             },
             {
-              "text": "如果进入战斗环节时你掷出的先攻区间为先",
-              "color": null
+              "text": "如果进入战斗环节时你掷出的先攻区间为先"
             },
             {
-              "text": "锋席，那么你还会获得一个突袭轮次",
-              "color": null
+              "text": "锋席，那么你还会获得一个突袭轮次"
             }
           ],
+          "section": "自身回合攻击命中检定具有优势",
           "choices": []
         }
       ],
       "flavor": "",
       "style": "原野",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 657,
+        "para_end": 676
+      }
     }
   ]
 }

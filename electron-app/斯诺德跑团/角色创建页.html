@@ -911,7 +911,7 @@ function _initChargenLivePanels() {
     var _p0 = document.getElementById('charOverview'); if (_p0) _p0.classList.remove('panel-open');
     var _b0 = document.getElementById('overviewToggle'); if (_b0) _b0.classList.remove('panel-open');
   }
-  if (!_handoffApplied && !_recreateSession && !new URLSearchParams(location.search).has('cli')) { try { restoreChargenDraft(); } catch(e){ console.warn("draft restore", e); } }
+  if (!(window.electronAPI && window.electronAPI.recoveryRead) && !_handoffApplied && !_recreateSession && !new URLSearchParams(location.search).has('cli')) { try { restoreChargenDraft(); } catch(e){ console.warn("draft restore", e); } }
   renderAspirationPanel();
   renderOvJump();
 }
@@ -1114,7 +1114,8 @@ function renderOvJump() {
 function clearChargenDraft() {
   SD_confirm('确定清空草稿并重新开始？', function() {
     try { localStorage.removeItem(CHARGEN_DRAFT_KEY); } catch(e){}
-    location.reload();
+    var clear = window.desktopRecovery ? window.desktopRecovery.discard() : null;
+    Promise.resolve(clear).then(function (r) { if (!r || r.ok) location.reload(); });
   });
 }
 function autosaveChargenDraft() {
@@ -1124,6 +1125,7 @@ function autosaveChargenDraft() {
     snap._step = CURRENT_STEP; snap._savedAt = Date.now();
     localStorage.setItem(CHARGEN_DRAFT_KEY, JSON.stringify(snap));
   } catch(e){}
+  if (window.desktopRecovery) window.desktopRecovery.mark();
   renderOvJump();
 }
 function restoreChargenDraft() {
@@ -3956,6 +3958,8 @@ function saveCharacter(){
     CHAR._charName=storageId;
     localStorage.setItem("char_"+storageId+"_slot1",JSON.stringify(charData));
     try{localStorage.removeItem(CHARGEN_DRAFT_KEY);}catch(e){}
+    if (window.desktopRecovery) window.desktopRecovery.saved();
+    if (window.electronAPI && !new URLSearchParams(location.search).has('cli')) window.electronAPI.setPanelDirty(false);
     if(_recreateSession){
       if(storageId!==displayName){
         SD_alert("已另存为新角色「"+storageId+"」（显示名「"+displayName+"」）");
@@ -4545,5 +4549,6 @@ document.addEventListener('click', function(e) {
 <script src="guild-ui.js"></script>
 <script src="onboard_steps.js"></script>
 <script src="onboard.js"></script>
+<script src="desktop_recovery.js"></script>
 </body>
 </html>

@@ -1256,9 +1256,16 @@ body.battle .fab{display:none}
 <script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
 <script src="skill_index.js"></script>
-<script src="character_io.js"></script>
-<script src="character_import_ui.js"></script>
-<script src="panel_engine.js"></script>
+<script src="character_class_data.js?v=20261003"></script>
+<script src="character_classes.js?v=20261003"></script>
+<script src="character_stats.js?v=20261003"></script>
+<script src="character_workbook_cache.js?v=20261003"></script>
+<script src="character_io.js?v=20261003"></script>
+<script src="character_layout.js?v=20261003"></script>
+<script src="character_fields.js?v=20261003"></script>
+<script src="character_export.js?v=20261003"></script>
+<script src="character_import_ui.js?v=20261003"></script>
+<script src="panel_engine.js?v=20261003"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
@@ -1305,45 +1312,9 @@ function SB_buildTestData(st) {
   if (st.classes && st.classes[0] && st.classes[0].name) classes.push(clsRow(st.classes[0]));
   if (st.classes && st.classes[1] && st.classes[1].name) classes.push(clsRow(st.classes[1]));
   while (classes.length < 3) classes.push({ name: '', sub: '', level: 0, styles: ['', '', '', ''] });
-  var dexMod = Math.floor((((st.attrs && st.attrs['敏捷']) || 10) - 10) / 2);
-  var strMod = Math.floor((((st.attrs && st.attrs['力量']) || 10) - 10) / 2);
-  var keyAttr = (st.classes && st.classes[0] && (st.classes[0].keyAttr || (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[st.classes[0].name] && REF_CLASSES[st.classes[0].name].key_attr))) || '力量';
-  if (keyAttr === '力量或敏捷') keyAttr = (st.classes && st.classes[0] && st.classes[0].keyAttr) || '力量';
-  var keyMod = Math.floor((((st.attrs && st.attrs[keyAttr]) || 10) - 10) / 2);
-  var ac = null;
-  try {
-    var eqArmor = (st.equipment && st.equipment['防具']) || [];
-    for (var ai = 0; ai < eqArmor.length; ai++) {
-      var aInfo = (typeof getArmorAC === 'function') ? getArmorAC(eqArmor[ai]) : null;
-      if (!aInfo) {
-        var an = (typeof itemName === 'function') ? itemName(eqArmor[ai]) : (eqArmor[ai] && (eqArmor[ai].item || eqArmor[ai].name)) || '';
-        if (an === '演出戏服' || an === '高档服装' || an === '布衣' || an === '披风') aInfo = { base: 11, addDex: true, dexCap: 2 };
-      }
-      if (aInfo) {
-        var ac2 = aInfo.addDex ? (aInfo.base + Math.min(dexMod, aInfo.dexCap != null ? aInfo.dexCap : 999)) : aInfo.base;
-        if (ac === null || ac2 > ac) ac = ac2;
-      }
-    }
-  } catch (e) {}
-  if (ac === null) ac = 10 + dexMod;
-  try {
-    if (typeof getShieldBonus === 'function') ac += getShieldBonus(st);
-  } catch (e) {}
-  try {
-    if (st._feat_ac_bonus && typeof wearingMediumArmor === 'function' && wearingMediumArmor()) ac += (st._feat_ac_bonus || 0);
-  } catch (e) {}
-  var _hpMaxV = Number(st.hp) || 0;
-  var _fpMaxV = Number(st.fp) || 0;
-  var _hpCurV = (typeof st._hpCurrent === 'number' && isFinite(st._hpCurrent)) ? st._hpCurrent : _hpMaxV;
-  var _fpCurV = (typeof st._fpCurrent === 'number' && isFinite(st._fpCurrent)) ? st._fpCurrent : _fpMaxV;
-  _hpCurV = Math.max(0, Math.min(_hpMaxV, _hpCurV));
-  _fpCurV = Math.max(0, Math.min(_fpMaxV, _fpCurV));
-  var battle = {
-    hp: _hpCurV, hpMax: _hpMaxV, fp: _fpCurV, fpMax: _fpMaxV,
-    hpRecover: Math.floor(_hpMaxV / 2), fpRecover: Math.floor(_fpMaxV / 2),
-    ac: ac, init: '', speed: String((typeof REF_RACES !== 'undefined' && REF_RACES[st.race] && REF_RACES[st.race].speed) ? REF_RACES[st.race].speed : '5').replace('米', ''),
-    keyAttr: keyAttr, atk: Math.max(strMod, dexMod) + (st.atk_hit_bonus || 0), spell: keyMod + (st.spell_hit_bonus || 0)
-  };
+  var evaluated=SNOWD_CHARACTER_STATS.read(st),_hpMaxV=typeof evaluated.hp==="number"?evaluated.hp:0,_fpMaxV=typeof evaluated.fp==="number"?evaluated.fp:0;
+  var _hpCurV=typeof st._hpCurrent==="number"&&isFinite(st._hpCurrent)?st._hpCurrent:_hpMaxV,_fpCurV=typeof st._fpCurrent==="number"&&isFinite(st._fpCurrent)?st._fpCurrent:_fpMaxV;
+  var battle={hp:Math.max(0,Math.min(_hpMaxV,_hpCurV)),hpMax:_hpMaxV,fp:Math.max(0,Math.min(_fpMaxV,_fpCurV)),fpMax:_fpMaxV,hpRecover:evaluated.hpRecover===null?"待确认":evaluated.hpRecover,fpRecover:evaluated.fpRecover===null?"待确认":evaluated.fpRecover,ac:evaluated.ac===null?"待确认":evaluated.ac,init:"",speed:evaluated.speed===null?"待确认":String(evaluated.speed).replace(/米$/,""),keyAttr:evaluated.keyAttr,atk:evaluated.atk===null?"待确认":evaluated.atk,spell:evaluated.spell===null?"待确认":evaluated.spell};
   var bgFields = [];
   var bgMap = [['故事', st.story], ['特性', st.traits], ['特点', st.personality], ['理念', st.ideals], ['羁绊', st.bonds], ['缺陷', st.flaws]];
   for (var bi = 0; bi < bgMap.length; bi++) { if (bgMap[bi][1]) bgFields.push({ label: bgMap[bi][0], v: bgMap[bi][1] }); }
@@ -1357,9 +1328,9 @@ function SB_buildTestData(st) {
     var tg = st.talent_tree[ti];
     if (!tg) continue;
     var tn = tg.n || tg.name || '';
-    var meta = SB_findSkillMeta(tn, tg.src || tg.cls || "", tg.id);
+    var meta = resolveSkillData(tg).data;
     var mf = (meta && meta.fields) || {};
-    var tdesc = mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || tg.desc || '');
+    var tdesc = tg.ds || tg.rawDesc || mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || tg.desc || '');
     var tfields = {
       '施展时间': mf['施展时间'] || '-', '施展距离': mf['施展距离'] || '-', '持续时间': mf['持续时间'] || '-',
       '疲劳消耗': mf['疲劳消耗'] || '-', '关键词': mf['关键词'] || '', '前置条件': mf['前置条件'] || mf['施展条件'] || '-', '额外条件': mf['额外条件'] || mf['施展限制'] || '-', '描述': tdesc
@@ -1367,7 +1338,7 @@ function SB_buildTestData(st) {
     var tdescList = (meta && meta.description && meta.description.length) ? meta.description.slice() : (tdesc ? [tdesc] : []);
     var tdescEntries = [];
     for (var tdi = 0; tdi < tdescList.length; tdi++) tdescEntries.push({ text: tdescList[tdi], runs: null });
-    talents.push({ tier: tg.tier || '一阶', n: tn, desc: tdesc, learned: true, fields: tfields, cost: (meta && meta.cost) || [], descList: tdescList, descEntries: tdescEntries, fieldRuns: (meta && meta.field_runs) || {} });
+    talents.push({ id: (meta && meta.id) || tg.id || '', src: tg.src || tg.cls || '', entry: tg, ruleData: meta, upgrades: ((meta && meta.level_upgrades) || []).map(function(u){ return (u.label || '') + u.text + '\n' + (u.choices || []).join('\n'); }), uid:tg.uid||'', resolution:tg.resolution||'', tier: tg.tier || (SNOWD_CHARACTER_IO.isCustom(tg)?'未标阶位':'一阶'), n: tn, desc: tdesc, learned: true, fields: tfields, cost: (meta && meta.cost) || [], descList: tdescList, descEntries: tdescEntries, fieldRuns: (meta && meta.field_runs) || {} });
   }
   var feats = [];
   if (st.special_feats) {
@@ -1383,10 +1354,10 @@ function SB_buildTestData(st) {
   if (st.skills) for (var si = 0; si < st.skills.length; si++) {
     var s = st.skills[si];
     if (!s || !(s.n || s.name)) continue;
-    var meta = SB_findSkillMeta(s.n || s.name, s.src, s.id);
+    var meta = resolveSkillData(s).data;
     var mf = (meta && meta.fields) || {};
     var cast = s.tm || s.time || mf['施展时间'] || '-';
-    var fp = s.cost || s.dr || s.fp || mf['疲劳消耗'] || '-';
+    var fp = [s.cost,s.dr,s.fp,mf['疲劳消耗']].find(function(v){return v!==undefined&&v!==null&&v!==''&&typeof v!=='object';});if(fp===undefined)fp='-';
     var range = s.range || mf['施展距离'] || '-';
     var dur = s.dur || s.duration || mf['持续时间'] || '-';
     var desc = s.ds || s.desc || mf['描述'] || ((meta && meta.description && meta.description.join(' ')) || '');
@@ -1406,7 +1377,7 @@ function SB_buildTestData(st) {
       place: s.place || (s.sub || s.isSub ? "sub" : "main"),
       kind: s.kind || "",
       fieldRuns: s.ds && s.ds !== mf['描述'] ? {} : (meta && meta.field_runs) || {},
-      tier: s.tier || ""
+      tier: s.tier || "", resolution:s.resolution||"",via:s.via||s.grantedBy||"",occupies:s.occupies,summonNotes:s.summonNotes||"",ownerClassIndex:s.ownerClassIndex,mergedNotes:s.mergedNotes||[],requiresEquipment:s.requiresEquipment||""
     });
     if (s.sub || s.isSub) entry.sub = true;
     if (entry.sub) skillsSub.push(entry); else skillsMain.push(entry);
@@ -1474,7 +1445,7 @@ function buildSkills(list, isSub) {
     out.push({
       n: s.n, style: s.style, fp: s.fp, cast: s.cast, range: s.range, dur: s.dur,
       kw: s.kw, cond: s.cond, ext: s.ext, desc: s.desc, up: (s.up || []).join('；') || '—',
-      react: s.react, sub: isSub, src: s.src || '', id: s.id || '', uid: s.uid || '', ds: s.ds || '', place: s.place || '', kind: s.kind || '', tier: s.tier || ''
+      react: s.react, sub: isSub, src: s.src || '', id: s.id || '', uid: s.uid || '', ds: s.ds || '', place: s.place || '', kind: s.kind || '', tier: s.tier || '',resolution:s.resolution||'',via:s.via||'',occupies:s.occupies,ownerClassIndex:s.ownerClassIndex,requiresEquipment:s.requiresEquipment||'',mergedNotes:s.mergedNotes||[]
     });
   }
   return out;
@@ -2624,7 +2595,7 @@ function adjHp(d) {
     state.hp = S.hp;
     S.hpMax = S.hp;
     state._hpCurrent = S.hp;
-    state._hpManual = true;
+    state._hpManual = true;if(typeof SNOWD_CHARACTER_STATS!=="undefined")SNOWD_CHARACTER_STATS.set(state,"hp",state.hp,"fixed",{origin:"manual"});
     state._dirty = true;
     if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
     log('非战斗调整生命值 → ' + S.hp + '（记为初始值）', 'heal');
@@ -2741,27 +2712,18 @@ function showExhaustDetail() {
 }
 
 /* ================= 技能表（真实） ================= */
-function skillRowHtml(sk, isSub) {
-  var react = sk.react ? '<span class="react-tag">⚡反应</span>' : '';
-  var used = S.usage[sk.n] || 0;
-  var usedHtml = used > 0 ? '<span class="used-cnt">已用 ' + used + ' 次</span>' : '<span class="used-cnt"></span>';
-  var disabled = S.battle && S.exhaust >= 4 ? 'disabled' : '';
-  var cls = sk.style ? '<span class="skill-sub">(' + sk.style + ')</span>' : '';
-  return '<tr data-name="' + sk.n + '" data-sub="' + isSub + '" data-uid="' + escHtml(sk.uid || '') + '" onclick="showSkillDetailRow(this)">' +
-    '<td class="skill-name">' + sk.n + ' ' + cls + react + '</td>' +
-    '<td>' + sk.cast + '</td>' +
-    '<td class="skill-desc">' + sk.desc + '</td>' +
-    '<td>' + sk.fp + '</td>' +
-    '<td>' + sk.range + '</td>' +
-    '<td>' + sk.dur + '</td>' +
-    '<td><button class="use-btn" ' + disabled + ' onclick="event.stopPropagation();useSkill(\'' + sk.n + '\')">⚔ 使用</button> ' + usedHtml + '</td>' +
-    '</tr>';
+function skillRowHtml(sk,isSub){
+  var react=sk.react?'<span class="react-tag">⚡反应</span>':"",used=S.usage[sk.n]||0,disabled=S.battle&&S.exhaust>=4?"disabled":"";
+  var tags=sk.resolution==="custom"?" · 额外能力":"";if(sk.occupies===null)tags+=" · 槽位待确认";if(sk.via)tags+=" · "+sk.via;if(sk.ownerClassIndex===2)tags+=" · 附赠职业";if(sk.resolution==="variant")tags+=" · 变体";if(sk.requiresEquipment)tags+=" · 需要装备："+sk.requiresEquipment;
+  return '<tr data-name="'+escHtml(sk.n)+'" data-sub="'+isSub+'" data-uid="'+escHtml(sk.uid||"")+'" onclick="showSkillDetailRow(this)"><td class="skill-name">'+escHtml(sk.n)+' '+(sk.style?'<span class="skill-sub">('+escHtml(sk.style)+')</span>':"")+react+'<small>'+escHtml(tags)+'</small></td><td>'+escHtml(sk.cast)+'</td><td class="skill-desc">'+escHtml(sk.desc)+'</td><td>'+escHtml(sk.fp)+'</td><td>'+escHtml(sk.range)+'</td><td>'+escHtml(sk.dur)+'</td><td><button class="use-btn" '+disabled+' data-name="'+escHtml(sk.n)+'" data-uid="'+escHtml(sk.uid||"")+'" onclick="event.stopPropagation();useSkill(this.dataset.name,this.dataset.uid)">⚔ 使用</button> <span class="used-cnt">'+(used?"已用 "+used+" 次":"")+'</span></td></tr>';
 }
 function renderSkillTables() {
+  if(typeof renderCharacterImportExtras==="function"&&typeof state!=="undefined")renderCharacterImportExtras(state);
   var main = document.getElementById('mainSkillBody');
   var sub = document.getElementById('subSkillBody');
   var mh = '';
-  for (var i = 0; i < SKILLS.main.length; i++) mh += skillRowHtml(SKILLS.main[i], false);
+  var regularMain=SKILLS.main.filter(function(s){return s.resolution!=="custom";}),extraMain=SKILLS.main.filter(function(s){return s.resolution==="custom";});
+  regularMain.forEach(function(s){mh+=skillRowHtml(s,false);});if(extraMain.length)mh+='<tr class="skill-empty"><td colspan="7">额外能力 · 保留原栏位归属</td></tr>';extraMain.forEach(function(s){mh+=skillRowHtml(s,false);});
   if (!SKILLS.main.length) mh += '<tr class="skill-empty"><td>（资料库无此风格技能数据）</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
   mh += '<tr class="skill-empty"><td>空栏位</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>';
   main.innerHTML = mh;
@@ -2805,7 +2767,8 @@ function showSkillDetailRow(tr) {
     if (!_ent) _ent = { n: name, src: sk.src || '', id: sk.id || '', ds: sk.ds || '' };
     var _res = (typeof resolveSkillData === 'function') ? resolveSkillData(_ent) : { data: null };
     if (_res && _res.data && typeof formatSkillDetailHtml === 'function') rows.push(['完整详情', formatSkillDetailHtml(_res.data)]);
-    else { var _raw = _ent.ds || sk.ds || ''; rows.push(['原始描述', _raw ? escHtml(_raw) : '（未匹配到数据库条目，来源待确认）']); }
+    else rows.push(['原始能力详情',formatSkillDetailHtml(SNOWD_CHARACTER_IO.rawSkillData(_ent))||'效果尚未填写']);
+    if(_ent.uid)rows.push(['能力设置','<button type="button" data-uid="'+escHtml(_ent.uid)+'" onclick="openIssueResolver(this.dataset.uid,state)">编辑来源、槽位与说明</button>']);
   } catch (eFull) {}
   var html = '';
   for (var i = 0; i < rows.length; i++) {
@@ -2830,15 +2793,18 @@ function findSkill(name, isSub, uid) {
   return null;
 }
 function useSkillFromDetail() {
-  if (curDetailSkill) useSkill(curDetailSkill.sk.n);
+  if (curDetailSkill) useSkill(curDetailSkill.sk.n,curDetailSkill.sk.uid);
 }
-function useSkill(name) {
+function useSkill(name,uid) {
   if (!S.battle) { toast('请先进入战斗记录模式', 'warn'); return; }
   if (S.exhaust >= 4) { toast('失能状态：无法使用技能（圣骑士例外暂未实现）', 'exhaust-toast'); return; }
-  var sk = findSkill(name, false) || findSkill(name, true);
+  var sk = findSkill(name,false,uid) || findSkill(name,true,uid);
   if (!sk) return;
   var before = S.fp;
-  var cost = parseFloat(sk.fp) || 0;
+  if(sk.requiresEquipment){var equipped=["主手武器","副手武器","防具","服饰","配饰"].some(function(slot){return (state.equipment[slot]||[]).some(function(e){return (e.item||e.name)===sk.requiresEquipment;});});if(!equipped){SD_alert("需要装备："+sk.requiresEquipment);return;}}
+  var rawCost=String(sk.fp==null?"":sk.fp).trim();
+  if(rawCost&&!/^\d+(?:\.\d+)?$/.test(rawCost)&&rawCost!=="—"&&rawCost!=="-"){SD_alert("该能力的疲劳消耗需要按原文确认："+rawCost);return;}
+  var cost = Number(rawCost) || 0;
   S.fp = Math.max(0, S.fp - cost);
   S.usage[name] = (S.usage[name] || 0) + 1;
   // 按钮视觉反馈
@@ -2870,6 +2836,7 @@ function renderInit() {
   if (!el) return;
   var mod = 0;
   if (T && T.attrs && T.attrs['敏捷']) mod = Math.floor((T.attrs['敏捷'] - 10) / 2);
+  if(typeof SNOWD_CHARACTER_STATS!=="undefined"&&typeof state!=="undefined"){var value=SNOWD_CHARACTER_STATS.read(state).init;if(value!==null)mod=value;}
   var val = S.init !== null ? S.init : 'D20' + (mod >= 0 ? '+' : '') + mod;
   el.innerHTML = '<small>先攻值</small><b>' + val + ' <span class="init-edit">✎</span></b>';
 }
@@ -3045,6 +3012,11 @@ function showSkillFromDrawer(name) {
   var descHtml = runs && runs.length ? renderFieldRuns(runs) : escHtml(sk.desc);
   rows.push(['描述', descHtml]);
   rows.push(['升级', sk.up]);
+  var entry=null,pool=(state.skills||[]).concat(state.talent_tree||[]);
+  for(var pi=0;pi<pool.length;pi++)if(sk.uid&&pool[pi].uid===sk.uid){entry=pool[pi];break;}
+  var resolved=resolveSkillData(entry||{n:sk.n,src:sk.src||"",id:sk.id||""});
+  rows.push(["\u5b8c\u6574\u8be6\u60c5",resolved.data?formatSkillDetailHtml(resolved.data):escapeHtmlText((entry&&entry.ds)||sk.ds||sk.desc||"\u6765\u6e90\u5f85\u786e\u8ba4")]);
+
   var html = '';
   for (var i = 0; i < rows.length; i++) {
     html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
@@ -3448,8 +3420,8 @@ function renderTalent() {
         var cell = t.cells[ci];
         if (cell) {
           learnedTotal++;
-          learnedList.push({ tier: t.name, n: cell.n, desc: cell.desc });
-          html += '<div class="talent-cell filled" onclick="showTalentDetail(\'' + t.name + '\',\'' + cell.n.replace(/'/g, '') + '\')" title="点击查看详情">' + cell.n + '</div>';
+          learnedList.push({ tier: t.name, n: cell.n, desc: cell.desc, uid: cell.uid });
+          html += '<div class="talent-cell filled" onclick="' + escapeHtmlText('showTalentDetail(' + JSON.stringify(t.name) + ',' + JSON.stringify(cell.n) + ',' + JSON.stringify(cell.uid || '') + ')') + '" title="\u70b9\u51fb\u67e5\u770b\u8be6\u60c5">' + escHtml(cell.n) + '</div>';
         } else {
           html += '<div class="talent-cell lock compact" onclick="toast(\'此槽位尚未学习天赋\',\'warn\')">空</div>';
         }
@@ -3475,11 +3447,13 @@ function renderTalent() {
     html += '<div class="talent-desc-list">';
     for (var di = 0; di < learnedList.length; di++) {
       var l2 = learnedList[di];
-      html += '<div class="td-item" onclick="showTalentDetail(\'' + l2.tier + '\',\'' + l2.n.replace(/'/g, '') + '\')" title="点击查看详情"><b>' + l2.n + '<span class="td-tier">' + l2.tier + '</span></b>' +
+      html += '<div class="td-item" onclick="' + escapeHtmlText('showTalentDetail(' + JSON.stringify(l2.tier) + ',' + JSON.stringify(l2.n) + ',' + JSON.stringify(l2.uid || '') + ')') + '" title="\u70b9\u51fb\u67e5\u770b\u8be6\u60c5"><b>' + escHtml(l2.n) + '<span class="td-tier">' + l2.tier + '</span></b>' +
         (l2.desc ? '<p>' + l2.desc + '</p>' : '') + '</div>';
     }
     html += '</div>';
   }
+  var unranked=(T.talents||[]).filter(function(t){return TIERS.every(function(x){return x.name!==t.tier;});});
+  if(unranked.length){html+='<div class="talent-desc-list"><p>未标阶位的额外天赋</p>';unranked.forEach(function(t){html+='<div class="td-item" data-name="'+escHtml(t.n)+'" data-uid="'+escHtml(t.uid||'')+'" onclick="showTalentDetail(\'未标阶位\',this.dataset.name,this.dataset.uid)"><b>'+escHtml(t.n)+'</b><p>'+escHtml(t.desc||'')+'</p></div>';});html+='</div>';learnedTotal+=unranked.length;}
   document.getElementById('talentList').innerHTML = html;
   document.getElementById('talentTitle').textContent = '已学 ' + learnedTotal;
   document.getElementById('talentNote').textContent = '天赋效果点击查看。未解锁阶位需花费经验值解锁（档案未记录经验）。';
@@ -3533,61 +3507,25 @@ function renderFieldRuns(runs) {
   }
   return out;
 }
-function findTalentData(tier, name) {
+function findTalentData(tier, name, uid) {
   if (!T) return null;
   for (var i = 0; i < T.talents.length; i++) {
     var t = T.talents[i];
-    if (t.tier === tier && t.n === name) return t;
+    if (uid ? t.uid === uid : (t.tier === tier && t.n === name)) return t;
   }
   return null;
 }
-function showTalentDetail(tier, name) {
-  var t = findTalentData(tier, name);
-  if (!t) return;
-  document.getElementById('sdName').innerHTML = escHtml(name) + ' <span style="font-size:13px;color:var(--muted);font-weight:normal">' + tier + '天赋</span>';
-  var rows = [];
-  var f = t.fields || {};
-  var pairs = [
-    ['施展时间', '施展时间'], ['施展距离', '施展距离'], ['持续时间', '持续时间'],
-    ['疲劳消耗', '疲劳消耗'], ['关键词', '关键词'], ['前置条件', '前置条件'], ['额外条件', '额外条件']
-  ];
-  for (var pi = 0; pi < pairs.length; pi++) {
-    var v = f[pairs[pi][1]];
-    if (v) rows.push([pairs[pi][0], v]);
-  }
-  var marks = (t.cost || []).map(function(c){ return c.name; }).filter(Boolean);
-  if (marks.length) rows.push(['标识', marks.join(' · ')]);
-  // 描述：优先 run 级真实颜色（对齐通用天赋树页面），无 run 时按 cost 兜底
-  var runs = (t.fieldRuns || {})['描述'];
-  var descHtml = runs && runs.length ? renderFieldRuns(runs) : colorizeMarks(f['描述'], t.cost);
-  if (f['描述']) rows.push(['描述', descHtml]);
-  // 效果段落：descEntries 逐段 run 渲染
-  var body = (t.descList || []).join('<br>');
-  if (body) {
-    var ents = t.descEntries || [];
-    if (ents.length) {
-      var eh = '';
-      for (var ei = 0; ei < ents.length; ei++) {
-        eh += renderFieldRuns(ents[ei].runs) || escHtml(ents[ei].text || '');
-        if (ei < ents.length - 1) eh += '<br>';
-      }
-      if (eh) rows.push(['效果', eh]);
-      else rows.push(['效果', body]);
-    } else {
-      rows.push(['效果', colorizeMarks(body, t.cost)]);
-    }
-  }
-  var ups = (t.upgrades || []).filter(function(v, i, a){ return a.indexOf(v) === i; });
-  if (ups.length) rows.push(['升级', ups.join('<br>')]);
-  var html = '';
-  for (var i = 0; i < rows.length; i++) {
-    html += '<tr><td class="k">' + rows[i][0] + '</td><td>' + rows[i][1] + '</td></tr>';
-  }
-  document.getElementById('sdTable').innerHTML = html;
-  var btn = document.getElementById('sdUseBtn');
-  btn.style.display = 'none';
-  document.getElementById('sdUsed').textContent = '';
-  document.getElementById('skillOverlay').classList.add('show');
+function showTalentDetail(tier,name,uid) {
+  var t=findTalentData(tier,name,uid);
+  if(!t)return;
+  var entry=t.entry||{n:t.n,src:t.src||"",id:t.id||""};
+  var resolved=resolveSkillData(entry), raw=entry.ds||entry.rawDesc||t.desc||"";
+  document.getElementById("sdName").textContent=name+" "+tier+"天赋";
+  document.getElementById("sdTable").innerHTML="<tr><td colspan='2'>"+(resolved.data?formatSkillDetailHtml(resolved.data):formatSkillDetailHtml(SNOWD_CHARACTER_IO.rawSkillData(entry))||escapeHtmlText(raw||"效果尚未填写"))+"</td></tr>";
+  if(entry.uid)document.getElementById("sdTable").insertAdjacentHTML("beforeend",'<tr><td colspan="2"><button type="button" data-uid="'+escHtml(entry.uid)+'" onclick="openIssueResolver(this.dataset.uid,state)">编辑能力设置</button></td></tr>');
+  document.getElementById("sdUseBtn").style.display="none";
+  document.getElementById("sdUsed").textContent="";
+  document.getElementById("skillOverlay").classList.add("show");
 }
 
 /* ================= 图纸（槽位 = 10+智力调整） ================= */
@@ -3614,7 +3552,8 @@ function renderSlotNote() {
   var mainCount = SKILLS.main.length;
   var m0 = (T && T.classes && T.classes[0]) ? T.classes[0] : null;
   var label = (m0 && m0.name) ? (m0.name + ' ' + m0.level + ' 级') : '角色';
-  document.getElementById('skillSlotNote').textContent = '主职业技能 ' + mainCount + ' 项已学（' + label + '，来源：角色档案技能列表）。';
+  var occupied=(state.skills||[]).filter(isMainSkillOccupant).length,pending=(state.skills||[]).filter(function(s){return !s.sub&&s.occupies===null;}).length;
+  document.getElementById('skillSlotNote').textContent='主职业技能 '+mainCount+' 项已学 · 已确认占槽 '+occupied+' 项'+(pending?' · 槽位待确认 '+pending+' 项':'')+'（'+label+'）。';
 }
 
 /* ================= 头像设置（社交模式） ================= */
@@ -3925,48 +3864,13 @@ function SB_reinit() {
     TIERS.push({ name: nm, cells: cellsArr, unlocked: cellsArr.length > 0 || tierUnlocked(nm), cost: (typeof TIER_COSTS !== 'undefined' ? TIER_COSTS[nm] : 0) || 0 });
   }
   /* 生命/疲劳重算：未手动编辑时按源公式随等级正确计算；手动锁定时保留当前值 */
-  function SB_recalcDerived() {
-    var mc0 = state.classes && state.classes[0];
-    if (!mc0 || !mc0.name) return;
-    var ml = mc0.level || 0;
-    var sc = (state.classes[1] && state.classes[1].name) || '';
-    var sl = (state.classes[1] && state.classes[1].level) || 0;
-    var prevHpMax = Number(state.hp) || 0;
-    var prevFpMax = Number(state.fp) || 0;
-    var prevHpCur = (typeof state._hpCurrent === 'number' && isFinite(state._hpCurrent)) ? state._hpCurrent : null;
-    var prevFpCur = (typeof state._fpCurrent === 'number' && isFinite(state._fpCurrent)) ? state._fpCurrent : null;
-    if (!state._hpManual && typeof calcTotalHP === 'function') {
-      var con = (state.attrs && state.attrs['体质']) || 10;
-      var featHP = 0;
-      if (state.special_feats) for (var fi = 0; fi < state.special_feats.length; fi++) {
-        var fn = state.special_feats[fi];
-        var fnN = typeof fn === 'string' ? fn : (fn && fn.name);
-        if (fnN === '健美教练') featHP += 10;
-        if (fnN === '健壮') featHP += 2 * (ml + (sl > 0 ? sl - 1 : 0));
-      }
-      state.hp = calcTotalHP(mc0.name, ml, sc, sl, con, state.race, state.background, featHP, state.raceSize);
-    }
-    if (!state._fpManual && typeof calcTotalFP === 'function') {
-      var ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name]) ? REF_CLASSES[mc0.name].key_attr : '';
-      if (!ka) ka = mc0.keyAttr || '';
-      if (!ka) ka = (typeof REF_CLASSES !== 'undefined' && REF_CLASSES[mc0.name] && REF_CLASSES[mc0.name].key_attr) || '';
-      if (ka === '力量或敏捷') ka = mc0.keyAttr || '力量';
-      if (!ka) ka = '力量';
-      var kv = (state.attrs && state.attrs[ka]) || 10;
-      state.fp = calcTotalFP(mc0.name, ml, sc, sl, ka, kv, state.race, 0);
-    }
-    var newHpMax = Number(state.hp) || 0;
-    var newFpMax = Number(state.fp) || 0;
-    if (prevHpCur === null || (prevHpMax > 0 && prevHpCur === prevHpMax)) {
-      state._hpCurrent = newHpMax;
-    } else {
-      state._hpCurrent = Math.max(0, Math.min(newHpMax, prevHpCur));
-    }
-    if (prevFpCur === null || (prevFpMax > 0 && prevFpCur === prevFpMax)) {
-      state._fpCurrent = newFpMax;
-    } else {
-      state._fpCurrent = Math.max(0, Math.min(newFpMax, prevFpCur));
-    }
+  function SB_recalcDerived(){
+    SNOWD_CHARACTER_STATS.migrate(state);
+    var oldHp=Number(state.hp)||0,oldFp=Number(state.fp)||0,h=typeof state._hpCurrent==="number"?state._hpCurrent:null,f=typeof state._fpCurrent==="number"?state._fpCurrent:null;
+    var effective=SNOWD_CHARACTER_STATS.synchronize(state),newHp=Number(state.hp)||0,newFp=Number(state.fp)||0;
+    state._hpCurrent=h===null||h===oldHp?newHp:Math.max(0,Math.min(newHp,h));
+    state._fpCurrent=f===null||f===oldFp?newFp:Math.max(0,Math.min(newFp,f));
+    if(T&&T.battle){T.battle.hpMax=newHp;T.battle.fpMax=newFp;T.battle.hpRecover=effective.hpRecover;T.battle.fpRecover=effective.fpRecover;T.battle.ac=effective.ac===null?"待确认":effective.ac;T.battle.atk=effective.atk;T.battle.spell=effective.spell;}
   }
   SB_recalcDerived();
   if (T && T.battle) {
@@ -4291,7 +4195,7 @@ function SB_editHitBonus(kind) {
 function SB_saveHitBonus() {
   var v = SB_takeValue();
   if (v === null) { toast('请输入有效数值', 'warn'); return; }
-  state[SB_EDIT_KEY] = v;
+  state[SB_EDIT_KEY] = v;SNOWD_CHARACTER_STATS.set(state,SB_EDIT_KEY==="atk_hit_bonus"?"atk":"spell",null,"rules",{origin:"manual-bonus"});
   state._dirty = true;
   SB_EDIT_MODE = null;
   closeOverlay('miniOverlay');
@@ -4317,13 +4221,13 @@ function SB_saveHpFp() {
       S.hpMax = nv;
       S.hp = nv;
       state._hpCurrent = nv;
-      state._hpManual = true;
+      state._hpManual = true;SNOWD_CHARACTER_STATS.set(state,"hp",nv,"fixed",{origin:"manual"});
     } else {
       state.fp = nv;
       S.fpMax = nv;
       S.fp = nv;
       state._fpCurrent = nv;
-      state._fpManual = true;
+      state._fpManual = true;SNOWD_CHARACTER_STATS.set(state,"fp",nv,"fixed",{origin:"manual"});
     }
     state._dirty = true;
     if (typeof SB_syncBattleVitals === 'function') SB_syncBattleVitals();
@@ -4589,5 +4493,6 @@ window.addEventListener('load', function() {
 </script>
 <script>window.__guiSkin = true; document.documentElement.classList.add("gui-panel-page");</script>
 <script src="guild-ui.js"></script>
+<script src="desktop_recovery.js"></script>
 </body>
 </html>

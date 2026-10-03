@@ -95,8 +95,16 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 </style>
 <script src="ui_dialog.js"></script>
 <script src="skill_index.js"></script>
-<script src="character_io.js"></script>
-<script src="character_import_ui.js"></script>
+<script src="../职业页/数据/items_data.js"></script>
+<script src="character_class_data.js?v=20261003"></script>
+<script src="character_classes.js?v=20261003"></script>
+<script src="character_stats.js?v=20261003"></script>
+<script src="character_workbook_cache.js?v=20261003"></script>
+<script src="character_io.js?v=20261003"></script>
+<script src="character_layout.js?v=20261003"></script>
+<script src="character_fields.js?v=20261003"></script>
+<script src="character_export.js?v=20261003"></script>
+<script src="character_import_ui.js?v=20261003"></script>
 <script src="导出立绘.js"></script>
 <script src="lookup_skill_export.js"></script>
 <script src="xlsx_proficiency_export.js"></script>
@@ -151,7 +159,7 @@ function parseMetaSheetXml(text, strings) { return SNOWD_CHARACTER_IO.readMeta(t
 function applySkillMeta(state, meta) { return SNOWD_CHARACTER_IO.applyMeta(state, meta); }
 function annotateEntryMeta(state) {
   if (!state) return { annotated: 0 };
-  var lists = [{ arr: state.skills || [], place: "main" }, { arr: state.talent_tree || [], place: "talent" }];
+  var lists = [{ arr: state.skills || [], place: "main" }, { arr: state.talent_tree || [], place: "talent" },{arr:state.blueprints||[],place:"blueprint"}];
   var n = 0;
   for (var li = 0; li < lists.length; li++) {
     var arr = lists[li].arr;
@@ -285,7 +293,7 @@ async function readFileEntry(files, entry) {
 }
 
 // ========== XLSX Parser (shared OOXML decoder) ==========
-async function parseXLSX(buffer) { return SNOWD_CHARACTER_IO.readWorkbook(buffer, readZIP, readFileEntry); }
+async function parseXLSX(buffer,options) { return SNOWD_CHARACTER_IO.readWorkbook(buffer, readZIP, readFileEntry,options); }
 
 // ========== Calculation Helpers ==========
 function calcMod(val){return Math.floor(((val||10)-10)/2);}
@@ -293,39 +301,8 @@ var _REF_CLASSES={"蛮斗士":{hp:{first:12,up:5},fp:{first:8,up:1},key:"力量"
 var _REF_BG_TRAITS={侍僧:"侍僧可以进行虔诚的祷告，并且与同一信仰的信徒们互相尊重",骗子:"骗子可以将自己伪装成另一个身份，还会根据偏好骗局获得额外加成",恶棍:"恶棍根据自身的罪行拥有几个臭味相投的接头人",盗贼:"盗贼能够制作仅有自己和同行看得懂的特殊暗号和隐秘图标，并且在偷窃时具有优势",职业杀手:"职业杀手根据任务渠道受雇与他人，对方可能会不定期派发暗杀任务",乐师:"乐师在持有乐器时进行魅力检定具有优势，还能够通过演奏提升在当地的名望",艺人:"艺人能够更快速地通过表演获得名气",小丑:"小丑在表演失败时可能使结局导向更为有利的情况",驯兽师:"驯兽师能够与动物建立更深厚的羁绊",魔术师:"魔术师擅长用障眼法迷惑观众",平民英雄:"平民英雄深受平民阶层的信赖，可以从普通人那里获得更多的助力",药剂师:"药剂师精通药物的配制与识别",工匠:"工匠能够制作和修理各类物品",酿酒师:"酿酒师精于酿造各类美酒",制图师:"制图师精于绘制精准的地图",厨师:"厨师能够烹制美味佳肴",医者:"医者拥有治疗伤病的能力",隐士:"隐士远离尘嚣，在独处中获得感悟",护林员:"护林员熟悉森林的每一寸土地",农夫:"农夫勤劳朴实，擅长耕作",赏金猎人:"赏金猎人追踪目标从未失手",游牧民:"游牧民适应各种严酷环境",野蛮人:"野蛮人以蛮力解决问题",占星师:"占星师通过星象预知未来",图书管理员:"图书管理员管理着浩瀚的知识",教授:"教授传授知识给下一代",法师学徒:"法师学徒正在学习魔法的奥秘",水手:"水手在海上如履平地",士兵:"士兵服从命令，纪律严明",流浪儿:"流浪儿在街头学会了生存之道",守卫:"守卫恪尽职守保护一方平安",消防员:"消防员不畏火海拯救生命",雇佣兵:"雇佣兵为金钱而战",赌徒:"赌徒相信运气胜过一切",失败商人:"失败商人从失败中汲取教训",天生领袖:"天生领袖能够鼓舞身边的人",运动员:"运动员拥有一项偏好的运动项目，在进行这项运动时具备专家级的熟练度",公民:"公民是城市中的普通一员",侦探:"侦探擅长从蛛丝马迹中寻找真相",外乡人:"外乡人带着远方的故事而来",狂信徒:"狂信徒对信仰坚定不移",愚者:"愚者看似糊涂实则大智若愚"};
 var _REF_BGS={"侍僧":0,"骗子":0,"恶棍":1,"盗贼":0,"职业杀手":0,"乐师":0,"艺人":0,"小丑":0,"驯兽师":0,"魔术师":0,"平民英雄":2,"药剂师":0,"工匠":0,"酿酒师":0,"制图师":0,"厨师":0,"医者":0,"隐士":0,"护林员":0,"农夫":0,"赏金猎人":0,"游牧民":0,"野蛮人":0,"占星师":0,"图书管理员":0,"教授":0,"法师学徒":0,"水手":0,"士兵":0,"流浪儿":0,"守卫":0,"消防员":0,"雇佣兵":0,"赌徒":0,"失败商人":0,"天生领袖":0,"运动员":2,"公民":0,"侦探":0,"外乡人":0,"狂信徒":0,"愚者":0};
 var _REF_RACES={"人类":2,"矮人":3,"半身人":0,"侏儒":0,"半精灵":2,"木精灵":2,"高等精灵":0,"卓尔精灵":2,"龙裔":2,"魔裔":2,"兽人":3,"巨魔":4,"地精":0,"狗头人":0,"蜥蜴人":2,"蛙人":0,"鼠人":0,"狼人":2,"血族":0,"黑暗精灵":0,"斑猫人":0,"豹兽人":0,"犬牙族":0,"翼空族":0,"牛头人":4,"狐人":0,"蛇人":1,"鱼人":0,"人鱼":1,"龟人":3};
-function calcHP(s){
-  var mc=s.classes[0],sc=s.classes[1];
-  if(!mc.name)return s.hp||0;
-  var cl=_REF_CLASSES[mc.name];if(!cl)return s.hp||0;
-  var con=s.attrs["体质"]||10;var cm=calcMod(con);
-  var f=cl.hp.first,u=cl.hp.up,ml=mc.level||1;
-  var raceHp=_REF_RACES[s.race]||0;
-  var featHP=0;
-  for(var fi=0;fi<(s.special_feats||[]).length;fi++){
-    var fn=typeof s.special_feats[fi]==="string"?s.special_feats[fi]:(s.special_feats[fi].name||"");
-    if(fn==="健美教练")featHP+=10;
-    if(fn==="健壮")featHP+=2*(ml+(sc&&sc.level?(sc.level-1):0));
-  }
-  var bgHp=0;if(s.background&&_REF_BGS){var _bhp=_REF_BGS[s.background];if(typeof _bhp==="number")bgHp=_bhp;}
-  var hp=f+cm+raceHp+bgHp+(u+cm)*(ml-1);
-  if(sc&&sc.name&&sc.level>0){
-    var cl2=_REF_CLASSES[sc.name];if(cl2){var su=cl2.hp.up;hp+=(su+cm)*(sc.level-1);}
-  }
-  return hp+featHP;
-}
-function calcFP(s){
-  var mc=s.classes[0],sc=s.classes[1];
-  if(!mc.name)return s.fp||0;
-  var cl=_REF_CLASSES[mc.name];if(!cl)return s.fp||0;
-  var key=cl.key;if(key==="力量或敏捷")key=s.classes[0].keyAttr||"力量";
-  var kv=s.attrs[key]||10;var km=calcMod(kv);
-  var f=cl.fp.first,u=cl.fp.up,ml=mc.level||1;
-  var fp=f+km+u*(ml-1);
-  if(sc&&sc.name&&sc.level>0){
-    var cl2=_REF_CLASSES[sc.name];if(cl2){var su=cl2.fp.up;fp+=su*(sc.level-1);}
-  }
-  return fp;
-}
+function calcHP(s){return SNOWD_CHARACTER_STATS.computed(s).hp;}
+function calcFP(s){return SNOWD_CHARACTER_STATS.computed(s).fp;}
 function calcInit(s){return calcMod(s.attrs["敏捷"]||10);}
 function calcProfBonus(level){if(level>=17)return 6;if(level>=13)return 5;if(level>=9)return 4;if(level>=5)return 3;return 2;}
 function calcAttackHit(s){
@@ -361,24 +338,31 @@ function applyXpSpPickerResult(state,result){
   state.sp_points=Math.max(0,parseInt(result.sp_points,10)||0);
   ensureSpStateOn(state);
   delete state.sp;
+  state.importIssues=(state.importIssues||[]).filter(function(i){return !(i.kind==="field-invalid"&&["xp","sp_points"].indexOf(i.field)>=0);});
 }
 
 function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValues || cells;
   function c(ref){return cells[ref]||"";}
   function cn(ref){var dc=cells[ref];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50)return dn;var v=rawVals[ref];if(v==null||v==="")return 0;var n=parseInt(v);return isNaN(n)?0:n;}
-  function findCellFuzzy(keywords){for(var k in cells){var v=cells[k];for(var i=0;i<keywords.length;i++){if(v&&v.indexOf(keywords[i])>=0)return k;}}for(var k in cells){for(var i=0;i<keywords.length;i++){if(cells[k]===keywords[i])return k;}}return null;}
+  function findCellFuzzy(keywords){return SNOWD_CHARACTER_LAYOUT.findLabel(parsed,keywords);}
   function findCell(text){return findCellFuzzy([text]);}
-  function readRight(ref,maxCols){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var v=c(String.fromCharCode(col+o)+row);if(v)return v;}return"";}
-  function readRightNum(ref,maxCols){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));for(var o=1;o<=(maxCols||3);o++){var cr=String.fromCharCode(col+o)+row;var dc=cells[cr];var dn=parseInt(dc);if(!isNaN(dn)&&dn<50&&dn>-20)return dn;var v=rawVals[cr];if(v!=null&&v!==""){var n=parseInt(v);if(!isNaN(n)&&n<50&&n>-20)return n;}}return 0;}
-  function adjVal(ref,offset){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return c(String.fromCharCode(col+offset)+row);}
-  function adjNum(ref,offset){if(!ref)return 0;var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));return cn(String.fromCharCode(col+offset)+row);}
+  function readRight(ref,maxCols){
+  if(!ref)return "";var g=SNOWD_CHARACTER_LAYOUT.grid(parsed),p=SNOWD_CHARACTER_LAYOUT.point(ref),span=g.span(ref);
+  for(var i=1;i<=(maxCols||3);i++){var v=g.value(span.right+i,p.row);if(v)return v;}return "";
+}
+  function readRightNum(ref,maxCols){
+  if(!ref)return 0;var g=SNOWD_CHARACTER_LAYOUT.grid(parsed),p=SNOWD_CHARACTER_LAYOUT.point(ref),span=g.span(ref);
+  for(var i=1;i<=(maxCols||3);i++){var v=g.value(span.right+i,p.row),n=parseInt(v,10);if(!isNaN(n)&&n<50&&n>-20)return n;}return 0;
+}
+  function adjVal(ref,offset){if(!ref)return "";var p=SNOWD_CHARACTER_LAYOUT.point(ref);return c(SNOWD_CHARACTER_LAYOUT.ref(p.col+offset,p.row));}
+  function adjNum(ref,offset){if(!ref)return 0;var p=SNOWD_CHARACTER_LAYOUT.point(ref);return cn(SNOWD_CHARACTER_LAYOUT.ref(p.col+offset,p.row));}
   function scanLabel(keywords,maxCols){return readRight(findCellFuzzy(keywords),maxCols||3);}
   function scanLabelNum(keywords,maxCols){return readRightNum(findCellFuzzy(keywords),maxCols||3);}
   var CLASS_NAMES=Object.keys(SNOWD_SKILL_INDEX.meta.perClass).filter(function(n){return n!=="通用"&&n!=="特殊专长"&&n.indexOf("·")<0;});
   function stripParens(s){return s.replace(/[（(][^)）]*[)）]/g,"").trim();}
   function findClassName(s){if(!s)return"";var clean=stripParens(s);for(var i=0;i<CLASS_NAMES.length;i++){if(clean.indexOf(CLASS_NAMES[i])>=0||CLASS_NAMES[i].indexOf(clean)>=0)return CLASS_NAMES[i];}return clean;}
   function findClassNameNear(ref,scanRange){if(!ref)return"";var col=ref.charCodeAt(0);var row=parseInt(ref.substring(1));scanRange=scanRange||5;for(var r=row-scanRange;r<=row+scanRange;r++){for(var ci=0;ci<=scanRange;ci++){var v=c(String.fromCharCode(col+ci)+r);if(v){var cls=findClassName(v);if(cls&&CLASS_NAMES.indexOf(cls)>=0)return cls;}}}return"";}
-  function colNumToRef(col,row){if(col<26)return String.fromCharCode(65+col)+row;return String.fromCharCode(64+Math.floor(col/26))+String.fromCharCode(65+(col%26))+row;}
+  function colNumToRef(col,row){return SNOWD_CHARACTER_LAYOUT.ref(col,row);}
   function refToColNum(ref){var m=ref.match(/^([A-Z]+)(\d+)$/);if(!m)return[-1,-1];var col=0;for(var i=0;i<m[1].length;i++)col=col*26+(m[1].charCodeAt(i)-64);return[col-1,parseInt(m[2])];}
   function scanAttrsHorizontal(){var attrs={};var names=ATTR_NAMES;for(var k in cells){for(var i=0;i<names.length;i++){if(cells[k]===names[i]){var rc=refToColNum(k);if(rc[0]<0)continue;var v=cn(colNumToRef(rc[0]+1,rc[1]));if(!v)v=cn(colNumToRef(rc[0],rc[1]+1));if(v)attrs[names[i]]=v;}}}return attrs;}
 
@@ -517,52 +501,21 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
     for(var _mi=0;_mi<_mpNames.length;_mi++){if(s.containerItems)_mpNames[_mi]&&(s.containerItems[_mpNames[_mi]]="已解锁");}
   }
 
-  // Subclass region follows its visible header; legacy templates may start earlier.
-  function readSubSkills(){
-    var header=findCell("技能列表");if(!header)return;
-    var first=parseInt(header.replace(/^[A-Z]+/,""),10),start=0;
-    for(var rr=first+2;rr<=207;rr++)if(c("B"+rr).indexOf("子职业")>=0){start=rr+2;break;}
-    if(!start)return;
-    var subName=(s.classes[1]&&s.classes[1].name)||"子职业";
-    for(var row=start;row<=209;row++){
-      var name=c("B"+row);if(!name||name==="-"||name==="—"||name.indexOf("技能名称")>=0||name.indexOf("子职业")>=0||name==="技能列表")continue;
-      s.skills.push(SNOWD_CHARACTER_IO.rawEntry({n:name,tm:c("D"+row)||c("C"+row)||"",range:c("E"+row),dur:c("F"+row),dr:c("H"+row)||c("G"+row)||"",src:c("I"+row)||"",sub:subName,cost:"",locked:false,ds:c("J"+row)||""},parsed,"B"+row,"sub","sub",""));
-    }
-  }
-  // Skills: find "技能列表", scan B column below; hard-stop at 子职业 section
-  _r=findCell("技能列表");if(_r){var sr=parseInt(_r.substring(1));
-    for(var sn=sr+2;sn<166;sn++){
-      var sk=c("B"+sn);if(sk&&sk.indexOf("\u5b50\u804c\u4e1a")>=0)break;
-      // K-side skills are a legacy region, independent of O-side talent tiers.
-      var kn=c("K"+sn);
-      if(kn&&kn!=="-"&&kn!=="\u2014"&&kn.indexOf("\u5929\u8d4b\u6811")<0&&kn!=="\u6280\u80fd\u540d\u79f0"){
-        s.skills.push(SNOWD_CHARACTER_IO.rawEntry({n:kn,tm:"",range:"",dur:"",dr:"",src:"",sub:"",cost:"",locked:false,ds:"",tier:""},parsed,"K"+sn,"legacy-main","main",""));
-      }
-      if(sk&&sk!=="-"&&sk!=="\u2014"&&sk.indexOf("\u5929\u8d4b\u6811")<0&&sk!=="\u6280\u80fd\u540d\u79f0"&&sk.indexOf("\u65bd\u5c55\u65f6\u95f4")<0&&sk.indexOf("\u4e3b\u804c\u4e1a")<0&&sk.indexOf("//")<0){
-        s.skills.push(SNOWD_CHARACTER_IO.rawEntry({n:sk,tm:c("D"+sn)||c("C"+sn)||"",range:c("E"+sn),dur:c("F"+sn),dr:c("H"+sn)||c("G"+sn)||"",src:c("I"+sn)||"",sub:"",cost:"",locked:false,ds:c("J"+sn)||"",tier:""},parsed,"B"+sn,"main","main",""));
-      }
-    }
-  }
-  // Talent placement comes from the header in the same column.
-  var _rt=findCellFuzzy(["\u5929\u8d4b\u5217\u8868","\u5929\u8d4b\u6811"]);
-  if(_rt){
-    var tc=_rt.match(/^[A-Z]+/)[0];if(tc!=="O"&&tc!=="R")tc="O";
-    var tr=parseInt(_rt.replace(/^[A-Z]+/,""),10),currentTier="";
-    for(var tn=tr;tn<Math.min(tr+65,173);tn++){
-      var tv=c(tc+tn);if(/图纸|专业列表/.test(tv))break;if(!tv||tv==="-"||tv==="\u2014")continue;
-      if(/^[\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e031-7]\u9636/.test(tv)&&tv.indexOf("\u5929\u8d4b")>=0){currentTier=SNOWD_CHARACTER_IO.tier(tv);continue;}
-      if(tv==="\u5929\u8d4b\u5217\u8868"||tv==="\u5929\u8d4b\u6811"||tv==="\u5929\u8d4b\u540d\u79f0"||tv.indexOf("\u5c5e\u6027\u503c\u9700\u6c42")>=0||tv.indexOf("\u6765\u6e90")>=0||tv.indexOf("\u7279\u6b8a\u6761\u4ef6")>=0||tv.indexOf("//")>=0||/^[\uff08(]/.test(tv))continue;
-      s.talent_tree.push(SNOWD_CHARACTER_IO.rawEntry({n:tv,tier:currentTier,sub:""},parsed,tc+tn,"talent","talent",currentTier));
-    }
-  }
-
-  // Talents: find "天赋列表", scan B column below
-  readSubSkills("子职业（）",2);
-  // 天赋列表 shares same data area as 技能列表 - handled by autoCorrect after initial parse
+  // Ability rows are read only from validated tables, using their own headings and boundaries.
+  var classRead=SNOWD_CHARACTER_CLASSES.read(parsed);s.classes=classRead.classes;s.classIssues=classRead.issues;
+  var structuralRead=SNOWD_CHARACTER_FIELDS.apply(s,parsed);
+  var abilityRead=SNOWD_CHARACTER_LAYOUT.readAbilities(parsed,s.classes);
+  s.skills=abilityRead.skills.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
+  s.talent_tree=abilityRead.talents.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
+  s.importIssues=(s.importIssues||[]).concat(abilityRead.issues);
+  s._importLayoutIssues=abilityRead.issues;
+  s._abilitySections=abilityRead.sections;
+  s.importLayoutMappings=parsed.layoutMappings||[];
+  pendingParsed=parsed;
   _r=null;
 
   // === Blueprints (professional slots): O173-O192（改版）；兼容旧表 O211-O230 ===
-  s.blueprints=s.blueprints||[];
+  s.blueprints=abilityRead.blueprints.map(function(e){return SNOWD_CHARACTER_IO.rawEntry(e,parsed,e.cellRef,e.region,e.place,e.tier);});
   if(typeof s.blueprint_bonus_slots!=="number")s.blueprint_bonus_slots=0;
   var _bpSeen={};
   for(var _bi=0;_bi<s.blueprints.length;_bi++){var _bn=s.blueprints[_bi]&&(s.blueprints[_bi].n||s.blueprints[_bi].name);if(_bn)_bpSeen[_bn]=true;}
@@ -701,8 +654,16 @@ function buildState(parsed) { var cells=parsed.cells; var rawVals=parsed.rawValu
   if(!s.backgroundChoices.missionChannel&&c("H36")&&s.background==="职业杀手"){s.backgroundChoices.missionChannel=c("H36");s.missionChannel=s.missionChannel||c("H36");}
   if(!s.backgroundChoices.academicDomain&&c("H37")&&s.background==="教授"){s.backgroundChoices.academicDomain=c("H37");s.academicDomain=s.academicDomain||c("H37");}
 
+  var supplemental=SNOWD_CHARACTER_LAYOUT.supplemental(parsed);
+  if(supplemental.feats!==null)s.special_feats=supplemental.feats;
+  if(supplemental.values.keyAttr)s.classes[0].keyAttr=supplemental.values.keyAttr;
+  Object.keys(supplemental.values.currency||{}).forEach(function(k){s.currency[k]=supplemental.values.currency[k];});
+  s.unmappedFields=supplemental.issues.filter(function(i){return i.kind==="field-unmapped";});
+  s.importIssues=s.importIssues.concat(supplemental.issues);
+  SNOWD_CHARACTER_FIELDS.apply(s,parsed);
+  s.importCandidates=SNOWD_CHARACTER_LAYOUT.candidatesFromNotes(parsed,{skills:s.skills,talents:s.talent_tree,feats:s.special_feats});
   s._xlsxMeta=parsed.meta||{status:"absent",rows:[]};
-  s._xlsxSheetPath=parsed.sheetPath||"xl/worksheets/sheet1.xml";
+  s._xlsxSheetPath=parsed.sheetPath||"xl/worksheets/sheet1.xml";s.supportingSheets=parsed.otherSheets||[];
   return s;
 }
 
@@ -713,16 +674,20 @@ function autoCorrect(state){
   if(state._xlsxMeta){state._metaStats=applySkillMeta(state,state._xlsxMeta);delete state._xlsxMeta;}
   ensureUids(state);
   var out={moved:[],typos:[],unknown:[],ambiguous:[]};
-  state.importIssues=state.importIssues.filter(function(i){return ["ambiguous","unmatched","typo-candidate","catalog-changed","source-mismatch"].indexOf(i.kind)<0;});
-  [[state.skills||[],"技能列表"],[state.talent_tree||[],"天赋树"]].forEach(function(pair){
+  state.importIssues=state.importIssues.filter(function(i){return ["ambiguous","unmatched","typo-candidate","catalog-changed","source-mismatch","slot-pending"].indexOf(i.kind)<0;});
+  [[state.skills||[],"技能列表"],[state.talent_tree||[],"天赋树"],[state.blueprints||[],"图纸与配方"]].forEach(function(pair){
     pair[0].forEach(function(e){
+      if(SNOWD_CHARACTER_IO.isCustom(e)||SNOWD_CHARACTER_IO.isDeferred(e)){
+        if(e.occupies===null)state.importIssues.push({kind:"slot-pending",uid:e.uid,name:e.n,note:"能力已保留，槽位规则待确认。"});
+        return;
+      }
       SNOWD_CHARACTER_IO.normalizeLegacy(e);
       var r=SNOWD_CHARACTER_IO.resolve(e),p=r.pick;
       if(p){
         e.src=p.cls;if(e.place==="talent")e.cls=p.cls;
         e.id=p.id;e.kind=p.kind;e.catalogTier=p.tier;e.st=e.st||p.style;
-        if(!e.tier)e.tier=p.tier;
-        else if(e.place==="talent"&&SNOWD_CHARACTER_IO.tier(e.tier)!==p.tier)
+        if(!e.tier&&e.place!=="blueprint")e.tier=p.tier;
+        else if(e.place==="talent"&&p.tier&&SNOWD_CHARACTER_IO.tier(e.tier)!==p.tier)
           state.importIssues.push({kind:"catalog-changed",uid:e.uid,name:e.n,note:"表格阶位 "+e.tier+"，当前规则阶位 "+p.tier+"；保留表格栏位"});
       }else if(r.exact){
         var a={kind:r.mismatch?"source-mismatch":"ambiguous",name:e.n,uid:e.uid,source:pair[1],candidates:r.candidates,note:"请选择技能来源"};
@@ -733,11 +698,12 @@ function autoCorrect(state){
         if(cs.length){
           var t={kind:"typo-candidate",name:e.n,uid:e.uid,source:pair[1],suggestion:cs[0].name,candidates:cs,dist:cs[0].dist};
           out.typos.push(t);state.importIssues.push(t);
-        }else{var u={kind:"unmatched",name:e.n,uid:e.uid,source:pair[1],note:"保留原始技能内容"};out.unknown.push(u);state.importIssues.push(u);}
+        }else{var u={kind:"unmatched",name:e.n,uid:e.uid,source:pair[1],note:"当前技能库未收录；可确认为额外能力或暂缓确认，原文已保留"};out.unknown.push(u);state.importIssues.push(u);}
       }
     });
   });
   annotateEntryMeta(state);
+  if(typeof pendingParsed!=="undefined"&&pendingParsed)(state.importFieldMappings||[]).forEach(function(m){if(m.sheet!==pendingParsed.sheetName)return;var v=pendingParsed.cells[m.cellRef];if(v!==undefined&&v!==""&&Number.isFinite(Number(v)))state.currency[m.field]=Number(v);});
   return out;
 }
 // ========== Validator ==========
@@ -830,45 +796,15 @@ function validateRequired(s){var _missing=[];
   if(_attrMissing>=8)_missing.push("属性值(全部未填写)");
   return _missing;
 }
-function validateState(s){console.log("VALIDATE: hp="+s.hp+" fp="+s.fp+" bg="+s.background);
-  var issues=[],suggestions=[];
-  // HP
-  var calcHp=calcHP(s);
-  console.log("HP suggestion triggered, calcHp="+calcHp); if(!s.hp||s.hp===0){suggestions.push({label:"HP",value:calcHp,detail:s.classes[0].name+" Lv."+s.classes[0].level+" 体质"+calcMod(s.attrs["体质"]||10)+" 种族+"+(_REF_RACES[s.race]||0)});}
-  else if(Math.abs(s.hp-calcHp)>=2){issues.push({label:"HP",original:s.hp,calculated:calcHp,detail:"计算值包含了职业+体质+种族+专长加成"});}
-  // FP
-  var calcFp=calcFP(s);
-  console.log("FP suggestion triggered, calcFp="+calcFp); if(!s.fp||s.fp===0){suggestions.push({label:"FP",value:calcFp,detail:s.classes[0].name+" Lv."+s.classes[0].level+" 关键属性"+calcMod(s.attrs[s.classes[0].keyAttr||"魅力"]||10)});}
-  else if(Math.abs(s.fp-calcFp)>=1){issues.push({label:"FP",original:s.fp,calculated:calcFp,detail:"计算值=首级+关键调整+每级+1"});}
-  // Initiative
-  var calcInitV=calcInit(s);
-  // Attack hit
-  var calcAtk=calcAttackHit(s);
-  // Spell hit
-  var calcSpell=calcSpellHit(s);
-  // Proficiency bonus
-  var calcPb=calcProfBonus(s.classes[0].level||1);
-  // Carry capacity
-  var str=s.attrs["力量"]||10;
-  var calcCap={常规:str*3,满载:str*4,极限:str*5};
-  var capChanged=false;
-  if(s.carry_capacity["常规"]!==calcCap["常规"]||s.carry_capacity["满载"]!==calcCap["满载"]||s.carry_capacity["极限"]!==calcCap["极限"]){
-    capChanged=true;
-    suggestions.push({label:"负重",value:calcCap["常规"]+","+calcCap["满载"]+","+calcCap["极限"],detail:"力量"+str+"×3/4/5倍"});
-  }
-  // Unlock backpack/pouch
-  var defUnlocks=[];
-  if(!s.containerItems["背包"]&&s.containerItems["背包"]!==""){defUnlocks.push("背包");}
-  if(!s.containerItems["旅行腰包"]&&s.containerItems["旅行腰包"]!==""){defUnlocks.push("旅行腰包");}
-  if(defUnlocks.length>0){suggestions.push({label:"容器解锁",value:defUnlocks.join(", "),detail:"上传角色默认解锁"});}
-  // Auto-apply zero values
-  if(!s.hp||s.hp===0)s.hp=calcHp;
-  if(!s.fp||s.fp===0)s.fp=calcFp;
-  if(defUnlocks.length>0){if(defUnlocks.indexOf("背包")>=0)s.containerItems["背包"]="\u5df2\u89e3\u9501";if(defUnlocks.indexOf("旅行腰包")>=0)s.containerItems["旅行腰包"]="\u5df2\u89e3\u9501";}
-  console.log("VALIDATE done: suggestions="+suggestions.length+" issues="+issues.length); return{suggestions:suggestions,issues:issues,state:s};
+function validateState(s){
+  var issues=[],suggestions=[],r=SNOWD_CHARACTER_STATS.read(s);
+  Object.keys(SNOWD_CHARACTER_STATS.labels).forEach(function(k){
+    var f=r.fields[k],source=s.fieldSources&&s.fieldSources.scalar&&s.fieldSources.scalar[k];
+    if(f.value===null||f.value===undefined){if(f.computed!==null&&f.computed!==undefined)suggestions.push({label:SNOWD_CHARACTER_STATS.labels[k],field:k,value:f.computed,detail:"规则参考值；填写值缺失时需确认采用方式"});}
+    else if(f.mode==="fixed"&&typeof f.value==="number"&&typeof f.computed==="number"&&f.value!==f.computed)issues.push({label:k==="hp"?"HP":k==="fp"?"FP":SNOWD_CHARACTER_STATS.labels[k],field:k,original:f.value,calculated:f.computed,detail:"默认保留填写值；采用规则值后随规则变化"});
+  });
+  return {suggestions:suggestions,issues:issues,state:s};
 }
-
-
 
 function showXP_SP_Picker(state,callback){
   ensureSpStateOn(state);
@@ -907,43 +843,30 @@ function showBgPicker(state,callback){
 }
 
 function showPreview(s,parsed){
-  var clsStr=s.classes[0].name+" Lv."+s.classes[0].level;
-  if(s.classes[1].name)clsStr+=" / "+s.classes[1].name+" Lv."+s.classes[1].level;
-  var attrStr="";var an=ATTR_NAMES;
-  for(var ai=0;ai<an.length;ai++)attrStr+=an[ai]+":"+(s.attrs[an[ai]]||10)+" ";
-  document.getElementById("previewContent").innerHTML=    "<div class=preview-row><span class=label>角色名</span><span class=value>"+(s.name||"未填写")+"</span></div>"+    "<div class=preview-row><span class=label>种族</span><span class=value>"+(s.race||"未填写")+"</span></div>"+    "<div class=preview-row><span class=label>职业</span><span class=value>"+clsStr+"</span></div>"+    "<div class=preview-row><span class=label>HP / FP</span><span class=value>"+(s.hp||0)+" / "+(s.fp||0)+"</span></div>"+    "<div class=preview-row><span class=label>属性</span><span class=value>"+attrStr+"</span></div>"+    "<div class=preview-row><span class=label>技能数</span><span class=value>"+s.skills.length+" 个</span></div>"+    "<div class=preview-row><span class=label>天赋数</span><span class=value>"+s.talent_tree.length+" 个</span></div>"+    "<div class=preview-row><span class=label>语言</span><span class=value>"+(s.languages.join("、")||"未填写")+"</span></div>";  var cellList=Object.keys(parsed.cells).sort().slice(0,80);  var dbg="字符串数: "+parsed.strings.length+" | 单元格: "+cellList.length+"\n";  for(var dk=0;dk<cellList.length;dk++){dbg+=cellList[dk]+"="+(parsed.cells[cellList[dk]]||"").substring(0,20)+"\n";}  document.getElementById("debugInfo").textContent=dbg;  try{document.getElementById("previewContent").innerHTML+='<div id="importIssuesHost">'+renderIssuesTable(s)+"</div>";}catch(e){console.log("issues render failed: "+e.message);}document.getElementById("previewPanel").style.display="block";}
+  var esc=SNOWD_CHARACTER_IO.escape,cls=s.classes[0].name+" Lv."+s.classes[0].level;
+  if(s.classes[1].name)cls+=" / "+s.classes[1].name+" Lv."+s.classes[1].level;
+  var rows=[["角色名",s.name||"未填写"],["种族",s.race||"未填写"],["职业",cls],["HP / FP",(s.hp||0)+" / "+(s.fp||0)],["属性",ATTR_NAMES.map(function(n){return n+":"+(s.attrs[n]===undefined?10:s.attrs[n]);}).join(" ")],["语言",(s.languages||[]).join("、")||"未填写"]];
+  document.getElementById("previewContent").innerHTML=rows.map(function(r){return '<div class="preview-row"><span class="label">'+esc(r[0])+'</span><span class="value">'+esc(r[1])+'</span></div>';}).join("")+'<div id="importIssuesHost">'+renderIssuesTable(s)+'</div>';
+  document.getElementById("debugInfo").textContent="工作表："+parsed.sheetName+"；非空单元格："+Object.keys(parsed.cells).filter(function(k){return String(parsed.cells[k]).trim();}).length;
+  document.getElementById("previewPanel").style.display="block";
+}
 // ========== Confirm Dialog ==========
 var _pendingImport=null;
 function showConfirmDialog(validation){
-  _pendingImport=validation.state;
-  var s=validation.suggestions,i=validation.issues;var c=_lastCorrections||{moved:[],typos:[],unknown:[]};
-  var overlay=document.createElement("div");overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center";
-  var box=document.createElement("div");box.style.cssText="background:#fffdf8;border-radius:10px;padding:20px;max-width:550px;width:95%;max-height:85vh;overflow-y:auto;border:2px solid #d8d2c4;box-shadow:0 8px 32px rgba(0,0,0,0.3)";
-  var h="<h3 style=margin-bottom:4px;color:#1f2522>📋 数据校验</h3><p style=font-size:13px;color:#69706b;margin-bottom:12px>以下字段已自动计算或与填写值存在差异</p>";
-  if(c.moved.length>0){h+="<div style=margin-bottom:8px;font-weight:bold;color:#2e7d32>\u{1f7e2} \u81ea\u52a8\u4fee\u6b63\uff08"+c.moved.length+"\u9879\uff09</div>";for(var mi=0;mi<c.moved.length;mi++){h+="<div style=padding:4px 10px;margin:2px 0;background:#e8f5e9;border-radius:4px;font-size:12px>"+c.moved[mi].name+": "+c.moved[mi].from+" \u2192 "+c.moved[mi].to+"</div>";}}if(c.typos.length>0){h+="<div style=margin:8px 0;font-weight:bold;color:#e8a86a>\u{1f7e0} \u7591\u4f3c\u9519\u522b\u5b57\uff08"+c.typos.length+"\u9879\uff09</div>";for(var ti=0;ti<c.typos.length;ti++){h+="<div style=padding:4px 10px;margin:2px 0;background:#fff8e1;border-radius:4px;font-size:12px id=typo_"+ti+">"+c.typos[ti].name+" \u2192 \u53ef\u80fd\u662f"+c.typos[ti].suggestion+"\uff1f<button id=typoBtn_"+ti+" style=font-size:11px;padding:1px 6px;margin-left:6px>\u4fee\u6b63</button></div>";}}if(c.unknown.length>0){h+="<div style=margin:8px 0;font-weight:bold;color:#c62828>\u{1f534} \u65e0\u6cd5\u8bc6\u522b\uff08"+c.unknown.length+"\u9879\uff09</div>";for(var ui=0;ui<c.unknown.length;ui++){h+="<div style=padding:4px 10px;margin:2px 0;background:#fce4e4;border-radius:4px;font-size:12px>"+c.unknown[ui].name+" ("+c.unknown[ui].source+")</div>";}}if(s.length>0){h+="<div style=margin-bottom:8px;font-weight:bold;color:#e8a86a>🟡 自动补充（"+s.length+"项）</div>";
-    for(var si=0;si<s.length;si++){
-      h+="<div style=padding:6px 10px;margin:2px 0;background:#fff8e1;border-radius:4px;font-size:13px><b>"+s[si].label+"</b>: "+s[si].value+" <span style=color:#888;font-size:11px>("+s[si].detail+")</span></div>";
-    }
-  }
-  if(i.length>0){h+="<div style=margin:12px 0 8px;font-weight:bold;color:#c62828>🔴 存在差异（"+i.length+"项）</div>";
-    for(var ii=0;ii<i.length;ii++){
-      h+="<div style=padding:8px 10px;margin:2px 0;background:#fce4e4;border-radius:4px;font-size:13px id=issue_"+ii+"><b>"+i[ii].label+"</b>: 填写值 <span style=font-weight:bold>"+i[ii].original+"</span> vs 计算值 <span style=font-weight:bold;color:#2e7d32>"+i[ii].calculated+"</span><br><span style=color:#888;font-size:11px>"+i[ii].detail+"</span><br><span style=display:flex;gap:6px;margin-top:4px><button onclick=resolveIssue("+ii+",\'original\') style=font-size:11px;padding:2px 8px;background:#5a3a18;color:#f0e0d0;border:none;border-radius:3px;cursor:pointer>采用填写值</button><button onclick=resolveIssue("+ii+",\'calculated\') style=font-size:11px;padding:2px 8px;background:#3a6a3a;color:#e0e0d0;border:none;border-radius:3px;cursor:pointer>采用计算值</button></span></div>";
-    }
-    h+="<div style=margin-top:8px><button onclick=resolveAllCalculated() style=font-size:12px;padding:4px 12px;background:#3a6a3a;color:#e0e0d0;border:none;border-radius:4px;cursor:pointer>全部采用计算值</button> <button onclick=resolveAllOriginal() style=font-size:12px;padding:4px 12px;background:#5a3a18;color:#f0e0d0;border:none;border-radius:4px;cursor:pointer>全部采用填写值</button></div>";
-  }
-  h+="<div style=margin-top:16px;display:flex;gap:8px;justify-content:flex-end>";
-  h+="<button onclick='this.closest(&quot;div[style*=position:fixed]&quot;).remove()' style=padding:8px 16px;background:#d8d2c4;color:#69706b;border:none;border-radius:6px;cursor:pointer;font-size:14px>取消</button>";
-  h+="<button onclick=confirmImport() style=padding:8px 16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold>确认导入</button>";
-  h+="</div>";
+  _pendingImport=validation.state;var s=validation.suggestions,i=validation.issues,esc=SNOWD_CHARACTER_IO.escape;
+  var overlay=document.createElement("div");overlay.id="uploadValidationDialog";overlay.style.cssText="position:fixed;inset:0;background:#0009;z-index:10000;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box";
+  var box=document.createElement("div");box.style.cssText="background:#fffdf8;color:#252b26;border-radius:10px;padding:20px;max-width:720px;width:100%;max-height:85vh;overflow:auto;box-sizing:border-box";
+  var h='<h3>数据校验</h3><p>核对角色数据与能力条目后确认导入。</p><div id="importIssuesHost">'+renderIssuesTable(validation.state)+'</div>';
+  s.forEach(function(v){h+='<p>可补充 '+esc(v.label)+'：'+esc(v.value)+'（'+esc(v.detail)+'）</p>';});
+  i.forEach(function(v,idx){h+='<div id="issue_'+idx+'"><p>'+esc(v.label)+'：填写 '+esc(v.original)+'；计算 '+esc(v.calculated)+'</p><p>'+esc(v.detail)+'</p><button onclick="resolveIssue('+idx+',\'original\')">采用填写值</button> <button onclick="resolveIssue('+idx+',\'calculated\')">采用计算值</button></div>';});
+  if(i.length)h+='<p><button onclick="resolveAllOriginal()">全部采用填写值</button> <button onclick="resolveAllCalculated()">全部采用计算值</button></p>';
+  h+='<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button type="button" onclick="document.getElementById(\'uploadValidationDialog\').remove()">取消</button><button type="button" onclick="confirmImport()">确认导入</button></div>';
   box.innerHTML=h;overlay.appendChild(box);document.body.appendChild(overlay);
-  for(var _t=0;_t<(c.typos||[]).length;_t++){var _btn=document.getElementById("typoBtn_"+_t);if(_btn){(function(_i){_btn.onclick=function(){fixTypo(c.typos[_i].name,c.typos[_i].suggestion,c.typos[_i].uid);};})(_t);}}
 }
 function resolveIssue(idx,choice){
   var issue=_pendingIssues[idx];
-  if(choice==="calculated"){
-    if(issue.label==="HP")_pendingImport.hp=issue.calculated;
-    if(issue.label==="FP")_pendingImport.fp=issue.calculated;
-  }
+  if(choice==="calculated")SNOWD_CHARACTER_STATS.set(_pendingImport,issue.field|| (issue.label==="HP"?"hp":"fp"),issue.calculated,"rules",{origin:"rules"});
+  else SNOWD_CHARACTER_STATS.set(_pendingImport,issue.field||(issue.label==="HP"?"hp":"fp"),issue.original,"fixed",{origin:"sheet"});
   // Gray out this issue
   var el=document.getElementById("issue_"+idx);if(el)el.style.opacity="0.4";
   issue._resolved=choice;
@@ -954,8 +877,8 @@ function resolveAllCalculated(){
   }
 }
 function ensureUid(e){if(e&&!e.uid)e.uid="e-"+(new Date().getTime().toString(36))+"-"+(Math.floor(Math.random()*1e6).toString(36));return e?e.uid:"";}
-function ensureUids(state){if(!state)return;var L=[state.skills||[],state.talent_tree||[]];for(var a=0;a<L.length;a++)for(var i=0;i<L[a].length;i++)ensureUid(L[a][i]);}
-function findEntryByUid(state,uid){if(!state||!uid)return null;var L=[state.skills||[],state.talent_tree||[]];for(var a=0;a<L.length;a++)for(var i=0;i<L[a].length;i++){var e=L[a][i];if(e&&e.uid===uid)return e;}return null;}
+function ensureUids(state){if(!state)return;var L=[state.skills||[],state.talent_tree||[],state.blueprints||[]];for(var a=0;a<L.length;a++)for(var i=0;i<L[a].length;i++)ensureUid(L[a][i]);}
+function findEntryByUid(state,uid){if(!state||!uid)return null;var L=[state.skills||[],state.talent_tree||[],state.blueprints||[]];for(var a=0;a<L.length;a++)for(var i=0;i<L[a].length;i++){var e=L[a][i];if(e&&e.uid===uid)return e;}return null;}
 function reparseEntry(entry){
   if(!entry)return entry;var r=SNOWD_CHARACTER_IO.resolve(entry),p=r.pick;
   if(p){entry.src=p.cls;if(entry.place==="talent")entry.cls=p.cls;entry.id=p.id;entry.kind=p.kind;entry.catalogTier=p.tier;entry.tier=entry.tier||p.tier;entry.st=p.style||entry.st;}
@@ -966,9 +889,9 @@ function fixTypo(wrong,correct,uid){
   if(!e){SD_alert("未找到该技能条目，请重新选择");return;}openIssueResolver(e.uid,s);
 }
 function findFuzzyCandidates(name,maxDist){
-  maxDist=maxDist||2;var out=[];
+  name=SNOWD_CHARACTER_IO.normalizeName(name);maxDist=Math.min(maxDist||2,String(name||"").length<=4?1:2);var out=[];
   var ix=typeof SNOWD_SKILL_INDEX!=="undefined"?SNOWD_SKILL_INDEX:null;if(!ix)return out;
-  Object.keys(ix.byName).forEach(function(n){if(Math.abs(n.length-name.length)>maxDist)return;var d=levenshtein(name,n);if(d<=maxDist)SNOWD_CHARACTER_IO.candidates(n).forEach(function(c){out.push(Object.assign({dist:d},c));});});
+  Object.keys(ix.byName).forEach(function(n){if(Math.abs(n.length-name.length)>maxDist)return;var d=levenshtein(name,SNOWD_CHARACTER_IO.normalizeName(n));if(d<=maxDist)SNOWD_CHARACTER_IO.candidates(n).forEach(function(c){out.push(Object.assign({dist:d},c));});});
   out.sort(function(a,b){return a.dist-b.dist||a.name.localeCompare(b.name)||a.cls.localeCompare(b.cls);});return out.slice(0,12);
 }
 function findFuzzyMatch(name,maxDist){var cs=findFuzzyCandidates(name,maxDist);return cs.length?{name:cs[0].name,dist:cs[0].dist}:null;}
@@ -988,12 +911,21 @@ for(var r2=0;r2<rows.length;r2++){var p=rows[r2].problems.join(" ");if(p.indexOf
 counts.typo=extra.filter(function(x){return x.kind==="typo-fallback";}).length;
 return {rows:rows,extra:extra,counts:counts};}
 function renderIssuesTable(s){
-  var esc=SNOWD_CHARACTER_IO.escape,list=(s.skills||[]).concat(s.talent_tree||[]);
-  var h='<p style="margin-top:12px">技能识别：'+list.length+' 个条目</p><div style="max-width:100%;overflow:auto"><table style="width:100%;font-size:12px"><thead><tr><th>名称</th><th>来源</th><th>栏位</th><th>获取途径</th><th>处理</th></tr></thead><tbody>';
+  var io=SNOWD_CHARACTER_IO,esc=io.escape,list=io.entries(s),custom=list.filter(io.isCustom).length;
+  var h='<p>识别结果：技能 '+(s.skills||[]).length+' 项 · 天赋 '+(s.talent_tree||[]).length+' 项 · 图纸与配方 '+(s.blueprints||[]).length+' 项；其中额外能力 '+custom+' 项。</p>';
+  h+='<div style="max-width:100%;overflow:auto"><table style="width:100%;font-size:12px"><thead><tr><th>名称</th><th>规则来源</th><th>栏位</th><th>获得途径</th><th>原始位置</th><th>状态</th><th>处理</th></tr></thead><tbody>';
   list.forEach(function(e){
-    h+='<tr><td>'+esc(e.n)+'</td><td>'+esc(e.src||"待确认")+'</td><td>'+esc(e.place||"main")+'</td><td>'+esc(e.via||"未填写")+'</td><td><button type="button" data-issue-uid="'+esc(e.uid)+'" onclick="openIssueResolver(this.dataset.issueUid)">确认</button></td></tr>';
+    var p=e.provenance||{},status=io.isCustom(e)?"额外能力已确认":io.isDeferred(e)?"保留原文，暂缓确认":io.resolve(e).pick?"已匹配规则":"规则待确认";
+    if(e.occupies===null)status+="；槽位待确认";
+    h+='<tr><td>'+esc(e.n)+'</td><td>'+esc(e.src||(io.isCustom(e)?"独立能力":"待确认"))+'</td><td>'+esc(({main:"主职业技能",sub:"子职业技能",talent:"天赋",blueprint:"图纸与配方"})[e.place]||e.place)+'</td><td>'+esc(e.via||"未填写")+'</td><td>'+esc((p.sheet||"")+" "+(p.fields&&p.fields.name||e.cellRef||""))+'</td><td>'+esc(status)+'</td><td><button type="button" data-issue-uid="'+esc(e.uid)+'" onclick="openIssueResolver(this.dataset.issueUid)">编辑</button></td></tr>';
   });h+='</tbody></table></div>';
-  if(s.importIssues&&s.importIssues.length)h+='<p style="font-size:12px;margin-top:8px">'+s.importIssues.map(function(i){return esc((i.name||"工作簿")+"："+(i.note||i.kind));}).join("；")+'</p>';
+  if(s._importLayoutIssues&&s._importLayoutIssues.length)h+='<p>有 '+s._importLayoutIssues.length+' 个区块需要映射或明确排除后才能导入。</p>';
+  h+='<p><button type="button" onclick="openClassResolver()">确认职业身份</button> <button type="button" onclick="openCombatStatResolver()">战斗数值采用方式</button> <button type="button" onclick="confirmImport(true)">保存导入草稿</button></p>';
+  h+='<p><button type="button" onclick="openLayoutResolver()">映射区块或补充字段</button> <button type="button" onclick="openImportSheetPicker()">选择工作表</button></p>';
+  if(s.importIssues&&s.importIssues.length)h+='<p style="font-size:12px">'+s.importIssues.map(function(i){return esc((i.name||"工作簿")+"："+(i.note||i.kind));}).join("；")+'</p>';
+  if(s.importExcluded&&s.importExcluded.length)h+='<p>已明确排除：'+s.importExcluded.map(function(e){return esc(e.n||e.name||e.note||e.cellRef);}).join("、")+'</p>';
+  if(s.unmappedFields&&s.unmappedFields.length)h+='<p>未分类字段已保留：'+s.unmappedFields.map(function(f){return esc((f.values||[]).map(function(v){return v.cellRef+"="+v.value;}).join("，"));}).join("；")+'</p>';
+  setTimeout(function(){renderCharacterImportExtras(s);},0);
   return h;
 }
 function resolveAllOriginal(){
@@ -1006,6 +938,7 @@ var _pendingIssues=[];
 // ========== UI ==========
 
 var pendingState = null;
+var pendingParsed=null;
 window._getState = function(){return pendingState;};
 
 document.getElementById("fileInput").addEventListener("change", async function(e) {
@@ -1056,12 +989,12 @@ document.getElementById("fileInput").addEventListener("change", async function(e
     showWarningDialog(_violations,function(_keep){
       if(!_keep){window.location.href="主页.html";return;}
       var _missingFields=validateRequired(pendingState);
-      if(_missingFields.length>0){SD_alert("上传失败！缺少必须字段: "+_missingFields.join(", ")); statusEl.style.display="none"; return;}
+      if(_missingFields.length>0){showPreview(pendingState,parsed);statusEl.style.display="none";return;}
       showXP_SP_Picker(pendingState,function(_xpsp){
         applyXpSpPickerResult(pendingState,_xpsp);
         if(!pendingState.background){ showBgPicker(pendingState,function(bg){
           pendingState.background=bg; if(!pendingState.traits&&_REF_BG_TRAITS[bg])pendingState.traits=_REF_BG_TRAITS[bg];
-          pendingState.hp=0;pendingState.fp=0;
+          SNOWD_CHARACTER_STATS.synchronize(pendingState);
           var v2=validateState(pendingState); _pendingIssues=v2.issues;
           if(v2.suggestions.length>0||v2.issues.length>0){ showConfirmDialog(v2); } else { showPreview(pendingState,parsed); }
         }); statusEl.style.display="none"; return; }
@@ -1073,11 +1006,9 @@ document.getElementById("fileInput").addEventListener("change", async function(e
   }
   var _missingFields=validateRequired(pendingState);
   if(_missingFields.length>0){
-    SD_alert("上传失败！缺少必须字段: "+_missingFields.join(", "));
-    statusEl.style.display="none";
-    return;
+    showPreview(pendingState,parsed);statusEl.style.display="none";return;
   } var validation=validateState(pendingState); _pendingIssues=validation.issues;_lastCorrections=_corr; showXP_SP_Picker(pendingState,function(_xpsp){ applyXpSpPickerResult(pendingState,_xpsp);
-  if(!pendingState.background){ showBgPicker(pendingState,function(bg){ pendingState.background=bg; if(!pendingState.traits&&_REF_BG_TRAITS[bg])pendingState.traits=_REF_BG_TRAITS[bg]; pendingState.hp=0;pendingState.fp=0; var v2=validateState(pendingState); _pendingIssues=v2.issues; if(v2.suggestions.length>0||v2.issues.length>0){ showConfirmDialog(v2); } else { showPreview(pendingState,parsed); } }); statusEl.style.display="none"; return; }
+  if(!pendingState.background){ showBgPicker(pendingState,function(bg){ pendingState.background=bg; if(!pendingState.traits&&_REF_BG_TRAITS[bg])pendingState.traits=_REF_BG_TRAITS[bg]; SNOWD_CHARACTER_STATS.synchronize(pendingState); var v2=validateState(pendingState); _pendingIssues=v2.issues; if(v2.suggestions.length>0||v2.issues.length>0){ showConfirmDialog(v2); } else { showPreview(pendingState,parsed); } }); statusEl.style.display="none"; return; }
   var v3=validateState(pendingState); _pendingIssues=v3.issues;
   if(v3.suggestions.length>0||v3.issues.length>0){ showConfirmDialog(v3); } else { showPreview(pendingState,parsed); }
 }); statusEl.style.display="none"; return;
@@ -1136,8 +1067,16 @@ function allocateUniqueCharId(desired) {
   return desired + "_" + n;
 }
 
-function confirmImport() {
+async function confirmImport(draft) {
   if (!pendingState) return;
+  draft=draft===true;
+  if(!draft&&pendingState._importLayoutIssues&&pendingState._importLayoutIssues.length){SD_alert(pendingState._importLayoutIssues.map(function(i){return i.note;}).join("\n"));openLayoutResolver();return;}
+  if(!draft&&pendingParsed&&pendingParsed.sheetSelectionPending){SD_alert("请先确认要导入的工作表。");openImportSheetPicker();return;}
+  var required=validateRequired(pendingState);if(!draft&&required.length){SD_alert("请补充必须字段："+required.join("、"));openLayoutResolver();return;}
+  var classPending=SNOWD_CHARACTER_CLASSES.pending(pendingState);if(!draft&&classPending.length){SD_alert("职业身份已保留，请先确认规则基础或保存草稿。");openClassResolver(pendingState);return;}
+  var invalid=(pendingState.importIssues||[]).filter(function(i){return ["field-invalid","field-cleared"].indexOf(i.kind)>=0;});
+  if(!draft&&invalid.length){SD_alert("部分字段无法可靠读取，请确认数值采用方式或保存草稿。");openCombatStatResolver(pendingState);return;}
+  pendingState.importDraft=draft;if(!draft)SNOWD_CHARACTER_STATS.synchronize(pendingState);
   ensureSpStateOn(pendingState);
   delete pendingState.sp;
   var displayName = pendingState.name || "未命名角色";
@@ -1164,7 +1103,14 @@ function confirmImport() {
     SD_alert("保存失败：" + (e.message || e));
     return;
   }
-  var msg = "✅ 成功导入！角色名：" + displayName + "（存档槽 1）";
+  if(pendingState._uploadedXlsxBuf){
+    try{pendingState.importWorkbookKey=await SNOWD_CHARACTER_WORKBOOK_CACHE.put(pendingState._uploadedXlsxBuf);}
+    catch(e){pendingState.importCacheNotice="本机工作簿缓存未保存："+e.message;}
+    var cached=JSON.parse(JSON.stringify(pendingState,function(k,v){return k==="_uploadedXlsxBuf"?undefined:v;}));
+    try{localStorage.setItem("char_"+storageId+"_slot1",JSON.stringify(cached));}catch(e){SD_alert("角色已保存，但工作簿缓存引用未保存："+e.message);}
+  }
+  var validationDialog=document.getElementById("uploadValidationDialog");if(validationDialog)validationDialog.remove();
+  var msg = (draft?"✅ 草稿已保存！角色名：":"✅ 成功导入！角色名：") + displayName + "（存档槽 1）";
   if (storageId !== displayName) msg = "✅ 成功导入！角色名：" + displayName + "，存档为「" + storageId + "」（存档槽 1）";
   document.getElementById("successMsg").textContent = msg;
   document.getElementById("successMsg").style.display = "block";
@@ -1296,6 +1242,8 @@ async function exportXlsxFromState(state) {
   await ensureSkillDataForExport();
   // Use the embedded enhanced template or the original uploaded ZIP
   var templateBuf = state._uploadedXlsxBuf;
+  if(!templateBuf&&state.importWorkbookKey)templateBuf=await SNOWD_CHARACTER_WORKBOOK_CACHE.get(state.importWorkbookKey);
+  var _hasSourceWorkbook=!!templateBuf;
   if(!templateBuf)state._xlsxSheetPath="xl/worksheets/sheet1.xml";
   if (!templateBuf) {
     // Fallback: use embedded blank template
@@ -1344,13 +1292,14 @@ async function exportXlsxFromState(state) {
   while ((m = re.exec(sh.text)) !== null) cStyle[m[1]] = m[3] || "";
 
   var xml = sh.text;
-  function set(ref, val) {
-    var cs = cStyle[ref] || "", nc;
-    if (typeof val === "number") nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : "") + "><v>" + val + "</v></c>";
-    else { var si = addStr(String(val)); nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : "") + ' t="s"><v>' + si + "</v></c>"; }
-    var rx = new RegExp('<c r="' + ref + '"([^>]*?)(?:/>|>[\\s\\S]*?</c>)', "g");
-    if (rx.test(xml)) xml = xml.replace(rx, nc);
-    else {var row=ref.replace(/^[A-Z]+/,""),rr=new RegExp('<row[^>]*\\br="'+row+'"[^>]*>[\\s\\S]*?</row>');var hit=rr.exec(xml);if(hit)xml=xml.replace(hit[0],hit[0].replace("</row>",nc+"</row>"));else xml=xml.replace("</sheetData>",'<row r="'+row+'">'+nc+"</row></sheetData>");}
+  var _abilitySource=SNOWD_CHARACTER_IO.sheet(sh.text,strings);_abilitySource.sheetName=(state.skills||[]).concat(state.talent_tree||[],state.blueprints||[]).map(function(e){return e.provenance&&e.provenance.sheet;}).filter(Boolean)[0]||"";
+  _abilitySource.sheetName=(SNOWD_CHARACTER_IO.manifest(entries.find(function(e){return e.name==="xl/workbook.xml";}).text,entries.find(function(e){return e.name==="xl/_rels/workbook.xml.rels";}).text).list.find(function(sheet){return sheet.path===sh.name;})||{}).name||_abilitySource.sheetName;
+  var _abilityPlan=SNOWD_CHARACTER_IO.abilityExportPlan(_abilitySource,state),_writingAbilityCells=false,_structuredOriginal=_hasSourceWorkbook&&!!state.fieldSources;
+  if(_structuredOriginal)_abilityPlan.dynamic=true;
+  var _cellEditor=SNOWD_CHARACTER_EXPORT.createEditor(xml,addStr,cStyle);
+  function set(ref,val,invent,styleId){
+    if(!_writingAbilityCells&&(_structuredOriginal||SNOWD_CHARACTER_IO.protectAbilityCell(_abilityPlan,ref)))return;
+    _cellEditor.set(ref,val,invent,styleId);
   }
 
   var talentLayout=SNOWD_CHARACTER_IO.talentLayout(sh.text,strings);
@@ -1499,7 +1448,8 @@ async function exportXlsxFromState(state) {
     if (!s) return false;
     var nm = s.n || s.name || "";
     if (nm.indexOf("（图纸）") >= 0) return false;
-    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    if(s.occupies===null)return false;
+    if(s.occupies===undefined?(s.freeSlot||s.grantedBy==="法师学徒"):s.occupies===false)return false;
     var sub = s.sub;
     if (sub === true) return false;
     if (sub === false || sub == null || sub === "") return true;
@@ -1530,11 +1480,12 @@ async function exportXlsxFromState(state) {
   for (ti0 = 0; ti0 < tierOrder.length; ti0++) {
     range = tierRowMap[tierOrder[ti0]];
     if (!range) continue;
-    for (ti = range[0]; ti <= range[1]; ti++) set(talentLayout.column + ti, "");
+    for (ti = range[0]; ti <= range[1]; ti++){set(talentLayout.column + ti,"");set(SNOWD_CHARACTER_LAYOUT.ref(SNOWD_CHARACTER_LAYOUT.point(talentLayout.column+"1").col+2,ti),"");}
   }
   for (ti = 0; ti < talents.length; ti++) {
     tName = talents[ti].n || talents[ti].name || "";
     if (!tName) continue;
+    if(SNOWD_CHARACTER_IO.isCustom(talents[ti])&&!SNOWD_CHARACTER_IO.tier(talents[ti].tier))continue;
     var cat=SNOWD_CHARACTER_IO.resolve(talents[ti]);
     tTier=SNOWD_CHARACTER_IO.tier(talents[ti].tier)||(cat.pick?cat.pick.tier:"")||"一阶";
     range = tierRowMap[tTier];
@@ -1542,6 +1493,7 @@ async function exportXlsxFromState(state) {
     slot = tierSlots[tTier] || 0;
     if (slot >= range[1] - range[0] + 1) continue;
     set(talentLayout.column + (range[0] + slot), tName);
+    set(SNOWD_CHARACTER_LAYOUT.ref(SNOWD_CHARACTER_LAYOUT.point(talentLayout.column+"1").col+2,range[0]+slot),talents[ti].ds||talents[ti].rawDesc||"");
     SNOWD_CHARACTER_IO.recordWrite(talents[ti],talentLayout.column+(range[0]+slot),"talent","talent");
     tierSlots[tTier] = slot + 1;
   }
@@ -1551,7 +1503,8 @@ async function exportXlsxFromState(state) {
     if (!s) return false;
     var nm = s.n || s.name || "";
     if (nm.indexOf("（图纸）") >= 0) return false;
-    if (s.freeSlot || s.grantedBy === "法师学徒" || s.grantedBy === "卓尔精灵·毒吻者") return false;
+    if(s.occupies===null)return false;
+    if(s.occupies===undefined?(s.freeSlot||s.grantedBy==="法师学徒"):s.occupies===false)return false;
     var sub = s.sub;
     if (sub === true) return true;
     if (sub === false || sub == null || sub === "") return false;
@@ -1582,9 +1535,12 @@ async function exportXlsxFromState(state) {
   if (state.languages && state.languages.length > 0) set("P7", state.languages.join(", "));
   if (state.professionals && state.professionals.length > 0) set("Q8", state.professionals[0]);
 
+  _writingAbilityCells=true;SNOWD_CHARACTER_IO.writeAbilityTables(set,state,_abilityPlan);SNOWD_CHARACTER_EXPORT.write(set,state,_abilitySource,_structuredOriginal);_writingAbilityCells=false;
+  xml=SNOWD_CHARACTER_EXPORT.normalizeMerges(_cellEditor.serialize(),state);
   // Rebuild XMLs
   ss.text = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="' + strings.length + '" uniqueCount="' + strings.length + '">\n' + siBlocks.join("\n") + '\n</sst>';
   sh.text = xml;
+  SNOWD_CHARACTER_IO.attachSupportingSheets(entries,state);
   SNOWD_CHARACTER_IO.attachMeta(entries,state);
 
   // Recompress modified entries

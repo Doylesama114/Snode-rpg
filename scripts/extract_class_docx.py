@@ -32,6 +32,7 @@ from class_sync_core import (  # noqa: E402
     build_docx_index,
     extract_paragraphs,
     extract_skill_block,
+    is_skill_header,
     is_boilerplate_line,
     is_section_break,
     split_field,
@@ -153,14 +154,9 @@ def dedupe_prefer_richer(skills: list[dict]) -> list[dict]:
     return [best[k] for k in order]
 
 
+
 def has_skill_anchors(paras: list[dict], start: int) -> bool:
-    far = [paras[i]["text"] for i in range(start + 1, min(start + 14, len(paras)))]
-    near = far[:5]
-    has_time = any(w.startswith("施展时间：") for w in near)
-    has_kw = any(w.startswith("关键词：") for w in far[:8])
-    has_mark = any(w.startswith(("标识：", "费用：")) for w in far[:8])
-    has_pre = any(w.startswith(("前置条件：", "额外条件：")) for w in far[:6])
-    return bool(has_time or (has_kw and (has_mark or has_pre or has_time)))
+    return is_skill_header(paras, start)
 
 
 def discover_skill_names(paras: list[dict]) -> set[str]:
@@ -244,7 +240,7 @@ def walk_structured(paras: list[dict], names: set[str]) -> list[dict]:
             "name": block["name"],
             "style": style,
             "tier": tier,
-            "type": skill_type_from_keywords(kw),
+            "type": skill_type_from_keywords(kw) if kw else ("天赋" if block["mark_dots"] else ""),
             "fields": block["fields"],
             "cost": list(block["mark_dots"]),
             "cost_meta": cost_meta(block["mark_dots"]),
@@ -259,6 +255,7 @@ def walk_structured(paras: list[dict], names: set[str]) -> list[dict]:
             "source": {
                 "kind": "docx",
                 "para_start": i,
+                "para_end": block.get("source_span", {}).get("end", i + 1),
                 "style_ctx": style,
                 "tier_ctx": tier,
             },

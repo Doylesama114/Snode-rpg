@@ -46,7 +46,7 @@ PANEL_SKILL_KEYS = (
     "id", "name", "type", "style", "tier", "tags", "fields", "cost",
     "description", "flavor", "level_upgrades", "field_runs", "description_entries",
     "roll_tables", "unit_tables",
-    "grants", "color", "composite", "choices",
+    "grants", "color", "composite", "choices", "legacy_ids", "deity", "kind",
 )
 
 GENERAL_HTML = ROOT / "职业页" / "通用天赋树.html"
@@ -186,11 +186,12 @@ def merge_class(
         s["id"]: json_skill_to_panel(
             s,
             panel_key=panel_key,
-            tier_override=tier_map.get(s["id"]),
+            tier_override=tier_map.get(s["id"]) if not s.get("tier") else None,
         )
         for s in new_skills
     }
     json_ids = set(by_id)
+    old_aliases = {alias for s in new_skills for alias in s.get("legacy_ids", [])}
     old_by_id = {s["id"]: s for s in old_skills if s.get("id")}
     for sid, skill in by_id.items():
         # 起始特性技能（type=starting）不继承旧 tier——docx 语义无阶位
@@ -206,7 +207,7 @@ def merge_class(
     merged = list(by_id.values())
     for s in old_skills:
         sid = s.get("id")
-        if sid in json_ids:
+        if sid in json_ids or sid in old_aliases:
             continue
         if s.get("type") in extra_types or sid and sid.endswith("-starting"):
             if s.get("style"):
@@ -236,6 +237,19 @@ def build_skill_data(old: dict) -> dict:
     for key, skills in old.items():
         if key not in out:
             out[key] = skills
+
+    domain_path = DATA_DIR / "\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df.json"
+    if domain_path.exists():
+        from class_sync_core import cost_json, marks_from_cost
+        domain = json.loads(domain_path.read_text(encoding="utf8"))
+        rows = []
+        for deity, dom in domain["domains"].items():
+            for skill in dom["skills"]:
+                row = json_skill_to_panel(skill)
+                row["deity"] = deity
+                row["cost"] = cost_json(marks_from_cost(skill))
+                rows.append(row)
+        out["\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df"] = rows
     return out
 
 
@@ -245,6 +259,11 @@ def patch_panel_data(path: Path, skill_data: dict) -> None:
     end = text.index("const STYLE_MAP", start)
     prefix = text[:start]
     suffix = text[end:]
+    # Older handwritten domain assignment must not override the regenerated catalog.
+    suffix = "\n".join(line for line in suffix.splitlines()
+        if not line.startswith("// #4: \u795e\u5723\u9886\u57df\u6280\u80fd\u5e76\u5165")
+        and not re.match(r'^if .*SKILL_DATA\["\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df"\]\s*=', line))
+
     new_blob = json.dumps(skill_data, ensure_ascii=False, separators=(",", ":"))
     new_text = f"{prefix}SKILL_DATA = {new_blob};\n{suffix}"
     path.write_text(new_text, encoding="utf-8")

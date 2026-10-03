@@ -165,17 +165,32 @@ def render_article(skill: dict, block: dict, deity: str) -> str:
         f'data-search="{safe}"{data_attrs}>'
         f'<h4>{esc(skill["name"])} <span class="chip" style="background:#888">{esc(label)}</span></h4>\n'
         f'<div class="chips">{chips_html(skill)}</div>\n'
-        f'<div class="detail">{detail}</div>\n'
+        f'<template class="skill-body"><div class="detail">{detail}</div></template>\n'
         f"</article>\n"
     )
 
 
 def assign_ids(deity_id: str, feats: list, skills: list) -> list[dict]:
     out = []
-    n = 0
-    for f in feats:
+    old = {}
+    if DOMAIN_JSON.exists():
+        existing = json.loads(DOMAIN_JSON.read_text(encoding="utf8"))
+        old = next((d for d in existing.get("domains", {}).values() if d.get("id") == deity_id), {})
+    previous = old.get("skills", [])
+    used = set()
+    n = max((int(s["id"].rsplit("-", 1)[1]) for s in previous if s["id"].rsplit("-", 1)[1].isdigit()), default=0)
+    def stable_id(row):
+        nonlocal n
+        matches = [s for s in previous if s["name"] == row["name"] and s["id"] not in used]
+        exact = [s for s in matches if s.get("style", "") == row.get("style", "") and s.get("tier", "") == row.get("tier", "")]
+        hit = exact[0] if len(exact) == 1 else matches[0] if len(matches) == 1 else None
+        if hit:
+            used.add(hit["id"]); return hit["id"]
         n += 1
         sid = f"pr-d-{deity_id}-{n}"
+        used.add(sid); return sid
+    for f in feats:
+        sid = stable_id(f)
         row = dict(f)
         row["id"] = sid
         row["kind"] = "initial_feat"
@@ -184,8 +199,7 @@ def assign_ids(deity_id: str, feats: list, skills: list) -> list[dict]:
         row["tags"] = []
         out.append(row)
     for s in skills:
-        n += 1
-        sid = f"pr-d-{deity_id}-{n}"
+        sid = stable_id(s)
         row = dict(s)
         row["id"] = sid
         if row.get("tier") == "起始":
@@ -493,7 +507,7 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
         if not m:
             raise SystemExit("nav end not found")
         nav_end = after + m.start()
-    common_nav = trim_excess_div_closes(html[after:nav_end])
+    common_nav = trim_excess_div_closes(html[after:nav_end]).strip()
     wrapped_nav = (
         f'\n<div class="deity-nav" data-deity="" id="pr-nav-common">\n'
         f"{common_nav}"
@@ -543,7 +557,7 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
         common_body,
         flags=re.S,
     )
-    common_body = trim_excess_div_closes(common_body)
+    common_body = trim_excess_div_closes(common_body).strip()
     new_body = (
         f"\n{chips}\n"
         f'<div class="deity-panel" data-deity="" id="pr-panel-common">\n'
@@ -565,7 +579,12 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
         else:
             html = html.replace("</body>", inject + "\n</body>", 1)
 
-    return html
+    # Re-injection removes wrappers but must not accumulate their blank separators.
+    # Preserve executable/preformatted content byte-for-byte.
+    segments = re.split(r"(<(?:script|style|pre|textarea)\b[\s\S]*?</(?:script|style|pre|textarea)>)", html, flags=re.I)
+    for i in range(0, len(segments), 2):
+        segments[i] = re.sub(r"\n(?:[ \t]*\n)+", "\n", segments[i])
+    return "".join(segments)
 
 
 def patch_filter_js() -> None:

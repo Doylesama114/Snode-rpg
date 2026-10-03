@@ -50,8 +50,8 @@ def canonicalize_mark_hex(hex_c: str | None) -> str:
         h = "#" + h
     return MARK_HEX_ALIASES.get(h, h)
 LIGHT_COLORS = {"#FFFFFF", "#B3F9FF", "#FFF32F", "#FFB7E3", "#D9D9D9", "#00FA99"}
-LEVEL_RE = re.compile(r"^你的(.+?)等级到达(\d+)级时：(.+)$")
-LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.+)$")
+LEVEL_RE = re.compile(r"^你的(.+?)等级(?:到达|达到)(\d+)级时：(.*)$")
+LEVEL_RE2 = re.compile(r"^你的(\d+)级时：(.*)$")
 
 
 LEVEL_CHOICE_LEAD_TAILS = (
@@ -97,7 +97,7 @@ def filter_description_lines(lines: list[str]) -> list[str]:
 def wants_stat_block_after_separator(description: list[str], fields: dict) -> bool:
     if not description:
         return False
-    tail = description[-1].strip()
+    tail = "".join(description[-3:]).strip()
     if tail.endswith(STAT_BLOCK_TAIL):
         return True
     desc_field = fields.get("描述", "").strip()
@@ -169,233 +169,112 @@ def is_section_break(text: str) -> bool:
     return False
 
 
+def is_skill_header(paras: list[dict], start: int, names: set[str] | None = None) -> bool:
+    """A definition starts with its own fields, never fields borrowed from a later title."""
+    if start + 1 >= len(paras):
+        return False
+    title = paras[start]["text"]
+    if names is not None and title not in names:
+        return False
+    if not title or len(title) > 30 or re.search(r"[:\uff1a\u3002\uff1b\uff0c]|^[\u00b7\u2022\u2605]|\d+[.\u3001]", title):
+        return False
+    if not split_field(paras[start + 1]["text"])[0]:
+        return False
+    found = set()
+    for p in paras[start + 1:start + 15]:
+        line = p["text"]
+        key, _ = split_field(line)
+        if key:
+            found.add(key)
+            if key in ("\u5173\u952e\u8bcd", "\u65bd\u5c55\u65f6\u95f4"):
+                return True
+            if key in ("\u6807\u8bc6", "\u8d39\u7528"):
+                return bool(found & {"\u524d\u7f6e\u6761\u4ef6", "\u989d\u5916\u6761\u4ef6", "\u63cf\u8ff0"})
+        elif is_section_break(line) or (names is not None and line in names):
+            break
+    return False
+
+
+
 def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict | None:
-    text0 = paras[start]["text"]
-    if not is_skill_name_line(text0, names):
+    if not is_skill_header(paras, start, names):
         return None
-
-    near = [paras[i]["text"] for i in range(start + 1, min(start + 5, len(paras)))]
-    far = [paras[i]["text"] for i in range(start + 1, min(start + 12, len(paras)))]
-    has_time_near = any(w.startswith("施展时间：") for w in near)
-    has_talent_near = any(w.startswith(("标识：", "费用：")) for w in far[:7]) and any(
-        w.startswith("关键词：") for w in far[:8]
-    )
-    has_kw_only = any(w.startswith("关键词：") for w in far[:4])
-    if not has_time_near and not has_talent_near and not has_kw_only:
-        return None
-    for j in range(start + 1, min(start + 12, len(paras))):
-        t = paras[j]["text"]
-        if t == text0:
-            return None
-        if split_field(t)[0] or t.startswith("施展时间：") or t.startswith("关键词："):
+    fields, field_runs, mark_dots = {}, {}, []
+    description, entries, upgrades = [], [], []
+    active_upgrade = None
+    body_started = False
+    section = ""
+    end = start + 1
+    for i in range(start + 1, len(paras)):
+        p = paras[i]
+        text, runs = p["text"], p.get("runs") or []
+        if is_skill_header(paras, i, names):
             break
-    else:
-        return None
-
-    fields: dict[str, str] = {}
-    field_runs: dict[str, list[dict]] = {}
-    mark_dots: list[str] = []
-    description: list[str] = []
-    description_entries: list[dict] = []
-    level_upgrades: list[dict] = []
-    flavor_parts: list[str] = []
-    phase = "pre"
-    absorb_choices = False
-    pending_upgrade_indent = False
-    i = start + 1
-
-    def append_description(text: str, runs: list[dict], is_indent: bool) -> None:
-        """合并 docx 中缩进的续行：上一行以 · 开头时拼回同一 bullet。"""
-        if (
-            is_indent
-            and description
-            and description[-1].startswith("·")
-            and not is_new_list_item(text)
+        if not text.startswith("-----") and (
+            is_section_break(text) or text.endswith("\u5929\u8d4b\u6811") or text.startswith("\u6289\u62e9")
         ):
-            prev_text = description[-1]
-            description[-1] += text
-            if description_entries and description_entries[-1]["text"] == prev_text:
-                description_entries[-1]["text"] += text
-                description_entries[-1]["runs"] = (
-                    description_entries[-1].get("runs") or []
-                ) + (runs or [])
-            return
-        description.append(text)
-        description_entries.append({"text": text, "runs": runs})
-
-    def append_choice(text: str, is_indent: bool) -> None:
-        choices = level_upgrades[-1].setdefault("choices", [])
-        if (
-            is_indent
-            and choices
-            and choices[-1].startswith("·")
-            and not is_new_list_item(text)
-        ):
-            choices[-1] += text
-            return
-        choices.append(text)
-
-    while i < len(paras):
-        text = paras[i]["text"]
-        runs = paras[i]["runs"]
-        is_indent = bool(paras[i].get("indent"))
-
-        if pending_upgrade_indent:
-            next_is_level = text.startswith("你的") and (LEVEL_RE.match(text) or LEVEL_RE2.match(text))
-            if (
-                is_indent
-                and level_upgrades
-                and not absorb_choices
-                and not is_new_list_item(text)
-                and not next_is_level
-                and not is_skill_name_line(text, names)
-                and not is_section_break(text)
-            ):
-                level_upgrades[-1]["text"] += text
-                if runs:
-                    level_upgrades[-1].setdefault("line_runs", [])
-                    if isinstance(level_upgrades[-1].get("line_runs"), list):
-                        level_upgrades[-1]["line_runs"].extend(runs)
-                i += 1
-                continue
-            pending_upgrade_indent = False
-
-        if is_skill_name_line(text, names):
             break
-        if is_section_break(text) and not (
-            text.startswith("-----") and wants_stat_block_after_separator(description, fields)
-        ):
-            absorb_choices = False
-            break
-
-        fk, val = split_field(text)
-        if fk in ("标识", "费用"):
-            mark_dots = mark_dots_from_runs(runs)
-            phase = "post_mark"
-            absorb_choices = False
-            i += 1
-            continue
-        if fk == "描述":
-            if val:
-                fields["描述"] = val
-                field_runs["描述"] = runs
-            phase = "post_mark"
-            absorb_choices = False
-            i += 1
-            continue
-        if fk:
-            fields[fk] = val
-            field_runs[fk] = runs
-            phase = "fields"
-            absorb_choices = False
-            i += 1
-            continue
-
-        if phase == "pre" and not text.startswith("施展时间"):
-            if "额外条件" not in fields:
-                fields["额外条件"] = text
-            i += 1
-            continue
-
-        if phase in ("post_mark", "fields") and text.startswith("你的"):
-            m = LEVEL_RE.match(text)
-            if m:
-                cls, lvl, body = m.group(1), m.group(2), m.group(3)
-                label = f"你的{cls}等级到达{lvl}级时："
-                level_upgrades.append({
-                    "class": cls,
-                    "level": int(lvl),
-                    "text": body,
-                    "label": label,
-                    "line_runs": runs,
-                })
-                next_text = paras[i + 1]["text"] if i + 1 < len(paras) else ""
-                absorb_choices = level_upgrade_absorbs_choices(body) or next_text.startswith("·")
-                pending_upgrade_indent = True
-                i += 1
-                continue
-            m2 = LEVEL_RE2.match(text)
-            if m2:
-                lvl, body = m2.group(1), m2.group(2)
-                label = f"你的{lvl}级时："
-                level_upgrades.append({
-                    "class": "",
-                    "level": int(lvl),
-                    "text": body,
-                    "label": label,
-                    "line_runs": runs,
-                })
-                next_text = paras[i + 1]["text"] if i + 1 < len(paras) else ""
-                absorb_choices = level_upgrade_absorbs_choices(body) or next_text.startswith("·")
-                pending_upgrade_indent = True
-                i += 1
-                continue
-
-        if text.startswith("抉择："):
-            i += 1
-            continue
-
+        end = i + 1
         if text.startswith("-----"):
-            if wants_stat_block_after_separator(description, fields):
-                i += 1
-                while i < len(paras):
-                    t2 = paras[i]["text"]
-                    if is_skill_name_line(t2, names) or is_section_break(t2):
-                        break
-                    if t2.startswith("你的") and (LEVEL_RE.match(t2) or LEVEL_RE2.match(t2)):
-                        break
-                    if not is_boilerplate_line(t2):
-                        description.append(t2)
-                        description_entries.append({"text": t2, "runs": paras[i]["runs"]})
-                    i += 1
-                continue
-            i += 1
-            while i < len(paras):
-                t2 = paras[i]["text"]
-                if is_skill_name_line(t2, names) or is_section_break(t2):
-                    break
-                if not split_field(t2)[0]:
-                    flavor_parts.append(t2)
-                i += 1
-            break
-        elif len(text) > 4 and "天赋树" in text and "解锁" in text:
-            i += 1
-            while i < len(paras):
-                t2 = paras[i]["text"]
-                if is_skill_name_line(t2, names) or is_section_break(t2):
-                    break
-                if not split_field(t2)[0]:
-                    flavor_parts.append(t2)
-                i += 1
-            break
-
-        if phase == "post_mark":
-            if absorb_choices and level_upgrades:
-                append_choice(text, is_indent)
-                i += 1
-                continue
-            if not is_boilerplate_line(text):
-                append_description(text, runs, is_indent)
-        elif phase == "fields" and not any(text.startswith(p) for p in FIELD_PREFIXES):
-            if not is_boilerplate_line(text):
-                append_description(text, runs, is_indent)
-
-        i += 1
-
-    description = filter_description_lines(description)
-    description_entries = [
-        e for e in description_entries if e["text"].strip() in description
-    ]
-    return {
-        "name": text0,
-        "fields": fields,
-        "field_runs": field_runs,
-        "mark_dots": mark_dots,
-        "description": description,
-        "description_entries": description_entries,
-        "level_upgrades": level_upgrades,
-        "flavor": "\n".join(flavor_parts).strip(),
-    }
+            continue
+        if is_boilerplate_line(text):
+            continue
+        fk, value = split_field(text)
+        if fk and not body_started:
+            if fk in ("\u6807\u8bc6", "\u8d39\u7528"):
+                mark_dots = mark_dots_from_runs(runs)
+            else:
+                if fk in fields and value != fields[fk]:
+                    fields[fk] += "\n" + value
+                    field_runs[fk] = field_runs.get(fk, []) + [{"text": "\n"}] + runs
+                else:
+                    fields[fk] = value
+                    field_runs[fk] = runs
+            continue
+        m = LEVEL_RE.match(text) or LEVEL_RE2.match(text)
+        if m:
+            if len(m.groups()) == 3:
+                cls, level, value = m.groups()
+            else:
+                level, value = m.groups()
+                cls = ""
+            label = text[:text.index("\uff1a") + 1]
+            active_upgrade = {"class": cls, "level": int(level), "text": value,
+                              "label": label, "line_runs": runs}
+            if section:
+                active_upgrade["section"] = section
+            upgrades.append(active_upgrade)
+            body_started = True
+            continue
+        # A named sub-form followed by level rules is a section of this skill.
+        if i + 1 < len(paras) and (LEVEL_RE.match(paras[i + 1]["text"]) or LEVEL_RE2.match(paras[i + 1]["text"])):
+            if len(text) <= 18 and not re.search(r"[\uff1a:\uff0c\u3002\u00b7]", text):
+                section = text
+                active_upgrade = None
+        body_started = True
+        independent = text.startswith(("你", "目标", "如果", "当", "每", "持续", "这个", "加工", "研发"))
+        continuation = bool(p.get("indent")) and not is_new_list_item(text) and not independent and not PURE_LABEL_RE.fullmatch(text) and _row_match(text) is None
+        if active_upgrade is not None:
+            choices = active_upgrade.setdefault("choices", [])
+            if continuation and choices and not PURE_LABEL_RE.fullmatch(choices[-1]):
+                choices[-1] += text
+            elif continuation and not choices:
+                active_upgrade["text"] += text
+                active_upgrade["line_runs"].extend(runs)
+            else:
+                choices.append(text)
+        else:
+            if continuation and description and not PURE_LABEL_RE.fullmatch(description[-1]):
+                description[-1] += text
+                entries[-1]["text"] += text
+                entries[-1]["runs"].extend(runs)
+            else:
+                description.append(text)
+                entries.append({"text": text, "runs": runs})
+    return {"name": paras[start]["text"], "fields": fields, "field_runs": field_runs,
+            "mark_dots": mark_dots, "description": description,
+            "description_entries": entries, "level_upgrades": upgrades, "flavor": "",
+            "source_span": {"start": start, "end": end}}
 
 
 def block_score(block: dict) -> tuple:
@@ -612,13 +491,13 @@ def field_p_html(label: str, value: str, runs: list[dict] | None = None) -> str:
 UNIT_ANCHOR_RE = re.compile(r"防御等级\s*[:：]\s*\d+.*生命值\s*[:：]\s*\d+")
 UNIT_STOP_PREFIXES = (
     "研发材料：", "研发时间：", "参考价格：", "负重：", "类别：", "使用限制：",
-    "加工材料：", "费用：", "描述：", "前置条件：", "额外条件：", "施展时间：",
+    "加工材料：", "加工时间：", "你的", "水栖形态", "飞禽形态", "费用：", "描述：", "前置条件：", "额外条件：", "施展时间：",
     "关键词：", "施展条件：", "施展限制：", "限制：", "标识：",
 )
 UNIT_NAME_RE = re.compile(r"^[^\s·•，,。:：;；、（）()]{1,24}$")
 D_ROW_RE = re.compile(r"(?:^|[·•])\s*(D\d+(?:[-–]\d+)?)\s*[.：:：]")
 NUM_ROW_RE = re.compile(r"[·•]\s*(\d{1,4}(?:[-–]\d+)?)\s*[.：:：]")
-SPLIT_ROW_RE = re.compile(r"[·•]\s*(D\d+(?:[-–]\d+)?|\d{1,4}(?:[-–]\d+)?)\s*[.：:：]")
+SPLIT_ROW_RE = re.compile(r"(?:[·•]|\s+)\s*(D\d+(?:[-–]\d+)?|\d{1,4}(?:[-–]\d+)?)\s*[.：:：]")
 PURE_LABEL_RE = re.compile(r"^\d{1,4}(?:[-–]\d{1,4})?$")
 UNIT_STAT_LABELS = (
     "感官", "移动速度", "战斗加成", "战斗加值", "伤害抗性", "伤害免疫",
@@ -657,6 +536,8 @@ def detect_unit_blocks(lines):
                 if arr[end].startswith(UNIT_STOP_PREFIXES):
                     break
                 end += 1
+            if end < len(arr) and end > i + 1 and UNIT_ANCHOR_RE.search(arr[end]) and UNIT_NAME_RE.fullmatch(arr[end - 1]):
+                end -= 1
             out.append({"name": name, "lines": arr[start:end]})
             i = end
         else:
@@ -702,6 +583,7 @@ def collect_roll_rows(lines):
                 and _row_match(arr[i]) is None
                 and not PURE_LABEL_RE.fullmatch(arr[i])
                 and len(arr[i]) <= 40
+                and not arr[i].startswith(("你", "目标", "持续", "如果", "当", "这个", "额外", "加工"))
                 and not arr[i].startswith(("·", "•", "-"))
                 and not re.match(r"^\d+[.、]", arr[i])
                 and not re.match(r"^你的.+等级到达\d+级时", arr[i])
@@ -725,22 +607,24 @@ def collect_roll_rows(lines):
     return rows
 
 
+
+def rendered_text_key(text):
+    return re.sub(r"[\W_]+", "", html_mod.unescape(re.sub(r"<[^>]+>", "", text))).casefold()
+
+
 def tables_skip_lines(unit_tables, roll_tables):
-    """生成渲染时应从效果正文中剔除的行（避免与表格重复）。"""
+    """Only consume lines covered by an actual rendered replacement."""
     skip = set()
-    for ut in unit_tables or []:
-        if ut.get("name"):
-            skip.add(ut["name"].strip())
-        for ln in ut.get("lines") or []:
-            if ln.strip():
-                skip.add(ln.strip())
+    for unit in unit_tables or []:
+        shown = rendered_text_key(render_unit_tables_html([unit]))
+        for line in [unit.get("name") or ""] + (unit.get("lines") or []):
+            if line and (rendered_text_key(line) in shown or line.strip() == "\u56fa\u6709\u6280\u80fd\uff1a"):
+                skip.add(line.strip())
+    shown = rendered_text_key(render_roll_tables_html(roll_tables))
     for row in roll_tables or []:
-        if row.get("raw"):
-            skip.update(x.strip() for x in row["raw"].split("\n") if x.strip())
-        if row.get("label"):
-            skip.add(row["label"].strip())
-        if row.get("text"):
-            skip.add(row["text"].strip())
+        for line in (row.get("raw") or "").split("\n"):
+            if line and rendered_text_key(line) in shown:
+                skip.add(line.strip())
     return skip
 
 
@@ -749,6 +633,7 @@ def render_unit_tables_html(unit_tables):
         return ""
     out = []
     for ut in unit_tables:
+        card_start = len(out)
         head = ut.get("head") or {}
         out.append('<div class="unit-card">')
         out.append('<div class="unit-head">')
@@ -802,6 +687,12 @@ def render_unit_tables_html(unit_tables):
             out.append("</div>")
         for n in ut.get("notes") or []:
             out.append('<div class="unit-note">' + html_mod.escape(n) + '</div>')
+        covered = rendered_text_key("".join(out[card_start:]))
+        for line in ut.get("lines") or []:
+            if line.strip() == "固有技能：":
+                continue
+            if rendered_text_key(line) not in covered:
+                out.append('<div class="unit-note">' + html_mod.escape(line) + '</div>')
         out.append("</div>")
     return "".join(out)
 
@@ -904,10 +795,6 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
         (tables or {}).get("unit_tables"),
         (tables or {}).get("roll_tables"),
     )
-    for blk in detect_unit_blocks(desc):
-        skip.update(ln.strip() for ln in blk["lines"] if ln.strip())
-    for row in collect_roll_rows(desc):
-        skip.update(x.strip() for x in row["raw"].split("\n") if x.strip())
     desc_text = fields.get("描述")
     # 描述句单独单元格：docx 原文（描述：xxx）一字不改
     if desc_text:
@@ -1175,7 +1062,7 @@ def build_skill_data_attrs(skill: dict, mark_dots: list[str] | None = None, clas
     tags = skill.get("tags") or []
     fields = skill.get("fields") or {}
     kw = fields.get("关键词", "")
-    stype = skill_type_from_keywords(kw)
+    stype = skill_type_from_keywords(kw) if kw else (skill.get("type") or "天赋")
     tier = skill.get("tier", "")
     if skill.get("type") == "starting":
         tier_val = "0"
@@ -1231,7 +1118,7 @@ def json_to_fx_entry(skill: dict, class_name: str) -> dict:
         "class": class_name,
         "style": st,
         "tier": tier,
-        "type": skill_type_from_keywords(kw),
+        "type": skill_type_from_keywords(kw) if kw else (skill.get("type") or "天赋"),
         "tags": tags,
         "cost": {},
         "effects": effects,
@@ -1273,6 +1160,9 @@ def json_to_fx_entry(skill: dict, class_name: str) -> dict:
                 change = f"{change}\n{choice}"
             entry["upgrades"].append({"level": u["level"], "change": change})
 
+    for key in ("fields", "description", "level_upgrades", "field_runs", "description_entries", "unit_tables", "roll_tables", "legacy_ids"):
+        if skill.get(key):
+            entry[key] = skill[key]
     return entry
 
 

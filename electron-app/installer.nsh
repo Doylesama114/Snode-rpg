@@ -2,7 +2,14 @@
 ; - 处理 /S 标志实现静默安装
 ; - 完成页"创建桌面快捷方式"复选框（仅安装程序，不作用于卸载程序）
 
+!include "WinVer.nsh"
+
 !macro customInit
+  ${IfNot} ${AtLeastWin10}
+    MessageBox MB_OK|MB_ICONSTOP "本版本需要 Windows 10/11 64 位。"
+    SetErrorLevel 1
+    Quit
+  ${EndIf}
   ; 处理 /S 标志实现静默安装
   ${GetParameters} $R0
   ${GetOptions} $R0 "/S" $R1

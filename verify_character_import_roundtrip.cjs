@@ -70,7 +70,7 @@ try {
  await check('Excel shared strings and sparse cells',async()=>{
   const b=XLSX.read(bytes,{type:'buffer'}),meta=b.Sheets._SNODE_META;
   for(const k of Object.keys(meta))if(!k.startsWith('!')&&meta[k].v==='')delete meta[k];
-  const r=await importBytes(upload,encode(b));assert.equal(r.meta.status,'ok');stable(r.state);assert.equal(r.state._metaStats.edited,0);
+  const r=await importBytes(upload,encode(b));assert.equal(r.meta.status,'ok');stable(r.state);assert.equal(r.state._metaStats.edited,0,JSON.stringify({issues:r.state.importIssues.filter(i=>i.kind==="visible-edited"),visible:r.state.skills.map(e=>({n:e.n,visible:e._visible})),baseline:r.meta.rows.filter(m=>m.sheet!=="__STATE__").map(m=>({n:m.name,baseline:m._baseline}))}));
  });
  await check('inline strings without sharedStrings',async()=>{
   const buf=encode(XLSX.read(bytes,{type:'buffer'}),false),r=await importBytes(upload,buf);stable(r.state);assert.equal(r.meta.status,'ok');
@@ -147,7 +147,7 @@ try {
   for(let row=2;row<=20;row++)if(m['R'+row])m['R'+row]={t:'s',v:'1'};
   const r=await importBytes(upload,encode(b));
   for(const old of initial.skills.concat(initial.talent_tree))assert.ok(r.state.skills.concat(r.state.talent_tree).some(e=>e.uid===old.uid),old.uid);
-  assert.equal(r.state._metaStats.edited,0);assert.equal(r.state.talent_tree.find(e=>e.n==='\u9053\u5177\u5927\u5e08').tier,'\u4e94\u9636');
+  assert.equal(r.state._metaStats.edited,0,JSON.stringify({issues:r.state.importIssues.filter(i=>i.kind==="visible-edited"),visible:r.state.skills.map(e=>({n:e.n,visible:e._visible})),baseline:r.meta.rows.filter(m=>m.sheet!=="__STATE__").map(m=>({n:m.name,baseline:m._baseline}))}));assert.equal(r.state.talent_tree.find(e=>e.n==='\u9053\u5177\u5927\u5e08').tier,'\u4e94\u9636');
  });
  await check('same name different domain IDs roundtrip separately',async()=>{
   const s=structuredClone(initial),choices=await upload.evaluate(()=>{
@@ -219,7 +219,7 @@ try {
   assert.ok(r.state.talent_tree.some(e=>e.cellRef==='R150'));stable(r.state);
   const out=await exportState(panel,r.state,buf),after=XLSX.read(out,{type:'buffer'});
   assert.equal(after.Sheets[sheetName].R150.v,'\u9053\u5177\u5927\u5e08');
-  const again=(await importBytes(upload,out)).state;stable(again);assert.equal(again._metaStats.edited,0);
+  const again=(await importBytes(upload,out)).state;stable(again);assert.equal(again._metaStats.edited,0,JSON.stringify(again.importIssues.filter(i=>i.kind==="visible-edited")));
  });
  await check('populated template outranks an empty template',async()=>{
   const b=XLSX.read(bytes,{type:'buffer'}),sh=structuredClone(b.Sheets[sheetName]);
@@ -244,6 +244,99 @@ try {
   const r=(await importBytes(upload,await exportState(panel,s))).state;assert.equal(r.skills.length,42);
   for(const i of [40,41]){const e=r.skills.find(e=>e.uid==='overflow-'+i);assert.equal(e.ds,'\u539f\u59cb\u5b8c\u6574\u5185\u5bb9-'+i);assert.equal(e.tm,'\u4e3b\u8981\u52a8\u4f5c');assert.equal(e.range,'18\u7c73');assert.deepEqual(e.choices,{pick:i});assert.equal(e.writtenToVisible,false);}
  });
+
+
+ function moveAbilityCells(book,rowOffset,colOffset){
+  const sh=book.Sheets[sheetName],moved={};
+  for(const key of Object.keys(sh)){
+   if(key.startsWith('!'))continue;const p=XLSX.utils.decode_cell(key);
+   if(p.r>=119&&p.r<=208){moved[XLSX.utils.encode_cell({r:p.r+rowOffset,c:p.c+colOffset})]=sh[key];delete sh[key];}
+  }
+  Object.assign(sh,moved);
+  sh['!merges']=(sh['!merges']||[]).map(m=>m.s.r>=119&&m.e.r<=208?{s:{r:m.s.r+rowOffset,c:m.s.c+colOffset},e:{r:m.e.r+rowOffset,c:m.e.c+colOffset}}:m);
+  const refs=Object.keys(sh).filter(k=>!k.startsWith('!')).map(k=>XLSX.utils.decode_cell(k));
+  sh['!ref']=XLSX.utils.encode_range({s:{r:Math.min(...refs.map(p=>p.r)),c:Math.min(...refs.map(p=>p.c))},e:{r:Math.max(...refs.map(p=>p.r)),c:Math.max(...refs.map(p=>p.c))}});
+ }
+ await check('section words in prose and K-column fields are not abilities',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'}),sh=b.Sheets[sheetName];
+  sh.H18={t:'s',v:'\u8be5\u4e13\u957f\u5141\u8bb8\u73a9\u5bb6\u4ece\u5176\u4ed6\u804c\u4e1a\u7684\u6280\u80fd\u5217\u8868\u6311\u9009\u80fd\u529b\u3002'};
+  sh.H19={t:'s',v:'\u6b63\u6587\u63d0\u5230\u5929\u8d4b\u6811\uff0c\u4e0d\u662f\u533a\u57df\u6807\u9898\u3002'};
+  sh.K125={t:'s',v:'\u540d\u79f0'};sh.K126={t:'s',v:'\u91d1\u5e01'};
+  const r=(await importBytes(upload,encode(b))).state;stable(r);
+  assert.equal(r.skills.length,initial.skills.length);assert.equal(r.talent_tree.length,initial.talent_tree.length);
+  assert.ok(!r.skills.some(e=>['\u540d\u79f0','\u7c7b\u522b','\u529b\u91cf','\u654f\u6377','\u91d1\u5e01'].includes(e.n)));
+ });
+ await check('skill and talent regions can move rows and columns',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'});moveAbilityCells(b,35,6);
+  const r=(await importBytes(upload,encode(b))).state;stable(r);
+  assert.equal(r.skills.find(e=>e.uid==='charge').cellRef,'H158');
+  assert.equal(r.talent_tree.find(e=>e.uid==='talent-0').cellRef,'U185');
+  assert.equal(r.skills.find(e=>e.uid==='sub-charge').place,'sub');
+  assert.equal(r.skills.length,initial.skills.length);
+ });
+
+ await check('blank rows between section captions and headings do not break recognition',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'}),sh=b.Sheets[sheetName],shifted={};
+  for(const key of Object.keys(sh)){if(key.startsWith('!'))continue;const p=XLSX.utils.decode_cell(key);if(p.r>=121){shifted[XLSX.utils.encode_cell({r:p.r+12,c:p.c})]=sh[key];delete sh[key];}}
+  Object.assign(sh,shifted);sh['!merges']=(sh['!merges']||[]).map(m=>m.s.r>=121?{s:{r:m.s.r+12,c:m.s.c},e:{r:m.e.r+12,c:m.e.c}}:m);
+  const used=XLSX.utils.decode_range(sh['!ref']);used.e.r+=12;sh['!ref']=XLSX.utils.encode_range(used);
+  const r=(await importBytes(upload,encode(b))).state;stable(r);assert.equal(r._importLayoutIssues.length,0);
+  assert.equal(r.skills.find(e=>e.uid==='charge').cellRef,'B135');
+ });
+
+ await check('ability columns beyond Z do not require template coordinates',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'});moveAbilityCells(b,5,28);
+  const r=(await importBytes(upload,encode(b))).state;stable(r);
+  assert.equal(r.skills.find(e=>e.uid==='charge').cellRef,'AD128');
+  assert.equal(r.talent_tree.find(e=>e.uid==='talent-0').cellRef,'AQ155');
+ });
+ await check('skill columns reordered by headers retain source and visible baseline',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'}),sh=b.Sheets[sheetName];
+  for(let row=122;row<=209;row++){
+   if(row>165&&row<167)continue;
+   for(const [a,c]of [['D','I'],['E','H']]){const v=sh[a+row];sh[a+row]=sh[c+row];sh[c+row]=v;}
+  }
+  const r=await importBytes(upload,encode(b));stable(r.state);
+  assert.equal(r.state.skills.find(e=>e.uid==='charge').src,'\u6218\u58eb');
+  assert.equal(r.state.skills.find(e=>e.uid==='charge').range,'X\u7c73');
+  assert.equal(r.state._metaStats.edited,0);
+ });
+ await check('unknown custom abilities remain in validated tables',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'}),sh=b.Sheets[sheetName];
+  sh.B136={t:'s',v:'\u73a9\u5bb6\u81ea\u5b9a\u4e49\u80fd\u529b'};sh.J136={t:'s',v:'\u4fdd\u7559\u5b8c\u6574\u539f\u6587'};
+  const r=(await importBytes(upload,encode(b))).state;
+  const e=r.skills.find(e=>e.n==='\u73a9\u5bb6\u81ea\u5b9a\u4e49\u80fd\u529b');assert.ok(e);assert.equal(e.ds,'\u4fdd\u7559\u5b8c\u6574\u539f\u6587');
+ });
+ await check('OOXML encoded line breaks and literal escapes decode once',async()=>{
+  const r=await upload.evaluate(()=>{
+   const x=SNOWD_CHARACTER_IO.sheet('<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData><row r="1"><c r="A1" t="inlineStr"><is><t>\u6301\u7eed\u65f6\u95f4_x000D_</t></is></c><c r="B1" t="inlineStr"><is><t>_x005F_x0041_</t></is></c></row></sheetData></worksheet>',[]);
+   return {header:SNOWD_CHARACTER_LAYOUT.normalize(x.cells.A1),literal:x.cells.B1};
+  });assert.equal(r.header,'\u6301\u7eed\u65f6\u95f4');assert.equal(r.literal,'_x0041_');
+ });
+ await check('unrecognized skill headings are reported and cannot silently save',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'}),sh=b.Sheets[sheetName];
+  for(const col of ['B','D','E','F','H','I','J']){sh[col+'122']={t:'s',v:'\u672a\u77e5\u5217-'+col};sh[col+'167']={t:'s',v:'\u672a\u77e5\u5217-'+col};}
+  const r=(await importBytes(upload,encode(b))).state;assert.ok(r._importLayoutIssues.length);assert.ok(r.importIssues.some(i=>i.kind==='layout-unrecognized'));
+  const count=await upload.evaluate(s=>{pendingState=s;let note='';const original=SD_alert;SD_alert=text=>{note=text;};const before=localStorage.length;confirmImport();SD_alert=original;return {delta:localStorage.length-before,note};},r);
+  assert.equal(count.delta,0);assert.ok(count.note.includes('\u8868\u5934'));
+ });
+
+ await check('a missing main table header is reported even when the sub table is valid',async()=>{
+  const b=XLSX.read(bytes,{type:'buffer'});b.Sheets[sheetName].B122={t:'s',v:'\u62db\u5f0f\u6807\u9898'};
+  const r=(await importBytes(upload,encode(b))).state;assert.ok(r._importLayoutIssues.length);assert.ok(r.skills.some(e=>e.place==='sub'));
+ });
+
+ const fixtureIndex=process.argv.indexOf('--fixture');
+ if(fixtureIndex>=0){
+  await check('real attachment has 9 skills and 5 talents without field-label abilities',async()=>{
+   const sourceBytes=fs.readFileSync(process.argv[fixtureIndex+1]),result=(await importBytes(upload,sourceBytes)).state;
+   assert.equal(result.skills.length,9);assert.equal(result.talent_tree.length,5);
+   assert.ok(!result.skills.some(e=>['\u540d\u79f0','\u7c7b\u522b','\u529b\u91cf','\u654f\u6377','\u4f53\u8d28','\u667a\u529b','\u611f\u77e5','\u9b45\u529b','\u610f\u5fd7','\u5e78\u8fd0','\u9644\u8d60\u804c\u4e1a','\u5c5e\u6027\u4fe1\u606f'].includes(e.n)));
+   assert.equal(result._metaStats.applied,5);assert.equal(result._metaStats.edited,0);
+   assert.equal(result.skills.find(e=>e.n==='\u6d3b\u706b\u7130').via,'\u9b54\u6cd5\u4e13\u5bb6');
+   assert.ok(result.skills.some(e=>e.n==='\u85e4\u66fc\u4e4b\u5899'));assert.equal(result.importIssues.filter(i=>i.kind==='typo-candidate').length,1);
+  });
+ }
 
  await check('source dialog targets UID / independent free and occupies',async()=>{
   await upload.evaluate(s=>{pendingState=s;openIssueResolver('bolt',s);},baseline.state);

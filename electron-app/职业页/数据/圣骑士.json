@@ -120,7 +120,12 @@
       ],
       "flavor": "",
       "cost": [],
-      "style": "惩戒"
+      "style": "惩戒",
+      "source": {
+        "kind": "docx",
+        "para_start": 73,
+        "para_end": 86
+      }
     },
     {
       "id": "p-starting-skill-2",
@@ -230,7 +235,12 @@
       ],
       "flavor": "",
       "cost": [],
-      "style": "惩戒"
+      "style": "惩戒",
+      "source": {
+        "kind": "docx",
+        "para_start": 86,
+        "para_end": 99
+      }
     },
     {
       "id": "p-starting-skill-3",
@@ -251,8 +261,7 @@
         "描述": "你举起盾牌以应对即将到来的伤害"
       },
       "description": [
-        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果",
-        "盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
+        "你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦",
         "如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值"
       ],
       "level_upgrades": [
@@ -297,7 +306,12 @@
       ],
       "flavor": "",
       "cost": [],
-      "style": "守护"
+      "style": "守护",
+      "source": {
+        "kind": "docx",
+        "para_start": 99,
+        "para_end": 112
+      }
     },
     {
       "id": "p-starting-skill-4",
@@ -395,7 +409,12 @@
       ],
       "flavor": "",
       "cost": [],
-      "style": "圣洁"
+      "style": "圣洁",
+      "source": {
+        "kind": "docx",
+        "para_start": 112,
+        "para_end": 124
+      }
     },
     {
       "id": "p-starting-skill-5",
@@ -419,8 +438,7 @@
         "你触碰一名角色，移除目标当前所受到的困惑、恐惧或混乱状态",
         "如果成功驱散对方的异常状态，那么目标还会获得4点对邪魔、亡灵和不死生物的抗性，持续1轮",
         "同一名角色直到进行一次长休前不会再次受到驱邪术的影响",
-        "施展驱邪术能够将挑战等级不超过2级的邪魔或不死生物从其他角色的体内驱逐",
-        "圣骑士天赋树"
+        "施展驱邪术能够将挑战等级不超过2级的邪魔或不死生物从其他角色的体内驱逐"
       ],
       "level_upgrades": [
         {
@@ -501,7 +519,12 @@
       ],
       "flavor": "",
       "cost": [],
-      "style": "圣洁"
+      "style": "圣洁",
+      "source": {
+        "kind": "docx",
+        "para_start": 124,
+        "para_end": 140
+      }
     },
     {
       "id": "p-skill-123",
@@ -615,7 +638,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 149,
+        "para_end": 163
+      }
     },
     {
       "id": "p-skill-138",
@@ -651,7 +680,13 @@
       "flavor": "",
       "style": "惩戒",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 164,
+        "para_end": 176
+      }
     },
     {
       "id": "p-skill-154",
@@ -725,7 +760,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 180,
+        "para_end": 195
+      }
     },
     {
       "id": "p-skill-169",
@@ -839,7 +880,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 195,
+        "para_end": 214
+      }
     },
     {
       "id": "p-skill-193",
@@ -1001,7 +1048,13 @@
       ],
       "style": "惩戒",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 219,
+        "para_end": 239
+      }
     },
     {
       "id": "p-skill-213",
@@ -1122,7 +1175,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 239,
+        "para_end": 255
+      }
     },
     {
       "id": "p-skill-230",
@@ -1162,7 +1221,13 @@
       "flavor": "",
       "style": "惩戒",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 256,
+        "para_end": 271
+      }
     },
     {
       "id": "p-skill-250",
@@ -1273,7 +1338,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 276,
+        "para_end": 293
+      }
     },
     {
       "id": "p-skill-267",
@@ -1382,7 +1453,13 @@
       ],
       "style": "惩戒",
       "tier": "四阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 293,
+        "para_end": 308
+      }
     },
     {
       "id": "p-skill-282",
@@ -1461,7 +1538,13 @@
       ],
       "style": "惩戒",
       "tier": "四阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 308,
+        "para_end": 325
+      }
     },
     {
       "id": "p-skill-305",
@@ -1573,7 +1656,13 @@
       ],
       "flavor": "",
       "style": "惩戒",
-      "tier": "五阶"
+      "tier": "五阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 331,
+        "para_end": 361
+      }
     },
     {
       "id": "p-skill-335",
@@ -1614,27 +1703,7 @@
         }
       ],
       "description": [
-        "你召唤一匹可供至多两名中型体型角色骑乘的神圣战驹，其数据如下所示",
-        "神圣战驹",
-        "中大型天界生物，防御等级：14，生命值：36",
-        "力量18（+2） 敏捷12（+1） 体质14（+2） 智力7 （-1）",
-        "感知12（+1） 魅力12（+1） 意志13（+1） 幸运13（+1）",
-        "感官：警惕值11",
-        "移动速度：12米",
-        "战斗加成：先攻时序值15，攻击命中检定加值+7",
-        "伤害抗性：光耀",
-        "伤害免疫：神圣",
-        "状态免疫：缴械",
-        "语言：兽语、天界语",
-        "固有技能：",
-        "神圣加护",
-        "天赋.韧性.神圣战驹在针对黑暗环境和暗影、诅咒和黑魔法等效应的豁免检定时具有优势",
-        "神圣冲锋",
-        "天赋.如果神圣战驹朝一名角色直线移动至少6米，那么可以使对方进行一次难度为15的力量豁免，对方豁免失败将承受13点神圣伤害并进入击倒状态，随后神圣战驹可以对其进行一次蹄击",
-        "蹄击",
-        "本能.主要动作.神圣战驹用蹄子践踏敌人，对一名角色造成13点钝击伤害",
-        "神圣之盾",
-        "神术.附赠动作.长休.神圣战驹在位移过程中为自身和骑乘者各生成一个能够抵挡13点伤害的护盾，这个护盾无法抵挡邪能和星界伤害"
+        "你召唤一匹可供至多两名中型体型角色骑乘的神圣战驹，其数据如下所示"
       ],
       "level_upgrades": [
         {
@@ -1693,6 +1762,28 @@
             {
               "text": "驹在被召唤的首个轮次拥有圣盾术"
             }
+          ],
+          "choices": [
+            "神圣战驹",
+            "中大型天界生物，防御等级：14，生命值：36",
+            "力量18（+2） 敏捷12（+1） 体质14（+2） 智力7 （-1）",
+            "感知12（+1） 魅力12（+1） 意志13（+1） 幸运13（+1）",
+            "感官：警惕值11",
+            "移动速度：12米",
+            "战斗加成：先攻时序值15，攻击命中检定加值+7",
+            "伤害抗性：光耀",
+            "伤害免疫：神圣",
+            "状态免疫：缴械",
+            "语言：兽语、天界语",
+            "固有技能：",
+            "神圣加护",
+            "天赋.韧性.神圣战驹在针对黑暗环境和暗影、诅咒和黑魔法等效应的豁免检定时具有优势",
+            "神圣冲锋",
+            "天赋.如果神圣战驹朝一名角色直线移动至少6米，那么可以使对方进行一次难度为15的力量豁免，对方豁免失败将承受13点神圣伤害并进入击倒状态，随后神圣战驹可以对其进行一次蹄击",
+            "蹄击",
+            "本能.主要动作.神圣战驹用蹄子践踏敌人，对一名角色造成13点钝击伤害",
+            "神圣之盾",
+            "神术.附赠动作.长休.神圣战驹在位移过程中为自身和骑乘者各生成一个能够抵挡13点伤害的护盾，这个护盾无法抵挡邪能和星界伤害"
           ]
         }
       ],
@@ -1781,9 +1872,16 @@
               "text": "神术.附赠动作.长休.神圣战驹在位移过程中为自身和骑乘者各生成一个能够抵挡13点伤害的护盾，这个护盾无法抵挡邪能和星界伤害"
             }
           ],
-          "notes": []
+          "notes": [],
+          "level": 18
         }
-      ]
+      ],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 361,
+        "para_end": 397
+      }
     },
     {
       "id": "p-skill-371",
@@ -1835,7 +1933,13 @@
       "flavor": "",
       "style": "惩戒",
       "tier": "五阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 397,
+        "para_end": 420
+      }
     },
     {
       "id": "p-skill-394",
@@ -1847,10 +1951,11 @@
         "前置条件": "本次游玩的战斗环节中有邪恶阵营角色的先攻区间在你之前",
         "额外条件": "你被他人誉为正义势力的先锋",
         "关键词": "天赋.互动",
-        "标识": "●●",
-        "描述": "你迫不及待地成为对抗邪恶势力的急先锋，在战斗环节中每个轮次结束阶段会进行一次结算，如果当前仍有邪恶阵营角色的先攻区间在你之前，那么将你的先攻区间至于对方之前（至多提升至闪电区间）"
+        "标识": "●●"
       },
-      "description": [],
+      "description": [
+        "你迫不及待地成为对抗邪恶势力的急先锋，在战斗环节中每个轮次结束阶段会进行一次结算，如果当前仍有邪恶阵营角色的先攻区间在你之前，那么将你的先攻区间至于对方之前（至多提升至闪电区间）"
+      ],
       "style": "惩戒",
       "tier": "五阶",
       "level_upgrades": [],
@@ -1868,7 +1973,13 @@
           "name": "浅色",
           "id": "浅色"
         }
-      ]
+      ],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 420,
+        "para_end": 426
+      }
     },
     {
       "id": "p-skill-407",
@@ -1993,7 +2104,13 @@
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 433,
+        "para_end": 447
+      }
     },
     {
       "id": "p-skill-421",
@@ -2129,7 +2246,13 @@
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 447,
+        "para_end": 464
+      }
     },
     {
       "id": "p-skill-439",
@@ -2165,7 +2288,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 465,
+        "para_end": 477
+      }
     },
     {
       "id": "p-skill-455",
@@ -2231,7 +2360,8 @@
             {
               "text": "环内的所有角色生成护盾"
             }
-          ]
+          ],
+          "section": "怜悯之光无法抵挡邪能和星界伤害"
         },
         {
           "class": "圣骑士职业",
@@ -2260,12 +2390,19 @@
             {
               "text": "点伤害的护盾"
             }
-          ]
+          ],
+          "section": "怜悯之光无法抵挡邪能和星界伤害"
         }
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 481,
+        "para_end": 497
+      }
     },
     {
       "id": "p-skill-471",
@@ -2310,7 +2447,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "二阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 497,
+        "para_end": 511
+      }
     },
     {
       "id": "p-skill-489",
@@ -2354,7 +2497,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 515,
+        "para_end": 529
+      }
     },
     {
       "id": "p-skill-504",
@@ -2400,7 +2549,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 530,
+        "para_end": 545
+      }
     },
     {
       "id": "p-skill-524",
@@ -2483,7 +2638,13 @@
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 550,
+        "para_end": 565
+      }
     },
     {
       "id": "p-skill-539",
@@ -2530,7 +2691,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "四阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 565,
+        "para_end": 581
+      }
     },
     {
       "id": "p-skill-555",
@@ -2543,10 +2710,11 @@
         "前置条件": "敏捷或感知属性不为你最低的属性值",
         "额外条件": "敏捷和感知属性为你最高的属性值之一",
         "关键词": "天赋.躲闪.战斗阶段开始",
-        "标识": "●●",
-        "描述": "你可以花费2点疲劳值来预知战斗的进程，在战斗环节中后续两次针对你的攻击命中检定具有劣势"
+        "标识": "●●"
       },
-      "description": [],
+      "description": [
+        "你可以花费2点疲劳值来预知战斗的进程，在战斗环节中后续两次针对你的攻击命中检定具有劣势"
+      ],
       "level_upgrades": [
         {
           "class": "圣骑士职业",
@@ -2582,7 +2750,13 @@
           "name": "白色",
           "id": "白色"
         }
-      ]
+      ],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 581,
+        "para_end": 588
+      }
     },
     {
       "id": "p-skill-567",
@@ -2627,7 +2801,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "五阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 593,
+        "para_end": 607
+      }
     },
     {
       "id": "p-skill-581",
@@ -2737,7 +2917,13 @@
       ],
       "flavor": "",
       "style": "守护",
-      "tier": "五阶"
+      "tier": "五阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 607,
+        "para_end": 622
+      }
     },
     {
       "id": "p-skill-596",
@@ -2783,7 +2969,13 @@
       "flavor": "",
       "style": "守护",
       "tier": "五阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 622,
+        "para_end": 637
+      }
     },
     {
       "id": "p-skill-617",
@@ -2866,7 +3058,13 @@
       ],
       "flavor": "",
       "style": "圣洁",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 643,
+        "para_end": 657
+      }
     },
     {
       "id": "p-skill-631",
@@ -2906,7 +3104,13 @@
       "flavor": "",
       "style": "圣洁",
       "tier": "一阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 657,
+        "para_end": 673
+      }
     },
     {
       "id": "p-skill-651",
@@ -3036,7 +3240,13 @@
       ],
       "style": "圣洁",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 677,
+        "para_end": 693
+      }
     },
     {
       "id": "p-skill-667",
@@ -3100,7 +3310,8 @@
             {
               "text": "）"
             }
-          ]
+          ],
+          "section": "圣光道标最多为目标回复15点生命值"
         },
         {
           "class": "圣骑士职业",
@@ -3135,12 +3346,19 @@
             {
               "text": "）"
             }
-          ]
+          ],
+          "section": "圣光道标最多为目标回复15点生命值"
         }
       ],
       "flavor": "",
       "style": "圣洁",
-      "tier": "二阶"
+      "tier": "二阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 693,
+        "para_end": 709
+      }
     },
     {
       "id": "p-skill-687",
@@ -3230,7 +3448,13 @@
       ],
       "flavor": "",
       "style": "圣洁",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 713,
+        "para_end": 728
+      }
     },
     {
       "id": "p-skill-703",
@@ -3271,7 +3495,13 @@
       "flavor": "",
       "style": "圣洁",
       "tier": "三阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 729,
+        "para_end": 745
+      }
     },
     {
       "id": "p-skill-724",
@@ -3324,7 +3554,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "圣洁",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 750,
+        "para_end": 764
+      }
     },
     {
       "id": "p-skill-738",
@@ -3370,7 +3606,13 @@
       "style": "圣洁",
       "tier": "四阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 764,
+        "para_end": 779
+      }
     },
     {
       "id": "p-skill-753",
@@ -3383,10 +3625,10 @@
         "前置条件": "你拥有包含光环关键词的技能",
         "额外条件": "本风格不能是你的圣骑士职业的第三或第四种战斗风格",
         "关键词": "天赋.强化.光环",
-        "标识": "●●",
-        "描述": "当你习得此天赋时，立即从抉择选项中获取一项你未选择的、带有光环关键词的技能加入你的技能列表"
+        "标识": "●●"
       },
       "description": [
+        "当你习得此天赋时，立即从抉择选项中获取一项你未选择的、带有光环关键词的技能加入你的技能列表",
         "你的带有光环关键词的技能生效范围改为自身周围12米范围内的所有友方角色",
         "你可以在自身回合花费一个附赠动作将光环的施展来源标记为范围内的一名友方角色，或者将标记转移回到自身",
         "带有光环关键词的技能将具有额外效果：",
@@ -3411,7 +3653,13 @@
           "name": "白色",
           "id": "白色"
         }
-      ]
+      ],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 779,
+        "para_end": 792
+      }
     },
     {
       "id": "p-skill-771",
@@ -3458,7 +3706,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "圣洁",
-      "tier": "五阶"
+      "tier": "五阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 797,
+        "para_end": 814
+      }
     },
     {
       "id": "p-skill-788",
@@ -3503,7 +3757,13 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "圣洁",
-      "tier": "五阶"
+      "tier": "五阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 814,
+        "para_end": 829
+      }
     },
     {
       "id": "p-skill-803",
@@ -3552,7 +3812,13 @@
       "flavor": "",
       "style": "圣洁",
       "tier": "五阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 829,
+        "para_end": 849
+      }
     },
     {
       "id": "p-skill-829",
@@ -3607,7 +3873,8 @@
             {
               "text": "米范围"
             }
-          ]
+          ],
+          "section": "以眼还眼至多返还25点神圣伤害"
         },
         {
           "class": "圣骑士职业",
@@ -3633,12 +3900,19 @@
             {
               "text": "点神圣伤害"
             }
-          ]
+          ],
+          "section": "以眼还眼至多返还25点神圣伤害"
         }
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 855,
+        "para_end": 870
+      }
     },
     {
       "id": "p-skill-844",
@@ -3734,7 +4008,13 @@
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "一阶"
+      "tier": "一阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 870,
+        "para_end": 884
+      }
     },
     {
       "id": "p-skill-862",
@@ -3859,7 +4139,13 @@
       ],
       "style": "热诚",
       "tier": "二阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 888,
+        "para_end": 905
+      }
     },
     {
       "id": "p-skill-879",
@@ -3898,7 +4184,13 @@
       "style": "热诚",
       "tier": "二阶",
       "level_upgrades": [],
-      "flavor": ""
+      "flavor": "",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 905,
+        "para_end": 919
+      }
     },
     {
       "id": "p-skill-898",
@@ -3973,7 +4265,13 @@
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 924,
+        "para_end": 941
+      }
     },
     {
       "id": "p-skill-916",
@@ -4083,7 +4381,13 @@
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "三阶"
+      "tier": "三阶",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 942,
+        "para_end": 959
+      }
     },
     {
       "id": "p-skill-933",
@@ -4206,7 +4510,13 @@
       ],
       "style": "热诚",
       "tier": "三阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 959,
+        "para_end": 974
+      }
     },
     {
       "id": "p-skill-953",
@@ -4259,7 +4569,13 @@
       "flavor": "",
       "style": "热诚",
       "tier": "四阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 979,
+        "para_end": 995
+      }
     },
     {
       "id": "p-skill-969",
@@ -4306,7 +4622,13 @@
       "flavor": "",
       "style": "热诚",
       "tier": "四阶",
-      "level_upgrades": []
+      "level_upgrades": [],
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 995,
+        "para_end": 1011
+      }
     },
     {
       "id": "p-skill-985",
@@ -4401,7 +4723,13 @@
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "四阶"
+      "tier": "四阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1011,
+        "para_end": 1034
+      }
     },
     {
       "id": "p-skill-1014",
@@ -4438,8 +4766,7 @@
         }
       ],
       "description": [
-        "你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前并发起攻击，本次攻击命中检定对于你阵营相反的角色具有优势",
-        "施展距离的X为你的基础移动速度+2米",
+        "你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前并发起攻击，本次攻击命中检定对于你阵营相反的角色具有优势施展距离的X为你的基础移动速度+2米",
         "如果你在施展殉道冲锋的过程中承受借机攻击或其他伤害并因此导致生命值降低至0或以下，那么在结算你的位移和攻击后再进入失能状态",
         "如果你在施展殉道冲锋后进入失能状态，对自身周围所有角色造成5D12点神圣伤害，闪避成功的角色仍需要承受一半的结算后伤害值"
       ],
@@ -4493,7 +4820,13 @@
       ],
       "style": "热诚",
       "tier": "五阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 1040,
+        "para_end": 1058
+      }
     },
     {
       "id": "p-skill-1032",
@@ -4569,7 +4902,13 @@
       ],
       "style": "热诚",
       "tier": "五阶",
-      "flavor": ""
+      "flavor": "",
+      "type": "战技",
+      "source": {
+        "kind": "docx",
+        "para_start": 1058,
+        "para_end": 1075
+      }
     },
     {
       "id": "p-skill-1049",
@@ -4646,7 +4985,13 @@
       ],
       "flavor": "",
       "style": "热诚",
-      "tier": "五阶"
+      "tier": "五阶",
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 1075,
+        "para_end": 1091
+      }
     },
     {
       "id": "p-skill-1065",
@@ -4659,10 +5004,10 @@
         "前置条件": "你为了维护自身信仰而做出了你明确知晓是错误的举止",
         "额外条件": "你为了维护自身信仰而杀害了一名无辜之人",
         "关键词": "天赋.韧性.负面收益",
-        "标识": "●●",
-        "描述": "你不在乎事件的对错，现在需要做得便是以更加积极的姿态赞颂信仰，你能够免疫困惑和忏悔状态"
+        "标识": "●●"
       },
       "description": [
+        "你不在乎事件的对错，现在需要做得便是以更加积极的姿态赞颂信仰，你能够免疫困惑和忏悔状态",
         "你的智力、感知和魅力豁免值-1"
       ],
       "flavor": "",
@@ -4682,7 +5027,13 @@
           "name": "青色",
           "id": "青色"
         }
-      ]
+      ],
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 1091,
+        "para_end": 1098
+      }
     }
   ]
 }

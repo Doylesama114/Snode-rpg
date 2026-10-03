@@ -5,6 +5,11 @@ directories:
 files:
   - main.js
   - preload.js
+  - desktop-diagnostics.js
+  - window-lifecycle.js
+  - recovery-store.js
+  - desktop-error.html
+  - desktop-error.js
   - update-mirror-config.js
   - advisor-env-bootstrap.js
   - chargen-cli-server.js

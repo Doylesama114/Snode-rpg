@@ -242,7 +242,7 @@ function allocateUniqueCharId(desired) {
 
 /** Underscore keys that must survive save/load (game progress, not UI temps). */
 function isPersistedInternalKey(key) {
-  return key === "_hp_per_level_bonus"
+  return key === "_xlsxSheetPath" || key === "_importLayoutIssues" || key === "_hp_per_level_bonus"
     || key === "_feat_ac_bonus"
     || key === "_persistOrig"
     || key === "_futureLowestLeft"
@@ -279,10 +279,12 @@ function saveState(slotIndex) {
   var snapshot = getStateSnapshot();
   try {
     localStorage.setItem(key, JSON.stringify(snapshot));
+    state._savedAt = snapshot._savedAt;
     state._dirty = false;
     reportPanelDirty(false);   // 已保存 → 允许自动重启安装（策略 B 安全网）
     CURRENT_CHAR = charName;
     CURRENT_SLOT = si;
+    if (window.desktopRecovery) window.desktopRecovery.saved({ module: 'panel', character: charName, slot: si });
     return true;
   } catch(e) {
     SB_toast("保存失败: " + e.message);
@@ -291,6 +293,7 @@ function saveState(slotIndex) {
 }
 
 function loadState(charName, slotIndex) {
+  if (window.desktopRecovery && state._dirty) window.desktopRecovery.flush();
   var key = getSaveKey(charName, slotIndex);
   var raw = localStorage.getItem(key);
   if (!raw) return false;
@@ -421,6 +424,7 @@ function reportPanelDirty(v) {
 function autoSave() {
   state._dirty = true;
   reportPanelDirty(true);
+  if (window.desktopRecovery) window.desktopRecovery.mark();
 }
 
 // Initialize from URL params
@@ -536,84 +540,9 @@ function startRecreateFromPanel() {
 function calcMod(s){return Math.floor((s-10)/2)}function mStr(v){return v>=0?'+'+v:v}
 
 
-function parseHpBonus(value, raceSize) {
-  if (typeof value === "number") return value;
-  if (!value) return 0;
-  if (typeof value === "string") {
-    var parts = value.split("/");
-    if (parts.length === 2) {
-      var small = parseInt(parts[0], 10); if (isNaN(small)) small = 0;
-      var large = parseInt(parts[1], 10); if (isNaN(large)) large = 0;
-      return (raceSize && String(raceSize).indexOf("小") >= 0) ? small : large;
-    }
-    var m = value.match(/([-+])?\d+/);
-    return m ? parseInt(m[0], 10) : 0;
-  }
-  return 0;
-}
-
-
-function calcTotalHP(mc,ml,sc,sl,con,race,bg,fb,raceSize){
-
-
-  if(!mc||!ml)return 0;var cm=calcMod(con);
-
-
-
-  var hd=REF_CLASSES[mc];var f=hd&&hd.hp_formula?hd.hp_formula.first:8;
-
-
-  var u=hd&&hd.hp_formula?hd.hp_formula.level_up:2;
-
-
-  var rhp=0;if(race&&REF_RACES[race]){var rs=raceSize||(REF_RACES[race].size||"");rhp=parseHpBonus(REF_RACES[race]["hp_bonus"],rs);}var bhp=0;if(bg&&REF_BACKGROUNDS&&REF_BACKGROUNDS[bg]){bhp=parseHpBonus(REF_BACKGROUNDS[bg]["hp_bonus"],"");}var hp=f+cm+rhp+bhp+u*(ml-1)+cm*(ml-1);
-
-
-  if(sc&&sl>0){
-
-
-    var sd=REF_CLASSES[sc];
-
-
-    var su=sd&&sd.hp_formula?sd.hp_formula.level_up:2;
-
-
-    // Sub class: each level gets (level_up_hp+con_mod), no first-level bonus
-
-
-    hp+=(su+cm)*(sl-1);
-
-
-  }
-
-
-  // Add flat bonus (feats, race, background)
-
-
-  if(fb) hp+=fb;
-
-
-  return Math.max(0, Number(hp) || 0);}
-
-
-function calcTotalFP(mc,ml,sc,sl,ka,kv,race,fb){
-
-
-  if(!mc||!ml)return 0;var km=calcMod(kv);
-
-
-  var fd=REF_CLASSES[mc];var f=fd&&fd.fp_formula?fd.fp_formula.first:8;
-
-
-  var u=fd&&fd.fp_formula?fd.fp_formula.level_up:1;
-
-
-  var rfp=0;if(race&&REF_RACES[race]){rfp=REF_RACES[race]["fp_bonus"]||0;}
-
-
-  var fp=f+km+rfp+u*(ml-1);if(sc&&sl>0){var sd=REF_CLASSES[sc];var su=sd&&sd.fp_formula?sd.fp_formula.level_up:1;fp+=su*(sl-1);}if(fb)fp+=fb;return fp;}
-
-
+function parseHpBonus(v,size){return SNOWD_CHARACTER_STATS.hpBonus(v,size);}
+function calcTotalHP(){return SNOWD_CHARACTER_STATS.totalHP.apply(null,arguments);}
+function calcTotalFP(){return SNOWD_CHARACTER_STATS.totalFP.apply(null,arguments);}
 
 function findSkillStyleAnywhere(name) {
   for (var key in SKILL_DATA) {
@@ -807,13 +736,13 @@ function getCurrentAttrCap() {
 
 function calcSkillSlots(clsIdx) {
   var cl = state.classes[clsIdx];
-  if (!cl || !cl.name) return 0;
+  if (!cl || !cl.name||cl.ruleEnabled===false||cl.rulesDisabled) return 0;
   var tbl = LEVEL_TABLE[clsIdx === 1 ? "子职业" : "主职业"];
   var total = 0;
-  for (var li = 1; li <= cl.level; li++) {
+  for (var li = 1; li <= (cl.confirmedTotalLevel||cl.level); li++) {
     var add = (tbl[li] && tbl[li].slot) ? tbl[li].slot : 0;
     // 法师 gets double slots per level (only the per-level increment, not the base)
-    if (cl.name === "法师" && li > 1) add *= 2;
+    if (SNOWD_CHARACTER_CLASSES.ruleName(cl) === "法师" && li > 1) add *= 2;
     total += add;
   }
   if (clsIdx === 0) total += (state.extra_skill_slots || 0);
@@ -857,14 +786,14 @@ function normalizeAllSkillSubs() {
 }
 
 function isMainSkillOccupant(s) {
-  if (!s) return false;
+  if (!s||s.occupies===null||s.ownerClassIndex===2) return false;
   if (isBlueprintName(s.n || s.name)) return false;
   if (isFreeSlotSkill(s)) return false;
   return !isSubSkillTagged(s);
 }
 
 function isSubSkillOccupant(s) {
-  if (!s) return false;
+  if (!s||s.occupies===null) return false;
   if (isBlueprintName(s.n || s.name)) return false;
   if (isFreeSlotSkill(s)) return false;
   return isSubSkillTagged(s);
@@ -1586,7 +1515,7 @@ function fillXlsxBlueprints(set, blueprints) {
   for (i = 0; i < list.length && i < max; i++) {
     if (!list[i]) continue;
     n = list[i].n || list[i].name || "";
-    if (n) set(BLUEPRINT_XLSX_CELLS[i], n);
+    if (n){set(BLUEPRINT_XLSX_CELLS[i], n);SNOWD_CHARACTER_IO.recordWrite(list[i],BLUEPRINT_XLSX_CELLS[i],"blueprint","blueprint");}
   }
   if (list.length > max) {
     console.warn("blueprints truncated for xlsx export:", list.length, ">", max);
@@ -1744,7 +1673,7 @@ function clearXlsxTalentSlots(set, tierRowMap, column) {
   var tier, range, r;
   for (tier in tierRowMap) {
     range = tierRowMap[tier];
-    for (r = range[0]; r <= range[1]; r++) set(column + r, "", false);
+    for(r=range[0];r<=range[1];r++){set(column+r,"",false);set(SNOWD_CHARACTER_IO.colName(SNOWD_CHARACTER_IO.colIndex(column+"1")+2)+r,"",false);}
   }
 }
 
@@ -1764,6 +1693,7 @@ function xlsxColIndex(col) {
  * @returns {string} 新的 row XML
  */
 function xlsxInsertCellInRow(rowXml, colLetters, cellXml) {
+  if(/\/>$/.test(rowXml))rowXml=rowXml.replace(/\/>$/,"></row>");
   var m = /^<row([^>]*)>([\s\S]*)<\/row>$/.exec(rowXml);
   if (!m) return rowXml;
   var attrs = m[1], inner = m[2], newIdx = xlsxColIndex(colLetters);
@@ -1855,12 +1785,14 @@ function fillXlsxTalents(set, talents, tierRowMap, column) {
     if (!talents[ti]) continue;
     tName = talents[ti].n || talents[ti].name || "";
     if (!tName) continue;
+    if(SNOWD_CHARACTER_IO.isCustom(talents[ti])&&!SNOWD_CHARACTER_IO.tier(talents[ti].tier))continue;
     tTier = normalizeExportTalentTier(talents[ti]);
     range = tierRowMap[tTier];
     if (!range) continue;
     slot = tierSlots[tTier] || 0;
     if (slot >= range[1] - range[0] + 1) continue;   // 模板位满 → 保持 writtenToVisible=false（溢出条目）
     set(column + (range[0] + slot), tName);
+    var descColumn=SNOWD_CHARACTER_IO.colName(SNOWD_CHARACTER_IO.colIndex(column+"1")+2)+(range[0]+slot);set(descColumn,talents[ti].ds||talents[ti].rawDesc||"");
     talents[ti].writtenToVisible = true;
     talents[ti].cellRef = column + (range[0] + slot);
     talents[ti].region = "talent"; talents[ti].place = "talent";
@@ -2296,162 +2228,63 @@ function sliceRunsAfterPrefix(runs, prefixLen) {
 
 
 function formatSkillDetailHtml(skillData) {
-
-
   if (!skillData) return "";
-
-
-  var fields = skillData.fields || {}, fieldRuns = skillData.field_runs || {}, html = "", fk, fi;
-
-
-  var fieldOrder = ["\u65bd\u5c55\u65f6\u95f4","\u65bd\u5c55\u8ddd\u79bb","\u6301\u7eed\u65f6\u95f4","\u75b2\u52b3\u6d88\u8017","\u524d\u7f6e\u6761\u4ef6","\u989d\u5916\u6761\u4ef6","\u65bd\u5c55\u6761\u4ef6","\u65bd\u5c55\u9650\u5236","\u5173\u952e\u8bcd","效果"];
-
-
-  for (fi = 0; fi < fieldOrder.length; fi++) {
-
-
-    fk = fieldOrder[fi];
-
-
-    if (!fields[fk]) continue;
-
-
-    if (fieldRuns[fk] && runsHaveColoredDots(fieldRuns[fk])) html += "<p><span style='color:#b0a090;font-weight:bold'>" + fk + "\uff1a</span>" + runsToHtml(fieldRuns[fk]) + "</p>";
-
-
-    else html += "<p><span style='color:#b0a090;font-weight:bold'>" + fk + "\uff1a</span>" + escapeHtmlText(fields[fk]) + "</p>";
-
-
+  var fields=skillData.fields||{}, fieldRuns=skillData.field_runs||{}, html="", i, key;
+  var fieldOrder=["施展时间","施展距离","持续时间","疲劳消耗","前置条件","额外条件","施展条件","施展限制","关键词","效果"];
+  function paragraph(text,runs) {
+    return runs&&runsHaveColoredDots(runs)?runsToHtml(runs):escapeHtmlText(text);
   }
-
-
-  if (skillData.cost && skillData.cost.length) {
-
-
-    html += "<p><span style='color:#b0a090;font-weight:bold'>\u6807\u8bc6\uff1a</span>" + markDotsHtml(skillData.cost) + "</p>"; if (skillData.effects && skillData.effects.length) { html += "<p><span style='color:#b0a090;font-weight:bold'>效果：</span></p>"; for (var _ei = 0; _ei < skillData.effects.length; _ei++) { html += "<p style='margin:2px 0 2px 10px'>· " + escapeHtmlText(skillData.effects[_ei]) + "</p>"; } }
-
-
+  for(i=0;i<fieldOrder.length;i++) {
+    key=fieldOrder[i];
+    if(fields[key])html+="<p><b>"+key+"：</b>"+paragraph(fields[key],fieldRuns[key])+"</p>";
   }
-
-
-  var descText = fields["\u63cf\u8ff0"] || "", descRuns = fieldRuns["\u63cf\u8ff0"], hasDescField = false;
-
-
-  if (descText) {
-
-
-    hasDescField = true;
-
-
-    if (descRuns && runsHaveColoredDots(descRuns)) html += "<p><span style='color:#b0a090;font-weight:bold'>\u63cf\u8ff0\uff1a</span>" + runsToHtml(descRuns) + "</p>";
-
-
-    else html += "<p><span style='color:#b0a090;font-weight:bold'>\u63cf\u8ff0\uff1a</span>" + escapeHtmlText(descText) + "</p>";
-
-
+  if(skillData.cost&&skillData.cost.length)html+="<p><b>标识：</b>"+markDotsHtml(skillData.cost)+"</p>";
+  var desc=fields["描述"]||"", entries=skillData.description_entries||[], runMap={};
+  if(desc)html+="<p><b>描述：</b>"+paragraph(desc,fieldRuns["描述"])+"</p>";
+  for(i=0;i<entries.length;i++)runMap[entries[i].text]=entries[i].runs;
+  var unitSet=buildUnitTextSet(skillData), rolls=skillData.roll_tables||[], rollHtml="", j;
+  if(rolls.length) {
+    rollHtml="<p><b>随机效果：</b></p><table style='width:100%;border-collapse:collapse;table-layout:auto'><tbody>";
+    for(i=0;i<rolls.length;i++)rollHtml+="<tr><td style='vertical-align:top;padding:3px;white-space:nowrap'>"+escapeHtmlText(rolls[i].label||"")+"</td><td style='padding:3px'>"+escapeHtmlText(rolls[i].text||"")+"</td></tr>";
+    rollHtml+="</tbody></table>";
   }
-
-
-  var entryRuns = {}, descEntries = skillData.description_entries || [], di, para, runs, body;
-
-
-  for (di = 0; di < descEntries.length; di++) entryRuns[descEntries[di].text] = descEntries[di].runs;
-
-
-  var descParas = skillData.description || [];
-
-
-  var _udSet = (skillData.unit_tables && skillData.unit_tables.length) ? buildUnitTextSet(skillData) : null;
-  for (di = 0; di < descParas.length; di++) {
-
-
-    para = descParas[di];
-
-
-    if (!para || (hasDescField && para === descText)) continue;
-    if (_udSet && para && _udSet[normUnitText(para)]) continue;
-
-
-    runs = entryRuns[para];
-
-
-    body = (runs && runsHaveColoredDots(runs)) ? runsToHtml(runs) : escapeHtmlText(para);
-
-
-    html += "<p>" + body + "</p>";
-
-
+  var rollCovered=normUnitText(rollHtml.replace(/<[^>]+>/g,""));
+  function covered(line) {
+    var n=normUnitText(line);
+    return !!unitSet[n] || (n&&rollCovered.indexOf(n)!==-1);
   }
-
-
-  var rollTables = skillData.roll_tables || [];
-  if (rollTables.length) {
-    html += "<p><span style='color:#b0a090;font-weight:bold'>随机效果：</span></p>";
-    html += "<table style='width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 8px'><tr><th style='text-align:left;color:#b0a090;border-bottom:1px solid var(--line);padding:2px 6px'>点数</th><th style='text-align:left;color:#b0a090;border-bottom:1px solid var(--line);padding:2px 6px'>效果</th></tr>";
-    for (var rt = 0; rt < rollTables.length; rt++) {
-      html += "<tr><td style='border-bottom:1px solid var(--line);padding:2px 6px;white-space:nowrap;vertical-align:top'>" + escapeHtmlText(rollTables[rt].label || "") + "</td><td style='border-bottom:1px solid var(--line);padding:2px 6px'>" + escapeHtmlText(rollTables[rt].text || "") + "</td></tr>";
-    }
-    html += "</table>";
+  var lines=skillData.description||[];
+  for(i=0;i<lines.length;i++)if(lines[i]&&lines[i]!==desc&&!covered(lines[i]))html+="<p>"+paragraph(lines[i],runMap[lines[i]])+"</p>";
+  var effects=skillData.effects||[];
+  for(i=0;i<effects.length;i++)if(effects[i]&&!covered(effects[i]))html+="<p>"+escapeHtmlText(effects[i])+"</p>";
+  html+=rollHtml;
+  html+=renderUnitTables(skillData);
+  var ups=skillData.level_upgrades||[];
+  for(i=0;i<ups.length;i++) {
+    var u=ups[i], label=u.label||("你的"+(u.class||"")+"等级到达"+u.level+"级时：");
+    if(u.section)html+="<p><b>"+escapeHtmlText(u.section)+"</b></p>";
+    html+="<p><b>"+escapeHtmlText(label)+"</b>"+paragraph(u.text||"",sliceRunsAfterPrefix(u.line_runs||[],label.length))+"</p>";
+    var choices=u.choices||[];
+    for(j=0;j<choices.length;j++)if(!covered(choices[j]))html+="<p>"+escapeHtmlText(choices[j])+"</p>";
   }
-  html += renderUnitTables(skillData);
-  var unitTables = [];
-  for (var ut = 0; ut < unitTables.length; ut++) {
-    var U = unitTables[ut] || {}, UH = U.head || {};
-    html += "<p><span style='color:#b0a090;font-weight:bold'>召唤单位：</span>" + escapeHtmlText(U.name || "");
-    if (UH.type_size) html += "　" + escapeHtmlText(UH.type_size);
-    if (UH.ac) html += "　防御等级 " + escapeHtmlText(String(UH.ac));
-    if (UH.hp) html += "　生命值 " + escapeHtmlText(String(UH.hp));
-    html += "</p>";
-    var attrs = U.attrs || [];
-    for (var ua = 0; ua < attrs.length; ua++) {
-      html += "<p style='font-size:13px;color:var(--muted)'>" + escapeHtmlText(typeof attrs[ua] === "string" ? attrs[ua] : JSON.stringify(attrs[ua])) + "</p>";
-    }
-  }
-  var upgrades = skillData.level_upgrades || [], ui, lu, label, lineRuns;
-
-
-  for (ui = 0; ui < upgrades.length; ui++) {
-
-
-    lu = upgrades[ui];
-
-
-    label = lu.label || ("\u4f60\u7684" + (lu.class || "") + "\u7b49\u7ea7\u5230\u8fbe" + lu.level + "\u7ea7\u65f6\uff1a");
-
-
-    lineRuns = lu.line_runs || [];
-
-
-    if (lineRuns.length && runsHaveColoredDots(lineRuns)) {
-
-
-      html += "<p><span style='color:#b0a090;font-weight:bold'>" + escapeHtmlText(label) + "</span>" + runsToHtml(sliceRunsAfterPrefix(lineRuns, label.length)) + "</p>";
-
-
-    } else if (lu.text) {
-
-
-      html += "<p><span style='color:#b0a090;font-weight:bold'>" + escapeHtmlText(label) + "</span>" + escapeHtmlText(lu.text) + "</p>";
-
-
-    }
-
-
-  }
-
-
-  if (!html && skillData.flavor) html = "<p>" + escapeHtmlText(skillData.flavor) + "</p>";
-
-
-  return html || "<p style='color:#888'>\u6682\u65e0\u63cf\u8ff0</p>";
-
-
+  return html||(skillData.flavor?"<p>"+escapeHtmlText(skillData.flavor)+"</p>":"<p>暂无描述</p>");
 }
 
-
-
-
-
+function unitCoveredText(u) {
+  var h=u.head||{}, parts=[u.name||"",h.type_size||""],i,s;
+  if(h.ac!=null)parts.push("防御等级"+h.ac);
+  if(h.hp!=null)parts.push("生命值"+h.hp);
+  parts=parts.concat(u.attrs||[]);
+  var stats=u.stats||[];
+  for(i=0;i<stats.length;i++) {
+    s=stats[i];parts.push(Array.isArray(s)?s[0]+s[1]:typeof s==="object"?(s.label||s.name||"")+(s.value||s.val||""):s);
+  }
+  var abs=u.abilities||[];
+  if(abs.length)parts.push("固有技能");
+  for(i=0;i<abs.length;i++)parts.push((abs[i].name||"")+(abs[i].text||""));
+  parts=parts.concat(u.notes||[]);
+  return normUnitText(parts.join(""));
+}
 
 
 function spCostCell(s) {
@@ -4547,7 +4380,7 @@ function getSkillStyle(name, src) {
 }
 
 
-function getKeyAttr(cls){if(!cls||!cls.name)return"魅力";if(cls.keyAttr)return cls.keyAttr;var ref=REF_CLASSES[cls.name];if(ref&&ref.key_attr){var ka=ref.key_attr;if(ka.indexOf("或")>=0)return ka.split("或")[0].trim();return ka.trim();}return"魅力";}
+function getKeyAttr(cls){if(!cls||!cls.name)return"魅力";if(cls.keyAttr)return cls.keyAttr;var ref=REF_CLASSES[SNOWD_CHARACTER_CLASSES.ruleName(cls)||cls.name];if(ref&&ref.key_attr){var ka=ref.key_attr;if(ka.indexOf("或")>=0)return ka.split("或")[0].trim();return ka.trim();}return"魅力";}
 
 function isSlotLocked(slot){
   if(!state.containerItems)return false;
@@ -4837,7 +4670,7 @@ function renderProfile(){
   }else{
     portraitDiv.innerHTML="<div style=\"text-align:center;color:var(--muted);padding:12px\"><div style=\"font-size:32px;margin-bottom:6px\">+</div><div style=\"font-size:13px\">\u70b9\u51fb\u4e0a\u4f20\u7acb\u7ed8</div></div>";
   }
-  portraitDiv.onclick=function(){var inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=function(e){var file=e.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(ev){state.portrait=ev.target.result;render();};reader.readAsDataURL(file);};inp.click();};
+  portraitDiv.onclick=function(){var inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=function(e){var file=e.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(ev){state.portrait=ev.target.result;autoSave();render();};reader.readAsDataURL(file);};inp.click();};
   profileOuter.appendChild(portraitDiv);
 
   // Info columns
@@ -5029,10 +4862,10 @@ function renderBattleStats(){
     if(fnName==="健美教练") featHPBonus+=10;
     if(fnName==="健壮") featHPBonus+=2*(ml+(sc&&sl>0?sl-1:0));
   }
-  state.hp=calcTotalHP(mc,ml,sc,sl,con,state.race,state.background,featHPBonus,state.raceSize);
+  if(SNOWD_CHARACTER_STATS.mode(state,"hp")==="rules")state.hp=calcTotalHP(mc,ml,sc,sl,con,state.race,state.background,featHPBonus,state.raceSize);
 
 
-  var fpKeyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"";if(fpKeyAttr==="力量或敏捷")fpKeyAttr=state.classes[0].keyAttr||"力量";var fpKeyVal=state.attrs[fpKeyAttr]||10;state.fp=calcTotalFP(mc,ml,sc,sl,fpKeyAttr,fpKeyVal,state.race,0);
+  var fpKeyAttr=REF_CLASSES[mc]?REF_CLASSES[mc].key_attr:"";if(fpKeyAttr==="力量或敏捷")fpKeyAttr=state.classes[0].keyAttr||"力量";var fpKeyVal=state.attrs[fpKeyAttr]||10;if(SNOWD_CHARACTER_STATS.mode(state,"fp")==="rules")state.fp=calcTotalFP(mc,ml,sc,sl,fpKeyAttr,fpKeyVal,state.race,0);
 
 
   // Load speed from race data
@@ -6347,7 +6180,8 @@ function renderLearnResults() {
   var tierOrder = ["\u4e00\u9636","\u4e8c\u9636","\u4e09\u9636","\u56db\u9636","\u4e94\u9636","\u516d\u9636","\u4e03\u9636","\u516b\u9636","\u4e5d\u9636"];
 
   for (var ci = 0; ci < state.classes.length; ci++) {
-    var clsName = state.classes[ci].name;
+    var displayClassName=state.classes[ci].name;
+    var clsName=SNOWD_CHARACTER_CLASSES.ruleName(state.classes[ci]);
     if (!clsName) continue;
     var clsData = SKILL_DATA[clsName]; if (!clsData) continue;
     var isSub = (ci === 1);
@@ -6379,7 +6213,7 @@ function renderLearnResults() {
     if (Object.keys(groups).length === 0) continue;
 
     html += "<div style=\"margin-bottom:14px;background:#2d2722;border-radius:8px;padding:10px 12px;border:1px solid #4a3520\">";
-    html += "<div style=\"font-size:15px;color:#e8a86a;font-weight:bold;margin-bottom:8px\">" + clsName + (isSub ? " <span style=\"font-size:12px;color:#b09070;font-weight:normal\">(\u5b50\u804c\u4e1a)</span>" : "") + "</div>";
+    html += "<div style=\"font-size:15px;color:#e8a86a;font-weight:bold;margin-bottom:8px\">" + escapeHtmlText(displayClassName)+(displayClassName!==clsName?"（规则基础："+escapeHtmlText(clsName)+"）":"") + (isSub ? " <span style=\"font-size:12px;color:#b09070;font-weight:normal\">(\u5b50\u804c\u4e1a)</span>" : "") + "</div>";
 
     var styleOrder = Object.keys(groups).sort();
     for (var gi = 0; gi < styleOrder.length; gi++) {
@@ -7403,26 +7237,19 @@ function doReplace(idx) {
 
 
 
-function showSkillDetail(clsName, skillName, skillId) {
-  // #2: 只解析一次；多候选绝不取第一项
-  var _res = (typeof resolveSkillData === "function") ? resolveSkillData({ src: clsName, id: skillId, n: skillName }) : { data: null, ambiguous: false };
-  if (_res && _res.data) {
-    showSkillPreview(skillName, _res.data.style || clsName, _res.data.tier || "", formatSkillDetailHtml(_res.data), null, clsName);
-    return;
+function showSkillDetail(clsName,skillName,skillId){
+  var list=SNOWD_CHARACTER_IO.entries(state),entry=null;
+  if(skillId)entry=list.find(function(e){return e.uid===skillId;})||null;
+  var r=resolveSkillData(entry||{src:clsName,id:skillId,n:skillName});
+  if(r.data){showSkillPreview(skillName,r.data.style||clsName,r.data.tier||"",formatSkillDetailHtml(r.data),null,clsName);return;}
+  if(!entry){
+    var hits=list.filter(function(e){return (e.n===skillName||SNOWD_CHARACTER_IO.normalizeName(e.n)===SNOWD_CHARACTER_IO.normalizeName(skillName))&&(!clsName||e.src===clsName)&&(!skillId||e.id===skillId);});
+    if(hits.length===1)entry=hits[0];
   }
-  var _raw = "";
-  try {
-    var _all = (state.skills || []).concat(state.talent_tree || []);
-    for (var _i = 0; _i < _all.length; _i++) {
-      var _en = _all[_i];
-      if (!_en) continue;
-      if ((skillId && _en.uid === skillId) || _en.n === skillName) { _raw = _en.ds || _en.rawDesc || ""; if (_raw) break; }
-    }
-  } catch (e2) {}
-  showSkillPreview(skillName, (_res && _res.ambiguous) ? "来源待确认（多候选）" : "来源待确认", "",
-    _raw ? escapeHtmlText(_raw) : "<p style=\"color:var(--muted)\">该技能未匹配到数据库条目，来源待确认。</p>", null, clsName);
+  var custom=entry&&SNOWD_CHARACTER_IO.isCustom(entry);
+  showSkillPreview(skillName,custom?"额外能力 · "+(entry.via||"来源未填写"):r.ambiguous?"规则来源待确认（多候选）":"规则来源待确认",entry?entry.tier||"":"",
+    entry?formatSkillDetailHtml(SNOWD_CHARACTER_IO.rawSkillData(entry))||"<p>效果尚未填写，可在能力设置中补充。</p>":"<p>请选择规则来源或保留为额外能力。</p>",null,clsName);
 }
-
 function showSkillDetailFromAll(skillName, clsName) {
 
 
@@ -8396,6 +8223,8 @@ function attachSkillMetaSheet(entries,state){return SNOWD_CHARACTER_IO.attachMet
 async function exportXlsxFromState(state) {
   // Use the embedded enhanced template or the original uploaded ZIP
   var templateBuf = _normalizeXlsxBuffer(state._uploadedXlsxBuf);
+  if(!templateBuf&&state.importWorkbookKey)templateBuf=await SNOWD_CHARACTER_WORKBOOK_CACHE.get(state.importWorkbookKey);
+  var _hasSourceWorkbook=!!templateBuf;
   if(!templateBuf)state._xlsxSheetPath="xl/worksheets/sheet1.xml";
   // Guard: ensure templateBuf is a valid non-empty ArrayBuffer
   if (!templateBuf) {
@@ -8460,35 +8289,14 @@ async function exportXlsxFromState(state) {
   var xml = sh.text;
   /** @param {boolean} [invent=true] 模板无此格时是否创建；clear 传 false 避免 invent 破坏列序
    *  @param {string} [styleId] 可选样式索引（未持有栏位删除线） */
-  function set(ref, val, invent, styleId) {
-    var cs = (styleId !== undefined && styleId !== null && styleId !== "") ? String(styleId) : (cStyle[ref] || "");
-    var nc, mrow, col, row, rowFullRe, rm;
-    if (invent === undefined) invent = true;
-    if (val === "" || val === null || val === undefined) {
-      // 空格：自封闭单元格（与手改「名称列划掉」一致，不写共享字符串）
-      nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : "") + "/>";
-    } else if (typeof val === "number") {
-      nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : "") + "><v>" + val + "</v></c>";
-    } else {
-      var si = addStr(String(val));
-      nc = '<c r="' + ref + '"' + (cs ? ' s="' + cs + '"' : '') + ' t="s"><v>' + si + "</v></c>";
-    }
-    var rx = new RegExp('<c r="' + ref + '"([^>]*?)(?:/>|>[\\s\\S]*?</c>)');
-    if (rx.test(xml)) {
-      xml = xml.replace(new RegExp('<c r="' + ref + '"([^>]*?)(?:/>|>[\\s\\S]*?</c>)', "g"), nc);
-      cStyle[ref] = cs;
-    } else {
-      if (!invent) return;
-      mrow = /^([A-Z]+)(\d+)$/.exec(ref);
-      if (!mrow) return;
-      col = mrow[1];
-      row = mrow[2];
-      rowFullRe = new RegExp('<row[^>]*\\br="' + row + '"[^>]*>[\\s\\S]*?</row>');
-      rm = rowFullRe.exec(xml);
-      if (rm) xml = xml.replace(rm[0], xlsxInsertCellInRow(rm[0], col, nc));
-      else xml = xml.replace("</sheetData>", '<row r="' + row + '">' + nc + "</row></sheetData>");
-      cStyle[ref] = cs;
-    }
+  var _abilitySource=SNOWD_CHARACTER_IO.sheet(sh.text,strings);_abilitySource.sheetName=(state.skills||[]).concat(state.talent_tree||[],state.blueprints||[]).map(function(e){return e.provenance&&e.provenance.sheet;}).filter(Boolean)[0]||"";
+  _abilitySource.sheetName=(SNOWD_CHARACTER_IO.manifest(entries.find(function(e){return e.name==="xl/workbook.xml";}).text,entries.find(function(e){return e.name==="xl/_rels/workbook.xml.rels";}).text).list.find(function(sheet){return sheet.path===sh.name;})||{}).name||_abilitySource.sheetName;
+  var _abilityPlan=SNOWD_CHARACTER_IO.abilityExportPlan(_abilitySource,state),_writingAbilityCells=false,_structuredOriginal=_hasSourceWorkbook&&!!state.fieldSources;
+  if(_structuredOriginal)_abilityPlan.dynamic=true;
+  var _cellEditor=SNOWD_CHARACTER_EXPORT.createEditor(xml,addStr,cStyle);
+  function set(ref,val,invent,styleId){
+    if(!_writingAbilityCells&&(_structuredOriginal||SNOWD_CHARACTER_IO.protectAbilityCell(_abilityPlan,ref)))return;
+    _cellEditor.set(ref,val,invent,styleId);
   }
 
   SNOWD_CHARACTER_IO.prepareExport(state);
@@ -8734,6 +8542,7 @@ async function exportXlsxFromState(state) {
     return "";
   }
   function skillExportCost(sk, skRef) {
+    if(sk.dr!==undefined&&sk.dr!==null&&sk.dr!=="")return sk.dr;
     if (sk.cost || sk.fp) return sk.cost || sk.fp || "";
     if (skRef && skRef.cost && skRef.cost.fp) return skRef.cost.fp;
     if (skRef && skRef.fields && skRef.fields["疲劳消耗"]) return skRef.fields["疲劳消耗"];
@@ -8832,9 +8641,12 @@ async function exportXlsxFromState(state) {
   if (_profNames.length > 0) set("Q8", _profNames.join("、"));
   else set("Q8", "");
 
+  _writingAbilityCells=true;SNOWD_CHARACTER_IO.writeAbilityTables(set,state,_abilityPlan);SNOWD_CHARACTER_EXPORT.write(set,state,_abilitySource,_structuredOriginal);_writingAbilityCells=false;
+  xml=SNOWD_CHARACTER_EXPORT.normalizeMerges(_cellEditor.serialize(),state);
   // Rebuild XMLs
   ss.text = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="' + strings.length + '" uniqueCount="' + strings.length + '">\n' + siBlocks.join("\n") + '\n</sst>';
   sh.text = xml;
+  SNOWD_CHARACTER_IO.attachSupportingSheets(entries,state);
 
   attachSkillMetaSheet(entries, state);
 
@@ -9006,11 +8818,9 @@ function importSaves(){
     try{
       var urlParams=new URLSearchParams(location.search);
       var cn=urlParams.get('char');var sl=parseInt(urlParams.get('slot'))||1;
-      var key='char_'+cn+'_slot'+sl;
-      localStorage.setItem(key,JSON.stringify(state));
+      if (!saveState(sl)) return;
       localStorage.setItem('_snowd_last_save_'+cn+'_'+sl,JSON.stringify(state));
-      reportPanelDirty(false);   // 已保存 → 允许自动重启安装
-    }catch(e){}
+    }catch(e){ SB_toast("保存失败: " + e.message); }
   }
 })();
 
@@ -9089,26 +8899,15 @@ function normUnitText(s) {
 }
 // 单位卡片中"可明确确认重复"的文本集合（供描述段去重：仅精确匹配才跳过）
 function buildUnitTextSet(skillData) {
-  var set = {}, U = skillData.unit_tables || [], i, j, u, arr;
-  for (i = 0; i < U.length; i++) {
-    u = U[i] || {};
-    if (u.name) set[normUnitText(u.name)] = 1;
-    arr = u.lines || [];
-    for (j = 0; j < arr.length; j++) set[normUnitText(arr[j])] = 1;
-    arr = u.stats || [];
-    for (j = 0; j < arr.length; j++) {
-      var st = arr[j];
-      if (Array.isArray(st)) { set[normUnitText(st[0] + "：" + st[1])] = 1; set[normUnitText(st[0] + st[1])] = 1; }
-      else set[normUnitText(typeof st === "string" ? st : JSON.stringify(st))] = 1;
+  var set={}, units=skillData.unit_tables||[],i,j;
+  for(i=0;i<units.length;i++) {
+    var u=units[i], covered=unitCoveredText(u);
+    var lines=(u.lines||[]).concat([u.name||""]);
+    for(j=0;j<lines.length;j++) {
+      var n=normUnitText(lines[j]);
+      // renderUnitTables also renders uncovered raw lines as a fallback.
+      if(n)set[n]=1;
     }
-    arr = u.abilities || [];
-    for (j = 0; j < arr.length; j++) {
-      var ab = arr[j] || {};
-      if (ab.text) set[normUnitText(ab.text)] = 1;
-      if (ab.name && ab.text) set[normUnitText(ab.name + "：" + ab.text)] = 1;
-    }
-    arr = u.notes || [];
-    for (j = 0; j < arr.length; j++) set[normUnitText(arr[j])] = 1;
   }
   return set;
 }
@@ -9117,11 +8916,12 @@ function buildUnitTextSet(skillData) {
 // ===== #2: 统一的技能数据解析（只解析一次，始终使用该结果）=====
 function resolveSkillData(entry) {
   var out={data:null,ambiguous:false,candidates:[]};
-  if(!entry||typeof SKILL_DATA==="undefined")return out;
+  if(!entry||typeof SKILL_DATA==="undefined"||SNOWD_CHARACTER_IO.isCustom(entry)||SNOWD_CHARACTER_IO.isDeferred(entry))return out;
+  if(entry.resolution==="variant"&&entry.baseDefinition)return resolveSkillData({n:entry.baseDefinition.name,src:entry.baseDefinition.src,id:entry.baseDefinition.id});
   var src=entry.src||entry.cls||"",id=entry.id||entry.skillId||"",name=entry.n||entry.name||"",hits=[];
   Object.keys(SKILL_DATA).forEach(function(cls){
     if(src&&cls!==src)return;
-    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id))hits.push(s);});
+    (SKILL_DATA[cls]||[]).forEach(function(s){if((s.name===name||s.n===name)&&(!id||s.id===id||(s.legacy_ids||[]).indexOf(id)!==-1))hits.push(s);});
   });
   if(hits.length===1)out.data=hits[0];else if(hits.length>1){out.ambiguous=true;out.candidates=hits;}
   return out;
@@ -9158,8 +8958,9 @@ function renderUnitTables(skillData) {
     }
     var notes = u.notes || [];
     for (j = 0; j < notes.length; j++) html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(typeof notes[j] === "string" ? notes[j] : JSON.stringify(notes[j])) + "</p>";
-    if (!hasStruct && u.lines && u.lines.length) {
-      for (j = 0; j < u.lines.length; j++) html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(u.lines[j]) + "</p>";
+    if (u.lines && u.lines.length) {
+      var coveredText=unitCoveredText(u);
+      for (j = 0; j < u.lines.length; j++) if(coveredText.indexOf(normUnitText(u.lines[j]))===-1) html += "<p style=\"font-size:13px;color:var(--muted);margin:1px 0\">" + escapeHtmlText(u.lines[j]) + "</p>";
     }
     html += "</div>";
   }

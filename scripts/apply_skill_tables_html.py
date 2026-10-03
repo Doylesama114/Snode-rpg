@@ -127,10 +127,6 @@ def patch_domains() -> int:
             if not (block.get("fields") or {}) and (block.get("description") or []):
                 # 起始专长：效果块渲染（剔除表格行），再追加表格
                 skip = tables_skip_lines(tables["unit_tables"], tables["roll_tables"])
-                for blk in detect_unit_blocks(block.get("description") or []):
-                    skip.update(ln.strip() for ln in blk["lines"] if ln.strip())
-                for row in collect_roll_rows(block.get("description") or []):
-                    skip.update(x.strip() for x in row["raw"].split("\n") if x.strip())
                 paras = "".join(
                     f'<div class="effect-cell">{html_mod.escape(p)}</div>'
                     for p in block["description"]
