@@ -31,7 +31,11 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
                 : new String[]{path};
         for (String p : candidates) {
             String rel = p.startsWith("/") ? p.substring(1) : p;
-            File file = new File(baseDir, rel);
+            File file;
+            try {
+                file = new File(baseDir, rel).getCanonicalFile();
+                if (!file.getPath().startsWith(baseDir.getCanonicalPath() + File.separator)) return error(403, "Forbidden");
+            } catch (IOException e) { return error(500, "IO error"); }
             if (file.isFile()) {
                 String mime = mimeFor(file.getName());
                 String encoding = (mime.startsWith("text/") || mime.equals("application/json")
@@ -39,7 +43,9 @@ public class FilesPathHandler implements WebViewAssetLoader.PathHandler {
                 android.util.Log.d("SnodeApp", "serve path=" + p + " file=" + file.getName()
                         + " mime=" + mime + " enc=" + encoding);
                 try {
-                    return new WebResourceResponse(mime, encoding, new FileInputStream(file));
+                    java.util.Map<String, String> headers = new java.util.HashMap<>();
+                    headers.put("Cache-Control", "no-store");
+                    return new WebResourceResponse(mime, encoding, 200, "OK", headers, new FileInputStream(file));
                 } catch (IOException e) {
                     return error(500, "IO error");
                 }

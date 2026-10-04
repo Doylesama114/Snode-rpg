@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8042',
+    date: '2026-10-05',
+    changes: [
+      '修复Android资源更新静默停留旧版和缓存白屏',
+      'APK内置完整资源，断网可用',
+      '新增GitHub备用更新和完整性校验、安全切换',
+      '移动端检查资源更新与APK下载入口修正'
+    ]
+  },
+
+
+  {
     version: '1.0.8041',
     date: '2026-10-03',
     changes: [

@@ -206,6 +206,8 @@ function checkReferences(files) {
 // ---------- main ----------
 function main() {
   const args = process.argv.slice(2);
+  const outIdx = args.indexOf("--out");
+  const outDir = outIdx >= 0 ? path.resolve(ROOT, args[outIdx + 1]) : OUT_DIR;
   const base = (() => {
     const i = args.indexOf('--base');
     return i >= 0 ? args[i + 1] : null;
@@ -234,9 +236,9 @@ function main() {
   injectMobileEntry(core, apiBase);
   const poker = collectDir(POKER_SRC, 'poker-game/');
 
-  fs.mkdirSync(OUT_DIR, { recursive: true });
-  const coreZip = path.join(OUT_DIR, `core-${version}.zip`);
-  const pokerZip = path.join(OUT_DIR, `poker-${version}.zip`);
+  fs.mkdirSync(outDir, { recursive: true });
+  const coreZip = path.join(outDir, `core-${version}.zip`);
+  const pokerZip = path.join(outDir, `poker-${version}.zip`);
   writeZip(core, coreZip);
   writeZip(poker, pokerZip);
 
@@ -245,21 +247,23 @@ function main() {
   const def = (key, zipPath) => {
     const name = path.basename(zipPath);
     const url = base ? `${base.replace(/\/+$/, '')}/mobile/packages/${version}/${name}` : `__URL_${key}__`;
-    pkgs[key] = { url, sha256: sha(zipPath), size: fs.statSync(zipPath).size };
+    pkgs[key] = { url, sha256: sha(zipPath), size: fs.statSync(zipPath).size,
+      fallbackUrls: [`https://github.com/Doylesama114/Snode-rpg/releases/download/v${version}/${name}`] };
   };
   def('core', coreZip);
   def('poker', pokerZip);
 
   const manifest = {
+    schemaVersion: 1,
     version,
     publishedAt: new Date().toISOString(),
     packages: pkgs,
     apk: {
-      version: null,
-      url: base ? `${base.replace(/\/+$/, '')}/mobile/apk/Snode-RPG-${version}.apk` : '__URL_apk__',
+      version,
+      url: `https://github.com/Doylesama114/Snode-rpg/releases/download/v${version}/Snode-RPG-${version}.apk`,
     },
   };
-  fs.writeFileSync(path.join(OUT_DIR, 'version.json'), JSON.stringify(manifest, null, 2), 'utf8');
+  fs.writeFileSync(path.join(outDir, 'version.json'), JSON.stringify(manifest, null, 2), 'utf8');
 
   const coreIssues = checkReferences(core);
   const pokerIssues = checkReferences(poker);

@@ -318,7 +318,7 @@ jobs:
             echo "::error::Missing Android signing secrets (MOBILE_KEYSTORE_PASS / MOBILE_KEY_ALIAS / MOBILE_KEY_PASS)"
             exit 1
           fi
-          gradle assembleRelease             -PupdateBase="$PUBLIC_BASE"             -PversionName="$VERSION"             -PversionCode="${VERSION##*.}"             -PkeystorePath=keystore-release.jks             -PkeystorePass="$KEYSTORE_PASS"             -PkeyAlias="$KEY_ALIAS"             -PkeyPass="$KEY_PASS"
+          gradle testDebugUnitTest assembleRelease             -PupdateBase="$PUBLIC_BASE"             -PversionName="$VERSION"             -PversionCode="${VERSION##*.}"             -PkeystorePath=keystore-release.jks             -PkeystorePass="$KEYSTORE_PASS"             -PkeyAlias="$KEY_ALIAS"             -PkeyPass="$KEY_PASS"
 
       - name: Rename APK
         run: |
@@ -326,61 +326,41 @@ jobs:
           cp mobile/app/build/outputs/apk/release/app-release.apk "Snode-RPG-${VERSION}.apk"
           sha256sum "Snode-RPG-${VERSION}.apk"
 
-      - name: Setup ossutil
+      - name: Publish complete mobile release to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+        run: |
+          set -euo pipefail
+          VERSION="${VERSION_TAG#v}"
+          if ! gh release view "$VERSION_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$VERSION_TAG" --repo "$GITHUB_REPOSITORY" --title "$VERSION_TAG" --notes-file "docs/releases/$VERSION_TAG.md"
+          fi
+          cp dist_mobile/version.json dist_mobile/mobile-version.json
+          for f in "Snode-RPG-${VERSION}.apk" "dist_mobile/core-${VERSION}.zip" "dist_mobile/poker-${VERSION}.zip" dist_mobile/mobile-version.json; do
+            ok=false
+            for i in 1 2 3; do
+              if gh release upload "$VERSION_TAG" "$f" --repo "$GITHUB_REPOSITORY" --clobber; then ok=true; break; fi
+              sleep 10
+            done
+            if [ "$ok" != true ]; then echo "::error::Mobile asset upload failed: $f"; exit 1; fi
+          done
+
+      - name: Setup optional OSS mirror
+        id: mobile-oss-setup
+        continue-on-error: true
         uses: yizhoumo/setup-ossutil@v2
         with:
           endpoint: ${{ vars.ALIYUN_OSS_ENDPOINT }}
           access-key-id: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIYUN_OSS_ACCESS_KEY_SECRET }}
 
-      - name: Upload mobile packages and APK
+      - name: Mirror mobile packages to OSS (optional external mirror)
+        if: steps.mobile-oss-setup.outcome == 'success'
+        continue-on-error: true
         run: |
           set -euo pipefail
           VERSION="${VERSION_TAG#v}"
-          # OSS 禁止默认域名公开分发 .apk，APK 改走 GitHub Release
-          ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read \
-            || echo "::warning::core 包上传失败，继续后续发布"
-          ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read \
-            || echo "::warning::poker 包上传失败，继续后续发布"
-
-          # 获取或创建 GitHub Release（build job 可能仍在构建 exe）
-          REL_JSON=$(curl -s -H "Authorization: token $GH_TOKEN2" \
-            "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/tags/${VERSION_TAG}")
-          RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
-          if [ -z "$RELEASE_ID" ]; then
-            REL_JSON=$(curl -s -X POST -H "Authorization: token $GH_TOKEN2" -H "Accept: application/vnd.github+json" \
-              -d "{\"tag_name\":\"${VERSION_TAG}\",\"name\":\"${VERSION_TAG}\",\"draft\":false,\"prerelease\":false}" \
-              "https://api.github.com/repos/Doylesama114/Snode-rpg/releases")
-            RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
-            if [ -z "$RELEASE_ID" ]; then
-              REL_JSON=$(curl -s -H "Authorization: token $GH_TOKEN2" \
-                "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/tags/${VERSION_TAG}")
-              RELEASE_ID=$(echo "$REL_JSON" | jq -r '.id // empty')
-            fi
-          fi
-          if [ -z "$RELEASE_ID" ]; then
-            echo "::error::Cannot resolve GitHub release id"
-            exit 1
-          fi
-
-          APK_NAME="Snode-RPG-${VERSION}.apk"
-          ASSET_ID=$(curl -s -H "Authorization: token $GH_TOKEN2" \
-            "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets" \
-            | jq -r ".[] | select(.name==\"${APK_NAME}\") | .id")
-          if [ -n "$ASSET_ID" ]; then
-            curl -s -X DELETE -H "Authorization: token $GH_TOKEN2" \
-              "https://api.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets/$ASSET_ID"
-          fi
-          curl -s -X POST -H "Authorization: token $GH_TOKEN2" -H "Content-Type: application/octet-stream" \
-            --data-binary "@${APK_NAME}" \
-            "https://uploads.github.com/repos/Doylesama114/Snode-rpg/releases/$RELEASE_ID/assets?name=${APK_NAME}"
-
-          # version.json 的 APK 指向 GitHub Release（OSS 不托管 apk）
-          APK_URL="https://github.com/Doylesama114/Snode-rpg/releases/download/${VERSION_TAG}/${APK_NAME}"
-          jq --arg ver "$VERSION" --arg url "$APK_URL" \
-            '.apk.version = $ver | .apk.url = $url' dist_mobile/version.json > dist_mobile/version.json.tmp
-          mv dist_mobile/version.json.tmp dist_mobile/version.json
-          ossutil cp "dist_mobile/version.json" "oss://${BUCKET}/mobile/version.json" -f --acl public-read --meta Cache-Control:no-cache
-
-          echo "::notice::APK ${APK_URL}"
-          echo "::notice::version.json ${PUBLIC_BASE}/mobile/version.json"
+          # Publish the manifest only after BOTH packages have uploaded successfully.
+          ossutil cp "dist_mobile/core-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/core-${VERSION}.zip" -f --acl public-read
+          ossutil cp "dist_mobile/poker-${VERSION}.zip" "oss://${BUCKET}/mobile/packages/${VERSION}/poker-${VERSION}.zip" -f --acl public-read
+          ossutil cp dist_mobile/version.json "oss://${BUCKET}/mobile/version.json" -f --acl public-read --meta Cache-Control:no-cache

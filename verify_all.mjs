@@ -711,6 +711,12 @@ const integrityIO=spawnSync('node',[join(BASE,'verify_character_integrity_import
 if(integrityIO.stdout)console.log(integrityIO.stdout.trim());if(integrityIO.stderr)console.error(integrityIO.stderr.trim());
 const integrityIOOK=integrityIO.status===0;totalErrors+=integrityIOOK?0:1;
 
+console.log('\n=== Android 更新资源与入口 ===');
+const mobileUpdate = spawnSync(process.execPath, [join(BASE, 'verify_mobile_update.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+if (mobileUpdate.stdout) console.log(mobileUpdate.stdout.trim());
+if (mobileUpdate.stderr) console.error(mobileUpdate.stderr.trim());
+if (mobileUpdate.status !== 0) totalErrors++;
+
 console.log('\n=== 自动引导与顾问提示偏好 ===');
 const prompts = spawnSync(process.execPath, [join(BASE, 'verify_prompt_preferences.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (prompts.stdout) console.log(prompts.stdout.trim());

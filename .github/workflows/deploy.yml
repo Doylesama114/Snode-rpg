@@ -17,9 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Build independent mobile update channel
+        run: node scripts/build-mobile-packages.mjs --base https://doylesama114.github.io/Snode-rpg
+
       - name: Prepare deploy directory
         run: |
-          mkdir -p _deploy
+          mkdir -p _deploy/mobile
+          VERSION=$(node -p "require('./electron-app/package.json').version")
+          mkdir -p "_deploy/mobile/packages/$VERSION"
+          cp dist_mobile/*.zip "_deploy/mobile/packages/$VERSION/"
+          cp dist_mobile/version.json _deploy/mobile/version.json
           cp -r 斯诺德跑团 _deploy/
           cp -r 职业页 _deploy/
           if [ -d electron-app/poker-game ]; then

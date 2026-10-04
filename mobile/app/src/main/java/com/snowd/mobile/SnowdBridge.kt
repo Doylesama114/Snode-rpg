@@ -97,10 +97,18 @@ class SnowdBridge(private val activity: Activity) {
     }
 
     @JavascriptInterface
+    fun checkResourceUpdate(): String {
+        (activity as? MainActivity)?.checkResourceUpdate() ?: return "unavailable"
+        return "checking"
+    }
+
+    @JavascriptInterface
     fun getAppInfo(): String {
         return JSONObject().apply {
             put("appVersion", BuildConfig.VERSION_NAME)
             put("updateBase", BuildConfig.UPDATE_BASE_URL)
+            put("resourceVersion", (activity as? MainActivity)?.resourceVersion() ?: "")
+            put("updateWarning", (activity as? MainActivity)?.resourceWarning() ?: "")
         }.toString()
     }
 }

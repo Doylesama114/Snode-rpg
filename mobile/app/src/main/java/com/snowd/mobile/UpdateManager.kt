@@ -4,203 +4,95 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import org.json.JSONObject
-import java.io.File
+import java.io.FilterInputStream
+import java.io.InputStream
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
-import java.util.zip.ZipFile
 
 class UpdateManager(
     private val context: Context,
     private val onProgress: (Int, String) -> Unit,
-    private val onReady: (String) -> Unit,
-    private val onError: (String) -> Unit
+    private val onReady: (String, String, String?) -> Unit,
+    private val onError: (String) -> Unit,
+    private val onLocalReady: (String, String) -> Unit,
+    private val loadedDirectory: String?
 ) {
     private val handler = Handler(Looper.getMainLooper())
-    private val manifestUrl: String = BuildConfig.UPDATE_BASE_URL.trimEnd('/') + "/mobile/version.json"
-    private val rootDir: File = File(context.filesDir, "mobile")
-    private val metaFile: File = File(rootDir, "version.json")
-    private val packagesRoot: File = File(rootDir, "packages")
-    private val downloadDir: File = File(rootDir, "downloads")
+    private val root = java.io.File(context.filesDir, "mobile")
+    private val engine = MobileUpdateEngine(root, { url -> openSource(url) }, { pct, msg ->
+        handler.post { onProgress(pct, msg) }
+    })
 
-    fun start() {
-        downloadDir.mkdirs()
-        Thread { runUpdate() }.start()
+    fun start() { engine.protectLoadedDirectory(loadedDirectory); Thread { runUpdate() }.start() }
+
+    private fun openSource(url: String): InputStream {
+        if (url.startsWith("asset://bootstrap/")) return context.assets.open(url.removePrefix("asset://"))
+        val conn = URL(url).openConnection() as HttpURLConnection
+        try {
+            conn.connectTimeout = 6000
+            conn.readTimeout = 15000
+            conn.instanceFollowRedirects = true
+            conn.useCaches = false
+            conn.setRequestProperty("User-Agent", "SnodeMobile/" + BuildConfig.VERSION_NAME)
+            conn.setRequestProperty("Cache-Control", "no-cache")
+            val code = conn.responseCode
+            if (code !in 200..299) throw IOException("HTTP $code")
+            return object : FilterInputStream(conn.inputStream) {
+                override fun close() { try { super.close() } finally { conn.disconnect() } }
+            }
+        } catch (e: Exception) { conn.disconnect(); throw e }
     }
 
     private fun runUpdate() {
-        val remote = fetchManifest()
-        if (remote == null) {
-            val local = readMeta()
-            if (local != null && packagesExist(local.optString("version"))) {
-                postReady(local.optString("version"))
-            } else {
-                postError("network unavailable")
-            }
-            return
-        }
-        val version = remote.optString("version", "")
-        if (version.isEmpty()) {
-            postError("bad manifest")
-            return
-        }
-        val local = readMeta()
-        if (local != null && local.optString("version") == version && packagesExist(version)) {
-            postReady(version)
-            return
-        }
-        val targetDir = File(packagesRoot, version)
+        var installed = engine.readInstalled()
+        var warning: String? = null
         try {
-            if (targetDir.exists()) targetDir.deleteRecursively()
-            targetDir.mkdirs()
-            val pkgs = remote.optJSONObject("packages")
-            val core = pkgs?.optJSONObject("core")
-            val poker = pkgs?.optJSONObject("poker")
-            downloadAndExtract(core, targetDir, "\u6b63\u5728\u4e0b\u8f7d\u6838\u5fc3\u8d44\u6e90\u5305")
-            downloadAndExtract(poker, targetDir, "\u6b63\u5728\u4e0b\u8f7d\u5361\u724c\u8d44\u6e90\u5305")
-            check(File(targetDir, "index.html").isFile) { "missing index.html" }
-            check(File(targetDir, "\u65af\u8bfa\u5fb7\u8dd1\u56e2/\u542f\u52a8\u53f0.html").isFile) { "missing launcher" }
-            check(File(targetDir, "poker-game/index.html").isFile) { "missing poker" }
-            writeMeta(remote.toString())
-            packagesRoot.listFiles()?.forEach { d ->
-                if (d.isDirectory && d.name != version) d.deleteRecursively()
+            val bundled = JSONObject(MobileUpdateEngine.readText(context.assets.open("bootstrap/version.json")))
+            for (key in arrayOf("core", "poker")) {
+                val pkg = bundled.getJSONObject("packages").getJSONObject(key)
+                pkg.put("url", "asset://bootstrap/$key-" + bundled.getString("version") + ".zip")
+                pkg.remove("fallbackUrls")
             }
-            postReady(version)
+            installed = engine.install(bundled)
         } catch (e: Exception) {
-            if (targetDir.exists()) targetDir.deleteRecursively()
-            val localV = local?.optString("version")
-            if (localV != null && packagesExist(localV)) {
-                postReady(localV)
-            } else {
-                postError(e.message ?: "update failed")
-            }
+            warning = "内置资源初始化失败：" + (e.message ?: "未知错误")
         }
-    }
-
-    private fun downloadAndExtract(pkg: JSONObject?, targetDir: File, stageMsg: String) {
-        if (pkg == null) return
-        val url = pkg.optString("url", "")
-        if (url.isEmpty()) return
-        val sha = pkg.optString("sha256", "").lowercase()
-        val size = pkg.optLong("size", 0L)
-        val zipFile = File(downloadDir, "pkg_" + System.currentTimeMillis() + ".zip")
-        try {
-            postProgress(0, stageMsg)
-            download(url, zipFile, sha, size, stageMsg)
-            postProgress(100, "\u6b63\u5728\u89e3\u538b\u8d44\u6e90\u5305")
-            unzip(zipFile, targetDir)
-        } finally {
-            if (zipFile.exists()) zipFile.delete()
+        installed?.takeIf { engine.healthy(it) }?.let { local ->
+            val v = local.getString("version")
+            val dir = local.optString("directory", v)
+            handler.post { onLocalReady(v, dir) }
         }
-    }
-
-    private fun download(url: String, dest: File, expectedSha: String, expectedSize: Long, stageMsg: String) {
-        val conn = URL(url).openConnection() as HttpURLConnection
-        try {
-            conn.connectTimeout = 20000
-            conn.readTimeout = 30000
-            conn.instanceFollowRedirects = true
-            conn.setRequestProperty("User-Agent", "SnodeMobile/1.0")
-            conn.connect()
-            val code = conn.responseCode
-            if (code !in 200..299) throw IOException("HTTP " + code)
-            val total = if (conn.contentLength > 0) conn.contentLength.toLong() else expectedSize
-            val digest = MessageDigest.getInstance("SHA-256")
-            dest.outputStream().use { out ->
-                conn.inputStream.use { ins ->
-                    val buf = ByteArray(64 * 1024)
-                    var read = 0L
-                    while (true) {
-                        val n = ins.read(buf)
-                        if (n < 0) break
-                        out.write(buf, 0, n)
-                        digest.update(buf, 0, n)
-                        read += n
-                        if (total > 0) {
-                            postProgress((read * 100 / total).toInt().coerceIn(0, 100), stageMsg)
-                        }
-                    }
-                }
-            }
-            if (dest.length() == 0L) throw IOException("empty download")
-            if (expectedSha.isNotEmpty()) {
-                val actual = digest.digest().joinToString("") { "%02x".format(it) }
-                if (actual != expectedSha) throw IOException("sha256 mismatch")
-            }
-        } finally {
-            conn.disconnect()
-        }
-    }
-
-    private fun unzip(zipFile: File, targetDir: File) {
-        ZipFile(zipFile).use { zip ->
-            val entries = zip.entries()
-            while (entries.hasMoreElements()) {
-                val e = entries.nextElement()
-                val name = e.name
-                if (name.isEmpty() || name.contains("..") || name.startsWith("/") || name.contains("\\")) continue
-                val outFile = File(targetDir, name)
-                if (e.isDirectory) {
-                    outFile.mkdirs()
-                    continue
-                }
-                outFile.parentFile?.mkdirs()
-                zip.getInputStream(e).use { ins ->
-                    outFile.outputStream().use { out -> ins.copyTo(out) }
-                }
-            }
-        }
-    }
-
-    private fun fetchManifest(): JSONObject? {
-        return try {
-            val conn = URL(manifestUrl).openConnection() as HttpURLConnection
+        val candidates = mutableListOf<JSONObject>()
+        val endpoints = arrayOf(
+            BuildConfig.UPDATE_BASE_URL.trimEnd('/') + "/mobile/version.json",
+            "https://doylesama114.github.io/Snode-rpg/mobile/version.json",
+            "https://github.com/Doylesama114/Snode-rpg/releases/latest/download/mobile-version.json"
+        )
+        val failures = mutableListOf<String>()
+        for (url in endpoints) {
             try {
-                conn.connectTimeout = 20000
-                conn.readTimeout = 30000
-                conn.instanceFollowRedirects = true
-                conn.setRequestProperty("User-Agent", "SnodeMobile/1.0")
-                conn.connect()
-                if (conn.responseCode !in 200..299) return null
-                val text = conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-                JSONObject(text)
-            } finally {
-                conn.disconnect()
-            }
-        } catch (e: Exception) {
-            null
+                val candidate = engine.fetchManifest(url)
+                candidates.add(candidate)
+            } catch (e: Exception) { failures.add(e.message ?: "网络不可用") }
         }
-    }
-
-    private fun readMeta(): JSONObject? {
-        return try {
-            if (metaFile.exists()) JSONObject(metaFile.readText()) else null
-        } catch (e: Exception) {
-            null
+        var updated = false
+        for (candidate in candidates.sortedWith(Comparator { a, b ->
+            MobileUpdateEngine.compareVersions(b.getString("version"), a.getString("version"))
+        })) {
+            try { installed = engine.install(candidate); warning = null; updated = true; break }
+            catch (e: Exception) { failures.add(e.message ?: "下载失败") }
         }
-    }
-
-    private fun writeMeta(text: String) {
-        rootDir.mkdirs()
-        metaFile.writeText(text)
-    }
-
-    private fun packagesExist(version: String): Boolean {
-        if (version.isEmpty()) return false
-        val d = File(packagesRoot, version)
-        return File(d, "index.html").isFile && File(d, "\u65af\u8bfa\u5fb7\u8dd1\u56e2/\u542f\u52a8\u53f0.html").isFile
-    }
-
-    private fun postProgress(pct: Int, msg: String) {
-        handler.post { onProgress(pct, msg) }
-    }
-
-    private fun postReady(version: String) {
-        handler.post { onReady(version) }
-    }
-
-    private fun postError(msg: String) {
-        handler.post { onError(msg) }
+        if (!updated) {
+            warning = "资源更新未完成，继续使用已验证的本地版本。" + failures.distinct().joinToString(" / ")
+        }
+        val ready = installed ?: engine.readInstalled()
+        if (ready != null && engine.healthy(ready)) {
+            val v = ready.getString("version")
+            val dir = ready.optString("directory", v)
+            handler.post { onReady(v, dir, warning) }
+        } else {
+            handler.post { onError(warning ?: "没有可用资源，请重试或覆盖安装新版 APK") }
+        }
     }
 }

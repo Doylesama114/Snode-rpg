@@ -25,6 +25,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
+import org.json.JSONObject
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var statusText: TextView
     private lateinit var retryBtn: Button
     private var currentVersion: String? = null
+    private var currentDirectory: String? = null
+    private var currentWarning: String? = null
+    private var updateRunning = false
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +52,14 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById(R.id.statusText)
         retryBtn = findViewById(R.id.retryBtn)
 
-        WebView.setWebContentsDebuggingEnabled(true)
+        WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.allowFileAccess = false
         webView.settings.allowContentAccess = true
         webView.settings.mediaPlaybackRequiresUserGesture = false
         webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
-        webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
+        webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         webView.addJavascriptInterface(SnowdBridge(this), "mobileBridge")
 
         webView.webChromeClient = object : WebChromeClient() {
@@ -178,31 +183,80 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    fun resourceVersion(): String? = currentVersion
+    fun resourceWarning(): String? = currentWarning
+    fun checkResourceUpdate() { runOnUiThread { startUpdateFlow() } }
+
+    private fun publishUpdate(status: String, message: String) {
+        val detail = JSONObject().put("status", status).put("message", message)
+            .put("version", currentVersion ?: "")
+        webView.evaluateJavascript(
+            "window.dispatchEvent(new CustomEvent('snowd-mobile-update',{detail:" + detail.toString() + "}));", null)
+    }
+
     private fun startUpdateFlow() {
+        if (updateRunning) return
+        updateRunning = true
         retryBtn.visibility = View.GONE
-        overlay.visibility = View.VISIBLE
+        if (currentVersion == null) overlay.visibility = View.VISIBLE
         progressBar.progress = 0
         statusText.setText(R.string.update_checking)
+        publishUpdate("checking", "正在检查移动资源更新…")
         UpdateManager(
             applicationContext,
             onProgress = { pct, msg ->
                 progressBar.progress = pct
                 statusText.text = msg
+                publishUpdate("downloading", "$msg $pct%")
             },
-            onReady = { version -> loadApp(version) },
+            loadedDirectory = currentDirectory,
+            onLocalReady = { version, directory ->
+                if (currentVersion == null) loadApp(version, directory)
+            },
+            onReady = { version, directory, warning ->
+                updateRunning = false
+                currentWarning = warning
+                if (currentDirectory == null) {
+                    loadApp(version, directory)
+                } else if (currentDirectory != directory) {
+                    overlay.visibility = View.GONE
+                    publishUpdate("ready", "资源 v$version 已下载，请先保存角色，再重新加载或下次打开应用")
+                    AlertDialog.Builder(this)
+                        .setTitle("新资源已就绪")
+                        .setMessage("资源 v$version 已下载。请先保存角色；重新加载会关闭当前页面。")
+                        .setNegativeButton("稍后") { _, _ -> }
+                        .setPositiveButton("重新加载") { _, _ -> loadApp(version, directory) }
+                        .show()
+                } else {
+                    overlay.visibility = View.GONE
+                    publishUpdate(if (warning == null) "uptodate" else "warning",
+                        warning ?: "移动资源已是最新版本 v$version")
+                }
+                if (warning != null) Toast.makeText(this, warning, Toast.LENGTH_LONG).show()
+            },
             onError = { msg ->
+                updateRunning = false
+                currentWarning = msg
                 statusText.text = getString(R.string.update_error) + " (" + msg + ")"
-                retryBtn.visibility = View.VISIBLE
+                if (currentVersion == null) {
+                    overlay.visibility = View.VISIBLE
+                    retryBtn.visibility = View.VISIBLE
+                } else {
+                    overlay.visibility = View.GONE
+                    publishUpdate("error", msg)
+                }
             }
         ).start()
     }
 
-    private fun loadApp(version: String) {
+    private fun loadApp(version: String, directory: String) {
+        webView.stopLoading()
         currentVersion = version
-        val baseDir = File(File(filesDir, "mobile/packages"), version)
+        currentDirectory = directory
+        val baseDir = File(File(filesDir, "mobile/packages"), directory)
         val handler = FilesPathHandler(baseDir)
         // 版本升级后清除 WebView 缓存，避免继续命中旧版 common.css
-        try { webView.clearCache(false) } catch (_: Exception) {}
+        try { webView.clearCache(true) } catch (_: Exception) {}
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
@@ -235,6 +289,19 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 overlay.visibility = View.GONE
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                val warning = currentWarning
+                if (warning != null) publishUpdate("warning", warning)
+            }
+
+            override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, response: WebResourceResponse?) {
+                if (request?.isForMainFrame == true) {
+                    overlay.visibility = View.VISIBLE
+                    statusText.text = "页面资源缺失，请重试修复或覆盖安装新版 APK"
+                    retryBtn.visibility = View.VISIBLE
+                }
             }
 
             override fun onReceivedError(

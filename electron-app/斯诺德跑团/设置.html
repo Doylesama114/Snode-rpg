@@ -267,7 +267,10 @@
   });
   $('checkBtn').addEventListener('click', function () {
     if (typeof window.downloadUpdate === 'function' || window.electronAPI) { tip('桌面端已发起检查', true); }
-    else tip('检查更新仅在桌面端可用（网页版不可用）', false);
+    else if (window.mobileBridge && typeof window.mobileBridge.checkResourceUpdate === 'function') {
+      window.mobileBridge.checkResourceUpdate(); tip('正在检查移动资源更新', true);
+    } else if (window.mobileBridge) tip('请从启动台下载 Android 新版 APK，覆盖安装升级更新器', false);
+    else tip('检查更新仅在应用中可用', false);
   });
   $('perfBtn').addEventListener('click', function () {
     if (typeof window.perfReport === 'function' || window.electronAPI) { tip('桌面端已运行性能自检', true); }
@@ -281,6 +284,11 @@
     ? chars.map(function (c) { return c.slots.map(function (s) { return '<option value="' + c.name + '#' + s + '">' + c.name + ' · 存档' + s + '</option>'; }).join(''); }).join('')
     : '<option value="">（暂无角色存档）</option>';
   renderCounter(); renderBoard(); paintPrefs();
+  if (window.mobileBridge) {
+    $('autoBtn').closest('.row').style.display = 'none';
+    var mobileDesc = $('checkBtn').closest('.row').querySelector('.desc');
+    if (mobileDesc) mobileDesc.textContent = ' · 检查移动资源更新';
+  }
 })();
 </script>
 <script src="user_preferences.js"></script>
