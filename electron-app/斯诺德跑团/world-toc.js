@@ -1,5 +1,6 @@
 /* world-toc.js v4 —— 两级目录：保 TTS 控件、标签去「朗读」、补全章节、滚动高亮 */
 (function () {
+  var scrollListener = null;
   function clean(a) {
     var c = a.cloneNode(true);
     var kill = c.querySelectorAll("button,.tts,[data-tts],[class*=speak],[class*=read],[class*=voice]");
@@ -41,8 +42,10 @@
       } else {
         setLabel(a, clean(a));
       }
+      // Capture the existing group before moving the chapter anchor to the end.
+      var sub = a.nextElementSibling;
       toc.appendChild(a);
-      if (a.nextElementSibling && a.nextElementSibling.className && a.nextElementSibling.className.indexOf("toc-sub") >= 0) { toc.appendChild(a.nextElementSibling); continue; }
+      if (sub && sub.classList.contains("toc-sub")) { toc.appendChild(sub); continue; }
       var hs = sec.querySelectorAll("h3");
       if (hs.length) {
         var box = document.createElement("div");
@@ -70,7 +73,8 @@
       for (var y = 0; y < ls.length; y++) ls[y].classList.remove("toc-active");
       if (best) best.classList.add("toc-active");
     }
-    window.removeEventListener("scroll", sync);
+    if (scrollListener) window.removeEventListener("scroll", scrollListener);
+    scrollListener = sync;
     window.addEventListener("scroll", sync, { passive: true });
     setTimeout(sync, 300);
     window.__worldTocBuilt = toc.querySelectorAll("a").length;

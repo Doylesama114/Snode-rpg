@@ -2719,8 +2719,41 @@ window.__worldImgHydrate = function () {
 setTimeout(function () { try { var p = document.getElementById("help-pane-world"); if (p && !p.classList.contains("help-pane-hidden")) window.__worldImgHydrate(); } catch (e) {} }, 800);
 </script>
 <style>#help-pane-world .toc .toc-sub{margin:2px 0 6px;padding-left:12px;border-left:2px solid #e8e2d8}#help-pane-world .toc .toc-sub a{font-size:12.5px !important;color:#6b5a3e !important}#help-pane-world .toc .toc-sub a.toc-active{color:#a46d1f !important;font-weight:bold}</style>
-<script src="world-toc.js"></script>
-<style>/* 手机端目录溢出 */@media(max-width:860px){#help-pane-world .toc{overflow-x:auto;-webkit-overflow-scrolling:touch}#help-pane-world .toc a{white-space:nowrap}#help-pane-world .toc .toc-sub a{white-space:normal}}</style>
+<script src="world-toc.js?v=1.0.8043"></script>
+<style>
+/* Compact world navigation: nested chapter links must not stretch the sticky header. */
+/* Follow the actual card theme, even when OS dark mode differs from the app theme. */
+#help-pane-world .p, #help-pane-world p, #help-pane-world li { color:inherit !important; }
+@media (max-width:860px) {
+  #help-pane-world { grid-template-columns:minmax(0,1fr); }
+  #help-pane-world .toc-sidebar {
+    min-width:0; max-width:100%; width:100%; box-sizing:border-box;
+    max-height:none; overflow:visible; margin-bottom:12px;
+  }
+  #help-pane-world .toc {
+    display:flex; flex-wrap:nowrap; align-items:center; gap:7px;
+    max-height:72px; overflow-x:auto; overflow-y:hidden;
+    margin:0; padding:8px; -webkit-overflow-scrolling:touch;
+  }
+  #help-pane-world .toc-title { display:none; }
+  #help-pane-world .toc a {
+    flex:0 0 auto; white-space:nowrap; line-height:1.2;
+    margin:0; padding:8px 12px; border-radius:999px;
+    border:1px solid #c9ab74; font-size:14px;
+  }
+  #help-pane-world .toc .toc-sub {
+    display:flex; flex:0 0 auto; align-items:center; gap:7px;
+    margin:0; padding:0 0 0 7px;
+  }
+  #help-pane-world .toc .toc-sub a {
+    flex:0 0 auto; white-space:nowrap; font-size:13px !important;
+  }
+  #help-pane-world .toc .toc-sub a.toc-active { color:#f6eeda !important; }
+  #help-pane-world .help-content { width:100%; min-width:0; }
+  /* Leave room for the native horizontal scrollbar as well as the sticky TOC. */
+  #help-pane-world .help-content [id] { scroll-margin-top:110px; }
+}
+</style>
 <style>
 /* mobile-help-opt：手机端排版优化（更小字号 = 一屏更多内容；宽表首列吸附 + 横滑提示） */
 @media (max-width: 600px) {
