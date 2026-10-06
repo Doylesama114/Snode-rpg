@@ -22,6 +22,8 @@ jobs:
           node-version: '24'
 
       - name: Build independent mobile update channel
+        env:
+          ADVISOR_API_BASE: ${{ vars.ADVISOR_API_BASE }}
         run: node scripts/build-mobile-packages.mjs --base https://doylesama114.github.io/Snode-rpg
 
       - name: Prepare deploy directory
@@ -48,6 +50,11 @@ jobs:
           find _deploy -name "*.bat" -delete 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/tests.html 2>/dev/null || true
+
+      - name: Configure public advisor connection
+        env:
+          ADVISOR_API_BASE: ${{ vars.ADVISOR_API_BASE }}
+        run: node scripts/prepare-advisor-config.cjs _deploy/斯诺德跑团/advisor-service.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

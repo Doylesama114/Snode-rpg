@@ -61,8 +61,8 @@ jobs:
             fi
           done
           ADVISOR_API="${{ vars.ADVISOR_API_BASE }}"
-          if [ -z "$ADVISOR_API" ] && [ -n "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}" ]; then
-            ADVISOR_API=$(curl -sS --max-time 15 "${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}/advisor-endpoint.txt" 2>/dev/null | tr -d '[:space:]' || true)
+          if [ -z "$ADVISOR_API" ]; then
+            ADVISOR_API=$(node -p "require('./斯诺德跑团/advisor-service.js').baseUrl")
           fi
           case "$ADVISOR_API" in
             https://*|http://*) ;;
@@ -77,6 +77,7 @@ jobs:
               fi
             done
           fi
+          ADVISOR_API_BASE="$ADVISOR_API" node scripts/prepare-advisor-config.cjs _deploy/斯诺德跑团/advisor-service.js
           find _deploy -name "*_backup_*" -delete 2>/dev/null || true
           find _deploy -name "*.bat" -delete 2>/dev/null || true
           rm -rf _deploy/斯诺德跑团/verify.html 2>/dev/null || true

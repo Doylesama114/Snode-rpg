@@ -7,10 +7,12 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = path.join(ROOT, 'dist_mobile');
 const SNODE = '\u65af\u8bfa\u5fb7\u8dd1\u56e2'; // ?????
+const ADVISOR_CONFIG = createRequire(import.meta.url)('./prepare-advisor-config.cjs');
 const JOBS = '\u804c\u4e1a\u9875'; // ???
 const POKER_SRC = path.join(ROOT, 'electron-app', 'poker-game');
 
@@ -132,6 +134,11 @@ function injectMobileEntry(files, apiBase) {
   for (const f of files) {
     if (!f.name.endsWith('.html')) continue;
     let t = f.data.toString('utf8');
+    if (apiBase && f.name.endsWith(`${SNODE}/顾问.html`)) {
+      const value = JSON.stringify(apiBase.replace(/\/+$/, '')).replace(/</g, '\\u003c');
+      t = t.replace(/<script\s+src="advisor-service\.js[^"]*"><\/script>/i,
+        '<script>window.SNODE_ADVISOR_API = ' + value + ';</script>\n$&');
+    }
     const inSN = f.name.includes(`${SNODE}/`);
     const inJobs = f.name.includes(`${JOBS}/`);
     const src = inSN
@@ -214,7 +221,7 @@ function main() {
   })();
   const apiBase = (() => {
     const i = args.indexOf('--api-base');
-    return i >= 0 ? args[i + 1] : (process.env.ADVISOR_API_BASE || '');
+    return i >= 0 ? ADVISOR_CONFIG.validate(args[i + 1]) : ADVISOR_CONFIG.loadConfig().baseUrl;
   })();
   const verArg = (() => {
     const i = args.indexOf('--version');

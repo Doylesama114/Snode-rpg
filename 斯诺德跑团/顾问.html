@@ -269,6 +269,13 @@ html.dark h1, html.dark h2, html.dark h3 { color:#f0e6d2 !important; }
 html.dark .card, html.dark .panel, html.dark .box, html.dark .section, html.dark .item {
   background: linear-gradient(180deg,#453d2f,#3a3327) !important; border-color:#5a4a35 !important; color:#e8e0cc !important; }
 html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.18) !important; }
+/* Keep the advisor's own title/status visible under the shared page skin. */
+#app .hdr-title h1 { display:block !important; overflow:hidden; text-overflow:ellipsis; }
+#app .hdr #statusText { display:block !important; color:#f4e9d6; line-height:1.4; }
+@media(max-width:600px) {
+  #app .hdr .gui-trigger { min-width:44px; width:44px; padding:7px !important; justify-content:center; }
+  #app .hdr .gui-trigger span { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+}
 </style>
 </head>
 <body>
@@ -279,6 +286,7 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
       <h1><span class="dot" id="statusDot"></span>AI 顾问</h1>
       <div class="sub" id="statusText">连接中…</div>
     </div>
+    <button class="hdr-btn" id="reconnectBtn" aria-label="重新连接" title="重新连接">↻</button>
     <button class="hdr-btn" id="clearBtn" aria-label="新对话" title="新对话">＋</button>
   </header>
   <main class="msgs" id="msgs"></main>
@@ -288,9 +296,9 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
     <button class="send" id="send" type="submit">发送</button>
   </form>
 </div>
-<script>window.SNODE_ADVISOR_API = window.SNODE_ADVISOR_API || "__ADVISOR_API_BASE__";</script>
+<script src="advisor-service.js?v=1.0.8044"></script>
 <script src="ui_dialog.js"></script>
-<script src="advisor-chat.js"></script>
+<script src="advisor-chat.js?v=1.0.8044"></script>
 <script>window.__guiBeam="AI 顾问";; window.__guiSkin = true;</script>
 <script src="guild-ui.js"></script>
 <script src="advisor-offline-guide.js"></script>

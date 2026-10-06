@@ -711,6 +711,12 @@ const integrityIO=spawnSync('node',[join(BASE,'verify_character_integrity_import
 if(integrityIO.stdout)console.log(integrityIO.stdout.trim());if(integrityIO.stderr)console.error(integrityIO.stderr.trim());
 const integrityIOOK=integrityIO.status===0;totalErrors+=integrityIOOK?0:1;
 
+console.log('\n=== 手机 AI 顾问连接与流式回复 ===');
+const mobileAdvisor = spawnSync(process.execPath, [join(BASE, 'verify_mobile_advisor.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+if (mobileAdvisor.stdout) console.log(mobileAdvisor.stdout.trim());
+if (mobileAdvisor.stderr) console.error(mobileAdvisor.stderr.trim());
+if (mobileAdvisor.status !== 0) totalErrors++;
+
 console.log('\n=== Android 更新资源与入口 ===');
 const mobileUpdate = spawnSync(process.execPath, [join(BASE, 'verify_mobile_update.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (mobileUpdate.stdout) console.log(mobileUpdate.stdout.trim());

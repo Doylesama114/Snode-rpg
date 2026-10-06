@@ -25,14 +25,48 @@
     return String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function resolveApi() {
-    var v = String(window.SNODE_ADVISOR_API || '').trim();
-    if (v && v !== '__ADVISOR_API_BASE__') return v.replace(/\/+$/, '');
-    var host = location.hostname || '';
-    if (!host || host === 'localhost' || host === '127.0.0.1') return 'http://127.0.0.1:9000';
-    return '';
+  function normalizeApi(value) {
+    try {
+      var u = new URL(String(value || '').trim());
+      var dev = !window.mobileBridge && (!location.hostname || /^(localhost|127\.0\.0\.1)$/.test(location.hostname));
+      var local = /^(localhost|127\.0\.0\.1)$/.test(u.hostname);
+      if (u.username || u.password || u.search || u.hash || (u.protocol !== 'https:' && !(dev && local && u.protocol === 'http:'))) return '';
+      return u.href.replace(/\/+$/, '');
+    } catch (_) { return ''; }
   }
-  var API = resolveApi();
+  function apiCandidates() {
+    var injected = normalizeApi(window.SNODE_ADVISOR_API);
+    var configured = normalizeApi(window.SnowdAdvisorService && window.SnowdAdvisorService.baseUrl);
+    var dev = !window.mobileBridge && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    var values = dev && !injected ? ['http://127.0.0.1:9000', configured] : [injected, configured];
+    values.push(normalizeApi(window.SnowdAdvisorService && window.SnowdAdvisorService.fallbackBaseUrl));
+    return values.filter(function (v, i) { return v && values.indexOf(v) === i; });
+  }
+  var API = apiCandidates()[0] || '';
+  if (API) window.SNODE_ADVISOR_API = API;
+  var connected = false, healthPending = false, healthPromise = Promise.resolve(false);
+
+  function timedFetch(url, options, timeout, jsonBody) {
+    return new Promise(function (resolve, reject) {
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var settled = false;
+      var timer = setTimeout(function () {
+        if (settled) return; settled = true;
+        if (controller) controller.abort();
+        reject(new Error('连接超时，请检查网络后重试'));
+      }, timeout);
+      var opts = Object.assign({}, options || {});
+      if (controller) opts.signal = controller.signal;
+      fetch(url, opts).then(function (r) {
+        return jsonBody ? r.json().then(function (data) { return { response:r, data:data }; }) : r;
+      }).then(function (r) {
+        if (settled) return; settled = true; clearTimeout(timer); resolve(r);
+      }, function (e) {
+        if (settled) return; settled = true; clearTimeout(timer);
+        reject(e && e.name === 'AbortError' ? new Error('连接超时，请重试') : e);
+      });
+    });
+  }
 
   // 角色面板移交的角色快照（_snowd_adv_last_snapshot）——移动端顾问据此分析当前角色
   function handoffSnapshot() {
@@ -279,113 +313,90 @@
   }
 
   // ---------- SSE ----------
-  function parseSseBlock(block, handlers) {
-    var eventName = 'message';
-    var data = '';
+  function parseSseBlock(block, handler) {
+    var eventName = 'message', lines = [];
     block.split(/\r?\n/).forEach(function (line) {
       if (line.indexOf('event:') === 0) eventName = line.slice(6).trim();
-      else if (line.indexOf('data:') === 0) data += line.slice(5).trim();
+      else if (line.indexOf('data:') === 0) lines.push(line.slice(5).replace(/^ /, ''));
     });
-    if (!data) return;
+    if (!lines.length) return;
     var payload;
-    try { payload = JSON.parse(data); } catch (e) { return; }
-    if (handlers[eventName]) handlers[eventName](payload);
+    try { payload = JSON.parse(lines.join('\n')); } catch (_) { return; }
+    handler(eventName, payload);
   }
 
   function streamAdvise(query) {
     return new Promise(function (resolve, reject) {
       var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-      var timer = setTimeout(function () {
-        if (controller) controller.abort();
-      }, FETCH_TIMEOUT);
-
-      var donePayload = null;
-      var gotDone = false;
-      var gotError = false;
-
+      var settled = false, reader = null, ai = state._currentAi;
+      var gotDelta = false, gotDone = false, donePayload = null;
+      function finish(error, result) {
+        if (settled) return; settled = true; clearTimeout(timer);
+        if (reader) reader.cancel().catch(function () {});
+        if (error) { if (controller) controller.abort(); reject(error); }
+        else resolve(result);
+      }
+      var timer = setTimeout(function () { finish(new Error('请求超时，请稍后重试')); }, FETCH_TIMEOUT);
+      function handleEvent(name, payload) {
+        if (settled) return;
+        if (name === 'delta' && payload && payload.delta) {
+          gotDelta = true;
+          if (ai && ai.wrap.parentNode) { ai.bubble.textContent += payload.delta; scrollBottom(); }
+        } else if (name === 'done') {
+          gotDone = true; donePayload = payload; finish(null, donePayload);
+        } else if (name === 'error') {
+          finish(new Error((payload && (payload.message || payload.error)) || '服务返回错误，请重试'));
+        }
+      }
       fetch(API + '/api/advise', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
         body: JSON.stringify(buildAdviseBody(query)),
         signal: controller ? controller.signal : undefined,
       }).then(function (res) {
-        if (!res.ok) {
-          return res.json().catch(function () { return { error: 'HTTP ' + res.status }; }).then(function (err) {
-            throw new Error(err.error || 'HTTP ' + res.status);
-          });
+        if (settled) return;
+        if (!res.ok) return res.json().catch(function () { return { error: '服务暂时不可用（HTTP ' + res.status + '）' }; }).then(function (data) { throw new Error(data.error || '服务暂时不可用'); });
+        if ((res.headers.get('Content-Type') || '').indexOf('application/json') >= 0) {
+          return res.json().then(function (data) { finish(null, data); });
         }
         if (!res.body || typeof res.body.getReader !== 'function') {
-          throw new Error('\u6d4f\u89c8\u5668\u4e0d\u652f\u6301\u6d41\u5f0f\u54cd\u5e94');
+          clearTimeout(timer);
+          return fetchAdvisePlain(query).then(function (data) { finish(null, data); }, finish);
         }
-        var reader = res.body.getReader();
-        var decoder = new TextDecoder('utf-8');
-        var buffer = '';
-
-        function handleEvent(name, payload) {
-          if (name === 'delta' && payload && payload.delta) {
-            var ai = state._currentAi;
-            if (ai) {
-              ai.bubble.textContent += payload.delta;
-              scrollBottom();
-            }
-            return;
-          }
-          if (name === 'done') {
-            donePayload = payload;
-            gotDone = true;
-            return;
-          }
-          if (name === 'error') {
-            gotError = true;
-            reject(new Error((payload && payload.message) || '\u670d\u52a1\u8fd4\u56de\u9519\u8bef'));
-          }
-        }
-
+        reader = res.body.getReader();
+        var decoder = new TextDecoder('utf-8'), buffer = '';
         function pump() {
-          return reader.read().then(function (r) {
-            if (r.done) {
+          if (settled) return;
+          return reader.read().then(function (chunk) {
+            if (settled) return;
+            if (chunk.done) {
+              buffer += decoder.decode();
               if (buffer.trim()) parseSseBlock(buffer, handleEvent);
-              if (gotError) return;
-              if (gotDone) { resolve(donePayload); return; }
-              // 流式结尾可能被网关吞掉最后一帧：自动改走非流式兜底
+              if (settled) return;
+              if (gotDone) { finish(null, donePayload); return; }
+              if (gotDelta) { finish(new Error('回复已中断，请重试')); return; }
               clearTimeout(timer);
-              fetchAdvisePlain(query).then(resolve).catch(reject);
-              return;
+              return fetchAdvisePlain(query).then(function (data) { finish(null, data); }, finish);
             }
-            buffer += decoder.decode(r.value, { stream: true });
-            var blocks = buffer.split('\n\n');
-            buffer = blocks.pop() || '';
-            blocks.forEach(function (b) { if (b.trim()) parseSseBlock(b, handleEvent); });
+            buffer += decoder.decode(chunk.value, { stream: true });
+            var blocks = buffer.split(/\r?\n\r?\n/); buffer = blocks.pop() || '';
+            blocks.forEach(function (block) { if (block.trim()) parseSseBlock(block, handleEvent); });
             return pump();
-          }).catch(function (err) {
-            if (err && err.name === 'AbortError') reject(new Error('\u8bf7\u6c42\u8d85\u65f6\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5'));
-            else reject(err);
           });
         }
-
         return pump();
-      }).catch(function (err) {
-        if (gotError) return;
-        reject(err);
-      }).finally(function () {
-        clearTimeout(timer);
-      });
+      }).catch(function (error) { finish(error && error.name === 'AbortError' ? new Error('请求超时，请重试') : error); });
     });
   }
 
-  // ---------- 非流式兜底 ----------
   function fetchAdvisePlain(query) {
-    return fetch(API + '/api/advise', {
+    return timedFetch(API + '/api/advise', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(buildAdviseBody(query)),
-    }).then(function (res) {
-      if (!res.ok) {
-        return res.json().catch(function () { return { error: 'HTTP ' + res.status }; }).then(function (err) {
-          throw new Error(err.error || 'HTTP ' + res.status);
-        });
-      }
-      return res.json();
+    }, FETCH_TIMEOUT, true).then(function (pair) {
+      if (!pair.response.ok) throw new Error(pair.data.error || '服务暂时不可用（HTTP ' + pair.response.status + '）');
+      return pair.data;
     });
   }
 
@@ -411,7 +422,10 @@
     state._currentAi = ai;
     setBusy(true);
 
-    streamAdvise(text).then(function (result) {
+    (connected ? Promise.resolve(true) : pingHealth()).then(function (ok) {
+      if (!ok) throw new Error('AI 服务连接失败，请点击顶部重连后重试');
+      return streamAdvise(text);
+    }).then(function (result) {
       var finalText = (result && result.answer && String(result.answer).trim())
         ? String(result.answer)
         : ai.bubble.textContent || '\uff08\u65e0\u56de\u7b54\u5185\u5bb9\uff09';
@@ -443,24 +457,28 @@
 
   // ---------- 服务状态 ----------
   function pingHealth() {
-    var dot = $('statusDot'), text = $('statusText');
-    if (!API) {
-      dot.className = 'dot _bad';
-      text.textContent = '\u670d\u52a1\u672a\u914d\u7f6e';
-      return;
-    }
-    fetch(API + '/api/health', { method: 'GET' }).then(function (res) {
-      if (res.ok) {
-        dot.className = 'dot _ok';
-        text.textContent = '\u5728\u7ebf';
-      } else {
-        dot.className = 'dot _bad';
-        text.textContent = '\u670d\u52a1\u5f02\u5e38';
+    if (healthPending) return healthPromise;
+    healthPending = true; connected = false;
+    var dot = $('statusDot'), text = $('statusText'), retry = $('reconnectBtn');
+    dot.className = 'dot'; text.textContent = '正在连接…'; if (retry) retry.disabled = true;
+    var candidates = apiCandidates(), lastError = null;
+    healthPromise = (async function () {
+      for (var i = 0; i < candidates.length; i++) {
+        try {
+          var pair = await timedFetch(candidates[i] + '/api/health', { cache: 'no-store' }, 10000, true);
+          var res = pair.response;
+          if (!res.ok) throw new Error('服务暂时不可用');
+          var data = pair.data;
+          if (!data || data.ok !== true || data.service !== 'snode-advisor') throw new Error('服务连接异常');
+          API = candidates[i]; window.SNODE_ADVISOR_API = API; connected = true;
+          dot.className = 'dot _ok'; text.textContent = '在线'; return true;
+        } catch (e) { lastError = e; }
       }
-    }).catch(function () {
       dot.className = 'dot _bad';
-      text.textContent = '\u672a\u8fde\u63a5\u670d\u52a1';
-    });
+      text.textContent = lastError && /超时/.test(lastError.message) ? '连接超时，点击重连' : '连接失败，点击重连';
+      return false;
+    })().finally(function () { healthPending = false; if (retry) retry.disabled = false; });
+    return healthPromise;
   }
 
   // ---------- 初始化 ----------
@@ -492,6 +510,7 @@
     restoreSession();
     bindRefClicks();
     pingHealth();
+    $('reconnectBtn').addEventListener('click', pingHealth);
 
     $('form').addEventListener('submit', function (e) {
       e.preventDefault();
