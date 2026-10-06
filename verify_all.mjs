@@ -723,6 +723,12 @@ if (mobileUpdate.stdout) console.log(mobileUpdate.stdout.trim());
 if (mobileUpdate.stderr) console.error(mobileUpdate.stderr.trim());
 if (mobileUpdate.status !== 0) totalErrors++;
 
+console.log('\n=== 技能栏与抉择组选项上限 ===');
+const skillCapacity = spawnSync(process.execPath, [join(BASE, 'verify_skill_capacity.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+if (skillCapacity.stdout) console.log(skillCapacity.stdout.trim());
+if (skillCapacity.stderr) console.error(skillCapacity.stderr.trim());
+if (skillCapacity.status !== 0) totalErrors++;
+
 console.log('\n=== 自动引导与顾问提示偏好 ===');
 const prompts = spawnSync(process.execPath, [join(BASE, 'verify_prompt_preferences.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (prompts.stdout) console.log(prompts.stdout.trim());

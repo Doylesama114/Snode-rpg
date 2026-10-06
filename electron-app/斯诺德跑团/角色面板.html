@@ -1268,7 +1268,7 @@ body.battle .fab{display:none}
 <script src="character_export.js?v=20261003-general1"></script>
 <script src="character_review_ui.js?v=20261003-general1"></script>
 <script src="character_import_ui.js?v=20261003-general1"></script>
-<script src="panel_engine.js?v=20261003-general1"></script>
+<script src="panel_engine.js?v=1.0.8045"></script>
 <script src="bug-report.js"></script>
 <script src="snd.js"></script>
 <script src="shortcuts.js"></script>
@@ -3558,7 +3558,7 @@ function renderSlotNote() {
   var m0 = (T && T.classes && T.classes[0]) ? T.classes[0] : null;
   var label = (m0 && m0.name) ? (m0.name + ' ' + m0.level + ' 级') : '角色';
   var occupied=(state.skills||[]).filter(isMainSkillOccupant).length,pending=(state.skills||[]).filter(function(s){return !s.sub&&s.occupies===null;}).length;
-  document.getElementById('skillSlotNote').textContent='主职业技能 '+mainCount+' 项已学 · 已确认占槽 '+occupied+' 项'+(pending?' · 槽位待确认 '+pending+' 项':'')+'（'+label+'）。';
+  document.getElementById('skillSlotNote').textContent='主职业技能 '+mainCount+' 项已学 · 已确认占槽 '+occupied+' / '+calcSkillSlots(0)+' 栏'+(pending?' · 槽位待确认 '+pending+' 项':'')+'（'+label+'）。';
 }
 
 /* ================= 头像设置（社交模式） ================= */

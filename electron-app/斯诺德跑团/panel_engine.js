@@ -785,15 +785,50 @@ function normalizeAllSkillSubs() {
   for (var i = 0; i < list.length; i++) normalizeSkillSubField(list[i]);
 }
 
+function hasSkillSlotEntry(s) {
+  return !!s && !!String(s.n || s.name || '').trim();
+}
+
+function choiceOptionName(entry, source) {
+  if (!entry || entry.resolution === "custom" || entry.resolution === "deferred") return "";
+  var ref = entry.resolution === "variant" && entry.baseDefinition ? entry.baseDefinition : entry;
+  var name = ref.n || ref.name || "", owner = ref.src || ref.cls || ref.source || "";
+  if (!owner && typeof SNOWD_CHARACTER_IO !== "undefined") {
+    var resolved = SNOWD_CHARACTER_IO.resolve(ref);
+    if (resolved.pick) owner = resolved.pick.cls;
+  }
+  return owner === source ? name : "";
+}
+
+/** Choice limits count distinct catalogue options from the owning source. */
+function getChoiceGroupStatus(group, clsName) {
+  var source = group.cls || clsName || "通用", chosen = {};
+  var list = state.talent_tree || [];
+  for (var i = 0; i < list.length; i++) {
+    var name = choiceOptionName(list[i], source);
+    if (name && (group.skills || []).indexOf(name) >= 0) chosen[name] = true;
+  }
+  var count = Object.keys(chosen).length, max = Number(group.max);
+  var valid = Number.isSafeInteger(max) && max > 0;
+  return { count:count, max:valid ? max : null, chosen:chosen, full:valid && count >= max };
+}
+
+function isRuleLockedAbility(skillData) {
+  var lines = (skillData && skillData.description || []).join(" ").split(/[。\n]/);
+  return lines.some(function (line) {
+    return /(?:这个|该|此|本)(?:天赋|技能|能力|法术|戏法)[^。\n]{0,12}无法(?:通过任何方式|被)?[^。\n]{0,5}(?:修改|覆盖|替换)/.test(line);
+  });
+}
+
 function isMainSkillOccupant(s) {
-  if (!s||s.occupies===null||s.ownerClassIndex===2) return false;
+  if (!hasSkillSlotEntry(s)||s.occupies===null||s.ownerClassIndex===2) return false;
   if (isBlueprintName(s.n || s.name)) return false;
   if (isFreeSlotSkill(s)) return false;
   return !isSubSkillTagged(s);
 }
 
 function isSubSkillOccupant(s) {
-  if (!s||s.occupies===null) return false;
+  if (!hasSkillSlotEntry(s)||s.occupies===null||s.ownerClassIndex===2) return false;
   if (isBlueprintName(s.n || s.name)) return false;
   if (isFreeSlotSkill(s)) return false;
   return isSubSkillTagged(s);
@@ -6311,7 +6346,7 @@ function renderLearnResults() {
       var skill = genData[si];
       var learned = false;
       var tt = state.talent_tree || [];
-      for (var ti = 0; ti < tt.length; ti++) { if (tt[ti].n === skill.name) { learned = true; break; } }
+      for (var ti = 0; ti < tt.length; ti++) { if (choiceOptionName(tt[ti], "通用") === skill.name) { learned = true; break; } }
       var groupName = skill.tier || "\u901a\u7528\u5929\u8d4b\u6811";
       if (searchQ && skill.name.toLowerCase().indexOf(searchQ) < 0 && groupName.toLowerCase().indexOf(searchQ) < 0 && (skill.tags || []).join(" ").toLowerCase().indexOf(searchQ) < 0) continue;
       if (!genGroups[groupName]) genGroups[groupName] = [];
@@ -6375,13 +6410,8 @@ function renderLearnResults() {
                     if (!window._renderedChoiceGroups[marker]) {
                       window._renderedChoiceGroups[marker] = true;
                       var cg = CHOICE_GROUPS[cgi2];
-                      var learnedCount = 0;
-                      var tt = state.talent_tree || [];
-                      for (var tti3 = 0; tti3 < tt.length; tti3++) {
-                        for (var csi3 = 0; csi3 < cg.skills.length; csi3++) {
-                          if (tt[tti3].n === cg.skills[csi3]) { learnedCount++; break; }
-                        }
-                      }
+                      var choiceStatus = getChoiceGroupStatus(cg, "通用");
+                      var learnedCount = choiceStatus.count;
                       html += "<div style=\"margin:8px 0 4px 0;padding:5px 10px;background:#3d3020;border-left:3px solid #e8a86a;border-radius:3px\">";
                       html += "<span style=\"font-size:12px;color:#e8a86a;font-weight:bold\">" + cg.marker + "</span>";
                       html += "<span style=\"font-size:11px;color:#b09070;margin-left:6px\">" + cg.rule + "</span>";
@@ -6396,12 +6426,12 @@ function renderLearnResults() {
                           var s3Learned = false;
                           var tt3 = state.talent_tree || [];
                           for (var ti3 = 0; ti3 < tt3.length; ti3++) { if (tt3[ti3].n === s3Name) { s3Learned = true; break; } }
-                          var s3Locked = !s3Learned && learnedCount >= cg.max;
+                          var s3Locked = !s3Learned && choiceStatus.full;
                           var bg3 = s3Learned ? "#2a3a2a" : (s3Locked ? "#1a1a1a" : "#2d2722");
                           var bd3 = s3Learned ? "#3a5a3a" : (s3Locked ? "#2a2020" : "#3d3020");
                           var tc3 = s3Learned ? "#7ab87a" : (s3Locked ? "#6a5a4a" : "#f0e0d0");
                           html += "<div style=\"display:flex;justify-content:space-between;align-items:center;padding:5px 8px;margin:2px 4px;border-radius:4px;background:" + bg3 + ";border:1px solid " + bd3 + "\">";
-                          html += "<span style=\"font-size:13px;color:" + tc3 + "\">" + s3Name + (typeof spDot === "function" ? spDot(s3) : "") + (s3Locked ? " <span style=\"font-size:10px;color:#8a5a4a;font-weight:bold\">[\u5df2\u8fbe\u4e0a\u9650\u9501\u5b9a]</span>" : "") + "</span>";
+                          html += "<span style=\"font-size:13px;color:" + tc3 + "\">" + s3Name + (typeof spDot === "function" ? spDot(s3) : "") + (s3Locked ? " <span style=\"font-size:10px;color:#8a5a4a;font-weight:bold\">[本抉择组选项已满]</span>" : "") + "</span>";
                           html += "<span style=\"display:flex;gap:4px;align-items:center\">";
                           if (s3.tags && s3.tags.indexOf("\u5929\u8d4b") >= 0) html += "<span style=\"font-size:11px;color:#daa520;font-weight:bold;padding:2px 6px;background:#3a3020;border-radius:3px;border:1px solid #6a5020\">\u5929\u8d4b</span>";
                           html += "<button onclick=\"showSkillDetail('\u901a\u7528','" + s3.name.replace(/'/g,"\\u0027") + "')\" style=\"font-size:11px;padding:2px 8px;background:#4a6a3a;color:#e0e0d0;border:none;border-radius:4px;cursor:pointer\">\u8be6\u60c5</button>";
@@ -6439,28 +6469,21 @@ function renderLearnResults() {
               var groupLocked = false;
               var cgParent = null;
               for (var cgi = 0; cgi < CHOICE_GROUPS.length; cgi++) {
-                if (CHOICE_GROUPS[cgi].cls && CHOICE_GROUPS[cgi].cls !== clsName && CHOICE_GROUPS[cgi].cls !== "通用") continue;
+                if (CHOICE_GROUPS[cgi].cls && CHOICE_GROUPS[cgi].cls !== "通用") continue;
                 for (var csi = 0; csi < CHOICE_GROUPS[cgi].skills.length; csi++) {
                   if (CHOICE_GROUPS[cgi].skills[csi] === skillName2) { cgParent = CHOICE_GROUPS[cgi]; break; }
                 }
                 if (cgParent) break;
               }
               if (cgParent && !learned2) {
-                var learnedCount2 = 0;
-                var tt2 = state.talent_tree || [];
-                for (var tti2 = 0; tti2 < tt2.length; tti2++) {
-                  for (var csi2 = 0; csi2 < cgParent.skills.length; csi2++) {
-                    if (tt2[tti2].n === cgParent.skills[csi2]) { learnedCount2++; break; }
-                  }
-                }
-                if (learnedCount2 >= cgParent.max) groupLocked = true;
+                groupLocked = getChoiceGroupStatus(cgParent, "通用").full;
               }
               var bgColor2 = learned2 ? "#2a3a2a" : (groupLocked ? "#1a1a1a" : "#2d2722");
               var borderColor2 = learned2 ? "#3a5a3a" : (groupLocked ? "#2a2020" : "#3d3020");
               var textColor2 = learned2 ? "#7ab87a" : (groupLocked ? "#6a5a4a" : "#f0e0d0");
               var isTalent2 = skill2.tags && skill2.tags.indexOf("\u5929\u8d4b") >= 0;
               html += "<div style=\"display:flex;justify-content:space-between;align-items:center;padding:5px 8px;margin:2px 4px;border-radius:4px;background:" + bgColor2 + ";border:1px solid " + borderColor2 + "\">";
-              html += "<span style=\"font-size:13px;color:" + textColor2 + "\">" + skillName2 + (typeof spDot === "function" ? spDot(skill2) : "") + (groupLocked ? " <span style=\"font-size:10px;color:#8a5a4a;font-weight:bold\">[\u5df2\u8fbe\u4e0a\u9650\u9501\u5b9a]</span>" : "") + "</span>";
+              html += "<span style=\"font-size:13px;color:" + textColor2 + "\">" + skillName2 + (typeof spDot === "function" ? spDot(skill2) : "") + (groupLocked ? " <span style=\"font-size:10px;color:#8a5a4a;font-weight:bold\">[本抉择组选项已满]</span>" : "") + "</span>";
               html += "<span style=\"display:flex;gap:4px;align-items:center\">";
               if (isTalent2) html += "<span style=\"font-size:11px;color:#daa520;font-weight:bold;padding:2px 6px;background:#3a3020;border-radius:3px;border:1px solid #6a5020\">\u5929\u8d4b</span>";
               html += "<button onclick=\"showSkillDetail('\u901a\u7528','" + skill2.name.replace(/'/g,"\\u0027") + "')\" style=\"font-size:11px;padding:2px 8px;background:#4a6a3a;color:#e0e0d0;border:none;border-radius:4px;cursor:pointer\">\u8be6\u60c5</button>";
@@ -6575,7 +6598,7 @@ function learnSkill(clsName, skillName, clsIdx) {
   var desc = (skillData.description || []).join(" ");
 
 
-  var isLocked = desc.indexOf("\u65e0\u6cd5") >= 0 && (desc.indexOf("\u4fee\u6539") >= 0 || desc.indexOf("\u8986\u76d6") >= 0 || desc.indexOf("\u66ff\u6362") >= 0);
+  var isLocked = isRuleLockedAbility(skillData);
 
 
   // Handle composite skills: grants sub-skills directly to skill list
@@ -6765,6 +6788,7 @@ function learnSkill(clsName, skillName, clsIdx) {
 
 
     var maxSlots = calcSkillSlots(slotClsIdx); var skillList = state.skills.slice(); var clsSkills = listOccupiedSkills(slotClsIdx);
+    if (!(maxSlots > 0)) { SB_toast("无法确认该职业的技能栏上限，请检查职业名称和等级"); return; }
 
 
 var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (skillList[si].n === skillName && skillList[si].src === clsName) { SB_toast("\u5df2\u5b66\u4e60\u8be5\u6280\u80fd"); return; } if (skillList[si].n === skillName && skillList[si].src !== clsName) { crossLocked = true; } } if (crossLocked) { SB_toast("\u8be5\u6280\u80fd\u5df2\u88ab\u5176\u4ed6\u804c\u4e1a\u7684\u540c\u540d\u6280\u80fd\u9501\u5b9a"); return; }
@@ -6810,7 +6834,7 @@ var crossLocked = false; for (var si = 0; si < skillList.length; si++) { if (ski
   autoCalcStyles(); autoCalcTalentTree(); render(); renderLearnPanel(); }
 
 
-function expandAllGroups() { window._learnCollapsed = {}; renderLearnPanel(); }
+function expandAllGroups() { renderLearnPanel(); Object.keys(window._learnCollapsed || {}).forEach(function(key) { window._learnCollapsed[key] = false; }); renderLearnResults(); }
 
 
 function collapseAllGroups() { 
