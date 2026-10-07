@@ -176,6 +176,7 @@ PAGER_JS = r"""
       }catch(e){}
     }
   }
+  window.HelpPager = { setView: setView };
   document.querySelectorAll(".help-pager button").forEach(function(btn){
     btn.addEventListener("click", function(){
       setView(btn.getAttribute("data-view"), true);

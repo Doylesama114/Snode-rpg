@@ -717,6 +717,12 @@ if (mobileAdvisor.stdout) console.log(mobileAdvisor.stdout.trim());
 if (mobileAdvisor.stderr) console.error(mobileAdvisor.stderr.trim());
 if (mobileAdvisor.status !== 0) totalErrors++;
 
+console.log('\n=== 帮助页手机搜索与跨页跳转 ===');
+const helpSearch = spawnSync(process.execPath, [join(BASE, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+if (helpSearch.stdout) console.log(helpSearch.stdout.trim());
+if (helpSearch.stderr) console.error(helpSearch.stderr.trim());
+if (helpSearch.status !== 0) totalErrors++;
+
 console.log('\n=== Android 更新资源与入口 ===');
 const mobileUpdate = spawnSync(process.execPath, [join(BASE, 'verify_mobile_update.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (mobileUpdate.stdout) console.log(mobileUpdate.stdout.trim());

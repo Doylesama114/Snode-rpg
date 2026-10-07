@@ -404,7 +404,7 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 <h1>📖 帮助文档</h1><div class="subtitle" id="help-subtitle">斯诺德规则 · 冒险者手册</div>
 <div class="help-pager" role="tablist" aria-label="帮助翻页"><button type="button" class="active" data-view="rules" role="tab">规则手册</button><button type="button" data-view="world" role="tab">世界观架构</button></div>
 <div class="help-search" id="help-search" role="search">
-  <input type="search" id="help-search-input" placeholder="检索规则与世界观…" autocomplete="off" aria-label="检索规则与世界观">
+  <input type="search" id="help-search-input" enterkeyhint="search" placeholder="检索规则与世界观…" autocomplete="off" aria-label="检索规则与世界观">
   <button type="button" class="help-search-btn help-search-btn-primary" id="help-search-go">检索</button>
   <button type="button" class="help-search-btn" id="help-search-prev" disabled title="上一条">上一条</button>
   <button type="button" class="help-search-btn" id="help-search-next" disabled title="下一条">下一条</button>
@@ -2660,6 +2660,7 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
       }catch(e){}
     }
   }
+  window.HelpPager = { setView: setView };
   document.querySelectorAll(".help-pager button").forEach(function(btn){
     btn.addEventListener("click", function(){
       setView(btn.getAttribute("data-view"), true);
@@ -2675,7 +2676,7 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 </script>
 
 <!-- /HELP-PAGER-SCRIPT -->
-<script src="help-search.js"></script>
+<script src="help-search.js?v=1.0.8046"></script>
 <script src="help-tts.js"></script>
 <script>window.__guiBeam="规则手册"; document.documentElement.classList.add("gui-help-page");; window.__guiSkin = true;</script>
 <script src="guild-ui.js"></script>
@@ -3107,4 +3108,20 @@ setTimeout(function () { try { var p = document.getElementById("help-pane-world"
 })();
 </script>
 <script src="user_preferences.js"></script>
+
+<style id="help-search-mobile-fix">
+/* Focus scrolling must finish before a search switches the rendered pane. */
+html.gui-help-page { scroll-behavior:auto !important; }
+/* Keep the search field readable under both the guild skin and OS color scheme. */
+html.gui-help-page body #help-search { background:#fffdf8 !important; color:#2f2317 !important; }
+html.gui-help-page body #help-search input[type="search"] { background:#fffdf8 !important; color:#2f2317 !important; font-size:16px; }
+html.gui-help-page body #help-search input::placeholder { color:#6b5b48 !important; opacity:1; }
+html.gui-help-page body #help-search .help-search-status { color:#6b5b48 !important; }
+html.dark.gui-help-page body #help-search { background:#24272b !important; color:#e8e6e3 !important; }
+html.dark.gui-help-page body #help-search input[type="search"] { background:#1a1d20 !important; color:#e8e6e3 !important; }
+html.dark.gui-help-page body #help-search input::placeholder,
+html.dark.gui-help-page body #help-search .help-search-status { color:#c1beb9 !important; }
+html.gui-help-page body .search-highlight { background:#ffe08a !important; color:#2f2317 !important; }
+html.gui-help-page body .search-hit-current { scroll-margin-top:var(--help-search-offset,16px) !important; }
+</style>
 </body></html>

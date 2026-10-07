@@ -1,331 +1,193 @@
-/**
- * help-search.js — 规则手册 + 世界观全文检索与跳转
- * 依赖：window.HelpPager.setView（help-pager-script）
- */
+/** Full-text search over the rendered rule/world content, including mobile cards. */
 (function () {
   "use strict";
-
-  var index = [];
-  var hits = [];
-  var hitIndex = -1;
-  var lastQuery = "";
-  var terms = [];
-  var jumpGen = 0;
-
+  var hits = [], hitIndex = -1, lastQuery = "", terms = [], jumpGen = 0, stopFollowing = null;
   var inputEl, statusEl, btnGo, btnPrev, btnNext;
+  var ignored = "button,input,select,textarea,script,style,.tts-controls,.tts-hint,.scroll-hint,[aria-hidden='true']";
+  var blocks = "h2,h3,h4,.card,.note,.rcard,.p,p,li,table tr";
 
-  function $(id) {
-    return document.getElementById(id);
-  }
-
-  function normalizeText(s) {
-    return String(s || "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase();
-  }
-
-  function parseTerms(q) {
-    return String(q || "")
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .map(function (t) {
-        return t.toLowerCase();
-      });
-  }
-
-  function closestSectionId(el) {
-    var n = el;
-    while (n && n !== document.body) {
-      if (n.classList && n.classList.contains("section") && n.id) return n.id;
-      n = n.parentNode;
+  function $(id) { return document.getElementById(id); }
+  function normalizeText(s) { return String(s || "").replace(/\s+/g, " ").trim().toLowerCase(); }
+  function textNodes(root) {
+    var result = [], walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    while (walker.nextNode()) {
+      var node = walker.currentNode;
+      if (!node.parentElement.closest(ignored)) result.push(node);
     }
-    return "";
+    return result;
   }
-
-  function paneOf(el) {
-    if (el.closest && el.closest("#help-pane-world")) return "world";
-    if (el.closest && el.closest("#help-pane-rules")) return "rules";
-    var n = el;
-    while (n) {
-      if (n.id === "help-pane-world") return "world";
-      if (n.id === "help-pane-rules") return "rules";
-      n = n.parentNode;
-    }
-    return "rules";
-  }
-
-  function pushBlock(el, pane) {
-    if (!el || el.nodeType !== 1) return;
-    var text = normalizeText(el.textContent || "");
-    if (!text || text.length < 2) return;
-    index.push({
-      el: el,
-      pane: pane,
-      text: text,
-      sectionId: closestSectionId(el),
-    });
-  }
-
   function buildIndex() {
-    index = [];
-    ["help-pane-rules", "help-pane-world"].forEach(function (paneId) {
-      var root = $(paneId);
+    var index = [];
+    ["rules", "world"].forEach(function (pane) {
+      var root = $("help-pane-" + pane);
       if (!root) return;
-      var pane = paneId === "help-pane-world" ? "world" : "rules";
       var content = root.querySelector("main.help-content") || root;
-
-      var headings = content.querySelectorAll("h2, h3, h4");
-      for (var i = 0; i < headings.length; i++) pushBlock(headings[i], pane);
-
-      var cards = content.querySelectorAll(".card");
-      for (var c = 0; c < cards.length; c++) pushBlock(cards[c], pane);
-
-      var notes = content.querySelectorAll(".note");
-      for (var n = 0; n < notes.length; n++) pushBlock(notes[n], pane);
-
-      var paras = content.querySelectorAll(".p");
-      for (var p = 0; p < paras.length; p++) pushBlock(paras[p], pane);
-
-      var rows = content.querySelectorAll(".wrap table tr");
-      for (var r = 0; r < rows.length; r++) {
-        var tr = rows[r];
-        if (tr.querySelector("th") && !tr.querySelector("td")) continue;
-        pushBlock(tr, pane);
+      var accepted = new Set(), visibility = new Map();
+      // Ignore only the pane's own display:none: both tabs must remain searchable.
+      function available(el) {
+        if (el === root) return true;
+        if (visibility.has(el)) return visibility.get(el);
+        var style = getComputedStyle(el);
+        var ok = !el.hidden && el.getAttribute("aria-hidden") !== "true" &&
+          style.display !== "none" && style.visibility !== "hidden" &&
+          (!el.parentElement || available(el.parentElement));
+        visibility.set(el, ok);
+        return ok;
       }
+      content.querySelectorAll(blocks).forEach(function (el) {
+        if (!available(el) || el.closest(ignored)) return;
+        if (el.tagName === "TR" && !el.querySelector("td")) return;
+        // Cards and table rows are single results; don't count their children twice.
+        for (var parent = el.parentElement; parent && parent !== content; parent = parent.parentElement) {
+          if (accepted.has(parent)) return;
+        }
+        var text = normalizeText(textNodes(el).map(function (n) { return n.textContent; }).join(""));
+        if (text.length < 2) return;
+        var section = el.closest(".section[id]");
+        accepted.add(el);
+        index.push({ el: el, pane: pane, text: text, sectionId: section ? section.id : "" });
+      });
     });
+    return index;
   }
-
   function clearHighlights() {
-    var highlights = document.querySelectorAll(".search-highlight");
-    for (var i = highlights.length - 1; i >= 0; i--) {
-      var span = highlights[i];
+    document.querySelectorAll(".search-highlight").forEach(function (span) {
       var parent = span.parentNode;
-      if (!parent) continue;
+      if (!parent) return;
       parent.replaceChild(document.createTextNode(span.textContent), span);
       parent.normalize();
-    }
-    var currents = document.querySelectorAll(".search-hit-current");
-    for (var j = 0; j < currents.length; j++) {
-      currents[j].classList.remove("search-hit-current");
-    }
+    });
+    document.querySelectorAll(".search-hit-current").forEach(function (el) {
+      el.classList.remove("search-hit-current");
+      el.style.removeProperty("--help-search-offset");
+    });
   }
-
-  function highlightInElement(root, term) {
-    if (!term) return;
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    var regex = new RegExp(escaped, "gi");
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-    var textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    for (var i = 0; i < textNodes.length; i++) {
-      var node = textNodes[i];
-      if (!node.parentNode) continue;
-      var parent = node.parentNode;
-      if (parent.classList && parent.classList.contains("search-highlight")) continue;
-      if (parent.tagName === "SCRIPT" || parent.tagName === "STYLE") continue;
-      var text = node.textContent;
-      regex.lastIndex = 0;
-      if (!regex.test(text)) continue;
-      regex.lastIndex = 0;
-      var fragment = document.createDocumentFragment();
-      var lastIdx = 0;
-      var m;
-      while ((m = regex.exec(text)) !== null) {
-        if (m.index > lastIdx) {
-          fragment.appendChild(document.createTextNode(text.substring(lastIdx, m.index)));
-        }
-        var span = document.createElement("span");
-        span.className = "search-highlight";
-        span.textContent = m[0];
-        fragment.appendChild(span);
-        lastIdx = regex.lastIndex;
+  function highlight(root) {
+    var nodes = textNodes(root), text = nodes.map(function (n) { return n.textContent; }).join("");
+    var escaped = terms.slice().sort(function (a, b) { return b.length - a.length; }).map(function (term) {
+      return term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    });
+    var regex = new RegExp(escaped.join("|"), "gi"), matches = [], match;
+    while ((match = regex.exec(text))) matches.push({ start: match.index, end: regex.lastIndex });
+    var offset = 0;
+    // Map whole-text matches back to text nodes, preserving inline markup and controls.
+    nodes.forEach(function (node) {
+      var value = node.textContent, end = offset + value.length;
+      var ranges = matches.filter(function (m) { return m.start < end && m.end > offset; });
+      if (ranges.length) {
+        var fragment = document.createDocumentFragment(), pos = 0;
+        ranges.forEach(function (m) {
+          var start = Math.max(0, m.start - offset), stop = Math.min(value.length, m.end - offset);
+          fragment.appendChild(document.createTextNode(value.slice(pos, start)));
+          var span = document.createElement("span");span.className = "search-highlight";
+          span.textContent = value.slice(start, stop);fragment.appendChild(span);pos = stop;
+        });
+        fragment.appendChild(document.createTextNode(value.slice(pos)));
+        node.parentNode.replaceChild(fragment, node);
       }
-      if (lastIdx < text.length) {
-        fragment.appendChild(document.createTextNode(text.substring(lastIdx)));
-      }
-      parent.replaceChild(fragment, node);
-    }
+      offset = end;
+    });
   }
-
   function updateStatus() {
-    if (!statusEl) return;
-    statusEl.classList.remove("empty");
-    if (!lastQuery) {
-      statusEl.textContent = "";
-      return;
-    }
-    if (!hits.length) {
-      statusEl.textContent = "无结果";
-      statusEl.classList.add("empty");
-      return;
-    }
-    statusEl.textContent = hitIndex + 1 + " / " + hits.length;
+    statusEl.classList.toggle("empty", !!lastQuery && !hits.length);
+    statusEl.textContent = !lastQuery ? "" : !hits.length ? "无结果" : (hitIndex + 1) + " / " + hits.length;
+    btnPrev.disabled = btnNext.disabled = !hits.length;
   }
-
-  function updateNavButtons() {
-    var has = hits.length > 0;
-    if (btnPrev) btnPrev.disabled = !has;
-    if (btnNext) btnNext.disabled = !has;
+  function reset() {
+    if (stopFollowing) stopFollowing();
+    ++jumpGen;hits = [];hitIndex = -1;lastQuery = "";terms = [];
+    clearHighlights();updateStatus();
   }
-
-  function updateUrlForHit(hit) {
-    try {
-      var u = new URL(location.href);
-      if (hit.pane === "world") u.searchParams.set("view", "world");
-      else u.searchParams.delete("view");
-      if (hit.sectionId) u.hash = "#" + hit.sectionId;
-      else u.hash = "";
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-    } catch (e) {}
-  }
-
   function goToHit(idx) {
     if (!hits.length) return;
     hitIndex = ((idx % hits.length) + hits.length) % hits.length;
-    var hit = hits[hitIndex];
-    var gen = ++jumpGen;
+    if (stopFollowing) stopFollowing();
+    var hit = hits[hitIndex], gen = ++jumpGen;
     clearHighlights();
-
-    var currentView = document.body.getAttribute("data-help-view") || "rules";
-    var needSwitch = hit.pane !== currentView;
-
-    function afterVisible() {
-      if (gen !== jumpGen) return;
-      for (var t = 0; t < terms.length; t++) {
-        highlightInElement(hit.el, terms[t]);
-      }
-      hit.el.classList.add("search-hit-current");
-      try {
-        hit.el.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch (e) {
-        hit.el.scrollIntoView(true);
-      }
-      updateUrlForHit(hit);
-      updateStatus();
-      updateNavButtons();
-    }
-
-    if (needSwitch && window.HelpPager && typeof window.HelpPager.setView === "function") {
+    if (window.HelpPager && typeof window.HelpPager.setView === "function") {
       window.HelpPager.setView(hit.pane, true);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          setTimeout(afterVisible, 50);
-        });
-      });
-    } else {
-      afterVisible();
     }
+    // Dismiss the phone keyboard before positioning the result.
+    inputEl.blur();updateStatus();
+    setTimeout(function () {
+      if (gen !== jumpGen || !hit.el.isConnected) return;
+      highlight(hit.el);hit.el.classList.add("search-hit-current");
+      var pane = $("help-pane-" + hit.pane), pending = null;
+      function position() {
+        if (gen !== jumpGen || !hit.el.isConnected || document.body.getAttribute("data-help-view") !== hit.pane) return;
+        var anchor = hit.el.querySelector(".search-highlight") || hit.el;
+        var toc = pane.querySelector(".toc-sidebar"), offset = 16;
+        if (toc) {
+          var style = getComputedStyle(toc), rect = toc.getBoundingClientRect(), target = anchor.getBoundingClientRect();
+          if ((style.position === "sticky" || style.position === "fixed") &&
+              rect.left < target.right && rect.right > target.left) {
+            offset += rect.height + (parseFloat(style.top) || 0);
+          }
+        }
+        hit.el.style.setProperty("--help-search-offset", offset + "px");
+        anchor.style.setProperty("scroll-margin-top", offset + "px", "important");
+        try { anchor.scrollIntoView({ behavior: "instant", block: "start" }); }
+        catch (e) { anchor.scrollIntoView(true); }
+      }
+      function refresh() { clearTimeout(pending);pending = setTimeout(position, 0); }
+      function imageLoaded(e) {
+        // Late images above the result must not push it out of the viewport.
+        if (e.target.tagName === "IMG" && (e.target.compareDocumentPosition(hit.el) & Node.DOCUMENT_POSITION_FOLLOWING)) refresh();
+      }
+      function stop() {
+        clearTimeout(pending);pane.removeEventListener("load", imageLoaded, true);
+        window.removeEventListener("resize", refresh);
+        ["pointerdown", "touchstart", "wheel", "keydown"].forEach(function (type) { document.removeEventListener(type, stop, true); });
+        if (stopFollowing === stop) stopFollowing = null;
+      }
+      stopFollowing = stop;
+      pane.addEventListener("load", imageLoaded, true);window.addEventListener("resize", refresh);
+      // Once the player interacts, their own scrolling takes priority.
+      ["pointerdown", "touchstart", "wheel", "keydown"].forEach(function (type) { document.addEventListener(type, stop, {capture:true,passive:true}); });
+      position();
+      try {
+        var u = new URL(location.href);
+        if (hit.pane === "world") u.searchParams.set("view", "world");
+        else u.searchParams.delete("view");
+        u.hash = hit.sectionId ? "#" + hit.sectionId : "";
+        history.replaceState(null, "", u.pathname + u.search + u.hash);
+      } catch (e) {}
+    }, 0);
   }
 
-  function runSearch(jumpFirst) {
-    var q = (inputEl && inputEl.value) || "";
-    var trimmed = q.trim();
-    clearHighlights();
-    hits = [];
-    hitIndex = -1;
-    terms = parseTerms(trimmed);
-    lastQuery = trimmed;
-
-    if (!trimmed) {
-      updateStatus();
-      updateNavButtons();
-      return;
-    }
-
-    for (var i = 0; i < index.length; i++) {
-      var block = index[i];
-      var ok = true;
-      for (var t = 0; t < terms.length; t++) {
-        if (block.text.indexOf(terms[t]) === -1) {
-          ok = false;
-          break;
-        }
-      }
-      if (ok) hits.push(block);
-    }
-
-    updateNavButtons();
-    if (!hits.length) {
-      updateStatus();
-      return;
-    }
-    if (jumpFirst !== false) goToHit(0);
+  function runSearch() {
+    var query = inputEl.value.trim();reset();
+    lastQuery = query;terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!query) return;
+    // Rebuild on submission: mobile table conversion and TTS can change the DOM after load.
+    hits = buildIndex().filter(function (block) {
+      return terms.every(function (term) { return block.text.indexOf(term) !== -1; });
+    });
+    if (hits.length) goToHit(0);
     else updateStatus();
   }
-
-  function nextHit() {
-    if (!hits.length) {
-      runSearch(true);
-      return;
-    }
-    goToHit(hitIndex + 1);
+  function move(step) {
+    if (inputEl.value.trim() !== lastQuery || !hits.length) runSearch();
+    else goToHit(hitIndex + step);
   }
-
-  function prevHit() {
-    if (!hits.length) {
-      runSearch(true);
-      return;
-    }
-    goToHit(hitIndex - 1);
-  }
-
-  function onEnterSearch() {
-    var q = ((inputEl && inputEl.value) || "").trim();
-    if (q !== lastQuery) {
-      runSearch(true);
-    } else if (hits.length) {
-      nextHit();
-    } else {
-      runSearch(true);
-    }
-  }
-
   function bind() {
-    inputEl = $("help-search-input");
-    statusEl = $("help-search-status");
-    btnGo = $("help-search-go");
-    btnPrev = $("help-search-prev");
-    btnNext = $("help-search-next");
-    if (!inputEl) return;
-
-    buildIndex();
-
-    if (btnGo) {
-      btnGo.addEventListener("click", function () {
-        runSearch(true);
-      });
-    }
-    if (btnNext) btnNext.addEventListener("click", nextHit);
-    if (btnPrev) btnPrev.addEventListener("click", prevHit);
-
+    inputEl = $("help-search-input");statusEl = $("help-search-status");
+    btnGo = $("help-search-go");btnPrev = $("help-search-prev");btnNext = $("help-search-next");
+    if (!inputEl || !statusEl || !btnGo || !btnPrev || !btnNext) return;
+    btnGo.addEventListener("click", runSearch);
+    btnPrev.addEventListener("click", function () { move(-1); });
+    btnNext.addEventListener("click", function () { move(1); });
     inputEl.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        if (e.shiftKey) prevHit();
-        else onEnterSearch();
-      }
+      if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
+      e.preventDefault();move(e.shiftKey ? -1 : 1);
     });
-
-    inputEl.addEventListener("input", function () {
-      if (!String(inputEl.value || "").trim()) {
-        lastQuery = "";
-        hits = [];
-        hitIndex = -1;
-        terms = [];
-        clearHighlights();
-        updateStatus();
-        updateNavButtons();
-      }
+    inputEl.addEventListener("search", function () {
+      // Some phone keyboards emit both Enter and search for the same submission.
+      if (inputEl.value.trim() !== lastQuery || !hits.length) runSearch();
     });
-
-    updateNavButtons();
+    inputEl.addEventListener("input", reset);
+    updateStatus();
   }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bind);
-  } else {
-    bind();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
+  else bind();
 })();
