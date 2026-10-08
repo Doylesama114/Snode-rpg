@@ -1,0 +1,52 @@
+# Standalone: electron-builder concatenates inherited extraFiles arrays, which
+# would otherwise include the Windows personal-build .env.bundle.
+appId: com.snowd.skilltree
+productName: "斯诺德跑团"
+directories:
+  output: dist/mac
+files:
+  - main.js
+  - preload.js
+  - update-mirror-config.js
+  - mac-platform.js
+  - advisor-env-bootstrap.js
+  - chargen-cli-server.js
+  - package.json
+  - 职业页/**/*
+  - "!职业页/_monk_test_top.html"
+  - 斯诺德跑团/**/*
+  - poker-game/**/*
+extraFiles:
+  - from: ../scripts/snode
+    to: snode
+  - from: ../docs/chargen-cli.md
+    to: CLI.md
+  - from: ../scripts
+    to: scripts
+    filter:
+      - "**/*.mjs"
+  - from: ../advisor
+    to: advisor
+    filter:
+      - "**/*"
+      - "!feedback/inbox/**/*"
+      - "!bug/inbox/**/*"
+  - from: ../.env.example
+    to: .env.example
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+  category: public.app-category.games
+  artifactName: "Snode-RPG-${version}-mac-${arch}.${ext}"
+  identity: "-"
+  hardenedRuntime: false
+  notarize: false
+dmg:
+  title: "斯诺德跑团 ${version}"
+npmRebuild: false
+nodeGypRebuild: false
+publish:
+  provider: github
+  owner: Doylesama114
+  repo: Snode-rpg

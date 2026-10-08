@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, webContents } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, webContents, shell } = require('electron');
 const path = require('path');
 const https = require('https');
 const { bootstrapAdvisorEnv } = require('./advisor-env-bootstrap');
@@ -10,6 +10,7 @@ if (process.env.SNODE_CLI_TEST_USER_DATA) {
 bootstrapAdvisorEnv();
 const { autoUpdater } = require('electron-updater');
 const mirrorConfig = require('./update-mirror-config');
+const { applicationMenu, macReleaseUpdate } = require('./mac-platform');
 
 // 允许渲染进程调用 window.gc()：职业页/预览会产生数万 DOM 节点，
 // 显式 GC 能在 ~90ms 内把这些游离文档真正回收（否则会累积到数百 MB 直到崩溃）。
@@ -202,6 +203,7 @@ function fetchLatestTag(sourceKey) {
 
 function checkForUpdatesViaGenericFeed(opts) {
   opts = opts || {};
+  if (process.platform === 'darwin') return checkForMacUpdates();
   if (updateCheckInFlight && !opts._fromFallback) return Promise.resolve({ outcome: 'busy' });
   updateCheckInFlight = true;
 
@@ -264,6 +266,25 @@ function checkForUpdatesViaGenericFeed(opts) {
 }
 
 /** 启动 / 定时 / 手动「检查更新」：先 GitHub，失败自动走国内镜像全流程 */
+async function checkForMacUpdates() {
+  if (updateCheckInFlight) return { outcome: 'busy' };
+  updateCheckInFlight = true;
+  sendUpdateStatus({ status: 'checking', message: '正在检查 Mac 版本更新...' });
+  try {
+    const release = await httpsGetJson(mirrorConfig.GITHUB_LATEST_API);
+    const result = macReleaseUpdate(release, app.getVersion(), process.arch);
+    pendingUpdate = result.status === 'available'
+      ? { version: result.version, ready: false, url: result.url } : null;
+    sendUpdateStatus(result);
+    return { outcome: 'ok' };
+  } catch (err) {
+    sendUpdateStatus({ status: 'error', message: 'Mac 更新检查失败：' + err.message });
+    return { outcome: 'failed' };
+  } finally {
+    updateCheckInFlight = false;
+  }
+}
+
 function runAutoUpdateCheck() {
   return checkForUpdatesViaGenericFeed({
     sources: ['github'],
@@ -362,6 +383,14 @@ ipcMain.on('check-update', (e, opts) => {
 
 // IPC: 用户在启动台确认下载更新（autoDownload=false）
 ipcMain.on('download-update', () => {
+  if (process.platform === 'darwin' && pendingUpdate && pendingUpdate.url) {
+    shell.openExternal(pendingUpdate.url).catch(err => {
+      sendUpdateStatus({ status: 'error', message: '打开下载链接失败：' + err.message });
+    });
+    sendUpdateStatus({ status: 'available', version: pendingUpdate.version,
+      message: '已在浏览器打开 Mac 安装包，下载后退出应用并替换即可更新' });
+    return;
+  }
   if (!pendingUpdate || pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '当前没有可下载的更新，请先「检查更新」。' });
     return;
@@ -830,6 +859,8 @@ function startMemoryWatchdog() {
   }, 20000);
 }
 
+const downloadSessions = new WeakSet();
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     show: process.env.SNODE_CLI_TEST !== '1',
@@ -843,10 +874,11 @@ function createWindow() {
     }
   });
 
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(process.platform === 'darwin' ? applicationMenu(app, Menu) : null);
   // 版本升级后旧 CSS/JS 可能命中缓存；启动时清一次 HTTP 缓存
   try { mainWindow.webContents.session.clearCache().catch(() => {}); } catch (_) {}
   mainWindow.loadFile(path.join(__dirname, '斯诺德跑团', '启动台.html'));
+  mainWindow.on('closed', () => { mainWindow = null; });
 
   // ---- 崩溃自愈：职业页/面板内存暴涨后渲染进程可能被杀，此前表现为「白屏且无法恢复」----
   let lastUrl = '';
@@ -902,7 +934,9 @@ function createWindow() {
   mainWindow.webContents.on('responsive', function () { clearTimeout(unresponsiveTimer); });
 
   // 中文文件名 / asar 偶发把 .html 导航误判为下载；取消下载并改为页面内打开
-  mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
+  if (!downloadSessions.has(mainWindow.webContents.session)) {
+    downloadSessions.add(mainWindow.webContents.session);
+    mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
     const name = item.getFilename() || '';
     const url = item.getURL() || '';
     let decoded = url;
@@ -935,7 +969,8 @@ function createWindow() {
       fp = decodeURIComponent(fp).replace(/\//g, path.sep);
       target.loadFile(fp).catch(() => {});
     }
-  });
+    });
+  }
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url.startsWith('https://github.com/') || url.startsWith('https://cdn.jsdelivr.net/')) return;
@@ -987,7 +1022,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
-  startChargenCliServer(mainWindow);
+  startChargenCliServer(() => mainWindow);
   startMemoryWatchdog();
 
   // 启动后延迟检查更新（GitHub → 失败则自动国内镜像）
@@ -1000,7 +1035,9 @@ app.whenReady().then(() => {
   });
 });
 
-app.on('window-all-closed', () => app.quit());
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });

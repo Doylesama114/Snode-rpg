@@ -128,6 +128,7 @@ async function fullClassPreview(name, includeSource, requestedPart) {
 }
 
 function refreshCharacterViews(mainWindow) {
+  if (typeof mainWindow === 'function') mainWindow = mainWindow();
   if (!mainWindow || mainWindow.isDestroyed()) return;
   mainWindow.webContents.executeJavaScript(`(() => {
     window.dispatchEvent(new CustomEvent('snowd-characters-changed'));

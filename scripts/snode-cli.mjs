@@ -104,8 +104,13 @@ function parse(args) {
 }
 
 function connectionFile(args) {
+  const appData = process.platform === 'darwin'
+    ? path.join(os.homedir(), 'Library', 'Application Support')
+    : process.platform === 'win32'
+      ? process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming')
+      : process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config');
   return flag(args, '--connection') || process.env.SNODE_CLI_CONNECTION ||
-    path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'snode-rpg-cli', 'chargen-cli-connection.json');
+    path.join(appData, 'snode-rpg-cli', 'chargen-cli-connection.json');
 }
 
 function call(connection, input) {
