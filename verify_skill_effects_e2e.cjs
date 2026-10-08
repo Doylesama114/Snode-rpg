@@ -3,9 +3,11 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
 const {pathToFileURL}=require('url'),{chromium,_electron}=require('playwright');
 const root=__dirname,fixture=JSON.parse(fs.readFileSync(path.join(root,'scripts/skill_effects_cases.json'),'utf8')).cases;
 const classes=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据/classes.json'),'utf8')).map(x=>x.name);
-const domains=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据/牧师·神圣领域.json'),'utf8')).domains;
+const domainData=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据/牧师·神圣领域.json'),'utf8'));
+const domains=domainData.domains;
+const canonicalDeity=name=>domainData.pantheon.find(d=>d.name===name||(d.aliases||[]).includes(name))?.name||name;
 const base={};for(const cls of classes)base[cls]=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据',cls+'.json'),'utf8')).skills;
-const cases=fixture.map(c=>({...c,id:c.id||domains[c.deity].skills.find(s=>s.name===c.name).id}));
+const cases=fixture.map(c=>({...c,deity:c.deity?canonicalDeity(c.deity):c.deity,id:c.id||domains[canonicalDeity(c.deity)].skills.find(s=>s.name===c.name).id}));
 let passes=0;const failures=[];
 function norm(s){return String(s||'').normalize('NFKC').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase()}
 function check(label,actual,expected){const n=norm(actual);for(const e of expected)if(!n.includes(norm(e)))failures.push(label+': '+e.slice(0,75));passes++}

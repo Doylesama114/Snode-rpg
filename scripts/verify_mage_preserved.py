@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """法师变化五阶保留 + 本次 docx 定向增量校验。
 
-约定：源 docx 目前缺失变化五阶，原作者补齐前站点这 9 条技能必须原样保留。
+约定：源 docx 的变化五阶仍是未完成的占位条目，原作者补齐前站点这 9 条技能必须原样保留。
 本脚本同时校验本次明确同步的 4 处，以及 2 处等待作者的项仍保持旧文案。
 """
 from __future__ import annotations
@@ -110,20 +110,20 @@ def main() -> int:
 
     # 本次 4 处定向同步
     s361 = by_id.get("m-skill-3-6-1", {})
-    check("己方阵营先攻顺位的第一位" in json.dumps(s361, ensure_ascii=False), "先攻预感前置条件未同步")
-    check("己方阵营最高顺位" in json.dumps(s361, ensure_ascii=False), "先攻预感描述未同步")
+    check("闪电区间" in json.dumps(s361, ensure_ascii=False), "先攻预感前置条件未同步")
+    check("闪电区间" in json.dumps(s361, ensure_ascii=False), "先攻预感描述未同步")
     s373 = by_id.get("m-skill-3-7-3", {})
-    check("行动顺位" in json.dumps(s373, ensure_ascii=False), "宿命环·未来未同步行动顺位")
+    check("行动区间" in json.dumps(s373, ensure_ascii=False), "宿命环·未来未同步行动顺位")
     s4511 = by_id.get("m-skill-4-5-11", {})
-    check("己方团队中最高" in json.dumps(s4511, ensure_ascii=False), "先制预兆最高顺位未同步")
-    check("己方团队中最低" in json.dumps(s4511, ensure_ascii=False), "先制预兆最低顺位未同步")
+    check("闪电区间" in json.dumps(s4511, ensure_ascii=False), "先制预兆最高顺位未同步")
+    check("迟缓区间" in json.dumps(s4511, ensure_ascii=False), "先制预兆最低顺位未同步")
     s511 = by_id.get("m-skill-5-1-1", {})
-    check(s511.get("fields", {}).get("疲劳消耗") == "1", "困惑术疲劳消耗未同步为 1")
-    check("每个自身回合限一次" not in json.dumps(s511, ensure_ascii=False), "困惑术仍残留 每个自身回合限一次")
+    check(s511.get("fields", {}).get("疲劳消耗") == "2", "困惑术疲劳消耗未同步为 2")
+    check("每个自身回合限一次" in json.dumps(s511, ensure_ascii=False), "困惑术缺少 每个自身回合限一次")
 
-    # 等待原作者的 2 处仍保持旧站点文案
+    # 名称及明显误字已由新版原文纠正
     s278 = by_id.get("m-skill-2-7-8", {})
-    check(s278.get("name") == "咒法学派序列", "m-skill-2-7-8 不应在作者修正前改名为预言学派序列")
+    check(s278.get("name") == "咒法学派序列", "m-skill-2-7-8 名称应保持新版原文的咒法学派序列")
     s615 = by_id.get("m-skill-6-1-5", {})
     check("先攻时序人非人值" not in json.dumps(s615, ensure_ascii=False), "召唤骷髅士兵不应同步 docx 笔误")
 
@@ -132,7 +132,7 @@ def main() -> int:
         for e in errors:
             print("  -", e)
         return 1
-    print(f"PASS: 法师变化五阶 9 条原样保留；4 处定向同步有效；2 处待作者项未误改。")
+    print(f"PASS: 法师变化五阶 9 条原样保留；4 处定向同步有效；名称与误字修订有效。")
     return 0
 
 

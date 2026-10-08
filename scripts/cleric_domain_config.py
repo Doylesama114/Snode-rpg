@@ -10,7 +10,7 @@ DOMAIN_DIR = ROOT / "牧师子分支"
 # Official pantheon from 基础职业-牧师.docx「神圣领域」
 OFFICIAL_PANTHEON: list[dict] = [
     {"name": "公正与荣耀之神", "attr": "神圣", "id": "glory"},
-    {"name": "生命与丰收之神", "attr": "自然", "id": "life"},
+    {"name": "生命与丰饶之神", "attr": "自然", "id": "life", "aliases": ["生命与丰收之神"]},
     {"name": "火焰与锻造之神", "attr": "火焰", "id": "forge"},
     {"name": "战争与谋略之神", "attr": "物理", "id": "war"},
     {"name": "知识与智慧之神", "attr": "奥术", "id": "lore"},
@@ -35,7 +35,7 @@ EXTRA_DEITIES: list[dict] = [
 # Canonical deity name -> source docx under 牧师子分支/
 DOMAIN_DOCX: dict[str, str] = {
     "公正与荣耀之神": "神圣领域-公正与荣耀之神.docx",
-    "生命与丰收之神": "神圣领域-生命与丰收之神.docx",
+    "生命与丰饶之神": "神圣领域-生命与丰收之神.docx",
     "战争与谋略之神": "神圣领域-战争与谋略之神.docx",
     "知识与智慧之神": "神圣领域-知识与智慧之神.docx",
     "艺术与创造之神": "神圣领域-艺术与创造之神.docx",

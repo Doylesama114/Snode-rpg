@@ -61,6 +61,17 @@ def source_rules(path, pool):
     for s in pool:
         starts=byname.get(s["name"],[])
         preferred=(s.get("source") or {}).get("para_start")
+        if len(starts)>1:
+            fields=s.get("fields") or {}
+            matched=[]
+            for candidate in starts:
+                actual={}
+                for line in ps[candidate+1:candidate+13]:
+                    field=SOURCE_FIELDS.match(line)
+                    if field:actual[field[1]]=line[field.end():]
+                keys=[key for key in ("关键词", "前置条件", "额外条件") if fields.get(key)]
+                if keys and all(norm(actual.get(key))==norm(fields[key]) for key in keys):matched.append(candidate)
+            if len(matched)==1:starts=matched
         if preferred in starts:start=preferred
         elif len(starts)==1:start=starts[0]
         elif s.get("kind")=="initial_feat":
@@ -133,6 +144,8 @@ def main():
     checked=0
     for case in fixture['cases']:
         cls=case['class'];dn=case.get('deity');nm=case['name']
+        if dn and dn not in domain['domains']:
+            dn=next((row['name'] for row in domain.get('pantheon',[]) if dn in row.get('aliases',[])),dn)
         pool=domain['domains'][dn]['skills'] if dn else docs[cls]
         hits=[s for s in pool if s['name']==nm and (not case.get('id') or s['id']==case['id'])]
         label=f'{dn or cls}/{nm}'

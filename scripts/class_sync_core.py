@@ -128,6 +128,13 @@ def extract_paragraphs(docx_path: Path) -> list[dict]:
             runs.append({"text": txt, "color": hex_c})
         text = "".join(r["text"] for r in runs).strip()
         if text:
+            # Word may split the trailing relative clause of a learning condition
+            # into another paragraph. Keep it in the field, never as a skill name.
+            if (paras and text.startswith("的角色")
+                    and paras[-1]["text"].startswith(("前置条件：", "额外条件："))):
+                paras[-1]["text"] += text
+                paras[-1]["runs"].extend(runs)
+                continue
             paras.append({"text": text, "runs": runs, "indent": indent})
     return paras
 
@@ -293,6 +300,7 @@ def build_docx_index(paras: list[dict], names: set[str]) -> dict[str, list[dict]
     """Name → list of blocks (handles duplicate skill names across styles)."""
     buckets: dict[str, list[dict]] = defaultdict(list)
     current_style = ""
+    current_tier = ""
 
     for i, p in enumerate(paras):
         text = p["text"]
@@ -304,12 +312,18 @@ def build_docx_index(paras: list[dict], names: set[str]) -> dict[str, list[dict]
         ):
             current_style = text.replace("风格", "")
 
+        tier_match = re.match(r"^([一二三四五六七八])阶天赋树", text)
+        if tier_match:
+            current_tier = tier_match.group(1) + "阶"
+        elif text.startswith("起始特性"):
+            current_tier = "起始"
         if text not in names:
             continue
         block = extract_skill_block(paras, i, names)
         if not block:
             continue
         block["_style"] = current_style
+        block["_tier"] = current_tier
         buckets[text].append(block)
 
     out: dict[str, list[dict]] = {}
@@ -319,6 +333,7 @@ def build_docx_index(paras: list[dict], names: set[str]) -> dict[str, list[dict]
         for b in sorted(blocks, key=block_score, reverse=True):
             sig = (
                 b.get("_style", ""),
+                b.get("_tier", ""),
                 json.dumps(b["fields"], sort_keys=True, ensure_ascii=False),
                 tuple(b["mark_dots"]),
             )
@@ -333,7 +348,18 @@ def pick_block(index: dict[str, list[dict]], skill: dict, used: set[int]) -> dic
     candidates = index.get(skill["name"], [])
     if not candidates:
         return None
-    style = skill.get("style", "")
+    style = re.sub(r"风格$", "", skill.get("style", ""))
+    tier = skill.get("tier")
+    if skill.get("type") == "starting":
+        tier = "起始"
+    elif isinstance(tier, int) and 1 <= tier <= 8:
+        tier = "一二三四五六七八"[tier - 1] + "阶"
+    elif isinstance(tier, str):
+        tier = tier.replace("天赋树", "")
+    exact = [b for b in candidates if b.get("_tier") == tier
+             and (not style or b.get("_style") == style)]
+    if exact:
+        candidates = exact
     for b in candidates:
         if id(b) in used:
             continue
@@ -1177,6 +1203,7 @@ def sync_class(
     electron_fx: Path | None,
     report_path: Path,
     preserve_names: set[str] | None = None,
+    preserve_skill_ids: set[str] | None = None,
 ) -> dict:
     data = json.loads(data_path.read_text(encoding="utf-8"))
     fx_doc = None
@@ -1198,6 +1225,9 @@ def sync_class(
 
     for skill in data["skills"]:
         sid = skill["id"]
+        if preserve_skill_ids and sid in preserve_skill_ids:
+            preserved.append(skill["name"])
+            continue
         block = pick_block(docx_index, skill, used)
         if not block:
             if preserve_names and skill["name"] in preserve_names:
@@ -1250,7 +1280,11 @@ def sync_class(
     data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     html_path.write_text(html, encoding="utf-8")
 
-    fx_entries = [json_to_fx_entry(s, class_name) for s in data["skills"]]
+    fx_entries = [
+        fx_by_id[s["id"]] if preserve_skill_ids and s["id"] in preserve_skill_ids
+        and s["id"] in fx_by_id else json_to_fx_entry(s, class_name)
+        for s in data["skills"]
+    ]
     if fx_path:
         fx_doc = {class_name: fx_entries}
         fx_path.write_text(json.dumps(fx_doc, ensure_ascii=False, indent=2), encoding="utf-8")

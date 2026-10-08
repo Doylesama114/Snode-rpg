@@ -40,15 +40,15 @@ check('src="filter-panel.js"' in html, "守望者页缺少 filter-panel.js")
 check('data-marks="' in html, "守望者页技能缺少 data-marks 属性")
 check('data-class="守望者"' in html, "守望者页技能缺少 data-class 属性")
 
-check(len(skills) == 40, f"技能总数应为 40，实际 {len(skills)}")
+check(len(skills) == 53, f"技能总数应为 53，实际 {len(skills)}")
 check(len(starting) == 4, f"起始特性应为 4，实际 {len(starting)}")
 check([s["name"] for s in starting] == ["挫志打击", "警戒之眼", "盾牌格挡", "荒野医疗"],
       f"起始特性顺序错误: {[s['name'] for s in starting]}")
 check(set(styles) == {"守护", "警戒", "坚韧", "原野"},
       f"风格应为 守护/警戒/坚韧/原野，实际 {set(styles)}")
 for style, tiers in styles.items():
-    check(len(tiers) == 9 and tiers == ["一阶"] * 3 + ["二阶"] * 3 + ["三阶"] * 3,
-          f"{style} 应为每阶 3 技能，实际 {tiers}")
+    expected = ["一阶"] * 3 + ["二阶"] * 3 + ["三阶"] * 3 + ["四阶"] * (4 if style == "原野" else 3)
+    check(tiers == expected, f"{style} 阶位数量与新版原文不符，实际 {tiers}")
 check(json_ids == articles, f"JSON/HTML ID 不一致: json-html={json_ids - articles} html-json={articles - json_ids}")
 check(json_ids == fx_ids, f"JSON/FX ID 不一致: json-fx={json_ids - fx_ids} fx-json={fx_ids - json_ids}")
 
@@ -95,8 +95,9 @@ if m_equip:
 upload = (ROOT / "斯诺德跑团" / "上传角色.html").read_text(encoding="utf-8")
 check('"守望者":{hp:{first:12,up:4},fp:{first:8,up:1},key:"意志"}' in upload,
       "上传角色.html _REF_CLASSES 缺少守望者 HP/FP 公式")
-check('"守望者"' in upload and 'var CLASS_NAMES=["蛮斗士"' in upload,
-      "上传角色.html 职业识别缺少守望者")
+class_registry_text = (ROOT / "斯诺德跑团" / "character_class_data.js").read_text(encoding="utf-8")
+check("character_class_data.js" in upload and '"守望者"' in class_registry_text,
+      "上传角色.html 职业识别数据源缺少守望者")
 
 # 首页 / 搜索 / 角色创建页入口
 home = (ROOT / "职业页" / "首页.html").read_text(encoding="utf-8")

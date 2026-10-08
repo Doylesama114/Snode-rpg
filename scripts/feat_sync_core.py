@@ -79,6 +79,16 @@ def parse_feats(paras: list[dict]) -> list[dict]:
             i += 1
         if not name:
             continue
+        # The source merged 特别彩蛋's introduction/effect into its condition cell.
+        # Restore the semantic fields without changing the source rule text.
+        if name == "特别彩蛋" and "冒险的旅途中" in prereq:
+            prereq, merged_effect = prereq.split("冒险的旅途中", 1)
+            body.insert(0, ("冒险的旅途中" + merged_effect, []))
+        if name == "鲜明特点" and "显然你" in prereq:
+            prereq, merged_effect = prereq.split("显然你", 1)
+            body.insert(0, ("显然你" + merged_effect, []))
+        if name == "无信者":
+            prereq = prereq.replace("魔契约师", "魔契师")
         desc_text = "\n".join(x[0] for x in body)
         if SEP_INLINE.search(desc_text):
             desc_text = SEP_INLINE.split(desc_text)[0].rstrip()

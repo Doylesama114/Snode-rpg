@@ -1,7 +1,7 @@
 {
   "extract": {
-    "count": 55,
-    "complete": 55,
+    "count": 58,
+    "complete": 58,
     "incomplete": []
   },
   "upsert": {
@@ -60,25 +60,53 @@
       "刺客",
       "防御者",
       "青龙尊者",
-      "朱鹤尊者"
+      "朱鹤尊者",
+      "灵能术士",
+      "心灵导师",
+      "逸闻作家"
     ],
     "skipped_incomplete": [],
     "preserved_extras": [],
-    "total": 55
+    "total": 58
   },
   "buttons": {
-    "files": [],
-    "detail_name_count": 55
+    "files": [
+      {
+        "file": "吟游诗人·进阶.html",
+        "articles_touched": 35
+      },
+      {
+        "file": "术士·进阶.html",
+        "articles_touched": 30
+      },
+      {
+        "file": "法师·进阶.html",
+        "articles_touched": 40
+      },
+      {
+        "file": "牧师·进阶.html",
+        "articles_touched": 79
+      },
+      {
+        "file": "谋士·进阶.html",
+        "articles_touched": 35
+      },
+      {
+        "file": "魔契师·进阶.html",
+        "articles_touched": 130
+      }
+    ],
+    "detail_name_count": 58
   },
-  "electron_copied": 17,
+  "electron_copied": 33,
   "advisor": {
-    "documented_count": 55,
+    "documented_count": 58,
     "log_tail": [
       "Advancement skills build complete:",
-      "  documented: 55",
-      "  catalog added: 0, patched: 0, total: 281",
-      "  斗士, 熊战士, 武器大师, 前锋, 旗手, 指挥官, 铳士, 剑圣, 神射手, 狂徒, 醉酒大师, 守护骑士, 圣洁骑士, 耀阳德鲁伊, 蝰蛇, 飞贼, 原始人英雄, 密探, 赋生者, 狂野术士, 预言家, 兽群领主, 怪物, 升腾者, 救赎骑士, 毁灭骑士, 诡术师, 狂战士, 原始术士, 凤凰术士, 巨龙术士, 秀逗魔导士, 棍术师, 惩戒骑士, 奥术师, 卷轴学者, 近卫, 高阶冒险者, 战斗大师, 战地医师, 塑形者, 离群野兽, 冰霜法师, 魔剑士, 狮心骑士, 牧魂人, 丰收祭司, 骑兵, 自然行者, 利爪德鲁伊, 狂热十字军, 刺客, 防御者, 青龙尊者, 朱鹤尊者"
+      "  documented: 58",
+      "  catalog added: 0, patched: 3, total: 330",
+      "  斗士, 熊战士, 武器大师, 前锋, 旗手, 指挥官, 铳士, 剑圣, 神射手, 狂徒, 醉酒大师, 守护骑士, 圣洁骑士, 耀阳德鲁伊, 蝰蛇, 飞贼, 原始人英雄, 密探, 赋生者, 狂野术士, 预言家, 兽群领主, 怪物, 升腾者, 救赎骑士, 毁灭骑士, 诡术师, 狂战士, 原始术士, 凤凰术士, 巨龙术士, 秀逗魔导士, 棍术师, 惩戒骑士, 奥术师, 卷轴学者, 近卫, 高阶冒险者, 战斗大师, 战地医师, 塑形者, 离群野兽, 冰霜法师, 魔剑士, 狮心骑士, 牧魂人, 丰收祭司, 骑兵, 自然行者, 利爪德鲁伊, 狂热十字军, 刺客, 防御者, 青龙尊者, 朱鹤尊者, 灵能术士, 心灵导师, 逸闻作家"
     ]
   },
-  "details_total": 55
+  "details_total": 58
 }

@@ -35,7 +35,7 @@ SKIP_NAMES = frozenset({"进阶", "属性值需求", "来源", "标识", "特殊
 # Pathway docx short labels (--- 天父 ---) → class-doc full names (牧师 only)
 PRIEST_BRANCH_FULL = {
     "天父": "公正与荣耀之神",
-    "圣母": "生命与丰收之神",
+    "圣母": "生命与丰饶之神",
     "骑士": "战争与谋略之神",
     "铁匠": "火焰与锻造之神",
     "学者": "知识与智慧之神",

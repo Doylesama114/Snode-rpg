@@ -6,8 +6,8 @@
       "name": "规划路线",
       "id": "st-skill-33",
       "source_file": "基础职业-谋士.docx",
-      "source_start": 639,
-      "source_end": 653,
+      "source_start": 669,
+      "source_end": 680,
       "expected": [
         "你可以在每日花费一小时来提前规划今日的路线，随后你在本日选择以下一项增益效果：",
         "· 你在每次进入战斗环节时会获得一颗D6的启迪骰，可以在进行一次攻击命中、",
@@ -27,8 +27,8 @@
       "name": "秘法习得",
       "id": "st-skill-94",
       "source_file": "基础职业-谋士.docx",
-      "source_start": 1562,
-      "source_end": 1572,
+      "source_start": 1700,
+      "source_end": 1706,
       "expected": [
         "你对于秘法拥有深入的研习，立即选择法师职业天赋树中一个不超过二阶的法术或戏法、在满足色彩标识后习得",
         "你能够忽视那个技能的前置技能或战斗风格相关的前置条件和额外条件，但仍需要遵循技能的剧情或战斗相关的前置条件和额外条件",
@@ -43,7 +43,7 @@
       "name": "偷师学艺",
       "id": "r-skill-23",
       "source_file": "基础职业-游荡者.docx",
-      "source_start": 504,
+      "source_start": 509,
       "source_end": 512,
       "expected": [
         "你日以夜继地学习他人的看家本领，你可以选择团队中的一名其他角色，学习对方基础职业天赋树中一个不超过三阶的能力，这个能力可以是战技、法术或戏法，你可以忽略那个能力的前置条件和额外条件，但仍需要照常支付其费用，并且习得的能力不会随着等级提升解锁更多效果",
@@ -56,8 +56,8 @@
       "name": "邪恶之水",
       "id": "m-skill-5-3-1",
       "source_file": "基础职业-法师.docx",
-      "source_start": 4256,
-      "source_end": 4291,
+      "source_start": 4269,
+      "source_end": 4292,
       "expected": [
         "你触碰一片不超过一立方米的水域，选择以下一项效果：·使这片水域具有“邪恶”的特性，饮用这些水源的角色需要进行一次难度为15的体质豁免，对方豁免失败后体质检定和豁免将始终具有劣势，并且会被判定为邪恶阵营单位，直到目标进行一次短休为止",
         "·你可以声明使这片水域在某些角色接近时发起攻击，邪恶之水无法理解过于复杂的指令，当你描述的角色移动至其周围6米时，会化作邪恶水元素攻击对方，其数值如下所示：",
@@ -83,8 +83,8 @@
       "name": "邪恶之水",
       "id": "p-skill-48",
       "source_file": "基础职业-魔契师.docx",
-      "source_start": 950,
-      "source_end": 985,
+      "source_start": 963,
+      "source_end": 986,
       "expected": [
         "你触碰一片不超过一立方米的水域，选择以下一项效果：·使这片水域具有“邪恶”的特性，饮用这些水源的角色需要进行一次难度为15的体质豁免，对方豁免失败后体质检定和豁免将始终具有劣势，并且会被判定为邪恶阵营单位，直到目标进行一次短休为止",
         "·你可以声明使这片水域在某些角色接近时发起攻击，邪恶之水无法理解过于复杂的指令，当你描述的角色移动至其周围6米时，会化作邪恶水元素攻击对方，其数值如下所示：",
@@ -110,8 +110,8 @@
       "name": "水灵契约",
       "id": "sa-skill-98",
       "source_file": "基础职业-萨满祭司.docx",
-      "source_start": 998,
-      "source_end": 1034,
+      "source_start": 1003,
+      "source_end": 1033,
       "expected": [
         "当你施展召唤水元素时，可以额外花费一个主要动作和一颗冰霜灵核来将其升格",
         "为水灵亲卫，全方位提升能力规格，并且持续时间提升为1小时，其数据如下所",
@@ -139,7 +139,7 @@
       "name": "土灵契约",
       "id": "sa-skill-101",
       "source_file": "基础职业-萨满祭司.docx",
-      "source_start": 1409,
+      "source_start": 1414,
       "source_end": 1446,
       "expected": [
         "当你施展召唤土元素时，可以额外花费一个主要动作和一颗大地灵核来将其升格",
@@ -169,8 +169,8 @@
       "name": "风之诗",
       "id": "b-skill-106",
       "source_file": "基础职业-吟游诗人.docx",
-      "source_start": 1350,
-      "source_end": 1377,
+      "source_start": 1356,
+      "source_end": 1378,
       "expected": [
         "用风之诗替换你的节拍骰中的任意一个骰面，当你的节拍骰掷出风之诗时，立即在自身周围2米内召唤一个风元素生物协同作战，其数据如下所示",
         "如果你在本次战斗环节中触发过两次风之诗，那么第三次召唤的风元素生物视作精英级单位",
@@ -236,7 +236,7 @@
       "name": "召唤火元素",
       "id": "m-skill-2-3-7",
       "source_file": "基础职业-法师.docx",
-      "source_start": 1662,
+      "source_start": 1675,
       "source_end": 1695,
       "expected": [
         "你召唤一团火元素协同作战，其数据如下所示",
@@ -260,7 +260,7 @@
       "name": "召唤火元素",
       "id": "sa-skill-31",
       "source_file": "基础职业-萨满祭司.docx",
-      "source_start": 578,
+      "source_start": 590,
       "source_end": 610,
       "expected": [
         "你召唤一团火元素协同作战，其数据如下所示",
@@ -284,7 +284,7 @@
       "name": "野兽形态",
       "id": "d-starting-skill-2",
       "source_file": "基础职业-德鲁伊.docx",
-      "source_start": 93,
+      "source_start": 95,
       "source_end": 166,
       "expected": [
         "你获得一套能够使自身变化为不同动物的全新机制，你能够在自身回合中花费一个附赠动作并消耗1点疲劳值来化身成各类野兽以获得不同的增益，进入野兽形态时你能够听懂并仅能发出对应种类的兽语，并且每十分钟消耗1点疲劳值",
@@ -343,7 +343,7 @@
       "name": "杂耍打击",
       "id": "r-skill-66",
       "source_file": "基础职业-游荡者.docx",
-      "source_start": 539,
+      "source_start": 551,
       "source_end": 563,
       "expected": [
         "1.你对一名角色发起攻击，本次攻击你需要掷一颗D4骰来依次决定是造成物理、火焰、暗影或剧毒伤害；之后投掷一颗D6的骰子来随机获得以下一项效果并执行：",
@@ -365,7 +365,7 @@
       "name": "致伤术",
       "id": "pr-skill-46",
       "source_file": "基础职业-牧师.docx",
-      "source_start": 937,
+      "source_start": 949,
       "source_end": 953,
       "expected": [
         "1.你使一名角色进行一次难度为15的体质豁免，对方豁免失败后需要掷一颗D4骰来决定将要承受的重伤效果:",
@@ -379,8 +379,8 @@
       "name": "混乱箭",
       "id": "p-skill-32",
       "source_file": "基础职业-魔契师.docx",
-      "source_start": 687,
-      "source_end": 706,
+      "source_start": 699,
+      "source_end": 707,
       "expected": [
         "你对一名角色发射混乱箭，造成5D6-1D6点伤害，这两次掷骰分别进行计算",
         "随后你需要掷一颗D6骰，根据骰子的点数来决定伤害类型：",
@@ -397,8 +397,8 @@
       "name": "预言学派序列",
       "id": "m-skill-3-7-8",
       "source_file": "基础职业-法师.docx",
-      "source_start": 3091,
-      "source_end": 3098,
+      "source_start": 3097,
+      "source_end": 3099,
       "expected": [
         "你可以将预言学派的法术或戏法加入法术序列之中",
         "当你触发一次法术序列中的预言学派能力后，你可以选择解锁真知大法师的一条随机超越者途径信息"
@@ -409,8 +409,8 @@
       "name": "梦魇术",
       "id": "m-skill-7-5-4",
       "source_file": "基础职业-法师.docx",
-      "source_start": 6201,
-      "source_end": 6245,
+      "source_start": 6214,
+      "source_end": 6246,
       "expected": [
         "你选择一名角色进行一次难度为15的体质或感知豁免（由你决定），对方豁免失败将进入昏睡状态",
         "目标在昏睡状态下将会进入一片特殊的黑暗梦境空间，在空间内需要与一个梦魇交战，其数据如下所示",
@@ -440,7 +440,7 @@
       "name": "猫鼬撕咬",
       "id": "h-skill-318",
       "source_file": "基础职业-猎人.docx",
-      "source_start": 395,
+      "source_start": 406,
       "source_end": 428,
       "expected": [
         "1.你在施展距离内召唤一只猫鼬，其数据如下所示",
@@ -466,7 +466,7 @@
       "name": "活火焰",
       "id": "d-skill-50",
       "source_file": "基础职业-德鲁伊.docx",
-      "source_start": 1068,
+      "source_start": 1080,
       "source_end": 1106,
       "expected": [
         "你点化一团火焰，使其具备活着的特性，并具有以下效果：",
@@ -496,7 +496,7 @@
       "name": "变奏手炮（图纸）",
       "id": "ar-skill-21",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 396,
+      "source_start": 400,
       "source_end": 425,
       "expected": [
         "使用限制：-",
@@ -527,7 +527,7 @@
       "name": "刨冰喷枪（图纸）",
       "id": "ar-skill-29",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 505,
+      "source_start": 513,
       "source_end": 533,
       "expected": [
         "研发材料：任意一把单手枪械武器+瑟银锭2磅+零件包1份+臻冰1份",
@@ -552,7 +552,7 @@
       "name": "自爆绵羊（图纸）",
       "id": "ar-skill-32",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 667,
+      "source_start": 674,
       "source_end": 709,
       "expected": [
         "研发材料：奇械齿轮+纯铁10磅+零件包2份+压力触发器1份+羊绒毯1份",
@@ -585,7 +585,7 @@
       "name": "擂台机器人W-BA！（图纸）",
       "id": "ar-skill-34",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 803,
+      "source_start": 769,
       "source_end": 850,
       "expected": [
         "研发材料：一对拳套+奇械齿轮5份+初级智能芯片1份+纯铁30磅+氮气弹簧2份+磁感应雷达1份",
@@ -623,7 +623,7 @@
       "name": "医疗手枪（图纸）",
       "id": "ar-skill-40",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1009,
+      "source_start": 1017,
       "source_end": 1042,
       "expected": [
         "研发材料：一把单手枪械武器+翡翠玉1份+治愈因子1份",
@@ -652,8 +652,8 @@
       "name": "医护机器人IR（图纸）",
       "id": "ar-skill-46",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1136,
-      "source_end": 1177,
+      "source_start": 1127,
+      "source_end": 1175,
       "expected": [
         "研发材料：奇械齿轮5份+中级智能芯片1份+纯铁30磅+治愈因子5份",
         "研发时间：1次长休",
@@ -690,7 +690,7 @@
       "name": "火箭靴（图纸）",
       "id": "ar-skill-54",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1336,
+      "source_start": 1344,
       "source_end": 1359,
       "expected": [
         "研发材料：任意靴子+纯铁2磅+零件包1份+火焰之油1份",
@@ -712,8 +712,8 @@
       "name": "电弧弹力靴（图纸）",
       "id": "ar-skill-62",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1457,
-      "source_end": 1480,
+      "source_start": 1465,
+      "source_end": 1479,
       "expected": [
         "研发材料：任意靴子+氮气弹簧1份+零件包1份+电气粒子1份",
         "研发时间：1次长休",
@@ -733,7 +733,7 @@
       "name": "闪电标枪投掷器（图纸）",
       "id": "ar-skill-66",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1518,
+      "source_start": 1521,
       "source_end": 1541,
       "expected": [
         "研发材料：任意掷矛+校准器1份+零件包1份+闪电灵核1份",
@@ -760,7 +760,7 @@
       "name": "电气拳套（图纸）",
       "id": "ar-skill-68",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1570,
+      "source_start": 1573,
       "source_end": 1588,
       "expected": [
         "研发材料：任意拳套+天然橡胶1份+电气粒子2份",
@@ -782,7 +782,7 @@
       "name": "不稳定电势（图纸）",
       "id": "ar-skill-73",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1784,
+      "source_start": 1788,
       "source_end": 1814,
       "expected": [
         "使用限制：-",
@@ -813,7 +813,7 @@
       "name": "魔导枪（图纸）",
       "id": "ar-skill-89",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 2039,
+      "source_start": 2047,
       "source_end": 2072,
       "expected": [
         "研发材料：任意手枪+金属导管1份+奥法之尘1份",
@@ -843,7 +843,7 @@
       "name": "奥术矩阵屏障（图纸）",
       "id": "ar-skill-100",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 2341,
+      "source_start": 2344,
       "source_end": 2368,
       "expected": [
         "研发材料：蓝宝石1份+紫水晶1份+高频驱动器2份+蓝钢导管1份+奥法之尘2份",
@@ -873,7 +873,7 @@
       "name": "斥力手雷（图纸）",
       "id": "ar-skill-108",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 603,
+      "source_start": 593,
       "source_end": 627,
       "expected": [
         "研发材料：电磁石2份+零件包1/5份",
@@ -895,8 +895,8 @@
       "name": "闪光手雷（图纸）",
       "id": "ar-skill-110",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 578,
-      "source_end": 603,
+      "source_start": 586,
+      "source_end": 602,
       "expected": [
         "研发材料：闪光尘1/5份+零件包1/5份",
         "研发时间：1次短休/5",
@@ -917,7 +917,7 @@
       "name": "自动净化矩阵（图纸）",
       "id": "ar-skill-127",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 1192,
+      "source_start": 1199,
       "source_end": 1224,
       "expected": [
         "研发材料：自动清洁仪+小型飞行器发动机1份+抗毒血清1份+治愈因子1份",
@@ -946,7 +946,7 @@
       "name": "力场桥信标（图纸）",
       "id": "ar-skill-144",
       "source_file": "基础职业-奇械师.docx",
-      "source_start": 2368,
+      "source_start": 2366,
       "source_end": 2388,
       "expected": [
         "研发材料：共鸣水晶1份+固化力场碎片1份+星界银1磅",
@@ -972,7 +972,7 @@
       "name": "圣愈术",
       "id": "pr-d-life-21",
       "source_file": "牧师子分支/神圣领域-生命与丰收之神.docx",
-      "source_start": 320,
+      "source_start": 332,
       "source_end": 335,
       "expected": [
         "你使一名其他角色在本轮次结束阶段时回复X点生命值、随后在下一个轮次开始阶段时回复X点生命值、在下一个轮次结束阶段再次回复X点生命值",
@@ -986,7 +986,7 @@
       "name": "冲锋",
       "id": "pr-d-war-3",
       "source_file": "牧师子分支/神圣领域-战争与谋略之神.docx",
-      "source_start": 26,
+      "source_start": 35,
       "source_end": 38,
       "expected": [
         "你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前并发起攻击",
@@ -1000,7 +1000,7 @@
       "name": "骑士臂甲",
       "id": "pr-d-war-10",
       "source_file": "牧师子分支/神圣领域-战争与谋略之神.docx",
-      "source_start": 137,
+      "source_start": 149,
       "source_end": 155,
       "expected": [
         "你将双臂着装上骑士臂甲，获得2D6点护甲值，这些护甲值仅在你承受来自侧翼方向的攻击时会生效",
@@ -1017,7 +1017,7 @@
       "name": "次级隐身术",
       "id": "pr-d-war-33",
       "source_file": "牧师子分支/神圣领域-战争与谋略之神.docx",
-      "source_start": 490,
+      "source_start": 502,
       "source_end": 505,
       "expected": [
         "1.你进入潜行状态，持续时间内当你进行全速移动和跳远、跳高行动，以及执行攻击或施法动作均会立即解除此效果",
@@ -1031,7 +1031,7 @@
       "name": "侦测魔法",
       "id": "pr-d-lore-15",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 237,
+      "source_start": 249,
       "source_end": 257,
       "expected": [
         "你对一片5*5的区域进行扫描以获悉范围内的以下信息：",
@@ -1050,7 +1050,7 @@
       "name": "灵思如泉",
       "id": "pr-d-lore-17",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 273,
+      "source_start": 285,
       "source_end": 294,
       "expected": [
         "你获得两颗D6的智慧骰，本场战斗环节中当你需要为以下行为进行掷骰时，可以在此之前将其中一颗智慧骰加入检定结果：",
@@ -1070,7 +1070,7 @@
       "name": "破障之眼",
       "id": "pr-d-lore-31",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 502,
+      "source_start": 514,
       "source_end": 518,
       "expected": [
         "你在持续时间内能够忽视来自阻碍效果的影响，包括迷雾、掩体所产生的影响视觉的效果",
@@ -1085,8 +1085,8 @@
       "name": "速效学习",
       "id": "pr-d-lore-47",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 735,
-      "source_end": 743,
+      "source_start": 739,
+      "source_end": 742,
       "expected": [
         "1.你通过填鸭式教育快速地令他人具备对抗风险的能力，立即使一名其他角色获",
         "得4个技能点",
@@ -1099,7 +1099,7 @@
       "name": "大师之手",
       "id": "pr-d-lore-50",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 772,
+      "source_start": 784,
       "source_end": 788,
       "expected": [
         "你在可视范围内召唤一个大师之手协助你，大师之手视作拥有所有锻造、制作和手工艺的专业熟练度",
@@ -1114,7 +1114,7 @@
       "name": "活化绳索",
       "id": "pr-d-lore-56",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 879,
+      "source_start": 891,
       "source_end": 899,
       "expected": [
         "你选择一根绳索，持续时间内具有以下效果：",
@@ -1133,8 +1133,8 @@
       "name": "演奏乐器（图纸）",
       "id": "pr-d-art-53",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 876,
-      "source_end": 898,
+      "source_start": 880,
+      "source_end": 899,
       "expected": [
         "使用限制：-",
         "研发材料：纯铁、木材或皮革1磅+零件包1/2份",
@@ -1159,8 +1159,8 @@
       "name": "秘法锁",
       "id": "pr-d-art-56",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 937,
-      "source_end": 955,
+      "source_start": 950,
+      "source_end": 956,
       "expected": [
         "你可以对一个体积不超过大型的密封容器或是门进行上锁",
         "你在触碰秘法锁后可以选择将其解锁",
@@ -1176,8 +1176,8 @@
       "name": "有用的小东西",
       "id": "pr-d-art-58",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 964,
-      "source_end": 976,
+      "source_start": 970,
+      "source_end": 977,
       "expected": [
         "你获取一个不超过中型体型生物巴掌大小的实用小物件，持续1小时",
         "你可以通过这个效果来获取",
@@ -1194,8 +1194,8 @@
       "name": "迷你乐团（图纸）",
       "id": "pr-d-art-59",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 976,
-      "source_end": 998,
+      "source_start": 981,
+      "source_end": 999,
       "expected": [
         "使用限制：-",
         "研发材料：奇械齿轮5份+零件包1份+玩具乐器套装1份",
@@ -1219,8 +1219,8 @@
       "name": "活木偶（图纸）",
       "id": "pr-d-art-66",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 1105,
-      "source_end": 1151,
+      "source_start": 1110,
+      "source_end": 1152,
       "expected": [
         "使用限制：-",
         "研发材料：木材20磅+奇械齿轮3份+零件包1份+布衣1件",
@@ -1261,8 +1261,8 @@
       "name": "场景转换轮（图纸）",
       "id": "pr-d-art-67",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 1151,
-      "source_end": 1188,
+      "source_start": 1146,
+      "source_end": 1189,
       "expected": [
         "使用限制：-",
         "研发材料：中级智能芯片1份+奇械摄影机1台+微光粒子2份+电磁铁2份+奇械齿轮1份+零件包2份+彩色透镜组1份",
@@ -1301,8 +1301,8 @@
       "name": "炫彩灯球（图纸）",
       "id": "pr-d-art-73",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 1273,
-      "source_end": 1299,
+      "source_start": 1278,
+      "source_end": 1300,
       "expected": [
         "研发材料：微光粒子2份+悬浮板1份+水晶透镜8份+彩色透镜组1份+电磁铁1份",
         "研发时间：1次长休",
@@ -1330,7 +1330,7 @@
       "name": "欢愉幻容",
       "id": "pr-d-love-3",
       "source_file": "牧师子分支/神圣领域-爱、激情与欢愉之神.docx",
-      "source_start": 20,
+      "source_start": 29,
       "source_end": 31,
       "expected": [
         "你的样貌和身躯变化为自身的性转版本",
@@ -1343,7 +1343,7 @@
       "name": "施虐祝福",
       "id": "pr-d-love-16",
       "source_file": "牧师子分支/神圣领域-爱、激情与欢愉之神.docx",
-      "source_start": 219,
+      "source_start": 231,
       "source_end": 238,
       "expected": [
         "你使一名角色获得施虐祝福，持续时间内获得以下效果",
@@ -1361,7 +1361,7 @@
       "name": "次级幻影",
       "id": "pr-d-luck-13",
       "source_file": "牧师子分支/神圣领域-幸运女神（争锋模式）.docx",
-      "source_start": 167,
+      "source_start": 179,
       "source_end": 188,
       "expected": [
         "1.你在可视范围内生成一段声响或模拟出体积不超过2立方米的物件影像，这个幻象会随着持续时间渐渐变得模糊不清，并且在受到攻击时会立即消散",
@@ -1380,7 +1380,7 @@
       "name": "旋刃魂曲",
       "id": "pr-d-luck-21",
       "source_file": "牧师子分支/神圣领域-幸运女神（争锋模式）.docx",
-      "source_start": 291,
+      "source_start": 303,
       "source_end": 307,
       "expected": [
         "你在一片3*3的区域召唤旋刃魂曲，对进入这个区域和轮次结束阶段停留在其中的角色造成4D4点心灵伤害",
@@ -1395,7 +1395,7 @@
       "name": "饿兽扑咬",
       "id": "pr-d-hunger-6",
       "source_file": "牧师子分支/神圣领域-无尽饥饿与吞噬之神.docx",
-      "source_start": 71,
+      "source_start": 82,
       "source_end": 87,
       "expected": [
         "你对一名能够触及的角色发起飞扑，朝直线方向跳跃至目标身前并发起攻击",
@@ -1411,7 +1411,7 @@
       "name": "召唤战斗学者",
       "id": "pr-d-lore-55",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 847,
+      "source_start": 856,
       "source_end": 879,
       "expected": [
         "你召唤一个战斗学者到一个空白位置，对方为一个没有具体容貌、性别，手持法",
@@ -1438,8 +1438,8 @@
       "name": "妖精演奏",
       "id": "pr-d-art-14",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 207,
-      "source_end": 226,
+      "source_start": 220,
+      "source_end": 227,
       "expected": [
         "你选定一件乐器，使其悬浮于空中自行开始演奏乐曲，你可以自定义乐器所演奏的曲目，前提是你对那首乐曲足够了解",
         "你的表演熟练度的点数总和将决定演奏旋律是否美妙绝伦",
@@ -1456,7 +1456,7 @@
       "name": "召唤宝石兽",
       "id": "pr-d-luck-24",
       "source_file": "牧师子分支/神圣领域-幸运女神（争锋模式）.docx",
-      "source_start": 338,
+      "source_start": 350,
       "source_end": 363,
       "expected": [
         "你召唤一只宝石兽，掷一颗D6骰来决定宝石兽的类别",
@@ -1480,7 +1480,7 @@
       "name": "秘法习得",
       "id": "",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 204,
+      "source_start": 208,
       "source_end": 214,
       "expected": [
         "你对于秘法拥有深入的研习，立即选择法师职业天赋树中一个不超过二阶的法术或戏法、在满足色彩标识后习得",
@@ -1497,7 +1497,7 @@
       "name": "规划路线",
       "id": "",
       "source_file": "牧师子分支/神圣领域-知识与智慧之神.docx",
-      "source_start": 350,
+      "source_start": 353,
       "source_end": 364,
       "expected": [
         "你可以在每日花费一小时来提前规划今日的路线，随后你在本日选择以下一项增益效果：",
@@ -1519,12 +1519,48 @@
       "name": "通感者",
       "id": "",
       "source_file": "牧师子分支/神圣领域-艺术与创造之神.docx",
-      "source_start": 671,
-      "source_end": 678,
+      "source_start": 676,
+      "source_end": 679,
       "expected": [
         "你卓越的感应着周围色彩的消逝，获得1点察觉的熟练度，允许以此突破你的熟练度上限",
         "每当战斗环节中出现一种不同颜色的色彩标识时，你获得10点经验值",
         "你通过情绪调色来获悉他人所象征的色彩时，能够清楚对方色彩所代表的明确寓意"
+      ]
+    },
+    {
+      "class": "召唤师",
+      "name": "灵猫守护",
+      "id": "sm-skill-32",
+      "source_file": "基础职业-召唤师.docx",
+      "source_start": 992,
+      "source_end": 994,
+      "expected": [
+        "天赋.防御.韧性.每日限一次",
+        "当你将要承受一次坠落伤害或击倒状态时，阻止那个效果的发生"
+      ]
+    },
+    {
+      "class": "召唤师",
+      "name": "灵枭守护",
+      "id": "sm-skill-33",
+      "source_file": "基础职业-召唤师.docx",
+      "source_start": 1010,
+      "source_end": 1012,
+      "expected": [
+        "天赋.探知.每日限一次",
+        "当你周围2米内首次出现非己方阵营的潜行单位时，灵枭会给予预警，并且在你的视野中标记出对方"
+      ]
+    },
+    {
+      "class": "召唤师",
+      "name": "灵狐守护",
+      "id": "sm-skill-34",
+      "source_file": "基础职业-召唤师.docx",
+      "source_start": 1028,
+      "source_end": 1030,
+      "expected": [
+        "天赋.韧性.每日限一次",
+        "你可以使自身进行的一次智力或魅力豁免具有优势"
       ]
     }
   ]
