@@ -1,0 +1,40 @@
+name: Publish v1.0.8048 release tag
+
+on:
+  push:
+    branches:
+      - 'codex/publish-v1.0.8048'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-v1.0.8048
+  cancel-in-progress: false
+
+jobs:
+  publish-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create the verified release tag
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+          EXPECTED_COMMIT: '75ffba4578d23aab0cdc606a4b62bf209226fd98'
+        run: |
+          set -euo pipefail
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Missing existing release secret GH_TOKEN2"
+            exit 1
+          fi
+          ref_path="repos/$GITHUB_REPOSITORY/git/ref/tags/v1.0.8048"
+          existing=$(gh api "$ref_path" --jq '.object.sha' 2>/dev/null || true)
+          if [ -z "$existing" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f ref="refs/tags/v1.0.8048" -f sha="$EXPECTED_COMMIT" >/dev/null
+          elif [ "$existing" != "$EXPECTED_COMMIT" ]; then
+            echo "::error::Existing release tag points to a different commit"
+            exit 1
+          fi
+          actual=$(gh api "$ref_path" --jq '.object.sha')
+          test "$actual" = "$EXPECTED_COMMIT"
+          echo "Published v1.0.8048 at $actual"
