@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, webContents, crashReporter } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, webContents, crashReporter, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -62,6 +62,7 @@ catch (e) {
   autoUpdater.quitAndInstall = () => {};
 }
 const mirrorConfig = require('./update-mirror-config');
+const { applicationMenu, macReleaseUpdate } = require('./mac-platform');
 const { RecoveryStore } = require('./recovery-store');
 const { DesktopSettings } = require('./desktop-settings');
 const desktopSettings = new DesktopSettings(path.join(app.getPath('userData'), 'snowd-settings.json'));
@@ -353,6 +354,7 @@ function fetchLatestTag(sourceKey) {
 
 function checkForUpdatesViaGenericFeed(opts) {
   opts = opts || {};
+  if (process.platform === 'darwin') return checkForMacUpdates();
   if (updateCheckInFlight && !opts._fromFallback) return Promise.resolve({ outcome: 'busy' });
   updateCheckInFlight = true;
 
@@ -415,6 +417,25 @@ function checkForUpdatesViaGenericFeed(opts) {
 }
 
 /** 启动 / 定时 / 手动「检查更新」：先 GitHub，失败自动走国内镜像全流程 */
+async function checkForMacUpdates() {
+  if (updateCheckInFlight) return { outcome: 'busy' };
+  updateCheckInFlight = true;
+  sendUpdateStatus({ status: 'checking', message: '正在检查 Mac 版本更新...' });
+  try {
+    const release = await httpsGetJson(mirrorConfig.GITHUB_LATEST_API);
+    const result = macReleaseUpdate(release, app.getVersion(), process.arch);
+    pendingUpdate = result.status === 'available'
+      ? { version: result.version, ready: false, url: result.url } : null;
+    sendUpdateStatus(result);
+    return { outcome: 'ok' };
+  } catch (err) {
+    sendUpdateStatus({ status: 'error', message: 'Mac 更新检查失败：' + err.message });
+    return { outcome: 'failed' };
+  } finally {
+    updateCheckInFlight = false;
+  }
+}
+
 function runAutoUpdateCheck() {
   return checkForUpdatesViaGenericFeed({
     sources: ['github'],
@@ -515,6 +536,14 @@ ipcMain.on('check-update', (e, opts) => {
 
 // IPC: 用户在启动台确认下载更新（autoDownload=false）
 ipcMain.on('download-update', () => {
+  if (process.platform === 'darwin' && pendingUpdate && pendingUpdate.url) {
+    shell.openExternal(pendingUpdate.url).catch(err => {
+      sendUpdateStatus({ status: 'error', message: '打开下载链接失败：' + err.message });
+    });
+    sendUpdateStatus({ status: 'available', version: pendingUpdate.version,
+      message: '已在浏览器打开 Mac 安装包，下载后退出应用并替换即可更新' });
+    return;
+  }
   if (!pendingUpdate || pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '当前没有可下载的更新，请先「检查更新」。' });
     return;
@@ -1014,7 +1043,7 @@ async function createWindow() {
     }
   });
 
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(process.platform === 'darwin' ? applicationMenu(app, Menu) : null);
   const created = mainWindow;
   lifecycle.attach(created, 'main');
   created.once('closed', () => { if (mainWindow === created) mainWindow = null; });
@@ -1116,7 +1145,9 @@ app.whenReady().then(async () => {
     updateTimer = setTimeout(() => { if (getAutoUpdateEnabled()) runAutoUpdateCheck(); }, 90000);
   }
 }).catch(fatalMain);
-app.on('window-all-closed', () => app.quit());
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
 app.on('activate', () => {
   if (!mainWindow || mainWindow.isDestroyed()) createWindow();
 });

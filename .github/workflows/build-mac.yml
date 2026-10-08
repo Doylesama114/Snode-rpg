@@ -1,0 +1,89 @@
+name: Build macOS Installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag or commit to build (empty uses this workflow ref)'
+        required: false
+        type: string
+  push:
+    branches:
+      - 'codex/mac-installer-*'
+      - 'codex/release-*'
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mac-installers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            os: macos-15
+            app-dir: mac-arm64
+          - arch: x64
+            os: macos-15-intel
+            app-dir: mac
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: electron-app/package-lock.json
+      - name: Install dependencies
+        working-directory: electron-app
+        run: npm ci
+      - name: Test Mac integration
+        run: node --test scripts/tests/mac-platform.test.cjs scripts/tests/advisor-chargen-snapshot.test.cjs
+      - name: Build DMG installer
+        working-directory: electron-app
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          TARGET_ARCH: ${{ matrix.arch }}
+        run: npm run dist:mac -- --arch "$TARGET_ARCH"
+      - name: Verify signature and launch packaged app
+        env:
+          APP_DIR: ${{ matrix.app-dir }}
+        run: |
+          APP_PATH="electron-app/dist/mac/$APP_DIR/斯诺德跑团.app"
+          codesign --verify --deep --strict "$APP_PATH"
+          node scripts/smoke-desktop.mjs "$APP_PATH/Contents/MacOS/斯诺德跑团"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Snode-RPG-mac-${{ matrix.arch }}
+          path: electron-app/dist/mac/*.dmg
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish DMG to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "$RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md" \
+              || gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+          fi
+          for file in electron-app/dist/mac/*.dmg; do
+            uploaded=false
+            for attempt in 1 2 3 4 5; do
+              if gh release upload "$RELEASE_TAG" "$file" --repo "$GITHUB_REPOSITORY" --clobber; then uploaded=true; break; fi
+              sleep "$((attempt * 10))"
+            done
+            if [ "$uploaded" != true ]; then echo "::error::DMG upload failed: $file"; exit 1; fi
+          done

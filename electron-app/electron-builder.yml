@@ -12,6 +12,7 @@ files:
   - desktop-error.html
   - desktop-error.js
   - update-mirror-config.js
+  - mac-platform.js
   - advisor-env-bootstrap.js
   - chargen-cli-server.js
   - package.json

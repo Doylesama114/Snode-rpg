@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8047',
+    date: '2026-10-08',
+    changes: [
+      '修复旧版 Mac 顾问读取角色资料时 char is not defined 的问题',
+      '新增顾问角色快照回归检查并接入发布流程',
+      '发布 Apple 芯片与 Intel 的 DMG 安装程序，沿用最新桌面壳与恢复功能'
+    ]
+  },
+
+
+  {
     version: '1.0.8046',
     date: '2026-10-07',
     changes: [

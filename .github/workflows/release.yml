@@ -60,6 +60,9 @@ jobs:
       - name: Install desktop test dependencies
         run: npm ci
 
+      - name: Verify advisor character snapshot
+        run: node --test scripts/tests/advisor-chargen-snapshot.test.cjs
+
       - name: Verify real desktop entry point
         shell: pwsh
         run: |
