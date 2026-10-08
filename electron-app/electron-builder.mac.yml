@@ -16,7 +16,8 @@ files:
   - "!职业页/_monk_test_top.html"
   - 斯诺德跑团/**/*
   - poker-game/**/*
-extraFiles:
+# Non-code files belong under Contents/Resources so macOS can seal the bundle.
+extraResources:
   - from: ../scripts/snode
     to: snode
   - from: ../docs/chargen-cli.md

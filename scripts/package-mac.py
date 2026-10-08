@@ -79,7 +79,7 @@ def build(args):
         for file in sorted(Path(args.extras).rglob('*')):
             if file.is_file():
                 name = file.relative_to(args.extras).as_posix()
-                put(archive, app + '/Contents/' + name, file.read_bytes(), 0o755 if name == 'snode' else 0o644)
+                put(archive, app + '/Contents/' + name, file.read_bytes(), 0o755 if name == 'Resources/snode' else 0o644)
         command = f'''#!/bin/bash
 set -euo pipefail
 SNODE_PACKAGE_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
@@ -105,11 +105,11 @@ echo "已启动。以后可以直接打开 {app}。"
    首次运行脚本仅为本文件夹内的应用清除下载隔离属性并生成本机临时签名，然后打开应用。
 3. 启动成功后，可以将 {app} 拖入“应用程序”，以后直接打开。
 4. 如需命令行功能，在应用启动后运行：
-   "/Applications/{app}/Contents/snode" chargen flow
+   "/Applications/{app}/Contents/Resources/snode" chargen flow
 
 此包在 Windows 上组装，尚未在真实 Mac 上完成运行验证。它不是 Apple Developer ID 签名或公证版本。
 应用和角色资料保存在 ~/Library/Application Support/ 下，更新时退出应用再替换 .app。
-AI 顾问需自行配置 API Key；可将应用 Contents/.env.example 复制成 Contents/.env 后填写。
+AI 顾问需自行配置 API Key；可将应用 Contents/Resources/.env.example 复制成 Contents/Resources/.env 后填写。
 完整标准 DMG 打包方法见仓库 docs/macos-packaging.md。
 '''
         put(archive, 'Mac使用说明.txt', readme.encode('utf-8'))
@@ -143,8 +143,8 @@ def verify(target, args):
         assert info['CFBundleExecutable'] == args.product
         assert info['CFBundleShortVersionString'] == args.version
         assert archive.read(app + '/Contents/Resources/app.asar') == Path(args.payload).read_bytes()
-        for required in ['Contents/snode', 'Contents/CLI.md', 'Contents/.env.example',
-                         'Contents/scripts/snode-cli.mjs', 'Contents/scripts/mage-advisor.mjs']:
+        for required in ['Contents/Resources/snode', 'Contents/Resources/CLI.md', 'Contents/Resources/.env.example',
+                         'Contents/Resources/scripts/snode-cli.mjs', 'Contents/Resources/scripts/mage-advisor.mjs']:
             assert app + '/' + required in names, required
         assert not any(name.endswith('/.env') or '/.env.bundle' in name for name in names)
         assert not any('_CodeSignature' in name for name in names)
@@ -177,7 +177,7 @@ def verify(target, args):
                 binary_path = member.filename.removesuffix('Info.plist') + 'MacOS/' + helper['CFBundleExecutable']
                 assert binary_path in names, binary_path
         assert symlinks > 0, 'Framework symlinks missing'
-        for name in ['首次运行.command', app + '/Contents/snode']:
+        for name in ['首次运行.command', app + '/Contents/Resources/snode']:
             assert (archive.getinfo(name).external_attr >> 16) & 0o111, name
     return {'file': target.name, 'version': args.version, 'arch': args.arch,
             'symlinks': symlinks, 'runtimeVerifiedOnMac': False,

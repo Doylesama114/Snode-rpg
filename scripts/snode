@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 SNODE_SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-SNODE_RUNTIME="$SNODE_SCRIPT_DIR/MacOS/斯诺德跑团"
+SNODE_RUNTIME="$SNODE_SCRIPT_DIR/../MacOS/斯诺德跑团"
 if [ -x "$SNODE_RUNTIME" ]; then
   ELECTRON_RUN_AS_NODE=1 exec "$SNODE_RUNTIME" "$SNODE_SCRIPT_DIR/scripts/snode-cli.mjs" "$@"
 fi

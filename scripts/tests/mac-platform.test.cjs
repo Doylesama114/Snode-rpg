@@ -152,9 +152,10 @@ test('The resolved native Mac configuration excludes Windows personal-build secr
   const { DebugLogger } = appRequire('builder-util');
   const resolved = await config.getConfig(APP, 'electron-builder.mac.yml', null);
   await config.validateConfiguration(resolved, new DebugLogger());
-  assert.ok(resolved.extraFiles.some(item => item.to === 'snode'));
-  assert.ok(resolved.extraFiles.some(item => item.to === '.env.example'));
-  assert.ok(!resolved.extraFiles.some(item => item.from === '.env.bundle' || item.to === '.env' || item.to === 'snode.cmd'));
-  assert.ok(!resolved.extraFiles.some(item => (item.filter || []).includes('**/*.ps1')));
+  assert.equal((resolved.extraFiles || []).length, 0, 'Contents must not contain loose resource files');
+  assert.ok(resolved.extraResources.some(item => item.to === 'snode'));
+  assert.ok(resolved.extraResources.some(item => item.to === '.env.example'));
+  assert.ok(!resolved.extraResources.some(item => item.from === '.env.bundle' || item.to === '.env' || item.to === 'snode.cmd'));
+  assert.ok(!resolved.extraResources.some(item => (item.filter || []).includes('**/*.ps1')));
   assert.deepEqual(resolved.mac.target.map(item => item.target), ['dmg']);
 });

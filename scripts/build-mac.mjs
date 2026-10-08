@@ -91,9 +91,9 @@ for (const name of ['main.js', 'preload.js', 'mac-platform.js',
   'node_modules/electron-updater/package.json', '斯诺德跑团/启动台.html', '职业页/首页.html']) {
   asar.statFile(payload, name.split('/').join(path.sep));
 }
-for (const entry of macConfig.extraFiles) {
+for (const entry of macConfig.extraResources) {
   const from = path.resolve(APP, entry.from);
-  const to = path.join(extras, entry.to);
+  const to = path.join(extras, 'Resources', entry.to);
   if (fs.statSync(from).isDirectory()) {
     for (const name of selectFiles(entry.filter || ['**/*'], from)) copyFile(path.join(from, name), path.join(to, name));
   } else copyFile(from, to);

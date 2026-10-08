@@ -35,8 +35,9 @@ Mac 默认使用 `electron-builder.mac.yml` 构建 DMG，并生成 ad-hoc 签名
 
 - Mac 保留原生编辑菜单及 Cmd+C/V/A 快捷键；关闭全部窗口后保留 Dock 应用，点击 Dock 图标重新打开。
 - 本机角色资料由 Electron 存入 `~/Library/Application Support/`，替换应用后仍可继续使用。
-- CLI 无需另装 Node.js。先打开应用，再执行 `"/Applications/斯诺德跑团.app/Contents/snode" chargen flow`。CLI 自动寻找 Mac 的连接文件。
-- 发行包只包含 `.env.example`，不读取本机 `.env` 或 Windows 的 `.env.bundle`。使用 AI 顾问时，可将 `Contents/.env.example` 复制成 `Contents/.env` 并自行配置 API Key。
+- CLI 无需另装 Node.js。先打开应用，再执行 `"/Applications/斯诺德跑团.app/Contents/Resources/snode" chargen flow`。CLI 自动寻找 Mac 的连接文件。
+- 发行包只包含 `.env.example`，不读取本机 `.env` 或 Windows 的 `.env.bundle`。使用 AI 顾问时，可将 `Contents/Resources/.env.example` 复制成 `Contents/Resources/.env` 并自行配置 API Key。
+- CLI、说明文件和顾问数据统一通过 `extraResources` 放入 `Contents/Resources`，保持标准 Mac 应用目录结构；放在 `Contents` 根目录会导致签名把资源误判为代码。资源位置见 [electron-builder 文档](https://www.electron.build/v26/docs/mac/)。
 - Mac 更新采用浏览器下载对应架构的 DMG/ZIP，再退出并替换应用。只发布 Windows 包的版本不会提供 Mac 下载，已有角色资料不受替换影响。
 
 要发行免手动允许打开、支持系统信任的版本，需要在 Mac 上配置 Apple Developer ID 证书与公证凭据，并调整 Mac 配置的签名及公证选项。[electron-builder 官方签名说明](https://www.electron.build/v26/code-signing/)介绍了这条流程。
