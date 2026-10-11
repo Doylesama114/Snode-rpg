@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8054',
+    date: '2026-10-11',
+    changes: [
+      'OSS 账号恢复后重新发版，补齐自 8042 起未同步的 OSS 镜像与自动更新清单'
+    ]
+  },
+
+
+  {
     version: '1.0.8053',
     date: '2026-10-11',
     changes: [
