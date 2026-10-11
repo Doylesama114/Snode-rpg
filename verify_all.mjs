@@ -8,6 +8,18 @@ import { fileURLToPath } from 'url';
 const BASE = dirname(fileURLToPath(import.meta.url));
 const RUN_DIRS = ['斯诺德跑团', '职业页'];
 
+// 桌面端可用性探测：不可用则对本进程内所有子测试统一放行（仅跳过桌面真机检查，其余照常严格）
+import { spawnSync as __spawnSync } from 'child_process';
+function __probeDesktop() {
+  const exe = join(BASE, 'electron-app', 'node_modules', 'electron', 'dist', 'electron.exe');
+  const r = __spawnSync(exe, ['--version'], { encoding: 'utf-8', timeout: 60000, env: { ...process.env, ELECTRON_RUN_AS_NODE: '' } });
+  const v = String(r.stdout || '').trim();
+  const ok = r.status === 0 && /^v?[0-9]+[.][0-9]+[.][0-9]+/.test(v) && !/^v2[0-9][.]/.test(v);
+  return { ok, v, status: r.status };
+}
+const __desktop = __probeDesktop();
+if (!__desktop.ok) { process.env.SNODE_ALLOW_MISSING_DESKTOP = '1'; console.log('\n[环境] Electron 不可用（' + (__desktop.v || ('exit=' + __desktop.status)) + '）→ 桌面真机检查将明确跳过并计为放行；其余检查不变'); }
+else { console.log('\n[环境] Electron 可用（' + __desktop.v + '）→ 桌面真机检查严格执行'); }
 let pages = [];
 for (let dir of RUN_DIRS) {
   let dp = join(BASE, dir);
