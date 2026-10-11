@@ -105,7 +105,7 @@ def build_feature_entry() -> dict:
                 continue
             if line.startswith('战斗风格'):
                 break
-            is_name = (len(line) <= 10 and '：' not in line and '。' not in line
+            is_name = (line in SPECS) or (len(line) <= 10 and '：' not in line and '。' not in line
                        and not line.startswith(('·', '你', '每', '此', '该', '若', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6')))
             if is_name and (cur is None or cur['body']):
                 cur = {'name': line, 'body': []}
