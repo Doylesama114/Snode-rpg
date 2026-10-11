@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8053',
+    date: '2026-10-11',
+    changes: [
+      '修复导入角色卡导出崩溃（装备数组含 null 时整卡导出失败）'
+    ]
+  },
+
+
+  {
     version: '1.0.8052',
     date: '2026-10-11',
     changes: [

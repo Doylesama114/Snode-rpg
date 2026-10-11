@@ -695,6 +695,21 @@ console.log('\n=== 技能索引 ===');
 console.log('\n=== 基本规则同步 ===');
 // 职业专长结构校验（class_features.json ↔ 各职业页 chips/panels）
 console.log('\n=== 职业专长结构 ===');
+// 装备数组含坏数据时导出不崩（回归：Cannot read properties of null (reading items)）
+console.log('\n=== 导出空值健壮性 ===');
+let exportRobustOK = true;
+try {
+  let ero = spawnSync('node', [join(BASE, 'verify_export_bad_equipment.cjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (ero.stdout) console.log(ero.stdout.trim());
+  if (ero.stderr) console.error(ero.stderr.trim());
+  if (ero.status !== 0) exportRobustOK = false;
+} catch (e) {
+  exportRobustOK = false;
+  console.log('❌ 导出空值健壮性校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(exportRobustOK ? '✅ 导出空值健壮性通过' : '❌ 导出空值健壮性失败');
+totalErrors += exportRobustOK ? 0 : 1;
+
 let classFeatOK = true;
 try {
   let cfo = spawnSync('node', [join(BASE, 'verify_class_features.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
@@ -803,6 +818,6 @@ const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

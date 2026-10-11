@@ -1,8 +1,24 @@
 /* One scalar export path for upload and panel. Source-layout writes are explicit. */
 var SNOWD_CHARACTER_EXPORT=(function(){
  function readSources(parsed){return SNOWD_CHARACTER_FIELDS.read(parsed);}
+ var EXPORT_SKIPPED=[];
+ function eqOk(x){return (x&&typeof x==="object"&&!Array.isArray(x))?x:null;}
+ function eqList(arr){var out=[];(arr||[]).forEach(function(x){var v=eqOk(x);if(v)out.push(v);else if(x!==undefined)EXPORT_SKIPPED.push(x);});return out;}
  function text(s){return String(s==null?"":s);}
- function write(set,state,parsed,original){
+ function publishSkipped(){try{if(typeof window!=="undefined")window.SNOWD_EXPORT_SKIPPED=EXPORT_SKIPPED.slice();}catch(err){}}
+ function sanitizeEquipment(state){EXPORT_SKIPPED.length=0;
+  if(!state||typeof state!=="object")return state;
+  var eq=state.equipment;if(!eq||typeof eq!=="object")return state;
+  Object.keys(eq).forEach(function(slot){
+   var arr=eq[slot];if(!Array.isArray(arr)){eq[slot]=[];return;}
+   eq[slot]=eqList(arr);
+   eq[slot].forEach(function(item){var list=item&&item.items;if(Array.isArray(list))item.items=eqList(list);});
+  });
+  publishSkipped();
+  publishSkipped();
+  return state;
+ }
+ function write(set,state,parsed,original){state=sanitizeEquipment(state);
   var l=SNOWD_CHARACTER_LAYOUT;parsed=Object.assign({},parsed,{fieldBindings:state.importFieldBindings||[],entityScope:state.importEntityScope||"",entityId:state.importEntityId||"",equipmentMappings:state.importEquipmentMappings||[]});var g=l.grid(parsed),data=readSources(parsed),stats=SNOWD_CHARACTER_STATS.read(state),dest=data.sources;
   function putSource(source,value){if(!source||!source.cellRef||value===null||value===undefined)return;if(source.inline)set(source.cellRef,source.label.split(/[:：]/)[0]+"："+value);else set(source.cellRef,value);}
   if(original){
@@ -25,12 +41,12 @@ var SNOWD_CHARACTER_EXPORT=(function(){
   }
    var written={};
    (data.equipmentGroups||[]).forEach(function(group){
-    var list=(state.equipment&&state.equipment[group.slot]||[]).reduce(function(out,e){return e.items?(e.rawLabel===group.label||!e.rawLabel&&(!e.type||group.label.indexOf(e.type)>=0)?out.concat(e.items):out):out.concat(e);},[]);
+    var list=eqList(state.equipment&&state.equipment[group.slot]).reduce(function(out,e){return e.items?(e.rawLabel===group.label||!e.rawLabel&&(!e.type||group.label.indexOf(e.type)>=0)?out.concat(e.items):out):out.concat(e);},[]);
     var available=[];for(var r=group.start;r<group.end;r++){var nameRef=l.ref(group.nameCol,r),raw=g.cells[nameRef];if(raw&&/^(?:名称|效果|说明|重量|磅重)$/.test(l.normalize(raw)))continue;if(!raw&&group.weightCol!=null&&(parsed.formulas||{})[l.ref(group.weightCol,r)])continue;available.push(r);}
     for(var i=0;i<available.length;i++){var row=available[i],e=list[i];set(l.ref(group.nameCol,row),e?e.item||e.name:"");if(group.descCol!=null)set(l.ref(group.descCol,row),e?e.desc||"":"");if(group.weightCol!=null)set(l.ref(group.weightCol,row),e?(e.weightStatus==="quantity"?(e.count||0)+(e.quantityUnit||""):e.weightStatus==="unknown"?e.rawWeight||"":e.weight):"");if(group.quantityCol!=null)set(l.ref(group.quantityCol,row),e?(e.count===undefined?"":String(e.count)+(e.quantityUnit||"")):"");if(e){written[e.uid||group.slot+"-"+i]=true;e.provenance={sheet:parsed.sheetName,nameRef:l.ref(group.nameCol,row),descRef:group.descCol==null?"":l.ref(group.descCol,row),weightRef:group.weightCol==null?"":l.ref(group.weightCol,row),quantityRef:group.quantityCol==null?"":l.ref(group.quantityCol,row)};}}
    });
    var next=Math.max(240,g.maxRow+3,parsed.exportNextRow||0),extra=[],oldExtra=g.all.find(function(a){return a.text==="装备补充列表";});if(oldExtra){for(var row=oldExtra.row;row<=g.maxRow;row++){if(row>oldExtra.row&&g.cells["B"+row]&&g.cells["B"+row].indexOf("列表")>=0)break;["B","D","E","F","G"].forEach(function(col){set(col+row,"");});}next=oldExtra.row;}
-   Object.keys(state.equipment||{}).forEach(function(slot){(state.equipment[slot]||[]).forEach(function(e,i){if(!e.items&&!written[e.uid||slot+"-"+i])extra.push({slot:slot,item:e});});});
+   Object.keys(state.equipment||{}).forEach(function(slot){eqList(state.equipment[slot]).forEach(function(e,i){if(!e.items&&!written[e.uid||slot+"-"+i])extra.push({slot:slot,item:e});});});
    if(extra.length){set("B"+next++,"装备补充列表");[["B","名称"],["D","原分区"],["E","重量"],["F","数量"],["G","说明"]].forEach(function(p){set(p[0]+next,p[1]);});next++;extra.forEach(function(p){var e=p.item;set("B"+next,e.item||e.name);set("D"+next,p.slot);set("E"+next,e.weightStatus==="known"?e.weight:"");set("F"+next,e.count?e.count+(e.quantityUnit||""):"");set("G"+next,e.desc||"");e.provenance={sheet:parsed.sheetName,nameRef:"B"+next,descRef:"G"+next,weightRef:"E"+next};next++;});}
 
   var extras=(state.special_feats||[]).filter(function(f){return f&&f.imported||f&&f.level===null;});
