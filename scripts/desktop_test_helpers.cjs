@@ -6,13 +6,15 @@ const { _electron } = require('playwright');
 const root = path.resolve(__dirname, '..');
 // 模块级守卫：任何脚本 require 本模块时，先确认 executablePath 是真 Electron 且可启动；
 // 不可用时给出可读原因（可用 SNODE_ALLOW_MISSING_DESKTOP=1 在无桌面环境明确跳过）。
-var __electronGuardDone = false;
+var __electronGuardDone = false, __probeSkipPackaged = false;
 function __resolveElectronExe() {
   try { return process.env.SNODE_PACKAGED_EXE || process.env.SNODE_DESKTOP_ELECTRON_EXE || require(path.join(root, "electron-app/node_modules/electron")); } catch (e) { return ""; }
 }
 (function __electronGuard() {
   if (__electronGuardDone) return;
   __electronGuardDone = true;
+  // 打包产物（SNODE_PACKAGED_EXE）不是 Electron 二进制，不能用 --version 探测；其正确性由测试本身校验。
+  if (process.env.SNODE_PACKAGED_EXE) { console.log('[desktop-test] 打包模式: 跳过 Electron 版本探测 → ' + process.env.SNODE_PACKAGED_EXE); __probeSkipPackaged = true; return; }
   var exe = __resolveElectronExe();
   if (!exe) { console.warn("[desktop-test] 未找到 Electron 可执行文件"); return; }
   var probe = probeElectron(exe);

@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8052',
+    date: '2026-10-11',
+    changes: [
+      '修复打包产物验证误判，恢复桌面与移动端完整发版流程'
+    ]
+  },
+
+
+  {
     version: '1.0.8051',
     date: '2026-10-11',
     changes: [
