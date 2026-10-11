@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="830" viewBox="0 0 1280 830">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8298a8"/></marker></defs>
+<rect width="1280" height="830" rx="24" fill="#f6f9fb"/>
+<text x="56" y="57" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e" text-anchor="start">02</text>
+<text x="112" y="58" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="700" fill="#183042" text-anchor="start">数据结构：共用资料与个人记录分开</text>
+<text x="56" y="104" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">新增角色增加记录；新增职业、阶位或领域扩展定义和规则。</text>
+<rect x="56" y="150" width="356" height="568" rx="18" fill="#eff8f5" stroke="#a3c9bd" stroke-width="2"/>
+<text x="80" y="194" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#21746e" text-anchor="start">人人共用的资料</text>
+<rect x="80" y="222" width="308" height="130" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="102" y="245" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="122" y="268" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">职业定义</text>
+<text x="105" y="305" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">成长、能力表、关键属性</text>
+<rect x="80" y="384" width="308" height="130" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="102" y="407" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="122" y="430" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">技能来源条目</text>
+<text x="105" y="467" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">来源职业、阶位、风格</text>
+<rect x="80" y="546" width="308" height="130" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="102" y="569" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="122" y="592" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">技能完整内容</text>
+<text x="105" y="629" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">说明、升级、召唤物模板</text>
+<path d="M420 437 L526 437" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="430" y="409" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#597080" text-anchor="start">精确引用</text>
+<rect x="536" y="150" width="688" height="568" rx="18" fill="#ffffff" stroke="#9ab4ca" stroke-width="2"/>
+<text x="560" y="194" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#376b95" text-anchor="start">角色 A 的完整记录</text>
+<rect x="560" y="226" width="310" height="120" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="582" y="249" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="602" y="272" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">职业进度</text>
+<text x="585" y="309" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">主 / 子职业、等级和进阶</text>
+<rect x="894" y="226" width="306" height="120" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="916" y="249" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="936" y="272" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">已获得能力</text>
+<text x="919" y="309" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">实例编号和获取途径</text>
+<rect x="560" y="376" width="310" height="120" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="582" y="399" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="602" y="422" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">选择与成长</text>
+<text x="585" y="459" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">选择依据、已领取收益</text>
+<rect x="894" y="376" width="306" height="120" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="916" y="399" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="936" y="422" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">当前资源与状态</text>
+<text x="919" y="459" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">生命、疲劳、来源池余额</text>
+<rect x="560" y="528" width="640" height="162" rx="18" fill="#fffaf0" stroke="#d7c49e" stroke-width="2"/>
+<text x="584" y="568" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">跨职业技能仍保留独立依据</text>
+<rect x="584" y="588" width="132" height="42" rx="8" fill="#ffffff" stroke="#dac9a8" stroke-width="2"/>
+<text x="650" y="617" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="700" fill="#a77b37" text-anchor="middle">获取来源</text>
+<rect x="730" y="588" width="132" height="42" rx="8" fill="#ffffff" stroke="#dac9a8" stroke-width="2"/>
+<text x="796" y="617" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="700" fill="#a77b37" text-anchor="middle">成长等级</text>
+<rect x="876" y="588" width="132" height="42" rx="8" fill="#ffffff" stroke="#dac9a8" stroke-width="2"/>
+<text x="942" y="617" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="700" fill="#a77b37" text-anchor="middle">关键属性</text>
+<rect x="1022" y="588" width="132" height="42" rx="8" fill="#ffffff" stroke="#dac9a8" stroke-width="2"/>
+<text x="1088" y="617" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="700" fill="#a77b37" text-anchor="middle">是否占栏</text>
+<text x="584" y="665" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">按获取规则确定，不只按技能名或摆放位置绑定。</text>
+<text x="56" y="779" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">角色 B、角色 C ……共用同样资料，各自保留选择、技能和当前状态。</text>
+</svg>

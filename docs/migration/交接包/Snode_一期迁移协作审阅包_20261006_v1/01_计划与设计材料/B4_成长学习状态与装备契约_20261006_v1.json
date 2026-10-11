@@ -1,0 +1,522 @@
+{
+  "date": "2026-10-06",
+  "stage": "B4-growth-learning-status-equipment",
+  "version": "1.0-review-candidate",
+  "status": "internal_review_complete_joint_signoff_pending",
+  "pageUrl": "https://chatgpt.com/space/page_4514894684c88191b77f815335f823e1",
+  "businessCodeChanged": false,
+  "productionImplementation": false,
+  "peerSignoffRecorded": false,
+  "characterModelOriginalChanged": false,
+  "schemaArtifact": "B4_角色操作Schema_评审候选_20261006_v1.json",
+  "examplesArtifact": "B4_契约验证样例_20261006_v1.json",
+  "schemaScope": {
+    "definitions": 30,
+    "topLevelShapes": 5,
+    "operationKinds": 20,
+    "structuralCases": 32,
+    "valid": 22,
+    "invalid": 10,
+    "localPlanNegatives": 10
+  },
+  "families": [
+    {
+      "id": "B4_OP01",
+      "name": "兼职、升级、开阶和进阶",
+      "input": "进度UID或职业／阶位／进阶定义、具体选择",
+      "plan": "经验／收益／栏位／自动授予／兼容条件；等级和首级收益由规则产生",
+      "guard": "不接收最终等级、HP增量或余额；未知成长事实不能猜"
+    },
+    {
+      "id": "B4_OP02",
+      "name": "学习与特殊获取",
+      "input": "精确Entry、目标placement、可空grantorHoldingId、选择内容",
+      "plan": "来源、费用、标识、前置／学派、成长／关键属性、栏位",
+      "guard": "授予者必须属当前角色且真能提供该途径；客户端free或manual路线不可信"
+    },
+    {
+      "id": "B4_OP03",
+      "name": "遗忘、替换与自动授予决策",
+      "input": "已有能力UID、新Entry、offer accept／decline／replace、风险确认",
+      "plan": "联动移除／获取、永久禁学、不退款、槽位及选择",
+      "guard": "替换不能先删后学分两次；新授予放弃和现能力遗忘分别留限制"
+    },
+    {
+      "id": "B4_OP04",
+      "name": "能力位置调整",
+      "input": "已有能力UID、新placement",
+      "plan": "原获取记录／来源保持，新的栏位与解析政策重核",
+      "guard": "UID不变；不按展示职业重写真实来源或默认改成长"
+    },
+    {
+      "id": "B4_OP05",
+      "name": "人工池与状态",
+      "input": "明确人工来源UID，或新增人工条目的受控定义／标签与值",
+      "plan": "当前余额／层数、notes、该来源的差异及汇总",
+      "guard": "不改合计值替代来源；非人工来源不走普通删除；标签不产生新规则"
+    },
+    {
+      "id": "B4_OP06",
+      "name": "装备、卸下和同角色容器",
+      "input": "物品实例、槽位／容器、涉及的资产版本",
+      "plan": "归属／容量／槽位／手数／条件及派生变化",
+      "guard": "角色引用与库存同事务；未入团仅持有配装；不直接扣钱包"
+    },
+    {
+      "id": "B4_OP07",
+      "name": "奖励领取与授权资源修正",
+      "input": "服务rewardOfferKey，或resource＋delta＋reason＋decisionId",
+      "plan": "真实触发范围、金额／上限、防重键和权限",
+      "guard": "本人不能自授XP／技能点；缺授权或溢出政策未明确则不自动处理"
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/operations/preview",
+      "purpose": "OperationPreviewRequest，单一受控意图可产生成套可信变更计划"
+    },
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/operation-commands",
+      "purpose": "CharacterOperationCommand，接受的预览与不可逆风险确认齐备后服务重做计划并提交"
+    },
+    {
+      "method": "GET",
+      "path": "/api/characters/:id/commands/:commandId",
+      "purpose": "沿用主体／当前权限范围核实原命令；unknown不换键重做"
+    },
+    {
+      "method": "GET",
+      "path": "/api/characters/:id/reward-offers",
+      "purpose": "只读可领取候选和触发依据，不在读取时发奖励"
+    },
+    {
+      "method": "GET",
+      "path": "/api/characters/:id/operation-capabilities",
+      "purpose": "当前角色、资产、支持覆盖与权限下允许哪些操作，未支持有原因"
+    }
+  ],
+  "transactionStages": [
+    {
+      "id": "B4_TX01",
+      "action": "验证登录、当前对象／操作范围、结构、请求指纹和命令登记；同键同请求复用"
+    },
+    {
+      "id": "B4_TX02",
+      "action": "锁定命令、角色修订及受影响资产，复核权限／生命周期、expectedRevision与所有assetBasis"
+    },
+    {
+      "id": "B4_TX03",
+      "action": "按绑定发布重做可信计划，检查选择、成本、禁学、领取及源权限；比较接受的planHash与风险确认"
+    },
+    {
+      "id": "B4_TX04",
+      "action": "生成服务operationId及新记录UID；变化、支付／奖励回执、防重事实、必要资产一起应用；完整文档与局部关系再校验"
+    },
+    {
+      "id": "B4_TX05",
+      "action": "当前revision＋1、不可变快照、审计及command committed同事务提交；失败全部回滚"
+    },
+    {
+      "id": "B4_TX06",
+      "action": "按当前权限返回新操作回执；刷新规则／状态／资产投影，已有更新基线不倒退；pending租约恢复核实"
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "B4_R01",
+      "subject": "操作联合类型及准入",
+      "detail": "一次请求一个受控意图，规则可产生复合计划；已归档／未支持／依赖未知事实分别处理"
+    },
+    {
+      "id": "B4_R02",
+      "subject": "成长费用、上限与冻结收益",
+      "detail": "主／子／gift及进阶保持原进度；主开阶共享；SP已确认容量和附赠／溢出未定项分开"
+    },
+    {
+      "id": "B4_R03",
+      "subject": "来源、栏位、标识与同名限制",
+      "detail": "授权获取上下文，真实source和UID独立于placement；禁学group由目录／规则决定"
+    },
+    {
+      "id": "B4_R04",
+      "subject": "不可逆与奖励账目",
+      "detail": "不退款、永久禁学、防重领取／支付不能被历史恢复抹去；确需修正用独立授权裁定"
+    },
+    {
+      "id": "B4_R05",
+      "subject": "人工来源权限",
+      "detail": "依据可信创建／获取／迁移来源认定人工记录，不凭sourceRecordId=null授权删改"
+    },
+    {
+      "id": "B4_R06",
+      "subject": "资产与字段／奖励权限",
+      "detail": "所有权、旧配装／容器资产版本、跨对象事务及未入团资产范围；DM奖励cap与decision真实性"
+    },
+    {
+      "id": "B4_R07",
+      "subject": "共同事务、回执与恢复",
+      "detail": "角色、支付／领取、资产、快照及终态一致；旧v1不扩字段；签批与真实服务验收分别记录"
+    }
+  ],
+  "irreversibleFacts": [
+    "permanent learning restrictions",
+    "paid XP/skill points and claim history",
+    "first timeline binding and trusted owner/group scope",
+    "current wallet/inventory/external transactions",
+    "original acquisition/growth evidence"
+  ],
+  "manualSourcePolicy": "trusted creation/acquisition/migration origin; empty source is not permission",
+  "unassignedAssetPolicy": "hold/equip only; no market/cross-character transfers",
+  "knownPendingRules": [
+    "replacement/forget extra costs",
+    "style order after removal/same-batch ordering",
+    "gift-class capacity and repeated specialties",
+    "mark consumption/substitution and artificer source update",
+    "award overflow policy where source is not confirmed"
+  ],
+  "claimKeyPolicy": "logical rule/trigger/progression or trusted scope; not only commandId or new ruleRevision",
+  "reportMarkdown": "日期：2026年10月6日；版本：v1，B4角色操作提交契约候选。本页承接[B1／B2保存](https://chatgpt.com/space/page_cfd381d68788819195ec90ef4d64f8cf)、[B3创建资产](https://chatgpt.com/space/page_4b879412afc08191ad88765c3eb03248)和[操作流程](https://chatgpt.com/space/page_642294ea3eb0819195ccd649f3d0fd12)，覆盖成长、学习替换／放弃、人工池／状态、装备及奖励资源的输入、预览、权限、账目和原子提交。\n\n本轮内部设计材料已形成，3.2签批尚未记录，不创建运行接口或修改角色数据。技能效果、战斗动作、伤害、持续时间和具体职业全量执行仍属于后续战斗工作。角色独立钱包／库存、未入团仅持有配装及待核对原文保留继续沿用。\n\n## 受控操作与计划边界\n\n| 操作族 | 输入和服务计划 | 关键限制 |\n| --- | --- | --- |\n| B4_OP01 兼职、升级、开阶和进阶 | 进度UID或职业／阶位／进阶定义、具体选择；经验／收益／栏位／自动授予／兼容条件；等级和首级收益由规则产生 | 不接收最终等级、HP增量或余额；未知成长事实不能猜 |\n| B4_OP02 学习与特殊获取 | 精确Entry、目标placement、可空grantorHoldingId、选择内容；来源、费用、标识、前置／学派、成长／关键属性、栏位 | 授予者必须属当前角色且真能提供该途径；客户端free或manual路线不可信 |\n| B4_OP03 遗忘、替换与自动授予决策 | 已有能力UID、新Entry、offer accept／decline／replace、风险确认；联动移除／获取、永久禁学、不退款、槽位及选择 | 替换不能先删后学分两次；新授予放弃和现能力遗忘分别留限制 |\n| B4_OP04 能力位置调整 | 已有能力UID、新placement；原获取记录／来源保持，新的栏位与解析政策重核 | UID不变；不按展示职业重写真实来源或默认改成长 |\n| B4_OP05 人工池与状态 | 明确人工来源UID，或新增人工条目的受控定义／标签与值；当前余额／层数、notes、该来源的差异及汇总 | 不改合计值替代来源；非人工来源不走普通删除；标签不产生新规则 |\n| B4_OP06 装备、卸下和同角色容器 | 物品实例、槽位／容器、涉及的资产版本；归属／容量／槽位／手数／条件及派生变化 | 角色引用与库存同事务；未入团仅持有配装；不直接扣钱包 |\n| B4_OP07 奖励领取与授权资源修正 | 服务rewardOfferKey，或resource＋delta＋reason＋decisionId；真实触发范围、金额／上限、防重键和权限 | 本人不能自授XP／技能点；缺授权或溢出政策未明确则不自动处理 |\n\n客户端提交意图，不能提交整份CharacterDocument、技能数组、最终等级／余额、paymentIds或新禁学group。一次请求包含一个已登记operation，但服务计划可以同时扣费、更新进度、补选择、授予／移除、写限制和调整资产。服务器产生计划，不开放自由JSON patch或任意多动作拼接来绕过步骤。\n\n本轮Schema联合类型列出20种基础意图，表示可评审的输入范围，不意味着所有分支已经实现。普通管理v1仍用于名称、故事和当前HP／FP；新角色操作使用独立合同，不能把成长、池／状态或资产塞进现有严格v1字段。\n\n## 成长收益与领取事实\n\n兼职、升级、开阶和完成进阶按具体定义与当前进度执行。进阶保留baseClass、progressionId及当前等级，不重新发首级收益；子职业继承主职业实际开阶，职业关键属性、领域与成长绑定独立解析。首级、后续升级与历史冻结收益分别记录，临时属性不作为永久生命成长依据。\n\n主／子职业技能点存储容量及各自进阶增加量按已确认F51处理。附赠职业数量／同名附赠、奖励溢出处理及标识消耗等既有未定项不被本轮联合类型自动补出规则；必要时预览needs-decision，不截断或丢弃奖励，也不编造待领取权益。读取页面和旧档恢复不重发经验、技能点或成长收益。\n\n奖励防重用可信角色、触发进度／等级、逻辑奖励规则和有效作用域组成claimKey。不能只按本次commandId或ruleRevision防重，否则换命令／升级发布版本会再次领奖；记录中的版本用于依据，已领取事实继续保留。允许重复的按场次收益必须有可信作用域，不能由玩家随意新造sessionId来刷新。\n\n本人可发起合法学习／成长和领取服务提供的可领取offer，不可自报“已获得经验”。资源人工修正只接受经3.2批准的capability与decisionId／reason，decision所属主体、角色、字段及额度要验证；未入团不凭没有DM就给本人无限调整权限。授权修正也不顺便清除永久禁学或伪造历史付款。\n\n## 学习来源、栏位与永久限制\n\n| 数据维度 | 计划怎样保持 |\n| --- | --- |\n| Entry／获取途径 | 从精确Entry及真正拥有的grantorHolding解析；客户端指定持有ID不等于具备免费获取资格 |\n| placement | 表示显示／占栏归属；移动保留能力UID和获取历史，改变栏目不自动重写来源 |\n| growth／keyAttribute | 按获取政策与角色进度绑定；跨职业获取不默认主职业或来源职业 |\n| slot／费用 | 免费与占栏分别计算，初始／特定专长免栏只在已确认范围生效；天赋同阶共享池 |\n| 标识／前置／学派 | 前置豁免不自动免除颜色或学派互斥；作用域与消耗按已确认规则 |\n| 永久禁学 | 服务按适用遗忘／放弃规则写LearningRestriction，查同名规则组而非删除一个显示名 |\n\n已确认正式遗忘技能不返还技能点，其他职业同名条目也不能重学。规则适用的同名group由发布资料及规则提供，不能由用户提供一个不同group避开限制；未确认的其他持有类型不从统一abilities数组擅自推出相同删除政策。\n\n替换是一个计划：先核对原能力与永久限制影响，再检查目标可学、费用和最终栏位；不能先删成功、再让学习失败。若遗忘原项形成的禁学group与目标同名，不能借同次替换绕过。明确“已有则强化”的规则属于更新已有持有记录，不自动构造一项新同名能力。\n\n自动授予在升级计划中给出稳定offer。accept／decline／replace均有明确记录，replace定位已有abilityId，decline新授予与遗忘已有能力使用不同限制分支。多个offer不能重复拿同一旧UID作替换；关键选择及费用不确定时整个相关计划不先提交一半。\n\n不可逆影响出现在预览requiredRiskKeys，提交acknowledgedRiskKeys必须覆盖接受计划中的实际目标。风险确认是玩家在产品内接受永久后果，不是修改规则的权限。客户端改前置、目标或choice后先重新预览。\n\n## 已知未定规则的处理\n\n| 既有边界 | 本轮处理 |\n| --- | --- |\n| 技能替换／放弃额外费用 | 不默认为0；影响此次支付时needs-decision，相关操作未完成 |\n| 删除后的风格顺位和同批学习顺序 | 保留原获取顺序与历史；影响当前资格／费用／栏位时阻塞；只影响以后某效果时记录依赖，不为此禁止无关维护 |\n| 附赠职业及其容量、部分重复专精授予 | 按待定来源保持原事实，不凭职业计数或名字自动合并收益 |\n| 颜色消耗／普通点替代、奇械师旧表 | 沿用此前待确认／待更新状态，不重问已确认基础问题 |\n| 历史成长来源缺失 | 保留recorded／unresolved及原数值；补全不是重领，不能默认一级或重新计算全部升级量 |\n\n候选类型、完整正文与已确认规则不同于实现覆盖。缺规则的某项操作标unsupported／needs-decision，并保留用户选择；其他无依赖操作可以继续。相同角色保有待核对数据，不要求为了保存故事就先解决全部技能效果。\n\n## 人工池和状态按来源操作\n\n人工池的value表示该记录当前余额，状态保存当前层数／备注。新增产生新UID，修改或删除定位一个确定UID；不会通过一次“护盾合计=0”清掉其他来源。临时生命和临时疲劳多效益取最高按已确认规则投影，不能在重开面板时把剩余余额重新刷新成原技能授予值。\n\n“人工来源”需要从可信创建操作、获取历史或经授权迁移依据确定。sourceRecordId为空可能是历史未知，不能据此开放普通删除；规则、物品或战斗来源的记录由相应专门效果／修正路径维护。来源补正需要新的授权及依据，不把受保护收益伪装为人工条目。\n\n自定义label只是文字，不能凭标签“无敌”等自动产生规则加值；关联了正式定义的状态也按实现覆盖处理。null表示未记录的值／层数，移除一个UID是另一种意图，不能把未知与已解除混同。普通人工维护不会冒充法术净化、伤害消耗、死亡裁决或回合到期自动执行。\n\n## 装备与资产版本\n\n装备／卸下／同角色容器移动仍使用本人所属itemInstanceId。预览除了角色revision，还收集新物品、旧配装、目标容器及其他受影响资产的assetBasis；角色没有变化，远端交易或数量变化也会使资产计划过期。\n\n服务重查归属、数量、堆叠、槽位／手数、容量、容器环及已确认使用条件，角色配装引用与资产关系在同一事务改变。装备改变派生结果，不能直接把过时maxHp或熟练汇总写回。缺少某项受影响资产版本返回重新预览需求，不凭物品名字或旧快照定位。\n\n未入团资产仍仅持有／配装，市场、跨角色转移及未定义处置不开放；角色成长与资产交易权限不是同一个开关。该联合类型只先列装备、卸下和容器移动，实际消耗物品要在可验证用途、权限、目标及物资扣减／效果同事务明确后另行支持。无效／未支持用途不能先扣物品再告知效果未实现。\n\n## 不可回滚事实与历史恢复\n\n| 保留的权威事实 | 普通历史恢复不能做什么 |\n| --- | --- |\n| LearningRestriction永久遗忘／放弃 | 不能恢复一份禁学为空的旧快照重新学，或把被遗忘同名能力重新装回 |\n| 已支付经验／技能点和领取记录 | 不能用旧余额退款、不重放初始／等级／奖励授予 |\n| 固定时间线、归属与团权限 | 不从文档快照恢复身份或解除跨线限制 |\n| 钱包、库存及外部交易 | 不回滚实际交易或凭历史装备重新发物品 |\n| 原获取、成长与操作证据 | 不删除履历来假装从未使用过某次资格或收益 |\n\n历史快照仍不可变，是差异与依据，不是把整个JSON直接PUT回当前文档的后门。一般恢复仅对允许字段产生新计划，并保留当前不可逆事实，重新检查所有影响；等级回退、撤销费用或解除永久禁学需要专门的已授权裁定流程，一期不默认开放。这里落实既有永久规则的存储边界，不新增任何战斗效果。\n\n## 预览、提交、原子性与错误\n\n| 候选接口 | 作用 |\n| --- | --- |\n| POST /api/characters/:id/operations/preview | OperationPreviewRequest，单一受控意图可产生成套可信变更计划 |\n| POST /api/characters/:id/operation-commands | CharacterOperationCommand，接受的预览与不可逆风险确认齐备后服务重做计划并提交 |\n| GET /api/characters/:id/commands/:commandId | 沿用主体／当前权限范围核实原命令；unknown不换键重做 |\n| GET /api/characters/:id/reward-offers | 只读可领取候选和触发依据，不在读取时发奖励 |\n| GET /api/characters/:id/operation-capabilities | 当前角色、资产、支持覆盖与权限下允许哪些操作，未支持有原因 |\n\n预览包含基线、发布、draftVersion、费用、changedRecordIds、issueRefs及requiredRiskKeys。ready不是一个可信客户端布尔；提交必须重做同意图计划，检查接受的previewId／planHash、风险确认及当前版本。费用0必须有确认的免费政策，不能因为costs数组暂时空就代表免费。\n\n| 阶段 | 处理 |\n| --- | --- |\n| B4_TX01 | 验证登录、当前对象／操作范围、结构、请求指纹和命令登记；同键同请求复用 |\n| B4_TX02 | 锁定命令、角色修订及受影响资产，复核权限／生命周期、expectedRevision与所有assetBasis |\n| B4_TX03 | 按绑定发布重做可信计划，检查选择、成本、禁学、领取及源权限；比较接受的planHash与风险确认 |\n| B4_TX04 | 生成服务operationId及新记录UID；变化、支付／奖励回执、防重事实、必要资产一起应用；完整文档与局部关系再校验 |\n| B4_TX05 | 当前revision＋1、不可变快照、审计及command committed同事务提交；失败全部回滚 |\n| B4_TX06 | 按当前权限返回新操作回执；刷新规则／状态／资产投影，已有更新基线不倒退；pending租约恢复核实 |\n\n命令沿用主体＋commandId幂等，operationId单独关联支付、领取、变化与快照。规则客户端不能指定claimReceiptIds／paymentReceiptIds或服务UID，成功回执由服务提供；规则与资产投影刷新后用当前版本展示，不用旧回执倒退现有基线。\n\n| 情况 | 响应与保留 |\n| --- | --- |\n| 角色旧版本／资产变了／计划Hash不符 | 409冲突或preview-stale；保留输入，分别核对角色和资产，重新预览 |\n| 客户端基线反而高于当前 | 沿用B2明确invalid-base-revision拒绝；不伪装普通高版本冲突 |\n| 未知费用、缺选择、未支持规则 | 明确needs-decision／needs-selection／unsupported，未提交不扣费 |\n| 永久禁学／已领取／源权限不符 | 安全可定位拒绝，不自动改group、重置claim或造人工来源 |\n| 同键不同请求／发送响应未知 | 原请求指纹固定；新意图新键，未知结果核实原键；不重复收费或授予 |\n| 资产或支付／领取写入故障 | 执行事务全部回滚；pending核实恢复，不留下半次替换、半个奖励或错配装 |\n\n## 评审材料与验证范围\n\n[Schema候选](/D:/Download/scholar-agent-main/docs/migration/B4_角色操作Schema_评审候选_20261006_v1.json)新增30项定义、5个顶层合同和20种受控基础意图，复用B1／B2结构。[合成样例](/D:/Download/scholar-agent-main/docs/migration/B4_契约验证样例_20261006_v1.json)有32项结构案例，22项应通过、10项应拒绝，全部匹配；另外10项局部计划反例识别未知费用、余额不足、退款、禁学、限制丢失、重复领取、资产版本缺失／重复、非人工来源及缺风险确认。\n\n这不是具体职业、真实费用／栏位／风格、权限服务、数据库事务或装备／奖励的端到端验证。本轮不改变T05原答、T07模型／样例、旧新业务代码，也不向其他开发者或DM发送材料；签批仍待双方完成。\n\n| 共享评审项 | 必须落实 |\n| --- | --- |\n| B4_R01 操作联合类型及准入 | 一次请求一个受控意图，规则可产生复合计划；已归档／未支持／依赖未知事实分别处理 |\n| B4_R02 成长费用、上限与冻结收益 | 主／子／gift及进阶保持原进度；主开阶共享；SP已确认容量和附赠／溢出未定项分开 |\n| B4_R03 来源、栏位、标识与同名限制 | 授权获取上下文，真实source和UID独立于placement；禁学group由目录／规则决定 |\n| B4_R04 不可逆与奖励账目 | 不退款、永久禁学、防重领取／支付不能被历史恢复抹去；确需修正用独立授权裁定 |\n| B4_R05 人工来源权限 | 依据可信创建／获取／迁移来源认定人工记录，不凭sourceRecordId=null授权删改 |\n| B4_R06 资产与字段／奖励权限 | 所有权、旧配装／容器资产版本、跨对象事务及未入团资产范围；DM奖励cap与decision真实性 |\n| B4_R07 共同事务、回执与恢复 | 角色、支付／领取、资产、快照及终态一致；旧v1不扩字段；签批与真实服务验收分别记录 |\n\nB4对应的生产支持范围应逐项登记：已确认规则、具体处理器及真实验证证据齐备才标supported；未支持的20种Schema意图不能仅因能解析就全部开放。下一部分若继续设计，转入B5历史导入、来源补全、版本化备份／导出与全量覆盖门槛，保持真实档案迁移与构造例分开。\n\n本地汇总：[B4_成长学习状态与装备契约_20261006_v1.json](/D:/Download/scholar-agent-main/docs/migration/B4_成长学习状态与装备契约_20261006_v1.json)。目标只读基线929cd8c与23项既存改动，未重查远端最新main；本轮没有实际角色操作或部署。页面无可用原生视觉预览，内容回读不等于渲染验收。",
+  "nextStep": "共同确认B4具体支持范围；继续设计时转入B5历史导入、补全、备份/导出与全量覆盖，不自动编码",
+  "sourceBaseline": {
+    "file": "baseline.json",
+    "archiveDirectory": "备份区/2026-10/b4-operations-20261006-2f81",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetExistingChanges": 23,
+    "remoteLatestVerifiedThisTurn": false
+  },
+  "validation": {
+    "date": "2026-10-06",
+    "schemaReport": {
+      "date": "2026-10-06",
+      "definitions": 30,
+      "compiledTopShapes": 5,
+      "operationKinds": 20,
+      "structuralCases": 32,
+      "valid": 22,
+      "invalid": 10,
+      "allExpectedMatched": true,
+      "localPlanNegativeCases": 10,
+      "local": [
+        {
+          "id": "RULE01",
+          "expectedDetected": "unknown-fee"
+        },
+        {
+          "id": "RULE02",
+          "expectedDetected": "insufficient-resource"
+        },
+        {
+          "id": "RULE03",
+          "expectedDetected": "no-forget-refund"
+        },
+        {
+          "id": "RULE04",
+          "expectedDetected": "permanent-ban"
+        },
+        {
+          "id": "RULE05",
+          "expectedDetected": "ban-not-preserved"
+        },
+        {
+          "id": "RULE06",
+          "expectedDetected": "duplicate-claim"
+        },
+        {
+          "id": "RULE07",
+          "expectedDetected": "duplicate-asset-basis"
+        },
+        {
+          "id": "RULE08",
+          "expectedDetected": "missing-asset-basis"
+        },
+        {
+          "id": "RULE09",
+          "expectedDetected": "non-manual-source"
+        },
+        {
+          "id": "RULE10",
+          "expectedDetected": "missing-permanent-risk-ack"
+        }
+      ],
+      "productionVerification": false,
+      "notVerified": "actual game rules/fees/slot/style policies, DB transactions, rewards authorization, equipment or inventory services",
+      "results": [
+        {
+          "id": "OP-AddSubclass",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-LevelUp",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-UnlockTier",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-SelectPathways",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Advance",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Learn",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Forget",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Replace",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-MoveAbility",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-AddPool",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-SetPool",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-RemovePool",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-AddStatus",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-SetStatus",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-RemoveStatus",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Equip",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-Unequip",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-MoveItem",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-ClaimReward",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "OP-AdjustResource",
+          "shape": "CharacterOperationCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "NO-ARBITRARY-FULL-DOC",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-CLIENT-FREE-ROUTE",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-CLIENT-GROWTH-AMOUNT",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-CLIENT-DELETE-BAN",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-NEGATIVE-REVISION",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-GRANT-REPLACE-WITHOUT-TARGET",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-REMOVE-BY-NAME",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-SOURCE-SPOOF",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-CLIENT-BALANCE",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-UNREGISTERED-OP",
+          "shape": "CharacterOperationCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "PREVIEW-PENDING",
+          "shape": "OperationPreview",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "RECEIPT",
+          "shape": "OperationReceipt",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        }
+      ]
+    },
+    "pageProof": {
+      "newPage": {
+        "exact": true,
+        "blocks": 43
+      },
+      "canonical": [
+        {
+          "key": "packet",
+          "changed": 1,
+          "unrelated": 41,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "plan",
+          "changed": 3,
+          "unrelated": 39,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "parent",
+          "changed": 2,
+          "unrelated": 246,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        }
+      ],
+      "questionnaireSequence": 20
+    },
+    "unrelatedBlocksPreserved": 326,
+    "sourceMismatches": [],
+    "targetFilesVerified": 60,
+    "originalFilesVerified": 47,
+    "productionTestsRun": false,
+    "nativePageVisualPreviewAvailable": false,
+    "pending": [],
+    "taskArchive": {
+      "date": "2026-10-06",
+      "source": "D:\\Download\\scholar-agent-main\\_scratch\\b4-operations-20261006-2f81",
+      "destination": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\b4-operations-20261006-2f81",
+      "entries": 1,
+      "indexPrefixPreserved": true,
+      "sourceOriginalsUnchanged": true,
+      "targetCodeUnchanged": true,
+      "unexpectedTrackedDeletions": [],
+      "scratchRemoved": true
+    }
+  },
+  "temporaryArtifactsArchive": "备份区/2026-10/b4-operations-20261006-2f81"
+}

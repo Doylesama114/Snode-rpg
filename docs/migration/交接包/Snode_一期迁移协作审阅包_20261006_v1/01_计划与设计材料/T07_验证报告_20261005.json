@@ -1,0 +1,1048 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-05",
+  "stage": "T07",
+  "status": "selected-representative-validation-complete",
+  "candidateVersion": "0.2.2",
+  "page": "https://chatgpt.com/space/page_0f31efad73648191a93884a336df0531",
+  "sampleOnly": true,
+  "businessCodeModified": false,
+  "T08Started": false,
+  "coverage": {
+    "definitionCount": 130,
+    "contentDocumentCount": 30,
+    "sourceEvidenceCount": 48,
+    "sourceAbilityEntries": 12,
+    "constructedCharacters": 5,
+    "unitNativeAbilities": 6,
+    "completePublication": false,
+    "legalCharacterCreation": false,
+    "fullBattleEngine": false,
+    "productionRuntimeSchema": false
+  },
+  "sourceOracle": {
+    "sourceScopes": 13,
+    "checks": [
+      {
+        "key": "warrior-strike",
+        "source": "基础职业-战士.docx",
+        "indices": [
+          87
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "cdfa7b68e1736e8944bdd6f444e7039334db45dab98bccb8c3712511ed4511f5",
+        "characters": 144
+      },
+      {
+        "key": "warrior-charge",
+        "source": "基础职业-战士.docx",
+        "indices": [
+          89
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "7a637475b7e1a8a95e778249b8ead125d32afa9815f0f725c886619efca6245d",
+        "characters": 176
+      },
+      {
+        "key": "warrior-shield",
+        "source": "基础职业-战士.docx",
+        "indices": [
+          91
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "f41ce9d2355581b6821a306a6009cccbfdf614caa0b276063735549f563fba29",
+        "characters": 247
+      },
+      {
+        "key": "warrior-aim",
+        "source": "基础职业-战士.docx",
+        "indices": [
+          93
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "e51158978cb0f4e4c2e25acf82afd5d2c5ab587dadd6bd0016df401fe2c4b021",
+        "characters": 183
+      },
+      {
+        "key": "priest-shield",
+        "source": "基础职业-牧师.docx",
+        "indices": [
+          160
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "4c20772507030bf8d03354155c42331166e9d43c643f81867af35f28f7b4f7de",
+        "characters": 289
+      },
+      {
+        "key": "wizard-missile",
+        "source": "基础职业-法师.docx",
+        "indices": [
+          113
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "d778b7cdbb2d90e0fe281b7dca6ceb6392ea1cfbbd39e2ef55cc94bfdab17d71",
+        "characters": 233
+      },
+      {
+        "key": "lore-read",
+        "source": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "indices": [
+          21
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "485d69917da0a85447ab0a42a613d884b9c395f760863b01bc74707787293a4f",
+        "characters": 199
+      },
+      {
+        "key": "lore-study",
+        "source": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "indices": [
+          23
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "3261fae4e33e4a603df27feb36c8452f3264ac2760b6d1db3185ccb24b8a6b53",
+        "characters": 329
+      },
+      {
+        "key": "lore-teach",
+        "source": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "indices": [
+          25
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "a8182e82e2f4ce071145ee792fd2eb0a5734562984d2f93fc501484a6f172400",
+        "characters": 297
+      },
+      {
+        "key": "summoner-servant-parent",
+        "source": "基础职业-召唤师.docx",
+        "indices": [
+          450
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "f7ed6a32deaeede732539d846f5ae122646f8e6ccb6bacfd75cbd3be69634938",
+        "characters": 452
+      },
+      {
+        "key": "summoner-servant",
+        "source": "基础职业-召唤师.docx",
+        "indices": [
+          452,
+          453,
+          454
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "699e74706fb40e01f358ba6f17192820350527d237a74e347a9479755c38ab1f",
+        "characters": 679
+      },
+      {
+        "key": "glory-judgment",
+        "source": "牧师子分支/神圣领域-公正与荣耀之神.docx",
+        "indices": [
+          35
+        ],
+        "completeText": true,
+        "fontColorsPreserved": true,
+        "sourceTextSha256": "2d4b035aa57ce99120351ae6c0f6b2807c5aa0188073967a4bf9bff52a8514c2",
+        "characters": 289
+      },
+      {
+        "key": "lore-slot-feature",
+        "source": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "indices": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "completeText": true,
+        "characters": 90
+      }
+    ],
+    "unitHeaderValuesVerified": true,
+    "upgradeTextMutationDetected": true,
+    "noExistingJsonUsedAsOracle": true
+  },
+  "sampleValidation": {
+    "positiveCases": 19,
+    "negativeCases": 17,
+    "totalCases": 36,
+    "passed": 36,
+    "failed": [],
+    "cases": [
+      {
+        "id": "P01",
+        "label": "130项定义、30份正文和所有引用闭合",
+        "passed": true
+      },
+      {
+        "id": "P02",
+        "label": "战士初始一阶、防护风格仍在且免栏不定顺位",
+        "passed": true
+      },
+      {
+        "id": "P03",
+        "label": "同名盾牌格挡战士一阶、牧师二阶保持独立",
+        "passed": true
+      },
+      {
+        "id": "P04",
+        "label": "知识领域起始阅读与预习从源底色恢复正确原风格",
+        "passed": true
+      },
+      {
+        "id": "P05",
+        "label": "受限额外槽只接受法术或神术且初始增量未假定",
+        "passed": true
+      },
+      {
+        "id": "P06",
+        "label": "主已开六阶、副牧师1级保留等级并继承资格",
+        "passed": true
+      },
+      {
+        "id": "P07",
+        "label": "魔法专家在副列表仍随主8级成长、关键属性绑定副职业",
+        "passed": true
+      },
+      {
+        "id": "P08",
+        "label": "魔法飞弹原6级成长分支用于8级显示，非3级基础分支",
+        "passed": true
+      },
+      {
+        "id": "P09",
+        "label": "镜子大师不豁免颜色和对立学派",
+        "passed": true
+      },
+      {
+        "id": "P10",
+        "label": "风格以有效学习先后而非数量、建卡或跨职业顺位",
+        "passed": true
+      },
+      {
+        "id": "P11",
+        "label": "未知等级返回需确认、不默认为1",
+        "passed": true
+      },
+      {
+        "id": "P12",
+        "label": "当前负HP和0疲劳保持原值",
+        "passed": true
+      },
+      {
+        "id": "P13",
+        "label": "召唤详情能遍历单位及六个完整固有能力",
+        "passed": true
+      },
+      {
+        "id": "P14",
+        "label": "升级授予关联父技能，14级不可触发，15级自动授予并占栏，满栏需玩家选择、未答边界保留",
+        "passed": true
+      },
+      {
+        "id": "P15",
+        "label": "同模板两个单位状态独立、实例修改不污染模板",
+        "passed": true
+      },
+      {
+        "id": "P16",
+        "label": "新职业、新领域与十阶仅增定义，不改资料类型",
+        "passed": true
+      },
+      {
+        "id": "P17",
+        "label": "raw公正领域职业词保留，明确修订绑定牧师",
+        "passed": true
+      },
+      {
+        "id": "P18",
+        "label": "HP历史确认例48→49而不是55",
+        "passed": true
+      },
+      {
+        "id": "N01",
+        "label": "删定义不能退回按名字取另一来源",
+        "passed": true
+      },
+      {
+        "id": "N02",
+        "label": "错误修订不自动取最新版",
+        "passed": true
+      },
+      {
+        "id": "N03",
+        "label": "同ID重复定义被拒绝",
+        "passed": true
+      },
+      {
+        "id": "N04",
+        "label": "发布哈希错配被拒绝",
+        "passed": true
+      },
+      {
+        "id": "N05",
+        "label": "旧引用冲突不任取首项",
+        "passed": true
+      },
+      {
+        "id": "N06",
+        "label": "额外实例不能复用UID",
+        "passed": true
+      },
+      {
+        "id": "N07",
+        "label": "错误获取记录被拒绝",
+        "passed": true
+      },
+      {
+        "id": "N08",
+        "label": "成长绑定不能指到另一个不存在的进度",
+        "passed": true
+      },
+      {
+        "id": "N09",
+        "label": "字符串0不能被当数字0",
+        "passed": true
+      },
+      {
+        "id": "N10",
+        "label": "未知不能偷偷带数值1",
+        "passed": true
+      },
+      {
+        "id": "N11",
+        "label": "跨来源同名重复学习被拒绝",
+        "passed": true
+      },
+      {
+        "id": "N12",
+        "label": "正式遗忘禁止其他来源的同名再学习",
+        "passed": true
+      },
+      {
+        "id": "N13",
+        "label": "待定栏位不能伪装为active",
+        "passed": true
+      },
+      {
+        "id": "N14",
+        "label": "缺单位固有动作的精确引用被捕获",
+        "passed": true
+      },
+      {
+        "id": "P19",
+        "label": "放弃未拥有的新技能记录永久禁学，无旧实例UID",
+        "passed": true
+      },
+      {
+        "id": "N15",
+        "label": "放弃新授予后不能重新习得同名技能",
+        "passed": true
+      },
+      {
+        "id": "N16",
+        "label": "放弃授予不能伪造原已学UID",
+        "passed": true
+      },
+      {
+        "id": "N17",
+        "label": "原永久遗忘记录仍需真实历史UID字段",
+        "passed": true
+      }
+    ],
+    "scope": "Sample validators and confirmed-policy demonstrations, not production backend or full game engine."
+  },
+  "typecheck": {
+    "original": {
+      "exitCode": 1,
+      "output": "{\"characters\":4,\"entryPayloads\":12,\"typeSourceBytes\":224710}\ntypecheck-samples.ts(7404,7): error TS2322: Type 'readonly [{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005\"; readonly manifestHash: \"66f9e00a345e5c6dc1e0cc9c38e4e8cb2dac6b33b46cb50883e81c82baeaecea\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; }, { ...; }, { ...; }, { ...; }]' is not assignable to type 'readonly CharacterDocument[]'.\n  Type '{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005\"; readonly manifestHash: \"66f9e00a345e5c6dc1e0cc9c38e4e8cb2dac6b33b46cb50883e81c82baeaecea\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; } | { ...; } | { ...; } | { ...; }' is not assignable to type 'CharacterDocument'.\n    Type '{ readonly schemaVersion: 1; readonly characterId: \"progression-pending\"; readonly ruleset: { readonly id: \"sample:t07:20261005\"; readonly manifestHash: \"66f9e00a345e5c6dc1e0cc9c38e4e8cb2dac6b33b46cb50883e81c82baeaecea\"; }; ... 27 more ...; readonly issueRefs: readonly [\"synthetic-character-not-complete-build\"]; }' is not assignable to type 'CharacterDocument'.\n      Types of property 'acquired' are incompatible.\n        Type 'readonly [{ readonly uid: \"sample:owned:progression-pending:summoner-servant-parent:acq\"; readonly route: \"learn\"; readonly rule: { readonly id: \"sample:rule:normal\"; readonly revision: 1; }; ... 7 more ...; readonly evidenceRefs: readonly []; }, { ...; }]' is not assignable to type 'readonly AcquisitionRecord[]'.\n          Type '{ readonly uid: \"sample:owned:progression-pending:summoner-servant-parent:acq\"; readonly route: \"learn\"; readonly rule: { readonly id: \"sample:rule:normal\"; readonly revision: 1; }; ... 7 more ...; readonly evidenceRefs: readonly []; } | { ...; }' is not assignable to type 'AcquisitionRecord'.\n            Type '{ readonly uid: \"sample:owned:progression-pending:summoner-servant:acq\"; readonly route: \"progression-grant\"; readonly rule: { readonly id: \"sample:rule:progression-grant\"; readonly revision: 1; }; ... 7 more ...; readonly evidenceRefs: readonly []; }' is not assignable to type 'AcquisitionRecord'.\n              Types of property 'route' are incompatible.\n                Type '\"progression-grant\"' is not assignable to type '\"background-grant\" | \"battle-experience\" | \"feat-grant\" | \"initial-choice\" | \"initial-feature\" | \"learn\" | \"manual\" | \"mirror\"'.\n"
+    },
+    "revised": {
+      "compiler": "TypeScript 7.0.2",
+      "strict": true,
+      "noEmit": true,
+      "exactOptionalPropertyTypes": true,
+      "noUncheckedIndexedAccess": true,
+      "exitCode": 0,
+      "files": [
+        "model-t07.ts",
+        "typecheck-samples.ts"
+      ],
+      "candidate": "0.2.2",
+      "constructedCharacters": 5
+    },
+    "restrictionBefore": {
+      "candidate": "0.2.1",
+      "exitCode": 1,
+      "output": "typecheck-samples-before.ts(7661,7): error TS2322: Type 'readonly [{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; }, { ...; }, { ...; }, {...' is not assignable to type 'readonly CharacterDocument[]'.\n  Type '{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; } | { ...; } | { ...; } | { ...; }...' is not assignable to type 'CharacterDocument'.\n    Type '{ readonly schemaVersion: 1; readonly characterId: \"declined-grant\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [\"synthetic-character-not-complete...' is not assignable to type 'CharacterDocument'.\n      Types of property 'learningRestrictions' are incompatible.\n        Type 'readonly [{ readonly uid: \"sample:restriction:declined-servant\"; readonly sameNameGroup: \"sample:named:召唤隐形战仆\"; readonly kind: \"permanently-declined-grant\"; readonly declinedEntry: { ...; }; readonly grantRule: { ...; }; readonly operationId: \"sample:op:decline-servant\"; readonly evidenceRefs: readonly [...' is not assignable to type 'readonly LearningRestriction[]'.\n          Type '{ readonly uid: \"sample:restriction:declined-servant\"; readonly sameNameGroup: \"sample:named:召唤隐形战仆\"; readonly kind: \"permanently-declined-grant\"; readonly declinedEntry: { readonly id: \"sample:entry:summoner-servant\"; readonly revision: 1; }; readonly grantRule: { readonly id: \"sample:rule:progression-g...' is missing the following properties from type 'LearningRestriction': formerAbilityId, formerEntry\n"
+    }
+  },
+  "browser": {
+    "headless": true,
+    "userDesktopBrowserUsed": false,
+    "viewportWidths": [
+      360,
+      390,
+      1440
+    ],
+    "cases": [
+      {
+        "sample": "warrior-charge",
+        "width": 360,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 187
+          },
+          {
+            "mode": "owned",
+            "characters": 187
+          },
+          {
+            "mode": "tree",
+            "characters": 187
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\warrior-charge-360.png"
+      },
+      {
+        "sample": "lore-study",
+        "width": 360,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 335
+          },
+          {
+            "mode": "owned",
+            "characters": 335
+          },
+          {
+            "mode": "tree",
+            "characters": 335
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\lore-study-360.png"
+      },
+      {
+        "sample": "summoner-servant",
+        "width": 360,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 742
+          },
+          {
+            "mode": "owned",
+            "characters": 742
+          },
+          {
+            "mode": "tree",
+            "characters": 742
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\summoner-servant-360.png"
+      },
+      {
+        "sample": "warrior-charge",
+        "width": 390,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 187
+          },
+          {
+            "mode": "owned",
+            "characters": 187
+          },
+          {
+            "mode": "tree",
+            "characters": 187
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\warrior-charge-390.png"
+      },
+      {
+        "sample": "lore-study",
+        "width": 390,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 335
+          },
+          {
+            "mode": "owned",
+            "characters": 335
+          },
+          {
+            "mode": "tree",
+            "characters": 335
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\lore-study-390.png"
+      },
+      {
+        "sample": "summoner-servant",
+        "width": 390,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 742
+          },
+          {
+            "mode": "owned",
+            "characters": 742
+          },
+          {
+            "mode": "tree",
+            "characters": 742
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\summoner-servant-390.png"
+      },
+      {
+        "sample": "warrior-charge",
+        "width": 1440,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 187
+          },
+          {
+            "mode": "owned",
+            "characters": 187
+          },
+          {
+            "mode": "tree",
+            "characters": 187
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\warrior-charge-1440.png"
+      },
+      {
+        "sample": "lore-study",
+        "width": 1440,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 335
+          },
+          {
+            "mode": "owned",
+            "characters": 335
+          },
+          {
+            "mode": "tree",
+            "characters": 335
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\lore-study-1440.png"
+      },
+      {
+        "sample": "summoner-servant",
+        "width": 1440,
+        "entryPoints": [
+          {
+            "mode": "learn",
+            "characters": 742
+          },
+          {
+            "mode": "owned",
+            "characters": 742
+          },
+          {
+            "mode": "tree",
+            "characters": 742
+          }
+        ],
+        "sameContent": true,
+        "horizontalOverflow": false,
+        "screenshot": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\t07-validation-2cf9db55337f\\visual\\summoner-servant-1440.png"
+      }
+    ],
+    "entryPointChecks": 27,
+    "visualQa": {
+      "screenshotsInspected": 9,
+      "allWidths": [
+        360,
+        390,
+        1440
+      ],
+      "observedClipping": false,
+      "observedOverlaps": false,
+      "observedHorizontalOverflow": false,
+      "metadataTitleDuplicatesRemoved": true,
+      "sourceContentRemoved": false
+    },
+    "scope": "Isolated HTML sample, not production character UI or React/API integration.",
+    "directoryIndependent": true
+  },
+  "integrity": {
+    "date": "2026-10-05",
+    "sourceCount": 15,
+    "sourcesUnchanged": true,
+    "checks": [
+      {
+        "path": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "after": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "unchanged": true
+      },
+      {
+        "path": "基础职业-牧师.docx",
+        "sha256": "9f8f3aac691011061aae40c80717d0ead1afb96ef2202fea5693cf85e1c0831b",
+        "after": "9f8f3aac691011061aae40c80717d0ead1afb96ef2202fea5693cf85e1c0831b",
+        "unchanged": true
+      },
+      {
+        "path": "基础职业-法师.docx",
+        "sha256": "1d083e15f11c9bde315e15cfc7663e0131748369aaf71da29428d48f81719e81",
+        "after": "1d083e15f11c9bde315e15cfc7663e0131748369aaf71da29428d48f81719e81",
+        "unchanged": true
+      },
+      {
+        "path": "基础职业-召唤师.docx",
+        "sha256": "4a8dc410824084bf675ee7134f8bba749fe0d18285f551d02fead44d16cc8e51",
+        "after": "4a8dc410824084bf675ee7134f8bba749fe0d18285f551d02fead44d16cc8e51",
+        "unchanged": true
+      },
+      {
+        "path": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "sha256": "e8c4d3774479c24de08659ac9f767fd8d0f39b5af452d7225542278c50b56654",
+        "after": "e8c4d3774479c24de08659ac9f767fd8d0f39b5af452d7225542278c50b56654",
+        "unchanged": true
+      },
+      {
+        "path": "牧师子分支/神圣领域-公正与荣耀之神.docx",
+        "sha256": "0d42f511a6c3617e2a49acfdc9c182a5192c4075d29ffa599db6741ba3e1f207",
+        "after": "0d42f511a6c3617e2a49acfdc9c182a5192c4075d29ffa599db6741ba3e1f207",
+        "unchanged": true
+      },
+      {
+        "path": "特殊专长.docx",
+        "sha256": "a42dac4791fd1839c99a91ad57a7dc9e18d2891353853019f7d13c8aa2975928",
+        "after": "a42dac4791fd1839c99a91ad57a7dc9e18d2891353853019f7d13c8aa2975928",
+        "unchanged": true
+      },
+      {
+        "path": "通用天赋树.docx",
+        "sha256": "792dff89c723ac7c5330cdfb1adf138f5007089e7ad472405bb38364d608014e",
+        "after": "792dff89c723ac7c5330cdfb1adf138f5007089e7ad472405bb38364d608014e",
+        "unchanged": true
+      },
+      {
+        "path": "冒险者基础规则.xlsx",
+        "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9",
+        "after": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9",
+        "unchanged": true
+      },
+      {
+        "path": "职业页/数据/战士.json",
+        "sha256": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2",
+        "after": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2",
+        "unchanged": true
+      },
+      {
+        "path": "职业页/数据/牧师.json",
+        "sha256": "287d4227af7027964e7c5da76c40528d3c51fc036a7c2233db08f7c6c8589ac8",
+        "after": "287d4227af7027964e7c5da76c40528d3c51fc036a7c2233db08f7c6c8589ac8",
+        "unchanged": true
+      },
+      {
+        "path": "职业页/数据/法师.json",
+        "sha256": "8c551ed518ccfc063f1a2d23b1cc6183150c2e360ad64118e3451031e81d535f",
+        "after": "8c551ed518ccfc063f1a2d23b1cc6183150c2e360ad64118e3451031e81d535f",
+        "unchanged": true
+      },
+      {
+        "path": "职业页/数据/召唤师.json",
+        "sha256": "020ef36cb09bedb88a2c2ea88e2ee6fa882f554fb6310aa07b78c358aec8dd69",
+        "after": "020ef36cb09bedb88a2c2ea88e2ee6fa882f554fb6310aa07b78c358aec8dd69",
+        "unchanged": true
+      },
+      {
+        "path": "职业页/数据/牧师·神圣领域.json",
+        "sha256": "e296697008a346c126eb6f3f72bdface1ba95d74a4660782866eee8e0b01cf03",
+        "after": "e296697008a346c126eb6f3f72bdface1ba95d74a4660782866eee8e0b01cf03",
+        "unchanged": true
+      },
+      {
+        "path": "docs/migration/T06_字段与接口候选_20261005.json",
+        "sha256": "42dda0ef70f3b7296cd93acf43b1e80b354f69e8f43cd0579e430e5a8908c51c",
+        "after": "42dda0ef70f3b7296cd93acf43b1e80b354f69e8f43cd0579e430e5a8908c51c",
+        "unchanged": true
+      }
+    ],
+    "oldHeadUnchanged": true,
+    "targetHeadUnchanged": true,
+    "targetStatusUnchanged": true,
+    "oldHead": "695508df57779d86afe7b6728db2995f7a7794f8",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetStatus": " M .github/workflows/ci.yml\n M README.md\n M apps/web/src/App.tsx\n A apps/web/src/features/characters/CharacterWorkspace.tsx\n A apps/web/src/features/characters/characters.css\n A apps/web/src/features/characters/editor-runtime.ts\n A apps/web/src/features/characters/local-service.ts\n A apps/web/test/characters.browser.test.mjs\n M apps/web/tsconfig.json\n A docs/proposals/character-management/README.md\n A docs/proposals/character-management/adapter.ts\n A docs/proposals/character-management/contracts.ts\n A docs/proposals/character-management/draft.test.mjs\n A docs/proposals/character-management/draft.ts\n A docs/proposals/character-management/editor.test.mjs\n A docs/proposals/character-management/editor.ts\n A docs/proposals/character-management/fixtures.mjs\n A docs/proposals/character-management/package.json\n A docs/proposals/character-management/tsconfig.json\n A docs/proposals/character-management/validation.test.mjs\n A docs/proposals/character-management/validation.ts\n M package.json\n M pnpm-lock.yaml\n"
+  },
+  "baseline": {
+    "date": "2026-10-05",
+    "root": "D:/Download/scholar-agent-main",
+    "oldHead": "695508df57779d86afe7b6728db2995f7a7794f8",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetStatus": " M .github/workflows/ci.yml\n M README.md\n M apps/web/src/App.tsx\n A apps/web/src/features/characters/CharacterWorkspace.tsx\n A apps/web/src/features/characters/characters.css\n A apps/web/src/features/characters/editor-runtime.ts\n A apps/web/src/features/characters/local-service.ts\n A apps/web/test/characters.browser.test.mjs\n M apps/web/tsconfig.json\n A docs/proposals/character-management/README.md\n A docs/proposals/character-management/adapter.ts\n A docs/proposals/character-management/contracts.ts\n A docs/proposals/character-management/draft.test.mjs\n A docs/proposals/character-management/draft.ts\n A docs/proposals/character-management/editor.test.mjs\n A docs/proposals/character-management/editor.ts\n A docs/proposals/character-management/fixtures.mjs\n A docs/proposals/character-management/package.json\n A docs/proposals/character-management/tsconfig.json\n A docs/proposals/character-management/validation.test.mjs\n A docs/proposals/character-management/validation.ts\n M package.json\n M pnpm-lock.yaml\n",
+    "sources": [
+      {
+        "path": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+      },
+      {
+        "path": "基础职业-牧师.docx",
+        "sha256": "9f8f3aac691011061aae40c80717d0ead1afb96ef2202fea5693cf85e1c0831b"
+      },
+      {
+        "path": "基础职业-法师.docx",
+        "sha256": "1d083e15f11c9bde315e15cfc7663e0131748369aaf71da29428d48f81719e81"
+      },
+      {
+        "path": "基础职业-召唤师.docx",
+        "sha256": "4a8dc410824084bf675ee7134f8bba749fe0d18285f551d02fead44d16cc8e51"
+      },
+      {
+        "path": "牧师子分支/神圣领域-知识与智慧之神.docx",
+        "sha256": "e8c4d3774479c24de08659ac9f767fd8d0f39b5af452d7225542278c50b56654"
+      },
+      {
+        "path": "牧师子分支/神圣领域-公正与荣耀之神.docx",
+        "sha256": "0d42f511a6c3617e2a49acfdc9c182a5192c4075d29ffa599db6741ba3e1f207"
+      },
+      {
+        "path": "特殊专长.docx",
+        "sha256": "a42dac4791fd1839c99a91ad57a7dc9e18d2891353853019f7d13c8aa2975928"
+      },
+      {
+        "path": "通用天赋树.docx",
+        "sha256": "792dff89c723ac7c5330cdfb1adf138f5007089e7ad472405bb38364d608014e"
+      },
+      {
+        "path": "冒险者基础规则.xlsx",
+        "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+      },
+      {
+        "path": "职业页/数据/战士.json",
+        "sha256": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2"
+      },
+      {
+        "path": "职业页/数据/牧师.json",
+        "sha256": "287d4227af7027964e7c5da76c40528d3c51fc036a7c2233db08f7c6c8589ac8"
+      },
+      {
+        "path": "职业页/数据/法师.json",
+        "sha256": "8c551ed518ccfc063f1a2d23b1cc6183150c2e360ad64118e3451031e81d535f"
+      },
+      {
+        "path": "职业页/数据/召唤师.json",
+        "sha256": "020ef36cb09bedb88a2c2ea88e2ee6fa882f554fb6310aa07b78c358aec8dd69"
+      },
+      {
+        "path": "职业页/数据/牧师·神圣领域.json",
+        "sha256": "e296697008a346c126eb6f3f72bdface1ba95d74a4660782866eee8e0b01cf03"
+      },
+      {
+        "path": "docs/migration/T06_字段与接口候选_20261005.json",
+        "sha256": "42dda0ef70f3b7296cd93acf43b1e80b354f69e8f43cd0579e430e5a8908c51c"
+      }
+    ]
+  },
+  "issues": [
+    {
+      "id": "sample-compatibility-not-covered",
+      "kind": "coverage",
+      "subject": "样本不覆盖全部兼职前提",
+      "status": "not-in-scope"
+    },
+    {
+      "id": "synthetic-no-game-rule",
+      "kind": "coverage",
+      "subject": "扩展定义仅结构验证，不是游戏新增内容",
+      "status": "synthetic"
+    },
+    {
+      "id": "synthetic-character-not-complete-build",
+      "kind": "coverage",
+      "subject": "构造角色未进行完整合规建卡验证",
+      "status": "not-in-scope"
+    },
+    {
+      "id": "F47-initial-restricted-slot-boundary",
+      "kind": "game-rule",
+      "subject": "神学教士初始1级额外槽是否已增加",
+      "status": "pending"
+    },
+    {
+      "id": "F60-t07-progression-grant",
+      "kind": "game-rule",
+      "subject": "15级自动授予、占栏、满栏选择与放弃永久禁学已确认；技能点费用未明确",
+      "status": "partially-confirmed",
+      "source": {
+        "file": "基础职业-召唤师.docx",
+        "locator": "body[450]与body[452]"
+      },
+      "impact": "两个满栏选项均对被放弃技能记录同名永久禁学；未曾拥有的新技能使用独立放弃授予记录，不伪造旧能力UID。已有pending只保留未答费用与未实现执行。",
+      "confirmed": {
+        "level": 15,
+        "grantMode": "automatic",
+        "occupiesSlot": true,
+        "onFullSlot": [
+          "replace-one-existing-ability",
+          "decline-new-ability"
+        ],
+        "bothFullSlotChoices": {
+          "replaceExisting": "permanently-ban-discarded-ability",
+          "declineNew": "permanently-ban-new-ability"
+        },
+        "sameNameScope": "all-sources-under-F59"
+      },
+      "confirmationRefs": [
+        "user-F60-20261005",
+        "user-F60-permanent-ban-20261005"
+      ],
+      "remaining": [
+        "learningCost"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "T07_规范样例包_20261005.json",
+      "absolutePath": "D:/Download/scholar-agent-main/docs/migration/T07_规范样例包_20261005.json"
+    },
+    {
+      "file": "T07_模型修订_20261005.json",
+      "absolutePath": "D:/Download/scholar-agent-main/docs/migration/T07_模型修订_20261005.json"
+    },
+    {
+      "file": "T07_验证报告_20261005.json",
+      "absolutePath": "D:/Download/scholar-agent-main/docs/migration/T07_验证报告_20261005.json"
+    }
+  ],
+  "archive": {
+    "directory": "D:/Download/scholar-agent-main/备份区/2026-10/t07-validation-2cf9db55337f",
+    "reproduction": {
+      "typecheck": "Run bundled node with D:/Download/Snode/node_modules/typescript/bin/tsc --project ./tsconfig.json from archive directory.",
+      "sourceOracle": "Run bundled Python source_oracle.py from archive directory with PYTHONUTF8=1 and PYTHONDONTWRITEBYTECODE=1.",
+      "sampleTests": "Run bundled node test_samples.mjs from archive directory.",
+      "preview": "Run bundled node render_preview.mjs then verify_preview.cjs from archive directory; TEMP/TMP point to D:/dsh-temp."
+    },
+    "completed": true,
+    "previewScriptUsesOwnDirectory": true
+  },
+  "nativePageVisualPreviewAvailable": false,
+  "ruleConfirmations": [
+    {
+      "id": "user-F60-20261005",
+      "source": "user-message",
+      "date": "2026-10-05",
+      "rawAnswer": "召唤隐形战仆是15级时自动获得并占槽位，如果槽位不够，提示用户需要放弃现有技能之一或者放弃习得召唤隐形战仆",
+      "confirmed": {
+        "level": 15,
+        "grantMode": "automatic",
+        "occupiesSlot": true,
+        "onFullSlot": [
+          "replace-one-existing-ability",
+          "decline-new-ability"
+        ]
+      },
+      "notInferred": [
+        "skill-point-cost",
+        "replacement-equals-formal-forgetting",
+        "decline-permanently-bans-relearning"
+      ]
+    },
+    {
+      "id": "user-F60-permanent-ban-20261005",
+      "source": "user-message",
+      "date": "2026-10-05",
+      "rawAnswer": "放弃涉及永久禁学",
+      "confirmed": {
+        "bothFullSlotChoices": {
+          "replaceExisting": "permanently-ban-discarded-ability",
+          "declineNew": "permanently-ban-new-ability"
+        },
+        "sameNameScope": "all-sources-under-F59"
+      },
+      "notInferred": [
+        "skill-point-cost"
+      ]
+    }
+  ],
+  "confirmationUpdate": {
+    "date": "2026-10-05",
+    "question": "F60",
+    "known": [
+      "automatic-at-15",
+      "occupies-slot",
+      "full-slot-player-choice",
+      "discarded-skill-permanent-same-name-ban",
+      "never-owned-declined-grant-does-not-require-former-uid"
+    ],
+    "notInferred": [
+      "learning-cost"
+    ],
+    "candidateVersion": "0.2.2",
+    "sampleRelease": {
+      "id": "sample:t07:20261005:f60-permanent-ban",
+      "manifestHash": "902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5"
+    },
+    "previousRelease": {
+      "id": "sample:t07:20261005:f60",
+      "manifestHash": "4da0c634d7b46b9d547631340112682fc4c4e70c1d8cb921e3c10b6861736e7d"
+    },
+    "validationDirectory": "D:/Download/scholar-agent-main/备份区/2026-10/f60-permanent-ban-20261005-83af",
+    "sourceContentUnchanged": true,
+    "businessCodeModified": false,
+    "typecheck": {
+      "compiler": "TypeScript 7.0.2",
+      "strict": true,
+      "noEmit": true,
+      "prior": {
+        "candidate": "0.2.1",
+        "exitCode": 1,
+        "output": "typecheck-samples-before.ts(7661,7): error TS2322: Type 'readonly [{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; }, { ...; }, { ...; }, {...' is not assignable to type 'readonly CharacterDocument[]'.\n  Type '{ readonly schemaVersion: 1; readonly characterId: \"warrior\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [...]; } | { ...; } | { ...; } | { ...; }...' is not assignable to type 'CharacterDocument'.\n    Type '{ readonly schemaVersion: 1; readonly characterId: \"declined-grant\"; readonly ruleset: { readonly id: \"sample:t07:20261005:f60-permanent-ban\"; readonly manifestHash: \"902f80024496b2084a1c05f6e7d9160a4a247e395043923ac6eb2df1934948e5\"; }; ... 27 more ...; readonly issueRefs: readonly [\"synthetic-character-not-complete...' is not assignable to type 'CharacterDocument'.\n      Types of property 'learningRestrictions' are incompatible.\n        Type 'readonly [{ readonly uid: \"sample:restriction:declined-servant\"; readonly sameNameGroup: \"sample:named:召唤隐形战仆\"; readonly kind: \"permanently-declined-grant\"; readonly declinedEntry: { ...; }; readonly grantRule: { ...; }; readonly operationId: \"sample:op:decline-servant\"; readonly evidenceRefs: readonly [...' is not assignable to type 'readonly LearningRestriction[]'.\n          Type '{ readonly uid: \"sample:restriction:declined-servant\"; readonly sameNameGroup: \"sample:named:召唤隐形战仆\"; readonly kind: \"permanently-declined-grant\"; readonly declinedEntry: { readonly id: \"sample:entry:summoner-servant\"; readonly revision: 1; }; readonly grantRule: { readonly id: \"sample:rule:progression-g...' is missing the following properties from type 'LearningRestriction': formerAbilityId, formerEntry\n"
+      },
+      "revised": {
+        "candidate": "0.2.2",
+        "exitCode": 0
+      }
+    },
+    "verificationScope": "36 sample cases and 5 constructed characters; original detail, Word oracle and browser preview unchanged.",
+    "integrity": {
+      "sourcesUnchanged": true,
+      "sourceChecks": [
+        {
+          "path": "基础职业-战士.docx",
+          "unchanged": true
+        },
+        {
+          "path": "基础职业-牧师.docx",
+          "unchanged": true
+        },
+        {
+          "path": "基础职业-法师.docx",
+          "unchanged": true
+        },
+        {
+          "path": "基础职业-召唤师.docx",
+          "unchanged": true
+        },
+        {
+          "path": "牧师子分支/神圣领域-知识与智慧之神.docx",
+          "unchanged": true
+        },
+        {
+          "path": "牧师子分支/神圣领域-公正与荣耀之神.docx",
+          "unchanged": true
+        },
+        {
+          "path": "特殊专长.docx",
+          "unchanged": true
+        },
+        {
+          "path": "通用天赋树.docx",
+          "unchanged": true
+        },
+        {
+          "path": "冒险者基础规则.xlsx",
+          "unchanged": true
+        },
+        {
+          "path": "职业页/数据/战士.json",
+          "unchanged": true
+        },
+        {
+          "path": "职业页/数据/牧师.json",
+          "unchanged": true
+        },
+        {
+          "path": "职业页/数据/法师.json",
+          "unchanged": true
+        },
+        {
+          "path": "职业页/数据/召唤师.json",
+          "unchanged": true
+        },
+        {
+          "path": "职业页/数据/牧师·神圣领域.json",
+          "unchanged": true
+        },
+        {
+          "path": "docs/migration/T06_字段与接口候选_20261005.json",
+          "unchanged": true
+        }
+      ],
+      "targetHeadUnchanged": true,
+      "targetStatusUnchanged": true
+    },
+    "archiveCompleted": true,
+    "nativePageReadbackVerified": true
+  },
+  "confirmationHistory": [
+    {
+      "date": "2026-10-05",
+      "question": "F60",
+      "known": [
+        "automatic-at-15",
+        "occupies-slot",
+        "full-slot-player-choice"
+      ],
+      "notInferred": [
+        "learning-cost",
+        "formal-forgetting",
+        "decline-relearning"
+      ],
+      "sampleRelease": {
+        "id": "sample:t07:20261005:f60",
+        "manifestHash": "4da0c634d7b46b9d547631340112682fc4c4e70c1d8cb921e3c10b6861736e7d"
+      },
+      "previousRelease": {
+        "id": "sample:t07:20261005",
+        "manifestHash": "66f9e00a345e5c6dc1e0cc9c38e4e8cb2dac6b33b46cb50883e81c82baeaecea"
+      },
+      "validationDirectory": "D:/Download/scholar-agent-main/备份区/2026-10/f60-confirmation-20261005-04ed",
+      "sourceContentUnchanged": true,
+      "businessCodeModified": false,
+      "typecheck": {
+        "compiler": "TypeScript 7.0.2",
+        "strict": true,
+        "noEmit": true,
+        "exitCode": 0
+      },
+      "verificationScope": "Updated sample data and two relevant assertions; previous source oracle and browser results retained because original detail content is identical.",
+      "archiveCompleted": true,
+      "nativePageReadbackVerified": true
+    }
+  ]
+}

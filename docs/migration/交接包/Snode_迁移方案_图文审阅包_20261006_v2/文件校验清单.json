@@ -1,0 +1,312 @@
+{
+  "version": 2,
+  "date": "2026-10-06",
+  "purpose": "迁移总体方案图文审阅",
+  "main": "00_迁移方案_图文版.html",
+  "files": [
+    {
+      "path": "00_开始阅读.md",
+      "bytes": 1535,
+      "sha256": "839ab528395f3d4c50ad3e4e4e0ade7ed255b222b77698623bb823447568f492"
+    },
+    {
+      "path": "00_迁移方案_图文版.html",
+      "bytes": 1239328,
+      "sha256": "ffdba2cf419690d93d9b3292ae1fea1cf6d7879df8196a6ae75f904859ba404f"
+    },
+    {
+      "path": "00_飞书审阅入口.md",
+      "bytes": 641,
+      "sha256": "33b7af9fe73bedfb0d669b7e29a554fadd9631fb358bd9eb81ef8b7d91cb0cff"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/01_总体接入.png",
+      "bytes": 256705,
+      "sha256": "4579c44770e7f34f351c197ab96add034e599945241a4bca5bc6eba747a30370"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/01_总体接入.svg",
+      "bytes": 8974,
+      "sha256": "da0bc121018b75782d665d1dd1c38ceb93a898f0b1cb7760848a4c8fab463a12"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/02_角色与能力.png",
+      "bytes": 248293,
+      "sha256": "13e8962cbab93ac936486c53ecaf3e18a4d9e45eeb42eedfd6112d5006d9ad14"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/02_角色与能力.svg",
+      "bytes": 7840,
+      "sha256": "6265bac2f50ad59bd9a0466a99f396d68c3a9dda25883c2d9289cef8e4735d7f"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/03_保存与导入.png",
+      "bytes": 204966,
+      "sha256": "ae0af59d811c5c6fe0991b86f5e54d8dba2b11ff64118a25405110c1c9b3fe67"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/03_保存与导入.svg",
+      "bytes": 7067,
+      "sha256": "da320bb2c5e6b93178e0f6c336e7f70b1ce5931052425d5bcf37c27574ae2c15"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/04_实施路线.png",
+      "bytes": 202034,
+      "sha256": "6c0fc6a0f52a3299ac64aec1793912f174f2a0042949363cda3b6427de85d586"
+    },
+    {
+      "path": "assets/迁移总体计划_v2/04_实施路线.svg",
+      "bytes": 7657,
+      "sha256": "d4c9604e3e6a3bb5a5e2422cd3a640bcdf8c47fd7003d629f6651da3c6d7e69d"
+    },
+    {
+      "path": "B1_B2_优先契约评审_20261006_v1.json",
+      "bytes": 67757,
+      "sha256": "051058b100c8718c5f1aeeba0ab1c711d6566889b8db87899773c25f1e008283"
+    },
+    {
+      "path": "B1_B2_契约验证样例_20261006_v1.json",
+      "bytes": 505843,
+      "sha256": "15a901c0cf559aa109be4cd0c33b8b94a4851b539aef7d27be7954ed1beab52b"
+    },
+    {
+      "path": "B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+      "bytes": 128643,
+      "sha256": "83bcfe2f84d5e290f3e4568b5b6617b28e34e18a2187167fef9670999f232fd0"
+    },
+    {
+      "path": "B1_规范目录投影_评审样例_20261006_v1.json",
+      "bytes": 258488,
+      "sha256": "cb74e0a16c3e582cb033d7c10bb4611754dd17bd9e824e500378c5159fd29373"
+    },
+    {
+      "path": "B3_合法建卡与起始资产契约_20261006_v1.json",
+      "bytes": 30132,
+      "sha256": "e1ba25f13dd89cc678e7e34b3bacca180ef159937775018e4140bee3dd57f67a"
+    },
+    {
+      "path": "B3_契约验证样例_20261006_v1.json",
+      "bytes": 36633,
+      "sha256": "bf039b1f6992208d3f087df211121a3e606db0b2b67027a700124bf7d2ee69fa"
+    },
+    {
+      "path": "B3_建卡与起始资产Schema_评审候选_20261006_v1.json",
+      "bytes": 19471,
+      "sha256": "b8874024d59908c9d6f9e70d2dd42bf283d0dd7125dfec58db0a13a93715a037"
+    },
+    {
+      "path": "B4_契约验证样例_20261006_v1.json",
+      "bytes": 23829,
+      "sha256": "e9bcdca8021bebd45278a86e611d197298d72176fa042bbfd9d8d045108ae8b4"
+    },
+    {
+      "path": "B4_成长学习状态与装备契约_20261006_v1.json",
+      "bytes": 34042,
+      "sha256": "80f091381bb8f6bb8d1e5622e245471a5ea18b01a17fc79ea1e5ed1e3ae7a302"
+    },
+    {
+      "path": "B4_角色操作Schema_评审候选_20261006_v1.json",
+      "bytes": 24147,
+      "sha256": "b834db7eee6d2f916699c2f475f6fb93103f5a9b9a418832e2d83822a462cc55"
+    },
+    {
+      "path": "B5_历史迁移备份与全量覆盖契约_20261006_v1.json",
+      "bytes": 37529,
+      "sha256": "4d9e11b784ddc6c95ec761ca1ce3a30315af272a87fee760a58caab0ffbb21c8"
+    },
+    {
+      "path": "B5_契约验证样例_20261006_v1.json",
+      "bytes": 15269,
+      "sha256": "2915dd6fa05b740d337078f8399937e84cff76d67193fa8a225afe309ce23ebf"
+    },
+    {
+      "path": "B5_迁移备份与覆盖Schema_评审候选_20261006_v1.json",
+      "bytes": 18033,
+      "sha256": "bf4ebb19e65a5e131242ad5623c83f328588f69cc25c8a6f9940822e954b885f"
+    },
+    {
+      "path": "B6_联调场景与验收门槛_20261006_v1.json",
+      "bytes": 18923,
+      "sha256": "d943b68f7437c6e60521a7b08519cd1730762ed18da4e5ff61c017cc1e883b8f"
+    },
+    {
+      "path": "B6_联调试用与一期验收契约_20261006_v1.json",
+      "bytes": 29965,
+      "sha256": "11212b80480c4326fb4e4ed3559f10c93c6c32032185383e3f60187bb10a69e3"
+    },
+    {
+      "path": "C01_战士斗争机制审查_20261005.json",
+      "bytes": 138919,
+      "sha256": "3c2ddae567bffbea9c11f4a893d0d68a5f3842775c512999ecdbcbcc6cbfe7df"
+    },
+    {
+      "path": "C01_战士覆盖清单_20261005.json",
+      "bytes": 222882,
+      "sha256": "496b3cc0a58a16d2a048bcc1abcb50fd70798dfdf107f951ff26ea5aa9040b1b"
+    },
+    {
+      "path": "C01_战士起始机制审查_20261005.json",
+      "bytes": 32997,
+      "sha256": "b8ca823bbbafbfa03c537fec4734de08538b90a4bf9aaf2ce74f946bfc675eb9"
+    },
+    {
+      "path": "F19_护甲结算具体算例_待确认_v5.docx",
+      "bytes": 40543,
+      "sha256": "80137b481f2eed7dfef46f8feb9eab34df44c614e796c129e1fc1c562b310727"
+    },
+    {
+      "path": "Snode_一期迁移总体计划_协作审阅版_20261006.md",
+      "bytes": 13998,
+      "sha256": "b08abc065ee62eefe0804d26b3b3a21f8642808a1cfc7a11388c45c014ca3db2"
+    },
+    {
+      "path": "Snode_一期迁移计划_飞书导入稿_v2_20261006.md",
+      "bytes": 14182,
+      "sha256": "19c9604c855f70a769ce84f02bce6eeb6b9a7458ff87001d866f4bae941490d7"
+    },
+    {
+      "path": "Snode_迁移技术参考_详细版_v1_20261006.md",
+      "bytes": 78891,
+      "sha256": "3ce198090b9be71089b2cf835b314bd56a5140cf0ebcff99bf3a2c383d9920a2"
+    },
+    {
+      "path": "T04_审查依据摘要_20261004.json",
+      "bytes": 6173,
+      "sha256": "af7b8d563301be31cc5b7f7e9acbab5680fc2c31ac264c57fd1e23b30419353a"
+    },
+    {
+      "path": "T04_用户答复校核_20261004_v8.json",
+      "bytes": 21374,
+      "sha256": "02b42f361b56d8bc02cbc08e73a71dd6307c09590dc3e7564a6d541fa279f163"
+    },
+    {
+      "path": "T04_规则补充确认_20261004_v9.json",
+      "bytes": 14907,
+      "sha256": "1538e7f25ceb5f6e75cca501c0af71bcd364c63d71e305cf53c5810c7fe9b20e"
+    },
+    {
+      "path": "T05_审查依据摘要_20261004.json",
+      "bytes": 46160,
+      "sha256": "5ed49b29950438024941f1ed4f1e86c5f436d827117874531993863fe5926059"
+    },
+    {
+      "path": "T05_用户答复校核_20261004_v11.json",
+      "bytes": 54064,
+      "sha256": "d819297fbfac7496e9016b5d094ae0385c4c320acd7c2e0f22566a49888e5437"
+    },
+    {
+      "path": "T05_用户答复校核_20261004_v12.json",
+      "bytes": 81535,
+      "sha256": "c4fde50a627afd514d601d43e36458e26b5f2246068cb5681ee83f0c4282506e"
+    },
+    {
+      "path": "T06_字段与接口候选_20261005.json",
+      "bytes": 71462,
+      "sha256": "42dda0ef70f3b7296cd93acf43b1e80b354f69e8f43cd0579e430e5a8908c51c"
+    },
+    {
+      "path": "T06_审查依据_20261005.json",
+      "bytes": 18996,
+      "sha256": "09a9cbedbb4c224ccca741dbfb8649235499178968b77dbe262f7aa92915382c"
+    },
+    {
+      "path": "T07_模型修订_20261005.json",
+      "bytes": 24640,
+      "sha256": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487"
+    },
+    {
+      "path": "T07_规范样例包_20261005.json",
+      "bytes": 322426,
+      "sha256": "f0d97e45c09579b29fe5fe6ce19325086b2aede1372454a352bf203ccd94f298"
+    },
+    {
+      "path": "T07_验证报告_20261005.json",
+      "bytes": 40936,
+      "sha256": "926a2ac439bbd6eaa0a7047a0a9758607e164183e2952d97de1fd8014c1703c0"
+    },
+    {
+      "path": "主持人原始答复_20261003_F01-F12.docx",
+      "bytes": 47358,
+      "sha256": "7956d64703151fba2ecd5001109e0b188e253a5e489fced0206622a659421d38"
+    },
+    {
+      "path": "建卡成长导入操作流程与最小契约_20261006_v1.json",
+      "bytes": 56262,
+      "sha256": "de8924a53cc4b3d3e6ff84182afacd2d25f43719e12a8bb425f2a66bd6247d74"
+    },
+    {
+      "path": "开工确认与首批工程任务_20261006_v1.json",
+      "bytes": 25759,
+      "sha256": "25fedba97d7178a9ee0e9bdf0446fe319a8fadbe3ec6518261f83ca54324e3d4"
+    },
+    {
+      "path": "战斗引擎总体设计_20261005_v0.1.json",
+      "bytes": 23941,
+      "sha256": "8aca141785281849eb190e1cf754a784e886912180fc101407c383fa0d70191d"
+    },
+    {
+      "path": "战斗引擎总体设计_20261005_v0.2.json",
+      "bytes": 51866,
+      "sha256": "82842e8b4f69c79239da96e3807a5b70e254854efd38e2149030e3f3e00c82e0"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_T04_筛选版_v7.docx",
+      "bytes": 43849,
+      "sha256": "7516c76a0f65c211c910b12439aa1c8cf9d2119e48fa6c161e63772ccd581ccf"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_T05_筛选版_v10.docx",
+      "bytes": 41471,
+      "sha256": "eec7f03167c3b998885696cdcb969852c9b3bda43043e6081e9ea00fc5c6d41f"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_v1.docx",
+      "bytes": 48716,
+      "sha256": "053d44956b5d98eddf143d61217744b75f0d31f7070406031bc7c0ab6f148ec9"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_待补充版_v4.docx",
+      "bytes": 41391,
+      "sha256": "8ca1e044cf55642a8de3961025f19505ee0fcb98f536a55f3a09300ce4574931"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_筛选版_v2.docx",
+      "bytes": 40825,
+      "sha256": "70aa3b4d833337da9c1a79e5b572c42faa97581bc2ddde3bd2d11a566bca96c3"
+    },
+    {
+      "path": "斯诺德规则细则确认问卷_累计版_v3.docx",
+      "bytes": 43625,
+      "sha256": "3488a6929a63d42812ceb86a65ba90bee3effcf28c33b9c35ad28dac9d061bc2"
+    },
+    {
+      "path": "迁移总体设计收敛与共享评审包_20261006_v1.json",
+      "bytes": 59089,
+      "sha256": "5f4b8d171172734bb56ab386535cfd63494342cfc8ed01439a23ec52c89d8628"
+    },
+    {
+      "path": "迁移接入与交付边界_20261006_v1.json",
+      "bytes": 53435,
+      "sha256": "7cc268cfeedc63da20fc60843a8fa2a26cd5e77e9aec67b58c7edcd33fb3cefd"
+    },
+    {
+      "path": "迁移最小共享Schema_评审候选_20261006_v1.json",
+      "bytes": 12935,
+      "sha256": "774854fa9f3ee3defc7566381435cfd8df79b0564e7eebddaf091c520e3e9f90"
+    },
+    {
+      "path": "迁移最小共享Schema_评审样例_20261006_v1.json",
+      "bytes": 19276,
+      "sha256": "985aff540ed96e16b6842ad04ef47319a638e86587f81d038f3439c35147882c"
+    },
+    {
+      "path": "飞书创建说明_20261006.md",
+      "bytes": 2863,
+      "sha256": "9249072d4d19dc5050397d46e75f501a246b1f64640bf94d60dc4bf148b0634f"
+    }
+  ],
+  "excludes": [
+    "文件校验清单.json"
+  ],
+  "cloudDocumentUrl": "https://lcnnkviu5vj0.feishu.cn/docx/RHBcdisuGop0SzxZfarcJhuxnLc"
+}

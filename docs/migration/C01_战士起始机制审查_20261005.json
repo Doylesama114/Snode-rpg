@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-05",
+  "stage": "C01-a",
+  "completeClassAudit": false,
+  "engineDesignVersion": "0.1",
+  "businessCodeChanged": false,
+  "recordType": "source-review-and-design-requirements",
+  "page": "https://chatgpt.com/space/page_1cf69a1f139c81919657d98b4317ab37",
+  "features": [
+    {
+      "name": "关键属性选择",
+      "range": [
+        61,
+        63
+      ],
+      "status": "source-reviewed",
+      "sourceText": [
+        {
+          "locator": "body[61]",
+          "text": "战士专精"
+        },
+        {
+          "locator": "body[62]",
+          "text": "初始专长"
+        },
+        {
+          "locator": "body[63]",
+          "text": "战士的关键属性为力量或敏捷，你必须在创建角色时选择其中一项作为你的关键属性，作为一名战士，你获得以下职业专长。"
+        }
+      ]
+    },
+    {
+      "name": "武器专精",
+      "range": [
+        65,
+        72
+      ],
+      "status": "source-reviewed-user-confirmed",
+      "issueRefs": [],
+      "sourceText": [
+        {
+          "locator": "body[65]",
+          "text": "武器专精"
+        },
+        {
+          "locator": "body[66]",
+          "text": "你专精于一种战斗风格，当你使用对应类别的武器时，获得相应增益效果："
+        },
+        {
+          "locator": "body[67]",
+          "text": "剑类武器：每个自身回合限一次.你在发起近战攻击时，如果伤害掷骰点数为1，则可以选择重掷，你必须接受重掷的结果。"
+        },
+        {
+          "locator": "body[68]",
+          "text": "斧类武器：你的暴击率+1。"
+        },
+        {
+          "locator": "body[69]",
+          "text": "锤类武器：你对着装重甲、或具有天生护甲的敌人进行近战攻击时的每颗伤害骰点数不会低于4，如果伤害骰点数不足4点则将上调至4。"
+        },
+        {
+          "locator": "body[70]",
+          "text": "长柄武器：你能够通过单手持有长柄武器。"
+        },
+        {
+          "locator": "body[71]",
+          "text": "弓箭：你的攻击命中检定值+2。"
+        },
+        {
+          "locator": "body[72]",
+          "text": "简易武器：每场战斗限一次.你能够通过附赠动作发起一次基础攻击（无法以此施展技能）。"
+        }
+      ],
+      "selection": {
+        "count": 1,
+        "activation": "selected-category AND used-weapon-matches"
+      }
+    },
+    {
+      "name": "运动健将",
+      "range": [
+        74,
+        75
+      ],
+      "status": "source-reviewed-character-input",
+      "sourceText": [
+        {
+          "locator": "body[74]",
+          "text": "运动健将"
+        },
+        {
+          "locator": "body[75]",
+          "text": "你可以选择力量或敏捷属性中的一个熟练项，获得1点对应熟练度。"
+        }
+      ]
+    },
+    {
+      "name": "回气",
+      "range": [
+        77,
+        78
+      ],
+      "status": "source-reviewed",
+      "sourceText": [
+        {
+          "locator": "body[77]",
+          "text": "回气"
+        },
+        {
+          "locator": "body[78]",
+          "text": "你可以在自身回合花费一个附赠动作为你回复1D10+你的战士职业等级的生命值，这个效果在进行一次短休或长休前仅能够生效一次。"
+        }
+      ]
+    },
+    {
+      "name": "战斗风格",
+      "range": [
+        79,
+        81
+      ],
+      "status": "source-reviewed-under-F55",
+      "sourceText": [
+        {
+          "locator": "body[79]",
+          "text": "战斗风格"
+        },
+        {
+          "locator": "body[80]",
+          "text": "你能够拥有至多四种战斗风格，你在学习第三、第四种战斗风格的能力时需要完成那个能力的额外条件。"
+        },
+        {
+          "locator": "body[81]",
+          "text": "斗争                                                               \n狂攻                                                               \n防护                                                               \n射击                                                               \n军团                                                               \n机敏                                                               "
+        }
+      ]
+    },
+    {
+      "name": "四选二起始特性",
+      "range": [
+        83,
+        85
+      ],
+      "status": "source-reviewed-under-confirmed-initial-policy",
+      "sourceText": [
+        {
+          "locator": "body[83]",
+          "text": "起始特性"
+        },
+        {
+          "locator": "body[84]",
+          "text": "你可以从以下起始特性中选择两项加入你的技能列表："
+        },
+        {
+          "locator": "body[85]",
+          "text": "猛击                                                               \n冲锋\n盾牌格挡\n瞄准射击"
+        }
+      ]
+    }
+  ],
+  "abilityProfiles": [
+    {
+      "legacyId": "w-starting-skill-1",
+      "name": "猛击",
+      "legacyStyle": "斗争",
+      "legacyTier": "一阶",
+      "legacyType": "starting",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 87,
+        "locator": "body[87]"
+      },
+      "sourceText": "猛击\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：1\n关键词：战技.近战攻击\n施展条件：-\n施展限制：-\n描述：你对敌人发起猛烈的一击\n你对一名角色发起攻击，本次攻击结算造成的伤害值后额外附加一次你的力量调整值\n你的战士等级到达12级时：猛击还会再结算造成的伤害值后额外附加两次你的力量调整值",
+      "contextTables": [
+        {
+          "locator": "body[85]",
+          "text": "猛击                                                               \n冲锋\n盾牌格挡\n瞄准射击",
+          "status": "pending-context-review"
+        }
+      ],
+      "reviewStatus": "source-reviewed-in-C01-a",
+      "issueRefs": [],
+      "battleImplementation": "not-started"
+    },
+    {
+      "legacyId": "w-starting-skill-2",
+      "name": "冲锋",
+      "legacyStyle": "狂攻",
+      "legacyTier": "一阶",
+      "legacyType": "starting",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 89,
+        "locator": "body[89]"
+      },
+      "sourceText": "冲锋\n施展时间：1动作\n施展距离：X米\n持续时间：立即\n疲劳消耗：3\n关键词：战技.近战攻击.位移\n施展条件：-\n施展限制：你不能对2米及以内的角色施展\n描述：你朝着敌人发起冲锋，快速接近对方并挥舞起你的武器\n你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前并发起攻击\n施展距离的X为你的基础移动速度+2米\n你的战士职业等级到达5级时：冲锋的施展时间变为一个附赠动作",
+      "contextTables": [],
+      "reviewStatus": "source-reviewed-in-C01-a",
+      "issueRefs": [],
+      "battleImplementation": "not-started"
+    },
+    {
+      "legacyId": "w-starting-skill-3",
+      "name": "盾牌格挡",
+      "legacyStyle": "防护",
+      "legacyTier": "一阶",
+      "legacyType": "starting",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 91,
+        "locator": "body[91]"
+      },
+      "sourceText": "盾牌格挡\n施展时间：反应动作\n施展距离：自身\n持续时间：立即\n疲劳消耗：2\n关键词：战技.防御.短休/长休\n施展条件：你必须持有盾牌\n施展限制：-\n描述：你举起盾牌以应对即将到来的伤害\n你尝试抵挡一次针对你的伤害效果，你必须在伤害数值结算前施展这个效果\n盾牌格挡仅能够抵挡诸如刀剑挥砍、箭矢和弹药以及魔法飞弹等直观的伤害类型，来自诅咒和精神攻击等攻击手段通常无法被盾牌格挡阻拦\n如果格挡的对象是带有AOE关键词的范围效果，你仍然会承受一半的结算后伤害值\n你的战士职业等级到达8级时：盾牌格挡的关键词变为短休/长休（2） ",
+      "contextTables": [],
+      "reviewStatus": "source-reviewed-in-C01-a",
+      "issueRefs": [],
+      "battleImplementation": "not-started"
+    },
+    {
+      "legacyId": "w-starting-skill-4",
+      "name": "瞄准射击",
+      "legacyStyle": "射击",
+      "legacyTier": "一阶",
+      "legacyType": "starting",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 93,
+        "locator": "body[93]"
+      },
+      "sourceText": "瞄准射击\n施展时间：1动作\n施展距离：远程\n持续时间：立即\n疲劳消耗：1\n关键词：战技.远程攻击.实体飞行道具\n施展条件：你必须持有远程武器\n施展限制：-\n描述：你保持专注瞄准一名敌人以确保能够击中对方\n你消耗一发箭矢或弹药对一名角色发起攻击，本次攻击的命中检定值+2\n你的战士职业等级到达4级时：瞄准射击改为攻击命中检定值+3\n你的战士职业等级到达8级时：瞄准射击改为攻击命中检定值+5",
+      "contextTables": [],
+      "reviewStatus": "source-reviewed-in-C01-a",
+      "issueRefs": [],
+      "battleImplementation": "not-started"
+    }
+  ],
+  "mechanismRequirements": [
+    {
+      "id": "C01-requirement-01",
+      "name": "weapon-attack",
+      "sourceRefs": [
+        "body[87]",
+        "body[89]",
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-02",
+      "name": "hit-modifier",
+      "sourceRefs": [
+        "body[71]",
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-03",
+      "name": "damage-addition-stage",
+      "sourceRefs": [
+        "body[87]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-04",
+      "name": "individual-damage-die-reroll",
+      "sourceRefs": [
+        "body[67]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-05",
+      "name": "damage-die-minimum",
+      "sourceRefs": [
+        "body[69]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-06",
+      "name": "critical-face-range",
+      "sourceRefs": [
+        "body[68]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-07",
+      "name": "weapon-holding-constraint",
+      "sourceRefs": [
+        "body[70]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-08",
+      "name": "action-budget",
+      "sourceRefs": [
+        "body[72]",
+        "body[78]",
+        "body[87]",
+        "body[89]",
+        "body[91]",
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-09",
+      "name": "fatigue-payment",
+      "sourceRefs": [
+        "body[87]",
+        "body[89]",
+        "body[91]",
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-10",
+      "name": "ammunition-consumption",
+      "sourceRefs": [
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-11",
+      "name": "healing",
+      "sourceRefs": [
+        "body[78]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-12",
+      "name": "movement-then-attack",
+      "sourceRefs": [
+        "body[89]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-13",
+      "name": "reaction-window",
+      "sourceRefs": [
+        "body[91]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-14",
+      "name": "area-defense-modifier",
+      "sourceRefs": [
+        "body[91]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-15",
+      "name": "usage-cycle-counter",
+      "sourceRefs": [
+        "body[67]",
+        "body[72]",
+        "body[78]",
+        "body[91]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-16",
+      "name": "level-branch-replacement",
+      "sourceRefs": [
+        "body[87]",
+        "body[89]",
+        "body[91]",
+        "body[93]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    },
+    {
+      "id": "C01-requirement-17",
+      "name": "acquisition-choice-and-style-order",
+      "sourceRefs": [
+        "body[63]",
+        "body[65]",
+        "body[79]",
+        "body[80]",
+        "body[84]",
+        "body[85]"
+      ],
+      "designStatus": "candidate-requirement",
+      "runtimeImplementation": "not-started"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F61",
+      "status": "confirmed",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "locator": "body[87]"
+      },
+      "question": "猛击12级是原一次再加两次，共三次，还是总共两次？其他结算后伤害10、力量调整+3时结果为19还是16？",
+      "impact": "upgrade additive versus replacement",
+      "rawUserAnswer": "猛击12级改为总共附加两次额外力量调整值，本身的平a的伤害是武器骰+力量调整值，使用12级之前的猛击是武器骰+2*力量调整值，在12级时变为武器骰+3*力量调整值",
+      "replySource": "current-conversation:user-reply:2026-10-05"
+    },
+    {
+      "id": "F62",
+      "status": "confirmed",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "locator": "body[65–72]"
+      },
+      "question": "武器专精取得时选择一个武器类别只获得该类增益，还是六类全部取得、按所用武器生效？",
+      "impact": "acquisition choices and conditional weapon modifiers; style ordering remains governed by F55",
+      "rawUserAnswer": "选一个类别，只获得该增益，并且只有使用对应武器时才生效",
+      "replySource": "current-conversation:user-reply:2026-10-05"
+    },
+    {
+      "id": "F63",
+      "status": "confirmed",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "locator": "body[87]"
+      },
+      "additionalSource": {
+        "file": "冒险者基础规则.xlsx",
+        "locator": "其他规则!H3",
+        "limit": "dual wield wording only, no general defense-stage rule"
+      },
+      "question": "猛击结算后力量附伤在抗性与防御层之前加入，还是减免之后直接扣生命？伤害8、力量+3、物理抗性2、护盾12、无护甲和临时生命、非暴击，结果为0还是3，或另一顺序？",
+      "impact": "post-critical versus post-defense hook",
+      "rawUserAnswer": "不乘暴击，因为写明了是造成伤害后额外附加力量调整值；损失0",
+      "replySource": "current-conversation:user-reply:2026-10-05",
+      "followup": {
+        "status": "confirmed",
+        "question": "普通攻击8，额外力量3，目标物理抗性10，无其它防御，非暴击；先合并后抗性得到1，还是未造成生命损失不触发额外附伤得到0，或其它结果？",
+        "reason": "Original example 0 does not distinguish insertion stage from damage-trigger prerequisite.",
+        "rawUserAnswer": "损失为1",
+        "confirmedHpDamage": 1
+      },
+      "normalized": {
+        "criticalMultiplied": false,
+        "combineWithAttackBeforeResistance": true,
+        "requiresPriorHpLoss": false,
+        "normalDefensePath": true,
+        "scope": "Might additional strength only"
+      }
+    }
+  ],
+  "paperCases": [
+    {
+      "case": "冲锋4级→5级",
+      "expectation": "主要改附赠，疲劳3",
+      "kind": "source-based-paper-check"
+    },
+    {
+      "case": "基础移动6米",
+      "expectation": "冲锋X=8米，2米及以内仍不合法",
+      "kind": "source-based-paper-check"
+    },
+    {
+      "case": "8级格挡休息前已用2次",
+      "expectation": "本能力次数已尽，与每场反应3次分开",
+      "kind": "source-based-paper-check"
+    },
+    {
+      "case": "AOE反应与豁免",
+      "expectation": "不能用该次格挡与豁免叠减伤",
+      "confirmation": "F20"
+    },
+    {
+      "case": "8级瞄准射击",
+      "expectation": "技能命中+5，非+10",
+      "kind": "source-based-paper-check"
+    },
+    {
+      "case": "弓专精有效＋8级瞄准射击",
+      "expectation": "独立来源修正+2和+5，合计+7，取得范围仍待F62",
+      "kind": "conditional-paper-check"
+    },
+    {
+      "case": "F63原例",
+      "input": {
+        "ordinaryDamage": 8,
+        "extraStrength": 3,
+        "physicalResistance": 2,
+        "shield": 12,
+        "armor": 0,
+        "tempHp": 0,
+        "critical": false
+      },
+      "expectedHpDamage": 0,
+      "source": "user-F63"
+    },
+    {
+      "case": "F63区分阶段补例",
+      "input": {
+        "ordinaryDamage": 8,
+        "extraStrength": 3,
+        "physicalResistance": 10,
+        "shield": 0,
+        "armor": 0,
+        "tempHp": 0,
+        "critical": false
+      },
+      "expectedHpDamage": 1,
+      "source": "user-F63-followup"
+    },
+    {
+      "case": "F61升级",
+      "expectation": "额外力量一次替换为两次；普通力量攻击示例为武器骰＋2×力量，12级起武器骰＋3×力量",
+      "source": "user-F61"
+    }
+  ],
+  "scopeLimits": [
+    "not a combat executor",
+    "17 candidate requirements are not total game mechanism count",
+    "remaining 115 cards and their context still pending"
+  ],
+  "next": "C01-b 斗争风格18项",
+  "reportMarkdown": "审查日期：2026年10月5日。阶段：C01-a，战士起始专长、起始条款和四个起始能力。已建立整个基础战士的覆盖清单，旧119条能力与原件119张能力卡一一定位。本轮仅详审起始部分，其余115条及相关条件／选择表待后续，C01整体未完成。\n\n本轮落实[战斗引擎设计与逐职业审查计划](https://chatgpt.com/space/page_e1e24020127c819183083300c31b28e5)。用户指定继续总体设计，代码实现延后。本报告提出机制与字段需求，不实现战斗逻辑，也不修改职业资料或规则原件。\n\n## 来源与完整覆盖清单\n\n主要来源为D:/Download/scholar-agent-main/基础职业-战士.docx。正文XML共845个直接子节点、160张顶层表；其中119张能力卡具有关键词或施展字段，剩余41张表需要作为风格、概览、条件或选择语境继续分类。已有职业JSON用于保留119个旧ID和对照，不作为效果真值。\n\nbody[n]是正文XML直接子节点的零起始位置，不是页码。名称匹配先找到候选，再区分“列名字的概览／条件表”和“真正的能力卡”；本次全部119个条目能唯一定位到能力卡。这只是定位检查，不能等同于119项规则全部审完。\n\n| 范围 | 能力卡数 | 本轮状态 |\n| --- | --- | --- |\n| 初始四能力 | 4 | 原文、升级及通用依赖已详审，猛击留两项具体歧义 |\n| 斗争风格 | 18 | 已定位，下一批详审 |\n| 狂攻风格 | 17 | 已定位，待审 |\n| 防护风格 | 18 | 已定位，待审 |\n| 射击风格 | 18 | 已定位，待审 |\n| 军团风格 | 24 | 已定位，待审 |\n| 机敏风格 | 20 | 已定位，待审 |\n\n覆盖清单另外保留学习／选择语境表、阶位标题、升级原文及起始专长段落。旧ID中的数字不能替代真实风格与阶位。目录中已有军用施法、传送门等高阶条目，战士也需要复用施法／空间机制，后续读完原文才能确定其执行细节。\n\n## 起始条款与角色解析\n\n| 条款 | 原文位置 | 采用结论或待定 | 对模型的要求 |\n| --- | --- | --- | --- |\n| 关键属性 | body[61–63] | 建卡选择力量或敏捷 | 职业进度保存实际选择，武器需求属性与职业关键属性分别解析 |\n| 武器专精 | body[65–72] | F62已确认六选一，仅使用所选类别武器生效 | 选择事实、装备类别、效果条件独立，不能凭“风格”一词改战斗风格顺序 |\n| 运动健将 | body[74–75] | 选择力量或敏捷的一项熟练度+1，普通上限沿用F46 | 属于角色事实与检定修正，不产生独立攻击行动 |\n| 回气 | body[77–78] | 自身回合附赠，恢复1D10＋战士等级，短休／长休前1次 | 治疗、等级绑定和休息次数记账；未写疲劳不伪造原文费用 |\n| 战斗风格 | body[79–81] | 至多四种，第三第四种的额外条件；学习顺序按F55 | 风格元数据与有效学习顺序分开，初始技能不定顺位 |\n| 起始选择 | body[83–85] | 四项选两项加入技能列表，按既有确认归一阶且免费免栏 | 可选项不是全部自动拥有，免费、免栏与获取途径分别保存 |\n\n首级／升级HP、FP、装备及职业熟练属于T05角色成长与资产设计的输入，本轮不重新制定公式。进入战斗时解析成快照，不能在每次施展时重新给首级收益。\n\n## 武器专精的六项机制\n\n下表描述六个可选类别的机制。F62已确认取得时只选一个类别，角色仅获得该项，且使用对应武器时才生效。取得选择与当前装备条件分别保存。\n\n| 武器类别与来源 | 原文效果 | 战斗机制需求 |\n| --- | --- | --- |\n| 剑 body[67] | 每自身回合一次，近战伤害骰为1可重掷，接受新结果 | 伤害骰的单骰处理、使用次数、重掷轨迹；沿用F17，避免整组重骰 |\n| 斧 body[68] | 暴击率+1 | 扩张自然暴击骰面；不把最终命中总值20当暴击 |\n| 锤 body[69] | 对重甲或天生护甲目标，近战每颗伤害骰不低于4 | 目标特征谓词、每骰最低值修订；不能用“护甲余额>0”代替重甲／天生护甲 |\n| 长柄 body[70] | 可单手持有 | 装备持用约束覆盖，不是攻击伤害修正 |\n| 弓箭 body[71] | 攻击命中检定+2 | 条件武器命中修正，不能当普通熟练项被上限1截掉，也不加到法术命中 |\n| 简易武器 body[72] | 每场一次，用附赠发起基础攻击，不能施展技能 | 附赠预算、每场次数、基础攻击与施展能力类型区分 |\n\n这些机制将复用于其他来源。武器类别、效果取得来源、作用条件和次数作用域都要在记录中可见，不能把它们写进战士专用攻击函数。\n\n## 四个起始能力\n\n| 能力与原文 | 动作和费用 | 目标、条件与效果 | 成长与设计关注 |\n| --- | --- | --- | --- |\n| 猛击 body[87]，w-starting-skill-1 | 主要动作，疲劳1 | 一次近战武器攻击，额外力量调整值标为结算后附加 | F61确认12级将额外一次改为两次；F63确认该附加不乘暴击，合并后经抗性与防御 |\n| 冲锋 body[89]，w-starting-skill-2 | 主要动作，疲劳3 | 距离X＝基础移动速度＋2米，不能对2米及以内目标使用；直线接近目标后攻击 | 5级改附赠，保留完整距离续句；路径、位移结束、攻击与中断顺序分开 |\n| 盾牌格挡 body[91]，w-starting-skill-3 | 反应，疲劳2，持盾，短休／长休前次数限制 | 伤害数值结算前；适用直观伤害，诅咒／精神等通常不适用；AOE承受一半结算后伤害 | 8级休息前2次，与每场反应总3次分开；精锐、速攻、命中与豁免窗口按已确认规则 |\n| 瞄准射击 body[93]，w-starting-skill-4 | 主要动作，疲劳1，远程武器，消耗一发弹药 | 当次远程武器攻击命中+2 | 4级改+3，8级改+5，按条件替换不累加；不要与基础行动“瞄准”的下次攻击增益混为同一效果 |\n\n四项仍保留原风格斗争、狂攻、防护、射击，初始取得不确定风格顺序。技能成长使用能力自己的ResolutionBinding；普通战士来源按相应职业进度，跨职业获取需要应用已确认途径，不统一取角色总等级。\n\n盾牌格挡的“直观”适用性需要攻击的传递方式及裁定说明，不能只按物理／魔法二分。已明确的例子保留，未列举手段不自动放入允许名单。此类有意依赖主持判断的内容保留人工节点，本轮不要求主持人枚举所有伤害技能。\n\n## 本轮机制登记与场景检查\n\n已登记的需求包括武器攻击、命中修正、重掷、每骰最低值、暴击率、持用约束、主／附／反应预算、疲劳支出、弹药、治疗、移动后攻击、反应减伤、每回合／每场／休息次数，以及升级替换与学习选择。这是起始部分的机制需求，不是整个游戏最终机制总数。\n\n| 纸面场景 | 已有依据能确定的结果 | 当前设计要求 |\n| --- | --- | --- |\n| 冲锋的战士等级4→5 | 主要动作改为附赠，疲劳仍3 | 同一能力按成长分支解析，不生成两个互不相关的技能实例 |\n| 基础移动6米，冲锋 | X为8米；2米及以内目标仍不符合限制 | 距离续句与施展限制都参与合法性；直线路径另校验 |\n| 8级格挡已用两次，尚未休息 | 自身次数已尽，即使全场反应还有额度也不能继续使用 | 两个计数器不可合并 |\n| 格挡AOE并选择豁免 | 已确认二者不能用于同一效果叠加减伤 | 反应选择先于豁免，已掷豁免即关闭该次反应选择 |\n| 瞄准射击8级 | 技能命中修正为+5，不是2＋3＋5 | “改为”是替换分支 |\n| 弓箭专精确实有效，且施展8级瞄准射击 | 专精+2与技能+5为独立来源修正，共+7 | 普通熟练项上限不吞掉这两项；须先取得所选弓类专精 |\n\n这些是按条款进行的纸面核对，尚无战斗执行器，不称为引擎测试通过。T07的36项数据验证仍保留其原覆盖范围。\n\n## 集中问卷 F61至F63\n\n已经对照基础工作簿与现有F01至F60记录。动作1／0、每场反应总3次、8级格挡可重复施展、来源阶位、速攻、AOE反应时机等已有答案，不重复提交。当前只保留以下三个具体问题：\n\n| 题号 | 依据与问题 | 对设计的影响 |\n| --- | --- | --- |\n| F61 | 猛击body[87]：12级“还会再…额外附加两次力量调整值”，是原一次再加两次，共三次，还是把原一次改成两次？若其他结算后伤害10、力量调整+3，结果是19还是16？ | 已答：额外一次替换为两次；原例16，普通攻击力量部分总计三次 |\n| F62 | 武器专精body[65–72]：是取得时选一个武器类别、只获得该类增益，还是六类效果都拥有，使用对应武器就生效？ | 已答：只选一类且仅对应武器生效；风格顺序仍按F55 |\n| F63 | 猛击“结算后”附加：是否只是不吃暴击倍率，仍在抗性／护盾／护甲前加入；还是在这些减免之后直接扣生命？例：不含猛击附加的伤害8，力量+3，物理抗性2、护盾12、护甲0，非暴击、无临时生命；最终损失0还是3？若均不对，请给阶段顺序。 | 已答：不乘暴击，先合并再经正常防御；原例0，抗性10补例1 |\n\nF63先收到不乘暴击和原例损失0的答复。该例不能单独区分“先合并”与“必须先造成生命损失才附加”，故又用普通伤害8、力量+3、抗性10且无其他防御的补例。用户确认损失1，明确猛击先合并再处理抗性，不需要先发生HP损失。相关原文仍保留，规范映射独立记录；其他来源的结算后效果需逐条审查。\n\n## 后续批次与产物\n\nC01-a本轮完成来源审读和机制登记，F61至F63及补例均已确认并归录。下一轮C01-b详审斗争风格18项及各升级、学习条件和高阶条款，再按狂攻、防护、射击、军团、机敏逐批推进。出现新机制就修订总体设计；只有全职业条款和组合关系逐项覆盖后才关闭C01。\n\n本地覆盖清单：[C01_战士覆盖清单_20261005.json](/D:/Download/scholar-agent-main/docs/migration/C01_战士覆盖清单_20261005.json)。源段落、119条旧ID、卡片位置、语境表与审查状态保存为可继续维护的数据。\n\n本地机制记录：[C01_战士起始机制审查_20261005.json](/D:/Download/scholar-agent-main/docs/migration/C01_战士起始机制审查_20261005.json)。包含起始条款、完整四卡原文、机制需求、纸面场景与三个问题。原件和业务代码不改。\n\n## 本轮答复及规范映射\n\nF61用户原答：猛击12级改为总共附加两次额外力量调整值，本身的平a的伤害是武器骰+力量调整值，使用12级之前的猛击是武器骰+2*力量调整值，在12级时变为武器骰+3*力量调整值。\n\n采用：能力额外部分是一次→两次的替换。本题力量平A示例下，猛击12级前为武器骰＋2×力量调整值，12级起为武器骰＋3×力量调整值。保留原件“还会再”措辞，通过用户确认映射消除叠加歧义；相对防御层的位置不由此推导。\n\nF62用户原答：选一个类别，只获得该增益，并且只有使用对应武器时才生效。\n\n采用：武器专精选择事实、实际武器类别和增益条件三者关联。只使用对应武器但没有取得该类专精，不会获得增益；未选类别不能自动生效。F63及补例确认不乘暴击，先合并再经抗性与防御，不要求先造成生命损失。\n\nF63用户原答：不乘暴击，因为写明了是造成伤害后额外附加力量调整值；损失0。\n\n补例用户原答：损失为1。补例输入为普通攻击8、额外力量3、抗性10，无其他防御，非暴击。\n\n规范步骤：普通攻击及其正常属性部分先按适用暴击计算，猛击额外力量不乘暴击；之后把额外部分并入攻击伤害，再处理抗性、护盾、护甲、临时生命、生命。原例损失0，补例8＋3−10＝1。这里没有“普通攻击先造成生命损失”的触发前提，原文也不因此被直接改写。",
+  "normalizedMappings": [
+    {
+      "question": "F61",
+      "sourceLocator": "body[87]",
+      "scope": "猛击成长",
+      "baseAdditionalStrengthMultiples": 1,
+      "level12AdditionalStrengthMultiples": 2,
+      "upgradeOperation": "replace",
+      "ordinaryStrengthAttackExamples": {
+        "before12": "weapon-dice + 2*strength-modifier",
+        "from12": "weapon-dice + 3*strength-modifier"
+      },
+      "originalTextPreserved": true
+    },
+    {
+      "question": "F62",
+      "sourceLocator": "body[65–72]",
+      "selectionCount": 1,
+      "candidates": [
+        "剑",
+        "斧",
+        "锤",
+        "长柄",
+        "弓箭",
+        "简易武器"
+      ],
+      "activation": "selected-category AND used-weapon-matches",
+      "originalTextPreserved": true
+    },
+    {
+      "question": "F63",
+      "criticalMultiplied": false,
+      "originalExampleFinalHpDamage": 0,
+      "defenseInsertion": "combined-before-resistance-and-defense",
+      "damageTriggerPrerequisite": "does-not-require-prior-hp-loss",
+      "scope": "Might additional strength only",
+      "confirmation": {
+        "originalExample": 0,
+        "discriminatingExample": 1,
+        "rawFollowup": "损失为1"
+      }
+    }
+  ],
+  "userConfirmations": {
+    "F61": "猛击12级改为总共附加两次额外力量调整值，本身的平a的伤害是武器骰+力量调整值，使用12级之前的猛击是武器骰+2*力量调整值，在12级时变为武器骰+3*力量调整值",
+    "F62": "选一个类别，只获得该增益，并且只有使用对应武器时才生效",
+    "F63": "不乘暴击，因为写明了是造成伤害后额外附加力量调整值；损失0",
+    "F63Followup": "损失为1"
+  },
+  "currentRoundQuestionsClosed": true
+}

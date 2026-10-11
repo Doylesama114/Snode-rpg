@@ -1,0 +1,733 @@
+{
+  "date": "2026-10-06",
+  "scope": "structure plus basic budget/field-uniqueness; not permissions, game rules, catalog relations or legal characters",
+  "registeredNumericRefs": [
+    "hp.current",
+    "fp.current"
+  ],
+  "cases": [
+    {
+      "id": "J01",
+      "schema": "DefinitionRef",
+      "input": {
+        "id": "review-definition",
+        "revision": 1
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J02",
+      "schema": "DefinitionRef",
+      "input": {
+        "id": "review-definition",
+        "revision": 0
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J03",
+      "schema": "DefinitionRef",
+      "input": {
+        "id": " trailing",
+        "revision": 1
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J04",
+      "schema": "RuleReleaseRef",
+      "input": {
+        "id": "review-release",
+        "manifestHash": "review-only-not-published"
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J05",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "评审样例",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": -3,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J06",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "评审样例",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J07",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "评审样例",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": 0,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J08",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "评审样例",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": -3,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ],
+        "quality": "needs-review"
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J09",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "评审样例",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": -3,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          },
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": 8,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": false,
+      "category": "duplicate-field-semantic"
+    },
+    {
+      "id": "J10",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "hp.current",
+            "value": -3
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J11",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "hp.current",
+            "value": -3
+          }
+        ],
+        "ownerUserId": "another-user"
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J12",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 0,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "hp.current",
+            "value": -3
+          }
+        ]
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J13",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": []
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J14",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "hp.current",
+            "value": -3
+          },
+          {
+            "kind": "clear-number",
+            "fieldRef": "hp.current"
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": false,
+      "category": "duplicate-edit-semantic"
+    },
+    {
+      "id": "J15",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "clear-number",
+            "fieldRef": "hp.current"
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J16",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "clear-number",
+            "fieldRef": "hp.current",
+            "value": 0
+          }
+        ]
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J17",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 1,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "maxHp",
+            "value": 50
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": false,
+      "category": "field-registry-semantic"
+    },
+    {
+      "id": "J18",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": -3,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": false,
+      "category": "utf16-budget-semantic"
+    },
+    {
+      "id": "J19",
+      "schema": "ManagementView",
+      "input": {
+        "viewSchemaVersion": 1,
+        "characterId": "review-role",
+        "characterRevision": 1,
+        "lifecycle": "active",
+        "profile": {
+          "displayName": " ",
+          "story": ""
+        },
+        "editableProfileFields": [
+          "displayName",
+          "story"
+        ],
+        "numericFields": [
+          {
+            "fieldRef": "hp.current",
+            "label": "当前生命",
+            "value": -3,
+            "editable": true
+          },
+          {
+            "fieldRef": "fp.current",
+            "label": "当前疲劳",
+            "value": null,
+            "editable": true
+          }
+        ]
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J20",
+      "schema": "CommitReceipt",
+      "input": {
+        "commandId": "review-command",
+        "submittedDraftVersion": 0,
+        "view": {
+          "viewSchemaVersion": 1,
+          "characterId": "review-role",
+          "characterRevision": 1,
+          "lifecycle": "active",
+          "profile": {
+            "displayName": "评审样例",
+            "story": ""
+          },
+          "editableProfileFields": [
+            "displayName",
+            "story"
+          ],
+          "numericFields": [
+            {
+              "fieldRef": "hp.current",
+              "label": "当前生命",
+              "value": -3,
+              "editable": true
+            },
+            {
+              "fieldRef": "fp.current",
+              "label": "当前疲劳",
+              "value": null,
+              "editable": true
+            }
+          ]
+        }
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J21",
+      "schema": "ChoiceSubmission",
+      "input": {
+        "clientChoiceKey": "new-choice",
+        "choiceDefinition": {
+          "id": "review-choice-definition",
+          "revision": 1
+        },
+        "value": {
+          "kind": "definitions",
+          "refs": [
+            {
+              "id": "review-selection",
+              "revision": 1
+            }
+          ]
+        }
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J22",
+      "schema": "ChoiceSubmission",
+      "input": {
+        "clientChoiceKey": "new-choice",
+        "choiceDefinition": {
+          "id": "review-choice-definition",
+          "revision": 1
+        }
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J23",
+      "schema": "ChoiceSubmission",
+      "input": {
+        "clientChoiceKey": "new-choice",
+        "choiceDefinition": {
+          "id": "review-choice-definition",
+          "revision": 1
+        },
+        "value": {
+          "kind": "unregistered",
+          "value": "x"
+        }
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J24",
+      "schema": "ChoiceUse",
+      "input": {
+        "kind": "submitted",
+        "clientChoiceKey": "new-choice"
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J25",
+      "schema": "ChoiceUse",
+      "input": {
+        "kind": "submitted",
+        "choiceRecordId": "not-yet-saved"
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J26",
+      "schema": "ChoiceUse",
+      "input": {
+        "kind": "existing",
+        "choiceRecordId": "existing-choice"
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J27",
+      "schema": "ChoiceValue",
+      "input": {
+        "kind": "allocation",
+        "amounts": [
+          {
+            "subject": {
+              "id": "review-attribute",
+              "revision": 1
+            },
+            "amount": 2
+          }
+        ]
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J28",
+      "schema": "CharacterServiceMetadata",
+      "input": {
+        "characterId": "review-role",
+        "ownerUserId": "review-user",
+        "revision": 1,
+        "lifecycle": "active",
+        "timelineId": null,
+        "campaignAssignmentId": null
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J29",
+      "schema": "CharacterServiceMetadata",
+      "input": {
+        "characterId": "review-role",
+        "ownerUserId": "review-user",
+        "revision": 1,
+        "lifecycle": "active",
+        "timelineId": null,
+        "campaignAssignmentId": "review-assignment"
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J30",
+      "schema": "CharacterServiceMetadata",
+      "input": {
+        "characterId": "review-role",
+        "ownerUserId": "review-user",
+        "revision": 1,
+        "lifecycle": "active",
+        "timelineId": "review-timeline",
+        "campaignAssignmentId": "review-assignment"
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J31",
+      "schema": "DefinitionRef",
+      "input": {
+        "id": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+        "revision": 1
+      },
+      "expectedSchema": true,
+      "expectedBasicSemantic": false,
+      "category": "utf16-budget-semantic"
+    },
+    {
+      "id": "J32",
+      "schema": "UpdateManagementCommand",
+      "jsonText": "{\"commandId\":\"review-command\",\"characterId\":\"review-role\",\"expectedRevision\":1,\"submittedDraftVersion\":0,\"edits\":[{\"kind\":\"set-number\",\"fieldRef\":\"hp.current\",\"value\":1e400}]}",
+      "expectedSchema": false,
+      "expectedBasicSemantic": false,
+      "category": "finite-number"
+    },
+    {
+      "id": "J33",
+      "schema": "UpdateManagementCommand",
+      "input": {
+        "commandId": "review-command",
+        "characterId": "review-role",
+        "expectedRevision": 9007199254740992,
+        "submittedDraftVersion": 0,
+        "edits": [
+          {
+            "kind": "set-number",
+            "fieldRef": "hp.current",
+            "value": -3
+          }
+        ]
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    },
+    {
+      "id": "J34",
+      "schema": "CommitReceipt",
+      "input": {
+        "commandId": "review-command",
+        "submittedDraftVersion": 0,
+        "view": {
+          "viewSchemaVersion": 1,
+          "characterId": "review-role",
+          "characterRevision": 1,
+          "lifecycle": "active",
+          "profile": {
+            "displayName": "评审样例",
+            "story": ""
+          },
+          "editableProfileFields": [
+            "displayName",
+            "story"
+          ],
+          "numericFields": [
+            {
+              "fieldRef": "hp.current",
+              "label": "当前生命",
+              "value": -3,
+              "editable": true
+            },
+            {
+              "fieldRef": "fp.current",
+              "label": "当前疲劳",
+              "value": null,
+              "editable": true
+            }
+          ]
+        },
+        "issues": []
+      },
+      "expectedSchema": false,
+      "expectedBasicSemantic": true,
+      "category": "structure"
+    }
+  ]
+}

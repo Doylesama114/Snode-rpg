@@ -1,0 +1,954 @@
+{
+  "formatVersion": 1,
+  "bundleName": "Snode_一期迁移协作审阅包_20261006_v1",
+  "date": "2026-10-06",
+  "purpose": "一期迁移协作审阅",
+  "status": "设计候选，业务实现与正式验收待执行",
+  "main": "01_计划与设计材料/Snode_一期迁移总体计划_协作审阅版_20261006.md",
+  "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+  "targetExistingChanges": 23,
+  "materialCounts": {
+    "design": 46,
+    "ruleOriginals": 37,
+    "targetReferences": 30,
+    "readableReports": 13,
+    "sourcePageCopies": 3
+  },
+  "manifestExcludes": [
+    "文件清单.md",
+    "文件校验清单.json"
+  ],
+  "files": [
+    {
+      "path": "00_阅读说明.md",
+      "category": "阅读说明",
+      "origin": "本次打包生成",
+      "bytes": 3348,
+      "sha256": "cc93f54df4c2991fe1b7be29388575e4c83f70f91e6ee4eec3ab6999faac47a2"
+    },
+    {
+      "path": "01_计划与设计材料/建卡成长导入操作流程与最小契约_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/建卡成长导入操作流程与最小契约_20261006_v1.json",
+      "bytes": 56262,
+      "sha256": "de8924a53cc4b3d3e6ff84182afacd2d25f43719e12a8bb425f2a66bd6247d74"
+    },
+    {
+      "path": "01_计划与设计材料/开工确认与首批工程任务_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/开工确认与首批工程任务_20261006_v1.json",
+      "bytes": 25759,
+      "sha256": "25fedba97d7178a9ee0e9bdf0446fe319a8fadbe3ec6518261f83ca54324e3d4"
+    },
+    {
+      "path": "01_计划与设计材料/迁移接入与交付边界_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/迁移接入与交付边界_20261006_v1.json",
+      "bytes": 53435,
+      "sha256": "7cc268cfeedc63da20fc60843a8fa2a26cd5e77e9aec67b58c7edcd33fb3cefd"
+    },
+    {
+      "path": "01_计划与设计材料/迁移总体设计收敛与共享评审包_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/迁移总体设计收敛与共享评审包_20261006_v1.json",
+      "bytes": 59089,
+      "sha256": "5f4b8d171172734bb56ab386535cfd63494342cfc8ed01439a23ec52c89d8628"
+    },
+    {
+      "path": "01_计划与设计材料/迁移最小共享Schema_评审候选_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/迁移最小共享Schema_评审候选_20261006_v1.json",
+      "bytes": 12935,
+      "sha256": "774854fa9f3ee3defc7566381435cfd8df79b0564e7eebddaf091c520e3e9f90"
+    },
+    {
+      "path": "01_计划与设计材料/迁移最小共享Schema_评审样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/迁移最小共享Schema_评审样例_20261006_v1.json",
+      "bytes": 19276,
+      "sha256": "985aff540ed96e16b6842ad04ef47319a638e86587f81d038f3439c35147882c"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_待补充版_v4.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_待补充版_v4.docx",
+      "bytes": 41391,
+      "sha256": "8ca1e044cf55642a8de3961025f19505ee0fcb98f536a55f3a09300ce4574931"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_累计版_v3.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_累计版_v3.docx",
+      "bytes": 43625,
+      "sha256": "3488a6929a63d42812ceb86a65ba90bee3effcf28c33b9c35ad28dac9d061bc2"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_筛选版_v2.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_筛选版_v2.docx",
+      "bytes": 40825,
+      "sha256": "70aa3b4d833337da9c1a79e5b572c42faa97581bc2ddde3bd2d11a566bca96c3"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_T04_筛选版_v7.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_T04_筛选版_v7.docx",
+      "bytes": 43849,
+      "sha256": "7516c76a0f65c211c910b12439aa1c8cf9d2119e48fa6c161e63772ccd581ccf"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_T05_筛选版_v10.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_T05_筛选版_v10.docx",
+      "bytes": 41471,
+      "sha256": "eec7f03167c3b998885696cdcb969852c9b3bda43043e6081e9ea00fc5c6d41f"
+    },
+    {
+      "path": "01_计划与设计材料/斯诺德规则细则确认问卷_v1.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/斯诺德规则细则确认问卷_v1.docx",
+      "bytes": 48716,
+      "sha256": "053d44956b5d98eddf143d61217744b75f0d31f7070406031bc7c0ab6f148ec9"
+    },
+    {
+      "path": "01_计划与设计材料/战斗引擎总体设计_20261005_v0.1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/战斗引擎总体设计_20261005_v0.1.json",
+      "bytes": 23941,
+      "sha256": "8aca141785281849eb190e1cf754a784e886912180fc101407c383fa0d70191d"
+    },
+    {
+      "path": "01_计划与设计材料/战斗引擎总体设计_20261005_v0.2.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/战斗引擎总体设计_20261005_v0.2.json",
+      "bytes": 51866,
+      "sha256": "82842e8b4f69c79239da96e3807a5b70e254854efd38e2149030e3f3e00c82e0"
+    },
+    {
+      "path": "01_计划与设计材料/主持人原始答复_20261003_F01-F12.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/主持人原始答复_20261003_F01-F12.docx",
+      "bytes": 47358,
+      "sha256": "7956d64703151fba2ecd5001109e0b188e253a5e489fced0206622a659421d38"
+    },
+    {
+      "path": "01_计划与设计材料/B1_规范目录投影_评审样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B1_规范目录投影_评审样例_20261006_v1.json",
+      "bytes": 258488,
+      "sha256": "cb74e0a16c3e582cb033d7c10bb4611754dd17bd9e824e500378c5159fd29373"
+    },
+    {
+      "path": "01_计划与设计材料/B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+      "bytes": 128643,
+      "sha256": "83bcfe2f84d5e290f3e4568b5b6617b28e34e18a2187167fef9670999f232fd0"
+    },
+    {
+      "path": "01_计划与设计材料/B1_B2_契约验证样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B1_B2_契约验证样例_20261006_v1.json",
+      "bytes": 505843,
+      "sha256": "15a901c0cf559aa109be4cd0c33b8b94a4851b539aef7d27be7954ed1beab52b"
+    },
+    {
+      "path": "01_计划与设计材料/B1_B2_优先契约评审_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B1_B2_优先契约评审_20261006_v1.json",
+      "bytes": 67757,
+      "sha256": "051058b100c8718c5f1aeeba0ab1c711d6566889b8db87899773c25f1e008283"
+    },
+    {
+      "path": "01_计划与设计材料/B3_合法建卡与起始资产契约_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B3_合法建卡与起始资产契约_20261006_v1.json",
+      "bytes": 30132,
+      "sha256": "e1ba25f13dd89cc678e7e34b3bacca180ef159937775018e4140bee3dd57f67a"
+    },
+    {
+      "path": "01_计划与设计材料/B3_建卡与起始资产Schema_评审候选_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B3_建卡与起始资产Schema_评审候选_20261006_v1.json",
+      "bytes": 19471,
+      "sha256": "b8874024d59908c9d6f9e70d2dd42bf283d0dd7125dfec58db0a13a93715a037"
+    },
+    {
+      "path": "01_计划与设计材料/B3_契约验证样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B3_契约验证样例_20261006_v1.json",
+      "bytes": 36633,
+      "sha256": "bf039b1f6992208d3f087df211121a3e606db0b2b67027a700124bf7d2ee69fa"
+    },
+    {
+      "path": "01_计划与设计材料/B4_成长学习状态与装备契约_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B4_成长学习状态与装备契约_20261006_v1.json",
+      "bytes": 34042,
+      "sha256": "80f091381bb8f6bb8d1e5622e245471a5ea18b01a17fc79ea1e5ed1e3ae7a302"
+    },
+    {
+      "path": "01_计划与设计材料/B4_角色操作Schema_评审候选_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B4_角色操作Schema_评审候选_20261006_v1.json",
+      "bytes": 24147,
+      "sha256": "b834db7eee6d2f916699c2f475f6fb93103f5a9b9a418832e2d83822a462cc55"
+    },
+    {
+      "path": "01_计划与设计材料/B4_契约验证样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B4_契约验证样例_20261006_v1.json",
+      "bytes": 23829,
+      "sha256": "e9bcdca8021bebd45278a86e611d197298d72176fa042bbfd9d8d045108ae8b4"
+    },
+    {
+      "path": "01_计划与设计材料/B5_历史迁移备份与全量覆盖契约_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B5_历史迁移备份与全量覆盖契约_20261006_v1.json",
+      "bytes": 37529,
+      "sha256": "4d9e11b784ddc6c95ec761ca1ce3a30315af272a87fee760a58caab0ffbb21c8"
+    },
+    {
+      "path": "01_计划与设计材料/B5_契约验证样例_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B5_契约验证样例_20261006_v1.json",
+      "bytes": 15269,
+      "sha256": "2915dd6fa05b740d337078f8399937e84cff76d67193fa8a225afe309ce23ebf"
+    },
+    {
+      "path": "01_计划与设计材料/B5_迁移备份与覆盖Schema_评审候选_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B5_迁移备份与覆盖Schema_评审候选_20261006_v1.json",
+      "bytes": 18033,
+      "sha256": "bf4ebb19e65a5e131242ad5623c83f328588f69cc25c8a6f9940822e954b885f"
+    },
+    {
+      "path": "01_计划与设计材料/B6_联调场景与验收门槛_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B6_联调场景与验收门槛_20261006_v1.json",
+      "bytes": 18923,
+      "sha256": "d943b68f7437c6e60521a7b08519cd1730762ed18da4e5ff61c017cc1e883b8f"
+    },
+    {
+      "path": "01_计划与设计材料/B6_联调试用与一期验收契约_20261006_v1.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/B6_联调试用与一期验收契约_20261006_v1.json",
+      "bytes": 29965,
+      "sha256": "11212b80480c4326fb4e4ed3559f10c93c6c32032185383e3f60187bb10a69e3"
+    },
+    {
+      "path": "01_计划与设计材料/C01_战士斗争机制审查_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/C01_战士斗争机制审查_20261005.json",
+      "bytes": 138919,
+      "sha256": "3c2ddae567bffbea9c11f4a893d0d68a5f3842775c512999ecdbcbcc6cbfe7df"
+    },
+    {
+      "path": "01_计划与设计材料/C01_战士覆盖清单_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/C01_战士覆盖清单_20261005.json",
+      "bytes": 222882,
+      "sha256": "496b3cc0a58a16d2a048bcc1abcb50fd70798dfdf107f951ff26ea5aa9040b1b"
+    },
+    {
+      "path": "01_计划与设计材料/C01_战士起始机制审查_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/C01_战士起始机制审查_20261005.json",
+      "bytes": 32997,
+      "sha256": "b8ca823bbbafbfa03c537fec4734de08538b90a4bf9aaf2ce74f946bfc675eb9"
+    },
+    {
+      "path": "01_计划与设计材料/F19_护甲结算具体算例_待确认_v5.docx",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/F19_护甲结算具体算例_待确认_v5.docx",
+      "bytes": 40543,
+      "sha256": "80137b481f2eed7dfef46f8feb9eab34df44c614e796c129e1fc1c562b310727"
+    },
+    {
+      "path": "01_计划与设计材料/Snode_一期迁移总体计划_协作审阅版_20261006.md",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/Snode_一期迁移总体计划_协作审阅版_20261006.md",
+      "bytes": 78891,
+      "sha256": "3ce198090b9be71089b2cf835b314bd56a5140cf0ebcff99bf3a2c383d9920a2"
+    },
+    {
+      "path": "01_计划与设计材料/T04_规则补充确认_20261004_v9.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T04_规则补充确认_20261004_v9.json",
+      "bytes": 14907,
+      "sha256": "1538e7f25ceb5f6e75cca501c0af71bcd364c63d71e305cf53c5810c7fe9b20e"
+    },
+    {
+      "path": "01_计划与设计材料/T04_审查依据摘要_20261004.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T04_审查依据摘要_20261004.json",
+      "bytes": 6173,
+      "sha256": "af7b8d563301be31cc5b7f7e9acbab5680fc2c31ac264c57fd1e23b30419353a"
+    },
+    {
+      "path": "01_计划与设计材料/T04_用户答复校核_20261004_v8.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T04_用户答复校核_20261004_v8.json",
+      "bytes": 21374,
+      "sha256": "02b42f361b56d8bc02cbc08e73a71dd6307c09590dc3e7564a6d541fa279f163"
+    },
+    {
+      "path": "01_计划与设计材料/T05_审查依据摘要_20261004.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T05_审查依据摘要_20261004.json",
+      "bytes": 46160,
+      "sha256": "5ed49b29950438024941f1ed4f1e86c5f436d827117874531993863fe5926059"
+    },
+    {
+      "path": "01_计划与设计材料/T05_用户答复校核_20261004_v11.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T05_用户答复校核_20261004_v11.json",
+      "bytes": 54064,
+      "sha256": "d819297fbfac7496e9016b5d094ae0385c4c320acd7c2e0f22566a49888e5437"
+    },
+    {
+      "path": "01_计划与设计材料/T05_用户答复校核_20261004_v12.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T05_用户答复校核_20261004_v12.json",
+      "bytes": 81535,
+      "sha256": "c4fde50a627afd514d601d43e36458e26b5f2246068cb5681ee83f0c4282506e"
+    },
+    {
+      "path": "01_计划与设计材料/T06_审查依据_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T06_审查依据_20261005.json",
+      "bytes": 18996,
+      "sha256": "09a9cbedbb4c224ccca741dbfb8649235499178968b77dbe262f7aa92915382c"
+    },
+    {
+      "path": "01_计划与设计材料/T06_字段与接口候选_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T06_字段与接口候选_20261005.json",
+      "bytes": 71462,
+      "sha256": "42dda0ef70f3b7296cd93acf43b1e80b354f69e8f43cd0579e430e5a8908c51c"
+    },
+    {
+      "path": "01_计划与设计材料/T07_规范样例包_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T07_规范样例包_20261005.json",
+      "bytes": 322426,
+      "sha256": "f0d97e45c09579b29fe5fe6ce19325086b2aede1372454a352bf203ccd94f298"
+    },
+    {
+      "path": "01_计划与设计材料/T07_模型修订_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T07_模型修订_20261005.json",
+      "bytes": 24640,
+      "sha256": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487"
+    },
+    {
+      "path": "01_计划与设计材料/T07_验证报告_20261005.json",
+      "category": "计划与设计材料",
+      "origin": "旧项目/docs/migration/T07_验证报告_20261005.json",
+      "bytes": 40936,
+      "sha256": "926a2ac439bbd6eaa0a7047a0a9758607e164183e2952d97de1fd8014c1703c0"
+    },
+    {
+      "path": "02_深入说明/00_说明索引.md",
+      "category": "阅读说明",
+      "origin": "本次打包生成",
+      "bytes": 3777,
+      "sha256": "228945f058dbfc7bca1bedb732f18158686ff790086bc81005d38a9f21f11b76"
+    },
+    {
+      "path": "02_深入说明/建卡成长导入操作流程与最小契约_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 建卡成长导入操作流程与最小契约_20261006_v1.json",
+      "bytes": 32062,
+      "sha256": "836d01f1fff77fac66056d380fca74c003c286f3a030857a8d77956edd77d0a3"
+    },
+    {
+      "path": "02_深入说明/开工确认与首批工程任务_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 开工确认与首批工程任务_20261006_v1.json",
+      "bytes": 12384,
+      "sha256": "05aa11355caf270a03adfefcb59c0af8a2f0a817e99e742d5a3adfdbea588055"
+    },
+    {
+      "path": "02_深入说明/来源调查与迁移总计划_原阶段记录.md",
+      "category": "深入说明",
+      "origin": "来源Page page_62d93a992ee4819188aa80bf16e28057 sequence 28",
+      "bytes": 76365,
+      "sha256": "8f61aca9e4cd978f32bde571cb91228b46e0231577532fd5a2a1b11712e5655a"
+    },
+    {
+      "path": "02_深入说明/来源区块清单_原阶段记录.md",
+      "category": "深入说明",
+      "origin": "来源Page page_1726a60859048191991cc894c086a4c8 sequence 0",
+      "bytes": 3459,
+      "sha256": "cb2f68b5837f9dd114844d0791dbbdf3055be5c1254cd745d2a87414d2782fd9"
+    },
+    {
+      "path": "02_深入说明/迁移接入与交付边界_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 迁移接入与交付边界_20261006_v1.json",
+      "bytes": 30393,
+      "sha256": "219bf1a2624d2b3d27333ef18c5375e3d5b4991a740742bcf5c2350b455c1abc"
+    },
+    {
+      "path": "02_深入说明/迁移总体设计收敛与共享评审包_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 迁移总体设计收敛与共享评审包_20261006_v1.json",
+      "bytes": 20150,
+      "sha256": "38a4ffc75b0d13d6fd22fbfb85568aba70d8e4927d1ee8d57519685715bd0d23"
+    },
+    {
+      "path": "02_深入说明/资料与领域框架调查_原阶段记录.md",
+      "category": "深入说明",
+      "origin": "来源Page page_852e22f7d6648191bfc15f55a81661f1 sequence 30",
+      "bytes": 64353,
+      "sha256": "b885f52597e5c662e1717788c5527baf2df503cd7d0d84a7913ed18b2c8c10fa"
+    },
+    {
+      "path": "02_深入说明/B1_B2_优先契约评审_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 B1_B2_优先契约评审_20261006_v1.json",
+      "bytes": 19764,
+      "sha256": "19b650a296a3722dbcdf916e03342066552c35aec60356120ae48dc9b8c7215c"
+    },
+    {
+      "path": "02_深入说明/B3_合法建卡与起始资产契约_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 B3_合法建卡与起始资产契约_20261006_v1.json",
+      "bytes": 16415,
+      "sha256": "fedc9794744a13ef28d2d59eedd6537339731538117bce5ede93b0c9d7b5e893"
+    },
+    {
+      "path": "02_深入说明/B4_成长学习状态与装备契约_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 B4_成长学习状态与装备契约_20261006_v1.json",
+      "bytes": 17207,
+      "sha256": "0335cb393dd55a430e58087371db697641adc088f74754b2a48a2624a6619516"
+    },
+    {
+      "path": "02_深入说明/B5_历史迁移备份与全量覆盖契约_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 B5_历史迁移备份与全量覆盖契约_20261006_v1.json",
+      "bytes": 17791,
+      "sha256": "51ab1c4bc7a6bc983b013e4211148f7c16bededc72bf5a1ff930be78e9cc032d"
+    },
+    {
+      "path": "02_深入说明/B6_联调试用与一期验收契约_20261006_v1.md",
+      "category": "深入说明",
+      "origin": "派生自 B6_联调试用与一期验收契约_20261006_v1.json",
+      "bytes": 19839,
+      "sha256": "cf4b9f85365beea77b0e52e26f243161e61cbc7e41c4b4c6f5781dd67e7e534f"
+    },
+    {
+      "path": "02_深入说明/C01_战士斗争机制审查_20261005.md",
+      "category": "深入说明",
+      "origin": "派生自 C01_战士斗争机制审查_20261005.json",
+      "bytes": 23016,
+      "sha256": "1223878b489a28be4329aa1f8d9ecf7460a8ec3f59b2ee5ac79fcaea0ac9ce43"
+    },
+    {
+      "path": "02_深入说明/C01_战士起始机制审查_20261005.md",
+      "category": "深入说明",
+      "origin": "派生自 C01_战士起始机制审查_20261005.json",
+      "bytes": 12474,
+      "sha256": "ddd4db1a7af6f7a3278c152f68e6f80a8645cde01fe3328bf521464760917d5d"
+    },
+    {
+      "path": "02_深入说明/T05_审查依据摘要_20261004.md",
+      "category": "深入说明",
+      "origin": "派生自 T05_审查依据摘要_20261004.json",
+      "bytes": 26343,
+      "sha256": "fcb6a3335c02a17df9f95fa16b78256972330b6e86e50e4087a50864314ad1fc"
+    },
+    {
+      "path": "02_深入说明/T06_字段与接口候选_20261005.md",
+      "category": "深入说明",
+      "origin": "派生自 T06_字段与接口候选_20261005.json",
+      "bytes": 33657,
+      "sha256": "f944d2bd6e637ab3b8597c44419edac50804555a601c05096a85ec7fc7399346"
+    },
+    {
+      "path": "02_深入说明/T07_领域类型_v0.2.2.ts",
+      "category": "深入说明",
+      "origin": "摘取 T07_模型修订_20261005.json.typeScript.model",
+      "bytes": 17507,
+      "sha256": "fb5d7c5616e963de8e7848602eb86fe02cb1299a7327046727b8b30446cb29bb"
+    },
+    {
+      "path": "03_规则原件/《基础职业进阶途径》.docx",
+      "category": "规则原件",
+      "origin": "旧项目/《基础职业进阶途径》.docx",
+      "bytes": 888458,
+      "sha256": "17c67cf3047704009484414f35b9b6d525ce147abd4fca880f2eb826b668ae0e"
+    },
+    {
+      "path": "03_规则原件/额外规则.png",
+      "category": "规则原件",
+      "origin": "旧项目/额外规则.png",
+      "bytes": 457836,
+      "sha256": "3c7ea32637db871055268d072c24047b5fc43d44ee30ed63a838f98bdf317f59"
+    },
+    {
+      "path": "03_规则原件/个性与背景创建规则.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/个性与背景创建规则.xlsx",
+      "bytes": 150058,
+      "sha256": "c2e4b5ea0504cef18f7ebff45e511b1e4422701e41e5ff122127f9de010b0326"
+    },
+    {
+      "path": "03_规则原件/基础职业-德鲁伊.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-德鲁伊.docx",
+      "bytes": 144507,
+      "sha256": "d9de4d89e5bbea887bd324198b42a5d618661f72ffd7423ec727dd46a3a698e6"
+    },
+    {
+      "path": "03_规则原件/基础职业-法师.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-法师.docx",
+      "bytes": 764159,
+      "sha256": "1d083e15f11c9bde315e15cfc7663e0131748369aaf71da29428d48f81719e81"
+    },
+    {
+      "path": "03_规则原件/基础职业-猎人.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-猎人.docx",
+      "bytes": 94392,
+      "sha256": "b016533a9a45c0fdbe448a3b4f12c9ac942ec04e8faf3347d78ea5798e5cbe5c"
+    },
+    {
+      "path": "03_规则原件/基础职业-蛮斗士.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-蛮斗士.docx",
+      "bytes": 120189,
+      "sha256": "6efae18e6f7f6016f24a7c8291531c6a9609d0eb26b55be5d1dfb8cb9b9ccade"
+    },
+    {
+      "path": "03_规则原件/基础职业-魔契师.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-魔契师.docx",
+      "bytes": 276584,
+      "sha256": "26f754cb70c7db59fc825bcb9780a3a6e99da5801b7b16761e9a5b4e10446935"
+    },
+    {
+      "path": "03_规则原件/基础职业-谋士.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-谋士.docx",
+      "bytes": 188612,
+      "sha256": "917b6d60ee9ca850217ecdd8dcd1d2cdbf1ae34f2b80c1720f8b9c410c42ad7a"
+    },
+    {
+      "path": "03_规则原件/基础职业-牧师.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-牧师.docx",
+      "bytes": 124288,
+      "sha256": "9f8f3aac691011061aae40c80717d0ead1afb96ef2202fea5693cf85e1c0831b"
+    },
+    {
+      "path": "03_规则原件/基础职业-奇械师.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-奇械师.docx",
+      "bytes": 271205,
+      "sha256": "774139c18b1ad30d7a82300f73a33164db04b9b604b41cdbd455b217bbda4334"
+    },
+    {
+      "path": "03_规则原件/基础职业-萨满祭司.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-萨满祭司.docx",
+      "bytes": 173528,
+      "sha256": "224d55d290bd88e3f0f1d726e7dcb6220426e4111a5adbc9e1ea28e16ae464ec"
+    },
+    {
+      "path": "03_规则原件/基础职业-圣骑士.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-圣骑士.docx",
+      "bytes": 115922,
+      "sha256": "3096e88d34c5dbdec7271c7d07cad51cca2962829845c7c07d3c98bf6111451d"
+    },
+    {
+      "path": "03_规则原件/基础职业-守望者.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-守望者.docx",
+      "bytes": 82072,
+      "sha256": "788c5883cf4782b98b33466c83a9f84c55e5e18487b1a528672bcb35a645c5e4"
+    },
+    {
+      "path": "03_规则原件/基础职业-术士.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-术士.docx",
+      "bytes": 103829,
+      "sha256": "8780a437702a5f5fcb89542ab417148ae090ad9f278f4d37fd96ea3287e8d89e"
+    },
+    {
+      "path": "03_规则原件/基础职业-武僧.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-武僧.docx",
+      "bytes": 188954,
+      "sha256": "1b1aeae9b1f9025061f06d8a402eab652c9fa661415a60dc97d6527620d73f04"
+    },
+    {
+      "path": "03_规则原件/基础职业-吟游诗人.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-吟游诗人.docx",
+      "bytes": 247620,
+      "sha256": "f77d6bd0adc8cbab93f9566bcc791ba0997a6146b8b8fb87b7ebfef1c45a1e95"
+    },
+    {
+      "path": "03_规则原件/基础职业-游荡者.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-游荡者.docx",
+      "bytes": 121769,
+      "sha256": "65eb749e45325185bc19f3b5083f6b21f7bdcd6461001092b3f14e3503910f87"
+    },
+    {
+      "path": "03_规则原件/基础职业-战士.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-战士.docx",
+      "bytes": 196725,
+      "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+    },
+    {
+      "path": "03_规则原件/基础职业-战舞者.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-战舞者.docx",
+      "bytes": 105143,
+      "sha256": "966ef09392f2f1be10dcff5436a65b03934df3e730006a7741631f002cbd20a9"
+    },
+    {
+      "path": "03_规则原件/基础职业-召唤师.docx",
+      "category": "规则原件",
+      "origin": "旧项目/基础职业-召唤师.docx",
+      "bytes": 124460,
+      "sha256": "4a8dc410824084bf675ee7134f8bba749fe0d18285f551d02fead44d16cc8e51"
+    },
+    {
+      "path": "03_规则原件/兼职条件.png",
+      "category": "规则原件",
+      "origin": "旧项目/兼职条件.png",
+      "bytes": 308346,
+      "sha256": "a8f1133b2693e915dfc7a337140a3c7af368485c24fc8a57f258184cda8abbea"
+    },
+    {
+      "path": "03_规则原件/兼职需求(谋士版本).png",
+      "category": "规则原件",
+      "origin": "旧项目/兼职需求(谋士版本).png",
+      "bytes": 268484,
+      "sha256": "1b867e825db30c63b2860b6698badcb7c99ed187940c11a8866d647892c90a5e"
+    },
+    {
+      "path": "03_规则原件/龙裔种族详情.png",
+      "category": "规则原件",
+      "origin": "旧项目/龙裔种族详情.png",
+      "bytes": 46751,
+      "sha256": "7fe8daeb6f45bc73fb67bdb2ec7507f0f7027751e6496413a6d5a8d8a64a720b"
+    },
+    {
+      "path": "03_规则原件/冒险者基础规则.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/冒险者基础规则.xlsx",
+      "bytes": 89419,
+      "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+    },
+    {
+      "path": "03_规则原件/冒险者角色创建流程.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/冒险者角色创建流程.xlsx",
+      "bytes": 9433824,
+      "sha256": "03a20ac006d43d536eee3190775f01e95a201d32d9d8e0d23acd2eb68ac1d28b"
+    },
+    {
+      "path": "03_规则原件/冒险者角色档案_空白_含图纸区_v2.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/冒险者角色档案_空白_含图纸区_v2.xlsx",
+      "bytes": 28815,
+      "sha256": "d76a37d910e68ca898a850aada3e33d5975d51bbdd8d3772efd6b7239dc604b9"
+    },
+    {
+      "path": "03_规则原件/冒险者角色档案_空白_含图纸区.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/冒险者角色档案_空白_含图纸区.xlsx",
+      "bytes": 29232,
+      "sha256": "372efe394bd64cdc9a3a10aa45f7fbc94dc7a9bce4771d443adf391226632411"
+    },
+    {
+      "path": "03_规则原件/神圣领域-生命与丰收之神.docx",
+      "category": "规则原件",
+      "origin": "旧项目/神圣领域-生命与丰收之神.docx",
+      "bytes": 69293,
+      "sha256": "dba654dec7c0962ad444eebbd037f2fc8c111ab82bb40f33ff2a6f1b5808b670"
+    },
+    {
+      "path": "03_规则原件/神圣领域-知识与智慧之神.docx",
+      "category": "规则原件",
+      "origin": "旧项目/神圣领域-知识与智慧之神.docx",
+      "bytes": 113493,
+      "sha256": "ddc3389072b5cf9914451a3cf7028b6cc8a533864fe581dc1f47737044743fee"
+    },
+    {
+      "path": "03_规则原件/斯诺德世界观架构.docx",
+      "category": "规则原件",
+      "origin": "旧项目/斯诺德世界观架构.docx",
+      "bytes": 25255815,
+      "sha256": "c1c63ca46880d122d1522a9eb4125f99181e4a202eb3e6814fe87eceaf1f2927"
+    },
+    {
+      "path": "03_规则原件/斯诺德物资大全.xlsx",
+      "category": "规则原件",
+      "origin": "旧项目/斯诺德物资大全.xlsx",
+      "bytes": 49589,
+      "sha256": "42ee0440844cab7b60a7b5b93e2c50171252773bfdf598b8d02cf495eec14eaf"
+    },
+    {
+      "path": "03_规则原件/斯诺德装备大全.xls",
+      "category": "规则原件",
+      "origin": "旧项目/斯诺德装备大全.xls",
+      "bytes": 43520,
+      "sha256": "84605b4b9c2d71a9cfa27c60bc0ba7c29db421cf0f28d6e081564759f7600ae3"
+    },
+    {
+      "path": "03_规则原件/特殊专长.docx",
+      "category": "规则原件",
+      "origin": "旧项目/特殊专长.docx",
+      "bytes": 58961,
+      "sha256": "a42dac4791fd1839c99a91ad57a7dc9e18d2891353853019f7d13c8aa2975928"
+    },
+    {
+      "path": "03_规则原件/通用天赋树.docx",
+      "category": "规则原件",
+      "origin": "旧项目/通用天赋树.docx",
+      "bytes": 248759,
+      "sha256": "792dff89c723ac7c5330cdfb1adf138f5007089e7ad472405bb38364d608014e"
+    },
+    {
+      "path": "03_规则原件/已公布进阶职业.docx",
+      "category": "规则原件",
+      "origin": "旧项目/已公布进阶职业.docx",
+      "bytes": 1108776,
+      "sha256": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f"
+    },
+    {
+      "path": "03_规则原件/Snode 一期开发文档.docx",
+      "category": "规则原件",
+      "origin": "Snode/../Snode 一期开发文档.docx",
+      "bytes": 1442946,
+      "sha256": "3e9cef7ea3a5ad45600e2db1074a30d56d53519deb50f633ef48962367e3a7db"
+    },
+    {
+      "path": "04_目标项目参考/00_快照说明.md",
+      "category": "阅读说明",
+      "origin": "本次打包生成",
+      "bytes": 1626,
+      "sha256": "ef6509e569e04a1223cda0ddde44524e2426903a3de607efdd315512c21fc12f"
+    },
+    {
+      "path": "04_目标项目参考/apps/api/src/app.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/api/src/app.ts",
+      "bytes": 1143,
+      "sha256": "43011cb1c8586a7400e081c9e6853af31234289dbaf898605c4b07b8661a48ac"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/public/images/snode-hero-v1.webp",
+      "category": "目标项目参考",
+      "origin": "Snode/apps/web/public/images/snode-hero-v1.webp",
+      "bytes": 161518,
+      "sha256": "c25b23edbd40c9e138386f5189f3fde756f1262b62234b75c58721c509c4b856"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/App.tsx",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/src/App.tsx",
+      "bytes": 7646,
+      "sha256": "7d252513f5d08ef3b8fb44bdafe161bb1986644be4a8e5d26331ae580d8c1404"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/features/characters/characters.css",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/src/features/characters/characters.css",
+      "bytes": 12156,
+      "sha256": "7991e290204c90ee64747b4867819db4cc07c6b9da1cb36a294750322aa8c12a"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/features/characters/CharacterWorkspace.tsx",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/src/features/characters/CharacterWorkspace.tsx",
+      "bytes": 22145,
+      "sha256": "59722d1bb51fe578d9df28fc81b5e9351b591654363f264de659282e49251fb2"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/features/characters/editor-runtime.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/src/features/characters/editor-runtime.ts",
+      "bytes": 7325,
+      "sha256": "82057c87381ad9ce6e37f5573d9c44f63d659901da5fcdfeb0bf7eb438693f56"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/features/characters/local-service.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/src/features/characters/local-service.ts",
+      "bytes": 12373,
+      "sha256": "95320da9c08e45d18a662ca0aee0a8a90d78d9de5b2c9ab55b27993904fa16ef"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/src/styles.css",
+      "category": "目标项目参考",
+      "origin": "Snode/apps/web/src/styles.css",
+      "bytes": 15195,
+      "sha256": "c2a4dbcbd8b1104bed27ba3818b6321653dc18906b462c7d4447bf82ee88ef66"
+    },
+    {
+      "path": "04_目标项目参考/apps/web/test/characters.browser.test.mjs",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/apps/web/test/characters.browser.test.mjs",
+      "bytes": 15340,
+      "sha256": "50d3a69415ebb1f2846067e1d831e6e575530a62996867ff0e56e31283a304bb"
+    },
+    {
+      "path": "04_目标项目参考/docs/assets/snode-hero-v1.prompt.txt",
+      "category": "目标项目参考",
+      "origin": "Snode/docs/assets/snode-hero-v1.prompt.txt",
+      "bytes": 1571,
+      "sha256": "57e8d1ed3be8bf66c952133212e13b566a5f557e1a4e78a7cb2f0be84325210d"
+    },
+    {
+      "path": "04_目标项目参考/docs/design.md",
+      "category": "目标项目参考",
+      "origin": "Snode/docs/design.md",
+      "bytes": 6593,
+      "sha256": "d443cc8c29b43e9c56e250c270d5aef6e998b8c13bb07e1eb8971882ce76e048"
+    },
+    {
+      "path": "04_目标项目参考/docs/development.md",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/development.md",
+      "bytes": 1886,
+      "sha256": "53710a7ca1458a6ea5a8a33441b782091929068c74b595e86cc5db869b8f8088"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/adapter.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/adapter.ts",
+      "bytes": 1968,
+      "sha256": "984750940bd2cec5962111b9bddfc7fbe11483e24ae903d89dd5013bb2f097d1"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/contracts.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/contracts.ts",
+      "bytes": 4228,
+      "sha256": "e55e6bbffae725ff7667f26baadb2feb4f18f42f3e8d0a68379e13bdc27a3fdf"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/draft.test.mjs",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/draft.test.mjs",
+      "bytes": 5734,
+      "sha256": "ff07d17d95001142fd6c1e7322087f42050e75da7f344ebe5903fbad90281c76"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/draft.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/draft.ts",
+      "bytes": 3789,
+      "sha256": "e0e4877bae26a08b6815b3b0601298ed60da4be57417d4eacb5befcd45172ebb"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/editor.test.mjs",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/editor.test.mjs",
+      "bytes": 11807,
+      "sha256": "8f93b29a3d312c1e17fb53db9daf117cbb99c90f858cae2eb9229cd34f6a5dd6"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/editor.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/editor.ts",
+      "bytes": 21709,
+      "sha256": "09e0363fbca70901d996e695cad0844245e73a09a10587728d1004add2bbdb8d"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/fixtures.mjs",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/fixtures.mjs",
+      "bytes": 1813,
+      "sha256": "01bc8d821a16101bd68cf206454a15eb72920ac2a1f03ec33d33710d786f6f49"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/package.json",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/package.json",
+      "bytes": 230,
+      "sha256": "8ecb9089620b6a9c420f2b93afa338ba43c6a349a0802da5f9fabaf25f3c592c"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/README.md",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/README.md",
+      "bytes": 6422,
+      "sha256": "e494e81fb667dd5239b5d16e7acd9e7bfce9cf1a10c00b500a8e0bb88a1727f8"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/tsconfig.json",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/tsconfig.json",
+      "bytes": 383,
+      "sha256": "03281cea3b4327889c1d8c5748abb3cb20521a13faf446faf8956d7da6b73285"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/validation.test.mjs",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/validation.test.mjs",
+      "bytes": 5108,
+      "sha256": "080fee850b25fedb2dc65d364324c20b9b288147c06db6aaaa4608d942e70df7"
+    },
+    {
+      "path": "04_目标项目参考/docs/proposals/character-management/validation.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/docs/proposals/character-management/validation.ts",
+      "bytes": 9296,
+      "sha256": "86d9d967e4a01c3be9e49a5ca397b8622f2326cafb413d16fbcb1fa53f65415d"
+    },
+    {
+      "path": "04_目标项目参考/package.json",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/package.json",
+      "bytes": 1455,
+      "sha256": "e6b1cb7b716b30d40e176cb7e2f24aebb1e74e470734f332a7133ee91a14e0fa"
+    },
+    {
+      "path": "04_目标项目参考/packages/contracts/src/index.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/packages/contracts/src/index.ts",
+      "bytes": 322,
+      "sha256": "3c8c691432f013f562715bc1a7d355ffaae0d33be43f091402f8cd12cb16c7b9"
+    },
+    {
+      "path": "04_目标项目参考/packages/db/src/schema.ts",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/packages/db/src/schema.ts",
+      "bytes": 391,
+      "sha256": "c37539b1867058180ed757457b03b489cce637fd8e0160d0567a08c963b8d207"
+    },
+    {
+      "path": "04_目标项目参考/pnpm-workspace.yaml",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/pnpm-workspace.yaml",
+      "bytes": 72,
+      "sha256": "764babfae2a2f09dc7c630f953ed0f974d71d824b2e27728241e0ef63f8d44e7"
+    },
+    {
+      "path": "04_目标项目参考/README.md",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/README.md",
+      "bytes": 4245,
+      "sha256": "8bc1afe76e7f46ef6a3ee489e197965a75d0c8c9599b8faa01b50923f2bf0a65"
+    },
+    {
+      "path": "04_目标项目参考/tsconfig.base.json",
+      "category": "目标项目参考",
+      "origin": "旧项目/../Snode/tsconfig.base.json",
+      "bytes": 299,
+      "sha256": "5d4def6e928270e9b58afc2f8b1ec5ffa7dfafd3abb8a6be2012f4b57d49fe97"
+    }
+  ]
+}

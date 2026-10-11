@@ -1,0 +1,589 @@
+{
+  "date": "2026-10-06",
+  "reviewOnly": true,
+  "scope": "synthetic shape tests; NativeBackup fixtures use existing T07 shape only, not legal characters",
+  "cases": [
+    {
+      "id": "M01",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "new-legacy"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M02",
+      "shape": "ImportCommand",
+      "input": {
+        "commandId": "import-command",
+        "importDraftId": "import-draft",
+        "submittedDraftVersion": 0,
+        "input": {
+          "source": {
+            "format": "legacy-save-bundle",
+            "adapterVersion": "review-adapter",
+            "sourceHash": "review-hash",
+            "fileName": "review.json"
+          },
+          "selection": {
+            "recordLocator": "char_A_B_slot2",
+            "sheetPath": null,
+            "legacySlot": 2
+          },
+          "capturedFacts": [
+            {
+              "sourceFactId": "source-ability",
+              "locator": "char_A_B_slot2.skills[0]",
+              "kind": "ability",
+              "raw": "unknown ability",
+              "styleTokens": []
+            }
+          ],
+          "resolutions": [],
+          "ruleset": {
+            "id": "review-release",
+            "manifestHash": "review-only"
+          },
+          "target": {
+            "mode": "new-legacy"
+          }
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M03",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "update-existing",
+          "characterId": "review-role",
+          "expectedRevision": 2
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M04",
+      "shape": "ImportPreviewRequest",
+      "input": {
+        "requestId": "preview-request",
+        "importDraftId": "import-draft",
+        "submittedDraftVersion": 0,
+        "input": {
+          "source": {
+            "format": "legacy-save-bundle",
+            "adapterVersion": "review-adapter",
+            "sourceHash": "review-hash",
+            "fileName": "review.json"
+          },
+          "selection": {
+            "recordLocator": "char_A_B_slot2",
+            "sheetPath": null,
+            "legacySlot": 2
+          },
+          "capturedFacts": [
+            {
+              "sourceFactId": "source-ability",
+              "locator": "char_A_B_slot2.skills[0]",
+              "kind": "ability",
+              "raw": "unknown ability",
+              "styleTokens": []
+            }
+          ],
+          "resolutions": [],
+          "ruleset": {
+            "id": "review-release",
+            "manifestHash": "review-only"
+          },
+          "target": {
+            "mode": "new-legacy"
+          }
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M05",
+      "shape": "ResolveImportIssueCommand",
+      "input": {
+        "commandId": "resolve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "issueId": "source-unresolved",
+        "candidateUid": "ability-uid",
+        "entry": {
+          "id": "review-entry",
+          "revision": 1
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M06",
+      "shape": "ApproveAssetClaimsCommand",
+      "input": {
+        "commandId": "approve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "claimSetId": "claim-set",
+        "expectedClaimSetRevision": 1,
+        "claimIds": [
+          "claim-1"
+        ],
+        "decisionId": "decision-1",
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "M07",
+      "shape": "CoverageRow",
+      "input": {
+        "sourceId": "review-source",
+        "sourceHash": "hash",
+        "scopeLocator": "body[1..3]",
+        "task": "3.1.1",
+        "contentStatus": "complete",
+        "automation": "read-only",
+        "definitionRefs": [
+          {
+            "id": "review-entry",
+            "revision": 1
+          }
+        ],
+        "caseIds": [
+          "source-case"
+        ],
+        "issueRefs": []
+      },
+      "expected": true
+    },
+    {
+      "id": "M08",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "update-existing",
+          "characterId": "review-role"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M09",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "new-legacy",
+          "ownerUserId": "spoof"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M10",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "sheetPath": null,
+          "legacySlot": null
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "new-legacy"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M11",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "unsupported-binary",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [
+          {
+            "sourceFactId": "source-ability",
+            "locator": "char_A_B_slot2.skills[0]",
+            "kind": "ability",
+            "raw": "unknown ability",
+            "styleTokens": []
+          }
+        ],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "new-legacy"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M12",
+      "shape": "ImportInput",
+      "input": {
+        "source": {
+          "format": "legacy-save-bundle",
+          "adapterVersion": "review-adapter",
+          "sourceHash": "review-hash",
+          "fileName": "review.json"
+        },
+        "selection": {
+          "recordLocator": "char_A_B_slot2",
+          "sheetPath": null,
+          "legacySlot": 2
+        },
+        "capturedFacts": [],
+        "resolutions": [],
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "target": {
+          "mode": "new-legacy"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M13",
+      "shape": "ImportCommand",
+      "input": {
+        "commandId": "import-command",
+        "importDraftId": "import-draft",
+        "submittedDraftVersion": 0,
+        "input": {
+          "source": {
+            "format": "legacy-save-bundle",
+            "adapterVersion": "review-adapter",
+            "sourceHash": "review-hash",
+            "fileName": "review.json"
+          },
+          "selection": {
+            "recordLocator": "char_A_B_slot2",
+            "sheetPath": null,
+            "legacySlot": 2
+          },
+          "capturedFacts": [
+            {
+              "sourceFactId": "source-ability",
+              "locator": "char_A_B_slot2.skills[0]",
+              "kind": "ability",
+              "raw": "unknown ability",
+              "styleTokens": []
+            }
+          ],
+          "resolutions": [],
+          "ruleset": {
+            "id": "review-release",
+            "manifestHash": "review-only"
+          },
+          "target": {
+            "mode": "new-legacy"
+          }
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "trusted": true
+      },
+      "expected": false
+    },
+    {
+      "id": "M14",
+      "shape": "ImportCommand",
+      "input": {
+        "commandId": "import-command",
+        "importDraftId": "import-draft",
+        "submittedDraftVersion": 0,
+        "input": {
+          "source": {
+            "format": "legacy-save-bundle",
+            "adapterVersion": "review-adapter",
+            "sourceHash": "review-hash",
+            "fileName": "review.json"
+          },
+          "selection": {
+            "recordLocator": "char_A_B_slot2",
+            "sheetPath": null,
+            "legacySlot": 2
+          },
+          "capturedFacts": [
+            {
+              "sourceFactId": "source-ability",
+              "locator": "char_A_B_slot2.skills[0]",
+              "kind": "ability",
+              "raw": "unknown ability",
+              "styleTokens": []
+            }
+          ],
+          "resolutions": [],
+          "ruleset": {
+            "id": "review-release",
+            "manifestHash": "review-only"
+          },
+          "target": {
+            "mode": "new-legacy"
+          }
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "walletBalance": 999
+      },
+      "expected": false
+    },
+    {
+      "id": "M15",
+      "shape": "ApproveAssetClaimsCommand",
+      "input": {
+        "commandId": "approve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "claimSetId": "claim-set",
+        "expectedClaimSetRevision": 1,
+        "claimIds": [
+          "claim-1"
+        ],
+        "decisionId": "decision-1",
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "ownerApproved": true
+      },
+      "expected": false
+    },
+    {
+      "id": "M16",
+      "shape": "ApproveAssetClaimsCommand",
+      "input": {
+        "commandId": "approve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "claimSetId": "claim-set",
+        "expectedClaimSetRevision": 1,
+        "claimIds": [],
+        "decisionId": "decision-1",
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M17",
+      "shape": "ApproveAssetClaimsCommand",
+      "input": {
+        "commandId": "approve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "claimSetId": "claim-set",
+        "expectedClaimSetRevision": 0,
+        "claimIds": [
+          "claim-1"
+        ],
+        "decisionId": "decision-1",
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "M18",
+      "shape": "ResolveImportIssueCommand",
+      "input": {
+        "commandId": "resolve-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "issueId": "source-unresolved",
+        "candidateUid": "ability-uid",
+        "entry": {
+          "id": "review-entry",
+          "revision": 1
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "learningCost": 0
+      },
+      "expected": false
+    },
+    {
+      "id": "M19",
+      "shape": "CoverageRow",
+      "input": {
+        "sourceId": "review-source",
+        "sourceHash": "hash",
+        "scopeLocator": "body[1..3]",
+        "task": "3.1.1",
+        "contentStatus": "complete",
+        "automation": "fully-implemented",
+        "definitionRefs": [
+          {
+            "id": "review-entry",
+            "revision": 1
+          }
+        ],
+        "caseIds": [
+          "source-case"
+        ],
+        "issueRefs": []
+      },
+      "expected": false
+    }
+  ]
+}

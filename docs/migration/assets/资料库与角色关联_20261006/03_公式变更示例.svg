@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="848" viewBox="0 0 1280 848">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8298a8"/></marker></defs>
+<rect width="1280" height="848" rx="24" fill="#f6f9fb"/>
+<text x="56" y="57" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e" text-anchor="start">03</text>
+<text x="112" y="58" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="700" fill="#183042" text-anchor="start">公式改变：输入保留，派生结果重算</text>
+<text x="56" y="104" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">假设以 10 为旧零点，仅演示机制；不是修改现行游戏公式。</text>
+<rect x="56" y="150" width="1168" height="118" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<text x="80" y="194" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="700" fill="#183042" text-anchor="start">本例参与计算的属性 = 13</text>
+<text x="80" y="239" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">仅调整计算公式；角色原始投入与加成来源不变。</text>
+<path d="M336 276 L336 326" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M944 276 L944 326" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="56" y="336" width="560" height="260" rx="18" fill="#eaf1f8" stroke="#9ab4ca" stroke-width="2"/>
+<text x="80" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="700" fill="#376b95" text-anchor="start">R1：偶数门槛</text>
+<text x="80" y="435" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" fill="#597080" text-anchor="start">floor((13 - 10) / 2)</text>
+<text x="80" y="531" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="66" font-weight="700" fill="#376b95" text-anchor="start">+1</text>
+<rect x="664" y="336" width="560" height="260" rx="18" fill="#eff8f5" stroke="#a3c9bd" stroke-width="2"/>
+<text x="688" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="28" font-weight="700" fill="#21746e" text-anchor="start">R2：奇数门槛</text>
+<text x="688" y="435" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="400" fill="#597080" text-anchor="start">floor((13 - 9) / 2)</text>
+<text x="688" y="531" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="66" font-weight="700" fill="#21746e" text-anchor="start">+2</text>
+<rect x="56" y="650" width="1168" height="124" rx="18" fill="#fffaf0" stroke="#d7c49e" stroke-width="2"/>
+<text x="80" y="698" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#a77b37" text-anchor="start">DM 将团统一升级：R1 → R2</text>
+<text x="80" y="743" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">调整值与依赖它的命中、豁免等结果按新依据计算；旧缓存不沿用。</text>
+</svg>

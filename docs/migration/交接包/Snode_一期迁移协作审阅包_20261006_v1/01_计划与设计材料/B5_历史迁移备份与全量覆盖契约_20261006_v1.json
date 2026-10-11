@@ -1,0 +1,629 @@
+{
+  "date": "2026-10-06",
+  "stage": "B5-legacy-import-backup-full-coverage",
+  "version": "1.0-review-candidate",
+  "status": "internal_review_complete_joint_signoff_pending",
+  "pageUrl": "https://chatgpt.com/space/page_2b601132e8ec8191bbb6a4b617a87e69",
+  "businessCodeChanged": false,
+  "productionImplementation": false,
+  "peerSignoffRecorded": false,
+  "realMigrationsPerformed": false,
+  "assetPolicy": {
+    "status": "user-confirmed",
+    "value": "历史金币与物品先待核对保留，由入团后的主持人确认后正式入账；未批准不覆盖云端余额或成为可交易资产"
+  },
+  "formats": [
+    {
+      "id": "FMT01",
+      "format": "旧全量JSON备份",
+      "basis": "meta.version=1.0＋saves字典；每个value是JSON字符串；char_<名称>_slotN",
+      "policy": "逐条读取与保留坏条目；先分组并选择主存档／槽位；charCount是条目数，不当角色数"
+    },
+    {
+      "id": "FMT02",
+      "format": "旧单角色JSON",
+      "basis": "旧字段结构识别：classes／skills／talent_tree／blueprints等；文件名不作格式证明",
+      "policy": "独立适配器与版本判读；保留内部持久字段和未知来源，不复制旧规则行为"
+    },
+    {
+      "id": "FMT03",
+      "format": "XLSX无元数据",
+      "basis": "按工作簿关系、模板特征、表／角色区域／字段识别；四份真实档案均属此路径",
+      "policy": "读取可见事实、公式缓存及样式；来源／UID缺失保留待核对，不凭最大Sheet或首列猜"
+    },
+    {
+      "id": "FMT04",
+      "format": "XLSX元数据1／2／3",
+      "basis": "_SNODE_META；读写代码已到v3，含visibleBaseline、entryJSON及__STATE__",
+      "policy": "按版本显式适配；同可见基线对照；重复UID／损坏／未来版本报告问题"
+    },
+    {
+      "id": "FMT05",
+      "format": "新版角色JSON备份",
+      "basis": "kind=snode-character-backup、formatVersion、完整CharacterDocument、出处、资产声称及不可逆证据",
+      "policy": "完整结构与图关系校验；身份／权限／余额仍由服务核定，文件不是授予凭证"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "MIGR01",
+      "name": "记录和目标",
+      "requirement": "明确文件、表、实体区域／槽位、源版本和目标；现角色更新必须有授权ID及当前revision"
+    },
+    {
+      "id": "MIGR02",
+      "name": "来源与UID",
+      "requirement": "正常保存／同角色导出导入保持技能、天赋、选择等UID；未知有原文和稳定候选键；显式复制重映射内部引用"
+    },
+    {
+      "id": "MIGR03",
+      "name": "原文与补全",
+      "requirement": "保留值、公式／缓存事实、颜色、合并与区域证据；补来源保持实例，不变成重新学习／扣费"
+    },
+    {
+      "id": "MIGR04",
+      "name": "历史与不可逆",
+      "requirement": "状态迁移不重放创建／升级奖励；保留禁学、付款／领取、固定时间线；旧余额不能覆盖权威账目"
+    },
+    {
+      "id": "MIGR05",
+      "name": "资产声称",
+      "requirement": "上传历史金币／物品先待核对；入团DM审核具体claim版本与归属后同事务入账，未批准不成为权威配装"
+    },
+    {
+      "id": "MIGR06",
+      "name": "保存与去重",
+      "requirement": "命令幂等、来源物化关联、目标revision与接受的转换计划一致；同文件Hash不替代全部身份／去重判断"
+    },
+    {
+      "id": "MIGR07",
+      "name": "导出与恢复",
+      "requirement": "新JSON保完整语义图；XLSX按约定模板声明可恢复范围；读取／生成失败不报成功"
+    },
+    {
+      "id": "MIGR08",
+      "name": "全量验收",
+      "requirement": "按来源范围、内容块、定义、选择分支、支持声明及真实案例逐项核验，构造例与实际迁移分开"
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/character-imports/preview",
+      "purpose": "源适配事实、显式记录选择、映射和目标策略；服务生成可信转换计划"
+    },
+    {
+      "method": "POST",
+      "path": "/api/character-imports/commands",
+      "purpose": "导入新遗留记录／更新／显式副本；仅经授权数据及接受的计划原子提交"
+    },
+    {
+      "method": "GET",
+      "path": "/api/character-imports/commands/:commandId",
+      "purpose": "目标尚未创建时的主体范围核实；当前对象权限重新检查"
+    },
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/import-issues/preview",
+      "purpose": "按issueId／实例UID补选来源并预览所有关联变化"
+    },
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/import-issue-commands",
+      "purpose": "保UID补全，不重放学习或奖励；变化超额先合法处理"
+    },
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/imported-assets/approval-commands",
+      "purpose": "同团获准DM审核固定claimSet版本，生成正式资产与批准回执"
+    },
+    {
+      "method": "GET",
+      "path": "/api/characters/:id/exports/backup",
+      "purpose": "当前授权角色语义备份及带版本资产声称／证据；不含登录凭据"
+    },
+    {
+      "method": "POST",
+      "path": "/api/characters/:id/exports/workbook",
+      "purpose": "选择已支持模板／映射，生成XLSX及丢失范围说明；无角色写入"
+    }
+  ],
+  "coverage": [
+    {
+      "id": "COV01",
+      "task": "3.1.1 全量资料",
+      "proof": "冻结全部已公布来源、Hash和locator；定义／旧ID映射、正文段落表格图片／字体与关联单位完整；未启用future不发布"
+    },
+    {
+      "id": "COV02",
+      "task": "3.1.2 全量建卡",
+      "proof": "每个公布职业、种族、背景及必需选择分支有场景；未确认关键规则不得仅用人工标签算自动建卡完成"
+    },
+    {
+      "id": "COV03",
+      "task": "3.1.3 全量管理",
+      "proof": "来源、UID、费用、栏位、成长、资产、人工状态、历史与失败恢复覆盖；未支持与人工范围明确"
+    },
+    {
+      "id": "COV04",
+      "task": "T13 历史格式",
+      "proof": "旧备份／单角色JSON、约定XLSX／元数据1至3、新备份通过真实档案与连续往返；大文件、错版和损坏明确"
+    },
+    {
+      "id": "COV05",
+      "task": "当前规则冲突与支持",
+      "proof": "read-only／character-validated／manual／unsupported／future-unpublished分层，内容完整不等于可计算；源码改动后重新冻结"
+    },
+    {
+      "id": "COV06",
+      "task": "跨3.2权限与资产",
+      "proof": "新遗留角色不走建卡发奖励；DM资产审核、目标更新权限、单线单团和去重在真实服务验收"
+    }
+  ],
+  "schemaArtifact": "B5_迁移备份与覆盖Schema_评审候选_20261006_v1.json",
+  "examplesArtifact": "B5_契约验证样例_20261006_v1.json",
+  "schemaScope": {
+    "definitions": 15,
+    "topShapes": 7,
+    "cases": 28,
+    "valid": 12,
+    "invalid": 16,
+    "localPlanNegatives": 10
+  },
+  "sourceObservations": {
+    "workbookProbe": "workbook_structure_probe.json",
+    "realFiles": 4,
+    "sheetCounts": [
+      2,
+      2,
+      1,
+      1
+    ],
+    "allWithoutMetadata": true,
+    "oneFormulaBookWithCachedValues": true,
+    "metadataReadVersions": [
+      1,
+      2,
+      3
+    ],
+    "metadataWriterVersion": 3,
+    "legacySaveBundle": "meta.version=1.0 + saves string payloads",
+    "legacySaveKey": "char_<name>_slotN",
+    "legacyCharCountIsSaveEntryCount": true
+  },
+  "newBackupScope": "full role semantic document, claims and provenance; not cloud/authority restoration or arbitrary Excel rendering objects",
+  "unknownDataPolicy": "preserve raw facts and stable entity mapping; no fuzzy/main-class guess",
+  "assetAdmission": "pending claims; verified current-campaign DM and fixed claim set version required",
+  "sourceBaseline": {
+    "file": "baseline.json",
+    "archiveDirectory": "备份区/2026-10/b5-migration-20261006-19cd",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetExistingChanges": 23,
+    "remoteLatestVerifiedThisTurn": false
+  },
+  "reportMarkdown": "日期：2026年10月6日；版本：v1，B5历史迁移、备份及全量覆盖候选。本页承接[B4不可逆与操作边界](https://chatgpt.com/space/page_4514894684c88191b77f815335f823e1)、[完整角色结构](https://chatgpt.com/space/page_cfd381d68788819195ec90ef4d64f8cf)和[总体评审包](https://chatgpt.com/space/page_4c9129dd408c8191a64a13aff3ba16f3)，明确旧档进入新模型、补全、资产审核和语义备份的流程。\n\n用户本轮确认历史金币和物品先作为待核对资产保留／展示，入团后由主持人确认才正式入账。文件不能直接覆盖云端余额或变为可交易资产；未知技能可先保存待核对角色的既有决定继续生效。本轮只设计及只读检查，不运行真实角色迁移、审批或导出，不修改代码和原档。\n\n## 当前格式依据与真实档案结构\n\n| 入口 | 实际依据 | 迁移政策 |\n| --- | --- | --- |\n| FMT01 旧全量JSON备份 | meta.version=1.0＋saves字典；每个value是JSON字符串；char_<名称>_slotN | 逐条读取与保留坏条目；先分组并选择主存档／槽位；charCount是条目数，不当角色数 |\n| FMT02 旧单角色JSON | 旧字段结构识别：classes／skills／talent_tree／blueprints等；文件名不作格式证明 | 独立适配器与版本判读；保留内部持久字段和未知来源，不复制旧规则行为 |\n| FMT03 XLSX无元数据 | 按工作簿关系、模板特征、表／角色区域／字段识别；四份真实档案均属此路径 | 读取可见事实、公式缓存及样式；来源／UID缺失保留待核对，不凭最大Sheet或首列猜 |\n| FMT04 XLSX元数据1／2／3 | _SNODE_META；读写代码已到v3，含visibleBaseline、entryJSON及__STATE__ | 按版本显式适配；同可见基线对照；重复UID／损坏／未来版本报告问题 |\n| FMT05 新版角色JSON备份 | kind=snode-character-backup、formatVersion、完整CharacterDocument、出处、资产声称及不可逆证据 | 完整结构与图关系校验；身份／权限／余额仍由服务核定，文件不是授予凭证 |\n\n只读代码核对来自character_io.js和panel_engine.js，旧全量备份为{meta,saves}；getSaveKey实际形如char_名称_slotN，名称可含下划线，分组不是按第一个下划线截断。旧saves覆盖localStorage的行为不迁入新平台；新站不能跨源自动读取旧站localStorage，玩家先从旧工具导出。\n\n四份原档只扫描OOXML结构，不读取／展示角色数值或重算公式：\n\n| 档案 | 工作表数与元数据 | 结构关注 |\n| --- | --- | --- |\n| 甘九·顽石.xlsx | 2表；无_SNODE_META | 17个公式有缓存；有负数单元格 |\n| 狐人术士 拉奇.xlsx | 2表；无_SNODE_META | 多表与负数单元格 |\n| 芙兰_角色档案.xlsx | 1表；无_SNODE_META | 单表识别仍需区域／来源校验 |\n| 基尼泰·梅.xlsx | 1表；无_SNODE_META | 单表及负数事实保留 |\n\n扫描未发现重复工作表关系编号；无元数据并非损坏，也不能由有缓存推断公式正确／最新。本轮没有把实际数据转换为新角色或证明四份已经可无损迁移。原件位于[甘九档案](/D:/Download/scholar-agent-main/甘九·顽石.xlsx)、[拉奇档案](</D:/Download/scholar-agent-main/狐人术士 拉奇.xlsx>)、[芙兰档案](/D:/Download/scholar-agent-main/芙兰_角色档案.xlsx)、[基尼泰档案](/D:/Download/scholar-agent-main/基尼泰·梅.xlsx)。\n\n## 分层读取与显式记录选择\n\n读取容器、捕获来源事实、领域标准化、服务预览和授权提交分层。OOXML关系、共享／内联字符串、转义、稀疏单元格、合并、字体颜色、公式与缓存属于读取层；职业绑定、UID、成长、栏位和规则属于领域层，数据库／资产属于服务层。\n\n选择维度是文件中的保存条目、工作表、实体区域及槽位。一个表可以混有多个角色、规划或参考资料，不能把最大表／第一个表／所有非空格合并成一个角色。同等候选先确认；已确认的支持表保留为supporting-data，不能串入主实体属性。\n\n源事实有稳定sourceFactId、locator、raw与样式语义；空、0、负值、错误缓存和未提供分别处理。公式缓存是当时的事实快照，缺缓存不等于0，读取不执行未知公式或外部工作簿；需要规则计算时另按确认模型。单条旧saves字符串损坏可以保留该条问题并查看其他条目，整个JSON／ZIP损坏则不能伪报成功。\n\n多槽位不自动成为多个正式角色。用户选择当前候选，其余作为历史依据／待导入记录，不把它们套用当前角色的正式命令历史或用于重复发放资产。文件名称和charCount不能决定真实人数、身份或覆盖目标。\n\n## 元数据版本、可见编辑与UID\n\n现有reader接受metaVersion 1至3，writer明确写3。B5支持清单包含1／2／3适配及无meta路径；高于已支持版本、坏JSON、重复UID或缺必需列返回明确问题，可见原文仍可保存为待核对依据，不能忽略错误然后声明已完整恢复。\n\n| 元数据与可见内容 | 处理 |\n| --- | --- |\n| 基线一致、实体身份明确 | 恢复额外来源／选择／UID及元信息，技能和天赋走同一身份协议 |\n| 修改备注等但仍为同一条目 | 显式识别可修改字段并保留原UID；未确认来源不覆盖新输入 |\n| 同名／改名／换技能导致身份不明确 | 列候选及原基线，用户确认编辑原条目还是替换；不只凭姓名继承UID |\n| 删除行／空格／消失的已写条目 | 区分删除意图、模板移动和损坏；云角色永久移除要走B4确认，不用文件缺字段自动遗忘 |\n| writtenToVisible=0的溢出或未定栏位条目 | 保留且展示；不因表格容量不足消失，也不自动变成合法活跃能力 |\n| 无UID的旧格式 | 首次分配候选与正式映射并留依据，重试沿用；不是每次读入按数组位置／名字随机生成 |\n\nmetadata中的服务器身份、权限、余额或‘validated’不是授权。正常同角色保存／新备份往返保持实例ID；显式复制产生新身份映射，内部引用同步转换，原UID作为来源证据。角色范围内完整实例引用用characterId＋uid，独立持久单位／资产另有服务身份，不混为一套全局名字键。\n\n## 解析未知来源与补全\n\n未知能力、职业来源、初始风格、学习途径、选择、占栏、成长依据及原有效数值均保留。别名与相似名字只能提供候选；旧skillId重号按来源系统／表／版本匹配，不能取第一项或默认主职业。规则目录更新不在读取时静默改旧角色绑定发布。\n\n来源补全按issueId与candidateUid，显示Entry的职业、表、阶位、风格与完整正文。服务更新对应能力、获取、成长／关键属性、placement及栏位关联，保持现实例UID；不是重新学，不扣一次新费用、不重领旧收益。若导致栏位超额、同名禁学或派生条件变化，先预览处理，不能自动删其他条目腾位。\n\n历史属性／最大HP来源不全时保留记录事实和问题，不猜哪项已包含奖励；缺初始或升级事实不默认从1级重算。角色资料可先保存，但自报XP／技能点／等级的导入声明不等于可信可消费的成长权益；操作所需来源仍核对，相关自动成长保持依赖阻塞。\n\n## 资产待核对与主持人入账\n\n| 层次 | 可做的事 | 权威边界 |\n| --- | --- | --- |\n| 原始资产声称 | 保留金币单位、数值、物品说明、数量／布局及源记录；在面板单独展示 | 未批准不进钱包／库存、不成为权威equippedAssetLinks或自动装备加成 |\n| 已存在的新平台资产引用 | 服务检查当前所有权、版本和目标，在合法范围关联 | 文件assetId／旧余额不直接授权，副本不能与旧角色共同拥有同一实例 |\n| 入团DM审批 | 审核明确claimSet及版本、选定claimIds、单位／物品匹配、数量、接收角色和decision | 当前同团资格及审批cap由3.2验证；审批不能成为无限余额setter |\n| 正式入账 | 角色、资产、源映射、防重领取／审批回执、审计及角色修订共同事务保存 | 同源资产不得在多次文件更新／复制中重复入账，批准后仍按当前团权限交易 |\n| 拒绝／未批准／原文修改 | 声称及裁定保留，新输入改变claim版本后重新审核 | 旧decision不适用于已换金额／物品的声称，拒绝不抹掉原件 |\n\n未入团无法由团DM确认，声称保持pending。B3按合法建卡规则生成的起始资产是另一条可信来源，不因B5声称审批把它与历史迁入重复授予。已有云角色的导入不会覆盖资产余额；同平台备份引用能从当前服务核实的既有资产，不需要把旧快照再发一遍。\n\n文件Hash只标源字节，不证明真实性或所有权，也不是唯一去重键。服务保留来源实体／槽位／行映射和importLineage；不同Hash可能是同一原角色新版本，相同Hash也可能有多个记录。旧格式没有稳定原ID时由用户显式关联来源，不按同名强行合并；审批按可信来源关联和已入账实例再核对。\n\n## 新JSON备份与XLSX恢复范围\n\n新版NativeBackup具有kind和formatVersion，保存完整CharacterDocument、出处与修订、资产声称／引用、付款／领取陈述和preservedFacts。语义备份必须保留来源、UID、选择、原文、未决问题、人工调整及永久限制，不能只导出ManagementView或可见技能表。\n\n出处、Hash和不可逆陈述用于核对，不是可伪造的登录／授权凭证；不导出会话、令牌、拥有者权限或可直接执行脚本。更新现角色明确目标及当前revision，保留当前永久禁学、支付／领取、固定时间线和经济事实；新建遗留角色不重放创建／升级。普通恢复和导入都不能用旧高余额退款或把禁学空表覆盖回去。\n\n导出取同一人物版本的授权字段，资产注明各自抓取版本／时间；它们不能被混成同一权威revision。原始来源附件若不随文件嵌入或另有正式受控包，明确其未保留范围，不用本机绝对路径冒充可跨设备恢复附件。JSON是角色语义备份，不承诺恢复任意工作簿的宏、图表、美术或第三方公式环境。\n\nXLSX导出以已支持模板／映射为前提，提供可见值、技能／天赋／图纸及溢出条目的展示，元数据携带可恢复来源和UID。缺meta或被第三方删除／改写后，只保证实际剩下的可见内容；必须报告损失范围，不能叫无损。元数据有基线和校验关联，损坏、移动、手改、删除、替换和不同O／R天赋列都进入测试矩阵。\n\n读取或生成失败不报告成功。浏览器能触发下载不等于文件已存盘；提示区分文件已生成／已发起下载与可核实的保存成功。重复导出不改角色、不重发奖励，正式三次导出导入验收必须经过新平台真实转换和读取，不能只对同一JSON stringify／parse作完成证明。\n\n## 导入提交与服务接口\n\n| 候选接口 | 用途 |\n| --- | --- |\n| POST /api/character-imports/preview | 源适配事实、显式记录选择、映射和目标策略；服务生成可信转换计划 |\n| POST /api/character-imports/commands | 导入新遗留记录／更新／显式副本；仅经授权数据及接受的计划原子提交 |\n| GET /api/character-imports/commands/:commandId | 目标尚未创建时的主体范围核实；当前对象权限重新检查 |\n| POST /api/characters/:id/import-issues/preview | 按issueId／实例UID补选来源并预览所有关联变化 |\n| POST /api/characters/:id/import-issue-commands | 保UID补全，不重放学习或奖励；变化超额先合法处理 |\n| POST /api/characters/:id/imported-assets/approval-commands | 同团获准DM审核固定claimSet版本，生成正式资产与批准回执 |\n| GET /api/characters/:id/exports/backup | 当前授权角色语义备份及带版本资产声称／证据；不含登录凭据 |\n| POST /api/characters/:id/exports/workbook | 选择已支持模板／映射，生成XLSX及丢失范围说明；无角色写入 |\n\n角色导入以受限SourceDescriptor、明确RecordSelection、capturedFacts、来源映射、固定规则和target模式提交。new-legacy／update-existing／explicit-copy分Schema；更新必须expectedRevision，复制／新建不信任文件characterId、owner或团声明，也不借新ID绕过已有时间线约束。\n\n预览返回输入／转换版本、选定记录、待核对项、差异、资产pending状态及语义planHash。提交再验证来源、权限和当前数据，角色／映射／问题／历史／命令结果同事务；资产入账是固定声称版本的独立授权审批，不伪造‘角色已经存入所以资产已成功’。\n\n命令登记、pending恢复和当前授权回放沿用B2。原命令同键重试；用户改映射／目标用新命令，服务仍按来源物化、不可逆事实和资产入账关联防重。入团或未知结果变化后，不把旧预览和旧审批当成当前权限。\n\n## 全量范围和真实验收门槛\n\n| 范围 | 完成证据 |\n| --- | --- |\n| COV01 3.1.1 全量资料 | 冻结全部已公布来源、Hash和locator；定义／旧ID映射、正文段落表格图片／字体与关联单位完整；未启用future不发布 |\n| COV02 3.1.2 全量建卡 | 每个公布职业、种族、背景及必需选择分支有场景；未确认关键规则不得仅用人工标签算自动建卡完成 |\n| COV03 3.1.3 全量管理 | 来源、UID、费用、栏位、成长、资产、人工状态、历史与失败恢复覆盖；未支持与人工范围明确 |\n| COV04 T13 历史格式 | 旧备份／单角色JSON、约定XLSX／元数据1至3、新备份通过真实档案与连续往返；大文件、错版和损坏明确 |\n| COV05 当前规则冲突与支持 | read-only／character-validated／manual／unsupported／future-unpublished分层，内容完整不等于可计算；源码改动后重新冻结 |\n| COV06 跨3.2权限与资产 | 新遗留角色不走建卡发奖励；DM资产审核、目标更新权限、单线单团和去重在真实服务验收 |\n\nCoverageRow把contentStatus与automation分开登记，记录sourceHash、locator、definitionRefs、caseIds及issueRefs。源文件有清单不等于正文迁移全，角色结构能验证不等于建卡分支全；人工与未支持范围要符合原任务／共同约定，不能擅自把必需自动计算改成manual然后标全部完成。\n\n| 必测维度 | 预期 |\n| --- | --- |\n| MIGR01 记录和目标 | 明确文件、表、实体区域／槽位、源版本和目标；现角色更新必须有授权ID及当前revision |\n| MIGR02 来源与UID | 正常保存／同角色导出导入保持技能、天赋、选择等UID；未知有原文和稳定候选键；显式复制重映射内部引用 |\n| MIGR03 原文与补全 | 保留值、公式／缓存事实、颜色、合并与区域证据；补来源保持实例，不变成重新学习／扣费 |\n| MIGR04 历史与不可逆 | 状态迁移不重放创建／升级奖励；保留禁学、付款／领取、固定时间线；旧余额不能覆盖权威账目 |\n| MIGR05 资产声称 | 上传历史金币／物品先待核对；入团DM审核具体claim版本与归属后同事务入账，未批准不成为权威配装 |\n| MIGR06 保存与去重 | 命令幂等、来源物化关联、目标revision与接受的转换计划一致；同文件Hash不替代全部身份／去重判断 |\n| MIGR07 导出与恢复 | 新JSON保完整语义图；XLSX按约定模板声明可恢复范围；读取／生成失败不报成功 |\n| MIGR08 全量验收 | 按来源范围、内容块、定义、选择分支、支持声明及真实案例逐项核验，构造例与实际迁移分开 |\n\n真实迁移包括四份已结构检查的XLSX，加旧全量JSON、多槽位／同名、metadata1／2／3及缺meta、改名／换项／删除、公式缓存缺失、元数据损坏和未来版本、UID重复、非法目标身份、文件换源及审批修改。新版JSON通过新平台连续三次导出导入，核对技能／天赋UID、来源、选择、进度、问题及人工调整，确认不重发资产和成长。\n\n本轮[Schema候选](/D:/Download/scholar-agent-main/docs/migration/B5_迁移备份与覆盖Schema_评审候选_20261006_v1.json)含15项定义、7顶层合同；28项结构例（12通过、16拒绝）全部匹配，另10项局部迁移反例被识别。合成旧bundle验证3个条目／2个角色分组、下划线名称和一条坏保存字符串保留为问题；这些不证明实际旧解析器、新平台迁移或UID往返已通过。\n\n内部材料已完成，DM／3.2签批和真实服务未运行。下一部分为B6账号、团／DM与经济联调、移动端／真实团试用及一期最终验收边界，仍只设计，不自动编码或重开全部技能效果制作。\n\n本地汇总：[B5_历史迁移备份与全量覆盖契约_20261006_v1.json](/D:/Download/scholar-agent-main/docs/migration/B5_历史迁移备份与全量覆盖契约_20261006_v1.json)。原XLSX、规则、类型与业务代码保持不变，目标本地仍929cd8c和23项既存改动，未重查远端main；本轮未发送给第三方或部署。页面无原生视觉预览，内容回读不等于渲染验收。",
+  "nextStep": "继续设计时转B6账号/团/DM/经济联调、移动端和真实团试用、一期验收；不自动编码",
+  "validation": {
+    "date": "2026-10-06",
+    "schemaReport": {
+      "date": "2026-10-06",
+      "definitions": 15,
+      "compiledTopShapes": 7,
+      "structuralCases": 28,
+      "valid": 12,
+      "invalid": 16,
+      "allExpectedMatched": true,
+      "localMigrationNegatives": 10,
+      "legacySyntheticEntries": 3,
+      "legacySyntheticRoles": 2,
+      "oneBadEntryRetainedAsIssue": true,
+      "realWorkbookStructureProbe": "workbook_structure_probe.json",
+      "realMigrationsPerformed": false,
+      "productionVerification": false,
+      "notVerified": "old/new parser E2E migration or UID roundtrip, asset approvals/DB/API, all actual source coverage or formulas",
+      "results": [
+        {
+          "id": "M01",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M02",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M03",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M04",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M05",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M06",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M07",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "M08",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M09",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M10",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M11",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M12",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M13",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M14",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M15",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M16",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M17",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M18",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "M19",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BACKUP-warrior",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BACKUP-cross",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BACKUP-priest",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BACKUP-progression-pending",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BACKUP-declined-grant",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "NO-FAKE-BACKUP-OWNER",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-UNSUPPORTED-VERSION",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-MISSING-STATEMENTS",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "NO-MISSING-LEGACY-FACTS",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        }
+      ],
+      "negatives": [
+        {
+          "id": "MP01",
+          "expectedDetected": "selection-required"
+        },
+        {
+          "id": "MP02",
+          "expectedDetected": "future-metadata"
+        },
+        {
+          "id": "MP03",
+          "expectedDetected": "duplicate-uid"
+        },
+        {
+          "id": "MP04",
+          "expectedDetected": "baseline-conflict"
+        },
+        {
+          "id": "MP05",
+          "expectedDetected": "irreversible-loss"
+        },
+        {
+          "id": "MP06",
+          "expectedDetected": "no-reward-replay"
+        },
+        {
+          "id": "MP07",
+          "expectedDetected": "asset-approval-required"
+        },
+        {
+          "id": "MP08",
+          "expectedDetected": "unapproved-equipment"
+        },
+        {
+          "id": "MP09",
+          "expectedDetected": "claim-revision-conflict"
+        },
+        {
+          "id": "MP10",
+          "expectedDetected": "backup-identity-conflict"
+        }
+      ]
+    },
+    "pageProof": {
+      "newPage": {
+        "exact": true,
+        "blocks": 44
+      },
+      "canonical": [
+        {
+          "key": "packet",
+          "changed": 1,
+          "unrelated": 41,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "plan",
+          "changed": 3,
+          "unrelated": 39,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "parent",
+          "changed": 3,
+          "unrelated": 245,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        }
+      ],
+      "questionnaireSequence": 20
+    },
+    "workbookProbe": {
+      "date": "2026-10-06",
+      "scope": "read-only OOXML package structure; no role normalization, formula evaluation or E2E migration",
+      "workbooks": [
+        {
+          "file": "甘九·顽石.xlsx",
+          "exists": true,
+          "readOnly": true,
+          "sha256": "e347b19cd245d1665ccfac18a6cf9729590e07c225243b39eec33db6187f20c7",
+          "sheetCount": 2,
+          "duplicateRelationshipIds": 0,
+          "sheets": [
+            {
+              "name": "甘九",
+              "state": "visible",
+              "relationId": "rId1",
+              "part": "xl/worksheets/sheet1.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 2764,
+              "formulaCount": 0,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 4,
+              "inlineStringCells": 0,
+              "sharedStringCells": 510,
+              "mergeCount": 558
+            },
+            {
+              "name": "Sheet1",
+              "state": "visible",
+              "relationId": "rId2",
+              "part": "xl/worksheets/sheet2.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 171,
+              "formulaCount": 17,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 0,
+              "inlineStringCells": 0,
+              "sharedStringCells": 14,
+              "mergeCount": 0
+            }
+          ],
+          "hasMetadata": false
+        },
+        {
+          "file": "狐人术士 拉奇.xlsx",
+          "exists": true,
+          "readOnly": true,
+          "sha256": "2c9c6e733a7f81cc0c4a2199acb08841984c3efadddd423a6407e3e11e83211c",
+          "sheetCount": 2,
+          "duplicateRelationshipIds": 0,
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "state": "visible",
+              "relationId": "rId1",
+              "part": "xl/worksheets/sheet1.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 2054,
+              "formulaCount": 0,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 0,
+              "inlineStringCells": 0,
+              "sharedStringCells": 205,
+              "mergeCount": 398
+            },
+            {
+              "name": "术士",
+              "state": "visible",
+              "relationId": "rId2",
+              "part": "xl/worksheets/sheet2.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 2616,
+              "formulaCount": 0,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 1,
+              "inlineStringCells": 0,
+              "sharedStringCells": 279,
+              "mergeCount": 428
+            }
+          ],
+          "hasMetadata": false
+        },
+        {
+          "file": "芙兰_角色档案.xlsx",
+          "exists": true,
+          "readOnly": true,
+          "sha256": "db254484b1cf2d77749171a6057f9c2ffa2ad234d5a26287fd4a1f04caf68529",
+          "sheetCount": 1,
+          "duplicateRelationshipIds": 0,
+          "sheets": [
+            {
+              "name": "模版",
+              "state": "visible",
+              "relationId": "rId1",
+              "part": "xl/worksheets/sheet1.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 3054,
+              "formulaCount": 0,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 3,
+              "inlineStringCells": 0,
+              "sharedStringCells": 433,
+              "mergeCount": 588
+            }
+          ],
+          "hasMetadata": false
+        },
+        {
+          "file": "基尼泰·梅.xlsx",
+          "exists": true,
+          "readOnly": true,
+          "sha256": "148fdc22f97b84e070e611d92a8d988257df4e27657b7ef5687b78538c269856",
+          "sheetCount": 1,
+          "duplicateRelationshipIds": 0,
+          "sheets": [
+            {
+              "name": "模版",
+              "state": "visible",
+              "relationId": "rId1",
+              "part": "xl/worksheets/sheet1.xml",
+              "external": false,
+              "present": true,
+              "cellCount": 2839,
+              "formulaCount": 0,
+              "formulaWithoutCache": 0,
+              "negativeNumericCells": 2,
+              "inlineStringCells": 0,
+              "sharedStringCells": 426,
+              "mergeCount": 573
+            }
+          ],
+          "hasMetadata": false
+        }
+      ]
+    },
+    "sourceMismatches": [],
+    "targetFilesVerified": 60,
+    "originalFilesVerified": 47,
+    "unrelatedBlocksPreserved": 325,
+    "productionTestsRun": false,
+    "realMigrationsPerformed": false,
+    "nativePageVisualPreviewAvailable": false,
+    "pending": [],
+    "taskArchive": {
+      "date": "2026-10-06",
+      "source": "D:\\Download\\scholar-agent-main\\_scratch\\b5-migration-20261006-19cd",
+      "destination": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\b5-migration-20261006-19cd",
+      "entries": 1,
+      "indexPrefixPreserved": true,
+      "originalWorkbooksUnchanged": true,
+      "sourceOriginalsUnchanged": true,
+      "targetCodeUnchanged": true,
+      "unexpectedTrackedDeletions": [],
+      "scratchRemoved": true
+    }
+  },
+  "temporaryArtifactsArchive": "备份区/2026-10/b5-migration-20261006-19cd"
+}

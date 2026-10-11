@@ -1,0 +1,909 @@
+{
+  "date": "2026-10-06",
+  "reviewOnly": true,
+  "productionVerification": false,
+  "scope": "synthetic shape and local plan invariants; no actual game operation or authority",
+  "cases": [
+    {
+      "id": "OP-AddSubclass",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "add-subclass",
+            "class": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "keyAttribute": {
+              "id": "review-definition",
+              "revision": 1
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-LevelUp",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "level-up",
+            "progressionId": "main"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-UnlockTier",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "unlock-tier",
+            "tier": {
+              "id": "review-definition",
+              "revision": 1
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-SelectPathways",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "select-pathways",
+            "progressionId": "main",
+            "pathways": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Advance",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "select-advancement",
+            "progressionId": "main",
+            "advancement": {
+              "id": "review-definition",
+              "revision": 1
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Learn",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "learn",
+            "entry": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "placement": {
+              "kind": "class-list",
+              "progressionId": "main"
+            },
+            "grantorHoldingId": null
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Forget",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "forget",
+            "abilityId": "ability-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Replace",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "replace",
+            "abilityId": "ability-a",
+            "entry": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "placement": {
+              "kind": "character"
+            },
+            "grantorHoldingId": "feat-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-MoveAbility",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "move-ability",
+            "abilityId": "ability-a",
+            "placement": {
+              "kind": "character"
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-AddPool",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "add-manual-pool",
+            "resource": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "value": 4
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-SetPool",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "set-manual-pool",
+            "poolId": "pool-a",
+            "value": null
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-RemovePool",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "remove-manual-pool",
+            "poolId": "pool-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-AddStatus",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "add-manual-status",
+            "definition": null,
+            "label": "人工状态",
+            "stacks": 1,
+            "notes": ""
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-SetStatus",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "set-manual-status",
+            "statusId": "status-a",
+            "stacks": null,
+            "notes": ""
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-RemoveStatus",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "remove-manual-status",
+            "statusId": "status-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Equip",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "equip",
+            "assetInstanceId": "item-a",
+            "slot": {
+              "id": "review-definition",
+              "revision": 1
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-Unequip",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "unequip",
+            "assetInstanceId": "item-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-MoveItem",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "move-item",
+            "assetInstanceId": "item-a",
+            "containerInstanceId": null
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-ClaimReward",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "claim-reward",
+            "rewardOfferKey": "offer-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "OP-AdjustResource",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "authorized-resource-adjustment",
+            "resource": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "delta": 1,
+            "reason": "经授权调整",
+            "decisionId": "decision-a"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "NO-ARBITRARY-FULL-DOC",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "learn",
+            "entry": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "placement": {
+              "kind": "class-list",
+              "progressionId": "main"
+            },
+            "grantorHoldingId": null
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": [],
+        "document": {
+          "skills": []
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-CLIENT-FREE-ROUTE",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "learn",
+            "entry": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "placement": {
+              "kind": "class-list",
+              "progressionId": "main"
+            },
+            "grantorHoldingId": null,
+            "free": true
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-CLIENT-GROWTH-AMOUNT",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "level-up",
+            "progressionId": "main",
+            "hpGain": 99
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-CLIENT-DELETE-BAN",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "forget",
+            "abilityId": "ability-a",
+            "clearRestrictions": true
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-NEGATIVE-REVISION",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "equip",
+            "assetInstanceId": "item-a",
+            "slot": {
+              "id": "review-definition",
+              "revision": 1
+            }
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": [
+            {
+              "assetInstanceId": "item-a",
+              "expectedRevision": 0
+            }
+          ]
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-GRANT-REPLACE-WITHOUT-TARGET",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "level-up",
+            "progressionId": "main"
+          },
+          "choices": [],
+          "grantDecisions": [
+            {
+              "offerKey": "offer-a",
+              "decision": "replace"
+            }
+          ],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-REMOVE-BY-NAME",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "remove-manual-status",
+            "label": "冻结"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-SOURCE-SPOOF",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "add-manual-pool",
+            "resource": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "value": 4,
+            "sourceRecordId": "rule-benefit"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-CLIENT-BALANCE",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "authorized-resource-adjustment",
+            "resource": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "delta": 1,
+            "reason": "经授权调整",
+            "decisionId": "decision-a",
+            "balanceAfter": 100
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "NO-UNREGISTERED-OP",
+      "shape": "CharacterOperationCommand",
+      "input": {
+        "commandId": "operation-command",
+        "characterId": "review-role",
+        "expectedRevision": 2,
+        "submittedDraftVersion": 0,
+        "input": {
+          "operation": {
+            "kind": "run-script",
+            "code": "reset"
+          },
+          "choices": [],
+          "grantDecisions": [],
+          "assetBasis": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "acknowledgedRiskKeys": []
+      },
+      "expected": false
+    },
+    {
+      "id": "PREVIEW-PENDING",
+      "shape": "OperationPreview",
+      "input": {
+        "requestId": "preview-request",
+        "characterId": "review-role",
+        "baseRevision": 2,
+        "submittedDraftVersion": 0,
+        "ruleset": {
+          "id": "review-release",
+          "manifestHash": "review-only"
+        },
+        "actionability": "needs-decision",
+        "previewId": null,
+        "planHash": null,
+        "issueRefs": [
+          "unknown-fee"
+        ],
+        "costs": [],
+        "changedRecordIds": [],
+        "requiredRiskKeys": []
+      },
+      "expected": true
+    },
+    {
+      "id": "RECEIPT",
+      "shape": "OperationReceipt",
+      "input": {
+        "commandId": "operation-command",
+        "submittedDraftVersion": 0,
+        "characterId": "review-role",
+        "operationId": "server-op",
+        "committedRevision": 3,
+        "changedRecordIds": [
+          "ability-a"
+        ],
+        "claimReceiptIds": [],
+        "paymentReceiptIds": [],
+        "assetReceiptIds": [],
+        "issueRefs": []
+      },
+      "expected": true
+    }
+  ]
+}

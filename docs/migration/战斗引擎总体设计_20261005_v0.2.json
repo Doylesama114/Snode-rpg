@@ -1,0 +1,846 @@
+{
+  "version": "combat-design-0.2",
+  "date": "2026-10-05",
+  "scope": "design-only",
+  "implementationDeferredByUser": true,
+  "businessCodeChanged": false,
+  "underlyingCharacterCandidate": "0.2.2",
+  "page": "https://chatgpt.com/space/page_e1e24020127c819183083300c31b28e5",
+  "classReviewPage": "https://chatgpt.com/space/page_c631ccffdbe0819187ee62052c736b87",
+  "codeImplementationStarted": false,
+  "overallDesignComplete": false,
+  "currentClassStage": "C01-b",
+  "nextReview": "C01-c 狂攻风格17项",
+  "markdown": "编写日期：2026年10月5日。状态：战斗引擎总体设计v0.2，逐职业全面审查已启动。按用户最新安排，接下来仅做规则调查、资料建模、交互与接口设计，T08至T15的实际代码实现延后到总体设计完成之后。本轮不创建战斗执行器或修改旧新项目业务代码。 C01-b增加攻击分段、后付成本、成对修正、当前收益转移、奖励凭据及独立风格计数视图；13题与补例已归录，DM边界明确。\n\n已有基础是T01至T05的规则调查、T06共享边界与T07代表资料验证。角色领域候选维持v0.2.2；本页是新的战斗设计草案，版本独立，不表示战斗引擎已完稿。第一职业从战士开始，当前进度见[C01起始条款与覆盖清单](https://chatgpt.com/space/page_1cf69a1f139c81919657d98b4317ab37)。\n\n## 设计目标与范围\n\n完整战斗设计需要同时回答：角色能做什么、如何判断合法、何时支付资源、在什么窗口允许反应、骰子及数值如何结算、结果怎样改变状态、主持人在哪里介入，以及这些操作如何保存和回放。\n\n审查覆盖全部公布职业及相关天赋、升级分支、领域、进阶、种族、专长、装备、物品和生物固有能力。叙事、临场掩体、阈值惩罚等按既定主持人边界处理。完整设计允许明确的人工裁定节点，不把缺规则的情况静默计算成默认值。\n\n基础战斗规则以冒险者基础规则.xlsx为主，结合主持人原答与用户后续更正。职业效果以当前原始DOCX为主，旧JSON与代码用于定位和差异检查。战斗设计手册的公式不作为规则依据；原件不修改，确认后的修订独立保存。\n\n## 逐职业审查顺序\n\n| 编号 | 范围 | 主要新增机制方向 | 完成要求 |\n| --- | --- | --- | --- |\n| C01 | 战士全部起始条款、六风格、各阶与升级 | 武器、攻击段、额外动作、位移、防御、反应、团队指令及高阶施法 | 本职业所有能力卡、学习条件、选择表、升级和关联内容都有处理结论 |\n| C02 | 牧师通用及全部公布领域 | 治疗、净化、延迟、保护、神祇与领域关系 | 可先代表领域后逐表展开，全领域覆盖后才能关闭C02 |\n| C03 | 游荡者 | 隐匿、朝向、条件伤害、连携及触发 | 所有风格、天赋与升级覆盖，不沿用旧原型默认规则 |\n| C04 | 法师全表 | 多动作施展、反应、区域、持续、控制、召唤、变化 | 先关键机制再全表，代表抽样不算全职业完成 |\n| C05a | 蛮斗士、武僧、战舞者、猎人、守望者 | 姿态、组合动作、远近战、追踪、防守与资源循环 | 五职业分别登记，逐项覆盖 |\n| C05b | 吟游诗人、谋士 | 队友协作、计划、干预、场上资源 | 明确操作者、目标、触发与资源所有者 |\n| C05c | 德鲁伊、萨满祭司、召唤师 | 变形、区域、召唤单位、召唤物指令和关联模板 | 单位属性及全部固有能力同时审查 |\n| C05d | 术士、魔契师、圣骑士 | 职业资源、契约、强化及复合效果 | 成长、授予、职业来源与战斗参数分开 |\n| C05e | 奇械师 | 制造、图纸、部署、装置与物资交互 | 新旧版本分开；学习费用等待新版表，不凭旧色点规则推演 |\n| C06 | 通用能力、种族、专长、进阶、装备、物品及其生物内容 | 跨来源取得、常驻修正、额外触发、消耗品与例外 | 逐来源覆盖，并复核跨职业与重复触发组合 |\n\n当前目录有18份基础职业DOCX，上表全部纳入。每个职业的技能、天赋、升级、选择条件分别盘点；同名技能保留各来源条目和阶位。一个技能可以涉及多个机制，相同机制按条件、阶段与参数复用，不能用技能数或关键词出现次数当作机制总量。\n\n## 每轮审查的交付物\n\n| 交付物 | 必须记录的内容 |\n| --- | --- |\n| 来源覆盖表 | 原件版本与哈希、正文位置、稳定旧ID、风格／阶位、正文与升级／选择范围、审查状态 |\n| 能力机制记录 | 条件、动作、资源、次数、目标、距离、检定、反应窗口、效果顺序、持续与解除、成长绑定 |\n| 机制登记表 | 机制身份、最小语义、复用参数、依赖、真实来源、适用范围、设计状态与未定问题 |\n| 场景记录 | 固定输入、事件顺序、应发生及不应发生的结果、对应条款；尚无执行器时只作纸面验算 |\n| 问卷 | 经过原文与既有答复过滤的具体场景，保留原句、争议点和影响范围 |\n| 设计修订 | 新机制要求哪些字段、事件、窗口、事务或展示支持，保留修订原因 |\n\n状态区分“已定位”“条款已审读”“规则已确认”“保留裁定”“设计待完善”“实现未开始”。全文能提取不代表效果已解释，模型能编译也不代表战斗执行可用。纯资料、学习条件与战斗机制可以有关联，但不混用完成状态。\n\n## 战斗引擎的总体结构\n\n建议使用通用角色与战斗实体，通过职业进度、来源条目、获取记录、装备与状态组合能力。新增人物或职业不会创建一份新的程序class；新资料使用现有机制，新语义才扩展机制处理器。未来可以使用TypeScript，但当前只定责任、数据与协议。\n\n| 层次 | 责任 | 关键数据或产物 |\n| --- | --- | --- |\n| 资料与规则发布 | 提供精确定义、版本、完整正文、规范修订与支持说明 | DefinitionRef、规则发布包、来源证据、能力机制描述 |\n| 角色解析 | 根据来源、职业进度、获取方式、装备及已确认规则形成可用能力和数值 | CharacterDocument解析结果、成长与关键属性绑定、缺项报告 |\n| 战斗实例 | 保存本场位置、资源、行动预算、状态及召唤单位 | BattleState、ActorState、EffectInstance、CounterLedger |\n| 行动与调度 | 处理意图、合法性、支付、分阶段执行、持续施展及区间调度 | ActionIntent、PendingAction、ActionResolution、ReactionWindow |\n| 机制与数值 | 按条款执行检定、伤害、治疗、移动、状态和组合效果 | 检定与伤害记录、效果步骤、空间查询 |\n| 事务与事件 | 将一次选择及结果可靠记录，防止重复提交并可追溯 | commandId、expectedRevision、事件因果链、快照与裁定记录 |\n| 展示与主持 | 展示可用动作、解释结果、收集选择／骰值／人工裁定 | 决策请求、结果预览、完整战斗日志及详情引用 |\n| 服务适配 | 对接身份、团权限、角色资源与资产权威服务 | 权限上下文、保存协议与结束战斗的写回边界 |\n\n角色事实、管理投影、战斗状态与规则定义各有所有者。战斗中暂时改变的值不直接覆盖角色成长历史或资产表。同模板召唤两次产生两个实体ID和独立状态，模板及原能力定义保持只读。\n\n## 必须设计清楚的数据对象\n\n| 对象 | 建议保存的内容 |\n| --- | --- |\n| BattleState | 场次ID、团／时间线引用、规则发布引用、修订、轮次与当前区间阶段、参与者、未完成操作、事件游标 |\n| ActorState | 通用实体ID、来源快照、操作者与阵营、位置、解析数值、当前HP／FP及防御层、行动预算、能力引用与状态 |\n| ActionIntent | 操作者、能力实例或基础行动、来源条目、目标、选择、预期修订；客户端只提交意图 |\n| ActionResolution | 支付记录、攻击及伤害段、目标分支、检定与骰子引用、当前执行阶段、完成／中断原因 |\n| PendingAction | 多动作技能所需与已付主要动作、首次资源支出、施展限制、连续性与中断依据 |\n| ReactionWindow | 触发事件、可反应者、合法能力、精锐来源阶位、窗口期限、决策与因果关系 |\n| RollRecord | 实际骰面、骰组、选择与重掷轨迹、加算／替换后的结果及来源；自然骰面不被最终总值覆盖 |\n| DamageInstance | 攻击ID、独立段ID、类型成分、倍率、附加值阶段、抗性与各防御层变化、取整位置 |\n| EffectInstance | 定义引用、来源实体／技能实例、目标、强度／层数、持续锚点、计数开始与到期、移除条件 |\n| CounterLedger | 所属实体与能力、每回合／每场／休息周期的额度、已用记录和恢复依据 |\n| DecisionRequest | 需要玩家或DM补充的具体输入、候选、关联事件与未定条款；禁止静默选第一项 |\n| BattleEvent | 顺序、前置修订、命令和因果ID、所用规则、输入与变化；足够重放已采用的结果 |\n\n这些是设计对象，不是数据库表承诺。字段会由各职业真实机制继续验证。精确版本、未知与0分开，以及来源／成长／关键属性分离，继续沿用T06与T07候选。\n\n## 调度与行动解析\n\n玩家同一区间可穿插行动，敌人的普通行动与玩家分开；敌人仍可在合法窗口反应。玩家自身回合开始锚定所属区间开始，结束在该区间所有玩家行动用完、放弃或视作完成时。不能在某个人用完主要动作时提前触发其回合结束。\n\n默认主／附各1，强敌及技能按自己的预算修订。1动作是主要、0动作是附赠；次数为0的资源与附赠动作是两回事。第一行动资格按已确认的施展范围判断，不从资源费用是否为0推导。\n\n多动作技能保留独立施展记录。首次开始扣疲劳和使用次数，中断不返还；完成前的连续释放阶段不能穿插其他行动，完成后才可继续附赠。跨区间等待不等于区间无法结束；期间其他玩家正常行动，放弃剩余额度仍按规则处理。\n\n阈值由主持人裁定，本阶段不设计自动累计阈值或自动惩罚策略。可以记录明确的主持操作及依据，使其与普通预算动作分开。\n\n| 需要命中的效果 | 需要豁免的效果 |\n| --- | --- |\n| 命中检定完成后，在允许的伤害前窗口决定反应；没命中可不使用 | 豁免掷骰前决定是否反应；已选择豁免后，不能再用反应规避该次效果 |\n| 精锐按实际来源阶位检查低阶反应资格，拒绝不扣费 | 盾牌格挡与该次AOE豁免减伤不能叠加 |\n| 速攻先结算，普通伤害前格挡赶不上；后续窗口按实际触发处理 | 特例依原条款，不统一改成命中式反应时机 |\n\n反应额度、技能自身休息次数与附赠动作分别记账。同场可以重复使用同一反应能力，但每场总3次；普通借机攻击不占该反应总额，具体触发与每目标次数独立记录。反应链的未定边界沿用已有问卷，不能直接把所有效果排序成一套通用栈规则。\n\n## 数值、空间与持续效果\n\n武器命中和法术命中分别解析。法术关键属性来自对应列表／职业绑定，不全局默认智力；普通武器熟练项不重复加算，额外熟练项与其他效果依条款处理。自然20／1、暴击率、优势劣势、极大优势劣势和重掷分别保留实际骰面与选择过程。\n\n伤害必须区分同一次攻击的类型成分与独立攻击段。已确认同次先合并再处理抗性，二连斩等独立攻击分别命中、分别扣抗性。临时生命与临时疲劳多种效益取最高，不能套普通资源求和。\n\n防御层按已确认的抗性、护盾、护甲、临时生命、生命处理；限定生物的护盾在条件满足时优先。护甲效率、小数中间量与对玩家不利的取整需保存计算轨迹。暴击前后附加值与防御层前后附加值是两个不同维度，F63与补例已确认猛击额外力量不乘暴击，在防御前并入攻击伤害，不要求先造成生命损失。\n\n当前负HP、濒死、生命／死亡标记、稳定、毅力与即死分别保存。已负HP再受生命层伤害保持HP并死亡标记+1，不继续扣负血；HP≤负生命上限的即死边界依已确认的适用分支处理。死亡裁决、伤害与治疗不能各写一份互相矛盾的生命规则。\n\n持续效果的数据要同时支持“立即生效”和“稍后开始计轮”。一轮普通效果与一轮控制的到期锚点分别按已确认规则；不能把所有一轮状态统一存成当前轮号+1。叠层、净化、受到伤害或特定类型伤害解除，均以具体状态定义为依据。\n\n位置、距离、相邻、可达路径、视线、掩体和作用区域分别查询。直线冲锋不是传送，格子占用和墙角约束不能跳过。二维圆环不能使用通用三维球体替代；DM裁定的掩体角度明确进入决策记录。度量与各类区域将随具体职业继续收敛，不自行套其他游戏公式。\n\n## 机制表达与人工边界\n\n建议能力描述分为触发／合法条件、选择、成本、执行步骤、成长分支与退出／恢复规则。先收敛真实出现的机制，再决定哪些可以用受限数据描述组合；不建立可运行任意文字或任意脚本的万能表达系统。\n\n有明确条款的效果形成机制参数；有明确主持裁定边界的效果形成DecisionRequest；缺规则的效果保存原文与问题ID。设计支持、人工支持与程序已实现必须分别记录，本阶段所有新增战斗机制都尚未实现。\n\n失效操作在投入前拒绝；已投入后中断按条款记资源与次数。错误修订、重复命令、过期反应窗口和裁定变化都需有具体处理。主持人纠错与回放采用保留因果的记录，不把纠错当作技能正常退款规则。\n\n## 总体设计的推进与完成条件\n\n| 设计阶段 | 与职业审查的关系 | 交付与关闭条件 |\n| --- | --- | --- |\n| D01 共同对象与时间线 | C01开始即可推进 | 对象责任、事件生命周期、回合／区间、资源及未知边界清楚 |\n| D02 核心解析流程 | C01至C04逐步修订 | 攻击、反应、多动作、数值、移动、状态流程及具体窗口有来源 |\n| D03 扩展机制与服务边界 | C05至C06逐项补齐 | 单位、区域、变形、制造、物资与跨来源组合不破坏核心模型 |\n| D04 设计总验收 | 全覆盖后进行 | 资料、角色、战斗、资产和保存接口能够共同评审；固定场景和异常路径可解释 |\n| 实施 | 总体设计完成后再安排 | 按用户指示恢复代码阶段，届时拆分模块并实现测试及联调 |\n\n总体设计完成要有全量覆盖清单、机制依赖图、已确认规则或明确人工节点、通用数据结构、命令／查询边界、状态机、关键交互、数值步骤、并发及失败处理和验收场景。文件写完或候选类型通过不等于总体设计已完成。\n\n当前C01-a四项及C01-b斗争18项已审读，战士22／119；剩余97项及相应条件／选择和进阶关系未审。13题与补例已归录，原目标永久收益战后恢复由DM决定。下一批C01-c狂攻17项，保持只设计，不启动T08代码。\n\nC01-a答复已明确两项共同模型需求：成长分支要区分替换与叠加，猛击12级额外力量附伤替换为两次；条件增益要区分是否取得和当前条件满足，武器专精只选一类且仅对应武器生效。F63及补例也已确认额外力量不乘暴击、先合并再经防御，且不以先发生HP损失为前提。其他职业同类措辞仍逐条审查。\n\n## C01-b对通用引擎的修订\n\n详见[斗争风格审查](https://chatgpt.com/space/page_c631ccffdbe0819187ee62052c736b87)。一个主要行动产生多个攻击段，与需要多个主要动作的施展不同。连续斩疲劳按各已执行、未被反应躲掉的段结束后扣2；普通未命中仍扣，不能从伤害0推断免费。Costs必须有支付时点及执行原因，不能统一起手扣。\n\n护甲检定纯D20以≥判断；豁免仍独立比较。伤害优势比较完整骰组。理论处决只比当前HP与理论最大，不先扣目标防御，等号成立，但明确处决保护要独立处理；首轮18级保护例免处决并锁1，不泛化到未裁定的其它时段。\n\n风格顺序与数量是两个只读解析结果。免费初始可以不定顺序却算数量，跨来源按自己的规则计入；count>min才满足“不是最少”，并列最低失败。派生政策由已有获取规则和元数据引用提供，避免给所有角色增加互相矛盾的永久布尔值。角色候选仍v0.2.2。\n\n武器掌握阈值奖励追补、逐项选未有类别，用GrantReceipt防重复发放。破敌保存生命层实际伤害快照X和触发时最大HP的Y；未命中不消费标记。ActorPairEffect不能误改目标全局AC／抗性。\n\n葬送是收益转移，维护原数值、剩层、剩时，原目标失去，不重算自己的参数，也不复制整角色／库存。通用媒介定义保留，仅该能力当前不作媒介生效检查。原目标永久收益战后恢复由DM决策，必须保存裁定节点而不是默认永久删改。新持有者的期限仍按本能力原文；维持者、受益者、原来源和媒介字段分别保存。\n\n重殴只能自身回合消费附赠，护盾／護甲伤也触发。巨龙可跨敌格、只扫实际路径单位，并只查本场自身伤害历史。书面绝对优势四次仍支持，F16高级抵消和超登记档边界继续保留。当前是设计对象、事件与交互约定，不是执行器或生产Schema实现。\n\n本地新版：[战斗引擎总体设计_20261005_v0.2.json](/D:/Download/scholar-agent-main/docs/migration/战斗引擎总体设计_20261005_v0.2.json)。旧v0.1保留作为来源，下一批狂攻风格继续用真实机制验证。",
+  "sourceBaseline": [
+    {
+      "file": "基础职业-战士.docx",
+      "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+      "currentHash": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+    },
+    {
+      "file": "职业页/数据/战士.json",
+      "sha256": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2",
+      "currentHash": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2"
+    },
+    {
+      "file": "冒险者基础规则.xlsx",
+      "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9",
+      "currentHash": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+    },
+    {
+      "file": "docs/migration/T07_模型修订_20261005.json",
+      "sha256": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487",
+      "currentHash": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487"
+    },
+    {
+      "file": "《基础职业进阶途径》.docx",
+      "sha256": "17c67cf3047704009484414f35b9b6d525ce147abd4fca880f2eb826b668ae0e",
+      "currentHash": "17c67cf3047704009484414f35b9b6d525ce147abd4fca880f2eb826b668ae0e"
+    },
+    {
+      "file": "已公布进阶职业.docx",
+      "sha256": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f",
+      "currentHash": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f"
+    }
+  ],
+  "classSources": [
+    "基础职业-召唤师.docx",
+    "基础职业-吟游诗人.docx",
+    "基础职业-圣骑士.docx",
+    "基础职业-奇械师.docx",
+    "基础职业-守望者.docx",
+    "基础职业-德鲁伊.docx",
+    "基础职业-战士.docx",
+    "基础职业-战舞者.docx",
+    "基础职业-术士.docx",
+    "基础职业-武僧.docx",
+    "基础职业-法师.docx",
+    "基础职业-游荡者.docx",
+    "基础职业-牧师.docx",
+    "基础职业-猎人.docx",
+    "基础职业-萨满祭司.docx",
+    "基础职业-蛮斗士.docx",
+    "基础职业-谋士.docx",
+    "基础职业-魔契师.docx"
+  ],
+  "pendingQuestions": [],
+  "repositoryBaseline": {
+    "oldHead": "695508df57779d86afe7b6728db2995f7a7794f8",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetStatus": " M .github/workflows/ci.yml\n M README.md\n M apps/web/src/App.tsx\n A apps/web/src/features/characters/CharacterWorkspace.tsx\n A apps/web/src/features/characters/characters.css\n A apps/web/src/features/characters/editor-runtime.ts\n A apps/web/src/features/characters/local-service.ts\n A apps/web/test/characters.browser.test.mjs\n M apps/web/tsconfig.json\n A docs/proposals/character-management/README.md\n A docs/proposals/character-management/adapter.ts\n A docs/proposals/character-management/contracts.ts\n A docs/proposals/character-management/draft.test.mjs\n A docs/proposals/character-management/draft.ts\n A docs/proposals/character-management/editor.test.mjs\n A docs/proposals/character-management/editor.ts\n A docs/proposals/character-management/fixtures.mjs\n A docs/proposals/character-management/package.json\n A docs/proposals/character-management/tsconfig.json\n A docs/proposals/character-management/validation.test.mjs\n A docs/proposals/character-management/validation.ts\n M package.json\n M pnpm-lock.yaml\n"
+  },
+  "questionRecords": [
+    {
+      "id": "F64",
+      "priority": "core",
+      "source": "body[123/153]",
+      "title": "护甲检定的公式",
+      "question": "护甲检定使用什么骰、加哪些数值？裸身角色如何检定？结果等于难度10／15时算成功还是失败？",
+      "impact": "建立独立的护甲检定类别，不借用豁免或命中公式。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "只看骰面的D20，所有护甲的检定都相同，等于时也成功",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "dice": "D20",
+        "value": "natural-face",
+        "modifierMode": "none",
+        "successComparison": ">=",
+        "bareAndAllArmorSame": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F65",
+      "priority": "core",
+      "source": "body[143/145]",
+      "title": "连斩的动态疲劳X",
+      "question": "二／三连斩的X初始是多少？“每次成功执行的攻击动作使X+2”是按命中、攻击段还是一次攻击行动计数，是否包括其他攻击？X何时重置，何时扣费？可用首次二连一失一中举例。",
+      "impact": "动态费用的输入事件、计数周期和支付时点。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "X为2，4，6点，成功执行攻击动作的意思是如果这一发攻击没有被对手的反应动作躲掉，那么每一斩需要花费2点疲劳，包括攻击没有命中也需要花2点疲劳；扣费在成功执行攻击动作后",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "paymentMode": "per-segment-after-execution",
+        "fatiguePerExecutedSegment": 2,
+        "normalMissStillPaid": true,
+        "reactionEvadedSegmentPaid": false,
+        "scope": "this-ability-resolution",
+        "initialUpfrontFatigue": false,
+        "totalAmountsByExecutedSegments": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F66",
+      "priority": "core",
+      "source": "body[121/163/206]",
+      "title": "多骰伤害的优势",
+      "question": "3D6伤害具有优势时，若两组为(6,1,1)和(1,6,6)，是取整组较高13，还是每颗分别取高得到18？主规则规定掷两次取高，但未细分多骰伤害。",
+      "impact": "伤害骰组的选择策略，与单颗低点重掷分开。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "取整组较高的13",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "selection": "whole-roll-group-higher-total",
+        "exampleCandidateTotals": [
+          8,
+          13
+        ],
+        "chosenDamageDiceTotal": 13,
+        "perDieMax18": false
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F67",
+      "priority": "core",
+      "source": "body[161]；关键词规则!C104",
+      "title": "处决理论最大值",
+      "question": "致死打击已命中且非暴击，武器1D8、普通力量加值3、技能额外10，原始最大值21。目标HP20但有抗性／护盾／护甲时，处决按21还是减免后最大伤害判断？HP恰好21能否处决？",
+      "impact": "最大伤害投影、严格比较和处决绕过反制的窗口。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "只比较目标的当前生命值与理论最大值伤害，所以会直接处决，等于也会处决",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "projectionBasis": "theoretical-damage-no-target-defenses",
+        "comparison": "currentHP <= theoreticalMaximum",
+        "nonCriticalExampleMaximum": 21,
+        "exampleHp20Execution": true,
+        "exampleHp21Execution": true,
+        "protectionConflictFollowup": "F70"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F68",
+      "priority": "growth",
+      "source": "body[125]",
+      "title": "武器掌握的迟领奖励",
+      "question": "战士12级首次学武器掌握，是否立即追加3个未拥有的武器专精（天赋本身＋5级＋10级），还是仅追加1个，15级再追加？初始专精选的一类不计入这3次。",
+      "impact": "阈值选择奖励的追补与防重复领取。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "12级学习会立刻追加三项",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "retroactive": true,
+        "level12FirstLearningAdditionalChoices": 3,
+        "choiceReceipts": [
+          "base",
+          "level5",
+          "level10"
+        ],
+        "excludeAlreadyOwned": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F69",
+      "priority": "resource",
+      "source": "body[206]",
+      "title": "巨人打击溢出生命",
+      "question": "最大HP100、当前90，巨人打击恢复20后溢出10。“额外生命值”是否就是临时生命、不改变上限？若已有临时生命15，最后取最高15还是叠到25，或另有生命层？",
+      "impact": "溢出治疗目标生命层及叠加规则。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "额外生命值算作临时生命值且不改上限；已有临时生命值取最高",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "overflowPool": "temporary-HP",
+        "maxHpChanges": false,
+        "aggregation": "highest",
+        "exampleExisting15New10Effective15": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F70",
+      "priority": "life",
+      "source": "body[183]",
+      "title": "愈战愈勇18级的不败",
+      "question": "第一轮不能被击败具体怎样改变结算？例如HP8／20受到10点最终伤害，保在1、进入负血但不判击败，还是免伤？若受到40点触发即死边界，这层保护是否仍有效？",
+      "impact": "防败、毅力、濒死与即死不能混为一个布尔字段。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "首轮会锁1血，触发即死边界时仍有保护",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "firstPublicRoundDamageHpFloor": 1,
+        "damageImmediateDeathBoundaryPrevented": true,
+        "directExecutionWhileEngaged": {
+          "scope": "adjudicated-level18-first-round-case",
+          "immune": true,
+          "hpFloor": 1,
+          "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+        },
+        "laterRoundEngagedExecutionImmunity": "not-confirmed"
+      },
+      "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+    },
+    {
+      "id": "F71",
+      "priority": "effect-copy",
+      "source": "body[208]；关键词规则!C81",
+      "title": "葬送的收益复制",
+      "question": "葬送复制收益后，保留目标当前数值／剩余层数和时长，还是按自己重新计算并重置时长？原目标是否失去收益？标了“媒介”却未指定物件，媒介由什么提供？",
+      "impact": "复制策略、来源绑定、时限和媒介依赖。",
+      "status": "answered-with-DM-boundary",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "保留目标的当前数值，剩余层数，时长，原目标失去收益，关键词媒介目前可以不用在意，只属于一种词条",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "operation": "benefit-transfer",
+        "preserveCurrentValues": true,
+        "preserveRemainingLayers": true,
+        "preserveRemainingTime": true,
+        "sourceTargetLosesBenefit": true,
+        "recalculateAgainstRecipientStats": false,
+        "mediumRequirement": "not-enforced-for-this-ability-now",
+        "genericMediumDefinitionUnchanged": true,
+        "livingSourcePermanentBenefitAtBattleEnd": {
+          "policy": "DM-decision-required",
+          "automaticRestore": false,
+          "automaticPermanentDeletion": false,
+          "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+        }
+      },
+      "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+    },
+    {
+      "id": "F72",
+      "priority": "snapshot",
+      "source": "body[181]",
+      "title": "破敌战戟的标记数值",
+      "question": "投掷伤害骰6，目标抗性2、护盾挡3，生命损失1：标记X记6还是1？后续近战未命中是否仍消耗标记并追加X？Y＝10%最大HP是在赋标记时固定，还是每次触发重新取当前上限？",
+      "impact": "捕获数值、消费时点和后续伤害的依赖条件。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "标记伤害为1；近战攻击未命中不会消耗标记；触发时重算",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "capturedX": "actual-HP-damage",
+        "exampleX": 1,
+        "meleeMissConsumesMark": false,
+        "Y": "10-percent-current-maxHP-at-trigger",
+        "successfulMeleeAdditionalDamageMarkConsumption": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F73",
+      "priority": "learning",
+      "source": "body[121/155]",
+      "title": "风格数量统计",
+      "question": "“本风格技能数量最多／狂攻不是最少”统计哪些记录：天赋、免费初始能力、跨职业取得是否计入？未习得风格是否按0参与？并列最多／最少怎样判？风格顺序仍沿用F55，不重问。",
+      "impact": "学习时统计范围与比较规则，不能用风格顺位代替数量。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "最多/最少统计计入天赋，免费初始；跨职业习得的技能取决于该技能是否会计算风格，如果不会计算风格则不会计算到最多和最少里；未习得按0参与；并列最多最少如果没写最多最少之一，那么并列不能生效",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "includeTalents": true,
+        "includeInitialFree": true,
+        "crossSource": "include-only-when-its-rule-contributes-style",
+        "unlearnedStyleCount": 0,
+        "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+        "negatedMinimumWithTie": {
+          "condition": "count > minimum-of-all-styles",
+          "zeroTiedMinimumCase": false,
+          "rawSupplement": "不满足"
+        },
+        "rankAndCountDifferent": true
+      },
+      "rawSupplement": "不满足"
+    },
+    {
+      "id": "F74",
+      "priority": "retry",
+      "source": "body[115]",
+      "title": "姿态的首次资格与重掷",
+      "question": "战斗中才开启战斗姿态，能否获得第一次基础攻击的优势和5级附伤？同场关闭再开是否刷新首次资格？8级再次攻击“必须接受结果”，是否禁止另用激励点等来源重掷？",
+      "impact": "首次攻击机会的归属周期、激活刷新与重掷限制。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "战斗中才开启那么就会计算开启后的第一次基础攻击，不能关闭再开；禁止其他重骰来源",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "activationDuringBattleGetsNextFirstBasicAttackBenefit": true,
+        "voluntaryCloseThenReopenSameBattleAllowed": false,
+        "otherRerollSourcesForFollowupAttackAllowed": false,
+        "forcedDispelReactivation": "not-confirmed"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F75",
+      "priority": "spatial-history",
+      "source": "body[179]",
+      "title": "巨龙冲锋的路径和历史",
+      "question": "巨龙冲锋是否可以穿过敌人占格，还是攻击／击飞沿途敌人后才能继续？“途经过的所有单位”指实际经过的格子还是路径相邻也算？15级的“目标承受过你造成的伤害”只算本场还是历史战斗也算？",
+      "impact": "路线通行、影响集合和目标历史事实的作用域。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "能穿敌占格，途径的单位仅实际路径格；仅算本场的伤害",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "enemyCellTraversalAllowed": true,
+        "sweepVictims": "actual-path-occupied-cells",
+        "adjacentNonpathVictims": false,
+        "priorDamageScope": "current-battle-only",
+        "terrainWallsIgnore": false
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F76",
+      "priority": "trigger-window",
+      "source": "body[112]",
+      "title": "重殴的触发窗口",
+      "question": "基础攻击只打掉护盾／护甲、未伤生命时，是否可触发重殴？回合外借机造成伤害时能否用重殴；若能，附赠额度用当下余额还是预支下回合？这仍是0动作附赠，不重问反应总3次。",
+      "impact": "真实伤害门槛、连锁窗口与回合外预算来源。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "能触发；回合外不能释放，因为重殴需要附赠动作释放",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "shieldOrArmorOnlyDamageCanTrigger": true,
+        "outsideOwnTurnAllowed": false,
+        "bonusActionCost": 1,
+        "noBorrowFromNextTurn": true
+      },
+      "rawSupplement": null
+    }
+  ],
+  "confirmedDesignRequirements": [
+    "growth branch replaces additional strength 1 with 2",
+    "weapon specialization selects one category and checks actual weapon",
+    "Might extra strength excludes critical multiplier, combines before normal defense, does not require prior HP loss"
+  ],
+  "pendingQuestionScope": "C01-b core questions answered; inherited and documented application boundaries remain",
+  "currentRoundQuestionsClosed": true,
+  "nativePageReadbackVerified": true,
+  "nativePageVisualPreviewAvailable": false,
+  "verification": {
+    "sourceInputsUnchanged": true,
+    "sourceChecks": [
+      {
+        "file": "基础职业-战士.docx",
+        "unchanged": true
+      },
+      {
+        "file": "职业页/数据/战士.json",
+        "unchanged": true
+      },
+      {
+        "file": "冒险者基础规则.xlsx",
+        "unchanged": true
+      },
+      {
+        "file": "docs/migration/T07_模型修订_20261005.json",
+        "unchanged": true
+      },
+      {
+        "file": "《基础职业进阶途径》.docx",
+        "unchanged": true
+      },
+      {
+        "file": "已公布进阶职业.docx",
+        "unchanged": true
+      }
+    ],
+    "legacyIdsUnique": true,
+    "sourceCardsUnique": true,
+    "reviewedFourOnly": true,
+    "unreviewedRemaining115": true,
+    "allThreeQuestionsConfirmed": true,
+    "paperExample0": true,
+    "paperExample1": true,
+    "notRuntimeEngineTest": true,
+    "sourceOriginalTextPreserved": true,
+    "targetHeadUnchanged": true,
+    "targetStatusUnchanged": true,
+    "codeImplementationStarted": false,
+    "overallDesignComplete": false,
+    "pagesVerified": true
+  },
+  "archive": {
+    "directory": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\c01b-struggle-20261005-691d",
+    "completed": true,
+    "onlyOwnTask": true
+  },
+  "supersedesFile": "战斗引擎总体设计_20261005_v0.1.json",
+  "inheritedApplicationIssues": [
+    {
+      "id": "F16",
+      "scope": "巨人打击超出绝对档及既有优劣势组合",
+      "status": "pending-inherited"
+    },
+    {
+      "id": "C01b-aoe-sharing",
+      "scope": "英勇双落点的伤害骰共享及重复目标处理",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-engagement",
+      "scope": "交战事实、累计暂停／重置和15级一次豁免资格",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-marks",
+      "scope": "同目标重复标记与原标记到期",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-critical-window",
+      "scope": "每自身回合一次的伤害触发在回合外如何归属",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-upgrade-eligibility",
+      "scope": "三连斩直接学习／跨来源取得及遗忘家族范围",
+      "status": "pending-cross-source"
+    },
+    {
+      "id": "C01b-damage-expression",
+      "scope": "固定技能骰是否另有通用属性项及复合骰修订的比较阶段",
+      "status": "pending-cross-source"
+    }
+  ],
+  "latestReviewFile": "C01_战士斗争机制审查_20261005.json",
+  "characterCandidateVersion": "0.2.2",
+  "coverage": {
+    "sourceReviewedAbilities": 22,
+    "totalWarriorAbilities": 119,
+    "mappedOnlyAbilities": 97,
+    "sourceCardsInCurrentRound": 18,
+    "upgradeHeadersInCurrentRound": 20
+  },
+  "designChanges": [
+    "区分行动、攻击段、命中、伤害各层、HP变化与结果事件",
+    "动态费用的计数输入、周期与支付时点由规则绑定，不按名字硬编码",
+    "普通预算、免费攻击许可、下回合许可与条件休息锁定分别记账",
+    "追加专精使用来源增益与阈值领取凭据；角色保存集合而非覆盖初始选项",
+    "学习条件的数量统计与风格顺序、取得条件与施展条件分开",
+    "理论最大伤害、处决、负生命、毅力与防败分支保持不同数据",
+    "复制用当前收益视图、捕获时点、维持／来源／受益者、媒介与过期策略",
+    "成对修正和目标标记保存施术者与对手，不能修改全局目标AC／抗性",
+    "升级形态保留身份与谱系，不自动新增槽位或扩张同名永久禁学",
+    "支持书面已有绝对四次检定；未登记的规格或抵消组合保持待定"
+  ],
+  "newDesignObjects": [
+    "AttackSegment",
+    "CostBinding",
+    "AttackPermission",
+    "DamageTrace",
+    "ValueBinding",
+    "PairScopedEffect",
+    "CapabilityGrant",
+    "GrantReceipt",
+    "MaxDamageProjection",
+    "TypedHealthBenefit",
+    "EffectSnapshot",
+    "CopyPolicy",
+    "DefeatProtectionPolicy",
+    "SpatialResolution"
+  ],
+  "baselineThisRound": {
+    "files": [
+      {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+      },
+      {
+        "file": "职业页/数据/战士.json",
+        "sha256": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2"
+      },
+      {
+        "file": "冒险者基础规则.xlsx",
+        "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+      },
+      {
+        "file": "docs/migration/T07_模型修订_20261005.json",
+        "sha256": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487"
+      },
+      {
+        "file": "《基础职业进阶途径》.docx",
+        "sha256": "17c67cf3047704009484414f35b9b6d525ce147abd4fca880f2eb826b668ae0e"
+      },
+      {
+        "file": "已公布进阶职业.docx",
+        "sha256": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f"
+      }
+    ],
+    "oldHead": "695508df57779d86afe7b6728db2995f7a7794f8",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetStatus": " M .github/workflows/ci.yml\n M README.md\n M apps/web/src/App.tsx\n A apps/web/src/features/characters/CharacterWorkspace.tsx\n A apps/web/src/features/characters/characters.css\n A apps/web/src/features/characters/editor-runtime.ts\n A apps/web/src/features/characters/local-service.ts\n A apps/web/test/characters.browser.test.mjs\n M apps/web/tsconfig.json\n A docs/proposals/character-management/README.md\n A docs/proposals/character-management/adapter.ts\n A docs/proposals/character-management/contracts.ts\n A docs/proposals/character-management/draft.test.mjs\n A docs/proposals/character-management/draft.ts\n A docs/proposals/character-management/editor.test.mjs\n A docs/proposals/character-management/editor.ts\n A docs/proposals/character-management/fixtures.mjs\n A docs/proposals/character-management/package.json\n A docs/proposals/character-management/tsconfig.json\n A docs/proposals/character-management/validation.test.mjs\n A docs/proposals/character-management/validation.ts\n M package.json\n M pnpm-lock.yaml\n"
+  },
+  "markdownStatus": "native-current-content-readback",
+  "normalizedRuleMappings": {
+    "F64": {
+      "dice": "D20",
+      "value": "natural-face",
+      "modifierMode": "none",
+      "successComparison": ">=",
+      "bareAndAllArmorSame": true
+    },
+    "F65": {
+      "paymentMode": "per-segment-after-execution",
+      "fatiguePerExecutedSegment": 2,
+      "normalMissStillPaid": true,
+      "reactionEvadedSegmentPaid": false,
+      "scope": "this-ability-resolution",
+      "initialUpfrontFatigue": false,
+      "totalAmountsByExecutedSegments": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+    },
+    "F66": {
+      "selection": "whole-roll-group-higher-total",
+      "exampleCandidateTotals": [
+        8,
+        13
+      ],
+      "chosenDamageDiceTotal": 13,
+      "perDieMax18": false
+    },
+    "F67": {
+      "projectionBasis": "theoretical-damage-no-target-defenses",
+      "comparison": "currentHP <= theoreticalMaximum",
+      "nonCriticalExampleMaximum": 21,
+      "exampleHp20Execution": true,
+      "exampleHp21Execution": true,
+      "protectionConflictFollowup": "F70"
+    },
+    "F68": {
+      "retroactive": true,
+      "level12FirstLearningAdditionalChoices": 3,
+      "choiceReceipts": [
+        "base",
+        "level5",
+        "level10"
+      ],
+      "excludeAlreadyOwned": true
+    },
+    "F69": {
+      "overflowPool": "temporary-HP",
+      "maxHpChanges": false,
+      "aggregation": "highest",
+      "exampleExisting15New10Effective15": true
+    },
+    "F70": {
+      "firstPublicRoundDamageHpFloor": 1,
+      "damageImmediateDeathBoundaryPrevented": true,
+      "directExecutionWhileEngaged": {
+        "scope": "adjudicated-level18-first-round-case",
+        "immune": true,
+        "hpFloor": 1,
+        "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+      },
+      "laterRoundEngagedExecutionImmunity": "not-confirmed"
+    },
+    "F71": {
+      "operation": "benefit-transfer",
+      "preserveCurrentValues": true,
+      "preserveRemainingLayers": true,
+      "preserveRemainingTime": true,
+      "sourceTargetLosesBenefit": true,
+      "recalculateAgainstRecipientStats": false,
+      "mediumRequirement": "not-enforced-for-this-ability-now",
+      "genericMediumDefinitionUnchanged": true,
+      "livingSourcePermanentBenefitAtBattleEnd": {
+        "policy": "DM-decision-required",
+        "automaticRestore": false,
+        "automaticPermanentDeletion": false,
+        "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+      }
+    },
+    "F72": {
+      "capturedX": "actual-HP-damage",
+      "exampleX": 1,
+      "meleeMissConsumesMark": false,
+      "Y": "10-percent-current-maxHP-at-trigger",
+      "successfulMeleeAdditionalDamageMarkConsumption": true
+    },
+    "F73": {
+      "includeTalents": true,
+      "includeInitialFree": true,
+      "crossSource": "include-only-when-its-rule-contributes-style",
+      "unlearnedStyleCount": 0,
+      "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+      "negatedMinimumWithTie": {
+        "condition": "count > minimum-of-all-styles",
+        "zeroTiedMinimumCase": false,
+        "rawSupplement": "不满足"
+      },
+      "rankAndCountDifferent": true
+    },
+    "F74": {
+      "activationDuringBattleGetsNextFirstBasicAttackBenefit": true,
+      "voluntaryCloseThenReopenSameBattleAllowed": false,
+      "otherRerollSourcesForFollowupAttackAllowed": false,
+      "forcedDispelReactivation": "not-confirmed"
+    },
+    "F75": {
+      "enemyCellTraversalAllowed": true,
+      "sweepVictims": "actual-path-occupied-cells",
+      "adjacentNonpathVictims": false,
+      "priorDamageScope": "current-battle-only",
+      "terrainWallsIgnore": false
+    },
+    "F76": {
+      "shieldOrArmorOnlyDamageCanTrigger": true,
+      "outsideOwnTurnAllowed": false,
+      "bonusActionCost": 1,
+      "noBorrowFromNextTurn": true
+    }
+  },
+  "manualDecisionNodes": [
+    {
+      "id": "F71-source-permanent-benefit-disposition",
+      "trigger": "living source target lost permanent benefit through transfer",
+      "decisionOwner": "DM",
+      "timing": "battle end / before applying long-term character changes",
+      "choices": [
+        "restore-source-benefit",
+        "retain-source-loss",
+        "other-DM-adjudication"
+      ],
+      "default": "none",
+      "requiresAuditRecord": true
+    }
+  ],
+  "derivedStyleViews": {
+    "rankContribution": "F55 policies, initial free excluded",
+    "countContribution": "F73 includes talents and initial free; cross-source follows its style-counting policy",
+    "positiveMostOrLeast": "unique extremum unless explicitly one-of",
+    "notLeast": "strictly above minimum, not boolean negation of unique-minimum",
+    "unlearnedStyleCount": 0,
+    "exampleTiedZeroNotLeast": false
+  },
+  "dataObjectClarifications": {
+    "armorCheck": "raw D20 with >= comparator separate from saves",
+    "segmentCost": "conditional post-execution payment2 with provenance of reaction evasion",
+    "favorSelection": "whole group higher sum for multi-die damage",
+    "execution": "raw theoretical maximum, inclusive current-HP threshold, explicit protection eligibility",
+    "effectOperation": "transfer snapshot current values/layers/time, not duplicate or rerun recipient stats",
+    "styleProjection": "two independently derived projections from rule refs; do not add contradictory permanent booleans"
+  },
+  "coreAnswerVerification": {
+    "armorDc10Face10Passes": true,
+    "armorDc15Face15Passes": true,
+    "wholeGroupAdvantageExample": 13,
+    "twoNormalMissOrHitSegmentsCost": 4,
+    "oneReactionEvadedOnePerformedCost": 2,
+    "threePerformedCost": 6,
+    "executionHp20Max21": true,
+    "executionHp21Max21": true,
+    "level12MasteryNewChoices": 3,
+    "temporaryHpExisting15New10": 15,
+    "markDamageSnapshotExample": 1,
+    "negatedMinimumTiedZero": false,
+    "firstRoundLevel18ExecutionPrevented": true,
+    "sourcePermanentBenefitReturn": "DM"
+  },
+  "latestVerification": {
+    "scope": "documentation and paper arithmetic only; not a combat engine test",
+    "paperArithmetic": [
+      {
+        "id": "armor equality10",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "armor equality15",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "separate save comparator",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "two ordinary performed segments including miss",
+        "value": 4,
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "id": "one reaction evaded and one normal performed",
+        "value": 2,
+        "expected": 2,
+        "passed": true
+      },
+      {
+        "id": "three normal segments",
+        "value": 6,
+        "expected": 6,
+        "passed": true
+      },
+      {
+        "id": "whole group advantage",
+        "value": 13,
+        "expected": 13,
+        "passed": true
+      },
+      {
+        "id": "execution inclusive equal",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "execution below",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "explicit protection eligibility",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "late mastery thresholds",
+        "value": 3,
+        "expected": 3,
+        "passed": true
+      },
+      {
+        "id": "temporary highest",
+        "value": 15,
+        "expected": 15,
+        "passed": true
+      },
+      {
+        "id": "mark actual life loss",
+        "value": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "id": "not least tied zero",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "unique max tie fails",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "giant maxHP250 X",
+        "value": 4,
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "id": "giant source fatigue",
+        "value": 8,
+        "expected": 8,
+        "passed": true
+      }
+    ],
+    "sourceCoverage": {
+      "cards": 18,
+      "upgradeHeaders": 20,
+      "sourceReviewed": 22,
+      "remaining": 97,
+      "originalTextUnchanged": true
+    },
+    "integrity": {
+      "sourcesUnchanged": true,
+      "sources": [
+        {
+          "file": "基础职业-战士.docx",
+          "unchanged": true
+        },
+        {
+          "file": "职业页/数据/战士.json",
+          "unchanged": true
+        },
+        {
+          "file": "冒险者基础规则.xlsx",
+          "unchanged": true
+        },
+        {
+          "file": "docs/migration/T07_模型修订_20261005.json",
+          "unchanged": true
+        },
+        {
+          "file": "《基础职业进阶途径》.docx",
+          "unchanged": true
+        },
+        {
+          "file": "已公布进阶职业.docx",
+          "unchanged": true
+        }
+      ],
+      "targetHeadUnchanged": true,
+      "targetStatusUnchanged": true
+    },
+    "pageReadbackPreserved": true
+  },
+  "coreAnswerVerificationRecordType": "expected paper-case results, not runtime assertions"
+}

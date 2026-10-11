@@ -1,0 +1,326 @@
+{
+  "date": "2026-10-06",
+  "stage": "B6-integration-real-pilot-delivery",
+  "version": "1.0-review-candidate",
+  "status": "design_stage_complete_joint_signoff_and_implementation_pending",
+  "pageUrl": "https://chatgpt.com/space/page_ec3d2c527c948191a83db126b44e9ca0",
+  "businessCodeChanged": false,
+  "productionImplementation": false,
+  "peerSignoffRecorded": false,
+  "formalAcceptanceCompleted": false,
+  "pilotRun": false,
+  "allDesignBatchesCovered": [
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6"
+  ],
+  "browserPolicy": {
+    "status": "user-confirmed",
+    "value": "一期正式纳入iPhone Safari，另验Android Chrome与桌面Chrome/Edge",
+    "date": "2026-10-06"
+  },
+  "browserMatrix": [
+    {
+      "id": "WEB01",
+      "family": "桌面Chrome／Edge",
+      "kind": "real-browser",
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "focus": "键盘、长详情、保存冲突、多账户会话、文件导入导出"
+    },
+    {
+      "id": "WEB02",
+      "family": "Android Chrome",
+      "kind": "real-device",
+      "viewports": [
+        {
+          "width": 360,
+          "height": 800
+        },
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "focus": "虚拟键盘、触摸、滚动、后台／返回、下载及本机存储"
+    },
+    {
+      "id": "WEB03",
+      "family": "iPhone Safari",
+      "kind": "real-device",
+      "viewports": [
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "focus": "用户确认必验；文件选择／下载可取回、页面返回／后台、存储恢复及交互"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "MILE01",
+      "name": "设计候选齐备",
+      "state": "complete-for-current-candidate",
+      "meaning": "B0至B6设计和代表证据可交双方评审，仍非正式ABI"
+    },
+    {
+      "id": "MILE02",
+      "name": "共享约定已确认",
+      "state": "pending-joint-review",
+      "meaning": "双方采用或修改D项及各批合同；当前没有签批记录"
+    },
+    {
+      "id": "MILE03",
+      "name": "工程已实现",
+      "state": "not-started-by-this-work",
+      "meaning": "目标业务、数据库和真实服务实施；现有本机候选不等于完成"
+    },
+    {
+      "id": "MILE04",
+      "name": "一期已验收",
+      "state": "not-executed",
+      "meaning": "所有必需业务／平台／真实团证据与最终签收齐备"
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "INT01",
+      "from": "3.2身份／权限",
+      "to": "3.1各API与投影",
+      "input": "已验证user、对象／字段／操作范围和当前关系版本",
+      "contract": "服务身份不来自JSON；owner／DM／外团隔离；在执行时复核"
+    },
+    {
+      "id": "INT02",
+      "from": "3.1目录／规则",
+      "to": "3.2创建／保存",
+      "input": "精确发布、完整文档Schema、支持组合与可信计划",
+      "contract": "版本固定、未知明确；服务提交前重算，正文完整不冒充可计算"
+    },
+    {
+      "id": "INT03",
+      "from": "3.1创建／角色操作",
+      "to": "3.2资产／账目",
+      "input": "服务operationId、characterId、来源计划和预期资产版本",
+      "contract": "角色独立资产，跨对象同事务，幂等／领取／支付留痕"
+    },
+    {
+      "id": "INT04",
+      "from": "3.2团／DM",
+      "to": "3.1角色能力",
+      "input": "真实同团资格、时间线、审批决策与支持的生命周期",
+      "contract": "首绑后固定；来源／场次不能自报；历史资产声称不直接入账"
+    },
+    {
+      "id": "INT05",
+      "from": "3.2经济",
+      "to": "3.1库存及派生",
+      "input": "当前所属实例／数量／钱包／交易版本与通知或刷新依据",
+      "contract": "报价和当前归属权威；面板不回写旧余额；尚未约定的经济功能不默认开放"
+    },
+    {
+      "id": "INT06",
+      "from": "3.1导入／导出",
+      "to": "3.2授权入库与审计",
+      "input": "来源选择、不可逆事实、UID映射、资产claim版本",
+      "contract": "目标权限明确、原文保留、DM批准限定对象；不重放创建收益"
+    }
+  ],
+  "gates": [
+    {
+      "id": "GATE01",
+      "name": "范围与共同契约",
+      "requirements": [
+        "D决策已由双方确认，变更与版本有记录",
+        "3.1三个子任务和3.2基础经济的必需范围有对应case",
+        "未确认生命周期／格式／规则明确处理，不擅自缩小必需范围"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE02",
+      "name": "数据与业务实现",
+      "requirements": [
+        "真实发布包、完整Schema与关系／规则处理器齐备",
+        "B1至B5真实保存／资产／迁移实现按支持范围核验",
+        "正式发布、代码及数据库迁移基线固定"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE03",
+      "name": "真实服务证据",
+      "requirements": [
+        "每项必测有真实HTTP／DB或规定层级的执行证据",
+        "并发、故障注入、权限和幂等结果可核对",
+        "health／ready和Mock通过不能代替业务验收"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE04",
+      "name": "浏览器与真实团",
+      "requirements": [
+        "Chrome／Edge、Android Chrome、iPhone Safari按确认范围验收",
+        "360／390／1440视口及真机事实分开记录",
+        "真实不同账号与DM的流程试用完成，隐私范围正确"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE05",
+      "name": "交付与维护",
+      "requirements": [
+        "无阻塞数据损失、越权、重复授予／交易和不可逆事实破坏",
+        "允许遗留项有具体影响、负责人、处理与同意记录",
+        "支持清单、升级／恢复、规则发布及用户操作说明完整"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE06",
+      "name": "一期最终签收",
+      "requirements": [
+        "上述门槛完成，有最终范围／结果／基线／签收人和日期",
+        "剩余项与人工处理范围已确认",
+        "签收不由文档作者或自动检查伪造"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    }
+  ],
+  "caseManifest": "B6_联调场景与验收门槛_20261006_v1.json",
+  "integrationCaseCount": 33,
+  "allIntegrationCasesNotRun": true,
+  "evidenceAdmissibilityNegativeFixtures": 8,
+  "supportedTaskMapping": [
+    "3.1.1",
+    "3.1.2",
+    "3.1.3",
+    "3.2-integration"
+  ],
+  "reportMarkdown": "日期：2026年10月6日；版本：v1，B6联调、真实试用与一期最终交付门槛候选。本页汇总[B1／B2](https://chatgpt.com/space/page_cfd381d68788819195ec90ef4d64f8cf)、[B3](https://chatgpt.com/space/page_4b879412afc08191ad88765c3eb03248)、[B4](https://chatgpt.com/space/page_4514894684c88191b77f815335f823e1)、[B5](https://chatgpt.com/space/page_2b601132e8ec8191bbb6a4b617a87e69)应怎样接真实3.2服务并验收，不另展开全部经济产品或战斗引擎设计。\n\n用户本轮确认iPhone Safari纳入一期正式验收。桌面Chrome／Edge、Android Chrome及360／390／1440视口建议继续沿用，测试须记录实际版本和设备。本轮只有设计清单与证据判定示例，没有运行真实API、SQL、浏览器、手机或团试用，也没有记录另一开发者已签批。\n\n至此B0至B6迁移设计候选已有完整分阶段材料，可以进入共同确认和首批工程任务安排；架构不再等待全面技能效果审查。当前设计工作与共享签批、业务实现、最终验收分开记录，代码仍按用户要求延后。\n\n## 四个状态与当前阶段\n\n| 里程碑 | 当前状态 | 判断依据 |\n| --- | --- | --- |\n| MILE01 设计候选齐备 | complete-for-current-candidate | B0至B6设计和代表证据可交双方评审，仍非正式ABI |\n| MILE02 共享约定已确认 | pending-joint-review | 双方采用或修改D项及各批合同；当前没有签批记录 |\n| MILE03 工程已实现 | not-started-by-this-work | 目标业务、数据库和真实服务实施；现有本机候选不等于完成 |\n| MILE04 一期已验收 | not-executed | 所有必需业务／平台／真实团证据与最终签收齐备 |\n\n本地目标HEAD仍929cd8c4ac48d8aa268608411c77e95753bd0655，23项角色管理候选改动既存。本机IndexedDB保存、Schema例子和已有健康／数据库连接检查各有价值，但不等于登录、规则建卡、团权限、经济及云端角色业务已经实现。开始工程前后台读取双方最新分支／契约与来源基线，保留他人的未提交改动，不用本轮本地状态宣称远端最新main。\n\n共同确认后的每批实现用短期分支与对应任务PR，由另一开发者评审共享影响。修改公开合同／数据库时列兼容和迁移说明；当前没有创建分支、PR、飞书任务或发送评审材料。\n\n## 与3.2的六项交接\n\n| 提供方与接收方 | 必须有的输入 | 共同契约 |\n| --- | --- | --- |\n| INT01 3.2身份／权限 → 3.1各API与投影 | 已验证user、对象／字段／操作范围和当前关系版本 | 服务身份不来自JSON；owner／DM／外团隔离；在执行时复核 |\n| INT02 3.1目录／规则 → 3.2创建／保存 | 精确发布、完整文档Schema、支持组合与可信计划 | 版本固定、未知明确；服务提交前重算，正文完整不冒充可计算 |\n| INT03 3.1创建／角色操作 → 3.2资产／账目 | 服务operationId、characterId、来源计划和预期资产版本 | 角色独立资产，跨对象同事务，幂等／领取／支付留痕 |\n| INT04 3.2团／DM → 3.1角色能力 | 真实同团资格、时间线、审批决策与支持的生命周期 | 首绑后固定；来源／场次不能自报；历史资产声称不直接入账 |\n| INT05 3.2经济 → 3.1库存及派生 | 当前所属实例／数量／钱包／交易版本与通知或刷新依据 | 报价和当前归属权威；面板不回写旧余额；尚未约定的经济功能不默认开放 |\n| INT06 3.1导入／导出 → 3.2授权入库与审计 | 来源选择、不可逆事实、UID映射、资产claim版本 | 目标权限明确、原文保留、DM批准限定对象；不重放创建收益 |\n\n3.1与3.2都负责各自所需前后端，共享合同和数据库仍在目标现有contracts／db入口协作。3.1不能只交页面，3.2也不能把保存前的最终规则检查交给客户端；初始资产、配装、成长与历史资产批准必须按此前共同事务边界落实。\n\n角色独立钱包／库存、未入团仅持有配装、首次入团固定时间线、同线单团及历史资产DM批准等产品决定已确认。实际团生命周期、经济交易种类、跨团范围、币种单位／价格政策和登录方式由3.2的原一期范围与共同评审确定；本页不默认扩展拍卖、全平台跨团市场或全量经济玩法，也不把必需基础经济留空就算3.2完成。\n\n已保存记录在另一设备授权读取、版本冲突和未知命令恢复是首轮同步门槛；未保存草稿不承诺跨设备同步。若3.2另有实时协作要求需单列行为和证据，REST保存不能被描述成已经支持实时多人推送。\n\n## 联调环境与证据记录\n\n联调环境使用真实API、PostgreSQL及确认后的迁移／契约，不用本机预览替代。数据夹具独立，角色、钱包、物品、claim／payment、command ledger和快照可核对；真实档案使用授权副本和合适脱敏，原件不被试用写回。\n\n每次证据记录包含runId、caseId、buildCommit、合同版本、文档Schema版本、rulesetRef、数据库迁移集、环境／夹具、实际登录主体范围、浏览器与版本、真机或模拟、viewport、时间、结果、实际观察及evidenceRefs。凭据、私有token及无关真实角色故事不放进共享报告。\n\n| 验证层 | 应有证据 | 不足以代替 |\n| --- | --- | --- |\n| 来源与Schema | 完整清单、Hash／locator、结构／引用／正文覆盖及预期输入输出 | 一个构造角色或目录切片不能代替全量源覆盖 |\n| 规则与预览 | 确认条款、独立固定场景、费用／收益／来源／栏位及支持版本 | 正文能读、Schema可解析不证明游戏合法 |\n| HTTP与授权 | 真实身份、对象／字段范围、会话切换／撤权及安全响应 | 前端隐藏按钮或editable不是权限 |\n| 真实数据库 | 两会话竞争、故障注入、角色／资产／回执／历史原子行结果、重启恢复 | Mock回滚或连接成功不能证明业务事务 |\n| 网页与跨设备 | 独立账户会话、实际UI操作、文件生成／读取、错误及草稿恢复 | 静态截图不能证明交互／下载／往返 |\n| 真机与真实团 | 真实Safari／Android、真实不同登录角色和DM、完整任务结果与缺陷 | 同一人同cookie的两页、模拟390宽不能替代真实身份或设备 |\n\n结果为not-run／pass／fail／blocked／not-applicable。pass需要指定层级的真实观察、冻结基线和证据；not-applicable必须有范围决定及理由，不能删除原本必需功能。修复或更改合同／规则／Schema后重跑受影响案例；旧基线的通过结果不能不加说明挪到新发布。\n\n## 三十三项正式联调场景\n\n| 批次与场景 | 预期结果 | 证据层 |\n| --- | --- | --- |\n| IT01 B1 未登录资料查询 | 公开搜索／完整正文／召唤单位与全部关联能力可读取，版本引用一致 | http-browser |\n| IT02 B1 发布及缓存隔离 | 未发布／sample-only资料不公开；旧发布不回退latest；角色数据不进公共缓存 | http-data |\n| IT03 B2 未入团正式保存 | 真实登录、可信owner、私有读取／历史可用；未保存草稿仍仅本机 | http-db-browser |\n| IT04 B2 对象越权 | 其他玩家／其他团DM／匿名不能读写角色或私有回执 | http |\n| IT05 B2 字段范围 | 当前团获准DM只用状态合同，不能通过完整管理／历史读取story | http-browser |\n| IT06 B2 账户切换及过期 | 旧请求／草稿不进入新账户；过期／撤权保存拒绝，输入按本机范围保留 | http-browser |\n| IT07 B2 并发及版本 | 两独立会话冲突保留输入；未来基线明确拒绝；不覆盖较新正式版本 | http-db-browser |\n| IT08 B2 未知结果与重启 | 命令登记后／效果事务前／提交后断线或重启，核实同键；不重复写入或永远pending | http-db-fault |\n| IT09 B3 首个合法创建 | 真实支持组合及选择完整，服务重算与预览一致，角色／起始资产原子创建 | rules-http-db |\n| IT10 B3 草稿创建防重 | 同命令重发和同草稿新命令并发仅物化一个角色；不重复初始物资 | http-db-concurrency |\n| IT11 B3 资产失败回滚 | 钱包／库存／配装／快照或回执任一步失败，无可见半个角色／部分资产 | db-fault |\n| IT12 B3 计划与规则变化 | 过期／输入或规则政策变化重做预览；不悄悄创建新金额或收益 | rules-http |\n| IT13 B4 成长与学习 | 来源／费用／栏位／UID／成长绑定正确，读取／重试不再领奖 | rules-http-db |\n| IT14 B4 永久限制及历史 | 遗忘不退款、跨来源同名禁学；旧快照不能解除限制／重置领取／倒回余额 | rules-db |\n| IT15 B4 池及状态来源 | 只改获准人工UID，规则／未知来源不擅自删除，聚合值不覆盖来源 | rules-http-browser |\n| IT16 B4 资产并发与配装 | 交易／容器变化使旧assetBasis失效；角色与物品关系一起提交 | http-db-concurrency |\n| IT17 B5 四份真实档案迁移 | 逐份新平台转换／保存／读取复核；表／区域选择、负值／缓存事实、未知内容可追溯 | real-migration |\n| IT18 B5 旧备份槽位 | 名称下划线、多个保存条目／槽位、坏一条与同名来源选择；不把条目数当角色数 | real-migration |\n| IT19 B5 元数据与实体身份 | v1／v2／v3／缺meta、基线变化／替换／删除、重复UID／未来版明示问题 | real-migration |\n| IT20 B5 新JSON连续三次往返 | 经新平台转换与读写后UID／来源／选择／问题／人工调整保持；无奖励／资产重放 | real-roundtrip |\n| IT21 B5 历史资产审核 | 声称待核对；同团获准DM审核固定版本后入账一次；旧决定不能批准已换物品／金额 | http-db-concurrency |\n| IT22 B6 初次入团绑定 | owner不变、时间线首次绑定后固定、同线单团；清关联不能跨线复用 | http-db |\n| IT23 B6 未入团与未批准资产 | 独立钱包／库存；未入团仅持有配装；待批准声称不能作为交易资产或权威加成 | http-db-browser |\n| IT24 B6 已约定基础经济 | 真实3.2报价／库存／钱包版本、对手权限及账目共同一致；重试不双扣／双给 | http-db-concurrency |\n| IT25 B6 权限变化竞态 | 角色／团权限在执行时有效，撤权后旧命令／快照不泄露或继续越权 | http-db-concurrency |\n| IT26 B6 跨设备已保存版本 | 另一设备真实登录读取正式记录；未保存草稿不宣称跨设备同步 | multi-device |\n| IT27 B6 移动长详情与表单 | 360／390宽及真机下长正文、单位、选择器、键盘、错误定位、冲突对话框可用 | browser-device |\n| IT28 B6 Safari文件与恢复 | iPhone Safari真实导入选择／下载获取、本机草稿、后台／返回及存储不可用恢复 | browser-device |\n| IT29 B6 导出完整和失败 | 下载生成后读取文件验证；无保存凭证不宣称已落盘；失败保留数据 | browser-device-roundtrip |\n| IT30 B6 全量内容及选择覆盖 | 冻结源清单逐项对应正文、定义、选择分支与支持；未来未启用不冒充公布全量 | source-coverage |\n| IT31 B6 真实团流程 | 不同真实登录主体依次资料／建卡／成长／导入补全／资产批准／经济流程，意见与缺陷留痕 | real-campaign |\n| IT32 B6 部署与恢复 | 迁移可追溯、实际备份恢复、已提交命令／角色／资产一致；回退前端不随意回滚DB | ops-integration |\n| IT33 B6 全量建卡与管理选择分支 | 每个公布职业／种族／背景／领域与必需选择、容量及例外有对应规则与真实页面证据；不能以首个组合或manual标签宣称全自动范围完成 | source-rules-browser-coverage |\n\n[机器可读清单](/D:/Download/scholar-agent-main/docs/migration/B6_联调场景与验收门槛_20261006_v1.json)的33项全部status=not-run、evidenceRefs为空。本轮只检查了任务／批次覆盖、唯一性、状态和证据准入逻辑；没有执行表中任何正式业务验收。经济实际功能定稿后，把IT24细分为所有必需交易正反例，不能只留一个笼统‘经济已通过’标签。\n\n## 浏览器真机与移动交互\n\n| 范围 | 视口及设备要求 | 关注 |\n| --- | --- | --- |\n| WEB01 桌面Chrome／Edge | real-browser；1440×900 | 键盘、长详情、保存冲突、多账户会话、文件导入导出 |\n| WEB02 Android Chrome | real-device；360×800／390×844 | 虚拟键盘、触摸、滚动、后台／返回、下载及本机存储 |\n| WEB03 iPhone Safari | real-device；390×844 | 用户确认必验；文件选择／下载可取回、页面返回／后台、存储恢复及交互 |\n\n视口用于定位排版问题，验收同时记录实际设备／浏览器版本，不伪造测过某种手机。iPhone Safari是已确认必需范围；没有设备或无法执行时相应用例blocked，不能用桌面相同宽度截图代替。\n\n具体检查长详情／召唤单位和表格可滚动、按钮和错误定位可触达、虚拟键盘不遮挡提交／恢复提示、触摸选择不误删、冲突与永久后果确认不丢输入。Safari和Android实际验证文件选择、读取失败、导出文件可取回并重读，后台／返回、刷新、离线或本机存储不可用时检查点不被报成已保存。\n\n浏览器已发起下载／已生成文件与用户设备已落盘分开提示，不能把点击下载作为成功保存证据。已登录私有记录与草稿不串账户，数据未正式保存时其他设备只看到上次正式版本。桌面Electron、旧APK、本机浏览器远程控制不在新平台默认交付；它们是旧行为和格式对照。\n\n## 真实团试用执行顺序\n\n建议一个真实DM、至少两个不同登录玩家／角色和一个无范围访问主体，按预先冻结的支持范围试用；这是执行建议，不是已邀请或已试用。团／时间线／规则包／权限和夹具预先核对，个人数据展示只在已授权范围。\n\n试用顺序：公开规则搜索与完整详情；未入团合法建卡／正式云存；第二设备读取；首次入团；DM状态维护与越权反例；一次已支持成长／学习／不可逆确认；旧档选择与未知来源补全；历史资产固定claim审批；入团后的已约定基础经济；导出取回再导入核对；会话切换、冲突与提交响应丢失恢复。\n\n玩家意见与系统缺陷分开：易用性记录步骤、设备、预期及观察，错误另有复现和数据影响。试用时遇到未确认的具体规则记录问题，不用DM当场裁定伪装成自动计算正确；人工支持须符合明确范围，不能把缺处理器统称为一切以DM决定。\n\n## 发布恢复与交付物\n\n部署先明确登录方式、域名／API映射、资产持久化和配置。目标开发代理不属于生产反代；health表示存活，ready表示数据库就绪，两者不代表角色业务健康。按目标README执行检查与构建，并把实际新业务验证纳入CI；本轮没有运行这些工程命令。\n\n数据库迁移新增并保留已应用历史，确认前后版本兼容及回填策略。发布前验证角色／资产／claim／payment／command ledger／快照的整体备份和恢复；只恢复人物文档可能失去防重账目，不能作为正确恢复。回退页面或API需要兼容已迁移数据，不随意drop表、重置角色ID或回滚资产流水。\n\n交付包含实际部署／回退／恢复说明、共享合同与Schema版本、规则发布及来源清单、角色和资产权限表、各平台范围、迁移支持模板／元数据／丢失范围、真实案例与错误恢复、已知问题及对应支持方式。运维人员能定位某角色revision／operationId及问题，但可诊断日志不暴露凭据或不必要私有数据。\n\n## 六个最终门槛与阻塞项\n\n| 门槛 | 完成要求 | 当前 |\n| --- | --- | --- |\n| GATE01 范围与共同契约 | D决策已由双方确认，变更与版本有记录；3.1三个子任务和3.2基础经济的必需范围有对应case；未确认生命周期／格式／规则明确处理，不擅自缩小必需范围 | not-verified |\n| GATE02 数据与业务实现 | 真实发布包、完整Schema与关系／规则处理器齐备；B1至B5真实保存／资产／迁移实现按支持范围核验；正式发布、代码及数据库迁移基线固定 | not-verified |\n| GATE03 真实服务证据 | 每项必测有真实HTTP／DB或规定层级的执行证据；并发、故障注入、权限和幂等结果可核对；health／ready和Mock通过不能代替业务验收 | not-verified |\n| GATE04 浏览器与真实团 | Chrome／Edge、Android Chrome、iPhone Safari按确认范围验收；360／390／1440视口及真机事实分开记录；真实不同账号与DM的流程试用完成，隐私范围正确 | not-verified |\n| GATE05 交付与维护 | 无阻塞数据损失、越权、重复授予／交易和不可逆事实破坏；允许遗留项有具体影响、负责人、处理与同意记录；支持清单、升级／恢复、规则发布及用户操作说明完整 | not-verified |\n| GATE06 一期最终签收 | 上述门槛完成，有最终范围／结果／基线／签收人和日期；剩余项与人工处理范围已确认；签收不由文档作者或自动检查伪造 | not-verified |\n\n数据丢失、串账户／越权、重复创建／奖励／资产／交易、角色与资产不一致、普通恢复解除永久限制、必需平台核心流程不可用，都应阻塞交付，不能以‘已知小问题’标一期完成。其他遗留项要写具体影响、支持方式、负责人和范围内同意记录；如原任务必需行为未完成，必须如实未完成，不能自行变成未来任务。\n\n最终签收记录实际范围、角色／规则／合同／数据库基线、必测结果、剩余问题、签收人和日期。自动校核或文档作者不能代替另一开发者的共同签批或用户验收。\n\n本轮清单核对通过，并用8个合成反例验证‘未执行、缺运行基线／观察、错误层级、模拟机冒充真机、缺共享签批、必测阻塞／缺证据’不能被准入为完成证明。这个判定例不认证真实签字，也没有把任何33项用例变成pass。\n\n## 设计阶段收尾与下一步\n\nB0共享边界、B1资料、B2完整保存、B3合法创建与起始资产、B4成长状态装备、B5历史迁移／全量覆盖、B6真实联调与交付的设计候选已经齐备。保留[T06／T07](https://chatgpt.com/space/page_0f31efad73648191a93884a336df0531)及规则问卷作为依据，本轮不继续追加更细的职业效果来延长总体架构阶段。\n\n下一步是共同评审B1／B2优先D项和各阶段契约，记录采用／修改，然后把首批工程分成可review的任务：公共结构与字段注册、不可变目录／查询详情、完整文档适配与真实保存，再按B3至B5扩展。开工前刷新双方真实代码和来源，保留既有候选改动；当前仍没有共享签批记录，业务代码按用户安排开始，不因本页成稿自动执行。\n\n本地汇总：[B6_联调试用与一期验收契约_20261006_v1.json](/D:/Download/scholar-agent-main/docs/migration/B6_联调试用与一期验收契约_20261006_v1.json)。本轮源码与原规则只读，未重查远端main、未对外发送邀请／评审、未运行试团或发布。页面没有可用原生视觉预览，内容回读不等于渲染验收。",
+  "nextStep": "共同确认共享约定并拆首批工程任务；开工前刷新代码/来源，业务实现按用户安排，不追加细致职业效果设计",
+  "sourceBaseline": {
+    "file": "baseline.json",
+    "archiveDirectory": "备份区/2026-10/b6-delivery-20261006-4b32",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetExistingChanges": 23,
+    "remoteLatestVerifiedThisTurn": false
+  },
+  "validation": {
+    "date": "2026-10-06",
+    "manifestValidation": {
+      "date": "2026-10-06",
+      "scope": "manifest design coverage and evidence-admissibility examples only; does not authenticate a real signoff or run business acceptance",
+      "cases": 33,
+      "allBusinessCasesNotRun": true,
+      "handoffs": 6,
+      "gates": 6,
+      "allGatesNotVerified": true,
+      "browserFamilies": 3,
+      "iphoneSafariConfirmed": true,
+      "negativeEvidenceExamples": 8,
+      "examples": [
+        {
+          "id": "EV01",
+          "expectedRejectedReason": "not-passed"
+        },
+        {
+          "id": "EV02",
+          "expectedRejectedReason": "missing-run-baseline"
+        },
+        {
+          "id": "EV03",
+          "expectedRejectedReason": "missing-observed-evidence"
+        },
+        {
+          "id": "EV04",
+          "expectedRejectedReason": "wrong-evidence-layer"
+        },
+        {
+          "id": "EV05",
+          "expectedRejectedReason": "emulation-not-real-device"
+        },
+        {
+          "id": "EV06",
+          "expectedRejectedReason": "missing-shared-signoff"
+        },
+        {
+          "id": "EV07",
+          "expectedRejectedReason": "required-case-not-verified"
+        },
+        {
+          "id": "EV08",
+          "expectedRejectedReason": "required-case-not-verified"
+        }
+      ],
+      "productionTestsRun": false
+    },
+    "pageProof": {
+      "newPage": {
+        "exact": true,
+        "blocks": 42
+      },
+      "canonical": [
+        {
+          "key": "packet",
+          "changed": 1,
+          "unrelated": 41,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "plan",
+          "changed": 3,
+          "unrelated": 39,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "parent",
+          "changed": 3,
+          "unrelated": 245,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        }
+      ],
+      "questionnaireSequence": 20
+    },
+    "sourceMismatches": [],
+    "targetFilesVerified": 60,
+    "originalFilesVerified": 47,
+    "unrelatedBlocksPreserved": 325,
+    "productionTestsRun": false,
+    "realDeviceTestsRun": false,
+    "realCampaignTrialRun": false,
+    "nativePageVisualPreviewAvailable": false,
+    "pending": [],
+    "taskArchive": {
+      "date": "2026-10-06",
+      "source": "D:\\Download\\scholar-agent-main\\_scratch\\b6-delivery-20261006-4b32",
+      "destination": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\b6-delivery-20261006-4b32",
+      "entries": 1,
+      "indexPrefixPreserved": true,
+      "sourceOriginalsUnchanged": true,
+      "targetCodeUnchanged": true,
+      "unexpectedTrackedDeletions": [],
+      "scratchRemoved": true
+    }
+  },
+  "temporaryArtifactsArchive": "备份区/2026-10/b6-delivery-20261006-4b32"
+}

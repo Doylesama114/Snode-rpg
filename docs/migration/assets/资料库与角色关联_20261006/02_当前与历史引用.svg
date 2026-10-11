@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="930" viewBox="0 0 1280 930">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8298a8"/></marker></defs>
+<rect width="1280" height="930" rx="24" fill="#f6f9fb"/>
+<text x="56" y="57" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e" text-anchor="start">02</text>
+<text x="112" y="58" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="700" fill="#183042" text-anchor="start">角色引用：当前计算与历史依据分开</text>
+<text x="56" y="104" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">编号和修订用于结构示意；升级后保留原实例身份和过去事实。</text>
+<rect x="56" y="150" width="1168" height="120" rx="18" fill="#eaf1f8" stroke="#9ab4ca" stroke-width="2"/>
+<text x="80" y="195" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="700" fill="#376b95" text-anchor="start">角色 A：当前发布 R2</text>
+<text x="80" y="238" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">能力实例 UID u-001 保持；获取记录仍能追溯当时的来源。</text>
+<path d="M336 278 L336 327" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M944 278 L944 327" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="56" y="336" width="560" height="280" rx="18" fill="#eff8f5" stroke="#a3c9bd" stroke-width="2"/>
+<text x="80" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#21746e" text-anchor="start">当前引用 → R2 内的定义</text>
+<text x="80" y="434" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">职业：class.warrior / 修订3</text>
+<text x="80" y="479" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">能力条目：entry.A / 修订2</text>
+<text x="80" y="524" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">调整公式：rule.modifier / 修订2</text>
+<text x="80" y="579" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e" text-anchor="start">用于今天的计算和资格检查</text>
+<rect x="664" y="336" width="560" height="280" rx="18" fill="#fffaf0" stroke="#d7c49e" stroke-width="2"/>
+<text x="688" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#a77b37" text-anchor="start">历史依据 → 取得时的版本</text>
+<text x="688" y="434" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">习得时：entry.A / 修订1</text>
+<text x="688" y="479" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">支付与授予：保留原事实</text>
+<text x="688" y="524" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">升级实得：保留当时的依据</text>
+<text x="688" y="579" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#a77b37" text-anchor="start">解释过去实际发生了什么</text>
+<path d="M336 624 L336 678" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M944 624 L944 678" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="56" y="688" width="560" height="110" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="711" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="98" y="734" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">按 R2 重算当前结果</text>
+<text x="81" y="771" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">不会与其他版本拼成一套公式</text>
+<rect x="664" y="688" width="560" height="110" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="686" y="711" width="5" height="31" rx="2" fill="#a77b37"/>
+<text x="706" y="734" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">原历史仍可查</text>
+<text x="689" y="771" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">若追溯补偿，则追加调整记录</text>
+<text x="56" y="879" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">同一角色可以保留旧历史引用；当前计算统一使用 R2。</text>
+</svg>

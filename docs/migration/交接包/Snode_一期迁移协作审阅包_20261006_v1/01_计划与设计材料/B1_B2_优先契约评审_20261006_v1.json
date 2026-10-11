@@ -1,0 +1,1788 @@
+{
+  "date": "2026-10-06",
+  "stage": "B1-B2-priority-contract-review",
+  "version": "1.0-review-candidate",
+  "status": "internal_review_complete_joint_signoff_pending",
+  "pageUrl": "https://chatgpt.com/space/page_cfd381d68788819195ec90ef4d64f8cf",
+  "peerSignoffRecorded": false,
+  "businessCodeChanged": false,
+  "productionImplementation": false,
+  "characterModelCandidate": "0.2.2",
+  "characterStructureSchemaCandidateComplete": true,
+  "productionRuntimeSchemaDeployed": false,
+  "gameLegalityValidated": false,
+  "schemaArtifact": "B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+  "projectionArtifact": "B1_规范目录投影_评审样例_20261006_v1.json",
+  "testArtifact": "B1_B2_契约验证样例_20261006_v1.json",
+  "schemaScope": {
+    "sourceDeclarations": 57,
+    "definitionBlocks": 99,
+    "characterTopLevelRequiredFields": 31,
+    "genericSpecializations": 13,
+    "topLevelShapes": 9
+  },
+  "validatedFixtures": {
+    "structuralCases": 191,
+    "positive": 168,
+    "negative": 23,
+    "sourceCharacters": 5,
+    "bodyDocuments": 30,
+    "typedRecordProjections": 75,
+    "sourceEvidence": 48,
+    "persistentUnits": 2,
+    "localRelationNegatives": 5,
+    "summonedNativeAbilitiesExpanded": 6
+  },
+  "normalizationFindings": {
+    "rawDirectoryTypeMismatches": 38,
+    "contentRecordLinks": 30,
+    "classMarkers": 6,
+    "domainMarkers": 2,
+    "reviewAnnotationsPreserved": 8,
+    "metadataOnlyRecords": 55,
+    "originalSamplesChanged": false,
+    "reviewOnly": true,
+    "publicationAllowed": false
+  },
+  "endpoints": [
+    {
+      "id": "API01",
+      "method": "GET",
+      "path": "/api/catalog/releases",
+      "scope": "公开",
+      "result": "仅已发布release摘要；评审样例不在此列"
+    },
+    {
+      "id": "API02",
+      "method": "GET",
+      "path": "/api/catalog/releases/:releaseId",
+      "scope": "公开",
+      "result": "固定id／manifestHash、覆盖说明、产物清单；不可复用id覆盖发布"
+    },
+    {
+      "id": "API03",
+      "method": "GET",
+      "path": "/api/catalog/releases/:releaseId/search",
+      "scope": "公开",
+      "result": "发布绑定的关键词／kind／来源筛选；游标绑定查询与发布"
+    },
+    {
+      "id": "API04",
+      "method": "GET",
+      "path": "/api/catalog/releases/:releaseId/definitions/:id/revisions/:revision",
+      "scope": "公开",
+      "result": "CatalogDefinitionDetail；contextEntry可选并校验归属；正文与关联详情同包"
+    },
+    {
+      "id": "API05",
+      "method": "GET",
+      "path": "/api/catalog/releases/:releaseId/lists/:id/revisions/:revision/entries",
+      "scope": "公开",
+      "result": "精确list引用、源顺序索引与分页条目；不凭名字决定来源"
+    },
+    {
+      "id": "API06",
+      "method": "GET",
+      "path": "/api/catalog/releases/:releaseId/legacy/resolve",
+      "scope": "公开",
+      "result": "按来源系统／旧id／版本查resolved、ambiguous或unresolved"
+    },
+    {
+      "id": "API07",
+      "method": "GET",
+      "path": "/api/characters",
+      "scope": "本人授权列表",
+      "result": "角色摘要和未入团／待核对提示；无云端未保存草稿"
+    },
+    {
+      "id": "API08",
+      "method": "GET",
+      "path": "/api/characters/:id/management",
+      "scope": "本人完整管理范围",
+      "result": "既有严格ManagementView v1；附加评估放独立Workspace包装"
+    },
+    {
+      "id": "API09",
+      "method": "POST",
+      "path": "/api/characters/:id/management-commands",
+      "scope": "本人且字段可写",
+      "result": "五字段命令；提交终态与三字段CommitReceipt"
+    },
+    {
+      "id": "API10",
+      "method": "GET",
+      "path": "/api/characters/:id/state-management",
+      "scope": "本人或获当前团状态权限的DM",
+      "result": "StateManagementView独立合同；姓名与状态，不含story"
+    },
+    {
+      "id": "API11",
+      "method": "POST",
+      "path": "/api/characters/:id/state-management-commands",
+      "scope": "当前有状态写权限",
+      "result": "StateManagementCommand／StateCommitReceipt；首轮仅HP／FP"
+    },
+    {
+      "id": "API12",
+      "method": "GET",
+      "path": "/api/characters/:id/commands/:commandId",
+      "scope": "发起主体且当前仍有对应对象／字段范围",
+      "result": "pending／committed／rejected／conflict／not-seen；不返回旧缓存私有字段"
+    },
+    {
+      "id": "API13",
+      "method": "GET",
+      "path": "/api/characters/:id/history",
+      "scope": "本人历史范围",
+      "result": "修订／时间／审计摘要与明确授权的历史投影；DM不复用此入口"
+    },
+    {
+      "id": "API14",
+      "method": "GET",
+      "path": "/api/characters/:id/history/:snapshotId/management",
+      "scope": "本人历史范围",
+      "result": "所选不可变快照的管理投影；B2不提供恢复写命令"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "AUTH01",
+      "actor": "未登录",
+      "read": "公开资料",
+      "write": "无私有角色写入",
+      "limits": "角色／团／资产请求要求登录"
+    },
+    {
+      "id": "AUTH02",
+      "actor": "未入团角色本人",
+      "read": "本人管理、状态、历史及同版本资料",
+      "write": "active角色的名称／故事／HP／FP登记字段",
+      "limits": "服务owner由身份建立；不可写拥有者、团、等级、钱包"
+    },
+    {
+      "id": "AUTH03",
+      "actor": "已入团角色本人",
+      "read": "按本人及当前服务策略授权",
+      "write": "仍须字段白名单和当前可写策略",
+      "limits": "入团不赋予任意经济／成长写入；时间线已绑定后固定"
+    },
+    {
+      "id": "AUTH04",
+      "actor": "同当前团的DM",
+      "read": "姓名与获准当前状态的独立StateView",
+      "write": "仅被3.2授予的HP／FP状态字段",
+      "limits": "第一批不开放故事、完整管理历史或成长；团服务未就绪时此分支关闭"
+    },
+    {
+      "id": "AUTH05",
+      "actor": "其他玩家、其他团DM、已退出／撤权主体",
+      "read": "无该私有角色读取范围",
+      "write": "拒绝",
+      "limits": "不能以缓存editable、客户端团ID或旧回执绕过"
+    },
+    {
+      "id": "AUTH06",
+      "actor": "已归档角色本人",
+      "read": "经服务许可的管理／历史",
+      "write": "B2不编辑",
+      "limits": "归档、删除、转团和恢复命令属于后续已确定范围"
+    }
+  ],
+  "transactionStages": [
+    {
+      "id": "TX01",
+      "stage": "接收与认证",
+      "action": "验证真实主体、对象范围、路径／正文ID一致、命令结构、字段登记及预算",
+      "failure": "未授权不泄露角色；结构错误没有角色写入"
+    },
+    {
+      "id": "TX02",
+      "stage": "命令登记短事务",
+      "action": "以verifiedPrincipalId＋commandId唯一登记family、目标、指纹、完整受控请求、operationId和pending状态",
+      "failure": "同键同请求复用；异请求拒绝；凭据不进入请求记录"
+    },
+    {
+      "id": "TX03",
+      "stage": "执行事务读取",
+      "action": "锁定命令和当前角色／关系依据；重新核验当前权限、lifecycle及expectedRevision",
+      "failure": "落后基线返回高版本conflict；未来基线明确拒绝"
+    },
+    {
+      "id": "TX04",
+      "stage": "应用与校验",
+      "action": "只应用登记意图，建立由operationId标识的事实；完整文档结构及受影响关系／值域重新校验",
+      "failure": "确定不合法记录rejected；原角色／资产不变"
+    },
+    {
+      "id": "TX05",
+      "stage": "成功原子提交",
+      "action": "角色revision＋1、完整文档、不可变快照、审计及ledger committed结果同事务写入",
+      "failure": "事务故障全部回滚；短事务pending保留，租约到期后核实并重试原命令"
+    },
+    {
+      "id": "TX06",
+      "stage": "回执及重放",
+      "action": "按当前读取权限从已提交快照渲染匹配回执；核实原commandId；已有更高客户端基线不倒退",
+      "failure": "发送失败不等于提交失败；不盲回存储的旧完整响应"
+    }
+  ],
+  "compatibilityDecisions": {
+    "sameValueAcceptedCommand": "new revision/snapshot/audit for valid nonempty new key; same key not repeated",
+    "futureExpectedRevision": "422 invalid-base-revision, not conflict view",
+    "olderExpectedRevision": "409 higher-version authorized conflict view",
+    "dmStory": "not present in StateView; owner ManagementView v1 unchanged",
+    "operationIdentity": "server-generated operationId distinct from principal-scoped commandId",
+    "pendingRegistration": "short transaction; effect transaction atomically stores current/snapshot/audit/terminal result"
+  },
+  "fieldRegistryProposal": {
+    "ordinary": [
+      "displayName",
+      "story",
+      "hp.current",
+      "fp.current"
+    ],
+    "stateWrite": [
+      "hp.current",
+      "fp.current"
+    ],
+    "excludedAggregateWrites": [
+      "hp.temporary",
+      "shield.manual",
+      "exhaustion.manual"
+    ],
+    "authority": "verified object/field policy, not editable flags"
+  },
+  "reportMarkdown": "日期：2026年10月6日；版本：v1，B1资料库与B2云端角色保存的优先契约候选。本页细化[总体共享评审包](https://chatgpt.com/space/page_4c9129dd408c8191a64a13aff3ba16f3)中的D01至D05、D07、D10至D12，将完整结构、公开读取、服务身份、权限、历史及幂等事务写成可共同确认的方案。\n\n本轮完成内部设计核对与Schema评审材料，技术建议尚未获3.2开发者签批。代码仍按用户要求延后，不创建运行接口、数据库迁移或实际云端记录。B3合法建卡、起始资产及B4成长／装备操作继续按其专门命令建设，B2不开放任意完整角色JSON上传接口。\n\n## 完整结构Schema与验证分层\n\n本轮从T07的v0.2.2类型文本推导57项声明及13个遇到的泛型特化，形成[完整角色与资料结构Schema候选](/D:/Download/scholar-agent-main/docs/migration/B1_B2_角色与资料Schema_评审候选_20261006_v1.json)。共99个定义，CharacterDocument的31个顶层字段全部有闭合结构，不用任意字典兜底。\n\n| 结构 | 本轮明确内容 | 仍需另一层验证 |\n| --- | --- | --- |\n| CharacterDocument | 身份／规则引用、资料、职业、选择／获取、能力与禁学、成长、属性／熟练、资源、池／状态、装备引用、迁移事实和问题；known／unrecorded／unresolved分支分开 | 游戏值域、身份权限、目录／系统／资产引用及完整合法建卡 |\n| CharacterPersistenceRecord | 复用同一CharacterDocument，增加可信服务owner、角色PK、revision、生命周期、系统时间、时间线和团关联 | 文档ID与PK一致；owner真实；首绑时间线不可跨线重置；单一团关系 |\n| ContentDocument | 有序段落／字体语义、表格／合并信息、资产和定义链接 | 表格跨度／合并一致、关联资源存在、完整来源覆盖与安全渲染 |\n| CatalogDefinitionDetail | 精确发布、定义摘要、选定Entry上下文、正文、结构化或仅正文状态、关联详情与未展开引用 | 结构化类别与实际数据匹配、同名来源和目标kind、固定发布与分页 |\n| StateManagementView／Command／Receipt | 独立于ManagementView的状态范围，含姓名和获准数值，不含story；严格控制状态写入 | 当前团DM资格、登记字段和事务授权；版本号1属于新合同族，不是扩展旧v1 |\n\n完整字段结构候选已经补齐，生产运行时尚未接入。类型推导采用现有TypeScript 5.9.3解析依赖，仅作为本轮临时设计工具；目标工程仍使用其既有工具链，没有安装或升级依赖。正式共享包的Schema／TS同源方法需双方采用一个权威来源。\n\n字段结构、关系、游戏规则及授权分别验证。普通数值传输保持有限数，HP允许负值、FP允许0；整数／范围及特殊规则仍按登记域值确定，不能统一截断或自动钳到上限。空值表示未记录，不能当0。名称及故事沿用管理v1约束与UTF-16预算；历史缺少可显示名称时明确补充，不通过伪造名称掩盖缺口。\n\n## 目录载荷与正文关联的规范投影\n\n更严格的Schema核对发现，T07目录样例中有38项记录不能按假定载荷直接通过：30项content使用contentDocumentId链接正文，6项class和2项domain含sampleCoverage／synthetic等评审标记。5份角色和30份正文结构本身通过检查；这些差异不是已验证的游戏规则出错。\n\n[规范目录投影样例](/D:/Download/scholar-agent-main/docs/migration/B1_规范目录投影_评审样例_20261006_v1.json)采用明确转换：content载荷保存document的id＋revision，正文放在独立PublishedContentDocument；8项评审标记保留在reviewAnnotations侧表，不混入正式职业／领域载荷。原T07文件不改，其他未知字段不按白名单之外的规则静默删除。\n\n| 类别 | 第一批处理 | 不混淆的范围 |\n| --- | --- | --- |\n| class、ability-entry、ability、domain、tier、entity-template | 采用对应闭合payload Schema，投影保留来源与引用 | 结构可验证不表示规则计算已支持 |\n| content | 储存版本化正文引用，详情解析实际ContentDocument | 不能把正文链接当作整篇正文，也不复制一份脱离版本的摘要 |\n| 其他kind的55项样例记录 | 先提供定义摘要和完整可核对正文；API payload标text-only，并禁止附带任意value | 尚未定义载荷结构不能冒充typed；所需计算Schema在对应功能前补齐 |\n| 评审／合成来源 | sampleOnly与publicationAllowed=false贯穿本轮投影和验证样例 | 不能把构造角色、合成职业或评审样例发布为现行规则 |\n\n规范投影仅为评审对照而保留原样例引用，不能直接复用旧manifestHash当正式发布结果。实际已发布资料转换必须产生新修订与新发布包，重新建立引用及Hash，旧角色仍读取原版本。\n\n## B1公开读取与发布约定\n\n| 候选接口 | 输出约定 | 权限 |\n| --- | --- | --- |\n| GET /api/catalog/releases | 仅已发布release摘要；评审样例不在此列 | 公开 |\n| GET /api/catalog/releases/:releaseId | 固定id／manifestHash、覆盖说明、产物清单；不可复用id覆盖发布 | 公开 |\n| GET /api/catalog/releases/:releaseId/search | 发布绑定的关键词／kind／来源筛选；游标绑定查询与发布 | 公开 |\n| GET /api/catalog/releases/:releaseId/definitions/:id/revisions/:revision | CatalogDefinitionDetail；contextEntry可选并校验归属；正文与关联详情同包 | 公开 |\n| GET /api/catalog/releases/:releaseId/lists/:id/revisions/:revision/entries | 精确list引用、源顺序索引与分页条目；不凭名字决定来源 | 公开 |\n| GET /api/catalog/releases/:releaseId/legacy/resolve | 按来源系统／旧id／版本查resolved、ambiguous或unresolved | 公开 |\n\n这些是本轮优先采用的路径建议，最终加入contracts之前共同签批。早期rulesetVersion参数名不再被当成已冻结接口：发布由RuleReleaseRef精确表达，定义引用与用户选定Entry有明确作用域。公开目录默认入口可以选择当前已发布包，角色详情必须使用角色绑定包；缺失版本、Hash不符或Entry不属于该能力返回问题，不改查latest。\n\n详情使用同一正文解析器。召唤模板的基础值、挑战等级、变体及全部固有能力能通过typed数据和正文读取；本轮组装了一个召唤详情示例，展开单位及6项固有能力。若出于体积限制分批返回，remainingRelatedRefs和可继续读取入口明确，客户端不能把首批摘要标成完整详情。\n\nAbilityEntry当前没有来源显示顺序字段。建议发布派生CatalogListEntryIndex：list／entry精确引用、sourceOrder与sourceLocator，按原表顺序生成；階位按TierDefinition.order排序，不固定七阶。游标绑定发布Hash、查询条件及排序，不能在翻页途中改用另一版索引。\n\n发布清单登记定义、正文和资源的版本／内容Hash，manifestHash只计算明确的清单载荷，排除它自身，防止自引用。采用固定UTF-8序列化与键排序，保留有语义的数组顺序；定义ID不直接拼文件路径。生产发布核对结构、引用、来源覆盖及Hash后再进入公开列表，资料索引是可重建产物。私有角色档案不进入资料源或公共缓存。\n\n## B2接口与权限范围\n\n| 候选接口 | 响应或写入范围 | 访问主体 |\n| --- | --- | --- |\n| GET /api/characters | 角色摘要和未入团／待核对提示；无云端未保存草稿 | 本人授权列表 |\n| GET /api/characters/:id/management | 既有严格ManagementView v1；附加评估放独立Workspace包装 | 本人完整管理范围 |\n| POST /api/characters/:id/management-commands | 五字段命令；提交终态与三字段CommitReceipt | 本人且字段可写 |\n| GET /api/characters/:id/state-management | StateManagementView独立合同；姓名与状态，不含story | 本人或获当前团状态权限的DM |\n| POST /api/characters/:id/state-management-commands | StateManagementCommand／StateCommitReceipt；首轮仅HP／FP | 当前有状态写权限 |\n| GET /api/characters/:id/commands/:commandId | pending／committed／rejected／conflict／not-seen；不返回旧缓存私有字段 | 发起主体且当前仍有对应对象／字段范围 |\n| GET /api/characters/:id/history | 修订／时间／审计摘要与明确授权的历史投影；DM不复用此入口 | 本人历史范围 |\n| GET /api/characters/:id/history/:snapshotId/management | 所选不可变快照的管理投影；B2不提供恢复写命令 | 本人历史范围 |\n\n| 主体 | 读取 | 写入与限制 |\n| --- | --- | --- |\n| AUTH01 未登录 | 公开资料 | 无私有角色写入；角色／团／资产请求要求登录 |\n| AUTH02 未入团角色本人 | 本人管理、状态、历史及同版本资料 | active角色的名称／故事／HP／FP登记字段；服务owner由身份建立；不可写拥有者、团、等级、钱包 |\n| AUTH03 已入团角色本人 | 按本人及当前服务策略授权 | 仍须字段白名单和当前可写策略；入团不赋予任意经济／成长写入；时间线已绑定后固定 |\n| AUTH04 同当前团的DM | 姓名与获准当前状态的独立StateView | 仅被3.2授予的HP／FP状态字段；第一批不开放故事、完整管理历史或成长；团服务未就绪时此分支关闭 |\n| AUTH05 其他玩家、其他团DM、已退出／撤权主体 | 无该私有角色读取范围 | 拒绝；不能以缓存editable、客户端团ID或旧回执绕过 |\n| AUTH06 已归档角色本人 | 经服务许可的管理／历史 | B2不编辑；归档、删除、转团和恢复命令属于后续已确定范围 |\n\n这是一份最小权限建议，3.2仍须确认。B2可以先交付真实本人身份和保存；DM分支在团／资格服务未就绪时关闭，不用客户端声明代替它。已获状态读取的DM也不能复用完整管理v1或本人历史，避免story及私有快照泄露；StateView是单独DTO，不用空字符串伪装被隐藏字段。\n\n已发布资料无登录要求；未登录私有请求返回401。无对象读取范围与对象不存在对外采用同样404，授权主体请求超出已知范围的操作返回安全403；拒绝不附角色差异。私有角色响应不进入共享缓存，终态回放也重新授权。\n\n未入团可以保存正式角色，owner由服务身份建立；timelineId与campaignAssignmentId可空。第一次正式入团后时间线固定，解除当前团关系不能恢复跨线绑定资格；团与时间线一致及单一活跃关联由3.2校验，首次入团的规则版本兼容不能通过静默重算解决。\n\n## 保存事务与命令恢复\n\n| 阶段 | 具体处理 | 失败与重试 |\n| --- | --- | --- |\n| TX01 接收与认证 | 验证真实主体、对象范围、路径／正文ID一致、命令结构、字段登记及预算 | 未授权不泄露角色；结构错误没有角色写入 |\n| TX02 命令登记短事务 | 以verifiedPrincipalId＋commandId唯一登记family、目标、指纹、完整受控请求、operationId和pending状态 | 同键同请求复用；异请求拒绝；凭据不进入请求记录 |\n| TX03 执行事务读取 | 锁定命令和当前角色／关系依据；重新核验当前权限、lifecycle及expectedRevision | 落后基线返回高版本conflict；未来基线明确拒绝 |\n| TX04 应用与校验 | 只应用登记意图，建立由operationId标识的事实；完整文档结构及受影响关系／值域重新校验 | 确定不合法记录rejected；原角色／资产不变 |\n| TX05 成功原子提交 | 角色revision＋1、完整文档、不可变快照、审计及ledger committed结果同事务写入 | 事务故障全部回滚；短事务pending保留，租约到期后核实并重试原命令 |\n| TX06 回执及重放 | 按当前读取权限从已提交快照渲染匹配回执；核实原commandId；已有更高客户端基线不倒退 | 发送失败不等于提交失败；不盲回存储的旧完整响应 |\n\n命令全局关联需要两个ID：commandId是客户端幂等与回执键，唯一约束是verifiedPrincipalId＋commandId；服务另生成全局operationId用于事实、快照及审计关联，避免不同主体碰巧使用同一commandId混淆来源。指纹包括合同族、目标、expectedRevision、submittedDraftVersion和完整登记意图；只做确定性序列化，不改写文本含义。\n\n登记pending的短事务不修改角色。执行事务更新角色、快照、审计与terminal命令结果。请求并发时由唯一约束／锁保证同键只应用一次；pending有执行租约及恢复流程，服务重启后重新核实并处理原请求，不能永久卡住或直接换键重做。成功关联记录按角色／快照保留，不仅放在有短TTL的缓存里。\n\n已提交命令先查幂等结果，再检查它是否是新的写入；不能因当前revision增加把同一已完成命令报成新冲突。重复读取结果仍须当前授权，从committedRevision对应快照渲染匹配回执，不盲返回存储的旧完整响应。权限失效拒绝读取私有结果；pending／not-seen都不证明此前一定未提交。\n\n确定拒绝或冲突可以保存命令terminal结果，但不改角色和资源，不生成成功快照。基础设施故障回滚执行事务，pending仍可按租约核实并恢复。提交响应丢失时客户端保存冻结命令及在途检查点，用同键查询或重发；新的输入留作本机草稿，暂不提交依赖未知结果的新命令。\n\n## 与现有管理v1的具体兼容规则\n\n实际editor.ts要求成功回执的characterRevision严格大于expectedRevision，冲突视图也必须高于提交基线。因此采用以下建议，避免后台看似成功而界面拒绝回执。\n\n| 情况 | 服务响应建议 | 现有编辑核心衔接 |\n| --- | --- | --- |\n| 客户端检测没有改动 | 不发送空edits请求，保留unchanged行为 | 无需生成命令和修订 |\n| 服务接受非空、授权且合法的新管理命令 | 包括同值复写，成功产生新revision及审计／快照；重试同键不再增版 | 三字段回执view.revision＞expectedRevision，符合completeSave |\n| expectedRevision低于服务当前修订 | 409 conflict，返回当前授权高版本投影 | 交给acceptConflict，保留原输入及基线 |\n| expectedRevision高于当前修订 | 明确422 invalid-base-revision，不伪装普通conflict | 按拒绝处理保留输入，重新核对来源／会话；不送进要求更高版本的acceptConflict |\n| 字段越权或未登记、资料非法 | 403或422明确拒绝，返回安全可定位错误 | 不当成未知网络结果；输入仍可修正 |\n| 同键不同请求 | 409 idempotency-key-reused，原请求不变 | 新意图应新键；不能偷偷修改已冻结请求 |\n| 已知成功回执与已有更高本机基线 | 确认原命令结果，界面不回退到旧修订；按条件刷新 | 不同会话／旧操作回执不覆盖当前编辑 |\n\n普通管理字段第一批为名称、故事、hp.current和fp.current；服务把数值set映射为Recorded.known人工事实，clear映射unrecorded，更新由operationId记录。它不执行战斗伤害、豁免或死亡裁决。临时生命、护盾、力竭依旧通过来源池／状态UID的后续命令处理；XP、技能点、等级、钱包及库存不成为任意set-number字段。\n\n管理v1命令及CommitReceipt本身保持严格字段不变，评估、UID映射和新操作放新包装DTO或独立合同。B2历史只读取和核对，不提供整份快照直接覆盖当前角色的写入口；后续恢复产生新修订，并重新检查规则及资产。\n\n## 存储关系与引用校验清单\n\n| 数据关系建议 | 唯一性和权威 | 事务用途 |\n| --- | --- | --- |\n| characters | 角色PK、可信owner、固定首次时间线、当前团关系、lifecycle、revision、完整document与系统时间 | 字段编辑后完整结构再校验；文档不能改变账户归属 |\n| character_snapshots | characterId＋revision唯一；不可变完整文档与规则版本，operationId／命令关联 | 成功写入与当前记录同事务；恢复不是覆写该行 |\n| command_ledger | verifiedPrincipalId＋commandId唯一；operationId全局唯一；payloadHash、family、target、请求、pending／terminal及提交修订 | 并发核实、租约恢复、幂等和匹配回执 |\n| character_audit | operationId、主体、原因、字段变化、前后revision；授权序列化 | 审计不以名称识别人，不直接向无范围DM返回私有字段 |\n| campaign／timeline关系 | 3.2服务拥有；单一活跃团关联；时间线首次绑定后保留 | 授权条件在执行事务内复核，不能仅在请求开始时看旧缓存 |\n| 资产／经济 | 3.2已有或待实现的独立权威；B2普通编辑不写 | B3及以后的带资产命令另有共同事务，历史记录不回滚余额 |\n\n角色内UID、目录／系统政策引用与外部资产／服务ID是不同关系域。局部校验检查能力／特性／图纸等acquisitionId、进度绑定、选择和unresolved.inputFactId；slot.poolId可属于派生栏位注册表，paymentIds／operationId可属于服务记录，不能简单要求所有ID都出现在同一数组里。\n\n完整读取要声明系统政策注册表、外部资产版本及发布Resolver。T07的extensionRefs／bindingFactory仍是评审构造依据，不意味着真实目录或外部服务已存在。当前Schema与局部关系通过后，合法建卡、支付／领取、颜色标识、栏位上限和复杂来源前置仍由相应规则执行及授权校验完成。\n\n## 本轮验证结果与签批状态\n\n[验证样例](/D:/Download/scholar-agent-main/docs/migration/B1_B2_契约验证样例_20261006_v1.json)含191项结构案例：168项应通过、23项应拒绝，全部匹配预期。范围包括5份原角色、30份正文、75项规范typed目录投影、48项来源证据、2个持久单位、存储／状态视图及召唤详情等例子；另外5项结构能通过的关系反例被局部关系检查识别。\n\n5份角色的本轮局部关系基线无问题；这不替代目录／系统／资产全引用、游戏规则、权限服务、HTTP、数据库及端到端验收。38项原目录差异被记录，规范投影保留8项评审标记和30条版本化正文链接，未改变原样例。所有本轮投影／验证仍是review-only，不能按已发布或完整合法建卡报告。\n\n本轮内部核对完成，D01至D05、D07、D10至D12具备更具体的B1／B2评审材料；没有记录另一开发者已同意，也没有发消息、提PR或发布接口。优先需要共同确认：固定发布与DTO路径、完整存储／状态合同、字段／权限矩阵、两阶段命令登记及成功事务、版本冲突分支和当前权限下的结果回放。\n\n下一步若继续设计，重点转到B3合法建卡及起始资产的原子提交契约；B1／B2按本页逐项签批后再安排对应实施。仍不扩大到逐技能效果，也不自动开始代码。\n\n本地汇总：[B1_B2_优先契约评审_20261006_v1.json](/D:/Download/scholar-agent-main/docs/migration/B1_B2_优先契约评审_20261006_v1.json)。本轮只读目标本地929cd8c基线及23项既存改动，未重查远端最新main。原规则、T07类型／样例及旧新业务代码保持不变；页面工具无原生视觉预览，内容回读不等于渲染验收。",
+  "currentReviewDecisions": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D10",
+    "D11",
+    "D12"
+  ],
+  "deferredDecisions": [
+    "D06",
+    "D08",
+    "D09"
+  ],
+  "nextStep": "共同确认B1/B2约定；若继续设计，转入B3合法建卡与起始资产原子提交，不自动编码",
+  "sourceBaseline": {
+    "file": "baseline.json",
+    "archiveDirectory": "备份区/2026-10/b1-b2-contracts-20261006-5a7c",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetExistingChanges": 23,
+    "remoteLatestVerifiedThisTurn": false
+  },
+  "validation": {
+    "date": "2026-10-06",
+    "checksPassed": 10,
+    "checks": [
+      "complete 31-field structure candidate and original model provenance",
+      "191 structural cases and five locally invalid relation cases checked",
+      "directory discrepancies retained in review-only projection, not silently published",
+      "14 routes, 6 authorization rows, and 6 transaction stages complete",
+      "DM view/command are separate and contain no story/profile writes",
+      "legacy source revision requirements reflected in contract",
+      "page changes preserve all 485 unrelated blocks and questionnaire answers",
+      "target files, original 47 documents, T07 source types and samples unchanged",
+      "target HEAD and all 23 preexisting changes unchanged",
+      "internal review does not invent peer signoff or running services"
+    ],
+    "targetFilesVerified": 60,
+    "originalFilesVerified": 47,
+    "unrelatedBlocksPreserved": 485,
+    "canonicalChangedBlocks": 9,
+    "sourceMismatches": [],
+    "productionTestsRun": false,
+    "nativePageVisualPreviewAvailable": false,
+    "pageProof": {
+      "newPage": {
+        "id": "page_cfd381d68788819195ec90ef4d64f8cf",
+        "exact": true,
+        "blocks": 45
+      },
+      "canonical": [
+        {
+          "key": "packet",
+          "pageId": "page_4c9129dd408c8191a64a13aff3ba16f3",
+          "sequence": 2,
+          "changed": 2,
+          "unrelated": 40,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "framework",
+          "pageId": "page_852e22f7d6648191bfc15f55a81661f1",
+          "sequence": 30,
+          "changed": 2,
+          "unrelated": 160,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "plan",
+          "pageId": "page_8d2acb837bbc819196ddbbcc1ab5efe7",
+          "sequence": 28,
+          "changed": 3,
+          "unrelated": 39,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        },
+        {
+          "key": "parent",
+          "pageId": "page_62d93a992ee4819188aa80bf16e28057",
+          "sequence": 23,
+          "changed": 2,
+          "unrelated": 246,
+          "changeMismatches": [],
+          "unrelatedMismatches": []
+        }
+      ],
+      "questionnaire": {
+        "pageId": "page_2de12922f1348191a588f53146239f9e",
+        "sequence": 20,
+        "modifiedByTask": false
+      },
+      "nativePageVisualPreviewAvailable": false
+    },
+    "schemaReport": {
+      "date": "2026-10-06",
+      "schemaValid": true,
+      "schemaDefinitions": 99,
+      "sourceDeclarations": 57,
+      "characterRequiredFields": 31,
+      "sourceCharacters": 5,
+      "contentDocuments": 30,
+      "typedRecordProjection": 75,
+      "sourceEvidence": 48,
+      "persistentUnits": 2,
+      "structuralCases": 191,
+      "validCases": 168,
+      "invalidCases": 23,
+      "allExpectedMatched": true,
+      "localRelationBaseline": [
+        {
+          "id": "warrior",
+          "issues": []
+        },
+        {
+          "id": "cross",
+          "issues": []
+        },
+        {
+          "id": "priest",
+          "issues": []
+        },
+        {
+          "id": "progression-pending",
+          "issues": []
+        },
+        {
+          "id": "declined-grant",
+          "issues": []
+        }
+      ],
+      "relationNegativeCases": [
+        {
+          "id": "REL-ACQUISITION",
+          "structurallyValid": true,
+          "expectedIssueFound": true
+        },
+        {
+          "id": "REL-PROGRESSION",
+          "structurallyValid": true,
+          "expectedIssueFound": true
+        },
+        {
+          "id": "REL-CHOICE",
+          "structurallyValid": true,
+          "expectedIssueFound": true
+        },
+        {
+          "id": "REL-INPUT-FACT",
+          "structurallyValid": true,
+          "expectedIssueFound": true
+        },
+        {
+          "id": "REL-OUTER-ID",
+          "structurallyValid": true,
+          "expectedIssueFound": true
+        }
+      ],
+      "nativeSummonAbilitiesExpanded": 6,
+      "publicPayloadKinds": [
+        "class",
+        "ability-entry",
+        "ability",
+        "domain",
+        "tier",
+        "entity-template",
+        "content"
+      ],
+      "originalDirectoryProbeFailures": 38,
+      "reviewMarkersPreserved": 8,
+      "versionedBodyLinks": 30,
+      "metadataOnlyRecords": 55,
+      "productionVerification": false,
+      "doesNotValidate": "full catalog/system/service references, game rules, permissions, HTTP or PostgreSQL",
+      "results": [
+        {
+          "id": "CHAR-warrior",
+          "shape": "CharacterDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CHAR-cross",
+          "shape": "CharacterDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CHAR-priest",
+          "shape": "CharacterDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CHAR-progression-pending",
+          "shape": "CharacterDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CHAR-declined-grant",
+          "shape": "CharacterDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-0",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-1",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-2",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-3",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-4",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-5",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-6",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-7",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-8",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-9",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-10",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-11",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-12",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-13",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-14",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-15",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-16",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-17",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-18",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-19",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-20",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-21",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-22",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-23",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-24",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-25",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-26",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-27",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-28",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BODY-29",
+          "shape": "ContentDocument",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-0",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-1",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-2",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-3",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-4",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-5",
+          "shape": "CatalogRecord_tier",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-6",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-7",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-8",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-9",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-10",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-11",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-12",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-13",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-14",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-15",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-16",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-17",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-18",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-19",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-20",
+          "shape": "CatalogRecord_domain",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-21",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-22",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-23",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-24",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-25",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-26",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-27",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-28",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-29",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-30",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-31",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-32",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-33",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-34",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-35",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-36",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-37",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-38",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-39",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-40",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-41",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-42",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-43",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-44",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-45",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-46",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-47",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-48",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-49",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-50",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-51",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-52",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-53",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-54",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-55",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-56",
+          "shape": "CatalogRecord_ability_entry",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-57",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-58",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-59",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-60",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-61",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-62",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-63",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-64",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-65",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-66",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-67",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-68",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-69",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-70",
+          "shape": "CatalogRecord_ability",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-71",
+          "shape": "CatalogRecord_entity_template",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-72",
+          "shape": "CatalogRecord_content",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-73",
+          "shape": "CatalogRecord_class",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "CAT-74",
+          "shape": "CatalogRecord_domain",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-0",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-1",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-2",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-3",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-4",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-5",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-6",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-7",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-8",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-9",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-10",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-11",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-12",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-13",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-14",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-15",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-16",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-17",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-18",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-19",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-20",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-21",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-22",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-23",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-24",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-25",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-26",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-27",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-28",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-29",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-30",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-31",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-32",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-33",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-34",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-35",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-36",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-37",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-38",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-39",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-40",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-41",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-42",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-43",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-44",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-45",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-46",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "EVIDENCE-47",
+          "shape": "SourceEvidence",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "UNIT-0",
+          "shape": "PersistentUnitRecord",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "UNIT-1",
+          "shape": "PersistentUnitRecord",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "RELEASE",
+          "shape": "RuleRelease",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "STORE-UNASSIGNED",
+          "shape": "CharacterPersistenceRecord",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "STORE-ASSIGNED",
+          "shape": "CharacterPersistenceRecord",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "STATE-VIEW",
+          "shape": "StateManagementView",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "STATE-COMMAND",
+          "shape": "StateManagementCommand",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "STATE-RECEIPT",
+          "shape": "StateCommitReceipt",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "FULL-SUMMON-DETAIL",
+          "shape": "CatalogDefinitionDetail",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "TEXT-ONLY-DETAIL",
+          "shape": "CatalogDefinitionDetail",
+          "expected": true,
+          "actual": true,
+          "matched": true
+        },
+        {
+          "id": "BAD-MISSING-CHOICES",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-EXTRA-OWNER",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-SCALAR-TIER",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-RAW-NUMBER",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-GROWTH-BINDING",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-SLOT-TAG",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-ROLE",
+          "shape": "CharacterDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-QUALITY-IN-LIFECYCLE",
+          "shape": "CharacterPersistenceRecord",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-CAMPAIGN-WITHOUT-TIMELINE",
+          "shape": "CharacterPersistenceRecord",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-MISSING-OWNER",
+          "shape": "CharacterPersistenceRecord",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-META-TIME",
+          "shape": "CharacterPersistenceRecord",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-STATE-STORY-LEAK",
+          "shape": "StateManagementView",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-STATE-PROFILE-EDIT",
+          "shape": "StateManagementCommand",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-OPAQUE-TEXTONLY-PAYLOAD",
+          "shape": "CatalogDefinitionDetail",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-BODY-EXTRA-HTML",
+          "shape": "ContentDocument",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:warrior",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:priest",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:wizard",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:summoner",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:rogue",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:domain:lore",
+          "shape": "CatalogRecord_domain",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:class:synthetic-new",
+          "shape": "CatalogRecord_class",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        },
+        {
+          "id": "BAD-REVIEW-META-sample:domain:synthetic-new",
+          "shape": "CatalogRecord_domain",
+          "expected": false,
+          "actual": false,
+          "matched": true
+        }
+      ]
+    },
+    "pending": [],
+    "taskArchive": {
+      "date": "2026-10-06",
+      "source": "D:\\Download\\scholar-agent-main\\_scratch\\b1-b2-contracts-20261006-5a7c",
+      "destination": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\b1-b2-contracts-20261006-5a7c",
+      "entries": 1,
+      "indexOriginalPrefixPreserved": true,
+      "targetCodeUnchanged": true,
+      "originalRulesUnchanged": true,
+      "sourceMismatches": [],
+      "unexpectedTrackedDeletions": [],
+      "scratchRemoved": true
+    }
+  },
+  "temporaryArtifactsArchive": "备份区/2026-10/b1-b2-contracts-20261006-5a7c"
+}

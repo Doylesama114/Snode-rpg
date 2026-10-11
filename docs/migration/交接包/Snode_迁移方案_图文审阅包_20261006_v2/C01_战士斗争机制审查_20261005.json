@@ -1,0 +1,2514 @@
+{
+  "date": "2026-10-05",
+  "stage": "C01-b",
+  "page": "https://chatgpt.com/space/page_c631ccffdbe0819187ee62052c736b87",
+  "recordType": "source-review-and-design",
+  "businessCodeChanged": false,
+  "completeClassAudit": false,
+  "overallEngineDesignComplete": false,
+  "characterModelVersion": "0.2.2",
+  "engineDesignVersion": "combat-design-0.2",
+  "profiles": [
+    {
+      "name": "重殴",
+      "issues": [
+        "F76"
+      ],
+      "mechanisms": [
+        "条件触发的附赠攻击",
+        "空手／持物约束",
+        "基础攻击与技能攻击分类"
+      ],
+      "review": "附赠触发基础攻击后的徒手；护盾／护甲受损也合格，回合外不能释放、不预支下回合。空一手且另一手持物时仍可附属性；窗口不占反应总额度。",
+      "legacyId": "w-skill-1-1-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 112,
+        "locator": "body[112]"
+      },
+      "sourceText": "重殴\n额外条件：你在本次游玩的战斗环节中进行过徒手攻击\n施展时间：0动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：1\n关键词：战技.徒手攻击.连锁反应\n施展条件：你至少拥有一只未持有任何物件的单手\n施展限制：-\n标识：●\n描述：你在进攻过程中找寻着攻击间隙，在挥舞武器的同时也不忘用拳头给予敌人痛击，不让对手获得喘息的时间\n在你的一次基础攻击造成伤害后，你可以对攻击目标再追加一次徒手攻击，这次攻击过程中即便你的另一只手持有物件，你依然可以在结算伤害时附加属性",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[108]",
+        "tierPolicy": "body[109]",
+        "overview": "body[110]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F76"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F76",
+          "normalized": {
+            "shieldOrArmorOnlyDamageCanTrigger": true,
+            "outsideOwnTurnAllowed": false,
+            "bonusActionCost": 1,
+            "noBorrowFromNextTurn": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "0动作是附赠，不因连锁反应标签变成每场反应额度；一次合格基础攻击后追加一次徒手。触发是否要求生命层伤害、回合外是否可用留F76。"
+    },
+    {
+      "name": "战斗姿态",
+      "issues": [
+        "F74"
+      ],
+      "mechanisms": [
+        "持久激活与光环／唯一性",
+        "首次攻击机会",
+        "每轮一次后续攻击"
+      ],
+      "review": "战中开启也给开启后的首次基础攻击优势和5级附伤；同场不能主动关闭再开。8级未中再攻每轮一次，禁止其它重骰来源。抉择和光环／唯一性语境仍保留。",
+      "legacyId": "w-skill-1-1-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 115,
+        "locator": "body[115]"
+      },
+      "sourceText": "战斗姿态\n额外条件：本风格不能是你的战士职业的第三或第四种战斗风格\n施展时间：0动作\n施展距离：自身\n持续时间：1小时\n疲劳消耗：-\n关键词：战技.增益.光环.激活.唯一性 \n施展条件：-\n施展限制：-\n标识：●\n描述：你摆好了战斗的姿态，紧握武器做好随时投身战斗的准备\n开启战斗姿态进入战斗环节后，你发起的第一次基础攻击命中检定具有优势\n你的战士等级到达5级时：战斗姿态还会使你发起的第一次基础攻击结算造成的伤害值后额外附加一次你的力量调整值\n你的战士等级到达8级时：每轮限一次.当你的一次基础攻击（不包含技能效果）未命中目标时，你可以再次对同一目标发起攻击，你必须接受这次攻击的结果",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达5级时：战斗姿态还会使你发起的第一次基础攻击结算造成的伤害值后额外附加一次你的力量调整值",
+        "你的战士等级到达8级时：每轮限一次.当你的一次基础攻击（不包含技能效果）未命中目标时，你可以再次对同一目标发起攻击，你必须接受这次攻击的结果"
+      ],
+      "learningContext": {
+        "tierHeading": "body[108]",
+        "tierPolicy": "body[109]",
+        "overview": "body[110]",
+        "choiceContext": "body[114]"
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F74"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F74",
+          "normalized": {
+            "activationDuringBattleGetsNextFirstBasicAttackBenefit": true,
+            "voluntaryCloseThenReopenSameBattleAllowed": false,
+            "otherRerollSourcesForFollowupAttackAllowed": false,
+            "forcedDispelReactivation": "not-confirmed"
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "1小时，前三／四风格条件只用于取得；三姿态抉择语境body[114]不可丢。5级首次基础攻击额外力量；8级未中再攻，须记录新攻击与首次状态的关系。"
+    },
+    {
+      "name": "顺劈斩",
+      "issues": [
+        "F66",
+        "F73"
+      ],
+      "mechanisms": [
+        "多目标独立攻击",
+        "明确覆盖通用AOE豁免",
+        "下一自身回合一次动作改换"
+      ],
+      "review": "逐目标独立攻击覆盖通用AOE豁免；8级完整伤害骰组优势，12级只改变下一自身回合首个本技能的成本。风格数量使用F73，不能拿风格顺位替代。",
+      "legacyId": "w-skill-1-2-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 121,
+        "locator": "body[121]"
+      },
+      "sourceText": "顺劈斩\n前置条件：你习得此技能时，你的技能列表中本战斗风格的技能数量最多\n额外条件：你在本次游玩的战斗环节中造成过AOE伤害\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：3\n关键词：战技.近战攻击.AOE \n施展条件：-\n施展限制：-\n标识：●\n描述：你挥舞手中的武器对前方进行横扫\n你对前方横排方向（1）上的所有角色各发起一次攻击，本次攻击的命中检定对攻击目标均具有优势\n你的战士等级到达8级时：顺劈斩造成的伤害值具有优势\n你的战士等级到达12级时：施展顺劈斩会使你在下一个自身回合中的首个顺劈斩仅需要花费一个附赠动作",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达8级时：顺劈斩造成的伤害值具有优势",
+        "你的战士等级到达12级时：施展顺劈斩会使你在下一个自身回合中的首个顺劈斩仅需要花费一个附赠动作"
+      ],
+      "learningContext": {
+        "tierHeading": "body[117]",
+        "tierPolicy": "body[118]",
+        "overview": "body[119]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F66",
+        "F73"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F66",
+          "normalized": {
+            "selection": "whole-roll-group-higher-total",
+            "exampleCandidateTotals": [
+              8,
+              13
+            ],
+            "chosenDamageDiceTotal": 13,
+            "perDieMax18": false
+          },
+          "status": "core-answered"
+        },
+        {
+          "id": "F73",
+          "normalized": {
+            "includeTalents": true,
+            "includeInitialFree": true,
+            "crossSource": "include-only-when-its-rule-contributes-style",
+            "unlearnedStyleCount": 0,
+            "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+            "negatedMinimumWithTie": {
+              "condition": "count > minimum-of-all-styles",
+              "zeroTiedMinimumCase": false,
+              "rawSupplement": "不满足"
+            },
+            "rankAndCountDifferent": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "各目标攻击且命中优势，不按AOE默认改成敏捷豁免。8级伤害优势；12级只改下一回合首个顺劈斩的主／附成本，令牌需到期。学习时风格数量另查。"
+    },
+    {
+      "name": "破甲攻势",
+      "issues": [
+        "F64"
+      ],
+      "mechanisms": [
+        "装备特征条件束",
+        "防御介质反应禁用",
+        "护甲检定后流血"
+      ],
+      "review": "目标装备／自然护甲条件束不变。护甲检定纯D20，达到10／成长15即成功；禁止防御介质反应，不自动忽略全部护甲。裸身检定同法，但不能伪造本技能的装备条件。",
+      "legacyId": "w-skill-1-2-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 123,
+        "locator": "body[123]"
+      },
+      "sourceText": "破甲攻势\n前置条件：你对一名着装重甲、盾牌或具有天生护甲的角色造成过伤害\n额外条件：你在本次游玩的战斗环节中击败过着装重甲、盾牌或具有天生护甲的角色\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：3\n关键词：战技.近战攻击.穿甲.护甲检定（10）\n施展条件：你必须持有剑类武器、斧类武器、锤类武器或长柄武器\n施展限制：-\n标识：●\n描述：你蓄力一击将敌人的护甲如同劣质罐头般轻松破开\n你对一名角色发起攻击，如果目标着装有重甲、盾牌或者天生护甲，本次攻击具备以下效果：\n·你的攻击命中检定具有优势\n·本次攻击在结算造成的伤害值后额外附加一次你的力量调整值\n·目标无法针对这次攻击施展来源于护甲或盾牌的反应动作效果\n·目标在受到伤害后需要进行一次难度为10的护甲检定，对方检定失败将进入流血状态\n你的战士职业等级到达5级时：破甲攻势的关键词变为护甲检定（15）",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "B94BFF"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士职业等级到达5级时：破甲攻势的关键词变为护甲检定（15）"
+      ],
+      "learningContext": {
+        "tierHeading": "body[117]",
+        "tierPolicy": "body[118]",
+        "overview": "body[119]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F64"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F64",
+          "normalized": {
+            "dice": "D20",
+            "value": "natural-face",
+            "modifierMode": "none",
+            "successComparison": ">=",
+            "bareAndAllArmorSame": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "重甲／盾／天生护甲条件满足才附优势、结算后力量、介质反应禁止和护甲检定。穿甲标签不能自动扣甲或无视所有甲；5级检定10改15。获取职业与防御介质分开。"
+    },
+    {
+      "name": "武器掌握",
+      "issues": [
+        "F68"
+      ],
+      "mechanisms": [
+        "逐阈值追加选择奖励",
+        "排除已有专精",
+        "奖励领取凭据"
+      ],
+      "review": "初始、5、10、15各一项未拥有增益；12级晚学即追加3项，分别选择并保存阈值凭据。追加不覆盖初始选择，不新增同名技能或重复领取。",
+      "legacyId": "w-skill-1-2-3",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 125,
+        "locator": "body[125]"
+      },
+      "sourceText": "武器掌握\n前置条件：你拥有至少一个通用天赋树中的能力\n额外条件：你作为战士职业的角色在剧情时间线中度过至少两年时长\n关键词：天赋.增益.技艺 \n标识：●\n你获得初始专长.武器专精中一项尚未拥有的增益效果\n你的战士等级到达5级时：获得初始专长.武器专精中一项尚未拥有的增益效果\n你的战士等级到达10级时：获得初始专长.武器专精中一项尚未拥有的增益效果\n你的战士等级到达15级时：获得初始专长.武器专精中一项尚未拥有的增益效果",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达5级时：获得初始专长.武器专精中一项尚未拥有的增益效果",
+        "你的战士等级到达10级时：获得初始专长.武器专精中一项尚未拥有的增益效果",
+        "你的战士等级到达15级时：获得初始专长.武器专精中一项尚未拥有的增益效果"
+      ],
+      "learningContext": {
+        "tierHeading": "body[117]",
+        "tierPolicy": "body[118]",
+        "overview": "body[119]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F68"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F68",
+          "normalized": {
+            "retroactive": true,
+            "level12FirstLearningAdditionalChoices": 3,
+            "choiceReceipts": [
+              "base",
+              "level5",
+              "level10"
+            ],
+            "excludeAlreadyOwned": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "本身及5／10／15级各取一项未有武器专精，是新增来源收益集合，不能覆盖最初六选一；晚学追补待答，重复解析不得重复领。"
+    },
+    {
+      "name": "二连斩",
+      "issues": [
+        "F65"
+      ],
+      "mechanisms": [
+        "单动作多攻击段",
+        "动态疲劳",
+        "上一段失手条件",
+        "升级形态"
+      ],
+      "review": "1主要动作2段；每实际执行且未被反应躲掉的斩完成后扣2疲劳，普通未中也扣。8级失手给下一段关键属性；12级升级三连，X按本次实际段数计。",
+      "legacyId": "w-skill-1-3-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 143,
+        "locator": "body[143]"
+      },
+      "sourceText": "二连斩\n前置条件：你拥有战技.战斗姿态\n额外条件：你在本次游玩的战斗环节中击杀过两个单位\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：X\n关键词：战技.近战攻击.连续攻击 \n施展条件：-\n施展限制：-\n标识：●●\n描述：你挥舞着武器对敌人发起连续不断的攻击\n你对一名角色发起二段攻击，分别结算两次近战攻击效果\n每次成功执行的攻击动作使X+2\n你的战士等级到达8级时：如果二连斩的第一段攻击未命中目标，那么第二段攻击在结算造成的伤害值后额外附加一次你的关键属性调整值\n你的战士等级到达12级时：二连斩升级为三连斩",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "B3F9FF"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达8级时：如果二连斩的第一段攻击未命中目标，那么第二段攻击在结算造成的伤害值后额外附加一次你的关键属性调整值",
+        "你的战士等级到达12级时：二连斩升级为三连斩"
+      ],
+      "learningContext": {
+        "tierHeading": "body[139]",
+        "tierPolicy": "body[140]",
+        "overview": "body[141]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F65"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F65",
+          "normalized": {
+            "paymentMode": "per-segment-after-execution",
+            "fatiguePerExecutedSegment": 2,
+            "normalMissStillPaid": true,
+            "reactionEvadedSegmentPaid": false,
+            "scope": "this-ability-resolution",
+            "initialUpfrontFatigue": false,
+            "totalAmountsByExecutedSegments": [
+              0,
+              2,
+              4,
+              6
+            ],
+            "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "1主要动作，两次独立近战，同一目标；8级第一失手才给第二额外关键属性，12级升级三连。X变量不能先填0。普通升级建议同UID解析形态，普通直学三连资格未写。"
+    },
+    {
+      "name": "三连斩",
+      "issues": [
+        "F65"
+      ],
+      "mechanisms": [
+        "三段独立攻击",
+        "相邻段依赖",
+        "派生形态"
+      ],
+      "review": "3段，每实际执行且未被反应躲掉的斩后扣2，总最多6。未中只给下一段，不自动累计全部至最后；目录形态不自动变成新增占槽学习。",
+      "legacyId": "w-skill-1-3-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 145,
+        "locator": "body[145]"
+      },
+      "sourceText": "三连斩\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：X\n关键词：战技.近战攻击.连续攻击 \n限制：-\n描述：你挥舞着武器对敌人发起连续不断的攻击\n你对一名角色发起三段攻击，分别结算三次近战攻击效果，三连斩的攻击过程中每有一次未命中目标的情况，便在下一段攻击结算造成的伤害值后附加一次你的关键属性调整值\n每次成功执行的攻击动作使X+2",
+      "sourceMarkerRuns": [],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[139]",
+        "tierPolicy": "body[140]",
+        "overview": "body[141]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F65"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F65",
+          "normalized": {
+            "paymentMode": "per-segment-after-execution",
+            "fatiguePerExecutedSegment": 2,
+            "normalMissStillPaid": true,
+            "reactionEvadedSegmentPaid": false,
+            "scope": "this-ability-resolution",
+            "initialUpfrontFatigue": false,
+            "totalAmountsByExecutedSegments": [
+              0,
+              2,
+              4,
+              6
+            ],
+            "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "三段，未中给下一段关键属性；原文不是全部未中次数累计到最后一段。没有标识和前置不表示免费或可普通直接学。与二连都列目录，但不自动多占持有槽。"
+    },
+    {
+      "name": "动作如潮",
+      "issues": [],
+      "mechanisms": [
+        "免费基础攻击许可",
+        "自身回合第一行动",
+        "休息次数与成长"
+      ],
+      "review": "免费主动基础攻击许可，不是额外主要额度或附赠费用；F10仍占第一行动，不能施技能。12／18级休息次数2／3。",
+      "legacyId": "w-skill-1-3-4",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 147,
+        "locator": "body[147]"
+      },
+      "sourceText": "动作如潮\n前置条件：本风格不能是你的战士职业的第三或第四种战斗风格\n额外条件：本风格为你战士职业的首个战斗风格\n关键词：天赋.连续攻击.短休/长休 \n标识：●\n你对一名角色发起一次额外的基础攻击（无法以此施展技能）\n你的战士等级到达12级时：动作如潮的关键词变更为短休/长休（2）\n你的战士等级到达18级时：动作如潮的关键词变更为短休/长休（3）",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达12级时：动作如潮的关键词变更为短休/长休（2）",
+        "你的战士等级到达18级时：动作如潮的关键词变更为短休/长休（3）"
+      ],
+      "learningContext": {
+        "tierHeading": "body[139]",
+        "tierPolicy": "body[140]",
+        "overview": "body[141]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [],
+      "openIssueRefs": [],
+      "userRuleMappings": [],
+      "initialReview": "免费主动天赋不等于0动作附赠，按F10仍占第一行动；额外基础攻击不能施技能。12／18级休息次数改2／3，与主要预算不混写。"
+    },
+    {
+      "name": "碾压打击",
+      "issues": [
+        "F64",
+        "F66"
+      ],
+      "mechanisms": [
+        "体型条件优势",
+        "绕过物理抗性",
+        "可选力量对抗",
+        "攻击者－目标成对修正",
+        "控制分支"
+      ],
+      "review": "体型、物抗绕过、可选力量对抗、护甲检定及成对忽视AC分开。护甲纯D20达到DC即过；8／12级还要求目标较小。伤害优势完整组，不全局削低对手AC。",
+      "legacyId": "w-skill-1-4-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 153,
+        "locator": "body[153]"
+      },
+      "sourceText": "碾压打击\n前置条件：你的力量属性值不低于18\n额外条件：你在本次游玩的战斗环节中击倒、击退或击飞过一名角色\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：3\n关键词：战技.近战攻击.穿甲.护甲检定（10）.短休/长休 \n施展条件：-\n施展限制：-\n标识：●●\n描述：你发起势不可挡的攻击，凭借力量上的优势来碾压敌人\n你对一名角色发起攻击，如果目标体型小于你，本次攻击命中检定具有优势\n本次攻击结算造成的伤害值后+5并且忽视对方的全部物理抗性\n你可以与对方进行一次力量对抗，如果你对抗成功那么对方将进入压制状态\n目标需要进行一次难度为10的护甲检定，如果对方检定失败你能够在这场战斗环节中忽视对方的2点防御等级\n你的战士等级到达8级时：如果目标的体型小于你，并且护甲检定失败，那么你在这场战斗环节中通过近战攻击对目标造成的伤害值具有优势\n你的战士等级到达12级时：如果目标的体型小于你，在护甲检定失败后对方还需要进行一次难度为15的力量豁免，豁免失败将进入眩晕",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "843F0B"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达8级时：如果目标的体型小于你，并且护甲检定失败，那么你在这场战斗环节中通过近战攻击对目标造成的伤害值具有优势",
+        "你的战士等级到达12级时：如果目标的体型小于你，在护甲检定失败后对方还需要进行一次难度为15的力量豁免，豁免失败将进入眩晕"
+      ],
+      "learningContext": {
+        "tierHeading": "body[149]",
+        "tierPolicy": "body[150]",
+        "overview": "body[151]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F64",
+        "F66"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F64",
+          "normalized": {
+            "dice": "D20",
+            "value": "natural-face",
+            "modifierMode": "none",
+            "successComparison": ">=",
+            "bareAndAllArmorSame": true
+          },
+          "status": "core-answered"
+        },
+        {
+          "id": "F66",
+          "normalized": {
+            "selection": "whole-roll-group-higher-total",
+            "exampleCandidateTotals": [
+              8,
+              13
+            ],
+            "chosenDamageDiceTotal": 13,
+            "perDieMax18": false
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "大小只控制相应优势分支；+5与忽略全部物抗不等于跳过护盾护甲。护甲检定失败令本施术者本场忽视目标2防御，不能全体削目标AC；8／12级还要求目标较小。"
+    },
+    {
+      "name": "待宰羔羊",
+      "issues": [
+        "F73"
+      ],
+      "mechanisms": [
+        "明确技能强制暴击",
+        "每自身回合额度",
+        "风格数量学习条件"
+      ],
+      "review": "明确技能强制暴击例外，不保证命中、不改自然骰面。数量前置按F73：狂攻必须高于最低数量，并列最低不满足；每自身回合一次及回合外归属保留应用边界。",
+      "legacyId": "w-skill-1-4-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 155,
+        "locator": "body[155]"
+      },
+      "sourceText": "待宰羔羊\n前置条件：狂攻风格不是你的技能列表中数量最少的战斗风格\n额外条件：你在这个位阶及后击杀过一名陷入失能的角色\n关键词：天赋.每个自身回合限一次\n标识：●●\n你磨刀霍霍走向那些失去抵抗能力的敌人，当你对一名处于失能状态下的角色造成伤害时，这个伤害数值必定暴击",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FF0000"
+        },
+        {
+          "text": "●",
+          "rgb": "843F0B"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[149]",
+        "tierPolicy": "body[150]",
+        "overview": "body[151]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F73"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F73",
+          "normalized": {
+            "includeTalents": true,
+            "includeInitialFree": true,
+            "crossSource": "include-only-when-its-rule-contributes-style",
+            "unlearnedStyleCount": 0,
+            "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+            "negatedMinimumWithTie": {
+              "condition": "count > minimum-of-all-styles",
+              "zeroTiedMinimumCase": false,
+              "rawSupplement": "不满足"
+            },
+            "rankAndCountDifferent": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "对失能目标的伤害必定暴击是一般自然骰规则的明文例外；不把D20改20，不保证攻击命中。自身回合次数、可用时段、风格数量需独立字段。"
+    },
+    {
+      "name": "致死打击",
+      "issues": [
+        "F67"
+      ],
+      "mechanisms": [
+        "本场已施展不同战技集合",
+        "理论最大伤害投影",
+        "处决分支",
+        "下一次非AOE近战增伤",
+        "处决成功给主要动作"
+      ],
+      "review": "比较当前HP与未扣对手防御的理论最大值，等于也处决。需已命中；显式处决保护另判，首轮18级保护例不被处决。普通击杀／成功处决奖励不同，12／15升级保留。",
+      "legacyId": "w-skill-1-5-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 161,
+        "locator": "body[161]"
+      },
+      "sourceText": "致死打击\n前置条件：你击杀过至少三十名角色\n额外条件：你超杀过一名角色，或是将一名角色的生命值降低至0或以下，随后令对方因进行死亡裁决而死亡\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：4\n关键词：战技.近战攻击.处决技.短休/长休 \n施展条件：你必须在这场战斗环节中施展过至少两种本风格的战技\n施展限制：-\n标识：●●\n描述：你瞄准敌人的要害将其置于死地，这场战斗的目的便是为了摧垮那些对手\n你对一名角色发起攻击，本次攻击结算造成的伤害值后+10\n如果目标在受到这次伤害前的当前生命值不足以承受致死打击的理论最大值伤害，那么这次攻击在命中后无需掷伤害骰，立即处决目标\n致死打击成功击杀目标会令你的下一次不包括A0E关键词的近战关键造成的伤害值后+10\n你的战士等级到达12级时：致死打击产生的结算后伤害值和击杀后给予的伤害值改为+15\n你的战士等级到达15级时：致死打击成功处决一名角色会使你立即获得一个主要动作",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FF0000"
+        },
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达12级时：致死打击产生的结算后伤害值和击杀后给予的伤害值改为+15",
+        "你的战士等级到达15级时：致死打击成功处决一名角色会使你立即获得一个主要动作"
+      ],
+      "learningContext": {
+        "tierHeading": "body[157]",
+        "tierPolicy": "body[158]",
+        "overview": "body[159]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F67"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F67",
+          "normalized": {
+            "projectionBasis": "theoretical-damage-no-target-defenses",
+            "comparison": "currentHP <= theoreticalMaximum",
+            "nonCriticalExampleMaximum": 21,
+            "exampleHp20Execution": true,
+            "exampleHp21Execution": true,
+            "protectionConflictFollowup": "F70"
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "要求本场至少两种本风格战技，不用施展两次代替；普通击杀与处决不同。12级+10改+15，15级只有成功处决才给主要动作。A0E／近战关键保留原字并列文书规范建议。"
+    },
+    {
+      "name": "英勇飞跃",
+      "issues": [
+        "F66"
+      ],
+      "mechanisms": [
+        "位移后范围豁免",
+        "成功仍半伤",
+        "条件伤害优势",
+        "双落点序列"
+      ],
+      "review": "X为2×基础移动，相邻全部角色各豁免，成功仍半伤；迅捷免借机。伤害优势完整组，15级第二落点再次结算，伤害共享细则保留应用边界。",
+      "legacyId": "w-skill-1-5-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 163,
+        "locator": "body[163]"
+      },
+      "sourceText": "英勇飞跃\n前置条件：你在战斗环节中执行过二十次跳远行动\n额外条件：你在本次游玩的战斗环节中，于执行了跳远行动的回合中击杀过一名角色\n施展时间：1动作\n施展距离：X米\n持续时间：立即\n疲劳消耗：4\n关键词：战技.AOE.迅捷.位移.敏捷豁免（15） \n施展条件：你与目标位置的距离不能少于2米\n施展限制：-\n标识：●●\n描述：你纵深飞跃，凭借惊人的弹跳力勇猛的突入敌阵\n你跳跃至指定位置，落地点所有相邻角色需要进行一次难度为15的敏捷豁免，豁免失败的角色将会受到3D6点钝击伤害\n如果你的体型为中型体型以上，那么英勇飞跃造成的伤害值具有优势\n闪避成功的角色仍需要承受一半的伤害值\n施展距离的X为你的基础移动速度两倍\n你的战士等级到达15级时：英勇飞跃能够在落地后再次起跳，跳跃至2米外一个至多位移Y米的距离，落地点相邻角色还需再次结算技能效果（Y为你的基础移动速度）",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "B3F9FF"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达15级时：英勇飞跃能够在落地后再次起跳，跳跃至2米外一个至多位移Y米的距离，落地点相邻角色还需再次结算技能效果（Y为你的基础移动速度）"
+      ],
+      "learningContext": {
+        "tierHeading": "body[157]",
+        "tierPolicy": "body[158]",
+        "overview": "body[159]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F66"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F66",
+          "normalized": {
+            "selection": "whole-roll-group-higher-total",
+            "exampleCandidateTotals": [
+              8,
+              13
+            ],
+            "chosenDamageDiceTotal": 13,
+            "perDieMax18": false
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "主动作疲劳4，X=2×基础移动；相邻所有角色均判，迅捷免借机。15级第二跳是新增落点效果步骤，不能把两处邻域提前合成一个集合；伤害池共享另记应用边界。"
+    },
+    {
+      "name": "勇士战吼",
+      "issues": [],
+      "mechanisms": [
+        "选择移除异常状态",
+        "单独处理力竭",
+        "下一回合限定基础近战许可"
+      ],
+      "review": "附赠、能发声、长休库；一种异常与力竭分别清除，沿F31通用口径且保留例外。下一自身回合额外基础近战许可不能施技能，不直接加主要额度。",
+      "legacyId": "w-skill-1-5-3",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 165,
+        "locator": "body[165]"
+      },
+      "sourceText": "勇士战吼\n前置条件：你击败过至少三十名角色\n额外条件：你在这个位阶及后战胜过挑战等级高于你角色等级的敌人\n施展时间：0动作\n施展距离：自身\n持续时间：立即\n疲劳消耗：-\n关键词：战技.增益.韧性.长休\n施展条件：你能够凭借言语发出声音\n施展限制：-\n标识：●●\n描述：你发出属于勇士的无畏怒吼，任何敌人都无法使你屈服\n移除一个你当前受到的异常状态效果和力竭状态，并使你在下一个自身回合能够额外发起一次近战攻击（无法以此施展技能）",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FF0000"
+        },
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[157]",
+        "tierPolicy": "body[158]",
+        "overview": "body[159]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [],
+      "openIssueRefs": [],
+      "userRuleMappings": [],
+      "initialReview": "附赠，能发声，长休次数；异常移除与力竭明确两项。一般类型清除沿用F31工作口径，特殊不可净化例外保留；下回合额外近战不能施技能，也不直接加主要额度。"
+    },
+    {
+      "name": "巨龙冲锋",
+      "issues": [
+        "F75"
+      ],
+      "mechanisms": [
+        "扫掠路径多目标攻击",
+        "沿途独立豁免与击飞",
+        "坠落与落点随机",
+        "受伤目标下一攻击劣势",
+        "未中主目标才休息锁定",
+        "历史伤害条件"
+      ],
+      "review": "可穿敌占格；只实际路径占格者，不取路径相邻。迅捷／精锐分别处理，主目标失手才休息锁定。15级附赠条件只查本场自己对目标的伤害，不能回溯改本次已付动作。",
+      "legacyId": "w-skill-1-6-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 179,
+        "locator": "body[179]"
+      },
+      "sourceText": "巨龙冲锋\n前置条件：你拥有名称中包含“冲锋”的技能\n额外条件：你在这个位阶及后对一个大型体型或以上的龙类生物发起过一场冲锋\n施展时间：1动作\n施展距离：X米\n持续时间：立即\n疲劳消耗：6\n关键词：战技.近战攻击.精锐.迅捷.位移.力量豁免（16）\n施展条件：-\n施展限制：你不能对2米及以内的角色施展\n标识：●●●\n描述：你如同巨龙一般势不可挡地冲向敌方，沿途的一切阻碍都将被强力的冲势所倾垮\n1.你对一名能够触及的角色发起冲锋，朝直线方向位移至目标身前，随后对目标和途经过的所有单位均发起一次攻击，本次攻击在结算后额外附加一次你的力量和体质属性调整值\n2.途经过的角色需要进行一次难度为16的力量豁免，豁免失败的单位将会被击飞至空中6米，随后掷一颗D2骰决定坠落至原先位置的左/右边位置\n3.承受巨龙冲锋伤害的角色对你进行的下一次攻击命中检定具有劣势\n4.施展距离的X为你的全速移动速度\n5.如果巨龙冲锋未命中主要攻击目标，那么将会进入短休/长休状态\n你的战士等级到达15级时：如果主要攻击目标承受过你造成的伤害，那么巨龙冲锋对其施展时仅需要花费一个附赠动作",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FF0000"
+        },
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "B3F9FF"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达15级时：如果主要攻击目标承受过你造成的伤害，那么巨龙冲锋对其施展时仅需要花费一个附赠动作"
+      ],
+      "learningContext": {
+        "tierHeading": "body[175]",
+        "tierPolicy": "body[176]",
+        "overview": "body[177]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F75"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F75",
+          "normalized": {
+            "enemyCellTraversalAllowed": true,
+            "sweepVictims": "actual-path-occupied-cells",
+            "adjacentNonpathVictims": false,
+            "priorDamageScope": "current-battle-only",
+            "terrainWallsIgnore": false
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "X=全速移动，精锐按来源阶位，迅捷免借机。主目标与沿途目标角色区分，主目标失手才进入短／长休；15级费用改附赠取决目标伤害历史。路径碰撞不能按普通冲锋或传送猜定。"
+    },
+    {
+      "name": "破敌战戟",
+      "issues": [
+        "F72"
+      ],
+      "mechanisms": [
+        "投掷武器与手槽",
+        "数值捕获的目标标记",
+        "消费后穿刺伤害",
+        "两个独立豁免",
+        "成对两次限额增减伤"
+      ],
+      "review": "标记X取实际生命损失，例为1；后续近战未中不消耗。Y每次触发取当前最大HP的10%。两豁免和两个成对限额分别保存，期限及多标记保留应用边界。",
+      "legacyId": "w-skill-1-6-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 181,
+        "locator": "body[181]"
+      },
+      "sourceText": "破敌战戟\n前置条件：你的战士职业武器专精中选择有长柄武器\n额外条件：你在这个位阶及后使用投掷武器或投掷物在战斗环节中发起过十次攻击\n施展时间：1动作\n施展距离：远程\n持续时间：立即\n疲劳消耗：4\n关键词：战技.远程攻击.增益.防御.力量豁免（15）.意志豁免（15）\n施展条件：你持有长柄武器\n施展限制：你不能对2米及以内的角色施展\n标识：●●●\n描述：你掷出手中的战戟，强劲的动能硬生生使敌人陷入僵直\n你掷出手中的一把长柄武器，对一名角色造成等同于武器伤害骰的伤害数值，随后标记那名敌人\n你对被标记的角色发起一次近战攻击后会消耗那个标记，随后目标在结算后额外承受X点穿刺伤害（X为你赋予标记时的伤害数值）\n随后目标需要分别进行一次15难度的力量豁免和意志豁免，对方豁免失败将产生以下效果：\n·力量豁免失败：你视作拥有对目标的易伤，你的至多下两次基础攻击在对目标结算造成的伤害值后额外附加Y点伤害（Y为你的10%最大生命值），持续1轮\n·意志豁免失败：你视作拥有对目标的抗性，目标对你的至多下两次基础攻击在结算造成的伤害值后降低Y点（Y为你的10%最大生命值），持续1轮",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "B94BFF"
+        },
+        {
+          "text": "●",
+          "rgb": "FFFFFF"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[175]",
+        "tierPolicy": "body[176]",
+        "overview": "body[177]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F72"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F72",
+          "normalized": {
+            "capturedX": "actual-HP-damage",
+            "exampleX": 1,
+            "meleeMissConsumesMark": false,
+            "Y": "10-percent-current-maxHP-at-trigger",
+            "successfulMeleeAdditionalDamageMarkConsumption": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "初次只写武器伤害骰，不擅加普通属性；标记X捕获阶段及未中后消费待答。力量与意志两次分别判定，各至多两次基础攻击、一轮；不能把对目标易伤变成全体目标抗性值。"
+    },
+    {
+      "name": "愈战愈勇",
+      "issues": [
+        "F70"
+      ],
+      "mechanisms": [
+        "交战事实驱动的每轮累计",
+        "收益上限5",
+        "一次豁免忽略",
+        "限定首轮的防败与处决保护"
+      ],
+      "review": "交战事实驱动公共轮累计，上限5。18级首轮锁1并保护伤害即死边界；已交战首轮处决例也免。未交战免处决原条保留，不据补答扩大成后续交战时无条件免死。",
+      "legacyId": "w-skill-1-6-3",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 183,
+        "locator": "body[183]"
+      },
+      "sourceText": "愈战愈勇\n前置条件：本风格不能是你的战士职业的第三或第四种战斗风格\n额外条件：你在这个位阶及后参与过十场战斗环节并且造成过伤害\n关键词：天赋.上限提升\n标识：●●●\n你在面对敌人时愈战愈勇，战斗环节中如果存在有敌方角色与你交战，那么每进入一个新的战斗轮时，你造成的伤害值在结算后+1，其他角色对你造成的伤害值在结算后-1，这个效果至多叠加至5点\n你的战士等级到达15级时：愈战愈勇的效果叠加至5点后，你可以忽视一次来自敌人的豁免效果\n你的战士等级到达18级时：你不会在第一个战斗轮次中被击败，如果你没有与其他角色交战，那么也不会承受处决效果的影响",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FFF32F"
+        },
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "843F0B"
+        }
+      ],
+      "upgradeClauses": [
+        "你的战士等级到达15级时：愈战愈勇的效果叠加至5点后，你可以忽视一次来自敌人的豁免效果",
+        "你的战士等级到达18级时：你不会在第一个战斗轮次中被击败，如果你没有与其他角色交战，那么也不会承受处决效果的影响"
+      ],
+      "learningContext": {
+        "tierHeading": "body[175]",
+        "tierPolicy": "body[176]",
+        "overview": "body[177]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F70"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F70",
+          "normalized": {
+            "firstPublicRoundDamageHpFloor": 1,
+            "damageImmediateDeathBoundaryPrevented": true,
+            "directExecutionWhileEngaged": {
+              "scope": "adjudicated-level18-first-round-case",
+              "immune": true,
+              "hpFloor": 1,
+              "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+            },
+            "laterRoundEngagedExecutionImmunity": "not-confirmed"
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "每公共轮与交战事实挂钩，数值到5停止增，不按每个受击刷新。15级忽略一次豁免与18级首轮不败不是普通抗性或毅力；具体保护留F70。交战事实和一次资格恢复另登记。"
+    },
+    {
+      "name": "巨人打击",
+      "issues": [
+        "F66",
+        "F69"
+      ],
+      "mechanisms": [
+        "体型差推动优势档位",
+        "费用取最大HP阶梯",
+        "比例治疗及溢出"
+      ],
+      "review": "大型以上，疲劳4＋每整100最大HP加2。伤害优势完整组；恢复20%上限，溢出为临时HP不改上限、多效益取最高。支持绝对四次，超登记档及混合抵消仍关联F16。",
+      "legacyId": "w-skill-1-7-1",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 206,
+        "locator": "body[206]"
+      },
+      "sourceText": "巨人打击\n前置条件：你拥有战技.碾压打击，在本位阶及后独自击败过一名巨人，并且获得围观的巨人部族的敬畏\n额外条件：你在本位阶及后不断挑战、并最终击败一位巨人族的酋长\n施展时间：1动作\n施展距离：近战\n持续时间：立即\n疲劳消耗：4+X\n关键词：战技.近战攻击.精锐.回复\n施展条件：你的当前体型为大型体型或以上\n施展限制：-\n标识：●●●●\n描述：你用如同巨人般摧枯拉朽地力量将敌人打垮，通过战斗的热血感受体内生命力量的涌动\n1.你对一名角色发起近战攻击，本次攻击阶段造成的伤害值后额外附加一次你的力量和体质属性调整值\n2.目标的体型每小于你一个规格，巨人打击的攻击命中检定和伤害骰优势规格提升一档（即普通变为具有优势，优势变为极大优势，以此类推）\n3.巨人打击在造成伤害后为自身回复等于20%最大生命值的生命值，超出的数值会转化为额外生命值\n4.你每拥有100点最大生命值，X的数值便+2",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "FF0000"
+        },
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "B94BFF"
+        },
+        {
+          "text": "●",
+          "rgb": "843F0B"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[202]",
+        "tierPolicy": "body[203]",
+        "overview": "body[204]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F66",
+        "F69"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F66",
+          "normalized": {
+            "selection": "whole-roll-group-higher-total",
+            "exampleCandidateTotals": [
+              8,
+              13
+            ],
+            "chosenDamageDiceTotal": 13,
+            "perDieMax18": false
+          },
+          "status": "core-answered"
+        },
+        {
+          "id": "F69",
+          "normalized": {
+            "overflowPool": "temporary-HP",
+            "maxHpChanges": false,
+            "aggregation": "highest",
+            "exampleExisting15New10Effective15": true
+          },
+          "status": "core-answered"
+        }
+      ],
+      "initialReview": "大型以上，疲劳4+X，每完整100最大HP给X+2；不能以当前HP计算。已登记优势含绝对4次，超出登记档位关联F16，不硬截3。溢出生命的类别待答。"
+    },
+    {
+      "name": "葬送！",
+      "issues": [
+        "F71"
+      ],
+      "mechanisms": [
+        "击败／击杀事件区分",
+        "当前收益视图复制",
+        "经验资格事实",
+        "源快照与媒介",
+        "毅力／个体永久收益的战末到期"
+      ],
+      "review": "转移当前有效收益：保留数值、剩层和剩时，不按自己重算，原目标失去。此能力媒介目前不强制；受益者的毅力／个体永久收益战末到期，原目标战后恢复由DM决定。",
+      "legacyId": "w-skill-1-7-2",
+      "source": {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4",
+        "bodyIndex": 208,
+        "locator": "body[208]"
+      },
+      "sourceText": "葬送！\n前置条件：你在本次游玩的战斗环节中处决过一名精英级或以上的单位\n额外条件：你前往灵界或死者国度，处决一名生前曾与你为敌的精英级或以上的单位\n关键词：天赋.媒介\n标识：●●●●\n1.你葬送敌人的生命并夺取其战斗的精华，当你击杀或击败一名角色时，获得目标当前正在生效的增益、防御、韧性和回复效果，包括对方来源于技能、天赋、药剂或其他收益的效果\n2.如果你击杀的目标能够为你提供经验值，那么还会为自身回复10%的最大生命值和疲劳值\n3.如果目标拥有毅力状态或者来源于个体的永久性收益，这些效果在本场战斗环节结束后将会失效",
+      "sourceMarkerRuns": [
+        {
+          "text": "●",
+          "rgb": "EE822F"
+        },
+        {
+          "text": "●",
+          "rgb": "00FA99"
+        },
+        {
+          "text": "●",
+          "rgb": "595959"
+        },
+        {
+          "text": "●",
+          "rgb": "FFFFFF"
+        }
+      ],
+      "upgradeClauses": [],
+      "learningContext": {
+        "tierHeading": "body[202]",
+        "tierPolicy": "body[203]",
+        "overview": "body[204]",
+        "choiceContext": null
+      },
+      "reviewStatus": "source-reviewed-core-rules-answered",
+      "runtimeImplementation": "not-started",
+      "questionRefs": [
+        "F71"
+      ],
+      "openIssueRefs": [],
+      "userRuleMappings": [
+        {
+          "id": "F71",
+          "normalized": {
+            "operation": "benefit-transfer",
+            "preserveCurrentValues": true,
+            "preserveRemainingLayers": true,
+            "preserveRemainingTime": true,
+            "sourceTargetLosesBenefit": true,
+            "recalculateAgainstRecipientStats": false,
+            "mediumRequirement": "not-enforced-for-this-ability-now",
+            "genericMediumDefinitionUnchanged": true,
+            "livingSourcePermanentBenefitAtBattleEnd": {
+              "policy": "DM-decision-required",
+              "automaticRestore": false,
+              "automaticPermanentDeletion": false,
+              "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+            }
+          },
+          "status": "DM-boundary"
+        }
+      ],
+      "initialReview": "只采当前生效的正面收益，不复施目标全部技能，不复制库存。触发复制可击杀或击败；回血疲劳还要求击杀且可提供经验。毅力和个体永久收益明确本场终止，其它期限／绑定待答。"
+    }
+  ],
+  "questions": [
+    {
+      "id": "F64",
+      "priority": "core",
+      "source": "body[123/153]",
+      "title": "护甲检定的公式",
+      "question": "护甲检定使用什么骰、加哪些数值？裸身角色如何检定？结果等于难度10／15时算成功还是失败？",
+      "impact": "建立独立的护甲检定类别，不借用豁免或命中公式。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "只看骰面的D20，所有护甲的检定都相同，等于时也成功",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "dice": "D20",
+        "value": "natural-face",
+        "modifierMode": "none",
+        "successComparison": ">=",
+        "bareAndAllArmorSame": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F65",
+      "priority": "core",
+      "source": "body[143/145]",
+      "title": "连斩的动态疲劳X",
+      "question": "二／三连斩的X初始是多少？“每次成功执行的攻击动作使X+2”是按命中、攻击段还是一次攻击行动计数，是否包括其他攻击？X何时重置，何时扣费？可用首次二连一失一中举例。",
+      "impact": "动态费用的输入事件、计数周期和支付时点。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "X为2，4，6点，成功执行攻击动作的意思是如果这一发攻击没有被对手的反应动作躲掉，那么每一斩需要花费2点疲劳，包括攻击没有命中也需要花2点疲劳；扣费在成功执行攻击动作后",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "paymentMode": "per-segment-after-execution",
+        "fatiguePerExecutedSegment": 2,
+        "normalMissStillPaid": true,
+        "reactionEvadedSegmentPaid": false,
+        "scope": "this-ability-resolution",
+        "initialUpfrontFatigue": false,
+        "totalAmountsByExecutedSegments": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F66",
+      "priority": "core",
+      "source": "body[121/163/206]",
+      "title": "多骰伤害的优势",
+      "question": "3D6伤害具有优势时，若两组为(6,1,1)和(1,6,6)，是取整组较高13，还是每颗分别取高得到18？主规则规定掷两次取高，但未细分多骰伤害。",
+      "impact": "伤害骰组的选择策略，与单颗低点重掷分开。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "取整组较高的13",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "selection": "whole-roll-group-higher-total",
+        "exampleCandidateTotals": [
+          8,
+          13
+        ],
+        "chosenDamageDiceTotal": 13,
+        "perDieMax18": false
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F67",
+      "priority": "core",
+      "source": "body[161]；关键词规则!C104",
+      "title": "处决理论最大值",
+      "question": "致死打击已命中且非暴击，武器1D8、普通力量加值3、技能额外10，原始最大值21。目标HP20但有抗性／护盾／护甲时，处决按21还是减免后最大伤害判断？HP恰好21能否处决？",
+      "impact": "最大伤害投影、严格比较和处决绕过反制的窗口。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "只比较目标的当前生命值与理论最大值伤害，所以会直接处决，等于也会处决",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "projectionBasis": "theoretical-damage-no-target-defenses",
+        "comparison": "currentHP <= theoreticalMaximum",
+        "nonCriticalExampleMaximum": 21,
+        "exampleHp20Execution": true,
+        "exampleHp21Execution": true,
+        "protectionConflictFollowup": "F70"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F68",
+      "priority": "growth",
+      "source": "body[125]",
+      "title": "武器掌握的迟领奖励",
+      "question": "战士12级首次学武器掌握，是否立即追加3个未拥有的武器专精（天赋本身＋5级＋10级），还是仅追加1个，15级再追加？初始专精选的一类不计入这3次。",
+      "impact": "阈值选择奖励的追补与防重复领取。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "12级学习会立刻追加三项",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "retroactive": true,
+        "level12FirstLearningAdditionalChoices": 3,
+        "choiceReceipts": [
+          "base",
+          "level5",
+          "level10"
+        ],
+        "excludeAlreadyOwned": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F69",
+      "priority": "resource",
+      "source": "body[206]",
+      "title": "巨人打击溢出生命",
+      "question": "最大HP100、当前90，巨人打击恢复20后溢出10。“额外生命值”是否就是临时生命、不改变上限？若已有临时生命15，最后取最高15还是叠到25，或另有生命层？",
+      "impact": "溢出治疗目标生命层及叠加规则。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "额外生命值算作临时生命值且不改上限；已有临时生命值取最高",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "overflowPool": "temporary-HP",
+        "maxHpChanges": false,
+        "aggregation": "highest",
+        "exampleExisting15New10Effective15": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F70",
+      "priority": "life",
+      "source": "body[183]",
+      "title": "愈战愈勇18级的不败",
+      "question": "第一轮不能被击败具体怎样改变结算？例如HP8／20受到10点最终伤害，保在1、进入负血但不判击败，还是免伤？若受到40点触发即死边界，这层保护是否仍有效？",
+      "impact": "防败、毅力、濒死与即死不能混为一个布尔字段。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "首轮会锁1血，触发即死边界时仍有保护",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "firstPublicRoundDamageHpFloor": 1,
+        "damageImmediateDeathBoundaryPrevented": true,
+        "directExecutionWhileEngaged": {
+          "scope": "adjudicated-level18-first-round-case",
+          "immune": true,
+          "hpFloor": 1,
+          "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+        },
+        "laterRoundEngagedExecutionImmunity": "not-confirmed"
+      },
+      "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+    },
+    {
+      "id": "F71",
+      "priority": "effect-copy",
+      "source": "body[208]；关键词规则!C81",
+      "title": "葬送的收益复制",
+      "question": "葬送复制收益后，保留目标当前数值／剩余层数和时长，还是按自己重新计算并重置时长？原目标是否失去收益？标了“媒介”却未指定物件，媒介由什么提供？",
+      "impact": "复制策略、来源绑定、时限和媒介依赖。",
+      "status": "answered-with-DM-boundary",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "保留目标的当前数值，剩余层数，时长，原目标失去收益，关键词媒介目前可以不用在意，只属于一种词条",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "operation": "benefit-transfer",
+        "preserveCurrentValues": true,
+        "preserveRemainingLayers": true,
+        "preserveRemainingTime": true,
+        "sourceTargetLosesBenefit": true,
+        "recalculateAgainstRecipientStats": false,
+        "mediumRequirement": "not-enforced-for-this-ability-now",
+        "genericMediumDefinitionUnchanged": true,
+        "livingSourcePermanentBenefitAtBattleEnd": {
+          "policy": "DM-decision-required",
+          "automaticRestore": false,
+          "automaticPermanentDeletion": false,
+          "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+        }
+      },
+      "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+    },
+    {
+      "id": "F72",
+      "priority": "snapshot",
+      "source": "body[181]",
+      "title": "破敌战戟的标记数值",
+      "question": "投掷伤害骰6，目标抗性2、护盾挡3，生命损失1：标记X记6还是1？后续近战未命中是否仍消耗标记并追加X？Y＝10%最大HP是在赋标记时固定，还是每次触发重新取当前上限？",
+      "impact": "捕获数值、消费时点和后续伤害的依赖条件。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "标记伤害为1；近战攻击未命中不会消耗标记；触发时重算",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "capturedX": "actual-HP-damage",
+        "exampleX": 1,
+        "meleeMissConsumesMark": false,
+        "Y": "10-percent-current-maxHP-at-trigger",
+        "successfulMeleeAdditionalDamageMarkConsumption": true
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F73",
+      "priority": "learning",
+      "source": "body[121/155]",
+      "title": "风格数量统计",
+      "question": "“本风格技能数量最多／狂攻不是最少”统计哪些记录：天赋、免费初始能力、跨职业取得是否计入？未习得风格是否按0参与？并列最多／最少怎样判？风格顺序仍沿用F55，不重问。",
+      "impact": "学习时统计范围与比较规则，不能用风格顺位代替数量。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "最多/最少统计计入天赋，免费初始；跨职业习得的技能取决于该技能是否会计算风格，如果不会计算风格则不会计算到最多和最少里；未习得按0参与；并列最多最少如果没写最多最少之一，那么并列不能生效",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "includeTalents": true,
+        "includeInitialFree": true,
+        "crossSource": "include-only-when-its-rule-contributes-style",
+        "unlearnedStyleCount": 0,
+        "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+        "negatedMinimumWithTie": {
+          "condition": "count > minimum-of-all-styles",
+          "zeroTiedMinimumCase": false,
+          "rawSupplement": "不满足"
+        },
+        "rankAndCountDifferent": true
+      },
+      "rawSupplement": "不满足"
+    },
+    {
+      "id": "F74",
+      "priority": "retry",
+      "source": "body[115]",
+      "title": "姿态的首次资格与重掷",
+      "question": "战斗中才开启战斗姿态，能否获得第一次基础攻击的优势和5级附伤？同场关闭再开是否刷新首次资格？8级再次攻击“必须接受结果”，是否禁止另用激励点等来源重掷？",
+      "impact": "首次攻击机会的归属周期、激活刷新与重掷限制。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "战斗中才开启那么就会计算开启后的第一次基础攻击，不能关闭再开；禁止其他重骰来源",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "activationDuringBattleGetsNextFirstBasicAttackBenefit": true,
+        "voluntaryCloseThenReopenSameBattleAllowed": false,
+        "otherRerollSourcesForFollowupAttackAllowed": false,
+        "forcedDispelReactivation": "not-confirmed"
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F75",
+      "priority": "spatial-history",
+      "source": "body[179]",
+      "title": "巨龙冲锋的路径和历史",
+      "question": "巨龙冲锋是否可以穿过敌人占格，还是攻击／击飞沿途敌人后才能继续？“途经过的所有单位”指实际经过的格子还是路径相邻也算？15级的“目标承受过你造成的伤害”只算本场还是历史战斗也算？",
+      "impact": "路线通行、影响集合和目标历史事实的作用域。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "能穿敌占格，途径的单位仅实际路径格；仅算本场的伤害",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "enemyCellTraversalAllowed": true,
+        "sweepVictims": "actual-path-occupied-cells",
+        "adjacentNonpathVictims": false,
+        "priorDamageScope": "current-battle-only",
+        "terrainWallsIgnore": false
+      },
+      "rawSupplement": null
+    },
+    {
+      "id": "F76",
+      "priority": "trigger-window",
+      "source": "body[112]",
+      "title": "重殴的触发窗口",
+      "question": "基础攻击只打掉护盾／护甲、未伤生命时，是否可触发重殴？回合外借机造成伤害时能否用重殴；若能，附赠额度用当下余额还是预支下回合？这仍是0动作附赠，不重问反应总3次。",
+      "impact": "真实伤害门槛、连锁窗口与回合外预算来源。",
+      "status": "core-answered",
+      "sourceFile": "基础职业-战士.docx",
+      "rawUserAnswer": "能触发；回合外不能释放，因为重殴需要附赠动作释放",
+      "sourceKind": "user-working-rule",
+      "normalized": {
+        "shieldOrArmorOnlyDamageCanTrigger": true,
+        "outsideOwnTurnAllowed": false,
+        "bonusActionCost": 1,
+        "noBorrowFromNextTurn": true
+      },
+      "rawSupplement": null
+    }
+  ],
+  "reportMarkdown": "审查日期：2026年10月5日。阶段：C01-b，战士斗争风格。18张能力卡、20条明确升级句及一至七阶的学习／抉择语境已逐项审读。结合上一批四个初始能力，战士累计22／119条能力已审读，剩余97条未审。资料审查完成不表示本批所有规则均已裁定。 本轮13题原答和3个补例已归录；F71战后恢复按明确DM边界处理，其他继承应用边界继续保留。\n\n本轮继续[总体设计与逐职业审查](https://chatgpt.com/space/page_e1e24020127c819183083300c31b28e5)，只更新文档和设计数据。业务代码、规则原件、生产契约与目标项目均不修改；本轮结束不进入狂攻风格，先归录本批问题。\n\n## 来源与覆盖验证\n\n主要来源：基础职业-战士.docx body[106–208]，实际能力卡分别位于112、115、121、123、125、143、145、147、153、155、161、163、165、179、181、183、206、208。直接重新读取Word XML后，与上一轮保存的各卡全文一致；20条升级句和标识的逐点RGB均保留，未仅依赖旧职业JSON作答案。\n\n一至七阶的标题与解锁语境位于body[108/117/139/149/157/175/202]，对应概览表110、119、141、151、159、177、204。body[114]的战斗／防御／迅疾姿态抉择必须单独关联，不能因为它在卡外而丢失。学习前置、额外条件、标识、施展条件、费用和效果分别处理。\n\n标识是学习资格，不是技能点数量或施展消耗。多个颜色的点按原RGB保存，不从点数直接推导费用。三连斩未单列标识，不能据此判为免费或无条件直接学习；它有明确的二连斩升级语境。白色标识需要在展示设计中给边界及文字提示，不能在白底上消失。这里只提出展示需求，未修改页面。\n\n## 主规则可以直接解决的事项\n\n| 事项 | 依据与采用结论 |\n| --- | --- |\n| 0动作与无普通动作费用 | 0动作消耗附赠。动作如潮未列主／附费用，F10明确免费主动仍占第一行动；这两者不能合并 |\n| 连锁反应 | 关键词规则!C51要求满足触发事件；不把这个标签自动改成反应动作或扣每场三次额度 |\n| AOE | 关键词规则!C48是默认豁免。顺劈斩明确对每名角色各攻击，采用技能特例，不能强行改为默认AOE豁免 |\n| 迅捷 | 关键词规则!C57明确不触发借机；英勇飞跃和巨龙冲锋依此处理，不等同于速攻 |\n| 穿甲 | 关键词规则!C69是能力类别说明。破甲攻势／碾压打击按各条具体效果，不默认直接扣甲或跳过护盾、护甲 |\n| 光环／唯一性 | C49、C55、C108规定维持、主动关闭及唯一性。持有者、维持者、原施术者要分别保存，不能用获取职业推断 |\n| 优势等级 | 其他规则!B15有普通两次、极大三次、绝对四次检定。巨人打击的规格提升需要支持绝对等级，不能硬截为三骰 |\n| 多段攻击 | F18明确二连斩等独立攻击分别命中、分别抗性；1主要动作产生多段，不是多回合施法 |\n| 反应顺序 | F08已答：同角色同节点多项合法反应可自行选顺序，也允许反应触发反应；多角色依H39后发先置，不重复泛问 |\n| 强制暴击 | 待宰羔羊明文是普通自然骰暴击条件的例外。保存技能导致的暴击，不伪造自然20，也不把它解释为保证命中 |\n\n护甲检定已由F64裁定为纯D20骰面，不加数值，裸身与所有护甲同法，等于难度也成功。它是独立检定类别，不能拿豁免严格大于难度的比较器共用。主规则原件与普通检定公式不改。\n\n## 18项逐条审读\n\n下表是机制分解与设计需求。涉及待定数值或时点的部分保留问题编号；没有执行器，不称为程序测试通过。\n\n| 能力 | 核心机制 | 已答核心规则与应用边界 |\n| --- | --- | --- |\n| 重殴 | 条件触发的附赠攻击、空手／持物约束、基础攻击与技能攻击分类 | 附赠触发基础攻击后的徒手；护盾／护甲受损也合格，回合外不能释放、不预支下回合。空一手且另一手持物时仍可附属性；窗口不占反应总额度。 |\n| 战斗姿态 | 持久激活与光环／唯一性、首次攻击机会、每轮一次后续攻击 | 战中开启也给开启后的首次基础攻击优势和5级附伤；同场不能主动关闭再开。8级未中再攻每轮一次，禁止其它重骰来源。抉择和光环／唯一性语境仍保留。 |\n| 顺劈斩 | 多目标独立攻击、明确覆盖通用AOE豁免、下一自身回合一次动作改换 | 逐目标独立攻击覆盖通用AOE豁免；8级完整伤害骰组优势，12级只改变下一自身回合首个本技能的成本。风格数量使用F73，不能拿风格顺位替代。 |\n| 破甲攻势 | 装备特征条件束、防御介质反应禁用、护甲检定后流血 | 目标装备／自然护甲条件束不变。护甲检定纯D20，达到10／成长15即成功；禁止防御介质反应，不自动忽略全部护甲。裸身检定同法，但不能伪造本技能的装备条件。 |\n| 武器掌握 | 逐阈值追加选择奖励、排除已有专精、奖励领取凭据 | 初始、5、10、15各一项未拥有增益；12级晚学即追加3项，分别选择并保存阈值凭据。追加不覆盖初始选择，不新增同名技能或重复领取。 |\n| 二连斩 | 单动作多攻击段、动态疲劳、上一段失手条件、升级形态 | 1主要动作2段；每实际执行且未被反应躲掉的斩完成后扣2疲劳，普通未中也扣。8级失手给下一段关键属性；12级升级三连，X按本次实际段数计。 |\n| 三连斩 | 三段独立攻击、相邻段依赖、派生形态 | 3段，每实际执行且未被反应躲掉的斩后扣2，总最多6。未中只给下一段，不自动累计全部至最后；目录形态不自动变成新增占槽学习。 |\n| 动作如潮 | 免费基础攻击许可、自身回合第一行动、休息次数与成长 | 免费主动基础攻击许可，不是额外主要额度或附赠费用；F10仍占第一行动，不能施技能。12／18级休息次数2／3。 |\n| 碾压打击 | 体型条件优势、绕过物理抗性、可选力量对抗、攻击者－目标成对修正、控制分支 | 体型、物抗绕过、可选力量对抗、护甲检定及成对忽视AC分开。护甲纯D20达到DC即过；8／12级还要求目标较小。伤害优势完整组，不全局削低对手AC。 |\n| 待宰羔羊 | 明确技能强制暴击、每自身回合额度、风格数量学习条件 | 明确技能强制暴击例外，不保证命中、不改自然骰面。数量前置按F73：狂攻必须高于最低数量，并列最低不满足；每自身回合一次及回合外归属保留应用边界。 |\n| 致死打击 | 本场已施展不同战技集合、理论最大伤害投影、处决分支、下一次非AOE近战增伤、处决成功给主要动作 | 比较当前HP与未扣对手防御的理论最大值，等于也处决。需已命中；显式处决保护另判，首轮18级保护例不被处决。普通击杀／成功处决奖励不同，12／15升级保留。 |\n| 英勇飞跃 | 位移后范围豁免、成功仍半伤、条件伤害优势、双落点序列 | X为2×基础移动，相邻全部角色各豁免，成功仍半伤；迅捷免借机。伤害优势完整组，15级第二落点再次结算，伤害共享细则保留应用边界。 |\n| 勇士战吼 | 选择移除异常状态、单独处理力竭、下一回合限定基础近战许可 | 附赠、能发声、长休库；一种异常与力竭分别清除，沿F31通用口径且保留例外。下一自身回合额外基础近战许可不能施技能，不直接加主要额度。 |\n| 巨龙冲锋 | 扫掠路径多目标攻击、沿途独立豁免与击飞、坠落与落点随机、受伤目标下一攻击劣势、未中主目标才休息锁定、历史伤害条件 | 可穿敌占格；只实际路径占格者，不取路径相邻。迅捷／精锐分别处理，主目标失手才休息锁定。15级附赠条件只查本场自己对目标的伤害，不能回溯改本次已付动作。 |\n| 破敌战戟 | 投掷武器与手槽、数值捕获的目标标记、消费后穿刺伤害、两个独立豁免、成对两次限额增减伤 | 标记X取实际生命损失，例为1；后续近战未中不消耗。Y每次触发取当前最大HP的10%。两豁免和两个成对限额分别保存，期限及多标记保留应用边界。 |\n| 愈战愈勇 | 交战事实驱动的每轮累计、收益上限5、一次豁免忽略、限定首轮的防败与处决保护 | 交战事实驱动公共轮累计，上限5。18级首轮锁1并保护伤害即死边界；已交战首轮处决例也免。未交战免处决原条保留，不据补答扩大成后续交战时无条件免死。 |\n| 巨人打击 | 体型差推动优势档位、费用取最大HP阶梯、比例治疗及溢出 | 大型以上，疲劳4＋每整100最大HP加2。伤害优势完整组；恢复20%上限，溢出为临时HP不改上限、多效益取最高。支持绝对四次，超登记档及混合抵消仍关联F16。 |\n| 葬送！ | 击败／击杀事件区分、当前收益视图复制、经验资格事实、源快照与媒介、毅力／个体永久收益的战末到期 | 转移当前有效收益：保留数值、剩层和剩时，不按自己重算，原目标失去。此能力媒介目前不强制；受益者的毅力／个体永久收益战末到期，原目标战后恢复由DM决定。 |\n\n## 学习与成长不能混成施展资格\n\nF73明确数量包括天赋和免费初始，跨职业取得只有按其规则会计算风格时才计入；未习得风格为0，未写“之一”的最多／最少不得靠并列满足。补例明确并列最低不满足“不是最少”，因此该否定条件用count>min，不能取反“唯一最少”。风格顺序仍按F55；初始可以不参与顺序却参与数量，两个解析结果必须分开。\n\n本次游玩、当前战斗、角色自身回合、公共轮次、本阶开启后、剧情年数与休息周期各有不同锚点。剧情两年不能按现实客户端日期相减；当前已有十次攻击也不能自动拿来满足“本位阶及后”的十次。没有历史数据时留主持认可的事实证据，不默认为0或已满足。\n\n武器掌握追加的是初始专精中的增益，不是重新学第二个同名技能。初始选择仍一类，后续追加用独立来源和奖励凭据，汇总为已获类别集合。破敌战戟前置查询这个集合，不能只查最初那一项。F68已确认12级首次学习即追加基础、5级、10级三项奖励，分别领未拥有类别。\n\n二连斩升级三连斩的普通职业路径，建议保留同一持有UID、获取记录和栏位，用解析出的升级形态显示新名称。目录两个源卡都保留；普通直接学习、跨来源直接取得、以及永久禁学是否覆盖整个家族未由本条确定。家族身份不能自动扩大F59的同名禁学范围。\n\n## 对引擎的新增要求\n\n| 设计对象 | 必须表达的内容 | 来源例子 |\n| --- | --- | --- |\n| ActionResolution与AttackSegment | 根行动、分段ID、固定目标、命中与未中、父事件、逐段合法性及反应窗口 | 二／三连、顺劈、姿态再攻 |\n| CostBinding与CounterLedger | 支付时点、X引用的计数器、哪些事件计数、恢复锚点；未知不填0 | 连斩疲劳、巨龙条件休息 |\n| AttackPermission | 允许的基础／近战攻击类型、数量、可用阶段、到期、是否花普通预算 | 动作如潮、勇士战吼、处决后主要动作 |\n| DamageTrace | 投骰／修订／暴击前后、抗性与各防御层损失、生命层入伤、HP变化和死亡标记 | 重殴触发、标记X、伤害与死亡 |\n| ValueBinding | 来源变量、捕获阶段、当前重算或固定快照、数值来源证据 | 破敌X／Y、比例恢复 |\n| PairScopedEffect | 提供者、受益者、对手、攻击类型、次数和期限，不能改全局角色抗性／AC | 碾压忽视防御、破敌双向增减 |\n| CapabilityGrant与GrantReceipt | 未拥有类别选择、阈值、来源UID、领取和选择记录、不可重复发放 | 武器掌握 |\n| MaxDamageProjection | 理论输入、暴击状态、防御取值、严格／包含等号比较与可见性 | 致死打击 |\n| TypedHealthBenefit | 治疗、溢出、临时生命、上限增加分别记录 | 巨人打击 |\n| EffectSnapshot与CopyPolicy | 当前有效收益、数值与计数快照、剩余期限、维持者／受益者／来源、媒介和冲突 | 葬送 |\n| DefeatProtectionPolicy | 濒死、死亡、处决、不败、毅力的作用阶段和具体转换 | 愈战愈勇18级 |\n| SpatialResolution | 路线、扫掠集合、落点、击飞与坠落步骤、独立的效果分支 | 巨龙冲锋、双跳 |\n\n一个能力可以组合多个对象。新增角色或职业使用统一ActorState和来源定义，不建立人物专用class，不按技能名称在角色类中堆条件分支。当前这些对象仍是设计候选。\n\n“完成行动”要等根技能及其后继事件结算后再判断。致死打击处决成功产生的主要额度，应在区间结束判断前入账；不能先看预算归0就结束回合。免费基础攻击许可与主要额度是不同事物，下一回合许可也不能提前花在本回合。自主结束区间、免费能力选择和新增额度的交互在关键交互设计中继续验证。\n\nF71明确这是转移当前收益：保持当前数值、剩余层数和时长，原目标失去，不重新按自身数值施展。不能复施过去治疗或复制整份角色／库存。仅本能力的媒介暂不作生效检查，C81一般定义保留。新持有者的毅力／个体永久收益仍按原文战末到期；原目标还活时是否恢复永久收益，DM决定，不能自动长期删除或自动恢复。\n\n## 纸面场景与反例\n\n| 纸面场景 | 按原答可确定的结果 |\n| --- | --- |\n| 护甲骰10／DC10，或15／DC15 | 都成功，不加护甲、属性或熟练值 |\n| 二连两斩均实际执行，一失一中 | 疲劳共4，逐斩执行后扣；未中不免费 |\n| 三连一斩被反应躲掉，其余两斩实际执行 | 共4，不能从生命损失0推断免费 |\n| 3D6两组(6,1,1)、(1,6,6) | 选择整组13，不逐骰拼成18 |\n| 无处决保护，非暴击理论最大21，当前HP20或21 | 处决阈值都满足，不先扣抗性／护盾／护甲 |\n| 18级首轮保护例且已经交战 | 不受处决，锁1；不把该补例扩大成后续轮交战时无条件免死 |\n| 12级首次学武器掌握 | 立即追加3次不同未拥有选择，不能重复领 |\n| 巨人溢出10、已有临时HP15 | 有效临时HP15，不改生命上限 |\n| 破敌骰6，实际生命伤1 | 标记X=1；后续未中不消费，Y触发时重算 |\n| 狂攻0与其他0并列最低 | “不是最少”不满足 |\n| 同场主动关战斗姿态再开 | 不允许；再次攻击禁止其他重骰 |\n| 巨龙途经敌占格，邻格另一角色 | 可穿敌格，邻格非路径者不在扫掠集合；15级只查本场历史 |\n| 重殴基础攻击只伤护盾／护甲 | 可触发；回合外借机后不可用，因为需要附赠 |\n\n这些是纸面输入与裁定对照，未运行战斗程序。\n\n以上是文档与场景审查，未运行战斗程序。不能把来源完整性检查当作数值引擎验收。\n\n## 集中问卷 F64至F76\n\n本轮13题与3项补充已收到用户原答。原问题、原答及采用范围均保存。F71永久收益战后恢复已指定DM，属于明确人工边界；F70只归录题中首轮保护例，不泛化后续轮的交战状态。\n\n| 题号 | 原问题摘要 | 当前采用结论 |\n| --- | --- | --- |\n| F64 护甲检定的公式 | 护甲检定使用什么骰、加哪些数值？裸身角色如何检定？结果等于难度10／15时算成功还是失败？ | 只看骰面的D20，所有护甲的检定都相同，等于时也成功 |\n| F65 连斩的动态疲劳X | 二／三连斩的X初始是多少？“每次成功执行的攻击动作使X+2”是按命中、攻击段还是一次攻击行动计数，是否包括其他攻击？X何时重置，何时扣费？可用首次二连一失一中举例。 | X为2，4，6点，成功执行攻击动作的意思是如果这一发攻击没有被对手的反应动作躲掉，那么每一斩需要花费2点疲劳，包括攻击没有命中也需要花2点疲劳；扣费在成功执行攻击动作后 |\n| F66 多骰伤害的优势 | 3D6伤害具有优势时，若两组为(6,1,1)和(1,6,6)，是取整组较高13，还是每颗分别取高得到18？主规则规定掷两次取高，但未细分多骰伤害。 | 取整组较高的13 |\n| F67 处决理论最大值 | 致死打击已命中且非暴击，武器1D8、普通力量加值3、技能额外10，原始最大值21。目标HP20但有抗性／护盾／护甲时，处决按21还是减免后最大伤害判断？HP恰好21能否处决？ | 只比较目标的当前生命值与理论最大值伤害，所以会直接处决，等于也会处决 |\n| F68 武器掌握的迟领奖励 | 战士12级首次学武器掌握，是否立即追加3个未拥有的武器专精（天赋本身＋5级＋10级），还是仅追加1个，15级再追加？初始专精选的一类不计入这3次。 | 12级学习会立刻追加三项 |\n| F69 巨人打击溢出生命 | 最大HP100、当前90，巨人打击恢复20后溢出10。“额外生命值”是否就是临时生命、不改变上限？若已有临时生命15，最后取最高15还是叠到25，或另有生命层？ | 额外生命值算作临时生命值且不改上限；已有临时生命值取最高 |\n| F70 愈战愈勇18级的不败 | 第一轮不能被击败具体怎样改变结算？例如HP8／20受到10点最终伤害，保在1、进入负血但不判击败，还是免伤？若受到40点触发即死边界，这层保护是否仍有效？ | 首轮会锁1血，触发即死边界时仍有保护；补答：愈战愈勇18级才不会受到处决效果影响 |\n| F71 葬送的收益复制 | 葬送复制收益后，保留目标当前数值／剩余层数和时长，还是按自己重新计算并重置时长？原目标是否失去收益？标了“媒介”却未指定物件，媒介由什么提供？ | 保留目标的当前数值，剩余层数，时长，原目标失去收益，关键词媒介目前可以不用在意，只属于一种词条；补答：这个交由DM决定，这个确实是很难裁定 |\n| F72 破敌战戟的标记数值 | 投掷伤害骰6，目标抗性2、护盾挡3，生命损失1：标记X记6还是1？后续近战未命中是否仍消耗标记并追加X？Y＝10%最大HP是在赋标记时固定，还是每次触发重新取当前上限？ | 标记伤害为1；近战攻击未命中不会消耗标记；触发时重算 |\n| F73 风格数量统计 | “本风格技能数量最多／狂攻不是最少”统计哪些记录：天赋、免费初始能力、跨职业取得是否计入？未习得风格是否按0参与？并列最多／最少怎样判？风格顺序仍沿用F55，不重问。 | 最多/最少统计计入天赋，免费初始；跨职业习得的技能取决于该技能是否会计算风格，如果不会计算风格则不会计算到最多和最少里；未习得按0参与；并列最多最少如果没写最多最少之一，那么并列不能生效；补答：不满足 |\n| F74 姿态的首次资格与重掷 | 战斗中才开启战斗姿态，能否获得第一次基础攻击的优势和5级附伤？同场关闭再开是否刷新首次资格？8级再次攻击“必须接受结果”，是否禁止另用激励点等来源重掷？ | 战斗中才开启那么就会计算开启后的第一次基础攻击，不能关闭再开；禁止其他重骰来源 |\n| F75 巨龙冲锋的路径和历史 | 巨龙冲锋是否可以穿过敌人占格，还是攻击／击飞沿途敌人后才能继续？“途经过的所有单位”指实际经过的格子还是路径相邻也算？15级的“目标承受过你造成的伤害”只算本场还是历史战斗也算？ | 能穿敌占格，途径的单位仅实际路径格；仅算本场的伤害 |\n| F76 重殴的触发窗口 | 基础攻击只打掉护盾／护甲、未伤生命时，是否可触发重殴？回合外借机造成伤害时能否用重殴；若能，附赠额度用当下余额还是预支下回合？这仍是0动作附赠，不重问反应总3次。 | 能触发；回合外不能释放，因为重殴需要附赠动作释放 |\n\n## 继承及后续应用边界\n\nF16已经登记同向优势组合及绝对等级的抵消边界，巨人打击的体型提升超过登记最高档时加一个具体应用场景，不新建重复基础问卷。当前书面已有绝对四次检定，不把它误记为尚无定义。\n\n英勇飞跃双落点的伤害骰共享、愈战愈勇的交战事实及一次豁免资格恢复、标记多源／同目标重复与原标记到期、待宰羔羊的回合外次数周期及效果选择，都保留为应用边界。没有明确依据时用待定字段或主持决策，不悄悄采用惯常规则。这些记录不代表已确认，也不从本批直接推出其它职业的规则。\n\n原件的“A0E”“近战关键”等文书表达保留，规范建议用AOE、近战攻击作查询描述，不能静默改原件或通过名称合并不同来源。所有时限、百分比取整和媒介涉及的具体规则仍以主规则和后续裁定为准。\n\n## 当前进度与下一步\n\n本批18项、20条升级及七阶语境的资料审读完成。战士累计22／119条，仍有97条未审；C01整体及完整战斗引擎尚未完成。下一批为C01-c狂攻风格17项，本轮不自动推进，本批原答已归录，DM边界已标明；仍保留继承及应用未定项。\n\n本地审查记录：[C01_战士斗争机制审查_20261005.json](/D:/Download/scholar-agent-main/docs/migration/C01_战士斗争机制审查_20261005.json)。覆盖表继续维护：[C01_战士覆盖清单_20261005.json](/D:/Download/scholar-agent-main/docs/migration/C01_战士覆盖清单_20261005.json)。引擎草案随机制审查修订至v0.2，旧v0.1文件保留；角色候选仍v0.2.2。所有业务代码及规则原件不改。\n\n## 裁定与原文区别\n\nF65按段后扣是连续攻击的特例，不改变其它技能起手扣费规则。F64的包含等号只用于护甲检定，不改变豁免。F71原标签媒介一般要求物件，本题仅葬送暂不检查；其它媒介技能不因此取消条件。F70处决保护与一般处决忽略反制的冲突按用户首轮例裁定，不能把普通防败当作同一个毅力布尔量。原文均保留，修订通过带来源的映射表达。",
+  "inheritedApplicationIssues": [
+    {
+      "id": "F16",
+      "scope": "巨人打击超出绝对档及既有优劣势组合",
+      "status": "pending-inherited"
+    },
+    {
+      "id": "C01b-aoe-sharing",
+      "scope": "英勇双落点的伤害骰共享及重复目标处理",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-engagement",
+      "scope": "交战事实、累计暂停／重置和15级一次豁免资格",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-marks",
+      "scope": "同目标重复标记与原标记到期",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-critical-window",
+      "scope": "每自身回合一次的伤害触发在回合外如何归属",
+      "status": "pending-application"
+    },
+    {
+      "id": "C01b-upgrade-eligibility",
+      "scope": "三连斩直接学习／跨来源取得及遗忘家族范围",
+      "status": "pending-cross-source"
+    },
+    {
+      "id": "C01b-damage-expression",
+      "scope": "固定技能骰是否另有通用属性项及复合骰修订的比较阶段",
+      "status": "pending-cross-source"
+    }
+  ],
+  "coreChanges": [
+    "区分行动、攻击段、命中、伤害各层、HP变化与结果事件",
+    "动态费用的计数输入、周期与支付时点由规则绑定，不按名字硬编码",
+    "普通预算、免费攻击许可、下回合许可与条件休息锁定分别记账",
+    "追加专精使用来源增益与阈值领取凭据；角色保存集合而非覆盖初始选项",
+    "学习条件的数量统计与风格顺序、取得条件与施展条件分开",
+    "理论最大伤害、处决、负生命、毅力与防败分支保持不同数据",
+    "复制用当前收益视图、捕获时点、维持／来源／受益者、媒介与过期策略",
+    "成对修正和目标标记保存施术者与对手，不能修改全局目标AC／抗性",
+    "升级形态保留身份与谱系，不自动新增槽位或扩张同名永久禁学",
+    "支持书面已有绝对四次检定；未登记的规格或抵消组合保持待定"
+  ],
+  "sourceContexts": [
+    {
+      "index": 103,
+      "kind": "p",
+      "text": "战士天赋树",
+      "paragraphs": [
+        "战士天赋树"
+      ]
+    },
+    {
+      "index": 104,
+      "kind": "p",
+      "text": "你可以通过花费技能点的方式来获取以下能力",
+      "paragraphs": [
+        "你可以通过花费技能点的方式来获取以下能力"
+      ]
+    },
+    {
+      "index": 106,
+      "kind": "p",
+      "text": "斗争风格",
+      "paragraphs": [
+        "斗争风格"
+      ]
+    },
+    {
+      "index": 108,
+      "kind": "p",
+      "text": "一阶天赋树",
+      "paragraphs": [
+        "一阶天赋树"
+      ]
+    },
+    {
+      "index": 109,
+      "kind": "p",
+      "text": "职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 110,
+      "kind": "tbl",
+      "text": "重殴\n战斗姿态",
+      "paragraphs": [
+        "重殴",
+        "战斗姿态"
+      ]
+    },
+    {
+      "index": 114,
+      "kind": "p",
+      "text": "抉择：战斗姿态/防御姿态/迅疾姿态",
+      "paragraphs": [
+        "抉择：战斗姿态/防御姿态/迅疾姿态"
+      ]
+    },
+    {
+      "index": 117,
+      "kind": "p",
+      "text": "二阶天赋树",
+      "paragraphs": [
+        "二阶天赋树"
+      ]
+    },
+    {
+      "index": 118,
+      "kind": "p",
+      "text": "职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级1级时开启，你无需花费经验值解锁，如果你已经开启三阶或以上的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 119,
+      "kind": "tbl",
+      "text": "顺劈斩\n破甲攻势\n武器掌握",
+      "paragraphs": [
+        "顺劈斩",
+        "破甲攻势",
+        "武器掌握"
+      ]
+    },
+    {
+      "index": 139,
+      "kind": "p",
+      "text": "三阶天赋树",
+      "paragraphs": [
+        "三阶天赋树"
+      ]
+    },
+    {
+      "index": 140,
+      "kind": "p",
+      "text": "职业等级3级时开启，你需要花费50点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级3级时开启，你需要花费50点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 141,
+      "kind": "tbl",
+      "text": "二连斩\n动作如潮",
+      "paragraphs": [
+        "二连斩",
+        "动作如潮"
+      ]
+    },
+    {
+      "index": 149,
+      "kind": "p",
+      "text": "四阶天赋树",
+      "paragraphs": [
+        "四阶天赋树"
+      ]
+    },
+    {
+      "index": 150,
+      "kind": "p",
+      "text": "职业等级6级时开启，你需要花费100点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级6级时开启，你需要花费100点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 151,
+      "kind": "tbl",
+      "text": "碾压打击\n待宰羔羊",
+      "paragraphs": [
+        "碾压打击",
+        "待宰羔羊"
+      ]
+    },
+    {
+      "index": 157,
+      "kind": "p",
+      "text": "五阶天赋树",
+      "paragraphs": [
+        "五阶天赋树"
+      ]
+    },
+    {
+      "index": 158,
+      "kind": "p",
+      "text": "职业等级9级时开启，你需要花费300点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级9级时开启，你需要花费300点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 159,
+      "kind": "tbl",
+      "text": "致死打击\n英勇飞跃\n勇士战吼",
+      "paragraphs": [
+        "致死打击",
+        "英勇飞跃",
+        "勇士战吼"
+      ]
+    },
+    {
+      "index": 175,
+      "kind": "p",
+      "text": "六阶天赋树",
+      "paragraphs": [
+        "六阶天赋树"
+      ]
+    },
+    {
+      "index": 176,
+      "kind": "p",
+      "text": "职业等级12级时开启，你需要花费500点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级12级时开启，你需要花费500点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 177,
+      "kind": "tbl",
+      "text": "巨龙冲锋\n破敌战戟\n愈战愈勇",
+      "paragraphs": [
+        "巨龙冲锋",
+        "破敌战戟",
+        "愈战愈勇"
+      ]
+    },
+    {
+      "index": 202,
+      "kind": "p",
+      "text": "七阶天赋树",
+      "paragraphs": [
+        "七阶天赋树"
+      ]
+    },
+    {
+      "index": 203,
+      "kind": "p",
+      "text": "职业等级15级时开启，你需要花费1000点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件",
+      "paragraphs": [
+        "职业等级15级时开启，你需要花费1000点经验值来解锁这个位阶，如果你已经开启更高位阶的天赋树，那么学习以下能力还需要满足额外条件"
+      ]
+    },
+    {
+      "index": 204,
+      "kind": "tbl",
+      "text": "巨人打击\n葬送！",
+      "paragraphs": [
+        "巨人打击",
+        "葬送！"
+      ]
+    },
+    {
+      "index": 209,
+      "kind": "p",
+      "text": "狂攻风格",
+      "paragraphs": [
+        "狂攻风格"
+      ]
+    }
+  ],
+  "sourceVerification": {
+    "freshWordRead": true,
+    "sourceCards": 18,
+    "uniqueSourceCards": 18,
+    "upgradeClauses": 20,
+    "textsMatchPriorInventory": true,
+    "markerFontColorsPreserved": true
+  },
+  "baseline": {
+    "files": [
+      {
+        "file": "基础职业-战士.docx",
+        "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+      },
+      {
+        "file": "职业页/数据/战士.json",
+        "sha256": "f6a9f53e686421c9496136f28ec25bc343f076ca0fddc19d12d0c2add2e4baf2"
+      },
+      {
+        "file": "冒险者基础规则.xlsx",
+        "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+      },
+      {
+        "file": "docs/migration/T07_模型修订_20261005.json",
+        "sha256": "39f0ced87474ec792b4d87347b86bfa1ec882ee9053ca1ca163bf59daa6fc487"
+      },
+      {
+        "file": "《基础职业进阶途径》.docx",
+        "sha256": "17c67cf3047704009484414f35b9b6d525ce147abd4fca880f2eb826b668ae0e"
+      },
+      {
+        "file": "已公布进阶职业.docx",
+        "sha256": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f"
+      }
+    ],
+    "oldHead": "695508df57779d86afe7b6728db2995f7a7794f8",
+    "targetHead": "929cd8c4ac48d8aa268608411c77e95753bd0655",
+    "targetStatus": " M .github/workflows/ci.yml\n M README.md\n M apps/web/src/App.tsx\n A apps/web/src/features/characters/CharacterWorkspace.tsx\n A apps/web/src/features/characters/characters.css\n A apps/web/src/features/characters/editor-runtime.ts\n A apps/web/src/features/characters/local-service.ts\n A apps/web/test/characters.browser.test.mjs\n M apps/web/tsconfig.json\n A docs/proposals/character-management/README.md\n A docs/proposals/character-management/adapter.ts\n A docs/proposals/character-management/contracts.ts\n A docs/proposals/character-management/draft.test.mjs\n A docs/proposals/character-management/draft.ts\n A docs/proposals/character-management/editor.test.mjs\n A docs/proposals/character-management/editor.ts\n A docs/proposals/character-management/fixtures.mjs\n A docs/proposals/character-management/package.json\n A docs/proposals/character-management/tsconfig.json\n A docs/proposals/character-management/validation.test.mjs\n A docs/proposals/character-management/validation.ts\n M package.json\n M pnpm-lock.yaml\n"
+  },
+  "sourceRuleExcerpts": {
+    "keywords": [
+      {
+        "sheet": "异常状态规则",
+        "row": 50,
+        "cells": [
+          {
+            "cell": "B50",
+            "text": "瘫痪"
+          },
+          {
+            "cell": "D50",
+            "text": "失能"
+          },
+          {
+            "cell": "E50",
+            "text": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到伤害或承受一定刺激后会立即解除瘫痪状态"
+          }
+        ]
+      },
+      {
+        "sheet": "异常状态规则",
+        "row": 51,
+        "cells": [
+          {
+            "cell": "B51",
+            "text": "震撼"
+          },
+          {
+            "cell": "D51",
+            "text": "失能"
+          },
+          {
+            "cell": "E51",
+            "text": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，目标在受到暴击伤害或承受一定刺激后会立即解除震撼状态"
+          }
+        ]
+      },
+      {
+        "sheet": "异常状态规则",
+        "row": 52,
+        "cells": [
+          {
+            "cell": "B52",
+            "text": "冻结"
+          },
+          {
+            "cell": "D52",
+            "text": "失能"
+          },
+          {
+            "cell": "E52",
+            "text": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，冻结会立即移除目标的全部灼烧状态，并且在受到火焰伤害时会解除冻结效果"
+          }
+        ]
+      },
+      {
+        "sheet": "异常状态规则",
+        "row": 53,
+        "cells": [
+          {
+            "cell": "B53",
+            "text": "眩晕"
+          },
+          {
+            "cell": "D53",
+            "text": "失能"
+          },
+          {
+            "cell": "E53",
+            "text": "目标将会跳过下一个自身回合，并且持续时间内无法执行任何动作，当自身回合开始时目标还需要进行一次难度为15的意志豁免，豁免失败将再次跳过行动回合（这个效果仅触发一次）"
+          }
+        ]
+      },
+      {
+        "sheet": "异常状态规则",
+        "row": 54,
+        "cells": [
+          {
+            "cell": "B54",
+            "text": "击晕"
+          },
+          {
+            "cell": "D54",
+            "text": "失能"
+          },
+          {
+            "cell": "E54",
+            "text": "效果等同于眩晕状态，但是持续时间仅为1轮"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 51,
+        "cells": [
+          {
+            "cell": "B51",
+            "text": "连锁反应"
+          },
+          {
+            "cell": "C51",
+            "text": "这个效果必须通过某种特定效果触发来执行，否则无法使用"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 53,
+        "cells": [
+          {
+            "cell": "B53",
+            "text": "专注"
+          },
+          {
+            "cell": "C53",
+            "text": "必须花费注意力来维持的精密效果，当施展者进入惑控或失能状态、以及执行另一项专注效果时将会中断先前的专注效果"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 55,
+        "cells": [
+          {
+            "cell": "B55",
+            "text": "激活"
+          },
+          {
+            "cell": "C55",
+            "text": "施展者未进入惑控或失能状态时能够在自身回合选择中断的效果，这个过程不需要花费动作"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 57,
+        "cells": [
+          {
+            "cell": "B57",
+            "text": "迅捷"
+          },
+          {
+            "cell": "C57",
+            "text": "不会触发借机攻击的效果"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 63,
+        "cells": [
+          {
+            "cell": "B63",
+            "text": "护盾"
+          },
+          {
+            "cell": "C63",
+            "text": "生成能够抵挡伤害的效果，护盾产生的数值不同于临时生命值"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 66,
+        "cells": [
+          {
+            "cell": "B66",
+            "text": "韧性"
+          },
+          {
+            "cell": "C66",
+            "text": "增强角色承受伤害和负面状态抗性的效果"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 80,
+        "cells": [
+          {
+            "cell": "B80",
+            "text": "结界"
+          },
+          {
+            "cell": "C80",
+            "text": "通过魔法结界的形式被施展，通过需要通过媒介或触发来生效的能力"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 81,
+        "cells": [
+          {
+            "cell": "B81",
+            "text": "媒介"
+          },
+          {
+            "cell": "C81",
+            "text": "需要有一个物件作为其生效的来源"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 82,
+        "cells": [
+          {
+            "cell": "B82",
+            "text": "法术媒介"
+          },
+          {
+            "cell": "C82",
+            "text": "需要通过魔棒、法杖等魔法道具作为媒介，针对一个物件作为其生效的来源"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 104,
+        "cells": [
+          {
+            "cell": "B104",
+            "text": "处决技"
+          },
+          {
+            "cell": "C104",
+            "text": "可怕的斩杀技能，如果这次攻击的理论最大值伤害能够击杀目标，那么忽略对方的反制手段，例如反应动作、毅力以及其他能力直接消灭目标"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 108,
+        "cells": [
+          {
+            "cell": "B108",
+            "text": "唯一性"
+          },
+          {
+            "cell": "C108",
+            "text": "指同一名角色仅能够维持一个效果，当其执行另一项这个效果时将会中断先前的唯一性效果；此外多名角色的同名效果对单一目标仅会生效一次，取其中当前\n角色等级最高的那个效果生效"
+          }
+        ]
+      },
+      {
+        "sheet": "关键词规则",
+        "row": 110,
+        "cells": [
+          {
+            "cell": "B110",
+            "text": "上限提升"
+          },
+          {
+            "cell": "C110",
+            "text": "指获得升级规则之外的生命值、疲劳值或属性值等数据加成"
+          }
+        ]
+      },
+      {
+        "sheet": "名望等级和声望规则",
+        "row": 8,
+        "cells": [
+          {
+            "cell": "B8",
+            "text": 5
+          },
+          {
+            "cell": "C8",
+            "text": "名望等级的提升不会直接给予你属性值或其他数值上的加成，但仍然会带来隐性的收益，例如更难以成为黑魔法或诅咒效果的媒介、在命运的位格上的得到提升"
+          }
+        ]
+      },
+      {
+        "sheet": "其他规则",
+        "row": 3,
+        "cells": [
+          {
+            "cell": "B3",
+            "text": "常规角色默认的跳远和跳高距离等于自身的力量或敏捷属\n性调整值+跳跃熟练度+1。\n跳远和跳高仅能够朝直线（斜线）方向进行，即角色无法\n在空中调整他们的位置。\n如果一名角色在自身回合中执行过全速移动，那么便不能\n执行跳远和跳高行动，如同他们无法执行基础移动一样。\n如果角色在进行跳远或跳高时途经了其他角色，这些角色\n可以选择是否借机攻击目标。\n如果角色当前承受了减速、或者其他会导致基础移动力减\n半的效果影响，那么他们再进行跳远和跳高行动时的距离\n同样会减半。"
+          },
+          {
+            "cell": "H3",
+            "text": "角色在使用双持武器造成伤害时，仅需要投掷一次武器伤\n害骰，在造成伤害时额额外附加一半的结算后伤害值（例\n如敏捷属性调整值为3的游荡者使用两把匕首武器攻击，那\n么伤害公式为（1D4+3）+（1D4+3）÷2。\n如果角色的双持武器不同名，那么附加伤害仅计算伤害骰\n较低的那把武器（例如同时持有传奇武器和普通单手剑，\n在附加伤害时取用普通单手剑的伤害公式）。\n需要双手装备的武器（例如双手剑、斧、长枪、弓箭或猎\n枪等）在每个自身回合中拥有一次重掷攻击命中检定骰的\n机会，持有者必须接受这次重掷的结果，如果在此之前角\n色已经使用过其他重掷攻击命中检定的手段，那么这个效\n果无法使用。"
+          },
+          {
+            "cell": "N3",
+            "text": "角色能够通过技能、药剂、装备或其他增益来获取一些临\n时的提升，这些提升具有时效性，或者在某些特殊情况下\n将会失去（例如卸下这件装备）。\n角色无法通过临时的属性值去满足前置条件或额外条件等\n要求中关于属性值的限制（例如角色无法通过饮用力量药\n水来临时提升1点属性值以达成力量属性值的要求）。\n临时生命值、临时疲劳值和临时伤害抗性除非进行特殊说\n明，否则无法叠加，如果受到多个类似效应的影响，那么\n取其中的最高值进行结算。\n与之相反，临时护盾值如果没有进行特殊说明，那么默认\n允许进行叠加，但这些护盾均为独立计算。"
+          }
+        ]
+      },
+      {
+        "sheet": "其他规则",
+        "row": 27,
+        "cells": [
+          {
+            "cell": "B27",
+            "text": "死亡裁决是游玩过程中最为严肃紧张的环节，当一名角色\n的当前生命值降低至0或以下时，在一个自身回合到来时\n便需要掷一颗D20的死亡裁决骰，如果点数低于10便获得\n一个死亡标记，点数不小于10则获得一个生命标记。\n如果角色率先获得三个生命标记，那么TA会获得一层力竭\n状态、将生命值回调至1点随后解除失能状态。\n如果角色率先获得三个死亡标记，那么TA将会真正死亡。\n如果角色在死亡裁决的过程中因受到治疗而使自身生命值\n回复至1或以上，立即中止这次死亡裁决并移除所有当前生\n命标记，但死亡标记会保留直到这场战斗环节的结束。\n死亡裁决骰无法通过任意形式进行重掷、覆盖和替换，也\n不能在这个过程中运用附加任何附加数值和骰值的手段。"
+          },
+          {
+            "cell": "H27",
+            "text": "角色在长时间未摄入营养或睡眠、在未休整的情况下进行\n长途跋涉、处于某种巨大压力或者消耗自身全部的疲劳值\n后便会进入力竭状态。\n如果当前处于战斗环节，那么力竭状态会令角色在本回合\n或下一个自身回合中失去一个附赠动作（即如果本回合在\n进入力竭后还拥有附赠动作，那么会花费这个动作，如果\n没有则扣除下个回合的附赠动作）。\n力竭状态会根据上述情况进行叠加，角色会在保留上一层\n力竭状态效果的同时受到当前力竭层数的影响。\n在战斗环节中获得的力竭状态可以被视作负面标记，能够\n被可以移除负面标记的效果进行移除，而其他情况获得的\n力竭层数通常仅能够依靠补给或休整去消除。"
+          },
+          {
+            "cell": "N27",
+            "text": "拥有力竭状态的角色会受到以下负面效果的影响：\n·一层力竭：角色的基础移动力减半。\n·两层力竭：角色进行的检定具有劣势，如果造成的效果\n需要攻击来源进行检定，那么对方会具有优势。\n·三层力竭：角色进行的检定具有极大劣势，如果造成的\n  效果需要攻击来源进行检定，那么对方会具有极大优势。\n·四层力竭：角色进入失能状态，无法自主行动。\n·五层力竭：角色因力竭而死亡。"
+          }
+        ]
+      },
+      {
+        "sheet": "其他规则",
+        "row": 51,
+        "cells": [
+          {
+            "cell": "B51",
+            "text": "玩家角色在游玩过程中运用熟练度来进行检定的次数并非\n是无限制的，否则这可能导致玩家们无节制的为了他们想\n要的结果持续检定下去，使得剧情无法得到顺利推进。\n在针对同一人物、物件或环境进行熟练项检定时，团队成\n员累计至多能够进行两次相同的检定，之后这些检定会自\n动视为失败、或者不会再给出结果。\n此外，如果团队对某件事物重复进行超过两种不同的熟练\n项检定，那么后续再执行其他类型的检定会暂时导致难度\n的提升（每次额外的检定类型上浮难度由2~5不等）、并\n且加速时间的流逝（每次额外的检定类型会花费1~2个时）\n，这可能导致玩家角色错过关键的时间节点。"
+          },
+          {
+            "cell": "H51",
+            "text": "拥有足够的负重量并不意味着角色能够无节制地携带大量\n的物品，如果没有合适的容器用于装填，那么角色可能会\n出现还尚存多余的负重却没有足够的装备槽位而导致无法\n带走物件的情况。\n玩家角色卡中包含有武器、防具、服饰、配饰和杂物等基\n础的装备槽位，其中除了杂物槽位以外其他位置只能够用\n于存放对应名称类型的物件。\n玩家会在起始装备中选择旅行腰包和背包这两个容器中的\n其中一项，这两件容器可以分别令玩家角色额外提供五个\n或十个装备槽位。\n玩家角色也可以在游戏中从商人手中购买未选择的另一种\n容器，但无论如何，这两种容器均只能携带至多一个。"
+          },
+          {
+            "cell": "N51",
+            "text": "在放置物件进入装备槽位时，除非这个物件是诸如草药、\n碎屑或动物血液等极小体型、材料类道具，否则即便是同\n名物件也必须遵循每个物件单独占用一个装备槽位的原则\n，而即便是那些体积不大的杂物，也至多只能够按照五个\n为一组来进行放置。\n玩家角色获取的钱币不需要放置在装备槽位中，而是在玩\n家角色卡上拥有单独的货币存放槽位，这些钱币同样会占\n据角色负重，角色也可以选择按照20枚一组的方式将钱币\n存入装备槽位中。\n除了旅行腰包和背包外，玩家角色还能够携带最多两个不\n同的专业材料包，这些材料包的放置规则与其他容器基本\n相同，但仅能够用于存放对应类型的物件。"
+          }
+        ]
+      },
+      {
+        "sheet": "其他规则",
+        "row": 63,
+        "cells": [
+          {
+            "cell": "B63",
+            "text": "通用天赋树是所有角色除自身基础职业天赋树以外均能够\n习得的能力总览，通用天赋树中的能力不会影响角色的战\n斗风格顺位，仅学习通用天赋树中的能力视作当前暂没有\n战斗风格，即角色优先学习通用天赋树的技能或天赋并不\n会导致个人的职业战斗风格发生变更。\n需要特别说明的一点是，通用天赋树中的二阶天赋战斗心\n得在为角色提供其基础职业起始特性时，会根据角色获取\n的技能或天赋风格影响其战斗风格的顺位。"
+          },
+          {
+            "cell": "H63",
+            "text": "掩体存在多种形式，大多数情况是用于对地图上障碍物或\n建筑的统称，一些体型过大的单位也能够被视作掩体。\n对于灌木丛、围栏等掩体，位于掩体外的单位对处于内部\n或对面的角色进行攻击命中检定时具有劣势。\n对于拥有窗户的环境或巨大体型单位等掩体，位于掩体对\n面的单位在进行攻击时必须先进行一次成功的瞄准行动。\n对于无缝隙的墙体、巨岩等无视野的掩体，位于掩体对面\n的单位不能够直接攻击，除非他们通过移动或其他方式使\n自身能够目击到攻击对象。"
+          },
+          {
+            "cell": "N63",
+            "text": "潜行是视觉层面的隐身，不同于隐匿通过利用视觉盲区或\n潜伏于阴影中的手段来躲避敌人和巡逻者。但是潜行并非\n令自身忽视单位碰撞体积，在拥挤的人流、沾染颜料或气\n味仍然可能导致自身暴露。\n当自身相邻位置存在敌人时无法进入潜行状态，战斗环节\n中如果有单位处于潜行状态，那么未能识破潜行的角色在\n途经、停留在潜行单位时视作对方没有占据那个位置。\n（在叙事层面上可以理解为潜行单位侧身为那名角色让出\n了空间），但是范围攻击手段、以及体型较大的单位（例\n如一头狂奔的雷龙或正在驶来的列车）仍然会对途经的潜\n行单位造成巨大危机。\n此外，潜行状态下的角色在进行剧烈地行动（例如全速移\n动或进行攻击）都会导致自身解除这个状态。"
+          }
+        ]
+      },
+      {
+        "sheet": "其他规则",
+        "row": 99,
+        "cells": [
+          {
+            "cell": "B99",
+            "text": "上述的规则内容仅作为斯诺德游玩过程中的参考使用，玩家天马行空的想象力和行动力或许会导致展开规则以外意想不到的事态出现。\n无论是这些规则还是其他衍生设定所提供的数据和数值均是为了能够更加清晰地让DM和玩家了解各项能力的大致作用，在实际游玩过程中的NPC角色是无法理解具体数值的含义的，玩家也几乎\n不可能以任何方式在游完过程中知晓NPC角色的具体数值信息或自己未持有武器的具体数据化信息（例如玩家在游玩过程中询问一名NPC角色TA的等级是多少、或者这把武器是能够造成1D6还是\n1D8的伤害值时，对方只会感到一头雾水而无法听懂你的话语）。\n玩家获取的技能、特性和道具所描述的效果均为剧情中角色所认为能够施展的效果，而并非其实际的效果。在实际游玩过程中可能会因为各种原因，例如角色与目标的当前等级差异、种族、属\n性值与调整值、豁免与熟练项、体型、防御等级、着装的武器装备与护甲、个人经历和文化背景、是否正处于异常状态或力竭、是否拥有其他增益效果、当前时间段、当前所处地形与气候等诸\n多原因而导致无法发挥实际效果或是超额发挥效果（例如法师的火球术在针对不同的敌人或是处于不同的环境下皆有可能产生不同的效益，但规则中不会、也不可能把或许会发生的每种特殊情\n况都记录下来），毫无意义的争辩不过是在耽搁众人游玩的时间，除非出现需要指正的原则性问题（例如明显的逻辑漏洞、对部分玩家的明显偏袒行为或是不符合法律法规的言论等），否则一\n切情况以DM给出的最终答案为准。"
+          }
+        ]
+      }
+    ],
+    "core": [
+      {
+        "sheet": "其他规则",
+        "cell": "B15",
+        "text": "角色在某些情况下会获得优势检定（例如获得增益、做出\n个人相对擅长的事情、得到他人协助等）或劣势检定（例\n如受到负面效果影响、承受压力或者与敌人相邻时进行远\n程攻击及施法攻击等），此时角色在检定时同时掷两次检\n定骰，如果是优势检定则取其中较高的数值结算，如果是\n劣势检定则取其中较低的数值结算。\n极大优势/劣势和绝对优势/劣势的掷骰规则与普通的优势\n、劣势相同，区别是改为掷三次检定骰或掷四次检定骰，\n根据优势或劣势来取其中的较高值或较低值进行结算。"
+      },
+      {
+        "sheet": "其他规则",
+        "cell": "H15",
+        "text": "激励点是一种奖励机制，意在鼓励玩家根据自身角色的职\n业、种族以及个性背景进行更加贴合剧情代入的演绎，玩\n家角色在游玩过程中进行获得增益效果、符合人物设定的\n扮演、或是参与激动人心的剧情桥段时，可能会被DM提示\n获得激励点。\n当角色进行一次攻击命中、伤害、回复、护盾和护甲、属\n性、熟练项、对抗、豁免以及事件骰检定后，如果对检定\n的结果不满意，那么便可以消耗激励点来重掷本次检定。\n此外激励点还可以用于为角色本人临时提供一项未拥有的\n熟练项用于检定，或者做出一些超出以往极限的事情（例\n如展开一段充满羁绊的交互等）。\n除特殊情况以外，原则上角色只能拥有一个激励点，在已\n经拥有激励点的情况下，角色无法再获得新的激励点。"
+      },
+      {
+        "sheet": "其他规则",
+        "cell": "N15",
+        "text": "触及、徒手和近战的射程默认为与自身相邻的位置，虽然\n斜线距离在计算位移时被视作2米，但在计算射程时仍然被\n视为相邻区域。\n远程攻击的射程默认为12米，如果角色的相邻位置存在敌\n方单位，那么与施法攻击一样会使攻击命中检定具有劣势\n，即使攻击目标并非相邻位置的那名敌方单位同样如此。"
+      },
+      {
+        "sheet": "其他规则",
+        "cell": "H39",
+        "text": "每名角色在同一场战斗环节中至多施展三个需要花费反应\n动作的能力，即便他们还拥有更多的反应动作。\n例如终结技一类会导致角色需要支付额外反应动作的能力\n并不会消耗更多的反应动作次数，仅是需要对应角色除了\n花费一个反应动作能力外、还需要再额外选择一个当前没\n有使用过的反应动作能力在本场战斗环节中加入锁定状态\n（例如角色同时可以选择支付反应动作能力盾牌格挡和卧倒！来应对敌人的终结技，这会使得其中一个能力在本场\n战斗环节中不能再使用，但这个行为仅消耗了一次反应动\n作次数）。\n如果有多名角色同时施展反应动作，那么按照后发先置的\n顺序进行结算（即后施展的反应动作能力先触发效果）。"
+      },
+      {
+        "sheet": "检定规则",
+        "cell": "H10",
+        "text": "掷骰点数+对应加值=检定结果"
+      },
+      {
+        "sheet": "检定规则",
+        "cell": "J12",
+        "text": "掷一颗D20的检定骰"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C48",
+        "text": "对一定范围内生效的攻击手段，默认从施展者进行攻击命中检定改为由目标进行一次难度为15的敏捷豁免，通常情况下闪避成功的角色仍需要承受一半的伤害"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C49",
+        "text": "以自身为中心，持续生效的效果，通常每名角色仅能够同时维持一个光环效应在场"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C51",
+        "text": "这个效果必须通过某种特定效果触发来执行，否则无法使用"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C57",
+        "text": "不会触发借机攻击的效果"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C104",
+        "text": "可怕的斩杀技能，如果这次攻击的理论最大值伤害能够击杀目标，那么忽略对方的反制手段，例如反应动作、毅力以及其他能力直接消灭目标"
+      },
+      {
+        "sheet": "关键词规则",
+        "cell": "C108",
+        "text": "指同一名角色仅能够维持一个效果，当其执行另一项这个效果时将会中断先前的唯一性效果；此外多名角色的同名效果对单一目标仅会生效一次，取其中当前\n角色等级最高的那个效果生效"
+      }
+    ]
+  },
+  "paperCases": [
+    {
+      "name": "顺劈三目标",
+      "expectation": "三个攻击目标，明文攻击判定覆盖默认AOE豁免",
+      "source": "body[121]"
+    },
+    {
+      "name": "二连斩",
+      "expectation": "一个主要预算、两个独立攻击段；疲劳X待裁定",
+      "source": "body[143]"
+    },
+    {
+      "name": "碾压成对修正",
+      "expectation": "caster-target pair ignore defense 2，不全局降低target AC",
+      "source": "body[153]"
+    },
+    {
+      "name": "巨龙条件锁定",
+      "expectation": "只因main-target miss而触发rest-lock，不用any/all-target miss替代",
+      "source": "body[179]"
+    },
+    {
+      "name": "巨人最大HP250",
+      "expectedX": 4,
+      "expectedSourceFatigue": 8,
+      "source": "body[206]",
+      "scope": "source formula only; no runtime cast"
+    },
+    {
+      "name": "普通起点体型差3档",
+      "expectedHitRolls": 4,
+      "expectedGrade": "absolute-advantage",
+      "source": "body[206];其他规则!B15",
+      "scope": "no other favor modifiers; damage pool selection pending F66"
+    }
+  ],
+  "currentRoundQuestionsClosed": true,
+  "engineProgramTestsRun": false,
+  "rawUserReplies": {
+    "F64": "只看骰面的D20，所有护甲的检定都相同，等于时也成功",
+    "F65": "X为2，4，6点，成功执行攻击动作的意思是如果这一发攻击没有被对手的反应动作躲掉，那么每一斩需要花费2点疲劳，包括攻击没有命中也需要花2点疲劳；扣费在成功执行攻击动作后",
+    "F66": "取整组较高的13",
+    "F67": "只比较目标的当前生命值与理论最大值伤害，所以会直接处决，等于也会处决",
+    "F68": "12级学习会立刻追加三项",
+    "F69": "额外生命值算作临时生命值且不改上限；已有临时生命值取最高",
+    "F70": "首轮会锁1血，触发即死边界时仍有保护",
+    "F71": "保留目标的当前数值，剩余层数，时长，原目标失去收益，关键词媒介目前可以不用在意，只属于一种词条",
+    "F72": "标记伤害为1；近战攻击未命中不会消耗标记；触发时重算",
+    "F73": "最多/最少统计计入天赋，免费初始；跨职业习得的技能取决于该技能是否会计算风格，如果不会计算风格则不会计算到最多和最少里；未习得按0参与；并列最多最少如果没写最多最少之一，那么并列不能生效",
+    "F74": "战斗中才开启那么就会计算开启后的第一次基础攻击，不能关闭再开；禁止其他重骰来源",
+    "F75": "能穿敌占格，途径的单位仅实际路径格；仅算本场的伤害",
+    "F76": "能触发；回合外不能释放，因为重殴需要附赠动作释放"
+  },
+  "rawSupplements": {
+    "F73": "不满足",
+    "F70": "愈战愈勇18级才不会受到处决效果影响",
+    "F71": "这个交由DM决定，这个确实是很难裁定"
+  },
+  "normalizedRuleMappings": {
+    "F64": {
+      "dice": "D20",
+      "value": "natural-face",
+      "modifierMode": "none",
+      "successComparison": ">=",
+      "bareAndAllArmorSame": true
+    },
+    "F65": {
+      "paymentMode": "per-segment-after-execution",
+      "fatiguePerExecutedSegment": 2,
+      "normalMissStillPaid": true,
+      "reactionEvadedSegmentPaid": false,
+      "scope": "this-ability-resolution",
+      "initialUpfrontFatigue": false,
+      "totalAmountsByExecutedSegments": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "reactionEvasionClassification": "reported-by-reaction-resolution-not-inferred-from-zero-damage"
+    },
+    "F66": {
+      "selection": "whole-roll-group-higher-total",
+      "exampleCandidateTotals": [
+        8,
+        13
+      ],
+      "chosenDamageDiceTotal": 13,
+      "perDieMax18": false
+    },
+    "F67": {
+      "projectionBasis": "theoretical-damage-no-target-defenses",
+      "comparison": "currentHP <= theoreticalMaximum",
+      "nonCriticalExampleMaximum": 21,
+      "exampleHp20Execution": true,
+      "exampleHp21Execution": true,
+      "protectionConflictFollowup": "F70"
+    },
+    "F68": {
+      "retroactive": true,
+      "level12FirstLearningAdditionalChoices": 3,
+      "choiceReceipts": [
+        "base",
+        "level5",
+        "level10"
+      ],
+      "excludeAlreadyOwned": true
+    },
+    "F69": {
+      "overflowPool": "temporary-HP",
+      "maxHpChanges": false,
+      "aggregation": "highest",
+      "exampleExisting15New10Effective15": true
+    },
+    "F70": {
+      "firstPublicRoundDamageHpFloor": 1,
+      "damageImmediateDeathBoundaryPrevented": true,
+      "directExecutionWhileEngaged": {
+        "scope": "adjudicated-level18-first-round-case",
+        "immune": true,
+        "hpFloor": 1,
+        "rawSupplement": "愈战愈勇18级才不会受到处决效果影响"
+      },
+      "laterRoundEngagedExecutionImmunity": "not-confirmed"
+    },
+    "F71": {
+      "operation": "benefit-transfer",
+      "preserveCurrentValues": true,
+      "preserveRemainingLayers": true,
+      "preserveRemainingTime": true,
+      "sourceTargetLosesBenefit": true,
+      "recalculateAgainstRecipientStats": false,
+      "mediumRequirement": "not-enforced-for-this-ability-now",
+      "genericMediumDefinitionUnchanged": true,
+      "livingSourcePermanentBenefitAtBattleEnd": {
+        "policy": "DM-decision-required",
+        "automaticRestore": false,
+        "automaticPermanentDeletion": false,
+        "rawSupplement": "这个交由DM决定，这个确实是很难裁定"
+      }
+    },
+    "F72": {
+      "capturedX": "actual-HP-damage",
+      "exampleX": 1,
+      "meleeMissConsumesMark": false,
+      "Y": "10-percent-current-maxHP-at-trigger",
+      "successfulMeleeAdditionalDamageMarkConsumption": true
+    },
+    "F73": {
+      "includeTalents": true,
+      "includeInitialFree": true,
+      "crossSource": "include-only-when-its-rule-contributes-style",
+      "unlearnedStyleCount": 0,
+      "positiveExtremumRequiresUniqueUnlessSaysOneOf": true,
+      "negatedMinimumWithTie": {
+        "condition": "count > minimum-of-all-styles",
+        "zeroTiedMinimumCase": false,
+        "rawSupplement": "不满足"
+      },
+      "rankAndCountDifferent": true
+    },
+    "F74": {
+      "activationDuringBattleGetsNextFirstBasicAttackBenefit": true,
+      "voluntaryCloseThenReopenSameBattleAllowed": false,
+      "otherRerollSourcesForFollowupAttackAllowed": false,
+      "forcedDispelReactivation": "not-confirmed"
+    },
+    "F75": {
+      "enemyCellTraversalAllowed": true,
+      "sweepVictims": "actual-path-occupied-cells",
+      "adjacentNonpathVictims": false,
+      "priorDamageScope": "current-battle-only",
+      "terrainWallsIgnore": false
+    },
+    "F76": {
+      "shieldOrArmorOnlyDamageCanTrigger": true,
+      "outsideOwnTurnAllowed": false,
+      "bonusActionCost": 1,
+      "noBorrowFromNextTurn": true
+    }
+  },
+  "allApplicationBoundariesClosed": false,
+  "sourceDifferences": [
+    {
+      "subject": "F64护甲检定",
+      "adopted": "raw D20 >= DC, no modifiers; distinct from saving throws"
+    },
+    {
+      "subject": "F65连斩",
+      "adopted": "per executed segment after resolution, ordinary misses still cost2, reaction-evasion no cost; explicit exception to general upfront-fatigue timing"
+    },
+    {
+      "subject": "F71葬送",
+      "adopted": "transfer current benefit; source target loses it; medium not enforced for this talent",
+      "primaryRule": "关键词规则!C81 still defines generic medium requirement",
+      "scope": "this ability only, raw source unchanged"
+    },
+    {
+      "subject": "F70首轮保护",
+      "adopted": "user-adjudicated level18 first-round engaged example prevents execution; do not extend to later engaged rounds"
+    },
+    {
+      "subject": "F73风格",
+      "adopted": "rank participation and count contribution separate; initial free counts while not ranking"
+    }
+  ],
+  "verification": {
+    "scope": "documentation and paper arithmetic only; not a combat engine test",
+    "paperArithmetic": [
+      {
+        "id": "armor equality10",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "armor equality15",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "separate save comparator",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "two ordinary performed segments including miss",
+        "value": 4,
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "id": "one reaction evaded and one normal performed",
+        "value": 2,
+        "expected": 2,
+        "passed": true
+      },
+      {
+        "id": "three normal segments",
+        "value": 6,
+        "expected": 6,
+        "passed": true
+      },
+      {
+        "id": "whole group advantage",
+        "value": 13,
+        "expected": 13,
+        "passed": true
+      },
+      {
+        "id": "execution inclusive equal",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "execution below",
+        "value": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "id": "explicit protection eligibility",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "late mastery thresholds",
+        "value": 3,
+        "expected": 3,
+        "passed": true
+      },
+      {
+        "id": "temporary highest",
+        "value": 15,
+        "expected": 15,
+        "passed": true
+      },
+      {
+        "id": "mark actual life loss",
+        "value": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "id": "not least tied zero",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "unique max tie fails",
+        "value": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "id": "giant maxHP250 X",
+        "value": 4,
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "id": "giant source fatigue",
+        "value": 8,
+        "expected": 8,
+        "passed": true
+      }
+    ],
+    "sourceCoverage": {
+      "cards": 18,
+      "upgradeHeaders": 20,
+      "sourceReviewed": 22,
+      "remaining": 97,
+      "originalTextUnchanged": true
+    },
+    "integrity": {
+      "sourcesUnchanged": true,
+      "sources": [
+        {
+          "file": "基础职业-战士.docx",
+          "unchanged": true
+        },
+        {
+          "file": "职业页/数据/战士.json",
+          "unchanged": true
+        },
+        {
+          "file": "冒险者基础规则.xlsx",
+          "unchanged": true
+        },
+        {
+          "file": "docs/migration/T07_模型修订_20261005.json",
+          "unchanged": true
+        },
+        {
+          "file": "《基础职业进阶途径》.docx",
+          "unchanged": true
+        },
+        {
+          "file": "已公布进阶职业.docx",
+          "unchanged": true
+        }
+      ],
+      "targetHeadUnchanged": true,
+      "targetStatusUnchanged": true
+    },
+    "pageReadbackPreserved": true
+  },
+  "archive": {
+    "directory": "D:\\Download\\scholar-agent-main\\备份区\\2026-10\\c01b-struggle-20261005-691d",
+    "completed": true,
+    "onlyOwnTask": true
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-04",
+  "report_page_id": "page_272730c03d908191814939407d76f82a",
+  "report_url": "https://chatgpt.com/space/page_272730c03d908191814939407d76f82a",
+  "docx": "D:/Download/scholar-agent-main/docs/migration/斯诺德规则细则确认问卷_T04_筛选版_v7.docx",
+  "question_ids": [
+    "F25",
+    "F26",
+    "F27",
+    "F28",
+    "F29",
+    "F30",
+    "F31",
+    "F32",
+    "F33",
+    "F34",
+    "F35",
+    "F36",
+    "F37",
+    "F38",
+    "F39",
+    "F40",
+    "F41",
+    "F42",
+    "F43",
+    "F44"
+  ],
+  "status_count": 35,
+  "implementation_issues": 16,
+  "pages": 7,
+  "qa": {
+    "allPagesInspected": true,
+    "codeEdited": false,
+    "T05Started": false
+  },
+  "old_repo_head": "cc8e34d3007128d1c189ab7fb6508e59b9853870",
+  "source_digest_records": [
+    {
+      "relativePath": "冒险者基础规则.xlsx",
+      "sha256": "23a8386d1fecfa72606e736f0b3997b7643638f703490033a5e8f5f0eef3ecb9"
+    },
+    {
+      "relativePath": "基础职业-召唤师.docx",
+      "sha256": "4a8dc410824084bf675ee7134f8bba749fe0d18285f551d02fead44d16cc8e51"
+    },
+    {
+      "relativePath": "基础职业-吟游诗人.docx",
+      "sha256": "f77d6bd0adc8cbab93f9566bcc791ba0997a6146b8b8fb87b7ebfef1c45a1e95"
+    },
+    {
+      "relativePath": "基础职业-圣骑士.docx",
+      "sha256": "3096e88d34c5dbdec7271c7d07cad51cca2962829845c7c07d3c98bf6111451d"
+    },
+    {
+      "relativePath": "基础职业-奇械师.docx",
+      "sha256": "774139c18b1ad30d7a82300f73a33164db04b9b604b41cdbd455b217bbda4334"
+    },
+    {
+      "relativePath": "基础职业-守望者.docx",
+      "sha256": "788c5883cf4782b98b33466c83a9f84c55e5e18487b1a528672bcb35a645c5e4"
+    },
+    {
+      "relativePath": "基础职业-德鲁伊.docx",
+      "sha256": "d9de4d89e5bbea887bd324198b42a5d618661f72ffd7423ec727dd46a3a698e6"
+    },
+    {
+      "relativePath": "基础职业-战士.docx",
+      "sha256": "f0848c5d07b3cfa88386be05b6450a273d7c5ee8c802b34ecebcee91301a12e4"
+    },
+    {
+      "relativePath": "基础职业-战舞者.docx",
+      "sha256": "966ef09392f2f1be10dcff5436a65b03934df3e730006a7741631f002cbd20a9"
+    },
+    {
+      "relativePath": "基础职业-术士.docx",
+      "sha256": "8780a437702a5f5fcb89542ab417148ae090ad9f278f4d37fd96ea3287e8d89e"
+    },
+    {
+      "relativePath": "基础职业-武僧.docx",
+      "sha256": "1b1aeae9b1f9025061f06d8a402eab652c9fa661415a60dc97d6527620d73f04"
+    },
+    {
+      "relativePath": "基础职业-法师.docx",
+      "sha256": "1d083e15f11c9bde315e15cfc7663e0131748369aaf71da29428d48f81719e81"
+    },
+    {
+      "relativePath": "基础职业-游荡者.docx",
+      "sha256": "65eb749e45325185bc19f3b5083f6b21f7bdcd6461001092b3f14e3503910f87"
+    },
+    {
+      "relativePath": "基础职业-牧师.docx",
+      "sha256": "9f8f3aac691011061aae40c80717d0ead1afb96ef2202fea5693cf85e1c0831b"
+    },
+    {
+      "relativePath": "基础职业-猎人.docx",
+      "sha256": "b016533a9a45c0fdbe448a3b4f12c9ac942ec04e8faf3347d78ea5798e5cbe5c"
+    },
+    {
+      "relativePath": "基础职业-萨满祭司.docx",
+      "sha256": "224d55d290bd88e3f0f1d726e7dcb6220426e4111a5adbc9e1ea28e16ae464ec"
+    },
+    {
+      "relativePath": "基础职业-蛮斗士.docx",
+      "sha256": "6efae18e6f7f6016f24a7c8291531c6a9609d0eb26b55be5d1dfb8cb9b9ccade"
+    },
+    {
+      "relativePath": "基础职业-谋士.docx",
+      "sha256": "917b6d60ee9ca850217ecdd8dcd1d2cdbf1ae34f2b80c1720f8b9c410c42ad7a"
+    },
+    {
+      "relativePath": "基础职业-魔契师.docx",
+      "sha256": "26f754cb70c7db59fc825bcb9780a3a6e99da5801b7b16761e9a5b4e10446935"
+    },
+    {
+      "relativePath": "已公布进阶职业.docx",
+      "sha256": "bd38f56f52293b0f631ff6392f72c38478117f48a5a0274d902f8d562546d74f"
+    },
+    {
+      "relativePath": "特殊专长.docx",
+      "sha256": "a42dac4791fd1839c99a91ad57a7dc9e18d2891353853019f7d13c8aa2975928"
+    },
+    {
+      "relativePath": "通用天赋树.docx",
+      "sha256": "792dff89c723ac7c5330cdfb1adf138f5007089e7ad472405bb38364d608014e"
+    },
+    {
+      "relativePath": "斯诺德跑团/help.html",
+      "sha256": "0a17c0cc2807a87a2dea8f65b2c66f590ccb8757de05df27113585aeeef1f799"
+    },
+    {
+      "relativePath": "斯诺德跑团/角色面板.html",
+      "sha256": "fb7a7c1a3f511a4935a0b0661d7c1091ddb6167e3812fb1dc8404db51de6a208"
+    },
+    {
+      "relativePath": "斯诺德跑团/character_stats.js",
+      "sha256": "5a556d310a1587bdfbf00e37e873f20d5b7c6494878d2bd666d4abc513cf886d"
+    },
+    {
+      "relativePath": "额外规则.png",
+      "sha256": "3c7ea32637db871055268d072c24047b5fc43d44ee30ed63a838f98bdf317f59"
+    },
+    {
+      "relativePath": "snode-combat/core/unit.ts",
+      "sha256": "b159cfca120916e308ba1eacdab3bd4c077324970d6d9755c1fc808cecaffeab"
+    },
+    {
+      "relativePath": "snode-combat/core/types.ts",
+      "sha256": "daf586e6896deb107b892e27abfb4cb8643e536019939fdcad7a5a5e684f0a39"
+    },
+    {
+      "relativePath": "snode-combat/core/encounter.ts",
+      "sha256": "9e4d684fc2ad330cb5f7afd78d9e5acf5215dcb0d50f10ca1c468452cf9214f0"
+    },
+    {
+      "relativePath": "snode-combat/core/phases.ts",
+      "sha256": "cd392bf4b1341316cb86ef6e9cf008176237e215cfe40ae94193b7ce9c20e19d"
+    },
+    {
+      "relativePath": "snode-combat/core/pve-game.ts",
+      "sha256": "80297c933e14b1ef95f22f3b3e55485b79754129628c18347b54c14dc533d7e5"
+    },
+    {
+      "relativePath": "snode-combat/core/resolver.ts",
+      "sha256": "a596d8e574c2d44c960ac12b4c5fc23f142a2c98102db5cc8c2a3b810fe65646"
+    },
+    {
+      "relativePath": "snode-combat/core/geometry.ts",
+      "sha256": "0b0df7cfd4b299f92369993ef27415f6a1f95234ecac3f11d222a96b5e708ac4"
+    },
+    {
+      "relativePath": "snode-combat/core/board.ts",
+      "sha256": "c8f3ff57d4ca2b729ff0d79dd30aeb67d345057912388af9590e8a4c55b95762"
+    },
+    {
+      "relativePath": "snode-combat/core/basic-actions.ts",
+      "sha256": "ac904ab5354b22410758bd5906c093b3d7b9a078933281dd0fe97209d134a563"
+    }
+  ],
+  "docx_sha256": "7516c76a0f65c211c910b12439aa1c8cf9d2119e48fa6c161e63772ccd581ccf",
+  "source_files_rechecked_unchanged": true,
+  "rule_answers_pending": true,
+  "schema_implemented": false
+}

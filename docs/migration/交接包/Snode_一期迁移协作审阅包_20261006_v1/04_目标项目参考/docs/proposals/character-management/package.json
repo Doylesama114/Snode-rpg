@@ -1,0 +1,9 @@
+{
+  "name": "@snode/proposal-character-management",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test validation.test.mjs editor.test.mjs draft.test.mjs",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

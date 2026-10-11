@@ -1,0 +1,1398 @@
+{
+  "date": "2026-10-06",
+  "scope": "synthetic contract structure and local plan invariants; not valid game build or actual assets",
+  "publicationAllowed": false,
+  "cases": [
+    {
+      "id": "BC01",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "race": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": []
+      },
+      "expected": true
+    },
+    {
+      "id": "BC02",
+      "shape": "BuildPreviewRequest",
+      "input": {
+        "requestId": "preview-request",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "BC03",
+      "shape": "BuildPreviewResponse",
+      "input": {
+        "requestId": "preview-request",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "inputFingerprint": "input-hash",
+        "status": "ready",
+        "previewId": "preview-id",
+        "planHash": "plan-hash",
+        "expiresAt": "2026-10-06T01:00:00Z",
+        "summary": {
+          "values": [
+            {
+              "fieldRef": "maxHp",
+              "subjectKey": null,
+              "result": {
+                "status": "ready",
+                "value": 20,
+                "basisRefs": []
+              }
+            }
+          ],
+          "abilityOffers": [],
+          "startingAssets": {
+            "recipient": "new-character",
+            "assetPolicyRevision": "review-policy",
+            "currencyAllocations": [
+              {
+                "grantKey": "initial-money",
+                "currencyId": "review-currency",
+                "allotmentMinor": 100,
+                "allocatedCostMinor": 30,
+                "netBalanceMinor": 70,
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "itemGrants": [
+              {
+                "grantKey": "initial-bag",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "starting-grant",
+                "placement": {
+                  "kind": "carried"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              },
+              {
+                "grantKey": "initial-item",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "creation-budget-purchase",
+                "placement": {
+                  "kind": "container",
+                  "parentGrantKey": "initial-bag"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "unassignedTransferPolicy": "hold-and-equip-only"
+          }
+        },
+        "issues": []
+      },
+      "expected": true
+    },
+    {
+      "id": "BC04",
+      "shape": "BuildPreviewResponse",
+      "input": {
+        "requestId": "preview-request",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "inputFingerprint": "input-hash",
+        "status": "needs-selection",
+        "issues": [
+          {
+            "code": "missing-choice",
+            "targetKey": "initial-trait",
+            "message": "需选择",
+            "severity": "blocker"
+          }
+        ],
+        "pendingChoiceDefinitions": [
+          {
+            "id": "review-definition",
+            "revision": 1
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "id": "BC05",
+      "shape": "CreateCharacterCommand",
+      "input": {
+        "commandId": "create-command",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "BC06",
+      "shape": "StartingAssetPlan",
+      "input": {
+        "recipient": "new-character",
+        "assetPolicyRevision": "review-policy",
+        "currencyAllocations": [
+          {
+            "grantKey": "initial-money",
+            "currencyId": "review-currency",
+            "allotmentMinor": 100,
+            "allocatedCostMinor": 30,
+            "netBalanceMinor": 70,
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "itemGrants": [
+          {
+            "grantKey": "initial-bag",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "starting-grant",
+            "placement": {
+              "kind": "carried"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          {
+            "grantKey": "initial-item",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "creation-budget-purchase",
+            "placement": {
+              "kind": "container",
+              "parentGrantKey": "initial-bag"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "unassignedTransferPolicy": "hold-and-equip-only"
+      },
+      "expected": true
+    },
+    {
+      "id": "BC07",
+      "shape": "CreationReceipt",
+      "input": {
+        "commandId": "create-command",
+        "submittedDraftVersion": 1,
+        "buildDraftId": "build-draft",
+        "operationId": "server-operation",
+        "characterId": "server-character",
+        "characterRevision": 1,
+        "management": {
+          "viewSchemaVersion": 1,
+          "characterId": "server-character",
+          "characterRevision": 1,
+          "lifecycle": "active",
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "editableProfileFields": [
+            "displayName",
+            "story"
+          ],
+          "numericFields": []
+        },
+        "choices": [],
+        "abilities": [],
+        "assetGrants": [
+          {
+            "clientKey": "initial-bag",
+            "serverId": "server-item-a"
+          },
+          {
+            "clientKey": "initial-item",
+            "serverId": "server-item-b"
+          }
+        ],
+        "initialAssets": {
+          "scope": "initialization-at-creation",
+          "operationId": "server-operation",
+          "ownerCharacterId": "server-character",
+          "walletReceiptIds": [
+            "wallet-initial"
+          ],
+          "itemInstanceIds": [
+            "server-item-a",
+            "server-item-b"
+          ],
+          "unassignedTransferPolicy": "hold-and-equip-only"
+        }
+      },
+      "expected": true
+    },
+    {
+      "id": "BC08",
+      "shape": "CreateCharacterCommand",
+      "input": {
+        "commandId": "create-command",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "expectedRevision": 0
+      },
+      "expected": false
+    },
+    {
+      "id": "BC09",
+      "shape": "CreateCharacterCommand",
+      "input": {
+        "commandId": "create-command",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "characterId": "client-character"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC10",
+      "shape": "CreateCharacterCommand",
+      "input": {
+        "commandId": "create-command",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        },
+        "acceptedPreview": {
+          "previewId": "preview-id",
+          "planHash": "plan-hash"
+        },
+        "ownerUserId": "another-user"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC11",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "race": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": [],
+        "level": 20
+      },
+      "expected": false
+    },
+    {
+      "id": "BC12",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "race": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": [],
+        "finalHp": 999
+      },
+      "expected": false
+    },
+    {
+      "id": "BC13",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": []
+      },
+      "expected": false
+    },
+    {
+      "id": "BC14",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "race": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": [
+          {
+            "choiceRecordId": "from-another-character"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "id": "BC15",
+      "shape": "BuildInput",
+      "input": {
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "profile": {
+          "displayName": "建卡契约样例",
+          "story": ""
+        },
+        "mainClass": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "keyAttribute": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "race": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "background": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "allocationRule": {
+          "id": "review-definition",
+          "revision": 1
+        },
+        "baseAttributeTargets": [
+          {
+            "attribute": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "targetValue": 5
+          }
+        ],
+        "choices": [
+          {
+            "clientChoiceKey": "choice",
+            "choiceDefinition": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "value": {
+              "kind": "script",
+              "source": "override"
+            }
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "id": "BC16",
+      "shape": "BuildPreviewResponse",
+      "input": {
+        "requestId": "preview-request",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "inputFingerprint": "input-hash",
+        "status": "ready-but-unknown",
+        "previewId": "preview-id",
+        "planHash": "plan-hash",
+        "expiresAt": "2026-10-06T01:00:00Z",
+        "summary": {
+          "values": [
+            {
+              "fieldRef": "maxHp",
+              "subjectKey": null,
+              "result": {
+                "status": "ready",
+                "value": 20,
+                "basisRefs": []
+              }
+            }
+          ],
+          "abilityOffers": [],
+          "startingAssets": {
+            "recipient": "new-character",
+            "assetPolicyRevision": "review-policy",
+            "currencyAllocations": [
+              {
+                "grantKey": "initial-money",
+                "currencyId": "review-currency",
+                "allotmentMinor": 100,
+                "allocatedCostMinor": 30,
+                "netBalanceMinor": 70,
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "itemGrants": [
+              {
+                "grantKey": "initial-bag",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "starting-grant",
+                "placement": {
+                  "kind": "carried"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              },
+              {
+                "grantKey": "initial-item",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "creation-budget-purchase",
+                "placement": {
+                  "kind": "container",
+                  "parentGrantKey": "initial-bag"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "unassignedTransferPolicy": "hold-and-equip-only"
+          }
+        },
+        "issues": []
+      },
+      "expected": false
+    },
+    {
+      "id": "BC17",
+      "shape": "StartingAssetPlan",
+      "input": {
+        "recipient": "player-account",
+        "assetPolicyRevision": "review-policy",
+        "currencyAllocations": [
+          {
+            "grantKey": "initial-money",
+            "currencyId": "review-currency",
+            "allotmentMinor": 100,
+            "allocatedCostMinor": 30,
+            "netBalanceMinor": 70,
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "itemGrants": [
+          {
+            "grantKey": "initial-bag",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "starting-grant",
+            "placement": {
+              "kind": "carried"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          {
+            "grantKey": "initial-item",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "creation-budget-purchase",
+            "placement": {
+              "kind": "container",
+              "parentGrantKey": "initial-bag"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "unassignedTransferPolicy": "hold-and-equip-only"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC18",
+      "shape": "StartingAssetPlan",
+      "input": {
+        "recipient": "new-character",
+        "assetPolicyRevision": "review-policy",
+        "currencyAllocations": [
+          {
+            "grantKey": "initial-money",
+            "currencyId": "review-currency",
+            "allotmentMinor": 100,
+            "allocatedCostMinor": 30,
+            "netBalanceMinor": -1,
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "itemGrants": [
+          {
+            "grantKey": "initial-bag",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "starting-grant",
+            "placement": {
+              "kind": "carried"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          {
+            "grantKey": "initial-item",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "creation-budget-purchase",
+            "placement": {
+              "kind": "container",
+              "parentGrantKey": "initial-bag"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "unassignedTransferPolicy": "hold-and-equip-only"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC19",
+      "shape": "StartingAssetPlan",
+      "input": {
+        "recipient": "new-character",
+        "assetPolicyRevision": "review-policy",
+        "currencyAllocations": [
+          {
+            "grantKey": "initial-money",
+            "currencyId": "review-currency",
+            "allotmentMinor": 100,
+            "allocatedCostMinor": 30,
+            "netBalanceMinor": 70,
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "itemGrants": [
+          {
+            "grantKey": "initial-bag",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 0,
+            "origin": "starting-grant",
+            "placement": {
+              "kind": "carried"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          {
+            "grantKey": "initial-item",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "creation-budget-purchase",
+            "placement": {
+              "kind": "container",
+              "parentGrantKey": "initial-bag"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "unassignedTransferPolicy": "hold-and-equip-only"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC20",
+      "shape": "StartingAssetPlan",
+      "input": {
+        "recipient": "new-character",
+        "assetPolicyRevision": "review-policy",
+        "currencyAllocations": [
+          {
+            "grantKey": "initial-money",
+            "currencyId": "review-currency",
+            "allotmentMinor": 100,
+            "allocatedCostMinor": 30,
+            "netBalanceMinor": 70,
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "itemGrants": [
+          {
+            "grantKey": "initial-bag",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "starting-grant",
+            "placement": {
+              "kind": "carried"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          },
+          {
+            "grantKey": "initial-item",
+            "item": {
+              "id": "review-definition",
+              "revision": 1
+            },
+            "quantity": 1,
+            "origin": "creation-budget-purchase",
+            "placement": {
+              "kind": "container",
+              "parentGrantKey": "initial-bag"
+            },
+            "basisRefs": [
+              {
+                "id": "review-definition",
+                "revision": 1
+              }
+            ]
+          }
+        ],
+        "unassignedTransferPolicy": "transfer-anywhere"
+      },
+      "expected": false
+    },
+    {
+      "id": "BC21",
+      "shape": "CreationReceipt",
+      "input": {
+        "commandId": "create-command",
+        "submittedDraftVersion": 1,
+        "buildDraftId": "build-draft",
+        "operationId": "server-operation",
+        "characterId": "server-character",
+        "characterRevision": 0,
+        "management": {
+          "viewSchemaVersion": 1,
+          "characterId": "server-character",
+          "characterRevision": 1,
+          "lifecycle": "active",
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "editableProfileFields": [
+            "displayName",
+            "story"
+          ],
+          "numericFields": []
+        },
+        "choices": [],
+        "abilities": [],
+        "assetGrants": [
+          {
+            "clientKey": "initial-bag",
+            "serverId": "server-item-a"
+          },
+          {
+            "clientKey": "initial-item",
+            "serverId": "server-item-b"
+          }
+        ],
+        "initialAssets": {
+          "scope": "initialization-at-creation",
+          "operationId": "server-operation",
+          "ownerCharacterId": "server-character",
+          "walletReceiptIds": [
+            "wallet-initial"
+          ],
+          "itemInstanceIds": [
+            "server-item-a",
+            "server-item-b"
+          ],
+          "unassignedTransferPolicy": "hold-and-equip-only"
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "BC22",
+      "shape": "CreateCharacterCommand",
+      "input": {
+        "commandId": "create-command",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "input": {
+          "ruleset": {
+            "id": "review-only-release",
+            "manifestHash": "not-production"
+          },
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "mainClass": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "keyAttribute": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "race": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "background": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "allocationRule": {
+            "id": "review-definition",
+            "revision": 1
+          },
+          "baseAttributeTargets": [
+            {
+              "attribute": {
+                "id": "review-definition",
+                "revision": 1
+              },
+              "targetValue": 5
+            }
+          ],
+          "choices": []
+        }
+      },
+      "expected": false
+    },
+    {
+      "id": "BC23",
+      "shape": "BuildPreviewResponse",
+      "input": {
+        "requestId": "preview-request",
+        "buildDraftId": "build-draft",
+        "submittedDraftVersion": 1,
+        "ruleset": {
+          "id": "review-only-release",
+          "manifestHash": "not-production"
+        },
+        "inputFingerprint": "input-hash",
+        "status": "ready",
+        "previewId": "preview-id",
+        "planHash": "plan-hash",
+        "expiresAt": "no-time",
+        "summary": {
+          "values": [
+            {
+              "fieldRef": "maxHp",
+              "subjectKey": null,
+              "result": {
+                "status": "ready",
+                "value": 20,
+                "basisRefs": []
+              }
+            }
+          ],
+          "abilityOffers": [],
+          "startingAssets": {
+            "recipient": "new-character",
+            "assetPolicyRevision": "review-policy",
+            "currencyAllocations": [
+              {
+                "grantKey": "initial-money",
+                "currencyId": "review-currency",
+                "allotmentMinor": 100,
+                "allocatedCostMinor": 30,
+                "netBalanceMinor": 70,
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "itemGrants": [
+              {
+                "grantKey": "initial-bag",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "starting-grant",
+                "placement": {
+                  "kind": "carried"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              },
+              {
+                "grantKey": "initial-item",
+                "item": {
+                  "id": "review-definition",
+                  "revision": 1
+                },
+                "quantity": 1,
+                "origin": "creation-budget-purchase",
+                "placement": {
+                  "kind": "container",
+                  "parentGrantKey": "initial-bag"
+                },
+                "basisRefs": [
+                  {
+                    "id": "review-definition",
+                    "revision": 1
+                  }
+                ]
+              }
+            ],
+            "unassignedTransferPolicy": "hold-and-equip-only"
+          }
+        },
+        "issues": []
+      },
+      "expected": false
+    },
+    {
+      "id": "BC24",
+      "shape": "CreationReceipt",
+      "input": {
+        "commandId": "create-command",
+        "submittedDraftVersion": 1,
+        "buildDraftId": "build-draft",
+        "operationId": "server-operation",
+        "characterId": "server-character",
+        "characterRevision": 1,
+        "management": {
+          "viewSchemaVersion": 1,
+          "characterId": "server-character",
+          "characterRevision": 1,
+          "lifecycle": "active",
+          "profile": {
+            "displayName": "建卡契约样例",
+            "story": ""
+          },
+          "editableProfileFields": [
+            "displayName",
+            "story"
+          ],
+          "numericFields": []
+        },
+        "choices": [],
+        "abilities": [],
+        "assetGrants": [
+          {
+            "clientKey": "initial-bag",
+            "serverId": "server-item-a"
+          },
+          {
+            "clientKey": "initial-item",
+            "serverId": "server-item-b"
+          }
+        ],
+        "initialAssets": {
+          "scope": "current-balance",
+          "operationId": "server-operation",
+          "ownerCharacterId": "server-character",
+          "walletReceiptIds": [
+            "wallet-initial"
+          ],
+          "itemInstanceIds": [
+            "server-item-a",
+            "server-item-b"
+          ],
+          "unassignedTransferPolicy": "hold-and-equip-only"
+        }
+      },
+      "expected": false
+    }
+  ]
+}

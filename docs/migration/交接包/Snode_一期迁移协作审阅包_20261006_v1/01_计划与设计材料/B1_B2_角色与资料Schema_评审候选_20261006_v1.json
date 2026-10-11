@@ -1,0 +1,5327 @@
+{
+  "date": "2026-10-06",
+  "version": "b1-b2-1.0-review-candidate",
+  "status": "review-candidate-not-production-ABI",
+  "implementation": false,
+  "targetCodeChanged": false,
+  "source": {
+    "file": "T07_模型修订_20261005.json",
+    "candidateVersion": "0.2.2",
+    "typescriptTextHash": "6ea1ccc05cb53ab8c1cd58fddba9d13d18700ce2271d69df5e5cf6fe82847248",
+    "parsedDeclarations": 57,
+    "parserLibrary": "existing TypeScript AST 5.9.3",
+    "noInstallation": true
+  },
+  "shapeCoverage": "all non-generic declarations and encountered generic specializations from T07; closed fields; added B1/B2 DTO and service-owner proposals",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:snode:b1-b2-review:20261006:v1",
+    "$defs": {
+      "DefinitionId": {
+        "$ref": "#/$defs/Id"
+      },
+      "InstanceId": {
+        "$ref": "#/$defs/Id"
+      },
+      "DefinitionKind": {
+        "anyOf": [
+          {
+            "const": "class"
+          },
+          {
+            "const": "race"
+          },
+          {
+            "const": "background"
+          },
+          {
+            "const": "ability"
+          },
+          {
+            "const": "ability-entry"
+          },
+          {
+            "const": "ability-list"
+          },
+          {
+            "const": "style"
+          },
+          {
+            "const": "tier"
+          },
+          {
+            "const": "feature"
+          },
+          {
+            "const": "choice"
+          },
+          {
+            "const": "advancement"
+          },
+          {
+            "const": "deity"
+          },
+          {
+            "const": "domain"
+          },
+          {
+            "const": "item"
+          },
+          {
+            "const": "recipe"
+          },
+          {
+            "const": "entity-template"
+          },
+          {
+            "const": "status"
+          },
+          {
+            "const": "attribute"
+          },
+          {
+            "const": "proficiency"
+          },
+          {
+            "const": "resource"
+          },
+          {
+            "const": "rule"
+          },
+          {
+            "const": "content"
+          },
+          {
+            "const": "mechanism"
+          },
+          {
+            "const": "tag"
+          },
+          {
+            "const": "damage-type"
+          },
+          {
+            "const": "domain-aspect"
+          },
+          {
+            "const": "mode"
+          },
+          {
+            "const": "equipment-slot"
+          },
+          {
+            "const": "language"
+          }
+        ]
+      },
+      "DefinitionRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "$ref": "#/$defs/PositiveRevision"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
+      "RuleReleaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "manifestHash": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "manifestHash"
+        ],
+        "additionalProperties": false
+      },
+      "SourceEvidence": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string"
+          },
+          "sourceHash": {
+            "type": "string"
+          },
+          "review": {
+            "anyOf": [
+              {
+                "const": "unreviewed"
+              },
+              {
+                "const": "verified"
+              },
+              {
+                "const": "conflict"
+              }
+            ]
+          },
+          "confirmationRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "sourceId",
+          "locator",
+          "sourceHash",
+          "review",
+          "confirmationRefs",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "RuleRelease": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "definitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "contentHash": {
+                  "type": "string"
+                },
+                "mediaType": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "contentHash",
+                "mediaType"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "sourceManifestHash": {
+            "type": "string"
+          },
+          "acceptedDecisionRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          }
+        },
+        "required": [
+          "ref",
+          "schemaVersion",
+          "definitions",
+          "assets",
+          "sourceManifestHash",
+          "acceptedDecisionRefs"
+        ],
+        "additionalProperties": false
+      },
+      "ContentDocument": {
+        "type": "object",
+        "properties": {
+          "blocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ContentBlock"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "blocks",
+          "evidenceRefs"
+        ],
+        "additionalProperties": false
+      },
+      "ContentBlock": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "paragraph"
+              },
+              "runs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/InlineRun"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "runs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "table"
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/TableCell"
+                  }
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "rows"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "asset"
+              },
+              "contentHash": {
+                "type": "string"
+              },
+              "alt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "contentHash",
+              "alt"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "definition-link"
+              },
+              "target": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "target"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "InlineRun": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "semanticColor": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "foregroundHex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "emphasis": {
+            "anyOf": [
+              {
+                "const": "normal"
+              },
+              {
+                "const": "bold"
+              },
+              {
+                "const": "italic"
+              }
+            ]
+          }
+        },
+        "required": [
+          "text",
+          "semanticColor",
+          "foregroundHex",
+          "emphasis"
+        ],
+        "additionalProperties": false
+      },
+      "TableCell": {
+        "type": "object",
+        "properties": {
+          "runs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InlineRun"
+            }
+          },
+          "rowSpan": {
+            "type": "number"
+          },
+          "colSpan": {
+            "type": "number"
+          },
+          "backgroundHex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "runs",
+          "rowSpan",
+          "colSpan",
+          "backgroundHex"
+        ],
+        "additionalProperties": false
+      },
+      "TierDefinition": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "label",
+          "order"
+        ],
+        "additionalProperties": false
+      },
+      "ClassDefinition": {
+        "type": "object",
+        "properties": {
+          "keyAttributeChoices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "progressionRule": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "abilityLists": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "initialGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "advancementCandidates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "compatibleMainClasses": {
+            "$ref": "#/$defs/SemanticFragment__730e1abd499b"
+          }
+        },
+        "required": [
+          "keyAttributeChoices",
+          "progressionRule",
+          "abilityLists",
+          "initialGrants",
+          "choices",
+          "advancementCandidates",
+          "compatibleMainClasses"
+        ],
+        "additionalProperties": false
+      },
+      "SemanticFragment__730e1abd499b": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "confirmed"
+              },
+              "value": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/DefinitionRef"
+                }
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "pending"
+              },
+              "rawContentRef": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "rawContentRef",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AbilityEntry": {
+        "type": "object",
+        "properties": {
+          "ability": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "sourceList": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "sourceClass": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tier": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "styles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "acquisitionRule": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "sameNameGroup": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ability",
+          "sourceList",
+          "sourceClass",
+          "tier",
+          "styles",
+          "acquisitionRule",
+          "sameNameGroup"
+        ],
+        "additionalProperties": false
+      },
+      "Recorded__e98253a1ef0c": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "known"
+              },
+              "value": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unrecorded"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              },
+              "inputFactId": {
+                "type": "string"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "inputFactId",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AbilityDefinition": {
+        "type": "object",
+        "properties": {
+          "detailContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "useRuleFragments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "growthRule": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "detailContent",
+          "relatedTemplates",
+          "useRuleFragments",
+          "growthRule"
+        ],
+        "additionalProperties": false
+      },
+      "DomainDefinition": {
+        "type": "object",
+        "properties": {
+          "deity": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "compatibleClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "abilityLists": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "initialGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "modeRef": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "deity",
+          "compatibleClasses",
+          "abilityLists",
+          "initialGrants",
+          "modeRef"
+        ],
+        "additionalProperties": false
+      },
+      "ChoiceValue": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "definitions"
+              },
+              "refs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/DefinitionRef"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "refs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "allocation"
+              },
+              "amounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "subject": {
+                      "$ref": "#/$defs/DefinitionRef"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "amount"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "amounts"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "text"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ChoiceRecord": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "choiceDefinition": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "value": {
+            "$ref": "#/$defs/ChoiceValue"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "choiceDefinition",
+          "value",
+          "operationId",
+          "evidenceRefs"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionSelection": {
+        "type": "object",
+        "properties": {
+          "definition": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "choiceRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "definition",
+          "choiceRecordIds"
+        ],
+        "additionalProperties": false
+      },
+      "ClassProgression": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "const": "main"
+              },
+              {
+                "const": "sub"
+              },
+              {
+                "const": "gift"
+              }
+            ]
+          },
+          "baseClass": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "level": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "keyAttribute": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "advancement": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Recorded__e98253a1ef0c"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "chosenPathwayRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "sourceFactIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "role",
+          "baseClass",
+          "level",
+          "keyAttribute",
+          "advancement",
+          "chosenPathwayRefs",
+          "sourceFactIds"
+        ],
+        "additionalProperties": false
+      },
+      "Recorded__428f46b7789d": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "known"
+              },
+              "value": {
+                "type": "number"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unrecorded"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              },
+              "inputFactId": {
+                "type": "string"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "inputFactId",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "DomainSelection": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "ownerProgressionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "deity": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "domain": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "choiceRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "ownerProgressionId",
+          "deity",
+          "domain",
+          "choiceRecordIds"
+        ],
+        "additionalProperties": false
+      },
+      "MainTierUnlock": {
+        "type": "object",
+        "properties": {
+          "tier": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "paymentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "tier",
+          "operationId",
+          "paymentIds",
+          "evidenceRefs"
+        ],
+        "additionalProperties": false
+      },
+      "ResolutionBinding": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "class-progress"
+              },
+              "progressionId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "policy": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "progressionId",
+              "policy"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "pending"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SlotBinding": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "exempt"
+              },
+              "policy": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "policy"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "occupied"
+              },
+              "poolId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "policy": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "poolId",
+              "policy"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "pending"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AcquisitionRecord": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "route": {
+            "anyOf": [
+              {
+                "const": "initial-feature"
+              },
+              {
+                "const": "initial-choice"
+              },
+              {
+                "const": "learn"
+              },
+              {
+                "const": "feat-grant"
+              },
+              {
+                "const": "background-grant"
+              },
+              {
+                "const": "battle-experience"
+              },
+              {
+                "const": "mirror"
+              },
+              {
+                "const": "progression-grant"
+              },
+              {
+                "const": "manual"
+              }
+            ]
+          },
+          "rule": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "acquiredDefinition": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "selectedEntry": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "grantorRecordId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/InstanceId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "paymentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "choiceRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "acquisitionOrder": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "route",
+          "rule",
+          "acquiredDefinition",
+          "selectedEntry",
+          "grantorRecordId",
+          "paymentIds",
+          "choiceRecordIds",
+          "operationId",
+          "acquisitionOrder",
+          "evidenceRefs"
+        ],
+        "additionalProperties": false
+      },
+      "LearnedAbility": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "entry": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "placement": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "class-list"
+                  },
+                  "progressionId": {
+                    "$ref": "#/$defs/InstanceId"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "progressionId"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "character"
+                  }
+                },
+                "required": [
+                  "kind"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "growth": {
+            "$ref": "#/$defs/ResolutionBinding"
+          },
+          "keyAttribute": {
+            "$ref": "#/$defs/ResolutionBinding"
+          },
+          "slot": {
+            "$ref": "#/$defs/SlotBinding"
+          },
+          "styleParticipation": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "participates"
+                  },
+                  "progressionId": {
+                    "$ref": "#/$defs/InstanceId"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "progressionId"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "excluded"
+                  },
+                  "policy": {
+                    "$ref": "#/$defs/DefinitionRef"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "policy"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "pending"
+                  },
+                  "issueRefs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "kind",
+                  "issueRefs"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "useStatus": {
+            "anyOf": [
+              {
+                "const": "active"
+              },
+              {
+                "const": "condition-locked"
+              },
+              {
+                "const": "pending"
+              }
+            ]
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "entry",
+          "acquisitionId",
+          "placement",
+          "growth",
+          "keyAttribute",
+          "slot",
+          "styleParticipation",
+          "useStatus",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "LearningRestriction": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "sameNameGroup": {
+                "type": "string"
+              },
+              "operationId": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "const": "permanently-forgotten"
+              },
+              "formerAbilityId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "formerEntry": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "uid",
+              "sameNameGroup",
+              "operationId",
+              "evidenceRefs",
+              "kind",
+              "formerAbilityId",
+              "formerEntry"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "sameNameGroup": {
+                "type": "string"
+              },
+              "operationId": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "kind": {
+                "const": "permanently-declined-grant"
+              },
+              "declinedEntry": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "grantRule": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "uid",
+              "sameNameGroup",
+              "operationId",
+              "evidenceRefs",
+              "kind",
+              "declinedEntry",
+              "grantRule"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "GrowthAward": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "progressionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "gainedLevel": {
+            "type": "number"
+          },
+          "hpGain": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "fpGain": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "evaluatedAttributeFacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rule": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "operationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uid",
+          "progressionId",
+          "gainedLevel",
+          "hpGain",
+          "fpGain",
+          "evaluatedAttributeFacts",
+          "rule",
+          "operationId"
+        ],
+        "additionalProperties": false
+      },
+      "StatOwnership": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "derived"
+              }
+            },
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "recorded"
+              },
+              "recordedValue": {
+                "$ref": "#/$defs/Recorded__428f46b7789d"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "mode",
+              "recordedValue",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AttributeFact": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "attribute": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "amount": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "permanence": {
+            "anyOf": [
+              {
+                "const": "base"
+              },
+              {
+                "const": "permanent"
+              },
+              {
+                "const": "temporary"
+              }
+            ]
+          },
+          "originRecordId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "expiresWithScope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "attribute",
+          "amount",
+          "permanence",
+          "originRecordId",
+          "expiresWithScope"
+        ],
+        "additionalProperties": false
+      },
+      "ProficiencyGrant": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "proficiency": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "amount": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "const": "general"
+              },
+              {
+                "const": "weapon-qualification"
+              },
+              {
+                "const": "extra-weapon"
+              },
+              {
+                "const": "save"
+              }
+            ]
+          },
+          "permitsCapBreak": {
+            "type": "boolean"
+          },
+          "originRecordId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "permanence": {
+            "anyOf": [
+              {
+                "const": "permanent"
+              },
+              {
+                "const": "temporary"
+              }
+            ]
+          },
+          "expiresWithScope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "proficiency",
+          "amount",
+          "category",
+          "permitsCapBreak",
+          "originRecordId",
+          "permanence",
+          "expiresWithScope"
+        ],
+        "additionalProperties": false
+      },
+      "NumericRecord": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "updatedByOperationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "updatedByOperationId"
+        ],
+        "additionalProperties": false
+      },
+      "ManualPoolRecord": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "resource": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "value": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "sourceRecordId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/InstanceId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expiresWithScope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "resource",
+          "value",
+          "sourceRecordId",
+          "expiresWithScope"
+        ],
+        "additionalProperties": false
+      },
+      "ManualStatusRecord": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "definition": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "stacks": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "sourceRecordId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/InstanceId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expiresWithScope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "definition",
+          "label",
+          "stacks",
+          "notes",
+          "sourceRecordId",
+          "expiresWithScope"
+        ],
+        "additionalProperties": false
+      },
+      "LearningSession": {
+        "type": "object",
+        "properties": {
+          "playSessionId": {
+            "$ref": "#/$defs/Recorded__8f3d8a04fb57"
+          },
+          "colorMarkRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "playSessionId",
+          "colorMarkRefs",
+          "evidenceRefs"
+        ],
+        "additionalProperties": false
+      },
+      "Recorded__8f3d8a04fb57": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "known"
+              },
+              "value": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unrecorded"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              },
+              "inputFactId": {
+                "type": "string"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "inputFactId",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AssetLink": {
+        "type": "object",
+        "properties": {
+          "assetInstanceId": {
+            "type": "string"
+          },
+          "equipmentSlotRef": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "expectedAssetRevision": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "assetInstanceId",
+          "equipmentSlotRef",
+          "expectedAssetRevision"
+        ],
+        "additionalProperties": false
+      },
+      "LegacyInputFact": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string"
+          },
+          "raw": {
+            "type": "string"
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "sourceId",
+          "locator",
+          "raw",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "FeatureHolding": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "definition": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "choiceRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "definition",
+          "acquisitionId",
+          "choiceRecordIds"
+        ],
+        "additionalProperties": false
+      },
+      "RecipeHolding": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "recipe": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "slot": {
+            "$ref": "#/$defs/SlotBinding"
+          },
+          "choiceRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "recipe",
+          "acquisitionId",
+          "slot",
+          "choiceRecordIds"
+        ],
+        "additionalProperties": false
+      },
+      "KnowledgeGrant": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "definition": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          }
+        },
+        "required": [
+          "uid",
+          "definition",
+          "acquisitionId"
+        ],
+        "additionalProperties": false
+      },
+      "MechanismAccessGrant": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "mechanism": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "parameterChoiceIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "mechanism",
+          "acquisitionId",
+          "parameterChoiceIds"
+        ],
+        "additionalProperties": false
+      },
+      "SlotBonusGrant": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "resource": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "tier": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ownerProgressionId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/InstanceId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "acceptedTagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "acquisitionId": {
+            "$ref": "#/$defs/InstanceId"
+          }
+        },
+        "required": [
+          "uid",
+          "resource",
+          "tier",
+          "ownerProgressionId",
+          "amount",
+          "acceptedTagRefs",
+          "acquisitionId"
+        ],
+        "additionalProperties": false
+      },
+      "RequirementFactRecord": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "predicate": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "value": {
+            "$ref": "#/$defs/Recorded__ac0b42057e4e"
+          },
+          "scopeId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval": {
+            "anyOf": [
+              {
+                "const": "reported"
+              },
+              {
+                "const": "confirmed"
+              },
+              {
+                "const": "disputed"
+              }
+            ]
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "decisionRef": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "predicate",
+          "value",
+          "scopeId",
+          "approval",
+          "evidenceRefs",
+          "decisionRef"
+        ],
+        "additionalProperties": false
+      },
+      "Recorded__ac0b42057e4e": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "known"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unrecorded"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              },
+              "inputFactId": {
+                "type": "string"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "inputFactId",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "CharacterDocument": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "const": 1
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "ruleset": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "profile": {
+            "type": "object",
+            "properties": {
+              "displayName": {
+                "type": "string"
+              },
+              "story": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "displayName",
+              "story"
+            ],
+            "additionalProperties": false
+          },
+          "race": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionSelection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "background": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionSelection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "progressions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ClassProgression"
+            }
+          },
+          "domains": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DomainSelection"
+            }
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ChoiceRecord"
+            }
+          },
+          "acquired": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AcquisitionRecord"
+            }
+          },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/LearnedAbility"
+            }
+          },
+          "learningRestrictions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/LearningRestriction"
+            }
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/FeatureHolding"
+            }
+          },
+          "recipes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/RecipeHolding"
+            }
+          },
+          "knowledge": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/KnowledgeGrant"
+            }
+          },
+          "mechanisms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/MechanismAccessGrant"
+            }
+          },
+          "slotBonusGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/SlotBonusGrant"
+            }
+          },
+          "mainUnlockedTiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/MainTierUnlock"
+            }
+          },
+          "attributeFacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AttributeFact"
+            }
+          },
+          "proficiencyGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ProficiencyGrant"
+            }
+          },
+          "hpGrowth": {
+            "type": "object",
+            "properties": {
+              "historyStatus": {
+                "anyOf": [
+                  {
+                    "const": "complete"
+                  },
+                  {
+                    "const": "incomplete"
+                  }
+                ]
+              },
+              "awards": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/GrowthAward"
+                }
+              }
+            },
+            "required": [
+              "historyStatus",
+              "awards"
+            ],
+            "additionalProperties": false
+          },
+          "statOwnership": {
+            "type": "object",
+            "properties": {
+              "maxHp": {
+                "$ref": "#/$defs/StatOwnership"
+              },
+              "maxFp": {
+                "$ref": "#/$defs/StatOwnership"
+              }
+            },
+            "required": [
+              "maxHp",
+              "maxFp"
+            ],
+            "additionalProperties": false
+          },
+          "resources": {
+            "type": "object",
+            "properties": {
+              "hpCurrent": {
+                "$ref": "#/$defs/NumericRecord"
+              },
+              "fpCurrent": {
+                "$ref": "#/$defs/NumericRecord"
+              },
+              "xpAvailable": {
+                "$ref": "#/$defs/NumericRecord"
+              },
+              "skillPointsAvailable": {
+                "$ref": "#/$defs/NumericRecord"
+              }
+            },
+            "required": [
+              "hpCurrent",
+              "fpCurrent",
+              "xpAvailable",
+              "skillPointsAvailable"
+            ],
+            "additionalProperties": false
+          },
+          "learningSession": {
+            "$ref": "#/$defs/LearningSession"
+          },
+          "manualPools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ManualPoolRecord"
+            }
+          },
+          "manualStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ManualStatusRecord"
+            }
+          },
+          "companionIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          },
+          "equippedAssetLinks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AssetLink"
+            }
+          },
+          "requirementFacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/RequirementFactRecord"
+            }
+          },
+          "legacyInputFacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/LegacyInputFact"
+            }
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "characterId",
+          "ruleset",
+          "profile",
+          "race",
+          "background",
+          "progressions",
+          "domains",
+          "choices",
+          "acquired",
+          "abilities",
+          "learningRestrictions",
+          "features",
+          "recipes",
+          "knowledge",
+          "mechanisms",
+          "slotBonusGrants",
+          "mainUnlockedTiers",
+          "attributeFacts",
+          "proficiencyGrants",
+          "hpGrowth",
+          "statOwnership",
+          "resources",
+          "learningSession",
+          "manualPools",
+          "manualStatuses",
+          "companionIds",
+          "equippedAssetLinks",
+          "requirementFacts",
+          "legacyInputFacts",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "CharacterRecord": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "number"
+          },
+          "lifecycle": {
+            "anyOf": [
+              {
+                "const": "active"
+              },
+              {
+                "const": "archived"
+              }
+            ]
+          },
+          "document": {
+            "$ref": "#/$defs/CharacterDocument"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "timelineId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "campaignAssignmentId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "revision",
+          "lifecycle",
+          "document",
+          "updatedAt",
+          "timelineId",
+          "campaignAssignmentId"
+        ],
+        "additionalProperties": false
+      },
+      "CampaignCharacterAssignment": {
+        "type": "object",
+        "properties": {
+          "assignmentId": {
+            "type": "string"
+          },
+          "characterId": {
+            "type": "string"
+          },
+          "timelineId": {
+            "type": "string"
+          },
+          "campaignId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "assignmentId",
+          "characterId",
+          "timelineId",
+          "campaignId",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
+      "DerivedNumber": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "ready"
+              },
+              "value": {
+                "type": "number"
+              },
+              "basisRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "basisRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "needs-decision"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "status",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "unsupported"
+              },
+              "reasonCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "reasonCode"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "RuleView": {
+        "type": "object",
+        "properties": {
+          "characterId": {
+            "type": "string"
+          },
+          "characterRevision": {
+            "type": "number"
+          },
+          "ruleset": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldRef": {
+                  "type": "string"
+                },
+                "subjectId": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "result": {
+                  "$ref": "#/$defs/DerivedNumber"
+                }
+              },
+              "required": [
+                "fieldRef",
+                "subjectId",
+                "result"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "characterId",
+          "characterRevision",
+          "ruleset",
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "RuleOperation": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "add-subclass"
+              },
+              "classRef": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "keyAttribute": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "choiceRecordIds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/InstanceId"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "classRef",
+              "keyAttribute",
+              "choiceRecordIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "level-up"
+              },
+              "progressionId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "choiceRecordIds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/InstanceId"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "progressionId",
+              "choiceRecordIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "unlock-tier"
+              },
+              "tier": {
+                "$ref": "#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "tier"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "learn"
+              },
+              "entry": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "ownerProgressionId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "choiceRecordIds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/InstanceId"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "entry",
+              "ownerProgressionId",
+              "choiceRecordIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "forget"
+              },
+              "abilityId": {
+                "$ref": "#/$defs/InstanceId"
+              }
+            },
+            "required": [
+              "kind",
+              "abilityId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "select-advancement"
+              },
+              "progressionId": {
+                "$ref": "#/$defs/InstanceId"
+              },
+              "advancement": {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "progressionId",
+              "advancement",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "OperationPreview": {
+        "type": "object",
+        "properties": {
+          "characterId": {
+            "type": "string"
+          },
+          "baseRevision": {
+            "type": "number"
+          },
+          "ruleset": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "actionability": {
+            "anyOf": [
+              {
+                "const": "ready"
+              },
+              {
+                "const": "needs-selection"
+              },
+              {
+                "const": "needs-decision"
+              },
+              {
+                "const": "unsupported"
+              }
+            ]
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "changedRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          },
+          "costSummary": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "resource": {
+                  "$ref": "#/$defs/DefinitionRef"
+                },
+                "amount": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "resource",
+                "amount"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "characterId",
+          "baseRevision",
+          "ruleset",
+          "actionability",
+          "issueRefs",
+          "changedRecordIds",
+          "costSummary"
+        ],
+        "additionalProperties": false
+      },
+      "EntityTemplate": {
+        "type": "object",
+        "properties": {
+          "detailContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "nativeAbilityRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "challengeLevel": {
+            "$ref": "#/$defs/Recorded__899886cee57f"
+          },
+          "baseValues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldRef": {
+                  "type": "string"
+                },
+                "value": {
+                  "$ref": "#/$defs/Recorded__428f46b7789d"
+                }
+              },
+              "required": [
+                "fieldRef",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "variationRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          }
+        },
+        "required": [
+          "detailContent",
+          "nativeAbilityRefs",
+          "challengeLevel",
+          "baseValues",
+          "variationRefs"
+        ],
+        "additionalProperties": false
+      },
+      "Recorded__899886cee57f": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "known"
+              },
+              "value": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "number"
+                  },
+                  "denominator": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "value",
+              "evidenceRefs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unrecorded"
+              }
+            },
+            "required": [
+              "state"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              },
+              "inputFactId": {
+                "type": "string"
+              },
+              "issueRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "state",
+              "inputFactId",
+              "issueRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PersistentUnitRecord": {
+        "type": "object",
+        "properties": {
+          "unitId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "template": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "ownerCharacterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "growthAwardIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/InstanceId"
+            }
+          }
+        },
+        "required": [
+          "unitId",
+          "revision",
+          "template",
+          "ownerCharacterId",
+          "growthAwardIds"
+        ],
+        "additionalProperties": false
+      },
+      "ResolvedAbilityContext": {
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "ability": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "entry": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sourceTier": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "growthLevel": {
+            "$ref": "#/$defs/Recorded__428f46b7789d"
+          },
+          "keyAttribute": {
+            "$ref": "#/$defs/Recorded__e98253a1ef0c"
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "instanceId",
+          "ability",
+          "entry",
+          "sourceTier",
+          "growthLevel",
+          "keyAttribute",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "DerivedActorSnapshot": {
+        "type": "object",
+        "properties": {
+          "snapshotId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "actorId": {
+            "$ref": "#/$defs/InstanceId"
+          },
+          "ruleset": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "character"
+                  },
+                  "characterId": {
+                    "type": "string"
+                  },
+                  "revision": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "characterId",
+                  "revision"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "unit"
+                  },
+                  "unitId": {
+                    "$ref": "#/$defs/InstanceId"
+                  },
+                  "revision": {
+                    "type": "number"
+                  },
+                  "template": {
+                    "$ref": "#/$defs/DefinitionRef"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "unitId",
+                  "revision",
+                  "template"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "resolvedValues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldRef": {
+                  "type": "string"
+                },
+                "subjectId": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "result": {
+                  "$ref": "#/$defs/DerivedNumber"
+                }
+              },
+              "required": [
+                "fieldRef",
+                "subjectId",
+                "result"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ResolvedAbilityContext"
+            }
+          },
+          "assetRevisionRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "assetId": {
+                  "type": "string"
+                },
+                "revision": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "assetId",
+                "revision"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "snapshotId",
+          "actorId",
+          "ruleset",
+          "source",
+          "resolvedValues",
+          "abilities",
+          "assetRevisionRefs"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__f7cbac7bc91a": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/ClassDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_class": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "class"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/ClassDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__867eb33d8af6": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/AbilityEntry"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_ability_entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "ability-entry"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/AbilityEntry"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__f10f01583a3b": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/AbilityDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_ability": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "ability"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/AbilityDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__72abc1b2c773": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/DomainDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_domain": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "domain"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/DomainDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__2da22bec0a56": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/TierDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_tier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "tier"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/TierDefinition"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__bc393539181b": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/EntityTemplate"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_entity_template": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "entity-template"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/EntityTemplate"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DefinitionRecord__ff08eacca34c": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/ContentDocument"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogRecord_content": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/DefinitionId"
+          },
+          "revision": {
+            "type": "number"
+          },
+          "schemaVersion": {
+            "type": "number"
+          },
+          "kind": {
+            "const": "content"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "payload": {
+            "$ref": "#/$defs/ContentRecordPayload"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "schemaVersion",
+          "kind",
+          "name",
+          "aliases",
+          "contentRefs",
+          "evidenceRefs",
+          "tagRefs",
+          "relatedRefs",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogDefinitionSummary": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "kind": {
+            "$ref": "#/$defs/DefinitionKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          }
+        },
+        "required": [
+          "ref",
+          "kind",
+          "name",
+          "aliases",
+          "tagRefs",
+          "relatedRefs"
+        ],
+        "additionalProperties": false
+      },
+      "PublishedContentDocument": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "document": {
+            "$ref": "#/$defs/ContentDocument"
+          }
+        },
+        "required": [
+          "ref",
+          "document"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogDisplayPayload": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "class"
+              },
+              "value": {
+                "$ref": "#/$defs/ClassDefinition"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "ability-entry"
+              },
+              "value": {
+                "$ref": "#/$defs/AbilityEntry"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "ability"
+              },
+              "value": {
+                "$ref": "#/$defs/AbilityDefinition"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "domain"
+              },
+              "value": {
+                "$ref": "#/$defs/DomainDefinition"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "tier"
+              },
+              "value": {
+                "$ref": "#/$defs/TierDefinition"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "entity-template"
+              },
+              "value": {
+                "$ref": "#/$defs/EntityTemplate"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "typed"
+              },
+              "kind": {
+                "const": "content"
+              },
+              "value": {
+                "$ref": "#/$defs/ContentDocument"
+              }
+            },
+            "required": [
+              "mode",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "text-only"
+              },
+              "reasonCode": {
+                "type": "string"
+              },
+              "contentRefs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/DefinitionRef"
+                }
+              }
+            },
+            "required": [
+              "mode",
+              "reasonCode",
+              "contentRefs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "CatalogRelatedDetail": {
+        "type": "object",
+        "properties": {
+          "definition": {
+            "$ref": "#/$defs/CatalogDefinitionSummary"
+          },
+          "payload": {
+            "$ref": "#/$defs/CatalogDisplayPayload"
+          },
+          "contentDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/PublishedContentDocument"
+            }
+          },
+          "relatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          }
+        },
+        "required": [
+          "definition",
+          "payload",
+          "contentDocuments",
+          "relatedRefs"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogDefinitionDetail": {
+        "type": "object",
+        "properties": {
+          "ruleset": {
+            "$ref": "#/$defs/RuleReleaseRef"
+          },
+          "definition": {
+            "$ref": "#/$defs/CatalogDefinitionSummary"
+          },
+          "contextEntry": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AbilityEntry"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "payload": {
+            "$ref": "#/$defs/CatalogDisplayPayload"
+          },
+          "contentDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/PublishedContentDocument"
+            }
+          },
+          "relatedDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/CatalogRelatedDetail"
+            }
+          },
+          "remainingRelatedRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DefinitionRef"
+            }
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ruleset",
+          "definition",
+          "contextEntry",
+          "payload",
+          "contentDocuments",
+          "relatedDetails",
+          "remainingRelatedRefs",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      },
+      "CatalogListEntryIndex": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "entry": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "sourceOrder": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sourceLocator": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "list",
+          "entry",
+          "sourceOrder",
+          "sourceLocator"
+        ],
+        "additionalProperties": false
+      },
+      "CharacterPersistenceRecord": {
+        "type": "object",
+        "properties": {
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "ownerUserId": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timelineId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "campaignAssignmentId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "document": {
+            "$ref": "#/$defs/CharacterDocument"
+          }
+        },
+        "required": [
+          "characterId",
+          "ownerUserId",
+          "revision",
+          "lifecycle",
+          "createdAt",
+          "updatedAt",
+          "timelineId",
+          "campaignAssignmentId",
+          "document"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "campaignAssignmentId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "campaignAssignmentId"
+              ]
+            },
+            "then": {
+              "properties": {
+                "timelineId": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+      },
+      "PositiveRevision": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "DraftVersion": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "DisplayName": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "Story": {
+        "type": "string"
+      },
+      "ChoiceSubmission": {
+        "type": "object",
+        "properties": {
+          "clientChoiceKey": {
+            "$ref": "#/$defs/Id"
+          },
+          "choiceDefinition": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "value": {
+            "$ref": "#/$defs/ChoiceValue"
+          }
+        },
+        "required": [
+          "clientChoiceKey",
+          "choiceDefinition",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "ChoiceUse": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "existing"
+              },
+              "choiceRecordId": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "choiceRecordId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "submitted"
+              },
+              "clientChoiceKey": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "clientChoiceKey"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "$ref": "#/$defs/DisplayName"
+          },
+          "story": {
+            "$ref": "#/$defs/Story"
+          }
+        },
+        "required": [
+          "displayName",
+          "story"
+        ],
+        "additionalProperties": false
+      },
+      "NumericFieldView": {
+        "type": "object",
+        "properties": {
+          "fieldRef": {
+            "$ref": "#/$defs/Id"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "editable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "fieldRef",
+          "label",
+          "value",
+          "editable"
+        ],
+        "additionalProperties": false
+      },
+      "ManagementView": {
+        "type": "object",
+        "properties": {
+          "viewSchemaVersion": {
+            "const": 1
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "profile": {
+            "$ref": "#/$defs/Profile"
+          },
+          "editableProfileFields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "displayName",
+                "story"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "numericFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/NumericFieldView"
+            }
+          }
+        },
+        "required": [
+          "viewSchemaVersion",
+          "characterId",
+          "characterRevision",
+          "lifecycle",
+          "profile",
+          "editableProfileFields",
+          "numericFields"
+        ],
+        "additionalProperties": false
+      },
+      "ManagementEdit": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-profile"
+              },
+              "field": {
+                "const": "displayName"
+              },
+              "value": {
+                "$ref": "#/$defs/DisplayName"
+              }
+            },
+            "required": [
+              "kind",
+              "field",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-profile"
+              },
+              "field": {
+                "const": "story"
+              },
+              "value": {
+                "$ref": "#/$defs/Story"
+              }
+            },
+            "required": [
+              "kind",
+              "field",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-number"
+              },
+              "fieldRef": {
+                "$ref": "#/$defs/Id"
+              },
+              "value": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "kind",
+              "fieldRef",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "clear-number"
+              },
+              "fieldRef": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "fieldRef"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "UpdateManagementCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "edits": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/ManagementEdit"
+            }
+          }
+        },
+        "required": [
+          "commandId",
+          "characterId",
+          "expectedRevision",
+          "submittedDraftVersion",
+          "edits"
+        ],
+        "additionalProperties": false
+      },
+      "CommitReceipt": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "view": {
+            "$ref": "#/$defs/ManagementView"
+          }
+        },
+        "required": [
+          "commandId",
+          "submittedDraftVersion",
+          "view"
+        ],
+        "additionalProperties": false
+      },
+      "CharacterServiceMetadata": {
+        "type": "object",
+        "properties": {
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "ownerUserId": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "timelineId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "campaignAssignmentId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "characterId",
+          "ownerUserId",
+          "revision",
+          "lifecycle",
+          "timelineId",
+          "campaignAssignmentId"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "campaignAssignmentId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "campaignAssignmentId"
+              ]
+            },
+            "then": {
+              "properties": {
+                "timelineId": {
+                  "$ref": "#/$defs/Id"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "StateManagementView": {
+        "type": "object",
+        "properties": {
+          "viewSchemaVersion": {
+            "const": 1
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "displayName": {
+            "$ref": "#/$defs/DisplayName"
+          },
+          "numericFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/NumericFieldView"
+            }
+          }
+        },
+        "required": [
+          "viewSchemaVersion",
+          "characterId",
+          "characterRevision",
+          "lifecycle",
+          "displayName",
+          "numericFields"
+        ],
+        "additionalProperties": false
+      },
+      "StateManagementCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "edits": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "set-number"
+                    },
+                    "fieldRef": {
+                      "$ref": "#/$defs/Id"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "fieldRef",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "clear-number"
+                    },
+                    "fieldRef": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "fieldRef"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "commandId",
+          "characterId",
+          "expectedRevision",
+          "submittedDraftVersion",
+          "edits"
+        ],
+        "additionalProperties": false
+      },
+      "StateCommitReceipt": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "view": {
+            "$ref": "#/$defs/StateManagementView"
+          }
+        },
+        "required": [
+          "commandId",
+          "submittedDraftVersion",
+          "view"
+        ],
+        "additionalProperties": false
+      },
+      "ContentRecordPayload": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "$ref": "#/$defs/DefinitionRef"
+          }
+        },
+        "required": [
+          "document"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "topLevelShapes": [
+    "CharacterDocument",
+    "CharacterPersistenceRecord",
+    "ContentDocument",
+    "RuleRelease",
+    "CatalogDefinitionDetail",
+    "CatalogListEntryIndex",
+    "StateManagementView",
+    "StateManagementCommand",
+    "StateCommitReceipt"
+  ],
+  "typedCatalogKinds": {
+    "class": "ClassDefinition",
+    "ability-entry": "AbilityEntry",
+    "ability": "AbilityDefinition",
+    "domain": "DomainDefinition",
+    "tier": "TierDefinition",
+    "entity-template": "EntityTemplate",
+    "content": "ContentRecordPayload"
+  },
+  "typedCatalogRecordSchemas": {
+    "class": "CatalogRecord_class",
+    "ability-entry": "CatalogRecord_ability_entry",
+    "ability": "CatalogRecord_ability",
+    "domain": "CatalogRecord_domain",
+    "tier": "CatalogRecord_tier",
+    "entity-template": "CatalogRecord_entity_template",
+    "content": "CatalogRecord_content"
+  },
+  "genericSpecializations": [
+    {
+      "name": "SemanticFragment__730e1abd499b",
+      "generic": "SemanticFragment",
+      "args": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DefinitionRef"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recorded__e98253a1ef0c",
+      "generic": "Recorded",
+      "args": [
+        {
+          "$ref": "#/$defs/DefinitionRef"
+        }
+      ]
+    },
+    {
+      "name": "Recorded__428f46b7789d",
+      "generic": "Recorded",
+      "args": [
+        {
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "Recorded__8f3d8a04fb57",
+      "generic": "Recorded",
+      "args": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Recorded__ac0b42057e4e",
+      "generic": "Recorded",
+      "args": [
+        {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Recorded__899886cee57f",
+      "generic": "Recorded",
+      "args": [
+        {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "number"
+            },
+            "denominator": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__f7cbac7bc91a",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/ClassDefinition"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__867eb33d8af6",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/AbilityEntry"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__f10f01583a3b",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/AbilityDefinition"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__72abc1b2c773",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/DomainDefinition"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__2da22bec0a56",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/TierDefinition"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__bc393539181b",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/EntityTemplate"
+        }
+      ]
+    },
+    {
+      "name": "DefinitionRecord__ff08eacca34c",
+      "generic": "DefinitionRecord",
+      "args": [
+        {
+          "$ref": "#/$defs/ContentDocument"
+        }
+      ]
+    }
+  ],
+  "omittedLayer": "all game rules, full payload schemas for other definition kinds, authorization, semantic links, manifest cryptographic checking, DB and runtime implementation",
+  "semanticChecksRequired": [
+    "all numbers finite, identity/string budgets and game-specific value domains",
+    "document.characterId equals persistence characterId; verified server owner",
+    "first timeline binding immutable; one active campaign; actual policy",
+    "instance IDs, choices, acquisitions and evidence/input-fact links",
+    "published reference kind/revision/release and source coverage",
+    "table cell spans/merges and bounded asset/detail expansion",
+    "source order index reflects original source; deterministic cursor",
+    "registered fields, uniqueness, expected revision/idempotent command/transaction"
+  ],
+  "displayContentBinding": "content records link to PublishedContentDocument; display typed content value is ContentDocument body resolved from exact reference"
+}

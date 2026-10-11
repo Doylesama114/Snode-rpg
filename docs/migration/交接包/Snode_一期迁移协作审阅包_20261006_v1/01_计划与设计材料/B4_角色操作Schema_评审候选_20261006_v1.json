@@ -1,0 +1,930 @@
+{
+  "date": "2026-10-06",
+  "status": "review-candidate-not-production",
+  "implementation": false,
+  "coreDependency": {
+    "file": "B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+    "id": "urn:snode:b1-b2-review:20261006:v1"
+  },
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:snode:b4-review:20261006:v1",
+    "$defs": {
+      "Placement": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "class-list"
+              },
+              "progressionId": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "progressionId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "character"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "AddSubclass": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "add-subclass"
+          },
+          "class": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "keyAttribute": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          }
+        },
+        "required": [
+          "kind",
+          "class",
+          "keyAttribute"
+        ],
+        "additionalProperties": false
+      },
+      "LevelUp": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "level-up"
+          },
+          "progressionId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "progressionId"
+        ],
+        "additionalProperties": false
+      },
+      "UnlockTier": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "unlock-tier"
+          },
+          "tier": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          }
+        },
+        "required": [
+          "kind",
+          "tier"
+        ],
+        "additionalProperties": false
+      },
+      "SelectPathways": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "select-pathways"
+          },
+          "progressionId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "pathways": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "kind",
+          "progressionId",
+          "pathways"
+        ],
+        "additionalProperties": false
+      },
+      "Advance": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "select-advancement"
+          },
+          "progressionId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "advancement": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          }
+        },
+        "required": [
+          "kind",
+          "progressionId",
+          "advancement"
+        ],
+        "additionalProperties": false
+      },
+      "Learn": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "learn"
+          },
+          "entry": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "placement": {
+            "$ref": "#/$defs/Placement"
+          },
+          "grantorHoldingId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "entry",
+          "placement",
+          "grantorHoldingId"
+        ],
+        "additionalProperties": false
+      },
+      "Forget": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "forget"
+          },
+          "abilityId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "abilityId"
+        ],
+        "additionalProperties": false
+      },
+      "Replace": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "replace"
+          },
+          "abilityId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "entry": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "placement": {
+            "$ref": "#/$defs/Placement"
+          },
+          "grantorHoldingId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "abilityId",
+          "entry",
+          "placement",
+          "grantorHoldingId"
+        ],
+        "additionalProperties": false
+      },
+      "MoveAbility": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "move-ability"
+          },
+          "abilityId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "placement": {
+            "$ref": "#/$defs/Placement"
+          }
+        },
+        "required": [
+          "kind",
+          "abilityId",
+          "placement"
+        ],
+        "additionalProperties": false
+      },
+      "AddPool": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "add-manual-pool"
+          },
+          "resource": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "resource",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "SetPool": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "set-manual-pool"
+          },
+          "poolId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "poolId",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "RemovePool": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "remove-manual-pool"
+          },
+          "poolId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "poolId"
+        ],
+        "additionalProperties": false
+      },
+      "AddStatus": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "add-manual-status"
+          },
+          "definition": {
+            "anyOf": [
+              {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "label": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DisplayName"
+          },
+          "stacks": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "definition",
+          "label",
+          "stacks",
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "SetStatus": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "set-manual-status"
+          },
+          "statusId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "stacks": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "statusId",
+          "stacks",
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "RemoveStatus": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "remove-manual-status"
+          },
+          "statusId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "statusId"
+        ],
+        "additionalProperties": false
+      },
+      "Equip": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "equip"
+          },
+          "assetInstanceId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "slot": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          }
+        },
+        "required": [
+          "kind",
+          "assetInstanceId",
+          "slot"
+        ],
+        "additionalProperties": false
+      },
+      "Unequip": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "unequip"
+          },
+          "assetInstanceId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "assetInstanceId"
+        ],
+        "additionalProperties": false
+      },
+      "MoveItem": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "move-item"
+          },
+          "assetInstanceId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "containerInstanceId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "assetInstanceId",
+          "containerInstanceId"
+        ],
+        "additionalProperties": false
+      },
+      "ClaimReward": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "claim-reward"
+          },
+          "rewardOfferKey": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "rewardOfferKey"
+        ],
+        "additionalProperties": false
+      },
+      "AdjustResource": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "authorized-resource-adjustment"
+          },
+          "resource": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "delta": {
+            "type": "number"
+          },
+          "reason": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DisplayName"
+          },
+          "decisionId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "kind",
+          "resource",
+          "delta",
+          "reason",
+          "decisionId"
+        ],
+        "additionalProperties": false
+      },
+      "Operation": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/AddSubclass"
+          },
+          {
+            "$ref": "#/$defs/LevelUp"
+          },
+          {
+            "$ref": "#/$defs/UnlockTier"
+          },
+          {
+            "$ref": "#/$defs/SelectPathways"
+          },
+          {
+            "$ref": "#/$defs/Advance"
+          },
+          {
+            "$ref": "#/$defs/Learn"
+          },
+          {
+            "$ref": "#/$defs/Forget"
+          },
+          {
+            "$ref": "#/$defs/Replace"
+          },
+          {
+            "$ref": "#/$defs/MoveAbility"
+          },
+          {
+            "$ref": "#/$defs/AddPool"
+          },
+          {
+            "$ref": "#/$defs/SetPool"
+          },
+          {
+            "$ref": "#/$defs/RemovePool"
+          },
+          {
+            "$ref": "#/$defs/AddStatus"
+          },
+          {
+            "$ref": "#/$defs/SetStatus"
+          },
+          {
+            "$ref": "#/$defs/RemoveStatus"
+          },
+          {
+            "$ref": "#/$defs/Equip"
+          },
+          {
+            "$ref": "#/$defs/Unequip"
+          },
+          {
+            "$ref": "#/$defs/MoveItem"
+          },
+          {
+            "$ref": "#/$defs/ClaimReward"
+          },
+          {
+            "$ref": "#/$defs/AdjustResource"
+          }
+        ]
+      },
+      "AssetBasis": {
+        "type": "object",
+        "properties": {
+          "assetInstanceId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/PositiveRevision"
+          }
+        },
+        "required": [
+          "assetInstanceId",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "GrantDecision": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "offerKey": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              },
+              "decision": {
+                "const": "accept"
+              }
+            },
+            "required": [
+              "offerKey",
+              "decision"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "offerKey": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              },
+              "decision": {
+                "const": "decline"
+              }
+            },
+            "required": [
+              "offerKey",
+              "decision"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "offerKey": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              },
+              "decision": {
+                "const": "replace"
+              },
+              "abilityId": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              }
+            },
+            "required": [
+              "offerKey",
+              "decision",
+              "abilityId"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "OperationInput": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "$ref": "#/$defs/Operation"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/ChoiceSubmission"
+            }
+          },
+          "grantDecisions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/GrantDecision"
+            }
+          },
+          "assetBasis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AssetBasis"
+            }
+          }
+        },
+        "required": [
+          "operation",
+          "choices",
+          "grantDecisions",
+          "assetBasis"
+        ],
+        "additionalProperties": false
+      },
+      "OperationPreviewRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "input": {
+            "$ref": "#/$defs/OperationInput"
+          }
+        },
+        "required": [
+          "requestId",
+          "characterId",
+          "expectedRevision",
+          "submittedDraftVersion",
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "CharacterOperationCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "input": {
+            "$ref": "#/$defs/OperationInput"
+          },
+          "acceptedPreview": {
+            "type": "object",
+            "properties": {
+              "previewId": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              },
+              "planHash": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              }
+            },
+            "required": [
+              "previewId",
+              "planHash"
+            ],
+            "additionalProperties": false
+          },
+          "acknowledgedRiskKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          }
+        },
+        "required": [
+          "commandId",
+          "characterId",
+          "expectedRevision",
+          "submittedDraftVersion",
+          "input",
+          "acceptedPreview",
+          "acknowledgedRiskKeys"
+        ],
+        "additionalProperties": false
+      },
+      "RulePlanCost": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "resource",
+          "amount"
+        ],
+        "additionalProperties": false
+      },
+      "OperationPreview": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "baseRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "ruleset": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/RuleReleaseRef"
+          },
+          "actionability": {
+            "enum": [
+              "ready",
+              "needs-selection",
+              "needs-decision",
+              "unsupported"
+            ]
+          },
+          "previewId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "planHash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "costs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/RulePlanCost"
+            }
+          },
+          "changedRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "requiredRiskKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          }
+        },
+        "required": [
+          "requestId",
+          "characterId",
+          "baseRevision",
+          "submittedDraftVersion",
+          "ruleset",
+          "actionability",
+          "previewId",
+          "planHash",
+          "issueRefs",
+          "costs",
+          "changedRecordIds",
+          "requiredRiskKeys"
+        ],
+        "additionalProperties": false
+      },
+      "OperationReceipt": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "characterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "operationId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "committedRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/PositiveRevision"
+          },
+          "changedRecordIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "claimReceiptIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "paymentReceiptIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "assetReceiptIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "issueRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          }
+        },
+        "required": [
+          "commandId",
+          "submittedDraftVersion",
+          "characterId",
+          "operationId",
+          "committedRevision",
+          "changedRecordIds",
+          "claimReceiptIds",
+          "paymentReceiptIds",
+          "assetReceiptIds",
+          "issueRefs"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "topLevelShapes": [
+    "OperationInput",
+    "OperationPreviewRequest",
+    "CharacterOperationCommand",
+    "OperationPreview",
+    "OperationReceipt"
+  ],
+  "operationKinds": [
+    "add-subclass",
+    "level-up",
+    "unlock-tier",
+    "select-pathways",
+    "select-advancement",
+    "learn",
+    "forget",
+    "replace",
+    "move-ability",
+    "add-manual-pool",
+    "set-manual-pool",
+    "remove-manual-pool",
+    "add-manual-status",
+    "set-manual-status",
+    "remove-manual-status",
+    "equip",
+    "unequip",
+    "move-item",
+    "claim-reward",
+    "authorized-resource-adjustment"
+  ],
+  "requiredSemanticChecks": [
+    "operation scope, unknown fees, current eligibility and actual evidence",
+    "confirmed grants, slot/mark/capacity and group restrictions",
+    "source binding policies; client grantor/context cannot create a free route",
+    "risks and permanent bans; restore cannot roll back authoritative facts",
+    "distinct asset IDs/revisions and current ownership/container/slot policies",
+    "manual source authority derived from trusted operation/origin, not null source shortcut",
+    "unique reward trigger key stable across replay/restores/release revision",
+    "same-operation plan, accepted hash, role revision and affected asset versions",
+    "authorized adjustment decisions, signed delta/field cap and real DM scope"
+  ],
+  "scopeNote": "generic controlled intent family; does not implement game rules or prove support for every variant",
+  "productionVerification": false
+}

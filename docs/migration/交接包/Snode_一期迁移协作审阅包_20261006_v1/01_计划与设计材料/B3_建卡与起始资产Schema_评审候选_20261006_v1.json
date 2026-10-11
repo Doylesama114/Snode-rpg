@@ -1,0 +1,686 @@
+{
+  "date": "2026-10-06",
+  "status": "review-candidate-not-production",
+  "implementation": false,
+  "targetCodeChanged": false,
+  "coreDependency": {
+    "file": "B1_B2_角色与资料Schema_评审候选_20261006_v1.json",
+    "id": "urn:snode:b1-b2-review:20261006:v1"
+  },
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:snode:b3-review:20261006:v1",
+    "$defs": {
+      "AttributeTarget": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "targetValue": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "attribute",
+          "targetValue"
+        ],
+        "additionalProperties": false
+      },
+      "BuildInput": {
+        "type": "object",
+        "properties": {
+          "ruleset": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/RuleReleaseRef"
+          },
+          "profile": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Profile"
+          },
+          "mainClass": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "keyAttribute": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "race": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "background": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "allocationRule": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "baseAttributeTargets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AttributeTarget"
+            },
+            "minItems": 1
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/ChoiceSubmission"
+            }
+          }
+        },
+        "required": [
+          "ruleset",
+          "profile",
+          "mainClass",
+          "keyAttribute",
+          "race",
+          "background",
+          "allocationRule",
+          "baseAttributeTargets",
+          "choices"
+        ],
+        "additionalProperties": false
+      },
+      "AcceptedPreview": {
+        "type": "object",
+        "properties": {
+          "previewId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "planHash": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "previewId",
+          "planHash"
+        ],
+        "additionalProperties": false
+      },
+      "BuildPreviewRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "buildDraftId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "input": {
+            "$ref": "#/$defs/BuildInput"
+          }
+        },
+        "required": [
+          "requestId",
+          "buildDraftId",
+          "submittedDraftVersion",
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "CreateCharacterCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "buildDraftId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "input": {
+            "$ref": "#/$defs/BuildInput"
+          },
+          "acceptedPreview": {
+            "$ref": "#/$defs/AcceptedPreview"
+          }
+        },
+        "required": [
+          "commandId",
+          "buildDraftId",
+          "submittedDraftVersion",
+          "input",
+          "acceptedPreview"
+        ],
+        "additionalProperties": false
+      },
+      "CreationIssue": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "targetKey": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "blocker",
+              "notice"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "targetKey",
+          "message",
+          "severity"
+        ],
+        "additionalProperties": false
+      },
+      "CurrencyAllocation": {
+        "type": "object",
+        "properties": {
+          "grantKey": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "currencyId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "allotmentMinor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "allocatedCostMinor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "netBalanceMinor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "basisRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "grantKey",
+          "currencyId",
+          "allotmentMinor",
+          "allocatedCostMinor",
+          "netBalanceMinor",
+          "basisRefs"
+        ],
+        "additionalProperties": false
+      },
+      "InitialPlacement": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "carried"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "equipped"
+              },
+              "slot": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+              }
+            },
+            "required": [
+              "kind",
+              "slot"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "container"
+              },
+              "parentGrantKey": {
+                "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "parentGrantKey"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ItemGrant": {
+        "type": "object",
+        "properties": {
+          "grantKey": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "item": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "origin": {
+            "enum": [
+              "starting-grant",
+              "creation-budget-purchase"
+            ]
+          },
+          "placement": {
+            "$ref": "#/$defs/InitialPlacement"
+          },
+          "basisRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "grantKey",
+          "item",
+          "quantity",
+          "origin",
+          "placement",
+          "basisRefs"
+        ],
+        "additionalProperties": false
+      },
+      "StartingAssetPlan": {
+        "type": "object",
+        "properties": {
+          "recipient": {
+            "const": "new-character"
+          },
+          "assetPolicyRevision": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "currencyAllocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/CurrencyAllocation"
+            }
+          },
+          "itemGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ItemGrant"
+            }
+          },
+          "unassignedTransferPolicy": {
+            "const": "hold-and-equip-only"
+          }
+        },
+        "required": [
+          "recipient",
+          "assetPolicyRevision",
+          "currencyAllocations",
+          "itemGrants",
+          "unassignedTransferPolicy"
+        ],
+        "additionalProperties": false
+      },
+      "AbilityOffer": {
+        "type": "object",
+        "properties": {
+          "offerKey": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "entry": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "free": {
+            "type": "boolean"
+          },
+          "slotPolicy": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+          },
+          "pendingChoiceKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          }
+        },
+        "required": [
+          "offerKey",
+          "entry",
+          "free",
+          "slotPolicy",
+          "pendingChoiceKeys"
+        ],
+        "additionalProperties": false
+      },
+      "BuildSummary": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldRef": {
+                  "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+                },
+                "subjectKey": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "result": {
+                  "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DerivedNumber"
+                }
+              },
+              "required": [
+                "fieldRef",
+                "subjectKey",
+                "result"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "abilityOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/AbilityOffer"
+            }
+          },
+          "startingAssets": {
+            "$ref": "#/$defs/StartingAssetPlan"
+          }
+        },
+        "required": [
+          "values",
+          "abilityOffers",
+          "startingAssets"
+        ],
+        "additionalProperties": false
+      },
+      "BuildPreviewReady": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "buildDraftId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "ruleset": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/RuleReleaseRef"
+          },
+          "inputFingerprint": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "status": {
+            "const": "ready"
+          },
+          "previewId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "planHash": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "$ref": "#/$defs/BuildSummary"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/CreationIssue"
+            }
+          }
+        },
+        "required": [
+          "requestId",
+          "buildDraftId",
+          "submittedDraftVersion",
+          "ruleset",
+          "inputFingerprint",
+          "status",
+          "previewId",
+          "planHash",
+          "expiresAt",
+          "summary",
+          "issues"
+        ],
+        "additionalProperties": false
+      },
+      "BuildPreviewBlocked": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "buildDraftId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "ruleset": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/RuleReleaseRef"
+          },
+          "inputFingerprint": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "status": {
+            "enum": [
+              "needs-selection",
+              "needs-decision",
+              "unsupported"
+            ]
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/CreationIssue"
+            },
+            "minItems": 1
+          },
+          "pendingChoiceDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DefinitionRef"
+            }
+          }
+        },
+        "required": [
+          "requestId",
+          "buildDraftId",
+          "submittedDraftVersion",
+          "ruleset",
+          "inputFingerprint",
+          "status",
+          "issues",
+          "pendingChoiceDefinitions"
+        ],
+        "additionalProperties": false
+      },
+      "BuildPreviewResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/BuildPreviewReady"
+          },
+          {
+            "$ref": "#/$defs/BuildPreviewBlocked"
+          }
+        ]
+      },
+      "KeyMapping": {
+        "type": "object",
+        "properties": {
+          "clientKey": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "serverId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          }
+        },
+        "required": [
+          "clientKey",
+          "serverId"
+        ],
+        "additionalProperties": false
+      },
+      "AssetInitializationReceipt": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "const": "initialization-at-creation"
+          },
+          "operationId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "ownerCharacterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "walletReceiptIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "itemInstanceIds": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+            }
+          },
+          "unassignedTransferPolicy": {
+            "const": "hold-and-equip-only"
+          }
+        },
+        "required": [
+          "scope",
+          "operationId",
+          "ownerCharacterId",
+          "walletReceiptIds",
+          "itemInstanceIds",
+          "unassignedTransferPolicy"
+        ],
+        "additionalProperties": false
+      },
+      "CreationReceipt": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/DraftVersion"
+          },
+          "buildDraftId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "operationId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/Id"
+          },
+          "characterRevision": {
+            "const": 1
+          },
+          "management": {
+            "$ref": "urn:snode:b1-b2-review:20261006:v1#/$defs/ManagementView"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/KeyMapping"
+            }
+          },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/KeyMapping"
+            }
+          },
+          "assetGrants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/KeyMapping"
+            }
+          },
+          "initialAssets": {
+            "$ref": "#/$defs/AssetInitializationReceipt"
+          }
+        },
+        "required": [
+          "commandId",
+          "submittedDraftVersion",
+          "buildDraftId",
+          "operationId",
+          "characterId",
+          "characterRevision",
+          "management",
+          "choices",
+          "abilities",
+          "assetGrants",
+          "initialAssets"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "topLevelShapes": [
+    "BuildInput",
+    "BuildPreviewRequest",
+    "BuildPreviewResponse",
+    "CreateCharacterCommand",
+    "StartingAssetPlan",
+    "CreationReceipt"
+  ],
+  "policies": {
+    "ownership": {
+      "status": "user-confirmed",
+      "value": "每个角色独立钱包与库存，起始资产归新角色"
+    },
+    "unassigned": {
+      "status": "user-confirmed",
+      "value": "未入团仅持有与配装，不开放市场交易或跨角色转移"
+    }
+  },
+  "requiredSemanticChecks": [
+    "eight/current-rule attribute coverage, duplicates, kinds and confirmed point-buy budget",
+    "all submitted choices belong to current build requirements; required options complete",
+    "only published creation-eligible release, confirmed rule semantics and implemented supported combination",
+    "ready cannot contain unresolved mandatory derived values, blocker issues or pending choice keys",
+    "currency net=allotment-cost, registered unit/price policy, no negative budget",
+    "grant key uniqueness, existing container dependencies, no cycles, slot uniqueness/stackability",
+    "principal/buildDraft once materialized plus command idempotency",
+    "preview scope/input/plan hash/time and current rule/policy revalidation",
+    "server-generated character/operation/instance IDs and same IDs in all receipt references",
+    "all character, wallet, inventory, equipment, receipt, audit and snapshot writes one transaction"
+  ],
+  "legalCharacterOrAssetsCreated": false
+}

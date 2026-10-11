@@ -1,0 +1,31 @@
+{
+  "name": "snode",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build:packages": "pnpm --filter \"./packages/*\" build",
+    "dev": "pnpm build:packages && concurrently --kill-others -n contracts,db,api,web \"pnpm --filter @snode/contracts dev\" \"pnpm --filter @snode/db dev\" \"pnpm --filter @snode/api dev\" \"pnpm --filter @snode/web dev\"",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm build:packages && pnpm -r typecheck && pnpm typecheck:characters",
+    "test": "pnpm build:packages && pnpm --filter @snode/api test && pnpm test:characters",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "db:generate": "pnpm --filter @snode/db db:generate",
+    "db:migrate": "pnpm --filter @snode/db db:migrate",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "test:characters": "node --test docs/proposals/character-management/validation.test.mjs docs/proposals/character-management/editor.test.mjs docs/proposals/character-management/draft.test.mjs",
+    "test:characters:browser": "node --test apps/web/test/characters.browser.test.mjs",
+    "typecheck:characters": "tsc -p docs/proposals/character-management/tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0",
+    "concurrently": "10.0.5",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "playwright": "1.60.0"
+  }
+}

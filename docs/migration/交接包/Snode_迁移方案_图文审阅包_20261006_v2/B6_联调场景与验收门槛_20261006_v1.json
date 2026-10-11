@@ -1,0 +1,589 @@
+{
+  "date": "2026-10-06",
+  "status": "design-candidate-only",
+  "browserPolicy": {
+    "status": "user-confirmed",
+    "value": "一期正式纳入iPhone Safari，另验Android Chrome与桌面Chrome/Edge",
+    "date": "2026-10-06"
+  },
+  "cases": [
+    {
+      "id": "IT01",
+      "batch": "B1",
+      "task": "3.1.1",
+      "actor": "anonymous",
+      "scenario": "未登录资料查询",
+      "expected": "公开搜索／完整正文／召唤单位与全部关联能力可读取，版本引用一致",
+      "evidenceLevel": "http-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT02",
+      "batch": "B1",
+      "task": "3.1.1",
+      "actor": "anonymous",
+      "scenario": "发布及缓存隔离",
+      "expected": "未发布／sample-only资料不公开；旧发布不回退latest；角色数据不进公共缓存",
+      "evidenceLevel": "http-data",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT03",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "未入团正式保存",
+      "expected": "真实登录、可信owner、私有读取／历史可用；未保存草稿仍仅本机",
+      "evidenceLevel": "http-db-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT04",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "outsider",
+      "scenario": "对象越权",
+      "expected": "其他玩家／其他团DM／匿名不能读写角色或私有回执",
+      "evidenceLevel": "http",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT05",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "dm",
+      "scenario": "字段范围",
+      "expected": "当前团获准DM只用状态合同，不能通过完整管理／历史读取story",
+      "evidenceLevel": "http-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT06",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "账户切换及过期",
+      "expected": "旧请求／草稿不进入新账户；过期／撤权保存拒绝，输入按本机范围保留",
+      "evidenceLevel": "http-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT07",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "并发及版本",
+      "expected": "两独立会话冲突保留输入；未来基线明确拒绝；不覆盖较新正式版本",
+      "evidenceLevel": "http-db-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT08",
+      "batch": "B2",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "未知结果与重启",
+      "expected": "命令登记后／效果事务前／提交后断线或重启，核实同键；不重复写入或永远pending",
+      "evidenceLevel": "http-db-fault",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT09",
+      "batch": "B3",
+      "task": "3.1.2",
+      "actor": "owner",
+      "scenario": "首个合法创建",
+      "expected": "真实支持组合及选择完整，服务重算与预览一致，角色／起始资产原子创建",
+      "evidenceLevel": "rules-http-db",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT10",
+      "batch": "B3",
+      "task": "3.1.2",
+      "actor": "owner",
+      "scenario": "草稿创建防重",
+      "expected": "同命令重发和同草稿新命令并发仅物化一个角色；不重复初始物资",
+      "evidenceLevel": "http-db-concurrency",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT11",
+      "batch": "B3",
+      "task": "3.1.2",
+      "actor": "owner",
+      "scenario": "资产失败回滚",
+      "expected": "钱包／库存／配装／快照或回执任一步失败，无可见半个角色／部分资产",
+      "evidenceLevel": "db-fault",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT12",
+      "batch": "B3",
+      "task": "3.1.2",
+      "actor": "owner",
+      "scenario": "计划与规则变化",
+      "expected": "过期／输入或规则政策变化重做预览；不悄悄创建新金额或收益",
+      "evidenceLevel": "rules-http",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT13",
+      "batch": "B4",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "成长与学习",
+      "expected": "来源／费用／栏位／UID／成长绑定正确，读取／重试不再领奖",
+      "evidenceLevel": "rules-http-db",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT14",
+      "batch": "B4",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "永久限制及历史",
+      "expected": "遗忘不退款、跨来源同名禁学；旧快照不能解除限制／重置领取／倒回余额",
+      "evidenceLevel": "rules-db",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT15",
+      "batch": "B4",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "池及状态来源",
+      "expected": "只改获准人工UID，规则／未知来源不擅自删除，聚合值不覆盖来源",
+      "evidenceLevel": "rules-http-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT16",
+      "batch": "B4",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "资产并发与配装",
+      "expected": "交易／容器变化使旧assetBasis失效；角色与物品关系一起提交",
+      "evidenceLevel": "http-db-concurrency",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT17",
+      "batch": "B5",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "四份真实档案迁移",
+      "expected": "逐份新平台转换／保存／读取复核；表／区域选择、负值／缓存事实、未知内容可追溯",
+      "evidenceLevel": "real-migration",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT18",
+      "batch": "B5",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "旧备份槽位",
+      "expected": "名称下划线、多个保存条目／槽位、坏一条与同名来源选择；不把条目数当角色数",
+      "evidenceLevel": "real-migration",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT19",
+      "batch": "B5",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "元数据与实体身份",
+      "expected": "v1／v2／v3／缺meta、基线变化／替换／删除、重复UID／未来版明示问题",
+      "evidenceLevel": "real-migration",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT20",
+      "batch": "B5",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "新JSON连续三次往返",
+      "expected": "经新平台转换与读写后UID／来源／选择／问题／人工调整保持；无奖励／资产重放",
+      "evidenceLevel": "real-roundtrip",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT21",
+      "batch": "B5",
+      "task": "3.1.3",
+      "actor": "dm",
+      "scenario": "历史资产审核",
+      "expected": "声称待核对；同团获准DM审核固定版本后入账一次；旧决定不能批准已换物品／金额",
+      "evidenceLevel": "http-db-concurrency",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT22",
+      "batch": "B6",
+      "task": "3.2-integration",
+      "actor": "owner",
+      "scenario": "初次入团绑定",
+      "expected": "owner不变、时间线首次绑定后固定、同线单团；清关联不能跨线复用",
+      "evidenceLevel": "http-db",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT23",
+      "batch": "B6",
+      "task": "3.2-integration",
+      "actor": "owner",
+      "scenario": "未入团与未批准资产",
+      "expected": "独立钱包／库存；未入团仅持有配装；待批准声称不能作为交易资产或权威加成",
+      "evidenceLevel": "http-db-browser",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT24",
+      "batch": "B6",
+      "task": "3.2-integration",
+      "actor": "owner",
+      "scenario": "已约定基础经济",
+      "expected": "真实3.2报价／库存／钱包版本、对手权限及账目共同一致；重试不双扣／双给",
+      "evidenceLevel": "http-db-concurrency",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT25",
+      "batch": "B6",
+      "task": "3.2-integration",
+      "actor": "dm",
+      "scenario": "权限变化竞态",
+      "expected": "角色／团权限在执行时有效，撤权后旧命令／快照不泄露或继续越权",
+      "evidenceLevel": "http-db-concurrency",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT26",
+      "batch": "B6",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "跨设备已保存版本",
+      "expected": "另一设备真实登录读取正式记录；未保存草稿不宣称跨设备同步",
+      "evidenceLevel": "multi-device",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT27",
+      "batch": "B6",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "移动长详情与表单",
+      "expected": "360／390宽及真机下长正文、单位、选择器、键盘、错误定位、冲突对话框可用",
+      "evidenceLevel": "browser-device",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT28",
+      "batch": "B6",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "Safari文件与恢复",
+      "expected": "iPhone Safari真实导入选择／下载获取、本机草稿、后台／返回及存储不可用恢复",
+      "evidenceLevel": "browser-device",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT29",
+      "batch": "B6",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "导出完整和失败",
+      "expected": "下载生成后读取文件验证；无保存凭证不宣称已落盘；失败保留数据",
+      "evidenceLevel": "browser-device-roundtrip",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT30",
+      "batch": "B6",
+      "task": "3.1.1",
+      "actor": "owner",
+      "scenario": "全量内容及选择覆盖",
+      "expected": "冻结源清单逐项对应正文、定义、选择分支与支持；未来未启用不冒充公布全量",
+      "evidenceLevel": "source-coverage",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT31",
+      "batch": "B6",
+      "task": "3.1.3",
+      "actor": "owner",
+      "scenario": "真实团流程",
+      "expected": "不同真实登录主体依次资料／建卡／成长／导入补全／资产批准／经济流程，意见与缺陷留痕",
+      "evidenceLevel": "real-campaign",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT32",
+      "batch": "B6",
+      "task": "3.2-integration",
+      "actor": "operator",
+      "scenario": "部署与恢复",
+      "expected": "迁移可追溯、实际备份恢复、已提交命令／角色／资产一致；回退前端不随意回滚DB",
+      "evidenceLevel": "ops-integration",
+      "status": "not-run",
+      "evidenceRefs": []
+    },
+    {
+      "id": "IT33",
+      "batch": "B6",
+      "task": "3.1.2",
+      "actor": "owner",
+      "scenario": "全量建卡与管理选择分支",
+      "expected": "每个公布职业／种族／背景／领域与必需选择、容量及例外有对应规则与真实页面证据；不能以首个组合或manual标签宣称全自动范围完成",
+      "evidenceLevel": "source-rules-browser-coverage",
+      "status": "not-run",
+      "evidenceRefs": []
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "INT01",
+      "from": "3.2身份／权限",
+      "to": "3.1各API与投影",
+      "input": "已验证user、对象／字段／操作范围和当前关系版本",
+      "contract": "服务身份不来自JSON；owner／DM／外团隔离；在执行时复核"
+    },
+    {
+      "id": "INT02",
+      "from": "3.1目录／规则",
+      "to": "3.2创建／保存",
+      "input": "精确发布、完整文档Schema、支持组合与可信计划",
+      "contract": "版本固定、未知明确；服务提交前重算，正文完整不冒充可计算"
+    },
+    {
+      "id": "INT03",
+      "from": "3.1创建／角色操作",
+      "to": "3.2资产／账目",
+      "input": "服务operationId、characterId、来源计划和预期资产版本",
+      "contract": "角色独立资产，跨对象同事务，幂等／领取／支付留痕"
+    },
+    {
+      "id": "INT04",
+      "from": "3.2团／DM",
+      "to": "3.1角色能力",
+      "input": "真实同团资格、时间线、审批决策与支持的生命周期",
+      "contract": "首绑后固定；来源／场次不能自报；历史资产声称不直接入账"
+    },
+    {
+      "id": "INT05",
+      "from": "3.2经济",
+      "to": "3.1库存及派生",
+      "input": "当前所属实例／数量／钱包／交易版本与通知或刷新依据",
+      "contract": "报价和当前归属权威；面板不回写旧余额；尚未约定的经济功能不默认开放"
+    },
+    {
+      "id": "INT06",
+      "from": "3.1导入／导出",
+      "to": "3.2授权入库与审计",
+      "input": "来源选择、不可逆事实、UID映射、资产claim版本",
+      "contract": "目标权限明确、原文保留、DM批准限定对象；不重放创建收益"
+    }
+  ],
+  "browserMatrix": [
+    {
+      "id": "WEB01",
+      "family": "桌面Chrome／Edge",
+      "kind": "real-browser",
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "focus": "键盘、长详情、保存冲突、多账户会话、文件导入导出"
+    },
+    {
+      "id": "WEB02",
+      "family": "Android Chrome",
+      "kind": "real-device",
+      "viewports": [
+        {
+          "width": 360,
+          "height": 800
+        },
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "focus": "虚拟键盘、触摸、滚动、后台／返回、下载及本机存储"
+    },
+    {
+      "id": "WEB03",
+      "family": "iPhone Safari",
+      "kind": "real-device",
+      "viewports": [
+        {
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "focus": "用户确认必验；文件选择／下载可取回、页面返回／后台、存储恢复及交互"
+    }
+  ],
+  "gates": [
+    {
+      "id": "GATE01",
+      "name": "范围与共同契约",
+      "requirements": [
+        "D决策已由双方确认，变更与版本有记录",
+        "3.1三个子任务和3.2基础经济的必需范围有对应case",
+        "未确认生命周期／格式／规则明确处理，不擅自缩小必需范围"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE02",
+      "name": "数据与业务实现",
+      "requirements": [
+        "真实发布包、完整Schema与关系／规则处理器齐备",
+        "B1至B5真实保存／资产／迁移实现按支持范围核验",
+        "正式发布、代码及数据库迁移基线固定"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE03",
+      "name": "真实服务证据",
+      "requirements": [
+        "每项必测有真实HTTP／DB或规定层级的执行证据",
+        "并发、故障注入、权限和幂等结果可核对",
+        "health／ready和Mock通过不能代替业务验收"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE04",
+      "name": "浏览器与真实团",
+      "requirements": [
+        "Chrome／Edge、Android Chrome、iPhone Safari按确认范围验收",
+        "360／390／1440视口及真机事实分开记录",
+        "真实不同账号与DM的流程试用完成，隐私范围正确"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE05",
+      "name": "交付与维护",
+      "requirements": [
+        "无阻塞数据损失、越权、重复授予／交易和不可逆事实破坏",
+        "允许遗留项有具体影响、负责人、处理与同意记录",
+        "支持清单、升级／恢复、规则发布及用户操作说明完整"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    },
+    {
+      "id": "GATE06",
+      "name": "一期最终签收",
+      "requirements": [
+        "上述门槛完成，有最终范围／结果／基线／签收人和日期",
+        "剩余项与人工处理范围已确认",
+        "签收不由文档作者或自动检查伪造"
+      ],
+      "status": "not-verified",
+      "evidenceRefs": []
+    }
+  ],
+  "milestones": [
+    {
+      "id": "MILE01",
+      "name": "设计候选齐备",
+      "state": "complete-for-current-candidate",
+      "meaning": "B0至B6设计和代表证据可交双方评审，仍非正式ABI"
+    },
+    {
+      "id": "MILE02",
+      "name": "共享约定已确认",
+      "state": "pending-joint-review",
+      "meaning": "双方采用或修改D项及各批合同；当前没有签批记录"
+    },
+    {
+      "id": "MILE03",
+      "name": "工程已实现",
+      "state": "not-started-by-this-work",
+      "meaning": "目标业务、数据库和真实服务实施；现有本机候选不等于完成"
+    },
+    {
+      "id": "MILE04",
+      "name": "一期已验收",
+      "state": "not-executed",
+      "meaning": "所有必需业务／平台／真实团证据与最终签收齐备"
+    }
+  ],
+  "evidenceRecordFields": [
+    "runId",
+    "caseId",
+    "buildCommit",
+    "contractVersions",
+    "documentSchemaVersion",
+    "rulesetRef",
+    "dbMigrationSet",
+    "environmentId",
+    "fixtureId",
+    "principalRoles",
+    "browserFamilyAndVersion",
+    "actualDeviceOrEmulation",
+    "viewport",
+    "runStartedAt",
+    "result",
+    "observedResult",
+    "evidenceRefs",
+    "reviewerRecord"
+  ],
+  "evidenceResults": [
+    "not-run",
+    "pass",
+    "fail",
+    "blocked",
+    "not-applicable"
+  ],
+  "rules": [
+    "case not-run is not pass",
+    "pass requires actual observed result, applicable frozen baseline and evidence at required level",
+    "not-applicable needs explicit scope decision and cannot erase a required feature",
+    "shared signoff is recorded from actual participants, not schema fixture strings",
+    "emulation cannot alone satisfy real-device/campaign cases",
+    "no executed business evidence supplied by this design task"
+  ]
+}

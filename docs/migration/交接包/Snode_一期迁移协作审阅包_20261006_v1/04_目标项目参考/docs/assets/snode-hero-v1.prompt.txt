@@ -1,0 +1,8 @@
+Use case: stylized-concept
+Asset type: original wide hero landscape illustration for Snode, a tabletop roleplaying character platform homepage.
+Primary request: cinematic, restrained fantasy landscape, evocative of an unexplored world. A medieval stone citadel and slender watchtower on a rocky cliff in the RIGHT half, a winding river through layers of mist and distant mountains, tiny amber windows and a warm camp lantern on a path. No people in the foreground.
+Style/medium: sophisticated painterly environment concept art, matte texture and fine grain, soft atmospheric perspective, grounded architecture, elegant and quiet rather than epic spectacle.
+Composition/framing: very wide 2:1 landscape, 2048 pixels wide if possible. Left 42 percent is mostly near-black misty negative space with subtle mountain silhouettes, for HTML headline and buttons. Main architectural focal point at 73 percent horizontal, river enters lower center. Gentle gradient into dark edges. No hard borders or vignettes.
+Lighting/mood: twilight, clouded sky, cool soft ambient light, muted antique gold glimmers. A welcoming sense of discovery, no horror.
+Color palette: ink black #0b1014, slate teal #31494d, mist gray #8eaaa8, parchment warm whites, sparse antique gold #d4b078. Mostly low saturation. The far sky may be brighter but no stark white.
+Constraints: no text, no letters, no typography, no logos, no UI, no frame, no watermark. No neon, no purple, no glowing magic rings, no dice, no dragons. Original architecture and original composition, not based on a franchise.

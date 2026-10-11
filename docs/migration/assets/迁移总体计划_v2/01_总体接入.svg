@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1280 960">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8298a8"/></marker></defs>
+<rect width="1280" height="960" rx="24" fill="#f6f9fb"/>
+<text x="56" y="57" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e" text-anchor="start">01</text>
+<text x="112" y="58" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="700" fill="#183042" text-anchor="start">总体接入：一套资料，各功能共同使用</text>
+<text x="56" y="104" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#597080" text-anchor="start">资料、个人记录和资产各有归属；图中是拟采用的职责关系。</text>
+<rect x="56" y="150" width="300" height="126" rx="18" fill="#fffaf0" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="173" width="5" height="31" rx="2" fill="#a77b37"/>
+<text x="98" y="196" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">规则与旧资料</text>
+<text x="81" y="233" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">正文、图片和表格</text>
+<text x="81" y="264" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">已确认的规则解释</text>
+<path d="M362 214 L422 214" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="430" y="150" width="794" height="126" rx="18" fill="#eff8f5" stroke="#c7d5df" stroke-width="2"/>
+<rect x="452" y="173" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="472" y="196" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">统一资料中心</text>
+<text x="455" y="233" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">固定版本的职业、技能、领域、物品与单位</text>
+<text x="455" y="264" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">完整正文和关联详情 · 可重建的查询索引</text>
+<rect x="56" y="336" width="352" height="116" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="359" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="98" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">资料查询</text>
+<text x="81" y="419" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">浏览、搜索和完整详情</text>
+<rect x="452" y="336" width="352" height="116" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="474" y="359" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="494" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">创建角色</text>
+<text x="477" y="419" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">选择、规则预览和确认</text>
+<rect x="848" y="336" width="352" height="116" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="870" y="359" width="5" height="31" rx="2" fill="#376b95"/>
+<text x="890" y="382" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">面板与导入</text>
+<text x="873" y="419" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">成长、技能、状态与旧档</text>
+<path d="M826 282 L826 305 L232 305 L232 329" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M826 282 L826 305 L628 305 L628 329" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M826 282 L826 305 L1024 305 L1024 329" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M232 458 L232 512" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M628 458 L628 512" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1024 458 L1024 512" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="56" y="520" width="1168" height="108" rx="18" fill="#eaf1f8" stroke="#9ab4ca" stroke-width="2"/>
+<text x="80" y="562" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="700" fill="#376b95" text-anchor="start">统一业务入口</text>
+<text x="80" y="602" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">身份与权限检查  /  规则校验与计算  /  正式保存和业务操作</text>
+<path d="M232 634 L232 684" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="56" y="692" width="352" height="142" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="715" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="98" y="738" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">角色与历史</text>
+<text x="81" y="775" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">选择、成长和当前资源</text>
+<text x="81" y="806" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">每次正式提交保留历史</text>
+<path d="M628 634 L628 684" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="452" y="692" width="352" height="142" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="474" y="715" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="494" y="738" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">身份与团</text>
+<text x="477" y="775" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">拥有者、团关系和权限</text>
+<text x="477" y="806" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">服务判断允许的操作</text>
+<path d="M1024 634 L1024 684" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="848" y="692" width="352" height="142" rx="18" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="870" y="715" width="5" height="31" rx="2" fill="#21746e"/>
+<text x="890" y="738" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="700" fill="#183042" text-anchor="start">钱包与库存</text>
+<text x="873" y="775" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">每角色独立持有资产</text>
+<text x="873" y="806" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#597080" text-anchor="start">相关变化与角色一起提交</text>
+<rect x="56" y="877" width="1168" height="54" rx="12" fill="#f6f9fb" stroke="#c7d5df" stroke-width="2" stroke-dasharray="8 7"/>
+<text x="80" y="913" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#597080" text-anchor="start">后续战斗：读取角色、能力和装备的输入快照；本场行动与效果另行维护。</text>
+<path d="M232 840 L232 870" fill="none" stroke="#8298a8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="8 7"/>
+</svg>

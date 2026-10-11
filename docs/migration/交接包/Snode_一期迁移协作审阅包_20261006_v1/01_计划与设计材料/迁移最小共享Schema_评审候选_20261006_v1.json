@@ -1,0 +1,526 @@
+{
+  "date": "2026-10-06",
+  "status": "review-candidate-not-production-ABI",
+  "scope": "nine named minimal transport/service shapes; not full CharacterDocument/catalog content/build or growth schemas",
+  "implementation": false,
+  "exportedToTarget": false,
+  "validatorOptions": {
+    "strict": true,
+    "strictNumbers": true
+  },
+  "budgets": {
+    "measurement": "UTF-16 code units, matching current JavaScript string.length",
+    "id": 128,
+    "displayName": 256,
+    "story": 65536,
+    "status": "awaiting-shared-review",
+    "enforcement": "additional common semantic validation; standard maxLength does not exactly express legacy UTF-16 budget"
+  },
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:snode:migration-review:20261006:v1",
+    "$defs": {
+      "Id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+      },
+      "PositiveRevision": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "DraftVersion": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "DisplayName": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "Story": {
+        "type": "string"
+      },
+      "DefinitionRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/PositiveRevision"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
+      "RuleReleaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "manifestHash": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "manifestHash"
+        ],
+        "additionalProperties": false
+      },
+      "ChoiceValue": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "definitions"
+              },
+              "refs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/DefinitionRef"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "refs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "allocation"
+              },
+              "amounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "subject": {
+                      "$ref": "#/$defs/DefinitionRef"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "amount"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "amounts"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "text"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ChoiceSubmission": {
+        "type": "object",
+        "properties": {
+          "clientChoiceKey": {
+            "$ref": "#/$defs/Id"
+          },
+          "choiceDefinition": {
+            "$ref": "#/$defs/DefinitionRef"
+          },
+          "value": {
+            "$ref": "#/$defs/ChoiceValue"
+          }
+        },
+        "required": [
+          "clientChoiceKey",
+          "choiceDefinition",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "ChoiceUse": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "existing"
+              },
+              "choiceRecordId": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "choiceRecordId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "submitted"
+              },
+              "clientChoiceKey": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "clientChoiceKey"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "$ref": "#/$defs/DisplayName"
+          },
+          "story": {
+            "$ref": "#/$defs/Story"
+          }
+        },
+        "required": [
+          "displayName",
+          "story"
+        ],
+        "additionalProperties": false
+      },
+      "NumericFieldView": {
+        "type": "object",
+        "properties": {
+          "fieldRef": {
+            "$ref": "#/$defs/Id"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "editable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "fieldRef",
+          "label",
+          "value",
+          "editable"
+        ],
+        "additionalProperties": false
+      },
+      "ManagementView": {
+        "type": "object",
+        "properties": {
+          "viewSchemaVersion": {
+            "const": 1
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "profile": {
+            "$ref": "#/$defs/Profile"
+          },
+          "editableProfileFields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "displayName",
+                "story"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "numericFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/NumericFieldView"
+            }
+          }
+        },
+        "required": [
+          "viewSchemaVersion",
+          "characterId",
+          "characterRevision",
+          "lifecycle",
+          "profile",
+          "editableProfileFields",
+          "numericFields"
+        ],
+        "additionalProperties": false
+      },
+      "ManagementEdit": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-profile"
+              },
+              "field": {
+                "const": "displayName"
+              },
+              "value": {
+                "$ref": "#/$defs/DisplayName"
+              }
+            },
+            "required": [
+              "kind",
+              "field",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-profile"
+              },
+              "field": {
+                "const": "story"
+              },
+              "value": {
+                "$ref": "#/$defs/Story"
+              }
+            },
+            "required": [
+              "kind",
+              "field",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "set-number"
+              },
+              "fieldRef": {
+                "$ref": "#/$defs/Id"
+              },
+              "value": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "kind",
+              "fieldRef",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "clear-number"
+              },
+              "fieldRef": {
+                "$ref": "#/$defs/Id"
+              }
+            },
+            "required": [
+              "kind",
+              "fieldRef"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "UpdateManagementCommand": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "edits": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/ManagementEdit"
+            }
+          }
+        },
+        "required": [
+          "commandId",
+          "characterId",
+          "expectedRevision",
+          "submittedDraftVersion",
+          "edits"
+        ],
+        "additionalProperties": false
+      },
+      "CommitReceipt": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "$ref": "#/$defs/Id"
+          },
+          "submittedDraftVersion": {
+            "$ref": "#/$defs/DraftVersion"
+          },
+          "view": {
+            "$ref": "#/$defs/ManagementView"
+          }
+        },
+        "required": [
+          "commandId",
+          "submittedDraftVersion",
+          "view"
+        ],
+        "additionalProperties": false
+      },
+      "CharacterServiceMetadata": {
+        "type": "object",
+        "properties": {
+          "characterId": {
+            "$ref": "#/$defs/Id"
+          },
+          "ownerUserId": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/PositiveRevision"
+          },
+          "lifecycle": {
+            "enum": [
+              "active",
+              "archived"
+            ]
+          },
+          "timelineId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "campaignAssignmentId": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "characterId",
+          "ownerUserId",
+          "revision",
+          "lifecycle",
+          "timelineId",
+          "campaignAssignmentId"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "campaignAssignmentId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "campaignAssignmentId"
+              ]
+            },
+            "then": {
+              "properties": {
+                "timelineId": {
+                  "$ref": "#/$defs/Id"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "publicShapeNames": [
+    "DefinitionRef",
+    "RuleReleaseRef",
+    "ChoiceValue",
+    "ChoiceSubmission",
+    "ChoiceUse",
+    "ManagementView",
+    "UpdateManagementCommand",
+    "CommitReceipt",
+    "CharacterServiceMetadata"
+  ],
+  "requiredSemanticChecks": [
+    "UTF-16 text/id budgets",
+    "registered writable field refs",
+    "duplicate edit targets and duplicate numeric field refs",
+    "choice keys unique and references belong to this character",
+    "choice definition-specific counts/values and published references",
+    "verified owner, object/field permissions and fixed timeline",
+    "revision/idempotent-command/asset checks",
+    "full CharacterDocument shape and relation validation before B2; omitted here"
+  ],
+  "sampleCharactersAreLegalBuilds": false
+}
