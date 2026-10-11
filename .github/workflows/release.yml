@@ -67,10 +67,14 @@ jobs:
         shell: pwsh
         env:
           ELECTRON_RUN_AS_NODE: ""
-          SNODE_ALLOW_MISSING_DESKTOP: ${{ vars.SKIP_DESKTOP_CHECK == '1' && '1' || '0' }}
+          SKIP_DESKTOP_CHECK: ${{ vars.SKIP_DESKTOP_CHECK }}
         run: |
+          if ($env:SKIP_DESKTOP_CHECK -eq "1") {
+            Write-Host "::warning title=Desktop checks skipped::SKIP_DESKTOP_CHECK=1（仓库变量显式放行），跳过 verify_desktop_* 与 verify_prompt_preferences；桌面端产物仍会构建，但未做真机校验。"
+            exit 0
+          }
           $exe = "electron-app/node_modules/electron/dist/electron.exe"
-          if (Test-Path $exe) { $ver = (& $exe --version 2>&1 | Out-String).Trim(); Write-Host "electron --version => $ver" } else { Write-Host "electron.exe missing" }
+          if (Test-Path $exe) { $ver = (& $exe --version 2>&1 | Out-String).Trim(); Write-Host "electron --version => $ver" } else { Write-Host "electron.exe missing: $exe" }
           node verify_desktop_startup.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node verify_desktop_recovery.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node verify_desktop_faults.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
