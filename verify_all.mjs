@@ -679,6 +679,21 @@ totalErrors += dupeOK ? 0 : 1;
 
 // 技能索引校验（独立枚举 + 内容级可达性）
 console.log('\n=== 技能索引 ===');
+// 基本规则同步校验（xlsx ↔ help.html #s0 ↔ advisor-tips.js）
+console.log('\n=== 基本规则同步 ===');
+let rulesSyncOK = true;
+try {
+  let rsOut = spawnSync('node', [join(BASE, 'verify_rules_sync.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  if (rsOut.stdout) console.log(rsOut.stdout.trim());
+  if (rsOut.stderr) console.error(rsOut.stderr.trim());
+  if (rsOut.status !== 0) rulesSyncOK = false;
+} catch (e) {
+  rulesSyncOK = false;
+  console.log('❌ 基本规则同步校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(rulesSyncOK ? '✅ 基本规则同步通过' : '❌ 基本规则同步失败');
+totalErrors += rulesSyncOK ? 0 : 1;
+
 let idxOK = true;
 try {
   let idxOut = spawnSync('node', [join(BASE, 'verify_skill_index.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
@@ -761,6 +776,6 @@ const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);
