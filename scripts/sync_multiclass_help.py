@@ -4,7 +4,7 @@
 
 生成内容：
 1. 兼职规则表（职业 / 属性要求 / 熟练度要求 / 其他要求 / 不可兼职）
-2. 职业兼容性稀疏矩阵（仅标红不可兼职，空白=可兼职，灰 —=自身）
+2. 职业兼容性矩阵（红=不可兼入，绿=可兼入，灰 —=自身；关系有方向：行=主职业，列=副职）
 3. 配套 CSS（粘性首列/表头、悬停高亮、图例）与 hover JS
 
 用法：
@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 from pathlib import Path
 
@@ -46,6 +47,35 @@ END_BODY = "<!-- /MULTICLASS-RULES -->"
 BEGIN_CSS = "/* MULTICLASS-RULES-CSS */"
 END_CSS = "/* /MULTICLASS-RULES-CSS */"
 
+
+MOBILE_TMPL = """<div class="mc-mobile">
+<p class="mc-note">选择你的<b>主职业</b>，即可看到它可以兼职进入哪些副职、哪些副职不能兼入（关系有方向）。</p>
+<label class="mc-pick">主职业：<select id="mcPick"></select></label>
+<div class="mc-out" id="mcOut"></div>
+<script>(function(){
+  var D = __DATA__;
+  var sel = document.getElementById('mcPick');
+  var out = document.getElementById('mcOut');
+  if (!sel || !out) return;
+  Object.keys(D).forEach(function(k){
+    var o = document.createElement('option');
+    o.value = k; o.textContent = k; sel.appendChild(o);
+  });
+  function tag(t, no){ return '<span class="' + (no ? 'mc-tag-no' : 'mc-tag') + '">' + t + '</span>'; }
+  function render(){
+    var d = D[sel.value];
+    if (!d) return;
+    var ok = d.ok.filter(function(x){ return x !== sel.value; });
+    var okHtml = ok.map(function(x){ return tag(x, false); }).join('');
+    var noHtml = d.no.map(function(x){ return tag(x, true); }).join('');
+    out.innerHTML =
+      '<div class="mc-line mc-ok-line"><b>可兼职进入（' + ok.length + '）：</b><br>' + (okHtml || '（无）') + '</div>' +
+      '<div class="mc-line mc-no-line"><b>不可兼入（' + d.no.length + '）：</b><br>' + (noHtml || '（无）') + '</div>';
+  }
+  sel.addEventListener('change', render);
+  render();
+})();</script>
+</div>"""
 
 def load_xlsx() -> dict:
     """读取兼职规则工作表，返回 {职业: {attr, prof, other, incompatible:[]}}。"""
@@ -81,6 +111,7 @@ CSS = f"""
 .mc-matrix thead th:first-child{{left:0;z-index:3}}
 .mc-matrix td{{background:#fffdf8}}
 .mc-matrix td.mc-no{{background:#c62828;color:#fff;font-weight:bold}}
+.mc-matrix td.mc-ok{{background:#eaf6ee}}
 .mc-matrix td.mc-self{{background:#e8e4dc;color:#69706b}}
 .mc-matrix tr.mc-hl td{{background:#f3efe6}}
 .mc-matrix tr.mc-hl td.mc-no{{background:#d94848}}
@@ -91,7 +122,9 @@ CSS = f"""
 .mc-legend .sw{{display:inline-flex;align-items:center;gap:5px}}
 .mc-legend .sw::before{{content:"";display:inline-block;width:14px;height:14px;border:1px solid #d8d2c4;border-radius:3px;flex:0 0 auto}}
 .mc-legend .sw.mc-no::before{{background:#c62828}}
+.mc-legend .sw.mc-ok::before{{background:#cfe8d4}}
 .mc-legend .sw.mc-self::before{{background:#e8e4dc}}
+.mc-note{{font-size:12px;color:#69706b;margin:4px 0;line-height:1.6}}
 .mc-hint{{font-size:12px;color:#69706b;margin:2px 0 8px}}
 .mc-planned{{color:#a06a00;font-size:12px;font-weight:normal}}
 html.dark .mc-planned{{color:#e0b063}}
@@ -101,6 +134,26 @@ html.dark .mc-matrix td.mc-self{{background:#2c2f33;color:#9d9b98}}
 html.dark .mc-matrix td.mc-no{{background:#a52a2a}}
 html.dark .mc-matrix tr.mc-hl td,html.dark .mc-matrix td.mc-hl-col{{background:#33373b}}
 html.dark .mc-legend,html.dark .mc-hint{{color:#9d9b98}}
+.mc-hint{{display:none}}
+@media (max-width:700px){{
+  #s4 .mc-wrap,#s4 .mc-matrix{{display:none !important}}
+  #s4 .mc-legend{{margin-top:2px}}
+  #s4 .mc-mobile{{display:block !important}}
+}}
+.mc-mobile{{display:none}}
+.mc-mobile .mc-pick{{display:block;margin:8px 0 12px;font-size:14px;color:#3d3a33}}
+.mc-mobile .mc-pick select{{font-size:15px;padding:8px 10px;margin-left:6px;border:1px solid #d8d2c4;border-radius:8px;background:#fffdf8;color:#1f2522;min-width:10em}}
+.mc-mobile .mc-out{{margin:8px 0 12px;font-size:14px;line-height:2}}
+.mc-mobile .mc-line{{margin:6px 0;padding:8px 10px;border-radius:8px;background:#f7f4ec}}
+.mc-mobile .mc-ok-line{{color:#1f6b3a}}
+.mc-mobile .mc-no-line{{color:#b3261e}}
+.mc-mobile .mc-out .mc-tag{{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:6px;background:#eaf6ee;color:#1f6b3a;border:1px solid #cfe8d4}}
+.mc-mobile .mc-out .mc-tag-no{{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:6px;background:#fdecea;color:#b3261e;border:1px solid #f3c9c4}}
+html.dark .mc-mobile .mc-pick{{color:#e8e6e3}}
+html.dark .mc-mobile .mc-pick select{{background:#24272b;color:#e8e6e3;border-color:#3a3d40}}
+html.dark .mc-mobile .mc-line{{background:#24272b}}
+html.dark .mc-mobile .mc-out .mc-tag{{background:#1f3a2a;color:#8fd6a8;border-color:#2f5a41}}
+html.dark .mc-mobile .mc-out .mc-tag-no{{background:#3a2320;color:#e79b95;border-color:#5c3833}}
 {END_CSS}
 """
 
@@ -132,7 +185,7 @@ JS = """<script>
 
 
 def build_rule_table(data: dict) -> str:
-    rows = ['<div class="wrap"><table><tr><th>职业</th><th>属性要求</th><th>熟练度要求</th><th>其他要求</th><th>不可兼职</th></tr>']
+    rows = ['<p class="mc-note">下表「不可兼入」= <b>以该职业为主职业时</b>，不能兼职的副职；关系有方向，反方向可能允许。</p>', '<div class="wrap"><table><tr><th>职业</th><th>属性要求</th><th>熟练度要求</th><th>其他要求</th><th>不可兼入</th></tr>']
     for name in CLASSES:
         d = data[name]
         inc = "、".join(d["incompatible"]) if d["incompatible"] else "—"
@@ -162,11 +215,19 @@ def build_matrix(data: dict) -> str:
             else:
                 cells.append(f'<td class="mc-ok" title="{rn} 可兼职 {cn}"></td>')
         body.append("<tr>" + "".join(cells) + "</tr>")
+    mobile_data = {}
+    for rn in CLASSES:
+        inc = [c for c in data[rn]["incompatible"]]
+        mobile_data[rn] = {"ok": [c for c in CLASSES if c != rn and c not in inc], "no": inc}
+    mobile_html = MOBILE_TMPL.replace("__DATA__", json.dumps(mobile_data, ensure_ascii=False))
     return (
         '<h3>职业兼容性</h3>\n'
-        '<div class="mc-legend">'
+        '<p class="mc-note">红格：以该行职业为主职业时，不能兼职该列职业。<b>关系有方向</b> —— 例如谋士可以兼职游荡者，但游荡者不能兼职谋士。没有任何职业完全不能兼职。</p>'
+        '<p class="mc-note">全表共 5 对单向限制：召唤师 ✗ 战士 · 战舞者 ✗ 牧师 · 谋士 ✗ 游荡者 · 奇械师 ✗ 武僧 · 魔契师 ✗ 奇械师（反方向均允许）。</p>'
+        + mobile_html
+        + '<div class="mc-legend">'
         '<span class="sw mc-no">不可兼职</span>'
-        '<span class="sw mc-ok">可兼职（空白）</span>'
+        '<span class="sw mc-ok">可兼职</span>'
         '<span class="sw mc-self">自身</span>'
         '<span>行 = 主职业，列 = 副职</span>'
         ''
@@ -287,6 +348,34 @@ def verify(html: str, data: dict) -> list:
         errors.append("s4 区块仍残留旧 ✓/✗ 矩阵的内联颜色")
     if "职业兼容性" not in body:
         errors.append("s4 区块缺少 职业兼容性 标题")
+    # 手机端交互块（方案 3）：结构、内联数据、方向抽样
+    if 'class="mc-mobile"' not in body or 'id="mcPick"' not in body:
+        errors.append("s4 区块缺少手机端交互块（mc-mobile / mcPick）")
+    _i = body.find("var D = ")
+    _j = body.find("var sel", _i)
+    raw = ""
+    if _i >= 0 and _j > _i:
+        raw = body[_i + 8:_j].strip().rstrip(";").strip()
+    if not raw:
+        errors.append("手机端交互块缺少内联数据 D")
+    else:
+        try:
+            mob = json.loads(raw)
+        except Exception as e:
+            mob = None
+            errors.append("手机端内联数据无法解析: %s" % e)
+        if isinstance(mob, dict):
+            if len(mob) != len(CLASSES):
+                errors.append("手机端职业键数 %d != %d" % (len(mob), len(CLASSES)))
+            for k, v in mob.items():
+                if len(v.get("ok", [])) + len(v.get("no", [])) != len(CLASSES) - 1:
+                    errors.append("手机端 %s 的 ok+no != %d" % (k, len(CLASSES) - 1))
+            if "游荡者" not in mob.get("谋士", {}).get("ok", []):
+                errors.append("手机端方向错误：谋士.ok 应含 游荡者")
+            if "谋士" in mob.get("游荡者", {}).get("ok", []):
+                errors.append("手机端方向错误：游荡者.ok 不应含 谋士")
+    if "mc-mobile-note" in body:
+        errors.append("s4 区块仍残留旧的 mc-mobile-note 提示")
     return errors
 
 
