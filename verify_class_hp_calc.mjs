@@ -77,10 +77,12 @@ ok('toughPickLevels = [4,8,13]', JSON.stringify(toughLevels) === '[4,8,13]', JSO
     const setLv = (n) => { $('hpLevel').value = n; $('hpLevel').dispatchEvent(new Event('input')); };
     const out = {};
     /* 未勾选基准 */
-    out.off = {}; [3, 4, 5, 13, 20].forEach(n => { setLv(n); out.off[n] = hp(); });
+    const fp = () => Number(document.querySelectorAll('#hpOut .hpcalc-card .hpcalc-v')[1].textContent);
+    out.off = {}; out.fpOff = {}; [3, 4, 5, 13, 20].forEach(n => { setLv(n); out.off[n] = hp(); out.fpOff[n] = fp(); });
     /* 勾选 + 选 4 级 */
     $('hpTough').checked = true; $('hpTough').dispatchEvent(new Event('change'));
     $('hpToughLv').value = '4'; $('hpToughLv').dispatchEvent(new Event('change'));
+    setLv(20); out.fpOn20 = fp(); setLv(4);
     out.L4 = {}; [3, 4, 5, 20].forEach(n => { setLv(n); out.L4[n] = hp(); });
     /* 选 8 级 */
     $('hpToughLv').value = '8'; $('hpToughLv').dispatchEvent(new Event('change'));
@@ -96,6 +98,7 @@ ok('toughPickLevels = [4,8,13]', JSON.stringify(toughLevels) === '[4,8,13]', JSO
   });
   await b2.close();
   const b = res.off;
+  res.fpSame = res.fpOff[20] === res.fpOn20;
   ok('健壮 L=4 · N=3（早于选择）→ 与不勾一致', res.L4[3] === b[3], res.L4[3] + ' vs ' + b[3]);
   ok('健壮 L=4 · N=4 → +2', res.L4[4] === b[4] + 2, res.L4[4] + ' vs ' + (b[4] + 2));
   ok('健壮 L=4 · N=5 → +4', res.L4[5] === b[5] + 4, res.L4[5] + ' vs ' + (b[5] + 4));
@@ -103,6 +106,7 @@ ok('toughPickLevels = [4,8,13]', JSON.stringify(toughLevels) === '[4,8,13]', JSO
   ok('健壮 L=8 · N=20 → +26', res.L8[20] === b[20] + 26, res.L8[20] + ' vs ' + (b[20] + 26));
   ok('健壮 L=13 · N=13 → +2', res.L13[13] === b[13] + 2, res.L13[13] + ' vs ' + (b[13] + 2));
   ok('健壮 L=13 · N=20 → +16', res.L13[20] === b[20] + 16, res.L13[20] + ' vs ' + (b[20] + 16));
+  ok('健壮不影响疲劳（勾选前后 FP 相同）', res.fpSame === true, 'FP(20级): ' + res.fpOff[20] + ' vs 勾健壮后 ' + res.fpOn20);
   ok('不勾健壮时选择等级不参与计算（与不勾一致）', res.offAgain[20] === b[20], res.offAgain[20] + ' vs ' + b[20]);
   ok('不勾健壮时「选择等级」隐藏', res.wrapHidden === true, String(res.wrapHidden));
   ok('健壮场景无 JS 错误', e2.length === 0, JSON.stringify(e2.slice(0, 2)));

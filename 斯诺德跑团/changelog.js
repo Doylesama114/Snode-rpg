@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8058',
+    date: '2026-10-14',
+    changes: [
+      '修复职业页血量疲劳计算器：健壮专长不再影响疲劳值；门禁新增对应断言'
+    ]
+  },
+
+
+  {
     version: '1.0.8057',
     date: '2026-10-14',
     changes: [

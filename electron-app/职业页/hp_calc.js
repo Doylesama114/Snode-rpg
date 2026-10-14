@@ -64,8 +64,8 @@ var SnowdHpCalc = (function () {
       var lv = Math.max(1, Math.min(20, Number(level) || 1));
       var pickLv = Number($('hpToughLv') && $('hpToughLv').value) || 4;
       var effective = Math.max(0, lv - pickLv + 1);
-      var fb = tough ? 2 * effective : 0;
-      return { hp: S.totalHP(className, lv, '', 0, con, race, bg, fb, size), fp: S.totalFP(className, lv, '', 0, ka, kv, race, fb), con: con, ka: ka, kv: kv, race: race, bg: bg, size: size, level: lv, tough: tough, pickLv: pickLv, effective: effective, fb: fb };
+      var fb = tough ? 2 * effective : 0;/* 健壮只影响生命值；totalFP 虽也收 fb 参数，但传 0，避免误加到疲劳 */
+      return { hp: S.totalHP(className, lv, '', 0, con, race, bg, fb, size), fp: S.totalFP(className, lv, '', 0, ka, kv, race, 0), con: con, ka: ka, kv: kv, race: race, bg: bg, size: size, level: lv, tough: tough, pickLv: pickLv, effective: effective, fb: fb };
     }
     function render() {
       var S = SNOWD_CHARACTER_STATS;
