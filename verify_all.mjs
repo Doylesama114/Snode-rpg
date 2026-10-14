@@ -710,6 +710,21 @@ try {
 console.log(exportRobustOK ? '✅ 导出空值健壮性通过' : '❌ 导出空值健壮性失败');
 totalErrors += exportRobustOK ? 0 : 1;
 
+// 职业页血量/疲劳计算器（18 页 + 与面板一致）
+console.log('\n=== 职业页血量计算器 ===');
+let hpCalcOK = true;
+try {
+  let hc = spawnSync('node', [join(BASE, 'verify_class_hp_calc.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (hc.stdout) console.log(hc.stdout.trim());
+  if (hc.stderr) console.error(hc.stderr.trim());
+  if (hc.status !== 0) hpCalcOK = false;
+} catch (e) {
+  hpCalcOK = false;
+  console.log('❌ 职业页血量计算器校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(hpCalcOK ? '✅ 职业页血量计算器通过' : '❌ 职业页血量计算器失败');
+totalErrors += hpCalcOK ? 0 : 1;
+
 let classFeatOK = true;
 try {
   let cfo = spawnSync('node', [join(BASE, 'verify_class_features.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
@@ -818,6 +833,6 @@ const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

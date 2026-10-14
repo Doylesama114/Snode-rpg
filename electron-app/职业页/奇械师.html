@@ -48,6 +48,7 @@
   <div class="nav-inner">
   <div class="filter-bar" id="ar-filter-bar"></div>
 <a class="style-link" href="#ar-class-features">职业专长</a>
+      <a class="style-link" href="#ar-hpcalc">血量/疲劳计算器</a>
 <a class="style-link" href="#ar-starting-features">起始特性</a>
 <a class="adv-link" href="奇械师·进阶.html">→ 查看进阶途径</a>
   <div class="tier-list">    <a class="skill-link" href="#ar-skill-1">精准射击</a>    <a class="skill-link" href="#ar-skill-2">基础材料学</a>    <a class="skill-link" href="#ar-skill-3">同调协手</a>    <a class="skill-link" href="#ar-skill-4">魔法武器</a>    <a class="skill-link" href="#ar-skill-101">万能遥控器（图纸）</a>    <a class="skill-link" href="#ar-skill-102">发条老鼠（图纸）</a>    <a class="skill-link" href="#ar-skill-103">报警机器人（图纸）</a>    <a class="skill-link" href="#ar-skill-104">破片手雷（图纸）</a>  </div>
@@ -186,6 +187,10 @@
   <div id="ar-empty" class="empty hidden">没有找到匹配的内容。</div>
 
 <section class="class-features" id="ar-class-features" aria-label="职业专长"><div class="class-feature-head"><h2>职业专长</h2><p class="class-feature-intro">奇械师的关键属性为智力，作为一名法师，你获得以下职业专长。</p></div><div class="class-feature-tabs" role="tablist"><button type="button" class="class-feature-chip active" role="tab" aria-selected="true" data-feature-index="0">奇械构装</button><button type="button" class="class-feature-chip" role="tab" aria-selected="false" data-feature-index="1">万用模组</button><button type="button" class="class-feature-chip" role="tab" aria-selected="false" data-feature-index="2">脑力强化</button></div><div class="class-feature-panels"><div class="class-feature-panel active" role="tabpanel" data-feature-panel="0"><h3>奇械构装</h3><div class="class-feature-body"><p>你擅长制作各类奇械装备，这些装备可以由自身使用，也能够交予他人提升团队的整体实力。</p><p>此外，你获得1点工程学的熟练度。</p></div></div><div class="class-feature-panel" role="tabpanel" data-feature-panel="1"><h3>万用模组</h3><div class="class-feature-body"><p>你拥有足够的知识储备在脑海中构建出科研模组，你的奇械师职业等级每提升1级，便额外获得一个专业槽位。</p><p>此外，你可以选择知识中的一个熟练项，获得1点对应熟练度。</p></div></div><div class="class-feature-panel" role="tabpanel" data-feature-panel="2"><h3>脑力强化</h3><div class="class-feature-body"><p>当你进行一次智力检定时，可以额外附加一次你的智力调整值，这个效果在进行一次长休前仅能够生效一次。</p></div></div></div></section>
+<section class="hpcalc" id="ar-hpcalc" aria-label="血量与疲劳计算器">
+  <div id="ar-hpcalc-mount"></div>
+</section>
+
 <section class="style starting" id="ar-starting-features">
     <h2>起始特性</h2>
     <p class="intro">你可以从以下起始特性中选择两项加入你的技能或天赋列表：</p>
@@ -1001,5 +1006,11 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 <script>window.__guiSkin = true; document.documentElement.classList.add("gui-class-page");</script>
 <script src="../斯诺德跑团/guild-ui.js"></script>
 <script src="../斯诺德跑团/user_preferences.js"></script>
+
+<link rel="stylesheet" href="hp_calc.css?v=1.0.8055"/>
+<script src="hp_calc_data.js"></script>
+<script src="../斯诺德跑团/character_stats.js"></script>
+<script src="hp_calc.js"></script>
+<script>SnowdHpCalc.mount(document.getElementById("ar-hpcalc-mount"), "奇械师");</script>
 </body>
 </html>
