@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8060',
+    date: '2026-10-15',
+    changes: [
+      '工具与门禁维护：repair 脚本自愈式坐标重定位与 --panel-only 护栏、守望者重建脚本弃用标注、源文件替换体检、语言选择器门禁断言、计算器数据真 diff'
+    ]
+  },
+
+
+  {
     version: '1.0.8059',
     date: '2026-10-15',
     changes: [
