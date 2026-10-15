@@ -1,3 +1,6 @@
+# DEPRECATED（2026-10-15）：此脚本为【整页重建】，会把已有技能 ID 按源文档顺序重新编号，
+# 并可能清空 type 字段，违反 职业页/AGENTS.md「已有技能 ID 不得重新编号」。
+# 请改用：python -X utf8 scripts/apply_watchman_sync.py（基于 class_sync_core，实测 ID 0 变化）。
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """从 基础职业-守望者.docx 重建守望者 JSON + HTML + skill_effects。

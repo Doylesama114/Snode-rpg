@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 const SRC = '斯诺德跑团/panel_data.js';
-const OUT = '职业页/hp_calc_data.js';
+const outArg = process.argv.indexOf('--out');
+const OUT = outArg >= 0 && process.argv[outArg + 1] ? process.argv[outArg + 1] : '职业页/hp_calc_data.js';
 const src = fs.readFileSync(SRC, 'utf8');
 let REF_CLASSES = null, REF_RACES = null, REF_BACKGROUNDS = null;
 const notes = [];

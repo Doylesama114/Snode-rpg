@@ -135,3 +135,32 @@ if errors:
         print(" -", e)
     sys.exit(1)
 print("\nPASS")
+
+# --- ID 稳定性断言（2026-10-15 新增）：防止整页重建把已有技能 ID 重新编号 ---
+def _check_id_stability():
+    import subprocess, json as _json, sys as _sys
+    r = subprocess.run(['git', 'show', 'HEAD:职业页/数据/守望者.json'], capture_output=True)
+    if r.returncode != 0:
+        print('ID 稳定性: 跳过（无法读取 HEAD 版本）')
+        return True
+    old = _json.loads(r.stdout.decode('utf-8', 'replace'))
+    new = _json.loads(open('职业页/数据/守望者.json', encoding='utf-8').read())
+    def ids(dd):
+        out = {}
+        for k, v in dd.items():
+            if isinstance(v, list):
+                for it in v:
+                    if isinstance(it, dict) and it.get('name'): out[it['name']] = it.get('id')
+        return out
+    o, n = ids(old), ids(new)
+    bad = [k for k in o if k in n and o[k] != n[k]]
+    missing = [k for k in o if k not in n]
+    empty_type = [k for k in n if n[k] and not (new.get('skills') and any(s.get('name') == k and s.get('type') for s in new['skills']))]
+    print('ID 稳定性: 变动 %d / %d · 消失 %d · type 为空 %d' % (len(bad), len(o), len(missing), len(empty_type)))
+    if bad:
+        print('  ✗ 以下技能 ID 被重新编号: ' + ', '.join('%s: %s→%s' % (k, o[k], n[k]) for k in bad[:8]))
+        return False
+    return True
+_id_ok = _check_id_stability()
+if not _id_ok:
+    raise SystemExit('ID 稳定性校验失败：已有技能 ID 不得重新编号')

@@ -27,31 +27,71 @@ def update(skill,block):
     C.apply_run_metadata(skill,block)
     skill['source']=dict(skill.get('source') or {},kind='docx',para_start=block['source_span']['start'],para_end=block['source_span']['end'])
 def main():
-    apply=argparse.ArgumentParser();apply.add_argument('--apply',action='store_true');args=apply.parse_args()
+    apply=argparse.ArgumentParser();apply.add_argument('--apply',action='store_true');apply.add_argument('--panel-only',action='store_true');args=apply.parse_args()
+    if args.panel_only:
+        import subprocess
+        print('仅重建面板数据（不触碰职业页）...')
+        rc=subprocess.run([sys.executable,'-B','-X','utf8',str(ROOT/'scripts'/'build_panel_skill_data.py')]).returncode
+        print('面板构建返回码: %d'%rc)
+        return
     fixture=json.loads((ROOT/'scripts/skill_effects_cases.json').read_text(encoding='utf8'))['cases']
     classes=[r['name'] for r in json.loads((ROOT/'职业页/数据/classes.json').read_text(encoding='utf8'))]
     data={cn:json.loads((ROOT/'职业页/数据'/f'{cn}.json').read_text(encoding='utf8')) for cn in classes}
     domain=json.loads((ROOT/'职业页/数据/牧师·神圣领域.json').read_text(encoding='utf8'))
     before={cn:[(s['id'],s['name']) for s in d['skills']] for cn,d in data.items()}
-    cache={};updated=[];added=[]
+    cache={};updated=[];added=[];relocated=[]
     def parse(path,start):
         key=str(path)
         if key not in cache:
             ps=C.extract_paragraphs(path);cache[key]=(ps,E.discover_skill_names(ps))
         ps,names=cache[key];b=C.extract_skill_block(ps,start,names)
-        if not b:raise ValueError(f'Missing source block: {path.name}:{start}')
+        if not b:return None
         return b
+    def relocate(path, expected):
+        """按用例的期望文本在源文档中重新定位技能块（坐标漂移自愈）"""
+        key=str(path)
+        if key not in cache:
+            ps=C.extract_paragraphs(path);cache[key]=(ps,E.discover_skill_names(ps))
+        ps,names=cache[key]
+        want=[re.sub(r'\\s+','',e) for e in expected if e]
+        best=None
+        for i in range(1,len(ps)+1):
+            b=C.extract_skill_block(ps,i,names)
+            if not b:continue
+            pool=[b.get('description') or '']+[u.get('text') or '' for u in (b.get('level_upgrades') or [])]+list((b.get('fields') or {}).values())
+            hay=re.sub(r'\\s+','',' '.join(str(x) for x in pool))
+            hit=sum(1 for w in want if w and w in hay)
+            if hit and (best is None or hit>best[0]):
+                best=(hit,i,b)
+        return best
+
     def allocate(dom):
         used={s['id'] for s in dom['skills']};prefix='pr-d-'+dom['id']+'-'
         i=max((int(x[len(prefix):]) for x in used if x.startswith(prefix) and x[len(prefix):].isdigit()),default=0)+1
         return prefix+str(i)
     for case in fixture:
         dn=case.get('deity');cls=case['class']
-        dom=domain['domains'][dn] if dn else None
+        if dn:
+            dom=domain['domains'].get(dn)
+            if dom is None:
+                # 神名在源文档 / 夹具 / 领域 JSON 之间存在「丰收 / 丰饶」写法差异，按同义写法回退查找
+                for a,b2 in (('丰收','丰饶'),('丰饶','丰收')):
+                    if a in dn:
+                        cand=domain['domains'].get(dn.replace(a,b2))
+                        if cand is not None:
+                            dom=cand
+                            break
+        else:
+            dom=None
         pool=dom['skills'] if dn else data[cls]['skills']
         hits=[s for s in pool if s['name']==case['name'] and (not case['id'] or s['id']==case['id'])]
         if len(hits)>1:raise ValueError(case)
         block=parse(ROOT/case['source_file'],case['source_start'])
+        if block is None:
+            moved=relocate(ROOT/case['source_file'],case.get('expected') or [])
+            if moved:
+                block=moved[2]
+                relocated.append('%s/%s: %s -> %s (匹配 %d 段)'%(case['class'],case.get('name',''),case['source_start'],moved[1],moved[0]))
         if hits:s=hits[0]
         else:
             assert dn and case['name'] in ('规划路线','秘法习得','通感者')
