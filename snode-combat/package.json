@@ -1,0 +1,21 @@
+{
+  "name": "snode-combat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "斯诺德战斗系统 v2 — BG3 式交互的 2D 格战棋（纯 PVE 首发）",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "pixi.js": "^8.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0"
+  }
+}

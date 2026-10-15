@@ -1,0 +1,47 @@
+{
+  "id": "rogue-elusive",
+  "name": "飘忽不定",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "2",
+    "duration": "1轮",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "法术",
+      "暗影",
+      "隐秘",
+      "短休/长休"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "持续1轮：对你的攻击有劣势；指向性效果选择你为目标前必须花附赠动作做专注检定（D12+D8+体质>15），失败不能选你；移动可穿过单位。",
+    "keywords": [
+      "隐秘"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "condition",
+      "name": "elusive",
+      "duration": {
+        "scope": "rounds",
+        "value": 1
+      }
+    }
+  ]
+}

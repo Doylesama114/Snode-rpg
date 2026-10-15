@@ -1,0 +1,46 @@
+{
+  "id": "rogue-combo-cycle",
+  "name": "连击循环",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": "2",
+    "duration": "1轮",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "补给",
+      "短休/长休"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "自身回合免费使用。记录生效期间消耗的连击点，1轮后返还全部，不超上限。",
+    "keywords": [
+      "补给"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "condition",
+      "name": "combo_cycle",
+      "duration": {
+        "scope": "rounds",
+        "value": 1
+      }
+    }
+  ]
+}

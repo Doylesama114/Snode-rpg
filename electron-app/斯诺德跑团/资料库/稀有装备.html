@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>稀有装备 · 斯诺德跑团</title>
+<style>
+:root{--bg:#f6f2e8;--panel:#fffdf8;--ink:#1f2522;--muted:#69706b;--line:#d8d2c4;--accent:#8a6d3b;--red:#b3261e;--green:#2e7d4f}
+html.dark{--bg:#1b1e21;--panel:#24272b;--ink:#e8e6e3;--muted:#9aa0a6;--line:#3a3d40}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 14px 60px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.top h1{font-size:20px;margin:0}
+.back{color:var(--muted);text-decoration:none;font-size:14px}
+.count{color:var(--muted);font-size:13px;margin-left:auto}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 16px}
+.bar input,.bar select{font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:inherit}
+.bar input{flex:1 1 200px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px}
+.card h3{margin:0 0 6px;font-size:17px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:#f0ece2;color:#5b5346}
+html.dark .chip{background:#2c2f33;color:#c9c6c1}
+.chip.req{background:#eaf6ee;color:#1f6b3a}
+html.dark .chip.req{background:#1f3a2a;color:#8fd6a8}
+.eff{white-space:pre-wrap;font-size:14px;color:#3d3a33}
+html.dark .eff{color:#d8d6d3}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (max-width:600px){.wrap{padding:14px 10px 50px}.card{padding:12px}.top h1{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../资料库.html">← 返回资料库</a>
+    <h1>稀有装备</h1>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="bar">
+    <input type="search" id="q" placeholder="搜索名称或效果…">
+    <select id="fCat"></select>
+    <select id="fWeight"></select>
+    <select id="fReq"></select>
+  </div>
+  <div id="list"></div>
+</div>
+<script src="../../职业页/数据/equipment_catalog_data.js"></script>
+<script>
+(function(){
+  if (typeof EQUIPMENT_CATALOG === "undefined") { document.getElementById("list").innerHTML = "<div class=\"empty\">数据未加载（equipment_catalog_data.js）</div>"; return; }
+  var ALL = [];
+  Object.keys(EQUIPMENT_CATALOG).forEach(function(cat){
+    EQUIPMENT_CATALOG[cat].forEach(function(it){ ALL.push(it); });
+  });
+  var q = document.getElementById("q"), fCat = document.getElementById("fCat"), fWeight = document.getElementById("fWeight"), fReq = document.getElementById("fReq");
+  function fill(sel, label, values){
+    var h = "<option value=\"\">" + label + "</option>";
+    values.forEach(function(v){ h += "<option value=\"" + v + "\">" + v + "</option>"; });
+    sel.innerHTML = h;
+  }
+  function uniq(arr){ var o = {}, r = []; arr.forEach(function(v){ if(v && !o[v]){ o[v]=1; r.push(v);} }); return r.sort(); }
+  fill(fCat, "全部类别", uniq(ALL.map(function(i){ return i.category; })));
+  fill(fWeight, "全部负重", uniq(ALL.map(function(i){ return i.weight; })).sort(function(a,b){ return Number(a)-Number(b); }));
+  fill(fReq, "全部职业要求", uniq(ALL.map(function(i){ return i.requirement; })));
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, function(c){ var Q = String.fromCharCode(34); return ({"&":"&amp;","<":"&lt;",">":"&gt;",Q:"&quot;"})[c]; }); }
+  function render(){
+    var kw = q.value.trim().toLowerCase();
+    var list = ALL.filter(function(it){
+      if (fCat.value && it.category !== fCat.value) return false;
+      if (fWeight.value && String(it.weight) !== fWeight.value) return false;
+      if (fReq.value && it.requirement !== fReq.value) return false;
+      if (kw && (it.name + " " + it.effect).toLowerCase().indexOf(kw) < 0) return false;
+      return true;
+    });
+    document.getElementById("count").textContent = "共 " + ALL.length + " 项 · 当前显示 " + list.length + " 项";
+    if (!list.length) { document.getElementById("list").innerHTML = "<div class=\"empty\">没有符合条件的装备</div>"; return; }
+    document.getElementById("list").innerHTML = list.map(function(it){
+      return "<div class=\"card\"><h3>" + esc(it.name) + "</h3>" +
+        "<div class=\"meta\">" +
+        "<span class=\"chip\">" + esc(it.category) + "</span>" +
+        (it.subcategory ? "<span class=\"chip\">" + esc(it.subcategory) + "</span>" : "") +
+        (it.type ? "<span class=\"chip\">" + esc(it.type) + "</span>" : "") +
+        (it.weight ? "<span class=\"chip\">负重 " + esc(it.weight) + "</span>" : "") +
+        (it.requirement ? "<span class=\"chip req\">职业要求 " + esc(it.requirement) + "</span>" : "") +
+        "</div><div class=\"eff\">" + esc(it.effect) + "</div></div>";
+    }).join("");
+  }
+  [q, fCat, fWeight, fReq].forEach(function(el){ el.addEventListener("input", render); el.addEventListener("change", render); });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "id": "rogue-provoke-duel",
+  "name": "挑衅对决",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "一阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "perBattle",
+      "max": 1
+    },
+    "keywords": [
+      "互动",
+      "每场战斗限一次"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "自身回合免费使用：移除自己1次反应使用次数与一名敌方角色1次反应使用次数。",
+    "keywords": [
+      "互动"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

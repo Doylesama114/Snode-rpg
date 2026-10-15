@@ -1,0 +1,46 @@
+{
+  "id": "rogue-stealth",
+  "name": "潜行",
+  "class": "游荡者",
+  "style": "妙手",
+  "tier": "起始",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "1",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "隐秘",
+      "激活"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "noAdjacentEnemy"
+    }
+  ],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "相邻位置无敌人时可进入潜行。潜行中不可被敌方单体选定；攻击或全速移动解除。",
+    "keywords": [
+      "隐秘"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "stealth",
+      "value": true
+    }
+  ]
+}

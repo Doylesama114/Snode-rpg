@@ -1,0 +1,146 @@
+{
+  "id": "rogue-bone-pierce",
+  "name": "刺骨",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "终结技"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets",
+        "mods": [
+          {
+            "ignoreAc": "@comboPoints"
+          }
+        ]
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "source": "weapon",
+            "timing": "before",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod"
+          },
+          {
+            "op": "damage",
+            "source": "effect",
+            "timing": "before",
+            "dice": "0",
+            "flat": "@comboPoints"
+          },
+          {
+            "op": "damage",
+            "source": "effect",
+            "timing": "after",
+            "dice": "1D6",
+            "repeat": "perComboPoint",
+            "rollFloor": "@boneFloor"
+          },
+          {
+            "op": "resource",
+            "resource": "comboPoints",
+            "amount": "-all",
+            "target": "self"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "boneFloor": "0"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "boneFloor": "3"
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "boneFloor": "6"
+        }
+      }
+    },
+    {
+      "minLevel": 15,
+      "patch": {
+        "rollMods": [
+          {
+            "if": "@comboPoints >= 5",
+            "guaranteedCrit": true
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "description": "消耗全部连击点攻击：忽视X点AC、结算前+X伤害、每点连击点结算后+1D6。5级伤害骰最低3；10级最低6；15级消耗至少5点则伤害必暴击。",
+    "keywords": [
+      "近战攻击",
+      "终结技"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-9",
+    "reviewStatus": "draft"
+  }
+}

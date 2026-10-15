@@ -1,0 +1,68 @@
+{
+  "id": "rogue-feint",
+  "name": "佯攻",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "一阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "天赋",
+      "短休/长休"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onAttackMiss",
+      "effects": [
+        {
+          "op": "choice",
+          "prompt": "返还本次攻击动作与FP，改用另一战技攻击",
+          "options": [
+            {
+              "label": "触发",
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "levelScaling": [
+    {
+      "minLevel": 5,
+      "patch": {
+        "cast": {
+          "action": "none",
+          "fp": null,
+          "duration": "-",
+          "usage": {
+            "scope": "shortRest",
+            "max": 2
+          },
+          "keywords": [
+            "天赋",
+            "短休/长休（2）"
+          ]
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "需命中检定的基础攻击未命中后，返还动作与FP，改为用被取消动作施展另一战技。",
+    "keywords": [
+      "短休/长休"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-7",
+    "reviewStatus": "draft"
+  }
+}

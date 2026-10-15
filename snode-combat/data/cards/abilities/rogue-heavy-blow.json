@@ -1,0 +1,122 @@
+{
+  "id": "rogue-heavy-blow",
+  "name": "重磅一击",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "远程攻击",
+      "终结技",
+      "幸运豁免（15）"
+    ],
+    "consumeAmmo": true
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "火枪"
+      ]
+    },
+    {
+      "kind": "weaponLoaded"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 12
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets",
+        "mods": [
+          {
+            "flat": "@comboPoints"
+          },
+          {
+            "critRange": "@comboPoints"
+          }
+        ]
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "source": "weapon",
+            "timing": "before",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "critMultiplier": 3
+          },
+          {
+            "op": "damage",
+            "source": "effect",
+            "timing": "after",
+            "dice": "0",
+            "flat": "@comboPoints"
+          },
+          {
+            "when": "crit",
+            "op": "conditionGroup",
+            "statuses": [
+              "prone",
+              "burning"
+            ],
+            "save": {
+              "attr": "幸运",
+              "dc": 15
+            }
+          },
+          {
+            "op": "resource",
+            "resource": "comboPoints",
+            "amount": "-all",
+            "target": "self"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "display": {
+    "description": "消耗弹药和全部连击点：每点命中+1、暴击率+1、结算后伤害+1；暴击为三倍，随后幸运豁免DC15失败进入击倒+灼烧。",
+    "keywords": [
+      "远程攻击",
+      "终结技"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-75",
+    "reviewStatus": "draft"
+  }
+}

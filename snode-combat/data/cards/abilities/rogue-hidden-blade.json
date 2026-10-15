@@ -1,0 +1,35 @@
+{
+  "id": "rogue-hidden-blade",
+  "name": "暗里藏刀",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "三阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "perBattle",
+      "max": 1
+    },
+    "keywords": [
+      "暗影",
+      "每场战斗限一次"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "落单状态下第一次近战攻击命中后，结算伤害后+10（L5+15，L10落单击杀刷新）。未命中不消耗。",
+    "keywords": [
+      "暗影"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

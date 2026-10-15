@@ -1,0 +1,46 @@
+{
+  "id": "rogue-anticipate",
+  "name": "克敌先机",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "一阶",
+  "category": "skill",
+  "active": false,
+  "cast": {
+    "action": "free",
+    "fp": null,
+    "duration": "1轮",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "躲闪",
+      "短休/长休"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onBeforeEnemyAttackRoll",
+      "when": "sourceIsPlayer",
+      "effects": [
+        {
+          "op": "modifier",
+          "stat": "attackRoll",
+          "adv": "disadvantage",
+          "target": "source"
+        }
+      ]
+    }
+  ],
+  "display": {
+    "description": "敌人攻击你掷骰前声明：该次攻击劣势；你对其下一次基础/施法攻击优势，持续到你下一轮次结束。",
+    "keywords": [
+      "躲闪"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-6",
+    "reviewStatus": "draft"
+  }
+}

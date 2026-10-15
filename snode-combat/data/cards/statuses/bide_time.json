@@ -1,0 +1,16 @@
+{
+  "id": "bide_time",
+  "name": "伺机待发",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "施展者本回合攻击命中与伤害结算后减半，下个自身回合额外获得主要动作。",
+    "icon": "◆",
+    "source": "P2内部状态"
+  }
+}

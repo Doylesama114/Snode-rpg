@@ -1,0 +1,66 @@
+{
+  "id": "rogue-shadow-step",
+  "name": "暗影步",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "暗影",
+      "迅捷",
+      "跃迁",
+      "媒介",
+      "短休/长休"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "lacksStatus",
+      "target": "self",
+      "name": "禁锢"
+    },
+    {
+      "kind": "lacksStatus",
+      "target": "self",
+      "name": "压制"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 6
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "movement": {
+    "mode": "teleport",
+    "destination": "adjacentToTarget",
+    "triggerOpportunity": false,
+    "allowAnyTargetDirection": true
+  },
+  "effects": [],
+  "display": {
+    "description": "选择6米内一名可见角色，跃迁至其周围8格内一个未占据位置。",
+    "keywords": [
+      "跃迁"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-31",
+    "reviewStatus": "draft"
+  }
+}

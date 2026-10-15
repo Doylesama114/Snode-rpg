@@ -1,0 +1,64 @@
+{
+  "id": "rogue-sand-throw",
+  "name": "抛沙",
+  "class": "游荡者",
+  "style": "妙手",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": null,
+    "duration": "instant",
+    "usage": { "scope": "unlimited", "max": 99 },
+    "keywords": ["战技", "感知豁免（12）", "递减（-5）"]
+  },
+  "conditions": [{ "kind": "equipped", "any": ["沙袋", "粉尘"] }],
+  "targeting": {
+    "kind": "area",
+    "area": { "shape": "cone", "rings": 2, "metric": "grid" },
+    "filter": { "teams": ["enemy"], "livingOnly": true, "facingSource": true }
+  },
+  "resolution": {
+    "rolls": [
+      { "id": "perception", "kind": "save", "attr": "感知", "dc": 12, "target": "allInArea" }
+    ],
+    "branches": [
+      {
+        "if": { "roll": "perception", "outcome": "saveFail" },
+        "effects": [
+          { "op": "condition", "name": "blinded", "layers": 1, "duration": { "scope": "battle" } }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "reactiveUse": {
+    "trigger": { "event": "hpBelowPercent", "value": 25 },
+    "usage": { "scope": "perBattle", "max": 1 },
+    "offTurn": true
+  },
+  "levelScaling": [
+    { "minLevel": 1, "patch": {} },
+    {
+      "minLevel": 5,
+      "patch": {
+        "branches": [
+          {
+            "if": { "roll": "perception", "outcome": "saveFail" },
+            "effects": [
+              { "op": "condition", "name": "blinded", "layers": 1, "duration": { "scope": "battle" } },
+              { "op": "condition", "name": "slowed", "layers": 1, "duration": { "scope": "battle" } }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "description": "对自身前方扇形2环内所有面朝向你的角色进行DC12感知豁免，失败进入致盲；5级后失败同时进入减速。生命值降至25%最大生命值时，每场战斗一次可在自身回合外施展。",
+    "keywords": ["感知豁免"],
+    "source": "职业页/数据/游荡者.json#r-skill-16",
+    "reviewStatus": "draft"
+  }
+}

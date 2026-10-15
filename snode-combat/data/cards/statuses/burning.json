@@ -1,0 +1,27 @@
+{
+  "id": "burning",
+  "name": "灼烧",
+  "kind": "stacking",
+  "maxLayers": 99,
+  "duration": {
+    "scope": "battle"
+  },
+  "triggers": [
+    {
+      "event": "onTurnStart",
+      "effects": [
+        {
+          "op": "damage",
+          "dice": "1D4 * @layers",
+          "type": "火焰",
+          "target": "self"
+        }
+      ]
+    }
+  ],
+  "display": {
+    "description": "每轮开始受1D4×层数火焰伤害；可用附赠动作扑灭。",
+    "icon": "🔥",
+    "source": "help.html 异常状态·灼烧"
+  }
+}

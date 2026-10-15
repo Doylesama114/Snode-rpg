@@ -1,0 +1,16 @@
+{
+  "id": "charmed",
+  "name": "魅惑",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "temporary"
+  },
+  "category": "mind_control",
+  "triggers": [],
+  "display": {
+    "description": "目标跳过下一个自身回合，改为在回合开始时朝施展来源进行一次基础移动；期间无法执行反应动作；目标下一个自身回合结束时解除；受到伤害或刺激立即解除。",
+    "icon": "💗",
+    "source": "斯诺德跑团/help.html 异常状态规则·魅惑"
+  }
+}

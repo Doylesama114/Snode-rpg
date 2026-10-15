@@ -1,0 +1,45 @@
+{
+  "id": "rogue-daring",
+  "name": "胆大妄为",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "四阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "天赋",
+      "韧性"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onBattleStart",
+      "when": "@comboPoints >= 5",
+      "effects": [
+        {
+          "op": "modifier",
+          "stat": "save",
+          "adv": "advantage",
+          "target": "self"
+        }
+      ]
+    }
+  ],
+  "display": {
+    "description": "拥有5点以上连击点时：魅力/意志检定优势、免疫同级恐惧与忏悔、基础攻击结算后+2（8级+4）。L12/L15待后续。",
+    "keywords": [
+      "韧性"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-78",
+    "reviewStatus": "draft"
+  }
+}

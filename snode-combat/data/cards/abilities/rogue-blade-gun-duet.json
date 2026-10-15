@@ -1,0 +1,34 @@
+{
+  "id": "rogue-blade-gun-duet",
+  "name": "剑炮齐奏",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "三阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "增益"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "同时持剑类武器与火枪时：剑类近战命中+1层标记，下次远程消耗全部标记且每层暴击范围+1；远程暴击后下次近战结算后+5；同回合近远各发起一次后下一次伤害令目标灼烧；任何暴击+1连击点。",
+    "keywords": [
+      "增益"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "disarmed",
+  "name": "缴械",
+  "kind": "binary",
+  "duration": { "scope": "battle" },
+  "weaponDisabled": true,
+  "removal": {
+    "byAction": { "action": "bonus" },
+    "text": "收纳当前武器（0动作）并重新拿出武器（0动作）后解除；天生武器/徒手攻击不受缴械影响。"
+  },
+  "display": {
+    "description": "无法使用当前持有的物件发起攻击或使用其特殊效果。天生武器（爪击、撕咬等徒手攻击）不受影响。可通过重新武装解除。",
+    "icon": "🗡️",
+    "source": "斯诺德跑团/help.html 异常状态规则·缴械 + 项目所有者裁决"
+  }
+}

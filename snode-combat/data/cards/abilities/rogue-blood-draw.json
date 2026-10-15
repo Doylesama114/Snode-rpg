@@ -1,0 +1,217 @@
+{
+  "id": "rogue-blood-draw",
+  "name": "抽血",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "2",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "生命流失",
+      "体质豁免（15）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "剑类",
+        "匕首",
+        "袖剑"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "source": "weapon"
+          },
+          {
+            "op": "condition",
+            "name": "bleeding",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "体质",
+              "dc": 15
+            }
+          },
+          {
+            "when": "targetHadStatusBefore('bleeding')",
+            "op": "statusLayers",
+            "name": "bleeding",
+            "amount": "+1",
+            "target": "targets"
+          },
+          {
+            "when": "targetHadStatusBefore('bleeding')",
+            "op": "loseHp",
+            "amount": "1D8",
+            "target": "targets"
+          },
+          {
+            "op": "choice",
+            "prompt": "是否消耗全部连击点，赋予目标相同层数的流血？",
+            "when": "@comboPoints > 0",
+            "options": [
+              {
+                "label": "消耗全部连击点",
+                "effects": [
+                  {
+                    "op": "resource",
+                    "resource": "comboPoints",
+                    "amount": "-all",
+                    "target": "self"
+                  },
+                  {
+                    "op": "statusLayers",
+                    "name": "bleeding",
+                    "amount": "@consumedResource",
+                    "target": "targets"
+                  }
+                ]
+              },
+              {
+                "label": "不消耗",
+                "effects": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {}
+    },
+    {
+      "minLevel": 8,
+      "patch": {
+        "branches": [
+          {
+            "if": {
+              "roll": "attack",
+              "outcome": "hit"
+            },
+            "effects": [
+              {
+                "op": "damage",
+                "dice": "@weapon.dice",
+                "flat": "@weapon.attrMod",
+                "source": "weapon"
+              },
+              {
+                "op": "condition",
+                "name": "bleeding",
+                "layers": 1,
+                "duration": {
+                  "scope": "battle"
+                },
+                "save": {
+                  "attr": "体质",
+                  "dc": 15
+                }
+              },
+              {
+                "when": "targetHadStatusBefore('bleeding')",
+                "op": "statusLayers",
+                "name": "bleeding",
+                "amount": "+2",
+                "target": "targets"
+              },
+              {
+                "when": "targetHadStatusBefore('bleeding')",
+                "op": "loseHp",
+                "amount": "1D8 + @targetBleedLayers",
+                "target": "targets"
+              },
+              {
+                "op": "choice",
+                "prompt": "是否消耗全部连击点，赋予目标相同层数的流血？",
+                "when": "@comboPoints > 0",
+                "options": [
+                  {
+                    "label": "消耗全部连击点",
+                    "effects": [
+                      {
+                        "op": "resource",
+                        "resource": "comboPoints",
+                        "amount": "-all",
+                        "target": "self"
+                      },
+                      {
+                        "op": "statusLayers",
+                        "name": "bleeding",
+                        "amount": "@consumedResource",
+                        "target": "targets"
+                      }
+                    ]
+                  },
+                  {
+                    "label": "不消耗",
+                    "effects": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "description": "攻击命中并结算武器伤害后，目标体质豁免DC15，失败进入流血（D3决定层数）。若施放前目标已流血：无条件额外获得1层流血并失去1D8生命值；体质豁免仍照常进行，失败再按D3追加层数。命中后玩家可选择消耗全部连击点赋予目标相同层数的流血。8级：已流血时额外+2层，失去1D8+X生命值（X=目标当前流血层数）。",
+    "keywords": [
+      "近战攻击",
+      "体质豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-39",
+    "reviewStatus": "draft"
+  }
+}

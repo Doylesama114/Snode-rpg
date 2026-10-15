@@ -1,0 +1,61 @@
+{
+  "id": "rogue-sow-discord",
+  "name": "嫁祸诀窍",
+  "class": "游荡者",
+  "style": "妙手",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": null,
+    "duration": "1轮",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "交涉",
+      "智力豁免（15）"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 12
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {},
+  "display": {
+    "description": "选择可视范围内一名角色。持续1轮内，其同阵营角色攻击且目标在射程内时做DC15智力豁免，失败改为攻击该目标；本场被影响过的角色不再生效。",
+    "keywords": [
+      "交涉"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "condition",
+      "name": "sow_discord",
+      "duration": {
+        "scope": "rounds",
+        "value": 1
+      }
+    },
+    {
+      "op": "mark",
+      "name": "sow_discord_target",
+      "amount": "1"
+    }
+  ]
+}

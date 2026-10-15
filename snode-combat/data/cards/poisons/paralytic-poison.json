@@ -1,0 +1,15 @@
+{
+  "id": "paralytic-poison",
+  "name": "麻痹毒药",
+  "durationTurns": 1,
+  "kind": "save",
+  "save": {
+    "attr": "敏捷",
+    "dc": 10
+  },
+  "status": "paralyzed",
+  "display": {
+    "description": "目标敏捷豁免DC10失败进入麻痹，持续一回合。",
+    "source": "r-skill-51"
+  }
+}

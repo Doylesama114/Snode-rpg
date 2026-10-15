@@ -1,0 +1,13 @@
+{
+  "id": "silenced",
+  "name": "沉默",
+  "kind": "binary",
+  "duration": {
+    "scope": "battle"
+  },
+  "display": {
+    "description": "无法通过语言交流，无法施展需要语言生效的能力。",
+    "icon": "🤐",
+    "source": "help.html 异常状态·沉默"
+  }
+}

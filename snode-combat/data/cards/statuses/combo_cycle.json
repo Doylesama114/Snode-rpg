@@ -1,0 +1,16 @@
+{
+  "id": "combo_cycle",
+  "name": "连击循环",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "记录生效期间消耗的连击点，结束时返还。",
+    "icon": "◆",
+    "source": "P2内部状态"
+  }
+}

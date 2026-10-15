@@ -1,0 +1,55 @@
+{
+  "id": "rogue-toxin-spread",
+  "name": "毒性蔓延",
+  "class": "游荡者",
+  "style": "魔药",
+  "tier": "三阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "shortRest",
+      "max": 1
+    },
+    "keywords": [
+      "毒性",
+      "短休/长休"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "levelScaling": [
+    {
+      "minLevel": 10,
+      "patch": {
+        "cast": {
+          "action": "none",
+          "fp": null,
+          "duration": "instant",
+          "usage": {
+            "scope": "shortRest",
+            "max": 2
+          },
+          "keywords": [
+            "毒性",
+            "短休/长休（2）"
+          ]
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "选择一项：6米内一名角色中毒；或中毒角色周围相邻角色DC15体质豁免失败中毒；或下一次毒刃中毒初始层数×2；或下一次毒刃仅需附赠动作。",
+    "keywords": [
+      "毒性"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

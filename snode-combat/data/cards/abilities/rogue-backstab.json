@@ -1,0 +1,118 @@
+{
+  "id": "rogue-backstab",
+  "name": "背刺",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "起始",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "1",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets",
+        "mods": [
+          {
+            "if": "attackerAtBackOfTarget",
+            "flat": "2"
+          }
+        ]
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "source": "weapon"
+          },
+          {
+            "op": "damage",
+            "dice": "@backstabDice",
+            "timing": "after",
+            "source": "effect"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "backstabDice": "1D4"
+        }
+      }
+    },
+    {
+      "minLevel": 3,
+      "patch": {
+        "variables": {
+          "backstabDice": "2D4"
+        }
+      }
+    },
+    {
+      "minLevel": 6,
+      "patch": {
+        "variables": {
+          "backstabDice": "3D4"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "你对一名角色发起攻击，如果攻击过程中你位于对方的身后（目标朝向反方向那一格），那么本次攻击的命中检定值+2，并在武器伤害结算后附加伤害骰。",
+    "keywords": [
+      "近战攻击"
+    ],
+    "source": "职业页/数据/游荡者.json#r-starting-skill-1",
+    "reviewStatus": "draft"
+  }
+}

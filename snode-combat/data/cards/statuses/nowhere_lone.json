@@ -1,0 +1,16 @@
+{
+  "id": "nowhere_lone",
+  "name": "无处可逃",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "目标视为落单状态。",
+    "icon": "◆",
+    "source": "P2内部状态"
+  }
+}

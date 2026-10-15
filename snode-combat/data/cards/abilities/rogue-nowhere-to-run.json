@@ -1,0 +1,59 @@
+{
+  "id": "rogue-nowhere-to-run",
+  "name": "无处可逃",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "2",
+    "duration": "2轮",
+    "usage": {
+      "scope": "longRest",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "阻碍",
+      "位移",
+      "媒介",
+      "激活",
+      "长休"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 6
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {},
+  "display": {
+    "description": "目标持续2轮视为落单；随后你可朝对方进行一次基础移动。若目标相邻无可移动位置或处于压制/禁锢，你对它的伤害有优势。",
+    "keywords": [
+      "阻碍"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "condition",
+      "name": "nowhere_lone",
+      "duration": {
+        "scope": "rounds",
+        "value": 2
+      }
+    }
+  ]
+}

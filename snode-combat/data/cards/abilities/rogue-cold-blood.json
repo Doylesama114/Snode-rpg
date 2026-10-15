@@ -1,0 +1,34 @@
+{
+  "id": "rogue-cold-blood",
+  "name": "冷血杀手",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "四阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "补给"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "单体近战攻击造成伤害后，目标当前HP低于5（1~4）则降至0；每击杀一名角色获得1连击点。",
+    "keywords": [
+      "补给"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

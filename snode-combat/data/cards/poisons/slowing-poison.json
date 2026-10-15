@@ -1,0 +1,15 @@
+{
+  "id": "slowing-poison",
+  "name": "减速毒药",
+  "durationTurns": 1,
+  "kind": "save",
+  "save": {
+    "attr": "敏捷",
+    "dc": 12
+  },
+  "status": "slowed",
+  "display": {
+    "description": "目标敏捷豁免DC12失败进入减速，持续一回合。",
+    "source": "r-skill-52"
+  }
+}

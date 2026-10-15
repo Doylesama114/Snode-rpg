@@ -1,0 +1,16 @@
+{
+  "id": "phantom_dagger",
+  "name": "幻影匕首",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "幻影匕首跟随你。每次单目标攻击后对同一目标发起一次攻击。",
+    "icon": "◆",
+    "source": "P2内部状态"
+  }
+}

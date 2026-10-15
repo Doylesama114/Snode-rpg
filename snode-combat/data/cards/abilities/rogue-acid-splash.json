@@ -1,0 +1,142 @@
+{
+  "id": "rogue-acid-splash",
+  "name": "酸液飞溅",
+  "class": "游荡者",
+  "style": "魔药",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "4",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "施法攻击",
+      "AOE",
+      "侵蚀",
+      "穿甲",
+      "护甲检定（10）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "强酸瓶"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "area",
+    "area": {
+      "shape": "cone",
+      "rings": 3,
+      "metric": "grid"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "aoe",
+        "kind": "aoeDamageSave",
+        "dc": 15,
+        "target": "allInArea"
+      },
+      {
+        "id": "armor",
+        "kind": "armorCheck",
+        "dc": 10,
+        "target": "allInArea",
+        "when": "tookDamageFromRoll('aoe')"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "armor",
+          "outcome": "saveFail"
+        },
+        "effects": [
+          {
+            "when": "targetArmorIs('轻甲')",
+            "op": "damage",
+            "source": "effect",
+            "timing": "before",
+            "dice": "@acidExtra",
+            "type": "强酸"
+          },
+          {
+            "when": "targetArmorIs('中甲')",
+            "op": "damage",
+            "source": "effect",
+            "timing": "before",
+            "dice": "@acidExtra",
+            "type": "强酸"
+          },
+          {
+            "when": "targetArmorIs('重甲')",
+            "op": "acReduction",
+            "amount": "1D2"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [
+    {
+      "op": "aoeDamage",
+      "roll": "aoe",
+      "dice": "@acidDice",
+      "type": "强酸"
+    }
+  ],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "acidDice": "1D8",
+          "acidExtra": "1D8"
+        }
+      }
+    },
+    {
+      "minLevel": 8,
+      "patch": {
+        "variables": {
+          "acidDice": "2D8",
+          "acidExtra": "1D8"
+        }
+      }
+    },
+    {
+      "minLevel": 12,
+      "patch": {
+        "variables": {
+          "acidDice": "2D8",
+          "acidExtra": "2D8"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "前方扇形3环强酸AOE；AOE伤害按DC15敏捷豁免；受伤者再做纯D20护甲检定DC10，失败轻/中甲额外酸伤，重甲失去1D2 AC至战斗结束。",
+    "keywords": [
+      "AOE",
+      "护甲检定"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-53",
+    "reviewStatus": "draft"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "dance_penalty",
+  "name": "蝶舞余韵",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": { "scope": "rounds", "value": 1 },
+  "triggers": [],
+  "display": {
+    "description": "对蝶舞施展者的下一次攻击命中检定具有劣势，命中后消耗。",
+    "icon": "🦋",
+    "source": "P2裁决C2"
+  }
+}

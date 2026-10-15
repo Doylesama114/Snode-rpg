@@ -1,0 +1,110 @@
+{
+  "id": "rogue-sap",
+  "name": "闷棍",
+  "class": "游荡者",
+  "style": "妙手",
+  "tier": "起始",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "惑控",
+      "体质豁免（15）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "钝器",
+        "锤类"
+      ]
+    },
+    {
+      "kind": "stealthed"
+    },
+    {
+      "kind": "sapTargetAllowed"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "sapSave",
+        "kind": "save",
+        "attr": "体质",
+        "dc": 15,
+        "target": "targets",
+        "adv": "disadvantage",
+        "advDice": 3
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "sapSave",
+          "outcome": "saveFail"
+        },
+        "effects": [
+          {
+            "op": "condition",
+            "name": "unconscious",
+            "duration": {
+              "scope": "rounds",
+              "value": "1D3"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "levelScaling": [
+    {
+      "minLevel": 3,
+      "patch": {
+        "cast": {
+          "action": "bonus",
+          "fp": null,
+          "duration": "instant",
+          "usage": {
+            "scope": "unlimited",
+            "max": 99
+          },
+          "keywords": [
+            "战技",
+            "惑控",
+            "体质豁免（15）"
+          ]
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "必须持钝器且潜行。目标体质豁免DC15（战斗中使用时极大劣势=3D20取低），失败昏迷1D3轮，受伤即醒。L3改为附赠动作。",
+    "keywords": [
+      "惑控"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

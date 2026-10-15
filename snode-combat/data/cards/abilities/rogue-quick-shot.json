@@ -1,0 +1,126 @@
+{
+  "id": "rogue-quick-shot",
+  "name": "迅捷连射",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "1",
+    "duration": "instant",
+    "usage": {
+      "scope": "perTurn",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "远程攻击",
+      "实体飞行道具",
+      "每个自身回合限一次"
+    ],
+    "consumeAmmo": true
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "手弩",
+        "火枪"
+      ]
+    },
+    {
+      "kind": "weaponLoaded"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 12
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "source": "weapon"
+          },
+          {
+            "op": "damage",
+            "dice": "@quickShotBonus",
+            "timing": "after",
+            "source": "effect"
+          },
+          {
+            "op": "resource",
+            "resource": "comboPoints",
+            "amount": "+1",
+            "target": "self"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "quickShotBonus": "0"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "quickShotBonus": "1D6"
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "quickShotBonus": "2D6"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "消耗一发弹药对远程目标发起攻击，命中造成伤害后获得1个连击点。未命中仍消耗弹药与FP，不获得连击点。射击后武器进入未装填状态，需0动作装填。",
+    "keywords": [
+      "远程攻击",
+      "实体飞行道具"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-38",
+    "reviewStatus": "draft"
+  }
+}

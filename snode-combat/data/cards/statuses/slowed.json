@@ -1,0 +1,15 @@
+{
+  "id": "slowed",
+  "name": "减速",
+  "kind": "binary",
+  "duration": { "scope": "battle" },
+  "modifiers": [
+    { "stat": "speed", "multiply": "0.5", "round": "floor" },
+    { "stat": "incomingAttackRoll", "adv": "advantage", "target": "attackers" }
+  ],
+  "display": {
+    "description": "位移步数（包括移动、跳跃、冲锋等）减半，向下取整；其他角色对其攻击命中具有优势。",
+    "icon": "🐌",
+    "source": "斯诺德跑团/help.html 异常状态规则·减速"
+  }
+}

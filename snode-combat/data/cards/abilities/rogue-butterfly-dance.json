@@ -1,0 +1,86 @@
+{
+  "id": "rogue-butterfly-dance",
+  "name": "蝶舞",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "2",
+    "duration": "2轮",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "戏法",
+      "暗影",
+      "幻象",
+      "专注",
+      "引导",
+      "魅力豁免（15）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "canSpeak"
+    },
+    {
+      "kind": "canGesture"
+    }
+  ],
+  "targeting": {
+    "kind": "area",
+    "area": {
+      "shape": "radius",
+      "radius": 6,
+      "metric": "grid"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "butterflySave",
+        "kind": "save",
+        "attr": "魅力",
+        "dc": 15,
+        "target": "targets",
+        "autoSuccessIfProf": true
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "butterflySave",
+          "outcome": "saveFail"
+        },
+        "effects": [
+          {
+            "op": "condition",
+            "name": "charmed",
+            "duration": {
+              "scope": "temporary"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "display": {
+    "description": "施放回合为第1轮引导：6米内敌人DC15魅力豁免失败进入魅惑（有魅力豁免熟练自动成功）。下个自身回合花主要动作完成第2轮，结束时再做一次DC15魅力豁免，失败受2D4心灵伤害且对你下次攻击劣势。",
+    "keywords": [
+      "引导",
+      "专注"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

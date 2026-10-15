@@ -1,0 +1,106 @@
+{
+  "id": "rogue-poison-blade",
+  "name": "毒刃",
+  "class": "游荡者",
+  "style": "魔药",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "1",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "毒性",
+      "体质豁免（12）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    },
+    {
+      "kind": "equipped",
+      "any": [
+        "基础毒药"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "damageTypeChoice": [
+    "物理",
+    "剧毒"
+  ],
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "type": "@chosenDamageType",
+            "source": "weapon"
+          },
+          {
+            "op": "condition",
+            "name": "poisoned",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "体质",
+              "dc": 12
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "display": {
+    "description": "玩家自选本次攻击造成物理或剧毒伤害（物理=武器原伤害类型）。命中后目标体质豁免DC12，失败进入中毒（D3决定层数）。不消耗基础毒药道具。",
+    "keywords": [
+      "近战攻击",
+      "体质豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-49",
+    "reviewStatus": "draft"
+  }
+}

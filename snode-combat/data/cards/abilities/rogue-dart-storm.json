@@ -1,0 +1,151 @@
+{
+  "id": "rogue-dart-storm",
+  "name": "袖箭风暴",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "施法攻击",
+      "AOE",
+      "终结技",
+      "敏捷豁免（15）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "飞镖"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "area",
+    "area": {
+      "shape": "radius",
+      "radius": 2,
+      "metric": "grid"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "aoe",
+        "kind": "aoeDamageSave",
+        "dc": 15,
+        "target": "allInArea"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "op": "aoeDamage",
+      "roll": "aoe",
+      "dice": "@dartDice",
+      "repeat": "perComboPoint",
+      "rollFloor": "@dartFloor"
+    }
+  ],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "dartDice": "1D3",
+          "dartFloor": "0"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "dartDice": "2D3",
+          "dartFloor": "3"
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "cast": {
+          "action": "bonus",
+          "fp": "3",
+          "duration": "instant",
+          "usage": {
+            "scope": "unlimited",
+            "max": 99
+          },
+          "keywords": [
+            "战技",
+            "施法攻击",
+            "AOE",
+            "终结技",
+            "敏捷豁免（15）"
+          ]
+        },
+        "variables": {
+          "dartDice": "2D3",
+          "dartFloor": "3"
+        }
+      }
+    },
+    {
+      "minLevel": 15,
+      "patch": {
+        "targeting": {
+          "kind": "area",
+          "area": {
+            "shape": "radius",
+            "radius": 3,
+            "metric": "grid"
+          },
+          "filter": {
+            "teams": [
+              "enemy"
+            ],
+            "livingOnly": true
+          }
+        },
+        "variables": {
+          "dartDice": "2D3",
+          "dartFloor": "3"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "对自身周围2米所有角色造成穿刺伤害并消耗全部连击点：每点重复一次并提升骰面。伤害程度按AOE通用DC15敏捷豁免。",
+    "keywords": [
+      "AOE",
+      "终结技"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-12",
+    "reviewStatus": "draft"
+  },
+  "afterEffects": [
+    {
+      "op": "resource",
+      "resource": "comboPoints",
+      "amount": "-all",
+      "target": "self"
+    }
+  ]
+}

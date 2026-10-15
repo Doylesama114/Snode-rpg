@@ -490,5 +490,14 @@ renderBgPage();
 }
 </style>
 <script src="user_preferences.js"></script>
+
+<script>
+(function(){
+  var host = document.querySelector("main") || document.querySelector(".container") || document.body;
+  var d = document.createElement("div");
+  d.innerHTML = '<a href="资料库/稀有装备.html" style="display:block;padding:14px 16px;margin:14px 0;border:1px solid #d8d2c4;border-radius:12px;background:#fffdf8;color:#1f2522;text-decoration:none"><b>稀有装备</b><span style="color:#69706b;font-size:13px"> · 70 件稀有装备的完整效果一览，可按类别 / 负重 / 职业要求筛选与搜索</span></a>';
+  host.appendChild(d);
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,338 @@
+{
+  "id": "rogue-laceration",
+  "name": "割裂",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "生命流失",
+      "终结技",
+      "体质豁免（0）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "source": "weapon",
+            "timing": "before",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod"
+          },
+          {
+            "op": "damage",
+            "source": "effect",
+            "timing": "before",
+            "dice": "0",
+            "flat": "@targetBleedLayers"
+          },
+          {
+            "op": "condition",
+            "name": "bleeding",
+            "layers": "2 * @comboPoints",
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "体质",
+              "dc": "@lacerateDC"
+            }
+          },
+          {
+            "op": "condition",
+            "name": "healing_halved",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "when": "lastSaveFailed"
+          },
+          {
+            "op": "resource",
+            "resource": "comboPoints",
+            "amount": "-all",
+            "target": "self"
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "lacerateDC": "0 + 5 * @comboPoints"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "lacerateDC": "5 + 5 * @comboPoints"
+        },
+        "branches": [
+          {
+            "if": {
+              "roll": "attack",
+              "outcome": "hit"
+            },
+            "effects": [
+              {
+                "op": "damage",
+                "source": "weapon",
+                "timing": "before",
+                "dice": "@weapon.dice",
+                "flat": "@weapon.attrMod"
+              },
+              {
+                "op": "damage",
+                "source": "effect",
+                "timing": "before",
+                "dice": "0",
+                "flat": "@targetBleedLayers"
+              },
+              {
+                "op": "condition",
+                "name": "bleeding",
+                "layers": "2 * @comboPoints",
+                "duration": {
+                  "scope": "battle"
+                },
+                "save": {
+                  "attr": "体质",
+                  "dc": "@lacerateDC"
+                }
+              },
+              {
+                "op": "condition",
+                "name": "healing_halved",
+                "layers": 1,
+                "duration": {
+                  "scope": "battle"
+                },
+                "when": "lastSaveFailed"
+              },
+              {
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "-all",
+                "target": "self"
+              },
+              {
+                "when": "targetHasStatus('bleeding')",
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "+1",
+                "target": "self"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "lacerateDC": "5 + 5 * @comboPoints"
+        },
+        "branches": [
+          {
+            "if": {
+              "roll": "attack",
+              "outcome": "hit"
+            },
+            "effects": [
+              {
+                "op": "damage",
+                "source": "weapon",
+                "timing": "before",
+                "dice": "@weapon.dice",
+                "flat": "@weapon.attrMod"
+              },
+              {
+                "op": "damage",
+                "source": "effect",
+                "timing": "before",
+                "dice": "0",
+                "flat": "@targetBleedLayers"
+              },
+              {
+                "op": "condition",
+                "name": "bleeding",
+                "layers": "3 * @comboPoints",
+                "duration": {
+                  "scope": "battle"
+                },
+                "save": {
+                  "attr": "体质",
+                  "dc": "@lacerateDC"
+                }
+              },
+              {
+                "op": "condition",
+                "name": "healing_halved",
+                "layers": 1,
+                "duration": {
+                  "scope": "battle"
+                },
+                "when": "lastSaveFailed"
+              },
+              {
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "-all",
+                "target": "self"
+              },
+              {
+                "when": "targetHasStatus('bleeding')",
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "+1",
+                "target": "self"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "minLevel": 15,
+      "patch": {
+        "variables": {
+          "lacerateDC": "5 + 5 * @comboPoints"
+        },
+        "branches": [
+          {
+            "if": {
+              "roll": "attack",
+              "outcome": "hit"
+            },
+            "effects": [
+              {
+                "op": "damage",
+                "source": "weapon",
+                "timing": "before",
+                "dice": "@weapon.dice",
+                "flat": "@weapon.attrMod"
+              },
+              {
+                "op": "damage",
+                "source": "effect",
+                "timing": "before",
+                "dice": "0",
+                "flat": "@targetBleedLayers"
+              },
+              {
+                "when": "@comboPoints < 5",
+                "op": "condition",
+                "name": "bleeding",
+                "layers": "3 * @comboPoints",
+                "duration": {
+                  "scope": "battle"
+                },
+                "save": {
+                  "attr": "体质",
+                  "dc": "@lacerateDC"
+                }
+              },
+              {
+                "when": "@comboPoints >= 5",
+                "op": "condition",
+                "name": "bleeding",
+                "layers": "4 * @comboPoints",
+                "duration": {
+                  "scope": "battle"
+                }
+              },
+              {
+                "op": "condition",
+                "name": "healing_halved",
+                "layers": 1,
+                "duration": {
+                  "scope": "battle"
+                },
+                "when": "lastSaveFailed"
+              },
+              {
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "-all",
+                "target": "self"
+              },
+              {
+                "when": "targetHasStatus('bleeding')",
+                "op": "resource",
+                "resource": "comboPoints",
+                "amount": "+1",
+                "target": "self"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "description": "消耗全部连击点，附加目标流血层数的伤害；体质豁免失败获得2X层流血（10级3X，15级消耗≥5时免豁免4X），下次生命回复减半。自然骰<5的重伤/恶性创伤标记待实现。",
+    "keywords": [
+      "近战攻击",
+      "终结技",
+      "体质豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-8",
+    "reviewStatus": "draft"
+  }
+}

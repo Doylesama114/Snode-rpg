@@ -1,0 +1,13 @@
+{
+  "id": "feared",
+  "name": "恐惧",
+  "kind": "binary",
+  "duration": {
+    "scope": "battle"
+  },
+  "display": {
+    "description": "恐惧状态按D6表结算（逃跑/原地跳过等）。P1 先标记状态，D6行为表后续接入。",
+    "icon": "😱",
+    "source": "help.html 异常状态·恐惧"
+  }
+}

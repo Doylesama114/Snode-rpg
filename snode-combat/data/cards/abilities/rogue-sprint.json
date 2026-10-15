@@ -1,0 +1,38 @@
+{
+  "id": "rogue-sprint",
+  "name": "疾跑",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "起始",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "3",
+    "duration": "instant",
+    "usage": { "scope": "unlimited", "max": 99 },
+    "keywords": ["战技", "迅捷", "位移"],
+    "repeatCost": "doublePerUseSameTurn"
+  },
+  "conditions": [
+    { "kind": "lacksStatus", "target": "self", "name": "禁锢" },
+    { "kind": "lacksStatus", "target": "self", "name": "压制" }
+  ],
+  "targeting": { "kind": "self" },
+  "effects": [
+    {
+      "op": "move",
+      "mode": "dash",
+      "distance": "@speed * 2",
+      "target": "self",
+      "triggerOpportunity": true,
+      "marksDash": true
+    }
+  ],
+  "display": {
+    "description": "立即执行一次全速移动。使用后仍可再花费1动作进行另一次全速移动。同一回合多次施展时，后续每次疲劳值消耗翻倍。",
+    "keywords": ["迅捷", "位移"],
+    "source": "职业页/数据/游荡者.json#r-starting-skill-4",
+    "reviewStatus": "draft"
+  }
+}

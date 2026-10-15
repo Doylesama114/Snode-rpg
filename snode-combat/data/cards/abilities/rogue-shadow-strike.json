@@ -1,0 +1,125 @@
+{
+  "id": "rogue-shadow-strike",
+  "name": "影袭",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "2",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "暗影",
+      "穿甲"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    },
+    {
+      "kind": "stealthed"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets",
+        "mods": [
+          {
+            "ignoreAc": "floor(@targetAc/2)"
+          }
+        ]
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "type": "@weapon.damageType",
+            "source": "weapon"
+          },
+          {
+            "op": "damage",
+            "dice": "0",
+            "flat": "@shadowStrikeBonus",
+            "type": "@weapon.damageType",
+            "source": "effect",
+            "timing": "after"
+          }
+        ]
+      }
+    ]
+  },
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "shadowStrikeBonus": "4"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "shadowStrikeBonus": "8"
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "shadowStrikeBonus": "12"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "从潜行中发起近战攻击：命中检定时目标AC减半向下取整，结算伤害后+4/8/12。",
+    "keywords": [
+      "近战攻击",
+      "穿甲"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

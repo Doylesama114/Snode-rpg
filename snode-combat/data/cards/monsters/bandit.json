@@ -1,0 +1,73 @@
+{
+  "id": "bandit",
+  "kind": "monster",
+  "name": "强盗",
+  "size": "medium",
+  "height": 1,
+  "attrs": {
+    "力量": 12,
+    "敏捷": 14,
+    "体质": 12,
+    "智力": 10,
+    "感知": 10,
+    "魅力": 10,
+    "意志": 10,
+    "幸运": 10
+  },
+  "hpMax": 15,
+  "fpMax": 6,
+  "ac": 14,
+  "speed": 6,
+  "initiative": {
+    "mode": "fixed",
+    "value": 3
+  },
+  "proficiency": 2,
+  "equipment": {
+    "mainHand": {
+      "id": "longsword-bandit",
+      "name": "长剑",
+      "category": "剑类",
+      "tags": [
+        "剑",
+        "单手"
+      ],
+      "hands": 1,
+      "dice": "1D6",
+      "damageType": "挥砍",
+      "attackAttr": "敏捷",
+      "isTech": false,
+      "range": {
+        "metric": "adjacent"
+      }
+    }
+  },
+  "abilities": [
+    "core.basicAttack"
+  ],
+  "ai": {
+    "style": "template",
+    "priorities": [
+      {
+        "intent": "attackNearest",
+        "prefer": "closest"
+      },
+      {
+        "intent": "moveToNearest"
+      }
+    ],
+    "fallback": "hold"
+  },
+  "tags": [
+    "类人生物"
+  ],
+  "drops": {
+    "gold": [
+      3,
+      8
+    ],
+    "xp": 25
+  },
+  "creatureType": "类人",
+  "saveProfs": []
+}

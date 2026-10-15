@@ -1,0 +1,73 @@
+{
+  "id": "wolf",
+  "kind": "monster",
+  "name": "狼",
+  "size": "medium",
+  "height": 1,
+  "attrs": {
+    "力量": 12,
+    "敏捷": 16,
+    "体质": 12,
+    "智力": 4,
+    "感知": 12,
+    "魅力": 6,
+    "意志": 8,
+    "幸运": 10
+  },
+  "hpMax": 9,
+  "fpMax": 4,
+  "ac": 12,
+  "speed": 7,
+  "initiative": {
+    "mode": "fixed",
+    "value": 4
+  },
+  "proficiency": 2,
+  "equipment": {
+    "mainHand": {
+      "id": "wolf-bite",
+      "name": "撕咬",
+      "category": "天生武器",
+      "tags": [
+        "徒手",
+        "天生武器"
+      ],
+      "hands": 1,
+      "dice": "1D4",
+      "damageType": "穿刺",
+      "attackAttr": "敏捷",
+      "isTech": false,
+      "range": {
+        "metric": "adjacent"
+      }
+    }
+  },
+  "abilities": [
+    "core.basicAttack"
+  ],
+  "ai": {
+    "style": "template",
+    "priorities": [
+      {
+        "intent": "attackNearest",
+        "prefer": "lowestHp"
+      },
+      {
+        "intent": "moveToNearest"
+      }
+    ],
+    "fallback": "hold"
+  },
+  "tags": [
+    "野兽"
+  ],
+  "drops": {
+    "gold": [
+      0,
+      0
+    ],
+    "xp": 15
+  },
+  "creatureType": "野兽",
+  "saveProfs": []
+}

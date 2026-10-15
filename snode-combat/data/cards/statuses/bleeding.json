@@ -1,0 +1,22 @@
+{
+  "id": "bleeding",
+  "name": "流血",
+  "kind": "stacking",
+  "maxLayers": 99,
+  "initialLayers": "1D3",
+  "duration": { "scope": "battle" },
+  "triggers": [
+    {
+      "event": "onTurnStart",
+      "effects": [
+        { "op": "loseHp", "amount": "@layers", "target": "self" },
+        { "op": "statusLayers", "name": "流血", "amount": "1D3", "target": "self" }
+      ]
+    }
+  ],
+  "display": {
+    "description": "首次进入时掷1D3决定层数。每个轮次开始阶段：先失去等同于层数的生命值（直接扣HP，不走伤害类型/抗性），随后再掷1D3追加层数。无解除手段时持续整场战斗。",
+    "icon": "🩸",
+    "source": "斯诺德跑团/help.html 异常状态规则·流血"
+  }
+}

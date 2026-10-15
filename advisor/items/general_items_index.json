@@ -3,7 +3,7 @@
     "layer": "L1",
     "phase": "7167",
     "source": "职业页/数据/items_data.js（非消耗品通用物品）",
-    "count": 371,
+    "count": 372,
     "categories": [
       "乐器",
       "医用,杂物,可堆叠",
@@ -34,7 +34,7 @@
       "盾牌,防具",
       "配饰"
     ],
-    "generatedAt": "2026-08-03"
+    "generatedAt": "2026-10-15"
   },
   "items": [
     {
@@ -167,12 +167,29 @@
       "kind": "general"
     },
     {
+      "name": "板甲",
+      "category": "护甲,防具,重甲",
+      "subcategory": null,
+      "type": null,
+      "requirement": null,
+      "effect": "防御等级：18/力量属性要求：15（隐匿劣势）.重甲，耐久度30",
+      "price": "500金币",
+      "weight": "80磅",
+      "tags": [
+        "护甲",
+        "防具",
+        "重甲"
+      ],
+      "source": "items_data.js",
+      "kind": "general"
+    },
+    {
       "name": "半身板甲",
       "category": "护甲,防具,中甲",
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：15+你的敏捷调整值（隐匿劣势）.中甲，耐久度20",
+      "effect": "防御等级：15+你的敏捷调整值（至多为2，隐匿劣势）.中甲，耐久度20",
       "price": "200金币",
       "weight": "45磅",
       "tags": [
@@ -439,7 +456,7 @@
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：11+你的敏捷调整值（隐匿劣势）.轻甲，耐久度15",
+      "effect": "防御等级：11+你的敏捷调整值（至多为2，隐匿劣势）.轻甲，耐久度15",
       "price": "5金币",
       "weight": "10磅",
       "tags": [
@@ -2707,7 +2724,7 @@
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：14+你的敏捷调整值（隐匿劣势）.中甲，耐久度10",
+      "effect": "防御等级：14+你的敏捷调整值（至多为2，隐匿劣势）.中甲，耐久度10",
       "price": "50金币",
       "weight": "50磅",
       "tags": [
@@ -3563,7 +3580,7 @@
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：11+你的敏捷调整值.轻甲，耐久度15",
+      "effect": "防御等级：11+你的敏捷调整值（至多为2）.轻甲，耐久度15",
       "price": "10金币",
       "weight": "12磅",
       "tags": [
@@ -4305,7 +4322,7 @@
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：12+你的敏捷调整值.中甲，耐久度15",
+      "effect": "防御等级：12+你的敏捷调整值（至多为2）.中甲，耐久度15",
       "price": "15金币",
       "weight": "12磅",
       "tags": [
@@ -4903,7 +4920,7 @@
       "subcategory": null,
       "type": null,
       "requirement": null,
-      "effect": "防御等级：14+你的敏捷调整值.中甲，耐久度15",
+      "effect": "防御等级：14+你的敏捷调整值（至多为2）.中甲，耐久度15",
       "price": "100金币",
       "weight": "25磅",
       "tags": [

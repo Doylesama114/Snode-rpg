@@ -1,0 +1,15 @@
+{
+  "id": "hallucinogenic-poison",
+  "name": "致幻毒药",
+  "durationTurns": 1,
+  "kind": "save",
+  "save": {
+    "attr": "感知",
+    "dc": 10
+  },
+  "status": "chaotic",
+  "display": {
+    "description": "目标感知豁免DC10失败进入混乱，持续一回合。",
+    "source": "r-skill-81"
+  }
+}

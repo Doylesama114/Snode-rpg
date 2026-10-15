@@ -1,0 +1,24 @@
+{
+  "id": "tutorial-01",
+  "name": "林地遭遇 · 教学战",
+  "board": { "width": 12, "height": 12 },
+  "terrain": [
+    { "x": 3, "y": 3, "type": "blocked" },
+    { "x": 8, "y": 3, "type": "blocked" },
+    { "x": 5, "y": 6, "type": "cover", "height": 1 },
+    { "x": 6, "y": 6, "type": "cover", "height": 1 },
+    { "x": 5, "y": 7, "type": "cover", "height": 1 },
+    { "x": 6, "y": 7, "type": "cover", "height": 1 },
+    { "x": 2, "y": 8, "type": "blocked" },
+    { "x": 9, "y": 8, "type": "blocked" }
+  ],
+  "playerSpawns": [
+    { "x": 6, "y": 10, "facing": "N" }
+  ],
+  "monsters": [
+    { "ref": "goblin", "x": 4, "y": 2, "facing": "S", "displayName": "哥布林哨兵" },
+    { "ref": "wolf", "x": 8, "y": 2, "facing": "S", "displayName": "饿狼" },
+    { "ref": "bandit", "x": 6, "y": 4, "facing": "S", "displayName": "拦路强盗" }
+  ],
+  "loot": { "gold": [4, 12], "xp": 50 }
+}

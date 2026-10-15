@@ -1,0 +1,55 @@
+{
+  "id": "rogue-silhouette",
+  "name": "剪影",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "3",
+    "duration": "1轮",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "召唤单位",
+      "暗影",
+      "生命流失",
+      "媒介"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 2
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {},
+  "display": {
+    "description": "在目标相邻位置召唤其影子。玩家近战攻击影子自动命中，最终伤害50%作为生命流失扣目标HP，不触发攻击特效。",
+    "keywords": [
+      "召唤单位"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "mark",
+      "name": "silhouette",
+      "amount": "1"
+    }
+  ]
+}

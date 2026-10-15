@@ -1,0 +1,16 @@
+{
+  "id": "sow_discord",
+  "name": "嫁祸目标",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "嫁祸诀窍的嫁祸目标：其同阵营角色攻击时可能改为攻击此目标。",
+    "icon": "🗣️",
+    "source": "P2裁决D2"
+  }
+}

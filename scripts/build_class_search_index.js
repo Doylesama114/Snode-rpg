@@ -129,6 +129,27 @@ function main() {
 
   meta.total = all.length;
   const out = { meta, skills: all };
+  // 稀有装备（来自 职业页/数据/equipment_catalog.json）
+  try {
+    const eqPath = path.join(CLASS_DIR, '数据', 'equipment_catalog.json');
+    if (fs.existsSync(eqPath)) {
+      const catalog = JSON.parse(fs.readFileSync(eqPath, 'utf8'));
+      let n = 0;
+      Object.keys(catalog).forEach(function (cat) {
+        (catalog[cat] || []).forEach(function (it) {
+          n++;
+          out.skills.push({
+            classname: '稀有装备', page: '../斯诺德跑团/资料库/稀有装备.html', kind: 'equipment',
+            skillId: 'eq-' + n, skillName: it.name, style: cat,
+            tier: [it.subcategory, it.type].filter(Boolean).join(' / '), marks: [],
+            searchText: ['稀有装备', it.name, cat, it.subcategory, it.type, it.requirement, it.effect].filter(Boolean).join(' '),
+          });
+        });
+      });
+      console.log('稀有装备: ' + n);
+    }
+  } catch (e) { console.log('稀有装备索引跳过: ' + e.message); }
+
   const jsonText = JSON.stringify(out, null, 0);
   fs.writeFileSync(OUT, jsonText, 'utf8');
   // file:// 兼容副本：window.__SEARCH_INDEX_DATA（转义 </script>）

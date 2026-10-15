@@ -1,0 +1,57 @@
+{
+  "id": "rogue-bide-time",
+  "name": "伺机待发",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "1",
+    "duration": "instant",
+    "usage": {
+      "scope": "perTurn",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "第一行动",
+      "专注",
+      "每个自身回合限一次"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "firstAction"
+    }
+  ],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "本回合第一个动作使用：本轮内你的攻击命中与伤害结算后减半；下一个自身回合额外获得1个主要动作。",
+    "keywords": [
+      "第一行动",
+      "专注"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "condition",
+      "name": "bide_time",
+      "duration": {
+        "scope": "rounds",
+        "value": 1
+      }
+    },
+    {
+      "op": "mark",
+      "name": "bide_time_penalty",
+      "amount": "1"
+    }
+  ]
+}

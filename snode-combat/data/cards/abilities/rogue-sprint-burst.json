@@ -1,0 +1,65 @@
+{
+  "id": "rogue-sprint-burst",
+  "name": "冲刺爆发",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "位移"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "lacksStatus",
+      "target": "self",
+      "name": "禁锢"
+    },
+    {
+      "kind": "lacksStatus",
+      "target": "self",
+      "name": "压制"
+    }
+  ],
+  "targeting": {
+    "kind": "self"
+  },
+  "effects": [
+    {
+      "op": "move",
+      "mode": "dash",
+      "distance": "@speed * 2",
+      "target": "self",
+      "triggerOpportunity": true,
+      "marksDash": true
+    }
+  ],
+  "afterEffects": [
+    {
+      "op": "resource",
+      "resource": "comboPoints",
+      "amount": "-all",
+      "target": "self"
+    }
+  ],
+  "display": {
+    "description": "消耗全部连击点执行全速移动；若落点相邻有其他角色，必须免费发动一次基础近战攻击（该强制攻击接入待实现）。5级每点+2伤害；8级≥5点攻击优势。",
+    "keywords": [
+      "近战攻击",
+      "位移"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-45",
+    "reviewStatus": "notImplemented"
+  }
+}

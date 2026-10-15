@@ -1,0 +1,74 @@
+{
+  "id": "goblin",
+  "kind": "monster",
+  "name": "哥布林",
+  "size": "small",
+  "height": 1,
+  "attrs": {
+    "力量": 8,
+    "敏捷": 14,
+    "体质": 10,
+    "智力": 10,
+    "感知": 10,
+    "魅力": 8,
+    "意志": 8,
+    "幸运": 10
+  },
+  "hpMax": 6,
+  "fpMax": 4,
+  "ac": 11,
+  "speed": 5,
+  "initiative": {
+    "mode": "fixed",
+    "value": 3
+  },
+  "proficiency": 2,
+  "equipment": {
+    "mainHand": {
+      "id": "shortsword-goblin",
+      "name": "短剑",
+      "category": "剑类",
+      "tags": [
+        "剑",
+        "单手"
+      ],
+      "hands": 1,
+      "dice": "1D4",
+      "damageType": "挥砍",
+      "attackAttr": "敏捷",
+      "isTech": false,
+      "range": {
+        "metric": "adjacent"
+      }
+    }
+  },
+  "abilities": [
+    "core.basicAttack"
+  ],
+  "ai": {
+    "style": "template",
+    "priorities": [
+      {
+        "intent": "attackNearest",
+        "prefer": "closest"
+      },
+      {
+        "intent": "moveToNearest"
+      }
+    ],
+    "fallback": "hold"
+  },
+  "tags": [
+    "类人生物",
+    "哥布林"
+  ],
+  "drops": {
+    "gold": [
+      1,
+      4
+    ],
+    "xp": 10
+  },
+  "creatureType": "类人",
+  "saveProfs": []
+}

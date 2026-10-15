@@ -1,0 +1,97 @@
+{
+  "id": "rogue-ghost-strike",
+  "name": "鬼魅攻击",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "暗影",
+      "魅力豁免（10）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "匕首",
+        "袖剑"
+      ]
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "source": "weapon",
+            "timing": "before",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "type": "心灵"
+          },
+          {
+            "op": "condition",
+            "name": "feared",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "魅力",
+              "dc": 10
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "display": {
+    "description": "武器攻击造成心灵伤害，命中后目标魅力豁免DC10，失败进入恐惧。L8/L12穿甲待后续。",
+    "keywords": [
+      "近战攻击",
+      "魅力豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-70",
+    "reviewStatus": "draft"
+  }
+}

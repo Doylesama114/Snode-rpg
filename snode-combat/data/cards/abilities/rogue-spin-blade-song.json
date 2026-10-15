@@ -1,0 +1,47 @@
+{
+  "id": "rogue-spin-blade-song",
+  "name": "旋刃魂曲",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "4",
+    "duration": "2轮",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "施法攻击",
+      "AOE",
+      "心灵",
+      "专注",
+      "节奏"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "canSpeak"
+    },
+    {
+      "kind": "canGesture"
+    }
+  ],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "在12米内指定一片3×3区域召唤旋刃魂曲2轮。施放瞬间、每次移动进入、每轮结束对其中角色造成4D4心灵伤害（DC15敏捷豁免，成功半伤），敌我不分。",
+    "keywords": [
+      "AOE",
+      "专注"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "rogue-quick-hands",
+  "name": "快攻手",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "四阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "free",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "perBattle",
+      "max": 1
+    },
+    "keywords": [
+      "天赋",
+      "每场战斗限一次"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onPlayerTurnAction",
+      "effects": [
+        {
+          "op": "choice",
+          "prompt": "使用副手武器进行一次免费近战攻击？",
+          "options": [
+            {
+              "label": "发动",
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "display": {
+    "description": "每场一次，不消耗动作使用副手武器近战攻击；基础版不给连击点不触发攻击特效。",
+    "keywords": [
+      "每场战斗限一次"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-60",
+    "reviewStatus": "draft"
+  }
+}

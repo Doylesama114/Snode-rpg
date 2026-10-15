@@ -1,0 +1,174 @@
+{
+  "id": "rogue-bewildering-blade",
+  "name": "迷惑之刃",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "2",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "施法攻击",
+      "心灵",
+      "感知豁免（10）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "canSpeak"
+    },
+    {
+      "kind": "canGesture"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 2
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "spellAttack",
+        "kind": "attack",
+        "attr": "敏捷",
+        "prof": "spell",
+        "vs": "AC",
+        "target": "targets",
+        "mods": [
+          {
+            "if": "targetIsAdjacent",
+            "ignoreAdjacentDisadvantage": true
+          }
+        ]
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "spellAttack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "when": "!targetHasStatus('confused')",
+            "op": "damage",
+            "dice": "@bwDice",
+            "type": "挥砍",
+            "source": "effect"
+          },
+          {
+            "when": "targetHasStatus('confused')",
+            "op": "damage",
+            "dice": "@bwDice",
+            "type": "心灵",
+            "source": "effect"
+          },
+          {
+            "when": "!targetHasStatus('confused')",
+            "op": "condition",
+            "name": "confused",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "感知",
+              "dc": "@bwDC"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "bwDice": "2D4",
+          "bwDC": "10"
+        }
+      }
+    },
+    {
+      "minLevel": 3,
+      "patch": {
+        "variables": {
+          "bwDice": "3D4",
+          "bwDC": "10"
+        }
+      }
+    },
+    {
+      "minLevel": 5,
+      "patch": {
+        "variables": {
+          "bwDice": "3D4",
+          "bwDC": "10"
+        },
+        "targeting": {
+          "kind": "unit",
+          "range": {
+            "metric": "grid",
+            "max": 4
+          },
+          "filter": {
+            "teams": [
+              "enemy"
+            ],
+            "livingOnly": true
+          }
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "bwDice": "3D4",
+          "bwDC": "15"
+        },
+        "targeting": {
+          "kind": "unit",
+          "range": {
+            "metric": "grid",
+            "max": 4
+          },
+          "filter": {
+            "teams": [
+              "enemy"
+            ],
+            "livingOnly": true
+          }
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "对2米内一名角色发起施法攻击，造成2D4挥砍伤害；命中后目标进行DC10感知豁免，失败进入困惑。目标已处于困惑状态时：改为造成心灵伤害，不再叠加困惑，也不再进行感知豁免。近战距离施展时攻击命中不会具有劣势。3级3D4；5级距离4米；10级豁免DC15。",
+    "keywords": [
+      "施法攻击",
+      "感知豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-32",
+    "reviewStatus": "draft"
+  }
+}

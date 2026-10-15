@@ -1,0 +1,14 @@
+{
+  "id": "unconscious",
+  "name": "昏迷",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": { "scope": "rounds", "value": 1 },
+  "category": "hard_cc",
+  "triggers": [],
+  "display": {
+    "description": "目标跳过自身回合且无法执行任何动作；受到任意伤害立即解除。闷棍造成的昏迷持续1D3轮，战斗外为1D3小时。",
+    "icon": "💤",
+    "source": "P2裁决B5（闷棍卡面）"
+  }
+}

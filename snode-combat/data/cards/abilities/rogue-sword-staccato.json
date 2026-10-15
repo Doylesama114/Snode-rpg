@@ -1,0 +1,155 @@
+{
+  "id": "rogue-sword-staccato",
+  "name": "短剑断奏",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "二阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "近战攻击",
+      "速攻",
+      "位移",
+      "敏捷豁免（12）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "equipped",
+      "any": [
+        "剑类"
+      ]
+    },
+    {
+      "kind": "notAdjacentToTarget"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 4
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "movement": {
+    "mode": "line8",
+    "maxCost": 4,
+    "destination": "adjacentToTarget",
+    "triggerOpportunity": true,
+    "allowAnyTargetDirection": true
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "attack",
+        "kind": "attack",
+        "attr": "weapon",
+        "prof": "weapon",
+        "vs": "AC",
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "attack",
+          "outcome": "hit"
+        },
+        "effects": [
+          {
+            "op": "damage",
+            "dice": "@weapon.dice",
+            "flat": "@weapon.attrMod",
+            "timing": "before",
+            "source": "weapon"
+          },
+          {
+            "op": "damage",
+            "dice": "0",
+            "flat": "@staccatoExtra",
+            "timing": "after",
+            "source": "effect"
+          },
+          {
+            "op": "condition",
+            "name": "disarmed",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            },
+            "save": {
+              "attr": "敏捷",
+              "dc": 12
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "staccatoExtra": "0"
+        }
+      }
+    },
+    {
+      "minLevel": 3,
+      "patch": {
+        "movement": {
+          "mode": "line8",
+          "maxCost": 4,
+          "destination": "adjacentToTarget",
+          "triggerOpportunity": false,
+          "allowAnyTargetDirection": true
+        },
+        "variables": {
+          "staccatoExtra": "0"
+        }
+      }
+    },
+    {
+      "minLevel": 6,
+      "patch": {
+        "movement": {
+          "mode": "line8",
+          "maxCost": 4,
+          "destination": "adjacentToTarget",
+          "triggerOpportunity": false,
+          "allowAnyTargetDirection": true
+        },
+        "variables": {
+          "staccatoExtra": "@dexMod"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "选择4米内一名不相邻目标：落点必须在施法者某条8方向直线上，且位于目标周围8格以内、路径成本≤4。沿直线位移后发起攻击；命中后目标敏捷豁免DC12，失败进入缴械。基础版冲锋会触发借机攻击；3级获得迅捷关键词后不触发；6级伤害结算后额外附加敏捷调整值。",
+    "keywords": [
+      "近战攻击",
+      "位移",
+      "敏捷豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-43",
+    "reviewStatus": "draft"
+  }
+}

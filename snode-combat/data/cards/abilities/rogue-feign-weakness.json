@@ -1,0 +1,35 @@
+{
+  "id": "rogue-feign-weakness",
+  "name": "示敌以弱",
+  "class": "游荡者",
+  "style": "妙手",
+  "tier": "一阶",
+  "category": "talent",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "instant",
+    "usage": {
+      "scope": "perBattle",
+      "max": 1
+    },
+    "keywords": [
+      "躲闪",
+      "每场战斗限一次"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "敌方可见攻击命中你后，受伤害前可花1反应进入击倒，完全忽视本次攻击伤害与后续效果。每场一次。",
+    "keywords": [
+      "躲闪"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

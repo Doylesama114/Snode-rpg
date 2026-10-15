@@ -1,0 +1,30 @@
+{
+  "id": "wound-poison",
+  "name": "致伤毒药",
+  "durationTurns": 1,
+  "kind": "dcPenalty",
+  "penalties": {
+    "灼烧": 2,
+    "中毒": 2,
+    "流血": 2
+  },
+  "levelScaling": [
+    {
+      "minLevel": 5,
+      "patch": {
+        "penalties": {
+          "灼烧": 2,
+          "中毒": 2,
+          "流血": 2,
+          "耳鸣": 2,
+          "沉默": 2,
+          "致盲": 2
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "攻击造成伤害后，目标对灼烧/中毒/流血豁免难度+2；5级追加耳鸣/沉默/致盲。持续一回合。",
+    "source": "r-skill-50"
+  }
+}

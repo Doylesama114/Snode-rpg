@@ -1,0 +1,13 @@
+{
+  "id": "healing_halved",
+  "name": "治疗减半",
+  "kind": "binary",
+  "duration": {
+    "scope": "battle"
+  },
+  "display": {
+    "description": "下一次生命回复效果结算后减半；触发后移除。",
+    "icon": "🩹",
+    "source": "游荡者·割裂"
+  }
+}

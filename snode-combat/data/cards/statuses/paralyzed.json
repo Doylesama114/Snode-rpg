@@ -1,0 +1,30 @@
+{
+  "id": "paralyzed",
+  "name": "麻痹",
+  "kind": "binary",
+  "duration": {
+    "scope": "battle"
+  },
+  "modifiers": [
+    {
+      "stat": "speed",
+      "multiply": "0.5",
+      "round": "floor"
+    },
+    {
+      "stat": "incomingAttackRoll",
+      "adv": "advantage",
+      "target": "attackers"
+    },
+    {
+      "stat": "canReact",
+      "value": "0",
+      "target": "self"
+    }
+  ],
+  "display": {
+    "description": "位移步数减半；其他角色攻击优势；持续时间内无法响应反应动作。",
+    "icon": "⚡",
+    "source": "help.html 异常状态·麻痹"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "elusive",
+  "name": "飘忽不定",
+  "kind": "binary",
+  "maxLayers": 1,
+  "duration": {
+    "scope": "rounds",
+    "value": 1
+  },
+  "triggers": [],
+  "display": {
+    "description": "对你的攻击有劣势；指向性效果需先瞄准；移动可穿过单位。",
+    "icon": "◆",
+    "source": "P2内部状态"
+  }
+}

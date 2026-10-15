@@ -1,0 +1,79 @@
+{
+  "id": "rogue-throat-lock",
+  "name": "锁喉",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "2",
+    "duration": "instant",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "战技",
+      "速攻",
+      "敏捷豁免（15）"
+    ]
+  },
+  "conditions": [
+    {
+      "kind": "hasFreeHand"
+    }
+  ],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "adjacent"
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {
+    "rolls": [
+      {
+        "id": "save",
+        "kind": "save",
+        "attr": "敏捷",
+        "dc": 15,
+        "target": "targets"
+      }
+    ],
+    "branches": [
+      {
+        "if": {
+          "roll": "save",
+          "outcome": "saveFail"
+        },
+        "effects": [
+          {
+            "op": "condition",
+            "name": "silenced",
+            "layers": 1,
+            "duration": {
+              "scope": "battle"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "display": {
+    "description": "目标敏捷豁免DC15，失败进入沉默。自己回合0动作=附赠动作；他人回合消耗反应且每场限一次。",
+    "keywords": [
+      "速攻",
+      "敏捷豁免"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-13",
+    "reviewStatus": "draft"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "rogue-shadow-armor",
+  "name": "暗影护甲",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "2",
+    "duration": "2轮",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "暗影",
+      "韧性",
+      "激活",
+      "唯一性"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "effects": [
+    {
+      "op": "modifier",
+      "stat": "ac",
+      "value": "min(@wisMod, 2)",
+      "cap": 18,
+      "target": "self"
+    },
+    {
+      "op": "modifier",
+      "stat": "resistance",
+      "value": 4,
+      "damageTypes": [
+        "暗影",
+        "心灵"
+      ],
+      "target": "self"
+    },
+    {
+      "op": "modifier",
+      "stat": "vulnerability",
+      "value": 2,
+      "damageTypes": [
+        "光耀",
+        "神圣"
+      ],
+      "target": "self"
+    }
+  ],
+  "display": {
+    "description": "AC附加min(感知调整,2)且不超过18；暗影/心灵抗性4；光耀/神圣易伤2，承受后立即移除。L3/L6/L9待后续。",
+    "keywords": [
+      "暗影",
+      "韧性"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-27",
+    "reviewStatus": "draft"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "prone",
+  "name": "击倒",
+  "kind": "binary",
+  "duration": { "scope": "battle" },
+  "modifiers": [
+    { "stat": "canMove", "value": "0", "target": "self" },
+    { "stat": "attackRoll", "adv": "disadvantage", "target": "self" },
+    { "stat": "incomingAttackRoll", "adv": "advantage", "target": "attackers" }
+  ],
+  "removal": {
+    "byAction": { "action": "bonus" },
+    "text": "站起消耗1个附赠动作；站起后本回合可正常移动/攻击。"
+  },
+  "display": {
+    "description": "需要花费1个附赠动作站起，否则无法移动或使用位移关键词能力；站起前攻击命中具有劣势，其他角色对其攻击命中具有优势。",
+    "icon": "💫",
+    "source": "斯诺德跑团/help.html 异常状态规则·击倒 + 项目所有者裁决"
+  }
+}

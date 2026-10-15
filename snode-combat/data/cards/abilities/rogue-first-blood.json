@@ -1,0 +1,61 @@
+{
+  "id": "rogue-first-blood",
+  "name": "第一滴血",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "三阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "perBattle",
+      "max": 1
+    },
+    "keywords": [
+      "天赋",
+      "生命流失"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onFirstDamageDealt",
+      "effects": [
+        {
+          "op": "loseHp",
+          "amount": "@firstBloodAmount",
+          "target": "targets"
+        }
+      ]
+    }
+  ],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "firstBloodAmount": "10"
+        }
+      }
+    },
+    {
+      "minLevel": 10,
+      "patch": {
+        "variables": {
+          "firstBloodAmount": "20"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "本场战斗首次造成伤害时，使承受伤害的角色失去10点生命值；10级为20点。",
+    "keywords": [
+      "生命流失"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-48",
+    "reviewStatus": "draft"
+  }
+}

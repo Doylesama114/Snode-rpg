@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>斯诺德战斗系统 v2 · P0 教学遭遇</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="board-wrap"><div id="board-root"></div></div>
+      <div id="side">
+        <div class="panel">
+          <h3>⚔ 教学遭遇</h3>
+          <div id="status" class="muted">加载中…</div>
+        </div>
+        <div class="panel">
+          <h3>操作</h3>
+          <div id="action-bar">
+            <button id="btn-end">结束回合</button>
+            <button id="btn-reload">装填(0动作)</button>
+          </div>
+          <div class="muted" style="margin-top:8px">点击己方棋子：显示移动范围。点击敌方棋子：选中目标。</div>
+        </div>
+        <div id="dice-overlay" class="hidden">
+          <div id="dice-box">
+            <div id="dice-label" class="muted">点击掷骰</div>
+            <div id="dice-face">?</div>
+            <div id="dice-values"></div>
+            <button id="dice-roll">🎲 掷骰</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>战前淬毒（可选）</h3>
+          <div id="poison-list" class="ability-list"></div>
+        </div>
+        <div class="panel">
+          <h3>游荡者技能</h3>
+          <div id="ability-list" class="ability-list"></div>
+        </div>
+        <div class="panel" id="log-panel">
+          <h3>战斗日志</h3>
+          <div id="log">等待开始…</div>
+        </div>
+      </div>
+    </div>
+    <div id="bottom-bar">
+      <div class="slot" id="slot-main" title="主要动作"><span class="slot-icon">●</span><span>主要</span></div>
+      <div class="slot" id="slot-bonus" title="附赠动作"><span class="slot-icon">◐</span><span>附赠</span></div>
+      <div class="slot" id="slot-react" title="反应动作"><span class="slot-icon">↯</span><span id="react-count">3/3</span></div>
+      <div class="slot" id="move-slot" title="移动预算"><span class="slot-icon">👣</span><span id="move-count">0</span></div>
+      <div id="weapon-slot" class="muted">武器：-</div>
+      <div class="spacer"></div>
+      <button id="btn-bottom-end">结束回合</button>
+    </div>
+    <script type="module" src="/app/main.ts"></script>
+  </body>
+</html>

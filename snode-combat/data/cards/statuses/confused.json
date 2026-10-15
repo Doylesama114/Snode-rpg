@@ -1,0 +1,13 @@
+{
+  "id": "confused",
+  "name": "困惑",
+  "kind": "binary",
+  "duration": { "scope": "battle" },
+  "canOpportunity": false,
+  "nextActionAutoFails": true,
+  "display": {
+    "description": "无法进行借机攻击。自身回合进行的下一个行动必定失败，并消耗对应动作；若仍拥有足够行动次数，可以继续执行行动。",
+    "icon": "😵",
+    "source": "斯诺德跑团/help.html 异常状态规则·困惑"
+  }
+}

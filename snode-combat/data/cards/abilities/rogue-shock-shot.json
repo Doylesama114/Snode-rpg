@@ -1,0 +1,78 @@
+{
+  "id": "rogue-shock-shot",
+  "name": "震慑射击",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "三阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "main",
+    "fp": "3",
+    "duration": "instant",
+    "usage": { "scope": "unlimited", "max": 99 },
+    "keywords": ["战技", "远程攻击", "AOE", "实体飞行道具", "力量豁免（12）"],
+    "consumeAmmo": true
+  },
+  "conditions": [
+    { "kind": "equipped", "any": ["火枪"] },
+    { "kind": "weaponLoaded" }
+  ],
+  "targeting": {
+    "kind": "area",
+    "area": { "shape": "cone", "rings": 3, "metric": "grid" },
+    "filter": { "teams": ["enemy"], "livingOnly": true }
+  },
+  "resolution": {
+    "rolls": [
+      { "id": "aoe", "kind": "aoeDamageSave", "dc": 15, "target": "allInArea" },
+      {
+        "id": "knock",
+        "kind": "save",
+        "attr": "力量",
+        "dc": 12,
+        "target": "allInArea",
+        "when": "tookDamageFromRoll('aoe')"
+      }
+    ],
+    "branches": [
+      {
+        "if": { "roll": "knock", "outcome": "saveFail" },
+        "effects": [
+          { "op": "condition", "name": "prone", "layers": 1, "duration": { "scope": "battle" } }
+        ]
+      }
+    ]
+  },
+  "effects": [
+    {
+      "op": "aoeDamage",
+      "roll": "aoe",
+      "dice": "@weapon.dice",
+      "type": "@weapon.damageType"
+    }
+  ],
+  "levelScaling": [
+    { "minLevel": 1, "patch": {} },
+    {
+      "minLevel": 6,
+      "patch": {
+        "effects": [
+          {
+            "op": "aoeDamage",
+            "roll": "aoe",
+            "dice": "@weapon.dice",
+            "type": "@weapon.damageType",
+            "adv": "advantage"
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "description": "消耗一发弹药，对前方扇形3环内所有角色造成火枪伤害。所有范围目标先做DC15敏捷豁免决定受伤程度：D20=1双倍、失败全伤、成功半伤（向下取整）、D20=20无伤。受到伤害者再做DC12力量豁免，失败进入击倒。6级伤害骰具有优势。",
+    "keywords": ["远程攻击", "AOE", "力量豁免"],
+    "source": "职业页/数据/游荡者.json#r-skill-46",
+    "reviewStatus": "draft"
+  }
+}

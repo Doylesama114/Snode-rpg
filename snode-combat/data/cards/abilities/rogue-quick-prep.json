@@ -1,0 +1,70 @@
+{
+  "id": "rogue-quick-prep",
+  "name": "快速备战",
+  "class": "游荡者",
+  "style": "狂妄",
+  "tier": "二阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "天赋",
+      "备战"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onBattleStart",
+      "effects": [
+        {
+          "op": "resource",
+          "resource": "comboPoints",
+          "amount": "+@quickPrepPoints",
+          "target": "self"
+        }
+      ]
+    }
+  ],
+  "levelScaling": [
+    {
+      "minLevel": 1,
+      "patch": {
+        "variables": {
+          "quickPrepPoints": "1"
+        }
+      }
+    },
+    {
+      "minLevel": 8,
+      "patch": {
+        "variables": {
+          "quickPrepPoints": "3"
+        }
+      }
+    },
+    {
+      "minLevel": 15,
+      "patch": {
+        "variables": {
+          "quickPrepPoints": "5"
+        }
+      }
+    }
+  ],
+  "display": {
+    "description": "战斗开始时立即获得1/3/5个连击点。",
+    "keywords": [
+      "备战"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-44",
+    "reviewStatus": "draft"
+  }
+}

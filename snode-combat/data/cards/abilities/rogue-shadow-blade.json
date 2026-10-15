@@ -1,0 +1,37 @@
+{
+  "id": "rogue-shadow-blade",
+  "name": "暗影之刃",
+  "class": "游荡者",
+  "style": "魅影",
+  "tier": "一阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "none",
+    "fp": "1",
+    "duration": "1小时",
+    "usage": {
+      "scope": "unlimited",
+      "max": 99
+    },
+    "keywords": [
+      "法术",
+      "暗影",
+      "媒介",
+      "唯一性"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "self"
+  },
+  "resolution": {},
+  "display": {
+    "description": "开战前准备阶段：为一把近战武器注入暗影能量，持续本场。武器改暗影伤害且武器伤害骰最低3。",
+    "keywords": [
+      "暗影"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  }
+}

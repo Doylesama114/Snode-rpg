@@ -1,0 +1,49 @@
+{
+  "id": "rogue-chain-assault",
+  "name": "连环奇袭",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "二阶",
+  "category": "talent",
+  "active": false,
+  "cast": {
+    "action": "none",
+    "fp": null,
+    "duration": "-",
+    "usage": {
+      "scope": "perRound",
+      "max": 1
+    },
+    "keywords": [
+      "天赋",
+      "连续攻击",
+      "每轮限一次"
+    ]
+  },
+  "conditions": [],
+  "passives": [
+    {
+      "event": "onKill",
+      "effects": [
+        {
+          "op": "choice",
+          "prompt": "选择一名相邻角色并施展本风格的一个战技",
+          "options": [
+            {
+              "label": "触发",
+              "effects": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "display": {
+    "description": "击杀一名角色后，可立即对相邻角色免费施展本风格一个战技（战技仍消耗FP）。",
+    "keywords": [
+      "连续攻击"
+    ],
+    "source": "职业页/数据/游荡者.json#r-skill-11",
+    "reviewStatus": "draft"
+  }
+}

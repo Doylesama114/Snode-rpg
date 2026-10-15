@@ -1,0 +1,54 @@
+{
+  "id": "rogue-death-mark",
+  "name": "死亡印记",
+  "class": "游荡者",
+  "style": "奇袭",
+  "tier": "四阶",
+  "category": "skill",
+  "active": true,
+  "cast": {
+    "action": "bonus",
+    "fp": "5",
+    "duration": "instant",
+    "usage": {
+      "scope": "longRest",
+      "max": 1
+    },
+    "keywords": [
+      "战技",
+      "命运",
+      "处决技",
+      "长休"
+    ]
+  },
+  "conditions": [],
+  "targeting": {
+    "kind": "unit",
+    "range": {
+      "metric": "grid",
+      "max": 6
+    },
+    "filter": {
+      "teams": [
+        "enemy"
+      ],
+      "livingOnly": true
+    }
+  },
+  "resolution": {},
+  "display": {
+    "description": "对6米内一名角色施加死亡印记。终结技命中该目标即直接处决（无视反制）。",
+    "keywords": [
+      "处决技"
+    ],
+    "source": "职业页/数据/游荡者.json",
+    "reviewStatus": "p2"
+  },
+  "effects": [
+    {
+      "op": "mark",
+      "name": "death_mark",
+      "amount": "1"
+    }
+  ]
+}

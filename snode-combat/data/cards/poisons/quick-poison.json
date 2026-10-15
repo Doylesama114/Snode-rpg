@@ -1,0 +1,31 @@
+{
+  "id": "quick-poison",
+  "name": "速效毒药",
+  "durationTurns": 1,
+  "kind": "loseHp",
+  "amount": 1,
+  "levelScaling": [
+    {
+      "minLevel": 3,
+      "patch": {
+        "amount": 2
+      }
+    },
+    {
+      "minLevel": 6,
+      "patch": {
+        "amount": 3
+      }
+    },
+    {
+      "minLevel": 9,
+      "patch": {
+        "amount": 4
+      }
+    }
+  ],
+  "display": {
+    "description": "攻击造成伤害后使目标失去1/2/3/4点生命值。",
+    "source": "r-skill-55"
+  }
+}
