@@ -99,6 +99,8 @@ def extract_to_block(ex: dict) -> dict:
         "description_entries": ex.get("description_entries") or [],
         "level_upgrades": list(ex.get("level_upgrades") or []),
         "flavor": ex.get("flavor") or "",
+        "group_label": ex.get("group_label") or "",
+        "group_of": ex.get("group_of") or "",
         "unit_tables": ex.get("unit_tables") or [],
         "roll_tables": ex.get("roll_tables") or [],
     }

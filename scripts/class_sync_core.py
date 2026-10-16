@@ -771,6 +771,13 @@ def colorize_mark_fallback(text, colors):
 
 
 def build_detail_html(block: dict, tables: dict | None = None) -> str:
+    # D1/D2/D3 属于【它所统领的那个技能】：渲染在本卡片顶部，而不是父技能的描述里
+    _group_html = ""
+    _gl = (block.get("group_label") or "").strip()
+    if _gl:
+        _gof = (block.get("group_of") or "").strip()
+        _tag = _gl + " · 选项" + _gl[1:] + (("（" + _gof + " 的抉择）") if _gof else "")
+        _group_html = '<div class="group-row"><span class="choice-head">' + _tag + '</span></div>'
     fields = block["fields"]
     field_runs = block.get("field_runs") or {}
     runs_by_text = {
@@ -905,7 +912,7 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
                 out.append(f"<div>{line.strip()}</div>")
         out.append("</div>")
 
-    return "".join(out)
+    return _group_html + "".join(out)
 
 def split_skill_description(fields: dict, desc_body: list[str]) -> list[str]:
     """把 docx 描述行拆成 (fields["描述"], description 列表)。
