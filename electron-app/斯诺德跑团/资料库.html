@@ -151,7 +151,8 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
     <div class="tab active" data-tab="flow">创建流程</div>
     <div class="tab" data-tab="bg">个性与背景创建规则</div>
     <div class="tab" data-tab="store">物资大全</div>
-    <div class="tab" data-tab="base">基础规则</div>
+    <div class="tab" data-tab="rare">🏆 稀有装备</div>
+      <div class="tab" data-tab="base">基础规则</div>
   </div>
 
   <div class="panel active" id="panel-flow">
@@ -175,6 +176,12 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
     <a class="cardLink" href="物资大全.html">
       <b>📦 打开斯诺德物资大全</b>
       <span>按原文件的大分类 + 小分类分组展示全部物品（名称 / 小类 / 效果与简介 / 价格 / 载重与负重 / 品质），武器伤害、卷轴与魔法道具效果、品质、容器负重、租借与购买价全部可见，支持搜索。</span>
+    </a>
+  </div>
+  <div class="panel" id="panel-rare">
+    <a class="cardLink" href="资料库/稀有装备.html">
+      <b>🎖️ 打开斯诺德稀有装备列表</b>
+      <span>70 件稀有装备的完整效果一览（名称 / 类别 / 负重 / 职业要求 / 效果 / 价格），可按类别、负重、职业要求筛选，并支持全文搜索。</span>
     </a>
   </div>
 
@@ -491,13 +498,6 @@ renderBgPage();
 </style>
 <script src="user_preferences.js"></script>
 
-<script>
-(function(){
-  var host = document.querySelector("main") || document.querySelector(".container") || document.body;
-  var d = document.createElement("div");
-  d.innerHTML = '<a href="资料库/稀有装备.html" style="display:block;padding:14px 16px;margin:14px 0;border:1px solid #d8d2c4;border-radius:12px;background:#fffdf8;color:#1f2522;text-decoration:none"><b>稀有装备</b><span style="color:#69706b;font-size:13px"> · 70 件稀有装备的完整效果一览，可按类别 / 负重 / 职业要求筛选与搜索</span></a>';
-  host.appendChild(d);
-})();
-</script>
+
 </body>
 </html>
