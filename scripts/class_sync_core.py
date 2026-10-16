@@ -853,6 +853,13 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
                 f'<div class="process-block"><div class="process-mat">{inner}</div>'
             )
             process_open = True
+        elif re.fullmatch(r"D[1-9][0-9]?", para.strip()):
+            # D1/D2/D3 是分组标题（其下紧跟的是被统领的技能），必须渲染在描述区块【之外】，
+            # 否则会混进正文、看着不知所谓。
+            mk = para.strip()
+            out.append(
+                f'<div class="choice-row"><span class="choice-head">{mk} · 选项{mk[1:]}</span></div>'
+            )
         elif process_open:
             if para.startswith("参考价格"):
                 out.append(f'<div class="process-price">{inner}</div>')

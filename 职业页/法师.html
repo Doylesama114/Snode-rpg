@@ -3634,24 +3634,6 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 .choice-head{display:inline-block;font-weight:700;padding:1px 10px;margin:8px 0 4px;border-radius:6px;background:#f0e6d2;border:1px solid #d8c9a8;color:#5b4a22}
 html.dark .choice-head{background:#3a3323;border-color:#5a4f35;color:#e8d9b0}
 </style>
-<script>
-(function(){
-  var RE=/^D[1-9][0-9]?$/;
-  function decorate(root){
-    var nodes=root.querySelectorAll("*");
-    Array.prototype.forEach.call(nodes,function(n){
-      if(n.dataset&&n.dataset.choiceDone)return;
-      var t=(n.textContent||"").trim();
-      if(!RE.test(t))return; if(n.children&&n.children.length)return;
-      if(n.querySelector(".choice-head"))return;
-      n.dataset.choiceDone="1";
-      n.innerHTML='<span class="choice-head">'+t+' · 选项'+(parseInt(t.slice(1),10))+'</span>';
-    });
-  }
-  function run(){decorate(document.body);}
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run);else run();
-  setTimeout(run,1200); setTimeout(run,2500);
-})();
-</script>
+
 </body>
 </html>
