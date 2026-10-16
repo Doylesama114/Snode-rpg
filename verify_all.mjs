@@ -724,6 +724,19 @@ try {
 console.log(langOK ? '✅ 建卡语言选择器通过' : '❌ 建卡语言选择器失败');
 totalErrors += langOK ? 0 : 1;
 
+// 技能定位与描述完整性
+console.log('\n=== 技能定位与描述完整性 ===');
+let skillAnchorOK = true;
+try {
+  let sa;
+  sa = spawnSync('python', [join(BASE, 'verify_skill_anchor.py')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (sa.stdout) console.log(sa.stdout.trim());
+  if (sa.stderr) console.error(sa.stderr.trim());
+  if (sa.status !== 0) skillAnchorOK = false;
+} catch (e) { skillAnchorOK = false; console.log("❌ 技能定位校验执行失败"); }
+console.log(skillAnchorOK ? '✅ 技能定位与描述完整性通过' : '❌ 技能定位与描述完整性失败');
+totalErrors += skillAnchorOK ? 0 : 1;
+
 let hpCalcOK = true;
 try {
   let hc = spawnSync('node', [join(BASE, 'verify_class_hp_calc.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
@@ -845,6 +858,6 @@ const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK && skillAnchorOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

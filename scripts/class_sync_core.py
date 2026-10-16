@@ -218,7 +218,7 @@ def extract_skill_block(paras: list[dict], start: int, names: set[str]) -> dict 
         if is_skill_header(paras, i, names):
             break
         if not text.startswith("-----") and (
-            is_section_break(text) or text.endswith("\u5929\u8d4b\u6811") or text.startswith("\u6289\u62e9")
+            is_section_break(text) or (text.endswith("\u5929\u8d4b\u6811") and len(text) <= 8) or text.startswith("\u6289\u62e9")
         ):
             break
         end = i + 1
