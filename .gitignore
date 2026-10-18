@@ -63,6 +63,9 @@ __pycache__/
 
 # DSH harness（本地工具，不同步 git）
 deepseek-harness/
+# DSH 子工具：曾误以 gitlink 形式加入（无 .gitmodules，导致 Cloudflare Pages 构建失败），保持本地
+dsh-anchored-standard/
+dsh-routing-suite/
 
 # Visual check screenshots
 screenshots/
