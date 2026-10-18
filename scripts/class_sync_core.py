@@ -737,6 +737,16 @@ def render_roll_tables_html(roll_tables):
     return '<div class="roll-table">' + "".join(rows) + '</div>'
 
 
+def unit_text_keys(unit: dict) -> set[str]:
+    """单位卡实际渲染覆盖的文本键（名称 + 原始行），用于升级 choices 去重。"""
+    keys: set[str] = set()
+    for x in [unit.get("name") or ""] + list(unit.get("lines") or []):
+        k = rendered_text_key(x)
+        if k:
+            keys.add(k)
+    return keys
+
+
 def append_tables_to_search(data_search, skill):
     """把单位表/随机效果表内容追加进搜索串，保证可检索。"""
     extra = []
@@ -878,11 +888,27 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
         out.append("</div>")
 
     # 单位属性表 / 随机效果表
+    # 单位块若带 level（docx 中跟在某条升级之后），跟随该升级行渲染；否则紧跟描述。
+    all_units = list((tables or {}).get("unit_tables") or [])
+    upgrade_levels = {
+        lu.get("level") for lu in block["level_upgrades"] if lu.get("level") is not None
+    }
+    inline_units = [u for u in all_units if u.get("level") not in upgrade_levels]
+    upgrade_units: dict = {}
+    for u in all_units:
+        lvl = u.get("level")
+        if lvl in upgrade_levels:
+            upgrade_units.setdefault(lvl, []).append(u)
+    all_unit_keys: set[str] = set()
+    for u in all_units:
+        all_unit_keys.update(unit_text_keys(u))
+
     if tables:
-        out.append(render_unit_tables_html(tables.get("unit_tables")))
+        out.append(render_unit_tables_html(inline_units))
         out.append(render_roll_tables_html(tables.get("roll_tables")))
 
-    # 升级行：保留 docx 原文前缀
+    # 升级行：保留 docx 原文前缀；choices 中被单位卡覆盖的行不再重复输出，
+    # 单位卡在 choices 中首次出现的位置实例化（与 docx 顺序一致）。
     for lu in block["level_upgrades"]:
         label = lu.get("label")
         if not label:
@@ -901,8 +927,27 @@ def build_detail_html(block: dict, tables: dict | None = None) -> str:
         out.append(
             f'<div class="upgrade-cell"><span class="upgrade-label">{label}</span>{body_html}</div>'
         )
+        units = upgrade_units.get(lu.get("level"), [])
+        rendered_units: set[int] = set()
         for choice in lu.get("choices") or []:
+            ck = rendered_text_key(choice)
+            owner = None
+            for u in units:
+                if id(u) in rendered_units:
+                    continue
+                if ck in unit_text_keys(u):
+                    owner = u
+                    break
+            if owner is not None:
+                out.append(render_unit_tables_html([owner]))
+                rendered_units.add(id(owner))
+                continue
+            if ck in all_unit_keys:
+                continue
             out.append(f'<div class="upgrade-cell sub">{choice}</div>')
+        for u in units:
+            if id(u) not in rendered_units:
+                out.append(render_unit_tables_html([u]))
 
     # 天赋树解锁说明等尾段（docx 原文）
     if block["flavor"]:

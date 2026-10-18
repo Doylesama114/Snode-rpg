@@ -855,9 +855,24 @@ console.log('\n=== 主体范围、通用字段和布局变换 ===');
 const generalImportCheck=spawnSync('node',[join(BASE,'verify_character_general_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
 if(generalImportCheck.stdout)console.log(generalImportCheck.stdout.trim());if(generalImportCheck.stderr)console.error(generalImportCheck.stderr.trim());
 const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK?0:1;
+
+console.log('\n=== 技能内容重复 ===');
+let contentDupOK = true;
+try {
+  const dupOut = spawnSync('python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_content_dupes.py')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (dupOut.stdout) console.log(dupOut.stdout.trim());
+  if (dupOut.stderr) console.error(dupOut.stderr.trim());
+  if (dupOut.status !== 0) contentDupOK = false;
+} catch (e) {
+  contentDupOK = false;
+  console.log('❌ 技能内容重复校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(contentDupOK ? '✅ 技能内容重复通过' : '❌ 技能内容重复失败');
+totalErrors += contentDupOK ? 0 : 1;
+
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK && skillAnchorOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && contentDupOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK && skillAnchorOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);
