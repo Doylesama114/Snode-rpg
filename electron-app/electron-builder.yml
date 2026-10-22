@@ -21,6 +21,7 @@ files:
   - 职业页/**/*
   - "!职业页/_monk_test_top.html"      # 一次性测试页，不能进安装包
   - 斯诺德跑团/**/*
+  - "!斯诺德跑团/tests.html"          # 回归断言页，不进安装包（同 _monk_test_top.html）
   - poker-game/**/*
 extraFiles:
   - from: ../snode.cmd

@@ -18,6 +18,16 @@
   var APP = { launcher: BASE + '启动台.html', panel: BASE + '角色面板.html', settings: BASE + '设置.html' };
 
   /* ---------------- ① 样式注入 ---------------- */
+  /* ---------------- ⓪ 版本更新开屏提示 ---------------- */
+  function noticeBoot() {
+    if (document.getElementById('swdNoticeScript')) return;
+    var s = document.createElement('script');
+    s.id = 'swdNoticeScript';
+    s.src = BASE + 'update_notice.js';
+    s.async = false;
+    document.body.appendChild(s);
+  }
+
   function injectCss() {
     if (document.getElementById('gui-css')) return;
     var l = document.createElement('link');
@@ -634,6 +644,7 @@
     skinBoot();                             // 皮肤与导航层无关（设置页也要）
     escBoot();
     centerBoot();                              // ESC 与导航层无关（设置页也要能 ESC 返回）
+    noticeBoot();                              // 版本更新开屏提示（全站，含启动台/设置页）
     if (window.__guiNoNav) return;          // 启动台/设置页只关闭「导航面板」
     beamBoot();
     navBoot();

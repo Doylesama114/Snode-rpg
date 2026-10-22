@@ -459,6 +459,21 @@ try {
 console.log(bgChoiceOK ? '✅ 背景特殊选择数据与导出文案通过' : '❌ 背景特殊选择数据与导出文案失败');
 totalErrors += bgChoiceOK ? 0 : 1;
 
+// 个性背景色彩标识（26.10.22）：xlsx ↔ JSON 全量比对
+console.log('\n=== 个性背景色彩标识 ===');
+let bgColorOK = true;
+try {
+  const colorOut = spawnSync('python', ['-X', 'utf8', join(BASE, 'scripts', 'build_bg_colors.py'), '--check'], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  if (colorOut.stdout) console.log(colorOut.stdout.trim().split('\n').slice(-2).join('\n'));
+  if (colorOut.stderr) console.error(colorOut.stderr.trim());
+  if (colorOut.status !== 0) bgColorOK = false;
+} catch (e) {
+  bgColorOK = false;
+  console.log('❌ 个性背景色彩标识校验执行失败: ' + e.message.split('\n')[0]);
+}
+console.log(bgColorOK ? '✅ 个性背景色彩标识通过' : '❌ 个性背景色彩标识失败');
+totalErrors += bgColorOK ? 0 : 1;
+
 // 职业专长切换回归（19 页 chip→面板 独立切换）
 console.log('\n=== 职业专长切换回归 ===');
 let tabOK = true;
@@ -873,6 +888,6 @@ totalErrors += contentDupOK ? 0 : 1;
 let clean = results.filter(r => r.errors === 0).length;
 console.log('\n========================');
 console.log(`Clean: ${clean}/${pages.length}  |  Errors: ${totalErrors}  |  Tests: ${pass}P ${fail}F`);
-const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && contentDupOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK && skillAnchorOK;
+const allOK = totalErrors === 0 && characterIOOK && unusualIOOK && integrityIOOK && generalImportOK && contentDupOK && bgColorOK && clean === pages.length && fail === 0 && dataOK && visOK && uiOK && armorOK && weaponOK && weaponSpecOK && magePreserveOK && hpFpOK && watchmanOK && markAndOrOK && navTierOK && lazyOK && idxOK && dupeOK && rulesSyncOK && classFeatOK && exportRobustOK && hpCalcOK && langOK && skillAnchorOK;
 console.log(allOK ? '✅ ALL CLEAN' : '❌ ISSUES');
 process.exit(allOK ? 0 : 1);

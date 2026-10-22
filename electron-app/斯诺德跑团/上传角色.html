@@ -96,6 +96,8 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 <script src="ui_dialog.js"></script>
 <script src="skill_index.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
+<script src="../职业页/数据/bg_personality_data.js"></script>
+<script src="bg_mark.js"></script>
 <script src="character_import_schema.js?v=20261003-general1"></script>
 <script src="character_structure.js?v=20261003-general1"></script>
 <script src="character_class_data.js?v=20261003-general1"></script>
@@ -490,10 +492,16 @@ function buildStateLegacyTemplate(parsed) { var cells=parsed.cells; var rawVals=
   s.story=c("H16")||scanLabel(["故事","角色故事","个人故事"],3);
   if(!s.story){var _sr=findCell("故事");if(_sr){var _srow=parseInt(_sr.substring(1));s.story=c("H"+_srow)||c("G"+_srow);}}
   s.traits=scanLabel(["特性","个性","个性特征"],3);
-  s.personality=scanLabel(["特点"],2);
-  s.ideals=scanLabel(["理念","信念"],2);
-  s.bonds=scanLabel(["羁绊"],2);
-  s.flaws=scanLabel(["缺陷"],2);
+  /* 剥离导出时追加的 （色名） 后缀，避免污染字段 */
+  var _stripMark=function(v){
+    if(!v)return v;
+    if(typeof BgMark!=="undefined"&&BgMark.stripSuffix)return BgMark.stripSuffix(v);
+    return String(v).replace(/[（(]\s*(红|橙|黄|绿|青|蓝|浅|紫|粉|棕|白|黑)色?\s*[)）]\s*$/,"");
+  };
+  s.personality=_stripMark(scanLabel(["特点"],2));
+  s.ideals=_stripMark(scanLabel(["理念","信念"],2));
+  s.bonds=_stripMark(scanLabel(["羁绊"],2));
+  s.flaws=_stripMark(scanLabel(["缺陷"],2));
 
   // Attributes: scan with value range check (1-50)
   var an=ATTR_NAMES;
@@ -1406,10 +1414,13 @@ async function exportXlsxFromState(state) {
     var _th = state.traits || "";
     if (_sport && _th.indexOf(_sport) < 0) set("H18", _th ? (_th + "（偏好：" + _sport + "）") : ("运动员拥有一项偏好的运动项目（" + _sport + "），在进行这项运动时具备专家级的熟练度"));
   }
-  if (state.personality) set("H21", state.personality);
-  if (state.ideals) set("H24", state.ideals);
-  if (state.bonds) set("H27", state.bonds);
-  if (state.flaws) set("H30", state.flaws);
+  var _mkText = function(st, f) {
+    return (typeof BgMark !== "undefined" && BgMark.textOf) ? BgMark.textOf(st, f, st.background) : st[f];
+  };
+  if (state.personality) set("H21", _mkText(state, "personality"));
+  if (state.ideals) set("H24", _mkText(state, "ideals"));
+  if (state.bonds) set("H27", _mkText(state, "bonds"));
+  if (state.flaws) set("H30", _mkText(state, "flaws"));
   var _aspObj = state.aspirationPath || null;
   var _aspStr = "";
   if (_aspObj) {

@@ -131,6 +131,7 @@
     <div class="row"><div class="name">音效<span class="desc"> · 界面与卡牌音效</span></div><button class="btn" id="soundBtn">切换</button></div>
     <div class="row"><div class="name">主题<span class="desc"> · 日间 / 夜间</span></div><button class="btn" id="themeBtn">切换</button></div>
     <div class="row"><div class="name">自动更新<span class="desc"> · 有新版本时提示（桌面端）</span></div><button class="btn" id="autoBtn">切换</button></div>
+    <div class="row"><div class="name">版本公告<span class="desc"> · 重新查看本次更新说明</span></div><button class="btn" id="noticeBtn">重看</button></div>
     <div class="row"><div class="name">检查更新<span class="desc"> · 桌面端可用</span></div><button class="btn" id="checkBtn">立即检查</button></div>
     <div class="row"><div class="name">性能自检<span class="desc"> · 桌面端可用</span></div><button class="btn" id="perfBtn">运行</button></div>
   </div>
@@ -257,6 +258,18 @@
     var auto = null; try { auto = localStorage.getItem('_snowd_auto_update'); } catch (e) {}
     $('autoBtn').textContent = (auto === '0') ? '已关闭' : '已开启（桌面端）';
   }
+  var _nb = $('noticeBtn');
+  if (_nb) _nb.addEventListener('click', function () {
+    if (window.SnowdNotice) {
+      window.SnowdNotice.reset();
+      var s = document.createElement('script');
+      s.src = 'update_notice.js?v=' + Date.now();
+      s.onload = function () { if (window.SnowdNotice) window.SnowdNotice.show('2026_10_22_color'); };
+      document.body.appendChild(s);
+      if (window.SnowdNotice.show('2026_10_22_color')) { tip('已重新显示版本公告', true); return; }
+    }
+    tip('公告模块未加载', false);
+  });
   $('soundBtn').addEventListener('click', function () { G.toggleMute(); paintPrefs(); });
   $('themeBtn').addEventListener('click', function () { G.toggleTheme(); paintPrefs(); });
   $('autoBtn').addEventListener('click', function () {

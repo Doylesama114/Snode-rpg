@@ -48,7 +48,7 @@
   .bgFields .fieldLabel{color:var(--muted);font-weight:bold}
   .bgFields .fieldValue{color:var(--ink);white-space:pre-wrap;word-break:break-word}
   .bgSection{margin:16px 0 8px;font-size:16px;font-weight:bold;color:var(--accent);border-left:4px solid var(--accent);padding-left:8px}
-  .bgOptionGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+  .bgOptionGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:6px}
   .bgOption{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;line-height:1.6}
   .bgOptionSub{margin-top:5px;color:var(--muted);font-size:12.5px;line-height:1.55}
   .bgOptionSub b{color:var(--accent);font-weight:bold}
@@ -199,6 +199,7 @@ html.dark table td { color:#e8e0cc !important; border-color: rgba(220,190,140,.1
 </div>
 <script src="../职业页/数据/backgrounds_data.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
+<script src="bg_mark.js"></script>
 <script src="资料库/creation_flow_data.js"></script>
 <script>
 function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -318,7 +319,18 @@ var _bgIdx=0;
 function _bgMatch(b,p,q){
   if(!q)return true;
   var hay=(String(b.name||'')+' '+String(b['基础熟练项']||'')+' '+String(b['专业熟练项']||'')+' '+String(b['其他']||'')+' '+String(b['特性描述']||'')+' '+String((p&&p.desc)||'')).toLowerCase();
-  return hay.indexOf(q)>=0;
+  if(hay.indexOf(q)>=0)return true;
+  /* 色名检索：搜「黄色」可筛出拥有该色彩标识的选项 */
+  if(typeof BgMark!=='undefined'&&p&&p.colors){
+    var _fields=['traits','ideals','bonds','flaws'];
+    for(var _f=0;_f<_fields.length;_f++){
+      var _cs=p.colors[_fields[_f]]||[];
+      for(var _ci=0;_ci<_cs.length;_ci++){
+        if(BgMark.name(_cs[_ci]).toLowerCase().indexOf(q)>=0)return true;
+      }
+    }
+  }
+  return false;
 }
 function _bgFiltered(){
   var q=(document.getElementById('bgQ').value||'').trim().toLowerCase();
@@ -358,6 +370,17 @@ function _bgOptions(title,arr){
   if(!arr||!arr.length)return '';
   var h='<div class="bgSection">'+esc(title)+'</div><div class="bgOptionGrid">';
   for(var i=0;i<arr.length;i++)h+='<div class="bgOption">'+_bgEsc(arr[i])+'</div>';
+  return h+'</div>';
+}
+/* 带色彩标识的选项（个性四类：特点/理念/羁绊/缺陷） */
+function _bgColorOptions(title,arr,colors){
+  if(!arr||!arr.length)return '';
+  var h='<div class="bgSection">'+esc(title)+'<span style="font-weight:normal;color:var(--muted);font-size:12px">（色块为该选项的色彩标识）</span></div><div class="bgOptionGrid">';
+  for(var i=0;i<arr.length;i++){
+    var hex=(colors&&colors[i])||(typeof BgMark!=='undefined'?BgMark.NONE:'#FFFFFF');
+    var dot=(typeof BgMark!=='undefined')?BgMark.dot(hex,12):'';
+    h+='<div class="bgOption">'+dot+_bgEsc(arr[i])+'</div>';
+  }
   return h+'</div>';
 }
 /* 带附加说明的选项（如 神祇简介 / 专职熟练度+额外装备 / 名望加成表） */
@@ -441,10 +464,11 @@ function renderBgPage(){
   h+=_bgField('装备','\n'+String(b['装备']||'').split('\n').filter(function(x){return x;}).map(function(x){return '· '+x;}).join('\n'));
   h+=_bgField('特性描述',b['特性描述']||'无');
   h+='</div>';
-  h+=_bgOptions('特点选项',p.traits);
-  h+=_bgOptions('理念选项',p.ideals);
-  h+=_bgOptions('羁绊选项',p.bonds);
-  h+=_bgOptions('缺陷选项',p.flaws);
+  var _bc=p.colors||{};
+  h+=_bgColorOptions('特点选项',p.traits,_bc.traits);
+  h+=_bgColorOptions('理念选项',p.ideals,_bc.ideals);
+  h+=_bgColorOptions('羁绊选项',p.bonds,_bc.bonds);
+  h+=_bgColorOptions('缺陷选项',p.flaws,_bc.flaws);
   h+=_bgRichOptions('神祇选项（创建时选 1 项）',p.deity_details||p.deities,[['name','神祇'],['desc','简介']]);
   h+=_bgOptions('联系渠道选项',p.contacts);
   h+=_bgRichOptions('偏好骗局选项（创建时选 1 项）',p.scam_details||p.scam_types,[['name','骗局'],['gear','对应装备']]);

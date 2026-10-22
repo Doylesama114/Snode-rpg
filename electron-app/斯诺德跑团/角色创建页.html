@@ -562,6 +562,7 @@ function calcCost(){var t=0;for(var i=0;i<ATTR_NAMES.length;i++)t+=calcAttrCost(
 <script src="../职业页/数据/items_data.js"></script>
 <script src="chargen_adv_paths.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
+<script src="bg_mark.js"></script>
 <script>
 // ====== Wizard ======
 function initWizard() {
@@ -2714,9 +2715,15 @@ function showPersonalityPicker(bg){
   b.appendChild(h3);
   var p=document.createElement("p");
   p.style.cssText="font-size:13px;color:#69706b;margin-bottom:16px";
-  p.textContent="选择或自定义角色的个性特征";
+  p.textContent="选择或自定义角色的个性特征（方括号内为该选项的色彩标识）";
   b.appendChild(p);
-  function makeSection(label,key,items,count,hints){
+  if(data.colors){
+    var cn=document.createElement("div");
+    cn.style.cssText="font-size:12px;color:#8a5a2b;background:#fdf6ec;border:1px solid #f0e0c8;border-radius:6px;padding:8px 10px;line-height:1.6;margin:-8px 0 14px";
+    cn.textContent="色彩标识决定角色在游玩中可申请重掷的场景类型。请在自定义前与 DM 进行商议，自定义个性背景将根据实际情况斟酌提供色彩标识。";
+    b.appendChild(cn);
+  }
+  function makeSection(label,key,items,count,hints,colors){
     var div=document.createElement("div");
     div.style.marginBottom="14px";
     var lb=document.createElement("label");
@@ -2738,7 +2745,8 @@ function showPersonalityPicker(bg){
       for(var j=0;j<items.length;j++){
         var it=items[j];
         var opt=document.createElement("option");
-        opt.value=it;opt.textContent=it;
+        opt.value=it;
+        opt.textContent=(colors&&colors[j]&&typeof BgMark!=="undefined")?("【"+BgMark.short(colors[j])+"】"+it):it;
         if((ep[i]||"").trim()===it)opt.selected=true;
         sel.appendChild(opt);
       }
@@ -2746,6 +2754,12 @@ function showPersonalityPicker(bg){
       optCustom.value="__custom__";optCustom.textContent="自定义...";
       sel.appendChild(optCustom);
       div.appendChild(sel);
+      if(colors){
+        var sw=document.createElement("div");
+        sw.id="persdot_"+key+"_"+i;
+        sw.style.cssText="display:flex;align-items:center;gap:4px;font-size:12px;color:#69706b;line-height:1.5;margin:0 0 4px;min-height:16px";
+        div.appendChild(sw);
+      }
       var inp=document.createElement("input");
       inp.id="pers_"+key+"_"+i+"_custom";
       inp.placeholder="输入自定义内容...";
@@ -2761,10 +2775,12 @@ function showPersonalityPicker(bg){
     }
     b.appendChild(div);
   }
-  makeSection("特点","personality",data.traits,1);
-  makeSection("理念","ideals",data.ideals,1);
-  makeSection("羁绊","bonds",data.bonds,1);
-  makeSection("缺陷","flaws",data.flaws,1);
+  window._PERS_BG=bg.name;
+  var _bc=data.colors||{};
+  makeSection("特点","personality",data.traits,1,null,_bc.traits);
+  makeSection("理念","ideals",data.ideals,1,null,_bc.ideals);
+  makeSection("羁绊","bonds",data.bonds,1,null,_bc.bonds);
+  makeSection("缺陷","flaws",data.flaws,1,null,_bc.flaws);
   var bgName=bg.name;
   /* 选项说明（来自 个性与背景创建规则.xlsx 的附加列） */
   function _hints(arr,key,fields){
@@ -2835,6 +2851,8 @@ function showPersonalityPicker(bg){
 }
 function updatePersonalityCustom(){
   var ks=["personality","ideals","bonds","flaws","deity","contacts","scamType","missionChannel","academicDomain","crime","seclusion","militaryRole","foreignOrigin","companion"];
+  var _fmap={personality:"traits",ideals:"ideals",bonds:"bonds",flaws:"flaws"};
+  var _bg=window._PERS_BG||(typeof CHAR!=="undefined"&&CHAR.bgName)||"";
   for(var i=0;i<ks.length;i++){
     var s=document.getElementById("pers_"+ks[i]+"_0");
     var ci=document.getElementById("pers_"+ks[i]+"_0_custom");
@@ -2842,6 +2860,18 @@ function updatePersonalityCustom(){
     var hd=document.getElementById("pershint_"+ks[i]+"_0");
     var hm=window._PERS_HINTS&&window._PERS_HINTS[ks[i]];
     if(hd&&hm)hd.textContent=hm[s?s.value:"__custom__"]||"";
+    var sw=document.getElementById("persdot_"+ks[i]+"_0");
+    if(sw&&typeof BgMark!=="undefined"){
+      var v=s?s.value:"";
+      if(v==="__custom__"){
+        sw.innerHTML="<span style='color:#8a5a2b'>请与 DM 商议后再确定此自定义内容的色彩标识</span>";
+      }else if(v&&_fmap[ks[i]]){
+        var hx=BgMark.colorOf(_bg,_fmap[ks[i]],v);
+        sw.innerHTML=hx?(BgMark.dot(hx,12)+"<span>色彩标识："+BgMark.name(hx)+"</span>"):"";
+      }else{
+        sw.innerHTML="";
+      }
+    }
   }
 }
 function confirmPersonalityPicker(){

@@ -1610,11 +1610,11 @@ function canSatisfyMarkRequirements(req) {
   return { ok: true };
 }
 
+/* 26.10.22 色彩标识重做：学习技能/天赋只校验技能点，不再校验色彩标识。
+   色彩标识仍用于费用色点显示（getSkillDotStates）与经验/重掷结算；
+   canSatisfyMarkRequirements 保留（显示判定、测试与后续进阶使用），只是不再参与学习校验。 */
 function canLearnSkill(skillData) {
   if (!skillHasCost(skillData)) return { ok: true };
-  var req = parseSkillRequirements(skillData);
-  var markCheck = canSatisfyMarkRequirements(req);
-  if (!markCheck.ok) return markCheck;
   if (getSpTotal() < 1) return { ok: false, reason: "\u6280\u80fd\u70b9\u4e0d\u8db3" };
   return { ok: true };
 }
@@ -4803,11 +4803,30 @@ function renderClassRow(){
 
 }
 
+/* 个性四类：导出用纯文本，每项后附 （色名）。state.traits 是职业特性，不参与。 */
+function _bgMarkText(state, field) {
+  var raw = (state && state[field]) || "";
+  if (!raw) return "";
+  if (typeof BgMark !== "undefined" && BgMark.textOf) {
+    var t = BgMark.textOf(state, field, state.background);
+    if (t) return t;
+  }
+  return raw;
+}
+/* 个性四类：带色彩标识渲染（26.10.22）。state.traits 是职业特性，不走这里。 */
+function _bgMark(state, field) {
+  var raw = (state && state[field]) || "";
+  if (typeof BgMark !== "undefined" && BgMark.marked) {
+    var h = BgMark.marked(state, field);
+    if (h) return h;
+  }
+  return escapeHtmlText(raw);
+}
 function renderStory(){
   // === 3. Story Block ===
 
 
-  var storyHtml='<div class="misc-item"><div class="m-title">背景故事</div><div>'+state.story+'</div></div><div class="misc-item"><div class="m-title">个性</div><div>'+state.personality+'</div></div><div class="misc-item"><div class="m-title">特性</div><div>'+state.traits+'</div></div><div class="misc-item"><div class="m-title">理念</div><div>'+state.ideals+'</div></div><div class="misc-item"><div class="m-title">羁绊</div><div>'+state.bonds+'</div></div><div class="misc-item"><div class="m-title">缺陷</div><div>'+state.flaws+'</div></div>';
+  var storyHtml='<div class="misc-item"><div class="m-title">背景故事</div><div>'+state.story+'</div></div><div class="misc-item"><div class="m-title">个性</div><div>'+_bgMark(state,"personality")+'</div></div><div class="misc-item"><div class="m-title">特性</div><div>'+state.traits+'</div></div><div class="misc-item"><div class="m-title">理念</div><div>'+_bgMark(state,"ideals")+'</div></div><div class="misc-item"><div class="m-title">羁绊</div><div>'+_bgMark(state,"bonds")+'</div></div><div class="misc-item"><div class="m-title">缺陷</div><div>'+_bgMark(state,"flaws")+'</div></div>';
 if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+state.deity+(state.deityAttr?'（'+state.deityAttr+'）':'')+'</div></div>';
 if(state.patron)storyHtml+='<div class="misc-item"><div class="m-title">宗主</div><div>'+state.patron+'</div></div>';
 if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系渠道</div><div>'+state.contacts+'</div></div>';
@@ -4822,6 +4841,10 @@ if(state.companion)storyHtml+='<div class="misc-item"><div class="m-title">动�
 if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title">偏好运动</div><div>'+state.sportPreference+'</div></div>';
 
 
+  if(typeof BgMark!=="undefined"&&BgMark.marksLine){
+    var _mk=BgMark.marksLine(state);
+    if(_mk)storyHtml+='<div class="misc-item"><div class="m-title">色彩标识</div><div>'+_mk+'</div></div>';
+  }
   document.getElementById("story-title").innerHTML="个性背景：\u0020"+(state.background||"未选择");
 
 
@@ -8468,10 +8491,10 @@ async function exportXlsxFromState(state) {
   if (state.story) set("H16", state.story);
   var _traitsOut = exportTraitsText(state);
   if (_traitsOut) set("H18", _traitsOut);
-  if (state.personality) set("H21", state.personality);
-  if (state.ideals) set("H24", state.ideals);
-  if (state.bonds) set("H27", state.bonds);
-  if (state.flaws) set("H30", state.flaws);
+  if (state.personality) set("H21", _bgMarkText(state, "personality"));
+  if (state.ideals) set("H24", _bgMarkText(state, "ideals"));
+  if (state.bonds) set("H27", _bgMarkText(state, "bonds"));
+  if (state.flaws) set("H30", _bgMarkText(state, "flaws"));
   // 背景创建选择写入两个 [其他内容] 块；H33–H39 不再使用
   set("U27", exportBackgroundChoiceText(state));
   set("U30", exportBackgroundExtraText(state));

@@ -24,6 +24,8 @@ for (const [key, bg] of Object.entries(raw)) {
     ideals: bg.ideals || [],
     bonds: bg.bonds || [],
     flaws: bg.flaws || [],
+    colors: bg.colors || {},
+    fateEvents: bg.fate_events || [],
     equipment: bg.equipment || [],
     deities: bg.deities || [],
     contacts: bg.contacts || [],

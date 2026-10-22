@@ -32,7 +32,7 @@ ORDER = ['name', 'traits', 'ideals', 'bonds', 'flaws', 'equipment', 'deities',
          'contacts', 'scam_types', 'scam_details', 'mission_channels',
          'academic_domains', 'academic_details', 'deity_details',
          'crimes', 'crime_details', 'fame_tiers', 'companions',
-         'seclusion_reasons', 'military_roles', 'foreign_origins',
+         'seclusion_reasons', 'military_roles', 'foreign_origins', 'fate_events',
          'desc', 'hp', 'base_profs', 'special_profs', 'other', 'gold', 'trait_desc']
 
 # 各背景的特殊段落：标签 -> 目标字段名
@@ -47,6 +47,7 @@ SECTION_FIELDS = {
     '士兵': [('专职', 'military_roles')],
     '外乡人': [('原因', 'foreign_origins')],
     '教授': [('学术领域', 'academic_details')],
+    '平民英雄': [('命定事件', 'fate_events')],
 }
 
 # 段落内每列的含义（列号 -> 字段名）；键为“目标字段名”
@@ -60,6 +61,7 @@ COLUMN_MEANING = {
     'military_roles': {4: 'name', 5: 'prof', 6: 'gear'},
     'foreign_origins': {4: 'name', 5: 'desc'},
     'academic_details': {4: 'name', 5: 'prof', 6: 'gear'},
+    'fate_events': {4: 'text'},
 }
 
 
@@ -114,7 +116,7 @@ def extract_sections():
                     rows.append(rec)
             if not rows:
                 continue
-            if field in ('companions', 'seclusion_reasons', 'fame_tiers'):
+            if field in ('companions', 'seclusion_reasons', 'fame_tiers', 'fate_events'):
                 if field == 'fame_tiers':
                     result.setdefault(sheet, {})[field] = [{'level': x.get('level', ''), 'bonus': x.get('bonus', '')} for x in rows]
                 else:

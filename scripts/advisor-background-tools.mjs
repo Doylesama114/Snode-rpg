@@ -127,22 +127,45 @@ export function buildBackgroundToolContext(detected) {
     if (!bg.deities?.length) lines.push('  · （语料无 deities 字段）');
   }
 
+  /* 色彩标识（26.10.22）：选项后附 （色名），来源 bg_personality_index.json 的 colors */
+  const MARK_NAME = {
+    '#FF0000': '红', '#F79646': '橙', '#FFFF00': '黄', '#FFC000': '黄',
+    '#00B050': '绿', '#00FA99': '青', '#00B0F0': '蓝', '#B3F9FF': '浅',
+    '#D2B7FF': '紫', '#FFB7E3': '粉', '#AC6520': '棕', '#595959': '黑', '#FFFFFF': '白',
+  };
+  const withMark = (list, field) => {
+    const colors = (bg.colors && bg.colors[field]) || [];
+    return (list || []).map((t, i) => {
+      const hex = String(colors[i] || '#FFFFFF').toUpperCase();
+      return `${t}（${MARK_NAME[hex] || '白'}）`;
+    });
+  };
+  const markSummary = () => {
+    const hexes = [];
+    for (const f of ['traits', 'ideals', 'bonds', 'flaws']) {
+      for (const h of ((bg.colors && bg.colors[f]) || [])) hexes.push(String(h).toUpperCase());
+    }
+    const uniq = [...new Set(hexes)].map(h => MARK_NAME[h] || '白');
+    return uniq.length ? `- 色彩标识：${uniq.join('、')}（每项每场可提供 10 点经验与 1 次场景重掷）` : '';
+  };
   if (section === 'traits' || section === 'overview') {
-    lines.push(`- **性格特点（共 ${bg.traits.length} 项）**：`);
-    for (const t of bg.traits || []) lines.push(`  · ${t}`);
+    lines.push(`- **性格特点（共 ${bg.traits.length} 项 · 括号内为色彩标识）**：`);
+    for (const t of withMark(bg.traits, 'traits')) lines.push(`  · ${t}`);
   }
   if (section === 'ideals' || section === 'overview') {
-    lines.push(`- **理想（共 ${bg.ideals.length} 项）**：`);
-    for (const t of bg.ideals || []) lines.push(`  · ${t}`);
+    lines.push(`- **理想（共 ${bg.ideals.length} 项 · 括号内为色彩标识）**：`);
+    for (const t of withMark(bg.ideals, 'ideals')) lines.push(`  · ${t}`);
   }
   if (section === 'bonds' || section === 'overview') {
-    lines.push(`- **牵绊（共 ${bg.bonds.length} 项）**：`);
-    for (const t of bg.bonds || []) lines.push(`  · ${t}`);
+    lines.push(`- **牵绊（共 ${bg.bonds.length} 项 · 括号内为色彩标识）**：`);
+    for (const t of withMark(bg.bonds, 'bonds')) lines.push(`  · ${t}`);
   }
   if (section === 'flaws' || section === 'overview') {
-    lines.push(`- **缺点（共 ${bg.flaws.length} 项）**：`);
-    for (const t of bg.flaws || []) lines.push(`  · ${t}`);
+    lines.push(`- **缺点（共 ${bg.flaws.length} 项 · 括号内为色彩标识）**：`);
+    for (const t of withMark(bg.flaws, 'flaws')) lines.push(`  · ${t}`);
   }
+  const _mkLine = markSummary();
+  if (_mkLine && (section === 'overview' || section === 'traits')) lines.push(_mkLine);
 
   if (bg.desc) lines.push(`- 描述：${bg.desc.slice(0, 400)}`);
   if (bg.baseProfs) lines.push(`- 基础熟练：${bg.baseProfs}`);

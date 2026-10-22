@@ -1253,6 +1253,7 @@ body.battle .fab{display:none}
 <script src="../职业页/数据/summoner_contracts_data.js"></script>
 <script src="../职业页/数据/items_data.js"></script>
 <script src="../职业页/数据/bg_personality_data.js"></script>
+<script src="bg_mark.js"></script>
 <script src="ui_dialog.js"></script>
 <script src="panel_data.js"></script>
 <script src="skill_index.js"></script>
@@ -1524,14 +1525,26 @@ function renderFeats() {
 }
 
 /* ================= 个性背景（真实画师数据） ================= */
+var BG_MARK_FIELD = { '特点': 'personality', '理念': 'ideals', '羁绊': 'bonds', '缺陷': 'flaws' };
 function renderBg() {
   var fields = T ? T.bgFields : [];
   document.getElementById('bgTitle').textContent = (T && T.char.bg) ? T.char.bg : '';
-  var html = '';
+  /* 色彩标识汇总（只读派生自个性背景，不写存档） */
+  var mk = '';
+  if (typeof BgMark !== 'undefined' && BgMark.marksLine && typeof state !== 'undefined') {
+    mk = BgMark.marksLine(state);
+  }
+  var html = mk ? '<div class="bg-field wide bg-mark-summary"><span class="bf-label">色彩标识</span><span class="bf-val">' + mk + '</span></div>' : '';
   for (var i = 0; i < fields.length; i++) {
     var f = fields[i];
     var wide = f.label === '背景故事' ? ' wide' : '';
-    html += '<div class="bg-field' + wide + '"><span class="bf-label">' + f.label + '</span><span class="bf-val">' + f.v + '</span></div>';
+    var val = f.v;
+    var mkField = BG_MARK_FIELD[f.label];
+    if (mkField && typeof BgMark !== 'undefined' && BgMark.marked && typeof state !== 'undefined') {
+      var rendered = BgMark.marked(state, mkField);
+      if (rendered) val = rendered;
+    }
+    html += '<div class="bg-field' + wide + '"><span class="bf-label">' + f.label + '</span><span class="bf-val">' + val + '</span></div>';
   }
   document.getElementById('bgFields').innerHTML = html;
 }

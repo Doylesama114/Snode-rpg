@@ -726,7 +726,7 @@ assert(_imp.sp_points, 5, "ensureSpStateOn 保留已有 sp_points");
 results.push('</div>');
 
 // =================== T8: SP / color marks (26.06.30 rules) ===================
-results.push('<div class="section"><h3>T8: parseSkillRequirements / canLearnSkill / wildcard — 技能点与色彩标识</h3>');
+results.push('<div class="section"><h3>T8: parseSkillRequirements / canLearnSkill / wildcard — 学习只校验技能点（26.10.22 起不再校验色彩标识）</h3>');
 
 function resetMarkState() {
   ensureSpState();
@@ -751,7 +751,7 @@ assertFalse(canLearnSkill(markSkill).ok, 'SP=0 无法学习');
 state.sp_points = 1;
 assertTrue(canLearnSkill(markSkill).ok, 'SP=1 + 标识齐全 → 可学');
 state.color_marks["蓝色"] = false;
-assertFalse(canLearnSkill(markSkill).ok, '缺蓝色标识 → 不可学');
+assertTrue(canLearnSkill(markSkill).ok, '缺蓝色标识但技能点足够 → 仍可学');
 state.color_marks["蓝色"] = true;
 
 var beforeSp = state.sp_points;
@@ -773,7 +773,7 @@ resetMarkState();
 var wc2 = { cost: [{ color: "#D9D9D9", count: 2 }] };
 state.color_marks["绿色"] = true;
 state.sp_points = 1;
-assertFalse(canLearnSkill(wc2).ok, '无色×2 仅1色不可学');
+assertTrue(canLearnSkill(wc2).ok, '无色×2 仅1色但技能点足够 → 仍可学');
 state.color_marks["蓝色"] = true;
 assertTrue(canLearnSkill(wc2).ok, '无色×2 + 绿蓝 → 可学');
 
@@ -787,7 +787,7 @@ resetMarkState();
 var mixed = { cost: [{ color: "#FF0000", count: 1 }, { color: "#D9D9D9", count: 1 }] };
 state.color_marks["红色"] = true;
 state.sp_points = 1;
-assertFalse(canLearnSkill(mixed).ok, '红+无色×1 仅红不可学（wildcard需另色）');
+assertTrue(canLearnSkill(mixed).ok, '红+无色×1 仅红但技能点足够 → 仍可学');
 state.color_marks["蓝色"] = true;
 assertTrue(canLearnSkill(mixed).ok, '红+无色×1 + 红蓝 → 可学');
 
