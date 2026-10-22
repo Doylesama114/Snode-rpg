@@ -11,7 +11,7 @@ var SNOWD_CHANGELOG = [
       'CI 新增发布后自检：Release 不存在、缺少 exe/latest.yml、或正文过短（发布说明未写入）一律判红',
       'macOS 更新检查：本版未提供 Mac 安装包时显示中性提示而非报错；GitHub 不可达时用镜像版本给出可操作提示',
       '发布规则补充：禁止删除已推送的 v* tag，验收以 Release 资产为准',
-      '本版不含 macOS 安装包，mac 端随下一版一起发布'
+      'mac 构建通过，mac-arm64 与 mac-x64 两个 DMG 已随本版发布'
     ]
   },
 
