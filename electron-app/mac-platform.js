@@ -41,7 +41,10 @@ function macReleaseUpdate(release, currentVersion, arch) {
   const stem = `Snode-RPG-${version}-mac-${arch}`;
   const asset = assets.find(item => item.name === `${stem}.dmg`) ||
     assets.find(item => item.name === `${stem}.zip`);
-  if (!asset) return { status: 'error', message: `v${version} 的 Mac ${arch} 安装包尚未发布。` };
+  // 某版本可能只发 Windows/Android（例如本轮 mac 延后），此时不是故障，
+  // 而是"本平台暂无可装包"，用中性态避免每次启动弹红色错误。
+  if (!asset) return { status: 'uptodate', version, platformMissing: true,
+    message: 'v' + version + ' 暂未提供 Mac ' + arch + ' 安装包，当前版本可继续使用' };
   const url = asset.browser_download_url;
   if (typeof url !== 'string' || !url.startsWith('https://github.com/Doylesama114/Snode-rpg/releases/download/')) {
     throw new Error('Mac 安装包下载地址无效');

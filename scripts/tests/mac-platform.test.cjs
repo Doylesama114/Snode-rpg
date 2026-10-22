@@ -26,7 +26,22 @@ test('Each architecture gets its own Mac DMG', () => {
 });
 
 test('Windows assets cannot be offered to a Mac user', () => {
-  assert.equal(macReleaseUpdate({ ...release, assets: release.assets.slice(2) }, '1.0.8046', 'arm64').status, 'error');
+  const result = macReleaseUpdate({ ...release, assets: release.assets.slice(2) }, '1.0.8046', 'arm64');
+  assert.notEqual(result.status, 'available');
+  assert.equal(result.status, 'uptodate');
+  assert.equal(result.platformMissing, true);
+});
+
+test('A version without a Mac package stays neutral instead of erroring', () => {
+  const windowsOnly = { tag_name: 'v1.0.8065', assets: [
+    { name: 'Snode-RPG-Setup-1.0.8065.exe', browser_download_url: 'https://github.com/Doylesama114/Snode-rpg/releases/download/v1.0.8065/Snode-RPG-Setup-1.0.8065.exe' },
+  ] };
+  for (const arch of ['arm64', 'x64']) {
+    const result = macReleaseUpdate(windowsOnly, '1.0.8064', arch);
+    assert.equal(result.status, 'uptodate');
+    assert.equal(result.platformMissing, true);
+    assert.equal(typeof result.message, 'string');
+  }
 });
 
 test('Same or newer installed versions do not get downgraded', () => {

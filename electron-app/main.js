@@ -277,6 +277,23 @@ function normalizeHttpsUrl(url) {
   return 'https://' + u.replace(/^\/+/, '');
 }
 
+function parseVersionTag(value) {
+  var m = String(value || '').match(/^v?(\d+)\.(\d+)\.(\d+)$/);
+  if (!m) return null;
+  return [Number(m[1]), Number(m[2]), Number(m[3])];
+}
+
+/** a 新于 b 返回 1，相等 0，落后 -1，无法解析返回 null */
+function compareVersion(a, b) {
+  var left = parseVersionTag(a);
+  var right = parseVersionTag(b);
+  if (!left || !right) return null;
+  for (var i = 0; i < 3; i++) {
+    if (left[i] !== right[i]) return left[i] > right[i] ? 1 : -1;
+  }
+  return 0;
+}
+
 function httpsGetJson(url, opts) {
   opts = opts || {};
   var retries = opts.retries != null ? opts.retries : 3;
@@ -391,17 +408,37 @@ function checkForUpdatesViaGenericFeed(opts) {
     return Promise.resolve({ outcome: 'failed' });
   }
 
+  // 源返回的 tag 可能比当前版本还旧（例如某次发布失败、GitHub 上仍停在上一版）。
+  // 若直接交给 autoUpdater，会得到"已是最新"的假结论，更新就此静默停滞。
+  // 规则：比当前新 -> 立即使用；与当前同版 -> 记为兜底并继续问下一个源；比当前旧 -> 仅作兜底。
+  // 全部问完仍无更新时，用兜底源走正常流程（正常显示"已是最新"，不报错）。
+  var currentVersion = app.getVersion();
+  var fallbackInfo = null;
+
+  function useSource(info, reason) {
+    updateSession.lastSource = info.source;
+    console.log('[更新] 使用 ' + info.source + ' feed: ' + info.feedUrl + ' (' + reason + ')');
+    autoUpdater.setFeedURL({ provider: 'generic', url: info.feedUrl });
+    return autoUpdater.checkForUpdates();
+  }
+
   function trySource(index) {
     if (index >= order.length) {
+      if (fallbackInfo) {
+        console.log('[更新] 无高于 ' + currentVersion + ' 的源，改用 ' + fallbackInfo.source + ' 兜底');
+        return useSource(fallbackInfo, 'fallback');
+      }
       return finishFailed();
     }
 
     var key = order[index];
     return fetchLatestTag(key).then(function(info) {
-      updateSession.lastSource = key;
-      console.log('[更新] 使用 ' + key + ' feed: ' + info.feedUrl);
-      autoUpdater.setFeedURL({ provider: 'generic', url: info.feedUrl });
-      return autoUpdater.checkForUpdates();
+      var cmp = compareVersion(info.tag, currentVersion);
+      if (cmp === 1) return useSource(info, 'newer');
+      if (cmp === null) return useSource(info, 'unparsed');
+      if (!fallbackInfo || compareVersion(info.tag, fallbackInfo.tag) === 1) fallbackInfo = info;
+      console.log('[更新] ' + key + ' 的 ' + info.tag + ' 不高于当前 ' + currentVersion + '，继续尝试下一个源');
+      return trySource(index + 1);
     }).catch(function(err) {
       console.warn('[更新] ' + key + ' 源失败:', err.message || err);
       return trySource(index + 1);
@@ -429,7 +466,19 @@ async function checkForMacUpdates() {
     sendUpdateStatus(result);
     return { outcome: 'ok' };
   } catch (err) {
-    sendUpdateStatus({ status: 'error', message: 'Mac 更新检查失败：' + err.message });
+    // macOS 安装包只托管在 GitHub，镜像无法直接下载；但镜像能判定版本，
+    // 于是失败时给出可操作提示，而不是只丢一句网络错误。
+    var hint = '';
+    try {
+      var mirror = await httpsGetJson(mirrorConfig.OSS_LATEST_JSON);
+      var mirrorVersion = String((mirror && mirror.tag) || '').replace(/^v/, '');
+      if (compareVersion(mirrorVersion, app.getVersion()) === 1) {
+        hint = ' 镜像已发布 v' + mirrorVersion + '，可到 ' + mirrorConfig.GITHUB_RELEASE_PAGE + ' 手动下载 Mac 安装包。';
+      }
+    } catch (mirrorErr) {
+      // 镜像也不可用时保留原始错误即可
+    }
+    sendUpdateStatus({ status: 'error', message: 'Mac 更新检查失败：' + err.message + hint });
     return { outcome: 'failed' };
   } finally {
     updateCheckInFlight = false;
@@ -437,10 +486,12 @@ async function checkForMacUpdates() {
 }
 
 function runAutoUpdateCheck() {
+  // 两个源都问：GitHub 尚未发布（Release 缺失或延迟）时，镜像仍能给出正确版本。
+  // 链里已含 oss，所以不再依赖"单源 github 失败才回退"那条路径。
   return checkForUpdatesViaGenericFeed({
-    sources: ['github'],
-    autoFallback: true,
-    phase: 'github',
+    sources: ['github', 'oss'],
+    autoFallback: false,
+    phase: 'full',
   });
 }
 

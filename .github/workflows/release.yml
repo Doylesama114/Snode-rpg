@@ -163,7 +163,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             Write-Host "Release $tag not found, creating..."
             gh release create $tag --repo $repo --title $tag --notes-file "docs/releases/$tag.md"
-            if ($LASTEXITCODE -ne 0) { Write-Host "::error::failed to create release $tag"; exit 1 }
+            if ($LASTEXITCODE -ne 0) {
+              # 并发场景：macOS 工作流可能同时创建同一个 Release（422 already_exists）。
+              # 只要现在能查到，就说明已被另一端建好，继续上传即可，不算失败。
+              gh release view $tag --repo $repo --json tagName *> $null
+              if ($LASTEXITCODE -ne 0) { Write-Host "::error::failed to create release $tag"; exit 1 }
+              Write-Host "Release $tag already exists (created concurrently), continuing."
+            }
           }
           gh release edit $tag --repo $repo --title $tag --notes-file "docs/releases/$tag.md"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -183,6 +189,28 @@ jobs:
             if (-not $ok) { Write-Host "::error::upload failed after 5 attempts: $($f.Name)"; exit 1 }
           }
           Write-Host "release $tag assets uploaded"
+
+      - name: Verify published release (assets, not a green checkmark)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $tag = "${{ steps.target.outputs.tag }}"
+          $repo = $env:GITHUB_REPOSITORY
+          $version = $tag.TrimStart('v')
+          gh release view $tag --repo $repo --json tagName,body,assets,url
+          if ($LASTEXITCODE -ne 0) { Write-Host "::error::release $tag does not exist after publish"; exit 1 }
+          $info = gh release view $tag --repo $repo --json body,assets | ConvertFrom-Json
+          $names = @($info.assets | ForEach-Object { $_.name })
+          Write-Host "assets($($names.Count)): $($names -join ', ')"
+          if ($names -notcontains "Snode-RPG-Setup-$version.exe") { Write-Host "::error::missing Snode-RPG-Setup-$version.exe"; exit 1 }
+          if ($names -notcontains 'latest.yml') { Write-Host "::error::missing latest.yml"; exit 1 }
+          $body = "$($info.body)".Trim()
+          Write-Host "release body length: $($body.Length)"
+          # 正文过短 = 发布说明没写进去（此时 Release 多半只是 tag 的空壳）
+          if ($body.Length -lt 200) { Write-Host "::error::release $tag body is too short ($($body.Length) chars), docs/releases/$tag.md missing?"; exit 1 }
+          Write-Host "release $tag verified"
 
   mirror-oss:
     needs: build
