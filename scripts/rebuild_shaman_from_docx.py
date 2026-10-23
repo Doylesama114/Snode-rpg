@@ -354,7 +354,6 @@ def main() -> None:
             "type": sk.get("type", ""),
             "unit_tables": sk.get("unit_tables") or [],
             "flavor": sk.get("flavor", ""),
-            "source": sk.get("source"),
         }
     for sid, meta in html_meta.items():
         if sid not in stubs:
@@ -397,6 +396,8 @@ def main() -> None:
             removed.append(f"{sid} {stub['name']}")
             continue
         skill = block_to_skill(stub, block)
+        span = block["source_span"]
+        skill["source"] = {"kind": "docx", "para_start": span["start"], "para_end": span["end"]}
         skills.append(skill)
         blocks[sid] = block
 

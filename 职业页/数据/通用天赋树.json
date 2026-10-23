@@ -17,7 +17,12 @@
       "tags": [
         "备战"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 6,
+        "para_end": 10
+      }
     },
     {
       "id": "g-skill-2",
@@ -31,7 +36,12 @@
       "description": [],
       "level_upgrades": [],
       "tags": [],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 10,
+        "para_end": 13
+      }
     },
     {
       "id": "g-skill-3",
@@ -51,7 +61,12 @@
         "参悟",
         "补给"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 13,
+        "para_end": 18
+      }
     },
     {
       "id": "g-skill-4",
@@ -92,7 +107,12 @@
         "上限提升",
         "每日限一次"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 18,
+        "para_end": 24
+      }
     },
     {
       "id": "g-skill-5",
@@ -109,7 +129,12 @@
       "tags": [
         "互动"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 24,
+        "para_end": 28
+      }
     },
     {
       "id": "g-skill-6",
@@ -138,7 +163,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 28,
+        "para_end": 33
+      }
     },
     {
       "id": "g-skill-7",
@@ -185,7 +215,12 @@
         "参悟",
         "每日限一次"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 33,
+        "para_end": 39
+      }
     },
     {
       "id": "g-skill-8",
@@ -221,7 +256,12 @@
         "补给",
         "充能（2）"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 39,
+        "para_end": 46
+      }
     },
     {
       "id": "g-skill-9",
@@ -238,7 +278,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 46,
+        "para_end": 50
+      }
     },
     {
       "id": "g-skill-10",
@@ -270,7 +315,12 @@
       "tags": [
         "每日限X次"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 50,
+        "para_end": 56
+      }
     },
     {
       "id": "g-skill-11",
@@ -290,7 +340,12 @@
         "命运",
         "机制"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 56,
+        "para_end": 61
+      }
     },
     {
       "id": "g-skill-13",
@@ -307,7 +362,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 62,
+        "para_end": 67
+      }
     },
     {
       "id": "g-skill-14",
@@ -324,7 +384,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 67,
+        "para_end": 72
+      }
     },
     {
       "id": "g-skill-15",
@@ -341,7 +406,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 72,
+        "para_end": 77
+      }
     },
     {
       "id": "g-skill-16",
@@ -358,7 +428,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 77,
+        "para_end": 82
+      }
     },
     {
       "id": "g-skill-17",
@@ -375,7 +450,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 82,
+        "para_end": 87
+      }
     },
     {
       "id": "g-skill-18",
@@ -392,7 +472,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 87,
+        "para_end": 92
+      }
     },
     {
       "id": "g-skill-19",
@@ -409,7 +494,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 92,
+        "para_end": 97
+      }
     },
     {
       "id": "g-skill-20",
@@ -426,7 +516,12 @@
       "tags": [
         "短休/长休"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 97,
+        "para_end": 101
+      }
     },
     {
       "id": "g-skill-22",
@@ -456,7 +551,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 102,
+        "para_end": 108
+      }
     },
     {
       "id": "g-skill-23",
@@ -486,7 +586,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 108,
+        "para_end": 114
+      }
     },
     {
       "id": "g-skill-24",
@@ -516,7 +621,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 114,
+        "para_end": 120
+      }
     },
     {
       "id": "g-skill-25",
@@ -546,7 +656,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 120,
+        "para_end": 126
+      }
     },
     {
       "id": "g-skill-26",
@@ -576,7 +691,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 126,
+        "para_end": 132
+      }
     },
     {
       "id": "g-skill-27",
@@ -606,7 +726,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 132,
+        "para_end": 138
+      }
     },
     {
       "id": "g-skill-28",
@@ -636,7 +761,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 138,
+        "para_end": 144
+      }
     },
     {
       "id": "g-skill-29",
@@ -666,7 +796,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 144,
+        "para_end": 150
+      }
     },
     {
       "id": "g-skill-30",
@@ -696,7 +831,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 150,
+        "para_end": 156
+      }
     },
     {
       "id": "g-skill-31",
@@ -726,7 +866,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 156,
+        "para_end": 162
+      }
     },
     {
       "id": "g-skill-32",
@@ -756,7 +901,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 162,
+        "para_end": 168
+      }
     },
     {
       "id": "g-skill-33",
@@ -786,7 +936,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 168,
+        "para_end": 174
+      }
     },
     {
       "id": "g-skill-34",
@@ -816,7 +971,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 174,
+        "para_end": 180
+      }
     },
     {
       "id": "g-skill-35",
@@ -846,7 +1006,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 180,
+        "para_end": 186
+      }
     },
     {
       "id": "g-skill-36",
@@ -876,7 +1041,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 186,
+        "para_end": 192
+      }
     },
     {
       "id": "g-skill-37",
@@ -906,7 +1076,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 192,
+        "para_end": 198
+      }
     },
     {
       "id": "g-skill-38",
@@ -936,7 +1111,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 198,
+        "para_end": 204
+      }
     },
     {
       "id": "g-skill-39",
@@ -966,7 +1146,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 204,
+        "para_end": 210
+      }
     },
     {
       "id": "g-skill-40",
@@ -996,7 +1181,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 210,
+        "para_end": 216
+      }
     },
     {
       "id": "g-skill-41",
@@ -1026,7 +1216,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 216,
+        "para_end": 222
+      }
     },
     {
       "id": "g-skill-42",
@@ -1056,7 +1251,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 222,
+        "para_end": 228
+      }
     },
     {
       "id": "g-skill-43",
@@ -1086,7 +1286,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 228,
+        "para_end": 234
+      }
     },
     {
       "id": "g-skill-44",
@@ -1116,7 +1321,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 234,
+        "para_end": 240
+      }
     },
     {
       "id": "g-skill-45",
@@ -1146,7 +1356,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 240,
+        "para_end": 246
+      }
     },
     {
       "id": "g-skill-46",
@@ -1176,7 +1391,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 246,
+        "para_end": 252
+      }
     },
     {
       "id": "g-skill-47",
@@ -1206,7 +1426,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 252,
+        "para_end": 258
+      }
     },
     {
       "id": "g-skill-48",
@@ -1236,7 +1461,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 258,
+        "para_end": 264
+      }
     },
     {
       "id": "g-skill-49",
@@ -1266,7 +1496,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 264,
+        "para_end": 270
+      }
     },
     {
       "id": "g-skill-50",
@@ -1296,7 +1531,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 270,
+        "para_end": 276
+      }
     },
     {
       "id": "g-skill-51",
@@ -1326,7 +1566,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 276,
+        "para_end": 282
+      }
     },
     {
       "id": "g-skill-52",
@@ -1356,7 +1601,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 282,
+        "para_end": 288
+      }
     },
     {
       "id": "g-skill-53",
@@ -1386,7 +1636,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 288,
+        "para_end": 294
+      }
     },
     {
       "id": "g-skill-54",
@@ -1416,7 +1671,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 294,
+        "para_end": 300
+      }
     },
     {
       "id": "g-skill-55",
@@ -1446,7 +1706,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 300,
+        "para_end": 306
+      }
     },
     {
       "id": "g-skill-56",
@@ -1476,7 +1741,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 306,
+        "para_end": 312
+      }
     },
     {
       "id": "g-skill-57",
@@ -1506,7 +1776,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 312,
+        "para_end": 318
+      }
     },
     {
       "id": "g-skill-58",
@@ -1536,7 +1811,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 318,
+        "para_end": 324
+      }
     },
     {
       "id": "g-skill-59",
@@ -1566,7 +1846,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 324,
+        "para_end": 330
+      }
     },
     {
       "id": "g-skill-60",
@@ -1596,7 +1881,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 330,
+        "para_end": 336
+      }
     },
     {
       "id": "g-skill-61",
@@ -1626,7 +1916,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 336,
+        "para_end": 342
+      }
     },
     {
       "id": "g-skill-62",
@@ -1656,7 +1951,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 342,
+        "para_end": 348
+      }
     },
     {
       "id": "g-skill-63",
@@ -1686,7 +1986,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 348,
+        "para_end": 354
+      }
     },
     {
       "id": "g-skill-64",
@@ -1716,7 +2021,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 354,
+        "para_end": 360
+      }
     },
     {
       "id": "g-skill-65",
@@ -1746,7 +2056,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 360,
+        "para_end": 366
+      }
     },
     {
       "id": "g-skill-66",
@@ -1776,7 +2091,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 366,
+        "para_end": 372
+      }
     },
     {
       "id": "g-skill-67",
@@ -1806,7 +2126,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 372,
+        "para_end": 378
+      }
     },
     {
       "id": "g-skill-68",
@@ -1836,7 +2161,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 378,
+        "para_end": 384
+      }
     },
     {
       "id": "g-skill-69",
@@ -1866,7 +2196,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 384,
+        "para_end": 390
+      }
     },
     {
       "id": "g-skill-70",
@@ -1896,7 +2231,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "一阶"
+      "tier": "一阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 390,
+        "para_end": 395
+      }
     },
     {
       "id": "g-skill-71",
@@ -1923,7 +2263,12 @@
       "tags": [
         "徒手攻击"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 397,
+        "para_end": 411
+      }
     },
     {
       "id": "g-skill-72",
@@ -1951,7 +2296,12 @@
         "基础攻击",
         "敏捷豁免（10）"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 411,
+        "para_end": 424
+      }
     },
     {
       "id": "g-skill-73",
@@ -1986,7 +2336,12 @@
         "反应",
         "每日限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 424,
+        "para_end": 430
+      }
     },
     {
       "id": "g-skill-74",
@@ -2034,7 +2389,12 @@
         "韧性",
         "短休/长休"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 430,
+        "para_end": 437
+      }
     },
     {
       "id": "g-skill-75",
@@ -2065,7 +2425,12 @@
         "探知",
         "每个自身回合限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 437,
+        "para_end": 443
+      }
     },
     {
       "id": "g-skill-76",
@@ -2084,7 +2449,12 @@
         "韧性",
         "每个自身回合限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 443,
+        "para_end": 448
+      }
     },
     {
       "id": "g-skill-77",
@@ -2104,7 +2474,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 448,
+        "para_end": 454
+      }
     },
     {
       "id": "g-skill-78",
@@ -2125,7 +2500,12 @@
         "命运",
         "每日限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 454,
+        "para_end": 460
+      }
     },
     {
       "id": "g-skill-79",
@@ -2145,7 +2525,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 460,
+        "para_end": 466
+      }
     },
     {
       "id": "g-skill-80",
@@ -2163,7 +2548,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 466,
+        "para_end": 471
+      }
     },
     {
       "id": "g-skill-81",
@@ -2194,7 +2584,12 @@
         "媒介",
         "命中"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 471,
+        "para_end": 477
+      }
     },
     {
       "id": "g-skill-82",
@@ -2213,7 +2608,12 @@
         "媒介",
         "阻碍"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 477,
+        "para_end": 482
+      }
     },
     {
       "id": "g-skill-83",
@@ -2235,7 +2635,12 @@
         "躲闪",
         "每日限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 482,
+        "para_end": 489
+      }
     },
     {
       "id": "g-skill-84",
@@ -2257,7 +2662,12 @@
         "命运",
         "充能（1）"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 489,
+        "para_end": 496
+      }
     },
     {
       "id": "g-skill-85",
@@ -2280,7 +2690,12 @@
         "互动",
         "充能（1）"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 496,
+        "para_end": 504
+      }
     },
     {
       "id": "g-skill-86",
@@ -2317,7 +2732,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 504,
+        "para_end": 510
+      }
     },
     {
       "id": "g-skill-87",
@@ -2353,7 +2773,12 @@
         "互动",
         "每日限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 510,
+        "para_end": 517
+      }
     },
     {
       "id": "g-skill-88",
@@ -2372,7 +2797,12 @@
         "火焰",
         "上限提升"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 517,
+        "para_end": 522
+      }
     },
     {
       "id": "g-skill-89",
@@ -2391,7 +2821,12 @@
         "毒性",
         "上限提升"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 522,
+        "para_end": 527
+      }
     },
     {
       "id": "g-skill-90",
@@ -2410,7 +2845,12 @@
         "生命流失",
         "上限提升"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 527,
+        "para_end": 532
+      }
     },
     {
       "id": "g-skill-91",
@@ -2471,7 +2911,12 @@
         "补给",
         "充能（3）"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 532,
+        "para_end": 542
+      }
     },
     {
       "id": "g-skill-92",
@@ -2489,7 +2934,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 542,
+        "para_end": 547
+      }
     },
     {
       "id": "g-skill-93",
@@ -2507,7 +2957,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 548,
+        "para_end": 554
+      }
     },
     {
       "id": "g-skill-94",
@@ -2525,7 +2980,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 554,
+        "para_end": 560
+      }
     },
     {
       "id": "g-skill-95",
@@ -2543,7 +3003,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 560,
+        "para_end": 566
+      }
     },
     {
       "id": "g-skill-96",
@@ -2561,7 +3026,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 566,
+        "para_end": 571
+      }
     },
     {
       "id": "g-skill-97",
@@ -2582,7 +3052,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 572,
+        "para_end": 579
+      }
     },
     {
       "id": "g-skill-98",
@@ -2603,7 +3078,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 579,
+        "para_end": 586
+      }
     },
     {
       "id": "g-skill-99",
@@ -2624,7 +3104,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 586,
+        "para_end": 593
+      }
     },
     {
       "id": "g-skill-100",
@@ -2645,7 +3130,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 593,
+        "para_end": 600
+      }
     },
     {
       "id": "g-skill-101",
@@ -2666,7 +3156,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 600,
+        "para_end": 607
+      }
     },
     {
       "id": "g-skill-102",
@@ -2687,7 +3182,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 607,
+        "para_end": 614
+      }
     },
     {
       "id": "g-skill-103",
@@ -2708,7 +3208,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 614,
+        "para_end": 621
+      }
     },
     {
       "id": "g-skill-104",
@@ -2729,7 +3234,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 628,
+        "para_end": 635
+      }
     },
     {
       "id": "g-skill-105",
@@ -2750,7 +3260,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 635,
+        "para_end": 642
+      }
     },
     {
       "id": "g-skill-106",
@@ -2771,7 +3286,12 @@
         "技艺",
         "每场战斗限一次"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 642,
+        "para_end": 648
+      }
     },
     {
       "id": "g-skill-108",
@@ -2793,7 +3313,12 @@
         "技艺",
         "韧性"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 649,
+        "para_end": 657
+      }
     },
     {
       "id": "g-skill-109",
@@ -2815,7 +3340,12 @@
         "技艺",
         "韧性"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 657,
+        "para_end": 665
+      }
     },
     {
       "id": "g-skill-110",
@@ -2837,7 +3367,12 @@
         "技艺",
         "韧性"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 665,
+        "para_end": 672
+      }
     },
     {
       "id": "g-skill-112",
@@ -2887,7 +3422,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 673,
+        "para_end": 681
+      }
     },
     {
       "id": "g-skill-113",
@@ -2937,7 +3477,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 681,
+        "para_end": 689
+      }
     },
     {
       "id": "g-skill-114",
@@ -2987,7 +3532,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 689,
+        "para_end": 697
+      }
     },
     {
       "id": "g-skill-115",
@@ -3037,7 +3587,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 697,
+        "para_end": 705
+      }
     },
     {
       "id": "g-skill-116",
@@ -3087,7 +3642,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 705,
+        "para_end": 713
+      }
     },
     {
       "id": "g-skill-117",
@@ -3137,7 +3697,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 713,
+        "para_end": 721
+      }
     },
     {
       "id": "g-skill-118",
@@ -3187,7 +3752,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 721,
+        "para_end": 729
+      }
     },
     {
       "id": "g-skill-119",
@@ -3237,7 +3807,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 729,
+        "para_end": 737
+      }
     },
     {
       "id": "g-skill-120",
@@ -3287,7 +3862,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 737,
+        "para_end": 745
+      }
     },
     {
       "id": "g-skill-121",
@@ -3337,7 +3917,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 745,
+        "para_end": 753
+      }
     },
     {
       "id": "g-skill-122",
@@ -3387,7 +3972,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 753,
+        "para_end": 761
+      }
     },
     {
       "id": "g-skill-123",
@@ -3437,7 +4027,12 @@
           }
         ]
       },
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 761,
+        "para_end": 768
+      }
     },
     {
       "id": "g-skill-125",
@@ -3482,7 +4077,12 @@
         "增益",
         "防御"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 769,
+        "para_end": 777
+      }
     },
     {
       "id": "g-skill-126",
@@ -3526,7 +4126,12 @@
         "构筑",
         "回复"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 777,
+        "para_end": 785
+      }
     },
     {
       "id": "g-skill-127",
@@ -3570,7 +4175,12 @@
         "构筑",
         "补给"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 785,
+        "para_end": 793
+      }
     },
     {
       "id": "g-skill-128",
@@ -3616,7 +4226,12 @@
         "增益",
         "探知"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 793,
+        "para_end": 801
+      }
     },
     {
       "id": "g-skill-129",
@@ -3660,7 +4275,12 @@
         "构筑",
         "恩惠"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 801,
+        "para_end": 809
+      }
     },
     {
       "id": "g-skill-130",
@@ -3704,7 +4324,12 @@
         "构筑",
         "探知"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 809,
+        "para_end": 817
+      }
     },
     {
       "id": "g-skill-131",
@@ -3748,7 +4373,12 @@
         "构筑",
         "躲闪"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 817,
+        "para_end": 825
+      }
     },
     {
       "id": "g-skill-132",
@@ -3792,7 +4422,12 @@
         "构筑",
         "回复"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 825,
+        "para_end": 833
+      }
     },
     {
       "id": "g-skill-133",
@@ -3834,7 +4469,12 @@
         "构筑",
         "交涉"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 833,
+        "para_end": 841
+      }
     },
     {
       "id": "g-skill-134",
@@ -3878,7 +4518,12 @@
         "构筑",
         "增益"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 841,
+        "para_end": 849
+      }
     },
     {
       "id": "g-skill-135",
@@ -3922,7 +4567,12 @@
         "构筑",
         "增益"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 849,
+        "para_end": 857
+      }
     },
     {
       "id": "g-skill-136",
@@ -3964,7 +4614,12 @@
         "构筑",
         "增益"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 857,
+        "para_end": 865
+      }
     },
     {
       "id": "g-skill-137",
@@ -4020,7 +4675,12 @@
         "构筑",
         "补给"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 865,
+        "para_end": 873
+      }
     },
     {
       "id": "g-skill-138",
@@ -4076,7 +4736,12 @@
         "构筑",
         "增益"
       ],
-      "tier": "二阶"
+      "tier": "二阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 873,
+        "para_end": 881
+      }
     },
     {
       "id": "g-skill-139",
@@ -4116,7 +4781,12 @@
       "tags": [
         "基础攻击"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 914,
+        "para_end": 929
+      }
     },
     {
       "id": "g-skill-140",
@@ -4143,7 +4813,12 @@
         "防御",
         "每日限一次"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 929,
+        "para_end": 941
+      }
     },
     {
       "id": "g-skill-141",
@@ -4252,7 +4927,12 @@
         "幻象",
         "补给"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 941,
+        "para_end": 957
+      }
     },
     {
       "id": "g-skill-143",
@@ -4271,7 +4951,12 @@
         "基础攻击",
         "每日限一次"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1026,
+        "para_end": 1032
+      }
     },
     {
       "id": "g-skill-144",
@@ -4290,7 +4975,12 @@
         "施法攻击",
         "每日限一次"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1032,
+        "para_end": 1037
+      }
     },
     {
       "id": "g-skill-145",
@@ -4326,7 +5016,12 @@
       "tags": [
         "位移"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 957,
+        "para_end": 963
+      }
     },
     {
       "id": "g-skill-146",
@@ -4345,7 +5040,12 @@
         "命运",
         "每日限一次"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 963,
+        "para_end": 968
+      }
     },
     {
       "id": "g-skill-147",
@@ -4382,7 +5082,12 @@
       "tags": [
         "躲闪"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 968,
+        "para_end": 974
+      }
     },
     {
       "id": "g-skill-148",
@@ -4427,7 +5132,12 @@
         "命运",
         "充能（1）"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 974,
+        "para_end": 983
+      }
     },
     {
       "id": "g-skill-149",
@@ -4445,7 +5155,12 @@
       "tags": [
         "互动"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 983,
+        "para_end": 988
+      }
     },
     {
       "id": "g-skill-150",
@@ -4486,7 +5201,12 @@
       "tags": [
         "互动"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 988,
+        "para_end": 995
+      }
     },
     {
       "id": "g-skill-151",
@@ -4537,7 +5257,12 @@
       "tags": [
         "短休/长休（X）"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 995,
+        "para_end": 1003
+      }
     },
     {
       "id": "g-skill-152",
@@ -4571,7 +5296,12 @@
         "回复",
         "每日限一次"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1003,
+        "para_end": 1009
+      }
     },
     {
       "id": "g-skill-153",
@@ -4605,7 +5335,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1009,
+        "para_end": 1015
+      }
     },
     {
       "id": "g-skill-154",
@@ -4640,7 +5375,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1015,
+        "para_end": 1025
+      }
     },
     {
       "id": "g-skill-156",
@@ -4658,7 +5398,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1038,
+        "para_end": 1044
+      }
     },
     {
       "id": "g-skill-157",
@@ -4676,7 +5421,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1044,
+        "para_end": 1050
+      }
     },
     {
       "id": "g-skill-158",
@@ -4694,7 +5444,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1050,
+        "para_end": 1056
+      }
     },
     {
       "id": "g-skill-159",
@@ -4712,7 +5467,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1056,
+        "para_end": 1062
+      }
     },
     {
       "id": "g-skill-160",
@@ -4730,7 +5490,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1062,
+        "para_end": 1067
+      }
     },
     {
       "id": "g-skill-161",
@@ -4748,7 +5513,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1067,
+        "para_end": 1073
+      }
     },
     {
       "id": "g-skill-162",
@@ -4766,7 +5536,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1073,
+        "para_end": 1079
+      }
     },
     {
       "id": "g-skill-163",
@@ -4784,7 +5559,12 @@
       "tags": [
         "韧性"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1079,
+        "para_end": 1084
+      }
     },
     {
       "id": "g-skill-165",
@@ -4802,7 +5582,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1085,
+        "para_end": 1091
+      }
     },
     {
       "id": "g-skill-166",
@@ -4820,7 +5605,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1091,
+        "para_end": 1097
+      }
     },
     {
       "id": "g-skill-167",
@@ -4838,7 +5628,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1097,
+        "para_end": 1103
+      }
     },
     {
       "id": "g-skill-168",
@@ -4856,7 +5651,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1103,
+        "para_end": 1109
+      }
     },
     {
       "id": "g-skill-169",
@@ -4874,7 +5674,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1109,
+        "para_end": 1115
+      }
     },
     {
       "id": "g-skill-170",
@@ -4892,7 +5697,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1115,
+        "para_end": 1121
+      }
     },
     {
       "id": "g-skill-171",
@@ -4910,7 +5720,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1121,
+        "para_end": 1127
+      }
     },
     {
       "id": "g-skill-172",
@@ -4928,7 +5743,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1127,
+        "para_end": 1133
+      }
     },
     {
       "id": "g-skill-173",
@@ -4946,7 +5766,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1133,
+        "para_end": 1139
+      }
     },
     {
       "id": "g-skill-174",
@@ -4964,7 +5789,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1139,
+        "para_end": 1145
+      }
     },
     {
       "id": "g-skill-175",
@@ -4982,7 +5812,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1145,
+        "para_end": 1151
+      }
     },
     {
       "id": "g-skill-176",
@@ -5000,7 +5835,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1151,
+        "para_end": 1157
+      }
     },
     {
       "id": "g-skill-177",
@@ -5018,7 +5858,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1157,
+        "para_end": 1164
+      }
     },
     {
       "id": "g-skill-178",
@@ -5036,7 +5881,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1164,
+        "para_end": 1170
+      }
     },
     {
       "id": "g-skill-179",
@@ -5054,7 +5904,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1170,
+        "para_end": 1176
+      }
     },
     {
       "id": "g-skill-180",
@@ -5072,7 +5927,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1176,
+        "para_end": 1182
+      }
     },
     {
       "id": "g-skill-181",
@@ -5090,7 +5950,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1182,
+        "para_end": 1188
+      }
     },
     {
       "id": "g-skill-182",
@@ -5108,7 +5973,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1188,
+        "para_end": 1194
+      }
     },
     {
       "id": "g-skill-183",
@@ -5126,7 +5996,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1194,
+        "para_end": 1200
+      }
     },
     {
       "id": "g-skill-184",
@@ -5144,7 +6019,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1200,
+        "para_end": 1206
+      }
     },
     {
       "id": "g-skill-185",
@@ -5162,7 +6042,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1206,
+        "para_end": 1212
+      }
     },
     {
       "id": "g-skill-186",
@@ -5180,7 +6065,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1212,
+        "para_end": 1218
+      }
     },
     {
       "id": "g-skill-187",
@@ -5198,7 +6088,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1218,
+        "para_end": 1224
+      }
     },
     {
       "id": "g-skill-188",
@@ -5216,7 +6111,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1224,
+        "para_end": 1230
+      }
     },
     {
       "id": "g-skill-189",
@@ -5234,7 +6134,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1230,
+        "para_end": 1236
+      }
     },
     {
       "id": "g-skill-190",
@@ -5252,7 +6157,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1236,
+        "para_end": 1242
+      }
     },
     {
       "id": "g-skill-191",
@@ -5270,7 +6180,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1242,
+        "para_end": 1248
+      }
     },
     {
       "id": "g-skill-192",
@@ -5288,7 +6203,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1248,
+        "para_end": 1254
+      }
     },
     {
       "id": "g-skill-193",
@@ -5306,7 +6226,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1254,
+        "para_end": 1260
+      }
     },
     {
       "id": "g-skill-194",
@@ -5324,7 +6249,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1260,
+        "para_end": 1266
+      }
     },
     {
       "id": "g-skill-195",
@@ -5342,7 +6272,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1266,
+        "para_end": 1272
+      }
     },
     {
       "id": "g-skill-196",
@@ -5360,7 +6295,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1272,
+        "para_end": 1278
+      }
     },
     {
       "id": "g-skill-197",
@@ -5378,7 +6318,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1278,
+        "para_end": 1284
+      }
     },
     {
       "id": "g-skill-198",
@@ -5396,7 +6341,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1284,
+        "para_end": 1290
+      }
     },
     {
       "id": "g-skill-199",
@@ -5414,7 +6364,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1290,
+        "para_end": 1296
+      }
     },
     {
       "id": "g-skill-200",
@@ -5432,7 +6387,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1296,
+        "para_end": 1302
+      }
     },
     {
       "id": "g-skill-201",
@@ -5450,7 +6410,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1302,
+        "para_end": 1308
+      }
     },
     {
       "id": "g-skill-202",
@@ -5468,7 +6433,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1308,
+        "para_end": 1314
+      }
     },
     {
       "id": "g-skill-203",
@@ -5486,7 +6456,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1314,
+        "para_end": 1320
+      }
     },
     {
       "id": "g-skill-204",
@@ -5504,7 +6479,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "三阶"
+      "tier": "三阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1320,
+        "para_end": 1325
+      }
     },
     {
       "id": "g-skill-205",
@@ -5557,7 +6537,12 @@
         "近战攻击",
         "徒手攻击"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1327,
+        "para_end": 1342
+      }
     },
     {
       "id": "g-skill-206",
@@ -5595,7 +6580,12 @@
       "tags": [
         "探知"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1342,
+        "para_end": 1355
+      }
     },
     {
       "id": "g-skill-207",
@@ -5614,7 +6604,12 @@
         "阻碍",
         "每个自身回合限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1355,
+        "para_end": 1360
+      }
     },
     {
       "id": "g-skill-208",
@@ -5634,7 +6629,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1360,
+        "para_end": 1366
+      }
     },
     {
       "id": "g-skill-209",
@@ -5654,7 +6654,12 @@
       "tags": [
         "长休"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1366,
+        "para_end": 1372
+      }
     },
     {
       "id": "g-skill-210",
@@ -5688,7 +6693,12 @@
           }
         ]
       },
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1372,
+        "para_end": 1378
+      }
     },
     {
       "id": "g-skill-211",
@@ -5709,7 +6719,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1378,
+        "para_end": 1385
+      }
     },
     {
       "id": "g-skill-212",
@@ -5757,7 +6772,12 @@
         "命运",
         "充能（1）"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1385,
+        "para_end": 1394
+      }
     },
     {
       "id": "g-skill-213",
@@ -5801,7 +6821,12 @@
       "tags": [
         "探知"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1394,
+        "para_end": 1401
+      }
     },
     {
       "id": "g-skill-214",
@@ -5826,7 +6851,12 @@
         "互动",
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1401,
+        "para_end": 1409
+      }
     },
     {
       "id": "g-skill-215",
@@ -5847,7 +6877,12 @@
         "位移",
         "长休（X）"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1409,
+        "para_end": 1415
+      }
     },
     {
       "id": "g-skill-216",
@@ -5869,7 +6904,12 @@
         "诅咒",
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1415,
+        "para_end": 1421
+      }
     },
     {
       "id": "g-skill-217",
@@ -5891,7 +6931,12 @@
         "诅咒",
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1421,
+        "para_end": 1427
+      }
     },
     {
       "id": "g-skill-218",
@@ -5913,7 +6958,12 @@
         "诅咒",
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1427,
+        "para_end": 1433
+      }
     },
     {
       "id": "g-skill-219",
@@ -5937,7 +6987,12 @@
       "tags": [
         "构筑"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1433,
+        "para_end": 1443
+      }
     },
     {
       "id": "g-skill-220",
@@ -5982,7 +7037,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1443,
+        "para_end": 1453
+      }
     },
     {
       "id": "g-skill-221",
@@ -6002,7 +7062,12 @@
       "tags": [
         "构筑"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1453,
+        "para_end": 1459
+      }
     },
     {
       "id": "g-skill-223",
@@ -6020,7 +7085,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1460,
+        "para_end": 1466
+      }
     },
     {
       "id": "g-skill-224",
@@ -6038,7 +7108,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1466,
+        "para_end": 1472
+      }
     },
     {
       "id": "g-skill-225",
@@ -6056,7 +7131,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1472,
+        "para_end": 1478
+      }
     },
     {
       "id": "g-skill-226",
@@ -6074,7 +7154,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1478,
+        "para_end": 1484
+      }
     },
     {
       "id": "g-skill-227",
@@ -6092,7 +7177,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1484,
+        "para_end": 1490
+      }
     },
     {
       "id": "g-skill-228",
@@ -6110,7 +7200,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1490,
+        "para_end": 1496
+      }
     },
     {
       "id": "g-skill-229",
@@ -6128,7 +7223,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1496,
+        "para_end": 1502
+      }
     },
     {
       "id": "g-skill-230",
@@ -6146,7 +7246,12 @@
       "tags": [
         "每日限一次"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1502,
+        "para_end": 1507
+      }
     },
     {
       "id": "g-skill-232",
@@ -6164,7 +7269,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1508,
+        "para_end": 1514
+      }
     },
     {
       "id": "g-skill-233",
@@ -6182,7 +7292,12 @@
       "tags": [
         "天赋"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1514,
+        "para_end": 1520
+      }
     },
     {
       "id": "g-skill-234",
@@ -6200,7 +7315,12 @@
       "tags": [
         "天赋"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1520,
+        "para_end": 1526
+      }
     },
     {
       "id": "g-skill-235",
@@ -6218,7 +7338,12 @@
       "tags": [
         "火焰"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1526,
+        "para_end": 1532
+      }
     },
     {
       "id": "g-skill-236",
@@ -6236,7 +7361,12 @@
       "tags": [
         "冰霜"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1532,
+        "para_end": 1538
+      }
     },
     {
       "id": "g-skill-237",
@@ -6254,7 +7384,12 @@
       "tags": [
         "雷电"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1538,
+        "para_end": 1544
+      }
     },
     {
       "id": "g-skill-238",
@@ -6272,7 +7407,12 @@
       "tags": [
         "自然"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1544,
+        "para_end": 1550
+      }
     },
     {
       "id": "g-skill-239",
@@ -6290,7 +7430,12 @@
       "tags": [
         "光耀"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1550,
+        "para_end": 1556
+      }
     },
     {
       "id": "g-skill-240",
@@ -6308,7 +7453,12 @@
       "tags": [
         "暗影"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1556,
+        "para_end": 1562
+      }
     },
     {
       "id": "g-skill-241",
@@ -6326,7 +7476,12 @@
       "tags": [
         "毒性"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1562,
+        "para_end": 1568
+      }
     },
     {
       "id": "g-skill-242",
@@ -6344,7 +7499,12 @@
       "tags": [
         "侵蚀"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1568,
+        "para_end": 1574
+      }
     },
     {
       "id": "g-skill-243",
@@ -6362,7 +7522,12 @@
       "tags": [
         "节奏"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1574,
+        "para_end": 1580
+      }
     },
     {
       "id": "g-skill-244",
@@ -6380,7 +7545,12 @@
       "tags": [
         "奥术"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1580,
+        "para_end": 1586
+      }
     },
     {
       "id": "g-skill-245",
@@ -6398,7 +7568,12 @@
       "tags": [
         "力能"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1586,
+        "para_end": 1592
+      }
     },
     {
       "id": "g-skill-246",
@@ -6416,7 +7591,12 @@
       "tags": [
         "幻象"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1592,
+        "para_end": 1598
+      }
     },
     {
       "id": "g-skill-247",
@@ -6434,7 +7614,12 @@
       "tags": [
         "奇迹"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1598,
+        "para_end": 1604
+      }
     },
     {
       "id": "g-skill-248",
@@ -6452,7 +7637,12 @@
       "tags": [
         "邪能"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1604,
+        "para_end": 1610
+      }
     },
     {
       "id": "g-skill-249",
@@ -6470,7 +7660,12 @@
       "tags": [
         "星空"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1610,
+        "para_end": 1615
+      }
     },
     {
       "id": "g-skill-251",
@@ -6491,7 +7686,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1616,
+        "para_end": 1624
+      }
     },
     {
       "id": "g-skill-252",
@@ -6513,7 +7713,12 @@
         "探知",
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1624,
+        "para_end": 1632
+      }
     },
     {
       "id": "g-skill-253",
@@ -6535,7 +7740,12 @@
         "防御",
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1632,
+        "para_end": 1640
+      }
     },
     {
       "id": "g-skill-254",
@@ -6557,7 +7767,12 @@
         "探知",
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1640,
+        "para_end": 1648
+      }
     },
     {
       "id": "g-skill-255",
@@ -6579,7 +7794,12 @@
         "探知",
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1648,
+        "para_end": 1656
+      }
     },
     {
       "id": "g-skill-256",
@@ -6600,7 +7820,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1656,
+        "para_end": 1664
+      }
     },
     {
       "id": "g-skill-257",
@@ -6621,7 +7846,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1664,
+        "para_end": 1672
+      }
     },
     {
       "id": "g-skill-258",
@@ -6642,7 +7872,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1672,
+        "para_end": 1680
+      }
     },
     {
       "id": "g-skill-259",
@@ -6663,7 +7898,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1680,
+        "para_end": 1688
+      }
     },
     {
       "id": "g-skill-260",
@@ -6685,7 +7925,12 @@
         "增益",
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1688,
+        "para_end": 1696
+      }
     },
     {
       "id": "g-skill-261",
@@ -6706,7 +7951,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1696,
+        "para_end": 1704
+      }
     },
     {
       "id": "g-skill-262",
@@ -6728,7 +7978,12 @@
         "技艺",
         "上限提升"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1704,
+        "para_end": 1712
+      }
     },
     {
       "id": "g-skill-263",
@@ -6749,7 +8004,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1712,
+        "para_end": 1720
+      }
     },
     {
       "id": "g-skill-264",
@@ -6770,7 +8030,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1720,
+        "para_end": 1728
+      }
     },
     {
       "id": "g-skill-265",
@@ -6791,7 +8056,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1728,
+        "para_end": 1736
+      }
     },
     {
       "id": "g-skill-266",
@@ -6812,7 +8082,12 @@
       "tags": [
         "技艺"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1736,
+        "para_end": 1744
+      }
     },
     {
       "id": "g-skill-267",
@@ -6834,7 +8109,12 @@
         "技艺",
         "补给"
       ],
-      "tier": "四阶"
+      "tier": "四阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1744,
+        "para_end": 1751
+      }
     },
     {
       "id": "g-skill-268",
@@ -6861,7 +8141,12 @@
         "基础攻击",
         "短休/长休"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1753,
+        "para_end": 1766
+      }
     },
     {
       "id": "g-skill-269",
@@ -6902,7 +8187,12 @@
         "位移",
         "互动"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1766,
+        "para_end": 1780
+      }
     },
     {
       "id": "g-skill-270",
@@ -6943,7 +8233,12 @@
         "回复",
         "短休/长休（X）"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1780,
+        "para_end": 1794
+      }
     },
     {
       "id": "g-skill-271",
@@ -6964,7 +8259,12 @@
         "韧性",
         "长休（X）"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1846,
+        "para_end": 1852
+      }
     },
     {
       "id": "g-skill-272",
@@ -6995,7 +8295,12 @@
         "韧性",
         "短休/长休"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1852,
+        "para_end": 1858
+      }
     },
     {
       "id": "g-skill-273",
@@ -7016,7 +8321,12 @@
         "参悟",
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1858,
+        "para_end": 1864
+      }
     },
     {
       "id": "g-skill-274",
@@ -7035,7 +8345,12 @@
         "韧性",
         "长休"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1864,
+        "para_end": 1869
+      }
     },
     {
       "id": "g-skill-275",
@@ -7053,7 +8368,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1869,
+        "para_end": 1874
+      }
     },
     {
       "id": "g-skill-276",
@@ -7101,7 +8421,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1889,
+        "para_end": 1902
+      }
     },
     {
       "id": "g-skill-277",
@@ -7120,7 +8445,12 @@
         "备战",
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1916,
+        "para_end": 1921
+      }
     },
     {
       "id": "g-skill-278",
@@ -7143,7 +8473,12 @@
         "互动",
         "长休"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1921,
+        "para_end": 1928
+      }
     },
     {
       "id": "g-skill-279",
@@ -7164,7 +8499,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1934,
+        "para_end": 1941
+      }
     },
     {
       "id": "g-skill-280",
@@ -7197,7 +8537,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1950,
+        "para_end": 1956
+      }
     },
     {
       "id": "g-skill-281",
@@ -7218,7 +8563,12 @@
       "tags": [
         "天赋"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1956,
+        "para_end": 1963
+      }
     },
     {
       "id": "g-skill-282",
@@ -7238,7 +8588,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1963,
+        "para_end": 1969
+      }
     },
     {
       "id": "g-skill-284",
@@ -7256,7 +8611,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1994,
+        "para_end": 2000
+      }
     },
     {
       "id": "g-skill-285",
@@ -7274,7 +8634,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2000,
+        "para_end": 2006
+      }
     },
     {
       "id": "g-skill-286",
@@ -7292,7 +8657,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2006,
+        "para_end": 2012
+      }
     },
     {
       "id": "g-skill-287",
@@ -7310,7 +8680,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2012,
+        "para_end": 2018
+      }
     },
     {
       "id": "g-skill-288",
@@ -7328,7 +8703,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2018,
+        "para_end": 2024
+      }
     },
     {
       "id": "g-skill-289",
@@ -7346,7 +8726,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2024,
+        "para_end": 2030
+      }
     },
     {
       "id": "g-skill-290",
@@ -7364,7 +8749,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2030,
+        "para_end": 2036
+      }
     },
     {
       "id": "g-skill-291",
@@ -7382,7 +8772,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2036,
+        "para_end": 2041
+      }
     },
     {
       "id": "g-skill-306",
@@ -7402,7 +8797,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2042,
+        "para_end": 2048
+      }
     },
     {
       "id": "g-skill-307",
@@ -7422,7 +8822,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2048,
+        "para_end": 2054
+      }
     },
     {
       "id": "g-skill-308",
@@ -7442,7 +8847,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2054,
+        "para_end": 2060
+      }
     },
     {
       "id": "g-skill-309",
@@ -7462,7 +8872,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2060,
+        "para_end": 2066
+      }
     },
     {
       "id": "g-skill-310",
@@ -7482,7 +8897,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2066,
+        "para_end": 2072
+      }
     },
     {
       "id": "g-skill-311",
@@ -7502,7 +8922,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2072,
+        "para_end": 2078
+      }
     },
     {
       "id": "g-skill-312",
@@ -7522,7 +8947,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2078,
+        "para_end": 2084
+      }
     },
     {
       "id": "g-skill-314",
@@ -7542,7 +8972,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2090,
+        "para_end": 2096
+      }
     },
     {
       "id": "g-skill-315",
@@ -7562,7 +8997,12 @@
         "媒介",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2096,
+        "para_end": 2101
+      }
     },
     {
       "id": "g-skill-317",
@@ -7582,7 +9022,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2102,
+        "para_end": 2108
+      }
     },
     {
       "id": "g-skill-318",
@@ -7602,7 +9047,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2108,
+        "para_end": 2114
+      }
     },
     {
       "id": "g-skill-319",
@@ -7622,7 +9072,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2114,
+        "para_end": 2120
+      }
     },
     {
       "id": "g-skill-320",
@@ -7642,7 +9097,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2120,
+        "para_end": 2126
+      }
     },
     {
       "id": "g-skill-321",
@@ -7662,7 +9122,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2126,
+        "para_end": 2132
+      }
     },
     {
       "id": "g-skill-322",
@@ -7682,7 +9147,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2132,
+        "para_end": 2138
+      }
     },
     {
       "id": "g-skill-323",
@@ -7702,7 +9172,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2138,
+        "para_end": 2144
+      }
     },
     {
       "id": "g-skill-324",
@@ -7722,7 +9197,12 @@
         "恩惠",
         "每场游玩限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2144,
+        "para_end": 2149
+      }
     },
     {
       "id": "g-skill-325",
@@ -7766,7 +9246,12 @@
         "感知豁免（15）",
         "短休/长休"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2151,
+        "para_end": 2166
+      }
     },
     {
       "id": "g-skill-326",
@@ -7798,7 +9283,12 @@
         "力量豁免（15）",
         "短休/长休"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2166,
+        "para_end": 2179
+      }
     },
     {
       "id": "g-skill-327",
@@ -7825,7 +9315,12 @@
         "回复",
         "长休"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2179,
+        "para_end": 2191
+      }
     },
     {
       "id": "g-skill-328",
@@ -7843,7 +9338,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2191,
+        "para_end": 2196
+      }
     },
     {
       "id": "g-skill-329",
@@ -7864,7 +9364,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1909,
+        "para_end": 1916
+      }
     },
     {
       "id": "g-skill-330",
@@ -7887,7 +9392,12 @@
         "躲闪",
         "每场战斗限一次"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2196,
+        "para_end": 2203
+      }
     },
     {
       "id": "g-skill-331",
@@ -7909,7 +9419,12 @@
         "韧性",
         "短休/长休（X）"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2203,
+        "para_end": 2209
+      }
     },
     {
       "id": "g-skill-332",
@@ -7966,7 +9481,12 @@
         "机制",
         "增益"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2209,
+        "para_end": 2224
+      }
     },
     {
       "id": "g-skill-333",
@@ -7987,7 +9507,12 @@
         "防御",
         "每日限一次"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2724,
+        "para_end": 2730
+      }
     },
     {
       "id": "g-skill-335",
@@ -8010,7 +9535,12 @@
         "命运",
         "充能（1）"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2224,
+        "para_end": 2232
+      }
     },
     {
       "id": "g-skill-336",
@@ -8045,7 +9575,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2232,
+        "para_end": 2239
+      }
     },
     {
       "id": "g-skill-337",
@@ -8068,7 +9603,12 @@
         "命运",
         "充能（1）"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2239,
+        "para_end": 2247
+      }
     },
     {
       "id": "g-skill-338",
@@ -8088,7 +9628,12 @@
       "tags": [
         "补给"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2247,
+        "para_end": 2253
+      }
     },
     {
       "id": "g-skill-339",
@@ -8106,7 +9651,12 @@
       "cost": [],
       "level_upgrades": [],
       "tags": [],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2705,
+        "para_end": 2711
+      }
     },
     {
       "id": "g-skill-340",
@@ -8124,7 +9674,12 @@
       "cost": [],
       "level_upgrades": [],
       "tags": [],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2711,
+        "para_end": 2717
+      }
     },
     {
       "id": "g-skill-341",
@@ -8143,7 +9698,12 @@
       "cost": [],
       "level_upgrades": [],
       "tags": [],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2717,
+        "para_end": 2724
+      }
     },
     {
       "id": "g-skill-342",
@@ -8161,7 +9721,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2269,
+        "para_end": 2274
+      }
     },
     {
       "id": "g-skill-344",
@@ -8182,7 +9747,12 @@
         "恩惠",
         "光耀"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2343,
+        "para_end": 2350
+      }
     },
     {
       "id": "g-skill-345",
@@ -8202,7 +9772,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2350,
+        "para_end": 2357
+      }
     },
     {
       "id": "g-skill-346",
@@ -8222,7 +9797,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2357,
+        "para_end": 2364
+      }
     },
     {
       "id": "g-skill-347",
@@ -8242,7 +9822,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2364,
+        "para_end": 2371
+      }
     },
     {
       "id": "g-skill-348",
@@ -8262,7 +9847,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2371,
+        "para_end": 2378
+      }
     },
     {
       "id": "g-skill-349",
@@ -8282,7 +9872,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2378,
+        "para_end": 2385
+      }
     },
     {
       "id": "g-skill-350",
@@ -8302,7 +9897,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2385,
+        "para_end": 2392
+      }
     },
     {
       "id": "g-skill-351",
@@ -8322,7 +9922,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2392,
+        "para_end": 2399
+      }
     },
     {
       "id": "g-skill-352",
@@ -8342,7 +9947,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2399,
+        "para_end": 2406
+      }
     },
     {
       "id": "g-skill-353",
@@ -8362,7 +9972,12 @@
       "tags": [
         "恩惠"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2406,
+        "para_end": 2412
+      }
     },
     {
       "id": "g-skill-355",
@@ -8421,7 +10036,12 @@
         "补给",
         "参悟"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2413,
+        "para_end": 2423
+      }
     },
     {
       "id": "g-skill-356",
@@ -8479,7 +10099,12 @@
         "互动",
         "构筑"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2423,
+        "para_end": 2433
+      }
     },
     {
       "id": "g-skill-357",
@@ -8539,7 +10164,12 @@
         "韧性",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2433,
+        "para_end": 2443
+      }
     },
     {
       "id": "g-skill-358",
@@ -8597,7 +10227,12 @@
         "自然",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2443,
+        "para_end": 2453
+      }
     },
     {
       "id": "g-skill-359",
@@ -8655,7 +10290,12 @@
         "自然",
         "隐秘"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2453,
+        "para_end": 2463
+      }
     },
     {
       "id": "g-skill-360",
@@ -8716,7 +10356,12 @@
         "互动",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2463,
+        "para_end": 2473
+      }
     },
     {
       "id": "g-skill-361",
@@ -8777,7 +10422,12 @@
         "交涉",
         "上限提升"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2473,
+        "para_end": 2483
+      }
     },
     {
       "id": "g-skill-362",
@@ -8837,7 +10487,12 @@
         "回复",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2483,
+        "para_end": 2493
+      }
     },
     {
       "id": "g-skill-363",
@@ -8896,7 +10551,12 @@
         "自然",
         "回复"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2493,
+        "para_end": 2503
+      }
     },
     {
       "id": "g-skill-364",
@@ -8955,7 +10615,12 @@
         "构筑",
         "充能（1）"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2503,
+        "para_end": 2513
+      }
     },
     {
       "id": "g-skill-365",
@@ -9014,7 +10679,12 @@
         "互动",
         "补给"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2513,
+        "para_end": 2523
+      }
     },
     {
       "id": "g-skill-366",
@@ -9073,7 +10743,12 @@
         "互动",
         "上限提升"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2523,
+        "para_end": 2533
+      }
     },
     {
       "id": "g-skill-367",
@@ -9118,7 +10793,12 @@
         "恩惠",
         "补给"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2533,
+        "para_end": 2543
+      }
     },
     {
       "id": "g-skill-368",
@@ -9177,7 +10857,12 @@
         "互动",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2543,
+        "para_end": 2553
+      }
     },
     {
       "id": "g-skill-369",
@@ -9238,7 +10923,12 @@
         "净化",
         "交涉"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2553,
+        "para_end": 2563
+      }
     },
     {
       "id": "g-skill-370",
@@ -9296,7 +10986,12 @@
         "冰霜",
         "互动"
       ],
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2563,
+        "para_end": 2572
+      }
     },
     {
       "id": "g-skill-371",
@@ -9345,7 +11040,12 @@
         "穿甲",
         "短休/长休"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2574,
+        "para_end": 2590
+      }
     },
     {
       "id": "g-skill-373",
@@ -9381,7 +11081,12 @@
         "备战",
         "唯一性"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2604,
+        "para_end": 2619
+      }
     },
     {
       "id": "g-skill-374",
@@ -9413,7 +11118,12 @@
         "补给",
         "每日限一次"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2619,
+        "para_end": 2633
+      }
     },
     {
       "id": "g-skill-375",
@@ -9463,7 +11173,12 @@
         "机制",
         "每日限一次"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2633,
+        "para_end": 2666
+      }
     },
     {
       "id": "g-skill-377",
@@ -9491,7 +11206,12 @@
         "防御",
         "每场战斗限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1795,
+        "para_end": 1808
+      }
     },
     {
       "id": "g-skill-378",
@@ -9519,7 +11239,12 @@
         "防御",
         "每场战斗限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1808,
+        "para_end": 1821
+      }
     },
     {
       "id": "g-skill-379",
@@ -9547,7 +11272,12 @@
         "躲闪",
         "每场战斗限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1821,
+        "para_end": 1834
+      }
     },
     {
       "id": "g-skill-380",
@@ -9576,7 +11306,12 @@
         "净化",
         "每场战斗限一次"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1834,
+        "para_end": 1846
+      }
     },
     {
       "id": "g-skill-382",
@@ -9595,7 +11330,12 @@
         "机制",
         "每日限一次"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2666,
+        "para_end": 2671
+      }
     },
     {
       "id": "g-skill-383",
@@ -9626,7 +11366,12 @@
         "韧性",
         "参悟"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2671,
+        "para_end": 2677
+      }
     },
     {
       "id": "g-skill-384",
@@ -9658,7 +11403,12 @@
       "tags": [
         "命运"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2677,
+        "para_end": 2684
+      }
     },
     {
       "id": "g-skill-385",
@@ -9700,7 +11450,12 @@
       "flavor": "",
       "cost": [],
       "tags": [],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2691,
+        "para_end": 2705
+      }
     },
     {
       "id": "g-skill-387",
@@ -9722,7 +11477,12 @@
         "机制",
         "补给"
       ],
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1928,
+        "para_end": 1934
+      }
     },
     {
       "id": "g-skill-389",
@@ -9740,7 +11500,12 @@
       "tags": [
         "额外行动"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2760,
+        "para_end": 2766
+      }
     },
     {
       "id": "g-skill-390",
@@ -9758,7 +11523,12 @@
       "tags": [
         "额外行动"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2766,
+        "para_end": 2771
+      }
     },
     {
       "id": "g-skill-392",
@@ -9778,7 +11548,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2772,
+        "para_end": 2779
+      }
     },
     {
       "id": "g-skill-393",
@@ -9798,7 +11573,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2779,
+        "para_end": 2786
+      }
     },
     {
       "id": "g-skill-394",
@@ -9818,7 +11598,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2786,
+        "para_end": 2793
+      }
     },
     {
       "id": "g-skill-395",
@@ -9838,7 +11623,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2793,
+        "para_end": 2800
+      }
     },
     {
       "id": "g-skill-396",
@@ -9858,7 +11648,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2800,
+        "para_end": 2807
+      }
     },
     {
       "id": "g-skill-397",
@@ -9878,7 +11673,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2807,
+        "para_end": 2814
+      }
     },
     {
       "id": "g-skill-398",
@@ -9898,7 +11698,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2814,
+        "para_end": 2821
+      }
     },
     {
       "id": "g-skill-399",
@@ -9918,7 +11723,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2821,
+        "para_end": 2828
+      }
     },
     {
       "id": "g-skill-400",
@@ -9938,7 +11748,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2828,
+        "para_end": 2835
+      }
     },
     {
       "id": "g-skill-401",
@@ -9958,7 +11773,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2835,
+        "para_end": 2842
+      }
     },
     {
       "id": "g-skill-402",
@@ -9978,7 +11798,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2842,
+        "para_end": 2849
+      }
     },
     {
       "id": "g-skill-403",
@@ -9998,7 +11823,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2849,
+        "para_end": 2856
+      }
     },
     {
       "id": "g-skill-404",
@@ -10018,7 +11848,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2856,
+        "para_end": 2863
+      }
     },
     {
       "id": "g-skill-405",
@@ -10038,7 +11873,12 @@
       "tags": [
         "上限提升"
       ],
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2863,
+        "para_end": 2870
+      }
     },
     {
       "id": "g-skill-422",
@@ -10058,7 +11898,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1874,
+        "para_end": 1879
+      }
     },
     {
       "id": "g-skill-423",
@@ -10078,7 +11923,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1879,
+        "para_end": 1884
+      }
     },
     {
       "id": "g-skill-424",
@@ -10098,7 +11948,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1884,
+        "para_end": 1889
+      }
     },
     {
       "id": "g-skill-425",
@@ -10120,7 +11975,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1902,
+        "para_end": 1909
+      }
     },
     {
       "id": "g-skill-426",
@@ -10145,7 +12005,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1941,
+        "para_end": 1950
+      }
     },
     {
       "id": "g-skill-427",
@@ -10192,7 +12057,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1970,
+        "para_end": 1982
+      }
     },
     {
       "id": "g-skill-428",
@@ -10251,7 +12121,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 1982,
+        "para_end": 1993
+      }
     },
     {
       "id": "g-skill-429",
@@ -10272,7 +12147,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "五阶"
+      "tier": "五阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2084,
+        "para_end": 2090
+      }
     },
     {
       "id": "g-skill-430",
@@ -10314,8 +12194,8 @@
       "type": "天赋",
       "source": {
         "kind": "docx",
-        "para_start": 2560,
-        "para_end": 2573
+        "para_start": 2275,
+        "para_end": 2287
       }
     },
     {
@@ -10353,7 +12233,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2287,
+        "para_end": 2295
+      }
     },
     {
       "id": "g-skill-432",
@@ -10387,7 +12272,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2295,
+        "para_end": 2303
+      }
     },
     {
       "id": "g-skill-433",
@@ -10420,7 +12310,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2303,
+        "para_end": 2311
+      }
     },
     {
       "id": "g-skill-434",
@@ -10454,7 +12349,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2311,
+        "para_end": 2319
+      }
     },
     {
       "id": "g-skill-435",
@@ -10485,7 +12385,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2319,
+        "para_end": 2326
+      }
     },
     {
       "id": "g-skill-437",
@@ -10519,7 +12424,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2334,
+        "para_end": 2342
+      }
     },
     {
       "id": "g-skill-391",
@@ -10541,7 +12451,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2253,
+        "para_end": 2259
+      }
     },
     {
       "id": "g-skill-406",
@@ -10561,7 +12476,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2259,
+        "para_end": 2264
+      }
     },
     {
       "id": "g-skill-407",
@@ -10581,7 +12501,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "六阶"
+      "tier": "六阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2264,
+        "para_end": 2269
+      }
     },
     {
       "id": "g-skill-408",
@@ -10617,7 +12542,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2730,
+        "para_end": 2737
+      }
     },
     {
       "id": "g-skill-409",
@@ -10654,7 +12584,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2737,
+        "para_end": 2747
+      }
     },
     {
       "id": "g-skill-410",
@@ -10680,7 +12615,12 @@
       "level_upgrades": [],
       "flavor": "",
       "style": "",
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2747,
+        "para_end": 2759
+      }
     },
     {
       "id": "g-skill-438",
@@ -10714,7 +12654,12 @@
       ],
       "flavor": "",
       "style": "",
-      "tier": "七阶"
+      "tier": "七阶",
+      "source": {
+        "kind": "docx",
+        "para_start": 2684,
+        "para_end": 2691
+      }
     },
     {
       "id": "g-skill-439",
@@ -10737,7 +12682,12 @@
       "flavor": "",
       "style": "",
       "tier": "二阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 621,
+        "para_end": 628
+      }
     },
     {
       "id": "g-skill-440",
@@ -10795,7 +12745,12 @@
       "flavor": "",
       "style": "",
       "tier": "二阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 881,
+        "para_end": 889
+      }
     },
     {
       "id": "g-skill-441",
@@ -10854,7 +12809,12 @@
       "flavor": "",
       "style": "",
       "tier": "二阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 889,
+        "para_end": 897
+      }
     },
     {
       "id": "g-skill-442",
@@ -10918,7 +12878,12 @@
       "flavor": "",
       "style": "",
       "tier": "二阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 897,
+        "para_end": 905
+      }
     },
     {
       "id": "g-skill-443",
@@ -10976,7 +12941,12 @@
       "flavor": "",
       "style": "",
       "tier": "二阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 905,
+        "para_end": 912
+      }
     },
     {
       "id": "g-skill-436",
@@ -11011,7 +12981,12 @@
       "flavor": "",
       "style": "",
       "tier": "六阶",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 2326,
+        "para_end": 2334
+      }
     },
     {
       "id": "g-skill-372",
@@ -11054,7 +13029,12 @@
       "flavor": "",
       "style": "",
       "tier": "七阶",
-      "type": "法术"
+      "type": "法术",
+      "source": {
+        "kind": "docx",
+        "para_start": 2590,
+        "para_end": 2604
+      }
     },
     {
       "id": "g-skill-446",
@@ -11077,7 +13057,12 @@
       "style": "",
       "tier": "七阶",
       "choice_group": "额外攻击/额外施法",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 2870,
+        "para_end": 2877
+      }
     },
     {
       "id": "g-skill-447",
@@ -11100,7 +13085,12 @@
       "style": "",
       "tier": "七阶",
       "choice_group": "额外攻击/额外施法",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 2877,
+        "para_end": 2884
+      }
     },
     {
       "id": "g-skill-448",
@@ -11123,7 +13113,12 @@
       "style": "",
       "tier": "七阶",
       "choice_group": "额外攻击/额外施法",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 2884,
+        "para_end": 2891
+      }
     },
     {
       "id": "g-skill-449",
@@ -11146,7 +13141,12 @@
       "style": "",
       "tier": "七阶",
       "choice_group": "额外攻击/额外施法",
-      "type": "天赋"
+      "type": "天赋",
+      "source": {
+        "kind": "docx",
+        "para_start": 2891,
+        "para_end": 2897
+      }
     }
   ]
 }

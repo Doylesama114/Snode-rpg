@@ -478,7 +478,7 @@ def preserve_existing_ids(skills: list[dict], blocks: dict) -> None:
         sk["id"] = final
         prev = next((o for o in old_skills if o.get("name") == sk["name"]), None)
         if prev:
-            for k in ("type", "source", "unit_tables", "tags", "flavor"):
+            for k in ("type", "unit_tables", "tags", "flavor"):
                 if not sk.get(k) and prev.get(k):
                     sk[k] = prev[k]
         if not sk.get("type"):
@@ -512,6 +512,8 @@ def main() -> None:
             raise RuntimeError(f"docx block not found: {stub['name']} ({stub['id']})")
         clean_level_upgrade_choices(block)
         skill = block_to_skill(stub, block)
+        span = block["source_span"]
+        skill["source"] = {"kind": "docx", "para_start": span["start"], "para_end": span["end"]}
         skills.append(skill)
         blocks[skill["id"]] = block
 

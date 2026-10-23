@@ -640,7 +640,10 @@ def build_skill_list() -> tuple[list[dict], dict[str, dict], dict]:
         block = blocks.get(stub['id'])
         if not block:
             continue
-        skills.append(block_to_skill(stub, block))
+        sk = block_to_skill(stub, block)
+        span = block["source_span"]
+        sk["source"] = {"kind": "docx", "para_start": span["start"], "para_end": span["end"]}
+        skills.append(sk)
     return skills, blocks, stats
 
 
@@ -675,7 +678,7 @@ def preserve_existing_ids(skills: list[dict], blocks: dict[str, dict]) -> dict[s
         # 重建会丢 type/source 等元数据：按名字从旧数据补回，新增条目按关键词推导
         prev = next((o for o in old_skills if o.get("name") == name), None)
         if prev:
-            for k in ("type", "source", "unit_tables", "tags", "flavor"):
+            for k in ("type", "unit_tables", "tags", "flavor"):
                 if not sk.get(k) and prev.get(k):
                     sk[k] = prev[k]
         if not sk.get("type"):

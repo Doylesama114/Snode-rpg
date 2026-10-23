@@ -1317,6 +1317,9 @@ def sync_class(
         skill["tags"] = tags_from_keywords(fields.get("关键词", ""))
         skill["cost"] = cost_json(block["mark_dots"])
         apply_run_metadata(skill, block)
+        # 源文档段落范围随文档更新而变，按当前块重写（旧值会指向错误段落）
+        _span = block["source_span"]
+        skill["source"] = {"kind": "docx", "para_start": _span["start"], "para_end": _span["end"]}
 
         if not skill.get("tier") and sid in nav_tiers:
             skill["tier"] = nav_tiers[sid]
