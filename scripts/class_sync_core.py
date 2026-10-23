@@ -188,6 +188,7 @@ def is_skill_header(paras: list[dict], start: int, names: set[str] | None = None
     if not split_field(paras[start + 1]["text"])[0]:
         return False
     found = set()
+    saw_body = False
     for p in paras[start + 1:start + 15]:
         line = p["text"]
         key, _ = split_field(line)
@@ -199,7 +200,11 @@ def is_skill_header(paras: list[dict], start: int, names: set[str] | None = None
                 return bool(found & {"\u524d\u7f6e\u6761\u4ef6", "\u989d\u5916\u6761\u4ef6", "\u63cf\u8ff0"})
         elif is_section_break(line) or (names is not None and line in names):
             break
-    return False
+        else:
+            saw_body = True
+    # 纯被动天赋：只有前置/额外条件 + 正文，既无关键词也无施展时间（如「法术精准」「规划路线」）。
+    # 必须有正文行才算，避免把名册表里的孤立名字当成条目。
+    return saw_body and bool(found & {"\u524d\u7f6e\u6761\u4ef6", "\u989d\u5916\u6761\u4ef6"})
 
 
 

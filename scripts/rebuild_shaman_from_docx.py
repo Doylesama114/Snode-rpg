@@ -71,6 +71,38 @@ def parse_html_meta(html: str) -> dict[str, dict]:
     return meta
 
 
+BAD_NAME = re.compile(r"[：:。；，、·]|^\d")
+SKIP_NAMES = {"起始特性", "起始专长", "谋士专精", "装备", "装备列表", "熟练项", "生命值加成", "疲劳值加成"}
+
+
+def docx_candidate_names() -> set[str]:
+    """从 docx 表格首列收集技能名（新文档为表格排版，名字在表格第一行）。"""
+    import docx
+
+    names: set[str] = set()
+    doc = docx.Document(DOCX)
+    for tb in doc.tables:
+        if not tb.rows:
+            continue
+        text = tb.rows[0].cells[0].text.strip().split("\n")[0].strip()
+        if not text or text in SKIP_NAMES or len(text) > 16 or BAD_NAME.search(text):
+            continue
+        if text.endswith("风格") or "天赋树" in text:
+            continue
+        names.add(text)
+    return names
+
+
+def fix_wind_thunder(idx: dict) -> None:
+    """作者笔误：风暴风格下那条「潮汐抗性」实为「风雷抗性」。"""
+    blocks = idx.get("潮汐抗性") or []
+    moved = [b for b in blocks if (b.get("_style") or "").removesuffix("风格") == "风暴"]
+    if not moved:
+        return
+    idx["潮汐抗性"] = [b for b in blocks if b not in moved]
+    idx["风雷抗性"] = moved
+
+
 def block_to_skill(stub: dict, block: dict) -> dict:
     fields = dict(block["fields"])
     if block["mark_dots"]:
@@ -88,14 +120,30 @@ def block_to_skill(stub: dict, block: dict) -> dict:
 
     skill = {
         "id": stub["id"],
-        "name": block["name"],
+        # 以 stub 名为准：文档里「潮汐抗性」那条风暴技能实为「风雷抗性」，块名仍是旧名
+        "name": stub.get("name") or block["name"],
         "tags": tags_from_keywords(fields.get("关键词", "")),
         "fields": fields,
         "cost": cost_json(block["mark_dots"]),
         "description": description,
         "level_upgrades": block["level_upgrades"],
-        "flavor": block["flavor"],
+        "flavor": block["flavor"] or stub.get("flavor", ""),
     }
+    if stub.get("type"):
+        skill["type"] = stub["type"]
+    elif not skill.get("type"):
+        # 新增技能：按关键词前缀判定，妥否以「施展时间」兜底（阶位技能基本都是法术）
+        kw = str(skill["fields"].get("关键词", ""))
+        for t in ("戏法", "天赋", "战技", "法术"):
+            if kw.startswith(t):
+                skill["type"] = t
+                break
+        if not skill.get("type"):
+            skill["type"] = "法术" if skill["fields"].get("施展时间") else "天赋"
+    if stub.get("source"):
+        skill["source"] = stub["source"]
+    if stub.get("unit_tables"):
+        skill["unit_tables"] = stub["unit_tables"]
     if stub.get("style") and stub["style"] != "起始":
         style = stub["style"].removesuffix("风格")
         skill["style"] = style
@@ -303,14 +351,36 @@ def main() -> None:
             "name": sk["name"],
             "style": style,
             "tier": sk.get("tier", ""),
+            "type": sk.get("type", ""),
+            "unit_tables": sk.get("unit_tables") or [],
+            "flavor": sk.get("flavor", ""),
+            "source": sk.get("source"),
         }
     for sid, meta in html_meta.items():
         if sid not in stubs:
             stubs[sid] = {"id": sid, **meta}
 
-    all_names = {s["name"] for s in stubs.values()} | {m["name"] for m in html_meta.values()}
+    # 10.23：文档新增技能（含作者笔误「潮汐抗性」应为「风雷抗性」）
+    extra = docx_candidate_names()
+    all_names = {s["name"] for s in stubs.values()} | {m["name"] for m in html_meta.values()} | extra | {"风雷抗性"}
     paras = extract_paragraphs(DOCX)
     idx = build_docx_index(paras, all_names)
+    fix_wind_thunder(idx)
+    known = {s["name"] for s in stubs.values()}
+    next_no = max([int(m.group(1)) for sid in stubs for m in [re.search(r"sa-skill-(\d+)$", sid)] if m] or [0]) + 1
+    for name in sorted(extra | {"风雷抗性"}):
+        if name in known:
+            continue
+        blocks = idx.get(name) or []
+        if not blocks:
+            continue
+        best = blocks[0]
+        style = (best.get("_style") or "").removesuffix("风格")
+        tier = best.get("_tier") or ""
+        if not style or not tier:
+            continue
+        stubs[f"sa-skill-{next_no}"] = {"id": f"sa-skill-{next_no}", "name": name, "style": style, "tier": tier}
+        next_no += 1
     used: set[int] = set()
 
     skills: list[dict] = []
