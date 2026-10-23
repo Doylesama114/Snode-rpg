@@ -57,15 +57,21 @@ STYLE_COLORS = {
     "咒法": "#C0A8FF",
     "降灵": "#8ED7F5",
 }
-TIER_ORDER = ["一阶", "二阶", "三阶"]
+TIER_ORDER = ["一阶", "二阶", "三阶", "四阶"]
 STARTING_ORDER = ["魔法飞弹", "次级召唤术", "唤回"]
 FEATURE_NAMES = ["召唤联结", "异界感知", "机缘召唤"]
 FEATURE_SECTION_ID = f"{PREFIX}-class-features"
 SEP_RE = re.compile(r"^-{3,}$")
 DICE_RANGE_RE = re.compile(r'^\d{3}(-\d{3})?$')
-REUSE_FROM_OTHER = {"蓝焰术": ("法师", "咒法", "二阶")}
+REUSE_FROM_OTHER: dict[str, tuple[str, str, str]] = {}  # 10.23：蓝焰术已从文档删除，不再从法师复用
 # 清单笔误 → 详情表真名（用户确认）
-LIST_ALIASES = {"召唤指令·回避": "契约指令·回避"}
+LIST_ALIASES: dict[str, str] = {}  # 10.23：文档已统一为「召唤指令·X」
+# 改名：新名 → 旧名，仅用于继承旧 ID（旧存档不断链）
+RENAME_ID_FROM = {
+    "召唤指令·攻击": "契约指令·攻击",
+    "召唤指令·防御": "契约指令·防御",
+    "召唤指令·回避": "契约指令·回避",
+}
 
 def extract_class_features() -> dict:
     """从谋士 docx 的「初始专长」段落区提取职业专长。"""
@@ -638,8 +644,59 @@ def build_skill_list() -> tuple[list[dict], dict[str, dict], dict]:
     return skills, blocks, stats
 
 
+def preserve_existing_ids(skills: list[dict], blocks: dict[str, dict]) -> dict[str, str]:
+    """按技能名把既有 ID 还原，避免重建后重编号导致旧角色引用错位。
+
+    「契约指令·X」改名为「召唤指令·X」时继承原 ID，旧存档继续有效。
+    """
+    inv = dict(RENAME_ID_FROM)
+    old_skills: list[dict] = []
+    if DATA.exists():
+        try:
+            old_skills = json.loads(DATA.read_text(encoding="utf-8")).get("skills") or []
+        except Exception:
+            old_skills = []
+    id_by_name = {s["name"]: s["id"] for s in old_skills if s.get("name") and s.get("id")}
+    used = set(id_by_name.values())
+    numbers = [int(m.group(1)) for sid in used for m in [re.search(r"-skill-(\d+)$", sid)] if m]
+    next_no = (max(numbers) + 1) if numbers else 1
+    remap: dict[str, str] = {}
+    for sk in skills:
+        auto, name = sk["id"], sk["name"]
+        final = id_by_name.get(name) or id_by_name.get(inv.get(name, ""))
+        if not final:
+            while f"{PREFIX}-skill-{next_no}" in used:
+                next_no += 1
+            final = f"{PREFIX}-skill-{next_no}"
+            next_no += 1
+        used.add(final)
+        remap[auto] = final
+        sk["id"] = final
+        # 重建会丢 type/source 等元数据：按名字从旧数据补回，新增条目按关键词推导
+        prev = next((o for o in old_skills if o.get("name") == name), None)
+        if prev:
+            for k in ("type", "source", "unit_tables", "tags", "flavor"):
+                if not sk.get(k) and prev.get(k):
+                    sk[k] = prev[k]
+        if not sk.get("type"):
+            kw = str((sk.get("fields") or {}).get("关键词", ""))
+            for t in ("戏法", "天赋", "战技", "法术"):
+                if kw.startswith(t):
+                    sk["type"] = t
+                    break
+            else:
+                sk["type"] = "法术" if (sk.get("fields") or {}).get("施展时间") else "天赋"
+    new_blocks: dict[str, dict] = {}
+    for auto, blk in blocks.items():
+        new_blocks[remap.get(auto, auto)] = blk
+    blocks.clear()
+    blocks.update(new_blocks)
+    return remap
+
+
 def main() -> None:
     skills, blocks, stats = build_skill_list()
+    preserve_existing_ids(skills, blocks)
     by_style_tier: dict[str, int] = defaultdict(int)
     for s in skills:
         if s.get('type') != 'starting':
