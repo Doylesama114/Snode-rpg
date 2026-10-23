@@ -54,6 +54,7 @@
       <div class="nav-inner">
       <div class="filter-bar" id="sm-filter-bar"></div>
       <a class="style-link" href="#sm-class-features">职业专长</a>
+      <a class="style-link" href="#sm-hpcalc">血量/疲劳计算器</a>
       <a class="style-link" href="#sm-starting-features">起始特性</a>
 <a class="adv-link" href="召唤师·进阶.html">→ 查看进阶途径</a>
       <div class="tier-list">
@@ -158,6 +159,10 @@
         <p style="text-align:center;color:var(--muted);padding:40px 0">没有匹配的技能。试试其他关键词吧。</p>
       </div>
 <section class="class-features" id="sm-class-features" aria-label="职业专长"><div class="class-feature-head"><h2>职业专长</h2><p class="class-feature-intro">召唤师的关键属性为幸运，作为一名召唤师，你获得以下职业专长。</p></div><div class="class-feature-tabs" role="tablist"><button type="button" class="class-feature-chip active" role="tab" aria-selected="true" data-feature-index="0">召唤联结</button><button type="button" class="class-feature-chip" role="tab" aria-selected="false" data-feature-index="1">异界感知</button><button type="button" class="class-feature-chip" role="tab" aria-selected="false" data-feature-index="2">机缘召唤</button></div><div class="class-feature-panels"><div class="class-feature-panel active" role="tabpanel" data-feature-panel="0"><h3>召唤联结</h3><div class="class-feature-body"><p>你与契约生物之间存在着超越言语的深层联结，你能够感知到你的契约生物当前的情绪状态（平静、警惕、恐惧、兴奋、愤怒、疲惫等）和大致的身体状况（健康、轻伤、重伤、濒危）。</p><p>当契约生物与你相距不超过1公里时，你可以模糊感知其方位；相距不超过100米时，你能够对其精确定位。</p></div></div><div class="class-feature-panel" role="tabpanel" data-feature-panel="1"><h3>异界感知</h3><div class="class-feature-body"><p>你能够感知到自身周围24米内是否存在传送门、异界裂隙、召唤法阵或位面锚点等异界魔法效应，当你靠近这些效应时，你会产生一种独特的感官体验（例如耳鸣、皮肤刺痛或空气中弥漫的特殊气味等），并且能够大致判断其类型和强度。</p></div></div><div class="class-feature-panel" role="tabpanel" data-feature-panel="2"><h3>机缘召唤</h3><div class="class-feature-body"><p>你与某个来自异界的灵魂签订了最初的契约，它或许是你儿时的玩伴、危急时刻的救命恩人，或是一次意外实验中偶然联结的存在...无论如何，它选择了你、而你选择了它。</p><p>你在创建角色时选择一个契约生物作为你的初始伙伴，可以通过随机抽取或者自选的形式，契约生物的初始形态和属性由你所选择的系别决定（见下方契约生物列表），你获得以下能力：</p><p>召唤契约.你可以在自身回合花费一个主要动作将契约生物从异界召唤至你周围相邻的一个未被占据的位置，契约生物在生命值归零后自动退场（返回异界），同一时间仅能够有一个契约生物在场，你需要在完成一次短休或长休后才能再次召唤它。</p><p>羁绊培养.契约生物与你的羁绊点数初始为0，你与契约生物共同完成一次关键战斗、在契约生物生命值归零后将其重新召唤并共同取得胜利、与契约生物进行专门的互动训练都可以获得羁绊点数。</p><p>你可以在一次游玩结束后通过支付羁绊点数来尝试提升契约生物的等级，每个羁绊点数视作100点经验值，你也可以直接支付自身经验值来提升契约生物的等级，其经验值费用与玩家角色的子职业等级一致，起始升级以契约生物的挑战等级为准（即挑战等级为1级的契约生物升级参考玩家子职业1级→2级的等级费用计算，挑战等级为5级的契约生物升级参考玩家子职业5级→6级的等级费用计算，以此类推；至多将契约生物的挑战等级提升至15级，挑战等级1/4级的契约生物在提升至1/2级和1级时的费用按照1级→2级来计算）。</p><p>契约生物在提升等级后，会按照你的召唤师升级生命值来获得生命值加成，并且在升级后根据对应职业等级获得属性值提升。</p><p>永久消亡.如果契约生物在同一天内被击败（生命值归零退场）三次或以上，那么它在第三次退场时被会永久消灭，你失去这项专精，需要寻找新的契约生物来重新缔结契约。</p><p>契约生物列表.</p><p>以下为各系别契约生物的初始形态数据，契约生物在成长过程中可通过投入经验值、召唤师等级提升获得强化，具体成长路径由DM与玩家共同决定，也可以在商议过程中自定义其他形象的契约生物。</p></div></div></div></section>
+<section class="hpcalc" id="sm-hpcalc" aria-label="血量与疲劳计算器">
+  <div id="sm-hpcalc-mount"></div>
+</section>
+
       <h3 id="sm-starting-features">起始特性</h3>
       <p class="subtitle">你获得以下全部起始特性，直接加入你的技能或天赋列表：</p>
 <article class="skill" id="sm-starting-skill-1" data-search="起始 起始特性 魔法飞弹 施法攻击 力能 虚化飞行道具 施展时间：1动作 施展距离：12米 持续时间：立即 疲劳消耗：1 关键词：法术.施法攻击.力能.虚化飞行道具 施展条件：你能够做出对应手势、凭借言语发出声音 施展限制：- 你向一名角色发射魔法飞弹，对目标造成1D8点力场伤害 描述：你用一只未持有物件的手在空中绘出紫色的流星形符号、并念诵法咒从那只手中发射一枚由魔法能量构成的紫色飞弹 你的召唤师职业等级到达6级时：魔法飞弹改为造成2D8点力场伤害 你的召唤师职业等级到达9级时：魔法飞弹改为造成3D8点力场伤害" data-tags="施法攻击,力能,虚化飞行道具" data-type="法术" data-tier="0" data-mark-count="0" data-class="召唤师">
@@ -524,5 +529,11 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 </script>
 <script src="common_tooltip.js"></script>
 <script src="../斯诺德跑团/shortcuts.js"></script>
+
+<link rel="stylesheet" href="hp_calc.css?v=1.0.8055"/>
+<script src="hp_calc_data.js"></script>
+<script src="../斯诺德跑团/character_stats.js"></script>
+<script src="hp_calc.js"></script>
+<script>SnowdHpCalc.mount(document.getElementById("sm-hpcalc-mount"), "召唤师");</script>
 </body>
 </html>
