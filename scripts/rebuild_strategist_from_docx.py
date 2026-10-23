@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
 import shutil
 import sys
@@ -56,7 +57,8 @@ PREFIX = "st"
 VIEW_ID = "view-strategist"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
-DOCX = ROOT / f"基础职业-{CLASS}.docx"
+# 允许用环境变量指向别处的同名文档（源文档被占用时不必覆盖根目录）
+DOCX = Path(os.environ.get("SNODE_DOCX") or (ROOT / f"基础职业-{CLASS}.docx"))
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 TEMPLATE = ROOT / "职业页" / "萨满祭司.html"
 
@@ -450,6 +452,50 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 """
 
 
+def preserve_existing_ids(skills: list[dict], blocks: dict) -> None:
+    """按技能名还原既有 ID（新增条目才分配新号），避免旧角色引用错位。"""
+    old_skills: list[dict] = []
+    if DATA.exists():
+        try:
+            old_skills = json.loads(DATA.read_text(encoding="utf-8")).get("skills") or []
+        except Exception:
+            old_skills = []
+    id_by_name = {s["name"]: s["id"] for s in old_skills if s.get("name") and s.get("id")}
+    used = set(id_by_name.values())
+    numbers = [int(m.group(1)) for sid in used for m in [re.search(r"-skill-(\d+)$", sid)] if m]
+    next_no = (max(numbers) + 1) if numbers else 1
+    remap: dict[str, str] = {}
+    for sk in skills:
+        auto = sk["id"]
+        final = id_by_name.get(sk["name"])
+        if not final:
+            while f"{PREFIX}-skill-{next_no}" in used:
+                next_no += 1
+            final = f"{PREFIX}-skill-{next_no}"
+            next_no += 1
+        used.add(final)
+        remap[auto] = final
+        sk["id"] = final
+        prev = next((o for o in old_skills if o.get("name") == sk["name"]), None)
+        if prev:
+            for k in ("type", "source", "unit_tables", "tags", "flavor"):
+                if not sk.get(k) and prev.get(k):
+                    sk[k] = prev[k]
+        if not sk.get("type"):
+            kw = str((sk.get("fields") or {}).get("关键词", ""))
+            for t in ("戏法", "天赋", "战技", "法术"):
+                if kw.startswith(t):
+                    sk["type"] = t
+                    break
+            else:
+                sk["type"] = "法术" if (sk.get("fields") or {}).get("施展时间") else "天赋"
+    new_blocks: dict = {}
+    for auto, blk in blocks.items():
+        new_blocks[remap.get(auto, auto)] = blk
+    blocks.clear()
+    blocks.update(new_blocks)
+
+
 def main() -> None:
     stubs = collect_stubs()
     all_names = {s["name"] for s in stubs}
@@ -469,6 +515,7 @@ def main() -> None:
         skills.append(skill)
         blocks[skill["id"]] = block
 
+    preserve_existing_ids(skills, blocks)
     doc = {"id": CLASS, "name": CLASS, "skills": skills}
     DATA.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
 
