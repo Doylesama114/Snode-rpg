@@ -560,9 +560,15 @@ if (typeof SKILL_DATA !== "undefined" && SKILL_DATA["通用"]) {
 }
 assertTrue(!!medSkill, 'SKILL_DATA 含冥想');
 if (medSkill) {
-  assertTrue(!!(medSkill.field_runs && medSkill.field_runs["描述"]), '冥想含 field_runs.描述');
+  // 10.23 起技能彩色成本取消：冥想正文不再含彩色 ●，但渲染器仍需支持彩色 runs
+  assertTrue(!medSkill.field_runs || !medSkill.field_runs["描述"], '冥想已无可上色标识（新规则）');
+  var probeSkill = {
+    name: '渲染探针', fields: { '描述': '探针描述' }, cost: [], description: [], level_upgrades: [],
+    field_runs: { '描述': [{ text: '探针描述', color: null }, { text: '●', color: '#00B0F0' }] }
+  };
+  var probeHtml = formatSkillDetailHtml(probeSkill);
+  assertTrue(probeHtml.indexOf("#00B0F0") >= 0, 'formatSkillDetailHtml 支持彩色 ●（合成样例）');
   var detailHtml = formatSkillDetailHtml(medSkill);
-  assertTrue(detailHtml.indexOf("#00B0F0") >= 0, 'formatSkillDetailHtml(冥想) 含彩色 ●');
   assertTrue(detailHtml.indexOf("描述") >= 0, 'formatSkillDetailHtml(冥想) 含描述标签');
 }
 
