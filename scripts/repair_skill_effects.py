@@ -122,6 +122,8 @@ def main():
     protected_mage = {
         "\u53d8\u5f62\u672f\u00b7\u67ad\u718a", "\u53d8\u5f62\u672f\u00b7\u9c7c", "\u53d8\u5f62\u672f\u00b7\u9e1f", "\u56db\u81c2\u672f", "\u7206\u88c2\u672f",
         "\u77f3\u5316\u672f", "\u7a7f\u5899\u672f", "\u8f6f\u6ce5\u5f62\u6001", "\u9690\u533f\u4f20\u8baf\u672f", "\u5492\u6cd5\u5b66\u6d3e\u5e8f\u5217"}
+    # 作者笔误：萨满风暴系那条在文档中名为「潮汐抗性」，数据侧已更正为「风雷抗性」
+    SOURCE_ALIAS = {("萨满祭司", "风雷抗性"): "潮汐抗性"}
     source_report = {}
     for cn, doc in data.items():
         path = ROOT / f"\u57fa\u7840\u804c\u4e1a-{cn}.docx"
@@ -136,7 +138,11 @@ def main():
                 cn == "\u730e\u4eba" and skill["name"] in {"\u7075\u9f9f\u5b88\u62a4\u00b7\u5929\u8d4b","\u7075\u7334\u5b88\u62a4\u00b7\u5929\u8d4b","\u7075\u72d0\u5b88\u62a4\u00b7\u5929\u8d4b"}
             ) or (cn == "\u53ec\u5524\u5e08" and skill["name"] == "\u84dd\u7130\u672f"):
                 preserved.append(skill["name"]); continue
-            block = C.pick_block(index, skill, used)
+            _probe = dict(skill)
+            _alias = SOURCE_ALIAS.get((cn, skill["name"]))
+            if _alias:
+                _probe["name"] = _alias
+            block = C.pick_block(index, _probe, used)
             if not block:
                 raise ValueError(f"Unexplained missing source: {cn}/{skill['name']}")
             if cn == "\u6cd5\u5e08" and skill["name"] == "\u53ec\u5524\u9ab7\u9ac5\u58eb\u5175":

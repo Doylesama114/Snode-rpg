@@ -1,0 +1,1422 @@
+{
+  "class_name": "通用天赋树",
+  "tier_filter": null,
+  "extract_count": 396,
+  "site_count": 409,
+  "missing_on_site": [],
+  "missing_in_docx": [
+    {
+      "id": "g-skill-2",
+      "name": "法术精准",
+      "style": null,
+      "tier": "一阶"
+    },
+    {
+      "id": "g-skill-339",
+      "name": "炎灾的加护",
+      "style": null,
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-340",
+      "name": "蜂灾的加护",
+      "style": null,
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-341",
+      "name": "兽灾的加护",
+      "style": null,
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-385",
+      "name": "召唤大师",
+      "style": null,
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-413",
+      "name": "豪勇与激斗符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-414",
+      "name": "灵动与巧变符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-415",
+      "name": "坚韧与不息符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-416",
+      "name": "博闻与通晓符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-417",
+      "name": "洞彻与澄明符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-418",
+      "name": "倾心与折服符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-419",
+      "name": "决意与信念符文",
+      "style": "",
+      "tier": "七阶"
+    },
+    {
+      "id": "g-skill-420",
+      "name": "命数与机遇符文",
+      "style": "",
+      "tier": "七阶"
+    }
+  ],
+  "field_diffs_count": 396,
+  "mark_diffs_count": 396,
+  "field_diffs": [
+    {
+      "name": "七面钟",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-312",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在调查、逻辑、知识、洞悉或机遇检定中掷出点数7时，那么会发现对当前剧情发展有价值的线索，这个效果不仅代表你通过一次成功的对应检定，还预示你会获取原先即便通过该检定也无法获取的新内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "万圣节的魅影",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-368",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你将自身易容、化妆为鬼怪、精怪或其他超自然生物后进行魅力检定时规格提升一档（即普通检定变为具有优势，优势变为极大优势，以此类推）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "三幕悲剧",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-308",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在调查、逻辑、知识、洞悉或机遇检定中掷出点数3时，那么会发现对当前剧情发展有价值的线索，这个效果不仅代表你通过一次成功的对应检定，还预示你会获取原先即便通过该检定也无法获取的新内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "丰收节的喜悦",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-366",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你获得一个对自身有益的效果（例如护盾、回复和其他法术效果），你可以选择让自身周围6米内的友方角色获得一半的收益（可能是一半的回复数值、或者一半的持续时间等），这个效果每日仅能够触发一次"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "乐师的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-170",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景乐师的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "九尾猫",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-314",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在调查、逻辑、知识、洞悉或机遇检定中掷出点数9时，那么会发现对当前剧情发展有价值的线索，这个效果不仅代表你通过一次成功的对应检定，还预示你会获取原先即便通过该检定也无法获取的新内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "乱击",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-139",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "交际圈",
+      "style": "",
+      "tier": "二阶",
+      "id": "g-skill-85",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你将要进入一个模组或冒险模式的新阶段开始前可以消耗这层充能，随后在本模组或阶段性剧情中将会根据实际情况获得一名NPC角色的助力，对方可能是当地城镇的居民、一位与你们相同的冒险者或者过路的旅人"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "人文知识",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-47",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点人文的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "以刃承伤",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-377",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "仰望星空",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-44",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点多元宇宙的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "仲夏节的繁盛",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-363",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你产生的回复生命值效果会在结算前额外附加一次你的感知或魅力调整值（由你决定）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "优良装备",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-8",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你进入一个新的模组、或者冒险模式进入一个新阶段时，可以消耗一层充能从装备列表中选择两件不超过稀有品质的装备，你也可以与DM描述自定义的装备外观和效果"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "传教士",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-35",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点宗教的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伤害阈值",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-333",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你可以在任意角色的回合选择令本回合你承受的伤害值不能超过30点"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "体操达人",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-27",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点体操的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "体能骤升",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-225",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你进行一场体质对抗或豁免时，可以令本次检定的难度-5"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "体质掌握",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-286",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点体质属性值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "体质耐性",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-158",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点体质豁免值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "体魄的加护",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-319",
+      "fields": {
+        "前置条件": {
+          "extract": "体质属性为你最高的属性值",
+          "site": "你在每次游玩过程中使用过一颗象征体魄的橙色D8骰成功通过了一次极为关键的熟练项检定，并且体质属性为你最高的属性值"
+        },
+        "描述": {
+          "extract": null,
+          "site": "当你在进行一次攻击命中检定、伤害、属性、熟练项或对抗检定时，你可以掷出这颗象征体魄的橙色D6骰，将最终检定附加在结果上，随后你需要自行描述你是如何凭借躯体和耐性来帮助你完成这场挑战"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "使命必达",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-436",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侍僧的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-165",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景侍僧的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦探的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-203",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景侦探的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "信手拈来",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-433",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.当你进行一次属性或熟练项检定时，无需进行掷骰，视作本次检定成功"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "俱乐部达人",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-410",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "即便是兴趣爱好你也将其专研成为大师，根据你拥有的特殊专长会分别产生对应效果"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "儿童周的呵护",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-360",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你在游玩过程中可以为年龄小于自身的一名角色赋予一个激励点，或者在能够触及的范围内代替对方进行一次熟练项检定，这个效果每次短休或长休仅能够触发一次"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "先发制人",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-1",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "在战斗环节开始进行先攻检定后，你可以选择与比你当前先攻区间更高、并且自愿的友方角色互换先攻区间"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "光明与黑暗",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-409",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你的名声如此响亮，以至于你的所作所为会影响那些与你阵营相同或对立的人，根据你名望等级更高的阵营获得以下效果"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "光明节的礼赞",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-357",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得戏法.光亮术、舞光术，以及法术.强光术和辉光术，这些技能不会占用你的技能槽位，而是单独放置在特殊技能槽位，并且效果会随着你的主职业等级而提升"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "光耀之痕",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-239",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你造成的光耀伤害在结算伤害值后+2"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "兢业玩家",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-426",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你可以选择获得以下一项效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "八毫米",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-429",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在调查、逻辑、知识、洞悉或机遇检定中掷出点数8时，那么会发现对当前剧情发展有价值的线索，这个效果不仅代表你通过一次成功的对应检定，还预示你会获取原先即便通过该检定也无法获取的新内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "公民的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-201",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景公民的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "关键偏好",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-220",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "习得此天赋时你需要先声明任意一种色彩标识作为你的关键偏好"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "关键线索",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-70",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点探索的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "关键锁定",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-206",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "冒险者义务",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-149",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "在一个模组或阶段性剧情结束时你可以申请与DM交互，如果你能够正确说出本次游玩模组中的全部支线内容，那么你额外获得300点经验值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "写作工具大师",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-251",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点写作的专业熟练度，允许以此突破角色的熟练度上限"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "农夫的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-184",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景农夫的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冥想",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-3",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "如果你在本次游玩过程中没有参与过战斗环节，并且花费过短休时段用于冥想，那么本次游玩结束时你视作拥有个人的色彩标识●/●/●"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "冬幕节的礼物",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-370",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得戏法.赠礼术，这个技能不会占用你的技能槽位，而是单独放置在特殊技能槽位，如果当前时间线为冬季，那么对方在接收礼物后会尽可能地转变为友好态度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "冲击之铠",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-371",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●●●"
+        }
+      }
+    },
+    {
+      "name": "决赛周的呐喊",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-364",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你在竞技场、角斗场或其他赛事活动中进行的事件检定具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "凝聚力量",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-13",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你可以使一个自身回合进行的下一次力量豁免检定具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "凯旋时刻",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-148",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你向众人宣告你的凯旋而归，当你完成一个模组并获得A级评价时，可以消耗一层充能改为获得S级评价的奖励内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●●"
+        }
+      }
+    },
+    {
+      "name": "创伤精通",
+      "style": "",
+      "tier": "二阶",
+      "id": "g-skill-90",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你产生一次流血效果后，至少会赋予两层流血状态"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "利刺之锋",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-232",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你造成的穿刺伤害在结算伤害值后+2"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "利见大人",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-437",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你可以消耗一次次数令一位对当前剧情桥段有所帮助的NPC角色到访，这名NPC角色对你的起始观感为中立态度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制图工具大师",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-259",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得1点制图的专业熟练度，允许以此突破角色的熟练度上限"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制图师的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-179",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你获得个性背景制图师的基础特性，并掷一颗D6骰来决定在这一过程中获得了何种收益"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "七面钟",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-312",
+      "extract": [],
+      "site": [
+        "#B94BFF",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "万圣节的魅影",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-368",
+      "extract": [],
+      "site": [
+        "#B94BFF",
+        "#FFB7E3",
+        "#595959"
+      ]
+    },
+    {
+      "name": "三幕悲剧",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-308",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#595959"
+      ]
+    },
+    {
+      "name": "丰收节的喜悦",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-366",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#EE822F",
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "乐师的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-170",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "九尾猫",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-314",
+      "extract": [],
+      "site": [
+        "#B94BFF",
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "乱击",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-139",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "交际圈",
+      "style": "",
+      "tier": "二阶",
+      "id": "g-skill-85",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "人文知识",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-47",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "以刃承伤",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-377",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#EE822F",
+        "#FFF32F",
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "仰望星空",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-44",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "仲夏节的繁盛",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-363",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#00FA99",
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "优良装备",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-8",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "传教士",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-35",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "伤害阈值",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-333",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#EE822F",
+        "#B94BFF",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "体操达人",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-27",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "体能骤升",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-225",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#FFF32F"
+      ]
+    },
+    {
+      "name": "体质掌握",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-286",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "体质耐性",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-158",
+      "extract": [],
+      "site": [
+        "#FFF32F"
+      ]
+    },
+    {
+      "name": "体魄的加护",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-319",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "使命必达",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-436",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "侍僧的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-165",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "侦探的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-203",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "信手拈来",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-433",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#595959"
+      ]
+    },
+    {
+      "name": "俱乐部达人",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-410",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#FFF32F",
+        "#EE822F",
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "儿童周的呵护",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-360",
+      "extract": [],
+      "site": [
+        "#FFF32F",
+        "#EE822F",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "先发制人",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-1",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "光明与黑暗",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-409",
+      "extract": [],
+      "site": [
+        "#FFF32F",
+        "#B94BFF",
+        "#595959",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "光明节的礼赞",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-357",
+      "extract": [],
+      "site": [
+        "#FFF32F",
+        "#00FA99",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "光耀之痕",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-239",
+      "extract": [],
+      "site": [
+        "#FFF32F",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "兢业玩家",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-426",
+      "extract": [],
+      "site": [
+        "#D9D9D9"
+      ]
+    },
+    {
+      "name": "八毫米",
+      "style": "",
+      "tier": "五阶",
+      "id": "g-skill-429",
+      "extract": [],
+      "site": [
+        "#00B050",
+        "#595959"
+      ]
+    },
+    {
+      "name": "公民的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-201",
+      "extract": [],
+      "site": [
+        "#D9D9D9"
+      ]
+    },
+    {
+      "name": "关键偏好",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-220",
+      "extract": [],
+      "site": [
+        "#D9D9D9"
+      ]
+    },
+    {
+      "name": "关键线索",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-70",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "关键锁定",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-206",
+      "extract": [],
+      "site": [
+        "#00FA99",
+        "#595959"
+      ]
+    },
+    {
+      "name": "冒险者义务",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-149",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "写作工具大师",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-251",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "农夫的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-184",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "冥想",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-3",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "冬幕节的礼物",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-370",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#00B050",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "冲击之铠",
+      "style": "",
+      "tier": "七阶",
+      "id": "g-skill-371",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#B94BFF",
+        "#843F0B",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "决赛周的呐喊",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-364",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#EE822F",
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "凝聚力量",
+      "style": "",
+      "tier": "一阶",
+      "id": "g-skill-13",
+      "extract": [],
+      "site": [
+        "#FF0000"
+      ]
+    },
+    {
+      "name": "凯旋时刻",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-148",
+      "extract": [],
+      "site": [
+        "#FF0000",
+        "#FFF32F",
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "创伤精通",
+      "style": "",
+      "tier": "二阶",
+      "id": "g-skill-90",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "利刺之锋",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-232",
+      "extract": [],
+      "site": [
+        "#EE822F",
+        "#595959"
+      ]
+    },
+    {
+      "name": "利见大人",
+      "style": "",
+      "tier": "六阶",
+      "id": "g-skill-437",
+      "extract": [],
+      "site": [
+        "#FFF32F",
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "制图工具大师",
+      "style": "",
+      "tier": "四阶",
+      "id": "g-skill-259",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#00B050"
+      ]
+    },
+    {
+      "name": "制图师的凭证",
+      "style": "",
+      "tier": "三阶",
+      "id": "g-skill-179",
+      "extract": [],
+      "site": [
+        "#00B050"
+      ]
+    }
+  ]
+}

@@ -61,7 +61,18 @@ for (const name of PAGES) {
     && base.buttons.find(b => b.mode === 'and')?.active === false, JSON.stringify(base.buttons));
   ok(`${name}: 关键词区不出现标识模式按钮`, base.ok === true, '');
 
-  if (!base.ok || base.allColors.length < 2) {
+  if (!base.ok) {
+    ok(`${name}: 面板初始化`, false, JSON.stringify(base));
+    await page.close();
+    continue;
+  }
+  // 10.23 起技能彩色成本取消：页面可能一种标识颜色都没有，属预期状态
+  if (base.allColors.length === 0) {
+    console.log(`  SKIP ${name}: 本页已无彩色标识（新规则），跳过 AND/OR 组合测试`);
+    await page.close();
+    continue;
+  }
+  if (base.allColors.length < 2) {
     ok(`${name}: 页面至少有两种标识颜色可供测试`, false, JSON.stringify(base));
     await page.close();
     continue;

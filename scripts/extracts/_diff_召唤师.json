@@ -1,0 +1,1092 @@
+{
+  "class_name": "召唤师",
+  "tier_filter": null,
+  "extract_count": 61,
+  "site_count": 47,
+  "missing_on_site": [
+    {
+      "name": "魔法飞弹",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "次级召唤术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "唤回",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·攻击",
+      "style": "咒法",
+      "tier": "一阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·防御",
+      "style": "咒法",
+      "tier": "二阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·回避",
+      "style": "咒法",
+      "tier": "三阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·二重攻击",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤宝石兽",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "放逐术",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "魔力泉涌",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "任意门",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "防护法阵",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "契约武装化",
+      "style": "咒法",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·魂系",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤指令·摆锤",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤异界邮差",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤次级恶魔",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "契约护盾",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤反噬",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "占卜球",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "魔宠强化‌Ⅱ",
+      "style": "降灵",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "sm-starting-skill-1",
+      "name": "魔法飞弹",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "sm-starting-skill-2",
+      "name": "次级召唤术",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "sm-starting-skill-3",
+      "name": "唤回",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "sm-skill-1",
+      "name": "契约指令·攻击",
+      "style": "咒法",
+      "tier": "一阶"
+    },
+    {
+      "id": "sm-skill-9",
+      "name": "契约指令·防御",
+      "style": "咒法",
+      "tier": "二阶"
+    },
+    {
+      "id": "sm-skill-13",
+      "name": "蓝焰术",
+      "style": "咒法",
+      "tier": "二阶"
+    },
+    {
+      "id": "sm-skill-15",
+      "name": "契约指令·回避",
+      "style": "咒法",
+      "tier": "三阶"
+    }
+  ],
+  "field_diffs_count": 39,
+  "mark_diffs_count": 39,
+  "field_diffs": [
+    {
+      "name": "创造水源",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-5",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "创造篝火",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-6",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤土元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-43",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤坐骑",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-17",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤指令·强化",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-22",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤指令·脉冲",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-36",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "召唤水元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-42",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤火元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-41",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤矩阵",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-16",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤风元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-40",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "召唤魅影杀手",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-39",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "咒灵召唤",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-8",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "咒灵赋能",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-11",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "契约共鸣",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.当你与契约生物在同一个轮次命中过同一个目标后，双方的攻击命中检定值+1，持续至你的下一个自身回合结束"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "奥术魔宠",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-10",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "强韧召唤",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-21",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你用魔力强化你的召唤物，使你的召唤单位额外获得等于你的召唤师职业等级的临时生命值，并且这些召唤物不会因承受攻击而立即被消灭（但仍然会因为生命值降低至0或以下而消失）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "活灵术",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-29",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "浮碟术",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵性进化",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-44",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你消耗5点羁绊点数，为你的一个契约生物进行一次灵性进化，由你与DM协商选择以下一项进化效果："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "灵摆召唤",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-28",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵摆术",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-25",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵枭守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-33",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵狐守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-34",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "灵猫守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-32",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "献祭转化",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-38",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "瞬闪召唤",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-2",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "秘法锁",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-14",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "血之契约",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-27",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你的契约生物承受一次伤害时，你可以选择由自身代替承受这次伤害，反之亦然"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "进化契机",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-20",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "选择你的一个契约生物，使其完成首次进化"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "造餐术",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-3",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "邪恶之水",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-37",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "镜子替身",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-31",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "闹鬼之地",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-30",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "隐形仆役",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-18",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "飞虫走兽",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-12",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "骚灵现象",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-24",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "魂灵之眼",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-23",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "魂灵馈赠",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-26",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "魔宠强化‌I",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-35",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.你选择自身的一个契约生物，令其从全部基础职业（不包括神圣领域）天赋树中，挑选一个不超过二阶天赋树的、符合关键词要求的战技、法术或戏法，成为该契约生物习得的能力"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "创造水源",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-5",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "创造篝火",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-6",
+      "extract": [],
+      "site": [
+        "#FF0000"
+      ]
+    },
+    {
+      "name": "召唤土元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-43",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "召唤坐骑",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-17",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "召唤指令·强化",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-22",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "召唤指令·脉冲",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-36",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "召唤水元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-42",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "召唤火元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-41",
+      "extract": [],
+      "site": [
+        "#FF0000"
+      ]
+    },
+    {
+      "name": "召唤矩阵",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-16",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "召唤风元素",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-40",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "召唤魅影杀手",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-39",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "咒灵召唤",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-8",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "咒灵赋能",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-11",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "契约共鸣",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-7",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "奥术魔宠",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-10",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "强韧召唤",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-21",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "活灵术",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-29",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "浮碟术",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-4",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "灵性进化",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-44",
+      "extract": [],
+      "site": [
+        "#00FA99",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "灵摆召唤",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-28",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "灵摆术",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-25",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "灵枭守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-33",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "灵狐守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-34",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "灵猫守护",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-32",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "献祭转化",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-38",
+      "extract": [],
+      "site": [
+        "#FF0000"
+      ]
+    },
+    {
+      "name": "瞬闪召唤",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-2",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "秘法锁",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-14",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "血之契约",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-27",
+      "extract": [],
+      "site": [
+        "#FF0000"
+      ]
+    },
+    {
+      "name": "进化契机",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-20",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "造餐术",
+      "style": "咒法",
+      "tier": "一阶",
+      "id": "sm-skill-3",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "邪恶之水",
+      "style": "降灵",
+      "tier": "三阶",
+      "id": "sm-skill-37",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "镜子替身",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-31",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "闹鬼之地",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-30",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "隐形仆役",
+      "style": "咒法",
+      "tier": "三阶",
+      "id": "sm-skill-18",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "飞虫走兽",
+      "style": "咒法",
+      "tier": "二阶",
+      "id": "sm-skill-12",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "骚灵现象",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-24",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "魂灵之眼",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-23",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "魂灵馈赠",
+      "style": "降灵",
+      "tier": "一阶",
+      "id": "sm-skill-26",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "魔宠强化‌I",
+      "style": "降灵",
+      "tier": "二阶",
+      "id": "sm-skill-35",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#EE822F"
+      ]
+    }
+  ]
+}

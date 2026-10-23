@@ -1,0 +1,1430 @@
+{
+  "class_name": "谋士",
+  "tier_filter": null,
+  "extract_count": 142,
+  "site_count": 121,
+  "missing_on_site": [
+    {
+      "name": "交友术",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "战术部署",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "毒刃",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "离间",
+      "style": "战斗",
+      "tier": "起始",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "合翼之策",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "读心术",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "契约护盾",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "秘密税",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "多方施压",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "暗线资金",
+      "style": "权谋",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "令行禁止",
+      "style": "军团",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "暗棋启动",
+      "style": "军团",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "无懈可击",
+      "style": "先见",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "凶兆时钟",
+      "style": "先见",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "十步之后",
+      "style": "先见",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "读秒",
+      "style": "先见",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "瘴气之幕",
+      "style": "鸩毒",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "瘫痪毒药（配方）",
+      "style": "鸩毒",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "慢性之杀",
+      "style": "鸩毒",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "以恶之名",
+      "style": "鸩毒",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "谣言风暴",
+      "style": "混乱",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "猜忌之种",
+      "style": "混乱",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "恐惧链",
+      "style": "混乱",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤反噬",
+      "style": "混乱",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "往昔回响",
+      "style": "博物",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "遗忘术",
+      "style": "博物",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "唤醒古物",
+      "style": "博物",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "召唤遗物护卫",
+      "style": "博物",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    },
+    {
+      "name": "万物皆兵",
+      "style": "博物",
+      "tier": "四阶",
+      "cost": [],
+      "cost_meta": []
+    }
+  ],
+  "missing_in_docx": [
+    {
+      "id": "st-starting-skill-1",
+      "name": "交友术",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "st-starting-skill-2",
+      "name": "战术部署",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "st-starting-skill-3",
+      "name": "毒刃",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "st-starting-skill-4",
+      "name": "离间",
+      "style": null,
+      "tier": null
+    },
+    {
+      "id": "st-skill-33",
+      "name": "规划路线",
+      "style": "先见",
+      "tier": "一阶"
+    },
+    {
+      "id": "st-skill-94",
+      "name": "秘法习得",
+      "style": "博物",
+      "tier": "二阶"
+    },
+    {
+      "id": "st-skill-111",
+      "name": "毒性蔓延",
+      "style": "鸩毒",
+      "tier": "四阶"
+    },
+    {
+      "id": "st-skill-113",
+      "name": "慷慨术",
+      "style": "混乱",
+      "tier": "四阶"
+    }
+  ],
+  "field_diffs_count": 112,
+  "mark_diffs_count": 102,
+  "field_diffs": [
+    {
+      "name": "下毒手法",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-54",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你以极其隐蔽的手法将毒药投入食物、饮料或涂抹于武器上，当你为上述行为而进行下毒时进行的巧手或隐匿检定具有优势"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "丝绒手套",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-2",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你掷出一次伤害骰或熟练项检定的骰值后，可以选择将其中一颗骰子翻面"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "书虫术",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-102",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "乱其阵脚",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-71",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "交错指令",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-32",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "以逸待劳",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-42",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伏击准备",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-28",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伏杀后手",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-41",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "伺机待发",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-20",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-56",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "侧击指示",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-21",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "催眠图纹",
+      "style": "混乱",
+      "tier": "四阶",
+      "id": "st-skill-114",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "先手之利",
+      "style": "先见",
+      "tier": "一阶",
+      "id": "st-skill-35",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "先见之明",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-39",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "在一次游玩开始前，你可以声明一种任意颜色的色彩标识，如果本次游玩中的团队获得了对应色彩标识，那么你获得30点经验值"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "兵者诡道",
+      "style": "军团",
+      "tier": "四阶",
+      "id": "st-skill-107",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "内应之桥",
+      "style": "权谋",
+      "tier": "三阶",
+      "id": "st-skill-16",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "制作附魔卷轴",
+      "style": "博物",
+      "tier": "四阶",
+      "id": "st-skill-117",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "制作魔法雕文",
+      "style": "博物",
+      "tier": "四阶",
+      "id": "st-skill-116",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "卓越远见",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-31",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你富有远见、能够带领队伍找到正确的方向，当你的一个自身回合开始时你可以声明使用这个效果：你能够在本回合实际行动前先对所有需要执行的动作进行一次推演，这会使你完整的预演这个回合，随后你再正式开始自己的回合"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "双象优势",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-7",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在拥有一项优势的情况下再次获得相同的优势时，改为使这次检定的规格提升一档（即优势→极大优势，极大优势→绝对优势）"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "口蜜腹剑",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-55",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "均衡敕令",
+      "style": "权谋",
+      "tier": "三阶",
+      "id": "st-skill-17",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "疲劳值消耗：2"
+        }
+      }
+    },
+    {
+      "name": "奇械雏形",
+      "style": "博物",
+      "tier": "二阶",
+      "id": "st-skill-99",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你视作拥有枪械武器和所有基础奇械工具（例如奇械摩托、机械操纵台或者公共奇械设施等）的熟练度"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "孔雀胆酒（配方）",
+      "style": "鸩毒",
+      "tier": "三阶",
+      "id": "st-skill-68",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "使用限制：仅可口服，并且混入酒水中"
+        }
+      }
+    },
+    {
+      "name": "官子收官",
+      "style": "先见",
+      "tier": "三阶",
+      "id": "st-skill-48",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "定点布防",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-26",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "弃子",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-1",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "1.当你删除一项自身职业的技能、天赋或专业能力时，记录下一个标记"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "弃子争先",
+      "style": "先见",
+      "tier": "一阶",
+      "id": "st-skill-37",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你移除这个天赋时，额外为弃子的效果增加两个标记"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "弑主",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-80",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "必应步",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-23",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当一名敌方角色执行位移时，你可以令对方必须在条件允许的情况下走完全部步数，并且这些步数不能再次用于途径本次位移过程中已经抵达过的位置"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "恐惧毒药（配方）",
+      "style": "鸩毒",
+      "tier": "三阶",
+      "id": "st-skill-70",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "使用限制：仅能用于附着匕首武器、袖剑和箭矢"
+        }
+      }
+    },
+    {
+      "name": "恩威并施",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-11",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "惑人低语",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-74",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "扭曲敕令",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-83",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你的听觉范围内一名角色施展带有强制命令的效果，例如命令术、邪恶命令或慷慨术时，你可以花费一个反应动作来修改命令的具体内容"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "扰咒术",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-78",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "投石问路",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-4",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "探明防护",
+      "style": "博物",
+      "tier": "二阶",
+      "id": "st-skill-96",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "探求精神",
+      "style": "博物",
+      "tier": "一阶",
+      "id": "st-skill-90",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你拥有旺盛的探求精神，你在为了探索环境、寻求知识而进行探索检定时具有一次额外的检定机会"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "掩护推进",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-22",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "掩饰术",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-12",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "掷下铁手套",
+      "style": "权谋",
+      "tier": "三阶",
+      "id": "st-skill-18",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "提取毒物",
+      "style": "鸩毒",
+      "tier": "二阶",
+      "id": "st-skill-60",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "操影术",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-79",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "改良咒法",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-101",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "攻心",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-85",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "断其号令",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-84",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "无中生有",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-72",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你在拥有这个天赋的情况下提升两次谋士职业等级后，移除这个天赋时额外为弃子的效果增加两个标记"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "星芒乱眼",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-82",
+      "fields": {
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    },
+    {
+      "name": "智慧报偿",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-104",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "你感受到汲取智慧所带来的无穷能量，你可以选择失去4点疲劳值上限获得以下增益："
+        },
+        "标识": {
+          "extract": null,
+          "site": "●●"
+        }
+      }
+    },
+    {
+      "name": "暗棋",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-27",
+      "fields": {
+        "描述": {
+          "extract": null,
+          "site": "当你的视野范围内有一名己方阵营的陷阱布置后，你可以在自身周围6米内的任意一个未被占据的位置秘密部署一个相同的陷阱"
+        },
+        "标识": {
+          "extract": null,
+          "site": "●"
+        }
+      }
+    }
+  ],
+  "mark_diffs": [
+    {
+      "name": "下毒手法",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-54",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "丝绒手套",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-2",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "书虫术",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-102",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "乱其阵脚",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-71",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "交错指令",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-32",
+      "extract": [],
+      "site": [
+        "#EE822F",
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "以逸待劳",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-42",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "伏击准备",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-28",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "伏杀后手",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-41",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "伺机待发",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-20",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "侦测毒性与疾病",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-56",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "侧击指示",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-21",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "催眠图纹",
+      "style": "混乱",
+      "tier": "四阶",
+      "id": "st-skill-114",
+      "extract": [],
+      "site": [
+        "#B94BFF",
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "先手之利",
+      "style": "先见",
+      "tier": "一阶",
+      "id": "st-skill-35",
+      "extract": [],
+      "site": [
+        "#B3F9FF"
+      ]
+    },
+    {
+      "name": "先见之明",
+      "style": "先见",
+      "tier": "二阶",
+      "id": "st-skill-39",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "兵者诡道",
+      "style": "军团",
+      "tier": "四阶",
+      "id": "st-skill-107",
+      "extract": [],
+      "site": [
+        "#EE822F",
+        "#595959"
+      ]
+    },
+    {
+      "name": "内应之桥",
+      "style": "权谋",
+      "tier": "三阶",
+      "id": "st-skill-16",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "制作附魔卷轴",
+      "style": "博物",
+      "tier": "四阶",
+      "id": "st-skill-117",
+      "extract": [],
+      "site": [
+        "#B94BFF",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "制作魔法雕文",
+      "style": "博物",
+      "tier": "四阶",
+      "id": "st-skill-116",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "卓越远见",
+      "style": "军团",
+      "tier": "三阶",
+      "id": "st-skill-31",
+      "extract": [],
+      "site": [
+        "#00FA99"
+      ]
+    },
+    {
+      "name": "双象优势",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-7",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "口蜜腹剑",
+      "style": "鸩毒",
+      "tier": "一阶",
+      "id": "st-skill-55",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "奇械雏形",
+      "style": "博物",
+      "tier": "二阶",
+      "id": "st-skill-99",
+      "extract": [],
+      "site": [
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "官子收官",
+      "style": "先见",
+      "tier": "三阶",
+      "id": "st-skill-48",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "定点布防",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-26",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "弃子",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-1",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "弃子争先",
+      "style": "先见",
+      "tier": "一阶",
+      "id": "st-skill-37",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "弑主",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-80",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "必应步",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-23",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "恩威并施",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-11",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "惑人低语",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-74",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "扭曲敕令",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-83",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "扰咒术",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-78",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "投石问路",
+      "style": "权谋",
+      "tier": "一阶",
+      "id": "st-skill-4",
+      "extract": [],
+      "site": [
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "探明防护",
+      "style": "博物",
+      "tier": "二阶",
+      "id": "st-skill-96",
+      "extract": [],
+      "site": [
+        "#FFF32F"
+      ]
+    },
+    {
+      "name": "探求精神",
+      "style": "博物",
+      "tier": "一阶",
+      "id": "st-skill-90",
+      "extract": [],
+      "site": [
+        "#FFF32F"
+      ]
+    },
+    {
+      "name": "掩护推进",
+      "style": "军团",
+      "tier": "一阶",
+      "id": "st-skill-22",
+      "extract": [],
+      "site": [
+        "#EE822F"
+      ]
+    },
+    {
+      "name": "掩饰术",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-12",
+      "extract": [],
+      "site": [
+        "#FFB7E3",
+        "#843F0B"
+      ]
+    },
+    {
+      "name": "掷下铁手套",
+      "style": "权谋",
+      "tier": "三阶",
+      "id": "st-skill-18",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "提取毒物",
+      "style": "鸩毒",
+      "tier": "二阶",
+      "id": "st-skill-60",
+      "extract": [],
+      "site": [
+        "#00B050"
+      ]
+    },
+    {
+      "name": "操影术",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-79",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "改良咒法",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-101",
+      "extract": [],
+      "site": [
+        "#00B0F0"
+      ]
+    },
+    {
+      "name": "攻心",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-85",
+      "extract": [],
+      "site": [
+        "#FFB7E3"
+      ]
+    },
+    {
+      "name": "断其号令",
+      "style": "混乱",
+      "tier": "三阶",
+      "id": "st-skill-84",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "无中生有",
+      "style": "混乱",
+      "tier": "一阶",
+      "id": "st-skill-72",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "星芒乱眼",
+      "style": "混乱",
+      "tier": "二阶",
+      "id": "st-skill-82",
+      "extract": [],
+      "site": [
+        "#FFFFFF"
+      ]
+    },
+    {
+      "name": "智慧报偿",
+      "style": "博物",
+      "tier": "三阶",
+      "id": "st-skill-104",
+      "extract": [],
+      "site": [
+        "#00B0F0",
+        "#B94BFF"
+      ]
+    },
+    {
+      "name": "暗棋",
+      "style": "军团",
+      "tier": "二阶",
+      "id": "st-skill-27",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "暗线之网",
+      "style": "权谋",
+      "tier": "二阶",
+      "id": "st-skill-8",
+      "extract": [],
+      "site": [
+        "#595959"
+      ]
+    },
+    {
+      "name": "毒性蔓延",
+      "style": "鸩毒",
+      "tier": "三阶",
+      "id": "st-skill-65",
+      "extract": [],
+      "site": [
+        "#00B050"
+      ]
+    },
+    {
+      "name": "毒疗术",
+      "style": "鸩毒",
+      "tier": "二阶",
+      "id": "st-skill-61",
+      "extract": [],
+      "site": [
+        "#00B050"
+      ]
+    }
+  ]
+}

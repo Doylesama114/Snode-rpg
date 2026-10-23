@@ -23,11 +23,12 @@ import class_sync_core as C  # noqa: E402
 DOCX = ROOT / '基础职业-召唤师.docx'
 CLASS = '召唤师'
 STYLES = ['咒法', '降灵']
-TIER_EXPECT = {('咒法', '一阶'): 7, ('咒法', '二阶'): 7, ('咒法', '三阶'): 7,
-               ('降灵', '一阶'): 6, ('降灵', '二阶'): 8, ('降灵', '三阶'): 9}
+TIER_EXPECT = {('咒法', '一阶'): 7, ('咒法', '二阶'): 6, ('咒法', '三阶'): 7,
+               ('降灵', '一阶'): 6, ('降灵', '二阶'): 8, ('降灵', '三阶'): 9,
+               ('咒法', '四阶'): 7, ('降灵', '四阶'): 8}
 STARTING = ['魔法飞弹', '次级召唤术', '唤回']
 FEATURES = ['召唤联结', '异界感知', '机缘召唤']
-REUSED = {'蓝焰术': '法师'}
+REUSED: dict[str, str] = {}  # 10.23：蓝焰术已删除，不再复用法师版
 CHOICE_GROUPS = [
     '抉择：创造水源/创造篝火',
     '抉择：灵猫守护/灵枭守护/灵狐守护',
@@ -48,8 +49,8 @@ def main() -> int:
     talents = [s for s in skills if s.get('type') != 'starting']
 
     # 1) 数量与风格/位阶分布
-    if len(skills) != 47:
-        errors.append(f'技能总数 {len(skills)} != 47')
+    if len(skills) != 61:
+        errors.append(f'技能总数 {len(skills)} != 61')
     if [s['name'] for s in starting] != STARTING:
         errors.append('起始特性不符: %s' % [s['name'] for s in starting])
     got = Counter((s['style'], s['tier']) for s in talents)
@@ -57,19 +58,14 @@ def main() -> int:
         if got.get(k, 0) != n:
             errors.append(f'{k[0]}/{k[1]} 技能数 {got.get(k, 0)} != {n}')
 
-    # 2) 已知缺漏登记：蓝焰术（复用）+ 契约指令·回避（清单笔误）
-    lf = next((s for s in talents if s['name'] == '蓝焰术'), None)
-    if not lf:
-        errors.append('缺少 蓝焰术（应从法师版复用）')
-    else:
-        if lf.get('style') != '咒法' or lf.get('tier') != '二阶':
-            errors.append('蓝焰术 风格/位阶不符')
-        if not any(CLASS in (u.get('class') or '') for u in (lf.get('level_upgrades') or [])):
-            errors.append('蓝焰术 升级条目未改写为召唤师')
-    if not any(s['name'] == '契约指令·回避' for s in talents):
-        errors.append('缺少 契约指令·回避（清单笔误应已重命名）')
-    if any(s['name'] == '召唤指令·回避' for s in talents):
-        errors.append('仍存在笔误名 召唤指令·回避')
+    # 2) 10.23 变更：蓝焰术删除（作者确认）；契约指令系列改名召唤指令系列
+    if any(s['name'] == '蓝焰术' for s in talents):
+        errors.append('蓝焰术 应已删除（10.23 作者确认）')
+    for nm in ('召唤指令·攻击', '召唤指令·防御', '召唤指令·回避'):
+        if not any(s['name'] == nm for s in talents):
+            errors.append(f'缺少 {nm}（契约指令系列已改名）')
+    if any(s['name'].startswith('契约指令·') for s in talents):
+        errors.append('仍存在旧名 契约指令·*')
     # 双块合并技能
     for nm in ('灵猫守护', '灵枭守护', '灵狐守护'):
         sk = next((s for s in talents if s['name'] == nm), None)
@@ -132,8 +128,8 @@ def main() -> int:
     # 3) HTML：卡片数 / 专长 / 契约生物 chip
     html = (ROOT / '职业页' / f'{CLASS}.html').read_text(encoding='utf-8')
     cards = re.findall(r'<article class="skill" id="([^"]+)"', html)
-    if len(cards) != 47:
-        errors.append(f'{CLASS}.html 技能卡 {len(cards)} != 47')
+    if len(cards) != 61:
+        errors.append(f'{CLASS}.html 技能卡 {len(cards)} != 61')
     chips = re.findall(r'class="class-feature-chip[^"]*"[^>]*data-feature-index="(\d+)"', html)
     contract_chips = re.findall(r'data-feature-index="(\d+)">\s*([^<]*系)·', html)
     if len(chips) != 23:
@@ -187,12 +183,12 @@ def main() -> int:
 
     # 6) 面板 / 技能效果 / 清单
     fx = json.loads((ROOT / '斯诺德跑团' / f'skill_effects_{CLASS}.json').read_text(encoding='utf-8'))
-    if len(fx.get(CLASS, [])) != 47:
-        errors.append('skill_effects 条数 != 47')
+    if len(fx.get(CLASS, [])) != 61:
+        errors.append('skill_effects 条数 != 61')
     panel = (ROOT / '斯诺德跑团' / 'panel_data.js').read_text(encoding='utf-8')
     m = re.search(r'var SKILL_DATA = (\{.*?\});', panel, re.S)
-    if not m or len(json.loads(m.group(1)).get(CLASS, [])) != 47:
-        errors.append('SKILL_DATA.召唤师 != 47')
+    if not m or len(json.loads(m.group(1)).get(CLASS, [])) != 61:
+        errors.append('SKILL_DATA.召唤师 != 61')
     rm = re.search(r"const REF_CLASSES = JSON\.parse\('(.*?)'\);", panel, re.S)
     ref = json.loads(rm.group(1).replace("\\'", "'")) if rm else {}
     r = ref.get(CLASS, {})
@@ -251,9 +247,9 @@ def main() -> int:
     if '"召唤师"' not in idx:
         errors.append('搜索索引缺召唤师')
 
-    ok_notes.append(f'技能 {len(skills)}（起始 3 + 天赋 44：咒法 7/7/7、降灵 6/8/9），蓝焰术复用法师版，'
-                    f'契约指令·回避已改名，灵猫/灵枭/灵狐守护双块已合并')
-    ok_notes.append(f'契约生物 20 个（8 属性 + 特性/动作齐全）；页面 47 卡 + 23 chip（3 专长 + 20 契约）')
+    ok_notes.append(f'技能 {len(skills)}（起始 3 + 天赋 58：咒法 7/6/7/7、降灵 6/8/9/8），'
+                    f'蓝焰术已删除，契约指令系列改名召唤指令·*，灵猫/灵枭/灵狐守护双块已合并')
+    ok_notes.append(f'契约生物 20 个（8 属性 + 特性/动作齐全）；页面 {len(cards)} 卡 + 23 chip（3 专长 + 20 契约）')
     ok_notes.append('创建页（第 1 步选契约生物 + 起始特性全给 + FP=幸运）/ 面板（REF_CLASSES + 契约卡）/')
     ok_notes.append('进阶页：召唤师章节 25 条 + 通用 10 条（共 35，无等待提示）；首页 + 搜索索引 + 清单数据 全部就位')
 

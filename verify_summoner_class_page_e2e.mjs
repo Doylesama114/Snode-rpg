@@ -1,4 +1,4 @@
-// 召唤师职业页 E2E：47 技能卡 / 2 风格 / 3 专长 / 3 抉择 / 契约生物切换区（20 系别）
+// 召唤师职业页 E2E：61 技能卡 / 2 风格 / 3 专长 / 3 抉择 / 契约生物切换区（20 系别）
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 
@@ -34,7 +34,7 @@ const info = await page.evaluate(() => {
     starting: [...document.querySelectorAll('nav .tier-list a')].map(a => a.textContent.trim()),
   };
 });
-ok('技能卡 47 张', info.cards === 47, String(info.cards));
+ok('技能卡 61 张', info.cards === 61, String(info.cards));
 ok('风格 2 个（咒法/降灵）', info.styles.length === 2 && info.styles.join('、').includes('咒法'), info.styles.join('、'));
 ok('职业专长 3 条', info.featureChips.join('、') === '召唤联结、异界感知、机缘召唤', info.featureChips.join('、'));
 ok('起始特性 3 条', info.starting.join('、') === '魔法飞弹、次级召唤术、唤回', info.starting.join('、'));
@@ -93,7 +93,7 @@ ok('职业专长 chip 只切换自身面板（机缘召唤）', tabs[2].own === 
 ok('契约生物 chip 独立切换（岩石系·陶土魔偶）', tabs[3].contract.startsWith('陶土魔偶') && tabs[3].own === '机缘召唤', JSON.stringify(tabs[3]));
 
 // 搜索只做高亮（不隐藏），契约区不受影响
-await page.fill('#sm-search', '蓝焰术');
+await page.fill('#sm-search', '魔法飞弹');
 await page.waitForTimeout(600);
 const search = await page.evaluate(() => {
   const sec = document.getElementById('sm-contract-creatures');

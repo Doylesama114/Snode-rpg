@@ -41,7 +41,7 @@ const base = await page.evaluate(() => {
     creatures: (typeof CONTRACT_CREATURES !== 'undefined' ? CONTRACT_CREATURES.length : 0),
   };
 });
-ok('SKILL_DATA.召唤师 = 47 条', base.skillCount === 47, String(base.skillCount));
+ok('SKILL_DATA.召唤师 = 61 条', base.skillCount === 61, String(base.skillCount));
 ok('风格 = 咒法/降灵', base.styles.join('、') === '咒法、降灵', base.styles.join('、'));
 ok('起始特性 = 魔法飞弹/次级召唤术/唤回', base.starting.join('、') === '魔法飞弹、次级召唤术、唤回', base.starting.join('、'));
 ok('风格配色 2 项', base.colors.join('、') === '咒法、降灵', base.colors.join('、'));
@@ -104,11 +104,11 @@ const learned = await page.evaluate(() => {
   state.sp_points = 99;
   state.unlocked_tiers = ['一阶', '二阶', '三阶'];
   state.skills = [];
-  learnSkill('召唤师', '契约指令·攻击', 0);
+  learnSkill('召唤师', '召唤指令·攻击', 0);
   autoCalcStyles();
   return state.skills.map(x => ({ n: x.n, src: x.src }));
 });
-ok('面板可学习召唤师技能', learned.some(x => x.n === '契约指令·攻击' && x.src === '召唤师'), JSON.stringify(learned));
+ok('面板可学习召唤师技能', learned.some(x => x.n === '召唤指令·攻击' && x.src === '召唤师'), JSON.stringify(learned));
 
 const SHOT_DIR = path.join(ROOT, 'screenshots');
 fs.mkdirSync(SHOT_DIR, { recursive: true });

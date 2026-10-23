@@ -71,7 +71,7 @@ STYLE_COLORS = {
     "混乱": "#FF8787",
     "博物": "#FFC078",
 }
-TIER_ORDER = ["一阶", "二阶", "三阶"]
+TIER_ORDER = ["一阶", "二阶", "三阶", "四阶"]
 STARTING_ORDER = ["交友术", "战术部署", "毒刃", "离间"]
 FEATURE_NAMES = ["运筹帷幄", "博闻强识", "料敌机先"]
 SEP_RE = re.compile(r"^-{3,}$")

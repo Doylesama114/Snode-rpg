@@ -3,16 +3,7 @@
   "docx_skills_indexed": 401,
   "json_skills": 401,
   "updated": 401,
-  "removed_not_in_docx": [
-    "豪勇与激斗符文",
-    "灵动与巧变符文",
-    "坚韧与不息符文",
-    "博闻与通晓符文",
-    "洞彻与澄明符文",
-    "倾心与折服符文",
-    "决意与信念符文",
-    "命数与机遇符文"
-  ],
+  "removed_not_in_docx": [],
   "preserved_not_in_docx": [],
   "fx_entries": 401
 }

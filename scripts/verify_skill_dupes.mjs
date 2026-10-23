@@ -64,10 +64,30 @@ if (diffGroups.length) {
   }
 }
 console.log('\n【神圣领域】与职业技能重名（独立数据源，各神域自有文本，不计入异常）：' + Object.keys(domainNames).length + ' 个名称');
-const WARN_LIMIT = 120; // 89 组为正常跨职业同名不同效果（规则设计）
-if (diffGroups.length > WARN_LIMIT) {
-  console.error('FAIL: 同名不同效果组数异常（>' + WARN_LIMIT + '），请核查 docx 数据');
+// 白名单：跨职业同名不同效果属规则设计（各职业自有文本）。以基线文件为准，
+// 只有「基线之外新出现的同名组」才判失败，避免每次新增内容都要调阈值。
+const keyOf = (nm, list) => nm + '|' + list.map(x => x.cls).sort().join(',');
+const BASELINE_FILE = 'scripts/skill_dupes_baseline.json';
+let baseline = new Set();
+try {
+  baseline = new Set(JSON.parse(fs.readFileSync(BASELINE_FILE, 'utf8')).allowed || []);
+} catch (e) {
+  console.log('\n（未找到基线文件，将以本次结果作为基线写入）');
+}
+if (process.argv.includes('--write-baseline')) {
+  fs.writeFileSync(BASELINE_FILE, JSON.stringify({
+    updated: new Date().toISOString(),
+    note: '跨职业同名不同效果白名单：各职业自有文本，按 名称|职业列表 记录',
+    allowed: diffGroups.map(([nm, list]) => keyOf(nm, list)).sort(),
+  }, null, 1));
+  console.log('已写入基线 ' + diffGroups.length + ' 组 → ' + BASELINE_FILE);
+  process.exit(0);
+}
+const newGroups = diffGroups.filter(([nm, list]) => !baseline.has(keyOf(nm, list)));
+if (newGroups.length) {
+  console.error('\nFAIL: 出现 ' + newGroups.length + ' 组基线之外的同名不同效果，请核对：');
+  for (const [nm, list] of newGroups.slice(0, 40)) console.error('  ' + nm + ': ' + list.map(x => x.cls).join(' vs '));
   process.exit(1);
 }
-console.log('\nOK: 同名冲突在预期范围内（上限 ' + WARN_LIMIT + '）');
+console.log('\nOK: 同名冲突全部在白名单内（' + diffGroups.length + ' 组，基线 ' + baseline.size + ' 组）');
 process.exit(0);
