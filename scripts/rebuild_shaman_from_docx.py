@@ -190,7 +190,8 @@ def render_article(skill: dict, block: dict) -> str:
         style_for_search = style
         tier_label = f"{tier}阶天赋树" if tier else tier_label_from_skill(skill)
 
-    detail = build_detail_html(block)
+    tables = {"unit_tables": skill.get("unit_tables") or [], "roll_tables": skill.get("roll_tables") or []}
+    detail = build_detail_html(block, tables)
     data_search = build_data_search(block, style_for_search, tier_label, tags)
     safe = sanitize_data_search(data_search)
     return (
