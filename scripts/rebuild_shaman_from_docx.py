@@ -338,6 +338,9 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList
 
 def main() -> None:
     html_old = HTML.read_text(encoding="utf-8")
+    # 职业专长区块属于页面骨架（不在技能数据里），重建时从旧页原样保留
+    _feat = re.search(r'<section class="class-features".*?</section>', html_old, re.S)
+    features_html = _feat.group(0) if _feat else ""
     data = json.loads(DATA.read_text(encoding="utf-8"))
     html_meta = parse_html_meta(html_old)
 
@@ -411,7 +414,10 @@ def main() -> None:
 
     head = read_head()
     nav = render_nav(skills)
-    content = render_content(skills, blocks)
+    if features_html:
+        # 导航里要有「职业专长」入口（add_hpcalc 与旧页结构都依赖它）
+        nav = '<a class="style-link" href="#sa-class-features">职业专长</a>' + nav
+    content = (features_html + "\n" if features_html else "") + render_content(skills, blocks)
     page = (
         head
         + "    <nav aria-label=\"萨满祭司天赋索引\">\n      <div class=\"nav-inner\">\n"
