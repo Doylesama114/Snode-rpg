@@ -20,6 +20,7 @@ from class_sync_core import (
     json_to_fx_entry,
     pick_block,
     sanitize_data_search,
+    split_skill_description,
     tags_from_keywords,
     tier_label_from_skill,
 )
@@ -114,7 +115,8 @@ def block_to_skill(stub: dict, block: dict) -> dict:
     ]
     if "描述" not in fields and desc_body:
         fields["描述"] = desc_body[0]
-    description = desc_body[1:] if len(desc_body) > 1 else ([] if "描述" in fields else desc_body)
+    # 注意：不能无条件丢弃 desc_body 首行——新文档「描述：」行与后续规则段并不重复
+    description = split_skill_description(fields, desc_body)
     if "描述" in fields and desc_body and fields["描述"] == desc_body[0]:
         description = desc_body[1:]
 
