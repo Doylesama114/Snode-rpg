@@ -2,6 +2,7 @@
 """Verify 德鲁伊 sync."""
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -78,3 +79,4 @@ if len(re.findall(r'data-tier="四阶"', html)) < EXPECT_TIER4:
 
 print("\n=== Result ===")
 print("PASS" if not errors else "FAIL: " + "; ".join(errors))
+sys.exit(0 if not errors else 1)

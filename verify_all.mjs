@@ -609,6 +609,23 @@ try {
 console.log(msSyncOK ? '✅ 谋士数据同步通过' : '❌ 谋士数据同步失败');
 totalErrors += msSyncOK ? 0 : 1;
 
+// 德鲁伊 / 奇械师·炽擎 同步校验（10.24 起：整职业 + 单风格窄口径）
+console.log('\n=== 德鲁伊 / 奇械师窄口径同步 ===');
+let clSyncOK = true;
+for (const [clLabel, clScript] of [['德鲁伊', 'verify_druid_sync.py'], ['奇械师·炽擎', 'verify_artificer_heat_style.py']]) {
+  try {
+    const clOut = spawnSync('python', ['-X', 'utf8', join(BASE, 'scripts', clScript)], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+    if (clOut.stdout) console.log(clOut.stdout.trim());
+    if (clOut.stderr) console.error(clOut.stderr.trim());
+    if (clOut.status !== 0) clSyncOK = false;
+  } catch (e) {
+    clSyncOK = false;
+    console.log('❌ ' + clLabel + ' 校验执行失败: ' + e.message.split('\n')[0]);
+  }
+}
+console.log(clSyncOK ? '✅ 德鲁伊/奇械师窄口径同步通过' : '❌ 德鲁伊/奇械师窄口径同步失败');
+totalErrors += clSyncOK ? 0 : 1;
+
 // 谋士「博闻强识」专长选择 E2E（2 项知识熟练度：UI/校验/总览/导出/快照）
 console.log('\n=== 谋士职业专长与博闻强识选择 ===');
 let stFeatOK = true;
