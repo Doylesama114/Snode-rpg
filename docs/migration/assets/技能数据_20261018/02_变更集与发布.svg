@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1280 960">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8298a8"/></marker></defs>
+<rect width="1280" height="960" rx="24" fill="#f6f9fb"/>
+<text x="56" y="60" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="700" fill="#21746e">02</text>
+<text x="112" y="61" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="33" font-weight="700" fill="#183042">变更集：docx 与后台共用的写入口</text>
+<text x="56" y="106" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" fill="#597080">任何修改先成为变更集，按风险分级审核，落成新修订后发布；角色可以拒绝跟随版本变化。</text>
+
+<!-- sources -->
+<rect x="56" y="150" width="520" height="110" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="172" width="5" height="26" rx="2" fill="#a77b37"/>
+<text x="94" y="192" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="700" fill="#183042">docx（整份职业）</text>
+<text x="78" y="226" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">解析 → 切分 → 字段识别 → 与库匹配</text>
+<text x="78" y="250" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">没有稳定 ID：靠同名 + 位置 + 描述相似度推断</text>
+
+<rect x="704" y="150" width="520" height="110" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="726" y="172" width="5" height="26" rx="2" fill="#376b95"/>
+<text x="742" y="192" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="700" fill="#183042">DM 后台</text>
+<text x="726" y="226" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">筛选 · 拖拽换阶位 · 字段表单 · 批量修改</text>
+<text x="726" y="250" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">表单由字段字典生成，右边实时预览技能卡</text>
+
+<path d="M316 260 L316 300" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+<path d="M964 260 L964 300" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+
+<!-- changeset -->
+<rect x="56" y="300" width="1168" height="120" rx="18" fill="#fffaf0" stroke="#d8c6a8" stroke-width="2"/>
+<rect x="78" y="318" width="5" height="26" rx="2" fill="#a77b37"/>
+<text x="94" y="338" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="700" fill="#a77b37">变更集（唯一写入口）</text>
+<text x="300" y="337" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#597080">每条动作可单独撤销；发布前都能改；docx 与后台共用同一套审核。</text>
+<rect x="80" y="352" width="218" height="34" rx="8" fill="#ffffff" stroke="#d8c6a8" stroke-width="1.5"/>
+<text x="189" y="374" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#183042" text-anchor="middle">改字段（新修订）</text>
+<rect x="306" y="352" width="218" height="34" rx="8" fill="#ffffff" stroke="#d8c6a8" stroke-width="1.5"/>
+<text x="415" y="374" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#183042" text-anchor="middle">移阶位（改来源条目）</text>
+<rect x="532" y="352" width="218" height="34" rx="8" fill="#ffffff" stroke="#d8c6a8" stroke-width="1.5"/>
+<text x="641" y="374" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#183042" text-anchor="middle">新增技能</text>
+<rect x="758" y="352" width="218" height="34" rx="8" fill="#ffffff" stroke="#d8c6a8" stroke-width="1.5"/>
+<text x="867" y="374" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#183042" text-anchor="middle">停用技能（不删除）</text>
+<rect x="984" y="352" width="218" height="34" rx="8" fill="#ffffff" stroke="#d8c6a8" stroke-width="1.5"/>
+<text x="1093" y="374" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#183042" text-anchor="middle">改名（同时写别名）</text>
+<text x="80" y="406" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="14" fill="#8298a8">高风险动作（改名 / 删除 / 换来源）不会自动合并，逐条等人确认。</text>
+
+<!-- risk -->
+<path d="M241 420 L241 452" stroke="#8298a8" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="56" y="452" width="370" height="100" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="74" y="470" width="5" height="24" rx="2" fill="#21746e"/>
+<text x="90" y="489" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#21746e">低风险</text>
+<text x="76" y="517" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">纯文本、描述变化</text>
+<text x="76" y="540" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">可配置为自动应用</text>
+<path d="M640 420 L640 452" stroke="#8298a8" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="455" y="452" width="370" height="100" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="473" y="470" width="5" height="24" rx="2" fill="#a77b37"/>
+<text x="489" y="489" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#a77b37">中风险</text>
+<text x="475" y="517" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">字段增删、数值变化</text>
+<text x="475" y="540" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">需要一次确认</text>
+<path d="M1039 420 L1039 452" stroke="#8298a8" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="854" y="452" width="370" height="100" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="872" y="470" width="5" height="24" rx="2" fill="#b03a2a"/>
+<text x="888" y="489" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#b03a2a">高风险</text>
+<text x="874" y="517" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">改名、删除、换来源</text>
+<text x="874" y="540" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">必须逐条人工确认</text>
+<path d="M241 552 L241 568 M640 552 L640 568 M1039 552 L1039 568" stroke="#8298a8" stroke-width="2"/>
+<path d="M241 568 L1039 568" stroke="#8298a8" stroke-width="2"/>
+<path d="M640 568 L640 584" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+
+<!-- revision -->
+<rect x="56" y="584" width="1168" height="80" rx="16" fill="#eff8f5" stroke="#c7d5df" stroke-width="2"/>
+<rect x="78" y="602" width="5" height="26" rx="2" fill="#21746e"/>
+<text x="94" y="622" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="700" fill="#183042">应用为草稿修订</text>
+<text x="290" y="621" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">同一技能的多条动作合并成一条新修订；旧修订保留不动，历史随时可查。</text>
+<text x="1200" y="645" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="14" fill="#8298a8" text-anchor="end">草稿可反复修改</text>
+
+<path d="M400 664 L400 696" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+
+<!-- release -->
+<rect x="56" y="696" width="1168" height="80" rx="16" fill="#eaf1f8" stroke="#9ab4ca" stroke-width="2"/>
+<rect x="78" y="714" width="5" height="26" rx="2" fill="#376b95"/>
+<text x="94" y="734" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="700" fill="#376b95">发布 release</text>
+<text x="250" y="733" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">锁定这批修订；资料库、建卡与战斗都只读这一版。</text>
+<text x="1200" y="757" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" font-weight="700" fill="#376b95" text-anchor="end">回滚 = 指针回到旧 release，不删数据</text>
+
+<!-- consumers -->
+<path d="M241 776 L241 808" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+<rect x="56" y="808" width="370" height="96" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="74" y="826" width="5" height="24" rx="2" fill="#376b95"/>
+<text x="90" y="845" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#183042">资料库与技能树</text>
+<text x="76" y="875" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">下次读取即为新版本</text>
+<path d="M640 776 L640 808" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+<rect x="455" y="808" width="370" height="96" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="473" y="826" width="5" height="24" rx="2" fill="#376b95"/>
+<text x="489" y="845" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#183042">角色（已学技能）</text>
+<text x="475" y="875" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">阶位变更时提示是否跟随，可拒绝</text>
+<path d="M1039 776 L1039 808" stroke="#8298a8" stroke-width="2.5" marker-end="url(#ar)"/>
+<rect x="854" y="808" width="370" height="96" rx="16" fill="#ffffff" stroke="#c7d5df" stroke-width="2"/>
+<rect x="872" y="826" width="5" height="24" rx="2" fill="#376b95"/>
+<text x="888" y="845" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="700" fill="#183042">变更日志与审计</text>
+<text x="874" y="875" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="16" fill="#597080">谁、何时、改了什么</text>
+
+<text x="56" y="940" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif" font-size="15" fill="#8298a8">阶位属于来源条目，不属于技能本身：移阶位只改该职业的技能树，其他职业引用同一技能不受影响。</text>
+</svg>
