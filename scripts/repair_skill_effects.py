@@ -134,6 +134,10 @@ def main():
         index = C.build_docx_index(ps, names)
         used = set(); refreshed = []; preserved = []
         for skill in doc["skills"]:
+            # 窄口径更新：来源不是本职业文档的技能（如奇械师·炽擎来自单风格文件）原样保留
+            _sf = ((skill.get("source") or {}).get("file") or "").strip()
+            if _sf and (ROOT / _sf) != path:
+                preserved.append(skill["name"]); continue
             if (cn == "\u6cd5\u5e08" and skill["name"] in protected_mage) or (
                 cn == "\u730e\u4eba" and skill["name"] in {"\u7075\u9f9f\u5b88\u62a4\u00b7\u5929\u8d4b","\u7075\u7334\u5b88\u62a4\u00b7\u5929\u8d4b","\u7075\u72d0\u5b88\u62a4\u00b7\u5929\u8d4b"}
             ) or (cn == "\u53ec\u5524\u5e08" and skill["name"] == "\u84dd\u7130\u672f"):

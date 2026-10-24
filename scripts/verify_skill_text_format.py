@@ -59,10 +59,25 @@ def main() -> int:
         docx = docx_for(cls)
         names = {s.get("name") for s in skills if isinstance(s, dict)}
         index = build_docx_index(extract_paragraphs(docx), names)
+        # 窄口径更新：部分技能来自另一个 docx（如奇械师·炽擎单风格文件），单独建索引
+        extra: dict[Path, dict] = {}
+        for _s in skills:
+            _f = ((_s.get("source") or {}).get("file") or "").strip()
+            if not _f:
+                continue
+            _p = ROOT / _f
+            if _p.exists() and _p != docx and _p not in extra:
+                extra[_p] = build_docx_index(extract_paragraphs(_p), names)
         used: set[int] = set()
+        used_extra: dict[Path, set[int]] = {p: set() for p in extra}
 
         for skill in skills:
-            block = pick_block(index, skill, used)
+            _f = ((skill.get("source") or {}).get("file") or "").strip()
+            _p = (ROOT / _f) if _f else None
+            if _p in extra:
+                block = pick_block(extra[_p], skill, used_extra[_p])
+            else:
+                block = pick_block(index, skill, used)
             if block is None:
                 continue
 

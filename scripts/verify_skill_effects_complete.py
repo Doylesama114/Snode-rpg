@@ -124,7 +124,16 @@ def main():
     sources=[(cls,ROOT/f"\u57fa\u7840\u804c\u4e1a-{cls}.docx",pool) for cls,pool in docs.items()]
     sources += [(dn,ROOT/dom["source_file"],dom["skills"]) for dn,dom in domain["domains"].items()]
     for cls,path,pool in sources:
-        rules=source_rules(path,pool)
+        # 按技能自身的 source.file 分组解析（窄口径更新的技能可能来自另一个 docx）
+        groups={}
+        for _s in pool:
+            _f=((_s.get('source') or {}).get('file') or '').strip()
+            _p=ROOT/_f if _f else path
+            if not _p.exists():_p=path
+            groups.setdefault(_p,[]).append(_s)
+        rules={}
+        for _p,_pool in groups.items():
+            rules.update(source_rules(_p,_pool))
         for skill in pool:
             if skill["name"] in SOURCE_EXCEPTIONS.get(cls,set()):continue
             expected=rules.get(skill["id"])
