@@ -33,10 +33,12 @@ print(f"\nSkills without 标识 ({len(no_mark)}): {no_mark}")
 has_old_fee = [s["name"] for s in data["skills"] if "费用" in s.get("fields", {})]
 print(f"JSON fields still using 费用: {has_old_fee}")
 
+# 10.24 起技能彩色成本取消，「标识」字段不再存在
 checks = [
     ("d-starting-skill-1", "缠绕术", False),
-    ("d-skill-5", "荆棘术", True),
-    ("d-skill-1", "树皮术", True),
+    ("d-skill-5", "荆棘术", False),
+    ("d-skill-1", "树皮术", False),
+    ("d-skill-73", "群体缠绕", False),
 ]
 fx_by_id = {s["id"]: s for s in fx.get(CLASS, [])}
 print("\n=== Spot checks ===")
@@ -54,12 +56,25 @@ for sid, name, has_mark in checks:
     )
 
 errors = []
+EXPECT_TOTAL = 104          # 10.24：77 + 27 条四阶
+EXPECT_TIER4 = 27
 if html.count("费用："):
     errors.append("HTML still has 费用：")
+if html.count("标识："):
+    errors.append("HTML 仍含 标识： 行（新规则应无彩色成本）")
 if json_ids != fx_ids or json_ids != articles:
     errors.append("ID mismatch")
 if has_old_fee:
     errors.append("JSON has 费用 field")
+if len(data["skills"]) != EXPECT_TOTAL:
+    errors.append("技能总数 %d != %d" % (len(data["skills"]), EXPECT_TOTAL))
+tier4 = [s for s in data["skills"] if s.get("tier") == "四阶"]
+if len(tier4) != EXPECT_TIER4:
+    errors.append("四阶技能 %d != %d" % (len(tier4), EXPECT_TIER4))
+if any(s.get("cost") for s in data["skills"]):
+    errors.append("仍有技能保留 cost（新规则应清空）")
+if len(re.findall(r'data-tier="四阶"', html)) < EXPECT_TIER4:
+    errors.append("页面四阶段落不足 %d" % EXPECT_TIER4)
 
 print("\n=== Result ===")
 print("PASS" if not errors else "FAIL: " + "; ".join(errors))
