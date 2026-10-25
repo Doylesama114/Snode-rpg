@@ -1483,6 +1483,26 @@ results.push('<div class="section"><h3>T17: fillXlsxSpecialFeats 槽位映射（
 })();
 results.push('</div>');
 
+// =================== T18: REF_LEVELUP 由 LEVEL_TABLE 派生 ===================
+results.push('<div class="section"><h3>T18: REF_LEVELUP 与 LEVEL_TABLE 一致性</h3>');
+(function(){
+  if (typeof REF_LEVELUP === 'undefined' || typeof LEVEL_TABLE === 'undefined') {
+    assertTrue(false, 'REF_LEVELUP / LEVEL_TABLE 未加载');
+    results.push('</div>'); return;
+  }
+  var main = REF_LEVELUP.main_class.levels, sub = REF_LEVELUP.sub_class.levels;
+  var byLv = {}; main.forEach(function(r){ byLv[r.level] = r; });
+  assert(byLv[5].xp, 300, '主职业 5 级经验 300（旧副本为 20300）');
+  assert(byLv[20].xp, 30000, '主职业 20 级经验 30000（旧副本为 2030000）');
+  var sub4 = sub.filter(function(r){ return r.level === 4; })[0];
+  assert(sub4.xp, 300, '子职业 4 级经验 300（旧副本为 20300）');
+  var mismatch = 0;
+  main.forEach(function(r){ var t = LEVEL_TABLE['主职业'][r.level]; if (!t || t.xp !== r.xp || (t.prof||0) !== (r.proficiency||0)) mismatch++; });
+  sub.forEach(function(r){ var t = LEVEL_TABLE['子职业'][r.level]; if (!t || t.xp !== r.xp) mismatch++; });
+  assert(mismatch, 0, 'REF_LEVELUP 与 LEVEL_TABLE 完全一致');
+  results.push('</div>');
+})();
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");

@@ -325,7 +325,7 @@ function calcSpellHit(s){
 
 // ========== State Builder ==========
 
-var _MARK_COLOR_NAMES=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","浅色","炫彩"];
+var _MARK_COLOR_NAMES=["橙色","白色","紫色","黄色","无色","蓝色","青色","黑色","红色","棕色","粉色","绿色","碧色","炫彩"];
 function defaultColorMarks(){var m={},i;for(i=0;i<_MARK_COLOR_NAMES.length;i++)m[_MARK_COLOR_NAMES[i]]=false;return m;}
 function ensureSpStateOn(s){if(!s.color_marks)s.color_marks=defaultColorMarks();if(typeof s.sp_points!=="number")s.sp_points=0;}
 function parseSpFromXlsxText(text){
@@ -333,7 +333,7 @@ function parseSpFromXlsxText(text){
   text=String(text).trim();
   if(!text)return 0;
   if(/^\d+$/.test(text))return Math.max(0,parseInt(text,10));
-  var spMap={"橙":"橙色","白":"白色","紫":"紫色","黄":"黄色","无":"无色","蓝":"蓝色","青":"青色","黑":"黑色","红":"红色","棕":"棕色","粉":"粉色","绿":"绿色","浅":"浅色","炫":"炫彩"};
+  var spMap={"橙":"橙色","白":"白色","紫":"紫色","黄":"黄色","无":"无色","蓝":"蓝色","青":"青色","黑":"黑色","红":"红色","棕":"棕色","粉":"粉色","绿":"绿色","浅":"碧色","炫":"炫彩"};
   var total=0,i;
   for(i=0;i<text.length;i++){if(spMap[text.charAt(i)])total++;}
   return total;

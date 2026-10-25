@@ -195,7 +195,7 @@ var state={
 "background":"", "player":"", "name":"","race":"","gender":"","age":"","height":"","weight":"","eye":"","skin":"","hair":"","portrait":"",
 "xp":0, "carry_capacity":{"常规":45,"满载":60,"极限":75,"当前":5},
 "sp_points":0,
-"color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"浅色":false,"炫彩":false},
+"color_marks":{"橙色":false,"白色":false,"紫色":false,"黄色":false,"无色":false,"蓝色":false,"青色":false,"黑色":false,"红色":false,"棕色":false,"粉色":false,"绿色":false,"碧色":false,"炫彩":false},
 "hp":10,"fp":8,"raceSize":"","_hpManual":false,"_fpManual":false,"_hpCurrent":null,"_fpCurrent":null,
 "dragonType":"","dragonBreath":"","dragonResistance":"",
 "raceChoices":{"extraAttrs":[],"humanFreeSkill":"","raceSaves":[],"raceSkillChoice":"","raceProfInput":"","wingfolkHasCommon":true},
@@ -1103,7 +1103,7 @@ function getSkillSPCost(skillName, skillSrc) {
 }
 
 
-function getFreeSPColors(){var _fc=[];for(var _fi=0;_fi<(state.special_feats||[]).length;_fi++){var _fn=typeof state.special_feats[_fi]==="string"?state.special_feats[_fi]:state.special_feats[_fi].name;if(_fn==="质朴"){_fc.push("白色");break;}}var _ml=state.classes[0].level||0;if(_ml>=10){var _colorMap={"红之精通":"红色","橙之精通":"橙色","黄之精通":"黄色","绿之精通":"绿色","青之精通":"青色","蓝之精通":"蓝色","紫之精通":"紫色","粉之精通":"粉色","棕之精通":"棕色","黑之精通":"黑色","白之精通":"白色","碧之精通":"浅色"};var _tt=state.talent_tree||[];for(var _ti=0;_ti<_tt.length;_ti++){var _cn=_colorMap[_tt[_ti].n];if(_cn&&_fc.indexOf(_cn)<0)_fc.push(_cn);}}return _fc;} function getKeyPreferenceColor(){var tt=state.talent_tree||[];for(var i=0;i<tt.length;i++){if(tt[i].n==="关键偏好"&&tt[i].pref)return tt[i].pref;}return"";}
+function getFreeSPColors(){var _fc=[];for(var _fi=0;_fi<(state.special_feats||[]).length;_fi++){var _fn=typeof state.special_feats[_fi]==="string"?state.special_feats[_fi]:state.special_feats[_fi].name;if(_fn==="质朴"){_fc.push("白色");break;}}var _ml=state.classes[0].level||0;if(_ml>=10){var _colorMap={"红之精通":"红色","橙之精通":"橙色","黄之精通":"黄色","绿之精通":"绿色","青之精通":"青色","蓝之精通":"蓝色","紫之精通":"紫色","粉之精通":"粉色","棕之精通":"棕色","黑之精通":"黑色","白之精通":"白色","碧之精通":"碧色"};var _tt=state.talent_tree||[];for(var _ti=0;_ti<_tt.length;_ti++){var _cn=_colorMap[_tt[_ti].n];if(_cn&&_fc.indexOf(_cn)<0)_fc.push(_cn);}}return _fc;} function getKeyPreferenceColor(){var tt=state.talent_tree||[];for(var i=0;i<tt.length;i++){if(tt[i].n==="关键偏好"&&tt[i].pref)return tt[i].pref;}return"";}
 function parseSkillCost(skillData) {
 
 
@@ -1194,9 +1194,19 @@ function defaultColorMarks() {
 }
 
 function ensureSpState() {
+  migrateColorMarkNames(state);
   if (!state.color_marks) state.color_marks = defaultColorMarks();
   if (typeof state.sp_points !== "number") state.sp_points = 0;
   ensureBlueprintState();
+}
+
+/* 26.10.25 色彩标识改名：浅色 → 碧色（老存档兼容；id=light 保持不变） */
+function migrateColorMarkNames(obj) {
+  if (!obj || !obj.color_marks) return;
+  if (obj.color_marks["浅色"] !== undefined) {
+    if (obj.color_marks["碧色"] === undefined) obj.color_marks["碧色"] = obj.color_marks["浅色"];
+    delete obj.color_marks["浅色"];
+  }
 }
 
 function parseSpFromXlsxText(text) {
@@ -1211,6 +1221,7 @@ function parseSpFromXlsxText(text) {
 }
 
 function ensureSpStateOn(obj) {
+  migrateColorMarkNames(obj);
   if (!obj.color_marks) obj.color_marks = defaultColorMarks();
   if (typeof obj.sp_points !== "number") obj.sp_points = 0;
 }
