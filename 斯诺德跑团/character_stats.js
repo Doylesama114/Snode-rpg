@@ -30,6 +30,32 @@ var SNOWD_CHARACTER_STATS=(function(){
   });
   return {value:(result===null?10+dex:result)+shield(s)+(medium?Number(s._feat_ac_bonus)||0:0),missing:missing};
  }
+  function totalLevelOf(s){
+   var t=0,cs=(s&&s.classes)||[];
+   for(var i=0;i<cs.length;i++){var c=cs[i];if(!c)continue;if(i>0&&c.ruleEnabled===false)continue;
+    var lv=Number(c.level);if(isFinite(lv)&&lv>0)t+=lv;}
+   return t;
+  }
+  function resolveFeatPickTotal(f){
+   if(f&&typeof f==="object"){
+    var pt=Number(f.pickTotal);
+    if(isFinite(pt)&&pt>0)return pt;
+    var lv=Number(f.level);
+    if(isFinite(lv)&&lv>0)return lv;
+   }
+   return 4;/* 选择等级未知（导入/旧档）：按最早可选槽位 4 级回退 */
+  }
+  function featHpBonus(s){
+   /* 健壮：每提升职业等级 +2 HP，仅计选择等级之后（含选择那一级）；健美教练：固定 +10 */
+   var total=totalLevelOf(s),bonus=0,feats=(s&&s.special_feats)||[];
+   for(var i=0;i<feats.length;i++){
+    var f=feats[i],n=typeof f==="string"?f:(f&&f.name);
+    if(!n)continue;
+    if(n==="健美教练"){bonus+=10;continue;}
+    if(n==="健壮")bonus+=2*Math.max(0,total-resolveFeatPickTotal(f)+1);
+   }
+   return bonus;
+  }
  function computed(s){
   var d=refs(),mc=s.classes&&s.classes[0]||{},sc=s.classes&&s.classes[1]||{},m=base(mc),sub=sc.ruleEnabled===false?"":base(sc),a=s.attrs||{},key=mc.keyAttr||d.classes[m]&&d.classes[m].key_attr||"力量",reasons=[];
   if(key==="力量或敏捷")key=mc.keyAttr&&mc.keyAttr!=="力量或敏捷"?mc.keyAttr:"力量";
@@ -37,7 +63,7 @@ var SNOWD_CHARACTER_STATS=(function(){
   var race=s.ruleRace||s.race,bg=s.ruleBackground||s.background;
   if(race&&!d.races[race])reasons.push("种族规则未确认");if(bg&&!d.backgrounds[bg])reasons.push("背景规则未确认");
   var effectiveMain=mc.confirmedTotalLevel||mc.level,effectiveSub=sc.ruleEnabled===false?0:sc.level;
-  var feat=0;(s.special_feats||[]).forEach(function(f){var n=typeof f==="string"?f:f.name;if(n==="健壮")feat+=2*((Number(effectiveMain)||0)+(Number(effectiveSub)>0?Number(effectiveSub)-1:0));if(n==="健美教练")feat+=10;});
+   var feat=featHpBonus(s);/* 唯一实现：分级生效 + pickTotal 快照 */
   if(s.fieldSources){if(!valid(a["体质"]))reasons.push("体质未读取");if(!valid(a[key]))reasons.push("关键属性未读取");}
   var ready=reasons.length===0,hp=ready?totalHP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,(valid(a["体质"])?a["体质"]:10),race,bg,feat,s.raceSize):null,fp=ready?totalFP(m,mc.confirmedTotalLevel||mc.level,sub,sc.ruleEnabled===false?0:sc.level,key,valid(a[key])?a[key]:10,race,0):null,ac=armor(s),r=d.races[race];
   return {hp:hp,fp:fp,ac:ac.missing.length?null:ac.value,acEstimate:ac.value,atk:Math.max(mod(a["力量"]||10),mod(a["敏捷"]||10))+(Number(s.atk_hit_bonus)||0),spell:mod(a[key]||10)+(Number(s.spell_hit_bonus)||0),init:mod(a["敏捷"]||10),speed:r&&r.speed!==undefined?String(r.speed).replace(/米$/,""):null,hpRecover:hp===null?null:Math.floor(hp/2),fpRecover:fp===null?null:Math.floor(fp/2),keyAttr:key,reasons:reasons,unknownArmor:ac.missing};
@@ -67,5 +93,5 @@ var SNOWD_CHARACTER_STATS=(function(){
   if(s.combatStats)return;
   if(s._chargenOrigin==="upload"){["hp","fp"].forEach(function(k){if(valid(s[k]))set(s,k,s[k],"fixed",{origin:"legacy-upload"});});}
  }
- return {labels:labels,valid:valid,mod:mod,hpBonus:hpBonus,totalHP:totalHP,totalFP:totalFP,computed:computed,armorInfo:armorInfo,shield:shield,read:read,set:set,mode:mode,fromSheet:fromSheet,synchronize:synchronize,migrate:migrate};
+ return {labels:labels,valid:valid,mod:mod,hpBonus:hpBonus,totalHP:totalHP,totalFP:totalFP,featHpBonus:featHpBonus,totalLevelOf:totalLevelOf,computed:computed,armorInfo:armorInfo,shield:shield,read:read,set:set,mode:mode,fromSheet:fromSheet,synchronize:synchronize,migrate:migrate};
 })();

@@ -782,6 +782,21 @@ try {
 console.log(hpCalcOK ? '✅ 职业页血量计算器通过' : '❌ 职业页血量计算器失败');
 totalErrors += hpCalcOK ? 0 : 1;
 
+// 面板健壮专长 HP 加成（分级生效 + pickTotal 快照 + 移除归零）
+console.log('\n=== 面板健壮专长 HP 加成 ===');
+let toughHpOK = true;
+try {
+  let th = spawnSync('node', [join(BASE, 'verify_panel_tough_hp_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  if (th.stdout) console.log(th.stdout.trim());
+  if (th.stderr) console.error(th.stderr.trim());
+  if (th.status !== 0) toughHpOK = false;
+} catch (e) {
+  toughHpOK = false;
+  console.log('❌ 面板健壮 E2E 执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(toughHpOK ? '✅ 面板健壮专长 HP 加成通过' : '❌ 面板健壮专长 HP 加成失败');
+totalErrors += toughHpOK ? 0 : 1;
+
 let classFeatOK = true;
 try {
   let cfo = spawnSync('node', [join(BASE, 'verify_class_features.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });

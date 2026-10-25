@@ -1427,6 +1427,62 @@ results.push('<div class="section"><h3>T5j: 猎人守护学习联动（学其一
 
 results.push('</div>');
 
+// =================== T16: 健壮专长 HP 分级生效 ===================
+results.push('<div class="section"><h3>T16: 健壮专长 HP 分级生效（选择等级之后 / 多职业快照）</h3>');
+(function(){
+  var S = SNOWD_CHARACTER_STATS;
+  function mk(mainLv, subLv, feats){
+    var cls = [{name:'战舞者', level:mainLv}];
+    if (subLv) cls.push({name:'法师', level:subLv, ruleEnabled:true});
+    return { classes: cls, special_feats: feats, attrs: {'体质': 14}, equipment: {}, race: '人类', background: '平民' };
+  }
+  var t = function(f, name){ return f ? f.name || f : ''; };
+  assertTrue(typeof S.featHpBonus === 'function', 'SNOWD_CHARACTER_STATS.featHpBonus 已导出');
+  if (typeof S.featHpBonus === 'function') {
+    assert(S.featHpBonus(mk(4, 0, [{name:'健壮', level:4, pickTotal:4}])), 2, '4级选健壮 → +2（不是 +8）');
+    assert(S.featHpBonus(mk(5, 0, [{name:'健壮', level:4, pickTotal:4}])), 4, '5级 → +4');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:4, pickTotal:4}])), 34, '20级·选4 → +34');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:8, pickTotal:8}])), 26, '20级·选8 → +26');
+    assert(S.featHpBonus(mk(13, 0, [{name:'健壮', level:13, pickTotal:13}])), 2, '13级·选13 → +2');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:13, pickTotal:13}])), 16, '20级·选13 → +16');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:null}])), 34, '选择等级未知 → 回退按4级 → +34');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:13}])), 16, '只有职业等级(13)、无快照 → +16');
+    assert(S.featHpBonus(mk(20, 0, ['健壮'])), 34, '旧档字符串条目 → 回退按4级 → +34');
+    assert(S.featHpBonus(mk(20, 0, [])), 0, '无健壮 → +0');
+    assert(S.featHpBonus(mk(20, 0, [{name:'健壮', level:4, pickTotal:4}, {name:'健美教练'}])), 44, '健壮 + 健美教练叠加（34 + 10）');
+    assert(S.featHpBonus(mk(15, 5, [{name:'健壮', level:13, pickTotal:18}])), 6, '多职业：主15/副5，快照18 → +6');
+    assert(S.featHpBonus(mk(15, 5, [{name:'健壮', level:13}])), 16, '多职业无快照：按职业等级13推算 → +16');
+    assert(S.featHpBonus(mk(4, 0, [{name:'健美教练'}])), 10, '健美教练固定 +10，与等级无关');
+  }
+  results.push('</div>');
+})();
+
+// =================== T17: 特殊专长导出槽位（4/8/13 + 第4槽） ===================
+results.push('<div class="section"><h3>T17: fillXlsxSpecialFeats 槽位映射（13 级 → K40）</h3>');
+(function(){
+  if (typeof fillXlsxSpecialFeats !== 'function') {
+    assertTrue(false, 'fillXlsxSpecialFeats 未加载');
+    results.push('</div>');
+    return;
+  }
+  var cells = {};
+  var set = function(k, v){ cells[k] = v; };
+  fillXlsxSpecialFeats(set, [
+    {name:'健壮', level:4},
+    {name:'健美教练', level:8},
+    {name:'仪式魔法', level:13},
+    {name:'元素亲和', level:null},
+  ]);
+  assert(cells['K36'], '健壮', '4 级专长 → K36');
+  assert(cells['K38'], '健美教练', '8 级专长 → K38');
+  assert(cells['K40'], '仪式魔法', '13 级专长 → K40（旧代码此处落空）');
+  assert(cells['K42'], '元素亲和', '第 4 槽（潜在专长）→ K42');
+  var cells2 = {};
+  fillXlsxSpecialFeats(function(k, v){ cells2[k] = v; }, [{name:'仪式魔法', level:13}]);
+  assert(cells2['K40'], '仪式魔法', '仅 13 级专长时也写 K40，不落到 K36');
+})();
+results.push('</div>');
+
 // =================== Render Summary ===================
 var total = passes + fails;
 var summary = document.getElementById("summary");

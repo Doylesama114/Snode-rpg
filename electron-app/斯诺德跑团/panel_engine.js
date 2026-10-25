@@ -242,7 +242,7 @@ function allocateUniqueCharId(desired) {
 
 /** Underscore keys that must survive save/load (game progress, not UI temps). */
 function isPersistedInternalKey(key) {
-  return key === "_xlsxSheetPath" || key === "_importLayoutIssues" || key === "_hp_per_level_bonus"
+  return key === "_xlsxSheetPath" || key === "_importLayoutIssues"
     || key === "_feat_ac_bonus"
     || key === "_persistOrig"
     || key === "_futureLowestLeft"
@@ -1842,7 +1842,7 @@ function featDisplayName(f) {
 }
 
 function fillXlsxSpecialFeats(set, feats) {
-  var levelRows = { 4: 36, 8: 38, 12: 40 };
+  var levelRows = { 4: 36, 8: 38, 13: 40 };
   var fi, name, lv, row, used = {};
   for (fi = 0; fi < feats.length; fi++) {
     if (!feats[fi]) continue;
@@ -3729,12 +3729,7 @@ function applyFeatEffects(name, featEntry, add) {
         if (!state.attrs) state.attrs = {};
         state.attrs[attr] = Math.max(0, (state.attrs[attr] || 0) + mult);
       }
-      // HP per level is tracked for calcTotalHP
-      if (add && eff.hp_per_level) {
-        state._hp_per_level_bonus = (state._hp_per_level_bonus || 0) + eff.hp_per_level;
-      } else if (!add && eff.hp_per_level) {
-        state._hp_per_level_bonus = Math.max(0, (state._hp_per_level_bonus || 0) - eff.hp_per_level);
-      }
+      // HP 加成统一由 SNOWD_CHARACTER_STATS.featHpBonus 计算，不再维护 state._hp_per_level_bonus
       break;
     }
     case "proficiency": {
@@ -4371,7 +4366,10 @@ function addSpecialFeat(name, choices) {
   // Store as object with name, level, and choices
   var lv = window._pendingLevelUp ? window._pendingLevelUp.level : 0;
   if (!lv) lv = getMaxLevel() || 0;
-  var entry = {name: name, level: lv};
+  /* 选择时快照总等级（含刚升的这级），用于健壮「选择之后每级 +2」的精确计算 */
+  var _totalNow = 0;
+  if (state.classes) { for (var _ci = 0; _ci < state.classes.length; _ci++) { var _cc = state.classes[_ci]; if (!_cc) continue; if (_ci > 0 && _cc.ruleEnabled === false) continue; _totalNow += Number(_cc.level) || 0; } }
+  var entry = {name: name, level: lv, pickTotal: window._pendingLevelUp ? _totalNow + 1 : _totalNow, clsIdx: window._pendingLevelUp ? window._pendingLevelUp.clsIdx : null};
   if (choices) entry.choices = choices;
   else entry.choices = {};
   if (name === "弥补短板" && entry.choices._futureLowestLeft == null) {
@@ -4912,14 +4910,8 @@ function renderBattleStats(){
   }
 
 
-  // Calculate HP bonus from special feats
-  var featHPBonus=0;
-  for(var fhi=0;fhi<state.special_feats.length;fhi++){
-    var fhn=state.special_feats[fhi];
-    var fnName=typeof fhn==="string"?fhn:fhn.name;
-    if(fnName==="健美教练") featHPBonus+=10;
-    if(fnName==="健壮") featHPBonus+=2*(ml+(sc&&sl>0?sl-1:0));
-  }
+  // HP bonus from special feats —— 唯一实现（健壮按选择等级分级生效）
+  var featHPBonus=(typeof SNOWD_CHARACTER_STATS!=="undefined"&&SNOWD_CHARACTER_STATS.featHpBonus)?SNOWD_CHARACTER_STATS.featHpBonus(state):0;
   if(SNOWD_CHARACTER_STATS.mode(state,"hp")==="rules")state.hp=calcTotalHP(mc,ml,sc,sl,con,state.race,state.background,featHPBonus,state.raceSize);
 
 

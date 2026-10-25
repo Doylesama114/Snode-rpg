@@ -94,6 +94,7 @@ ok('toughPickLevels = [4,8,13]', JSON.stringify(toughLevels) === '[4,8,13]', JSO
     $('hpTough').checked = false; $('hpTough').dispatchEvent(new Event('change'));
     out.offAgain = {}; [20].forEach(n => { setLv(n); out.offAgain[n] = hp(); });
     out.wrapHidden = getComputedStyle($('hpToughLvWrap')).display === 'none';
+    out.inputs = { con: Number($('hpCon').value), race: $('hpRace').value, keyName: $('hpKeyName') ? $('hpKeyName').value : '', keyVal: Number($('hpKeyVal').value) };
     return out;
   });
   await b2.close();
@@ -110,6 +111,43 @@ ok('toughPickLevels = [4,8,13]', JSON.stringify(toughLevels) === '[4,8,13]', JSO
   ok('不勾健壮时选择等级不参与计算（与不勾一致）', res.offAgain[20] === b[20], res.offAgain[20] + ' vs ' + b[20]);
   ok('不勾健壮时「选择等级」隐藏', res.wrapHidden === true, String(res.wrapHidden));
   ok('健壮场景无 JS 错误', e2.length === 0, JSON.stringify(e2.slice(0, 2)));
+  /* 面板一致性：同一场景面板输出必须与计算器完全一致（旧算法会多算 2×(选择等级−1)） */
+  {
+    const pnl = await chromium.launch({ headless: true });
+    const pp = await pnl.newPage({ viewport: { width: 1440, height: 900 } });
+    const pErr = []; pp.on('pageerror', e => pErr.push(String(e.message).slice(0, 60)));
+    await pp.goto('file:///' + ROOT.replace(/\\/g, '/') + '/' + encodeURI('斯诺德跑团/角色面板.html') + '?v=' + Date.now(), { waitUntil: 'load' });
+    await pp.waitForTimeout(2200);
+    const cases = [
+      { pick: 4, lv: 3 }, { pick: 4, lv: 4 }, { pick: 4, lv: 5 }, { pick: 4, lv: 20 },
+      { pick: 8, lv: 20 }, { pick: 13, lv: 13 }, { pick: 13, lv: 20 },
+    ];
+    const panelVals = await pp.evaluate(({ cases, inputs }) => {
+      const S = window.SNOWD_CHARACTER_STATS;
+      return cases.map(c => {
+        const attrs = { '体质': inputs.con };
+        if (inputs.keyName) attrs[inputs.keyName] = inputs.keyVal;
+        const st = {
+          classes: [{ name: '战舞者', level: c.lv }],
+          special_feats: [{ name: '健壮', level: c.pick, pickTotal: c.pick }],
+          attrs: attrs, race: inputs.race, background: '', equipment: {},
+        };
+        const r = S.computed(st);
+        return r && typeof r.hp === 'number' ? r.hp : null;
+      });
+    }, { cases, inputs: res.inputs });
+    await pnl.close();
+    const calcVals = [res.L4[3], res.L4[4], res.L4[5], res.L4[20], res.L8[20], res.L13[13], res.L13[20]];
+    let same = 0;
+    cases.forEach((c, i) => {
+      const good = panelVals[i] === calcVals[i];
+      if (good) same++;
+      else console.log('  FAIL 面板与计算器不一致：选 ' + c.pick + ' 级 · ' + c.lv + ' 级 → 面板 ' + panelVals[i] + ' vs 计算器 ' + calcVals[i]);
+    });
+    ok('面板与计算器逐场景一致（7 个场景）', same === cases.length, same + '/' + cases.length);
+    ok('面板健壮场景无 JS 错误', pErr.length === 0, JSON.stringify(pErr.slice(0, 2)));
+  }
+
 }
 ok('18 个职业页逐页通过（计算器 + 与面板一致 + 20级格 + 配色 + 导航 + 无溢出 + 0错误）', pageBad.length === 0, pageOk + '/18 通过' + (pageBad.length ? ' · 问题页: ' + pageBad.slice(0, 3).join(' | ') : ''));
 console.log('');
