@@ -18,8 +18,8 @@ ROOT = Path(__file__).resolve().parent.parent
 
 T5 = {
     "m-skill-8-5-1": ("变形术·枭熊", "e1d648fdbe2e78ec6ea73dffc435674a7ea83b5994cb8146846e110f03a372e4"),
-    "m-skill-8-5-2": ("变形术·鱼", "f258f94a405f9275798ed3b505190167693e0f66a18ec47a0859b81e22c96661"),
-    "m-skill-8-5-3": ("变形术·鸟", "a37fdbd25e0bf96fa493806d2f7e991d8139544857369c381d3ab12d9d56b7e8"),
+    "m-skill-8-5-2": ("变形术·鱼", "c17531143bedce33e6ec7374e9439e75483888507f8e1a40edbb9a9fcf43212b"),
+    "m-skill-8-5-3": ("变形术·鸟", "4abb19422fc6d0104a1acc615b89d1f2fec81fe53462c0740711090686912e88"),
     "m-skill-8-5-4": ("四臂术", "03e8d828aa8d9735137edd7312a04ad86c2455f9888fc60aaba8d54ac6c279fa"),
     "m-skill-8-5-5": ("爆裂术", "40d46299cf794f6cb634a740817a993eaa4fc10faff74480e9c96654bdf4ddbc"),
     "m-skill-8-5-6": ("石化术", "8cc08b127cd2e87cad68e311cbc254cd713338792a1419dd04d4503980905bde"),
