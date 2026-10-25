@@ -1,28 +1,48 @@
 # Bug 反馈汇总
 
-数据截止：2026-09-23T01:36:24.892Z
+数据截止：2026-10-24T15:24:55.993Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 7 |
-| 本次新拉取 | 0 |
+| 总反馈 | 9 |
+| 本次新拉取 | 2 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
 | desktop | 5 |
-| web | 2 |
+| web | 4 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
 | electron | 5 |
-| https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5% | 1 |
+| https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5% | 3 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-10-24T15:24:55.993Z｜web
+- 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/help.html#s4｜标题：斯诺德 · 帮助
+```
+页面: https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/help.html#s4
+斯诺德 · 帮助
+2026/10/25 01:24:55
+
+天赋生命装填会漏掉加血
+```
+
+### 2026-10-24T15:24:35.564Z｜web
+- 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/help.html#s4｜标题：斯诺德 · 帮助
+```
+页面: https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/help.html#s4
+斯诺德 · 帮助
+2026/10/25 01:24:35
+
+职业天赋学了不会在学习技能面板显示，子职业选取后没有选取初始特性的选项
+```
 
 ### 2026-09-23T01:36:24.892Z｜web
 - 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E9%A1%BE%E9%97%AE.html｜标题：斯诺德 · AI 顾问
