@@ -87,6 +87,25 @@ ok('saveState / saveCurrentSlot 会清脏', /state\._dirty = false;\s*\n\s*repor
   await b.close();
 }
 
+
+sec('⑤ 更新链路：镜像优先 / 源回退 / 低速熔断 / 安装校验');
+ok('自动检查镜像优先（oss -> github）', /function runAutoUpdateCheck\(\)[\s\S]{0,400}sources:\s*\['oss',\s*'github'\]/.test(main));
+ok('存在 tryNextUntriedSource（切到未尝试的源）', /function tryNextUntriedSource\(reason\)/.test(main));
+ok('tryNextUntriedSource 会挑出未尝试的源', /tried\.indexOf\(updateSession\.order\[i\]\)\s*<\s*0/.test(main));
+ok('useSource 记录已尝试源', /updateSession\.tried\.push\(info\.source\)/.test(main));
+ok('error 事件先尝试切源', /autoUpdater\.on\('error'[\s\S]{0,220}if \(tryNextUntriedSource\(/.test(main));
+ok('下载失败也会切源', /自动下载失败[\s\S]{0,260}tryNextUntriedSource\(/.test(main));
+ok('回退不会来回打转（_fromFallback + mirrorAttempted）', /_fromFallback:\s*true/.test(main) && /mirrorAttempted:\s*!!opts\._fromFallback/.test(main));
+ok('低速熔断阈值存在（100 KB/s / 60s / 120s）', /DOWNLOAD_MIN_KBPS\s*=\s*100/.test(main) && /DOWNLOAD_SLOW_AFTER_MS\s*=\s*60000/.test(main) && /DOWNLOAD_STALL_MS\s*=\s*120000/.test(main));
+ok('download-progress 会采样并可能中止', /autoUpdater\.on\('download-progress'[\s\S]{0,120}noteDownloadProgress\(p\)/.test(main));
+ok('下载使用 CancellationToken（可中止）', /getDownloadToken\(\)/.test(main) && /CancellationToken/.test(main));
+ok('本次运行内 10/30 分钟重试', /10 \* 60 \* 1000/.test(main) && /30 \* 60 \* 1000/.test(main) && /scheduleUpdateRetries\(\)/.test(main));
+ok('启动后执行安装结果校验', /checkInstallApplied\(\);/.test(main));
+ok('安装前写入待安装版本（两处 quitAndInstall）', (main.match(/markInstallAttempt\(pendingUpdate\.version\)/g) || []).length >= 2);
+ok('版本没变会报 update-install-not-applied', /updater-install-not-applied/.test(main));
+ok('updater 日志保留消息体', /info:\s*\(m\)\s*=>\s*diagnostics\.log\('updater-info',\s*\{\s*msg:/.test(main));
+ok('诊断白名单允许 msg/source/percent', /'msg'[\s\S]{0,40}'source'[\s\S]{0,40}'percent'/.test(fs.readFileSync('electron-app/desktop-diagnostics.js', 'utf8')));
+
 console.log('\n' + '─'.repeat(52));
 console.log((fail === 0 ? '✅ 全自动更新流程验收通过（策略 B）' : '❌ 存在失败项') + '  ' + pass + 'P / ' + fail + 'F');
 process.exit(fail === 0 ? 0 : 1);

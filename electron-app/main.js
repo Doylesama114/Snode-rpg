@@ -179,7 +179,15 @@ app.commandLine.appendSwitch('js-flags', '--expose-gc' + (testHeapMB >= 128 && t
 // 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;  // 已下载的更新在退出时自动安装（策略 B：手动检查走立即重启）
-autoUpdater.logger = { info: () => diagnostics.log('updater-info'), warn: () => diagnostics.log('updater-warning'), error: e => diagnostics.error('updater-error', e), debug: () => {} };
+autoUpdater.logger = {
+  info: (m) => diagnostics.log('updater-info', { msg: String(m) }),
+  warn: (m) => diagnostics.log('updater-warning', { msg: String(m) }),
+  error: (e) => diagnostics.error('updater-error', e, { msg: String((e && e.message) || e) }),
+  debug: () => {},
+};
+
+let CancellationToken = null;
+try { CancellationToken = require('builder-util-runtime').CancellationToken; } catch (e) { CancellationToken = null; }
 
 const UPDATE_SOURCES = {
   oss: {
@@ -193,7 +201,7 @@ const UPDATE_SOURCES = {
 };
 
 let updateCheckInFlight = false;
-/** @type {{ order: string[], phase: string, autoFallback: boolean, mirrorAttempted: boolean, lastSource: string|null }|null} */
+/** @type {{ order: string[], tried: string[], phase: string, autoFallback: boolean, mirrorAttempted: boolean, lastSource: string|null }|null} */
 let updateSession = null;
 
 let autoUpdateEnabledCache = null;
@@ -268,6 +276,120 @@ function beginMirrorFallback(reason) {
     _fromFallback: true,
     phase: 'mirror',
   });
+}
+
+/* 下载失败/太慢时切到下一个尚未尝试的源（OSS 与 GitHub 互为备份，最多各试一次） */
+function tryNextUntriedSource(reason) {
+  if (!updateSession) return false;
+  var tried = updateSession.tried || [];
+  var next = null;
+  for (var i = 0; i < updateSession.order.length; i++) {
+    if (tried.indexOf(updateSession.order[i]) < 0) { next = updateSession.order[i]; break; }
+  }
+  if (!next) return false;
+  updateCheckInFlight = false;
+  console.log('[更新] ' + (reason || '失败') + ' -> 切换到 ' + next + ' 重试');
+  diagnostics.log('updater-source-fallback', { source: next, reason: String(reason || '').slice(0, 120), stage: 'fallback' });
+  sendUpdateStatus({ status: 'checking', message: next === 'oss' ? '正在切换国内镜像重试…' : '正在切换备用源重试…' });
+  checkForUpdatesViaGenericFeed({ sources: [next], autoFallback: false, _fromFallback: true, phase: next === 'oss' ? 'mirror' : 'github' });
+  return true;
+}
+
+/* ===== 下载低速熔断：GitHub 慢到 15 KB/s 时不能让用户白等 ===== */
+var DOWNLOAD_MIN_KBPS = 100;       /* 平均速度下限 */
+var DOWNLOAD_SLOW_AFTER_MS = 60000; /* 至少观察 60 秒再判定 */
+var DOWNLOAD_STALL_MS = 120000;     /* 120 秒没有任何进度视为卡死 */
+var downloadWatch = null;
+var downloadGeneration = 0;
+var abortedGeneration = 0;
+function resetDownloadWatch(version) {
+  downloadGeneration += 1;
+  downloadWatch = {
+    generation: downloadGeneration,
+    version: version,
+    startedAt: Date.now(),
+    lastBytes: 0,
+    lastProgressAt: Date.now(),
+    token: null,
+  };
+  return downloadWatch.generation;
+}
+function getDownloadToken() {
+  if (!downloadWatch || !CancellationToken) return undefined;
+  downloadWatch.token = new CancellationToken();
+  return downloadWatch.token;
+}
+function noteDownloadProgress(p) {
+  if (!downloadWatch) return;
+  var now = Date.now();
+  var transferred = (p && p.transferred) || 0;
+  if (transferred > downloadWatch.lastBytes) {
+    downloadWatch.lastBytes = transferred;
+    downloadWatch.lastProgressAt = now;
+  }
+  var elapsed = now - downloadWatch.startedAt;
+  var stalled = now - downloadWatch.lastProgressAt;
+  var kbps = elapsed > 0 ? (transferred / 1024) / (elapsed / 1000) : 0;
+  var tooSlow = elapsed >= DOWNLOAD_SLOW_AFTER_MS && kbps < DOWNLOAD_MIN_KBPS;
+  var frozen = stalled >= DOWNLOAD_STALL_MS;
+  if (!tooSlow && !frozen) return;
+  var reason = frozen ? '下载停顿超过 2 分钟' : '下载速度过低（' + Math.round(kbps) + ' KB/s）';
+  diagnostics.log('updater-download-abort', { reason: reason, ms: elapsed, percent: Math.round((p && p.percent) || 0) });
+  abortedGeneration = downloadWatch.generation;
+  if (downloadWatch.token) { try { downloadWatch.token.cancel(); } catch (e) {} }
+  downloadWatch = null;
+  updateCheckInFlight = false;
+  if (tryNextUntriedSource(reason)) return;
+  sendUpdateStatus({ status: 'error', message: '更新' + reason + '，已中止。可稍后重试，或到设置页手动下载安装包。' });
+}
+
+/* ===== 本次运行内重试：首检失败后 10/30 分钟各再试一次 ===== */
+var updateRetryTimers = [];
+function scheduleUpdateRetries() {
+  updateRetryTimers.forEach(function (t) { clearTimeout(t); });
+  updateRetryTimers = [];
+  [10 * 60 * 1000, 30 * 60 * 1000].forEach(function (ms) {
+    updateRetryTimers.push(setTimeout(function () {
+      if (!getAutoUpdateEnabled()) return;
+      if (pendingUpdate && pendingUpdate.ready) return;
+      if (updateCheckInFlight) return;
+      diagnostics.log('updater-retry', { ms: ms, stage: 'retry', version: app.getVersion() });
+      runAutoUpdateCheck();
+    }, ms));
+  });
+}
+
+/* ===== 安装结果校验：记录待安装版本，重启后比对是否真的装上了 ===== */
+function updateStatePath() { return path.join(app.getPath('userData'), 'snowd-update-state.json'); }
+function readUpdateState() {
+  try { return JSON.parse(fs.readFileSync(updateStatePath(), 'utf8')) || {}; } catch (e) { return {}; }
+}
+function writeUpdateState(patch) {
+  try {
+    var state = readUpdateState();
+    Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
+    fs.writeFileSync(updateStatePath(), JSON.stringify(state));
+  } catch (e) { diagnostics.error('update-state-write-failed', e); }
+}
+function markInstallAttempt(version) {
+  writeUpdateState({ pendingVersion: version || null, attemptedAt: Date.now() });
+  diagnostics.log('updater-install-attempt', { version: version || '', stage: 'install' });
+}
+function checkInstallApplied() {
+  var state = readUpdateState();
+  if (!state || !state.pendingVersion) return;
+  var now = Date.now();
+  if (app.getVersion() === state.pendingVersion) {
+    writeUpdateState({ pendingVersion: null, installedAt: now });
+    diagnostics.log('updater-install-applied', { version: app.getVersion(), stage: 'install' });
+    return;
+  }
+  if (state.attemptedAt && now - state.attemptedAt < 24 * 3600 * 1000) {
+    diagnostics.log('updater-install-not-applied', { version: app.getVersion(), target: state.pendingVersion, stage: 'install' });
+    sendUpdateStatus({ status: 'error', message: '上次更新未生效（当前仍为 v' + app.getVersion() + '）。可到设置页手动下载安装包，或导出诊断反馈。' });
+  } else {
+    writeUpdateState({ pendingVersion: null });
+  }
 }
 
 function normalizeHttpsUrl(url) {
@@ -379,6 +501,7 @@ function checkForUpdatesViaGenericFeed(opts) {
   var autoFallback = opts.autoFallback !== false && !opts._fromFallback && order.length === 1 && order[0] === 'github';
   updateSession = {
     order: order,
+    tried: [],
     phase: opts.phase || (order[0] === 'oss' ? 'mirror' : order.length === 1 ? 'github' : 'full'),
     autoFallback: autoFallback,
     mirrorAttempted: !!opts._fromFallback,
@@ -416,6 +539,7 @@ function checkForUpdatesViaGenericFeed(opts) {
   var fallbackInfo = null;
 
   function useSource(info, reason) {
+    if (updateSession && updateSession.tried.indexOf(info.source) < 0) updateSession.tried.push(info.source);
     updateSession.lastSource = info.source;
     console.log('[更新] 使用 ' + info.source + ' feed: ' + info.feedUrl + ' (' + reason + ')');
     autoUpdater.setFeedURL({ provider: 'generic', url: info.feedUrl });
@@ -489,9 +613,9 @@ function runAutoUpdateCheck() {
   // 两个源都问：GitHub 尚未发布（Release 缺失或延迟）时，镜像仍能给出正确版本。
   // 链里已含 oss，所以不再依赖"单源 github 失败才回退"那条路径。
   return checkForUpdatesViaGenericFeed({
-    sources: ['github', 'oss'],
+    sources: ['oss', 'github'],
     autoFallback: false,
-    phase: 'full',
+    phase: 'mirror',
   });
 }
 
@@ -515,8 +639,12 @@ autoUpdater.on('update-available', (info) => {
   /* 策略 B：不再等用户点「下载更新」，直接静默下载 */
   console.log('[更新] 自动开始下载 v' + info.version);
   sendUpdateStatus({ status: 'downloading', version: info.version, percent: 0, message: '正在下载更新 v' + info.version + '…' });
-  autoUpdater.downloadUpdate().catch(function (err) {
+  var downloadGen = resetDownloadWatch(info.version);
+  autoUpdater.downloadUpdate(getDownloadToken()).catch(function (err) {
+    if (abortedGeneration === downloadGen) return;
     console.error('[更新] 自动下载失败:', err && err.message);
+    diagnostics.error('updater-download-failed', err);
+    if (tryNextUntriedSource('下载失败：' + ((err && err.message) || '未知错误'))) return;
     sendUpdateStatus({ status: 'error', message: '下载更新失败：' + ((err && err.message) || '未知错误') });
   });
 });
@@ -539,6 +667,8 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 autoUpdater.on('error', (err) => {
   console.error('[更新] 出错:', err.message);
+  diagnostics.error('updater-error-event', err);
+  if (tryNextUntriedSource(err && err.message)) return;
   if (updateSession && updateSession.autoFallback && !updateSession.mirrorAttempted) {
     beginMirrorFallback(err.message || 'autoUpdater error');
     return;
@@ -565,6 +695,7 @@ function maybeInstallNow() {
   installPending = false;
   console.log('[更新] 立即重启安装 v' + pendingUpdate.version);
   sendUpdateStatus({ status: 'installing', version: pendingUpdate.version, message: '更新已就绪，正在重启安装…' });
+  markInstallAttempt(pendingUpdate.version);
   setTimeout(function () { autoUpdater.quitAndInstall(true, true); }, 400);
 }
 ipcMain.on('panel-dirty', (e, flag) => {
@@ -575,6 +706,7 @@ ipcMain.on('panel-dirty', (e, flag) => {
   if (!flag && installPending) setTimeout(maybeInstallNow, 300);
 });
 autoUpdater.on('download-progress', (p) => {
+  noteDownloadProgress(p);
   var pct = Math.max(0, Math.min(100, Math.round((p && p.percent) || 0)));
   sendUpdateStatus({ status: 'downloading', percent: pct, version: pendingUpdate ? pendingUpdate.version : '', message: '正在下载更新 ' + pct + '%' });
 });
@@ -618,6 +750,7 @@ ipcMain.on('install-update', () => {
     return;
   }
   console.log('[更新] 用户确认重启安装 v' + pendingUpdate.version);
+  markInstallAttempt(pendingUpdate.version);
   autoUpdater.quitAndInstall(true, true);
 });
 
@@ -1079,7 +1212,13 @@ function startMemoryWatchdog() {
   }, 20000);
 }
 let updateTimer = null;
-app.on('will-quit', () => { clearInterval(memoryTimer); clearTimeout(updateTimer); gcWork.clear(); });
+app.on('will-quit', () => {
+  clearInterval(memoryTimer);
+  clearTimeout(updateTimer);
+  (updateRetryTimers || []).forEach(function (t) { clearTimeout(t); });
+  updateRetryTimers = [];
+  gcWork.clear();
+});
 async function createWindow() {
   mainWindow = new BrowserWindow({
     show: false,
@@ -1189,11 +1328,13 @@ app.whenReady().then(async () => {
   } catch (e) { diagnostics.error('local-crash-dumps-unavailable', e); }
   diagnostics.log('startup-stage', { stage: 'app-ready' });
   await createWindow();
+  try { checkInstallApplied(); } catch (e) { diagnostics.error('update-install-check-failed', e); }
   try { require('./chargen-cli-server').startChargenCliServer(() => mainWindow, { diagnostics, lifecycle }); }
   catch (e) { diagnostics.error('cli-disabled', e); }
   startMemoryWatchdog();
   if (process.env.SNODE_CLI_TEST !== '1') {
     updateTimer = setTimeout(() => { if (getAutoUpdateEnabled()) runAutoUpdateCheck(); }, 90000);
+    scheduleUpdateRetries();
   }
 }).catch(fatalMain);
 app.on('window-all-closed', () => {

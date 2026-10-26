@@ -24,7 +24,7 @@ function createDiagnostics(app, options = {}) {
       break;
     } catch (_) { degraded = true; }
   }
-  const allowed = new Set(['stage', 'ms', 'windowId', 'role', 'url', 'code', 'reason', 'exitCode', 'type', 'pid', 'mb', 'freeMB', 'windows', 'version', 'electron', 'chrome', 'node', 'os', 'arch', 'mode', 'seq', 'count', 'name', 'status', 'site', 'vendor', 'device', 'driver']);
+  const allowed = new Set(['stage', 'ms', 'windowId', 'role', 'url', 'code', 'reason', 'exitCode', 'type', 'pid', 'mb', 'freeMB', 'windows', 'version', 'electron', 'chrome', 'node', 'os', 'arch', 'mode', 'seq', 'count', 'name', 'status', 'site', 'vendor', 'device', 'driver', 'msg', 'source', 'percent', 'target', 'attempt']);
   function log(event, details = {}) {
     const meta = {};
     for (const [key, value] of Object.entries(details)) {
