@@ -11,6 +11,7 @@ data = json.loads((ROOT / "职业页" / "数据" / f"{CLASS}.json").read_text(en
 fx_path = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 fx = json.loads(fx_path.read_text(encoding="utf-8")) if fx_path.exists() else {CLASS: []}
 
+hidden_ids = {s['id'] for s in data['skills'] if s.get('hidden')}
 articles = set(re.findall(r'<article class="skill(?: starting)?" id="(p-[^"]+)"', html))
 json_ids = {s["id"] for s in data["skills"]}
 fx_ids = {s["id"] for s in fx.get(CLASS, [])}
@@ -18,7 +19,7 @@ fx_ids = {s["id"] for s in fx.get(CLASS, [])}
 print("=== ID alignment ===")
 print(f"JSON skills: {len(json_ids)}")
 print(f"FX entries:  {len(fx_ids)}")
-print(f"JSON not in HTML: {sorted(json_ids - articles)}")
+print(f"JSON not in HTML: {sorted((json_ids - hidden_ids) - articles)}")
 print(f"HTML not in JSON: {sorted(articles - json_ids)}")
 print(f"JSON not in FX:   {sorted(json_ids - fx_ids)}")
 
@@ -34,8 +35,8 @@ print(f"JSON fields still using 费用: {has_old_fee}")
 
 checks = [
     ("p-starting-skill-1", "审判", False),
-    ("p-skill-123", "制裁之锤", True),
-    ("p-skill-138", "力量祝福", True),
+    ("p-skill-123", "制裁之锤", False),
+    ("p-skill-138", "力量祝福", False),
 ]
 fx_by_id = {s["id"]: s for s in fx.get(CLASS, [])}
 print("\n=== Spot checks ===")
@@ -57,7 +58,7 @@ if html.count("费用："):
     errors.append("HTML still has 费用：")
 if json_ids != fx_ids:
     errors.append("JSON/FX id mismatch")
-if json_ids - articles:
+if (json_ids - hidden_ids) - articles:
     errors.append("JSON ids missing in HTML")
 if has_old_fee:
     errors.append("JSON has 费用 field")

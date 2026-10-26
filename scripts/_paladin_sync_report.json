@@ -1,8 +1,11 @@
 {
   "class": "圣骑士",
-  "docx_skills_indexed": 79,
-  "json_skills": 58,
-  "updated": 58,
+  "docx_skills_indexed": 70,
+  "json_skills": 69,
+  "updated": 68,
   "removed_not_in_docx": [],
-  "fx_entries": 58
+  "preserved_not_in_docx": [
+    "盲目信念"
+  ],
+  "fx_entries": 69
 }

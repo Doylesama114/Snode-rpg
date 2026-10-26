@@ -48,6 +48,8 @@ SOURCE_EXCEPTIONS = {
     "\u53ec\u5524\u5e08": {"\u84dd\u7130\u672f"},
     # 10.23：作者笔误，文档中名为「潮汐抗性」，数据侧已更正为「风雷抗性」
     "\u8428\u6ee1\u796d\u53f8": {"\u98ce\u96f7\u6297\u6027"},
+    # 10.26：作者新文档已删除「盲目信念」，按要求数据保留但页面不再展示
+    "\u5723\u9a91\u58eb": {"\u76f2\u76ee\u4fe1\u5ff5"},
 }
 SOURCE_FIELDS = re.compile(r"^(\u524d\u7f6e\u6761\u4ef6|\u989d\u5916\u6761\u4ef6|\u65bd\u5c55\u65f6\u95f4|\u65bd\u5c55\u8ddd\u79bb|\u6301\u7eed\u65f6\u95f4|\u75b2\u52b3\u6d88\u8017|\u5173\u952e\u8bcd|\u65bd\u5c55\u6761\u4ef6|\u65bd\u5c55\u9650\u5236|\u9650\u5236|\u6807\u8bc6|\u8d39\u7528|\u63cf\u8ff0)[:\uff1a]")
 def source_rules(path, pool):
@@ -118,7 +120,8 @@ def main():
         for s in docs[cls]:
             if s['id'] not in pids:errors.append(f'{cls}/{s["name"]}: panel ID missing {s["id"]}')
             if not body(s):errors.append(f'{cls}/{s["name"]}: empty effect')
-            if s['id'] not in visible[cls]:errors.append(f'{cls}/{s["name"]}: card missing')
+            # 页面隐藏（hidden=true）的技能按约定不要求出现卡片
+            if s['id'] not in visible[cls] and not s.get('hidden'):errors.append(f'{cls}/{s["name"]}: card missing')
 
     source_checked=0
     sources=[(cls,ROOT/f"\u57fa\u7840\u804c\u4e1a-{cls}.docx",pool) for cls,pool in docs.items()]
@@ -151,7 +154,7 @@ def main():
             for line in expected:
                 for channel,text in channels.items():
                     if norm(line) not in text:errors.append(f"{cls}/{skill['name']}/{channel}: source rule missing "+line[:60])
-    print(f"Independent full-source coverage: {source_checked} definitions; 14 named source exceptions")
+    print(f"Independent full-source coverage: {source_checked} definitions; 15 named source exceptions")
     checked=0
     for case in fixture['cases']:
         cls=case['class'];dn=case.get('deity');nm=case['name']
