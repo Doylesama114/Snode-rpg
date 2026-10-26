@@ -8,6 +8,7 @@
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -56,6 +57,28 @@ def audit_page(path: Path) -> list[str]:
 
     errors: list[str] = []
     seen: dict[str, tuple[str | None, str]] = {}
+
+    # 历史 bug：起始特性技能（无阶位）被塞进伪「天赋树」nav-tier，产生 #xxx-tier-0 死锚点
+    body_ids = set(tree.xpath('//*[@id]/@id'))
+    for href in nav.xpath('.//a/@href'):
+        if href and re.search(r'-tier-0$', href):
+            errors.append(f"伪阶位导航：{href}（起始技能不应进入阶位分组）")
+    for details in nav.xpath('.//details[contains(concat(" ", normalize-space(@class), " "), " nav-tier ")]'):
+        summary = details.xpath("./summary[1]")
+        if summary:
+            label = "".join(summary[0].itertext()).strip()
+            if not tier_from_label(label):
+                errors.append(f"导航分组缺少阶位名：「{label}」")
+        for a in details.xpath('.//a[contains(@class,"skill-link")]/@href'):
+            tid = (a or "").lstrip("#")
+            if tid.startswith(("huangye-", "shouling-", "fusu-", "yueying-", "rinu-", "xingchen-", "jinghuo-")) and tid not in body_ids:
+                errors.append(f"阶位锚点不存在：#{tid}")
+    # 导航内所有技能链接必须唯一（含顶部平铺列表）
+    all_links = [ (a or "").lstrip("#") for a in nav.xpath('.//a[contains(@class,"skill-link")]/@href') ]
+    dup = {x for x in all_links if all_links.count(x) > 1}
+    for d_ in sorted(dup):
+        errors.append(f"导航重复链接：#{d_}")
+
 
     for details in nav.xpath('.//details[contains(concat(" ", normalize-space(@class), " "), " nav-tier ")]'):
         summary = details.xpath("./summary[1]")
