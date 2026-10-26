@@ -88,6 +88,20 @@ ok('saveState / saveCurrentSlot 会清脏', /state\._dirty = false;\s*\n\s*repor
 }
 
 
+
+sec('⑥ 临时目录加固 / 更新缓存清理');
+ok('关闭差分下载（OSS 不支持 multipart/byteranges）', /autoUpdater\.disableDifferentialDownload = true/.test(main));
+ok('关闭 web 安装器', /autoUpdater\.disableWebInstaller = true/.test(main));
+ok('存在 resolveSafeTempDir（不依赖 TEMP 自身）', /function resolveSafeTempDir\(\)/.test(main) && /localAppData/.test(main));
+ok('启动时归一化 process.env.TEMP/TMP', /function ensureProcessTemp\(\)/.test(main) && /process\.env\.TEMP = safe/.test(main) && /ensureProcessTemp\(\);/.test(main));
+ok('存在 purgeUpdaterCache（装完清理）', /function purgeUpdaterCache\(reason\)/.test(main));
+ok('存在 purgeStaleUpdaterCache（7 天保留）', /function purgeStaleUpdaterCache\(\)/.test(main) && /UPDATER_CACHE_KEEP_MS = 7 \* 24/.test(main));
+ok('清理前检查是否有正在进行的更新', /function updaterBusy\(\)/.test(main) && /if \(updaterBusy\(\)\) return 0;/.test(main));
+ok('装完（版本匹配）后调用清理', /updater-install-applied[\s\S]{0,300}purgeUpdaterCache\('post-install'\)/.test(main));
+ok('启动时清理过期缓存', /purgeStaleUpdaterCache\(\);/.test(main));
+ok('清理保留 update-info.json', /entries\[i\]\.name === "update-info\.json"/.test(main));
+ok('清理目标取自 app-update.yml 的 updaterCacheDirName', /updaterCacheDirName:\\s\*/.test(main));
+
 sec('⑤ 更新链路：镜像优先 / 源回退 / 低速熔断 / 安装校验');
 ok('自动检查镜像优先（oss -> github）', /function runAutoUpdateCheck\(\)[\s\S]{0,400}sources:\s*\['oss',\s*'github'\]/.test(main));
 ok('存在 tryNextUntriedSource（切到未尝试的源）', /function tryNextUntriedSource\(reason\)/.test(main));

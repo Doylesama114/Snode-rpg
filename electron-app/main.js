@@ -179,6 +179,9 @@ app.commandLine.appendSwitch('js-flags', '--expose-gc' + (testHeapMB >= 128 && t
 // 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;  // 已下载的更新在退出时自动安装（策略 B：手动检查走立即重启）
+/* OSS 不支持 multipart/byteranges（差分下载会先报错再回退全量），直接关掉差分；同时关闭 web 安装器警告 */
+autoUpdater.disableDifferentialDownload = true;
+autoUpdater.disableWebInstaller = true;
 autoUpdater.logger = {
   info: (m) => diagnostics.log('updater-info', { msg: String(m) }),
   warn: (m) => diagnostics.log('updater-warning', { msg: String(m) }),
@@ -360,6 +363,91 @@ function scheduleUpdateRetries() {
 }
 
 /* ===== 安装结果校验：记录待安装版本，重启后比对是否真的装上了 ===== */
+/* ===== 临时目录加固：用户级 TEMP 被改坏时 NSIS 安装器会直接失败（Error writing temporary file） ===== */
+function resolveSafeTempDir() {
+  try {
+    var base = app.getPath("localAppData") || "";
+    if (!base) return "";
+    var dir = path.join(base, "Temp");
+    fs.mkdirSync(dir, { recursive: true });
+    return dir;
+  } catch (e) { return ""; }
+}
+function ensureProcessTemp() {
+  var safe = resolveSafeTempDir();
+  if (!safe) return;
+  var cur = process.env.TEMP || "";
+  var same = false;
+  try { same = !!cur && path.resolve(cur) === path.resolve(safe); } catch (e) { same = false; }
+  if (same) return;
+  process.env.TEMP = safe;
+  process.env.TMP = safe;
+  diagnostics.log("temp-env-normalized", { target: safe, reason: "installer-needs-valid-temp" });
+}
+
+/* ===== 更新缓存清理：安装包会堆在 %LOCALAPPDATA%/<updaterCacheDirName>（每版 150~300MB） ===== */
+var UPDATER_CACHE_KEEP_MS = 7 * 24 * 3600 * 1000;
+function updaterCacheDir() {
+  var base = app.getPath("localAppData") || "";
+  var name = "snowd-skill-tree-updater";
+  try {
+    var yml = fs.readFileSync(path.join(process.resourcesPath || "", "app-update.yml"), "utf8");
+    var m = /updaterCacheDirName:\s*(\S+)/.exec(yml);
+    if (m) name = m[1];
+  } catch (e) {}
+  return path.join(base, name);
+}
+function dirSize(dir) {
+  var total = 0;
+  try {
+    var entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (var i = 0; i < entries.length; i++) {
+      var p = path.join(dir, entries[i].name);
+      if (entries[i].isDirectory()) total += dirSize(p);
+      else { try { total += fs.statSync(p).size; } catch (e) {} }
+    }
+  } catch (e) {}
+  return total;
+}
+function updaterBusy() { return !!(pendingUpdate && pendingUpdate.ready) || !!downloadWatch; }
+function purgeUpdaterCache(reason) {
+  var dir = updaterCacheDir();
+  if (!dir || !fs.existsSync(dir)) return 0;
+  if (updaterBusy()) return 0;
+  var before = dirSize(dir);
+  try { fs.rmSync(path.join(dir, "pending"), { recursive: true, force: true }); } catch (e) {}
+  try { fs.rmSync(path.join(dir, "installer.exe"), { force: true }); } catch (e) {}
+  var after = dirSize(dir);
+  var freed = before - after;
+  if (freed > 0) diagnostics.log("updater-cache-purged", { ms: freed, reason: String(reason || "") });
+  return freed;
+}
+function purgeStaleUpdaterCache() {
+  var dir = updaterCacheDir();
+  if (!dir || !fs.existsSync(dir)) return;
+  if (updaterBusy()) return;
+  var now = Date.now();
+  var removed = 0;
+  function walk(d) {
+    var entries = [];
+    try { entries = fs.readdirSync(d, { withFileTypes: true }); } catch (e) { return; }
+    for (var i = 0; i < entries.length; i++) {
+      var p = path.join(d, entries[i].name);
+      if (entries[i].isDirectory()) {
+        walk(p);
+        try { if (fs.readdirSync(p).length === 0) fs.rmdirSync(p); } catch (e) {}
+        continue;
+      }
+      if (entries[i].name === "update-info.json") continue;
+      try {
+        var st = fs.statSync(p);
+        if (now - st.mtimeMs > UPDATER_CACHE_KEEP_MS) { fs.rmSync(p, { force: true }); removed += st.size; }
+      } catch (e) {}
+    }
+  }
+  walk(dir);
+  if (removed > 0) diagnostics.log("updater-cache-stale-purged", { ms: removed, reason: "older-than-7d" });
+}
 function updateStatePath() { return path.join(app.getPath('userData'), 'snowd-update-state.json'); }
 function readUpdateState() {
   try { return JSON.parse(fs.readFileSync(updateStatePath(), 'utf8')) || {}; } catch (e) { return {}; }
@@ -382,6 +470,7 @@ function checkInstallApplied() {
   if (app.getVersion() === state.pendingVersion) {
     writeUpdateState({ pendingVersion: null, installedAt: now });
     diagnostics.log('updater-install-applied', { version: app.getVersion(), stage: 'install' });
+    try { purgeUpdaterCache('post-install'); } catch (e) { diagnostics.error('updater-cache-purge-failed', e); }
     return;
   }
   if (state.attemptedAt && now - state.attemptedAt < 24 * 3600 * 1000) {
@@ -1327,8 +1416,10 @@ app.whenReady().then(async () => {
     crashReporter.start({ uploadToServer: false, compress: true });
   } catch (e) { diagnostics.error('local-crash-dumps-unavailable', e); }
   diagnostics.log('startup-stage', { stage: 'app-ready' });
+  try { ensureProcessTemp(); } catch (e) { diagnostics.error('temp-normalize-failed', e); }
   await createWindow();
   try { checkInstallApplied(); } catch (e) { diagnostics.error('update-install-check-failed', e); }
+  try { purgeStaleUpdaterCache(); } catch (e) { diagnostics.error('updater-cache-prune-failed', e); }
   try { require('./chargen-cli-server').startChargenCliServer(() => mainWindow, { diagnostics, lifecycle }); }
   catch (e) { diagnostics.error('cli-disabled', e); }
   startMemoryWatchdog();

@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8073',
+    date: '2026-10-27',
+    changes: [
+      '更新安装包自动清理：装完即删 pending/installer.exe，另按 7 天兜底清理旧缓存（本机实测回收 300.4 MB → 0.2 MB）',
+      'TEMP 环境加固：启动时把子进程 TEMP/TMP 归一化到 %LOCALAPPDATA%\\Temp，避免安装器因 TEMP 被改坏而报 "Error writing temporary file"',
+      '关闭差分下载（OSS 不支持 multipart/byteranges，此前每次都会报错再回退全量）',
+      '关闭 web 安装器告警（disableWebInstaller）',
+      '清理前检查是否有进行中的更新，不会误删待安装包；保留 update-info.json 续传信息',
+      '更新校验新增 11 条断言（47P 0F），覆盖加固函数、清理时机与保留名单'
+    ]
+  },
+
+  {
     version: '1.0.8072',
     date: '2026-10-27',
     changes: [
