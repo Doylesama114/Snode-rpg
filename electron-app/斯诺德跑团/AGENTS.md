@@ -1,6 +1,6 @@
-本轮更新 v1.0.8084 2026-10-27
+本轮更新 v1.0.8085 2026-10-27
 
-补 8083 的打包遗漏：`portable-updater.js` 未列入 electron-builder 的 `files`，导致打包后启动即崩（CI 的 `Verify packaged desktop executable` 失败）。已加入清单，并新增门禁断言「main.js 的本地 require 必须都在 files 列表里」。详见 docs/releases/v1.0.8084.md。
+便携版自更新验证版（仅版本号）：应用已迁移到 `D:\SnodeRPG`（解压 zip，8084），本版用于验证 zip 覆盖式自更新是否闭环。详见 docs/releases/v1.0.8085.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

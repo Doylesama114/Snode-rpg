@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8085',
+    date: '2026-10-27',
+    changes: [
+      '便携版自更新验证版：除版本号外与 1.0.8084 相同',
+      '用于验证 zip 覆盖式自更新（检查 portable.json → 下载 → sha512 → 解压 → robocopy 覆盖 → 重启）'
+    ]
+  },
+
+  {
     version: '1.0.8084',
     date: '2026-10-27',
     changes: [
