@@ -1,6 +1,6 @@
-本轮更新 v1.0.8074 2026-10-27
+本轮更新 v1.0.8075 2026-10-27
 
-安装器改为「延迟拉起」：先让应用彻底退出，12 秒后再由分离进程执行 `--updated /S --force-run`，解决静默模式下 NSIS 无法关闭运行中的应用而返回 2（Failed to uninstall old application files）。详见 docs/releases/v1.0.8074.md。
+更新链路验证版：仅版本号与说明变更，用于验证 v1.0.8074 的「应用退出后延迟 12 秒拉起安装器」是否真正闭环（8074 的修复只有在出现更新版本时才会触发）。详见 docs/releases/v1.0.8075.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
