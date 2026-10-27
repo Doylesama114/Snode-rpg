@@ -24,6 +24,7 @@ OFFICIAL_PANTHEON: list[dict] = [
         "aliases": ["爱、激情与欢愉之神"],
     },
     {"name": "潮汐、引力与崩坏之神", "attr": "力场", "id": "tide"},
+    {"name": "季风之神", "attr": "自然", "id": "monsoon", "hidden": True},
 ]
 
 # Extra deities with domain tables but not in official 10
@@ -31,6 +32,9 @@ EXTRA_DEITIES: list[dict] = [
     {"name": "幸运女神", "attr": "", "id": "luck"},
     {"name": "隐秘与变化之神", "attr": "", "id": "secret"},
 ]
+
+# 隐藏神系：只在职业技能树出现，不进建卡神祇选择 / 学习面板 / help 规则表
+HIDDEN_DEITIES: set[str] = {"季风之神"}
 
 # Canonical deity name -> source docx under 牧师子分支/
 DOMAIN_DOCX: dict[str, str] = {
@@ -43,6 +47,7 @@ DOMAIN_DOCX: dict[str, str] = {
     "幸运女神": "神圣领域-幸运女神（争锋模式）.docx",
     "隐秘与变化之神": "神圣领域-隐秘与变化之神（争锋模式）.docx",
     "无尽饥饿与吞噬之神": "神圣领域-无尽饥饿与吞噬之神.docx",
+    "季风之神": "神圣领域-季风之神.docx",
 }
 
 
@@ -61,6 +66,8 @@ def pantheon_for_json() -> list[dict]:
             "locked": d["name"] not in unlocked,
             "official": d["name"] in {x["name"] for x in OFFICIAL_PANTHEON},
         }
+        if d.get("hidden") or d["name"] in HIDDEN_DEITIES:
+            row["hidden"] = True
         if d.get("aliases"):
             row["aliases"] = list(d["aliases"])
         if d["name"] in DOMAIN_DOCX:

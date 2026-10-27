@@ -10,11 +10,11 @@ html = (ROOT / "职业页" / "牧师.html").read_text(encoding="utf-8")
 data = json.loads((ROOT / "职业页" / "数据" / "牧师·神圣领域.json").read_text(encoding="utf-8"))
 errors = []
 
-if html.count('<div class="deity-chip') < 13 and html.count('class="deity-chip') < 13:
-    errors.append("expected 13 deity chips (incl 通用)")
+if html.count('<div class="deity-chip') < 14 and html.count('class="deity-chip') < 14:
+    errors.append("expected 14 deity chips (incl 通用)")
 chips = re.findall(r'class="deity-chip[^"]*"', html)
-if len(chips) != 13:
-    errors.append(f"chip count {len(chips)} != 13")
+if len(chips) != 14:
+    errors.append(f"chip count {len(chips)} != 14")
 locked = [p for p in data["pantheon"] if p["locked"]]
 if len(locked) != 3:
     errors.append(f"locked {len(locked)} != 3")
@@ -35,13 +35,19 @@ for name in [p["name"] for p in locked]:
     if f'class="deity-chip locked" data-deity="{name}"' not in html:
         errors.append(f"chip not locked: {name}")
 
+# 通用区块必须完好（防止注入误伤）
+if html.count('class="class-features"') != 1:
+    errors.append("class-features block missing or duplicated")
+if html.count('id="pr-hpcalc"') != 1:
+    errors.append("hpcalc block missing or duplicated")
+
 # common skills still present
 for sid in ("pr-skill-1", "pr-skill-5", "pr-style-戒律"):
     if sid not in html:
         errors.append(f"missing common {sid}")
 
 # sample domain skills
-for needle in ("树莓术", "好运飞弹", "爱箭恋矢", "奥术箭", "快速拨弦", "无形之手", "冲锋", "战争潮流", "审判", "圣光出鞘", "神谕真言·耀", "保护之手"):
+for needle in ("树莓术", "好运飞弹", "爱箭恋矢", "奥术箭", "快速拨弦", "无形之手", "冲锋", "战争潮流", "审判", "圣光出鞘", "神谕真言·耀", "保护之手", "唤风术", "雨露之赐", "见证新生"):
     if needle not in html:
         errors.append(f"missing skill text {needle}")
 
@@ -80,9 +86,40 @@ for pid in (
     "pr-panel-secret",
     "pr-panel-hunger",
     "pr-panel-glory",
+    "pr-panel-monsoon",
 ):
     if f'id="{pid}"' not in inside:
         errors.append(f"panel not inside .content: {pid}")
+
+
+# ---- 隐藏神系边界：季风之神只在技能树出现 ----
+create_html = (ROOT / "斯诺德跑团" / "角色创建页.html").read_text(encoding="utf-8")
+_i = create_html.find("var CLERIC_DEITIES")
+_j = create_html.find("];", _i)
+if _i < 0 or _j < 0:
+    errors.append("CLERIC_DEITIES not found in 角色创建页.html")
+elif "季风之神" in create_html[_i:_j]:
+    errors.append("hidden deity 季风之神 leaked into CLERIC_DEITIES (creation page)")
+
+MONSOON_SKILLS = {"唤风术", "雨露之赐", "见证新生", "和风守护", "风暴之眼", "复苏祈咒"}
+
+panel_text = (ROOT / "斯诺德跑团" / "panel_data.js").read_text(encoding="utf-8")
+_m = re.search(r"SKILL_DATA\s*=\s*", panel_text)
+if not _m:
+    errors.append("SKILL_DATA not found in panel_data.js")
+else:
+    panel, _ = json.JSONDecoder().raw_decode(panel_text[_m.end():])
+    priest_names = {s.get("name") for s in (panel.get("牧师") or [])}
+    leaked = priest_names & MONSOON_SKILLS
+    if leaked:
+        errors.append(f"hidden domain skills leaked into SKILL_DATA['牧师']: {sorted(leaked)}")
+    dom_rows = [r for r in (panel.get("牧师·神圣领域") or []) if r.get("deity") == "季风之神"]
+    if not dom_rows:
+        errors.append("季风之神 rows missing from SKILL_DATA['牧师·神圣领域']")
+    elif not all(r.get("hidden") for r in dom_rows):
+        errors.append("季风之神 rows in panel data must all carry hidden=true")
+
+# help.html 里的「季风之神」属于世界观九柱神设定（非牧师领域表），不在此约束内
 
 if errors:
     print("FAIL")

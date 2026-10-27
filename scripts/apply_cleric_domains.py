@@ -401,6 +401,47 @@ def find_div_close(html: str, open_at: int) -> int:
     raise ValueError("matching </div> not found")
 
 
+
+def _strip_leaked_hidden_panels(text: str) -> str:
+    """移除上一轮注入泄漏到 common 区的隐藏域面板（按 <div> 深度配对，避免误伤正文）。
+
+    旧实现用非贪婪正则 + 前瞻，遇到正文里没有成对闭合时会一路吃到下一个 deity-panel
+    甚至吃穿 <section class="class-features">，导致职业专长/血量计算器整块消失。
+    """
+    marker = '<div class="deity-panel deity-hidden"'
+    out: list[str] = []
+    i = 0
+    while True:
+        j = text.find(marker, i)
+        if j < 0:
+            out.append(text[i:])
+            return "".join(out)
+        depth = 0
+        k = j
+        end = -1
+        while True:
+            nxt_open = text.find("<div", k + 1)
+            nxt_close = text.find("</div>", k + 1)
+            if nxt_close < 0:
+                break
+            if nxt_open != -1 and nxt_open < nxt_close:
+                depth += 1
+                k = nxt_open
+            else:
+                if depth == 0:
+                    end = nxt_close + len("</div>")
+                    break
+                depth -= 1
+                k = nxt_close
+        if end < 0:
+            # 结构不完整：不要冒险删除，原样跳过这个标记
+            out.append(text[i:j + len(marker)])
+            i = j + len(marker)
+            continue
+        out.append(text[i:j])
+        i = end
+
+
 def strip_previous(html: str) -> str:
     html = re.sub(
         r"<!-- PR-DEITY-CHIPS -->.*?<!-- /PR-DEITY-CHIPS -->\n?",
@@ -551,12 +592,7 @@ def inject_html(html: str, chips: str, panels: str, navs: str) -> str:
         common_body,
         flags=re.S,
     )
-    common_body = re.sub(
-        r'\n*<div class="deity-panel deity-hidden"[^>]*>.*?(?=(?:<div class="deity-panel"|</div>\s*$))',
-        "",
-        common_body,
-        flags=re.S,
-    )
+    common_body = _strip_leaked_hidden_panels(common_body)
     common_body = trim_excess_div_closes(common_body).strip()
     new_body = (
         f"\n{chips}\n"
@@ -677,6 +713,9 @@ def main() -> None:
             "source_file": dom.get("source_file"),
             "skills": items,
         }
+        _hidden = any(p.get("hidden") and p.get("name") == deity for p in pantheon)
+        if _hidden:
+            site_domains[deity]["hidden"] = True
         ph, nh = build_domain_panel_html(
             deity, deity_id, items, dom.get("combat_styles") or []
         )
@@ -697,6 +736,11 @@ def main() -> None:
     chips = build_chips_html(pantheon)
     html = HTML_PATH.read_text(encoding="utf-8")
     html = inject_html(html, chips, "".join(panel_html_parts), "".join(nav_html_parts))
+    # 自检：注入不得吃掉通用区块（历史事故：chips 标记吞掉 class-features / hpcalc）
+    if html.count('class="class-features"') != 1:
+        raise SystemExit("apply aborted: class-features block lost or duplicated")
+    if html.count('id="pr-hpcalc"') != 1:
+        raise SystemExit("apply aborted: hpcalc block lost or duplicated")
     HTML_PATH.write_text(html, encoding="utf-8")
     print("wrote", HTML_PATH)
 

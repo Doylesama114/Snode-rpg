@@ -244,10 +244,14 @@ def build_skill_data(old: dict) -> dict:
         domain = json.loads(domain_path.read_text(encoding="utf8"))
         rows = []
         for deity, dom in domain["domains"].items():
+            _dom_hidden = bool(dom.get("hidden"))
             for skill in dom["skills"]:
                 row = json_skill_to_panel(skill)
                 row["deity"] = deity
                 row["cost"] = cost_json(marks_from_cost(skill))
+                # 隐藏神系：只在职业技能树出现，不进学习面板/建卡，数据里显式标记
+                if _dom_hidden:
+                    row["hidden"] = True
                 rows.append(row)
         out["\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df"] = rows
     return out

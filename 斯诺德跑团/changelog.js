@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8087',
+    date: '2026-10-28',
+    changes: [
+      '新增隐藏神系：牧师神圣领域「季风之神」（3 风格 × 一阶/二阶，21 条目，属性自然）',
+      '隐藏边界：只出现在职业技能树，不进建卡神祇选择、学习面板与 help 领域表',
+      '实现：HIDDEN_DEITIES 清单 + pantheon hidden 字段 + 面板数据 21 行 hidden:true',
+      '校验：verify_cleric_domains 增加 3 条隐藏边界断言（chips 14 / locked 3）',
+      '顺带修复领域注入管线：泄漏清理改为 div 深度配对（此前会把职业专长与血量计算器整块吞掉）；牧师页 chips 标记错位已修复并加自检'
+    ]
+  },
+
+  {
     version: '1.0.8086',
     date: '2026-10-27',
     changes: [

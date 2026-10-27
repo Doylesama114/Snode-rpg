@@ -1,6 +1,6 @@
-本轮更新 v1.0.8086 2026-10-27
+本轮更新 v1.0.8087 2026-10-28
 
-旧版本迁移桥：`installer.nsh` 增加 `customUnInstallCheck`/`customUnInstallCheckCurrentUser`，让安装器在旧版本卸载失败时**不再中止**，直接覆盖安装——≤1.0.8082 的客户端点「检查更新」也能一次跳到便携版时代。详见 docs/releases/v1.0.8086.md。
+新增**隐藏神系**牧师的「季风之神」神圣领域（3 风格 × 一阶/二阶，21 条目）：只出现在职业技能树，不进建卡神祇选择、学习面板与 help 领域表。实现见 `HIDDEN_DEITIES` + `hidden` 标记。详见 docs/releases/v1.0.8087.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
