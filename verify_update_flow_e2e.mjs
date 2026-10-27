@@ -18,10 +18,10 @@ const launcher = fs.readFileSync('斯诺德跑团/启动台.html', 'utf8');
 const engine = fs.readFileSync('斯诺德跑团/panel_engine.js', 'utf8');
 
 sec('① 主进程接线（静态断言）');
-ok('autoInstallOnAppQuit = true（退出时安装已下载的包）', /autoInstallOnAppQuit\s*=\s*true/.test(main));
+ok('autoInstallOnAppQuit = false（改由延迟拉起安装器）', /autoInstallOnAppQuit\s*=\s*false/.test(main));
 ok('发现新版本后自动下载（不再等用户点下载）', /自动开始下载 v/.test(main) && /autoUpdater\.downloadUpdate\(\)/.test(main));
 ok('下载完成后手动检查走立即安装', /if \(manualCheckRequested\) maybeInstallNow\(\);/.test(main));
-ok('存在 maybeInstallNow（quitAndInstall）', /function maybeInstallNow/.test(main) && /quitAndInstall\(true, true\)/.test(main));
+ok('存在 maybeInstallNow（走延迟拉起）', /function maybeInstallNow/.test(main) && /launchInstallerDelayed\('manual-check'\)/.test(main));
 ok('转发下载进度 download-progress', /autoUpdater\.on\('download-progress'/.test(main));
 ok('跟踪未保存窗口 panel-dirty', /ipcMain\.on\('panel-dirty'/.test(main) && /dirtyWindows/.test(main));
 ok('未保存时先提示再安装（waiting-save）', /waiting-save/.test(main));
@@ -89,6 +89,20 @@ ok('saveState / saveCurrentSlot 会清脏', /state\._dirty = false;\s*\n\s*repor
 
 
 
+
+sec('⑦ 安装器延迟拉起（避免静默卸载失败）');
+ok('不再交给 electron-updater 的 quitAndInstall 退出即装', /autoUpdater\.autoInstallOnAppQuit = false/.test(main));
+ok('存在 launchInstallerDelayed（先退出，延迟拉起安装器）', /function launchInstallerDelayed\(reason\)/.test(main));
+ok('延迟参数存在（ping 等待后再执行安装器）', /ping 127\.0\.0\.1 -n/.test(main));
+ok('安装器参数为 --updated /S --force-run', /--updated \/S --force-run/.test(main));
+ok('分离进程 spawn + unref（应用退出后仍能安装）', /detached: true/.test(main) && /child\.unref\(\)/.test(main));
+ok('记录已下载安装包路径', /pendingInstallerFile = info\.downloadedFile/.test(main));
+ok('手动检查走延迟拉起', /launchInstallerDelayed\('manual-check'\)/.test(main));
+ok('用户确认重启走延迟拉起', /launchInstallerDelayed\('user-confirm'\)/.test(main));
+ok('退出时兜底拉起（替代 autoInstallOnAppQuit）', /launchInstallerDelayed\('quit'\)/.test(main));
+ok('只拉起一次（installerLaunched 守卫）', /if \(installerLaunched\) return false;/.test(main));
+ok('不再直接调用 autoUpdater.quitAndInstall', !/autoUpdater\.quitAndInstall\(/.test(main));
+
 sec('⑥ 临时目录加固 / 更新缓存清理');
 ok('关闭差分下载（OSS 不支持 multipart/byteranges）', /autoUpdater\.disableDifferentialDownload = true/.test(main));
 ok('关闭 web 安装器', /autoUpdater\.disableWebInstaller = true/.test(main));
@@ -115,7 +129,7 @@ ok('download-progress 会采样并可能中止', /autoUpdater\.on\('download-pro
 ok('下载使用 CancellationToken（可中止）', /getDownloadToken\(\)/.test(main) && /CancellationToken/.test(main));
 ok('本次运行内 10/30 分钟重试', /10 \* 60 \* 1000/.test(main) && /30 \* 60 \* 1000/.test(main) && /scheduleUpdateRetries\(\)/.test(main));
 ok('启动后执行安装结果校验', /checkInstallApplied\(\);/.test(main));
-ok('安装前写入待安装版本（两处 quitAndInstall）', (main.match(/markInstallAttempt\(pendingUpdate\.version\)/g) || []).length >= 2);
+ok('安装前写入待安装版本（launchInstallerDelayed 内）', /function launchInstallerDelayed[\s\S]{0,600}markInstallAttempt\(pendingUpdate/.test(main));
 ok('版本没变会报 update-install-not-applied', /updater-install-not-applied/.test(main));
 ok('updater 日志保留消息体', /info:\s*\(m\)\s*=>\s*diagnostics\.log\('updater-info',\s*\{\s*msg:/.test(main));
 ok('诊断白名单允许 msg/source/percent', /'msg'[\s\S]{0,40}'source'[\s\S]{0,40}'percent'/.test(fs.readFileSync('electron-app/desktop-diagnostics.js', 'utf8')));

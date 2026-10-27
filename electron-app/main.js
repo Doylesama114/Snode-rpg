@@ -178,7 +178,7 @@ app.commandLine.appendSwitch('js-flags', '--expose-gc' + (testHeapMB >= 128 && t
 
 // 发现新版本后不自动下载：由用户在启动台确认后再下载（避免开软件即后台下载 ~100 MB）
 autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = true;  // 已下载的更新在退出时自动安装（策略 B：手动检查走立即重启）
+autoUpdater.autoInstallOnAppQuit = false; // 改由本进程延迟拉起安装器（见 launchInstallerDelayed）
 /* OSS 不支持 multipart/byteranges（差分下载会先报错再回退全量），直接关掉差分；同时关闭 web 安装器警告 */
 autoUpdater.disableDifferentialDownload = true;
 autoUpdater.disableWebInstaller = true;
@@ -364,6 +364,35 @@ function scheduleUpdateRetries() {
 
 /* ===== 安装结果校验：记录待安装版本，重启后比对是否真的装上了 ===== */
 /* ===== 临时目录加固：用户级 TEMP 被改坏时 NSIS 安装器会直接失败（Error writing temporary file） ===== */
+/* 已下载安装包路径与「是否已拉起安装器」标记 */
+var pendingInstallerFile = null;
+var installerLaunched = false;
+
+/* 先让本进程彻底退出，再由 cmd 延迟若干秒拉起安装器：
+   静默安装时 NSIS 无法弹「关闭应用」对话框，应用还在跑就会直接返回 2（Failed to uninstall old application files） */
+function launchInstallerDelayed(reason) {
+  if (installerLaunched) return false;
+  var file = pendingInstallerFile;
+  if (!file || !fs.existsSync(file)) {
+    diagnostics.log("updater-installer-missing", { reason: String(reason || "") });
+    return false;
+  }
+  installerLaunched = true;
+  markInstallAttempt(pendingUpdate ? pendingUpdate.version : null);
+  var delay = 12;
+  var cmd = "ping 127.0.0.1 -n " + delay + " >nul & " + chr(34) + file + chr(34) + " --updated /S --force-run";
+  try {
+    var child = require("child_process").spawn("cmd.exe", ["/c", cmd], { detached: true, stdio: "ignore", windowsHide: true });
+    child.unref();
+    diagnostics.log("updater-install-launched", { reason: String(reason || ""), ms: delay * 1000, target: file });
+  } catch (e) {
+    installerLaunched = false;
+    diagnostics.error("updater-install-spawn-failed", e);
+    return false;
+  }
+  setTimeout(function () { app.quit(); }, 300);
+  return true;
+}
 function resolveSafeTempDir() {
   try {
     var base = app.getPath("localAppData") || "";
@@ -746,6 +775,8 @@ autoUpdater.on('update-downloaded', (info) => {
   console.log('[更新] v' + info.version + ' 下载完成（等待用户确认重启）');
   updateCheckInFlight = false;
   pendingUpdate = { version: info.version, ready: true };
+  pendingInstallerFile = info.downloadedFile || null;
+  diagnostics.log('updater-downloaded-file', { target: String(pendingInstallerFile || ''), version: info.version });
   sendUpdateStatus({
     status: 'downloaded',
     version: info.version,
@@ -784,8 +815,7 @@ function maybeInstallNow() {
   installPending = false;
   console.log('[更新] 立即重启安装 v' + pendingUpdate.version);
   sendUpdateStatus({ status: 'installing', version: pendingUpdate.version, message: '更新已就绪，正在重启安装…' });
-  markInstallAttempt(pendingUpdate.version);
-  setTimeout(function () { autoUpdater.quitAndInstall(true, true); }, 400);
+  launchInstallerDelayed('manual-check');
 }
 ipcMain.on('panel-dirty', (e, flag) => {
   var id = e.sender.id;
@@ -839,8 +869,7 @@ ipcMain.on('install-update', () => {
     return;
   }
   console.log('[更新] 用户确认重启安装 v' + pendingUpdate.version);
-  markInstallAttempt(pendingUpdate.version);
-  autoUpdater.quitAndInstall(true, true);
+  launchInstallerDelayed('user-confirm');
 });
 
 // IPC: 自动更新开关（启动台切换；默认开启）
@@ -1302,6 +1331,7 @@ function startMemoryWatchdog() {
 }
 let updateTimer = null;
 app.on('will-quit', () => {
+  if (pendingUpdate && pendingUpdate.ready && !installerLaunched) { try { launchInstallerDelayed('quit'); } catch (e) {} }
   clearInterval(memoryTimer);
   clearTimeout(updateTimer);
   (updateRetryTimers || []).forEach(function (t) { clearTimeout(t); });

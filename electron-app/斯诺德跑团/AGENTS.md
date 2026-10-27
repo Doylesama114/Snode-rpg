@@ -1,6 +1,6 @@
-本轮更新 v1.0.8073 2026-10-27
+本轮更新 v1.0.8074 2026-10-27
 
-更新相关两项：安装包自动清理（装完后删 pending/installer.exe，7 天后清过期缓存，实测可回收 300 MB）+ TEMP 硬化（用户级 TEMP 被改坏时安装器会失败，启动时把子进程 TEMP 指向 %LOCALAPPDATA%\Temp）；顺带关闭差分下载与 web 安装器告警。详见 docs/releases/v1.0.8073.md。
+安装器改为「延迟拉起」：先让应用彻底退出，12 秒后再由分离进程执行 `--updated /S --force-run`，解决静默模式下 NSIS 无法关闭运行中的应用而返回 2（Failed to uninstall old application files）。详见 docs/releases/v1.0.8074.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

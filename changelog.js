@@ -2,6 +2,18 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8074',
+    date: '2026-10-27',
+    changes: [
+      '修复自动更新最后一步：安装器改为「先退出、延迟 12 秒再拉起」，不再在应用仍占用文件时卸载旧版本（此前会报 Failed to uninstall old application files: 2）',
+      '改用分离进程执行 --updated /S --force-run 并 unref，应用退出后安装器仍能完成',
+      '记录 electron-updater 实际下载的安装包路径；installerLaunched 守卫确保只拉起一次',
+      '退出时兜底：已下载但未安装的更新仍会走延迟安装',
+      '更新校验扩充到 58 条断言（新增延迟拉起/分离进程/幂等保护）'
+    ]
+  },
+
+  {
     version: '1.0.8073',
     date: '2026-10-27',
     changes: [
