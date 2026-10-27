@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8080',
+    date: '2026-10-27',
+    changes: [
+      '更新链路验证版：除版本号外与 1.0.8079 相同',
+      '用于验证 oneClick 的覆盖式自动更新（不再有「Failed to uninstall old application files: 2」）',
+      '预期：自动下载 → 关闭应用 → 12 秒后覆盖安装 → 重开为 1.0.8080'
+    ]
+  },
+
+  {
     version: '1.0.8079',
     date: '2026-10-27',
     changes: [

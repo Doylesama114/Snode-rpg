@@ -1,6 +1,6 @@
-本轮更新 v1.0.8078 2026-10-27
+本轮更新 v1.0.8079 2026-10-27
 
-安装器改为 **oneClick**（electron-updater 官方支持的自动更新形态，此前的 assisted 安装器在静默模式下始终无法卸载旧版本，返回 2）；用 `installer.nsh` 的 `preInit` 把安装目录固定到 `D:\SnodeRPG`，安装与自动更新都落在这里。详见 docs/releases/v1.0.8078.md。
+修 1.0.8078 的安装失败：`preInit` 同时写 HKLM 与 HKCU，而 `perMachine: false` 的安装器无管理员权限，写 HKLM 直接失败（退出码 2）→ 改为**只写 HKCU** 的 `InstallLocation = D:\SnodeRPG`。详见 docs/releases/v1.0.8079.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

@@ -1,6 +1,6 @@
-本轮更新 v1.0.8079 2026-10-27
+本轮更新 v1.0.8080 2026-10-27
 
-修 1.0.8078 的安装失败：`preInit` 同时写 HKLM 与 HKCU，而 `perMachine: false` 的安装器无管理员权限，写 HKLM 直接失败（退出码 2）→ 改为**只写 HKCU** 的 `InstallLocation = D:\SnodeRPG`。详见 docs/releases/v1.0.8079.md。
+更新链路验证版（仅版本号）：oneClick 安装器已就位（1.0.8079 装在 D:\\SnodeRPG），本版用于验证覆盖式自动更新是否闭环。详见 docs/releases/v1.0.8080.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
