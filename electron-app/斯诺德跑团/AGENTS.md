@@ -1,6 +1,6 @@
-本轮更新 v1.0.8076 2026-10-27
+本轮更新 v1.0.8078 2026-10-27
 
-修复 1.0.8074/8075 的崩溃：延迟安装命令里残留 Python 写法 `chr(34)`（→ ReferenceError，启动异常弹窗），且 spawn 缺少 `windowsVerbatimArguments` 导致 `cmd /c ... & ...` 整条链不执行；另修正非法的 `app.getPath('localAppData')`（TEMP 硬化与缓存清理因此静默失效）。详见 docs/releases/v1.0.8076.md。
+安装器改为 **oneClick**（electron-updater 官方支持的自动更新形态，此前的 assisted 安装器在静默模式下始终无法卸载旧版本，返回 2）；用 `installer.nsh` 的 `preInit` 把安装目录固定到 `D:\SnodeRPG`，安装与自动更新都落在这里。详见 docs/releases/v1.0.8078.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

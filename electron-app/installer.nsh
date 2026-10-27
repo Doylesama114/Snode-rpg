@@ -1,30 +1,19 @@
-; electron-builder NSIS 自定义脚本
-; - 处理 /S 标志实现静默安装
-; - 完成页"创建桌面快捷方式"复选框（仅安装程序，不作用于卸载程序）
+; electron-builder NSIS custom script (ASCII only, avoid encoding issues)
+; oneClick installer: electron-updater supported auto-update path.
+; preInit pins the install directory to D:\SnodeRPG for both install and update.
 
 !include "WinVer.nsh"
 
+!macro preInit
+  SetRegView 64
+  WriteRegExpandStr HKLM "${INSTALL_REGISTRY_KEY}" InstallLocation "D:\SnodeRPG"
+  WriteRegExpandStr HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation "D:\SnodeRPG"
+!macroend
+
 !macro customInit
   ${IfNot} ${AtLeastWin10}
-    MessageBox MB_OK|MB_ICONSTOP "本版本需要 Windows 10/11 64 位。"
+    MessageBox MB_OK|MB_ICONSTOP "This build requires Windows 10/11 64-bit."
     SetErrorLevel 1
     Quit
   ${EndIf}
-  ; 处理 /S 标志实现静默安装
-  ${GetParameters} $R0
-  ${GetOptions} $R0 "/S" $R1
-  ${IfNot} ${Errors}
-    SetSilent silent
-  ${EndIf}
 !macroend
-
-; 桌面快捷方式复选框 — 仅作用于安装程序（BUILD_UNINSTALLER 时跳过）
-!ifndef BUILD_UNINSTALLER
-  !define MUI_FINISHPAGE_SHOWREADME ""
-  !define MUI_FINISHPAGE_SHOWREADME_TEXT "创建桌面快捷方式"
-  !define MUI_FINISHPAGE_SHOWREADME_FUNCTION createDesktopShortcutFn
-
-  Function createDesktopShortcutFn
-    CreateShortCut "$DESKTOP\斯诺德跑团.lnk" "$INSTDIR\${PRODUCT_NAME}.exe"
-  FunctionEnd
-!endif

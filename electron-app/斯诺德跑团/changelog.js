@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8078',
+    date: '2026-10-27',
+    changes: [
+      '安装器改为 oneClick：assisted 安装器在静默模式下始终无法卸载旧版本（Failed to uninstall old application files: 2），oneClick 才是 electron-updater 支持的更新形态',
+      'installer.nsh 用 preInit 把 InstallLocation 固定为 D:\\SnodeRPG（HKLM/HKCU），安装与自动更新都落在该目录',
+      '桌面快捷方式改为默认创建；自定义脚本精简为 ASCII，避免 NSIS 编码问题',
+      '注意：从 ≤1.0.8077 升级需要手动安装本版一次（卸载记录不兼容）'
+    ]
+  },
+
+  {
     version: '1.0.8077',
     date: '2026-10-27',
     changes: [
