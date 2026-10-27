@@ -1,6 +1,6 @@
-本轮更新 v1.0.8083 2026-10-27
+本轮更新 v1.0.8084 2026-10-27
 
-分发方式切换为**便携版 zip + 自更新**：应用自己下载 `portable.json` + zip，解压后 robocopy 覆盖并重启，不再调用 NSIS 安装器。详见 docs/releases/v1.0.8083.md。
+补 8083 的打包遗漏：`portable-updater.js` 未列入 electron-builder 的 `files`，导致打包后启动即崩（CI 的 `Verify packaged desktop executable` 失败）。已加入清单，并新增门禁断言「main.js 的本地 require 必须都在 files 列表里」。详见 docs/releases/v1.0.8084.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

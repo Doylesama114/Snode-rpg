@@ -37,6 +37,13 @@ ok('构建产出 zip 目标', /target: zip/.test(fs.readFileSync('electron-app/e
 ok('CI 生成并镜像 portable.json', /Generate portable manifest/.test(fs.readFileSync('.github/workflows/release.yml', 'utf8')));
 
 const preload = fs.readFileSync('electron-app/preload.js', 'utf8');
+
+sec('⑪ 打包清单包含所有本地 require');
+const builderYml = fs.readFileSync('electron-app/electron-builder.yml', 'utf8');
+const localRequires = Array.from(main.matchAll(/require\('\.\/([\w.-]+\.js)'\)/g)).map(m => m[1]);
+const missing = Array.from(new Set(localRequires)).filter(n => !new RegExp('(^|\\s)-\\s+' + n.replace('.', '\\.') + '$', 'm').test(builderYml));
+ok('main.js 的本地 require 都在 files 列表里', missing.length === 0, missing.join(','));
+
 const launcher = fs.readFileSync('斯诺德跑团/启动台.html', 'utf8');
 const engine = fs.readFileSync('斯诺德跑团/panel_engine.js', 'utf8');
 

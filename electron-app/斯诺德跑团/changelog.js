@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8084',
+    date: '2026-10-27',
+    changes: [
+      '修复 8083 的打包遗漏：portable-updater.js 未列入 electron-builder files，打包后启动即崩',
+      '新增门禁断言：main.js 的本地 require 必须都在 files 清单里，防止同类遗漏',
+      '便携版自更新机制（portable.json + zip + robocopy 覆盖）本版起可用'
+    ]
+  },
+
+  {
     version: '1.0.8083',
     date: '2026-10-27',
     changes: [
