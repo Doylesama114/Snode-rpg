@@ -1,6 +1,6 @@
-本轮更新 v1.0.8076 2026-10-27
+本轮更新 v1.0.8077 2026-10-27
 
-修复 1.0.8074/8075 的崩溃：延迟安装命令里残留 Python 写法 `chr(34)`（→ ReferenceError，启动异常弹窗），且 spawn 缺少 `windowsVerbatimArguments` 导致 `cmd /c ... & ...` 整条链不执行；另修正非法的 `app.getPath('localAppData')`（TEMP 硬化与缓存清理因此静默失效）。详见 docs/releases/v1.0.8076.md。
+更新链路验证版（仅版本号）：用于验证 1.0.8076 修复后的「延迟 12 秒拉起安装器」是否真正闭环。详见 docs/releases/v1.0.8077.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
