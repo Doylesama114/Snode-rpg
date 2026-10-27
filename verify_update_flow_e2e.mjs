@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 全自动更新流程（策略 B）验收
  * 覆盖：主进程接线（自动下载/立即安装/进度/脏窗口）、preload API、启动台状态显示、角色面板未保存上报
  * 用法：node verify_update_flow_e2e.mjs
@@ -92,6 +92,18 @@ ok('saveState / saveCurrentSlot 会清脏', /state\._dirty = false;\s*\n\s*repor
 
 
 
+
+sec('⑨ 安装前剥离旧卸载器（绕过静默卸载返回 2）');
+ok('存在 removeOldUninstaller', /function removeOldUninstaller\(reason\)/.test(main));
+ok('匹配 Uninstall *.exe', /Uninstall/.test(main));
+ok('在拉起安装器前调用', /installerLaunched = true;[\s\S]{0,120}removeOldUninstaller\(reason\)/.test(main));
+ok('剥离有日志与容错', /uninstaller-stripped/.test(main) && /uninstaller-remove-failed/.test(main));
+{
+  const re = /^Uninstall\s.*\.exe$/i;
+  ok('正则可命中「Uninstall 斯诺德跑团.exe」', re.test('Uninstall 斯诺德跑团.exe'));
+  ok('正则可命中「Uninstall Snowd.exe」', re.test('Uninstall Snowd.exe'));
+  ok('正则不误伤主程序', !re.test('斯诺德跑团.exe'));
+}
 
 sec('⑧ 延迟安装命令必须真的能执行（8074/8075 的线上崩溃点）');
 ok('没有 Python 写法 chr(34) 残留', !/chr\(/.test(main));

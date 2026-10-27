@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8081',
+    date: '2026-10-27',
+    changes: [
+      '修复自动更新最后一步：安装器 --updated 会先运行旧版本卸载器，而它固定返回 2 导致中止；改为安装前删除安装目录里的 Uninstall *.exe，安装器即跳过卸载分支直接覆盖写入',
+      '新增 removeOldUninstaller（带日志与容错），在 launchInstallerDelayed 内 spawn 之前调用',
+      '已手工验证：删除卸载器后 --updated /S 退出码 0、389 文件完整、新卸载器生成',
+      '更新校验扩充到 60P 0F'
+    ]
+  },
+
+  {
     version: '1.0.8080',
     date: '2026-10-27',
     changes: [

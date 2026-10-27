@@ -370,6 +370,30 @@ var installerLaunched = false;
 
 /* 先让本进程彻底退出，再由 cmd 延迟若干秒拉起安装器：
    静默安装时 NSIS 无法弹「关闭应用」对话框，应用还在跑就会直接返回 2（Failed to uninstall old application files） */
+/* 安装器在 --updated 时会先运行「旧版本的卸载器」。我们的安装目录被移动/接管过，
+   那个卸载器经常直接返回 2（Failed to uninstall old application files），而静默模式
+   无法提示，安装就会中止。删掉旧卸载器后，安装器会跳过这一步，直接覆盖写入。 */
+function removeOldUninstaller(reason) {
+  var dir = path.dirname(process.execPath);
+  var removed = 0;
+  try {
+    var names = fs.readdirSync(dir);
+    for (var i = 0; i < names.length; i++) {
+      if (!/^Uninstall\s.*\.exe$/i.test(names[i])) continue;
+      try {
+        fs.unlinkSync(path.join(dir, names[i]));
+        removed++;
+      } catch (e) {
+        diagnostics.error('uninstaller-remove-failed', e);
+      }
+    }
+  } catch (e) {
+    diagnostics.error('uninstaller-scan-failed', e);
+  }
+  diagnostics.log('uninstaller-stripped', { count: removed, reason: String(reason || '') });
+  return removed;
+}
+
 function launchInstallerDelayed(reason) {
   if (installerLaunched) return false;
   var file = pendingInstallerFile;
@@ -378,6 +402,7 @@ function launchInstallerDelayed(reason) {
     return false;
   }
   installerLaunched = true;
+  removeOldUninstaller(reason);
   markInstallAttempt(pendingUpdate ? pendingUpdate.version : null);
   var delay = 12;
   var q = String.fromCharCode(34);
