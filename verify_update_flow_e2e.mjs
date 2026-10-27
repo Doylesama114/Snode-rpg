@@ -36,6 +36,13 @@ ok('替换命令不用 /MIR（不删旧文件）', /\/E \/IS \/IT/.test(portable
 ok('构建产出 zip 目标', /target: zip/.test(fs.readFileSync('electron-app/electron-builder.yml', 'utf8')));
 ok('CI 生成并镜像 portable.json', /Generate portable manifest/.test(fs.readFileSync('.github/workflows/release.yml', 'utf8')));
 
+sec('⑫ 旧版本迁移桥（安装器忽略卸载失败）');
+const nsh = fs.readFileSync('electron-app/installer.nsh', 'utf8');
+ok('installer.nsh 定义 customUnInstallCheck', /!macro customUnInstallCheck\b/.test(nsh));
+ok('同时覆盖 CurrentUser 分支', /!macro customUnInstallCheckCurrentUser\b/.test(nsh));
+ok('宏体不再 Quit（而是继续覆盖安装）', !/customUnInstallCheck[\s\S]{0,200}Quit/.test(nsh));
+
+
 const preload = fs.readFileSync('electron-app/preload.js', 'utf8');
 
 sec('⑪ 打包清单包含所有本地 require');

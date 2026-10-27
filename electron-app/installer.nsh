@@ -16,3 +16,16 @@
     Quit
   ${EndIf}
 !macroend
+
+; Migration bridge: old (<=1.0.8082) installs may have a broken uninstaller that returns
+; non-zero when the installer runs it with --updated. Historically that aborted the whole
+; update with "Failed to uninstall old application files". These macros instruct
+; handleUninstallResult to skip its failure check, so the installer just overwrites the
+; files in place instead of quitting. Stale leftovers are harmless.
+!macro customUnInstallCheck
+  DetailPrint "customUnInstallCheck: ignoring old uninstaller failure, continue overwrite"
+!macroend
+
+!macro customUnInstallCheckCurrentUser
+  DetailPrint "customUnInstallCheckCurrentUser: ignoring old uninstaller failure"
+!macroend

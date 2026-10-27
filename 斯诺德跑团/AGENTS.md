@@ -1,6 +1,6 @@
-本轮更新 v1.0.8085 2026-10-27
+本轮更新 v1.0.8086 2026-10-27
 
-便携版自更新验证版（仅版本号）：应用已迁移到 `D:\SnodeRPG`（解压 zip，8084），本版用于验证 zip 覆盖式自更新是否闭环。详见 docs/releases/v1.0.8085.md。
+旧版本迁移桥：`installer.nsh` 增加 `customUnInstallCheck`/`customUnInstallCheckCurrentUser`，让安装器在旧版本卸载失败时**不再中止**，直接覆盖安装——≤1.0.8082 的客户端点「检查更新」也能一次跳到便携版时代。详见 docs/releases/v1.0.8086.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

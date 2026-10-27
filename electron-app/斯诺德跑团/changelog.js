@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8086',
+    date: '2026-10-27',
+    changes: [
+      '旧版本迁移桥：installer.nsh 增加 customUnInstallCheck / customUnInstallCheckCurrentUser，安装器在旧卸载器失败时不再中止，直接覆盖安装',
+      '≤1.0.8082 的用户点「检查更新」即可一次跳到便携版时代，无需手动下载',
+      '更新链路验收 80P 0F（新增迁移桥断言）'
+    ]
+  },
+
+  {
     version: '1.0.8085',
     date: '2026-10-27',
     changes: [
