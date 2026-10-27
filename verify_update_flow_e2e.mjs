@@ -5,6 +5,9 @@
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = process.cwd().replace(/\\/g, '/');
 const URL = (p) => 'file:///' + ROOT + '/' + encodeURI(p);
@@ -90,23 +93,35 @@ ok('saveState / saveCurrentSlot 会清脏', /state\._dirty = false;\s*\n\s*repor
 
 
 
-sec('⑦ 安装器延迟拉起（避免静默卸载失败）');
-ok('不再交给 electron-updater 的 quitAndInstall 退出即装', /autoUpdater\.autoInstallOnAppQuit = false/.test(main));
-ok('存在 launchInstallerDelayed（先退出，延迟拉起安装器）', /function launchInstallerDelayed\(reason\)/.test(main));
-ok('延迟参数存在（ping 等待后再执行安装器）', /ping 127\.0\.0\.1 -n/.test(main));
-ok('安装器参数为 --updated /S --force-run', /--updated \/S --force-run/.test(main));
-ok('分离进程 spawn + unref（应用退出后仍能安装）', /detached: true/.test(main) && /child\.unref\(\)/.test(main));
-ok('记录已下载安装包路径', /pendingInstallerFile = info\.downloadedFile/.test(main));
-ok('手动检查走延迟拉起', /launchInstallerDelayed\('manual-check'\)/.test(main));
-ok('用户确认重启走延迟拉起', /launchInstallerDelayed\('user-confirm'\)/.test(main));
-ok('退出时兜底拉起（替代 autoInstallOnAppQuit）', /launchInstallerDelayed\('quit'\)/.test(main));
-ok('只拉起一次（installerLaunched 守卫）', /if \(installerLaunched\) return false;/.test(main));
-ok('不再直接调用 autoUpdater.quitAndInstall', !/autoUpdater\.quitAndInstall\(/.test(main));
+sec('⑧ 延迟安装命令必须真的能执行（8074/8075 的线上崩溃点）');
+ok('没有 Python 写法 chr(34) 残留', !/chr\(/.test(main));
+ok('没有非法的 app.getPath("localAppData")', !/getPath\("localAppData"\)/.test(main));
+ok('spawn 带 windowsVerbatimArguments（否则 cmd 的 & 链不执行）', /windowsVerbatimArguments:\s*true/.test(main));
+{
+  const cmdSrc = main.match(/var q = String\.fromCharCode\(34\);\s*\n\s*var cmd = [^\n]+;/);
+  const spawnOpts = main.match(/spawn\("cmd\.exe", \["\/c", cmd\], \{[^}]+\}\)/);
+  ok('能从 main.js 提取命令构造', !!cmdSrc);
+  ok('能从 main.js 提取 spawn 选项', !!spawnOpts);
+  if (cmdSrc && spawnOpts) {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'snode-inst-'));
+    const markerFile = path.join(tmp, 'ran.txt');
+    const bat = path.join(tmp, 'fake installer.bat');
+    fs.writeFileSync(bat, '@echo off\r\n> "' + markerFile + '" echo ok\r\n');
+    try {
+      const build = new Function('delay', 'file', cmdSrc[0] + '\nreturn cmd;');
+      const verbatim = /windowsVerbatimArguments:\s*true/.test(spawnOpts[0]);
+      spawnSync('cmd.exe', ['/c', build(1, bat)], { encoding: 'utf8', windowsVerbatimArguments: verbatim });
+      ok('延迟安装命令真实执行（含空格路径）', fs.existsSync(markerFile));
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  }
+}
 
 sec('⑥ 临时目录加固 / 更新缓存清理');
 ok('关闭差分下载（OSS 不支持 multipart/byteranges）', /autoUpdater\.disableDifferentialDownload = true/.test(main));
 ok('关闭 web 安装器', /autoUpdater\.disableWebInstaller = true/.test(main));
-ok('存在 resolveSafeTempDir（不依赖 TEMP 自身）', /function resolveSafeTempDir\(\)/.test(main) && /localAppData/.test(main));
+ok('存在 resolveSafeTempDir（不依赖 TEMP 自身）', /function resolveSafeTempDir\(\)/.test(main) && /process\.env\.LOCALAPPDATA/.test(main));
 ok('启动时归一化 process.env.TEMP/TMP', /function ensureProcessTemp\(\)/.test(main) && /process\.env\.TEMP = safe/.test(main) && /ensureProcessTemp\(\);/.test(main));
 ok('存在 purgeUpdaterCache（装完清理）', /function purgeUpdaterCache\(reason\)/.test(main));
 ok('存在 purgeStaleUpdaterCache（7 天保留）', /function purgeStaleUpdaterCache\(\)/.test(main) && /UPDATER_CACHE_KEEP_MS = 7 \* 24/.test(main));

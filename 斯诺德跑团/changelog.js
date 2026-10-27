@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8076',
+    date: '2026-10-27',
+    changes: [
+      '修复 1.0.8074/8075 启动崩溃：延迟安装命令残留 Python 写法 chr(34)，运行时 ReferenceError → 启动异常弹窗',
+      '修复延迟安装不执行：spawn 缺 windowsVerbatimArguments，cmd /c 的 & 命令链被当成普通参数',
+      '修复非法 app.getPath("localAppData")：TEMP 硬化与更新缓存清理此前静默失效',
+      '校验改为真实执行：提取 main.js 的命令构造，用带空格的假安装包跑一遍并断言标记文件（53P 0F）'
+    ]
+  },
+
+  {
     version: '1.0.8075',
     date: '2026-10-27',
     changes: [

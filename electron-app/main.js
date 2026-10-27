@@ -380,9 +380,10 @@ function launchInstallerDelayed(reason) {
   installerLaunched = true;
   markInstallAttempt(pendingUpdate ? pendingUpdate.version : null);
   var delay = 12;
-  var cmd = "ping 127.0.0.1 -n " + delay + " >nul & " + chr(34) + file + chr(34) + " --updated /S --force-run";
+  var q = String.fromCharCode(34);
+  var cmd = "ping 127.0.0.1 -n " + delay + " >nul & " + q + file + q + " --updated /S --force-run";
   try {
-    var child = require("child_process").spawn("cmd.exe", ["/c", cmd], { detached: true, stdio: "ignore", windowsHide: true });
+    var child = require("child_process").spawn("cmd.exe", ["/c", cmd], { detached: true, stdio: "ignore", windowsHide: true, windowsVerbatimArguments: true });
     child.unref();
     diagnostics.log("updater-install-launched", { reason: String(reason || ""), ms: delay * 1000, target: file });
   } catch (e) {
@@ -395,7 +396,7 @@ function launchInstallerDelayed(reason) {
 }
 function resolveSafeTempDir() {
   try {
-    var base = app.getPath("localAppData") || "";
+    var base = process.env.LOCALAPPDATA || "";
     if (!base) return "";
     var dir = path.join(base, "Temp");
     fs.mkdirSync(dir, { recursive: true });
@@ -417,7 +418,7 @@ function ensureProcessTemp() {
 /* ===== 更新缓存清理：安装包会堆在 %LOCALAPPDATA%/<updaterCacheDirName>（每版 150~300MB） ===== */
 var UPDATER_CACHE_KEEP_MS = 7 * 24 * 3600 * 1000;
 function updaterCacheDir() {
-  var base = app.getPath("localAppData") || "";
+  var base = process.env.LOCALAPPDATA || "";
   var name = "snowd-skill-tree-updater";
   try {
     var yml = fs.readFileSync(path.join(process.resourcesPath || "", "app-update.yml"), "utf8");
