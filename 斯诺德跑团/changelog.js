@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8082',
+    date: '2026-10-27',
+    changes: [
+      '更新链路验证版：除版本号外与 1.0.8081 相同',
+      '用于验证「安装前剥离旧卸载器」是否让自动更新真正跑通',
+      '日志判据：uninstaller-stripped → updater-install-launched → updater-install-applied → updater-cache-purged'
+    ]
+  },
+
+  {
     version: '1.0.8081',
     date: '2026-10-27',
     changes: [
