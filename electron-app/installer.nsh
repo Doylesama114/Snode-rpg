@@ -1,12 +1,11 @@
-; electron-builder NSIS custom script (ASCII only, avoid encoding issues)
-; oneClick installer: electron-updater supported auto-update path.
-; preInit pins the install directory to D:\SnodeRPG for both install and update.
+; electron-builder NSIS custom script (ASCII only)
+; oneClick installer: the only form electron-updater supports for auto-update.
+; preInit pins InstallLocation to D:\SnodeRPG (HKCU only: perMachine=false, no elevation).
 
 !include "WinVer.nsh"
 
 !macro preInit
   SetRegView 64
-  WriteRegExpandStr HKLM "${INSTALL_REGISTRY_KEY}" InstallLocation "D:\SnodeRPG"
   WriteRegExpandStr HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation "D:\SnodeRPG"
 !macroend
 

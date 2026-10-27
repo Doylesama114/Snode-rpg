@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8079',
+    date: '2026-10-27',
+    changes: [
+      '修复 1.0.8078 安装器退出码 2：preInit 写 HKLM 需要管理员权限，而 perMachine:false 不弹 UAC → 改为只写 HKCU',
+      '安装位置仍固定为 D:\\SnodeRPG（per-user 安装的 InstallLocation 本来就在 HKCU）'
+    ]
+  },
+
+  {
     version: '1.0.8078',
     date: '2026-10-27',
     changes: [
