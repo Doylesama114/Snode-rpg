@@ -118,12 +118,39 @@ jobs:
           $ok = $false
           for ($i = 1; $i -le 3; $i++) {
             Write-Host "=== electron-builder attempt $i/3 ==="
-            node node_modules/electron-builder/out/cli/cli.js --win nsis --x64 --publish never
+            node node_modules/electron-builder/out/cli/cli.js --win nsis zip --x64 --publish never
             if ($LASTEXITCODE -eq 0) { $ok = $true; break }
             Write-Host "Build failed (exit $LASTEXITCODE), waiting before retry..."
             Start-Sleep -Seconds 20
           }
           if (-not $ok) { exit 1 }
+
+      # 便携版清单：应用自更新只读这个文件（安装器不再参与更新）
+      - name: Generate portable manifest (portable.json)
+        shell: pwsh
+        env:
+          TAG: ${{ steps.target.outputs.tag }}
+          PUBLIC_BASE: ${{ vars.ALIYUN_OSS_PUBLIC_BASE_URL }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = $env:TAG
+          $version = $tag.TrimStart('v')
+          $zip = Get-ChildItem -Path electron-app/dist -Filter '*.zip' |
+            Where-Object { $_.Name -like '*-win-*' } | Select-Object -First 1
+          if (-not $zip) { Write-Host '::error::portable zip not found in dist'; exit 1 }
+          $base = "$($env:PUBLIC_BASE)".Trim().TrimEnd('/')
+          if ($base -notmatch '^https?://') { $base = 'https://' + $base }
+          $sha = [Convert]::ToBase64String(
+            [System.Security.Cryptography.SHA512]::Create().ComputeHash([System.IO.File]::ReadAllBytes($zip.FullName)))
+          $obj = [ordered]@{
+            version = $version
+            url = "$base/releases/$tag/$($zip.Name)"
+            sha512 = $sha
+            size = $zip.Length
+            publishedAt = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+          }
+          ($obj | ConvertTo-Json -Compress) | Set-Content -Path (Join-Path $zip.DirectoryName 'portable.json') -Encoding utf8 -NoNewline
+          Write-Host "portable.json ok: version=$version size=$($zip.Length) zip=$($zip.Name)"
 
       - name: Verify packaged desktop executable
         shell: pwsh
@@ -174,7 +201,7 @@ jobs:
           gh release edit $tag --repo $repo --title $tag --notes-file "docs/releases/$tag.md"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $files = @(Get-ChildItem -Path electron-app/dist -File |
-            Where-Object { $_.Extension -in '.exe', '.yml', '.blockmap' })
+            Where-Object { $_.Extension -in '.exe', '.yml', '.blockmap', '.zip' -or $_.Name -eq 'portable.json' })
           if ($files.Count -eq 0) { Write-Host "::error::no dist files to upload"; exit 1 }
           foreach ($f in $files) {
             $ok = $false
@@ -206,6 +233,8 @@ jobs:
           Write-Host "assets($($names.Count)): $($names -join ', ')"
           if ($names -notcontains "Snode-RPG-Setup-$version.exe") { Write-Host "::error::missing Snode-RPG-Setup-$version.exe"; exit 1 }
           if ($names -notcontains 'latest.yml') { Write-Host "::error::missing latest.yml"; exit 1 }
+          if ($names -notcontains 'portable.json') { Write-Host "::error::missing portable.json"; exit 1 }
+          if (-not ($names | Where-Object { $_ -like '*-win-*.zip' })) { Write-Host "::error::missing portable zip"; exit 1 }
           $body = "$($info.body)".Trim()
           Write-Host "release body length: $($body.Length)"
           # 正文过短 = 发布说明没写进去（此时 Release 多半只是 tag 的空壳）
@@ -252,7 +281,7 @@ jobs:
           echo "EXE: $EXE ($(du -h "$EXE" | cut -f1))"
           ls -la
 
-          for f in *.exe *.yml *.blockmap; do
+          for f in *.exe *.yml *.blockmap *.zip portable.json; do
             [ -f "$f" ] || continue
             echo "Uploading releases/${TAG}/${f}..."
             ossutil cp "$f" "oss://${BUCKET}/releases/${TAG}/${f}" --update -f --acl public-read
@@ -261,6 +290,14 @@ jobs:
           if [ -f latest.yml ]; then
             echo "Uploading releases/latest/latest.yml..."
             ossutil cp latest.yml "oss://${BUCKET}/releases/latest/latest.yml" --update -f --acl public-read
+          fi
+
+          if [ -f portable.json ]; then
+            echo "Uploading releases/latest/portable.json..."
+            ossutil cp portable.json "oss://${BUCKET}/releases/latest/portable.json" --update -f --acl public-read
+          else
+            echo "::error::portable.json missing in dist artifact"
+            exit 1
           fi
 
           jq -n \

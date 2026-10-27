@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 全自动更新流程（策略 B）验收
  * 覆盖：主进程接线（自动下载/立即安装/进度/脏窗口）、preload API、启动台状态显示、角色面板未保存上报
  * 用法：node verify_update_flow_e2e.mjs
@@ -16,6 +16,26 @@ const ok = (n, c, extra) => { if (c) { pass++; console.log('  ✓ ' + n); } else
 const sec = (t) => console.log('\n▌' + t);
 
 const main = fs.readFileSync('electron-app/main.js', 'utf8');
+
+sec('⑩ 便携版自更新接线（路线 B）');
+const portableSrc = fs.readFileSync('electron-app/portable-updater.js', 'utf8');
+ok('存在 portable-updater 模块', portableSrc.length > 2000);
+ok('main.js 引入模块', /require\('\.\/portable-updater\.js'\)/.test(main));
+ok('存在 PORTABLE_MODE 开关（SNODE_UPDATE_MODE=installer 可回退）', /SNODE_UPDATE_MODE/.test(main));
+ok('检查更新走便携分支', /if \(PORTABLE_MODE\) return runPortableUpdateCheck\(\)/.test(main));
+ok('下载走便携分支', /if \(PORTABLE_MODE\) \{ startPortableDownload\(\); return; \}/.test(main));
+ok('安装走便携分支', /applyPortableUpdate\('user-confirm'\)/.test(main));
+ok('自动安装也走便携分支', /applyPortableUpdate\('manual-check'\)/.test(main));
+ok('清单来自 OSS releases/latest/portable.json', /releases\/latest\/portable\.json/.test(main));
+ok('GitHub 回退取 release 资产里的 portable.json', /pickPortableAsset/.test(main));
+ok('下载后校验 sha512', /sha512Base64\(zipFile\)/.test(main) && /sha512 校验失败/.test(main));
+ok('解压后再替换', /portable\.extractZip\(/.test(main) && /portable\.findExtractRoot\(/.test(main));
+ok('替换后 app.exit 保证文件不占用', /setTimeout\(function \(\) \{ app\.exit\(0\); \}, 300\)/.test(main));
+ok('模块支持 tar 解压并回退 PowerShell', /tar\.exe/.test(portableSrc) && /Expand-Archive/.test(portableSrc));
+ok('替换命令不用 /MIR（不删旧文件）', /\/E \/IS \/IT/.test(portableSrc) && !/\/MIR/.test(portableSrc));
+ok('构建产出 zip 目标', /target: zip/.test(fs.readFileSync('electron-app/electron-builder.yml', 'utf8')));
+ok('CI 生成并镜像 portable.json', /Generate portable manifest/.test(fs.readFileSync('.github/workflows/release.yml', 'utf8')));
+
 const preload = fs.readFileSync('electron-app/preload.js', 'utf8');
 const launcher = fs.readFileSync('斯诺德跑团/启动台.html', 'utf8');
 const engine = fs.readFileSync('斯诺德跑团/panel_engine.js', 'utf8');

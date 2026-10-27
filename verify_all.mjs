@@ -207,6 +207,18 @@ try {
 console.log(updOK ? '✅ 全自动更新流程通过' : '❌ 全自动更新流程失败');
 totalErrors += updOK ? 0 : 1;
 
+// 便携版自更新（zip 覆盖式，路线 B）
+console.log('\n=== 便携版自更新（zip 覆盖式） ===');
+let portableOK = true;
+try {
+  let pu = spawnSync('node', [join(BASE, 'verify_portable_updater.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  if (pu.stdout) console.log(pu.stdout.trim().slice(-900));
+  if (pu.stderr) console.error(pu.stderr.trim());
+  if (pu.status !== 0) portableOK = false;
+} catch (e) { portableOK = false; console.log(String(e.message).split(String.fromCharCode(10))[0]); }
+console.log(portableOK ? '✅ 便携版自更新通过' : '❌ 便携版自更新失败');
+totalErrors += portableOK ? 0 : 1;
+
 // 规则章节对照 xlsx（v1.0.8008）
 console.log('\n=== 规则章节（对照冒险者基础规则.xlsx） ===');
 let rulesOK = true;

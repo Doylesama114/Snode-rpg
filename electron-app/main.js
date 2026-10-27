@@ -754,6 +754,7 @@ async function checkForMacUpdates() {
 }
 
 function runAutoUpdateCheck() {
+  if (PORTABLE_MODE) return runPortableUpdateCheck();
   // 两个源都问：GitHub 尚未发布（Release 缺失或延迟）时，镜像仍能给出正确版本。
   // 链里已含 oss，所以不再依赖"单源 github 失败才回退"那条路径。
   return checkForUpdatesViaGenericFeed({
@@ -761,6 +762,136 @@ function runAutoUpdateCheck() {
     autoFallback: false,
     phase: 'mirror',
   });
+}
+
+
+/* ===== 便携版更新（zip 覆盖式）=====
+   绕开安装器：清单 portable.json -> 下载 zip -> sha512 -> 解压 -> 应用退出后 robocopy 覆盖 -> 重启 */
+var portable = require('./portable-updater.js');
+var PORTABLE_MODE = process.platform === 'win32' && process.env.SNODE_UPDATE_MODE !== 'installer';
+var portableDownloadToken = null;
+
+function portableManifestUrls() {
+  var cfg = require('./update-mirror-config.js');
+  var base = String(cfg.OSS_PUBLIC_BASE || '').replace(/\/+$/, '');
+  return { oss: base ? base + '/releases/latest/portable.json' : '', github: cfg.GITHUB_LATEST_API || '' };
+}
+
+function pickPortableAsset(release) {
+  var assets = (release && release.assets) || [];
+  for (var i = 0; i < assets.length; i++) {
+    if (assets[i] && assets[i].name === 'portable.json') return assets[i].browser_download_url;
+  }
+  return '';
+}
+
+async function fetchPortableManifest(source) {
+  var urls = portableManifestUrls();
+  if (source === 'oss') {
+    if (!urls.oss) throw new Error('OSS base 未配置');
+    return portable.parsePortableManifest(await portable.fetchText(urls.oss));
+  }
+  var rel = JSON.parse(await portable.fetchText(urls.github));
+  var assetUrl = pickPortableAsset(rel);
+  if (!assetUrl) throw new Error('release 中缺少 portable.json');
+  return portable.parsePortableManifest(await portable.fetchText(assetUrl));
+}
+
+async function runPortableUpdateCheck() {
+  if (updateCheckInFlight) return { outcome: 'busy' };
+  updateCheckInFlight = true;
+  sendUpdateStatus({ status: 'checking', message: '正在检查更新...' });
+  diagnostics.log('portable-check-start', { version: app.getVersion() });
+  var sources = ['oss', 'github'];
+  var manifest = null;
+  var lastErr = null;
+  for (var i = 0; i < sources.length; i++) {
+    try {
+      var m = await fetchPortableManifest(sources[i]);
+      if (m) {
+        manifest = m;
+        diagnostics.log('portable-manifest', { source: sources[i], version: m.version, size: m.size });
+        break;
+      }
+    } catch (e) {
+      lastErr = e;
+      diagnostics.log('portable-manifest-failed', { source: sources[i], msg: String((e && e.message) || e) });
+    }
+  }
+  updateCheckInFlight = false;
+  if (!manifest) {
+    sendUpdateStatus({ status: 'error', message: '无法获取更新信息（镜像与 GitHub 均失败）' });
+    return { outcome: 'failed' };
+  }
+  if (portable.compareVersion(manifest.version, app.getVersion()) <= 0) {
+    sendUpdateStatus({ status: 'up-to-date', version: app.getVersion(), message: '已是最新版本 v' + app.getVersion() });
+    return { outcome: 'up-to-date' };
+  }
+  pendingUpdate = { version: manifest.version, ready: false, portable: manifest };
+  diagnostics.log('portable-update-available', { version: manifest.version, size: manifest.size });
+  sendUpdateStatus({ status: 'available', version: manifest.version,
+    message: '发现新版本 v' + manifest.version + '（当前 v' + app.getVersion() + '），开始下载' });
+  return startPortableDownload();
+}
+
+async function startPortableDownload() {
+  if (!pendingUpdate || !pendingUpdate.portable || pendingUpdate.ready) return { outcome: 'skip' };
+  var m = pendingUpdate.portable;
+  var zipFile = path.join(resolveSafeTempDir(), 'Snode-RPG-' + m.version + '-win-x64.zip');
+  portableDownloadToken = { cancelled: false };
+  diagnostics.log('portable-download-start', { version: m.version, size: m.size });
+  sendUpdateStatus({ status: 'downloading', version: m.version, percent: 0, message: '正在下载更新 v' + m.version + '…' });
+  try {
+    await portable.downloadToFile(m.url, zipFile, {
+      token: portableDownloadToken,
+      onProgress: function (p) {
+        var pct = Math.max(0, Math.min(100, Math.round(p.percent || 0)));
+        sendUpdateStatus({ status: 'downloading', version: m.version, percent: pct, message: '正在下载更新 ' + pct + '%' });
+      },
+    });
+    var got = await portable.sha512Base64(zipFile);
+    if (m.sha512 && got !== m.sha512) throw new Error('sha512 校验失败');
+    pendingUpdate.ready = true;
+    pendingUpdate.zipFile = zipFile;
+    diagnostics.log('portable-downloaded', { version: m.version, target: zipFile });
+    sendUpdateStatus({ status: 'downloaded', version: m.version, message: '更新已下载完成（v' + m.version + '）' });
+    if (manualCheckRequested) setTimeout(function () { maybeInstallNow(); }, 400);
+    return { outcome: 'downloaded' };
+  } catch (e) {
+    diagnostics.error('portable-download-failed', e);
+    sendUpdateStatus({ status: 'error', message: '下载更新失败：' + String((e && e.message) || e) });
+    return { outcome: 'failed' };
+  }
+}
+
+async function applyPortableUpdate(reason) {
+  if (!pendingUpdate || !pendingUpdate.ready || !pendingUpdate.zipFile) {
+    sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
+    return false;
+  }
+  var m = pendingUpdate.portable;
+  var zipFile = pendingUpdate.zipFile;
+  var appDir = path.dirname(process.execPath);
+  var stageDir = path.join(resolveSafeTempDir(), 'snode-portable-' + m.version);
+  sendUpdateStatus({ status: 'installing', version: m.version, message: '正在准备更新（解压）…' });
+  try {
+    try { fs.rmSync(stageDir, { recursive: true, force: true }); } catch (e) {}
+    var ex = portable.extractZip(zipFile, stageDir);
+    if (!ex.ok) throw new Error('解压失败：' + (ex.error || ''));
+    var exeName = path.basename(process.execPath);
+    var root = portable.findExtractRoot(stageDir, exeName);
+    if (!root) throw new Error('解压目录里找不到主程序');
+    markInstallAttempt(m.version);
+    var cmd = portable.buildApplyCommand({ srcDir: root, dstDir: appDir, exePath: path.join(appDir, exeName) });
+    portable.spawnDetached(cmd);
+    diagnostics.log('portable-apply', { version: m.version, target: appDir, reason: String(reason || '') });
+    setTimeout(function () { app.exit(0); }, 300);
+    return true;
+  } catch (e) {
+    diagnostics.error('portable-apply-failed', e);
+    sendUpdateStatus({ status: 'error', message: '准备更新失败：' + String((e && e.message) || e) });
+    return false;
+  }
 }
 
 autoUpdater.on('checking-for-update', () => {
@@ -839,6 +970,7 @@ function maybeInstallNow() {
     return;
   }
   installPending = false;
+  if (PORTABLE_MODE) { applyPortableUpdate('manual-check'); return; }
   console.log('[更新] 立即重启安装 v' + pendingUpdate.version);
   sendUpdateStatus({ status: 'installing', version: pendingUpdate.version, message: '更新已就绪，正在重启安装…' });
   launchInstallerDelayed('manual-check');
@@ -864,6 +996,7 @@ ipcMain.on('check-update', (e, opts) => {
 
 // IPC: 用户在启动台确认下载更新（autoDownload=false）
 ipcMain.on('download-update', () => {
+  if (PORTABLE_MODE) { startPortableDownload(); return; }
   if (process.platform === 'darwin' && pendingUpdate && pendingUpdate.url) {
     shell.openExternal(pendingUpdate.url).catch(err => {
       sendUpdateStatus({ status: 'error', message: '打开下载链接失败：' + err.message });
@@ -890,6 +1023,7 @@ ipcMain.on('download-update', () => {
 
 // IPC: 用户在启动台确认重启并安装
 ipcMain.on('install-update', () => {
+  if (PORTABLE_MODE) { applyPortableUpdate('user-confirm'); return; }
   if (!pendingUpdate || !pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
     return;

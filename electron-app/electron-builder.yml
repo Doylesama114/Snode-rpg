@@ -46,6 +46,11 @@ win:
     - target: nsis
       arch:
         - x64
+    - target: zip
+      arch:
+        - x64
+  # zip 是便携版自更新用的产物（应用自己下载解压，不经过安装器）
+  artifactName: "Snode-RPG-${version}-win-${arch}.zip"
   signAndEditExecutable: false
   forceCodeSigning: false
 nsis:

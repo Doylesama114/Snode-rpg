@@ -2,6 +2,19 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8083',
+    date: '2026-10-27',
+    changes: [
+      '分发方式切换为便携版 zip + 自更新：不再使用安装器，彻底绕开「卸载旧版本失败」问题',
+      '新增 portable-updater.js：清单解析 / 带进度下载 / sha512 校验 / tar 解压 / robocopy 覆盖 / 重启',
+      'main.js 增加 PORTABLE_MODE，检查·下载·安装三入口分流（SNODE_UPDATE_MODE=installer 可回退）',
+      '清单改为 releases/latest/portable.json（OSS 优先，GitHub 资产回退）',
+      '构建增加 zip 目标；CI 生成并镜像 portable.json',
+      '新增门禁 verify_portable_updater.mjs（19 条，含真 zip 端到端）'
+    ]
+  },
+
+  {
     version: '1.0.8082',
     date: '2026-10-27',
     changes: [
