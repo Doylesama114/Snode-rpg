@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8090',
+    date: '2026-10-28',
+    changes: [
+      '重建发布产物：内容与 1.0.8089 相同（安装器 customCheckAppRunning 修复）',
+      '1.0.8089 的 OSS 镜像曾因账号 403 失败；恢复后重触发导致 GitHub Release 变成空发布，故用正常路径重建',
+      'OSS 侧 1.0.8089 已补齐，本版把 GitHub Release 与 OSS 重新对齐到同一版本'
+    ]
+  },
+
+  {
     version: '1.0.8089',
     date: '2026-10-28',
     changes: [
