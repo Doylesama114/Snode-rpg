@@ -1,6 +1,6 @@
-本轮更新 v1.0.8088 2026-10-28
+本轮更新 v1.0.8089 2026-10-28
 
-修复安装器「无法关闭应用」死循环：`installer.nsh` 接管 `customCheckAppRunning`（按进程名 taskkill /F /T + 20 次重试 + 可执行提示），并移除 `preInit` 的 D 盘钉死。详见 docs/releases/v1.0.8088.md。
+安装器宏第二版：`customCheckAppRunning` 改用 taskkill 退出码（0/128）判定，替代 8088 中无效的 `%USERNAME%` + tasklist 方案。详见 docs/releases/v1.0.8089.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
