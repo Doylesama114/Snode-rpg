@@ -1,28 +1,38 @@
 # Bug 反馈汇总
 
-数据截止：2026-10-24T15:24:55.993Z
+数据截止：2026-10-27T18:29:10.453Z
 
 | 指标 | 数量 |
 |---|---|
-| 总反馈 | 9 |
-| 本次新拉取 | 0 |
+| 总反馈 | 10 |
+| 本次新拉取 | 1 |
 
 ## 按来源分布
 
 | 来源 | 数量 |
 |---|---|
+| web | 5 |
 | desktop | 5 |
-| web | 4 |
 
 ## 按页面分布（Top 20）
 
 | 页面 | 数量 |
 |---|---|
 | electron | 5 |
-| https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5% | 3 |
+| https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5% | 4 |
 | https://appassets.androidplatform.net/%E8%81%8C%E4%B8%9A%E9% | 1 |
 
 ## 明细（按时间倒序）
+
+### 2026-10-27T18:29:10.453Z｜web
+- 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E5%90%AF%E5%8A%A8%E5%8F%B0.html｜标题：斯诺德 · 冒险者工会
+```
+页面: https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/%E5%90%AF%E5%8A%A8%E5%8F%B0.html
+斯诺德 · 冒险者工会
+2026/10/28 02:29:10
+
+如何更改基础信息
+```
 
 ### 2026-10-24T15:24:55.993Z｜web
 - 页面：https://appassets.androidplatform.net/%E6%96%AF%E8%AF%BA%E5%BE%B7%E8%B7%91%E5%9B%A2/help.html#s4｜标题：斯诺德 · 帮助
