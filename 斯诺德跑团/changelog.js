@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8088',
+    date: '2026-10-28',
+    changes: [
+      '修复更新时卡在「无法关闭，请手动关闭后点重试」：接管 customCheckAppRunning，改为按进程名 taskkill /F /T + 20 次重试 + 可执行提示',
+      '移除 preInit（不再把安装器固定到 D:\\SnodeRPG，避免 $INSTDIR 与真实安装目录错位）',
+      '安装器失败时明确提示「任务管理器结束进程」或「以管理员身份运行」，不再是无意义的反复重试',
+      '校验新增 6 条安装器断言（86P 0F）'
+    ]
+  },
+
+  {
     version: '1.0.8087',
     date: '2026-10-28',
     changes: [

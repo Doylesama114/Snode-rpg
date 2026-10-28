@@ -1,6 +1,6 @@
-本轮更新 v1.0.8087 2026-10-28
+本轮更新 v1.0.8088 2026-10-28
 
-新增**隐藏神系**牧师的「季风之神」神圣领域（3 风格 × 一阶/二阶，21 条目）：只出现在职业技能树，不进建卡神祇选择、学习面板与 help 领域表。实现见 `HIDDEN_DEITIES` + `hidden` 标记。详见 docs/releases/v1.0.8087.md。
+修复安装器「无法关闭应用」死循环：`installer.nsh` 接管 `customCheckAppRunning`（按进程名 taskkill /F /T + 20 次重试 + 可执行提示），并移除 `preInit` 的 D 盘钉死。详见 docs/releases/v1.0.8088.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

@@ -17,6 +17,14 @@ const sec = (t) => console.log('\n▌' + t);
 
 const main = fs.readFileSync('electron-app/main.js', 'utf8');
 
+sec('⑬ 安装器不再被运行中的应用卡死（接管 customCheckAppRunning）');
+const nshSrc = fs.readFileSync('electron-app/installer.nsh', 'utf8');
+ok('定义 customCheckAppRunning', /!macro customCheckAppRunning/.test(nshSrc));
+ok('按进程名强杀（taskkill /F /T）', /taskkill[^`]*\/F[^`]*\/T/.test(nshSrc));
+ok('重试上限 20 次', /\$R9 < 20/.test(nshSrc));
+ok('失败时给出可执行提示（任务管理器 / 管理员）', /Task Manager/.test(nshSrc) && /administrator/i.test(nshSrc));
+ok('不再用 preInit 把安装目录钉到 D:\\SnodeRPG', !/!macro preInit/.test(nshSrc) && !/D:\\SnodeRPG/.test(nshSrc));
+ok('保留旧卸载器迁移桥', /customUnInstallCheck/.test(nshSrc));
 sec('⑩ 便携版自更新接线（路线 B）');
 const portableSrc = fs.readFileSync('electron-app/portable-updater.js', 'utf8');
 ok('存在 portable-updater 模块', portableSrc.length > 2000);

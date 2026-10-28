@@ -1,6 +1,6 @@
-本轮更新 v1.0.8087 2026-10-28
+本轮更新 v1.0.8088 2026-10-28
 
-牧师页新增第 14 个神祇面板「季风之神」（隐藏神系，`pr-panel-monsoon`）。详见 docs/releases/v1.0.8087.md。
+仅安装器修复，无职业页数据变化。详见 docs/releases/v1.0.8088.md。
 
 # PROJECT KNOWLEDGE BASE — 职业页（职业技能浏览）
 
