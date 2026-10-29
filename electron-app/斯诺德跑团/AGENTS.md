@@ -1,6 +1,6 @@
-本轮更新 v1.0.8089 2026-10-28
+本轮更新 v1.0.8090 2026-10-28
 
-安装器宏第二版：`customCheckAppRunning` 改用 taskkill 退出码（0/128）判定，替代 8088 中无效的 `%USERNAME%` + tasklist 方案。详见 docs/releases/v1.0.8089.md。
+内容同 1.0.8089（安装器修复）；本版用于重建发布产物，把 GitHub Release 与 OSS 对齐。教训：镜像失败不要删 tag 重推。详见 docs/releases/v1.0.8090.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

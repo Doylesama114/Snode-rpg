@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8091',
+    date: '2026-10-29',
+    changes: [
+      '新增安装器诊断日志：每次运行 Setup 追加写入 %APPDATA%\\snowd-skill-tree\\installer-logs\\setup-<版本>.log',
+      '日志含 cmdline/installdir、whoami/groups（判断是否提权）、tasklist 输出、每次 taskkill 退出码与结论',
+      '安装失败弹窗直接显示日志路径，用户复制即可发送',
+      '启动台「导出诊断日志」改为单文件 .txt，内含应用日志 + 全部安装器日志'
+    ]
+  },
+
+  {
     version: '1.0.8090',
     date: '2026-10-28',
     changes: [

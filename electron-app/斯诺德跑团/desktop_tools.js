@@ -24,9 +24,9 @@
     nextMode = !r.compatibilityMode; compatibilityButton.disabled = false;
     status.textContent = '当前渲染：' + (r.compatibilityMode ? '兼容模式' : '硬件加速') + (r.diagnosticsDegraded ? '；诊断目录不可写，已尝试备用记录。' : '');
   }).catch(function () { status.textContent = '诊断状态暂不可用。'; });
-  button(section, '导出诊断', async function () {
+  button(section, '导出诊断日志', async function () {
     var r = await api.exportDiagnostics();
-    status.textContent = r.canceled ? '已取消导出' : r.ok ? '诊断已导出；不含角色存档或恢复草稿。' : r.error;
+    status.textContent = r.canceled ? '已取消导出' : r.ok ? ('诊断已导出（含安装器日志 ' + (r.installerLogs || 0) + ' 份）；不含角色存档或恢复草稿，可直接发给开发者。') : r.error;
   });
   var compatibilityButton = button(section, '切换兼容渲染模式', async function () {
     var r = await api.setCompatibilityMode(nextMode);

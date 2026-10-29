@@ -144,12 +144,49 @@ handled('desktop-compatibility', (event, enabled) => {
 handled('desktop-export-diagnostics', async event => {
   trusted(event);
   const result = await dialog.showSaveDialog(BrowserWindow.fromWebContents(event.sender), {
-    title: '导出桌面诊断', defaultPath: path.join(app.getPath('downloads'), 'snode-desktop-diagnostics.jsonl'),
-    filters: [{ name: '诊断日志', extensions: ['jsonl'] }]
+    title: '导出诊断日志', defaultPath: path.join(app.getPath('downloads'), 'snode-diagnostics-' + app.getVersion() + '.txt'),
+    filters: [{ name: '诊断日志', extensions: ['txt'] }]
   });
   if (result.canceled || !result.filePath) return { ok: true, canceled: true };
   diagnostics.log('diagnostics-export');
-  return diagnostics.exportTo(result.filePath);
+  // 一个文件打包：应用日志 + 安装器日志（安装器在 %APPDATA%\snowd-skill-tree\installer-logs 追加）
+  try {
+    const tmp = path.join(os.tmpdir(), 'snode-diag-' + Date.now() + '.jsonl');
+    const wrote = diagnostics.exportTo(tmp);
+    if (!wrote || wrote.ok === false) throw new Error((wrote && wrote.error) || 'export failed');
+    const appLog = fs.readFileSync(tmp, 'utf8');
+    try { fs.unlinkSync(tmp); } catch (e) {}
+    const parts = [
+      '=== Snowd RPG diagnostics bundle ===',
+      'version: ' + app.getVersion(),
+      'generated: ' + new Date().toISOString(),
+      'platform: ' + process.platform + ' ' + process.arch,
+      'os: ' + os.release(),
+      'exe: ' + process.execPath,
+      'userData: ' + app.getPath('userData'),
+      'logDir: ' + diagnostics.directory,
+      '',
+      '=== app log (jsonl) ===',
+      appLog
+    ];
+    const instDir = path.join(process.env.APPDATA || app.getPath('appData'), 'snowd-skill-tree', 'installer-logs');
+    parts.push('', '=== installer logs (' + instDir + ') ===');
+    let instCount = 0;
+    if (fs.existsSync(instDir)) {
+      for (const name of fs.readdirSync(instDir)) {
+        if (!/\.log$/i.test(name)) continue;
+        try {
+          parts.push('', '--- ' + name + ' ---', fs.readFileSync(path.join(instDir, name), 'utf8'));
+          instCount += 1;
+        } catch (e) {}
+      }
+    }
+    if (!instCount) parts.push('(no installer logs)');
+    fs.writeFileSync(result.filePath, parts.join('\n'), 'utf8');
+    return { ok: true, installerLogs: instCount };
+  } catch (e) {
+    return { ok: false, error: String((e && e.message) || e) };
+  }
 });
 app.on('child-process-gone', (_event, details) => {
   diagnostics.log('child-process-gone', { type: details.type, reason: details.reason, exitCode: details.exitCode });
