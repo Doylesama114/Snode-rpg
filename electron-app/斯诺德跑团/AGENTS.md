@@ -1,6 +1,6 @@
-本轮更新 v1.0.8090 2026-10-28
+本轮更新 v1.0.8091 2026-10-29
 
-内容同 1.0.8089（安装器修复）；本版用于重建发布产物，把 GitHub Release 与 OSS 对齐。教训：镜像失败不要删 tag 重推。详见 docs/releases/v1.0.8090.md。
+安装器新增诊断日志（`%APPDATA%\snowd-skill-tree\installer-logs\setup-<版本>.log`，含 whoami/tasklist/taskkill 退出码）；启动台「导出诊断日志」打包成单个 .txt。详见 docs/releases/v1.0.8091.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

@@ -109,6 +109,22 @@ for (const [cmd,args] of [
   if(out.status!==0)totalErrors++;
 }
 
+
+// 学习面板解锁（v1.0.8092：取消阶位门禁与抉择门禁）
+console.log('\n=== 学习面板解锁 ===');
+let unlockOK = true;
+try {
+  const uo = spawnSync('node', [join(BASE, 'verify_panel_unlocks.mjs')], { encoding: 'utf-8', timeout: 60000 });
+  if (uo.stdout) console.log(uo.stdout.trim());
+  if (uo.stderr) console.error(uo.stderr.trim());
+  if (uo.status !== 0) unlockOK = false;
+} catch (e) {
+  unlockOK = false;
+  console.log('❌ 学习面板解锁校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(unlockOK ? '✅ 学习面板解锁通过' : '❌ 学习面板解锁失败');
+totalErrors += unlockOK ? 0 : 1;
+
 // 技能文本格式（docx 缩进续行合并 + 升级选项吸收）
 console.log('\n=== 技能文本格式 ===');
 let fmtOK = true;

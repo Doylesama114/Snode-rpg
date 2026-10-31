@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8092',
+    date: '2026-10-31',
+    changes: [
+      '取消学习技能的阶位锁：三阶及以上不再需要经验值/等级解锁，学习面板直接展示全部阶位',
+      '取消抉择选择锁：选满后其余选项不再变灰，仍可继续学习；(已选 X/Y) 仅作显示',
+      '新增 verify_panel_unlocks.mjs（13P 0F）并接入全量门禁',
+      '存档结构不变；恢复限制只需还原 isTierUnlocked / getChoiceGroupStatus 两处'
+    ]
+  },
+
+  {
     version: '1.0.8091',
     date: '2026-10-29',
     changes: [

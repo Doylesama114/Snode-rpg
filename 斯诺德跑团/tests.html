@@ -957,7 +957,7 @@ assertFalse(hasTierUnlockCost("一阶"), "一阶无 hasTierUnlockCost");
 state.unlocked_tiers = ["一阶", "二阶"];
 assertTrue(isTierUnlocked("一阶天赋树"), "一阶天赋树 视为已解锁");
 assertTrue(isTierUnlocked("二阶"), "二阶已解锁");
-assertFalse(isTierUnlocked("三阶天赋树"), "三阶天赋树 默认未解锁");
+assertTrue(isTierUnlocked("三阶天赋树"), "三阶天赋树 默认即可学（v1.0.8092 取消阶位门禁）");
 assertTrue(isTierUnlocked("起始特性"), "起始特性→一阶 已解锁");
 
 // 德鲁伊荒野数据：重建后应为裸阶名
@@ -987,7 +987,7 @@ state.talent_tree = [];
 window._pendingLevelUp = { clsIdx: 0, level: 3, _done: {} };
 finalizeLevelUp(0, 3);
 assert(state.classes[0].level, 3, "主职升到 3");
-assertFalse(isTierUnlocked("三阶"), "主职 L3 不自动开三阶");
+assertTrue(isTierUnlocked("三阶"), "主职 L3 也可直接学三阶（v1.0.8092 取消阶位门禁）");
 
 // 子职业升到 3：自动开三阶
 state.unlocked_tiers = ["一阶", "二阶"];

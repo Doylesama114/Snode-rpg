@@ -1,6 +1,6 @@
-本轮更新 v1.0.8091 2026-10-29
+本轮更新 v1.0.8092 2026-10-31
 
-安装器新增诊断日志（`%APPDATA%\snowd-skill-tree\installer-logs\setup-<版本>.log`，含 whoami/tasklist/taskkill 退出码）；启动台「导出诊断日志」打包成单个 .txt。详见 docs/releases/v1.0.8091.md。
+取消学习面板限制：`isTierUnlocked()` 恒真（阶位不再花经验值解锁）、`getChoiceGroupStatus().full` 恒假（抉择选满仍可学）。校验见 `verify_panel_unlocks.mjs`。详见 docs/releases/v1.0.8092.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

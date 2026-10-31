@@ -24,9 +24,9 @@ async function checkPage(p) {
  assert.equal(await p.evaluate(()=>getChoiceGroupStatus(CHOICE_GROUPS.find(g=>g.marker==='抉择B'),'通用').count),2);
  assert.equal(await p.evaluate(()=>state.talent_tree.filter(t=>t.uid==='duplicate-one'||t.uid==='duplicate-two').length),2);
  pass('duplicate records do not fill a choice group; actual UI learning succeeds and preserves both UIDs');
- assert.equal(await p.locator('#learnResults button[onclick*="learnSkill"][onclick*="纵身一跃"]').count(),0);
- assert(await p.evaluate(()=>document.getElementById('learnResults').textContent.includes('本抉择组选项已满')));
- pass('a genuinely full choice group remains locked with a precise reason');
+ assert.equal(await p.locator('#learnResults button[onclick*="learnSkill"][onclick*="纵身一跃"]').count(),1);
+ assert(!(await p.evaluate(()=>document.getElementById('learnResults').textContent.includes('本抉择组选项已满'))));
+ pass('a full choice group no longer locks remaining options (v1.0.8092)');
  const foreign=await p.evaluate(()=>{
   state.talent_tree=[{n:'威力惊人',src:'法师',uid:'foreign'},{n:'负重前行',src:'通用',uid:'custom',resolution:'custom'}];
   return getChoiceGroupStatus(CHOICE_GROUPS.find(g=>g.marker==='抉择B'),'通用').count;

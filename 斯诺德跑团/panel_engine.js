@@ -810,7 +810,8 @@ function getChoiceGroupStatus(group, clsName) {
   }
   var count = Object.keys(chosen).length, max = Number(group.max);
   var valid = Number.isSafeInteger(max) && max > 0;
-  return { count:count, max:valid ? max : null, chosen:chosen, full:valid && count >= max };
+  // v1.0.8092: 取消抉择门禁 —— 选满后其余选项仍可学习，count/max 仅用于显示
+  return { count:count, max:valid ? max : null, chosen:chosen, full:false };
 }
 
 function isRuleLockedAbility(skillData) {
@@ -4588,6 +4589,8 @@ function resolveWeight(name) {
 function isTierUnlocked(tierName) {
   tierName = normalizeTierName(tierName);
   if (!tierName || tierName === "\u901a\u7528") return true;
+  // v1.0.8092: 取消阶位门禁 —— 三阶及以上不再要求经验值/等级解锁，学习面板直接展示
+  return true;
   // 一阶/二阶始终免费（默认已开）；防止后缀未归一时误锁
   if (tierName === "\u4e00\u9636" || tierName === "\u4e8c\u9636") {
     var unlockedFree = state.unlocked_tiers || ["\u4e00\u9636","\u4e8c\u9636"];
