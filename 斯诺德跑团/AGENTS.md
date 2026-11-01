@@ -1,6 +1,6 @@
-本轮更新 v1.0.8093 2026-11-01
+本轮更新 v1.0.8094 2026-11-01
 
-修复更新只下载不安装：便携模式 `will-quit` 退出即装、`pending-update.json` 断点续装、启动台去掉 `window.confirm`。诊断日志见 docs/releases/v1.0.8093.md。
+安装器修复：不再调用旧卸载器（它会删掉安装目录再失败）、目标目录失效/不可写时回退默认目录、杀残留卸载器、安装后校验 exe+app.asar。详见 docs/releases/v1.0.8094.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

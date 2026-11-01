@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8094',
+    date: '2026-11-01',
+    changes: [
+      '修复旧用户「更新后打不开/装不上」：旧卸载器会先删掉安装目录再失败，导致安装器无处可写',
+      '安装器不再调用旧卸载器（清 UninstallString），并清理残留卸载器进程与只读文件',
+      '目标目录失效（无主程序/不可写）时自动回退到 %LOCALAPPDATA%\\Programs\\<产品名>',
+      '安装后校验 exe 与 app.asar，缺失时明确提示改用便携 zip'
+    ]
+  },
+
+  {
     version: '1.0.8093',
     date: '2026-11-01',
     changes: [

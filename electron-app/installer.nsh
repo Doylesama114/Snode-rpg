@@ -77,6 +77,68 @@ Var /GLOBAL SnowdLogOn
     SetErrorLevel 1
     Quit
   ${EndIf}
+
+  ; --- v1.0.8094: target-dir health check -----------------------------
+  ; Symptom this fixes: an earlier install left InstallLocation pointing at a
+  ; folder that no longer exists (the old uninstaller deleted the folder itself
+  ; while failing). The installer then tries to write Uninstall*.exe into that
+  ; missing/odd path and dies with 'cannot open file for writing'.
+  ; 1) no main exe in $INSTDIR -> stale path, forget it and use the default dir
+  ${IfNot} ${FileExists} "$INSTDIR\${APP_EXECUTABLE_FILENAME}"
+    !insertmacro SnowdLogLine "targetdir-stale: no main exe in $INSTDIR"
+    ReadRegStr $R7 SHELL_CONTEXT "${INSTALL_REGISTRY_KEY}" InstallLocation
+    ${If} $R7 != ""
+      DeleteRegValue SHELL_CONTEXT "${INSTALL_REGISTRY_KEY}" InstallLocation
+      !insertmacro SnowdLogLine "targetdir-stale: cleared InstallLocation ($R7)"
+    ${EndIf}
+    StrCpy $INSTDIR "$LOCALAPPDATA\Programs\${APP_FILENAME}"
+    !insertmacro SnowdLogLine "targetdir-new: $INSTDIR"
+  ${EndIf}
+
+  CreateDirectory "$INSTDIR"
+
+  ; 2) still not writable (ACL / read-only / security software) -> default dir
+  ClearErrors
+  FileOpen $R6 "$INSTDIR\.snowd-write-probe" w
+  ${If} ${Errors}
+    !insertmacro SnowdLogLine "targetdir-unwritable: $INSTDIR -> fallback"
+    StrCpy $INSTDIR "$LOCALAPPDATA\Programs\${APP_FILENAME}"
+    CreateDirectory "$INSTDIR"
+  ${Else}
+    FileWrite $R6 "probe"
+    FileClose $R6
+    Delete "$INSTDIR\.snowd-write-probe"
+    !insertmacro SnowdLogLine "targetdir-writable: $INSTDIR"
+  ${EndIf}
+
+  ; --- v1.0.8094: never invoke the old uninstaller ---------------------
+  ; It deletes the app folder and then fails (because it cannot delete itself
+  ; while running from there), which is what emptied the install folder for users.
+  DeleteRegValue SHELL_CONTEXT "${UNINSTALL_REGISTRY_KEY}" UninstallString
+  DeleteRegValue SHELL_CONTEXT "${UNINSTALL_REGISTRY_KEY}" QuietUninstallString
+  !insertmacro SnowdLogLine "uninstall-old: UninstallString cleared (will be skipped)"
+
+  ; kill a stuck old uninstaller and remove its read-only file, so the new
+  ; uninstaller write cannot fail with 'cannot open file for writing'
+  nsExec::Exec `"$SYSDIR\taskkill.exe" /F /T /IM "${UNINSTALL_FILENAME}"`
+  Pop $R8
+  Sleep 600
+  SetFileAttributes "$INSTDIR\${UNINSTALL_FILENAME}" NORMAL
+  ClearErrors
+  Delete "$INSTDIR\${UNINSTALL_FILENAME}"
+  !insertmacro SnowdLogLine "uninstaller-cleanup: taskkill=$R8 file deleted"
+!macroend
+
+; --- v1.0.8094: post-install verification ----------------------------
+!macro customInstall
+  ${If} ${FileExists} "$INSTDIR\${APP_EXECUTABLE_FILENAME}"
+  ${AndIf} ${FileExists} "$INSTDIR\resources\app.asar"
+    !insertmacro SnowdLogLine "post-install: ok (exe + app.asar present)"
+  ${Else}
+    !insertmacro SnowdLogLine "post-install: MISSING exe or app.asar"
+    MessageBox MB_OK|MB_ICONSTOP "Installation finished but the application files are missing.$\r$\n$\r$\nPlease download the portable zip (Snode-RPG-*-win-x64.zip), extract it to any folder and run the exe.$\r$\n$\r$\nLog: $SnowdLogFile"
+  ${EndIf}
+  !insertmacro SnowdLogClose
 !macroend
 
 ; --- Migration bridge (old uninstallers) -------------------------------

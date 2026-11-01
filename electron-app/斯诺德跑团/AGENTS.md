@@ -1,6 +1,6 @@
-本轮更新 v1.0.8092 2026-10-31
+本轮更新 v1.0.8093 2026-11-01
 
-取消学习面板限制：`isTierUnlocked()` 恒真（阶位不再花经验值解锁）、`getChoiceGroupStatus().full` 恒假（抉择选满仍可学）。校验见 `verify_panel_unlocks.mjs`。详见 docs/releases/v1.0.8092.md。
+修复更新只下载不安装：便携模式 `will-quit` 退出即装、`pending-update.json` 断点续装、启动台去掉 `window.confirm`。诊断日志见 docs/releases/v1.0.8093.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
