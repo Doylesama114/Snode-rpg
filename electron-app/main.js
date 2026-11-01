@@ -807,6 +807,50 @@ function runAutoUpdateCheck() {
 var portable = require('./portable-updater.js');
 var PORTABLE_MODE = process.platform === 'win32' && process.env.SNODE_UPDATE_MODE !== 'installer';
 var portableDownloadToken = null;
+var portableApplyLaunched = false;
+
+/* 断点续装：下载完成后把信息落盘，即使本次退出失败，下次启动也能直接安装 */
+function pendingUpdatePath() { return path.join(app.getPath('userData'), 'pending-update.json'); }
+function savePendingUpdate(info) {
+  try {
+    fs.writeFileSync(pendingUpdatePath(), JSON.stringify(info), 'utf8');
+    diagnostics.log('pending-update-saved', { version: info.version, size: info.size });
+  } catch (e) { diagnostics.error('pending-update-write-failed', e); }
+}
+function clearPendingUpdate() {
+  try { fs.unlinkSync(pendingUpdatePath()); } catch (e) {}
+}
+function restorePendingUpdate() {
+  var info = null;
+  try {
+    var file = pendingUpdatePath();
+    if (!fs.existsSync(file)) return false;
+    info = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!info || !info.version || !info.zipFile || !fs.existsSync(info.zipFile)) {
+      clearPendingUpdate();
+      diagnostics.log('pending-update-restored', { version: info && info.version, ok: false, reason: 'missing-zip' });
+      return false;
+    }
+    if (info.size && fs.statSync(info.zipFile).size !== info.size) {
+      clearPendingUpdate();
+      diagnostics.log('pending-update-restored', { version: info.version, ok: false, reason: 'size-mismatch' });
+      return false;
+    }
+    pendingUpdate = {
+      version: info.version,
+      ready: true,
+      zipFile: info.zipFile,
+      portable: { version: info.version, url: '', sha512: info.sha512 || '', size: info.size || 0 }
+    };
+    diagnostics.log('pending-update-restored', { version: info.version, ok: true });
+    sendUpdateStatus({ status: 'downloaded', version: info.version,
+      message: '更新已下载完成（v' + info.version + '），关闭应用时自动安装' });
+    return true;
+  } catch (e) {
+    diagnostics.error('pending-update-restore-failed', e);
+    return false;
+  }
+}
 
 function portableManifestUrls() {
   var cfg = require('./update-mirror-config.js');
@@ -864,6 +908,12 @@ async function runPortableUpdateCheck() {
     sendUpdateStatus({ status: 'up-to-date', version: app.getVersion(), message: '已是最新版本 v' + app.getVersion() });
     return { outcome: 'up-to-date' };
   }
+  if (pendingUpdate && pendingUpdate.ready && pendingUpdate.version === manifest.version && pendingUpdate.zipFile && fs.existsSync(pendingUpdate.zipFile)) {
+    diagnostics.log('portable-update-already-downloaded', { version: manifest.version });
+    sendUpdateStatus({ status: 'downloaded', version: manifest.version,
+      message: '更新已下载完成（v' + manifest.version + '），关闭应用时自动安装' });
+    return { outcome: 'downloaded' };
+  }
   pendingUpdate = { version: manifest.version, ready: false, portable: manifest };
   diagnostics.log('portable-update-available', { version: manifest.version, size: manifest.size });
   sendUpdateStatus({ status: 'available', version: manifest.version,
@@ -890,6 +940,7 @@ async function startPortableDownload() {
     if (m.sha512 && got !== m.sha512) throw new Error('sha512 校验失败');
     pendingUpdate.ready = true;
     pendingUpdate.zipFile = zipFile;
+    savePendingUpdate({ version: m.version, zipFile: zipFile, sha512: m.sha512 || '', size: m.size || 0, at: new Date().toISOString() });
     diagnostics.log('portable-downloaded', { version: m.version, target: zipFile });
     sendUpdateStatus({ status: 'downloaded', version: m.version, message: '更新已下载完成（v' + m.version + '）' });
     if (manualCheckRequested) setTimeout(function () { maybeInstallNow(); }, 400);
@@ -901,9 +952,17 @@ async function startPortableDownload() {
   }
 }
 
-async function applyPortableUpdate(reason) {
+async function applyPortableUpdate(reason, opts) {
+  opts = opts || {};
   if (!pendingUpdate || !pendingUpdate.ready || !pendingUpdate.zipFile) {
-    sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
+    diagnostics.log('portable-apply-skip', { reason: 'no-pending', trigger: String(reason || '') });
+    if (!opts.silent) sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
+    return false;
+  }
+  if (!fs.existsSync(pendingUpdate.zipFile)) {
+    diagnostics.log('portable-apply-skip', { reason: 'no-zip', trigger: String(reason || ''), zip: pendingUpdate.zipFile });
+    clearPendingUpdate();
+    if (!opts.silent) sendUpdateStatus({ status: 'error', message: '更新包已丢失，请重新检查更新。' });
     return false;
   }
   var m = pendingUpdate.portable;
@@ -921,8 +980,9 @@ async function applyPortableUpdate(reason) {
     markInstallAttempt(m.version);
     var cmd = portable.buildApplyCommand({ srcDir: root, dstDir: appDir, exePath: path.join(appDir, exeName) });
     portable.spawnDetached(cmd);
-    diagnostics.log('portable-apply', { version: m.version, target: appDir, reason: String(reason || '') });
-    setTimeout(function () { app.exit(0); }, 300);
+    clearPendingUpdate();
+    diagnostics.log('portable-apply', { version: m.version, target: appDir, reason: String(reason || ''), onQuit: !!opts.skipExit });
+    if (!opts.skipExit) setTimeout(function () { app.exit(0); }, 300);
     return true;
   } catch (e) {
     diagnostics.error('portable-apply-failed', e);
@@ -1060,6 +1120,7 @@ ipcMain.on('download-update', () => {
 
 // IPC: 用户在启动台确认重启并安装
 ipcMain.on('install-update', () => {
+  diagnostics.log('updater-install-click', { portable: !!PORTABLE_MODE, ready: !!(pendingUpdate && pendingUpdate.ready) });
   if (PORTABLE_MODE) { applyPortableUpdate('user-confirm'); return; }
   if (!pendingUpdate || !pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
@@ -1528,7 +1589,18 @@ function startMemoryWatchdog() {
 }
 let updateTimer = null;
 app.on('will-quit', () => {
-  if (pendingUpdate && pendingUpdate.ready && !installerLaunched) { try { launchInstallerDelayed('quit'); } catch (e) {} }
+  if (pendingUpdate && pendingUpdate.ready) {
+    if (PORTABLE_MODE) {
+      if (!portableApplyLaunched) {
+        portableApplyLaunched = true;
+        diagnostics.log('portable-apply-on-quit', { version: pendingUpdate.version });
+        try { applyPortableUpdate('quit', { skipExit: true, silent: true }); }
+        catch (e) { diagnostics.error('portable-apply-on-quit-failed', e); }
+      }
+    } else if (!installerLaunched) {
+      try { launchInstallerDelayed('quit'); } catch (e) {}
+    }
+  }
   clearInterval(memoryTimer);
   clearTimeout(updateTimer);
   (updateRetryTimers || []).forEach(function (t) { clearTimeout(t); });
@@ -1646,6 +1718,7 @@ app.whenReady().then(async () => {
   try { ensureProcessTemp(); } catch (e) { diagnostics.error('temp-normalize-failed', e); }
   await createWindow();
   try { checkInstallApplied(); } catch (e) { diagnostics.error('update-install-check-failed', e); }
+  try { restorePendingUpdate(); } catch (e) { diagnostics.error('pending-update-restore-failed', e); }
   try { purgeStaleUpdaterCache(); } catch (e) { diagnostics.error('updater-cache-prune-failed', e); }
   try { require('./chargen-cli-server').startChargenCliServer(() => mainWindow, { diagnostics, lifecycle }); }
   catch (e) { diagnostics.error('cli-disabled', e); }

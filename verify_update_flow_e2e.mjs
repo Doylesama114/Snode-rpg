@@ -17,6 +17,21 @@ const sec = (t) => console.log('\n▌' + t);
 
 const main = fs.readFileSync('electron-app/main.js', 'utf8');
 
+sec('⑭ 便携版：退出即装 + 断点续装（v1.0.8093）');
+const mainV93 = fs.readFileSync('electron-app/main.js', 'utf8');
+const launcherV93 = fs.readFileSync('斯诺德跑团/启动台.html', 'utf8');
+ok('退出时便携分支存在（PORTABLE_MODE + portable-apply-on-quit）',
+  /app\.on\('will-quit'[\s\S]{0,900}PORTABLE_MODE[\s\S]{0,400}portable-apply-on-quit/.test(mainV93));
+ok('便携模式下不再走安装器退出分支', /\}\s*else if \(!installerLaunched\)/.test(mainV93));
+ok('applyPortableUpdate 支持 skipExit（退出路径不重复 exit）', /function applyPortableUpdate\(reason, opts\)/.test(mainV93) && /opts\.skipExit/.test(mainV93));
+ok('apply 失败有跳过原因日志', /portable-apply-skip/.test(mainV93));
+ok('下载完成写断点文件', /savePendingUpdate\(/.test(mainV93) && /pending-update\.json/.test(mainV93));
+ok('启动时补装', /restorePendingUpdate\(\)/.test(mainV93) && /pending-update-restored/.test(mainV93));
+ok('已下载同版本不重复下载', /portable-update-already-downloaded/.test(mainV93));
+ok('用户点击安装留痕', /updater-install-click/.test(mainV93));
+ok('启动台更新路径不再用 window.confirm', !/window\.confirm/.test(launcherV93));
+ok('下载完成文案改为自动安装', /关闭应用时会自动安装|关闭应用时自动安装/.test(launcherV93));
+
 sec('⑬ 安装器不再被运行中的应用卡死（接管 customCheckAppRunning）');
 const nshSrc = fs.readFileSync('electron-app/installer.nsh', 'utf8');
 ok('定义 customCheckAppRunning', /!macro customCheckAppRunning/.test(nshSrc));

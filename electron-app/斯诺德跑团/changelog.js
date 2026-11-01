@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8093',
+    date: '2026-11-01',
+    changes: [
+      '修复「更新一直下载却从不安装」：便携模式退出时自动应用更新',
+      '新增断点续装：下载完成写 pending-update.json，启动时读取并直接安装，不再重复下载',
+      '启动台更新按钮去掉 window.confirm；文案改为「关闭应用时会自动安装」',
+      '新增更新诊断日志（apply-on-quit / apply-skip / pending-restored / install-click）'
+    ]
+  },
+
+  {
     version: '1.0.8092',
     date: '2026-10-31',
     changes: [
