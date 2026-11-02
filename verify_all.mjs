@@ -110,6 +110,15 @@ for (const [cmd,args] of [
 }
 
 
+// 面板技能详情去重（v1.0.8095：level_upgrades 的 section 只渲染一次）
+console.log('\n=== 面板详情去重 ===');
+{
+  const dq = spawnSync('node', [join(BASE, 'verify_panel_detail_dedup.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
+  if (dq.stdout) console.log(dq.stdout.trim());
+  if (dq.stderr) console.error(dq.stderr.trim().slice(-1500));
+  totalErrors += dq.status === 0 ? 0 : 1;
+}
+
 // 学习面板解锁（v1.0.8092：取消阶位门禁与抉择门禁）
 console.log('\n=== 学习面板解锁 ===');
 let unlockOK = true;

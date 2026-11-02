@@ -2306,10 +2306,19 @@ function formatSkillDetailHtml(skillData) {
   for(i=0;i<effects.length;i++)if(effects[i]&&!covered(effects[i]))html+="<p>"+escapeHtmlText(effects[i])+"</p>";
   html+=rollHtml;
   html+=renderUnitTables(skillData);
-  var ups=skillData.level_upgrades||[];
+  var ups=skillData.level_upgrades||[], printedText={};
+  if(desc&&typeof normUnitText==="function")printedText[normUnitText(desc)]=true;
+  for(i=0;i<lines.length;i++)if(lines[i]&&typeof normUnitText==="function")printedText[normUnitText(lines[i])]=true;
+  for(i=0;i<effects.length;i++)if(effects[i]&&typeof normUnitText==="function")printedText[normUnitText(effects[i])]=true;
   for(i=0;i<ups.length;i++) {
     var u=ups[i], label=u.label||("你的"+(u.class||"")+"等级到达"+u.level+"级时：");
-    if(u.section)html+="<p><b>"+escapeHtmlText(u.section)+"</b></p>";
+    var upsSec=(u.section||"").trim();
+    var upsKey=(upsSec&&typeof normUnitText==="function")?normUnitText(upsSec):upsSec;
+    // v1.0.8095: 同一 section 只输出一次；已作为描述/正文出现过的直接跳过
+    if(upsSec&&!printedText[upsKey]&&!covered(upsSec)) {
+      html+="<p><b>"+escapeHtmlText(upsSec)+"</b></p>";
+      printedText[upsKey]=true;
+    }
     html+="<p><b>"+escapeHtmlText(label)+"</b>"+paragraph(u.text||"",sliceRunsAfterPrefix(u.line_runs||[],label.length))+"</p>";
     var choices=u.choices||[];
     for(j=0;j<choices.length;j++)if(!covered(choices[j]))html+="<p>"+escapeHtmlText(choices[j])+"</p>";
