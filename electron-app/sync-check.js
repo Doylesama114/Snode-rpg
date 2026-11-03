@@ -16,6 +16,11 @@ const DIR_PAIRS = [
 /** 需要跳过的文件模式 */
 const SKIP_PATTERNS = ['_backup_'];
 
+/** 纯文档：不同步只警告（不阻断构建） */
+function isDocumentation(relativePath) {
+  return /\.md$/i.test(relativePath) || /(^|[\\/])README(\.|$)/i.test(relativePath);
+}
+
 /**
  * 递归获取目录下所有文件（非目录）
  * 跳过名称中包含 SKIP_PATTERNS 中任一模式的文件
@@ -71,6 +76,10 @@ for (const pair of DIR_PAIRS) {
 
     // 检查目标文件是否存在
     if (!fs.existsSync(destFile)) {
+      if (isDocumentation(srcFile.relativePath)) {
+        console.warn('⚠️ 文档缺失: ' + pair.dest + '/' + srcFile.relativePath + ' —— 不影响构建，建议同步');
+        continue;
+      }
       console.error(`❌ 缺少文件: ${pair.dest}/${srcFile.relativePath} —— 源文件存在但未同步到构建目录`);
       hasErrors = true;
       continue;
@@ -80,8 +89,13 @@ for (const pair of DIR_PAIRS) {
     const srcStat = fs.statSync(srcFile.fullPath);
     const destStat = fs.statSync(destFile);
     if (srcStat.size !== destStat.size || !fs.readFileSync(srcFile.fullPath).equals(fs.readFileSync(destFile))) {
-      console.error(`❌ 文件不同步: ${pair.dest}/${srcFile.relativePath} —— 内容不同，需要重新同步`);
-      hasErrors = true;
+      // v1.0.8096: 纯文档（*.md）不同步只警告，不阻断构建（AGENTS.md 曾让 mac 构建第一步就退出）
+      if (isDocumentation(srcFile.relativePath)) {
+        console.warn('⚠️ 文档未同步: ' + pair.dest + '/' + srcFile.relativePath + ' —— 不影响构建，建议同步');
+      } else {
+        console.error(`❌ 文件不同步: ${pair.dest}/${srcFile.relativePath} —— 内容不同，需要重新同步`);
+        hasErrors = true;
+      }
     }
   }
 

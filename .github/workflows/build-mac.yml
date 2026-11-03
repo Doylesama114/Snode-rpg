@@ -53,7 +53,25 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
           TARGET_ARCH: ${{ matrix.arch }}
-        run: npm run dist:mac -- --arch "$TARGET_ARCH"
+          DEBUG: electron-builder
+        run: |
+          set -o pipefail
+          npm run dist:mac -- --arch "$TARGET_ARCH" 2>&1 | tee "$GITHUB_WORKSPACE/mac-build.log"
+      - name: Surface build failure
+        if: failure()
+        run: |
+          LOG="$GITHUB_WORKSPACE/mac-build.log"
+          if [ ! -f "$LOG" ]; then echo "::error title=DMG build failed::no log file produced"; exit 0; fi
+          tail -n 80 "$LOG"
+          MSG=$(grep -inE 'error|failed|cannot|ENOENT|hdiutil|not found' "$LOG" | tail -n 12 | sed 's/%/%25/g' | tr '\n' '\r' | sed 's/\r/%0A/g' | cut -c1-3000)
+          echo "::error title=DMG build failed::${MSG}"
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-build-log-${{ matrix.arch }}
+          path: mac-build.log
+          if-no-files-found: ignore
       - name: Verify signature and launch packaged app
         env:
           APP_DIR: ${{ matrix.app-dir }}

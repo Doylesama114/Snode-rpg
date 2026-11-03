@@ -1,6 +1,6 @@
-本轮更新 v1.0.8094 2026-11-01
+本轮更新 v1.0.8095 2026-11-03
 
-安装器修复：不再调用旧卸载器（它会删掉安装目录再失败）、目标目录失效/不可写时回退默认目录、杀残留卸载器、安装后校验 exe+app.asar。详见 docs/releases/v1.0.8094.md。
+技能详情渲染修复：`formatSkillDetailHtml` 的 `level_upgrades.section` 只输出一次（同 section 自动归组，与描述相同则跳过），全库 124 条重复 → 0；新增 `verify_panel_detail_dedup.mjs` 守门。上一版安装器修复见 docs/releases/v1.0.8094.md，本版详见 docs/releases/v1.0.8095.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
