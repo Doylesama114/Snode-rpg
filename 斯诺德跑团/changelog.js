@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8096',
+    date: '2026-11-03',
+    changes: [
+      '修复 Mac 版：8083 起打包遗漏 portable-updater.js 导致应用启动即崩溃，现已在 mac 包内补齐并改为防御性加载',
+      '修复 mac 构建：纯文档（AGENTS.md 等）不同步不再阻断构建，之前会让构建第一步就退出',
+      'mac CI 失败时会输出真实报错注解；新增“main.js 依赖必须在 mac 白名单里”的回归测试'
+    ]
+  },
+
+  {
     version: '1.0.8095',
     date: '2026-11-03',
     changes: [
