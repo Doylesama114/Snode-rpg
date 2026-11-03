@@ -77,8 +77,26 @@ jobs:
           APP_DIR: ${{ matrix.app-dir }}
         run: |
           APP_PATH="electron-app/dist/mac/$APP_DIR/斯诺德跑团.app"
-          codesign --verify --deep --strict "$APP_PATH"
-          node scripts/smoke-desktop.mjs "$APP_PATH/Contents/MacOS/斯诺德跑团"
+          echo "app path: $APP_PATH"
+          ls -1 electron-app/dist/mac 2>/dev/null || true
+          if [ ! -d "$APP_PATH" ]; then
+            echo "::error title=APP bundle missing::$APP_PATH not found (see dir listing above)"
+            exit 1
+          fi
+          if ! OUT=$(codesign --verify --deep --strict --verbose=2 "$APP_PATH" 2>&1); then
+            echo "$OUT"
+            MSG=$(printf '%s' "$OUT" | sed 's/%/%25/g' | tr '\n' '\r' | sed 's/\r/%0A/g' | cut -c1-2500)
+            echo "::error title=codesign verify failed::${MSG}"
+            exit 1
+          fi
+          echo "$OUT"
+          if ! OUT2=$(node scripts/smoke-desktop.mjs "$APP_PATH/Contents/MacOS/斯诺德跑团" 2>&1); then
+            echo "$OUT2"
+            MSG2=$(printf '%s' "$OUT2" | sed 's/%/%25/g' | tr '\n' '\r' | sed 's/\r/%0A/g' | cut -c1-2500)
+            echo "::error title=smoke launch failed::${MSG2}"
+            exit 1
+          fi
+          echo "$OUT2"
       - uses: actions/upload-artifact@v4
         with:
           name: Snode-RPG-mac-${{ matrix.arch }}
