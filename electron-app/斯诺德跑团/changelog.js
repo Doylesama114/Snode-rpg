@@ -2,7 +2,7 @@
 var SNOWD_CHANGELOG = [
 
   {
-    version: '1.0.8096',
+    version: '1.0.8098',
     date: '2026-11-03',
     changes: [
       '修复 Mac 版：8083 起打包遗漏 portable-updater.js 导致应用启动即崩溃，现已在 mac 包内补齐并改为防御性加载',

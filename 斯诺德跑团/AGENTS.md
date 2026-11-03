@@ -1,6 +1,6 @@
-本轮更新 v1.0.8095 2026-11-03
+本轮更新 v1.0.8098 2026-11-03
 
-技能详情渲染修复：`formatSkillDetailHtml` 的 `level_upgrades.section` 只输出一次（同 section 自动归组，与描述相同则跳过），全库 124 条重复 → 0；新增 `verify_panel_detail_dedup.mjs` 守门。上一版安装器修复见 docs/releases/v1.0.8094.md，本版详见 docs/releases/v1.0.8095.md。
+Mac 版本修复：mac 打包白名单补 `portable-updater.js`（8083 起遗漏导致 app 启动即崩）、`main.js` 防御性 require、`sync-check` 对纯文档只警告、mac CI 失败输出 `::error::` 注解。详见 docs/releases/v1.0.8098.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
