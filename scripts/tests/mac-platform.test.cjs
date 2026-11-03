@@ -70,3 +70,28 @@ test('Mac bundle includes current desktop diagnostics and keeps resources outsid
   assert.deepEqual(resolved.mac.target.map(item => item.target), ['dmg']);
   assert.ok(fs.existsSync(path.join(APP, 'desktop-diagnostics.js')));
 });
+test('main.js 的每个相对 require 都在 mac 打包白名单里', () => {
+  // 8083 加了 portable-updater.js 但 mac 白名单漏了它 -> 打包后的 app 一启动就崩，
+  // CI 的 smoke launch 报 'Application exited during startup'。
+  // 轻量解析：只取 files: 段里的 '- xxx' 行，避免依赖 js-yaml（CI 之外不一定装了）
+  const ymlLines = fs.readFileSync(path.join(APP, 'electron-builder.mac.yml'), 'utf8').split(/\r?\n/);
+  const patterns = [];
+  let inFiles = false;
+  for (const line of ymlLines) {
+    if (/^files:\s*$/.test(line)) { inFiles = true; continue; }
+    if (inFiles && /^[A-Za-z]/.test(line)) break;
+    if (inFiles) {
+      const m = line.match(/^\s*-\s+(.+?)\s*$/);
+      if (m) patterns.push(m[1].replace(/^['"]|['"]$/g, ''));
+    }
+  }
+  const source = fs.readFileSync(path.join(APP, 'main.js'), 'utf8');
+  const required = [...new Set([...source.matchAll(/require\(['"]\.\/([^'"]+)['"]\)/g)].map(m => m[1]))];
+  assert.ok(required.length > 0);
+  for (const name of required) {
+    const covered = patterns.some(pattern => pattern === name || pattern === name + '.js' ||
+      pattern.startsWith(name + '/') || pattern.startsWith(name + '**'));
+    assert.ok(covered, name + ' 未包含在 electron-builder.mac.yml 的 files 中');
+  }
+});
+

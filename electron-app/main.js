@@ -804,8 +804,10 @@ function runAutoUpdateCheck() {
 
 /* ===== 便携版更新（zip 覆盖式）=====
    绕开安装器：清单 portable.json -> 下载 zip -> sha512 -> 解压 -> 应用退出后 robocopy 覆盖 -> 重启 */
-var portable = require('./portable-updater.js');
-var PORTABLE_MODE = process.platform === 'win32' && process.env.SNODE_UPDATE_MODE !== 'installer';
+// v1.0.8096: 该模块只有 Windows 便携版用到；mac 包里没有它时不能让整个应用启动失败
+var portable = null;
+try { portable = require('./portable-updater.js'); } catch (e) { diagnostics.error('portable-updater-missing', e); }
+var PORTABLE_MODE = process.platform === 'win32' && !!portable && process.env.SNODE_UPDATE_MODE !== 'installer';
 var portableDownloadToken = null;
 var portableApplyLaunched = false;
 
