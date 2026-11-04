@@ -1,6 +1,6 @@
-本轮更新 v1.0.8098 2026-11-03
+本轮更新 v1.0.8100 2026-11-04
 
-Mac 版本修复：mac 打包白名单补 `portable-updater.js`（8083 起遗漏导致 app 启动即崩）、`main.js` 防御性 require、`sync-check` 对纯文档只警告、mac CI 失败输出 `::error::` 注解。详见 docs/releases/v1.0.8098.md。
+更新黑窗修复：便携版自更新改为「.bat 承载 + wscript 隐藏拉起（窗口样式 0、detached）」，避免 detached 下 windowsHide 失效导致 cmd 新建控制台。详见 docs/releases/v1.0.8100.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

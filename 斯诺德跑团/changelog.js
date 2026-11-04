@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8100',
+    date: '2026-11-04',
+    changes: [
+      '修复更新时弹出「ping 127.0.0.1 -n 12」黑窗：detached 模式下 windowsHide 无效，改为 wscript 隐藏拉起批处理',
+      '更新时序不变（退出应用 → 等待 → 覆盖 → 重启），实测无窗口且能活过主进程退出'
+    ]
+  },
+
+  {
     version: '1.0.8099',
     date: '2026-11-04',
     changes: [

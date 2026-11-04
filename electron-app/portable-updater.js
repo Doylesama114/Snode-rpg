@@ -197,13 +197,50 @@ function buildApplyCommand(opts) {
 }
 
 function spawnDetached(commandLine) {
+  // v1.0.8100: 旧实现用 detached:true + cmd /c ping，Windows 会为 cmd.exe 新建控制台，
+  // 用户更新时会看到「ping 127.0.0.1 -n 12」黑窗；改成 detached:false 又活不过主进程退出。
+  // 现在写一个 .bat 承载 ping/robocopy/start，再用 wscript(.vbs, 窗口样式 0) 隐藏拉起：
+  // wscript 是 GUI 子系统进程，既没有控制台窗口，也不随父进程控制台关闭而退出。
   const parts = commandLine.split('|');
   const exe = parts[0];
   const args = parts.slice(1);
-  const child = spawn(exe, args, { detached: true, stdio: 'ignore', windowsHide: true, windowsVerbatimArguments: true });
-  child.unref();
-  return child.pid;
+  const chain = args.length > 1 ? args.slice(1).join(' ') : args[0] || '';
+  const os = require('os');
+  const fs = require('fs');
+  const path = require('path');
+  const q = String.fromCharCode(34);
+  const stamp = process.pid + '-' + Date.now();
+  const batPath = path.join(os.tmpdir(), 'snowd-apply-' + stamp + '.bat');
+  const vbsPath = path.join(os.tmpdir(), 'snowd-apply-' + stamp + '.vbs');
+  try {
+    fs.writeFileSync(batPath, '@echo off\r\n' + chain + '\r\n', 'utf8');
+    fs.writeFileSync(
+      vbsPath,
+      'Set sh = CreateObject("WScript.Shell")\r\n' +
+        'sh.Run ' + q + 'cmd /c ' + q + q + batPath + q + q + q + ', 0, False\r\n',
+      'utf8'
+    );
+    // wscript 是 GUI 子系统程序：detached 不会创建控制台，且能活过主进程退出
+    const child = spawn('wscript.exe', ['//B', '//Nologo', vbsPath], {
+      detached: true,
+      stdio: 'ignore',
+      windowsHide: true,
+    });
+    child.unref();
+    return child.pid;
+  } catch (e) {
+    // 兜底：wscript 不可用时退回旧的直接拉起（可能有窗口，但更新仍能完成）
+    const child = spawn(exe, args, {
+      detached: true,
+      stdio: 'ignore',
+      windowsHide: true,
+      windowsVerbatimArguments: true,
+    });
+    child.unref();
+    return child.pid;
+  }
 }
+
 
 module.exports = {
   parseVersion: parseVersion,
