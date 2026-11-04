@@ -1,8 +1,12 @@
 {
   "class": "战士",
-  "docx_skills_indexed": 161,
-  "json_skills": 119,
-  "updated": 119,
-  "removed_not_in_docx": [],
-  "fx_entries": 119
+  "docx_skills_indexed": 117,
+  "json_skills": 117,
+  "updated": 117,
+  "removed_not_in_docx": [
+    "逆流诀窍",
+    "机敏的韵律"
+  ],
+  "preserved_not_in_docx": [],
+  "fx_entries": 117
 }

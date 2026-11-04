@@ -167,10 +167,10 @@ def json_skill_to_panel(
 
 
 def load_old_skill_data(text: str) -> dict:
-    start = text.index("SKILL_DATA = ")
-    end = text.index("const STYLE_MAP", start)
-    blob = text[start + len("SKILL_DATA = ") : end].strip().rstrip(";")
-    return json.loads(blob)
+    """只解析 SKILL_DATA 对象本身（后面可能跟 var DEITY_ALIASES = {...};）。"""
+    start = text.index("SKILL_DATA = ") + len("SKILL_DATA = ")
+    obj, _ = json.JSONDecoder().raw_decode(text[start:])
+    return obj
 
 
 def merge_class(
@@ -257,6 +257,15 @@ def build_skill_data(old: dict) -> dict:
     return out
 
 
+def deity_alias_map() -> dict:
+    """牧师领域别名表（丰饶/丰收 等），供面板解析旧存档。"""
+    domain_path = DATA_DIR / "\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df.json"
+    if not domain_path.exists():
+        return {}
+    domain = json.loads(domain_path.read_text(encoding="utf8"))
+    return dict((domain.get("meta") or {}).get("deity_aliases") or {})
+
+
 def patch_panel_data(path: Path, skill_data: dict) -> None:
     text = path.read_text(encoding="utf-8")
     start = text.index("SKILL_DATA = ")
@@ -269,7 +278,16 @@ def patch_panel_data(path: Path, skill_data: dict) -> None:
         and not re.match(r'^if .*SKILL_DATA\["\u7267\u5e08\u00b7\u795e\u5723\u9886\u57df"\]\s*=', line))
 
     new_blob = json.dumps(skill_data, ensure_ascii=False, separators=(",", ":"))
-    new_text = f"{prefix}SKILL_DATA = {new_blob};\n{suffix}"
+    aliases = json.dumps(deity_alias_map(), ensure_ascii=False, separators=(",", ":"))
+    # 清掉上一次写入的别名行，避免重复（只删整行，别动 prefix 末尾的 "var "）
+    prefix = re.sub(r"(?m)^var DEITY_ALIASES = .*\n", "", prefix)
+    # 统一重建声明：先去掉 prefix 末尾悬空的 "var" / "var " 行，再自己写一次
+    prefix = re.sub(r"(?m)^var\s*$", "", prefix)
+    prefix = re.sub(r"\bvar\s*$", "", prefix).rstrip()
+    new_text = (
+        f"{prefix}\nvar SKILL_DATA = {new_blob};\n"
+        f"var DEITY_ALIASES = {aliases};\n{suffix}"
+    )
     path.write_text(new_text, encoding="utf-8")
 
 

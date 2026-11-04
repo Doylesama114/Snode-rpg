@@ -1,0 +1,91 @@
+{
+  "added": 14,
+  "skills": [
+    {
+      "id": "be-skill-65",
+      "name": "凶蛮践踏",
+      "style": "斗争",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-66",
+      "name": "势不可挡",
+      "style": "斗争",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-67",
+      "name": "愈战愈勇",
+      "style": "斗争",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-68",
+      "name": "斩杀！！",
+      "style": "狂暴",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-69",
+      "name": "浴血者",
+      "style": "狂暴",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-70",
+      "name": "狂血回响",
+      "style": "狂暴",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-71",
+      "name": "不竭之泉",
+      "style": "生机",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-72",
+      "name": "伤痕之泉",
+      "style": "生机",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-73",
+      "name": "冰原狼咒印",
+      "style": "法咒",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-74",
+      "name": "多头蛇咒印",
+      "style": "法咒",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-75",
+      "name": "猛犸咒印",
+      "style": "法咒",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-76",
+      "name": "群体狂怒术",
+      "style": "法咒",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-77",
+      "name": "群体英勇术",
+      "style": "法咒",
+      "tier": "六阶"
+    },
+    {
+      "id": "be-skill-78",
+      "name": "附魔武器·鲜血雷鸣",
+      "style": "法咒",
+      "tier": "六阶"
+    }
+  ],
+  "site_skills": 82,
+  "fx_entries": 82
+}

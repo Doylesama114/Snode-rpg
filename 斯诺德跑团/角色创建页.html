@@ -752,7 +752,7 @@ function buildCreationSnapshot(){
     ideals:CHAR.ideals||"",
     bonds:CHAR.bonds||"",
     flaws:CHAR.flaws||"",
-    deity:CHAR.deity||"",
+    deity:(typeof resolveDeity==="function"?resolveDeity(CHAR.deity||""):(CHAR.deity||"")),
     deityAttr:CHAR.deityAttr||"",
     patron:CHAR.patron||"",
     contacts:CHAR.contacts||"",
@@ -944,7 +944,7 @@ function updateOverview() {
     h += '<div class="ov-section"><div class="ov-label">🗡 职业</div>';
     h += '<div class="ov-item">' + CHAR.className + '</div>';
     if (CHAR.keyAttr) h += '<div class="ov-item">关键属性: ' + CHAR.keyAttr + '</div>';
-    if (CHAR.deity && CHAR.className === '牧师') h += '<div class="ov-item">神祇: ' + CHAR.deity + (CHAR.deityAttr ? '（' + CHAR.deityAttr + '）' : '') + '</div>';
+    if (CHAR.deity && CHAR.className === '牧师') h += '<div class="ov-item">神祇: ' + (typeof resolveDeity==='function'?resolveDeity(CHAR.deity):CHAR.deity) + (CHAR.deityAttr ? '（' + CHAR.deityAttr + '）' : '') + '</div>';
     if (CHAR.patron && CHAR.className === '魔契师') h += '<div class="ov-item">宗主: ' + CHAR.patron + '</div>';
     if (CHAR.selectedFeatures && CHAR.selectedFeatures.length) {
       h += '<div class="ov-item">起始特性: ' + CHAR.selectedFeatures.map(function(f){return f.n||f;}).join('、') + '</div>';

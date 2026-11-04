@@ -49,12 +49,19 @@ for (const name of PAGES) {
     }));
     return {
       ok: true,
+      marksHidden: window.SNOWD_SHOW_COLOR_MARKS === false,
+      markSections: [...document.querySelectorAll(".fp-section-title")].filter(function (e) { return e.textContent.indexOf("色彩标识") !== -1; }).length,
       defaultMode: panel.getState().markMode,
       buttons,
       allColors: panel.allColors.filter(c => panel.presentColors.has(c)),
       allTags: panel.allTags,
     };
   });
+  if (base.ok && base.marksHidden) {
+    ok(`${name}: 色彩标识已按新规则隐藏`, (base.buttons || []).length === 0 && base.markSections === 0, JSON.stringify({ buttons: (base.buttons || []).length, sections: base.markSections }));
+    await page.close();
+    continue;
+  }
   ok(`${name}: 面板初始化且默认 OR`, base.ok === true && base.defaultMode === 'or', JSON.stringify(base));
   ok(`${name}: AND/OR 按钮齐全且默认 OR 高亮`, base.buttons?.length === 2
     && base.buttons.find(b => b.mode === 'or')?.active === true
@@ -172,6 +179,13 @@ for (const name of PAGES) {
 {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const errs = await load(page, '战士');
+  const mobileHidden = await page.evaluate(() => window.SNOWD_SHOW_COLOR_MARKS === false
+    && document.querySelectorAll('.fp-mark-mode-btn').length === 0);
+  if (mobileHidden) {
+    ok('移动端: 色彩标识已隐藏（无 AND/OR 按钮）', true, '');
+    ok('移动端: 页面无 JS 错误', errs.length === 0, errs.join('|'));
+    await page.close();
+  } else {
   const mobile = await page.evaluate(() => {
     const panel = window.__filterPanel;
     if (!panel || !panel.root) return { ok: false };
@@ -188,6 +202,7 @@ for (const name of PAGES) {
   ok('移动端: AND/OR 按钮可见且 AND 可点击生效', mobile.ok && mobile.mode === 'and' && mobile.andActive, JSON.stringify(mobile));
   ok('移动端: 页面无 JS 错误', errs.length === 0, errs.join('|'));
   await page.close();
+  }
 }
 
 await browser.close(); server.close();

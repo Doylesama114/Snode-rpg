@@ -1,3 +1,6 @@
+// v1.0.8099：色彩标识规则取消，全站隐藏（数据仍保留在 data-marks 与 JSON）
+window.SNOWD_SHOW_COLOR_MARKS = false;
+
 function _q(viewId, sel) {
   var wrapper = document.getElementById(viewId);
   if (wrapper) return wrapper.querySelectorAll(sel);
@@ -224,7 +227,11 @@ function focusSkillFromHash() {
   }
 
   // 4) SP 徽章（卡片右上角，属性表标识保留）
+  // v1.0.8099：色彩标识规则取消，徽章隐藏（data-marks 仍保留在 HTML 里）
+  var SNOWD_SHOW_COLOR_MARKS = false;
+  try { window.SNOWD_SHOW_COLOR_MARKS = SNOWD_SHOW_COLOR_MARKS; } catch (e) {}
   function addSpBadges(root) {
+    if (!SNOWD_SHOW_COLOR_MARKS) return;
     var arts = skillsIn(root);
     for (var i = 0; i < arts.length; i++) {
       var art = arts[i];

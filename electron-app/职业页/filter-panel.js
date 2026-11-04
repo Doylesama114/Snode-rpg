@@ -379,7 +379,8 @@
             this._kwGroups = [typeGroup, regGroup];
         }
 
-        if (this.allColors.length) {
+        // v1.0.8099：色彩标识规则取消 → 隐藏该筛选区（数据仍保留）
+        if (this.allColors.length && window.SNOWD_SHOW_COLOR_MARKS !== false) {
             var colSec = document.createElement("div");
             colSec.className = "fp-section";
             colSec.innerHTML = '<div class="fp-section-title">色彩标识</div>';

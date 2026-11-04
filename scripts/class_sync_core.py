@@ -171,6 +171,10 @@ def is_section_break(text: str) -> bool:
         return True
     if re.match(r"^[一二三四五六七八]阶天赋树", text):
         return True
+    # v1.0.8099: 「XX之神天赋树」这类节标题（>8 字）以前不被当成边界，
+    # 会被当成上一个技能的升级选项/正文尾巴，例如「无尽饥饿与吞噬之神天赋树」。
+    if re.match(r"^[^\s，。；、：]{2,22}天赋树$", text):
+        return True
     if text.startswith("抉择："):
         return True
     return False

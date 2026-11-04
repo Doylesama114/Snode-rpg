@@ -1,4 +1,14 @@
 var ATTR_NAMES=["力量","敏捷","体质","智力","感知","魅力","意志","幸运"];
+
+/* v1.0.8099：色彩标识规则取消 —— 数据（cost/marks）保留，界面统一隐藏 */
+var SNOWD_SHOW_COLOR_MARKS = false;
+/* v1.0.8099：神祇别名归一并存（例：生命与丰收之神 ↔ 生命与丰饶之神） */
+function resolveDeity(name) {
+  var n = String(name == null ? "" : name).trim();
+  if (!n) return n;
+  var map = (typeof DEITY_ALIASES !== "undefined" && DEITY_ALIASES) || {};
+  return map[n] || n;
+}
 /** alert 替代：Electron（contextIsolation）下 alert 不可见；优先 toast，无 toast 环境回退 alert（v1.0.7235） */
 function SB_toast(msg, cls) {
   if (typeof window !== 'undefined' && window.toast) { window.toast(msg, cls || 'warn'); return; }
@@ -1981,7 +1991,7 @@ function exportClassFeatures(state) {
     } else if (fcls === "奇械师" && fname.indexOf("万用模组") >= 0 && sc["万用模组"] && sc["万用模组"].skill) {
       fdesc = sc["万用模组"].skill;
     } else if (fcls === "牧师" && fname.indexOf("神圣领域") >= 0 && state.deity) {
-      fdesc = "信奉：" + state.deity + (state.deityAttr ? ("（" + state.deityAttr + "）") : "");
+      fdesc = "信奉：" + (typeof resolveDeity === "function" ? resolveDeity(state.deity) : state.deity) + (state.deityAttr ? ("（" + state.deityAttr + "）") : "");
     } else if (fcls === "魔契师" && fname.indexOf("宗主契约") >= 0 && state.patron) {
       fdesc = "宗主：" + state.patron;
     }
@@ -1994,7 +2004,7 @@ function exportBackgroundChoiceText(state) {
   var bc = state.backgroundChoices || {};
   var bg = state.background || "";
   if (bg === "侍僧") {
-    var d = bc.deity || state.deity || "";
+    var d = (typeof resolveDeity === "function") ? resolveDeity(bc.deity || state.deity || "") : (bc.deity || state.deity || "");
     if (!d) return "";
     var da = bc.deityAttr || state.deityAttr || "";
     return "神祇：" + d + (da ? ("（" + da + "）") : "");
@@ -2097,6 +2107,7 @@ function exportMaterialPackNames(state) {
 }
 
 function spDot(skill) {
+  if (!SNOWD_SHOW_COLOR_MARKS) return "";
   var info = getSkillDotStates(skill), flat = info.flat, states = info.states, html = "", ci, hex, isGrad, bg, on;
   if (!flat.length) return "";
   for (ci = 0; ci < flat.length; ci++) {
@@ -2285,7 +2296,7 @@ function formatSkillDetailHtml(skillData) {
     key=fieldOrder[i];
     if(fields[key])html+="<p><b>"+key+"：</b>"+paragraph(fields[key],fieldRuns[key])+"</p>";
   }
-  if(skillData.cost&&skillData.cost.length)html+="<p><b>标识：</b>"+markDotsHtml(skillData.cost)+"</p>";
+  if(SNOWD_SHOW_COLOR_MARKS&&skillData.cost&&skillData.cost.length)html+="<p><b>标识：</b>"+markDotsHtml(skillData.cost)+"</p>";
   var desc=fields["描述"]||"", entries=skillData.description_entries||[], runMap={};
   if(desc)html+="<p><b>描述：</b>"+paragraph(desc,fieldRuns["描述"])+"</p>";
   for(i=0;i<entries.length;i++)runMap[entries[i].text]=entries[i].runs;
@@ -2346,6 +2357,7 @@ function unitCoveredText(u) {
 function spCostCell(s) {
 
 
+  if (!SNOWD_SHOW_COLOR_MARKS) return "";
   var colorName = getSkillSPCost(s.n, s.src);
 
 
@@ -4848,7 +4860,7 @@ function renderStory(){
 
 
   var storyHtml='<div class="misc-item"><div class="m-title">背景故事</div><div>'+state.story+'</div></div><div class="misc-item"><div class="m-title">个性</div><div>'+_bgMark(state,"personality")+'</div></div><div class="misc-item"><div class="m-title">特性</div><div>'+state.traits+'</div></div><div class="misc-item"><div class="m-title">理念</div><div>'+_bgMark(state,"ideals")+'</div></div><div class="misc-item"><div class="m-title">羁绊</div><div>'+_bgMark(state,"bonds")+'</div></div><div class="misc-item"><div class="m-title">缺陷</div><div>'+_bgMark(state,"flaws")+'</div></div>';
-if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+state.deity+(state.deityAttr?'（'+state.deityAttr+'）':'')+'</div></div>';
+if(state.deity)storyHtml+='<div class="misc-item"><div class="m-title">神祇</div><div>'+(typeof resolveDeity === 'function' ? resolveDeity(state.deity) : state.deity)+(state.deityAttr?'（'+state.deityAttr+'）':'')+'</div></div>';
 if(state.patron)storyHtml+='<div class="misc-item"><div class="m-title">宗主</div><div>'+state.patron+'</div></div>';
 if(state.contacts)storyHtml+='<div class="misc-item"><div class="m-title">联系渠道</div><div>'+state.contacts+'</div></div>';
 if(state.scamType)storyHtml+='<div class="misc-item"><div class="m-title">偏好骗局</div><div>'+state.scamType+'</div></div>';
@@ -4864,7 +4876,7 @@ if(state.sportPreference)storyHtml+='<div class="misc-item"><div class="m-title"
 
   if(typeof BgMark!=="undefined"&&BgMark.marksLine){
     var _mk=BgMark.marksLine(state);
-    if(_mk)storyHtml+='<div class="misc-item"><div class="m-title">色彩标识</div><div>'+_mk+'</div></div>';
+    if(_mk&&SNOWD_SHOW_COLOR_MARKS)storyHtml+='<div class="misc-item"><div class="m-title">色彩标识</div><div>'+_mk+'</div></div>';
   }
   document.getElementById("story-title").innerHTML="个性背景：\u0020"+(state.background||"未选择");
 
@@ -5996,7 +6008,7 @@ function cheatAdd(){
   h+='<input id="_cheatSPPoints" type="number" min="0" value="'+spTotal+'" onchange="_cheatSetSPPoints(this.value)" style="flex:1;width:60px;padding:6px;text-align:center;border:1px solid var(--line,#d8d2c4);border-radius:6px;font-size:14px;background:var(--panel,#fffdf8);color:var(--ink,#1f2522)">';
   h+='<button onclick="_cheatAdjSPPoints(1)" style="padding:6px 14px;font-size:16px;background:#4caf50;color:#fff;border:none;border-radius:6px;cursor:pointer">+1</button>';
   h+='</div></div>';
-  h+='<div style="margin-bottom:8px;font-weight:bold">🎨 色彩标识（点击切换）</div>';
+  if(SNOWD_SHOW_COLOR_MARKS)h+='<div style="margin-bottom:8px;font-weight:bold">🎨 色彩标识（点击切换）</div>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
   for(var ci=0;ci<MARK_COLOR_NAMES.length;ci++){
     var c=MARK_COLOR_NAMES[ci];var on=hasColorMark(c);

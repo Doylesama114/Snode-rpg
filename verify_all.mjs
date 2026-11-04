@@ -110,6 +110,20 @@ for (const [cmd,args] of [
 }
 
 
+// v1.0.8099 内容守门：色彩标识隐藏 / 神祇别名 / 六·七阶落位 / 节标题串行
+console.log('\n=== 8099 内容守门 ===');
+{
+  for (const [cmd, args] of [
+    ['node', [join(BASE, 'verify_release_8099.mjs')]],
+    ['python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_stray_section_titles.py')]],
+  ]) {
+    const out = spawnSync(cmd, args, { encoding: 'utf-8', timeout: 240000, maxBuffer: 8 * 1024 * 1024 });
+    if (out.stdout) console.log(out.stdout.trim());
+    if (out.stderr) console.error(out.stderr.trim().slice(-1200));
+    totalErrors += out.status === 0 ? 0 : 1;
+  }
+}
+
 // 面板技能详情去重（v1.0.8095：level_upgrades 的 section 只渲染一次）
 console.log('\n=== 面板详情去重 ===');
 {

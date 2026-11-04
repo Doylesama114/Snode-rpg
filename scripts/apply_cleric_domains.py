@@ -716,6 +716,10 @@ def main() -> None:
         _hidden = any(p.get("hidden") and p.get("name") == deity for p in pantheon)
         if _hidden:
             site_domains[deity]["hidden"] = True
+        # v1.0.8099: 别名随领域一起下发（例：生命与丰饶之神 / 生命与丰收之神）
+        _aliases = next((x.get("aliases") for x in pantheon if x.get("name") == deity), None)
+        if _aliases:
+            site_domains[deity]["aliases"] = list(_aliases)
         ph, nh = build_domain_panel_html(
             deity, deity_id, items, dom.get("combat_styles") or []
         )
@@ -723,8 +727,14 @@ def main() -> None:
         nav_html_parts.append(nh)
         print(f"built {deity}: {len(items)} entries")
 
+    deity_aliases = {}
+    for x in pantheon:
+        for a in (x.get("aliases") or []):
+            deity_aliases[a] = x["name"]
+    meta = dict(data.get("meta") or {})
+    meta["deity_aliases"] = deity_aliases
     payload = {
-        "meta": data.get("meta") or {},
+        "meta": meta,
         "pantheon": pantheon,
         "domains": site_domains,
     }
