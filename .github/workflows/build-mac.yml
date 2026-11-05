@@ -123,7 +123,10 @@ jobs:
             gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "$RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md" \
               || gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
           fi
-          for file in electron-app/dist/mac/*.dmg electron-app/dist/mac/*.zip; do
+          shopt -s nullglob
+          files=(electron-app/dist/mac/*.dmg electron-app/dist/mac/*.zip)
+          if [ ${#files[@]} -eq 0 ]; then echo "::error::no mac artifacts produced"; exit 1; fi
+          for file in "${files[@]}"; do
             uploaded=false
             for attempt in 1 2 3 4 5; do
               if gh release upload "$RELEASE_TAG" "$file" --repo "$GITHUB_REPOSITORY" --clobber; then uploaded=true; break; fi
