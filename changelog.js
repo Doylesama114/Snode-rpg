@@ -2,6 +2,17 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8101',
+    date: '2026-11-05',
+    changes: [
+      'Mac 更新改为应用内下载 + 退出即装：自动下载 zip、校验 sha512、ditto 覆盖、清 quarantine、自动重启，失败自动回滚',
+      'Mac 检查更新改为 OSS mac.json → GitHub 资源 → API 三级回退，不再依赖 api.github.com',
+      '新增 --update-selftest 自检；发布产物新增 mac zip 与 mac.json',
+      'CI 在真实 macOS（macos-14/15）上回归安装链路：正常/版本不符/包损坏/只读回滚'
+    ]
+  },
+
+  {
     version: '1.0.8100',
     date: '2026-11-04',
     changes: [

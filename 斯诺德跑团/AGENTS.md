@@ -1,6 +1,6 @@
-本轮更新 v1.0.8100 2026-11-04
+本轮更新 v1.0.8101 2026-11-05
 
-更新黑窗修复：便携版自更新改为「.bat 承载 + wscript 隐藏拉起（窗口样式 0、detached）」，避免 detached 下 windowsHide 失效导致 cmd 新建控制台。详见 docs/releases/v1.0.8100.md。
+Mac 应用内更新：清单 OSS mac.json → GitHub 资源 → API；下载 zip + sha512；退出后 ditto 覆盖 + 清 quarantine + 重启，失败回滚；`--update-selftest` 自检。真实 macOS e2e（macos-14/15）全绿。详见 docs/releases/v1.0.8101.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 
