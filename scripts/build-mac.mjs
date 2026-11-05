@@ -35,7 +35,8 @@ run(process.execPath, [path.join(APP, 'sync-check.js')]);
 if (process.platform === 'darwin' && !args.includes('--zip')) {
   fs.chmodSync(path.join(ROOT, 'scripts', 'snode'), 0o755);
   run(process.execPath, [require.resolve('electron-builder/out/cli/cli.js'),
-    '--config', 'electron-builder.mac.yml', '--mac', 'dmg', 'zip',  // zip 供应用内更新（ditto 解压，无需挂载） ...arches.map(item => `--${item}`), '--publish', 'never']);
+    // zip 供应用内更新（ditto 解压，无需挂载）
+    '--config', 'electron-builder.mac.yml', '--mac', 'dmg', 'zip', ...arches.map(function (a) { return '--' + a; }), '--publish', 'never']);
   console.log(`[mac] DMG installers: ${DIST}`);
   process.exit(0);
 }
