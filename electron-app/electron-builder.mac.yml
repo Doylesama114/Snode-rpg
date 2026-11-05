@@ -16,6 +16,7 @@ files:
   - update-mirror-config.js
   - mac-platform.js
   - mac-updater.js
+  - mac-download.js
   - portable-updater.js
   - advisor-env-bootstrap.js
   - chargen-cli-server.js

@@ -1,6 +1,6 @@
-本轮更新 v1.0.8103 2026-11-06
+本轮更新 v1.0.8104 2026-11-06
 
-帮助页结构修复：`#s0` 缺 `</div>` 导致后续 10 段嵌套；3 组正文越界已收回；新增 `scripts/verify_help_structure.py`（section 必须为 main 直接子元素、不得嵌套、正文不得越界、div 平衡）并接入门禁。详见 docs/releases/v1.0.8103.md。
+Mac 下载修复：302 重定向时旧实现先建流再 unlink，删掉正在写的文件导致 ENOENT；新模块 mac-download.js 先跟完重定向再落盘，校验存在与大小，失败重试一次。详见 docs/releases/v1.0.8104.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

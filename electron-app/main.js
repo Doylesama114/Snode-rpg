@@ -66,6 +66,8 @@ const { applicationMenu, macReleaseUpdate } = require('./mac-platform');
 // v1.0.8101: macOS 应用内更新（oss mac.json / 应用内下载 / 退出即装）
 let macUpdater = null;
 try { macUpdater = require('./mac-updater.js'); } catch (e) { diagnostics.error('mac-updater-missing', e); }
+let macDownload = null;
+try { macDownload = require('./mac-download.js'); } catch (e) { diagnostics.error('mac-download-missing', e); }
 let macPending = null;      // { version, asset, arch, file, ready }
 let macApplyLaunched = false;
 const { RecoveryStore } = require('./recovery-store');
@@ -829,32 +831,14 @@ function macManifestSources() {
 }
 
 function downloadToFileWithProgress(url, dest, onProgress) {
-  return new Promise(function (resolve, reject) {
-    var lib = url.indexOf('http://') === 0 ? require('http') : require('https');
-    var file = fs.createWriteStream(dest);
-    var req = lib.get(url, { headers: { 'User-Agent': 'SnodeRPG/' + app.getVersion() } }, function (res) {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        file.close(function () { fs.unlink(dest, function () {}); });
-        downloadToFileWithProgress(res.headers.location, dest, onProgress).then(resolve, reject);
-        return;
-      }
-      if (res.statusCode !== 200) {
-        file.close(function () {});
-        reject(new Error('HTTP ' + res.statusCode));
-        return;
-      }
-      var total = parseInt(res.headers['content-length'] || '0', 10);
-      var got = 0;
-      res.on('data', function (chunk) {
-        got += chunk.length;
-        if (total > 0 && onProgress) onProgress(Math.min(99, Math.round((got / total) * 100)));
-      });
-      res.pipe(file);
-      file.on('finish', function () { file.close(function () { resolve(dest); }); });
+  // v1.0.8104: 交给 mac-download 模块（重定向不再预先建流/删除文件，修掉 ENOENT 竞态）
+  if (macDownload) {
+    return macDownload.downloadToFile(url, dest, {
+      onProgress: onProgress,
+      userAgent: 'SnodeRPG/' + app.getVersion(),
     });
-    req.on('error', function (err) { fs.unlink(dest, function () {}); reject(err); });
-    req.setTimeout(120000, function () { req.destroy(new Error('下载超时')); });
-  });
+  }
+  return Promise.reject(new Error('下载组件缺失'));
 }
 
 function startMacDownload() {
@@ -891,6 +875,14 @@ function startMacDownload() {
     if (manualCheckRequested) applyMacUpdate('manual-check');
   }).catch(function (err) {
     diagnostics.error('mac-update-download-failed', err);
+    try { fs.unlinkSync(file); } catch (e) {}
+    if (!macPending.retried) {
+      macPending.retried = true;
+      diagnostics.log('mac-update-download-retry', { version: macPending.version });
+      sendUpdateStatus({ status: 'downloading', percent: 0, version: macPending.version, message: '下载中断，正在重试…' });
+      setTimeout(startMacDownload, 800);
+      return;
+    }
     sendUpdateStatus({ status: 'error', message: '下载更新失败：' + (err && err.message ? err.message : String(err)) + '，可稍后重试或到发布页手动下载。' });
   });
 }

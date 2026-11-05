@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8104',
+    date: '2026-11-06',
+    changes: [
+      '修复 Mac 应用内下载 ENOENT：重定向(302)时旧实现先建流再 unlink，删掉了正在写的文件',
+      '下载逻辑独立为 mac-download.js：先跟完重定向再落盘，校验文件存在与大小，失败自动重试一次',
+      '新增 302→302→200 回归用例与 4 条流程断言（verify_update_flow_e2e 126P 0F）'
+    ]
+  },
+
+  {
     version: '1.0.8103',
     date: '2026-11-06',
     changes: [

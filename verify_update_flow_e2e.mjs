@@ -72,6 +72,10 @@ ok('提供 --update-selftest 自检入口', /--update-selftest/.test(main) && /r
 ok('清单优先 OSS、其次 GitHub 资源、最后 API', /MAC_MANIFEST_OSS/.test(macCfg) && /MAC_MANIFEST_GITHUB/.test(macCfg) && /GITHUB_LATEST_API/.test(macCfg));
 ok('mac 包内含 mac-updater.js', /- mac-updater\.js/.test(macYml));
 ok('mac 构建同时产出 zip', /- target: zip/.test(macYml));
+ok('8104 下载走独立模块（重定向不预建流）', /downloadToFile/.test(fs.readFileSync('electron-app/mac-download.js', 'utf8')) && /macDownload\.downloadToFile/.test(main));
+ok('8104 下载模块不预先 createWriteStream', !/createWriteStream[\s\S]{0,200}statusCode/.test(fs.readFileSync('electron-app/mac-download.js', 'utf8')));
+ok('8104 下载完成后校验文件存在与大小', /下载完成但文件不存在/.test(fs.readFileSync('electron-app/mac-download.js', 'utf8')) && /下载不完整/.test(fs.readFileSync('electron-app/mac-download.js', 'utf8')));
+ok('8104 打包清单包含下载模块', /- mac-download\.js/.test(macYml) && /- mac-download\.js/.test(fs.readFileSync('electron-app/electron-builder.yml', 'utf8')));
 ok('v1.0.8100 更新安装不弹黑窗（wscript 隐藏拉起）', /spawn\('wscript\.exe'/.test(portableSrc) && /window style 0|, 0, False/.test(portableSrc));
 ok('v1.0.8100 wscript 以 detached 运行（主进程退出后仍完成覆盖）', /spawn\('wscript\.exe'[\s\S]{0,160}detached: true/.test(portableSrc));
 ok('v1.0.8100 cmd 不再用 detached（否则会新建控制台）', !/spawn\(exe, args, \{ detached: true/.test(portableSrc));
