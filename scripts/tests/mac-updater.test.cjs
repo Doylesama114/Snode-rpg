@@ -58,3 +58,32 @@ test('资产命名与临时目录', () => {
   assert.equal(updater.assetName('1.0.8102', 'arm64', 'zip'), 'Snode-RPG-1.0.8102-mac-arm64.zip');
   assert.ok(updater.stagingPath().includes('snowd-update-'));
 });
+test('GitHub Release 转 manifest', () => {
+  const release = { tag_name: 'v1.0.8101', assets: [
+    { name: 'Snode-RPG-1.0.8101-mac-arm64.zip', browser_download_url: 'https://x/a.zip', size: 10 },
+    { name: 'Snode-RPG-1.0.8101-mac-x64.dmg', browser_download_url: 'https://x/b.dmg', size: 20 },
+    { name: 'Snode-RPG-Setup-1.0.8101.exe', browser_download_url: 'https://x/c.exe' },
+    { name: 'mac.json', browser_download_url: 'https://x/mac.json' },
+  ] };
+  const manifest = updater.manifestFromRelease(release);
+  assert.equal(manifest.version, '1.0.8101');
+  assert.equal(manifest.assets.length, 2);
+  assert.deepEqual(manifest.assets.map(a => a.arch + ':' + a.kind).sort(), ['arm64:zip', 'x64:dmg']);
+});
+
+test('sha512Base64 与系统实现一致', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const nodePath = require('node:path');
+  const crypto = require('node:crypto');
+  const file = nodePath.join(os.tmpdir(), 'snowd-sha-' + Date.now() + '.bin');
+  fs.writeFileSync(file, Buffer.alloc(2048, 7));
+  const expect = crypto.createHash('sha512').update(fs.readFileSync(file)).digest('base64');
+  assert.equal(updater.sha512Base64(file), expect);
+  fs.unlinkSync(file);
+});
+
+test('安装脚本支持启动延时', () => {
+  const script = updater.buildApplyScript({ zipPath: '/a.zip', appPath: '/b.app', expectVersion: '1.0.0', delaySeconds: 3 });
+  assert.ok(script.includes('sleep 3'), '应包含 sleep 3');
+});

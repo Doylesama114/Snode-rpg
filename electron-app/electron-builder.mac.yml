@@ -15,6 +15,7 @@ files:
   - desktop-error.js
   - update-mirror-config.js
   - mac-platform.js
+  - mac-updater.js
   - portable-updater.js
   - advisor-env-bootstrap.js
   - chargen-cli-server.js
@@ -44,6 +45,8 @@ extraResources:
 mac:
   target:
     - target: dmg
+      arch: [arm64, x64]
+    - target: zip
       arch: [arm64, x64]
   category: public.app-category.games
   artifactName: "Snode-RPG-${version}-mac-${arch}.${ext}"

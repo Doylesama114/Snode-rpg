@@ -300,6 +300,14 @@ jobs:
             exit 1
           fi
 
+          # Mac 更新清单：由 Build macOS Installers 产出并挂在 Release 上，这里转发到 OSS（缺失不算失败）
+          if gh release download "$TAG" -p mac.json -D /tmp/macmanifest -R "$GITHUB_REPOSITORY" --clobber >/dev/null 2>&1; then
+            ossutil cp /tmp/macmanifest/mac.json "oss://${BUCKET}/releases/latest/mac.json" --update -f --acl public-read
+            echo "Mac manifest mirrored -> releases/latest/mac.json"
+          else
+            echo "::warning::mac.json 尚未就绪（mac 构建较慢），本次跳过 OSS Mac 清单"
+          fi
+
           jq -n \
             --arg version "$VERSION" \
             --arg tag "$TAG" \

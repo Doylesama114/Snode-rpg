@@ -8,6 +8,8 @@
  */
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
 
 function normalizeVersion(v) {
   return String(v == null ? '' : v).trim().replace(/^v/i, '');
@@ -43,6 +45,33 @@ function pickAsset(manifest, arch) {
     || null;
 }
 
+/** 把 GitHub Release（assets 数组）转成统一 manifest，便于与 OSS mac.json 共用解析 */
+function manifestFromRelease(release, version) {
+  const tag = normalizeVersion((release && (release.tag_name || release.version)) || version);
+  const list = (release && Array.isArray(release.assets)) ? release.assets : [];
+  const assets = [];
+  for (const a of list) {
+    const name = String((a && a.name) || '');
+    const m = name.match(/^Snode-RPG-([0-9.]+)-mac-(arm64|x64)\.(zip|dmg)$/);
+    if (!m) continue;
+    assets.push({ arch: m[2], kind: m[3], url: a.browser_download_url || a.url, size: a.size, sha512: a.sha512 || null });
+  }
+  return { version: tag, assets: assets };
+}
+
+function sha512Base64(file) {
+  const hash = crypto.createHash('sha512');
+  const fd = fs.openSync(file, 'r');
+  const buf = Buffer.alloc(1024 * 1024);
+  try {
+    let n;
+    while ((n = fs.readSync(fd, buf, 0, buf.length, null)) > 0) hash.update(buf.subarray(0, n));
+  } finally {
+    fs.closeSync(fd);
+  }
+  return hash.digest('base64');
+}
+
 function parseManifest(manifest, currentVersion, arch) {
   const version = normalizeVersion(manifest && manifest.version);
   if (!version) throw new Error('清单缺少 version');
@@ -76,6 +105,7 @@ function buildApplyScript(opts) {
     'APP=' + shQuote(appPath),
     'EXPECT=' + shQuote(expect),
     'STAGE="$(mktemp -d /tmp/snowd-update.XXXXXX)"',
+    'sleep ' + String(opts.delaySeconds || 0) + ' 2>/dev/null || true',
     'BACKUP="${APP}.bak.$$"',
     'cleanup() { rm -rf "$STAGE"; }',
     'trap cleanup EXIT',
@@ -110,6 +140,8 @@ module.exports = {
   assetName: assetName,
   pickAsset: pickAsset,
   parseManifest: parseManifest,
+  manifestFromRelease: manifestFromRelease,
+  sha512Base64: sha512Base64,
   buildApplyScript: buildApplyScript,
   stagingPath: stagingPath,
 };

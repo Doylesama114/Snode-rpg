@@ -59,6 +59,19 @@ ok('导出诊断打包安装器日志', /installer-logs/.test(mainSrc) && /snode
 sec('⑩ 便携版自更新接线（路线 B）');
 const portableSrc = fs.readFileSync('electron-app/portable-updater.js', 'utf8');
 ok('存在 portable-updater 模块', portableSrc.length > 2000);
+
+sec('⑯ macOS 应用内更新（v1.0.8101）');
+const macUpd = fs.readFileSync('electron-app/mac-updater.js', 'utf8');
+const macCfg = fs.readFileSync('electron-app/update-mirror-config.js', 'utf8');
+const macYml = fs.readFileSync('electron-app/electron-builder.mac.yml', 'utf8');
+ok('mac-updater 模块存在', macUpd.length > 1500 && /function buildApplyScript/.test(macUpd));
+ok('安装脚本用系统命令且可回滚', /ditto -x -k/.test(macUpd) && /PlistBuddy/.test(macUpd) && /xattr -dr com.apple.quarantine/.test(macUpd) && /mv "\$BACKUP" "\$APP"/.test(macUpd));
+ok('main.js 在 darwin 走应用内下载', /if \(process\.platform === 'darwin'\) \{ startMacDownload\(\); return; \}/.test(main));
+ok('main.js 退出时安装更新', /spawnMacApply\('quit'\)/.test(main));
+ok('提供 --update-selftest 自检入口', /--update-selftest/.test(main) && /runMacUpdateSelfTest/.test(main));
+ok('清单优先 OSS、其次 GitHub 资源、最后 API', /MAC_MANIFEST_OSS/.test(macCfg) && /MAC_MANIFEST_GITHUB/.test(macCfg) && /GITHUB_LATEST_API/.test(macCfg));
+ok('mac 包内含 mac-updater.js', /- mac-updater\.js/.test(macYml));
+ok('mac 构建同时产出 zip', /- target: zip/.test(macYml));
 ok('v1.0.8100 更新安装不弹黑窗（wscript 隐藏拉起）', /spawn\('wscript\.exe'/.test(portableSrc) && /window style 0|, 0, False/.test(portableSrc));
 ok('v1.0.8100 wscript 以 detached 运行（主进程退出后仍完成覆盖）', /spawn\('wscript\.exe'[\s\S]{0,160}detached: true/.test(portableSrc));
 ok('v1.0.8100 cmd 不再用 detached（否则会新建控制台）', !/spawn\(exe, args, \{ detached: true/.test(portableSrc));

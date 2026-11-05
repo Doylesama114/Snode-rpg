@@ -63,6 +63,11 @@ catch (e) {
 }
 const mirrorConfig = require('./update-mirror-config');
 const { applicationMenu, macReleaseUpdate } = require('./mac-platform');
+// v1.0.8101: macOS 应用内更新（oss mac.json / 应用内下载 / 退出即装）
+let macUpdater = null;
+try { macUpdater = require('./mac-updater.js'); } catch (e) { diagnostics.error('mac-updater-missing', e); }
+let macPending = null;      // { version, asset, arch, file, ready }
+let macApplyLaunched = false;
 const { RecoveryStore } = require('./recovery-store');
 const { DesktopSettings } = require('./desktop-settings');
 const desktopSettings = new DesktopSettings(path.join(app.getPath('userData'), 'snowd-settings.json'));
@@ -762,32 +767,190 @@ function checkForUpdatesViaGenericFeed(opts) {
 async function checkForMacUpdates() {
   if (updateCheckInFlight) return { outcome: 'busy' };
   updateCheckInFlight = true;
-  sendUpdateStatus({ status: 'checking', message: '正在检查 Mac 版本更新...' });
+  sendUpdateStatus({ status: 'checking', message: '正在检查 Mac 版本更新…' });
+
+  const arch = macUpdater
+    ? macUpdater.resolveArch(process.arch, app.runningUnderARM64Translation === true)
+    : process.arch;
   try {
-    const release = await httpsGetJson(mirrorConfig.GITHUB_LATEST_API);
-    const result = macReleaseUpdate(release, app.getVersion(), process.arch);
-    pendingUpdate = result.status === 'available'
-      ? { version: result.version, ready: false, url: result.url } : null;
-    sendUpdateStatus(result);
+    let manifest = null;
+    let source = '';
+    for (const candidate of macManifestSources()) {
+      try {
+        const json = await httpsGetJson(candidate.url);
+        manifest = candidate.kind === 'release'
+          ? macUpdater.manifestFromRelease(json)
+          : json;
+        source = candidate.name;
+        break;
+      } catch (e) {
+        diagnostics.log('mac-update-source-failed', { source: candidate.name, error: String(e && e.message) });
+      }
+    }
+    if (!manifest) throw new Error('GitHub 与镜像均无法访问');
+
+    const parsed = macUpdater.parseManifest(manifest, app.getVersion(), arch);
+    diagnostics.log('mac-update-check', {
+      source: source, arch: arch, version: parsed.version,
+      hasUpdate: parsed.hasUpdate, platformMissing: !!parsed.platformMissing,
+    });
+
+    if (parsed.platformMissing) {
+      macPending = null;
+      sendUpdateStatus({ status: 'uptodate', version: parsed.version,
+        message: 'v' + parsed.version + ' 暂未提供 Mac ' + arch + ' 安装包，当前版本可继续使用' });
+      return { outcome: 'ok' };
+    }
+    if (!parsed.hasUpdate) {
+      macPending = null;
+      sendUpdateStatus({ status: 'uptodate', version: parsed.version });
+      return { outcome: 'ok' };
+    }
+    macPending = { version: parsed.version, asset: parsed.asset, arch: arch, ready: false };
+    sendUpdateStatus({ status: 'available', version: parsed.version,
+      message: '发现 Mac 新版本 v' + parsed.version + '，点击更新即自动下载并在退出后安装' });
     return { outcome: 'ok' };
   } catch (err) {
-    // macOS 安装包只托管在 GitHub，镜像无法直接下载；但镜像能判定版本，
-    // 于是失败时给出可操作提示，而不是只丢一句网络错误。
-    var hint = '';
-    try {
-      var mirror = await httpsGetJson(mirrorConfig.OSS_LATEST_JSON);
-      var mirrorVersion = String((mirror && mirror.tag) || '').replace(/^v/, '');
-      if (compareVersion(mirrorVersion, app.getVersion()) === 1) {
-        hint = ' 镜像已发布 v' + mirrorVersion + '，可到 ' + mirrorConfig.GITHUB_RELEASE_PAGE + ' 手动下载 Mac 安装包。';
-      }
-    } catch (mirrorErr) {
-      // 镜像也不可用时保留原始错误即可
-    }
-    sendUpdateStatus({ status: 'error', message: 'Mac 更新检查失败：' + err.message + hint });
+    diagnostics.error('mac-update-check-failed', err);
+    sendUpdateStatus({ status: 'error',
+      message: 'Mac 更新检查失败：' + (err && err.message ? err.message : String(err)) + '。可到 ' + mirrorConfig.GITHUB_RELEASE_PAGE + ' 手动下载。' });
     return { outcome: 'failed' };
   } finally {
     updateCheckInFlight = false;
   }
+}
+
+function macManifestSources() {
+  var list = [];
+  if (mirrorConfig.MAC_MANIFEST_OSS) list.push({ name: 'oss-mac-json', url: mirrorConfig.MAC_MANIFEST_OSS, kind: 'manifest' });
+  if (mirrorConfig.MAC_MANIFEST_GITHUB) list.push({ name: 'github-mac-json', url: mirrorConfig.MAC_MANIFEST_GITHUB, kind: 'manifest' });
+  list.push({ name: 'github-release', url: mirrorConfig.GITHUB_LATEST_API, kind: 'release' });
+  return list;
+}
+
+function downloadToFileWithProgress(url, dest, onProgress) {
+  return new Promise(function (resolve, reject) {
+    var lib = url.indexOf('http://') === 0 ? require('http') : require('https');
+    var file = fs.createWriteStream(dest);
+    var req = lib.get(url, { headers: { 'User-Agent': 'SnodeRPG/' + app.getVersion() } }, function (res) {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        file.close(function () { fs.unlink(dest, function () {}); });
+        downloadToFileWithProgress(res.headers.location, dest, onProgress).then(resolve, reject);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        file.close(function () {});
+        reject(new Error('HTTP ' + res.statusCode));
+        return;
+      }
+      var total = parseInt(res.headers['content-length'] || '0', 10);
+      var got = 0;
+      res.on('data', function (chunk) {
+        got += chunk.length;
+        if (total > 0 && onProgress) onProgress(Math.min(99, Math.round((got / total) * 100)));
+      });
+      res.pipe(file);
+      file.on('finish', function () { file.close(function () { resolve(dest); }); });
+    });
+    req.on('error', function (err) { fs.unlink(dest, function () {}); reject(err); });
+    req.setTimeout(120000, function () { req.destroy(new Error('下载超时')); });
+  });
+}
+
+function startMacDownload() {
+  if (!macUpdater) { sendUpdateStatus({ status: 'error', message: '当前版本缺少 Mac 更新组件，请到发布页手动下载。' }); return; }
+  if (!macPending || !macPending.asset) { sendUpdateStatus({ status: 'error', message: '没有可下载的 Mac 更新，请先检查更新。' }); return; }
+  if (macPending.ready) {
+    sendUpdateStatus({ status: 'downloaded', version: macPending.version, message: '更新已下载，关闭应用时自动安装' });
+    return;
+  }
+  var dir = path.join(app.getPath('userData'), 'mac-update');
+  try { fs.mkdirSync(dir, { recursive: true }); } catch (e) {}
+  var file = path.join(dir, macUpdater.assetName(macPending.version, macPending.arch, macPending.asset.kind || 'zip'));
+  macPending.file = file;
+  diagnostics.log('mac-update-download-start', { version: macPending.version, url: macPending.asset.url });
+  sendUpdateStatus({ status: 'downloading', percent: 0, version: macPending.version, message: '正在下载更新 v' + macPending.version + '…' });
+
+  downloadToFileWithProgress(macPending.asset.url, file, function (pct) {
+    sendUpdateStatus({ status: 'downloading', percent: pct, version: macPending.version, message: '正在下载更新 ' + pct + '%' });
+  }).then(function () {
+    var expect = macPending.asset.sha512;
+    if (expect) {
+      var got = macUpdater.sha512Base64(file);
+      if (got !== expect) throw new Error('下载文件校验失败（sha512 不一致）');
+    }
+    macPending.ready = true;
+    diagnostics.log('mac-update-downloaded', { version: macPending.version, file: file, size: fs.statSync(file).size });
+    sendUpdateStatus({ status: 'downloaded', version: macPending.version, message: '更新已下载，关闭应用时自动安装' });
+    if (manualCheckRequested) applyMacUpdate('manual-check');
+  }).catch(function (err) {
+    diagnostics.error('mac-update-download-failed', err);
+    sendUpdateStatus({ status: 'error', message: '下载更新失败：' + (err && err.message ? err.message : String(err)) + '，可稍后重试或到发布页手动下载。' });
+  });
+}
+
+function spawnMacApply(reason) {
+  if (!macPending || !macPending.ready || !macPending.file || macApplyLaunched) return false;
+  macApplyLaunched = true;
+  var exe = app.getPath('exe');
+  var appPath = path.resolve(exe, '../../..');
+  var script = macUpdater.buildApplyScript({
+    zipPath: macPending.file,
+    appPath: appPath,
+    expectVersion: macPending.version,
+    delaySeconds: 3,
+  });
+  var scriptPath = path.join(app.getPath('userData'), 'mac-apply-' + Date.now() + '.sh');
+  try {
+    fs.writeFileSync(scriptPath, script, { mode: 0o755 });
+    var child = require('child_process').spawn('/bin/sh', [scriptPath], { detached: true, stdio: 'ignore' });
+    child.unref();
+    diagnostics.log('mac-update-apply', { reason: reason, appPath: appPath, version: macPending.version, script: scriptPath });
+    return true;
+  } catch (e) {
+    macApplyLaunched = false;
+    diagnostics.error('mac-update-apply-failed', e);
+    return false;
+  }
+}
+
+function applyMacUpdate(reason) {
+  if (!macPending || !macPending.ready) { sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' }); return; }
+  sendUpdateStatus({ status: 'installing', version: macPending.version, message: '正在退出并安装更新…' });
+  if (!spawnMacApply(reason || 'user-confirm')) {
+    sendUpdateStatus({ status: 'error', message: '无法启动安装程序，请到发布页手动下载。' });
+    return;
+  }
+  setTimeout(function () { app.quit(); }, 400);
+}
+
+async function runMacUpdateSelfTest() {
+  var out = { platform: process.platform, version: app.getVersion(), arch: process.arch, checks: [] };
+  function add(name, ok, detail) { out.checks.push({ name: name, ok: !!ok, detail: detail || '' }); }
+  add('mac-updater 模块', !!macUpdater);
+  var arch = macUpdater ? macUpdater.resolveArch(process.arch, app.runningUnderARM64Translation === true) : process.arch;
+  add('架构判定', true, 'process.arch=' + process.arch + ' -> ' + arch);
+  var dir = path.join(app.getPath('userData'), 'mac-update');
+  try { fs.mkdirSync(dir, { recursive: true }); fs.accessSync(dir, fs.constants.W_OK); add('更新缓存目录可写', true, dir); }
+  catch (e) { add('更新缓存目录可写', false, String(e && e.message)); }
+  var sources = macManifestSources();
+  for (var i = 0; i < sources.length; i++) {
+    try {
+      var json = await httpsGetJson(sources[i].url);
+      var mf = sources[i].kind === 'release' ? macUpdater.manifestFromRelease(json) : json;
+      var parsed = macUpdater.parseManifest(mf, app.getVersion(), arch);
+      add('清单源 ' + sources[i].name, true, 'version=' + parsed.version + ' asset=' + (parsed.asset ? parsed.asset.kind : 'none'));
+      break;
+    } catch (e) {
+      add('清单源 ' + sources[i].name, false, String(e && e.message));
+    }
+  }
+  var exe = app.getPath('exe');
+  var appPath = path.resolve(exe, '../../..');
+  try { fs.accessSync(path.dirname(appPath), fs.constants.W_OK); add('安装目录可写', true, appPath); }
+  catch (e) { add('安装目录可写', false, appPath + ' -> ' + String(e && e.message)); }
+  out.ok = out.checks.every(function (c) { return c.ok; });
+  return out;
 }
 
 function runAutoUpdateCheck() {
@@ -1096,14 +1259,7 @@ ipcMain.on('check-update', (e, opts) => {
 // IPC: 用户在启动台确认下载更新（autoDownload=false）
 ipcMain.on('download-update', () => {
   if (PORTABLE_MODE) { startPortableDownload(); return; }
-  if (process.platform === 'darwin' && pendingUpdate && pendingUpdate.url) {
-    shell.openExternal(pendingUpdate.url).catch(err => {
-      sendUpdateStatus({ status: 'error', message: '打开下载链接失败：' + err.message });
-    });
-    sendUpdateStatus({ status: 'available', version: pendingUpdate.version,
-      message: '已在浏览器打开 Mac 安装包，下载后退出应用并替换即可更新' });
-    return;
-  }
+  if (process.platform === 'darwin') { startMacDownload(); return; }
   if (!pendingUpdate || pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '当前没有可下载的更新，请先「检查更新」。' });
     return;
@@ -1124,6 +1280,7 @@ ipcMain.on('download-update', () => {
 ipcMain.on('install-update', () => {
   diagnostics.log('updater-install-click', { portable: !!PORTABLE_MODE, ready: !!(pendingUpdate && pendingUpdate.ready) });
   if (PORTABLE_MODE) { applyPortableUpdate('user-confirm'); return; }
+  if (process.platform === 'darwin') { applyMacUpdate('user-confirm'); return; }
   if (!pendingUpdate || !pendingUpdate.ready) {
     sendUpdateStatus({ status: 'error', message: '更新尚未下载完成。' });
     return;
@@ -1591,6 +1748,9 @@ function startMemoryWatchdog() {
 }
 let updateTimer = null;
 app.on('will-quit', () => {
+  if (process.platform === 'darwin' && macPending && macPending.ready && !macApplyLaunched) {
+    try { spawnMacApply('quit'); } catch (e) { diagnostics.error('mac-apply-on-quit-failed', e); }
+  }
   if (pendingUpdate && pendingUpdate.ready) {
     if (PORTABLE_MODE) {
       if (!portableApplyLaunched) {
@@ -1710,6 +1870,17 @@ async function createWindow() {
 }
 
 app.whenReady().then(async () => {
+  if (process.argv.indexOf('--update-selftest') !== -1) {
+    try {
+      const report = await runMacUpdateSelfTest();
+      console.log('[update-selftest] ' + JSON.stringify(report, null, 2));
+      app.exit(report.ok ? 0 : 1);
+    } catch (e) {
+      console.error('[update-selftest] failed: ' + (e && e.message));
+      app.exit(2);
+    }
+    return;
+  }
   try {
     const dumpDir = app.getPath('crashDumps');
     fs.mkdirSync(dumpDir, { recursive: true });

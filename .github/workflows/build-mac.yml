@@ -100,7 +100,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Snode-RPG-mac-${{ matrix.arch }}
-          path: electron-app/dist/mac/*.dmg
+          path: |
+            electron-app/dist/mac/*.dmg
+            electron-app/dist/mac/*.zip
           if-no-files-found: error
           retention-days: 14
       - name: Publish DMG to GitHub Release
@@ -121,7 +123,7 @@ jobs:
             gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "$RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md" \
               || gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
           fi
-          for file in electron-app/dist/mac/*.dmg; do
+          for file in electron-app/dist/mac/*.dmg electron-app/dist/mac/*.zip; do
             uploaded=false
             for attempt in 1 2 3 4 5; do
               if gh release upload "$RELEASE_TAG" "$file" --repo "$GITHUB_REPOSITORY" --clobber; then uploaded=true; break; fi
@@ -129,3 +131,63 @@ jobs:
             done
             if [ "$uploaded" != true ]; then echo "::error::DMG upload failed: $file"; exit 1; fi
           done
+
+  mac-manifest:
+    # 汇总两个架构的 zip/dmg，生成 mac.json（客户端据此判定版本与下载地址，不依赖 api.github.com）
+    needs: build-mac
+    runs-on: macos-15
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Snode-RPG-mac-*
+          path: dist
+          merge-multiple: true
+      - name: Build mac.json
+        env:
+          TARGET_TAG: ${{ inputs.ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          ls -1 dist
+          python3 - <<'PY'
+          import base64, glob, hashlib, json, os, re
+          repo = os.environ['GITHUB_REPOSITORY']
+          tag = os.environ.get('TARGET_TAG') or os.environ['GITHUB_REF_NAME']
+          tag = tag.replace('refs/tags/', '')
+          assets = []
+          for f in sorted(glob.glob('dist/*mac-*.zip') + glob.glob('dist/*mac-*.dmg')):
+              name = os.path.basename(f)
+              m = re.match(r'Snode-RPG-([0-9.]+)-mac-(arm64|x64)\.(zip|dmg)$', name)
+              if not m:
+                  continue
+              h = hashlib.sha512()
+              with open(f, 'rb') as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b''):
+                      h.update(chunk)
+              assets.append({
+                  'arch': m.group(2),
+                  'kind': m.group(3),
+                  'name': name,
+                  'url': 'https://github.com/%s/releases/download/%s/%s' % (repo, tag, name),
+                  'size': os.path.getsize(f),
+                  'sha512': base64.b64encode(h.digest()).decode(),
+              })
+          if not assets:
+              raise SystemExit('no mac assets found')
+          version = re.match(r'Snode-RPG-([0-9.]+)', assets[0]['name']).group(1)
+          json.dump({'version': version, 'assets': assets}, open('mac.json', 'w'), ensure_ascii=False, indent=2)
+          print(open('mac.json').read())
+          PY
+      - name: Publish mac.json to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(inputs.ref, 'v') || startsWith(inputs.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+        run: |
+          set -euo pipefail
+          TAG="${{ inputs.ref || github.ref_name }}"
+          TAG="${TAG#refs/tags/}"
+          gh release upload "$TAG" mac.json --repo "$GITHUB_REPOSITORY" --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac-manifest
+          path: mac.json
+          retention-days: 14
