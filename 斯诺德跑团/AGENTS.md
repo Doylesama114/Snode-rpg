@@ -1,6 +1,6 @@
-本轮更新 v1.0.8102 2026-11-05
+本轮更新 v1.0.8103 2026-11-06
 
-Mac 更新补齐：`build-mac.mjs` 改为 `--mac dmg zip` 双产物（8101 只发 DMG 导致应用内更新拿不到 zip）；发布步骤 nullglob 容错；只发 DMG 时提示手动安装。详见 docs/releases/v1.0.8102.md。
+帮助页结构修复：`#s0` 缺 `</div>` 导致后续 10 段嵌套；3 组正文越界已收回；新增 `scripts/verify_help_structure.py`（section 必须为 main 直接子元素、不得嵌套、正文不得越界、div 平衡）并接入门禁。详见 docs/releases/v1.0.8103.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

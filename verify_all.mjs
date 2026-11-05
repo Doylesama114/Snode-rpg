@@ -116,6 +116,7 @@ console.log('\n=== 8099 内容守门 ===');
   for (const [cmd, args] of [
     ['node', [join(BASE, 'verify_release_8099.mjs')]],
     ['python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_stray_section_titles.py')]],
+    ['python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_help_structure.py')]],  // 8103: 帮助页 section 结构守门
   ]) {
     const out = spawnSync(cmd, args, { encoding: 'utf-8', timeout: 240000, maxBuffer: 8 * 1024 * 1024 });
     if (out.stdout) console.log(out.stdout.trim());

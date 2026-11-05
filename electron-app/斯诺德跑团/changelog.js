@@ -2,6 +2,16 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8103',
+    date: '2026-11-06',
+    changes: [
+      '修复帮助页排版错位：基本规则段缺少 </div>，导致后面 10 个规则段整段嵌套进它（右移 29px、变窄 58px）',
+      '另把 3 组落在所有 section 之外的正文收进对应章节（升级规则 / 幕间规则 / 技能点与色彩标识）',
+      '新增 verify_help_structure.py 并接入门禁：section 必须是 main 直接子元素、不得嵌套、正文不得越界'
+    ]
+  },
+
+  {
     version: '1.0.8102',
     date: '2026-11-05',
     changes: [
