@@ -2,6 +2,15 @@
 var SNOWD_CHANGELOG = [
 
   {
+    version: '1.0.8102',
+    date: '2026-11-05',
+    changes: [
+      '修复 1.0.8101 只发 DMG、没有 zip 的问题（Mac 应用内更新依赖 zip），构建改为同时产出 dmg + zip',
+      'mac 发布步骤对缺失产物容错并明确报错；仅提供 DMG 的版本会提示手动安装而不是白下载'
+    ]
+  },
+
+  {
     version: '1.0.8101',
     date: '2026-11-05',
     changes: [

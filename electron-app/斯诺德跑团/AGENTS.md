@@ -1,6 +1,6 @@
-本轮更新 v1.0.8101 2026-11-05
+本轮更新 v1.0.8102 2026-11-05
 
-Mac 应用内更新：清单 OSS mac.json → GitHub 资源 → API；下载 zip + sha512；退出后 ditto 覆盖 + 清 quarantine + 重启，失败回滚；`--update-selftest` 自检。真实 macOS e2e（macos-14/15）全绿。详见 docs/releases/v1.0.8101.md。
+Mac 更新补齐：`build-mac.mjs` 改为 `--mac dmg zip` 双产物（8101 只发 DMG 导致应用内更新拿不到 zip）；发布步骤 nullglob 容错；只发 DMG 时提示手动安装。详见 docs/releases/v1.0.8102.md。
 
 # PROJECT KNOWLEDGE BASE — 斯诺德跑团（角色系统）
 

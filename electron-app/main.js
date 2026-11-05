@@ -860,6 +860,12 @@ function downloadToFileWithProgress(url, dest, onProgress) {
 function startMacDownload() {
   if (!macUpdater) { sendUpdateStatus({ status: 'error', message: '当前版本缺少 Mac 更新组件，请到发布页手动下载。' }); return; }
   if (!macPending || !macPending.asset) { sendUpdateStatus({ status: 'error', message: '没有可下载的 Mac 更新，请先检查更新。' }); return; }
+  if ((macPending.asset.kind || 'zip') !== 'zip') {
+    // 只发布了 DMG 的版本无法应用内安装（需要挂载），直接引导手动安装，避免下载完才发现失败
+    sendUpdateStatus({ status: 'available', version: macPending.version,
+      message: 'v' + macPending.version + ' 仅提供 DMG 安装包，请到 ' + mirrorConfig.GITHUB_RELEASE_PAGE + ' 手动下载安装。' });
+    return;
+  }
   if (macPending.ready) {
     sendUpdateStatus({ status: 'downloaded', version: macPending.version, message: '更新已下载，关闭应用时自动安装' });
     return;
