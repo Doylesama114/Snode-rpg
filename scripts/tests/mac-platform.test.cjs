@@ -59,7 +59,7 @@ test('Mac bundle includes current desktop diagnostics and keeps resources outsid
   const resolved = await config.getConfig(APP, 'electron-builder.mac.yml', null);
   await config.validateConfiguration(resolved, new DebugLogger());
   assert.equal((resolved.extraFiles || []).length, 0);
-  for (const file of ['main.js', 'mac-platform.js', 'desktop-diagnostics.js', 'window-lifecycle.js',
+  for (const file of ['main.js', 'mac-platform.js', 'mac-updater.js', 'desktop-diagnostics.js', 'window-lifecycle.js',
     'recovery-store.js', 'desktop-settings.js', 'desktop-error.html', 'desktop-error.js']) {
     const appFiles = (resolved.files || []).flatMap(item => typeof item === 'string' ? [item] : item.filter || []);
     assert.ok(appFiles.includes(file), file);
@@ -67,7 +67,8 @@ test('Mac bundle includes current desktop diagnostics and keeps resources outsid
   assert.ok(resolved.extraResources.some(item => item.to === 'snode'));
   assert.ok(resolved.extraResources.some(item => item.to === '.env.example'));
   assert.ok(!resolved.extraResources.some(item => item.from === '.env.bundle' || item.to === '.env' || item.to === 'snode.cmd'));
-  assert.deepEqual(resolved.mac.target.map(item => item.target), ['dmg']);
+  // v1.0.8101: 应用内更新改用 zip（无需挂载 DMG），同时保留 dmg 供全新安装
+  assert.deepEqual(resolved.mac.target.map(item => item.target), ['dmg', 'zip']);
   assert.ok(fs.existsSync(path.join(APP, 'desktop-diagnostics.js')));
 });
 test('main.js 的每个相对 require 都在 mac 打包白名单里', () => {
