@@ -913,6 +913,12 @@ if (mobileAdvisor.stdout) console.log(mobileAdvisor.stdout.trim());
 if (mobileAdvisor.stderr) console.error(mobileAdvisor.stderr.trim());
 if (mobileAdvisor.status !== 0) totalErrors++;
 
+console.log('\n=== 顾问 P0（澄清顺序 / 能力矩阵 / 三段计时） ===');
+const advP0 = spawnSync(process.execPath, ['--test', join(BASE, 'scripts/tests/advisor-p0.test.cjs')], { encoding: 'utf8', timeout: 120000 });
+if (advP0.stdout) console.log(advP0.stdout.trim().split(String.fromCharCode(10)).slice(-6).join(String.fromCharCode(10)));
+if (advP0.stderr) console.error(advP0.stderr.trim().slice(-800));
+if (advP0.status !== 0) totalErrors++;
+
 console.log('\n=== 帮助页手机搜索与跨页跳转 ===');
 const helpSearch = spawnSync(process.execPath, [join(BASE, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (helpSearch.stdout) console.log(helpSearch.stdout.trim());

@@ -20,6 +20,57 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const REPORTS_DIR = path.join(ROOT, 'tmp', 'eval_reports');
 
+const FAMILY_BY_NAME = {
+  cleric_domain: 'A',
+  race_detail: 'A',
+  background_deity: 'A',
+  equipment_price: 'A',
+  status_rules: 'A',
+  skill_cost_lookup: 'A',
+  hunter_guard_talent: 'A',
+  bard_chord_restored: 'A',
+  artificer_drawing: 'A',
+  rogue_recipe_natural: 'A',
+  druid_water_form_interaction: 'A',
+  hunter_guard_passive_natural: 'A',
+  artificer_drawing_natural: 'A',
+  paladin_skills: 'B',
+  barbarian_skills: 'B',
+  monk_skills: 'B',
+  warlock_skills: 'B',
+  shaman_skills: 'B',
+  sorcerer_chaos: 'B',
+  universal_rune: 'B',
+  universal_free_offensive: 'B',
+  mage_school_seq: 'B',
+  class_compare: 'C',
+  proficiency_lookup: 'C',
+  build_warrior: 'D',
+  druid_advance: 'D',
+  advancement_warrior: 'D',
+  build_review: 'E',
+  chargen_recommend_vague: 'F',
+  chargen_advice: 'F',
+  point_buy_optimize: 'F',
+  carry_capacity: 'F',
+  ac_armor_value_calc: 'G',
+  damage_expectation: 'G',
+  rules_qa_long: 'H',
+  rules_qa_short: 'H',
+  leveling_summary: 'H',
+  multiclass_conflict: 'H',
+  sp_marks: 'H',
+  tips_warrior: 'H',
+  feat_timing: 'H',
+  worldview_era: 'I',
+  unknown_entity: 'J',
+  clarify_missing_class: 'K',
+};
+
+function familyOf(name) {
+  return FAMILY_BY_NAME[name] || 'L';
+}
+
 const CASES = [
   {
     name: 'build_warrior',
@@ -641,9 +692,9 @@ async function run() {
     return;
   }
 
-  let cases = CASES;
+  let cases = CASES.map((c) => ({ ...c, family: familyOf(c.name) }));
   if (sampleN && sampleN > 0) {
-    cases = [...CASES].sort(() => Math.random() - 0.5).slice(0, sampleN);
+    cases = [...CASES].map((c) => ({ ...c, family: familyOf(c.name) })).sort(() => Math.random() - 0.5).slice(0, sampleN);
     console.log(`抽样 ${cases.length} 个用例`);
   }
 
@@ -740,13 +791,28 @@ async function run() {
   const total = results.length;
   const passed = results.filter((r) => r.ok && !r.skipped).length;
   const passRate = total ? Number(((passed / total) * 100).toFixed(1)) : 0;
+  // v6.0-P0：能力矩阵（12 族）分族汇总
+  const famCount = {};
+  for (const c of cases) {
+    const f = c.family || 'L';
+    if (!famCount[f]) famCount[f] = { total: 0, passed: 0 };
+    famCount[f].total += 1;
+  }
+  for (const r of results) {
+    const c = cases.find((x) => x.name === r.name);
+    const f = c ? (c.family || 'L') : 'L';
+    if (famCount[f] && r.ok && !r.skipped) famCount[f].passed += 1;
+  }
+  const famLine = Object.keys(famCount).sort().map(function (f) { return f + ' ' + famCount[f].passed + '/' + famCount[f].total; }).join(' | ');
+  console.log('能力矩阵: ' + famLine);
+
   const judgeAvg = judgeCount ? Number(((judgeSum / judgeCount) * 5).toFixed(2)) : null;
   console.log(`\nSUMMARY: ${passed} passed, ${failed} failed (of ${total}) | 引用错误 ${citationErrorsTotal}${judgeAvg != null ? ` | judge 均分 ${judgeAvg}/5` : ''}`);
 
   const report = {
     date: new Date().toISOString(),
     mode: useJudge ? 'judge' : (contextOnly ? 'context' : 'full'),
-    summary: { total, passed, failed, passRate, citationErrors: citationErrorsTotal, judgeAvg, judgeCount },
+    summary: { total, passed, failed, passRate, citationErrors: citationErrorsTotal, judgeAvg, judgeCount, families: famCount },
     results,
   };
   fs.mkdirSync(REPORTS_DIR, { recursive: true });

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>[Snode] 顾问 AI：现状诊断与 6.0 优化方案</title>
+<style>
+  :root{
+    --ink:#1f2328; --muted:#57606a; --line:#e3e6eb;
+    --blue:#1f4e9c; --blue-soft:#eef4ff; --blue-line:#c9dcff;
+    --amber:#fff3b0; --red:#c0392b; --green:#1f7a4d;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Source Han Sans SC",sans-serif;
+    font-size:14.5px; line-height:1.78; color:var(--ink);
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{ width:210mm; margin:0 auto; padding:16mm 15mm 10mm; }
+  @page{ size:A4; margin:16mm 15mm 16mm; }
+  @media print{
+    .page{ width:auto; margin:0; padding:0; }
+    h1,h2,h3{ break-after:avoid; }
+    figure,.callout,blockquote{ break-inside:avoid; }
+    table{ break-inside:auto; }
+    thead{ display:table-header-group; }
+    tr{ break-inside:avoid; }
+  }
+
+  a{ color:#1f4e9c; text-decoration:none; border-bottom:1px solid #c9dcff; }
+  .doc-title{ font-size:30px; line-height:1.35; font-weight:700; letter-spacing:.4px; margin:0 0 10px; }
+  .doc-sub{ font-size:13px; color:var(--muted); margin:0 0 18px; }
+  .doc-sub b{ color:#3d4450; font-weight:600; }
+
+  .callout{
+    background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:8px;
+    padding:12px 16px 12px 44px; position:relative; font-size:13.5px; line-height:1.72;
+    margin:14px 0 22px;
+  }
+  .callout::before{ content:"💡"; position:absolute; left:14px; top:11px; font-size:16px; }
+  .callout b{ color:#12356d; }
+
+  h1{ font-size:23px; line-height:1.4; margin:30px 0 10px; color:#12356d; font-weight:700; }
+  h1 .num{ margin-right:10px; }
+  h2{ font-size:17.5px; line-height:1.45; margin:22px 0 8px; color:#173f7a; font-weight:700; }
+  h3{ font-size:15px; line-height:1.5; margin:16px 0 6px; color:#243b5a; font-weight:700; }
+  p{ margin:7px 0; }
+  .lead{ margin:8px 0 12px; }
+
+  .hl{ background:linear-gradient(transparent 58%, var(--amber) 58%); padding:0 2px; }
+  .b{ font-weight:700; }
+  .red{ color:var(--red); font-weight:700; }
+  .mono{ font-family:Consolas,"Cascadia Mono",monospace; font-size:12.5px; }
+
+  code{
+    font-family:Consolas,"Cascadia Mono",monospace; font-size:12.5px;
+    background:#f6f8fa; border:1px solid #e6e9ee; border-radius:4px; padding:1px 5px;
+    color:#243b53; white-space:nowrap;
+  }
+  pre{
+    font-family:Consolas,"Cascadia Mono",monospace; font-size:12px; line-height:1.62;
+    background:#f7f9fc; border:1px solid #e3e8ef; border-radius:6px; padding:10px 14px;
+    overflow:auto; margin:10px 0; color:#22303f;
+  }
+  pre code{ background:none; border:0; padding:0; white-space:pre; }
+
+  table{ width:100%; border-collapse:collapse; margin:10px 0 14px; font-size:13px; }
+  th,td{ border:1px solid var(--line); padding:7px 10px; vertical-align:top; text-align:left; }
+  th{ background:#f5f7fa; font-weight:700; color:#2b3441; }
+  td.nw,th.nw{ white-space:nowrap; }
+  .tnum{ color:var(--muted); font-size:12.5px; margin:-4px 0 10px; }
+
+  blockquote{
+    margin:10px 0 14px; padding:8px 14px; border-left:3px solid #d0d7de;
+    background:#fafbfc; color:var(--muted); font-size:13px; line-height:1.7;
+  }
+  blockquote p{ margin:3px 0; }
+
+  ul,ol{ margin:7px 0 10px; padding-left:22px; }
+  li{ margin:3px 0; }
+  ul.dot{ list-style:none; padding-left:2px; }
+  ul.dot li{ position:relative; padding-left:16px; }
+  ul.dot li::before{ content:"•"; position:absolute; left:2px; color:#2f6fd0; font-weight:700; }
+
+  figure{ margin:16px 0 6px; }
+  .panel{
+    border:1px solid #dfe5ee; border-radius:10px; background:#fbfcfe; padding:12px 14px 14px;
+  }
+  .panel-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:#1f3f7a; color:#fff; border-radius:8px; padding:8px 14px; margin:-4px -4px 12px;
+    font-size:14px; font-weight:700;
+  }
+  .panel-head .tag{ font-weight:400; font-size:11.5px; background:rgba(255,255,255,.18); border-radius:20px; padding:2px 10px; }
+  figcaption{ text-align:center; color:#6b7280; font-size:12.5px; margin-top:8px; }
+  .fig-note{ margin:8px 0 16px; }
+
+  .flow{ display:flex; align-items:stretch; gap:8px; flex-wrap:nowrap; }
+  .flow3 .node{ padding:10px 12px; font-size:12.3px; }
+  .node{
+    flex:1 1 0; border:1px solid #d7dfea; background:#fff; border-radius:8px; padding:9px 10px;
+    font-size:12px; line-height:1.5; position:relative;
+  }
+  .node .t{ font-weight:700; font-size:12.5px; color:#1f3f7a; display:block; margin-bottom:2px; }
+  .node .d{ color:#5b6675; }
+  .node.bad{ border-color:#f0b8b2; background:#fff7f6; }
+  .arrow{ align-self:center; color:#9aa7b8; font-size:16px; }
+  .badges{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .badge{ font-size:11.5px; border-radius:20px; padding:2px 9px; border:1px solid #d7dfea; color:#45526a; background:#fff; }
+  .badge.bad{ border-color:#efbdb7; background:#fff1ef; color:#a3342a; }
+  .badge.ok{ border-color:#bfe0cd; background:#f0fbf5; color:#1f7a4d; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .card{ border:1px solid #e0e6ef; border-radius:8px; background:#fff; padding:10px 12px; font-size:12.5px; line-height:1.6; }
+  .card h4{ margin:0 0 6px; font-size:13px; color:#1f3f7a; }
+  .card.blue{ background:#f4f8ff; border-color:#cfdffb; }
+  .card.green{ background:#f2fbf6; border-color:#c9e8d6; }
+  .card.amber{ background:#fffaf0; border-color:#f3e2b8; }
+  .kstack{ display:flex; flex-direction:column; gap:6px; }
+  .klayer{ display:flex; gap:10px; align-items:flex-start; }
+  .klayer .lb{ width:92px; flex:none; font-size:11.5px; color:#fff; background:#2f6fd0; border-radius:6px; padding:5px 8px; text-align:center; }
+  .klayer .lb.alt{ background:#5c7fa8; }
+  .klayer .bd{ flex:1; border:1px solid #e0e6ef; border-radius:6px; background:#fff; padding:6px 10px; font-size:12px; }
+  .bar{ display:flex; height:34px; border-radius:6px; overflow:hidden; border:1px solid #d9e1ec; font-size:11.5px; }
+  .bar div{ display:flex; align-items:center; justify-content:center; color:#243b53; }
+  .cache-brace{ position:relative; border-bottom:2px solid #2f6fd0; margin-top:4px; }
+  .note-sm{ font-size:12px; color:var(--muted); }
+  .keep{ break-inside:avoid; }
+  .sep{ height:1px; background:var(--line); margin:22px 0; }
+  .footer-line{ font-size:13px; color:#374151; border-top:1px solid var(--line); margin-top:26px; padding-top:12px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1 class="doc-title">[Snode] 顾问 AI：现状诊断与 6.0 优化方案</h1>
+  <p class="doc-sub">2026-11-08 · 顾问 6.0 方案 · 面向产品讨论与前后端实现评审</p>
+
+  <div class="callout">
+    <b>核心定位已确认：顾问不做「全能 AI DM」，只做「可溯源、可评测、可维护的规则与构筑助手」。</b>
+    本文诊断来自 2026-11-08 当前工作区实测；六层结构与四个阶段是实施建议，尚未落地；配图均为方案示意，不是已实现界面。
+  </div>
+
+  <h1><span class="num">1.</span>背景</h1>
+
+  <h2>1.1 顾问已经不是「一个聊天框」</h2>
+  <p class="lead">它现在有四个入口、两套运行时、一张 8.8 MB 的知识底座：</p>
+  <ul class="dot">
+    <li><span class="b">入口</span>：角色面板悬浮球、建卡页气泡、全屏聊天页（<code>顾问.html</code>）、手机端。</li>
+    <li><span class="b">运行时</span>：桌面端在 Electron 主进程里直接 import 管线（<code>scripts/mage-advisor.mjs</code>）；移动端走阿里云 FC（<code>advisor-server/server.js</code>），Key 只在服务端。</li>
+    <li><span class="b">底座</span>：<code>advisor/</code> 8.8 MB —— 技能索引 5.5 MB、世界观 392 KB、进阶 728 KB、专长 183 KB，其余是车卡、装备与规则表。</li>
+    <li><span class="b">代码</span>：54 个 <code>advisor-*.mjs</code>，13,856 行；另有 48 个 <code>validate-advisor-*.mjs</code> 与 23 个 <code>build-advisor-*.mjs</code>。</li>
+  </ul>
+  <p>一次问答实际经过六步：<span class="b">规划 → 澄清闸门 → 分层检索 → 上下文装配 → DeepSeek 生成 → 引用清洗</span>。理解这个顺序很重要，后面四个问题全都出在这条链上，而不是「资料不够」。</p>
+
+  <h2>1.2 问题不在「缺内容」，在「喂不对」</h2>
+  <p>5.0 审计已经给出结论：<span class="hl">问题类型与检索能力不匹配</span>。今天复测，这个判断仍然成立，而且可以量出来了：</p>
+
+  <table>
+    <thead><tr><th style="width:23%">项目</th><th style="width:34%">实测（2026-11-08 工作区）</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>检索层回归</td><td>43 / 44 通过</td><td>失败项 <code>cleric_domain</code>：上下文缺「生命与丰收之神」</td></tr>
+      <tr><td>检索耗时</td><td>44 条约 1.9 s（单条 40 ms 量级）</td><td><span class="b">慢的不是检索</span></td></tr>
+      <tr><td>一次真实问答</td><td>4.1 s；输入 10,374 token，命中缓存 1,024</td><td>问句「法师和吟游诗人有哪些相同的技能」</td></tr>
+      <tr><td>上下文长度</td><td>系统提示 3.0–4.0 k 字符；用户消息 1.1–12.4 k</td><td>4 条样例 dry-run 实测</td></tr>
+      <tr><td>路由</td><td>38 个 intent</td><td><code>advisor-router.mjs</code> 的 INTENT_RULES</td></tr>
+      <tr><td>工具</td><td>21 个（15 query + 6 base）</td><td>全部是<b>预计算后注入</b>，模型不能调用</td></tr>
+      <tr><td>知识库</td><td>8.8 MB</td><td>技能索引单文件 5.5 MB</td></tr>
+    </tbody>
+  </table>
+  <p class="tnum">复现命令见附录 A；数据为当前工作区状态，不代表线上部署状态。</p>
+
+  <h2>1.3 为什么不再「一题一修」</h2>
+  <p>过去五个版本的做法是：一条真实提问答错 → 加一个正则、一个工具、一段 prompt、一个 batch 用例。24 个 batch、38 个 intent、48 个 validate 脚本，就是这套方法的产物。</p>
+  <p>它有效，但<span class="b">边际收益在下降</span>：</p>
+  <ul class="dot">
+    <li>每加一个能力要同时动四处（路由 / 工具 / 提示词 / 用例），漏一处就是线上回归；</li>
+    <li>同类问题换个说法仍然可能漏，因为检索是字面匹配，不是语义匹配；</li>
+    <li>回归面越来越大，但每条用例只锁定「这一版改的那道题」，无法回答<span class="hl">「整体能力是变强还是变弱」</span>。</li>
+  </ul>
+
+  <figure class="keep">
+    <div class="panel">
+      <div class="panel-head"><span>顾问现状：六步管线与四个断点</span><span class="tag">方案示意 · 非已实现界面</span></div>
+      <div class="flow flow3">
+        <div class="node bad"><span class="t">① 规划</span><span class="d">LLM JSON 或规则；异常时降级为规则</span></div>
+        <div class="arrow">→</div>
+        <div class="node bad"><span class="t">② 澄清闸门</span><span class="d">缺职业 / 等级 / 风格时先追问</span></div>
+        <div class="arrow">→</div>
+        <div class="node bad"><span class="t">③ 分层检索</span><span class="d">L0–L7 + 21 个工具预计算</span></div>
+      </div>
+      <div class="flow flow3" style="margin-top:8px">
+        <div class="node"><span class="t">④ 装配</span><span class="d">拼成一段 Markdown 上下文</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span class="t">⑤ 生成</span><span class="d">DeepSeek 流式 / 非流式</span></div>
+        <div class="arrow">→</div>
+        <div class="node bad"><span class="t">⑥ 清洗</span><span class="d">只修末行【参考】</span></div>
+      </div>
+      <div class="badges" style="margin-top:10px">
+        <span class="badge bad">断点 A：澄清早于实体解析</span>
+        <span class="badge bad">断点 B：检索靠字面包含</span>
+        <span class="badge bad">断点 C：上下文按查询重排，前缀缓存命中低</span>
+        <span class="badge bad">断点 D：质量校验只到引用末行</span>
+        <span class="badge ok">稳定：检索耗时 40 ms 量级</span>
+      </div>
+    </div>
+    <figcaption>图 1：顾问现状管线与四个断点（方案示意）</figcaption>
+    <blockquote class="fig-note"><p><span class="b">图意说明：</span>从左到右是实际调用顺序，不是理想架构。四个断点中只有 D 是「最后一道闸」，A/B/C 会让错误在生成之前就进入上下文——模型再强也补不回来。</p></blockquote>
+  </figure>
+
+  <h1><span class="num">2.</span>诊断：四个结构性问题</h1>
+
+  <h2>2.1 检索是「字面包含」，不是检索</h2>
+  <p>检索打分只有两行核心逻辑：把问句切成汉字与二元词，然后判断文本里<span class="mono">是否包含</span>这个词。</p>
+  <pre><code>// scripts/advisor-retrieve.mjs:182
+export function scoreText(queryTokens, text) {
+  const hay = String(text).toLowerCase();
+  let score = 0;
+  for (const t of queryTokens) {
+    if (hay.includes(t)) score += t.length &gt;= 2 ? 3 : 1;
+  }
+  return score;
+}</code></pre>
+  <p>全仓 <span class="mono">grep -i "embedding|cosine|vector|bm25|rerank"</span> 结果为 <span class="b">none</span>：没有向量、没有 BM25、没有重排。别名与同义词靠手写清单（<code>STYLE_NAMES</code>、<code>tokenize()</code> 里的关键词数组）硬补。</p>
+  <p>后果很具体：用户说「肉盾」「脆皮法师」「怎么堆命中」这类口语，字面命中不到任何条目；而「法师和吟游诗人有哪些相同技能」之所以能答对，是因为有专门的交集工具，不是因为检索好。</p>
+
+  <h2>2.2 路由是正则表，实体解析有三套</h2>
+  <p>38 个 intent 由 <code>INTENT_RULES</code> 的正则顺序抢答；分类器只在置信度 ≥ 0.65 时覆盖。更麻烦的是<span class="b">同一个实体名在不同模块各有各的解析</span>：</p>
+  <table>
+    <thead><tr><th style="width:34%">位置</th><th style="width:24%">职责</th><th>认识「飞贼」吗</th></tr></thead>
+    <tbody>
+      <tr><td><code>advisor-advancement-resolve.mjs</code></td><td>进阶名解析</td><td>认识（读 <code>advancements.json</code>）</td></tr>
+      <tr><td><code>advisor-class-l2.mjs</code> · <code>matchClassNameFromQuery</code></td><td>职业名识别</td><td class="red">不认识，只认职业</td></tr>
+      <tr><td><code>advisor-clarify.mjs</code></td><td>澄清闸门</td><td class="red">不认识 → 直接追问「你想玩哪个职业」</td></tr>
+    </tbody>
+  </table>
+  <p>今天的现场复现：问「我想玩飞贼，我该怎么安排我的成长路线？」，线上直接返回<span class="b">「为了给你更准确的规划，请先补充一个关键信息：你想玩哪个职业？」</span>；而同一条问句走 <code>--dry-run</code>、跳过澄清后，检索上下文里已经有游荡者与飞贼。</p>
+  <blockquote><p><span class="b">结论：</span>闸门用最弱的解析器做了最强的拦截。这不是模型问题，是顺序问题——澄清应该发生在实体解析之后，只对「解析后仍然缺」的信息追问。</p></blockquote>
+
+  <h2>2.3 上下文又大又贵，且前缀不稳定</h2>
+  <p>实测一次问答：输入 10,374 token、输出 443 token，其中<span class="b">只有 1,024 token 命中 DeepSeek 的前缀缓存</span>（约 10%）。原因不是缓存不工作，而是<span class="hl">前缀每次都在变</span>：系统提示按 intent 选 profile 与 addon，证据块顺序随查询变化，用户问题在最前面。</p>
+  <p>DeepSeek 的上下文缓存按「相同前缀」命中，官方文档写得很清楚：重叠前缀只从缓存取，算作 cache hit。这意味着——<span class="b">把稳定内容放前面、把变化内容放后面，是免费的优化</span>；现在的拼装顺序恰好相反。</p>
+
+  <h2>2.4 质量闭环只到「检索层」</h2>
+  <p>44 条 eval 全部是上下文断言（<code>--context-only</code>），不调 API，所以能在 CI 里跑得很快——这是优点。但它只能证明「证据进了上下文」，不能证明：</p>
+  <ul class="dot">
+    <li>答案里的数字是不是来自证据（编造 15 级门槛这类问题测不出来）；</li>
+    <li>引用是否与正文一致（现在只清洗最后一行【参考】，正文里的行内引用不管）；</li>
+    <li>结构是否符合该 intent 的作答契约（六段式缺一段也不报警）。</li>
+  </ul>
+  <p>48 个 validate 脚本按版本批次组织，跑的是「这一版改的东西没坏」。要回答「能力矩阵有没有退化」，需要另一套组织方式。</p>
+
+  <h1><span class="num">3.</span>目标与原则</h1>
+
+  <h2>3.1 三个可验收的目标</h2>
+  <div class="grid3">
+    <div class="card blue"><h4>可溯源</h4>答案里的每个数字、技能名、等级节点都能指回一条证据（<span class="mono">[E12]</span>），引用可点击跳转；指不回去的，不许出现在正文里。</div>
+    <div class="card green"><h4>可评测</h4>用「能力矩阵」替代「版本批次」：12 个问题族 × 3 层检查，每次发版给出同一张表上的前后对比。</div>
+    <div class="card amber"><h4>可维护</h4>新增一个能力 = 改一行路由表 + 加一条用例；不再同时改正则、工具、提示词和 batch 脚本。</div>
+  </div>
+
+  <h2>3.2 五条原则</h2>
+  <ol>
+    <li><span class="b">结构化的交给函数，语言的交给模型。</span>5.0 的判断继续成立，但要把「预先算好塞进上下文」升级为<span class="hl">「模型按需调用」</span>——前者只能覆盖预想到的问题，后者才能处理复合问句。</li>
+    <li><span class="b">先测量再优化。</span>没有 trace 的改动不合并；每次改动的收益要能用同一把尺子量出来。</li>
+    <li><span class="b">一次只换一层。</span>检索、路由、工具、装配分开上；每层都能单独回滚，出问题能定位到层。</li>
+    <li><span class="b">离线可用优先。</span>新增依赖必须能在断网时降级；顾问不能变成「必须联网才有用」。</li>
+    <li><span class="b">不引入 Python 运行时。</span>RAGAS、Guardrails 只借指标定义与校验器形态，本地用 JS 实现，避免打包链路多一套解释器。</li>
+  </ol>
+
+  <h2>3.3 非目标（本次明确不做）</h2>
+  <ul class="dot">
+    <li>不 fine-tune、不训练自有模型；</li>
+    <li>不引入独立向量数据库服务；</li>
+    <li>不做对外 MCP server，工具先只做内部 JSON Schema；</li>
+    <li>不做 AI DM 自动裁决——规则判定仍以主持人结算为准；</li>
+    <li>不推倒重写 54 个脚本，按能力矩阵逐步收敛。</li>
+  </ul>
+
+  <h1><span class="num">4.</span>方案：六层结构</h1>
+
+  <p>核心变化只有一句话：<span class="b">把「一张正则表 + 一次检索 + 一段拼接」改成「一台路由器 + 一个混合检索器 + 一组可调用原语 + 一个校验器」</span>，并用 trace 与能力矩阵把它们串成闭环。</p>
+
+  <figure class="keep">
+    <div class="panel">
+      <div class="panel-head"><span>顾问 6.0：请求链与索引构建</span><span class="tag">方案示意</span></div>
+      <div class="grid2">
+        <div>
+          <div class="note-sm" style="margin:0 0 6px;font-weight:700;color:#1f3f7a">在线：一次请求</div>
+          <div class="kstack">
+            <div class="klayer"><div class="lb">① 路由</div><div class="bd">规则表命中 → 分类器兜底 → 实体解析（职业/进阶/技能/装备/状态）</div></div>
+            <div class="klayer"><div class="lb">② 检索</div><div class="bd">改写扩展 → BM25 + 字面 + 向量（可选）→ RRF 融合 → 重排</div></div>
+            <div class="klayer"><div class="lb">③ 工具</div><div class="bd">六原语按需调用（≤3 次 / 6 s）；常见意图走确定性快路径</div></div>
+            <div class="klayer"><div class="lb">④ 装配</div><div class="bd">稳定前缀 + 证据块（带 id）+ 预算截断 + 首尾排序</div></div>
+            <div class="klayer"><div class="lb">⑤ 生成</div><div class="bd">DeepSeek；按族的作答契约出章节</div></div>
+            <div class="klayer"><div class="lb alt">⑥ 校验</div><div class="bd">结构 / 数字落地 / 引用 → 失败补证据重试一次 → 仍失败则降级</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="note-sm" style="margin:0 0 6px;font-weight:700;color:#1f3f7a">离线：索引与用例</div>
+          <div class="kstack">
+            <div class="klayer"><div class="lb alt">A 切块</div><div class="bd">技能/规则/装备/世界观 → 带语境头的 chunk（职业·阶位·风格·来源）</div></div>
+            <div class="klayer"><div class="lb alt">B 建索引</div><div class="bd">倒排（BM25）+ 别名表 + 向量（可选包）→ <span class="mono">manifest.json</span> 记 sha256</div></div>
+            <div class="klayer"><div class="lb alt">C 用例库</div><div class="bd">真实反馈 → 12 族分层用例 → 金标（必含/禁含/引用）</div></div>
+            <div class="klayer"><div class="lb alt">D 发布</div><div class="bd">L1 每次 CI；L2 发版前；L3 每周抽样 → 同一张指标表</div></div>
+          </div>
+          <div class="card" style="margin-top:10px;background:#f7f9fc">
+            <h4>为什么快路径要保留</h4>
+            常见意图（实体问答、规则查询、车卡演算）用确定性函数一次算完，不额外往返；只有复合问句才进工具循环。这保证 <span class="b">P50 延迟不因新架构变慢</span>。
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>图 2：六层结构与离在线分工（方案示意）</figcaption>
+    <blockquote class="fig-note"><p><span class="b">图意说明：</span>左列是每次提问都走的路径，右列是发版前跑的路径。两侧通过中间的用例库与 trace 相连——线上出错的问句应当在下一次发版前变成一条 L1 用例，而不是变成一个新的 batch 脚本。</p></blockquote>
+  </figure>
+
+  <h2>4.1 路由：一张表、一个解析器、一个分类器</h2>
+  <p>38 个 intent 收敛为 <span class="b">12 个问题族</span>。族是「同一种回答形态 + 同一套工具 + 同一个预算」，intent 只是族内的小分支，不再各自维护正则。</p>
+
+  <table>
+    <thead><tr><th style="width:15%">族</th><th style="width:36%">覆盖的现有意图</th><th style="width:19%">默认工具</th><th>证据层</th></tr></thead>
+    <tbody>
+      <tr><td>A 实体问答</td><td>entity_qa · skill_detail · race_detail · background_detail · equipment_lookup · status_rules · starting_gear_lookup</td><td>lookup · search</td><td>L1 / L2 / L7</td></tr>
+      <tr><td>B 目录列举</td><td>class_skills · mage_skills · universal_skills · advancement · equipment_search</td><td>search（catalog）</td><td>L2 / L3</td></tr>
+      <tr><td>C 跨实体对比</td><td>cross_class_compare · class_weapon_prof · skill_aggregate · style_compare</td><td>aggregate · compare</td><td>L2 / L4</td></tr>
+      <tr><td>D 成长路线</td><td>build_roadmap</td><td>compute · search</td><td>L0 / L2 / L3</td></tr>
+      <tr><td>E 构筑评价</td><td>build_review</td><td>compute · compare · 快照</td><td>L6</td></tr>
+      <tr><td>F 车卡演算</td><td>chargen · chargen_hp_optimize · point_buy_optimize · background_chargen · chargen_recommend · proficiency_roadmap · proficiency_lookup</td><td>compute · lookup</td><td>L1</td></tr>
+      <tr><td>G 战斗演算</td><td>combat_math</td><td>compute</td><td>规则 + 技能修饰</td></tr>
+      <tr><td>H 规则查询</td><td>leveling · leveling_summary · multiclass · multiclass_req · eligibility · feats · feat_timing · sp_marks · tips</td><td>lookup · search</td><td>L0 / L4 / L5</td></tr>
+      <tr><td>I 世界观</td><td>worldview_lore</td><td>search</td><td>L7</td></tr>
+      <tr><td>J 未收录闸门</td><td>unknown_entity</td><td>verify</td><td>—</td></tr>
+      <tr><td>K 澄清 / 多意图</td><td>横切所有族（不占独立 intent）</td><td>闸门</td><td>—</td></tr>
+      <tr><td>L 元问题</td><td>general</td><td>—</td><td>能力说明</td></tr>
+    </tbody>
+  </table>
+  <p class="tnum">38 个 intent 全部落在 A–L 之内；K 是闸门不是族，所以不占 id。</p>
+
+  <figure class="keep">
+    <div class="panel">
+      <div class="panel-head"><span>收敛：38 个意图 → 12 个族 → 6 个原语</span><span class="tag">方案示意</span></div>
+      <div class="grid3" style="align-items:stretch">
+        <div class="card"><h4>现在</h4><div style="font-size:30px;font-weight:700;color:#1f3f7a;line-height:1.2">38</div><div class="note-sm">intent × 各自的正则</div><div style="margin-top:8px">21 个工具函数，全部预计算后注入；新增同类问法要再写一条规则。</div></div>
+        <div class="card blue"><h4>6.0 第一步</h4><div style="font-size:30px;font-weight:700;color:#1f3f7a;line-height:1.2">12</div><div class="note-sm">问题族 × 一行路由表</div><div style="margin-top:8px">族决定证据层、预算、作答契约；意图只作为族内标签保留，兼容旧日志与用例。</div></div>
+        <div class="card green"><h4>6.0 第二步</h4><div style="font-size:30px;font-weight:700;color:#1f3f7a;line-height:1.2">6</div><div class="note-sm">原语 × 可调用</div><div style="margin-top:8px">search / lookup / aggregate / compute / compare / verify；常见意图仍走快路径，不进循环。</div></div>
+      </div>
+      <div class="badges" style="margin-top:10px">
+        <span class="badge">改动面：正则 38 → 表 12 行</span>
+        <span class="badge">新增能力：改 1 行 + 1 条用例</span>
+        <span class="badge">旧 intent 保留为标签，不破日志</span>
+      </div>
+    </div>
+    <figcaption>图 3：路由与工具的收敛路径（方案示意）</figcaption>
+    <blockquote class="fig-note"><p><span class="b">图意说明：</span>不是把 38 个意图删成 12 个，而是把它们分成 12 类「同形态问题」，同类共用一套工具、预算与作答契约。意图 id 继续存在，用于日志、用例与灰度对比。</p></blockquote>
+  </figure>
+
+  <h3>4.1.1 路由表长什么样</h3>
+  <pre><code>// advisor/routes.json（示意，字段会在 P1 定稿）
+{
+  "id": "build_roadmap",
+  "family": "D",
+  "triggers": ["成长路线", "怎么规划", "想玩", "安排.*级"],
+  "entities": { "required": ["advancement|class"], "optional": ["level"] },
+  "tools": ["compute.leveling", "search.advancement"],
+  "layers": ["L0", "L2", "L3"],
+  "budget": { "evidenceChars": 8000, "maxToolCalls": 2 },
+  "contract": "roadmap_six_sections",
+  "golden": ["roadmap-feizei", "roadmap-dual-class"]
+}</code></pre>
+  <p>三件事被这张表统一了：<span class="b">谁触发</span>、<span class="b">需要什么实体</span>、<span class="b">用哪些工具与多少预算</span>。澄清闸门改为读取 <code>entities.required</code>，并且在<span class="hl">实体解析之后</span>才判断缺什么——「飞贼」能被解析成游荡者，就不再追问职业。</p>
+
+  <h3>4.1.2 实体解析只留一个入口</h3>
+  <p>新增 <code>resolveEntity({ type, name })</code>，覆盖职业 / 进阶 / 技能 / 装备 / 状态 / 专长六类，长名优先、别名兜底。现有三套实现先做适配层，双跑比对结果一致后再删除旧实现。验收标准很直接：<span class="b">同一条问句在路由、澄清、检索三处解析出的实体必须完全相同</span>。</p>
+
+  <h2>4.2 检索：从字面到混合</h2>
+  <p>保留现有字面检索作为「零依赖兜底」，在其上叠三层，按成本从低到高排序：</p>
+  <table>
+    <thead><tr><th style="width:16%">层</th><th style="width:40%">做法</th><th>解决什么</th></tr></thead>
+    <tbody>
+      <tr><td>L1 改写</td><td>别名表 + 同义词 + 口语映射（「肉盾」→ 坦克/前排/防御）</td><td>口语化、错别字、行话</td></tr>
+      <tr><td>L2 倒排</td><td>对 chunk 建 BM25（含字符二元组），按词频与长度归一</td><td>长文档里「提到但没排前面」的条目</td></tr>
+      <tr><td>L3 向量</td><td>可选包：构建期产出向量，查询期一次 embedding；关闭时自动跳过</td><td>换一种说法、语义相近但字面不重叠</td></tr>
+      <tr><td>融合</td><td>RRF（Reciprocal Rank Fusion）合并多路结果，再按族预算截断</td><td>避免单一召回源主导</td></tr>
+    </tbody>
+  </table>
+  <p>切块不再是「一段正文」，而是带语境头的条目：<span class="mono">职业·阶位·风格·来源·条目 id</span>。这直接借鉴了 Anthropic 的 contextual retrieval——<span class="hl">让每一块自带「它是谁的一部分」</span>，否则「飞贼」这种词在进阶表、技能表、心得节点里各出现一次，检索分不清。</p>
+  <p>索引在构建期产出，<code>manifest.json</code> 记录源文件 sha256 与条目数；运行时校验哈希，过期就报警并降级。<span class="b">索引不进 git</span>，随发布包构建，避免仓库再涨几十 MB。</p>
+
+  <h2>4.3 工具：21 个宏，收敛成 6 个原语</h2>
+  <table>
+    <thead><tr><th style="width:13%">原语</th><th style="width:41%">签名（示意）</th><th>替代的现有工具</th></tr></thead>
+    <tbody>
+      <tr><td><code>search</code></td><td><code>search(query, { scope, k, filters })</code></td><td>各层 buildXxxResults、catalog / full_list</td></tr>
+      <tr><td><code>lookup</code></td><td><code>lookup(type, name)</code></td><td>lookupSkill / lookupStatus / lookupEquipment / lookupRace / lookupBackground</td></tr>
+      <tr><td><code>aggregate</code></td><td><code>aggregate(op, { a, b, filter })</code></td><td>intersectSkills / listClassesByWeaponProf / aggregateSkillByName</td></tr>
+      <tr><td><code>compute</code></td><td><code>compute(kind, params)</code></td><td>HP / AC / 命中 / 伤害 / 购点 / 升级累计</td></tr>
+      <tr><td><code>compare</code></td><td><code>compare(a, b, aspect)</code></td><td>cross_class_compare 的组装逻辑</td></tr>
+      <tr><td><code>verify</code></td><td><code>verify(answer, evidence)</code></td><td>—（新增，后置校验，不由模型调用）</td></tr>
+    </tbody>
+  </table>
+  <p><span class="b">宏不删除，降级为快路径。</span>现有 21 个函数继续服务常见意图（一次算完、零往返）；只有路由判定为「复合问句」时才进入工具循环：最多 3 次调用、6 秒预算、每次返回不超过 800 token。<span class="hl">模型能调工具，但调不动预算。</span></p>
+
+  <h2>4.4 装配：稳定的放前面，变化的放后面</h2>
+  <figure class="keep">
+    <div class="panel">
+      <div class="panel-head"><span>上下文布局：让前缀可被缓存</span><span class="tag">方案示意</span></div>
+      <div class="bar">
+        <div style="flex:0 0 26%;background:#dbe7fb">系统提示（族固定）</div>
+        <div style="flex:0 0 20%;background:#e8eff9">静态规则（全族共用）</div>
+        <div style="flex:0 0 38%;background:#fff1c9">证据块 [E1]…[En]（按查询变化）</div>
+        <div style="flex:0 0 16%;background:#e6f5ec">用户问题</div>
+      </div>
+      <div class="cache-brace" style="margin-left:0;width:46%"></div>
+      <div class="note-sm" style="color:#2f6fd0">↑ 这一段字节稳定 → 命中 DeepSeek 前缀缓存</div>
+      <div class="grid3" style="margin-top:12px">
+        <div class="card"><h4>证据块格式</h4><span class="mono">[E3] 飞贼｜进阶·游荡者｜L5 解锁｜门槛 敏捷15/感知15｜来源 advancements.json</span></div>
+        <div class="card"><h4>排序</h4>强相关放首尾，弱相关放中间——长上下文对中段信息最不敏感（Lost in the Middle）。</div>
+        <div class="card"><h4>预算</h4>轻族 4k / 中族 5k / 重族 7k token；超出按分数截断，并在上下文里标注「已截断」。</div>
+      </div>
+      <div class="badges" style="margin-top:10px">
+        <span class="badge ok">实测缓存命中 1,024 / 10,374（9.9%）</span>
+        <span class="badge">目标 ≥50%</span>
+        <span class="badge">目标输入 ≤6k token</span>
+      </div>
+    </div>
+    <figcaption>图 4：上下文布局与可缓存前缀（方案示意）</figcaption>
+    <blockquote class="fig-note"><p><span class="b">图意说明：</span>蓝色两段在同一个族内字节不变，因此可以反复命中缓存；黄色证据块每次不同，放在缓存边界之后。今天的拼装把用户问题放在最前面，等于每次都让缓存从第一个字节就失效。</p></blockquote>
+  </figure>
+
+  <h2>4.5 校验：让「编造」过不了闸</h2>
+  <p>现有清洗函数 <code>sanitizeCitationLine</code> 只处理回答末尾的【参考】行：id 不存在就按名称反查，查不到就剔除。这挡住了「引用假条目」，但挡不住<span class="b">正文里编造的数字</span>。补齐三类检查：</p>
+
+  <table>
+    <thead><tr><th style="width:14%">检查</th><th style="width:38%">怎么查</th><th>失败时怎么办</th></tr></thead>
+    <tbody>
+      <tr><td>结构</td><td>按族的作答契约检查章节是否齐全（如 roadmaps 六段）</td><td>缺章节 → 一次补写，只补缺的段落</td></tr>
+      <tr><td>事实</td><td>抽取答案中的等级、数字、技能名、专长名，归一化（全半角/中文数字）后与证据集合比对</td><td>不在证据中 → 标记「未收录」，不许进正文；必要时补检索一次再答</td></tr>
+      <tr><td>引用</td><td>行内 <span class="mono">[E3]</span> 与末行【参考】都必须存在于证据 id 集合</td><td>剔除无效引用；正文因此失去支撑的句子一并降级</td></tr>
+    </tbody>
+  </table>
+
+  <p>这套「先查再答」的做法，对应 Self-RAG 的自我反思与 CRAG 的纠正性检索：<span class="hl">检索不足时补的是证据，不是重写答案</span>。重试只允许一次，避免把延迟拖成两倍。</p>
+
+  <h2>4.6 评测：从「版本批次」到「能力矩阵」</h2>
+
+  <figure class="keep">
+    <div class="panel">
+      <div class="panel-head"><span>评测与观测闭环</span><span class="tag">方案示意</span></div>
+      <div class="flow" style="flex-wrap:nowrap">
+        <div class="node"><span class="t">线上 trace</span><span class="d">每次问答六段耗时 + 校验结果</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span class="t">失败样本</span><span class="d">校验失败 / 用户点「没用」/ 反馈队列</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span class="t">用例库</span><span class="d">12 族分层，带金标与 capability 标签</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span class="t">三层 CI</span><span class="d">L1 每次 / L2 发版 / L3 每周</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span class="t">发布</span><span class="d">同一张指标表前后对比</span></div>
+      </div>
+      <div class="note-sm" style="margin-top:8px;color:#2f6fd0">↺ 发布后回到线上 trace；每条线上失败应当在下一版变成一条 L1 用例，而不是一个新的 batch 脚本。</div>
+      <table style="margin-top:10px">
+        <thead><tr><th style="width:10%">层</th><th style="width:20%">何时跑</th><th style="width:38%">断言什么</th><th>成本</th></tr></thead>
+        <tbody>
+          <tr><td>L1</td><td>每次提交 / PR</td><td>检索上下文必含/禁含；路由族与实体正确；预算未超</td><td>不调 API，&lt;30 s</td></tr>
+          <tr><td>L2</td><td>发版前</td><td>答案必含/禁含、引用有效、数字落地、结构齐全</td><td>抽样调 API，约 20 条</td></tr>
+          <tr><td>L3</td><td>每周 / 大改后</td><td>判官评分：faithfulness、answer relevancy、context precision</td><td>全量或分层抽样</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figcaption>图 5：评测与观测的闭环（方案示意）</figcaption>
+    <blockquote class="fig-note"><p><span class="b">图意说明：</span>左边是线上真实发生的事，右边是发版前的闸门。闭环的关键不是工具，而是「失败样本必须变成用例」这条纪律——否则 trace 只是日志。</p></blockquote>
+  </figure>
+
+  <p>用例库从 44 条扩到 <span class="b">200 条</span>，按 12 族分层。来源有三个：现有 44 条（保留）、反馈队列里的真实问句（脱敏后）、每族按模板补齐的边界问法（未收录、多意图、跨职业、断网）。每条带 <code>capability</code> 标签，跑完自动生成矩阵：</p>
+
+  <table>
+    <thead><tr><th style="width:26%">指标</th><th style="width:22%">现状（2026-11-08）</th><th style="width:18%">目标</th><th>定义</th></tr></thead>
+    <tbody>
+      <tr><td>检索命中率</td><td>43 / 44（97.7%）</td><td>≥95%（200 例）</td><td>金标条目出现在上下文</td></tr>
+      <tr><td>引用有效率</td><td>0 错误（仅末行）</td><td>0（行内 + 末行）</td><td>引用 id 全部存在于证据集合</td></tr>
+      <tr><td>数字落地率</td><td>未测</td><td>≥98%</td><td>答案中的数字能在证据中找到出处</td></tr>
+      <tr><td>结构符合率</td><td>未测</td><td>≥95%</td><td>该族的契约章节齐全</td></tr>
+      <tr><td>P95 延迟</td><td>4.1 s（单例）</td><td>≤8 s</td><td>端到端，含工具循环</td></tr>
+      <tr><td>输入 token / 答</td><td>10,374</td><td>≤6,000</td><td>单次问答的 prompt token</td></tr>
+      <tr><td>前缀缓存命中</td><td>1,024 / 10,374（9.9%）</td><td>≥50%</td><td>cached_tokens ÷ prompt_tokens</td></tr>
+    </tbody>
+  </table>
+  <p class="tnum">现状值来自今天的实测（附录 A）；「未测」表示当前没有这项检查，不代表没有问题。</p>
+
+  <h2>4.7 观测与成本</h2>
+  <p>每次问答落一条 trace，六段各一个 span，字段固定：<code>family</code>、<code>intent</code>、<code>toolCalls</code>、<code>inputTokens</code>、<code>cachedTokens</code>、<code>outputTokens</code>、<code>latencyMs</code>、<code>verify</code>。默认采样 10% 写 <code>tmp/advisor-traces/</code>，可选导出 OTLP；<span class="b">trace 里不写角色名与用户问句原文</span>，只留哈希与分类。</p>
+  <p>成本上有两个立竿见影的动作：</p>
+  <ul class="dot">
+    <li><span class="b">前缀稳定化</span>（§4.4）：同一族内系统提示与静态规则字节不变，缓存命中率从 10% 往上走，输入侧实际计费 Token 显著下降；</li>
+    <li><span class="b">语义缓存</span>：只对「无快照、首轮、A/B/H 族」生效；键 = 归一化问句 + <code>corpusHash</code> + <code>promptVersion</code>，相似度 ≥0.95 且 TTL 7 天。命中时在界面标注「缓存」，并允许用户强制重答。</li>
+  </ul>
+  <p>有快照、多轮追问、涉及时效的问答<span class="b">不缓存</span>——这类问题一旦答错，比慢更糟。</p>
+
+  <h2>4.8 双端统一：一个 core，两个适配层</h2>
+  <p>现在桌面端与 FC 各自 import 同一套脚本，但装配方式不同、日志不通。改成 <code>advisor-core</code>（纯 ESM，不依赖 Electron）：</p>
+  <ul class="dot">
+    <li>桌面端：主进程 import core，IPC 只做参数搬运；</li>
+    <li>移动端：FC 只做 HTTP/SSE 适配，不复制任何业务逻辑；</li>
+    <li><code>/api/health</code> 返回 <code>pipelineVersion</code> + <code>corpusHash</code> + <code>indexVersion</code>；客户端版本不一致时提示「顾问数据版本不一致」，而不是静默降级。</li>
+  </ul>
+
+  <h1><span class="num">5.</span>路线图：四个阶段</h1>
+
+  <table>
+    <thead><tr><th style="width:9%">阶段</th><th style="width:12%">版本</th><th style="width:38%">主要改动</th><th>退出条件</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>P0</b><br><span class="note-sm">测量</span></td>
+        <td class="nw">1.0.8105–8110</td>
+        <td>trace 六段；L1 用例库 200 条与 runner；澄清改为实体解析之后；行内引用与数字落地校验（先 warn 后 block）</td>
+        <td>「飞贼」不再被追问职业；<code>cleric_domain</code> 修复；L1 全绿且 &lt;30 s；每条 trace 能看到六段耗时</td>
+      </tr>
+      <tr>
+        <td><b>P1</b><br><span class="note-sm">路由与检索</span></td>
+        <td class="nw">1.0.8111–8118</td>
+        <td>routes.json 双跑比对；resolveEntity 单一入口；BM25 + 别名表；预算装配；前缀布局调整</td>
+        <td>新旧路由 diff 清零；输入 token ≤6k；缓存命中 ≥50%；L1 无回归</td>
+      </tr>
+      <tr>
+        <td><b>P2</b><br><span class="note-sm">工具</span></td>
+        <td class="nw">1.0.8119–8126</td>
+        <td>六原语 + 调用循环（≤3 次 / 6 s）；常见意图保留快路径；语义缓存（限 A/B/H 族）</td>
+        <td>10 条多跳用例通过；P95 ≤8 s；缓存在 trace 里可计量；关闭缓存无行为回归</td>
+      </tr>
+      <tr>
+        <td><b>P3</b><br><span class="note-sm">统一</span></td>
+        <td class="nw">1.0.8127–8135</td>
+        <td>向量召回作为可选包；advisor-core 拆包；FC 适配层；双端版本握手</td>
+        <td>桌面与 FC 的 pipelineVersion 一致；向量包不装时行为与 P2 完全相同</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>排期原则：<span class="b">先有尺子，再改东西</span>。P0 不做任何检索算法改动，只把「看不见」变成「看得见」；P1 才开始动检索与路由，此时每一步都有前后对比。每阶段独立发版、独立回滚，不合并成一个大版本。</p>
+
+  <div class="grid2">
+    <div class="card amber"><h4>主要风险</h4>
+      <ul style="margin:4px 0 0 0"><li>路由表覆盖不全 → 旧规则保留一个版本做 fallback，双跑 diff 清零再切；</li><li>工具循环拉高延迟 → 只对复合问句开放，超时直接降级为快路径；</li><li>校验误杀 → 先跑 warn 模式一周，统计误报率再开 block。</li></ul>
+    </div>
+    <div class="card green"><h4>怎么判定成功</h4>
+      <ul style="margin:4px 0 0 0"><li>200 条用例的矩阵整体上移，而不是某一条从红变绿；</li><li>同样的问题，输入 token 下降、延迟不升；</li><li>新增能力的改动面从「四处」降到「两处」。</li></ul>
+    </div>
+  </div>
+
+  <h1><span class="num">6.</span>验收：可观察的行为</h1>
+  <p>不验收「架构图画得对不对」，只验收下面八条能直接复现的行为：</p>
+  <ol>
+    <li>「我想玩飞贼，怎么安排成长路线」不再追问职业，直接给出游荡者 → 飞贼的路线（<span class="red">今天会追问</span>）。</li>
+    <li>「生命与丰收之神有哪些领域技能」的检索上下文包含该领域条目（<span class="red">今天 ctxMissing</span>）。</li>
+    <li>同一问题两分钟内再问一次，输入 token 下降 ≥40%，界面标注「缓存」。</li>
+    <li>答案中出现的每个数字都能在证据中找到；找不到的被拦下或明确标注「未收录」。</li>
+    <li>行内引用与末行【参考】的每个 id 都在证据集合中，点击能跳转。</li>
+    <li>200 条 L1 用例全绿且 &lt;30 s；L2 失败阻断发版。</li>
+    <li>断网时顾问降级为字面检索，并在界面明确标注「检索降级」，不静默。</li>
+    <li>桌面与 FC 的 <code>pipelineVersion</code> / <code>corpusHash</code> 不一致时，健康检查报警。</li>
+  </ol>
+
+  <h1><span class="num">7.</span>本次不做</h1>
+  <ul class="dot">
+    <li>不做 fine-tune，不训练自有模型；</li>
+    <li>不引入独立向量数据库或 Python 服务；RAGAS / Guardrails 只借指标与校验器形态；</li>
+    <li>不做对外 MCP server——工具先内部化，等有第二个消费方再谈协议；</li>
+    <li>不把 48 个 validate 脚本一次性重写，按能力矩阵逐批合并；</li>
+    <li>不做 AI DM 自动裁决，规则判定仍以主持人结算为准；</li>
+    <li>不做多模型自动路由（P3 之后再评估）。</li>
+  </ul>
+
+  <h1><span class="num">8.</span>参考：成熟方案取什么、不取什么</h1>
+  <p>下面这些是业界已经跑通的做法。我们只取与「可溯源 + 可评测 + 零构建」相容的部分，不整体引入框架。</p>
+
+  <table>
+    <thead><tr><th style="width:24%">来源</th><th style="width:38%">取什么</th><th>不取什么 / 为什么</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic · Building effective agents</a></td><td>把「路由 / 并行 / 编排-执行 / 评估-优化」当工作流，而不是默认上自主 agent；能一步做完就不要循环</td><td>不照搬自主 agent 的开放式循环——顾问的问题有明确答案边界</td></tr>
+      <tr><td><a href="https://github.com/langchain-ai/langgraph">LangGraph</a></td><td>用状态图描述路由与分支、每步可检查点可回放</td><td>不引入框架依赖；Electron 内只需要一个轻量状态机</td></tr>
+      <tr><td><a href="https://github.com/stanfordnlp/dspy">DSPy</a></td><td>用数据挑 prompt 与 few-shot，而不是手调措辞</td><td>不引入 Python 依赖；用现有 golden 集做离线对比即可</td></tr>
+      <tr><td><a href="https://github.com/promptfoo/promptfoo">promptfoo</a></td><td>声明式用例 + CI 门禁 + 多模型矩阵对比的形态</td><td>不替换现有 runner，先把用例格式统一，再考虑嫁接</td></tr>
+      <tr><td><a href="https://github.com/vibrantlabsai/ragas">RAGAS</a></td><td>faithfulness / answer relevancy / context precision 三个指标的口径</td><td>不作为 CI 依赖；本地实现轻量版本</td></tr>
+      <tr><td><a href="https://github.com/langfuse/langfuse">Langfuse</a></td><td>trace → 数据集 → 回归的组织方式</td><td>不自建平台；先本地 JSONL，需要时再导出 OTLP</td></tr>
+      <tr><td><a href="https://github.com/traceloop/openllmetry">OpenLLMetry</a></td><td>GenAI span 的字段命名，避免自造日志格式</td><td>暂不部署 collector</td></tr>
+      <tr><td><a href="https://github.com/zilliztech/GPTCache">GPTCache</a></td><td>语义缓存的键设计、相似度阈值与失效策略</td><td>不做全量缓存；只对无状态问答开，且必须可强制重答</td></tr>
+      <tr><td><a href="https://github.com/guardrails-ai/guardrails">Guardrails</a></td><td>输出校验器的组织形态（结构 / 事实 / 引用）</td><td>不引入 Python 运行时</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2312.10997">RAG 综述（arXiv 2312.10997）</a></td><td>naive → advanced → modular 的分层演进，对应本文六层</td><td>不追求端到端可训练 RAG</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2310.11511">Self-RAG</a> · <a href="https://arxiv.org/abs/2401.15884">CRAG</a></td><td>检索不足时补证据再答，而不是硬答或重写</td><td>不做检索器联合训练</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a></td><td>长上下文对中段信息不敏感 → 证据首尾优先</td><td>—</td></tr>
+      <tr><td><a href="https://www.anthropic.com/news/contextual-retrieval">Anthropic · Contextual Retrieval</a></td><td>给每个 chunk 加语境头（它属于谁的一部分）</td><td>不引入其 BM25+向量混合的具体实现</td></tr>
+      <tr><td><a href="https://api-docs.deepseek.com/guides/kv_cache">DeepSeek · Context Caching</a></td><td>相同前缀命中缓存 → 稳定内容必须前置</td><td>不依赖其长期行为，缓存只是优化不是正确性前提</td></tr>
+      <tr><td><a href="https://modelcontextprotocol.io/">MCP</a></td><td>工具 schema 的标准化方向，为将来第二个消费方留口</td><td>P3 之前不做，避免过早抽象</td></tr>
+    </tbody>
+  </table>
+
+  <h1><span class="num">A.</span>附录：实测命令与输出</h1>
+  <pre><code># 1) 检索层回归（不调 API）
+node scripts/advisor-eval.mjs --context-only
+# → 43 passed, 1 failed (of 44) | 引用错误 0
+#    FAIL cleric_domain  ctxMissing=生命与丰收之神
+
+# 2) 单题 dry-run：看上下文与 intent
+node scripts/mage-advisor.mjs --dry-run --json "我想玩飞贼，我该怎么安排我的成长路线？"
+# → intent=build_roadmap；上下文含「游荡者」「飞贼」
+
+# 3) 同一条问句走真实调用：澄清闸门先于实体解析
+node scripts/mage-advisor.mjs --json "我想玩飞贼，我该怎么安排我的成长路线？"
+# → 追问「你想玩哪个职业？」（answer 41 字符，未调用生成）
+
+# 4) 一次真实问答的用量
+node scripts/mage-advisor.mjs --json "法师和吟游诗人有哪些相同的技能"
+# → 4.1 s；prompt 10,374 / cached 1,024 / completion 443</code></pre>
+
+  <p class="note-sm">以上命令在 2026-11-08 的工作区执行；<code>.env</code> 中已配置 DeepSeek Key，真实的两次调用产生少量费用。所有数字均可复现，除模型输出长度会随版本浮动。</p>
+
+  <h2>下一步：本周就能做的三件事</h2>
+  <p>不改架构，也不依赖前面的任何阶段；做完这三件，P0 就有了基线：</p>
+  <ol>
+    <li><span class="b">把澄清挪到实体解析之后。</span>一行调用顺序的改动，直接消掉「飞贼被追问职业」这类误拦截；改完用现有 44 条用例回归。</li>
+    <li><span class="b">给 44 条用例打 capability 标签，补 12 族的空档。</span>先让「哪一族最弱」可见，再谈优化哪一层。</li>
+    <li><span class="b">在 advise() 里加三段计时。</span>plan / retrieve / llm 各记一个耗时，落到 JSONL；先不引入任何观测框架。</li>
+  </ol>
+
+  <div class="footer-line">
+    顾问记录规则，证据决定口径，函数负责算术；模型只做组织与解释。评测不通过的改动不进版本。
+  </div>
+
+</div>
+</body>
+</html>
+</div>
+</body>
+</html>

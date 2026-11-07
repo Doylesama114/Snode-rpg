@@ -4,6 +4,7 @@
  * Run: node scripts/mage-advisor.mjs [--thinking] [--dry-run] [--stream] [--save-log] "问题"
  */
 import fs from 'fs';
+import crypto from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { retrieve, formatContext } from './advisor-retrieve.mjs';
@@ -17,6 +18,7 @@ import { appendChoiceContext } from './advisor-choice-groups.mjs';
 import { detectMultiIntent } from './advisor-multi-intent.mjs';
 import { detectStructuredQuestion } from './advisor-query-tools.mjs';
 import { matchClassNameFromQuery } from './advisor-class-l2.mjs';
+import { resolveAdvancementName, inferSourceClassForAdvancement } from './advisor-advancement-resolve.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -231,6 +233,16 @@ export function sanitizeCitationLine(text, context) {
   return body + '【参考】' + [...new Set(kept)].join('｜') + '\n';
 }
 
+const TRACE_DIR = path.join(ROOT, 'tmp', 'advisor-traces');
+function traceAdvise(record) {
+  if (process.env.ADVISOR_TRACE === '0') return;
+  try {
+    fs.mkdirSync(TRACE_DIR, { recursive: true });
+    const day = new Date().toISOString().slice(0, 10);
+    fs.appendFileSync(path.join(TRACE_DIR, day + '.jsonl'), JSON.stringify(record) + '\n');
+  } catch (e) { /* trace 失败不影响主流程 */ }
+}
+
 export async function advise(query, options = {}) {
   const config = getAdvisorConfig();
   const thinking = options.thinking ?? config.thinkingDefault;
@@ -264,6 +276,7 @@ export async function advise(query, options = {}) {
   });
 
   // 结构化规则问题（combat_math/状态/专长/技能详情等）无需 LLM 规划，直接走规则规划器
+  const __t0 = Date.now();
   const structuredDetect = options.skipPlanner ? null : detectStructuredQuestion(query);
   const plan = options.skipPlanner
     ? (options.plan || null)
@@ -273,12 +286,22 @@ export async function advise(query, options = {}) {
         useLLM: options.usePlannerLLM !== false,
       });
 
+  const __tPlan = Date.now() - __t0;
+
+  // v6.0-P0：先解析实体，再判断是否需要追问。
+  // 旧顺序是「先追问后解析」：问「我想玩飞贼…」时，澄清闸门只认职业名，
+  // 认不出「飞贼」→ 直接追问「你想玩哪个职业」，而其实解析器能把它归到游荡者。
+  const advancementName = resolveAdvancementName(query);
+  const advancementBase = advancementName ? inferSourceClassForAdvancement(advancementName) : null;
+  const resolvedClass = retrievalClassHint || advancementBase || matchClassNameFromQuery(query) || null;
+
   // 主动追问：缺关键信息时跳过 LLM 规划与生成，先让用户点选补充（dryRun 仍走完整检索供评测）
-  const clarify = plan
+  // 已点名进阶途径（飞贼/狂战士…）视为目标明确，不再追问职业。
+  const clarify = plan && !advancementName
     ? detectClarify(query, {
         intent: plan.intent || null,
         mode: options.mode || 'advisor',
-        retrievalClass: retrievalClassHint || matchClassNameFromQuery(query) || null,
+        retrievalClass: resolvedClass,
         hasSnapshot: !!snapshot,
         hasChargenState: !!wizardState || !!options.chargenState,
       })
@@ -349,6 +372,8 @@ export async function advise(query, options = {}) {
       || (retrieval.retrievalClass ? undefined : null),
   });
 
+  const __tRetrieve = Date.now() - __t0 - __tPlan;
+
   if (options.dryRun) {
     return {
       query,
@@ -380,6 +405,26 @@ export async function advise(query, options = {}) {
     onDelta: options.onDelta,
   });
 
+  const __timings = {
+    planMs: __tPlan,
+    retrieveMs: __tRetrieve,
+    llmMs: Date.now() - __t0 - __tPlan - __tRetrieve,
+    totalMs: Date.now() - __t0,
+  };
+  traceAdvise({
+    ts: new Date().toISOString(),
+    qHash: crypto.createHash('sha1').update(String(query)).digest('hex').slice(0, 12),
+    intent: retrieval.intent,
+    mode: retrieval.mode,
+    promptProfile: retrieval.promptProfile,
+    answerStyle: retrieval.answerStyle,
+    hasSnapshot: !!snapshot,
+    clarify: !!clarify,
+    contextChars: String(context || '').length,
+    timings: __timings,
+    tokens: result.usage || null,
+  });
+
   return {
     query,
     intent: retrieval.intent,
@@ -392,6 +437,7 @@ export async function advise(query, options = {}) {
     messages,
     context,
     clarify,
+    timings: __timings,
     answer: sanitizeCitationLine(result.content, context),
     answerRaw: result.content,
     usage: result.usage,
@@ -435,6 +481,7 @@ Options:
           thinking: out.thinking,
           systemPrompt: out.messages[0].content,
           userMessage: out.messages[1].content,
+          timings: out.timings || null,
         }, null, 2));
       } else {
         console.log('=== DRY RUN ===');
@@ -459,6 +506,7 @@ Options:
         thinking: out.thinking,
         answer: out.answer,
         usage: out.usage,
+        timings: out.timings || null,
       }, null, 2));
     }
   } catch (err) {
