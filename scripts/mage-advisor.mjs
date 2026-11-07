@@ -201,6 +201,7 @@ function extractContextNameIds(context) {
 }
 
 import { detectClarify } from './advisor-clarify.mjs';
+import { searchProse, formatProseContext, hasCorpus } from './advisor-search-prose.mjs';
 
 export function sanitizeCitationLine(text, context) {
   const t = String(text || '');
@@ -353,7 +354,16 @@ export async function advise(query, options = {}) {
     plan: plan || undefined,
     goalOverride: plannerCtx.goalOverride || null,
   });
-  const context = appendChoiceContext(query, formatContext(retrieval));
+  let context = appendChoiceContext(query, formatContext(retrieval));
+
+  // v6.0-P0.5：规则语料检索（BM25）。命中则把原文块追加进上下文，并保留锚点供引用。
+  let proseHits = [];
+  try {
+    if (hasCorpus()) {
+      proseHits = searchProse(query, { limit: 3 }).filter((h) => h.score >= 0.8);
+      if (proseHits.length) context += '\n\n' + formatProseContext(proseHits);
+    }
+  } catch (e) { /* 规则检索失败不阻塞主流程 */ }
   const messages = buildChatMessages(query, context, {
     intent: retrieval.intent,
     mode: retrieval.mode,
@@ -387,6 +397,7 @@ export async function advise(query, options = {}) {
       messages,
       context,
       clarify,
+      proseHits: proseHits.map((h) => ({ id: h.id, title: h.title, anchor: h.anchor, score: h.score })),
       answer: null,
     };
   }
@@ -437,6 +448,7 @@ export async function advise(query, options = {}) {
     messages,
     context,
     clarify,
+    proseHits: proseHits.map((h) => ({ id: h.id, title: h.title, anchor: h.anchor, score: h.score })),
     timings: __timings,
     answer: sanitizeCitationLine(result.content, context),
     answerRaw: result.content,

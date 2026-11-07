@@ -1,0 +1,116 @@
+{
+  "source": "docs/migration/50_交接/审阅包_20261029/lab/data",
+  "snapshot_date": "2026-10-30",
+  "imported_at": "2026-11-08",
+  "note": "lab 规则库快照；缺 11.04 内容（机敏光环/逆流技巧/极大逆境）；BOM 已剥离",
+  "files": [
+    {
+      "path": "rule-sections.json",
+      "sha256": "7ef4bb1d69ebed075046459be01538564aed8f446ee8b37a7c9ef890171986b4",
+      "bytes": 90019,
+      "had_bom": false
+    },
+    {
+      "path": "rule-keywords.json",
+      "sha256": "187fe308592b7e8b9298f5788954a3e826640003709171c692f6442bd1f4ae72",
+      "bytes": 19750,
+      "had_bom": false
+    },
+    {
+      "path": "rule-states.json",
+      "sha256": "f3105c1076809842273f791238c710f7bedd30629edf14ad7469e1ff3a0d874a",
+      "bytes": 10510,
+      "had_bom": false
+    },
+    {
+      "path": "rule-interludes.json",
+      "sha256": "11a4581c95233478705a17b5fc27e2d00d11d62b73d0e2e1f4c9eb152cd0f07a",
+      "bytes": 3988,
+      "had_bom": false
+    },
+    {
+      "path": "rule-levels.json",
+      "sha256": "ca99148f7746120d6450d4205170be812e98e2a109f0c6f798c4d65d3b8025ee",
+      "bytes": 8715,
+      "had_bom": false
+    },
+    {
+      "path": "rule-multiclass.json",
+      "sha256": "b6b1b02563b2c101c856e0f07b4a4fc22024dcc8c8608e519eb8df87b9ac9342",
+      "bytes": 8968,
+      "had_bom": false
+    },
+    {
+      "path": "rule-marks.json",
+      "sha256": "5f79cd6911a31f5f5cbacbf107b8803826b491dc94e025afcc31ec5c0ec4245d",
+      "bytes": 4806,
+      "had_bom": false
+    },
+    {
+      "path": "rule-mark-rules.json",
+      "sha256": "85e4797ffbaa4e71bb72734b6670fc54413269b15faac982e7778321ef0f78db",
+      "bytes": 1313,
+      "had_bom": false
+    },
+    {
+      "path": "rule-renown.json",
+      "sha256": "bac7041d610cc110217ff6483ce01271f23837e349bab69d7e5331713a2afd15",
+      "bytes": 7924,
+      "had_bom": false
+    },
+    {
+      "path": "rule-reputation.json",
+      "sha256": "1b44b050d291ff94476b632f73bb40680dd578f548edb6aa3ed1dd53fe419cc6",
+      "bytes": 3840,
+      "had_bom": false
+    },
+    {
+      "path": "classes.json",
+      "sha256": "ac0aa2ff0b40c60c8370cf62bccb9e1487cd47eb86572a43fdbf13af43b55a9a",
+      "bytes": 27908,
+      "had_bom": false
+    },
+    {
+      "path": "adv-paths.json",
+      "sha256": "bf19e39e37ee527cef460aeed2f6543626cd8318c3c67c7628cde93e84ab9ebd",
+      "bytes": 192894,
+      "had_bom": false
+    },
+    {
+      "path": "adv-abilities.json",
+      "sha256": "a12b2dc145853250db4d5580d9f0341fd42d43cd3c6737a6e69ccb01121f1d70",
+      "bytes": 161884,
+      "had_bom": false
+    },
+    {
+      "path": "feats.json",
+      "sha256": "f85cc8f5e6d6335792ef3bd0374f2dc335ad2b8ceda4c87839f9526bfbe63b5a",
+      "bytes": 94868,
+      "had_bom": false
+    },
+    {
+      "path": "items.json",
+      "sha256": "73cd6bc69aaceb7d7d8fa3932e5e1998738dd814ac7febf23529b5a615f1f7f0",
+      "bytes": 494252,
+      "had_bom": false
+    },
+    {
+      "path": "backgrounds.json",
+      "sha256": "c470314449f30ccbf914736325ac710ad0bddba6e1491fe4cfc483529dca9935",
+      "bytes": 45907,
+      "had_bom": false
+    },
+    {
+      "path": "races.json",
+      "sha256": "76f9771e1c26303d2170145b0c9f1d6f40cfeb5951bfdc644a9e18f1f6d344a8",
+      "bytes": 20394,
+      "had_bom": false
+    },
+    {
+      "path": "choice-map.json",
+      "sha256": "606ec95bb00609e9ba31f39b117fd69f949ca700bedfe6132361df8680bf866c",
+      "bytes": 73478,
+      "had_bom": false
+    }
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "levels": [
+    {
+      "track": "main",
+      "level": 1,
+      "xp": "0",
+      "prof": "-",
+      "attr": "-",
+      "slots": "10",
+      "other": "根据新人冒险者创建流程获取加成数值",
+      "attrCap": "18",
+      "profCap": "2",
+      "role": "新人冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 2,
+      "xp": "50",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "attrCap": "18",
+      "profCap": "2",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 3,
+      "xp": "100",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第三阶天赋树(50点经验值）",
+      "attrCap": "18",
+      "profCap": "2",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 4,
+      "xp": "150",
+      "prof": "1",
+      "attr": "1",
+      "slots": null,
+      "other": "获取一项特殊专长",
+      "attrCap": "18",
+      "profCap": "2",
+      "role": null,
+      "slotsInferred": true
+    },
+    {
+      "track": "main",
+      "level": 5,
+      "xp": "300",
+      "prof": "-",
+      "attr": "1",
+      "slots": "1",
+      "other": "开启主职业的三条进阶职业途径",
+      "attrCap": "19",
+      "profCap": "3",
+      "role": "普通冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 6,
+      "xp": "500",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第四阶天赋树（100点经验值）",
+      "attrCap": "19",
+      "profCap": "3",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 7,
+      "xp": "800",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "允许兼职一个与主职业不冲突的基础职业",
+      "attrCap": "19",
+      "profCap": "3",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 8,
+      "xp": "1200",
+      "prof": "1",
+      "attr": "1",
+      "slots": "1",
+      "other": "获取一项特殊专长",
+      "attrCap": "19",
+      "profCap": "3",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 9,
+      "xp": "1600",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第五阶天赋树（300点经验值）",
+      "attrCap": "20",
+      "profCap": "4",
+      "role": "资深冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 10,
+      "xp": "2000",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "attrCap": "20",
+      "profCap": "4",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 11,
+      "xp": "2400",
+      "prof": "-",
+      "attr": "1",
+      "slots": "1",
+      "other": "开启子职业的三条进阶职业途径",
+      "attrCap": "20",
+      "profCap": "4",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 12,
+      "xp": "2800",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第六阶天赋树（500点经验值）",
+      "attrCap": "20",
+      "profCap": "4",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 13,
+      "xp": "3200",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "获取一项特殊专长",
+      "attrCap": "21",
+      "profCap": "5",
+      "role": "大师冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 14,
+      "xp": "3600",
+      "prof": "1",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "attrCap": "21",
+      "profCap": "5",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 15,
+      "xp": "4000",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第七阶天赋树（1000点经验值）",
+      "attrCap": "21",
+      "profCap": "5",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 16,
+      "xp": "5000",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "将你的属性值中最低的一项提升2点",
+      "attrCap": "21",
+      "profCap": "5",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 17,
+      "xp": "10000",
+      "prof": "-",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "attrCap": "22",
+      "profCap": "6",
+      "role": "明星冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 18,
+      "xp": "15000",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "解锁职业的第八阶天赋树（3000点经验值）",
+      "attrCap": "23",
+      "profCap": "6",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 19,
+      "xp": "20000",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "将你的属性值中最低的一项提升2点",
+      "attrCap": "24",
+      "profCap": "6",
+      "role": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "main",
+      "level": 20,
+      "xp": "30000",
+      "prof": "1",
+      "attr": "1",
+      "slots": "2",
+      "other": "解锁职业的第九阶天赋树（5000点经验值）",
+      "attrCap": "25",
+      "profCap": "8",
+      "role": "传奇冒险者",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 1,
+      "xp": "0",
+      "prof": "-",
+      "attr": "-",
+      "slots": "4",
+      "other": "根据职业来获取对应的加成",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 2,
+      "xp": "100",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 3,
+      "xp": "200",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "自动开启职业的第三阶天赋树",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 4,
+      "xp": "300",
+      "prof": "1",
+      "attr": "1",
+      "slots": "-",
+      "other": null,
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 5,
+      "xp": "600",
+      "prof": "-",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 6,
+      "xp": "1000",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "自动开启职业的第四阶天赋树",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 7,
+      "xp": "1600",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 8,
+      "xp": "2400",
+      "prof": "1",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 9,
+      "xp": "3200",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "自动开启职业的第五阶天赋树",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 10,
+      "xp": "4000",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 11,
+      "xp": "4800",
+      "prof": "-",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 12,
+      "xp": "5600",
+      "prof": "1",
+      "attr": "-",
+      "slots": "1",
+      "other": "自动开启职业的第六阶天赋树",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 13,
+      "xp": "6400",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 14,
+      "xp": "7200",
+      "prof": "1",
+      "attr": "1",
+      "slots": "1",
+      "other": "-",
+      "slotsInferred": false
+    },
+    {
+      "track": "sub",
+      "level": 15,
+      "xp": "8000",
+      "prof": "-",
+      "attr": "-",
+      "slots": "1",
+      "other": "自动开启职业的第七阶天赋树",
+      "slotsInferred": false
+    }
+  ],
+  "attachNotes": [
+    {
+      "ord": 1,
+      "text": "玩家角色可以支付经验值来为坐骑、野兽伙伴和活体武器等附属单位来提升等级，升级花费的经验值参照子职业升级规则"
+    },
+    {
+      "ord": 2,
+      "text": "附属单位升级花费的经验值参照子职业升级规则，这些单位的起始等级以其挑战等级为准（即挑战等级2级的野兽伙伴升级参考玩家子职业等级2→3级的经验值花费）"
+    },
+    {
+      "ord": 3,
+      "text": "挑战等级15级或以上的附属单位无法通过这个方式进行升级"
+    },
+    {
+      "ord": 4,
+      "text": "附属单位的升级收益提升通常不如玩家角色直观，不参照玩家角色的等级提升奖励，主要提升属性、生命值和造成的伤害数值"
+    }
+  ]
+}

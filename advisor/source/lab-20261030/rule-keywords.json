@@ -1,0 +1,626 @@
+[
+ {
+  "term": "技能",
+  "category": "基础分类",
+  "categoryInferred": true,
+  "definition": "所有需要主动使用的能力被统称为技能，技能必定拥有施展时间、施展距离、持续时间和疲劳值消耗这四个要素，每名角色的基础职业技能槽位上限数量为10，\n技能数量到达上限后添置新的技能需要先移除一项已有的技能"
+ },
+ {
+  "term": "天赋",
+  "category": "基础分类",
+  "categoryInferred": true,
+  "definition": "没有技能四个要素的被动能力被统称为天赋，每名角色在同一层天赋树中至多拥有5项不同的天赋，同一层的天赋数量到达上限后添置新的天赋需要先移除一项\n已有的天赋"
+ },
+ {
+  "term": "基础攻击",
+  "category": "攻击形式",
+  "categoryInferred": true,
+  "definition": "徒手攻击、近战攻击和远程攻击的统称"
+ },
+ {
+  "term": "徒手攻击",
+  "category": "攻击形式",
+  "categoryInferred": true,
+  "definition": "通过自身肢体，例如手部、腿部或头部进行的攻击形式"
+ },
+ {
+  "term": "近战攻击",
+  "category": "攻击形式",
+  "categoryInferred": true,
+  "definition": "通过持有剑、斧、锤或匕首等近战武器进行的攻击形式"
+ },
+ {
+  "term": "远程攻击",
+  "category": "攻击形式",
+  "categoryInferred": true,
+  "definition": "通过弓箭、弓弩或枪械等物理远程武器进行的攻击形式"
+ },
+ {
+  "term": "施法攻击",
+  "category": "攻击形式",
+  "categoryInferred": true,
+  "definition": "通过施展法术、戏法、神术或部分异能进行的攻击形式"
+ },
+ {
+  "term": "战技",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "纯粹的武艺所带来的战斗技巧"
+ },
+ {
+  "term": "法术",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "通过神奇的魔法衍化的术式"
+ },
+ {
+  "term": "戏法",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "虽不如法术精妙，但同样变化万千"
+ },
+ {
+  "term": "神术",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "来自于神祇等伟大存在的恩赐"
+ },
+ {
+  "term": "异能",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "源自内心、本质与超维时空而诞生的神奇力量"
+ },
+ {
+  "term": "功法",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "修行者所施展的术法"
+ },
+ {
+  "term": "绝学",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "通过心灵力量和感悟所淬炼的精华，是功法更深层次的奥义，因此绝学关键词有时能泛指功法关键词，但并非绝对"
+ },
+ {
+  "term": "科技",
+  "category": "能力来源",
+  "categoryInferred": true,
+  "definition": "思维与逻辑的碰撞而创造的工艺，带有这类关键词的效果不会触发关键属性"
+ },
+ {
+  "term": "火焰",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以火焰而呈现的能力"
+ },
+ {
+  "term": "冰霜",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以冰霜而呈现的能力"
+ },
+ {
+  "term": "雷电",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以雷电而呈现的能力"
+ },
+ {
+  "term": "水源",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以水流而呈现的能力"
+ },
+ {
+  "term": "大地",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以地表而呈现的能力"
+ },
+ {
+  "term": "自然",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理通过汲取或释放自然能量而呈现的能力，通常为植物、岩石或流水的形式，因此自然关键词有时能够泛指大地和水源关键词，但并非绝对"
+ },
+ {
+  "term": "毒性",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以剧毒而呈现的能力"
+ },
+ {
+  "term": "光耀",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以光芒而呈现的能力"
+ },
+ {
+  "term": "暗影",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以黑暗而呈现的能力"
+ },
+ {
+  "term": "奥术",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以奥术而呈现的能力"
+ },
+ {
+  "term": "心灵",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理与心灵和精神力相关，大多数情况下不会呈现出可目击的表现形式"
+ },
+ {
+  "term": "力能",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以力场、魔法能量或冲击波而呈现的能力"
+ },
+ {
+  "term": "侵蚀",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以强酸、邪能或其他侵略性效果而呈现的能力"
+ },
+ {
+  "term": "衰败",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以死亡、腐朽或负面能量效果而呈现的能力"
+ },
+ {
+  "term": "生命流失",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以直观的生命力流失而呈现的能力"
+ },
+ {
+  "term": "月亮",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以月光而呈现的能力"
+ },
+ {
+  "term": "太阳",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以日光而呈现的能力"
+ },
+ {
+  "term": "星空",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理或表现形式以星空而呈现的能力"
+ },
+ {
+  "term": "梦境",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理与梦境和精神力相关，大多数情况下不会呈现出可目击的表现形式"
+ },
+ {
+  "term": "灵能",
+  "category": "元素属性",
+  "categoryInferred": true,
+  "definition": "指施展原理与灵能和精神力相关，大多数情况下不会呈现出可目击的表现形式"
+ },
+ {
+  "term": "AOE",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "对一定范围内生效的攻击手段，默认从施展者进行攻击命中检定改为由目标进行一次难度为15的敏捷豁免，通常情况下闪避成功的角色仍需要承受一半的伤害"
+ },
+ {
+  "term": "光环",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "以自身为中心，持续生效的效果，通常每名角色仅能够同时维持一个光环效应在场"
+ },
+ {
+  "term": "第一行动",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "这个效果必须用本回合的第一个动作来执行，否则无法使用"
+ },
+ {
+  "term": "连锁反应",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "这个效果必须通过某种特定效果触发来执行，否则无法使用"
+ },
+ {
+  "term": "召唤单位",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够召唤其他单位进场的效果，这些单位通常由DM来进行控制"
+ },
+ {
+  "term": "专注",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "必须花费注意力来维持的精密效果，当施展者进入惑控或失能状态、以及执行另一项专注效果时将会中断先前的专注效果"
+ },
+ {
+  "term": "引导",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "必须通过多个动作来维持的效果，当施展者进行移动或执行其他动作时将会立即中断的效果"
+ },
+ {
+  "term": "激活",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "施展者未进入惑控或失能状态时能够在自身回合选择中断的效果，这个过程不需要花费动作"
+ },
+ {
+  "term": "速攻",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "这个效果的优先级高于反应动作和其他行动，在结算速攻效果后再结算其他角色施展的效果"
+ },
+ {
+  "term": "迅捷",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "不会触发借机攻击的效果"
+ },
+ {
+  "term": "位移",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "在具有移动轨迹的情况下进行一段距离上的变化"
+ },
+ {
+  "term": "跃迁",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "在没有移动轨迹的情况下进行一段距离上的变迁"
+ },
+ {
+  "term": "躲闪",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够闪避敌方攻击和针对性效果的手段"
+ },
+ {
+  "term": "增益",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够提供正面增幅效果的能力，包括强化角色的属性值、获得额外行动以及提升伤害等效果"
+ },
+ {
+  "term": "回复",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够回复生命值或疲劳值的效果"
+ },
+ {
+  "term": "护盾",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "生成能够抵挡伤害的效果，护盾产生的数值不同于临时生命值"
+ },
+ {
+  "term": "防御",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够抵挡或减免伤害数值的效果"
+ },
+ {
+  "term": "净化",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "移除角色当前承受的负面状态的效果"
+ },
+ {
+  "term": "韧性",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "增强角色承受伤害和负面状态抗性的效果"
+ },
+ {
+  "term": "毅力",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "当目标的生命值降低至0或以下时，如果这次伤害值不超过对方的最大生命值，那么将目标的生命值降低至1的效果"
+ },
+ {
+  "term": "诅咒",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "对角色持续造成负面影响的效果，通常来源于巫毒、邪神诅咒和黑魔法的影响"
+ },
+ {
+  "term": "穿甲",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "指破坏角色防御等级、护盾或护甲值等能力的效果"
+ },
+ {
+  "term": "暴击",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "指造成的结算前伤害值翻倍的效应"
+ },
+ {
+  "term": "超杀",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "单次造成超过目标最大生命值的伤害值效果"
+ },
+ {
+  "term": "惑控",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够使目标短暂失去角色控制权的效果"
+ },
+ {
+  "term": "隐秘",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "无法直观被察觉到的效果"
+ },
+ {
+  "term": "探知",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够提供情报和信息的效果"
+ },
+ {
+  "term": "交涉",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "与语言或交流相关的相关"
+ },
+ {
+  "term": "幻象",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "产生并非真实存在的效果"
+ },
+ {
+  "term": "阻碍",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "对角色的行动具有物理意义上影响的效果"
+ },
+ {
+  "term": "空中",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "使目标脱离地面的效果"
+ },
+ {
+  "term": "变形",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "使目标的性质发生变化"
+ },
+ {
+  "term": "光源",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "指能够在黑暗环境下提供照明的能力"
+ },
+ {
+  "term": "结界",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "通过魔法结界的形式被施展，通过需要通过媒介或触发来生效的能力"
+ },
+ {
+  "term": "媒介",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "需要有一个物件作为其生效的来源"
+ },
+ {
+  "term": "法术媒介",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "需要通过魔棒、法杖等魔法道具作为媒介，针对一个物件作为其生效的来源"
+ },
+ {
+  "term": "创建地形",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够改变地图环境的能力"
+ },
+ {
+  "term": "实体飞行道具",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "能够在物理意义上捕捉到、具有弹道的飞行物，例如箭矢和弹药等"
+ },
+ {
+  "term": "虚化飞行道具",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "无法或难以在物理意义上捕捉到的飞行物，例如大部分弹道法术和激光等"
+ },
+ {
+  "term": "效果递增",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "指针对同一目标在剧情或战斗环节中重复进行检定时难度的上升"
+ },
+ {
+  "term": "效果递减",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "指针对同一目标在剧情或战斗环节中重复进行检定时难度的下降"
+ },
+ {
+  "term": "额外行动",
+  "category": "通用机制",
+  "categoryInferred": true,
+  "definition": "获取额外动作的能力"
+ },
+ {
+  "term": "机制",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "代表这个效果带有一套独有的特殊内容，通常会导致游玩方式的改变"
+ },
+ {
+  "term": "奇迹",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "超乎想象的效果，甚至足以突破游戏性的限制"
+ },
+ {
+  "term": "命运",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "对剧情与角色的走向将会产生影响的效果"
+ },
+ {
+  "term": "恩惠",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指通过外界力量、通常特指伟大存在的赐福所获得的能力"
+ },
+ {
+  "term": "创建骰池",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "通过拿取任意数量的骰子来对自身角色进行构筑的效果"
+ },
+ {
+  "term": "构筑",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指需要进行特殊规划来改变游玩性质的内容"
+ },
+ {
+  "term": "随机性",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "代表这个能力具有极大的不确定性，甚至可能产生负面效果"
+ },
+ {
+  "term": "互动",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "需要多名角色配合生效的效果"
+ },
+ {
+  "term": "补给",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "能够提供物质需求的效果"
+ },
+ {
+  "term": "参悟",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "一次自我的升华"
+ },
+ {
+  "term": "自律",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "拥有同名关键词的相关无法同时生效，关键词中的X通常为自律效果的持续轮次"
+ },
+ {
+  "term": "精锐",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "优先级高于对应位阶的速攻、反应动作和其他回合外能力，但低于同位阶或更高位阶相应能力的优先级"
+ },
+ {
+  "term": "终结技",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "强大的连击技能，攻击目标必须花费两个需要反应动作的能力，将其中一个与之抵消才能使另一个生效"
+ },
+ {
+  "term": "处决技",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "可怕的斩杀技能，如果这次攻击的理论最大值伤害能够击杀目标，那么忽略对方的反制手段，例如反应动作、毅力以及其他能力直接消灭目标"
+ },
+ {
+  "term": "节奏",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "通过施展音乐魔法触发对应次数后获取额外的效果"
+ },
+ {
+  "term": "技艺",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "与生活向或功能性效果息息相关的能力"
+ },
+ {
+  "term": "无加成",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "这个效果不会受到关键属性的影响，也不会附加其他增益效果"
+ },
+ {
+  "term": "唯一性",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指同一名角色仅能够维持一个效果，当其执行另一项这个效果时将会中断先前的唯一性效果；此外多名角色的同名效果对单一目标仅会生效一次，取其中当前\n角色等级最高的那个效果生效"
+ },
+ {
+  "term": "上限提升",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指获得升级规则之外的生命值、疲劳值或属性值等数据加成"
+ },
+ {
+  "term": "充能",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指拥有使用次数的特殊效果，每次使用会消耗对应充能，当充能全部消耗后将会失去效果"
+ },
+ {
+  "term": "备战",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指在战斗环节开始前需要决定是否发动或将会触发的效果"
+ },
+ {
+  "term": "非战斗环节",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "无法在战斗环节中使用的效果"
+ },
+ {
+  "term": "命中",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "指提升攻击命中几率的效果"
+ },
+ {
+  "term": "每场战斗限一次",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "在每一场战斗环节中仅能使用一次的效果"
+ },
+ {
+  "term": "每日限一次",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "在每24个小时内仅能使用一次的效果"
+ },
+ {
+  "term": "短休",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "必须进行一次至少长达两小时的休整后才能再次使用的效果"
+ },
+ {
+  "term": "长休",
+  "category": "延伸机制",
+  "categoryInferred": true,
+  "definition": "必须进行一次至少长达八小时的深度休息后才能再次使用的效果"
+ }
+]
