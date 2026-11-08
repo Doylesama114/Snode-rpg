@@ -919,6 +919,12 @@ if (advP0.stdout) console.log(advP0.stdout.trim().split(String.fromCharCode(10))
 if (advP0.stderr) console.error(advP0.stderr.trim().slice(-800));
 if (advP0.status !== 0) totalErrors++;
 
+console.log('\n=== 规则语料命中率基线（40 题） ===');
+const rulesBase = spawnSync(process.execPath, [join(BASE, 'scripts', 'advisor-rules-baseline.mjs')], { encoding: 'utf8', timeout: 120000 });
+if (rulesBase.stdout) console.log(rulesBase.stdout.trim());
+if (rulesBase.stderr) console.error(rulesBase.stderr.trim().slice(-600));
+if (rulesBase.status !== 0) totalErrors++;
+
 console.log('\n=== 帮助页手机搜索与跨页跳转 ===');
 const helpSearch = spawnSync(process.execPath, [join(BASE, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (helpSearch.stdout) console.log(helpSearch.stdout.trim());

@@ -141,7 +141,7 @@ def fact_chunks():
     p = os.path.join(FACTS, 'states.json')
     if os.path.exists(p):
         for s in json.load(open(p, encoding='utf-8')):
-            add('s7', '异常状态', s.get('name', ''), '[%s] %s' % (s.get('type', ''), s.get('effect', '')))
+            add('s7', '异常状态规则', s.get('name', ''), '[%s] %s' % (s.get('type', ''), s.get('effect', '')))
     p = os.path.join(FACTS, 'interludes.json')
     if os.path.exists(p):
         for it in json.load(open(p, encoding='utf-8')):
@@ -150,7 +150,7 @@ def fact_chunks():
     p = os.path.join(FACTS, 'marks.json')
     if os.path.exists(p):
         for m in json.load(open(p, encoding='utf-8')):
-            add('s6', '色彩标识', m.get('color', ''), '%s（关键词：%s）' % (m.get('meaning', ''), '、'.join(m.get('keywords', []))))
+            add('s6', '技能点和色彩标识规则', m.get('color', ''), '%s（关键词：%s）' % (m.get('meaning', ''), '、'.join(m.get('keywords', []))))
     p = os.path.join(FACTS, 'levels.json')
     if os.path.exists(p):
         for lv in (json.load(open(p, encoding='utf-8')).get('levels') or []):
@@ -167,7 +167,7 @@ def fact_chunks():
     p = os.path.join(FACTS, 'renown.json')
     if os.path.exists(p):
         for rn in (json.load(open(p, encoding='utf-8')).get('levels') or []):
-            add('s9', '名望', rn.get('title', ''), '范围 %s。%s 正面：%s' % (rn.get('range', ''), rn.get('intro', ''), rn.get('positive', '')))
+            add('s9', '名望等级和声望规则', rn.get('title', ''), '范围 %s。%s 正面：%s' % (rn.get('range', ''), rn.get('intro', ''), rn.get('positive', '')))
     return out
 
 
