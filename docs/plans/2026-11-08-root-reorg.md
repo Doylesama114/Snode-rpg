@@ -286,3 +286,22 @@ debug-journal.md            10 KB
 `文件整理规范.md` 已改为：根目录只放「入口 + 发布链路 + 门禁薄壳 + 强制规范」，真值进 `源文件/`、校验脚本进 `verify/`；新增 §1.1 真值管理（manifest / source_path / 更新流程）。
 
 验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4 · Tests 913P 0F**。
+
+## 阶段 5 执行记录（2026-11-11）
+
+8 个「更新内容」目录迁入 `源文件/更新内容/YYYYMMDD/`：
+
+```
+2026.10.15更新内容 → 20261015      10.22内容更新 → 20261022
+10.23–10.27更新内容 → 20261023–27  11.04更新内容 → 20261104
+```
+
+| 改动 | 说明 |
+|---|---|
+| `source_paths.py` | 支持 `10.24更新内容/x.docx` 与 `2026.10.15更新内容/x.docx` 两种写法 |
+| `sync_help_from_xlsx.py` | `ROOT / '10.25更新内容' / ...` → `source_path(...)` |
+| `verify_skill_text_format.py` | 额外 docx（奇械师·炽擎）改走 `source_path` |
+| `scripts/build_source_manifest.py` | 新增，可重复生成清单（含 更新内容） |
+| `源文件/manifest.json` | 71 个文件 / 57.2 MB（职业 20、规则 18、角色档案 9、素材 6、更新内容 18） |
+
+验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4 · Tests 913P 0F**；真值清单 OK。

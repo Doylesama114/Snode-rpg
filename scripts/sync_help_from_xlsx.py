@@ -105,7 +105,7 @@ def main() -> int:
     ap.add_argument('--apply', action='store_true')
     ap.add_argument('--verbose', action='store_true')
     args = ap.parse_args()
-    rows = read_sheet(ROOT / '10.25更新内容' / '冒险者基础规则.xlsx', args.sheet)
+    rows = read_sheet(source_path('10.25更新内容/冒险者基础规则.xlsx'), args.sheet)
     sid, nxt = CHAPTERS[args.sheet]
     html = HELP.read_text(encoding='utf-8')
     start, end = section_bounds(html, sid, nxt)

@@ -66,7 +66,7 @@ def main() -> int:
             _f = ((_s.get("source") or {}).get("file") or "").strip()
             if not _f:
                 continue
-            _p = ROOT / _f
+            _p = source_path(_f)
             if _p.exists() and _p != docx and _p not in extra:
                 extra[_p] = build_docx_index(extract_paragraphs(_p), names)
         used: set[int] = set()
@@ -74,7 +74,7 @@ def main() -> int:
 
         for skill in skills:
             _f = ((skill.get("source") or {}).get("file") or "").strip()
-            _p = (ROOT / _f) if _f else None
+            _p = source_path(_f) if _f else None
             if _p in extra:
                 block = pick_block(extra[_p], skill, used_extra[_p])
             else:

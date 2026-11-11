@@ -1,8 +1,8 @@
 {
-  "generated": "2026-11-11T20:49:11",
+  "generated": "2026-11-11T23:31:17",
   "root": "源文件",
-  "count": 53,
-  "totalBytes": 57560517,
+  "count": 71,
+  "totalBytes": 59943436,
   "items": [
     {
       "path": "职业/《基础职业进阶途径》.docx",
@@ -10,7 +10,7 @@
       "sha256": "cd3af7c492e2e049be3fca47fa18dce937a9fb8f298ddeafb3839eec35e988aa",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-召唤师.docx",
@@ -18,7 +18,7 @@
       "sha256": "c0b6b73267d4f96be05e9f8bd50c78d140ae816f4ddd50bfc67c1b84521113eb",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-吟游诗人.docx",
@@ -26,7 +26,7 @@
       "sha256": "33be04af1d6e1025c83b0b0fe4ec521e3e7eabe8ac57e7905403ca9fdc0c0228",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-圣骑士.docx",
@@ -34,7 +34,7 @@
       "sha256": "2215acc5219d309c51e7e34b3c0a78ba6b9d87afeea37ce450f1d5ae16b78412",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-奇械师.docx",
@@ -42,7 +42,7 @@
       "sha256": "774139c18b1ad30d7a82300f73a33164db04b9b604b41cdbd455b217bbda4334",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-守望者.docx",
@@ -50,7 +50,7 @@
       "sha256": "4131222fcd811878aedfe33e5e71361c1cdbb416ec813f18e3a2779a6811a8ab",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-德鲁伊.docx",
@@ -58,7 +58,7 @@
       "sha256": "30531d2534844d448f09b726e9e3e6c1156f3f696c8ccc16f572d88191b55318",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-战士.docx",
@@ -66,7 +66,7 @@
       "sha256": "dca1771eaa485884297a94e389b97927b58dbf063896a224f554c0f8d166a0e8",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-战舞者.docx",
@@ -74,7 +74,7 @@
       "sha256": "09fbd372ca81640ac8e5a6b264e484eb91b095abe17a6fcb8f9fb7d7eed3e3af",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-术士.docx",
@@ -82,7 +82,7 @@
       "sha256": "36fda2df5dc0d8a7759a1a65f19f945b39b1dfe72bc6f897f89611a8469ea727",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-武僧.docx",
@@ -90,7 +90,7 @@
       "sha256": "3c6135da95f8270f3871d2949767b1e02ff6ab5d77c710a85fcd17cca1a98ed7",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-法师.docx",
@@ -98,7 +98,7 @@
       "sha256": "915f69fc669eb4562ae3c3578d9740fe65d25c05c6613980152d396bf18061da",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-游荡者.docx",
@@ -106,7 +106,7 @@
       "sha256": "8f9aebb7cb7d44ce5168af2d07a64f29cc3685bc6bb8ad903f06b9113abf65b6",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-牧师.docx",
@@ -114,7 +114,7 @@
       "sha256": "c28c87f694b46ed4a3f2dc477ceaf70d6b93833f555feba16d3ddafa91c6a190",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-猎人.docx",
@@ -122,7 +122,7 @@
       "sha256": "1e40550035670a525111a7dad2d0b9bcec9df89ae916fa8a6a2c05c46ee93fb8",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-萨满祭司.docx",
@@ -130,7 +130,7 @@
       "sha256": "bd9230647d4141bc98db5bcb50d6cdffc7ee2dec1f5520f3c747ef49d4600345",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-蛮斗士.docx",
@@ -138,7 +138,7 @@
       "sha256": "962c3f4b9987f65f3a547c4b38fa66c6e73a860c2e009cb053569ac9593cb046",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-谋士.docx",
@@ -146,7 +146,7 @@
       "sha256": "358362b5c6da7cc4c5c1d47ce254d7aeea4169d81091f5cd67c3b66e37556b27",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/基础职业-魔契师.docx",
@@ -154,7 +154,7 @@
       "sha256": "3590918a6f3d00b36322bc1bcc74b76ff92c2fca0d62dd8cfa538fdb58276b4d",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "职业/已公布进阶职业.docx",
@@ -162,7 +162,7 @@
       "sha256": "d8ce601fbbf7655f10d918ff299e24de1f6344116596fcb32f68e28fddf98ebe",
       "category": "职业",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/ai总结.docx",
@@ -170,7 +170,7 @@
       "sha256": "e33f767864b7d6ec25d25ee82c8001811a0a127345fc2db32d363e32277161b8",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/个性与背景创建规则.xlsx",
@@ -178,7 +178,7 @@
       "sha256": "92cb1653eabd17070b1f400864b5d64201aa1d87e9d0b47b667e7454b771b942",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/冒险者基础规则.xlsx",
@@ -186,7 +186,7 @@
       "sha256": "0e79bd5714780abe9007341a27a2b4becb0b84741b8db64df81043fcad2538bb",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/冒险者角色创建流程.xlsx",
@@ -194,7 +194,7 @@
       "sha256": "03a20ac006d43d536eee3190775f01e95a201d32d9d8e0d23acd2eb68ac1d28b",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/斯诺德世界观架构.docx",
@@ -202,7 +202,7 @@
       "sha256": "c1c63ca46880d122d1522a9eb4125f99181e4a202eb3e6814fe87eceaf1f2927",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/斯诺德对决卡牌列表（已开出）.xlsx",
@@ -210,7 +210,7 @@
       "sha256": "6e0d77be5c694b16046a38e035df9bf648d866b2219ef2abf503c03beb76cb6a",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/斯诺德核心文档.rar",
@@ -218,7 +218,7 @@
       "sha256": "e02430104bba9ff06875eaaad6e5eb931878f89153081200f420ea344e909370",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/斯诺德物资大全.xlsx",
@@ -226,7 +226,7 @@
       "sha256": "42ee0440844cab7b60a7b5b93e2c50171252773bfdf598b8d02cf495eec14eaf",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/斯诺德稀有装备列表.xlsx",
@@ -234,7 +234,7 @@
       "sha256": "720824e71292f6f86645acde1c35cf0e07da81a8744798c354e5e66c4b3576ca",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/特殊专长.docx",
@@ -242,7 +242,7 @@
       "sha256": "b175cc456c9032f9e2ff6b2afa8bb750f3c8c9412ea43e7185aea57e81f94abf",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-公正与荣耀之神.docx",
@@ -250,7 +250,7 @@
       "sha256": "9b15bf693f2542639544efcb6115942bb53e26e8c2cacc1a1db38fca218a5465",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-无尽饥饿与吞噬之神.docx",
@@ -258,7 +258,7 @@
       "sha256": "bdff037745d395c2a49c1e57c118f9c50626946019058a579a2012592e973f2e",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-爱、激情与欢愉之神.docx",
@@ -266,7 +266,7 @@
       "sha256": "6e7c53b8d200b9acee6c0c3e6d4548642ea631b6ffb71a4b86017acdb8a83808",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-生命与丰收之神.docx",
@@ -274,7 +274,7 @@
       "sha256": "7b9d05bd351f582f44b41c86221408a9f058ec3636f1410c405c718142d48377",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-知识与智慧之神.docx",
@@ -282,7 +282,7 @@
       "sha256": "5bec214bf8faffe25221128666e14cb38ed3547f99a8971061e863b0cbf9e7a3",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/神圣领域-艺术与创造之神.docx",
@@ -290,7 +290,7 @@
       "sha256": "29eb650e5bd6f238fc89e40afba7a44254b77b33965e9494a52c4be1d45e63f9",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/通用天赋树.docx",
@@ -298,7 +298,7 @@
       "sha256": "21eb99e9fac5570fbd9f31f698c5fffc057a65812b0169a8f45d122aa6d8cadf",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "规则/通用天赋树.md",
@@ -306,7 +306,7 @@
       "sha256": "a7b5176ac68cf5bc3ba5d1be488ed692cdc670bfa9e7df994694131a3e317084",
       "category": "规则",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/冒险者角色档案_测试填充.xlsx",
@@ -314,7 +314,7 @@
       "sha256": "94eda2182a754978f96f55a921678107df320e7421dec52a621c1f52d9a3f1f4",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/冒险者角色档案_空白_含图纸区.xlsx",
@@ -322,7 +322,7 @@
       "sha256": "372efe394bd64cdc9a3a10aa45f7fbc94dc7a9bce4771d443adf391226632411",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/冒险者角色档案_空白_含图纸区_v2.xlsx",
@@ -330,7 +330,7 @@
       "sha256": "d76a37d910e68ca898a850aada3e33d5975d51bbdd8d3772efd6b7239dc604b9",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/冒险者角色档案_空白_含图纸区_示例填写.xlsx",
@@ -338,7 +338,7 @@
       "sha256": "8a534a83b2f37977e30d169b123499c4d7b1b89ef43bef7cc21bdd6c60cc8ac6",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/冒险者角色档案_装备测试.xlsx",
@@ -346,7 +346,7 @@
       "sha256": "45a5781d3ecdfad5cf990921e1ae25028624f4b6d19fa5303d1bbf5e8ca9d6c8",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/基尼泰·梅.xlsx",
@@ -354,7 +354,7 @@
       "sha256": "148fdc22f97b84e070e611d92a8d988257df4e27657b7ef5687b78538c269856",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/狐人术士 拉奇.xlsx",
@@ -362,7 +362,7 @@
       "sha256": "2c9c6e733a7f81cc0c4a2199acb08841984c3efadddd423a6407e3e11e83211c",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/甘九·顽石.xlsx",
@@ -370,7 +370,7 @@
       "sha256": "e347b19cd245d1665ccfac18a6cf9729590e07c225243b39eec33db6187f20c7",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "角色档案/芙兰_角色档案.xlsx",
@@ -378,7 +378,7 @@
       "sha256": "db254484b1cf2d77749171a6057f9c2ffa2ad234d5a26287fd4a1f04caf68529",
       "category": "角色档案",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/card_new.png",
@@ -386,7 +386,7 @@
       "sha256": "51d26a9997fa9eef5c59aa03f4496e070d0619fb0c30eedd08535dc92ed46e9c",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/兼职条件.png",
@@ -394,7 +394,7 @@
       "sha256": "a8f1133b2693e915dfc7a337140a3c7af368485c24fc8a57f258184cda8abbea",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/兼职需求(谋士版本).png",
@@ -402,7 +402,7 @@
       "sha256": "1b867e825db30c63b2860b6698badcb7c99ed187940c11a8866d647892c90a5e",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/封面.png",
@@ -410,7 +410,7 @@
       "sha256": "0054a5e6f343c5abca1775ce812e4f3fa2cf2b6be5d68613eec70b9a82abad10",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/额外规则.png",
@@ -418,7 +418,7 @@
       "sha256": "3c7ea32637db871055268d072c24047b5fc43d44ee30ed63a838f98bdf317f59",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
     },
     {
       "path": "素材/龙裔种族详情.png",
@@ -426,7 +426,151 @@
       "sha256": "7fe8daeb6f45bc73fb67bdb2ec7507f0f7027751e6496413a6d5a8d8a64a720b",
       "category": "素材",
       "imported_at": "2026-11-11",
-      "source": "仓库根目录（阶段 4 迁移）"
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261015/冒险者基础规则.xlsx",
+      "bytes": 89677,
+      "sha256": "4399e59e8ffcee962f300454c9a653f9589b27a6817c18d4020cca5ac6806225",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261015/基础职业-守望者.docx",
+      "bytes": 94790,
+      "sha256": "4131222fcd811878aedfe33e5e71361c1cdbb416ec813f18e3a2779a6811a8ab",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261015/基础职业-武僧.docx",
+      "bytes": 205316,
+      "sha256": "3c6135da95f8270f3871d2949767b1e02ff6ab5d77c710a85fcd17cca1a98ed7",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261015/斯诺德稀有装备列表.xlsx",
+      "bytes": 22509,
+      "sha256": "720824e71292f6f86645acde1c35cf0e07da81a8744798c354e5e66c4b3576ca",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261015/特殊专长.docx",
+      "bytes": 59464,
+      "sha256": "b175cc456c9032f9e2ff6b2afa8bb750f3c8c9412ea43e7185aea57e81f94abf",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261022/个性与背景创建规则.xlsx",
+      "bytes": 160981,
+      "sha256": "92cb1653eabd17070b1f400864b5d64201aa1d87e9d0b47b667e7454b771b942",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261023/基础职业-召唤师.docx",
+      "bytes": 142748,
+      "sha256": "c0b6b73267d4f96be05e9f8bd50c78d140ae816f4ddd50bfc67c1b84521113eb",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261023/基础职业-萨满祭司.docx",
+      "bytes": 153506,
+      "sha256": "bd9230647d4141bc98db5bcb50d6cdffc7ee2dec1f5520f3c747ef49d4600345",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261023/基础职业-谋士.docx",
+      "bytes": 224451,
+      "sha256": "358362b5c6da7cc4c5c1d47ce254d7aeea4169d81091f5cd67c3b66e37556b27",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261023/通用天赋树.docx",
+      "bytes": 231849,
+      "sha256": "3aea46ac114ea590e6047e0474c38530f5e77c42a387a87dea686d57cd1be8b6",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261024/基础职业-奇械师·炽擎风格(1).docx",
+      "bytes": 39924,
+      "sha256": "7c960eb5bf70419fd5ec775bc4034923ee11bd50052eaeaff4f306b3ef92747a",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261024/基础职业-德鲁伊.docx",
+      "bytes": 166685,
+      "sha256": "30531d2534844d448f09b726e9e3e6c1156f3f696c8ccc16f572d88191b55318",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261025/冒险者基础规则.xlsx",
+      "bytes": 91872,
+      "sha256": "0e79bd5714780abe9007341a27a2b4becb0b84741b8db64df81043fcad2538bb",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261026/基础职业-圣骑士.docx",
+      "bytes": 119804,
+      "sha256": "2215acc5219d309c51e7e34b3c0a78ba6b9d87afeea37ce450f1d5ae16b78412",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261027/神圣领域-季风之神.docx",
+      "bytes": 42061,
+      "sha256": "0cec7ba1cd30426c358a4e0f07afc0f0b7ac8840b68798e9aed9510709726974",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261104/基础职业-战士.docx",
+      "bytes": 170868,
+      "sha256": "dca1771eaa485884297a94e389b97927b58dbf063896a224f554c0f8d166a0e8",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261104/基础职业-蛮斗士.docx",
+      "bytes": 133448,
+      "sha256": "962c3f4b9987f65f3a547c4b38fa66c6e73a860c2e009cb053569ac9593cb046",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
+    },
+    {
+      "path": "更新内容/20261104/通用天赋树.docx",
+      "bytes": 232966,
+      "sha256": "21eb99e9fac5570fbd9f31f698c5fffc057a65812b0169a8f45d122aa6d8cadf",
+      "category": "更新内容",
+      "imported_at": "2026-11-11",
+      "source": "仓库迁移"
     }
   ]
 }

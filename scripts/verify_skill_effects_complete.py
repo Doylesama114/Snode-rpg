@@ -132,7 +132,7 @@ def main():
         groups={}
         for _s in pool:
             _f=((_s.get('source') or {}).get('file') or '').strip()
-            _p=ROOT/_f if _f else path
+            _p=source_path(_f) if _f else path
             if not _p.exists():_p=path
             groups.setdefault(_p,[]).append(_s)
         rules={}

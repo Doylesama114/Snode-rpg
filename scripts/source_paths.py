@@ -8,6 +8,7 @@
     from source_paths import source_path
     DOCX = source_path("基础职业-战士.docx")
 """
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,8 +22,20 @@ SOURCE_DIRS = [
 ]
 
 
+UPDATE_RE = re.compile(r'^(?:(\d{4})\.)?(\d{1,2})\.(\d{1,2})(?:更新内容|内容更新)[/\\](.+)$')
+
+
 def source_path(name):
     """返回真值文件路径：优先 源文件/ 分类目录，回退仓库根目录。"""
+    m = UPDATE_RE.match(str(name))
+    if m:
+        y, mo, d, rest = m.groups()
+        if not y:
+            y = '2026'
+        key = '%s%s%s' % (y, str(int(mo)).zfill(2), str(int(d)).zfill(2))
+        p = ROOT / '源文件' / '更新内容' / key / rest
+        if p.exists():
+            return p
     for d in SOURCE_DIRS:
         p = d / name
         if p.exists():
