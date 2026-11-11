@@ -27,7 +27,7 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-PNG = ROOT / '龙裔种族详情.png'
+PNG = source_path('龙裔种族详情.png')
 OUT = Path(__file__).resolve().parent / '_dragonborn_gap_report.json'
 RACES_JS = ROOT / '职业页' / '数据' / 'races_data.js'
 RACES_JSON = ROOT / '职业页' / '数据' / 'races.json'

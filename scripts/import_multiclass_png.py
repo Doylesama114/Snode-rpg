@@ -22,7 +22,7 @@ from pathlib import Path
 from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_PNG = ROOT / '兼职条件.png'
+DEFAULT_PNG = source_path('兼职条件.png')
 XLSX = source_path('冒险者基础规则.xlsx')
 SHEET = '兼职规则'
 

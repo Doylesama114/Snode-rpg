@@ -5,6 +5,7 @@ Output: 职业页/数据/class_features.json
 Only the "初始专长" section (职业专长) is extracted, as requested.
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -240,7 +241,7 @@ def prefix_for(class_name):
 def main():
     out = {"version": 1, "classes": {}}
     for cls in CLASSES:
-        docx = ROOT / f"基础职业-{cls}.docx"
+        docx = source_path(f"基础职业-{cls}.docx")
         if not docx.exists():
             print("MISSING", docx)
             continue

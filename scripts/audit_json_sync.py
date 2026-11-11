@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Audit 职业页/数据 JSON sync status."""
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 from pathlib import Path
@@ -56,7 +57,7 @@ def audit(path: Path) -> dict:
 def main() -> None:
     print("=== docx-synced modules ===")
     for name in SYNCED:
-        p = ROOT / f"{name}.json"
+        p = source_path(f"{name}.json")
         if not p.exists():
             print(f"  {name}: MISSING")
             continue

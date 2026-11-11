@@ -26,7 +26,7 @@ CLASSES = (
 def docx_for(cls: str) -> Path:
     if cls == "通用天赋树":
         return source_path("通用天赋树.docx")
-    return ROOT / f"基础职业-{cls}.docx"
+    return source_path(f"基础职业-{cls}.docx")
 
 
 def contains_entry(haystack: list[str], needle: str) -> bool:

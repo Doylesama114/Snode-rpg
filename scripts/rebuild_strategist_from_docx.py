@@ -6,6 +6,7 @@
 （起始特性 + 权谋/军团/先见/鸩毒/混乱/博物 六风格）。
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import html
 import json
@@ -58,7 +59,7 @@ VIEW_ID = "view-strategist"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
 # 允许用环境变量指向别处的同名文档（源文档被占用时不必覆盖根目录）
-DOCX = Path(os.environ.get("SNODE_DOCX") or (ROOT / f"基础职业-{CLASS}.docx"))
+DOCX = Path(os.environ.get("SNODE_DOCX") or (source_path(f"基础职业-{CLASS}.docx")))
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 TEMPLATE = ROOT / "职业页" / "萨满祭司.html"
 

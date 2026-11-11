@@ -16,7 +16,13 @@ const OUT_CHARGEN = path.join(ROOT, 'advisor', 'chargen');
 const OUT_ITEMS = path.join(ROOT, 'advisor', 'items');
 
 const HELP_HTML = path.join(ROOT, '斯诺德跑团', 'help.html');
-const MAGE_DOCX = path.join(ROOT, '基础职业-法师.docx');
+const MAGE_DOCX = (() => {
+  const cands = [
+    path.join(ROOT, '源文件', '职业', '基础职业-法师.docx'),
+    path.join(ROOT, '基础职业-法师.docx'),
+  ];
+  return cands.find((p) => fs.existsSync(p)) || cands[1];
+})();
 const PANEL_DATA = path.join(ROOT, '斯诺德跑团', 'panel_data.js');
 const MAGE_JSON = path.join(ROOT, '职业页', '数据', '法师.json');
 const ITEMS_DATA = path.join(ROOT, '职业页', '数据', 'items_data.js');

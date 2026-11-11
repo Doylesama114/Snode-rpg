@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Independent source fixtures, complete skill bodies and per-card rendering gate."""
 from __future__ import annotations
+from source_paths import source_path
 import html,json,re,sys,unicodedata,zipfile
 from pathlib import Path
 from html.parser import HTMLParser
@@ -124,8 +125,8 @@ def main():
             if s['id'] not in visible[cls] and not s.get('hidden'):errors.append(f'{cls}/{s["name"]}: card missing')
 
     source_checked=0
-    sources=[(cls,ROOT/f"\u57fa\u7840\u804c\u4e1a-{cls}.docx",pool) for cls,pool in docs.items()]
-    sources += [(dn,ROOT/dom["source_file"],dom["skills"]) for dn,dom in domain["domains"].items()]
+    sources=[(cls,source_path(f"\u57fa\u7840\u804c\u4e1a-{cls}.docx"),pool) for cls,pool in docs.items()]
+    sources += [(dn,source_path(dom["source_file"]),dom["skills"]) for dn,dom in domain["domains"].items()]
     for cls,path,pool in sources:
         # 按技能自身的 source.file 分组解析（窄口径更新的技能可能来自另一个 docx）
         groups={}
@@ -165,7 +166,7 @@ def main():
         label=f'{dn or cls}/{nm}'
         if len(hits)!=1:errors.append(label+': definition missing/ambiguous');continue
         s=hits[0];sid=s['id'];checked+=1
-        source=word_lines(ROOT/case['source_file'])
+        source=word_lines(source_path(case['source_file']))
         # Validate frozen independent expected clauses against the current source too.
         source_text=norm(''.join(source[case['source_start']:case['source_end']]))
         targets={'json':body(s),'html':visible.get('牧师' if dn else cls,{}).get(sid,'')}

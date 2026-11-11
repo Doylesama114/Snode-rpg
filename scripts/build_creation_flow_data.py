@@ -1,3 +1,4 @@
+from source_paths import source_path
 # -*- coding: utf-8 -*-
 """Extract 冒险者角色创建流程.xlsx into a web-friendly JS data file.
 
@@ -10,7 +11,7 @@ import os
 import openpyxl
 from openpyxl.utils import range_boundaries
 
-SRC = '冒险者角色创建流程.xlsx'
+SRC = str(source_path('冒险者角色创建流程.xlsx'))
 OUT_DIR = os.path.join('斯诺德跑团', '资料库')
 OUT = os.path.join(OUT_DIR, 'creation_flow_data.js')
 GROUP_STARTS = [2, 7, 12, 17, 22, 27]  # B, G, L, Q, V, AA

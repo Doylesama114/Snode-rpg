@@ -5,7 +5,11 @@ const require = createRequire(import.meta.url);
 const XLSX = require('xlsx');
 /** 基本规则同步校验：xlsx ↔ help.html #s0 ↔ advisor-tips.js rules；另 11 张表建立基线；无旧文案残留 */
 const ROOT = process.cwd();
-const XLSX_PATH = path.join(ROOT, '冒险者基础规则.xlsx');
+const XLSX_CANDIDATES = [
+  path.join(ROOT, '源文件', '规则', '冒险者基础规则.xlsx'),
+  path.join(ROOT, '冒险者基础规则.xlsx'),
+];
+const XLSX_PATH = XLSX_CANDIDATES.find((p) => fs.existsSync(p)) || XLSX_CANDIDATES[1];
 const HELP = path.join(ROOT, '斯诺德跑团', 'help.html');
 const TIPS = path.join(ROOT, '斯诺德跑团', 'advisor-tips.js');
 let pass = 0, fail = 0;

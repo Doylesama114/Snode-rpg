@@ -13,6 +13,7 @@
   python scripts/repair_skill_desc_entries.py --write
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -52,7 +53,7 @@ def do_repair(cls: str, sid: str, name: str, write: bool) -> list[str]:
     data = json.loads(data_path.read_text(encoding='utf-8'))
     skills = data['skills']
     names = {s['name'] for s in skills}
-    paras = C.extract_paragraphs(ROOT / f'基础职业-{cls}.docx')
+    paras = C.extract_paragraphs(source_path(f'基础职业-{cls}.docx'))
     index = C.build_docx_index(paras, names)
     used: set[int] = set()
     target = None
@@ -124,7 +125,7 @@ def restore_missing_first_lines(cls: str, write: bool) -> list[str]:
     data = json.loads(data_path.read_text(encoding='utf-8'))
     skills = data['skills']
     names = {s['name'] for s in skills}
-    paras = C.extract_paragraphs(ROOT / f'基础职业-{cls}.docx')
+    paras = C.extract_paragraphs(source_path(f'基础职业-{cls}.docx'))
     index = C.build_docx_index(paras, names)
     used: set[int] = set()
     html = html_path.read_text(encoding='utf-8')

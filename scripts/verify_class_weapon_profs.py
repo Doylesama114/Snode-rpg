@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # 1) docx 原文
 docx_weapons = {}
-for f in sorted((ROOT).glob("基础职业-*.docx")):
+docx_files = sorted((ROOT / "源文件" / "职业").glob("基础职业-*.docx")) or sorted((ROOT).glob("基础职业-*.docx"))
+for f in docx_files:
     name = f.stem.split("-", 1)[1]
     d = docx.Document(str(f))
     for p in d.paragraphs:

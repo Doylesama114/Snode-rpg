@@ -11,6 +11,7 @@
 - 契约生物切换区由 apply_summoner_contracts.py 注入（M3）。
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import html
 import json
@@ -47,7 +48,7 @@ PREFIX = "sm"
 VIEW_ID = "view-summoner"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
-DOCX = ROOT / f"基础职业-{CLASS}.docx"
+DOCX = source_path(f"基础职业-{CLASS}.docx")
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 TEMPLATE = ROOT / "职业页" / "萨满祭司.html"
 REF_MAGE = ROOT / "职业页" / "数据" / "法师.json"

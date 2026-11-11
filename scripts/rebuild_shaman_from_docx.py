@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild 萨满祭司 JSON + HTML + skill_effects from docx (HTML was corrupted)."""
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -28,7 +29,7 @@ from class_sync_core import (
 CLASS = "萨满祭司"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
-DOCX = ROOT / f"基础职业-{CLASS}.docx"
+DOCX = source_path(f"基础职业-{CLASS}.docx")
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 
 STYLE_COLORS = {

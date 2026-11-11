@@ -7,6 +7,7 @@
 这里把研发材料行放回 description（研发时间前），fields.描述 置空。
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import shutil
@@ -50,9 +51,9 @@ def fix_skill(sk: dict) -> bool:
 
 
 def rebuild_class(cls: str) -> list[str]:
-    data_path = ROOT / f"职业页/数据/{cls}.json"
-    html_path = ROOT / f"职业页/{cls}.html"
-    fx_path = ROOT / f"斯诺德跑团/skill_effects_{cls}.json"
+    data_path = source_path(f"职业页/数据/{cls}.json")
+    html_path = source_path(f"职业页/{cls}.html")
+    fx_path = source_path(f"斯诺德跑团/skill_effects_{cls}.json")
 
     data = json.loads(data_path.read_text(encoding="utf-8"))
     fixed = [sk["name"] for sk in data["skills"] if fix_skill(sk)]

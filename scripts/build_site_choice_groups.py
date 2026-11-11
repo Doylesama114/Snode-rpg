@@ -147,7 +147,7 @@ def parse_base_groups():
     groups = []
     for cls in BASE_CLASSES:
         data_path = ROOT / "职业页" / "数据" / f"{cls}.json"
-        docx_path = ROOT / f"基础职业-{cls}.docx"
+        docx_path = source_path(f"基础职业-{cls}.docx")
         if not data_path.exists() or not docx_path.exists():
             continue
         data = json.loads(data_path.read_text(encoding="utf-8"))

@@ -10,6 +10,7 @@ future_classes_data.json / class_features.json / 首页.html 卡片）。
   python scripts/apply_zhanwuzhe_class_entries.py --write
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -31,7 +32,7 @@ PAGE = ROOT / '职业页' / '数据'
 NL = chr(10)
 CLASS = '战舞者'
 EMOJI = '💃'
-DOCX = ROOT / f'基础职业-{CLASS}.docx'
+DOCX = source_path(f'基础职业-{CLASS}.docx')
 EQUIP_SRC = ROOT / 'scripts' / 'extracts' / f'{CLASS}_equipment.json'
 
 KEY_ATTR = '敏捷或魅力'

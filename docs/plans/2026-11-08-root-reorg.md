@@ -242,3 +242,47 @@ debug-journal.md            10 KB
 验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4（既有基线）· Tests 913P 0F**。
 
 顺带修正：`verify_all.mjs` 初次批量替换误把 `verify_all.mjs` 自身与 `verify_skill_anchor.py` 指向 `verify/`，已恢复。
+
+## 阶段 3–4 执行记录（2026-11-11）
+
+### 3a 解析器与 codemod
+
+- 新增 `scripts/source_paths.py`：`source_path(name)` 依次查 `源文件/{职业,规则,角色档案,素材}`，回退根目录；
+- codemod 41 个脚本的 `ROOT / "x.docx"` / `os.path.join(ROOT, ...)`；
+- 补丁 25 个脚本的 f-string 形式 `ROOT / f"基础职业-{CLASS}.docx"`；
+- 修正 21 个文件的 `__future__` 导入顺序；
+- 门禁在文件未移动前保持基线（回退生效）。
+
+### 4 真值迁移
+
+| 目录 | 文件数 |
+|---|---|
+| `源文件/职业/` | 20（18 基础职业 + 已公布进阶 + 进阶途径） |
+| `源文件/规则/` | 18（神圣领域 ×6、世界观、专长、天赋树、规则 xlsx 等） |
+| `源文件/角色档案/` | 9 |
+| `源文件/素材/` | 6（png） |
+| 合计 | **53 / 54.9 MB** |
+
+根目录 docx/xlsx/png/rar 归零。
+
+### 迁移后修掉的 5 处路径问题
+
+| 脚本 | 问题 | 修法 |
+|---|---|---|
+| `scripts/verify_class_weapon_profs.py` | `ROOT.glob('基础职业-*.docx')` | 改为先 glob `源文件/职业`，回退根目录 |
+| `scripts/verify_skill_effects_complete.py` | `ROOT/dom['source_file']` | 改 `source_path(...)` |
+| `verify_skill_anchor.py` | `Path('基础职业-X.docx')` + 找不到 `source_paths` | 改 `source_path`，并注入 `scripts/` 到 `sys.path` |
+| `verify/verify_rules_sync.mjs` | 根目录 xlsx 路径 | 双候选（源文件优先） |
+| `scripts/build_creation_flow_data.py` 等 | 裸相对路径 `SRC = 'x.xlsx'` | 改 `source_path` |
+
+### 真值清单
+
+- `源文件/manifest.json`：53 条（sha256/大小/分类/导入日期）；
+- `scripts/verify_source_manifest.py`：清单与磁盘一致 + 无孤儿文件，已接入 `verify_all.mjs`；
+- 门禁输出：`OK 真值清单一致：53 个文件`。
+
+### 规范升 v2
+
+`文件整理规范.md` 已改为：根目录只放「入口 + 发布链路 + 门禁薄壳 + 强制规范」，真值进 `源文件/`、校验脚本进 `verify/`；新增 §1.1 真值管理（manifest / source_path / 更新流程）。
+
+验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4 · Tests 913P 0F**。

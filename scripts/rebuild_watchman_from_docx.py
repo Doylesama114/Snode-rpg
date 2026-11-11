@@ -9,6 +9,7 @@
 从零生成标准职业页（起始特性 + 守护/警戒/坚韧/原野四风格）。
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import html
 import json
@@ -40,7 +41,7 @@ from class_sync_core import (  # noqa: E402
 CLASS = "守望者"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
-DOCX = ROOT / f"基础职业-{CLASS}.docx"
+DOCX = source_path(f"基础职业-{CLASS}.docx")
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 TEMPLATE = ROOT / "职业页" / "萨满祭司.html"
 

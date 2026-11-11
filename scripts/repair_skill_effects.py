@@ -127,7 +127,7 @@ def main():
     SOURCE_ALIAS = {("萨满祭司", "风雷抗性"): "潮汐抗性"}
     source_report = {}
     for cn, doc in data.items():
-        path = ROOT / f"\u57fa\u7840\u804c\u4e1a-{cn}.docx"
+        path = source_path(f"\u57fa\u7840\u804c\u4e1a-{cn}.docx")
         if str(path) not in cache:
             ps = C.extract_paragraphs(path); cache[str(path)] = (ps, E.discover_skill_names(ps))
         ps, discovered = cache[str(path)]

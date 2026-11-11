@@ -10,6 +10,7 @@ Usage:
   python scripts/extract_class_docx.py --class 吟游诗人 --out scripts/extracts/吟游诗人.json
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -277,7 +278,7 @@ def stats_by_style_tier(skills: list[dict]) -> dict:
 
 
 def extract_class(class_name: str, docx: Path | None = None) -> dict:
-    docx = docx or (ROOT / f"基础职业-{class_name}.docx")
+    docx = docx or (source_path(f"基础职业-{class_name}.docx"))
     if not docx.exists():
         raise FileNotFoundError(docx)
 

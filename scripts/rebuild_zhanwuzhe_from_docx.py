@@ -8,6 +8,7 @@
 - 额外产出：起始装备 4 组（A/B/C/D）→ scripts/extracts/战舞者_equipment.json（供创建页 M4 使用）。
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import html
 import json
@@ -37,7 +38,7 @@ PREFIX = "zw"
 VIEW_ID = "view-zhanwuzhe"
 DATA = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 HTML = ROOT / "职业页" / f"{CLASS}.html"
-DOCX = ROOT / f"基础职业-{CLASS}.docx"
+DOCX = source_path(f"基础职业-{CLASS}.docx")
 FX = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"
 EXTRACT = ROOT / "scripts" / "extracts" / f"{CLASS}.json"
 EQUIP_OUT = ROOT / "scripts" / "extracts" / f"{CLASS}_equipment.json"
