@@ -199,3 +199,29 @@
 | 待盘点 | 5 个目录 |
 
 待人类拍板的 5 项：`_backup/`（191 个已跟踪文件）、`基础职业技能表/`、`牧师子分支/`、`角色系统/`、`斯诺德全职业技能树_Win7特供版/`。
+
+## 阶段 1 执行记录（2026-11-11）
+
+已用 `git mv` 归档 8 份过期文档到 `docs/archive/`：
+
+```
+旧会话延续上下文.md          219 KB（历史会话）
+debug-journal.md            10 KB
+卡牌效果实现进度.md           35 KB
+关键词系统注意事项.md          5 KB
+编排提案_战斗规则与冒险规则.md   7 KB
+方案_新手向导设计.md           9 KB
+修复方案_预览套娃叠加.md       7 KB
+缺口清单_世界观.md            3 KB
+```
+
+同步更新 `scripts/archive_files.mjs` 的 `KEEP_ROOT_FILES`（移除已迁走的 4 项）。
+
+**暂缓迁移（需要先做引用清扫）**：
+
+| 文档 | 原因 |
+|---|---|
+| `职业页同步手册.md` | 被 `后续更新教程.md`、`项目文档.md`、`docs/build-advisor-spec.md` 等 15 处按名引用 |
+| `设计风格规范.md` | 被 `guild-ui.js/.css`、`common.css` 等 10 处注释按名引用（含 electron 镜像） |
+| `后续更新教程.md` | 有 electron-app 镜像，移动需同步改 sync 路径 |
+| `项目文档.md` | 164 KB，需先拆分再迁入 `docs/architecture/` |

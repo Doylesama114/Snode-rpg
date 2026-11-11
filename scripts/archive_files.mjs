@@ -66,8 +66,7 @@ const KEEP_ROOT_FILES = new Set([
   'bump-version.js', 'changelog.js', 'package.json', 'package-lock.json',
   'opencode.json', '更新打包.bat', 'upload-gitee-exe.sh',
   '项目文档.md', '工作规则.md', '后续更新教程.md', '职业页同步手册.md', '文件整理规范.md',
-  'debug-journal.md', '卡牌效果实现进度.md', '关键词系统注意事项.md', '通用天赋树.md',
-  '旧会话延续上下文.md',
+  '通用天赋树.md',
 ]);
 const isKeep = (name) =>
   KEEP_ROOT_FILES.has(name) ||
