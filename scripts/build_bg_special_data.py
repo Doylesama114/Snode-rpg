@@ -15,6 +15,7 @@
 输出：职业页/数据/bg_personality.json 与 bg_personality_data.js（两者保持同步）
 用法：python scripts/build_bg_special_data.py [--check]
 """
+from source_paths import source_path
 import io
 import json
 import os
@@ -24,7 +25,7 @@ import sys
 import openpyxl
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, '个性与背景创建规则.xlsx')
+SRC = str(source_path('个性与背景创建规则.xlsx'))
 OUT_JSON = os.path.join(ROOT, '职业页', '数据', 'bg_personality.json')
 OUT_JS = os.path.join(ROOT, '职业页', '数据', 'bg_personality_data.js')
 

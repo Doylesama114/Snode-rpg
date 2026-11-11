@@ -8,6 +8,7 @@
   python -X utf8 scripts/build_bg_colors.py             # 写入
   python -X utf8 scripts/build_bg_colors.py --check     # 校验（供门禁）
 """
+from source_paths import source_path
 import json
 import os
 import sys
@@ -22,7 +23,7 @@ def _src_path():
         if a == "--src" and i + 1 < len(sys.argv):
             p = sys.argv[i + 1]
             return p if os.path.isabs(p) else os.path.join(ROOT, p)
-    return os.path.join(ROOT, "个性与背景创建规则.xlsx")
+    return str(source_path("个性与背景创建规则.xlsx"))
 OUT_JSON = os.path.join(ROOT, "职业页", "数据", "bg_personality.json")
 OUT_JS = os.path.join(ROOT, "职业页", "数据", "bg_personality_data.js")
 

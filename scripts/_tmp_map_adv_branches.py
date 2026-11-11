@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Map repeated 牧师/魔契师 pathway blocks and hunt for branch labels."""
 from __future__ import annotations
+from source_paths import source_path
 
 from pathlib import Path
 from zipfile import ZipFile
@@ -8,7 +9,7 @@ from xml.etree import ElementTree as ET
 import json
 
 ROOT = Path(r"D:\Download\scholar-agent-main")
-docx = ROOT / "《基础职业进阶途径》.docx"
+docx = source_path("《基础职业进阶途径》.docx")
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"

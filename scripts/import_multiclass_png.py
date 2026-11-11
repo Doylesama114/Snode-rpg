@@ -13,6 +13,7 @@
   python scripts/import_multiclass_png.py --write   # 写入 xlsx（Excel COM，保留样式）
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import sys
@@ -22,7 +23,7 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_PNG = ROOT / '兼职条件.png'
-XLSX = ROOT / '冒险者基础规则.xlsx'
+XLSX = source_path('冒险者基础规则.xlsx')
 SHEET = '兼职规则'
 
 CLASSES = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司',

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Add HTML/docx skills missing from 游荡者.json (fourth-tier entries etc.)."""
+from source_paths import source_path
 import json
 import re
 import shutil
@@ -18,7 +19,7 @@ from class_sync_core import (
 
 DATA = ROOT / "职业页" / "数据" / "游荡者.json"
 HTML = ROOT / "职业页" / "游荡者.html"
-DOCX = ROOT / "基础职业-游荡者.docx"
+DOCX = source_path("基础职业-游荡者.docx")
 
 TIER_CHIP = re.compile(r"([^·]+)风格 · ([^<]+)天赋树")
 ARTICLE = re.compile(

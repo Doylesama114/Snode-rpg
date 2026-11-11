@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """规则章节验收：内容与 xlsx 一致 + 新章节可用（v1.0.8008）"""
+from source_paths import source_path
 import re, sys
 from pathlib import Path
 try:
@@ -42,7 +43,7 @@ ok('镜像与源一致', text == mirror)
 print()
 print('▌结构质量（v1.0.8009）')
 import openpyxl
-wb = openpyxl.load_workbook(ROOT / "冒险者基础规则.xlsx", data_only=True)
+wb = openpyxl.load_workbook(source_path("冒险者基础规则.xlsx"), data_only=True)
 for sid, sheet in [("s1", "检定规则"), ("s2", "战斗规则"), ("s-adventure", "冒险规则"), ("s10", "其他规则")]:
     body = section(sid)
     tds = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", body, re.S)

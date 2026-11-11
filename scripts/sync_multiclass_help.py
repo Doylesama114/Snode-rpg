@@ -12,6 +12,7 @@
     python scripts/sync_multiclass_help.py --verify  # 仅校验
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -21,7 +22,7 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parent.parent
-XLSX = ROOT / "冒险者基础规则.xlsx"
+XLSX = source_path("冒险者基础规则.xlsx")
 HELP = ROOT / "斯诺德跑团" / "help.html"
 ELECTRON_HELP = ROOT / "electron-app" / "斯诺德跑团" / "help.html"
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Extract enriched backgrounds from 个性与背景创建规则.xlsx."""
+from source_paths import source_path
 import json
 import os
 import sys
@@ -7,7 +8,7 @@ import sys
 import openpyxl
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-XLSX = os.path.join(ROOT, "个性与背景创建规则.xlsx")
+XLSX = str(source_path("个性与背景创建规则.xlsx"))
 OUT = os.path.join(ROOT, "advisor", "chargen", "_backgrounds_xlsx_raw.json")
 
 LABEL_MAP = {

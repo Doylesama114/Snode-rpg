@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Add HTML/docx skills missing from 武僧.json."""
+from source_paths import source_path
 import json
 import re
 import shutil
@@ -18,7 +19,7 @@ from class_sync_core import (
 
 DATA = ROOT / "职业页" / "数据" / "武僧.json"
 HTML = ROOT / "职业页" / "武僧.html"
-DOCX = ROOT / "基础职业-武僧.docx"
+DOCX = source_path("基础职业-武僧.docx")
 
 STYLE_TIER_CHIP = re.compile(r"([^·]+)风格(?: · ([^<]+))?")
 ARTICLE = re.compile(

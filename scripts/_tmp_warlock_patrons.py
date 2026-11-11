@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from source_paths import source_path
 from pathlib import Path
 from zipfile import ZipFile
 from xml.etree import ElementTree as ET
@@ -6,7 +7,7 @@ from xml.etree import ElementTree as ET
 ROOT = Path(r"D:\Download\scholar-agent-main")
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
-with ZipFile(ROOT / "基础职业-魔契师.docx") as z:
+with ZipFile(source_path("基础职业-魔契师.docx")) as z:
     root = ET.fromstring(z.read("word/document.xml"))
 paras = []
 for p in root.iter(W + "p"):

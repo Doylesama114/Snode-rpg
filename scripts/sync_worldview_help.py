@@ -4,6 +4,7 @@ Sync 斯诺德世界观架构.docx into 斯诺德跑团/help.html as an in-page
 「规则 / 世界观」翻页 pane. Also extracts the map image and mirrors to electron-app.
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import html as html_lib
 import json
@@ -14,7 +15,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / "斯诺德世界观架构.docx"
+DOCX = source_path("斯诺德世界观架构.docx")
 HELP = ROOT / "斯诺德跑团" / "help.html"
 MEDIA_DIR = ROOT / "斯诺德跑团" / "help-media"
 MAP_NAME = "world-map.png"

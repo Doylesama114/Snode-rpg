@@ -1,8 +1,9 @@
 {
   "class": "德鲁伊",
-  "docx_skills_indexed": 106,
-  "json_skills": 77,
-  "updated": 77,
+  "docx_skills_indexed": 104,
+  "json_skills": 104,
+  "updated": 104,
   "removed_not_in_docx": [],
-  "fx_entries": 77
+  "preserved_not_in_docx": [],
+  "fx_entries": 104
 }

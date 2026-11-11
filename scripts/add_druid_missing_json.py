@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Add HTML/docx skills missing from 德鲁伊.json."""
+from source_paths import source_path
 import json
 import re
 import shutil
@@ -18,7 +19,7 @@ from class_sync_core import (
 
 DATA = ROOT / "职业页" / "数据" / "德鲁伊.json"
 HTML = ROOT / "职业页" / "德鲁伊.html"
-DOCX = ROOT / "基础职业-德鲁伊.docx"
+DOCX = source_path("基础职业-德鲁伊.docx")
 
 TIER_MAP = {"一阶": "一阶天赋树", "二阶": "二阶天赋树", "三阶": "三阶天赋树", "四阶": "四阶天赋树"}
 ARTICLE = re.compile(

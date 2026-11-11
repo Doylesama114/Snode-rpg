@@ -13,6 +13,7 @@ talents (same content as the docx side-tables) in:
   - electron-app mirrors
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -33,7 +34,7 @@ from class_sync_core import (  # noqa: E402
 from apply_hunter_missing_extract import render_article  # noqa: E402
 
 CLASS = "猎人"
-DOCX = ROOT / "基础职业-猎人.docx"
+DOCX = source_path("基础职业-猎人.docx")
 HTML_PATH = ROOT / "职业页" / f"{CLASS}.html"
 DATA_PATH = ROOT / "职业页" / "数据" / f"{CLASS}.json"
 FX_PATH = ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json"

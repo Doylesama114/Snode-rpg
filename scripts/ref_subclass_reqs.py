@@ -13,6 +13,7 @@
   python scripts/ref_subclass_reqs.py --print    # 打印生成结果
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -30,7 +31,7 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-XLSX = ROOT / '冒险者基础规则.xlsx'
+XLSX = source_path('冒险者基础规则.xlsx')
 PANEL = ROOT / '斯诺德跑团' / 'panel_data.js'
 PANEL_ELECTRON = ROOT / 'electron-app' / '斯诺德跑团' / 'panel_data.js'
 

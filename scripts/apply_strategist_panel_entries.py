@@ -10,6 +10,7 @@
   python scripts/apply_strategist_panel_entries.py --write
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import json
@@ -28,7 +29,7 @@ PANEL = ROOT / '斯诺德跑团' / 'panel_data.js'
 PANEL_MIRROR = ROOT / 'electron-app' / '斯诺德跑团' / 'panel_data.js'
 CLASSES_DATA = ROOT / '职业页' / '数据' / 'classes_data.js'
 MOUSHI_JSON = ROOT / '职业页' / '数据' / '谋士.json'
-MOUSHI_DOCX = ROOT / '基础职业-谋士.docx'
+MOUSHI_DOCX = source_path('基础职业-谋士.docx')
 
 CLASS = '谋士'
 WEAPON_DOCX = '匕首、手弩、简易武器'

@@ -12,6 +12,7 @@
   python scripts/apply_material_prices.py --apply   # 写 JSON + 重建页面
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -66,7 +67,7 @@ def parse_weight_lb(s):
 def build_price_dict():
     """从物资大全 xlsx 提取 名称 -> {copper, weight_lb, per_lb}。"""
     wb = openpyxl.load_workbook(
-        str(ROOT / "斯诺德物资大全.xlsx"), read_only=True, data_only=True
+        str(source_path("斯诺德物资大全.xlsx")), read_only=True, data_only=True
     )
     D: dict[str, dict] = {}
     for sn in wb.sheetnames:
@@ -417,7 +418,7 @@ def main() -> None:
     D = build_price_dict()
 
     # ---------- 1. 奇械师：从 docx 提取缺价条目 ----------
-    art_tables = docx_tables(ROOT / "基础职业-奇械师.docx")
+    art_tables = docx_tables(source_path("基础职业-奇械师.docx"))
     qj_json = json.loads((ROOT / "职业页/数据/奇械师.json").read_text(encoding="utf-8"))
     qj_by_name = {s["name"]: s for s in qj_json["skills"]}
 
@@ -466,7 +467,7 @@ def main() -> None:
             web_price_skills[name] = mat
 
     # ---------- 2. 艺术与创造之神加工行 ----------
-    art_docx = docx_tables(ROOT / "牧师子分支/神圣领域-艺术与创造之神.docx")
+    art_docx = docx_tables(source_path("牧师子分支/神圣领域-艺术与创造之神.docx"))
     art_process: list[dict] = []
     last_art = None
     for t in art_docx:

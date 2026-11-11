@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from source_paths import source_path
 from pathlib import Path
 from zipfile import ZipFile
 from xml.etree import ElementTree as ET
@@ -23,7 +24,7 @@ def paras_of(docx: Path):
     return out
 
 # Extract warlock patron list section
-wparas = paras_of(ROOT / "基础职业-魔契师.docx")
+wparas = paras_of(source_path("基础职业-魔契师.docx"))
 lines = ["=== 魔契师 宗主-related paras ==="]
 capture = False
 for i, t in enumerate(wparas):
@@ -44,7 +45,7 @@ for i in range(40, min(110, len(wparas))):
     lines.append(f"{i}|{wparas[i][:180]}")
 
 # Priest deity section already known; dump 45-75
-pparas = paras_of(ROOT / "基础职业-牧师.docx")
+pparas = paras_of(source_path("基础职业-牧师.docx"))
 lines.append("\n=== 牧师 paras 45-70 ===")
 for i in range(45, min(70, len(pparas))):
     lines.append(f"{i}|{pparas[i][:180]}")

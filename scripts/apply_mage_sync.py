@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Sync 法师 from docx → HTML + JSON + skill_effects."""
+from source_paths import source_path
 from pathlib import Path
 
 from class_sync_core import sync_class
@@ -26,7 +27,7 @@ if __name__ == "__main__":
 
     report = sync_class(
         class_name=CLASS,
-        docx=ROOT / "基础职业-法师.docx",
+        docx=source_path("基础职业-法师.docx"),
         html_path=ROOT / "职业页" / "法师.html",
         data_path=ROOT / "职业页" / "数据" / "法师.json",
         fx_path=ROOT / "斯诺德跑团" / f"skill_effects_{CLASS}.json",

@@ -5,6 +5,7 @@
 用法: python scripts/verify_strategist_sync.py
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -18,7 +19,7 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / '基础职业-谋士.docx'
+DOCX = source_path('基础职业-谋士.docx')
 CLASS = '谋士'
 STYLES = ['权谋', '军团', '先见', '鸩毒', '混乱', '博物']
 TIERS = ['一阶', '二阶', '三阶']

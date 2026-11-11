@@ -12,6 +12,7 @@ v1.0.7269 重写（修复内容缺失）：
   python scripts/build_store_data.py            # 生成 store_data.js
   python scripts/build_store_data.py --check    # 只校验现有文件与源文件是否一致
 """
+from source_paths import source_path
 import io
 import os
 import sys
@@ -19,7 +20,7 @@ import sys
 import openpyxl
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, '斯诺德物资大全.xlsx')
+SRC = str(source_path('斯诺德物资大全.xlsx'))
 OUT = os.path.join(ROOT, '斯诺德跑团', 'store_data.js')
 
 try:

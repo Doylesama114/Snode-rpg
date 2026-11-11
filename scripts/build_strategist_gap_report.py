@@ -9,6 +9,7 @@
   python scripts/build_strategist_gap_report.py
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import hashlib
 import json
@@ -26,10 +27,10 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-MOUSHI_DOCX = ROOT / '基础职业-谋士.docx'
+MOUSHI_DOCX = source_path('基础职业-谋士.docx')
 MOUSHI_JSON = ROOT / '职业页' / '数据' / '谋士.json'
-ADV_DOCX = ROOT / '《基础职业进阶途径》.docx'
-XLSX = ROOT / '冒险者基础规则.xlsx'
+ADV_DOCX = source_path('《基础职业进阶途径》.docx')
+XLSX = source_path('冒险者基础规则.xlsx')
 OUT = Path(__file__).resolve().parent / '_strategist_gap_report.json'
 
 CLASSES = ['蛮斗士', '战士', '法师', '猎人', '牧师', '圣骑士', '游荡者', '德鲁伊', '萨满祭司',

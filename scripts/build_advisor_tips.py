@@ -10,6 +10,7 @@
     python scripts/build_advisor_tips.py
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import shutil
@@ -18,7 +19,7 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parent.parent
-XLSX = ROOT / "冒险者基础规则.xlsx"
+XLSX = source_path("冒险者基础规则.xlsx")
 OUT = ROOT / "斯诺德跑团" / "advisor-tips.js"
 ELECTRON_OUT = ROOT / "electron-app" / "斯诺德跑团" / "advisor-tips.js"
 

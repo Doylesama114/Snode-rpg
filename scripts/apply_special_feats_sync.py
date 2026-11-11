@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Sync 特殊专长 from docx → HTML + JSON + skill_effects."""
+from source_paths import source_path
 import json
 import sys
 from pathlib import Path
@@ -13,7 +14,7 @@ DATA = ROOT / "职业页" / "数据" / "特殊专长.json"
 if __name__ == "__main__":
     old = json.loads(DATA.read_text(encoding="utf-8"))
     report = sync_special_feats(
-        docx=ROOT / "特殊专长.docx",
+        docx=source_path("特殊专长.docx"),
         html_path=ROOT / "职业页" / "特殊专长.html",
         data_path=DATA,
         fx_path=ROOT / "斯诺德跑团" / "skill_effects_特殊专长.json",

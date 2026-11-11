@@ -5,6 +5,7 @@
 用法: python scripts/verify_summoner_sync.py
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -20,7 +21,7 @@ except Exception:
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 import class_sync_core as C  # noqa: E402
-DOCX = ROOT / '基础职业-召唤师.docx'
+DOCX = source_path('基础职业-召唤师.docx')
 CLASS = '召唤师'
 STYLES = ['咒法', '降灵']
 TIER_EXPECT = {('咒法', '一阶'): 7, ('咒法', '二阶'): 6, ('咒法', '三阶'): 7,

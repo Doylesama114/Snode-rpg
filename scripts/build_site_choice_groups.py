@@ -8,6 +8,7 @@ Authoritative choice groups are derived from the docx "抉择" paragraphs:
 User-confirmed overrides: 通用 M = 4 skills; H = 8 skills (docx already 8).
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import hashlib
 import json
@@ -178,7 +179,7 @@ def parse_base_groups():
 
 
 def parse_general_groups():
-    docx = ROOT / "通用天赋树.docx"
+    docx = source_path("通用天赋树.docx")
     html = (ROOT / "职业页" / "通用天赋树.html").read_text(encoding="utf-8")
     order = article_order(html)
     data = json.loads((ROOT / "职业页" / "数据" / "通用天赋树.json").read_text(encoding="utf-8"))

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """从 斯诺德稀有装备列表.xlsx 生成 职业页/数据/equipment_catalog.json（保留 price 与结构/格式）"""
+from source_paths import source_path
 import openpyxl, json, sys
 from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 ROOT = Path('.').resolve()
-XLSX = ROOT / '斯诺德稀有装备列表.xlsx'
+XLSX = source_path('斯诺德稀有装备列表.xlsx')
 JSONP = ROOT / '职业页' / '数据' / 'equipment_catalog.json'
 DATAP = ROOT / '职业页' / '数据' / 'equipment_catalog_data.js'
 APPLY = '--write' in sys.argv

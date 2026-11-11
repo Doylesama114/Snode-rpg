@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Sync 职业页/*·进阶 from 《基础职业进阶途径》.docx."""
 from __future__ import annotations
+from source_paths import source_path
 
 import html
 import json
@@ -19,7 +20,7 @@ from class_sync_core import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / "《基础职业进阶途径》.docx"
+DOCX = source_path("《基础职业进阶途径》.docx")
 ADV_PAGE = ROOT / "职业页"
 ADV_DATA = ADV_PAGE / "数据"
 ELECTRON_ADV = ROOT / "electron-app" / "职业页"

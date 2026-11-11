@@ -9,6 +9,7 @@
   python scripts/build_summoner_gap_report.py
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import hashlib
 import json
@@ -24,7 +25,7 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / '基础职业-召唤师.docx'
+DOCX = source_path('基础职业-召唤师.docx')
 DATA_JSON = ROOT / '职业页' / '数据' / '召唤师.json'
 CONTRACT_JSON = ROOT / '职业页' / '数据' / '召唤师契约生物.json'
 PAGE_HTML = ROOT / '职业页' / '召唤师.html'

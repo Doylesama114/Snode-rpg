@@ -11,6 +11,7 @@
   python scripts/rebuild_summoner_contracts.py [--check]
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -24,7 +25,7 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / '基础职业-召唤师.docx'
+DOCX = source_path('基础职业-召唤师.docx')
 OUT_JSON = ROOT / '职业页' / '数据' / '召唤师契约生物.json'
 OUT_JS = ROOT / '职业页' / '数据' / 'summoner_contracts_data.js'
 MIRRORS = [

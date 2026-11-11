@@ -3,6 +3,7 @@
 Default is a dry run. --apply regenerates JSON, HTML, effects, panel data and mirrors.
 """
 from __future__ import annotations
+from source_paths import source_path
 import argparse,copy,json,re,shutil,sys,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
@@ -177,7 +178,7 @@ def main():
     # The new multiline-upgrade parser also repairs the existing general-talent regression.
     general_path = ROOT/"\u804c\u4e1a\u9875/\u6570\u636e/\u901a\u7528\u5929\u8d4b\u6811.json"
     general = json.loads(general_path.read_text(encoding="utf8"))
-    general_paras = C.extract_paragraphs(ROOT/"\u901a\u7528\u5929\u8d4b\u6811.docx")
+    general_paras = C.extract_paragraphs(source_path("\u901a\u7528\u5929\u8d4b\u6811.docx"))
     general_index = C.build_docx_index(general_paras,{s["name"] for s in general["skills"]})
     for skill in general["skills"]:
         if skill["name"] == "\u9965\u997f\u6e38\u620f":

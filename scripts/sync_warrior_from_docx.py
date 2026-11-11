@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Parse 基础职业-战士.docx and compare with 职业页/战士.html + JSON."""
+from source_paths import source_path
 import json
 import re
 import zipfile
@@ -7,7 +8,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / "基础职业-战士.docx"
+DOCX = source_path("基础职业-战士.docx")
 HTML = ROOT / "职业页" / "战士.html"
 DATA_JSON = ROOT / "职业页" / "数据" / "战士.json"
 FX_JSON = ROOT / "斯诺德跑团" / "skill_effects_战士.json"

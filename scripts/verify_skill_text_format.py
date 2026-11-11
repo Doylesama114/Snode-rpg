@@ -6,6 +6,7 @@ docx block: every docx bullet entry must appear as one contiguous entry (or a
 longer merged entry), and every docx level-up choice must appear in choices.
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import sys
@@ -24,7 +25,7 @@ CLASSES = (
 
 def docx_for(cls: str) -> Path:
     if cls == "通用天赋树":
-        return ROOT / "通用天赋树.docx"
+        return source_path("通用天赋树.docx")
     return ROOT / f"基础职业-{cls}.docx"
 
 

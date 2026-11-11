@@ -10,6 +10,7 @@ v5（按语义编排，内容照原文单元格）：
 用法：python scripts/build_rules_help.py --write
 """
 from __future__ import annotations
+from source_paths import source_path
 
 import argparse
 import html
@@ -26,7 +27,7 @@ except Exception:
 import openpyxl
 
 ROOT = Path(__file__).resolve().parent.parent
-XLSX = ROOT / '冒险者基础规则.xlsx'
+XLSX = source_path('冒险者基础规则.xlsx')
 HELP = ROOT / '斯诺德跑团' / 'help.html'
 MIRROR = ROOT / 'electron-app' / '斯诺德跑团' / 'help.html'
 NL = chr(10)

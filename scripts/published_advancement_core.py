@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Parse 已公布进阶职业.docx → ADVANCEMENT_DETAILS-shaped records."""
 from __future__ import annotations
+from source_paths import source_path
 
 import json
 import re
@@ -10,7 +11,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCX = ROOT / "已公布进阶职业.docx"
+DOCX = source_path("已公布进阶职业.docx")
 ADV_PAGE = ROOT / "职业页"
 DETAILS_JS = ADV_PAGE / "advancement_details.js"
 ELECTRON_ADV = ROOT / "electron-app" / "职业页"
