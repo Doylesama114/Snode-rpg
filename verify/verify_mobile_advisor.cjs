@@ -1,9 +1,9 @@
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const {chromium}=require('playwright');
-const desktop=require('./scripts/desktop_test_helpers.cjs');
-const project=__dirname,rootIdx=process.argv.indexOf('--root'),root=rootIdx<0?project:path.resolve(project,process.argv[rootIdx+1]);
-const endpoint=require('./斯诺德跑团/advisor-service.js').baseUrl;
+const desktop=require('../scripts/desktop_test_helpers.cjs');
+const project=path.resolve(__dirname,'..'),rootIdx=process.argv.indexOf('--root'),root=rootIdx<0?project:path.resolve(project,process.argv[rootIdx+1]);
+const endpoint=require('../斯诺德跑团/advisor-service.js').baseUrl;
 let groups=0;function pass(name){groups++;console.log('PASS '+name);}
 async function pageFor(browser,mode='stream',extra={},native){
  const p=native?await native.app.firstWindow():await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
@@ -122,7 +122,7 @@ async function send(p,text='检查连接'){
   await p.waitForFunction(()=>!document.getElementById('send').disabled);
   assert((await p.locator('.msg._err').textContent()).includes('超时'));
   pass('stalled answer releases send state on deadline even when fetch ignores abort');await p.close();
-  const config=require('./scripts/prepare-advisor-config.cjs');
+  const config=require('../scripts/prepare-advisor-config.cjs');
   assert.equal(config.loadConfig('').baseUrl,endpoint);assert.throws(()=>config.validate('not-a-url'));
   assert.throws(()=>config.validate('http://example.com'));assert.throws(()=>config.validate('https://user:pass@example.com'));
   pass('production build defaults work without OSS and invalid/insecure/credential URL configuration is rejected');

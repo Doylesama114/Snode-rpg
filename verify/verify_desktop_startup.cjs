@@ -3,7 +3,7 @@ const assert = require('assert/strict');
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
-const { launch, js, waitFor, navigate } = require('./scripts/desktop_test_helpers.cjs');
+const { launch, js, waitFor, navigate } = require('../scripts/desktop_test_helpers.cjs');
 (async () => {
   const test = await launch({}, profile => {
     fs.mkdirSync(path.join(profile, 'chargen-cli-connection.json'));

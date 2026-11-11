@@ -2,7 +2,7 @@
 const assert = require('assert/strict');
 const fs = require('fs');
 const path = require('path');
-const { launch, navigate, js, waitFor } = require('./scripts/desktop_test_helpers.cjs');
+const { launch, navigate, js, waitFor } = require('../scripts/desktop_test_helpers.cjs');
 async function call(profile, op) {
   const connection = JSON.parse(fs.readFileSync(path.join(profile, 'chargen-cli-connection.json'), 'utf8'));
   const response = await fetch('http://127.0.0.1:' + connection.port + '/v1/call', {

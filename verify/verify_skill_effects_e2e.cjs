@@ -1,7 +1,7 @@
 /* Real card/detail regressions; isolated Chromium and optional Electron 22 profiles. */
 const fs=require('fs'),path=require('path'),os=require('os'),assert=require('assert/strict');
 const {pathToFileURL}=require('url'),{chromium,_electron}=require('playwright');
-const root=__dirname,fixture=JSON.parse(fs.readFileSync(path.join(root,'scripts/skill_effects_cases.json'),'utf8')).cases;
+const root=path.resolve(__dirname,'..'),fixture=JSON.parse(fs.readFileSync(path.join(root,'scripts/skill_effects_cases.json'),'utf8')).cases;
 const classes=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据/classes.json'),'utf8')).map(x=>x.name);
 const domainData=JSON.parse(fs.readFileSync(path.join(root,'职业页/数据/牧师·神圣领域.json'),'utf8'));
 const domains=domainData.domains;
@@ -82,7 +82,7 @@ async function details(page,label,width,setWidth){
    temp=fs.mkdtempSync(path.join(scratch,'skill-effects-electron-'));
    const profile=path.join(temp,'profile'),boot=path.join(temp,'bootstrap.cjs');fs.mkdirSync(profile);
    fs.writeFileSync(boot,"const {app,BrowserWindow}=require('electron');app.disableHardwareAcceleration();app.setPath('userData',"+JSON.stringify(profile)+");app.setPath('sessionData',"+JSON.stringify(profile)+");app.whenReady().then(()=>{new BrowserWindow({show:false,width:1440,height:900,webPreferences:{contextIsolation:true,nodeIntegration:false,backgroundThrottling:false}}).loadURL('about:blank')});app.on('window-all-closed',()=>app.quit());");
-   electron=await _electron.launch({executablePath:require('./electron-app/node_modules/electron'),args:[boot]});
+   electron=await _electron.launch({executablePath:require('../electron-app/node_modules/electron'),args:[boot]});
    const p=await electron.firstWindow();await configure(p);
    for(const width of [360,390,1440])await details(p,'Electron',width,async w=>{await electron.evaluate(({BrowserWindow},width)=>BrowserWindow.getAllWindows()[0].setContentSize(width,900),w);await p.waitForFunction(w=>innerWidth===w,w)});
    await electron.close();electron=null;

@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import desktop from './scripts/desktop_test_helpers.cjs';
+import desktop from '../scripts/desktop_test_helpers.cjs';
 const root=process.cwd(), arg=process.argv.indexOf('--root');
 const contentRoot=arg<0?root:path.resolve(root,process.argv[arg+1]);
 const out=path.join(root,'screenshots');fs.mkdirSync(out,{recursive:true});

@@ -6,6 +6,7 @@ import { spawnSync } from 'child_process';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const BASE = dirname(fileURLToPath(import.meta.url));
+const VERIFY_DIR = join(BASE, 'verify');
 const RUN_DIRS = ['斯诺德跑团', '职业页'];
 
 // 桌面端可用性探测：不可用则对本进程内所有子测试统一放行（仅跳过桌面真机检查，其余照常严格）
@@ -101,7 +102,7 @@ totalErrors += dataOK ? 0 : 1;
 console.log('\n=== \u6280\u80fd\u6548\u679c\u5b8c\u6574\u6027 ===');
 for (const [cmd,args] of [
   ['python',['-B','-X','utf8',join(BASE,'scripts','verify_skill_effects_complete.py')]],
-  ['node',[join(BASE,'verify_skill_effects_e2e.cjs')]]
+  ['node',[join(VERIFY_DIR, 'verify_skill_effects_e2e.cjs')]]
 ]) {
   const out=spawnSync(cmd,args,{encoding:'utf8',timeout:240000,maxBuffer:8*1024*1024});
   if(out.stdout)console.log(out.stdout.trim());
@@ -114,7 +115,7 @@ for (const [cmd,args] of [
 console.log('\n=== 8099 内容守门 ===');
 {
   for (const [cmd, args] of [
-    ['node', [join(BASE, 'verify_release_8099.mjs')]],
+    ['node', [join(VERIFY_DIR, 'verify_release_8099.mjs')]],
     ['python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_stray_section_titles.py')]],
     ['python', ['-X', 'utf8', join(BASE, 'scripts', 'verify_help_structure.py')]],  // 8103: 帮助页 section 结构守门
   ]) {
@@ -128,7 +129,7 @@ console.log('\n=== 8099 内容守门 ===');
 // 面板技能详情去重（v1.0.8095：level_upgrades 的 section 只渲染一次）
 console.log('\n=== 面板详情去重 ===');
 {
-  const dq = spawnSync('node', [join(BASE, 'verify_panel_detail_dedup.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
+  const dq = spawnSync('node', [join(VERIFY_DIR, 'verify_panel_detail_dedup.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
   if (dq.stdout) console.log(dq.stdout.trim());
   if (dq.stderr) console.error(dq.stderr.trim().slice(-1500));
   totalErrors += dq.status === 0 ? 0 : 1;
@@ -138,7 +139,7 @@ console.log('\n=== 面板详情去重 ===');
 console.log('\n=== 学习面板解锁 ===');
 let unlockOK = true;
 try {
-  const uo = spawnSync('node', [join(BASE, 'verify_panel_unlocks.mjs')], { encoding: 'utf-8', timeout: 60000 });
+  const uo = spawnSync('node', [join(VERIFY_DIR, 'verify_panel_unlocks.mjs')], { encoding: 'utf-8', timeout: 60000 });
   if (uo.stdout) console.log(uo.stdout.trim());
   if (uo.stderr) console.error(uo.stderr.trim());
   if (uo.status !== 0) unlockOK = false;
@@ -182,7 +183,7 @@ totalErrors += uiOK ? 0 : 1;
 console.log('\n=== 工会 UI 共享层（guild-ui） ===');
 let guildOK = true;
 try {
-  let gOut = spawnSync('node', [join(BASE, 'verify_guild_ui_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 8 * 1024 * 1024 });
+  let gOut = spawnSync('node', [join(VERIFY_DIR, 'verify_guild_ui_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 8 * 1024 * 1024 });
   if (gOut.stdout) console.log(gOut.stdout.trim().slice(-1500));
   if (gOut.stderr) console.error(gOut.stderr.trim());
   if (gOut.status !== 0) guildOK = false;
@@ -197,7 +198,7 @@ totalErrors += guildOK ? 0 : 1;
 console.log('\n=== 移动端排版验收（≤600px） ===');
 let mobOK = true;
 try {
-  let mOut = spawnSync('node', [join(BASE, 'verify_mobile_layout.mjs')], { encoding: 'utf-8', timeout: 900000, maxBuffer: 8 * 1024 * 1024 });
+  let mOut = spawnSync('node', [join(VERIFY_DIR, 'verify_mobile_layout.mjs')], { encoding: 'utf-8', timeout: 900000, maxBuffer: 8 * 1024 * 1024 });
   if (mOut.stdout) console.log(mOut.stdout.trim().slice(-1500));
   if (mOut.stderr) console.error(mOut.stderr.trim());
   if (mOut.status !== 0) mobOK = false;
@@ -212,7 +213,7 @@ totalErrors += mobOK ? 0 : 1;
 console.log('\n=== UI 修复验收（v1.0.8002） ===');
 let ui8002OK = true;
 try {
-  let u8Out = spawnSync('node', [join(BASE, 'verify_ui_8002_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let u8Out = spawnSync('node', [join(VERIFY_DIR, 'verify_ui_8002_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (u8Out.stdout) console.log(u8Out.stdout.trim().slice(-1200));
   if (u8Out.stderr) console.error(u8Out.stderr.trim());
   if (u8Out.status !== 0) ui8002OK = false;
@@ -227,7 +228,7 @@ totalErrors += ui8002OK ? 0 : 1;
 console.log('\n=== UI 验收（v1.0.8003） ===');
 let ui8003OK = true;
 try {
-  let u83 = spawnSync('node', [join(BASE, 'verify_ui_8003_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let u83 = spawnSync('node', [join(VERIFY_DIR, 'verify_ui_8003_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (u83.stdout) console.log(u83.stdout.trim().slice(-1200));
   if (u83.stderr) console.error(u83.stderr.trim());
   if (u83.status !== 0) ui8003OK = false;
@@ -239,7 +240,7 @@ totalErrors += ui8003OK ? 0 : 1;
 console.log('\n=== 全自动更新流程（策略 B） ===');
 let updOK = true;
 try {
-  let up = spawnSync('node', [join(BASE, 'verify_update_flow_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let up = spawnSync('node', [join(VERIFY_DIR, 'verify_update_flow_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (up.stdout) console.log(up.stdout.trim().slice(-900));
   if (up.stderr) console.error(up.stderr.trim());
   if (up.status !== 0) updOK = false;
@@ -251,7 +252,7 @@ totalErrors += updOK ? 0 : 1;
 console.log('\n=== 便携版自更新（zip 覆盖式） ===');
 let portableOK = true;
 try {
-  let pu = spawnSync('node', [join(BASE, 'verify_portable_updater.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let pu = spawnSync('node', [join(VERIFY_DIR, 'verify_portable_updater.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (pu.stdout) console.log(pu.stdout.trim().slice(-900));
   if (pu.stderr) console.error(pu.stderr.trim());
   if (pu.status !== 0) portableOK = false;
@@ -275,7 +276,7 @@ totalErrors += rulesOK ? 0 : 1;
 console.log('\n=== 手机端资料库 ===');
 let mlOK = true;
 try {
-  let ml = spawnSync('node', [join(BASE, 'verify_mobile_lib.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let ml = spawnSync('node', [join(VERIFY_DIR, 'verify_mobile_lib.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (ml.stdout) console.log(ml.stdout.trim().slice(-700));
   if (ml.stderr) console.error(ml.stderr.trim());
   if (ml.status !== 0) mlOK = false;
@@ -287,7 +288,7 @@ totalErrors += mlOK ? 0 : 1;
 console.log('\n=== 手机端帮助页 ===');
 let mhOK = true;
 try {
-  let mh = spawnSync('node', [join(BASE, 'verify_mobile_help.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let mh = spawnSync('node', [join(VERIFY_DIR, 'verify_mobile_help.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (mh.stdout) console.log(mh.stdout.trim().slice(-700));
   if (mh.stderr) console.error(mh.stderr.trim());
   if (mh.status !== 0) mhOK = false;
@@ -299,7 +300,7 @@ totalErrors += mhOK ? 0 : 1;
 console.log('\n=== 返回键回上一级 ===');
 let backOK = true;
 try {
-  let bk = spawnSync('node', [join(BASE, 'verify_back_key_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let bk = spawnSync('node', [join(VERIFY_DIR, 'verify_back_key_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (bk.stdout) console.log(bk.stdout.trim().slice(-800));
   if (bk.stderr) console.error(bk.stderr.trim());
   if (bk.status !== 0) backOK = false;
@@ -311,7 +312,7 @@ totalErrors += backOK ? 0 : 1;
 console.log('\n=== 移动端导航抽屉 ===');
 let navOK = true;
 try {
-  let navOut = spawnSync('node', [join(BASE, 'verify_mobile_nav_drawer.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
+  let navOut = spawnSync('node', [join(VERIFY_DIR, 'verify_mobile_nav_drawer.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 8 * 1024 * 1024 });
   if (navOut.stdout) console.log(navOut.stdout.trim().slice(-1200));
   if (navOut.stderr) console.error(navOut.stderr.trim());
   if (navOut.status !== 0) navOK = false;
@@ -326,7 +327,7 @@ totalErrors += navOK ? 0 : 1;
 console.log('\n=== 护甲/防御等级规则 ===');
 let armorOK = true;
 try {
-  let armorOut = spawnSync('node', [join(BASE, 'verify_armor_ac_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  let armorOut = spawnSync('node', [join(VERIFY_DIR, 'verify_armor_ac_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
   if (armorOut.stdout) console.log(armorOut.stdout.trim());
   if (armorOut.stderr) console.error(armorOut.stderr.trim());
   if (armorOut.status !== 0) armorOK = false;
@@ -351,7 +352,7 @@ try {
   console.log('❌ 武器熟练度 docx 一致性校验执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
 }
 try {
-  let weaponE2e = spawnSync('node', [join(BASE, 'verify_weapon_profs_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  let weaponE2e = spawnSync('node', [join(VERIFY_DIR, 'verify_weapon_profs_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
   if (weaponE2e.stdout) console.log(weaponE2e.stdout.trim());
   if (weaponE2e.stderr) console.error(weaponE2e.stderr.trim());
   if (weaponE2e.status !== 0) weaponOK = false;
@@ -366,7 +367,7 @@ totalErrors += weaponOK ? 0 : 1;
 console.log('\n=== 猎人武器专精 ===');
 let weaponSpecOK = true;
 try {
-  let wsOut = spawnSync('node', [join(BASE, 'verify_weapon_spec_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  let wsOut = spawnSync('node', [join(VERIFY_DIR, 'verify_weapon_spec_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
   if (wsOut.stdout) console.log(wsOut.stdout.trim());
   if (wsOut.stderr) console.error(wsOut.stderr.trim());
   if (wsOut.status !== 0) weaponSpecOK = false;
@@ -396,7 +397,7 @@ totalErrors += magePreserveOK ? 0 : 1;
 console.log('\n=== 种族体型 HP / 面板 HP·FP 持久化 ===');
 let hpFpOK = true;
 try {
-  let hpOut = spawnSync('node', [join(BASE, 'verify_hp_fp_race_size_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  let hpOut = spawnSync('node', [join(VERIFY_DIR, 'verify_hp_fp_race_size_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
   if (hpOut.stdout) console.log(hpOut.stdout.trim());
   if (hpOut.stderr) console.error(hpOut.stderr.trim());
   if (hpOut.status !== 0) hpFpOK = false;
@@ -411,7 +412,7 @@ totalErrors += hpFpOK ? 0 : 1;
 console.log('\n=== 导出映射与回读 ===');
 let exportMapOK = true;
 try {
-  let emOut = spawnSync('node', [join(BASE, 'verify_export_mapping_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  let emOut = spawnSync('node', [join(VERIFY_DIR, 'verify_export_mapping_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
   if (emOut.stdout) console.log(emOut.stdout.trim());
   if (emOut.stderr) console.error(emOut.stderr.trim());
   if (emOut.status !== 0) exportMapOK = false;
@@ -426,7 +427,7 @@ totalErrors += exportMapOK ? 0 : 1;
 console.log('\n=== 守望者创建页与生命/疲劳公式 ===');
 let watchmanOK = true;
 try {
-  let wdOut = spawnSync('node', [join(BASE, 'verify_watchman_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  let wdOut = spawnSync('node', [join(VERIFY_DIR, 'verify_watchman_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
   if (wdOut.stdout) console.log(wdOut.stdout.trim());
   if (wdOut.stderr) console.error(wdOut.stderr.trim());
   if (wdOut.status !== 0) watchmanOK = false;
@@ -456,7 +457,7 @@ totalErrors += navTierOK ? 0 : 1;
 console.log('=== 技能标识 AND/OR E2E ===');
 let markAndOrOK = true;
 try {
-  let moOut = spawnSync('node', [join(BASE, 'verify_mark_filter_and_or.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
+  let moOut = spawnSync('node', [join(VERIFY_DIR, 'verify_mark_filter_and_or.mjs')], { encoding: 'utf-8', timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
   if (moOut.stdout) console.log(moOut.stdout.trim());
   if (moOut.stderr) console.error(moOut.stderr.trim());
   if (moOut.status !== 0) markAndOrOK = false;
@@ -471,7 +472,7 @@ totalErrors += markAndOrOK ? 0 : 1;
 console.log('\n=== 职业页懒渲染与首屏性能 ===');
 let lazyOK = true;
 try {
-  let lazyOut = spawnSync('node', [join(BASE, 'verify_class_lazy_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let lazyOut = spawnSync('node', [join(VERIFY_DIR, 'verify_class_lazy_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (lazyOut.stdout) console.log(lazyOut.stdout.trim().split('\n').slice(-7).join('\n'));
   if (lazyOut.stderr) console.error(lazyOut.stderr.trim());
   if (lazyOut.status !== 0) lazyOK = false;
@@ -530,7 +531,7 @@ totalErrors += bgColorOK ? 0 : 1;
 console.log('\n=== 职业专长切换回归 ===');
 let tabOK = true;
 try {
-  let tabOut = spawnSync('node', [join(BASE, 'verify_class_feature_tabs_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let tabOut = spawnSync('node', [join(VERIFY_DIR, 'verify_class_feature_tabs_e2e.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (tabOut.stdout) console.log(tabOut.stdout.trim());
   if (tabOut.stderr) console.error(tabOut.stderr.trim());
   if (tabOut.status !== 0) tabOK = false;
@@ -575,7 +576,7 @@ totalErrors += dbSyncOK ? 0 : 1;
 console.log('\n=== 龙裔详情 E2E ===');
 let dbE2EOK = true;
 try {
-  let out_dbE2E = spawnSync('node', [join(BASE, 'verify_dragonborn_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let out_dbE2E = spawnSync('node', [join(VERIFY_DIR, 'verify_dragonborn_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (out_dbE2E.stdout) console.log(out_dbE2E.stdout.trim());
   if (out_dbE2E.stderr) console.error(out_dbE2E.stderr.trim());
   if (out_dbE2E.status !== 0) dbE2EOK = false;
@@ -605,7 +606,7 @@ totalErrors += smSyncOK ? 0 : 1;
 console.log('\n=== 召唤师职业页与契约生物切换区 E2E ===');
 let smPageOK = true;
 try {
-  let out_smPage = spawnSync('node', [join(BASE, 'verify_summoner_class_page_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let out_smPage = spawnSync('node', [join(VERIFY_DIR, 'verify_summoner_class_page_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (out_smPage.stdout) console.log(out_smPage.stdout.trim());
   if (out_smPage.stderr) console.error(out_smPage.stderr.trim());
   if (out_smPage.status !== 0) smPageOK = false;
@@ -620,7 +621,7 @@ totalErrors += smPageOK ? 0 : 1;
 console.log('\n=== 召唤师创建页 E2E ===');
 let smChgOK = true;
 try {
-  let out_smChg = spawnSync('node', [join(BASE, 'verify_summoner_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let out_smChg = spawnSync('node', [join(VERIFY_DIR, 'verify_summoner_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (out_smChg.stdout) console.log(out_smChg.stdout.trim());
   if (out_smChg.stderr) console.error(out_smChg.stderr.trim());
   if (out_smChg.status !== 0) smChgOK = false;
@@ -635,7 +636,7 @@ totalErrors += smChgOK ? 0 : 1;
 console.log('\n=== 召唤师面板 E2E ===');
 let smPanelOK = true;
 try {
-  let out_smPanel = spawnSync('node', [join(BASE, 'verify_summoner_panel_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let out_smPanel = spawnSync('node', [join(VERIFY_DIR, 'verify_summoner_panel_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (out_smPanel.stdout) console.log(out_smPanel.stdout.trim());
   if (out_smPanel.stderr) console.error(out_smPanel.stderr.trim());
   if (out_smPanel.status !== 0) smPanelOK = false;
@@ -682,7 +683,7 @@ totalErrors += clSyncOK ? 0 : 1;
 console.log('\n=== 谋士职业专长与博闻强识选择 ===');
 let stFeatOK = true;
 try {
-  let fOut = spawnSync('node', [join(BASE, 'verify_strategist_feature_choices.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  let fOut = spawnSync('node', [join(VERIFY_DIR, 'verify_strategist_feature_choices.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
   if (fOut.stdout) console.log(fOut.stdout.trim());
   if (fOut.stderr) console.error(fOut.stderr.trim());
   if (fOut.status !== 0) stFeatOK = false;
@@ -697,7 +698,7 @@ totalErrors += stFeatOK ? 0 : 1;
 console.log('\n=== 谋士创建页与生命/疲劳公式 ===');
 let stOK = true;
 try {
-  let stOut = spawnSync('node', [join(BASE, 'verify_strategist_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
+  let stOut = spawnSync('node', [join(VERIFY_DIR, 'verify_strategist_chargen_e2e.mjs')], { encoding: 'utf-8', timeout: 180000, maxBuffer: 16 * 1024 * 1024 });
   if (stOut.stdout) console.log(stOut.stdout.trim());
   if (stOut.stderr) console.error(stOut.stderr.trim());
   if (stOut.status !== 0) stOK = false;
@@ -712,7 +713,7 @@ totalErrors += stOK ? 0 : 1;
 console.log('\n=== 兼职表 18 职业 E2E ===');
 let mcE2EOK = true;
 try {
-  let mcOut = spawnSync('node', [join(BASE, 'verify_multiclass_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let mcOut = spawnSync('node', [join(VERIFY_DIR, 'verify_multiclass_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (mcOut.stdout) console.log(mcOut.stdout.trim());
   if (mcOut.stderr) console.error(mcOut.stderr.trim());
   if (mcOut.status !== 0) mcE2EOK = false;
@@ -746,7 +747,7 @@ if (process.env.VERIFY_VISUAL !== '1') {   // 默认跳过：识图复核由发�
 } else {
   let visOut = null;
   try {
-    visOut = spawnSync('node', [join(BASE, 'verify_visual.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024 });
+    visOut = spawnSync('node', [join(VERIFY_DIR, 'verify_visual.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024 });
   } catch (e) {
     visOK = false;
     console.log('❌ 视觉检查执行失败: ' + e.message.split('\n')[0]);
@@ -783,7 +784,7 @@ console.log('\n=== 职业专长结构 ===');
 console.log('\n=== 导出空值健壮性 ===');
 let exportRobustOK = true;
 try {
-  let ero = spawnSync('node', [join(BASE, 'verify_export_bad_equipment.cjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let ero = spawnSync('node', [join(VERIFY_DIR, 'verify_export_bad_equipment.cjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (ero.stdout) console.log(ero.stdout.trim());
   if (ero.stderr) console.error(ero.stderr.trim());
   if (ero.status !== 0) exportRobustOK = false;
@@ -800,7 +801,7 @@ console.log('\n=== 职业页血量计算器 ===');
 console.log('\n=== 建卡语言选择器 ===');
 let langOK = true;
 try {
-  let lg = spawnSync('node', [join(BASE, 'verify_language_picker.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  let lg = spawnSync('node', [join(VERIFY_DIR, 'verify_language_picker.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
   if (lg.stdout) console.log(lg.stdout.trim());
   if (lg.stderr) console.error(lg.stderr.trim());
   if (lg.status !== 0) langOK = false;
@@ -823,7 +824,7 @@ totalErrors += skillAnchorOK ? 0 : 1;
 
 let hpCalcOK = true;
 try {
-  let hc = spawnSync('node', [join(BASE, 'verify_class_hp_calc.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
+  let hc = spawnSync('node', [join(VERIFY_DIR, 'verify_class_hp_calc.mjs')], { encoding: 'utf-8', timeout: 600000, maxBuffer: 16 * 1024 * 1024 });
   if (hc.stdout) console.log(hc.stdout.trim());
   if (hc.stderr) console.error(hc.stderr.trim());
   if (hc.status !== 0) hpCalcOK = false;
@@ -838,7 +839,7 @@ totalErrors += hpCalcOK ? 0 : 1;
 console.log('\n=== 面板健壮专长 HP 加成 ===');
 let toughHpOK = true;
 try {
-  let th = spawnSync('node', [join(BASE, 'verify_panel_tough_hp_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  let th = spawnSync('node', [join(VERIFY_DIR, 'verify_panel_tough_hp_e2e.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
   if (th.stdout) console.log(th.stdout.trim());
   if (th.stderr) console.error(th.stderr.trim());
   if (th.status !== 0) toughHpOK = false;
@@ -851,7 +852,7 @@ totalErrors += toughHpOK ? 0 : 1;
 
 let classFeatOK = true;
 try {
-  let cfo = spawnSync('node', [join(BASE, 'verify_class_features.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let cfo = spawnSync('node', [join(VERIFY_DIR, 'verify_class_features.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (cfo.stdout) console.log(cfo.stdout.trim());
   if (cfo.stderr) console.error(cfo.stderr.trim());
   if (cfo.status !== 0) classFeatOK = false;
@@ -864,7 +865,7 @@ totalErrors += classFeatOK ? 0 : 1;
 
 let rulesSyncOK = true;
 try {
-  let rsOut = spawnSync('node', [join(BASE, 'verify_rules_sync.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let rsOut = spawnSync('node', [join(VERIFY_DIR, 'verify_rules_sync.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (rsOut.stdout) console.log(rsOut.stdout.trim());
   if (rsOut.stderr) console.error(rsOut.stderr.trim());
   if (rsOut.status !== 0) rulesSyncOK = false;
@@ -877,7 +878,7 @@ totalErrors += rulesSyncOK ? 0 : 1;
 
 let idxOK = true;
 try {
-  let idxOut = spawnSync('node', [join(BASE, 'verify_skill_index.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
+  let idxOut = spawnSync('node', [join(VERIFY_DIR, 'verify_skill_index.mjs')], { encoding: 'utf-8', timeout: 300000, maxBuffer: 16 * 1024 * 1024 });
   if (idxOut.stdout) console.log(idxOut.stdout.trim());
   if (idxOut.stderr) console.error(idxOut.stderr.trim());
   if (idxOut.status !== 0) idxOK = false;
@@ -891,24 +892,24 @@ totalErrors += idxOK ? 0 : 1;
 
 // 角色工作簿业务回归（不以索引条目数替代导入行为验收）
 console.log('\n=== 角色导入导出往返 ===');
-const characterIO = spawnSync('node', [join(BASE, 'verify_character_import_roundtrip.cjs')], {encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+const characterIO = spawnSync('node', [join(VERIFY_DIR, 'verify_character_import_roundtrip.cjs')], {encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
 if(characterIO.stdout)console.log(characterIO.stdout.trim());
 if(characterIO.stderr)console.error(characterIO.stderr.trim());
 const characterIOOK=characterIO.status===0;
 totalErrors+=characterIOOK?0:1;
 
 console.log('\n=== 异形角色表与额外能力 ===');
-const unusualIO=spawnSync('node',[join(BASE,'verify_character_unusual_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+const unusualIO=spawnSync('node',[join(VERIFY_DIR, 'verify_character_unusual_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
 if(unusualIO.stdout)console.log(unusualIO.stdout.trim());if(unusualIO.stderr)console.error(unusualIO.stderr.trim());
 const unusualIOOK=unusualIO.status===0;totalErrors+=unusualIOOK?0:1;
 
 console.log('\n=== 角色字段、进阶职业及原始工作簿完整性 ===');
-const integrityIO=spawnSync('node',[join(BASE,'verify_character_integrity_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+const integrityIO=spawnSync('node',[join(VERIFY_DIR, 'verify_character_integrity_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
 if(integrityIO.stdout)console.log(integrityIO.stdout.trim());if(integrityIO.stderr)console.error(integrityIO.stderr.trim());
 const integrityIOOK=integrityIO.status===0;totalErrors+=integrityIOOK?0:1;
 
 console.log('\n=== 手机 AI 顾问连接与流式回复 ===');
-const mobileAdvisor = spawnSync(process.execPath, [join(BASE, 'verify_mobile_advisor.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+const mobileAdvisor = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_mobile_advisor.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (mobileAdvisor.stdout) console.log(mobileAdvisor.stdout.trim());
 if (mobileAdvisor.stderr) console.error(mobileAdvisor.stderr.trim());
 if (mobileAdvisor.status !== 0) totalErrors++;
@@ -926,25 +927,25 @@ if (rulesBase.stderr) console.error(rulesBase.stderr.trim().slice(-600));
 if (rulesBase.status !== 0) totalErrors++;
 
 console.log('\n=== 帮助页手机搜索与跨页跳转 ===');
-const helpSearch = spawnSync(process.execPath, [join(BASE, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+const helpSearch = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (helpSearch.stdout) console.log(helpSearch.stdout.trim());
 if (helpSearch.stderr) console.error(helpSearch.stderr.trim());
 if (helpSearch.status !== 0) totalErrors++;
 
 console.log('\n=== Android 更新资源与入口 ===');
-const mobileUpdate = spawnSync(process.execPath, [join(BASE, 'verify_mobile_update.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+const mobileUpdate = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_mobile_update.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (mobileUpdate.stdout) console.log(mobileUpdate.stdout.trim());
 if (mobileUpdate.stderr) console.error(mobileUpdate.stderr.trim());
 if (mobileUpdate.status !== 0) totalErrors++;
 
 console.log('\n=== 技能栏与抉择组选项上限 ===');
-const skillCapacity = spawnSync(process.execPath, [join(BASE, 'verify_skill_capacity.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+const skillCapacity = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_skill_capacity.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (skillCapacity.stdout) console.log(skillCapacity.stdout.trim());
 if (skillCapacity.stderr) console.error(skillCapacity.stderr.trim());
 if (skillCapacity.status !== 0) totalErrors++;
 
 console.log('\n=== 自动引导与顾问提示偏好 ===');
-const prompts = spawnSync(process.execPath, [join(BASE, 'verify_prompt_preferences.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
+const prompts = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_prompt_preferences.cjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (prompts.stdout) console.log(prompts.stdout.trim());
 if (prompts.stderr) console.error(prompts.stderr.trim());
 if (prompts.status !== 0) totalErrors++;
@@ -963,7 +964,7 @@ if (process.platform === 'win32') {
 }
 
 console.log('\n=== 主体范围、通用字段和布局变换 ===');
-const generalImportCheck=spawnSync('node',[join(BASE,'verify_character_general_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
+const generalImportCheck=spawnSync('node',[join(VERIFY_DIR, 'verify_character_general_import.cjs')],{encoding:'utf-8',timeout:300000,maxBuffer:16*1024*1024});
 if(generalImportCheck.stdout)console.log(generalImportCheck.stdout.trim());if(generalImportCheck.stderr)console.error(generalImportCheck.stderr.trim());
 const generalImportOK=generalImportCheck.status===0;totalErrors+=generalImportOK?0:1;
 

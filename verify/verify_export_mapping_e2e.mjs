@@ -1,9 +1,9 @@
 // 导出映射 + 回读 E2E：验证新模板的 K/Q/U 动态效果、Q6/Q8/R/Q36-Q42、I89/I100、戏法与 H33-H39 不写
 import { chromium } from 'playwright';
-import { join, dirname } from 'path';
+import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
-const BASE = dirname(fileURLToPath(import.meta.url));
+const BASE = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PANEL = 'file:///' + join(BASE, '斯诺德跑团', '角色面板.html').replace(/\\/g, '/');
 const UPLOAD = 'file:///' + join(BASE, '斯诺德跑团', '上传角色.html').replace(/\\/g, '/');
 

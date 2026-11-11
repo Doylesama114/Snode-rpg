@@ -3,8 +3,8 @@ const assert = require('assert/strict');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { RecoveryStore } = require('./electron-app/recovery-store');
-const { root, launch, js, navigate, waitFor } = require('./scripts/desktop_test_helpers.cjs');
+const { RecoveryStore } = require('../electron-app/recovery-store');
+const { root, launch, js, navigate, waitFor } = require('../scripts/desktop_test_helpers.cjs');
 async function crash(app, id) {
   await app.evaluate(({ BrowserWindow, app }, id) => {
     const win = id ? BrowserWindow.fromId(id) : [...app.__snodeDesktop.lifecycle.records.values()].find(r => r.role === 'main').win;

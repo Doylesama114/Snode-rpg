@@ -1,8 +1,8 @@
 'use strict';
 const assert=require('assert/strict'),fs=require('fs'),path=require('path'),{pathToFileURL}=require('url');
-const {chromium}=require('playwright'),desktop=require('./scripts/desktop_test_helpers.cjs');
+const {chromium}=require('playwright'),desktop=require('../scripts/desktop_test_helpers.cjs');
 let count=0;function pass(n){count++;console.log('PASS '+n);}
-const root=process.argv.includes('--root')?path.resolve(process.argv[process.argv.indexOf('--root')+1]):__dirname;
+const root=process.argv.includes('--root')?path.resolve(process.argv[process.argv.indexOf('--root')+1]):path.resolve(__dirname,'..');
 async function checkPage(p) {
  await p.evaluate(()=>{
   Object.assign(state,JSON.parse(JSON.stringify(STATE_DEFAULTS)));

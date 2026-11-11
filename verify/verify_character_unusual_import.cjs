@@ -1,7 +1,7 @@
 // Independent unusual-layout and extra-ability gate. Personal fixtures are read only when supplied.
 (function(){
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path'),crypto=require('crypto'),{pathToFileURL}=require('url');
-const {chromium}=require('playwright'),X=require('xlsx'),dir=path.join(__dirname,'斯诺德跑团');
+const {chromium}=require('playwright'),X=require('xlsx'),dir=path.join(path.resolve(__dirname,'..'),'斯诺德跑团');
 let browser,passes=0;const failures=[],errors=[];
 async function check(name,fn){try{await fn();passes++;console.log('PASS '+name);}catch(e){failures.push(name+': '+e.message);console.error('FAIL '+name+'\n'+e.stack);}}
 function bytes(book){return X.write(book,{bookType:'xlsx',type:'buffer',bookSST:true,compression:true});}

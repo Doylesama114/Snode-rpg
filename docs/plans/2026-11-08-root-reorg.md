@@ -225,3 +225,20 @@ debug-journal.md            10 KB
 | `设计风格规范.md` | 被 `guild-ui.js/.css`、`common.css` 等 10 处注释按名引用（含 electron 镜像） |
 | `后续更新教程.md` | 有 electron-app 镜像，移动需同步改 sync 路径 |
 | `项目文档.md` | 164 KB，需先拆分再迁入 `docs/architecture/` |
+
+## 阶段 2 执行记录（2026-11-11）
+
+`verify_*.mjs` / `verify_*.cjs` 共 **64 个**已 `git mv` 到 `verify/`；`verify_all.mjs` 留在根做薄壳。
+
+| 改动 | 数量 |
+|---|---|
+| `verify_all.mjs` spawn 路径改为 `VERIFY_DIR` | 48 处 |
+| `.github/workflows/release.yml` 改为 `node verify/verify_*.cjs` | 8 处 |
+| 脚本内 `__dirname` 根路径改为 `path.resolve(__dirname,'..')` | 8 个文件 |
+| 脚本内 `import.meta.url` 根路径补 `..` | 2 个文件 |
+| 脚本内 `./scripts/...`、`./electron-app/...`、`./斯诺德跑团/...` 改为 `../` | 18 处 |
+| `verify_skill_anchor.py` | 留在根（Python，未被移动） |
+
+验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4（既有基线）· Tests 913P 0F**。
+
+顺带修正：`verify_all.mjs` 初次批量替换误把 `verify_all.mjs` 自身与 `verify_skill_anchor.py` 指向 `verify/`，已恢复。

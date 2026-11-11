@@ -2,7 +2,7 @@
 const fs = require('fs'), path = require('path'), assert = require('assert/strict');
 const { spawnSync } = require('child_process');
 const { chromium } = require('playwright');
-const root = __dirname, scratch = path.resolve(root, '_scratch');
+const root = path.resolve(__dirname,'..'), scratch = path.resolve(root, '_scratch');
 fs.mkdirSync(scratch, { recursive: true });
 const dir = fs.mkdtempSync(path.join(scratch, 'mobile-update-test-'));
 assert(dir.startsWith(scratch + path.sep));

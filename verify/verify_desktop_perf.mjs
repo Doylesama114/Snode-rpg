@@ -4,7 +4,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { launch, navigate, js, waitFor, root } = require('./scripts/desktop_test_helpers.cjs');
+const { launch, navigate, js, waitFor, root } = require('../scripts/desktop_test_helpers.cjs');
 const test = await launch();
 const samples = [];
 try {

@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import desktop from './scripts/desktop_test_helpers.cjs';
+import desktop from '../scripts/desktop_test_helpers.cjs';
 const root=process.cwd(), out=path.join(root,'screenshots');
 const rootArg=process.argv.indexOf('--root');
 const contentRoot=rootArg>=0?path.resolve(root,process.argv[rootArg+1]):root;

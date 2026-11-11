@@ -1,7 +1,7 @@
 // Character import/export gate; independent Excel fixtures generated with SheetJS.
 (function regressionTest() {
 const assert=require('node:assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{pathToFileURL}=require('url');
-const {chromium,_electron}=require('playwright'),XLSX=require('xlsx'),root=__dirname,dir=path.join(root,'斯诺德跑团');
+const {chromium,_electron}=require('playwright'),XLSX=require('xlsx'),root=path.resolve(__dirname,'..'),dir=path.join(root,'斯诺德跑团');
 const failures=[];let passed=0,browser,electron;
 async function check(name,fn){try{await fn();passed++;console.log('PASS '+name);}catch(e){failures.push(name+': '+e.message);console.error('FAIL '+name+'\n'+e.stack);}}
 function encode(book,sst=true){return XLSX.write(book,{bookType:'xlsx',type:'buffer',bookSST:sst,compression:true});}
@@ -375,7 +375,7 @@ try {
   const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'character-io-electron-')),profile=path.join(tmp,'profile'),boot=path.join(tmp,'bootstrap.cjs');
   fs.mkdirSync(profile);fs.writeFileSync(boot,`const {app,BrowserWindow}=require('electron');app.disableHardwareAcceleration();app.setPath('userData',${JSON.stringify(profile)});app.setPath('sessionData',${JSON.stringify(profile)});app.whenReady().then(()=>{const w=new BrowserWindow({show:false,width:1440,height:900,webPreferences:{contextIsolation:true,nodeIntegration:false,backgroundThrottling:false}});w.loadURL('about:blank');});app.on('window-all-closed',()=>app.quit());`);
   try{
-   electron=await _electron.launch({executablePath:require('./electron-app/node_modules/electron'),args:[boot]});
+   electron=await _electron.launch({executablePath:require('../electron-app/node_modules/electron'),args:[boot]});
    const p=await electron.firstWindow();await p.route('**/*',r=>r.request().url().startsWith('file:')?r.continue():r.abort());await configure(p);
    await check('Electron 22 import/export and UI 360/390/1440',async()=>{
     await p.goto(pathToFileURL(path.join(dir,'上传角色.html')).href,{waitUntil:'load'});stable((await importBytes(p,bytes)).state);await configure(p);

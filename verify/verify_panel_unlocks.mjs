@@ -2,7 +2,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const root = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
+const here = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
+const root = path.resolve(here, '..');
 const src = fs.readFileSync(path.join(root, '斯诺德跑团', 'panel_engine.js'), 'utf8');
 
 function grab(name) {

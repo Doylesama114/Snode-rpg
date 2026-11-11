@@ -2,8 +2,8 @@
 const assert = require('assert/strict'), fs = require('fs'), path = require('path');
 const { pathToFileURL } = require('url');
 const { chromium, _electron } = require('playwright');
-const { DesktopSettings } = require('./electron-app/desktop-settings');
-const { launch, js, navigate, waitFor, root } = require('./scripts/desktop_test_helpers.cjs');
+const { DesktopSettings } = require('../electron-app/desktop-settings');
+const { launch, js, navigate, waitFor, root } = require('../scripts/desktop_test_helpers.cjs');
 let passed = 0;
 function pass(name) { passed++; console.log('PASS ' + name); }
 (async function () {

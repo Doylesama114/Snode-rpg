@@ -75,10 +75,10 @@ jobs:
           }
           $exe = "electron-app/node_modules/electron/dist/electron.exe"
           if (Test-Path $exe) { $ver = (& $exe --version 2>&1 | Out-String).Trim(); Write-Host "electron --version => $ver" } else { Write-Host "electron.exe missing: $exe" }
-          node verify_desktop_startup.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_desktop_recovery.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_desktop_faults.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_prompt_preferences.cjs --desktop-only; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify/verify_desktop_startup.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify/verify_desktop_recovery.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify/verify_desktop_faults.cjs; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node verify/verify_prompt_preferences.cjs --desktop-only; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Create release notes
         working-directory: electron-app
         run: node ../scripts/create_release_notes.cjs
@@ -158,13 +158,13 @@ jobs:
           $packagedExe = Get-ChildItem -LiteralPath electron-app/dist/win-unpacked -Filter *.exe | Select-Object -First 1
           if (-not $packagedExe) { throw "Packaged application missing" }
           $env:SNODE_PACKAGED_EXE = $packagedExe.FullName
-          node verify_desktop_startup.cjs
+          node verify/verify_desktop_startup.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_desktop_recovery.cjs
+          node verify/verify_desktop_recovery.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_desktop_faults.cjs
+          node verify/verify_desktop_faults.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node verify_prompt_preferences.cjs --desktop-only
+          node verify/verify_prompt_preferences.cjs --desktop-only
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       # 先留存构建产物：即使后面的 Release 上传失败，也能从 artifact 直接恢复，无需重新构建

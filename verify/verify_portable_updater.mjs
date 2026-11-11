@@ -7,7 +7,7 @@ import http from 'node:http';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const U = require('./electron-app/portable-updater.js');
+const U = require('../electron-app/portable-updater.js');
 
 let pass = 0, fail = 0;
 const ok = (name, cond, extra) => { if (cond) { pass++; console.log('  ✓ ' + name); } else { fail++; console.log('  ✗ ' + name + (extra ? ' -> ' + extra : '')); } };

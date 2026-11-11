@@ -2,7 +2,7 @@
 // Scalar, class, auxiliary-sheet and source-workbook integrity gate.
 // Independent, anonymous fixtures are always tested; personal files only when --fixture is provided.
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path'),os=require('os'),crypto=require('crypto'),{pathToFileURL}=require('url');
-const {chromium,_electron}=require('playwright'),X=require('xlsx'),root=__dirname,dir=path.join(root,'斯诺德跑团');
+const {chromium,_electron}=require('playwright'),X=require('xlsx'),root=path.resolve(__dirname,'..'),dir=path.join(root,'斯诺德跑团');
 let browser,electron,passes=0;const failures=[],errors=[];
 async function check(name,fn){try{await fn();passes++;console.log('PASS '+name);}catch(e){failures.push(name+': '+e.message);console.error('FAIL '+name+'\n'+e.stack);}}
 const bytes=b=>X.write(b,{bookType:'xlsx',type:'buffer',bookSST:true,compression:true});
@@ -146,7 +146,7 @@ async function fit(p,resize,s){for(const w of [360,390,1440]){await resize(w);fo
  if(process.argv.includes('--electron')){
   const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'character-integrity-')),profile=path.join(tmp,'profile'),boot=path.join(tmp,'boot.cjs');fs.mkdirSync(profile);
   fs.writeFileSync(boot,"const {app,BrowserWindow}=require('electron');app.disableHardwareAcceleration();app.setPath('userData',"+JSON.stringify(profile)+");app.setPath('sessionData',"+JSON.stringify(profile)+");app.whenReady().then(()=>{const w=new BrowserWindow({show:false,width:1440,height:900,webPreferences:{contextIsolation:true,nodeIntegration:false,backgroundThrottling:false}});w.loadURL('about:blank');});app.on('window-all-closed',()=>app.quit());");
-  try{electron=await _electron.launch({executablePath:require('./electron-app/node_modules/electron'),args:[boot]});const p=await electron.firstWindow();await p.route('**/*',r=>r.request().url().startsWith('file:')?r.continue():r.abort());await p.addInitScript(capture);await p.goto(pathToFileURL(path.join(dir,'角色面板.html')).href,{waitUntil:'load'});
+  try{electron=await _electron.launch({executablePath:require('../electron-app/node_modules/electron'),args:[boot]});const p=await electron.firstWindow();await p.route('**/*',r=>r.request().url().startsWith('file:')?r.continue():r.abort());await p.addInitScript(capture);await p.goto(pathToFileURL(path.join(dir,'角色面板.html')).href,{waitUntil:'load'});
    await check('Electron combat/class dialogs and exports at 360/390/1440',async()=>{assert.ok(X.read(await write(p,base,source),{type:'buffer'}).Sheets._SNODE_META);await fit(p,async w=>{await electron.evaluate(({BrowserWindow},w)=>BrowserWindow.getAllWindows()[0].setContentSize(w,900),w);await p.waitForFunction(w=>innerWidth===w,w);},base);});
   }finally{if(electron){await electron.close();electron=null;}const target=path.resolve(tmp);assert.ok(target.startsWith(path.resolve(os.tmpdir())+path.sep)&&path.basename(target).startsWith('character-integrity-'));fs.rmSync(target,{recursive:true,force:true,maxRetries:3});}
  }
