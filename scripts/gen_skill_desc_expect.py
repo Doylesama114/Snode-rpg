@@ -1,3 +1,4 @@
+from source_paths import source_path
 # -*- coding: utf-8 -*-
 import re, json, zipfile, os
 NL = chr(10)
@@ -44,7 +45,7 @@ for cls in ['德鲁伊','法师','猎人','魔契师','奇械师','战士']:
     arr = fx if isinstance(fx, list) else list(fx.values())[0]
     for s in arr:
         if not isinstance(s, dict) or not s.get('name'): continue
-        body = sections(docx_lines('基础职业技能表/基础职业-%s.docx' % cls)).get(s['name'])
+        body = sections(docx_lines(str(source_path('基础职业-%s.docx' % cls)))).get(s['name'])
         if not body: continue
         cl = [x for x in content_of(body) if x and not re.fullmatch(r'[-—–_=·]{4,}', x)]
         A, hit = [], False

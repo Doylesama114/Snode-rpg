@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "职业页" / "数据"
 PAGES = ROOT / "职业页"
 ELECTRON = ROOT / "electron-app" / "职业页"
-DEITY_DIR = ROOT / "牧师子分支"
+DEITY_DIR = (ROOT / "源文件" / "规则") if (ROOT / "源文件" / "规则").exists() else (ROOT / "牧师子分支")
 
 PAGE_JSON = [
     ("吟游诗人", "吟游诗人.json"), ("圣骑士", "圣骑士.json"), ("奇械师", "奇械师.json"),

@@ -36,11 +36,16 @@ def source_path(name):
         p = ROOT / '源文件' / '更新内容' / key / rest
         if p.exists():
             return p
+    _n = str(name)
+    for _prefix in ('牧师子分支/', '牧师子分支\\'):
+        if _n.startswith(_prefix):
+            _n = _n[len(_prefix):]
+            break
     for d in SOURCE_DIRS:
-        p = d / name
+        p = d / _n
         if p.exists():
             return p
-    return ROOT / name
+    return ROOT / _n
 
 
 def source_root():

@@ -1,3 +1,4 @@
+from source_paths import source_path
 # -*- coding: utf-8 -*-
 import re, json, os, shutil, zipfile
 NL = chr(10)
@@ -37,7 +38,7 @@ def content_of(body):
 STAT = re.compile(r'^[^，,]{2,18}[，,]' + BS + 's*防御等级')
 BLACK = re.compile(r'^(职业等级|你可以通过花费技能点|.{0,8}天赋树$|抉择|一阶|二阶|三阶|四阶|五阶|六阶|七阶|晋升|进阶)')
 def getA(cls, name):
-    body = sections(docx_lines('基础职业技能表/基础职业-%s.docx' % cls)).get(name)
+    body = sections(docx_lines(str(source_path('基础职业-%s.docx' % cls)))).get(name)
     if not body: return []
     cl = [x for x in content_of(body) if x and not re.fullmatch(r'[-—–_=·]{4,}', x)]
     A, hit = [], False

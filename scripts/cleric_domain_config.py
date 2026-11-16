@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DOMAIN_DIR = ROOT / "牧师子分支"
+DOMAIN_DIR = (ROOT / "源文件" / "规则") if (ROOT / "源文件" / "规则").exists() else (ROOT / "牧师子分支")
 
 # Official pantheon from 基础职业-牧师.docx「神圣领域」
 OFFICIAL_PANTHEON: list[dict] = [

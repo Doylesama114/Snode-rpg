@@ -7,6 +7,10 @@
       结尾的正文，导致描述被静默丢弃。本脚本把这两类问题固化为门禁。
 """
 import json, sys, glob
+import sys as _sys, os as _os
+_here = _os.path.dirname(_os.path.abspath(__file__))
+_sys.path.insert(0, _os.path.join(_here, 'scripts'))
+from source_paths import source_path
 sys.path.insert(0, "scripts")
 sys.stdout.reconfigure(encoding="utf-8")
 from pathlib import Path
@@ -43,7 +47,7 @@ ANCHOR_IDS = {"m-skill-3-3-9","wd-skill-27","st-skill-46","st-skill-74","st-skil
 for f in sorted(glob.glob("职业页/数据/*.json")):
     cn = Path(f).stem
     if cn in SKIP: continue
-    docx = Path("基础职业-%s.docx" % cn)
+    docx = source_path("基础职业-%s.docx" % cn)
     if not docx.exists(): continue
     try: dd = json.loads(Path(f).read_text(encoding="utf-8"))
     except Exception: continue

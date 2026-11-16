@@ -305,3 +305,25 @@ debug-journal.md            10 KB
 | `源文件/manifest.json` | 71 个文件 / 57.2 MB（职业 20、规则 18、角色档案 9、素材 6、更新内容 18） |
 
 验收：`node verify_all.mjs` → **Clean 57/57 · Errors 4 · Tests 913P 0F**；真值清单 OK。
+
+## 阶段 6 执行记录（2026-11-16）
+
+### 归档 5 个目录（移出 git，落在 备份区/2026-11/）
+
+| 目录 | 说明 |
+|---|---|
+| _backup/ | 历史备份，191 个已跟踪文件 |
+| 基础职业技能表/ | 重复的 docx 导出；脚本已改用 源文件/职业 |
+| 牧师子分支/ | 神圣领域 docx 超集；4 份独有文件已并入 源文件/规则 |
+| 角色系统/ | 旧版源码（105 MB） |
+| 斯诺德全职业技能树_Win7特供版/ | 旧打包产物 |
+
+### 合并与修正
+
+- 从 牧师子分支 补入 4 份独有领域 docx（季风、幸运女神争锋、战争与谋略、隐秘与变化争锋），源文件/规则 现有 10 份神圣领域；
+- source_paths.py 支持 牧师子分支/ 前缀；
+- cleric_domain_config.py / fix_description_mark_colors.py 的 DOMAIN_DIR 改为优先 源文件/规则；
+- 5 个 apply_skill_desc_sync*.py / gen_skill_desc_expect.py 改读真值 docx；
+- 源文件/manifest.json 更新为 75 个文件 / 57.4 MB。
+
+验收：node verify_all.mjs → Clean 57/57 · Errors 4 · Tests 913P 0F；真值清单 OK。

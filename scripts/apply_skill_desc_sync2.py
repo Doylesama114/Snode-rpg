@@ -1,3 +1,4 @@
+from source_paths import source_path
 # -*- coding: utf-8 -*-
 import re, json, os, shutil, zipfile
 from pathlib import Path
@@ -46,7 +47,7 @@ def write(p, t):
     m = 'electron-app/' + p
     if os.path.exists(m): shutil.copyfile(p, m)
 for cls, skill in tgt:
-    body = sections(docx_lines('基础职业技能表/基础职业-%s.docx' % cls)).get(skill)
+    body = sections(docx_lines(str(source_path('基础职业-%s.docx' % cls)))).get(skill)
     if not body: continue
     cl = [x for x in content_of(body) if x and not re.fullmatch(r'[-—–_=·]{4,}', x)]
     A, hit = [], False
