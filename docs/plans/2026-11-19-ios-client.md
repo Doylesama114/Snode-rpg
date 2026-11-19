@@ -94,3 +94,30 @@
 1. 找 3–5 名 iPhone 内测用户（现有用户即可）；
 2. 每人按「安装引导」走一遍，打开自检页并回传截图/JSON；
 3. 反馈问题走现有 bug-report 入口，附自检信息。
+
+## 10. 执行记录（2026-11-19）
+
+### 已完成
+
+| 项 | 结果 |
+| --- | --- |
+| manifest.webmanifest | 已上线（name/short_name/start_url/standalone/icons/theme） |
+| 图标 | icons/ 下 6 个（180/167/192/512/1024/32），由脚本生成 |
+| SW | sw.js：导航 network-first、静态 cache-first、版本常量、更新不自动接管 |
+| pwa.js | 注册 SW、更新提示条、standalone 标记、storage.persist、自检 API |
+| 页面 meta | 启动台 / 主页 补齐 manifest、apple-touch-icon、theme-color、viewport-fit=cover |
+| 安装引导页 | 安装到主屏幕.html：iOS/Android 步骤 + 自检 + 复制结果 |
+| iOS CSS | 安全区（仅独立模式影响 body）、固定元素避让、输入字号（仅 iOS） |
+| 门禁 | verify/verify_pwa.mjs 接入 verify_all：Clean 58/58 · Errors 4 · 913P 0F |
+| 部署 | GitHub Pages 已发布，manifest/sw/图标/安装页均 200 |
+
+### 未完成（下一步）
+
+- **IndexedDB 迁移**：目前仍用 localStorage，只是加了 persist 与写入失败提示；5MB 上限风险仍在；
+- 离线二次验证：需内测用户在真机确认；
+- OSS 镜像 web 路径当前返回 403（与本次无关，需单独排查 bucket 策略）。
+
+### 测试入口
+
+- 安装页：https://doylesama114.github.io/Snode-rpg/斯诺德跑团/安装到主屏幕.html
+- 说明：docs/guides/ios-内测说明.md
