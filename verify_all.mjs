@@ -927,6 +927,12 @@ if (rulesBase.stdout) console.log(rulesBase.stdout.trim());
 if (rulesBase.stderr) console.error(rulesBase.stderr.trim().slice(-600));
 if (rulesBase.status !== 0) totalErrors++;
 
+console.log('\n=== PWA（iOS 安装 / 离线） ===');
+const pwaOut = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_pwa.mjs')], { encoding: 'utf8', timeout: 60000 });
+if (pwaOut.stdout) console.log(pwaOut.stdout.trim());
+if (pwaOut.stderr) console.error(pwaOut.stderr.trim());
+if (pwaOut.status !== 0) totalErrors++;
+
 console.log('\n=== 帮助页手机搜索与跨页跳转 ===');
 const helpSearch = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_help_search.mjs')], { encoding:'utf8', timeout:180000, maxBuffer:8*1024*1024 });
 if (helpSearch.stdout) console.log(helpSearch.stdout.trim());

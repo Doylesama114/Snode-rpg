@@ -581,3 +581,17 @@ body.gui-page .attr-table, body.gui-page .attr-row,
 body.gui-page .kv-row, body.gui-page .kv-list .kv { align-items: center !important; }
 body.gui-page .attr-table .attr-name, body.gui-page .attr-table .attr-val,
 body.gui-page .kv-row .k, body.gui-page .kv-row .v { vertical-align: middle !important; align-self: center !important; }
+
+/* ===== iOS / PWA 适配（2026-11-19）===== */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .gui-trigger.gui-floating { top: calc(12px + env(safe-area-inset-top)); }
+  .gui-toast { bottom: calc(28px + env(safe-area-inset-bottom)); }
+  html.pwa-standalone body.gui-page { padding-bottom: env(safe-area-inset-bottom); }
+}
+/* 仅 iOS Safari：避免输入聚焦自动放大；用 -webkit-touch-callout 限定，不影响 Chromium 校验 */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 480px) {
+    input, select, textarea { font-size: 16px; }
+  }
+}
+html.pwa-standalone .gui-trigger.gui-floating { top: calc(16px + env(safe-area-inset-top)); }

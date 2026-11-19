@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>安装到主屏幕 · 斯诺德跑团</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#14100c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="斯诺德">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #14100c; color: #efe3c8; font: 16px/1.7 system-ui, -apple-system, "PingFang SC", sans-serif;
+    padding: 24px 18px calc(28px + env(safe-area-inset-bottom)); max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; color: #e8c96a; margin: 0 0 4px; }
+  .sub { color: #b9a887; font-size: 13px; margin-bottom: 22px; }
+  h2 { font-size: 16px; color: #d4af37; margin: 26px 0 10px; border-left: 3px solid #a9822f; padding-left: 10px; }
+  ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .card { background: #1b1510; border: 1px solid #3a2d1a; border-radius: 12px; padding: 14px 16px; margin: 14px 0; }
+  .hint { color: #b9a887; font-size: 13px; }
+  pre { background: #0f0c08; border: 1px solid #3a2d1a; border-radius: 10px; padding: 12px;
+    font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  button { background: #d4af37; color: #1b1510; border: 0; border-radius: 10px; padding: 10px 16px;
+    font-size: 15px; font-weight: 600; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .ok { color: #7ec47e; } .warn { color: #e0a04a; }
+  a { color: #e8c96a; }
+</style>
+</head>
+<body>
+<h1>安装到主屏幕</h1>
+<div class="sub">安装后全屏运行、可离线打开，数据仍在本机浏览器内。</div>
+
+<h2>iPhone / iPad（Safari）</h2>
+<ol>
+  <li>用 <b>Safari</b> 打开本站（必须 Safari，微信/Chrome 内不行）。</li>
+  <li>点底部工具栏的 <b>分享</b> 按钮（方框加向上箭头）。</li>
+  <li>往下找到 <b>添加到主屏幕</b>，点它，再点 <b>添加</b>。</li>
+  <li>回到桌面，点「斯诺德」图标启动。</li>
+</ol>
+<div class="card hint">提示：iOS 对未安装的网页只保留约 7 天数据，<b>请务必先安装</b>；长期不打开时，建议在设置页导出一次存档备份。</div>
+
+<h2>Android（Chrome / Edge）</h2>
+<ol>
+  <li>用 Chrome 打开本站。</li>
+  <li>右上角菜单 → <b>安装应用</b> / <b>添加到主屏幕</b>。</li>
+</ol>
+
+<h2>自检（回传给管理员用）</h2>
+<div class="card">
+  <div class="row">
+    <button id="btn-check" type="button">运行自检</button>
+    <button id="btn-copy" type="button" style="background:#4a3a1e;color:#f3e3b3">复制结果</button>
+  </div>
+  <pre id="out">点「运行自检」后，这里会显示环境信息。</pre>
+</div>
+
+<p class="hint">问题反馈：可回到启动台使用页面右下角的反馈入口，并附上上面的自检结果。</p>
+<p><a href="启动台.html">返回启动台</a></p>
+
+<script src="pwa.js"></script>
+<script>
+(function () {
+  var out = document.getElementById("out");
+  function render(info) {
+    var lines = [];
+    lines.push("standalone: " + info.standalone);
+    lines.push("iOS: " + (info.ios || "n/a"));
+    lines.push("serviceWorker: " + info.serviceWorker);
+    if (info.storage && info.storage.usageMB !== undefined) {
+      lines.push("storage: used " + info.storage.usageMB + "MB / quota " + (info.storage.quotaMB || "?") + "MB");
+    } else { lines.push("storage: " + (info.storage || "unknown")); }
+    lines.push("safeArea: top " + info.safeArea.top + " / bottom " + info.safeArea.bottom);
+    lines.push("ua: " + info.ua);
+    out.textContent = lines.join("\n");
+  }
+  document.getElementById("btn-check").addEventListener("click", function () {
+    if (!window.SnowdPWA) { out.textContent = "PWA 脚本未加载"; return; }
+    window.SnowdPWA.selfCheck().then(render, function (e) { out.textContent = "自检失败: " + e; });
+  });
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    var text = out.textContent || "";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        document.getElementById("btn-copy").textContent = "已复制";
+        setTimeout(function () { document.getElementById("btn-copy").textContent = "复制结果"; }, 1500);
+      });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>
