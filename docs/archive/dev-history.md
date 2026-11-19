@@ -1,0 +1,1607 @@
+# 开发历史与角色面板记录
+
+> 按时间倒序的开发日志，归档保存。
+> 来源：项目文档.md（拆分于 2026-11-19）
+
+## 目录
+
+1. [项目概述](#1-项目概述)
+2. [数据源与格式](#2-数据源与格式)
+3. [系统架构](#3-系统架构)
+4. [完整工作流程](#4-完整工作流程)
+5. [HTML 结构详解](#5-html-结构详解)
+6. [JavaScript 功能实现](#6-javascript-功能实现)
+7. [CSS 样式体系](#7-css-样式体系)
+8. [关键词筛选系统](#8-关键词筛选系统)
+9. [搜索功能](#9-搜索功能)
+10. [移动端适配](#10-移动端适配)
+11. [关键注意事项](#11-关键注意事项)
+12. [开发历史](#12-开发历史)
+13. [文件清单](#13-文件清单)
+
+---
+
+## 12. 开发历史
+
+### 2026-11-06 / v1.0.8104：Mac 下载 ENOENT
+
+Mac 应用内下载必现 `ENOENT ... open '*-mac-arm64.zip'`：旧实现对 302 的处理是「先 createWriteStream，再 close + unlink，同时递归重开同一文件」，GitHub 下载必走 302，于是新流的文件被上一个流的 unlink 删掉，最终 hash 阶段打不开。修复：抽出 `electron-app/mac-download.js`，重定向阶段不碰磁盘，拿到 200 才建流，完成后校验存在与大小，失败重试一次。回归：302→302→200 用例 + `verify_update_flow_e2e.mjs` 126P 0F。详见 `docs/releases/v1.0.8104.md`。
+
+### 2026-11-06 / v1.0.8103：帮助页 section 结构修复
+
+`help.html` 的「基本规则」段缺少 `</div>`（1094/1093），导致后面 10 个规则段整段嵌套进它：`main.help-content` 只有 1 个直接子元素、11 个 section 被嵌套、`s1`–`s10` 左移 29px/窄 58px。另发现 3 组正文（子职业/附赠职业、补充规则、色彩标识说明）落在所有 section 之外，已随各自 section 的闭合标签下移收进正确章节。新增 `scripts/verify_help_structure.py`（section 必须是 main 直接子元素、不得嵌套、正文不得越界、div 平衡）并入门禁，并用「去掉一个 `</div>` 的副本」做过反向验证。详见 `docs/releases/v1.0.8103.md`。
+
+### 2026-11-05 / v1.0.8102：补齐 Mac 更新包（zip）
+
+1.0.8101 的应用内更新依赖 zip，但 `build-mac.mjs` 写死了 `--mac dmg`，实际只产出 DMG，导致 Mac 用户下载后无法安装。修复：构建改为 `dmg zip` 双产物；发布步骤用 `nullglob` 只上传真实存在的文件；客户端对「只提供 DMG」的版本直接提示手动安装。验证：分支上 `build-mac` 与 `mac-manifest` 均 success（dmg + zip + mac.json 齐全）。详见 `docs/releases/v1.0.8102.md`。
+
+### 2026-11-05 / v1.0.8101：Mac 应用内更新
+
+旧实现只做两件事：请求 `api.github.com` + `shell.openExternal(dmg)`（等于让用户自己下 DMG 拖拽），叠加未签名 DMG 的 quarantine，Mac 用户基本装不上。新版改为应用内下载 zip（进度 + sha512）→ 退出后 `ditto` 解压 → `PlistBuddy` 校验版本 → 备份 → 覆盖 → `xattr -dr com.apple.quarantine` → 重启，任一步失败自动回滚；清单按 OSS `mac.json` → GitHub 资源 → API 三级回退；Rosetta 下按 CPU 真实架构选包。应用内下载不产生 quarantine，因此不签名也不会再被 Gatekeeper 拦。验证：真实 macOS（macos-14/15）e2e 覆盖正常/版本不符/包损坏/只读回滚，全绿；`verify_update_flow_e2e.mjs` 122P 0F。详见 `docs/releases/v1.0.8101.md`。
+
+### 2026-11-04 / v1.0.8100：更新时的 ping 黑窗
+
+便携版自更新会闪出 `ping 127.0.0.1 -n 12` 控制台：`spawn(..., { detached: true, windowsHide: true })` 在 Windows 上 detached 优先，`cmd.exe` 拿到新控制台。修复为「`.bat` 承载链路 + `wscript` 隐藏拉起」：wscript 属 GUI 子系统（无控制台），`sh.Run(..., 0, False)` 以窗口样式 0 启动 cmd，detached 保证主进程退出后仍完成覆盖。实测：延迟后标记文件生成、cmd/PING `MainWindowHandle = 0`；`verify_update_flow_e2e.mjs` 114P 0F。详见 `docs/releases/v1.0.8100.md`。
+
+### 2026-11-04 / v1.0.8099：11.04 内容同步 + 色彩标识隐藏
+
+战士 119→121（七阶 征伐/极大逆境·狂攻之潮、五阶 逆流技巧、六阶 机敏光环），蛮斗士 68→82（六阶 14 条），通用天赋树 10 处文本修订。新版 docx 删除了全部 `●`，按「取消但保留」处理：`scripts/preserve_skill_marks.py` 回填 169 条 `cost`，界面用 `SNOWD_SHOW_COLOR_MARKS=false` 统一隐藏。神祇名 `丰收/丰饶` 互为别名（`DEITY_ALIASES` + `resolveDeity()`）。顺带修 7 处「XX之神天赋树」串行标题并加守门脚本。验收：页面巡检 37P 0F、8099 内容守门 8P 0F。详见 `docs/releases/v1.0.8099.md`。
+
+### 2026-11-03 / v1.0.8098：Mac 版本恢复发布
+
+Mac CI 自 v1.0.8083 起连续 13 个版本失败，且打包遗漏 `portable-updater.js` 让 app 一启动就崩。修复：`sync-check` 对纯文档只警告、mac `files` 白名单补 `portable-updater.js`、`main.js` 防御性 require、CI 失败输出 `::error::` 注解、新增「main.js 依赖必须落在 mac 白名单」回归测试。分支 `codex/mac-installer-fix` 实测 arm64 + x64 两个 job 全绿（含 codesign 与启动烟测）。详见 `docs/releases/v1.0.8098.md`。
+
+### 2026-11-03 / v1.0.8095：技能详情重复渲染修复
+
+`formatSkillDetailHtml()` 对 `level_upgrades` 的每条升级都输出一次 `section`（归属描述句），而同一 section 往往被多条升级共用、且与 `描述` 相同 → 奇械师特性一句话出现 3 次。修复：记录已输出段落（描述/正文/效果）的归一化集合，section 只在未出现时输出一次，多条升级自动归组。全量 2829 条技能中 124 条有重复 → 修复后 0 条；新增 `verify_panel_detail_dedup.mjs`（6 断言）并接入门禁。详见 `docs/releases/v1.0.8095.md`。
+
+### 2026-11-01 / v1.0.8094：旧用户「打不开 / 装不上」修复
+
+真机取证：用户注册表 `UninstallString` 指向 `D:\SnodeRPG`，而该目录**已不存在**。源码还原链路：`uninstallOldVersion` 执行旧卸载器 → 旧卸载器把目录**连文件带目录一起删掉**、又因删不掉自己返回非零 → 重试 5 次弹中文「无法关闭」→ 取消后新安装器写 `Uninstall *.exe` 时无处可写 → 「不能打开要写入的文件」→ 安装中止、应用消失。
+
+修复：`customInit` 做目标目录体检（无主程序或不可写 → 清 `InstallLocation` 并回退到 `%LOCALAPPDATA%\Programs\<产品名>`）、清空 `UninstallString` 让旧卸载器永不执行、杀掉残留卸载器并清只读属性后删除；`customInstall` 校验 `exe` + `app.asar`，缺失时提示改用 zip。校验：`verify_update_flow_e2e.mjs` 111P 0F。详见 `docs/releases/v1.0.8094.md`。
+
+### 2026-11-01 / v1.0.8093：更新「只下载不安装」修复
+
+真机日志显示 8087 连续三次 `portable-downloaded` 后再无下文，随后必出现 `updater-installer-missing reason=quit`：便携模式退出时只有安装器分支，等于什么都不装；UI 文案又写着「重启后生效」，把用户直接引到这条死路。
+
+修复：`will-quit` 增加便携分支（退出即 spawn 覆盖命令，`skipExit` 防重复 exit）；下载完成写 `pending-update.json`，启动时读取断点直接补装（不再重下 190 MB）；启动台去掉 `window.confirm`，文案改为「关闭应用时会自动安装」；新增 6 类更新诊断日志。校验：`verify_update_flow_e2e.mjs` 105P 0F。详见 `docs/releases/v1.0.8093.md`。
+
+### 2026-10-31 / v1.0.8092：去掉学习面板的阶位锁与抉择锁
+
+`isTierUnlocked()` 改为恒真、`getChoiceGroupStatus().full` 改为恒假，于是三阶及以上不再需要经验值/等级解锁，抉择组选满后其余选项也不再变灰。每日交互：学习面板直接展示全部阶位，`(已选 X/Y)` 仍作提示。
+
+改动集中在 `panel_engine.js` 两个函数（带 `v1.0.8092` 注释，可一行还原）；存档结构不变。新增 `verify_panel_unlocks.mjs`（13P 0F）接入门禁。详见 `docs/releases/v1.0.8092.md`。
+
+### 2026-10-29 / v1.0.8091：安装器诊断日志
+
+用户仍可能卡在更新环节，而应用日志看不到安装器做了什么。本版给安装器加日志：每次运行 Setup 向 `%APPDATA%\snowd-skill-tree\installer-logs\setup-<版本>.log` **追加**一段记录，包含 cmdline/installdir、`whoami /groups`（判提权）、`tasklist` 输出、每次 `taskkill` 退出码、最终结论与旧卸载器结果；失败弹窗直接显示该文件路径。
+
+应用侧「导出诊断日志」改为单文件 `.txt`：版本/系统/路径 + 应用日志 + 全部安装器日志，用户只需发一个文件。校验：`verify_update_flow_e2e.mjs` 95P 0F。详见 `docs/releases/v1.0.8091.md`。
+
+### 2026-10-28 / v1.0.8090：重建发布产物（内容同 8089）
+
+8089 发布时 OSS 因账号 403 未能镜像；恢复后我删 tag 重推以触发 mirror，结果 GitHub Release 变成空发布（`expanded_assets` 仅 4.5 KB，匿名 API 404），`releases/latest` 停在 8088；本地 `gh` 未登录无法补传。
+
+因此以正常路径重建：**8090 的内容 = 8090 = 8089**，目的是让 GitHub Release 与 OSS 重新对齐同一版本。纪律上记住：**不要用删 tag 重推的方式补镜像**，直接重跑失败的 job 或走新版本。
+
+### 2026-10-28 / v1.0.8089：安装器宏改用 taskkill 退出码
+
+8088 的宏用 `tasklist /FI "USERNAME eq %USERNAME%"` 判断进程存活 —— `%USERNAME%` 在 NSIS 里**不会展开**，过滤条件恒不命中，安装器因此认为进程不存在而直接放行；同时它依赖 `find.exe` 解析本地化文本，脆弱。
+
+8089 改为以 **taskkill 自己的退出码**作为循环条件：`0`=杀成功、`128`=进程不存在、其他=继续重试（最多 20 次 × 1 秒），仍失败才提示「任务管理器结束进程 / 以管理员身份运行」。判据从「进程是否存在」变成「能不能杀掉」，与真正的需求一致，也不再依赖文本输出与系统语言。
+
+验证：makensis 3.0.4.1 编译通过；真机跑宏，活进程存在时 `attempts=1` / 退出码 128 → 2.1 秒内结束、不再阻塞；`verify_update_flow_e2e.mjs` 90P 0F。详见 `docs/releases/v1.0.8089.md`。
+
+### 2026-10-28 / v1.0.8088：安装器「无法关闭应用」死循环修复
+
+旧客户端（≤1.0.8082）点「检查更新」时，Setup 以 `--updated /S` 运行，electron-builder 的 `_CHECK_APP_RUNNING` 用「进程路径以 `$INSTDIR` 开头」匹配、再用 `Stop-Process -Force` 杀；遇到提权进程、跨用户共用目录、或 `$INSTDIR` 只是路径前缀时永远杀不掉，弹「无法关闭，请手动关闭后点重试」，而重试窗口只有 1s+2s，点了也没用。
+
+修复：`installer.nsh` 接管 `customCheckAppRunning` —— 按**进程名** `taskkill /F /T`（只处理当前用户）、最多 20 次、失败给可执行提示（任务管理器 / 以管理员身份运行）。同时移除 `preInit`（曾把安装器钉到 `D:\SnodeRPG`，导致 `$INSTDIR` 与真实安装目录错位）。校验 `verify_update_flow_e2e.mjs` 新增 6 条断言（86P 0F）。详见 `docs/releases/v1.0.8088.md`。
+
+### 2026-10-28 / v1.0.8087：隐藏神系「季风之神」
+
+牧师新增第 10 个已解锁神圣领域，但定位为**隐藏神系**：只出现在职业技能树（`职业页/牧师.html` 第 14 个神祇 chip + `pr-panel-monsoon`），不进建卡神祇选择（硬编码 `CLERIC_DEITIES` 不动）、不进学习面板（领域技能本就不在 `SKILL_DATA['牧师']`，本次再给 21 行数据加 `hidden: true`）、不改 help 领域表与 advisor。品类：3 风格（长风/潮息/新生）× 一阶/二阶 + 初始专长 2 + 初始特性 3，共 21 条目。实现：`cleric_domain_config.HIDDEN_DEITIES` + `pantheon_for_json()` 输出 `hidden` + 面板数据按域打标；校验新增 3 条隐藏边界断言（chips 14 / locked 3）。详见 `docs/releases/v1.0.8087.md`。
+
+### 2026-10-27 / v1.0.8086：旧版本迁移桥
+
+老客户端（≤1.0.8082）只能用安装器链路更新，而安装器在 `--updated` 时会先跑旧卸载器，失败就 `SetErrorLevel 2` 中止。修复放在安装器一侧：`installer.nsh` 定义 `customUnInstallCheck` / `customUnInstallCheckCurrentUser`，electron-builder 的 `handleUninstallResult` 检测到宏后直接 `Return`，不再弹窗、不再 Quit，改为覆盖写入。于是老用户点「检查更新」就能一次跳到 1.0.8086，之后走便携链路。校验 80P 0F。详见 `docs/releases/v1.0.8086.md`。
+
+### 2026-10-27 / v1.0.8084：打包清单修复
+
+8083 引入的 `portable-updater.js` 未列入 electron-builder 的 `files`，打包后主进程 require 失败、应用启动即崩，CI 卡在 `Verify packaged desktop executable`。本版把它加入清单，并新增门禁断言：**main.js 里所有本地 `require('./x.js')` 必须出现在 `files` 清单中**（77P 0F）。便携版自更新机制（portable.json + zip + robocopy 覆盖）从本版起可用。详见 `docs/releases/v1.0.8084.md`。
+
+### 2026-10-27 / v1.0.8083：切换便携版 + 自更新
+
+安装器路线彻底放弃：更新时它会先运行旧版本卸载器，而卸载器只认烘焙目录；搬动目录（D 盘/junction/手写注册表）必然失败。实验也证明 junction 目标写不进（NSIS CopyFiles 不穿过重解析点）、`/S /D=` 不生效、向导选 D 盘会卡在写卸载器。
+改法：新增 `electron-app/portable-updater.js`（清单解析/带进度下载/sha512 校验/tar 解压/替换命令构造），`main.js` 增加 `PORTABLE_MODE` 分流检查·下载·安装三个入口；清单为 `releases/latest/portable.json`（OSS 优先、GitHub 资产回退）；构建增加 `zip` 目标，CI 生成并镜像 portable.json。替换用 `robocopy /E /IS /IT`（不删旧文件），应用完全退出后执行并重启。门禁新增 `verify_portable_updater.mjs`（19 条，含真 zip 端到端）。详见 `docs/releases/v1.0.8083.md`。
+
+### 2026-10-27 / v1.0.8081：安装前剥离旧卸载器
+
+自动更新最后一道坎：安装器 `--updated` 会先执行旧版本目录里的 `Uninstall *.exe`，`nsExec::Exec` 拿到非 0 就中止并报 `Failed to uninstall old application files`。该卸载器在本项目环境下固定返回 2（目录搬迁/注册表外部写入/无卸载记录都会让它空转）。修复：`launchInstallerDelayed` 在 spawn 之前调用 `removeOldUninstaller()` 删除安装目录里的 `Uninstall *.exe`，安装器找不到就不走卸载分支、直接覆盖写入并生成新卸载器。手工端到端验证：删除后 `--updated /S` 退出码 0、389 文件完整、新卸载器生成。校验 60P 0F。
+
+### 2026-10-27 / v1.0.8079：preInit 只写 HKCU
+
+1.0.8078 安装器退出码 2、什么都没装：`preInit` 同时写 HKLM 与 HKCU，而 `perMachine: false` 的按用户安装不弹 UAC，写 HKLM 直接失败。本版只写 HKCU 的 `InstallLocation = D:\\SnodeRPG`（per-user 安装的安装位置本来就记录在 HKCU，安装器与更新器读同一个键）。详见 `docs/releases/v1.0.8079.md`。
+
+### 2026-10-27 / v1.0.8078：安装器改为 oneClick（自动更新根因收尾）
+
+自动更新一直卡在 `Failed to uninstall old application files: 2`，根因是安装器形态：项目用的是 assisted（`oneClick: false`），其更新流程要「先卸载旧版本」，而 electron-updater 静默调用它时没有界面、任何一步失败只能返回 2。本版改为 **`oneClick: true`**（electron-updater 官方支持的形态，覆盖写入、无卸载步骤），并用 `installer.nsh` 的 `preInit` 向 HKLM/HKCU 写入 `InstallLocation = D:\SnodeRPG`，安装与后续自动更新都落在该目录；自定义脚本精简为 ASCII 避免 NSIS 编码问题；桌面快捷方式改默认创建。**从 ≤1.0.8077 升级必须手动装一次**（两种安装器的卸载记录不兼容）。详见 `docs/releases/v1.0.8078.md`。
+
+### 2026-10-27 / v1.0.8077：更新链路验证版
+
+仅版本号变更，用于验证 1.0.8076 的延迟安装闭环：自动下载 → 关闭应用 → 12 秒后静默安装 → 重开为 8077；日志应为 `updater-install-launched` → `updater-install-applied` → `updater-cache-purged`。详见 `docs/releases/v1.0.8077.md`。
+
+### 2026-10-27 / v1.0.8076：修复延迟安装的崩溃与空转
+
+1.0.8074/8075 的延迟安装有三个缺陷：①命令拼接残留 Python 写法 `chr(34)` → 运行时 ReferenceError，触发「启动异常」弹窗；②`spawn('cmd.exe', ['/c', cmd])` 缺 `windowsVerbatimArguments`，Node 给整串加引号后 `&` 不再是命令分隔符，安装器根本不执行；③`app.getPath('localAppData')` 不是合法 Electron 路径名，TEMP 硬化与缓存清理静默失效（日志 `updater-cache-prune-failed`）。修复：`String.fromCharCode(34)` 拼引号、spawn 加 `windowsVerbatimArguments: true`、基址改用 `process.env.LOCALAPPDATA`。校验改为**真实执行**：从 main.js 提取命令构造，用带空格的假安装包跑一遍并断言标记文件（53P 0F）。详见 `docs/releases/v1.0.8076.md`。
+
+### 2026-10-27 / v1.0.8075：更新链路验证版
+
+仅版本号与说明变更。8074 的「延迟 12 秒拉起安装器」只有在存在更新版本时才触发，所以用这个小版本做端到端验证：自动下载 → 关闭应用 → 12 秒后后台静默安装 → 重开为 8075；安装后 `%LOCALAPPDATA%\snowd-skill-tree-updater` 应只剩 `current.blockmap`。验证日志关键字：`updater-install-launched` / `updater-install-applied` / `updater-cache-purged`。详见 `docs/releases/v1.0.8075.md`。
+
+### 2026-10-27 / v1.0.8074：安装器延迟拉起（修复静默卸载失败）
+
+自动更新最后一步失败：日志显示 `Executing … --updated,/S,--force-run` 之后 3 秒应用才 `Quitting application`，安装器在应用仍占用文件时尝试卸载旧版本，静默模式下 NSIS 无法弹「关闭应用」对话框 → 卸载器返回 2（`Failed to uninstall old application files`）。本版改为 `autoInstallOnAppQuit = false` + 新增 `launchInstallerDelayed()`：用分离进程 `cmd /c ping 127.0.0.1 -n 12 >nul & "<安装包>" --updated /S --force-run` 先等应用彻底退出再安装，`child.unref()` 保证应用退出后安装器仍能完成，并用 `installerLaunched` 守卫只拉起一次；`will-quit` 保留兜底。安装包路径改取 `info.downloadedFile`。校验：`verify_update_flow_e2e.mjs` 58P 0F（新增 11 条）。详见 `docs/releases/v1.0.8074.md`。
+
+### 2026-10-27 / v1.0.8073：更新安装包清理 + TEMP 加固
+
+桌面端更新装不上且安装包堆积的两项维护：①**装完即清**（版本与 `pendingVersion` 匹配时删 `pending\` 与 `installer.exe`）+ **7 天兜底清理**，清理前用 `updaterBusy()` 跳过正在下载/待安装的包，保留 `update-info.json`；本机实测 `%LOCALAPPDATA%\snowd-skill-tree-updater` **300.4 MB → 0.2 MB**。②**TEMP 加固**：启动时把 `process.env.TEMP/TMP` 归一化到 `%LOCALAPPDATA%\Temp`（不经 TEMP 自身推导），子进程与安装器不再继承坏值——本机用户级 TEMP 曾被设为 `D:\dsh-temp`，导致所有 NSIS 安装器报 `Error writing temporary file` 并静默失败。另关闭差分下载（OSS 不支持 `multipart/byteranges`）与 web 安装器告警。校验：`verify_update_flow_e2e.mjs` 新增 11 条断言（47P 0F）。详见 `docs/releases/v1.0.8073.md`。
+
+### 2026-10-27 / v1.0.8072：圣骑士扩到六阶（10.26 文档）
+
+圣骑士按作者 10.26 文档更新：技能 58 → 69（页面 68），惩戒/守护/圣洁各补一段六阶（+11 技能，12 级 + 500 经验解锁），热诚仍止于五阶；**色标大幅取消**（53 → 3：黄金连打、英雄气概、破邪战旗），44 个技能补充前置条件。热诚五阶「盲目信念」按作者要求下线：页面/导航/搜索不再显示，数据保留并标记 `hidden: true`，老角色详情不受影响。配套改动：`verify_skill_effects_complete` 支持 hidden 技能与新增来源例外、同名白名单 170 → 175 组、导航阶位分组 23 段全部有锚点。重跑 `apply_paladin_sync.py` 需带 `preserve_skill_ids={'p-skill-1065'}`。详见 `docs/releases/v1.0.8072.md`。
+
+### 2026-10-26 / v1.0.8071：桌面端自动更新修复（镜像优先）
+
+自动更新长期不生效的根因：v1.0.8065 起 `runAutoUpdateCheck()` 用 `sources: ['github','oss']` 且 `autoFallback: false`，而 `autoUpdater.on('error')` 的回退分支要求 `autoFallback === true`，导致回退代码成为死代码；实测 GitHub exe 下载仅 **15 KB/s**（157 MB 约 3 小时），OSS 为 **4,619 KB/s**（约 35 秒）。本版改为镜像优先（`['oss','github']`）、按已尝试源切源（各一次，不来回打转）、低速熔断（<100 KB/s 持续 60 s 或 120 s 无进度即取消并切源）、本次运行内 10/30 分钟重试、安装前写入待安装版本并在重启后比对（`updater-install-not-applied` 可见于诊断），更新日志保留完整消息体。校验：`verify_update_flow_e2e.mjs` 新增 16 条断言（36P 0F）。详见 `docs/releases/v1.0.8071.md`。
+
+### 2026-10-26 / v1.0.8070：《冒险者基础规则》10.25 版落库
+
+帮助页 12 个规则章节按 10.25 工作簿同步（校正 25 处、补充 16 段，章节数/表格数/TOC 全部不变，三视口无溢出）；兼职规则放开「战士 × 召唤师」并在帮助页矩阵、不可兼职列、`REF_SUBCLASS_REQS`、顾问数据四处对齐；`REF_LEVELUP` 改为由 `LEVEL_TABLE` 派生，修掉主 5 级 20300、主 20 级 2030000、子 4 级 20300 三处坏值（T18 断言锁死）；色彩标识「浅色」改名「碧色」（607 处，`id=light` 不变，老存档读取时自动迁移）。待定项：技能点上限与溢出转 50 XP、附赠职业升级（本版未实现）。详见 `docs/releases/v1.0.8070.md`。
+
+### 2026-10-25 / v1.0.8069：健壮专长血量与专长导出槽位
+
+角色面板「健壮」过去按“当前等级 ×2”计算，等于把选择前的等级也倒补了一遍，多算量恒为 `2×(选择等级−1)`；同时面板与职业页计算器口径不一致，而校验脚本此前“刻意不与面板比对”，缺陷长期未暴露。本版把加成收敛为唯一实现 `featHpBonus()`（`2×max(0, 当前总等级 − 选择时总等级 + 1)`），获得专长时快照 `pickTotal`/`clsIdx` 以支持多职业精确计算，导入档无快照时按 4 级回退；并删除只写不读的 `_hp_per_level_bonus`。另修正导出槽位映射 `{12:40}` → `{13:40}`，13 级专长不再错位到 K36 或被丢弃。测试 889 → 909，新增面板健壮 E2E 并接入门禁，职业页校验改为与面板逐场景比对。详见 `docs/releases/v1.0.8069.md`。
+
+### 2026-10-25 / v1.0.8068：门禁加固
+
+`verify_all.mjs` 新增两节：德鲁伊同步（104 条 / 四阶 27 / cost 全空 / 三方 ID 对齐）与奇械师·炽擎窄口径（16 条 / 其余 138 条零变化）。同时修掉 `verify_druid_sync.py` 只打印 PASS/FAIL 却不返回退出码的缺陷——此前它即使失败也不会让门禁变红。技能数据与 v1.0.8067 完全一致。详见 `docs/releases/v1.0.8068.md`。
+
+### 2026-10-25 / v1.0.8067：10.24 技能更新（德鲁伊 + 奇械师·炽擎）
+
+德鲁伊 77→104（7 个风格各补四阶，共 27 条；导航改「风格 → 阶位」两级）；奇械师·炽擎风格 8→16（新增三阶 4 / 四阶 4，其余 5 风格 138 条零改动）。技能彩色成本取消范围扩大到德鲁伊全职业与炽擎风格。工程侧为「只更新部分风格」的源文档建立了窄口径管线：`apply_partial_style_sync.py`（只同步指定风格，其余 preserve）、`insert_class_skills.py`（续号插入新技能+补段落+补导航）、`verify_artificer_heat_style.py`（零改动断言），并让 `verify_skill_effects_complete` / `verify_skill_text_format` / `repair_skill_effects` 按技能自身 `source.file` 解析来源。详见 `docs/releases/v1.0.8067.md`。
+
+### 2026-10-24 / v1.0.8066：10.23 技能更新
+
+四份 10.23 源文档落库：谋士 121→144（新增 25 条四阶、删慷慨术）、萨满祭司 98→103（新增 5 条风暴四阶，含笔误更正的「风雷抗性」）、召唤师 47→61（新增 18 条四阶，契约指令系列改名召唤指令并继承原 ID，删蓝焰术）、通用天赋树 409→401（删 8 条符文）。技能彩色成本按新规则取消（本版只涉及这四个文件），其余职业暂保留，技能点卡 14 色芯片未改动。工程侧：`class_sync_core` 支持纯被动天赋并保留描述首段、`sync_class` 重写 source 段落范围、三个 `rebuild_*` 按名保留 ID 与元数据、同名技能改白名单基线、规则完整性新增来源例外；页面重建后恢复职业专长区、契约切换区、抉择组、血量计算器与懒渲染。详见 `docs/releases/v1.0.8066.md`。
+
+### 2026-10-22 / v1.0.8065：发布链路修复
+
+v1.0.8064 的 GitHub Release 生成后消失（删 tag 会异步连带删除其 Release），`/releases/latest` 停在 v1.0.8063，而桌面自动更新优先读它，导致老用户被告知「已是最新」。本版改用全新 tag，并修三处链路缺陷：更新器按版本比较（源落后就换源，自动检查改为 github→oss 双源）、`release.yml` 建 Release 支持并发已存在、CI 新增发布后自检（资产缺失或正文过短判红）。`build-mac.yml` 的补发条件补上 `inputs.ref`，`工作规则.md` §1 增加「禁止删除已推送的 v* tag」与「验收以资产为准」。本版 mac 构建通过、两个 DMG 已随包发布；无安装包时的中性提示保留备用。详见 `docs/releases/v1.0.8065.md`。
+
+### 2026-10-22 / v1.0.8064：个性背景色彩标识
+
+个性四类（特点/理念/羁绊/缺陷）共 1092 项从新版《个性与背景创建规则.xlsx》序列号列底纹取色，写入 `bg_personality.json` 的 `colors` 并列字段；创建页前置色名、资料库与角色面板显示色块、导出文档追加色名（导入侧剥离）。新增 `bg_mark.js` 共享色标模块与 `build_bg_colors.py --check` 门禁（xlsx ↔ JSON 全量 1092 项）。新增 26.10.22 色彩标识重做开屏公告（仅 ✕ 可关）。学习技能与天赋改为只校验技能点，不再校验色彩标识（显示全部保留）。修复平民英雄「命定事件」误并入特点。规则页 help.html 未改动，待专门规则文件。详见 `docs/releases/v1.0.8064.md`。
+
+### 2026-10-18 / v1.0.8063：技能内容重复修复
+
+修复 11 个带召唤单位技能的单位属性块重复渲染（unit-card + upgrade 子行），单位卡改为跟随对应升级行；清理 3 处模板外旧残留（含 1 处跨技能残留）与通用天赋树 2 处兄弟技能吞并；新增内容重复门禁并接入 verify_all。全量门禁 ALL CLEAN（57/57 · 889P 0F）。已知遗留：吟游诗人「静滞力场」字段丢失属 199 样本专项。详见 docs/releases/v1.0.8063.md。
+
+### 2026-10-08 / v1.0.8047：顾问角色快照与 Mac 发布
+
+旧 Mac 安装包使用了创建页变量笔误 `char.className`；新版基于线上最新源码，正确读取 `CHAR.className`。补充真实页面适配器的回归检查，覆盖两个副本及八个建卡步骤，并接入 Windows／Mac 发布前检查。Mac 沿用最新 Electron 44.5.1 桌面壳、诊断与恢复模块，发布 arm64／x64 DMG；资源目录、编辑快捷键、Dock 重开及架构匹配下载均适配。发行说明见 `docs/releases/v1.0.8047.md`。
+
+### v1.0.8041（2026-10-03）
+
+加入启动台和设置页的持久提示开关，保持手动顾问可用，修复自动引导重复触发及迟到气泡；整合角色表结构识别与空白模板回归修正。发布前后验收包括真实桌面偏好状态及故障恢复。详见 docs/releases/v1.0.8041.md。
+
+### v1.0.8040（2026-10-03）
+
+本轮整合角色工作簿完整性与跨职业技能身份、全职业技能效果及单位数据，并加入 Windows 桌面单实例、独立恢复草稿、失败界面和持久诊断。运行时更新至 Electron 44.5.1，保留安全隔离；发布前后运行真实入口与安装产物故障验收。详见 docs/releases/v1.0.8040.md 和 docs/desktop-recovery.md。
+
+### v1.0.7279 桌面端性能优化：职业页懒渲染 + 崩溃自愈（2026-09-20）
+
+- **诊断**：用户反馈桌面端长时间使用后卡顿、内存占用大、最终白屏。真机实测（Electron 22.3.27 / v1.0.7278）：12 轮职业页来回切换后渲染进程累计 **356,240** 个 DOM 节点、存活文档 11 个、进程内存 **1,017MB**；A/B 对照（关闭 BackForwardCache）排除缓存因素，强制 GC 后可全部回收 → 属「可回收但长期不回收」的垃圾堆积；渲染进程最终被杀而主进程无崩溃处理 → 白屏
+- **修复**：职业页技能卡懒渲染（18 页 / 2,588 张卡）、页面卸载显式 GC、主进程 `--expose-gc` + 内存看门狗、崩溃自愈、搜索防抖、hash 定位瘦身、预览用后销毁、首页搜索结果同页预览、更新策略改确认后下载、子窗口限流、注入脚本合并、性能自检入口、存档基线缺陷修复
+- **结果**：累计节点 356,240 → **33,221**；进程峰值 1,017MB → **430.7MB**；法师页最长长任务 1,614ms → **287ms**；搜索阻塞 24ms → **0.2ms**；崩溃后 **1 秒自愈**
+- **门禁**：新增 `verify_class_lazy_e2e.mjs`（32 断言）并接入 `verify_all.mjs`；全量 Clean 52/52
+- 完整诊断与计划见 `docs/desktop-performance.md`
+
+### v1.0.7209 世界观架构插图扩充：146 张随文渲染（2026-08-13）
+
+- docx 新增 116 张插图（30 → 146，19.3MB）；同步管线修复图文共存段落漏图、多图段落仅首图 → 146/146 全量提取
+- L7 lore 重建 188 块；验证 146/146 图加载 0×404、TTS 保留、electron 镜像一致、verify_all 44/44 全绿
+
+### v1.0.7200 世界观架构更新：29 张插图 + 宗主名标粗（2026-08-12）
+
+- docx 更新（四境/周边政权/组织/位面插图 29 张 + 双地图）；sync 管线升级（run 粗体/全量图提取/图片随文）
+- 宗主名 18 个粗体；L7 lore 重建 188 块；验证 29/29 图、18/18 标粗、verify_all 全绿
+
+### v1.0.7199 牧师神圣领域新增「公正与荣耀之神」（2026-08-11）
+
+- 耀光/圣洁/自省 3 风格、2 起始专长 + 15 技能入库；标识颜色黄/白/青/蓝/紫双色 13 点零黑色
+- 神祇法表 7/10 已公布、锁定 3；search-index 2532
+- 管线加固：HEAD 基底仅注入新领域，保留既有领域 roll/unit tables；verify 期望同步
+- 验证：verify_cleric_domains PASS、verify_all 44/44 页 852 断言全绿
+
+### v1.0.7198 角色面板重构 + 数据一致性校验（2026-08-10）
+
+- render() 1083 行拆 15 区块函数（零行为变化，装备监听器顶层注册）；ATTR_NAMES 统一 3 文件 16 处
+- 新增 verify_panel_data_sync.py 三数据源校验并接入 verify_all；修复 SKILL_DATA/effects 漂移（2096 对齐）、法师幻术三阶 7 技能归位、起始特性 tier 误标、build 管线 starting 继承缺陷
+- 验证：verify_all 44/44 页 852 断言、三源 0 差异、全功能交互测试通过（拖拽/升级/学习/导出等）
+
+### v1.0.7197 进阶详情全量入库 + 三职业数据修正（2026-08-10）
+
+- 已公布进阶详情 49→55：冰霜法师补全（7 新法术+补给）、狂热十字军/刺客/防御者/青龙尊者/朱鹤尊者 全量效果；飞贼/奥术师 docx 修订同步；6 处详情解锁
+- advisor advancement_skills 27→55 documented；三职业（吟游诗人/游荡者/萨满祭司）对照 docx 修正阶位/风格/缺失技能
+- 补交 斯诺德世界观架构.docx / 已公布进阶职业.docx 源文件；.gitignore 增加 pyc 规则
+- 验证：verify_published_advancement PASS、advisor validate 全过、verify_all 44/44 页 852 断言
+
+### v1.0.7146 角色面板移动端优化（2026-07-31）
+
+- 天赋树容器 max-width:100% 使横向滚动生效，修复 375px 视口下 625px 溢出
+- 技能表改为所在 section-body 横向滚动（:has 选择器精准匹配），表格完整可读
+- 验证：移动端无溢出、按钮/面板布局正常、全量回归 42 页 / 846 断言
+
+### v1.0.7145 职业页 UX 增强（2026-07-31）
+
+- Scrollspy 当前位置高亮 + 侧栏展开、回到顶部按钮；搜索高亮描边对比度
+- 前置/额外条件技能引用链接化；升级行 Lv 徽标（原文保留）；SP 彩色徽章（属性表标识不动）
+- 白色底纹风格（死灵/妙手/诙谐/圣洁/虔佑）浅灰视觉兜底（纯 CSS）
+- 验证：全量回归 42 页 / 846 断言
+
+### v1.0.7144 职业页：起始特性补全风格色 + 跨职业同名风格冲突修复（2026-07-31）
+
+- 12 个职业 53 个起始特性技能按 docx 底纹补全/纠正 style，起始特性卡片恢复风格底纹
+- article 增加 data-class 职业标识，解决「防护/机敏/射击」等跨职业同名风格被 CSS 覆盖串色
+- 验证：起始特性色 10/10、跨职业冲突 6/6、全量回归 42 页 / 846 断言
+
+### v1.0.7143 职业页交互修复：关键词筛选 / 右下角面板 / 首页搜索（2026-07-31）
+
+- 类型头关键词（战技/法术/天赋…）补入筛选读取层，点击不再全灭；右下角面板按类型分组 + 搜索框 + 计数 + 折叠，常规词按频次排序
+- 首页全局搜索双通道（fetch + search-index.js script 降级），file:// 与桌面端恢复可用；build 脚本双输出并同步 electron
+- 修复武僧页脚本丢失与 HTML 闭合；特殊专长/通用天赋树页接入筛选系统
+- 验证：全量回归 42 页 / 846 断言；三功能 Edge 实测通过
+
+### v1.0.7142 职业页表格化：14 职业 + 通用天赋树 + 牧师神圣领域（2026-07-31）
+
+- 技能卡片全部改为方案 C 表格化结构（条件/属性两栏表/描述/效果/升级分区），71 个 docx 风格底纹色进 common.css
+- 以 docx 为基准补齐升级文本、描述句、限制字段；技能与 nav 顺序对齐 docx 表格顺序；修复法师游离 tier、武僧通用区错放
+- 缺失技能补全：术士 11、武僧 3、通用天赋树 31（含极速者）；牧师 7 神圣领域 284 技能按「牧师子分支」docx 重建
+- 验证：14 职业 + 通用 + 领域逆序 0、内容缺失 0；search-index 2443 条；verify_all 42 页 / 846 断言
+
+### v1.0.7141 xlsx 导出：技能/风格格按职业底纹色 + 风格格居中（2026-07-31）
+
+- 从 14 职业 docx + 通用天赋树提取 60 个风格底纹色（`STYLE_COLOR_MAP`）；白色底纹严格忠于 docx；法师防护统一 `FCFF99`；起始特性缺 style 的技能以 `STARTING_STYLE_OVERRIDE` 补全
+- 导出时 `styles.xml` 按需注册 fill + cellXf（同色复用）；B 列技能名按所属风格上色，通用天赋灰底 `D7D7D7`；E17–E20 / E23–E26 / E29–E32 风格标识格按已学风格上色
+- 风格标识格文字水平居中；与未持有栏位对角线划掉样式共存
+- 验证：导出断言 17 项 + 参考 xlsx 对照 28 项 + 全量回归 42 页 / 846 断言
+
+### v1.0.7140 xlsx 导出：改版图纸区 + 同名技能 + 未持有栏位划掉（2026-07-31）
+
+- 空白模板同步改版图纸区（O172 标题、O173–O192 槽位）；天赋行映射避开图纸区
+- 同名技能导出按 `src`/主职优先；效果/消耗回退 `fields`；过滤自选武器占位；H18 不再塞背景长文；XP/SP 含 0 也写出
+- 未持有技能/专业/天赋仅在名称列（B/O）画对角线划掉；tests 846
+
+### v1.0.7139 重新车卡（创建快照 + 另存新角色）（2026-07-31）
+
+- 面板「重新车卡」预填创建快照并另存新 1 级角色；上传/旧档无快照不可用；已升级二次确认
+
+### v1.0.7138 导出幸运·探索行丢失修复（2026-07-30）
+
+- 特性槽 112–117（6 格）对齐模板；`set` 列序插入；`clear` 不 invent；修复导出丢「探索」行
+
+### v1.0.7137 创建熟练计数 + 兼职熟练判定（2026-07-30）
+
+- 创建概览计入无连字符专精；技巧别名→正式键；奇械师万用模组知识可选
+- 兼职复合项/别名 resolve 求和；牧师「魅力」按属性合计；法师不兼容对齐帮助页
+
+### v1.0.7136 技能栏误报已满 + 子职 xlsx 回读（2026-07-29）
+
+- 统一技能栏占用；通用学习占主职栏；子职导出/回读 168–209 跳过空行；tests 737
+
+### v1.0.7135 卓尔毒刃 + 牧师神祇 + 魔契师宗主（2026-07-29）
+
+- 卓尔授予毒刃/制毒；牧师 10 神必选；魔契师 15 宗主必选；tests 717
+
+### v1.0.7134 个性背景面板奖励补齐（2026-07-29）
+
+- 法师学徒一/二阶戏法双选（freeSlot）；公民基础/专业熟练分轨；运动员 sportPreference；乐器/赌具→professionals；tests 703
+
+### v1.0.7133 人类自由熟练度选择可读性（2026-07-29）
+
+- 角色创建页：人类「中庸」自由熟练度按属性分组；技能名按钮 + 可滚动列表
+
+### v1.0.7132 升级/专长/天赋属性与熟练修复（2026-07-29）
+
+- 升级选属性/熟练用 nextLv cap；finalize 静默落盘；熟练键迁移；禁止写「通用」
+- 固定熟练专长接线；弥补短板后续升级与旧档计数；通用天赋属性/熟练钩子
+- 36 个 panel 专长写面板；天赋额外槽生效；属性夹至 20；旧档 panel 补发；tests 690
+
+### v1.0.7131 技能栏/风格/熟练项/夜间模式修复（2026-07-28）
+
+- `learnSkill` 用 `calcSkillSlots`；风格 `src` 用职业名；夜间 XP/专长 CSS 变量；复合熟练项
+
+### v1.0.7130 同名存档后缀 + xlsx 导出错位修复（2026-07-28）
+
+- xlsx ZIP CRC / 清残留格；同名静默 `名字_2`；`loadState` 先重置；移除立绘体积上限
+
+### v1.0.7129 帮助页全文检索跳转（2026-07-28）
+
+- 规则/世界观检索条：命中切页签跳转、上下条、高亮
+
+### v1.0.7128 基础规则帮助再同步（2026-07-28）
+
+- 帮助再同步基础规则；顾问 status_conditions / rules_summary 对齐
+
+### v1.0.7127 帮助页名望/声望表格可读性（2026-07-28）
+
+- `#s9` 概述与等级一览统一为表格样式；正/负面配色；声望档位倾向标签
+
+### v1.0.7126 基础规则帮助同步 + 藏宝图修复（2026-07-28）
+
+- 帮助 `#s9` 名望/声望、`#s10` 其他规则 22 条，源 `冒险者基础规则.xlsx`；顾问改读 `help.html`
+- 通用天赋树「哟吼船长的藏宝图」五阶/奇珍 + DOM 嵌套修复；下游 JSON/面板/上传/search-index 对齐
+
+### v1.0.7163 docx 对比补齐：奇械师/猎人/治愈和弦/升级子项（2026-08-03）
+
+- 奇械师补齐 46 个缺失技能（含图纸系、电沌/魔枢系）：源数据/HTML/FX/索引同步，贴合 docx 原文
+- 猎人三守护天赋侧独立条目：灵龟守护·天赋/灵猴守护·天赋/灵狐守护·天赋（学习联动待办：角色面板技能学习系统未改）
+- 治愈和弦恢复 docx 原文（回复类），静寂术独立保留
+- 升级子项补齐 51+：守护刻印/次级变形术/召唤宝石兽/侦测魔法/制作魔法系列/窃者的交易/神恩术/太极拳法/欢迎召唤大师等约 30 个技能，docx 完整文本覆盖引导句版
+- 联动修复：德鲁伊野兽形态升级去重/补水栖强化；自由攻势补正文；通用拉择假条目 15 个从源数据/索引清除（HTML 提示卡保留）
+- 回归测试扩展至 13 用例全部通过（新增奇械师图纸、猎人守护天赋、治愈和弦、自由攻势）
+- 待办事项：角色面板学习“守护技能/天赋”二者其一自动获得另一个（本轮不改面板系统）
+
+### v1.0.7163 advisor 资料库全量补齐（2026-08-03）
+
+- 全职业 L2 索引重建（15 个，新增 `scripts/build-advisor-index-all.mjs`）：补入缺失技能共 452 条（含牧师神圣领域 273，领域条目附 deity 标签可检索）
+- 升级内容补齐：`advisor-skill-chunk.mjs` 的 buildSummary 截断策略改为优先保留升级文本（600 字内完整，长技能压缩描述、升级全保留）
+- 源数据补丁：德鲁伊野兽形态 3/5/5/8 级升级（水栖/飞禽形态等）、吟游诗人静寂术独立条目
+- 检索修复：leveling 语境提及具体技能/形态时附带该技能详情（含「X形态」变体匹配）
+- 修复扫描解析 bug：非贪婪正则被 article 内文截断（“荆棘术漏渲染”为误报，HTML 实际 77 条与源数据一致）
+- 回归测试扩展至 9 用例全部通过（含德鲁伊水栖/飞禽、牧师领域、法师学派序列、通用符文）
+- 剩余差异（合理例外）：通用天赋树 HTML 中“拉择T/U”为拉择提示卡非技能，不入索引；起始特性页面 data-tier=0 与索引实际阶位为表示差异
+
+### v1.0.7176 移动端 bug 上报接入汇总（2026-08-04）
+
+- 修复移动端 APK 资源包内的 bug 上报未接入自动汇总，现与网页/桌面统一上报到 OSS
+
+### v1.0.7175 反馈闭环与抽象问题路由（2026-08-04）
+
+- AI 反馈闭环：手机/网页/桌面点有用没用自动上报，FC 沉淀到 OSS，可拉取汇总报告
+- Bug 反馈自动汇总：全站注入顾问端点，bug 上报进 OSS，支持拉取汇总报告
+- 世界观抽象问题路由增强：环游旅行、值得去、神秘危险地方、饮食、祭拜等不再误入 general，饮食文化检索补齐别名
+- 多意图与矛盾意图检测：命中时引用基本规则第六条，引导用户先明确目标
+
+### v1.0.7174 世界观检索与帮助页修复（2026-08-04）
+
+- 世界观检索增强：首都/王都/四境/城市与道路旅行关键词路由修复，路线问题不再误入车卡规划
+- 帮助页世界观部分标题样式修复：城市与城镇恢复小标题样式，宗教据点、所属领主等字段行不再被误判为标题
+- AI 顾问抒择技能规则与多状态检索修复（德鲁伊定位术二选一、中毒与流血状态同时回答）
+
+### v1.0.7173 移动端 AI 顾问与悬浮球体验修复（2026-08-04）
+
+- 修复流式回答偶发“服务流未正常结束”：服务端发送完成事件后延迟关闭连接，客户端流结束无 done 时自动回退非流式兜底
+- 修复快捷问题连点拼接问题：每次发送当前问题，上下文由会话历史携带
+- AI 顾问悬浮球与 Bug 反馈按钮可拖动，并默认靠边收起，悬停/点按侧边展开
+
+### v1.0.7172 移动端入口路径修复（2026-08-04）
+
+- 修复 APK 内 AI 顾问悬浮球点击显示 Not Found：改用绝对 appassets 地址（https://appassets.androidplatform.net/斯诺德跑团/顾问.html）
+- 修复 APK/网页卡牌游戏入口：部署后卡牌在顶层 poker-game，跳转路径已更正
+- 启动台在 APK 内自动注入 <base> 标签，兜底帮助页与脚本等相对引用
+
+### v1.0.7171 移动端 AI 助理接口自动下发（2026-08-04）
+
+- FC 部署成功后自动将顾问接口地址发布到 OSS（advisor-endpoint.txt），网页与 APK 资源包构建时自动读取，无需手动填变量
+- 修复网页部署与 FC 端点发布的竞态：拉取结果增加 URL 校验，避免错误文本写入页面
+- 线上 FC 功能验证通过：健康检查、dry-run、SSE 流式真实问答均正常
+
+### v1.0.7170 移动端 AI 助理上线（2026-08-04）
+
+- 新增全屏顾问聊天页（顾问.html）：SSE 流式回答、追问选项、有用/没用/复制、参考链接页内跳转、会话记忆
+- 新增移动端全局悬浮球入口：手机网页与 APK 显示，桌面 Electron 保持原侧滑面板
+- 新增阿里云函数计算后端：完整顾问管线（scripts + advisor 数据），DeepSeek Key 仅保存在 FC 环境变量
+- APK 软键盘适配：聊天输入框随键盘上推（windowSoftInputMode=adjustResize）
+- 全量评测 44/44 通过，引用错误 0，裁判均分 4.96/5
+
+### v1.0.7169 世界观架构同步（2026-08-04）
+
+- 斯诺德世界观架构.docx 更新：雷恩王国章节大幅扩充（商业贸易/货币经济、律法、道路与关卡、旅行习俗与禁忌、民俗文化、城市与城镇名录、冒险者公会、其他组织势力与位面等）
+- 帮助页「规则 / 世界观」翻页同步更新（含 TTS 与地图，镜像到 electron-app）
+- AI 助理 L7 lore 索引重建：91 → 163 块，新增内容可检索（冒险者公会、君冠城等）
+- 全量评测 44/44 通过，引用错误 0
+
+### v1.0.7168 职业页技能描述错位修复（2026-08-03）
+
+- 用户反馈蛮斗士/法师起始特性描述错误；检查发现是系统性渲染错位：15 个职业页（含通用天赋树）大量技能的「描述/效果/升级文本」与 JSON/docx 错位
+- 根因：历史 HTML 由旧版同步器生成，升级单元格整体偏移；渲染器误删以「天赋树」结尾的描述句（如自由攻势）；牧师领域技能与通用天赋树拉择卡未纳入重建范围
+- 修复：从 JSON 全量重建 30 份职业页文章（含牧师 284 条神圣领域技能），修复 class_sync_core 的 boilerplate 误删与 cost 字符串兼容，保留德鲁伊野兽形态特殊区块，清理自然武器/奇械师道途的历史泄露内容
+- 创建页/面板的凶蛮打击短摘要更正为「造成额外伤害但自身失去生命值」
+- 全量校验：30 份页面 0 内容差异、0 结构失衡，文章数与数据源一致
+
+### v1.0.7167 AI 助理：评测体系与交互大升级（2026-08-03）
+
+**反馈闭环 + 性能与交互**
+
+- 反馈闭环：每条 AI 回答下方新增 👍有用 / 👎没用 / 📋复制 按钮；反馈写入 localStorage `_snowd_advisor_feedback`（与既有 bug 反馈兼容），Electron 端经新 IPC `advisor-feedback` 推送 ntfy 独立主题 snowd-advisor-feedback；面板头部新增「反馈」导出按钮，导出 JSON 可导入 advisor/feedback/inbox/queue.json 沉淀为 golden 用例
+- 性能：升级累计类问题（从 X 级升到 Y 级/累计奖励）走规则快路径，跳过 LLM 规划器；build 路线回答 token 上限 6144 → 4096（评测质量无回退）
+- 交互：空会话显示 4 个常见问题快捷入口（车卡推荐/战士路线/AC 公式/混沌法术）
+- 评测：断言失败自动重试一次（连续两次失败才算真失败），judge 分数照常呈现质量；德鲁伊形态断言放宽到语义等价词
+- 全量评测：44/44 通过，引用错误 0，judge 均分 4.88/5（发版前必跑 node scripts/advisor-eval.mjs --judge）
+
+**数值确定性工具 + 主动追问**
+
+- 数值工具层（scripts/advisor-numeric-tools.mjs）：技能代价查询（疲劳/技能点/色彩标识/施展时间，来自 2377 技能结构化字段）、负重演算（力量×5/10/15，承载熟练 +1 力量）、伤害期望（技能骰子按升级档拆分，仅清晰表达式给出区间/均值，并声明不含武器/属性调整）
+- 主动追问（scripts/advisor-clarify.mjs）：build 类问题缺职业/等级/风格时，跳过 LLM 规划与生成，直接返回追问模板与可点选选项；前端消息下方渲染选项按钮，点选后携带原问题继续完整流程（等级追问仅限规划/升级语境，风格选择题不追问）
+- 路由修正：风格选择类问题强制 class_skills（避免 LLM 规划器误判 build_roadmap）；非技能意图合并职业专属 addon（升级/进阶回答自动补职业细节）
+- 评测矩阵 40 → 44 用例：新增 skill_cost_lookup、carry_capacity、damage_expectation、clarify_missing_class
+- 全量评测：44/44 通过，引用错误 0，judge 均分 4.88/5（发版前必跑 node scripts/advisor-eval.mjs --judge）
+
+**引用兜底 + 评测矩阵扩充**
+
+- 引用兜底：回答组装层新增 sanitizeCitationLine —— 【参考】只保留上下文真实条目；非法 id 按条目名称反查修复，查不到自动剔除，全部无效移除整行
+- 修复引用 id 校验过严 bug：多段式 id（如 wl-starting-skill-2）不再被误判，前端引用链接恢复可点击
+- 评测硬门槛：引用错误计入失败；断言失败自动重试一次，连续两次失败才算真失败
+- 评测矩阵 19 → 40 用例：补齐圣骑士/蛮斗士/武僧/魔契师/萨满祭司/术士；新增购点、升级累计、装备、种族、背景、熟练、专长、兼职、状态、SP 标识、小贴士、世界观、未知条目、build 评价、进阶等意图
+- 检索修复（矩阵暴露的真实缺口）：技能指名补检支持多名称；装备查询支持多物品名；新增通用物品索引（371 项，含开锁工具等）；sp_marks 上下文补 14 种标识清单；世界观年代问题优先返回年代记章节
+- Prompt 增强：技能罗列末尾必须给选择建议；新增术士/购点 addon；德鲁伊野兽形态升级、吟游诗人回复关键词、武僧/萨满风格区分等细化
+- 全量评测：40/40 通过，引用错误 0，judge 均分 4.9/5（发版前必跑 node scripts/advisor-eval.mjs --judge）
+
+### v1.0.7166 启动台自动更新开关（2026-08-03）
+
+- 启动台新增「自动更新」开关（默认开启），关闭后不再自动检查更新；手动「检查更新 / 镜像更新」始终可用
+- Web/移动端：localStorage 持久化，关闭后跳过启动自动检查与 4 小时定时检查
+- 桌面端：主进程持久化 userData/snowd-settings.json，关闭后启动时跳过 autoUpdater 自动检查与下载安装
+
+### v1.0.7165 AI 助理：车卡推荐 + 评测系统升级（2026-08-03）
+
+- 新增意图 chargen_recommend：“我想玩很帅有操作感的角色”类模糊问法再不落空上下文
+- 检索带出：14 职业定位摘要 + 30 种族紧凑表（属性加值+核心特性）+ 42 背景熟练表 + 购点叠加规则
+- prompt 新增 addon：推荐 3-4 职业、每职业 2-3 种族、属性必写最终值（15+2=17）、背景推荐后附自由选择声明、名称必须来自上下文
+- 新增评测用例 chargen_recommend_vague：judge 5/5；全量 19 用例全过，要点通过率 94.6%；推荐类耗时 13-14s，与普通 build 相当
+- AC 数值修复：parseAcScenarioFromQuery 支持「敏捷14」原始属性按 floor((属性值-10)/2) 换算，修复“敏捷14 → +0”导致 AC 算错；新增 ac_armor_value_calc 用例 judge 6/6
+- 组合推理修复：形态/特性补检泛化（提及形态名即带完整条目，_full 免裁剪）+ 主题优先排序 + prompt 规则 10 禁止“未收录”误报；新增 druid_water_form_interaction 用例 0/5 → 4/5
+- 评测系统升级：16 个用例补充 golden 要点；新增 scripts/advisor-judge.mjs（LLM-as-judge + evidence 引用防幻觉）；eval 支持 --judge/--sample/--report，报告存 tmp/eval_reports/
+- 引用有效性校验：【参考】条目 id 格式 + 上下文存在性
+- 评测校准修复 3 个真实问题：eval 上下文被问题行污染、universal 检索截断、M1 语义后缀误判天赋树
+- 发版前必跑：`node scripts/advisor-eval.mjs --judge`
+
+### v1.0.7164 角色面板：猎人守护技能/天赋学习联动（2026-08-03）
+
+- panel_data.js 补入灵龟/灵猴/灵狐守护·天赋 3 条；面板学习列表可见
+- 学习守护技能/天赋其一自动免费获得另一个，退学同步移除；栏位满时提示不强行
+- tests.html 新增 T5j 联动测试（9 断言）
+
+### v1.0.7163 AI 助理适配 + 资料库补齐 + docx 对比修复（2026-08-03）
+
+- v4-flash 正式版默认思考：未开启思考时显式 `thinking: {type:'disabled'}`，避免回答落入 reasoning_content
+- 修复超时定时器不清理导致进程挂起 120s（abortAfter 增加 cleanup，规划器 25s 与 API 120s 请求结束即清理）
+- combat_math 检索一致性：短问法/双问句（如「防御等级和攻击命中的检定公式是什么？」）也能附带 AC+命中通用公式；「力量18」等原始属性值按 floor((属性值-10)/2) 换算
+- 「未收录」回答按原因分级引导（上下文为空/缺关键信息/资料确实缺失/剧情裁决）
+- 规则类问题跳过 LLM 规划器，单问 2–5s；build 规划仍走 LLM
+- advisor 索引清理：移除通用「拉择J/N」等 6 条失效条目；法师「防护箭矢」更名「防范箭矢」对齐网页
+- 新增 `scripts/advisor-eval.mjs` 回归测试（5 用例 + 1 数据缺口 skip；支持 --context-only）
+- 资料库缺口已于下条记录全量补齐（自动上一条记录）
+
+### v1.0.7125 顾问问答接入世界观 L7 lore（2026-07-27）
+
+- `advisor/lore/index.json` + 意图 `worldview_lore`；`build-advisor-lore.mjs` / sync 从世界观 docx 切块入库
+- 设定题走 L7 检索；构筑类意图不默认灌满篇设定
+
+### v1.0.7124 帮助页世界观翻页 + Web Speech 朗读（2026-07-27）
+
+- `help.html` 顶栏翻页切换规则 / 世界观；`scripts/sync_worldview_help.py` 从 `斯诺德世界观架构.docx` 生成正文与地图
+- 世界观 pane：全文/章节/段落朗读（`help-tts.js`，浏览器 Web Speech API）；切回规则页停止；不含侧栏目录
+
+### v1.0.7123 修复牧师神圣领域布局（2026-07-27）
+
+- 牧师各神祇子分支正文不再落入左侧导航列；领域注入脚本与结构校验加固
+
+### v1.0.7122 猎人/魔契师五阶 + 牧师战争领域（2026-07-27）
+
+- 猎人五阶 9 技能（86）；魔契师三阶补遗 + 五阶 27（144）；牧师解锁战争与谋略之神领域（已公布 7 / 锁定 5）
+- search-index 2409；verify_all 42 页 + 609 断言
+
+### v1.0.7121 修复帮助点击触发下载（2026-07-27）
+
+- 启动台帮助改为 `help.html`；`帮助.html` 跳转兼容；Electron 拦截 `.html` 误下载并用 `loadFile` 打开
+
+### v1.0.7120 图纸专业槽位 + 帮助规则同步（2026-07-27）
+
+- 角色面板图纸专业槽位：固定 20 格；规则上限 10+智力调整+独具匠心/手动加成
+- 学习「（图纸）」分流至 `blueprints`；xlsx O210–O230 导出导入；旧存档迁移
+- 帮助页同步基础规则「其他规则」；T12 回归；verify_all 609 断言
+
+### v1.0.7119 修复 CI electron-builder 构建失败（2026-07-27）
+
+- 加固 release.yml：windows-2022、构建重试、去掉 choco NSIS、关闭自动签名发现
+
+### v1.0.7118 帮助页额外规则章节（2026-07-27）
+
+- 帮助页新增 `#s9` 额外规则：潜行、跳远/跳高、双持、前置条件、Y/Z轴、专业活动、描述不利裁定
+
+### v1.0.7117 牧师神圣领域神祇法表切换（2026-07-26）
+
+- 牧师页按神祇切换神圣领域法表；无表神祇锁定；六神领域入库
+- search-index / filter 作用域按当前面板；`牧师·神圣领域.json` 数据源
+
+### v1.0.7116 四职业docx同步 + 战士七阶入库（2026-07-26）
+
+- 战士/武僧/诗人/法师基础职业内容同步；法师新增约58技能与防范箭矢改名
+- 战士七阶10技能入库；search-index / panel SKILL_DATA 重建
+
+### v1.0.7115 牧师/魔契师进阶分支 + 详情按钮错绑修复（2026-07-26）
+
+途径页按神祇/宗主分节筛选；`refresh_detail_buttons` 单卡片对齐（影舞者等不再误绑）。
+
+### v1.0.7114 进阶详情嵌套技能顺序修复（2026-07-26）
+
+能力/心得 `nested_skills` 按文档顺序渲染；`限制` 字段别名；verify 覆盖 mid-nest / insight-owned。
+
+### v1.0.7113 已公布进阶技能树一键入库（2026-07-26）
+
+`已公布进阶职业.docx` → `advancement_details.js`（49；跳过冰霜法师）；Advisor documented 27→49；`apply_published_advancement_sync.py`。
+
+### v1.0.7112 职业页侧栏技能跳转修复（2026-07-26）
+
+武僧酒仙/凰火七阶 nav href 对齐；通用天赋树去重错误链接；`verify_class_nav_links.mjs`。
+
+### v1.0.7111 暗红归一为棕色（2026-07-26）
+
+`#851321`→棕；全局搜索去掉「暗红」；search-index 重建。
+
+### v1.0.7110 docx 非标准色归一（2026-07-26）
+
+`#808080`→黑、`#F79646`→橙、`#FF66CC`→粉；`mark-colors.js` + 首页/职业页筛选与 search-index 重建。
+
+### v1.0.7109 吟游诗人五阶 + 通用提取管线（2026-07-26）
+
+五风格五阶约 30 条入库；`extract_class_docx` / `diff_class_extract` / `apply_class_extract`；search-index 同步；发版流程见 `后续更新教程.md` §1.5。
+
+### v1.0.7108 首页全局搜索可用性重做（2026-07-26）
+
+`search-index.json` 预构建；首页单索引 + 职业/色彩筛选；分组紧凑结果；hash 落地高亮。
+
+### v1.0.7107 职业页展示 + 阶位数据修复（2026-07-26）
+
+术士混沌法术 D100 表；游荡者魔药三阶 nav 合并；阶位解锁 normalize。
+
+### v1.0.7097 斯诺德对决批次A 四张新卡（2026-07-10）
+
+鲁特琴（deployOnHostOnly 吟游诗人）、猫鼬神龛（全局 modifyPlayCost 战力>4 +1）、挖掘（peekDeckBottom 随机玩家）、奇美拉（setFieldAttribute 随机属性）。卡池 152。`test-newcards-a.mjs` 11/11。
+
+### v1.0.7096 斯诺德对决联机迭代3（2026-07-09）
+
+联机权威服接入迭代3：`handleQuickPlayCard` 贝壳空槽 + `pendingReveals`；检索 `selectSearchCard` / 跳过；酒馆 `playTavernLiquor` / 跳过；回合过渡分阶段暂停。`test-iter3-mp.mjs` 11/11。
+
+### v1.0.7087 Advisor 5.0 batch23 — Tier-B 条件修饰符 bulk（2026-07-09）
+
+皮匠工具大师/凶蛮无羁/混乱箭；`mergeTierBFromScan`；语料 32 条；Audit 82 条 + Golden 63 条 batch22 must-pass。
+
+### v1.0.7086 Advisor 5.0 batch22 — appliesTo + Tier-A 收尾 + scan v2.1（2026-07-09）
+
+`appliesTo` 引擎；语料 29 条；scan v2.1；Audit 79 条 + Golden 60 条 batch21 must-pass。
+
+### v1.0.7085 Advisor 5.0 batch21 — 优势/劣势 + 目标 AC debuff（2026-07-09）
+
+`hitRollModifier` · `targetAcModifier`；语料 26 条；Audit 76 条 + Golden 57 条 batch20 must-pass。
+
+### v1.0.7084 Advisor 5.0 batch20 — 引擎 Phase 6 + Tier-A/B bulk（2026-07-09）
+
+`requiresReaction`；语料 23 条；`build-advisor-combat-modifiers-from-scan.mjs`；Audit 73 条 + Golden 54 条 batch19 must-pass。
+
+### v1.0.7083 Advisor 5.0 batch19 — 战斗修饰符扫描 v2（2026-07-09）
+
+`advisor-combat-modifiers-scan.mjs` Tier A–D；`combat-modifiers-scan.json` 报告；regression 7/7 + combat-scan CI。
+
+### v1.0.7082 Advisor 5.0 batch18 — 扫描入库 + build_review 多职（2026-07-09）
+
+枪影如林·极/酩酊大醉/石木树皮；`conditionalAcModifier`；build_review 多职分组；Audit 70 条 + Golden 51 条 batch18 must-pass。
+
+### v1.0.7081 Advisor 5.0 batch17 — 条件/熟练度修饰符 + L2 扫描（2026-07-09）
+
+十字军打击/神力战槌/魔能翻涌；`hitViaProficiency`；`scan-advisor-combat-modifiers.mjs`；Audit 67 条 + Golden 48 条 batch17 must-pass。
+
+### v1.0.7080 Advisor 5.0 batch16 — 战斗 Phase 5 + build_review 无 kit（2026-07-09）
+
+蓄力劲射/树皮术/眼镜蛇射击入 `combat_skill_modifiers.json`；`conditionalHitModifier`；`suggestSkillsFromCatalog` L2 回退；Audit 64 条 + Golden 45 条 batch16 must-pass。
+
+### v1.0.7079 Advisor 5.0 batch15 — Build 评价 Tools 层（2026-07-09）
+
+`advisor-build-review-tools.mjs`；面板评价问句 → `build_review`；kit 位阶内技能候选；Audit 61 条 + Golden 42 条 batch15 must-pass。
+
+### v1.0.7078 Advisor 5.0 batch14 — 战斗 Phase 4 AC Buff（2026-07-09）
+
+`acModifier` 演算；守护刻印/穿透射击/硬化铠甲；`validate-advisor-combat-modifiers.mjs`；`mock-cleric-l6.json`；Audit 58 条 + Golden 39 条 batch14 must-pass。
+
+### v1.0.7077 Advisor 5.0 batch13 — 熟练路线泛化（2026-07-09）
+
+`outlineProficiencyRoadmap` 任意职业+父/单项熟练；`parseProficiencyTargetsFromQuery`；`mock-rogue-l6.json`；Audit 55 条 + Golden 36 条 batch13 must-pass。
+
+### v1.0.7076 Advisor 5.0 batch12 — 战斗 Phase 3（2026-07-09）
+
+斧类 `categoryCritBonuses`；`combat_skill_modifiers` 瞄准射击；`mergeSnapshotCombatBuffs` 快照技能 Buff 联动；Audit 52 条 + Golden 33 条 batch12 must-pass。
+
+### v1.0.7075 Advisor 5.0 batch11 — 反馈闭环 + CI 收口（2026-07-09）
+
+`advisor-feedback-lib.mjs` / `advisor-feedback-export.mjs`；`validate-advisor-feedback.mjs` + `validate-advisor-5-regression.mjs`；Phase5 回归接入 advisor-5-ci；Audit 49 条 batch11 must-pass；`bug-report.js` 反馈队列。
+
+### v1.0.7074 Advisor 5.0 batch10 — 车卡 entity + 快照 AC（2026-07-08）
+
+`advisor-chargen-entity-tools.mjs`（起始装备/种族/背景 bundle）；`mergeSnapshotIntoAcScenario`；Audit 46 条 batch10 must-pass。
+
+### v1.0.7073 Advisor 5.0 batch9 — 战斗 Phase2 + 熟练反查（2026-07-08）
+
+弓箭类别命中 +2、`resolveFullCombatScenario` 命中伤害合并；`advisor-proficiency-tools.mjs` + intent `proficiency_lookup`。Audit 43 条 batch9 must-pass。
+
+### v1.0.7072 Advisor 5.0 batch8 — 背景性格 + AC 演算（2026-07-08）
+
+`bg_personality_index.json`（42 背景）；`lookupBackground`；AC 演算（皮甲+敏捷）；`advisor-feedback-sync.mjs`。
+
+### v1.0.7071 Advisor 5.0 batch7 — 购点/升级 + 伤害引擎（2026-07-08）
+
+`optimizePointBuy` / `summarizeLevelingRange`；战斗伤害 flat 加值；`validate-advisor-intents.mjs`。
+
+### v1.0.7070 Advisor 5.0 batch6 — 装备语料 + 反馈 golden（2026-07-08）
+
+装备/消耗品 index；`lookupEquipment` / `searchEquipment`；`advisor-feedback-golden.mjs`。
+
+### v1.0.7064 诡术师/诡术士解析修复（2026-07-08）
+
+师/士 别名与 `stripAdvancementTokensFromQuery` 修复「诡术士」误匹配职业「术士」；`advancement_base_class_pick` 模式列全兼容主职；澄清 scope=mage-only≠仅法师。Golden 用例 `guishushi-base-class`。
+
+### v1.0.7063 Advisor 4.0 batch3 — Tools 层（2026-07-08）
+
+`advisor-tools.mjs`：`outlineGrowthRoadmap` 服务端事实骨架注入检索上下文；LLM 仅润色勿改门槛。`validate-advisor-tools.mjs`；`docs/advisor-4.0-tools-spec.md`。
+
+### v1.0.7062 Advisor 4.0 batch2（2026-07-08）
+
+会话目标隔离（`extractGoalOverride`）；Golden 对话 CI（`validate-advisor-golden.mjs`）；未收录进阶 `unknown_entity` 闸门；`advancement_primary` 路由（L2-rogue 优先）。
+
+### v1.0.7061 Advisor 4.0 batch1（2026-07-08）
+
+统一 `resolveAdvancementName`（`advancements.json` + `advancement_skills`）；飞贼等单进阶目标从 `sourceClasses` 推断主职（游荡者），移除无依据默认法师；「想玩飞贼」触发 roadmap；成长路线六段式作答契约 + L0 升级摘要 + L3 路线模式 brief。见 `docs/advisor-4.0-plan.md`、`scripts/advisor-advancement-resolve.mjs`。
+
+### v1.0.7060 通用 Build Roadmap（2026-07-08）
+
+`buildGenericRoadmapContext` 替代 kit 硬编码；L2 抽样 + 灵活 prompt；免责声明；移除 widget 预设按钮。
+
+### v1.0.7059 Build Kit 校对与魔弹射手（2026-07-08）
+
+魔剑士 kit 流派校正；新增魔弹射手 kit 与 `validate-advisor-build-kit.mjs`；roadmap 按子职动态 L2 层。
+
+### v1.0.7058 面板 build 评价统一路线图（2026-07-08）
+
+绑定 L6 快照的魔剑士 build 评价问句升级为 `build_roadmap`；widget 预设按钮与长文展示；`max_tokens` 6144。
+
+### v1.0.7057 Advisor 3.0 Build Roadmap（2026-07-08）
+
+`build_roadmap` 意图与魔剑士 build kit；分阶段路线图 prompt；面板快照缺口分析。`docs/advisor-3.0-roadmap-spec.md`、`validate-advisor-roadmap.mjs`。
+
+### v1.0.7056 顾问 L6 build 评价修复（2026-07-08）
+
+嵌套熟练度读取、进阶≠兼职、绑定快照时 L2 位阶过滤；`validate-advisor-l6-build.mjs`。
+
+### v1.0.7055 Advisor 2.1 会话闭环（2026-07-08）
+
+创建页气泡推荐写入 session；角色面板 `loadState` 派发 `snowd-panel-character-change` 触发顾问 reset；Planner 同 session 问句缓存。
+
+### v1.0.7054 Build Advisor 2.0 v1（2026-07-08）
+
+多职业并列问句（如「法师和战士有哪些技能」）并行注入 L2 层；`advisor-planner.mjs` 规划 catalog/full_list；问答 Tab 多轮对话（sessionStorage 3 轮）、「新对话」、换角色自动 reset。规格见 `docs/advisor-2.0-spec.md`；验证 `validate-advisor-planner.mjs`。
+
+### v1.0.7053 斯诺德对决费用/战力修复（2026-07-08）
+
+卡牌数据库 F/G 列互换修复（103 张）；`audit-cost-power.mjs` 0 差异。
+
+### v1.0.6128 单位装备槽（武器/防具 extra slot）（2026-07-06）
+
+`deployOnHostOnly` 装备改为懒创建 `equipWeapon` / `equipArmor` extra 槽独立计战力；空槽隐藏、装上 mini 展示；宿主离场装备进弃牌堆；禁止替换。单机/联机/AI 同步。`test-equip-slots.mjs` 17 项。
+
+### v1.0.6127 xlsx G 列熟练度同步（2026-07-06）
+
+新增 `xlsx_proficiency_export.js`：`fillXlsxProficiencies` 解析模板 E 列标签写入 G 列加值（含 `属性::豁免` 复合键）。`panel_engine.js`、`上传角色.html`、`角色创建页.html` 共用该模块，修复上传/创建页此前跳过熟练度导出的问题。`tests.html` **468** 项（T12）。
+
+### v1.0.6126 xlsx 立绘导出修复（2026-07-06）
+
+`injectPortrait` 改为 upsert，替换模板空占位图并正确写入 blip/媒体；修复透明图与缺图问题。`tests.html` **463** 项（T11）。
+
+### v1.0.6125 上传/创建页立绘与技能字段补全（2026-07-06）
+
+上传页/创建页 xlsx 导出嵌入立绘（G3:I12）；导出时按技能名从 `SKILL_DATA` 补全 D/E/F/H/J 列；新增 `lookup_skill_export.js`。`tests.html` **457** 项（T10）。
+
+### v1.0.6124 上传页/创建页技能点系统（2026-07-06）
+
+上传角色页接入 26.06.30 规则：`sp_points` + `color_marks`（导入时标识全 false）；弹窗简化为 XP + 技能点两栏；U51 读数字或旧颜色字串（求和迁移）；导出 U51 写数字。角色创建页新建存档与 xlsx 导出同步。`tests.html` **453** 项。
+
+### v1.0.6123 学习技能风格分组修复（2026-07-06）
+
+法师六阶技能 JSON 误用 `塑能风格`/`咒法风格`，与一至五阶的 `塑能`/`咒法` 并存，导致学习技能面板同一风格拆成两组。修正 `法师.json`（15 处）与 `战士.json` 起始技能（4 处）；`build_panel_skill_data.py` 与 `panel_engine.js` 增加 `canonicalSkillStyle` 统一去 `风格` 后缀。`tests.html` **446** 项。
+
+### v1.0.6122 xlsx 导出专长/特性与三阶天赋行位（2026-07-06）
+
+`featDisplayName` / `fillXlsxSpecialFeats` 修复 K36 `[object Object]`。`exportTraitsText` 回填背景特性与运动员偏好运动。`buildTalentTierRowMap` + 清空旧槽位；三阶默认 O136–140。`exportRacialTraits` / `exportClassFeatures` 导出前补全。`tests.html` **92** 项。
+
+### v1.0.6121 技能点 UI、测试加点与 xlsx 天赋行位（2026-07-06）
+
+`renderMarkOverviewHtml()` 重写为 SP 总数 + 14 色标识网格；`panel.css` 新增 `.sp-overview-*` / `.sp-mark-*`。测试加点 `_cheatToggleMark` 改为 `_cheatRefreshPanel()` 就地刷新，不再调用 `cheatAdd()` 关窗。`fillXlsxTalents()` 按阶位映射填 O 列（122–126 / 129–133 / 137–141 …）；同步 `上传角色.html`、`角色创建页.html`。`tests.html` **90** 项。
+
+### v1.0.6120 xlsx 导出防具 AC 修复（2026-07-06）
+
+`exportXlsxFromState` 计算 AC 时防具槽可能为 `{item: "…"}` 对象，旧代码直接 `.indexOf` 报错。改为 `getArmorAC()` + `itemName()`，与面板渲染一致。
+
+### v1.0.6119 兼职判定、xlsx 导出与面板按钮（2026-07-06）
+
+`panel_engine.js`：兼职熟练度改为多属性/多技能求和；`evalSubclassAttrReq` / `evalSubclassProfReq` / `checkSubclassReq` 修复战士「力量或敏捷」等条件；`selectSubclass` 二次校验。xlsx 导出：`_xlsxPackEntry` 在 `CompressionStream` 失败时回退 method 0；`_normalizeXlsxBuffer` 规范化模板；错误提示具体化。角色面板：移除导入/导出全部存档按钮；「导出 xlsx」移至「学习技能」旁（`exportAllSaves` / `importSaves` 函数保留供日后高级入口）。`tests.html` **84** 项。
+
+### v1.0.6118 角色面板色彩标识与技能点（2026-07-06）
+
+`panel_engine.js` 接入 26.06.30 规则：`sp_points` + `color_marks`；固定色 / 无色 / 炫彩 wildcard 学习校验；1 SP 学 1 技能、卸载退 1 SP；移除旧 14 色 SP 弹窗。`tests.html` 扩展至 75 项。各技能「游玩结束授予标识」等效果**不实现**，记为 **DM 团队结算 UI 待办**（见《职业页同步手册》）。
+
+### v1.0.6108 BGM + 联机房主开局（2026-07-05）
+
+`music/` BGM：HALL1（主页/构筑/大厅）、Battle1（对局）、END1（最后一回合）；设置页 BGM 滑动条 + 静音（默认 70%）。联机改房主手动「开始游戏」；对手仅显示手牌数；牌局页滚动修复。
+
+### v1.0.6107 联机大厅移除配置服务器（2026-07-05）
+
+删除联机大厅「配置服务器」按钮与 `ServerConfigDialog`；服务器地址仍由 `getServerUrl()` 自动检测连接。
+
+### v1.0.6106 筛选默认收起 + 音效 -10dB（2026-07-05）
+
+卡组构筑筛选侧栏默认收起（仅显示边缘「筛选」标签）；跑团 `snd.js` 与扑克 `sound.ts` 统一下调 10dB。
+
+### v1.0.6105 手牌效果详情 + AI 默认展开（2026-07-05）
+
+牌局手牌悬停（或右键）弹出 `CardDetailPopover` 查看完整效果；AI 对手 `PlayerStrip` 默认展开，场上卡牌可悬停/点击查看详情。
+
+### v1.0.6104 CC0 样本音效（2026-07-05）
+
+跑团 `snd.js` 改为预加载 `audio/ui/*.ogg`（Kenney Interface Sounds），失败时回退 Web Audio 合成；`charge` 长按充能仍用合成。扑克卡组编辑接入 `deckAdd` / `deckRemove` / `saveSuccess` / `error`（Kenney Casino + Interface）。跑团与扑克共用 `localStorage._snowd_mute`。映射见 `docs/sound-manifest.json`，授权见 `docs/audio-licenses.md`。
+
+### v1.0.6103 筛选标签避开 Bug 按钮（2026-07-05）
+
+卡组筛选收起标签从垂直居中上移至 `top: min(168px, 22vh)`，避免与 🐛 反馈按钮重叠。
+
+### v1.0.6102 筛选侧栏浮动（2026-07-05）
+
+筛选面板改为 `position: fixed` + `Teleport`，滚动卡池时仍可操作；可收起查看卡面。
+
+### v1.0.6101 卡组构筑筛选侧栏（2026-07-05）
+
+卡池右侧可钉住/收起的筛选侧栏：类别与属性多选 OR、关键词多选 AND、费用/战力排序（零战力沉底）；搜索含效果描述；卡组状态（未加入/已在卡组）；筛选状态 sessionStorage 记忆。
+
+### v1.0.6100 卡组构筑 UX + 15 张校验（2026-07-05）
+
+右键卡池快速加入、✕ 移出、飞入飞出动画；构筑时可超过 15 张但仅恰好 15 张可保存；单人/联机/路由拦截非法卡组。
+
+### v1.0.6099 联机大厅卡组栏位（2026-07-05）
+
+大厅显示已保存卡组名称；可切换栏位（不在大厅内构筑）。
+
+### v1.0.6098 恢复米色主题（2026-07-05）
+
+撤销 v1.0.6097 深色牌桌，恢复 `#f6f4ef` 米色背景，保留新 UI 组件布局。
+
+### v1.0.6097 深色牌桌 UI 重构（2026-07-05）
+
+P0–P4：GameCard、ActionDock、StatusBar、Sticky 牌桌、对手区折叠；后被 6098 回退配色。
+
+### v1.0.6094–6096 揭示/费用/重铸修复（2026-07-05）
+
+AI 揭示时机、联机延迟揭示与按序费用、费用不足退回手牌、揭示阶段不退费、重铸与战力同步等。
+
+### v1.0.6082 ESC/部署/卡牌详情修复（2026-07-05）
+
+ESC 层级返回修复；单机部署后结束回合；场上卡牌详情；单机开局人数弹窗。
+
+### v1.0.6081 单机部署修复 + 多人牌桌 UX（2026-07-05）
+
+单机部署格点击修复；卡组页滚动；2–4 人牌桌布局；联机 3+ 人准备/决策修复。
+
+### v1.0.6080 卡组管理 UX + ESC 层级导航（2026-07-05）
+
+卡组管理页支持 148 卡池替换与详情弹窗；ESC 按路由层级返回上级页面。
+
+### v1.0.6078 斯诺德对决里程碑 + UX（2026-07-05）
+
+**斯诺德对决已完成** — 148/148 卡牌效果结构化；用户可进行游戏测试逻辑是否正确。首页米色背景、卡组入口调整、`verify-full.mjs`。
+
+### v1.0.6077 斯诺德对决卡牌效果 5E — 终批（2026-07-05）
+- 旗鱼 batchHighestFreeDeploy / 矮人烈酒双效果；**148/148 完成**
+
+### v1.0.6076 斯诺德对决 P0 盖牌批次引擎（2026-07-05）
+- `resolveRevealBatch` / `batchHighestFreeDeploy` / 矮人烈酒机制；`test-engine-p0.mjs` 11/11
+
+### v1.0.6075 斯诺德对决卡牌效果 5D — 14 张 P1 卡（2026-07-05）
+- 箭袋至冰锥术全量结构化；进度 139/148
+
+### v1.0.6074 斯诺德对决 P1 机制引擎（2026-07-05）
+- 充能/scry/回春/封锁/出牌限制/分支/复制/牺牲 — 详见 `test-engine-p1.mjs`
+
+### v1.0.6073 斯诺德对决卡牌效果 5C — 自动进场/吸收/藏牌（2026-07-05）
+- 急先锋·罗森弗斯 autoEnterFromZone / 巨鹏 absorbLeftPlayerUnit / 走私船 stashHandUnderSelf
+
+### v1.0.6072 斯诺德对决卡牌效果 5B — 衍生物/偷牌/随机打出（2026-07-05）
+- 征募官 grantCopiesToHand / 强盗 stealCard+requireGlobalFieldKeyword / 攀爬工具 playRandomFromDeckOrTop
+
+### v1.0.6071 斯诺德对决卡牌效果 5A — 冰系/预约能量（2026-07-05）
+- 雪怪 conditionalPlayCost / 寒铁虎 directDestroy / 间歇泉 scheduleRoundStartEnergy
+
+### v1.0.6070 斯诺德对决卡牌效果 4Z — 抽牌/弃牌/检索（2026-07-05）
+- 牛头人勇士 skipOthersDrawNextRound / 火蜥蜴 discardHandForLeftPlayerDebuff / 雪狼 searchAttribute
+
+### v1.0.6069 斯诺德对决卡牌效果 4Y — 旅馆/弃牌/狂战（2026-07-05）
+- 温馨的旅馆 createSlot+requireDeployedOnSelf / 哥布林杂兵 discardHandOrSelf / 狂战士 invertPowerLoss
+
+### v1.0.6068 斯诺德对决卡牌效果 4X — 宿主部署进阶（2026-07-05）
+- 板甲/三叉戟/攀岩爱好者 deployOnHostOnly 扩展
+
+### v1.0.6067 斯诺德对决卡牌效果 4W — 宿主部署扩展（2026-07-05）
+- 洋葱/渔网/短柄斧 deployOnHostOnly 扩展
+
+### v1.0.6066 斯诺德对决卡牌效果 4V — 速攻作物（2026-07-05）
+- 玉米/胡萝卜/卷心菜 deployOnHostOnly
+
+### v1.0.6065 斯诺德对决卡牌效果 4U — 财富宝石（2026-07-05）
+- 红宝石 setPowerIfFieldKeyword / 蓝宝石·绿宝石 setPowerIfHandNames
+
+### v1.0.6064 斯诺德对决卡牌效果 4T + 终局/不可打出引擎（2026-07-05）
+- 食人魔 destroyRandomOther / 纪念照 unplayable+setPowerIfFieldNames / 金矿 setPowerIfOnlyHandCard
+
+### v1.0.6063 斯诺德对决卡牌效果 4S + 跨玩家部署引擎（2026-07-05）
+- 礁石 crossPlayerDeploy / 兽栏 createSlot(载具) / 荒野 onField
+
+### v1.0.6062 斯诺德对决卡牌效果 4R（2026-07-05）
+- 搬运工 deployFromHand / 锻炉 onReforge / 贫民窟 debuffAheadPlayers
+
+### v1.0.6061 斯诺德对决卡牌效果 4Q（2026-07-04）
+- 蛮斗士 requireNoTacticsInDeck / 蛇颈龙 grantUntargetable / 仲夏节庆典 requireKeywords +22
+
+### v1.0.6060 斯诺德对决卡牌效果 4P（2026-07-04）
+- 武僧 onOtherPlay triggerPlayedCardType / 溪流 searchFromHandOrDeck / 帆船 playRequirement
+
+### v1.0.6059 斯诺德对决卡牌效果 4O（2026-07-04）
+- 猎人 conditionalPlayCost / 游客 modifyPowerByUniqueAttributes / 药剂师 grantTacticPlayFree
+
+### v1.0.6058 斯诺德对决卡牌效果 4N（2026-07-04）
+- 奴隶 excludeFromFieldCount / 蔓生怪 conditionalPlayCost / 珊瑚元素 requireAllFieldAttributes
+
+### v1.0.6057 斯诺德对决卡牌效果 4M（2026-07-04）
+- 萨满祭司 grantAttributePlayBonus / 珍珠商人 setD6MinForCardName / 海港 createSlot 船槽
+
+### v1.0.6056 斯诺德对决部署引擎（2026-07-04）
+
+纯引擎批次（无 cardDatabase 改动）：额外槽位 deploy 规则、萨满祭司属性部署加成、珍珠商人 D6 下限；`test-deploy-engine.mjs` 18/18；进度仍为 74/148。
+
+### v1.0.6055 斯诺德对决卡牌效果 4L（2026-07-04）
+- 海葵 countMatchingFieldCards / 翻车鱼 buffPlayedCard / 拾贝鱼人 shuffleAfterSearch
+
+### v1.0.6054 斯诺德对决卡牌效果 4K（2026-07-04）
+- 奶牛 requireFieldName / 螃蟹 draw / 退役老兵 noOtherFieldKeyword
+
+### v1.0.6053 斯诺德对决引擎债 + UX（2026-07-04）
+- 环境摧毁 / 最后一轮限制 / unitPlayPowerBonus 清除；游戏结束浮层；场上卡牌悬停效果
+
+### v1.0.6052 斯诺德对决卡牌效果 4J（2026-07-04）
+- 海鸥 stealCard / 精准射击 destroy / 气泡酒 grantUnitPlayBonus
+
+### v1.0.6051 斯诺德对决卡牌效果 4I（2026-07-04）
+- 葡萄酒商人 / 魔法飞弹 targetLeftPlayer / 暴徒 noHigherPowerUnitOnField
+
+### v1.0.6050 斯诺德对决卡牌效果 4H（2026-07-04）
+- 酒吧女招待 searchNames / 杂货铺 searchEachKeyword / 燃烧之手 debuffOpponentHand
+
+### v1.0.6049 斯诺德对决卡牌效果 4G（2026-07-04）
+- 贝壳 D6 档位 / 晴天 onGameEnd / 沙滩 onField 组合三卡
+
+### v1.0.6048 斯诺德对决卡牌效果 4F（2026-07-04）
+- onGameEnd 三卡 + D6 揭示；单机 round 触发修复
+
+### v1.0.6047 斯诺德对决卡牌效果 4E（2026-07-04）
+- onField 费用 + roundEnd 单目标 + D6 抽牌三卡；`getEffectivePlayCost` 接入出牌流程
+
+### v1.0.6046 斯诺德对决卡牌效果 4D（2026-07-04）
+- round 事件三卡 + applyRoundEffect 引擎
+
+### v1.0.6045 斯诺德对决卡牌效果 4C（2026-07-04）
+- onDeploy 三卡：休憩曲/祈福/炎炎夏日；战术牌 deploy 流程修复
+- 详见 `卡牌效果实现进度.md` §0（Agent 接力工作流程）
+
+### v1.0.6044 斯诺德对决卡牌效果（2026-07-04）
+- 阶段0：148 卡池审计与 seed 同步
+- 批次 4A：onField 四卡（野猪/见习冒险者/农田/铁匠铺）+ 引擎 selfTarget 累加
+- 批次 4B：onReveal 三卡（收获日/雷云召来/报警机器人）+ 引擎 applyRevealEffect
+- 详见根目录 `卡牌效果实现进度.md`
+
+### v1.0 初始版本
+- 实现 docx 解析和 HTML 生成的基本流程
+- 包含法师、战士两个职业的完整实现
+- 基础的搜索和筛选功能
+
+### v1.01 扩展职业
+- 添加游荡者、吟游诗人、猎人、圣骑士等多个职业
+- 引入通用天赋树
+- 完善 IIFE 隔离机制
+
+### v1.02 系统重构
+- **修复关键词与搜索冲突**：搜索不再清除关键词筛选状态
+- **添加导航侧栏搜索联动**：搜索时同步隐藏/显示导航目录条目
+- **修复搜索高亮残留**：返回主页时清除所有高亮标记
+- **修复筛选取消后技能不显示**：清除筛选时正确移除所有隐藏类
+- **补充术士起始特性**：从 docx 提取并添加魔法飞弹、混沌法术、天赐神通
+- **统一 chip 格式**：确保所有职业的关键词芯片格式一致
+
+
+### v1.03 进阶页面搜索高亮 & Electron 便携版发布
+- **搜索高亮闪烁功能**：所有15个进阶页面的搜索匹配内容改为高亮闪烁（金色底色 + 红黄交替闪烁3次动画）
+- **修复4个进阶页面搜索缺失**：术士·进阶、蛮斗士·进阶、通用·进阶、魔契师·进阶 之前只有搜索框无搜索脚本，已补全完整搜索+高亮功能
+- **搜索脚本重构**：清除旧高亮→筛选卡片→遍历可见卡片文本节点包裹高亮 span，清空搜索框时自动清除高亮
+- **职业页面5项Bug修复**：
+  - 圣骑士技能页面费用技能点颜色修正
+  - 德鲁伊技能页面星辰风格三阶技能描述补全
+  - 武僧技能页面导航菜单点击技能跳转修正
+  - 蛮斗士技能页面三阶五阶技能技能点颜色修正
+  - 魔契师技能页面技能点颜色修正
+- **Electron 便携版打包发布**：制作单文件 exe，包含全部职业和进阶页面，保留搜索/筛选/关键词全部交互功能
+- **修复打包构建问题**：发现 electron-app 内有独立职业页副本，需同步修改后方可生效
+
+
+### v1.033 修复打包方式 & 更新文档
+- **修复打包构建失败问题**：发现 `npm run dist -- --prepackaged` 方式构建的便携版 exe 无法正常运行
+  - 根因：`--prepackaged` 手动构建的 `resources/app/` 目录缺少 `app.asar`，导致 Electron Mojo IPC 通道初始化失败
+  - 修复：改用完整的 electron-builder 管道（直接 `npm run dist`），让 electron-builder 自动生成 `app.asar`
+  - 额外修复：发现 `package.json` 含有 UTF-8 BOM 会导致 JSON 解析错误，已移除
+- **更新工作规则**：`工作规则.md` 第6节更新为正确的打包流程，明确禁用 `--prepackaged`
+- **更新后续更新教程**：`后续更新教程.md` 版本更新至 v1.033
+- **版本号**：无实质功能增改，版本定为 v1.033（非大版本升级）
+
+---
+### v1.04 启动台整合 & 角色系统重构
+
+- **启动台页面**：新建 `启动台.html` 作为统一入口，整合角色系统、职业技能、帮助文档三大模块
+- **帮助文档**：新建 `帮助.html`（从 `冒险者基础规则.xlsx` 自动生成），包含基本规则/检定/战斗/升级/兼职/幕间/技能点/异常状态/关键词共 9 个章节
+- **文件整理**：核心 HTML 文件统一放入 `斯诺德跑团/` 文件夹
+
+**角色创建页重构**：
+- **装备系统**：实现 `parseEquipToSlots` 解析装备文本，自动分配到正确栏位（主手/副手/防具/配饰/背包/腰包/材料包）
+- **装备数据**：从 `斯诺德物资大全.xlsx` 导入全部武器、防具、盾牌数据到 `items.json`
+- **重量系统**：创建 `items_data.js`，替换硬编码重量表
+- **金币累加**：修复背景金币和装备金币的正确累加逻辑
+- **背景熟练项**：实现背景基础熟练项和专业熟练项的自动/自选映射
+- **专精熟练项**：新增运动健将/奥法学者/知识传承等专长的熟练项 UI
+- **关键属性**：支持战士力量/敏捷选择，修复面板硬编码问题
+- **半精灵属性**：半精灵种族额外 2 属性自选功能
+
+**角色面板重构**：
+- **风格确定**：修复 `autoCalcStyles` 将起始特性错误计入的 bug
+- **起始特性同步**：补齐魔契师/奇械师在 `REF_CLASSES` 中缺失的数据
+- **容器锁定**：背包/旅行腰包/材料包需装备才解锁，拖拽受限
+- **测试按钮**：新增"🧪 测试加点"按钮（+1000 XP + 全部技能点）
+- **默认清空**：面板默认改为空白模板，角色选择页新增清空按钮
+
+**打包**：Electron 降级至 v22，产物 `斯诺德跑团.exe`（61MB）
+
+---
+### v1.041 疲劳值计算修复 & 角色选择页增强
+- **疲劳值（FP）公式修复**：`角色面板.html` 中 `calcTotalFP` 函数对照 HP 公式模式重写，补齐关键属性×等级、种族加成、子职业公式，关键属性由硬编码"魅力"改为动态从职业定义获取
+- **创建页 FP 计算**：`角色创建页.html` 中 FP 由硬编码 `10` 改为根据职业公式+关键属性+种族加成计算
+- **角色选择页增强**：新增显示角色的种族、个性背景、个性特征信息
+- **HP 公式清理**：移除 `calcTotalHP` 中损坏的 `total += state._hp_per_level_bonus` 代码
+
+### v1.042 职业技能页费用颜色修正 & 导航结构修复
+- **游荡者导航修复**：修复奇袭/魅影/狂妄/魔药风格中 `</a` 标签断裂（4处），移除 `></details>` hack 补救代码，四阶从一阶嵌套中移出为平级 tier
+- **游荡者费用颜色修正**：对照 docx 修正全部 78 个技能的费用技能点颜色（此前全为 #EE822F 橙色）
+- **战士费用颜色修正**：对照 docx 修正全部 103 个技能的费用技能点颜色
+- **武僧费用颜色修正**：对照 docx 修正全部 127 个技能的费用技能点颜色，清除 15 处 raw 格式费用行，补全 10 个缺失结构化的费用行
+- **武僧碎空技能重建**：碎空整篇文章数据被替换为云鹤式的数据，已从 docx 完全重建（前置条件/关键词/描述/费用）；清除 detail 内 1869 字符误入的 raw docx 文本
+- **武僧导航重建**：全部 7 个风格的导航菜单重建，七阶技能从错误嵌套中移出为独立 tier，锋岚补全五阶，凰火补全七阶
+- **萨满祭司·进阶 元素之躯**：优化换行显示（每种元素独立一行），修正水元素效果为"获得4点火焰伤害易伤"
+
+### v1.045 全职业技能数据修复 & 字段级 docx 同步
+
+- **全职业技能数据修复**：14 个职业（蛮斗士已完成）共 1830 处 JSON 字段 + 1811 处 HTML 字段与 docx 原文同步
+  - 修复字段：施展时间、施展距离、持续时间、疲劳消耗
+  - 法咒风格全员修正（轰雷箭基础伤害 1D8→2D8、施展时间 0→1动作等）
+  - 使用 docx ZIP 解压 + 正则段落解析，逐技能匹配差异
+- **满斗士数据修复**（先行）：蛮斗士 68 技能中 149 处 JSON + 66 处 HTML 字段修正
+- 备份：（全目录），（JSON + HTML）
+
+### v1.047 导出战斗数据修复
+
+- **导出战斗数据修正**：导出引擎的战斗数据（生命回复、疲劳回复、防御等级、先攻、速度、攻击命中、法术命中）全部镜像面板  的计算公式
+  - 生命/疲劳回复： / （与面板显示一致）
+  - 防御等级：使用面板同款护甲映射表（布衣11→板甲18），无护甲则 10+敏捷调整
+  - 攻击命中：
+  - 法术命中：关键属性调整值
+  - 速度：从  获取
+- **立绘导出重构**：独立  模块，通过 OOXML standard drawing（twoCellAnchor）嵌入图片
+- **打包**：exe 63.7MB（Electron 22, v1.047）
+
+### v1.0.568 全职业关键词 Tooltip 系统
+
+- **common_tooltip.js**：新建公共模块，包含 141 条完整关键词/异常状态定义字典
+- **桌面端**：hover 关键词显示 tooltip（深色浮层，实线下划线），关键词芯片无下划线
+- **移动端**：长按 0.5s 触发 tooltip（保持 3 秒），短按仍触发关键词筛选
+- **覆盖范围**：全部 31 个职业页面（14 基础 + 14 进阶 + 通用 + 特殊专长 + 首页）
+- **CSS 适配**：960px / 600px 响应式 tooltip 尺寸，暗色背景 + 圆角 + 阴影
+- **字典内容**：异常状态 36 项 + 攻击类型 7 项 + 元素属性 20 项 + 关键词 80+ 项
+- **Playwright 验证**：8 页全通过，无 JS 错误，tooltip 数据正确渲染
+
+### v1.0.564 装备系统重构 & 上传页槽位分类
+
+- **物品对象化**：上传页 K 列物品名 + S 列重量 → 存储为 `{item, weight}` 对象，面板新增 `itemName()` 兼容函数
+- **槽位自动分类**：扫描 I 列分区头（武器/防具/背包/旅行腰包/杂物），自动分配到对应装备槽位
+- **武器主副手分离**：同一"武器"区第1件→主手武器，后续→副手武器
+- **面板兼容**：`compactStacks`、`resolveWeight`、`getItemTags`、`getStackLimit`、`getArmorAC` 全部兼容新旧格式
+- **重量显示**：面板装备栏新增 `.equip-weight` 样式，显示物品磅重
+- **E2E 验证**：3 角色装备分类全部通过
+
+### v1.0.560 上传角色页全面重构 & 面板联动修复
+
+- **上传角色页全面重构**：
+  - 修复 xlsx 解析 20+ bug：背景读取(G15)、子职业去重(raw name 对比)、等级解析(shared string index 问题)、天赋扫描(R列/O列)、SP文本解析(U51/U25)、设备读取(K列)、故事提取(H16直读)、属性扫描(cells优先)、语法闭合等
+  - `cn()` 和 `readRightNum()` 改为 cells 优先读取，避免 shared string index 被当成数值
+  - 附赠职业扫描移除 `findClassNameNear` 回退，防止捡到子职业名
+  - 天赋扫描按"天赋列表"标签所在列(O或R)追踪，不再硬编码
+  - 天赋阶位通过 `SKILL_TIER` 查表，不再全部硬编码"一阶"
+  - XP读取增加标签下方扫描回退（XP值在标签下方而非右侧）
+  - `readFeat` 增加货币/章节标签过滤，防止误识别
+  - 职业风格读取 E 列全部 4 格
+  - `findCellFuzzy(["主职业"])` 优先，避免"职业信息"误匹配
+- **角色面板联动修复**：
+  - `panel_engine.js` 的 `autoCalcStyles()` 新增保护：已有有效风格时跳过重算
+  - `panel_engine.js` 的 `autoCalcTalentTree()` 新增保护：已有 tier 数据时跳过重算
+- **风格系统修正**：
+  - `通用`不再作为职业风格显示（`autoCalcStyles` 过滤）
+  - xlsx E 列的原始风格数据优先保留（上传页 `autoCalcStyles` 同样保护）
+- **Playwright E2E 自动化验证**：建立上传→面板端到端测试脚本，验证芙兰(血族·法师/战士)、蕾米(血族·吟游诗人/法师)、基尼泰·梅(人类·牧师) 全部通过
+- **文档更新**：`后续更新教程.md` 追加 v1.0.560 更新日志
+
+### v1.0.559 移动端导航重大修复
+
+- **修复导航挤压正文bug**：CSS选择器从 `.class-view.active` 改为全局 `main`/`nav`，确保所有页面（含特殊专长）在移动端都不会显示固定300px导航栏，正文内容不再被挤压
+- **移动端抽屉重设计**：
+  - 桌面搜索框在移动端隐藏，改为抽屉内置搜索输入框
+  - 筛选标签（filter-bar）克隆到抽屉内，点击可正常筛选
+  - 导航链接克隆到抽屉内，点击跳转后自动关闭抽屉
+  - 全新触控优化样式：44px搜索框、大号筛选标签、层级分明的目录链接
+  - Escape键关闭抽屉、窗口放大自动关闭
+
+### v1.0.558 移动端导航优化
+
+- **移除首页空抽屉导航**：首页无导航菜单，悬浮球无实际用途，已移除
+- **抽屉内链接优化**：增大字号（15px）和内边距（10px），链接块状显示提升移动端触控命中率
+- **目录层级优化**：style-link 16px 加粗、skill-link 14px、summary 15px，层级视觉清晰
+- **筛选标签优化**：filter-tag 字号 13px + 内边距 5px×10px，适合手指点选
+
+### v1.0.557 移动端悬浮目录导航恢复
+
+- **移动端悬浮导航恢复**：为全部 32 个职业技能页面（14 基础 + 14 进阶 + 通用天赋树 + 通用进阶 + 特殊专长 + 首页）恢复移动端悬浮 ☰ 按钮和抽屉式目录导航
+  - CSS 已存在于 `common.css`（第 257-395 行），此次补全了缺失的 HTML 元素和 JS toggle 逻辑
+  - ≤860px 宽度时自动显示悬浮 ☰ 按钮，点击打开左侧抽屉导航，复刻桌面侧栏内容
+  - 首页无侧栏导航，抽屉为空但不报错
+- **术士.html 修复**：修复了术士页面截断问题（原缺失 `</body>`、`</html>` 及 `common.js`/`filter.js`/`createFilterController` 脚本，导致页面无法正常加载）
+
+### v1.0.556 术士起始特性自动获取
+
+- **术士起始特性修复**：术士职业不再需要手动选择起始特性，改为自动获得全部 3 个起始特性（魔法飞弹、混沌法术、天赐神通），步骤描述改为"术士初始拥有全部起始特性"，下一步按钮立即可用
+- 其他职业（法师 4 选、其余 2 选）不受影响
+
+### v1.0.555 种族卡片显示全部特性名称
+
+- **种族卡片特性展示优化**：移除了种族选择步骤中卡片仅显示前 2 个特性名称 + "+N" 计数徽章的限制，改为直接展示全部种族特性名称
+- 容器已使用 `flex-wrap: wrap`，多出的标签自动换行，无需额外 CSS 调整（最多 4 个特性）
+
+### v1.0.554 背景特殊选择项补充
+
+- **5 个背景新增特殊选择器**：根据 `个性与背景创建规则.xlsx` 定义，为角色创建页的个性背景选择环节补充缺失的特殊选项 UI：
+  - **侍僧**：神祇选择器（11 项神祇），数据已存在于 `bg_personality_data.js`，UI 补全
+  - **侦探**：联系渠道选择器（10 项联系渠道），数据 + UI 同时补全
+  - **骗子**：偏好骗局选择器（6 项骗局类型），数据 + UI 同时补全
+  - **职业杀手**：任务渠道选择器（6 项任务渠道），数据 + UI 同时补全
+  - **教授**：学术领域选择器（6 项学科），数据 + UI 同时补全
+- **数据层**：`bg_personality_data.js` 新增 4 个字段（`contacts`、`scam_types`、`mission_channels`、`academic_domains`）
+- **UI 层**：`角色创建页.html` 扩展 `showPersonalityPicker` / `confirmPersonalityPicker` / `updatePersonalityCustom` 支持条件渲染特殊选择器（dropdown + 自定义输入）
+- **审查页集成**：审查步骤动态显示已选的特殊选项（条件 textarea）
+- **持久化**：`saveCharacter` 和 xlsx 导出增加 5 个特殊字段
+- **同步**：electron-app 镜像已同步
+
+### v1.0.553 全站移动端响应式优化
+
+- **panel.css 移动端大修**：为角色面板新增 860px / 600px / 480px 三断点响应式布局
+  - 多列网格自适应（7列→滚动、5列→3→2→1）
+  - 固定定位面板缩放（learn-panel 600px→calc(100vw-32px)）
+  - 属性/装备/战斗区域堆叠排列
+  - 技能表横向滚动（min-width:600px + overflow-x:auto）
+- **8 个角色系统页面**：角色创建页、上传角色、角色选择页、角色存档页、启动台、主页、帮助——全部新增移动断点
+- **职业页微调**：back-btn z-index 防抽屉遮挡、480px 字号收窄
+- **electron-app 全量同步**：18 个文件镜像至部署副本
+
+### v1.0.5150 法师职业技能树全风格 docx 对照修正
+
+- **全8风格覆盖**：塑能/咒法/预言/防护/附魔/死灵/幻术/变化，约300+技能逐字段docx对照
+- **模板污染清除**：系统性修正"6米/1小时"、"12米/立即"、"0动作/自身/1轮"等十余种模板错误模式
+- **Phase 1B 新建**：附魔六阶9技能、幻术五阶8技能、幻术六阶7技能（HTML+nav+data+skill_effects全链路）
+- **导航错位修复**：附魔六阶、幻术五阶被edit工具误插入起始特性区，脚本搬迁至正确section
+- **战士修复**：天鹅湖之匕 data-search HTML污染
+- **职业名修正**：修复术/"奇械师"、霜噬/"魔契师"、召唤骨爪/"牧师"→"法师"
+- **文档建设**：工作规则§7.7-7.8、SKILL.md §E、关键词系统注意事项
+- **版本发布**：v1.0.5140 → v1.0.5141 → v1.0.5150
+
+### v1.0.5164 角色面板多项修复与增强
+
+- **测试加点悬浮面板**：左下角弹出XP/SP加减面板，支持按钮加减与数值直接输入
+- **属性豁免数值化**：豁免从布尔改为数值(0=无/1+=有)
+- **autoCalcStyles修复**：学习新风格技能后风格正常递增
+- **xlsx导出修复**：起始特性补全字段(FP/时间/距离)+装备导出+豁免false不填
+- **暗色模式**：面板熟练项适配CSS变量
+
+### v1.0.5154 圣骑士职业技能树全流程 docx 对照修正
+
+- **全风格覆盖**：起始特性(5) + 惩戒(14) + 守护(13) + 圣洁(13) + 热诚(14) = 59技能逐字段docx对照
+- **费用dot颜色**：全部从docx XML `<w:color>` 提取，杜绝猜测；修正了大量缺dot、多dot、颜色错误
+- **字段修正**：持续时间（如圣佑术立即→1轮、神圣屏障立即→2轮）、疲劳消耗、施展距离（如破胆斥喝1-3轮→立即、命令圣印1-3轮→立即）
+- **描述修正**：警戒光环被动察觉→警惕值、圣盾术触及或近程→4米范围、无私治愈触及/近程→4米
+- **重复清理**：移除祈福、神谕真言·愈、光环掌握、盲目信念等detail内的重复`<p>`技能名
+- **data-search**：大量近战/近程→x米、中程→6米、触及/近程→x米等标准化修正
+- **nav补链**：曙光祷言在圣洁五阶内容区存在但nav缺失，已补入
+- **skill_effects**：圣骑士完整59技能结构化数据录入
+- **工作流建设**：SKILL.md 新增零号执行协议、Phase 1执行锚点、编辑工具安全绳、最终提交前强制问卷（5条）
+
+### v1.0.5182-5186 萨满祭司火焰风格全四阶 docx 对照修正
+
+- **火焰一阶**（v1.0.5184）：3 处修正——灼热图腾/创造篝火"空白位置"→"未被占据的位置"、火焰祈咒费用黄→黄（还原）
+- **火焰二阶**（v1.0.5182）：5 技能对照修正（熔岩武器/火炬图腾/沸腾/点燃/炽焰武力），修正施展距离×2、持续时间×3、疲劳消耗×3、描述段落重排×1、data-search污染清理×1
+- **火焰三阶**（v1.0.5183）：4 技能对照修正（烈焰战旗/火环图腾/火蛇图腾/召唤火元素），修正施展距离×3、持续时间×1、疲劳消耗×3
+- **火焰四阶**（v1.0.5186）：4 技能对照修正（熔岩喷溅/火焰新星/火镰图腾/余烬抗性），熔岩喷溅和余烬抗性已正确无需修改；火焰新星修正距离12→6米+疲劳8→2；火镰图腾修正时间0→1动作+距离12→6米+疲劳8→2
+- **费用颜色教训**（v1.0.5185）：发现此前 XML body-element 脚本提取全错，所有技能输出"红+蓝"导致 7 技能被错误修改。正确做法是逐技能 raw paras 切片 + 肉眼确认 + run-level 颜色提取。实际火焰 17 技能共 11 种不同色彩组合（红/红黄/红紫/红青/红橙/红红/红棕/红蓝/红红棕/红紫白/红红黑），仅召唤火元素为红+蓝
+- **Playwright 线上验证**：火焰风格 17 技能全部通过 snode-rpg.pages.dev 验证，费用颜色+字段值完整正确
+- **工作流记录**：事后在 `工作规则.md` §7.9 和 `debug-journal.md` #2 记录了此次批量错误的全过程教训
+
+### v1.0.595 特殊专长技能点颜色修正——6 专长对照 docx 修复
+
+- **Bug 修复**：6 个特殊专长的技能点 (●) 在页面中无颜色显示，对照 docx 地面真值逐一修正
+  - 绿拇指：5 绿色 (#00B050) / 质朴：2 灰色 + 1 白色 / 共享钱袋：1 黄色 (#FFF32F)
+  - 技能点礼包：31 灰色 (#D9D9D9) / 龙棋选手：5 色龙棋 (红蓝绿黑白)
+  - 创伤后成长：1 灰色 (#D9D9D9)
+- **Playwright 线上验证**：所有 6 个专长 skill point 均含正确颜色 span，零裸点残留
+
+### v1.0.594 特殊专长数据修复——拆分斯诺德大师
+
+- **Bug 修复**：特别彩蛋误将斯诺德大师（Snoed Master）专长合并显示，用户无法查看斯诺德大师独立卡片
+  - `特殊专长.html`：feat-97 拆分为独立斯诺德大师卡片 + feat-98 特别彩蛋（清洁） + feat-99 第四面墙重新编号
+  - `特殊专长.json`：斯诺德大师独立条目，特别彩蛋前置条件与描述去重
+  - `panel_data.js`：特别彩蛋 prerequisite 修正为事件检定条件，description 移除斯诺德大师残留
+  - `electron-app/` 三文件同步
+- **Playwright 线上验证**：`snode-rpg.pages.dev` 确认 feat-97 斯诺德大师 / feat-98 特别彩蛋 / feat-99 第四面墙 全部正确
+
+### v1.0.573-589 持续修复与增强
+
+**数据修正（v1.0.573-580）**：
+- 修复 `html.dark` 逗号选择器泄漏到亮色模式（帮助页标题变灰等）
+- 充能音效松手停止修复 + `snd.js` 语法修复
+- `color-mix()` 浏览器兼容性问题修复（adv-link 按钮消失）
+- 全职业 403 处 FP 疲劳值从 docx 同步
+- 武僧全部技能 dot 数量 + 颜色从 docx XML 完整同步
+
+**快捷键系统（v1.0.584-586）**：
+- 新建 `shortcuts.js` 全局快捷键管理器
+- ESC 返回上一页、Space 首页搜索、`/` 聚焦搜索、`?` 帮助面板
+- 40 页全部注入快捷键脚本
+
+**暗色模式完善（v1.0.582-583）**：
+- 职业页 toggle 按钮注入（`common.js` 动态注入，32 页全覆盖）
+- `html.dark` CSS 规则补全（style/tier/back-btn/adv-link/header/nav 等）
+
+**Bug 修复（v1.0.578-579）**：
+- 面板 `sd`→`skillData` 变量名错误（技能详情点击无反应）
+- 暗色模式全站主题初始化（`snd.js` + `common.js`）
+- 法师灼热射线 FP 1→4 修正
+- tooltip 嵌套 span 导致详情出现 `>` 字符（全局修复）
+
+**工具人优化**：
+- 通用天赋树手风琴导航、阶点弹跳动画、面板弹窗入场、空状态友好化
+- 暗色模式手动切换 ☀️/🌙、按钮涟漪、上传区光晕、字体微调
+- 首页搜索滑入动画、帮助页平滑滚动 + 锚点高亮
+- 面板学习技能搜索 150ms 防抖
+
+### v1.0.572 全站 UI 美化 & 音效系统
+
+**UI 优化**：
+- 通用天赋树手风琴导航（单展开 + 箭头旋转 + 左边框强调）
+- 角色创建阶点弹跳动画（`scale(1.3)` + 回弹贝塞尔）
+- 面板学习技能弹窗入场（右下角 `scale+fade` 弹出）
+- 空状态友好化（角色选择页 📜 + 存档页 📂）
+- 暗色模式手动切换 ☀️/🌙（`localStorage` 持久，`html.dark` 覆盖全站）
+- 按钮点击涟漪、上传区光晕、字体微调、首页搜索滑入、帮助页平滑滚动
+
+**进阶卡片特效**：
+- 悬停金光扫过（`skewX` 斜切光柱）+ 旋转金影
+- 展开详情后彩虹火焰 + 碎晶光点（8 个碎片 + 8 帧循环）
+- 展开详情后碎镜高光（5 层条纹 + 锥面 gradient 边框效果）
+
+**Bug 修复**：
+- 个性背景特点选择修复为 1 项（原 2 项）
+- 面板新增特殊背景选项显示（神祇/联系渠道/偏好骗局/任务渠道/学术领域）
+- `fadeInUp` 动画导致 nav-drawer 桌面端露出的 containing block 问题
+
+**音效系统**（v1.0.6104 起）：
+- `snd.js` 预加载 `斯诺德跑团/audio/ui/` CC0 样本（Kenney Interface Sounds），加载失败回退 Web Audio 合成
+- 8 种预设：点击/成功/错误/展开/阶点/切换/页面进入/充能（`charge` 仍为三角波 200→800Hz 合成，支持 `playRef` 松手停止）
+- 扑克卡组编辑：`poker-game-main/public/audio/cards/`（加入/移出/保存/错误）
+- 启动台 🔊 静音切换；跑团与扑克共用 `localStorage._snowd_mute`
+- 映射与授权：`docs/sound-manifest.json`、`docs/audio-licenses.md`
+
+### v1.0.571 全站美化 & 进阶页重构
+
+**CSS 基础设施**：
+- 新建 `斯诺德跑团/shared.css`，含 9 个 CSS 变量 + 12 条共享规则，消除主页/角色选择/角色存档 3 页重复 CSS（各删 ~75 行）
+- `panel.css` + `common.css` 全面 CSS 变量化，7 个目标色值硬编码全部替换为 `var()`
+- 统一上传角色页按钮品牌色（绿色→金色 `#a46d1f`）
+
+**动画增强**：
+- 全部 42 页添加 `fadeInUp` 入场动画 + 卡片/技能交错延迟（nth-child stagger）
+- 职业技能卡片悬停效果（抬升 + 阴影 + 金边）
+- 首页搜索面板 `searchPanelIn` 缩放入场动画
+- 筛选标签淡出移除动画（`.removing` class + 200ms setTimeout）
+
+**暗色模式**：
+- 全站 `@media (prefers-color-scheme: dark)` 支持，10 个斯诺德跑团页 + 32 个职业页全部适配
+- 暗色调色板：`--bg:#1a1d20; --panel:#24272b; --ink:#e8e6e3; --accent:#d4a54a`
+
+**职业专属配色**：
+- 14 个基础职业技能页各分配独立 `--class-color`（法师蓝紫、战士红、德鲁伊绿等）
+- `.adv-link` 按钮渐变 + `.style-link` 侧栏激活色随职业变化
+
+**帮助页优化**：
+- 桌面端粘性目录侧栏（`.toc-sidebar`） + 顶部滚动进度条
+- 移动端自动切换为单列布局
+
+**进阶页重构**：
+- 新建 `职业页/advancement_renderer.js` 共享渲染器
+- 14 个进阶页的能力/技能表格/心得全部改为 `article.skill` 卡片格式（h4 + chips + detail）
+- 消除 ~3000 行重复 `buildHTML()`/`formatDetailText()` 代码
+
+**Bug 修复**：
+- `fadeInUp` 动画的 `both` fill-mode 导致 `position:fixed` 的 nav-drawer 在桌面端露出的问题（改为去掉 fill-mode）
+- 帮助页滚动进度条 JS 语法错误修复
+
+### v1.0.570 种族属性数据修正
+
+- **血族智力修正**：`panel_data.js` 中血族（血族）智力从 0 修正为 1，与 `冒险者角色创建流程.xlsx` 源文件一致（xlsx 中血族列显示智力+1）
+- **全种族 xlsx 比对**：Python 脚本提取 xlsx Sheet2 全部 30 个种族的 8 项属性加成，与 `REF_RACES` 逐一比对，全部一致，确认无其他遗漏
+- **electron-app 同步**：主文件修改后同步至 `electron-app/` 部署副本，确保桌面版与 Web 版数据一致
+- **Playwright 线上验证**：在 `snode-rpg.pages.dev` 上通过浏览器自动化确认角色创建页血族卡片显示「魅力+2 智力+1」
+
+### v1.0.552 特殊专长页面
+
+- **新增特殊专长页面**：从 `特殊专长(争锋模式）.docx` 提取 98 项特殊专长，生成独立展示页面 `职业页/特殊专长.html`
+  - 通过 bold 字体识别专长名称，解析前置条件和描述文本
+  - 数据存储为 `职业页/数据/特殊专长.json`
+- **搜索功能**：支持名称/前置条件/正文全文搜索，AND 多词并行，匹配内容高亮闪烁
+- **首页入口**：在「通用」区块的通用进阶按钮右侧新增 ⭐特殊专长 入口（`btn-grid` 改为 `three-col`）
+- **electron-app 同步**：新增文件已镜像至部署副本
+
+### v1.0.551 Bug 按钮位置优化
+
+- **捉虫按钮移位**：🐛 从右下角 `bottom:30px` 移至页面右侧中间 `top:50%;margin-top:-22px`，避免与浮动导航、返回顶部等右下角按钮重叠
+
+### v1.0.550 语言系统重构 & 面板同步
+
+- **语言系统升级**：从 10 种语言扩展至 18 种语言，覆盖全部 30 个种族
+  - 新增语言：半身人语、地底通用语、地狱语、深渊语、巨魔语、泽地语、荒漠语、鸟禽语、兽语、蛇语、海洋通用语
+  - 旧语言替换：炼狱语→地狱语、巨人语→巨魔语、地精语→地底通用语
+  - 翼空族特殊处理：基础语言仅"鸟禽语"，通过复选框可选"通用语"
+  - 多语言种族：蛇人（3种）、卓尔精灵/黑暗精灵/人鱼（3种）
+- **panel_data.js 同步**：`RACE_LANGUAGES` 与创建页 `RACE_LANGS` 完全一致
+- **Bug 修复**：`saveCharacter()` 中翼空族语言处理添加 `.slice()` 防止 `RACE_LANGS` 数组被永久变异
+- **electron-app 全量同步**：所有修改文件镜像至部署副本
+
+### v1.0.549 首页全局搜索修复 & Debug 工具
+
+- **搜索高亮修复**：首页全局搜索高亮完全失效，根因为 `renderResults` 调用 `_applyHighlights` 时查找 `.skill` 选择器，但搜索结果使用 `.search-result-item`。改为 HTML 字符串层内联正则生成高亮 span
+- **空结果提示**：搜索无匹配时显示"没有找到匹配的技能"
+- **CSS 清理**：移除 `common.css` 中 `.search-highlight` 和 `@keyframes search-blink` 的重复定义
+- **electron-app 同步**：`首页.html` 此前缺失全局搜索功能（111 行 vs 332 行），已同步修复版本
+- **Debug 工具化**：新增 `debug-journal.md`（修复日志）和 `.opencode/skills/debug-snode.md`（项目 Debug Skill）
+
+### v1.0.548 更新日志 UX 改进
+
+- **关闭按钮移至右上角**：修复根目录 changelog.js 主源文件，弹窗右上角新增 ✕ 关闭按钮
+
+### v1.0.547 更新日志 UX 改进（无效版本）
+
+### v1.0.546 魔契师数据清理 & 描述补全
+
+- **垃圾文本清理**：29 处从 docx 错误合并的章节标题/技能列表从 level_upgrade 和 description 中截除
+- **缺失描述补全**：22 个天赋型技能（无施展时间）从 docx 重新提取描述文本
+- **HTML 全量重建**：修复后重新生成全部 116 张技能卡片
+
+### v1.0.545 魔契师数据全面更新 & 历史数据修复
+
+- **docx 完全同步**：魔契师全 116 技能从新版 `基础职业-魔契师.docx` 重新解析，新增「秘术」战斗风格（第 4 风格）
+- **JSON 重构**：`职业页/数据/魔契师.json` 56→116 技能，包含全部 4 风格一~四阶数据
+- **HTML 重建**：`职业页/魔契师.html` 导航/内容同步更新为 4 风格，55 张技能卡片
+- **费用颜色修复**：28 处 `#D9D9D9`（无色）替换为 docx 原始颜色（如 通晓禁忌 绿+黑）
+- **描述/升级文本技能点颜色修正**：通晓禁忌（595959 黑）、血债血偿（FF0000 红）
+- **REF_CLASSES 数据修正**：armor/weapons/saves/skills 字段错位修正、key_attr→魅力
+- **REF_SUBCLASS_REQS 补充**：魔契师 attrs 设为 `{"魅力":14}`（此前为空）
+- **_REF_CLASSES 修正**：`上传角色.html` 中 key 从空修正为 "魅力"
+- **错别字修复**：`panel_data.js` 中"魔契约师"→"魔契师"
+- **样式映射**：style_mappings.json 新增全部 116 条魔契师技能映射
+- **electron-app 全量同步**：所有修改文件镜像至 electron-app 部署副本
+
+### v1.0.542-1.0.544 CI 构建修复 & NSIS 环境适配
+
+- **CI 构建修复（v1.0.544）**：electron-builder v26 不再捆绑 NSIS 二进制，`release.yml` 新增 `choco install nsis` 步骤
+- **移除 spawn_monkey_patch**：原补丁与 v26 的 NSIS 模板（assistedInstaller.nsh / multiUser.nsh）不兼容，已从 CI 构建中移除
+- **MULTIUSER_EXECUTIONLEVEL 定义**：由 electron-builder v26 模板自动处理
+- **v1.0.543**：首次安装可选桌面快捷方式、NSIS 静默安装 `/S` 处理
+- **v1.0.542**：GitHub Pages 部署改用 actions/deploy-pages、Cloudflare Pages 国内镜像
+- **打包**：exe 61-67MB（Electron 22, v1.0.544）
+
+### v1.046 导出系统 & 立绘导出 & 创建页增强
+
+- **xlsx 导出引擎**：通用的 JS ZIP 写入引擎（CRC32 + 浏览器 CompressionStream deflate-raw），接收 state 数据填充单元格
+  - 上传页：克隆上传的原始 xlsx 导出（保留用户样式和布局），预览面板增加导出按钮
+  - 角色面板：右下角「导出 xlsx」按钮（「学习技能」上方），从空白模板或上传模板填充数据
+  - 角色创建页：创建成功后弹窗增加"导出 xlsx 角色档案"按钮
+- **增强空白模板**：技能区从 9 行扩展到 40 行主职业 + 30 行子职业 + 30 行天赋，覆盖一~七阶全部阶位
+- **OOXML 立绘导出**： 独立模块——通过 OOXML standard drawing（twoCellAnchor）在 G3:I12 立绘区嵌入图片
+  - 支持 PNG/JPEG/GIF/WebP 格式自动检测
+  - 零 HTML 转义风险（独立 JS 文件 + 引擎调用 injectPortrait）
+- **autoCalcStyles + autoUnlockTiers**：上传角色后自动推导战斗风格和阶位解锁
+- **SKILL_STYLE 字典**：build_skill_lookup.js 新增 1699 项技能→风格映射
+- **打包**：exe 67MB（Electron 22, v1.046）
+
+### v1.044 上传角色系统 & 阶位违规检测 & 打包完善
+
+- **上传角色页面**：全新 `上传角色.html`，支持解析冒险者角色档案 .xlsx 文件
+  - ZIP 解析：EOCD → 中央目录 → 本地文件头 → deflate 解压（deflate-raw 优先，回退 zlib 头）
+  - XLSX 解析：正则提取 `<c>` 单元格，智能标签定位（findCell / adjVal / adjNum）
+  - 数据读取：基本信息（C 列）、职业（B/D 列）、属性、熟练度（E/G 列）、技能（B+K 列，含 O 列阶位）、天赋（O 列）
+  - 特殊专长：readFeat 扫描 4/8/12 级标签附近
+  - 子职业技能：readSubSkills 从子职业区域读取
+- **自动纠错引擎**：SKILL_LOOKUP（1539 项）+ 模糊匹配（Levenshtein 距离）、天赋/技能重分类
+- **阶位违规检测**：SKILL_TIER（1501 项）映射技能阶位，角色等级不足时弹出恶作剧警告对话框（含 警告.jpeg 图片）
+  - 提示文案："你才 X 级，怎么就有"技能名"(阶位)了？"
+  - "我捡来的！"（继续）/ "我撒谎了..."（返回主页）两个按钮
+- **数据校验**：HP/FP 自动计算与填写值比对，手动 XP/SP/背景选择，确认导入
+- **SKILL_LOOKUP 构建工具**：`build_skill_lookup.js` 从角色面板 SKILL_DATA + 职业页 JSON 重建完整查找表，含 cleanTier 清洗（去"天赋树"后缀、过滤非阶位值）
+- **打包**：exe 67MB（Electron 22）+ zip 587KB（纯 HTML），同步根目录源文件 → electron-app
+
+### v1.043 子职业系统 & 关键偏好 & 公式修复
+- **子职业选择系统**：主职业≥7级解锁，弹窗列出14职业及兼容性/属性/熟练度要求，满足条件可兼职（含同职业）
+- **关键偏好天赋实现**：学习"关键偏好"时弹出13色选择器，选定偏好颜色后可将任意颜色技能点视作偏好色使用，SP扣除时代换逻辑生效，天赋格显示偏好色徽章
+- **HP公式修复**：`calcTotalHP` 加入 `REF_BACKGROUNDS` 背景血量，修复木精灵圣骑士掉血问题
+- **FP公式修复**：移除升级时每级累加关键调整值（仅首级+关键调整），FP每次渲染重新计算
+- **升级奖励链修复**：4/8级熟练度/属性/专长奖励改为累积处理，修复专长窗口被跳过的问题
+- **抉择系统扩展**：`CHOICE_GROUPS` 新增 `cls` 字段实现职业隔离，加入22个法师专属抉择组
+- **天赋树七阶列**：面板天赋格从6列扩展到7列
+- 修复创建页 `/(\\d+)/` 双反斜杠regex问题
+
+---
+### v1.032 进阶页详情增强 & 视觉特效更新
+- **返回顶部悬浮球**：所有15个进阶页面右下角添加悬浮球按钮，点击滚动至页面顶部
+- **长按查看详情**：进阶职业的查看详情按钮改为长按约2秒触发，附带进度增长动画，松开时进度动画渐降
+- **详情内容排版增强**：
+  - 卡片式布局，加大字体，引言段落放大加粗
+  - 选项条目使用 ▸ 标记符
+  - 数字/数值高亮（百分比、点数、骰子、等级、加值等）
+  - 职业等级条件高亮（你的XX职业等级到达X级时）
+- **分隔线转换**：详情中的 --- 分隔线转换为 <hr> 元素
+- **换行处理优化**：详情文本仅在句号或冒号后进行换行
+- **修复样式同步**：解决详情弹窗中文字颜色与背景对比度问题
+- **Electron 便携版重新打包**：更新 exe 包含全部进阶页面增强
+
+
+
+## 14. 角色面板系统
+
+### 14.1 概述
+
+角色面板系统是一个**独立的 RPG 角色卡管理工具**，对应 `斯诺德跑团/` 目录。核心文件 `角色面板.html`（约 2.3MB）是一个自包含的单页应用，内嵌全部 HTML/CSS/JavaScript 及角色数据，无需外部依赖即可运行。
+
+配套工具包括角色创建向导（`角色创建页.html`）、xlsx 角色上传/导入（`上传角色.html`）、存档管理（`角色选择页.html` / `角色存档页.html`）。
+
+数据层依赖 `职业页/数据/` 目录下的 JSON 文件，包括职业定义、种族数据、物品/装备数据等。
+
+### 14.2 文件结构
+
+| 路径 | 说明 |
+|------|------|
+| `斯诺德跑团/角色面板.html` | 核心文件，包含全部前端逻辑和内嵌数据 |
+| `斯诺德跑团/角色创建页.html` | 角色创建向导 |
+| `斯诺德跑团/上传角色.html` | xlsx 角色卡上传/导入 |
+| `斯诺德跑团/角色选择页.html` | 存档列表 |
+| `斯诺德跑团/角色存档页.html` | 存档管理 |
+| `斯诺德跑团/启动台.html` | 统一入口 |
+| `职业页/数据/classes.json` | 15 个职业的基础定义 |
+| `职业页/数据/races.json` | 种族数据 |
+| `职业页/数据/backgrounds.json` | 背景数据 |
+| `职业页/数据/{职业名}.json` | 各职业技能详情 |
+| `职业页/数据/equipment.json` | 装备数据 |
+| `职业页/数据/items.json` | 物品数据 |
+
+### 14.3 页面布局（16 个区块）
+
+| # | 区块 | DOM ID | 内容 |
+|---|------|--------|------|
+| 1 | 基本信息 | `#info-grid` | 玩家、角色名、种族、性别、年龄、身高、体重、瞳色、肤色、发色 |
+| 2 | 职业信息 | `#class-row` | 主/子/附赠职业的名称、等级、风格 |
+| 3 | 个性背景 | `#story-block` | 背景故事、个性、特性、理念、羁绊、缺陷 |
+| 4 | 经验值 | `#xp-bar` | 当前经验值 |
+| 5 | 技能点 | `#sp-bar` | 14 种颜色技能点 |
+| 6 | 战斗数据 | `#stat-row` | HP、FP、AC、速度、先攻加值、熟练加值 |
+| 7 | 属性 | `#attr-grid` | 8 种属性及熟练度子项 |
+| 8 | 特殊专长 | `#feat-list` | 专长列表 |
+| 9 | 货币 | `#currency-row` | 货币数量 |
+| 10 | 负重 | `#weight-block` | 负重三档 + 当前值 |
+| 11 | 天赋树 | `#talent-grid` | 6 x 5 网格 |
+| 12 | 装备栏 | `#equip-grid` | 8 个装备槽位 |
+| 13 | 种族特性 | `#racial-traits` | 种族特性列表 |
+| 14 | 职业特性 | `#class-features` | 职业特性列表 |
+| 15 | 语言/熟练项 | `#lang-list` / `#prof-list` | 标签列表 |
+| 16 | 技能列表 | `#skill-table-body` / `#sub-skill-table-body` | 主/子技能表 |
+
+### 14.4 state 关键字段
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `profs` | object | 熟练度，按属性分组 |
+| `player` / `name` / `race` | string | 基本信息 |
+| `attrs` | object | 8 项属性值 |
+| `classes` | array | 3 个职业，每项 `{name, level, styles[]}` |
+| `xp` / `sp` | number / object | 经验值和技能点 |
+| `hp` / `fp` | number | 生命值和疲劳值（自动计算） |
+| `equipment` | object | 8 个装备槽位的物品数组 |
+| `skills` | array | 已学习技能列表 |
+| `racial_traits` / `class_features` | array | 特性列表 |
+| `languages` / `professionals` | array | 语言和熟练项 |
+| `talent_tree` / `feats` / `currency` | 各种类型 | 天赋树、专长、货币 |
+
+### 14.5 核心函数
+
+- **`render()`** — 主渲染函数，遍历 16 个区块
+- **`calcMod(val)`** — 属性调整值：`(val-10)//2`
+- **`calcTotalHP(...)`** — 总生命值计算（职业 HP 公式 + 体质调整 + 种族/背景加值）
+- **`calcTotalFP(...)`** — 总疲劳值计算
+- **`autoCalcStyles()`** / **`autoCalcTalentTree()`** — 自动推导风格和天赋树
+- **`tryMoveItem(...)`** — 装备移动/交换/合堆叠
+- **`compactStacks(arr)`** — 物品堆叠压缩
+- **`canPlaceInSlot(...)`** — 槽位规则校验
+- **`learnSkill()` / `unlearnSkill()` / `batchResetSkills()`** — 技能学习管理
+- **`parseSkillCost()` / `deductSkillPoint()` / `showSPChoiceModal()`** — 技能点消耗管理
+- **`showReplaceModal()` / `showSkillPreview()`** — 替换弹窗和预览
+
+### 14.6 装备栏
+
+8 个槽位：主手武器(3格)、副手武器(4格)、防具(2格)、配饰(4格)、背包(10格)、杂物包(10格)、旅行腰包(5格)、材料包(10格 x 2)
+
+可堆叠物品上限：材料类 5 个，弹药类 20 个。材料包有子类型约束（草药/矿石/珠宝/炼金等）。
+
+### 14.7 技能学习系统
+
+右下角 "学习技能" 悬浮按钮打开学习面板，按职业分组展示技能，含搜索和折叠功能。学习时弹出技能点支付弹窗，槽位满时弹出替换弹窗。
+
+### 14.8 已知限制
+
+- **无持久化存储**：纯内存模式，修改后需手动保存 HTML 文件
+- **拖拽交互不完整**：装备栏拖拽移动存在浏览器兼容问题
+- **上传角色 XP/SP**：xlsx 模板 U51 已可读技能点；经验值仍需上传后手动填写（或从存档导入）
+- **无多角色切换**：角色选择页可切换存档，但不支持同时多角色在线
+
+
+## 2026-10-01：角色上传与面板工作簿修复
+角色导入使用共享 character_io.js 和当前 skill_index.js，不再读取上传页的旧名称表。_SNODE_META v2 保存实际工作表/区域/单元格、可见内容基线和技能选项；v1 仍可读取。已删除或替换的可见条目不会由元数据重新加入，溢出条目按 UID 恢复。无法关联、未知版本和损坏元数据会显示待确认信息。
+
+来源、获取途径、栏位、免费与占栏分别保存。上传预览与角色面板均提供来源补选，修改精确定位到 UID，不重跑学习、扣点或专长奖励。同名技能详情按来源和 ID 匹配；自定义说明保留在摘要和详情中，召唤物完整数据沿用共享详情渲染器。
+
+Excel 读写支持共享/内联/富文本字符串、稀疏列、负数、科学计数、XML 实体及公式缓存值（不计算没有缓存的公式）。工作表按模板特征和实际填写情况选择；两个同等有效角色表会明确报错。支持 O/R 天赋列及旧模板提前出现的子职业区域。额外工作表在使用原工作簿导出时保留。I 列中的旧风格与职业来源分别识别；不能唯一确定的同名技能保留原文，交由玩家补选。
+
+维护与验收：
+- node verify_character_import_roundtrip.cjs：往返/元数据/来源/详情业务回归。
+- node verify_character_import_roundtrip.cjs --electron：增加 Electron 22 和 360/390/1440 视口。
+- node verify_skill_index.mjs：按来源、ID、名称、阶位与风格核对全部 2785 个条目。
+- node verify_all.mjs：已接入角色业务回归，并以 totalErrors 检查任何专项失败。
+
+实文件只读复核：甘九·顽石.xlsx、狐人术士 拉奇.xlsx、芙兰_角色档案.xlsx、基尼泰·梅.xlsx。旧文件中缺失的获取途径及不唯一的技能来源不会凭主职业猜填；补选后再导出的工作簿会保存确认结果。
+
+
+## 2026-10-02 上传页技能区块识别修复
+
+真实附件中 H18 的法师学徒说明包含“技能列表”。旧 findCellFuzzy 先进行全文包含匹配，误把该正文当成 B120 的区块标题，从第 20 行开始读取 B 列，得到 30 条所谓技能，其中 21 条是标题或属性字段。附件的技能区坐标与原模板一致。
+
+新增 character_layout.js：技能表必须具备技能名称及施展时间、距离等列结构，按各自列标题读取；天赋按本列阶位区块读取，利用合并区域和后续区块界定范围。不再猜测 K 列单元格都是技能，也不以数据库是否收录作为保留条件。解析结构不完整时记录 layout-unrecognized 并阻止保存缺失能力的角色。
+
+技能和天赋区域支持行列移动、列重排、标题和表头之间插空行及 Z 列以后的位置；这不等同于任意改版整张角色表均能自动读取。基本信息、装备及熟练等其他区域仍有旧模板兼容逻辑，后续可统一结构化或提供字段映射。
+
+character_io.js 保留工作表合并信息，并在文本读取入口单次解码 OOXML _xHHHH_ 转义，避免 Excel 重存后持续时间表头丢失。rawEntry 接收结构读取所得的原始字段，保持元数据基线和 UID 关联。特殊专长写在来源列时保留为获取途径，不将其视为职业。起始能力没有目录阶位时不报告虚假的阶位变化。
+
+真实附件现提取 9 条技能和 5 条天赋，保留“藤曼之墙”原文并提示可能为“藤蔓之墙”。原始 XLSX 未修改。永久回归增加正文误命中、字段误收、行列移动、插空行、列重排、未知能力、文本转义和结构不完整场景；--fixture 额外读取用户指定的真实档案，不保存附件进仓库。
+
+验证命令：node verify_character_import_roundtrip.cjs --electron --fixture <真实档案路径>；node verify_all.mjs。
+
+
+## 2026-10-02 异形角色表与额外能力
+
+能力提取与技能库关联分离。character_layout.js 读取技能、带阶位或无阶位天赋、图纸与配方，接受标题附带槽位数量，保留邻接天赋说明和 provenance.fields。无法识别的区块必须映射或明确排除，不能静默导入为空。专长读取限制在所属区块；缺少币种的数值保存在 unmappedFields，明确映射后才归类。
+
+上传预览提供工作表选择、范围和列映射、原始内容预览、个人导入方案，以及角色名称、种族、主职业、等级、关键属性、货币字段补充。个人方案仅保存结构，加载后需核对；结构变化后重新确认。能力确认按 UID 编辑，支持关联规则、确认额外能力、暂缓确认、重新分类和显式排除，不调用学习、扣点或奖励动作。
+
+resolution=custom 的能力保持独立身份，不因同名规则自动绑定。origin/via 表示获取途径，与职业来源、栏位独立。free 和 occupies 可为 null，表示待确认；面板分开显示已确认占用与待确认数。完整原文、动作、距离、消耗、召唤物补充信息和未标阶位天赋可以保存及编辑。
+
+_SNODE_META v3 兼容读取 v1/v2，覆盖技能、天赋、配方、确认状态、映射、未分类值和排除记录。异形能力区按实际列写回；额外能力可见写出，未标阶位天赋不强行归入一阶。标准模板沿用既有布局与溢出元数据约定。v3 文件需使用支持新版格式的应用读取。
+
+回归：node verify_character_unusual_import.cjs；--fixture <咲夜角色档案路径> 只读复核个人文件，不保存附件进仓库。node verify_all.mjs 已集成新 gate；桌面回归使用 node verify_character_import_roundtrip.cjs --electron。源码与 electron-app 镜像必须同步。
+
+本轮验收记录：咲夜原件只读复核得到 8 技能、4 天赋、2 配方；原件 SHA-256 未改变。新增异形表专项（含真实文件及非标准阶位）18P/0F，既有往返及 Electron 22 / 360、390、1440 检查 42P/0F。全量加载 57/57 页面、889/889 基础断言通过，四个其他专项未通过：战士 AND/OR 筛选数量、召唤师 D100 随机表同步、召唤师面板随机表详情、技能索引 byKey 数量。执行期间职业数据、生成脚本和详情渲染器另有并行修改；召唤师源数据当前两张表分别为 6 和 3 行，专项要求 13 行；新索引 2791 条记录、2845 个键，校验仍要求键数等于记录数。这些失败已保留，未降低门禁要求。
+
+
+## 2026-10-03 完整角色导入与进阶职业修复
+
+character_fields.js 按字段标题、合并结构及真实列位置读取基础字段、属性、熟练、负重、语言、装备和职业特性。数值严格区分有效值（含 0、负数）、缺失、非法文本及公式无缓存；不求解 Excel 公式。药水的“3瓶”记录为数量，重量保持未知；服饰保持原分区。character_layout.js 支持职业名加槽位数量的技能区标题、附赠职业栏、组合表头、已习得进阶战术以及带装备条件的战术；跨列说明保持一份原文，确认归属后才拆开相应合并。正文、发展计划、敌人与参考资料不会自动成为已学能力。
+
+character_stats.js 提供共享纯计算、数值采用策略与读取接口。上传数值默认 fixed，规则自动值须明确选择 rules。上传校验只读；打开面板、修改背景或等级不得覆盖 fixed 值，当前生命/疲劳独立保存。自定义种族、未知护甲、未确认职业基础和同名职业记录使相应规则值不可用，不能以默认职业或 0 冒充已算结果。原有上传 JSON 无策略时迁移为保留现值，不声称能恢复过去已经丢失的原值。
+
+scripts/build_character_class_registry.mjs 从进阶职业 JSON 生成 character_class_data.js（18 个基础职业、330 个不同进阶名称）。character_classes.js 保存职业原名与原等级，将允许的基础职业列为确认选项。确认后学习面板按基础职业检索技能，仍展示原职业名称。指挥官、密探等不会替换显示名、重复扣除资格费用或发放奖励；主副栏同名保留两条记录，独立记录与续写须确认，续写总等级不自行相加。缺失/非法等级不默认为一级。
+
+能力确认可保留名称和玩家参数，将基础规则作为 variant 的参考身份；技能库外、主持人授予及装备能力继续保留原文，免费获得与占用栏位可待确认。附赠职业有单独归属，散列备注先进入候选记录，明确确认后才加入已拥有条目。额外专长和装备写入可见补充区，不强行指定专长获得等级或天赋阶位。手动映射更新未编辑字段，保留 UID 与显式玩家修改；冲突保留记录。可保存未完成确认的 importDraft，正式导入仍检查必填、区块、职业与数值问题。
+
+character_export.js 共用字段写回路径。_SNODE_META v3 新增 characterState 对象记录数值策略、职业基础、当前生命疲劳、装备、辅助表与原始说明；保留既有能力 UID 与可见基线规则，兼容 v1/v2。可见表格修改优先；清空数值不会从元数据偷偷恢复旧值。character_workbook_cache.js 通过本地 IndexedDB 保存原工作簿，JSON 只存 key；保存完成后再跳转，面板重开可从原文件导出，保留图像、格式和辅助表。缓存丢失时用内嵌模板并保留辅助表的单元格/合并/公式快照；这种回退不能恢复原图像、格式或宏。
+
+新增 verify_character_integrity_import.cjs（可重复传 --fixture，个人文件只读；--electron 检查桌面），全量门禁已集成。覆盖填写值保护、规则值、零与清空、连续往返 UID、组合表头、数量/服饰、辅助表、散列专长、同名职业、战斗条件、真实上传草稿及 360/390/1440 弹窗。个人附件不复制到仓库；根目录与 electron-app 同步。
+
+本轮针对三份特殊档案的只读验收：甘九保留 HP216/FP28、22 技能/24 天赋；诺兰保留 HP86/FP62、51 技能（含3项附赠技能）/31 天赋及主副法师两条原等级记录；冯旷保留 HP170/FP45、34 普通技能加12已学进阶战术和3装备条件战术/33 天赋、XP2030/SP3及12张辅助表。三份原件分别完成3轮跨页面导出/导入，UID集合和数量稳定，元数据 edited=0，SHA-256未改变。新增完整性专项含真实文件与 Electron：25P/0F；既有往返 Electron 42P/0F；咲夜专项18P/0F；对话框三视口视觉复核通过。新增 XML 写入使用共享 DOM 编辑器，不再依赖正则拼接行单元格；已验证空行、复杂模板、非首张角色表与扩展 used-range。
+
+未定位生命/疲劳总值也须显式确认，不因缺标签而默认采用规则值；确认手填后在可见“角色补充字段”中输出并建立新绑定。强化版本再次打开编辑时按 baseDefinition 提供候选，仍保留玩家名称和参数。对象形式的专业项目导出其名称，避免写成 [object Object]。
+
+最终全量验收：57/57 页面、889P/0F、Errors=0、ALL CLEAN；技能效果专项495项检查/0失败。源码及桌面镜像14文件逐字节一致；本轮日志与调试脚本仅按指定清单归档，不移动个人附件或其他任务文件。
+
+
+## 2026-10-03 通用上传识别与主体边界
+
+本轮将识别范围定义为可解析的 OOXML 工作簿与受支持的结构；不能宣称任意表格均可自动理解。已知样表回归与布局变换、留出布局分别验收，角色面板与导出自洽不替代人工语义金标。
+
+新增 character_import_schema.js：字段词汇、区块种类、装备能力关联数据独立于几何解析。特定道具规则作为数据声明；未知名称的同结构能力表先提取原文，归属或生效条件没有证据时保留候选。移除了散列候选第30/115行限制，技能库匹配仍独立于内容提取。
+
+新增 character_structure.js：建立主体与区块范围、字段候选和识别证据。NPC/敌人/宠物与当前角色分开；同页多个角色须明确选择；同名值存在多个候选时不默认取第一个。空字段不会跨入另一标签。区块结束依据实际跨度和结构，规则槽位容量只用于校验，不截断真实记录。名称加说明的紧凑参考名单遇到空白分隔后结束，不能无限延伸吞掉经验、技能点。
+
+character_fields.js 支持标签右侧、标签下方、字段表头加下一行值、单元格内“标签：值”及明确字段绑定。属性缺失保持缺失，规则计算检查依赖，不使用导入时默认10掩盖缺失。装备列从表头、合并边界与用户映射确定；取消数字最多列推定重量，未明确的重量保持未知，数量和价格不冒充重量。职业表按当前主体内名称/等级表头或显式字段读取，去除九行搜索范围。
+
+原 buildState 的坐标兼容逻辑改为 buildStateLegacyTemplate，只在四个关键模板锚点完整匹配且无主体覆盖时启用。通用入口使用结构化流程；坐标规则不再成为陌生布局的兜底。能力表增加转置方向，字段行映射与原方向写回共享实现。
+
+新增 character_review_ui.js：当前角色范围、主体选择、所有关键字段单元格绑定、装备范围/列映射、原始内容去向清单。绑定保存标签、区块与主体证据，相关证据变化时重新确认。未分类文字原样保存；将其作为参考不会掩盖关键字段冲突。源缓存不可用的导出也可见写出未分类原文；这不等同恢复原图像/宏。未知 Excel 功能不进行静默重算。
+
+装备生效条件区分正常、待确认、持有和装备。可变疲劳消耗通过每次使用确认，不修改原规则“X”。工作表选择取消C4/B17加分及正文包含关键词得分；多个合理角色候选都需选择。种族/背景原文变化使旧规则参考失效，同名记录重排行优先比对可见内容指纹以维护身份。
+
+新增 verify_character_general_import.cjs：固定人工预期、独立布局生成器、180个开发布局、独立留出种子，以及实际UI绑定、转置导出、过期确认、同名排序、未知能力、原文保留、可变消耗、360/390/1440与Electron检查。生成器不读取解析器词汇来生成金标；开发布局曾用于修复，不能作为盲测宣称。留出布局与本轮未参与规则调整的真实档案复核是补充证据，仍不能证明所有未来表格。全量门禁已集成。
+
+本轮专项实际验证：通用识别205P/0F（含180个开发生成布局、独立留出种子、界面操作、Electron），既有往返42P/0F，真实档案完整性25P/0F，咲夜原件18P/0F。开发生成布局用于调试，不称盲测；三个旧附件仅作为本轮留出复核，也不是项目从未见过的真实档案。外部从未参与开发的新样本仍需后续独立标注验收。所有个人附件保持只读，名称匹配不驱动生产解析分支。
+
+通用上传最终全量验收：57/57页面、889P/0F、Errors=0、ALL CLEAN；新通用专项205P/0F（含Electron）。所有15个修改的角色文件与桌面镜像逐字节一致，四个个人原件SHA-256未变化。参数变化、转置导出、数量写回、过期确认、同名排序、实际字段/装备映射和实际一次消耗弹窗均已验证。字段证据与去向已可查看，仍不将受支持布局的通过率等同于任意表格的语义识别能力。
+
+### 2026-10-05 / v1.0.8042：Android 更新恢复
+
+内置完整资源、独立备用渠道、验证后切换、损坏缓存修复和可见回退。资源更新保留玩家存储，后台完成后由用户保存并重新加载。阿里云账户禁用仍需所有者恢复，旧 Android 更新器需覆盖安装 APK。详见 docs/mobile-updates.md。
+
+### 2026-10-06 / v1.0.8043：手机世界观正文显示
+
+世界观目录在手机/平板上横向滚动，子目录复用及监听保持幂等；正文宽度和章节定位正确，保留桌面侧栏。排版变更没有修改世界观正文与插图标记区。 段落文字随实际内容卡片继承前景色，修复系统深色模式与应用主题不同步时浅色字落在浅色卡片上的问题。回归实际切换两种视图，覆盖多个视口及 Electron，并在失败时阻断发布。
+
+### 2026-10-06 / v1.0.8044：手机顾问连接恢复
+
+统一公开服务配置并移除对OSS地址文件的唯一依赖；完整响应期限、重连和SSE解析修复。会话及角色快照保留。线上实际问答验证与正式包检查分别记录，见docs/mobile-advisor-connection.md。
+
+### 2026-10-06 / v1.0.8045：学习名额与占栏
+
+抉择组按来源及不同已选项计数，避免原始记录重复导致误锁；不删除或合并玩家记录。技能栏容量与组名额独立，空白占位不计入占栏；六级法师20栏保持规则。范围与验证见docs/releases/v1.0.8045.md。
+
+### 2026-10-07 / v1.0.8046：手机帮助页检索与定位
+
+HelpPager向搜索暴露setView，生成器保持接口。搜索提交时重新索引当前正文与手机卡片，排除隐藏表格和朗读控件，保持跨标签高亮。直接定位匹配文字并按悬浮目录高度设置偏移；插图加载后校正，玩家操作即停止跟随。修改／清空取消旧检索，中文输入法确认不提交。verify_help_search.mjs已接入全量门禁，支持Electron与APK提取资源。验证与更新渠道限制见docs/releases/v1.0.8046.md。
+
+帮助页原生焦点滚动采用即时方式，避免输入框尚在平滑滚动时切换页签，覆盖搜索的正文定位。目录按钮继续使用明确的章节跳转处理。

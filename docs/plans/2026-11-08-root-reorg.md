@@ -327,3 +327,40 @@ debug-journal.md            10 KB
 - 源文件/manifest.json 更新为 75 个文件 / 57.4 MB。
 
 验收：node verify_all.mjs → Clean 57/57 · Errors 4 · Tests 913P 0F；真值清单 OK。
+
+## 阶段 1b 执行记录（2026-11-19）
+
+### 文档拆分
+
+| 原文件 | 去向 | 行数 |
+|---|---|---|
+| 项目文档.md（164 KB, 2357 行正文） | docs/architecture/01-overview.md | 127 |
+| | docs/architecture/02-frontend.md | 353 |
+| | docs/architecture/03-features.md | 114 |
+| | docs/architecture/04-build-release.md | 160 |
+| | docs/archive/dev-history.md | 1603 |
+| 后续更新教程.md（127 KB） | docs/guides/release-guide.md（1416 行） | |
+| | docs/archive/release-history.md（580 行） | |
+| 工作规则.md | docs/governance/work-rules.md | |
+| 职业页同步手册.md | docs/guides/职业页同步手册.md | |
+| 设计风格规范.md | docs/guides/设计风格规范.md | |
+
+拆分校验：分桶合计 2357 行 == 原文正文 2357 行（零丢失）。
+
+### 根目录文档
+
+| 文件 | 大小 | 说明 |
+|---|---|---|
+| AGENTS.md | 4 KB | 重写：A 盘符策略 + B 目录地图/命令/约定/文档入口 |
+| README.md | 1 KB | 新增：快速开始与目录概览 |
+| 文件整理规范.md | 7 KB | v2，文档行改为新路径 |
+| 项目文档.md | 1 KB | 索引（导航 + 维护约定） |
+
+根目录 md 从 16 份 / 855 KB 降到 4 份 / 13 KB（正文全在 docs/）。
+
+### 配套
+
+- scripts/archive_files.mjs 的 KEEP_ROOT_FILES 同步为新的根目录白名单；
+- docs/architecture、docs/guides 内对旧文件名的引用改为新路径（3 个文件）。
+
+验收：node verify_all.mjs → Clean 57/57 · Errors 4 · Tests 913P 0F。
