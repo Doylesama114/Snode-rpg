@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** PWA 静态检查（2026-11-19）：清单、图标、SW、安装页、meta。 */
+/** PWA 静态清单检查（2026-11-20 A 方案）：仅 manifest / 图标 / meta，不含 SW。 */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -26,22 +26,16 @@ if (manifest) {
   }
 }
 
-const swPath = path.join(SITE, 'sw.js');
-ok('sw.js 存在', fs.existsSync(swPath));
-const sw = fs.existsSync(swPath) ? fs.readFileSync(swPath, 'utf8') : '';
-ok('sw 含 install/fetch 监听', /addEventListener\('install'/.test(sw) && /addEventListener\('fetch'/.test(sw));
-ok('sw 版本常量', /VERSION\s*=/.test(sw));
-
-ok('pwa.js 存在', fs.existsSync(path.join(SITE, 'pwa.js')));
-ok('安装引导页存在', fs.existsSync(path.join(SITE, '安装到主屏幕.html')));
+ok('不应存在 sw.js（A 方案已移除）', !fs.existsSync(path.join(SITE, 'sw.js')));
+ok('不应存在 pwa.js（A 方案已移除）', !fs.existsSync(path.join(SITE, 'pwa.js')));
 
 for (const page of ['启动台.html', '主页.html']) {
   const p = path.join(SITE, page);
   const html = fs.readFileSync(p, 'utf8');
   ok(page + ' 引用 manifest', /rel="manifest"/.test(html));
   ok(page + ' 有 apple-touch-icon', /apple-touch-icon/.test(html));
-  ok(page + ' 有 pwa.js', /pwa\.js/.test(html));
   ok(page + ' viewport-fit=cover', /viewport-fit=cover/.test(html));
+  ok(page + ' 不再加载 pwa.js', !/pwa\.js/.test(html));
 }
 
 if (fails.length) {
@@ -49,4 +43,4 @@ if (fails.length) {
   fails.forEach((f) => console.log('  - ' + f));
   process.exit(1);
 }
-console.log('PWA 检查通过：manifest / 图标 / SW / 引导页 / meta');
+console.log('PWA 检查通过：manifest / 图标 / head meta（无 SW）');

@@ -927,7 +927,7 @@ if (rulesBase.stdout) console.log(rulesBase.stdout.trim());
 if (rulesBase.stderr) console.error(rulesBase.stderr.trim().slice(-600));
 if (rulesBase.status !== 0) totalErrors++;
 
-console.log('\n=== PWA（iOS 安装 / 离线） ===');
+console.log('\n=== PWA 静态清单（iOS 图标 / 全屏） ===');
 const pwaOut = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_pwa.mjs')], { encoding: 'utf8', timeout: 60000 });
 if (pwaOut.stdout) console.log(pwaOut.stdout.trim());
 if (pwaOut.stderr) console.error(pwaOut.stderr.trim());

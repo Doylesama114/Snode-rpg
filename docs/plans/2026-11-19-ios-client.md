@@ -121,3 +121,18 @@
 
 - 安装页：https://doylesama114.github.io/Snode-rpg/斯诺德跑团/安装到主屏幕.html
 - 说明：docs/guides/ios-内测说明.md
+
+### 2026-11-20 调整（A 方案）
+
+决定：**不要求用户安装**，iOS 用户直接用 Safari 网页。
+
+| 保留 | 移除 |
+| --- | --- |
+| manifest.webmanifest + icons | sw.js（离线缓存） |
+| apple meta / theme-color / viewport-fit | pwa.js（SW 注册、更新提示） |
+| guild-ui.css 的 14 行 iOS 适配 | 安装到主屏幕.html |
+| 启动台/主页 head 的静态标签 | 站内安装引导（未上线即取消） |
+
+移除原因：SW 对 JS 采用缓存优先，安卓 WebView（appsettings 域名是安全上下文）会注册并可能缓存旧 JS，影响 OTA 更新；且会增加每次发版的版本号维护。
+
+结果：用户零额外操作；自愿「添加到主屏幕」的用户仍能得到正确图标与全屏；无离线能力。
