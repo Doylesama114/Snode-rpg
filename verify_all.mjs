@@ -927,6 +927,20 @@ if (rulesBase.stdout) console.log(rulesBase.stdout.trim());
 if (rulesBase.stderr) console.error(rulesBase.stderr.trim().slice(-600));
 if (rulesBase.status !== 0) totalErrors++;
 
+console.log('\n=== 血脉 / 地形 / 元素选择 ===');
+let specOptOK = true;
+try {
+  const soOut = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_chargen_spec_opt.mjs')], { encoding: 'utf8', timeout: 180000 });
+  if (soOut.stdout) console.log(soOut.stdout.trim());
+  if (soOut.stderr) console.error(soOut.stderr.trim());
+  if (soOut.status !== 0) specOptOK = false;
+} catch (e) {
+  specOptOK = false;
+  console.log('❌ 血脉选择回归执行失败: ' + e.message.split(String.fromCharCode(10))[0]);
+}
+console.log(specOptOK ? '✅ 血脉 / 地形 / 元素选择通过' : '❌ 血脉 / 地形 / 元素选择失败');
+totalErrors += specOptOK ? 0 : 1;
+
 console.log('\n=== PWA 静态清单（iOS 图标 / 全屏） ===');
 const pwaOut = spawnSync(process.execPath, [join(VERIFY_DIR, 'verify_pwa.mjs')], { encoding: 'utf8', timeout: 60000 });
 if (pwaOut.stdout) console.log(pwaOut.stdout.trim());

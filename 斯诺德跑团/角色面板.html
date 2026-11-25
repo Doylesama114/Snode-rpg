@@ -1392,9 +1392,15 @@ function SB_buildTestData(st) {
     raceTraits.push({ n: st.racial_traits[ri].name, d: st.racial_traits[ri].desc });
   }
   var classTraits = [];
+  var _specOpts = (st.classChoices && st.classChoices.specOpts) || {};
   if (st.class_features) for (var ci2 = 0; ci2 < st.class_features.length; ci2++) {
     if (!st.class_features[ci2]) continue;
-    classTraits.push({ n: st.class_features[ci2].name, d: st.class_features[ci2].desc });
+    var _cfName = st.class_features[ci2].name || "";
+    var _cfDesc = st.class_features[ci2].desc || "";
+    if (_cfName.indexOf("魔力血脉") >= 0 && _specOpts.bloodline) _cfDesc = "伤害类型：" + _specOpts.bloodline + "；" + _cfDesc;
+    else if (_cfName.indexOf("自然探索") >= 0 && _specOpts.terrain) _cfDesc = "地形：" + _specOpts.terrain + "；" + _cfDesc;
+    else if (_cfName.indexOf("元素亲和") >= 0 && _specOpts.element) _cfDesc = "元素：" + _specOpts.element + "；" + _cfDesc;
+    classTraits.push({ n: _cfName, d: _cfDesc });
   }
   return {
     char: { player: st.player || '', name: st.name || '', race: st.race || '', gender: st.gender || '', age: st.age || '', height: st.height || '', weight: st.weight || '', eye: st.eye || '', skin: st.skin || '', hair: st.hair || '', bg: '' },

@@ -599,6 +599,7 @@ function chargenSnapshotChar(){
     selectedSkills:(CHAR.selectedSkills||[]).slice(),
     selectedFeatures:(CHAR.selectedFeatures||[]).map(function(f){return f.n||f;}),
     specChoices:CHAR.specChoices?JSON.parse(JSON.stringify(CHAR.specChoices)):{},
+    specOpts:CHAR.specOpts?JSON.parse(JSON.stringify(CHAR.specOpts)):{},
     bgName:CHAR.bgName||null,
     bgProfs:CHAR.bgProfs?JSON.parse(JSON.stringify(CHAR.bgProfs)):{},
     equipChoice:CHAR.equipChoice?{letter:CHAR.equipChoice.letter}:null,
@@ -710,7 +711,7 @@ function buildCreationSnapshot(){
   var snap={
     className:CHAR.className||"",
     keyAttr:CHAR.keyAttr||"",
-    specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),
+    specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),     specOpts:JSON.parse(JSON.stringify(CHAR.specOpts||{})),
     selectedFeatures:(CHAR.selectedFeatures||[]).slice(),
     contractCreature:CHAR.contractCreature?JSON.parse(JSON.stringify(CHAR.contractCreature)):null,
     bpPicks:(CHAR.bpPicks||[]).slice(),
@@ -781,6 +782,7 @@ function applyCreationSnapshotToChar(snap){
   }
   CHAR.keyAttr=snap.keyAttr||"";
   CHAR.specChoices=JSON.parse(JSON.stringify(snap.specChoices||{}));
+  CHAR.specOpts=(snap.specOpts&&typeof snap.specOpts==='object')?JSON.parse(JSON.stringify(snap.specOpts)):{};
   CHAR.selectedFeatures=(snap.selectedFeatures||[]).slice();
   CHAR.contractCreature=snap.contractCreature?JSON.parse(JSON.stringify(snap.contractCreature)):null;
   CHAR.bpPicks=(snap.bpPicks||[]).slice();
@@ -1693,6 +1695,7 @@ function pickSpecOpt(el, field, val){
     for(var i=0;i<chips.length;i++) chips[i].classList.remove("selected");
   }
   el.classList.add("selected");
+  checkSpecDone();
   updateOverview();
 }
 function renderSpecChoices(clsName){
@@ -1786,6 +1789,10 @@ function renderSpecChoices(clsName){
       t.classList.add("selected");
       checkSpecDone();return;
     }
+    if(t.classList.contains("spec-btn") && t.getAttribute("data-field")){
+      pickSpecOpt(t, t.getAttribute("data-field"), t.getAttribute("data-val"));
+      return;
+    }
     if(t.classList.contains("spec-attr")){
       var sn=t.parentNode.parentNode.getAttribute("data-spec");
       if(!CHAR.specChoices)CHAR.specChoices={};
@@ -1859,6 +1866,13 @@ function checkSpecDone(){
       if(pc.multi){var _arr=(ch&&ch.skills)||[];if(_arr.length!==pc.multi){allDone=false;break;}continue;}
       if(!ch||!ch.skill){allDone=false;break;}
       if(pc.attr&&!ch.attr){allDone=false;break;}
+    }
+  }
+  var _optMap=SPEC_OPT_CHOICES[clsName];
+  if(_optMap){
+    for(var _ok in _optMap){
+      var _of=_optMap[_ok].field;
+      if(!(CHAR.specOpts&&CHAR.specOpts[_of])){allDone=false;break;}
     }
   }
   var nb=document.getElementById("nextBtn");if(nb)nb.disabled=!allDone;
@@ -1961,7 +1975,7 @@ function rollSummonerContract(){
 function selectClass(idx){
   var newClassName=CLASSES[idx].name;
   if(CHAR.className&&CHAR.className!==newClassName){CHAR.selectedSkills=[];}
-  CHAR.keyAttr="";CHAR.specChoices={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
+  CHAR.keyAttr="";CHAR.specChoices={};CHAR.specOpts={};CHAR.selectedFeatures=[];CHAR.bpPicks=[];
   CHAR.deity="";CHAR.deityAttr="";CHAR.patron="";CHAR.contractCreature=null;CHAR.equipIdx=-1;CHAR.equipChoice=null;CHAR.equipSel={};
   CHAR.classIdx=idx; CHAR.className=newClassName; CHAR.classData=CLASSES[idx];
   var cards=document.querySelectorAll("#classGrid .card");
@@ -3745,7 +3759,7 @@ function saveCharacter(){
     story:CHAR.story||"", personality:CHAR.personality||"", traits:CHAR.traits||"", ideals:CHAR.ideals||"", bonds:CHAR.bonds||"", flaws:CHAR.flaws||"", deity:CHAR.deity||"", deityAttr:CHAR.deityAttr||"", patron:CHAR.patron||"", contacts:CHAR.contacts||"", scamType:CHAR.scamType||"", missionChannel:CHAR.missionChannel||"", academicDomain:CHAR.academicDomain||"", sportPreference:CHAR.sportPreference||"", crime:CHAR.crime||"", seclusion:CHAR.seclusion||"", militaryRole:CHAR.militaryRole||"", foreignOrigin:CHAR.foreignOrigin||"", companion:CHAR.companion||"", background:CHAR.bgName||"", weapon_specs:CHAR.weaponSpec?[CHAR.weaponSpec]:[],
     dragonType:CHAR.dragonType||"", dragonBreath:CHAR.dragonBreath||"", dragonResistance:CHAR.dragonResistance||"",
     raceChoices:{extraAttrs:(CHAR.raceExtra||[]).slice(),humanFreeSkill:CHAR.humanFreeSkill||"",raceSaves:(CHAR.raceSaves||[]).slice(),raceSkillChoice:Array.isArray(CHAR.raceSkillChoice)?CHAR.raceSkillChoice.slice():(CHAR.raceSkillChoice||""),raceProfInput:CHAR.raceProfInput||"",wingfolkHasCommon:CHAR.wingfolkHasCommon!==false},
-    classChoices:(function(){var _wb="";if(CHAR.weaponSpec&&typeof WEAPON_SPEC_BY_CLASS!=="undefined"&&WEAPON_SPEC_BY_CLASS[CHAR.className]&&WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses){_wb=WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses[CHAR.weaponSpec]||"";}return {weaponSpec:CHAR.weaponSpec||"",weaponSpecBonus:_wb,specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{}))};})(),
+    classChoices:(function(){var _wb="";if(CHAR.weaponSpec&&typeof WEAPON_SPEC_BY_CLASS!=="undefined"&&WEAPON_SPEC_BY_CLASS[CHAR.className]&&WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses){_wb=WEAPON_SPEC_BY_CLASS[CHAR.className].bonuses[CHAR.weaponSpec]||"";}return {weaponSpec:CHAR.weaponSpec||"",weaponSpecBonus:_wb,specChoices:JSON.parse(JSON.stringify(CHAR.specChoices||{})),specOpts:JSON.parse(JSON.stringify(CHAR.specOpts||{}))};})(),
     backgroundChoices:{deity:(CHAR.bgName==="侍僧"?(CHAR.deity||""):""),contacts:CHAR.contacts||"",scamType:CHAR.scamType||"",missionChannel:CHAR.missionChannel||"",academicDomain:CHAR.academicDomain||"",crime:CHAR.crime||"",seclusion:CHAR.seclusion||"",militaryRole:CHAR.militaryRole||"",foreignOrigin:CHAR.foreignOrigin||"",companion:CHAR.companion||""},
     bgOtherPicks:(CHAR.bgOtherPicks||[]).slice(),
     attrs:{},

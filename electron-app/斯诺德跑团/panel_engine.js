@@ -1994,6 +1994,12 @@ function exportClassFeatures(state) {
       fdesc = "信奉：" + (typeof resolveDeity === "function" ? resolveDeity(state.deity) : state.deity) + (state.deityAttr ? ("（" + state.deityAttr + "）") : "");
     } else if (fcls === "魔契师" && fname.indexOf("宗主契约") >= 0 && state.patron) {
       fdesc = "宗主：" + state.patron;
+    } else if (fname.indexOf("魔力血脉") >= 0 && cc.specOpts && cc.specOpts.bloodline) {
+      fdesc = "伤害类型：" + cc.specOpts.bloodline;
+    } else if (fname.indexOf("自然探索") >= 0 && cc.specOpts && cc.specOpts.terrain) {
+      fdesc = "地形：" + cc.specOpts.terrain;
+    } else if (fname.indexOf("元素亲和") >= 0 && cc.specOpts && cc.specOpts.element) {
+      fdesc = "元素：" + cc.specOpts.element;
     }
     feats[ci] = { name: fname, desc: fdesc };
   }
@@ -5771,7 +5777,15 @@ function renderTraits(){
     if(_feats.length>0)state.class_features=_feats;
   }
 
-  var cfh="";for(var ci=0;ci<state.class_features.length;ci++){cfh+='<div class="trait-item"><span class="trait-name">'+state.class_features[ci].name+'</span>: '+state.class_features[ci].desc+'</div>';}
+  var _cfOpts=(state.classChoices&&state.classChoices.specOpts)||{};
+  function _cfDesc(n,d){
+    n=n||"";d=d||"";
+    if(n.indexOf("魔力血脉")>=0&&_cfOpts.bloodline)return "伤害类型："+_cfOpts.bloodline+"；"+d;
+    if(n.indexOf("自然探索")>=0&&_cfOpts.terrain)return "地形："+_cfOpts.terrain+"；"+d;
+    if(n.indexOf("元素亲和")>=0&&_cfOpts.element)return "元素："+_cfOpts.element+"；"+d;
+    return d;
+  }
+  var cfh="";for(var ci=0;ci<state.class_features.length;ci++){var _cf=state.class_features[ci]||{};cfh+='<div class="trait-item"><span class="trait-name">'+_cf.name+'</span>: '+_cfDesc(_cf.name,_cf.desc)+'</div>';}
 
 
   cfh+=summonerContractHtml();
